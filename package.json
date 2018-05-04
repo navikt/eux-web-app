@@ -23,13 +23,15 @@
     "usePathForSuiteName": "true"
   },
   "devDependencies": {
-    "jest-cli": "^21.2.1",
-    "jest-junit": "^3.3.0",
-    "webpack": "^3.10.0",
     "eslint": "^4.13.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
-    "eslint-plugin-react": "^7.5.1"
+    "eslint-plugin-react": "^7.5.1",
+    "jest-cli": "^21.2.1",
+    "jest-junit": "^3.3.0",
+    "node-sass": "^4.9.0",
+    "sass-loader": "^7.0.1",
+    "webpack": "^3.10.0"
   }
 }
