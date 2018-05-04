@@ -51,45 +51,12 @@ node {
     sh "${npm} install"
   }
 
-/*
 
   stage('Test') {
     echo('CI=true && npm run-script test:ci')
     sh "CI=true && ${npm} run-script test:ci"
   }
 
-  stage('GitHub version') {
-    echo('Create a tagged release version @Github releases')
-//    def version = sh(returnStdout: true, script: "${npm} version minor")
-//    echo("version=${version}")
-//    env.WORKSPACE = pwd()
-//    echo("workspace=${env.WORKSPACE}")
-//    def semver = version.stripMargin('v')
-
-    withEnv([
-      "PATH+NODE=${NODEJS_HOME}",
-      'HTTP_PROXY=http://webproxy-utvikler.nav.no:8088',
-      'HTTPS_PROXY=http://webproxy-utvikler.nav.no:8088',
-      'NO_PROXY=adeo.no'
-    ]) {
-      sh("git remote -v")
-      echo("${scmVars.GIT_BRANCH}")
-      sh(returnStdout: true, script: "${npm} version patch")
-      sh(returnStdout: true, script: "git push origin")
-      sh(returnStdout: true, script: "git push origin --tags")
-//      sh(returnStdout: true, script: "git push origin HEAD:${scmVars.GIT_BRANCH}")
-//      sh(returnStdout: true, script: "git push origin HEAD:${scmVars.GIT_BRANCH} --tags")
-
-//      withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'navikt-jenkins', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
-//echo("GIT_USERNAME:${usernameVariable}")
-//echo("GIT_PASSWORD:${passwordVariable}")
-//        sh(returnStdout: true, script: "git push")
-//        sh(returnStdout: true, script: "git push --tags")
-//
-//      }
-    }
-  }
-*/
   stage('Build') {
     echo('Build Web App')
 
