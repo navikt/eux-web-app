@@ -64,23 +64,16 @@ node {
 
     sh(returnStdout: true, script: "${npm} run build")
 
-
-    if (scmVars.GIT_BRANCH.equalsIgnoreCase("develop")) {
-      sh "rm -rf /var/lib/jenkins/eux-web-app/*"
-      // TODO fungerer ikke. Må finne rett navn på folder, trolig for kommandoen over også
-      // sh "cp -r build/*  /var/lib/jenkins/eux-web-app/"
-    }
-    //sh "scp -r build/ B150245@e34apvl00327.devillo.no:eux/build/"
     def majorMinor = semver.split("\\.").take(2).join('.')
     buildVersion ="${majorMinor}.${BUILD_NUMBER}"
     echo("buildVersion=${buildVersion}")
   }
 
   stage('Docker') {
-    echo("Build docker image.")
 
     if (scmVars.GIT_BRANCH.equalsIgnoreCase("develop")) {
       def imageName = "${dockerRepo}/${application}:${buildVersion}"
+      echo("Build docker image= '" + imageName + "'")
       sh "mkdir -p docker/build"
       sh "cp Dockerfile docker"
       sh "cp -r build docker/build"
