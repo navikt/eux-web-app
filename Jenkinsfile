@@ -51,11 +51,13 @@ node {
     sh "${npm} install"
   }
 
+/*
+
   stage('Test') {
     echo('CI=true && npm run-script test:ci')
     sh "CI=true && ${npm} run-script test:ci"
   }
-/*
+
   stage('GitHub version') {
     echo('Create a tagged release version @Github releases')
 //    def version = sh(returnStdout: true, script: "${npm} version minor")
