@@ -11,12 +11,28 @@ class App extends Component {
       counterParty: ''
     };
 
+    this.handleChangeCaseType = this.handleChangeCaseType.bind(this);
+    this.handleChangeUser = this.handleChangeUser.bind(this);
+    this.handleChangeCounterParty = this.handleChangeCounterParty.bind(this);
+
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleSubmit(event) {
-    alert('Case type: ' + this.state.caseType);
+    alert('Case type: ' + this.state.caseType + ', user: ' + this.state.user + ', counterParty: ' + this.state.counterParty);
     event.preventDefault();
+  }
+
+  handleChangeCaseType(event) {
+    this.setState({caseType: event.target.value});
+  }
+
+  handleChangeUser(event) {
+    this.setState({user: event.target.value});
+  }
+
+  handleChangeCounterParty(event) {
+    this.setState({counterParty: event.target.value});
   }
 
   render() {
@@ -33,15 +49,15 @@ class App extends Component {
         </div>
         <div>
           <label>Sakstype:</label>
-          <input type="text" value={this.state.value}/>
+          <input type="text" value={this.state.caseType} onChange={this.handleChangeCaseType}/>
         </div>
         <div>
           <label>User:</label>
-          <input type="text" value={this.state.user}/>
+          <input type="text" value={this.state.user} onChange={this.handleChangeUser}/>
         </div>
         <div>
           <label>Counterparty:</label>
-          <input type="text" value={this.state.counterParty}/>
+          <input type="text" value={this.state.counterParty} onChange={this.handleChangeCounterParty}/>
         </div>
         <div>
           <input type="submit" value="Submit" onClick={this.handleSubmit}/>
