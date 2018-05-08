@@ -69,21 +69,13 @@ node {
     echo("buildVersion=${buildVersion}")
   }
 
-  stage('Docker') {
+  stage('Copy to pickup') {
 
     if (scmVars.GIT_BRANCH.equalsIgnoreCase("develop")) {
-      def imageName = "${dockerRepo}/${application}:${buildVersion}"
-      echo("Build docker image= '" + imageName + "'")
-      sh "mkdir -p docker/build"
-      sh "cp Dockerfile docker"
-      sh "cp -r build docker/build"
-      sh "cd docker"
-      sh "docker build -t ${imageName} ."
-      sh "docker push ${imageName}"
+      sh "rm -rf /var/lib/jenkins/eux-web/*"
+      sh "cp -r build/*  /var/lib/jenkins/eux-web-app/"
     }
-    else {
-      echo("PR branches are not used in docker images")
-    }
+
   }
 
 }
