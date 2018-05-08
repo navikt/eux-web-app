@@ -1,4 +1,4 @@
-#FROM docker.adeo.no:5000/lib/nginx:1.13.5
+#FROM docker.adeo.no:5001/lib/nginx:1.13.5
 FROM nginx
 MAINTAINER Ragnar Westad ragnar.westad@nav.no
 
