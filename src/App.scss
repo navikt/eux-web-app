@@ -26,3 +26,8 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+label {
+  padding: 20px;
+  width : 200px;
+}
