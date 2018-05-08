@@ -5,7 +5,7 @@ node {
   def project = "navikt"
   def application = "eux-web-app"
   def appConfig = "nais.yaml"
-  def dockerRepo = "docker.adeo.no:5001"
+  def dockerRepo = "docker.adeo.no:5000"
   def groupId = "nais"
 
   def nais_cluster = "preprod-fss"
