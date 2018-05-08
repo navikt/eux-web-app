@@ -19,7 +19,8 @@ class App extends Component {
   }
 
   handleSubmit(event) {
-    alert('Case type: ' + this.state.caseType + ', user: ' + this.state.user + ', counterParty: ' + this.state.counterParty);
+    alert('Case type: ' + this.state.caseType + ', user: ' + this.state.user
+      + ', counterParty: ' + this.state.counterParty);
     event.preventDefault();
   }
 
@@ -44,20 +45,23 @@ class App extends Component {
             <h1 className="App-title">EUX-web-app</h1>
           </header>
           <p className="App-intro">
-            Nei, altså ... prøver å få til en Ract-app da...
+            Nei altså ... prøver å få til en React-app da...
           </p>
         </div>
         <div>
           <label>Sakstype:</label>
-          <input type="text" value={this.state.caseType} onChange={this.handleChangeCaseType}/>
+          <input type="text" value={this.state.caseType}
+                 onChange={this.handleChangeCaseType}/>
         </div>
         <div>
           <label>User:</label>
-          <input type="text" value={this.state.user} onChange={this.handleChangeUser}/>
+          <input type="text" value={this.state.user}
+                 onChange={this.handleChangeUser}/>
         </div>
         <div>
           <label>Counterparty:</label>
-          <input type="text" value={this.state.counterParty} onChange={this.handleChangeCounterParty}/>
+          <input type="text" value={this.state.counterParty}
+                 onChange={this.handleChangeCounterParty}/>
         </div>
         <div>
           <input type="submit" value="Submit" onClick={this.handleSubmit}/>
