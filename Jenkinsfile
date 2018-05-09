@@ -72,8 +72,9 @@ node {
   stage('Copy to pickup') {
 
     if (scmVars.GIT_BRANCH.equalsIgnoreCase("develop")) {
-      sh "rm -rf /var/lib/jenkins/eux-web/*"
-      sh "cp -r build/*  /var/lib/jenkins/eux-web-app/"
+      def frontendDir = "/var/lib/jenkins/eux-web-app"
+      sh "rm -rf $frontendDir/*" // Clean the content, don't remove top folder
+      sh "cp -r build/*  $frontendDir"
     }
 
   }
