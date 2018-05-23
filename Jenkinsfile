@@ -7,25 +7,22 @@ node {
 
   /* metadata */
   def buildVersion // major.minor.BUILD_NUMBER
-  def semver
+  def semVer
   def commitHash, commitHashShort, commitUrl, committer
   def scmVars
 
   /* tools */
-  def NODEJS_HOME = tool "node-8.9.4" // => "installation directory" = "/opt/node"
-  echo "${NODEJS_HOME}"
-  def node = "${NODEJS_HOME}/bin/node"
-  def npm = "${NODEJS_HOME}/bin/npm"
-  //env.PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
-  //echo("${env.PATH}")
+  def NODE_JS_HOME = tool "node-8.9.4" // => "installation directory" = "/opt/node"
+  echo "${NODE_JS_HOME}"
+  def node = "${NODE_JS_HOME}/bin/node"
+  def npm = "${NODE_JS_HOME}/bin/npm"
 
-  // delete whole workspace before starting the build,
-  // so that the 'git clone' command below doesn't fail due to
-  // directory not being empty
+  // Delete whole workspace before starting the build, so that the 'git clone' command below
+  // doesn't fail due to directory not being empty
   cleanWs()
 
   stage('Checkout') {
-    echo('Checkout from Github ...')
+    echo('Checkout from GitHub ...')
     scmVars = checkout scm
     scmVars.each { print it }
   }
@@ -53,12 +50,12 @@ node {
   stage('Build') {
     echo('Build Web App')
 
-    semver = sh(returnStdout: true, script: "node -pe \"require('./package.json').version\"")
-    echo("semver=${semver}")
+    semVer = sh(returnStdout: true, script: "node -pe \"require('./package.json').version\"")
+    echo("semver=${semVer}")
 
     sh(returnStdout: true, script: "${npm} run build")
 
-    def majorMinor = semver.split("\\.").take(2).join('.')
+    def majorMinor = semVer.split("\\.").take(2).join('.')
     buildVersion ="${majorMinor}.${BUILD_NUMBER}"
     echo("buildVersion=${buildVersion}")
   }
