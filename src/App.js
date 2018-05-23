@@ -44,9 +44,6 @@ class App extends Component {
           <header className="App-header">
             <h1 className="App-title">EUX-web-app</h1>
           </header>
-          <p className="App-intro">
-            Nei altså ... prøver å få til en React-app da...
-          </p>
         </div>
         <div>
           <label>Sakstype:</label>
