@@ -1,0 +1,37 @@
+{
+  "name": "eux-web-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-scripts": "1.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "test:ci": "react-scripts test --env=jsdom --testResultsProcessor ./node_modules/jest-junit --coverage --coverageDirectory=test/coverage",
+    "eject": "react-scripts eject"
+  },
+  "jest-junit": {
+    "suiteName": "jest tests",
+    "output": "test/junit.xml",
+    "classNameTemplate": "{classname} - {title}",
+    "titleTemplate": "{classname} - {title}",
+    "ancestorSeparator": " > ",
+    "usePathForSuiteName": "true"
+  },
+  "devDependencies": {
+    "eslint": "^4.13.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.5.1",
+    "jest-cli": "^21.2.1",
+    "jest-junit": "^3.3.0",
+    "node-sass": "^4.9.0",
+    "sass-loader": "^7.0.1",
+    "webpack": "^3.10.0"
+  }
+}
