@@ -1,14 +1,13 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './App.scss';
 
 class App extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       caseType: '',
       user: '',
-      counterParty: ''
+      counterParty: '',
     };
 
     this.handleChangeCaseType = this.handleChangeCaseType.bind(this);
@@ -25,15 +24,15 @@ class App extends Component {
   }
 
   handleChangeCaseType(event) {
-    this.setState({caseType: event.target.value});
+    this.setState({ caseType: event.target.value });
   }
 
   handleChangeUser(event) {
-    this.setState({user: event.target.value});
+    this.setState({ user: event.target.value });
   }
 
   handleChangeCounterParty(event) {
-    this.setState({counterParty: event.target.value});
+    this.setState({ counterParty: event.target.value });
   }
 
   render() {
@@ -46,22 +45,37 @@ class App extends Component {
           </header>
         </div>
         <div>
-          <label>Sakstype:</label>
-          <input type="text" value={this.state.caseType}
-                 onChange={this.handleChangeCaseType}/>
+          <label htmlFor="caseType">Sakstype:
+            <input
+              id="caseType"
+              type="text"
+              value={this.state.caseType}
+              onChange={this.handleChangeCaseType} />
+          </label>
         </div>
         <div>
-          <label>User:</label>
-          <input type="text" value={this.state.user}
-                 onChange={this.handleChangeUser}/>
+          <label htmlFor="user">User:
+            <input
+              id="user"
+              type="text"
+              value={this.state.user}
+              onChange={this.handleChangeUser} />
+          </label>
         </div>
         <div>
-          <label>Counterparty:</label>
-          <input type="text" value={this.state.counterParty}
-                 onChange={this.handleChangeCounterParty}/>
+          <label htmlFor="counterParty">Counterparty:
+            <input
+              id="counterParty"
+              type="text"
+              value={this.state.counterParty}
+              onChange={this.handleChangeCounterParty} />
+          </label>
         </div>
         <div>
-          <input type="submit" value="Submit" onClick={this.handleSubmit}/>
+          <input
+            type="submit"
+            value="Submit"
+            onClick={this.handleSubmit} />
         </div>
       </form>
     );
