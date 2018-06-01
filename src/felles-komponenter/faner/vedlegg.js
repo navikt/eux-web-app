@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Vedlegg = props => {
+function Vedlegg() {
   return (
     <div>Vedlegg</div>
   );
 }
 
-export default Vedlegg
+export default Vedlegg;

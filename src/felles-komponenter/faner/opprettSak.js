@@ -1,9 +1,9 @@
 import React from 'react';
 
-const OpprettSak = props => {
+function OpprettSak() {
   return (
-    <div>opprett sak</div>
+    <div>Opprett sak</div>
   );
 }
 
-export default OpprettSak
+export default OpprettSak;
