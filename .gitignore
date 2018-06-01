@@ -9,12 +9,6 @@
 # production
 /build
 
-# mock data
-/scripts/mock_data
-
-# mocha + coverage
-/test
-
 # misc
 .idea
 !.idea/runConfigurations/
