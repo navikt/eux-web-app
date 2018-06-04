@@ -1,6 +1,6 @@
 import { createBrowserHistory } from 'history';
 
-const contextPath = '/'; // defaulkt
+const contextPath = '/'; // default
 
 const routerHistory = createBrowserHistory({
   basename: contextPath,
