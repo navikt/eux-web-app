@@ -51,9 +51,11 @@
   },
   "extends": "airbnb",
   "plugins": [
-    "jsx-a11y"
+    "jsx-a11y",
+    "jest"
   ],
   "env": {
-    "browser": true
+    "browser": true,
+    "jest/globals": true
   }
 }
