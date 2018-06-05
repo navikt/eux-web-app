@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import * as Skjema from '../skjema/';
 import * as Nav from '../../utils/navFrontend';
 import * as Api from '../../services/api';
-// import * as MPT from '../../proptypes';
 
 class Vedlegg extends Component {
   render() {
