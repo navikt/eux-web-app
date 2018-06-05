@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import PT from 'prop-types';
+import PT from 'prop-types';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 
@@ -9,19 +9,15 @@ import * as Api from '../../services/api';
 // import * as MPT from '../../proptypes';
 
 class Vedlegg extends Component {
-  overstyrSubmit = event => {
-    console.log(event.target);
-    event.preventDefault();
-    // const { sendVedlegg } = this.props;
-  };
-
   render() {
+    const { handleSubmit, sendSkjema } = this.props;
+
     return (
       <div className="vedlegg">
         <Nav.Container fluid>
-          <form onSubmit={this.overstyrSubmit}>
+          <form onSubmit={handleSubmit(sendSkjema)}>
             <Nav.Row>
-              <Nav.Column xs="4">
+              <Nav.Column xs="6">
                 <Nav.Panel className="vedlegg__skjema">
                   <Nav.Fieldset legend="Vedleggs informasjon">
                     <Skjema.Input feltNavn="journalpostID" label="JournalpostID" />
@@ -40,6 +36,12 @@ class Vedlegg extends Component {
     );
   }
 }
+
+Vedlegg.propTypes = {
+  handleSubmit: PT.func.isRequired,
+  sendSkjema: PT.func.isRequired,
+};
+
 const form = {
   form: 'vedlegg',
   enableReinitialize: true,
@@ -47,14 +49,9 @@ const form = {
   onSubmit: () => {},
 };
 
-const mapStateToProps = () => ({
-  initalValues: {
-    journalpostID: '',
-    dokumentID: '',
-    saksnummer: '',
-  },
-});
+const mapStateToProps = () => ({});
+
 const mapDispatchToProps = () => ({
-  send: data => Api.Vedlegg.send(data),
+  sendSkjema: data => Api.Vedlegg.send(data),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm(form)(Vedlegg));
