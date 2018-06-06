@@ -5,11 +5,25 @@ import { connect } from 'react-redux';
 
 import * as Skjema from '../skjema/';
 import * as Nav from '../../utils/navFrontend';
-import * as Api from '../../services/api';
+import { vedleggOperations, vedleggSelectors } from '../../ducks/vedlegg';
+
+const StatusLinje = ({ status }) => {
+  if (status === 'NOT_STARTED') {
+    return null;
+  }
+  return (
+    <div className="vedlegg__status">
+      <h3>{status}</h3>
+    </div>
+  );
+};
+StatusLinje.propTypes = {
+  status: PT.string.isRequired,
+};
 
 class Vedlegg extends Component {
   render() {
-    const { handleSubmit, sendSkjema } = this.props;
+    const { handleSubmit, sendSkjema, vedleggStatus } = this.props;
 
     return (
       <div className="vedlegg">
@@ -26,6 +40,7 @@ class Vedlegg extends Component {
                   <div className="vedlegg__submmit">
                     <Nav.Knapp onClick={this.sendVedlegg}>Send Vedlegg</Nav.Knapp>
                   </div>
+                  <StatusLinje status={vedleggStatus} />
                 </Nav.Panel>
               </Nav.Column>
             </Nav.Row>
@@ -39,7 +54,16 @@ class Vedlegg extends Component {
 Vedlegg.propTypes = {
   handleSubmit: PT.func.isRequired,
   sendSkjema: PT.func.isRequired,
+  vedleggStatus: PT.string.isRequired,
 };
+
+const mapStateToProps = state => ({
+  vedleggStatus: vedleggSelectors.VedleggStatusSelector(state),
+});
+
+const mapDispatchToProps = dispatch => ({
+  sendSkjema: data => dispatch(vedleggOperations.send(data)),
+});
 
 const form = {
   form: 'vedlegg',
@@ -47,10 +71,4 @@ const form = {
   destroyOnUnmount: true,
   onSubmit: () => {},
 };
-
-const mapStateToProps = () => ({});
-
-const mapDispatchToProps = () => ({
-  sendSkjema: data => Api.Vedlegg.send(data),
-});
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm(form)(Vedlegg));
