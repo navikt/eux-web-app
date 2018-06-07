@@ -23,7 +23,9 @@ StatusLinje.propTypes = {
 
 class Vedlegg extends Component {
   render() {
-    const { handleSubmit, sendSkjema, vedleggStatus } = this.props;
+    const {
+      handleSubmit, sendSkjema, vedleggStatus, vedlegg,
+    } = this.props;
 
     return (
       <div className="vedlegg">
@@ -41,6 +43,7 @@ class Vedlegg extends Component {
                     <Nav.Knapp onClick={this.sendVedlegg}>Send Vedlegg</Nav.Knapp>
                   </div>
                   <StatusLinje status={vedleggStatus} />
+                  <p>{vedlegg.data && JSON.parse(vedlegg.data).status}</p>
                 </Nav.Panel>
               </Nav.Column>
             </Nav.Row>
@@ -55,10 +58,16 @@ Vedlegg.propTypes = {
   handleSubmit: PT.func.isRequired,
   sendSkjema: PT.func.isRequired,
   vedleggStatus: PT.string.isRequired,
+  vedlegg: PT.object,
+};
+
+Vedlegg.defaultProps = {
+  vedlegg: {},
 };
 
 const mapStateToProps = state => ({
   vedleggStatus: vedleggSelectors.VedleggStatusSelector(state),
+  vedlegg: vedleggSelectors.VedleggSelector(state),
 });
 
 const mapDispatchToProps = dispatch => ({

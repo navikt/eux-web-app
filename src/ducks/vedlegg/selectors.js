@@ -8,13 +8,10 @@
 import { createSelector } from 'reselect';
 
 // selector(s)
-/*
 export const VedleggSelector = createSelector(
-  state => (state.vedlegg.data.vedlegg ? state.vedlegg.data.vedlegg : {}),
-  vedlegg => vedlegg
+  state => (state.vedlegg.data ? state.vedlegg.data : {}),
+  vedlegg => vedlegg || {}
 );
-*/
-/* eslint import/prefer-default-export:"off" */
 export const VedleggStatusSelector = createSelector(
   state => (state.vedlegg.status ? state.vedlegg.status : ''),
   vedleggStatus => vedleggStatus || ''
