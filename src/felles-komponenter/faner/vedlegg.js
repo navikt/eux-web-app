@@ -7,6 +7,8 @@ import * as Skjema from '../skjema/';
 import * as Nav from '../../utils/navFrontend';
 import { vedleggOperations, vedleggSelectors } from '../../ducks/vedlegg';
 
+import './vedlegg.css';
+
 const StatusLinje = ({ status }) => {
   if (status === 'NOT_STARTED') {
     return null;
@@ -33,9 +35,9 @@ class Vedlegg extends Component {
               <Nav.Column xs="6">
                 <Nav.Panel className="vedlegg__skjema">
                   <Nav.Fieldset legend="Vedleggs informasjon">
-                    <Skjema.Input feltNavn="journalpostID" label="JournalpostID" />
-                    <Skjema.Input feltNavn="dokumentID" label="DokumentID" />
-                    <Skjema.Input feltNavn="saksnummer" label="RINA Saksnummer" />
+                    <Skjema.Input feltNavn="journalpostID" label="JournalpostID (Hentes i fra Gosys)" />
+                    <Skjema.Input feltNavn="dokumentID" label="DokumentID (Hentes i fra Gosys)" />
+                    <Skjema.Input feltNavn="saksnummer" label="RINA Saksnummer (Kopieres fra nettleser-adressen til RINA saken)" />
                   </Nav.Fieldset>
                   <div className="vedlegg__submmit">
                     <Nav.Knapp onClick={this.sendVedlegg}>Send Vedlegg</Nav.Knapp>
