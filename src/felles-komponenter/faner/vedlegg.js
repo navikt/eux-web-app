@@ -7,6 +7,8 @@ import * as Skjema from '../skjema/';
 import * as Nav from '../../utils/navFrontend';
 import { vedleggOperations, vedleggSelectors } from '../../ducks/vedlegg';
 
+import './vedlegg.css';
+
 const StatusLinje = ({ status }) => {
   if (status === 'NOT_STARTED') {
     return null;
