@@ -13,25 +13,20 @@ class Forside extends Component {
   };
 
   faneKomponentVelger = faneIndex => {
-    let fane;
     switch (faneIndex) {
       case 0:
-        fane = <Faner.Vedlegg />;
-        break;
+        return <Faner.Vedlegg />;
       case 1:
-        fane = <Faner.OpprettSak />;
-        break;
+        return <Faner.OpprettSak />;
       default:
-        fane = <Faner.OpprettSak />;
-        break;
+        return <Faner.Vedlegg />;
     }
-    return fane;
   };
 
   render() {
     const tabs = [
       { label: 'Vedlegg' },
-      { label: 'Opprett sak' },
+//      { label: 'Opprett sak' },
     ];
 
     const fane = this.faneKomponentVelger(this.state.faneIndex);
