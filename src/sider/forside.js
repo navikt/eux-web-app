@@ -31,7 +31,7 @@ class Forside extends Component {
   render() {
     const tabs = [
       { label: 'Vedlegg' },
-      { label: 'Opprett sak' },
+//      { label: 'Opprett sak' },
     ];
 
     const fane = this.faneKomponentVelger(this.state.faneIndex);
