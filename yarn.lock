@@ -5170,6 +5170,14 @@ nav-frontend-grid@^1.0.14:
   version "1.0.16"
   resolved "https://registry.yarnpkg.com/nav-frontend-grid/-/nav-frontend-grid-1.0.16.tgz#d1bf23b3669e497406b7e74a4fc950791ac59824"
 
+nav-frontend-hjelpetekst-style@^0.3.13:
+  version "0.3.13"
+  resolved "https://registry.yarnpkg.com/nav-frontend-hjelpetekst-style/-/nav-frontend-hjelpetekst-style-0.3.13.tgz#64f9ba789dbb60f7167c6cf0625d980a5508f37c"
+
+nav-frontend-hjelpetekst@^1.0.14:
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/nav-frontend-hjelpetekst/-/nav-frontend-hjelpetekst-1.0.14.tgz#917049409ea8c227cfca5214fc61332b35eb5099"
+
 nav-frontend-ikoner-assets@^0.2.27:
   version "0.2.27"
   resolved "https://registry.yarnpkg.com/nav-frontend-ikoner-assets/-/nav-frontend-ikoner-assets-0.2.27.tgz#5e42f1456c798b82655284fba1a1736cfbfce5a9"
@@ -5197,6 +5205,14 @@ nav-frontend-lenkepanel@^1.0.2:
 nav-frontend-lenker-style@^0.2.5:
   version "0.2.6"
   resolved "https://registry.yarnpkg.com/nav-frontend-lenker-style/-/nav-frontend-lenker-style-0.2.6.tgz#c937610f845a8b5a2b3109674499fbce9f5ee122"
+
+nav-frontend-lukknapp-style@^0.2.6:
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/nav-frontend-lukknapp-style/-/nav-frontend-lukknapp-style-0.2.6.tgz#ff2014bd2e8387e799dd082d71ae3282a662c12f"
+
+nav-frontend-lukknapp@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/nav-frontend-lukknapp/-/nav-frontend-lukknapp-1.0.5.tgz#58838d58e175beeeefd44deaab27002307a733ae"
 
 nav-frontend-paneler-style@^0.3.7:
   version "0.3.8"

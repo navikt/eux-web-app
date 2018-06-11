@@ -1,6 +1,7 @@
 import { EkspanderbartpanelBase } from 'nav-frontend-ekspanderbartpanel';
 import { Panel } from 'nav-frontend-paneler';
 import Lenkepanel from 'nav-frontend-lenkepanel';
+import HjelpetekstBase from 'nav-frontend-hjelpetekst';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { Container, Row, Column } from 'nav-frontend-grid';
 import { Checkbox, Radio, RadioGruppe, SkjemaGruppe, Fieldset, Select, Input, Textarea } from 'nav-frontend-skjema';
@@ -20,4 +21,5 @@ export {
   Knapp,
   Stegindikator,
   Tabs,
+  HjelpetekstBase,
 };

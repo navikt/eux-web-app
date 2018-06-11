@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import * as Skjema from '../felles-komponenter/skjema';
 import * as Nav from '../utils/navFrontend';
+
 import { vedleggOperations, vedleggSelectors } from '../ducks/vedlegg';
 
 import './vedlegg.css';
@@ -37,6 +38,7 @@ class Vedlegg extends Component {
               <Nav.Column xs="6">
                 <Nav.Panel className="vedlegg__skjema">
                   <Nav.Fieldset legend="Vedleggs informasjon">
+                    <Nav.HjelpetekstBase id="journalPostID" type="under">Hentes fra Gosys</Nav.HjelpetekstBase>
                     <Skjema.Input feltNavn="journalpostID" label="JournalpostID (Hentes i fra Gosys)" />
                     <Skjema.Input feltNavn="dokumentID" label="DokumentID (Hentes i fra Gosys)" />
                     <Skjema.Input feltNavn="saksnummer" label="RINA Saksnummer (Kopieres fra nettleser-adressen til RINA saken)" />
