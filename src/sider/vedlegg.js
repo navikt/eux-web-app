@@ -3,9 +3,9 @@ import PT from 'prop-types';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 
-import * as Skjema from '../skjema/';
-import * as Nav from '../../utils/navFrontend';
-import { vedleggOperations, vedleggSelectors } from '../../ducks/vedlegg';
+import * as Skjema from '../felles-komponenter/skjema';
+import * as Nav from '../utils/navFrontend';
+import { vedleggOperations, vedleggSelectors } from '../ducks/vedlegg';
 
 import './vedlegg.css';
 

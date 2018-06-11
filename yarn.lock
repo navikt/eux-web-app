@@ -5134,7 +5134,7 @@ natural-compare@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
 
-nav-frontend-alertstriper-style@^0.2.26:
+nav-frontend-alertstriper-style@^0.2.33:
   version "0.2.34"
   resolved "https://registry.yarnpkg.com/nav-frontend-alertstriper-style/-/nav-frontend-alertstriper-style-0.2.34.tgz#4e62d221d07e03c6d3a3dcb2db28fcdfc25cecad"
 
@@ -5146,9 +5146,9 @@ nav-frontend-chevron-style@^0.3.4:
   version "0.3.4"
   resolved "https://registry.yarnpkg.com/nav-frontend-chevron-style/-/nav-frontend-chevron-style-0.3.4.tgz#e6b0d5e9ddd87af988e4e1a44fc7fcb1fbb70994"
 
-nav-frontend-chevron@^0.1.10:
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/nav-frontend-chevron/-/nav-frontend-chevron-0.1.10.tgz#52289b31d67e7fc5833857c627f016137edcfe75"
+nav-frontend-chevron@^1.0.2:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/nav-frontend-chevron/-/nav-frontend-chevron-1.0.5.tgz#7f590b3683755c3f09669df5ffbd1f4e105195ff"
 
 nav-frontend-core@^4.0.2, nav-frontend-core@^4.0.5:
   version "4.0.5"
@@ -5158,41 +5158,41 @@ nav-frontend-ekspanderbartpanel-style@^0.3.8:
   version "0.3.9"
   resolved "https://registry.yarnpkg.com/nav-frontend-ekspanderbartpanel-style/-/nav-frontend-ekspanderbartpanel-style-0.3.9.tgz#2ec74fbacf0db8846d68b7238647afa9240b4c00"
 
-nav-frontend-ekspanderbartpanel@^0.2.19:
-  version "0.2.22"
-  resolved "https://registry.yarnpkg.com/nav-frontend-ekspanderbartpanel/-/nav-frontend-ekspanderbartpanel-0.2.22.tgz#2e23606e10b8fec20ee7e4a445c553ee4ee9a8d0"
+nav-frontend-ekspanderbartpanel@^1.0.3:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/nav-frontend-ekspanderbartpanel/-/nav-frontend-ekspanderbartpanel-1.0.6.tgz#2a2bd5b0f3b504458af3cc9e2e1d945b1a701979"
 
-nav-frontend-grid-style@^0.2.4:
+nav-frontend-grid-style@^0.2.15:
   version "0.2.16"
   resolved "https://registry.yarnpkg.com/nav-frontend-grid-style/-/nav-frontend-grid-style-0.2.16.tgz#6e4d1b90d9ffccc58fd1b79b918a7772f75d23a2"
 
-nav-frontend-grid@^0.1.10:
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/nav-frontend-grid/-/nav-frontend-grid-0.1.10.tgz#6e2a6cb9b38683607399ebdf24f87e64169672cd"
+nav-frontend-grid@^1.0.14:
+  version "1.0.16"
+  resolved "https://registry.yarnpkg.com/nav-frontend-grid/-/nav-frontend-grid-1.0.16.tgz#d1bf23b3669e497406b7e74a4fc950791ac59824"
 
-nav-frontend-ikoner-assets@^0.2.21:
+nav-frontend-ikoner-assets@^0.2.27:
   version "0.2.27"
   resolved "https://registry.yarnpkg.com/nav-frontend-ikoner-assets/-/nav-frontend-ikoner-assets-0.2.27.tgz#5e42f1456c798b82655284fba1a1736cfbfce5a9"
 
-nav-frontend-js-utils@^0.2.10:
-  version "0.2.10"
-  resolved "https://registry.yarnpkg.com/nav-frontend-js-utils/-/nav-frontend-js-utils-0.2.10.tgz#95cf2975e7ec3cc235971dfc683a6eded0f9a153"
+nav-frontend-js-utils@^1.0.4:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/nav-frontend-js-utils/-/nav-frontend-js-utils-1.0.6.tgz#e3320dffd377239ccfaf22da7f4886d3b79303df"
 
-nav-frontend-knapper-style@^0.3.5:
+nav-frontend-knapper-style@^0.3.8:
   version "0.3.9"
   resolved "https://registry.yarnpkg.com/nav-frontend-knapper-style/-/nav-frontend-knapper-style-0.3.9.tgz#798d5deaa0184ab8e88c6860fc59edfaca4abb44"
 
-nav-frontend-knapper@^0.2.14:
-  version "0.2.15"
-  resolved "https://registry.yarnpkg.com/nav-frontend-knapper/-/nav-frontend-knapper-0.2.15.tgz#4abaa88e14e9116175c0c189e5d40e252d1ad15d"
+nav-frontend-knapper@^1.0.6:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/nav-frontend-knapper/-/nav-frontend-knapper-1.0.10.tgz#f6ea921cac1b9e17d111d679943d22008d63e660"
 
 nav-frontend-lenkepanel-style@^0.3.6:
   version "0.3.7"
   resolved "https://registry.yarnpkg.com/nav-frontend-lenkepanel-style/-/nav-frontend-lenkepanel-style-0.3.7.tgz#a8f4fb94803d576d1bdd1c7de4090d88499fb0f9"
 
-nav-frontend-lenkepanel@^0.3.16:
-  version "0.3.17"
-  resolved "https://registry.yarnpkg.com/nav-frontend-lenkepanel/-/nav-frontend-lenkepanel-0.3.17.tgz#f8324fd2bdf48431071a3df6eac417fd7f94f395"
+nav-frontend-lenkepanel@^1.0.2:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/nav-frontend-lenkepanel/-/nav-frontend-lenkepanel-1.0.5.tgz#79edc62ba93f5cd2905818c968f413f252a49b78"
 
 nav-frontend-lenker-style@^0.2.5:
   version "0.2.6"
@@ -5202,31 +5202,31 @@ nav-frontend-paneler-style@^0.3.7:
   version "0.3.8"
   resolved "https://registry.yarnpkg.com/nav-frontend-paneler-style/-/nav-frontend-paneler-style-0.3.8.tgz#ad69540b628efc8fc771e831f5e98bb037b06897"
 
-nav-frontend-paneler@^0.2.17:
-  version "0.2.17"
-  resolved "https://registry.yarnpkg.com/nav-frontend-paneler/-/nav-frontend-paneler-0.2.17.tgz#96c12d8176181ffa9c95c4a407d7ec03658336c9"
+nav-frontend-paneler@^1.0.4:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/nav-frontend-paneler/-/nav-frontend-paneler-1.0.6.tgz#1902aae90cb39e1ed039f798e723b26ab8a8c196"
 
-nav-frontend-skjema-style@^0.3.11:
+nav-frontend-skjema-style@^0.3.19:
   version "0.3.20"
   resolved "https://registry.yarnpkg.com/nav-frontend-skjema-style/-/nav-frontend-skjema-style-0.3.20.tgz#15469de7636db028068a105c4fa973fd5f53f389"
 
-nav-frontend-skjema@^0.1.21:
-  version "0.1.32"
-  resolved "https://registry.yarnpkg.com/nav-frontend-skjema/-/nav-frontend-skjema-0.1.32.tgz#ee61961c2ef99bdf31b23428c320a2570076e617"
+nav-frontend-skjema@^1.0.6:
+  version "1.0.18"
+  resolved "https://registry.yarnpkg.com/nav-frontend-skjema/-/nav-frontend-skjema-1.0.18.tgz#eb2532ab17780daa804139d807805950e8dc2872"
 
-nav-frontend-snakkeboble-style@^0.2.4:
+nav-frontend-snakkeboble-style@^0.2.5:
   version "0.2.6"
   resolved "https://registry.yarnpkg.com/nav-frontend-snakkeboble-style/-/nav-frontend-snakkeboble-style-0.2.6.tgz#1dabe2b6c16215407925cb7746e05aed6c2afa7a"
 
-nav-frontend-snakkeboble@^0.1.18:
-  version "0.1.19"
-  resolved "https://registry.yarnpkg.com/nav-frontend-snakkeboble/-/nav-frontend-snakkeboble-0.1.19.tgz#a83b792349de377020bb9050fa00db9676bd920a"
+nav-frontend-snakkeboble@^1.0.5:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/nav-frontend-snakkeboble/-/nav-frontend-snakkeboble-1.0.9.tgz#2ff5460b0074fa11a65b3694fc65016dc9c600cf"
 
 nav-frontend-spinner-style@^0.2.4:
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/nav-frontend-spinner-style/-/nav-frontend-spinner-style-0.2.4.tgz#2c851f5bd4ffe21b2802a9b2f16fade1506a961a"
 
-nav-frontend-spinner@^1.0.5:
+nav-frontend-spinner@^1.0.8:
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/nav-frontend-spinner/-/nav-frontend-spinner-1.0.10.tgz#7d8275e047b4ec1fa7089eea465a21112b3f1a18"
 
@@ -5234,9 +5234,9 @@ nav-frontend-stegindikator-style@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/nav-frontend-stegindikator-style/-/nav-frontend-stegindikator-style-1.0.2.tgz#f302e543914f578406a5d005f63ae6a5a0a4c1e5"
 
-nav-frontend-stegindikator@^0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/nav-frontend-stegindikator/-/nav-frontend-stegindikator-0.0.7.tgz#e3b6cb67e12702bf1a2158de20d29d30e48c6d98"
+nav-frontend-stegindikator@^0.0.11:
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/nav-frontend-stegindikator/-/nav-frontend-stegindikator-0.0.11.tgz#6ad180c5a451122e5b7bcd075ad59c4bd15a47e4"
 
 nav-frontend-tabell-style@^0.2.5:
   version "0.2.6"
@@ -5250,19 +5250,19 @@ nav-frontend-tabs@0.0.12:
   version "0.0.12"
   resolved "https://registry.yarnpkg.com/nav-frontend-tabs/-/nav-frontend-tabs-0.0.12.tgz#02166e75a9f8186a671d6551041aaf3e0c781eac"
 
-nav-frontend-tekstomrade@^0.1.15:
-  version "0.1.18"
-  resolved "https://registry.yarnpkg.com/nav-frontend-tekstomrade/-/nav-frontend-tekstomrade-0.1.18.tgz#a5b9323daa013e87dc112fef5f2b0f732f1cf6b4"
+nav-frontend-tekstomrade@^2.0.4:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/nav-frontend-tekstomrade/-/nav-frontend-tekstomrade-2.0.8.tgz#b4457f28a819ef08b27e2d36176b12540391ee2d"
 
-nav-frontend-typografi-style@^1.0.7:
+nav-frontend-typografi-style@^1.0.8:
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/nav-frontend-typografi-style/-/nav-frontend-typografi-style-1.0.9.tgz#68e23f1e287b5e361b26466c29bb587df44f960b"
   dependencies:
     nav-frontend-core "^4.0.2"
 
-nav-frontend-typografi@^1.0.12:
-  version "1.0.12"
-  resolved "https://registry.yarnpkg.com/nav-frontend-typografi/-/nav-frontend-typografi-1.0.12.tgz#9e8e769b2b83dcd7f68ab363dfaa0fdd0863740a"
+nav-frontend-typografi@^2.0.3:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/nav-frontend-typografi/-/nav-frontend-typografi-2.0.5.tgz#9bd255c98f61d2d46122b6426d9b46e144b6ad0e"
 
 nearley@^2.7.10:
   version "2.13.0"
