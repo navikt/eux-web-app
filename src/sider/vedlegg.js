@@ -4,6 +4,7 @@ import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 
 import * as Skjema from '../felles-komponenter/skjema';
+import { StatusLinje } from '../felles-komponenter/statuslinje';
 import * as Nav from '../utils/navFrontend';
 import * as MPT from '../proptypes';
 
@@ -13,20 +14,6 @@ import { vedleggOperations, vedleggSelectors } from '../ducks/vedlegg';
 import './vedlegg.css';
 
 const uuid = require('uuid/v4');
-
-const StatusLinje = ({ status }) => {
-  if (status === 'NOT_STARTED') {
-    return null;
-  }
-  return (
-    <div className="vedlegg__status">
-      <h3>{status}</h3>
-    </div>
-  );
-};
-StatusLinje.propTypes = {
-  status: PT.string.isRequired,
-};
 
 class Vedlegg extends Component {
   render() {
@@ -55,7 +42,7 @@ class Vedlegg extends Component {
                   <div className="vedlegg__submmit">
                     <Nav.Knapp onClick={this.sendVedlegg}>Send Vedlegg</Nav.Knapp>
                   </div>
-                  <StatusLinje status={vedleggStatus} />
+                  <StatusLinje status={vedleggStatus} tittel="Vedlegget" />
                   <p>{vedlegg.data && JSON.parse(vedlegg.data).status}</p>
                 </Nav.Panel>
               </Nav.Column>

@@ -8,7 +8,7 @@ import * as Skjema from '../felles-komponenter/skjema';
 import * as Ikoner from '../resources/images';
 import * as API from '../services/api';
 import { PersonerSelectors } from '../ducks/personer';
-import PanelHeader from '../felles-komponenter/panelHeader/panelHeader';
+import { PanelHeader } from '../felles-komponenter/panelHeader';
 
 import './personsok.css';
 

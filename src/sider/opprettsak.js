@@ -6,6 +6,8 @@ import PT from 'prop-types';
 import * as MPT from '../proptypes/';
 import * as Nav from '../utils/navFrontend';
 import * as Skjema from '../felles-komponenter/skjema';
+
+import { StatusLinje } from '../felles-komponenter/statuslinje';
 import { KodeverkSelectors } from '../ducks/kodeverk';
 import PersonSok from './personsok';
 import { eusakOperations, eusakSelectors } from '../ducks/eusak';
@@ -13,6 +15,7 @@ import { eusakOperations, eusakSelectors } from '../ducks/eusak';
 import './opprettsak.css';
 
 const uuid = require('uuid/v4');
+
 
 class OpprettSak extends Component {
   skjemaSubmit = values => {
@@ -72,7 +75,7 @@ class OpprettSak extends Component {
                   </Nav.Fieldset>
                 </div>
                 <Nav.Knapp onClick={this.props.handleSubmit(this.skjemaSubmit)}>Opprett sak i RINA</Nav.Knapp>
-                <h3>{status}</h3>
+                <StatusLinje status={status} tittel="Opprettet sak" />
               </Nav.Column>
             </Nav.Row>
           </Nav.Container>
