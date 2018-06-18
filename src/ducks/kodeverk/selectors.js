@@ -53,6 +53,6 @@ export const buctyperSelector = createSelector(
 );
 
 export const institusjonSelector = createSelector(
-  state => state.kodeverk.data.institusjon,
-  institusjon => institusjon
+  state => state.kodeverk.data.institusjoner,
+  institusjoner => institusjoner
 );
