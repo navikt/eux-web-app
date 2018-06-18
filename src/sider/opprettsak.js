@@ -16,13 +16,9 @@ const uuid = require('uuid/v4');
 class OpprettSak extends Component {
   skjemaSubmit = event => {
     event.preventDefault();
-    console.log('sender skjema');
-  }
-
-  validerSok = erGyldig => {
-    console.log(erGyldig);
-    erGyldig ? this.props.validerFnrRiktig() : this.props.validerFnrFeil();
   };
+
+  validerSok = erGyldig => (erGyldig ? this.props.validerFnrRiktig() : this.props.validerFnrFeil());
 
   render() {
     const {
@@ -79,6 +75,8 @@ OpprettSak.propTypes = {
   sector: PT.arrayOf(MPT.Kodeverk),
   buctyper: MPT.Buctyper,
   fnr: PT.string,
+  validerFnrRiktig: PT.func.isRequired,
+  validerFnrFeil: PT.func.isRequired,
 };
 OpprettSak.defaultProps = {
   landkoder: undefined,
@@ -111,6 +109,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
     {
 
     }
-  )
+  ),
 })(OpprettSak));
 // export default OpprettSak;

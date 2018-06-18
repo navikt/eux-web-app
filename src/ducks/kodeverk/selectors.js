@@ -28,26 +28,26 @@ export const valgtSectorSelector = createSelector(
     const { values = {} } = opprettSakForm;
     return values.sector;
   }
-)
+);
 
 const mapToBucSektor = {
   AD: 'administrative',
   AW: 'awod',
-  'FA': 'family',
-  'AD': 'horizontal',
-  'AD': 'legislation',
-  'AD': 'miscellaneous',
-  'AD': 'pensions',
-  'AD': 'recovery',
-  'AD': 'sickness',
-  'AD': 'unemployment',
-}
+  FB: 'family',
+  HZ: 'horizontal',
+  LA: 'legislation',
+  MI: 'miscellaneous',
+  PE: 'pensions',
+  RE: 'recovery',
+  SI: 'sickness',
+  UB: 'unemployment',
+};
 
 export const buctyperSelector = createSelector(
   state => state.kodeverk.data.buctyper,
   state => valgtSectorSelector(state),
   (buctyper, valgtSektor) => {
-    if(!valgtSektor) { return []}
+    if (!valgtSektor) { return []; }
     return buctyper[mapToBucSektor[valgtSektor]];
   }
 );
