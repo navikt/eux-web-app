@@ -37,7 +37,7 @@ class OpprettSak extends Component {
         <form onSubmit={this.overrideForm}>
           <Nav.Container fluid>
             <Nav.Row>
-              <Nav.Column xs="12">
+              <Nav.Column xs="6">
                 <PersonSok fnr={fnr} validerSok={this.validerSok} />
               </Nav.Column>
             </Nav.Row>
