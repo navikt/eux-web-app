@@ -59,7 +59,7 @@ class OpprettSak extends Component {
                     </Skjema.Select>
                   </Nav.Fieldset>
                   <Nav.Fieldset legend="Land">
-                    <Skjema.Select feltNavn="Land" label="Velg Land" bredde="s">
+                    <Skjema.Select feltNavn="land" label="Velg Land" bredde="s">
                       {landkoder && landkoder.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                     </Skjema.Select>
                   </Nav.Fieldset>
@@ -111,5 +111,20 @@ const mapDispatchToProps = dispatch => ({
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
   form: 'opprettSak',
   onSubmit: () => {},
+  validate: values => {
+    const fnr = !values.fnr ? 'Du må taste inn fødselsnummer' : null;
+    const sector = !values.fnr ? 'Du må velge sektor' : null;
+    const buctype = !values.fnr ? 'Du må velge buctype' : null;
+    const sedtype = !values.fnr ? 'Du må velge sedtype' : null;
+    const land = !values.fnr ? 'Du må velge land' : null;
+
+    return {
+      fnr,
+      sector,
+      buctype,
+      sedtype,
+      land,
+    };
+  },
 })(OpprettSak));
 // export default OpprettSak;
