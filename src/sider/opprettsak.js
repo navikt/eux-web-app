@@ -18,7 +18,7 @@ class OpprettSak extends Component {
   skjemaSubmit = values => {
     const { submitFailed } = this.props;
     if (submitFailed) return;
-    console.log('sender skjema nå.');
+    this.props.sendSkjema(values);
   }
 
   overrideForm = event => {
@@ -79,6 +79,7 @@ OpprettSak.propTypes = {
   validerFnrFeil: PT.func.isRequired,
   handleSubmit: PT.func.isRequired,
   submitFailed: PT.bool.isRequired,
+  sendSkjema: PT.func.isRequired,
   landkoder: PT.arrayOf(MPT.Kodeverk),
   sedtyper: PT.arrayOf(MPT.Kodeverk),
   sector: PT.arrayOf(MPT.Kodeverk),
@@ -115,10 +116,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
   onSubmit: () => {},
   validate: values => {
     const fnr = !values.fnr ? 'Du må taste inn fødselsnummer' : null;
-    const sector = !values.fnr ? 'Du må velge sektor' : null;
-    const buctype = !values.fnr ? 'Du må velge buctype' : null;
-    const sedtype = !values.fnr ? 'Du må velge sedtype' : null;
-    const land = !values.fnr ? 'Du må velge land' : null;
+    const sector = !values.sector ? 'Du må velge sektor' : null;
+    const buctype = !values.buctype ? 'Du må velge buctype' : null;
+    const sedtype = !values.sedtype ? 'Du må velge sedtype' : null;
+    const land = !values.land ? 'Du må velge land' : null;
 
     return {
       fnr,

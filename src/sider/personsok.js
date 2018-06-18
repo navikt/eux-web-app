@@ -52,13 +52,15 @@ class PersonSok extends Component {
 
     return (
       <div className="personsok">
-        <Skjema.Input
-          label="Søk på fødsels- eller d-nummer"
-          className="personsok__input"
-          bredde="XL"
-          feltNavn="fnr"
-        />
-        <Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson}>SØK</Nav.Knapp>
+        <div className="personsok__skjema">
+          <Skjema.Input
+            label="Søk på fødsels- eller d-nummer"
+            className="personsok__input"
+            bredde="XL"
+            feltNavn="fnr"
+          />
+          <Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson}>SØK</Nav.Knapp>
+        </div>
         {personKort}
       </div>
     );
