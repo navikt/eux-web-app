@@ -22,8 +22,32 @@ export const sedtyperSelector = createSelector(
   sedtyper => sedtyper
 );
 
+export const valgtSectorSelector = createSelector(
+  state => (state.form.opprettSak ? state.form.opprettSak : {}),
+  opprettSakForm => {
+    const { values = {} } = opprettSakForm;
+    return values.sector;
+  }
+)
+
+const mapToBucSektor = {
+  AD: 'administrative',
+  AW: 'awod',
+  'FA': 'family',
+  'AD': 'horizontal',
+  'AD': 'legislation',
+  'AD': 'miscellaneous',
+  'AD': 'pensions',
+  'AD': 'recovery',
+  'AD': 'sickness',
+  'AD': 'unemployment',
+}
+
 export const buctyperSelector = createSelector(
   state => state.kodeverk.data.buctyper,
-  buctyper => buctyper
+  state => valgtSectorSelector(state),
+  (buctyper, valgtSektor) => {
+    if(!valgtSektor) { return []}
+    return buctyper[mapToBucSektor[valgtSektor]];
+  }
 );
-

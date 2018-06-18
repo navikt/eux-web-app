@@ -39,7 +39,12 @@ class PersonSok extends Component {
   sokEtterPerson = () => {
     const { fnr } = this.props;
     if (fnr === '') return;
-    API.Personer.hent(fnr).then(response => this.byggPerson(response));
+
+    API.Personer.hent(fnr).then(response => {
+      this.byggPerson(response);
+
+      this.props.validerSok(response.sammensattNavn !== undefined);
+    });
   };
 
   byggPerson = person => {
@@ -68,13 +73,14 @@ class PersonSok extends Component {
     );
   }
 }
+
 PersonSok.propTypes = {
   person: MPT.Person,
   handleSubmit: PT.func.isRequired,
-  lagreSokeStreng: PT.func.isRequired,
-  hentPerson: PT.isRequired,
+  validerSok: PT.func.isRequired,
   fnr: PT.string,
 };
+
 PersonSok.defaultProps = {
   person: {},
   fnr: '',
@@ -83,9 +89,5 @@ PersonSok.defaultProps = {
 const mapStateToProps = state => ({
   person: PersonerSelectors.personSelector(state),
 });
-const mapDispatchToProps = dispatch => ({
-  lagreSokeStreng: verdi => dispatch(change('sokEtterPerson', 'sokeStreng', verdi)),
-  hentPerson: fnr => dispatch(PersonerOperations.hent(fnr)),
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(PersonSok);
+export default connect(mapStateToProps, null)(PersonSok);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, formValueSelector } from 'redux-form';
+import { reduxForm, formValueSelector, setSubmitFailed, clearAsyncError } from 'redux-form';
 import PT from 'prop-types';
 
 import * as MPT from '../proptypes/';
@@ -19,17 +19,15 @@ class OpprettSak extends Component {
     console.log('sender skjema');
   }
 
+  validerSok = erGyldig => {
+    console.log(erGyldig);
+    erGyldig ? this.props.validerFnrRiktig() : this.props.validerFnrFeil();
+  };
+
   render() {
     const {
       landkoder, sedtyper, sector, buctyper, fnr,
     } = this.props;
-    let bucliste;
-    if (buctyper) {
-      const {
-        awod, administrative, family, horizontal, legislation, miscellaneous, pensions, recovery, sickness, unemployment,
-      } = buctyper;
-      bucliste = [].concat(awod, administrative, family, horizontal, legislation, miscellaneous, pensions, recovery, sickness, unemployment);
-    }
 
     return (
       <div className="opprettsak">
@@ -37,7 +35,7 @@ class OpprettSak extends Component {
           <Nav.Container fluid>
             <Nav.Row>
               <Nav.Column xs="12">
-                <PersonSok fnr={fnr} />
+                <PersonSok fnr={fnr} validerSok={this.validerSok} />
               </Nav.Column>
             </Nav.Row>
             <Nav.Row>
@@ -53,7 +51,7 @@ class OpprettSak extends Component {
                   </Nav.Fieldset>
                   <Nav.Fieldset legend="Type BUC">
                     <Skjema.Select feltNavn="buctype" label="Velg BUC Type" bredde="xl">
-                      {bucliste && bucliste.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
+                      {buctyper && buctyper.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
                     </Skjema.Select>
                   </Nav.Fieldset>
                   <Nav.Fieldset legend="Type SED">
@@ -99,9 +97,20 @@ const mapStateToProps = state => ({
   buctyper: KodeverkSelectors.buctyperSelector(state),
   fnr: skjemaSelector(state, 'fnr'),
 });
+
+const mapDispatchToProps = dispatch => ({
+  validerFnrFeil: () => dispatch(setSubmitFailed('opprettSak', 'fnr')),
+  validerFnrRiktig: () => dispatch(clearAsyncError('opprettSak', 'fnr')),
+});
+
 // mapDispatchToProps = dispatch => ({});
-export default connect(mapStateToProps, null)(reduxForm({
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
   form: 'opprettSak',
   onSubmit: () => {},
+  validate: (values, props) => (
+    {
+
+    }
+  )
 })(OpprettSak));
 // export default OpprettSak;
