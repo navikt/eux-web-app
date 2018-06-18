@@ -45,7 +45,7 @@ class OpprettSak extends Component {
             </Nav.Row>
             <Nav.Row>
               <Nav.Column xs="12">
-                <Nav.Panel>
+                <div>
                   <Nav.Fieldset legend="Fagområde">
                     <Skjema.Select feltNavn="sector" label="Velg Fagområde" bredde="xl">
                       {sector && sector.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
@@ -66,7 +66,7 @@ class OpprettSak extends Component {
                       {landkoder && landkoder.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                     </Skjema.Select>
                   </Nav.Fieldset>
-                </Nav.Panel>
+                </div>
               </Nav.Column>
             </Nav.Row>
           </Nav.Container>
