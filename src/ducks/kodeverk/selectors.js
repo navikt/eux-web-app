@@ -51,3 +51,8 @@ export const buctyperSelector = createSelector(
     return buctyper[mapToBucSektor[valgtSektor]];
   }
 );
+
+export const institusjonSelector = createSelector(
+  state => state.kodeverk.data.institusjon,
+  institusjon => institusjon
+);

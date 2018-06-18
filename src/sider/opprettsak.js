@@ -29,7 +29,8 @@ class OpprettSak extends Component {
 
   render() {
     const {
-      landkoder, sedtyper, sector, buctyper, fnr, status,
+      landkoder, sedtyper, sector, buctyper, institusjon,
+      fnr, status,
     } = this.props;
 
     return (
@@ -64,6 +65,11 @@ class OpprettSak extends Component {
                       {landkoder && landkoder.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                     </Skjema.Select>
                   </Nav.Fieldset>
+                  <Nav.Fieldset legend="Mottaker instutisjon">
+                    <Skjema.Select feltNavn="institusjon" label="Velg Institusjon" bredde="xl">
+                      {institusjon && institusjon.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+                    </Skjema.Select>
+                  </Nav.Fieldset>
                 </div>
                 <Nav.Knapp onClick={this.props.handleSubmit(this.skjemaSubmit)}>Opprett sak i RINA</Nav.Knapp>
                 <h3>{status}</h3>
@@ -85,6 +91,7 @@ OpprettSak.propTypes = {
   sedtyper: PT.arrayOf(MPT.Kodeverk),
   sector: PT.arrayOf(MPT.Kodeverk),
   buctyper: PT.arrayOf(MPT.Kodeverk),
+  institusjon: PT.arrayOf(MPT.Kodeverk),
   fnr: PT.string,
   status: PT.string,
 };
@@ -93,6 +100,7 @@ OpprettSak.defaultProps = {
   sedtyper: undefined,
   sector: undefined,
   buctyper: undefined,
+  institusjon: undefined,
   fnr: '',
   status: '',
 };
@@ -104,6 +112,7 @@ const mapStateToProps = state => ({
   sedtyper: KodeverkSelectors.sedtyperSelector(state),
   sector: KodeverkSelectors.sectorSelector(state),
   buctyper: KodeverkSelectors.buctyperSelector(state),
+  institusjon: KodeverkSelectors.institusjonSelector(state),
   fnr: skjemaSelector(state, 'fnr'),
   status: eusakSelectors.EusakStatusSelector(state),
 });
