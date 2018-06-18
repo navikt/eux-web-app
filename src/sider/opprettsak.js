@@ -19,11 +19,11 @@ class OpprettSak extends Component {
     const { submitFailed } = this.props;
     if (submitFailed) return;
     console.log('sender skjema nå.');
-  }
+  };
 
   overrideForm = event => {
     event.preventDefault();
-  }
+  };
 
   validerSok = erGyldig => (erGyldig ? this.props.validerFnrRiktig() : this.props.validerFnrFeil());
 
@@ -65,7 +65,7 @@ class OpprettSak extends Component {
                     </Skjema.Select>
                   </Nav.Fieldset>
                 </div>
-                <Nav.Knapp onClick={this.props.handleSubmit(this.skjemaSubmit)}>Lagre</Nav.Knapp>
+                <Nav.Knapp onClick={this.props.handleSubmit(this.skjemaSubmit)}>Opprett sak i RINA</Nav.Knapp>
               </Nav.Column>
             </Nav.Row>
           </Nav.Container>
