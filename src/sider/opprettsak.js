@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, formValueSelector, setSubmitFailed, clearAsyncError } from 'redux-form';
+import { reduxForm, formValueSelector, clearAsyncError, stopSubmit } from 'redux-form';
 import PT from 'prop-types';
 
 import * as MPT from '../proptypes/';
@@ -15,29 +15,31 @@ import './opprettsak.css';
 const uuid = require('uuid/v4');
 
 class OpprettSak extends Component {
-  skjemaSubmit = event => {
+  skjemaSubmit = values => {
+    const { submitFailed } = this.props;
+    if (submitFailed) return;
+    console.log('sender skjema nå.');
+  }
+
+  overrideForm = event => {
     event.preventDefault();
-  };
+  }
 
   validerSok = erGyldig => (erGyldig ? this.props.validerFnrRiktig() : this.props.validerFnrFeil());
 
   render() {
     const {
-      handleSubmit, sendSkjema,
       landkoder, sedtyper, sector, buctyper, fnr,
     } = this.props;
 
     return (
       <div className="opprettsak">
-        <form onSubmit={handleSubmit(sendSkjema)}>
+        <form onSubmit={this.overrideForm}>
           <Nav.Container fluid>
             <Nav.Row>
               <Nav.Column xs="12">
                 <PersonSok fnr={fnr} validerSok={this.validerSok} />
               </Nav.Column>
-            </Nav.Row>
-            <Nav.Row>
-              <p />
             </Nav.Row>
             <Nav.Row>
               <Nav.Column xs="12">
@@ -58,20 +60,13 @@ class OpprettSak extends Component {
                     </Skjema.Select>
                   </Nav.Fieldset>
                   <Nav.Fieldset legend="Land">
-                    <Skjema.Select feltNavn="Land" label="Velg Land" bredde="s">
+                    <Skjema.Select feltNavn="land" label="Velg Land" bredde="s">
                       {landkoder && landkoder.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                     </Skjema.Select>
                   </Nav.Fieldset>
                 </div>
+                <Nav.Knapp onClick={this.props.handleSubmit(this.skjemaSubmit)}>Lagre</Nav.Knapp>
               </Nav.Column>
-            </Nav.Row>
-            <Nav.Row>
-              <p />
-            </Nav.Row>
-            <Nav.Row>
-              <div className="vedlegg__submmit">
-                <Nav.Knapp onClick={this.skjemaSubmit}>Oppprett Sak</Nav.Knapp>
-              </div>
             </Nav.Row>
           </Nav.Container>
         </form>
@@ -80,15 +75,15 @@ class OpprettSak extends Component {
   }
 }
 OpprettSak.propTypes = {
+  validerFnrRiktig: PT.func.isRequired,
+  validerFnrFeil: PT.func.isRequired,
+  handleSubmit: PT.func.isRequired,
+  submitFailed: PT.bool.isRequired,
   landkoder: PT.arrayOf(MPT.Kodeverk),
   sedtyper: PT.arrayOf(MPT.Kodeverk),
   sector: PT.arrayOf(MPT.Kodeverk),
   buctyper: PT.arrayOf(MPT.Kodeverk),
   fnr: PT.string,
-  validerFnrRiktig: PT.func.isRequired,
-  validerFnrFeil: PT.func.isRequired,
-  handleSubmit: PT.func.isRequired,
-  sendSkjema: PT.func.isRequired,
 };
 OpprettSak.defaultProps = {
   landkoder: undefined,
@@ -109,7 +104,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  validerFnrFeil: () => dispatch(setSubmitFailed('opprettSak', 'fnr')),
+  validerFnrFeil: () => dispatch(stopSubmit('opprettSak', { fnr: 'Fant ingen treff på søket.' })),
   validerFnrRiktig: () => dispatch(clearAsyncError('opprettSak', 'fnr')),
   sendSkjema: data => dispatch(eusakOperations.send(data)),
 });
@@ -118,10 +113,20 @@ const mapDispatchToProps = dispatch => ({
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
   form: 'opprettSak',
   onSubmit: () => {},
-  validate: (values, props) => (
-    {
+  validate: values => {
+    const fnr = !values.fnr ? 'Du må taste inn fødselsnummer' : null;
+    const sector = !values.fnr ? 'Du må velge sektor' : null;
+    const buctype = !values.fnr ? 'Du må velge buctype' : null;
+    const sedtype = !values.fnr ? 'Du må velge sedtype' : null;
+    const land = !values.fnr ? 'Du må velge land' : null;
 
-    }
-  ),
+    return {
+      fnr,
+      sector,
+      buctype,
+      sedtype,
+      land,
+    };
+  },
 })(OpprettSak));
 // export default OpprettSak;
