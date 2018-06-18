@@ -38,10 +38,14 @@ class Vedlegg extends Component {
               <Nav.Column xs="6">
                 <Nav.Panel className="vedlegg__skjema">
                   <Nav.Fieldset legend="Vedleggs informasjon">
-                    <Nav.HjelpetekstBase id="journalPostID" type="under">Hentes fra Gosys</Nav.HjelpetekstBase>
-                    <Skjema.Input feltNavn="journalpostID" label="JournalpostID (Hentes i fra Gosys)" />
-                    <Skjema.Input feltNavn="dokumentID" label="DokumentID (Hentes i fra Gosys)" />
-                    <Skjema.Input feltNavn="saksnummer" label="RINA Saksnummer (Kopieres fra nettleser-adressen til RINA saken)" />
+                    <Nav.HjelpetekstBase id="journalPostID" type="under">Journalpost ID finner du i Gosys</Nav.HjelpetekstBase>
+                    <Skjema.Input feltNavn="journalpostID" label="JournalpostID" />
+                    <Nav.HjelpetekstBase id="dokumentID" type="under">Dokument ID finner du i Gosys</Nav.HjelpetekstBase>
+                    <Skjema.Input feltNavn="dokumentID" label="DokumentID" />
+                    <Nav.HjelpetekstBase id="saksnummer" type="under">Saksnummer finner du i RINA</Nav.HjelpetekstBase>
+                    <Skjema.Input feltNavn="saksnummer" label="RINA Saksnummer" />
+                    <Nav.HjelpetekstBase id="sed" type="under">Les mer om de forskjellige SED typene</Nav.HjelpetekstBase>
+                    <Skjema.Input feltNavn="sed" label="SED type" />
                   </Nav.Fieldset>
                   <div className="vedlegg__submmit">
                     <Nav.Knapp onClick={this.sendVedlegg}>Send Vedlegg</Nav.Knapp>
