@@ -5,10 +5,14 @@ import { connect } from 'react-redux';
 
 import * as Skjema from '../felles-komponenter/skjema';
 import * as Nav from '../utils/navFrontend';
+import * as MPT from '../proptypes';
 
+import { KodeverkSelectors } from '../ducks/kodeverk';
 import { vedleggOperations, vedleggSelectors } from '../ducks/vedlegg';
 
 import './vedlegg.css';
+
+const uuid = require('uuid/v4');
 
 const StatusLinje = ({ status }) => {
   if (status === 'NOT_STARTED') {
@@ -27,7 +31,7 @@ StatusLinje.propTypes = {
 class Vedlegg extends Component {
   render() {
     const {
-      handleSubmit, sendSkjema, vedleggStatus, vedlegg,
+      handleSubmit, sendSkjema, vedleggStatus, vedlegg, sedtyper,
     } = this.props;
 
     return (
@@ -44,8 +48,9 @@ class Vedlegg extends Component {
                     <Skjema.Input feltNavn="dokumentID" label="DokumentID" />
                     <Nav.HjelpetekstBase id="saksnummer" type="under">Saksnummer finner du i RINA</Nav.HjelpetekstBase>
                     <Skjema.Input feltNavn="saksnummer" label="RINA Saksnummer" />
-                    <Nav.HjelpetekstBase id="sed" type="under">Les mer om de forskjellige SED typene</Nav.HjelpetekstBase>
-                    <Skjema.Input feltNavn="sed" label="SED type" />
+                    <Skjema.Select feltNavn="sedtype" label="Velg SED Type" bredde="xl">
+                      {sedtyper && sedtyper.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+                    </Skjema.Select>
                   </Nav.Fieldset>
                   <div className="vedlegg__submmit">
                     <Nav.Knapp onClick={this.sendVedlegg}>Send Vedlegg</Nav.Knapp>
@@ -65,27 +70,47 @@ class Vedlegg extends Component {
 Vedlegg.propTypes = {
   handleSubmit: PT.func.isRequired,
   sendSkjema: PT.func.isRequired,
+  sedtyper: PT.arrayOf(MPT.Kodeverk),
   vedleggStatus: PT.string.isRequired,
   vedlegg: PT.object,
 };
 
 Vedlegg.defaultProps = {
+  sedtyper: undefined,
   vedlegg: {},
 };
 
 const mapStateToProps = state => ({
   vedleggStatus: vedleggSelectors.VedleggStatusSelector(state),
   vedlegg: vedleggSelectors.VedleggSelector(state),
+  sedtyper: KodeverkSelectors.sedtyperSelector(state),
 });
 
 const mapDispatchToProps = dispatch => ({
   sendSkjema: data => dispatch(vedleggOperations.send(data)),
 });
 
+const journalpostValidation = journalpostID => {
+  if (!journalpostID) { return 'Du må taste inn en journalpostID'; }
+  return null;
+};
+
 const form = {
   form: 'vedlegg',
   enableReinitialize: true,
   destroyOnUnmount: true,
   onSubmit: () => {},
+  validate: values => {
+    const journalpostID = journalpostValidation(values.journalpostID);
+    const dokumentID = !values.dokumentID ? 'Du må taste inn en dokumentID' : null;
+    const saksnummer = !values.saksnummer ? 'Du må taste inn et RINA saksnummer' : null;
+    const sedtype = !values.sedtype ? 'Du må velge en SED fra listen' : null;
+    return {
+      journalpostID,
+      dokumentID,
+      saksnummer,
+      sedtype,
+    };
+  },
 };
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm(form)(Vedlegg));
