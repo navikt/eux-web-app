@@ -73,7 +73,7 @@ OpprettSak.propTypes = {
   landkoder: PT.arrayOf(MPT.Kodeverk),
   sedtyper: PT.arrayOf(MPT.Kodeverk),
   sector: PT.arrayOf(MPT.Kodeverk),
-  buctyper: MPT.Buctyper,
+  buctyper: PT.arrayOf(MPT.Kodeverk),
   fnr: PT.string,
   validerFnrRiktig: PT.func.isRequired,
   validerFnrFeil: PT.func.isRequired,
