@@ -8,6 +8,7 @@ import * as Nav from '../utils/navFrontend';
 import * as Skjema from '../felles-komponenter/skjema';
 import { KodeverkSelectors } from '../ducks/kodeverk';
 import PersonSok from './personsok';
+import { eusakOperations } from '../ducks/eusak';
 
 import './opprettsak.css';
 
@@ -22,12 +23,13 @@ class OpprettSak extends Component {
 
   render() {
     const {
+      handleSubmit, sendSkjema,
       landkoder, sedtyper, sector, buctyper, fnr,
     } = this.props;
 
     return (
       <div className="opprettsak">
-        <form onSubmit={this.skjemaSubmit}>
+        <form onSubmit={handleSubmit(sendSkjema)}>
           <Nav.Container fluid>
             <Nav.Row>
               <Nav.Column xs="12">
@@ -63,6 +65,14 @@ class OpprettSak extends Component {
                 </div>
               </Nav.Column>
             </Nav.Row>
+            <Nav.Row>
+              <p />
+            </Nav.Row>
+            <Nav.Row>
+              <div className="vedlegg__submmit">
+                <Nav.Knapp onClick={this.skjemaSubmit}>Oppprett Sak</Nav.Knapp>
+              </div>
+            </Nav.Row>
           </Nav.Container>
         </form>
       </div>
@@ -77,6 +87,8 @@ OpprettSak.propTypes = {
   fnr: PT.string,
   validerFnrRiktig: PT.func.isRequired,
   validerFnrFeil: PT.func.isRequired,
+  handleSubmit: PT.func.isRequired,
+  sendSkjema: PT.func.isRequired,
 };
 OpprettSak.defaultProps = {
   landkoder: undefined,
@@ -99,6 +111,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   validerFnrFeil: () => dispatch(setSubmitFailed('opprettSak', 'fnr')),
   validerFnrRiktig: () => dispatch(clearAsyncError('opprettSak', 'fnr')),
+  sendSkjema: data => dispatch(eusakOperations.send(data)),
 });
 
 // mapDispatchToProps = dispatch => ({});
