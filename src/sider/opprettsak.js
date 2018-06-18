@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, formValueSelector, setSubmitFailed, clearAsyncError } from 'redux-form';
+import { reduxForm, formValueSelector, clearAsyncError, stopSubmit } from 'redux-form';
 import PT from 'prop-types';
 
 import * as MPT from '../proptypes/';
@@ -16,12 +16,14 @@ const uuid = require('uuid/v4');
 class OpprettSak extends Component {
   skjemaSubmit = event => {
     event.preventDefault();
-    console.log('sender skjema');
   }
 
   validerSok = erGyldig => {
-    console.log(erGyldig);
-    erGyldig ? this.props.validerFnrRiktig() : this.props.validerFnrFeil();
+    if (erGyldig) {
+      this.props.validerFnrRiktig();
+    } else {
+      this.props.validerFnrFeil();
+    }
   };
 
   render() {
@@ -74,6 +76,8 @@ class OpprettSak extends Component {
   }
 }
 OpprettSak.propTypes = {
+  validerFnrRiktig: PT.func.isRequired,
+  validerFnrFeil: PT.func.isRequired,
   landkoder: PT.arrayOf(MPT.Kodeverk),
   sedtyper: PT.arrayOf(MPT.Kodeverk),
   sector: PT.arrayOf(MPT.Kodeverk),
@@ -99,7 +103,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  validerFnrFeil: () => dispatch(setSubmitFailed('opprettSak', 'fnr')),
+  validerFnrFeil: () => dispatch(stopSubmit('opprettSak', { fnr: 'Fant ingen treff på søket.' })),
   validerFnrRiktig: () => dispatch(clearAsyncError('opprettSak', 'fnr')),
 });
 
@@ -107,10 +111,5 @@ const mapDispatchToProps = dispatch => ({
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
   form: 'opprettSak',
   onSubmit: () => {},
-  validate: (values, props) => (
-    {
-
-    }
-  )
 })(OpprettSak));
 // export default OpprettSak;
