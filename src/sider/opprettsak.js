@@ -14,7 +14,13 @@ import './opprettsak.css';
 const uuid = require('uuid/v4');
 
 class OpprettSak extends Component {
-  skjemaSubmit = event => {
+  skjemaSubmit = values => {
+    const { submitFailed } = this.props;
+    if (submitFailed) return;
+    console.log('sender skjema nå.');
+  }
+
+  overrideForm = event => {
     event.preventDefault();
   }
 
@@ -27,15 +33,12 @@ class OpprettSak extends Component {
 
     return (
       <div className="opprettsak">
-        <form onSubmit={this.skjemaSubmit}>
+        <form onSubmit={this.overrideForm}>
           <Nav.Container fluid>
             <Nav.Row>
               <Nav.Column xs="12">
                 <PersonSok fnr={fnr} validerSok={this.validerSok} />
               </Nav.Column>
-            </Nav.Row>
-            <Nav.Row>
-              <p />
             </Nav.Row>
             <Nav.Row>
               <Nav.Column xs="12">
@@ -61,6 +64,7 @@ class OpprettSak extends Component {
                     </Skjema.Select>
                   </Nav.Fieldset>
                 </div>
+                <Nav.Knapp onClick={this.props.handleSubmit(this.skjemaSubmit)}>Lagre</Nav.Knapp>
               </Nav.Column>
             </Nav.Row>
           </Nav.Container>
@@ -72,6 +76,8 @@ class OpprettSak extends Component {
 OpprettSak.propTypes = {
   validerFnrRiktig: PT.func.isRequired,
   validerFnrFeil: PT.func.isRequired,
+  handleSubmit: PT.func.isRequired,
+  submitFailed: PT.bool.isRequired,
   landkoder: PT.arrayOf(MPT.Kodeverk),
   sedtyper: PT.arrayOf(MPT.Kodeverk),
   sector: PT.arrayOf(MPT.Kodeverk),
