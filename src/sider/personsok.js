@@ -6,21 +6,50 @@ import PT from 'prop-types';
 import * as MPT from '../proptypes/';
 import * as Nav from '../utils/navFrontend';
 import * as Skjema from '../felles-komponenter/skjema';
+import * as Ikoner from '../resources/images';
 import * as API from '../services/api';
 import { PersonerOperations, PersonerSelectors } from '../ducks/personer';
+import PanelHeader from '../felles-komponenter/panelHeader/panelHeader';
+
+const ikonFraKjonn = kjoenn => {
+  switch (kjoenn) {
+    case 'K': { return Ikoner.Kvinne; }
+    case 'M': { return Ikoner.Mann; }
+    default: { return Ikoner.Ukjentkjoenn; }
+  }
+};
+
+const PersonKort = ({ person }) => (
+  <Nav.Panel>
+    <PanelHeader ikon={ikonFraKjonn('M')} tittel={`${person.sammensattNavn}`} undertittel={`Fødselsnummer: ${person.fnr}`} />
+  </Nav.Panel>
+);
+
+PersonKort.propTypes = {
+  person: MPT.Person.isRequired,
+};
 
 class PersonSok extends Component {
+  state = {};
+
   sokEtterPerson = () => {
     const { fnr } = this.props;
     if (fnr === '') return;
-    API.Personer.hent(fnr).then(response => console.log(response));
+    API.Personer.hent(fnr).then(response => this.byggPerson(response));
   };
+
+  byggPerson = person => {
+    this.setState({ person });
+  }
 
   render() {
     const { sokEtterPerson } = this;
+    const { person } = this.state;
+
+    const personKort = person ? <PersonKort person={person} /> : null;
 
     return (
-      <Nav.Panel>
+      <div>
         <Skjema.Input
           label="Søk på fødsels- eller d-nummer"
           className="personsok__input"
@@ -28,7 +57,8 @@ class PersonSok extends Component {
           feltNavn="fnr"
         />
         <Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson}>SØK</Nav.Knapp>
-      </Nav.Panel>
+        {personKort}
+      </div>
     );
   }
 }
