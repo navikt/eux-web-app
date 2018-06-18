@@ -8,7 +8,7 @@ import * as Nav from '../utils/navFrontend';
 import * as Skjema from '../felles-komponenter/skjema';
 import { KodeverkSelectors } from '../ducks/kodeverk';
 import PersonSok from './personsok';
-import { eusakOperations } from '../ducks/eusak';
+import { eusakOperations, eusakSelectors } from '../ducks/eusak';
 
 import './opprettsak.css';
 
@@ -16,20 +16,20 @@ const uuid = require('uuid/v4');
 
 class OpprettSak extends Component {
   skjemaSubmit = values => {
-    const { submitFailed } = this.props;
+    const { submitFailed, sendSkjema } = this.props;
     if (submitFailed) return;
-    this.props.sendSkjema(values);
-  }
+    sendSkjema(values);
+  };
 
   overrideForm = event => {
     event.preventDefault();
-  }
+  };
 
   validerSok = erGyldig => (erGyldig ? this.props.validerFnrRiktig() : this.props.validerFnrFeil());
 
   render() {
     const {
-      landkoder, sedtyper, sector, buctyper, fnr,
+      landkoder, sedtyper, sector, buctyper, fnr, status,
     } = this.props;
 
     return (
@@ -65,7 +65,8 @@ class OpprettSak extends Component {
                     </Skjema.Select>
                   </Nav.Fieldset>
                 </div>
-                <Nav.Knapp onClick={this.props.handleSubmit(this.skjemaSubmit)}>Lagre</Nav.Knapp>
+                <Nav.Knapp onClick={this.props.handleSubmit(this.skjemaSubmit)}>Opprett sak i RINA</Nav.Knapp>
+                <h3>{status}</h3>
               </Nav.Column>
             </Nav.Row>
           </Nav.Container>
@@ -78,13 +79,14 @@ OpprettSak.propTypes = {
   validerFnrRiktig: PT.func.isRequired,
   validerFnrFeil: PT.func.isRequired,
   handleSubmit: PT.func.isRequired,
-  submitFailed: PT.bool.isRequired,
   sendSkjema: PT.func.isRequired,
+  submitFailed: PT.bool.isRequired,
   landkoder: PT.arrayOf(MPT.Kodeverk),
   sedtyper: PT.arrayOf(MPT.Kodeverk),
   sector: PT.arrayOf(MPT.Kodeverk),
   buctyper: PT.arrayOf(MPT.Kodeverk),
   fnr: PT.string,
+  status: PT.string,
 };
 OpprettSak.defaultProps = {
   landkoder: undefined,
@@ -92,6 +94,7 @@ OpprettSak.defaultProps = {
   sector: undefined,
   buctyper: undefined,
   fnr: '',
+  status: '',
 };
 
 const skjemaSelector = formValueSelector('opprettSak');
@@ -102,6 +105,7 @@ const mapStateToProps = state => ({
   sector: KodeverkSelectors.sectorSelector(state),
   buctyper: KodeverkSelectors.buctyperSelector(state),
   fnr: skjemaSelector(state, 'fnr'),
+  status: eusakSelectors.EusakStatusSelector(state),
 });
 
 const mapDispatchToProps = dispatch => ({
