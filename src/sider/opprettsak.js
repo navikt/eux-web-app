@@ -18,13 +18,7 @@ class OpprettSak extends Component {
     event.preventDefault();
   }
 
-  validerSok = erGyldig => {
-    if (erGyldig) {
-      this.props.validerFnrRiktig();
-    } else {
-      this.props.validerFnrFeil();
-    }
-  };
+  validerSok = erGyldig => (erGyldig ? this.props.validerFnrRiktig() : this.props.validerFnrFeil());
 
   render() {
     const {
@@ -81,7 +75,7 @@ OpprettSak.propTypes = {
   landkoder: PT.arrayOf(MPT.Kodeverk),
   sedtyper: PT.arrayOf(MPT.Kodeverk),
   sector: PT.arrayOf(MPT.Kodeverk),
-  buctyper: MPT.Buctyper,
+  buctyper: PT.arrayOf(MPT.Kodeverk),
   fnr: PT.string,
 };
 OpprettSak.defaultProps = {
