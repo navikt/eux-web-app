@@ -69,7 +69,7 @@ class OpprettSak extends Component {
                     </Skjema.Select>
                   </Nav.Fieldset>
                   <Nav.Fieldset legend="Type BUC">
-                    <Skjema.Select feltNavn="buctype" label="Velg BUC Type" bredde="xl">
+                    <Skjema.Select feltNavn="buctype" label="Velg BUC Type" bredde="xxl">
                       {buctyper && buctyper.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
                     </Skjema.Select>
                   </Nav.Fieldset>
@@ -84,7 +84,6 @@ class OpprettSak extends Component {
                     </Skjema.Select>
                   </Nav.Fieldset>
                   <Nav.Fieldset legend="Mottaker institusjon">
-                    <Nav.HjelpetekstBase id="institusjon" type="under">Institusjon ID finner du i ???</Nav.HjelpetekstBase>
                     <Skjema.Input feltNavn="institusjon" label="InstitusjonID" bredde="S" />
                   </Nav.Fieldset>
                 </div>

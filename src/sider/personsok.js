@@ -35,7 +35,7 @@ class PersonSok extends Component {
 
   sokEtterPerson = () => {
     const { fnr } = this.props;
-    if (fnr === '') return;
+    if (fnr.length === 0) return;
 
     API.Personer.hent(fnr).then(response => {
       this.setState({ person: response });
