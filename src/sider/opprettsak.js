@@ -28,28 +28,24 @@ class OpprettSak extends Component {
     event.preventDefault();
   };
 
-  validerSok = (erGyldig, fnr) => {
+  validerFnr = erGyldig => {
+    const { validerFnrRiktig, validerFnrFeil, settFnrGyldighet } = this.props;
     if (erGyldig) {
-      this.props.validerFnrRiktig();
-      // Todo: Flytt dispatch til mapDispatchToProps;
-      this.props.dispatch(change('opprettSak', 'validertFnr', fnr));
+      validerFnrRiktig();
+      settFnrGyldighet(true);
     } else {
-      this.props.validerFnrFeil();
-      this.props.dispatch(change('opprettSak', 'validertFnr', ''));
+      validerFnrFeil();
+      settFnrGyldighet(false);
     }
-  }
-
-  ugyldiggjorSok = () => {
-    this.props.dispatch(change('opprettSak', 'validertFnr', ''));
   }
 
   render() {
     const {
       landkoder, sedtyper, sector, buctyper, institusjon,
-      fnr, status,
+      inntastetFnr, status,
+      settFnrGyldighet, settFnrSjekket,
     } = this.props;
 
-    const { ugyldiggjorSok } = this;
 
     return (
       <div className="opprettsak">
@@ -57,7 +53,7 @@ class OpprettSak extends Component {
           <Nav.Container fluid>
             <Nav.Row>
               <Nav.Column xs="6">
-                <PersonSok fnr={fnr} validerSok={this.validerSok} ugyldiggjorSok={ugyldiggjorSok} />
+                <PersonSok inntastetFnr={inntastetFnr} settFnrGyldighet={settFnrGyldighet} settFnrSjekket={settFnrSjekket} />
               </Nav.Column>
             </Nav.Row>
             <Nav.Row>
@@ -104,22 +100,25 @@ OpprettSak.propTypes = {
   validerFnrFeil: PT.func.isRequired,
   handleSubmit: PT.func.isRequired,
   sendSkjema: PT.func.isRequired,
+  settFnrGyldighet: PT.func.isRequired,
+  settFnrSjekket: PT.func.isRequired,
   submitFailed: PT.bool.isRequired,
   landkoder: PT.arrayOf(MPT.Kodeverk),
   sedtyper: PT.arrayOf(MPT.Kodeverk),
   sector: PT.arrayOf(MPT.Kodeverk),
   buctyper: PT.arrayOf(MPT.Kodeverk),
   institusjon: PT.arrayOf(MPT.Kodeverk),
-  fnr: PT.string,
+  inntastetFnr: PT.string,
   status: PT.string,
 };
+
 OpprettSak.defaultProps = {
   landkoder: undefined,
   sedtyper: undefined,
   sector: undefined,
   buctyper: undefined,
   institusjon: undefined,
-  fnr: '',
+  inntastetFnr: '',
   status: '',
 };
 
@@ -131,27 +130,30 @@ const mapStateToProps = state => ({
   sector: KodeverkSelectors.sectorSelector(state),
   buctyper: KodeverkSelectors.buctyperSelector(state),
   institusjon: KodeverkSelectors.institusjonSelector(state),
-  fnr: skjemaSelector(state, 'fnr'),
+  inntastetFnr: skjemaSelector(state, 'fnr'),
   status: eusakSelectors.EusakStatusSelector(state),
 });
 
 const mapDispatchToProps = dispatch => ({
   validerFnrFeil: () => dispatch(stopSubmit('opprettSak', { fnr: 'Fant ingen treff på søket.' })),
   validerFnrRiktig: () => dispatch(clearAsyncError('opprettSak', 'fnr')),
+  settFnrGyldighet: erGyldig => dispatch(change('opprettSak', 'fnrErGyldig', erGyldig)),
+  settFnrSjekket: erSjekket => dispatch(change('opprettSak', 'fnrErSjekket', erSjekket)),
   sendSkjema: data => dispatch(eusakOperations.send(data)),
 });
 
 const validering = values => {
-  let fnr = !values.fnr ? 'Du må taste inn fødselsnummer' : null;
-  fnr = !values.validertFnr ? 'Husk å søke opp fødselsnummeret først.' : null;
-  const sector = !values.sector ? 'Du må velge sektor' : null;
-  const buctype = !values.buctype ? 'Du må velge buctype' : null;
-  const sedtype = !values.sedtype ? 'Du må velge sedtype' : null;
-  const land = !values.land ? 'Du må velge land' : null;
-  const institusjon = !values.institusjon ? 'Du må velge institusjon' : null;
+  const fnr = !values.fnr ? 'Du må taste inn fødselsnummer.' : null;
+  const fnrSokPaminnelse = !values.fnrErSjekket ? 'Husk å søke opp fødselsnummeret først.' : null;
+  const fnrErUgyldig = !values.fnrErGyldig ? 'Fødselsnummeret er ikke gyldig.' : null;
+  const sector = !values.sector ? 'Du må velge sektor.' : null;
+  const buctype = !values.buctype ? 'Du må velge buctype.' : null;
+  const sedtype = !values.sedtype ? 'Du må velge sedtype.' : null;
+  const land = !values.land ? 'Du må velge land.' : null;
+  const institusjon = !values.institusjon ? 'Du må velge institusjon.' : null;
 
   return {
-    fnr,
+    fnr: fnr || fnrSokPaminnelse || fnrErUgyldig,
     sector,
     buctype,
     sedtype,
@@ -166,4 +168,3 @@ export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
   onSubmit: () => {},
   validate: validering,
 })(OpprettSak));
-// export default OpprettSak;

@@ -1,17 +1,9 @@
 import React from 'react';
 import PT from 'prop-types';
 
-import * as Ikoner from '../../resources/images';
-import { PanelHeader } from '..//panelHeader';
+import * as Nav from '../../utils/navFrontend';
 
 import './statuslinje.css';
-
-const ikonFraStatus = status => {
-  switch (status) {
-    case 'OK': { return Ikoner.Ferdig; }
-    default: { return Ikoner.Feil; }
-  }
-};
 
 const undertittelFraStatus = status => {
   switch (status) {
@@ -21,15 +13,16 @@ const undertittelFraStatus = status => {
 };
 
 const StatusLinje = ({ status, tittel }) => {
-  if (status === 'NOT_STARTED') {
-    return null;
-  }
+  if (status === 'NOT_STARTED') { return null; }
+  const type = status === 'OK' ? 'suksess' : 'stopp';
+
   return (
     <div className="statuslinje">
-      <PanelHeader ikon={ikonFraStatus(status)} tittel={tittel} undertittel={undertittelFraStatus(status)} />
+      <Nav.AlertStripe type={type}>{tittel} {undertittelFraStatus(status)}</Nav.AlertStripe>
     </div>
   );
 };
+
 StatusLinje.propTypes = {
   status: PT.string.isRequired,
   tittel: PT.string.isRequired,

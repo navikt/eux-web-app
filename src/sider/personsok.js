@@ -33,24 +33,28 @@ PersonKort.propTypes = {
 class PersonSok extends Component {
   state = {};
 
+  erPersonFunnet = person => (person.sammensattNavn && person.fnr);
+
   sokEtterPerson = () => {
-    const { fnr } = this.props;
-    if (fnr === '') return;
+    const { inntastetFnr, settFnrGyldighet, settFnrSjekket } = this.props;
+    if (inntastetFnr === '') return;
 
-    API.Personer.hent(fnr).then(response => {
+    API.Personer.hent(inntastetFnr).then(response => {
       this.setState({ person: response });
-
-      this.props.validerSok(Object.keys(response).length > 0, response.fnr);
+      // validerFnr(this.erPersonFunnet(response), response.fnr);
+      settFnrGyldighet(this.erPersonFunnet(response));
+      settFnrSjekket(true);
     });
   };
 
-  sokErEndret = () => {
+  inntastetFnrHarBlittEndret = () => {
     this.setState({ person: {} });
-    this.props.ugyldiggjorSok(false, '');
+    this.props.settFnrGyldighet(false);
+    this.props.settFnrSjekket(false);
   }
 
   render() {
-    const { sokEtterPerson, sokErEndret } = this;
+    const { sokEtterPerson, inntastetFnrHarBlittEndret } = this;
     const { person } = this.state;
 
     const personKort = person && person.sammensattNavn ? <PersonKort person={person} /> : null;
@@ -63,7 +67,7 @@ class PersonSok extends Component {
             className="personsok__input"
             bredde="XL"
             feltNavn="fnr"
-            onKeyUp={sokErEndret}
+            onKeyUp={inntastetFnrHarBlittEndret}
           />
           <Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson}>SØK</Nav.Knapp>
         </div>
@@ -75,14 +79,14 @@ class PersonSok extends Component {
 
 PersonSok.propTypes = {
   person: MPT.Person,
-  validerSok: PT.func.isRequired,
-  ugyldiggjorSok: PT.func.isRequired,
-  fnr: PT.string,
+  settFnrGyldighet: PT.func.isRequired,
+  settFnrSjekket: PT.func.isRequired,
+  inntastetFnr: PT.string,
 };
 
 PersonSok.defaultProps = {
   person: {},
-  fnr: '',
+  inntastetFnr: '',
 };
 
 const mapStateToProps = state => ({
