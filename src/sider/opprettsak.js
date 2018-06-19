@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, formValueSelector, clearAsyncError, stopSubmit } from 'redux-form';
+import { reduxForm, formValueSelector, clearAsyncError, stopSubmit, change } from 'redux-form';
 import PT from 'prop-types';
 
 import * as MPT from '../proptypes/';
@@ -24,11 +24,24 @@ class OpprettSak extends Component {
     sendSkjema(values);
   };
 
-  overrideForm = event => {
+  overrideDefaultSubmit = event => {
     event.preventDefault();
   };
 
-  validerSok = erGyldig => (erGyldig ? this.props.validerFnrRiktig() : this.props.validerFnrFeil());
+  validerSok = (erGyldig, fnr) => {
+    if (erGyldig) {
+      this.props.validerFnrRiktig();
+      // Todo: Flytt dispatch til mapDispatchToProps;
+      this.props.dispatch(change('opprettSak', 'validertFnr', fnr));
+    } else {
+      this.props.validerFnrFeil();
+      this.props.dispatch(change('opprettSak', 'validertFnr', ''));
+    }
+  }
+
+  ugyldiggjorSok = () => {
+    this.props.dispatch(change('opprettSak', 'validertFnr', ''));
+  }
 
   render() {
     const {
@@ -36,13 +49,15 @@ class OpprettSak extends Component {
       fnr, status,
     } = this.props;
 
+    const { ugyldiggjorSok } = this;
+
     return (
       <div className="opprettsak">
-        <form onSubmit={this.overrideForm}>
+        <form onSubmit={this.overrideDefaultSubmit}>
           <Nav.Container fluid>
             <Nav.Row>
               <Nav.Column xs="6">
-                <PersonSok fnr={fnr} validerSok={this.validerSok} />
+                <PersonSok fnr={fnr} validerSok={this.validerSok} ugyldiggjorSok={ugyldiggjorSok} />
               </Nav.Column>
             </Nav.Row>
             <Nav.Row>
@@ -126,24 +141,29 @@ const mapDispatchToProps = dispatch => ({
   sendSkjema: data => dispatch(eusakOperations.send(data)),
 });
 
+const validering = values => {
+  let fnr = !values.fnr ? 'Du må taste inn fødselsnummer' : null;
+  fnr = !values.validertFnr ? 'Husk å søke opp fødselsnummeret først.' : null;
+  const sector = !values.sector ? 'Du må velge sektor' : null;
+  const buctype = !values.buctype ? 'Du må velge buctype' : null;
+  const sedtype = !values.sedtype ? 'Du må velge sedtype' : null;
+  const land = !values.land ? 'Du må velge land' : null;
+  const institusjon = !values.institusjon ? 'Du må velge institusjon' : null;
+
+  return {
+    fnr,
+    sector,
+    buctype,
+    sedtype,
+    land,
+    institusjon,
+  };
+};
+
 // mapDispatchToProps = dispatch => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
   form: 'opprettSak',
   onSubmit: () => {},
-  validate: values => {
-    const fnr = !values.fnr ? 'Du må taste inn fødselsnummer' : null;
-    const sector = !values.sector ? 'Du må velge sektor' : null;
-    const buctype = !values.buctype ? 'Du må velge buctype' : null;
-    const sedtype = !values.sedtype ? 'Du må velge sedtype' : null;
-    const land = !values.land ? 'Du må velge land' : null;
-
-    return {
-      fnr,
-      sector,
-      buctype,
-      sedtype,
-      land,
-    };
-  },
+  validate: validering,
 })(OpprettSak));
 // export default OpprettSak;

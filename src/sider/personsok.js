@@ -40,12 +40,17 @@ class PersonSok extends Component {
     API.Personer.hent(fnr).then(response => {
       this.setState({ person: response });
 
-      this.props.validerSok(Object.keys(response).length > 0);
+      this.props.validerSok(Object.keys(response).length > 0, response.fnr);
     });
   };
 
+  sokErEndret = () => {
+    this.setState({ person: {} });
+    this.props.ugyldiggjorSok(false, '');
+  }
+
   render() {
-    const { sokEtterPerson } = this;
+    const { sokEtterPerson, sokErEndret } = this;
     const { person } = this.state;
 
     const personKort = person && person.sammensattNavn ? <PersonKort person={person} /> : null;
@@ -58,6 +63,7 @@ class PersonSok extends Component {
             className="personsok__input"
             bredde="XL"
             feltNavn="fnr"
+            onKeyUp={sokErEndret}
           />
           <Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson}>SØK</Nav.Knapp>
         </div>
@@ -70,6 +76,7 @@ class PersonSok extends Component {
 PersonSok.propTypes = {
   person: MPT.Person,
   validerSok: PT.func.isRequired,
+  ugyldiggjorSok: PT.func.isRequired,
   fnr: PT.string,
 };
 
