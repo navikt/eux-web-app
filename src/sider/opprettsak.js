@@ -41,7 +41,7 @@ class OpprettSak extends Component {
 
   render() {
     const {
-      landkoder, sedtyper, sector, buctyper, institusjon,
+      landkoder, sedtyper, sector, buctyper,
       inntastetFnr, status,
       settFnrGyldighet, settFnrSjekket,
     } = this.props;
@@ -65,7 +65,7 @@ class OpprettSak extends Component {
                     </Skjema.Select>
                   </Nav.Fieldset>
                   <Nav.Fieldset legend="Type BUC">
-                    <Skjema.Select feltNavn="buctype" label="Velg BUC Type" bredde="xl">
+                    <Skjema.Select feltNavn="buctype" label="Velg BUC Type" bredde="xxl">
                       {buctyper && buctyper.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
                     </Skjema.Select>
                   </Nav.Fieldset>
@@ -79,10 +79,8 @@ class OpprettSak extends Component {
                       {landkoder && landkoder.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                     </Skjema.Select>
                   </Nav.Fieldset>
-                  <Nav.Fieldset legend="Mottaker instutisjon">
-                    <Skjema.Select feltNavn="institusjon" label="Velg Institusjon" bredde="xl">
-                      {institusjon && institusjon.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
-                    </Skjema.Select>
+                  <Nav.Fieldset legend="Mottaker institusjon">
+                    <Skjema.Input feltNavn="institusjon" label="InstitusjonID" bredde="S" />
                   </Nav.Fieldset>
                 </div>
                 <Nav.Knapp onClick={this.props.handleSubmit(this.skjemaSubmit)}>Opprett sak i RINA</Nav.Knapp>
@@ -107,7 +105,6 @@ OpprettSak.propTypes = {
   sedtyper: PT.arrayOf(MPT.Kodeverk),
   sector: PT.arrayOf(MPT.Kodeverk),
   buctyper: PT.arrayOf(MPT.Kodeverk),
-  institusjon: PT.arrayOf(MPT.Kodeverk),
   inntastetFnr: PT.string,
   status: PT.string,
 };
@@ -117,7 +114,6 @@ OpprettSak.defaultProps = {
   sedtyper: undefined,
   sector: undefined,
   buctyper: undefined,
-  institusjon: undefined,
   inntastetFnr: '',
   status: '',
 };
@@ -129,7 +125,6 @@ const mapStateToProps = state => ({
   sedtyper: KodeverkSelectors.sedtyperSelector(state),
   sector: KodeverkSelectors.sectorSelector(state),
   buctyper: KodeverkSelectors.buctyperSelector(state),
-  institusjon: KodeverkSelectors.institusjonSelector(state),
   inntastetFnr: skjemaSelector(state, 'fnr'),
   status: eusakSelectors.EusakStatusSelector(state),
 });

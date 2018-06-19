@@ -74,7 +74,7 @@ const setCachedItem = (cacheKey, content) => {
 
 const cachedFetch = (url, cacheDurationSec) => {
   // Use the URL as the cache key to sessionStorage
-  const cacheKey = url;
+  const cacheKey = `/eux${url}`;
 
   const cachedItem = getCachedItem(cacheKey);
   const whenCached = getCachedItemTS(cacheKey);
