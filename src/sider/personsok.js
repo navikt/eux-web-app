@@ -33,7 +33,7 @@ PersonKort.propTypes = {
 class PersonSok extends Component {
   state = {};
 
-  erPersonFunnet = person => (person.sammensattNavn && person.fnr);
+  erPersonFunnet = person => (person.sammensattNavn.length !== undefined && person.fnr !== undefined);
 
   sokEtterPerson = () => {
     const { inntastetFnr, settFnrGyldighet, settFnrSjekket } = this.props;

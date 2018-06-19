@@ -21,7 +21,11 @@ class OpprettSak extends Component {
   skjemaSubmit = values => {
     const { submitFailed, sendSkjema } = this.props;
     if (submitFailed) return;
-    sendSkjema(values);
+
+    const vaskedeVerdier = { ...values };
+    delete vaskedeVerdier.fnrErGyldig;
+    delete vaskedeVerdier.fnrErSjekket;
+    sendSkjema(vaskedeVerdier);
   };
 
   overrideDefaultSubmit = event => {
