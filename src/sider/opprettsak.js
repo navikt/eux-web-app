@@ -18,7 +18,7 @@ import './opprettsak.css';
 const uuid = require('uuid/v4');
 
 const TilleggsOpplysninger = props => (
-  <FieldArray name="familierelasjon" component={CustomFamilieRelasjoner} props={props} />
+  <FieldArray name="familierelasjoner" component={CustomFamilieRelasjoner} props={props} />
 );
 
 class OpprettSak extends Component {
