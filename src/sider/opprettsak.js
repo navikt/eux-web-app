@@ -8,6 +8,7 @@ import * as Nav from '../utils/navFrontend';
 import * as Skjema from '../felles-komponenter/skjema';
 
 import { StatusLinje } from '../felles-komponenter/statuslinje';
+import CustomFamilieRelasjoner from '../felles-komponenter/skjema/customFamileRelasjoner';
 import { KodeverkSelectors } from '../ducks/kodeverk';
 import PersonSok from './personsok';
 import { eusakOperations, eusakSelectors } from '../ducks/eusak';
@@ -16,69 +17,9 @@ import './opprettsak.css';
 
 const uuid = require('uuid/v4');
 
-const FamilieRelasjon = ({ relasjon, slettRelasjon }) => (
-  <div>
-    <dl>
-      <dt>FamilieRelasjon</dt><dd>{relasjon.relasjon}</dd>
-      <dt>Fødselsnummmer</dt><dd>{relasjon.fnr}</dd>
-    </dl>
-    <button onClick={() => slettRelasjon(relasjon.fnr)} >slett</button>
-  </div>
-);
-
-FamilieRelasjon.propTypes = {
-  relasjon: PT.object.isRequired,
-  slettRelasjon: PT.func.isRequired,
-};
-
-class CustomFamilieRelasjoner extends Component {
-  state = { fnr: '', relasjon: ''};
-
-  leggTilRelasjon = () => {
-    const { fields } = this.props;
-    const relasjon = { fnr: this.state.fnr, relasjon: this.state.relasjon };
-    fields.push(relasjon);
-  }
-
-  oppdaterState = (felt, event) => {
-    const { value } = event.currentTarget;
-    this.setState({ [felt]: value });
-  }
-
-  slettRelasjon = fnr => {
-    const index = this.props.fields.getAll().findIndex(relasjon => relasjon.fnr === fnr);
-    this.props.fields.remove(index);
-  }
-
-  render() {
-    const { tilleggsopplysninger, familierelasjoner, fields } = this.props;
-    const relasjoner = fields.getAll();
-
-    console.log(relasjoner);
-    console.log('state', this.state);
-
-    return (
-      <div>
-        {relasjoner && relasjoner.map(relasjon => <FamilieRelasjon key={uuid()} relasjon={relasjon} slettRelasjon={this.slettRelasjon} />)}
-        <Nav.Input feltNavn="familie_fnr" label="Fødsels- eller d-nummer" bredde="S" value={this.state.fnr} onChange={event => this.oppdaterState('fnr', event)} />
-        <Nav.Select feltNavn="familierelasjon" label="Familierelasjon" bredde="s" value={this.state.relasjon} onChange={event => this.oppdaterState('relasjon', event)}>
-          <option value='' disabled>- velg -</option>
-          {familierelasjoner && familierelasjoner.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
-        </Nav.Select>
-        <button onClick={this.leggTilRelasjon}>Legg til</button>
-      </div>
-    );
-  }
-}
-
-CustomFamilieRelasjoner.propTypes = {
-  fields: PT.object.isRequired,
-}
-
 const TilleggsOpplysninger = props => (
   <FieldArray name="familierelasjon" component={CustomFamilieRelasjoner} props={props} />
 );
-
 
 class OpprettSak extends Component {
   skjemaSubmit = values => {
@@ -112,11 +53,7 @@ class OpprettSak extends Component {
       inntastetFnr, status,
       settFnrGyldighet, settFnrSjekket,
     } = this.props;
-    const tilleggsopplysninger = [{
-      fnr: '02026100715',
-      sammensattNavn: 'BLYANT STOR',
-      relasjon: 'sonn',
-    }];
+
     return (
       <div className="opprettsak">
         <form onSubmit={this.overrideDefaultSubmit}>
@@ -154,7 +91,7 @@ class OpprettSak extends Component {
                   </Nav.Fieldset>
                 </div>
                 <Nav.Fieldset legend="Tilleggsopplysninger">
-                  <TilleggsOpplysninger familierelasjoner={familierelasjoner} tilleggsopplysninger={tilleggsopplysninger} />
+                  <TilleggsOpplysninger familierelasjoner={familierelasjoner} />
                 </Nav.Fieldset>
                 <Nav.Knapp onClick={this.props.handleSubmit(this.skjemaSubmit)}>Opprett sak i RINA</Nav.Knapp>
                 <StatusLinje status={status} tittel="Opprettet sak" />
