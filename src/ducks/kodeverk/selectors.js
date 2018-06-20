@@ -56,3 +56,7 @@ export const institusjonSelector = createSelector(
   state => state.kodeverk.data.institusjoner,
   institusjoner => institusjoner
 );
+export const familierelasjonerSelector = createSelector(
+  state => state.kodeverk.data.familierelasjoner,
+  familierelasjoner => familierelasjoner
+);

@@ -16,6 +16,17 @@ import './opprettsak.css';
 
 const uuid = require('uuid/v4');
 
+const TilleggsOpplysning = ({ opplysning }) => (
+  <dl>
+    <dt>FamilieRelasjon</dt><dd>{opplysning.relasjon}</dd>
+    <dt>SammensattNavn</dt><dd>{opplysning.sammensattNavn}</dd>
+    <dt>Fødselsnummmer</dt><dd>{opplysning.fnr}</dd>
+  </dl>
+);
+TilleggsOpplysning.propTypes = {
+  opplysning: PT.object.isRequired,
+};
+
 
 class OpprettSak extends Component {
   skjemaSubmit = values => {
@@ -41,16 +52,19 @@ class OpprettSak extends Component {
       validerFnrFeil();
       settFnrGyldighet(false);
     }
-  }
+  };
 
   render() {
     const {
-      landkoder, sedtyper, sector, buctyper,
+      familierelasjoner, landkoder, sedtyper, sector, buctyper,
       inntastetFnr, status,
       settFnrGyldighet, settFnrSjekket,
     } = this.props;
-
-
+    const tilleggsopplysninger = [{
+      fnr: '02026100715',
+      sammensattNavn: 'BLYANT STOR',
+      relasjon: 'sonn',
+    }];
     return (
       <div className="opprettsak">
         <form onSubmit={this.overrideDefaultSubmit}>
@@ -87,6 +101,13 @@ class OpprettSak extends Component {
                     <Skjema.Input feltNavn="institusjon" label="InstitusjonID" bredde="S" />
                   </Nav.Fieldset>
                 </div>
+                <Nav.Fieldset legend="Tilleggsopplysninger">
+                  {tilleggsopplysninger && tilleggsopplysninger.map(opplysning => <TilleggsOpplysning key={uuid()} opplysning={opplysning} />)}
+                  <Skjema.Input feltNavn="familie_fnr" label="Fødsels- eller d-nummer" bredde="S" />
+                  <Skjema.Select feltNavn="familierelasjon" label="Familierelasjon" bredde="s">
+                    {familierelasjoner && familierelasjoner.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+                  </Skjema.Select>
+                </Nav.Fieldset>
                 <Nav.Knapp onClick={this.props.handleSubmit(this.skjemaSubmit)}>Opprett sak i RINA</Nav.Knapp>
                 <StatusLinje status={status} tittel="Opprettet sak" />
               </Nav.Column>
@@ -105,6 +126,7 @@ OpprettSak.propTypes = {
   settFnrGyldighet: PT.func.isRequired,
   settFnrSjekket: PT.func.isRequired,
   submitFailed: PT.bool.isRequired,
+  familierelasjoner: PT.arrayOf(MPT.Kodeverk),
   landkoder: PT.arrayOf(MPT.Kodeverk),
   sedtyper: PT.arrayOf(MPT.Kodeverk),
   sector: PT.arrayOf(MPT.Kodeverk),
@@ -114,6 +136,7 @@ OpprettSak.propTypes = {
 };
 
 OpprettSak.defaultProps = {
+  familierelasjoner: undefined,
   landkoder: undefined,
   sedtyper: undefined,
   sector: undefined,
@@ -125,6 +148,7 @@ OpprettSak.defaultProps = {
 const skjemaSelector = formValueSelector('opprettSak');
 
 const mapStateToProps = state => ({
+  familierelasjoner: KodeverkSelectors.familierelasjonerSelector(state),
   landkoder: KodeverkSelectors.landkoderSelector(state),
   sedtyper: KodeverkSelectors.sedtyperSelector(state),
   sector: KodeverkSelectors.sectorSelector(state),
