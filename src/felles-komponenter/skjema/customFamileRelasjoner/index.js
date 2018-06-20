@@ -28,8 +28,9 @@ class CustomFamilieRelasjoner extends Component {
 
   leggTilRelasjon = () => {
     const { fields } = this.props;
-    const relasjon = { fnr: this.state.fnr, relasjon: this.state.relasjon };
-    fields.push(relasjon);
+    const { fnr, relasjon } = this.state;
+    const familerelasjon = { fnr, relasjon };
+    fields.push(familerelasjon);
   };
 
   oppdaterState = (felt, event) => {
@@ -38,8 +39,9 @@ class CustomFamilieRelasjoner extends Component {
   };
 
   slettRelasjon = fnr => {
-    const index = this.props.fields.getAll().findIndex(relasjon => relasjon.fnr === fnr);
-    this.props.fields.remove(index);
+    const { fields } = this.props;
+    const index = fields.getAll().findIndex(relasjon => relasjon.fnr === fnr);
+    fields.remove(index);
   };
 
   render() {
