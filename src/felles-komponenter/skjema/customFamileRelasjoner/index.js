@@ -8,17 +8,24 @@ import './familierelasjoner.css';
 
 const uuid = require('uuid/v4');
 
-const FamilieRelasjon = ({ relasjon: familie, slettRelasjon }) => (
-  <div>
-    <dl>
-      <dt>FamilieRelasjon</dt><dd>{familie.relasjon}</dd>
-      <dt>Fødselsnummmer</dt><dd>{familie.fnr}</dd>
+const FamilieRelasjon = ({ relasjon: familie, indeks, slettRelasjon }) => (
+  <div className="familierelasjoner__linje">
+    <dl className="familierelasjoner__detailjer">
+      <dt className="familierelasjoner__tittel">Familierelasjon #{indeks + 1}:</dt>
+      <dd className="familierelasjoner__detalj">{familie.relasjon}</dd>
+      <dd className="familierelasjoner__detalj">{familie.fnr}</dd>
     </dl>
-    <button onClick={() => slettRelasjon(familie.fnr)} >slett</button>
+    <Nav.Knapp
+      className="familierelasjoner__knapp familierelasjoner__knapp--slett"
+      onClick={() => slettRelasjon(familie.fnr)}>
+      <Nav.Ikon kind="trashcan" size="20" className="familierelasjoner__knapp__ikon" />
+      <div>Fjern</div>
+    </Nav.Knapp>
   </div>
 );
 
 FamilieRelasjon.propTypes = {
+  indeks: PT.number.isRequired,
   relasjon: MPT.FamilieRelasjon.isRequired,
   slettRelasjon: PT.func.isRequired,
 };
@@ -51,9 +58,7 @@ class CustomFamilieRelasjoner extends Component {
 
     return (
       <div className="familerelasjoner">
-        <div className="familierelasjoner__linje">
-          {relasjoner && relasjoner.map(relasjon => <FamilieRelasjon key={uuid()} relasjon={relasjon} slettRelasjon={this.slettRelasjon} />)}
-        </div>
+        {relasjoner && relasjoner.map((relasjon, indeks) => <FamilieRelasjon key={uuid()} relasjon={relasjon} indeks={indeks} slettRelasjon={this.slettRelasjon} />)}
         <div className="familierelasjoner__linje">
           <Nav.Input
             label="Fnr eller Dnr"
@@ -71,7 +76,7 @@ class CustomFamilieRelasjoner extends Component {
             {familierelasjonKodeverk && familierelasjonKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
           </Nav.Select>
           <Nav.Knapp onClick={this.leggTilRelasjon} className="familierelasjoner__knapp">
-            <Nav.Ikon kind="tilsette" size="20" style={{ stroke: '#ff0000' }} className="familierelasjoner__knapp__ikon" />
+            <Nav.Ikon kind="tilsette" size="20" className="familierelasjoner__knapp__ikon" />
             <div>Legg til</div>
           </Nav.Knapp>
         </div>

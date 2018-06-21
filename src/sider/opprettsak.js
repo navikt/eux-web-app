@@ -17,9 +17,7 @@ import './opprettsak.css';
 
 const uuid = require('uuid/v4');
 
-const TilleggsOpplysninger = props => (
-  <FieldArray name="tilleggsoplysninger.familierelasjoner" component={CustomFamilieRelasjoner} props={props} />
-);
+const TilleggsOpplysninger = props => (<FieldArray name="tilleggsoplysninger.familierelasjoner" component={CustomFamilieRelasjoner} props={props} />);
 
 class OpprettSak extends Component {
   skjemaSubmit = values => {
@@ -64,7 +62,7 @@ class OpprettSak extends Component {
               </Nav.Column>
             </Nav.Row>
             <Nav.Row>
-              <Nav.Column xs="12">
+              <Nav.Column xs="6">
                 <div>
                   <Nav.Fieldset legend="Fagområde">
                     <Skjema.Select feltNavn="sector" label="Velg Fagområde" bredde="xl">
@@ -91,9 +89,14 @@ class OpprettSak extends Component {
                   </Nav.Fieldset>
                 </div>
                 <Nav.Fieldset legend="Tilleggsopplysninger">
+                  <Nav.Normaltekst>Fyll ut opplysninger om evt familierelasjoner.</Nav.Normaltekst>
                   <TilleggsOpplysninger familierelasjonKodeverk={familierelasjonKodeverk} />
                 </Nav.Fieldset>
-                <Nav.Knapp onClick={this.props.handleSubmit(this.skjemaSubmit)}>Opprett sak i RINA</Nav.Knapp>
+              </Nav.Column>
+            </Nav.Row>
+            <Nav.Row className="opprettsak__statuslinje">
+              <Nav.Column xs="6">
+                <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)}>Opprett sak i RINA</Nav.Hovedknapp>
                 <StatusLinje status={status} tittel="Opprettet sak" />
               </Nav.Column>
             </Nav.Row>
