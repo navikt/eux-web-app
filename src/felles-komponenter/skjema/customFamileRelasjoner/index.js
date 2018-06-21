@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PT from 'prop-types';
 
-// import * as MPT from '../../../proptypes';
+import * as MPT from '../../../proptypes';
 import * as Nav from '../../../utils/navFrontend';
 
 import './familierelasjoner.css';
@@ -19,7 +19,7 @@ const FamilieRelasjon = ({ relasjon, slettRelasjon }) => (
 );
 
 FamilieRelasjon.propTypes = {
-  relasjon: PT.object.isRequired,
+  relasjon: MPT.FamilieRelasjon.isRequired,
   slettRelasjon: PT.func.isRequired,
 };
 
@@ -45,7 +45,7 @@ class CustomFamilieRelasjoner extends Component {
   };
 
   render() {
-    const { familierelasjoner, fields } = this.props;
+    const { familierelasjonKodeverk, fields } = this.props;
     const relasjoner = fields.getAll();
 
     return (
@@ -54,7 +54,7 @@ class CustomFamilieRelasjoner extends Component {
         <Nav.Input label="Fødsels- eller d-nummer" bredde="S" value={this.state.fnr} onChange={event => this.oppdaterState('fnr', event)} />
         <Nav.Select label="Familierelasjon" bredde="s" value={this.state.relasjon} onChange={event => this.oppdaterState('relasjon', event)}>
           <option value="" disabled>- velg -</option>
-          {familierelasjoner && familierelasjoner.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+          {familierelasjonKodeverk && familierelasjonKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
         </Nav.Select>
         <button onClick={this.leggTilRelasjon}>Legg til</button>
       </div>
@@ -63,11 +63,11 @@ class CustomFamilieRelasjoner extends Component {
 }
 
 CustomFamilieRelasjoner.propTypes = {
-  familierelasjoner: PT.array,
+  familierelasjonKodeverk: PT.arrayOf(MPT.Kodeverk),
   fields: PT.object.isRequired,
 };
 CustomFamilieRelasjoner.defaultProps = {
-  familierelasjoner: [],
+  familierelasjonKodeverk: [],
 };
 
 export default CustomFamilieRelasjoner;

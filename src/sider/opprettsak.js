@@ -18,7 +18,7 @@ import './opprettsak.css';
 const uuid = require('uuid/v4');
 
 const TilleggsOpplysninger = props => (
-  <FieldArray name="familierelasjoner" component={CustomFamilieRelasjoner} props={props} />
+  <FieldArray name="tilleggsoplysninger.familierelasjoner" component={CustomFamilieRelasjoner} props={props} />
 );
 
 class OpprettSak extends Component {
@@ -49,7 +49,7 @@ class OpprettSak extends Component {
 
   render() {
     const {
-      familierelasjoner, landkoder, sedtyper, sector, buctyper,
+      familierelasjonKodeverk, landkoder, sedtyper, sector, buctyper,
       inntastetFnr, status,
       settFnrGyldighet, settFnrSjekket,
     } = this.props;
@@ -91,7 +91,7 @@ class OpprettSak extends Component {
                   </Nav.Fieldset>
                 </div>
                 <Nav.Fieldset legend="Tilleggsopplysninger">
-                  <TilleggsOpplysninger familierelasjoner={familierelasjoner} />
+                  <TilleggsOpplysninger familierelasjonKodeverk={familierelasjonKodeverk} />
                 </Nav.Fieldset>
                 <Nav.Knapp onClick={this.props.handleSubmit(this.skjemaSubmit)}>Opprett sak i RINA</Nav.Knapp>
                 <StatusLinje status={status} tittel="Opprettet sak" />
@@ -111,7 +111,7 @@ OpprettSak.propTypes = {
   settFnrGyldighet: PT.func.isRequired,
   settFnrSjekket: PT.func.isRequired,
   submitFailed: PT.bool.isRequired,
-  familierelasjoner: PT.arrayOf(MPT.Kodeverk),
+  familierelasjonKodeverk: PT.arrayOf(MPT.Kodeverk),
   landkoder: PT.arrayOf(MPT.Kodeverk),
   sedtyper: PT.arrayOf(MPT.Kodeverk),
   sector: PT.arrayOf(MPT.Kodeverk),
@@ -121,7 +121,7 @@ OpprettSak.propTypes = {
 };
 
 OpprettSak.defaultProps = {
-  familierelasjoner: undefined,
+  familierelasjonKodeverk: undefined,
   landkoder: undefined,
   sedtyper: undefined,
   sector: undefined,
@@ -133,7 +133,12 @@ OpprettSak.defaultProps = {
 const skjemaSelector = formValueSelector('opprettSak');
 
 const mapStateToProps = state => ({
-  familierelasjoner: KodeverkSelectors.familierelasjonerSelector(state),
+  initialValues: {
+    tilleggsoplysninger: {
+      familierelasjoner: [],
+    },
+  },
+  familierelasjonKodeverk: KodeverkSelectors.familierelasjonerSelector(state),
   landkoder: KodeverkSelectors.landkoderSelector(state),
   sedtyper: KodeverkSelectors.sedtyperSelector(state),
   sector: KodeverkSelectors.sectorSelector(state),
