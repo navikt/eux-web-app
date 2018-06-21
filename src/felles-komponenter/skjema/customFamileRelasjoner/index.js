@@ -8,13 +8,13 @@ import './familierelasjoner.css';
 
 const uuid = require('uuid/v4');
 
-const FamilieRelasjon = ({ relasjon, slettRelasjon }) => (
+const FamilieRelasjon = ({ relasjon: familie, slettRelasjon }) => (
   <div>
     <dl>
-      <dt>FamilieRelasjon</dt><dd>{relasjon.relasjon}</dd>
-      <dt>Fødselsnummmer</dt><dd>{relasjon.fnr}</dd>
+      <dt>FamilieRelasjon</dt><dd>{familie.relasjon}</dd>
+      <dt>Fødselsnummmer</dt><dd>{familie.fnr}</dd>
     </dl>
-    <button onClick={() => slettRelasjon(relasjon.fnr)} >slett</button>
+    <button onClick={() => slettRelasjon(familie.fnr)} >slett</button>
   </div>
 );
 
