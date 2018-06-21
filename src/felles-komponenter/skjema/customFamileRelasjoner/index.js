@@ -29,8 +29,9 @@ class CustomFamilieRelasjoner extends Component {
   leggTilRelasjon = () => {
     const { fields } = this.props;
     const { fnr, relasjon } = this.state;
+    if (!fnr || !relasjon) { return false; }
     const familerelasjon = { fnr, relasjon };
-    fields.push(familerelasjon);
+    return fields.push(familerelasjon);
   };
 
   oppdaterState = (felt, event) => {
@@ -49,14 +50,31 @@ class CustomFamilieRelasjoner extends Component {
     const relasjoner = fields.getAll();
 
     return (
-      <div>
-        {relasjoner && relasjoner.map(relasjon => <FamilieRelasjon key={uuid()} relasjon={relasjon} slettRelasjon={this.slettRelasjon} />)}
-        <Nav.Input label="Fødsels- eller d-nummer" bredde="S" value={this.state.fnr} onChange={event => this.oppdaterState('fnr', event)} />
-        <Nav.Select label="Familierelasjon" bredde="s" value={this.state.relasjon} onChange={event => this.oppdaterState('relasjon', event)}>
-          <option value="" disabled>- velg -</option>
-          {familierelasjonKodeverk && familierelasjonKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
-        </Nav.Select>
-        <button onClick={this.leggTilRelasjon}>Legg til</button>
+      <div className="familerelasjoner">
+        <div className="familierelasjoner__linje">
+          {relasjoner && relasjoner.map(relasjon => <FamilieRelasjon key={uuid()} relasjon={relasjon} slettRelasjon={this.slettRelasjon} />)}
+        </div>
+        <div className="familierelasjoner__linje">
+          <Nav.Input
+            label="Fnr eller Dnr"
+            className="familierelasjoner__input"
+            bredde="XXL"
+            value={this.state.fnr}
+            onChange={event => this.oppdaterState('fnr', event)} />
+          <Nav.Select
+            label="Familierelasjon"
+            bredde="s"
+            className="familierelasjoner__input"
+            value={this.state.relasjon}
+            onChange={event => this.oppdaterState('relasjon', event)}>
+            <option value="" disabled>- velg -</option>
+            {familierelasjonKodeverk && familierelasjonKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+          </Nav.Select>
+          <Nav.Knapp onClick={this.leggTilRelasjon} className="familierelasjoner__knapp">
+            <Nav.Ikon kind="tilsette" size="20" style={{ stroke: '#ff0000' }} className="familierelasjoner__knapp__ikon" />
+            <div>Legg til</div>
+          </Nav.Knapp>
+        </div>
       </div>
     );
   }

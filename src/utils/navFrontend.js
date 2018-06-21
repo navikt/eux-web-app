@@ -8,6 +8,7 @@ import { Checkbox, Radio, RadioGruppe, SkjemaGruppe, Fieldset, Select, Input, Te
 import { Innholdstittel, Systemtittel, Undertittel, Element, Normaltekst, UndertekstBold } from 'nav-frontend-typografi';
 import { Knapp } from 'nav-frontend-knapper';
 import Tabs from 'nav-frontend-tabs';
+import Ikon from 'nav-frontend-ikoner-assets';
 import Stegindikator from 'nav-frontend-stegindikator';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 
@@ -21,5 +22,6 @@ export {
   Knapp,
   Stegindikator,
   Tabs,
+  Ikon,
   HjelpetekstBase,
 };
