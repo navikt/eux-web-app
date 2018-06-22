@@ -7,9 +7,9 @@
 
 import { createSelector } from 'reselect';
 
-export const lookupSelector = createSelector(
-  state => state.kodeverk.data.lookup,
-  lookup => lookup
+export const familierelasjonerSelector = createSelector(
+  state => state.kodeverk.data.familierelasjoner,
+  familierelasjoner => familierelasjoner
 );
 
 export const landkoderSelector = createSelector(
@@ -17,46 +17,14 @@ export const landkoderSelector = createSelector(
   landkoder => landkoder
 );
 
+export const kodemapsSelector = createSelector(
+  state => state.kodeverk.data.kodemaps,
+  kodemaps => kodemaps
+);
+
 export const sectorSelector = createSelector(
   state => state.kodeverk.data.sector,
   sector => sector
-);
-
-export const valgtSectorSelector = createSelector(
-  state => (state.form.opprettSak ? state.form.opprettSak : {}),
-  opprettSakForm => {
-    const { values = {} } = opprettSakForm;
-    return values.sector;
-  }
-);
-export const valgtBucTypeSelector = createSelector(
-  state => (state.form.opprettSak ? state.form.opprettSak : {}),
-  opprettSakForm => {
-    const { values = {} } = opprettSakForm;
-    return values.buctype;
-  }
-);
-
-const mapSektor2BucGruppe = {
-  AD: 'administrative',
-  AW: 'awod',
-  FB: 'family',
-  HZ: 'horizontal',
-  LA: 'legislation',
-  MI: 'miscellaneous',
-  PE: 'pensions',
-  RE: 'recovery',
-  SI: 'sickness',
-  UB: 'unemployment',
-};
-
-export const buctyperSelector = createSelector(
-  state => state.kodeverk.data.buctyper,
-  state => valgtSectorSelector(state),
-  (buctyper, valgtSektor) => {
-    if (!valgtSektor) { return []; }
-    return buctyper[mapSektor2BucGruppe[valgtSektor]];
-  }
 );
 
 export const alleSEDtyperSelector = createSelector(
@@ -64,30 +32,7 @@ export const alleSEDtyperSelector = createSelector(
   sedtyper => sedtyper
 );
 
-export const sedtypeSelector = createSelector(
-  state => valgtSectorSelector(state),
-  state => lookupSelector(state),
-  state => alleSEDtyperSelector(state),
-  state => valgtBucTypeSelector(state),
-  (valgtSector, lookup, sedKodeverk, valgtBucType) => {
-    if (!(valgtSector && valgtSector === 'FB')) { return []; }
-    if (!lookup) { return []; }
-    if (!valgtBucType) { return []; }
-    const sedtyper = lookup.buc2Seds[valgtBucType];
-    if (!(sedtyper && sedtyper.length)) return [];
-    return sedtyper.reduce((acc, curr) => {
-      const kode = sedKodeverk.find(elem => elem.kode === curr);
-      acc.push(kode);
-      return acc;
-    }, []);
-  }
-);
-
-export const institusjonSelector = createSelector(
-  state => state.kodeverk.data.institusjoner,
-  institusjoner => institusjoner
-);
-export const familierelasjonerSelector = createSelector(
-  state => state.kodeverk.data.familierelasjoner,
-  familierelasjoner => familierelasjoner
+export const alleBUCtyperSelector = createSelector(
+  state => state.kodeverk.data.buctyper,
+  buctyper => buctyper
 );

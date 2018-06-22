@@ -145,9 +145,9 @@ const mapStateToProps = state => ({
   },
   familierelasjonKodeverk: KodeverkSelectors.familierelasjonerSelector(state),
   landkoder: KodeverkSelectors.landkoderSelector(state),
-  sedtyper: KodeverkSelectors.sedtypeSelector(state),
   sector: KodeverkSelectors.sectorSelector(state),
-  buctyper: KodeverkSelectors.buctyperSelector(state),
+  sedtyper: eusakSelectors.sedtypeSelector(state),
+  buctyper: eusakSelectors.buctyperSelector(state),
   inntastetFnr: skjemaSelector(state, 'fnr'),
   status: eusakSelectors.EusakStatusSelector(state),
 });
