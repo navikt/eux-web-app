@@ -1,0 +1,53 @@
+@import '../../../constants';
+
+.familerelasjoner {
+
+  .familierelasjoner__linje {
+    display: flex;
+    flex-direction: row;
+    margin: 2em 0;
+  }
+
+  .familierelasjoner__input {
+    margin: 0 1em 0 0;
+  }
+
+  .familierelasjoner__detailjer {
+    display: flex;
+    width: 40%;
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .familierelasjoner__tittel, .familierelasjoner__detalj {
+    margin: 0;
+    padding: 0;
+  }
+
+  .familierelasjoner__tittel {
+    font-weight: bold;
+  }
+
+  .familierelasjoner__knapp {
+    display: flex;
+    align-self: flex-start;
+    margin-top: 1.9em;
+    align-items: center;
+  }
+
+  .familierelasjoner__knapp__ikon {
+    margin-right: .5em;
+
+    path {
+      stroke: @blue-nav;
+    }
+  }
+
+  .familierelasjoner__knapp {
+    &:hover {
+      .familierelasjoner__knapp__ikon path {
+        stroke: @white !important;
+      }
+    }
+  }
+}

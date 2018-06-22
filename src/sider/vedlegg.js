@@ -36,7 +36,7 @@ class Vedlegg extends Component {
                     <Nav.HjelpetekstBase id="saksnummer" type="under">Saksnummer finner du i RINA</Nav.HjelpetekstBase>
                     <Skjema.Input feltNavn="saksnummer" label="RINA Saksnummer" />
                     <Skjema.Select feltNavn="sedtype" label="Velg SED Type" bredde="xl">
-                      {sedtyper && sedtyper.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+                      {sedtyper && sedtyper.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
                     </Skjema.Select>
                   </Nav.Fieldset>
                   <div className="vedlegg__submmit">
@@ -70,7 +70,7 @@ Vedlegg.defaultProps = {
 const mapStateToProps = state => ({
   vedleggStatus: vedleggSelectors.VedleggStatusSelector(state),
   vedlegg: vedleggSelectors.VedleggSelector(state),
-  sedtyper: KodeverkSelectors.sedtyperSelector(state),
+  sedtyper: KodeverkSelectors.alleSEDtyperSelector(state),
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -6,8 +6,9 @@ import AlertStripe, { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { Container, Row, Column } from 'nav-frontend-grid';
 import { Checkbox, Radio, RadioGruppe, SkjemaGruppe, Fieldset, Select, Input, Textarea } from 'nav-frontend-skjema';
 import { Innholdstittel, Systemtittel, Undertittel, Element, Normaltekst, UndertekstBold } from 'nav-frontend-typografi';
-import { Knapp } from 'nav-frontend-knapper';
+import { Knapp, Hovedknapp } from 'nav-frontend-knapper';
 import Tabs from 'nav-frontend-tabs';
+import Ikon from 'nav-frontend-ikoner-assets';
 import Stegindikator from 'nav-frontend-stegindikator';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 
@@ -18,8 +19,9 @@ export {
   EkspanderbartpanelBase, Panel, Lenkepanel,
   Innholdstittel, Systemtittel, Undertittel, Element, Normaltekst, UndertekstBold,
   NavFrontendSpinner,
-  Knapp,
+  Knapp, Hovedknapp,
   Stegindikator,
   Tabs,
+  Ikon,
   HjelpetekstBase,
 };

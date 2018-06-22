@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, formValueSelector, clearAsyncError, stopSubmit, change } from 'redux-form';
+import { reduxForm, formValueSelector, clearAsyncError, stopSubmit, change, FieldArray } from 'redux-form';
 import PT from 'prop-types';
 
 import * as MPT from '../proptypes/';
@@ -8,6 +8,7 @@ import * as Nav from '../utils/navFrontend';
 import * as Skjema from '../felles-komponenter/skjema';
 
 import { StatusLinje } from '../felles-komponenter/statuslinje';
+import CustomFamilieRelasjoner from '../felles-komponenter/skjema/customFamileRelasjoner';
 import { KodeverkSelectors } from '../ducks/kodeverk';
 import PersonSok from './personsok';
 import { eusakOperations, eusakSelectors } from '../ducks/eusak';
@@ -16,6 +17,7 @@ import './opprettsak.css';
 
 const uuid = require('uuid/v4');
 
+const TilleggsOpplysninger = props => (<FieldArray name="tilleggsoplysninger.familierelasjoner" component={CustomFamilieRelasjoner} props={props} />);
 
 class OpprettSak extends Component {
   skjemaSubmit = values => {
@@ -41,15 +43,16 @@ class OpprettSak extends Component {
       validerFnrFeil();
       settFnrGyldighet(false);
     }
-  }
+  };
+
+  erSedtyperGyldig = sedtyper => sedtyper && sedtyper.length > 0 && sedtyper[0];
 
   render() {
     const {
-      landkoder, sedtyper, sector, buctyper,
+      familierelasjonKodeverk, landkoder, sedtyper, sector, buctyper,
       inntastetFnr, status,
       settFnrGyldighet, settFnrSjekket,
     } = this.props;
-
 
     return (
       <div className="opprettsak">
@@ -61,7 +64,7 @@ class OpprettSak extends Component {
               </Nav.Column>
             </Nav.Row>
             <Nav.Row>
-              <Nav.Column xs="12">
+              <Nav.Column xs="6">
                 <div>
                   <Nav.Fieldset legend="Fagområde">
                     <Skjema.Select feltNavn="sector" label="Velg Fagområde" bredde="xl">
@@ -75,7 +78,7 @@ class OpprettSak extends Component {
                   </Nav.Fieldset>
                   <Nav.Fieldset legend="Type SED">
                     <Skjema.Select feltNavn="sedtype" label="Velg SED Type" bredde="xl">
-                      {sedtyper && sedtyper.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+                      {this.erSedtyperGyldig(sedtyper) && sedtyper.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
                     </Skjema.Select>
                   </Nav.Fieldset>
                   <Nav.Fieldset legend="Land">
@@ -87,7 +90,15 @@ class OpprettSak extends Component {
                     <Skjema.Input feltNavn="institusjon" label="InstitusjonID" bredde="S" />
                   </Nav.Fieldset>
                 </div>
-                <Nav.Knapp onClick={this.props.handleSubmit(this.skjemaSubmit)}>Opprett sak i RINA</Nav.Knapp>
+                <Nav.Fieldset legend="Tilleggsopplysninger">
+                  <Nav.Normaltekst>Fyll ut opplysninger om evt familierelasjoner.</Nav.Normaltekst>
+                  <TilleggsOpplysninger familierelasjonKodeverk={familierelasjonKodeverk} />
+                </Nav.Fieldset>
+              </Nav.Column>
+            </Nav.Row>
+            <Nav.Row className="opprettsak__statuslinje">
+              <Nav.Column xs="6">
+                <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)}>Opprett sak i RINA</Nav.Hovedknapp>
                 <StatusLinje status={status} tittel="Opprettet sak" />
               </Nav.Column>
             </Nav.Row>
@@ -105,6 +116,7 @@ OpprettSak.propTypes = {
   settFnrGyldighet: PT.func.isRequired,
   settFnrSjekket: PT.func.isRequired,
   submitFailed: PT.bool.isRequired,
+  familierelasjonKodeverk: PT.arrayOf(MPT.Kodeverk),
   landkoder: PT.arrayOf(MPT.Kodeverk),
   sedtyper: PT.arrayOf(MPT.Kodeverk),
   sector: PT.arrayOf(MPT.Kodeverk),
@@ -114,6 +126,7 @@ OpprettSak.propTypes = {
 };
 
 OpprettSak.defaultProps = {
+  familierelasjonKodeverk: undefined,
   landkoder: undefined,
   sedtyper: undefined,
   sector: undefined,
@@ -125,8 +138,14 @@ OpprettSak.defaultProps = {
 const skjemaSelector = formValueSelector('opprettSak');
 
 const mapStateToProps = state => ({
+  initialValues: {
+    tilleggsoplysninger: {
+      familierelasjoner: [],
+    },
+  },
+  familierelasjonKodeverk: KodeverkSelectors.familierelasjonerSelector(state),
   landkoder: KodeverkSelectors.landkoderSelector(state),
-  sedtyper: KodeverkSelectors.sedtyperSelector(state),
+  sedtyper: KodeverkSelectors.sedtypeSelector(state),
   sector: KodeverkSelectors.sectorSelector(state),
   buctyper: KodeverkSelectors.buctyperSelector(state),
   inntastetFnr: skjemaSelector(state, 'fnr'),
