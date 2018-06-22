@@ -7,7 +7,10 @@
 
 import { createSelector } from 'reselect';
 
-export const lookupSelector = state => state.kodeverk.data.lookup;
+export const lookupSelector = createSelector(
+  state => state.kodeverk.data.lookup,
+  lookup => lookup
+);
 
 export const landkoderSelector = createSelector(
   state => state.kodeverk.data.landkoder,
@@ -55,30 +58,23 @@ export const buctyperSelector = createSelector(
     return buctyper[mapSektor2BucGruppe[valgtSektor]];
   }
 );
-const hasProp = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
 
-function mapBucTtoSEDs (buctype) {
-  const buc2seds = {
-    FB_BUC_01: ['SED_F001'],
-    FB_BUC_02: ['SED_F016'],
-    FB_BUC_03: ['SED_F018', 'SED_F021'],
-    FB_BUC_04: ['SED_F003'],
-  };
-  return hasProp(buc2seds, buctype) ? buc2seds[buctype] : [];
-}
-
-export const sedtyperSelector = createSelector(
+export const alleSEDtyperSelector = createSelector(
   state => state.kodeverk.data.sedtyper,
   sedtyper => sedtyper
 );
 
 export const sedtypeSelector = createSelector(
-  state => sedtyperSelector(state),
+  state => valgtSectorSelector(state),
+  state => lookupSelector(state),
+  state => alleSEDtyperSelector(state),
   state => valgtBucTypeSelector(state),
-  (sedKodeverk, valgtBucType) => {
+  (valgtSector, lookup, sedKodeverk, valgtBucType) => {
+    if (!(valgtSector && valgtSector === 'FB')) { return []; }
+    if (!lookup) { return []; }
     if (!valgtBucType) { return []; }
-    const sedtyper = mapBucTtoSEDs(valgtBucType);
-    if (!sedtyper.length) return [];
+    const sedtyper = lookup.buc2Seds[valgtBucType];
+    if (!(sedtyper && sedtyper.length)) return [];
     return sedtyper.reduce((acc, curr) => {
       const kode = sedKodeverk.find(elem => elem.kode === curr);
       acc.push(kode);
