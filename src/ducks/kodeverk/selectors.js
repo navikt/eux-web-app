@@ -37,25 +37,14 @@ export const valgtBucTypeSelector = createSelector(
   }
 );
 
-const mapSektor2BucGruppe = {
-  AD: 'administrative',
-  AW: 'awod',
-  FB: 'family',
-  HZ: 'horizontal',
-  LA: 'legislation',
-  MI: 'miscellaneous',
-  PE: 'pensions',
-  RE: 'recovery',
-  SI: 'sickness',
-  UB: 'unemployment',
-};
-
 export const buctyperSelector = createSelector(
+  state => kodemapsSelector(state),
   state => state.kodeverk.data.buctyper,
   state => valgtSectorSelector(state),
-  (buctyper, valgtSektor) => {
-    if (!valgtSektor) { return []; }
-    return buctyper[mapSektor2BucGruppe[valgtSektor]];
+  (kodemaps, buctyper, valgtSector) => {
+    if (!kodemaps) { return []; }
+    if (!valgtSector) { return []; }
+    return buctyper[kodemaps.SECTOR2BUC[valgtSector]];
   }
 );
 
