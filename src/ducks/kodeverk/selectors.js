@@ -7,14 +7,19 @@
 
 import { createSelector } from 'reselect';
 
-export const kodemapsSelector = createSelector(
-  state => state.kodeverk.data.kodemaps,
-  kodemaps => kodemaps
+export const familierelasjonerSelector = createSelector(
+  state => state.kodeverk.data.familierelasjoner,
+  familierelasjoner => familierelasjoner
 );
 
 export const landkoderSelector = createSelector(
   state => state.kodeverk.data.landkoder,
   landkoder => landkoder
+);
+
+export const kodemapsSelector = createSelector(
+  state => state.kodeverk.data.kodemaps,
+  kodemaps => kodemaps
 );
 
 export const sectorSelector = createSelector(
@@ -27,7 +32,7 @@ export const alleSEDtyperSelector = createSelector(
   sedtyper => sedtyper
 );
 
-export const familierelasjonerSelector = createSelector(
-  state => state.kodeverk.data.familierelasjoner,
-  familierelasjoner => familierelasjoner
+export const alleBUCtyperSelector = createSelector(
+  state => state.kodeverk.data.buctyper,
+  buctyper => buctyper
 );
