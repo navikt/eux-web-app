@@ -7,9 +7,9 @@
 
 import { createSelector } from 'reselect';
 
-export const lookupSelector = createSelector(
-  state => state.kodeverk.data.lookup,
-  lookup => lookup
+export const kodemapsSelector = createSelector(
+  state => state.kodeverk.data.kodemaps,
+  kodemaps => kodemaps
 );
 
 export const landkoderSelector = createSelector(
@@ -66,14 +66,14 @@ export const alleSEDtyperSelector = createSelector(
 
 export const sedtypeSelector = createSelector(
   state => valgtSectorSelector(state),
-  state => lookupSelector(state),
+  state => kodemapsSelector(state),
   state => alleSEDtyperSelector(state),
   state => valgtBucTypeSelector(state),
-  (valgtSector, lookup, sedKodeverk, valgtBucType) => {
+  (valgtSector, kodemaps, sedKodeverk, valgtBucType) => {
     if (!(valgtSector && valgtSector === 'FB')) { return []; }
-    if (!lookup) { return []; }
+    if (!kodemaps) { return []; }
     if (!valgtBucType) { return []; }
-    const sedtyper = lookup.buc2Seds[valgtBucType];
+    const sedtyper = kodemaps.BUC2SEDS[valgtSector][valgtBucType];
     if (!(sedtyper && sedtyper.length)) return [];
     return sedtyper.reduce((acc, curr) => {
       const kode = sedKodeverk.find(elem => elem.kode === curr);
