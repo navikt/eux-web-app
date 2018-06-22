@@ -45,6 +45,8 @@ class OpprettSak extends Component {
     }
   };
 
+  erSedtyperGyldig = sedtyper => sedtyper && sedtyper.length > 0 && sedtyper[0];
+
   render() {
     const {
       familierelasjonKodeverk, landkoder, sedtyper, sector, buctyper,
@@ -76,7 +78,7 @@ class OpprettSak extends Component {
                   </Nav.Fieldset>
                   <Nav.Fieldset legend="Type SED">
                     <Skjema.Select feltNavn="sedtype" label="Velg SED Type" bredde="xl">
-                      {sedtyper && sedtyper.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+                      {this.erSedtyperGyldig(sedtyper) && sedtyper.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
                     </Skjema.Select>
                   </Nav.Fieldset>
                   <Nav.Fieldset legend="Land">
@@ -143,7 +145,7 @@ const mapStateToProps = state => ({
   },
   familierelasjonKodeverk: KodeverkSelectors.familierelasjonerSelector(state),
   landkoder: KodeverkSelectors.landkoderSelector(state),
-  sedtyper: KodeverkSelectors.sedtyperSelector(state),
+  sedtyper: KodeverkSelectors.sedtypeSelector(state),
   sector: KodeverkSelectors.sectorSelector(state),
   buctyper: KodeverkSelectors.buctyperSelector(state),
   inntastetFnr: skjemaSelector(state, 'fnr'),

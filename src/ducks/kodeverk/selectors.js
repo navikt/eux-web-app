@@ -7,6 +7,8 @@
 
 import { createSelector } from 'reselect';
 
+export const lookupSelector = state => state.kodeverk.data.lookup;
+
 export const landkoderSelector = createSelector(
   state => state.kodeverk.data.landkoder,
   landkoder => landkoder
@@ -17,11 +19,6 @@ export const sectorSelector = createSelector(
   sector => sector
 );
 
-export const sedtyperSelector = createSelector(
-  state => state.kodeverk.data.sedtyper,
-  sedtyper => sedtyper
-);
-
 export const valgtSectorSelector = createSelector(
   state => (state.form.opprettSak ? state.form.opprettSak : {}),
   opprettSakForm => {
@@ -29,8 +26,15 @@ export const valgtSectorSelector = createSelector(
     return values.sector;
   }
 );
+export const valgtBucTypeSelector = createSelector(
+  state => (state.form.opprettSak ? state.form.opprettSak : {}),
+  opprettSakForm => {
+    const { values = {} } = opprettSakForm;
+    return values.buctype;
+  }
+);
 
-const mapToBucSektor = {
+const mapSektor2BucGruppe = {
   AD: 'administrative',
   AW: 'awod',
   FB: 'family',
@@ -48,7 +52,38 @@ export const buctyperSelector = createSelector(
   state => valgtSectorSelector(state),
   (buctyper, valgtSektor) => {
     if (!valgtSektor) { return []; }
-    return buctyper[mapToBucSektor[valgtSektor]];
+    return buctyper[mapSektor2BucGruppe[valgtSektor]];
+  }
+);
+const hasProp = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
+
+function mapBucTtoSEDs (buctype) {
+  const buc2seds = {
+    FB_BUC_01: ['SED_F001'],
+    FB_BUC_02: ['SED_F016'],
+    FB_BUC_03: ['SED_F018', 'SED_F021'],
+    FB_BUC_04: ['SED_F003'],
+  };
+  return hasProp(buc2seds, buctype) ? buc2seds[buctype] : [];
+}
+
+export const sedtyperSelector = createSelector(
+  state => state.kodeverk.data.sedtyper,
+  sedtyper => sedtyper
+);
+
+export const sedtypeSelector = createSelector(
+  state => sedtyperSelector(state),
+  state => valgtBucTypeSelector(state),
+  (sedKodeverk, valgtBucType) => {
+    if (!valgtBucType) { return []; }
+    const sedtyper = mapBucTtoSEDs(valgtBucType);
+    if (!sedtyper.length) return [];
+    return sedtyper.reduce((acc, curr) => {
+      const kode = sedKodeverk.find(elem => elem.kode === curr);
+      acc.push(kode);
+      return acc;
+    }, []);
   }
 );
 
