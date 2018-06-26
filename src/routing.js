@@ -4,7 +4,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 
 import Forside from './sider/forside';
 import Vedlegg from './sider/vedlegg';
-import OpprettSak from './sider/opprettsak';
+import OpprettSak from './sider/rinasak';
 
 const Routing = ({ location }) => (
   <Switch location={location}>

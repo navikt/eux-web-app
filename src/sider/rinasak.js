@@ -13,13 +13,13 @@ import { KodeverkSelectors } from '../ducks/kodeverk';
 import PersonSok from './personsok';
 import { rinasakOperations, rinasakSelectors } from '../ducks/rinasak';
 
-import './opprettsak.css';
+import './rinasak.css';
 
 const uuid = require('uuid/v4');
 
 const TilleggsOpplysninger = props => (<FieldArray name="tilleggsoplysninger.familierelasjoner" component={CustomFamilieRelasjoner} props={props} />);
 
-class OpprettSak extends Component {
+class RinaSak extends Component {
   skjemaSubmit = values => {
     const { submitFailed, sendSkjema } = this.props;
     if (submitFailed) return;
@@ -108,7 +108,7 @@ class OpprettSak extends Component {
     );
   }
 }
-OpprettSak.propTypes = {
+RinaSak.propTypes = {
   validerFnrRiktig: PT.func.isRequired,
   validerFnrFeil: PT.func.isRequired,
   handleSubmit: PT.func.isRequired,
@@ -125,7 +125,7 @@ OpprettSak.propTypes = {
   status: PT.string,
 };
 
-OpprettSak.defaultProps = {
+RinaSak.defaultProps = {
   familierelasjonKodeverk: undefined,
   landkoder: undefined,
   sedtyper: undefined,
@@ -185,4 +185,4 @@ export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
   form: 'opprettSak',
   onSubmit: () => {},
   validate: validering,
-})(OpprettSak));
+})(RinaSak));
