@@ -11,7 +11,7 @@ import { StatusLinje } from '../felles-komponenter/statuslinje';
 import CustomFamilieRelasjoner from '../felles-komponenter/skjema/customFamileRelasjoner';
 import { KodeverkSelectors } from '../ducks/kodeverk';
 import PersonSok from './personsok';
-import { eusakOperations, eusakSelectors } from '../ducks/eusak';
+import { rinasakOperations, rinasakSelectors } from '../ducks/rinasak';
 
 import './opprettsak.css';
 
@@ -146,10 +146,10 @@ const mapStateToProps = state => ({
   familierelasjonKodeverk: KodeverkSelectors.familierelasjonerSelector(state),
   landkoder: KodeverkSelectors.landkoderSelector(state),
   sector: KodeverkSelectors.sectorSelector(state),
-  sedtyper: eusakSelectors.sedtypeSelector(state),
-  buctyper: eusakSelectors.buctyperSelector(state),
+  sedtyper: rinasakSelectors.sedtypeSelector(state),
+  buctyper: rinasakSelectors.buctyperSelector(state),
   inntastetFnr: skjemaSelector(state, 'fnr'),
-  status: eusakSelectors.EusakStatusSelector(state),
+  status: rinasakSelectors.EusakStatusSelector(state),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -157,7 +157,7 @@ const mapDispatchToProps = dispatch => ({
   validerFnrRiktig: () => dispatch(clearAsyncError('opprettSak', 'fnr')),
   settFnrGyldighet: erGyldig => dispatch(change('opprettSak', 'fnrErGyldig', erGyldig)),
   settFnrSjekket: erSjekket => dispatch(change('opprettSak', 'fnrErSjekket', erSjekket)),
-  sendSkjema: data => dispatch(eusakOperations.send(data)),
+  sendSkjema: data => dispatch(rinasakOperations.send(data)),
 });
 
 const validering = values => {

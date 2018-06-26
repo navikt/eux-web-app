@@ -10,12 +10,12 @@ import { alleSEDtyperSelector, kodemapsSelector } from '../kodeverk/selectors';
 
 // selector(s)
 export const EusakSelector = createSelector(
-  state => (state.eusak.data ? state.eusak.data : {}),
-  eusak => eusak || {}
+  state => (state.rinasak.data ? state.rinasak.data : {}),
+  rinasak => rinasak || {}
 );
 export const EusakStatusSelector = createSelector(
-  state => (state.eusak.status ? state.eusak.status : ''),
-  eusakStatus => eusakStatus || ''
+  state => (state.rinasak.status ? state.rinasak.status : ''),
+  rinasakStatus => rinasakStatus || ''
 );
 
 export const valgtSectorSelector = createSelector(
