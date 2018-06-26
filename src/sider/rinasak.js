@@ -149,7 +149,7 @@ const mapStateToProps = state => ({
   sedtyper: rinasakSelectors.sedtypeSelector(state),
   buctyper: rinasakSelectors.buctyperSelector(state),
   inntastetFnr: skjemaSelector(state, 'fnr'),
-  status: rinasakSelectors.EusakStatusSelector(state),
+  status: rinasakSelectors.RinasakStatusSelector(state),
 });
 
 const mapDispatchToProps = dispatch => ({
