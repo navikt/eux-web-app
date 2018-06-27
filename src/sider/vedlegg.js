@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PT from 'prop-types';
-import { reduxForm } from 'redux-form';
+import { formValueSelector, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 
 import * as Skjema from '../felles-komponenter/skjema';
 import { StatusLinje } from '../felles-komponenter/statuslinje';
+import DokumentSok from './dokumentsok';
 import * as Nav from '../utils/navFrontend';
 import * as MPT from '../proptypes';
 
@@ -13,18 +14,19 @@ import { vedleggOperations, vedleggSelectors } from '../ducks/vedlegg';
 
 import './vedlegg.css';
 
-const uuid = require('uuid/v4');
-
 class Vedlegg extends Component {
+  overrideDefaultSubmit = event => {
+    event.preventDefault();
+  };
   render() {
     const {
-      handleSubmit, sendSkjema, vedleggStatus, vedlegg, sedtyper,
+      handleSubmit, sendSkjema, vedleggStatus, vedlegg, inntastetRinasaksnummer,
     } = this.props;
 
     return (
       <div className="vedlegg">
         <Nav.Container fluid>
-          <form onSubmit={handleSubmit(sendSkjema)}>
+          <form onSubmit={this.overrideDefaultSubmit}>
             <Nav.Row>
               <Nav.Column xs="6">
                 <Nav.Panel className="vedlegg__skjema">
@@ -33,14 +35,10 @@ class Vedlegg extends Component {
                     <Skjema.Input feltNavn="journalpostID" label="JournalpostID" />
                     <Nav.HjelpetekstBase id="dokumentID" type="under">Dokument ID finner du i Gosys</Nav.HjelpetekstBase>
                     <Skjema.Input feltNavn="dokumentID" label="DokumentID" />
-                    <Nav.HjelpetekstBase id="saksnummer" type="under">Saksnummer finner du i RINA</Nav.HjelpetekstBase>
-                    <Skjema.Input feltNavn="saksnummer" label="RINA Saksnummer" />
-                    <Skjema.Select feltNavn="sedtype" label="Velg SED Type" bredde="xl">
-                      {sedtyper && sedtyper.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
-                    </Skjema.Select>
+                    <DokumentSok inntastetRinasaksnummer={inntastetRinasaksnummer} />
                   </Nav.Fieldset>
                   <div className="vedlegg__submmit">
-                    <Nav.Knapp onClick={this.sendVedlegg}>Send Vedlegg</Nav.Knapp>
+                    <Nav.Hovedknapp onClick={handleSubmit(sendSkjema)}>Send vedlegg</Nav.Hovedknapp>
                   </div>
                   <StatusLinje status={vedleggStatus} tittel="Vedlegget" />
                   <p>{vedlegg.data && JSON.parse(vedlegg.data).status}</p>
@@ -60,17 +58,27 @@ Vedlegg.propTypes = {
   sedtyper: PT.arrayOf(MPT.Kodeverk),
   vedleggStatus: PT.string.isRequired,
   vedlegg: PT.object,
+  rinasaksnummer: PT.string,
+  inntastetRinasaksnummer: PT.string,
+  rinadokumentID: PT.string,
 };
 
 Vedlegg.defaultProps = {
   sedtyper: undefined,
   vedlegg: {},
+  rinasaksnummer: '',
+  inntastetRinasaksnummer: '',
+  rinadokumentID: '',
 };
+
+const skjemaSelector = formValueSelector('vedlegg');
 
 const mapStateToProps = state => ({
   vedleggStatus: vedleggSelectors.VedleggStatusSelector(state),
   vedlegg: vedleggSelectors.VedleggSelector(state),
   sedtyper: KodeverkSelectors.alleSEDtyperSelector(state),
+  inntastetRinasaksnummer: skjemaSelector(state, 'rinasaksnummer'),
+  rinadokumentID: skjemaSelector(state, 'rinadokumentID'),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -91,12 +99,12 @@ const form = {
     const journalpostID = journalpostValidation(values.journalpostID);
     const dokumentID = !values.dokumentID ? 'Du må taste inn en dokumentID' : null;
     const saksnummer = !values.saksnummer ? 'Du må taste inn et RINA saksnummer' : null;
-    const sedtype = !values.sedtype ? 'Du må velge en SED fra listen' : null;
+    const rinadokumentID = !values.rinadokumentID ? 'Du må velge en SED' : null;
     return {
       journalpostID,
       dokumentID,
       saksnummer,
-      sedtype,
+      rinadokumentID,
     };
   },
 };
