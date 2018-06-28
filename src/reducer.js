@@ -5,6 +5,7 @@ import kodeverkReducer from './ducks/kodeverk';
 import saksbehandlerReducer from './ducks/saksbehandler/';
 import vedleggReducer from './ducks/vedlegg';
 import rinasakReducer from './ducks/rinasak';
+import dokumenterReducer from './ducks/dokumenter';
 
 export default combineReducers({
   form: formReducer,
@@ -12,4 +13,5 @@ export default combineReducers({
   saksbehandler: saksbehandlerReducer,
   vedlegg: vedleggReducer,
   rinasak: rinasakReducer,
+  dokumenter: dokumenterReducer,
 });
