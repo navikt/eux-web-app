@@ -13,7 +13,7 @@ import * as Types from './types';
  */
 /* eslint import/prefer-default-export:"off" */
 export function send(data) {
-  return doThenDispatch(() => Api.Eusak.send(data), {
+  return doThenDispatch(() => Api.Rinasak.send(data), {
     OK: Types.OK,
     FEILET: Types.FEILET,
     PENDING: Types.PENDING,

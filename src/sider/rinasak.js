@@ -11,15 +11,15 @@ import { StatusLinje } from '../felles-komponenter/statuslinje';
 import CustomFamilieRelasjoner from '../felles-komponenter/skjema/customFamileRelasjoner';
 import { KodeverkSelectors } from '../ducks/kodeverk';
 import PersonSok from './personsok';
-import { eusakOperations, eusakSelectors } from '../ducks/eusak';
+import { rinasakOperations, rinasakSelectors } from '../ducks/rinasak';
 
-import './opprettsak.css';
+import './rinasak.css';
 
 const uuid = require('uuid/v4');
 
 const TilleggsOpplysninger = props => (<FieldArray name="tilleggsoplysninger.familierelasjoner" component={CustomFamilieRelasjoner} props={props} />);
 
-class OpprettSak extends Component {
+class RinaSak extends Component {
   skjemaSubmit = values => {
     const { submitFailed, sendSkjema } = this.props;
     if (submitFailed) return;
@@ -108,7 +108,7 @@ class OpprettSak extends Component {
     );
   }
 }
-OpprettSak.propTypes = {
+RinaSak.propTypes = {
   validerFnrRiktig: PT.func.isRequired,
   validerFnrFeil: PT.func.isRequired,
   handleSubmit: PT.func.isRequired,
@@ -125,7 +125,7 @@ OpprettSak.propTypes = {
   status: PT.string,
 };
 
-OpprettSak.defaultProps = {
+RinaSak.defaultProps = {
   familierelasjonKodeverk: undefined,
   landkoder: undefined,
   sedtyper: undefined,
@@ -146,10 +146,10 @@ const mapStateToProps = state => ({
   familierelasjonKodeverk: KodeverkSelectors.familierelasjonerSelector(state),
   landkoder: KodeverkSelectors.landkoderSelector(state),
   sector: KodeverkSelectors.sectorSelector(state),
-  sedtyper: eusakSelectors.sedtypeSelector(state),
-  buctyper: eusakSelectors.buctyperSelector(state),
+  sedtyper: rinasakSelectors.sedtypeSelector(state),
+  buctyper: rinasakSelectors.buctyperSelector(state),
   inntastetFnr: skjemaSelector(state, 'fnr'),
-  status: eusakSelectors.EusakStatusSelector(state),
+  status: rinasakSelectors.RinasakStatusSelector(state),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -157,7 +157,7 @@ const mapDispatchToProps = dispatch => ({
   validerFnrRiktig: () => dispatch(clearAsyncError('opprettSak', 'fnr')),
   settFnrGyldighet: erGyldig => dispatch(change('opprettSak', 'fnrErGyldig', erGyldig)),
   settFnrSjekket: erSjekket => dispatch(change('opprettSak', 'fnrErSjekket', erSjekket)),
-  sendSkjema: data => dispatch(eusakOperations.send(data)),
+  sendSkjema: data => dispatch(rinasakOperations.send(data)),
 });
 
 const validering = values => {
@@ -185,4 +185,4 @@ export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
   form: 'opprettSak',
   onSubmit: () => {},
   validate: validering,
-})(OpprettSak));
+})(RinaSak));
