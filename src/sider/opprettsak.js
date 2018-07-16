@@ -19,6 +19,23 @@ const uuid = require('uuid/v4');
 
 const TilleggsOpplysninger = props => (<FieldArray name="tilleggsoplysninger.familierelasjoner" component={CustomFamilieRelasjoner} props={props} />);
 
+const RinasaksNummer = ({ sak }) => {
+  if (sak && !sak.rinasaksnummer) { return null; }
+  return (
+    <p>Rinasaksnummer: {sak.rinasaksnummer}</p>
+  );
+};
+RinasaksNummer.propTypes = {
+  sak: PT.shape({
+    rinasaksnummer: PT.string,
+  }).isRequired,
+};
+RinasaksNummer.defaultProps = {
+  sak: {
+    rinasaksnummer: '',
+  },
+};
+
 class OpprettSak extends Component {
   skjemaSubmit = values => {
     const { submitFailed, sendSkjema } = this.props;
@@ -50,7 +67,7 @@ class OpprettSak extends Component {
   render() {
     const {
       familierelasjonKodeverk, landkoder, sedtyper, sektor, buctyper,
-      inntastetFnr, status,
+      inntastetFnr, status, sak,
       settFnrGyldighet, settFnrSjekket,
     } = this.props;
 
@@ -100,6 +117,7 @@ class OpprettSak extends Component {
               <Nav.Column xs="6">
                 <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)}>Opprett sak i RINA</Nav.Hovedknapp>
                 <StatusLinje status={status} tittel="Opprettet sak" />
+                <RinasaksNummer sak={sak} />
               </Nav.Column>
             </Nav.Row>
           </Nav.Container>
@@ -123,6 +141,9 @@ OpprettSak.propTypes = {
   buctyper: PT.arrayOf(MPT.Kodeverk),
   inntastetFnr: PT.string,
   status: PT.string,
+  sak: PT.shape({
+    rinasaksnummer: PT.string,
+  }).isRequired,
 };
 
 OpprettSak.defaultProps = {
@@ -133,6 +154,9 @@ OpprettSak.defaultProps = {
   buctyper: undefined,
   inntastetFnr: '',
   status: '',
+  sak: {
+    rinasaksnummer: '',
+  },
 };
 
 const skjemaSelector = formValueSelector('opprettSak');
@@ -150,6 +174,7 @@ const mapStateToProps = state => ({
   buctyper: RinasakSelectors.buctyperSelector(state),
   inntastetFnr: skjemaSelector(state, 'fnr'),
   status: RinasakSelectors.sakStatusSelector(state),
+  sak: RinasakSelectors.sakSelector(state),
 });
 
 const mapDispatchToProps = dispatch => ({
