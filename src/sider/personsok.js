@@ -12,6 +12,8 @@ import { PanelHeader } from '../felles-komponenter/panelHeader';
 
 import './personsok.css';
 
+const uuid = require('uuid/v4');
+
 const ikonFraKjonn = kjoenn => {
   switch (kjoenn) {
     case 'K': { return Ikoner.Kvinne; }
@@ -19,12 +21,33 @@ const ikonFraKjonn = kjoenn => {
     default: { return Ikoner.Ukjentkjoenn; }
   }
 };
+const Relasjon = ({ relasjon }) => {
+  const {
+    fnr, sammensattNavn, kjoenn, rolle,
+  } = relasjon;
+  return (
+    <Nav.Panel className="personsok__kort">
+      <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${sammensattNavn} - ${rolle}`} undertittel={`Fødselsnummer: ${fnr}`} />
+    </Nav.Panel>
+  );
+};
+Relasjon.propTypes = {
+  relasjon: MPT.Relasjon.isRequired,
+};
 
-const PersonKort = ({ person }) => (
-  <Nav.Panel className="personsok__kort">
-    <PanelHeader ikon={ikonFraKjonn('M')} tittel={`${person.sammensattNavn}`} undertittel={`Fødselsnummer: ${person.fnr}`} />
-  </Nav.Panel>
-);
+const PersonKort = ({ person }) => {
+  const {
+    fnr, sammensattNavn, kjoenn, relasjoner,
+  } = person;
+  return (
+    <div>
+      <Nav.Panel className="personsok__kort">
+        <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${sammensattNavn}`} undertittel={`Fødselsnummer: ${fnr}`} />
+      </Nav.Panel>
+      {relasjoner && relasjoner.map(relasjon => <Relasjon key={uuid()} relasjon={relasjon} />)}
+    </div>
+  );
+};
 
 PersonKort.propTypes = {
   person: MPT.Person.isRequired,
@@ -48,10 +71,11 @@ class PersonSok extends Component {
   };
 
   inntastetFnrHarBlittEndret = () => {
+    const { settFnrGyldighet, settFnrSjekket } = this.props;
     this.setState({ person: {} });
-    this.props.settFnrGyldighet(false);
-    this.props.settFnrSjekket(false);
-  }
+    settFnrGyldighet(false);
+    settFnrSjekket(false);
+  };
 
   render() {
     const { sokEtterPerson, inntastetFnrHarBlittEndret } = this;
