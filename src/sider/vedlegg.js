@@ -82,7 +82,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  sendSkjema: data => dispatch(vedleggOperations.send(data)),
+  sendSkjema: data => dispatch(vedleggOperations.sendVedlegg(data)),
 });
 
 const journalpostValidation = journalpostID => {

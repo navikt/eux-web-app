@@ -12,8 +12,8 @@ import * as Types from './types';
  *
  */
 /* eslint import/prefer-default-export:"off" */
-export function send(data) {
-  return doThenDispatch(() => Api.Vedlegg.send(data), {
+export function sendVedlegg(data) {
+  return doThenDispatch(() => Api.Rina.sendVedlegg(data), {
     OK: Types.OK,
     FEILET: Types.FEILET,
     PENDING: Types.PENDING,
