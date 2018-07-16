@@ -49,7 +49,7 @@ class OpprettSak extends Component {
 
   render() {
     const {
-      familierelasjonKodeverk, landkoder, sedtyper, sector, buctyper,
+      familierelasjonKodeverk, landkoder, sedtyper, sektor, buctyper,
       inntastetFnr, status,
       settFnrGyldighet, settFnrSjekket,
     } = this.props;
@@ -67,8 +67,8 @@ class OpprettSak extends Component {
               <Nav.Column xs="6">
                 <div>
                   <Nav.Fieldset legend="Fagområde">
-                    <Skjema.Select feltNavn="sector" label="Velg Fagområde" bredde="xl">
-                      {sector && sector.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+                    <Skjema.Select feltNavn="sektor" label="Velg Fagområde" bredde="xl">
+                      {sektor && sektor.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                     </Skjema.Select>
                   </Nav.Fieldset>
                   <Nav.Fieldset legend="Type BUC">
@@ -119,7 +119,7 @@ OpprettSak.propTypes = {
   familierelasjonKodeverk: PT.arrayOf(MPT.Kodeverk),
   landkoder: PT.arrayOf(MPT.Kodeverk),
   sedtyper: PT.arrayOf(MPT.Kodeverk),
-  sector: PT.arrayOf(MPT.Kodeverk),
+  sektor: PT.arrayOf(MPT.Kodeverk),
   buctyper: PT.arrayOf(MPT.Kodeverk),
   inntastetFnr: PT.string,
   status: PT.string,
@@ -129,7 +129,7 @@ OpprettSak.defaultProps = {
   familierelasjonKodeverk: undefined,
   landkoder: undefined,
   sedtyper: undefined,
-  sector: undefined,
+  sektor: undefined,
   buctyper: undefined,
   inntastetFnr: '',
   status: '',
@@ -145,7 +145,7 @@ const mapStateToProps = state => ({
   },
   familierelasjonKodeverk: KodeverkSelectors.familierelasjonerSelector(state),
   landkoder: KodeverkSelectors.landkoderSelector(state),
-  sector: KodeverkSelectors.sectorSelector(state),
+  sektor: KodeverkSelectors.sektorSelector(state),
   sedtyper: RinasakSelectors.sedtypeSelector(state),
   buctyper: RinasakSelectors.buctyperSelector(state),
   inntastetFnr: skjemaSelector(state, 'fnr'),
@@ -164,7 +164,7 @@ const validering = values => {
   const fnr = !values.fnr ? 'Du må taste inn fødselsnummer.' : null;
   const fnrSokPaminnelse = !values.fnrErSjekket ? 'Husk å søke opp fødselsnummeret først.' : null;
   const fnrErUgyldig = !values.fnrErGyldig ? 'Fødselsnummeret er ikke gyldig.' : null;
-  const sector = !values.sector ? 'Du må velge sektor.' : null;
+  const sektor = !values.sektor ? 'Du må velge sektor.' : null;
   const buctype = !values.buctype ? 'Du må velge buctype.' : null;
   const sedtype = !values.sedtype ? 'Du må velge sedtype.' : null;
   const land = !values.land ? 'Du må velge land.' : null;
@@ -172,7 +172,7 @@ const validering = values => {
 
   return {
     fnr: fnr || fnrSokPaminnelse || fnrErUgyldig,
-    sector,
+    sektor,
     buctype,
     sedtype,
     land,
