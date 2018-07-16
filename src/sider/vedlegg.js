@@ -10,7 +10,7 @@ import * as Nav from '../utils/navFrontend';
 import * as MPT from '../proptypes';
 
 import { KodeverkSelectors } from '../ducks/kodeverk';
-import { vedleggOperations, vedleggSelectors } from '../ducks/vedlegg';
+import { RinavedleggOperations, RinavedleggSelectors } from '../ducks/rinavedlegg';
 
 import './vedlegg.css';
 
@@ -74,15 +74,15 @@ Vedlegg.defaultProps = {
 const skjemaSelector = formValueSelector('vedlegg');
 
 const mapStateToProps = state => ({
-  vedleggStatus: vedleggSelectors.VedleggStatusSelector(state),
-  vedlegg: vedleggSelectors.VedleggSelector(state),
+  vedleggStatus: RinavedleggSelectors.vedleggStatusSelector(state),
+  vedlegg: RinavedleggSelectors.vedleggSelector(state),
   sedtyper: KodeverkSelectors.alleSEDtyperSelector(state),
   inntastetRinasaksnummer: skjemaSelector(state, 'rinasaksnummer'),
   rinadokumentID: skjemaSelector(state, 'rinadokumentID'),
 });
 
 const mapDispatchToProps = dispatch => ({
-  sendSkjema: data => dispatch(vedleggOperations.sendVedlegg(data)),
+  sendSkjema: data => dispatch(RinavedleggOperations.sendVedlegg(data)),
 });
 
 const journalpostValidation = journalpostID => {
