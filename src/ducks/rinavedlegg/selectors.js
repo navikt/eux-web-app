@@ -9,10 +9,10 @@ import { createSelector } from 'reselect';
 
 // selector(s)
 export const vedleggSelector = createSelector(
-  state => (state.rinavedlegg.data ? state.rinavedlegg.data : {}),
+  state => (state.rina.vedlegg.data ? state.rina.vedlegg.data : {}),
   rinavedlegg => rinavedlegg || {}
 );
 export const vedleggStatusSelector = createSelector(
-  state => (state.rinavedlegg.status ? state.rinavedlegg.status : ''),
+  state => (state.rina.vedlegg.status ? state.rina.vedlegg.status : ''),
   rinavedleggStatus => rinavedleggStatus || ''
 );

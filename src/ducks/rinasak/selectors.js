@@ -10,11 +10,11 @@ import { alleSEDtyperSelector, kodemapsSelector } from '../kodeverk/selectors';
 
 // selector(s)
 export const sakSelector = createSelector(
-  state => (state.rinasak.data ? state.rinasak.data : {}),
+  state => (state.rina.sak.data ? state.rina.sak.data : {}),
   rinasak => rinasak || {}
 );
 export const sakStatusSelector = createSelector(
-  state => (state.rinasak.status ? state.rinasak.status : ''),
+  state => (state.rina.sak.status ? state.rina.sak.status : ''),
   rinasakStatus => rinasakStatus || ''
 );
 
