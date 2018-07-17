@@ -5,6 +5,6 @@
  * eller oppdateres.
  */
 
-export const OK = 'vedlegg/OK';
-export const FEILET = 'vedlegg/FEILET';
-export const PENDING = 'vedlegg/PENDING';
+export const OK = 'rinasak/OK';
+export const FEILET = 'rinasak/FEILET';
+export const PENDING = 'rinasak/PENDING';

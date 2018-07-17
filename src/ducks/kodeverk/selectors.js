@@ -22,9 +22,9 @@ export const kodemapsSelector = createSelector(
   kodemaps => kodemaps
 );
 
-export const sectorSelector = createSelector(
-  state => state.kodeverk.data.sector,
-  sector => sector
+export const sektorSelector = createSelector(
+  state => state.kodeverk.data.sektor,
+  sektor => sektor
 );
 
 export const alleSEDtyperSelector = createSelector(

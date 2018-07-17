@@ -12,8 +12,8 @@ import * as Types from './types';
  *
  */
 /* eslint import/prefer-default-export:"off" */
-export function send(data) {
-  return doThenDispatch(() => Api.Eusak.send(data), {
+export function sendSak(data) {
+  return doThenDispatch(() => Api.Rina.sendSak(data), {
     OK: Types.OK,
     FEILET: Types.FEILET,
     PENDING: Types.PENDING,

@@ -9,20 +9,20 @@ import { createSelector } from 'reselect';
 import { alleSEDtyperSelector, kodemapsSelector } from '../kodeverk/selectors';
 
 // selector(s)
-export const EusakSelector = createSelector(
-  state => (state.eusak.data ? state.eusak.data : {}),
-  eusak => eusak || {}
+export const sakSelector = createSelector(
+  state => (state.rinasak.data ? state.rinasak.data : {}),
+  rinasak => rinasak || {}
 );
-export const EusakStatusSelector = createSelector(
-  state => (state.eusak.status ? state.eusak.status : ''),
-  eusakStatus => eusakStatus || ''
+export const sakStatusSelector = createSelector(
+  state => (state.rinasak.status ? state.rinasak.status : ''),
+  rinasakStatus => rinasakStatus || ''
 );
 
-export const valgtSectorSelector = createSelector(
+export const valgtSektorSelector = createSelector(
   state => (state.form.opprettSak ? state.form.opprettSak : {}),
   opprettSakForm => {
     const { values = {} } = opprettSakForm;
-    return values.sector;
+    return values.sektor;
   }
 );
 export const valgtBucTypeSelector = createSelector(
@@ -36,25 +36,25 @@ export const valgtBucTypeSelector = createSelector(
 export const buctyperSelector = createSelector(
   state => kodemapsSelector(state),
   state => state.kodeverk.data.buctyper,
-  state => valgtSectorSelector(state),
-  (kodemaps, buctyper, valgtSector) => {
+  state => valgtSektorSelector(state),
+  (kodemaps, buctyper, valgtSektor) => {
     if (!kodemaps) { return []; }
-    if (!valgtSector) { return []; }
-    return buctyper[kodemaps.SECTOR2BUC[valgtSector]];
+    if (!valgtSektor) { return []; }
+    return buctyper[kodemaps.SEKTOR2BUC[valgtSektor]];
   }
 );
 
 
 export const sedtypeSelector = createSelector(
-  state => valgtSectorSelector(state),
+  state => valgtSektorSelector(state),
   state => kodemapsSelector(state),
   state => alleSEDtyperSelector(state),
   state => valgtBucTypeSelector(state),
-  (valgtSector, kodemaps, sedKodeverk, valgtBucType) => {
-    if (!(valgtSector && valgtSector === 'FB')) { return []; }
+  (valgtSektor, kodemaps, sedKodeverk, valgtBucType) => {
+    if (!(valgtSektor && valgtSektor === 'FB')) { return []; }
     if (!kodemaps) { return []; }
     if (!valgtBucType) { return []; }
-    const sedtyper = kodemaps.BUC2SEDS[valgtSector][valgtBucType];
+    const sedtyper = kodemaps.BUC2SEDS[valgtSektor][valgtBucType];
     if (!(sedtyper && sedtyper.length)) return [];
     return sedtyper.reduce((acc, curr) => {
       const kode = sedKodeverk.find(elem => elem.kode === curr);

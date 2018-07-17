@@ -8,11 +8,11 @@
 import { createSelector } from 'reselect';
 
 // selector(s)
-export const VedleggSelector = createSelector(
-  state => (state.vedlegg.data ? state.vedlegg.data : {}),
-  vedlegg => vedlegg || {}
+export const vedleggSelector = createSelector(
+  state => (state.rinavedlegg.data ? state.rinavedlegg.data : {}),
+  rinavedlegg => rinavedlegg || {}
 );
-export const VedleggStatusSelector = createSelector(
-  state => (state.vedlegg.status ? state.vedlegg.status : ''),
-  vedleggStatus => vedleggStatus || ''
+export const vedleggStatusSelector = createSelector(
+  state => (state.rinavedlegg.status ? state.rinavedlegg.status : ''),
+  rinavedleggStatus => rinavedleggStatus || ''
 );
