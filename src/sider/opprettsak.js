@@ -17,15 +17,22 @@ import './opprettsak.css';
 
 const uuid = require('uuid/v4');
 
-const FamilieRelasjoner = relasjoner => {
-  const harRelasjoner = relasjoner.length > 0;
-  return (
-    <Nav.Fieldset legend="Familiemedlemmer SEDen angår:">
-      {harRelasjoner && <p>Ingen valgt</p>}
-      <Nav.Normaltekst>Fyll ut opplysninger om evt familierelasjoner.</Nav.Normaltekst>
-      <FieldArray name="tilleggsopplysninger.familierelasjoner" component={CustomFamilieRelasjoner} />
-    </Nav.Fieldset>
-  );
+const FamilieRelasjoner = ({ relasjoner }) => (
+  <Nav.Fieldset legend="Familiemedlemmer SEDen angår:">
+    {relasjoner.length === 0 && <p>Ingen valgt</p>}
+    <Nav.Normaltekst>Fyll ut opplysninger om evt familierelasjoner.</Nav.Normaltekst>
+    <FieldArray name="tilleggsopplysninger.familierelasjoner" component={CustomFamilieRelasjoner} />
+  </Nav.Fieldset>
+);
+FamilieRelasjoner.propTypes = {
+  relasjoner: PT.arrayOf(PT.shape({
+    rolle: PT.string.isRequired,
+    fnr: PT.string.isRequired,
+    sammensattNavn: PT.string.isRequired,
+  })),
+};
+FamilieRelasjoner.defaultProps = {
+  relasjoner: [],
 };
 
 const RinasaksNummer = ({ sak }) => {
@@ -38,11 +45,6 @@ RinasaksNummer.propTypes = {
   sak: PT.shape({
     rinasaksnummer: PT.string,
   }).isRequired,
-};
-RinasaksNummer.defaultProps = {
-  sak: {
-    rinasaksnummer: '',
-  },
 };
 
 class OpprettSak extends Component {
