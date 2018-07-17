@@ -11,13 +11,30 @@ import { StatusLinje } from '../felles-komponenter/statuslinje';
 import CustomFamilieRelasjoner from '../felles-komponenter/skjema/customFamileRelasjoner';
 import { KodeverkSelectors } from '../ducks/kodeverk';
 import PersonSok from './personsok';
-import { eusakOperations, eusakSelectors } from '../ducks/eusak';
+import { RinasakOperations, RinasakSelectors } from '../ducks/rinasak';
 
 import './opprettsak.css';
 
 const uuid = require('uuid/v4');
 
 const TilleggsOpplysninger = props => (<FieldArray name="tilleggsoplysninger.familierelasjoner" component={CustomFamilieRelasjoner} props={props} />);
+
+const RinasaksNummer = ({ sak }) => {
+  if (sak && !sak.rinasaksnummer) { return null; }
+  return (
+    <p>Rinasaksnummer: {sak.rinasaksnummer}</p>
+  );
+};
+RinasaksNummer.propTypes = {
+  sak: PT.shape({
+    rinasaksnummer: PT.string,
+  }).isRequired,
+};
+RinasaksNummer.defaultProps = {
+  sak: {
+    rinasaksnummer: '',
+  },
+};
 
 class OpprettSak extends Component {
   skjemaSubmit = values => {
@@ -49,8 +66,8 @@ class OpprettSak extends Component {
 
   render() {
     const {
-      familierelasjonKodeverk, landkoder, sedtyper, sector, buctyper,
-      inntastetFnr, status,
+      familierelasjonKodeverk, landkoder, sedtyper, sektor, buctyper,
+      inntastetFnr, status, sak,
       settFnrGyldighet, settFnrSjekket,
     } = this.props;
 
@@ -67,8 +84,8 @@ class OpprettSak extends Component {
               <Nav.Column xs="6">
                 <div>
                   <Nav.Fieldset legend="Fagområde">
-                    <Skjema.Select feltNavn="sector" label="Velg Fagområde" bredde="xl">
-                      {sector && sector.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+                    <Skjema.Select feltNavn="sektor" label="Velg Fagområde" bredde="xl">
+                      {sektor && sektor.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                     </Skjema.Select>
                   </Nav.Fieldset>
                   <Nav.Fieldset legend="Type BUC">
@@ -87,7 +104,7 @@ class OpprettSak extends Component {
                     </Skjema.Select>
                   </Nav.Fieldset>
                   <Nav.Fieldset legend="Mottaker institusjon">
-                    <Skjema.Input feltNavn="institusjon" label="InstitusjonID" bredde="S" />
+                    <Skjema.Input feltNavn="mottakerID" label="InstitusjonID" bredde="S" />
                   </Nav.Fieldset>
                 </div>
                 <Nav.Fieldset legend="Tilleggsopplysninger">
@@ -100,6 +117,7 @@ class OpprettSak extends Component {
               <Nav.Column xs="6">
                 <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)}>Opprett sak i RINA</Nav.Hovedknapp>
                 <StatusLinje status={status} tittel="Opprettet sak" />
+                <RinasaksNummer sak={sak} />
               </Nav.Column>
             </Nav.Row>
           </Nav.Container>
@@ -119,20 +137,26 @@ OpprettSak.propTypes = {
   familierelasjonKodeverk: PT.arrayOf(MPT.Kodeverk),
   landkoder: PT.arrayOf(MPT.Kodeverk),
   sedtyper: PT.arrayOf(MPT.Kodeverk),
-  sector: PT.arrayOf(MPT.Kodeverk),
+  sektor: PT.arrayOf(MPT.Kodeverk),
   buctyper: PT.arrayOf(MPT.Kodeverk),
   inntastetFnr: PT.string,
   status: PT.string,
+  sak: PT.shape({
+    rinasaksnummer: PT.string,
+  }).isRequired,
 };
 
 OpprettSak.defaultProps = {
   familierelasjonKodeverk: undefined,
   landkoder: undefined,
   sedtyper: undefined,
-  sector: undefined,
+  sektor: undefined,
   buctyper: undefined,
   inntastetFnr: '',
   status: '',
+  sak: {
+    rinasaksnummer: '',
+  },
 };
 
 const skjemaSelector = formValueSelector('opprettSak');
@@ -145,11 +169,12 @@ const mapStateToProps = state => ({
   },
   familierelasjonKodeverk: KodeverkSelectors.familierelasjonerSelector(state),
   landkoder: KodeverkSelectors.landkoderSelector(state),
-  sector: KodeverkSelectors.sectorSelector(state),
-  sedtyper: eusakSelectors.sedtypeSelector(state),
-  buctyper: eusakSelectors.buctyperSelector(state),
+  sektor: KodeverkSelectors.sektorSelector(state),
+  sedtyper: RinasakSelectors.sedtypeSelector(state),
+  buctyper: RinasakSelectors.buctyperSelector(state),
   inntastetFnr: skjemaSelector(state, 'fnr'),
-  status: eusakSelectors.EusakStatusSelector(state),
+  status: RinasakSelectors.sakStatusSelector(state),
+  sak: RinasakSelectors.sakSelector(state),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -157,26 +182,26 @@ const mapDispatchToProps = dispatch => ({
   validerFnrRiktig: () => dispatch(clearAsyncError('opprettSak', 'fnr')),
   settFnrGyldighet: erGyldig => dispatch(change('opprettSak', 'fnrErGyldig', erGyldig)),
   settFnrSjekket: erSjekket => dispatch(change('opprettSak', 'fnrErSjekket', erSjekket)),
-  sendSkjema: data => dispatch(eusakOperations.send(data)),
+  sendSkjema: data => dispatch(RinasakOperations.sendSak(data)),
 });
 
 const validering = values => {
   const fnr = !values.fnr ? 'Du må taste inn fødselsnummer.' : null;
   const fnrSokPaminnelse = !values.fnrErSjekket ? 'Husk å søke opp fødselsnummeret først.' : null;
   const fnrErUgyldig = !values.fnrErGyldig ? 'Fødselsnummeret er ikke gyldig.' : null;
-  const sector = !values.sector ? 'Du må velge sektor.' : null;
+  const sektor = !values.sektor ? 'Du må velge sektor.' : null;
   const buctype = !values.buctype ? 'Du må velge buctype.' : null;
   const sedtype = !values.sedtype ? 'Du må velge sedtype.' : null;
   const land = !values.land ? 'Du må velge land.' : null;
-  const institusjon = !values.institusjon ? 'Du må velge institusjon.' : null;
+  const mottakerID = !values.mottakerID ? 'Du må velge institusjon.' : null;
 
   return {
     fnr: fnr || fnrSokPaminnelse || fnrErUgyldig,
-    sector,
+    sektor,
     buctype,
     sedtype,
     land,
-    institusjon,
+    mottakerID,
   };
 };
 
