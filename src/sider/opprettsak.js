@@ -104,7 +104,7 @@ class OpprettSak extends Component {
                     </Skjema.Select>
                   </Nav.Fieldset>
                   <Nav.Fieldset legend="Mottaker institusjon">
-                    <Skjema.Input feltNavn="institusjon" label="InstitusjonID" bredde="S" />
+                    <Skjema.Input feltNavn="mottakerID" label="InstitusjonID" bredde="S" />
                   </Nav.Fieldset>
                 </div>
                 <Nav.Fieldset legend="Tilleggsopplysninger">
@@ -193,7 +193,7 @@ const validering = values => {
   const buctype = !values.buctype ? 'Du må velge buctype.' : null;
   const sedtype = !values.sedtype ? 'Du må velge sedtype.' : null;
   const land = !values.land ? 'Du må velge land.' : null;
-  const institusjon = !values.institusjon ? 'Du må velge institusjon.' : null;
+  const mottakerID = !values.mottakerID ? 'Du må velge institusjon.' : null;
 
   return {
     fnr: fnr || fnrSokPaminnelse || fnrErUgyldig,
@@ -201,7 +201,7 @@ const validering = values => {
     buctype,
     sedtype,
     land,
-    institusjon,
+    mottakerID,
   };
 };
 
