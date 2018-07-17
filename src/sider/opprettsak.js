@@ -17,7 +17,16 @@ import './opprettsak.css';
 
 const uuid = require('uuid/v4');
 
-const TilleggsOpplysninger = props => (<FieldArray name="tilleggsoplysninger.familierelasjoner" component={CustomFamilieRelasjoner} props={props} />);
+const FamilieRelasjoner = relasjoner => {
+  const harRelasjoner = relasjoner.length > 0;
+  return (
+    <Nav.Fieldset legend="Familiemedlemmer SEDen angår:">
+      {harRelasjoner && <p>Ingen valgt</p>}
+      <Nav.Normaltekst>Fyll ut opplysninger om evt familierelasjoner.</Nav.Normaltekst>
+      <FieldArray name="tilleggsopplysninger.familierelasjoner" component={CustomFamilieRelasjoner} />
+    </Nav.Fieldset>
+  );
+};
 
 const RinasaksNummer = ({ sak }) => {
   if (sak && !sak.rinasaksnummer) { return null; }
@@ -66,9 +75,9 @@ class OpprettSak extends Component {
 
   render() {
     const {
-      familierelasjonKodeverk, landkoder, sedtyper, sektor, buctyper,
-      inntastetFnr, status, sak,
-      settFnrGyldighet, settFnrSjekket,
+      landkoder, sedtyper, sektor, buctyper,
+      inntastetFnr, status, sak, institusjoner,
+      settFnrGyldighet, settFnrSjekket, valgtSektor, valgteFamilieRelasjoner,
     } = this.props;
 
     return (
@@ -104,13 +113,12 @@ class OpprettSak extends Component {
                     </Skjema.Select>
                   </Nav.Fieldset>
                   <Nav.Fieldset legend="Mottaker institusjon">
-                    <Skjema.Input feltNavn="mottakerID" label="InstitusjonID" bredde="S" />
+                    <Skjema.Select feltNavn="mottakerID" label="Velg InstitusjonID" bredde="s">
+                      {institusjoner && institusjoner.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+                    </Skjema.Select>
                   </Nav.Fieldset>
                 </div>
-                <Nav.Fieldset legend="Tilleggsopplysninger">
-                  <Nav.Normaltekst>Fyll ut opplysninger om evt familierelasjoner.</Nav.Normaltekst>
-                  <TilleggsOpplysninger familierelasjonKodeverk={familierelasjonKodeverk} />
-                </Nav.Fieldset>
+                {valgtSektor.includes('FB') && <FamilieRelasjoner relasjoner={valgteFamilieRelasjoner} />}
               </Nav.Column>
             </Nav.Row>
             <Nav.Row className="opprettsak__statuslinje">
@@ -134,45 +142,51 @@ OpprettSak.propTypes = {
   settFnrGyldighet: PT.func.isRequired,
   settFnrSjekket: PT.func.isRequired,
   submitFailed: PT.bool.isRequired,
-  familierelasjonKodeverk: PT.arrayOf(MPT.Kodeverk),
   landkoder: PT.arrayOf(MPT.Kodeverk),
+  institusjoner: PT.arrayOf(MPT.Kodeverk),
   sedtyper: PT.arrayOf(MPT.Kodeverk),
   sektor: PT.arrayOf(MPT.Kodeverk),
   buctyper: PT.arrayOf(MPT.Kodeverk),
   inntastetFnr: PT.string,
+  valgtSektor: PT.string,
   status: PT.string,
   sak: PT.shape({
     rinasaksnummer: PT.string,
   }).isRequired,
+  valgteFamilieRelasjoner: PT.array,
 };
 
 OpprettSak.defaultProps = {
-  familierelasjonKodeverk: undefined,
   landkoder: undefined,
+  institusjoner: undefined,
   sedtyper: undefined,
   sektor: undefined,
   buctyper: undefined,
   inntastetFnr: '',
+  valgtSektor: '',
   status: '',
   sak: {
     rinasaksnummer: '',
   },
+  valgteFamilieRelasjoner: [],
 };
 
 const skjemaSelector = formValueSelector('opprettSak');
 
 const mapStateToProps = state => ({
   initialValues: {
-    tilleggsoplysninger: {
+    tilleggsopplysninger: {
       familierelasjoner: [],
     },
   },
-  familierelasjonKodeverk: KodeverkSelectors.familierelasjonerSelector(state),
   landkoder: KodeverkSelectors.landkoderSelector(state),
+  institusjoner: KodeverkSelectors.institusjonerSelector(state),
   sektor: KodeverkSelectors.sektorSelector(state),
   sedtyper: RinasakSelectors.sedtypeSelector(state),
   buctyper: RinasakSelectors.buctyperSelector(state),
   inntastetFnr: skjemaSelector(state, 'fnr'),
+  valgtSektor: skjemaSelector(state, 'sektor'),
+  valgteFamilieRelasjoner: skjemaSelector(state, 'tilleggsopplysninger.familierelasjoner'),
   status: RinasakSelectors.sakStatusSelector(state),
   sak: RinasakSelectors.sakSelector(state),
 });
