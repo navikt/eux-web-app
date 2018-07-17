@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PT from 'prop-types';
 
 import * as MPT from '../../../proptypes';
 import * as Nav from '../../../utils/navFrontend';
 
 import './familierelasjoner.css';
+import * as KodeverkSelectors from '../../../ducks/kodeverk/selectors';
 
 const uuid = require('uuid/v4');
 
@@ -93,4 +95,8 @@ CustomFamilieRelasjoner.defaultProps = {
   familierelasjonKodeverk: [],
 };
 
-export default CustomFamilieRelasjoner;
+const mapStateToProps = state => ({
+  familierelasjonKodeverk: KodeverkSelectors.familierelasjonerSelector(state),
+});
+
+export default connect(mapStateToProps)(CustomFamilieRelasjoner);
