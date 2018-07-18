@@ -59,7 +59,7 @@ const Relasjon = ({ relasjon, leggTilTPSrelasjon }) => {
   );
 };
 Relasjon.propTypes = {
-  relasjon: MPT.Relasjon.isRequired,
+  relasjon: MPT.FamilieRelasjon.isRequired,
   leggTilTPSrelasjon: PT.func.isRequired,
 };
 

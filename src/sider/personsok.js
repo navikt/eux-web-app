@@ -6,13 +6,10 @@ import * as MPT from '../proptypes/';
 import * as Nav from '../utils/navFrontend';
 import * as Skjema from '../felles-komponenter/skjema';
 import * as Ikoner from '../resources/images';
-// import { PersonSelectors, PersonOperations } from '../ducks/person';
 import { PersonOperations } from '../ducks/person';
 import { PanelHeader } from '../felles-komponenter/panelHeader';
 
 import './personsok.css';
-
-// const uuid = require('uuid/v4');
 
 const ikonFraKjonn = kjoenn => {
   switch (kjoenn) {
@@ -21,30 +18,14 @@ const ikonFraKjonn = kjoenn => {
     default: { return Ikoner.Ukjentkjoenn; }
   }
 };
-const Relasjon = ({ relasjon }) => {
-  const {
-    fnr, sammensattNavn, kjoenn, rolle,
-  } = relasjon;
-  return (
-    <Nav.Panel className="personsok__kort">
-      <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${sammensattNavn} - ${rolle}`} undertittel={`Fødselsnummer: ${fnr}`} />
-    </Nav.Panel>
-  );
-};
-Relasjon.propTypes = {
-  relasjon: MPT.Relasjon.isRequired,
-};
 
 const PersonKort = ({ person }) => {
-  const {
-    fnr, sammensattNavn, kjoenn, // relasjoner,
-  } = person;
+  const { fnr, sammensattNavn, kjoenn } = person;
   return (
     <div>
       <Nav.Panel className="personsok__kort">
         <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${sammensattNavn}`} undertittel={`Fødselsnummer: ${fnr}`} />
       </Nav.Panel>
-      {/* {relasjoner && relasjoner.map(relasjon => <Relasjon key={uuid()} relasjon={relasjon} />)} */}
     </div>
   );
 };
@@ -115,12 +96,7 @@ PersonSok.defaultProps = {
   person: {},
   inntastetFnr: '',
 };
-/*
-const mapStateToProps = state => ({
-  person: PersonSelectors.personSelector(state),
-  familerelasjoner: PersonSelectors.familieRelasjonerSelector(state),
-});
-*/
+
 const mapDispatchToProps = dispatch => ({
   personSok: fnr => dispatch(PersonOperations.hentPerson(fnr)),
 });
