@@ -9,6 +9,10 @@ import { createSelector } from 'reselect';
 
 // eslint-disable-next-line import/prefer-default-export
 export const personSelector = createSelector(
-  state => state.kodeverk.data.person,
+  state => state.person.data,
   person => person
+);
+export const familieRelasjonerSelector = createSelector(
+  state => state.person.data.relasjoner,
+  relasjoner => relasjoner
 );

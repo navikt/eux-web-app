@@ -6,13 +6,13 @@ import * as MPT from '../proptypes/';
 import * as Nav from '../utils/navFrontend';
 import * as Skjema from '../felles-komponenter/skjema';
 import * as Ikoner from '../resources/images';
-import * as API from '../services/api';
-import { PersonerSelectors } from '../ducks/personer';
+// import { PersonSelectors, PersonOperations } from '../ducks/person';
+import { PersonOperations } from '../ducks/person';
 import { PanelHeader } from '../felles-komponenter/panelHeader';
 
 import './personsok.css';
 
-const uuid = require('uuid/v4');
+// const uuid = require('uuid/v4');
 
 const ikonFraKjonn = kjoenn => {
   switch (kjoenn) {
@@ -37,14 +37,14 @@ Relasjon.propTypes = {
 
 const PersonKort = ({ person }) => {
   const {
-    fnr, sammensattNavn, kjoenn, relasjoner,
+    fnr, sammensattNavn, kjoenn, // relasjoner,
   } = person;
   return (
     <div>
       <Nav.Panel className="personsok__kort">
         <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${sammensattNavn}`} undertittel={`Fødselsnummer: ${fnr}`} />
       </Nav.Panel>
-      {relasjoner && relasjoner.map(relasjon => <Relasjon key={uuid()} relasjon={relasjon} />)}
+      {/* {relasjoner && relasjoner.map(relasjon => <Relasjon key={uuid()} relasjon={relasjon} />)} */}
     </div>
   );
 };
@@ -59,13 +59,16 @@ class PersonSok extends Component {
   erPersonFunnet = person => (person.sammensattNavn.length !== undefined && person.fnr !== undefined);
 
   sokEtterPerson = () => {
-    const { inntastetFnr, settFnrGyldighet, settFnrSjekket } = this.props;
+    const {
+      inntastetFnr, settFnrGyldighet, settFnrSjekket, personSok,
+    } = this.props;
     if (inntastetFnr.length === 0) return;
 
-    API.Personer.hent(inntastetFnr).then(response => {
-      this.setState({ person: response });
+    personSok(inntastetFnr).then(response => {
+      const person = { ...response.data };
+      this.setState({ person });
       // validerFnr(this.erPersonFunnet(response), response.fnr);
-      settFnrGyldighet(this.erPersonFunnet(response));
+      settFnrGyldighet(this.erPersonFunnet(person));
       settFnrSjekket(true);
     });
   };
@@ -80,7 +83,6 @@ class PersonSok extends Component {
   render() {
     const { sokEtterPerson, inntastetFnrHarBlittEndret } = this;
     const { person } = this.state;
-
     const personKort = person && person.sammensattNavn ? <PersonKort person={person} /> : null;
 
     return (
@@ -102,6 +104,7 @@ class PersonSok extends Component {
 }
 
 PersonSok.propTypes = {
+  personSok: PT.func.isRequired,
   person: MPT.Person,
   settFnrGyldighet: PT.func.isRequired,
   settFnrSjekket: PT.func.isRequired,
@@ -112,9 +115,14 @@ PersonSok.defaultProps = {
   person: {},
   inntastetFnr: '',
 };
-
+/*
 const mapStateToProps = state => ({
-  person: PersonerSelectors.personSelector(state),
+  person: PersonSelectors.personSelector(state),
+  familerelasjoner: PersonSelectors.familieRelasjonerSelector(state),
 });
-
-export default connect(mapStateToProps, null)(PersonSok);
+*/
+const mapDispatchToProps = dispatch => ({
+  personSok: fnr => dispatch(PersonOperations.hentPerson(fnr)),
+});
+// export default connect(mapStateToProps, mapDispatchToProps)(PersonSok);
+export default connect(null, mapDispatchToProps)(PersonSok);
