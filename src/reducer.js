@@ -1,17 +1,19 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 
-import kodeverkReducer from './ducks/kodeverk';
-import saksbehandlerReducer from './ducks/saksbehandler/';
-import rinasakReducer from './ducks/rinasak';
+import kodeverkReducers from './ducks/kodeverk';
+import saksbehandlerReducers from './ducks/saksbehandler';
+import rinasakReducers from './ducks/rinasak';
 import rinavedleggReducers from './ducks/rinavedlegg';
-import dokumenterReducer from './ducks/dokumenter';
+import dokumenterReducers from './ducks/dokumenter';
 
 export default combineReducers({
-  rinasak: rinasakReducer,
-  rinavedlegg: rinavedleggReducers,
+  rina: combineReducers({
+    sak: rinasakReducers,
+    vedlegg: rinavedleggReducers,
+  }),
   form: formReducer,
-  kodeverk: kodeverkReducer,
-  saksbehandler: saksbehandlerReducer,
-  dokumenter: dokumenterReducer,
+  kodeverk: kodeverkReducers,
+  saksbehandler: saksbehandlerReducers,
+  dokumenter: dokumenterReducers,
 });
