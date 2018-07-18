@@ -75,7 +75,7 @@ class CustomFamilieRelasjoner extends Component {
     } = this.state;
     if (!fnr || !rolle || !kjoenn || !sammensattNavn) { return false; }
     const familerelasjon = {
-      fnr, rolle, kjoenn, sammensattNavn,
+      rolle, fnr, sammensattNavn, kjoenn,
     };
     return fields.push(familerelasjon);
   };
