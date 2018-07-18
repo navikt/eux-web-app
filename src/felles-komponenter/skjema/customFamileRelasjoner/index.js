@@ -5,8 +5,11 @@ import PT from 'prop-types';
 import * as MPT from '../../../proptypes';
 import * as Nav from '../../../utils/navFrontend';
 
+import { PanelHeader } from '../../../felles-komponenter/panelHeader';
 import './familierelasjoner.css';
 import * as KodeverkSelectors from '../../../ducks/kodeverk/selectors';
+import { PersonSelectors } from '../../../ducks/person';
+import * as Ikoner from '../../../resources/images';
 
 const uuid = require('uuid/v4');
 
@@ -14,7 +17,7 @@ const FamilieRelasjon = ({ relasjon: familie, indeks, slettRelasjon }) => (
   <div className="familierelasjoner__linje">
     <dl className="familierelasjoner__detailjer">
       <dt className="familierelasjoner__tittel">Familierelasjon #{indeks + 1}:</dt>
-      <dd className="familierelasjoner__detalj">{familie.relasjon}</dd>
+      <dd className="familierelasjoner__detalj">{familie.rolle}</dd>
       <dd className="familierelasjoner__detalj">{familie.fnr}</dd>
       <dd className="familierelasjoner__detalj">{familie.kjoenn}</dd>
       <dd className="familierelasjoner__detalj">{familie.sammensattNavn}</dd>
@@ -33,22 +36,53 @@ FamilieRelasjon.propTypes = {
   relasjon: MPT.FamilieRelasjon.isRequired,
   slettRelasjon: PT.func.isRequired,
 };
+const ikonFraKjonn = kjoenn => {
+  switch (kjoenn) {
+    case 'K': { return Ikoner.Kvinne; }
+    case 'M': { return Ikoner.Mann; }
+    default: { return Ikoner.Ukjentkjoenn; }
+  }
+};
+
+const Relasjon = ({ relasjon, leggTilTPSrelasjon }) => {
+  const {
+    fnr, sammensattNavn, kjoenn, rolle,
+  } = relasjon;
+  return (
+    <Nav.Panel className="personsok__kort">
+      <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${sammensattNavn} - ${rolle}`} undertittel={`Fødselsnummer: ${fnr}`} />
+      <Nav.Knapp onClick={() => leggTilTPSrelasjon(relasjon)} className="familierelasjoner__knapp">
+        <Nav.Ikon kind="tilsette" size="20" className="familierelasjoner__knapp__ikon" />
+        <div>Legg til</div>
+      </Nav.Knapp>
+    </Nav.Panel>
+  );
+};
+Relasjon.propTypes = {
+  relasjon: MPT.Relasjon.isRequired,
+  leggTilTPSrelasjon: PT.func.isRequired,
+};
 
 class CustomFamilieRelasjoner extends Component {
   state = {
-    fnr: '', relasjon: '', kjoenn: '', sammensattNavn: '',
+    fnr: '', rolle: '', kjoenn: '', sammensattNavn: '',
   };
 
   leggTilRelasjon = () => {
     const { fields } = this.props;
     const {
-      fnr, relasjon, kjoenn, sammensattNavn,
+      fnr, rolle, kjoenn, sammensattNavn,
     } = this.state;
-    if (!fnr || !relasjon || !kjoenn || !sammensattNavn) { return false; }
+    if (!fnr || !rolle || !kjoenn || !sammensattNavn) { return false; }
     const familerelasjon = {
-      fnr, relasjon, kjoenn, sammensattNavn,
+      fnr, rolle, kjoenn, sammensattNavn,
     };
     return fields.push(familerelasjon);
+  };
+
+  leggTilTPSrelasjon = relasjon => {
+    const { fields } = this.props;
+    return fields.push(relasjon);
   };
 
   oppdaterState = (felt, event) => {
@@ -63,7 +97,9 @@ class CustomFamilieRelasjoner extends Component {
   };
 
   render() {
-    const { familierelasjonKodeverk, kjoennKodeverk, fields } = this.props;
+    const {
+      familierelasjonKodeverk, kjoennKodeverk, fields, tpsrelasjoner,
+    } = this.props;
     const relasjoner = fields.getAll();
 
     return (
@@ -95,8 +131,8 @@ class CustomFamilieRelasjoner extends Component {
             label="Familierelasjon"
             bredde="s"
             className="familierelasjoner__input"
-            value={this.state.relasjon}
-            onChange={event => this.oppdaterState('relasjon', event)}>
+            value={this.state.rolle}
+            onChange={event => this.oppdaterState('rolle', event)}>
             <option value="" disabled>- velg -</option>
             {familierelasjonKodeverk && familierelasjonKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
           </Nav.Select>
@@ -105,22 +141,26 @@ class CustomFamilieRelasjoner extends Component {
             <div>Legg til</div>
           </Nav.Knapp>
         </div>
+        {tpsrelasjoner && tpsrelasjoner.map(relasjon => <Relasjon key={uuid()} relasjon={relasjon} leggTilTPSrelasjon={this.leggTilTPSrelasjon} />)}
       </div>
     );
   }
 }
 
 CustomFamilieRelasjoner.propTypes = {
+  tpsrelasjoner: PT.arrayOf(MPT.FamilieRelasjon),
   familierelasjonKodeverk: PT.arrayOf(MPT.Kodeverk),
   kjoennKodeverk: PT.arrayOf(MPT.Kodeverk),
   fields: PT.object.isRequired,
 };
 CustomFamilieRelasjoner.defaultProps = {
+  tpsrelasjoner: [],
   familierelasjonKodeverk: [],
   kjoennKodeverk: [],
 };
 
 const mapStateToProps = state => ({
+  tpsrelasjoner: PersonSelectors.familieRelasjonerSelector(state),
   familierelasjonKodeverk: KodeverkSelectors.familierelasjonerSelector(state),
   kjoennKodeverk: KodeverkSelectors.kjoennSelector(state),
 });
