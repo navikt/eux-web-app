@@ -26,9 +26,9 @@ const FamilieRelasjoner = ({ relasjoner }) => (
 );
 FamilieRelasjoner.propTypes = {
   relasjoner: PT.arrayOf(PT.shape({
-    rolle: PT.string.isRequired,
-    fnr: PT.string.isRequired,
-    sammensattNavn: PT.string.isRequired,
+    rolle: PT.string,
+    fnr: PT.string,
+    sammensattNavn: PT.string,
   })),
 };
 FamilieRelasjoner.defaultProps = {
