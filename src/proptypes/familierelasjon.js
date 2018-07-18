@@ -4,6 +4,8 @@ import PT from 'prop-types';
 const FamilieRelasjonType = PT.shape({
   fnr: PT.string,
   relasjon: PT.string,
+  kjoenn: PT.string,
+  sammensattNavn: PT.string,
 });
 
 export { FamilieRelasjonType as FamilieRelasjon };

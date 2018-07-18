@@ -16,6 +16,8 @@ const FamilieRelasjon = ({ relasjon: familie, indeks, slettRelasjon }) => (
       <dt className="familierelasjoner__tittel">Familierelasjon #{indeks + 1}:</dt>
       <dd className="familierelasjoner__detalj">{familie.relasjon}</dd>
       <dd className="familierelasjoner__detalj">{familie.fnr}</dd>
+      <dd className="familierelasjoner__detalj">{familie.kjoenn}</dd>
+      <dd className="familierelasjoner__detalj">{familie.sammensattNavn}</dd>
     </dl>
     <Nav.Knapp
       className="familierelasjoner__knapp familierelasjoner__knapp--slett"
@@ -33,13 +35,19 @@ FamilieRelasjon.propTypes = {
 };
 
 class CustomFamilieRelasjoner extends Component {
-  state = { fnr: '', relasjon: '' };
+  state = {
+    fnr: '', relasjon: '', kjoenn: '', sammensattNavn: '',
+  };
 
   leggTilRelasjon = () => {
     const { fields } = this.props;
-    const { fnr, relasjon } = this.state;
-    if (!fnr || !relasjon) { return false; }
-    const familerelasjon = { fnr, relasjon };
+    const {
+      fnr, relasjon, kjoenn, sammensattNavn,
+    } = this.state;
+    if (!fnr || !relasjon || !kjoenn || !sammensattNavn) { return false; }
+    const familerelasjon = {
+      fnr, relasjon, kjoenn, sammensattNavn,
+    };
     return fields.push(familerelasjon);
   };
 
@@ -55,7 +63,7 @@ class CustomFamilieRelasjoner extends Component {
   };
 
   render() {
-    const { familierelasjonKodeverk, fields } = this.props;
+    const { familierelasjonKodeverk, kjoennKodeverk, fields } = this.props;
     const relasjoner = fields.getAll();
 
     return (
@@ -68,6 +76,21 @@ class CustomFamilieRelasjoner extends Component {
             bredde="XXL"
             value={this.state.fnr}
             onChange={event => this.oppdaterState('fnr', event)} />
+          <Nav.Input
+            label="Navn"
+            className="familierelasjoner__input"
+            bredde="XXL"
+            value={this.state.sammensattNavn}
+            onChange={event => this.oppdaterState('sammensattNavn', event)} />
+          <Nav.Select
+            label="Kjønn"
+            bredde="s"
+            className="familierelasjoner__input"
+            value={this.state.kjoenn}
+            onChange={event => this.oppdaterState('kjoenn', event)}>
+            <option value="" disabled>- velg -</option>
+            {kjoennKodeverk && kjoennKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+          </Nav.Select>
           <Nav.Select
             label="Familierelasjon"
             bredde="s"
@@ -89,14 +112,17 @@ class CustomFamilieRelasjoner extends Component {
 
 CustomFamilieRelasjoner.propTypes = {
   familierelasjonKodeverk: PT.arrayOf(MPT.Kodeverk),
+  kjoennKodeverk: PT.arrayOf(MPT.Kodeverk),
   fields: PT.object.isRequired,
 };
 CustomFamilieRelasjoner.defaultProps = {
   familierelasjonKodeverk: [],
+  kjoennKodeverk: [],
 };
 
 const mapStateToProps = state => ({
   familierelasjonKodeverk: KodeverkSelectors.familierelasjonerSelector(state),
+  kjoennKodeverk: KodeverkSelectors.kjoennSelector(state),
 });
 
 export default connect(mapStateToProps)(CustomFamilieRelasjoner);
