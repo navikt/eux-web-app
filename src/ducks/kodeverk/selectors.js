@@ -41,3 +41,8 @@ export const alleBUCtyperSelector = createSelector(
   state => state.kodeverk.data.buctyper,
   buctyper => buctyper
 );
+
+export const kjoennSelector = createSelector(
+  state => state.kodeverk.data.kjoenn,
+  kjoenn => kjoenn
+);

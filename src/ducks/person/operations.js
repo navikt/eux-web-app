@@ -7,13 +7,13 @@
  *
  */
 
-import { doThenDispatch } from '../../services/utils';
 import * as Api from '../../services/api';
 import * as Types from './types';
+import { doThenDispatch } from '../../services/utils';
 
 // eslint-disable-next-line import/prefer-default-export
-export function hent(fnr) {
-  return doThenDispatch(() => Api.Personer.hent(fnr), {
+export function hentPerson(fnr) {
+  return doThenDispatch(() => Api.Personer.hentPerson(fnr), {
     OK: Types.OK,
     FEILET: Types.FEILET,
     PENDING: Types.PENDING,
