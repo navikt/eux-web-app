@@ -6,6 +6,7 @@ import saksbehandlerReducers from './ducks/saksbehandler';
 import rinasakReducers from './ducks/rinasak';
 import rinavedleggReducers from './ducks/rinavedlegg';
 import dokumenterReducers from './ducks/dokumenter';
+import personReducers from './ducks/person';
 
 export default combineReducers({
   rina: combineReducers({
@@ -16,4 +17,5 @@ export default combineReducers({
   kodeverk: kodeverkReducers,
   saksbehandler: saksbehandlerReducers,
   dokumenter: dokumenterReducers,
+  person: personReducers,
 });
