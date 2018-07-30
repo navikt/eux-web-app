@@ -112,6 +112,7 @@ class CustomFamilieRelasjoner extends Component {
             bredde="XXL"
             value={this.state.fnr}
             onChange={event => this.oppdaterState('fnr', event)} />
+          {/* TODO, splitte sammensattNavn => fornavn, etternavn */}
           <Nav.Input
             label="Navn"
             className="familierelasjoner__input"
