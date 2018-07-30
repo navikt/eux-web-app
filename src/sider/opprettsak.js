@@ -95,7 +95,7 @@ class OpprettSak extends Component {
         <form onSubmit={this.overrideDefaultSubmit}>
           <Nav.Container fluid>
             <Nav.Row>
-              <Nav.Column xs="6">
+              <Nav.Column xs="12">
                 <PersonSok
                   inntastetFnr={inntastetFnr}
                   resettSokStatus={resettSokStatus}
@@ -105,7 +105,7 @@ class OpprettSak extends Component {
               </Nav.Column>
             </Nav.Row>
             <Nav.Row>
-              <Nav.Column xs="6">
+              <Nav.Column xs="12">
                 <div>
                   <Nav.Fieldset legend="Fagområde">
                     <Skjema.Select feltNavn="sektor" label="Velg Fagområde" bredde="xl" disabled={!oppgittFnrErValidert}>
@@ -137,7 +137,7 @@ class OpprettSak extends Component {
               </Nav.Column>
             </Nav.Row>
             <Nav.Row className="opprettsak__statuslinje">
-              <Nav.Column xs="6">
+              <Nav.Column xs="12">
                 <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)}>Opprett sak i RINA</Nav.Hovedknapp>
                 <StatusLinje status={status} tittel="Opprettet sak" />
                 <RinasaksNummer sak={sak} />
