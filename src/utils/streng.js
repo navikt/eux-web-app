@@ -25,7 +25,7 @@ export function tekstEllerDash(data) {
 }
 
 export function isEmpty(streng) {
-  return streng && streng.length === 0;
+  return !streng || streng.length === 0;
 }
 export function sammensattNavn(fornavn, etternavn) {
   return (isEmpty(fornavn) || isEmpty(etternavn)) ? undefined : `${fornavn} ${etternavn}`;
