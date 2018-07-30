@@ -52,8 +52,8 @@ class PersonSok extends Component {
   }
 
   erPersonFunnet = (person = {}) => {
-    const { sammensattNavn, fnr } = person;
-    return (sammensattNavn !== undefined && fnr !== undefined);
+    const { fornavn, etternavn, fnr } = person;
+    return (fornavn !== undefined && etternavn !== undefined && fnr !== undefined);
   };
 
   sokEtterPerson = () => {
