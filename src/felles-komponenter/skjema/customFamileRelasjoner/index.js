@@ -5,6 +5,8 @@ import PT from 'prop-types';
 import * as MPT from '../../../proptypes';
 import * as Nav from '../../../utils/navFrontend';
 
+import { vaskInputDato } from '../../../utils/dato';
+
 import { PanelHeader } from '../../../felles-komponenter/panelHeader';
 import './familierelasjoner.css';
 import * as KodeverkSelectors from '../../../ducks/kodeverk/selectors';
@@ -65,7 +67,7 @@ Relasjon.propTypes = {
 
 class CustomFamilieRelasjoner extends Component {
   state = {
-    fnr: '', rolle: '', kjoenn: '', fornavn: '', etternavn: '',
+    fnr: '', rolle: '', kjoenn: '', fornavn: '', etternavn: '', fdato: '',
   };
 
   leggTilRelasjon = () => {
@@ -90,6 +92,13 @@ class CustomFamilieRelasjoner extends Component {
     this.setState({ [felt]: value });
   };
 
+  vaskInputDatoOgOppdater = (felt, event) => {
+    const { value } = event.currentTarget;
+    const nyDato = vaskInputDato(value) || value;
+    const dummyEvent = { currentTarget: { value: nyDato } };
+    this.oppdaterState(felt, dummyEvent);
+  };
+
   slettRelasjon = fnr => {
     const { fields } = this.props;
     const index = fields.getAll().findIndex(relasjon => relasjon.fnr === fnr);
@@ -112,7 +121,12 @@ class CustomFamilieRelasjoner extends Component {
             bredde="XXL"
             value={this.state.fnr}
             onChange={event => this.oppdaterState('fnr', event)} />
-          {/* TODO, splitte fornavn => fornavn, etternavn */}
+          <Nav.Input
+            label="Fødselsdato"
+            className="familierelasjoner__input"
+            bredde="XXL"
+            value={this.state.fdato}
+            onChange={event => this.vaskInputDatoOgOppdater('fdato', event)} />
           <Nav.Input
             label="Fornavn"
             className="familierelasjoner__input"
