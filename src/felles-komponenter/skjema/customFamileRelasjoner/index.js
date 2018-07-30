@@ -15,12 +15,16 @@ import * as Ikoner from '../../../resources/images';
 
 const uuid = require('uuid/v4');
 
-const FamilieRelasjon = ({ relasjon: familie, indeks, slettRelasjon }) => (
+const FamilieRelasjon = ({
+  kodeverk,
+  relasjon: familie, indeks, slettRelasjon,
+}) => (
   <div className="familierelasjoner__linje">
     <dl className="familierelasjoner__detailjer">
       <dt className="familierelasjoner__tittel">Familierelasjon #{indeks + 1}:</dt>
-      <dd className="familierelasjoner__detalj">{familie.rolle}</dd>
+      <dd className="familierelasjoner__detalj">{kodeverk.find(rolle => rolle.kode === familie.rolle).term}</dd>
       <dd className="familierelasjoner__detalj">{familie.fnr}</dd>
+      <dd className="familierelasjoner__detalj">{familie.fdato}</dd>
       <dd className="familierelasjoner__detalj">{familie.kjoenn}</dd>
       <dd className="familierelasjoner__detalj">{familie.fornavn}&nbsp;{familie.etternavn}</dd>
     </dl>
@@ -35,6 +39,7 @@ const FamilieRelasjon = ({ relasjon: familie, indeks, slettRelasjon }) => (
 
 FamilieRelasjon.propTypes = {
   indeks: PT.number.isRequired,
+  kodeverk: PT.arrayOf(MPT.Kodeverk).isRequired,
   relasjon: MPT.FamilieRelasjon.isRequired,
   slettRelasjon: PT.func.isRequired,
 };
@@ -46,10 +51,11 @@ const ikonFraKjonn = kjoenn => {
   }
 };
 
-const Relasjon = ({ relasjon, leggTilTPSrelasjon }) => {
+const Relasjon = ({ kodeverk, relasjon, leggTilTPSrelasjon }) => {
   const {
-    fnr, fornavn, etternavn, kjoenn, rolle,
+    fnr, fornavn, etternavn, kjoenn, rolle: kode,
   } = relasjon;
+  const rolle = kodeverk.find(elem => elem.kode === kode).term;
   return (
     <Nav.Panel className="personsok__kort">
       <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn} - ${rolle}`} undertittel={`Fødselsnummer: ${fnr}`} />
@@ -61,23 +67,24 @@ const Relasjon = ({ relasjon, leggTilTPSrelasjon }) => {
   );
 };
 Relasjon.propTypes = {
+  kodeverk: PT.arrayOf(MPT.Kodeverk).isRequired,
   relasjon: MPT.FamilieRelasjon.isRequired,
   leggTilTPSrelasjon: PT.func.isRequired,
 };
 
 class CustomFamilieRelasjoner extends Component {
   state = {
-    fnr: '', rolle: '', kjoenn: '', fornavn: '', etternavn: '', fdato: '',
+    fnr: '', fdato: '', rolle: '', kjoenn: '', fornavn: '', etternavn: '',
   };
 
   leggTilRelasjon = () => {
     const { fields } = this.props;
     const {
-      fnr, rolle, kjoenn, fornavn, etternavn,
+      fnr, fdato = '', rolle, kjoenn, fornavn, etternavn,
     } = this.state;
     if (!fnr || !rolle || !kjoenn || !fornavn || !etternavn) { return false; }
     const familerelasjon = {
-      rolle, fnr, fornavn, etternavn, kjoenn,
+      rolle, fnr, fdato, fornavn, etternavn, kjoenn,
     };
     return fields.push(familerelasjon);
   };
@@ -113,7 +120,7 @@ class CustomFamilieRelasjoner extends Component {
 
     return (
       <div className="familerelasjoner">
-        {relasjoner && relasjoner.map((relasjon, indeks) => <FamilieRelasjon key={uuid()} relasjon={relasjon} indeks={indeks} slettRelasjon={this.slettRelasjon} />)}
+        {relasjoner && relasjoner.map((relasjon, indeks) => <FamilieRelasjon key={uuid()} kodeverk={familierelasjonKodeverk} relasjon={relasjon} indeks={indeks} slettRelasjon={this.slettRelasjon} />)}
         <div className="familierelasjoner__linje">
           <Nav.Input
             label="Fnr eller Dnr"
@@ -163,7 +170,7 @@ class CustomFamilieRelasjoner extends Component {
             <div>Legg til</div>
           </Nav.Knapp>
         </div>
-        {tpsrelasjoner && tpsrelasjoner.map(relasjon => <Relasjon key={uuid()} relasjon={relasjon} leggTilTPSrelasjon={this.leggTilTPSrelasjon} />)}
+        {tpsrelasjoner && tpsrelasjoner.map(relasjon => <Relasjon key={uuid()} kodeverk={familierelasjonKodeverk} relasjon={relasjon} leggTilTPSrelasjon={this.leggTilTPSrelasjon} />)}
       </div>
     );
   }
