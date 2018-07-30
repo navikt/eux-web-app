@@ -37,7 +37,16 @@ PersonKort.propTypes = {
 class PersonSok extends Component {
   state = {};
 
-  erPersonFunnet = person => (person.sammensattNavn.length !== undefined && person.fnr !== undefined);
+  componentDidUpdate(prevProps) {
+    if (prevProps.inntastetFnr !== this.props.inntastetFnr) {
+      this.inntastetFnrHarBlittEndret();
+    }
+  }
+
+  erPersonFunnet = (person = {}) => {
+    const { sammensattNavn, fnr } = person;
+    return (sammensattNavn !== undefined && fnr !== undefined);
+  };
 
   sokEtterPerson = () => {
     const {
@@ -55,14 +64,13 @@ class PersonSok extends Component {
   };
 
   inntastetFnrHarBlittEndret = () => {
-    const { settFnrGyldighet, settFnrSjekket } = this.props;
+    const { resettSokStatus } = this.props;
     this.setState({ person: {} });
-    settFnrGyldighet(false);
-    settFnrSjekket(false);
+    resettSokStatus();
   };
 
   render() {
-    const { sokEtterPerson, inntastetFnrHarBlittEndret } = this;
+    const { sokEtterPerson } = this;
     const { person } = this.state;
     const personKort = person && person.sammensattNavn ? <PersonKort person={person} /> : null;
 
@@ -72,9 +80,8 @@ class PersonSok extends Component {
           <Skjema.Input
             label="Søk på fødsels- eller d-nummer"
             className="personsok__input"
-            bredde="XL"
+            bredde="XXL"
             feltNavn="fnr"
-            onKeyUp={inntastetFnrHarBlittEndret}
           />
           <Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson}>SØK</Nav.Knapp>
         </div>
@@ -87,6 +94,7 @@ class PersonSok extends Component {
 PersonSok.propTypes = {
   personSok: PT.func.isRequired,
   person: MPT.Person,
+  resettSokStatus: PT.func.isRequired,
   settFnrGyldighet: PT.func.isRequired,
   settFnrSjekket: PT.func.isRequired,
   inntastetFnr: PT.string,
