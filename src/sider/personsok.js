@@ -40,11 +40,21 @@ PersonKort.propTypes = {
 class PersonSok extends Component {
   state = {};
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.inntastetFnr !== this.props.inntastetFnr) {
+      this.inntastetFnrHarBlittEndret();
+    }
+  }
+
   sammensattPersonNavn = person => {
     if (!person) { return undefined; }
     return Streng.sammensattNavn(person.fornavn, person.etternavn);
   }
-  erPersonFunnet = person => (this.sammensattPersonNavn(person) !== undefined && person.fnr !== undefined);
+
+  erPersonFunnet = (person = {}) => {
+    const { fornavn, etternavn, fnr } = person;
+    return (fornavn !== undefined && etternavn !== undefined && fnr !== undefined);
+  };
 
   sokEtterPerson = () => {
     const {
@@ -62,14 +72,13 @@ class PersonSok extends Component {
   };
 
   inntastetFnrHarBlittEndret = () => {
-    const { settFnrGyldighet, settFnrSjekket } = this.props;
+    const { resettSokStatus } = this.props;
     this.setState({ person: {} });
-    settFnrGyldighet(false);
-    settFnrSjekket(false);
+    resettSokStatus();
   };
 
   render() {
-    const { sokEtterPerson, inntastetFnrHarBlittEndret } = this;
+    const { sokEtterPerson } = this;
     const { person } = this.state;
     const personKort = person && person.fornavn && person.etternavn ? <PersonKort person={person} /> : null;
 
@@ -79,9 +88,8 @@ class PersonSok extends Component {
           <Skjema.Input
             label="Søk på fødsels- eller d-nummer"
             className="personsok__input"
-            bredde="XL"
+            bredde="XXL"
             feltNavn="fnr"
-            onKeyUp={inntastetFnrHarBlittEndret}
           />
           <Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson}>SØK</Nav.Knapp>
         </div>
@@ -94,6 +102,7 @@ class PersonSok extends Component {
 PersonSok.propTypes = {
   personSok: PT.func.isRequired,
   person: MPT.Person,
+  resettSokStatus: PT.func.isRequired,
   settFnrGyldighet: PT.func.isRequired,
   settFnrSjekket: PT.func.isRequired,
   inntastetFnr: PT.string,

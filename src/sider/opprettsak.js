@@ -71,12 +71,24 @@ class OpprettSak extends Component {
 
   erSedtyperGyldig = sedtyper => sedtyper && sedtyper.length > 0 && sedtyper[0];
 
+  resettSokStatus = () => {
+    const { settFnrGyldighet, settFnrSjekket } = this.props;
+    settFnrGyldighet(null);
+    settFnrSjekket(false);
+  }
+
   render() {
     const {
       landkoder, sedtyper, sektor, buctyper,
       inntastetFnr, status, sak, institusjoner,
-      settFnrGyldighet, settFnrSjekket, valgtSektor, valgteFamilieRelasjoner,
+      valgtSektor, valgteFamilieRelasjoner,
+      settFnrSjekket, settFnrGyldighet,
+      fnrErGyldig, fnrErSjekket,
     } = this.props;
+
+    const { resettSokStatus } = this;
+
+    const oppgittFnrErValidert = (fnrErGyldig && fnrErSjekket);
 
     return (
       <div className="opprettsak">
@@ -84,34 +96,39 @@ class OpprettSak extends Component {
           <Nav.Container fluid>
             <Nav.Row>
               <Nav.Column xs="6">
-                <PersonSok inntastetFnr={inntastetFnr} settFnrGyldighet={settFnrGyldighet} settFnrSjekket={settFnrSjekket} />
+                <PersonSok
+                  inntastetFnr={inntastetFnr}
+                  resettSokStatus={resettSokStatus}
+                  settFnrSjekket={settFnrSjekket}
+                  settFnrGyldighet={settFnrGyldighet}
+                />
               </Nav.Column>
             </Nav.Row>
             <Nav.Row>
               <Nav.Column xs="6">
                 <div>
                   <Nav.Fieldset legend="Fagområde">
-                    <Skjema.Select feltNavn="sektor" label="Velg Fagområde" bredde="xl">
+                    <Skjema.Select feltNavn="sektor" label="Velg Fagområde" bredde="xl" disabled={!oppgittFnrErValidert}>
                       {sektor && sektor.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                     </Skjema.Select>
                   </Nav.Fieldset>
                   <Nav.Fieldset legend="Type BUC">
-                    <Skjema.Select feltNavn="buctype" label="Velg BUC Type" bredde="xxl">
+                    <Skjema.Select feltNavn="buctype" label="Velg BUC Type" bredde="xxl" disabled={!oppgittFnrErValidert}>
                       {buctyper && buctyper.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
                     </Skjema.Select>
                   </Nav.Fieldset>
                   <Nav.Fieldset legend="Type SED">
-                    <Skjema.Select feltNavn="sedtype" label="Velg SED Type" bredde="xl">
+                    <Skjema.Select feltNavn="sedtype" label="Velg SED Type" bredde="xl" disabled={!oppgittFnrErValidert}>
                       {this.erSedtyperGyldig(sedtyper) && sedtyper.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
                     </Skjema.Select>
                   </Nav.Fieldset>
                   <Nav.Fieldset legend="Land">
-                    <Skjema.Select feltNavn="land" label="Velg Land" bredde="s">
+                    <Skjema.Select feltNavn="land" label="Velg Land" bredde="s" disabled={!oppgittFnrErValidert}>
                       {landkoder && landkoder.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                     </Skjema.Select>
                   </Nav.Fieldset>
                   <Nav.Fieldset legend="Mottaker institusjon">
-                    <Skjema.Select feltNavn="mottakerID" label="Velg InstitusjonID" bredde="s">
+                    <Skjema.Select feltNavn="mottakerID" label="Velg InstitusjonID" bredde="s" disabled={!oppgittFnrErValidert}>
                       {institusjoner && institusjoner.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                     </Skjema.Select>
                   </Nav.Fieldset>
@@ -145,6 +162,8 @@ OpprettSak.propTypes = {
   sedtyper: PT.arrayOf(MPT.Kodeverk),
   sektor: PT.arrayOf(MPT.Kodeverk),
   buctyper: PT.arrayOf(MPT.Kodeverk),
+  fnrErGyldig: PT.bool,
+  fnrErSjekket: PT.bool,
   inntastetFnr: PT.string,
   valgtSektor: PT.string,
   status: PT.string,
@@ -160,6 +179,8 @@ OpprettSak.defaultProps = {
   sedtyper: undefined,
   sektor: undefined,
   buctyper: undefined,
+  fnrErGyldig: undefined,
+  fnrErSjekket: undefined,
   inntastetFnr: '',
   valgtSektor: '',
   status: '',
@@ -180,6 +201,8 @@ const mapStateToProps = state => ({
   landkoder: KodeverkSelectors.landkoderSelector(state),
   institusjoner: KodeverkSelectors.institusjonerSelector(state),
   sektor: KodeverkSelectors.sektorSelector(state),
+  fnrErGyldig: skjemaSelector(state, 'fnrErGyldig'),
+  fnrErSjekket: skjemaSelector(state, 'fnrErSjekket'),
   sedtyper: RinasakSelectors.sedtypeSelector(state),
   buctyper: RinasakSelectors.buctyperSelector(state),
   inntastetFnr: skjemaSelector(state, 'fnr'),
@@ -199,8 +222,7 @@ const mapDispatchToProps = dispatch => ({
 
 const validering = values => {
   const fnr = !values.fnr ? 'Du må taste inn fødselsnummer.' : null;
-  const fnrSokPaminnelse = !values.fnrErSjekket ? 'Husk å søke opp fødselsnummeret først.' : null;
-  const fnrErUgyldig = !values.fnrErGyldig ? 'Fødselsnummeret er ikke gyldig.' : null;
+  const fnrErUgyldig = (values.fnrErGyldig === false && values.fnrErSjekket) ? 'Fødselsnummeret er ikke gyldig.' : null;
   const sektor = !values.sektor ? 'Du må velge sektor.' : null;
   const buctype = !values.buctype ? 'Du må velge buctype.' : null;
   const sedtype = !values.sedtype ? 'Du må velge sedtype.' : null;
@@ -208,7 +230,7 @@ const validering = values => {
   const mottakerID = !values.mottakerID ? 'Du må velge institusjon.' : null;
 
   return {
-    fnr: fnr || fnrSokPaminnelse || fnrErUgyldig,
+    fnr: fnr || fnrErUgyldig,
     sektor,
     buctype,
     sedtype,
