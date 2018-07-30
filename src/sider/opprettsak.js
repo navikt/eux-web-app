@@ -25,11 +25,7 @@ const FamilieRelasjoner = ({ relasjoner }) => (
   </Nav.Fieldset>
 );
 FamilieRelasjoner.propTypes = {
-  relasjoner: PT.arrayOf(PT.shape({
-    rolle: PT.string,
-    fnr: PT.string,
-    sammensattNavn: PT.string,
-  })),
+  relasjoner: PT.arrayOf(MPT.FamilieRelasjon),
 };
 FamilieRelasjoner.defaultProps = {
   relasjoner: [],
