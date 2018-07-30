@@ -20,7 +20,7 @@ const FamilieRelasjon = ({ relasjon: familie, indeks, slettRelasjon }) => (
       <dd className="familierelasjoner__detalj">{familie.rolle}</dd>
       <dd className="familierelasjoner__detalj">{familie.fnr}</dd>
       <dd className="familierelasjoner__detalj">{familie.kjoenn}</dd>
-      <dd className="familierelasjoner__detalj">{familie.sammensattNavn}</dd>
+      <dd className="familierelasjoner__detalj">{familie.fornavn}&nbsp;{familie.etternavn}</dd>
     </dl>
     <Nav.Knapp
       className="familierelasjoner__knapp familierelasjoner__knapp--slett"
@@ -46,11 +46,11 @@ const ikonFraKjonn = kjoenn => {
 
 const Relasjon = ({ relasjon, leggTilTPSrelasjon }) => {
   const {
-    fnr, sammensattNavn, kjoenn, rolle,
+    fnr, fornavn, etternavn, kjoenn, rolle,
   } = relasjon;
   return (
     <Nav.Panel className="personsok__kort">
-      <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${sammensattNavn} - ${rolle}`} undertittel={`Fødselsnummer: ${fnr}`} />
+      <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn} - ${rolle}`} undertittel={`Fødselsnummer: ${fnr}`} />
       <Nav.Knapp onClick={() => leggTilTPSrelasjon(relasjon)} className="familierelasjoner__knapp">
         <Nav.Ikon kind="tilsette" size="20" className="familierelasjoner__knapp__ikon" />
         <div>Legg til</div>
@@ -65,17 +65,17 @@ Relasjon.propTypes = {
 
 class CustomFamilieRelasjoner extends Component {
   state = {
-    fnr: '', rolle: '', kjoenn: '', sammensattNavn: '',
+    fnr: '', rolle: '', kjoenn: '', fornavn: '', etternavn: '',
   };
 
   leggTilRelasjon = () => {
     const { fields } = this.props;
     const {
-      fnr, rolle, kjoenn, sammensattNavn,
+      fnr, rolle, kjoenn, fornavn, etternavn,
     } = this.state;
-    if (!fnr || !rolle || !kjoenn || !sammensattNavn) { return false; }
+    if (!fnr || !rolle || !kjoenn || !fornavn || !etternavn) { return false; }
     const familerelasjon = {
-      rolle, fnr, sammensattNavn, kjoenn,
+      rolle, fnr, fornavn, etternavn, kjoenn,
     };
     return fields.push(familerelasjon);
   };
@@ -112,13 +112,20 @@ class CustomFamilieRelasjoner extends Component {
             bredde="XXL"
             value={this.state.fnr}
             onChange={event => this.oppdaterState('fnr', event)} />
-          {/* TODO, splitte sammensattNavn => fornavn, etternavn */}
+          {/* TODO, splitte fornavn => fornavn, etternavn */}
           <Nav.Input
-            label="Navn"
+            label="Fornavn"
             className="familierelasjoner__input"
             bredde="XXL"
-            value={this.state.sammensattNavn}
-            onChange={event => this.oppdaterState('sammensattNavn', event)} />
+            value={this.state.fornavn}
+            onChange={event => this.oppdaterState('fornavn', event)} />
+          <Nav.Input
+            label="Etternavn"
+            className="familierelasjoner__input"
+            bredde="XXL"
+            value={this.state.etternavn}
+            onChange={event => this.oppdaterState('etternavn', event)} />
+
           <Nav.Select
             label="Kjønn"
             bredde="s"

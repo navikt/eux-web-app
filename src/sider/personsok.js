@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PT from 'prop-types';
 
 import * as MPT from '../proptypes/';
+import * as Streng from '../utils/streng';
 import * as Nav from '../utils/navFrontend';
 import * as Skjema from '../felles-komponenter/skjema';
 import * as Ikoner from '../resources/images';
@@ -20,11 +21,13 @@ const ikonFraKjonn = kjoenn => {
 };
 
 const PersonKort = ({ person }) => {
-  const { fnr, sammensattNavn, kjoenn } = person;
+  const {
+    fnr, fornavn, etternavn, kjoenn,
+  } = person;
   return (
     <div>
       <Nav.Panel className="personsok__kort">
-        <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${sammensattNavn}`} undertittel={`Fødselsnummer: ${fnr}`} />
+        <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn}`} undertittel={`Fødselsnummer: ${fnr}`} />
       </Nav.Panel>
     </div>
   );
@@ -37,7 +40,11 @@ PersonKort.propTypes = {
 class PersonSok extends Component {
   state = {};
 
-  erPersonFunnet = person => (person.sammensattNavn.length !== undefined && person.fnr !== undefined);
+  sammensattPersonNavn = person => {
+    if (!person) { return undefined; }
+    return Streng.sammensattNavn(person.fornavn, person.etternavn);
+  }
+  erPersonFunnet = person => (this.sammensattPersonNavn(person) !== undefined && person.fnr !== undefined);
 
   sokEtterPerson = () => {
     const {
@@ -64,7 +71,7 @@ class PersonSok extends Component {
   render() {
     const { sokEtterPerson, inntastetFnrHarBlittEndret } = this;
     const { person } = this.state;
-    const personKort = person && person.sammensattNavn ? <PersonKort person={person} /> : null;
+    const personKort = person && person.fornavn && person.etternavn ? <PersonKort person={person} /> : null;
 
     return (
       <div className="personsok">

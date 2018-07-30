@@ -1,5 +1,13 @@
 /* eslint-disable */
-import { boolTilNorsk, norskTilBool, boolTilStreng, strengTilBool, strengTilInt, tekstEllerDash } from './streng';
+import {
+  boolTilNorsk,
+  norskTilBool,
+  boolTilStreng,
+  strengTilBool,
+  strengTilInt,
+  tekstEllerDash,
+  isEmpty
+} from './streng';
 
 describe('streng.js', () => {
   describe('boolTilNorsk', () => {
@@ -55,6 +63,17 @@ describe('streng.js', () => {
     test('Returnerer gyldig verdi uendret', () => {
       const data = {}
       expect(tekstEllerDash(data)).toEqual(data);
+    });
+  });
+  describe('isEmpty', () => {
+    test('data = undefined', () => {
+      expect((isEmpty(undefined)).toEqual(true));
+    });
+    test('data = ""', () => {
+      expect((isEmpty('')).toEqual(true));
+    });
+    test('data = "astring"', () => {
+      expect((isEmpty('astring')).toEqual(false));
     });
   });
 });
