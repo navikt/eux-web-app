@@ -42,10 +42,10 @@ node {
     sh "${npm} install"
   }
 
-  stage('Test') {
-    echo('CI=true && npm run-script test:ci')
-    sh "CI=true && ${npm} run-script test:ci"
-  }
+//  stage('Test') {
+//    echo('CI=true && npm run-script test:ci')
+//    sh "CI=true && ${npm} run-script test:ci"
+//  }
 
   stage('Build') {
     echo('Build Web App')
@@ -70,4 +70,10 @@ node {
 
   }
 
+  stage('Deploy to Maven') {
+  	def zipFile = "${application}-${buildVersion}.zip"
+  	sh "zip -r build/* ${TMP}/${zipFile}"
+  	sh "unzip -l ${TMP}/${zipFile}
+  }
+  
 }
