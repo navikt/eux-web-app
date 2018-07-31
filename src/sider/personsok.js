@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PT from 'prop-types';
 
 import * as MPT from '../proptypes/';
-import * as Streng from '../utils/streng';
 import * as Nav from '../utils/navFrontend';
 import * as Skjema from '../felles-komponenter/skjema';
 import * as Ikoner from '../resources/images';
@@ -40,21 +39,7 @@ PersonKort.propTypes = {
 class PersonSok extends Component {
   state = {};
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.inntastetFnr !== this.props.inntastetFnr) {
-      this.inntastetFnrHarBlittEndret();
-    }
-  }
-
-  sammensattPersonNavn = person => {
-    if (!person) { return undefined; }
-    return Streng.sammensattNavn(person.fornavn, person.etternavn);
-  }
-
-  erPersonFunnet = (person = {}) => {
-    const { fornavn, etternavn, fnr } = person;
-    return (fornavn !== undefined && etternavn !== undefined && fnr !== undefined);
-  };
+  erPersonFunnet = person => (person.fornavn.length !== undefined && person.fnr !== undefined);
 
   sokEtterPerson = () => {
     const {
@@ -72,24 +57,25 @@ class PersonSok extends Component {
   };
 
   inntastetFnrHarBlittEndret = () => {
-    const { resettSokStatus } = this.props;
+    const { settFnrGyldighet, settFnrSjekket } = this.props;
     this.setState({ person: {} });
-    resettSokStatus();
+    settFnrGyldighet(false);
+    settFnrSjekket(false);
   };
 
   render() {
-    const { sokEtterPerson } = this;
+    const { sokEtterPerson, inntastetFnrHarBlittEndret } = this;
     const { person } = this.state;
     const personKort = person && person.fornavn && person.etternavn ? <PersonKort person={person} /> : null;
-
     return (
       <div className="personsok">
         <div className="personsok__skjema">
           <Skjema.Input
             label="Søk på fødsels- eller d-nummer"
             className="personsok__input"
-            bredde="XXL"
+            bredde="XL"
             feltNavn="fnr"
+            onKeyUp={inntastetFnrHarBlittEndret}
           />
           <Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson}>SØK</Nav.Knapp>
         </div>
@@ -102,7 +88,6 @@ class PersonSok extends Component {
 PersonSok.propTypes = {
   personSok: PT.func.isRequired,
   person: MPT.Person,
-  resettSokStatus: PT.func.isRequired,
   settFnrGyldighet: PT.func.isRequired,
   settFnrSjekket: PT.func.isRequired,
   inntastetFnr: PT.string,
@@ -116,5 +101,5 @@ PersonSok.defaultProps = {
 const mapDispatchToProps = dispatch => ({
   personSok: fnr => dispatch(PersonOperations.hentPerson(fnr)),
 });
-// export default connect(mapStateToProps, mapDispatchToProps)(PersonSok);
+
 export default connect(null, mapDispatchToProps)(PersonSok);
