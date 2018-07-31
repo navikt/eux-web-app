@@ -15,40 +15,42 @@ import * as Ikoner from '../../../resources/images';
 
 const uuid = require('uuid/v4');
 
-const FamilieRelasjon = ({
-  kodeverk,
-  relasjon: familie, indeks, slettRelasjon,
-}) => (
-  <div className="familierelasjoner__linje">
-    <dl className="familierelasjoner__detailjer">
-      <dt className="familierelasjoner__tittel">Familierelasjon #{indeks + 1}:</dt>
-      <dd className="familierelasjoner__detalj">{kodeverk.find(rolle => rolle.kode === familie.rolle).term}</dd>
-      <dd className="familierelasjoner__detalj">{familie.fnr}</dd>
-      <dd className="familierelasjoner__detalj">{familie.fdato}</dd>
-      <dd className="familierelasjoner__detalj">{familie.kjoenn}</dd>
-      <dd className="familierelasjoner__detalj">{familie.fornavn}&nbsp;{familie.etternavn}</dd>
-    </dl>
-    <Nav.Knapp
-      className="familierelasjoner__knapp familierelasjoner__knapp--slett"
-      onClick={() => slettRelasjon(familie.fnr)}>
-      <Nav.Ikon kind="trashcan" size="20" className="familierelasjoner__knapp__ikon" />
-      <div>Fjern</div>
-    </Nav.Knapp>
-  </div>
-);
-
-FamilieRelasjon.propTypes = {
-  indeks: PT.number.isRequired,
-  kodeverk: PT.arrayOf(MPT.Kodeverk).isRequired,
-  relasjon: MPT.FamilieRelasjon.isRequired,
-  slettRelasjon: PT.func.isRequired,
-};
 const ikonFraKjonn = kjoenn => {
   switch (kjoenn) {
     case 'K': { return Ikoner.Kvinne; }
     case 'M': { return Ikoner.Mann; }
     default: { return Ikoner.Ukjentkjoenn; }
   }
+};
+
+const FamilieRelasjon = ({
+  kodeverk,
+  relasjon: familie, slettRelasjon,
+}) => {
+  const {
+    fornavn, etternavn, fnr, fdato, kjoenn,
+  } = familie;
+  const undertittel = `Fødselsnummer: ${fnr}`;
+  const rolle = kodeverk.find(item => item.kode === familie.rolle).term;
+  return (
+    <Nav.Panel className="personsok__kort">
+      <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn} - ${rolle}`} undertittel={undertittel} />
+      { fdato && <span className="panelheader__tittel__under">Fødselsdato: {fdato}</span> }
+      <Nav.Knapp
+        className="familierelasjoner__knapp familierelasjoner__knapp--slett"
+        onClick={() => slettRelasjon(familie.fnr)}>
+        <Nav.Ikon kind="trashcan" size="20" className="familierelasjoner__knapp__ikon" />
+        <div>Fjern</div>
+      </Nav.Knapp>
+    </Nav.Panel>
+  );
+};
+
+FamilieRelasjon.propTypes = {
+  indeks: PT.number.isRequired,
+  kodeverk: PT.arrayOf(MPT.Kodeverk).isRequired,
+  relasjon: MPT.FamilieRelasjon.isRequired,
+  slettRelasjon: PT.func.isRequired,
 };
 
 const Relasjon = ({ kodeverk, relasjon, leggTilTPSrelasjon }) => {
