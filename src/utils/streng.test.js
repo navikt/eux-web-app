@@ -1,5 +1,13 @@
 /* eslint-disable */
-import { boolTilNorsk, norskTilBool, boolTilStreng, strengTilBool, strengTilInt, tekstEllerDash } from './streng';
+import {
+  boolTilNorsk,
+  norskTilBool,
+  boolTilStreng,
+  strengTilBool,
+  strengTilInt,
+  tekstEllerDash,
+  isEmpty, sammensattNavn
+} from './streng';
 
 describe('streng.js', () => {
   describe('boolTilNorsk', () => {
@@ -57,4 +65,29 @@ describe('streng.js', () => {
       expect(tekstEllerDash(data)).toEqual(data);
     });
   });
+  describe('isEmpty', () => {
+    test('streng = undefined return true', () => {
+      expect(isEmpty(undefined)).toEqual(true);
+    });
+    test('string = "" return true', () => {
+      expect(isEmpty('')).toEqual(true);
+    });
+    test('data = "astring" return false', () => {
+      expect(isEmpty('astring')).toEqual(false);
+    });
+  });
+  describe('sammensattNavn', () => {
+    test('Gyldig fnavn OG enavn to concatenate correctly', () => {
+      expect(sammensattNavn('fornavn', 'etternavn')).toEqual('fornavn etternavn');
+    });
+    test('Ugyldig fnavn OG enavn, to be undefined', () => {
+      expect(sammensattNavn(undefined, undefined)).toEqual(undefined);
+    });
+    test('Gyldig fnavn OG Ugyldig enavn, to be undefined', () => {
+      expect(sammensattNavn('fornavn', undefined)).toEqual(undefined);
+    });
+    test('Ugyldig fnavn OG Gyldig enavn, to be undefined', () => {
+      expect(sammensattNavn(undefined, 'etternavn')).toEqual(undefined);
+    });
+  })
 });
