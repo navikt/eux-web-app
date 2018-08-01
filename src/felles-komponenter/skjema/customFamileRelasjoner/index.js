@@ -55,12 +55,13 @@ FamilieRelasjon.propTypes = {
 
 const Relasjon = ({ kodeverk, relasjon, leggTilTPSrelasjon }) => {
   const {
-    fnr, fornavn, etternavn, kjoenn, rolle: kode,
+    fnr, fdato, fornavn, etternavn, kjoenn, rolle: kode,
   } = relasjon;
   const rolle = kodeverk.find(elem => elem.kode === kode).term;
   return (
     <Nav.Panel className="personsok__kort">
       <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn} - ${rolle}`} undertittel={`Fødselsnummer: ${fnr}`} />
+      { fdato && <span className="panelheader__tittel__under">Fødselsdato: {fdato}</span> }
       <Nav.Knapp onClick={() => leggTilTPSrelasjon(relasjon)} className="familierelasjoner__knapp">
         <Nav.Ikon kind="tilsette" size="20" className="familierelasjoner__knapp__ikon" />
         <div>Legg til</div>

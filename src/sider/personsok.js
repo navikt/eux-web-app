@@ -21,12 +21,13 @@ const ikonFraKjonn = kjoenn => {
 
 const PersonKort = ({ person }) => {
   const {
-    fnr, fornavn, etternavn, kjoenn,
+    fnr, fdato, fornavn, etternavn, kjoenn,
   } = person;
   return (
     <div>
       <Nav.Panel className="personsok__kort">
         <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn}`} undertittel={`Fødselsnummer: ${fnr}`} />
+        { fdato && <p className="panelheader__tittel__under">Fødselsdato: {fdato}</p> }
       </Nav.Panel>
     </div>
   );
