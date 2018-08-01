@@ -1,6 +1,10 @@
 #! groovy
 import jenkins.model.*
 
+properties([[$class: 'BuildDiscarderProperty', 
+			 strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '', artifactNumToKeepStr: '', 
+			            daysToKeepStr: '', numToKeepStr: '5']]]);
+
 node {
   def project = "navikt"
   def application = "eux-web-app"
@@ -70,4 +74,18 @@ node {
 
   }
 
+  stage('Deploy ZIP archive to Maven') {
+  	def zipFile = "${application}-${buildVersion}.zip"
+    sh "zip -r ${zipFile} build/*"
+	configFileProvider(
+        [configFile(fileId: 'navMavenSettings', variable: 'MAVEN_SETTINGS')]) {
+    	sh """
+     	  	mvn --settings ${MAVEN_SETTINGS} deploy:deploy-file -Dfile=${zipFile} -DartifactId=${application} \
+	            -DgroupId=no.nav.eux -Dversion=${buildVersion} \
+	 	        -Ddescription='Eux-web-app JavaScript resources.' \
+		        -DrepositoryId=m2internal -Durl=http://maven.adeo.no/nexus/content/repositories/m2internal   
+        """
+    }
+  }
+  
 }
