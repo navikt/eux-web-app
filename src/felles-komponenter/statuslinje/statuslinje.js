@@ -13,7 +13,7 @@ const undertittelFraStatus = status => {
 };
 
 const StatusLinje = ({ status, tittel }) => {
-  if (status === 'NOT_STARTED') { return null; }
+  if (['NOT_STARTED', 'PENDING'].includes(status)) { return null; }
   const type = status === 'OK' ? 'suksess' : 'stopp';
 
   return (
