@@ -3,7 +3,9 @@ import PT from 'prop-types';
 
 const PersonPropType = PT.shape({
   fnr: PT.string,
-  sammensattNavn: PT.string,
+  fdato: PT.string,
+  fornavn: PT.string,
+  etternavn: PT.string,
   kjoenn: PT.string,
 });
 
