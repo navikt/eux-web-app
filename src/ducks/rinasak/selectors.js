@@ -51,7 +51,6 @@ export const sedtypeSelector = createSelector(
   state => alleSEDtyperSelector(state),
   state => valgtBucTypeSelector(state),
   (valgtSektor, kodemaps, sedKodeverk, valgtBucType) => {
-    if (!(valgtSektor && valgtSektor === 'FB')) { return []; }
     if (!kodemaps) { return []; }
     if (!valgtBucType) { return []; }
     const sedtyper = kodemaps.BUC2SEDS[valgtSektor][valgtBucType];
