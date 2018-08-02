@@ -38,7 +38,10 @@ PersonKort.propTypes = {
 };
 
 class PersonSok extends Component {
-  state = {};
+  state = {
+    searching: false,
+    person: {},
+  };
 
   erPersonFunnet = person => (person.fornavn.length !== undefined && person.fnr !== undefined);
 
@@ -48,9 +51,10 @@ class PersonSok extends Component {
     } = this.props;
     if (inntastetFnr.length === 0) return;
 
+    this.setState({ searching: true });
     personSok(inntastetFnr).then(response => {
       const person = { ...response.data };
-      this.setState({ person });
+      this.setState({ searching: false, person });
       // validerFnr(this.erPersonFunnet(response), response.fnr);
       settFnrGyldighet(this.erPersonFunnet(person));
       settFnrSjekket(true);
@@ -66,7 +70,7 @@ class PersonSok extends Component {
 
   render() {
     const { sokEtterPerson, inntastetFnrHarBlittEndret } = this;
-    const { person } = this.state;
+    const { searching, person } = this.state;
     const personKort = person && person.fornavn && person.etternavn ? <PersonKort person={person} /> : null;
     return (
       <div className="personsok">
@@ -79,6 +83,7 @@ class PersonSok extends Component {
             onKeyUp={inntastetFnrHarBlittEndret}
           />
           <Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson}>SØK</Nav.Knapp>
+          {searching && <Nav.NavFrontendSpinner />}
         </div>
         {personKort}
       </div>
@@ -98,9 +103,10 @@ PersonSok.defaultProps = {
   person: {},
   inntastetFnr: '',
 };
-
+const mapStateToProps = _state => ({
+});
 const mapDispatchToProps = dispatch => ({
   personSok: fnr => dispatch(PersonOperations.hentPerson(fnr)),
 });
 
-export default connect(null, mapDispatchToProps)(PersonSok);
+export default connect(mapStateToProps, mapDispatchToProps)(PersonSok);
