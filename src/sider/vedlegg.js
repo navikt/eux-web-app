@@ -22,7 +22,8 @@ class Vedlegg extends Component {
     const {
       handleSubmit, sendSkjema, vedleggStatus, vedlegg, inntastetRinasaksnummer,
     } = this.props;
-
+    const responseVerdi = (vedlegg && vedlegg.vedleggID) ? <p>VedleggID: {vedlegg.vedleggID}</p> : null;
+    const venteSpinner = ['PENDING'].includes(vedleggStatus) ? <Nav.NavFrontendSpinner /> : null;
     return (
       <div className="vedlegg">
         <Nav.Container fluid>
@@ -40,9 +41,9 @@ class Vedlegg extends Component {
                   <div className="vedlegg__submmit">
                     <Nav.Hovedknapp onClick={handleSubmit(sendSkjema)}>Send vedlegg</Nav.Hovedknapp>
                   </div>
-                  {['PENDING'].includes(vedleggStatus) ? <Nav.NavFrontendSpinner /> : null}
+                  {venteSpinner}
+                  {responseVerdi}
                   <StatusLinje status={vedleggStatus} tittel="Vedlegget" />
-                  <p>{vedlegg.data && JSON.parse(vedlegg.data).status}</p>
                 </Nav.Panel>
               </Nav.Column>
             </Nav.Row>
