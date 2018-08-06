@@ -54,8 +54,7 @@ class PersonSok extends Component {
     this.setState({ searching: true });
     personSok(inntastetFnr).then(response => {
       const person = { ...response.data };
-      this.setState({ searching: false, person });
-      // validerFnr(this.erPersonFunnet(response), response.fnr);
+      setTimeout(() => this.setState({ searching: false, person }), 1000);
       settFnrGyldighet(this.erPersonFunnet(person));
       settFnrSjekket(true);
     });

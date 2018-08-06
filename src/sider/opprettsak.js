@@ -139,6 +139,7 @@ class OpprettSak extends Component {
             <Nav.Row className="opprettsak__statuslinje">
               <Nav.Column xs="10">
                 <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)}>Opprett sak i RINA</Nav.Hovedknapp>
+                {['PENDING'].includes(status) ? <Nav.NavFrontendSpinner /> : null}
                 <StatusLinje status={status} tittel="Opprettet sak" />
                 <RinasaksNummer sak={sak} />
               </Nav.Column>

@@ -24,13 +24,19 @@ DokumentKort.defaultProps = {
   dokumenter: [],
 };
 class DokumentSok extends Component {
-  state = {};
+  state = {
+    searching: false,
+  };
   sokEtterDokumenter = () => {
     const { inntastetRinasaksnummer } = this.props;
     if (inntastetRinasaksnummer.length === 0) return;
+    this.setState({ searching: true });
     API.Dokumenter.hent(inntastetRinasaksnummer).then(response => {
-      this.setState({ nyttSok: true });
-      this.setState({ rinadokumenter: response });
+      setTimeout(() => this.setState({
+        searching: false,
+        nyttSok: true,
+        rinadokumenter: response,
+      }), 1000);
     });
   };
   inntastetRinaSaksnummerHarBlittEndret = () => {
@@ -39,11 +45,12 @@ class DokumentSok extends Component {
   };
   render() {
     const { sokEtterDokumenter, inntastetRinaSaksnummerHarBlittEndret } = this;
-    const { rinadokumenter, nyttSok } = this.state;
+    const { searching, rinadokumenter, nyttSok } = this.state;
     const harDokumenter = () => rinadokumenter && rinadokumenter.length;
     const harIngenDokumenter = () => rinadokumenter && rinadokumenter.length === 0;
     const dokumentKort = harDokumenter() ? <DokumentKort dokumenter={rinadokumenter} /> : null;
     const sokeStatus = (nyttSok && harIngenDokumenter()) ? <p>Ingen dokumenter funnet</p> : null;
+    const venteSpinner = searching ? <Nav.NavFrontendSpinner /> : null;
     return (
       <div className="dokumentsok">
         <div className="dokumentsok__skjema">
@@ -55,6 +62,7 @@ class DokumentSok extends Component {
             onKeyUp={inntastetRinaSaksnummerHarBlittEndret}
           />
           <Nav.Knapp className="dokumentsok__knapp" onClick={sokEtterDokumenter}>SØK</Nav.Knapp>
+          {venteSpinner}
         </div>
         {dokumentKort}
         {sokeStatus}
@@ -63,10 +71,12 @@ class DokumentSok extends Component {
   }
 }
 DokumentSok.propTypes = {
+  searching: PT.bool,
   inntastetRinasaksnummer: PT.string,
   rinadokumenter: PT.array,
 };
 DokumentSok.defaultProps = {
+  searching: false,
   inntastetRinasaksnummer: '',
   rinadokumenter: [],
 };
