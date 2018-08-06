@@ -40,6 +40,7 @@ class Vedlegg extends Component {
                   <div className="vedlegg__submmit">
                     <Nav.Hovedknapp onClick={handleSubmit(sendSkjema)}>Send vedlegg</Nav.Hovedknapp>
                   </div>
+                  {['PENDING'].includes(vedleggStatus) ? <Nav.NavFrontendSpinner /> : null}
                   <StatusLinje status={vedleggStatus} tittel="Vedlegget" />
                   <p>{vedlegg.data && JSON.parse(vedlegg.data).status}</p>
                 </Nav.Panel>
