@@ -74,18 +74,22 @@ node {
 
   }
 
-  stage('Deploy ZIP archive to Maven') {
-  	def zipFile = "${application}-${buildVersion}.zip"
-    sh "zip -r ${zipFile} build/*"
-	configFileProvider(
-        [configFile(fileId: 'navMavenSettings', variable: 'MAVEN_SETTINGS')]) {
-    	sh """
-     	  	mvn --settings ${MAVEN_SETTINGS} deploy:deploy-file -Dfile=${zipFile} -DartifactId=${application} \
-	            -DgroupId=no.nav.eux -Dversion=${buildVersion} \
-	 	        -Ddescription='Eux-web-app JavaScript resources.' \
-		        -DrepositoryId=m2internal -Durl=http://maven.adeo.no/nexus/content/repositories/m2internal   
-        """
-    }
+  if (env.BRANCH_NAME == "deployment") {
+    stage('Deploy ZIP archive to Maven') {
+  	  def zipFile = "${application}-${buildVersion}.zip"
+      sh "zip -r ${zipFile} build/*"
+	  configFileProvider(
+          [configFile(fileId: 'navMavenSettings', variable: 'MAVEN_SETTINGS')]) {
+          sh """
+     	      mvn --settings ${MAVEN_SETTINGS} deploy:deploy-file -Dfile=${zipFile} -DartifactId=${application} \
+	              -DgroupId=no.nav.eux -Dversion=${buildVersion} \
+	 	          -Ddescription='Eux-web-app JavaScript resources.' \
+		          -DrepositoryId=m2internal -Durl=http://maven.adeo.no/nexus/content/repositories/m2internal   
+          """
+      }
+    } 
+  } else {
+	echo "Skipping deployment to Maven, since this is not a main branch build."
   }
-  
+
 }
