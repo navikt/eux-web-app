@@ -74,7 +74,7 @@ node {
 
   }
 
-  if (env.BRANCH_NAME == "deployment") {
+  if (env.BRANCH_NAME == "develop") {
     stage('Deploy ZIP archive to Maven') {
   	  def zipFile = "${application}-${buildVersion}.zip"
       sh "zip -r ${zipFile} build/*"
