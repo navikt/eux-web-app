@@ -1,0 +1,15 @@
+{
+  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "linterOptions": {
+    "exclude": [
+      "test/**/*",
+      "config/**/*.js",
+      "src/**/*.js",
+      "node_modules/**/*.ts",
+      "node_modules/**/*.tsx"
+    ]
+  },
+  "rules": {
+    "interface-name": false
+  }
+}
