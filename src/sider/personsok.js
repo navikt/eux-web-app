@@ -39,10 +39,6 @@ PersonKort.propTypes = {
 };
 
 class PersonSok extends Component {
-  state = {
-    person: {},
-  };
-
   erPersonFunnet = person => (person.fornavn.length !== undefined && person.fnr !== undefined);
 
   sokEtterPerson = () => {
@@ -53,7 +49,6 @@ class PersonSok extends Component {
     personSok(inntastetFnr).then(response => {
       if (response && response.data) {
         const person = { ...response.data };
-        this.setState(person);
         settFnrGyldighet(this.erPersonFunnet(person));
         settFnrSjekket(true);
       }
@@ -62,15 +57,13 @@ class PersonSok extends Component {
 
   inntastetFnrHarBlittEndret = () => {
     const { settFnrGyldighet, settFnrSjekket } = this.props;
-    this.setState({ person: {} });
     settFnrGyldighet(false);
     settFnrSjekket(false);
   };
 
   render() {
     const { sokEtterPerson, inntastetFnrHarBlittEndret } = this;
-    const { status, errdata } = this.props;
-    const { person } = this.state;
+    const { person, status, errdata } = this.props;
 
     const personKort = person && person.fornavn && person.etternavn ? <PersonKort person={person} /> : null;
     return (
@@ -86,8 +79,8 @@ class PersonSok extends Component {
           <Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson}>SØK</Nav.Knapp>
           {['PENDING'].includes(status) ? <Nav.NavFrontendSpinner /> : null}
         </div>
-        <StatusLinje status={status} tittel="Fødselsnummer søket" />
-        {errdata && errdata.status && <p>{errdata.message}</p>}
+        { errdata.status && <StatusLinje status={status} tittel="Fødselsnummer søket" /> }
+        { errdata.status && <p>{errdata.message}</p> }
         {personKort}
       </div>
     );
@@ -112,6 +105,7 @@ PersonSok.defaultProps = {
 };
 
 const mapStateToProps = state => ({
+  person: PersonSelectors.personSelector(state),
   status: PersonSelectors.statusSelector(state),
   errdata: PersonSelectors.errorDataSelector(state),
 });

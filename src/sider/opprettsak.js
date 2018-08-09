@@ -68,7 +68,7 @@ class OpprettSak extends Component {
   render() {
     const {
       landkoder, sedtyper, sektor, buctyper,
-      inntastetFnr, status, institusjoner,
+      inntastetFnr, status, errdata, institusjoner,
       valgtSektor, valgteFamilieRelasjoner,
       settFnrSjekket, settFnrGyldighet,
       fnrErGyldig, fnrErSjekket,
@@ -129,6 +129,7 @@ class OpprettSak extends Component {
                 <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)}>Opprett sak i RINA</Nav.Hovedknapp>
                 {['PENDING'].includes(status) ? <Nav.NavFrontendSpinner /> : null}
                 <StatusLinje status={status} tittel="Opprettet sak" />
+                {errdata && errdata.status && <p>{errdata.message}</p>}
               </Nav.Column>
             </Nav.Row>
           </Nav.Container>
@@ -155,6 +156,7 @@ OpprettSak.propTypes = {
   inntastetFnr: PT.string,
   valgtSektor: PT.string,
   status: PT.string,
+  errdata: PT.object,
   valgteFamilieRelasjoner: PT.array,
 };
 
@@ -169,6 +171,7 @@ OpprettSak.defaultProps = {
   inntastetFnr: '',
   valgtSektor: '',
   status: '',
+  errdata: {},
   valgteFamilieRelasjoner: [],
 };
 
@@ -191,6 +194,7 @@ const mapStateToProps = state => ({
   valgtSektor: skjemaSelector(state, 'sektor'),
   valgteFamilieRelasjoner: skjemaSelector(state, 'tilleggsopplysninger.familierelasjoner'),
   status: RinasakSelectors.sakStatusSelector(state),
+  errdata: RinasakSelectors.errorDataSakSelector(state),
 });
 
 const mapDispatchToProps = dispatch => ({
