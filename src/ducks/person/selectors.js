@@ -13,8 +13,9 @@ export const statusSelector = createSelector(
   status => status
 );
 export const errorDataSelector = createSelector(
-  state => (state.person.status === 'ERROR' ? JSON.parse(state.person.data.data) : {}) || {},
-  data => data
+  // state => (state.person.status === 'ERROR' ? JSON.parse(state.person.data.data) : {}) || {},
+  state => (state.person.status === 'ERROR' ? state.person.data : {}),
+  data => (data.data ? JSON.parse(data.data) : {})
 );
 
 export const personSelector = createSelector(
@@ -22,6 +23,6 @@ export const personSelector = createSelector(
   person => person
 );
 export const familieRelasjonerSelector = createSelector(
-  state => state.person.data.relasjoner,
+  state => state.person.data.relasjoner || [],
   relasjoner => relasjoner
 );
