@@ -31,18 +31,6 @@ FamilieRelasjoner.defaultProps = {
   relasjoner: [],
 };
 
-const RinasaksNummer = ({ sak }) => {
-  if (sak && !sak.rinasaksnummer) { return null; }
-  return (
-    <p>Rinasaksnummer: {sak.rinasaksnummer}</p>
-  );
-};
-RinasaksNummer.propTypes = {
-  sak: PT.shape({
-    rinasaksnummer: PT.string,
-  }).isRequired,
-};
-
 class OpprettSak extends Component {
   skjemaSubmit = values => {
     const { submitFailed, sendSkjema } = this.props;
@@ -75,12 +63,12 @@ class OpprettSak extends Component {
     const { settFnrGyldighet, settFnrSjekket } = this.props;
     settFnrGyldighet(null);
     settFnrSjekket(false);
-  }
+  };
 
   render() {
     const {
       landkoder, sedtyper, sektor, buctyper,
-      inntastetFnr, status, sak, institusjoner,
+      inntastetFnr, status, institusjoner,
       valgtSektor, valgteFamilieRelasjoner,
       settFnrSjekket, settFnrGyldighet,
       fnrErGyldig, fnrErSjekket,
@@ -141,7 +129,6 @@ class OpprettSak extends Component {
                 <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)}>Opprett sak i RINA</Nav.Hovedknapp>
                 {['PENDING'].includes(status) ? <Nav.NavFrontendSpinner /> : null}
                 <StatusLinje status={status} tittel="Opprettet sak" />
-                <RinasaksNummer sak={sak} />
               </Nav.Column>
             </Nav.Row>
           </Nav.Container>
@@ -168,9 +155,6 @@ OpprettSak.propTypes = {
   inntastetFnr: PT.string,
   valgtSektor: PT.string,
   status: PT.string,
-  sak: PT.shape({
-    rinasaksnummer: PT.string,
-  }).isRequired,
   valgteFamilieRelasjoner: PT.array,
 };
 
@@ -185,9 +169,6 @@ OpprettSak.defaultProps = {
   inntastetFnr: '',
   valgtSektor: '',
   status: '',
-  sak: {
-    rinasaksnummer: '',
-  },
   valgteFamilieRelasjoner: [],
 };
 
@@ -210,7 +191,6 @@ const mapStateToProps = state => ({
   valgtSektor: skjemaSelector(state, 'sektor'),
   valgteFamilieRelasjoner: skjemaSelector(state, 'tilleggsopplysninger.familierelasjoner'),
   status: RinasakSelectors.sakStatusSelector(state),
-  sak: RinasakSelectors.sakSelector(state),
 });
 
 const mapDispatchToProps = dispatch => ({

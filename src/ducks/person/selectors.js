@@ -8,6 +8,15 @@
 import { createSelector } from 'reselect';
 
 // eslint-disable-next-line import/prefer-default-export
+export const statusSelector = createSelector(
+  state => state.person.status,
+  status => status
+);
+export const errorDataSelector = createSelector(
+  state => (state.person.status === 'ERROR' ? JSON.parse(state.person.data.data) : {}) || {},
+  data => data
+);
+
 export const personSelector = createSelector(
   state => state.person.data,
   person => person
