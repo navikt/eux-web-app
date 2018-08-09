@@ -18,10 +18,11 @@ import './opprettsak.css';
 const uuid = require('uuid/v4');
 
 const FamilieRelasjoner = ({ relasjoner }) => (
-  <Nav.Fieldset legend="Familiemedlemmer SEDen angår:">
-    {relasjoner.length === 0 && <p>Ingen valgt</p>}
-    <Nav.Normaltekst>Fyll ut opplysninger om evt familierelasjoner.</Nav.Normaltekst>
-    <FieldArray name="tilleggsopplysninger.familierelasjoner" component={CustomFamilieRelasjoner} />
+  <Nav.Fieldset legend="Familiemedlemmer SEDen angår:" className="familieRelasjoner">
+    <div className="familieRelasjoner__liste">
+      {relasjoner.length === 0 && <Nav.Panel className="familieRelasjoner__liste__tom">(Ingen familiemedlemmer er valgt. Velg fra listen nedenfor)</Nav.Panel>}
+      <FieldArray name="tilleggsopplysninger.familierelasjoner" component={CustomFamilieRelasjoner} />
+    </div>
   </Nav.Fieldset>
 );
 FamilieRelasjoner.propTypes = {

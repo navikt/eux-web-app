@@ -121,59 +121,80 @@ class CustomFamilieRelasjoner extends Component {
     } = this.props;
     const relasjoner = fields.getAll();
 
+    const valgbareRelasjoner = tpsrelasjoner && tpsrelasjoner.reduce((samling, tpsrelasjon) => {
+      const erLagtTil = relasjoner.some(r => r.fnr === tpsrelasjon.fnr);
+      return (!erLagtTil ? [...samling, <Relasjon key={uuid()} kodeverk={familierelasjonKodeverk} relasjon={tpsrelasjon} leggTilTPSrelasjon={this.leggTilTPSrelasjon} />] : [...samling]);
+    }, []);
+
     return (
       <div className="familerelasjoner">
         {relasjoner && relasjoner.map((relasjon, indeks) => <FamilieRelasjon key={uuid()} kodeverk={familierelasjonKodeverk} relasjon={relasjon} indeks={indeks} slettRelasjon={this.slettRelasjon} />)}
-        <div className="familierelasjoner__linje">
-          <Nav.Input
-            label="Fnr eller Dnr"
-            className="familierelasjoner__input"
-            bredde="XXL"
-            value={this.state.fnr}
-            onChange={event => this.oppdaterState('fnr', event)} />
-          <Nav.Input
-            label="Fødselsdato"
-            className="familierelasjoner__input"
-            bredde="XXL"
-            value={this.state.fdato}
-            onChange={event => this.oppdaterState('fdato', event)} />
-          <Nav.Input
-            label="Fornavn"
-            className="familierelasjoner__input"
-            bredde="XXL"
-            value={this.state.fornavn}
-            onChange={event => this.oppdaterState('fornavn', event)} />
-          <Nav.Input
-            label="Etternavn"
-            className="familierelasjoner__input"
-            bredde="XXL"
-            value={this.state.etternavn}
-            onChange={event => this.oppdaterState('etternavn', event)} />
 
-          <Nav.Select
-            label="Kjønn"
-            bredde="s"
-            className="familierelasjoner__input"
-            value={this.state.kjoenn}
-            onChange={event => this.oppdaterState('kjoenn', event)}>
-            <option value="" disabled>- velg -</option>
-            {kjoennKodeverk && kjoennKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
-          </Nav.Select>
-          <Nav.Select
-            label="Familierelasjon"
-            bredde="s"
-            className="familierelasjoner__input"
-            value={this.state.rolle}
-            onChange={event => this.oppdaterState('rolle', event)}>
-            <option value="" disabled>- velg -</option>
-            {familierelasjonKodeverk && familierelasjonKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
-          </Nav.Select>
-          <Nav.Knapp onClick={this.leggTilRelasjon} className="familierelasjoner__knapp">
-            <Nav.Ikon kind="tilsette" size="20" className="familierelasjoner__knapp__ikon" />
-            <div>Legg til</div>
-          </Nav.Knapp>
-        </div>
-        {tpsrelasjoner && tpsrelasjoner.map(relasjon => <Relasjon key={uuid()} kodeverk={familierelasjonKodeverk} relasjon={relasjon} leggTilTPSrelasjon={this.leggTilTPSrelasjon} />)}
+        <Nav.Fieldset className="familierelasjoner__utland" legend="Fant følgende familiemedlemmer i TPS:">
+          { valgbareRelasjoner }
+          { (tpsrelasjoner.length > 0 && valgbareRelasjoner.length === 0) ? <Nav.Panel>(Du har lagt til alle som fantes i listen.)</Nav.Panel> : null }
+          { !tpsrelasjoner && <Nav.Panel>(Ingen familierelasjoner funnet i TPS)</Nav.Panel> }
+        </Nav.Fieldset>
+        <Nav.Fieldset className="familierelasjoner__utland" legend="Du kan også legge til familierelasjoner fra utlandet som ikke er oppført i TPS:">
+          <Nav.Panel className="familierelasjoner__utland__wrapper">
+            <Nav.Row>
+              <Nav.Column xs="4">
+                <Nav.Input
+                  label="Utenlandsk ID"
+                  className="familierelasjoner__input"
+                  bredde="XXL"
+                  value={this.state.fnr}
+                  onChange={event => this.oppdaterState('fnr', event)} />
+                <Nav.Input
+                  label="Fødselsdato"
+                  className="familierelasjoner__input"
+                  bredde="XXL"
+                  value={this.state.fdato}
+                  onChange={event => this.oppdaterState('fdato', event)} />
+              </Nav.Column>
+              <Nav.Column xs="4">
+                <Nav.Input
+                  label="Fornavn"
+                  className="familierelasjoner__input"
+                  bredde="XXL"
+                  value={this.state.fornavn}
+                  onChange={event => this.oppdaterState('fornavn', event)} />
+                <Nav.Select
+                  label="Kjønn"
+                  bredde="s"
+                  className="familierelasjoner__input"
+                  value={this.state.kjoenn}
+                  onChange={event => this.oppdaterState('kjoenn', event)}>
+                  <option value="" disabled>- velg -</option>
+                  {kjoennKodeverk && kjoennKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+                </Nav.Select>
+              </Nav.Column>
+              <Nav.Column xs="4">
+                <Nav.Input
+                  label="Etternavn"
+                  className="familierelasjoner__input"
+                  bredde="XXL"
+                  value={this.state.etternavn}
+                  onChange={event => this.oppdaterState('etternavn', event)} />
+                <Nav.Select
+                  label="Familierelasjon"
+                  bredde="s"
+                  className="familierelasjoner__input"
+                  value={this.state.rolle}
+                  onChange={event => this.oppdaterState('rolle', event)}>
+                  <option value="" disabled>- velg -</option>
+                  {familierelasjonKodeverk && familierelasjonKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+                </Nav.Select>
+              </Nav.Column>
+              <Nav.Column xs="4">
+                <Nav.Knapp onClick={this.leggTilRelasjon} className="familierelasjoner__knapp">
+                  <Nav.Ikon kind="tilsette" size="20" className="familierelasjoner__knapp__ikon" />
+                  <div>Legg til</div>
+                </Nav.Knapp>
+              </Nav.Column>
+            </Nav.Row>
+          </Nav.Panel>
+        </Nav.Fieldset>
       </div>
     );
   }
