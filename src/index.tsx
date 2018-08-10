@@ -12,7 +12,7 @@ import { unregister } from './registerServiceWorker';
 import Routing from './routing';
 import createStore from './store';
 
-const store = createStore(routerHistory);
+const store = createStore();
 loadInitialData(store);
 
 
