@@ -30,12 +30,18 @@ const FamilieRelasjon = ({
   const {
     fornavn, etternavn, fnr, fdato, kjoenn,
   } = familie;
-  const undertittel = `Fødselsnummer: ${fnr}`;
+
+  const panelUndertittel = (
+    <div className="panelheader__undertittel">
+      <span>Fødselsnummer: {fnr}</span>
+      <span>Fødselsdato: {formatterDatoTilNorsk(fdato)}</span>
+    </div>
+  );
+
   const rolle = kodeverk.find(item => item.kode === familie.rolle).term;
   return (
     <Nav.Panel border className="personsok__kort">
-      <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn} - ${rolle}`} undertittel={undertittel} />
-      { fdato && <span className="panelheader__tittel__under">Fødselsdato: {formatterDatoTilNorsk(fdato)}</span> }
+      <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn} - ${rolle}`} undertittel={panelUndertittel} />
       <Nav.Knapp
         className="familierelasjoner__knapp familierelasjoner__knapp--slett"
         onClick={() => slettRelasjon(familie.fnr)}>
@@ -58,10 +64,17 @@ const TPSRelasjonEnkelt = ({ kodeverk, relasjon, leggTilTPSrelasjon }) => {
     fnr, fdato, fornavn, etternavn, kjoenn, rolle: kode,
   } = relasjon;
   const rolle = kodeverk.find(elem => elem.kode === kode).term;
+
+  const panelUndertittel = (
+    <div className="panelheader__undertittel">
+      <span>Fødselsnummer: {fnr}</span>
+      <span>Fødselsdato: {formatterDatoTilNorsk(fdato)}</span>
+    </div>
+  );
+
   return (
     <Nav.Panel border className="personsok__kort">
-      <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn} - ${rolle}`} undertittel={`Fødselsnummer: ${fnr}`} />
-      { fdato && <span className="panelheader__tittel__under">Fødselsdato: {formatterDatoTilNorsk(fdato)}</span> }
+      <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn} - ${rolle}`} undertittel={panelUndertittel} />
       <Nav.Knapp onClick={() => leggTilTPSrelasjon(relasjon)} className="familierelasjoner__knapp">
         <Nav.Ikon kind="tilsette" size="20" className="familierelasjoner__knapp__ikon" />
         <span>Legg til</span>
@@ -86,7 +99,7 @@ class CustomFamilieRelasjoner extends Component {
   kanSpesialRelasjonLeggesTil = () => {
     const { spesialRelasjon } = this.state;
     return (spesialRelasjon.fnr && spesialRelasjon.rolle && spesialRelasjon.kjoenn && spesialRelasjon.fornavn && spesialRelasjon.etternavn);
-  }
+  };
 
   resettSpesialRelasjonsFelter = () => {
     this.setState({
@@ -94,7 +107,7 @@ class CustomFamilieRelasjoner extends Component {
         fnr: '', fdato: '', rolle: '', kjoenn: '', fornavn: '', etternavn: '',
       },
     });
-  }
+  };
 
   leggTilSpesialRelasjon = () => {
     const { fields } = this.props;
