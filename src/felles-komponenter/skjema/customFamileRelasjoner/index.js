@@ -122,8 +122,11 @@ class CustomFamilieRelasjoner extends Component {
       etternavn: spesialRelasjon.etternavn,
       kjoenn: spesialRelasjon.kjoenn,
     };
-    this.resettSpesialRelasjonsFelter();
-    return kanSpesialRelasjonLeggesTil() && fields.push(vasketRelasjon);
+
+    if (kanSpesialRelasjonLeggesTil()) {
+      this.resettSpesialRelasjonsFelter();
+      fields.push(vasketRelasjon);
+    }
   };
 
   leggTilTPSrelasjon = relasjon => {
@@ -221,8 +224,8 @@ class CustomFamilieRelasjoner extends Component {
                   className="familierelasjoner__input"
                   bredde="XXL"
                   value={this.state.spesialRelasjon.fdato}
-                  onChange={event => this.oppdaterState('fdato', event)} />
-                  onBlur={event => this.vaskInputDatoOgOppdater('fdato', event)}
+                  onChange={event => this.oppdaterState('fdato', event)}
+                  onBlur={event => this.vaskInputDatoOgOppdater('fdato', event)} />
               </Nav.Column>
               <Nav.Column xs="4">
                 <Nav.Select
