@@ -18,11 +18,14 @@ import './opprettsak.css';
 const uuid = require('uuid/v4');
 
 const FamilieRelasjoner = ({ relasjoner }) => (
-  <Nav.Fieldset legend="Familiemedlemmer SEDen angår:">
-    {relasjoner.length === 0 && <p>Ingen valgt</p>}
-    <Nav.Normaltekst>Fyll ut opplysninger om evt familierelasjoner.</Nav.Normaltekst>
-    <FieldArray name="tilleggsopplysninger.familierelasjoner" component={CustomFamilieRelasjoner} />
-  </Nav.Fieldset>
+  <Nav.Panel border>
+    <Nav.Fieldset legend="Familiemedlemmer SEDen angår:" className="familieRelasjoner">
+      <div className="familieRelasjoner__liste">
+        {relasjoner.length === 0 && <Nav.Panel className="familieRelasjoner__liste__tom">(Ingen familiemedlemmer er valgt. Velg fra listen nedenfor)</Nav.Panel>}
+        <FieldArray name="tilleggsopplysninger.familierelasjoner" component={CustomFamilieRelasjoner} />
+      </div>
+    </Nav.Fieldset>
+  </Nav.Panel>
 );
 FamilieRelasjoner.propTypes = {
   relasjoner: PT.arrayOf(MPT.FamilieRelasjon),
@@ -83,7 +86,7 @@ class OpprettSak extends Component {
         <form onSubmit={this.overrideDefaultSubmit}>
           <Nav.Container fluid>
             <Nav.Row>
-              <Nav.Column xs="10">
+              <Nav.Column xs="6">
                 <PersonSok
                   inntastetFnr={inntastetFnr}
                   resettSokStatus={resettSokStatus}
@@ -126,8 +129,7 @@ class OpprettSak extends Component {
             </Nav.Row>
             <Nav.Row className="opprettsak__statuslinje">
               <Nav.Column xs="10">
-                <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)}>Opprett sak i RINA</Nav.Hovedknapp>
-                {['PENDING'].includes(status) ? <Nav.NavFrontendSpinner /> : null}
+                <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)} spinner={['PENDING'].includes(status)} disabled={['PENDING'].includes(status)}>Opprett sak i RINA</Nav.Hovedknapp>
                 <StatusLinje status={status} tittel="Opprettet sak" />
                 {errdata && errdata.status && <p>{errdata.message}</p>}
               </Nav.Column>

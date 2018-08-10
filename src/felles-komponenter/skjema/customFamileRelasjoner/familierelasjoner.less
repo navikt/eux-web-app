@@ -2,10 +2,12 @@
 
 .familerelasjoner {
 
-  .familierelasjoner__linje {
-    display: flex;
-    flex-direction: row;
+  .familierelasjoner__utland {
     margin: 2em 0;
+  }
+
+  .familierelasjoner__utland__wrapper {
+    .row:not(:last-of-type) {margin-bottom: 1.2em;}
   }
 
   .familierelasjoner__input {
@@ -28,22 +30,38 @@
     font-weight: bold;
   }
 
+  .spesialrelasjon {
+    float:right;
+  }
+
   .familierelasjoner__knapp {
     display: flex;
     align-self: center;
     justify-self: flex-end;
+
+    .familierelasjoner__knapp__label {
+      display: flex;
+      align-self: center;
+    }
   }
 
   .familierelasjoner__knapp__ikon {
-    margin-right: .5em;
+    margin: -0.0em 0.5em 0 0;
 
     path {
       stroke: @blue-nav;
     }
   }
 
+  .knapp--disabled {
+    path {
+      stroke: @white !important;
+    }
+  }
+
   .familierelasjoner__knapp {
-    &:hover {
+
+    &:hover:not(.knapp--disabled) {
       .familierelasjoner__knapp__ikon path {
         stroke: @white !important;
       }

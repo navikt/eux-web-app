@@ -11,6 +11,7 @@ import { PanelHeader } from '../felles-komponenter/panelHeader';
 import { StatusLinje } from '../felles-komponenter/statuslinje';
 
 import './personsok.css';
+import { formatterDatoTilNorsk } from '../utils/dato';
 
 const ikonFraKjonn = kjoenn => {
   switch (kjoenn) {
@@ -24,11 +25,18 @@ const PersonKort = ({ person }) => {
   const {
     fnr, fdato, fornavn, etternavn, kjoenn,
   } = person;
+
+  const panelUndertittel = (
+    <div className="panelheader__undertittel">
+      <span>Fødselsnummer: {fnr}</span>
+      <span>Fødselsdato: {formatterDatoTilNorsk(fdato)}</span>
+    </div>
+  );
+
   return (
     <div>
       <Nav.Panel className="personsok__kort">
-        <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn}`} undertittel={`Fødselsnummer: ${fnr}`} />
-        { fdato && <p className="panelheader__tittel__under">Fødselsdato: {fdato}</p> }
+        <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn}`} undertittel={panelUndertittel} />
       </Nav.Panel>
     </div>
   );
@@ -76,8 +84,8 @@ class PersonSok extends Component {
             feltNavn="fnr"
             onKeyUp={inntastetFnrHarBlittEndret}
           />
+          {['PENDING'].includes(status) ? <div className="personsok__spinnerwrapper"><Nav.NavFrontendSpinner type="S" /></div> : null}
           <Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson}>SØK</Nav.Knapp>
-          {['PENDING'].includes(status) ? <Nav.NavFrontendSpinner /> : null}
         </div>
         { errdata.status && <StatusLinje status={status} tittel="Fødselsnummer søket" /> }
         { errdata.status && <p>{errdata.message}</p> }
