@@ -6,8 +6,9 @@ import * as MPT from '../proptypes/';
 import * as Nav from '../utils/navFrontend';
 import * as Skjema from '../felles-komponenter/skjema';
 import * as Ikoner from '../resources/images';
-import { PersonOperations } from '../ducks/person';
+import { PersonOperations, PersonSelectors } from '../ducks/person';
 import { PanelHeader } from '../felles-komponenter/panelHeader';
+import { StatusLinje } from '../felles-komponenter/statuslinje';
 
 import './personsok.css';
 
@@ -38,11 +39,6 @@ PersonKort.propTypes = {
 };
 
 class PersonSok extends Component {
-  state = {
-    searching: false,
-    person: {},
-  };
-
   erPersonFunnet = person => (person.fornavn.length !== undefined && person.fnr !== undefined);
 
   sokEtterPerson = () => {
@@ -50,26 +46,25 @@ class PersonSok extends Component {
       inntastetFnr, settFnrGyldighet, settFnrSjekket, personSok,
     } = this.props;
     if (inntastetFnr.length === 0) return;
-
-    this.setState({ searching: true });
     personSok(inntastetFnr).then(response => {
-      const person = { ...response.data };
-      setTimeout(() => this.setState({ searching: false, person }), 1000);
-      settFnrGyldighet(this.erPersonFunnet(person));
-      settFnrSjekket(true);
+      if (response && response.data) {
+        const person = { ...response.data };
+        settFnrGyldighet(this.erPersonFunnet(person));
+        settFnrSjekket(true);
+      }
     });
   };
 
   inntastetFnrHarBlittEndret = () => {
     const { settFnrGyldighet, settFnrSjekket } = this.props;
-    this.setState({ person: {} });
     settFnrGyldighet(false);
     settFnrSjekket(false);
   };
 
   render() {
     const { sokEtterPerson, inntastetFnrHarBlittEndret } = this;
-    const { searching, person } = this.state;
+    const { person, status, errdata } = this.props;
+
     const personKort = person && person.fornavn && person.etternavn ? <PersonKort person={person} /> : null;
     return (
       <div className="personsok">
@@ -82,8 +77,10 @@ class PersonSok extends Component {
             onKeyUp={inntastetFnrHarBlittEndret}
           />
           <Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson}>SØK</Nav.Knapp>
-          {searching && <Nav.NavFrontendSpinner />}
+          {['PENDING'].includes(status) ? <Nav.NavFrontendSpinner /> : null}
         </div>
+        { errdata.status && <StatusLinje status={status} tittel="Fødselsnummer søket" /> }
+        { errdata.status && <p>{errdata.message}</p> }
         {personKort}
       </div>
     );
@@ -96,13 +93,21 @@ PersonSok.propTypes = {
   settFnrGyldighet: PT.func.isRequired,
   settFnrSjekket: PT.func.isRequired,
   inntastetFnr: PT.string,
+  status: PT.string,
+  errdata: PT.object,
 };
 
 PersonSok.defaultProps = {
   person: {},
   inntastetFnr: '',
+  status: '',
+  errdata: {},
 };
-const mapStateToProps = _state => ({
+
+const mapStateToProps = state => ({
+  person: PersonSelectors.personSelector(state),
+  status: PersonSelectors.statusSelector(state),
+  errdata: PersonSelectors.errorDataSelector(state),
 });
 const mapDispatchToProps = dispatch => ({
   personSok: fnr => dispatch(PersonOperations.hentPerson(fnr)),

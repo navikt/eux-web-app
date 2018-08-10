@@ -18,6 +18,11 @@ export const sakStatusSelector = createSelector(
   status => status || ''
 );
 
+export const errorDataSakSelector = createSelector(
+  state => (state.rina.sak.status === 'ERROR' ? state.rina.sak.data : {}),
+  data => (data.data ? JSON.parse(data.data) : {})
+);
+
 export const valgtSektorSelector = createSelector(
   state => (state.form.opprettSak ? state.form.opprettSak : {}),
   opprettSakForm => {
