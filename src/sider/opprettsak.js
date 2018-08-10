@@ -86,7 +86,7 @@ class OpprettSak extends Component {
         <form onSubmit={this.overrideDefaultSubmit}>
           <Nav.Container fluid>
             <Nav.Row>
-              <Nav.Column xs="10">
+              <Nav.Column xs="6">
                 <PersonSok
                   inntastetFnr={inntastetFnr}
                   resettSokStatus={resettSokStatus}
