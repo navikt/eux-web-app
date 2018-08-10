@@ -50,6 +50,7 @@ it('tolker årstall med 2 siffer riktig', () => {
 
   const tillatteDatoer = [
     {test: `26-10-10`, 'forvent': `26.10.2010`},
+    {test: `26-10-11`, 'forvent': `26.10.1911`},
     {test: `26-04-20`, 'forvent': `26.04.1920`},
     {test: `26-04-30`, 'forvent': `26.04.1930`},
   ];
