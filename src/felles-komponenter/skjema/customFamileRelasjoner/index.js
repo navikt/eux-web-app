@@ -5,7 +5,7 @@ import PT from 'prop-types';
 import * as MPT from '../../../proptypes';
 import * as Nav from '../../../utils/navFrontend';
 
-import { formatterDatoTilNorsk } from '../../../utils/dato';
+import { vaskInputDato, formatterDatoTilNorsk } from '../../../utils/dato';
 
 import { PanelHeader } from '../../../felles-komponenter/panelHeader';
 import './familierelasjoner.css';
@@ -135,14 +135,14 @@ class CustomFamilieRelasjoner extends Component {
     const { value } = event.currentTarget;
     this.setState({ spesialRelasjon: { ...this.state.spesialRelasjon, [felt]: value } });
   };
-  /*
+
   vaskInputDatoOgOppdater = (felt, event) => {
     const { value } = event.currentTarget;
-    const nyDato = vaskInputDato(value) || value;
+    const nyDato = vaskInputDato(value) || '';
     const dummyEvent = { currentTarget: { value: nyDato } };
     this.oppdaterState(felt, dummyEvent);
   };
-  */
+
   slettRelasjon = fnr => {
     const { fields } = this.props;
     const index = fields.getAll().findIndex(relasjon => relasjon.fnr === fnr);
@@ -222,6 +222,7 @@ class CustomFamilieRelasjoner extends Component {
                   bredde="XXL"
                   value={this.state.spesialRelasjon.fdato}
                   onChange={event => this.oppdaterState('fdato', event)} />
+                  onBlur={event => this.vaskInputDatoOgOppdater('fdato', event)}
               </Nav.Column>
               <Nav.Column xs="4">
                 <Nav.Select

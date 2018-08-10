@@ -9,7 +9,7 @@ import moment from 'moment';
  * @param dato String Datoen som sakebehandleren har tastet inn.
  * @returns String Datoen som er vasket og stringified.
  */
-const MAX_AR_FREM_I_TID = 10;
+const MAX_AR_FREM_I_TID = 0;
 
 /** Gjør et beste forsøk på å vaske inputdato. Dersom vask ikke er mulig (feks ved helt feil datoformat eller
  * ugyldig dato, returner false.
