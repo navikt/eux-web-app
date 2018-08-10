@@ -46,7 +46,7 @@ const FamilieRelasjon = ({
         className="familierelasjoner__knapp familierelasjoner__knapp--slett"
         onClick={() => slettRelasjon(familie.fnr)}>
         <Nav.Ikon kind="trashcan" size="20" className="familierelasjoner__knapp__ikon" />
-        <div>Fjern</div>
+        <div className="familierelasjoner__knapp__label">Fjern</div>
       </Nav.Knapp>
     </Nav.Panel>
   );
@@ -77,7 +77,7 @@ const TPSRelasjonEnkelt = ({ kodeverk, relasjon, leggTilTPSrelasjon }) => {
       <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn} - ${rolle}`} undertittel={panelUndertittel} />
       <Nav.Knapp onClick={() => leggTilTPSrelasjon(relasjon)} className="familierelasjoner__knapp">
         <Nav.Ikon kind="tilsette" size="20" className="familierelasjoner__knapp__ikon" />
-        <span>Legg til</span>
+        <div className="familierelasjoner__knapp__label">Legg til</div>
       </Nav.Knapp>
     </Nav.Panel>
   );
@@ -238,8 +238,8 @@ class CustomFamilieRelasjoner extends Component {
             <Nav.Row>
               <Nav.Column xs="12">
                 <Nav.Knapp onClick={this.leggTilSpesialRelasjon} disabled={!this.kanSpesialRelasjonLeggesTil()} className="spesialrelasjon familierelasjoner__knapp">
-                  <Nav.Ikon kind="tilsette" size="20" className="familierelasjoner__knapp__ikon" />
-                  <div>Legg til</div>
+                  <Nav.Ikon kind="tilsette" size="18" className="familierelasjoner__knapp__ikon" />
+                  <div className="familierelasjoner__knapp__label">Legg til</div>
                 </Nav.Knapp>
               </Nav.Column>
             </Nav.Row>
