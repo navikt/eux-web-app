@@ -5,7 +5,7 @@ import PT from 'prop-types';
 import * as MPT from '../../../proptypes';
 import * as Nav from '../../../utils/navFrontend';
 
-// import { vaskInputDato } from '../../../utils/dato';
+import { formatterDatoTilNorsk } from '../../../utils/dato';
 
 import { PanelHeader } from '../../../felles-komponenter/panelHeader';
 import './familierelasjoner.css';
@@ -33,9 +33,9 @@ const FamilieRelasjon = ({
   const undertittel = `Fødselsnummer: ${fnr}`;
   const rolle = kodeverk.find(item => item.kode === familie.rolle).term;
   return (
-    <Nav.Panel className="personsok__kort">
+    <Nav.Panel border className="personsok__kort">
       <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn} - ${rolle}`} undertittel={undertittel} />
-      { fdato && <span className="panelheader__tittel__under">Fødselsdato: {fdato}</span> }
+      { fdato && <span className="panelheader__tittel__under">Fødselsdato: {formatterDatoTilNorsk(fdato)}</span> }
       <Nav.Knapp
         className="familierelasjoner__knapp familierelasjoner__knapp--slett"
         onClick={() => slettRelasjon(familie.fnr)}>
@@ -53,23 +53,24 @@ FamilieRelasjon.propTypes = {
   slettRelasjon: PT.func.isRequired,
 };
 
-const Relasjon = ({ kodeverk, relasjon, leggTilTPSrelasjon }) => {
+const TPSRelasjonEnkelt = ({ kodeverk, relasjon, leggTilTPSrelasjon }) => {
   const {
     fnr, fdato, fornavn, etternavn, kjoenn, rolle: kode,
   } = relasjon;
   const rolle = kodeverk.find(elem => elem.kode === kode).term;
   return (
-    <Nav.Panel className="personsok__kort">
+    <Nav.Panel border className="personsok__kort">
       <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn} - ${rolle}`} undertittel={`Fødselsnummer: ${fnr}`} />
-      { fdato && <span className="panelheader__tittel__under">Fødselsdato: {fdato}</span> }
+      { fdato && <span className="panelheader__tittel__under">Fødselsdato: {formatterDatoTilNorsk(fdato)}</span> }
       <Nav.Knapp onClick={() => leggTilTPSrelasjon(relasjon)} className="familierelasjoner__knapp">
         <Nav.Ikon kind="tilsette" size="20" className="familierelasjoner__knapp__ikon" />
-        <div>Legg til</div>
+        <span>Legg til</span>
       </Nav.Knapp>
     </Nav.Panel>
   );
 };
-Relasjon.propTypes = {
+
+TPSRelasjonEnkelt.propTypes = {
   kodeverk: PT.arrayOf(MPT.Kodeverk).isRequired,
   relasjon: MPT.FamilieRelasjon.isRequired,
   leggTilTPSrelasjon: PT.func.isRequired,
@@ -77,19 +78,39 @@ Relasjon.propTypes = {
 
 class CustomFamilieRelasjoner extends Component {
   state = {
-    fnr: '', fdato: '', rolle: '', kjoenn: '', fornavn: '', etternavn: '',
+    spesialRelasjon: {
+      fnr: '', fdato: '', rolle: '', kjoenn: '', fornavn: '', etternavn: '',
+    },
   };
 
-  leggTilRelasjon = () => {
+  kanSpesialRelasjonLeggesTil = () => {
+    const { spesialRelasjon } = this.state;
+    return (spesialRelasjon.fnr && spesialRelasjon.rolle && spesialRelasjon.kjoenn && spesialRelasjon.fornavn && spesialRelasjon.etternavn);
+  }
+
+  resettSpesialRelasjonsFelter = () => {
+    this.setState({
+      spesialRelasjon: {
+        fnr: '', fdato: '', rolle: '', kjoenn: '', fornavn: '', etternavn: '',
+      },
+    });
+  }
+
+  leggTilSpesialRelasjon = () => {
     const { fields } = this.props;
-    const {
-      fnr, fdato = '', rolle, kjoenn, fornavn, etternavn,
-    } = this.state;
-    if (!fnr || !rolle || !kjoenn || !fornavn || !etternavn) { return false; }
-    const familerelasjon = {
-      rolle, fnr, fdato, fornavn, etternavn, kjoenn,
+    const { kanSpesialRelasjonLeggesTil } = this;
+    const { spesialRelasjon } = this.state;
+
+    const vasketRelasjon = {
+      rolle: spesialRelasjon.rolle,
+      fnr: spesialRelasjon.fnr,
+      fdato: spesialRelasjon.fdato || '',
+      fornavn: spesialRelasjon.fornavn,
+      etternavn: spesialRelasjon.etternavn,
+      kjoenn: spesialRelasjon.kjoenn,
     };
-    return fields.push(familerelasjon);
+    this.resettSpesialRelasjonsFelter();
+    return kanSpesialRelasjonLeggesTil() && fields.push(vasketRelasjon);
   };
 
   leggTilTPSrelasjon = relasjon => {
@@ -99,7 +120,7 @@ class CustomFamilieRelasjoner extends Component {
 
   oppdaterState = (felt, event) => {
     const { value } = event.currentTarget;
-    this.setState({ [felt]: value });
+    this.setState({ spesialRelasjon: { ...this.state.spesialRelasjon, [felt]: value } });
   };
   /*
   vaskInputDatoOgOppdater = (felt, event) => {
@@ -117,53 +138,65 @@ class CustomFamilieRelasjoner extends Component {
 
   render() {
     const {
-      familierelasjonKodeverk, kjoennKodeverk, fields, tpsrelasjoner,
+      familierelasjonKodeverk, kjoennKodeverk, fields, tpsrelasjoner = [],
     } = this.props;
-    const relasjoner = fields.getAll();
+    const valgteRelasjoner = fields.getAll();
 
-    const valgbareRelasjoner = tpsrelasjoner && tpsrelasjoner.reduce((samling, tpsrelasjon) => {
-      const erLagtTil = relasjoner.some(r => r.fnr === tpsrelasjon.fnr);
-      return (!erLagtTil ? [...samling, <Relasjon key={uuid()} kodeverk={familierelasjonKodeverk} relasjon={tpsrelasjon} leggTilTPSrelasjon={this.leggTilTPSrelasjon} />] : [...samling]);
+    const gjenstaendeRelasjonerFraTPS = tpsrelasjoner.reduce((samling, enkeltTPSRelasjon) => {
+      const erAlleredeLagtTil = valgteRelasjoner.some(r => r.fnr === enkeltTPSRelasjon.fnr);
+      return (erAlleredeLagtTil ?
+        [...samling]
+        :
+        [...samling, <TPSRelasjonEnkelt key={uuid()} kodeverk={familierelasjonKodeverk} relasjon={enkeltTPSRelasjon} leggTilTPSrelasjon={this.leggTilTPSrelasjon} />]
+      );
     }, []);
 
     return (
       <div className="familerelasjoner">
-        {relasjoner && relasjoner.map((relasjon, indeks) => <FamilieRelasjon key={uuid()} kodeverk={familierelasjonKodeverk} relasjon={relasjon} indeks={indeks} slettRelasjon={this.slettRelasjon} />)}
+        {valgteRelasjoner && valgteRelasjoner.map((relasjon, indeks) =>
+          (<FamilieRelasjon key={uuid()} kodeverk={familierelasjonKodeverk} relasjon={relasjon} indeks={indeks} slettRelasjon={this.slettRelasjon} />))
+        }
 
         <Nav.Fieldset className="familierelasjoner__utland" legend="Fant følgende familiemedlemmer i TPS:">
-          { valgbareRelasjoner }
-          { (tpsrelasjoner.length > 0 && valgbareRelasjoner.length === 0) ? <Nav.Panel>(Du har lagt til alle som fantes i listen.)</Nav.Panel> : null }
+          { gjenstaendeRelasjonerFraTPS }
+          { (tpsrelasjoner.length > 0 && gjenstaendeRelasjonerFraTPS.length === 0) ? <Nav.Panel>(Du har lagt til alle som fantes i listen.)</Nav.Panel> : null }
           { !tpsrelasjoner && <Nav.Panel>(Ingen familierelasjoner funnet i TPS)</Nav.Panel> }
         </Nav.Fieldset>
         <Nav.Fieldset className="familierelasjoner__utland" legend="Du kan også legge til familierelasjoner fra utlandet som ikke er oppført i TPS:">
-          <Nav.Panel className="familierelasjoner__utland__wrapper">
+          <Nav.Panel border className="familierelasjoner__utland__wrapper">
             <Nav.Row>
               <Nav.Column xs="4">
                 <Nav.Input
                   label="Utenlandsk ID"
                   className="familierelasjoner__input"
                   bredde="XXL"
-                  value={this.state.fnr}
+                  value={this.state.spesialRelasjon.fnr}
                   onChange={event => this.oppdaterState('fnr', event)} />
-                <Nav.Input
-                  label="Fødselsdato"
-                  className="familierelasjoner__input"
-                  bredde="XXL"
-                  value={this.state.fdato}
-                  onChange={event => this.oppdaterState('fdato', event)} />
               </Nav.Column>
               <Nav.Column xs="4">
                 <Nav.Input
                   label="Fornavn"
                   className="familierelasjoner__input"
                   bredde="XXL"
-                  value={this.state.fornavn}
+                  value={this.state.spesialRelasjon.fornavn}
                   onChange={event => this.oppdaterState('fornavn', event)} />
+              </Nav.Column>
+              <Nav.Column xs="4">
+                <Nav.Input
+                  label="Etternavn"
+                  className="familierelasjoner__input"
+                  bredde="XXL"
+                  value={this.state.spesialRelasjon.etternavn}
+                  onChange={event => this.oppdaterState('etternavn', event)} />
+              </Nav.Column>
+            </Nav.Row>
+            <Nav.Row>
+              <Nav.Column xs="4">
                 <Nav.Select
                   label="Kjønn"
                   bredde="s"
                   className="familierelasjoner__input"
-                  value={this.state.kjoenn}
+                  value={this.state.spesialRelasjon.kjoenn}
                   onChange={event => this.oppdaterState('kjoenn', event)}>
                   <option value="" disabled>- velg -</option>
                   {kjoennKodeverk && kjoennKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
@@ -171,23 +204,27 @@ class CustomFamilieRelasjoner extends Component {
               </Nav.Column>
               <Nav.Column xs="4">
                 <Nav.Input
-                  label="Etternavn"
+                  label="Fødselsdato"
                   className="familierelasjoner__input"
                   bredde="XXL"
-                  value={this.state.etternavn}
-                  onChange={event => this.oppdaterState('etternavn', event)} />
+                  value={this.state.spesialRelasjon.fdato}
+                  onChange={event => this.oppdaterState('fdato', event)} />
+              </Nav.Column>
+              <Nav.Column xs="4">
                 <Nav.Select
                   label="Familierelasjon"
                   bredde="s"
                   className="familierelasjoner__input"
-                  value={this.state.rolle}
+                  value={this.state.spesialRelasjon.rolle}
                   onChange={event => this.oppdaterState('rolle', event)}>
                   <option value="" disabled>- velg -</option>
                   {familierelasjonKodeverk && familierelasjonKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                 </Nav.Select>
               </Nav.Column>
-              <Nav.Column xs="4">
-                <Nav.Knapp onClick={this.leggTilRelasjon} className="familierelasjoner__knapp">
+            </Nav.Row>
+            <Nav.Row>
+              <Nav.Column xs="12">
+                <Nav.Knapp onClick={this.leggTilSpesialRelasjon} disabled={!this.kanSpesialRelasjonLeggesTil()} className="spesialrelasjon familierelasjoner__knapp">
                   <Nav.Ikon kind="tilsette" size="20" className="familierelasjoner__knapp__ikon" />
                   <div>Legg til</div>
                 </Nav.Knapp>

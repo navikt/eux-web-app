@@ -7,8 +7,7 @@
   }
 
   .familierelasjoner__utland__wrapper {
-    display: flex;
-    flex-direction: row;
+    .row:not(:last-of-type) {margin-bottom: 1.2em;}
   }
 
   .familierelasjoner__input {
@@ -31,6 +30,10 @@
     font-weight: bold;
   }
 
+  .spesialrelasjon {
+    float:right;
+  }
+
   .familierelasjoner__knapp {
     display: flex;
     align-self: center;
@@ -45,8 +48,15 @@
     }
   }
 
+  .knapp--disabled {
+    path {
+      stroke: @white !important;
+    }
+  }
+
   .familierelasjoner__knapp {
-    &:hover {
+
+    &:hover:not(.knapp--disabled) {
       .familierelasjoner__knapp__ikon path {
         stroke: @white !important;
       }

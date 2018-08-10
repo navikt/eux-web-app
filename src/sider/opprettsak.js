@@ -18,12 +18,14 @@ import './opprettsak.css';
 const uuid = require('uuid/v4');
 
 const FamilieRelasjoner = ({ relasjoner }) => (
-  <Nav.Fieldset legend="Familiemedlemmer SEDen angår:" className="familieRelasjoner">
-    <div className="familieRelasjoner__liste">
-      {relasjoner.length === 0 && <Nav.Panel className="familieRelasjoner__liste__tom">(Ingen familiemedlemmer er valgt. Velg fra listen nedenfor)</Nav.Panel>}
-      <FieldArray name="tilleggsopplysninger.familierelasjoner" component={CustomFamilieRelasjoner} />
-    </div>
-  </Nav.Fieldset>
+  <Nav.Panel border>
+    <Nav.Fieldset legend="Familiemedlemmer SEDen angår:" className="familieRelasjoner">
+      <div className="familieRelasjoner__liste">
+        {relasjoner.length === 0 && <Nav.Panel className="familieRelasjoner__liste__tom">(Ingen familiemedlemmer er valgt. Velg fra listen nedenfor)</Nav.Panel>}
+        <FieldArray name="tilleggsopplysninger.familierelasjoner" component={CustomFamilieRelasjoner} />
+      </div>
+    </Nav.Fieldset>
+  </Nav.Panel>
 );
 FamilieRelasjoner.propTypes = {
   relasjoner: PT.arrayOf(MPT.FamilieRelasjon),
