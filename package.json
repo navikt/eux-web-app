@@ -1,5 +1,5 @@
 {
-  "name": "eux-web",
+  "name": "HelloEU",
   "version": "0.2.0",
   "private": true,
   "dependencies": {
@@ -45,9 +45,9 @@
     "nav-frontend-typografi": "^2.0.6",
     "nav-frontend-typografi-style": "^1.0.10",
     "prop-types": "^15.6.1",
-    "react": "^16.4.0",
+    "react": "^16.4.2",
     "react-collapse": "^4.0.3",
-    "react-dom": "^16.4.0",
+    "react-dom": "^16.4.2",
     "react-motion": "^0.5.2",
     "react-redux": "^5.0.7",
     "react-redux-form-validation": "^1.0.1",
@@ -66,7 +66,7 @@
     "start:js": "react-scripts-ts start",
     "build:js": "react-scripts-ts build",
     "start:css": "less-watch-compiler --config less.json",
-    "build:css": "less-watch-compiler -run-once--config less.json",
+    "build:css": "less-watch-compiler --run-once --config less.json",
     "start": "npm-run-all -p start:*",
     "build": "npm run build:css && npm run build:js",
     "test": "npm run build:css && react-scripts-ts test --env=jsdom",
