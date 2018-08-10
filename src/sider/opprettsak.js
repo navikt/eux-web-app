@@ -129,8 +129,7 @@ class OpprettSak extends Component {
             </Nav.Row>
             <Nav.Row className="opprettsak__statuslinje">
               <Nav.Column xs="10">
-                <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)}>Opprett sak i RINA</Nav.Hovedknapp>
-                {['PENDING'].includes(status) ? <Nav.NavFrontendSpinner /> : null}
+                <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)} spinner={['PENDING'].includes(status)} disabled={['PENDING'].includes(status)}>Opprett sak i RINA</Nav.Hovedknapp>
                 <StatusLinje status={status} tittel="Opprettet sak" />
                 {errdata && errdata.status && <p>{errdata.message}</p>}
               </Nav.Column>
