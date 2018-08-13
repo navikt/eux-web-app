@@ -22,8 +22,9 @@ class Vedlegg extends Component {
     const {
       handleSubmit, sendSkjema, vedleggStatus, vedlegg, inntastetRinasaksnummer,
     } = this.props;
-    const responseVerdi = (vedlegg && vedlegg.vedleggID) ? <p>VedleggID: {vedlegg.vedleggID}</p> : null;
-    const venteSpinner = ['PENDING'].includes(vedleggStatus) ? <Nav.NavFrontendSpinner /> : null;
+    const responsLenke = vedlegg && vedlegg.url;
+    const visVenteSpinner = ['PENDING'].includes(vedleggStatus);
+
     return (
       <div className="vedlegg">
         <Nav.Container fluid>
@@ -32,18 +33,16 @@ class Vedlegg extends Component {
               <Nav.Column xs="6">
                 <Nav.Panel className="vedlegg__skjema">
                   <Nav.Fieldset legend="Vedleggs informasjon">
-                    <Nav.HjelpetekstBase id="journalPostID" type="under">Journalpost ID finner du i Gosys</Nav.HjelpetekstBase>
+                    <Nav.HjelpetekstBase id="journalPostID" type="hoyre">Journalpost ID finner du i Gosys</Nav.HjelpetekstBase>
                     <Skjema.Input feltNavn="journalpostID" label="JournalpostID" />
                     <Nav.HjelpetekstBase id="dokumentID" type="under">Dokument ID finner du i Gosys</Nav.HjelpetekstBase>
                     <Skjema.Input feltNavn="dokumentID" label="DokumentID" />
                     <DokumentSok inntastetRinasaksnummer={inntastetRinasaksnummer} />
                   </Nav.Fieldset>
                   <div className="vedlegg__submmit">
-                    <Nav.Hovedknapp onClick={handleSubmit(sendSkjema)}>Send vedlegg</Nav.Hovedknapp>
+                    <Nav.Hovedknapp onClick={handleSubmit(sendSkjema)} disabled={visVenteSpinner} spinner={visVenteSpinner}>Send vedlegg</Nav.Hovedknapp>
                   </div>
-                  {venteSpinner}
-                  {responseVerdi}
-                  <StatusLinje status={vedleggStatus} tittel="Vedlegget" />
+                  <StatusLinje status={vedleggStatus} url={responsLenke} tittel="Vedlegget" />
                 </Nav.Panel>
               </Nav.Column>
             </Nav.Row>
