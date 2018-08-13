@@ -30,17 +30,23 @@ class DokumentSok extends Component {
     searching: false,
   };
   sokEtterDokumenter = () => {
-    const { inntastetRinasaksnummer } = this.props;
+    const { inntastetRinasaksnummer, settRinaGyldighet, settRinaSjekket } = this.props;
     if (inntastetRinasaksnummer.length === 0) return;
     this.setState({ searching: true });
     API.Dokumenter.hent(inntastetRinasaksnummer).then(response => {
-      setTimeout(() => this.setState({
+      this.setState({
         searching: false,
         nyttSok: true,
         rinadokumenter: response,
-      }), 1000);
+      });
+
+      settRinaSjekket(true);
+      if (response.length > 0) {
+        settRinaGyldighet(true);
+      }
     });
   };
+
   inntastetRinaSaksnummerHarBlittEndret = () => {
     this.setState({ rinadokumenter: [] });
     this.setState({ nyttSok: false });
@@ -75,6 +81,8 @@ DokumentSok.propTypes = {
   searching: PT.bool,
   inntastetRinasaksnummer: PT.string,
   rinadokumenter: PT.array,
+  settRinaGyldighet: PT.func.isRequired,
+  settRinaSjekket: PT.func.isRequired,
 };
 DokumentSok.defaultProps = {
   searching: false,
@@ -85,5 +93,6 @@ DokumentSok.defaultProps = {
 const mapStateToProps = state => ({
   rinadokumenter: DokumenterSelectors.dokumenterSelector(state),
 });
+
 
 export default connect(mapStateToProps, null)(DokumentSok);

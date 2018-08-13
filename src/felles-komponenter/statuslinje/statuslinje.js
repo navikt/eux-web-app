@@ -15,7 +15,7 @@ const undertittelFraStatus = status => {
 const StatusLinje = ({ status, tittel, url }) => {
   if (['NOT_STARTED', 'PENDING'].includes(status)) { return null; }
   const type = status === 'OK' ? 'suksess' : 'stopp';
-  const urlLenke = url ? <Link to={url} className="vedlegg__lenke">Gå direkte til siden.</Link> : null;
+  const urlLenke = url ? <Link to={url} className="vedlegg__lenke">Gå direkte til Rina.</Link> : null;
 
   const statusTekst = status === 'OK' ? <div>{`${tittel} er opprettet.`} {urlLenke}</div> : `${tittel} ${undertittelFraStatus(status)}`;
 
