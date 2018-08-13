@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PT from 'prop-types';
-import { formValueSelector, reduxForm } from 'redux-form';
+import { change, formValueSelector, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 
 import * as Skjema from '../felles-komponenter/skjema';
@@ -20,10 +20,12 @@ class Vedlegg extends Component {
   };
   render() {
     const {
-      handleSubmit, sendSkjema, vedleggStatus, vedlegg, inntastetRinasaksnummer,
+      handleSubmit, sendSkjema, vedleggStatus, vedlegg, inntastetRinasaksnummer, rinadokumentID, settRinaGyldighet, settRinaSjekket, rinaNrErGyldig, rinaNrErSjekket,
     } = this.props;
-    const responseVerdi = (vedlegg && vedlegg.vedleggID) ? <p>VedleggID: {vedlegg.vedleggID}</p> : null;
-    const venteSpinner = ['PENDING'].includes(vedleggStatus) ? <Nav.NavFrontendSpinner /> : null;
+    const responsLenke = vedlegg && vedlegg.url;
+    const visVenteSpinner = ['PENDING'].includes(vedleggStatus);
+    const disableSendKnapp = !(rinaNrErGyldig && rinaNrErSjekket && rinadokumentID);
+
     return (
       <div className="vedlegg">
         <Nav.Container fluid>
@@ -32,18 +34,24 @@ class Vedlegg extends Component {
               <Nav.Column xs="6">
                 <Nav.Panel className="vedlegg__skjema">
                   <Nav.Fieldset legend="Vedleggs informasjon">
-                    <Nav.HjelpetekstBase id="journalPostID" type="under">Journalpost ID finner du i Gosys</Nav.HjelpetekstBase>
+                    <Nav.HjelpetekstBase id="journalPostID" type="hoyre">Journalpost ID finner du i Gosys</Nav.HjelpetekstBase>
                     <Skjema.Input feltNavn="journalpostID" label="JournalpostID" />
                     <Nav.HjelpetekstBase id="dokumentID" type="under">Dokument ID finner du i Gosys</Nav.HjelpetekstBase>
                     <Skjema.Input feltNavn="dokumentID" label="DokumentID" />
-                    <DokumentSok inntastetRinasaksnummer={inntastetRinasaksnummer} />
+                    <DokumentSok
+                      inntastetRinasaksnummer={inntastetRinasaksnummer}
+                      settRinaGyldighet={settRinaGyldighet}
+                      settRinaSjekket={settRinaSjekket}
+                    />
                   </Nav.Fieldset>
                   <div className="vedlegg__submmit">
-                    <Nav.Hovedknapp onClick={handleSubmit(sendSkjema)}>Send vedlegg</Nav.Hovedknapp>
+                    <Nav.Hovedknapp
+                      onClick={handleSubmit(sendSkjema)}
+                      disabled={disableSendKnapp || visVenteSpinner}
+                      spinner={visVenteSpinner}>Send vedlegg
+                    </Nav.Hovedknapp>
                   </div>
-                  {venteSpinner}
-                  {responseVerdi}
-                  <StatusLinje status={vedleggStatus} tittel="Vedlegget" />
+                  <StatusLinje status={vedleggStatus} url={responsLenke} tittel="Vedlegget" />
                 </Nav.Panel>
               </Nav.Column>
             </Nav.Row>
@@ -59,10 +67,14 @@ Vedlegg.propTypes = {
   sendSkjema: PT.func.isRequired,
   sedtyper: PT.arrayOf(MPT.Kodeverk),
   vedleggStatus: PT.string.isRequired,
+  rinaNrErGyldig: PT.bool,
+  rinaNrErSjekket: PT.bool,
   vedlegg: PT.object,
   rinasaksnummer: PT.string,
   inntastetRinasaksnummer: PT.string,
   rinadokumentID: PT.string,
+  settRinaGyldighet: PT.func.isRequired,
+  settRinaSjekket: PT.func.isRequired,
 };
 
 Vedlegg.defaultProps = {
@@ -71,6 +83,8 @@ Vedlegg.defaultProps = {
   rinasaksnummer: '',
   inntastetRinasaksnummer: '',
   rinadokumentID: '',
+  rinaNrErGyldig: false,
+  rinaNrErSjekket: false,
 };
 
 const skjemaSelector = formValueSelector('vedlegg');
@@ -81,10 +95,14 @@ const mapStateToProps = state => ({
   sedtyper: KodeverkSelectors.alleSEDtyperSelector(state),
   inntastetRinasaksnummer: skjemaSelector(state, 'rinasaksnummer'),
   rinadokumentID: skjemaSelector(state, 'rinadokumentID'),
+  rinaNrErGyldig: skjemaSelector(state, 'rinaNrErGyldig'),
+  rinaNrErSjekket: skjemaSelector(state, 'rinaNrErSjekket'),
 });
 
 const mapDispatchToProps = dispatch => ({
   sendSkjema: data => dispatch(RinavedleggOperations.sendVedlegg(data)),
+  settRinaGyldighet: erGyldig => dispatch(change('vedlegg', 'rinaNrErGyldig', erGyldig)),
+  settRinaSjekket: erSjekket => dispatch(change('vedlegg', 'rinaNrErSjekket', erSjekket)),
 });
 
 const journalpostValidation = journalpostID => {

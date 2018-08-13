@@ -8,6 +8,8 @@ import * as Skjema from '../felles-komponenter/skjema';
 import * as API from '../services/api';
 import { DokumenterSelectors } from '../ducks/dokumenter';
 
+import './dokumentsok.css';
+
 const yyyMMdd = dato => moment(dato).format('YYYY-MM-DD');
 
 const DokumentKort = ({ dokumenter }) => (
@@ -28,17 +30,23 @@ class DokumentSok extends Component {
     searching: false,
   };
   sokEtterDokumenter = () => {
-    const { inntastetRinasaksnummer } = this.props;
+    const { inntastetRinasaksnummer, settRinaGyldighet, settRinaSjekket } = this.props;
     if (inntastetRinasaksnummer.length === 0) return;
     this.setState({ searching: true });
     API.Dokumenter.hent(inntastetRinasaksnummer).then(response => {
-      setTimeout(() => this.setState({
+      this.setState({
         searching: false,
         nyttSok: true,
         rinadokumenter: response,
-      }), 1000);
+      });
+
+      settRinaSjekket(true);
+      if (response.length > 0) {
+        settRinaGyldighet(true);
+      }
     });
   };
+
   inntastetRinaSaksnummerHarBlittEndret = () => {
     this.setState({ rinadokumenter: [] });
     this.setState({ nyttSok: false });
@@ -50,7 +58,7 @@ class DokumentSok extends Component {
     const harIngenDokumenter = () => rinadokumenter && rinadokumenter.length === 0;
     const dokumentKort = harDokumenter() ? <DokumentKort dokumenter={rinadokumenter} /> : null;
     const sokeStatus = (nyttSok && harIngenDokumenter()) ? <p>Ingen dokumenter funnet</p> : null;
-    const venteSpinner = searching ? <Nav.NavFrontendSpinner /> : null;
+    const visVenteSpinner = searching;
     return (
       <div className="dokumentsok">
         <div className="dokumentsok__skjema">
@@ -61,8 +69,7 @@ class DokumentSok extends Component {
             feltNavn="rinasaksnummer"
             onKeyUp={inntastetRinaSaksnummerHarBlittEndret}
           />
-          <Nav.Knapp className="dokumentsok__knapp" onClick={sokEtterDokumenter}>SØK</Nav.Knapp>
-          {venteSpinner}
+          <Nav.Knapp className="dokumentsok__knapp" onClick={sokEtterDokumenter} spinner={visVenteSpinner}>SØK</Nav.Knapp>
         </div>
         {dokumentKort}
         {sokeStatus}
@@ -74,6 +81,8 @@ DokumentSok.propTypes = {
   searching: PT.bool,
   inntastetRinasaksnummer: PT.string,
   rinadokumenter: PT.array,
+  settRinaGyldighet: PT.func.isRequired,
+  settRinaSjekket: PT.func.isRequired,
 };
 DokumentSok.defaultProps = {
   searching: false,
@@ -84,5 +93,6 @@ DokumentSok.defaultProps = {
 const mapStateToProps = state => ({
   rinadokumenter: DokumenterSelectors.dokumenterSelector(state),
 });
+
 
 export default connect(mapStateToProps, null)(DokumentSok);
