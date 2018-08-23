@@ -7,8 +7,8 @@ import './forside.css';
 const Forside = () => (
   <div className="forside">
     <h3>Velkommen til EUX</h3>
-    <NAV.Lenkepanel href="/vedlegg">Legg ved vedlegg til SED</NAV.Lenkepanel>
     <NAV.Lenkepanel href="/opprett">Opprett sak</NAV.Lenkepanel>
+    <NAV.Lenkepanel href="/vedlegg">Legg ved vedlegg til SED</NAV.Lenkepanel>
   </div>
 );
 

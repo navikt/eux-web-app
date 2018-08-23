@@ -5514,6 +5514,10 @@ nav-frontend-lenker-style@^0.2.16:
   version "0.2.16"
   resolved "https://registry.yarnpkg.com/nav-frontend-lenker-style/-/nav-frontend-lenker-style-0.2.16.tgz#130e233529dabcaccd5f8ca6265fd1386b67f8fa"
 
+nav-frontend-lenker@^1.0.18:
+  version "1.0.18"
+  resolved "https://registry.yarnpkg.com/nav-frontend-lenker/-/nav-frontend-lenker-1.0.18.tgz#ff9cb78b160f7f6ce8fb46dfce370c908640423c"
+
 nav-frontend-lukknapp-style@^0.2.13:
   version "0.2.13"
   resolved "https://registry.yarnpkg.com/nav-frontend-lukknapp-style/-/nav-frontend-lukknapp-style-0.2.13.tgz#37ca3cbad7375dbb13747d33de341b9ab4a4802e"
