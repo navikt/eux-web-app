@@ -47,7 +47,7 @@ node {
     sh "${npm} config ls"
     sh "${npm} install"
 
-    semVer = sh(returnStdout: true, script: "node -pe \"require('./package.json').version\"")
+    semVer = sh(returnStdout: true, script: "node -pe \"require('./package.json').version\"").trim()
     echo("semver=${semVer}")
   }
 
