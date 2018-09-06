@@ -3,11 +3,12 @@ import jenkins.model.*
 
 properties([[$class: 'BuildDiscarderProperty', 
 			 strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '', artifactNumToKeepStr: '', 
-			            daysToKeepStr: '', numToKeepStr: '5']]]);
+			            daysToKeepStr: '', numToKeepStr: '5']]])
 
 node {
   def project = "navikt"
   def application = "eux-web-app"
+  def zipFile
 
   /* metadata */
   def buildVersion // major.minor.BUILD_NUMBER
@@ -43,7 +44,11 @@ node {
     echo('Step: npm install package depenencies')
     sh "${node} -v"
     sh "${npm} -v"
+    sh "${npm} config ls"
     sh "${npm} install"
+
+    semVer = sh(returnStdout: true, script: "node -pe \"require('./package.json').version\"")
+    echo("semver=${semVer}")
   }
 
   stage('Test') {
@@ -54,29 +59,20 @@ node {
   stage('Build') {
     echo('Build Web App')
 
-    semVer = sh(returnStdout: true, script: "node -pe \"require('./package.json').version\"")
-    echo("semver=${semVer}")
-
     sh(returnStdout: true, script: "${npm} run build")
-
-    def majorMinor = semVer.split("\\.").take(2).join('.')
-    buildVersion ="${majorMinor}.${BUILD_NUMBER}"
-    echo("buildVersion=${buildVersion}")
   }
 
   stage('Copy to pickup') {
-
-    if (scmVars.GIT_BRANCH.equalsIgnoreCase("develop")) {
-      def frontendDir = "/var/lib/jenkins/eux-web-app"
-      sh "rm -rf $frontendDir/*" // Clean the content, don't remove top folder
-      sh "cp -r build/*  $frontendDir"
-    }
-
+    def frontendDir = "/var/lib/jenkins/eux-web-app"
+    sh "rm -rf $frontendDir/*" // Clean the content, don't remove top folder
+    sh "cp -r build/* $frontendDir"
   }
 
   if (env.BRANCH_NAME == "develop") {
     stage('Deploy ZIP archive to Maven') {
-  	  def zipFile = "${application}-${buildVersion}.zip"
+      buildVersion ="${semVer}-${BUILD_NUMBER}"
+      echo("buildVersion=${buildVersion}")
+  	  zipFile = "${application}-${buildVersion}.zip"
       sh "zip -r ${zipFile} build/*"
 	  configFileProvider(
           [configFile(fileId: 'navMavenSettings', variable: 'MAVEN_SETTINGS')]) {
@@ -89,7 +85,22 @@ node {
       }
     } 
   } else {
-	echo "Skipping deployment to Maven, since this is not a main branch build."
+    def majorMinor = semVer.split("\\.").take(2).join('.')
+    def qualifier = "SNAPSHOT"
+    def snapshotVersion ="${majorMinor}-${qualifier}"
+    def snapshotVersionZipfile = "${application}-${snapshotVersion}.zip"
+    echo("snapshotVersionZipfile=${snapshotVersionZipfile}")
+    sh "mv ${zipFile} ${snapshotVersionZipfile}"
+
+    configFileProvider(
+      [configFile(fileId: 'navMavenSettings', variable: 'MAVEN_SETTINGS')]) {
+      sh """
+     	      mvn --settings ${MAVEN_SETTINGS} deploy:deploy-file -Dfile=${snapshotVersionZipfile} -DartifactId=${application} \
+	              -DgroupId=no.nav.eux -Dversion=${snapshotVersion} \
+	 	          -Ddescription='Eux-web-app JavaScript resources.' \
+		          -DrepositoryId=m2snapshot -Durl=http://maven.adeo.no/nexus/content/repositories/m2snapshot   
+          """
+    }
   }
 
 }
