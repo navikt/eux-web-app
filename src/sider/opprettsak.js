@@ -75,7 +75,10 @@ class OpprettSak extends Component {
       valgtSektor, valgteFamilieRelasjoner,
       settFnrSjekket, settFnrGyldighet,
       fnrErGyldig, fnrErSjekket,
+      opprettetSak,
     } = this.props;
+
+    const { rinasaksnummer, url: responsLenke } = opprettetSak;
 
     const { resettSokStatus } = this;
 
@@ -85,7 +88,7 @@ class OpprettSak extends Component {
       <div className="opprettsak">
         <form onSubmit={this.overrideDefaultSubmit}>
           <Nav.Container fluid>
-            <Nav.Row>
+            <Nav.Row className="">
               <Nav.Column xs="6">
                 <PersonSok
                   inntastetFnr={inntastetFnr}
@@ -95,7 +98,7 @@ class OpprettSak extends Component {
                 />
               </Nav.Column>
             </Nav.Row>
-            <Nav.Row>
+            <Nav.Row className="">
               <Nav.Column xs="10">
                 <div>
                   <Nav.Fieldset legend="Fagområde">
@@ -130,7 +133,7 @@ class OpprettSak extends Component {
             <Nav.Row className="opprettsak__statuslinje">
               <Nav.Column xs="10">
                 <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)} spinner={['PENDING'].includes(status)} disabled={['PENDING'].includes(status)}>Opprett sak i RINA</Nav.Hovedknapp>
-                <StatusLinje status={status} tittel="Opprettet sak" />
+                <StatusLinje status={status} url={responsLenke} tittel={`Saksnummer: ${rinasaksnummer}`} />
                 {errdata && errdata.status && <p>{errdata.message}</p>}
               </Nav.Column>
             </Nav.Row>
@@ -160,6 +163,10 @@ OpprettSak.propTypes = {
   status: PT.string,
   errdata: PT.object,
   valgteFamilieRelasjoner: PT.array,
+  opprettetSak: PT.shape({
+    rinasaksnummer: PT.string,
+    url: PT.string,
+  }),
 };
 
 OpprettSak.defaultProps = {
@@ -175,6 +182,7 @@ OpprettSak.defaultProps = {
   status: '',
   errdata: {},
   valgteFamilieRelasjoner: [],
+  opprettetSak: {},
 };
 
 const skjemaSelector = formValueSelector('opprettSak');
@@ -197,6 +205,7 @@ const mapStateToProps = state => ({
   valgteFamilieRelasjoner: skjemaSelector(state, 'tilleggsopplysninger.familierelasjoner'),
   status: RinasakSelectors.sakStatusSelector(state),
   errdata: RinasakSelectors.errorDataSakSelector(state),
+  opprettetSak: RinasakSelectors.sakSelector(state),
 });
 
 const mapDispatchToProps = dispatch => ({
