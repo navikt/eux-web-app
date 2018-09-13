@@ -24,18 +24,17 @@ moment.updateLocale('nb', {
 
 it('godtar alle tillatte datoformater', () => {
   const tillatteDatoer = [
-    {test: '010113', 'forvent': '01.01.2013'},
-    {test: '300113', 'forvent': '30.01.2013'},
-    {test: '060479', 'forvent': '06.04.1979'},
-    {test: '260479', 'forvent': '26.04.1979'},
-    {test: '26041979', 'forvent': '26.04.1979'},
-    {test: '26-04-79', 'forvent': '26.04.1979'},
-    {test: '01-01-79', 'forvent': '01.01.1979'},
-    {test: '26-04-1979', 'forvent': '26.04.1979'},
-    {test: '26-04-1979', 'forvent': '26.04.1979'},
-    {test: '1979-07-02', 'forvent': false},
-    {test: '29-02-17', 'forvent': false},
-    {test: '121979', 'forvent': false},
+    {test: '130101', 'forvent': '2013.01.01'},
+    {test: '130130', 'forvent': '2013.01.30'},
+    {test: '010101', 'forvent': '2001.01.01'},
+    {test: '790426', 'forvent': '1979.04.26'},
+    {test: '19790426', 'forvent': '1979.04.26'},
+    {test: '79-04-26', 'forvent': '1979.04.26'},
+    {test: '79-01-01', 'forvent': '1979.01.01'},
+    {test: '1979-04-26', 'forvent': '1979.04.26'},
+    {test: '02-03-1979', 'forvent': false},
+    {test: '17-29-02', 'forvent': false},
+    {test: '790230', 'forvent': false},
     {test: 'abcdef', 'forvent': false},
    ];
 
@@ -49,16 +48,28 @@ it('tolker årstall med 2 siffer riktig', () => {
   MockDate.set('1/1/2010');
 
   const tillatteDatoer = [
-    {test: `26-10-10`, 'forvent': `26.10.2010`},
-    {test: `26-10-11`, 'forvent': `26.10.1911`},
-    {test: `26-04-20`, 'forvent': `26.04.1920`},
-    {test: `26-04-30`, 'forvent': `26.04.1930`},
+    {test: `10-10-26`, 'forvent': `2010.10.26`},
+    {test: `11-10-26`, 'forvent': `1911.10.26`},
+    {test: `20-04-26`, 'forvent': `1920.04.26`},
+    {test: `30-04-03`, 'forvent': `1930.04.03`},
   ];
 
   tillatteDatoer.map(datoTest => {
     const vasketDato = vaskInputDato(datoTest.test);
     expect(vasketDato).toEqual(datoTest.forvent);
   });
+});
+
+it('håndterer skuddår korrekt', () => {
+  const tillatteDatoer = [
+    {test: '2016-02-29', 'forvent': '2016.02.29'},
+    {test: '2017-02-29', 'forvent': false},
+  ];
+
+  tillatteDatoer.map(datoTest => {
+    const vasketDato = vaskInputDato(datoTest.test);
+    expect(vasketDato).toEqual(datoTest.forvent);
+  })
 });
 
 it('normaliserer ikke dersom verdiene er forskjellige, dvs at brukeren fortsatt står i felt (focus)', () => {
@@ -77,15 +88,15 @@ it('normaliserer dersom begge verdiene er like (indikerer forlatt felt / blur fi
   expect(normaliserInputDato(verdi, forrigeVerdi)).not.toEqual(false);
 });
 
-it('formatterer datoen riktig til norsk format DD.MM.YYYY HH:mm:ss og med evt klokkeslett', () => {
+it('formatterer datoen riktig til format YYYY.MM.DD HH:mm:ss (tid er optional)', () => {
   const tillatteDatoer = [
-    {test: '2016-01-12', 'forvent': '12.01.2016', klokkeslett: false},
-    {test: '2017-12-01T20:58:01', 'forvent': '01.12.2017', klokkeslett: false},
-    {test: '2017-12-01T20:58:01', 'forvent': '01.12.2017 20:58', klokkeslett: true},
-    {test: '2017-12-01T01:08:01', 'forvent': '01.12.2017 01:08', klokkeslett: true},
-    {test: '01.02.1979', 'forvent': '01.02.1979', klokkeslett: false},
-    {test: '01.02.1979', 'forvent': '01.02.1979', klokkeslett: false},
-    {test: '12.02.2000 20:00:1', 'forvent': '12.02.2000 20:00', klokkeslett: true},
+    {test: '2016-01-12', 'forvent': '2016.01.12', klokkeslett: false},
+    {test: '2017-12-01T20:58:01', 'forvent': '2017.12.01', klokkeslett: false},
+    {test: '2017-12-01T20:58:01', 'forvent': '2017.12.01 20:58', klokkeslett: true},
+    {test: '2017-12-01T01:08:01', 'forvent': '2017.12.01 01:08', klokkeslett: true},
+    {test: '1979.01.02', 'forvent': '1979.01.02', klokkeslett: false},
+    {test: '1979.03.05', 'forvent': '1979.03.05', klokkeslett: false},
+    {test: '2000.02.12 20:00:1', 'forvent': '2000.02.12 20:00', klokkeslett: true},
   ];
 
   tillatteDatoer.forEach(datoTest => {
@@ -96,10 +107,10 @@ it('formatterer datoen riktig til norsk format DD.MM.YYYY HH:mm:ss og med evt kl
 
 it('formatterer norsk dato korrekt tilbake til maskinlesbar dato', () => {
   const tillatteDatoer = [
-    {test: '01.01.2018 10:34', tid: true, forvent: '2018-01-01T10:34:00'},
-    {test: '01.01.2018', tid: false, forvent: '2018-01-01'},
-    {test: '10.12.2018 10:34', tid: true, forvent: '2018-12-10T10:34:00'},
-    {test: '10.12.2018', tid: false, forvent: '2018-12-10'}
+    {test: '2018.01.01 10:34', tid: true, forvent: '2018-01-01T10:34:00'},
+    {test: '2018.01.01', tid: false, forvent: '2018-01-01'},
+    {test: '2018.12.10 10:34', tid: true, forvent: '2018-12-10T10:34:00'},
+    {test: '2018.04.29', tid: false, forvent: '2018-04-29'}
   ]
 
   tillatteDatoer.forEach(datoTest => {
