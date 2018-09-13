@@ -1,6 +1,8 @@
 import { doThenDispatch } from '../../services/utils';
 import * as Api from '../../services/api';
 
+import { formatterDatoTilISO } from '../../utils/dato';
+
 import * as Types from './types';
 
 /**
@@ -13,7 +15,12 @@ import * as Types from './types';
  */
 /* eslint import/prefer-default-export:"off" */
 export function sendSak(data) {
-  return doThenDispatch(() => Api.Rina.sendSak(data), {
+  /* Vask kjente datofelter slik at alle datoer sendes i formatet YYYY.MM.DD */
+  const vaskedeData = { ...data };
+  const { familierelasjoner } = vaskedeData.tilleggsopplysninger;
+  vaskedeData.tilleggsopplysninger.familierelasjoner = familierelasjoner.map(relasjon => ({ ...relasjon, fdato: formatterDatoTilISO(relasjon.fdato) }));
+
+  return doThenDispatch(() => Api.Rina.sendSak(vaskedeData), {
     OK: Types.OK,
     FEILET: Types.FEILET,
     PENDING: Types.PENDING,
