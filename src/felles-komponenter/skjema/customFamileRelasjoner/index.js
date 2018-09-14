@@ -6,12 +6,15 @@ import * as MPT from '../../../proptypes';
 import * as Nav from '../../../utils/navFrontend';
 
 import { vaskInputDato, formatterDatoTilNorsk } from '../../../utils/dato';
+import { kodeverkObjektTilTerm } from '../../../utils/kodeverk';
 
-import { PanelHeader } from '../../../felles-komponenter/panelHeader';
-import './familierelasjoner.css';
 import * as KodeverkSelectors from '../../../ducks/kodeverk/selectors';
 import { PersonSelectors } from '../../../ducks/person';
+
+import { PanelHeader } from '../../../felles-komponenter/panelHeader';
 import * as Ikoner from '../../../resources/images';
+
+import './familierelasjoner.css';
 
 const uuid = require('uuid/v4');
 
@@ -24,24 +27,31 @@ const ikonFraKjonn = kjoenn => {
 };
 
 const FamilieRelasjon = ({
-  kodeverk,
+  familierelasjonKodeverk,
+  landKodeverk,
   relasjon: familie, slettRelasjon,
 }) => {
   const {
-    fornavn, etternavn, fnr, fdato, kjoenn,
+    fornavn, etternavn, fnr, fdato, nasjonalitet, kjoenn,
   } = familie;
+
+  const rolleObjekt = familierelasjonKodeverk.find(item => item.kode === familie.rolle);
+  const nasjonalitetObjekt = landKodeverk.find(item => item.kode === nasjonalitet);
+
+  const rolleTerm = kodeverkObjektTilTerm(rolleObjekt);
+  const nasjonalitetTerm = kodeverkObjektTilTerm(nasjonalitetObjekt);
 
   const panelUndertittel = (
     <div className="panelheader__undertittel">
       <span>Fødselsnummer: {fnr}</span>
       <span>Fødselsdato: {formatterDatoTilNorsk(fdato)}</span>
+      {nasjonalitetObjekt && <span>Nasjonalitet: {nasjonalitetTerm}</span>}
     </div>
   );
 
-  const rolle = kodeverk.find(item => item.kode === familie.rolle).term;
   return (
     <Nav.Panel border className="personsok__kort">
-      <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn} - ${rolle}`} undertittel={panelUndertittel} />
+      <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn} - ${rolleTerm}`} undertittel={panelUndertittel} />
       <Nav.Knapp
         className="familierelasjoner__knapp familierelasjoner__knapp--slett"
         onClick={() => slettRelasjon(familie.fnr)}>
@@ -54,7 +64,8 @@ const FamilieRelasjon = ({
 
 FamilieRelasjon.propTypes = {
   indeks: PT.number.isRequired,
-  kodeverk: PT.arrayOf(MPT.Kodeverk).isRequired,
+  familierelasjonKodeverk: PT.arrayOf(MPT.Kodeverk).isRequired,
+  landKodeverk: PT.arrayOf(MPT.Kodeverk).isRequired,
   relasjon: MPT.FamilieRelasjon.isRequired,
   slettRelasjon: PT.func.isRequired,
 };
@@ -92,19 +103,19 @@ TPSRelasjonEnkelt.propTypes = {
 class CustomFamilieRelasjoner extends Component {
   state = {
     spesialRelasjon: {
-      fnr: '', fdato: '', rolle: '', kjoenn: '', fornavn: '', etternavn: '',
+      fnr: '', fdato: '', nasjonalitet: '', rolle: '', kjoenn: '', fornavn: '', etternavn: '',
     },
   };
 
   kanSpesialRelasjonLeggesTil = () => {
     const { spesialRelasjon } = this.state;
-    return (spesialRelasjon.fnr && spesialRelasjon.rolle && spesialRelasjon.kjoenn && spesialRelasjon.fornavn && spesialRelasjon.etternavn);
+    return (spesialRelasjon.fnr && spesialRelasjon.rolle && spesialRelasjon.nasjonalitet && spesialRelasjon.kjoenn && spesialRelasjon.fornavn && spesialRelasjon.etternavn);
   };
 
   resettSpesialRelasjonsFelter = () => {
     this.setState({
       spesialRelasjon: {
-        fnr: '', fdato: '', rolle: '', kjoenn: '', fornavn: '', etternavn: '',
+        fnr: '', fdato: '', nasjonalitet: '', rolle: '', kjoenn: '', fornavn: '', etternavn: '',
       },
     });
   };
@@ -118,6 +129,7 @@ class CustomFamilieRelasjoner extends Component {
       rolle: spesialRelasjon.rolle,
       fnr: spesialRelasjon.fnr,
       fdato: spesialRelasjon.fdato || '',
+      nasjonalitet: spesialRelasjon.nasjonalitet,
       fornavn: spesialRelasjon.fornavn,
       etternavn: spesialRelasjon.etternavn,
       kjoenn: spesialRelasjon.kjoenn,
@@ -130,8 +142,13 @@ class CustomFamilieRelasjoner extends Component {
   };
 
   leggTilTPSrelasjon = relasjon => {
+    /* Personer fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
     const { fields } = this.props;
-    return fields.push(relasjon);
+    const vasketRelasjon = {
+      ...relasjon,
+      nasjonalitet: 'NO',
+    };
+    return fields.push(vasketRelasjon);
   };
 
   oppdaterState = (felt, event) => {
@@ -154,7 +171,7 @@ class CustomFamilieRelasjoner extends Component {
 
   render() {
     const {
-      familierelasjonKodeverk, kjoennKodeverk, fields, tpsrelasjoner = [],
+      familierelasjonKodeverk, kjoennKodeverk, landKodeverk, fields, tpsrelasjoner = [],
     } = this.props;
     const valgteRelasjoner = fields.getAll();
 
@@ -170,7 +187,14 @@ class CustomFamilieRelasjoner extends Component {
     return (
       <div className="familerelasjoner">
         {valgteRelasjoner && valgteRelasjoner.map((relasjon, indeks) =>
-          (<FamilieRelasjon key={uuid()} kodeverk={familierelasjonKodeverk} relasjon={relasjon} indeks={indeks} slettRelasjon={this.slettRelasjon} />))
+          (<FamilieRelasjon
+            key={uuid()}
+            familierelasjonKodeverk={familierelasjonKodeverk}
+            landKodeverk={landKodeverk}
+            relasjon={relasjon}
+            indeks={indeks}
+            slettRelasjon={this.slettRelasjon}
+          />))
         }
 
         <Nav.Fieldset className="familierelasjoner__utland" legend="Fant følgende familiemedlemmer i TPS:">
@@ -185,7 +209,7 @@ class CustomFamilieRelasjoner extends Component {
                 <Nav.Input
                   label="Utenlandsk ID"
                   className="familierelasjoner__input"
-                  bredde="XXL"
+                  bredde="fullbredde"
                   value={this.state.spesialRelasjon.fnr}
                   onChange={event => this.oppdaterState('fnr', event)} />
               </Nav.Column>
@@ -193,7 +217,7 @@ class CustomFamilieRelasjoner extends Component {
                 <Nav.Input
                   label="Fornavn"
                   className="familierelasjoner__input"
-                  bredde="XXL"
+                  bredde="fullbredde"
                   value={this.state.spesialRelasjon.fornavn}
                   onChange={event => this.oppdaterState('fornavn', event)} />
               </Nav.Column>
@@ -201,13 +225,13 @@ class CustomFamilieRelasjoner extends Component {
                 <Nav.Input
                   label="Etternavn"
                   className="familierelasjoner__input"
-                  bredde="XXL"
+                  bredde="fullbredde"
                   value={this.state.spesialRelasjon.etternavn}
                   onChange={event => this.oppdaterState('etternavn', event)} />
               </Nav.Column>
             </Nav.Row>
             <Nav.Row>
-              <Nav.Column xs="4">
+              <Nav.Column xs="2">
                 <Nav.Select
                   label="Kjønn"
                   bredde="s"
@@ -218,11 +242,22 @@ class CustomFamilieRelasjoner extends Component {
                   {kjoennKodeverk && kjoennKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                 </Nav.Select>
               </Nav.Column>
+              <Nav.Column xs="2">
+                <Nav.Select
+                  label="Nasjonalitet"
+                  bredde="m"
+                  className="familierelasjoner__input"
+                  value={this.state.spesialRelasjon.nasjonalitet}
+                  onChange={event => this.oppdaterState('nasjonalitet', event)}>
+                  <option value="" disabled>- velg -</option>
+                  {landKodeverk && landKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+                </Nav.Select>
+              </Nav.Column>
               <Nav.Column xs="4">
                 <Nav.Input
-                  label="Fødselsdato"
+                  label="Fødselsdato (YYYY.MM.DD)"
                   className="familierelasjoner__input"
-                  bredde="XXL"
+                  bredde="S"
                   value={this.state.spesialRelasjon.fdato}
                   onChange={event => this.oppdaterState('fdato', event)}
                   onBlur={event => this.vaskInputDatoOgOppdater('fdato', event)} />
@@ -230,7 +265,7 @@ class CustomFamilieRelasjoner extends Component {
               <Nav.Column xs="4">
                 <Nav.Select
                   label="Familierelasjon"
-                  bredde="s"
+                  bredde="fullbredde"
                   className="familierelasjoner__input"
                   value={this.state.spesialRelasjon.rolle}
                   onChange={event => this.oppdaterState('rolle', event)}>
@@ -259,17 +294,20 @@ CustomFamilieRelasjoner.propTypes = {
   familierelasjonKodeverk: PT.arrayOf(MPT.Kodeverk),
   kjoennKodeverk: PT.arrayOf(MPT.Kodeverk),
   fields: PT.object.isRequired,
+  landKodeverk: PT.arrayOf(MPT.Kodeverk),
 };
 CustomFamilieRelasjoner.defaultProps = {
   tpsrelasjoner: [],
   familierelasjonKodeverk: [],
   kjoennKodeverk: [],
+  landKodeverk: [],
 };
 
 const mapStateToProps = state => ({
   tpsrelasjoner: PersonSelectors.familieRelasjonerSelector(state),
   familierelasjonKodeverk: KodeverkSelectors.familierelasjonerSelector(state),
   kjoennKodeverk: KodeverkSelectors.kjoennSelector(state),
+  landKodeverk: KodeverkSelectors.landkoderSelector(state),
 });
 
 export default connect(mapStateToProps)(CustomFamilieRelasjoner);

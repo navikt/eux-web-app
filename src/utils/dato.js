@@ -1,11 +1,13 @@
 import moment from 'moment';
 
 /**
+ * Denne hjelperen vasker til internasjonalt datoformat: YYYYMMDD
+
  * Saksbehandlere har forskjellig måte å taste inn datoer på. Denne funksjonen forsøker å
  * vaske / tolke datoene og returnere en korrekt formattert dato.
  *
- * Eksempel på mulige datoinput: '260479', '26041979', '26-04-79', '26-04-1979', '26/04/79', '26.04.1979' etc.
- * Datoer må være tastet inn i rekkefølgen DD MM ÅÅ(ÅÅ)
+ * Eksempel på mulige datoinput: '790426', '19790426', '17-04-26', '1979-04-26', '79/04/26', '1979.04.26' etc.
+ * Datoer må være tastet inn i rekkefølgen YYYYYMMDD
  * @param dato String Datoen som sakebehandleren har tastet inn.
  * @returns String Datoen som er vasket og stringified.
  */
@@ -22,26 +24,29 @@ const vaskInputDato = dato => {
 
   // Hvis datoen er mindre enn 6 tegn - dvs at dag, måned eller år er tastet med
   // kun 1 siffer ("51217" istedet for "051217"), returner ''.
-  if (newDate.length < 6) {
+  if (newDate.length < 6 || newDate.length > 8) {
     return false;
   }
 
-  // const dateArray = newDate.match(/(..?)/g);
-  const dateArray = [newDate.substr(0, 2), parseInt(newDate.substr(2, 2), 10), parseInt(newDate.substr(4), 10)];
+  const dateArray = newDate.length === 6 ?
+    [parseInt(newDate.substr(0, 2), 10), parseInt(newDate.substr(2, 2), 10), parseInt(newDate.substr(4, 2), 10)]
+    :
+    [parseInt(newDate.substr(0, 4), 10), parseInt(newDate.substr(4, 2), 10), parseInt(newDate.substr(6, 2), 10)];
 
   // Hvis kun de to siste årstallene er tastet inn, må vi gjøre en gjetning på hvilket århundre det
   // dreier seg om. Det er ikke sannsynlig at datoen gjelder for mer enn 10 år frem tid, så gjett da
   // på at det dreier se om århundre 19.
-  if (dateArray[2] < 100) {
+  if (dateArray[0] < 100) {
     const dagensAr = (new Date()).getFullYear();
-    const testAr = parseInt(`${dagensAr.toString().substr(0, 2)}${dateArray[2]}`, 10);
+    const testAr = parseInt(`${dagensAr.toString().substr(0, 2)}${dateArray[0]}`, 10);
     const guessCentury = (testAr - dagensAr > MAX_AR_FREM_I_TID) ? '19' : '20';
-    dateArray[2] = parseInt(`${guessCentury}${dateArray[2]}`, 10);
+    const twoDigitYear = dateArray[0] < 10 ? `0${dateArray[0]}` : dateArray[0];
+    dateArray[0] = parseInt(`${guessCentury}${twoDigitYear}`, 10);
   }
 
-  const returnDate = moment(dateArray.join(), 'DDMMYYYY').format('DD.MM.YYYY');
+  const returnDate = moment(dateArray.join(), 'YYYYMMDD').format('YYYY.MM.DD');
 
-  if (!moment(dateArray.join(), 'DDMMYYYY').isValid()) {
+  if (!moment(dateArray.join(), 'YYYYMMDD').isValid()) {
     return false;
   }
 
@@ -61,24 +66,24 @@ const normaliserInputDato = (verdi, forrigeVerdi) => {
   return ((verdi === forrigeVerdi) ? vasketDato : verdi);
 };
 
-/** Gjør en vurdering av innkomne datoformat og formatter til korrekt DD.MM.YYY, med eller uten tidspunkt.
+/** Gjør en vurdering av innkomne datoformat og formatter til korrekt YYYY.MM.DD, med eller uten tidspunkt.
  * Moment kunne ha vært benyttet direkte i hver komponent, men denne funksjonen tillater begge datoformater i tillegg
  * til å enklere åpne opp for dato med eller uten tidspunkt.
  *
  */
 function formatterDatoTilNorsk(dato, visTidspunkt) {
-  const inputFormat = ['YYYY-MM-DD', 'YYYY-MM-DDTHH:mm:ss', 'DD-MM-YYYY', 'DD-MM-YYYY HH:mm'];
-  const momentFormat = visTidspunkt ? 'DD.MM.YYYY HH:mm' : 'DD.MM.YYYY';
+  const inputFormat = ['YYYY-MM-DD', 'YYYY-MM-DDTHH:mm:ss', 'YYYY-MM-DD', 'YYYY-MM-DD HH:mm'];
+  const momentFormat = visTidspunkt ? 'YYYY.MM.DD HH:mm' : 'YYYY.MM.DD';
   const momentDato = moment(dato, inputFormat);
   return momentDato.isValid() ? momentDato.format(momentFormat) : '';
 }
 
-/** Forutsatt at datoen er validert korrekt norsk (DD.MM.YYYY HH:mm), formatter den til det maskinlesbare
+/** Forutsatt at datoen er validert korrekt (YYYY.MM.DD HH:mm), formatter den til det maskinlesbare
  * formatet "YYYY-MM-DDTHH:mm:ss"
  *
  */
 function formatterDatoTilISO(dato, tid = false) {
-  const inputFormat = ['DD.MM.YYYY HH:mm', 'DD.MM.YYYY'];
+  const inputFormat = ['YYYY.MM.DD HH:mm', 'YYYY.MM.DD'];
   const momentFormat = tid ? 'YYYY-MM-DDTHH:mm:ss' : 'YYYY-MM-DD';
   return moment(dato, inputFormat).format(momentFormat);
 }
