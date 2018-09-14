@@ -142,8 +142,13 @@ class CustomFamilieRelasjoner extends Component {
   };
 
   leggTilTPSrelasjon = relasjon => {
+    /* Personer fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
     const { fields } = this.props;
-    return fields.push(relasjon);
+    const vasketRelasjon = {
+      ...relasjon,
+      nasjonalitet: 'NO',
+    };
+    return fields.push(vasketRelasjon);
   };
 
   oppdaterState = (felt, event) => {
@@ -250,7 +255,7 @@ class CustomFamilieRelasjoner extends Component {
               </Nav.Column>
               <Nav.Column xs="4">
                 <Nav.Input
-                  label="Fødselsdato"
+                  label="Fødselsdato (YYYY.MM.DD)"
                   className="familierelasjoner__input"
                   bredde="S"
                   value={this.state.spesialRelasjon.fdato}
