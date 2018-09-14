@@ -7,11 +7,12 @@ import * as MPT from '../proptypes/';
 import * as Nav from '../utils/navFrontend';
 import * as Skjema from '../felles-komponenter/skjema';
 
+import { KodeverkSelectors } from '../ducks/kodeverk';
+import { RinasakOperations, RinasakSelectors } from '../ducks/rinasak';
+
 import { StatusLinje } from '../felles-komponenter/statuslinje';
 import CustomFamilieRelasjoner from '../felles-komponenter/skjema/customFamileRelasjoner';
-import { KodeverkSelectors } from '../ducks/kodeverk';
 import PersonSok from './personsok';
-import { RinasakOperations, RinasakSelectors } from '../ducks/rinasak';
 
 import './opprettsak.css';
 
