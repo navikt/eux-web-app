@@ -1,3 +1,7 @@
+/*
+import { CustomFamilieRelasjoner } from './CustomFamilieRelasjoner';
+export default CustomFamilieRelasjoner;
+*/
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PT from 'prop-types';
@@ -6,69 +10,18 @@ import * as MPT from '../../../proptypes';
 import * as Nav from '../../../utils/navFrontend';
 
 import { vaskInputDato, formatterDatoTilNorsk } from '../../../utils/dato';
-import { kodeverkObjektTilTerm } from '../../../utils/kodeverk';
 
 import * as KodeverkSelectors from '../../../ducks/kodeverk/selectors';
 import { PersonSelectors } from '../../../ducks/person';
 
 import { PanelHeader } from '../../../felles-komponenter/panelHeader';
-import * as Ikoner from '../../../resources/images';
+
+import { IkonFraKjonn } from './IkonFraKjonn';
+import { FamilieRelasjon } from './FamilieRelasjon';
 
 import './familierelasjoner.css';
 
 const uuid = require('uuid/v4');
-
-const ikonFraKjonn = kjoenn => {
-  switch (kjoenn) {
-    case 'K': { return Ikoner.Kvinne; }
-    case 'M': { return Ikoner.Mann; }
-    default: { return Ikoner.Ukjentkjoenn; }
-  }
-};
-
-const FamilieRelasjon = ({
-  familierelasjonKodeverk,
-  landKodeverk,
-  relasjon: familie, slettRelasjon,
-}) => {
-  const {
-    fornavn, etternavn, fnr, fdato, nasjonalitet, kjoenn,
-  } = familie;
-
-  const rolleObjekt = familierelasjonKodeverk.find(item => item.kode === familie.rolle);
-  const nasjonalitetObjekt = landKodeverk.find(item => item.kode === nasjonalitet);
-
-  const rolleTerm = kodeverkObjektTilTerm(rolleObjekt);
-  const nasjonalitetTerm = kodeverkObjektTilTerm(nasjonalitetObjekt);
-
-  const panelUndertittel = (
-    <div className="panelheader__undertittel">
-      <span>Fødselsnummer: {fnr}</span>
-      <span>Fødselsdato: {formatterDatoTilNorsk(fdato)}</span>
-      {nasjonalitetObjekt && <span>Nasjonalitet: {nasjonalitetTerm}</span>}
-    </div>
-  );
-
-  return (
-    <Nav.Panel border className="personsok__kort">
-      <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn} - ${rolleTerm}`} undertittel={panelUndertittel} />
-      <Nav.Knapp
-        className="familierelasjoner__knapp familierelasjoner__knapp--slett"
-        onClick={() => slettRelasjon(familie.fnr)}>
-        <Nav.Ikon kind="trashcan" size="20" className="familierelasjoner__knapp__ikon" />
-        <div className="familierelasjoner__knapp__label">Fjern</div>
-      </Nav.Knapp>
-    </Nav.Panel>
-  );
-};
-
-FamilieRelasjon.propTypes = {
-  indeks: PT.number.isRequired,
-  familierelasjonKodeverk: PT.arrayOf(MPT.Kodeverk).isRequired,
-  landKodeverk: PT.arrayOf(MPT.Kodeverk).isRequired,
-  relasjon: MPT.FamilieRelasjon.isRequired,
-  slettRelasjon: PT.func.isRequired,
-};
 
 const TPSRelasjonEnkelt = ({ kodeverk, relasjon, leggTilTPSrelasjon }) => {
   const {
@@ -85,7 +38,7 @@ const TPSRelasjonEnkelt = ({ kodeverk, relasjon, leggTilTPSrelasjon }) => {
 
   return (
     <Nav.Panel border className="personsok__kort">
-      <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn} - ${rolle}`} undertittel={panelUndertittel} />
+      <PanelHeader ikon={IkonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn} - ${rolle}`} undertittel={panelUndertittel} />
       <Nav.Knapp onClick={() => leggTilTPSrelasjon(relasjon)} className="familierelasjoner__knapp">
         <Nav.Ikon kind="tilsette" size="20" className="familierelasjoner__knapp__ikon" />
         <div className="familierelasjoner__knapp__label">Legg til</div>
