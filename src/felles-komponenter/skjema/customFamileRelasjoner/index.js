@@ -31,7 +31,10 @@ class CustomFamilieRelasjoner extends Component {
 
   kanSpesialRelasjonLeggesTil = () => {
     const { spesialRelasjon } = this.state;
-    return (spesialRelasjon.fnr && spesialRelasjon.rolle && spesialRelasjon.nasjonalitet && spesialRelasjon.kjoenn && spesialRelasjon.fornavn && spesialRelasjon.etternavn);
+    const {
+      fnr, rolle, nasjonalitet, kjoenn, fornavn, etternavn,
+    } = spesialRelasjon;
+    return (fnr && rolle && nasjonalitet && kjoenn && fornavn && etternavn);
   };
 
   resettSpesialRelasjonsFelter = () => {
