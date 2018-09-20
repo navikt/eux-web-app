@@ -18,7 +18,7 @@ import './familierelasjoner.css';
 
 const uuid = require('uuid/v4');
 
-class CustomFamilieRelasjoner extends Component {
+class FamilieRelasjonController extends Component {
   state = {
     spesialRelasjon: {
       fnr: '', fdato: '', nasjonalitet: '', rolle: '', kjoenn: '', fornavn: '', etternavn: '',
@@ -139,14 +139,14 @@ class CustomFamilieRelasjoner extends Component {
   }
 }
 
-CustomFamilieRelasjoner.propTypes = {
+FamilieRelasjonController.propTypes = {
   tpsrelasjoner: PT.arrayOf(MPT.FamilieRelasjon),
   familierelasjonKodeverk: PT.arrayOf(MPT.Kodeverk),
   kjoennKodeverk: PT.arrayOf(MPT.Kodeverk),
   fields: PT.object.isRequired,
   landKodeverk: PT.arrayOf(MPT.Kodeverk),
 };
-CustomFamilieRelasjoner.defaultProps = {
+FamilieRelasjonController.defaultProps = {
   tpsrelasjoner: [],
   familierelasjonKodeverk: [],
   kjoennKodeverk: [],
@@ -160,4 +160,4 @@ const mapStateToProps = state => ({
   landKodeverk: KodeverkSelectors.landkoderSelector(state),
 });
 
-export default connect(mapStateToProps)(CustomFamilieRelasjoner);
+export default connect(mapStateToProps)(FamilieRelasjonController);
