@@ -6,7 +6,7 @@ import { formatterDatoTilNorsk } from '../../../utils/dato';
 import * as Nav from '../../../utils/navFrontend';
 import PanelHeader from '../../panelHeader/panelHeader';
 import * as MPT from '../../../proptypes';
-import { IkonFraKjonn } from './IkonFraKjonn';
+import { IkonFraKjonn } from '../../IkonFraKjonn';
 
 const FamilieRelasjonPanel = ({
   familierelasjonKodeverk,

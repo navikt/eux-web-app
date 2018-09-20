@@ -1,4 +1,4 @@
-import * as Ikoner from '../../../resources/images';
+import * as Ikoner from '../resources/images/index';
 
 export const IkonFraKjonn = kjoenn => {
   switch (kjoenn) {

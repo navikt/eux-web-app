@@ -5,21 +5,14 @@ import PT from 'prop-types';
 import * as MPT from '../proptypes/';
 import * as Nav from '../utils/navFrontend';
 import * as Skjema from '../felles-komponenter/skjema';
-import * as Ikoner from '../resources/images';
 import { PersonOperations, PersonSelectors } from '../ducks/person';
 import { PanelHeader } from '../felles-komponenter/panelHeader';
 import { StatusLinje } from '../felles-komponenter/statuslinje';
+import { IkonFraKjonn } from '../felles-komponenter/IkonFraKjonn';
 
 import './personsok.css';
 import { formatterDatoTilNorsk } from '../utils/dato';
 
-const ikonFraKjonn = kjoenn => {
-  switch (kjoenn) {
-    case 'K': { return Ikoner.Kvinne; }
-    case 'M': { return Ikoner.Mann; }
-    default: { return Ikoner.Ukjentkjoenn; }
-  }
-};
 
 const PersonKort = ({ person }) => {
   const {
@@ -36,7 +29,7 @@ const PersonKort = ({ person }) => {
   return (
     <div>
       <Nav.Panel className="personsok__kort">
-        <PanelHeader ikon={ikonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn}`} undertittel={panelUndertittel} />
+        <PanelHeader ikon={IkonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn}`} undertittel={panelUndertittel} />
       </Nav.Panel>
     </div>
   );

@@ -4,7 +4,7 @@ import PT from 'prop-types';
 import { formatterDatoTilNorsk } from '../../../utils/dato';
 import * as Nav from '../../../utils/navFrontend';
 import PanelHeader from '../../panelHeader/panelHeader';
-import { IkonFraKjonn } from './IkonFraKjonn';
+import { IkonFraKjonn } from '../../IkonFraKjonn';
 import * as MPT from '../../../proptypes';
 
 const AnnenRelatertTPSPerson = ({ person, leggTilTPSrelasjon }) => {
