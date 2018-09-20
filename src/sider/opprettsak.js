@@ -11,7 +11,7 @@ import { KodeverkSelectors } from '../ducks/kodeverk';
 import { RinasakOperations, RinasakSelectors } from '../ducks/rinasak';
 
 import { StatusLinje } from '../felles-komponenter/statuslinje';
-import FamilieRelasjoner from '../felles-komponenter/skjema/customFamileRelasjoner';
+import FamilieRelasjonsComponent from '../felles-komponenter/skjema/customFamileRelasjoner';
 import PersonSok from './personsok';
 
 import './opprettsak.css';
@@ -112,7 +112,7 @@ class OpprettSak extends Component {
                     </Skjema.Select>
                   </Nav.Fieldset>
                 </div>
-                {valgtSektor.includes('FB') && <FamilieRelasjoner relasjoner={valgteFamilieRelasjoner} />}
+                {valgtSektor.includes('FB') && <FamilieRelasjonsComponent relasjoner={valgteFamilieRelasjoner} />}
               </Nav.Column>
             </Nav.Row>
             <Nav.Row className="opprettsak__statuslinje">

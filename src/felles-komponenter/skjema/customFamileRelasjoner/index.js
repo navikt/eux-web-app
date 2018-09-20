@@ -1,3 +1,3 @@
-import FamileRelasjoner from './FamilieRelasjoner';
+import FamilieRelasjonsComponent from './FamilieRelasjonsComponent';
 
-export default FamileRelasjoner;
+export default FamilieRelasjonsComponent;

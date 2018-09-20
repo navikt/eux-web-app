@@ -6,7 +6,7 @@ import * as MPT from '../../../proptypes/';
 import * as Nav from '../../../utils/navFrontend';
 import CustomFamilieRelasjoner from './CustomFamilieRelasjoner';
 
-const FamilieRelasjoner = ({ relasjoner }) => (
+const FamilieRelasjonsComponent = ({ relasjoner }) => (
   <Nav.Panel border>
     <Nav.Fieldset legend="Familiemedlemmer SEDen angår:" className="familieRelasjoner">
       <div className="familieRelasjoner__liste">
@@ -16,11 +16,11 @@ const FamilieRelasjoner = ({ relasjoner }) => (
     </Nav.Fieldset>
   </Nav.Panel>
 );
-FamilieRelasjoner.propTypes = {
+FamilieRelasjonsComponent.propTypes = {
   relasjoner: PT.arrayOf(MPT.FamilieRelasjon),
 };
-FamilieRelasjoner.defaultProps = {
+FamilieRelasjonsComponent.defaultProps = {
   relasjoner: [],
 };
 
-export default FamilieRelasjoner;
+export default FamilieRelasjonsComponent;
