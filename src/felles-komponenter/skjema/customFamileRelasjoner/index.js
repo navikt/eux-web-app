@@ -1,3 +1,3 @@
-import CustomFamilieRelasjoner from './CustomFamilieRelasjoner';
+import FamileRelasjoner from './FamilieRelasjoner';
 
-export default CustomFamilieRelasjoner;
+export default FamileRelasjoner;
