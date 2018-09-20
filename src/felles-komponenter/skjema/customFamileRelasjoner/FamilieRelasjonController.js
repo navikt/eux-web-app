@@ -10,7 +10,7 @@ import { vaskInputDato } from '../../../utils/dato';
 import * as KodeverkSelectors from '../../../ducks/kodeverk/selectors';
 import { PersonSelectors } from '../../../ducks/person';
 
-import { FamilieRelasjon } from './FamilieRelasjon';
+import { FamilieRelasjonPanel } from './FamilieRelasjonPanel';
 import { FamilieRelasjonUtland } from './FamilieRelasjonUtland';
 import { TPSRelasjonEnkelt } from './TPSRelasjonEnkelt';
 
@@ -108,7 +108,7 @@ class FamilieRelasjonController extends Component {
     return (
       <div className="familerelasjoner">
         {valgteRelasjoner && valgteRelasjoner.map((relasjon, indeks) =>
-          (<FamilieRelasjon
+          (<FamilieRelasjonPanel
             key={uuid()}
             familierelasjonKodeverk={familierelasjonKodeverk}
             landKodeverk={landKodeverk}

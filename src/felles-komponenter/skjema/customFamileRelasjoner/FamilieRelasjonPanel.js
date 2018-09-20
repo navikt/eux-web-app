@@ -8,7 +8,7 @@ import PanelHeader from '../../panelHeader/panelHeader';
 import * as MPT from '../../../proptypes';
 import { IkonFraKjonn } from './IkonFraKjonn';
 
-const FamilieRelasjon = ({
+const FamilieRelasjonPanel = ({
   familierelasjonKodeverk,
   landKodeverk,
   relasjon: familie, slettRelasjon,
@@ -44,7 +44,7 @@ const FamilieRelasjon = ({
   );
 };
 
-FamilieRelasjon.propTypes = {
+FamilieRelasjonPanel.propTypes = {
   indeks: PT.number.isRequired,
   familierelasjonKodeverk: PT.arrayOf(MPT.Kodeverk).isRequired,
   landKodeverk: PT.arrayOf(MPT.Kodeverk).isRequired,
@@ -52,4 +52,4 @@ FamilieRelasjon.propTypes = {
   slettRelasjon: PT.func.isRequired,
 };
 
-export { FamilieRelasjon };
+export { FamilieRelasjonPanel };
