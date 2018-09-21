@@ -68,39 +68,40 @@ node {
     sh "cp -r build/* $frontendDir"
   }
 
-  if (env.BRANCH_NAME == "develop") {
-    stage('Deploy ZIP archive to Maven') {
-      buildVersion ="${semVer}-${BUILD_NUMBER}"
-      echo("buildVersion=${buildVersion}")
-  	  zipFile = "${application}-${buildVersion}.zip"
-      sh "zip -r ${zipFile} build/*"
-	  configFileProvider(
-          [configFile(fileId: 'navMavenSettings', variable: 'MAVEN_SETTINGS')]) {
-          sh """
+  stage('Deploy ZIP archive to Maven') {
+    buildVersion ="${semVer}-${BUILD_NUMBER}"
+    echo("buildVersion=${buildVersion}")
+    zipFile = "${application}-${buildVersion}.zip"
+    sh "zip -r ${zipFile} build/*"
+
+    if (env.BRANCH_NAME == "develop") {
+      configFileProvider(
+        [configFile(fileId: 'navMavenSettings', variable: 'MAVEN_SETTINGS')]) {
+        sh """
      	      mvn --settings ${MAVEN_SETTINGS} deploy:deploy-file -Dfile=${zipFile} -DartifactId=${application} \
 	              -DgroupId=no.nav.eux -Dversion=${buildVersion} \
 	 	          -Ddescription='Eux-web-app JavaScript resources.' \
 		          -DrepositoryId=m2internal -Durl=http://maven.adeo.no/nexus/content/repositories/m2internal   
           """
       }
-    } 
-  } else {
-    def majorMinor = semVer.split("\\.").take(2).join('.')
-    def qualifier = "SNAPSHOT"
-    def snapshotVersion ="${majorMinor}-${qualifier}"
-    def snapshotVersionZipfile = "${application}-${snapshotVersion}.zip"
-    echo("snapshotVersionZipfile=${snapshotVersionZipfile}")
-    sh "mv ${zipFile} ${snapshotVersionZipfile}"
+    }
+    else {
+      def majorMinor = semVer.split("\\.").take(2).join('.')
+      def qualifier = "SNAPSHOT"
+      def snapshotVersion ="${majorMinor}-${qualifier}"
+      def snapshotVersionZipfile = "${application}-${snapshotVersion}.zip"
+      echo("snapshotVersionZipfile=${snapshotVersionZipfile}")
+      sh "mv ${zipFile} ${snapshotVersionZipfile}"
 
-    configFileProvider(
-      [configFile(fileId: 'navMavenSettings', variable: 'MAVEN_SETTINGS')]) {
-      sh """
+      configFileProvider(
+        [configFile(fileId: 'navMavenSettings', variable: 'MAVEN_SETTINGS')]) {
+        sh """
      	      mvn --settings ${MAVEN_SETTINGS} deploy:deploy-file -Dfile=${snapshotVersionZipfile} -DartifactId=${application} \
 	              -DgroupId=no.nav.eux -Dversion=${snapshotVersion} \
 	 	          -Ddescription='Eux-web-app JavaScript resources.' \
 		          -DrepositoryId=m2snapshot -Durl=http://maven.adeo.no/nexus/content/repositories/m2snapshot   
           """
+      }
     }
   }
-
 }
