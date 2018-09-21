@@ -10,13 +10,14 @@ import * as API from '../../../services/api';
 
 const uuid = require('uuid/v4');
 
-
 const PersonSokResultat = props => {
   const {
-    kjoenn, fornavn, etternavn, fnr, fdato, familierelasjon,
-  } = props.person;
+    person, familierelasjonKodeverk, leggTilHandler, oppdaterFamilierelajon,
+  } = props;
 
-  const { leggTilHandler, familierelasjonKodeverk, oppdaterFamilierelajon } = props;
+  const {
+    kjoenn, fornavn, etternavn, fnr, fdato, rolle,
+  } = person;
 
   const panelUndertittel = (
     <div className="panelheader__undertittel">
@@ -25,7 +26,6 @@ const PersonSokResultat = props => {
     </div>
   );
 
-
   return (
     <Nav.Panel border className="personsok__kort">
       <PanelHeader ikon={IkonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn}`} undertittel={panelUndertittel} />
@@ -33,7 +33,7 @@ const PersonSokResultat = props => {
         label="Familierelasjon"
         bredde="fullbredde"
         className="familierelasjoner__input"
-        value={familierelasjon}
+        value={rolle}
         onChange={oppdaterFamilierelajon}>
         <option value="" disabled>- velg -</option>
         {familierelasjonKodeverk && familierelasjonKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
@@ -43,20 +43,28 @@ const PersonSokResultat = props => {
         <div className="familierelasjoner__knapp__label">Legg til</div>
       </Nav.Knapp>
     </Nav.Panel>
-    );
-}
-
+  );
+};
+PersonSokResultat.propTypes = {
+  person: MPT.Person.isRequired,
+  familierelasjonKodeverk: PT.arrayOf(MPT.Kodeverk).isRequired,
+  leggTilHandler: PT.func.isRequired,
+  oppdaterFamilierelajon: PT.func.isRequired,
+};
 
 class AnnenRelatertTPSPerson extends Component {
-  // 3. La saksbehandler oppgi relasjon
-  // 4. Dispatche til redux (hele objektet)
-
-  state = { sok: '', person: null }
+  state = { sok: '', person: null };
 
   sokEtterFnr = () => {
     const { sok } = this.state;
     API.Personer.hentPerson(sok).then(response => {
-      this.setState({ person: response });
+      const {
+        kjoenn, fornavn, etternavn, fnr, fdato,
+      } = response; // Remove relasjoner: []
+      const person = {
+        kjoenn, fornavn, etternavn, fnr, fdato,
+      };
+      this.setState({ person });
     });
   };
 
@@ -78,7 +86,7 @@ class AnnenRelatertTPSPerson extends Component {
     const { person } = this.state;
     const { familierelasjonKodeverk } = this.props;
 
-    const sokefelt = <div><Nav.Input label="Fødsels eller dnr" value={this.state.sok} onChange={this.updateSok} /><Nav.Knapp onClick={sokEtterFnr}>Søk</Nav.Knapp></div>
+    const sokefelt = <div><Nav.Input label="Fødsels eller dnr" value={this.state.sok} onChange={this.updateSok} /><Nav.Knapp onClick={sokEtterFnr}>Søk</Nav.Knapp></div>;
 
     return (
       <div>
@@ -90,9 +98,12 @@ class AnnenRelatertTPSPerson extends Component {
     );
   }
 }
-
 AnnenRelatertTPSPerson.propTypes = {
+  person: MPT.Person,
+  familierelasjonKodeverk: PT.arrayOf(MPT.Kodeverk).isRequired,
   leggTilTPSrelasjon: PT.func.isRequired,
 };
-
+AnnenRelatertTPSPerson.defaultProps = {
+  person: null,
+};
 export { AnnenRelatertTPSPerson };
