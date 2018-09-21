@@ -24,6 +24,10 @@ class FamilieRelasjonController extends Component {
     spesialRelasjon: {
       fnr: '', fdato: '', nasjonalitet: '', rolle: '', kjoenn: '', fornavn: '', etternavn: '',
     },
+    ui: {
+      visRelatertTPS: false,
+      visRelatertUtland: false,
+    },
   };
 
   kanSpesialRelasjonLeggesTil = () => {
@@ -92,6 +96,10 @@ class FamilieRelasjonController extends Component {
     fields.remove(index);
   };
 
+  visSkjulRelatertTPS = () => {
+    this.setState({ ui: { ...this.state.ui, visRelatertTPS: !this.state.ui.visRelatertTPS } });
+  }
+
   render() {
     const {
       familierelasjonKodeverk, kjoennKodeverk, landKodeverk, fields, tpsrelasjoner,
@@ -126,7 +134,7 @@ class FamilieRelasjonController extends Component {
           { !tpsrelasjoner && <Nav.Panel>(Ingen familierelasjoner funnet i TPS)</Nav.Panel> }
         </Nav.Fieldset>
 
-        <FamilieRelasjonUtland
+        { this.state.ui.visRelatertUtland && <FamilieRelasjonUtland
           spesialRelasjon={this.state.spesialRelasjon}
           oppdaterState={this.oppdaterState}
           kjoennKodeverk={kjoennKodeverk}
@@ -135,9 +143,10 @@ class FamilieRelasjonController extends Component {
           leggTilSpesialRelasjon={this.leggTilSpesialRelasjon}
           vaskInputDatoOgOppdater={this.vaskInputDatoOgOppdater}
           kanSpesialRelasjonLeggesTil={this.kanSpesialRelasjonLeggesTil}
-        />
+        />}
         <h2>TPS person uten relasjon</h2>
-        <AnnenRelatertTPSPerson leggTilTPSrelasjon={this.leggTilTPSrelasjon} familierelasjonKodeverk={familierelasjonKodeverk} />
+        <Nav.Knapp onClick={this.visSkjulRelatertTPS} >+ Søk etter fnr /dnr </Nav.Knapp>
+        { this.state.ui.visRelatertTPS && <AnnenRelatertTPSPerson leggTilTPSrelasjon={this.leggTilTPSrelasjon} familierelasjonKodeverk={familierelasjonKodeverk} /> }
       </div>
     );
   }
