@@ -70,6 +70,7 @@ class FamilieRelasjonController extends Component {
       ...relasjon,
       nasjonalitet: 'NO',
     };
+    console.log(vasketRelasjon);
     return fields.push(vasketRelasjon);
   };
 
@@ -106,13 +107,6 @@ class FamilieRelasjonController extends Component {
       );
     }, []);
 
-    const annenPerson = {
-      fnr: '02026100715',
-      fdato: '1961-02-02',
-      fornavn: 'STOR',
-      etternavn: 'BLYANT',
-      kjoenn: 'M',
-    };
     return (
       <div className="familerelasjoner">
         {valgteRelasjoner && valgteRelasjoner.map((relasjon, indeks) =>
@@ -143,7 +137,7 @@ class FamilieRelasjonController extends Component {
           kanSpesialRelasjonLeggesTil={this.kanSpesialRelasjonLeggesTil}
         />
         <h2>TPS person uten relasjon</h2>
-        <AnnenRelatertTPSPerson person={annenPerson} leggTilTPSrelasjon={this.leggTilTPSrelasjon} />
+        <AnnenRelatertTPSPerson leggTilTPSrelasjon={this.leggTilTPSrelasjon} familierelasjonKodeverk={familierelasjonKodeverk} />
       </div>
     );
   }
