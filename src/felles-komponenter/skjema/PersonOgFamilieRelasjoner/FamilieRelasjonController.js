@@ -118,7 +118,7 @@ class FamilieRelasjonController extends Component {
     }, []);
 
     return (
-      <div className="familerelasjoner">
+      <div className="familierelasjoner">
         {valgteRelasjoner && valgteRelasjoner.map((relasjon, indeks) =>
           (<FamilieRelasjonPanel
             key={uuid()}
