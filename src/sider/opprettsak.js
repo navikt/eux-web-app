@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, formValueSelector, clearAsyncError, stopSubmit, change, FieldArray } from 'redux-form';
+import { reduxForm, formValueSelector, clearAsyncError, stopSubmit, change } from 'redux-form';
 import PT from 'prop-types';
 
 import * as MPT from '../proptypes/';
@@ -11,29 +11,12 @@ import { KodeverkSelectors } from '../ducks/kodeverk';
 import { RinasakOperations, RinasakSelectors } from '../ducks/rinasak';
 
 import { StatusLinje } from '../felles-komponenter/statuslinje';
-import CustomFamilieRelasjoner from '../felles-komponenter/skjema/customFamileRelasjoner';
+import FamilieRelasjonsComponent from '../felles-komponenter/skjema/PersonOgFamilieRelasjoner';
 import PersonSok from './personsok';
 
 import './opprettsak.css';
 
 const uuid = require('uuid/v4');
-
-const FamilieRelasjoner = ({ relasjoner }) => (
-  <Nav.Panel border>
-    <Nav.Fieldset legend="Familiemedlemmer SEDen angår:" className="familieRelasjoner">
-      <div className="familieRelasjoner__liste">
-        {relasjoner.length === 0 && <Nav.Panel className="familieRelasjoner__liste__tom">(Ingen familiemedlemmer er valgt. Velg fra listen nedenfor)</Nav.Panel>}
-        <FieldArray name="tilleggsopplysninger.familierelasjoner" component={CustomFamilieRelasjoner} />
-      </div>
-    </Nav.Fieldset>
-  </Nav.Panel>
-);
-FamilieRelasjoner.propTypes = {
-  relasjoner: PT.arrayOf(MPT.FamilieRelasjon),
-};
-FamilieRelasjoner.defaultProps = {
-  relasjoner: [],
-};
 
 class OpprettSak extends Component {
   skjemaSubmit = values => {
@@ -128,7 +111,7 @@ class OpprettSak extends Component {
                     </Skjema.Select>
                   </Nav.Fieldset>
                 </div>
-                {valgtSektor.includes('FB') && <FamilieRelasjoner relasjoner={valgteFamilieRelasjoner} />}
+                {valgtSektor.includes('FB') && <FamilieRelasjonsComponent relasjoner={valgteFamilieRelasjoner} />}
               </Nav.Column>
             </Nav.Row>
             <Nav.Row className="opprettsak__statuslinje">
