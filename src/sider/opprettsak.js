@@ -70,6 +70,7 @@ class OpprettSak extends Component {
 
     return (
       <div className="opprettsak">
+        <Nav.Systemtittel>Opprett Sak</Nav.Systemtittel>
         <form onSubmit={this.overrideDefaultSubmit}>
           <Nav.Container fluid>
             <Nav.Row className="">
@@ -85,31 +86,21 @@ class OpprettSak extends Component {
             <Nav.Row className="">
               <Nav.Column xs="10">
                 <div>
-                  <Nav.Fieldset legend="Fagområde">
-                    <Skjema.Select feltNavn="sektor" label="Velg Fagområde" bredde="xl" disabled={!oppgittFnrErValidert}>
-                      {sektor && sektor.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
-                    </Skjema.Select>
-                  </Nav.Fieldset>
-                  <Nav.Fieldset legend="Type BUC">
-                    <Skjema.Select feltNavn="buctype" label="Velg BUC Type" bredde="xxl" disabled={!oppgittFnrErValidert}>
-                      {buctyper && buctyper.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
-                    </Skjema.Select>
-                  </Nav.Fieldset>
-                  <Nav.Fieldset legend="Type SED">
-                    <Skjema.Select feltNavn="sedtype" label="Velg SED Type" bredde="xl" disabled={!oppgittFnrErValidert}>
-                      {this.erSedtyperGyldig(sedtyper) && sedtyper.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
-                    </Skjema.Select>
-                  </Nav.Fieldset>
-                  <Nav.Fieldset legend="Land">
-                    <Skjema.Select feltNavn="land" label="Velg Land" bredde="s" disabled={!oppgittFnrErValidert}>
-                      {landkoder && landkoder.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
-                    </Skjema.Select>
-                  </Nav.Fieldset>
-                  <Nav.Fieldset legend="Mottaker institusjon">
-                    <Skjema.Select feltNavn="mottakerID" label="Velg InstitusjonID" bredde="s" disabled={!oppgittFnrErValidert}>
-                      {institusjoner && institusjoner.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
-                    </Skjema.Select>
-                  </Nav.Fieldset>
+                  <Skjema.Select feltNavn="sektor" label="Fagområde" bredde="xl" disabled={!oppgittFnrErValidert}>
+                    {sektor && sektor.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+                  </Skjema.Select>
+                  <Skjema.Select feltNavn="buctype" label="BUC" bredde="xxl" disabled={!oppgittFnrErValidert}>
+                    {buctyper && buctyper.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
+                  </Skjema.Select>
+                  <Skjema.Select feltNavn="sedtype" label="SED" bredde="xl" disabled={!oppgittFnrErValidert}>
+                    {this.erSedtyperGyldig(sedtyper) && sedtyper.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
+                  </Skjema.Select>
+                  <Skjema.Select feltNavn="land" label="Land" bredde="s" disabled={!oppgittFnrErValidert}>
+                    {landkoder && landkoder.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+                  </Skjema.Select>
+                  <Skjema.Select feltNavn="mottakerID" label="Mottaker institusjon" bredde="s" disabled={!oppgittFnrErValidert}>
+                    {institusjoner && institusjoner.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+                  </Skjema.Select>
                 </div>
                 {valgtSektor.includes('FB') && <FamilieRelasjonsComponent relasjoner={valgteFamilieRelasjoner} />}
               </Nav.Column>
