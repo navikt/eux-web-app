@@ -56,7 +56,7 @@ class OpprettSak extends Component {
     const {
       landkoder, sedtyper, sektor, buctyper,
       inntastetFnr, status, errdata, institusjoner,
-      valgtSektor, valgteFamilieRelasjoner,
+      valgtSektor,
       settFnrSjekket, settFnrGyldighet,
       fnrErGyldig, fnrErSjekket,
       opprettetSak,
@@ -115,7 +115,7 @@ class OpprettSak extends Component {
               </Nav.Column>
             </Nav.Row>
             <Nav.Row className="">
-              {valgtSektor.includes('FB') && <FamilieRelasjonsComponent relasjoner={valgteFamilieRelasjoner} />}
+              {valgtSektor.includes('FB') && <FamilieRelasjonsComponent />}
             </Nav.Row>
             <Nav.Row className="opprettsak__statuslinje">
               <Nav.Column xs="10">
