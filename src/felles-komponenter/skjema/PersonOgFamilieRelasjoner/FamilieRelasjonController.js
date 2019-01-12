@@ -130,7 +130,7 @@ class FamilieRelasjonController extends Component {
           />))
         }
 
-        <Nav.Fieldset className="familierelasjoner__utland" legend="Fant følgende familiemedlemmer i TPS:">
+        <Nav.Fieldset className="familierelasjoner__utland" legend="Familiemedlemmer i TPS">
           { gjenstaendeRelasjonerFraTPS }
           { (tpsrelasjoner.length > 0 && gjenstaendeRelasjonerFraTPS.length === 0) ? <Nav.Panel>(Du har lagt til alle som fantes i listen.)</Nav.Panel> : null }
           { !tpsrelasjoner && <Nav.Panel>(Ingen familierelasjoner funnet i TPS)</Nav.Panel> }

@@ -115,7 +115,6 @@ class OpprettSak extends Component {
               </Nav.Column>
             </Nav.Row>
             <Nav.Row className="">
-              <Nav.Systemtittel>Familierelasjon(er)</Nav.Systemtittel>
               {valgtSektor.includes('FB') && <FamilieRelasjonsComponent relasjoner={valgteFamilieRelasjoner} />}
             </Nav.Row>
             <Nav.Row className="opprettsak__statuslinje">
