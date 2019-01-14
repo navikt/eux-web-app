@@ -13,14 +13,22 @@ import * as Types from './types';
  * når det asynkrone kallet, feks fra API'et er ferdigkjørt.
  *
  */
+const transformData = data => {
+  if (data.tilleggsopplysninger.familierelasjoner.length > 0) {
+    const familierelasjoner = data.tilleggsopplysninger.familierelasjoner.map(relasjon => ({ ...relasjon, fdato: formatterDatoTilISO(relasjon.fdato) }));
+    return {
+      tilleggsopplysninger: {
+        familierelasjoner,
+      },
+    };
+  }
+  return data;
+};
 /* eslint import/prefer-default-export:"off" */
 export function sendSak(data) {
   /* Vask kjente datofelter slik at alle datoer sendes i formatet YYYY.MM.DD */
-  const vaskedeData = { ...data };
-  const { familierelasjoner } = vaskedeData.tilleggsopplysninger;
-  vaskedeData.tilleggsopplysninger.familierelasjoner = familierelasjoner.map(relasjon => ({ ...relasjon, fdato: formatterDatoTilISO(relasjon.fdato) }));
-
-  return doThenDispatch(() => Api.Rina.sendSak(vaskedeData), {
+  const vaskedData = transformData(data);
+  return doThenDispatch(() => Api.Rina.sendSak(vaskedData), {
     OK: Types.OK,
     FEILET: Types.FEILET,
     PENDING: Types.PENDING,

@@ -1,18 +1,19 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { Provider as ReduxProvider } from 'react-redux';
+import 'babel-polyfill';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { Router as ReduxRouter } from 'react-router-dom';
+import { Provider as ReduxProvider } from 'react-redux';
 
-import App from './App';
 import './index.css';
+import App from './App';
 import loadInitialData from './startupDataLoader';
 
-import routerHistory from './history';
-import { unregister } from './registerServiceWorker';
-import Routing from './routing';
 import createStore from './store';
+import routerHistory from './history';
+import Routing from './routing';
+import { unregister } from './registerServiceWorker';
 
-const store = createStore();
+const store = createStore(routerHistory);
 loadInitialData(store);
 
 
