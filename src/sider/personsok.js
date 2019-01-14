@@ -71,7 +71,7 @@ class PersonSok extends Component {
       <div className="personsok">
         <div className="personsok__skjema">
           <Skjema.Input
-            label="Søk på fødsels- eller d-nummer"
+            label="Finn bruker"
             className="personsok__input"
             bredde="XL"
             feltNavn="fnr"

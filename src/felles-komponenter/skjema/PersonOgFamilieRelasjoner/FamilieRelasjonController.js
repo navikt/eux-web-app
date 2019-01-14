@@ -98,9 +98,12 @@ class FamilieRelasjonController extends Component {
   visSkjulRelatertTPS = () => {
     this.setState({ ui: { ...this.state.ui, visRelatertTPS: !this.state.ui.visRelatertTPS } });
   };
+  knappeTekstRelatertTPS = () => (this.state.ui.visRelatertTPS ? 'Skjul Skjema' : 'Vis skjema');
   visSkulRelatertUtland = () => {
     this.setState({ ui: { ...this.state.ui, visRelatertUtland: !this.state.ui.visRelatertUtland } });
   };
+
+  knappeTekstUtland = () => (this.state.ui.visRelatertUtland ? 'Skjul Skjema' : 'Vis skjema');
 
   render() {
     const {
@@ -116,9 +119,9 @@ class FamilieRelasjonController extends Component {
         [...samling, <TPSRelasjonEnkelt key={uuid()} kodeverk={familierelasjonKodeverk} relasjon={enkeltTPSRelasjon} leggTilTPSrelasjon={this.leggTilTPSrelasjon} />]
       );
     }, []);
-
     return (
       <div className="familierelasjoner">
+        {valgteRelasjoner && valgteRelasjoner.length > 0}<Nav.UndertekstBold>Valgte familierelasjoner&nbsp;({valgteRelasjoner.length})</Nav.UndertekstBold>
         {valgteRelasjoner && valgteRelasjoner.map((relasjon, indeks) =>
           (<FamilieRelasjonPanel
             key={uuid()}
@@ -130,14 +133,17 @@ class FamilieRelasjonController extends Component {
           />))
         }
 
-        <Nav.Fieldset className="familierelasjoner__utland" legend="Fant følgende familiemedlemmer i TPS:">
+        <Nav.Fieldset className="familierelasjoner__utland" legend="Familierelasjoner registrert i TPS">
           { gjenstaendeRelasjonerFraTPS }
           { (tpsrelasjoner.length > 0 && gjenstaendeRelasjonerFraTPS.length === 0) ? <Nav.Panel>(Du har lagt til alle som fantes i listen.)</Nav.Panel> : null }
           { !tpsrelasjoner && <Nav.Panel>(Ingen familierelasjoner funnet i TPS)</Nav.Panel> }
         </Nav.Fieldset>
 
-        <h2>Person uten fødsels- eller d-nummer</h2>
-        <Nav.Knapp onClick={this.visSkulRelatertUtland} >+ Legg til familiemedlem uten d-/f.nr </Nav.Knapp>
+        <Nav.Panel>
+          <span><strong>Person uten fødsels- eller d-nummer&nbsp;</strong></span>
+          <Nav.Knapp onClick={this.visSkulRelatertUtland} >{this.knappeTekstUtland()}</Nav.Knapp>
+          <p />
+        </Nav.Panel>
         { this.state.ui.visRelatertUtland && <FamilieRelasjonUtland
           spesialRelasjon={this.state.spesialRelasjon}
           oppdaterState={this.oppdaterState}
@@ -148,8 +154,11 @@ class FamilieRelasjonController extends Component {
           vaskInputDatoOgOppdater={this.vaskInputDatoOgOppdater}
           kanSpesialRelasjonLeggesTil={this.kanSpesialRelasjonLeggesTil}
         />}
-        <h2>TPS person uten relasjon</h2>
-        <Nav.Knapp onClick={this.visSkjulRelatertTPS} >+ Legg til familiemedlem fra TPS </Nav.Knapp>
+        <Nav.Panel>
+          <span><strong>Person uten registrert relasjon i TPS&nbsp;</strong></span>
+          <Nav.Knapp onClick={this.visSkjulRelatertTPS} >{this.knappeTekstRelatertTPS()}</Nav.Knapp>
+        </Nav.Panel>
+
         { this.state.ui.visRelatertTPS && <AnnenRelatertTPSPerson leggTilTPSrelasjon={this.leggTilTPSrelasjon} familierelasjonKodeverk={familierelasjonKodeverk} /> }
       </div>
     );
