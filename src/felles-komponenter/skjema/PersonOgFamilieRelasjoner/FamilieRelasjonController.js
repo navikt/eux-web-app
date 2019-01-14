@@ -133,7 +133,7 @@ class FamilieRelasjonController extends Component {
           />))
         }
 
-        <Nav.Fieldset className="familierelasjoner__utland" legend="Familiemedlemmer i TPS">
+        <Nav.Fieldset className="familierelasjoner__utland" legend="Familierelasjoner registrert i TPS">
           { gjenstaendeRelasjonerFraTPS }
           { (tpsrelasjoner.length > 0 && gjenstaendeRelasjonerFraTPS.length === 0) ? <Nav.Panel>(Du har lagt til alle som fantes i listen.)</Nav.Panel> : null }
           { !tpsrelasjoner && <Nav.Panel>(Ingen familierelasjoner funnet i TPS)</Nav.Panel> }
@@ -155,7 +155,7 @@ class FamilieRelasjonController extends Component {
           kanSpesialRelasjonLeggesTil={this.kanSpesialRelasjonLeggesTil}
         />}
         <Nav.Panel>
-          <span><strong>TPS person uten relasjon&nbsp;</strong></span>
+          <span><strong>Person uten registrert relasjon i TPS&nbsp;</strong></span>
           <Nav.Knapp onClick={this.visSkjulRelatertTPS} >{this.knappeTekstRelatertTPS()}</Nav.Knapp>
         </Nav.Panel>
 
