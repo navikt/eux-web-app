@@ -18,7 +18,7 @@ const FamilieRelasjonUtland = ({
     <Nav.Fieldset className="familierelasjoner__utland" legend="Du kan også legge til familierelasjoner fra utlandet som ikke er oppført i TPS:">
       <Nav.Panel border className="familierelasjoner__utland__wrapper">
         <Nav.Row>
-          <Nav.Column xs="4">
+          <Nav.Column xs="2">
             <Nav.Input
               label="Utenlandsk ID"
               className="familierelasjoner__input"
@@ -26,7 +26,20 @@ const FamilieRelasjonUtland = ({
               value={spesialRelasjon.fnr}
               onChange={event => oppdaterState('fnr', event)} />
           </Nav.Column>
-          <Nav.Column xs="4">
+          <Nav.Column xs="2">
+            <Nav.Select
+              label="Nasjonalitet"
+              bredde="m"
+              className="familierelasjoner__input"
+              value={spesialRelasjon.nasjonalitet}
+              onChange={event => oppdaterState('nasjonalitet', event)}>
+              <option value="" disabled>- velg -</option>
+              {landKodeverk && landKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+            </Nav.Select>
+          </Nav.Column>
+        </Nav.Row>
+        <Nav.Row>
+          <Nav.Column xs="2">
             <Nav.Input
               label="Fornavn"
               className="familierelasjoner__input"
@@ -34,7 +47,7 @@ const FamilieRelasjonUtland = ({
               value={spesialRelasjon.fornavn}
               onChange={event => oppdaterState('fornavn', event)} />
           </Nav.Column>
-          <Nav.Column xs="4">
+          <Nav.Column xs="2">
             <Nav.Input
               label="Etternavn"
               className="familierelasjoner__input"
@@ -56,17 +69,6 @@ const FamilieRelasjonUtland = ({
             </Nav.Select>
           </Nav.Column>
           <Nav.Column xs="2">
-            <Nav.Select
-              label="Nasjonalitet"
-              bredde="m"
-              className="familierelasjoner__input"
-              value={spesialRelasjon.nasjonalitet}
-              onChange={event => oppdaterState('nasjonalitet', event)}>
-              <option value="" disabled>- velg -</option>
-              {landKodeverk && landKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
-            </Nav.Select>
-          </Nav.Column>
-          <Nav.Column xs="4">
             <Nav.Input
               label="Fødselsdato (YYYY.MM.DD)"
               className="familierelasjoner__input"
@@ -75,7 +77,9 @@ const FamilieRelasjonUtland = ({
               onChange={event => oppdaterState('fdato', event)}
               onBlur={event => vaskInputDatoOgOppdater('fdato', event)} />
           </Nav.Column>
-          <Nav.Column xs="4">
+        </Nav.Row>
+        <Nav.Row>
+          <Nav.Column xs="2">
             <Nav.Select
               label="Familierelasjon"
               bredde="fullbredde"
@@ -86,9 +90,8 @@ const FamilieRelasjonUtland = ({
               {familierelasjonKodeverk && familierelasjonKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
             </Nav.Select>
           </Nav.Column>
-        </Nav.Row>
-        <Nav.Row>
-          <Nav.Column xs="12">
+          <Nav.Column xs="4">
+            <br />
             <Nav.Knapp onClick={leggTilSpesialRelasjon} disabled={!kanSpesialRelasjonLeggesTil()} className="spesialrelasjon familierelasjoner__knapp">
               <Nav.Ikon kind="tilsette" size="18" className="familierelasjoner__knapp__ikon" />
               <div className="familierelasjoner__knapp__label">Legg til</div>
