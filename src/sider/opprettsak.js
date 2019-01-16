@@ -118,8 +118,17 @@ class OpprettSak extends Component {
               {valgtSektor.includes('FB') && <FamilieRelasjonsComponent />}
             </Nav.Row>
             <Nav.Row className="opprettsak__statuslinje">
-              <Nav.Column xs="10">
+              <Nav.Column xs="2">
                 <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)} spinner={['PENDING'].includes(status)} disabled={['PENDING'].includes(status)}>Opprett sak i RINA</Nav.Hovedknapp>
+              </Nav.Column>
+              <Nav.Column xs="2">
+                <Nav.Lenke href="/" ariaLabel="Navigasjonslink tilbake til forsiden">
+                 AVSLUTT
+                </Nav.Lenke>
+              </Nav.Column>
+            </Nav.Row>
+            <Nav.Row>
+              <Nav.Column xs="3">
                 <StatusLinje status={status} url={responsLenke} tittel={`Saksnummer: ${rinasaksnummer}`} />
                 {errdata && errdata.status && <p>{errdata.message}</p>}
               </Nav.Column>
