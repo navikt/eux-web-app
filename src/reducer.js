@@ -8,17 +8,6 @@ import rinasakReducers from './ducks/rinasak';
 import rinavedleggReducers from './ducks/rinavedlegg';
 import saksbehandlerReducers from './ducks/saksbehandler';
 
-export interface AppState {
-  dokumenter: any;
-  form: any;
-  kodeverk: any;
-  person: any;
-  rina: {
-    sak: any;
-    vedlegg: any;
-  };
-  saksbehandler: any;
-}
 export default combineReducers({
   dokumenter: dokumenterReducers,
   form: formReducer,
