@@ -1,14 +1,24 @@
 import React from 'react';
 
 import PT from 'prop-types';
-import * as NAV from '../utils/navFrontend';
+import * as Nav from '../utils/navFrontend';
+
 import './forside.css';
 
 const Forside = () => (
   <div className="forside">
-    <h3>Velkommen til EUX</h3>
-    <NAV.Lenkepanel href="/opprett">Opprett sak</NAV.Lenkepanel>
-    <NAV.Lenkepanel href="/vedlegg">Legg ved vedlegg til SED</NAV.Lenkepanel>
+    <Nav.Container fluid>
+      <Nav.Systemtittel>Velkommen til EUX</Nav.Systemtittel>
+      <br />
+      <Nav.Row className="">
+        <Nav.Column xs="3">
+          <Nav.Lenkepanel href="/opprett">Opprett sak</Nav.Lenkepanel>
+        </Nav.Column>
+        <Nav.Column xs="3">
+          <Nav.Lenkepanel href="/vedlegg">Legg ved vedlegg til SED</Nav.Lenkepanel>
+        </Nav.Column>
+      </Nav.Row>
+    </Nav.Container>
   </div>
 );
 

@@ -84,31 +84,31 @@ class OpprettSak extends Component {
               </Nav.Column>
             </Nav.Row>
             <Nav.Row className="">
-              <Nav.Column xs="10">
+              <Nav.Column xs="3">
                 <Skjema.Select feltNavn="sektor" label="Fagområde" bredde="xl" disabled={!oppgittFnrErValidert}>
                   {sektor && sektor.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                 </Skjema.Select>
               </Nav.Column>
             </Nav.Row>
             <Nav.Row className="">
-              <Nav.Column xs="6">
+              <Nav.Column xs="3">
                 <Skjema.Select feltNavn="buctype" label="BUC" bredde="xxl" disabled={!oppgittFnrErValidert}>
                   {buctyper && buctyper.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
                 </Skjema.Select>
               </Nav.Column>
-              <Nav.Column xs="6">
+              <Nav.Column xs="3">
                 <Skjema.Select feltNavn="sedtype" label="SED" bredde="xl" disabled={!oppgittFnrErValidert}>
                   {this.erSedtyperGyldig(sedtyper) && sedtyper.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
                 </Skjema.Select>
               </Nav.Column>
             </Nav.Row>
             <Nav.Row className="">
-              <Nav.Column xs="6">
+              <Nav.Column xs="3">
                 <Skjema.Select feltNavn="land" label="Land" bredde="s" disabled={!oppgittFnrErValidert}>
                   {landkoder && landkoder.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                 </Skjema.Select>
               </Nav.Column>
-              <Nav.Column xs="6">
+              <Nav.Column xs="3">
                 <Skjema.Select feltNavn="mottakerID" label="Mottaker institusjon" bredde="s" disabled={!oppgittFnrErValidert}>
                   {institusjoner && institusjoner.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                 </Skjema.Select>
@@ -118,8 +118,17 @@ class OpprettSak extends Component {
               {valgtSektor.includes('FB') && <FamilieRelasjonsComponent />}
             </Nav.Row>
             <Nav.Row className="opprettsak__statuslinje">
-              <Nav.Column xs="10">
+              <Nav.Column xs="3">
                 <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)} spinner={['PENDING'].includes(status)} disabled={['PENDING'].includes(status)}>Opprett sak i RINA</Nav.Hovedknapp>
+              </Nav.Column>
+              <Nav.Column xs="3">
+                <Nav.Lenke href="/" ariaLabel="Navigasjonslink tilbake til forsiden">
+                 AVSLUTT
+                </Nav.Lenke>
+              </Nav.Column>
+            </Nav.Row>
+            <Nav.Row>
+              <Nav.Column xs="3">
                 <StatusLinje status={status} url={responsLenke} tittel={`Saksnummer: ${rinasaksnummer}`} />
                 {errdata && errdata.status && <p>{errdata.message}</p>}
               </Nav.Column>

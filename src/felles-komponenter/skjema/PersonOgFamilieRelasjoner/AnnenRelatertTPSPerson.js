@@ -8,6 +8,8 @@ import { IkonFraKjonn } from '../../IkonFraKjonn';
 import * as MPT from '../../../proptypes';
 import * as API from '../../../services/api';
 
+import './annenperson.css';
+
 const uuid = require('uuid/v4');
 
 const PersonSokResultat = props => {
@@ -86,13 +88,18 @@ class AnnenRelatertTPSPerson extends Component {
     const { person } = this.state;
     const { familierelasjonKodeverk } = this.props;
 
-    const sokefelt = <div><Nav.Input label="Fødsels eller dnr" value={this.state.sok} onChange={this.updateSok} /><Nav.Knapp onClick={sokEtterFnr}>Søk</Nav.Knapp></div>;
+    const Sokefelt = () => (
+      <div className="annenpersonsok">
+        <div className="annenpersonsok__skjema">
+          <Nav.Input className="" label="" placeholder="Fødsels eller dnr" value={this.state.sok} onChange={this.updateSok} />
+          <Nav.Knapp className="annenpersonsok__knapp" onClick={sokEtterFnr}>Søk</Nav.Knapp>
+        </div>
+      </div>
+    );
 
     return (
       <div>
-        <div>
-          {sokefelt}
-        </div>
+        <Sokefelt />
         {person && <PersonSokResultat person={person} leggTilHandler={leggTilHandler} familierelasjonKodeverk={familierelasjonKodeverk} oppdaterFamilierelajon={oppdaterFamilierelajon} />}
       </div>
     );

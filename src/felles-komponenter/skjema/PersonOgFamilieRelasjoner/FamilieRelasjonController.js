@@ -138,12 +138,14 @@ class FamilieRelasjonController extends Component {
           { (tpsrelasjoner.length > 0 && gjenstaendeRelasjonerFraTPS.length === 0) ? <Nav.Panel>(Du har lagt til alle som fantes i listen.)</Nav.Panel> : null }
           { !tpsrelasjoner && <Nav.Panel>(Ingen familierelasjoner funnet i TPS)</Nav.Panel> }
         </Nav.Fieldset>
-
-        <Nav.Panel>
-          <span><strong>Person uten fødsels- eller d-nummer&nbsp;</strong></span>
-          <Nav.Knapp onClick={this.visSkulRelatertUtland} >{this.knappeTekstUtland()}</Nav.Knapp>
-          <p />
-        </Nav.Panel>
+        <Nav.Row>
+          <Nav.Column xs="3">
+            <p><strong>Person uten fødsels- eller d-nummer&nbsp;</strong></p>
+          </Nav.Column>
+          <Nav.Column xs="2">
+            <Nav.Knapp onClick={this.visSkulRelatertUtland} >{this.knappeTekstUtland()}</Nav.Knapp>
+          </Nav.Column>
+        </Nav.Row>
         { this.state.ui.visRelatertUtland && <FamilieRelasjonUtland
           spesialRelasjon={this.state.spesialRelasjon}
           oppdaterState={this.oppdaterState}
@@ -154,10 +156,17 @@ class FamilieRelasjonController extends Component {
           vaskInputDatoOgOppdater={this.vaskInputDatoOgOppdater}
           kanSpesialRelasjonLeggesTil={this.kanSpesialRelasjonLeggesTil}
         />}
-        <Nav.Panel>
-          <span><strong>Person uten registrert relasjon i TPS&nbsp;</strong></span>
-          <Nav.Knapp onClick={this.visSkjulRelatertTPS} >{this.knappeTekstRelatertTPS()}</Nav.Knapp>
-        </Nav.Panel>
+        <Nav.Row>
+          <br />
+        </Nav.Row>
+        <Nav.Row>
+          <Nav.Column xs="3">
+            <p><strong>Person uten registrert relasjon i TPS&nbsp;</strong></p>
+          </Nav.Column>
+          <Nav.Column xs="2">
+            <Nav.Knapp onClick={this.visSkjulRelatertTPS} >{this.knappeTekstRelatertTPS()}</Nav.Knapp>
+          </Nav.Column>
+        </Nav.Row>
 
         { this.state.ui.visRelatertTPS && <AnnenRelatertTPSPerson leggTilTPSrelasjon={this.leggTilTPSrelasjon} familierelasjonKodeverk={familierelasjonKodeverk} /> }
       </div>
