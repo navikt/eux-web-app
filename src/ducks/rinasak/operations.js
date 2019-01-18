@@ -15,8 +15,18 @@ import * as Types from './types';
  */
 const transformData = data => {
   if (data.tilleggsopplysninger.familierelasjoner.length > 0) {
-    const familierelasjoner = data.tilleggsopplysninger.familierelasjoner.map(relasjon => ({ ...relasjon, fdato: formatterDatoTilISO(relasjon.fdato) }));
+    const {
+      buctype, fnr, land, mottakerID, sedtype, sektor,
+      tilleggsopplysninger,
+    } = data;
+    const familierelasjoner = tilleggsopplysninger.familierelasjoner.map(relasjon => ({ ...relasjon, fdato: formatterDatoTilISO(relasjon.fdato) }));
     return {
+      buctype,
+      fnr,
+      land,
+      mottakerID,
+      sedtype,
+      sektor,
       tilleggsopplysninger: {
         familierelasjoner,
       },
