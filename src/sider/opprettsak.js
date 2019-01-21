@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { reduxForm, formValueSelector, clearAsyncError, stopSubmit, change } from 'redux-form';
 import PT from 'prop-types';
 
+import * as Api from '../services/api';
 import * as MPT from '../proptypes/';
 import * as Nav from '../utils/navFrontend';
 import * as Skjema from '../felles-komponenter/skjema';
@@ -19,11 +20,32 @@ import './opprettsak.css';
 const uuid = require('uuid/v4');
 
 class OpprettSak extends Component {
+  state = {
+    landKode: '',
+    institusjonsid: '',
+    institusjoner: [],
+  };
+  oppdaterLandKode = event => {
+    const landKode = event.target.value;
+    const { buctype } = this.props;
+    Api.Institusjoner.hent(buctype, landKode).then(institusjoner => {
+      this.setState({ landKode, institusjoner });
+    });
+  };
+
+  oppdaterInstitusjonKode = event => {
+    const institusjonsid = event.target.value;
+    const { institusjoner } = this.state;
+    this.setState({ institusjonsid, institusjoner });
+  };
+
   skjemaSubmit = values => {
     const { submitFailed, sendSkjema } = this.props;
+    const { institusjonsid, landKode } = this.state;
+
     if (submitFailed) return;
 
-    const vaskedeVerdier = { ...values };
+    const vaskedeVerdier = { ...values, institusjonsid, landKode };
     delete vaskedeVerdier.fnrErGyldig;
     delete vaskedeVerdier.fnrErSjekket;
     sendSkjema(vaskedeVerdier);
@@ -55,12 +77,14 @@ class OpprettSak extends Component {
   render() {
     const {
       landkoder, sedtyper, sektor, buctyper,
-      inntastetFnr, status, errdata, institusjoner,
+      inntastetFnr, status, errdata,
       valgtSektor,
       settFnrSjekket, settFnrGyldighet,
       fnrErGyldig, fnrErSjekket,
       opprettetSak,
     } = this.props;
+
+    const { institusjoner } = this.state;
 
     const { rinasaksnummer, url: responsLenke } = opprettetSak;
 
@@ -104,14 +128,17 @@ class OpprettSak extends Component {
             </Nav.Row>
             <Nav.Row className="">
               <Nav.Column xs="3">
-                <Skjema.Select feltNavn="land" label="Land" bredde="s" disabled={!oppgittFnrErValidert}>
+                <Nav.Select bredde="xl" disabled={!oppgittFnrErValidert} value={this.state.landKode} onChange={this.oppdaterLandKode} label="Land">
+                  <option value="0" />
                   {landkoder && landkoder.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
-                </Skjema.Select>
+                </Nav.Select>
+
               </Nav.Column>
               <Nav.Column xs="3">
-                <Skjema.Select feltNavn="mottakerID" label="Mottaker institusjon" bredde="s" disabled={!oppgittFnrErValidert}>
-                  {institusjoner && institusjoner.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
-                </Skjema.Select>
+                <Nav.Select bredde="xl" disabled={!oppgittFnrErValidert} value={this.state.institusjonsid} onChange={this.oppdaterInstitusjonKode} label="Mottaker institusjon">
+                  <option value="0" />
+                  {institusjoner && institusjoner.map(element => <option value={element.institusjonsid} key={uuid()}>{element.institusjonsid}</option>)}
+                </Nav.Select>
               </Nav.Column>
             </Nav.Row>
             <Nav.Row className="">
@@ -148,10 +175,10 @@ OpprettSak.propTypes = {
   settFnrSjekket: PT.func.isRequired,
   submitFailed: PT.bool.isRequired,
   landkoder: PT.arrayOf(MPT.Kodeverk),
-  institusjoner: PT.arrayOf(MPT.Kodeverk),
   sedtyper: PT.arrayOf(MPT.Kodeverk),
   sektor: PT.arrayOf(MPT.Kodeverk),
   buctyper: PT.arrayOf(MPT.Kodeverk),
+  buctype: PT.string,
   fnrErGyldig: PT.bool,
   fnrErSjekket: PT.bool,
   inntastetFnr: PT.string,
@@ -167,10 +194,10 @@ OpprettSak.propTypes = {
 
 OpprettSak.defaultProps = {
   landkoder: undefined,
-  institusjoner: undefined,
   sedtyper: undefined,
   sektor: undefined,
   buctyper: undefined,
+  buctype: undefined,
   fnrErGyldig: undefined,
   fnrErSjekket: undefined,
   inntastetFnr: '',
@@ -190,11 +217,11 @@ const mapStateToProps = state => ({
     },
   },
   landkoder: KodeverkSelectors.landkoderSelector(state),
-  institusjoner: KodeverkSelectors.institusjonerSelector(state),
   sektor: KodeverkSelectors.sektorSelector(state),
   fnrErGyldig: skjemaSelector(state, 'fnrErGyldig'),
   fnrErSjekket: skjemaSelector(state, 'fnrErSjekket'),
   sedtyper: RinasakSelectors.sedtypeSelector(state),
+  buctype: skjemaSelector(state, 'buctype'),
   buctyper: RinasakSelectors.buctyperSelector(state),
   inntastetFnr: skjemaSelector(state, 'fnr'),
   valgtSektor: skjemaSelector(state, 'sektor'),

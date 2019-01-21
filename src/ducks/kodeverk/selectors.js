@@ -7,11 +7,6 @@
 
 import { createSelector } from 'reselect';
 
-export const institusjonerSelector = createSelector(
-  state => state.kodeverk.data.institusjoner,
-  institusjoner => institusjoner
-);
-
 export const familierelasjonerSelector = createSelector(
   state => state.kodeverk.data.familierelasjoner,
   familierelasjoner => familierelasjoner
