@@ -148,6 +148,9 @@ class OpprettSak extends Component {
               <Nav.Column xs="3">
                 <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)} spinner={['PENDING'].includes(status)} disabled={['PENDING'].includes(status)}>Opprett sak i RINA</Nav.Hovedknapp>
               </Nav.Column>
+              <Nav.Column xs="1">
+                &nbsp;
+              </Nav.Column>
               <Nav.Column xs="3">
                 <Nav.Lenke href="/" ariaLabel="Navigasjonslink tilbake til forsiden">
                  AVSLUTT
@@ -155,7 +158,7 @@ class OpprettSak extends Component {
               </Nav.Column>
             </Nav.Row>
             <Nav.Row>
-              <Nav.Column xs="3">
+              <Nav.Column xs="6">
                 <StatusLinje status={status} url={responsLenke} tittel={`Saksnummer: ${rinasaksnummer}`} />
                 {errdata && errdata.status && <p>{errdata.message}</p>}
               </Nav.Column>
@@ -246,7 +249,7 @@ const validering = values => {
   const buctype = !values.buctype ? 'Du må velge buctype.' : null;
   const sedtype = !values.sedtype ? 'Du må velge sedtype.' : null;
   const land = !values.land ? 'Du må velge land.' : null;
-  const mottakerID = !values.mottakerID ? 'Du må velge institusjon.' : null;
+  const mottakerID = !values.mottakerID ? 'Du må velge institusjon.' : null; // TODO Bytte med 'institusjonid'
 
   return {
     fnr: fnr || fnrErUgyldig,
