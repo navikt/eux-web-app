@@ -22,7 +22,7 @@ const uuid = require('uuid/v4');
 class OpprettSak extends Component {
   state = {
     landKode: '',
-    institusjonsid: '',
+    mottakerID: '',
     institusjoner: [],
   };
   oppdaterLandKode = event => {
@@ -34,18 +34,18 @@ class OpprettSak extends Component {
   };
 
   oppdaterInstitusjonKode = event => {
-    const institusjonsid = event.target.value;
+    const mottakerID = event.target.value;
     const { institusjoner } = this.state;
-    this.setState({ institusjonsid, institusjoner });
+    this.setState({ mottakerID, institusjoner });
   };
 
   skjemaSubmit = values => {
     const { submitFailed, sendSkjema } = this.props;
-    const { institusjonsid, landKode } = this.state;
+    const { mottakerID, landKode } = this.state;
 
     if (submitFailed) return;
 
-    const vaskedeVerdier = { ...values, institusjonsid, landKode };
+    const vaskedeVerdier = { ...values, mottakerID, landKode };
     delete vaskedeVerdier.fnrErGyldig;
     delete vaskedeVerdier.fnrErSjekket;
     sendSkjema(vaskedeVerdier);
@@ -135,9 +135,9 @@ class OpprettSak extends Component {
 
               </Nav.Column>
               <Nav.Column xs="3">
-                <Nav.Select bredde="xl" disabled={!oppgittFnrErValidert} value={this.state.institusjonsid} onChange={this.oppdaterInstitusjonKode} label="Mottaker institusjon">
+                <Nav.Select bredde="xl" disabled={!oppgittFnrErValidert} value={this.state.mottakerID} onChange={this.oppdaterInstitusjonKode} label="Mottaker institusjon">
                   <option value="0" />
-                  {institusjoner && institusjoner.map(element => <option value={element.institusjonsid} key={uuid()}>{element.institusjonsid}</option>)}
+                  {institusjoner && institusjoner.map(element => <option value={element.mottakerID} key={uuid()}>{element.mottakerID}</option>)}
                 </Nav.Select>
               </Nav.Column>
             </Nav.Row>
