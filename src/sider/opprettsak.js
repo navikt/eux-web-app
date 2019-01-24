@@ -10,6 +10,7 @@ import * as Skjema from '../felles-komponenter/skjema';
 
 import { KodeverkSelectors } from '../ducks/kodeverk';
 import { RinasakOperations, RinasakSelectors } from '../ducks/rinasak';
+import { FagsakOperations, FagsakSelectors } from '../ducks/fagsak';
 
 import { StatusLinje } from '../felles-komponenter/statuslinje';
 import FamilieRelasjonsComponent from '../felles-komponenter/skjema/PersonOgFamilieRelasjoner';
@@ -19,12 +20,73 @@ import './opprettsak.css';
 
 const uuid = require('uuid/v4');
 
+const BehandlingsTemaer = props => {
+  const { temaer, tema, oppdaterFagsakListe } = props;
+
+  return (
+    <Nav.Select bredde="xl" label="Velg tema" value={tema} onChange={oppdaterFagsakListe}>
+      <option value="0" />
+      {temaer && temaer.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
+    </Nav.Select>
+  );
+};
+BehandlingsTemaer.propTypes = {
+  tema: PT.string,
+  temaer: PT.arrayOf(MPT.Kodeverk),
+  oppdaterFagsakListe: PT.func.isRequired,
+};
+BehandlingsTemaer.defaultProps = {
+  tema: '',
+  temaer: [],
+};
+
+const FagsakTabell = props => {
+  const { fagsaker } = props;
+  return (
+    <table>
+      <caption>Saksliste</caption>
+      <thead>
+        <tr>
+          <th>Saksid</th>
+          <th>Fagsystem</th>
+          <th>Sakstype</th>
+          <th>Opprettet/mottatt</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {fagsaker.map(fagsak => (
+          <tr key={uuid()}>
+            <td>{fagsak.saksid}</td>
+            <td>{fagsak.sakstype}</td>
+            <td>{fagsak.fagsystem}</td>
+            <td>{fagsak.opprettet}</td>
+            <td>{fagsak.status}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+};
+
+FagsakTabell.propTypes = {
+  fagsaker: PT.array.isRequired,
+};
+
 class OpprettSak extends Component {
   state = {
     landKode: '',
     mottakerID: '',
     institusjoner: [],
+    tema: '',
+    fagsaker: [],
   };
+  /*
+  componentDidMount() {
+    this.props.hentFagsaker('02026100715', 'a345');
+    //Api.Fagsaker.saksliste('02026100715', 'a345').then(data => console.dir(data));
+  }
+  */
   oppdaterLandKode = event => {
     const landKode = event.target.value;
     const { buctype } = this.props;
@@ -39,6 +101,13 @@ class OpprettSak extends Component {
     this.setState({ mottakerID, institusjoner });
   };
 
+  oppdaterFagsakListe = event => {
+    const tema = event.target.value;
+    const { inntastetFnr: fnr } = this.props;
+    Api.Fagsaker.saksliste(fnr, tema).then(fagsaker => {
+      this.setState({ tema, fagsaker });
+    });
+  };
   skjemaSubmit = values => {
     const { submitFailed, sendSkjema } = this.props;
     const { mottakerID, landKode } = this.state;
@@ -144,6 +213,12 @@ class OpprettSak extends Component {
             <Nav.Row className="">
               {valgtSektor.includes('FB') && <FamilieRelasjonsComponent />}
             </Nav.Row>
+            <Nav.Row className="">
+              {['FB', 'UB'].includes(valgtSektor) && <BehandlingsTemaer temaer={behandlingstema} tema={this.state.tema} oppdaterFagsakListe={this.oppdaterFagsakListe} />}
+            </Nav.Row>
+            <FagsakTabell fagsaker={this.state.fagsaker} />
+            <Nav.Row>
+            </Nav.Row>
             <Nav.Row className="opprettsak__statuslinje">
               <Nav.Column xs="3">
                 <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)} spinner={['PENDING'].includes(status)} disabled={['PENDING'].includes(status)}>Opprett sak i RINA</Nav.Hovedknapp>
@@ -180,6 +255,7 @@ OpprettSak.propTypes = {
   landkoder: PT.arrayOf(MPT.Kodeverk),
   sedtyper: PT.arrayOf(MPT.Kodeverk),
   sektor: PT.arrayOf(MPT.Kodeverk),
+  behandlingstema: PT.arrayOf(MPT.Kodeverk),
   buctyper: PT.arrayOf(MPT.Kodeverk),
   buctype: PT.string,
   fnrErGyldig: PT.bool,
@@ -199,6 +275,7 @@ OpprettSak.defaultProps = {
   landkoder: undefined,
   sedtyper: undefined,
   sektor: undefined,
+  behandlingstema: undefined,
   buctyper: undefined,
   buctype: undefined,
   fnrErGyldig: undefined,
@@ -226,13 +303,14 @@ const mapStateToProps = state => ({
   sedtyper: RinasakSelectors.sedtypeSelector(state),
   buctype: skjemaSelector(state, 'buctype'),
   buctyper: RinasakSelectors.buctyperSelector(state),
-  behandlingstema: RinasakSelectors.behandlingstypeSelector(state),
+  behandlingstema: FagsakSelectors.behandlingstypeSelector(state),
   inntastetFnr: skjemaSelector(state, 'fnr'),
   valgtSektor: skjemaSelector(state, 'sektor'),
   valgteFamilieRelasjoner: skjemaSelector(state, 'tilleggsopplysninger.familierelasjoner'),
   status: RinasakSelectors.sakStatusSelector(state),
   errdata: RinasakSelectors.errorDataSakSelector(state),
   opprettetSak: RinasakSelectors.sakSelector(state),
+  fagsaker: FagsakSelectors.fagsakerSelector(state),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -241,6 +319,7 @@ const mapDispatchToProps = dispatch => ({
   settFnrGyldighet: erGyldig => dispatch(change('opprettSak', 'fnrErGyldig', erGyldig)),
   settFnrSjekket: erSjekket => dispatch(change('opprettSak', 'fnrErSjekket', erSjekket)),
   sendSkjema: data => dispatch(RinasakOperations.sendSak(data)),
+  hentFagsaker: (fnr, behandlingstema) => dispatch(FagsakOperations.saksliste(fnr, behandlingstema)),
 });
 
 const validering = values => {
