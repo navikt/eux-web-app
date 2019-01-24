@@ -56,7 +56,7 @@ export const behandlingstypeSelector = createSelector(
   (kodemaps, behandlingstema, valgtSektor) => {
     if (!kodemaps) { return []; }
     if (!valgtSektor) { return []; }
-    return behandlingstema[kodemaps.SEKTOR2BOMA[valgtSektor]];
+    return behandlingstema[kodemaps.SEKTOR2FAGSAK[valgtSektor]];
   }
 );
 
