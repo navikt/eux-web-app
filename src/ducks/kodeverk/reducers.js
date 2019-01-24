@@ -10,7 +10,7 @@ import * as Types from './types';
 
 const initalState = {
   status: STATUS.NOT_STARTED,
-  data: [],
+  data: {},
 };
 
 export default function reducer(state = initalState, action) {
