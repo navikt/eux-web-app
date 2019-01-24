@@ -76,7 +76,7 @@ class OpprettSak extends Component {
 
   render() {
     const {
-      landkoder, sedtyper, sektor, buctyper,
+      landkoder, sedtyper, sektor, buctyper, behandlingstema,
       inntastetFnr, status, errdata,
       valgtSektor,
       settFnrSjekket, settFnrGyldighet,
@@ -226,6 +226,7 @@ const mapStateToProps = state => ({
   sedtyper: RinasakSelectors.sedtypeSelector(state),
   buctype: skjemaSelector(state, 'buctype'),
   buctyper: RinasakSelectors.buctyperSelector(state),
+  behandlingstema: RinasakSelectors.behandlingstypeSelector(state),
   inntastetFnr: skjemaSelector(state, 'fnr'),
   valgtSektor: skjemaSelector(state, 'sektor'),
   valgteFamilieRelasjoner: skjemaSelector(state, 'tilleggsopplysninger.familierelasjoner'),

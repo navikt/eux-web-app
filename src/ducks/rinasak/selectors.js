@@ -49,6 +49,16 @@ export const buctyperSelector = createSelector(
   }
 );
 
+export const behandlingstypeSelector = createSelector(
+  state => kodemapsSelector(state),
+  state => state.kodeverk.data.behandlingstema,
+  state => valgtSektorSelector(state),
+  (kodemaps, behandlingstema, valgtSektor) => {
+    if (!kodemaps) { return []; }
+    if (!valgtSektor) { return []; }
+    return behandlingstema[kodemaps.SEKTOR2BOMA[valgtSektor]];
+  }
+);
 
 export const sedtypeSelector = createSelector(
   state => valgtSektorSelector(state),
