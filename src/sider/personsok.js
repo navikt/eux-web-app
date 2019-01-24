@@ -30,6 +30,13 @@ const PersonKort = ({ person }) => {
     <div>
       <Nav.Panel className="personsok__kort">
         <PanelHeader ikon={IkonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn}`} undertittel={panelUndertittel} />
+        <Nav.Knapp
+          className="familierelasjoner__knapp familierelasjoner__knapp--slett"
+          onClick={() => window.location.reload()}
+        >
+          <Nav.Ikon kind="trashcan" size="20" className="familierelasjoner__knapp__ikon" />
+          <div className="familierelasjoner__knapp__label">Fjern</div>
+        </Nav.Knapp>
       </Nav.Panel>
     </div>
   );
