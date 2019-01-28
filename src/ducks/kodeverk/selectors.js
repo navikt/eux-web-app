@@ -42,7 +42,7 @@ export const kjoennSelector = createSelector(
   kjoenn => kjoenn
 );
 
-export const behandlingstemaSelector = createSelector(
-  state => state.kodeverk.data.behandlingstema,
-  behandlingstema => behandlingstema
+export const temaSelector = createSelector(
+  state => state.kodeverk.data.tema,
+  tema => tema
 );

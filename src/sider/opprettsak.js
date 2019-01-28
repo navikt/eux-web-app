@@ -150,7 +150,7 @@ class OpprettSak extends Component {
 
   render() {
     const {
-      landkoder, sedtyper, sektor, buctyper, behandlingstema,
+      landkoder, sedtyper, sektor, buctyper, temar,
       inntastetFnr, status, errdata,
       valgtSektor,
       settFnrSjekket, settFnrGyldighet,
@@ -220,7 +220,7 @@ class OpprettSak extends Component {
             {['FB', 'UB'].includes(valgtSektor) && (
               <Nav.Row className="">
                 <Nav.Column xs="3">
-                  <BehandlingsTemaer temaer={behandlingstema} tema={this.state.tema} oppdaterFagsakListe={this.oppdaterFagsakListe} />
+                  <BehandlingsTemaer temaer={temar} tema={this.state.tema} oppdaterFagsakListe={this.oppdaterFagsakListe} />
                 </Nav.Column>
                 <Nav.Column xs="2">
                   <Nav.Knapp style={btnStyle} onClick={this.visFagsaker} disabled={this.state.tema.length === 0}>Vis saker</Nav.Knapp>
@@ -268,7 +268,7 @@ OpprettSak.propTypes = {
   landkoder: PT.arrayOf(MPT.Kodeverk),
   sedtyper: PT.arrayOf(MPT.Kodeverk),
   sektor: PT.arrayOf(MPT.Kodeverk),
-  behandlingstema: PT.arrayOf(MPT.Kodeverk),
+  temar: PT.arrayOf(MPT.Kodeverk),
   buctyper: PT.arrayOf(MPT.Kodeverk),
   buctype: PT.string,
   fnrErGyldig: PT.bool,
@@ -288,7 +288,7 @@ OpprettSak.defaultProps = {
   landkoder: undefined,
   sedtyper: undefined,
   sektor: undefined,
-  behandlingstema: undefined,
+  temar: undefined,
   buctyper: undefined,
   buctype: undefined,
   fnrErGyldig: undefined,
@@ -316,7 +316,7 @@ const mapStateToProps = state => ({
   sedtyper: RinasakSelectors.sedtypeSelector(state),
   buctype: skjemaSelector(state, 'buctype'),
   buctyper: RinasakSelectors.buctyperSelector(state),
-  behandlingstema: FagsakSelectors.behandlingstypeSelector(state),
+  temar: FagsakSelectors.temaSelector(state),
   inntastetFnr: skjemaSelector(state, 'fnr'),
   valgtSektor: skjemaSelector(state, 'sektor'),
   valgteFamilieRelasjoner: skjemaSelector(state, 'tilleggsopplysninger.familierelasjoner'),

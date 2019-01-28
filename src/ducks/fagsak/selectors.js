@@ -14,13 +14,13 @@ export const fagsakerSelector = createSelector(
   fagsaker => fagsaker
 );
 
-export const behandlingstypeSelector = createSelector(
+export const temaSelector = createSelector(
   state => KodeverkSelectors.kodemapsSelector(state),
-  state => KodeverkSelectors.behandlingstemaSelector(state),
+  state => KodeverkSelectors.temaSelector(state),
   state => FormSelectors.valgtSektorSelector(state),
-  (kodemaps, behandlingstema, valgtSektor) => {
+  (kodemaps, tema, valgtSektor) => {
     if (!kodemaps) { return []; }
     if (!valgtSektor) { return []; }
-    return behandlingstema[kodemaps.SEKTOR2FAGSAK[valgtSektor]];
+    return tema[kodemaps.SEKTOR2FAGSAK[valgtSektor]];
   }
 );
