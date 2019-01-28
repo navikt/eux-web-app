@@ -10,7 +10,7 @@ import * as Skjema from '../felles-komponenter/skjema';
 
 import { KodeverkSelectors } from '../ducks/kodeverk';
 import { RinasakOperations, RinasakSelectors } from '../ducks/rinasak';
-import { FagsakOperations, FagsakSelectors } from '../ducks/fagsak';
+import { FagsakSelectors } from '../ducks/fagsak';
 
 import { StatusLinje } from '../felles-komponenter/statuslinje';
 import FamilieRelasjonsComponent from '../felles-komponenter/skjema/PersonOgFamilieRelasjoner';
@@ -25,8 +25,8 @@ const BehandlingsTemaer = props => {
 
   return (
     <Nav.Select bredde="xl" label="Velg tema" value={tema} onChange={oppdaterFagsakListe}>
-      <option value="0" />
-      {temaer && temaer.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
+      <option defaultChecked />
+      {temaer && temaer.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
     </Nav.Select>
   );
 };
@@ -52,6 +52,7 @@ const FagsakTabell = props => {
           <th>Sakstype</th>
           <th>Opprettet/mottatt</th>
           <th>Status</th>
+          <th>Tema</th>
         </tr>
       </thead>
       <tbody>
@@ -62,6 +63,7 @@ const FagsakTabell = props => {
             <td>{fagsak.fagsystem}</td>
             <td>{fagsak.opprettet}</td>
             <td>{fagsak.status}</td>
+            <td>{fagsak.tema.term}</td>
           </tr>
         ))}
       </tbody>
@@ -72,7 +74,9 @@ const FagsakTabell = props => {
 FagsakTabell.propTypes = {
   fagsaker: PT.array.isRequired,
 };
-
+const btnStyle = {
+  margin: '1.85em 0 0 0',
+};
 class OpprettSak extends Component {
   state = {
     landKode: '',
@@ -81,12 +85,9 @@ class OpprettSak extends Component {
     tema: '',
     fagsaker: [],
   };
-  /*
-  componentDidMount() {
-    this.props.hentFagsaker('02026100715', 'a345');
-    //Api.Fagsaker.saksliste('02026100715', 'a345').then(data => console.dir(data));
-  }
-  */
+
+  visFagsakTabell = () => (['FB', 'UB'].includes(this.props.valgtSektor) && this.state.tema.length > 0 && this.state.fagsaker.length > 0);
+
   oppdaterLandKode = event => {
     const landKode = event.target.value;
     const { buctype } = this.props;
@@ -103,8 +104,12 @@ class OpprettSak extends Component {
 
   oppdaterFagsakListe = event => {
     const tema = event.target.value;
-    const { inntastetFnr: fnr } = this.props;
-    Api.Fagsaker.saksliste(fnr, tema).then(fagsaker => {
+    this.setState({ tema, fagsaker: [] });
+  };
+  visFagsaker = () => {
+    const { tema } = this.state;
+    const { inntastetFnr: fnr, valgtSektor } = this.props;
+    Api.Fagsaker.saksliste(fnr, valgtSektor.toLowerCase(), tema).then(fagsaker => {
       this.setState({ tema, fagsaker });
     });
   };
@@ -201,7 +206,6 @@ class OpprettSak extends Component {
                   <option value="0" />
                   {landkoder && landkoder.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                 </Nav.Select>
-
               </Nav.Column>
               <Nav.Column xs="3">
                 <Nav.Select bredde="xl" disabled={!oppgittFnrErValidert} value={this.state.mottakerID} onChange={this.oppdaterInstitusjonKode} label="Mottaker institusjon">
@@ -211,13 +215,22 @@ class OpprettSak extends Component {
               </Nav.Column>
             </Nav.Row>
             <Nav.Row className="">
-              {valgtSektor.includes('FB') && <FamilieRelasjonsComponent />}
+              {valgtSektor === 'FB' && <FamilieRelasjonsComponent />}
             </Nav.Row>
-            <Nav.Row className="">
-              {['FB', 'UB'].includes(valgtSektor) && <BehandlingsTemaer temaer={behandlingstema} tema={this.state.tema} oppdaterFagsakListe={this.oppdaterFagsakListe} />}
-            </Nav.Row>
-            <FagsakTabell fagsaker={this.state.fagsaker} />
+            {['FB', 'UB'].includes(valgtSektor) && (
+              <Nav.Row className="">
+                <Nav.Column xs="3">
+                  <BehandlingsTemaer temaer={behandlingstema} tema={this.state.tema} oppdaterFagsakListe={this.oppdaterFagsakListe} />
+                </Nav.Column>
+                <Nav.Column xs="2">
+                  <Nav.Knapp style={btnStyle} onClick={this.visFagsaker} disabled={this.state.tema.length === 0}>Vis saker</Nav.Knapp>
+                </Nav.Column>
+              </Nav.Row>
+            )}
             <Nav.Row>
+              {this.visFagsakTabell() && (
+                <FagsakTabell fagsaker={this.state.fagsaker} />
+              )}
             </Nav.Row>
             <Nav.Row className="opprettsak__statuslinje">
               <Nav.Column xs="3">
@@ -319,7 +332,6 @@ const mapDispatchToProps = dispatch => ({
   settFnrGyldighet: erGyldig => dispatch(change('opprettSak', 'fnrErGyldig', erGyldig)),
   settFnrSjekket: erSjekket => dispatch(change('opprettSak', 'fnrErSjekket', erSjekket)),
   sendSkjema: data => dispatch(RinasakOperations.sendSak(data)),
-  hentFagsaker: (fnr, behandlingstema) => dispatch(FagsakOperations.saksliste(fnr, behandlingstema)),
 });
 
 const validering = values => {
