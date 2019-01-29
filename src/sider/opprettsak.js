@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, formValueSelector, clearAsyncError, stopSubmit, change } from 'redux-form';
 import PT from 'prop-types';
-
 import * as Api from '../services/api';
 import * as MPT from '../proptypes/';
 import * as Nav from '../utils/navFrontend';
@@ -10,21 +9,33 @@ import * as Skjema from '../felles-komponenter/skjema';
 
 import { KodeverkSelectors } from '../ducks/kodeverk';
 import { RinasakOperations, RinasakSelectors } from '../ducks/rinasak';
+import { FagsakSelectors } from '../ducks/fagsak';
 
 import { StatusLinje } from '../felles-komponenter/statuslinje';
 import FamilieRelasjonsComponent from '../felles-komponenter/skjema/PersonOgFamilieRelasjoner';
 import PersonSok from './personsok';
 
 import './opprettsak.css';
+import { BehandlingsTemaer, FagsakerListe } from './sak';
 
 const uuid = require('uuid/v4');
+
+const btnStyle = {
+  margin: '1.85em 0 0 0',
+};
 
 class OpprettSak extends Component {
   state = {
     landKode: '',
     mottakerID: '',
     institusjoner: [],
+    tema: '',
+    fagsaker: [],
+    saksid: '',
   };
+
+  visFagsakerListe = () => (['FB', 'UB'].includes(this.props.valgtSektor) && this.state.tema.length > 0 && this.state.fagsaker.length > 0);
+
   oppdaterLandKode = event => {
     const landKode = event.target.value;
     const { buctype } = this.props;
@@ -39,15 +50,34 @@ class OpprettSak extends Component {
     this.setState({ mottakerID, institusjoner });
   };
 
+  oppdaterTemaListe = event => {
+    const tema = event.target.value;
+    this.setState({ tema, fagsaker: [] });
+  };
+
+  oppdaterFagsakListe = event => {
+    const saksid = event.target.value;
+    this.setState({ saksid });
+  };
+  visFagsaker = () => {
+    const { tema } = this.state;
+    const { inntastetFnr: fnr, valgtSektor } = this.props;
+    Api.Fagsaker.saksliste(fnr, valgtSektor.toLowerCase(), tema).then(fagsaker => {
+      this.setState({ tema, fagsaker });
+    });
+  };
   skjemaSubmit = values => {
     const { submitFailed, sendSkjema } = this.props;
-    const { mottakerID, landKode } = this.state;
+    const { mottakerID, landKode, saksid } = this.state;
 
     if (submitFailed) return;
 
-    const vaskedeVerdier = { ...values, mottakerID, landKode };
+    const vaskedeVerdier = {
+      ...values, mottakerID, landKode, saksid,
+    };
     delete vaskedeVerdier.fnrErGyldig;
     delete vaskedeVerdier.fnrErSjekket;
+
     sendSkjema(vaskedeVerdier);
   };
 
@@ -76,7 +106,7 @@ class OpprettSak extends Component {
 
   render() {
     const {
-      landkoder, sedtyper, sektor, buctyper,
+      landkoder, sedtyper, sektor, buctyper, temar,
       inntastetFnr, status, errdata,
       valgtSektor,
       settFnrSjekket, settFnrGyldighet,
@@ -132,7 +162,6 @@ class OpprettSak extends Component {
                   <option value="0" />
                   {landkoder && landkoder.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                 </Nav.Select>
-
               </Nav.Column>
               <Nav.Column xs="3">
                 <Nav.Select bredde="xl" disabled={!oppgittFnrErValidert} value={this.state.mottakerID} onChange={this.oppdaterInstitusjonKode} label="Mottaker institusjon">
@@ -142,7 +171,31 @@ class OpprettSak extends Component {
               </Nav.Column>
             </Nav.Row>
             <Nav.Row className="">
-              {valgtSektor.includes('FB') && <FamilieRelasjonsComponent />}
+              {valgtSektor === 'FB' && <FamilieRelasjonsComponent />}
+            </Nav.Row>
+            {['FB', 'UB'].includes(valgtSektor) && (
+              <Nav.Row className="">
+                <Nav.Column xs="3">
+                  <BehandlingsTemaer temaer={temar} tema={this.state.tema} oppdaterTemaListe={this.oppdaterTemaListe} />
+                </Nav.Column>
+                <Nav.Column xs="2">
+                  <Nav.Knapp style={btnStyle} onClick={this.visFagsaker} disabled={this.state.tema.length === 0}>Vis saker</Nav.Knapp>
+                </Nav.Column>
+              </Nav.Row>
+            )}
+            <Nav.Row>
+              {this.visFagsakerListe() && (
+                <div>
+                  <Nav.Column xs="3">
+                    <FagsakerListe fagsaker={this.state.fagsaker} saksid={this.state.saksid} oppdaterFagsakListe={this.oppdaterFagsakListe} />
+                  </Nav.Column>
+                  <Nav.Column xs="3" style={btnStyle} >
+                    <Nav.Lenke href="https://wasapp-t8.adeo.no/gosys/login.jsf?execution=e1s1" ariaLabel="Opprett ny sak i GOSYS" target="_blank">
+                      Opprett ny sak i GOSYS
+                    </Nav.Lenke>
+                  </Nav.Column>
+                </div>
+              )}
             </Nav.Row>
             <Nav.Row className="opprettsak__statuslinje">
               <Nav.Column xs="3">
@@ -153,7 +206,7 @@ class OpprettSak extends Component {
               </Nav.Column>
               <Nav.Column xs="3">
                 <Nav.Lenke href="/" ariaLabel="Navigasjonslink tilbake til forsiden">
-                 AVSLUTT
+                  AVSLUTT
                 </Nav.Lenke>
               </Nav.Column>
             </Nav.Row>
@@ -180,6 +233,7 @@ OpprettSak.propTypes = {
   landkoder: PT.arrayOf(MPT.Kodeverk),
   sedtyper: PT.arrayOf(MPT.Kodeverk),
   sektor: PT.arrayOf(MPT.Kodeverk),
+  temar: PT.arrayOf(MPT.Kodeverk),
   buctyper: PT.arrayOf(MPT.Kodeverk),
   buctype: PT.string,
   fnrErGyldig: PT.bool,
@@ -199,6 +253,7 @@ OpprettSak.defaultProps = {
   landkoder: undefined,
   sedtyper: undefined,
   sektor: undefined,
+  temar: undefined,
   buctyper: undefined,
   buctype: undefined,
   fnrErGyldig: undefined,
@@ -226,12 +281,14 @@ const mapStateToProps = state => ({
   sedtyper: RinasakSelectors.sedtypeSelector(state),
   buctype: skjemaSelector(state, 'buctype'),
   buctyper: RinasakSelectors.buctyperSelector(state),
+  temar: FagsakSelectors.temaSelector(state),
   inntastetFnr: skjemaSelector(state, 'fnr'),
   valgtSektor: skjemaSelector(state, 'sektor'),
   valgteFamilieRelasjoner: skjemaSelector(state, 'tilleggsopplysninger.familierelasjoner'),
   status: RinasakSelectors.sakStatusSelector(state),
   errdata: RinasakSelectors.errorDataSakSelector(state),
   opprettetSak: RinasakSelectors.sakSelector(state),
+  fagsaker: FagsakSelectors.fagsakerSelector(state),
 });
 
 const mapDispatchToProps = dispatch => ({

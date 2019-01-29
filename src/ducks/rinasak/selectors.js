@@ -6,7 +6,8 @@
  */
 
 import { createSelector } from 'reselect';
-import { alleSEDtyperSelector, kodemapsSelector } from '../kodeverk/selectors';
+import { KodeverkSelectors } from '../kodeverk';
+import { FormSelectors } from '../form';
 
 // selector(s)
 export const sakSelector = createSelector(
@@ -23,25 +24,10 @@ export const errorDataSakSelector = createSelector(
   data => (data.data ? JSON.parse(data.data) : {})
 );
 
-export const valgtSektorSelector = createSelector(
-  state => (state.form.opprettSak ? state.form.opprettSak : {}),
-  opprettSakForm => {
-    const { values = {} } = opprettSakForm;
-    return values.sektor;
-  }
-);
-export const valgtBucTypeSelector = createSelector(
-  state => (state.form.opprettSak ? state.form.opprettSak : {}),
-  opprettSakForm => {
-    const { values = {} } = opprettSakForm;
-    return values.buctype;
-  }
-);
-
 export const buctyperSelector = createSelector(
-  state => kodemapsSelector(state),
-  state => state.kodeverk.data.buctyper,
-  state => valgtSektorSelector(state),
+  state => KodeverkSelectors.kodemapsSelector(state),
+  state => KodeverkSelectors.alleBUCtyperSelector(state),
+  state => FormSelectors.valgtSektorSelector(state),
   (kodemaps, buctyper, valgtSektor) => {
     if (!kodemaps) { return []; }
     if (!valgtSektor) { return []; }
@@ -49,12 +35,11 @@ export const buctyperSelector = createSelector(
   }
 );
 
-
 export const sedtypeSelector = createSelector(
-  state => valgtSektorSelector(state),
-  state => kodemapsSelector(state),
-  state => alleSEDtyperSelector(state),
-  state => valgtBucTypeSelector(state),
+  state => FormSelectors.valgtSektorSelector(state),
+  state => KodeverkSelectors.kodemapsSelector(state),
+  state => KodeverkSelectors.alleSEDtyperSelector(state),
+  state => FormSelectors.valgtBucTypeSelector(state),
   (valgtSektor, kodemaps, sedKodeverk, valgtBucType) => {
     if (!kodemaps) { return []; }
     if (!valgtBucType) { return []; }
