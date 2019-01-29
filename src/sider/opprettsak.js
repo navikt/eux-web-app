@@ -21,10 +21,10 @@ import './opprettsak.css';
 const uuid = require('uuid/v4');
 
 const BehandlingsTemaer = props => {
-  const { temaer, tema, oppdaterFagsakListe } = props;
+  const { temaer, tema, oppdaterTemaListe } = props;
 
   return (
-    <Nav.Select bredde="xl" label="Velg tema" value={tema} onChange={oppdaterFagsakListe}>
+    <Nav.Select bredde="xl" label="Velg tema" value={tema} onChange={oppdaterTemaListe}>
       <option defaultChecked />
       {temaer && temaer.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
     </Nav.Select>
@@ -33,50 +33,36 @@ const BehandlingsTemaer = props => {
 BehandlingsTemaer.propTypes = {
   tema: PT.string,
   temaer: PT.arrayOf(MPT.Kodeverk),
-  oppdaterFagsakListe: PT.func.isRequired,
+  oppdaterTemaListe: PT.func.isRequired,
 };
 BehandlingsTemaer.defaultProps = {
   tema: '',
   temaer: [],
 };
 
-const FagsakTabell = props => {
-  const { fagsaker } = props;
+const FagsakerListe = props => {
+  const { fagsaker, fagsak, oppdaterFagsakListe } = props;
   return (
-    <table>
-      <caption>Saksliste</caption>
-      <thead>
-        <tr>
-          <th>Saksid</th>
-          <th>Fagsystem</th>
-          <th>Sakstype</th>
-          <th>Opprettet/mottatt</th>
-          <th>Status</th>
-          <th>Tema</th>
-        </tr>
-      </thead>
-      <tbody>
-        {fagsaker.map(fagsak => (
-          <tr key={uuid()}>
-            <td>{fagsak.saksid}</td>
-            <td>{fagsak.sakstype}</td>
-            <td>{fagsak.fagsystem}</td>
-            <td>{fagsak.opprettet}</td>
-            <td>{fagsak.status}</td>
-            <td>{fagsak.tema.term}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <Nav.Select bredde="xl" label="Velg fagsak" value={fagsak} onChange={oppdaterFagsakListe}>
+      <option defaultChecked />
+      {fagsaker && fagsaker.map(element => <option value={element.tema.kode} key={uuid()}>{element.tema.term}-{element.saksid}</option>)}
+    </Nav.Select>
   );
 };
 
-FagsakTabell.propTypes = {
+FagsakerListe.propTypes = {
+  fagsak: PT.string,
   fagsaker: PT.array.isRequired,
+  oppdaterFagsakListe: PT.func.isRequired,
 };
+FagsakerListe.defaultProps = {
+  fagsak: '',
+};
+
 const btnStyle = {
   margin: '1.85em 0 0 0',
 };
+
 class OpprettSak extends Component {
   state = {
     landKode: '',
@@ -84,9 +70,10 @@ class OpprettSak extends Component {
     institusjoner: [],
     tema: '',
     fagsaker: [],
+    fagsak: '',
   };
 
-  visFagsakTabell = () => (['FB', 'UB'].includes(this.props.valgtSektor) && this.state.tema.length > 0 && this.state.fagsaker.length > 0);
+  visFagsakerListe = () => (['FB', 'UB'].includes(this.props.valgtSektor) && this.state.tema.length > 0 && this.state.fagsaker.length > 0);
 
   oppdaterLandKode = event => {
     const landKode = event.target.value;
@@ -102,9 +89,14 @@ class OpprettSak extends Component {
     this.setState({ mottakerID, institusjoner });
   };
 
-  oppdaterFagsakListe = event => {
+  oppdaterTemaListe = event => {
     const tema = event.target.value;
     this.setState({ tema, fagsaker: [] });
+  };
+
+  oppdaterFagsakListe = event => {
+    const fagsak = event.target.value;
+    this.setState({ fagsak });
   };
   visFagsaker = () => {
     const { tema } = this.state;
@@ -220,7 +212,7 @@ class OpprettSak extends Component {
             {['FB', 'UB'].includes(valgtSektor) && (
               <Nav.Row className="">
                 <Nav.Column xs="3">
-                  <BehandlingsTemaer temaer={temar} tema={this.state.tema} oppdaterFagsakListe={this.oppdaterFagsakListe} />
+                  <BehandlingsTemaer temaer={temar} tema={this.state.tema} oppdaterTemaListe={this.oppdaterTemaListe} />
                 </Nav.Column>
                 <Nav.Column xs="2">
                   <Nav.Knapp style={btnStyle} onClick={this.visFagsaker} disabled={this.state.tema.length === 0}>Vis saker</Nav.Knapp>
@@ -228,8 +220,10 @@ class OpprettSak extends Component {
               </Nav.Row>
             )}
             <Nav.Row>
-              {this.visFagsakTabell() && (
-                <FagsakTabell fagsaker={this.state.fagsaker} />
+              {this.visFagsakerListe() && (
+                <Nav.Column xs="3">
+                  <FagsakerListe fagsaker={this.state.fagsaker} fagsak={this.state.fagsak} oppdaterFagsakListe={this.oppdaterFagsakListe} />
+                </Nav.Column>
               )}
             </Nav.Row>
             <Nav.Row className="opprettsak__statuslinje">
