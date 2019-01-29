@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, formValueSelector, clearAsyncError, stopSubmit, change } from 'redux-form';
 import PT from 'prop-types';
-
 import * as Api from '../services/api';
 import * as MPT from '../proptypes/';
 import * as Nav from '../utils/navFrontend';
@@ -17,47 +16,9 @@ import FamilieRelasjonsComponent from '../felles-komponenter/skjema/PersonOgFami
 import PersonSok from './personsok';
 
 import './opprettsak.css';
+import { BehandlingsTemaer, FagsakerListe } from './sak';
 
 const uuid = require('uuid/v4');
-
-const BehandlingsTemaer = props => {
-  const { temaer, tema, oppdaterTemaListe } = props;
-
-  return (
-    <Nav.Select bredde="xl" label="Velg tema" value={tema} onChange={oppdaterTemaListe}>
-      <option defaultChecked />
-      {temaer && temaer.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
-    </Nav.Select>
-  );
-};
-BehandlingsTemaer.propTypes = {
-  tema: PT.string,
-  temaer: PT.arrayOf(MPT.Kodeverk),
-  oppdaterTemaListe: PT.func.isRequired,
-};
-BehandlingsTemaer.defaultProps = {
-  tema: '',
-  temaer: [],
-};
-
-const FagsakerListe = props => {
-  const { fagsaker, fagsak, oppdaterFagsakListe } = props;
-  return (
-    <Nav.Select bredde="xl" label="Velg fagsak" value={fagsak} onChange={oppdaterFagsakListe}>
-      <option defaultChecked />
-      {fagsaker && fagsaker.map(element => <option value={element.tema.kode} key={uuid()}>{element.tema.term}-{element.saksid}</option>)}
-    </Nav.Select>
-  );
-};
-
-FagsakerListe.propTypes = {
-  fagsak: PT.string,
-  fagsaker: PT.array.isRequired,
-  oppdaterFagsakListe: PT.func.isRequired,
-};
-FagsakerListe.defaultProps = {
-  fagsak: '',
-};
 
 const btnStyle = {
   margin: '1.85em 0 0 0',
@@ -70,7 +31,7 @@ class OpprettSak extends Component {
     institusjoner: [],
     tema: '',
     fagsaker: [],
-    fagsak: '',
+    saksid: '',
   };
 
   visFagsakerListe = () => (['FB', 'UB'].includes(this.props.valgtSektor) && this.state.tema.length > 0 && this.state.fagsaker.length > 0);
@@ -95,8 +56,8 @@ class OpprettSak extends Component {
   };
 
   oppdaterFagsakListe = event => {
-    const fagsak = event.target.value;
-    this.setState({ fagsak });
+    const saksid = event.target.value;
+    this.setState({ saksid });
   };
   visFagsaker = () => {
     const { tema } = this.state;
@@ -107,13 +68,16 @@ class OpprettSak extends Component {
   };
   skjemaSubmit = values => {
     const { submitFailed, sendSkjema } = this.props;
-    const { mottakerID, landKode } = this.state;
+    const { mottakerID, landKode, saksid } = this.state;
 
     if (submitFailed) return;
 
-    const vaskedeVerdier = { ...values, mottakerID, landKode };
+    const vaskedeVerdier = {
+      ...values, mottakerID, landKode, saksid,
+    };
     delete vaskedeVerdier.fnrErGyldig;
     delete vaskedeVerdier.fnrErSjekket;
+
     sendSkjema(vaskedeVerdier);
   };
 
@@ -221,9 +185,16 @@ class OpprettSak extends Component {
             )}
             <Nav.Row>
               {this.visFagsakerListe() && (
-                <Nav.Column xs="3">
-                  <FagsakerListe fagsaker={this.state.fagsaker} fagsak={this.state.fagsak} oppdaterFagsakListe={this.oppdaterFagsakListe} />
-                </Nav.Column>
+                <div>
+                  <Nav.Column xs="3">
+                    <FagsakerListe fagsaker={this.state.fagsaker} saksid={this.state.saksid} oppdaterFagsakListe={this.oppdaterFagsakListe} />
+                  </Nav.Column>
+                  <Nav.Column xs="3" style={btnStyle} >
+                    <Nav.Lenke href="https://wasapp-t8.adeo.no/gosys/login.jsf?execution=e1s1" ariaLabel="Opprett ny sak i GOSYS" target="_blank">
+                      Opprett ny sak i GOSYS
+                    </Nav.Lenke>
+                  </Nav.Column>
+                </div>
               )}
             </Nav.Row>
             <Nav.Row className="opprettsak__statuslinje">
@@ -235,7 +206,7 @@ class OpprettSak extends Component {
               </Nav.Column>
               <Nav.Column xs="3">
                 <Nav.Lenke href="/" ariaLabel="Navigasjonslink tilbake til forsiden">
-                 AVSLUTT
+                  AVSLUTT
                 </Nav.Lenke>
               </Nav.Column>
             </Nav.Row>
