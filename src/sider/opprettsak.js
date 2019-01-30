@@ -16,7 +16,7 @@ import FamilieRelasjonsComponent from '../felles-komponenter/skjema/PersonOgFami
 import PersonSok from './personsok';
 
 import './opprettsak.css';
-import { BehandlingsTemaer, FagsakerListe } from './sak';
+import { Arbeidsforhold, BehandlingsTemaer, Fagsaker } from './sak';
 
 const uuid = require('uuid/v4');
 
@@ -35,7 +35,10 @@ class OpprettSak extends Component {
   };
 
   visFagsakerListe = () => (['FB', 'UB'].includes(this.props.valgtSektor) && this.state.tema.length > 0 && this.state.fagsaker.length > 0);
-
+  visArbeidsforhold = () => {
+    const { valgtSektor, buctype, sedtype } = this.props;
+    return ['FB'].includes(valgtSektor) && ['FB_BUC_01'].includes(buctype) && sedtype;
+  };
   oppdaterLandKode = event => {
     const landKode = event.target.value;
     const { buctype } = this.props;
@@ -183,20 +186,14 @@ class OpprettSak extends Component {
                 </Nav.Column>
               </Nav.Row>
             )}
-            <Nav.Row>
-              {this.visFagsakerListe() && (
-                <div>
-                  <Nav.Column xs="3">
-                    <FagsakerListe fagsaker={this.state.fagsaker} saksid={this.state.saksid} oppdaterFagsakListe={this.oppdaterFagsakListe} />
-                  </Nav.Column>
-                  <Nav.Column xs="3" style={btnStyle} >
-                    <Nav.Lenke href="https://wasapp-t8.adeo.no/gosys/login.jsf?execution=e1s1" ariaLabel="Opprett ny sak i GOSYS" target="_blank">
-                      Opprett ny sak i GOSYS
-                    </Nav.Lenke>
-                  </Nav.Column>
-                </div>
-              )}
-            </Nav.Row>
+
+            {this.visFagsakerListe() &&
+              <Fagsaker fagsaker={this.state.fagsaker} saksid={this.state.saksid} oppdaterFagsakListe={this.oppdaterFagsakListe} />
+            }
+
+            {this.visArbeidsforhold() && (
+              <Arbeidsforhold />
+            )}
             <Nav.Row className="opprettsak__statuslinje">
               <Nav.Column xs="3">
                 <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)} spinner={['PENDING'].includes(status)} disabled={['PENDING'].includes(status)}>Opprett sak i RINA</Nav.Hovedknapp>
@@ -232,6 +229,7 @@ OpprettSak.propTypes = {
   submitFailed: PT.bool.isRequired,
   landkoder: PT.arrayOf(MPT.Kodeverk),
   sedtyper: PT.arrayOf(MPT.Kodeverk),
+  sedtype: PT.string,
   sektor: PT.arrayOf(MPT.Kodeverk),
   temar: PT.arrayOf(MPT.Kodeverk),
   buctyper: PT.arrayOf(MPT.Kodeverk),
@@ -252,6 +250,7 @@ OpprettSak.propTypes = {
 OpprettSak.defaultProps = {
   landkoder: undefined,
   sedtyper: undefined,
+  sedtype: undefined,
   sektor: undefined,
   temar: undefined,
   buctyper: undefined,
@@ -278,7 +277,8 @@ const mapStateToProps = state => ({
   sektor: KodeverkSelectors.sektorSelector(state),
   fnrErGyldig: skjemaSelector(state, 'fnrErGyldig'),
   fnrErSjekket: skjemaSelector(state, 'fnrErSjekket'),
-  sedtyper: RinasakSelectors.sedtypeSelector(state),
+  sedtyper: RinasakSelectors.sedtyperSelector(state),
+  sedtype: skjemaSelector(state, 'sedtype'),
   buctype: skjemaSelector(state, 'buctype'),
   buctyper: RinasakSelectors.buctyperSelector(state),
   temar: FagsakSelectors.temaSelector(state),

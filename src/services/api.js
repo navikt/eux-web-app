@@ -6,12 +6,15 @@ import * as Rina from './modules/rina';
 import * as Dokumenter from './modules/dokumenter';
 import * as Fagsaker from './modules/fagsaker';
 import * as Institusjoner from './modules/institusjoner';
+import * as Arbeidsforhold from './modules/arbeidsforhold';
+
 // from .env or .env.local
 // const API_BASE_URL = `${process.env.REACT_APP_API_BASE_URL}`;
 // console.log('process.env', process.env);
 
 
 export {
+  Arbeidsforhold,
   Rina,
   Dokumenter,
   Fagsaker,

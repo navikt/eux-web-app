@@ -26,3 +26,11 @@ export const valgtBucTypeSelector = createSelector(
     return values.buctype;
   }
 );
+
+export const valgtSedtypeSelector = createSelector(
+  state => OpprettSakFormSelector(state),
+  opprettSakForm => {
+    const { values = {} } = opprettSakForm;
+    return values.sedtype;
+  }
+);
