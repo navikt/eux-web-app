@@ -198,10 +198,7 @@ class OpprettSak extends Component {
               <Nav.Column xs="3">
                 <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)} spinner={['PENDING'].includes(status)} disabled={['PENDING'].includes(status)}>Opprett sak i RINA</Nav.Hovedknapp>
               </Nav.Column>
-              <Nav.Column xs="1">
-                &nbsp;
-              </Nav.Column>
-              <Nav.Column xs="3">
+              <Nav.Column xs="2">
                 <Nav.Lenke href="/" ariaLabel="Navigasjonslink tilbake til forsiden">
                   AVSLUTT
                 </Nav.Lenke>

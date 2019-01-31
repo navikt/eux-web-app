@@ -8,10 +8,6 @@ import Ansettelse from './ansettelse';
 
 const uuid = require('uuid/v4');
 
-const btnStyle = {
-  margin: '1.85em 0 0 0',
-};
-
 class Arbeidsforhold extends Component {
   state = {
     arbeidsforhold: [],
@@ -30,19 +26,11 @@ class Arbeidsforhold extends Component {
     return (
       <div className="arbeidsforhold">
         <Nav.Row>
-          <Nav.Column xs="6">
+          <Nav.Column xs="3">
             <strong>AA Registeret</strong><br />Arbeidsforhold
           </Nav.Column>
-        </Nav.Row>
-        <Nav.Row>
           <Nav.Column xs="2">
-            <p>Startdato</p>
-          </Nav.Column>
-          <Nav.Column xs="2">
-            <p>Sluttdato</p>
-          </Nav.Column>
-          <Nav.Column xs="2">
-            <Nav.Knapp style={btnStyle} onClick={this.hentArbeidsforhold}>Søk</Nav.Knapp>
+            <Nav.Knapp onClick={this.hentArbeidsforhold}>Søk</Nav.Knapp>
           </Nav.Column>
         </Nav.Row>
         <Nav.Row>
