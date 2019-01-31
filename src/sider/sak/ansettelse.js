@@ -15,7 +15,7 @@ const Ansettelse = props => {
       <Nav.Column xs="1" style={{ width: '5%' }}>
         <div className="panelheader__ikon" style={{ marginTop: '0.25em', backgroundImage: `url('${Ikoner.Arbeidsforhold}')` }} />
       </Nav.Column>
-      <Nav.Column xs="2" style={{ width: '20%' }}>
+      <Nav.Column xs="2" style={{ width: '20%', marginBottom: '0.5em' }}>
         <strong>{arbeidsGiver}</strong><br />StartDato:&nbsp;{formatterDatoTilNorsk(fom)}<br />SluttDato:&nbsp;{formatterDatoTilNorsk(tom)}
       </Nav.Column>
       <Nav.Column xs="1">
