@@ -191,9 +191,7 @@ class OpprettSak extends Component {
               <Fagsaker fagsaker={this.state.fagsaker} saksid={this.state.saksid} oppdaterFagsakListe={this.oppdaterFagsakListe} />
             }
 
-            {this.visArbeidsforhold() && (
-              <Arbeidsforhold />
-            )}
+            { this.visArbeidsforhold() && <Arbeidsforhold fnr={inntastetFnr} /> }
             <Nav.Row className="opprettsak__statuslinje">
               <Nav.Column xs="3">
                 <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)} spinner={['PENDING'].includes(status)} disabled={['PENDING'].includes(status)}>Opprett sak i RINA</Nav.Hovedknapp>

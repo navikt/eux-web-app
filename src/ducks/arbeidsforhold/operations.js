@@ -12,8 +12,8 @@ import * as Api from '../../services/api';
 import * as Types from './types';
 
 /* eslint-disable import/prefer-default-export */
-export function hent() {
-  return doThenDispatch(() => Api.Arbeidsforhold.hent(), {
+export function hent(fnr) {
+  return doThenDispatch(() => Api.Arbeidsforhold.ansettelser(fnr), {
     OK: Types.OK,
     FEILET: Types.FEILET,
     PENDING: Types.PENDING,

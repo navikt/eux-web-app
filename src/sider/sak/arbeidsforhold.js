@@ -14,9 +14,8 @@ class Arbeidsforhold extends Component {
   };
 
   hentArbeidsforhold = async () => {
-    const fom = '';
-    const tom = '';
-    await Api.Arbeidsforhold.hent(fom, tom).then(arbeidsforhold => {
+    const { fnr } = this.props;
+    await Api.Arbeidsforhold.ansettelser(fnr).then(arbeidsforhold => {
       this.setState({ arbeidsforhold });
     });
   };
