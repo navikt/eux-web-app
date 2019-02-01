@@ -15,7 +15,7 @@ class Arbeidsforhold extends Component {
 
   hentArbeidsforhold = async () => {
     const { fnr } = this.props;
-    await Api.Arbeidsforhold.ansettelser(fnr).then(arbeidsforhold => {
+    await Api.Arbeidsforhold.arbeidsgivere(fnr).then(arbeidsforhold => {
       this.setState({ arbeidsforhold });
     });
   };
@@ -26,7 +26,7 @@ class Arbeidsforhold extends Component {
       <div className="arbeidsforhold">
         <Nav.Row>
           <Nav.Column xs="3">
-            <strong>AA Registeret</strong><br />Arbeidsforhold
+            <strong>AA Registeret</strong><br />Arbeidsforhold/Arbeidsgivere
           </Nav.Column>
           <Nav.Column xs="2">
             <Nav.Knapp onClick={this.hentArbeidsforhold}>Søk</Nav.Knapp>

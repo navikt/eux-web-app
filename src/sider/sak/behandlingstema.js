@@ -11,7 +11,7 @@ export const BehandlingsTemaer = props => {
   const { temaer, tema, oppdaterTemaListe } = props;
 
   return (
-    <Nav.Select bredde="xl" label="Velg tema" value={tema} onChange={oppdaterTemaListe}>
+    <Nav.Select bredde="xl" label="Velg behandlings tema" value={tema} onChange={oppdaterTemaListe}>
       <option defaultChecked />
       {temaer && temaer.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
     </Nav.Select>
