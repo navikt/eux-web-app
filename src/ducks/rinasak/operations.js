@@ -19,6 +19,7 @@ const transformData = data => {
       buctype, fnr, landKode: land, mottakerID, sedtype, sektor, saksid,
       tilleggsopplysninger,
     } = data;
+    const { arbeidsgivere } = tilleggsopplysninger;
     const familierelasjoner = tilleggsopplysninger.familierelasjoner.map(relasjon => ({ ...relasjon, fdato: formatterDatoTilISO(relasjon.fdato) }));
     return {
       buctype,
@@ -30,6 +31,7 @@ const transformData = data => {
       saksid,
       tilleggsopplysninger: {
         familierelasjoner,
+        arbeidsgivere,
       },
     };
   }

@@ -190,8 +190,9 @@ class OpprettSak extends Component {
             {this.visFagsakerListe() &&
               <Fagsaker fagsaker={this.state.fagsaker} saksid={this.state.saksid} oppdaterFagsakListe={this.oppdaterFagsakListe} />
             }
-
             { this.visArbeidsforhold() && <Arbeidsforhold fnr={inntastetFnr} /> }
+
+
             <Nav.Row className="opprettsak__statuslinje">
               <Nav.Column xs="3">
                 <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)} spinner={['PENDING'].includes(status)} disabled={['PENDING'].includes(status)}>Opprett sak i RINA</Nav.Hovedknapp>
@@ -266,6 +267,7 @@ const mapStateToProps = state => ({
   initialValues: {
     tilleggsopplysninger: {
       familierelasjoner: [],
+      arbeidsgivere: [],
     },
   },
   landkoder: KodeverkSelectors.landkoderSelector(state),
@@ -280,6 +282,7 @@ const mapStateToProps = state => ({
   inntastetFnr: skjemaSelector(state, 'fnr'),
   valgtSektor: skjemaSelector(state, 'sektor'),
   valgteFamilieRelasjoner: skjemaSelector(state, 'tilleggsopplysninger.familierelasjoner'),
+  valgteArbeidsgivere: skjemaSelector(state, 'tilleggsopplysninger.arbeidsgivere'),
   status: RinasakSelectors.sakStatusSelector(state),
   errdata: RinasakSelectors.errorDataSakSelector(state),
   opprettetSak: RinasakSelectors.sakSelector(state),

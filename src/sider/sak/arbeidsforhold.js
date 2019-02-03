@@ -4,9 +4,7 @@ import PT from 'prop-types';
 
 import * as Nav from '../../utils/navFrontend';
 import * as Api from '../../services/api';
-import Ansettelse from './ansettelse';
-
-const uuid = require('uuid/v4');
+import Arbeidsgivere from './arbeidsgivere';
 
 class Arbeidsforhold extends Component {
   state = {
@@ -35,7 +33,7 @@ class Arbeidsforhold extends Component {
         <Nav.Row>
           &nbsp;
         </Nav.Row>
-        {arbeidsforhold.length > 0 && arbeidsforhold.map(ansettelse => <Ansettelse key={uuid()} ansettelse={ansettelse} />)}
+        {arbeidsforhold.length > 0 && <Arbeidsgivere arbeidsgivere={arbeidsforhold} />}
       </div>
     );
   }
