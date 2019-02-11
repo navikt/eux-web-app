@@ -7,6 +7,10 @@ import { formatterDatoTilNorsk } from '../../utils/dato';
 
 const uuid = require('uuid/v4');
 
+const btnStyle = {
+  margin: '1.25em 0 0 0',
+};
+
 const ArbeidsgiverLinje = props => {
   const { arbeidsgiveren, erValgt, arbeidsgiverKlikkHandler } = props;
   const { navn, orgnr, ansettelsesPeriode: { fom, tom } } = arbeidsgiveren;
@@ -18,7 +22,7 @@ const ArbeidsgiverLinje = props => {
       <Nav.Column xs="2" style={{ width: '20%', marginBottom: '0.5em' }}>
         <strong>{navn}</strong><br />StartDato:&nbsp;{formatterDatoTilNorsk(fom)}<br />SluttDato:&nbsp;{formatterDatoTilNorsk(tom)}
       </Nav.Column>
-      <Nav.Column xs="1">
+      <Nav.Column xs="1" style={btnStyle} >
         <Nav.Checkbox checked={erValgt} onChange={() => arbeidsgiverKlikkHandler(orgnr)} label={orgnr} />
       </Nav.Column>
     </Nav.Row>
