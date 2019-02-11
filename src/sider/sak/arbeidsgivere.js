@@ -67,6 +67,7 @@ class ArbeidsgiverListe extends Component {
     );
   }
 }
+
 ArbeidsgiverListe.propTypes = {
   fields: PT.object.isRequired,
   arbeidsgivere: PT.array,

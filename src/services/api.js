@@ -7,6 +7,7 @@ import * as Dokumenter from './modules/dokumenter';
 import * as Fagsaker from './modules/fagsaker';
 import * as Institusjoner from './modules/institusjoner';
 import * as Arbeidsforhold from './modules/arbeidsforhold';
+import * as Landkoder from './modules/landkoder';
 
 // from .env or .env.local
 // const API_BASE_URL = `${process.env.REACT_APP_API_BASE_URL}`;
@@ -19,6 +20,7 @@ export {
   Dokumenter,
   Fagsaker,
   Kodeverk,
+  Landkoder,
   Saksbehandler,
   Personer,
   Institusjoner,
