@@ -13,7 +13,7 @@ import * as Types from './types';
 
 /* eslint-disable import/prefer-default-export */
 export function saksliste(fnr, behandlingstema) {
-  return doThenDispatch(() => Api.Fagsaker.saksliste(fnr, behandlingstema), {
+  return doThenDispatch(() => Api.Fagsaker.hent(fnr, behandlingstema), {
     OK: Types.OK,
     FEILET: Types.FEILET,
     PENDING: Types.PENDING,

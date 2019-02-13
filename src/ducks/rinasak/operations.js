@@ -16,7 +16,7 @@ import * as Types from './types';
 const transformData = data => {
   if (data.tilleggsopplysninger.familierelasjoner.length > 0) {
     const {
-      buctype, fnr, landKode: land, mottakerID, sedtype, sektor, saksid,
+      buctype, fnr, landKode: land, mottakerID, sedtype, sektor, saksID,
       tilleggsopplysninger,
     } = data;
     const { arbeidsgivere } = tilleggsopplysninger;
@@ -28,7 +28,7 @@ const transformData = data => {
       mottakerID,
       sedtype,
       sektor,
-      saksid,
+      saksid: saksID,
       tilleggsopplysninger: {
         familierelasjoner,
         arbeidsgivere,

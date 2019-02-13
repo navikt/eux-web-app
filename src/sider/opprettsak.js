@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, formValueSelector, clearAsyncError, stopSubmit, change } from 'redux-form';
 import PT from 'prop-types';
+
 import * as Api from '../services/api';
 import * as MPT from '../proptypes/';
 import * as Nav from '../utils/navFrontend';
@@ -32,7 +33,7 @@ class OpprettSak extends Component {
     institusjoner: [],
     tema: '',
     fagsaker: [],
-    saksid: '',
+    saksID: '',
   };
 
   visFagsakerListe = () => (['FB', 'UB'].includes(this.props.valgtSektor) && this.state.tema.length > 0 && this.state.fagsaker.length > 0);
@@ -67,24 +68,23 @@ class OpprettSak extends Component {
   };
 
   oppdaterFagsakListe = event => {
-    const saksid = event.target.value;
-    this.setState({ saksid });
+    const saksID = event.target.value;
+    this.setState({ saksID });
   };
-  visFagsaker = () => {
+  visFagsaker = async () => {
     const { tema } = this.state;
     const { inntastetFnr: fnr, valgtSektor } = this.props;
-    Api.Fagsaker.saksliste(fnr, valgtSektor.toLowerCase(), tema).then(fagsaker => {
-      this.setState({ tema, fagsaker });
-    });
+    const fagsaker = await Api.Fagsaker.hent(fnr, valgtSektor, tema);
+    this.setState({ tema, fagsaker });
   };
   skjemaSubmit = values => {
     const { submitFailed, sendSkjema } = this.props;
-    const { institusjonsID, landKode, saksid } = this.state;
+    const { institusjonsID, landKode, saksID } = this.state;
 
     if (submitFailed) return;
 
     const vaskedeVerdier = {
-      ...values, institusjonsID, landKode, saksid,
+      ...values, institusjonsID, landKode, saksID,
     };
     delete vaskedeVerdier.fnrErGyldig;
     delete vaskedeVerdier.fnrErSjekket;
@@ -196,7 +196,7 @@ class OpprettSak extends Component {
             )}
 
             {this.visFagsakerListe() &&
-              <Fagsaker fagsaker={this.state.fagsaker} saksid={this.state.saksid} oppdaterFagsakListe={this.oppdaterFagsakListe} />
+              <Fagsaker fagsaker={this.state.fagsaker} saksID={this.state.saksID} oppdaterFagsakListe={this.oppdaterFagsakListe} />
             }
             { this.visArbeidsforhold() && <Arbeidsforhold fnr={inntastetFnr} /> }
 
