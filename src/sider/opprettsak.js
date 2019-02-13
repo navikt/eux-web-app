@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, formValueSelector, clearAsyncError, stopSubmit, change } from 'redux-form';
 import PT from 'prop-types';
+
 import * as Api from '../services/api';
 import * as MPT from '../proptypes/';
 import * as Nav from '../utils/navFrontend';
@@ -70,12 +71,11 @@ class OpprettSak extends Component {
     const saksID = event.target.value;
     this.setState({ saksID });
   };
-  visFagsaker = () => {
+  visFagsaker = async () => {
     const { tema } = this.state;
     const { inntastetFnr: fnr, valgtSektor } = this.props;
-    Api.Fagsaker.saksliste(fnr, valgtSektor, tema).then(fagsaker => {
-      this.setState({ tema, fagsaker });
-    });
+    const fagsaker = await Api.Fagsaker.hent(fnr, valgtSektor, tema);
+    this.setState({ tema, fagsaker });
   };
   skjemaSubmit = values => {
     const { submitFailed, sendSkjema } = this.props;
