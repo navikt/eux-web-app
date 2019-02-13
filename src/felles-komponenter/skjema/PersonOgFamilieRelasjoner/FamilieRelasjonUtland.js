@@ -90,7 +90,7 @@ const FamilieRelasjonUtland = ({
               {familierelasjonKodeverk && familierelasjonKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
             </Nav.Select>
           </Nav.Column>
-          <Nav.Column xs="4">
+          <Nav.Column xs="3">
             <br />
             <Nav.Knapp onClick={leggTilSpesialRelasjon} disabled={!kanSpesialRelasjonLeggesTil()} className="spesialrelasjon familierelasjoner__knapp">
               <Nav.Ikon kind="tilsette" size="18" className="familierelasjoner__knapp__ikon" />

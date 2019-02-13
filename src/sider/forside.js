@@ -14,6 +14,13 @@ const Forside = () => (
         <Nav.Column xs="3">
           <Nav.Lenkepanel href="/opprett">Opprett sak</Nav.Lenkepanel>
         </Nav.Column>
+      </Nav.Row>
+      <Nav.Row className="">
+        <Nav.Column xs="3">
+          <Nav.Lenkepanel href="/vedlegg">Legg ved vedlegg til SED</Nav.Lenkepanel>
+        </Nav.Column>
+      </Nav.Row>
+      <Nav.Row className="">
         <Nav.Column xs="3">
           <Nav.Lenkepanel href="/vedlegg">Legg ved vedlegg til SED</Nav.Lenkepanel>
         </Nav.Column>

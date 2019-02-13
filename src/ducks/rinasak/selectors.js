@@ -35,7 +35,7 @@ export const buctyperSelector = createSelector(
   }
 );
 
-export const sedtypeSelector = createSelector(
+export const sedtyperSelector = createSelector(
   state => FormSelectors.valgtSektorSelector(state),
   state => KodeverkSelectors.kodemapsSelector(state),
   state => KodeverkSelectors.alleSEDtyperSelector(state),
