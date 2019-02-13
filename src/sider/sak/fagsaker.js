@@ -11,31 +11,31 @@ const btnStyle = {
 };
 
 const FagsakerListe = props => {
-  const { fagsaker, saksid, oppdaterFagsakListe } = props;
+  const { fagsaker, saksID, oppdaterFagsakListe } = props;
   return (
-    <Nav.Select bredde="xl" label="Velg fagsak" value={saksid} onChange={oppdaterFagsakListe}>
+    <Nav.Select bredde="xl" label="Velg fagsak" value={saksID} onChange={oppdaterFagsakListe}>
       <option defaultChecked />
-      {fagsaker && fagsaker.map(element => <option value={element.saksid} key={uuid()}>{element.tema.term}-{element.saksid}</option>)}
+      {fagsaker && fagsaker.map(element => <option value={element.saksID} key={uuid()}>{element.tema.term}-{element.saksID}</option>)}
     </Nav.Select>
   );
 };
 
 FagsakerListe.propTypes = {
-  saksid: PT.string,
+  saksID: PT.string,
   fagsaker: PT.array.isRequired,
   oppdaterFagsakListe: PT.func.isRequired,
 };
 FagsakerListe.defaultProps = {
-  saksid: '',
+  saksID: '',
 };
 
 export const Fagsaker = props => {
-  const { fagsaker, saksid, oppdaterFagsakListe } = props;
+  const { fagsaker, saksID, oppdaterFagsakListe } = props;
   return (
 
     <Nav.Row>
       <Nav.Column xs="3">
-        <FagsakerListe fagsaker={fagsaker} saksid={saksid} oppdaterFagsakListe={oppdaterFagsakListe} />
+        <FagsakerListe fagsaker={fagsaker} saksID={saksID} oppdaterFagsakListe={oppdaterFagsakListe} />
       </Nav.Column>
       <Nav.Column xs="3" style={btnStyle} >
         <Nav.Lenke href="https://wasapp-t8.adeo.no/gosys/login.jsf?execution=e1s1" ariaLabel="Opprett ny sak i GOSYS" target="_blank">
@@ -47,10 +47,10 @@ export const Fagsaker = props => {
 };
 
 Fagsaker.propTypes = {
-  saksid: PT.string,
+  saksID: PT.string,
   fagsaker: PT.array.isRequired,
   oppdaterFagsakListe: PT.func.isRequired,
 };
 Fagsaker.defaultProps = {
-  saksid: '',
+  saksID: '',
 };
