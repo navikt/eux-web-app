@@ -2,6 +2,7 @@ import React from 'react';
 import PT from 'prop-types';
 
 import * as Nav from '../../../utils/navFrontend';
+import * as Eux from '../../../felles-komponenter/Ikon';
 import * as MPT from '../../../proptypes';
 
 import './familierelasjoner.css';
@@ -93,7 +94,7 @@ const FamilieRelasjonUtland = ({
           <Nav.Column xs="3">
             <br />
             <Nav.Knapp onClick={leggTilSpesialRelasjon} disabled={!kanSpesialRelasjonLeggesTil()} className="spesialrelasjon familierelasjoner__knapp">
-              <Nav.Ikon kind="tilsette" size="18" className="familierelasjoner__knapp__ikon" />
+              <Eux.Icon kind="tilsette" size="18" className="familierelasjoner__knapp__ikon" />
               <div className="familierelasjoner__knapp__label">Legg til</div>
             </Nav.Knapp>
           </Nav.Column>

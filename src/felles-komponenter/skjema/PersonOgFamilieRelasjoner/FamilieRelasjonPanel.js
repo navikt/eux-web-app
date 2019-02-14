@@ -6,7 +6,7 @@ import { formatterDatoTilNorsk } from '../../../utils/dato';
 import * as Nav from '../../../utils/navFrontend';
 import PanelHeader from '../../panelHeader/panelHeader';
 import * as MPT from '../../../proptypes';
-import { IkonFraKjonn } from '../../IkonFraKjonn';
+import * as Eux from '../../../felles-komponenter/Ikon';
 
 const FamilieRelasjonPanel = ({
   familierelasjonKodeverk,
@@ -33,11 +33,11 @@ const FamilieRelasjonPanel = ({
 
   return (
     <Nav.Panel border className="personsok__kort">
-      <PanelHeader ikon={IkonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn} - ${rolleTerm}`} undertittel={panelUndertittel} />
+      <PanelHeader ikon={Eux.IkonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn} - ${rolleTerm}`} undertittel={panelUndertittel} />
       <Nav.Knapp
         className="familierelasjoner__knapp familierelasjoner__knapp--slett"
         onClick={() => slettRelasjon(familie.fnr)}>
-        <Nav.Ikon kind="trashcan" size="20" className="familierelasjoner__knapp__ikon" />
+        <Eux.Icon kind="trashcan" size="20" className="familierelasjoner__knapp__ikon" />
         <div className="familierelasjoner__knapp__label">Fjern</div>
       </Nav.Knapp>
     </Nav.Panel>

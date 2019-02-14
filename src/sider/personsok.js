@@ -8,7 +8,8 @@ import * as Skjema from '../felles-komponenter/skjema';
 import { PersonOperations, PersonSelectors } from '../ducks/person';
 import { PanelHeader } from '../felles-komponenter/panelHeader';
 import { StatusLinje } from '../felles-komponenter/statuslinje';
-import { IkonFraKjonn } from '../felles-komponenter/IkonFraKjonn';
+
+import * as Eux from '../felles-komponenter/Ikon';
 
 import './personsok.css';
 import { formatterDatoTilNorsk } from '../utils/dato';
@@ -29,12 +30,12 @@ const PersonKort = ({ person }) => {
   return (
     <div>
       <Nav.Panel className="personsok__kort">
-        <PanelHeader ikon={IkonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn}`} undertittel={panelUndertittel} />
+        <PanelHeader ikon={Eux.IkonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn}`} undertittel={panelUndertittel} />
         <Nav.Knapp
           className="familierelasjoner__knapp familierelasjoner__knapp--slett"
           onClick={() => window.location.reload()}
         >
-          <Nav.Ikon kind="trashcan" size="20" className="familierelasjoner__knapp__ikon" />
+          <Eux.Icon kind="trashcan" size="20" className="familierelasjoner__knapp__ikon" />
           <div className="familierelasjoner__knapp__label">Fjern</div>
         </Nav.Knapp>
       </Nav.Panel>
