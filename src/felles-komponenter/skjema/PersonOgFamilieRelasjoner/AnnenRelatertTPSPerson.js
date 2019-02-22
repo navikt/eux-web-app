@@ -12,70 +12,92 @@ import './annenperson.css';
 
 const uuid = require('uuid/v4');
 
-const PersonSokResultat = props => {
-  const {
-    person, familierelasjonKodeverk, leggTilHandler, oppdaterFamilierelajon,
-  } = props;
+class PersonSokResultat extends Component {
+  state = {
+    rolle: 'BARN',
+  };
+  selectOnChange = event => {
+    const { oppdaterFamilierelajon } = this.props;
+    console.log(event.target.value);
+    this.setState({ rolle: event.target.value });
+    oppdaterFamilierelajon(event);
+  };
 
-  const {
-    kjoenn, fornavn, etternavn, fnr, fdato, rolle,
-  } = person;
+  render() {
+    const { rolle } = this.state;
+    const {
+      person, familierelasjonKodeverk, leggTilHandler, oppdaterFamilierelajon,
+    } = this.props;
+    const {
+      kjoenn, fornavn, etternavn, fnr, fdato,
+    } = person;
 
-  const panelUndertittel = (
-    <div className="panelheader__undertittel">
-      <span>Fødselsnummer: {fnr}</span>
-      <span>Fødselsdato: {formatterDatoTilNorsk(fdato)}</span>
-    </div>
-  );
+    const panelUndertittel = (
+      <div className="panelheader__undertittel">
+        <span>Fødselsnummer: {fnr}</span>
+        <span>Fødselsdato: {formatterDatoTilNorsk(fdato)}</span>
+      </div>
+    );
 
-  return (
-    <Nav.Panel border className="personsok__kort">
-      <PanelHeader ikon={Eux.IkonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn}`} undertittel={panelUndertittel} />
-      <Nav.Select
-        label="Familierelasjon"
-        bredde="fullbredde"
-        className="familierelasjoner__input"
-        value={rolle}
-        onChange={oppdaterFamilierelajon}>
-        <option value="" disabled>- velg -</option>
-        {familierelasjonKodeverk && familierelasjonKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
-      </Nav.Select>
-      <Nav.Knapp onClick={leggTilHandler} className="familierelasjoner__knapp">
-        <Eux.Icon kind="tilsette" size="20" className="familierelasjoner__knapp__ikon" />
-        <div className="familierelasjoner__knapp__label">Legg til</div>
-      </Nav.Knapp>
-    </Nav.Panel>
-  );
-};
+    return (
+      <Nav.Panel border className="personsok__kort">
+        <PanelHeader ikon={Eux.IkonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn}`} undertittel={panelUndertittel} />
+        <Nav.Select
+          label="Familierelasjon"
+          bredde="fullbredde"
+          className="familierelasjoner__input"
+          value={rolle}
+          onChange={this.selectOnChange}>
+          {familierelasjonKodeverk && familierelasjonKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+        </Nav.Select>
+        <Nav.Knapp onClick={() => leggTilHandler(this.state.rolle)} className="familierelasjoner__knapp">
+          <Eux.Icon kind="tilsette" size="20" className="familierelasjoner__knapp__ikon" />
+          <div className="familierelasjoner__knapp__label">Legg til</div>
+        </Nav.Knapp>
+      </Nav.Panel>
+    );
+  }
+}
 PersonSokResultat.propTypes = {
+  rolle: PT.string,
   person: MPT.Person.isRequired,
   familierelasjonKodeverk: PT.arrayOf(MPT.Kodeverk).isRequired,
   leggTilHandler: PT.func.isRequired,
   oppdaterFamilierelajon: PT.func.isRequired,
 };
+PersonSokResultat.defaultProps = {
+  rolle: 'BARN',
+};
 
 class AnnenRelatertTPSPerson extends Component {
-  state = { sok: '', person: null };
+  state = {
+    sok: '', person: null, tpsperson: null, valgtRolle: 'BARN',
+  };
 
-  sokEtterFnr = () => {
+  sokEtterFnr = async () => {
     const { sok } = this.state;
-    API.Personer.hentPerson(sok).then(response => {
-      const {
-        kjoenn, fornavn, etternavn, fnr, fdato,
-      } = response; // Remove relasjoner: []
-      const person = {
-        kjoenn, fornavn, etternavn, fnr, fdato,
-      };
+    const { tpsrelasjoner, valgteRelasjoner } = this.props;
+    const response = await API.Personer.hentPerson(sok);
+    const { relasjoner: _relasjoner, ...person } = response;
+    const tpsperson = tpsrelasjoner.find(elem => elem.fnr === person.fnr);
+    const valgtPerson = valgteRelasjoner.find(elem => elem.fnr === person.fnr);
+    console.log('valgtPerson', valgtPerson);
+    if (!tpsperson) {
       this.setState({ person });
-    });
+    } else {
+      this.setState({ tpsperson });
+    }
   };
 
   updateSok = event => {
     this.setState({ sok: event.target.value });
   };
 
-  leggTilHandler = () => {
-    this.props.leggTilTPSrelasjon(this.state.person);
+  leggTilHandlerMedRolle = rolle => {
+    console.log('rolle', rolle);
+    const person = { ...this.state.person, rolle };
+    console.log('leggTilHandler', person);
+    this.props.leggTilTPSrelasjon(person);
   };
 
   oppdaterFamilierelajon = event => {
@@ -83,9 +105,9 @@ class AnnenRelatertTPSPerson extends Component {
   };
 
   render() {
-    const { leggTilHandler, sokEtterFnr, oppdaterFamilierelajon } = this;
+    const { leggTilHandlerMedRolle, sokEtterFnr, oppdaterFamilierelajon } = this;
 
-    const { person } = this.state;
+    const { person, valgtRolle, tpsperson } = this.state;
     const { familierelasjonKodeverk } = this.props;
 
     const Sokefelt = () => (
@@ -100,17 +122,27 @@ class AnnenRelatertTPSPerson extends Component {
     return (
       <div>
         <Sokefelt />
-        {person && <PersonSokResultat person={person} leggTilHandler={leggTilHandler} familierelasjonKodeverk={familierelasjonKodeverk} oppdaterFamilierelajon={oppdaterFamilierelajon} />}
+        {tpsperson && <p>{tpsperson.fnr} Familierelasjonen er allerede registrert i TPS</p>}
+        {person && <PersonSokResultat
+          person={person}
+          rolle={valgtRolle}
+          leggTilHandler={leggTilHandlerMedRolle}
+          familierelasjonKodeverk={familierelasjonKodeverk}
+          oppdaterFamilierelajon={oppdaterFamilierelajon} />}
       </div>
     );
   }
 }
 AnnenRelatertTPSPerson.propTypes = {
+  tpsrelasjoner: PT.any.isRequired,
+  valgteRelasjoner: PT.any.isRequired,
+  tpsperson: PT.object,
   person: MPT.Person,
   familierelasjonKodeverk: PT.arrayOf(MPT.Kodeverk).isRequired,
   leggTilTPSrelasjon: PT.func.isRequired,
 };
 AnnenRelatertTPSPerson.defaultProps = {
   person: null,
+  tpsperson: null,
 };
 export { AnnenRelatertTPSPerson };

@@ -70,6 +70,7 @@ class FamilieRelasjonController extends Component {
   leggTilTPSrelasjon = relasjon => {
     /* Personer fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
     const { fields } = this.props;
+    console.log('leggTilTPSrelasjon::relasjon', relasjon);
     const vasketRelasjon = {
       ...relasjon,
       nasjonalitet: 'NO',
@@ -167,8 +168,12 @@ class FamilieRelasjonController extends Component {
             <Nav.Knapp onClick={this.visSkjulRelatertTPS} >{this.knappeTekstRelatertTPS()}</Nav.Knapp>
           </Nav.Column>
         </Nav.Row>
-
-        { this.state.ui.visRelatertTPS && <AnnenRelatertTPSPerson leggTilTPSrelasjon={this.leggTilTPSrelasjon} familierelasjonKodeverk={familierelasjonKodeverk} /> }
+        { this.state.ui.visRelatertTPS && <AnnenRelatertTPSPerson
+          valgteRelasjoner={valgteRelasjoner}
+          tpsrelasjoner={tpsrelasjoner}
+          leggTilTPSrelasjon={this.leggTilTPSrelasjon}
+          familierelasjonKodeverk={familierelasjonKodeverk}
+        />}
       </div>
     );
   }
