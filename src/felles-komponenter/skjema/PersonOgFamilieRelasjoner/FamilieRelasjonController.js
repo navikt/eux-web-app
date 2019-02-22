@@ -10,11 +10,12 @@ import { vaskInputDato } from '../../../utils/dato';
 import * as KodeverkSelectors from '../../../ducks/kodeverk/selectors';
 import { PersonSelectors } from '../../../ducks/person';
 
+import { LandkoderSelectors } from '../../../ducks/landkoder';
 import { FamilieRelasjonPanel } from './FamilieRelasjonPanel';
 import { FamilieRelasjonUtland } from './FamilieRelasjonUtland';
 import { TPSRelasjonEnkelt } from './TPSRelasjonEnkelt';
-import { AnnenRelatertTPSPerson } from './AnnenRelatertTPSPerson';
 
+import { AnnenRelatertTPSPerson } from './AnnenRelatertTPSPerson';
 import './familierelasjoner.css';
 
 const uuid = require('uuid/v4');
@@ -196,7 +197,7 @@ const mapStateToProps = state => ({
   tpsrelasjoner: PersonSelectors.familieRelasjonerSelector(state),
   familierelasjonKodeverk: KodeverkSelectors.familierelasjonerSelector(state),
   kjoennKodeverk: KodeverkSelectors.kjoennSelector(state),
-  landKodeverk: KodeverkSelectors.landkoderSelector(state),
+  landKodeverk: LandkoderSelectors.landkoderSelector(state),
 });
 
 export default connect(mapStateToProps)(FamilieRelasjonController);

@@ -19,12 +19,12 @@ class AnnenRelatertTPSPerson extends Component {
 
   sokEtterFnr = async () => {
     const { sok } = this.state;
-    const { tpsrelasjoner, valgteRelasjoner } = this.props;
+    const { tpsrelasjoner } = this.props;
     const response = await API.Personer.hentPerson(sok);
     // Fjern relasjoner array, NOTE! det er kun relqasjoner som har rolle.
     const person = _.omit(response, 'relasjoner');
     const tpsperson = tpsrelasjoner.find(elem => elem.fnr === person.fnr);
-    console.log(valgteRelasjoner);
+
     if (!tpsperson) {
       this.setState({ person, tpsperson: null });
     } else {
