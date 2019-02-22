@@ -10,7 +10,7 @@ import './annenperson.css';
 
 class AnnenRelatertTPSPerson extends Component {
   state = {
-    sok: '', person: null, tpsperson: null, rolle: '',
+    sok: '', person: null, tpsperson: null, rolle: '', knappDisabled: true,
   };
 
   sokEtterFnr = async () => {
@@ -34,20 +34,24 @@ class AnnenRelatertTPSPerson extends Component {
   };
 
   leggTilPersonOgRolle = () => {
-    const person = { ...this.state.person, ...this.state.rolle };
+    const { rolle } = this.state;
+    const person = { ...this.state.person, rolle };
     this.props.leggTilTPSrelasjon(person);
   };
 
   oppdaterFamilierelajon = event => {
     const rolle = event.target.value;
     const person = { ...this.state.person, rolle };
-    this.setState({ person, rolle });
+    const knappDisabled = false;
+    this.setState({ person, rolle, knappDisabled });
   };
 
   render() {
     const { leggTilPersonOgRolle, sokEtterFnr, oppdaterFamilierelajon } = this;
 
-    const { person, rolle, tpsperson } = this.state;
+    const {
+      person, rolle, tpsperson, knappDisabled,
+    } = this.state;
     const { familierelasjonKodeverk } = this.props;
 
     const Sokefelt = () => (
@@ -66,6 +70,7 @@ class AnnenRelatertTPSPerson extends Component {
         {person && <PersonSokResultat
           person={person}
           rolle={rolle}
+          knappDisabled={knappDisabled}
           leggTilHandler={leggTilPersonOgRolle}
           familierelasjonKodeverk={familierelasjonKodeverk}
           oppdaterFamilierelajon={oppdaterFamilierelajon} />}

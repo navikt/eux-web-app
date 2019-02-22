@@ -12,7 +12,7 @@ const uuid = require('uuid/v4');
 
 const PersonSokResultat = props => {
   const {
-    person, rolle, familierelasjonKodeverk, leggTilHandler, oppdaterFamilierelajon,
+    person, rolle, knappDisabled, familierelasjonKodeverk, leggTilHandler, oppdaterFamilierelajon,
   } = props;
   const {
     kjoenn, fornavn, etternavn, fnr, fdato,
@@ -37,7 +37,7 @@ const PersonSokResultat = props => {
         <option value="" disabled>- velg -</option>
         {familierelasjonKodeverk && familierelasjonKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
       </Nav.Select>
-      <Nav.Knapp onClick={leggTilHandler} className="familierelasjoner__knapp">
+      <Nav.Knapp disabled={knappDisabled} onClick={leggTilHandler} className="familierelasjoner__knapp">
         <Eux.Icon kind="tilsette" size="20" className="familierelasjoner__knapp__ikon" />
         <div className="familierelasjoner__knapp__label">Legg til</div>
       </Nav.Knapp>
@@ -46,6 +46,7 @@ const PersonSokResultat = props => {
 };
 PersonSokResultat.propTypes = {
   rolle: PT.string.isRequired,
+  knappDisabled: PT.bool.isRequired,
   person: MPT.Person.isRequired,
   familierelasjonKodeverk: PT.arrayOf(MPT.Kodeverk).isRequired,
   leggTilHandler: PT.func.isRequired,

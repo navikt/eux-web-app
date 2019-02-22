@@ -70,7 +70,6 @@ class FamilieRelasjonController extends Component {
   leggTilTPSrelasjon = relasjon => {
     /* Personer fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
     const { fields } = this.props;
-    console.log('leggTilTPSrelasjon::relasjon', relasjon);
     const vasketRelasjon = {
       ...relasjon,
       nasjonalitet: 'NO',
