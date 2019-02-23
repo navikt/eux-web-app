@@ -20,10 +20,10 @@ const ArbeidsgiverLinje = props => {
         <div className="panelheader__ikon" style={{ marginTop: '0.25em', backgroundImage: `url('${Ikoner.Arbeidsforhold}')` }} />
       </Nav.Column>
       <Nav.Column xs="2" style={{ width: '20%', marginBottom: '0.5em' }}>
-        <strong>{navn}</strong><br />StartDato:&nbsp;{formatterDatoTilNorsk(fom)}<br />SluttDato:&nbsp;{formatterDatoTilNorsk(tom)}
+        <strong>{navn}</strong><br />Orgnr:&nbsp;{orgnr}<br />StartDato:&nbsp;{formatterDatoTilNorsk(fom)}<br />SluttDato:&nbsp;{formatterDatoTilNorsk(tom)}
       </Nav.Column>
       <Nav.Column xs="1" style={btnStyle} >
-        <Nav.Checkbox checked={erValgt} onChange={() => arbeidsgiverKlikkHandler(orgnr)} label={orgnr} />
+        <Nav.Checkbox checked={erValgt} onChange={() => arbeidsgiverKlikkHandler(orgnr)} label="Velg" />
       </Nav.Column>
     </Nav.Row>
   );
