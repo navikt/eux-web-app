@@ -38,6 +38,7 @@ class Arbeidsforhold extends Component {
   }
 }
 Arbeidsforhold.propTypes = {
+  fnr: PT.string.isRequired,
   arbeidshorhold: PT.array,
 };
 Arbeidsforhold.defaultProps = {
