@@ -13,7 +13,10 @@ const btnStyle = {
 
 const ArbeidsgiverLinje = props => {
   const { arbeidsgiveren, erValgt, arbeidsgiverKlikkHandler } = props;
-  const { navn, orgnr, ansettelsesPeriode: { fom, tom } } = arbeidsgiveren;
+  const {
+    arbeidsforholdIDnav, navn, orgnr,
+    ansettelsesPeriode: { fom, tom },
+  } = arbeidsgiveren;
   return (
     <Nav.Row>
       <Nav.Column xs="1" style={{ width: '5%' }}>
@@ -23,7 +26,7 @@ const ArbeidsgiverLinje = props => {
         <strong>{navn}</strong><br />Orgnr:&nbsp;{orgnr}<br />StartDato:&nbsp;{formatterDatoTilNorsk(fom)}<br />SluttDato:&nbsp;{formatterDatoTilNorsk(tom)}
       </Nav.Column>
       <Nav.Column xs="1" style={btnStyle} >
-        <Nav.Checkbox checked={erValgt} onChange={() => arbeidsgiverKlikkHandler(orgnr)} label="Velg" />
+        <Nav.Checkbox checked={erValgt} onChange={() => arbeidsgiverKlikkHandler(arbeidsforholdIDnav)} label="Velg" />
       </Nav.Column>
     </Nav.Row>
   );
@@ -38,12 +41,12 @@ ArbeidsgiverLinje.defaultProps = {
 };
 
 class ArbeidsgiverListe extends Component {
-  arbeidsgiverKlikkHandler = orgnr => {
+  arbeidsgiverKlikkHandler = arbeidsforholdIDnav => {
     const { fields } = this.props;
     const alleValgteFelter = fields.getAll() || [];
-    const eksistererVedPosisjon = alleValgteFelter.findIndex(item => item === orgnr);
+    const eksistererVedPosisjon = alleValgteFelter.findIndex(item => item === arbeidsforholdIDnav);
     if (eksistererVedPosisjon === -1) {
-      fields.push(orgnr);
+      fields.push(arbeidsforholdIDnav);
     } else {
       fields.remove(eksistererVedPosisjon);
     }
@@ -54,8 +57,8 @@ class ArbeidsgiverListe extends Component {
     return (
       <Fragment>
         {arbeidsforhold.map(arbeidsgiveren => {
-          const orgnr = alleValgteFelter.find(item => item === arbeidsgiveren.orgnr);
-          const arbeidsGiverErValgt = orgnr && orgnr.length > 0;
+          const arbeidsforholdIDnav = alleValgteFelter.find(item => item === arbeidsgiveren.arbeidsforholdIDnav);
+          const arbeidsGiverErValgt = arbeidsforholdIDnav && arbeidsforholdIDnav > 0;
           return <ArbeidsgiverLinje
             key={uuid()}
             arbeidsgiveren={arbeidsgiveren}
