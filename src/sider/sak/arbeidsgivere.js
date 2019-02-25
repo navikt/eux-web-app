@@ -49,11 +49,11 @@ class ArbeidsgiverListe extends Component {
     }
   };
   render() {
-    const { fields, arbeidsgivere } = this.props;
+    const { fields, arbeidsforhold } = this.props;
     const alleValgteFelter = fields.getAll();
     return (
       <Fragment>
-        {arbeidsgivere.map(arbeidsgiveren => {
+        {arbeidsforhold.map(arbeidsgiveren => {
           const orgnr = alleValgteFelter.find(item => item === arbeidsgiveren.orgnr);
           const arbeidsGiverErValgt = orgnr && orgnr.length > 0;
           return <ArbeidsgiverLinje
@@ -70,15 +70,15 @@ class ArbeidsgiverListe extends Component {
 
 ArbeidsgiverListe.propTypes = {
   fields: PT.object.isRequired,
-  arbeidsgivere: PT.array,
+  arbeidsforhold: PT.array,
 };
 ArbeidsgiverListe.defaultProps = {
-  arbeidsgivere: [],
+  arbeidsforhold: [],
 };
 
 const Arbeidsgivere = props => (
-  <div className="arbeidsgivere">
-    <FieldArray name="tilleggsopplysninger.arbeidsgivere" component={ArbeidsgiverListe} props={props} />
+  <div className="arbeidsforhold">
+    <FieldArray name="tilleggsopplysninger.arbeidsforhold" component={ArbeidsgiverListe} props={props} />
   </div>
 );
 export default Arbeidsgivere;

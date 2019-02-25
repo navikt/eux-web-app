@@ -277,7 +277,7 @@ const mapStateToProps = state => ({
   initialValues: {
     tilleggsopplysninger: {
       familierelasjoner: [],
-      arbeidsgivere: [],
+      arbeidsforhold: [],
     },
   },
   landkoder: LandkoderSelectors.landkoderSelector(state),
@@ -292,7 +292,7 @@ const mapStateToProps = state => ({
   inntastetFnr: skjemaSelector(state, 'fnr'),
   valgtSektor: skjemaSelector(state, 'sektor'),
   valgteFamilieRelasjoner: skjemaSelector(state, 'tilleggsopplysninger.familierelasjoner'),
-  valgteArbeidsgivere: skjemaSelector(state, 'tilleggsopplysninger.arbeidsgivere'),
+  valgteArbeidsforhold: skjemaSelector(state, 'tilleggsopplysninger.arbeidsforhold'),
   status: RinasakSelectors.sakStatusSelector(state),
   errdata: RinasakSelectors.errorDataSakSelector(state),
   opprettetSak: RinasakSelectors.sakSelector(state),
