@@ -13,7 +13,7 @@ const btnStyle = {
   margin: '1.25em 0 0 0',
 };
 
-const ArbeidsgiverLinje = props => {
+const ArbeidsforholdLinje = props => {
   const { arbeidsgiveren, erValgt, arbeidsgiverKlikkHandler } = props;
   const {
     arbeidsforholdIDnav, navn, orgnr, ansettelsesPeriode: { fom, tom },
@@ -32,17 +32,17 @@ const ArbeidsgiverLinje = props => {
     </Nav.Row>
   );
 };
-ArbeidsgiverLinje.propTypes = {
+ArbeidsforholdLinje.propTypes = {
   arbeidsgiveren: PT.object.isRequired,
   erValgt: PT.bool,
   arbeidsgiverKlikkHandler: PT.func.isRequired,
 };
-ArbeidsgiverLinje.defaultProps = {
+ArbeidsforholdLinje.defaultProps = {
   erValgt: false,
 };
 
-class ArbeidsgiverListe extends Component {
-  arbeidsgiverKlikkHandler = arbeidsforholdIDnav => {
+class ArbeidsforholdListe extends Component {
+  arbeidsforholdKlikkHandler = arbeidsforholdIDnav => {
     const { fields, arbeidsforhold } = this.props;
     const alleValgteFelter = fields.getAll() || [];
     const valgtArbeidsgiver = arbeidsforhold.find(elem => elem.arbeidsforholdIDnav === arbeidsforholdIDnav);
@@ -60,11 +60,11 @@ class ArbeidsgiverListe extends Component {
       <Fragment>
         {arbeidsforhold.map(arbeidsgiveren => {
           const arbeidsGiverErValgt = alleValgteFelter.find(item => item.arbeidsforholdIDnav === arbeidsgiveren.arbeidsforholdIDnav);
-          return <ArbeidsgiverLinje
+          return <ArbeidsforholdLinje
             key={uuid()}
             arbeidsgiveren={arbeidsgiveren}
             erValgt={arbeidsGiverErValgt !== undefined}
-            arbeidsgiverKlikkHandler={this.arbeidsgiverKlikkHandler}
+            arbeidsgiverKlikkHandler={this.arbeidsforholdKlikkHandler}
           />;
         })}
       </Fragment>
@@ -72,17 +72,17 @@ class ArbeidsgiverListe extends Component {
   }
 }
 
-ArbeidsgiverListe.propTypes = {
+ArbeidsforholdListe.propTypes = {
   fields: PT.object.isRequired,
   arbeidsforhold: MPT.Arbeidsforhold,
 };
-ArbeidsgiverListe.defaultProps = {
+ArbeidsforholdListe.defaultProps = {
   arbeidsforhold: [],
 };
 
 const Arbeidsforhold = props => (
-  <div className="arbeidsgivere">
-    <FieldArray name="tilleggsopplysninger.arbeidsgivere" component={ArbeidsgiverListe} props={props} />
+  <div className="arbeidsforhold">
+    <FieldArray name="tilleggsopplysninger.arbeidsgivere" component={ArbeidsforholdListe} props={props} />
   </div>
 );
 export default Arbeidsforhold;
