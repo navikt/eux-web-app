@@ -11,7 +11,7 @@ const uuid = require('uuid/v4');
 
 const FamilieRelasjonUtland = ({
   spesialRelasjon, oppdaterState,
-  kjoennKodeverk, landKodeverk, familierelasjonKodeverk,
+  kjoennKodeverk, landKodeverk, filtrerteFamilieRelasjoner,
   leggTilSpesialRelasjon, vaskInputDatoOgOppdater, kanSpesialRelasjonLeggesTil,
 }) => (
   <div>
@@ -88,7 +88,7 @@ const FamilieRelasjonUtland = ({
               value={spesialRelasjon.rolle}
               onChange={event => oppdaterState('rolle', event)}>
               <option value="" disabled>- velg -</option>
-              {familierelasjonKodeverk && familierelasjonKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+              {filtrerteFamilieRelasjoner().map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
             </Nav.Select>
           </Nav.Column>
           <Nav.Column xs="3">
@@ -107,7 +107,7 @@ const FamilieRelasjonUtland = ({
 FamilieRelasjonUtland.propTypes = {
   spesialRelasjon: PT.object.isRequired,
   oppdaterState: PT.func.isRequired,
-  familierelasjonKodeverk: PT.arrayOf(MPT.Kodeverk),
+  filtrerteFamilieRelasjoner: PT.func.isRequired,
   kjoennKodeverk: PT.arrayOf(MPT.Kodeverk),
   landKodeverk: PT.arrayOf(MPT.Kodeverk),
   leggTilSpesialRelasjon: PT.func.isRequired,
@@ -116,7 +116,6 @@ FamilieRelasjonUtland.propTypes = {
 };
 
 FamilieRelasjonUtland.defaultProps = {
-  familierelasjonKodeverk: [],
   kjoennKodeverk: [],
   landKodeverk: [],
 };
