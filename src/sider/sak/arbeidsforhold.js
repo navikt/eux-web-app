@@ -39,7 +39,7 @@ class Arbeidsforhold extends Component {
 }
 Arbeidsforhold.propTypes = {
   fnr: PT.string,
-  arbeidsgivere: MPT.Arbeidsgivere,
+  arbeidsgivere: MPT.Arbeidsforhold,
 };
 Arbeidsforhold.defaultProps = {
   fnr: '',

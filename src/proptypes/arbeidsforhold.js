@@ -3,16 +3,16 @@ import PT from 'prop-types';
 
 import { Periode } from './periode';
 
-const ArbeidsgiverPropType = PT.shape({
+const ArbeidsforholdetPropType = PT.shape({
   arbeidsforholdIDnav: PT.number,
   orgnr: PT.string,
   navn: PT.string,
   ansettelsesPeriode: Periode,
 });
 
-const ArbeidsgiverePropType = PT.arrayOf(ArbeidsgiverPropType);
+const ArbeidsforholdPropType = PT.arrayOf(ArbeidsforholdetPropType);
 
 export {
-  ArbeidsgiverPropType as Arbeidsgiver,
-  ArbeidsgiverePropType as Arbeidsgivere,
+  ArbeidsforholdetPropType as Arbeidsforholdet,
+  ArbeidsforholdPropType as Arbeidsforhold,
 };
