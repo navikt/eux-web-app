@@ -8,17 +8,17 @@ import Arbeidsgivere from './arbeidsgivere';
 
 class Arbeidsforhold extends Component {
   state = {
-    arbeidsgivere: [],
+    arbeidsforhold: [],
   };
 
   hentArbeidsforhold = async () => {
     const { fnr } = this.props;
-    const arbeidsgivere = await Api.Arbeidsgivere.hent(fnr);
-    this.setState({ arbeidsgivere });
+    const arbeidsforhold = await Api.Arbeidsgivere.hent(fnr);
+    this.setState({ arbeidsforhold });
   };
 
   render() {
-    const { arbeidsgivere } = this.state;
+    const { arbeidsforhold } = this.state;
     return (
       <div className="arbeidsforhold">
         <Nav.Row>
@@ -32,18 +32,18 @@ class Arbeidsforhold extends Component {
         <Nav.Row>
           &nbsp;
         </Nav.Row>
-        {arbeidsgivere.length > 0 && <Arbeidsgivere arbeidsgivere={arbeidsgivere} />}
+        {arbeidsforhold.length > 0 && <Arbeidsgivere arbeidsgivere={arbeidsforhold} />}
       </div>
     );
   }
 }
 Arbeidsforhold.propTypes = {
   fnr: PT.string,
-  arbeidsgivere: MPT.Arbeidsforhold,
+  arbeidsforhold: MPT.Arbeidsforhold,
 };
 Arbeidsforhold.defaultProps = {
   fnr: '',
-  arbeidsgivere: [],
+  arbeidsforhold: [],
 };
 
 export default Arbeidsforhold;
