@@ -6,7 +6,7 @@ import * as Nav from '../../utils/navFrontend';
 import * as Api from '../../services/api';
 import Arbeidsgivere from './arbeidsgivere';
 
-class Arbeidsforhold extends Component {
+class ArbeidsforholdController extends Component {
   state = {
     arbeidsforhold: [],
   };
@@ -37,13 +37,13 @@ class Arbeidsforhold extends Component {
     );
   }
 }
-Arbeidsforhold.propTypes = {
+ArbeidsforholdController.propTypes = {
   fnr: PT.string,
   arbeidsforhold: MPT.Arbeidsforhold,
 };
-Arbeidsforhold.defaultProps = {
+ArbeidsforholdController.defaultProps = {
   fnr: '',
   arbeidsforhold: [],
 };
 
-export default Arbeidsforhold;
+export default ArbeidsforholdController;
