@@ -58,11 +58,11 @@ class ArbeidsforholdListe extends Component {
     const alleValgteFelter = fields.getAll();
     return (
       <Fragment>
-        {arbeidsforhold.map(arbeidsgiveren => {
-          const arbeidsGiverErValgt = alleValgteFelter.find(item => item.arbeidsforholdIDnav === arbeidsgiveren.arbeidsforholdIDnav);
+        {arbeidsforhold.map(arbeidsforholdet => {
+          const arbeidsGiverErValgt = alleValgteFelter.find(item => item.arbeidsforholdIDnav === arbeidsforholdet.arbeidsforholdIDnav);
           return <ArbeidsforholdLinje
             key={uuid()}
-            arbeidsforholdet={arbeidsgiveren}
+            arbeidsforholdet={arbeidsforholdet}
             erValgt={arbeidsGiverErValgt !== undefined}
             arbeidsforholdKlikkHandler={this.arbeidsforholdKlikkHandler}
           />;
