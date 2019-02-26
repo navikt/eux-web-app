@@ -59,11 +59,11 @@ class ArbeidsforholdListe extends Component {
     return (
       <Fragment>
         {arbeidsforhold.map(arbeidsforholdet => {
-          const arbeidsGiverErValgt = alleValgteFelter.find(item => item.arbeidsforholdIDnav === arbeidsforholdet.arbeidsforholdIDnav);
+          const arbeidsForholdErValgt = alleValgteFelter.find(item => item.arbeidsforholdIDnav === arbeidsforholdet.arbeidsforholdIDnav);
           return <ArbeidsforholdLinje
             key={uuid()}
             arbeidsforholdet={arbeidsforholdet}
-            erValgt={arbeidsGiverErValgt !== undefined}
+            erValgt={arbeidsForholdErValgt !== undefined}
             arbeidsforholdKlikkHandler={this.arbeidsforholdKlikkHandler}
           />;
         })}
@@ -82,7 +82,7 @@ ArbeidsforholdListe.defaultProps = {
 
 const Arbeidsforhold = props => (
   <div className="arbeidsforhold">
-    <FieldArray name="tilleggsopplysninger.arbeidsgivere" component={ArbeidsforholdListe} props={props} />
+    <FieldArray name="tilleggsopplysninger.arbeidsforhold" component={ArbeidsforholdListe} props={props} />
   </div>
 );
 export default Arbeidsforhold;

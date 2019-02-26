@@ -13,7 +13,7 @@ class ArbeidsforholdController extends Component {
 
   hentArbeidsforhold = async () => {
     const { fnr } = this.props;
-    const arbeidsforhold = await Api.Arbeidsgivere.hent(fnr);
+    const arbeidsforhold = await Api.Arbeidsforhold.hent(fnr);
     this.setState({ arbeidsforhold });
   };
 

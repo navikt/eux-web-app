@@ -6,7 +6,7 @@ import * as Rina from './modules/rina';
 import * as Dokumenter from './modules/dokumenter';
 import * as Fagsaker from './modules/fagsaker';
 import * as Institusjoner from './modules/institusjoner';
-import * as Arbeidsgivere from './modules/arbeidsgivere';
+import * as Arbeidsforhold from './modules/arbeidsforhold';
 import * as Landkoder from './modules/landkoder';
 
 // from .env or .env.local
@@ -15,7 +15,7 @@ import * as Landkoder from './modules/landkoder';
 
 
 export {
-  Arbeidsgivere,
+  Arbeidsforhold,
   Dokumenter,
   Fagsaker,
   Institusjoner,
