@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { FieldArray } from 'redux-form';
 import PT from 'prop-types';
+
+import * as MPT from '../../proptypes';
 import * as Ikoner from '../../resources/images/index';
 import * as Nav from '../../utils/navFrontend';
 import { formatterDatoTilNorsk } from '../../utils/dato';
@@ -41,9 +43,9 @@ ArbeidsgiverLinje.defaultProps = {
 
 class ArbeidsgiverListe extends Component {
   arbeidsgiverKlikkHandler = arbeidsforholdIDnav => {
-    const { fields, arbeidsgivere } = this.props;
+    const { fields, arbeidsforhold } = this.props;
     const alleValgteFelter = fields.getAll() || [];
-    const valgtArbeidsgiver = arbeidsgivere.find(elem => elem.arbeidsforholdIDnav === arbeidsforholdIDnav);
+    const valgtArbeidsgiver = arbeidsforhold.find(elem => elem.arbeidsforholdIDnav === arbeidsforholdIDnav);
     const eksistererVedPosisjon = alleValgteFelter.findIndex(item => item.arbeidsforholdIDnav === arbeidsforholdIDnav);
     if (eksistererVedPosisjon === -1) {
       fields.push({ ...valgtArbeidsgiver });
@@ -52,11 +54,11 @@ class ArbeidsgiverListe extends Component {
     }
   };
   render() {
-    const { fields, arbeidsgivere } = this.props;
+    const { fields, arbeidsforhold } = this.props;
     const alleValgteFelter = fields.getAll();
     return (
       <Fragment>
-        {arbeidsgivere.map(arbeidsgiveren => {
+        {arbeidsforhold.map(arbeidsgiveren => {
           const arbeidsGiverErValgt = alleValgteFelter.find(item => item.arbeidsforholdIDnav === arbeidsgiveren.arbeidsforholdIDnav);
           return <ArbeidsgiverLinje
             key={uuid()}
@@ -72,10 +74,10 @@ class ArbeidsgiverListe extends Component {
 
 ArbeidsgiverListe.propTypes = {
   fields: PT.object.isRequired,
-  arbeidsgivere: PT.array,
+  arbeidsforhold: MPT.Arbeidsforhold,
 };
 ArbeidsgiverListe.defaultProps = {
-  arbeidsgivere: [],
+  arbeidsforhold: [],
 };
 
 const Arbeidsforhold = props => (

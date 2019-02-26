@@ -32,7 +32,7 @@ class ArbeidsforholdController extends Component {
         <Nav.Row>
           &nbsp;
         </Nav.Row>
-        {arbeidsforhold.length > 0 && <Arbeidsforhold arbeidsgivere={arbeidsforhold} />}
+        {arbeidsforhold.length > 0 && <Arbeidsforhold arbeidsforhold={arbeidsforhold} />}
       </div>
     );
   }
