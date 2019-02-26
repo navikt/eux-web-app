@@ -14,10 +14,10 @@ const btnStyle = {
 };
 
 const ArbeidsforholdLinje = props => {
-  const { arbeidsgiveren, erValgt, arbeidsgiverKlikkHandler } = props;
+  const { arbeidsforholdet, erValgt, arbeidsforholdKlikkHandler } = props;
   const {
     arbeidsforholdIDnav, navn, orgnr, ansettelsesPeriode: { fom, tom },
-  } = arbeidsgiveren;
+  } = arbeidsforholdet;
   return (
     <Nav.Row>
       <Nav.Column xs="1" style={{ width: '5%' }}>
@@ -27,15 +27,15 @@ const ArbeidsforholdLinje = props => {
         <strong>{navn}</strong><br />Orgnr:&nbsp;{orgnr}<br />StartDato:&nbsp;{formatterDatoTilNorsk(fom)}<br />SluttDato:&nbsp;{formatterDatoTilNorsk(tom)}
       </Nav.Column>
       <Nav.Column xs="1" style={btnStyle} >
-        <Nav.Checkbox checked={erValgt} onChange={() => arbeidsgiverKlikkHandler(arbeidsforholdIDnav)} label="Velg" />
+        <Nav.Checkbox checked={erValgt} onChange={() => arbeidsforholdKlikkHandler(arbeidsforholdIDnav)} label="Velg" />
       </Nav.Column>
     </Nav.Row>
   );
 };
 ArbeidsforholdLinje.propTypes = {
-  arbeidsgiveren: PT.object.isRequired,
+  arbeidsforholdet: MPT.Arbeidsforholdet.isRequired,
   erValgt: PT.bool,
-  arbeidsgiverKlikkHandler: PT.func.isRequired,
+  arbeidsforholdKlikkHandler: PT.func.isRequired,
 };
 ArbeidsforholdLinje.defaultProps = {
   erValgt: false,
@@ -62,9 +62,9 @@ class ArbeidsforholdListe extends Component {
           const arbeidsGiverErValgt = alleValgteFelter.find(item => item.arbeidsforholdIDnav === arbeidsgiveren.arbeidsforholdIDnav);
           return <ArbeidsforholdLinje
             key={uuid()}
-            arbeidsgiveren={arbeidsgiveren}
+            arbeidsforholdet={arbeidsgiveren}
             erValgt={arbeidsGiverErValgt !== undefined}
-            arbeidsgiverKlikkHandler={this.arbeidsforholdKlikkHandler}
+            arbeidsforholdKlikkHandler={this.arbeidsforholdKlikkHandler}
           />;
         })}
       </Fragment>
