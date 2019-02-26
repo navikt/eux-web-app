@@ -39,11 +39,12 @@ ArbeidsgiverLinje.defaultProps = {
 
 class ArbeidsgiverListe extends Component {
   arbeidsgiverKlikkHandler = orgnr => {
-    const { fields } = this.props;
+    const { fields, arbeidsgivere } = this.props;
     const alleValgteFelter = fields.getAll() || [];
-    const eksistererVedPosisjon = alleValgteFelter.findIndex(item => item === orgnr);
+    const valgtArbeidsgiver = arbeidsgivere.find(elem => elem.orgnr === orgnr);
+    const eksistererVedPosisjon = alleValgteFelter.findIndex(item => item.orgnr === orgnr);
     if (eksistererVedPosisjon === -1) {
-      fields.push(orgnr);
+      fields.push({ ...valgtArbeidsgiver });
     } else {
       fields.remove(eksistererVedPosisjon);
     }
@@ -54,12 +55,11 @@ class ArbeidsgiverListe extends Component {
     return (
       <Fragment>
         {arbeidsgivere.map(arbeidsgiveren => {
-          const orgnr = alleValgteFelter.find(item => item === arbeidsgiveren.orgnr);
-          const arbeidsGiverErValgt = orgnr && orgnr.length > 0;
+          const arbeidsGiverErValgt = alleValgteFelter.find(item => item.orgnr === arbeidsgiveren.orgnr);
           return <ArbeidsgiverLinje
             key={uuid()}
             arbeidsgiveren={arbeidsgiveren}
-            erValgt={arbeidsGiverErValgt}
+            erValgt={arbeidsGiverErValgt !== undefined}
             arbeidsgiverKlikkHandler={this.arbeidsgiverKlikkHandler}
           />;
         })}

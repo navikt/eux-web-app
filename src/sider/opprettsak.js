@@ -198,7 +198,9 @@ class OpprettSak extends Component {
             {this.visFagsakerListe() &&
               <Fagsaker fagsaker={this.state.fagsaker} saksID={this.state.saksID} oppdaterFagsakListe={this.oppdaterFagsakListe} />
             }
-            { this.visArbeidsforhold() && <Arbeidsforhold fnr={inntastetFnr} /> }
+            {this.visArbeidsforhold() &&
+              <Arbeidsforhold fnr={inntastetFnr} />
+            }
 
 
             <Nav.Row className="opprettsak__statuslinje">

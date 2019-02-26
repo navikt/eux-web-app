@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import PT from 'prop-types';
-
+import * as MPT from '../../proptypes';
 import * as Nav from '../../utils/navFrontend';
 import * as Api from '../../services/api';
 import Arbeidsgivere from './arbeidsgivere';
@@ -38,10 +38,12 @@ class Arbeidsforhold extends Component {
   }
 }
 Arbeidsforhold.propTypes = {
-  arbeidshorhold: PT.array,
+  fnr: PT.string,
+  arbeidsgivere: MPT.Arbeidsgivere,
 };
 Arbeidsforhold.defaultProps = {
-  arbeidshorhold: [],
+  fnr: '',
+  arbeidsgivere: [],
 };
 
 export default Arbeidsforhold;
