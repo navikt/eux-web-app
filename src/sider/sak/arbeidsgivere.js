@@ -13,7 +13,9 @@ const btnStyle = {
 
 const ArbeidsgiverLinje = props => {
   const { arbeidsgiveren, erValgt, arbeidsgiverKlikkHandler } = props;
-  const { navn, orgnr, ansettelsesPeriode: { fom, tom } } = arbeidsgiveren;
+  const {
+    arbeidsforholdIDnav, navn, orgnr, ansettelsesPeriode: { fom, tom },
+  } = arbeidsgiveren;
   return (
     <Nav.Row>
       <Nav.Column xs="1" style={{ width: '5%' }}>
@@ -23,7 +25,7 @@ const ArbeidsgiverLinje = props => {
         <strong>{navn}</strong><br />Orgnr:&nbsp;{orgnr}<br />StartDato:&nbsp;{formatterDatoTilNorsk(fom)}<br />SluttDato:&nbsp;{formatterDatoTilNorsk(tom)}
       </Nav.Column>
       <Nav.Column xs="1" style={btnStyle} >
-        <Nav.Checkbox checked={erValgt} onChange={() => arbeidsgiverKlikkHandler(orgnr)} label="Velg" />
+        <Nav.Checkbox checked={erValgt} onChange={() => arbeidsgiverKlikkHandler(arbeidsforholdIDnav)} label="Velg" />
       </Nav.Column>
     </Nav.Row>
   );
@@ -38,11 +40,11 @@ ArbeidsgiverLinje.defaultProps = {
 };
 
 class ArbeidsgiverListe extends Component {
-  arbeidsgiverKlikkHandler = orgnr => {
+  arbeidsgiverKlikkHandler = arbeidsforholdIDnav => {
     const { fields, arbeidsgivere } = this.props;
     const alleValgteFelter = fields.getAll() || [];
-    const valgtArbeidsgiver = arbeidsgivere.find(elem => elem.orgnr === orgnr);
-    const eksistererVedPosisjon = alleValgteFelter.findIndex(item => item.orgnr === orgnr);
+    const valgtArbeidsgiver = arbeidsgivere.find(elem => elem.arbeidsforholdIDnav === arbeidsforholdIDnav);
+    const eksistererVedPosisjon = alleValgteFelter.findIndex(item => item.arbeidsforholdIDnav === arbeidsforholdIDnav);
     if (eksistererVedPosisjon === -1) {
       fields.push({ ...valgtArbeidsgiver });
     } else {
@@ -55,7 +57,7 @@ class ArbeidsgiverListe extends Component {
     return (
       <Fragment>
         {arbeidsgivere.map(arbeidsgiveren => {
-          const arbeidsGiverErValgt = alleValgteFelter.find(item => item.orgnr === arbeidsgiveren.orgnr);
+          const arbeidsGiverErValgt = alleValgteFelter.find(item => item.arbeidsforholdIDnav === arbeidsgiveren.arbeidsforholdIDnav);
           return <ArbeidsgiverLinje
             key={uuid()}
             arbeidsgiveren={arbeidsgiveren}

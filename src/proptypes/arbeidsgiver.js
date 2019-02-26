@@ -4,6 +4,7 @@ import PT from 'prop-types';
 import { Periode } from './periode';
 
 const ArbeidsgiverPropType = PT.shape({
+  arbeidsforholdIDnav: PT.number,
   orgnr: PT.string,
   navn: PT.string,
   ansettelsesPeriode: Periode,
