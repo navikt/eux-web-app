@@ -9,7 +9,7 @@ import PersonSokResultat from '../../../komponenter/PersonSokResultat';
 import './annenperson.css';
 
 const defaultState = {
-  sok: '', person: null, tpsperson: null, rolle: '', knappDisabled: true,
+  sok: '', person: null, tpsperson: null, rolle: '', knappDisabled: true, notFound400: false,
 };
 
 class AnnenRelatertTPSPerson extends Component {
@@ -20,17 +20,20 @@ class AnnenRelatertTPSPerson extends Component {
   sokEtterFnr = async () => {
     const { sok } = this.state;
     const { tpsrelasjoner } = this.props;
-    const response = await API.Personer.hentPerson(sok);
-    // Fjern relasjoner array, NOTE! det er kun relqasjoner som har rolle.
-    const person = _.omit(response, 'relasjoner');
-    const tpsperson = tpsrelasjoner.find(elem => elem.fnr === person.fnr);
-
-    if (!tpsperson) {
-      this.setState({ person, tpsperson: null });
-    } else {
-      this.setState({
-        tpsperson, sok: '', person: null, rolle: '', knappDisabled: true,
-      });
+    try {
+      const response = await API.Personer.hentPerson(sok);
+      // Fjern relasjoner array, NOTE! det er kun relqasjoner som har rolle.
+      const person = _.omit(response, 'relasjoner');
+      const tpsperson = tpsrelasjoner.find(elem => elem.fnr === person.fnr);
+      if (!tpsperson) {
+        this.setState({ person, tpsperson: null });
+      } else {
+        this.setState({
+          tpsperson, sok: '', person: null, rolle: '', knappDisabled: true,
+        });
+      }
+    } catch (e) {
+      this.setState({ notFound400: true });
     }
   };
 
@@ -64,7 +67,10 @@ class AnnenRelatertTPSPerson extends Component {
         return kt.kode !== valgtRelasjon.rolle;
       });
       */
-      return familierelasjonKodeverk.filter(kt => kt.kode !== 'EKTE');
+      const ektefelle = valgteRelasjoner.find(kt => kt.rolle === 'EKTE');
+      if (ektefelle) {
+        return familierelasjonKodeverk.filter(kt => ['EKTE', 'SAMB', 'REPA'].includes(kt.kode) === false);
+      }
     }
     return [...familierelasjonKodeverk];
   };
@@ -73,7 +79,7 @@ class AnnenRelatertTPSPerson extends Component {
     const { leggTilPersonOgRolle, sokEtterFnr, oppdaterFamilierelajon } = this;
 
     const {
-      person, rolle, tpsperson, knappDisabled,
+      person, rolle, tpsperson, knappDisabled, notFound400, sok,
     } = this.state;
 
     const Sokefelt = () => (
@@ -89,6 +95,7 @@ class AnnenRelatertTPSPerson extends Component {
       <div>
         <Sokefelt />
         {tpsperson && <p>{tpsperson.fnr} Familierelasjonen er allerede registrert i TPS</p>}
+        {notFound400 && <p>Ingen person med fnr {sok} funnet</p>}
         {person && <PersonSokResultat
           person={person}
           rolle={rolle}
