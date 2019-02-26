@@ -71,7 +71,7 @@ const FamilieRelasjonUtland = ({
           </Nav.Column>
           <Nav.Column xs="3">
             <Nav.Input
-              label="Fødselsdato (YYYY.MM.DD)"
+              label="Fødselsdato"
               className="familierelasjoner__input"
               bredde="S"
               value={spesialRelasjon.fdato}
