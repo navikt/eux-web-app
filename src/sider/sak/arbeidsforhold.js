@@ -78,9 +78,9 @@ ArbeidsgiverListe.defaultProps = {
   arbeidsgivere: [],
 };
 
-const Arbeidsgivere = props => (
+const Arbeidsforhold = props => (
   <div className="arbeidsgivere">
     <FieldArray name="tilleggsopplysninger.arbeidsgivere" component={ArbeidsgiverListe} props={props} />
   </div>
 );
-export default Arbeidsgivere;
+export default Arbeidsforhold;

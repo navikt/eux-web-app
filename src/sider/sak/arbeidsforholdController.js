@@ -4,7 +4,7 @@ import PT from 'prop-types';
 import * as MPT from '../../proptypes';
 import * as Nav from '../../utils/navFrontend';
 import * as Api from '../../services/api';
-import Arbeidsgivere from './arbeidsgivere';
+import Arbeidsforhold from './arbeidsforhold';
 
 class ArbeidsforholdController extends Component {
   state = {
@@ -32,7 +32,7 @@ class ArbeidsforholdController extends Component {
         <Nav.Row>
           &nbsp;
         </Nav.Row>
-        {arbeidsforhold.length > 0 && <Arbeidsgivere arbeidsgivere={arbeidsforhold} />}
+        {arbeidsforhold.length > 0 && <Arbeidsforhold arbeidsgivere={arbeidsforhold} />}
       </div>
     );
   }
