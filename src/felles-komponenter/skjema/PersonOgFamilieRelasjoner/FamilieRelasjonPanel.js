@@ -30,10 +30,10 @@ const FamilieRelasjonPanel = ({
       {nasjonalitetObjekt && <span>Nasjonalitet: {nasjonalitetTerm}</span>}
     </div>
   );
-
+  const tittel = `${fornavn} ${etternavn}`.toUpperCase();
   return (
     <Nav.Panel border className="personsok__kort">
-      <PanelHeader ikon={Eux.IkonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn} - ${rolleTerm}`} undertittel={panelUndertittel} />
+      <PanelHeader ikon={Eux.IkonFraKjonn(kjoenn)} tittel={`${tittel} - ${rolleTerm}`} undertittel={panelUndertittel} />
       <Nav.Knapp
         className="familierelasjoner__knapp familierelasjoner__knapp--slett"
         onClick={() => slettRelasjon(familie.fnr)}>

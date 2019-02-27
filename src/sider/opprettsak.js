@@ -18,7 +18,7 @@ import FamilieRelasjonsComponent from '../felles-komponenter/skjema/PersonOgFami
 import PersonSok from './personsok';
 
 import './opprettsak.css';
-import { Arbeidsforhold, BehandlingsTemaer, Fagsaker } from './sak';
+import { ArbeidsforholdController, BehandlingsTemaer, Fagsaker } from './sak';
 
 const uuid = require('uuid/v4');
 
@@ -198,7 +198,9 @@ class OpprettSak extends Component {
             {this.visFagsakerListe() &&
               <Fagsaker fagsaker={this.state.fagsaker} saksID={this.state.saksID} oppdaterFagsakListe={this.oppdaterFagsakListe} />
             }
-            { this.visArbeidsforhold() && <Arbeidsforhold fnr={inntastetFnr} /> }
+            {this.visArbeidsforhold() &&
+              <ArbeidsforholdController fnr={inntastetFnr} />
+            }
 
 
             <Nav.Row className="opprettsak__statuslinje">

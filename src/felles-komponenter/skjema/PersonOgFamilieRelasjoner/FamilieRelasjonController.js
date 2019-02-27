@@ -106,6 +106,18 @@ class FamilieRelasjonController extends Component {
 
   knappeTekstUtland = () => (this.state.ui.visRelatertUtland ? 'Skjul Skjema' : 'Vis skjema');
 
+  filtrerRoller = () => {
+    const { familierelasjonKodeverk, fields } = this.props;
+    const valgteRelasjoner = fields.getAll();
+    if (valgteRelasjoner.length > 0) {
+      const ektefelle = valgteRelasjoner.find(kt => kt.rolle === 'EKTE');
+      if (ektefelle) {
+        return familierelasjonKodeverk.filter(kt => ['EKTE', 'SAMB', 'REPA'].includes(kt.kode) === false);
+      }
+    }
+    return [...familierelasjonKodeverk];
+  };
+
   render() {
     const {
       familierelasjonKodeverk, kjoennKodeverk, landKodeverk, fields, tpsrelasjoner,
@@ -152,7 +164,7 @@ class FamilieRelasjonController extends Component {
           oppdaterState={this.oppdaterState}
           kjoennKodeverk={kjoennKodeverk}
           landKodeverk={landKodeverk}
-          familierelasjonKodeverk={familierelasjonKodeverk}
+          filtrerteFamilieRelasjoner={this.filtrerRoller}
           leggTilSpesialRelasjon={this.leggTilSpesialRelasjon}
           vaskInputDatoOgOppdater={this.vaskInputDatoOgOppdater}
           kanSpesialRelasjonLeggesTil={this.kanSpesialRelasjonLeggesTil}
@@ -172,7 +184,7 @@ class FamilieRelasjonController extends Component {
           valgteRelasjoner={valgteRelasjoner}
           tpsrelasjoner={tpsrelasjoner}
           leggTilTPSrelasjon={this.leggTilTPSrelasjon}
-          familierelasjonKodeverk={familierelasjonKodeverk}
+          filtrerteFamilieRelasjoner={this.filtrerRoller}
         />}
       </div>
     );

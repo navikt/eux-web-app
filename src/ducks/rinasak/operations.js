@@ -20,7 +20,10 @@ const transformData = data => {
       tilleggsopplysninger,
     } = data;
     const { arbeidsforhold } = tilleggsopplysninger;
-    const familierelasjoner = tilleggsopplysninger.familierelasjoner.map(relasjon => ({ ...relasjon, fdato: formatterDatoTilISO(relasjon.fdato) }));
+    const familierelasjoner = tilleggsopplysninger.familierelasjoner.map(relasjon => ({
+      ...relasjon,
+      fdato: relasjon.fdato.indexOf('-') > 0 ? relasjon.fdato : formatterDatoTilISO(relasjon.fdato),
+    }));
     return {
       buctype,
       fnr,
