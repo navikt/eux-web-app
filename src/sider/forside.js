@@ -8,7 +8,7 @@ import './forside.css';
 const Forside = () => (
   <div className="forside">
     <Nav.Container fluid>
-      <Nav.Systemtittel>Velkommen til EUX</Nav.Systemtittel>
+      <Nav.Systemtittel>Velkommen til {process.env.REACT_APP_NAME}</Nav.Systemtittel>
       <br />
       <Nav.Row className="">
         <Nav.Column xs="3">

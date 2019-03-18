@@ -18,7 +18,7 @@ import FamilieRelasjonsComponent from '../felles-komponenter/skjema/PersonOgFami
 import PersonSok from './personsok';
 
 import './opprettsak.css';
-import { Arbeidsforhold, BehandlingsTemaer, Fagsaker } from './sak';
+import { ArbeidsforholdController, BehandlingsTemaer, Fagsaker } from './sak';
 
 const uuid = require('uuid/v4');
 
@@ -150,7 +150,7 @@ class OpprettSak extends Component {
             </Nav.Row>
             <Nav.Row className="">
               <Nav.Column xs="3">
-                <Skjema.Select feltNavn="sektor" label="Fagområde" bredde="xl" disabled={!oppgittFnrErValidert}>
+                <Skjema.Select feltNavn="sektor" label="Fagområde" bredde="xxl" disabled={!oppgittFnrErValidert}>
                   {sektor && sektor.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                 </Skjema.Select>
               </Nav.Column>
@@ -162,20 +162,20 @@ class OpprettSak extends Component {
                 </Skjema.Select>
               </Nav.Column>
               <Nav.Column xs="3">
-                <Skjema.Select feltNavn="sedtype" label="SED" bredde="xl" disabled={!oppgittFnrErValidert}>
+                <Skjema.Select feltNavn="sedtype" label="SED" bredde="xxl" disabled={!oppgittFnrErValidert}>
                   {this.erSedtyperGyldig(sedtyper) && sedtyper.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
                 </Skjema.Select>
               </Nav.Column>
             </Nav.Row>
             <Nav.Row className="">
               <Nav.Column xs="3">
-                <Nav.Select bredde="xl" disabled={!oppgittFnrErValidert} value={this.state.landKode} onChange={this.oppdaterLandKode} label="Land">
+                <Nav.Select bredde="xxl" disabled={!oppgittFnrErValidert} value={this.state.landKode} onChange={this.oppdaterLandKode} label="Land">
                   <option value="0" />
                   {landkoder && landkoder.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                 </Nav.Select>
               </Nav.Column>
               <Nav.Column xs="3">
-                <Nav.Select bredde="xl" disabled={!oppgittFnrErValidert} value={this.state.institusjonsID} onChange={this.oppdaterInstitusjonKode} label="Mottaker institusjon">
+                <Nav.Select bredde="xxl" disabled={!oppgittFnrErValidert} value={this.state.institusjonsID} onChange={this.oppdaterInstitusjonKode} label="Mottaker institusjon">
                   <option value="0" />
                   {institusjoner && institusjoner.map(element => <option value={element.institusjonsID} key={uuid()}>{element.navn}</option>)}
                 </Nav.Select>
@@ -198,7 +198,9 @@ class OpprettSak extends Component {
             {this.visFagsakerListe() &&
               <Fagsaker fagsaker={this.state.fagsaker} saksID={this.state.saksID} oppdaterFagsakListe={this.oppdaterFagsakListe} />
             }
-            { this.visArbeidsforhold() && <Arbeidsforhold fnr={inntastetFnr} /> }
+            {this.visArbeidsforhold() &&
+              <ArbeidsforholdController fnr={inntastetFnr} />
+            }
 
 
             <Nav.Row className="opprettsak__statuslinje">
@@ -231,6 +233,7 @@ OpprettSak.propTypes = {
   settFnrGyldighet: PT.func.isRequired,
   settFnrSjekket: PT.func.isRequired,
   settBuctype: PT.func.isRequired,
+  hentLandkoder: PT.func.isRequired,
   submitFailed: PT.bool.isRequired,
   landkoder: PT.arrayOf(MPT.Kodeverk),
   sedtyper: PT.arrayOf(MPT.Kodeverk),
@@ -276,7 +279,7 @@ const mapStateToProps = state => ({
   initialValues: {
     tilleggsopplysninger: {
       familierelasjoner: [],
-      arbeidsgivere: [],
+      arbeidsforhold: [],
     },
   },
   landkoder: LandkoderSelectors.landkoderSelector(state),
@@ -291,7 +294,7 @@ const mapStateToProps = state => ({
   inntastetFnr: skjemaSelector(state, 'fnr'),
   valgtSektor: skjemaSelector(state, 'sektor'),
   valgteFamilieRelasjoner: skjemaSelector(state, 'tilleggsopplysninger.familierelasjoner'),
-  valgteArbeidsgivere: skjemaSelector(state, 'tilleggsopplysninger.arbeidsgivere'),
+  valgteArbeidsforhold: skjemaSelector(state, 'tilleggsopplysninger.arbeidsforhold'),
   status: RinasakSelectors.sakStatusSelector(state),
   errdata: RinasakSelectors.errorDataSakSelector(state),
   opprettetSak: RinasakSelectors.sakSelector(state),

@@ -7,12 +7,12 @@
 
 import { createSelector } from 'reselect';
 
-export const ArbeidsgivereSelector = createSelector(
-  state => state.arbeidsgivere.data,
-  arbeidsgivere => arbeidsgivere
+export const ArbeidsforholdSelector = createSelector(
+  state => state.arbeidsforhold.data,
+  arbeidsforhold => arbeidsforhold
 );
 
-export const ArbeidsgivereStatusSelector = createSelector(
-  state => state.arbeidsgivere.status,
-  arbeidsgivere => arbeidsgivere
+export const ArbeidsforholdStatusSelector = createSelector(
+  state => state.arbeidsforhold.status,
+  arbeidsforhold => arbeidsforhold
 );

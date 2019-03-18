@@ -81,7 +81,6 @@ class PersonSok extends Component {
           <Skjema.Input
             label="Finn bruker"
             className="personsok__input"
-            bredde="XL"
             feltNavn="fnr"
             onKeyUp={inntastetFnrHarBlittEndret}
           />

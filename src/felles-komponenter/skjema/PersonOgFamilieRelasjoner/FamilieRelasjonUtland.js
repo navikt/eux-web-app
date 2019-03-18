@@ -11,7 +11,7 @@ const uuid = require('uuid/v4');
 
 const FamilieRelasjonUtland = ({
   spesialRelasjon, oppdaterState,
-  kjoennKodeverk, landKodeverk, familierelasjonKodeverk,
+  kjoennKodeverk, landKodeverk, filtrerteFamilieRelasjoner,
   leggTilSpesialRelasjon, vaskInputDatoOgOppdater, kanSpesialRelasjonLeggesTil,
 }) => (
   <div>
@@ -19,7 +19,7 @@ const FamilieRelasjonUtland = ({
     <Nav.Fieldset className="familierelasjoner__utland" legend="Du kan også legge til familierelasjoner fra utlandet som ikke er oppført i TPS:">
       <Nav.Panel border className="familierelasjoner__utland__wrapper">
         <Nav.Row>
-          <Nav.Column xs="2">
+          <Nav.Column xs="3">
             <Nav.Input
               label="Utenlandsk ID"
               className="familierelasjoner__input"
@@ -27,7 +27,7 @@ const FamilieRelasjonUtland = ({
               value={spesialRelasjon.fnr}
               onChange={event => oppdaterState('fnr', event)} />
           </Nav.Column>
-          <Nav.Column xs="2">
+          <Nav.Column xs="3">
             <Nav.Select
               label="Nasjonalitet"
               bredde="m"
@@ -40,7 +40,7 @@ const FamilieRelasjonUtland = ({
           </Nav.Column>
         </Nav.Row>
         <Nav.Row>
-          <Nav.Column xs="2">
+          <Nav.Column xs="3">
             <Nav.Input
               label="Fornavn"
               className="familierelasjoner__input"
@@ -48,7 +48,7 @@ const FamilieRelasjonUtland = ({
               value={spesialRelasjon.fornavn}
               onChange={event => oppdaterState('fornavn', event)} />
           </Nav.Column>
-          <Nav.Column xs="2">
+          <Nav.Column xs="3">
             <Nav.Input
               label="Etternavn"
               className="familierelasjoner__input"
@@ -58,7 +58,7 @@ const FamilieRelasjonUtland = ({
           </Nav.Column>
         </Nav.Row>
         <Nav.Row>
-          <Nav.Column xs="2">
+          <Nav.Column xs="3">
             <Nav.Select
               label="Kjønn"
               bredde="s"
@@ -69,9 +69,9 @@ const FamilieRelasjonUtland = ({
               {kjoennKodeverk && kjoennKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
             </Nav.Select>
           </Nav.Column>
-          <Nav.Column xs="2">
+          <Nav.Column xs="3">
             <Nav.Input
-              label="Fødselsdato (YYYY.MM.DD)"
+              label="Fødselsdato"
               className="familierelasjoner__input"
               bredde="S"
               value={spesialRelasjon.fdato}
@@ -80,7 +80,7 @@ const FamilieRelasjonUtland = ({
           </Nav.Column>
         </Nav.Row>
         <Nav.Row>
-          <Nav.Column xs="2">
+          <Nav.Column xs="3">
             <Nav.Select
               label="Familierelasjon"
               bredde="fullbredde"
@@ -88,11 +88,10 @@ const FamilieRelasjonUtland = ({
               value={spesialRelasjon.rolle}
               onChange={event => oppdaterState('rolle', event)}>
               <option value="" disabled>- velg -</option>
-              {familierelasjonKodeverk && familierelasjonKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+              {filtrerteFamilieRelasjoner().map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
             </Nav.Select>
           </Nav.Column>
           <Nav.Column xs="3">
-            <br />
             <Nav.Knapp onClick={leggTilSpesialRelasjon} disabled={!kanSpesialRelasjonLeggesTil()} className="spesialrelasjon familierelasjoner__knapp">
               <Eux.Icon kind="tilsette" size="18" className="familierelasjoner__knapp__ikon" />
               <div className="familierelasjoner__knapp__label">Legg til</div>
@@ -108,7 +107,7 @@ const FamilieRelasjonUtland = ({
 FamilieRelasjonUtland.propTypes = {
   spesialRelasjon: PT.object.isRequired,
   oppdaterState: PT.func.isRequired,
-  familierelasjonKodeverk: PT.arrayOf(MPT.Kodeverk),
+  filtrerteFamilieRelasjoner: PT.func.isRequired,
   kjoennKodeverk: PT.arrayOf(MPT.Kodeverk),
   landKodeverk: PT.arrayOf(MPT.Kodeverk),
   leggTilSpesialRelasjon: PT.func.isRequired,
@@ -117,7 +116,6 @@ FamilieRelasjonUtland.propTypes = {
 };
 
 FamilieRelasjonUtland.defaultProps = {
-  familierelasjonKodeverk: [],
   kjoennKodeverk: [],
   landKodeverk: [],
 };

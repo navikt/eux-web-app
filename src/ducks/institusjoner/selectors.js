@@ -21,7 +21,4 @@ export const institusjonerSelector = createSelector(
   state => state.institusjoner.data,
   institusjoner => institusjoner
 );
-export const familieRelasjonerSelector = createSelector(
-  state => state.institusjoner.data.relasjoner || [],
-  relasjoner => relasjoner
-);
+

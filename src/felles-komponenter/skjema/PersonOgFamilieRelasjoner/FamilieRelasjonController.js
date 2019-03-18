@@ -10,11 +10,12 @@ import { vaskInputDato } from '../../../utils/dato';
 import * as KodeverkSelectors from '../../../ducks/kodeverk/selectors';
 import { PersonSelectors } from '../../../ducks/person';
 
+import { LandkoderSelectors } from '../../../ducks/landkoder';
 import { FamilieRelasjonPanel } from './FamilieRelasjonPanel';
 import { FamilieRelasjonUtland } from './FamilieRelasjonUtland';
 import { TPSRelasjonEnkelt } from './TPSRelasjonEnkelt';
-import { AnnenRelatertTPSPerson } from './AnnenRelatertTPSPerson';
 
+import { AnnenRelatertTPSPerson } from './AnnenRelatertTPSPerson';
 import './familierelasjoner.css';
 
 const uuid = require('uuid/v4');
@@ -105,6 +106,18 @@ class FamilieRelasjonController extends Component {
 
   knappeTekstUtland = () => (this.state.ui.visRelatertUtland ? 'Skjul Skjema' : 'Vis skjema');
 
+  filtrerRoller = () => {
+    const { familierelasjonKodeverk, fields } = this.props;
+    const valgteRelasjoner = fields.getAll();
+    if (valgteRelasjoner.length > 0) {
+      const ektefelle = valgteRelasjoner.find(kt => kt.rolle === 'EKTE');
+      if (ektefelle) {
+        return familierelasjonKodeverk.filter(kt => ['EKTE', 'SAMB', 'REPA'].includes(kt.kode) === false);
+      }
+    }
+    return [...familierelasjonKodeverk];
+  };
+
   render() {
     const {
       familierelasjonKodeverk, kjoennKodeverk, landKodeverk, fields, tpsrelasjoner,
@@ -151,7 +164,7 @@ class FamilieRelasjonController extends Component {
           oppdaterState={this.oppdaterState}
           kjoennKodeverk={kjoennKodeverk}
           landKodeverk={landKodeverk}
-          familierelasjonKodeverk={familierelasjonKodeverk}
+          filtrerteFamilieRelasjoner={this.filtrerRoller}
           leggTilSpesialRelasjon={this.leggTilSpesialRelasjon}
           vaskInputDatoOgOppdater={this.vaskInputDatoOgOppdater}
           kanSpesialRelasjonLeggesTil={this.kanSpesialRelasjonLeggesTil}
@@ -167,8 +180,12 @@ class FamilieRelasjonController extends Component {
             <Nav.Knapp onClick={this.visSkjulRelatertTPS} >{this.knappeTekstRelatertTPS()}</Nav.Knapp>
           </Nav.Column>
         </Nav.Row>
-
-        { this.state.ui.visRelatertTPS && <AnnenRelatertTPSPerson leggTilTPSrelasjon={this.leggTilTPSrelasjon} familierelasjonKodeverk={familierelasjonKodeverk} /> }
+        { this.state.ui.visRelatertTPS && <AnnenRelatertTPSPerson
+          valgteRelasjoner={valgteRelasjoner}
+          tpsrelasjoner={tpsrelasjoner}
+          leggTilTPSrelasjon={this.leggTilTPSrelasjon}
+          filtrerteFamilieRelasjoner={this.filtrerRoller}
+        />}
       </div>
     );
   }
@@ -192,7 +209,7 @@ const mapStateToProps = state => ({
   tpsrelasjoner: PersonSelectors.familieRelasjonerSelector(state),
   familierelasjonKodeverk: KodeverkSelectors.familierelasjonerSelector(state),
   kjoennKodeverk: KodeverkSelectors.kjoennSelector(state),
-  landKodeverk: KodeverkSelectors.landkoderSelector(state),
+  landKodeverk: LandkoderSelectors.landkoderSelector(state),
 });
 
 export default connect(mapStateToProps)(FamilieRelasjonController);

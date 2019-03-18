@@ -1,5 +1,5 @@
-import Arbeidsforhold from './arbeidsforhold';
+import ArbeidsforholdController from './arbeidsforholdController';
 import { BehandlingsTemaer } from './behandlingstema';
 import { Fagsaker } from './fagsaker';
 
-export { Arbeidsforhold, BehandlingsTemaer, Fagsaker };
+export { ArbeidsforholdController, BehandlingsTemaer, Fagsaker };
