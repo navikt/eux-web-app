@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import * as navLogo from '../resources/images/nav.svg';
+import * as navLogo from '../resources/images/nEESSI.svg';
 
 import './topplinje.css';
 import * as MPT from '../proptypes/';
