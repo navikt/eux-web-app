@@ -282,19 +282,19 @@
     ],
     "miscellaneous": [
       {
-        "kode": "MI_BUC_01",
+        "kode": "M_BUC_01",
         "term": "Krav om gravferdsstønad"
       },
       {
-        "kode": "MI_BUC_02",
+        "kode": "M_BUC_02",
         "term": "Krav om førtidspensjon"
       },
       {
-        "kode": "MI_BUC_03a",
+        "kode": "M_BUC_03a",
         "term": "Utveksling av informasjon om inntekt for særskilte innskuddsfrie kontantytelser"
       },
       {
-        "kode": "MI_BUC_03b",
+        "kode": "M_BUC_03b",
         "term": "Utveksling av informasjon om perioder for ansettelsesforhold/selvstendig næringsvirksomhet/bosetningsperioder for særskilte avgiftsfrie kontantytelser"
       }
     ],
@@ -372,103 +372,35 @@
     ],
     "sickness": [
       {
-        "kode": "SI_BUC_01",
-        "term": "Entitlement - Residence outside Competent Member State without PD"
-      },
-      {
-        "kode": "SI_BUC_01a",
-        "term": "Entitlement - Residence outside Competent Member State withoud PD"
-      },
-      {
-        "kode": "SI_BUC_02",
-        "term": "Entitlement - Residence outside Competent Member State"
-      },
-      {
-        "kode": "SI_BUC_03",
-        "term": "Change or cancellation of entitlement document"
-      },
-      {
-        "kode": "SI_BUC_04",
-        "term": "Change or cancellation of registration"
-      },
-      {
-        "kode": "SI_BUC_05",
-        "term": "Necessary Treatment in Member State of Stay - Request for Entitlement Document"
-      },
-      {
-        "kode": "SI_BUC_06",
-        "term": "Necessary or Scheduled Treatment - Reimbursement Rates"
-      },
-      {
-        "kode": "SI_BUC_07",
-        "term": "Scheduled Treatment - Information on Coverage of Specific Benefit in Kind"
-      },
-      {
-        "kode": "SI_BUC_08",
-        "term": "Scheduled treatment - Request Entitlement Document in Member State of Stay"
-      },
-      {
-        "kode": "SI_BUC_09",
-        "term": "Scheduled treatment - Request extension of authorisation in Member State of Stay"
-      },
-      {
-        "kode": "SI_BUC_11",
-        "term": "Urgent vitally necessary treatment - Request for authorisation in Member State of residence (residence not in competent Member State)"
-      },
-      {
-        "kode": "SI_BUC_12",
+        "kode": "S_BUC_12",
         "term": "Søknad om kontantytelser i forbindelse med arbeidsuførhet"
       },
       {
-        "kode": "SI_BUC_14",
+        "kode": "S_BUC_14",
         "term": "Informasjon om hvorvidt det er utbetalt kontantytelser ved arbeidsuførhet"
       },
       {
-        "kode": "SI_BUC_14a",
+        "kode": "S_BUC_14a",
         "term": "Informasjon om kontantytelser som følge av arbeidsuførhet - gitt av kompetent institusjon"
       },
       {
-        "kode": "SI_BUC_14b",
+        "kode": "S_BUC_14b",
         "term": "Informasjon om kontantytelser som følge av arbeidsuførhet, gitt av institusjon ved bosted eller oppholdssted"
       },
       {
-        "kode": "SI_BUC_15",
+        "kode": "S_BUC_15",
         "term": "Kontantytelser ved langtidsomsorg - søknad"
       },
       {
-        "kode": "SI_BUC_17",
+        "kode": "S_BUC_17",
         "term": "Kontantytelser ved langtidsomsorg - informasjon om betaling"
       },
       {
-        "kode": "SI_BUC_17a",
+        "kode": "S_BUC_17a",
         "term": "Kontantytelser ved langtidsomsorg - endring eller opphør"
       },
       {
-        "kode": "SI_BUC_18",
-        "term": "Request for entitlement document for Former Frontier Workers"
-      },
-      {
-        "kode": "SI_BUC_18a",
-        "term": "Change or cancellation of entitlement document of a former frontier worker / family member of a former frontier worker"
-      },
-      {
-        "kode": "SI_BUC_19",
-        "term": "Actual Cost Claim - Benefits in Kind"
-      },
-      {
-        "kode": "SI_BUC_21",
-        "term": "Inventory of months - fixed amounts"
-      },
-      {
-        "kode": "SI_BUC_22",
-        "term": "Claim for Interest on late Payment"
-      },
-      {
-        "kode": "SI_BUC_23",
-        "term": "Refund of Overpayment"
-      },
-      {
-        "kode": "SI_BUC_24",
+        "kode": "S_BUC_24",
         "term": "Sammenlegging av perioder - ved sykdom, svangerskap eller fødsel"
       }
     ],
@@ -739,16 +671,16 @@
         ]
       },
       "MI": {
-        "MI_BUC_01": [
+        "M_BUC_01": [
           "M030"
         ],
-        "MI_BUC_02": [
+        "M_BUC_02": [
           "M040"
         ],
-        "MI_BUC_03a": [
+        "M_BUC_03a": [
           "M050"
         ],
-        "MI_BUC_03b": [
+        "M_BUC_03b": [
           "M052"
         ]
       },
@@ -810,80 +742,29 @@
           "R017"
         ]
       },
-      "SI": {
-        "SI_BUC_01": [
-          "DUMMY"
-        ],
-        "SI_BUC_01a": [
-          "DUMMY"
-        ],
-        "SI_BUC_02": [
-          "DUMMY"
-        ],
-        "SI_BUC_03": [
-          "DUMMY"
-        ],
-        "SI_BUC_04": [
-          "DUMMY"
-        ],
-        "SI_BUC_05": [
-          "DUMMY"
-        ],
-        "SI_BUC_06": [
-          "DUMMY"
-        ],
-        "SI_BUC_07": [
-          "DUMMY"
-        ],
-        "SI_BUC_08": [
-          "DUMMY"
-        ],
-        "SI_BUC_09": [
-          "DUMMY"
-        ],
-        "SI_BUC_11": [
-          "DUMMY"
-        ],
-        "SI_BUC_12": [
+      "SI": {       
+        "S_BUC_12": [
           "S055"
         ],
-        "SI_BUC_14": [
+        "S_BUC_14": [
           "S046"
         ],
-        "SI_BUC_14a": [
+        "S_BUC_14a": [
           "S047"
         ],
-        "SI_BUC_14b": [
+        "S_BUC_14b": [
           "S048"
         ],
-        "SI_BUC_15": [
+        "S_BUC_15": [
           "S056"
         ],
-        "SI_BUC_17": [
+        "S_BUC_17": [
           "S001"
         ],
-        "SI_BUC_17a": [
+        "S_BUC_17a": [
           "S005"
         ],
-        "SI_BUC_18": [
-          "DUMMY"
-        ],
-        "SI_BUC_18a": [
-          "DUMMY"
-        ],
-        "SI_BUC_19": [
-          "DUMMY"
-        ],
-        "SI_BUC_21": [
-          "DUMMY"
-        ],
-        "SI_BUC_22": [
-          "DUMMY"
-        ],
-        "SI_BUC_23": [
-          "DUMMY"
-        ],
-        "SI_BUC_24": [
+        "S_BUC_24": [
           "S040"
         ]
       },
