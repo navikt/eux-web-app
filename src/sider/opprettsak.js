@@ -150,32 +150,32 @@ class OpprettSak extends Component {
             </Nav.Row>
             <Nav.Row className="">
               <Nav.Column xs="3">
-                <Skjema.Select feltNavn="sektor" label="Fagområde" bredde="xxl" disabled={!oppgittFnrErValidert}>
+                <Skjema.Select id="id-sektor" feltNavn="sektor" label="Fagområde" bredde="xxl" disabled={!oppgittFnrErValidert}>
                   {sektor && sektor.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                 </Skjema.Select>
               </Nav.Column>
             </Nav.Row>
             <Nav.Row className="">
               <Nav.Column xs="3">
-                <Skjema.Select feltNavn="buctype" label="BUC" bredde="xxl" disabled={!oppgittFnrErValidert} onChange={this.oppdaterBucKode}>
+                <Skjema.Select id="id-buctype" feltNavn="buctype" label="BUC" bredde="xxl" disabled={!oppgittFnrErValidert} onChange={this.oppdaterBucKode}>
                   {buctyper && buctyper.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
                 </Skjema.Select>
               </Nav.Column>
               <Nav.Column xs="3">
-                <Skjema.Select feltNavn="sedtype" label="SED" bredde="xxl" disabled={!oppgittFnrErValidert}>
+                <Skjema.Select id="id-sedtype" feltNavn="sedtype" label="SED" bredde="xxl" disabled={!oppgittFnrErValidert}>
                   {this.erSedtyperGyldig(sedtyper) && sedtyper.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
                 </Skjema.Select>
               </Nav.Column>
             </Nav.Row>
             <Nav.Row className="">
               <Nav.Column xs="3">
-                <Nav.Select bredde="xxl" disabled={!oppgittFnrErValidert} value={this.state.landKode} onChange={this.oppdaterLandKode} label="Land">
+                <Nav.Select id="id-landkode" bredde="xxl" disabled={!oppgittFnrErValidert} value={this.state.landKode} onChange={this.oppdaterLandKode} label="Land">
                   <option value="0" />
                   {landkoder && landkoder.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                 </Nav.Select>
               </Nav.Column>
               <Nav.Column xs="3">
-                <Nav.Select bredde="xxl" disabled={!oppgittFnrErValidert} value={this.state.institusjonsID} onChange={this.oppdaterInstitusjonKode} label="Mottaker institusjon">
+                <Nav.Select id="id-institusjon" bredde="xxl" disabled={!oppgittFnrErValidert} value={this.state.institusjonsID} onChange={this.oppdaterInstitusjonKode} label="Mottaker institusjon">
                   <option value="0" />
                   {institusjoner && institusjoner.map(element => <option value={element.institusjonsID} key={uuid()}>{element.navn}</option>)}
                 </Nav.Select>

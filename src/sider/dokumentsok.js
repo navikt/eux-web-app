@@ -14,7 +14,7 @@ const yyyMMdd = dato => moment(dato).format('YYYY-MM-DD');
 
 const DokumentKort = ({ dokumenter }) => (
   <Nav.Panel className="dokumentsok__kort">
-    <Skjema.Select feltNavn="rinadokumentID" label="Velg SED Type" bredde="xl">
+    <Skjema.Select id="id-rinadokument" feltNavn="rinadokumentID" label="Velg SED Type" bredde="xl">
       {dokumenter && dokumenter.map(element => <option value={element.rinadokumentID} key={element.rinadokumentID}>{element.kode} =&gt; {yyyMMdd(element.opprettetdato)}</option>)}
     </Skjema.Select>
   </Nav.Panel>
