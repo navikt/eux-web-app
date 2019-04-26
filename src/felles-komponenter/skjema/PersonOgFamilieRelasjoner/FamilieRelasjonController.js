@@ -109,13 +109,12 @@ class FamilieRelasjonController extends Component {
   filtrerRoller = () => {
     const { familierelasjonKodeverk, fields } = this.props;
     const valgteRelasjoner = fields.getAll();
+    const filtrerteVerdier = [];
     if (valgteRelasjoner.length > 0) {
-      const ektefelle = valgteRelasjoner.find(kt => kt.rolle === 'EKTE');
-      if (ektefelle) {
-        return familierelasjonKodeverk.filter(kt => ['EKTE', 'SAMB', 'REPA'].includes(kt.kode) === false);
-      }
+      if (valgteRelasjoner.find(kt => kt.rolle === 'EKTE')) filtrerteVerdier.push('EKTE', 'SAMB', 'REPA');
+      if (valgteRelasjoner.find(kt => kt.rolle === 'ANNEN')) filtrerteVerdier.push('ANNEN');
     }
-    return [...familierelasjonKodeverk];
+    return familierelasjonKodeverk.filter(kt => filtrerteVerdier.includes(kt.kode) === false);
   };
 
   render() {
@@ -123,7 +122,6 @@ class FamilieRelasjonController extends Component {
       familierelasjonKodeverk, kjoennKodeverk, landKodeverk, fields, tpsrelasjoner,
     } = this.props;
     const valgteRelasjoner = fields.getAll();
-
     const gjenstaendeRelasjonerFraTPS = tpsrelasjoner.reduce((samling, enkeltTPSRelasjon) => {
       const erAlleredeLagtTil = valgteRelasjoner.some(r => r.fnr === enkeltTPSRelasjon.fnr);
       return (erAlleredeLagtTil ?
@@ -147,9 +145,9 @@ class FamilieRelasjonController extends Component {
         }
 
         <Nav.Fieldset className="familierelasjoner__utland" legend="Familierelasjoner registrert i TPS">
-          { gjenstaendeRelasjonerFraTPS }
-          { (tpsrelasjoner.length > 0 && gjenstaendeRelasjonerFraTPS.length === 0) ? <Nav.Panel>(Du har lagt til alle som fantes i listen.)</Nav.Panel> : null }
-          { !tpsrelasjoner && <Nav.Panel>(Ingen familierelasjoner funnet i TPS)</Nav.Panel> }
+          {gjenstaendeRelasjonerFraTPS}
+          {(tpsrelasjoner.length > 0 && gjenstaendeRelasjonerFraTPS.length === 0) ? <Nav.Panel>(Du har lagt til alle som fantes i listen.)</Nav.Panel> : null}
+          {!tpsrelasjoner && <Nav.Panel>(Ingen familierelasjoner funnet i TPS)</Nav.Panel>}
         </Nav.Fieldset>
         <Nav.Row>
           <Nav.Column xs="3">
@@ -159,7 +157,7 @@ class FamilieRelasjonController extends Component {
             <Nav.Knapp onClick={this.visSkulRelatertUtland} >{this.knappeTekstUtland()}</Nav.Knapp>
           </Nav.Column>
         </Nav.Row>
-        { this.state.ui.visRelatertUtland && <FamilieRelasjonUtland
+        {this.state.ui.visRelatertUtland && <FamilieRelasjonUtland
           spesialRelasjon={this.state.spesialRelasjon}
           oppdaterState={this.oppdaterState}
           kjoennKodeverk={kjoennKodeverk}
@@ -180,7 +178,7 @@ class FamilieRelasjonController extends Component {
             <Nav.Knapp onClick={this.visSkjulRelatertTPS} >{this.knappeTekstRelatertTPS()}</Nav.Knapp>
           </Nav.Column>
         </Nav.Row>
-        { this.state.ui.visRelatertTPS && <AnnenRelatertTPSPerson
+        {this.state.ui.visRelatertTPS && <AnnenRelatertTPSPerson
           valgteRelasjoner={valgteRelasjoner}
           tpsrelasjoner={tpsrelasjoner}
           leggTilTPSrelasjon={this.leggTilTPSrelasjon}
