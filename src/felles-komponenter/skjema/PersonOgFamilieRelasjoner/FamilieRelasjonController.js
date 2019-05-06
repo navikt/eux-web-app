@@ -106,15 +106,20 @@ class FamilieRelasjonController extends Component {
 
   knappeTekstUtland = () => (this.state.ui.visRelatertUtland ? 'Skjul Skjema' : 'Vis skjema');
 
+  /**
+   * I nedtrekslisten for familierelasjoner filtrerers ut mulige relasjoner basert på personer som allerede er lagt til.
+   */
   filtrerRoller = () => {
     const { familierelasjonKodeverk, fields } = this.props;
     const valgteRelasjoner = fields.getAll();
-    const filtrerteVerdier = [];
+    const ekskluderteVerdier = [];
     if (valgteRelasjoner.length > 0) {
-      if (valgteRelasjoner.find(kt => kt.rolle === 'EKTE')) filtrerteVerdier.push('EKTE', 'SAMB', 'REPA');
-      if (valgteRelasjoner.find(kt => kt.rolle === 'ANNEN')) filtrerteVerdier.push('ANNEN');
+      // Hvis ektefelle allerede er lagt til, fjern mulighet for andre typer samlivspartnere
+      if (valgteRelasjoner.find(kt => kt.rolle === 'EKTE')) ekskluderteVerdier.push('EKTE', 'SAMB', 'REPA');
+      // Det skal kun være mulig å legge til en relasjon av typen annen
+      if (valgteRelasjoner.find(kt => kt.rolle === 'ANNEN')) ekskluderteVerdier.push('ANNEN');
     }
-    return familierelasjonKodeverk.filter(kt => filtrerteVerdier.includes(kt.kode) === false);
+    return familierelasjonKodeverk.filter(kt => ekskluderteVerdier.includes(kt.kode) === false);
   };
 
   render() {
