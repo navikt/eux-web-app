@@ -29,6 +29,7 @@ const FamilieRelasjonUtland = ({
           </Nav.Column>
           <Nav.Column xs="3">
             <Nav.Select
+              id="id-nasjonalitet"
               label="Nasjonalitet"
               bredde="m"
               className="familierelasjoner__input"
@@ -60,6 +61,7 @@ const FamilieRelasjonUtland = ({
         <Nav.Row>
           <Nav.Column xs="3">
             <Nav.Select
+              id="id-kjoenn"
               label="Kjønn"
               bredde="s"
               className="familierelasjoner__input"
@@ -82,6 +84,7 @@ const FamilieRelasjonUtland = ({
         <Nav.Row>
           <Nav.Column xs="3">
             <Nav.Select
+              id="id-familierelasjon"
               label="Familierelasjon"
               bredde="fullbredde"
               className="familierelasjoner__input"

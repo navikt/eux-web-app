@@ -29,6 +29,7 @@ const PersonSokResultat = props => {
     <Nav.Panel border className="personsok__kort">
       <PanelHeader ikon={Eux.IkonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn}`} undertittel={panelUndertittel} />
       <Nav.Select
+        id="id-familirelasjon-rolle"
         label="Familierelasjon"
         bredde="fullbredde"
         className="familierelasjoner__input"
