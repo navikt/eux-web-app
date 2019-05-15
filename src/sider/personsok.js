@@ -60,18 +60,15 @@ class PersonSok extends Component {
         const person = { ...response.data };
         settFnrGyldighet(this.erPersonFunnet(person));
         settFnrSjekket(true);
+      } else {
+        settFnrGyldighet(false);
+        settFnrSjekket(false);
       }
     });
   };
 
-  inntastetFnrHarBlittEndret = () => {
-    const { settFnrGyldighet, settFnrSjekket } = this.props;
-    settFnrGyldighet(false);
-    settFnrSjekket(false);
-  };
-
   render() {
-    const { sokEtterPerson, inntastetFnrHarBlittEndret } = this;
+    const { sokEtterPerson } = this;
     const { person, status, errdata } = this.props;
 
     const personKort = person && person.fornavn && person.etternavn ? <PersonKort person={person} /> : null;
@@ -82,13 +79,12 @@ class PersonSok extends Component {
             label="Finn bruker"
             className="personsok__input"
             feltNavn="fnr"
-            onKeyUp={inntastetFnrHarBlittEndret}
           />
           {['PENDING'].includes(status) ? <div className="personsok__spinnerwrapper"><Nav.NavFrontendSpinner type="S" /></div> : null}
           <Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson}>SØK</Nav.Knapp>
         </div>
-        { errdata.status && <StatusLinje status={status} tittel="Fødselsnummer søket" /> }
-        { errdata.status && <p>{errdata.message}</p> }
+        {errdata.status && <StatusLinje status={status} tittel="Fødselsnummer søket" />}
+        {errdata.status && <p>{errdata.message}</p>}
         {personKort}
       </div>
     );
