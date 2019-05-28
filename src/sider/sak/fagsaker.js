@@ -11,12 +11,14 @@ const btnStyle = {
   margin: '1.85em 0 0 0',
 };
 
+const fagsakNrHvisEksisterer = element => element.fagsakNr || element.saksID;
+
 const FagsakerListe = props => {
   const { fagsaker, saksID, oppdaterFagsakListe } = props;
   return (
     <Nav.Select id="id-fagsaker" bredde="xl" label="Velg fagsak" value={saksID} onChange={oppdaterFagsakListe}>
       <option defaultChecked />
-      {fagsaker && fagsaker.map(element => <option value={element.saksID} key={uuid()}>{element.saksID}</option>)}
+      {fagsaker && fagsaker.map(element => <option value={fagsakNrHvisEksisterer(element)} key={uuid()}>{fagsakNrHvisEksisterer(element)}</option>)}
     </Nav.Select>
   );
 };
