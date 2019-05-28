@@ -32,11 +32,14 @@ class OpprettSak extends Component {
     institusjonsID: '',
     institusjoner: [],
     tema: '',
-    fagsaker: [],
+    fagsaker: {
+      saker: [],
+      soktEtterSaker: false,
+    },
     saksID: '',
   };
 
-  visFagsakerListe = () => (['FB', 'UB'].includes(this.props.valgtSektor) && this.state.tema.length > 0 && this.state.fagsaker.length > 0);
+  visFagsakerListe = () => (['FB', 'UB'].includes(this.props.valgtSektor) && this.state.tema.length > 0 && this.state.fagsaker.soktEtterSaker);
   visArbeidsforhold = () => {
     const { valgtSektor, buctype, sedtype } = this.props;
     return ['FB'].includes(valgtSektor) && ['FB_BUC_01'].includes(buctype) && sedtype;
@@ -64,7 +67,7 @@ class OpprettSak extends Component {
 
   oppdaterTemaListe = event => {
     const tema = event.target.value;
-    this.setState({ tema, fagsaker: [] });
+    this.setState({ tema, fagsaker: { saker: [], soktEtterSaker: false } });
   };
 
   oppdaterFagsakListe = event => {
@@ -75,7 +78,7 @@ class OpprettSak extends Component {
     const { tema } = this.state;
     const { inntastetFnr: fnr, valgtSektor } = this.props;
     const fagsaker = await Api.Fagsaker.hent(fnr, valgtSektor, tema);
-    this.setState({ tema, fagsaker });
+    this.setState({ tema, fagsaker: { saker: fagsaker, soktEtterSaker: true } });
   };
   skjemaSubmit = values => {
     const { submitFailed, sendSkjema } = this.props;
@@ -194,15 +197,12 @@ class OpprettSak extends Component {
                 </Nav.Column>
               </Nav.Row>
             )}
-
             {this.visFagsakerListe() &&
-              <Fagsaker fagsaker={this.state.fagsaker} saksID={this.state.saksID} oppdaterFagsakListe={this.oppdaterFagsakListe} />
+              <Fagsaker fagsaker={this.state.fagsaker.saker} saksID={this.state.saksID} oppdaterFagsakListe={this.oppdaterFagsakListe} />
             }
             {this.visArbeidsforhold() &&
               <ArbeidsforholdController fnr={inntastetFnr} />
             }
-
-
             <Nav.Row className="opprettsak__statuslinje">
               <Nav.Column xs="3">
                 <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)} spinner={['PENDING'].includes(status)} disabled={['PENDING'].includes(status)}>Opprett sak i RINA</Nav.Hovedknapp>
@@ -333,6 +333,6 @@ const validering = values => {
 // mapDispatchToProps = dispatch => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
   form: 'opprettSak',
-  onSubmit: () => {},
+  onSubmit: () => { },
   validate: validering,
 })(OpprettSak));

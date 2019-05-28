@@ -4,6 +4,7 @@ import PT from 'prop-types';
 
 import * as Nav from '../../utils/navFrontend';
 
+
 const uuid = require('uuid/v4');
 
 const btnStyle = {
@@ -32,11 +33,19 @@ FagsakerListe.defaultProps = {
 export const Fagsaker = props => {
   const { fagsaker, saksID, oppdaterFagsakListe } = props;
   return (
-
     <Nav.Row>
-      <Nav.Column xs="3">
-        <FagsakerListe fagsaker={fagsaker} saksID={saksID} oppdaterFagsakListe={oppdaterFagsakListe} />
-      </Nav.Column>
+      {
+        fagsaker.length > 0 ?
+          <Nav.Column xs="3">
+            <FagsakerListe fagsaker={fagsaker} saksID={saksID} oppdaterFagsakListe={oppdaterFagsakListe} />
+          </Nav.Column>
+          :
+          <Nav.Row>
+            <Nav.Column xs="3">
+              <Nav.AlertStripe type="info">Ingen saker funnet</Nav.AlertStripe>
+            </Nav.Column>
+          </Nav.Row>
+      }
       <Nav.Column xs="3" style={btnStyle} >
         <Nav.Lenke href="https://wasapp-t8.adeo.no/gosys/login.jsf?execution=e1s1" ariaLabel="Opprett ny sak i GOSYS" target="_blank">
           Opprett ny sak i GOSYS
