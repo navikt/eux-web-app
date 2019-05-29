@@ -116,6 +116,8 @@ class FamilieRelasjonController extends Component {
     if (valgteRelasjoner.length > 0) {
       // Hvis ektefelle allerede er lagt til, fjern mulighet for andre typer samlivspartnere
       if (valgteRelasjoner.find(kt => kt.rolle === 'EKTE')) ekskluderteVerdier.push('EKTE', 'SAMB', 'REPA');
+      // Hvis registret partner allerede er lagt til, fjern mulighet for andre typer samlivspartnere
+      if (valgteRelasjoner.find(kt => kt.rolle === 'REPA')) ekskluderteVerdier.push('EKTE', 'SAMB', 'REPA');
       // Det skal kun være mulig å legge til en relasjon av typen annen
       if (valgteRelasjoner.find(kt => kt.rolle === 'ANNEN')) ekskluderteVerdier.push('ANNEN');
     }
