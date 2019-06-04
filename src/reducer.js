@@ -10,6 +10,7 @@ import personReducers from './ducks/person';
 import rinasakReducers from './ducks/rinasak';
 import rinavedleggReducers from './ducks/rinavedlegg';
 import saksbehandlerReducers from './ducks/saksbehandler';
+import serverinfoReducers from './ducks/serverinfo';
 
 export default combineReducers({
   arbeidsforhold: arbeidsforholdReducers,
@@ -24,4 +25,5 @@ export default combineReducers({
     vedlegg: rinavedleggReducers,
   }),
   saksbehandler: saksbehandlerReducers,
+  serverinfo: serverinfoReducers,
 });

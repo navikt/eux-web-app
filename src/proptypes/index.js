@@ -4,6 +4,7 @@ import { FamilieRelasjon } from './familierelasjon';
 import { Kodeverk } from './kodeverk';
 import { Person } from './person';
 import { Saksbehandler } from './saksbehandler';
+import { ServerInfo } from './serverinfo';
 
 export {
   Arbeidsforhold,
@@ -13,4 +14,5 @@ export {
   Kodeverk,
   Person,
   Saksbehandler,
+  ServerInfo,
 };

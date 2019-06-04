@@ -8,11 +8,11 @@ import * as MPT from '../proptypes/';
 import * as Nav from '../utils/navFrontend';
 import * as Skjema from '../felles-komponenter/skjema';
 
+import { FagsakSelectors } from '../ducks/fagsak';
 import { KodeverkSelectors } from '../ducks/kodeverk';
 import { LandkoderOperations, LandkoderSelectors } from '../ducks/landkoder';
 import { RinasakOperations, RinasakSelectors } from '../ducks/rinasak';
-import { FagsakSelectors } from '../ducks/fagsak';
-
+import { ServerinfoSelectors } from '../ducks/serverinfo';
 import { StatusLinje } from '../felles-komponenter/statuslinje';
 import FamilieRelasjonsComponent from '../felles-komponenter/skjema/PersonOgFamilieRelasjoner';
 import PersonSok from './personsok';
@@ -117,6 +117,7 @@ class OpprettSak extends Component {
 
   render() {
     const {
+      serverInfo,
       landkoder, sedtyper, sektor, buctyper, temar,
       inntastetFnr, status, errdata,
       valgtSektor,
@@ -192,6 +193,11 @@ class OpprettSak extends Component {
                 <Nav.Column xs="2">
                   <Nav.Knapp style={btnStyle} onClick={this.visFagsaker} disabled={this.state.tema.length === 0}>Vis saker</Nav.Knapp>
                 </Nav.Column>
+                <Nav.Column xs="2">
+                  <Nav.Lenke href={serverInfo.gosysURL} ariaLabel="Opprett ny sak i GOSYS" target="_blank">
+                    Opprett ny sak i GOSYS
+                  </Nav.Lenke>
+                </Nav.Column>
               </Nav.Row>
             )}
 
@@ -226,6 +232,7 @@ class OpprettSak extends Component {
   }
 }
 OpprettSak.propTypes = {
+  serverInfo: MPT.ServerInfo.isRequired,
   validerFnrRiktig: PT.func.isRequired,
   validerFnrFeil: PT.func.isRequired,
   handleSubmit: PT.func.isRequired,
@@ -282,6 +289,7 @@ const mapStateToProps = state => ({
       arbeidsforhold: [],
     },
   },
+  serverInfo: ServerinfoSelectors.ServerinfoSelector(state),
   landkoder: LandkoderSelectors.landkoderSelector(state),
   sektor: KodeverkSelectors.sektorSelector(state),
   fnrErGyldig: skjemaSelector(state, 'fnrErGyldig'),
