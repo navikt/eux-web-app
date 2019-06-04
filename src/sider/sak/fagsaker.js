@@ -15,7 +15,7 @@ const FagsakerListe = props => {
   return (
     <Nav.Select id="id-fagsaker" bredde="xl" label="Velg fagsak" value={saksID} onChange={oppdaterFagsakListe}>
       <option defaultChecked />
-      {fagsaker && fagsaker.map(element => <option value={element.saksID} key={uuid()}>{element.saksID}</option>)}
+      {fagsaker && fagsaker.map(element => <option value={element.saksID} key={uuid()}>{element.fagsakNr ? element.fagsakNr : element.saksID}</option>)}
     </Nav.Select>
   );
 };
