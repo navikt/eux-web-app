@@ -57,28 +57,52 @@ class AnnenRelatertTPSPerson extends Component {
     this.setState({ person, rolle, knappDisabled });
   };
 
+  /**
+   * Returnerer JSX-elementer med informasjon og feilmeldinger basert på ymse kriterie
+   */
+  feilmeldingerOgInformasjon = (valgtBrukerFnr, tpsperson, notFound400, sok) => {
+    if (valgtBrukerFnr === sok) {
+      return (
+        <Nav.Column xs="3">
+          <Nav.AlertStripe type="info">Fnr {sok} tilhører bruker</Nav.AlertStripe>
+        </Nav.Column>
+      );
+    } else if (tpsperson) {
+      return (
+        <Nav.Column xs="3">
+          <Nav.AlertStripe type="info">Familierelasjonen er allerede registrert i TPS</Nav.AlertStripe>
+        </Nav.Column>
+      );
+    } else if (notFound400) {
+      return (
+        <Nav.Column xs="3">
+          <Nav.AlertStripe type="stopp">Ingen person med fnr {sok} funnet</Nav.AlertStripe>
+        </Nav.Column>
+      );
+    }
+    return null;
+  }
+
   render() {
-    const { filtrerteFamilieRelasjoner } = this.props;
+    const { filtrerteFamilieRelasjoner, valgtBrukerFnr } = this.props;
     const { leggTilPersonOgRolle, sokEtterFnr, oppdaterFamilierelajon } = this;
 
     const {
       person, rolle, tpsperson, knappDisabled, notFound400, sok,
     } = this.state;
 
-    const Sokefelt = () => (
-      <div className="annenpersonsok">
-        <div className="annenpersonsok__skjema">
-          <Nav.Input className="" label="" placeholder="Fødsels eller dnr" value={this.state.sok} onChange={this.updateSok} />
-          <Nav.Knapp className="annenpersonsok__knapp" onClick={sokEtterFnr}>Søk</Nav.Knapp>
-        </div>
-      </div>
-    );
-
     return (
       <div>
-        <Sokefelt />
-        {tpsperson && <p>{tpsperson.fnr} Familierelasjonen er allerede registrert i TPS</p>}
-        {notFound400 && <p>Ingen person med fnr {sok} funnet</p>}
+        <div className="annenpersonsok">
+          <div className="annenpersonsok__skjema">
+            <Nav.Input className="" label="" placeholder="Fødsels eller dnr" value={this.state.sok} onChange={this.updateSok} />
+            {valgtBrukerFnr !== sok ?
+              <Nav.Knapp className="annenpersonsok__knapp" onClick={sokEtterFnr}>Søk</Nav.Knapp>
+              :
+              <Nav.Knapp disabled className="annenpersonsok__knapp" onClick={sokEtterFnr}>Søk</Nav.Knapp>}
+          </div>
+        </div>
+        {this.feilmeldingerOgInformasjon(valgtBrukerFnr, tpsperson, notFound400, sok)}
         {person && <PersonSokResultat
           person={person}
           rolle={rolle}
@@ -96,6 +120,7 @@ AnnenRelatertTPSPerson.propTypes = {
   person: MPT.Person,
   filtrerteFamilieRelasjoner: PT.func.isRequired,
   leggTilTPSrelasjon: PT.func.isRequired,
+  valgtBrukerFnr: PT.string.isRequired,
 };
 AnnenRelatertTPSPerson.defaultProps = {
   person: null,
