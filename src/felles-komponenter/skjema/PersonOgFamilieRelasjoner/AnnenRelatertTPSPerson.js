@@ -59,24 +59,21 @@ class AnnenRelatertTPSPerson extends Component {
 
   render() {
     const { filtrerteFamilieRelasjoner } = this.props;
-    const { leggTilPersonOgRolle, sokEtterFnr, oppdaterFamilierelajon } = this;
-
+    const {
+      leggTilPersonOgRolle, sokEtterFnr, oppdaterFamilierelajon, updateSok,
+    } = this;
     const {
       person, rolle, tpsperson, knappDisabled, notFound400, sok,
     } = this.state;
 
-    const Sokefelt = () => (
-      <div className="annenpersonsok">
-        <div className="annenpersonsok__skjema">
-          <Nav.Input className="" label="" placeholder="Fødsels eller dnr" value={this.state.sok} onChange={this.updateSok} />
-          <Nav.Knapp className="annenpersonsok__knapp" onClick={sokEtterFnr}>Søk</Nav.Knapp>
-        </div>
-      </div>
-    );
-
     return (
       <div>
-        <Sokefelt />
+        <div className="annenpersonsok">
+          <div className="annenpersonsok__skjema">
+            <Nav.Input className="" label="" placeholder="Fødsels eller dnr" value={sok} onChange={updateSok} />
+            <Nav.Knapp className="annenpersonsok__knapp" onClick={sokEtterFnr}>Søk</Nav.Knapp>
+          </div>
+        </div>
         {tpsperson && <p>{tpsperson.fnr} Familierelasjonen er allerede registrert i TPS</p>}
         {notFound400 && <p>Ingen person med fnr {sok} funnet</p>}
         {person && <PersonSokResultat
@@ -90,6 +87,7 @@ class AnnenRelatertTPSPerson extends Component {
     );
   }
 }
+
 AnnenRelatertTPSPerson.propTypes = {
   tpsrelasjoner: PT.any.isRequired,
   tpsperson: PT.object,
@@ -97,8 +95,10 @@ AnnenRelatertTPSPerson.propTypes = {
   filtrerteFamilieRelasjoner: PT.func.isRequired,
   leggTilTPSrelasjon: PT.func.isRequired,
 };
+
 AnnenRelatertTPSPerson.defaultProps = {
   person: null,
   tpsperson: null,
 };
+
 export { AnnenRelatertTPSPerson };
