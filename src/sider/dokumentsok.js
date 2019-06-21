@@ -29,6 +29,7 @@ class DokumentSok extends Component {
   state = {
     searching: false,
   };
+
   sokEtterDokumenter = () => {
     const { inntastetRinasaksnummer, settRinaGyldighet, settRinaSjekket } = this.props;
     if (inntastetRinasaksnummer.length === 0) return;
