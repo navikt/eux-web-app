@@ -113,6 +113,14 @@ class OpprettSak extends Component {
     const { settFnrGyldighet, settFnrSjekket } = this.props;
     settFnrGyldighet(null);
     settFnrSjekket(false);
+    this.setState({
+      landKode: '',
+      institusjonsID: '',
+      institusjoner: [],
+      tema: '',
+      fagsaker: [],
+      saksID: '',
+    });
   };
 
   render() {

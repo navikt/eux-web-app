@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { reset } from 'redux-form';
+
 import PT from 'prop-types';
 
 import * as MPT from '../proptypes/';
@@ -52,8 +54,10 @@ class PersonSok extends Component {
 
   sokEtterPerson = () => {
     const {
-      inntastetFnr, settFnrGyldighet, settFnrSjekket, personSok,
+      inntastetFnr, settFnrGyldighet, settFnrSjekket, personSok, resettSkjema, resettSokStatus,
     } = this.props;
+    resettSkjema();
+    resettSokStatus();
     if (inntastetFnr.length === 0) return;
     personSok(inntastetFnr).then(response => {
       if (response && response.data) {
@@ -94,8 +98,10 @@ class PersonSok extends Component {
 PersonSok.propTypes = {
   personSok: PT.func.isRequired,
   person: MPT.Person,
+  resettSkjema: PT.func.isRequired,
   settFnrGyldighet: PT.func.isRequired,
   settFnrSjekket: PT.func.isRequired,
+  resettSokStatus: PT.func.isRequired,
   inntastetFnr: PT.string,
   status: PT.string,
   errdata: PT.object,
@@ -115,6 +121,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   personSok: fnr => dispatch(PersonOperations.hentPerson(fnr)),
+  resettSkjema: () => dispatch(reset('opprettSak')),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PersonSok);
