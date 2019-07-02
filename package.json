@@ -57,6 +57,7 @@
     "react": "^16.8.6",
     "react-collapse": "^4.0.3",
     "react-dom": "^16.8.6",
+    "react-modal": "^3.8.2",
     "react-motion": "^0.5.2",
     "react-redux": "^6.0.1",
     "react-redux-form-validation": "^1.0.1",

@@ -17,8 +17,10 @@ import { StatusLinje } from '../felles-komponenter/statuslinje';
 import FamilieRelasjonsComponent from '../felles-komponenter/skjema/PersonOgFamilieRelasjoner';
 import PersonSok from './personsok';
 
+
 import './opprettsak.css';
 import { ArbeidsforholdController, BehandlingsTemaer, Fagsaker } from './sak';
+import AvsluttModal from '../komponenter/AvsluttModal';
 
 const uuid = require('uuid/v4');
 
@@ -34,6 +36,7 @@ class OpprettSak extends Component {
     tema: '',
     fagsaker: [],
     saksID: '',
+    visModal: false,
   };
 
   visFagsakerListe = () => (['FB', 'UB'].includes(this.props.valgtSektor) && this.state.tema.length > 0 && this.state.fagsaker.length > 0);
@@ -115,6 +118,14 @@ class OpprettSak extends Component {
     settFnrSjekket(false);
   };
 
+  openModal = () => {
+    this.setState({ visModal: true });
+  };
+
+  closeModal = () => {
+    this.setState({ visModal: false });
+  };
+
   render() {
     const {
       serverInfo,
@@ -126,11 +137,11 @@ class OpprettSak extends Component {
       opprettetSak,
     } = this.props;
 
-    const { institusjoner } = this.state;
+    const { institusjoner, visModal } = this.state;
 
     const { rinasaksnummer, url: responsLenke } = opprettetSak;
     const vedleggRoute = `/vedlegg?rinasaksnummer=${rinasaksnummer}`;
-    const { resettSokStatus } = this;
+    const { resettSokStatus, openModal, closeModal } = this;
 
     const oppgittFnrErValidert = (fnrErGyldig && fnrErSjekket);
     return (
@@ -212,10 +223,14 @@ class OpprettSak extends Component {
               <Nav.Column xs="3">
                 <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)} spinner={['PENDING'].includes(status)} disabled={['PENDING'].includes(status)}>Opprett sak i RINA</Nav.Hovedknapp>
               </Nav.Column>
-              <Nav.Column xs="2">
-                <Nav.Lenke href="/" ariaLabel="Navigasjonslink tilbake til forsiden">
-                  AVSLUTT
-                </Nav.Lenke>
+              <AvsluttModal
+                visModal={visModal}
+                closeModal={closeModal}
+              />
+              <Nav.Column xs="3">
+                <Nav.Flatknapp ariaLabel="Navigasjonslink tilbake til forsiden" onClick={() => openModal()} >
+                  AVSLUTT UTFYLLING
+                </Nav.Flatknapp>
               </Nav.Column>
             </Nav.Row>
             <Nav.Row>
@@ -340,6 +355,6 @@ const validering = values => {
 // mapDispatchToProps = dispatch => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
   form: 'opprettSak',
-  onSubmit: () => {},
+  onSubmit: () => { },
   validate: validering,
 })(OpprettSak));
