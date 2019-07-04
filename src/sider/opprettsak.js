@@ -228,7 +228,7 @@ class OpprettSak extends Component {
                 closeModal={closeModal}
               />
               <Nav.Column xs="3">
-                <Nav.Flatknapp ariaLabel="Navigasjonslink tilbake til forsiden" onClick={() => openModal()} >
+                <Nav.Flatknapp aria-label="Navigasjonslink tilbake til forsiden" onClick={() => openModal()} >
                   AVSLUTT UTFYLLING
                 </Nav.Flatknapp>
               </Nav.Column>

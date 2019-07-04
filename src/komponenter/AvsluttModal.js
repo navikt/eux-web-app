@@ -5,16 +5,16 @@ import { Hovedknapp, Column, Row, Container } from '../utils/navFrontend';
 
 import './avsluttModal.css';
 
-Modal.setAppElement('body');
+Modal.setAppElement('#root');
 
 const avsluttModal = props => {
   const { visModal, closeModal } = props;
   return (
+
     <Modal
       isOpen={visModal}
       onRequestClose={closeModal}
       contentLabel="Bekreft navigering tilbake til forsiden"
-      shouldCloseOnEsc
       shouldCloseOnOverlayClick
       className="Modal"
       overlayClassName="Overlay"
@@ -29,7 +29,8 @@ const avsluttModal = props => {
           </Row>
           <Row>
             <Column xs="6">
-              <a href="/">
+              {/* Hack for å bruke en nav-knapp som lenke */}
+              <a href="/" tabIndex="-1">
                 <Hovedknapp className="modal__knapp">JA, AVBRYT</Hovedknapp>
               </a>
             </Column >
