@@ -223,10 +223,6 @@ class OpprettSak extends Component {
               <Nav.Column xs="3">
                 <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)} spinner={['PENDING'].includes(status)} disabled={['PENDING'].includes(status)}>Opprett sak i RINA</Nav.Hovedknapp>
               </Nav.Column>
-              <AvsluttModal
-                visModal={visModal}
-                closeModal={closeModal}
-              />
               <Nav.Column xs="3">
                 <Nav.Flatknapp aria-label="Navigasjonslink tilbake til forsiden" onClick={() => openModal()} >
                   AVSLUTT UTFYLLING
@@ -241,6 +237,10 @@ class OpprettSak extends Component {
             </Nav.Row>
           </Nav.Container>
         </form>
+        <AvsluttModal
+          visModal={visModal}
+          closeModal={closeModal}
+        />
       </div>
     );
   }

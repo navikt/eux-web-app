@@ -6280,10 +6280,15 @@ nav-frontend-chevron@^1.0.6:
   resolved "https://registry.yarnpkg.com/nav-frontend-chevron/-/nav-frontend-chevron-1.0.7.tgz#fcf496905b4bec5028c885d5cd3ed1c87b81bfa4"
   integrity sha512-0+s7x1NAuVGbNaTER7qM8/GZeDIym0yrX+jnjAICw5Dq+qE3SYiAfjPZQ+S+CC3LhmC5mSERbE0uMx/RXX52Bg==
 
-nav-frontend-core@^4.0.5, nav-frontend-core@^4.0.6:
+nav-frontend-core@^4.0.6:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/nav-frontend-core/-/nav-frontend-core-4.0.6.tgz#a7c493257c47e4ddc09721da721743345d6ccf9d"
   integrity sha512-ZIC0xZU2QeyKrJWAUcVjEySZl3IYAX/judnNvzgUi0vZSlCHuutmzEzdmRlAZjTAfTFkjGHp2s+vMBIB+E7qcw==
+
+nav-frontend-core@^4.0.9:
+  version "4.0.9"
+  resolved "https://registry.yarnpkg.com/nav-frontend-core/-/nav-frontend-core-4.0.9.tgz#27a49de6f434f64989785938cfa809915d101fd9"
+  integrity sha512-dCc2jFSA+LJXtfIP1n4eiEfCGIrirgEt88UMVwRCgT3wOz3kky387e6gFBHhUX8knEczV4ujOp428uip6sEuJw==
 
 nav-frontend-ekspanderbartpanel-style@^0.3.14:
   version "0.3.18"
@@ -6375,30 +6380,30 @@ nav-frontend-lesmerpanel@^0.0.8:
   resolved "https://registry.yarnpkg.com/nav-frontend-lesmerpanel/-/nav-frontend-lesmerpanel-0.0.8.tgz#7db77f46249402ed89fa44158e2f867a30e00445"
   integrity sha512-qnGV8QA0kb+revxjZY0cu52l3o11Hacgzzt1Ucm/bN31fHQ6oFbpJeUO51ztimngOAJafaY5DvXCN7/YF82zZw==
 
-nav-frontend-lukknapp-style@^0.2.16:
-  version "0.2.17"
-  resolved "https://registry.yarnpkg.com/nav-frontend-lukknapp-style/-/nav-frontend-lukknapp-style-0.2.17.tgz#b08cf5fcec8b95d89c8979e5e829e08d172e8300"
-  integrity sha512-rIdfYQl9mzmYEeaCqbD9AoV/G3pRz7l+n7tVV7RoapVVEDWixXDBKtwzRKQ5YLjV3Yi3m6Jb0Cku+5ZTL/CseQ==
+nav-frontend-lukknapp-style@^0.2.19:
+  version "0.2.19"
+  resolved "https://registry.yarnpkg.com/nav-frontend-lukknapp-style/-/nav-frontend-lukknapp-style-0.2.19.tgz#ceb1603ad0abea017a8d7396b11f07a5bdc8e00c"
+  integrity sha512-5en3QBgDOqkDOEzaofxor5AbnnAlWStm5ZXO+/sS0ReF94TiHOo9kHCnDjQl7o/PYisKMwv909HN5RswLrpdLA==
 
-nav-frontend-lukknapp@^1.0.16:
-  version "1.0.18"
-  resolved "https://registry.yarnpkg.com/nav-frontend-lukknapp/-/nav-frontend-lukknapp-1.0.18.tgz#756f453ccf5cfaf083f0ea58ee8c479f8b291bb6"
-  integrity sha512-FxdMODQdSHNQlbwm10TjS98sSqMD11OE+U8Yb3jysgN9jbuPItKeK8GAm690VqlsZ6yPro/taVY8+4yfuDpMQw==
+nav-frontend-lukknapp@^1.0.21:
+  version "1.0.21"
+  resolved "https://registry.yarnpkg.com/nav-frontend-lukknapp/-/nav-frontend-lukknapp-1.0.21.tgz#22cdaca6fa10b18321f458a3904a2c893edd1c06"
+  integrity sha512-QLjZumXqWI0AhEsOxSaH0A+fUBv1xb2CnKAcpBkR37h86jxgT/tI1ksZplortn04VDrUBt6RoZEXf2I5XbapZA==
 
-nav-frontend-modal-style@^0.3.21:
-  version "0.3.27"
-  resolved "https://registry.yarnpkg.com/nav-frontend-modal-style/-/nav-frontend-modal-style-0.3.27.tgz#c6c34d99825c09369f4952887bf5a88d1750c7a7"
-  integrity sha512-4lZaxxiVEvsfJ7MXOcSakFW+plrtbFCAn2QJxhoWXdcMs0n4nY0blKjXLlvnpDIA8HYmhVf2Fn4GBVrC6SDh2Q==
+nav-frontend-modal-style@^0.3.29:
+  version "0.3.29"
+  resolved "https://registry.yarnpkg.com/nav-frontend-modal-style/-/nav-frontend-modal-style-0.3.29.tgz#d3366a404e3004f607d10b7bac3e7d3ddd027390"
+  integrity sha512-1jPSizq1VOBr1b6/kA9Ki+Ke6hChbkfPKtlRS7a/YRuc0GtIDYiOMJhpqabCJh9drq9Fz+x0//7C9zxze/+EDA==
 
-nav-frontend-modal@^1.0.17:
-  version "1.0.25"
-  resolved "https://registry.yarnpkg.com/nav-frontend-modal/-/nav-frontend-modal-1.0.25.tgz#c70bcd87ae8d48f4c360da843eaf6376fa544949"
-  integrity sha512-wO//LycUOmWoyBVglExZIftIGyqg5B/2ViwAlky5qPmrwLoCMUxN5LUCXqq8CCkYWPKH1VfsETVeKFz/3JXHTA==
+nav-frontend-modal@^1.0.28:
+  version "1.0.28"
+  resolved "https://registry.yarnpkg.com/nav-frontend-modal/-/nav-frontend-modal-1.0.28.tgz#de8656922ec346c02407d4f26ad01755640a4966"
+  integrity sha512-1WuwApv8sd/DBtRvikBmshoK5uxyYbtEu3I3KxXP8IzqkKS46ckdoo5U3AOmcGnQvspgYvUarKycA3gPEjWEFg==
 
-nav-frontend-paneler-style@^0.3.11:
-  version "0.3.13"
-  resolved "https://registry.yarnpkg.com/nav-frontend-paneler-style/-/nav-frontend-paneler-style-0.3.13.tgz#e149df51b2aff32f44e6f42ded5f218b35025c63"
-  integrity sha512-3M+q3As52QezzIqdcVsithkXZKDIK1eLFUeOyhv7hUWzWgbbWMGatAHttcefCeKfyymRigFDjUORylvccG1jPA==
+nav-frontend-paneler-style@^0.3.15:
+  version "0.3.15"
+  resolved "https://registry.yarnpkg.com/nav-frontend-paneler-style/-/nav-frontend-paneler-style-0.3.15.tgz#b9dee564e601c1d149fa4e3ba19e97aa3f9454c4"
+  integrity sha512-NbslWxU2XHun7Xp0aR2G6rkrd69dNDTScQhOck6pKFA3rBAV/mdf/gbOAdIWQl+mq4M/V1ElYCZ7C/5F193Dtw==
 
 nav-frontend-paneler@^1.0.10:
   version "1.0.13"

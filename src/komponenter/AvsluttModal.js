@@ -1,7 +1,6 @@
 import React from 'react';
-import Modal from 'react-modal';
 import PT from 'prop-types';
-import { Hovedknapp, Column, Row, Container } from '../utils/navFrontend';
+import { Hovedknapp, Column, Row, Container, Modal, Undertittel, Normaltekst } from '../utils/navFrontend';
 
 import './avsluttModal.css';
 
@@ -10,22 +9,19 @@ Modal.setAppElement('#root');
 const avsluttModal = props => {
   const { visModal, closeModal } = props;
   return (
-
     <Modal
       isOpen={visModal}
-      onRequestClose={closeModal}
-      contentLabel="Bekreft navigering tilbake til forsiden"
-      shouldCloseOnOverlayClick
-      className="Modal"
-      overlayClassName="Overlay"
+      onRequestClose={() => closeModal()}
+      closeButton={false}
+      contentLabel="Bekreft navigasjon tilbake til forsiden"
     >
       <div className="modal__innhold">
-        <Container fluid>
+        <Container align="center" fluid>
           <Row className="modal__overskrift">
-            <h3> Er du sikker på at du vil avbryte? </h3>
+            <Undertittel> Er du sikker på at du vil avbryte? </Undertittel>
           </Row >
           <Row className="modal__tekst">
-            Informasjonen du har fyllt inn hittil vil ikke bli lagret.
+            <Normaltekst>Informasjonen du har fyllt inn hittil vil ikke bli lagret.</Normaltekst>
           </Row>
           <Row>
             <Column xs="6">
