@@ -85,8 +85,9 @@ class AnnenRelatertTPSPerson extends Component {
 
   render() {
     const { filtrerteFamilieRelasjoner, valgtBrukerFnr } = this.props;
-    const { leggTilPersonOgRolle, sokEtterFnr, oppdaterFamilierelajon } = this;
-
+    const {
+      leggTilPersonOgRolle, sokEtterFnr, oppdaterFamilierelajon, updateSok, feilmeldingerOgInformasjon,
+    } = this;
     const {
       person, rolle, tpsperson, knappDisabled, notFound400, sok,
     } = this.state;
@@ -95,25 +96,28 @@ class AnnenRelatertTPSPerson extends Component {
       <div>
         <div className="annenpersonsok">
           <div className="annenpersonsok__skjema">
-            <Nav.Input className="" label="" placeholder="Fødsels eller dnr" value={this.state.sok} onChange={this.updateSok} />
+            <Nav.Input className="" label="" placeholder="Fødsels eller dnr" value={this.state.sok} onChange={updateSok} />
             {valgtBrukerFnr !== sok ?
               <Nav.Knapp className="annenpersonsok__knapp" onClick={sokEtterFnr}>Søk</Nav.Knapp>
               :
               <Nav.Knapp disabled className="annenpersonsok__knapp" onClick={sokEtterFnr}>Søk</Nav.Knapp>}
           </div>
         </div>
-        {this.feilmeldingerOgInformasjon(valgtBrukerFnr, tpsperson, notFound400, sok)}
-        {person && <PersonSokResultat
-          person={person}
-          rolle={rolle}
-          knappDisabled={knappDisabled}
-          leggTilHandler={leggTilPersonOgRolle}
-          familierelasjonKodeverk={filtrerteFamilieRelasjoner()}
-          oppdaterFamilierelajon={oppdaterFamilierelajon} />}
-      </div>
+        {feilmeldingerOgInformasjon(valgtBrukerFnr, tpsperson, notFound400, sok)}
+        {
+          person && <PersonSokResultat
+            person={person}
+            rolle={rolle}
+            knappDisabled={knappDisabled}
+            leggTilHandler={leggTilPersonOgRolle}
+            familierelasjonKodeverk={filtrerteFamilieRelasjoner()}
+            oppdaterFamilierelajon={oppdaterFamilierelajon} />
+        }
+      </div >
     );
   }
 }
+
 AnnenRelatertTPSPerson.propTypes = {
   tpsrelasjoner: PT.any.isRequired,
   tpsperson: PT.object,
@@ -122,8 +126,10 @@ AnnenRelatertTPSPerson.propTypes = {
   leggTilTPSrelasjon: PT.func.isRequired,
   valgtBrukerFnr: PT.string.isRequired,
 };
+
 AnnenRelatertTPSPerson.defaultProps = {
   person: null,
   tpsperson: null,
 };
+
 export { AnnenRelatertTPSPerson };

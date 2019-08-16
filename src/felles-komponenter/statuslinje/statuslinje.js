@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PT from 'prop-types';
 import * as Nav from '../../utils/navFrontend';
 
@@ -11,11 +12,15 @@ const undertittelFraStatus = status => {
   }
 };
 
-const StatusLinje = ({ status, tittel, url }) => {
+const StatusLinje = ({
+  status, tittel, rinaURL, routePath = null,
+}) => {
   if (['NOT_STARTED', 'PENDING'].includes(status)) { return null; }
+
   const type = status === 'OK' ? 'suksess' : 'stopp';
-  const urlLenke = url ? <Nav.Lenke href={url} target="_blank" className="vedlegg__lenke">Gå direkte til Rina.</Nav.Lenke> : null;
-  const statusTekst = status === 'OK' ? <div>{`${tittel} er opprettet.`} {urlLenke}</div> : `${tittel} ${undertittelFraStatus(status)}`;
+  const urlLenke = rinaURL ? <Nav.Lenke href={rinaURL} target="_blank" className="vedlegg__lenke">Gå direkte til Rina.</Nav.Lenke> : null;
+  const messageOK = routePath ? <Link to={routePath}>{tittel}</Link> : <span>{tittel}</span>;
+  const statusTekst = status === 'OK' ? <div>{messageOK} er opprettet. &nbsp; {urlLenke}</div> : `${tittel} ${undertittelFraStatus(status)}`;
 
   return (
     <div className="statuslinje">
@@ -27,11 +32,13 @@ const StatusLinje = ({ status, tittel, url }) => {
 StatusLinje.propTypes = {
   status: PT.string.isRequired,
   tittel: PT.string.isRequired,
-  url: PT.string,
+  rinaURL: PT.string,
+  routePath: PT.string,
 };
 
 StatusLinje.defaultProps = {
-  url: '',
+  rinaURL: '',
+  routePath: null,
 };
 
 export default StatusLinje;

@@ -11,10 +11,16 @@ import * as MPT from '../proptypes';
 
 import { KodeverkSelectors } from '../ducks/kodeverk';
 import { RinavedleggOperations, RinavedleggSelectors } from '../ducks/rinavedlegg';
-
+import { getParam } from '../utils/queryString';
 import './vedlegg.css';
 
 class Vedlegg extends Component {
+  componentDidMount() {
+    const { location, oppdaterRinaSaksnummer } = this.props;
+    const rinasaksnummer = getParam(location, 'rinasaksnummer');
+    oppdaterRinaSaksnummer(rinasaksnummer);
+  }
+
   overrideDefaultSubmit = event => {
     event.preventDefault();
   };
@@ -63,18 +69,21 @@ class Vedlegg extends Component {
 }
 
 Vedlegg.propTypes = {
-  handleSubmit: PT.func.isRequired,
-  sendSkjema: PT.func.isRequired,
+  location: PT.object.isRequired,
   sedtyper: PT.arrayOf(MPT.Kodeverk),
-  vedleggStatus: PT.string.isRequired,
   rinaNrErGyldig: PT.bool,
   rinaNrErSjekket: PT.bool,
   vedlegg: PT.object,
   rinasaksnummer: PT.string,
   inntastetRinasaksnummer: PT.string,
   rinadokumentID: PT.string,
+  // Funcs
   settRinaGyldighet: PT.func.isRequired,
   settRinaSjekket: PT.func.isRequired,
+  vedleggStatus: PT.string.isRequired,
+  handleSubmit: PT.func.isRequired,
+  sendSkjema: PT.func.isRequired,
+  oppdaterRinaSaksnummer: PT.func.isRequired,
 };
 
 Vedlegg.defaultProps = {
@@ -101,6 +110,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   sendSkjema: data => dispatch(RinavedleggOperations.sendVedlegg(data)),
+  oppdaterRinaSaksnummer: rinasaksnummer => dispatch(change('vedlegg', 'rinasaksnummer', rinasaksnummer)),
   settRinaGyldighet: erGyldig => dispatch(change('vedlegg', 'rinaNrErGyldig', erGyldig)),
   settRinaSjekket: erSjekket => dispatch(change('vedlegg', 'rinaNrErSjekket', erSjekket)),
 });
