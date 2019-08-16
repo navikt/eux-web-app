@@ -9,7 +9,7 @@ import PersonSokResultat from '../../../komponenter/PersonSokResultat';
 import './annenperson.css';
 
 const defaultState = {
-  sok: '', person: null, tpsperson: null, rolle: '', knappDisabled: true, notFound400: false,
+  sok: '', feiletSok: '', person: null, tpsperson: null, rolle: '', knappDisabled: true, notFound400: false,
 };
 
 class AnnenRelatertTPSPerson extends Component {
@@ -33,7 +33,7 @@ class AnnenRelatertTPSPerson extends Component {
         });
       }
     } catch (e) {
-      this.setState({ notFound400: true });
+      this.setState({ notFound400: true, feiletSok: sok });
     }
   };
 
@@ -60,11 +60,11 @@ class AnnenRelatertTPSPerson extends Component {
   /**
    * Returnerer JSX-elementer med informasjon og feilmeldinger basert på ymse kriterie
    */
-  feilmeldingerOgInformasjon = (valgtBrukerFnr, tpsperson, notFound400, sok) => {
+  feilmeldingerOgInformasjon = (valgtBrukerFnr, tpsperson, notFound400, sok, feiletSok) => {
     if (valgtBrukerFnr === sok) {
       return (
         <Nav.Column xs="3">
-          <Nav.AlertStripe type="info">Fnr {sok} tilhører bruker</Nav.AlertStripe>
+          <Nav.AlertStripe type="info">FNR {sok} tilhører bruker</Nav.AlertStripe>
         </Nav.Column>
       );
     } else if (tpsperson) {
@@ -76,20 +76,19 @@ class AnnenRelatertTPSPerson extends Component {
     } else if (notFound400) {
       return (
         <Nav.Column xs="3">
-          <Nav.AlertStripe type="stopp">Ingen person med fnr {sok} funnet</Nav.AlertStripe>
+          <Nav.AlertStripe type="stopp">Ingen person med FNR {feiletSok} funnet</Nav.AlertStripe>
         </Nav.Column>
       );
     }
     return null;
   }
-
   render() {
     const { filtrerteFamilieRelasjoner, valgtBrukerFnr } = this.props;
     const {
       leggTilPersonOgRolle, sokEtterFnr, oppdaterFamilierelajon, updateSok, feilmeldingerOgInformasjon,
     } = this;
     const {
-      person, rolle, tpsperson, knappDisabled, notFound400, sok,
+      person, rolle, tpsperson, knappDisabled, notFound400, sok, feiletSok,
     } = this.state;
 
     return (
@@ -103,7 +102,7 @@ class AnnenRelatertTPSPerson extends Component {
               <Nav.Knapp disabled className="annenpersonsok__knapp" onClick={sokEtterFnr}>Søk</Nav.Knapp>}
           </div>
         </div>
-        {feilmeldingerOgInformasjon(valgtBrukerFnr, tpsperson, notFound400, sok)}
+        {feilmeldingerOgInformasjon(valgtBrukerFnr, tpsperson, notFound400, sok, feiletSok)}
         {
           person && <PersonSokResultat
             person={person}
