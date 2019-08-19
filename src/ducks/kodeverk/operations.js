@@ -6,11 +6,11 @@
  * når det asynkrone kallet, feks fra API'et er ferdigkjørt.
  *
  */
+import * as EKV from 'eessi-kodeverk';
 
 import { doThenDispatch } from '../../services/utils';
 import * as Api from '../../services/api';
 import * as Types from './types';
-import kodeverk from '../../kodeverk.json';
 
 // eslint-disable-next-line import/prefer-default-export
 export function hent() {
@@ -24,6 +24,6 @@ export function hent() {
 export function preload() {
   return {
     type: Types.PRELOAD,
-    data: kodeverk,
+    data: { ...EKV.KTObjects, ...EKV.Kodemaps },
   };
 }
