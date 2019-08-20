@@ -2863,6 +2863,11 @@ ee-first@1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
+eessi-kodeverk@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/eessi-kodeverk/-/eessi-kodeverk-0.1.0.tgz#b7d54681a96ed3ac1365da8b349fabd8270f84ab"
+  integrity sha512-gXl92B4tQPixxm3UciKn6wSOgkX0FjvVCUWR6439J8PZCragt4hWfh+CdL69QmlLs9hccrUGg6sAuXLAOJtaAw==
+
 electron-to-chromium@^1.2.7, electron-to-chromium@^1.3.30, electron-to-chromium@^1.3.47:
   version "1.3.113"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.113.tgz#b1ccf619df7295aea17bc6951dc689632629e4a9"
