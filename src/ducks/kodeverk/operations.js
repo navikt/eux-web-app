@@ -24,6 +24,6 @@ export function hent() {
 export function preload() {
   return {
     type: Types.PRELOAD,
-    data: { ...EKV.KTObjects, ...EKV.Kodemaps },
+    data: { ...EKV.KTObjects, kodemaps: { ...EKV.Kodemaps } }, // kodemaps: { BUC2SEDS, SEKTOR2FAGSAK, SEKTOR2BUC }
   };
 }
