@@ -74,7 +74,7 @@ node {
     zipFile = "${application}-${buildVersion}.zip"
     sh "zip -r ${zipFile} build/*"
 
-    if (env.BRANCH_NAME == "develop") {
+    if (env.BRANCH_NAME == "master") {
       configFileProvider(
         [configFile(fileId: 'navMavenSettings', variable: 'MAVEN_SETTINGS')]) {
         sh """
