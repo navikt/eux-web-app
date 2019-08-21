@@ -124,7 +124,7 @@ class FamilieRelasjonController extends Component {
 
   render() {
     const {
-      familierelasjonKodeverk, kjoennKodeverk, landKodeverk, fields, tpsrelasjoner,
+      familierelasjonKodeverk, kjoennKodeverk, landKodeverk, fields, tpsrelasjoner, person,
     } = this.props;
     const valgteRelasjoner = fields.getAll();
     const gjenstaendeRelasjonerFraTPS = tpsrelasjoner.reduce((samling, enkeltTPSRelasjon) => {
@@ -188,6 +188,7 @@ class FamilieRelasjonController extends Component {
           tpsrelasjoner={tpsrelasjoner}
           leggTilTPSrelasjon={this.leggTilTPSrelasjon}
           filtrerteFamilieRelasjoner={this.filtrerRoller}
+          valgtBrukerFnr={person.fnr}
         />}
       </div>
     );
@@ -195,6 +196,7 @@ class FamilieRelasjonController extends Component {
 }
 
 FamilieRelasjonController.propTypes = {
+  person: MPT.Person,
   tpsrelasjoner: PT.arrayOf(MPT.FamilieRelasjon),
   familierelasjonKodeverk: PT.arrayOf(MPT.Kodeverk),
   kjoennKodeverk: PT.arrayOf(MPT.Kodeverk),
@@ -202,6 +204,7 @@ FamilieRelasjonController.propTypes = {
   landKodeverk: PT.arrayOf(MPT.Kodeverk),
 };
 FamilieRelasjonController.defaultProps = {
+  person: {},
   tpsrelasjoner: [],
   familierelasjonKodeverk: [],
   kjoennKodeverk: [],
@@ -209,6 +212,7 @@ FamilieRelasjonController.defaultProps = {
 };
 
 const mapStateToProps = state => ({
+  person: PersonSelectors.personSelector(state),
   tpsrelasjoner: PersonSelectors.familieRelasjonerSelector(state),
   familierelasjonKodeverk: KodeverkSelectors.familierelasjonerSelector(state),
   kjoennKodeverk: KodeverkSelectors.kjoennSelector(state),
