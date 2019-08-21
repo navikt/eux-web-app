@@ -22,7 +22,7 @@ class AnnenRelatertTPSPerson extends Component {
     const { tpsrelasjoner } = this.props;
     try {
       const response = await API.Personer.hentPerson(sok);
-      // Fjern relasjoner array, NOTE! det er kun relqasjoner som har rolle.
+      // Fjern relasjoner array, NOTE! det er kun relasjoner som har rolle.
       const person = _.omit(response, 'relasjoner');
       const tpsperson = tpsrelasjoner.find(elem => elem.fnr === person.fnr);
       if (!tpsperson) {
@@ -81,7 +81,8 @@ class AnnenRelatertTPSPerson extends Component {
       );
     }
     return null;
-  }
+  };
+
   render() {
     const { filtrerteFamilieRelasjoner, valgtBrukerFnr } = this.props;
     const {
