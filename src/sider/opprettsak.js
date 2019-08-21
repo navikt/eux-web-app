@@ -3,16 +3,17 @@ import { connect } from 'react-redux';
 import { reduxForm, formValueSelector, clearAsyncError, stopSubmit, change } from 'redux-form';
 import PT from 'prop-types';
 
+import * as EKV from 'eessi-kodeverk';
 import * as Api from '../services/api';
 import * as MPT from '../proptypes/';
 import * as Nav from '../utils/navFrontend';
 import * as Skjema from '../felles-komponenter/skjema';
 
+import { FagsakSelectors } from '../ducks/fagsak';
 import { KodeverkSelectors } from '../ducks/kodeverk';
 import { LandkoderOperations, LandkoderSelectors } from '../ducks/landkoder';
 import { RinasakOperations, RinasakSelectors } from '../ducks/rinasak';
-import { FagsakSelectors } from '../ducks/fagsak';
-
+import { ServerinfoSelectors } from '../ducks/serverinfo';
 import { StatusLinje } from '../felles-komponenter/statuslinje';
 import FamilieRelasjonsComponent from '../felles-komponenter/skjema/PersonOgFamilieRelasjoner';
 import PersonSok from './personsok';
@@ -36,10 +37,10 @@ class OpprettSak extends Component {
     saksID: '',
   };
 
-  visFagsakerListe = () => (['FB', 'UB'].includes(this.props.valgtSektor) && this.state.tema.length > 0 && this.state.fagsaker.length > 0);
+  visFagsakerListe = () => ([EKV.Koder.sektor.FB, EKV.Koder.sektor.UB].includes(this.props.valgtSektor) && this.state.tema.length > 0 && this.state.fagsaker.length > 0);
   visArbeidsforhold = () => {
     const { valgtSektor, buctype, sedtype } = this.props;
-    return ['FB'].includes(valgtSektor) && ['FB_BUC_01'].includes(buctype) && sedtype;
+    return EKV.Koder.sektor.FB === valgtSektor && EKV.Koder.buctyper.family.FB_BUC_01 === buctype && sedtype;
   };
   oppdaterBucKode = async event => {
     const { settBuctype, hentLandkoder } = this.props;
@@ -117,6 +118,7 @@ class OpprettSak extends Component {
 
   render() {
     const {
+      serverInfo,
       landkoder, sedtyper, sektor, buctyper, temar,
       inntastetFnr, status, errdata,
       valgtSektor,
@@ -128,11 +130,10 @@ class OpprettSak extends Component {
     const { institusjoner } = this.state;
 
     const { rinasaksnummer, url: responsLenke } = opprettetSak;
-
+    const vedleggRoute = `/vedlegg?rinasaksnummer=${rinasaksnummer}`;
     const { resettSokStatus } = this;
 
     const oppgittFnrErValidert = (fnrErGyldig && fnrErSjekket);
-
     return (
       <div className="opprettsak">
         <Nav.Systemtittel>Opprett Sak</Nav.Systemtittel>
@@ -192,6 +193,11 @@ class OpprettSak extends Component {
                 <Nav.Column xs="2">
                   <Nav.Knapp style={btnStyle} onClick={this.visFagsaker} disabled={this.state.tema.length === 0}>Vis saker</Nav.Knapp>
                 </Nav.Column>
+                <Nav.Column xs="2">
+                  <Nav.Lenke href={serverInfo.gosysURL} ariaLabel="Opprett ny sak i GOSYS" target="_blank">
+                    Opprett ny sak i GOSYS
+                  </Nav.Lenke>
+                </Nav.Column>
               </Nav.Row>
             )}
 
@@ -215,7 +221,7 @@ class OpprettSak extends Component {
             </Nav.Row>
             <Nav.Row>
               <Nav.Column xs="6">
-                <StatusLinje status={status} url={responsLenke} tittel={`Saksnummer: ${rinasaksnummer}`} />
+                <StatusLinje status={status} tittel={`Saksnummer: ${rinasaksnummer}`} rinaURL={responsLenke} routePath={vedleggRoute} />
                 {errdata && errdata.status && <p>{errdata.message}</p>}
               </Nav.Column>
             </Nav.Row>
@@ -226,6 +232,7 @@ class OpprettSak extends Component {
   }
 }
 OpprettSak.propTypes = {
+  serverInfo: MPT.ServerInfo.isRequired,
   validerFnrRiktig: PT.func.isRequired,
   validerFnrFeil: PT.func.isRequired,
   handleSubmit: PT.func.isRequired,
@@ -282,6 +289,7 @@ const mapStateToProps = state => ({
       arbeidsforhold: [],
     },
   },
+  serverInfo: ServerinfoSelectors.ServerinfoSelector(state),
   landkoder: LandkoderSelectors.landkoderSelector(state),
   sektor: KodeverkSelectors.sektorSelector(state),
   fnrErGyldig: skjemaSelector(state, 'fnrErGyldig'),

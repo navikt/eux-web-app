@@ -106,24 +106,27 @@ class FamilieRelasjonController extends Component {
 
   knappeTekstUtland = () => (this.state.ui.visRelatertUtland ? 'Skjul Skjema' : 'Vis skjema');
 
+  /**
+   * I nedtrekslisten for familierelasjoner filtrerers ut mulige relasjoner basert på personer som allerede er lagt til.
+   */
   filtrerRoller = () => {
     const { familierelasjonKodeverk, fields } = this.props;
     const valgteRelasjoner = fields.getAll();
+    const ekskluderteVerdier = [];
     if (valgteRelasjoner.length > 0) {
-      const ektefelle = valgteRelasjoner.find(kt => kt.rolle === 'EKTE');
-      if (ektefelle) {
-        return familierelasjonKodeverk.filter(kt => ['EKTE', 'SAMB', 'REPA'].includes(kt.kode) === false);
-      }
+      // Hvis ektefelle allerede er lagt til, fjern mulighet for andre typer samlivspartnere
+      if (valgteRelasjoner.find(kt => kt.rolle === 'EKTE')) ekskluderteVerdier.push('EKTE', 'SAMB', 'REPA');
+      // Det skal kun være mulig å legge til en relasjon av typen annen
+      if (valgteRelasjoner.find(kt => kt.rolle === 'ANNEN')) ekskluderteVerdier.push('ANNEN');
     }
-    return [...familierelasjonKodeverk];
+    return familierelasjonKodeverk.filter(kt => ekskluderteVerdier.includes(kt.kode) === false);
   };
 
   render() {
     const {
-      familierelasjonKodeverk, kjoennKodeverk, landKodeverk, fields, tpsrelasjoner,
+      familierelasjonKodeverk, kjoennKodeverk, landKodeverk, fields, tpsrelasjoner, person,
     } = this.props;
     const valgteRelasjoner = fields.getAll();
-
     const gjenstaendeRelasjonerFraTPS = tpsrelasjoner.reduce((samling, enkeltTPSRelasjon) => {
       const erAlleredeLagtTil = valgteRelasjoner.some(r => r.fnr === enkeltTPSRelasjon.fnr);
       return (erAlleredeLagtTil ?
@@ -147,9 +150,9 @@ class FamilieRelasjonController extends Component {
         }
 
         <Nav.Fieldset className="familierelasjoner__utland" legend="Familierelasjoner registrert i TPS">
-          { gjenstaendeRelasjonerFraTPS }
-          { (tpsrelasjoner.length > 0 && gjenstaendeRelasjonerFraTPS.length === 0) ? <Nav.Panel>(Du har lagt til alle som fantes i listen.)</Nav.Panel> : null }
-          { !tpsrelasjoner && <Nav.Panel>(Ingen familierelasjoner funnet i TPS)</Nav.Panel> }
+          {gjenstaendeRelasjonerFraTPS}
+          {(tpsrelasjoner.length > 0 && gjenstaendeRelasjonerFraTPS.length === 0) ? <Nav.Panel>(Du har lagt til alle som fantes i listen.)</Nav.Panel> : null}
+          {!tpsrelasjoner && <Nav.Panel>(Ingen familierelasjoner funnet i TPS)</Nav.Panel>}
         </Nav.Fieldset>
         <Nav.Row>
           <Nav.Column xs="3">
@@ -159,7 +162,7 @@ class FamilieRelasjonController extends Component {
             <Nav.Knapp onClick={this.visSkulRelatertUtland} >{this.knappeTekstUtland()}</Nav.Knapp>
           </Nav.Column>
         </Nav.Row>
-        { this.state.ui.visRelatertUtland && <FamilieRelasjonUtland
+        {this.state.ui.visRelatertUtland && <FamilieRelasjonUtland
           spesialRelasjon={this.state.spesialRelasjon}
           oppdaterState={this.oppdaterState}
           kjoennKodeverk={kjoennKodeverk}
@@ -180,11 +183,12 @@ class FamilieRelasjonController extends Component {
             <Nav.Knapp onClick={this.visSkjulRelatertTPS} >{this.knappeTekstRelatertTPS()}</Nav.Knapp>
           </Nav.Column>
         </Nav.Row>
-        { this.state.ui.visRelatertTPS && <AnnenRelatertTPSPerson
+        {this.state.ui.visRelatertTPS && <AnnenRelatertTPSPerson
           valgteRelasjoner={valgteRelasjoner}
           tpsrelasjoner={tpsrelasjoner}
           leggTilTPSrelasjon={this.leggTilTPSrelasjon}
           filtrerteFamilieRelasjoner={this.filtrerRoller}
+          valgtBrukerFnr={person.fnr}
         />}
       </div>
     );
@@ -192,6 +196,7 @@ class FamilieRelasjonController extends Component {
 }
 
 FamilieRelasjonController.propTypes = {
+  person: MPT.Person,
   tpsrelasjoner: PT.arrayOf(MPT.FamilieRelasjon),
   familierelasjonKodeverk: PT.arrayOf(MPT.Kodeverk),
   kjoennKodeverk: PT.arrayOf(MPT.Kodeverk),
@@ -199,6 +204,7 @@ FamilieRelasjonController.propTypes = {
   landKodeverk: PT.arrayOf(MPT.Kodeverk),
 };
 FamilieRelasjonController.defaultProps = {
+  person: {},
   tpsrelasjoner: [],
   familierelasjonKodeverk: [],
   kjoennKodeverk: [],
@@ -206,6 +212,7 @@ FamilieRelasjonController.defaultProps = {
 };
 
 const mapStateToProps = state => ({
+  person: PersonSelectors.personSelector(state),
   tpsrelasjoner: PersonSelectors.familieRelasjonerSelector(state),
   familierelasjonKodeverk: KodeverkSelectors.familierelasjonerSelector(state),
   kjoennKodeverk: KodeverkSelectors.kjoennSelector(state),
