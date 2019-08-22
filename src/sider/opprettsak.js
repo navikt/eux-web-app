@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { reduxForm, formValueSelector, clearAsyncError, stopSubmit, change } from 'redux-form';
 import PT from 'prop-types';
 
+import * as EKV from 'eessi-kodeverk';
 import * as Api from '../services/api';
 import * as MPT from '../proptypes/';
 import * as Nav from '../utils/navFrontend';
@@ -39,10 +40,10 @@ class OpprettSak extends Component {
     visModal: false,
   };
 
-  visFagsakerListe = () => (['FB', 'UB'].includes(this.props.valgtSektor) && this.state.tema.length > 0 && this.state.fagsaker.length > 0);
+  visFagsakerListe = () => ([EKV.Koder.sektor.FB, EKV.Koder.sektor.UB].includes(this.props.valgtSektor) && this.state.tema.length > 0 && this.state.fagsaker.length > 0);
   visArbeidsforhold = () => {
     const { valgtSektor, buctype, sedtype } = this.props;
-    return ['FB'].includes(valgtSektor) && ['FB_BUC_01'].includes(buctype) && sedtype;
+    return EKV.Koder.sektor.FB === valgtSektor && EKV.Koder.buctyper.family.FB_BUC_01 === buctype && sedtype;
   };
   oppdaterBucKode = async event => {
     const { settBuctype, hentLandkoder } = this.props;
