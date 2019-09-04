@@ -157,7 +157,7 @@ class OpprettSak extends Component {
             <Nav.Row className="">
               <Nav.Column xs="3">
                 <Skjema.Select id="id-sektor" feltNavn="sektor" label="Fagområde" bredde="xxl" disabled={!oppgittFnrErValidert}>
-                  {sektor && sektor.concat().sort(sortBy('term')).filter(elem => ['FB', 'UB'].includes(elem.kode)).map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+                  {sektor && sektor.concat().sort(sortBy('term')).map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                 </Skjema.Select>
               </Nav.Column>
             </Nav.Row>
