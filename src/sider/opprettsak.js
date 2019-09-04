@@ -27,6 +27,11 @@ const btnStyle = {
   margin: '1.85em 0 0 0',
 };
 
+const sortBy = key => (a, b) => {
+  if (a[key] > b[key]) return 1;
+  return ((b[key] > a[key]) ? -1 : 0);
+};
+
 class OpprettSak extends Component {
   state = {
     landKode: '',
@@ -152,14 +157,14 @@ class OpprettSak extends Component {
             <Nav.Row className="">
               <Nav.Column xs="3">
                 <Skjema.Select id="id-sektor" feltNavn="sektor" label="Fagområde" bredde="xxl" disabled={!oppgittFnrErValidert}>
-                  {sektor && sektor.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+                  {sektor && sektor.concat().sort(sortBy('term')).map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                 </Skjema.Select>
               </Nav.Column>
             </Nav.Row>
             <Nav.Row className="">
               <Nav.Column xs="3">
                 <Skjema.Select id="id-buctype" feltNavn="buctype" label="BUC" bredde="xxl" disabled={!oppgittFnrErValidert} onChange={this.oppdaterBucKode}>
-                  {buctyper && buctyper.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
+                  {buctyper && buctyper.concat().sort(sortBy('kode')).map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
                 </Skjema.Select>
               </Nav.Column>
               <Nav.Column xs="3">
@@ -172,13 +177,13 @@ class OpprettSak extends Component {
               <Nav.Column xs="3">
                 <Nav.Select id="id-landkode" bredde="xxl" disabled={!oppgittFnrErValidert} value={this.state.landKode} onChange={this.oppdaterLandKode} label="Land">
                   <option value="0" />
-                  {landkoder && landkoder.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+                  {landkoder && landkoder.concat().sort(sortBy('term')).map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                 </Nav.Select>
               </Nav.Column>
               <Nav.Column xs="3">
                 <Nav.Select id="id-institusjon" bredde="xxl" disabled={!oppgittFnrErValidert} value={this.state.institusjonsID} onChange={this.oppdaterInstitusjonKode} label="Mottaker institusjon">
                   <option value="0" />
-                  {institusjoner && institusjoner.map(element => <option value={element.institusjonsID} key={uuid()}>{element.navn}</option>)}
+                  {institusjoner && institusjoner.concat().sort(sortBy('term')).map(element => <option value={element.institusjonsID} key={uuid()}>{element.navn}</option>)}
                 </Nav.Select>
               </Nav.Column>
             </Nav.Row>
@@ -255,7 +260,15 @@ OpprettSak.propTypes = {
   valgtSektor: PT.string,
   status: PT.string,
   errdata: PT.object,
-  valgteFamilieRelasjoner: PT.array,
+  valgteFamilieRelasjoner: PT.arrayOf(PT.shape({
+    rolle: PT.string,
+    fnr: PT.string,
+    fdato: PT.string,
+    fornavn: PT.string,
+    etternavn: PT.string,
+    kjoenn: PT.string,
+    nasjonalitet: PT.string,
+  })),
   opprettetSak: PT.shape({
     rinasaksnummer: PT.string,
     url: PT.string,
