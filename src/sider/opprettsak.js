@@ -42,7 +42,7 @@ class OpprettSak extends Component {
     saksID: '',
   };
 
-  visFagsakerListe = () => ([EKV.Koder.sektor.FB, EKV.Koder.sektor.UB].includes(this.props.valgtSektor) && this.state.tema.length > 0 && this.state.fagsaker.length > 0);
+  visFagsakerListe = () => ([EKV.Koder.sektor.FB, EKV.Koder.sektor.UB, EKV.Koder.sektor.AW].includes(this.props.valgtSektor) && this.state.tema.length > 0 && this.state.fagsaker.length > 0);
   visArbeidsforhold = () => {
     const { valgtSektor, buctype, sedtype } = this.props;
     return EKV.Koder.sektor.FB === valgtSektor && EKV.Koder.buctyper.family.FB_BUC_01 === buctype && sedtype;
@@ -190,7 +190,7 @@ class OpprettSak extends Component {
             <Nav.Row className="">
               {valgtSektor === 'FB' && <FamilieRelasjonsComponent />}
             </Nav.Row>
-            {['FB', 'UB'].includes(valgtSektor) && (
+            {['FB', 'UB', 'AW'].includes(valgtSektor) && (
               <Nav.Row className="">
                 <Nav.Column xs="3">
                   <BehandlingsTemaer temaer={temar} tema={this.state.tema} oppdaterTemaListe={this.oppdaterTemaListe} />
