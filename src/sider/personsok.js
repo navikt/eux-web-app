@@ -79,6 +79,7 @@ class PersonSok extends Component {
             label="Finn bruker"
             className="personsok__input"
             feltNavn="fnr"
+            type="number"
           />
           {['PENDING'].includes(status) ? <div className="personsok__spinnerwrapper"><Nav.NavFrontendSpinner type="S" /></div> : null}
           <Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson}>SØK</Nav.Knapp>
