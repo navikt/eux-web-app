@@ -48,6 +48,9 @@ PersonKort.propTypes = {
 };
 
 class PersonSok extends Component {
+  state = {
+    sokeerror: null,
+  };
   erPersonFunnet = person => (person.fornavn.length !== undefined && person.fnr !== undefined);
 
   sokEtterPerson = () => {
@@ -55,7 +58,13 @@ class PersonSok extends Component {
       inntastetFnr, settFnrGyldighet, settFnrSjekket, personSok,
     } = this.props;
     if (!inntastetFnr || inntastetFnr.length === 0) return;
-    personSok(inntastetFnr).then(response => {
+    const fnrPattern = /^[0-9]{11}$/;
+    if (!fnrPattern.test(inntastetFnr)) {
+      this.setState({ sokeerror: { message: 'Fnr må ha 11 siffer' } });
+      return;
+    }
+    this.setState({ sokeerror: null });
+    personSok(inntastetFnr.trim()).then(response => {
       if (response && response.data) {
         const person = { ...response.data };
         settFnrGyldighet(this.erPersonFunnet(person));
@@ -83,6 +92,7 @@ class PersonSok extends Component {
           {['PENDING'].includes(status) ? <div className="personsok__spinnerwrapper"><Nav.NavFrontendSpinner type="S" /></div> : null}
           <Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson}>SØK</Nav.Knapp>
         </div>
+        {this.state.sokeerror && <p>{this.state.sokeerror.message}</p>}
         {errdata.status && <StatusLinje status={status} tittel="Fødselsnummer søket" />}
         {errdata.status && <p>{errdata.message}</p>}
         {personKort}
