@@ -20,6 +20,7 @@ import PersonSok from './personsok';
 
 import './opprettsak.css';
 import { ArbeidsforholdController, BehandlingsTemaer, Fagsaker } from './sak';
+import AvsluttModal from '../komponenter/AvsluttModal';
 
 const uuid = require('uuid/v4');
 
@@ -27,17 +28,28 @@ const btnStyle = {
   margin: '1.85em 0 0 0',
 };
 
+const sortBy = key => (a, b) => {
+  if (a[key] > b[key]) return 1;
+  return ((b[key] > a[key]) ? -1 : 0);
+};
+
+const initalState = {
+  landKode: '',
+  institusjonsID: '',
+  institusjoner: [],
+  tema: '',
+  fagsaker: [],
+  saksID: '',
+  visModal: false,
+};
+
 class OpprettSak extends Component {
   state = {
-    landKode: '',
-    institusjonsID: '',
-    institusjoner: [],
-    tema: '',
-    fagsaker: [],
-    saksID: '',
+    ...initalState,
   };
 
-  visFagsakerListe = () => ([EKV.Koder.sektor.FB, EKV.Koder.sektor.UB].includes(this.props.valgtSektor) && this.state.tema.length > 0 && this.state.fagsaker.length > 0);
+  // visFagsakerListe = () => ([EKV.Koder.sektor.FB, EKV.Koder.sektor.UB, EKV.Koder.sektor.AW].includes(this.props.valgtSektor) && this.state.tema.length > 0 && this.state.fagsaker.length > 0);
+  visFagsakerListe = () => (this.props.valgtSektor.length > 0 && this.state.tema.length > 0 && this.state.fagsaker.length > 0);
   visArbeidsforhold = () => {
     const { valgtSektor, buctype, sedtype } = this.props;
     return EKV.Koder.sektor.FB === valgtSektor && EKV.Koder.buctyper.family.FB_BUC_01 === buctype && sedtype;
@@ -78,6 +90,7 @@ class OpprettSak extends Component {
     const fagsaker = await Api.Fagsaker.hent(fnr, valgtSektor, tema);
     this.setState({ tema, fagsaker });
   };
+
   skjemaSubmit = values => {
     const { submitFailed, sendSkjema } = this.props;
     const { institusjonsID, landKode, saksID } = this.state;
@@ -116,6 +129,14 @@ class OpprettSak extends Component {
     settFnrSjekket(false);
   };
 
+  openModal = () => {
+    this.setState({ visModal: true });
+  };
+
+  closeModal = () => {
+    this.setState({ visModal: false });
+  };
+
   render() {
     const {
       serverInfo,
@@ -127,11 +148,11 @@ class OpprettSak extends Component {
       opprettetSak,
     } = this.props;
 
-    const { institusjoner } = this.state;
+    const { institusjoner, visModal } = this.state;
 
     const { rinasaksnummer, url: responsLenke } = opprettetSak;
     const vedleggRoute = `/vedlegg?rinasaksnummer=${rinasaksnummer}`;
-    const { resettSokStatus } = this;
+    const { resettSokStatus, openModal, closeModal } = this;
 
     const oppgittFnrErValidert = (fnrErGyldig && fnrErSjekket);
     return (
@@ -152,14 +173,14 @@ class OpprettSak extends Component {
             <Nav.Row className="">
               <Nav.Column xs="3">
                 <Skjema.Select id="id-sektor" feltNavn="sektor" label="Fagområde" bredde="xxl" disabled={!oppgittFnrErValidert}>
-                  {sektor && sektor.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+                  {sektor && sektor.concat().sort(sortBy('term')).map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                 </Skjema.Select>
               </Nav.Column>
             </Nav.Row>
             <Nav.Row className="">
               <Nav.Column xs="3">
                 <Skjema.Select id="id-buctype" feltNavn="buctype" label="BUC" bredde="xxl" disabled={!oppgittFnrErValidert} onChange={this.oppdaterBucKode}>
-                  {buctyper && buctyper.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
+                  {buctyper && buctyper.concat().sort(sortBy('kode')).map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
                 </Skjema.Select>
               </Nav.Column>
               <Nav.Column xs="3">
@@ -172,20 +193,20 @@ class OpprettSak extends Component {
               <Nav.Column xs="3">
                 <Nav.Select id="id-landkode" bredde="xxl" disabled={!oppgittFnrErValidert} value={this.state.landKode} onChange={this.oppdaterLandKode} label="Land">
                   <option value="0" />
-                  {landkoder && landkoder.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+                  {landkoder && landkoder.concat().sort(sortBy('term')).map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                 </Nav.Select>
               </Nav.Column>
               <Nav.Column xs="3">
                 <Nav.Select id="id-institusjon" bredde="xxl" disabled={!oppgittFnrErValidert} value={this.state.institusjonsID} onChange={this.oppdaterInstitusjonKode} label="Mottaker institusjon">
                   <option value="0" />
-                  {institusjoner && institusjoner.map(element => <option value={element.institusjonsID} key={uuid()}>{element.navn}</option>)}
+                  {institusjoner && institusjoner.concat().sort(sortBy('term')).map(element => <option value={element.institusjonsID} key={uuid()}>{element.navn}</option>)}
                 </Nav.Select>
               </Nav.Column>
             </Nav.Row>
             <Nav.Row className="">
               {valgtSektor === 'FB' && <FamilieRelasjonsComponent />}
             </Nav.Row>
-            {['FB', 'UB'].includes(valgtSektor) && (
+            {valgtSektor && (
               <Nav.Row className="">
                 <Nav.Column xs="3">
                   <BehandlingsTemaer temaer={temar} tema={this.state.tema} oppdaterTemaListe={this.oppdaterTemaListe} />
@@ -213,10 +234,10 @@ class OpprettSak extends Component {
               <Nav.Column xs="3">
                 <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)} spinner={['PENDING'].includes(status)} disabled={['PENDING'].includes(status)}>Opprett sak i RINA</Nav.Hovedknapp>
               </Nav.Column>
-              <Nav.Column xs="2">
-                <Nav.Lenke href="/" ariaLabel="Navigasjonslink tilbake til forsiden">
-                  AVSLUTT
-                </Nav.Lenke>
+              <Nav.Column xs="3">
+                <Nav.Flatknapp aria-label="Navigasjonslink tilbake til forsiden" onClick={() => openModal()} >
+                  AVSLUTT UTFYLLING
+                </Nav.Flatknapp>
               </Nav.Column>
             </Nav.Row>
             <Nav.Row>
@@ -227,6 +248,10 @@ class OpprettSak extends Component {
             </Nav.Row>
           </Nav.Container>
         </form>
+        <AvsluttModal
+          visModal={visModal}
+          closeModal={closeModal}
+        />
       </div>
     );
   }
@@ -255,7 +280,15 @@ OpprettSak.propTypes = {
   valgtSektor: PT.string,
   status: PT.string,
   errdata: PT.object,
-  valgteFamilieRelasjoner: PT.array,
+  valgteFamilieRelasjoner: PT.arrayOf(PT.shape({
+    rolle: PT.string,
+    fnr: PT.string,
+    fdato: PT.string,
+    fornavn: PT.string,
+    etternavn: PT.string,
+    kjoenn: PT.string,
+    nasjonalitet: PT.string,
+  })),
   opprettetSak: PT.shape({
     rinasaksnummer: PT.string,
     url: PT.string,
