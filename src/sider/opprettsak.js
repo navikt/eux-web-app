@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, formValueSelector, clearAsyncError, stopSubmit, change } from 'redux-form';
 import PT from 'prop-types';
+import _ from 'lodash';
 
 import * as EKV from 'eessi-kodeverk';
 import * as Api from '../services/api';
@@ -102,7 +103,6 @@ class OpprettSak extends Component {
     };
     delete vaskedeVerdier.fnrErGyldig;
     delete vaskedeVerdier.fnrErSjekket;
-
     sendSkjema(vaskedeVerdier);
   };
 
@@ -140,9 +140,9 @@ class OpprettSak extends Component {
   render() {
     const {
       serverInfo,
-      landkoder, sedtyper, sektor, buctyper, temar,
+      landkoder, sedtyper, sektor, buctype, buctyper, temar,
       inntastetFnr, status, errdata,
-      valgtSektor,
+      valgtSektor, sedtype,
       settFnrSjekket, settFnrGyldighet,
       fnrErGyldig, fnrErSjekket,
       opprettetSak,
@@ -153,6 +153,14 @@ class OpprettSak extends Component {
     const { rinasaksnummer, url: responsLenke } = opprettetSak;
     const vedleggRoute = `/vedlegg?rinasaksnummer=${rinasaksnummer}`;
     const { resettSokStatus, openModal, closeModal } = this;
+
+    const erFagomroedeValgt = valgtSektor && valgtSektor.length > 0;
+    const erBUCValgt = !_.isNil(buctype);
+    const erSEDValgt = !_.isNil(sedtype);
+    const erLandValgt = this.state.landKode.length > 0;
+    const erMottakerInstitusjonValgt = this.state.institusjonsID.length > 0;
+    const erFagsakValgt = this.state.saksID.length > 0;
+    const redigerbart = erFagomroedeValgt && erBUCValgt && erSEDValgt && erLandValgt && erMottakerInstitusjonValgt && erFagsakValgt;
 
     const oppgittFnrErValidert = (fnrErGyldig && fnrErSjekket);
     return (
@@ -232,7 +240,11 @@ class OpprettSak extends Component {
 
             <Nav.Row className="opprettsak__statuslinje">
               <Nav.Column xs="3">
-                <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)} spinner={['PENDING'].includes(status)} disabled={['PENDING'].includes(status)}>Opprett sak i RINA</Nav.Hovedknapp>
+                <Nav.Hovedknapp
+                  disabled={!redigerbart || ['PENDING'].includes(status)}
+                  onClick={this.props.handleSubmit(this.skjemaSubmit)}
+                  spinner={['PENDING'].includes(status)}>Opprett sak i RINA
+                </Nav.Hovedknapp>
               </Nav.Column>
               <Nav.Column xs="3">
                 <Nav.Flatknapp aria-label="Navigasjonslink tilbake til forsiden" onClick={() => openModal()} >
@@ -353,8 +365,9 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const validering = values => {
-  const fnr = !values.fnr ? 'Du må taste inn fødselsnummer.' : null;
-  const fnrErUgyldig = (values.fnrErGyldig === false && values.fnrErSjekket) ? 'Fødselsnummeret er ikke gyldig.' : null;
+  // const { fnr, sektor, sedtype, land, institusjonsID } = values;
+  const fnrValidNumberMsg = _.isNumber(values.fnr) ? 'Du må taste inn fødselsnummer.' : null;
+  // const fnrErUgyldig = (values.fnrErGyldig === false && values.fnrErSjekket) ? 'Fødselsnummeret er ikke gyldig.' : null;
   const sektor = !values.sektor ? 'Du må velge sektor.' : null;
   const buctype = !values.buctype ? 'Du må velge buctype.' : null;
   const sedtype = !values.sedtype ? 'Du må velge sedtype.' : null;
@@ -362,7 +375,7 @@ const validering = values => {
   const institusjonsID = !values.institusjonsID ? 'Du må velge institusjon.' : null;
 
   return {
-    fnr: fnr || fnrErUgyldig,
+    fnr: fnrValidNumberMsg, // || fnrErUgyldig,
     sektor,
     buctype,
     sedtype,

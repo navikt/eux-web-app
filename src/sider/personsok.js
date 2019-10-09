@@ -54,7 +54,7 @@ class PersonSok extends Component {
     const {
       inntastetFnr, settFnrGyldighet, settFnrSjekket, personSok,
     } = this.props;
-    if (inntastetFnr.length === 0) return;
+    if (!inntastetFnr || inntastetFnr.length === 0) return;
     personSok(inntastetFnr).then(response => {
       if (response && response.data) {
         const person = { ...response.data };
@@ -79,7 +79,6 @@ class PersonSok extends Component {
             label="Finn bruker"
             className="personsok__input"
             feltNavn="fnr"
-            type="number"
           />
           {['PENDING'].includes(status) ? <div className="personsok__spinnerwrapper"><Nav.NavFrontendSpinner type="S" /></div> : null}
           <Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson}>SØK</Nav.Knapp>
@@ -115,7 +114,7 @@ const mapStateToProps = state => ({
   errdata: PersonSelectors.errorDataSelector(state),
 });
 const mapDispatchToProps = dispatch => ({
-  personSok: fnr => dispatch(PersonOperations.hentPerson(fnr)),
+  personSok: fnr => dispatch(PersonOperations.hentPerson(fnr.trim())),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PersonSok);
