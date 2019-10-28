@@ -17,7 +17,7 @@ node {
   def scmVars
 
   /* tools */
-  def NODE_JS_HOME = tool "node-10.10.0" // => "installation directory" = "/opt/node"
+  def NODE_JS_HOME = tool "node-11.12.0" // => "installation directory" = "/opt/node"
   echo "${NODE_JS_HOME}"
   def node = "${NODE_JS_HOME}/bin/node"
   def npm = "${NODE_JS_HOME}/bin/npm"
