@@ -5,7 +5,7 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.6",
-    "eessi-kodeverk": "1.4.0",
+    "eessi-kodeverk": "1.4.1",
     "history": "^4.9.0",
     "lodash": "^4.17.15",
     "lodash.throttle": "^4.1.1",
