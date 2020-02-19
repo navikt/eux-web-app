@@ -3,7 +3,7 @@ import PT from 'prop-types';
 
 import { kodeverkObjektTilTerm } from '../../../utils/kodeverk';
 import { formatterDatoTilNorsk } from '../../../utils/dato';
-import * as Nav from '../../../utils/navFrontend';
+import Ui from 'eessi-pensjon-ui'
 import PanelHeader from '../../panelHeader/panelHeader';
 import * as MPT from '../../../proptypes';
 import * as Eux from '../../../felles-komponenter/Ikon';
@@ -32,15 +32,15 @@ const FamilieRelasjonPanel = ({
   );
   const tittel = `${fornavn} ${etternavn}`.toUpperCase();
   return (
-    <Nav.Panel border className="personsok__kort">
+    <Ui.Nav.Panel border className="personsok__kort">
       <PanelHeader ikon={Eux.IkonFraKjonn(kjoenn)} tittel={`${tittel} - ${rolleTerm}`} undertittel={panelUndertittel} />
-      <Nav.Knapp
+      <Ui.Nav.Knapp
         className="familierelasjoner__knapp familierelasjoner__knapp--slett"
         onClick={() => slettRelasjon(familie.fnr)}>
         <Eux.Icon kind="trashcan" size="20" className="familierelasjoner__knapp__ikon" />
         <div className="familierelasjoner__knapp__label">Fjern</div>
-      </Nav.Knapp>
-    </Nav.Panel>
+      </Ui.Nav.Knapp>
+    </Ui.Nav.Panel>
   );
 };
 

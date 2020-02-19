@@ -1,8 +1,7 @@
 import React from 'react';
 import PT from 'prop-types';
 import { Field } from 'redux-form';
-
-import * as Nav from '../../../utils/navFrontend';
+import Ui from 'eessi-pensjon-ui'
 import { normaliserInputDato } from '../../../utils/dato';
 import '../skjema.css';
 
@@ -14,7 +13,7 @@ function InnerInputComponent({
 }) {
   const feil = (rest.meta.error && rest.meta.touched && !rest.meta.active) ? { feilmelding: rest.meta.error } : undefined;
   const inputProps = { ...input, ...rest };
-  return !rest.hidden && <Nav.Input label={label} feil={feil} {...inputProps} />;
+  return !rest.hidden && <Ui.Nav.Input label={label} feil={feil} {...inputProps} />;
 }
 
 InnerInputComponent.propTypes = {

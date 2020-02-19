@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PT from 'prop-types';
 import _ from 'lodash';
+import Ui from 'eessi-pensjon-ui'
 
-import * as Nav from '../../../utils/navFrontend';
 import * as MPT from '../../../proptypes';
 import * as API from '../../../services/api';
 import PersonSokResultat from '../../../komponenter/PersonSokResultat';
@@ -63,21 +63,21 @@ class AnnenRelatertTPSPerson extends Component {
   feilmeldingerOgInformasjon = (valgtBrukerFnr, tpsperson, notFound400, sok, feiletSok) => {
     if (valgtBrukerFnr === sok) {
       return (
-        <Nav.Column xs="3">
-          <Nav.AlertStripe type="info">FNR {sok} tilhører bruker</Nav.AlertStripe>
-        </Nav.Column>
+        <Ui.Nav.Column xs="3">
+          <Ui.Nav.AlertStripe type="info">FNR {sok} tilhører bruker</Ui.Nav.AlertStripe>
+        </Ui.Nav.Column>
       );
     } else if (tpsperson) {
       return (
-        <Nav.Column xs="3">
-          <Nav.AlertStripe type="info">Familierelasjonen er allerede registrert i TPS</Nav.AlertStripe>
-        </Nav.Column>
+        <Ui.Nav.Column xs="3">
+          <Ui.Nav.AlertStripe type="info">Familierelasjonen er allerede registrert i TPS</Ui.Nav.AlertStripe>
+        </Ui.Nav.Column>
       );
     } else if (notFound400) {
       return (
-        <Nav.Column xs="3">
-          <Nav.AlertStripe type="stopp">Ingen person med FNR {feiletSok} funnet</Nav.AlertStripe>
-        </Nav.Column>
+        <Ui.Nav.Column xs="3">
+          <Ui.Nav.AlertStripe type="stopp">Ingen person med FNR {feiletSok} funnet</Ui.Nav.AlertStripe>
+        </Ui.Nav.Column>
       );
     }
     return null;
@@ -96,11 +96,11 @@ class AnnenRelatertTPSPerson extends Component {
       <div>
         <div className="annenpersonsok">
           <div className="annenpersonsok__skjema">
-            <Nav.Input className="" label="" placeholder="Fødsels eller dnr" value={this.state.sok} onChange={updateSok} />
+            <Ui.Nav.Input className="" label="" placeholder="Fødsels eller dnr" value={this.state.sok} onChange={updateSok} />
             {valgtBrukerFnr !== sok ?
-              <Nav.Knapp className="annenpersonsok__knapp" onClick={sokEtterFnr}>Søk</Nav.Knapp>
+              <Ui.Nav.Knapp className="annenpersonsok__knapp" onClick={sokEtterFnr}>Søk</Ui.Nav.Knapp>
               :
-              <Nav.Knapp disabled className="annenpersonsok__knapp" onClick={sokEtterFnr}>Søk</Nav.Knapp>}
+              <Ui.Nav.Knapp disabled className="annenpersonsok__knapp" onClick={sokEtterFnr}>Søk</Ui.Nav.Knapp>}
           </div>
         </div>
         {feilmeldingerOgInformasjon(valgtBrukerFnr, tpsperson, notFound400, sok, feiletSok)}

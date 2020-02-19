@@ -7,7 +7,7 @@ import _ from 'lodash';
 import * as EKV from 'eessi-kodeverk';
 import * as Api from '../services/api';
 import * as MPT from '../proptypes/';
-import * as Nav from '../utils/navFrontend';
+import Ui from 'eessi-pensjon-ui'
 import * as Skjema from '../felles-komponenter/skjema';
 
 import { FagsakSelectors } from '../ducks/fagsak';
@@ -165,69 +165,69 @@ class OpprettSak extends Component {
     const oppgittFnrErValidert = (fnrErGyldig && fnrErSjekket);
     return (
       <div className="opprettsak">
-        <Nav.Systemtittel>Opprett Sak</Nav.Systemtittel>
+        <Ui.Nav.Systemtittel>Opprett Sak</Ui.Nav.Systemtittel>
         <form onSubmit={this.overrideDefaultSubmit}>
-          <Nav.Container fluid>
-            <Nav.Row className="">
-              <Nav.Column xs="6">
+          <Ui.Nav.Container fluid>
+            <Ui.Nav.Row className="">
+              <Ui.Nav.Column xs="6">
                 <PersonSok
                   inntastetFnr={inntastetFnr}
                   resettSokStatus={resettSokStatus}
                   settFnrSjekket={settFnrSjekket}
                   settFnrGyldighet={settFnrGyldighet}
                 />
-              </Nav.Column>
-            </Nav.Row>
-            <Nav.Row className="">
-              <Nav.Column xs="3">
+              </Ui.Nav.Column>
+            </Ui.Nav.Row>
+            <Ui.Nav.Row className="">
+              <Ui.Nav.Column xs="3">
                 <Skjema.Select id="id-sektor" feltNavn="sektor" label="Fagområde" bredde="xxl" disabled={!oppgittFnrErValidert}>
                   {sektor && sektor.concat().sort(sortBy('term')).map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
                 </Skjema.Select>
-              </Nav.Column>
-            </Nav.Row>
-            <Nav.Row className="">
-              <Nav.Column xs="3">
+              </Ui.Nav.Column>
+            </Ui.Nav.Row>
+            <Ui.Nav.Row className="">
+              <Ui.Nav.Column xs="3">
                 <Skjema.Select id="id-buctype" feltNavn="buctype" label="BUC" bredde="xxl" disabled={!oppgittFnrErValidert} onChange={this.oppdaterBucKode}>
                   {buctyper && buctyper.concat().sort(sortBy('kode')).map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
                 </Skjema.Select>
-              </Nav.Column>
-              <Nav.Column xs="3">
+              </Ui.Nav.Column>
+              <Ui.Nav.Column xs="3">
                 <Skjema.Select id="id-sedtype" feltNavn="sedtype" label="SED" bredde="xxl" disabled={!oppgittFnrErValidert}>
                   {this.erSedtyperGyldig(sedtyper) && sedtyper.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
                 </Skjema.Select>
-              </Nav.Column>
-            </Nav.Row>
-            <Nav.Row className="">
-              <Nav.Column xs="3">
-                <Nav.Select id="id-landkode" bredde="xxl" disabled={!oppgittFnrErValidert} value={this.state.landKode} onChange={this.oppdaterLandKode} label="Land">
+              </Ui.Nav.Column>
+            </Ui.Nav.Row>
+            <Ui.Nav.Row className="">
+              <Ui.Nav.Column xs="3">
+                <Ui.Nav.Select id="id-landkode" bredde="xxl" disabled={!oppgittFnrErValidert} value={this.state.landKode} onChange={this.oppdaterLandKode} label="Land">
                   <option value="0" />
                   {landkoder && landkoder.concat().sort(sortBy('term')).map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
-                </Nav.Select>
-              </Nav.Column>
-              <Nav.Column xs="3">
-                <Nav.Select id="id-institusjon" bredde="xxl" disabled={!oppgittFnrErValidert} value={this.state.institusjonsID} onChange={this.oppdaterInstitusjonKode} label="Mottaker institusjon">
+                </Ui.Nav.Select>
+              </Ui.Nav.Column>
+              <Ui.Nav.Column xs="3">
+                <Ui.Nav.Select id="id-institusjon" bredde="xxl" disabled={!oppgittFnrErValidert} value={this.state.institusjonsID} onChange={this.oppdaterInstitusjonKode} label="Mottaker institusjon">
                   <option value="0" />
                   {institusjoner && institusjoner.concat().sort(sortBy('term')).map(element => <option value={element.institusjonsID} key={uuid()}>{element.navn}</option>)}
-                </Nav.Select>
-              </Nav.Column>
-            </Nav.Row>
-            <Nav.Row className="">
+                </Ui.Nav.Select>
+              </Ui.Nav.Column>
+            </Ui.Nav.Row>
+            <Ui.Nav.Row className="">
               {valgtSektor === 'FB' && <FamilieRelasjonsComponent />}
-            </Nav.Row>
+            </Ui.Nav.Row>
             {valgtSektor && (
-              <Nav.Row className="">
-                <Nav.Column xs="3">
+              <Ui.Nav.Row className="">
+                <Ui.Nav.Column xs="3">
                   <BehandlingsTemaer temaer={temar} tema={this.state.tema} oppdaterTemaListe={this.oppdaterTemaListe} />
-                </Nav.Column>
-                <Nav.Column xs="2">
-                  <Nav.Knapp style={btnStyle} onClick={this.visFagsaker} disabled={this.state.tema.length === 0}>Vis saker</Nav.Knapp>
-                </Nav.Column>
-                <Nav.Column xs="2">
-                  <Nav.Lenke href={serverInfo.gosysURL} ariaLabel="Opprett ny sak i GOSYS" target="_blank">
+                </Ui.Nav.Column>
+                <Ui.Nav.Column xs="2">
+                  <Ui.Nav.Knapp style={btnStyle} onClick={this.visFagsaker} disabled={this.state.tema.length === 0}>Vis saker</Ui.Nav.Knapp>
+                </Ui.Nav.Column>
+                <Ui.Nav.Column xs="2">
+                  <Ui.Nav.Lenke href={serverInfo.gosysURL} ariaLabel="Opprett ny sak i GOSYS" target="_blank">
                     Opprett ny sak i GOSYS
-                  </Nav.Lenke>
-                </Nav.Column>
-              </Nav.Row>
+                  </Ui.Nav.Lenke>
+                </Ui.Nav.Column>
+              </Ui.Nav.Row>
             )}
 
             {this.visFagsakerListe() &&
@@ -238,27 +238,27 @@ class OpprettSak extends Component {
             }
 
 
-            <Nav.Row className="opprettsak__statuslinje">
-              <Nav.Column xs="3">
-                <Nav.Hovedknapp
+            <Ui.Nav.Row className="opprettsak__statuslinje">
+              <Ui.Nav.Column xs="3">
+                <Ui.Nav.Hovedknapp
                   disabled={!redigerbart || ['PENDING'].includes(status)}
                   onClick={this.props.handleSubmit(this.skjemaSubmit)}
                   spinner={['PENDING'].includes(status)}>Opprett sak i RINA
-                </Nav.Hovedknapp>
-              </Nav.Column>
-              <Nav.Column xs="3">
-                <Nav.Flatknapp aria-label="Navigasjonslink tilbake til forsiden" onClick={() => openModal()} >
+                </Ui.Nav.Hovedknapp>
+              </Ui.Nav.Column>
+              <Ui.Nav.Column xs="3">
+                <Ui.Nav.Flatknapp aria-label="Navigasjonslink tilbake til forsiden" onClick={() => openModal()} >
                   AVSLUTT UTFYLLING
-                </Nav.Flatknapp>
-              </Nav.Column>
-            </Nav.Row>
-            <Nav.Row>
-              <Nav.Column xs="6">
+                </Ui.Nav.Flatknapp>
+              </Ui.Nav.Column>
+            </Ui.Nav.Row>
+            <Ui.Nav.Row>
+              <Ui.Nav.Column xs="6">
                 <StatusLinje status={status} tittel={`Saksnummer: ${rinasaksnummer}`} rinaURL={responsLenke} routePath={vedleggRoute} />
                 {errdata && errdata.status && <p>{errdata.message}</p>}
-              </Nav.Column>
-            </Nav.Row>
-          </Nav.Container>
+              </Ui.Nav.Column>
+            </Ui.Nav.Row>
+          </Ui.Nav.Container>
         </form>
         <AvsluttModal
           visModal={visModal}

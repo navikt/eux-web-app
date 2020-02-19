@@ -5,5 +5,5 @@ import Vedlegg from './Vedlegg';
 export default {
   Forside,
   OpprettSak,
-  Vedlegg,
+  Vedlegg
 };

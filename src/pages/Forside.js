@@ -1,26 +1,25 @@
 import React from 'react';
 
 import PT from 'prop-types';
-import * as Nav from '../utils/navFrontend';
-
+import Ui from 'eessi-pensjon-ui'
 import './Forside.css';
 
 const Forside = () => (
   <div className="forside">
-    <Nav.Container fluid>
-      <Nav.Systemtittel>Velkommen til {process.env.REACT_APP_NAME}</Nav.Systemtittel>
+    <Ui.Nav.Container fluid>
+      <Ui.Nav.Systemtittel>Velkommen til {process.env.REACT_APP_NAME}</Ui.Nav.Systemtittel>
       <br />
-      <Nav.Row className="">
-        <Nav.Column xs="3">
-          <Nav.Lenkepanel href="/opprett">Opprett sak</Nav.Lenkepanel>
-        </Nav.Column>
-      </Nav.Row>
-      <Nav.Row className="">
-        <Nav.Column xs="3">
-          <Nav.Lenkepanel href="/vedlegg">Legg ved vedlegg til SED</Nav.Lenkepanel>
-        </Nav.Column>
-      </Nav.Row>
-    </Nav.Container>
+      <Ui.Nav.Row className="">
+        <Ui.Nav.Column xs="3">
+          <Ui.Nav.Lenkepanel href="/opprett">Opprett sak</Ui.Nav.Lenkepanel>
+        </Ui.Nav.Column>
+      </Ui.Nav.Row>
+      <Ui.Nav.Row className="">
+        <Ui.Nav.Column xs="3">
+          <Ui.Nav.Lenkepanel href="/vedlegg">Legg ved vedlegg til SED</Ui.Nav.Lenkepanel>
+        </Ui.Nav.Column>
+      </Ui.Nav.Row>
+    </Ui.Nav.Container>
   </div>
 );
 

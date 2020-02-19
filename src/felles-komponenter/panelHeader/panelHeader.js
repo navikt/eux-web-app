@@ -1,6 +1,6 @@
 import React from 'react';
 import PT from 'prop-types';
-import * as Nav from '../../utils/navFrontend';
+import Ui from 'eessi-pensjon-ui'
 import './panelHeader.css';
 
 
@@ -8,7 +8,7 @@ const PanelHeader = ({ ikon, tittel, undertittel }) => (
   <div className="panelheader">
     { ikon && <div className="panelheader__ikon" style={{ backgroundImage: `url('${ikon}')` }} /> }
     <div className="panelheader__tittel">
-      <Nav.Undertittel className="panelheader__tittel__hoved">{tittel}</Nav.Undertittel>
+      <Ui.Nav.Undertittel className="panelheader__tittel__hoved">{tittel}</Ui.Nav.Undertittel>
       <span className="panelheader__tittel__under">{undertittel}</span>
     </div>
   </div>

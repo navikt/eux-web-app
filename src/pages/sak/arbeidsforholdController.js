@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import PT from 'prop-types';
 import * as MPT from '../../proptypes';
-import * as Nav from '../../utils/navFrontend';
+import Ui from 'eessi-pensjon-ui'
 import * as Api from '../../services/api';
 import Arbeidsforhold from './arbeidsforhold';
 
@@ -21,17 +21,17 @@ class ArbeidsforholdController extends Component {
     const { arbeidsforhold } = this.state;
     return (
       <div className="arbeidsforhold">
-        <Nav.Row>
-          <Nav.Column xs="3">
+        <Ui.Nav.Row>
+          <Ui.Nav.Column xs="3">
             <strong>AA Registeret</strong><br />Arbeidsforhold/Arbeidsgivere
-          </Nav.Column>
-          <Nav.Column xs="2">
-            <Nav.Knapp onClick={this.hentArbeidsforhold}>Søk</Nav.Knapp>
-          </Nav.Column>
-        </Nav.Row>
-        <Nav.Row>
+          </Ui.Nav.Column>
+          <Ui.Nav.Column xs="2">
+            <Ui.Nav.Knapp onClick={this.hentArbeidsforhold}>Søk</Ui.Nav.Knapp>
+          </Ui.Nav.Column>
+        </Ui.Nav.Row>
+        <Ui.Nav.Row>
           &nbsp;
-        </Nav.Row>
+        </Ui.Nav.Row>
         {arbeidsforhold.length > 0 && <Arbeidsforhold arbeidsforhold={arbeidsforhold} />}
       </div>
     );

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import * as Skjema from '../felles-komponenter/skjema';
 import { StatusLinje } from '../felles-komponenter/statuslinje';
 import DokumentSok from './dokumentsok';
-import * as Nav from '../utils/navFrontend';
+import Ui from 'eessi-pensjon-ui'
 import * as MPT from '../proptypes';
 
 import { KodeverkSelectors } from '../ducks/kodeverk';
@@ -34,35 +34,35 @@ class Vedlegg extends Component {
 
     return (
       <div className="vedlegg">
-        <Nav.Container fluid>
+        <Ui.Nav.Container fluid>
           <form onSubmit={this.overrideDefaultSubmit}>
-            <Nav.Row>
-              <Nav.Column xs="6">
-                <Nav.Panel className="vedlegg__skjema">
-                  <Nav.Fieldset legend="Vedleggs informasjon">
-                    <Nav.HjelpetekstBase id="journalPostID" type="hoyre">Journalpost ID finner du i Gosys</Nav.HjelpetekstBase>
+            <Ui.Nav.Row>
+              <Ui.Nav.Column xs="6">
+                <Ui.Nav.Panel className="vedlegg__skjema">
+                  <Ui.Nav.Fieldset legend="Vedleggs informasjon">
+                    <Ui.Nav.HjelpetekstBase id="journalPostID" type="hoyre">Journalpost ID finner du i Gosys</Ui.Nav.HjelpetekstBase>
                     <Skjema.Input feltNavn="journalpostID" label="JournalpostID" />
-                    <Nav.HjelpetekstBase id="dokumentID" type="under">Dokument ID finner du i Gosys</Nav.HjelpetekstBase>
+                    <Ui.Nav.HjelpetekstBase id="dokumentID" type="under">Dokument ID finner du i Gosys</Ui.Nav.HjelpetekstBase>
                     <Skjema.Input feltNavn="dokumentID" label="DokumentID" />
                     <DokumentSok
                       inntastetRinasaksnummer={inntastetRinasaksnummer}
                       settRinaGyldighet={settRinaGyldighet}
                       settRinaSjekket={settRinaSjekket}
                     />
-                  </Nav.Fieldset>
+                  </Ui.Nav.Fieldset>
                   <div className="vedlegg__submmit">
-                    <Nav.Hovedknapp
+                    <Ui.Nav.Hovedknapp
                       onClick={handleSubmit(sendSkjema)}
                       disabled={disableSendKnapp || visVenteSpinner}
                       spinner={visVenteSpinner}>Send vedlegg
-                    </Nav.Hovedknapp>
+                    </Ui.Nav.Hovedknapp>
                   </div>
                   <StatusLinje status={vedleggStatus} url={responsLenke} tittel="Vedlegget" />
-                </Nav.Panel>
-              </Nav.Column>
-            </Nav.Row>
+                </Ui.Nav.Panel>
+              </Ui.Nav.Column>
+            </Ui.Nav.Row>
           </form>
-        </Nav.Container>
+        </Ui.Nav.Container>
       </div>
     );
   }
