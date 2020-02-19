@@ -2,7 +2,7 @@ import React from 'react';
 
 import PT from 'prop-types';
 
-import * as Nav from '../../utils/navFrontend';
+import Ui from 'eessi-pensjon-ui'
 import * as Sort from '../../utils/sortering';
 
 const uuid = require('uuid/v4');
@@ -10,10 +10,10 @@ const uuid = require('uuid/v4');
 const FagsakerListe = props => {
   const { fagsaker, saksID, oppdaterFagsakListe } = props;
   return (
-    <Nav.Select id="id-fagsaker" bredde="xl" label="Velg fagsak" value={saksID} onChange={oppdaterFagsakListe}>
+    <Ui.Nav.Select id="id-fagsaker" bredde="xl" label="Velg fagsak" value={saksID} onChange={oppdaterFagsakListe}>
       <option defaultChecked />
       {fagsaker && fagsaker.concat().sort(Sort.sortBy('fagsakNr')).map(element => <option value={element.saksID} key={uuid()}>{element.fagsakNr ? element.fagsakNr : element.saksID}</option>)}
-    </Nav.Select>
+    </Ui.Nav.Select>
   );
 };
 
@@ -30,11 +30,11 @@ export const Fagsaker = props => {
   const { fagsaker, saksID, oppdaterFagsakListe } = props;
   return (
 
-    <Nav.Row>
-      <Nav.Column xs="3">
+    <Ui.Nav.Row>
+      <Ui.Nav.Column xs="3">
         <FagsakerListe fagsaker={fagsaker} saksID={saksID} oppdaterFagsakListe={oppdaterFagsakListe} />
-      </Nav.Column>
-    </Nav.Row>
+      </Ui.Nav.Column>
+    </Ui.Nav.Row>
   );
 };
 

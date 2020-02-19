@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PT from 'prop-types';
 
 import * as MPT from '../../../proptypes';
-import * as Nav from '../../../utils/navFrontend';
+import Ui from 'eessi-pensjon-ui'
 
 import { vaskInputDato } from '../../../utils/dato';
 
@@ -139,7 +139,7 @@ class FamilieRelasjonController extends Component {
     }, []);
     return (
       <div className="familierelasjoner">
-        {valgteRelasjoner && valgteRelasjoner.length > 0}<Nav.UndertekstBold>Valgte familierelasjoner&nbsp;({valgteRelasjoner.length})</Nav.UndertekstBold>
+        {valgteRelasjoner && valgteRelasjoner.length > 0}<Ui.Nav.UndertekstBold>Valgte familierelasjoner&nbsp;({valgteRelasjoner.length})</Ui.Nav.UndertekstBold>
         {valgteRelasjoner && valgteRelasjoner.map((relasjon, indeks) =>
           (<FamilieRelasjonPanel
             key={uuid()}
@@ -151,19 +151,19 @@ class FamilieRelasjonController extends Component {
           />))
         }
 
-        <Nav.Fieldset className="familierelasjoner__utland" legend="Familierelasjoner registrert i TPS">
+        <Ui.Nav.Fieldset className="familierelasjoner__utland" legend="Familierelasjoner registrert i TPS">
           {gjenstaendeRelasjonerFraTPS}
-          {(tpsrelasjoner.length > 0 && gjenstaendeRelasjonerFraTPS.length === 0) ? <Nav.Panel>(Du har lagt til alle som fantes i listen.)</Nav.Panel> : null}
-          {!tpsrelasjoner && <Nav.Panel>(Ingen familierelasjoner funnet i TPS)</Nav.Panel>}
-        </Nav.Fieldset>
-        <Nav.Row>
-          <Nav.Column xs="3">
+          {(tpsrelasjoner.length > 0 && gjenstaendeRelasjonerFraTPS.length === 0) ? <Ui.Nav.Panel>(Du har lagt til alle som fantes i listen.)</Ui.Nav.Panel> : null}
+          {!tpsrelasjoner && <Ui.Nav.Panel>(Ingen familierelasjoner funnet i TPS)</Ui.Nav.Panel>}
+        </Ui.Nav.Fieldset>
+        <Ui.Nav.Row>
+          <Ui.Nav.Column xs="3">
             <p><strong>Person uten fødsels- eller d-nummer&nbsp;</strong></p>
-          </Nav.Column>
-          <Nav.Column xs="2">
-            <Nav.Knapp onClick={this.visSkulRelatertUtland} >{this.knappeTekstUtland()}</Nav.Knapp>
-          </Nav.Column>
-        </Nav.Row>
+          </Ui.Nav.Column>
+          <Ui.Nav.Column xs="2">
+            <Ui.Nav.Knapp onClick={this.visSkulRelatertUtland} >{this.knappeTekstUtland()}</Ui.Nav.Knapp>
+          </Ui.Nav.Column>
+        </Ui.Nav.Row>
         {this.state.ui.visRelatertUtland && <FamilieRelasjonUtland
           spesialRelasjon={this.state.spesialRelasjon}
           oppdaterState={this.oppdaterState}
@@ -174,17 +174,17 @@ class FamilieRelasjonController extends Component {
           vaskInputDatoOgOppdater={this.vaskInputDatoOgOppdater}
           kanSpesialRelasjonLeggesTil={this.kanSpesialRelasjonLeggesTil}
         />}
-        <Nav.Row>
+        <Ui.Nav.Row>
           <br />
-        </Nav.Row>
-        <Nav.Row>
-          <Nav.Column xs="3">
+        </Ui.Nav.Row>
+        <Ui.Nav.Row>
+          <Ui.Nav.Column xs="3">
             <p><strong>Person uten registrert relasjon i TPS&nbsp;</strong></p>
-          </Nav.Column>
-          <Nav.Column xs="2">
-            <Nav.Knapp onClick={this.visSkjulRelatertTPS} >{this.knappeTekstRelatertTPS()}</Nav.Knapp>
-          </Nav.Column>
-        </Nav.Row>
+          </Ui.Nav.Column>
+          <Ui.Nav.Column xs="2">
+            <Ui.Nav.Knapp onClick={this.visSkjulRelatertTPS} >{this.knappeTekstRelatertTPS()}</Ui.Nav.Knapp>
+          </Ui.Nav.Column>
+        </Ui.Nav.Row>
         {this.state.ui.visRelatertTPS && <AnnenRelatertTPSPerson
           valgteRelasjoner={valgteRelasjoner}
           tpsrelasjoner={tpsrelasjoner}

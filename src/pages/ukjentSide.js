@@ -1,7 +1,6 @@
 import PT from 'prop-types';
 import React from 'react';
-
-import * as Nav from '../utils/navFrontend';
+import Ui from 'eessi-pensjon-ui'
 
 import './ukjentSide.css';
 
@@ -17,13 +16,13 @@ const UkjentSide = ({ location }) => {
   window.frontendlogger.error(logdata);
   */
   return (
-    <Nav.AlertStripe type="stopp" className="ukjentSide">
-      <Nav.Systemtittel>Denne siden finnes ikke: &quot;{location.pathname}&quot;.</Nav.Systemtittel>
+    <Ui.Nav.AlertStripe type="stopp" className="ukjentSide">
+      <Ui.Nav.Systemtittel>Denne siden finnes ikke: &quot;{location.pathname}&quot;.</Ui.Nav.Systemtittel>
       <p>Dersom du ble sendt hit fra Gosys eller et annet Nav-system, ta kontakt med driftsansvarlig.</p>
-      <Nav.Lenke href="/" ariaLabel="Navigasjonslink tilbake til forsiden">
+      <Ui.Nav.Lenke href="/" ariaLabel="Navigasjonslink tilbake til forsiden">
         Klikk her for å gå tilbake til forsiden
-      </Nav.Lenke>
-    </Nav.AlertStripe>
+      </Ui.Nav.Lenke>
+    </Ui.Nav.AlertStripe>
   );
 };
 

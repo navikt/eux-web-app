@@ -1,6 +1,6 @@
 import React from 'react';
 import PT from 'prop-types';
-import { Select as NavSelect } from 'nav-frontend-skjema';
+import Ui from 'eessi-pensjon-ui';
 import { Field } from 'redux-form';
 import '../skjema.css';
 
@@ -16,10 +16,10 @@ function InnerInputComponent({
     ...rest,
   };
   return (
-    <NavSelect label={label} feil={feil} {...inputProps}>
+    <Ui.Nav.Select label={label} feil={feil} {...inputProps}>
       <option />
       {children}
-    </NavSelect>
+    </Ui.Nav.Select>
   );
 }
 

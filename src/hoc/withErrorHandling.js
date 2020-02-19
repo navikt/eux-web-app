@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PT from 'prop-types';
 
-import * as Nav from '../utils/navFrontend';
+import Ui from 'eessi-pensjon-ui'
 import { isJSON } from '../utils/utils';
 
 import './withErrorHandling.css';
@@ -14,7 +14,7 @@ import './withErrorHandling.css';
  */
 const FeilKomponent = ({ feilobjekt }) => (
   <div className="error-message">
-    <Nav.AlertStripeAdvarsel>{ feilobjekt.status } : { feilobjekt.statusText }<br />{ feilobjekt.fetchdata.timestamp}<br />{ feilobjekt.message }</Nav.AlertStripeAdvarsel>
+    <Ui.Nav.AlertStripeAdvarsel>{ feilobjekt.status } : { feilobjekt.statusText }<br />{ feilobjekt.fetchdata.timestamp}<br />{ feilobjekt.message }</Ui.Nav.AlertStripeAdvarsel>
   </div>
 );
 

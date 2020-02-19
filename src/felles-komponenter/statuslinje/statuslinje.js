@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PT from 'prop-types';
-import * as Nav from '../../utils/navFrontend';
-
+import Ui from 'eessi-pensjon-ui'
 import './statuslinje.css';
 
 const undertittelFraStatus = status => {
@@ -18,13 +17,13 @@ const StatusLinje = ({
   if (['NOT_STARTED', 'PENDING'].includes(status)) { return null; }
 
   const type = status === 'OK' ? 'suksess' : 'stopp';
-  const urlLenke = rinaURL ? <Nav.Lenke href={rinaURL} target="_blank" className="vedlegg__lenke">Gå direkte til Rina.</Nav.Lenke> : null;
+  const urlLenke = rinaURL ? <Ui.Nav.Lenke href={rinaURL} target="_blank" className="vedlegg__lenke">Gå direkte til Rina.</Ui.Nav.Lenke> : null;
   const messageOK = routePath ? <Link to={routePath}>{tittel}</Link> : <span>{tittel}</span>;
   const statusTekst = status === 'OK' ? <div>{messageOK} er opprettet. &nbsp; {urlLenke}</div> : `${tittel} ${undertittelFraStatus(status)}`;
 
   return (
     <div className="statuslinje">
-      <Nav.AlertStripe type={type}>{statusTekst}</Nav.AlertStripe>
+      <Ui.Nav.AlertStripe type={type}>{statusTekst}</Ui.Nav.AlertStripe>
     </div>
   );
 };
