@@ -2,7 +2,7 @@ import React from 'react';
 import PT from 'prop-types';
 
 import { formatterDatoTilNorsk } from '../../../utils/dato';
-import * as Nav from '../../../utils/navFrontend';
+import Ui from 'eessi-pensjon-ui'
 import PanelHeader from '../../panelHeader/panelHeader';
 import * as Eux from '../../../felles-komponenter/Ikon';
 import * as MPT from '../../../proptypes';
@@ -21,13 +21,13 @@ const TPSRelasjonEnkelt = ({ kodeverk, relasjon, leggTilTPSrelasjon }) => {
   );
 
   return (
-    <Nav.Panel border className="personsok__kort">
+    <Ui.Nav.Panel border className="personsok__kort">
       <PanelHeader ikon={Eux.IkonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn} - ${rolle}`} undertittel={panelUndertittel} />
-      <Nav.Knapp onClick={() => leggTilTPSrelasjon(relasjon)} className="familierelasjoner__knapp">
+      <Ui.Nav.Knapp onClick={() => leggTilTPSrelasjon(relasjon)} className="familierelasjoner__knapp">
         <Eux.Icon kind="tilsette" size="20" className="familierelasjoner__knapp__ikon" />
         <div className="familierelasjoner__knapp__label">Legg til</div>
-      </Nav.Knapp>
-    </Nav.Panel>
+      </Ui.Nav.Knapp>
+    </Ui.Nav.Panel>
   );
 };
 

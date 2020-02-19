@@ -1,7 +1,7 @@
 import React from 'react';
 import PT from 'prop-types';
 
-import * as Nav from '../utils/navFrontend';
+import Ui from 'eessi-pensjon-ui'
 import * as Eux from '../felles-komponenter/Ikon';
 import * as MPT from '../proptypes';
 
@@ -26,9 +26,9 @@ const PersonSokResultat = props => {
   );
 
   return (
-    <Nav.Panel border className="personsok__kort">
+    <Ui.Nav.Panel border className="personsok__kort">
       <PanelHeader ikon={Eux.IkonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn}`} undertittel={panelUndertittel} />
-      <Nav.Select
+      <Ui.Nav.Select
         id="id-familirelasjon-rolle"
         label="Familierelasjon"
         bredde="fullbredde"
@@ -37,12 +37,12 @@ const PersonSokResultat = props => {
         onChange={oppdaterFamilierelajon}>
         <option value="" disabled>- velg -</option>
         {familierelasjonKodeverk && familierelasjonKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
-      </Nav.Select>
-      <Nav.Knapp disabled={knappDisabled} onClick={leggTilHandler} className="familierelasjoner__knapp">
+      </Ui.Nav.Select>
+      <Ui.Nav.Knapp disabled={knappDisabled} onClick={leggTilHandler} className="familierelasjoner__knapp">
         <Eux.Icon kind="tilsette" size="20" className="familierelasjoner__knapp__ikon" />
         <div className="familierelasjoner__knapp__label">Legg til</div>
-      </Nav.Knapp>
-    </Nav.Panel>
+      </Ui.Nav.Knapp>
+    </Ui.Nav.Panel>
   );
 };
 PersonSokResultat.propTypes = {

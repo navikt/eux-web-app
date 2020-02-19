@@ -1,42 +1,42 @@
 import React from 'react';
 import PT from 'prop-types';
-import { Hovedknapp, Column, Row, Container, Modal, Undertittel, Normaltekst } from '../utils/navFrontend';
+import Ui from 'eessi-pensjon-ui'
 
 import './avsluttModal.css';
 
-Modal.setAppElement('#root');
+Ui.Nav.Modal.setAppElement('#root');
 
 const avsluttModal = props => {
   const { visModal, closeModal } = props;
   return (
-    <Modal
+    <Ui.Nav.Modal
       isOpen={visModal}
       onRequestClose={() => closeModal()}
       closeButton={false}
       contentLabel="Bekreft navigasjon tilbake til forsiden"
     >
       <div className="modal__innhold">
-        <Container align="center" fluid>
-          <Row className="modal__overskrift">
-            <Undertittel> Er du sikker på at du vil avbryte? </Undertittel>
-          </Row >
-          <Row className="modal__tekst">
-            <Normaltekst>Informasjonen du har fyllt inn hittil vil ikke bli lagret.</Normaltekst>
-          </Row>
-          <Row>
-            <Column xs="6">
+        <Ui.Nav.Container align="center" fluid>
+          <Ui.Nav.Row className="modal__overskrift">
+            <Ui.Nav.Undertittel> Er du sikker på at du vil avbryte? </Ui.Nav.Undertittel>
+          </Ui.Nav.Row >
+          <Ui.Nav.Row className="modal__tekst">
+            <Ui.Nav.Normaltekst>Informasjonen du har fyllt inn hittil vil ikke bli lagret.</Ui.Nav.Normaltekst>
+          </Ui.Nav.Row>
+          <Ui.Nav.Row>
+            <Ui.Nav.Column xs="6">
               {/* Hack for å bruke en nav-knapp som lenke */}
               <a href="/" tabIndex="-1">
-                <Hovedknapp className="modal__knapp">JA, AVBRYT</Hovedknapp>
+                <Ui.Nav.Hovedknapp className="modal__knapp">JA, AVBRYT</Ui.Nav.Hovedknapp>
               </a>
-            </Column >
-            <Column xs="6">
-              <Hovedknapp className="modal__knapp" onClick={closeModal}>NEI, FORTSETT</Hovedknapp>
-            </Column >
-          </Row>
-        </Container>
+            </Ui.Nav.Column >
+            <Ui.Nav.Column xs="6">
+              <Ui.Nav.Hovedknapp className="modal__knapp" onClick={closeModal}>NEI, FORTSETT</Ui.Nav.Hovedknapp>
+            </Ui.Nav.Column >
+          </Ui.Nav.Row>
+        </Ui.Nav.Container>
       </div >
-    </Modal>
+    </Ui.Nav.Modal>
   );
 };
 

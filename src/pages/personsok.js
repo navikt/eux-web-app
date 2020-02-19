@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PT from 'prop-types';
 
 import * as MPT from '../proptypes/';
-import * as Nav from '../utils/navFrontend';
+import Ui from 'eessi-pensjon-ui'
 import * as Skjema from '../felles-komponenter/skjema';
 import { PersonOperations, PersonSelectors } from '../ducks/person';
 import { PanelHeader } from '../felles-komponenter/panelHeader';
@@ -29,16 +29,16 @@ const PersonKort = ({ person }) => {
 
   return (
     <div>
-      <Nav.Panel className="personsok__kort">
+      <Ui.Nav.Panel className="personsok__kort">
         <PanelHeader ikon={Eux.IkonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn}`} undertittel={panelUndertittel} />
-        <Nav.Knapp
+        <Ui.Nav.Knapp
           className="familierelasjoner__knapp familierelasjoner__knapp--slett"
           onClick={() => window.location.reload()}
         >
           <Eux.Icon kind="trashcan" size="20" className="familierelasjoner__knapp__ikon" />
           <div className="familierelasjoner__knapp__label">Fjern</div>
-        </Nav.Knapp>
-      </Nav.Panel>
+        </Ui.Nav.Knapp>
+      </Ui.Nav.Panel>
     </div>
   );
 };
@@ -89,8 +89,8 @@ class PersonSok extends Component {
             className="personsok__input"
             feltNavn="fnr"
           />
-          {['PENDING'].includes(status) ? <div className="personsok__spinnerwrapper"><Nav.NavFrontendSpinner type="S" /></div> : null}
-          <Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson}>SØK</Nav.Knapp>
+          {['PENDING'].includes(status) ? <div className="personsok__spinnerwrapper"><Ui.Nav.NavFrontendSpinner type="S" /></div> : null}
+          <Ui.Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson}>SØK</Ui.Nav.Knapp>
         </div>
         {this.state.sokeerror && <p>{this.state.sokeerror.message}</p>}
         {errdata.status && <StatusLinje status={status} tittel="Fødselsnummer søket" />}

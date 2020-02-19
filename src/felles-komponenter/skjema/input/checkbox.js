@@ -1,7 +1,7 @@
 import React from 'react';
 import PT from 'prop-types';
 import { submit } from 'redux-form';
-import { Checkbox as NavCheckbox } from 'nav-frontend-skjema';
+import Ui from 'eessi-pensjon-ui';
 import { CustomField } from 'react-redux-form-validation';
 import '../skjema.css';
 
@@ -22,7 +22,7 @@ function InnerCheckboxComponent({
   }
 
   return (
-    <NavCheckbox
+    <Ui.Nav.Checkbox
       label={label}
       feil={feil}
       checked={input.value}
