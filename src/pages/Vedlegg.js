@@ -12,7 +12,7 @@ import * as MPT from '../proptypes';
 import { KodeverkSelectors } from '../ducks/kodeverk';
 import { RinavedleggOperations, RinavedleggSelectors } from '../ducks/rinavedlegg';
 import { getParam } from '../utils/queryString';
-import './vedlegg.css';
+import './Vedlegg.css';
 
 class Vedlegg extends Component {
   componentDidMount() {
