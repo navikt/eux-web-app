@@ -2,24 +2,20 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import * as navLogo from '../resources/images/nEESSI.svg';
+import NEESSILogo from 'resources/images/nEESSI';
 
 import './topplinje.css';
 import * as MPT from '../proptypes/';
 
 import { saksbehandlerSelectors } from '../ducks/saksbehandler/';
 
-const Topplinje = props => {
+const Topplinje = (props: any) => {
   const { saksbehandler: { navn } } = props;
   return (
     <header className="topplinje">
       <div className="topplinje__brand">
-        <Link to="/" alt="NAV, lenke hovedsiden">
-          <img
-            className="brand__logo"
-            src={navLogo}
-            alt="To personer på NAV kontor"
-          />
+        <Link to="/">
+          <NEESSILogo/>
         </Link>
         <div className="brand__skillelinje" />
         <div className="brand__tittel"><span>{process.env.REACT_APP_NAME}</span></div>
@@ -35,7 +31,7 @@ Topplinje.propTypes = {
   saksbehandler: MPT.Saksbehandler.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
   saksbehandler: saksbehandlerSelectors.SaksbehandlerSelector(state),
 });
 

@@ -19,7 +19,7 @@ import { StatusLinje } from '../felles-komponenter/statuslinje';
 import FamilieRelasjonsComponent from '../felles-komponenter/skjema/PersonOgFamilieRelasjoner';
 import PersonSok from './personsok';
 
-import './opprettsak.css';
+import './OpprettSak.css';
 import { ArbeidsforholdController, BehandlingsTemaer, Fagsaker } from './sak';
 import AvsluttModal from '../komponenter/AvsluttModal';
 
