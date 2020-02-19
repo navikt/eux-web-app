@@ -1,8 +1,7 @@
 import PT from 'prop-types';
 import React from 'react';
 import Ui from 'eessi-pensjon-ui'
-
-import './ukjentSide.css';
+import './UkjentSide.css';
 
 /* eslint arrow-body-style:off */
 const UkjentSide = ({ location }) => {
