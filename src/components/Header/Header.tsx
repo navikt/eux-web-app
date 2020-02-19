@@ -1,16 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-
 import NEESSILogo from 'resources/images/nEESSI';
+import './Header.css';
+import * as MPT from '../../proptypes/';
 
-import './topplinje.css';
-import * as MPT from '../proptypes/';
+import { saksbehandlerSelectors } from '../../ducks/saksbehandler/';
 
-import { saksbehandlerSelectors } from '../ducks/saksbehandler/';
-
-const Topplinje = (props: any) => {
+const Header = (props: any) => {
   const { saksbehandler: { navn } } = props;
+  console.log('werweewr')
   return (
     <header className="topplinje">
       <div className="topplinje__brand">
@@ -27,7 +26,7 @@ const Topplinje = (props: any) => {
   );
 };
 
-Topplinje.propTypes = {
+Header.propTypes = {
   saksbehandler: MPT.Saksbehandler.isRequired,
 };
 
@@ -38,4 +37,4 @@ const mapStateToProps = (state: any) => ({
 const mapDispatchToProps = () => ({
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Topplinje);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
