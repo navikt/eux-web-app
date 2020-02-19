@@ -1,7 +1,7 @@
 import React from 'react';
 import PT from 'prop-types';
 
-import Rammeverk from './sider/rammeverk';
+import Rammeverk from './pages/rammeverk';
 
 function App({ children }) {
   return (
