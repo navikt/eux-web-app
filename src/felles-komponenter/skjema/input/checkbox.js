@@ -12,7 +12,7 @@ function InnerCheckboxComponent({
   errorMessage,
   submitOnChange,
 }) {
-  const feil = errorMessage ? { feilmelding: errorMessage[0] } : undefined;
+  const feil = errorMessage ? errorMessage[0] : undefined;
 
   function onChange(...args) {
     if (submitOnChange) {
