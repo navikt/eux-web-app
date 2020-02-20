@@ -3,7 +3,7 @@ import PT from 'prop-types';
 import { change, formValueSelector, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 
-import * as Skjema from '../felles-komponenter/skjema';
+import * as Skjema from 'felles-komponenter/skjema';
 import { StatusLinje } from '../felles-komponenter/statuslinje';
 import DokumentSok from './dokumentsok';
 import Ui from 'eessi-pensjon-ui'

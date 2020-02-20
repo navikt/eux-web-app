@@ -1,5 +1,5 @@
-import Forside from './Forside';
-import OpprettSak from './OpprettSak';
+import Forside from 'pages/Forside';
+import OpprettSak from 'pages/OpprettSak';
 import Vedlegg from './Vedlegg';
 import UkjentSide from 'pages/UkjentSide';
 
