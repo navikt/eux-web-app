@@ -4,7 +4,7 @@ import PT from 'prop-types';
 import moment from 'moment/moment';
 
 import Ui from 'eessi-pensjon-ui'
-import * as Skjema from '../felles-komponenter/skjema';
+import * as Skjema from 'felles-komponenter/skjema';
 import * as API from '../services/api';
 import { DokumenterSelectors } from '../ducks/dokumenter';
 

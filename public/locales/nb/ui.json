@@ -1,1 +1,14 @@
-{}
+{
+  "app-name" : "nEESSI",
+  "app-title": "Velkommen til nEESSI",
+
+  "error-unknownPage-cantFindRoute": "Denne siden finnes ikke: '{{pathname}}'.",
+  "error-unknownPage-description": "Dersom du ble sendt hit fra Gosys eller et annet Nav-system, ta kontakt med driftsansvarlig.",
+  "error-unknownPage-linkToRoot": "Klikk her for å gå tilbake til forsiden",
+  "error-unknownPage-linkToRoot-ariaLabel": "Navigasjonslink tilbake til forsiden",
+
+  "menu-createCase" : "Opprett sak",
+  "menu-addAttachment": "Legg ved vedlegg til SED",
+
+  "validation-invalidFnr": "Fnr må ha 11 siffer"
+}

@@ -7,7 +7,7 @@ import { Route, Router, Switch } from 'react-router'
 import { applyMiddleware, combineReducers, createStore, Store } from 'redux'
 import { reducer as formReducer } from 'redux-form'
 import thunk from 'redux-thunk'
-
+import { IS_PRODUCTION } from 'constants/environment'
 import arbeidsforholdReducers from './ducks/arbeidsforhold'
 import dokumenterReducers from './ducks/dokumenter'
 import fagsakReducers from './ducks/fagsak'
@@ -45,15 +45,19 @@ const _reducers = combineReducers({
   }),
   saksbehandler: saksbehandlerReducers,
   serverinfo: serverinfoReducers,
+})
 
-});
+const store: Store = createStore(_reducers, applyMiddleware(thunk))
+  store.dispatch(KodeverkOperations.preload())
+  // @ts-ignore
+store.dispatch(saksbehandlerOperations.hent())
+  // @ts-ignore
+store.dispatch(ServerinfoOperations.hent())
 
-const store: Store = createStore(_reducers, applyMiddleware(thunk));
-  store.dispatch(KodeverkOperations.preload());
-  // @ts-ignore
-store.dispatch(saksbehandlerOperations.hent());
-  // @ts-ignore
-store.dispatch(ServerinfoOperations.hent());
+if (!IS_PRODUCTION) {
+  var axe = require('react-axe')
+  axe(React, ReactDOM, 1000)
+}
 
 ReactDOM.render(
   <I18nextProvider i18n={i18n}>
