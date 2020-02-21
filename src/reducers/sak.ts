@@ -101,6 +101,9 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
         ...action.payload
       }
 
+    case types.APP_CLEAN_DATA:
+      return initialSakState;
+
     default:
 
       return state

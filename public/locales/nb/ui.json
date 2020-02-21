@@ -12,5 +12,7 @@
   "menu-createCase" : "Opprett sak",
   "menu-addAttachment": "Legg ved vedlegg til SED",
 
+  "modal-abort-contentLabel": "Bekreft navigasjon tilbake til forsiden",
+
   "validation-invalidFnr": "Fnr må ha 11 siffer"
 }

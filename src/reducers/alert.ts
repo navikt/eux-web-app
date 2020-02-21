@@ -36,6 +36,9 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         serverErrorMessage = 'ui:serverAuthenticationError'
         break
 
+      case types.APP_CLEAN_DATA:
+        return initialAlertState;
+
       default:
         serverErrorMessage = (action as ActionWithPayload).payload.message || 'ui:serverInternalError'
         break

@@ -9,15 +9,16 @@ import _ from 'lodash'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import { ArbeidsforholdController, BehandlingsTemaer, Fagsaker } from '../components/sak'
 import FamilieRelasjonsComponent from '../felles-komponenter/skjema/PersonOgFamilieRelasjoner'
 import { StatusLinje } from '../felles-komponenter/statuslinje'
-import AvsluttModal from '../komponenter/AvsluttModal'
+import AbortModal from 'components/AbortModal/AbortModal'
+import * as types from 'constants/actionTypes'
 import './OpprettSak.css'
-import { ArbeidsforholdController, BehandlingsTemaer, Fagsaker } from '../components/sak'
 
-const btnStyle = {
-  margin: '1.85em 0 0 0',
-};
+export interface OpprettSakProps {
+  history: any;
+}
 
 export interface OpprettSakSelector {
   allbuctyper: any;
@@ -61,7 +62,7 @@ const mapState =(state: State): OpprettSakSelector => ({
   valgteArbeidsforhold: state.form.tilleggsopplysninger.arbeidsforhold
 });
 
-const OpprettSak: React.FC<any> = (): JSX.Element => {
+const OpprettSak: React.FC<OpprettSakProps> = ({history} : OpprettSakProps): JSX.Element => {
   const {
     allbuctyper, allsedtyper, fagsaker, fnrErGyldig, fnrErSjekket, inntastetFnr, institusjoner, kodemaps, landkoder, opprettetSak,
     sektor, sendingSak, serverInfo, valgtBucType, valgtSedType, valgtSektor
@@ -187,6 +188,11 @@ const OpprettSak: React.FC<any> = (): JSX.Element => {
     dispatch(formActions.set('fnrErSjekket', erSjekket))
   }
 
+  const onAbort = () => {
+    dispatch({type: types.APP_CLEAN_DATA})
+    history.push('/')
+  }
+
   return (
     <TopContainer className="opprettsak">
       <Ui.Nav.Row>
@@ -270,7 +276,7 @@ const OpprettSak: React.FC<any> = (): JSX.Element => {
                     <BehandlingsTemaer temaer={temar as any} tema={tema} oppdaterTemaListe={oppdaterTemaListe} />
                   </Ui.Nav.Column>
                   <Ui.Nav.Column xs="2">
-                    <Ui.Nav.Knapp style={btnStyle} onClick={visFagsaker} disabled={tema.length === 0}>Vis saker</Ui.Nav.Knapp>
+                    <Ui.Nav.Knapp onClick={visFagsaker} disabled={tema.length === 0}>Vis saker</Ui.Nav.Knapp>
                   </Ui.Nav.Column>
                   <Ui.Nav.Column xs="2">
                     <Ui.Nav.Lenke href={serverInfo.gosysURL} ariaLabel="Opprett ny sak i GOSYS" target="_blank">
@@ -310,7 +316,8 @@ const OpprettSak: React.FC<any> = (): JSX.Element => {
               </Ui.Nav.Row>
             ) : null}
           </form>
-          <AvsluttModal
+          <AbortModal
+            onAbort={onAbort}
             visModal={visModal}
             closeModal={closeModal}
           />
