@@ -29,6 +29,10 @@ export const initialFormState: FormState = {
 
 const formReducer = (state: FormState = initialFormState, action: ActionWithPayload) => {
   switch (action.type) {
+
+    case types.APP_CLEAN_DATA:
+      return initialFormState;
+
     case types.FORM_VALUE_SET:
       return {
         ...state,
