@@ -3,10 +3,11 @@ import PT from 'prop-types';
 import _ from 'lodash';
 import Ui from 'eessi-pensjon-ui'
 
-import * as MPT from '../../../proptypes';
-import * as API from '../../../services/api';
+import * as sakActions from 'actions/sak';
 import PersonSokResultat from '../../../komponenter/PersonSokResultat';
 import './annenperson.css';
+import { PersonPropType } from '../../../declarations/types.pt';
+import { useDispatch } from 'react-redux';
 
 const defaultState = {
   sok: '', feiletSok: '', person: null, tpsperson: null, rolle: '', knappDisabled: true, notFound400: false,
@@ -20,8 +21,10 @@ class AnnenRelatertTPSPerson extends Component {
   sokEtterFnr = async () => {
     const { sok } = this.state;
     const { tpsrelasjoner } = this.props;
+    const { dispatch } = useDispatch()
     try {
-      const response = await API.Personer.hentPerson(sok);
+      const response = dispatch(sakActions.getPersoner(sok))
+
       // Fjern relasjoner array, NOTE! det er kun relasjoner som har rolle.
       const person = _.omit(response, 'relasjoner');
       const tpsperson = tpsrelasjoner.find(elem => elem.fnr === person.fnr);
@@ -121,7 +124,7 @@ class AnnenRelatertTPSPerson extends Component {
 AnnenRelatertTPSPerson.propTypes = {
   tpsrelasjoner: PT.any.isRequired,
   tpsperson: PT.object,
-  person: MPT.Person,
+  person: PersonPropType,
   filtrerteFamilieRelasjoner: PT.func.isRequired,
   leggTilTPSrelasjon: PT.func.isRequired,
   valgtBrukerFnr: PT.string.isRequired,

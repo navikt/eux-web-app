@@ -1,22 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PT from 'prop-types';
-
-import * as MPT from '../../../proptypes';
 import Ui from 'eessi-pensjon-ui'
 
 import { vaskInputDato } from '../../../utils/dato';
 
-import * as KodeverkSelectors from '../../../ducks/kodeverk/selectors';
-import { PersonSelectors } from '../../../ducks/person';
 
-import { LandkoderSelectors } from '../../../ducks/landkoder';
 import { FamilieRelasjonPanel } from './FamilieRelasjonPanel';
 import { FamilieRelasjonUtland } from './FamilieRelasjonUtland';
 import { TPSRelasjonEnkelt } from './TPSRelasjonEnkelt';
 
 import { AnnenRelatertTPSPerson } from './AnnenRelatertTPSPerson';
 import './familierelasjoner.css';
+import { FamilieRelasjonPropType, KodeverkPropType, PersonPropType } from 'declarations/types.pt';
 
 const uuid = require('uuid/v4');
 
@@ -198,12 +194,12 @@ class FamilieRelasjonController extends Component {
 }
 
 FamilieRelasjonController.propTypes = {
-  person: MPT.Person,
-  tpsrelasjoner: PT.arrayOf(MPT.FamilieRelasjon),
-  familierelasjonKodeverk: PT.arrayOf(MPT.Kodeverk),
-  kjoennKodeverk: PT.arrayOf(MPT.Kodeverk),
+  person: PersonPropType,
+  tpsrelasjoner: PT.arrayOf(FamilieRelasjonPropType),
+  familierelasjonKodeverk: PT.arrayOf(KodeverkPropType),
+  kjoennKodeverk: PT.arrayOf(KodeverkPropType),
   fields: PT.object.isRequired,
-  landKodeverk: PT.arrayOf(MPT.Kodeverk),
+  landKodeverk: PT.arrayOf(KodeverkPropType)
 };
 FamilieRelasjonController.defaultProps = {
   person: {},
@@ -214,11 +210,11 @@ FamilieRelasjonController.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  person: PersonSelectors.personSelector(state),
+ /* person: PersonSelectors.personSelector(state),
   tpsrelasjoner: PersonSelectors.familieRelasjonerSelector(state),
   familierelasjonKodeverk: KodeverkSelectors.familierelasjonerSelector(state),
   kjoennKodeverk: KodeverkSelectors.kjoennSelector(state),
-  landKodeverk: LandkoderSelectors.landkoderSelector(state),
+  landKodeverk: LandkoderSelectors.landkoderSelector(state),*/
 });
 
 export default connect(mapStateToProps)(FamilieRelasjonController);
