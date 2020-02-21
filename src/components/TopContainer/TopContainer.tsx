@@ -1,15 +1,14 @@
 import { clientClear, clientError } from 'actions/alert'
-import { closeModal, toggleHighContrast } from 'actions/ui'
+import { toggleHighContrast } from 'actions/ui'
 import classNames from 'classnames'
 import Header from 'components/Header/Header'
+import { State } from 'declarations/reducers'
 import Ui from 'eessi-pensjon-ui'
-import { ModalContent } from 'eessi-pensjon-ui/dist/declarations/components'
 import _ from 'lodash'
 import PT from 'prop-types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { State } from 'declarations/reducers'
 import './TopContainer.css'
 
 export interface TopContainerProps {
@@ -24,7 +23,6 @@ export interface TopContainerSelector {
   clientErrorMessage: string | undefined;
   serverErrorMessage: string | undefined;
   error: any | undefined;
-  modal: ModalContent | undefined;
   highContrast: boolean;
 }
 
@@ -33,7 +31,6 @@ const mapState = (state: State): TopContainerSelector => ({
   clientErrorMessage: state.alert.clientErrorMessage,
   serverErrorMessage: state.alert.serverErrorMessage,
   error: state.alert.error,
-  modal: state.ui.modal,
   highContrast: state.ui.highContrast
 })
 
@@ -41,13 +38,10 @@ export const TopContainer: React.FC<TopContainerProps> = ({
   className, children, fluid = true, header
 }: TopContainerProps): JSX.Element => {
   const {
-    clientErrorMessage, clientErrorStatus, serverErrorMessage, error, modal, highContrast
+    clientErrorMessage, clientErrorStatus, serverErrorMessage, error, highContrast
   } = useSelector(mapState)
   const dispatch = useDispatch()
   const { t } = useTranslation()
-  const handleModalClose = (): void => {
-    dispatch(closeModal())
-  }
 
   const onClear = (): void => {
     dispatch(clientClear())
@@ -103,13 +97,6 @@ export const TopContainer: React.FC<TopContainerProps> = ({
           error={error}
           onClose={onClear}
         />
-        {modal !== undefined ? (
-          <Ui.Modal
-            appElement={(document.getElementById('main') || document.body)}
-            modal={modal}
-            onModalClose={handleModalClose}
-          />
-        ) : null}
       </Header>
       <main id='main' role='main' className={classNames(className, '_container', 'p-0', { 'container-fluid': fluid, highContrast: highContrast })}>
         {children}

@@ -170,6 +170,9 @@ const loadingReducer = (state: LoadingState = initialLoadingState, action: Actio
         gettingServerinfo: false
       }
 
+    case types.APP_CLEAN_DATA:
+      return initialLoadingState;
+
     default:
       return state
   }
