@@ -14,13 +14,9 @@ import Pages from './pages'
 import { unregister } from './registerServiceWorker'
 import 'eessi-pensjon-ui/dist/minibootstrap.css'
 import 'eessi-pensjon-ui/dist/nav.css'
-import * as sakActions from 'actions/sak'
 import './index.css'
 
 const store: Store = createStore(combineReducers(reducers), applyMiddleware(thunk))
-store.dispatch(sakActions.preload())
-store.dispatch(sakActions.getSaksbehandler())
-store.dispatch(sakActions.getServerinfo())
 
 if (!IS_PRODUCTION) {
   var axe = require('react-axe')
