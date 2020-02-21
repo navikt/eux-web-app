@@ -1,31 +1,40 @@
+import 'components/PersonFind/PersonFind.css'
+import { State } from 'declarations/reducers'
 import { Person } from 'declarations/types'
-import React, { useState } from 'react'
-import { connect } from 'react-redux';
-import PT from 'prop-types';
-import * as MPT from '../../proptypes';
 import Ui from 'eessi-pensjon-ui'
-import * as Skjema from 'felles-komponenter/skjema';
-import { PersonOperations, PersonSelectors } from 'ducks/person';
-import { StatusLinje } from 'felles-komponenter/statuslinje';
+import * as Skjema from 'felles-komponenter/skjema'
+import { StatusLinje } from 'felles-komponenter/statuslinje'
+import PT from 'prop-types'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import PersonCard from '../PersonCard/PersonCard'
-import 'components/PersonFind/PersonFind.css';
+import * as sakActions from 'actions/sak'
 
 export interface PersonFindProps {
   inntastetFnr: any;
   settFnrGyldighet: (b: boolean) => any;
   settFnrSjekket: (b: boolean) => any;
-  personSok: any;
-  person: any;
-  status: any;
-  errdata: any;
 }
 
+export interface PersonFindSelector {
+  personer: Person;
+  gettingPersoner: boolean;
+}
+
+const mapState = (state: State): PersonFindSelector => ({
+  personer: state.sak.personer,
+  gettingPersoner: state.loading.gettingPersoner
+});
+
 const PersonFind: React.FC<PersonFindProps> = ({
-  inntastetFnr, settFnrGyldighet, settFnrSjekket, personSok, person, status, errdata
+  inntastetFnr, settFnrGyldighet, settFnrSjekket
 }: PersonFindProps): JSX.Element => {
   const [ validation, setValidation ] = useState<string | undefined>(undefined)
+  const [_person, setPerson ] = useState<Person | undefined>(undefined)
 
-  const erPersonFunnet = (person: Person) => (person.fornavn.length !== undefined && person.fnr !== undefined);
+  const dispatch = useDispatch()
+  const { gettingPersoner, personer }: PersonFindSelector = useSelector<State, PersonFindSelector>(mapState)
+  const erPersonFunnet = (personer: Person) => (personer?.fornavn?.length !== undefined && personer?.fnr !== undefined);
 
   const sokEtterPerson = () => {
 
@@ -38,19 +47,23 @@ const PersonFind: React.FC<PersonFindProps> = ({
       return;
     }
     setValidation(undefined)
-    personSok(inntastetFnr.trim()).then((response: any) => {
-      if (response && response.data) {
-        const person = { ...response.data };
-        settFnrGyldighet(erPersonFunnet(person));
-        settFnrSjekket(true);
-      } else {
+    setPerson(undefined)
+    dispatch(sakActions.getPersoner(inntastetFnr.trim()))
+  }
+
+  useEffect(() => {
+    if (personer !== undefined && !_person) {
+      if (personer === null) {
         settFnrGyldighet(false);
         settFnrSjekket(false);
+      } else {
+        settFnrGyldighet(erPersonFunnet(personer))
+        settFnrSjekket(true)
+        setPerson(personer)
       }
-    });
-  };
+    }
+  }, [personer, _person, settFnrGyldighet, settFnrSjekket])
 
-  const personKort = person && person.fornavn && person.etternavn ? <PersonCard person={person} /> : null;
   return (
     <div className="personsok">
       <div className="personsok__skjema">
@@ -59,41 +72,24 @@ const PersonFind: React.FC<PersonFindProps> = ({
           className="personsok__input"
           feltNavn="fnr"
         />
-        {['PENDING'].includes(status) ? <div className="personsok__spinnerwrapper"><Ui.Nav.NavFrontendSpinner type="S" /></div> : null}
+        {gettingPersoner ? <div className="personsok__spinnerwrapper"><Ui.Nav.NavFrontendSpinner type="S" /></div> : null}
         <Ui.Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson}>SØK</Ui.Nav.Knapp>
       </div>
       {validation ? <p>validation</p> : null}
-      {errdata.status && <StatusLinje status={status} tittel="Fødselsnummer søket" />}
-      {errdata.status && <p>{errdata.message}</p>}
-      {personKort}
+      {personer ? <StatusLinje status='OK' tittel="Fødselsnummer søket" /> : null}
+      {personer && personer.fornavn && personer.etternavn ? <PersonCard person={personer} /> : null}
     </div>
   )
 }
 
 PersonFind.propTypes = {
-  personSok: PT.func.isRequired,
-  person: MPT.Person,
   settFnrGyldighet: PT.func.isRequired,
   settFnrSjekket: PT.func.isRequired,
-  inntastetFnr: PT.string,
-  status: PT.string,
-  errdata: PT.object,
-};
+  inntastetFnr: PT.string
+}
 
 PersonFind.defaultProps = {
-  person: {},
-  inntastetFnr: '',
-  status: '',
-  errdata: {},
-};
+  inntastetFnr: ''
+}
 
-const mapStateToProps = (state: any) => ({
-  person: PersonSelectors.personSelector(state),
-  status: PersonSelectors.statusSelector(state),
-  errdata: PersonSelectors.errorDataSelector(state),
-});
-const mapDispatchToProps = (dispatch: any) => ({
-  personSok: (fnr: any) => dispatch(PersonOperations.hentPerson(fnr.trim())),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(PersonFind);
+export default PersonFind

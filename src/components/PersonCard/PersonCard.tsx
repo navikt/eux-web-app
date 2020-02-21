@@ -1,14 +1,17 @@
+import { Person } from 'declarations/types'
+import { PersonPropType } from 'declarations/types.pt'
 import Ui from "eessi-pensjon-ui"
 import React from 'react'
 import { formatterDatoTilNorsk } from 'utils/dato'
 import { PanelHeader } from 'felles-komponenter/panelHeader';
 import * as Eux from 'felles-komponenter/Ikon';
-import * as MPT from '../../proptypes';
 
-const PersonKort: React.FC<any> = ({ person }: any): JSX.Element => {
-  const {
-    fnr, fdato, fornavn, etternavn, kjoenn,
-  } = person;
+export interface PersonCardProps {
+  person: Person
+}
+
+const PersonCard: React.FC<PersonCardProps> = ({ person }: PersonCardProps): JSX.Element => {
+  const { fnr, fdato, fornavn, etternavn, kjoenn } = person;
 
   const panelUndertittel = (
     <div className="panelheader__undertittel">
@@ -30,11 +33,11 @@ const PersonKort: React.FC<any> = ({ person }: any): JSX.Element => {
         </Ui.Nav.Knapp>
       </Ui.Nav.Panel>
     </div>
-  );
-};
+  )
+}
 
-PersonKort.propTypes = {
-  person: MPT.Person.isRequired,
-};
+PersonCard.propTypes = {
+  person: PersonPropType.isRequired,
+}
 
-export default PersonKort
+export default PersonCard

@@ -3,9 +3,9 @@ import PT from 'prop-types';
 
 import Ui from 'eessi-pensjon-ui'
 import * as Eux from '../../../felles-komponenter/Ikon';
-import * as MPT from '../../../proptypes';
 
 import './familierelasjoner.css';
+import { KodeverkPropType } from '../../../declarations/types.pt';
 
 const uuid = require('uuid/v4');
 
@@ -111,8 +111,8 @@ FamilieRelasjonUtland.propTypes = {
   spesialRelasjon: PT.object.isRequired,
   oppdaterState: PT.func.isRequired,
   filtrerteFamilieRelasjoner: PT.func.isRequired,
-  kjoennKodeverk: PT.arrayOf(MPT.Kodeverk),
-  landKodeverk: PT.arrayOf(MPT.Kodeverk),
+  kjoennKodeverk: PT.arrayOf(KodeverkPropType),
+  landKodeverk: PT.arrayOf(KodeverkPropType),
   leggTilSpesialRelasjon: PT.func.isRequired,
   vaskInputDatoOgOppdater: PT.func.isRequired,
   kanSpesialRelasjonLeggesTil: PT.func.isRequired,

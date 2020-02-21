@@ -1,11 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import { FieldArray } from 'redux-form';
 import PT from 'prop-types';
-
-import * as MPT from '../../proptypes';
 import * as Ikoner from '../../resources/images/index';
 import Ui from 'eessi-pensjon-ui'
 import { formatterDatoTilNorsk } from '../../utils/dato';
+import { ArbeidsforholdPropType, ArbeidsforholdetPropType } from '../../declarations/types.pt';
 
 const uuid = require('uuid/v4');
 
@@ -33,7 +32,7 @@ const ArbeidsforholdLinje = props => {
   );
 };
 ArbeidsforholdLinje.propTypes = {
-  arbeidsforholdet: MPT.Arbeidsforholdet.isRequired,
+  arbeidsforholdet: ArbeidsforholdetPropType.isRequired,
   erValgt: PT.bool,
   arbeidsforholdKlikkHandler: PT.func.isRequired,
 };
@@ -74,7 +73,7 @@ class ArbeidsforholdListe extends Component {
 
 ArbeidsforholdListe.propTypes = {
   fields: PT.object.isRequired,
-  arbeidsforhold: MPT.Arbeidsforhold,
+  arbeidsforhold: ArbeidsforholdPropType,
 };
 ArbeidsforholdListe.defaultProps = {
   arbeidsforhold: [],

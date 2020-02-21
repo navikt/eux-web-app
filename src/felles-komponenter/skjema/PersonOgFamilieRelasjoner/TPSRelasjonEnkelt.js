@@ -5,7 +5,7 @@ import { formatterDatoTilNorsk } from '../../../utils/dato';
 import Ui from 'eessi-pensjon-ui'
 import PanelHeader from '../../panelHeader/panelHeader';
 import * as Eux from '../../../felles-komponenter/Ikon';
-import * as MPT from '../../../proptypes';
+import { KodeverkPropType, FamilieRelasjonPropType } from 'declarations/types.pt';
 
 const TPSRelasjonEnkelt = ({ kodeverk, relasjon, leggTilTPSrelasjon }) => {
   const {
@@ -32,8 +32,8 @@ const TPSRelasjonEnkelt = ({ kodeverk, relasjon, leggTilTPSrelasjon }) => {
 };
 
 TPSRelasjonEnkelt.propTypes = {
-  kodeverk: PT.arrayOf(MPT.Kodeverk).isRequired,
-  relasjon: MPT.FamilieRelasjon.isRequired,
+  kodeverk: PT.arrayOf(KodeverkPropType).isRequired,
+  relasjon: FamilieRelasjonPropType.isRequired,
   leggTilTPSrelasjon: PT.func.isRequired,
 };
 
