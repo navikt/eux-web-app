@@ -1,10 +1,24 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Ui from 'eessi-pensjon-ui'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
+import * as sakActions from 'actions/sak'
 
 const Forside: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
+  const dispatch = useDispatch()
+  const [ mounted, setMounted ] = useState(false)
+
+  useEffect(() => {
+    if (!mounted) {
+      dispatch(sakActions.preload())
+      dispatch(sakActions.getSaksbehandler())
+      dispatch(sakActions.getServerinfo())
+      setMounted(true)
+    }
+  }, [mounted, dispatch])
+
   return (
     <TopContainer className="p-forside">
       <Ui.Nav.Row>

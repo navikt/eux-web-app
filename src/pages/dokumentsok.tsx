@@ -1,12 +1,11 @@
 import * as sakActions from 'actions/sak'
+import * as vedleggActions from 'actions/vedlegg'
 import { State } from 'declarations/reducers'
 import Ui from 'eessi-pensjon-ui'
-import * as Skjema from 'felles-komponenter/skjema'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import DocumentCard from '../components/DocumentCard/DocumentCard'
-
 import './dokumentsok.css'
 
 export interface DocumentSearchSelector {
@@ -57,15 +56,20 @@ const DokumentSok: React.FC<DocumentSearchProps> = ({
 
   const harIngenDokumenter = rinadokumenter && rinadokumenter.length === 0;
 
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(vedleggActions.set('rinasaksnummer', e.target.value))
+  }
+
   return (
     <div className="dokumentsok">
       <div className="dokumentsok__skjema">
-        <Skjema.Input
+        <Ui.Nav.Input
           label="RINA saksnummer"
           className="dokumentsok__input"
           bredde="XL"
-          feltNavn="rinasaksnummer"
+          name="rinasaksnummer"
           onKeyUp={inntastetRinaSaksnummerHarBlittEndret}
+          onChange={onChange}
         />
         <Ui.Nav.Knapp className="dokumentsok__knapp" onClick={sokEtterDokumenter} spinner={gettingDokumenter}>SØK</Ui.Nav.Knapp>
       </div>

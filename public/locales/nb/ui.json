@@ -7,6 +7,8 @@
   "error-unknownPage-linkToRoot": "Klikk her for å gå tilbake til forsiden",
   "error-unknownPage-linkToRoot-ariaLabel": "Navigasjonslink tilbake til forsiden",
 
+  "form-createCaseInRINA" : "Opprett sak i RINA",
+
   "menu-createCase" : "Opprett sak",
   "menu-addAttachment": "Legg ved vedlegg til SED",
 

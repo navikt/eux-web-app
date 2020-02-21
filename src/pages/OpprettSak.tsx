@@ -5,17 +5,15 @@ import TopContainer from 'components/TopContainer/TopContainer'
 import { State } from 'declarations/reducers'
 import * as EKV from 'eessi-kodeverk'
 import Ui from 'eessi-pensjon-ui'
-import * as Skjema from 'felles-komponenter/skjema'
 import _ from 'lodash'
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import FamilieRelasjonsComponent from '../felles-komponenter/skjema/PersonOgFamilieRelasjoner'
 import { StatusLinje } from '../felles-komponenter/statuslinje'
 import AvsluttModal from '../komponenter/AvsluttModal'
 import './OpprettSak.css'
 import { ArbeidsforholdController, BehandlingsTemaer, Fagsaker } from './sak'
-
-const uuid = require('uuid/v4');
 
 const btnStyle = {
   margin: '1.85em 0 0 0',
@@ -74,11 +72,11 @@ const OpprettSak: React.FC<any> = (): JSX.Element => {
     sektor, sendingSak, serverInfo, valgtBucType, valgtSedType, valgtSektor
   }: OpprettSakSelector = useSelector<State, OpprettSakSelector>(mapState)
   const dispatch = useDispatch()
+  const { t } = useTranslation()
 
   const [landKode, setLandKode] = useState('')
   const [institusjonsID, setInstitusjonsID] = useState('')
   const [tema, setTema] = useState('')
-
   const [saksID, setSaksID] = useState('')
   const [visModal, setVisModal] = useState(false)
 
@@ -94,9 +92,6 @@ const OpprettSak: React.FC<any> = (): JSX.Element => {
     return acc
   }, [])
 
-  const { rinasaksnummer, url: responsLenke } = opprettetSak
-  const vedleggRoute = `/vedlegg?rinasaksnummer=${rinasaksnummer}`
-
   const erFagomroedeValgt = valgtSektor && valgtSektor.length > 0
   const erBUCValgt = !_.isNil(valgtBucType)
   const erSEDValgt = !_.isNil(valgtSedType)
@@ -106,13 +101,13 @@ const OpprettSak: React.FC<any> = (): JSX.Element => {
   const redigerbart = erFagomroedeValgt && erBUCValgt && erSEDValgt && erLandValgt && erMottakerInstitusjonValgt && erFagsakValgt
   const oppgittFnrErValidert = (fnrErGyldig && fnrErSjekket)
 
-  const visFagsakerListe = () => (valgtSektor.length > 0 && tema.length > 0 && fagsaker.length > 0)
+  const visFagsakerListe = () => (valgtSektor?.length > 0 && tema?.length > 0 && fagsaker?.length > 0)
   const visArbeidsforhold = () => (EKV.Koder.sektor.FB === valgtSektor && EKV.Koder.buctyper.family.FB_BUC_01 === valgtBucType && valgtSedType)
 
-  const oppdaterBucKode = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const oppdaterBucKode = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const buctype = event.target.value
-    await dispatch(formActions.set('buctype', buctype))
-    await dispatch(sakActions.getLandkoder(buctype))
+    dispatch(formActions.set('buctype', buctype))
+    dispatch(sakActions.getLandkoder(buctype))
     setLandKode('')
   }
 
@@ -216,34 +211,58 @@ const OpprettSak: React.FC<any> = (): JSX.Element => {
           <form onSubmit={overrideDefaultSubmit}>
               <Ui.Nav.Row className="">
                 <Ui.Nav.Column xs="3">
-                  <Skjema.Select id="id-sektor" feltNavn="sektor" label="Fagområde" bredde="xxl" disabled={!oppgittFnrErValidert}>
-                    {sektor && sektor.concat().sort(sortBy('term')).map((element: any) => <option value={element.kode} key={uuid()}>{element.term}</option>)}
-                  </Skjema.Select>
+                  <Ui.Nav.Select
+                    id="id-sektor"
+                    name="sektor"
+                    label="Fagområde"
+                    bredde="xxl"
+                    disabled={!oppgittFnrErValidert}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => formActions.set('sektor', e.target.value)}
+                    value={valgtSektor}
+                  >
+                     {sektor && sektor.concat().sort(sortBy('term')).map((element: any) => <option value={element.kode} key={element.kode}>{element.term}</option>)}
+                  </Ui.Nav.Select>
                 </Ui.Nav.Column>
               </Ui.Nav.Row>
               <Ui.Nav.Row className="">
                 <Ui.Nav.Column xs="3">
-                  <Skjema.Select id="id-buctype" feltNavn="buctype" label="BUC" bredde="xxl" disabled={!oppgittFnrErValidert} onChange={oppdaterBucKode}>
-                    {buctyper && buctyper.concat().sort(sortBy('kode')).map((element: any) => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
-                  </Skjema.Select>
+                  <Ui.Nav.Select
+                    id="id-buctype"
+                    name="buctype"
+                    label="BUC"
+                    bredde="xxl"
+                    disabled={!oppgittFnrErValidert}
+                    onChange={oppdaterBucKode}
+                    value={valgtBucType}
+                  >
+                    {buctyper && buctyper.concat().sort(sortBy('kode')).map((element: any) => <option value={element.kode} key={element.kode}>{element.kode}-{element.term}</option>)}
+                  </Ui.Nav.Select>
                 </Ui.Nav.Column>
                 <Ui.Nav.Column xs="3">
-                  <Skjema.Select id="id-sedtype" feltNavn="sedtype" label="SED" bredde="xxl" disabled={!oppgittFnrErValidert}>
-                    {erSedtyperGyldig(sedtyper) && sedtyper.map((element: any) => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
-                  </Skjema.Select>
+                  <Ui.Nav.Select
+                    id="id-sedtype"
+                    name="sedtype"
+                    label="SED"
+                    bredde="xxl"
+                    disabled={!oppgittFnrErValidert}
+                    onChange={oppdaterBucKode}
+                    value={valgtSedType}
+                  >
+                    {erSedtyperGyldig(sedtyper) && sedtyper.map((element: any) => <option value={element.kode} key={element.kode}>{element.kode}-{element.term}</option>)}
+                  </Ui.Nav.Select>
                 </Ui.Nav.Column>
               </Ui.Nav.Row>
               <Ui.Nav.Row className="">
                 <Ui.Nav.Column xs="3">
                   <Ui.Nav.Select id="id-landkode" bredde="xxl" disabled={!oppgittFnrErValidert} value={landKode} onChange={oppdaterLandKode} label="Land">
                     <option value="0" />
-                    {landkoder && landkoder.concat().sort(sortBy('term')).map((element: any) => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+                    {landkoder && landkoder.concat().sort(sortBy('term')).map((element: any) => <option value={element.kode} key={element.kode}>{element.term}</option>)}
                   </Ui.Nav.Select>
                 </Ui.Nav.Column>
                 <Ui.Nav.Column xs="3">
                   <Ui.Nav.Select id="id-institusjon" bredde="xxl" disabled={!oppgittFnrErValidert} value={institusjonsID} onChange={oppdaterInstitusjonKode} label="Mottaker institusjon">
                     <option value="0" />
-                    {institusjoner && institusjoner.concat().sort(sortBy('term')).map((element: any) => <option value={element.institusjonsID} key={uuid()}>{element.navn}</option>)}
+                    {institusjoner && institusjoner.concat().sort(sortBy('term')).map((element: any) => <option value={element.institusjonsID} key={element.institusjonsID}>{element.navn}</option>)}
                   </Ui.Nav.Select>
                 </Ui.Nav.Column>
               </Ui.Nav.Row>
@@ -279,7 +298,7 @@ const OpprettSak: React.FC<any> = (): JSX.Element => {
                     onClick={skjemaSubmit}
                     spinner={sendingSak}
                   >
-                    Opprett sak i RINA
+                    {t('ui:form-createCaseInRina')}
                   </Ui.Nav.Hovedknapp>
                 </Ui.Nav.Column>
                 <Ui.Nav.Column xs="3">
@@ -288,11 +307,13 @@ const OpprettSak: React.FC<any> = (): JSX.Element => {
                   </Ui.Nav.Flatknapp>
                 </Ui.Nav.Column>
               </Ui.Nav.Row>
+            {opprettetSak && opprettetSak.url ? (
               <Ui.Nav.Row>
                 <Ui.Nav.Column xs="6">
-                  <StatusLinje status='OK' tittel={`Saksnummer: ${rinasaksnummer}`} rinaURL={responsLenke} routePath={vedleggRoute} />
+                  <StatusLinje status='OK' tittel={`Saksnummer: ${opprettetSak.rinasaksnummer}`} rinaURL={opprettetSak.url} routePath={'/vedlegg?rinasaksnummer=' + opprettetSak.rinasaksnummer} />
                 </Ui.Nav.Column>
               </Ui.Nav.Row>
+            ) : null}
           </form>
           <AvsluttModal
             visModal={visModal}

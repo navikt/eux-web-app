@@ -1,12 +1,10 @@
 import * as vedleggActions from 'actions/vedlegg'
 import { State } from 'declarations/reducers'
 import Ui from 'eessi-pensjon-ui'
-import * as Skjema from 'felles-komponenter/skjema'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { StatusLinje } from '../felles-komponenter/statuslinje'
-
 import { getParam } from '../utils/queryString'
 import DokumentSok from './dokumentsok'
 import './Vedlegg.css'
@@ -100,6 +98,14 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
   const responsLenke = vedlegg && vedlegg.url;
   const disableSendKnapp = !(rinaNrErGyldig && rinaNrErSjekket && rinadokumentID);
 
+  const onjournalpostIDChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(vedleggActions.set('journalpostID', e.target.value))
+  }
+
+  const onDokumentIDChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(vedleggActions.set('dokumentID', e.target.value))
+  }
+
   return (
     <div className="vedlegg">
       <Ui.Nav.Container fluid>
@@ -109,9 +115,9 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
               <Ui.Nav.Panel className="vedlegg__skjema">
                 <Ui.Nav.Fieldset legend="Vedleggs informasjon">
                   <Ui.Nav.HjelpetekstBase id="journalPostID" type="hoyre">Journalpost ID finner du i Gosys</Ui.Nav.HjelpetekstBase>
-                  <Skjema.Input feltNavn="journalpostID" label="JournalpostID" />
+                  <Ui.Nav.Input name="journalpostID" label="JournalpostID" onChnge={onjournalpostIDChange}/>
                   <Ui.Nav.HjelpetekstBase id="dokumentID" type="under">Dokument ID finner du i Gosys</Ui.Nav.HjelpetekstBase>
-                  <Skjema.Input feltNavn="dokumentID" label="DokumentID" />
+                  <Ui.Nav.Input name="dokumentID" label="DokumentID" onChnge={onDokumentIDChange}/>
                   <DokumentSok
                     inntastetRinasaksnummer={inntastetRinasaksnummer}
                     settRinaGyldighet={settRinaGyldighet}

@@ -2,7 +2,7 @@ import 'components/PersonFind/PersonFind.css'
 import { State } from 'declarations/reducers'
 import { Person } from 'declarations/types'
 import Ui from 'eessi-pensjon-ui'
-import * as Skjema from 'felles-komponenter/skjema'
+import * as vedleggActions from 'actions/vedlegg'
 import { StatusLinje } from 'felles-komponenter/statuslinje'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
@@ -64,13 +64,18 @@ const PersonFind: React.FC<PersonFindProps> = ({
     }
   }, [personer, _person, settFnrGyldighet, settFnrSjekket])
 
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(vedleggActions.set('fnr', e.target.value))
+  }
+
   return (
     <div className="personsok">
       <div className="personsok__skjema">
-        <Skjema.Input
+        <Ui.Nav.Input
           label="Finn bruker"
           className="personsok__input"
-          feltNavn="fnr"
+          name="fnr"
+          onChange={onChange}
         />
         {gettingPersoner ? <div className="personsok__spinnerwrapper"><Ui.Nav.NavFrontendSpinner type="S" /></div> : null}
         <Ui.Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson}>SØK</Ui.Nav.Knapp>
