@@ -1,12 +1,11 @@
 import React from 'react';
-import PT from 'prop-types';
-
+import PT  from 'prop-types';
 import { kodeverkObjektTilTerm } from '../../../utils/kodeverk';
 import { formatterDatoTilNorsk } from '../../../utils/dato';
 import Ui from 'eessi-pensjon-ui'
 import PanelHeader from '../../panelHeader/panelHeader';
-import * as MPT from '../../../proptypes';
 import * as Eux from '../../../felles-komponenter/Ikon';
+import { KodeverkPropType, FamilieRelasjonPropType } from 'declarations/types.pt';
 
 const FamilieRelasjonPanel = ({
   familierelasjonKodeverk,
@@ -46,9 +45,9 @@ const FamilieRelasjonPanel = ({
 
 FamilieRelasjonPanel.propTypes = {
   indeks: PT.number.isRequired,
-  familierelasjonKodeverk: PT.arrayOf(MPT.Kodeverk).isRequired,
-  landKodeverk: PT.arrayOf(MPT.Kodeverk).isRequired,
-  relasjon: MPT.FamilieRelasjon.isRequired,
+  familierelasjonKodeverk: PT.arrayOf(KodeverkPropType).isRequired,
+  landKodeverk: PT.arrayOf(KodeverkPropType).isRequired,
+  relasjon: FamilieRelasjonPropType.isRequired,
   slettRelasjon: PT.func.isRequired,
 };
 

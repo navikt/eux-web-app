@@ -3,10 +3,10 @@ import PT from 'prop-types';
 
 import Ui from 'eessi-pensjon-ui'
 import * as Eux from '../felles-komponenter/Ikon';
-import * as MPT from '../proptypes';
 
 import { formatterDatoTilNorsk } from '../utils/dato';
 import PanelHeader from '../felles-komponenter/panelHeader/panelHeader';
+import { KodeverkPropType, PersonPropType } from '../declarations/types.pt';
 
 const uuid = require('uuid/v4');
 
@@ -48,8 +48,8 @@ const PersonSokResultat = props => {
 PersonSokResultat.propTypes = {
   rolle: PT.string.isRequired,
   knappDisabled: PT.bool.isRequired,
-  person: MPT.Person.isRequired,
-  familierelasjonKodeverk: PT.arrayOf(MPT.Kodeverk).isRequired,
+  person: PersonPropType.isRequired,
+  familierelasjonKodeverk: PT.arrayOf(KodeverkPropType).isRequired,
   leggTilHandler: PT.func.isRequired,
   oppdaterFamilierelajon: PT.func.isRequired,
 };

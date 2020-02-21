@@ -2,13 +2,11 @@ import React from 'react';
 import PT from 'prop-types';
 
 import Ui from 'eessi-pensjon-ui'
-
-import * as MPT from '../../proptypes';
+import { KodeverkPropType } from '../../declarations/types.pt';
 
 const uuid = require('uuid/v4');
 
-export const BehandlingsTemaer = props => {
-  const { temaer, tema, oppdaterTemaListe } = props;
+export const BehandlingsTemaer = ({ temaer, tema, oppdaterTemaListe }) => {
 
   return (
     <Ui.Nav.Select id="id-behandlings-tema" bredde="xxl" label="Velg behandlings tema" value={tema} onChange={oppdaterTemaListe}>
@@ -19,7 +17,7 @@ export const BehandlingsTemaer = props => {
 };
 BehandlingsTemaer.propTypes = {
   tema: PT.string,
-  temaer: PT.arrayOf(MPT.Kodeverk),
+  temaer: PT.arrayOf(KodeverkPropType),
   oppdaterTemaListe: PT.func.isRequired,
 };
 BehandlingsTemaer.defaultProps = {
