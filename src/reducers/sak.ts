@@ -1,5 +1,5 @@
 import * as types from 'constants/actionTypes'
-import { Arbeidsforhold, OpprettetSak, Saksbehandler, ServerInfo } from 'declarations/types'
+import { Arbeidsforhold, OpprettetSak } from 'declarations/types'
 import { ActionWithPayload } from 'eessi-pensjon-ui/dist/declarations/types'
 
 export interface SakState {
@@ -10,8 +10,6 @@ export interface SakState {
   landkoder: any;
   personer: any;
   opprettetSak: OpprettetSak | undefined;
-  saksbehandler: Saksbehandler | undefined;
-  serverinfo: ServerInfo | undefined;
 
   buctyper: any;
   familierelasjoner: any;
@@ -30,8 +28,6 @@ export const initialSakState: SakState = {
   landkoder: undefined,
   personer: undefined,
   opprettetSak: undefined,
-  saksbehandler: undefined,
-  serverinfo: undefined,
 
   buctyper: undefined,
   familierelasjoner: undefined,
@@ -97,18 +93,6 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
       return {
         ...state,
         opprettetSak: action.payload
-      }
-
-    case types.SAK_SAKSBEHANDLER_GET_SUCCESS:
-      return {
-        ...state,
-        saksbehandler: action.payload
-      }
-
-    case types.SAK_SERVERINFO_GET_SUCCESS:
-      return {
-        ...state,
-        serverinfo: action.payload
       }
 
     case types.SAK_PRELOAD:

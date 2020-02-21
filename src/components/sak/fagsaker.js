@@ -1,18 +1,14 @@
-import React from 'react';
-
-import PT from 'prop-types';
-
+import React from 'react'
+import _ from 'lodash'
+import PT from 'prop-types'
 import Ui from 'eessi-pensjon-ui'
-import * as Sort from '../../utils/sortering';
-
-const uuid = require('uuid/v4');
 
 const FagsakerListe = props => {
   const { fagsaker, saksID, oppdaterFagsakListe } = props;
   return (
     <Ui.Nav.Select id="id-fagsaker" bredde="xl" label="Velg fagsak" value={saksID} onChange={oppdaterFagsakListe}>
       <option defaultChecked />
-      {fagsaker && fagsaker.concat().sort(Sort.sortBy('fagsakNr')).map(element => <option value={element.saksID} key={uuid()}>{element.fagsakNr ? element.fagsakNr : element.saksID}</option>)}
+      {fagsaker ? _.orderBy(fagsaker,'fagsakNr').map(element => <option value={element.saksID} key={element.saksID}>{element.fagsakNr ? element.fagsakNr : element.saksID}</option>) : null}
     </Ui.Nav.Select>
   );
 };

@@ -1,12 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import { FieldArray } from 'redux-form';
 import PT from 'prop-types';
-import * as Ikoner from '../../resources/images/index';
+import * as Ikoner from 'resources/images';
 import Ui from 'eessi-pensjon-ui'
-import { formatterDatoTilNorsk } from '../../utils/dato';
+import { formatterDatoTilNorsk } from 'utils/dato';
 import { ArbeidsforholdPropType, ArbeidsforholdetPropType } from '../../declarations/types.pt';
-
-const uuid = require('uuid/v4');
 
 const btnStyle = {
   margin: '1.25em 0 0 0',
@@ -60,7 +58,7 @@ class ArbeidsforholdListe extends Component {
         {arbeidsforhold.map(arbeidsforholdet => {
           const arbeidsForholdErValgt = alleValgteFelter.find(item => item.arbeidsforholdIDnav === arbeidsforholdet.arbeidsforholdIDnav);
           return <ArbeidsforholdLinje
-            key={uuid()}
+            key={arbeidsforholdet}
             arbeidsforholdet={arbeidsforholdet}
             erValgt={arbeidsForholdErValgt !== undefined}
             arbeidsforholdKlikkHandler={this.arbeidsforholdKlikkHandler}

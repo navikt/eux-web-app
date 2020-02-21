@@ -144,27 +144,27 @@ const loadingReducer = (state: LoadingState = initialLoadingState, action: Actio
         sendingVedlegg: false
       }
 
-    case types.SAK_SAKSBEHANDLER_GET_REQUEST:
+    case types.APP_SAKSBEHANDLER_GET_REQUEST:
       return {
         ...state,
         gettingSaksbehandler: true
       }
 
-    case types.SAK_SAKSBEHANDLER_GET_SUCCESS:
-    case types.SAK_SAKSBEHANDLER_GET_FAILURE:
+    case types.APP_SAKSBEHANDLER_GET_SUCCESS:
+    case types.APP_SAKSBEHANDLER_GET_FAILURE:
       return {
         ...state,
         gettingSaksbehandler: false
       }
 
-    case types.SAK_SERVERINFO_GET_REQUEST:
+    case types.APP_SERVERINFO_GET_REQUEST:
       return {
         ...state,
         gettingServerinfo: true
       }
 
-    case types.SAK_SERVERINFO_GET_SUCCESS:
-    case types.SAK_SERVERINFO_GET_FAILURE:
+    case types.APP_SERVERINFO_GET_SUCCESS:
+    case types.APP_SERVERINFO_GET_FAILURE:
       return {
         ...state,
         gettingServerinfo: false

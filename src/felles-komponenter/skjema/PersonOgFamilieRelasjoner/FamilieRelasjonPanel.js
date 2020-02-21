@@ -1,6 +1,6 @@
 import React from 'react';
 import PT  from 'prop-types';
-import { kodeverkObjektTilTerm } from '../../../utils/kodeverk';
+
 import { formatterDatoTilNorsk } from '../../../utils/dato';
 import Ui from 'eessi-pensjon-ui'
 import PanelHeader from '../../panelHeader/panelHeader';
@@ -18,6 +18,11 @@ const FamilieRelasjonPanel = ({
 
   const rolleObjekt = familierelasjonKodeverk.find(item => item.kode === familie.rolle);
   const nasjonalitetObjekt = landKodeverk.find(item => item.kode === nasjonalitet);
+
+  const kodeverkObjektTilTerm = kodeverkObjekt => {
+    if (!kodeverkObjekt || !kodeverkObjekt.term) { return '(mangler informasjon)'; }
+    return Object.keys(kodeverkObjekt).includes('term') ? kodeverkObjekt.term : null;
+  };
 
   const rolleTerm = kodeverkObjektTilTerm(rolleObjekt);
   const nasjonalitetTerm = kodeverkObjektTilTerm(nasjonalitetObjekt);

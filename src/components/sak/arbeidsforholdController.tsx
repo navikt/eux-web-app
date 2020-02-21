@@ -5,7 +5,7 @@ import Ui from 'eessi-pensjon-ui'
 import PT from 'prop-types'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Arbeidsforhold from './arbeidsforhold'
+import Arbeidsforhold from 'components/sak/arbeidsforhold'
 
 export interface ArbeidsForholdSelector {
   arbeidsforhold: any
