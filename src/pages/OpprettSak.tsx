@@ -13,15 +13,10 @@ import FamilieRelasjonsComponent from '../felles-komponenter/skjema/PersonOgFami
 import { StatusLinje } from '../felles-komponenter/statuslinje'
 import AvsluttModal from '../komponenter/AvsluttModal'
 import './OpprettSak.css'
-import { ArbeidsforholdController, BehandlingsTemaer, Fagsaker } from './sak'
+import { ArbeidsforholdController, BehandlingsTemaer, Fagsaker } from '../components/sak'
 
 const btnStyle = {
   margin: '1.85em 0 0 0',
-};
-
-const sortBy = (key: any) => (a: any, b: any) => {
-  if (a[key] > b[key]) return 1;
-  return ((b[key] > a[key]) ? -1 : 0);
 };
 
 export interface OpprettSakSelector {
@@ -58,7 +53,7 @@ const mapState =(state: State): OpprettSakSelector => ({
   opprettetSak: state.sak.opprettetSak,
   sektor: state.sak.sektor,
   sendingSak: state.loading.sendingSak,
-  serverInfo: state.sak.serverinfo,
+  serverInfo: state.app.serverinfo,
   valgtBucType: state.form.buctype,
   valgtSedType: state.form.sedtype,
   valgtSektor: state.form.sektor,
@@ -220,7 +215,7 @@ const OpprettSak: React.FC<any> = (): JSX.Element => {
                     onChange={(e: React.ChangeEvent<HTMLSelectElement>) => formActions.set('sektor', e.target.value)}
                     value={valgtSektor}
                   >
-                     {sektor && sektor.concat().sort(sortBy('term')).map((element: any) => <option value={element.kode} key={element.kode}>{element.term}</option>)}
+                     {sektor ? _.orderBy(sektor,'term').map((element: any) => <option value={element.kode} key={element.kode}>{element.term}</option>) : null}
                   </Ui.Nav.Select>
                 </Ui.Nav.Column>
               </Ui.Nav.Row>
@@ -235,7 +230,7 @@ const OpprettSak: React.FC<any> = (): JSX.Element => {
                     onChange={oppdaterBucKode}
                     value={valgtBucType}
                   >
-                    {buctyper && buctyper.concat().sort(sortBy('kode')).map((element: any) => <option value={element.kode} key={element.kode}>{element.kode}-{element.term}</option>)}
+                    {buctyper ? _.orderBy(buctyper,'kode').map((element: any) => <option value={element.kode} key={element.kode}>{element.kode}-{element.term}</option>) : null}
                   </Ui.Nav.Select>
                 </Ui.Nav.Column>
                 <Ui.Nav.Column xs="3">
@@ -256,13 +251,13 @@ const OpprettSak: React.FC<any> = (): JSX.Element => {
                 <Ui.Nav.Column xs="3">
                   <Ui.Nav.Select id="id-landkode" bredde="xxl" disabled={!oppgittFnrErValidert} value={landKode} onChange={oppdaterLandKode} label="Land">
                     <option value="0" />
-                    {landkoder && landkoder.concat().sort(sortBy('term')).map((element: any) => <option value={element.kode} key={element.kode}>{element.term}</option>)}
+                    {landkoder ? _.orderBy(landkoder,'term').map((element: any) => <option value={element.kode} key={element.kode}>{element.term}</option>) : null}
                   </Ui.Nav.Select>
                 </Ui.Nav.Column>
                 <Ui.Nav.Column xs="3">
                   <Ui.Nav.Select id="id-institusjon" bredde="xxl" disabled={!oppgittFnrErValidert} value={institusjonsID} onChange={oppdaterInstitusjonKode} label="Mottaker institusjon">
                     <option value="0" />
-                    {institusjoner && institusjoner.concat().sort(sortBy('term')).map((element: any) => <option value={element.institusjonsID} key={element.institusjonsID}>{element.navn}</option>)}
+                    {institusjoner ? _.orderBy(institusjoner, 'term').map((element: any) => <option value={element.institusjonsID} key={element.institusjonsID}>{element.navn}</option>) : null}
                   </Ui.Nav.Select>
                 </Ui.Nav.Column>
               </Ui.Nav.Row>

@@ -5,7 +5,11 @@ import React from 'react'
 
 const yyyMMdd = (dato: any) => moment(dato).format('YYYY-MM-DD');
 
-const DokumentKort = ({ dokumenter, value, onChange }: any) => (
+export interface DocumentCardProps {
+
+}
+
+const DocumentCard = ({ dokumenter, value, onChange }: any) => (
   <Ui.Nav.Panel className="dokumentsok__kort">
     <Ui.Nav.Select
       id="id-rinadokument"
@@ -19,11 +23,11 @@ const DokumentKort = ({ dokumenter, value, onChange }: any) => (
   </Ui.Nav.Panel>
 );
 
-DokumentKort.propTypes = {
+DocumentCard.propTypes = {
   dokumenter: PT.array,
 };
-DokumentKort.defaultProps = {
+DocumentCard.defaultProps = {
   dokumenter: [],
 };
 
-export default DokumentKort
+export default DocumentCard

@@ -5,8 +5,8 @@ import Ui from 'eessi-pensjon-ui'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import DocumentCard from '../components/DocumentCard/DocumentCard'
-import './dokumentsok.css'
+import DocumentCard from 'components/DocumentCard/DocumentCard'
+import 'components/DocumentSearch/DocumentSearch.css'
 
 export interface DocumentSearchSelector {
   gettingDokumenter: boolean;
@@ -24,7 +24,7 @@ const mapState = (state: State): DocumentSearchSelector => ({
   dokumenter: state.sak.dokumenter
 })
 
-const DokumentSok: React.FC<DocumentSearchProps> = ({
+const DocumentSearch: React.FC<DocumentSearchProps> = ({
   inntastetRinasaksnummer, settRinaGyldighet, settRinaSjekket
 }: DocumentSearchProps): JSX.Element => {
 
@@ -79,13 +79,13 @@ const DokumentSok: React.FC<DocumentSearchProps> = ({
   );
 }
 
-DokumentSok.propTypes = {
+DocumentSearch.propTypes = {
   inntastetRinasaksnummer: PT.string,
   settRinaGyldighet: PT.func.isRequired,
   settRinaSjekket: PT.func.isRequired,
 };
-DokumentSok.defaultProps = {
+DocumentSearch.defaultProps = {
   inntastetRinasaksnummer: ''
 };
 
-export default DokumentSok
+export default DocumentSearch
