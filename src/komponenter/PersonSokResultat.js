@@ -1,14 +1,10 @@
 import React from 'react';
 import PT from 'prop-types';
-
 import Ui from 'eessi-pensjon-ui'
 import * as Eux from '../felles-komponenter/Ikon';
-
 import { formatterDatoTilNorsk } from '../utils/dato';
 import PanelHeader from '../felles-komponenter/panelHeader/panelHeader';
 import { KodeverkPropType, PersonPropType } from '../declarations/types.pt';
-
-const uuid = require('uuid/v4');
 
 const PersonSokResultat = props => {
   const {
@@ -36,7 +32,7 @@ const PersonSokResultat = props => {
         value={rolle}
         onChange={oppdaterFamilierelajon}>
         <option value="" disabled>- velg -</option>
-        {familierelasjonKodeverk && familierelasjonKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+        {familierelasjonKodeverk && familierelasjonKodeverk.map(element => <option value={element.kode} key={element.kode}>{element.term}</option>)}
       </Ui.Nav.Select>
       <Ui.Nav.Knapp disabled={knappDisabled} onClick={leggTilHandler} className="familierelasjoner__knapp">
         <Eux.Icon kind="tilsette" size="20" className="familierelasjoner__knapp__ikon" />

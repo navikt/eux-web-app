@@ -127,29 +127,6 @@ export const createSak: ActionCreator<ThunkResult<ActionWithPayload>> = (data: a
   })
 }
 
-export const getSaksbehandler: ActionCreator<ThunkResult<ActionWithPayload>> = (): ThunkResult<ActionWithPayload> => {
-  return api.realCall({
-    url: urls.API_SAK_SAKSBEHANDLER_URL,
-    type: {
-      request: types.SAK_SAKSBEHANDLER_GET_REQUEST,
-      success: types.SAK_SAKSBEHANDLER_GET_SUCCESS,
-      failure: types.SAK_SAKSBEHANDLER_GET_FAILURE
-    }
-  })
-}
-
-export const getServerinfo: ActionCreator<ThunkResult<ActionWithPayload>> = (): ThunkResult<ActionWithPayload> => {
-  return api.realCall({
-    url: urls.API_SAK_SERVERINFO_URL,
-    type: {
-      request: types.SAK_SERVERINFO_GET_REQUEST,
-      success: types.SAK_SERVERINFO_GET_SUCCESS,
-      failure: types.SAK_SERVERINFO_GET_FAILURE
-    }
-  })
-}
-
-
 /*
 KTObjects: {
   buctyper: buctyper,

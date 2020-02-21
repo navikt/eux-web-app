@@ -5,8 +5,7 @@ import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { StatusLinje } from '../felles-komponenter/statuslinje'
-import { getParam } from '../utils/queryString'
-import DokumentSok from './dokumentsok'
+import DocumentSearch from 'components/DocumentSearch/DocumentSearch'
 import './Vedlegg.css'
 
 export interface VedleggSelector {
@@ -46,7 +45,9 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
 
   useEffect(() => {
     if (!mounted) {
-      const rinasaksnummer = getParam(location, 'rinasaksnummer')
+
+      const params: URLSearchParams = new URLSearchParams(location.search)
+      const rinasaksnummer = params.get('rinasaksnummer')
       dispatch(vedleggActions.set('rinasaksnummer', rinasaksnummer))
       setMounted(true)
     }
@@ -118,7 +119,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
                   <Ui.Nav.Input name="journalpostID" label="JournalpostID" onChnge={onjournalpostIDChange}/>
                   <Ui.Nav.HjelpetekstBase id="dokumentID" type="under">Dokument ID finner du i Gosys</Ui.Nav.HjelpetekstBase>
                   <Ui.Nav.Input name="dokumentID" label="DokumentID" onChnge={onDokumentIDChange}/>
-                  <DokumentSok
+                  <DocumentSearch
                     inntastetRinasaksnummer={inntastetRinasaksnummer}
                     settRinaGyldighet={settRinaGyldighet}
                     settRinaSjekket={settRinaSjekket}

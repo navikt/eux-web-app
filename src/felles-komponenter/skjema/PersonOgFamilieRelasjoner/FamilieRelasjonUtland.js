@@ -1,13 +1,9 @@
 import React from 'react';
 import PT from 'prop-types';
-
 import Ui from 'eessi-pensjon-ui'
 import * as Eux from '../../../felles-komponenter/Ikon';
-
 import './familierelasjoner.css';
 import { KodeverkPropType } from '../../../declarations/types.pt';
-
-const uuid = require('uuid/v4');
 
 const FamilieRelasjonUtland = ({
   spesialRelasjon, oppdaterState,
@@ -36,7 +32,7 @@ const FamilieRelasjonUtland = ({
               value={spesialRelasjon.nasjonalitet}
               onChange={event => oppdaterState('nasjonalitet', event)}>
               <option value="" disabled>- velg -</option>
-              {landKodeverk && landKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+              {landKodeverk && landKodeverk.map(element => <option value={element.kode} key={element.kode}>{element.term}</option>)}
             </Ui.Nav.Select>
           </Ui.Nav.Column>
         </Ui.Nav.Row>
@@ -68,7 +64,7 @@ const FamilieRelasjonUtland = ({
               value={spesialRelasjon.kjoenn}
               onChange={event => oppdaterState('kjoenn', event)}>
               <option value="" disabled>- velg -</option>
-              {kjoennKodeverk && kjoennKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+              {kjoennKodeverk && kjoennKodeverk.map(element => <option value={element.kode} key={element.kode}>{element.term}</option>)}
             </Ui.Nav.Select>
           </Ui.Nav.Column>
           <Ui.Nav.Column xs="3">
@@ -91,7 +87,7 @@ const FamilieRelasjonUtland = ({
               value={spesialRelasjon.rolle}
               onChange={event => oppdaterState('rolle', event)}>
               <option value="" disabled>- velg -</option>
-              {filtrerteFamilieRelasjoner().map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
+              {filtrerteFamilieRelasjoner().map(element => <option value={element.kode} key={element.kode}>{element.term}</option>)}
             </Ui.Nav.Select>
           </Ui.Nav.Column>
           <Ui.Nav.Column xs="3">

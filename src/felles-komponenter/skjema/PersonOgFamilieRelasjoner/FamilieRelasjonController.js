@@ -4,17 +4,12 @@ import PT from 'prop-types';
 import Ui from 'eessi-pensjon-ui'
 
 import { vaskInputDato } from '../../../utils/dato';
-
-
 import { FamilieRelasjonPanel } from './FamilieRelasjonPanel';
 import { FamilieRelasjonUtland } from './FamilieRelasjonUtland';
 import { TPSRelasjonEnkelt } from './TPSRelasjonEnkelt';
-
 import { AnnenRelatertTPSPerson } from './AnnenRelatertTPSPerson';
 import './familierelasjoner.css';
 import { FamilieRelasjonPropType, KodeverkPropType, PersonPropType } from 'declarations/types.pt';
-
-const uuid = require('uuid/v4');
 
 class FamilieRelasjonController extends Component {
   state = {
@@ -130,7 +125,7 @@ class FamilieRelasjonController extends Component {
       return (erAlleredeLagtTil ?
         [...samling]
         :
-        [...samling, <TPSRelasjonEnkelt key={uuid()} kodeverk={familierelasjonKodeverk} relasjon={enkeltTPSRelasjon} leggTilTPSrelasjon={this.leggTilTPSrelasjon} />]
+        [...samling, <TPSRelasjonEnkelt kodeverk={familierelasjonKodeverk} relasjon={enkeltTPSRelasjon} leggTilTPSrelasjon={this.leggTilTPSrelasjon} />]
       );
     }, []);
     return (
@@ -138,7 +133,7 @@ class FamilieRelasjonController extends Component {
         {valgteRelasjoner && valgteRelasjoner.length > 0}<Ui.Nav.UndertekstBold>Valgte familierelasjoner&nbsp;({valgteRelasjoner.length})</Ui.Nav.UndertekstBold>
         {valgteRelasjoner && valgteRelasjoner.map((relasjon, indeks) =>
           (<FamilieRelasjonPanel
-            key={uuid()}
+            key={indeks}
             familierelasjonKodeverk={familierelasjonKodeverk}
             landKodeverk={landKodeverk}
             relasjon={relasjon}
