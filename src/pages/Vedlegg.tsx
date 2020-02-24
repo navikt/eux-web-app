@@ -1,11 +1,11 @@
 import * as vedleggActions from 'actions/vedlegg'
+
+import DocumentSearch from 'components/DocumentSearch/DocumentSearch'
 import { State } from 'declarations/reducers'
 import Ui from 'eessi-pensjon-ui'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { StatusLinje } from '../felles-komponenter/statuslinje'
-import DocumentSearch from 'components/DocumentSearch/DocumentSearch'
 import './Vedlegg.css'
 
 export interface VedleggSelector {
@@ -38,7 +38,7 @@ const mapState = (state: State): VedleggSelector => ({
 
 const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Element => {
   const [mounted, setMounted] = useState(false)
-  const { vedlegg, journalpostID, dokumentID, inntastetRinasaksnummer, rinasaksnummer, rinadokumentID, rinaNrErGyldig, rinaNrErSjekket, sendingVedlegg }: VedleggSelector = useSelector<State, VedleggSelector>(mapState)
+  const { journalpostID, dokumentID, inntastetRinasaksnummer, rinasaksnummer, rinadokumentID, rinaNrErGyldig, rinaNrErSjekket, sendingVedlegg }: VedleggSelector = useSelector<State, VedleggSelector>(mapState)
 
   const dispatch = useDispatch()
 
@@ -94,7 +94,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
     if (!journalpostID) { return 'Du må taste inn en journalpostID' }
     return null
   }
-  const responsLenke = vedlegg && vedlegg.url
+  //const responsLenke = vedlegg && vedlegg.url
   const disableSendKnapp = !(rinaNrErGyldig && rinaNrErSjekket && rinadokumentID)
 
   const onjournalpostIDChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -131,7 +131,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
                   >Send vedlegg
                   </Ui.Nav.Hovedknapp>
                 </div>
-                <StatusLinje status='OK' rinaURL={responsLenke} tittel='Vedlegget' />
+                {/*<StatusLinje status='OK' rinaURL={responsLenke} tittel='Vedlegget' />*/}
               </Ui.Nav.Panel>
             </Ui.Nav.Column>
           </Ui.Nav.Row>

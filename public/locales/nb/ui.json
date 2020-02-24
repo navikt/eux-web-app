@@ -7,10 +7,13 @@
   "error-unknownPage-linkToRoot": "Klikk her for å gå tilbake til forsiden",
   "error-unknownPage-linkToRoot-ariaLabel": "Navigasjonslink tilbake til forsiden",
 
+  "form-add": "Legg til",
+  "form-birthdate" : "Fødselsdato",
+  "form-caseNumber" : "Saksnummer",
   "form-createCaseInRina" : "Opprett sak i RINA",
   "form-createNewCaseInGosys" : "Opprett ny sak i GOSYS",
   "form-choose" : "Velg",
-  "form-birthdate" : "Fødselsdato",
+  "form-family-description": "Vennligst velg familirelasjonen SEDen angår:",
   "form-fnr" : "Fødselsnummer",
   "form-remove" : "Fjern",
   "form-search" : "Søk",
@@ -18,6 +21,7 @@
   "form-seeCases": "Vis saker",
 
   "label-buc": "BUC",
+  "label-familyRelationships" : "Familierelasjon(er)",
   "label-institusjon": "Mottaker institusjon",
   "label-landkode": "Land",
   "label-sed": "SED",
@@ -31,7 +35,7 @@
   "modal-abort-title": " Er du sikker på at du vil avbryte? ",
   "modal-abort-description": "Informasjonen du har fyllt inn hittil vil ikke bli lagret.",
   "modal-abort-yes-button": "JA, AVBRYT",
-  "modal-abort-no-coninue": "NEI, FORTSETT",
+  "modal-abort-no-continue": "NEI, FORTSETT",
 
   "validation-invalidFnr": "Fnr må ha 11 siffer",
   "validation-noSektor": "Du må velge sektor",
