@@ -32,4 +32,3 @@ const appReducer = (state: AppState = initialAppState, action: ActionWithPayload
 }
 
 export default appReducer
-

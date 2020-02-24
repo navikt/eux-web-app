@@ -8,11 +8,18 @@
   "error-unknownPage-linkToRoot-ariaLabel": "Navigasjonslink tilbake til forsiden",
 
   "form-createCaseInRINA" : "Opprett sak i RINA",
+  "form-remove" : "Fjern",
+  "form-search" : "Søk",
+  "form-searching" : "Søker...",
 
   "menu-createCase" : "Opprett sak",
   "menu-addAttachment": "Legg ved vedlegg til SED",
 
   "modal-abort-contentLabel": "Bekreft navigasjon tilbake til forsiden",
+  "modal-abort-title": " Er du sikker på at du vil avbryte? ",
+  "modal-abort-description": "Informasjonen du har fyllt inn hittil vil ikke bli lagret.",
+  "modal-abort-yes-button": "JA, AVBRYT",
+  "modal-abort-no-coninue": "NEI, FORTSETT",
 
   "validation-invalidFnr": "Fnr må ha 11 siffer"
 }

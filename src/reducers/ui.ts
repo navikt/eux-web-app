@@ -12,7 +12,6 @@ export const initialUiState: UiState = {
 
 const uiReducer = (state: UiState = initialUiState, action: Action | ActionWithPayload) => {
   switch (action.type) {
-
     case types.UI_HIGHCONTRAST_TOGGLE :
 
       return {

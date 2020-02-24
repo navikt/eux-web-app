@@ -2,7 +2,6 @@ import * as uiActions from 'actions/ui'
 import * as types from 'constants/actionTypes'
 
 describe('actions/ui', () => {
-
   it('toggleHighContrast()', () => {
     const generatedResult = uiActions.toggleHighContrast()
     expect(generatedResult).toMatchObject({
