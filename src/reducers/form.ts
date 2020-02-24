@@ -2,12 +2,13 @@ import * as types from 'constants/actionTypes'
 import { ActionWithPayload } from 'eessi-pensjon-ui/dist/declarations/types'
 
 export interface FormState {
-  fnrErGyldig: any;
-  fnrErSjekket: any;
   sedtype: any;
   buctype: any;
-  fnr: any;
   sektor: any;
+  landkode: any;
+  institusjon: any;
+  saksId: any;
+  tema: any;
   tilleggsopplysninger: {
     familierelasjoner: any
     arbeidsforhold: any;
@@ -15,12 +16,13 @@ export interface FormState {
 }
 
 export const initialFormState: FormState = {
-  fnrErGyldig: undefined,
-  fnrErSjekket: undefined,
   sedtype: undefined,
   buctype: undefined,
-  fnr: undefined,
   sektor: undefined,
+  landkode: undefined,
+  institusjon: undefined,
+  saksId: undefined,
+  tema: undefined,
   tilleggsopplysninger: {
     familierelasjoner: undefined,
     arbeidsforhold: undefined

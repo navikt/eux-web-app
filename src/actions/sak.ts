@@ -40,13 +40,13 @@ export const getFagsaker: ActionCreator<ThunkResult<ActionWithPayload>> = (fnr: 
   })
 }
 
-export const getInstitusjoner: ActionCreator<ThunkResult<ActionWithPayload>> = (buctype: string, lanskode: string): ThunkResult<ActionWithPayload> => {
+export const getInstitusjoner: ActionCreator<ThunkResult<ActionWithPayload>> = (buctype: string, landkode: string): ThunkResult<ActionWithPayload> => {
   return api.realCall({
-    url: sprintf(urls.API_SAK_INSTITUSJONER_URL, { buctype: buctype, lanskode: lanskode }),
+    url: sprintf(urls.API_SAK_INSTITUSJONER_URL, { buctype: buctype, landkode: landkode }),
     type: {
-      request: types.SAK_FAGSAKER_GET_REQUEST,
-      success: types.SAK_FAGSAKER_GET_SUCCESS,
-      failure: types.SAK_FAGSAKER_GET_FAILURE
+      request: types.SAK_INSTITUSJONER_GET_REQUEST,
+      success: types.SAK_INSTITUSJONER_GET_SUCCESS,
+      failure: types.SAK_INSTITUSJONER_GET_FAILURE
     }
   })
 }

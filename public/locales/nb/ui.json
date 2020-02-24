@@ -8,9 +8,21 @@
   "error-unknownPage-linkToRoot-ariaLabel": "Navigasjonslink tilbake til forsiden",
 
   "form-createCaseInRINA" : "Opprett sak i RINA",
+  "form-createNewCaseInGosys" : "Opprett ny sak i GOSYS",
+  "form-choose" : "Velg",
+  "form-birthdate" : "Fødselsdato",
+  "form-fnr" : "Fødselsnummer",
   "form-remove" : "Fjern",
   "form-search" : "Søk",
   "form-searching" : "Søker...",
+  "form-seeCases": "Vis saker",
+
+  "label-buc": "BUC",
+  "label-institusjon": "Mottaker institusjon",
+  "label-landkode": "Land",
+  "label-sed": "SED",
+  "label-sektor": "Fagområde",
+  "label-tema": "Velg behandlings tema",
 
   "menu-createCase" : "Opprett sak",
   "menu-addAttachment": "Legg ved vedlegg til SED",
@@ -21,5 +33,10 @@
   "modal-abort-yes-button": "JA, AVBRYT",
   "modal-abort-no-coninue": "NEI, FORTSETT",
 
-  "validation-invalidFnr": "Fnr må ha 11 siffer"
+  "validation-invalidFnr": "Fnr må ha 11 siffer",
+  "validation-noSektor": "Du må velge sektor",
+  "validation-noBuctype": "Du må velge buctype",
+  "validation-noSedtype": "Du må velge sedtype",
+  "validation-noLand": "Du må velge land",
+  "validation-noInstitusjonsID": "Du må velge institusjon"
 }

@@ -1,5 +1,16 @@
 import * as types from 'constants/actionTypes'
-import { Arbeidsforhold, OpprettetSak } from 'declarations/types'
+import {
+  Arbeidsforhold,
+  BucTyper,
+  FamilieRelasjoner,
+  Kjoenn,
+  Kodemaps,
+  Landkoder,
+  OpprettetSak,
+  SedTyper,
+  Sektor,
+  Tema
+} from 'declarations/types'
 import { ActionWithPayload } from 'eessi-pensjon-ui/dist/declarations/types'
 
 export interface SakState {
@@ -7,17 +18,18 @@ export interface SakState {
   dokumenter: any;
   fagsaker: any;
   institusjoner: any;
-  landkoder: any;
   personer: any;
   opprettetSak: OpprettetSak | undefined;
 
-  buctyper: any;
-  familierelasjoner: any;
-  kjoenn: any;
-  sektor: any;
-  sedtyper: any;
-  tema: any;
-  kodemaps: any;
+  // comes from eessi-kodeverk
+  buctyper: BucTyper | undefined;
+  familierelasjoner: FamilieRelasjoner | undefined;
+  kjoenn: Kjoenn | undefined;
+  landkoder: Landkoder | undefined;
+  sektor: Sektor | undefined;
+  sedtyper: SedTyper | undefined;
+  tema: Tema | undefined;
+  kodemaps: Kodemaps | undefined;
 }
 
 export const initialSakState: SakState = {
