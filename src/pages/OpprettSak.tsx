@@ -12,9 +12,8 @@ import _ from 'lodash'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { ArbeidsforholdController } from '../components/sak'
-import FamilieRelasjonsComponent from '../felles-komponenter/skjema/PersonOgFamilieRelasjoner'
-import { StatusLinje } from '../felles-komponenter/statuslinje'
+import IkonArbeidsforhold from 'resources/images/ikon-arbeidsforhold'
+import { formatterDatoTilNorsk } from 'utils/dato'
 import './OpprettSak.css'
 
 export interface OpprettSakProps {
@@ -22,6 +21,7 @@ export interface OpprettSakProps {
 }
 
 export interface OpprettSakSelector {
+  arbeidsforhold: any;
   buctyper: any;
   fagsaker: any;
   institusjoner: any;
@@ -34,6 +34,7 @@ export interface OpprettSakSelector {
   sendingSak: boolean;
   serverInfo: any;
   tema: any;
+
   valgtBucType: any;
   valgtSedType: any;
   valgtSektor: any;
@@ -60,6 +61,7 @@ const mapState = (state: State): OpprettSakSelector => ({
   personer: state.sak.personer,
   sendingSak: state.loading.sendingSak,
   serverInfo: state.app.serverinfo,
+  arbeidsforhold: state.sak.arbeidsforhold,
 
   // entered data
   valgtBucType: state.form.buctype,
@@ -69,8 +71,8 @@ const mapState = (state: State): OpprettSakSelector => ({
   valgtInstitusjon: state.form.institusjon,
   valgtSaksId: state.form.saksId,
   valgtTema: state.form.tema,
-  valgteFamilieRelasjoner: state.form.tilleggsopplysninger.familierelasjoner,
-  valgteArbeidsforhold: state.form.tilleggsopplysninger.arbeidsforhold
+  valgteFamilieRelasjoner: state.form.familierelasjoner,
+  valgteArbeidsforhold: state.form.arbeidsforhold
 })
 
 /*
@@ -87,8 +89,8 @@ const mapState = (state: State): OpprettSakSelector => ({
 
 const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): JSX.Element => {
   const {
-    buctyper, sedtyper, fagsaker, institusjoner, kodemaps, landkoder, opprettetSak, personer, sektor, sendingSak,
-    serverInfo, tema, valgtBucType, valgtInstitusjon, valgtLandkode, valgtSedType, valgtSektor, valgtSaksId, valgtTema,
+    arbeidsforhold, buctyper, sedtyper, fagsaker, institusjoner, kodemaps, landkoder, opprettetSak, personer, sektor, sendingSak,
+    serverInfo, tema, valgteArbeidsforhold, valgtBucType, valgteFamilieRelasjoner, valgtInstitusjon, valgtLandkode, valgtSedType, valgtSektor, valgtSaksId, valgtTema,
   }: OpprettSakSelector = useSelector<State, OpprettSakSelector>(mapState)
   const dispatch = useDispatch()
   const { t } = useTranslation()
@@ -112,7 +114,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
   const isSomething = (value: any) => (!_.isNil(value) && !_.isEmpty(value))
   const redigerbart = isSomething(valgtSektor) && isSomething(valgtBucType) && isSomething(valgtSedType) && isSomething(valgtLandkode) && isSomething(valgtInstitusjon) && isSomething(valgtSaksId)
   const visFagsakerListe =  isSomething(valgtSektor) &&  isSomething(tema) &&  isSomething(fagsaker)
-  const visArbeidsforhold = () => (EKV.Koder.sektor.FB === valgtSektor && EKV.Koder.buctyper.family.FB_BUC_01 === valgtBucType && valgtSedType)
+  const visArbeidsforhold =  EKV.Koder.sektor.FB === valgtSektor && EKV.Koder.buctyper.family.FB_BUC_01 === valgtBucType && isSomething(valgtSedType)
 
   const doValidation = (): any => {
     setValidation({
@@ -191,6 +193,18 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
     dispatch(formActions.set('saksId', saksId))
   }
 
+  const getArbeidsforhold = () => {
+    dispatch(sakActions.getArbeidsforhold(personer?.fnr))
+  }
+
+  const onArbeidsforholdClick = (item: any, checked: boolean) => {
+    if (checked) {
+      dispatch(formActions.addArbeidsforhold(item))
+    } else {
+      dispatch(formActions.removeArbeidsforhold(item))
+    }
+  }
+
   return (
     <TopContainer className='opprettsak'>
       <Ui.Nav.Row>
@@ -263,6 +277,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
               <div className='col-xs-6'>
                 <Ui.Nav.Select
                   id='id-institusjon'
+                  className='mb-4'
                   disabled={!isSomething(valgtLandkode)}
                   value={valgtInstitusjon}
                   onChange={onInstitusjonChange}
@@ -275,13 +290,15 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                 </Ui.Nav.Select>
               </div>
               <div className='col-xs-12'>
-                {valgtSektor === 'FB' ? <FamilieRelasjonsComponent /> : null}
+                {/*{valgtSektor === 'FB' ? <FamilieRelasjonsComponent /> : null}*/}
+                {valgteFamilieRelasjoner}
               </div>
               {valgtSektor ? (
                 <div className='d-flex w-100' style={{alignItems: 'flex-end'}}>
                   <div className='w-50 mr-3'>
                     <Ui.Nav.Select
                       id="id-behandlings-tema"
+                      className='mb-4'
                       label={t('ui:label-tema')}
                       value={valgtTema}
                       onChange={onTemaChange}
@@ -296,6 +313,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                     <div className='d-flex' style={{alignItems: 'flex-end', justifyContent: 'space-between'}}>
                       <div>
                         <Ui.Nav.Knapp
+                          className='mb-4'
                           onClick={onViewFagsakerClick}
                           disabled={!isSomething(valgtTema)}
                         >
@@ -303,8 +321,13 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                         </Ui.Nav.Knapp>
                       </div>
                       <div>
-                        <Ui.Nav.Lenke href={serverInfo.gosysURL} ariaLabel={t('ui:form-createNewCaseInGosys')} target='_blank'>
-                          t('ui:form-createNewCaseInGosys')
+                        <Ui.Nav.Lenke
+                          className='mb-4'
+                          href={serverInfo.gosysURL}
+                          ariaLabel={t('ui:form-createNewCaseInGosys')}
+                          target='_blank'
+                        >
+                          {t('ui:form-createNewCaseInGosys')}
                         </Ui.Nav.Lenke>
                       </div>
                     </div>
@@ -312,20 +335,71 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                 </div>
               ) : null}
               {visFagsakerListe ? (
-                <Ui.Nav.Select
-                  id="id-fagsaker"
-                  label="Velg fagsak"
-                  value={valgtSaksId}
-                  onChange={onSakIDChange}
-                >
-                  <option value={''}>{t('ui:form-choose')}</option>
-                  {fagsaker ? _.orderBy(fagsaker,'fagsakNr').map(element => (
-                    <option value={element.saksID} key={element.saksID}>{element.fagsakNr ? element.fagsakNr : element.saksID}</option>)
-                  ): null}
-                </Ui.Nav.Select>
+                <div className='d-flex w-100'>
+                  <div className='col-xs-6'>
+                    <Ui.Nav.Select
+                      id="id-fagsaker"
+                      className='mb-4'
+                      label="Velg fagsak"
+                      value={valgtSaksId}
+                      onChange={onSakIDChange}
+                    >
+                      <option value={''}>{t('ui:form-choose')}</option>
+                      {fagsaker ? _.orderBy(fagsaker,'fagsakNr').map(element => (
+                        <option value={element.saksID} key={element.saksID}>{element.fagsakNr ? element.fagsakNr : element.saksID}</option>)
+                      ): null}
+                    </Ui.Nav.Select>
+                  </div>
+                  <div className='col-xs-6'/>
+                </div>
               ): null}
               {visArbeidsforhold ? (
-                <ArbeidsforholdController fnr={personer.fnr}/>
+                <>
+                  <div className='col-xs-6 arbeidsforhold'>
+                    <Ui.Nav.Row>
+                      <div className='col-xs-6'>
+                        <strong>AA Registeret</strong><br />Arbeidsforhold/Arbeidsgivere
+                      </div>
+                      <div className='col-xs-6'>
+                        <Ui.Nav.Knapp onClick={getArbeidsforhold}>
+                          {t('ui:form-search')}
+                        </Ui.Nav.Knapp>
+                      </div>
+                    </Ui.Nav.Row>
+                    {arbeidsforhold ? arbeidsforhold.map((arbeidsforholdet: any) => {
+                      const {arbeidsforholdIDnav, navn, orgnr, ansettelsesPeriode: {fom, tom}} = arbeidsforholdet
+                      const arbeidsForholdErValgt = valgteArbeidsforhold.find((item: any) => item.arbeidsforholdIDnav === arbeidsforholdIDnav)
+                      return (
+                        <Ui.Nav.Panel className='mt-4' border>
+                          <div className='arbeidsforhold-item'>
+                            <div className='arbeidsforhold-desc'>
+                              <div className='mr-3'>
+                                <IkonArbeidsforhold/>
+                              </div>
+                              <div>
+                                <strong>{navn}</strong>
+                                <br/>
+                                Orgnr:&nbsp;{orgnr}
+                                <br/>
+                                StartDato:&nbsp;{formatterDatoTilNorsk(fom)}
+                                <br/>
+                                SluttDato:&nbsp;{formatterDatoTilNorsk(tom)}
+                              </div>
+                            </div>
+                            <div>
+                              <Ui.Nav.Checkbox
+                                checked={arbeidsForholdErValgt}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onArbeidsforholdClick(arbeidsforholdIDnav, e.target.checked)}
+                                label={t('ui:form-choose')}
+                              />
+                            </div>
+                          </div>
+                        </Ui.Nav.Panel>
+                      )
+                    }) : null}
+                  </div>
+                  <div className='col-xs-6'/>
+                </>
               ): null}
               <div className='col-xs-6 opprettsak__statuslinje'>
                 <Ui.Nav.Hovedknapp
@@ -343,9 +417,15 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
               </div>
               {opprettetSak && opprettetSak.url ? (
                 <div className={'col-xs-12'}>
-                  <StatusLinje status='OK' tittel={`Saksnummer: ${opprettetSak.rinasaksnummer}`}
-                               rinaURL={opprettetSak.url}
-                               routePath={'/vedlegg?rinasaksnummer=' + opprettetSak.rinasaksnummer}/>
+                  <Ui.Alert status='OK'
+                    message={(
+                      <div>
+                        Saksnummer: {opprettetSak.rinasaksnummer}
+                        rinaURL: {opprettetSak.url}
+                        routePath: {'/vedlegg?rinasaksnummer=' + opprettetSak.rinasaksnummer}
+                        </div>
+                    )}
+                  />
                 </div>
               ) : null}
             </Ui.Nav.Row>

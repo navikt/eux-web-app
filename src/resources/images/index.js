@@ -10,7 +10,6 @@ import Kvinne from './ikon-kvinne.svg';
 import Ukjentkjoenn from './ikon-ukjentkjonn.svg';
 import IkonSak from './ikon-sak.svg';
 import Arbeidsgiver from './ikon-arbeidsgiver.svg';
-import Arbeidsforhold from './ikon-arbeidsforhold.svg';
 import Medlemskap from './ikon-medlemsskap.svg';
 import Inntekt from './ikon-inntekt.svg';
 
@@ -25,7 +24,7 @@ export { Mann };
 export { Kvinne };
 export { Ukjentkjoenn };
 export { Arbeidsgiver };
-export { Arbeidsforhold };
+
 export { Medlemskap };
 export { Inntekt };
 export { IkonSak };
