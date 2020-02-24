@@ -2,21 +2,21 @@ import PT from 'prop-types'
 
 export const PeriodePropType = PT.shape({
   fom: PT.string,
-  tom: PT.string,
+  tom: PT.string
 })
 
 export const ArbeidsforholdetPropType = PT.shape({
   arbeidsforholdIDnav: PT.number,
   orgnr: PT.string,
   navn: PT.string,
-  ansettelsesPeriode: PeriodePropType,
+  ansettelsesPeriode: PeriodePropType
 })
 
 export const ArbeidsforholdPropType = PT.arrayOf(ArbeidsforholdetPropType)
 
 export const KodeverkPropType = PT.shape({
   kode: PT.string,
-  term: PT.string,
+  term: PT.string
 })
 
 export const BuctyperPropType = PT.shape({
@@ -29,7 +29,7 @@ export const BuctyperPropType = PT.shape({
   pensions: PT.arrayOf(KodeverkPropType),
   recovery: PT.arrayOf(KodeverkPropType),
   sickness: PT.arrayOf(KodeverkPropType),
-  unemployment: PT.arrayOf(KodeverkPropType),
+  unemployment: PT.arrayOf(KodeverkPropType)
 })
 
 export const FamilieRelasjonPropType = PT.shape({
@@ -39,22 +39,22 @@ export const FamilieRelasjonPropType = PT.shape({
   rolle: PT.string,
   kjoenn: PT.string,
   fornavn: PT.string,
-  etternavn: PT.string,
+  etternavn: PT.string
 })
 
-export const FamilieRelasjonerPropType  = PT.arrayOf(FamilieRelasjonPropType)
+export const FamilieRelasjonerPropType = PT.arrayOf(FamilieRelasjonPropType)
 
 export const PersonPropType = PT.shape({
   fnr: PT.string,
   fdato: PT.string,
   fornavn: PT.string,
   etternavn: PT.string,
-  kjoenn: PT.string,
+  kjoenn: PT.string
 })
 
 export const SaksbehandlerPropType = PT.shape({
   brukernavn: PT.string,
-  navn: PT.string,
+  navn: PT.string
 })
 
 export const ServerInfoPropType = PT.shape({
@@ -63,10 +63,10 @@ export const ServerInfoPropType = PT.shape({
   branchName: PT.string,
   longVersionHash: PT.string,
   gosysURL: PT.string,
-  veraURL: PT.string,
-});
+  veraURL: PT.string
+})
 
 export const opprettetSakPropType = PT.shape({
   rinasaksnummer: PT.string,
-  url: PT.string,
+  url: PT.string
 })

@@ -171,7 +171,7 @@ const loadingReducer = (state: LoadingState = initialLoadingState, action: Actio
       }
 
     case types.APP_CLEAN_DATA:
-      return initialLoadingState;
+      return initialLoadingState
 
     default:
       return state

@@ -35,12 +35,11 @@ export const initialSakState: SakState = {
   sektor: undefined,
   sedtyper: undefined,
   tema: undefined,
-  kodemaps: undefined,
+  kodemaps: undefined
 }
 
 const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload) => {
   switch (action.type) {
-
     case types.SAK_ARBEIDSFORHOLD_GET_SUCCESS:
       return {
         ...state,
@@ -89,6 +88,12 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
         personer: action.payload
       }
 
+    case types.SAK_PERSONER_RESET:
+      return {
+        ...state,
+        personer: undefined
+      }
+
     case types.SAK_SEND_POST_SUCCESS:
       return {
         ...state,
@@ -102,7 +107,7 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
       }
 
     case types.APP_CLEAN_DATA:
-      return initialSakState;
+      return initialSakState
 
     default:
 

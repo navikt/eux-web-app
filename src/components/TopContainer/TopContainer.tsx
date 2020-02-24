@@ -75,6 +75,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
     }
   }
 
+  console.log(getServerErrorMessage())
   return (
     <>
       <Header className={classNames({ highContrast: highContrast })}>
@@ -84,21 +85,23 @@ export const TopContainer: React.FC<TopContainerProps> = ({
             onHighContrastClicked={handleHighContrastToggle}
             labelHighContrast={t('ui:highContrast')}
           />) : null}
-        <Ui.Alert
-          type='client'
-          message={getClientErrorMessage()}
-          status={clientErrorStatus}
-          error={error}
-          onClose={onClear}
-        />
-        <Ui.Alert
-          type='server'
-          message={getServerErrorMessage()}
-          error={error}
-          onClose={onClear}
-        />
+
       </Header>
+      <Ui.Alert
+        type='server'
+        message={getServerErrorMessage()}
+        error={error}
+        onClose={onClear}
+      />
+      <Ui.Alert
+        type='client'
+        message={getClientErrorMessage()}
+        status={clientErrorStatus}
+        error={error}
+        onClose={onClear}
+      />
       <main id='main' role='main' className={classNames(className, '_container', 'p-0', { 'container-fluid': fluid, highContrast: highContrast })}>
+
         {children}
       </main>
     </>

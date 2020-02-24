@@ -35,9 +35,9 @@ ReactDOM.render(
       <Suspense fallback={<span>...</span>}>
         <Router history={createBrowserHistory()}>
           <Switch>
-            <Route path="/vedlegg" component={Pages.Vedlegg} />
-            <Route path="/opprett" component={Pages.OpprettSak} />
-            <Route exact path="/" component={Pages.Forside} />
+            <Route path='/vedlegg' component={Pages.Vedlegg} />
+            <Route path='/opprett' component={Pages.OpprettSak} />
+            <Route exact path='/' component={Pages.Forside} />
             <Route component={Pages.UkjentSide} />
           </Switch>
         </Router>

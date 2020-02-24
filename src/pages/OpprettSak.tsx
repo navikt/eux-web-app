@@ -1,8 +1,9 @@
 import * as formActions from 'actions/form'
 import * as sakActions from 'actions/sak'
-import PersonFind from 'components/PersonFind/PersonFind'
+import PersonSearch from 'components/PersonSearch/PersonSearch'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { State } from 'declarations/reducers'
+import { Person } from 'declarations/types'
 import * as EKV from 'eessi-kodeverk'
 import Ui from 'eessi-pensjon-ui'
 import _ from 'lodash'
@@ -32,6 +33,7 @@ export interface OpprettSakSelector {
   landkoder: any;
   opprettetSak: any;
   sektor: any;
+  personer: Person | undefined;
   sendingSak: boolean;
   serverInfo: any;
   valgtBucType: any;
@@ -41,17 +43,18 @@ export interface OpprettSakSelector {
   valgteArbeidsforhold: any;
 }
 
-const mapState =(state: State): OpprettSakSelector => ({
+const mapState = (state: State): OpprettSakSelector => ({
   allbuctyper: state.sak.buctyper,
   allsedtyper: state.sak.sedtyper,
   fagsaker: state.sak.fagsaker,
-  fnrErGyldig:  state.form.fnrErGyldig,
+  fnrErGyldig: state.form.fnrErGyldig,
   fnrErSjekket: state.form.fnrErSjekket,
   inntastetFnr: state.form.fnr,
   institusjoner: state.sak.institusjoner,
   kodemaps: state.sak.kodemaps,
   landkoder: state.sak.landkoder,
   opprettetSak: state.sak.opprettetSak,
+  personer: state.sak.personer,
   sektor: state.sak.sektor,
   sendingSak: state.loading.sendingSak,
   serverInfo: state.app.serverinfo,
@@ -60,12 +63,12 @@ const mapState =(state: State): OpprettSakSelector => ({
   valgtSektor: state.form.sektor,
   valgteFamilieRelasjoner: state.form.tilleggsopplysninger.familierelasjoner,
   valgteArbeidsforhold: state.form.tilleggsopplysninger.arbeidsforhold
-});
+})
 
-const OpprettSak: React.FC<OpprettSakProps> = ({history} : OpprettSakProps): JSX.Element => {
+const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): JSX.Element => {
   const {
     allbuctyper, allsedtyper, fagsaker, fnrErGyldig, fnrErSjekket, inntastetFnr, institusjoner, kodemaps, landkoder, opprettetSak,
-    sektor, sendingSak, serverInfo, valgtBucType, valgtSedType, valgtSektor
+    personer, sektor, sendingSak, serverInfo, valgtBucType, valgtSedType, valgtSektor
   }: OpprettSakSelector = useSelector<State, OpprettSakSelector>(mapState)
   const dispatch = useDispatch()
   const { t } = useTranslation()
@@ -78,7 +81,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({history} : OpprettSakProps): JSX
 
   const temar = (!kodemaps ? [] : (!valgtSektor ? [] : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor]]))
   const buctyper = (!kodemaps ? [] : (!valgtSektor ? [] : allbuctyper[kodemaps.SEKTOR2FAGSAK[valgtSektor]]))
-  let sedtyper =  (!kodemaps ? [] : (!valgtSektor ? [] : allbuctyper[kodemaps.SEKTOR2FAGSAK[valgtSektor][valgtBucType]]))
+  let sedtyper = (!kodemaps ? [] : (!valgtSektor ? [] : allbuctyper[kodemaps.SEKTOR2FAGSAK[valgtSektor][valgtBucType]]))
   if (!(sedtyper && sedtyper.length)) {
     sedtyper = []
   }
@@ -114,18 +117,18 @@ const OpprettSak: React.FC<OpprettSakProps> = ({history} : OpprettSakProps): JSX
   }
 
   const oppdaterInstitusjonKode = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const institusjonsID = event.target.value;
+    const institusjonsID = event.target.value
     setInstitusjonsID(institusjonsID)
   }
 
   const oppdaterTemaListe = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const tema = event.target.value;
+    const tema = event.target.value
     setTema(tema)
     dispatch(formActions.set('fagsaker', []))
   }
 
   const oppdaterFagsakListe = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const saksID = event.target.value;
+    const saksID = event.target.value
     setSaksID(saksID)
   }
 
@@ -134,7 +137,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({history} : OpprettSakProps): JSX
   }
 
   const validation = (): boolean => {
-    /*// const { fnr, sektor, sedtype, land, institusjonsID } = values;
+    /* // const { fnr, sektor, sedtype, land, institusjonsID } = values;
     const fnrValidNumberMsg = _.isNumber(values.fnr) ? 'Du må taste inn fødselsnummer.' : null;
     // const fnrErUgyldig = (values.fnrErGyldig === false && values.fnrErSjekket) ? 'Fødselsnummeret er ikke gyldig.' : null;
     const sektor = !values.sektor ? 'Du må velge sektor.' : null;
@@ -150,7 +153,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({history} : OpprettSakProps): JSX
       sedtype,
       land,
       institusjonsID,
-    };*/
+    }; */
     return true
   }
 
@@ -179,7 +182,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({history} : OpprettSakProps): JSX
   const closeModal = () => {
     setVisModal(false)
   }
-
+/*
   const settFnrGyldighet = (erGyldig: any) => {
     dispatch(formActions.set('fnrErGyldig', erGyldig))
   }
@@ -187,99 +190,100 @@ const OpprettSak: React.FC<OpprettSakProps> = ({history} : OpprettSakProps): JSX
   const settFnrSjekket = (erSjekket: any) => {
     dispatch(formActions.set('fnrErSjekket', erSjekket))
   }
-
+*/
   const onAbort = () => {
-    dispatch({type: types.APP_CLEAN_DATA})
+    dispatch({ type: types.APP_CLEAN_DATA })
     history.push('/')
   }
 
   return (
-    <TopContainer className="opprettsak">
+    <TopContainer className='opprettsak'>
       <Ui.Nav.Row>
         <div className='col-sm-1' />
         <div className='col-sm-10'>
           <Ui.Nav.Systemtittel className='mb-4'>Opprett Sak</Ui.Nav.Systemtittel>
-          <Ui.Nav.Row className="">
-            <Ui.Nav.Column xs="6">
-              <PersonFind
-                inntastetFnr={inntastetFnr}
-                settFnrSjekket={settFnrSjekket}
-                settFnrGyldighet={settFnrGyldighet}
-              />
-            </Ui.Nav.Column>
-          </Ui.Nav.Row>
 
-          <form onSubmit={overrideDefaultSubmit}>
-              <Ui.Nav.Row className="">
-                <Ui.Nav.Column xs="3">
+          <PersonSearch className='w-50' />
+
+          {personer ?
+            <form onSubmit={overrideDefaultSubmit}>
+              <Ui.Nav.Row className=''>
+                <Ui.Nav.Column xs='3'>
                   <Ui.Nav.Select
-                    id="id-sektor"
-                    name="sektor"
-                    label="Fagområde"
-                    bredde="xxl"
+                    id='id-sektor'
+                    name='sektor'
+                    label='Fagområde'
+                    bredde='xxl'
                     disabled={!oppgittFnrErValidert}
                     onChange={(e: React.ChangeEvent<HTMLSelectElement>) => formActions.set('sektor', e.target.value)}
                     value={valgtSektor}
                   >
-                     {sektor ? _.orderBy(sektor,'term').map((element: any) => <option value={element.kode} key={element.kode}>{element.term}</option>) : null}
+                    {sektor ? _.orderBy(sektor, 'term').map((element: any) => <option value={element.kode}
+                                                                                      key={element.kode}>{element.term}</option>) : null}
                   </Ui.Nav.Select>
                 </Ui.Nav.Column>
               </Ui.Nav.Row>
-              <Ui.Nav.Row className="">
-                <Ui.Nav.Column xs="3">
+              <Ui.Nav.Row className=''>
+                <Ui.Nav.Column xs='3'>
                   <Ui.Nav.Select
-                    id="id-buctype"
-                    name="buctype"
-                    label="BUC"
-                    bredde="xxl"
+                    id='id-buctype'
+                    name='buctype'
+                    label='BUC'
+                    bredde='xxl'
                     disabled={!oppgittFnrErValidert}
                     onChange={oppdaterBucKode}
                     value={valgtBucType}
                   >
-                    {buctyper ? _.orderBy(buctyper,'kode').map((element: any) => <option value={element.kode} key={element.kode}>{element.kode}-{element.term}</option>) : null}
+                    {buctyper ? _.orderBy(buctyper, 'kode').map((element: any) => <option value={element.kode}
+                                                                                          key={element.kode}>{element.kode}-{element.term}</option>) : null}
                   </Ui.Nav.Select>
                 </Ui.Nav.Column>
-                <Ui.Nav.Column xs="3">
+                <Ui.Nav.Column xs='3'>
                   <Ui.Nav.Select
-                    id="id-sedtype"
-                    name="sedtype"
-                    label="SED"
-                    bredde="xxl"
+                    id='id-sedtype'
+                    name='sedtype'
+                    label='SED'
+                    bredde='xxl'
                     disabled={!oppgittFnrErValidert}
                     onChange={oppdaterBucKode}
                     value={valgtSedType}
                   >
-                    {erSedtyperGyldig(sedtyper) && sedtyper.map((element: any) => <option value={element.kode} key={element.kode}>{element.kode}-{element.term}</option>)}
+                    {erSedtyperGyldig(sedtyper) && sedtyper.map((element: any) => <option value={element.kode}
+                                                                                          key={element.kode}>{element.kode}-{element.term}</option>)}
                   </Ui.Nav.Select>
                 </Ui.Nav.Column>
               </Ui.Nav.Row>
-              <Ui.Nav.Row className="">
-                <Ui.Nav.Column xs="3">
-                  <Ui.Nav.Select id="id-landkode" bredde="xxl" disabled={!oppgittFnrErValidert} value={landKode} onChange={oppdaterLandKode} label="Land">
-                    <option value="0" />
-                    {landkoder ? _.orderBy(landkoder,'term').map((element: any) => <option value={element.kode} key={element.kode}>{element.term}</option>) : null}
+              <Ui.Nav.Row className=''>
+                <Ui.Nav.Column xs='3'>
+                  <Ui.Nav.Select id='id-landkode' bredde='xxl' disabled={!oppgittFnrErValidert} value={landKode}
+                                 onChange={oppdaterLandKode} label='Land'>
+                    <option value='0'/>
+                    {landkoder ? _.orderBy(landkoder, 'term').map((element: any) => <option value={element.kode}
+                                                                                            key={element.kode}>{element.term}</option>) : null}
                   </Ui.Nav.Select>
                 </Ui.Nav.Column>
-                <Ui.Nav.Column xs="3">
-                  <Ui.Nav.Select id="id-institusjon" bredde="xxl" disabled={!oppgittFnrErValidert} value={institusjonsID} onChange={oppdaterInstitusjonKode} label="Mottaker institusjon">
-                    <option value="0" />
-                    {institusjoner ? _.orderBy(institusjoner, 'term').map((element: any) => <option value={element.institusjonsID} key={element.institusjonsID}>{element.navn}</option>) : null}
+                <Ui.Nav.Column xs='3'>
+                  <Ui.Nav.Select id='id-institusjon' bredde='xxl' disabled={!oppgittFnrErValidert}
+                                 value={institusjonsID} onChange={oppdaterInstitusjonKode} label='Mottaker institusjon'>
+                    <option value='0'/>
+                    {institusjoner ? _.orderBy(institusjoner, 'term').map((element: any) => <option
+                      value={element.institusjonsID} key={element.institusjonsID}>{element.navn}</option>) : null}
                   </Ui.Nav.Select>
                 </Ui.Nav.Column>
               </Ui.Nav.Row>
-              <Ui.Nav.Row className="">
-                {valgtSektor === 'FB' && <FamilieRelasjonsComponent />}
+              <Ui.Nav.Row className=''>
+                {valgtSektor === 'FB' && <FamilieRelasjonsComponent/>}
               </Ui.Nav.Row>
               {valgtSektor && (
-                <Ui.Nav.Row className="">
-                  <Ui.Nav.Column xs="3">
-                    <BehandlingsTemaer temaer={temar as any} tema={tema} oppdaterTemaListe={oppdaterTemaListe} />
+                <Ui.Nav.Row className=''>
+                  <Ui.Nav.Column xs='3'>
+                    <BehandlingsTemaer temaer={temar as any} tema={tema} oppdaterTemaListe={oppdaterTemaListe}/>
                   </Ui.Nav.Column>
-                  <Ui.Nav.Column xs="2">
+                  <Ui.Nav.Column xs='2'>
                     <Ui.Nav.Knapp onClick={visFagsaker} disabled={tema.length === 0}>Vis saker</Ui.Nav.Knapp>
                   </Ui.Nav.Column>
-                  <Ui.Nav.Column xs="2">
-                    <Ui.Nav.Lenke href={serverInfo.gosysURL} ariaLabel="Opprett ny sak i GOSYS" target="_blank">
+                  <Ui.Nav.Column xs='2'>
+                    <Ui.Nav.Lenke href={serverInfo.gosysURL} ariaLabel='Opprett ny sak i GOSYS' target='_blank'>
                       Opprett ny sak i GOSYS
                     </Ui.Nav.Lenke>
                   </Ui.Nav.Column>
@@ -287,13 +291,11 @@ const OpprettSak: React.FC<OpprettSakProps> = ({history} : OpprettSakProps): JSX
               )}
 
               {visFagsakerListe() &&
-                <Fagsaker fagsaker={fagsaker} saksID={saksID} oppdaterFagsakListe={oppdaterFagsakListe} />
-              }
+              <Fagsaker fagsaker={fagsaker} saksID={saksID} oppdaterFagsakListe={oppdaterFagsakListe}/>}
               {visArbeidsforhold() &&
-                <ArbeidsforholdController fnr={inntastetFnr} />
-              }
-              <Ui.Nav.Row className="opprettsak__statuslinje">
-                <Ui.Nav.Column xs="3">
+              <ArbeidsforholdController fnr={inntastetFnr}/>}
+              <Ui.Nav.Row className='opprettsak__statuslinje'>
+                <Ui.Nav.Column xs='3'>
                   <Ui.Nav.Hovedknapp
                     disabled={!redigerbart || sendingSak}
                     onClick={skjemaSubmit}
@@ -302,20 +304,23 @@ const OpprettSak: React.FC<OpprettSakProps> = ({history} : OpprettSakProps): JSX
                     {t('ui:form-createCaseInRina')}
                   </Ui.Nav.Hovedknapp>
                 </Ui.Nav.Column>
-                <Ui.Nav.Column xs="3">
-                  <Ui.Nav.Flatknapp aria-label="Navigasjonslink tilbake til forsiden" onClick={() => openModal()} >
+                <Ui.Nav.Column xs='3'>
+                  <Ui.Nav.Flatknapp aria-label='Navigasjonslink tilbake til forsiden' onClick={() => openModal()}>
                     AVSLUTT UTFYLLING
                   </Ui.Nav.Flatknapp>
                 </Ui.Nav.Column>
               </Ui.Nav.Row>
-            {opprettetSak && opprettetSak.url ? (
-              <Ui.Nav.Row>
-                <Ui.Nav.Column xs="6">
-                  <StatusLinje status='OK' tittel={`Saksnummer: ${opprettetSak.rinasaksnummer}`} rinaURL={opprettetSak.url} routePath={'/vedlegg?rinasaksnummer=' + opprettetSak.rinasaksnummer} />
-                </Ui.Nav.Column>
-              </Ui.Nav.Row>
-            ) : null}
-          </form>
+              {opprettetSak && opprettetSak.url ? (
+                <Ui.Nav.Row>
+                  <Ui.Nav.Column xs='6'>
+                    <StatusLinje status='OK' tittel={`Saksnummer: ${opprettetSak.rinasaksnummer}`}
+                                 rinaURL={opprettetSak.url}
+                                 routePath={'/vedlegg?rinasaksnummer=' + opprettetSak.rinasaksnummer}/>
+                  </Ui.Nav.Column>
+                </Ui.Nav.Row>
+              ) : null}
+            </form>
+           : null}
           <AbortModal
             onAbort={onAbort}
             visModal={visModal}

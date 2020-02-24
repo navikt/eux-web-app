@@ -20,7 +20,6 @@ const mapState = (state: State): ArbeidsForholdSelector => ({
 })
 
 const ArbeidsforholdController: React.FC<ArbeidsForholdProps> = ({ fnr = '' }: ArbeidsForholdProps): JSX.Element => {
-
   const { dispatch } = useDispatch()
   const { arbeidsforhold }: ArbeidsForholdSelector = useSelector<State, ArbeidsForholdSelector>(mapState)
   const hentArbeidsforhold = () => {
@@ -28,12 +27,12 @@ const ArbeidsforholdController: React.FC<ArbeidsForholdProps> = ({ fnr = '' }: A
   }
 
   return (
-    <div className="arbeidsforhold">
+    <div className='arbeidsforhold'>
       <Ui.Nav.Row>
-        <Ui.Nav.Column xs="3">
+        <Ui.Nav.Column xs='3'>
           <strong>AA Registeret</strong><br />Arbeidsforhold/Arbeidsgivere
         </Ui.Nav.Column>
-        <Ui.Nav.Column xs="2">
+        <Ui.Nav.Column xs='2'>
           <Ui.Nav.Knapp onClick={hentArbeidsforhold}>Søk</Ui.Nav.Knapp>
         </Ui.Nav.Column>
       </Ui.Nav.Row>
@@ -42,11 +41,11 @@ const ArbeidsforholdController: React.FC<ArbeidsForholdProps> = ({ fnr = '' }: A
       </Ui.Nav.Row>
       {arbeidsforhold?.length > 0 && <Arbeidsforhold arbeidsforhold={arbeidsforhold} />}
     </div>
-  );
+  )
 }
 
 ArbeidsforholdController.propTypes = {
   fnr: PT.string
 }
 
-export default ArbeidsforholdController;
+export default ArbeidsforholdController

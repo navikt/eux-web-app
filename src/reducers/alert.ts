@@ -37,7 +37,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         break
 
       case types.APP_CLEAN_DATA:
-        return initialAlertState;
+        return initialAlertState
 
       default:
         serverErrorMessage = (action as ActionWithPayload).payload.message || 'ui:serverInternalError'
@@ -57,6 +57,10 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
 
     switch (action.type) {
 
+      case types.SAK_PERSONER_GET_FAILURE:
+        clientErrorMessage = 'ui:validation-invalidFnr'
+        break
+
       default:
 
         clientErrorMessage = 'ui:error'
@@ -73,7 +77,6 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
   }
 
   switch (action.type) {
-
     default:
       break
   }
