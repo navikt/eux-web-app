@@ -15,7 +15,7 @@ const Forside: React.FC = (): JSX.Element => {
   }
 
   return (
-    <TopContainer className="p-forside">
+    <TopContainer className='p-forside'>
       <Ui.Banner
         style={{ backgroundColor: 'lightblue' }}
         onHighContrastClicked={toggleHighContrast}
@@ -30,12 +30,14 @@ const Forside: React.FC = (): JSX.Element => {
         <div className='col-sm-10 m-4'>
           <Ui.Nav.Lenkepanel
             linkCreator={(props: any) => (<Link to='/opprett' {...props} />)}
-            href='#'>
+            href='#'
+          >
             {t('ui:menu-createCase')}
           </Ui.Nav.Lenkepanel>
           <Ui.Nav.Lenkepanel
             linkCreator={(props: any) => (<Link to='/vedlegg' {...props} />)}
-            href='#'>
+            href='#'
+          >
             {t('ui:menu-addAttachment')}
           </Ui.Nav.Lenkepanel>
         </div>

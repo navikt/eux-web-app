@@ -1,6 +1,6 @@
-import * as EKV from "eessi-kodeverk"
+import * as EKV from 'eessi-kodeverk'
 import { ActionWithPayload, ThunkResult } from 'eessi-pensjon-ui/dist/declarations/types'
-import { ActionCreator } from 'redux'
+import { Action, ActionCreator } from 'redux'
 import * as api from 'eessi-pensjon-ui/dist/api'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
@@ -9,7 +9,7 @@ const sprintf = require('sprintf-js').sprintf
 
 export const getArbeidsforhold: ActionCreator<ThunkResult<ActionWithPayload>> = (fnr: string): ThunkResult<ActionWithPayload> => {
   return api.realCall({
-    url: sprintf(urls.API_SAK_ARBEIDSFORHOLD_URL, {fnr: fnr}),
+    url: sprintf(urls.API_SAK_ARBEIDSFORHOLD_URL, { fnr: fnr }),
     type: {
       request: types.SAK_ARBEIDSFORHOLD_GET_REQUEST,
       success: types.SAK_ARBEIDSFORHOLD_GET_SUCCESS,
@@ -20,7 +20,7 @@ export const getArbeidsforhold: ActionCreator<ThunkResult<ActionWithPayload>> = 
 
 export const getDokumenter: ActionCreator<ThunkResult<ActionWithPayload>> = (rinasaksnummer: string): ThunkResult<ActionWithPayload> => {
   return api.realCall({
-    url: sprintf(urls.API_SAK_DOKUMENTER_URL, {rinasaksnummer: rinasaksnummer}),
+    url: sprintf(urls.API_SAK_DOKUMENTER_URL, { rinasaksnummer: rinasaksnummer }),
     type: {
       request: types.SAK_DOKUMENTER_GET_REQUEST,
       success: types.SAK_DOKUMENTER_GET_SUCCESS,
@@ -31,7 +31,7 @@ export const getDokumenter: ActionCreator<ThunkResult<ActionWithPayload>> = (rin
 
 export const getFagsaker: ActionCreator<ThunkResult<ActionWithPayload>> = (fnr: string, sektor: string, tema: string): ThunkResult<ActionWithPayload> => {
   return api.realCall({
-    url: sprintf(urls.API_SAK_FAGSAKER_URL, {fnr: fnr, sektor: sektor, tema: tema}),
+    url: sprintf(urls.API_SAK_FAGSAKER_URL, { fnr: fnr, sektor: sektor, tema: tema }),
     type: {
       request: types.SAK_FAGSAKER_GET_REQUEST,
       success: types.SAK_FAGSAKER_GET_SUCCESS,
@@ -42,7 +42,7 @@ export const getFagsaker: ActionCreator<ThunkResult<ActionWithPayload>> = (fnr: 
 
 export const getInstitusjoner: ActionCreator<ThunkResult<ActionWithPayload>> = (buctype: string, lanskode: string): ThunkResult<ActionWithPayload> => {
   return api.realCall({
-    url: sprintf(urls.API_SAK_INSTITUSJONER_URL, {buctype: buctype, lanskode: lanskode}),
+    url: sprintf(urls.API_SAK_INSTITUSJONER_URL, { buctype: buctype, lanskode: lanskode }),
     type: {
       request: types.SAK_FAGSAKER_GET_REQUEST,
       success: types.SAK_FAGSAKER_GET_SUCCESS,
@@ -64,7 +64,7 @@ export const getKodeverk: ActionCreator<ThunkResult<ActionWithPayload>> = (): Th
 
 export const getLandkoder: ActionCreator<ThunkResult<ActionWithPayload>> = (buctype: string): ThunkResult<ActionWithPayload> => {
   return api.realCall({
-    url: sprintf(urls.API_SAK_LANDKODER_URL, {buctype: buctype}),
+    url: sprintf(urls.API_SAK_LANDKODER_URL, { buctype: buctype }),
     type: {
       request: types.SAK_LANDKODER_GET_REQUEST,
       success: types.SAK_LANDKODER_GET_SUCCESS,
@@ -75,7 +75,7 @@ export const getLandkoder: ActionCreator<ThunkResult<ActionWithPayload>> = (buct
 
 export const getPersoner: ActionCreator<ThunkResult<ActionWithPayload>> = (fnr: string): ThunkResult<ActionWithPayload> => {
   return api.realCall({
-    url: sprintf(urls.API_SAK_PERSONER_URL, {fnr: fnr}),
+    url: sprintf(urls.API_SAK_PERSONER_URL, { fnr: fnr }),
     type: {
       request: types.SAK_PERSONER_GET_REQUEST,
       success: types.SAK_PERSONER_GET_SUCCESS,
@@ -84,19 +84,22 @@ export const getPersoner: ActionCreator<ThunkResult<ActionWithPayload>> = (fnr: 
   })
 }
 
-export const createSak: ActionCreator<ThunkResult<ActionWithPayload>> = (data: any): ThunkResult<ActionWithPayload> => {
+export const resetPersoner: ActionCreator<Action> = (): Action => ({
+  type: types.SAK_PERSONER_RESET
+})
 
+export const createSak: ActionCreator<ThunkResult<ActionWithPayload>> = (data: any): ThunkResult<ActionWithPayload> => {
   const transformData = (data: any) => {
     if (data.tilleggsopplysninger.familierelasjoner.length > 0) {
       const {
         buctype, fnr, landKode, institusjonsID, sedtype, sektor, saksID,
-        tilleggsopplysninger,
-      } = data;
-      const { arbeidsforhold } = tilleggsopplysninger;
+        tilleggsopplysninger
+      } = data
+      const { arbeidsforhold } = tilleggsopplysninger
       const familierelasjoner = tilleggsopplysninger.familierelasjoner.map((relasjon: any) => ({
         ...relasjon,
-        fdato: relasjon.fdato.indexOf('-') > 0 ? relasjon.fdato : formatterDatoTilISO(relasjon.fdato),
-      }));
+        fdato: relasjon.fdato.indexOf('-') > 0 ? relasjon.fdato : formatterDatoTilISO(relasjon.fdato)
+      }))
       return {
         buctype,
         fnr,
@@ -107,13 +110,13 @@ export const createSak: ActionCreator<ThunkResult<ActionWithPayload>> = (data: a
         saksID,
         tilleggsopplysninger: {
           familierelasjoner,
-          arbeidsforhold,
-        },
-      };
+          arbeidsforhold
+        }
+      }
     }
-    return data;
-  };
-  const payload = transformData(data);
+    return data
+  }
+  const payload = transformData(data)
 
   return api.realCall({
     url: urls.API_SAK_SEND_POST_URL,
@@ -145,9 +148,5 @@ export const preload = () => ({
     kodemaps: {
       ...EKV.Kodemaps
     }
-  }, // kodemaps: { BUC2SEDS, SEKTOR2FAGSAK, SEKTOR2BUC }
+  } // kodemaps: { BUC2SEDS, SEKTOR2FAGSAK, SEKTOR2BUC }
 })
-
-
-
-
