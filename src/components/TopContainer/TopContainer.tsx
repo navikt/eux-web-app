@@ -75,7 +75,6 @@ export const TopContainer: React.FC<TopContainerProps> = ({
     }
   }
 
-  console.log(getServerErrorMessage())
   return (
     <>
       <Header className={classNames({ highContrast: highContrast })}>

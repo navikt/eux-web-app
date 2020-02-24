@@ -26,6 +26,10 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
     return initialAlertState
   }
 
+  if (action.type === types.SAK_PERSONER_GET_REQUEST) {
+    return initialAlertState
+  }
+
   if (_.endsWith(action.type, '/ERROR')) {
     switch (action.type) {
       case types.SERVER_INTERNAL_ERROR:

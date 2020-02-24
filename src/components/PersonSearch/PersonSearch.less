@@ -22,8 +22,21 @@
     margin: 1.9em 0 0 1em;
   }
 
+  .panelheader__undertittel {
+    display: flex;
+    flex-direction: column;
+  }
+
   .personsok__kort {
-    margin: 1em 0;
+    display: flex !important;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin: .6em 0;
+    align-items: center;
+
+    .fodselsdato {
+      flex: 1;
+    }
   }
 
   .personsok__advarsel {
