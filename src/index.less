@@ -55,3 +55,21 @@ section {
 .panelSeksjon {
   margin:1em 0;
 }
+
+.slideAnimate {
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: slideInFromLeft 0.3s forwards;
+}
+
+
+@keyframes slideInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

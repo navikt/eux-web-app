@@ -1,6 +1,7 @@
 import * as formActions from 'actions/form'
 import * as sakActions from 'actions/sak'
 import AbortModal from 'components/AbortModal/AbortModal'
+import Family from 'components/Family/Family'
 import PersonSearch from 'components/PersonSearch/PersonSearch'
 import TopContainer from 'components/TopContainer/TopContainer'
 import * as types from 'constants/actionTypes'
@@ -12,6 +13,7 @@ import _ from 'lodash'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import IkonArbeidsforhold from 'resources/images/ikon-arbeidsforhold'
 import { formatterDatoTilNorsk } from 'utils/dato'
 import './OpprettSak.css'
@@ -214,7 +216,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
           <PersonSearch className='w-50' />
           {personer ? (
             <Ui.Nav.Row>
-              <div className='col-xs-6'>
+              <div className='col-xs-6 slideAnimate' style={{animationDelay: '0s'}}>
                 <Ui.Nav.Select
                   className='mb-4'
                   id='id-sektor'
@@ -232,7 +234,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                 </Ui.Nav.Select>
               </div>
               <div className='col-xs-6'/>
-              <div className='col-xs-6'>
+              <div className='col-xs-6 slideAnimate' style={{animationDelay: '0.15s'}}>
                 <Ui.Nav.Select
                   className='mb-4'
                   id='id-buctype'
@@ -248,7 +250,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                   ): null}
                 </Ui.Nav.Select>
               </div>
-              <div className='col-xs-6'>
+              <div className='col-xs-6 slideAnimate' style={{animationDelay: '0.3s'}}>
                 <Ui.Nav.Select
                   className='mb-4'
                   id='id-sedtype'
@@ -264,7 +266,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                   ): null}
                 </Ui.Nav.Select>
               </div>
-              <div className='col-xs-6'>
+              <div className='col-xs-6 slideAnimate' style={{animationDelay: '0.45s'}}>
                 <Ui.CountrySelect
                   className='mb-4'
                   label={t('ui:label-landkode')}
@@ -274,7 +276,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                   onOptionSelected={onLandkodeChange}
                 />
               </div>
-              <div className='col-xs-6'>
+              <div className='col-xs-6 slideAnimate' style={{animationDelay: '0.6s'}}>
                 <Ui.Nav.Select
                   id='id-institusjon'
                   className='mb-4'
@@ -290,12 +292,12 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                 </Ui.Nav.Select>
               </div>
               <div className='col-xs-12'>
-                {/*{valgtSektor === 'FB' ? <FamilieRelasjonsComponent /> : null}*/}
+                {valgtSektor === 'FB' ? <Family /> : null}
                 {valgteFamilieRelasjoner}
               </div>
               {valgtSektor ? (
                 <div className='d-flex w-100' style={{alignItems: 'flex-end'}}>
-                  <div className='w-50 mr-3'>
+                  <div className='w-50 ml-2 mr-3 slideAnimate'>
                     <Ui.Nav.Select
                       id="id-behandlings-tema"
                       className='mb-4'
@@ -310,7 +312,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                     </Ui.Nav.Select>
                   </div>
                   <div className='w-50'>
-                    <div className='d-flex' style={{alignItems: 'flex-end', justifyContent: 'space-between'}}>
+                    <div className='d-flex' style={{alignItems: 'center', justifyContent: 'space-between'}}>
                       <div>
                         <Ui.Nav.Knapp
                           className='mb-4'
@@ -401,16 +403,15 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                   <div className='col-xs-6'/>
                 </>
               ): null}
-              <div className='col-xs-6 opprettsak__statuslinje'>
+              <div className='col-xs-12 buttons mt-4 slideAnimate' style={{animationDelay: '0.75s'}}>
                 <Ui.Nav.Hovedknapp
+                  className='mr-4'
                   disabled={!redigerbart || sendingSak}
                   onClick={skjemaSubmit}
                   spinner={sendingSak}
                 >
                   {t('ui:form-createCaseInRina')}
                 </Ui.Nav.Hovedknapp>
-              </div>
-              <div className='col-xs-6'>
                 <Ui.Nav.Flatknapp aria-label='Navigasjonslink tilbake til forsiden' onClick={() => openModal()}>
                   AVSLUTT UTFYLLING
                 </Ui.Nav.Flatknapp>
@@ -421,8 +422,14 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                     message={(
                       <div>
                         Saksnummer: {opprettetSak.rinasaksnummer}
-                        rinaURL: {opprettetSak.url}
-                        routePath: {'/vedlegg?rinasaksnummer=' + opprettetSak.rinasaksnummer}
+                        {opprettetSak.url ? <Ui.Nav.Lenke href={opprettetSak.url} target="_blank" className="vedlegg__lenke">
+                          Gå direkte til Rina.
+                        </Ui.Nav.Lenke>  : null}
+                        { opprettetSak.rinasaksnummer ? (
+                          <Link to={'/vedlegg?rinasaksnummer=' + opprettetSak.rinasaksnummer}>
+                            {t('ui:form-caseNumber') + ': ' + opprettetSak.rinasaksnummer}
+                          </Link>
+                        ): <span>{t('ui:form-caseNumber') + ': ' + opprettetSak.rinasaksnummer}</span> }
                         </div>
                     )}
                   />

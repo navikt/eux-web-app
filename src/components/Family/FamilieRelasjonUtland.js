@@ -1,9 +1,8 @@
 import React from 'react';
 import PT from 'prop-types';
 import Ui from 'eessi-pensjon-ui'
-import * as Eux from '../../../felles-komponenter/Ikon';
-import './familierelasjoner.css';
-import { KodeverkPropType } from '../../../declarations/types.pt';
+import './FamilieRelasjonUtland.css';
+import { KodeverkPropType } from 'declarations/types.pt';
 
 const FamilieRelasjonUtland = ({
   spesialRelasjon, oppdaterState,
@@ -92,7 +91,7 @@ const FamilieRelasjonUtland = ({
           </Ui.Nav.Column>
           <Ui.Nav.Column xs="3">
             <Ui.Nav.Knapp onClick={leggTilSpesialRelasjon} disabled={!kanSpesialRelasjonLeggesTil()} className="spesialrelasjon familierelasjoner__knapp">
-              <Eux.Icon kind="tilsette" size="18" className="familierelasjoner__knapp__ikon" />
+              <Ui.Icons kind="tilsette" size="18" className="familierelasjoner__knapp__ikon" />
               <div className="familierelasjoner__knapp__label">Legg til</div>
             </Ui.Nav.Knapp>
           </Ui.Nav.Column>

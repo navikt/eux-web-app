@@ -33,16 +33,6 @@ export interface BucTyper {
   unemployment: Array<Kodeverk>
 }
 
-export interface FamilieRelasjon {
-  fnr?: string;
-  fdato?: string;
-  nasjonalitet?: string;
-  rolle?: string;
-  kjoenn?: string;
-  fornavn?: string;
-  etternavn?: string
-}
-
 export interface Person {
   fnr?: string;
   fdato?: string;
@@ -50,6 +40,12 @@ export interface Person {
   etternavn?: string;
   kjoenn?: string;
 }
+
+export interface FamilieRelasjon extends Person {
+  nasjonalitet?: string;
+  rolle?: string;
+}
+
 export interface Saksbehandler {
   brukernavn?: string;
   navn?: string;

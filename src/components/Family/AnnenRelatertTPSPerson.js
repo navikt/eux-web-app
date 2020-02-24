@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import PT from 'prop-types';
 import _ from 'lodash';
-import Ui from 'eessi-pensjon-ui'
-
+import Ui from 'eessi-pensjon-ui';
 import * as sakActions from 'actions/sak';
-import PersonSokResultat from '../../../komponenter/PersonSokResultat';
-import './annenperson.css';
-import { PersonPropType } from '../../../declarations/types.pt';
+import './AnnenRelatertTPSPerson.css';
+import { PersonPropType } from 'declarations/types.pt';
 import { useDispatch } from 'react-redux';
+import PersonCard from 'components/PersonCard/PersonCard';
 
 const defaultState = {
   sok: '', feiletSok: '', person: null, tpsperson: null, rolle: '', knappDisabled: true, notFound400: false,
@@ -53,8 +52,7 @@ class AnnenRelatertTPSPerson extends Component {
     this.props.leggTilTPSrelasjon(person);
   };
 
-  oppdaterFamilierelajon = event => {
-    const rolle = event.target.value;
+  oppdaterFamilierelajon = rolle => {
     const person = { ...this.state.person, rolle };
     const knappDisabled = false;
     this.setState({ person, rolle, knappDisabled });
@@ -107,19 +105,22 @@ class AnnenRelatertTPSPerson extends Component {
           </div>
         </div>
         {feilmeldingerOgInformasjon(valgtBrukerFnr, tpsperson, notFound400, sok, feiletSok)}
-        {
-          person && <PersonSokResultat
+        {person ? (
+          <PersonCard
             person={person}
-            rolle={rolle}
-            knappDisabled={knappDisabled}
-            leggTilHandler={leggTilPersonOgRolle}
+            initialRolle={rolle}
+            onAddClick={leggTilPersonOgRolle}
             familierelasjonKodeverk={filtrerteFamilieRelasjoner()}
-            oppdaterFamilierelajon={oppdaterFamilierelajon} />
-        }
+            oppdaterFamilierelajon={oppdaterFamilierelajon}
+          />
+        ) : null}
       </div >
     );
   }
 }
+
+
+
 
 AnnenRelatertTPSPerson.propTypes = {
   tpsrelasjoner: PT.any.isRequired,
