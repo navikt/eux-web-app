@@ -20,17 +20,17 @@ export interface Kodeverk {
   term: string;
 }
 
-export interface Buctyper {
-  awod?: Array<Kodeverk>,
-  administrative?: Array<Kodeverk>,
-  family?: Array<Kodeverk>,
-  horizontal?: Array<Kodeverk>,
-  legislation?: Array<Kodeverk>,
-  miscellaneous?: Array<Kodeverk>,
-  pensions?: Array<Kodeverk>,
-  recovery?: Array<Kodeverk>,
-  sickness?: Array<Kodeverk>,
-  unemployment?: Array<Kodeverk>
+export interface BucTyper {
+  awod: Array<Kodeverk>,
+  administrative: Array<Kodeverk>,
+  family: Array<Kodeverk>,
+  horizontal: Array<Kodeverk>,
+  legislation: Array<Kodeverk>,
+  miscellaneous: Array<Kodeverk>,
+  pensions: Array<Kodeverk>,
+  recovery: Array<Kodeverk>,
+  sickness: Array<Kodeverk>,
+  unemployment: Array<Kodeverk>
 }
 
 export interface FamilieRelasjon {
@@ -72,4 +72,28 @@ export interface OpprettetSak {
 export interface VedleggSendResponse {
   vedleggID: string;
   url: string
+}
+
+export type FamilieRelasjoner = Array<Kodeverk>
+export type Kjoenn = Array<Kodeverk>
+export type Landkoder = Array<Kodeverk>
+export type Sektor = Array<Kodeverk>
+export type SedTyper =  Array<Kodeverk>
+
+export interface Tema {
+  awod: Array<Kodeverk>,
+  family: Array<Kodeverk>,
+  horizontal: Array<Kodeverk>,
+  legislation: Array<Kodeverk>,
+  miscellaneous: Array<Kodeverk>,
+  pensions: Array<Kodeverk>,
+  recovery: Array<Kodeverk>,
+  sickness: Array<Kodeverk>,
+  unemployment: Array<Kodeverk>
+}
+
+export interface Kodemaps {
+  BUC2SEDS: {[k: string]: Array<string>},
+  SEKTOR2BUC: {[k: string]: string},
+  SEKTOR2FAGSAK: {[k: string]: string}
 }

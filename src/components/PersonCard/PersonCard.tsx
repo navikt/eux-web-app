@@ -19,14 +19,14 @@ const PersonCard: React.FC<PersonCardProps> = ({ onRemoveClick, person }: Person
 
   return (
     <div>
-      <Ui.Nav.Panel className='personsok__kort'>
+      <Ui.Nav.Panel border className='personsok__kort mt-4'>
         <PanelHeader
           ikon={Eux.IkonFraKjonn(kjoenn)}
           tittel={`${fornavn} ${etternavn}`}
           undertittel={(
             <div className='panelheader__undertittel'>
-              <span>Fødselsnummer: {fnr}</span>
-              <span>Fødselsdato: {formatterDatoTilNorsk(fdato)}</span>
+              <span>{t('ui:form-fnr') + ' : ' + fnr}</span>
+              <span>{t('ui:form-birthdate') + ': ' + formatterDatoTilNorsk(fdato)}</span>
             </div>
           )}
         />
