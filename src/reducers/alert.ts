@@ -60,7 +60,6 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
     clientErrorStatus = 'ERROR'
 
     switch (action.type) {
-
       case types.SAK_PERSONER_GET_FAILURE:
         clientErrorMessage = 'ui:validation-invalidFnr'
         break

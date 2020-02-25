@@ -10,22 +10,22 @@ export const set = (key: any, value: any) => ({
   }
 })
 
-export const addArbeidsforhold:  ActionCreator<ActionWithPayload> = (payload: any): ActionWithPayload => ({
+export const addArbeidsforhold: ActionCreator<ActionWithPayload> = (payload: any): ActionWithPayload => ({
   type: types.FORM_ARBEIDSFORHOLD_ADD,
   payload: payload
 })
 
-export const removeArbeidsforhold:  ActionCreator<ActionWithPayload> = (payload: any): ActionWithPayload => ({
+export const removeArbeidsforhold: ActionCreator<ActionWithPayload> = (payload: any): ActionWithPayload => ({
   type: types.FORM_ARBEIDSFORHOLD_REMOVE,
   payload: payload
 })
 
-export const addFamilierelasjoner:  ActionCreator<ActionWithPayload> = (payload: any): ActionWithPayload => ({
+export const addFamilierelasjoner: ActionCreator<ActionWithPayload> = (payload: any): ActionWithPayload => ({
   type: types.FORM_FAMILIERELASJONER_ADD,
   payload: payload
 })
 
-export const removeFamilierelasjoner:  ActionCreator<ActionWithPayload> = (payload: any): ActionWithPayload => ({
+export const removeFamilierelasjoner: ActionCreator<ActionWithPayload> = (payload: any): ActionWithPayload => ({
   type: types.FORM_FAMILIERELASJONER_REMOVE,
   payload: payload
 })

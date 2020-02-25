@@ -1,4 +1,5 @@
 import * as sakActions from 'actions/sak'
+import * as formActions from 'actions/form'
 import classNames from 'classnames'
 import 'components/PersonSearch/PersonSearch.css'
 import { State } from 'declarations/reducers'
@@ -13,29 +14,32 @@ import PersonCard from '../PersonCard/PersonCard'
 
 export interface PersonSearchProps {
   className?: string;
-  onPersonFound? : (personer: Person) => any;
+  onFnrChange?: () => void;
+  onPersonFound? : (personer: Person) => void;
+  validation: any;
+  resetValidation: (key: string) => void;
 }
 
 export interface PersonSearchSelector {
   personer: Person;
   gettingPersoner: boolean;
+  fnr: any;
 }
 
 const mapState = (state: State): PersonSearchSelector => ({
   personer: state.sak.personer,
+  fnr: state.form.fnr,
   gettingPersoner: state.loading.gettingPersoner
 })
 
 const PersonSearch: React.FC<PersonSearchProps> = ({
-  className, onPersonFound
+  className, onFnrChange, onPersonFound, resetValidation, validation
 }: PersonSearchProps): JSX.Element => {
-  const [validation, setValidation] = useState<string | undefined>(undefined)
-  const [_person, setPerson] = useState<Person | undefined>(undefined)
-  const [inntastetFnr, setInntastetFnr] = useState<string | undefined>(undefined)
-
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const { gettingPersoner, personer }: PersonSearchSelector = useSelector<State, PersonSearchSelector>(mapState)
+  const { gettingPersoner, fnr, personer }: PersonSearchSelector = useSelector<State, PersonSearchSelector>(mapState)
+  const [_person, setPerson] = useState<Person | undefined>(undefined)
+  const [localValidation, setLocalValidation] = useState<string |undefined>(undefined)
 
   const isPersonValid = useCallback(
     (personer: Person) => (personer?.fornavn?.length !== undefined && personer?.fnr !== undefined)
@@ -43,7 +47,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   )
 
   useEffect(() => {
-    if (personer &&  !_person && isPersonValid(personer)) {
+    if (personer && !_person && isPersonValid(personer)) {
       setPerson(personer)
       if (_.isFunction(onPersonFound)) {
         onPersonFound(personer)
@@ -51,28 +55,29 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
     }
   }, [personer, _person, isPersonValid, onPersonFound])
 
-
   const sokEtterPerson = () => {
-    if (!inntastetFnr || inntastetFnr.length === 0) {
-      return
-    }
     const fnrPattern = /^[0-9]{11}$/
-    if (!fnrPattern.test(inntastetFnr)) {
-      setValidation('ui:validation-invalidFnr')
+    if (!fnrPattern.test(fnr)) {
+      setLocalValidation(t('ui:validation-invalidFnr'))
       return
     }
-    setValidation(undefined)
+    setLocalValidation(undefined)
     setPerson(undefined)
-    dispatch(sakActions.getPersoner(inntastetFnr.trim()))
+    dispatch(sakActions.getPersoner(fnr))
   }
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValidation(undefined)
-    setInntastetFnr(e.target.value)
+    setLocalValidation(undefined)
+    resetValidation('fnr')
+    if (_.isFunction(onFnrChange)) {
+      onFnrChange()
+    }
+    dispatch(formActions.set('fnr', e.target.value.trim()))
   }
 
   const onRemovePerson = () => {
-    setValidation(undefined)
+    setLocalValidation(undefined)
+    resetValidation('fnr')
     setPerson(undefined)
     dispatch(sakActions.resetPersoner())
   }
@@ -84,11 +89,12 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
           label='Finn bruker'
           className='personsok__input'
           name='fnr'
+          value={fnr}
           onChange={onChange}
-          feil={validation ? t(validation) : null}
+          feil={validation.fnr || localValidation}
         />
         <Ui.Nav.Knapp className='personsok__knapp' onClick={sokEtterPerson} disabled={gettingPersoner}>
-          {gettingPersoner ? <Ui.WaitingPanel size='S' message={t('ui:form-searching')} oneLine/> : t('ui:form-search')}
+          {gettingPersoner ? <Ui.WaitingPanel size='S' message={t('ui:form-searching')} oneLine /> : t('ui:form-search')}
         </Ui.Nav.Knapp>
       </div>
       {personer && isPersonValid(personer) ? <PersonCard person={personer} onRemoveClick={onRemovePerson} /> : null}

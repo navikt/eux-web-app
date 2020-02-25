@@ -35,7 +35,7 @@ const mapState = (state: State): DocumentSearchSelector => ({
 const DocumentSearch: React.FC<DocumentSearchProps> = ({
   className, onDocumentFound, onRinasaksnummerChanged, resetValidation, validation
 }: DocumentSearchProps): JSX.Element => {
-  const { dokumenter, gettingDokumenter, rinasaksnummer, rinadokumentID }: DocumentSearchSelector = useSelector<State, DocumentSearchSelector>(mapState)
+  const { dokumenter, gettingDokumenter, rinasaksnummer, rinadokumentID }: DocumentSearchSelector = useSelector<State, DocumentSearchSelector>(mapState)
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const [nyttSok, setNyttSok] = useState(false)
@@ -100,7 +100,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
           feil={validation.rinadokumentID}
           disabled={!_dokumenter}
         >
-          <option value={''}>{t('ui:form-choose')}</option>
+          <option value=''>{t('ui:form-choose')}</option>
           {dokumenter ? dokumenter.map((element: any) => (
             <option value={element.rinadokumentID} key={element.rinadokumentID}>{element.kode} =&gt; {yyyMMdd(element.opprettetdato)}</option>)
           ) : null}
