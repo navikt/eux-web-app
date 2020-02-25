@@ -37,7 +37,7 @@ const Forside: React.FC = (): JSX.Element => {
           </Ui.Nav.Lenkepanel>
           <Ui.Nav.Lenkepanel
             className='slideAnimate'
-            style={{animationDelay: '0.15s'}}
+            style={{ animationDelay: '0.15s' }}
             linkCreator={(props: any) => (<Link to='/vedlegg' {...props} />)}
             href='#'
           >

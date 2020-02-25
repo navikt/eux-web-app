@@ -1,7 +1,7 @@
-//import { IS_DEVELOPMENT } from 'constants/environment'
-//export const HOSTNAME = window.location.hostname
-//export const BASE_HOST = HOSTNAME === 'localhost' && IS_DEVELOPMENT ? 'localhost:3002' : ''
-//export const API_BASE_URL = BASE_HOST + '/api'
+// import { IS_DEVELOPMENT } from 'constants/environment'
+// export const HOSTNAME = window.location.hostname
+// export const BASE_HOST = HOSTNAME === 'localhost' && IS_DEVELOPMENT ? 'localhost:3002' : ''
+// export const API_BASE_URL = BASE_HOST + '/api'
 export const API_BASE_URL = '/api'
 
 export const API_SAK_ARBEIDSFORHOLD_URL = API_BASE_URL + '/arbeidsforhold/%(fnr)s'

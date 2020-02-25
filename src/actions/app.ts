@@ -2,7 +2,7 @@ import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import * as api from 'eessi-pensjon-ui/dist/api'
 import { ActionWithPayload, ThunkResult } from 'eessi-pensjon-ui/dist/declarations/types'
-import { ActionCreator } from 'redux'
+import { Action, ActionCreator } from 'redux'
 
 export const getSaksbehandler: ActionCreator<ThunkResult<ActionWithPayload>> = (): ThunkResult<ActionWithPayload> => {
   return api.realCall({
@@ -14,6 +14,10 @@ export const getSaksbehandler: ActionCreator<ThunkResult<ActionWithPayload>> = (
     }
   })
 }
+
+export const cleanData: ActionCreator<Action> = (): Action => ({
+  type: types.APP_CLEAN_DATA
+})
 
 export const getServerinfo: ActionCreator<ThunkResult<ActionWithPayload>> = (): ThunkResult<ActionWithPayload> => {
   return api.realCall({

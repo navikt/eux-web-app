@@ -3,6 +3,7 @@ import _ from 'lodash'
 import { ActionWithPayload } from 'eessi-pensjon-ui/dist/declarations/types'
 
 export interface FormState {
+  fnr: any;
   sedtype: any;
   buctype: any;
   sektor: any;
@@ -15,6 +16,7 @@ export interface FormState {
 }
 
 export const initialFormState: FormState = {
+  fnr: undefined,
   sedtype: undefined,
   buctype: undefined,
   sektor: undefined,
