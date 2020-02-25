@@ -6,20 +6,18 @@ export interface VedleggState {
   vedlegg: VedleggSendResponse | undefined;
   rinasaksnummer: any;
   rinadokumentID: any;
-  rinaNrErGyldig: boolean;
-  rinaNrErSjekket: boolean;
   journalpostID: any;
   dokumentID: any;
+  dokumenter: any;
 }
 
 export const initialVedleggState: VedleggState = {
   vedlegg: undefined,
   rinasaksnummer: undefined,
   rinadokumentID: undefined,
-  rinaNrErGyldig: false,
-  rinaNrErSjekket: false,
   journalpostID: undefined,
-  dokumentID: undefined
+  dokumentID: undefined,
+  dokumenter: undefined
 }
 
 const vedleggReducer = (state: VedleggState = initialVedleggState, action: ActionWithPayload) => {
@@ -28,6 +26,12 @@ const vedleggReducer = (state: VedleggState = initialVedleggState, action: Actio
       return {
         ...state,
         vedlegg: action.payload
+      }
+
+    case types.VEDLEGG_DOKUMENTER_GET_SUCCESS:
+      return {
+        ...state,
+        dokumenter: action.payload
       }
 
     case types.VEDLEGG_VALUE_SET:

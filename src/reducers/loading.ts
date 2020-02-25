@@ -40,14 +40,14 @@ const loadingReducer = (state: LoadingState = initialLoadingState, action: Actio
         gettingArbeidsforhold: false
       }
 
-    case types.SAK_DOKUMENTER_GET_REQUEST:
+    case types.VEDLEGG_DOKUMENTER_GET_REQUEST:
       return {
         ...state,
         gettingDokumenter: true
       }
 
-    case types.SAK_DOKUMENTER_GET_SUCCESS:
-    case types.SAK_DOKUMENTER_GET_FAILURE:
+    case types.VEDLEGG_DOKUMENTER_GET_SUCCESS:
+    case types.VEDLEGG_DOKUMENTER_GET_FAILURE:
       return {
         ...state,
         gettingDokumenter: false

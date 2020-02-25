@@ -15,7 +15,6 @@ import { ActionWithPayload } from 'eessi-pensjon-ui/dist/declarations/types'
 
 export interface SakState {
   arbeidsforhold: Arbeidsforhold | undefined;
-  dokumenter: any;
   fagsaker: any;
   institusjoner: any;
   personer: any;
@@ -34,7 +33,6 @@ export interface SakState {
 
 export const initialSakState: SakState = {
   arbeidsforhold: undefined,
-  dokumenter: undefined,
   fagsaker: undefined,
   institusjoner: undefined,
   landkoder: undefined,
@@ -56,12 +54,6 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
       return {
         ...state,
         arbeidsforhold: action.payload
-      }
-
-    case types.SAK_DOKUMENTER_GET_SUCCESS:
-      return {
-        ...state,
-        dokumenter: action.payload
       }
 
     case types.SAK_FAGSAKER_GET_SUCCESS:
