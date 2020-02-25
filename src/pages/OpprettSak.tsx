@@ -77,18 +77,6 @@ const mapState = (state: State): OpprettSakSelector => ({
   valgteArbeidsforhold: state.form.arbeidsforhold
 })
 
-/*
-  buctyper: BucTyper | undefined;
-  familierelasjoner: FamilieRelasjoner | undefined;
-  kjoenn: Kjoenn | undefined;
-  landkoder: Landkoder | undefined;
-  sektor: Sektor | undefined;
-  sedtyper: SedTyper | undefined;
-  tema: Tema | undefined;
-  kodemaps: Kodemaps | undefined;
-}
- */
-
 const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): JSX.Element => {
   const {
     arbeidsforhold, buctyper, sedtyper, fagsaker, institusjoner, kodemaps, landkoder, opprettetSak, personer, sektor, sendingSak,
@@ -129,7 +117,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
   }
 
   const isValid = (): boolean => {
-    return _.find(_.values(validation), e => e !== null) !== undefined
+    return _.find(_.values(validation), e => e !== null) === undefined
   }
 
   const skjemaSubmit = (values: any) => {
@@ -418,21 +406,19 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
               </div>
               {opprettetSak && opprettetSak.url ? (
                 <div className={'col-xs-12'}>
-                  <Ui.Alert status='OK'
-                    message={(
-                      <div>
-                        Saksnummer: {opprettetSak.rinasaksnummer}
-                        {opprettetSak.url ? <Ui.Nav.Lenke href={opprettetSak.url} target="_blank" className="vedlegg__lenke">
-                          Gå direkte til Rina.
-                        </Ui.Nav.Lenke>  : null}
-                        { opprettetSak.rinasaksnummer ? (
-                          <Link to={'/vedlegg?rinasaksnummer=' + opprettetSak.rinasaksnummer}>
-                            {t('ui:form-caseNumber') + ': ' + opprettetSak.rinasaksnummer}
-                          </Link>
-                        ): <span>{t('ui:form-caseNumber') + ': ' + opprettetSak.rinasaksnummer}</span> }
-                        </div>
-                    )}
-                  />
+                  <Ui.Nav.AlertStripe type='suksess'>
+                    <div>
+                      Saksnummer: {opprettetSak.rinasaksnummer}
+                      {opprettetSak.url ? <Ui.Nav.Lenke href={opprettetSak.url} target="_blank" className="vedlegg__lenke">
+                        Gå direkte til Rina.
+                      </Ui.Nav.Lenke>  : null}
+                      { opprettetSak.rinasaksnummer ? (
+                        <Link to={'/vedlegg?rinasaksnummer=' + opprettetSak.rinasaksnummer}>
+                          {t('ui:form-caseNumber') + ': ' + opprettetSak.rinasaksnummer}
+                        </Link>
+                      ): <span>{t('ui:form-caseNumber') + ': ' + opprettetSak.rinasaksnummer}</span> }
+                      </div>
+                  </Ui.Nav.AlertStripe>
                 </div>
               ) : null}
             </Ui.Nav.Row>
@@ -443,8 +429,9 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
               closeModal={closeModal}
             />
           </div>
-        </Ui.Nav.Row>
-      </TopContainer>
+        <div className='col-sm-1' />
+      </Ui.Nav.Row>
+    </TopContainer>
   )
 }
 

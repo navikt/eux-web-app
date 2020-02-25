@@ -18,17 +18,6 @@ export const getArbeidsforhold: ActionCreator<ThunkResult<ActionWithPayload>> = 
   })
 }
 
-export const getDokumenter: ActionCreator<ThunkResult<ActionWithPayload>> = (rinasaksnummer: string): ThunkResult<ActionWithPayload> => {
-  return api.realCall({
-    url: sprintf(urls.API_SAK_DOKUMENTER_URL, { rinasaksnummer: rinasaksnummer }),
-    type: {
-      request: types.SAK_DOKUMENTER_GET_REQUEST,
-      success: types.SAK_DOKUMENTER_GET_SUCCESS,
-      failure: types.SAK_DOKUMENTER_GET_FAILURE
-    }
-  })
-}
-
 export const getFagsaker: ActionCreator<ThunkResult<ActionWithPayload>> = (fnr: string, sektor: string, tema: string): ThunkResult<ActionWithPayload> => {
   return api.realCall({
     url: sprintf(urls.API_SAK_FAGSAKER_URL, { fnr: fnr, sektor: sektor, tema: tema }),

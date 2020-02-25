@@ -29,12 +29,15 @@ const Forside: React.FC = (): JSX.Element => {
         <div className='col-sm-1' />
         <div className='col-sm-10 m-4'>
           <Ui.Nav.Lenkepanel
+            className='slideAnimate'
             linkCreator={(props: any) => (<Link to='/opprett' {...props} />)}
             href='#'
           >
             {t('ui:menu-createCase')}
           </Ui.Nav.Lenkepanel>
           <Ui.Nav.Lenkepanel
+            className='slideAnimate'
+            style={{animationDelay: '0.15s'}}
             linkCreator={(props: any) => (<Link to='/vedlegg' {...props} />)}
             href='#'
           >

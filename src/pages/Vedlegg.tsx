@@ -1,22 +1,22 @@
 import * as vedleggActions from 'actions/vedlegg'
 
 import DocumentSearch from 'components/DocumentSearch/DocumentSearch'
+import TopContainer from 'components/TopContainer/TopContainer'
 import { State } from 'declarations/reducers'
 import Ui from 'eessi-pensjon-ui'
+import _ from 'lodash'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import './Vedlegg.css'
 
 export interface VedleggSelector {
   vedlegg: any;
-  inntastetRinasaksnummer: any;
   rinasaksnummer: any;
   journalpostID: any;
   rinadokumentID: any;
   dokumentID: any;
-  rinaNrErGyldig: any;
-  rinaNrErSjekket: any;
   sendingVedlegg: boolean;
 }
 
@@ -26,118 +26,138 @@ export interface VedleggProps {
 
 const mapState = (state: State): VedleggSelector => ({
   vedlegg: state.vedlegg.vedlegg,
-  inntastetRinasaksnummer: state.vedlegg.rinasaksnummer,
   rinasaksnummer: state.vedlegg.rinasaksnummer,
   journalpostID: state.vedlegg.journalpostID,
   rinadokumentID: state.vedlegg.rinadokumentID,
   dokumentID: state.vedlegg.dokumentID,
-  rinaNrErGyldig: state.vedlegg.rinaNrErGyldig,
-  rinaNrErSjekket: state.vedlegg.rinaNrErSjekket,
   sendingVedlegg: state.loading.sendingVedlegg
 })
 
 const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Element => {
   const [mounted, setMounted] = useState(false)
-  const { journalpostID, dokumentID, inntastetRinasaksnummer, rinasaksnummer, rinadokumentID, rinaNrErGyldig, rinaNrErSjekket, sendingVedlegg }: VedleggSelector = useSelector<State, VedleggSelector>(mapState)
-
   const dispatch = useDispatch()
+  const { t } = useTranslation()
+  const { journalpostID, dokumentID, rinasaksnummer, rinadokumentID, sendingVedlegg, vedlegg }: VedleggSelector = useSelector<State, VedleggSelector>(mapState)
+  const [validation, setValidation] = useState<{[k: string]: any}>({})
+  const [isRinaNumberValid, setIsRinaNumberValid] = useState<boolean>(false)
 
   useEffect(() => {
     if (!mounted) {
       const params: URLSearchParams = new URLSearchParams(location.search)
       const rinasaksnummer = params.get('rinasaksnummer')
-      dispatch(vedleggActions.set('rinasaksnummer', rinasaksnummer))
+      if (rinasaksnummer) {
+        dispatch(vedleggActions.set('rinasaksnummer', rinasaksnummer))
+      }
       setMounted(true)
     }
   }, [mounted, dispatch, location])
 
-  const overrideDefaultSubmit = (event: React.FormEvent) => {
-    event.preventDefault()
+  const isValid = (): boolean => {
+    return _.find(_.values(validation), e => e !== null) === undefined
+  }
+
+  const validate = () => {
+    setValidation({
+      journalpostID: !journalpostID ? t('ui:validation-noJournalpostID') : null,
+      dokumentID: !dokumentID ? t('ui:validation-noDokumentID') : null,
+      rinasaksnummer: !rinasaksnummer ? t('ui:validation-noSaksnummer') : null,
+      rinadokumentID: !rinadokumentID ? t('ui:validation-noRinadokumentID') : null
+    })
+  }
+
+  const resetValidation = (key: string) => {
+    setValidation({
+      ...validation,
+      [key]: null
+    })
   }
 
   const sendSkjema = () => {
-    if (!validate({})) {
-      return
-    }
-    dispatch(vedleggActions.sendVedlegg({
-      journalpostID: journalpostID,
-      dokumentID: dokumentID,
-      rinasaksnummer: rinasaksnummer,
-      rinaNrErSjekket: rinaNrErSjekket,
-      rinaNrErGyldig: rinaNrErGyldig,
-      rinadokumentID: rinadokumentID
-    }))
-  }
-
-  const settRinaGyldighet = (erGyldig: boolean) => {
-    dispatch(vedleggActions.set('rinaNrErGyldig', erGyldig))
-  }
-
-  const settRinaSjekket = (erSjekket: boolean) => {
-    dispatch(vedleggActions.set('rinaNrErSjekket', erSjekket))
-  }
-
-  const validate = (values: any) => {
-    const journalpostID = journalpostValidation(values.journalpostID)
-    const dokumentID = !values.dokumentID ? 'Du må taste inn en dokumentID' : null
-    const saksnummer = !values.saksnummer ? 'Du må taste inn et RINA saksnummer' : null
-    const rinadokumentID = !values.rinadokumentID ? 'Du må velge en SED' : null
-    return {
-      journalpostID,
-      dokumentID,
-      saksnummer,
-      rinadokumentID
+    validate()
+    if (isValid() && isRinaNumberValid) {
+      dispatch(vedleggActions.sendVedlegg({
+        journalpostID: journalpostID,
+        dokumentID: dokumentID,
+        rinasaksnummer: rinasaksnummer,
+        rinadokumentID: rinadokumentID,
+        rinaNrErSjekket: isRinaNumberValid,
+        rinaNrErGyldig: isRinaNumberValid
+      }))
     }
   }
-
-  const journalpostValidation = (journalpostID: any) => {
-    if (!journalpostID) { return 'Du må taste inn en journalpostID' }
-    return null
-  }
-  //const responsLenke = vedlegg && vedlegg.url
-  const disableSendKnapp = !(rinaNrErGyldig && rinaNrErSjekket && rinadokumentID)
 
   const onjournalpostIDChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    resetValidation('journalpostID')
     dispatch(vedleggActions.set('journalpostID', e.target.value))
   }
 
   const onDokumentIDChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    resetValidation('dokumentID')
     dispatch(vedleggActions.set('dokumentID', e.target.value))
   }
 
   return (
-    <div className='vedlegg'>
-      <Ui.Nav.Container fluid>
-        <form onSubmit={overrideDefaultSubmit}>
-          <Ui.Nav.Row>
-            <Ui.Nav.Column xs='6'>
-              <Ui.Nav.Panel className='vedlegg__skjema'>
-                <Ui.Nav.Fieldset legend='Vedleggs informasjon'>
-                  <Ui.Nav.HjelpetekstBase id='journalPostID' type='hoyre'>Journalpost ID finner du i Gosys</Ui.Nav.HjelpetekstBase>
-                  <Ui.Nav.Input name='journalpostID' label='JournalpostID' onChnge={onjournalpostIDChange} />
-                  <Ui.Nav.HjelpetekstBase id='dokumentID' type='under'>Dokument ID finner du i Gosys</Ui.Nav.HjelpetekstBase>
-                  <Ui.Nav.Input name='dokumentID' label='DokumentID' onChnge={onDokumentIDChange} />
-                  <DocumentSearch
-                    inntastetRinasaksnummer={inntastetRinasaksnummer}
-                    settRinaGyldighet={settRinaGyldighet}
-                    settRinaSjekket={settRinaSjekket}
-                  />
-                </Ui.Nav.Fieldset>
-                <div className='vedlegg__submmit'>
-                  <Ui.Nav.Hovedknapp
-                    onClick={sendSkjema}
-                    disabled={disableSendKnapp || sendingVedlegg}
-                    spinner={sendingVedlegg}
-                  >Send vedlegg
-                  </Ui.Nav.Hovedknapp>
+    <TopContainer className='vedlegg'>
+      <Ui.Nav.Row>
+        <div className='col-sm-2' />
+        <div className='col-sm-8 m-4'>
+          <Ui.Nav.Systemtittel className='mt-4 mb-4'>Vedleggs informasjon</Ui.Nav.Systemtittel>
+          <div className='slideAnimate'>
+            <Ui.Nav.Hjelpetekst id='journalPostID' type='hoyre'>
+              {t('ui:form-journalpostID')}
+            </Ui.Nav.Hjelpetekst>
+            <Ui.Nav.Input
+              className='mb-4'
+              name='journalpostID'
+              label='JournalpostID'
+              onChange={onjournalpostIDChange}
+              feil={validation.journalpostID}
+            />
+          </div>
+          <div className='slideAnimate' style={{animationDelay: '0.15s'}}>
+            <Ui.Nav.Hjelpetekst id='dokumentID' type='under'>
+              {t('ui:form-dokumentID')}
+            </Ui.Nav.Hjelpetekst>
+            <Ui.Nav.Input
+              className='mb-4'
+              name='dokumentID'
+              label='DokumentID'
+              onChange={onDokumentIDChange}
+              feil={validation.dokumentID}
+            />
+          </div>
+          <div className='slideAnimate' style={{animationDelay: '0.3s'}}>
+            <DocumentSearch
+              className='mb-4'
+              validation={validation}
+              resetValidation={resetValidation}
+              onRinasaksnummerChanged={() => setIsRinaNumberValid(false)}
+              onDocumentFound={() => setIsRinaNumberValid(true)}
+            />
+          </div>
+          <div className='vedlegg__submmit slideAnimate' style={{animationDelay: '0.45s'}}>
+            <Ui.Nav.Hovedknapp
+              onClick={sendSkjema}
+              disabled={sendingVedlegg}
+              spinner={sendingVedlegg}
+            >
+              {sendingVedlegg ? t('ui:label-sendingVedlegg') : t('ui:label-sendVedlegg')}
+            </Ui.Nav.Hovedknapp>
+            {vedlegg ? (
+              <Ui.Nav.AlertStripe className='mt-4' type='suksess'>
+                <div>
+                  <div>Vedlegget: {vedlegg.vedleggID}</div>
+                  {vedlegg.url ? <Ui.Nav.Lenke href={vedlegg.url} target="_blank" className="vedlegg__lenke">
+                    Gå direkte til Rina.
+                  </Ui.Nav.Lenke>  : null}
                 </div>
-                {/*<StatusLinje status='OK' rinaURL={responsLenke} tittel='Vedlegget' />*/}
-              </Ui.Nav.Panel>
-            </Ui.Nav.Column>
-          </Ui.Nav.Row>
-        </form>
-      </Ui.Nav.Container>
-    </div>
+              </Ui.Nav.AlertStripe>
+            ) : null}
+          </div>
+        </div>
+        <div className='col-sm-2' />
+      </Ui.Nav.Row>
+    </TopContainer>
   )
 }
 
