@@ -1,5 +1,4 @@
-import { KodeverkPropType, PeriodePropType } from 'declarations/types.pt'
-import PT from 'prop-types'
+import { PeriodePropType } from 'declarations/types.pt'
 
 export interface Period {
   fom?: string;
@@ -74,7 +73,7 @@ export type FamilieRelasjoner = Array<Kodeverk>
 export type Kjoenn = Array<Kodeverk>
 export type Landkoder = Array<Kodeverk>
 export type Sektor = Array<Kodeverk>
-export type SedTyper =  Array<Kodeverk>
+export type SedTyper = Array<Kodeverk>
 
 export interface Tema {
   awod: Array<Kodeverk>,
@@ -93,3 +92,5 @@ export interface Kodemaps {
   SEKTOR2BUC: {[k: string]: string},
   SEKTOR2FAGSAK: {[k: string]: string}
 }
+
+export type Validation = {[k: string]: string | null}

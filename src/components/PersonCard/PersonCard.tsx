@@ -21,7 +21,7 @@ export interface PersonCardProps {
 
 const PersonCard: React.FC<PersonCardProps> = ({
   familierelasjonKodeverk, landKodeverk, initialRolle, onAddClick, onRemoveClick,
-   oppdaterFamilierelajon, person
+  oppdaterFamilierelajon, person
 }: PersonCardProps): JSX.Element => {
   const { fnr, fdato, fornavn, etternavn, kjoenn } = person
   const { nasjonalitet } = person as FamilieRelasjon
@@ -38,22 +38,23 @@ const PersonCard: React.FC<PersonCardProps> = ({
   let nasjonalitetTerm//, rolleTerm
 
   if ((person as FamilieRelasjon).rolle) {
-    //const rolleObjekt = familierelasjonKodeverk.find((item: any) => item.kode === (person as FamilieRelasjon).rolle)
+    // const rolleObjekt = familierelasjonKodeverk.find((item: any) => item.kode === (person as FamilieRelasjon).rolle)
     const nasjonalitetObjekt = landKodeverk.find((item: any) => item.kode === nasjonalitet)
 
     const kodeverkObjektTilTerm = (kodeverkObjekt: any) => {
-      if (!kodeverkObjekt || !kodeverkObjekt.term) { return '(mangler informasjon)'; }
+      if (!kodeverkObjekt || !kodeverkObjekt.term) { return '(mangler informasjon)' }
       return Object.keys(kodeverkObjekt).includes('term') ? kodeverkObjekt.term : null
-    };
+    }
 
-    //rolleTerm = kodeverkObjektTilTerm(rolleObjekt)
+    // rolleTerm = kodeverkObjektTilTerm(rolleObjekt)
     nasjonalitetTerm = kodeverkObjektTilTerm(nasjonalitetObjekt)
   }
 
   const updateFamilyRelation = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (rolle && oppdaterFamilierelajon) {
-      setRolle(rolle)
-      oppdaterFamilierelajon(rolle)
+    const newRolle = e.target.value
+    if (newRolle && oppdaterFamilierelajon) {
+      setRolle(newRolle)
+      oppdaterFamilierelajon(newRolle)
     }
   }
 
@@ -61,44 +62,47 @@ const PersonCard: React.FC<PersonCardProps> = ({
     <div>
       <Ui.Nav.Panel border className='mt-4'>
         <div className='personcard'>
-          <div className="personcard__desc">
-            <Ui.Icons className='mr-3' kind={kind} size={40}/>
-            <div className="panelheader__tittel">
-              <Ui.Nav.Undertittel className="panelheader__tittel__hoved">
+          <div className='personcard__desc'>
+            <Ui.Icons className='mr-3' kind={kind} size={40} />
+            <div className='panelheader__tittel'>
+              <Ui.Nav.Undertittel className='panelheader__tittel__hoved'>
                 {fornavn}
                 {etternavn}
                 {rolle ? ' - ' + rolle : ''}
               </Ui.Nav.Undertittel>
-                <div className='panelheader__undertittel'>
-                  <span>{t('ui:form-fnr') + ' : ' + fnr}</span>
-                  <span>{t('ui:form-birthdate') + ': ' + formatterDatoTilNorsk(fdato)}</span>
-                  {nasjonalitetTerm ? <span>Nasjonalitet: {nasjonalitetTerm}</span> : null}
-                </div>
+              <div className='panelheader__undertittel'>
+                <span>{t('ui:form-fnr') + ' : ' + fnr}</span>
+                <span>{t('ui:form-birthdate') + ': ' + formatterDatoTilNorsk(fdato)}</span>
+                {nasjonalitetTerm ? <span>Nasjonalitet: {nasjonalitetTerm}</span> : null}
+              </div>
             </div>
           </div>
           {_.isFunction(oppdaterFamilierelajon) ? (
             <Ui.Nav.Select
-            id="id-familirelasjon-rolle"
-            label="Familierelasjon"
-            bredde="fullbredde"
-            className="familierelasjoner__input"
-            value={rolle}
-            onChange={updateFamilyRelation}>
-            <option value="" disabled>{t('ui:form-choose')}</option>
-            {familierelasjonKodeverk && familierelasjonKodeverk.map((element: any) => (
-              <option value={element.kode} key={element.kode}>{element.term}</option>)
-            )}
-          </Ui.Nav.Select>
-            ) : null}
-          {_.isFunction(onRemoveClick) ? (<Ui.Nav.Knapp
-            className='familierelasjoner__knapp familierelasjoner__knapp--slett'
-            onClick={() => onRemoveClick(person)}
-          >
-            <Ui.Icons kind='trashcan' size='20' className='familierelasjoner__knapp__ikon' />
-            <div className='familierelasjoner__knapp__label'>{t('ui:form-remove')}</div>
-          </Ui.Nav.Knapp>
+              id='id-familirelasjon-rolle'
+              label='Familierelasjon'
+              bredde='fullbredde'
+              className='familierelasjoner__input'
+              value={rolle}
+              onChange={updateFamilyRelation}
+            >
+              <option value='' disabled>{t('ui:form-choose')}</option>
+              {familierelasjonKodeverk && familierelasjonKodeverk.map((element: any) => (
+                <option value={element.kode} key={element.kode}>{element.term}</option>)
+              )}
+            </Ui.Nav.Select>
           ) : null}
-          {_.isFunction(onAddClick) ? (<Ui.Nav.Knapp
+          {_.isFunction(onRemoveClick) ? (
+            <Ui.Nav.Knapp
+              className='familierelasjoner__knapp familierelasjoner__knapp--slett'
+              onClick={() => onRemoveClick(person)}
+            >
+              <Ui.Icons kind='trashcan' size='20' className='familierelasjoner__knapp__ikon' />
+              <div className='familierelasjoner__knapp__label'>{t('ui:form-remove')}</div>
+            </Ui.Nav.Knapp>
+          ) : null}
+          {_.isFunction(onAddClick) ? (
+            <Ui.Nav.Knapp
               className='familierelasjoner__knapp familierelasjoner__knapp--legg-til'
               onClick={() => onAddClick(person)}
             >

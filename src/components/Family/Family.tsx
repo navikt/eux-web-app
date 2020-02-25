@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { vaskInputDato } from 'utils/dato'
 
 export interface FamilySelector {
-  familierelasjonKodeverk:  FamilieRelasjoner | undefined;
+  familierelasjonKodeverk: FamilieRelasjoner | undefined;
   kjoenn: Kjoenn | undefined;
   landkoder: Landkoder | undefined;
   personer: Person | undefined;
@@ -21,7 +21,7 @@ export interface FamilySelector {
 }
 
 const mapState = (state: State): FamilySelector => ({
-  familierelasjonKodeverk:  state.sak.familierelasjoner,
+  familierelasjonKodeverk: state.sak.familierelasjoner,
   kjoenn: state.sak.kjoenn,
   landkoder: state.sak.landkoder,
   personer: state.sak.personer,
@@ -32,7 +32,7 @@ const mapState = (state: State): FamilySelector => ({
 const Family: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const {familierelasjonKodeverk, kjoenn, landkoder, personer, tpsrelasjoner, valgteFamilieRelasjoner }: FamilySelector = useSelector<State, FamilySelector>(mapState)
+  const { familierelasjonKodeverk, kjoenn, landkoder, personer, tpsrelasjoner, valgteFamilieRelasjoner }: FamilySelector = useSelector<State, FamilySelector>(mapState)
   const [viewFormRelatedUtland, setViewFormRelatedUtland] = useState<boolean>(false)
   const [viewFormRelatedTPS, setViewFormRelatedTPS] = useState<boolean>(false)
   const emptyRelation = { fnr: '', fdato: '', nasjonalitet: '', rolle: '', kjoenn: '', fornavn: '', etternavn: '' }
@@ -52,7 +52,7 @@ const Family: React.FC = (): JSX.Element => {
     /* Personer fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
     const vasketRelasjon = {
       ...relasjon,
-      nasjonalitet: 'NO',
+      nasjonalitet: 'NO'
     }
     const newValgteFamilieRelasjoner = valgteFamilieRelasjoner.concat(vasketRelasjon)
     dispatch(formActions.set('familierelasjoner', newValgteFamilieRelasjoner))
@@ -67,7 +67,7 @@ const Family: React.FC = (): JSX.Element => {
   }
 
   const oppdaterState = (felt: string, event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.value;
+    const value = event.currentTarget.value
     setSpecialRelation({
       ...specialRelation,
       [felt]: value
@@ -75,21 +75,21 @@ const Family: React.FC = (): JSX.Element => {
   }
 
   const filtrerRoller = () => {
-    const ekskluderteVerdier: any = [];
+    const ekskluderteVerdier: any = []
     if (!_.isEmpty(valgteFamilieRelasjoner)) {
       // Hvis ektefelle allerede er lagt til, fjern mulighet for andre typer samlivspartnere
-      if (valgteFamilieRelasjoner.find((kt: any) => kt.rolle === 'EKTE')) ekskluderteVerdier.push('EKTE', 'SAMB', 'REPA');
+      if (valgteFamilieRelasjoner.find((kt: any) => kt.rolle === 'EKTE')) ekskluderteVerdier.push('EKTE', 'SAMB', 'REPA')
       // Hvis registret partner allerede er lagt til, fjern mulighet for andre typer samlivspartnere
-      if (valgteFamilieRelasjoner.find((kt: any) => kt.rolle === 'REPA')) ekskluderteVerdier.push('EKTE', 'SAMB', 'REPA');
+      if (valgteFamilieRelasjoner.find((kt: any) => kt.rolle === 'REPA')) ekskluderteVerdier.push('EKTE', 'SAMB', 'REPA')
       // Det skal kun være mulig å legge til en relasjon av typen annen
-      if (valgteFamilieRelasjoner.find((kt: any) => kt.rolle === 'ANNEN')) ekskluderteVerdier.push('ANNEN');
+      if (valgteFamilieRelasjoner.find((kt: any) => kt.rolle === 'ANNEN')) ekskluderteVerdier.push('ANNEN')
     }
     return familierelasjonKodeverk!.filter(kt => ekskluderteVerdier.includes(kt.kode) === false)
   }
 
   const vaskInputDatoOgOppdater = (felt: string, event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.value;
-    const nyDato = vaskInputDato(value) || '';
+    const value = event.currentTarget.value
+    const nyDato = vaskInputDato(value) || ''
     setSpecialRelation({
       ...specialRelation,
       [felt]: nyDato
@@ -118,7 +118,7 @@ const Family: React.FC = (): JSX.Element => {
       <Ui.Nav.Systemtittel>{t('ui:label-familyRelationships')}</Ui.Nav.Systemtittel>
       <Ui.Nav.Panel border>
         <Ui.Nav.UndertekstBold>{t('ui:fom-family-description')}</Ui.Nav.UndertekstBold>
-        <div className="familierelasjoner">
+        <div className='familierelasjoner'>
           {!_.isEmpty(valgteFamilieRelasjoner) ? (
             <>
               <Ui.Nav.UndertekstBold>Valgte familierelasjoner&nbsp;({valgteFamilieRelasjoner.length})</Ui.Nav.UndertekstBold>
@@ -129,26 +129,27 @@ const Family: React.FC = (): JSX.Element => {
                   landKodeverk={landkoder!}
                   person={relasjon}
                   onRemoveClick={slettRelasjon}
-                />))
-              }
-              </>
+                />))}
+            </>
           ) : null}
           <div>
             <Ui.Nav.UndertekstBold>Familierelasjoner registrert i TPS</Ui.Nav.UndertekstBold>
-            {remainingRelationsFromTPS.map((enkeltTPSRelasjon: any) => (
+            {remainingRelationsFromTPS.map((enkeltTPSRelasjon: any, index: number) => (
               <PersonCard
+                key={index}
                 person={enkeltTPSRelasjon}
-                initialRolle={_.find(familierelasjonKodeverk, ((elem: any) => elem.kode === enkeltTPSRelasjon.kode))?.term}
-                onAddClick={leggTilTPSrelasjon} />
+                initialRolle={_.find(familierelasjonKodeverk, (elem: any) => elem.kode === enkeltTPSRelasjon.kode)?.term}
+                onAddClick={leggTilTPSrelasjon}
+              />
             ))}
             {(!_.isEmpty(tpsrelasjoner) && _.isEmpty(remainingRelationsFromTPS)) ? <Ui.Nav.UndertekstBold>(Du har lagt til alle som fantes i listen.)</Ui.Nav.UndertekstBold> : null}
-              {!tpsrelasjoner && <Ui.Nav.Panel>(Ingen familierelasjoner funnet i TPS)</Ui.Nav.Panel>}
+            {!tpsrelasjoner && <Ui.Nav.Panel>(Ingen familierelasjoner funnet i TPS)</Ui.Nav.Panel>}
           </div>
           <Ui.Nav.Row>
-            <Ui.Nav.Column xs="3">
+            <Ui.Nav.Column xs='3'>
               <p><strong>Person uten fødsels- eller d-nummer&nbsp;</strong></p>
             </Ui.Nav.Column>
-            <Ui.Nav.Column xs="2">
+            <Ui.Nav.Column xs='2'>
               <Ui.Nav.Knapp onClick={toggleFormRelatedUtland}>{viewFormRelatedUtland ? 'Skjul Skjema' : 'Vis skjema'}</Ui.Nav.Knapp>
             </Ui.Nav.Column>
           </Ui.Nav.Row>
@@ -168,11 +169,11 @@ const Family: React.FC = (): JSX.Element => {
             <br />
           </Ui.Nav.Row>
           <Ui.Nav.Row>
-            <Ui.Nav.Column xs="3">
+            <Ui.Nav.Column xs='3'>
               <p><strong>Person uten registrert relasjon i TPS&nbsp;</strong></p>
             </Ui.Nav.Column>
-            <Ui.Nav.Column xs="2">
-              <Ui.Nav.Knapp onClick={toggleFormRelatedTPS} >{viewFormRelatedTPS ? 'Skjul Skjema' : 'Vis skjema'}</Ui.Nav.Knapp>
+            <Ui.Nav.Column xs='2'>
+              <Ui.Nav.Knapp onClick={toggleFormRelatedTPS}>{viewFormRelatedTPS ? 'Skjul Skjema' : 'Vis skjema'}</Ui.Nav.Knapp>
             </Ui.Nav.Column>
           </Ui.Nav.Row>
           {viewFormRelatedTPS ? (

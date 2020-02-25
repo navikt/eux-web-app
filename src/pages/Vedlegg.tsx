@@ -3,6 +3,7 @@ import * as vedleggActions from 'actions/vedlegg'
 import DocumentSearch from 'components/DocumentSearch/DocumentSearch'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { State } from 'declarations/reducers'
+import { Validation } from 'declarations/types'
 import Ui from 'eessi-pensjon-ui'
 import _ from 'lodash'
 import PT from 'prop-types'
@@ -38,7 +39,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const { journalpostID, dokumentID, rinasaksnummer, rinadokumentID, sendingVedlegg, vedlegg }: VedleggSelector = useSelector<State, VedleggSelector>(mapState)
-  const [validation, setValidation] = useState<{[k: string]: any}>({})
+  const [validation, setValidation] = useState<Validation>({})
   const [isRinaNumberValid, setIsRinaNumberValid] = useState<boolean>(false)
 
   useEffect(() => {
@@ -52,17 +53,19 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
     }
   }, [mounted, dispatch, location])
 
-  const isValid = (): boolean => {
-    return _.find(_.values(validation), e => e !== null) === undefined
+  const isValid = (_validation: Validation): boolean => {
+    return _.find(_.values(_validation), e => e !== null) === undefined
   }
 
-  const validate = () => {
-    setValidation({
+  const validate = (): Validation => {
+    const validation = {
       journalpostID: !journalpostID ? t('ui:validation-noJournalpostID') : null,
       dokumentID: !dokumentID ? t('ui:validation-noDokumentID') : null,
-      rinasaksnummer: !rinasaksnummer ? t('ui:validation-noSaksnummer') : null,
+      rinasaksnummer: !rinasaksnummer ? t('ui:validation-noSaksnummer') : (!isRinaNumberValid ? t('ui:validation-unverifiedSaksnummer') : null),
       rinadokumentID: !rinadokumentID ? t('ui:validation-noRinadokumentID') : null
-    })
+    }
+    setValidation(validation)
+    return validation
   }
 
   const resetValidation = (key: string) => {
@@ -73,8 +76,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
   }
 
   const sendSkjema = () => {
-    validate()
-    if (isValid() && isRinaNumberValid) {
+    if (isValid(validate()) && isRinaNumberValid) {
       dispatch(vedleggActions.sendVedlegg({
         journalpostID: journalpostID,
         dokumentID: dokumentID,
@@ -114,7 +116,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
               feil={validation.journalpostID}
             />
           </div>
-          <div className='slideAnimate' style={{animationDelay: '0.15s'}}>
+          <div className='slideAnimate' style={{ animationDelay: '0.15s' }}>
             <Ui.Nav.Hjelpetekst id='dokumentID' type='under'>
               {t('ui:form-dokumentID')}
             </Ui.Nav.Hjelpetekst>
@@ -126,7 +128,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
               feil={validation.dokumentID}
             />
           </div>
-          <div className='slideAnimate' style={{animationDelay: '0.3s'}}>
+          <div className='slideAnimate' style={{ animationDelay: '0.3s' }}>
             <DocumentSearch
               className='mb-4'
               validation={validation}
@@ -135,7 +137,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
               onDocumentFound={() => setIsRinaNumberValid(true)}
             />
           </div>
-          <div className='vedlegg__submmit slideAnimate' style={{animationDelay: '0.45s'}}>
+          <div className='vedlegg__submmit slideAnimate' style={{ animationDelay: '0.45s' }}>
             <Ui.Nav.Hovedknapp
               onClick={sendSkjema}
               disabled={sendingVedlegg}
@@ -147,9 +149,11 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
               <Ui.Nav.AlertStripe className='mt-4' type='suksess'>
                 <div>
                   <div>Vedlegget: {vedlegg.vedleggID}</div>
-                  {vedlegg.url ? <Ui.Nav.Lenke href={vedlegg.url} target="_blank" className="vedlegg__lenke">
-                    Gå direkte til Rina.
-                  </Ui.Nav.Lenke>  : null}
+                  {vedlegg.url ? (
+                    <Ui.Nav.Lenke href={vedlegg.url} target='_blank' className='vedlegg__lenke'>
+                      Gå direkte til Rina.
+                    </Ui.Nav.Lenke>
+                  ) : null}
                 </div>
               </Ui.Nav.AlertStripe>
             ) : null}
