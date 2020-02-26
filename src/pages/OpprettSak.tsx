@@ -89,7 +89,6 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
 
   const [visModal, setVisModal] = useState(false)
   const [validation, setValidation] = useState<{[k: string]: any}>({})
-  console.log('resetting validation')
   const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
 
   const temaer = (!kodemaps ? [] : (!valgtSektor ? [] : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor]]))
@@ -316,67 +315,68 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                   ) : null}
                 </Ui.Nav.Select>
               </div>
-              <div className='col-xs-12'>
-                {valgtSektor === 'FB' ? <Family /> : null}
-              </div>
+              {valgtSektor === 'FB' ? (
+                <div className='col-xs-12 mb-4'>
+                  <Family />
+                </div>
+              ) : null}
               {valgtSektor ? (
-                <div className='d-flex mt-4 ml-3 mr-3 w-100 slideAnimate' style={{ alignItems: 'flex-end' }}>
-                  <div className='w-50 mr-3'>
-                    <Ui.Nav.Select
-                      id='id-behandlings-tema'
-                      className='mb-4'
-                      label={t('ui:label-tema')}
-                      value={valgtTema}
-                      onChange={onTemaChange}
-                    >
-                      <option value=''>{t('ui:form-choose')}</option>)
-                      {temaer ? temaer.map((element: any) => (
-                        <option value={element.kode} key={element.kode}>{element.term}</option>)
-                      ) : null}
-                    </Ui.Nav.Select>
-                  </div>
-                  <div className='w-50'>
-                    <div className='d-flex' style={{ alignItems: 'center', justifyContent: 'space-between' }}>
-                      <div>
-                        <Ui.Nav.Knapp
-                          className='mb-4'
-                          onClick={onViewFagsakerClick}
-                          disabled={!isSomething(valgtTema)}
-                        >
-                          {t('ui:form-seeCases')}
-                        </Ui.Nav.Knapp>
-                      </div>
-                      <div>
-                        <Ui.Nav.Lenke
-                          className='mb-4'
-                          href={serverInfo.gosysURL}
-                          ariaLabel={t('ui:form-createNewCaseInGosys')}
-                          target='_blank'
-                        >
-                          {t('ui:form-createNewCaseInGosys')}
-                        </Ui.Nav.Lenke>
+                <div className='col-xs-12'>
+                  <div className='d-flex slideAnimate' style={{ alignItems: 'flex-end' }}>
+                    <div className='w-50 mr-3'>
+                      <Ui.Nav.Select
+                        id='id-behandlings-tema'
+                        className='mb-4'
+                        label={t('ui:label-tema')}
+                        value={valgtTema}
+                        onChange={onTemaChange}
+                      >
+                        <option value=''>{t('ui:form-choose')}</option>)
+                        {temaer ? temaer.map((element: any) => (
+                          <option value={element.kode} key={element.kode}>{element.term}</option>)
+                        ) : null}
+                      </Ui.Nav.Select>
+                    </div>
+                    <div className='w-50'>
+                      <div className='d-flex' style={{ alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div>
+                          <Ui.Nav.Knapp
+                            className='mb-4'
+                            onClick={onViewFagsakerClick}
+                            disabled={!isSomething(valgtTema)}
+                          >
+                            {t('ui:form-seeCases')}
+                          </Ui.Nav.Knapp>
+                        </div>
+                        <div>
+                          <Ui.Nav.Lenke
+                            className='mb-4'
+                            href={serverInfo.gosysURL}
+                            ariaLabel={t('ui:form-createNewCaseInGosys')}
+                            target='_blank'
+                          >
+                            {t('ui:form-createNewCaseInGosys')}
+                          </Ui.Nav.Lenke>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               ) : null}
               {visFagsakerListe ? (
-                <div className='d-flex w-100'>
-                  <div className='col-xs-6'>
-                    <Ui.Nav.Select
-                      id='id-fagsaker'
-                      className='mb-4'
-                      label={t('ui:label-fagsak')}
-                      value={valgtSaksId}
-                      onChange={onSakIDChange}
-                    >
-                      <option value=''>{t('ui:form-choose')}</option>
-                      {fagsaker ? _.orderBy(fagsaker, 'fagsakNr').map(element => (
-                        <option value={element.saksID} key={element.saksID}>{element.fagsakNr ? element.fagsakNr : element.saksID}</option>)
-                      ) : null}
-                    </Ui.Nav.Select>
-                  </div>
-                  <div className='col-xs-6' />
+                <div className='col-xs-6'>
+                  <Ui.Nav.Select
+                    id='id-fagsaker'
+                    className='mb-4'
+                    label={t('ui:label-fagsak')}
+                    value={valgtSaksId}
+                    onChange={onSakIDChange}
+                  >
+                    <option value=''>{t('ui:form-choose')}</option>
+                    {fagsaker ? _.orderBy(fagsaker, 'fagsakNr').map(element => (
+                      <option value={element.saksID} key={element.saksID}>{element.fagsakNr ? element.fagsakNr : element.saksID}</option>)
+                    ) : null}
+                  </Ui.Nav.Select>
                 </div>
               ) : null}
               {visArbeidsforhold ? (

@@ -10,6 +10,7 @@ import _ from 'lodash'
 import './PersonCard.css'
 
 export interface PersonCardProps {
+  className?: string,
   person: Person | FamilieRelasjon,
   initialRolle?: string | undefined;
   onAddClick?: (p: Person) => void;
@@ -20,7 +21,7 @@ export interface PersonCardProps {
 }
 
 const PersonCard: React.FC<PersonCardProps> = ({
-  familierelasjonKodeverk, landKodeverk, initialRolle, onAddClick, onRemoveClick,
+  className, familierelasjonKodeverk, landKodeverk, initialRolle, onAddClick, onRemoveClick,
   oppdaterFamilierelajon, person
 }: PersonCardProps): JSX.Element => {
   const { fnr, fdato, fornavn, etternavn, kjoenn } = person
@@ -39,7 +40,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
 
   if ((person as FamilieRelasjon).rolle) {
     // const rolleObjekt = familierelasjonKodeverk.find((item: any) => item.kode === (person as FamilieRelasjon).rolle)
-    const nasjonalitetObjekt = landKodeverk.find((item: any) => item.kode === nasjonalitet)
+    const nasjonalitetObjekt = landKodeverk ? landKodeverk.find((item: any) => item.kode === nasjonalitet) : undefined
 
     const kodeverkObjektTilTerm = (kodeverkObjekt: any) => {
       if (!kodeverkObjekt || !kodeverkObjekt.term) { return '(mangler informasjon)' }
@@ -59,8 +60,8 @@ const PersonCard: React.FC<PersonCardProps> = ({
   }
 
   return (
-    <div>
-      <Ui.Nav.Panel border className='mt-4'>
+    <div className={className}>
+      <Ui.Nav.Panel border style={{background: 'transparent'}} className='mt-4'>
         <div className='personcard'>
           <div className='personcard__desc'>
             <Ui.Icons className='mr-3' kind={kind} size={40} />
@@ -71,9 +72,9 @@ const PersonCard: React.FC<PersonCardProps> = ({
                 {rolle ? ' - ' + rolle : ''}
               </Ui.Nav.Undertittel>
               <div className='panelheader__undertittel'>
-                <span>{t('ui:form-fnr') + ' : ' + fnr}</span>
-                <span>{t('ui:form-birthdate') + ': ' + formatterDatoTilNorsk(fdato)}</span>
-                {nasjonalitetTerm ? <span>Nasjonalitet: {nasjonalitetTerm}</span> : null}
+                <div>{t('ui:form-fnr') + ' : ' + fnr}</div>
+                <div>{t('ui:form-birthdate') + ': ' + formatterDatoTilNorsk(fdato)}</div>
+                {nasjonalitetTerm ? <div>Nasjonalitet: {nasjonalitetTerm}</div> : null}
               </div>
             </div>
           </div>
@@ -117,6 +118,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
 }
 
 PersonCard.propTypes = {
+  className: PT.string,
   onAddClick: PT.func,
   onRemoveClick: PT.func,
   oppdaterFamilierelajon: PT.func,

@@ -29,22 +29,22 @@ const mapState = (state: State): FamilySelector => ({
   valgteFamilieRelasjoner: state.form.familierelasjoner
 })
 
+const emptyRelation = { fnr: '', fdato: '', nasjonalitet: '', rolle: '', kjoenn: '', fornavn: '', etternavn: '' }
+
 const Family: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const { familierelasjonKodeverk, kjoenn, landkoder, personer, tpsrelasjoner, valgteFamilieRelasjoner }: FamilySelector = useSelector<State, FamilySelector>(mapState)
   const [viewFormRelatedUtland, setViewFormRelatedUtland] = useState<boolean>(false)
   const [viewFormRelatedTPS, setViewFormRelatedTPS] = useState<boolean>(false)
-  const emptyRelation = { fnr: '', fdato: '', nasjonalitet: '', rolle: '', kjoenn: '', fornavn: '', etternavn: '' }
   const [specialRelation, setSpecialRelation] = useState<FamilieRelasjon>(emptyRelation)
 
-  const remainingRelationsFromTPS = _.filter(tpsrelasjoner, (relasjon) => {
-    const alreadyExists = _.find(valgteFamilieRelasjoner, (r: any) => r.fnr === relasjon.fnr)
-    return alreadyExists !== undefined
-  })
+  const remainingRelationsFromTPS = _.filter(tpsrelasjoner, (relasjon) => (
+    _.find(valgteFamilieRelasjoner, (r: any) => r.fnr === relasjon.fnr) ===  undefined
+  ))
 
   const slettRelasjon = (p: Person) => {
-    const newValgteFamilieRelasjoner = _.filter(valgteFamilieRelasjoner, (relasjon: any) => relasjon.fnr === p.fnr)
+    const newValgteFamilieRelasjoner = _.filter(valgteFamilieRelasjoner, (relasjon: any) => relasjon.fnr !== p.fnr)
     dispatch(formActions.set('familierelasjoner', newValgteFamilieRelasjoner))
   }
 
@@ -115,36 +115,42 @@ const Family: React.FC = (): JSX.Element => {
 
   return (
     <>
-      <Ui.Nav.Systemtittel>{t('ui:label-familyRelationships')}</Ui.Nav.Systemtittel>
+      <Ui.Nav.Systemtittel className='mb-4'>{t('ui:label-familyRelationships')}</Ui.Nav.Systemtittel>
       <Ui.Nav.Panel border>
-        <Ui.Nav.UndertekstBold>{t('ui:fom-family-description')}</Ui.Nav.UndertekstBold>
+        <Ui.Nav.Undertittel className='mb-4'>{t('ui:form-family-description')}</Ui.Nav.Undertittel>
         <div className='familierelasjoner'>
-          {!_.isEmpty(valgteFamilieRelasjoner) ? (
-            <>
-              <Ui.Nav.UndertekstBold>Valgte familierelasjoner&nbsp;({valgteFamilieRelasjoner.length})</Ui.Nav.UndertekstBold>
+          <Ui.Nav.Row>
+            <div className='col-xs-6'>
+              <Ui.Nav.Ingress>{t('ui:form-family-relations-in-tps')}</Ui.Nav.Ingress>
+              {remainingRelationsFromTPS.map((enkeltTPSRelasjon: any, index: number) => (
+                <PersonCard
+                  className='slideAnimate personNotSelected mt-3 mb-3'
+                  key={index}
+                  person={enkeltTPSRelasjon}
+                  initialRolle={_.find(familierelasjonKodeverk, (elem: any) => elem.kode === enkeltTPSRelasjon.kode)?.term}
+                  onAddClick={leggTilTPSrelasjon}
+                />
+              ))}
+              {(!_.isEmpty(tpsrelasjoner) && _.isEmpty(remainingRelationsFromTPS)) ? (
+                <Ui.Nav.UndertekstBold>({t('ui:form-family-added-all')})</Ui.Nav.UndertekstBold>
+              ) : null}
+              {!_.isEmpty(tpsrelasjoner) ? (
+                <Ui.Nav.Panel>({t('ui:form-family-none-in-tps')})</Ui.Nav.Panel>
+              ) : null}
+            </div>
+            <div className='col-xs-6'>
+              <Ui.Nav.Ingress>{t('ui:form-family-chosen')}&nbsp;({valgteFamilieRelasjoner.length})</Ui.Nav.Ingress>
               {valgteFamilieRelasjoner && valgteFamilieRelasjoner.map((relasjon: any, indeks: number) => (
                 <PersonCard
+                  className='slideAnimate personSelected mt-3 mb-3'
                   key={indeks}
                   familierelasjonKodeverk={familierelasjonKodeverk!}
                   landKodeverk={landkoder!}
                   person={relasjon}
                   onRemoveClick={slettRelasjon}
                 />))}
-            </>
-          ) : null}
-          <div>
-            <Ui.Nav.UndertekstBold>Familierelasjoner registrert i TPS</Ui.Nav.UndertekstBold>
-            {remainingRelationsFromTPS.map((enkeltTPSRelasjon: any, index: number) => (
-              <PersonCard
-                key={index}
-                person={enkeltTPSRelasjon}
-                initialRolle={_.find(familierelasjonKodeverk, (elem: any) => elem.kode === enkeltTPSRelasjon.kode)?.term}
-                onAddClick={leggTilTPSrelasjon}
-              />
-            ))}
-            {(!_.isEmpty(tpsrelasjoner) && _.isEmpty(remainingRelationsFromTPS)) ? <Ui.Nav.UndertekstBold>(Du har lagt til alle som fantes i listen.)</Ui.Nav.UndertekstBold> : null}
-            {!tpsrelasjoner && <Ui.Nav.Panel>(Ingen familierelasjoner funnet i TPS)</Ui.Nav.Panel>}
-          </div>
+            </div>
+          </Ui.Nav.Row>
           <Ui.Nav.Row>
             <Ui.Nav.Column xs='3'>
               <p><strong>Person uten fødsels- eller d-nummer&nbsp;</strong></p>
