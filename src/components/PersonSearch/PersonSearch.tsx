@@ -97,7 +97,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
           {gettingPersoner ? <Ui.WaitingPanel size='S' message={t('ui:form-searching')} oneLine /> : t('ui:form-search')}
         </Ui.Nav.Knapp>
       </div>
-      {personer && isPersonValid(personer) ? <PersonCard person={personer} onRemoveClick={onRemovePerson} /> : null}
+      {personer && isPersonValid(personer) ? <PersonCard className='neutral' person={personer} onRemoveClick={onRemovePerson} /> : null}
     </div>
   )
 }
