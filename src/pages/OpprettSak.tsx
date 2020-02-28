@@ -292,6 +292,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                   className='mb-4'
                   label={t('ui:label-landkode')}
                   lang='nb'
+                  menuPortalTarget={document.body}
                   disabled={!isSomething(personer)}
                   includeList={landkoder ? _.orderBy(landkoder, 'term').map((element: any) => element.kode) : []}
                   onOptionSelected={onLandkodeChange}
@@ -316,7 +317,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                 </Ui.Nav.Select>
               </div>
               {valgtSektor === 'FB' ? (
-                <div className='col-xs-12 mb-4'>
+                <div className='col-xs-12 mb-4 slideAnimate'>
                   <Family />
                 </div>
               ) : null}
