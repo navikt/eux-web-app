@@ -8,12 +8,11 @@ export interface LoadingState {
 
 export const initialLoadingState: LoadingState = {
   gettingArbeidsforhold: false,
-  gettingDokumenter: false,
+  gettingDokument: false,
   gettingFagsaker: false,
   gettingInstitusjoner: false,
-  gettingKodeverk: false,
   gettingLandkoder: false,
-  gettingPersoner: false,
+  gettingPerson: false,
   gettingSaksbehandler: false,
   gettingServerinfo: false,
   sendingVedlegg: false,
@@ -40,17 +39,17 @@ const loadingReducer = (state: LoadingState = initialLoadingState, action: Actio
         gettingArbeidsforhold: false
       }
 
-    case types.VEDLEGG_DOKUMENTER_GET_REQUEST:
+    case types.VEDLEGG_DOKUMENT_GET_REQUEST:
       return {
         ...state,
         gettingDokumenter: true
       }
 
-    case types.VEDLEGG_DOKUMENTER_GET_SUCCESS:
-    case types.VEDLEGG_DOKUMENTER_GET_FAILURE:
+    case types.VEDLEGG_DOKUMENT_GET_SUCCESS:
+    case types.VEDLEGG_DOKUMENT_GET_FAILURE:
       return {
         ...state,
-        gettingDokumenter: false
+        gettingDokument: false
       }
 
     case types.SAK_FAGSAKER_GET_REQUEST:
@@ -79,19 +78,6 @@ const loadingReducer = (state: LoadingState = initialLoadingState, action: Actio
         gettingInstitusjoner: false
       }
 
-    case types.SAK_KODEVERK_GET_REQUEST:
-      return {
-        ...state,
-        gettingKodeverk: true
-      }
-
-    case types.SAK_KODEVERK_GET_SUCCESS:
-    case types.SAK_KODEVERK_GET_FAILURE:
-      return {
-        ...state,
-        gettingKodeverk: false
-      }
-
     case types.SAK_LANDKODER_GET_REQUEST:
       return {
         ...state,
@@ -105,17 +91,17 @@ const loadingReducer = (state: LoadingState = initialLoadingState, action: Actio
         gettingKLandkoder: false
       }
 
-    case types.SAK_PERSONER_GET_REQUEST:
+    case types.SAK_PERSON_GET_REQUEST:
       return {
         ...state,
-        gettingPersoner: true
+        gettingPerson: true
       }
 
-    case types.SAK_PERSONER_GET_SUCCESS:
-    case types.SAK_PERSONER_GET_FAILURE:
+    case types.SAK_PERSON_GET_SUCCESS:
+    case types.SAK_PERSON_GET_FAILURE:
       return {
         ...state,
-        gettingPersoner: false
+        gettingPerson: false
       }
 
     case types.SAK_SEND_POST_REQUEST:

@@ -60,7 +60,7 @@ const formReducer = (state: FormState = initialFormState, action: ActionWithPayl
     case types.FORM_FAMILIERELASJONER_REMOVE:
       return {
         ...state,
-        familierelasjoner: _.filter(state.familierelasjoner, i => i !== action.payload)
+        familierelasjoner: _.filter(state.familierelasjoner, i => i.fnr !== action.payload.fnr)
       }
     default:
       return state

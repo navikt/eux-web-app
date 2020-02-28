@@ -2,6 +2,8 @@ import * as vedleggActions from 'actions/vedlegg'
 import 'components/DocumentSearch/DocumentSearch.css'
 import classNames from 'classnames'
 import { State } from 'declarations/reducers'
+import { Dokument, Validation } from 'declarations/types'
+import { ValidationPropType } from 'declarations/types.pt'
 import Ui from 'eessi-pensjon-ui'
 import _ from 'lodash'
 import moment from 'moment'
@@ -11,23 +13,23 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
 export interface DocumentSearchSelector {
-  gettingDokumenter: boolean;
-  dokumenter: any;
-  rinadokumentID: any;
-  rinasaksnummer: any;
+  gettingDokument: boolean;
+  dokument: Array<Dokument> | undefined;
+  rinadokumentID: string;
+  rinasaksnummer: string;
 }
 
 export interface DocumentSearchProps {
   className ?: string;
-  onDocumentFound? : (dokument: any) => void;
+  onDocumentFound? : (dokument: Array<Dokument>) => void;
   onRinasaksnummerChanged?: () => void;
-  validation: any;
+  validation: Validation;
   resetValidation: (k: string) => void;
 }
 
 const mapState = (state: State): DocumentSearchSelector => ({
-  gettingDokumenter: state.loading.gettingDokumenter,
-  dokumenter: state.vedlegg.dokumenter,
+  gettingDokument: state.loading.gettingDokument,
+  dokument: state.vedlegg.dokument,
   rinasaksnummer: state.vedlegg.rinasaksnummer,
   rinadokumentID: state.vedlegg.rinadokumentID
 })
@@ -35,32 +37,29 @@ const mapState = (state: State): DocumentSearchSelector => ({
 const DocumentSearch: React.FC<DocumentSearchProps> = ({
   className, onDocumentFound, onRinasaksnummerChanged, resetValidation, validation
 }: DocumentSearchProps): JSX.Element => {
-  const { dokumenter, gettingDokumenter, rinasaksnummer, rinadokumentID }: DocumentSearchSelector = useSelector<State, DocumentSearchSelector>(mapState)
+  const { dokument, gettingDokument, rinasaksnummer, rinadokumentID }: DocumentSearchSelector = useSelector<State, DocumentSearchSelector>(mapState)
   const dispatch = useDispatch()
   const { t } = useTranslation()
-  const [nyttSok, setNyttSok] = useState(false)
-  const [_dokumenter, setDokumenter] = useState(undefined)
+  const [_dokument, setDokument] = useState<Array<Dokument> | null | undefined>(undefined)
 
-  const sokEtterDokumenter = () => {
+  const sokEtterDokument = () => {
     if (rinasaksnummer) {
-      dispatch(vedleggActions.getDokumenter(rinasaksnummer))
+      dispatch(vedleggActions.getDokument(rinasaksnummer))
     }
   }
 
   useEffect(() => {
-    if (dokumenter && !_dokumenter) {
-      setNyttSok(true)
-      setDokumenter(dokumenter)
+    if (dokument !== undefined && _dokument === undefined) {
+      setDokument(dokument)
       if (_.isFunction(onDocumentFound)) {
-        onDocumentFound(dokumenter)
+        onDocumentFound(dokument)
       }
     }
-  }, [dokumenter, _dokumenter, onDocumentFound])
+  }, [dokument, _dokument, onDocumentFound])
 
   const onRinaSaksnummerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDokumenter(undefined)
-    dispatch(vedleggActions.set('dokumenter', undefined))
-    setNyttSok(false)
+    setDokument(undefined)
+    dispatch(vedleggActions.set('dokument', undefined))
     if (_.isFunction(onRinasaksnummerChanged)) {
       onRinasaksnummerChanged()
     }
@@ -75,38 +74,43 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
 
   const yyyMMdd = (dato: any) => moment(dato).format('YYYY-MM-DD')
 
+  console.log(dokument, _dokument)
   return (
     <div className={classNames(className, 'dokumentsok')}>
       <div className='dokumentsok__skjema'>
         <Ui.Nav.Input
-          label='RINA saksnummer'
+          label={t('ui:label-rinasaksnummer')}
           className='dokumentsok__input'
-          name='rinasaksnummer'
           value={rinasaksnummer}
           onChange={onRinaSaksnummerChange}
           feil={validation.rinasaksnummer}
         />
-        <Ui.Nav.Knapp className='dokumentsok__knapp' onClick={sokEtterDokumenter} spinner={gettingDokumenter}>
+        <Ui.Nav.Knapp
+          className='dokumentsok__knapp'
+          onClick={sokEtterDokument}
+          spinner={gettingDokument}
+        >
           {t('ui:form-search')}
         </Ui.Nav.Knapp>
       </div>
       <div className='dokumentsok__kort mt-4 mb-4 slideAnimate'>
         <Ui.Nav.Select
           id='id-rinadokument'
-          name='rinadokumentID'
-          label='Velg SED Type'
+          label={t('ui:label-rinadokumentID')}
           onChange={onRinadokumentIDChange}
           value={rinadokumentID}
           feil={validation.rinadokumentID}
-          disabled={!_dokumenter}
+          disabled={!_dokument}
         >
           <option value=''>{t('ui:form-choose')}</option>
-          {dokumenter ? dokumenter.map((element: any) => (
-            <option value={element.rinadokumentID} key={element.rinadokumentID}>{element.kode} =&gt; {yyyMMdd(element.opprettetdato)}</option>)
-          ) : null}
+          {dokument?.map((element: Dokument) => (
+            <option value={element.rinadokumentID} key={element.rinadokumentID}>
+              {element.kode + (element.opprettetdato ? ' (' + yyyMMdd(element.opprettetdato) + ')' : '')}
+            </option>)
+          )}
         </Ui.Nav.Select>
       </div>
-      {(nyttSok && _.isEmpty(dokumenter)) ? <p>Ingen dokumenter funnet</p> : null}
+      {dokument === null || dokument?.length === 0 ? <p>{t('ui:error-noDocumentFound')}</p> : null}
     </div>
   )
 }
@@ -115,7 +119,8 @@ DocumentSearch.propTypes = {
   className: PT.string,
   onDocumentFound: PT.func,
   onRinasaksnummerChanged: PT.func,
-  validation: PT.any
+  validation: ValidationPropType.isRequired,
+  resetValidation: PT.func.isRequired
 }
 
 export default DocumentSearch
