@@ -19,6 +19,7 @@ export interface SakState {
   institusjoner: any;
   personer: any;
   opprettetSak: OpprettetSak | undefined;
+  personerRelatert: any;
 
   // comes from eessi-kodeverk
   buctyper: BucTyper | undefined;
@@ -38,6 +39,7 @@ export const initialSakState: SakState = {
   landkoder: undefined,
   personer: undefined,
   opprettetSak: undefined,
+  personerRelatert: undefined,
 
   buctyper: undefined,
   familierelasjoner: undefined,
@@ -90,6 +92,18 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
       return {
         ...state,
         personer: action.payload
+      }
+
+    case types.SAK_PERSONER_RELATERT_GET_FAILURE:
+      return {
+        ...state,
+        personerRelatert: null
+      }
+
+    case types.SAK_PERSONER_RELATERT_GET_SUCCESS:
+      return {
+        ...state,
+        personerRelatert: action.payload
       }
 
     case types.SAK_PERSONER_RESET:

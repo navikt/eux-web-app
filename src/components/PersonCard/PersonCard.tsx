@@ -61,7 +61,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
 
   return (
     <div className={className}>
-      <Ui.Nav.Panel border style={{background: 'transparent'}} className='mt-4'>
+      <Ui.Nav.Panel border style={{ background: 'transparent' }} className='mt-4'>
         <div className='personcard'>
           <div className='personcard__desc'>
             <Ui.Icons className='mr-3' kind={kind} size={40} />

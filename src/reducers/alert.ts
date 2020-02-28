@@ -64,6 +64,10 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         clientErrorMessage = 'ui:validation-invalidFnr'
         break
 
+      case types.SAK_PERSONER_RELATERT_GET_FAILURE:
+        clientErrorMessage = 'ui:error-personRelated-notFound'
+        break
+
       default:
 
         clientErrorMessage = 'ui:error'
