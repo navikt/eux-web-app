@@ -110,8 +110,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
             </Ui.Nav.Hjelpetekst>
             <Ui.Nav.Input
               className='mb-4'
-              name='journalpostID'
-              label='JournalpostID'
+              label={t('ui:label-journalpostID')}
               onChange={onjournalpostIDChange}
               feil={validation.journalpostID}
             />
@@ -122,8 +121,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
             </Ui.Nav.Hjelpetekst>
             <Ui.Nav.Input
               className='mb-4'
-              name='dokumentID'
-              label='DokumentID'
+              label={t('ui:label-dokumentID')}
               onChange={onDokumentIDChange}
               feil={validation.dokumentID}
             />

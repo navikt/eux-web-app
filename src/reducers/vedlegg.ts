@@ -8,7 +8,7 @@ export interface VedleggState {
   rinadokumentID: any;
   journalpostID: any;
   dokumentID: any;
-  dokumenter: any;
+  dokument: any;
 }
 
 export const initialVedleggState: VedleggState = {
@@ -17,7 +17,7 @@ export const initialVedleggState: VedleggState = {
   rinadokumentID: undefined,
   journalpostID: undefined,
   dokumentID: undefined,
-  dokumenter: undefined
+  dokument: undefined
 }
 
 const vedleggReducer = (state: VedleggState = initialVedleggState, action: ActionWithPayload) => {
@@ -28,10 +28,22 @@ const vedleggReducer = (state: VedleggState = initialVedleggState, action: Actio
         vedlegg: action.payload
       }
 
-    case types.VEDLEGG_DOKUMENTER_GET_SUCCESS:
+    case types.VEDLEGG_DOKUMENT_GET_REQUEST:
       return {
         ...state,
-        dokumenter: action.payload
+        dokument: undefined
+      }
+
+    case types.VEDLEGG_DOKUMENT_GET_FAILURE:
+      return {
+        ...state,
+        dokument: null
+      }
+
+    case types.VEDLEGG_DOKUMENT_GET_SUCCESS:
+      return {
+        ...state,
+        dokument: action.payload
       }
 
     case types.VEDLEGG_VALUE_SET:

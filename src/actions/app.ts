@@ -4,6 +4,10 @@ import * as api from 'eessi-pensjon-ui/dist/api'
 import { ActionWithPayload, ThunkResult } from 'eessi-pensjon-ui/dist/declarations/types'
 import { Action, ActionCreator } from 'redux'
 
+export const cleanData: ActionCreator<Action> = (): Action => ({
+  type: types.APP_CLEAN_DATA
+})
+
 export const getSaksbehandler: ActionCreator<ThunkResult<ActionWithPayload>> = (): ThunkResult<ActionWithPayload> => {
   return api.realCall({
     url: urls.API_SAKSBEHANDLER_URL,
@@ -14,10 +18,6 @@ export const getSaksbehandler: ActionCreator<ThunkResult<ActionWithPayload>> = (
     }
   })
 }
-
-export const cleanData: ActionCreator<Action> = (): Action => ({
-  type: types.APP_CLEAN_DATA
-})
 
 export const getServerinfo: ActionCreator<ThunkResult<ActionWithPayload>> = (): ThunkResult<ActionWithPayload> => {
   return api.realCall({

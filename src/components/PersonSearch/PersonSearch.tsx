@@ -15,21 +15,21 @@ import PersonCard from '../PersonCard/PersonCard'
 export interface PersonSearchProps {
   className?: string;
   onFnrChange?: () => void;
-  onPersonFound? : (personer: Person) => void;
+  onPersonFound? : (person: Person) => void;
   validation: any;
   resetValidation: (key: string) => void;
 }
 
 export interface PersonSearchSelector {
-  personer: Person;
-  gettingPersoner: boolean;
+  person: Person;
+  gettingPerson: boolean;
   fnr: any;
 }
 
 const mapState = (state: State): PersonSearchSelector => ({
-  personer: state.sak.personer,
+  person: state.sak.person,
   fnr: state.form.fnr,
-  gettingPersoner: state.loading.gettingPersoner
+  gettingPerson: state.loading.gettingPerson
 })
 
 const PersonSearch: React.FC<PersonSearchProps> = ({
@@ -37,23 +37,23 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
 }: PersonSearchProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const { gettingPersoner, fnr, personer }: PersonSearchSelector = useSelector<State, PersonSearchSelector>(mapState)
+  const { gettingPerson, fnr, person }: PersonSearchSelector = useSelector<State, PersonSearchSelector>(mapState)
   const [_person, setPerson] = useState<Person | undefined>(undefined)
   const [localValidation, setLocalValidation] = useState<string |undefined>(undefined)
 
   const isPersonValid = useCallback(
-    (personer: Person) => (personer?.fornavn?.length !== undefined && personer?.fnr !== undefined)
+    (person: Person) => (person?.fornavn?.length !== undefined && person?.fnr !== undefined)
     , []
   )
 
   useEffect(() => {
-    if (personer && !_person && isPersonValid(personer)) {
-      setPerson(personer)
+    if (person && !_person && isPersonValid(person)) {
+      setPerson(person)
       if (_.isFunction(onPersonFound)) {
-        onPersonFound(personer)
+        onPersonFound(person)
       }
     }
-  }, [personer, _person, isPersonValid, onPersonFound])
+  }, [person, _person, isPersonValid, onPersonFound])
 
   const sokEtterPerson = () => {
     const fnrPattern = /^[0-9]{11}$/
@@ -63,7 +63,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
     }
     setLocalValidation(undefined)
     setPerson(undefined)
-    dispatch(sakActions.getPersoner(fnr))
+    dispatch(sakActions.getPerson(fnr))
   }
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,25 +79,24 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
     setLocalValidation(undefined)
     resetValidation('fnr')
     setPerson(undefined)
-    dispatch(sakActions.resetPersoner())
+    dispatch(sakActions.resetPerson())
   }
 
   return (
     <div className={classNames('personsok', className)}>
       <div className='personsok__skjema'>
         <Ui.Nav.Input
-          label='Finn bruker'
+          label={t('ui:form-searchUser')}
           className='personsok__input'
-          name='fnr'
           value={fnr}
           onChange={onChange}
           feil={validation.fnr || localValidation}
         />
-        <Ui.Nav.Knapp className='personsok__knapp' onClick={sokEtterPerson} disabled={gettingPersoner}>
-          {gettingPersoner ? <Ui.WaitingPanel size='S' message={t('ui:form-searching')} oneLine /> : t('ui:form-search')}
+        <Ui.Nav.Knapp className='personsok__knapp' onClick={sokEtterPerson} disabled={gettingPerson}>
+          {gettingPerson ? <Ui.WaitingPanel size='S' message={t('ui:form-searching')} oneLine /> : t('ui:form-search')}
         </Ui.Nav.Knapp>
       </div>
-      {personer && isPersonValid(personer) ? <PersonCard className='neutral' person={personer} onRemoveClick={onRemovePerson} /> : null}
+      {person && isPersonValid(person) ? <PersonCard className='neutral' person={person} onRemoveClick={onRemovePerson} /> : null}
     </div>
   )
 }

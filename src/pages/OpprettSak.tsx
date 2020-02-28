@@ -31,7 +31,7 @@ export interface OpprettSakSelector {
   landkoder: any;
   opprettetSak: any;
   sektor: any;
-  personer: Person | undefined;
+  person: Person | undefined;
   sedtyper: any;
   sendingSak: boolean;
   serverInfo: any;
@@ -61,7 +61,7 @@ const mapState = (state: State): OpprettSakSelector => ({
   fagsaker: state.sak.fagsaker,
   institusjoner: state.sak.institusjoner,
   opprettetSak: state.sak.opprettetSak,
-  personer: state.sak.personer,
+  person: state.sak.person,
   sendingSak: state.loading.sendingSak,
   serverInfo: state.app.serverinfo,
   arbeidsforhold: state.sak.arbeidsforhold,
@@ -81,7 +81,7 @@ const mapState = (state: State): OpprettSakSelector => ({
 
 const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): JSX.Element => {
   const {
-    arbeidsforhold, buctyper, sedtyper, fagsaker, institusjoner, kodemaps, landkoder, opprettetSak, personer, sektor, sendingSak,
+    arbeidsforhold, buctyper, sedtyper, fagsaker, institusjoner, kodemaps, landkoder, opprettetSak, person, sektor, sendingSak,
     serverInfo, tema, valgteArbeidsforhold, valgtBucType, valgtFnr, valgteFamilieRelasjoner, valgtInstitusjon, valgtLandkode, valgtSedType, valgtSektor, valgtSaksId, valgtTema
   }: OpprettSakSelector = useSelector<State, OpprettSakSelector>(mapState)
   const dispatch = useDispatch()
@@ -203,7 +203,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
   }
 
   const onViewFagsakerClick = () => {
-    dispatch(sakActions.getFagsaker(personer?.fnr, valgtSektor, valgtTema))
+    dispatch(sakActions.getFagsaker(person?.fnr, valgtSektor, valgtTema))
   }
 
   const onSakIDChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -212,7 +212,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
   }
 
   const getArbeidsforhold = () => {
-    dispatch(sakActions.getArbeidsforhold(personer?.fnr))
+    dispatch(sakActions.getArbeidsforhold(person?.fnr))
   }
 
   const onArbeidsforholdClick = (item: any, checked: boolean) => {
@@ -236,14 +236,14 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
             onFnrChange={() => setIsFnrValid(false)}
             onPersonFound={() => setIsFnrValid(true)}
           />
-          {personer ? (
+          {person ? (
             <Ui.Nav.Row>
               <div className='col-xs-6 slideAnimate' style={{ animationDelay: '0s' }}>
                 <Ui.Nav.Select
                   className='mb-4'
                   id='id-sektor'
                   label={t('ui:label-sektor')}
-                  disabled={!personer}
+                  disabled={!person}
                   onChange={onSektorChange}
                   value={valgtSektor}
                   feil={validation.sektor}
@@ -293,7 +293,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                   label={t('ui:label-landkode')}
                   lang='nb'
                   menuPortalTarget={document.body}
-                  disabled={!isSomething(personer)}
+                  disabled={!isSomething(person)}
                   includeList={landkoder ? _.orderBy(landkoder, 'term').map((element: any) => element.kode) : []}
                   onOptionSelected={onLandkodeChange}
                   value={valgtLandkode}
@@ -464,7 +464,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
           ) : null}
           <AbortModal
             onAbort={onAbort}
-            visModal={visModal}
+            isOpen={visModal}
             closeModal={closeModal}
           />
         </div>
