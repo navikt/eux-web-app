@@ -38,6 +38,7 @@ export interface Person {
   fornavn?: string;
   etternavn?: string;
   kjoenn?: string;
+  relasjoner?: Array<FamilieRelasjon>
 }
 
 export interface FamilieRelasjon extends Person {
@@ -64,16 +65,25 @@ export interface OpprettetSak {
   url: string;
 }
 
+export interface VedleggPayload {
+  journalpostID: string;
+  dokumentID: string;
+  rinasaksnummer: string;
+  rinadokumentID: string;
+  rinaNrErSjekket: boolean;
+  rinaNrErGyldig: boolean;
+}
+
+export interface Dokument {
+  kode: string;
+  rinadokumentID: string;
+  opprettetdato?: string;
+}
+
 export interface VedleggSendResponse {
   vedleggID: string;
   url: string
 }
-
-export type FamilieRelasjoner = Array<Kodeverk>
-export type Kjoenn = Array<Kodeverk>
-export type Landkoder = Array<Kodeverk>
-export type Sektor = Array<Kodeverk>
-export type SedTyper = Array<Kodeverk>
 
 export interface Tema {
   awod: Array<Kodeverk>,

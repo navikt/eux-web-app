@@ -15,8 +15,8 @@ export const ArbeidsforholdetPropType = PT.shape({
 export const ArbeidsforholdPropType = PT.arrayOf(ArbeidsforholdetPropType)
 
 export const KodeverkPropType = PT.shape({
-  kode: PT.string,
-  term: PT.string
+  kode: PT.string.isRequired,
+  term: PT.string.isRequired
 })
 
 export const BuctyperPropType = PT.shape({
@@ -70,3 +70,5 @@ export const opprettetSakPropType = PT.shape({
   rinasaksnummer: PT.string,
   url: PT.string
 })
+
+export const ValidationPropType = PT.objectOf(PT.string.isRequired)

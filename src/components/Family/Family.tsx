@@ -1,61 +1,52 @@
 import * as formActions from 'actions/form'
-import AnnenRelatertTPSPerson from 'components/Family/AnnenRelatertTPSPerson'
-import FamilieRelasjonUtland from 'components/Family/FamilieRelasjonUtland'
+import TPSPersonForm from 'components/Family/TPSPersonForm'
+import AbroadPersonForm from 'components/Family/AbroadPersonForm'
 import PersonCard from 'components/PersonCard/PersonCard'
 import { State } from 'declarations/reducers'
-import { FamilieRelasjon, FamilieRelasjoner, Kjoenn, Landkoder, Person } from 'declarations/types'
+import { FamilieRelasjon, Kodeverk, Person } from 'declarations/types'
 import Ui from 'eessi-pensjon-ui'
 import _ from 'lodash'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { vaskInputDato } from 'utils/dato'
 
 export interface FamilySelector {
-  familierelasjonKodeverk: FamilieRelasjoner | undefined;
-  kjoenn: Kjoenn | undefined;
-  landkoder: Landkoder | undefined;
-  personer: Person | undefined;
-  tpsrelasjoner: any | undefined;
-  valgteFamilieRelasjoner: any | undefined;
+  familierelasjonKodeverk: Array<Kodeverk> | undefined;
+  landkoder: Array<Kodeverk> | undefined;
+  person: Person | undefined;
+  valgteFamilieRelasjoner: Array<FamilieRelasjon> | undefined;
 }
 
 const mapState = (state: State): FamilySelector => ({
   familierelasjonKodeverk: state.sak.familierelasjoner,
-  kjoenn: state.sak.kjoenn,
   landkoder: state.sak.landkoder,
-  personer: state.sak.personer,
-  tpsrelasjoner: state.sak.personer.relasjoner,
+  person: state.sak.person,
   valgteFamilieRelasjoner: state.form.familierelasjoner
 })
-
-const emptyRelation = { fnr: '', fdato: '', nasjonalitet: '', rolle: '', kjoenn: '', fornavn: '', etternavn: '' }
 
 const Family: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const { familierelasjonKodeverk, kjoenn, landkoder, personer, tpsrelasjoner, valgteFamilieRelasjoner }: FamilySelector = useSelector<State, FamilySelector>(mapState)
+  const { familierelasjonKodeverk, landkoder, person, valgteFamilieRelasjoner }: FamilySelector = useSelector<State, FamilySelector>(mapState)
   const [viewFormRelatedUtland, setViewFormRelatedUtland] = useState<boolean>(false)
   const [viewFormRelatedTPS, setViewFormRelatedTPS] = useState<boolean>(false)
-  const [specialRelation, setSpecialRelation] = useState<FamilieRelasjon>(emptyRelation)
 
-  const remainingRelationsFromTPS = _.filter(tpsrelasjoner, (relasjon) => (
-    _.find(valgteFamilieRelasjoner, (r: any) => r.fnr === relasjon.fnr) === undefined
+  const remainingRelationsFromTPS = _.filter(person!.relasjoner, (relation: FamilieRelasjon) => (
+    _.find(valgteFamilieRelasjoner, (valgteRelasjon: FamilieRelasjon) => (
+      valgteRelasjon.fnr === relation.fnr
+    )) === undefined
   ))
 
-  const slettRelasjon = (p: Person) => {
-    const newValgteFamilieRelasjoner = _.filter(valgteFamilieRelasjoner, (relasjon: any) => relasjon.fnr !== p.fnr)
-    dispatch(formActions.set('familierelasjoner', newValgteFamilieRelasjoner))
+  const deleteRelation = (relation: FamilieRelasjon) => {
+    dispatch(formActions.removeFamilierelasjoner(relation))
   }
 
-  const leggTilTPSrelasjon = (relasjon: any) => {
-    /* Personer fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
-    const vasketRelasjon = {
-      ...relasjon,
+  const addTpsRelation = (relation: FamilieRelasjon) => {
+    /* Person fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
+    dispatch(formActions.addFamilierelasjoner({
+      ...relation,
       nasjonalitet: 'NO'
-    }
-    const newValgteFamilieRelasjoner = valgteFamilieRelasjoner.concat(vasketRelasjon)
-    dispatch(formActions.set('familierelasjoner', newValgteFamilieRelasjoner))
+    }))
   }
 
   const toggleFormRelatedUtland = () => {
@@ -66,142 +57,95 @@ const Family: React.FC = (): JSX.Element => {
     setViewFormRelatedTPS(!viewFormRelatedTPS)
   }
 
-  const oppdaterState = (felt: string, event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.value
-    setSpecialRelation({
-      ...specialRelation,
-      [felt]: value
-    })
+  const ekskluderteVerdier: Array<string> = []
+  if (!_.isEmpty(valgteFamilieRelasjoner)) {
+    // Hvis ektefelle allerede er lagt til, fjern mulighet for andre typer samlivspartnere
+    if (valgteFamilieRelasjoner?.find((relation: FamilieRelasjon) => relation.rolle === 'EKTE')) ekskluderteVerdier.push('EKTE', 'SAMB', 'REPA')
+    // Hvis registret partner allerede er lagt til, fjern mulighet for andre typer samlivspartnere
+    if (valgteFamilieRelasjoner?.find((relation: FamilieRelasjon) => relation.rolle === 'REPA')) ekskluderteVerdier.push('EKTE', 'SAMB', 'REPA')
+    // Det skal kun være mulig å legge til en relasjon av typen annen
+    if (valgteFamilieRelasjoner?.find((relation: FamilieRelasjon) => relation.rolle === 'ANNEN')) ekskluderteVerdier.push('ANNEN')
   }
 
-  const filtrerRoller = () => {
-    const ekskluderteVerdier: any = []
-    if (!_.isEmpty(valgteFamilieRelasjoner)) {
-      // Hvis ektefelle allerede er lagt til, fjern mulighet for andre typer samlivspartnere
-      if (valgteFamilieRelasjoner.find((kt: any) => kt.rolle === 'EKTE')) ekskluderteVerdier.push('EKTE', 'SAMB', 'REPA')
-      // Hvis registret partner allerede er lagt til, fjern mulighet for andre typer samlivspartnere
-      if (valgteFamilieRelasjoner.find((kt: any) => kt.rolle === 'REPA')) ekskluderteVerdier.push('EKTE', 'SAMB', 'REPA')
-      // Det skal kun være mulig å legge til en relasjon av typen annen
-      if (valgteFamilieRelasjoner.find((kt: any) => kt.rolle === 'ANNEN')) ekskluderteVerdier.push('ANNEN')
-    }
-    return familierelasjonKodeverk!.filter(kt => ekskluderteVerdier.includes(kt.kode) === false)
-  }
-
-  const vaskInputDatoOgOppdater = (felt: string, event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.value
-    const nyDato = vaskInputDato(value) || ''
-    setSpecialRelation({
-      ...specialRelation,
-      [felt]: nyDato
-    })
-  }
-
-  const kanSpesialRelasjonLeggesTil = () => {
-    const { fnr, rolle, nasjonalitet, kjoenn, fornavn, etternavn } = specialRelation
-    return (fnr && rolle && nasjonalitet && kjoenn && fornavn && etternavn)
-  }
-
-  const leggTilSpesialRelasjon = () => {
-    const vasketRelasjon = {
-      ...specialRelation,
-      fdato: specialRelation.fdato || ''
-    }
-    if (kanSpesialRelasjonLeggesTil()) {
-      setSpecialRelation(emptyRelation)
-      const newValgteFamilieRelasjoner = valgteFamilieRelasjoner.concat(vasketRelasjon)
-      dispatch(formActions.set('familierelasjoner', newValgteFamilieRelasjoner))
-    }
-  }
+  const rolleList: Array<Kodeverk> = familierelasjonKodeverk!.filter((kt: Kodeverk) => ekskluderteVerdier.includes(kt.kode) === false)
 
   return (
     <>
       <Ui.Nav.Systemtittel className='mb-4'>{t('ui:label-familyRelationships')}</Ui.Nav.Systemtittel>
       <Ui.Nav.Panel border>
         <Ui.Nav.Undertittel className='mb-4 ml-2'>{t('ui:form-family-description')}</Ui.Nav.Undertittel>
-        <div className='familierelasjoner'>
-          <Ui.Nav.Row>
-            <div className='col-xs-6'>
-              <Ui.Nav.Ingress className='ml-2'>{t('ui:form-family-relations-in-tps')}</Ui.Nav.Ingress>
-              {remainingRelationsFromTPS.map((enkeltTPSRelasjon: any, index: number) => (
-                <PersonCard
-                  className='slideAnimate personNotSelected m-2'
-                  key={index}
-                  person={enkeltTPSRelasjon}
-                  initialRolle={_.find(familierelasjonKodeverk, (elem: any) => elem.kode === enkeltTPSRelasjon.kode)?.term}
-                  onAddClick={leggTilTPSrelasjon}
+        <Ui.Nav.Row>
+          <div className='col-xs-6'>
+            <Ui.Nav.Ingress className='ml-2'>{t('ui:form-family-relations-in-tps')}</Ui.Nav.Ingress>
+            {remainingRelationsFromTPS.map((relation: FamilieRelasjon) => (
+              <PersonCard
+                className='slideAnimate personNotSelected m-2'
+                key={relation.fnr}
+                person={relation}
+                familierelasjonKodeverk={familierelasjonKodeverk}
+                onAddClick={addTpsRelation}
+              />
+            ))}
+            {(!_.isEmpty(person!.relasjoner) && _.isEmpty(remainingRelationsFromTPS)) ? (
+              <Ui.Nav.UndertekstBold className='ml-2 mt-4'>({t('ui:form-family-added-all')})</Ui.Nav.UndertekstBold>
+            ) : null}
+            {_.isEmpty(person!.relasjoner) ? (
+              <Ui.Nav.UndertekstBold className='ml-2 mt-4'>({t('ui:form-family-none-in-tps')})</Ui.Nav.UndertekstBold>
+            ) : null}
+          </div>
+          <div style={{
+            borderLeft: '1px solid lightgrey',
+            marginLeft: '-1px'
+          }}
+          />
+          <div className='col-xs-6'>
+            <Ui.Nav.Ingress className='ml-2'>
+              {t('ui:form-family-chosen')}&nbsp;({valgteFamilieRelasjoner ? valgteFamilieRelasjoner.length : 0})
+            </Ui.Nav.Ingress>
+            {valgteFamilieRelasjoner ? valgteFamilieRelasjoner.map((relation: FamilieRelasjon) => (
+              <PersonCard
+                className='slideAnimate personSelected m-2'
+                key={relation.fnr}
+                landKodeverk={landkoder!}
+                familierelasjonKodeverk={familierelasjonKodeverk}
+                person={relation}
+                onRemoveClick={deleteRelation}
+              />)) : null}
+          </div>
+        </Ui.Nav.Row>
+        <Ui.Nav.Row>
+          <div className='col-xs-12 mt-4'>
+            <div>
+              <Ui.Nav.Ingress className='ml-2'>{t('ui:form-family-utland-title')}</Ui.Nav.Ingress>
+              {viewFormRelatedUtland ? (
+                <AbroadPersonForm
+                  className='m-2'
+                  rolleList={rolleList}
                 />
-              ))}
-              {(!_.isEmpty(tpsrelasjoner) && _.isEmpty(remainingRelationsFromTPS)) ? (
-                <Ui.Nav.UndertekstBold>({t('ui:form-family-added-all')})</Ui.Nav.UndertekstBold>
               ) : null}
-              {_.isEmpty(tpsrelasjoner) ? (
-                <Ui.Nav.Panel>({t('ui:form-family-none-in-tps')})</Ui.Nav.Panel>
+              <Ui.Nav.Knapp className='m-2' onClick={toggleFormRelatedUtland}>
+                {viewFormRelatedUtland ? t('ui:label-hide-form') : t('ui:label-show-form')}
+              </Ui.Nav.Knapp>
+            </div>
+
+          </div>
+        </Ui.Nav.Row>
+        <Ui.Nav.Row>
+          <div className='col-xs-12 mt-4'>
+            <div>
+              <Ui.Nav.Ingress className='ml-2'>{t('ui:form-family-tps-title')}</Ui.Nav.Ingress>
+              {viewFormRelatedTPS ? (
+                <TPSPersonForm
+                  className='m-2'
+                  rolleList={rolleList}
+                />
               ) : null}
+              <Ui.Nav.Knapp className='m-2' onClick={toggleFormRelatedTPS}>
+                {viewFormRelatedTPS ? t('ui:label-hide-form') : t('ui:label-show-form')}
+              </Ui.Nav.Knapp>
             </div>
-            <div style={{
-              borderLeft: '1px solid lightgrey',
-              marginLeft: '-1px'
-            }}
-            />
-            <div className='col-xs-6'>
-              <Ui.Nav.Ingress className='ml-2'>{t('ui:form-family-chosen')}&nbsp;({valgteFamilieRelasjoner.length})</Ui.Nav.Ingress>
-              {valgteFamilieRelasjoner && valgteFamilieRelasjoner.map((relasjon: any, indeks: number) => (
-                <PersonCard
-                  className='slideAnimate personSelected m-2'
-                  key={indeks}
-                  familierelasjonKodeverk={familierelasjonKodeverk!}
-                  landKodeverk={landkoder!}
-                  person={relasjon}
-                  onRemoveClick={slettRelasjon}
-                />))}
-            </div>
-          </Ui.Nav.Row>
-          <Ui.Nav.Row>
-            <div className='col-xs-12 mt-4'>
-              <div>
-                <Ui.Nav.Ingress className='ml-2'>{t('ui:form-family-utland-title')}</Ui.Nav.Ingress>
-                {viewFormRelatedUtland ? (
-                  <FamilieRelasjonUtland
-                    className='m-2'
-                    spesialRelasjon={specialRelation}
-                    oppdaterState={oppdaterState}
-                    kjoennKodeverk={kjoenn}
-                    landKodeverk={landkoder}
-                    filtrerteFamilieRelasjoner={filtrerRoller}
-                    leggTilSpesialRelasjon={leggTilSpesialRelasjon}
-                    vaskInputDatoOgOppdater={vaskInputDatoOgOppdater}
-                    kanSpesialRelasjonLeggesTil={kanSpesialRelasjonLeggesTil}
-                  />
-                ) : null}
-                <Ui.Nav.Knapp className='m-2' onClick={toggleFormRelatedUtland}>
-                  {viewFormRelatedUtland ? t('ui:label-hide-form') : t('ui:label-show-form')}
-                </Ui.Nav.Knapp>
-              </div>
-
-            </div>
-          </Ui.Nav.Row>
-          <Ui.Nav.Row>
-            <div className='col-xs-12 mt-4'>
-              <div>
-                <Ui.Nav.Ingress className='ml-2'>{t('ui:form-family-tps-title')}</Ui.Nav.Ingress>
-                {viewFormRelatedTPS ? (
-                  <AnnenRelatertTPSPerson
-                    className='m-2'
-                    valgteRelasjoner={valgteFamilieRelasjoner}
-                    tpsrelasjoner={tpsrelasjoner}
-                    leggTilTPSrelasjon={leggTilTPSrelasjon}
-                    filtrerteFamilieRelasjoner={filtrerRoller}
-                    valgtBrukerFnr={personer!.fnr}
-                  />
-                ) : null}
-                <Ui.Nav.Knapp className='m-2' onClick={toggleFormRelatedTPS}>
-                  {viewFormRelatedTPS ? t('ui:label-hide-form') : t('ui:label-show-form')}
-                </Ui.Nav.Knapp>
-              </div>
-
-            </div>
-          </Ui.Nav.Row>
-        </div>
+          </div>
+        </Ui.Nav.Row>
       </Ui.Nav.Panel>
     </>
   )

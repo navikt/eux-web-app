@@ -1,33 +1,22 @@
 import * as types from 'constants/actionTypes'
-import {
-  Arbeidsforhold,
-  BucTyper,
-  FamilieRelasjoner,
-  Kjoenn,
-  Kodemaps,
-  Landkoder,
-  OpprettetSak,
-  SedTyper,
-  Sektor,
-  Tema
-} from 'declarations/types'
+import { Arbeidsforhold, BucTyper, Kodemaps, Kodeverk, OpprettetSak, Tema } from 'declarations/types'
 import { ActionWithPayload } from 'eessi-pensjon-ui/dist/declarations/types'
 
 export interface SakState {
   arbeidsforhold: Arbeidsforhold | undefined;
   fagsaker: any;
   institusjoner: any;
-  personer: any;
+  person: any;
   opprettetSak: OpprettetSak | undefined;
-  personerRelatert: any;
+  personRelatert: any;
 
   // comes from eessi-kodeverk
   buctyper: BucTyper | undefined;
-  familierelasjoner: FamilieRelasjoner | undefined;
-  kjoenn: Kjoenn | undefined;
-  landkoder: Landkoder | undefined;
-  sektor: Sektor | undefined;
-  sedtyper: SedTyper | undefined;
+  familierelasjoner: Array<Kodeverk> | undefined;
+  kjoenn: Array<Kodeverk> | undefined;
+  landkoder: Array<Kodeverk> | undefined;
+  sektor: Array<Kodeverk> | undefined;
+  sedtyper: Array<Kodeverk> | undefined;
   tema: Tema | undefined;
   kodemaps: Kodemaps | undefined;
 }
@@ -37,9 +26,9 @@ export const initialSakState: SakState = {
   fagsaker: undefined,
   institusjoner: undefined,
   landkoder: undefined,
-  personer: undefined,
+  person: undefined,
   opprettetSak: undefined,
-  personerRelatert: undefined,
+  personRelatert: undefined,
 
   buctyper: undefined,
   familierelasjoner: undefined,
@@ -70,46 +59,46 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
         institusjoner: action.payload
       }
 
-    case types.SAK_KODEVERK_GET_SUCCESS:
-      return {
-        ...state,
-        ...action.payload
-      }
-
     case types.SAK_LANDKODER_GET_SUCCESS:
       return {
         ...state,
         landkoder: action.payload
       }
 
-    case types.SAK_PERSONER_GET_FAILURE:
+    case types.SAK_PERSON_GET_FAILURE:
       return {
         ...state,
-        personer: null
+        person: null
       }
 
-    case types.SAK_PERSONER_GET_SUCCESS:
+    case types.SAK_PERSON_GET_SUCCESS:
       return {
         ...state,
-        personer: action.payload
+        person: action.payload
       }
 
-    case types.SAK_PERSONER_RELATERT_GET_FAILURE:
+    case types.SAK_PERSON_RELATERT_GET_FAILURE:
       return {
         ...state,
-        personerRelatert: null
+        personRelatert: null
       }
 
-    case types.SAK_PERSONER_RELATERT_GET_SUCCESS:
+    case types.SAK_PERSON_RELATERT_GET_SUCCESS:
       return {
         ...state,
-        personerRelatert: action.payload
+        personRelatert: action.payload
       }
 
-    case types.SAK_PERSONER_RESET:
+    case types.SAK_PERSON_RESET:
       return {
         ...state,
-        personer: undefined
+        person: undefined
+      }
+
+    case types.SAK_PERSON_RELATERT_RESET:
+      return {
+        ...state,
+        personRelatert: undefined
       }
 
     case types.SAK_SEND_POST_SUCCESS:
