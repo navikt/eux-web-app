@@ -65,10 +65,26 @@ export const getLandkoder: ActionCreator<ThunkResult<ActionWithPayload>> = (buct
 export const getPersoner: ActionCreator<ThunkResult<ActionWithPayload>> = (fnr: string): ThunkResult<ActionWithPayload> => {
   return api.realCall({
     url: sprintf(urls.API_SAK_PERSONER_URL, { fnr: fnr }),
+    cascadeFailureError: true,
     type: {
       request: types.SAK_PERSONER_GET_REQUEST,
       success: types.SAK_PERSONER_GET_SUCCESS,
       failure: types.SAK_PERSONER_GET_FAILURE
+    }
+  })
+}
+
+export const getPersonerRelated: ActionCreator<ThunkResult<ActionWithPayload>> = (fnr: string): ThunkResult<ActionWithPayload> => {
+  return api.realCall({
+    url: sprintf(urls.API_SAK_PERSONER_URL, { fnr: fnr }),
+    cascadeFailureError: true,
+    context: {
+      fnr: fnr
+    },
+    type: {
+      request: types.SAK_PERSONER_RELATERT_GET_REQUEST,
+      success: types.SAK_PERSONER_RELATERT_GET_SUCCESS,
+      failure: types.SAK_PERSONER_RELATERT_GET_FAILURE
     }
   })
 }

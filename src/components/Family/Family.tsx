@@ -1,6 +1,6 @@
 import * as formActions from 'actions/form'
-import { AnnenRelatertTPSPerson } from 'components/Family/AnnenRelatertTPSPerson'
-import { FamilieRelasjonUtland } from 'components/Family/FamilieRelasjonUtland'
+import AnnenRelatertTPSPerson from 'components/Family/AnnenRelatertTPSPerson'
+import FamilieRelasjonUtland from 'components/Family/FamilieRelasjonUtland'
 import PersonCard from 'components/PersonCard/PersonCard'
 import { State } from 'declarations/reducers'
 import { FamilieRelasjon, FamilieRelasjoner, Kjoenn, Landkoder, Person } from 'declarations/types'
@@ -40,7 +40,7 @@ const Family: React.FC = (): JSX.Element => {
   const [specialRelation, setSpecialRelation] = useState<FamilieRelasjon>(emptyRelation)
 
   const remainingRelationsFromTPS = _.filter(tpsrelasjoner, (relasjon) => (
-    _.find(valgteFamilieRelasjoner, (r: any) => r.fnr === relasjon.fnr) ===  undefined
+    _.find(valgteFamilieRelasjoner, (r: any) => r.fnr === relasjon.fnr) === undefined
   ))
 
   const slettRelasjon = (p: Person) => {
@@ -117,14 +117,14 @@ const Family: React.FC = (): JSX.Element => {
     <>
       <Ui.Nav.Systemtittel className='mb-4'>{t('ui:label-familyRelationships')}</Ui.Nav.Systemtittel>
       <Ui.Nav.Panel border>
-        <Ui.Nav.Undertittel className='mb-4'>{t('ui:form-family-description')}</Ui.Nav.Undertittel>
+        <Ui.Nav.Undertittel className='mb-4 ml-2'>{t('ui:form-family-description')}</Ui.Nav.Undertittel>
         <div className='familierelasjoner'>
           <Ui.Nav.Row>
             <div className='col-xs-6'>
-              <Ui.Nav.Ingress>{t('ui:form-family-relations-in-tps')}</Ui.Nav.Ingress>
+              <Ui.Nav.Ingress className='ml-2'>{t('ui:form-family-relations-in-tps')}</Ui.Nav.Ingress>
               {remainingRelationsFromTPS.map((enkeltTPSRelasjon: any, index: number) => (
                 <PersonCard
-                  className='slideAnimate personNotSelected mt-3 mb-3'
+                  className='slideAnimate personNotSelected m-2'
                   key={index}
                   person={enkeltTPSRelasjon}
                   initialRolle={_.find(familierelasjonKodeverk, (elem: any) => elem.kode === enkeltTPSRelasjon.kode)?.term}
@@ -134,15 +134,20 @@ const Family: React.FC = (): JSX.Element => {
               {(!_.isEmpty(tpsrelasjoner) && _.isEmpty(remainingRelationsFromTPS)) ? (
                 <Ui.Nav.UndertekstBold>({t('ui:form-family-added-all')})</Ui.Nav.UndertekstBold>
               ) : null}
-              {!_.isEmpty(tpsrelasjoner) ? (
+              {_.isEmpty(tpsrelasjoner) ? (
                 <Ui.Nav.Panel>({t('ui:form-family-none-in-tps')})</Ui.Nav.Panel>
               ) : null}
             </div>
+            <div style={{
+              borderLeft: '1px solid lightgrey',
+              marginLeft: '-1px'
+            }}
+            />
             <div className='col-xs-6'>
-              <Ui.Nav.Ingress>{t('ui:form-family-chosen')}&nbsp;({valgteFamilieRelasjoner.length})</Ui.Nav.Ingress>
+              <Ui.Nav.Ingress className='ml-2'>{t('ui:form-family-chosen')}&nbsp;({valgteFamilieRelasjoner.length})</Ui.Nav.Ingress>
               {valgteFamilieRelasjoner && valgteFamilieRelasjoner.map((relasjon: any, indeks: number) => (
                 <PersonCard
-                  className='slideAnimate personSelected mt-3 mb-3'
+                  className='slideAnimate personSelected m-2'
                   key={indeks}
                   familierelasjonKodeverk={familierelasjonKodeverk!}
                   landKodeverk={landkoder!}
@@ -152,45 +157,50 @@ const Family: React.FC = (): JSX.Element => {
             </div>
           </Ui.Nav.Row>
           <Ui.Nav.Row>
-            <Ui.Nav.Column xs='3'>
-              <p><strong>Person uten fødsels- eller d-nummer&nbsp;</strong></p>
-            </Ui.Nav.Column>
-            <Ui.Nav.Column xs='2'>
-              <Ui.Nav.Knapp onClick={toggleFormRelatedUtland}>{viewFormRelatedUtland ? 'Skjul Skjema' : 'Vis skjema'}</Ui.Nav.Knapp>
-            </Ui.Nav.Column>
+            <div className='col-xs-12 mt-4'>
+              <div>
+                <Ui.Nav.Ingress className='ml-2'>{t('ui:form-family-utland-title')}</Ui.Nav.Ingress>
+                {viewFormRelatedUtland ? (
+                  <FamilieRelasjonUtland
+                    className='m-2'
+                    spesialRelasjon={specialRelation}
+                    oppdaterState={oppdaterState}
+                    kjoennKodeverk={kjoenn}
+                    landKodeverk={landkoder}
+                    filtrerteFamilieRelasjoner={filtrerRoller}
+                    leggTilSpesialRelasjon={leggTilSpesialRelasjon}
+                    vaskInputDatoOgOppdater={vaskInputDatoOgOppdater}
+                    kanSpesialRelasjonLeggesTil={kanSpesialRelasjonLeggesTil}
+                  />
+                ) : null}
+                <Ui.Nav.Knapp className='m-2' onClick={toggleFormRelatedUtland}>
+                  {viewFormRelatedUtland ? t('ui:label-hide-form') : t('ui:label-show-form')}
+                </Ui.Nav.Knapp>
+              </div>
+
+            </div>
           </Ui.Nav.Row>
-          {viewFormRelatedUtland ? (
-            <FamilieRelasjonUtland
-              spesialRelasjon={specialRelation}
-              oppdaterState={oppdaterState}
-              kjoennKodeverk={kjoenn}
-              landKodeverk={landkoder}
-              filtrerteFamilieRelasjoner={filtrerRoller}
-              leggTilSpesialRelasjon={leggTilSpesialRelasjon}
-              vaskInputDatoOgOppdater={vaskInputDatoOgOppdater}
-              kanSpesialRelasjonLeggesTil={kanSpesialRelasjonLeggesTil}
-            />
-          ) : null}
           <Ui.Nav.Row>
-            <br />
+            <div className='col-xs-12 mt-4'>
+              <div>
+                <Ui.Nav.Ingress className='ml-2'>{t('ui:form-family-tps-title')}</Ui.Nav.Ingress>
+                {viewFormRelatedTPS ? (
+                  <AnnenRelatertTPSPerson
+                    className='m-2'
+                    valgteRelasjoner={valgteFamilieRelasjoner}
+                    tpsrelasjoner={tpsrelasjoner}
+                    leggTilTPSrelasjon={leggTilTPSrelasjon}
+                    filtrerteFamilieRelasjoner={filtrerRoller}
+                    valgtBrukerFnr={personer!.fnr}
+                  />
+                ) : null}
+                <Ui.Nav.Knapp className='m-2' onClick={toggleFormRelatedTPS}>
+                  {viewFormRelatedTPS ? t('ui:label-hide-form') : t('ui:label-show-form')}
+                </Ui.Nav.Knapp>
+              </div>
+
+            </div>
           </Ui.Nav.Row>
-          <Ui.Nav.Row>
-            <Ui.Nav.Column xs='3'>
-              <p><strong>Person uten registrert relasjon i TPS&nbsp;</strong></p>
-            </Ui.Nav.Column>
-            <Ui.Nav.Column xs='2'>
-              <Ui.Nav.Knapp onClick={toggleFormRelatedTPS}>{viewFormRelatedTPS ? 'Skjul Skjema' : 'Vis skjema'}</Ui.Nav.Knapp>
-            </Ui.Nav.Column>
-          </Ui.Nav.Row>
-          {viewFormRelatedTPS ? (
-            <AnnenRelatertTPSPerson
-              valgteRelasjoner={valgteFamilieRelasjoner}
-              tpsrelasjoner={tpsrelasjoner}
-              leggTilTPSrelasjon={leggTilTPSrelasjon}
-              filtrerteFamilieRelasjoner={filtrerRoller}
-              valgtBrukerFnr={personer!.fnr}
-            />
-          ) : null}
         </div>
       </Ui.Nav.Panel>
     </>
