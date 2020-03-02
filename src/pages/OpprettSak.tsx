@@ -10,6 +10,7 @@ import { Person, Validation } from 'declarations/types'
 import * as EKV from 'eessi-kodeverk'
 import Ui from 'eessi-pensjon-ui'
 import _ from 'lodash'
+import PT from 'prop-types'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -104,9 +105,9 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
     return acc
   }, [])
 
-  const isSomething = (value: any) => (!_.isNil(value) && !_.isEmpty(value))
-  const visFagsakerListe = isSomething(valgtSektor) && isSomething(tema) && isSomething(fagsaker)
-  const visArbeidsforhold = EKV.Koder.sektor.FB === valgtSektor && EKV.Koder.buctyper.family.FB_BUC_01 === valgtBucType && isSomething(valgtSedType)
+  const isSomething = (value: any): boolean => (!_.isNil(value) && !_.isEmpty(value))
+  const visFagsakerListe: boolean = isSomething(valgtSektor) && isSomething(tema) && isSomething(fagsaker)
+  const visArbeidsforhold: boolean = EKV.Koder.sektor.FB === valgtSektor && EKV.Koder.buctyper.family.FB_BUC_01 === valgtBucType && isSomething(valgtSedType)
 
   const validate = (): Validation => {
     const validation: Validation = {
@@ -123,7 +124,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
     return validation
   }
 
-  const resetValidation = (key: string) => {
+  const resetValidation = (key: string): void => {
     setValidation({
       ...validation,
       [key]: null
@@ -134,7 +135,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
     return _.find(_.values(_validation), e => e !== null) === undefined
   }
 
-  const skjemaSubmit = () => {
+  const skjemaSubmit = (): void => {
     if (isValid(validate())) {
       dispatch(sakActions.createSak({
         fnr: valgtFnr,
@@ -151,25 +152,25 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
     }
   }
 
-  const openModal = () => {
+  const openModal = (): void => {
     setVisModal(true)
   }
 
-  const closeModal = () => {
+  const closeModal = (): void => {
     setVisModal(false)
   }
 
-  const onAbort = () => {
+  const onAbort = (): void => {
     dispatch(appActions.cleanData())
     history.push('/')
   }
 
-  const onSektorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const onSektorChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     resetValidation('sektor')
     dispatch(formActions.set('sektor', e.target.value))
   }
 
-  const onBuctypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const onBuctypeChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     resetValidation('buctype')
     resetValidation('landkode')
     const buctype = event.target.value
@@ -178,44 +179,44 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
     dispatch(sakActions.getLandkoder(buctype))
   }
 
-  const onSedtypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const onSedtypeChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     resetValidation('sedtype')
     dispatch(formActions.set('sedtype', e.target.value))
   }
 
-  const onLandkodeChange = (country: any) => {
+  const onLandkodeChange = (country: any): void => {
     resetValidation('landkode')
     const landKode = country.value
     dispatch(formActions.set('landkode', landKode))
     dispatch(sakActions.getInstitusjoner(valgtBucType, landKode))
   }
 
-  const onInstitusjonChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const onInstitusjonChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     resetValidation('institusjon')
     dispatch(formActions.set('institusjon', event.target.value))
   }
 
-  const onTemaChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const onTemaChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     resetValidation('tema')
     resetValidation('fagsaker')
     dispatch(formActions.set('tema', event.target.value))
     dispatch(formActions.set('fagsaker', undefined))
   }
 
-  const onViewFagsakerClick = () => {
+  const onViewFagsakerClick = (): void => {
     dispatch(sakActions.getFagsaker(person?.fnr, valgtSektor, valgtTema))
   }
 
-  const onSakIDChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const onSakIDChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     resetValidation('saksId')
     dispatch(formActions.set('saksId', event.target.value))
   }
 
-  const getArbeidsforhold = () => {
+  const getArbeidsforhold = (): void => {
     dispatch(sakActions.getArbeidsforhold(person?.fnr))
   }
 
-  const onArbeidsforholdClick = (item: any, checked: boolean) => {
+  const onArbeidsforholdClick = (item: any, checked: boolean): void => {
     if (checked) {
       dispatch(formActions.addArbeidsforhold(item))
     } else {
@@ -475,6 +476,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
 }
 
 OpprettSak.propTypes = {
+  history: PT.any.isRequired
 }
 
 export default OpprettSak

@@ -10,7 +10,7 @@ const Forside: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
-  const toggleHighContrast = () => {
+  const toggleHighContrast = (): void => {
     dispatch(uiActions.toggleHighContrast())
   }
 

@@ -76,7 +76,7 @@
     "redux-thunk": "^2.3.0",
     "standardx": "^5.0.0",
     "ts-jest": "^25.2.1",
-    "typescript": "^3.8.2"
+    "typescript": "^3.8.3"
   },
   "eslintConfig": {
     "rules": {

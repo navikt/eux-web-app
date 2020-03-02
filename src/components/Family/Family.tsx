@@ -12,14 +12,12 @@ import { useDispatch, useSelector } from 'react-redux'
 
 export interface FamilySelector {
   familierelasjonKodeverk: Array<Kodeverk> | undefined;
-  landkoder: Array<Kodeverk> | undefined;
   person: Person | undefined;
   valgteFamilieRelasjoner: Array<FamilieRelasjon> | undefined;
 }
 
 const mapState = (state: State): FamilySelector => ({
   familierelasjonKodeverk: state.sak.familierelasjoner,
-  landkoder: state.sak.landkoder,
   person: state.sak.person,
   valgteFamilieRelasjoner: state.form.familierelasjoner
 })
@@ -27,21 +25,21 @@ const mapState = (state: State): FamilySelector => ({
 const Family: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const { familierelasjonKodeverk, landkoder, person, valgteFamilieRelasjoner }: FamilySelector = useSelector<State, FamilySelector>(mapState)
+  const { familierelasjonKodeverk, person, valgteFamilieRelasjoner }: FamilySelector = useSelector<State, FamilySelector>(mapState)
   const [viewFormRelatedUtland, setViewFormRelatedUtland] = useState<boolean>(false)
   const [viewFormRelatedTPS, setViewFormRelatedTPS] = useState<boolean>(false)
 
-  const remainingRelationsFromTPS = _.filter(person!.relasjoner, (relation: FamilieRelasjon) => (
+  const remainingRelationsFromTPS: Array<FamilieRelasjon> = _.filter(person!.relasjoner, (relation: FamilieRelasjon) => (
     _.find(valgteFamilieRelasjoner, (valgteRelasjon: FamilieRelasjon) => (
       valgteRelasjon.fnr === relation.fnr
     )) === undefined
   ))
 
-  const deleteRelation = (relation: FamilieRelasjon) => {
+  const deleteRelation = (relation: FamilieRelasjon): void => {
     dispatch(formActions.removeFamilierelasjoner(relation))
   }
 
-  const addTpsRelation = (relation: FamilieRelasjon) => {
+  const addTpsRelation = (relation: FamilieRelasjon): void => {
     /* Person fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
     dispatch(formActions.addFamilierelasjoner({
       ...relation,
@@ -49,11 +47,11 @@ const Family: React.FC = (): JSX.Element => {
     }))
   }
 
-  const toggleFormRelatedUtland = () => {
+  const toggleFormRelatedUtland = (): void => {
     setViewFormRelatedUtland(!viewFormRelatedUtland)
   }
 
-  const toggleFormRelatedTPS = () => {
+  const toggleFormRelatedTPS = (): void => {
     setViewFormRelatedTPS(!viewFormRelatedTPS)
   }
 
@@ -106,7 +104,6 @@ const Family: React.FC = (): JSX.Element => {
               <PersonCard
                 className='slideAnimate personSelected m-2'
                 key={relation.fnr}
-                landKodeverk={landkoder!}
                 familierelasjonKodeverk={familierelasjonKodeverk}
                 person={relation}
                 onRemoveClick={deleteRelation}

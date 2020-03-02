@@ -23,8 +23,8 @@ export interface DocumentSearchProps {
   className ?: string;
   onDocumentFound? : (dokument: Array<Dokument>) => void;
   onRinasaksnummerChanged?: () => void;
-  validation: Validation;
   resetValidation: (k: string) => void;
+  validation: Validation;
 }
 
 const mapState = (state: State): DocumentSearchSelector => ({
@@ -42,7 +42,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
   const { t } = useTranslation()
   const [_dokument, setDokument] = useState<Array<Dokument> | null | undefined>(undefined)
 
-  const sokEtterDokument = () => {
+  const sokEtterDokument = (): void => {
     if (rinasaksnummer) {
       dispatch(vedleggActions.getDokument(rinasaksnummer))
     }
@@ -57,7 +57,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
     }
   }, [dokument, _dokument, onDocumentFound])
 
-  const onRinaSaksnummerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onRinaSaksnummerChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setDokument(undefined)
     dispatch(vedleggActions.set('dokument', undefined))
     if (_.isFunction(onRinasaksnummerChanged)) {
@@ -67,14 +67,13 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
     dispatch(vedleggActions.set('rinasaksnummer', e.target.value))
   }
 
-  const onRinadokumentIDChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onRinadokumentIDChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     resetValidation('rinadokumentID')
     dispatch(vedleggActions.set('rinadokumentID', e.target.value))
   }
 
-  const yyyMMdd = (dato: any) => moment(dato).format('YYYY-MM-DD')
+  const yyyMMdd = (dato: string): string => moment(dato).format('YYYY-MM-DD')
 
-  console.log(dokument, _dokument)
   return (
     <div className={classNames(className, 'dokumentsok')}>
       <div className='dokumentsok__skjema'>
@@ -119,8 +118,8 @@ DocumentSearch.propTypes = {
   className: PT.string,
   onDocumentFound: PT.func,
   onRinasaksnummerChanged: PT.func,
-  validation: ValidationPropType.isRequired,
-  resetValidation: PT.func.isRequired
+  resetValidation: PT.func.isRequired,
+  validation: ValidationPropType.isRequired
 }
 
 export default DocumentSearch

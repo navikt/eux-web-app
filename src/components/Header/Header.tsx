@@ -35,7 +35,11 @@ const Header: React.FC<HeaderProps> = ({ className }: HeaderProps): JSX.Element 
         <div className='c-header__tittel'><span>{t('ui:app-name')}</span></div>
       </div>
       <div className='c-header__saksbehandler'>
-        {saksbehandler && saksbehandler.navn ? <div className='saksbehandler__navn'>{saksbehandler.navn}</div> : null}
+        {saksbehandler && saksbehandler.navn ? (
+          <div className='saksbehandler__navn'>
+            {saksbehandler.navn}
+          </div>
+        ): null}
       </div>
     </header>
   )
