@@ -34,32 +34,32 @@ const TPSPersonForm: React.FC<AnnenRelatertTPSPersonProps> = ({
   const [sok, setSok] = useState('')
   const [_personRelatert, setPersonRelatert] = useState<FamilieRelasjon | undefined>(undefined)
   const [tpsperson, setTpsPerson] = useState<FamilieRelasjon | undefined>(undefined)
-  const [knappDisabled, setKnappDisabled] = useState(false)
 
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const { personRelatert, person }: AnnenRelatertTPSPersonSelector = useSelector<State, AnnenRelatertTPSPersonSelector>(mapState)
 
   const sokEtterFnr = () => {
+    dispatch(sakActions.resetPersonRelatert())
+    setPersonRelatert(undefined)
+    setTpsPerson(undefined)
     dispatch(sakActions.getPersonRelated(sok))
   }
 
   useEffect(() => {
-    if (personRelatert && _personRelatert) {
+    if (personRelatert && !_personRelatert) {
       // Fjern relasjoner array, NOTE! det er kun relasjoner som har rolle.
       const person = (_.omit(personRelatert, 'relasjoner'))
-      const tpsperson = personRelatert && personRelatert.relasjoner ? personRelatert.relasjoner.find((elem: any) => elem.fnr === person.fnr) : undefined
+      const tpsperson = personRelatert && personRelatert.relasjoner ? personRelatert.relasjoner.find((elem: FamilieRelasjon) => elem.fnr === person.fnr) : undefined
+      setTpsPerson(tpsperson)
       if (!tpsperson) {
         setPersonRelatert(person)
-        setTpsPerson(undefined)
       } else {
-        setTpsPerson(tpsperson)
-        setSok('')
+        dispatch(sakActions.resetPersonRelatert())
         setPersonRelatert(undefined)
-        setKnappDisabled(true)
       }
     }
-  }, [personRelatert, _personRelatert])
+  }, [personRelatert, _personRelatert, dispatch])
 
   const updateSok = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSok(e.target.value)
@@ -69,14 +69,14 @@ const TPSPersonForm: React.FC<AnnenRelatertTPSPersonProps> = ({
     setSok('')
     setPersonRelatert(undefined)
     setTpsPerson(undefined)
-    setKnappDisabled(true)
 
+    dispatch(sakActions.resetPersonRelatert())
     /* Person fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
-    const vasketPerson = {
+
+    dispatch(formActions.addFamilierelasjoner({
       ...person,
       nasjonalitet: 'NO'
-    }
-    dispatch(formActions.addFamilierelasjoner(vasketPerson))
+    }))
   }
 
   return (
@@ -113,11 +113,11 @@ const TPSPersonForm: React.FC<AnnenRelatertTPSPersonProps> = ({
             </Ui.Nav.AlertStripe>
           </div>
         ) : null}
-        {personRelatert ? (
+        {_personRelatert ? (
           <div className='col-xs-12'>
             <PersonCard
-              person={personRelatert}
-              onAddClick={!knappDisabled ? leggTilPersonOgRolle : undefined}
+              person={_personRelatert}
+              onAddClick={leggTilPersonOgRolle}
               rolleList={rolleList}
             />
           </div>

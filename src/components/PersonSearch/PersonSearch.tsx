@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import 'components/PersonSearch/PersonSearch.css'
 import { State } from 'declarations/reducers'
 import { Person } from 'declarations/types'
+import { ValidationPropType } from 'declarations/types.pt'
 import Ui from 'eessi-pensjon-ui'
 import _ from 'lodash'
 import PT from 'prop-types'
@@ -16,20 +17,20 @@ export interface PersonSearchProps {
   className?: string;
   onFnrChange?: () => void;
   onPersonFound? : (person: Person) => void;
-  validation: any;
   resetValidation: (key: string) => void;
+  validation: any;
 }
 
 export interface PersonSearchSelector {
-  person: Person;
-  gettingPerson: boolean;
   fnr: any;
+  gettingPerson: boolean;
+  person: Person;
 }
 
 const mapState = (state: State): PersonSearchSelector => ({
-  person: state.sak.person,
   fnr: state.form.fnr,
-  gettingPerson: state.loading.gettingPerson
+  gettingPerson: state.loading.gettingPerson,
+  person: state.sak.person
 })
 
 const PersonSearch: React.FC<PersonSearchProps> = ({
@@ -55,7 +56,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
     }
   }, [person, _person, isPersonValid, onPersonFound])
 
-  const sokEtterPerson = () => {
+  const sokEtterPerson = (): void => {
     const fnrPattern = /^[0-9]{11}$/
     if (!fnrPattern.test(fnr)) {
       setLocalValidation(t('ui:validation-invalidFnr'))
@@ -66,7 +67,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
     dispatch(sakActions.getPerson(fnr))
   }
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setLocalValidation(undefined)
     resetValidation('fnr')
     if (_.isFunction(onFnrChange)) {
@@ -75,7 +76,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
     dispatch(formActions.set('fnr', e.target.value.trim()))
   }
 
-  const onRemovePerson = () => {
+  const onRemovePerson = (): void => {
     setLocalValidation(undefined)
     resetValidation('fnr')
     setPerson(undefined)
@@ -103,7 +104,10 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
 
 PersonSearch.propTypes = {
   className: PT.string,
-  onPersonFound: PT.func
+  onFnrChange: PT.func,
+  onPersonFound: PT.func,
+  resetValidation: PT.func.isRequired,
+  validation: ValidationPropType.isRequired
 }
 
 export default PersonSearch
