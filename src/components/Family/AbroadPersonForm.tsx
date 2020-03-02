@@ -9,6 +9,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { vaskInputDato } from 'utils/dato'
+import _ from 'lodash'
 import './AbroadPersonForm.css'
 
 const mapState = (state: State): AbroadPersonFormSelector => ({
@@ -36,14 +37,14 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
   const { kjoenn, landkoder }: AbroadPersonFormSelector = useSelector<State, AbroadPersonFormSelector>(mapState)
   const [relation, setRelation] = useState<FamilieRelasjon>(emptyRelation)
 
-  const updateCountry = (felt: string, value: string) => {
+  const updateCountry = (felt: string, value: string): void => {
     setRelation({
       ...relation,
       [felt]: value
     })
   }
 
-  const updateRelation = (felt: string, event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const updateRelation = (felt: string, event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>): void => {
     const value = event.currentTarget.value
     setRelation({
       ...relation,
@@ -51,7 +52,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
     })
   }
 
-  const updateDate = (felt: string, event: React.ChangeEvent<HTMLInputElement>) => {
+  const updateDate = (felt: string, event: React.ChangeEvent<HTMLInputElement>): void => {
     const nyDato = vaskInputDato(event.currentTarget.value) || ''
     setRelation({
       ...relation,
@@ -59,12 +60,12 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
     })
   }
 
-  const canAddRelation = () => {
+  const canAddRelation = (): boolean => {
     const { fnr, rolle, nasjonalitet, kjoenn, fornavn, etternavn } = relation
-    return (fnr && rolle && nasjonalitet && kjoenn && fornavn && etternavn)
+    return !_.isEmpty(fnr) && !_.isEmpty(rolle) && !_.isEmpty(nasjonalitet) && !_.isEmpty(kjoenn) && !_.isEmpty(fornavn) && !_.isEmpty(etternavn)
   }
 
-  const addRelation = () => {
+  const addRelation = (): void => {
     if (canAddRelation()) {
       setRelation(emptyRelation)
       dispatch(formActions.addFamilierelasjoner({

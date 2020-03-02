@@ -16,7 +16,9 @@ const UkjentSide: React.FC<UkjentSideProps> = ({ location }: UkjentSideProps): J
         <div className='col-sm-1' />
         <div className='col-sm-10 m-4'>
           <Ui.Nav.AlertStripe type='advarsel'>
-            <Ui.Nav.Systemtittel>{t('ui:error-unknownPage-cantFindRoute', { pathname: location.pathname })}</Ui.Nav.Systemtittel>
+            <Ui.Nav.Systemtittel>
+              {t('ui:error-unknownPage-cantFindRoute', { pathname: location.pathname })}
+            </Ui.Nav.Systemtittel>
           </Ui.Nav.AlertStripe>
           <p>{t('ui:error-unknownPage-description')}</p>
           <Ui.Nav.Lenke href='/' ariaLabel={t('ui:error-unknownPage-linkToRoot-ariaLabel')}>

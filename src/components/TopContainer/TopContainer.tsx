@@ -39,7 +39,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
 }: TopContainerProps): JSX.Element => {
   const {
     clientErrorMessage, clientErrorStatus, serverErrorMessage, error, highContrast
-  } = useSelector(mapState)
+  }: TopContainerSelector = useSelector<State, TopContainerSelector>(mapState)
   const dispatch = useDispatch()
   const { t } = useTranslation()
 
@@ -51,9 +51,9 @@ export const TopContainer: React.FC<TopContainerProps> = ({
     dispatch(toggleHighContrast())
   }
 
-  const getClientErrorMessage = (): string | null => {
+  const getClientErrorMessage = (): string | undefined => {
     if (!clientErrorMessage) {
-      return null
+      return undefined
     }
     const separatorIndex: number = clientErrorMessage.lastIndexOf('|')
     let message: string
@@ -84,7 +84,6 @@ export const TopContainer: React.FC<TopContainerProps> = ({
             onHighContrastClicked={handleHighContrastToggle}
             labelHighContrast={t('ui:highContrast')}
           />) : null}
-
       </Header>
       <Ui.Alert
         type='server'
@@ -100,7 +99,6 @@ export const TopContainer: React.FC<TopContainerProps> = ({
         onClose={onClear}
       />
       <main id='main' role='main' className={classNames(className, '_container', 'p-0', { 'container-fluid': fluid, highContrast: highContrast })}>
-
         {children}
       </main>
     </>

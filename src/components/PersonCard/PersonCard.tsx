@@ -1,31 +1,41 @@
+import { State } from 'declarations/reducers'
 import { FamilieRelasjon, Kodeverk, Person } from 'declarations/types'
-import { PersonPropType } from 'declarations/types.pt'
+import { KodeverkPropType, PersonPropType } from 'declarations/types.pt'
 import Ui from 'eessi-pensjon-ui'
 import _ from 'lodash'
 import PT from 'prop-types'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 import { formatterDatoTilNorsk } from 'utils/dato'
 
 import './PersonCard.css'
 
+export interface PersonCardSelector {
+  landKodeverk: Array<Kodeverk> | undefined
+}
+
+const mapState = (state: State): PersonCardSelector => ({
+  landKodeverk: state.sak.landkoder
+})
+
 export interface PersonCardProps {
   className?: string,
-  person: Person | FamilieRelasjon,
+  familierelasjonKodeverk?: Array<Kodeverk>;
   onAddClick?: (p: Person) => void;
   onRemoveClick?: (p: Person) => void;
-  familierelasjonKodeverk?: Array<Kodeverk>;
+  person: Person | FamilieRelasjon,
   rolleList?: Array<Kodeverk>;
-  landKodeverk?: any;
 }
 
 const PersonCard: React.FC<PersonCardProps> = ({
-  className, rolleList, familierelasjonKodeverk, landKodeverk, onAddClick, onRemoveClick, person
+  className, familierelasjonKodeverk, onAddClick, onRemoveClick, person, rolleList
 }: PersonCardProps): JSX.Element => {
   const [_person, setPerson] = useState<Person | FamilieRelasjon>(person)
   const { fnr, fdato, fornavn, etternavn, kjoenn } = _person
   const { nasjonalitet } = _person as FamilieRelasjon
   const { t } = useTranslation()
+  const { landKodeverk }: PersonCardSelector = useSelector<State, PersonCardSelector>(mapState)
 
   let kind: string = 'nav-unknown-icon'
   if (kjoenn === 'K') {
@@ -48,11 +58,17 @@ const PersonCard: React.FC<PersonCardProps> = ({
 
     const kodeverkObjektTilTerm = (kodeverkObjekt: any) => {
       if (!kodeverkObjekt || !kodeverkObjekt.term) return undefined
-      return Object.keys(kodeverkObjekt).includes('term') ? kodeverkObjekt.term : null
+      return Object.keys(kodeverkObjekt).includes('term') ? kodeverkObjekt.term : undefined
     }
 
-    rolleTerm = kodeverkObjektTilTerm(rolleObjekt) || t('ui:form-unknownRolle')
-    nasjonalitetTerm = kodeverkObjektTilTerm(nasjonalitetObjekt) || t('ui:form-unknownNationality')
+    rolleTerm = kodeverkObjektTilTerm(rolleObjekt)
+    if (!rolleTerm) {
+      rolleTerm = t('ui:form-unknownRolle')
+    }
+    nasjonalitetTerm = kodeverkObjektTilTerm(nasjonalitetObjekt)
+    if (!nasjonalitetTerm) {
+      nasjonalitetTerm = t('ui:form-unknownNationality')
+    }
   }
 
   const updateFamilyRelation = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -62,6 +78,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
     })
   }
 
+  console.log(_person, nasjonalitet, nasjonalitetTerm, familierelasjonKodeverk, rolleList)
   return (
     <div className={className}>
       <Ui.Nav.Panel border style={{ background: 'transparent' }} className='mt-4'>
@@ -95,7 +112,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
               value={(_person as FamilieRelasjon).rolle}
               onChange={updateFamilyRelation}
             >
-              <option value='' disabled>{t('ui:form-choose')}</option>
+              <option value=''>{t('ui:form-choose')}</option>
               {rolleList ? rolleList.map((element: Kodeverk) => (
                 <option value={element.kode} key={element.kode}>{element.term}</option>)
               ) : null}
@@ -113,6 +130,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
           {_.isFunction(onAddClick) ? (
             <Ui.Nav.Knapp
               className='familierelasjoner__knapp familierelasjoner__knapp--legg-til'
+              disabled={rolleList !== undefined && !(_person as FamilieRelasjon).rolle}
               onClick={() => onAddClick(_person)}
             >
               <Ui.Icons kind='tilsette' size='20' className='familierelasjoner__knapp__ikon mr-3' />
@@ -127,9 +145,11 @@ const PersonCard: React.FC<PersonCardProps> = ({
 
 PersonCard.propTypes = {
   className: PT.string,
+  familierelasjonKodeverk: PT.arrayOf(KodeverkPropType.isRequired),
   onAddClick: PT.func,
   onRemoveClick: PT.func,
-  person: PersonPropType.isRequired
+  person: PersonPropType.isRequired,
+  rolleList: PT.arrayOf(KodeverkPropType.isRequired)
 }
 
 export default PersonCard

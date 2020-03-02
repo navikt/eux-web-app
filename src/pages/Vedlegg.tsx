@@ -68,14 +68,14 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
     return validation
   }
 
-  const resetValidation = (key: string) => {
+  const resetValidation = (key: string): void => {
     setValidation({
       ...validation,
       [key]: null
     })
   }
 
-  const sendSkjema = () => {
+  const sendSkjema = (): void => {
     if (isValid(validate()) && isRinaNumberValid) {
       dispatch(vedleggActions.sendVedlegg({
         journalpostID: journalpostID,
@@ -88,12 +88,12 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
     }
   }
 
-  const onjournalpostIDChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onjournalpostIDChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     resetValidation('journalpostID')
     dispatch(vedleggActions.set('journalpostID', e.target.value))
   }
 
-  const onDokumentIDChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onDokumentIDChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     resetValidation('dokumentID')
     dispatch(vedleggActions.set('dokumentID', e.target.value))
   }
