@@ -1,10 +1,10 @@
 import * as types from 'constants/actionTypes'
-import { Arbeidsforhold, BucTyper, Kodemaps, Kodeverk, OpprettetSak, Tema } from 'declarations/types'
+import { Arbeidsforhold, BucTyper, FagSaker, Kodemaps, Kodeverk, OpprettetSak, Tema } from 'declarations/types'
 import { ActionWithPayload } from 'eessi-pensjon-ui/dist/declarations/types'
 
 export interface SakState {
   arbeidsforhold: Arbeidsforhold | undefined;
-  fagsaker: any;
+  fagsaker: FagSaker | undefined | null;
   institusjoner: any;
   person: any;
   opprettetSak: OpprettetSak | undefined;
@@ -47,10 +47,22 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
         arbeidsforhold: action.payload
       }
 
+    case types.SAK_FAGSAKER_GET_REQUEST:
+      return {
+        ...state,
+        fagsaker: undefined
+      }
+
     case types.SAK_FAGSAKER_GET_SUCCESS:
       return {
         ...state,
         fagsaker: action.payload
+      }
+
+    case types.SAK_FAGSAKER_GET_FAILURE:
+      return {
+        ...state,
+        fagsaker: null
       }
 
     case types.SAK_INSTITUSJONER_GET_SUCCESS:

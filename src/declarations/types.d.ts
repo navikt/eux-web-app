@@ -103,4 +103,16 @@ export interface Kodemaps {
   SEKTOR2FAGSAK: {[k: string]: string}
 }
 
+export interface FagSak {
+  saksID: string;
+  sakstype: string;
+  temakode: string;
+  fagsystem: string;
+  opprettet: string;
+  status: string;
+  fagsakNr?: string;
+}
+
+export type FagSaker = Array<FagSak>
+
 export type Validation = {[k: string]: string | null}
