@@ -39,7 +39,7 @@ const Header: React.FC<HeaderProps> = ({ className }: HeaderProps): JSX.Element 
           <div className='saksbehandler__navn'>
             {saksbehandler.navn}
           </div>
-        ): null}
+        ) : null}
       </div>
     </header>
   )
