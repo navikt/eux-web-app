@@ -78,7 +78,6 @@ const PersonCard: React.FC<PersonCardProps> = ({
     })
   }
 
-  console.log(_person, nasjonalitet, nasjonalitetTerm, familierelasjonKodeverk, rolleList)
   return (
     <div className={className}>
       <Ui.Nav.Panel border style={{ background: 'transparent' }} className='mt-4'>

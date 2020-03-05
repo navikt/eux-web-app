@@ -6,7 +6,7 @@ import Family from 'components/Family/Family'
 import PersonSearch from 'components/PersonSearch/PersonSearch'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { State } from 'declarations/reducers'
-import { Person, Validation } from 'declarations/types'
+import { FagSaker, Person, Validation } from 'declarations/types'
 import * as EKV from 'eessi-kodeverk'
 import Ui from 'eessi-pensjon-ui'
 import _ from 'lodash'
@@ -26,7 +26,7 @@ export interface OpprettSakProps {
 export interface OpprettSakSelector {
   arbeidsforhold: any;
   buctyper: any;
-  fagsaker: any;
+  fagsaker: FagSaker | undefined | null;
   institusjoner: any;
   kodemaps: any;
   landkoder: any;
@@ -175,13 +175,20 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
     resetValidation('landkode')
     const buctype = event.target.value
     dispatch(formActions.set('buctype', buctype))
-    dispatch(formActions.set('landkode', ''))
+    dispatch(formActions.set('landkode', undefined))
+    dispatch(formActions.set('sedtype', undefined))
+    dispatch(formActions.set('institution', undefined))
     dispatch(sakActions.getLandkoder(buctype))
   }
 
   const onSedtypeChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     resetValidation('sedtype')
     dispatch(formActions.set('sedtype', e.target.value))
+  }
+
+  const onSedtypeSet = (e: string): void => {
+    resetValidation('sedtype')
+    dispatch(formActions.set('sedtype', e))
   }
 
   const onLandkodeChange = (country: any): void => {
@@ -283,9 +290,13 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                   feil={validation.sedtype}
                 >
                   <option value=''>{t('ui:form-choose')}</option>)
-                  {_sedtyper ? _sedtyper.map((element: any) => (
-                    <option value={element.kode} key={element.kode}>{element.kode} - {element.term}</option>)
-                  ) : null}
+                  {_sedtyper ? _sedtyper.map((element: any) => {
+                    // if only one element, select it
+                    if (_sedtyper.length === 1 && valgtSedType !== element.kode) {
+                      onSedtypeSet(element.kode)
+                    }
+                    return <option value={element.kode} key={element.kode}>{element.kode} - {element.term}</option>
+                  }) : null}
                 </Ui.Nav.Select>
               </div>
               <div className='col-xs-6 slideAnimate' style={{ animationDelay: '0.45s' }}>
@@ -323,47 +334,54 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                 </div>
               ) : null}
               {valgtSektor ? (
-                <div className='col-xs-12'>
-                  <div className='d-flex slideAnimate' style={{ alignItems: 'flex-end' }}>
-                    <div className='w-50 mr-3'>
-                      <Ui.Nav.Select
-                        id='id-behandlings-tema'
-                        className='mb-4'
-                        label={t('ui:label-tema')}
-                        value={valgtTema}
-                        onChange={onTemaChange}
-                      >
-                        <option value=''>{t('ui:form-choose')}</option>)
-                        {temaer ? temaer.map((element: any) => (
-                          <option value={element.kode} key={element.kode}>{element.term}</option>)
-                        ) : null}
-                      </Ui.Nav.Select>
-                    </div>
-                    <div className='w-50'>
-                      <div className='d-flex' style={{ alignItems: 'center', justifyContent: 'space-between' }}>
-                        <div>
-                          <Ui.Nav.Knapp
-                            className='mb-4'
-                            onClick={onViewFagsakerClick}
-                            disabled={!isSomething(valgtTema)}
-                          >
-                            {t('ui:form-seeCases')}
-                          </Ui.Nav.Knapp>
-                        </div>
-                        <div>
-                          <Ui.Nav.Lenke
-                            className='mb-4'
-                            href={serverInfo.gosysURL}
-                            ariaLabel={t('ui:form-createNewCaseInGosys')}
-                            target='_blank'
-                          >
-                            {t('ui:form-createNewCaseInGosys')}
-                          </Ui.Nav.Lenke>
+                <>
+                  <div className='col-xs-12'>
+                    <div className='d-flex slideAnimate' style={{ alignItems: 'flex-end' }}>
+                      <div className='w-50 mr-3'>
+                        <Ui.Nav.Select
+                          id='id-behandlings-tema'
+                          className='mb-4'
+                          label={t('ui:label-tema')}
+                          value={valgtTema}
+                          onChange={onTemaChange}
+                        >
+                          <option value=''>{t('ui:form-choose')}</option>)
+                          {temaer ? temaer.map((element: any) => (
+                            <option value={element.kode} key={element.kode}>{element.term}</option>)
+                          ) : null}
+                        </Ui.Nav.Select>
+                      </div>
+                      <div className='w-50'>
+                        <div className='d-flex' style={{ alignItems: 'center', justifyContent: 'space-between' }}>
+                          <div>
+                            <Ui.Nav.Knapp
+                              className='mb-4'
+                              onClick={onViewFagsakerClick}
+                              disabled={!isSomething(valgtTema)}
+                            >
+                              {t('ui:form-seeCases')}
+                            </Ui.Nav.Knapp>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                  {fagsaker === null || (fagsaker !== undefined && _.isEmpty(fagsaker)) ? (
+                    <div className='col-xs-12 mb-4'>
+                      <Ui.Nav.AlertStripe type='advarsel'>
+                        {t('ui:error-fagsak-notFound')}
+                        <Ui.Nav.Lenke
+                          className='mb-4'
+                          href={serverInfo.gosysURL}
+                          ariaLabel={t('ui:form-createNewCaseInGosys')}
+                          target='_blank'
+                        >
+                          {t('ui:form-createNewCaseInGosys')}
+                        </Ui.Nav.Lenke>
+                      </Ui.Nav.AlertStripe>
+                    </div>
+                  ) : null}
+                </>
               ) : null}
               {visFagsakerListe ? (
                 <div className='col-xs-6'>
