@@ -44,6 +44,7 @@ node {
     echo('Step: npm install package depenencies')
     sh "${node} -v"
     sh "${npm} -v"
+    sh "${npm} whoami"
     sh "${npm} config ls"
     sh "${npm} install"
 
