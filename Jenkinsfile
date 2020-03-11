@@ -44,6 +44,8 @@ node {
     echo('Step: npm install package depenencies')
     sh "${node} -v"
     sh "${npm} -v"
+    npm config set proxy http://webproxy-utvikler.nav.no:8088
+    npm config set https-proxy https://webproxy-utvikler.nav.no:8088
     sh "${npm} config ls"
     sh "${npm} install"
 
