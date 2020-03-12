@@ -48,7 +48,7 @@ node {
     sh "${npm} config set https-proxy https://webproxy-utvikler.nav.no:8088"
     sh "${npm} config set registry http://registry.npmjs.org/"
     sh "${npm} config set strict-ssl false"
-    //sh "${npm} config set cafile = /etc/pki/ca-trust/source/anchors/webproxy.crt"
+    sh "${npm} config set cafile = /etc/pki/ca-trust/source/anchors/webproxy.crt"
     sh "${npm} config ls"
     sh "${npm} install"
 
