@@ -1,9 +1,9 @@
 #! groovy
 import jenkins.model.*
 
-properties([[$class: 'BuildDiscarderProperty', 
-			 strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '', artifactNumToKeepStr: '', 
-			            daysToKeepStr: '', numToKeepStr: '5']]])
+properties([[$class: 'BuildDiscarderProperty',
+             strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '', artifactNumToKeepStr: '',
+                        daysToKeepStr: '', numToKeepStr: '5']]])
 
 node {
   def project = "navikt"
@@ -44,6 +44,13 @@ node {
     echo('Step: npm install package depenencies')
     sh "${node} -v"
     sh "${npm} -v"
+    sh "${npm} config set proxy http://webproxy-utvikler.nav.no:8088"
+    sh "${npm} config set https_proxy http://webproxy-utvikler.nav.no:8088"
+    sh "${npm} config set metrics-registry https://repo.adeo.no/repository/npm-public/"
+    sh "${npm} config set cafile /etc/pki/ca-trust/source/anchors/webproxy.crt"
+    sh "${npm} config set registry https://repo.adeo.no/repository/npm-public/"
+    sh "${npm} config rm https-proxy"
+    sh "${npm} config rm proxy"
     sh "${npm} config ls"
     sh "${npm} install"
 
@@ -81,7 +88,7 @@ node {
      	      mvn --settings ${MAVEN_SETTINGS} deploy:deploy-file -Dfile=${zipFile} -DartifactId=${application} \
 	              -DgroupId=no.nav.eux -Dversion=${buildVersion} \
 	 	          -Ddescription='Eux-web-app JavaScript resources.' \
-		          -DrepositoryId=m2internal -Durl=http://maven.adeo.no/nexus/content/repositories/m2internal   
+		          -DrepositoryId=m2internal -Durl=http://maven.adeo.no/nexus/content/repositories/m2internal
           """
       }
     }
@@ -99,7 +106,7 @@ node {
      	      mvn --settings ${MAVEN_SETTINGS} deploy:deploy-file -Dfile=${snapshotVersionZipfile} -DartifactId=${application} \
 	              -DgroupId=no.nav.eux -Dversion=${snapshotVersion} \
 	 	          -Ddescription='Eux-web-app JavaScript resources.' \
-		          -DrepositoryId=m2snapshot -Durl=http://maven.adeo.no/nexus/content/repositories/m2snapshot   
+		          -DrepositoryId=m2snapshot -Durl=http://maven.adeo.no/nexus/content/repositories/m2snapshot
           """
       }
     }
