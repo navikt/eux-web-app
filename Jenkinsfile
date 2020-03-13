@@ -2,8 +2,8 @@
 import jenkins.model.*
 
 properties([[$class: 'BuildDiscarderProperty',
-			 strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '', artifactNumToKeepStr: '',
-			            daysToKeepStr: '', numToKeepStr: '5']]])
+             strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '', artifactNumToKeepStr: '',
+                        daysToKeepStr: '', numToKeepStr: '5']]])
 
 node {
   def project = "navikt"
@@ -45,12 +45,14 @@ node {
     sh "${node} -v"
     sh "${npm} -v"
     sh "${npm} config set proxy http://webproxy-utvikler.nav.no:8088"
-    sh "${npm} config set https-proxy http://webproxy-utvikler.nav.no:8088"
+    sh "${npm} config set https_proxy http://webproxy-utvikler.nav.no:8088"
+    sh "${npm} config set metrics-registry https://repo.adeo.no/repository/npm-public/"
+    sh "${npm} config set cafile /etc/pki/ca-trust/source/anchors/webproxy.crt"
+    sh "${npm} config set registry https://repo.adeo.no/repository/npm-public/"
+    sh "${npm} config rm https-proxy"
+    sh "${npm} config rm proxy"
     sh "${npm} config ls"
     sh "${npm} install"
-
-    semVer = sh(returnStdout: true, script: "node -pe \"require('./package.json').version\"").trim()
-    echo("semver=${semVer}")
   }
 
   stage('Test') {
