@@ -1,4 +1,3 @@
-import { State } from 'declarations/reducers'
 import { FamilieRelasjon, Kodeverk, Person } from 'declarations/types'
 import { KodeverkPropType, PersonPropType } from 'declarations/types.pt'
 import Ui from 'eessi-pensjon-ui'
@@ -6,18 +5,9 @@ import _ from 'lodash'
 import PT from 'prop-types'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 import { formatterDatoTilNorsk } from 'utils/dato'
 
 import './PersonCard.css'
-
-export interface PersonCardSelector {
-  landKodeverk: Array<Kodeverk> | undefined
-}
-
-const mapState = (state: State): PersonCardSelector => ({
-  landKodeverk: state.sak.landkoder
-})
 
 export interface PersonCardProps {
   className?: string,
@@ -33,9 +23,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
 }: PersonCardProps): JSX.Element => {
   const [_person, setPerson] = useState<Person | FamilieRelasjon>(person)
   const { fnr, fdato, fornavn, etternavn, kjoenn } = _person
-  const { nasjonalitet } = _person as FamilieRelasjon
   const { t } = useTranslation()
-  const { landKodeverk }: PersonCardSelector = useSelector<State, PersonCardSelector>(mapState)
 
   let kind: string = 'nav-unknown-icon'
   if (kjoenn === 'K') {
@@ -44,7 +32,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
     kind = 'nav-man-icon'
   }
 
-  let nasjonalitetTerm, rolleTerm
+  let rolleTerm
 
   if ((_person as FamilieRelasjon).rolle && (familierelasjonKodeverk || rolleList)) {
     let rolleObjekt
@@ -54,8 +42,6 @@ const PersonCard: React.FC<PersonCardProps> = ({
     if (rolleList) {
       rolleObjekt = rolleList.find((item: any) => item.kode === (_person as FamilieRelasjon).rolle)
     }
-    const nasjonalitetObjekt = landKodeverk?.find((item: any) => item.kode === nasjonalitet)
-
     const kodeverkObjektTilTerm = (kodeverkObjekt: any) => {
       if (!kodeverkObjekt || !kodeverkObjekt.term) return undefined
       return Object.keys(kodeverkObjekt).includes('term') ? kodeverkObjekt.term : undefined
@@ -64,10 +50,6 @@ const PersonCard: React.FC<PersonCardProps> = ({
     rolleTerm = kodeverkObjektTilTerm(rolleObjekt)
     if (!rolleTerm) {
       rolleTerm = t('ui:form-unknownRolle')
-    }
-    nasjonalitetTerm = kodeverkObjektTilTerm(nasjonalitetObjekt)
-    if (!nasjonalitetTerm) {
-      nasjonalitetTerm = t('ui:form-unknownNationality')
     }
   }
 
@@ -93,13 +75,6 @@ const PersonCard: React.FC<PersonCardProps> = ({
               <div className='panelheader__undertittel'>
                 <div>{t('ui:form-fnr') + ' : ' + fnr}</div>
                 <div>{t('ui:form-birthdate') + ': ' + formatterDatoTilNorsk(fdato)}</div>
-                {nasjonalitet ? (
-                  <div>
-                    <span>{t('ui:label-nationality')}: </span>
-                    <Ui.Flag className='ml-2 mr-2' country={nasjonalitet} size='S' label={nasjonalitetTerm} />
-                    <span>{nasjonalitetTerm}</span>
-                  </div>
-                ) : null}
               </div>
             </div>
           </div>
