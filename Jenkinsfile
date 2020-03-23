@@ -79,6 +79,8 @@ node {
     buildVersion ="${semVer}-${BUILD_NUMBER}"
     echo("buildVersion=${buildVersion}")
     zipFile = "${application}-${buildVersion}.zip"
+    echo("ls build/*")
+    sh "ls build/*"
     sh "zip -r ${zipFile} build/*"
 
     if (env.BRANCH_NAME == "master") {
