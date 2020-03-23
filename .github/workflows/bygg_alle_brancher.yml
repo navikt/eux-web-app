@@ -53,6 +53,8 @@ jobs:
           buildVersion="${SEMVER}-${GITHUB_RUN_ID}"
           echo "buildVersion=${buildVersion}"
           zipFile="${application}-${buildVersion}.zip"
+          echo "ls build/*"
+          ls build/*
           zip -r ${zipFile} build/*
 
           major=${SEMVER%%.*}
