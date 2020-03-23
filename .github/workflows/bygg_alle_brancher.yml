@@ -55,7 +55,10 @@ jobs:
           zipFile="${application}-${buildVersion}.zip"
           echo "ls build/*"
           ls build/*
-          zip -r ${zipFile} build/*
+          cd build
+          zip -r ${zipFile} *
+          cd ..
+          mv build/${zipFile} ./${zipFile}
 
           major=${SEMVER%%.*}
           minor=${SEMVER/major./}
