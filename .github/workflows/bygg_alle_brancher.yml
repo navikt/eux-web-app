@@ -1,0 +1,73 @@
+name: Build, push, and deploy
+
+on:
+  push:
+    branches:
+      - '*'
+      - '*/*'
+      - '!master'
+
+jobs:
+  tag_build_and_deploy:
+    name: 'Build'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+
+      # PULLER REPO
+      - name: 'Pull repo'
+        uses: actions/checkout@v1
+
+      # SETTER OPP NODE
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      # BYGGER APP
+      - name: 'Bygg'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          application="eux-web-app"
+          npm install
+          RAW_SEMVER=`node -pe "require('./package.json').version"`
+          SEMVER=`echo -e "${RAW_SEMVER}" | tr -d '[:space:]'`
+          echo "semver=${SEMVER}"
+
+          echo "CI=true && npm run-script test:ci"
+
+          echo "npm run build"
+          npm run build
+
+          echo "copying content"
+          frontendDir="${GITHUB_WORKSPACE}/eux-web-app"
+          echo $frontendDir
+          mkdir -p $frontendDir
+          rm -rf $frontendDir/*
+          cp -r build/* $frontendDir
+
+
+          buildVersion="${SEMVER}-${GITHUB_RUN_ID}"
+          echo "buildVersion=${buildVersion}"
+          zipFile="${application}-${buildVersion}.zip"
+          zip -r ${zipFile} build/*
+
+          major=${SEMVER%%.*}
+          minor=${SEMVER/major./}
+          minor=${minor%%.*}
+
+          echo "major=${major}"
+          echo "minor=${minor}"
+
+          qualifier="${GITHUB_RUN_ID}"
+          snapshotVersion="${major}.${minor}-${qualifier}"
+          snapshotVersionZipfile="${application}-${snapshotVersion}.jar"
+          echo "snapshotVersionZipfile=${snapshotVersionZipfile}"
+          mv ${zipFile} ${snapshotVersionZipfile}
+
+          cat settings.xml
+
+          mvn --settings settings.xml deploy:deploy-file -Dfile=${snapshotVersionZipfile} -DartifactId=${application} -DgroupId=no.nav.eux -Dversion=${snapshotVersion} -Ddescription='Eux-web-app JavaScript resources.' -Durl=https://maven.pkg.github.com/navikt/eux-web-app -DrepositoryId=github
