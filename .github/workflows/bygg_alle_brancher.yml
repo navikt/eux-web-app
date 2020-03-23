@@ -64,7 +64,7 @@ jobs:
 
           qualifier="${GITHUB_RUN_ID}"
           snapshotVersion="${major}.${minor}-${qualifier}"
-          snapshotVersionZipfile="${application}-${snapshotVersion}.jar"
+          snapshotVersionZipfile="${application}-${snapshotVersion}.zip"
           echo "snapshotVersionZipfile=${snapshotVersionZipfile}"
           mv ${zipFile} ${snapshotVersionZipfile}
 
