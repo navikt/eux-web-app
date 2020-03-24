@@ -27,7 +27,7 @@ export interface AbroadPersonFormProps {
   rolleList: Array<Kodeverk>
 }
 
-const emptyRelation = { fnr: '', fdato: '', nasjonalitet: '', rolle: '', kjoenn: '', fornavn: '', etternavn: '' }
+const emptyRelation = { fnr: '', fdato: '', land: '', statsborgerskap: '', rolle: '', kjoenn: '', fornavn: '', etternavn: '' }
 
 const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
   className, rolleList
@@ -61,8 +61,8 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
   }
 
   const canAddRelation = (): boolean => {
-    const { fnr, rolle, nasjonalitet, kjoenn, fornavn, etternavn } = relation
-    return !_.isEmpty(fnr) && !_.isEmpty(rolle) && !_.isEmpty(nasjonalitet) && !_.isEmpty(kjoenn) && !_.isEmpty(fornavn) && !_.isEmpty(etternavn)
+    const { fnr, rolle, land, statsborgerskap, kjoenn, fornavn, etternavn } = relation
+    return !_.isEmpty(fnr) && !_.isEmpty(rolle) && !_.isEmpty(land) && !_.isEmpty(statsborgerskap) && !_.isEmpty(kjoenn) && !_.isEmpty(fornavn) && !_.isEmpty(etternavn)
   }
 
   const addRelation = (): void => {
@@ -80,7 +80,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
       <Ui.Nav.Normaltekst>{t('ui:form-family-utland-add-form-title')}</Ui.Nav.Normaltekst>
       <Ui.Nav.Panel border className='mt-4 familierelasjoner__utland__wrapper'>
         <Ui.Nav.Row>
-          <div className='col-xs-6'>
+          <div className='col-xs-4'>
             <div className='slideAnimate mb-3'>
               <Ui.Nav.Input
                 label={t('ui:label-abroad-id')}
@@ -90,16 +90,30 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               />
             </div>
           </div>
-          <div className='col-xs-6'>
+          <div className='col-xs-4'>
             <div className='slideAnimate mb-3' style={{ animationDelay: '0.1s' }}>
               <Ui.CountrySelect
-                id='id-nasjonalitet'
-                label={t('ui:label-nationality')}
+                id='id-land'
+                label={t('ui:label-landkode')}
                 className='familierelasjoner__input'
                 menuPortalTarget={document.body}
-                value={relation.nasjonalitet}
+                value={relation.land}
                 includeList={landkoder ? landkoder.map((l: Kodeverk) => l.kode) : []}
-                onOptionSelected={(e: any) => updateCountry('nasjonalitet', e.value)}
+                onOptionSelected={(e: any) => updateCountry('land', e.value)}
+              >
+              </Ui.CountrySelect>
+            </div>
+          </div>
+          <div className='col-xs-4'>
+            <div className='slideAnimate mb-3' style={{ animationDelay: '0.1s' }}>
+              <Ui.CountrySelect
+                id='id-statsborgerskap'
+                label={t('ui:label-statsborgerskap')}
+                className='familierelasjoner__input'
+                menuPortalTarget={document.body}
+                value={relation.statsborgerskap}
+                includeList={landkoder ? landkoder.map((l: Kodeverk) => l.kode) : []}
+                onOptionSelected={(e: any) => updateCountry('statsborgerskap', e.value)}
               >
               </Ui.CountrySelect>
             </div>

@@ -42,7 +42,8 @@ export interface Person {
 }
 
 export interface FamilieRelasjon extends Person {
-  nasjonalitet?: string;
+  land?: string;
+  statsborgerskap?: string;
   rolle?: string;
 }
 
