@@ -123,5 +123,8 @@
         "statements": 90
       }
     }
-  }
+  },
+  "browserslist": [
+    "defaults"
+  ]
 }
