@@ -384,6 +384,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                 </>
               ) : null}
               {visFagsakerListe ? (
+                <>
                 <div className='col-xs-6'>
                   <Ui.Nav.Select
                     id='id-fagsaker'
@@ -398,13 +399,15 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                     ) : null}
                   </Ui.Nav.Select>
                 </div>
+                <div className='col-xs-6'/>
+                </>
               ) : null}
               {visArbeidsforhold ? (
                 <>
                   <div className='col-xs-6 arbeidsforhold'>
                     <Ui.Nav.Row>
                       <div className='col-xs-6'>
-                        <strong>{t('ui:label-aaResistered')}</strong><br />{t('ui:label-arbeidsforhold')}
+                        <strong>{t('ui:label-aaRegistered')}</strong><br />{t('ui:label-arbeidsforhold')}
                       </div>
                       <div className='col-xs-6'>
                         <Ui.Nav.Knapp onClick={getArbeidsforhold}>
