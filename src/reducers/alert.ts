@@ -8,7 +8,8 @@ export interface AlertState {
   clientErrorMessage: string | undefined;
   serverErrorMessage: string | undefined;
   uuid: string | undefined;
-  error: any |undefined;
+  error: any | undefined;
+  type: string | undefined;
 }
 
 export const initialAlertState: AlertState = {
@@ -16,7 +17,8 @@ export const initialAlertState: AlertState = {
   clientErrorMessage: undefined,
   serverErrorMessage: undefined,
   uuid: undefined,
-  error: undefined
+  error: undefined,
+  type: undefined
 }
 
 const alertReducer = (state: AlertState = initialAlertState, action: Action | ActionWithPayload) => {
@@ -50,6 +52,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
 
     return {
       ...state,
+      type: action.type,
       serverErrorMessage: serverErrorMessage,
       error: (action as ActionWithPayload).payload ? (action as ActionWithPayload).payload.error : undefined,
       uuid: (action as ActionWithPayload).payload ? (action as ActionWithPayload).payload.uuid : undefined
@@ -61,7 +64,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
 
     switch (action.type) {
       case types.SAK_PERSON_GET_FAILURE:
-        clientErrorMessage = 'ui:validation-invalidFnr'
+        clientErrorMessage = 'ui:error-person-notFound'
         break
 
       case types.SAK_PERSON_RELATERT_GET_FAILURE:
@@ -69,23 +72,18 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         break
 
       default:
-
         clientErrorMessage = 'ui:error'
         break
     }
 
     return {
       ...state,
+      type: action.type,
       clientErrorStatus: clientErrorMessage ? clientErrorStatus : undefined,
       clientErrorMessage: clientErrorMessage,
       error: (action as ActionWithPayload).payload ? (action as ActionWithPayload).payload.error : undefined,
       uuid: (action as ActionWithPayload).payload ? (action as ActionWithPayload).payload.uuid : undefined
     }
-  }
-
-  switch (action.type) {
-    default:
-      break
   }
 
   if (!clientErrorMessage) {
@@ -94,6 +92,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
 
   return {
     ...state,
+    type: action.type,
     clientErrorStatus: 'OK',
     clientErrorMessage: clientErrorMessage,
     uuid: undefined,
