@@ -1,5 +1,6 @@
 import { toggleHighContrast } from 'actions/ui'
 import classNames from 'classnames'
+import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import { Saksbehandler } from 'declarations/types'
 import Ui from 'eessi-pensjon-ui'
@@ -33,10 +34,16 @@ const Header: React.FC<HeaderProps> = ({ className }: HeaderProps): JSX.Element 
     dispatch(toggleHighContrast())
   }
 
+  const cleanData = () => {
+    dispatch({
+      type: types.APP_CLEAN_DATA
+    })
+  }
+
   return (
     <header className={classNames(className, 'c-header')}>
       <div className='c-header__brand'>
-        <Link to='/' className='ml-2 mr-2'>
+        <Link to='/' onClick={cleanData} className='ml-2 mr-2'>
           <NEESSILogo />
         </Link>
         <div className='c-header__skillelinje' />
@@ -47,15 +54,15 @@ const Header: React.FC<HeaderProps> = ({ className }: HeaderProps): JSX.Element 
       </Ui.Nav.Undertittel>
       <div className='c-header__saksbehandler'>
         <Ui.Nav.Lenke
-                 className='c-header__highcontrast-link mr-3'
-                  href='#highContrast'
-                  onClick={(e: React.MouseEvent) => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    handleHighContrastToggle()
-                  }}
-                >
-                  {t('ui:label-highContrast')}
+           className='c-header__highcontrast-link mr-3'
+            href='#highContrast'
+            onClick={(e: React.MouseEvent) => {
+              e.preventDefault()
+              e.stopPropagation()
+              handleHighContrastToggle()
+            }}
+          >
+            {t('ui:label-highContrast')}
         </Ui.Nav.Lenke>
         {saksbehandler && saksbehandler.navn ? (
           <div className='saksbehandler__navn'>
