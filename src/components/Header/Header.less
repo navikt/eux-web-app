@@ -3,12 +3,13 @@
   display: flex;
   flex-direction: row;
   height: 4rem;
+  justify-content: space-between;
+  align-items: center;
 
   &__brand {
     align-items: center;
     display: flex;
     flex-direction: row;
-    flex-grow: 1;
   }
 
   &__skillelinje {
@@ -26,10 +27,12 @@
   }
 
   &__saksbehandler {
+
     align-items: flex-end;
     display: flex;
-    flex-grow: 1;
-    flex-direction: column;
+    flex-direction: row;
+    margin-right: 1rem;
+    align-items: center;
 
     .saksbehandler__navn {
       color: #02329c;

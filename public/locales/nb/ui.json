@@ -52,6 +52,7 @@
   "label-firstname": "Fornavn",
   "label-fnr-or-dnr": "Fødsels eller dnr",
   "label-gender" : "Kjønn",
+  "label-highContrast": "Høy kontrast",
   "label-institusjon": "Mottaker institusjon",
   "label-journalpostID": "JournalpostID",
   "label-landkode": "Land",
