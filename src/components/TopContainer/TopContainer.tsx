@@ -1,5 +1,4 @@
 import { clientClear, clientError } from 'actions/alert'
-import { toggleHighContrast } from 'actions/ui'
 import classNames from 'classnames'
 import Header from 'components/Header/Header'
 import { State } from 'declarations/reducers'
@@ -47,10 +46,6 @@ export const TopContainer: React.FC<TopContainerProps> = ({
     dispatch(clientClear())
   }
 
-  const handleHighContrastToggle = (): void => {
-    dispatch(toggleHighContrast())
-  }
-
   const getClientErrorMessage = (): string | undefined => {
     if (!clientErrorMessage) {
       return undefined
@@ -77,14 +72,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
 
   return (
     <>
-      <Header className={classNames({ highContrast: highContrast })}>
-        {header ? (
-          <Ui.Banner
-            header={header}
-            onHighContrastClicked={handleHighContrastToggle}
-            labelHighContrast={t('ui:highContrast')}
-          />) : null}
-      </Header>
+      <Header className={classNames({ highContrast: highContrast })}/>
       <Ui.Alert
         type='server'
         message={getServerErrorMessage()}
