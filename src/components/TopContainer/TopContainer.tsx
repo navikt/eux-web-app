@@ -18,16 +18,12 @@ export interface TopContainerProps {
 }
 
 export interface TopContainerSelector {
-  clientErrorStatus: string | undefined;
-  clientErrorMessage: string | undefined;
   serverErrorMessage: string | undefined;
   error: any | undefined;
   highContrast: boolean;
 }
 
 const mapState = (state: State): TopContainerSelector => ({
-  clientErrorStatus: state.alert.clientErrorStatus,
-  clientErrorMessage: state.alert.clientErrorMessage,
   serverErrorMessage: state.alert.serverErrorMessage,
   error: state.alert.error,
   highContrast: state.ui.highContrast
@@ -37,27 +33,13 @@ export const TopContainer: React.FC<TopContainerProps> = ({
   className, children, fluid = true, header
 }: TopContainerProps): JSX.Element => {
   const {
-    clientErrorMessage, clientErrorStatus, serverErrorMessage, error, highContrast
+    serverErrorMessage, error, highContrast
   }: TopContainerSelector = useSelector<State, TopContainerSelector>(mapState)
   const dispatch = useDispatch()
   const { t } = useTranslation()
 
   const onClear = (): void => {
     dispatch(clientClear())
-  }
-
-  const getClientErrorMessage = (): string | undefined => {
-    if (!clientErrorMessage) {
-      return undefined
-    }
-    const separatorIndex: number = clientErrorMessage.lastIndexOf('|')
-    let message: string
-    if (separatorIndex >= 0) {
-      message = t(clientErrorMessage.substring(0, separatorIndex)) + ': ' + clientErrorMessage.substring(separatorIndex + 1)
-    } else {
-      message = t(clientErrorMessage)
-    }
-    return message
   }
 
   const getServerErrorMessage = (): string | undefined => {
@@ -76,13 +58,6 @@ export const TopContainer: React.FC<TopContainerProps> = ({
       <Ui.Alert
         type='server'
         message={getServerErrorMessage()}
-        error={error}
-        onClose={onClear}
-      />
-      <Ui.Alert
-        type='client'
-        message={getClientErrorMessage()}
-        status={clientErrorStatus}
         error={error}
         onClose={onClear}
       />

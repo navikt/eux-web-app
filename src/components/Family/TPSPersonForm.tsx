@@ -1,7 +1,9 @@
+import { clientClear } from 'actions/alert'
 import * as formActions from 'actions/form'
 import * as sakActions from 'actions/sak'
 import classNames from 'classnames'
 import PersonCard from 'components/PersonCard/PersonCard'
+import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import { FamilieRelasjon, Kodeverk, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
@@ -14,13 +16,19 @@ import { useDispatch, useSelector } from 'react-redux'
 import 'components/Family/TPSPersonForm.css'
 
 const mapState = (state: State): AnnenRelatertTPSPersonSelector => ({
+  alertStatus: state.alert.clientErrorStatus,
+  alertMessage: state.alert.clientErrorMessage,
+  alertType: state.alert.type,
   personRelatert: state.sak.personRelatert,
   person: state.sak.person
 })
 
 export interface AnnenRelatertTPSPersonSelector {
-   personRelatert: Person | undefined;
-   person: Person;
+  alertStatus: string | undefined;
+  alertMessage: string | undefined;
+  alertType: string | undefined;
+  personRelatert: Person | undefined;
+  person: Person;
 }
 
 export interface AnnenRelatertTPSPersonProps {
@@ -37,7 +45,7 @@ const TPSPersonForm: React.FC<AnnenRelatertTPSPersonProps> = ({
 
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const { personRelatert, person }: AnnenRelatertTPSPersonSelector = useSelector<State, AnnenRelatertTPSPersonSelector>(mapState)
+  const { alertStatus, alertMessage, alertType, personRelatert, person }: AnnenRelatertTPSPersonSelector = useSelector<State, AnnenRelatertTPSPersonSelector>(mapState)
 
   const sokEtterFnr = () => {
     dispatch(sakActions.resetPersonRelatert())
@@ -113,6 +121,16 @@ const TPSPersonForm: React.FC<AnnenRelatertTPSPersonProps> = ({
             </Ui.Nav.AlertStripe>
           </div>
         ) : null}
+        {alertMessage && alertType === types.SAK_PERSON_RELATERT_GET_FAILURE && <div className='col-xs-12'>
+          <Ui.Alert
+            className='mt-4 mb-4 w-50'
+            type='client'
+            fixed={false}
+            message={t(alertMessage)}
+            status={alertStatus}
+            onClose={() => dispatch(clientClear())}
+          />
+        </div>}
         {_personRelatert ? (
           <div className='col-xs-12'>
             <PersonCard

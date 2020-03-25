@@ -1,7 +1,9 @@
+import { clientClear } from 'actions/alert'
 import * as sakActions from 'actions/sak'
 import * as formActions from 'actions/form'
 import classNames from 'classnames'
 import 'components/PersonSearch/PersonSearch.css'
+import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import { Person } from 'declarations/types'
 import { ValidationPropType } from 'declarations/types.pt'
@@ -22,12 +24,18 @@ export interface PersonSearchProps {
 }
 
 export interface PersonSearchSelector {
+  alertStatus: string | undefined;
+  alertMessage: string | undefined;
+  alertType: string | undefined;
   fnr: any;
   gettingPerson: boolean;
   person: Person;
 }
 
 const mapState = (state: State): PersonSearchSelector => ({
+  alertStatus: state.alert.clientErrorStatus,
+  alertMessage: state.alert.clientErrorMessage,
+  alertType: state.alert.type,
   fnr: state.form.fnr,
   gettingPerson: state.loading.gettingPerson,
   person: state.sak.person
@@ -38,7 +46,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
 }: PersonSearchProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const { gettingPerson, fnr, person }: PersonSearchSelector = useSelector<State, PersonSearchSelector>(mapState)
+  const { alertStatus, alertMessage, alertType, gettingPerson, fnr, person }: PersonSearchSelector = useSelector<State, PersonSearchSelector>(mapState)
   const [_person, setPerson] = useState<Person | undefined>(undefined)
   const [localValidation, setLocalValidation] = useState<string |undefined>(undefined)
 
@@ -97,6 +105,14 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
           {gettingPerson ? <Ui.WaitingPanel size='S' message={t('ui:form-searching')} oneLine /> : t('ui:form-search')}
         </Ui.Nav.Knapp>
       </div>
+      {alertMessage && alertType === types.SAK_PERSON_GET_FAILURE && <Ui.Alert
+        className='mt-4 mb-4 w-50'
+        type='client'
+        fixed={false}
+        message={t(alertMessage)}
+        status={alertStatus}
+        onClose={() => dispatch(clientClear())}
+      />}
       {person && isPersonValid(person) ? <PersonCard className='neutral' person={person} onRemoveClick={onRemovePerson} /> : null}
     </div>
   )
