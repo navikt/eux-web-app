@@ -124,11 +124,17 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
     return validation
   }
 
-  const resetValidation = (key: string): void => {
-    setValidation({
-      ...validation,
-      [key]: null
-    })
+  const resetValidation = (key: Array<string> | string): void => {
+    const newValidation = _.cloneDeep(validation)
+    if (_.isString(key)) {
+      newValidation[key] = null
+    }
+    if (_.isArray(key)) {
+      key.forEach(k => {
+        newValidation[k] = null
+      })
+    }
+    setValidation(newValidation)
   }
 
   const isValid = (_validation: Validation): boolean => {
@@ -138,13 +144,13 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
   const skjemaSubmit = (): void => {
     if (isValid(validate())) {
       dispatch(sakActions.createSak({
-        fnr: valgtFnr,
         buctype: valgtBucType,
+        fnr: valgtFnr,
+        landKode: valgtLandkode,
+        institusjonsID: valgtInstitusjon,
+        saksID: valgtSaksId,
         sedtype: valgtSedType,
         sektor: valgtSektor,
-        landkode: valgtLandkode,
-        institusjon: valgtInstitusjon,
-        saksId: valgtSaksId,
         tema: valgtTema,
         familierelasjoner: valgteFamilieRelasjoner,
         arbeidsforhold: valgteArbeidsforhold
@@ -171,8 +177,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
   }
 
   const onBuctypeChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-    resetValidation('buctype')
-    resetValidation('landkode')
+    resetValidation(['buctype', 'landkode'])
     const buctype = event.target.value
     dispatch(formActions.set('buctype', buctype))
     dispatch(formActions.set('landkode', undefined))
@@ -192,7 +197,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
   }
 
   const onLandkodeChange = (country: any): void => {
-    resetValidation('landkode')
+    resetValidation(['landkode', 'institusjon'])
     const landKode = country.value
     dispatch(formActions.set('landkode', landKode))
     dispatch(sakActions.getInstitusjoner(valgtBucType, landKode))
@@ -204,8 +209,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
   }
 
   const onTemaChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-    resetValidation('tema')
-    resetValidation('fagsaker')
+    resetValidation(['tema', 'saksId'])
     dispatch(formActions.set('tema', event.target.value))
     dispatch(formActions.set('fagsaker', undefined))
   }
@@ -344,6 +348,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                           label={t('ui:label-tema')}
                           value={valgtTema}
                           onChange={onTemaChange}
+                          feil={validation.tema}
                         >
                           <option value=''>{t('ui:form-choose')}</option>)
                           {temaer ? temaer.map((element: any) => (
@@ -392,6 +397,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                     label={t('ui:label-fagsak')}
                     value={valgtSaksId}
                     onChange={onSakIDChange}
+                    feil={validation.saksId}
                   >
                     <option value=''>{t('ui:form-choose')}</option>
                     {fagsaker ? _.orderBy(fagsaker, 'fagsakNr').map(element => (
@@ -438,7 +444,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                             <div>
                               <Ui.Nav.Checkbox
                                 checked={arbeidsForholdErValgt}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onArbeidsforholdClick(arbeidsforholdIDnav, e.target.checked)}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onArbeidsforholdClick(arbeidsforholdet, e.target.checked)}
                                 label={t('ui:form-choose')}
                               />
                             </div>
@@ -465,19 +471,20 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
               </div>
               {opprettetSak && opprettetSak.url ? (
                 <div className='col-xs-12'>
-                  <Ui.Nav.AlertStripe type='suksess'>
+                  <Ui.Nav.AlertStripe className='mt-4 w-50' type='suksess'>
                     <div>
-                      {t('ui:form-caseNumber')}: {opprettetSak.rinasaksnummer}
-                      {opprettetSak.url ? (
-                        <Ui.Nav.Lenke href={opprettetSak.url} target='_blank' className='vedlegg__lenke'>
-                          {t('ui:form-goToRina')}
-                        </Ui.Nav.Lenke>
-                      ) : null}
                       {opprettetSak.rinasaksnummer ? (
                         <Link to={'/vedlegg?rinasaksnummer=' + opprettetSak.rinasaksnummer}>
                           {t('ui:form-caseNumber') + ': ' + opprettetSak.rinasaksnummer}
                         </Link>
                       ) : <span>{t('ui:form-caseNumber') + ': ' + opprettetSak.rinasaksnummer}</span>}
+
+                      <span className='ml-1 mr-1'>{t('ui:label-is-created')}.</span>
+                      {opprettetSak.url ? (
+                        <Ui.Nav.Lenke className='vedlegg__lenke ml-1 mr-1' href={opprettetSak.url} target='_blank'>
+                          {t('ui:form-goToRina')}
+                        </Ui.Nav.Lenke>
+                      ) : null}
                     </div>
                   </Ui.Nav.AlertStripe>
                 </div>
