@@ -1,6 +1,5 @@
 import { clientClear } from 'actions/alert'
-import { closeModal, toggleHighContrast } from 'actions/ui'
-import { ModalContent } from 'eessi-pensjon-ui/dist/declarations/components'
+import { toggleHighContrast } from 'actions/ui'
 import { mount, ReactWrapper } from 'enzyme'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,18 +9,8 @@ jest.mock('react-redux');
 (useDispatch as jest.Mock).mockImplementation(() => jest.fn())
 
 const defaultSelector: TopContainerSelector = {
-  clientErrorStatus: 'ERROR',
-  clientErrorMessage: 'mockErrorMessage',
   serverErrorMessage: undefined,
   error: undefined,
-  expirationTime: undefined,
-  params: {},
-  username: 'mockUsername',
-  gettingUserInfo: false,
-  isLoggingOut: false,
-  footerOpen: false,
-  modal: undefined,
-  snow: false,
   highContrast: false
 }
 
@@ -46,8 +35,7 @@ jest.mock('actions/ui', () => ({
 describe('components/TopContainer', () => {
   let wrapper: ReactWrapper
   const initialMockProps: TopContainerProps = {
-    header: 'mockHeader',
-    history: {}
+    header: 'mockHeader'
   }
 
   beforeEach(() => {
@@ -92,27 +80,5 @@ describe('components/TopContainer', () => {
     (toggleHighContrast as jest.Mock).mockReset()
     wrapper.find('Banner #c-banner__highcontrast-link-id').hostNodes().simulate('click')
     expect(toggleHighContrast).toHaveBeenCalledWith()
-  })
-
-  it('Opens and closes modal', () => {
-    expect(wrapper.exists('Modal')).toBeFalsy()
-    const mockModal: ModalContent = {
-      modalTitle: 'mockTitle',
-      modalText: 'mockText',
-      modalButtons: [{
-        text: 'ok'
-      }]
-    }
-    setup({ modal: mockModal })
-    wrapper = mount(
-      <TopContainer {...initialMockProps}>
-        <div id='TEST_CHILD' />
-      </TopContainer>
-    )
-
-    expect(wrapper.exists('Modal')).toBeTruthy()
-    const modal = wrapper.find('Modal').first()
-    modal.find('button').hostNodes().last().simulate('click')
-    expect(closeModal).toHaveBeenCalled()
   })
 })

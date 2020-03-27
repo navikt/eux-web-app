@@ -9,7 +9,7 @@ const Forside: React.FC = (): JSX.Element => {
 
   return (
     <TopContainer className='p-forside'>
-      <Ui.Nav.Row>
+      <Ui.Nav.Row className='m-0'>
         <div className='col-sm-1' />
         <div className='col-sm-10 m-4'>
           <Ui.Nav.Lenkepanel

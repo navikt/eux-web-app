@@ -82,6 +82,9 @@
   "modal-abort-yes-button": "JA, AVBRYT",
   "modal-abort-no-continue": "NEI, FORTSETT",
 
+  "serverInternalError" : "Serverfeil",
+  "serverAuthenticationError" : "Uautorisert",
+
   "validation-invalidFnr": "Fnr må ha 11 siffer",
   "validation-noDokumentID": "Du må taste inn en dokumentID",
   "validation-noJournalpostID": "Du må taste inn en journalpostID",

@@ -100,7 +100,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
 
   return (
     <TopContainer className='vedlegg'>
-      <Ui.Nav.Row>
+      <Ui.Nav.Row className='m-0'>
         <div className='col-sm-2' />
         <div className='col-sm-8 m-4'>
           <Ui.Nav.Systemtittel className='mt-4 mb-4'>Vedleggs informasjon</Ui.Nav.Systemtittel>

@@ -124,6 +124,10 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
     return validation
   }
 
+  const resetAllValidation = () => {
+    setValidation({})
+  }
+
   const resetValidation = (key: Array<string> | string): void => {
     const newValidation = _.cloneDeep(validation)
     if (_.isString(key)) {
@@ -244,7 +248,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
           <PersonSearch
             className='slideAnimate'
             validation={validation}
-            resetValidation={resetValidation}
+            resetAllValidation={resetAllValidation}
             onFnrChange={() => setIsFnrValid(false)}
             onPersonFound={() => setIsFnrValid(true)}
           />

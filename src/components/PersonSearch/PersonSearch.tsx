@@ -19,7 +19,7 @@ export interface PersonSearchProps {
   className?: string;
   onFnrChange?: () => void;
   onPersonFound? : (person: Person) => void;
-  resetValidation: (key: string) => void;
+  resetAllValidation: () => void;
   validation: any;
 }
 
@@ -42,7 +42,7 @@ const mapState = (state: State): PersonSearchSelector => ({
 })
 
 const PersonSearch: React.FC<PersonSearchProps> = ({
-  className, onFnrChange, onPersonFound, resetValidation, validation
+  className, onFnrChange, onPersonFound, resetAllValidation, validation
 }: PersonSearchProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -77,7 +77,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setLocalValidation(undefined)
-    resetValidation('fnr')
+    resetAllValidation()
     if (_.isFunction(onFnrChange)) {
       onFnrChange()
     }
@@ -86,7 +86,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
 
   const onRemovePerson = (): void => {
     setLocalValidation(undefined)
-    resetValidation('fnr')
+    resetAllValidation()
     setPerson(undefined)
     dispatch(sakActions.resetPerson())
   }
@@ -97,7 +97,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
         <Ui.Nav.Input
           label={t('ui:form-searchUser')}
           className='personsok__input'
-          value={fnr}
+          value={fnr || ''}
           onChange={onChange}
           feil={validation.fnr || localValidation}
         />
@@ -122,7 +122,7 @@ PersonSearch.propTypes = {
   className: PT.string,
   onFnrChange: PT.func,
   onPersonFound: PT.func,
-  resetValidation: PT.func.isRequired,
+  resetAllValidation: PT.func.isRequired,
   validation: ValidationPropType.isRequired
 }
 
