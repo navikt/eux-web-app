@@ -237,7 +237,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
 
   return (
     <TopContainer className='opprettsak'>
-      <Ui.Nav.Row>
+      <Ui.Nav.Row className='m-0'>
         <div className='col-sm-1' />
         <div className='col-sm-10'>
           <Ui.Nav.Systemtittel className='mb-4'>Opprett Sak</Ui.Nav.Systemtittel>
