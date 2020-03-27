@@ -12,7 +12,7 @@ const UkjentSide: React.FC<UkjentSideProps> = ({ location }: UkjentSideProps): J
   const { t } = useTranslation()
   return (
     <TopContainer className='p-ukjentSide'>
-      <Ui.Nav.Row>
+      <Ui.Nav.Row className='m-0'>
         <div className='col-sm-1' />
         <div className='col-sm-10 m-4'>
           <Ui.Nav.AlertStripe type='advarsel'>
