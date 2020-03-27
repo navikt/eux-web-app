@@ -4,8 +4,8 @@
 
   "error-fnr-is-user": "FNR {{sok}} tilhører bruker",
   "error-noDocumentFound": "Ingen dokumenter funnet",
-  "error-personRelated-notFound": "Ingen person med FNR {{feiletSok}} funnet",
-  "error-person-notFound": "Ingen person funnet",
+  "error-personRelated-notFound": "Ingen person med FNR {{feiletSok}} funnet eller har en diskresjonskode",
+  "error-person-notFound": "Brukeren du søker finnes ikke i TPS eller har en diskresjonskode",
   "error-relation-already-in-tps": "Familierelasjonen er allerede registrert i TPS",
   "error-unknownPage-cantFindRoute": "Denne siden finnes ikke: '{{pathname}}'.",
   "error-unknownPage-description": "Dersom du ble sendt hit fra Gosys eller et annet Nav-system, ta kontakt med driftsansvarlig.",
