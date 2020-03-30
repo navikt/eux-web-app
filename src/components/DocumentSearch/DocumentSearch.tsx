@@ -76,10 +76,10 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
 
   return (
     <div className={classNames(className, 'dokumentsok')}>
-      <div className='dokumentsok__skjema'>
+      <div className={classNames('dokumentsok__form', {feil: !!validation.rinadokumentID})}>
         <Ui.Nav.Input
           label={t('ui:label-rinasaksnummer')}
-          className='dokumentsok__input'
+          className='dokumentsok__form__input'
           value={rinasaksnummer}
           onChange={onRinaSaksnummerChange}
           feil={validation.rinasaksnummer}
@@ -92,7 +92,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
           {t('ui:form-search')}
         </Ui.Nav.Knapp>
       </div>
-      <div className='dokumentsok__kort mt-4 mb-4 slideAnimate'>
+      <div className='dokumentsok__card mt-4 mb-4 slideAnimate'>
         <Ui.Nav.Select
           id='id-rinadokument'
           label={t('ui:label-rinadokumentID')}

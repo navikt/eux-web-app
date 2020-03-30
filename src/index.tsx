@@ -17,6 +17,7 @@ import { unregister } from './registerServiceWorker'
 import 'eessi-pensjon-ui/dist/minibootstrap.css'
 import 'eessi-pensjon-ui/dist/nav.css'
 import './index.css'
+import 'index_highContrast.css'
 
 const store: Store = createStore(combineReducers(reducers), applyMiddleware(thunk))
 

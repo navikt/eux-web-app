@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import IkonArbeidsforhold from 'resources/images/ikon-arbeidsforhold'
 import { formatterDatoTilNorsk } from 'utils/dato'
+import classNames from 'classnames'
 import './OpprettSak.css'
 
 export interface OpprettSakProps {
@@ -241,7 +242,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
 
   return (
     <TopContainer className='opprettsak'>
-      <Ui.Nav.Row className='m-0'>
+      <Ui.Nav.Row className='m-0 p-4'>
         <div className='col-sm-1' />
         <div className='col-sm-10'>
           <Ui.Nav.Systemtittel className='mb-4'>Opprett Sak</Ui.Nav.Systemtittel>
@@ -344,7 +345,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
               {valgtSektor ? (
                 <>
                   <div className='col-xs-12'>
-                    <div className='d-flex slideAnimate' style={{ alignItems: 'flex-end' }}>
+                    <div className={classNames('slideAnimate', 'opprettsak__tema', {feil: !!validation.tema})}>
                       <div className='w-50 mr-3'>
                         <Ui.Nav.Select
                           id='id-behandlings-tema'

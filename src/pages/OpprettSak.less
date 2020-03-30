@@ -1,21 +1,28 @@
+
 .opprettsak {
-  width: 100%;
-  margin: 2em 1em;
-}
-
-.opprettsak__statuslinje {
-  margin-top: 2em;
-}
-
-.arbeidsforhold-item {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-
-  .arbeidsforhold-desc {
-    display: flex;
-    flex-direction: row;
+  &__statuslinje {
+    margin-top: 2em;
   }
 
+  &__tema {
+    display: flex;
+    align-items: flex-end;
+
+    &.feil {
+      align-items: center !important;
+    }
+  }
+  .arbeidsforhold-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    .arbeidsforhold-desc {
+      display: flex;
+      flex-direction: row;
+    }
+  }
 }
+
+
