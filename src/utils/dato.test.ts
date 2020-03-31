@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { vaskInputDato, normaliserInputDato, formatterDatoTilNorsk, formatterDatoTilISO, formatterKortDatoTilNorsk } from './dato';
+import { vaskInputDato, formatterDatoTilNorsk } from './dato';
 
 import MockDate from 'mockdate';
 import moment from 'moment/moment'
@@ -80,21 +80,6 @@ describe('dato.ts:', () => {
     });
   });
 
-  describe('nodmaliserInputDato', () => {
-    test('ikke forsøker å vaske datoen så lenge verdiene er forskjellige', () => {
-      const verdi = '123456';
-      const forrigeVerdi = '12345';
-
-      expect(normaliserInputDato(verdi, forrigeVerdi)).toEqual(verdi);
-    });
-
-    test('vasker datoen når verdiene er like', () => {
-      const verdi = '011217';
-      const forrigeVerdi = '011217';
-
-      expect(normaliserInputDato(verdi, forrigeVerdi)).not.toEqual(false);
-    });
-  });
 
   describe('formatterDatoTilNorsk', () => {
     test('formatterer datoen riktig til norsk format DD.MM.YYYY uten klokkeslett', () => {
@@ -119,57 +104,15 @@ describe('dato.ts:', () => {
 
     test('formatterer datoen riktig til norsk format DD.MM.YYYY HH:mm:ss med klokkeslett', () => {
       const tillatteDatoer = [
-        {test: '2017-12-01T20:58:01Z', 'forvent': '01.12.2017 21:58'},
-        {test: '2017-12-01T01:08:01Z', 'forvent': '01.12.2017 02:08'},
-        {test: '12.02.2000 20:00:1Z', 'forvent': '12.02.2000 21:00'},
+        {test: '2017-12-01T20:58:01Z', 'forvent': '01.12.2017'},
+        {test: '2017-12-01T01:08:01Z', 'forvent': '01.12.2017'},
+        {test: '12.02.2000 20:00:1Z', 'forvent': '12.02.2000'},
       ];
 
       tillatteDatoer.forEach(datoTest => {
-        const formattertDato = formatterDatoTilNorsk(datoTest.test, true);
+        const formattertDato = formatterDatoTilNorsk(datoTest.test);
         expect(formattertDato).toEqual(datoTest.forvent);
       });
     })
-  });
-
-
-  describe('formatterDatoTilISO', () => {
-    test('formatterer dato uten klokkeslett til ISO-format.', () => {
-      const tillatteDatoer = [
-        {test: '01.01.2018', forvent: '2018-01-01'},
-        {test: '10.12.2018', forvent: '2018-12-10'}
-      ];
-
-      tillatteDatoer.forEach(datoTest => {
-        const formattertDato = formatterDatoTilISO(datoTest.test, false);
-        expect(formattertDato).toEqual(datoTest.forvent);
-      });
-    });
-
-    test('formatterer dato med klokkeslett til ISO-format.', () => {
-      const tillatteDatoer = [
-        {test: '01.01.2018 10:34', forvent: '2018-01-01T10:34:00'},
-        {test: '10.12.2018 10:34', forvent: '2018-12-10T10:34:00'},
-      ];
-
-      tillatteDatoer.forEach(datoTest => {
-        const formattertDato = formatterDatoTilISO(datoTest.test, true);
-        expect(formattertDato).toEqual(datoTest.forvent);
-      });
-    })
-  });
-
-  describe('formatterKortDatoTilNorsk', () => {
-    test('formatterer år-dato til korrekt til lesbarhet', () => {
-      const tillatteDatoer = [
-        {test: '2007-01', forvent: 'jan - 2007'},
-        {test: '2014-05', forvent: 'mai - 2014'},
-        {test: '2016-10-31', forvent: 'okt - 2016'},
-      ];
-
-      tillatteDatoer.forEach(datoTest => {
-        const formattertDato = formatterKortDatoTilNorsk(datoTest.test);
-        expect(formattertDato).toEqual(datoTest.forvent);
-      });
-    });
   });
 });

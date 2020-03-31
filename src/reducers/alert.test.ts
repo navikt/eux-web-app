@@ -23,6 +23,7 @@ describe('reducers/alert', () => {
       })
     ).toEqual({
       ...initialAlertState,
+      type: types.SERVER_INTERNAL_ERROR,
       serverErrorMessage: 'ui:serverInternalError',
       error: 'mockPayload'
     })
@@ -38,22 +39,8 @@ describe('reducers/alert', () => {
       })
     ).toEqual({
       ...initialAlertState,
+      type: types.SERVER_UNAUTHORIZED_ERROR,
       serverErrorMessage: 'ui:serverAuthenticationError',
-      error: 'mockPayload'
-    })
-  })
-
-  it('SOMETHING_ERROR', () => {
-    expect(
-      alertReducer(initialAlertState, {
-        type: 'SOMETHING/ERROR',
-        payload: {
-          error: 'mockPayload'
-        }
-      })
-    ).toEqual({
-      ...initialAlertState,
-      serverErrorMessage: 'ui:serverInternalError',
       error: 'mockPayload'
     })
   })
