@@ -25,3 +25,6 @@ yarn-debug.log*
 yarn-error.log*
 /.project
 /.vscode
+
+**/__snapshots__/*
+/coverage

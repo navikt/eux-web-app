@@ -15,8 +15,8 @@ import { useDispatch, useSelector } from 'react-redux'
 export interface DocumentSearchSelector {
   gettingDokument: boolean;
   dokument: Array<Dokument> | undefined;
-  rinadokumentID: string;
-  rinasaksnummer: string;
+  rinadokumentID: string | undefined;
+  rinasaksnummer: string | undefined;
 }
 
 export interface DocumentSearchProps {
@@ -79,6 +79,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
       <div className={classNames('dokumentsok__form', {feil: !!validation.rinadokumentID})}>
         <Ui.Nav.Input
           label={t('ui:label-rinasaksnummer')}
+          id='dokumentsok__form__input-id'
           className='dokumentsok__form__input'
           value={rinasaksnummer}
           onChange={onRinaSaksnummerChange}
@@ -94,7 +95,8 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
       </div>
       <div className='dokumentsok__card mt-4 mb-4 slideAnimate'>
         <Ui.Nav.Select
-          id='id-rinadokument'
+          id='dokumentsok__card-select-id'
+          className='dokumentsok__card-select'
           label={t('ui:label-rinadokumentID')}
           onChange={onRinadokumentIDChange}
           value={rinadokumentID}

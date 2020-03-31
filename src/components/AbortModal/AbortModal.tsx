@@ -4,7 +4,9 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import './AbortModal.css'
 
-Ui.Nav.Modal.setAppElement('#root')
+if (document && document.getElementById('root')) {
+  Ui.Nav.Modal.setAppElement('#root')
+}
 
 export interface AbortModalProps {
   closeModal: () => void;

@@ -8,7 +8,7 @@
     "eessi-kodeverk": "1.4.2",
     "eessi-pensjon-ui": "https://github.com/navikt/eessi-pensjon-ui#2.2.8",
     "history": "^4.10.1",
-    "i18next": "^19.3.3",
+    "i18next": "^19.3.4",
     "i18next-browser-languagedetector": "^4.0.2",
     "i18next-xhr-backend": "^3.2.2",
     "lodash": "^4.17.15",
@@ -48,12 +48,12 @@
     "@types/history": "^4.7.5",
     "@types/jest": "^25.1.4",
     "@types/lodash": "^4.14.149",
-    "@types/react": "^16.9.25",
+    "@types/react": "^16.9.29",
     "@types/react-dom": "^16.9.5",
     "@types/react-redux": "^7.1.7",
     "@types/react-router-dom": "^5.1.3",
-    "@typescript-eslint/eslint-plugin": "^2.25.0",
-    "@typescript-eslint/parser": "^2.25.0",
+    "@typescript-eslint/eslint-plugin": "^2.26.0",
+    "@typescript-eslint/parser": "^2.26.0",
     "cross-env": "^7.0.2",
     "dotenv-save": "^1.2.0",
     "enzyme": "^3.11.0",
@@ -69,7 +69,7 @@
     "react-axe": "^3.4.1",
     "redux-thunk": "^2.3.0",
     "standardx": "^5.0.0",
-    "ts-jest": "^25.2.1",
+    "ts-jest": "^25.3.0",
     "typescript": "^3.8.3"
   },
   "resolutions": {
@@ -121,8 +121,22 @@
         "functions": 90,
         "lines": 90,
         "statements": 90
+      },
+      "src/actions": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
       }
-    }
+    },
+    "collectCoverageFrom": [
+      "src/actions/*.{ts,tsx}",
+      "src/applications/**/*.{ts,tsx}",
+      "src/components/**/*.{ts,tsx}",
+      "src/pages/**/*.{ts,tsx}",
+      "src/reducers/*.{ts,tsx}",
+      "src/utils/*.{ts,tsx}"
+    ]
   },
   "browserslist": [
     "defaults"
