@@ -10,7 +10,6 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { vaskInputDato } from 'utils/dato'
 import _ from 'lodash'
-import './AbroadPersonForm.css'
 
 const mapState = (state: State): AbroadPersonFormSelector => ({
   kjoenn: state.sak.kjoenn,
@@ -76,13 +75,14 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
   }
 
   return (
-    <div className={classNames(className, 'mt-4')}>
+    <div className={classNames(className, 'c-abroadPersonForm', 'mt-4')}>
       <Ui.Nav.Normaltekst>{t('ui:form-family-utland-add-form-title')}</Ui.Nav.Normaltekst>
       <Ui.Nav.Panel border className='mt-4 familierelasjoner__utland__wrapper'>
         <Ui.Nav.Row>
           <div className='col-xs-4'>
             <div className='slideAnimate mb-3'>
               <Ui.Nav.Input
+                id='familierelasjoner__input-fnr-id'
                 label={t('ui:label-abroad-id')}
                 className='familierelasjoner__input'
                 value={relation.fnr}
@@ -121,6 +121,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
           <div className='col-xs-6'>
             <div className='slideAnimate mb-3' style={{ animationDelay: '0.2s' }}>
               <Ui.Nav.Input
+                id='familierelasjoner__input-fornavn-id'
                 label={t('ui:label-firstname')}
                 className='familierelasjoner__input'
                 value={relation.fornavn}
@@ -131,6 +132,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
           <div className='col-xs-6'>
             <div className='slideAnimate mb-3' style={{ animationDelay: '0.3s' }}>
               <Ui.Nav.Input
+                id='familierelasjoner__input-etternavn-id'
                 label={t('ui:label-lastname')}
                 className='familierelasjoner__input'
                 value={relation.etternavn}
@@ -157,6 +159,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
           <div className='col-xs-6'>
             <div className='slideAnimate mb-3' style={{ animationDelay: '0.5s' }}>
               <Ui.Nav.Input
+                id='familierelasjoner__input-fdato-id'
                 label={t('ui:form-birthdate')}
                 className='familierelasjoner__input'
                 value={relation.fdato}

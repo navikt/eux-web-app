@@ -13,9 +13,8 @@ import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import 'components/Family/TPSPersonForm.css'
 
-const mapState = (state: State): AnnenRelatertTPSPersonSelector => ({
+const mapState = (state: State): TPSPersonFormSelector => ({
   alertStatus: state.alert.clientErrorStatus,
   alertMessage: state.alert.clientErrorMessage,
   alertType: state.alert.type,
@@ -23,7 +22,7 @@ const mapState = (state: State): AnnenRelatertTPSPersonSelector => ({
   person: state.sak.person
 })
 
-export interface AnnenRelatertTPSPersonSelector {
+export interface TPSPersonFormSelector {
   alertStatus: string | undefined;
   alertMessage: string | undefined;
   alertType: string | undefined;
@@ -31,21 +30,21 @@ export interface AnnenRelatertTPSPersonSelector {
   person: Person;
 }
 
-export interface AnnenRelatertTPSPersonProps {
+export interface TPSPersonFormProps {
   className ?: string;
   rolleList: Array<Kodeverk>;
 }
 
-const TPSPersonForm: React.FC<AnnenRelatertTPSPersonProps> = ({
+const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
   className, rolleList
-}: AnnenRelatertTPSPersonProps): JSX.Element => {
+}: TPSPersonFormProps): JSX.Element => {
   const [sok, setSok] = useState('')
   const [_personRelatert, setPersonRelatert] = useState<FamilieRelasjon | undefined>(undefined)
   const [tpsperson, setTpsPerson] = useState<FamilieRelasjon | undefined>(undefined)
 
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const { alertStatus, alertMessage, alertType, personRelatert, person }: AnnenRelatertTPSPersonSelector = useSelector<State, AnnenRelatertTPSPersonSelector>(mapState)
+  const { alertStatus, alertMessage, alertType, personRelatert, person }: TPSPersonFormSelector = useSelector<State, TPSPersonFormSelector>(mapState)
 
   const sokEtterFnr = () => {
     dispatch(sakActions.resetPersonRelatert())
@@ -88,10 +87,11 @@ const TPSPersonForm: React.FC<AnnenRelatertTPSPersonProps> = ({
   }
 
   return (
-    <div className={classNames(className, 'annenpersonsok')}>
+    <div className={classNames(className, 'c-TPSPersonForm')}>
       <Ui.Nav.Row className='annenpersonsok__skjema'>
         <div className='col-xs-6'>
           <Ui.Nav.Input
+            id='c-TPSPersonForm__input-fnr-or-dnr-id'
             label={t('ui:label-fnr-or-dnr')}
             placeholder={t('ui:label-fnr-or-dnr')}
             value={sok}

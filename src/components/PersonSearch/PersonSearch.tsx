@@ -95,6 +95,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
     <div className={classNames('personsok', className)}>
       <div className='personsok__skjema'>
         <Ui.Nav.Input
+          id='personsok__input-id'
           label={t('ui:form-searchUser')}
           className='personsok__input'
           value={fnr || ''}

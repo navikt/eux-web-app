@@ -68,7 +68,7 @@ const Family: React.FC = (): JSX.Element => {
   const rolleList: Array<Kodeverk> = familierelasjonKodeverk!.filter((kt: Kodeverk) => ekskluderteVerdier.includes(kt.kode) === false)
 
   return (
-    <>
+    <div className='c-family'>
       <Ui.Nav.Systemtittel className='mb-4'>{t('ui:label-familyRelationships')}</Ui.Nav.Systemtittel>
       <Ui.Nav.Panel border>
         <Ui.Nav.Undertittel className='mb-4 ml-2'>{t('ui:form-family-description')}</Ui.Nav.Undertittel>
@@ -144,7 +144,7 @@ const Family: React.FC = (): JSX.Element => {
           </div>
         </Ui.Nav.Row>
       </Ui.Nav.Panel>
-    </>
+    </div>
   )
 }
 
