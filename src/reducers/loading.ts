@@ -42,7 +42,7 @@ const loadingReducer = (state: LoadingState = initialLoadingState, action: Actio
     case types.VEDLEGG_DOKUMENT_GET_REQUEST:
       return {
         ...state,
-        gettingDokumenter: true
+        gettingDokument: true
       }
 
     case types.VEDLEGG_DOKUMENT_GET_SUCCESS:
@@ -81,14 +81,14 @@ const loadingReducer = (state: LoadingState = initialLoadingState, action: Actio
     case types.SAK_LANDKODER_GET_REQUEST:
       return {
         ...state,
-        gettingKLandkoder: true
+        gettingLandkoder: true
       }
 
     case types.SAK_LANDKODER_GET_SUCCESS:
     case types.SAK_LANDKODER_GET_FAILURE:
       return {
         ...state,
-        gettingKLandkoder: false
+        gettingLandkoder: false
       }
 
     case types.SAK_PERSON_GET_REQUEST:

@@ -45,6 +45,21 @@ describe('reducers/alert', () => {
     })
   })
 
+
+  it('UNKNOWN_FAILURE', () => {
+    expect(
+      alertReducer(initialAlertState, {
+        type: 'UNKNOWN/FAILURE',
+        payload: {}
+      })
+    ).toEqual({
+      ...initialAlertState,
+      clientErrorMessage: 'ui:error',
+      clientErrorStatus: 'ERROR',
+      type: 'UNKNOWN/FAILURE'
+    })
+  })
+
   it('UNKNOWN_ACTION', () => {
     expect(
       alertReducer(initialAlertState, {

@@ -109,6 +109,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
               {t('ui:form-journalpostID')}
             </Ui.Nav.Hjelpetekst>
             <Ui.Nav.Input
+              id='vedlegg-journalpostID-id'
               className='mb-4'
               label={t('ui:label-journalpostID')}
               onChange={onjournalpostIDChange}
@@ -120,6 +121,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
               {t('ui:form-dokumentID')}
             </Ui.Nav.Hjelpetekst>
             <Ui.Nav.Input
+              id='vedlegg-dokumentID-id'
               className='mb-4'
               label={t('ui:label-dokumentID')}
               onChange={onDokumentIDChange}

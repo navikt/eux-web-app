@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import { FamilieRelasjon, Kodeverk, Person } from 'declarations/types'
 import { KodeverkPropType, PersonPropType } from 'declarations/types.pt'
 import Ui from 'eessi-pensjon-ui'
@@ -61,7 +62,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
   }
 
   return (
-    <div className={className}>
+    <div className={classNames(className, 'c-personCard')}>
       <Ui.Nav.Panel border style={{ background: 'transparent' }} className='mt-4'>
         <div className='personcard'>
           <div className='personcard__desc'>
