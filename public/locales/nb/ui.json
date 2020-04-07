@@ -3,6 +3,7 @@
   "app-title": "Velkommen til nEESSI",
 
   "error-fnr-is-user": "FNR {{sok}} tilhører bruker",
+  "error-abroadperson-exists": "Personner er allerede i familierelasjons liste",
   "error-noDocumentFound": "Ingen dokumenter funnet",
   "error-personRelated-notFound": "Ingen person med FNR {{feiletSok}} funnet eller har en diskresjonskode",
   "error-person-notFound": "Brukeren du søker finnes ikke i TPS eller har en diskresjonskode",

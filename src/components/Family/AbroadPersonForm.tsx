@@ -1,5 +1,7 @@
+import { clientClear } from 'actions/alert'
 import * as formActions from 'actions/form'
 import classNames from 'classnames'
+import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import { FamilieRelasjon, Kodeverk } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
@@ -12,28 +14,35 @@ import { vaskInputDato } from 'utils/dato'
 import _ from 'lodash'
 
 const mapState = (state: State): AbroadPersonFormSelector => ({
+  alertStatus: state.alert.clientErrorStatus,
+  alertMessage: state.alert.clientErrorMessage,
+  alertType: state.alert.type,
   kjoenn: state.sak.kjoenn,
   landkoder: state.sak.landkoder
 })
 
 export interface AbroadPersonFormSelector {
+  alertStatus: string | undefined;
+  alertMessage: string | undefined;
+  alertType: string | undefined;
   kjoenn: Array<Kodeverk> | undefined;
   landkoder: Array<Kodeverk> | undefined;
 }
 
 export interface AbroadPersonFormProps {
   className?: string,
-  rolleList: Array<Kodeverk>
+  rolleList: Array<Kodeverk>,
+  existingFamilyRelationships: Array<FamilieRelasjon>
 }
 
 const emptyRelation = { fnr: '', fdato: '', land: '', statsborgerskap: '', rolle: '', kjoenn: '', fornavn: '', etternavn: '' }
 
 const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
-  className, rolleList
+  className, rolleList, existingFamilyRelationships
 }: AbroadPersonFormProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const { kjoenn, landkoder }: AbroadPersonFormSelector = useSelector<State, AbroadPersonFormSelector>(mapState)
+  const { alertType, alertMessage, alertStatus, kjoenn, landkoder }: AbroadPersonFormSelector = useSelector<State, AbroadPersonFormSelector>(mapState)
   const [relation, setRelation] = useState<FamilieRelasjon>(emptyRelation)
 
   const updateCountry = (felt: string, value: string): void => {
@@ -64,13 +73,27 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
     return !_.isEmpty(fnr) && !_.isEmpty(rolle) && !_.isEmpty(land) && !_.isEmpty(statsborgerskap) && !_.isEmpty(kjoenn) && !_.isEmpty(fornavn) && !_.isEmpty(etternavn)
   }
 
+  const conflictingPerson = (): boolean => {
+    const { fnr } = relation
+    if (_.find(existingFamilyRelationships, f => f.fnr === fnr) !== undefined) {
+      dispatch({
+        type: types.FORM_ABROADPERSON_ADD_FAILURE
+      })
+      return true
+    }
+    return false
+  }
+
   const addRelation = (): void => {
-    if (canAddRelation()) {
+    if (canAddRelation() && !conflictingPerson()) {
       setRelation(emptyRelation)
       dispatch(formActions.addFamilierelasjoner({
         ...relation,
         fdato: relation.fdato || ''
       }))
+      dispatch({
+        type: types.FORM_ABROADPERSON_ADD_SUCCESS
+      })
     }
   }
 
@@ -112,7 +135,6 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
                 className='familierelasjoner__input'
                 menuPortalTarget={document.body}
                 value={relation.statsborgerskap}
-                includeList={landkoder ? landkoder.map((l: Kodeverk) => l.kode) : []}
                 onOptionSelected={(e: any) => updateCountry('statsborgerskap', e.value)}
               >
               </Ui.CountrySelect>
@@ -198,6 +220,16 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               </Ui.Nav.Knapp>
             </div>
           </div>
+          {alertMessage && alertType === types.FORM_ABROADPERSON_ADD_FAILURE && <div className='col-xs-12'>
+            <Ui.Alert
+              className='mt-4 mb-4 w-50'
+              type='client'
+              fixed={false}
+              message={t(alertMessage)}
+              status={alertStatus}
+              onClose={() => dispatch(clientClear())}
+            />
+          </div>}
         </Ui.Nav.Row>
       </Ui.Nav.Panel>
     </div>
