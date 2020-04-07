@@ -118,6 +118,7 @@ const Family: React.FC = (): JSX.Element => {
                 <AbroadPersonForm
                   className='m-2'
                   rolleList={rolleList}
+                  existingFamilyRelationships={(valgteFamilieRelasjoner || []).concat(remainingRelationsFromTPS || [])}
                 />
               ) : null}
               <Ui.Nav.Knapp className='m-2' onClick={toggleFormRelatedUtland}>

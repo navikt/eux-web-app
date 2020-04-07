@@ -13,6 +13,7 @@ import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import './TPSPersonForm.css'
 
 const mapState = (state: State): TPSPersonFormSelector => ({
   alertStatus: state.alert.clientErrorStatus,
@@ -57,7 +58,9 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
     if (personRelatert && !_personRelatert) {
       // Fjern relasjoner array, NOTE! det er kun relasjoner som har rolle.
       const person = (_.omit(personRelatert, 'relasjoner'))
-      const tpsperson = personRelatert && personRelatert.relasjoner ? personRelatert.relasjoner.find((elem: FamilieRelasjon) => elem.fnr === person.fnr) : undefined
+      const tpsperson = personRelatert && personRelatert.relasjoner ?
+        personRelatert.relasjoner.find((elem: FamilieRelasjon) => elem.fnr === person.fnr) :
+        undefined
       setTpsPerson(tpsperson)
       if (!tpsperson) {
         setPersonRelatert(person)
@@ -87,9 +90,9 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
   }
 
   return (
-    <div className={classNames(className, 'c-TPSPersonForm')}>
-      <Ui.Nav.Row className='annenpersonsok__skjema'>
-        <div className='col-xs-6'>
+    <div className='col-xs-12'>
+      <div className={classNames(className,  'c-TPSPersonForm', 'slideAnimate',  {feil: !!alertMessage})}>
+        <div className='w-50 mr-3'>
           <Ui.Nav.Input
             id='c-TPSPersonForm__input-fnr-or-dnr-id'
             label={t('ui:label-fnr-or-dnr')}
@@ -98,7 +101,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
             onChange={updateSok}
           />
         </div>
-        <div className='col-xs-6'>
+        <div className='w-50'>
           <Ui.Nav.Knapp
             disabled={person.fnr === sok}
             className='annenpersonsok__knapp'
@@ -107,40 +110,40 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
             {t('ui:form-search')}
           </Ui.Nav.Knapp>
         </div>
-        {(person.fnr === sok) ? (
-          <div className='col-xs-12'>
-            <Ui.Nav.AlertStripe className='w-50 mt-4 mb-4' type='advarsel'>
-              {t('ui:error-fnr-is-user', { sok: sok })}
-            </Ui.Nav.AlertStripe>
-          </div>
-        ) : null}
-        {tpsperson ? (
-          <div className='col-xs-12'>
-            <Ui.Nav.AlertStripe className='mt-4 mb-4' type='advarsel'>
-              {t('ui:error-relation-already-in-tps')}
-            </Ui.Nav.AlertStripe>
-          </div>
-        ) : null}
-        {alertMessage && alertType === types.SAK_PERSON_RELATERT_GET_FAILURE && <div className='col-xs-12'>
-          <Ui.Alert
-            className='mt-4 mb-4 w-50'
-            type='client'
-            fixed={false}
-            message={t(alertMessage)}
-            status={alertStatus}
-            onClose={() => dispatch(clientClear())}
+      </div>
+      {(person.fnr === sok) ? (
+        <div className='col-xs-12'>
+          <Ui.Nav.AlertStripe className='w-50 mt-4 mb-4' type='advarsel'>
+            {t('ui:error-fnr-is-user', { sok: sok })}
+          </Ui.Nav.AlertStripe>
+        </div>
+      ) : null}
+      {tpsperson ? (
+        <div className='col-xs-12'>
+          <Ui.Nav.AlertStripe className='mt-4 mb-4' type='advarsel'>
+            {t('ui:error-relation-already-in-tps')}
+          </Ui.Nav.AlertStripe>
+        </div>
+      ) : null}
+      {alertMessage && alertType === types.SAK_PERSON_RELATERT_GET_FAILURE && <div className='col-xs-12'>
+        <Ui.Alert
+          className='mt-4 mb-4 w-50'
+          type='client'
+          fixed={false}
+          message={t(alertMessage)}
+          status={alertStatus}
+          onClose={() => dispatch(clientClear())}
+        />
+      </div>}
+      {_personRelatert ? (
+        <div className='col-xs-12'>
+          <PersonCard
+            person={_personRelatert}
+            onAddClick={leggTilPersonOgRolle}
+            rolleList={rolleList}
           />
-        </div>}
-        {_personRelatert ? (
-          <div className='col-xs-12'>
-            <PersonCard
-              person={_personRelatert}
-              onAddClick={leggTilPersonOgRolle}
-              rolleList={rolleList}
-            />
-          </div>
-        ) : null}
-      </Ui.Nav.Row>
+        </div>
+      ) : null}
     </div>
   )
 }
