@@ -119,6 +119,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
                 id='id-land'
                 label={t('ui:label-landkode')}
                 className='familierelasjoner__input'
+                placeholder={t('ui:form-choose')}
                 menuPortalTarget={document.body}
                 value={relation.land}
                 includeList={landkoder ? landkoder.map((l: Kodeverk) => l.kode) : []}
@@ -132,6 +133,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
                 id='id-statsborgerskap'
                 label={t('ui:label-statsborgerskap')}
                 className='familierelasjoner__input'
+                placeholder={t('ui:form-choose')}
                 menuPortalTarget={document.body}
                 value={relation.statsborgerskap}
                 onOptionSelected={(e: any) => updateCountry('statsborgerskap', e.value)}
@@ -183,6 +185,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
                 label={t('ui:form-birthdate')}
                 className='familierelasjoner__input'
                 value={relation.fdato}
+                placeholder='ÅÅÅÅ-MM-DD'
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateRelation('fdato', e)}
                 onBlur={(e: React.FocusEvent<HTMLInputElement>) => updateDate('fdato', e)}
               />

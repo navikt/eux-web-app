@@ -72,7 +72,6 @@
   "label-sektor": "Fagområde",
   "label-startDate": "StartDato",
   "label-tema": "Velg behandlingstema",
-  "label-vedlegg-information": "Vedleggsinformasjon",
   "label-hide-form": "Skjul Skjema",
   "label-show-form": "Vis Skjema",
 
@@ -87,6 +86,9 @@
 
   "serverInternalError" : "Serverfeil",
   "serverAuthenticationError" : "Uautorisert",
+
+  "title-newcase": "Opprett Sak",
+  "title-vedlegg": "Vedleggsinformasjon",
 
   "validation-invalidFnr": "Fnr må ha 11 siffer",
   "validation-noDokumentID": "Du må taste inn en dokumentID",

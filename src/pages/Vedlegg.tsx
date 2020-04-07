@@ -104,7 +104,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
         <div className='col-sm-2' />
         <div className='col-sm-8 m-4'>
           <Ui.Nav.Systemtittel className='mt-4 mb-4'>
-            {t('ui:label-vedlegg-information')}
+            {t('ui:title-vedlegg')}
           </Ui.Nav.Systemtittel>
           <div className='noSlideAnimate'>
             <Ui.Nav.Input
