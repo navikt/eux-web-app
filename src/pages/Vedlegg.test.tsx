@@ -47,7 +47,7 @@ describe('pages/Vedlegg', () => {
   })
 
   beforeEach(() => {
-    wrapper = mount(<Vedlegg {...initialMockProps}/>)
+    wrapper = mount(<Vedlegg {...initialMockProps} />)
   })
 
   afterEach(() => {

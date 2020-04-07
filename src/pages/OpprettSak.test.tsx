@@ -44,13 +44,12 @@ describe('pages/OpprettSak/OpprettSak', () => {
   })
 
   beforeEach(() => {
-    wrapper = mount(<OpprettSak {...initialMockProps}/>)
+    wrapper = mount(<OpprettSak {...initialMockProps} />)
   })
 
   afterEach(() => {
     wrapper.unmount()
   })
-
 
   it('Renders', () => {
     expect(wrapper.isEmptyRender()).toBeFalsy()

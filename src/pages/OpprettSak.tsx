@@ -313,6 +313,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                   className='mb-4'
                   label={t('ui:label-landkode')}
                   lang='nb'
+                  placeholder={t('ui:form-choose')}
                   menuPortalTarget={document.body}
                   disabled={!isSomething(person)}
                   includeList={landkoder ? _.orderBy(landkoder, 'term').map((element: any) => element.kode) : []}
@@ -345,7 +346,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
               {valgtSektor ? (
                 <>
                   <div className='col-xs-12'>
-                    <div className={classNames('slideAnimate', 'opprettsak__tema', {feil: !!validation.tema})}>
+                    <div className={classNames('slideAnimate', 'opprettsak__tema', { feil: !!validation.tema })}>
                       <div className='w-50 mr-3'>
                         <Ui.Nav.Select
                           id='id-behandlings-tema'
@@ -395,22 +396,22 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
               ) : null}
               {visFagsakerListe ? (
                 <>
-                <div className='col-xs-6'>
-                  <Ui.Nav.Select
-                    id='id-fagsaker'
-                    className='mb-4'
-                    label={t('ui:label-fagsak')}
-                    value={valgtSaksId}
-                    onChange={onSakIDChange}
-                    feil={validation.saksId}
-                  >
-                    <option value=''>{t('ui:form-choose')}</option>
-                    {fagsaker ? _.orderBy(fagsaker, 'fagsakNr').map(element => (
-                      <option value={element.saksID} key={element.saksID}>{element.fagsakNr ? element.fagsakNr : element.saksID}</option>)
-                    ) : null}
-                  </Ui.Nav.Select>
-                </div>
-                <div className='col-xs-6'/>
+                  <div className='col-xs-6'>
+                    <Ui.Nav.Select
+                      id='id-fagsaker'
+                      className='mb-4'
+                      label={t('ui:label-fagsak')}
+                      value={valgtSaksId}
+                      onChange={onSakIDChange}
+                      feil={validation.saksId}
+                    >
+                      <option value=''>{t('ui:form-choose')}</option>
+                      {fagsaker ? _.orderBy(fagsaker, 'fagsakNr').map(element => (
+                        <option value={element.saksID} key={element.saksID}>{element.fagsakNr ? element.fagsakNr : element.saksID}</option>)
+                      ) : null}
+                    </Ui.Nav.Select>
+                  </div>
+                  <div className='col-xs-6' />
                 </>
               ) : null}
               {visArbeidsforhold ? (

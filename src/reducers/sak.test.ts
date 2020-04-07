@@ -45,7 +45,7 @@ describe('reducers/sak', () => {
       ...initialSakState,
       fagsaker: payload
     })
-  }),
+  })
 
   it('SAK_FAGSAKER_GET_FAILURE', () => {
     expect(
@@ -203,7 +203,7 @@ describe('reducers/sak', () => {
         ...initialSakState
       }, {
         type: types.SAK_PRELOAD,
-        payload: {foo: 'bar'}
+        payload: { foo: 'bar' }
       })
     ).toEqual({
       ...initialSakState,

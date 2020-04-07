@@ -3,7 +3,7 @@
   "app-title": "Velkommen til nEESSI",
 
   "error-fnr-is-user": "FNR {{sok}} tilhører bruker",
-  "error-abroadperson-exists": "Personner er allerede i familierelasjons liste",
+  "error-abroadperson-exists": "Du kan ikke legge til samme person flere ganger",
   "error-noDocumentFound": "Ingen dokumenter funnet",
   "error-personRelated-notFound": "Ingen person med FNR {{feiletSok}} funnet eller har en diskresjonskode",
   "error-person-notFound": "Brukeren du søker finnes ikke i TPS eller har en diskresjonskode",
@@ -20,10 +20,9 @@
   "form-createCaseInRina" : "Opprett sak i RINA",
   "form-createNewCaseInGosys" : "Lenke til Gosys",
   "form-choose" : "Velg",
-  "form-dokumentID": "Dokument ID finner du i Gosys",
   "form-family-added-all": "Du har lagt til alle som fantes i listen",
   "form-family-chosen": "Valgte familierelasjoner",
-  "form-family-description": "Vennligst velg familirelasjonen SEDen angår",
+  "form-family-description": "Vennligst velg familirelasjoner SEDen angår",
   "form-family-none-in-tps": "Ingen familierelasjoner funnet i TPS",
   "form-family-relations-in-tps": "Familierelasjoner registrert i TPS",
   "form-family-utland-title": "Person uten fødsels- eller d-nummer",
@@ -31,7 +30,6 @@
   "form-family-tps-title": "Person uten registrert relasjon i TPS",
   "form-fnr" : "Fødselsnummer",
   "form-goToRina" : "Gå direkte til Rina",
-  "form-journalpostID": "Journalpost ID finner du i Gosys",
   "form-remove" : "Fjern",
   "form-rolle": "Rolle",
   "form-resetForm": "AVSLUTT UTFYLLING",
@@ -41,6 +39,9 @@
   "form-seeCases": "Vis saker",
   "form-unknownRolle": "(ukjent rolle)",
   "form-unknownNationality": "(ukjent nasjonalitetet)",
+
+  "help-dokumentID": "DokumnetID finner du ved å åpne «Dokumentinformasjon» i journalposten i Gosys",
+  "help-journalpostID": "Journalpost ID finner du ved å åpne journalposten i Gosys",
 
   "label-aaRegistered" : "AA Registeret",
   "label-abroad-id": "Utenlandsk ID",
@@ -70,7 +71,8 @@
   "label-statsborgerskap" : "Statsborgerskap",
   "label-sektor": "Fagområde",
   "label-startDate": "StartDato",
-  "label-tema": "Velg behandlings tema",
+  "label-tema": "Velg behandlingstema",
+  "label-vedlegg-information": "Vedleggsinformasjon",
   "label-hide-form": "Skjul Skjema",
   "label-show-form": "Vis Skjema",
 
@@ -79,7 +81,7 @@
 
   "modal-abort-contentLabel": "Bekreft navigasjon tilbake til forsiden",
   "modal-abort-title": " Er du sikker på at du vil avbryte? ",
-  "modal-abort-description": "Informasjonen du har fyllt inn hittil vil ikke bli lagret.",
+  "modal-abort-description": "Informasjonen du har fylt inn hittil vil ikke bli lagret.",
   "modal-abort-yes-button": "JA, AVBRYT",
   "modal-abort-no-continue": "NEI, FORTSETT",
 

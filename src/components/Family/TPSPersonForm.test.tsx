@@ -32,7 +32,6 @@ describe('components/Family/TPSPersonForm', () => {
     wrapper.unmount()
   })
 
-
   it('Renders', () => {
     expect(wrapper.isEmptyRender()).toBeFalsy()
     expect(wrapper).toMatchSnapshot()
@@ -42,4 +41,3 @@ describe('components/Family/TPSPersonForm', () => {
     expect(wrapper.exists('.c-TPSPersonForm')).toBeTruthy()
   })
 })
-

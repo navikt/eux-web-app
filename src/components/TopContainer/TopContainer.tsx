@@ -30,7 +30,7 @@ const mapState = (state: State): TopContainerSelector => ({
 })
 
 export const TopContainer: React.FC<TopContainerProps> = ({
-  className, children, fluid = true, header
+  className, children, fluid = true
 }: TopContainerProps): JSX.Element => {
   const {
     serverErrorMessage, error, highContrast
@@ -54,7 +54,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
 
   return (
     <>
-      <Header className={classNames({ highContrast: highContrast })}/>
+      <Header className={classNames({ highContrast: highContrast })} />
       <Ui.Alert
         type='server'
         message={getServerErrorMessage()}

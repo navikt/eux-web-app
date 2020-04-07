@@ -16,7 +16,7 @@ describe('components/PersonCard/PersonCard', () => {
   }
 
   beforeEach(() => {
-    wrapper = mount(<PersonCard {...initialMockProps}/>)
+    wrapper = mount(<PersonCard {...initialMockProps} />)
   })
 
   afterEach(() => {

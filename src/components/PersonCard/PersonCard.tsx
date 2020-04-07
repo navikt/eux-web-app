@@ -70,6 +70,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
             <div className='panelheader__tittel'>
               <Ui.Nav.Undertittel className='panelheader__tittel__hoved'>
                 {fornavn}
+                {' '}
                 {etternavn}
                 {(_person as FamilieRelasjon).rolle ? ' - ' + rolleTerm : ''}
               </Ui.Nav.Undertittel>
