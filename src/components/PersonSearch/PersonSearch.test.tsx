@@ -29,13 +29,12 @@ describe('components/PersonSearch/PersonSearch', () => {
   })
 
   beforeEach(() => {
-    wrapper = mount(<PersonSearch {...initialMockProps}/>)
+    wrapper = mount(<PersonSearch {...initialMockProps} />)
   })
 
   afterEach(() => {
     wrapper.unmount()
   })
-
 
   it('Renders', () => {
     expect(wrapper.isEmptyRender()).toBeFalsy()

@@ -33,7 +33,6 @@ describe('components/Family/AbroadPersonForm', () => {
     wrapper.unmount()
   })
 
-
   it('Renders', () => {
     expect(wrapper.isEmptyRender()).toBeFalsy()
     expect(wrapper).toMatchSnapshot()

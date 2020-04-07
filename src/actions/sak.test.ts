@@ -44,7 +44,7 @@ describe('actions/app', () => {
           success: types.SAK_FAGSAKER_GET_SUCCESS,
           failure: types.SAK_FAGSAKER_GET_FAILURE
         },
-        url: sprintf(urls.API_SAK_FAGSAKER_URL, { fnr: mockFnr, sektor: mockSektor, tema: mockTema }),
+        url: sprintf(urls.API_SAK_FAGSAKER_URL, { fnr: mockFnr, sektor: mockSektor, tema: mockTema })
       }))
   })
 
@@ -133,7 +133,7 @@ describe('actions/app', () => {
       arbeidsforhold: [{
         ansettelsesPeriode: {
           fom: '01.01.1970',
-          tom: '01.01.2000',
+          tom: '01.01.2000'
         },
         arbeidsforholdIDnav: 123,
         navn: 'navn',
@@ -172,7 +172,7 @@ describe('actions/app', () => {
             arbeidsforhold: [{
               ansettelsesPeriode: {
                 fom: '01.01.1970',
-                tom: '01.01.2000',
+                tom: '01.01.2000'
               },
               arbeidsforholdIDnav: 123,
               navn: 'navn',
@@ -206,4 +206,3 @@ describe('actions/app', () => {
       })
   })
 })
-

@@ -2,7 +2,6 @@ import uiReducer, { initialUiState } from './ui'
 import * as types from 'constants/actionTypes'
 
 describe('reducers/ui', () => {
-
   it('UI_HIGHCONTRAST_TOGGLE', () => {
     expect(
       uiReducer(initialUiState, {

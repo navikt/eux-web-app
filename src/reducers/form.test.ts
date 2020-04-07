@@ -27,13 +27,13 @@ describe('reducers/app', () => {
   it('FORM_VALUE_SET', () => {
     expect(
       formReducer(initialFormState,
-      {
-        type: types.FORM_VALUE_SET,
-        payload: {
-          key: 'foo',
-          value: 'bar'
-        }
-      })
+        {
+          type: types.FORM_VALUE_SET,
+          payload: {
+            key: 'foo',
+            value: 'bar'
+          }
+        })
     ).toEqual({
       ...initialFormState,
       foo: 'bar'
@@ -46,9 +46,9 @@ describe('reducers/app', () => {
         ...initialFormState,
         arbeidsforhold: [1]
       }, {
-          type: types.FORM_ARBEIDSFORHOLD_ADD,
-          payload: 2
-        })
+        type: types.FORM_ARBEIDSFORHOLD_ADD,
+        payload: 2
+      })
     ).toEqual({
       ...initialFormState,
       arbeidsforhold: [1, 2]
@@ -74,14 +74,14 @@ describe('reducers/app', () => {
     expect(
       formReducer({
         ...initialFormState,
-        familierelasjoner: [{ fnr: 1}]
+        familierelasjoner: [{ fnr: 1 }]
       }, {
         type: types.FORM_FAMILIERELASJONER_ADD,
-        payload: {fnr: 2}
+        payload: { fnr: 2 }
       })
     ).toEqual({
       ...initialFormState,
-      familierelasjoner: [{fnr: 1}, {fnr: 2}]
+      familierelasjoner: [{ fnr: 1 }, { fnr: 2 }]
     })
   })
 
@@ -89,14 +89,14 @@ describe('reducers/app', () => {
     expect(
       formReducer({
         ...initialFormState,
-        familierelasjoner: [{fnr: 1}, {fnr: 2}]
+        familierelasjoner: [{ fnr: 1 }, { fnr: 2 }]
       }, {
         type: types.FORM_FAMILIERELASJONER_REMOVE,
-        payload: {fnr: 2}
+        payload: { fnr: 2 }
       })
     ).toEqual({
       ...initialFormState,
-      familierelasjoner: [{fnr: 1}]
+      familierelasjoner: [{ fnr: 1 }]
     })
   })
 })

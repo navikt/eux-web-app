@@ -33,7 +33,6 @@ describe('components/DocumentSearch/DocumentSearch', () => {
     wrapper.unmount()
   })
 
-
   it('Renders', () => {
     expect(wrapper.isEmptyRender()).toBeFalsy()
     expect(wrapper).toMatchSnapshot()

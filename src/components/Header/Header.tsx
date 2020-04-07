@@ -50,19 +50,19 @@ const Header: React.FC<HeaderProps> = ({ className }: HeaderProps): JSX.Element 
         <div className='c-header__tittel'><span>{t('ui:app-name')}</span></div>
       </div>
       <Ui.Nav.Undertittel>
-         {t('ui:app-title')}
+        {t('ui:app-title')}
       </Ui.Nav.Undertittel>
       <div className='c-header__saksbehandler'>
         <Ui.Nav.Lenke
-           className='c-header__highcontrast-link mr-3'
-            href='#highContrast'
-            onClick={(e: React.MouseEvent) => {
-              e.preventDefault()
-              e.stopPropagation()
-              handleHighContrastToggle()
-            }}
-          >
-            {t('ui:label-highContrast')}
+          className='c-header__highcontrast-link mr-3'
+          href='#highContrast'
+          onClick={(e: React.MouseEvent) => {
+            e.preventDefault()
+            e.stopPropagation()
+            handleHighContrastToggle()
+          }}
+        >
+          {t('ui:label-highContrast')}
         </Ui.Nav.Lenke>
         {saksbehandler && saksbehandler.navn ? (
           <div className='saksbehandler__navn'>

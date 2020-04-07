@@ -58,9 +58,9 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
     if (personRelatert && !_personRelatert) {
       // Fjern relasjoner array, NOTE! det er kun relasjoner som har rolle.
       const person = (_.omit(personRelatert, 'relasjoner'))
-      const tpsperson = personRelatert && personRelatert.relasjoner ?
-        personRelatert.relasjoner.find((elem: FamilieRelasjon) => elem.fnr === person.fnr) :
-        undefined
+      const tpsperson = personRelatert && personRelatert.relasjoner
+        ? personRelatert.relasjoner.find((elem: FamilieRelasjon) => elem.fnr === person.fnr)
+        : undefined
       setTpsPerson(tpsperson)
       if (!tpsperson) {
         setPersonRelatert(person)
@@ -91,7 +91,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
 
   return (
     <div className='col-xs-12'>
-      <div className={classNames(className,  'c-TPSPersonForm', 'slideAnimate',  {feil: !!alertMessage})}>
+      <div className={classNames(className, 'c-TPSPersonForm', 'slideAnimate', { feil: !!alertMessage })}>
         <div className='w-50 mr-3'>
           <Ui.Nav.Input
             id='c-TPSPersonForm__input-fnr-or-dnr-id'
@@ -125,16 +125,18 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
           </Ui.Nav.AlertStripe>
         </div>
       ) : null}
-      {alertMessage && alertType === types.SAK_PERSON_RELATERT_GET_FAILURE && <div className='col-xs-12'>
-        <Ui.Alert
-          className='mt-4 mb-4 w-50'
-          type='client'
-          fixed={false}
-          message={t(alertMessage)}
-          status={alertStatus}
-          onClose={() => dispatch(clientClear())}
-        />
-      </div>}
+      {alertMessage && alertType === types.SAK_PERSON_RELATERT_GET_FAILURE && (
+        <div className='col-xs-12'>
+          <Ui.Alert
+            className='mt-4 mb-4 w-50'
+            type='client'
+            fixed={false}
+            message={t(alertMessage)}
+            status={alertStatus}
+            onClose={() => dispatch(clientClear())}
+          />
+        </div>
+      )}
       {_personRelatert ? (
         <div className='col-xs-12'>
           <PersonCard

@@ -22,13 +22,12 @@ describe('components/Header/Header', () => {
   })
 
   beforeEach(() => {
-    wrapper = mount(<Header {...initialMockProps}/>)
+    wrapper = mount(<Header {...initialMockProps} />)
   })
 
   afterEach(() => {
     wrapper.unmount()
   })
-
 
   it('Renders', () => {
     expect(wrapper.isEmptyRender()).toBeFalsy()

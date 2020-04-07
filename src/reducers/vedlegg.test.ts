@@ -1,7 +1,5 @@
-import { vedlegg } from 'reducers/index'
-import loadingReducer, { initialLoadingState } from 'reducers/loading'
-import vedleggReducer, { initialVedleggState } from './vedlegg'
 import * as types from 'constants/actionTypes'
+import vedleggReducer, { initialVedleggState } from './vedlegg'
 
 describe('reducers/app', () => {
   it('VEDLEGG_POST_SUCCESS', () => {

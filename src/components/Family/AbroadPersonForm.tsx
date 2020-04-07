@@ -123,8 +123,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
                 value={relation.land}
                 includeList={landkoder ? landkoder.map((l: Kodeverk) => l.kode) : []}
                 onOptionSelected={(e: any) => updateCountry('land', e.value)}
-              >
-              </Ui.CountrySelect>
+              />
             </div>
           </div>
           <div className='col-xs-4'>
@@ -136,8 +135,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
                 menuPortalTarget={document.body}
                 value={relation.statsborgerskap}
                 onOptionSelected={(e: any) => updateCountry('statsborgerskap', e.value)}
-              >
-              </Ui.CountrySelect>
+              />
             </div>
           </div>
           <div className='col-xs-6'>
@@ -220,16 +218,18 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               </Ui.Nav.Knapp>
             </div>
           </div>
-          {alertMessage && alertType === types.FORM_ABROADPERSON_ADD_FAILURE && <div className='col-xs-12'>
-            <Ui.Alert
-              className='mt-4 mb-4 w-50'
-              type='client'
-              fixed={false}
-              message={t(alertMessage)}
-              status={alertStatus}
-              onClose={() => dispatch(clientClear())}
-            />
-          </div>}
+          {alertMessage && alertType === types.FORM_ABROADPERSON_ADD_FAILURE && (
+            <div className='col-xs-12'>
+              <Ui.Alert
+                className='mt-4 mb-4 w-50'
+                type='client'
+                fixed={false}
+                message={t(alertMessage)}
+                status={alertStatus}
+                onClose={() => dispatch(clientClear())}
+              />
+            </div>
+          )}
         </Ui.Nav.Row>
       </Ui.Nav.Panel>
     </div>

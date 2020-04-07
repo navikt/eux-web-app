@@ -103,32 +103,43 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
       <Ui.Nav.Row className='m-0'>
         <div className='col-sm-2' />
         <div className='col-sm-8 m-4'>
-          <Ui.Nav.Systemtittel className='mt-4 mb-4'>Vedleggs informasjon</Ui.Nav.Systemtittel>
-          <div className='slideAnimate'>
-            <Ui.Nav.Hjelpetekst id='journalPostID' type='hoyre'>
-              {t('ui:form-journalpostID')}
-            </Ui.Nav.Hjelpetekst>
+          <Ui.Nav.Systemtittel className='mt-4 mb-4'>
+            {t('ui:label-vedlegg-information')}
+          </Ui.Nav.Systemtittel>
+          <div className='noSlideAnimate'>
             <Ui.Nav.Input
               id='vedlegg-journalpostID-id'
               className='mb-4'
-              label={t('ui:label-journalpostID')}
+              label={(
+                <div>
+                  {t('ui:label-journalpostID')}
+                  <Ui.Nav.Hjelpetekst id='journalPostID'>
+                    {t('ui:help-journalpostID')}
+                  </Ui.Nav.Hjelpetekst>
+                </div>
+              )}
               onChange={onjournalpostIDChange}
               feil={validation.journalpostID}
             />
           </div>
-          <div className='slideAnimate' style={{ animationDelay: '0.15s' }}>
-            <Ui.Nav.Hjelpetekst id='dokumentID' type='under'>
-              {t('ui:form-dokumentID')}
-            </Ui.Nav.Hjelpetekst>
+          <div className='noSlideAnimate' style={{ animationDelay: '0.15s' }}>
+
             <Ui.Nav.Input
               id='vedlegg-dokumentID-id'
               className='mb-4'
-              label={t('ui:label-dokumentID')}
+              label={(
+                <div>
+                  {t('ui:label-dokumentID')}
+                  <Ui.Nav.Hjelpetekst id='dokumentID'>
+                    {t('ui:help-dokumentID')}
+                  </Ui.Nav.Hjelpetekst>
+                </div>
+              )}
               onChange={onDokumentIDChange}
               feil={validation.dokumentID}
             />
           </div>
-          <div className='slideAnimate' style={{ animationDelay: '0.3s' }}>
+          <div className='noSlideAnimate' style={{ animationDelay: '0.0s' }}>
             <DocumentSearch
               className='mb-4'
               validation={validation}

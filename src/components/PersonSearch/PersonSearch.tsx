@@ -106,14 +106,16 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
           {gettingPerson ? <Ui.WaitingPanel size='S' message={t('ui:form-searching')} oneLine /> : t('ui:form-search')}
         </Ui.Nav.Knapp>
       </div>
-      {alertMessage && alertType === types.SAK_PERSON_GET_FAILURE && <Ui.Alert
-        className='mt-4 mb-4 w-50'
-        type='client'
-        fixed={false}
-        message={t(alertMessage)}
-        status={alertStatus}
-        onClose={() => dispatch(clientClear())}
-      />}
+      {alertMessage && alertType === types.SAK_PERSON_GET_FAILURE && (
+        <Ui.Alert
+          className='mt-4 mb-4 w-50'
+          type='client'
+          fixed={false}
+          message={t(alertMessage)}
+          status={alertStatus}
+          onClose={() => dispatch(clientClear())}
+        />
+      )}
       {person && isPersonValid(person) ? <PersonCard className='neutral' person={person} onRemoveClick={onRemovePerson} /> : null}
     </div>
   )

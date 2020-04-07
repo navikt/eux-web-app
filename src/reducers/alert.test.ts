@@ -45,7 +45,6 @@ describe('reducers/alert', () => {
     })
   })
 
-
   it('UNKNOWN_FAILURE', () => {
     expect(
       alertReducer(initialAlertState, {

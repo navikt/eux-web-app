@@ -3,11 +3,10 @@ import * as types from 'constants/actionTypes'
 import { Arbeidsforholdet } from 'declarations/types'
 
 describe('actions/form', () => {
-
   const mockArbeidsforhold: Arbeidsforholdet = {
     ansettelsesPeriode: {
       fom: '01.01.1970',
-      tom: '01.01.2000',
+      tom: '01.01.2000'
     },
     arbeidsforholdIDnav: 123,
     navn: 'navn',
