@@ -245,7 +245,9 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
       <Ui.Nav.Row className='m-0 p-4'>
         <div className='col-sm-1' />
         <div className='col-sm-10'>
-          <Ui.Nav.Systemtittel className='mb-4'>Opprett Sak</Ui.Nav.Systemtittel>
+          <Ui.Nav.Systemtittel className='mb-4'>
+            {t('ui:title-newcase')}
+          </Ui.Nav.Systemtittel>
           <PersonSearch
             className='slideAnimate'
             validation={validation}
