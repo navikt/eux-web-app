@@ -60,6 +60,12 @@ export interface ServerInfo {
   gosysURL: string;
   veraURL: string;
 }
+export type Enheter = Array<Enhet>
+
+export interface Enhet {
+  enhetId: string;
+  navn: string;
+}
 
 export interface OpprettetSak {
   rinasaksnummer: string;

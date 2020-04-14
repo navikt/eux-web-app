@@ -37,6 +37,19 @@ describe('actions/app', () => {
       }))
   })
 
+  it('getEnheter()', () => {
+    appActions.getEnheter()
+    expect(realCall)
+      .toBeCalledWith(expect.objectContaining({
+        type: {
+          request: types.APP_ENHETER_GET_REQUEST,
+          success: types.APP_ENHETER_GET_SUCCESS,
+          failure: types.APP_ENHETER_GET_FAILURE
+        },
+        url: urls.API_ENHETER_URL
+      }))
+  })
+
   it('getServerinfo()', () => {
     appActions.getServerinfo()
     expect(realCall)

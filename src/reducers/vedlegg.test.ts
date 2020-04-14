@@ -1,5 +1,5 @@
 import * as types from 'constants/actionTypes'
-import vedleggReducer, { initialVedleggState } from './vedlegg'
+import vedleggReducer, { initialVedleggState, VedleggState } from './vedlegg'
 
 describe('reducers/app', () => {
   it('VEDLEGG_POST_SUCCESS', () => {
@@ -87,8 +87,9 @@ describe('reducers/app', () => {
 
   it('APP_CLEAN_DATA', () => {
     expect(
-      vedleggReducer({}, {
-        type: types.APP_CLEAN_DATA
+      vedleggReducer({} as VedleggState, {
+        type: types.APP_CLEAN_DATA,
+        payload: undefined
       })
     ).toEqual(initialVedleggState)
   })

@@ -29,3 +29,14 @@ export const getServerinfo: ActionCreator<ThunkResult<ActionWithPayload>> = (): 
     }
   })
 }
+
+export const getEnheter: ActionCreator<ThunkResult<ActionWithPayload>> = (): ThunkResult<ActionWithPayload> => {
+  return api.realCall({
+    url: urls.API_ENHETER_URL,
+    type: {
+      request: types.APP_ENHETER_GET_REQUEST,
+      success: types.APP_ENHETER_GET_SUCCESS,
+      failure: types.APP_ENHETER_GET_FAILURE
+    }
+  })
+}
