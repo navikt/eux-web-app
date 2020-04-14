@@ -213,10 +213,17 @@ describe('reducers/sak', () => {
 
   it('APP_CLEAN_DATA', () => {
     expect(
-      sakReducer({} as SakState, {
+      sakReducer({
+        ...initialSakState,
+        kjoenn: [{term: 'kvinne', kode: 'K'}],
+        person: '123'
+      }, {
         type: types.APP_CLEAN_DATA,
         payload: {}
       })
-    ).toEqual(initialSakState)
+    ).toEqual({
+      ...initialSakState,
+      kjoenn: [{term: 'kvinne', kode: 'K'}]
+    })
   })
 })
