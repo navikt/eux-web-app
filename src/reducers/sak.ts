@@ -126,7 +126,16 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
       }
 
     case types.APP_CLEAN_DATA:
-      return initialSakState
+      // reset all but stuff that comes from eessi-kodeverk
+      return {
+        ...state,
+        arbeidsforhold: undefined,
+        fagsaker: undefined,
+        institusjoner: undefined,
+        person: undefined,
+        opprettetSak: undefined,
+        personRelatert: undefined
+      }
 
     default:
 
