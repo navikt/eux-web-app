@@ -1,15 +1,17 @@
 import * as types from 'constants/actionTypes'
-import { Saksbehandler, ServerInfo } from 'declarations/types'
+import { Enheter, Saksbehandler, ServerInfo } from 'declarations/types'
 import { ActionWithPayload } from 'eessi-pensjon-ui/dist/declarations/types'
 
 export interface AppState {
   saksbehandler: Saksbehandler | undefined;
   serverinfo: ServerInfo | undefined;
+  enheter: Enheter | undefined;
 }
 
 export const initialAppState: AppState = {
   saksbehandler: undefined,
-  serverinfo: undefined
+  serverinfo: undefined,
+  enheter: undefined
 }
 
 const appReducer = (state: AppState = initialAppState, action: ActionWithPayload) => {
@@ -24,6 +26,12 @@ const appReducer = (state: AppState = initialAppState, action: ActionWithPayload
       return {
         ...state,
         serverinfo: action.payload
+      }
+
+    case types.APP_ENHETER_GET_SUCCESS:
+      return {
+        ...state,
+        enheter: action.payload
       }
 
     default:

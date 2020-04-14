@@ -28,6 +28,7 @@ if (!IS_PRODUCTION) {
 
 store.dispatch(sakActions.preload())
 store.dispatch(appActions.getSaksbehandler())
+store.dispatch(appActions.getEnheter())
 store.dispatch(appActions.getServerinfo())
 
 ReactDOM.render(

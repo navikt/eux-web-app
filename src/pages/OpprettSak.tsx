@@ -6,7 +6,7 @@ import Family from 'components/Family/Family'
 import PersonSearch from 'components/PersonSearch/PersonSearch'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { State } from 'declarations/reducers'
-import { FagSaker, Person, Validation } from 'declarations/types'
+import { Enheter, FagSaker, Person, Validation } from 'declarations/types'
 import * as EKV from 'eessi-kodeverk'
 import Ui from 'eessi-pensjon-ui'
 import _ from 'lodash'
@@ -33,6 +33,7 @@ export interface OpprettSakSelector {
   landkoder: any;
   opprettetSak: any;
   sektor: any;
+  enheter: Enheter | undefined;
   person: Person | undefined;
   sedtyper: any;
   sendingSak: boolean;
@@ -40,6 +41,7 @@ export interface OpprettSakSelector {
   tema: any;
 
   valgtFnr: any;
+  valgtUnit: any;
   valgtBucType: any;
   valgtSedType: any;
   valgtSektor: any;
@@ -52,39 +54,41 @@ export interface OpprettSakSelector {
 }
 
 const mapState = (state: State): OpprettSakSelector => ({
-  // kodeverk data
+  enheter: state.app.enheter,
+  serverInfo: state.app.serverinfo,
+
+  sendingSak: state.loading.sendingSak,
+
+  arbeidsforhold: state.sak.arbeidsforhold,
   buctyper: state.sak.buctyper,
-  sedtyper: state.sak.sedtyper,
+  fagsaker: state.sak.fagsaker,
   kodemaps: state.sak.kodemaps,
+  institusjoner: state.sak.institusjoner,
   landkoder: state.sak.landkoder,
+  opprettetSak: state.sak.opprettetSak,
+  person: state.sak.person,
+  sedtyper: state.sak.sedtyper,
   sektor: state.sak.sektor,
   tema: state.sak.tema,
 
-  fagsaker: state.sak.fagsaker,
-  institusjoner: state.sak.institusjoner,
-  opprettetSak: state.sak.opprettetSak,
-  person: state.sak.person,
-  sendingSak: state.loading.sendingSak,
-  serverInfo: state.app.serverinfo,
-  arbeidsforhold: state.sak.arbeidsforhold,
-
-  // entered data
-  valgtFnr: state.form.fnr,
+  valgteArbeidsforhold: state.form.arbeidsforhold,
   valgtBucType: state.form.buctype,
+  valgteFamilieRelasjoner: state.form.familierelasjoner,
+  valgtFnr: state.form.fnr,
+  valgtInstitusjon: state.form.institusjon,
+  valgtLandkode: state.form.landkode,
+  valgtSaksId: state.form.saksId,
   valgtSedType: state.form.sedtype,
   valgtSektor: state.form.sektor,
-  valgtLandkode: state.form.landkode,
-  valgtInstitusjon: state.form.institusjon,
-  valgtSaksId: state.form.saksId,
   valgtTema: state.form.tema,
-  valgteFamilieRelasjoner: state.form.familierelasjoner,
-  valgteArbeidsforhold: state.form.arbeidsforhold
+  valgtUnit: state.form.unit
 })
 
 const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): JSX.Element => {
   const {
-    arbeidsforhold, buctyper, sedtyper, fagsaker, institusjoner, kodemaps, landkoder, opprettetSak, person, sektor, sendingSak,
-    serverInfo, tema, valgteArbeidsforhold, valgtBucType, valgtFnr, valgteFamilieRelasjoner, valgtInstitusjon, valgtLandkode, valgtSedType, valgtSektor, valgtSaksId, valgtTema
+    enheter, serverInfo, sendingSak, arbeidsforhold, buctyper, fagsaker, sedtyper, institusjoner, kodemaps,
+    landkoder, opprettetSak, person, sektor, tema, valgteArbeidsforhold, valgtBucType, valgteFamilieRelasjoner,
+    valgtFnr, valgtInstitusjon, valgtLandkode, valgtSaksId, valgtSedType, valgtSektor, valgtTema, valgtUnit
   }: OpprettSakSelector = useSelector<State, OpprettSakSelector>(mapState)
   const dispatch = useDispatch()
   const { t } = useTranslation()
@@ -176,8 +180,15 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
     history.push('/')
   }
 
+  const onUnitChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+    resetValidation('unit')
+    dispatch(formActions.set('unit', e.target.value))
+  }
+
   const onSektorChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     resetValidation('sektor')
+    resetValidation('unit')
+    dispatch(formActions.set('unit', undefined))
     dispatch(formActions.set('sektor', e.target.value))
   }
 
@@ -273,7 +284,22 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                   ) : null}
                 </Ui.Nav.Select>
               </div>
-              <div className='col-xs-6' />
+              <div className='col-xs-6 slideAnimate' style={{ animationDelay: '0.15s' }}>
+                <Ui.Nav.Select
+                  className='mb-4'
+                  id='id-enhet'
+                  disabled={!(valgtSektor === 'HZ' || valgtSektor === 'SI')}
+                  label={t('ui:label-unit')}
+                  onChange={onUnitChange}
+                  value={valgtUnit}
+                  feil={validation.unit}
+                >
+                  <option value=''>{t('ui:form-choose')}</option>)
+                  {sektor ? _.orderBy(enheter, 'navn').map((element: any) => (
+                    <option value={element.enhetId} key={element.enhetId}>{element.navn}</option>)
+                  ) : null}
+                </Ui.Nav.Select>
+              </div>
               <div className='col-xs-6 slideAnimate' style={{ animationDelay: '0.15s' }}>
                 <Ui.Nav.Select
                   className='mb-4'

@@ -5,6 +5,7 @@ import { Action } from 'redux'
 
 export interface FormState {
   fnr: any;
+  unit: any;
   sedtype: any;
   buctype: any;
   sektor: any;
@@ -18,6 +19,7 @@ export interface FormState {
 
 export const initialFormState: FormState = {
   fnr: undefined,
+  unit: undefined,
   sedtype: undefined,
   buctype: undefined,
   sektor: undefined,
