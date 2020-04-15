@@ -152,7 +152,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
 
   const skjemaSubmit = (): void => {
     if (isValid(validate())) {
-      dispatch(sakActions.createSak({
+      let payload = {
         buctype: valgtBucType,
         fnr: valgtFnr,
         landKode: valgtLandkode,
@@ -162,8 +162,10 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
         sektor: valgtSektor,
         tema: valgtTema,
         familierelasjoner: valgteFamilieRelasjoner,
-        arbeidsforhold: valgteArbeidsforhold
-      }))
+        arbeidsforhold: valgteArbeidsforhold,
+        enhet: valgtUnit
+      }
+      dispatch(sakActions.createSak(payload))
     }
   }
 

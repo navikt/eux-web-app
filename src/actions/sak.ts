@@ -99,6 +99,9 @@ export const createSak: ActionCreator<ThunkResult<ActionWithPayload>> = (data: a
       arbeidsforhold: [],
       familierelasjoner: []
     } as any
+  } as any
+  if (data.enhet) {
+    payload.enhet = data.enhet
   }
   if (data.arbeidsforhold.length > 0) {
     payload.tilleggsopplysninger.arbeidsforhold = data.arbeidsforhold
