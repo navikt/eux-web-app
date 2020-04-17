@@ -56,7 +56,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
     const value = event.currentTarget.value
     setRelation({
       ...relation,
-      [felt]: value
+      [felt]: value ? value.trim() : ''
     })
   }
 
@@ -69,8 +69,8 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
   }
 
   const canAddRelation = (): boolean => {
-    const { fnr, rolle, land, statsborgerskap, kjoenn, fornavn, etternavn } = relation
-    return !_.isEmpty(fnr) && !_.isEmpty(rolle) && !_.isEmpty(land) && !_.isEmpty(statsborgerskap) && !_.isEmpty(kjoenn) && !_.isEmpty(fornavn) && !_.isEmpty(etternavn)
+    const { fnr, rolle, land, statsborgerskap, kjoenn, fornavn, etternavn, fdato } = relation
+    return !_.isEmpty(fnr) && !_.isEmpty(rolle) && !_.isEmpty(land) && !_.isEmpty(statsborgerskap) && !_.isEmpty(kjoenn) && !_.isEmpty(fornavn) && !_.isEmpty(etternavn) && !_.isEmpty(fdato)
   }
 
   const conflictingPerson = (): boolean => {

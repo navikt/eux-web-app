@@ -1,6 +1,7 @@
 import { clientClear, clientError } from 'actions/alert'
 import classNames from 'classnames'
 import Header from 'components/Header/Header'
+import Version from 'components/Version/Version'
 import { State } from 'declarations/reducers'
 import Ui from 'eessi-pensjon-ui'
 import _ from 'lodash'
@@ -64,6 +65,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
       <main id='main' role='main' className={classNames(className, '_container', 'p-0', { 'container-fluid': fluid, highContrast: highContrast })}>
         {children}
       </main>
+      <Version />
     </>
   )
 }

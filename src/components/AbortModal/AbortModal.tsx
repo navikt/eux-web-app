@@ -18,6 +18,7 @@ const AbortModal: React.FC<AbortModalProps> = ({ closeModal, onAbort, isOpen = f
   const { t } = useTranslation()
   return (
     <Ui.Nav.Modal
+      ariaHideApp={false}
       isOpen={isOpen}
       onRequestClose={closeModal}
       closeButton={false}
