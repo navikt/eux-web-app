@@ -30,8 +30,8 @@ const Version = () => {
 
   const copyToClipBoard = () => {
     const clientVersionString = `WEB; Versjon: ${versjon()}, Byggetidspunkt: ${byggTidspunkt()}, Byggeversjon: ${byggVersjon()}, Branch: ${branchVersjon()}, eessi-kodeverk:${eessiKodeverk()}, React:${reactLibVersion()}`
-    const { namespace, cluster, branchName, veraURL, longVersionHash } = serverInfo!
-    const serverVersionString = `SERVER; Namespace: ${namespace}, Cluster: ${cluster} BranchName: ${branchName}, Vera: ${veraURL}, VersionHash: ${longVersionHash}, Branch: ${branchVersjon()}`
+    const { namespace, cluster, branchName, veraUrl, gosysURL, longVersionHash } = serverInfo!
+    const serverVersionString = `SERVER; Namespace: ${namespace}, Cluster: ${cluster} BranchName: ${branchName}, Vera: ${veraUrl}, Gosys: ${gosysURL}, VersionHash: ${longVersionHash}, Branch: ${branchVersjon()}`
     const versionString = clientVersionString + '\n' + serverVersionString
     Clipboard.copy(versionString)
   }
@@ -51,7 +51,8 @@ const Version = () => {
         <dt>Namespace:</dt><dd>{serverInfo.namespace}</dd>
         <dt>Cluster:</dt><dd>{serverInfo.cluster}</dd>
         <dt>BranchName:</dt><dd>{serverInfo.branchName}</dd>
-        <dt>Vera:</dt><dd>{serverInfo.veraURL}</dd>
+        <dt>Vera:</dt><dd>{serverInfo.veraUrl}</dd>
+        <dt>Gosys:</dt><dd>{serverInfo.gosysURL}</dd>
         <dt>VersionHash:</dt><dd>{serverInfo.longVersionHash}</dd>
       </dl>
       <button className='App__versjonering__kopierknapp' onClick={copyToClipBoard}>Klikk for å kopiere versjonsinfo</button>
