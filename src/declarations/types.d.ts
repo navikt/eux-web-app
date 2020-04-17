@@ -58,7 +58,8 @@ export interface ServerInfo {
   branchName: string;
   longVersionHash: string;
   gosysURL: string;
-  veraURL: string;
+  veraUrl: string;
+  gosysURL: string;
 }
 export type Enheter = Array<Enhet>
 

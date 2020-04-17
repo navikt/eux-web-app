@@ -63,7 +63,7 @@ export const ServerInfoPropType = PT.shape({
   branchName: PT.string,
   longVersionHash: PT.string,
   gosysURL: PT.string,
-  veraURL: PT.string
+  veraUrl: PT.string
 })
 
 export const opprettetSakPropType = PT.shape({
