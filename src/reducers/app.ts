@@ -17,6 +17,9 @@ export const initialAppState: AppState = {
 const appReducer = (state: AppState = initialAppState, action: ActionWithPayload) => {
   switch (action.type) {
     case types.APP_SAKSBEHANDLER_GET_SUCCESS:
+      try {
+        (window as any).frontendlogger.info(action.payload)
+      } catch (e) {}
       return {
         ...state,
         saksbehandler: action.payload

@@ -1,5 +1,5 @@
 import * as types from 'constants/actionTypes'
-import sakReducer, { initialSakState, SakState } from './sak'
+import sakReducer, { initialSakState } from './sak'
 
 describe('reducers/sak', () => {
   it('SAK_ARBEIDSFORHOLD_GET_SUCCESS', () => {
@@ -215,7 +215,7 @@ describe('reducers/sak', () => {
     expect(
       sakReducer({
         ...initialSakState,
-        kjoenn: [{term: 'kvinne', kode: 'K'}],
+        kjoenn: [{ term: 'kvinne', kode: 'K' }],
         person: '123'
       }, {
         type: types.APP_CLEAN_DATA,
@@ -223,7 +223,7 @@ describe('reducers/sak', () => {
       })
     ).toEqual({
       ...initialSakState,
-      kjoenn: [{term: 'kvinne', kode: 'K'}]
+      kjoenn: [{ term: 'kvinne', kode: 'K' }]
     })
   })
 })

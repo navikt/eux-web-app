@@ -76,5 +76,6 @@ exports[`components/TopContainer Renders 1`] = `
       id="TEST_CHILD"
     />
   </main>
+  <Version />
 </TopContainer>
 `;

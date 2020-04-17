@@ -152,7 +152,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
 
   const skjemaSubmit = (): void => {
     if (isValid(validate())) {
-      let payload = {
+      const payload = {
         buctype: valgtBucType,
         fnr: valgtFnr,
         landKode: valgtLandkode,

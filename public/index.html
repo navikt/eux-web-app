@@ -4,7 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="git_version" content="%GIT_VERSION%">
-    <title>nEESSI - www.nav.no</title>
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+
+    <script type="application/javascript">
+      window.frontendlogger = { info: function(){}, warn: function(){}, error: function(){} };
+      window.frontendlogger.appname = '%REACT_APP_NAME%';
+      window.frontendlogger.context = '%REACT_APP_LOCAL_CONTEXT%';
+    </script>
+    <script type="application/javascript" src="%REACT_APP_JAVA_LOCAL_HOST%/frontendlogger/logger.js"></script>
+    <title>%REACT_APP_NAME% %REACT_APP_VERSION%</title>
   </head>
   <body>
     <div id="root"></div>
