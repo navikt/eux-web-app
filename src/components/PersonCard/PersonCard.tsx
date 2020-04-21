@@ -13,17 +13,18 @@ import './PersonCard.css'
 export interface PersonCardProps {
   className?: string,
   familierelasjonKodeverk?: Array<Kodeverk>;
-  onAddClick?: (p: Person) => void;
-  onRemoveClick?: (p: Person) => void;
-  person: Person | FamilieRelasjon,
+  onAddClick?: (p: Person | FamilieRelasjon) => void;
+  onRemoveClick?: (p: Person | FamilieRelasjon) => void;
+  person: Person | FamilieRelasjon;
   rolleList?: Array<Kodeverk>;
 }
 
 const PersonCard: React.FC<PersonCardProps> = ({
   className, familierelasjonKodeverk, onAddClick, onRemoveClick, person, rolleList
 }: PersonCardProps): JSX.Element => {
-  const [_person, setPerson] = useState<Person | FamilieRelasjon>(person)
-  const { fnr, fdato, fornavn, etternavn, kjoenn } = _person
+  // const [_person, setPerson] = useState<Person | FamilieRelasjon>(person)
+  const [rolle, setRolle] = useState<any>(undefined)
+  const { fnr, fdato, fornavn, etternavn, kjoenn } = person
   const { t } = useTranslation()
 
   let kind: string = 'nav-unknown-icon'
@@ -35,13 +36,13 @@ const PersonCard: React.FC<PersonCardProps> = ({
 
   let rolleTerm
 
-  if ((_person as FamilieRelasjon).rolle && (familierelasjonKodeverk || rolleList)) {
+  if ((person as FamilieRelasjon).rolle && (familierelasjonKodeverk || rolleList)) {
     let rolleObjekt
     if (familierelasjonKodeverk) {
-      rolleObjekt = familierelasjonKodeverk.find((item: any) => item.kode === (_person as FamilieRelasjon).rolle)
+      rolleObjekt = familierelasjonKodeverk.find((item: any) => item.kode === (person as FamilieRelasjon).rolle)
     }
     if (rolleList) {
-      rolleObjekt = rolleList.find((item: any) => item.kode === (_person as FamilieRelasjon).rolle)
+      rolleObjekt = rolleList.find((item: any) => item.kode === (person as FamilieRelasjon).rolle)
     }
     const kodeverkObjektTilTerm = (kodeverkObjekt: any) => {
       if (!kodeverkObjekt || !kodeverkObjekt.term) return undefined
@@ -54,11 +55,26 @@ const PersonCard: React.FC<PersonCardProps> = ({
     }
   }
 
+  const _onRemoveClick = (p: Person | FamilieRelasjon) => {
+    if (rolle) {
+      (p as FamilieRelasjon).rolle = rolle
+    }
+    if (onRemoveClick) {
+      onRemoveClick(p)
+    }
+  }
+
+  const _onAddClick = (p: Person | FamilieRelasjon) => {
+    if (rolle) {
+      (p as FamilieRelasjon).rolle = rolle
+    }
+    if (onAddClick) {
+      onAddClick(p)
+    }
+  }
+
   const updateFamilyRelation = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setPerson({
-      ..._person,
-      rolle: e.target.value
-    })
+    setRolle(e.target.value)
   }
 
   return (
@@ -72,7 +88,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
                 {fornavn}
                 {' '}
                 {etternavn}
-                {(_person as FamilieRelasjon).rolle ? ' - ' + rolleTerm : ''}
+                {(person as FamilieRelasjon).rolle ? ' - ' + rolleTerm : ''}
               </Ui.Nav.Undertittel>
               <div className='panelheader__undertittel'>
                 <div>{t('ui:form-fnr') + ' : ' + fnr}</div>
@@ -85,7 +101,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
               id='id-familirelasjon-rolle'
               label={t('ui:label-familyRelationship')}
               className='familierelasjoner__input'
-              value={(_person as FamilieRelasjon).rolle}
+              value={(person as FamilieRelasjon).rolle}
               onChange={updateFamilyRelation}
             >
               <option value=''>{t('ui:form-choose')}</option>
@@ -97,7 +113,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
           {_.isFunction(onRemoveClick) ? (
             <Ui.Nav.Knapp
               className='familierelasjoner__knapp familierelasjoner__knapp--slett'
-              onClick={() => onRemoveClick(_person)}
+              onClick={() => _onRemoveClick(person)}
             >
               <Ui.Icons kind='trashcan' color='#0067C5' size='20' className='familierelasjoner__knapp__ikon mr-3' />
               <div className='familierelasjoner__knapp__label'>{t('ui:form-remove')}</div>
@@ -106,8 +122,8 @@ const PersonCard: React.FC<PersonCardProps> = ({
           {_.isFunction(onAddClick) ? (
             <Ui.Nav.Knapp
               className='familierelasjoner__knapp familierelasjoner__knapp--legg-til'
-              disabled={rolleList !== undefined && !(_person as FamilieRelasjon).rolle}
-              onClick={() => onAddClick(_person)}
+              disabled={rolleList !== undefined && !rolle}
+              onClick={() => _onAddClick(person)}
             >
               <Ui.Icons kind='tilsette' size='20' className='familierelasjoner__knapp__ikon mr-3' />
               <div className='familierelasjoner__knapp__label'>{t('ui:form-add')}</div>

@@ -36,6 +36,10 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
     return initialAlertState
   }
 
+  if (action.type === types.FORM_TPSPERSON_ADD_SUCCESS) {
+    return initialAlertState
+  }
+
   if (_.endsWith(action.type, '/ERROR')) {
     switch (action.type) {
       case types.SERVER_INTERNAL_ERROR:
@@ -47,6 +51,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         break
 
       case types.APP_CLEAN_DATA:
+      case types.SAK_PERSON_RELATERT_RESET:
         return initialAlertState
 
       default:
@@ -77,6 +82,10 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
 
       case types.FORM_ABROADPERSON_ADD_FAILURE:
         clientErrorMessage = 'ui:error-abroadperson-exists'
+        break
+
+      case types.FORM_TPSPERSON_ADD_FAILURE:
+        clientErrorMessage = 'ui:error-tpsperson-exists'
         break
 
       default:
