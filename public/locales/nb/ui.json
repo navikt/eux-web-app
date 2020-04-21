@@ -4,6 +4,7 @@
 
   "error-fnr-is-user": "FNR {{sok}} tilhører bruker",
   "error-abroadperson-exists": "Du kan ikke legge til samme person flere ganger",
+  "error-tpsperson-exists": "Du kan ikke legge til samme person flere ganger",
   "error-noDocumentFound": "Ingen dokumenter funnet",
   "error-personRelated-notFound": "Ingen person med FNR {{feiletSok}} funnet eller har en diskresjonskode",
   "error-person-notFound": "Brukeren du søker finnes ikke i TPS eller har en diskresjonskode",
@@ -22,7 +23,7 @@
   "form-choose" : "Velg",
   "form-family-added-all": "Du har lagt til alle som fantes i listen",
   "form-family-chosen": "Valgte familierelasjoner",
-  "form-family-description": "Vennligst velg familirelasjoner SEDen angår",
+  "form-family-description": "Vennligst velg familierelasjoner SEDen angår",
   "form-family-none-in-tps": "Ingen familierelasjoner funnet i TPS",
   "form-family-relations-in-tps": "Familierelasjoner registrert i TPS",
   "form-family-utland-title": "Person uten fødsels- eller d-nummer",
@@ -45,6 +46,7 @@
 
   "label-aaRegistered" : "AA Registeret",
   "label-abroad-id": "Utenlandsk ID",
+  "label-add-as-attachment-to-sed" : "Legge til vedlegg til SED",
   "label-arbeidsforhold": "Arbeidsforhold/Arbeidsgivere",
   "label-buc": "BUC",
   "label-is-created": "er opprettet",

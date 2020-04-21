@@ -35,7 +35,7 @@ export interface AbroadPersonFormProps {
   existingFamilyRelationships: Array<FamilieRelasjon>
 }
 
-const emptyRelation = { fnr: '', fdato: '', land: '', statsborgerskap: '', rolle: '', kjoenn: '', fornavn: '', etternavn: '' }
+const emptyRelation = { fnr: '', fdato: '', land: null, statsborgerskap: null, rolle: '', kjoenn: '', fornavn: '', etternavn: '' }
 
 const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
   className, rolleList, existingFamilyRelationships
@@ -70,7 +70,8 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
 
   const canAddRelation = (): boolean => {
     const { fnr, rolle, land, statsborgerskap, kjoenn, fornavn, etternavn, fdato } = relation
-    return !_.isEmpty(fnr) && !_.isEmpty(rolle) && !_.isEmpty(land) && !_.isEmpty(statsborgerskap) && !_.isEmpty(kjoenn) && !_.isEmpty(fornavn) && !_.isEmpty(etternavn) && !_.isEmpty(fdato)
+    return !_.isEmpty(fnr) && !_.isEmpty(rolle) && !_.isEmpty(land) && !_.isEmpty(statsborgerskap) &&
+      !_.isEmpty(kjoenn) && !_.isEmpty(fornavn) && !_.isEmpty(etternavn) && !_.isEmpty(fdato) && fdato?.match(/\d{2}\.\d{2}\.\d{4}/) !== null
   }
 
   const conflictingPerson = (): boolean => {
@@ -85,6 +86,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
   }
 
   const addRelation = (): void => {
+    console.log(canAddRelation, !conflictingPerson())
     if (canAddRelation() && !conflictingPerson()) {
       setRelation(emptyRelation)
       dispatch(formActions.addFamilierelasjoner({
@@ -185,7 +187,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
                 label={t('ui:form-birthdate')}
                 className='familierelasjoner__input'
                 value={relation.fdato}
-                placeholder='ÅÅÅÅ-MM-DD'
+                placeholder='DD.MM.ÅÅÅÅ'
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateRelation('fdato', e)}
                 onBlur={(e: React.FocusEvent<HTMLInputElement>) => updateDate('fdato', e)}
               />

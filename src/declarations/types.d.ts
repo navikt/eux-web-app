@@ -42,8 +42,8 @@ export interface Person {
 }
 
 export interface FamilieRelasjon extends Person {
-  land?: string;
-  statsborgerskap?: string;
+  land?: string | null | undefined;
+  statsborgerskap?: string | null | undefined;
   rolle?: string;
 }
 

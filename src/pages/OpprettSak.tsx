@@ -286,22 +286,23 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                   ) : null}
                 </Ui.Nav.Select>
               </div>
-              <div className='col-xs-6 slideAnimate' style={{ animationDelay: '0.15s' }}>
-                <Ui.Nav.Select
-                  className='mb-4'
-                  id='id-enhet'
-                  disabled={!(valgtSektor === 'HZ' || valgtSektor === 'SI')}
-                  label={t('ui:label-unit')}
-                  onChange={onUnitChange}
-                  value={valgtUnit}
-                  feil={validation.unit}
-                >
-                  <option value=''>{t('ui:form-choose')}</option>)
-                  {sektor ? _.orderBy(enheter, 'navn').map((element: any) => (
-                    <option value={element.enhetId} key={element.enhetId}>{element.navn}</option>)
-                  ) : null}
-                </Ui.Nav.Select>
-              </div>
+              {valgtSektor === 'HZ' || valgtSektor === 'SI' ? (
+                <div className='col-xs-6 slideAnimate' style={{ animationDelay: '0.15s' }}>
+                  <Ui.Nav.Select
+                    className='mb-4'
+                    id='id-enhet'
+                    label={t('ui:label-unit')}
+                    onChange={onUnitChange}
+                    value={valgtUnit}
+                    feil={validation.unit}
+                  >
+                    <option value=''>{t('ui:form-choose')}</option>)
+                    {sektor ? _.orderBy(enheter, 'navn').map((element: any) => (
+                      <option value={element.enhetId} key={element.enhetId}>{element.navn}</option>)
+                    ) : null}
+                  </Ui.Nav.Select>
+                </div>
+              ) : <div className='col-xs-6' />}
               <div className='col-xs-6 slideAnimate' style={{ animationDelay: '0.15s' }}>
                 <Ui.Nav.Select
                   className='mb-4'
@@ -509,17 +510,19 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                 <div className='col-xs-12'>
                   <Ui.Nav.AlertStripe className='mt-4 w-50' type='suksess'>
                     <div>
-                      {opprettetSak.rinasaksnummer ? (
-                        <Link to={'/vedlegg?rinasaksnummer=' + opprettetSak.rinasaksnummer}>
-                          {t('ui:form-caseNumber') + ': ' + opprettetSak.rinasaksnummer}
-                        </Link>
-                      ) : <span>{t('ui:form-caseNumber') + ': ' + opprettetSak.rinasaksnummer}</span>}
-
+                      <span>{t('ui:form-caseNumber') + ': ' + opprettetSak.rinasaksnummer}</span>
                       <span className='ml-1 mr-1'>{t('ui:label-is-created')}.</span>
                       {opprettetSak.url ? (
                         <Ui.Nav.Lenke className='vedlegg__lenke ml-1 mr-1' href={opprettetSak.url} target='_blank'>
                           {t('ui:form-goToRina')}
                         </Ui.Nav.Lenke>
+                      ) : null}
+                    </div>
+                    <div>
+                      {opprettetSak.rinasaksnummer ? (
+                        <Link to={'/vedlegg?rinasaksnummer=' + opprettetSak.rinasaksnummer}>
+                          {t('ui:label-add-as-attachment-to-sed')}
+                        </Link>
                       ) : null}
                     </div>
                   </Ui.Nav.AlertStripe>

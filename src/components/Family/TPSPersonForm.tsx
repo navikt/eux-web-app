@@ -34,10 +34,11 @@ export interface TPSPersonFormSelector {
 export interface TPSPersonFormProps {
   className ?: string;
   rolleList: Array<Kodeverk>;
+  existingFamilyRelationships: Array<FamilieRelasjon>
 }
 
 const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
-  className, rolleList
+  className, rolleList, existingFamilyRelationships
 }: TPSPersonFormProps): JSX.Element => {
   const [sok, setSok] = useState('')
   const [_personRelatert, setPersonRelatert] = useState<FamilieRelasjon | undefined>(undefined)
@@ -73,24 +74,42 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
 
   const updateSok = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSok(e.target.value)
+    setPersonRelatert(undefined)
+    dispatch(sakActions.resetPersonRelatert())
+  }
+
+  const conflictingPerson = (): boolean => {
+    const { fnr } = _personRelatert!
+    if (_.find(existingFamilyRelationships, f => f.fnr === fnr) !== undefined) {
+      dispatch({
+        type: types.FORM_TPSPERSON_ADD_FAILURE
+      })
+      return true
+    }
+    return false
   }
 
   const leggTilPersonOgRolle = (person: FamilieRelasjon) => {
-    setSok('')
-    setPersonRelatert(undefined)
-    setTpsPerson(undefined)
+    if (!conflictingPerson()) {
+      setSok('')
+      setPersonRelatert(undefined)
+      setTpsPerson(undefined)
 
-    dispatch(sakActions.resetPersonRelatert())
-    /* Person fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
+      dispatch(sakActions.resetPersonRelatert())
+      /* Person fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
 
-    dispatch(formActions.addFamilierelasjoner({
-      ...person,
-      nasjonalitet: 'NO'
-    }))
+      dispatch(formActions.addFamilierelasjoner({
+        ...person,
+        nasjonalitet: 'NO'
+      }))
+      dispatch({
+        type: types.FORM_TPSPERSON_ADD_SUCCESS
+      })
+    }
   }
 
   return (
-    <div className='col-xs-12'>
+    <div className='mt-4 mb-4'>
       <div className={classNames(className, 'c-TPSPersonForm', 'slideAnimate', { feil: !!alertMessage })}>
         <div className='w-50 mr-3'>
           <Ui.Nav.Input
@@ -112,21 +131,24 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
         </div>
       </div>
       {(person.fnr === sok) ? (
-        <div className='col-xs-12'>
+        <div className='m-2'>
           <Ui.Nav.AlertStripe className='w-50 mt-4 mb-4' type='advarsel'>
             {t('ui:error-fnr-is-user', { sok: sok })}
           </Ui.Nav.AlertStripe>
         </div>
       ) : null}
       {tpsperson ? (
-        <div className='col-xs-12'>
+        <div className='m-2'>
           <Ui.Nav.AlertStripe className='mt-4 mb-4' type='advarsel'>
             {t('ui:error-relation-already-in-tps')}
           </Ui.Nav.AlertStripe>
         </div>
       ) : null}
-      {alertMessage && alertType === types.SAK_PERSON_RELATERT_GET_FAILURE && (
-        <div className='col-xs-12'>
+      {alertMessage && (
+        alertType === types.SAK_PERSON_RELATERT_GET_FAILURE ||
+        alertType === types.FORM_TPSPERSON_ADD_FAILURE
+      ) && (
+        <div className='m-2'>
           <Ui.Alert
             className='mt-4 mb-4 w-50'
             type='client'
@@ -138,7 +160,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
         </div>
       )}
       {_personRelatert ? (
-        <div className='col-xs-12'>
+        <div className='m-2'>
           <PersonCard
             person={_personRelatert}
             onAddClick={leggTilPersonOgRolle}
