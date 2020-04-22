@@ -113,6 +113,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
   const isSomething = (value: any): boolean => (!_.isNil(value) && !_.isEmpty(value))
   const visFagsakerListe: boolean = isSomething(valgtSektor) && isSomething(tema) && isSomething(fagsaker)
   const visArbeidsforhold: boolean = EKV.Koder.sektor.FB === valgtSektor && EKV.Koder.buctyper.family.FB_BUC_01 === valgtBucType && isSomething(valgtSedType)
+  const visEnheter = valgtSektor === 'HZ' || valgtSektor === 'SI'
 
   const validate = (): Validation => {
     const validation: Validation = {
@@ -123,7 +124,8 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
       landkode: !valgtLandkode ? t('ui:validation-noLand') : null,
       institusjon: !valgtInstitusjon ? t('ui:validation-noInstitusjonsID') : null,
       tema: !valgtTema ? t('ui:validation-noTema') : null,
-      saksId: !valgtSaksId ? t('ui:validation-noSaksId') : null
+      saksId: !valgtSaksId ? t('ui:validation-noSaksId') : null,
+      unit: visEnheter && !valgtUnit ? t('ui:validation-noUnit') : null
     }
     setValidation(validation)
     return validation
@@ -286,7 +288,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
                   ) : null}
                 </Ui.Nav.Select>
               </div>
-              {valgtSektor === 'HZ' || valgtSektor === 'SI' ? (
+              {visEnheter ? (
                 <div className='col-xs-6 slideAnimate' style={{ animationDelay: '0.15s' }}>
                   <Ui.Nav.Select
                     className='mb-4'

@@ -107,5 +107,6 @@
   "validation-noInstitusjonsID": "Du må velge institusjon",
   "validation-unverifiedSaksnummer": "Uverifisert RINA saksnummer",
   "validation-uncheckedFnr": "Uverifisert fødselsnummer",
-  "validation-noFnr": "Du må velge fødselsnummer"
+  "validation-noFnr": "Du må velge fødselsnummer",
+  "validation-noUnit": "Du må velge enhet"
 }
