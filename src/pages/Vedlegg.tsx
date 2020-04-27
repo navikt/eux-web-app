@@ -159,7 +159,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
             {vedlegg ? (
               <Ui.Nav.AlertStripe className='mt-4' type='suksess'>
                 <div>
-                  <div>Vedlegget: {vedlegg.vedleggID}</div>
+                  <div>Vedlegget: {vedlegg.filnavn || vedlegg.vedleggID}</div>
                   {vedlegg.url ? (
                     <Ui.Nav.Lenke href={vedlegg.url} target='_blank' className='vedlegg__lenke'>
                       Gå direkte til Rina.
