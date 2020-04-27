@@ -4,6 +4,7 @@ import vedleggReducer, { initialVedleggState, VedleggState } from './vedlegg'
 describe('reducers/app', () => {
   it('VEDLEGG_POST_SUCCESS', () => {
     const payload = {
+      filnavn: 'filnavn',
       vedleggID: '123',
       url: 'url'
     }

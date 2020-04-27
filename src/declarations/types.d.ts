@@ -89,6 +89,7 @@ export interface Dokument {
 }
 
 export interface VedleggSendResponse {
+  filnavn?: string;
   vedleggID: string;
   url: string
 }
