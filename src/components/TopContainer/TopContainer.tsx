@@ -9,6 +9,8 @@ import PT from 'prop-types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import useErrorBoundary from 'use-error-boundary'
+import Error from 'pages/Error'
 import './TopContainer.css'
 
 export interface TopContainerProps {
@@ -38,6 +40,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
   }: TopContainerSelector = useSelector<State, TopContainerSelector>(mapState)
   const dispatch = useDispatch()
   const { t } = useTranslation()
+  const { ErrorBoundary } = useErrorBoundary()
 
   const onClear = (): void => {
     dispatch(clientClear())
@@ -54,7 +57,9 @@ export const TopContainer: React.FC<TopContainerProps> = ({
   }
 
   return (
-    <>
+      <ErrorBoundary
+  renderError={({ error }: any) => <Error error={error} />}
+    >
       <Header className={classNames({ highContrast: highContrast })} />
       <Ui.Alert
         type='server'
@@ -66,7 +71,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
         {children}
       </main>
       <Version />
-    </>
+    </ErrorBoundary>
   )
 }
 

@@ -15,6 +15,7 @@ import * as sakActions from 'actions/sak'
 import * as appActions from 'actions/app'
 import { unregister } from './registerServiceWorker'
 import * as Utils from './utils/utils'
+import * as Sentry from 'metrics/sentry'
 import 'eessi-pensjon-ui/dist/minibootstrap.css'
 import 'eessi-pensjon-ui/dist/nav.css'
 import './index.css'
@@ -25,7 +26,9 @@ const store: Store = createStore(combineReducers(reducers), applyMiddleware(thun
 if (!IS_PRODUCTION) {
   var axe = require('react-axe')
   axe(React, ReactDOM, 1000)
-};
+} else {
+  Sentry.init()
+}
 
 (window as any).frontendlogger.info(Utils.buildinfo())
 store.dispatch(sakActions.preload())
