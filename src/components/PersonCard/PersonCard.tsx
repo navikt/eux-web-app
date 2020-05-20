@@ -24,7 +24,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
 }: PersonCardProps): JSX.Element => {
   // const [_person, setPerson] = useState<Person | FamilieRelasjon>(person)
   const [rolle, setRolle] = useState<any>(undefined)
-  const { fnr, fdato, fornavn, etternavn, kjoenn } = person
+  const { fnr, fdato, fornavn, etternavn, kjoenn } = (person as FamilieRelasjon)
   const { t } = useTranslation()
 
   let kind: string = 'nav-unknown-icon'
