@@ -15,6 +15,10 @@
   "error-unknownPage-linkToRoot-ariaLabel": "Navigasjonslink tilbake til forsiden",
   "error-fagsak-notFound": "Det finnes ikke sak på bruker med det valgte temaet.  Sak må opprettes manuelt i Gosys eller tema må endres. ",
 
+  "error-page-title" : "Teknisk feil",
+  "error-page-description" : "Vennligst rapporter feilen i Porten slik at vi kan rette den. Kopier innholdet i detaljert feilmelding under og lim det inn i saken i Porten.",
+  "error-page-footer" : "",
+
   "form-add": "Legg til",
   "form-birthdate" : "Fødselsdato",
   "form-caseNumber" : "Saksnummer",
