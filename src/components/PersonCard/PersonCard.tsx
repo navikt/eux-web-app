@@ -1,10 +1,6 @@
 import classNames from 'classnames'
 import { FamilieRelasjon, Kodeverk, Person } from 'declarations/types'
-import {
-  FamilieRelasjonPropType,
-  KodeverkPropType,
-  PersonPropType
-} from 'declarations/types.pt'
+import { KodeverkPropType } from 'declarations/types.pt'
 import Ui from 'eessi-pensjon-ui'
 import _ from 'lodash'
 import PT from 'prop-types'
