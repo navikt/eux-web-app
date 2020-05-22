@@ -1,6 +1,10 @@
 import classNames from 'classnames'
 import { FamilieRelasjon, Kodeverk, Person } from 'declarations/types'
-import { KodeverkPropType, PersonPropType } from 'declarations/types.pt'
+import {
+  FamilieRelasjonPropType,
+  KodeverkPropType,
+  PersonPropType
+} from 'declarations/types.pt'
 import Ui from 'eessi-pensjon-ui'
 import _ from 'lodash'
 import PT from 'prop-types'
@@ -140,7 +144,7 @@ PersonCard.propTypes = {
   familierelasjonKodeverk: PT.arrayOf(KodeverkPropType.isRequired),
   onAddClick: PT.func,
   onRemoveClick: PT.func,
-  person: PersonPropType.isRequired,
+  person: PT.oneOfType([PersonPropType, FamilieRelasjonPropType]).isRequired,
   rolleList: PT.arrayOf(KodeverkPropType.isRequired)
 }
 
