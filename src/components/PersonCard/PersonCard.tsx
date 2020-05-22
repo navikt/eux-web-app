@@ -144,7 +144,7 @@ PersonCard.propTypes = {
   familierelasjonKodeverk: PT.arrayOf(KodeverkPropType.isRequired),
   onAddClick: PT.func,
   onRemoveClick: PT.func,
-  person: PT.oneOfType([PersonPropType, FamilieRelasjonPropType]).isRequired,
+  person: PT.any.isRequired,
   rolleList: PT.arrayOf(KodeverkPropType.isRequired)
 }
 
