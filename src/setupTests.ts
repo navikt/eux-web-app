@@ -34,7 +34,9 @@ jest.mock('i18next', () => {
   return result
 })
 
-jest.mock('uuid/v4', () => 'mock_uuid')
+jest.mock('uuid', () => {
+  v4: 'mock_uuid'
+})
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key })

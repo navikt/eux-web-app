@@ -1,0 +1,595 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/Family/Family Renders 1`] = `
+<Family>
+  <div
+    className="c-family"
+  >
+    <Systemtittel
+      className="mb-4"
+    >
+      <n
+        className="mb-4"
+        type="systemtittel"
+      >
+        <h2
+          className="typo-systemtittel mb-4"
+        >
+          ui:label-familyRelationships
+        </h2>
+      </n>
+    </Systemtittel>
+    <Panel
+      border={true}
+    >
+      <div
+        className="panel panel--border"
+      >
+        <Undertittel
+          className="mb-4 ml-2"
+        >
+          <n
+            className="mb-4 ml-2"
+            type="undertittel"
+          >
+            <h2
+              className="typo-undertittel mb-4 ml-2"
+            >
+              ui:form-family-description
+            </h2>
+          </n>
+        </Undertittel>
+        <Row>
+          <div
+            className="row"
+          >
+            <div
+              className="col-xs-6"
+            >
+              <Ingress
+                className="ml-2"
+              >
+                <n
+                  className="ml-2"
+                  type="ingress"
+                >
+                  <p
+                    className="typo-ingress ml-2"
+                  >
+                    ui:form-family-relations-in-tps
+                  </p>
+                </n>
+              </Ingress>
+              <PersonCard
+                className="slideAnimate personNotSelected m-2"
+                familierelasjonKodeverk={
+                  Array [
+                    Object {
+                      "kode": "BARN",
+                      "term": "Barn av",
+                    },
+                    Object {
+                      "kode": "EKTE",
+                      "term": "Ektefelle til",
+                    },
+                    Object {
+                      "kode": "REPA",
+                      "term": "Registrert partner med",
+                    },
+                    Object {
+                      "kode": "SAMB",
+                      "term": "Samboer med",
+                    },
+                    Object {
+                      "kode": "ANNEN",
+                      "term": "Annen person",
+                    },
+                  ]
+                }
+                key="02026100714"
+                onAddClick={[Function]}
+                person={
+                  Object {
+                    "etternavn": "BLYANT",
+                    "fdato": "1961-04-08",
+                    "fnr": "02026100714",
+                    "fornavn": "PEN",
+                    "kjoenn": "K",
+                    "rolle": "EKTE",
+                  }
+                }
+              >
+                <div
+                  className="slideAnimate personNotSelected m-2 c-personCard"
+                >
+                  <Panel
+                    border={true}
+                    className="mt-4"
+                    style={
+                      Object {
+                        "background": "transparent",
+                      }
+                    }
+                  >
+                    <div
+                      className="panel mt-4 panel--border"
+                      style={
+                        Object {
+                          "background": "transparent",
+                        }
+                      }
+                    >
+                      <div
+                        className="personcard"
+                      >
+                        <div
+                          className="personcard__desc"
+                        >
+                          <Icons
+                            className="mr-3"
+                            kind="nav-woman-icon"
+                            size={40}
+                          >
+                            <img
+                              alt="woman-icon"
+                              className="mr-3"
+                              height={40}
+                              kind="nav-woman-icon"
+                              size={40}
+                              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJ0AAACdCAYAAAHZIUpAAAAAAXNSR0IArs4c6QAAJN9JREFUeAHtPQd4FVXWd+a9l0ISCARQkBaKNCkCKa5d17q2JERZC5oEUEFXRXSxrVhQ194bJrGtLSSxr13/tSxJEAUBYZFeBOmQkEDy3vznTHKHO/Omv5nXyP2+5LbT7pnz7ty55VxCTIZ5k/J7mQHltIDmFeUJWnVYzhP+4ezyypuUMEEEa4rzPhAEco4SUCufW14toyHLaEmVU1Yl0qspzlelyxLlKcS8ovy3aFoz5iVwGQgriCQhWyiDtpBBSb0Ir0eMNpelq9V0hFFvQxu2GjGWsDKNgukSRASlNIGWFqLHyJDg6AeflwlSN+VCWV6Z0SRIpUjs2l2G03lMjiyvzIhPOWwPJSVzoFIAw7xmkxGzYfVv0kNZMnumSEz5kFgOPMc/IxL0cPxpbIXddHZZ5TUiwayyyi/sEqF4HMctxrTUZPYHToGsxGAVI2QEMaNHtH7l/0jDutWqPFg8qXNgIfXMiIUjHPd9blnVcWyZKkEKoEWY4/ibc8oqH6JwluP5Uwo7mUVSlbB2auHhgcaW3/WIsHpj4YIIajWTRWLTSsIyglrEaEeh9SthiUp2qEWMlUYrzeKKErIFWkhG5VRKXYK0qSwxrWYjDBLla4ryP2ERjNJqTFgcXiDCGWwBTSd2P5wmpVhPOgokPRRaQOPRDzwr9YW0zEg6YFilSZASUcY/zZii+daDMdGxnN4TVpNIr9kcTy60LKEaE9qKnNLqCl2zQUCWgJ50CCuaDSacDGKTc/qO8oVKlP5SRILcrFktoRCkxJCG9FDYQpb4L3dOD7JHtl6JJ+u+EPDHSQUjm/2BhSySVlpJDOGCCFLkBcUTeh4Q9m+keTZWI0TrNQlSAK24pijvN/juGKBVryzXE0IJy+ZNC6j3C2UJmk3zXv6o7DmVS4zgdQW0KtRhf/4LSRs4mPz2/KNGfGX1etpVFdCqYMiN7UEwv+LZh8iO+f/FpOmgJqj0s6NU7AiHuGvfLKMkiBAIWBYOkZF3TUne3yVCkJA0uHDGZSmN2+vr2UqjtC+9MxnzaKkuWP3qFWTJPTKeuvBYyXFkW05ZdTdMSxq0KlyXcccYCocMUjMHBT1+LNcL8N7sWlNU8FeEEQW081gHTW2duFg/93VNXhs/qNCsM6oQSOANhJE0aITA1tMfRMPalWTTx60TG2w9TScd1kN6bVAcWmcmrpk0/njrAsIwg4bFd92k+/gysmVfLmTMEy9TVHOxP/D6QW7mUEhO6VwREgcjvS+caIiFmqMDF19aR0N4FkDghCXir9iODSIhs4+tdspFRGhpZnmbSmO/KGqQI9w6UxgMkFnhECX7xbcZTGtJqR+0q0VkxwqL8xvDb3tAlII+WmsitULTt4pkg7TADjGncVhZJAGRCVZAL77PaYZW6LHCIZ44o8kSgFdMCubtPvLmPbtZcqbTSsEoomSDtEAZ2xVUSUcrryUYhTcUkAJiDKPod2EUfT5bZjUNDIWc8mqZaenRsCSgFqHVs65I+mPt3hsJJ4wD/mnwBp3Pc4HXs0qrxfk+Lbywl/846aKhwjuFHqcY29JeTXHBOEEI1JkWguOfzC2rvM40fBugJeHmFefvJYKQapUJC2/0Y2BhTQkHi1DfwMDxRBYx1LQZIQ2Fc7NbSeO9GcNLK3ZoNVTzp71kVmGCVcGGzZxNEjLEzwYtfrLyvYGW7WAqb8oKmYyq5mqmTcwQ9u3dxsDpJjmvTzYyafpjM1k4c6oujrySW5ZbXjVUXqYxrLciGBJUDpmSVKY5lYzleWEI2PUj8jIV4aw+SiTYsq9BSddyHn5w05VIssdqRzBKkB3vOTHGQ7qScPga2rJ2dyNlFqkYxnGroKHibJg0hLIjGKstrcZY1aIgCP0pLbErgQJJg7TCKB5539NGIGK9mQYoCUGDVmGZKBxkAkoAo3zy4T2NQGzXg7IyEVmzE7ZNWQWx38QrVUqNi2wJx67UtzTUa3LZv32rWHfYSaqrPpp4WAE9x9c8PNJXdKFUKumq//yplxC9CZ6fb7KnsTaWJ/HwfI3nHlQExCJ/UyPpO6FIo1Ze3P1E66vzlh/roGk3y7ka5DZ/+bEIkXn51QaQwdWWhesyNleksuK5RwjOiuqF7NJKsvZfL+mB6NZZFo5S21H3veGMKH61s6FDn/5s1jBtWzhDygwA/dX2nXAFU2qclF5fxqCtEFZfRzgAtfur5UHzn5kVjIUb95w4zcsWqabTjgwaQ6rCqRXyMFdivYcESp7EJDV6jpXBnOLmsNgcLl9ZDTnlVT0s2xxlQm2vd8GlpOdfWrcUYhk7CqEwFMdqLGougef6WUV0Ex46IJg3ahuVjCmtWusmM6u06WzUQZvjPLZ+GFYZW4GXhMstm2urS7HCzAwsO00hCYeIbIUZQs7DeIezNGXCYQUulbMA4UrDe3h3bnnFUpZfkHC4hs/z3B0skF66ec8uvWrTddAFpSuBg4RDgOzSqnuholgJrJbf/PmHYvHW778W4/nTLhVj030cR1q0zEk+plFwX3HttYnb6zc0KYody+IuVtx4qkVQVziKFMo0BaWhjLW0xcKZEo4iOCEk7BLNgl2i8ylNvdiScJQQ2NMv8GFk6VdtRlOUPo1tCUeRaQzHA8bDlNDJ8EocB0Od5ZwgzM8ur36S1tuNHRHOLvOakvwrSYCUwF7LLKs0QPA9sD/kvQQfd8/RL1SusIrvBLzrylsytTC1vtH/HijoFCcENkMDXjgBUGxxTmnlK2bg7cI4rjzcFe5v8W+F33TI2y/tNkoND36uT8MHwLVqdXbLHFEeHMvKJX7hv3aFCDsex62FAwj9QuUbkvLmFec1w2eJ7a+5UIV3Ah9mGGZkl1UFLdaYoW1ZeQuKCrsdIC1/mCFuByZ1wJHS/hoW/8DuneSnG0rYIkfT0E/Oh/GvpReXaeXNnzLF19K89YCjEiuI4dQ4nYFWVElZ02NuCcNaApT4CSjxLDNYqh8WSkRYg2xyW3HI00hxCJORczxGrgV40Z2JI+26koKjjZjoWh4obRSsj/5sRMSpel8n2C78mPZ2Yf/+JjL/6oudYmeCDtcEK+vJWoCayoOfRzU8hQu0EN0s5zxegkshnUePI831e8m6t8rJth++cZOlLm2tTyNV5cGesN0wt2dtg6sue+3KrsedQnrn/ZUkdM7QBlLUwEMlO2q/I6teeY4EmlybEZBx9fq86eNerJBtJQxSHljcJhCuhwzThQw7uRwq+V2/LCDLH7s3VDKG+BmpvZIGPfXUfgooe2HA9p7yWFMcNiR9xBhCDwjQhrkRKye+JOXNn5LfA7bQXeEGU5bm2GdeZ7OOpfH4B+dxbG+kplwwQ9NCKyXltTQLm2ihW3HaoKHEm9zBLfIke06Fa7QPEhY8dSX5x2JeVF5tyfhTD1a6lxp2y2wZ8W3zvhUPYFgd+AaamzXxjjj/IhkPNzL+gPAd0hWVJwT8c91gwtIcduv9bFZMr3zxMTG2ajG8z0c8bRa8RrEholcYlEcb0qo86HNpgRsxNhSPP7IBz9xi6DhspK2+alxb37mlbasLSzsrhMMwLB29dG1RwUNSn6cHGGodbSilgztD961fI2aHzphFiy3HPc8ZL+LUTi6U4fKwZzd91FhZmdOZACfYOPlmUYq+FwfPhPx4zWUilcHX32aRmhy8d37rp5rg95PdSxbKKgdfFxptGTHVjDDWdcs7XLHlY8O7ba6aYKdO+sjQrWPM4+Vi05Y9cldQE4fefE9QmVMFnEAWu6683UsOzivUr1pBNr7/jig/rC840g5fx04ED59iqJ18oYzmrw/9Q5Z3NsPNFz/P4Fs2AN+yQZ9qzjI7SK3rsSeTASWOLidIZ04PcnE3dUS6t0Or5XH8VHdZyak7rTiknjnxKjkTl3O9H6toFJUHy+PPu8xLIj/i7taxnVTgUKL7Sac7RMmYDMdzkxFK6vM4ns8zRgsNAsd7HXr1DY2IDrbVwbYOKd2qnNIqcauyrJ+DmeNlMFUmH83qknGmkt0LyVLEzzatBSGrn3Qs3VDS7MSoZHlIELbSDgmFcLzj8l6POCFA2ylTHhaymqVA7TH0bzx/XvacuT+wughSHlaKCuQ47WMxLIVDIJ2U6O0FpzI+UDZVVXkIBNsR0mB/h9gxKpEOpTwa0ujnKzaqtVlTeQgMG2MmH6o/Y3iTvmLUdq+aRpVlSKSmpOAC8AdVrayLvzznh7VaU3rRtTxWMfAt+i4qETbGPM6WO5GWJgsYYr9/+r6YQ7+tyrBv43plkSN5WNHjzSoOGcrGeVYkwHl8Oh1tBS/qYDmyM7esuosduWwrj2UGW83mw1az0OeXWKIup8FB8wDwqSwedbbLyhHlsczBOezzsIX2SrYsGtK41TY5ManryOfe2OmUPI4rTykYKHMOKHOSstz1PIxTE33cGDc3e7uuPDUlicdOGjbeBsxnwg6F0PYug49u4HEHjEu/VuPlZllElGfUIHSLVPOZv4eP+NIEPrBJucHGCD8c9RFT3E9XFgw60CzcAds7zocZbMu7seDLpw4m00phauiFcChKySOsiptXXPAEeFz9m1IIJ/LQkJWE4yeYPe8UKk/XFQdfI5eDVZVBf2Z6EB56o7ivUpM95w9/tsK1CQ3XFIcr6AESmBGqEkLChzcsn+QZlP1sxeaQ6KggO644GIY8BcMQzcOUKjK4XgTjuWaP19PNyZeMY4qrnVwwPNASWOy6FkJgAOvp/wez4ieFQEJCdURxsGt0DfRj7q3eSOI6lPBwx+S+VDUvFGohKW5JSWEX9KYXigCRwgXr+xCs71y7/G2/6WqL82+MVaWhsmAF8BzxXJxNzdmyONFfoyBMsMnTEA39R/YpnCh6ccIbALZ88ZEhTigAaX29icNnVVg68mVZcbAGWgdjsnGhCKqHO+axMuLrFLx/csm9M0n9quDJTj1aVuoSiLf7mPKKVh9uJhAtKQ52dv8KRu7aWu0ouAFIz99mLdwuJ8CVdW4FrkNa15xnXjXVZ5vu48DS/u2m0lAZekrD+pGzn8LItYBOVvGkphkGphQHn02Pws/zTDME7cJ0GfcnQ9SkbocZwoQKYPaUpqHi8PgjrHzdEKpARvic19SikxEZR+rxmKsRIUPF+QOBBUZEnKjfDgfpjIKeb04jXCv1MFRJNLpqVVdxgNxohWFIsHC/D56F1QuLbnNlRkqDpXARnhXWqDy4r04JUFtcMBNeBknKcjfzeIAYL0hSC2veKCVO+cBSo69WBpZ3cCO0AkBzOOKEIyUFL9NZ3Gfc56IriC81jez8uY6seOZBglv8IxFgZqUaFrDzlbxVFQdDj5XwFu2vBD5U84f17ZScOetlWT8S9CpD7zktzS1hUZonKZlkXnE16ZJ1LHgaUn2Gqs/qwM7tZH3VG2Rbm2c4VSAHC/9Yt2czkJN9zgRJC9v/t8HiSYaDfFVJDb/jQbiibKBqnZXCBdNLSPMux9abNVknZ6Smjnr4tQYKIHur4ppnOJQ2ePo/HFEaNsLogjva0FDjph0NK1gaMsXtaNgI36Luh/SjRjvKZOTsJx2lp0YM+vwe8Cf9QmWKg4pMNSQnywZd83cnyYm0knv0cpymGkH49JQcskiKAwd9F6sBO13WxeC6e7v8OrtEVyaPIBTRvKQ4IUBepYVuxegAxq3Qvzg8C2t4ETu2QVIcfCV43GoUpdvv0sk06Xjs7ZDiOE01gkKj/2UsFxU3v7jwODUgp8vsXO9gRYbUga7NsUpiwJrxGZgRFecnLfdKNWFM4L0FGz+w7qMBZ0nWzX0tSNIBk8I3CSB2OvAxe2KQFA4X9LpgQhBFeqdCj7POB4/cpiZeRRo/Xtt6/0lKn0zCXgRrNIMcJIDNAnRnwvRxNqmYRDviPPkp6ACzdmBFacju8NNbl0NXv/J8EPfEMMwSw42CE8OmOGUL0aUaBo+NTh2XDjH4G/eJMfsvLD9XQTiPx0uVWcZupNUO8G756t8iq0wbVz2xvpoa1q2WiYyujtwO8FmaznN+4Ty3GfW9eJImC7aP0gRSqeg4dIRYuqrs6aBanHVxO/BwCfVA15koFmI2O7Ay379omij2PoXFYWFmW52b7eLB7Fx16td5dFaQ/Oveflks63luYVCd2QLWEarynsaMLOOlRrN8tOB48ITfU6vSifJMlU8hOg2uNkSxwhMdoWJY/arK/mnmbnsrNM3Cwk/VXYvDdQM2sI5grMz6sjRoGmePMaCPTmWwehmYEt8oz8O2d9emT1P6DQjiv6rsGbHMidmMzqO09/4cfto5QbydLMBxnGveEPuoXFGI6wUY7Nz8JyIq/7WtVagd6VSCOpmHl4OLbiTReRET6J16WORL68jU2E/2Ht/qaYz6frJPyRom/lRdszilc6mFt7TOmSU5eFFrz7MukFq8d+VyKb1r8U9S2o2EFxT3GVhdiRvEcb+o6IwF33AwU0oDHYPRvFPx0tm3OEXKkA7foxMf5D7CEMsqAKM0RHX6s6jrn06yKlFI8LBiI/Do1SokKhaR8Tp2p0O/y6Y4TVKfHkc+D/vsSD8VV5L6UhrXun07aLAEfHWr4jiyJbjSnRK1mRInOKX0c/2TWxITXc6JiuMJf4dUGqOJ/sWtH/3hEl9UHNwAOCccDO3cU2tWLjf92bEywChkHeZbf6psjYvpvrDnzc1APV27yUPw8OKKkLQXAnZgPh0QAuG197YWqt0lsWQ2HAgB7zdqdRs/qiQbKv/lpn40aVN/TJLF6V3YqUnlEKuAz2Lp00RSHOoAB3aHmC4sNdfHceJiNCLJFAeX+bq+cGNJ0igDZm8Dlykuq7Tq+yiTNWrEAd9Mp7HCyBSHFeg3kgVoT7dqABxafcHqIkhxaj4jWYRDMs15pL6Ntj9IcWKFh+tNAQ75GFxw5JbN/UypB1XFwUH/DbCQslgJfCjmc/qMbF1KUzReVXEIAwPP1qVyBcKhlIXPq5e4WbNUTxZrKq5VQd7hh5Ki2LbCYHcfeq1ly9i0ruJyyyuWwk/2VRbhUEmDa40UvbbqKg4R4Sd7OShvtx6R+Ksz/qUZKq5NeXCOifPHn4KCW4TXOuAvLbhGXmJKcYhixW+unIW9XPPuXZqIenWaSCYq4JPzDvSDbAJU/q1qhAA/W9OKNqLF1jdu2sBmxfT+bX+I8e+fBS/C/fH1p0HwoRagw+js0qp7zdKxpAjo64TW+Shnf7aLbv8bYXdWzp92qSQ/bnndyhyvxJvpBL/qCEHCsZoAJRTD9fOWHDZIE5lWmYFfoh0wCaU6OLRKK5LwHp47zs7khiWLYxuIrq95jm/desRWxFAabwS2ozRsom2Lo/qpKy7o7xcCK2k+JmKO/AgPXnuPmIlGhKw4ygM8fH0He0Vkd8DQumiKfR5+1NiXKheFKpNjikNBFl19cefG/U3b4Nyr7S4g1AZp4cN35wvwCXWVVr3VckcVR5nXFBeMg91JtbCA4Qp9ysdMDCOBd2EYlWcG1gqMqw1D79L7m4UF8BNOtSKUE7A4s6H3kR4qD1cVxwoHVngTnIF6kC1zOg3WtdhHEs4YU/aWa5slqcxhUxxliDG8SE6G6J5QXyagqGboDh7ISDli9qCnntrP8nA7HRHFqTWqriTvKNh/eIrA8XDuAs9eCD1BKXgN1iaIN3ECxsLyw/p2/FDpdUaNnttlUaM4txtqRF88a99IBge4wGCOBAbDe20w/CKOALw0gXB4WAP+BINDYhxu0tzLEWEvxuC+ZyPgLBcIv5wX+OUkmSx3w3048IqpcEgYHbiM6uP3B04GIzoFns4pMNTsFU1PCbprnCH6Coz0K4+H/xrcsq+LJvmcliWujK526oTepKn5ErgUYSLM3wx1WlkRoceRX2Hf7Kskyfev7GffWh8RGRxmGrNGVzNtYobQWH8dnB+9FsYtsDhy6AR4aLsEjnuKS059wqzn52jSTswY3YKS/L4HBHIz9GDFME4KqwPUaHpg6rJwTTC1UpbAkQfZ/XzqsJEvjWqjm1eSfxmMwx4CQzss8qqKIQng/A98uMzILq98PRqljiqjWzjjspSmHfV3wpfj9TDY90WjwmJNJpxTgjfD40ldUu9i3aVGsh0RNzowLg7c+k+Hcdn97YbmrimgAcIDvyWrtPJRSIPKIxMiZnS1k8f/SWjxvwUtb9+HHIFnDw9+Pef1TMieM/eHcLMPq9Fhr1ZbUvAExNeGu6Ht/LQ1AL3eU3CC47pw9X5hMbolUwtT9zb5q+Gj4M/aTY/eGl96Z9K74FLS9ZgT4WZc9S0MeL0H3gWAdwI073bNJ5PLSuI+T0v25Lt5ay02wFWjw8naQOOBL2EgO8hlbblCPrlXXzL81vuIVReJ/qZGsgS8yzRujNWFBW4Fn5xwqluT0a4YHX6FNu5o+BJ6thxXrCEMRHuceT7pc+HlIXFaC94bN3/6fkg0IorMcTXJXVJOdfqrV/1dYbOlOGYDX1WvN26vr49lg0s+ok/IBocqROcYSCtmA3Qa+CznleS9hs/WqXY4ZnRwEfzVYHABEO4Sp4SLFJ2Og507JZh25LBINcM5vgFyKT5bfMZOEPWGSmRZcXHaLrJrAXiGGRgqrWjBb1i/2jFR9q1f4xitSBOCjRTPwkbI6ekkfcyQsjLcvmUrhNTTwXbWq3YJO/fAqzRuDA61WL9iGdny1Se2FMoioeP8+t+WsUWxn4Znjc8cLpO60m5jbL2n8Wpmf8vWn8HdaBy8O7RVl5FzHBl45XRtAJ2aFc8/qupEWwcl5qrgxP5Sj7fb6HEvvghLbeaDZaMTN0S2tPwKBtfBPJvYhux01NEEL9Qyukmn6Y/NZM1rLxLWC3xst9xYetgS3+DxeYZZ2XhqyejqJhWcDTtwPzIWJf4h6PXsAnPbUfy3WruFHs5zdlbZ3H9rQxysMW108PVyJ3yZzjqIGn8pzpdAEjO6wWRwEkEn0bzP1xrjtTNtNwAYthpeAXjtltDSTALNzWLsb2oi6FxfaD5giB7bAPydueWVdxu1wZTR1Zbk3x4ICPcYEYuVejQunPztAfeqeVPCfi5SVFNL/V7y++cfkt8/eS+ujJEj/O055ZWz9WzB0Ohqi/NvhMm3h/WIxEqdt2MnMuLOh0lC54yoEnn/jm1k8V03kZa98eHLieP4G8Ex+qNaStY1OpwMxLkZLeRYKu9+4ulw2Y5j5/pdafqql58lW//zhSu0w00UDhNNhZ3Lz6nx1Zynw9PQ8WJwnUYcHfUGhw+n/xVTSafho9SeU8yVoe3UTRp/kprgqkYH83AwHSK8p4YQa2V8QiI5ctrNMSP2oGtmEj4hIWbk1RPUH/C/v/6GwqAD6qpG52/eVgWHYfBUe8yHTOg90PBiJXgSE527cy/SjQYb2rTbX6UUI8joaorybqCXyyuBYy2Pr9WuucfHmtjiZtFOw0fHnNxqAsM025kwVLuerZN9SIjLW83bdoLR6frVZQlEbRrm1cY8Vkp8HWPzHPYB2H380/RJMMqJ2PkZxx5t66pF1850uUzW07U0b78lLgwO1IUbMGPV4PBpJ8Dt0X0KJzr24CNJCG0q0LJtJpVB6ulwwLdpd8tO+GHFzgCItkIRd+iTSUbMekRRKs/69+8ni269htC7izsOOYoMvfluOZDDuaX/vIPsXb5EpIpzhaPuf9pwvLnoHzeQxg1rHZYk/OTgxbO/e59O6eiqTOrpYMB3QzwYHKpzwCTxJjhdza4qe1oyOATcv2O7LrwTldTAkRamV5UbuxoeOPk6J1hHnAba1pb1e25AQSSjg5FDXNy+hMtbRhdE7lr8M9lR973sQfS/wpFNsTKayozyJvjtNd/BjpSFSjBZvkPvfuTwM+Li0cD4lJyPjRONbuFVed1j+UwDfUo+GAf1NjEOWq3oYTJyjif4enU7dBo6giAvNpjp7XBsh0t4MR/gzAXammh0Tc1cXPyU+pdcC5tBpGGq6jPa8O6bstcq5/GQfhNtb4JV5aFXiNeRI08aDsC664b33qZZ1RjP2g6AtsVDQFtrfb0K5IRYb1BG7gkk/Sj9uS28/mTj+xWypvaBE1ve5PDtR/V2SCHIkw0bwehw0V8vpI8YA73kcXogsVEnkONFo4PxXI/YkFhdStyqZGYxX/kqw8PUh//5L+pEXSxFnsibDavKjD8qcEyI+/xiOYCt9RSNDhwzg0fu2A2Z8MryJOr7Sdw271uy59dfZI3sXzRNlg9npn/RVBm7PUsXku0138rKlBn0NICv51gOaGv09RqzRtdxyAjS7bhTdJ8D7uRd8+rzMhjc6pSaGblDbKmZg0j3E0+TybT61RfEXceyQkWm+/GnkrTBwxSlsZPFt2rb65XT7yaiuE39JxkPsPEmNvQvQgNuAOh7cQnNRixGGdjNCP7GfQRlNQoDJsXw3J3AJbW+Xjni+hUpRoq0U9+r4BKS2KWrLmrD2pVwhlV+XgRfUXj+IdKBh7EonjJjA8rasHYVWxSUxnMcvfL+GlQeCwXwet3U1tMJMWl0GVnHGupZOUBPHTSEdDv2ZEO8cAHg0CB14BAZO+UHj6yyLZORHbNfsq1GBzNbMWl0m+Fgi17Y+EEFUbp16F90jR5KROqUHzT71q2Gubt3dGUxarsuciQrOfK7OEs55ehhQ2GAFz0/f5NKaVi9gmz6qIrgWCipRy/RjxyuaW754mOy7NG7yR7FElOPsy4gXaNwrsuX1pEE4Jhi/crlUsv3Ll9MNn1YCQtFAhwk6kI8MJeIE8mbPphLlj95H8D+T4KNpQTcd/2WOH1fU5w3Ctr2cywJb1VWLzzYMY+VaXrStErPaXj05Lng+iKCRxPjOeBVseKYLqeseiGsH62N58aKE6sarlujod241KXcEBANcjkqA9gY3k0sGh0Shi4vhl1G6qsmfeRY0mVMjj5QFNR2GZtLOsFyV7wGamOS0QmCRz57GkctzwzDtiWn1KVcqXCKbjTQoTYmGV1uecVSeMW+FQ3COSlDr7yLSUJ6FydJukoLZUWZ4y3A5p83RRuDhklGh430en23x1NjE7t2J0ecOz7mmoQyo+zxFODEv2RbMqMb9+LbK6G3ezleGpsZwQX9UHWYqdgQECq9iOKDTWWVVUrLLOADSx683q5T/M1bz4V5u+jyMiMX0zDngX1rOIeHf2ZC9xNOJWZn+de8UUoaN20QySb37EX6mVzHxV0kf3z7lRlxRBicm8M5yFgO8PGw3QM2xbYhyOjwbGJdSeHZ/kBLDQsYa2n/vgaC24XMBtxKbjbgpDSdnA3sP7iRwAi/CTaRWpHJiF4s1PO892x63pXKK3u90sKs0opa9DNG8+1xuwbsaABtCG1JiatqdAgkOrbjiHx7hhK7Pd+uAU0NcB9rOUfUNDqklVtWfTZE32C6PbRrwIIGvsktr9I8B6BrdMgkt7z6ZPiijenxnQVltYOGqgGwFdFmdOgYGh3i5pRWHgOGt0iHTntVuwbQGfgi0VYMdGHK6PDy2dyyqlEQzzWg1159iGoAVhwq2mwEZtv0gymjoyRyyqoKYQ3jJppvj9s1gBrgOW4G7FS60Kw2LBkdEs0trX4YNuKdaJZBO1x8awC8FZyQXVb1iJVWWjY6JJ5dWvUfr69bCji7a/V7ZYVjO2xcaACfPdpAzktz9Q/rqrQ2aEVCBUa1CGaZcX3mKLhn4gq4Z6JcFai9MC41AK/TIujdXrbbOFs9HcsMmSdnpKbCLtBf2fL2dBxqAJ4xPutQDA61YrunY1Xadsf7MLjO6QTY6v8pOCKL2cPbbLva01QDXBPspj8Dh1W0JJTYEaOjArQJlVxbXDAZbrp+kZa3x7GrAZ7jp2SXVc5xsgUhv17VhEEhYVYapm64p9Xqo7Fs56L5psTC01p0hwkiYLqlod4U7q6FP5qCiwYgfHb4DJ02OGwbbHdyP0DPNxN6vvvd5xQah5R+A8mwW+8jPF61qRIaf99Afpk1I+jWQnRVNmLWwyQZzt6qhQBcw7n0vttIw5rf1Kqjqgx6tlvA0B5wU6iwGB1tQG1JwblwhSe4nRSSaVlUxtBHJx3Wk6T0GwCbKBtIw+qVpHnPLlOi4jUCKZkD4OB3B9EnSdPmjabwIgvENcLc60XZpZUfhEOOsBodbdCPJYUDmwN+NL74PW9HGxvVMbfAx3suGltaEdYuOCJGxz6HeUX546FjeQncJ8SBJ2e2ZdGZhvXz3eDNYRJsPYrYOnrEjY4+miWzChMa1gZmB7jA9eD6XX1QRYHbY2sa4EgLL/CPp/Tlbxs+q+KANWTnoaPG6NimQa/H1cFKh8Bx/4R0N7auPW1OA9CjbeUE4e9ZMHmPu4TMYYUHKiqNTtn02sn5WYJfuBdeC6cr69rzBzUAw5TPOA93e/acqrqDpdGXigmjU6qtriTvqIBAboUOEbbTCKK7MyVM/Oc5P3Rg7/AcuS+rtHpxLLU3Jo1OqeCFMy5L2b99X16ACBPh134qvJJdmfRW8g1XHl6PsKeCfMkT7tXEjA7VbcuO4WLvOJ+4MDotrdROLhwttATggIhwCgxq/gRxlK8Jc03wQH6AOfuvOC//Ufacirj0GRjXRqdljFiOvWPjjoZsXuCGBEhgMPQmg6EY//o63VNiTwV018LfcqC9HPx6LA9wwrLkLim1sd5rQZssh/8HB8H2zMiKFXUAAAAASUVORK5CYII="
+                              width={40}
+                            />
+                          </Icons>
+                          <div
+                            className="panelheader__tittel"
+                          >
+                            <Undertittel
+                              className="panelheader__tittel__hoved"
+                            >
+                              <n
+                                className="panelheader__tittel__hoved"
+                                type="undertittel"
+                              >
+                                <h2
+                                  className="typo-undertittel panelheader__tittel__hoved"
+                                >
+                                  PEN
+                                   
+                                  BLYANT
+                                   - Ektefelle til
+                                </h2>
+                              </n>
+                            </Undertittel>
+                            <div
+                              className="panelheader__undertittel"
+                            >
+                              <div>
+                                ui:form-fnr : 02026100714
+                              </div>
+                              <div>
+                                ui:form-birthdate: 08.04.1961
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <Knapp
+                          className="familierelasjoner__knapp familierelasjoner__knapp--legg-til"
+                          disabled={false}
+                          onClick={[Function]}
+                        >
+                          <KnappBase
+                            autoDisableVedSpinner={false}
+                            className="familierelasjoner__knapp familierelasjoner__knapp--legg-til"
+                            disabled={false}
+                            htmlType="submit"
+                            inaktivKlasseVedDisabled={false}
+                            kompakt={false}
+                            mini={false}
+                            onClick={[Function]}
+                            spinner={false}
+                            type="standard"
+                          >
+                            <button
+                              className="knapp familierelasjoner__knapp familierelasjoner__knapp--legg-til knapp--standard"
+                              disabled={false}
+                              onClick={[Function]}
+                              type="submit"
+                            >
+                              <Icons
+                                className="familierelasjoner__knapp__ikon mr-3"
+                                kind="tilsette"
+                                size="20"
+                              >
+                                <De
+                                  className="familierelasjoner__knapp__ikon mr-3"
+                                  height={20}
+                                  kind="tilsette"
+                                  size="20"
+                                  width={20}
+                                >
+                                  <svg
+                                    className="familierelasjoner__knapp__ikon mr-3"
+                                    height={20}
+                                    kind="tilsette"
+                                    size="20"
+                                    version="1.1"
+                                    viewBox="0 0 24 24"
+                                    width={20}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <title>
+                                      Tilsette
+                                    </title>
+                                    <g
+                                      fill="none"
+                                      fillRule="evenodd"
+                                      stroke="none"
+                                      strokeWidth="1"
+                                    >
+                                      <path
+                                        d="M20.146852,3.88403947 L20.146771,3.88395809 C17.976089,1.70435546 15.0928534,0.505997541 11.9994782,0.5 C5.67074719,0.5 0.512021923,5.64860101 0.500022608,11.9769766 C0.494020029,15.0501691 1.68354863,17.9384927 3.85210448,20.1159605 C6.02125562,22.2930255 8.90491868,23.494 11.9775643,23.5 C18.3251119,23.5 23.4879722,18.3534487 23.4999774,12.0209361 C23.5059792,8.94917357 22.3156837,6.06078388 20.146852,3.88403947 Z"
+                                        stroke="#0067C5"
+                                      />
+                                      <path
+                                        d="M18.2616513,12.5217391 L5.73939227,12.5217391 C5.45138031,12.5206957 5.21658796,12.288 5.21763148,12 C5.21763148,11.7130435 5.45138031,11.4782609 5.73939227,11.4782609 L18.2616513,11.4782609 C18.5486197,11.4782609 18.7844556,11.712 18.7834121,12 C18.7834121,12.288 18.5496632,12.5217391 18.2616513,12.5217391 Z"
+                                        fill="#0067C5"
+                                      />
+                                      <path
+                                        d="M18.2616513,12.5217391 L5.73939227,12.5217391 C5.45138031,12.5206957 5.21658796,12.288 5.21763148,12 C5.21763148,11.7130435 5.45138031,11.4782609 5.73939227,11.4782609 L18.2616513,11.4782609 C18.5486197,11.4782609 18.7844556,11.712 18.7834121,12 C18.7834121,12.288 18.5496632,12.5217391 18.2616513,12.5217391 Z"
+                                        fill="#0067C5"
+                                        transform="translate(12.000522, 12.000000) rotate(90.000000) translate(-12.000522, -12.000000) "
+                                      />
+                                    </g>
+                                  </svg>
+                                </De>
+                              </Icons>
+                              <div
+                                className="familierelasjoner__knapp__label"
+                              >
+                                ui:form-add
+                              </div>
+                            </button>
+                          </KnappBase>
+                        </Knapp>
+                      </div>
+                    </div>
+                  </Panel>
+                </div>
+              </PersonCard>
+              <PersonCard
+                className="slideAnimate personNotSelected m-2"
+                familierelasjonKodeverk={
+                  Array [
+                    Object {
+                      "kode": "BARN",
+                      "term": "Barn av",
+                    },
+                    Object {
+                      "kode": "EKTE",
+                      "term": "Ektefelle til",
+                    },
+                    Object {
+                      "kode": "REPA",
+                      "term": "Registrert partner med",
+                    },
+                    Object {
+                      "kode": "SAMB",
+                      "term": "Samboer med",
+                    },
+                    Object {
+                      "kode": "ANNEN",
+                      "term": "Annen person",
+                    },
+                  ]
+                }
+                key="02026100713"
+                onAddClick={[Function]}
+                person={
+                  Object {
+                    "etternavn": "BLYANT",
+                    "fdato": "1980-02-02",
+                    "fnr": "02026100713",
+                    "fornavn": "LITEN",
+                    "kjoenn": "M",
+                    "rolle": "BARN",
+                  }
+                }
+              >
+                <div
+                  className="slideAnimate personNotSelected m-2 c-personCard"
+                >
+                  <Panel
+                    border={true}
+                    className="mt-4"
+                    style={
+                      Object {
+                        "background": "transparent",
+                      }
+                    }
+                  >
+                    <div
+                      className="panel mt-4 panel--border"
+                      style={
+                        Object {
+                          "background": "transparent",
+                        }
+                      }
+                    >
+                      <div
+                        className="personcard"
+                      >
+                        <div
+                          className="personcard__desc"
+                        >
+                          <Icons
+                            className="mr-3"
+                            kind="nav-man-icon"
+                            size={40}
+                          >
+                            <img
+                              alt="man-icon"
+                              className="mr-3"
+                              height={40}
+                              kind="nav-man-icon"
+                              size={40}
+                              src="data:image/png;base64,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"
+                              width={40}
+                            />
+                          </Icons>
+                          <div
+                            className="panelheader__tittel"
+                          >
+                            <Undertittel
+                              className="panelheader__tittel__hoved"
+                            >
+                              <n
+                                className="panelheader__tittel__hoved"
+                                type="undertittel"
+                              >
+                                <h2
+                                  className="typo-undertittel panelheader__tittel__hoved"
+                                >
+                                  LITEN
+                                   
+                                  BLYANT
+                                   - Barn av
+                                </h2>
+                              </n>
+                            </Undertittel>
+                            <div
+                              className="panelheader__undertittel"
+                            >
+                              <div>
+                                ui:form-fnr : 02026100713
+                              </div>
+                              <div>
+                                ui:form-birthdate: 02.02.1980
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <Knapp
+                          className="familierelasjoner__knapp familierelasjoner__knapp--legg-til"
+                          disabled={false}
+                          onClick={[Function]}
+                        >
+                          <KnappBase
+                            autoDisableVedSpinner={false}
+                            className="familierelasjoner__knapp familierelasjoner__knapp--legg-til"
+                            disabled={false}
+                            htmlType="submit"
+                            inaktivKlasseVedDisabled={false}
+                            kompakt={false}
+                            mini={false}
+                            onClick={[Function]}
+                            spinner={false}
+                            type="standard"
+                          >
+                            <button
+                              className="knapp familierelasjoner__knapp familierelasjoner__knapp--legg-til knapp--standard"
+                              disabled={false}
+                              onClick={[Function]}
+                              type="submit"
+                            >
+                              <Icons
+                                className="familierelasjoner__knapp__ikon mr-3"
+                                kind="tilsette"
+                                size="20"
+                              >
+                                <De
+                                  className="familierelasjoner__knapp__ikon mr-3"
+                                  height={20}
+                                  kind="tilsette"
+                                  size="20"
+                                  width={20}
+                                >
+                                  <svg
+                                    className="familierelasjoner__knapp__ikon mr-3"
+                                    height={20}
+                                    kind="tilsette"
+                                    size="20"
+                                    version="1.1"
+                                    viewBox="0 0 24 24"
+                                    width={20}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <title>
+                                      Tilsette
+                                    </title>
+                                    <g
+                                      fill="none"
+                                      fillRule="evenodd"
+                                      stroke="none"
+                                      strokeWidth="1"
+                                    >
+                                      <path
+                                        d="M20.146852,3.88403947 L20.146771,3.88395809 C17.976089,1.70435546 15.0928534,0.505997541 11.9994782,0.5 C5.67074719,0.5 0.512021923,5.64860101 0.500022608,11.9769766 C0.494020029,15.0501691 1.68354863,17.9384927 3.85210448,20.1159605 C6.02125562,22.2930255 8.90491868,23.494 11.9775643,23.5 C18.3251119,23.5 23.4879722,18.3534487 23.4999774,12.0209361 C23.5059792,8.94917357 22.3156837,6.06078388 20.146852,3.88403947 Z"
+                                        stroke="#0067C5"
+                                      />
+                                      <path
+                                        d="M18.2616513,12.5217391 L5.73939227,12.5217391 C5.45138031,12.5206957 5.21658796,12.288 5.21763148,12 C5.21763148,11.7130435 5.45138031,11.4782609 5.73939227,11.4782609 L18.2616513,11.4782609 C18.5486197,11.4782609 18.7844556,11.712 18.7834121,12 C18.7834121,12.288 18.5496632,12.5217391 18.2616513,12.5217391 Z"
+                                        fill="#0067C5"
+                                      />
+                                      <path
+                                        d="M18.2616513,12.5217391 L5.73939227,12.5217391 C5.45138031,12.5206957 5.21658796,12.288 5.21763148,12 C5.21763148,11.7130435 5.45138031,11.4782609 5.73939227,11.4782609 L18.2616513,11.4782609 C18.5486197,11.4782609 18.7844556,11.712 18.7834121,12 C18.7834121,12.288 18.5496632,12.5217391 18.2616513,12.5217391 Z"
+                                        fill="#0067C5"
+                                        transform="translate(12.000522, 12.000000) rotate(90.000000) translate(-12.000522, -12.000000) "
+                                      />
+                                    </g>
+                                  </svg>
+                                </De>
+                              </Icons>
+                              <div
+                                className="familierelasjoner__knapp__label"
+                              >
+                                ui:form-add
+                              </div>
+                            </button>
+                          </KnappBase>
+                        </Knapp>
+                      </div>
+                    </div>
+                  </Panel>
+                </div>
+              </PersonCard>
+            </div>
+            <div
+              style={
+                Object {
+                  "borderLeft": "1px solid lightgrey",
+                  "marginLeft": "-1px",
+                }
+              }
+            />
+            <div
+              className="col-xs-6"
+            >
+              <Ingress
+                className="ml-2"
+              >
+                <n
+                  className="ml-2"
+                  type="ingress"
+                >
+                  <p
+                    className="typo-ingress ml-2"
+                  >
+                    ui:form-family-chosen
+                     (
+                    0
+                    )
+                  </p>
+                </n>
+              </Ingress>
+            </div>
+          </div>
+        </Row>
+        <Row>
+          <div
+            className="row"
+          >
+            <div
+              className="col-xs-12 mt-4"
+            >
+              <div>
+                <Ingress
+                  className="ml-2"
+                >
+                  <n
+                    className="ml-2"
+                    type="ingress"
+                  >
+                    <p
+                      className="typo-ingress ml-2"
+                    >
+                      ui:form-family-utland-title
+                    </p>
+                  </n>
+                </Ingress>
+                <Knapp
+                  className="m-2"
+                  onClick={[Function]}
+                >
+                  <KnappBase
+                    autoDisableVedSpinner={false}
+                    className="m-2"
+                    disabled={false}
+                    htmlType="submit"
+                    inaktivKlasseVedDisabled={false}
+                    kompakt={false}
+                    mini={false}
+                    onClick={[Function]}
+                    spinner={false}
+                    type="standard"
+                  >
+                    <button
+                      className="knapp m-2 knapp--standard"
+                      disabled={false}
+                      onClick={[Function]}
+                      type="submit"
+                    >
+                      ui:label-show-form
+                    </button>
+                  </KnappBase>
+                </Knapp>
+              </div>
+            </div>
+          </div>
+        </Row>
+        <Row>
+          <div
+            className="row"
+          >
+            <div
+              className="col-xs-12 mt-4"
+            >
+              <div>
+                <Ingress
+                  className="ml-2"
+                >
+                  <n
+                    className="ml-2"
+                    type="ingress"
+                  >
+                    <p
+                      className="typo-ingress ml-2"
+                    >
+                      ui:form-family-tps-title
+                    </p>
+                  </n>
+                </Ingress>
+                <Knapp
+                  className="m-2"
+                  onClick={[Function]}
+                >
+                  <KnappBase
+                    autoDisableVedSpinner={false}
+                    className="m-2"
+                    disabled={false}
+                    htmlType="submit"
+                    inaktivKlasseVedDisabled={false}
+                    kompakt={false}
+                    mini={false}
+                    onClick={[Function]}
+                    spinner={false}
+                    type="standard"
+                  >
+                    <button
+                      className="knapp m-2 knapp--standard"
+                      disabled={false}
+                      onClick={[Function]}
+                      type="submit"
+                    >
+                      ui:label-show-form
+                    </button>
+                  </KnappBase>
+                </Knapp>
+              </div>
+            </div>
+          </div>
+        </Row>
+      </div>
+    </Panel>
+  </div>
+</Family>
+`;

@@ -57,8 +57,8 @@ export const TopContainer: React.FC<TopContainerProps> = ({
   }
 
   return (
-      <ErrorBoundary
-  renderError={({ error }: any) => <Error error={error} />}
+    <ErrorBoundary
+      renderError={({ error }: any) => <Error error={error} />}
     >
       <Header className={classNames({ highContrast: highContrast })} />
       <Ui.Alert
