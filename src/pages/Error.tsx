@@ -11,7 +11,6 @@ export interface ErrorProps {
 }
 
 export const Error = ({ error }: ErrorProps) => {
-
   const { t } = useTranslation()
   const title = t('ui:error-page-title')
   const description = t('ui:error-page-description')

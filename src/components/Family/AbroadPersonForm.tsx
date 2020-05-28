@@ -56,7 +56,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
     const value = event.currentTarget.value
     setRelation({
       ...relation,
-      [felt]: value ? value.trim() : ''
+      [felt]: value || ''
     })
   }
 
@@ -66,6 +66,20 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
       ...relation,
       [felt]: nyDato
     })
+  }
+
+  const trimFamilyRelation = (relation: FamilieRelasjon): FamilieRelasjon => {
+    return {
+      fnr: relation.fnr ? relation.fnr.trim() : '',
+      fdato: relation.fdato ? relation.fdato.trim() : '',
+      fornavn: relation.fornavn ? relation.fornavn.trim() : '',
+      etternavn: relation.etternavn ? relation.etternavn.trim() : '',
+      kjoenn: relation.kjoenn ? relation.kjoenn.trim() : '',
+      relasjoner: relation.relasjoner,
+      land: relation.land,
+      statsborgerskap: relation.statsborgerskap,
+      rolle: relation.rolle
+    } as FamilieRelasjon
   }
 
   const canAddRelation = (): boolean => {
@@ -86,13 +100,9 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
   }
 
   const addRelation = (): void => {
-    console.log(canAddRelation, !conflictingPerson())
     if (canAddRelation() && !conflictingPerson()) {
       setRelation(emptyRelation)
-      dispatch(formActions.addFamilierelasjoner({
-        ...relation,
-        fdato: relation.fdato || ''
-      }))
+      dispatch(formActions.addFamilierelasjoner(trimFamilyRelation(relation)))
       dispatch({
         type: types.FORM_ABROADPERSON_ADD_SUCCESS
       })

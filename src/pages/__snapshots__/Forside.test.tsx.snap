@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages/Forside Renders 1`] = `
+<Forside>
+  <Component
+    className="p-forside"
+  >
+    <div
+      className="mock-topContainer"
+    >
+      <Row
+        className="m-0 pt-4"
+      >
+        <div
+          className="row m-0 pt-4"
+        >
+          <div
+            className="col-sm-1"
+          />
+          <div
+            className="col-sm-10 m-4"
+          >
+            <Lenkepanel
+              className="slideAnimate"
+              href="#"
+              linkCreator={[Function]}
+              tittelProps="undertittel"
+            >
+              <LenkepanelBase
+                border={false}
+                className="slideAnimate"
+                href="#"
+                linkCreator={[Function]}
+              >
+                <Link
+                  className="lenkepanel slideAnimate"
+                  href="#"
+                  to="/opprett"
+                >
+                  <div
+                    className="mock-link"
+                  />
+                </Link>
+              </LenkepanelBase>
+            </Lenkepanel>
+            <Lenkepanel
+              className="slideAnimate"
+              href="#"
+              linkCreator={[Function]}
+              style={
+                Object {
+                  "animationDelay": "0.15s",
+                }
+              }
+              tittelProps="undertittel"
+            >
+              <LenkepanelBase
+                border={false}
+                className="slideAnimate"
+                href="#"
+                linkCreator={[Function]}
+                style={
+                  Object {
+                    "animationDelay": "0.15s",
+                  }
+                }
+              >
+                <Link
+                  className="lenkepanel slideAnimate"
+                  href="#"
+                  style={
+                    Object {
+                      "animationDelay": "0.15s",
+                    }
+                  }
+                  to="/vedlegg"
+                >
+                  <div
+                    className="mock-link"
+                  />
+                </Link>
+              </LenkepanelBase>
+            </Lenkepanel>
+          </div>
+          <div
+            className="col-sm-1"
+          />
+        </div>
+      </Row>
+    </div>
+  </Component>
+</Forside>
+`;
