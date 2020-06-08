@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/PersonSearch/PersonSearch Renders 1`] = `
+exports['components/PersonSearch/PersonSearch Renders 1'] = `
 <PersonSearch
   className="mock-className"
   onFnrChange={[MockFunction]}
@@ -418,4 +418,4 @@ exports[`components/PersonSearch/PersonSearch Renders 1`] = `
     </PersonCard>
   </div>
 </PersonSearch>
-`;
+`

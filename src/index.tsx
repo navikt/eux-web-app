@@ -35,6 +35,7 @@ store.dispatch(sakActions.preload())
 store.dispatch(appActions.getSaksbehandler())
 store.dispatch(appActions.getEnheter())
 store.dispatch(appActions.getServerinfo())
+store.dispatch(appActions.getUtgaarDato())
 
 ReactDOM.render(
   <I18nextProvider i18n={i18n}>

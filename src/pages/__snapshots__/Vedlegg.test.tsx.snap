@@ -398,6 +398,13 @@ exports[`pages/Vedlegg Renders 1`] = `
             </div>
           </Row>
         </main>
+        <SessionMonitor>
+          <styled.div>
+            <div
+              className="sc-AxjAm kmXdIo"
+            />
+          </styled.div>
+        </SessionMonitor>
         <Version />
       </ErrorBoundary>
     </UseErrorBoundaryWrapper>

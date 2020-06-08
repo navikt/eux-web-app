@@ -27,7 +27,7 @@ describe('components/Family/Family', () => {
     wrapper.unmount()
   })
 
-  it('Renders', () =>
+  it('Renders', () => {
     expect(wrapper.isEmptyRender()).toBeFalsy()
     expect(wrapper).toMatchSnapshot()
   })

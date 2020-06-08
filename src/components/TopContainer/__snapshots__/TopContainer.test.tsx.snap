@@ -83,6 +83,13 @@ exports[`components/TopContainer Renders 1`] = `
           id="TEST_CHILD"
         />
       </main>
+      <SessionMonitor>
+        <styled.div>
+          <div
+            className="sc-AxjAm kmXdIo"
+          />
+        </styled.div>
+      </SessionMonitor>
       <Version />
     </ErrorBoundary>
   </UseErrorBoundaryWrapper>
