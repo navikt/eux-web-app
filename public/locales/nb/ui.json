@@ -94,6 +94,10 @@
   "serverInternalError" : "Serverfeil",
   "serverAuthenticationError" : "Uautorisert",
 
+  "session-expire-title" : "Du vil snart bli logget ut",
+  "session-expire-text" : "Husk å lagre opplysningene. Hvis du ønsker å fortsette, må du logge inn igjen.  Du blir logget ut om {{minutes}} minutter",
+  "ok-got-it" : "Ok, stemmer det",
+
   "title-newcase": "Opprett Sak",
   "title-vedlegg": "Vedleggsinformasjon",
 

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/DocumentSearch/DocumentSearch Renders 1`] = `
+exports['components/DocumentSearch/DocumentSearch Renders 1'] = `
 <DocumentSearch
   className="mockClassname"
   onDocumentFound={[MockFunction]}
@@ -119,4 +119,4 @@ exports[`components/DocumentSearch/DocumentSearch Renders 1`] = `
     </div>
   </div>
 </DocumentSearch>
-`;
+`

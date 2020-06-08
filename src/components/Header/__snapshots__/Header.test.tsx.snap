@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/Header/Header Renders 1`] = `
+exports['components/Header/Header Renders 1'] = `
 <Header
   className="mock-classname"
 >
@@ -60,4 +60,4 @@ exports[`components/Header/Header Renders 1`] = `
     </div>
   </header>
 </Header>
-`;
+`

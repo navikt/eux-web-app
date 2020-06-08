@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/AbortModal/AbortModal Renders 1`] = `
+exports['components/AbortModal/AbortModal Renders 1'] = `
 <AbortModal
   closeModal={[MockFunction]}
   isOpen={true}
@@ -276,4 +276,4 @@ exports[`components/AbortModal/AbortModal Renders 1`] = `
     </t>
   </Modal>
 </AbortModal>
-`;
+`

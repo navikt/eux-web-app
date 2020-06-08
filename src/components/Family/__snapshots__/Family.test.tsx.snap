@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/Family/Family Renders 1`] = `
+exports['components/Family/Family Renders 1'] = `
 <Family>
   <div
     className="c-family"
@@ -592,4 +592,4 @@ exports[`components/Family/Family Renders 1`] = `
     </Panel>
   </div>
 </Family>
-`;
+`

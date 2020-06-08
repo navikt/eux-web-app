@@ -6,12 +6,14 @@ export interface AppState {
   saksbehandler: Saksbehandler | undefined;
   serverinfo: ServerInfo | undefined;
   enheter: Enheter | undefined;
+  expirationTime: Date | undefined;
 }
 
 export const initialAppState: AppState = {
   saksbehandler: undefined,
   serverinfo: undefined,
-  enheter: undefined
+  enheter: undefined,
+  expirationTime: undefined
 }
 
 const appReducer = (state: AppState = initialAppState, action: ActionWithPayload) => {
@@ -36,6 +38,17 @@ const appReducer = (state: AppState = initialAppState, action: ActionWithPayload
         ...state,
         enheter: action.payload
       }
+
+    case types.APP_UTGAARDATO_GET_SUCCESS: {
+      const now = action.payload.naa ? new Date(action.payload.naa) : new Date()
+      const expirationTime = action.payload.utgaarDato
+        ? new Date(action.payload.utgaarDato)
+        : new Date(new Date().setMinutes(now.getMinutes() + 60))
+      return {
+        ...state,
+        expirationTime: expirationTime
+      }
+    }
 
     default:
       return state

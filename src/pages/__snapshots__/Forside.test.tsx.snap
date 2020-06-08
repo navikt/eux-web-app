@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages/Forside Renders 1`] = `
+exports['pages/Forside Renders 1'] = `
 <Forside>
   <Component
     className="p-forside"
@@ -90,4 +90,4 @@ exports[`pages/Forside Renders 1`] = `
     </div>
   </Component>
 </Forside>
-`;
+`

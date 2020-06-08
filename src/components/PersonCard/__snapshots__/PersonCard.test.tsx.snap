@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/PersonCard/PersonCard Renders 1`] = `
+exports['components/PersonCard/PersonCard Renders 1'] = `
 <PersonCard
   className="mock-classname"
   familierelasjonKodeverk={
@@ -372,4 +372,4 @@ exports[`components/PersonCard/PersonCard Renders 1`] = `
     </Panel>
   </div>
 </PersonCard>
-`;
+`

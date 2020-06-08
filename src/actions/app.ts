@@ -40,3 +40,14 @@ export const getEnheter: ActionCreator<ThunkResult<ActionWithPayload>> = (): Thu
     }
   })
 }
+
+export const getUtgaarDato: ActionCreator<ThunkResult<ActionWithPayload>> = (): ThunkResult<ActionWithPayload> => {
+  return api.realCall({
+    url: urls.API_UTGAARDATO_URL,
+    type: {
+      request: types.APP_UTGAARDATO_GET_REQUEST,
+      success: types.APP_UTGAARDATO_GET_SUCCESS,
+      failure: types.APP_UTGAARDATO_GET_FAILURE
+    }
+  })
+}

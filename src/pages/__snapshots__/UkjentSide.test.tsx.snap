@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages/OpprettSak/OpprettSak Renders 1`] = `
+exports['pages/OpprettSak/OpprettSak Renders 1'] = `
 <UkjentSide
   location={
     Object {
@@ -135,4 +135,4 @@ exports[`pages/OpprettSak/OpprettSak Renders 1`] = `
     </div>
   </Component>
 </UkjentSide>
-`;
+`
