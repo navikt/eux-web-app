@@ -7,7 +7,7 @@
     "classnames": "^2.2.6",
     "core-js": "^3.6.5",
     "eessi-kodeverk": "1.4.2",
-    "eessi-pensjon-ui": "git+https://github.com/navikt/eessi-pensjon-ui.git#2.4.1",
+    "eessi-pensjon-ui": "git+https://github.com/navikt/eessi-pensjon-ui.git#2.4.2",
     "history": "^4.10.1",
     "i18next": "^19.4.5",
     "i18next-browser-languagedetector": "^4.2.0",

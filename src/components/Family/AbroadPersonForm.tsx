@@ -148,6 +148,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
                 placeholder={t('ui:form-choose')}
                 menuPortalTarget={document.body}
                 value={relation.statsborgerskap}
+                includeList={Ui.CountryFilter.STANDARD}
                 onOptionSelected={(e: any) => updateCountry('statsborgerskap', e.value)}
               />
             </div>
