@@ -27,6 +27,14 @@ const Forside: React.FC = (): JSX.Element => {
           >
             {t('ui:menu-addAttachment')}
           </Ui.Nav.Lenkepanel>
+          <Ui.Nav.Lenkepanel
+            className='slideAnimate'
+            style={{ animationDelay: '0.3s' }}
+            linkCreator={(props: any) => (<Link to='/svarpased' {...props} />)}
+            href='#'
+          >
+            {t('ui:menu-svarpased')}
+          </Ui.Nav.Lenkepanel>
         </div>
         <div className='col-sm-1' />
       </Ui.Nav.Row>
