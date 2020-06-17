@@ -16,7 +16,8 @@ export const initialLoadingState: LoadingState = {
   gettingSaksbehandler: false,
   gettingServerinfo: false,
   sendingVedlegg: false,
-  sendingSak: false
+  sendingSak: false,
+  gettingSaksnummer: false
 }
 
 const loadingReducer = (state: LoadingState = initialLoadingState, action: Action) => {
@@ -115,6 +116,22 @@ const loadingReducer = (state: LoadingState = initialLoadingState, action: Actio
       return {
         ...state,
         sendingSak: false
+      }
+
+
+    case types.SVARPASED_SAKSNUMMER_GET_REQUEST:
+
+      return {
+        ...state,
+        gettingSaksnummer: true
+      }
+
+    case types.SVARPASED_SAKSNUMMER_GET_SUCCESS:
+    case types.SVARPASED_SAKSNUMMER_GET_FAILURE:
+
+      return {
+        ...state,
+        gettingSaksnummer: false
       }
 
     case types.VEDLEGG_POST_REQUEST:
