@@ -17,4 +17,4 @@ export const API_SERVERINFO_URL = API_BASE_URL + '/serverinfo'
 export const API_VEDLEGG_POST_URL = API_BASE_URL + '/rina/vedlegg'
 export const API_VEDLEGG_DOKUMENT_URL = API_BASE_URL + '/rina/dokumenter/?rinasaksnummer=%(rinasaksnummer)s'
 
-export const API_SVARPASED_SAKSNUMMER_URL = API_BASE_URL + '/saksnummer'
+export const API_SVARPASED_SAKSNUMMER_URL = API_BASE_URL + '/saksnummer/%(saksnummer)s'

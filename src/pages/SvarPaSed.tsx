@@ -1,6 +1,6 @@
 import TopContainer from 'components/TopContainer/TopContainer'
 import { State } from 'declarations/reducers'
-import React from 'react'
+import React, { useState } from 'react'
 import Ui from 'eessi-pensjon-ui'
 import { useDispatch, useSelector } from 'react-redux'
 import * as svarpasedActions from 'actions/svarpased'
@@ -22,14 +22,13 @@ const mapState = (state: State): any => ({
 
 const SvarPaSed: React.FC = (): JSX.Element => {
 
+  const [ _saksnummer, setSaksnummer ] = useState(undefined)
   const dispatch = useDispatch()
 
   const { gettingSaksnummer, saksnummer }: any = useSelector<State, any>(mapState)
 
-  const onSaksnummerClick = (e: any) => {
-     const saksnummer = e.target.value
-
-     dispatch(svarpasedActions.getSaksnummer(saksnummer))
+  const onSaksnummerClick = () => {
+     dispatch(svarpasedActions.getSaksnummer(_saksnummer))
   }
 
   console.log('gettingSaksnummer: ', gettingSaksnummer)
@@ -42,6 +41,7 @@ const SvarPaSed: React.FC = (): JSX.Element => {
            <SaksnummerInput
              label='saksnummer'
              bredde='M'
+             onChange={(e: any) => setSaksnummer(e.target.value)}
            />
            <Ui.Nav.Knapp
              onClick={onSaksnummerClick}
@@ -51,6 +51,7 @@ const SvarPaSed: React.FC = (): JSX.Element => {
          </SaksnummerDiv>
           {saksnummer === null && (<Ui.Nav.AlertStripe status='ERROR'>Fail</Ui.Nav.AlertStripe>)}
         </div>
+        {JSON.stringify(saksnummer)}
         <div className='col-sm-1' />
       </Ui.Nav.Row>
     </TopContainer>
