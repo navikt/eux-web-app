@@ -50,3 +50,15 @@ export const getSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
     },
   });
 };
+
+export const getPerson: ActionCreator<ThunkResult<ActionWithPayload>> = (fnr: string): ThunkResult<ActionWithPayload> => {
+  return api.realCall({
+    url: sprintf(urls.API_SVARPASED_PERSON_URL, { fnr: fnr }),
+    cascadeFailureError: true,
+    type: {
+      request: types.SVARPASED_PERSON_GET_REQUEST,
+      success: types.SVARPASED_PERSON_GET_SUCCESS,
+      failure: types.SVARPASED_PERSON_GET_FAILURE
+    }
+  })
+}

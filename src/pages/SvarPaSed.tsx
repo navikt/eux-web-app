@@ -1,3 +1,5 @@
+import { clientClear } from 'actions/alert'
+import PersonSearch from 'components/PersonSearch/PersonSearch'
 import TopContainer from "components/TopContainer/TopContainer";
 import { State } from "declarations/reducers";
 import React, { useState } from "react";
@@ -20,6 +22,13 @@ const SetSelect = styled(Ui.Nav.Select)`
 `;
 
 const mapState = (state: State): any => ({
+  alertStatus: state.alert.clientErrorStatus,
+  alertMessage: state.alert.clientErrorMessage,
+  alertType: state.alert.type,
+  gettingPerson: state.loading.gettingPerson,
+
+  person: state.svarpased.person,
+
   gettingSaksnummer: state.loading.gettingSaksnummer,
   saksnummer: state.svarpased.saksnummer,
   getingFnummerDnummer: state.loading.getingFnummerDnummer,
@@ -30,10 +39,13 @@ const mapState = (state: State): any => ({
 const SvarPaSed: React.FC = (): JSX.Element => {
   const [_saksnummer, setSaksnummer] = useState(undefined);
   const [_fnummerDnummer, setFnummerDnummer] = useState(undefined);
+  const [validation, setValidation] = useState<{[k: string]: any}>({})
+  const [, setIsFnrValid] = useState<boolean>(false)
   //const [_sed, setSed] = useState(undefined);
   const dispatch = useDispatch();
 
   const {
+    alertStatus, alertMessage, alertType, gettingPerson, person,
     gettingSaksnummer,
     saksnummer,
     getingFnummerDnummer,
@@ -48,6 +60,10 @@ const SvarPaSed: React.FC = (): JSX.Element => {
   const onFnrDnrClick = () => {
     dispatch(svarpasedActions.getFnummerDnummer(_fnummerDnummer));
   };
+
+  const resetAllValidation = () => {
+    setValidation({})
+  }
 
   const onSetChange = (e: any) => {
     dispatch(svarpasedActions.getSed(e.target.value));
@@ -67,7 +83,8 @@ const SvarPaSed: React.FC = (): JSX.Element => {
               onChange={(e: any) => setSaksnummer(e.target.value)}
             />
             <Ui.Nav.Knapp onClick={onSaksnummerClick}>Hent</Ui.Nav.Knapp>
-
+          </SaksnummerDiv>
+          <SaksnummerDiv>
             <SaksnummerInput
               label="Fnr/Dnr"
               bredde="M"
@@ -75,11 +92,33 @@ const SvarPaSed: React.FC = (): JSX.Element => {
             />
             <Ui.Nav.Knapp onClick={onFnrDnrClick}>Hent</Ui.Nav.Knapp>
           </SaksnummerDiv>
-          <SetSelect onChange={onSetChange}>
-            {saksnummer?.map((s: any) => {
-              return <option key={s.sed}>{s.sed}</option>;
-            })}
-          </SetSelect>
+
+          <PersonSearch
+            alertStatus={alertStatus}
+            alertMessage={alertMessage}
+            alertType={alertType}
+            initialFnr={''}
+            person={person}
+            gettingPerson={gettingPerson}
+            className='slideAnimate'
+            validation={validation}
+            resetAllValidation={resetAllValidation}
+            onFnrChange={() => setIsFnrValid(false)}
+            onPersonFound={() => setIsFnrValid(true)}
+            onSearchPerformed={(_fnr) => {
+              dispatch(svarpasedActions.getPerson(_fnr))
+            }}
+            onPersonRemoved={() => {}}
+            onAlertClose={() => dispatch(clientClear())}
+          />
+
+          {saksnummer !== undefined && saksnummer !== null && (
+            <SetSelect onChange={onSetChange}>
+              {saksnummer?.map((s: any) => {
+                return <option key={s.sed}>{s.sed}</option>
+              })}
+            </SetSelect>
+          )}
 
           {saksnummer === null && (
             <Ui.Nav.AlertStripe status="ERROR">Fail</Ui.Nav.AlertStripe>
@@ -91,6 +130,7 @@ const SvarPaSed: React.FC = (): JSX.Element => {
         {JSON.stringify(saksnummer)}
         {JSON.stringify(fnummerDnummer)}
         {JSON.stringify(sed)}
+        {JSON.stringify(person)}
         <div className="col-sm-1" />
       </Ui.Nav.Row>
     </TopContainer>

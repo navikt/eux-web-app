@@ -26,3 +26,6 @@ export const API_SVARPASED_SAKSNUMMER_URL =
 export const API_SVARPASED_FNUMMERDNUMMER_URL =
   API_BASE_URL + "/fnummerDnummer/%(fnummerDnummer)s";
 export const API_SVARPASED_SED_URL = API_BASE_URL + "/sed/%(sed)s";
+
+export const API_SVARPASED_PERSON_URL = API_BASE_URL + "/personer/?fnr=%(fnr)s";
+

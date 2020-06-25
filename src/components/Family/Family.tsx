@@ -8,7 +8,7 @@ import Ui from 'eessi-pensjon-ui'
 import _ from 'lodash'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+
 
 export interface FamilySelector {
   familierelasjonKodeverk: Array<Kodeverk> | undefined;
@@ -22,9 +22,9 @@ const mapState = (state: State): FamilySelector => ({
   valgteFamilieRelasjoner: state.form.familierelasjoner
 })
 
-const Family: React.FC = (): JSX.Element => {
+const Family: React.FC = ({}): JSX.Element => {
   const { t } = useTranslation()
-  const dispatch = useDispatch()
+
   const { familierelasjonKodeverk, person, valgteFamilieRelasjoner }: FamilySelector = useSelector<State, FamilySelector>(mapState)
   const [viewFormRelatedUtland, setViewFormRelatedUtland] = useState<boolean>(false)
   const [viewFormRelatedTPS, setViewFormRelatedTPS] = useState<boolean>(false)
