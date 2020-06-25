@@ -6,12 +6,14 @@ export interface SvarpasedState {
   saksnummer: Array<any> | undefined;
   fnummerDnummer: any;
   sed: any;
+  person:any;
 }
 
 export const initialSvarpasedState: SvarpasedState = {
   saksnummer: undefined,
   fnummerDnummer: undefined,
   sed: undefined,
+  person: undefined
 };
 
 const svarpasedReducer = (
@@ -42,6 +44,18 @@ const svarpasedReducer = (
         ...state,
         saksnummer: null,
       };
+
+    case types.SVARPASED_PERSON_GET_FAILURE:
+      return {
+        ...state,
+        person: null
+      }
+
+    case types.SVARPASED_PERSON_GET_SUCCESS:
+      return {
+        ...state,
+        person: (action as ActionWithPayload).payload
+      }
 
     case types.SVARPASED_FNUMMERDNUMMER_GET_FAILURE:
       return {

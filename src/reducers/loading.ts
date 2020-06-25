@@ -141,8 +141,8 @@ const loadingReducer = (
         getingFnummerDnummer: true,
       };
 
-    case types.SVARPASED_SAKSNUMMER_GET_SUCCESS:
-    case types.SVARPASED_SAKSNUMMER_GET_FAILURE:
+    case types.SVARPASED_FNUMMERDNUMMER_GET_SUCCESS:
+    case types.SVARPASED_FNUMMERDNUMMER_GET_FAILURE:
       return {
         ...state,
         getingFnummerDnummer: false,

@@ -1,3 +1,4 @@
+import { clientClear } from 'actions/alert'
 import * as appActions from 'actions/app'
 import * as formActions from 'actions/form'
 import * as sakActions from 'actions/sak'
@@ -25,6 +26,12 @@ export interface OpprettSakProps {
 }
 
 export interface OpprettSakSelector {
+
+  alertStatus: any;
+  alertMessage: any;
+  alertType: any;
+  gettingPerson: any;
+
   arbeidsforhold: any;
   buctyper: any;
   fagsaker: FagSaker | undefined | null;
@@ -54,6 +61,11 @@ export interface OpprettSakSelector {
 }
 
 const mapState = (state: State): OpprettSakSelector => ({
+  alertStatus: state.alert.clientErrorStatus,
+  alertMessage: state.alert.clientErrorMessage,
+  alertType: state.alert.type,
+  gettingPerson: state.loading.gettingPerson,
+
   enheter: state.app.enheter,
   serverInfo: state.app.serverinfo,
 
@@ -86,6 +98,7 @@ const mapState = (state: State): OpprettSakSelector => ({
 
 const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): JSX.Element => {
   const {
+    alertStatus, alertMessage, alertType, gettingPerson,
     enheter, serverInfo, sendingSak, arbeidsforhold, buctyper, fagsaker, sedtyper, institusjoner, kodemaps,
     landkoder, opprettetSak, person, sektor, tema, valgteArbeidsforhold, valgtBucType, valgteFamilieRelasjoner,
     valgtFnr, valgtInstitusjon, valgtLandkode, valgtSaksId, valgtSedType, valgtSektor, valgtTema, valgtUnit
@@ -264,11 +277,23 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
             {t('ui:title-newcase')}
           </Ui.Nav.Systemtittel>
           <PersonSearch
+            alertStatus={alertStatus}
+            alertMessage={alertMessage}
+            alertType={alertType}
+            initialFnr={''}
+            person={person}
+            gettingPerson={gettingPerson}
             className='slideAnimate'
             validation={validation}
             resetAllValidation={resetAllValidation}
             onFnrChange={() => setIsFnrValid(false)}
             onPersonFound={() => setIsFnrValid(true)}
+            onSearchPerformed={(_fnr) => {
+              dispatch(formActions.set('fnr', _fnr))
+              dispatch(sakActions.getPerson(_fnr))
+            }}
+            onPersonRemoved={() => dispatch(sakActions.resetPerson())}
+            onAlertClose={() => dispatch(clientClear())}
           />
           {person ? (
             <Ui.Nav.Row>
@@ -373,7 +398,11 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
               </div>
               {valgtSektor === 'FB' ? (
                 <div className='col-xs-12 mb-4 slideAnimate'>
-                  <Family />
+                  <Family
+                    familierelasjonKodeverk={familierelasjonKodeverk}
+                    person={person}
+                    valgteFamilieRelasjoner={valgteFamilieRelasjoner}
+                />
                 </div>
               ) : null}
               {valgtSektor ? (
