@@ -1,5 +1,5 @@
-import { clientClear } from 'actions/alert'
-import PersonSearch from 'components/PersonSearch/PersonSearch'
+import { clientClear } from "actions/alert";
+import PersonSearch from "components/PersonSearch/PersonSearch";
 import TopContainer from "components/TopContainer/TopContainer";
 import { State } from "declarations/reducers";
 import React, { useState } from "react";
@@ -7,6 +7,8 @@ import Ui from "eessi-pensjon-ui";
 import { useDispatch, useSelector } from "react-redux";
 import * as svarpasedActions from "actions/svarpased";
 import styled from "styled-components";
+import { FamilieRelasjon } from "declarations/types";
+import Family from "components/Family/Family";
 
 const SaksnummerDiv = styled.div`
   display: flex;
@@ -28,6 +30,9 @@ const mapState = (state: State): any => ({
   gettingPerson: state.loading.gettingPerson,
 
   person: state.svarpased.person,
+  //familierelasjonKodeverk: state.svarpased.
+  familierelasjonKodeverk: state.svarpased.familierelasjoner,
+  valgteFamilieRelasjoner: state.svarpased.familierelasjoner,
 
   gettingSaksnummer: state.loading.gettingSaksnummer,
   saksnummer: state.svarpased.saksnummer,
@@ -39,18 +44,24 @@ const mapState = (state: State): any => ({
 const SvarPaSed: React.FC = (): JSX.Element => {
   const [_saksnummer, setSaksnummer] = useState(undefined);
   const [_fnummerDnummer, setFnummerDnummer] = useState(undefined);
-  const [validation, setValidation] = useState<{[k: string]: any}>({})
-  const [, setIsFnrValid] = useState<boolean>(false)
+  const [validation, setValidation] = useState<{ [k: string]: any }>({});
+  const [, setIsFnrValid] = useState<boolean>(false);
   //const [_sed, setSed] = useState(undefined);
   const dispatch = useDispatch();
 
   const {
-    alertStatus, alertMessage, alertType, gettingPerson, person,
+    alertStatus,
+    alertMessage,
+    alertType,
+    gettingPerson,
+    person,
     gettingSaksnummer,
     saksnummer,
     getingFnummerDnummer,
+    familierelasjonKodeverk,
     fnummerDnummer,
     sed,
+    valgteFamilieRelasjoner,
   }: any = useSelector<State, any>(mapState);
 
   const onSaksnummerClick = () => {
@@ -62,11 +73,25 @@ const SvarPaSed: React.FC = (): JSX.Element => {
   };
 
   const resetAllValidation = () => {
-    setValidation({})
-  }
+    setValidation({});
+  };
 
   const onSetChange = (e: any) => {
     dispatch(svarpasedActions.getSed(e.target.value));
+  };
+
+  const addTpsRelation = (relation: FamilieRelasjon): void => {
+    /* Person fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
+    dispatch(
+      svarpasedActions.addFamilierelasjoner({
+        ...relation,
+        nasjonalitet: "NO",
+      })
+    );
+  };
+
+  const deleteRelation = (relation: FamilieRelasjon): void => {
+    dispatch(svarpasedActions.removeFamilierelasjoner(relation));
   };
 
   console.log("gettingSaksnummer: ", gettingSaksnummer);
@@ -97,25 +122,33 @@ const SvarPaSed: React.FC = (): JSX.Element => {
             alertStatus={alertStatus}
             alertMessage={alertMessage}
             alertType={alertType}
-            initialFnr={''}
+            initialFnr={""}
             person={person}
             gettingPerson={gettingPerson}
-            className='slideAnimate'
+            className="slideAnimate"
             validation={validation}
             resetAllValidation={resetAllValidation}
             onFnrChange={() => setIsFnrValid(false)}
             onPersonFound={() => setIsFnrValid(true)}
             onSearchPerformed={(_fnr) => {
-              dispatch(svarpasedActions.getPerson(_fnr))
+              dispatch(svarpasedActions.getPerson(_fnr));
             }}
             onPersonRemoved={() => {}}
             onAlertClose={() => dispatch(clientClear())}
           />
-
+          {person !== undefined && person !== null && (
+            <Family
+              familierelasjonKodeverk={familierelasjonKodeverk}
+              person={person}
+              valgteFamilieRelasjoner={valgteFamilieRelasjoner}
+              onClickAddRelasjons={(value: any) => addTpsRelation(value)}
+              onClickRemoveRelasjons={(value: any) => deleteRelation(value)}
+            />
+          )}
           {saksnummer !== undefined && saksnummer !== null && (
             <SetSelect onChange={onSetChange}>
               {saksnummer?.map((s: any) => {
-                return <option key={s.sed}>{s.sed}</option>
+                return <option key={s.sed}>{s.sed}</option>;
               })}
             </SetSelect>
           )}
