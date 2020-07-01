@@ -1,19 +1,22 @@
 import { ActionWithPayload } from "eessi-pensjon-ui/dist/declarations/types";
 import { Action } from "redux";
 import * as types from "constants/actionTypes";
+import _ from "lodash";
 
 export interface SvarpasedState {
   saksnummer: Array<any> | undefined;
   fnummerDnummer: any;
   sed: any;
-  person:any;
+  person: any;
+  familierelasjoner: Array<any>;
 }
 
 export const initialSvarpasedState: SvarpasedState = {
   saksnummer: undefined,
   fnummerDnummer: undefined,
   sed: undefined,
-  person: undefined
+  person: undefined,
+  familierelasjoner: [],
 };
 
 const svarpasedReducer = (
@@ -48,14 +51,14 @@ const svarpasedReducer = (
     case types.SVARPASED_PERSON_GET_FAILURE:
       return {
         ...state,
-        person: null
-      }
+        person: null,
+      };
 
     case types.SVARPASED_PERSON_GET_SUCCESS:
       return {
         ...state,
-        person: (action as ActionWithPayload).payload
-      }
+        person: (action as ActionWithPayload).payload,
+      };
 
     case types.SVARPASED_FNUMMERDNUMMER_GET_FAILURE:
       return {
@@ -67,6 +70,22 @@ const svarpasedReducer = (
       return {
         ...state,
         sed: null,
+      };
+    case types.SVARPASED_FAMILIERELASJONER_ADD:
+      return {
+        ...state,
+        familierelasjoner: state.familierelasjoner.concat(
+          (action as ActionWithPayload).payload
+        ),
+      };
+
+    case types.SVARPASED_FAMILIERELASJONER_REMOVE:
+      return {
+        ...state,
+        familierelasjoner: _.filter(
+          state.familierelasjoner,
+          (i) => i.fnr !== (action as ActionWithPayload).payload.fnr
+        ),
       };
 
     default:
