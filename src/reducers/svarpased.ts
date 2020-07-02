@@ -8,6 +8,7 @@ export interface SvarpasedState {
   fnummerDnummer: any;
   sed: any;
   person: any;
+  personRelatert: any;
   familierelasjoner: Array<any>;
 }
 
@@ -16,6 +17,7 @@ export const initialSvarpasedState: SvarpasedState = {
   fnummerDnummer: undefined,
   sed: undefined,
   person: undefined,
+  personRelatert: undefined,
   familierelasjoner: [],
 };
 

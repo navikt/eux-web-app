@@ -1,6 +1,7 @@
 import { clientClear } from "actions/alert";
 import PersonSearch from "components/PersonSearch/PersonSearch";
 import TopContainer from "components/TopContainer/TopContainer";
+import * as types from 'constants/actionTypes'
 import { State } from "declarations/reducers";
 import React, { useState } from "react";
 import Ui from "eessi-pensjon-ui";
@@ -30,8 +31,9 @@ const mapState = (state: State): any => ({
   gettingPerson: state.loading.gettingPerson,
 
   person: state.svarpased.person,
+  personRelatert: state.svarpased.personRelatert,
   //familierelasjonKodeverk: state.svarpased.
-  familierelasjonKodeverk: state.svarpased.familierelasjoner,
+  familierelasjonKodeverk: state.sak.familierelasjoner,
   valgteFamilieRelasjoner: state.svarpased.familierelasjoner,
 
   gettingSaksnummer: state.loading.gettingSaksnummer,
@@ -55,6 +57,7 @@ const SvarPaSed: React.FC = (): JSX.Element => {
     alertType,
     gettingPerson,
     person,
+    personRelatert,
     gettingSaksnummer,
     saksnummer,
     getingFnummerDnummer,
@@ -138,11 +141,32 @@ const SvarPaSed: React.FC = (): JSX.Element => {
           />
           {person !== undefined && person !== null && (
             <Family
+              alertStatus={alertStatus}
+              alertMessage={alertMessage}
+              alertType={alertType}
               familierelasjonKodeverk={familierelasjonKodeverk}
+              personRelatert={personRelatert}
               person={person}
               valgteFamilieRelasjoner={valgteFamilieRelasjoner}
               onClickAddRelasjons={(value: any) => addTpsRelation(value)}
               onClickRemoveRelasjons={(value: any) => deleteRelation(value)}
+              onResetPersonRelatert={() => {
+                dispatch(svarpasedActions.resetPersonRelatert());
+              }}
+              onAddFailure={() => {
+                dispatch({
+                  type: types.SVARPASED_TPSPERSON_ADD_FAILURE,
+                });
+              }}
+              onAddSuccess={(e: any) => {
+                dispatch(
+                  svarpasedActions.addFamilierelasjoner(e)
+                );
+                dispatch({
+                  type: types.SVARPASED_TPSPERSON_ADD_SUCCESS,
+                });
+              }}
+              onAlertClose={() => dispatch(clientClear())}
             />
           )}
           {saksnummer !== undefined && saksnummer !== null && (

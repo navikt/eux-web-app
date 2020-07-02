@@ -5,7 +5,7 @@ import {
   ActionWithPayload,
   ThunkResult,
 } from "eessi-pensjon-ui/dist/declarations/types";
-import { ActionCreator } from "redux";
+import { Action, ActionCreator } from 'redux'
 import { FamilieRelasjon } from "declarations/types";
 
 const sprintf = require("sprintf-js").sprintf;
@@ -80,3 +80,8 @@ export const removeFamilierelasjoner: ActionCreator<ActionWithPayload> = (
   type: types.SVARPASED_FAMILIERELASJONER_REMOVE,
   payload: payload,
 });
+
+export const resetPersonRelatert: ActionCreator<Action> = (): Action => ({
+  type: types.SVARPASED_PERSON_RELATERT_RESET
+})
+
