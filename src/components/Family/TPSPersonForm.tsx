@@ -1,10 +1,6 @@
-import { clientClear } from "actions/alert";
-import * as formActions from "actions/form";
-import * as sakActions from "actions/sak";
 import classNames from "classnames";
 import PersonCard from "components/PersonCard/PersonCard";
 import * as types from "constants/actionTypes";
-import { State } from "declarations/reducers";
 import { FamilieRelasjon, Kodeverk, Person } from "declarations/types";
 import { KodeverkPropType } from "declarations/types.pt";
 import Ui from "eessi-pensjon-ui";
@@ -12,33 +8,34 @@ import _ from "lodash";
 import PT from "prop-types";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-//import { useDispatch, useSelector } from 'react-redux'
 import "./TPSPersonForm.css";
 
-const mapState = (state: State): TPSPersonFormSelector => ({
-  alertStatus: state.alert.clientErrorStatus,
-  alertMessage: state.alert.clientErrorMessage,
-  alertType: state.alert.type,
-  personRelatert: state.sak.personRelatert,
-  person: state.sak.person,
-});
-
-export interface TPSPersonFormSelector {
+export interface TPSPersonFormProps {
   alertStatus: string | undefined;
   alertMessage: string | undefined;
   alertType: string | undefined;
+  className?: string;
+  onAddFailure: () => void;
+  onAlertClose: () => void;
+  onAddSuccess: (e: any) => void;
+  onResetPersonRelatert: () => void;
   personRelatert: Person | undefined;
   person: Person;
-}
-
-export interface TPSPersonFormProps {
-  className?: string;
   rolleList: Array<Kodeverk>;
   existingFamilyRelationships: Array<FamilieRelasjon>;
 }
 
 const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
+  alertStatus,
+  alertMessage,
+  alertType,
   className,
+  onAddFailure,
+  onAddSuccess,
+  onAlertClose,
+  onResetPersonRelatert,
+  personRelatert,
+  person,
   rolleList,
   existingFamilyRelationships,
 }: TPSPersonFormProps): JSX.Element => {
@@ -51,16 +48,6 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
   );
 
   const { t } = useTranslation();
-  //const dispatch = useDispatch()
-  const {
-    alertStatus,
-    alertMessage,
-    alertType,
-    personRelatert,
-    person,
-  }: TPSPersonFormSelector = useSelector<State, TPSPersonFormSelector>(
-    mapState
-  );
 
   const sokEtterFnr = () => {
     //dispatch(sakActions.resetPersonRelatert())
@@ -83,16 +70,20 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
       if (!tpsperson) {
         setPersonRelatert(person);
       } else {
-        dispatch(sakActions.resetPersonRelatert());
+        if (onResetPersonRelatert) {
+          onResetPersonRelatert()
+        }
         setPersonRelatert(undefined);
       }
     }
-  }, [personRelatert, _personRelatert, dispatch]);
+  }, [personRelatert, _personRelatert]);
 
   const updateSok = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSok(e.target.value);
     setPersonRelatert(undefined);
-    dispatch(sakActions.resetPersonRelatert());
+    if (onResetPersonRelatert) {
+      onResetPersonRelatert()
+    }
   };
 
   const conflictingPerson = (): boolean => {
@@ -100,9 +91,9 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
     if (
       _.find(existingFamilyRelationships, (f) => f.fnr === fnr) !== undefined
     ) {
-      dispatch({
-        type: types.FORM_TPSPERSON_ADD_FAILURE,
-      });
+       if (onAddFailure) {
+         onAddFailure()
+       }
       return true;
     }
     return false;
@@ -113,19 +104,16 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
       setSok("");
       setPersonRelatert(undefined);
       setTpsPerson(undefined);
-
-      dispatch(sakActions.resetPersonRelatert());
+      if (onResetPersonRelatert) {
+        onResetPersonRelatert()
+      }
       /* Person fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
-
-      dispatch(
-        formActions.addFamilierelasjoner({
+      if (onAddSuccess) {
+        onAddSuccess({
           ...person,
           nasjonalitet: "NO",
         })
-      );
-      dispatch({
-        type: types.FORM_TPSPERSON_ADD_SUCCESS,
-      });
+      }
     }
   };
 
@@ -179,7 +167,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
               fixed={false}
               message={t(alertMessage)}
               status={alertStatus}
-              onClose={() => dispatch(clientClear())}
+              onClose={onAlertClose}
             />
           </div>
         )}

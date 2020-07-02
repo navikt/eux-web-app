@@ -1,50 +1,48 @@
-//import * as formActions from "actions/form";
 import TPSPersonForm from "components/Family/TPSPersonForm";
 import AbroadPersonForm from "components/Family/AbroadPersonForm";
 import PersonCard from "components/PersonCard/PersonCard";
-
-//import { State } from "declarations/reducers";
 import { FamilieRelasjon, Kodeverk, Person } from "declarations/types";
 import Ui from "eessi-pensjon-ui";
 import _ from "lodash";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-//import { withRouter } from "react-router-dom";
 
 export interface FamilySelector {
+  alertStatus: string | undefined;
+  alertMessage: string | undefined;
+  alertType: string | undefined;
   familierelasjonKodeverk: Array<Kodeverk> | undefined;
   person: Person | undefined;
+  personRelatert: Person | undefined;
   valgteFamilieRelasjoner: Array<FamilieRelasjon> | undefined;
   onClickAddRelasjons: (p: Person | FamilieRelasjon) => void;
   onClickRemoveRelasjons: (p: Person | FamilieRelasjon) => void;
+  onResetPersonRelatert: () => void;
+  onAddFailure: () => void;
+  onAddSuccess: (e: any) => void;
+  onAlertClose: () => void;
 }
-/*
-const mapState = (state: State): FamilySelector => ({
-  familierelasjonKodeverk: state.sak.familierelasjoner,
-  person: state.sak.person,
-  valgteFamilieRelasjoner: state.form.familierelasjoner,
-});
-*/
+
 const Family: React.FC<FamilySelector> = ({
+  alertStatus,
+  alertMessage,
+  alertType,
   familierelasjonKodeverk,
+  personRelatert,
   person,
   valgteFamilieRelasjoner,
   onClickAddRelasjons,
   onClickRemoveRelasjons,
+  onResetPersonRelatert,
+  onAddFailure,
+  onAddSuccess,
+  onAlertClose
 }): JSX.Element => {
   const [viewFormRelatedUtland, setViewFormRelatedUtland] = useState<boolean>(
     false
   );
   const [viewFormRelatedTPS, setViewFormRelatedTPS] = useState<boolean>(false);
   const { t } = useTranslation();
-
-  /*
-  const {
-  familierelasjonKodeverk,
-  person,
-  valgteFamilieRelasjoner,
-  }: //FamilySelector = useSelector<State, FamilySelector>(mapState);
-  */
 
   const remainingRelationsFromTPS: Array<FamilieRelasjon> = _.filter(
     person!.relasjoner,
@@ -181,15 +179,24 @@ const Family: React.FC<FamilySelector> = ({
               <Ui.Nav.Ingress className="ml-2">
                 {t("ui:form-family-tps-title")}
               </Ui.Nav.Ingress>
-              {viewFormRelatedTPS ? (
+              {viewFormRelatedTPS && person && (
                 <TPSPersonForm
                   className="m-2"
+                  alertStatus={alertStatus}
+                  alertMessage={alertMessage}
+                  alertType={alertType}
+                  personRelatert={personRelatert}
+                  person={person}
                   rolleList={rolleList}
                   existingFamilyRelationships={(
                     valgteFamilieRelasjoner || []
                   ).concat(remainingRelationsFromTPS || [])}
+                  onResetPersonRelatert={onResetPersonRelatert}
+                  onAddFailure={onAddFailure}
+                  onAddSuccess={onAddSuccess}
+                  onAlertClose={onAlertClose}
                 />
-              ) : null}
+              )}
               <Ui.Nav.Knapp className="m-2" onClick={toggleFormRelatedTPS}>
                 {viewFormRelatedTPS
                   ? t("ui:label-hide-form")

@@ -6,6 +6,7 @@ import AbortModal from "components/AbortModal/AbortModal";
 import Family from "components/Family/Family";
 import PersonSearch from "components/PersonSearch/PersonSearch";
 import TopContainer from "components/TopContainer/TopContainer";
+import * as types from 'constants/actionTypes'
 import { State } from "declarations/reducers";
 import {
   Enheter,
@@ -47,6 +48,7 @@ export interface OpprettSakSelector {
   sektor: any;
   enheter: Enheter | undefined;
   person: Person | undefined;
+  personRelatert: Person | undefined;
   sedtyper: any;
   sendingSak: boolean;
   serverInfo: any;
@@ -86,6 +88,7 @@ const mapState = (state: State): OpprettSakSelector => ({
   landkoder: state.sak.landkoder,
   opprettetSak: state.sak.opprettetSak,
   person: state.sak.person,
+  personRelatert: state.sak.personRelatert,
   sedtyper: state.sak.sedtyper,
   sektor: state.sak.sektor,
   tema: state.sak.tema,
@@ -127,6 +130,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
     landkoder,
     opprettetSak,
     person,
+    personRelatert,
     sektor,
     tema,
     valgteArbeidsforhold,
@@ -536,13 +540,34 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
               {valgtSektor === "FB" ? (
                 <div className="col-xs-12 mb-4 slideAnimate">
                   <Family
+                    alertStatus={alertStatus}
+                    alertMessage={alertMessage}
+                    alertType={alertType}
                     familierelasjonKodeverk={familierelasjonKodeverk}
+                    personRelatert={personRelatert}
                     person={person}
                     valgteFamilieRelasjoner={valgteFamilieRelasjoner}
                     onClickAddRelasjons={(value: any) => addTpsRelation(value)}
                     onClickRemoveRelasjons={(value: any) =>
                       deleteRelation(value)
                     }
+                    onResetPersonRelatert={() => {
+                      dispatch(sakActions.resetPersonRelatert());
+                    }}
+                    onAddFailure={() => {
+                      dispatch({
+                        type: types.FORM_TPSPERSON_ADD_FAILURE,
+                      });
+                    }}
+                    onAddSuccess={(e: any) => {
+                      dispatch(
+                        formActions.addFamilierelasjoner(e)
+                      );
+                      dispatch({
+                        type: types.FORM_TPSPERSON_ADD_SUCCESS,
+                      });
+                    }}
+                    onAlertClose={() => dispatch(clientClear())}
                   />
                 </div>
               ) : null}
