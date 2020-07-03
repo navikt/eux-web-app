@@ -17,8 +17,7 @@ export const initialLoadingState: LoadingState = {
   gettingServerinfo: false,
   sendingVedlegg: false,
   sendingSak: false,
-  gettingSaksnummer: false,
-  getingFnummerDnummer: false,
+  gettingSaksnummer: false
 };
 
 const loadingReducer = (
@@ -133,19 +132,6 @@ const loadingReducer = (
       return {
         ...state,
         gettingSaksnummer: false,
-      };
-
-    case types.SVARPASED_FNUMMERDNUMMER_GET_REQUEST:
-      return {
-        ...state,
-        getingFnummerDnummer: true,
-      };
-
-    case types.SVARPASED_FNUMMERDNUMMER_GET_SUCCESS:
-    case types.SVARPASED_FNUMMERDNUMMER_GET_FAILURE:
-      return {
-        ...state,
-        getingFnummerDnummer: false,
       };
 
     case types.VEDLEGG_POST_REQUEST:

@@ -5,7 +5,6 @@ import _ from "lodash";
 
 export interface SvarpasedState {
   saksnummer: Array<any> | undefined;
-  fnummerDnummer: any;
   sed: any;
   person: any;
   personRelatert: any;
@@ -14,7 +13,6 @@ export interface SvarpasedState {
 
 export const initialSvarpasedState: SvarpasedState = {
   saksnummer: undefined,
-  fnummerDnummer: undefined,
   sed: undefined,
   person: undefined,
   personRelatert: undefined,
@@ -32,11 +30,6 @@ const svarpasedReducer = (
         saksnummer: (action as ActionWithPayload).payload,
       };
 
-    case types.SVARPASED_FNUMMERDNUMMER_GET_SUCCESS:
-      return {
-        ...state,
-        fnummerDnummer: (action as ActionWithPayload).payload,
-      };
 
     case types.SVARPASED_SED_GET_SUCCESS:
       return {
@@ -60,12 +53,6 @@ const svarpasedReducer = (
       return {
         ...state,
         person: (action as ActionWithPayload).payload,
-      };
-
-    case types.SVARPASED_FNUMMERDNUMMER_GET_FAILURE:
-      return {
-        ...state,
-        fnummerDnummer: null,
       };
 
     case types.SVARPASED_SED_GET_FAILURE:

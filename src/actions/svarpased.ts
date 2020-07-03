@@ -23,21 +23,6 @@ export const getSaksnummer: ActionCreator<ThunkResult<ActionWithPayload>> = (
   });
 };
 
-export const getFnummerDnummer: ActionCreator<ThunkResult<
-  ActionWithPayload
->> = (fnummerDnummer: string): ThunkResult<ActionWithPayload> => {
-  return api.realCall({
-    url: sprintf(urls.API_SVARPASED_FNUMMERDNUMMER_URL, {
-      fnummerDnummer: fnummerDnummer,
-    }),
-    type: {
-      request: types.SVARPASED_FNUMMERDNUMMER_GET_REQUEST,
-      success: types.SVARPASED_FNUMMERDNUMMER_GET_SUCCESS,
-      failure: types.SVARPASED_FNUMMERDNUMMER_GET_FAILURE,
-    },
-  });
-};
-
 export const getSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
   sed: string
 ): ThunkResult<ActionWithPayload> => {

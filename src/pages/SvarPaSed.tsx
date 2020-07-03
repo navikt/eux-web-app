@@ -38,14 +38,11 @@ const mapState = (state: State): any => ({
 
   gettingSaksnummer: state.loading.gettingSaksnummer,
   saksnummer: state.svarpased.saksnummer,
-  getingFnummerDnummer: state.loading.getingFnummerDnummer,
-  fnummerDnummer: state.svarpased.fnummerDnummer,
   sed: state.svarpased.sed,
 });
 
 const SvarPaSed: React.FC = (): JSX.Element => {
   const [_saksnummer, setSaksnummer] = useState(undefined);
-  const [_fnummerDnummer, setFnummerDnummer] = useState(undefined);
   const [validation, setValidation] = useState<{ [k: string]: any }>({});
   const [, setIsFnrValid] = useState<boolean>(false);
   //const [_sed, setSed] = useState(undefined);
@@ -60,9 +57,7 @@ const SvarPaSed: React.FC = (): JSX.Element => {
     personRelatert,
     gettingSaksnummer,
     saksnummer,
-    getingFnummerDnummer,
     familierelasjonKodeverk,
-    fnummerDnummer,
     sed,
     valgteFamilieRelasjoner,
   }: any = useSelector<State, any>(mapState);
@@ -71,9 +66,6 @@ const SvarPaSed: React.FC = (): JSX.Element => {
     dispatch(svarpasedActions.getSaksnummer(_saksnummer));
   };
 
-  const onFnrDnrClick = () => {
-    dispatch(svarpasedActions.getFnummerDnummer(_fnummerDnummer));
-  };
 
   const resetAllValidation = () => {
     setValidation({});
@@ -98,7 +90,6 @@ const SvarPaSed: React.FC = (): JSX.Element => {
   };
 
   console.log("gettingSaksnummer: ", gettingSaksnummer);
-  console.log("getFnummerDnummer", getingFnummerDnummer);
   return (
     <TopContainer className="p-svarpased">
       <Ui.Nav.Row className="m-0">
@@ -111,14 +102,6 @@ const SvarPaSed: React.FC = (): JSX.Element => {
               onChange={(e: any) => setSaksnummer(e.target.value)}
             />
             <Ui.Nav.Knapp onClick={onSaksnummerClick}>Hent</Ui.Nav.Knapp>
-          </SaksnummerDiv>
-          <SaksnummerDiv>
-            <SaksnummerInput
-              label="Fnr/Dnr"
-              bredde="M"
-              onChange={(e: any) => setFnummerDnummer(e.target.value)}
-            />
-            <Ui.Nav.Knapp onClick={onFnrDnrClick}>Hent</Ui.Nav.Knapp>
           </SaksnummerDiv>
 
           <PersonSearch
@@ -180,12 +163,9 @@ const SvarPaSed: React.FC = (): JSX.Element => {
           {saksnummer === null && (
             <Ui.Nav.AlertStripe status="ERROR">Fail</Ui.Nav.AlertStripe>
           )}
-          {fnummerDnummer === null && (
-            <Ui.Nav.AlertStripe status="ERROR">Fail</Ui.Nav.AlertStripe>
-          )}
+
         </div>
         {JSON.stringify(saksnummer)}
-        {JSON.stringify(fnummerDnummer)}
         {JSON.stringify(sed)}
         {JSON.stringify(person)}
         <div className="col-sm-1" />
