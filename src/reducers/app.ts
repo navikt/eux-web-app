@@ -1,6 +1,6 @@
 import * as types from 'constants/actionTypes'
 import { Enheter, Saksbehandler, ServerInfo } from 'declarations/types'
-import { ActionWithPayload } from 'eessi-pensjon-ui/dist/declarations/types'
+import { ActionWithPayload } from 'js-fetch-api'
 
 export interface AppState {
   saksbehandler: Saksbehandler | undefined;

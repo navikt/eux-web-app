@@ -16,10 +16,7 @@ import * as appActions from 'actions/app'
 import { unregister } from './registerServiceWorker'
 import * as Utils from './utils/utils'
 import * as Sentry from 'metrics/sentry'
-import 'eessi-pensjon-ui/dist/minibootstrap.css'
-import 'eessi-pensjon-ui/dist/nav.css'
 import './index.css'
-import 'index_highContrast.css'
 
 const store: Store = createStore(combineReducers(reducers), applyMiddleware(thunk))
 

@@ -1,13 +1,12 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { VedleggPayload } from 'declarations/types'
-import * as api from 'eessi-pensjon-ui/dist/api'
-import { ActionWithPayload, ThunkResult } from 'eessi-pensjon-ui/dist/declarations/types'
+import { realCall, ActionWithPayload, ThunkResult } from 'js-fetch-api'
 import { ActionCreator } from 'redux'
 const sprintf = require('sprintf-js').sprintf
 
 export const sendVedlegg: ActionCreator<ThunkResult<ActionWithPayload>> = (payload: VedleggPayload): ThunkResult<ActionWithPayload> => {
-  return api.realCall({
+  return realCall({
     url: urls.API_VEDLEGG_POST_URL,
     method: 'POST',
     payload: payload,
@@ -20,7 +19,7 @@ export const sendVedlegg: ActionCreator<ThunkResult<ActionWithPayload>> = (paylo
 }
 
 export const getDokument: ActionCreator<ThunkResult<ActionWithPayload>> = (rinasaksnummer: string): ThunkResult<ActionWithPayload> => {
-  return api.realCall({
+  return realCall({
     url: sprintf(urls.API_VEDLEGG_DOKUMENT_URL, { rinasaksnummer: rinasaksnummer }),
     type: {
       request: types.VEDLEGG_DOKUMENT_GET_REQUEST,

@@ -6,16 +6,6 @@ import Vedlegg, { VedleggProps, VedleggSelector } from './Vedlegg'
 jest.mock('react-router-dom', () => ({
   Link: () => (<div className='mock-link' />)
 }))
-jest.mock('eessi-pensjon-ui', () => {
-  const Ui = jest.requireActual('eessi-pensjon-ui').default
-  return {
-    ...Ui,
-    Nav: {
-      ...Ui.Nav,
-      Hjelpetekst: ({ children }: {children: any}) => <div className='mock-hjelpetekst'>{children}</div>
-    }
-  }
-})
 
 describe('pages/Vedlegg', () => {
   let wrapper: ReactWrapper
