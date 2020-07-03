@@ -33,56 +33,58 @@ export interface OpprettSakProps {
 }
 
 export interface OpprettSakSelector {
-  alertStatus: any;
-  alertMessage: any;
-  alertType: any;
-  gettingPerson: any;
+  alertStatus: any
+  alertMessage: any
+  alertType: any
 
-  arbeidsforhold: any;
-  buctyper: any;
-  fagsaker: FagSaker | undefined | null;
-  institusjoner: any;
-  kodemaps: any;
-  landkoder: any;
-  opprettetSak: any;
-  sektor: any;
-  enheter: Enheter | undefined;
-  person: Person | undefined;
-  personRelatert: Person | undefined;
-  sedtyper: any;
-  sendingSak: boolean;
-  serverInfo: any;
-  tema: any;
+  enheter: Enheter | undefined
+  serverInfo: any
 
-  familierelasjonKodeverk: any;
+  sendingSak: boolean
+  gettingPerson: boolean
 
-  valgtFnr: any;
-  valgtUnit: any;
-  valgtBucType: any;
-  valgtSedType: any;
-  valgtSektor: any;
-  valgtLandkode: any;
-  valgtInstitusjon: any;
-  valgtSaksId: any;
-  valgtTema: any;
-  valgteFamilieRelasjoner: any;
-  valgteArbeidsforhold: any;
+  arbeidsforhold: any
+  buctyper: any
+  fagsaker: FagSaker | undefined | null
+  familierelasjonKodeverk: any
+  kodemaps: any
+  institusjoner: any
+  landkoder: any
+  opprettetSak: any
+  person: Person | undefined
+  personRelatert: Person | undefined
+  sedtyper: any
+  sektor: any
+  tema: any
+
+  valgteArbeidsforhold: any
+  valgtBucType: any
+  valgteFamilieRelasjoner: any
+  valgtFnr: any
+  valgtInstitusjon: any
+  valgtLandkode: any
+  valgtSaksId: any
+  valgtSedType: any
+  valgtSektor: any
+  valgtTema: any
+  valgtUnit: any
 }
 
 const mapState = (state: State): OpprettSakSelector => ({
   alertStatus: state.alert.clientErrorStatus,
   alertMessage: state.alert.clientErrorMessage,
   alertType: state.alert.type,
-  gettingPerson: state.loading.gettingPerson,
 
   enheter: state.app.enheter,
   serverInfo: state.app.serverinfo,
 
   sendingSak: state.loading.sendingSak,
+  gettingPerson: state.loading.gettingPerson,
 
   arbeidsforhold: state.sak.arbeidsforhold,
   buctyper: state.sak.buctyper,
   fagsaker: state.sak.fagsaker,
+  familierelasjonKodeverk: state.sak.familierelasjoner,
   kodemaps: state.sak.kodemaps,
   institusjoner: state.sak.institusjoner,
   landkoder: state.sak.landkoder,
@@ -92,9 +94,6 @@ const mapState = (state: State): OpprettSakSelector => ({
   sedtyper: state.sak.sedtyper,
   sektor: state.sak.sektor,
   tema: state.sak.tema,
-
-  familierelasjonKodeverk: state.form.familierelasjoner,
-  //person: state.svarpased.person,
 
   valgteArbeidsforhold: state.form.arbeidsforhold,
   valgtBucType: state.form.buctype,
@@ -106,7 +105,7 @@ const mapState = (state: State): OpprettSakSelector => ({
   valgtSedType: state.form.sedtype,
   valgtSektor: state.form.sektor,
   valgtTema: state.form.tema,
-  valgtUnit: state.form.unit,
+  valgtUnit: state.form.unit
 });
 
 const OpprettSak: React.FC<OpprettSakProps> = ({
@@ -144,93 +143,70 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
     valgtSektor,
     valgtTema,
     valgtUnit,
-  }: OpprettSakSelector = useSelector<State, OpprettSakSelector>(mapState);
-  const dispatch = useDispatch();
-  const { t } = useTranslation();
+  }: OpprettSakSelector = useSelector<State, OpprettSakSelector>(mapState)
+  const dispatch = useDispatch()
+  const { t } = useTranslation()
 
-  const [visModal, setVisModal] = useState(false);
-  const [validation, setValidation] = useState<{ [k: string]: any }>({});
-  const [isFnrValid, setIsFnrValid] = useState<boolean>(false);
+  const [visModal, setVisModal] = useState(false)
+  const [validation, setValidation] = useState<{ [k: string]: any }>({})
+  const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
 
-  //const [relation, setRelation] = useState({});
-
-  const temaer = !kodemaps
-    ? []
-    : !valgtSektor
-    ? []
-    : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor]];
-  const _buctyper = !kodemaps
-    ? []
-    : !valgtSektor
-    ? []
-    : buctyper[kodemaps.SEKTOR2FAGSAK[valgtSektor]];
-  let _sedtyper = !kodemaps
-    ? []
-    : !valgtSektor || !valgtBucType
-    ? []
-    : kodemaps.BUC2SEDS[valgtSektor][valgtBucType];
+  const temaer = !kodemaps ? [] : !valgtSektor ? [] : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor]];
+  const _buctyper = !kodemaps ? [] : !valgtSektor ? [] : buctyper[kodemaps.SEKTOR2FAGSAK[valgtSektor]];
+  let _sedtyper = !kodemaps ? [] : !valgtSektor || !valgtBucType ? [] : kodemaps.BUC2SEDS[valgtSektor][valgtBucType];
 
   if (!(_sedtyper && _sedtyper.length)) {
-    _sedtyper = [];
+    _sedtyper = []
   }
   _sedtyper = _sedtyper.reduce((acc: any, curr: any) => {
     const kode = sedtyper?.find((elem: any) => elem.kode === curr);
     acc.push(kode);
     return acc;
-  }, []);
+  }, [])
 
-  const isSomething = (value: any): boolean =>
-    !_.isNil(value) && !_.isEmpty(value);
-  const visFagsakerListe: boolean =
-    isSomething(valgtSektor) && isSomething(tema) && isSomething(fagsaker);
-  const visArbeidsforhold: boolean =
-    EKV.Koder.sektor.FB === valgtSektor &&
+  const isSomething = (value: any): boolean => !_.isNil(value) && !_.isEmpty(value)
+  const visFagsakerListe: boolean = isSomething(valgtSektor) && isSomething(tema) && isSomething(fagsaker)
+  const visArbeidsforhold: boolean = EKV.Koder.sektor.FB === valgtSektor &&
     EKV.Koder.buctyper.family.FB_BUC_01 === valgtBucType &&
-    isSomething(valgtSedType);
-  const visEnheter = valgtSektor === "HZ" || valgtSektor === "SI";
+    isSomething(valgtSedType)
+  const visEnheter = valgtSektor === "HZ" || valgtSektor === "SI"
 
   const validate = (): Validation => {
     const validation: Validation = {
-      fnr: !valgtFnr
-        ? t("ui:validation-noFnr")
-        : !isFnrValid
-        ? t("ui:validation-uncheckedFnr")
-        : null,
+      fnr: !valgtFnr ? t("ui:validation-noFnr") : !isFnrValid ? t("ui:validation-uncheckedFnr") : null,
       sektor: !valgtSektor ? t("ui:validation-noSektor") : null,
       buctype: !valgtBucType ? t("ui:validation-noBuctype") : null,
       sedtype: !valgtSedType ? t("ui:validation-noSedtype") : null,
       landkode: !valgtLandkode ? t("ui:validation-noLand") : null,
-      institusjon: !valgtInstitusjon
-        ? t("ui:validation-noInstitusjonsID")
-        : null,
+      institusjon: !valgtInstitusjon ? t("ui:validation-noInstitusjonsID") : null,
       tema: !valgtTema ? t("ui:validation-noTema") : null,
       saksId: !valgtSaksId ? t("ui:validation-noSaksId") : null,
       unit: visEnheter && !valgtUnit ? t("ui:validation-noUnit") : null,
     };
-    setValidation(validation);
-    return validation;
+    setValidation(validation)
+    return validation
   };
 
   const resetAllValidation = () => {
-    setValidation({});
-  };
+    setValidation({})
+  }
 
   const resetValidation = (key: Array<string> | string): void => {
-    const newValidation = _.cloneDeep(validation);
+    const newValidation = _.cloneDeep(validation)
     if (_.isString(key)) {
-      newValidation[key] = null;
+      newValidation[key] = null
     }
     if (_.isArray(key)) {
       key.forEach((k) => {
-        newValidation[k] = null;
-      });
+        newValidation[k] = null
+      })
     }
-    setValidation(newValidation);
-  };
+    setValidation(newValidation)
+  }
 
   const isValid = (_validation: Validation): boolean => {
     return _.find(_.values(_validation), (e) => e !== null) === undefined;
-  };
+  }
 
   const skjemaSubmit = (): void => {
     if (isValid(validate())) {
@@ -247,46 +223,46 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
         arbeidsforhold: valgteArbeidsforhold,
         enhet: valgtUnit,
       };
-      dispatch(sakActions.createSak(payload));
+      dispatch(sakActions.createSak(payload))
     }
-  };
+  }
 
   const openModal = (): void => {
-    setVisModal(true);
-  };
+    setVisModal(true)
+  }
 
   const closeModal = (): void => {
-    setVisModal(false);
-  };
+    setVisModal(false)
+  }
 
   const onAbort = (): void => {
-    dispatch(appActions.cleanData());
-    history.push("/");
-  };
+    dispatch(appActions.cleanData())
+    history.push("/")
+  }
 
   const onUnitChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    resetValidation("unit");
-    dispatch(formActions.set("unit", e.target.value));
-  };
+    resetValidation("unit")
+    dispatch(formActions.set("unit", e.target.value))
+  }
 
   const onSektorChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    resetValidation("sektor");
-    resetValidation("unit");
-    dispatch(formActions.set("unit", undefined));
-    dispatch(formActions.set("sektor", e.target.value));
-  };
+    resetValidation("sektor")
+    resetValidation("unit")
+    dispatch(formActions.set("unit", undefined))
+    dispatch(formActions.set("sektor", e.target.value))
+  }
 
   const onBuctypeChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ): void => {
-    resetValidation(["buctype", "landkode"]);
-    const buctype = event.target.value;
-    dispatch(formActions.set("buctype", buctype));
-    dispatch(formActions.set("landkode", undefined));
-    dispatch(formActions.set("sedtype", undefined));
-    dispatch(formActions.set("institution", undefined));
-    dispatch(sakActions.getLandkoder(buctype));
-  };
+    resetValidation(["buctype", "landkode"])
+    const buctype = event.target.value
+    dispatch(formActions.set("buctype", buctype))
+    dispatch(formActions.set("landkode", undefined))
+    dispatch(formActions.set("sedtype", undefined))
+    dispatch(formActions.set("institution", undefined))
+    dispatch(sakActions.getLandkoder(buctype))
+  }
 
   const onSedtypeChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     resetValidation("sedtype");
@@ -380,7 +356,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
             onPersonRemoved={() => dispatch(sakActions.resetPerson())}
             onAlertClose={() => dispatch(clientClear())}
           />
-          {person ? (
+          {person && (
             <Ui.Nav.Row>
               <div
                 className="col-xs-6 slideAnimate"
@@ -395,7 +371,9 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   value={valgtSektor}
                   feil={validation.sektor}
                 >
-                  <option value="">{t("ui:form-choose")}</option>)
+                  <option value="">
+                    {t("ui:form-choose")}
+                  </option>)
                   {sektor
                     ? _.orderBy(sektor, "term").map((element: any) => (
                         <option value={element.kode} key={element.kode}>
@@ -405,11 +383,11 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     : null}
                 </Ui.Nav.Select>
               </div>
-              {visEnheter ? (
-                <div
-                  className="col-xs-6 slideAnimate"
-                  style={{ animationDelay: "0.15s" }}
-                >
+              <div
+                className="col-xs-6 slideAnimate"
+                style={{ animationDelay: "0.15s" }}
+              >
+                {visEnheter && (
                   <Ui.Nav.Select
                     className="mb-4"
                     id="id-enhet"
@@ -427,10 +405,8 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                         ))
                       : null}
                   </Ui.Nav.Select>
-                </div>
-              ) : (
-                <div className="col-xs-6" />
-              )}
+                )}
+              </div>
               <div
                 className="col-xs-6 slideAnimate"
                 style={{ animationDelay: "0.15s" }}
@@ -470,22 +446,21 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   feil={validation.sedtype}
                 >
                   <option value="">{t("ui:form-choose")}</option>)
-                  {_sedtyper
-                    ? _sedtyper.map((element: any) => {
-                        // if only one element, select it
-                        if (
-                          _sedtyper.length === 1 &&
-                          valgtSedType !== element.kode
-                        ) {
-                          onSedtypeSet(element.kode);
-                        }
-                        return (
-                          <option value={element.kode} key={element.kode}>
-                            {element.kode} - {element.term}
-                          </option>
-                        );
-                      })
-                    : null}
+                  {_sedtyper && _sedtyper.map((element: any) => {
+                      // if only one element, select it
+                      if (
+                        _sedtyper.length === 1 &&
+                        valgtSedType !== element.kode
+                      ) {
+                        onSedtypeSet(element.kode);
+                      }
+                      return (
+                        <option value={element.kode} key={element.kode}>
+                          {element.kode} - {element.term}
+                        </option>
+                      );
+                    })
+                  }
                 </Ui.Nav.Select>
               </div>
               <div
@@ -537,7 +512,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     : null}
                 </Ui.Nav.Select>
               </div>
-              {valgtSektor === "FB" ? (
+              {valgtSektor === "FB" && (
                 <div className="col-xs-12 mb-4 slideAnimate">
                   <Family
                     alertStatus={alertStatus}
@@ -548,30 +523,18 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     person={person}
                     valgteFamilieRelasjoner={valgteFamilieRelasjoner}
                     onClickAddRelasjons={(value: any) => addTpsRelation(value)}
-                    onClickRemoveRelasjons={(value: any) =>
-                      deleteRelation(value)
-                    }
-                    onResetPersonRelatert={() => {
-                      dispatch(sakActions.resetPersonRelatert());
-                    }}
-                    onAddFailure={() => {
-                      dispatch({
-                        type: types.FORM_TPSPERSON_ADD_FAILURE,
-                      });
-                    }}
+                    onClickRemoveRelasjons={(value: any) => deleteRelation(value)}
+                    onResetPersonRelatert={() => dispatch(sakActions.resetPersonRelatert())}
+                    onAddFailure={() => dispatch({type: types.FORM_TPSPERSON_ADD_FAILURE})}
                     onAddSuccess={(e: any) => {
-                      dispatch(
-                        formActions.addFamilierelasjoner(e)
-                      );
-                      dispatch({
-                        type: types.FORM_TPSPERSON_ADD_SUCCESS,
-                      });
+                      dispatch(formActions.addFamilierelasjoner(e))
+                      dispatch({type: types.FORM_TPSPERSON_ADD_SUCCESS})
                     }}
                     onAlertClose={() => dispatch(clientClear())}
                   />
                 </div>
-              ) : null}
-              {valgtSektor ? (
+              )}
+              {valgtSektor && (
                 <>
                   <div className="col-xs-12">
                     <div
@@ -638,8 +601,8 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     </div>
                   ) : null}
                 </>
-              ) : null}
-              {visFagsakerListe ? (
+              )}
+              {visFagsakerListe && (
                 <>
                   <div className="col-xs-6">
                     <Ui.Nav.Select
@@ -664,8 +627,8 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   </div>
                   <div className="col-xs-6" />
                 </>
-              ) : null}
-              {visArbeidsforhold ? (
+              )}
+              {visArbeidsforhold && (
                 <>
                   <div className="col-xs-6 arbeidsforhold">
                     <Ui.Nav.Row>
@@ -735,7 +698,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   </div>
                   <div className="col-xs-6" />
                 </>
-              ) : null}
+              )}
               <div
                 className="col-xs-12 buttons mt-4 slideAnimate"
                 style={{ animationDelay: "0.75s" }}
@@ -755,7 +718,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   {t("ui:form-resetForm")}
                 </Ui.Nav.Flatknapp>
               </div>
-              {opprettetSak && opprettetSak.url ? (
+              {opprettetSak && opprettetSak.url && (
                 <div className="col-xs-12">
                   <Ui.Nav.AlertStripe className="mt-4 w-50" type="suksess">
                     <div>
@@ -791,9 +754,9 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     </div>
                   </Ui.Nav.AlertStripe>
                 </div>
-              ) : null}
+              )}
             </Ui.Nav.Row>
-          ) : null}
+          )}
           <AbortModal
             onAbort={onAbort}
             isOpen={visModal}
