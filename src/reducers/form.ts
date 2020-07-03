@@ -1,20 +1,20 @@
 import * as types from 'constants/actionTypes'
 import _ from 'lodash'
-import { ActionWithPayload } from 'eessi-pensjon-ui/dist/declarations/types'
+import { ActionWithPayload } from 'js-fetch-api'
 import { Action } from 'redux'
 
 export interface FormState {
-  fnr: any;
-  unit: any;
-  sedtype: any;
-  buctype: any;
-  sektor: any;
-  landkode: any;
-  institusjon: any;
-  saksId: any;
-  tema: any;
-  familierelasjoner: Array<any>;
-  arbeidsforhold: Array<any>;
+  fnr: any
+  unit: any
+  sedtype: any
+  buctype: any
+  sektor: any
+  landkode: any
+  institusjon: any
+  saksId: any
+  tema: any
+  familierelasjoner: Array<any>
+  arbeidsforhold: Array<any>
 }
 
 export const initialFormState: FormState = {

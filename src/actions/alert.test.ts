@@ -1,6 +1,6 @@
 import * as alertActions from 'actions/alert'
 import * as types from 'constants/actionTypes'
-import { ErrorPayload } from 'eessi-pensjon-ui/dist/declarations/types'
+import { ErrorPayload } from 'js-fetch-api'
 
 describe('actions/alert', () => {
   it('clientClear()', () => {

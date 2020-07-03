@@ -1,13 +1,15 @@
-import classNames from 'classnames'
-import 'components/PersonSearch/PersonSearch.css'
+import Alert, { AlertStatus } from 'components/Alert/Alert'
+import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import * as types from 'constants/actionTypes'
 import { Person } from 'declarations/types'
 import { ValidationPropType } from 'declarations/types.pt'
-import Ui from 'eessi-pensjon-ui'
 import _ from 'lodash'
+import { Knapp } from 'nav-frontend-knapper'
+import { Input } from 'nav-frontend-skjema'
 import PT from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
 import PersonCard from '../PersonCard/PersonCard'
 
 export interface PersonSearchProps {
@@ -27,10 +29,64 @@ export interface PersonSearchProps {
   validation: any;
 }
 
+const AlertstripeDiv = styled.div`
+  margin: 0.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  width: 50%;
+`
+
+const PersonSearchDiv = styled.div`
+  margin-bottom: 2em;
+
+  .personsok__skjema {
+    display: flex;
+    flex-direction: row;
+  }
+  .personsok__input {
+    min-width: 24.5em;
+  }
+  .personsok__spinnerwrapper {
+    margin: 2.3em 1em 0 -2.5em;
+  }
+
+  .personsok__knapp {
+    display: flex;
+    flex: 0;
+    height: 2.4em;
+    align-self: flex-start;
+    margin: 1.9em 0 0 1em;
+  }
+
+  .personsok__kort {
+    display: flex !important;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin: .6em 0;
+    align-items: center;
+
+    .fodselsdato {
+      flex: 1;
+    }
+  }
+
+  .personsok__advarsel {
+    margin-top: 1em;
+  }
+
+  .familierelasjoner__knapp__ikon {
+    margin: -0.0em 0.5em 0 0;
+
+    path {
+      stroke: @navBla;
+    }
+  }
+`
+
 const PersonSearch: React.FC<PersonSearchProps> = ({
-   alertStatus, alertMessage, alertType, className, initialFnr, gettingPerson,
-   onAlertClose, onFnrChange, onPersonFound, onPersonRemoved, onSearchPerformed, person,
-   resetAllValidation, validation
+  alertStatus, alertMessage, alertType, className, initialFnr, gettingPerson,
+  onAlertClose, onFnrChange, onPersonFound, onPersonRemoved, onSearchPerformed, person,
+  resetAllValidation, validation
 }: PersonSearchProps): JSX.Element => {
   const { t } = useTranslation()
   const [_fnr, setFnr] = useState<string | undefined>(initialFnr)
@@ -83,9 +139,9 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   }
 
   return (
-    <div className={classNames('personsok', className)}>
+    <PersonSearchDiv>
       <div className='personsok__skjema'>
-        <Ui.Nav.Input
+        <Input
           id='personsok__input-id'
           label={t('ui:form-searchUser')}
           className='personsok__input'
@@ -93,22 +149,23 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
           onChange={onChange}
           feil={validation.fnr || localValidation}
         />
-        <Ui.Nav.Knapp className='personsok__knapp' onClick={sokEtterPerson} disabled={gettingPerson}>
-          {gettingPerson ? <Ui.WaitingPanel size='S' message={t('ui:form-searching')} oneLine /> : t('ui:form-search')}
-        </Ui.Nav.Knapp>
+        <Knapp className='personsok__knapp' onClick={sokEtterPerson} disabled={gettingPerson}>
+          {gettingPerson ? <WaitingPanel size='S' message={t('ui:form-searching')} oneLine /> : t('ui:form-search')}
+        </Knapp>
       </div>
       {alertMessage && alertType === types.SAK_PERSON_GET_FAILURE && (
-        <Ui.Alert
-          className='mt-4 mb-4 w-50'
-          type='client'
-          fixed={false}
-          message={t(alertMessage)}
-          status={alertStatus}
-          onClose={onAlertClose}
-        />
+        <AlertstripeDiv>
+          <Alert
+            type='client'
+            fixed={false}
+            message={t(alertMessage)}
+            status={alertStatus as AlertStatus}
+            onClose={onAlertClose}
+          />
+        </AlertstripeDiv>
       )}
-      {person && isPersonValid(person) ? <PersonCard className='neutral' person={person} onRemoveClick={onRemovePerson} /> : null}
-    </div>
+      {person && isPersonValid(person) && <PersonCard className='neutral' person={person} onRemoveClick={onRemovePerson} />}
+    </PersonSearchDiv>
   )
 }
 

@@ -1,35 +1,36 @@
-import { clientClear } from "actions/alert";
-import * as appActions from "actions/app";
-import * as formActions from "actions/form";
-import * as sakActions from "actions/sak";
-import AbortModal from "components/AbortModal/AbortModal";
-import Family from "components/Family/Family";
-import PersonSearch from "components/PersonSearch/PersonSearch";
-import TopContainer from "components/TopContainer/TopContainer";
+import { clientClear } from 'actions/alert'
+import * as appActions from 'actions/app'
+import * as formActions from 'actions/form'
+import * as sakActions from 'actions/sak'
+import classNames from 'classnames'
+import AbortModal from 'components/AbortModal/AbortModal'
+import Family from 'components/Family/Family'
+import PersonSearch from 'components/PersonSearch/PersonSearch'
+import { Container, Content, HorizontalSeparatorDiv, Margin, VerticalSeparatorDiv } from 'components/StyledComponents'
+import TopContainer from 'components/TopContainer/TopContainer'
 import * as types from 'constants/actionTypes'
-import { State } from "declarations/reducers";
-import {
-  Enheter,
-  FagSaker,
-  Person,
-  Validation,
-  FamilieRelasjon,
-} from "declarations/types";
-import * as EKV from "eessi-kodeverk";
-import Ui from "eessi-pensjon-ui";
-import _ from "lodash";
-import PT from "prop-types";
-import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import IkonArbeidsforhold from "resources/images/ikon-arbeidsforhold";
-import { formatterDatoTilNorsk } from "utils/dato";
-import classNames from "classnames";
-import "./OpprettSak.css";
+import { State } from 'declarations/reducers'
+import { Enheter, FagSaker, FamilieRelasjon, Person, Validation } from 'declarations/types'
+import * as EKV from 'eessi-kodeverk'
+import CountrySelect from 'landvelger'
+import _ from 'lodash'
+import AlertStripe from 'nav-frontend-alertstriper'
+import { Flatknapp, Hovedknapp, Knapp } from 'nav-frontend-knapper'
+import Lenke from 'nav-frontend-lenker'
+import Panel from 'nav-frontend-paneler'
+import { Checkbox, Select } from 'nav-frontend-skjema'
+import { Systemtittel } from 'nav-frontend-typografi'
+import PT from 'prop-types'
+import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import IkonArbeidsforhold from 'resources/images/ikon-arbeidsforhold'
+import styled from 'styled-components'
+import { formatterDatoTilNorsk } from 'utils/dato'
 
 export interface OpprettSakProps {
-  history: any;
+  history: any
 }
 
 export interface OpprettSakSelector {
@@ -106,10 +107,40 @@ const mapState = (state: State): OpprettSakSelector => ({
   valgtSektor: state.form.sektor,
   valgtTema: state.form.tema,
   valgtUnit: state.form.unit
-});
+})
 
+const Row = styled.div`
+  display: flex;
+  flex-direaction: row;
+`
+const Cell = styled.div`
+  flex: 1;
+`
+const Tema = styled.div`
+  display: flex;
+  align-items: flex-end;
+
+  &.feil {
+    align-items: center !important;
+  }
+`
+const CenteredButtons = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+const ArbeidsforholdItem = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`
+const ArbeidsforholdDesc = styled.div`
+  display: flex;
+  flex-direction: row;
+`
 const OpprettSak: React.FC<OpprettSakProps> = ({
-  history,
+  history
 }: OpprettSakProps): JSX.Element => {
   const {
     alertStatus,
@@ -142,7 +173,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
     valgtSedType,
     valgtSektor,
     valgtTema,
-    valgtUnit,
+    valgtUnit
   }: OpprettSakSelector = useSelector<State, OpprettSakSelector>(mapState)
   const dispatch = useDispatch()
   const { t } = useTranslation()
@@ -151,17 +182,17 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
   const [validation, setValidation] = useState<{ [k: string]: any }>({})
   const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
 
-  const temaer = !kodemaps ? [] : !valgtSektor ? [] : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor]];
-  const _buctyper = !kodemaps ? [] : !valgtSektor ? [] : buctyper[kodemaps.SEKTOR2FAGSAK[valgtSektor]];
-  let _sedtyper = !kodemaps ? [] : !valgtSektor || !valgtBucType ? [] : kodemaps.BUC2SEDS[valgtSektor][valgtBucType];
+  const temaer = !kodemaps ? [] : !valgtSektor ? [] : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor]]
+  const _buctyper = !kodemaps ? [] : !valgtSektor ? [] : buctyper[kodemaps.SEKTOR2FAGSAK[valgtSektor]]
+  let _sedtyper = !kodemaps ? [] : !valgtSektor || !valgtBucType ? [] : kodemaps.BUC2SEDS[valgtSektor][valgtBucType]
 
   if (!(_sedtyper && _sedtyper.length)) {
     _sedtyper = []
   }
   _sedtyper = _sedtyper.reduce((acc: any, curr: any) => {
-    const kode = sedtyper?.find((elem: any) => elem.kode === curr);
-    acc.push(kode);
-    return acc;
+    const kode = sedtyper?.find((elem: any) => elem.kode === curr)
+    acc.push(kode)
+    return acc
   }, [])
 
   const isSomething = (value: any): boolean => !_.isNil(value) && !_.isEmpty(value)
@@ -169,23 +200,23 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
   const visArbeidsforhold: boolean = EKV.Koder.sektor.FB === valgtSektor &&
     EKV.Koder.buctyper.family.FB_BUC_01 === valgtBucType &&
     isSomething(valgtSedType)
-  const visEnheter = valgtSektor === "HZ" || valgtSektor === "SI"
+  const visEnheter = valgtSektor === 'HZ' || valgtSektor === 'SI'
 
   const validate = (): Validation => {
     const validation: Validation = {
-      fnr: !valgtFnr ? t("ui:validation-noFnr") : !isFnrValid ? t("ui:validation-uncheckedFnr") : null,
-      sektor: !valgtSektor ? t("ui:validation-noSektor") : null,
-      buctype: !valgtBucType ? t("ui:validation-noBuctype") : null,
-      sedtype: !valgtSedType ? t("ui:validation-noSedtype") : null,
-      landkode: !valgtLandkode ? t("ui:validation-noLand") : null,
-      institusjon: !valgtInstitusjon ? t("ui:validation-noInstitusjonsID") : null,
-      tema: !valgtTema ? t("ui:validation-noTema") : null,
-      saksId: !valgtSaksId ? t("ui:validation-noSaksId") : null,
-      unit: visEnheter && !valgtUnit ? t("ui:validation-noUnit") : null,
-    };
+      fnr: !valgtFnr ? t('ui:validation-noFnr') : !isFnrValid ? t('ui:validation-uncheckedFnr') : null,
+      sektor: !valgtSektor ? t('ui:validation-noSektor') : null,
+      buctype: !valgtBucType ? t('ui:validation-noBuctype') : null,
+      sedtype: !valgtSedType ? t('ui:validation-noSedtype') : null,
+      landkode: !valgtLandkode ? t('ui:validation-noLand') : null,
+      institusjon: !valgtInstitusjon ? t('ui:validation-noInstitusjonsID') : null,
+      tema: !valgtTema ? t('ui:validation-noTema') : null,
+      saksId: !valgtSaksId ? t('ui:validation-noSaksId') : null,
+      unit: visEnheter && !valgtUnit ? t('ui:validation-noUnit') : null
+    }
     setValidation(validation)
     return validation
-  };
+  }
 
   const resetAllValidation = () => {
     setValidation({})
@@ -205,7 +236,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
   }
 
   const isValid = (_validation: Validation): boolean => {
-    return _.find(_.values(_validation), (e) => e !== null) === undefined;
+    return _.find(_.values(_validation), (e) => e !== null) === undefined
   }
 
   const skjemaSubmit = (): void => {
@@ -221,8 +252,8 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
         tema: valgtTema,
         familierelasjoner: valgteFamilieRelasjoner,
         arbeidsforhold: valgteArbeidsforhold,
-        enhet: valgtUnit,
-      };
+        enhet: valgtUnit
+      }
       dispatch(sakActions.createSak(payload))
     }
   }
@@ -237,207 +268,206 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
 
   const onAbort = (): void => {
     dispatch(appActions.cleanData())
-    history.push("/")
+    history.push('/')
   }
 
   const onUnitChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    resetValidation("unit")
-    dispatch(formActions.set("unit", e.target.value))
+    resetValidation('unit')
+    dispatch(formActions.set('unit', e.target.value))
   }
 
   const onSektorChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    resetValidation("sektor")
-    resetValidation("unit")
-    dispatch(formActions.set("unit", undefined))
-    dispatch(formActions.set("sektor", e.target.value))
+    resetValidation('sektor')
+    resetValidation('unit')
+    dispatch(formActions.set('unit', undefined))
+    dispatch(formActions.set('sektor', e.target.value))
   }
 
   const onBuctypeChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ): void => {
-    resetValidation(["buctype", "landkode"])
+    resetValidation(['buctype', 'landkode'])
     const buctype = event.target.value
-    dispatch(formActions.set("buctype", buctype))
-    dispatch(formActions.set("landkode", undefined))
-    dispatch(formActions.set("sedtype", undefined))
-    dispatch(formActions.set("institution", undefined))
+    dispatch(formActions.set('buctype', buctype))
+    dispatch(formActions.set('landkode', undefined))
+    dispatch(formActions.set('sedtype', undefined))
+    dispatch(formActions.set('institution', undefined))
     dispatch(sakActions.getLandkoder(buctype))
   }
 
   const onSedtypeChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    resetValidation("sedtype");
-    dispatch(formActions.set("sedtype", e.target.value));
-  };
+    resetValidation('sedtype')
+    dispatch(formActions.set('sedtype', e.target.value))
+  }
 
   const onSedtypeSet = (e: string): void => {
-    resetValidation("sedtype");
-    dispatch(formActions.set("sedtype", e));
-  };
+    resetValidation('sedtype')
+    dispatch(formActions.set('sedtype', e))
+  }
 
   const onLandkodeChange = (country: any): void => {
-    resetValidation(["landkode", "institusjon"]);
-    const landKode = country.value;
-    dispatch(formActions.set("landkode", landKode));
-    dispatch(sakActions.getInstitusjoner(valgtBucType, landKode));
-  };
+    resetValidation(['landkode', 'institusjon'])
+    const landKode = country.value
+    dispatch(formActions.set('landkode', landKode))
+    dispatch(sakActions.getInstitusjoner(valgtBucType, landKode))
+  }
 
   const onInstitusjonChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ): void => {
-    resetValidation("institusjon");
-    dispatch(formActions.set("institusjon", event.target.value));
-  };
+    resetValidation('institusjon')
+    dispatch(formActions.set('institusjon', event.target.value))
+  }
 
   const onTemaChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-    resetValidation(["tema", "saksId"]);
-    dispatch(formActions.set("tema", event.target.value));
-    dispatch(formActions.set("fagsaker", undefined));
-  };
+    resetValidation(['tema', 'saksId'])
+    dispatch(formActions.set('tema', event.target.value))
+    dispatch(formActions.set('fagsaker', undefined))
+  }
 
   const onViewFagsakerClick = (): void => {
-    dispatch(sakActions.getFagsaker(person?.fnr, valgtSektor, valgtTema));
-  };
+    dispatch(sakActions.getFagsaker(person?.fnr, valgtSektor, valgtTema))
+  }
 
   const onSakIDChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-    resetValidation("saksId");
-    dispatch(formActions.set("saksId", event.target.value));
-  };
+    resetValidation('saksId')
+    dispatch(formActions.set('saksId', event.target.value))
+  }
 
   const getArbeidsforhold = (): void => {
-    dispatch(sakActions.getArbeidsforhold(person?.fnr));
-  };
+    dispatch(sakActions.getArbeidsforhold(person?.fnr))
+  }
 
   const onArbeidsforholdClick = (item: any, checked: boolean): void => {
     if (checked) {
-      dispatch(formActions.addArbeidsforhold(item));
+      dispatch(formActions.addArbeidsforhold(item))
     } else {
-      dispatch(formActions.removeArbeidsforhold(item));
+      dispatch(formActions.removeArbeidsforhold(item))
     }
-  };
+  }
 
   const addTpsRelation = (relation: FamilieRelasjon): void => {
     /* Person fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
     dispatch(
       formActions.addFamilierelasjoner({
         ...relation,
-        nasjonalitet: "NO",
+        nasjonalitet: 'NO'
       })
-    );
-  };
+    )
+  }
 
   const deleteRelation = (relation: FamilieRelasjon): void => {
-    dispatch(formActions.removeFamilierelasjoner(relation));
-  };
+    dispatch(formActions.removeFamilierelasjoner(relation))
+  }
 
   return (
-    <TopContainer className="opprettsak">
-      <Ui.Nav.Row className="m-0 p-4">
-        <div className="col-sm-1" />
-        <div className="col-sm-10">
-          <Ui.Nav.Systemtittel className="mb-4">
-            {t("ui:title-newcase")}
-          </Ui.Nav.Systemtittel>
+    <TopContainer className='opprettsak'>
+      <Container>
+        <Margin/>
+        <Content>
+          <Systemtittel>
+            {t('ui:title-newcase')}
+          </Systemtittel>
+          <VerticalSeparatorDiv/>
           <PersonSearch
             alertStatus={alertStatus}
             alertMessage={alertMessage}
             alertType={alertType}
-            initialFnr={""}
+            initialFnr=''
             person={person}
             gettingPerson={gettingPerson}
-            className="slideAnimate"
+            className='slideAnimate'
             validation={validation}
             resetAllValidation={resetAllValidation}
             onFnrChange={() => setIsFnrValid(false)}
             onPersonFound={() => setIsFnrValid(true)}
             onSearchPerformed={(_fnr) => {
-              dispatch(formActions.set("fnr", _fnr));
-              dispatch(sakActions.getPerson(_fnr));
+              dispatch(formActions.set('fnr', _fnr))
+              dispatch(sakActions.getPerson(_fnr))
             }}
             onPersonRemoved={() => dispatch(sakActions.resetPerson())}
             onAlertClose={() => dispatch(clientClear())}
           />
           {person && (
-            <Ui.Nav.Row>
-              <div
-                className="col-xs-6 slideAnimate"
-                style={{ animationDelay: "0s" }}
+            <>
+            <Row>
+              <Cell
+                className='slideAnimate'
+                style={{ animationDelay: '0s' }}
               >
-                <Ui.Nav.Select
-                  className="mb-4"
-                  id="id-sektor"
-                  label={t("ui:label-sektor")}
+                <Select
+                  id='id-sektor'
+                  label={t('ui:label-sektor')}
                   disabled={!person}
                   onChange={onSektorChange}
                   value={valgtSektor}
                   feil={validation.sektor}
                 >
-                  <option value="">
-                    {t("ui:form-choose")}
-                  </option>)
-                  {sektor
-                    ? _.orderBy(sektor, "term").map((element: any) => (
-                        <option value={element.kode} key={element.kode}>
-                          {element.term}
-                        </option>
-                      ))
-                    : null}
-                </Ui.Nav.Select>
-              </div>
-              <div
-                className="col-xs-6 slideAnimate"
-                style={{ animationDelay: "0.15s" }}
+                  <option value=''>
+                    {t('ui:form-choose')}
+                  </option>
+                  {sektor && _.orderBy(sektor, 'term').map((element: any) => (
+                    <option value={element.kode} key={element.kode}>
+                      {element.term}
+                    </option>
+                  ))}
+                </Select>
+                <VerticalSeparatorDiv/>
+              </Cell>
+              <Cell
+                className='slideAnimate'
+                style={{ animationDelay: '0.15s' }}
               >
                 {visEnheter && (
-                  <Ui.Nav.Select
-                    className="mb-4"
-                    id="id-enhet"
-                    label={t("ui:label-unit")}
+                  <Select
+                    id='id-enhet'
+                    label={t('ui:label-unit')}
                     onChange={onUnitChange}
                     value={valgtUnit}
                     feil={validation.unit}
                   >
-                    <option value="">{t("ui:form-choose")}</option>)
-                    {sektor
-                      ? _.orderBy(enheter, "navn").map((element: any) => (
-                          <option value={element.enhetId} key={element.enhetId}>
-                            {element.navn}
-                          </option>
-                        ))
-                      : null}
-                  </Ui.Nav.Select>
+                    <option value=''>
+                      {t('ui:form-choose')}
+                    </option>
+                    {sektor && _.orderBy(enheter, 'navn').map((element: any) => (
+                      <option value={element.enhetId} key={element.enhetId}>
+                        {element.navn}
+                      </option>
+                    ))}
+                  </Select>
                 )}
-              </div>
-              <div
-                className="col-xs-6 slideAnimate"
-                style={{ animationDelay: "0.15s" }}
+                <VerticalSeparatorDiv/>
+              </Cell>
+            </Row>
+            <Row>
+              <Cell
+                className='slideAnimate'
+                style={{ animationDelay: '0.15s' }}
               >
-                <Ui.Nav.Select
-                  className="mb-4"
-                  id="id-buctype"
-                  label={t("ui:label-buc")}
+                <Select
+                  id='id-buctype'
+                  label={t('ui:label-buc')}
                   disabled={!isSomething(valgtSektor)}
                   onChange={onBuctypeChange}
                   value={valgtBucType}
                   feil={validation.buctype}
                 >
-                  <option value="">{t("ui:form-choose")}</option>)
-                  {_buctyper
-                    ? _.orderBy(_buctyper, "kode").map((element: any) => (
-                        <option value={element.kode} key={element.kode}>
-                          {element.kode} - {element.term}
-                        </option>
-                      ))
-                    : null}
-                </Ui.Nav.Select>
-              </div>
-              <div
-                className="col-xs-6 slideAnimate"
-                style={{ animationDelay: "0.3s" }}
+                  <option value=''>{t('ui:form-choose')}</option>
+                  {_buctyper && _.orderBy(_buctyper, 'kode').map((element: any) => (
+                    <option value={element.kode} key={element.kode}>
+                      {element.kode} - {element.term}
+                    </option>
+                  ))}
+                </Select>
+                <VerticalSeparatorDiv/>
+              </Cell>
+              <Cell
+                className='slideAnimate'
+                style={{ animationDelay: '0.3s' }}
               >
-                <Ui.Nav.Select
-                  className="mb-4"
-                  id="id-sedtype"
-                  label={t("ui:label-sed")}
+                <Select
+                  id='id-sedtype'
+                  label={t('ui:label-sed')}
                   disabled={
                     !isSomething(valgtBucType) || !isSomething(valgtSektor)
                   }
@@ -445,75 +475,75 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   value={valgtSedType}
                   feil={validation.sedtype}
                 >
-                  <option value="">{t("ui:form-choose")}</option>)
+                  <option value=''>{t('ui:form-choose')}</option>)
                   {_sedtyper && _sedtyper.map((element: any) => {
-                      // if only one element, select it
-                      if (
-                        _sedtyper.length === 1 &&
+                    // if only one element, select it
+                    if (
+                      _sedtyper.length === 1 &&
                         valgtSedType !== element.kode
-                      ) {
-                        onSedtypeSet(element.kode);
-                      }
-                      return (
-                        <option value={element.kode} key={element.kode}>
-                          {element.kode} - {element.term}
-                        </option>
-                      );
-                    })
-                  }
-                </Ui.Nav.Select>
-              </div>
-              <div
-                className="col-xs-6 slideAnimate"
-                style={{ animationDelay: "0.45s" }}
+                    ) {
+                      onSedtypeSet(element.kode)
+                    }
+                    return (
+                      <option value={element.kode} key={element.kode}>
+                        {element.kode} - {element.term}
+                      </option>
+                    )
+                  })}
+                </Select>
+                <VerticalSeparatorDiv/>
+              </Cell>
+              <Cell
+                className='slideAnimate'
+                style={{ animationDelay: '0.45s' }}
               >
-                <Ui.CountrySelect
-                  className="mb-4"
-                  label={t("ui:label-landkode")}
-                  lang="nb"
-                  placeholder={t("ui:form-choose")}
+                <CountrySelect
+                  label={t('ui:label-landkode')}
+                  lang='nb'
+                  placeholder={t('ui:form-choose')}
                   menuPortalTarget={document.body}
                   disabled={!isSomething(person)}
                   includeList={
                     landkoder
-                      ? _.orderBy(landkoder, "term").map(
-                          (element: any) => element.kode
-                        )
+                      ? _.orderBy(landkoder, 'term').map(
+                        (element: any) => element.kode
+                      )
                       : []
                   }
                   onOptionSelected={onLandkodeChange}
                   value={valgtLandkode}
                   error={validation.landkode}
                 />
-              </div>
-              <div
-                className="col-xs-6 slideAnimate"
-                style={{ animationDelay: "0.6s" }}
+                <VerticalSeparatorDiv/>
+              </Cell>
+              <Cell
+                className='slideAnimate'
+                style={{ animationDelay: '0.6s' }}
               >
-                <Ui.Nav.Select
-                  id="id-institusjon"
-                  className="mb-4"
+                <Select
+                  id='id-institusjon'
                   disabled={!isSomething(valgtLandkode)}
                   value={valgtInstitusjon}
                   onChange={onInstitusjonChange}
-                  label={t("ui:label-institusjon")}
+                  label={t('ui:label-institusjon')}
                   feil={validation.institusjon}
                 >
-                  <option value="">{t("ui:form-choose")}</option>)
-                  {institusjoner
-                    ? _.orderBy(institusjoner, "term").map((element: any) => (
-                        <option
-                          value={element.institusjonsID}
-                          key={element.institusjonsID}
-                        >
-                          {element.navn}
-                        </option>
-                      ))
-                    : null}
-                </Ui.Nav.Select>
-              </div>
-              {valgtSektor === "FB" && (
-                <div className="col-xs-12 mb-4 slideAnimate">
+                  <option value=''>{t('ui:form-choose')}</option>)
+                  {institusjoner &&  _.orderBy(institusjoner, 'term').map((element: any) => (
+                    <option
+                      value={element.institusjonsID}
+                      key={element.institusjonsID}
+                    >
+                      {element.navn}
+                    </option>
+                  ))}
+                </Select>
+                <VerticalSeparatorDiv/>
+              </Cell>
+            </Row>
+            <Row>
+              {valgtSektor === 'FB' && (
+                <Cell className='slideAnimate'>
                   <Family
                     alertStatus={alertStatus}
                     alertMessage={alertMessage}
@@ -525,252 +555,237 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     onClickAddRelasjons={(value: any) => addTpsRelation(value)}
                     onClickRemoveRelasjons={(value: any) => deleteRelation(value)}
                     onResetPersonRelatert={() => dispatch(sakActions.resetPersonRelatert())}
-                    onAddFailure={() => dispatch({type: types.FORM_TPSPERSON_ADD_FAILURE})}
+                    onAddFailure={() => dispatch({ type: types.FORM_TPSPERSON_ADD_FAILURE })}
                     onAddSuccess={(e: any) => {
                       dispatch(formActions.addFamilierelasjoner(e))
-                      dispatch({type: types.FORM_TPSPERSON_ADD_SUCCESS})
+                      dispatch({ type: types.FORM_TPSPERSON_ADD_SUCCESS })
                     }}
                     onAlertClose={() => dispatch(clientClear())}
                   />
-                </div>
+                  <VerticalSeparatorDiv/>
+                </Cell>
               )}
-              {valgtSektor && (
-                <>
-                  <div className="col-xs-12">
-                    <div
-                      className={classNames(
-                        "slideAnimate",
-                        "opprettsak__tema",
-                        { feil: !!validation.tema }
-                      )}
+            </Row>
+            {valgtSektor && (
+              <Row>
+                <Tema
+                  className={classNames(
+                    'slideAnimate',
+                    { feil: !!validation.tema }
+                  )}
+                >
+                  <Cell>
+                    <Select
+                      id='id-behandlings-tema'
+                      label={t('ui:label-tema')}
+                      value={valgtTema}
+                      onChange={onTemaChange}
+                      feil={validation.tema}
                     >
-                      <div className="w-50 mr-3">
-                        <Ui.Nav.Select
-                          id="id-behandlings-tema"
-                          className="mb-4"
-                          label={t("ui:label-tema")}
-                          value={valgtTema}
-                          onChange={onTemaChange}
-                          feil={validation.tema}
+                      <option value=''>{t('ui:form-choose')}</option>)
+                      {temaer && temaer.map((element: any) => (
+                        <option value={element.kode} key={element.kode}>
+                          {element.term}
+                        </option>
+                      ))}
+                    </Select>
+                    <VerticalSeparatorDiv/>
+                  </Cell>
+                  <Cell>
+                    <CenteredButtons>
+                      <div>
+                        <Knapp
+                          onClick={onViewFagsakerClick}
+                          disabled={!isSomething(valgtTema)}
                         >
-                          <option value="">{t("ui:form-choose")}</option>)
-                          {temaer
-                            ? temaer.map((element: any) => (
-                                <option value={element.kode} key={element.kode}>
-                                  {element.term}
-                                </option>
-                              ))
-                            : null}
-                        </Ui.Nav.Select>
+                          {t('ui:form-seeCases')}
+                        </Knapp>
+                        <VerticalSeparatorDiv/>
                       </div>
-                      <div className="w-50">
-                        <div
-                          className="d-flex"
-                          style={{
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          <div>
-                            <Ui.Nav.Knapp
-                              className="mb-4"
-                              onClick={onViewFagsakerClick}
-                              disabled={!isSomething(valgtTema)}
-                            >
-                              {t("ui:form-seeCases")}
-                            </Ui.Nav.Knapp>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  {fagsaker === null ||
-                  (fagsaker !== undefined && _.isEmpty(fagsaker)) ? (
-                    <div className="col-xs-12 mb-4">
-                      <Ui.Nav.AlertStripe type="advarsel">
-                        {t("ui:error-fagsak-notFound")}
-                        <Ui.Nav.Lenke
-                          className="mb-4"
-                          href={serverInfo.gosysURL}
-                          ariaLabel={t("ui:form-createNewCaseInGosys")}
-                          target="_blank"
-                        >
-                          {t("ui:form-createNewCaseInGosys")}
-                        </Ui.Nav.Lenke>
-                      </Ui.Nav.AlertStripe>
-                    </div>
-                  ) : null}
-                </>
-              )}
-              {visFagsakerListe && (
-                <>
-                  <div className="col-xs-6">
-                    <Ui.Nav.Select
-                      id="id-fagsaker"
-                      className="mb-4"
-                      label={t("ui:label-fagsak")}
-                      value={valgtSaksId}
-                      onChange={onSakIDChange}
-                      feil={validation.saksId}
-                    >
-                      <option value="">{t("ui:form-choose")}</option>
-                      {fagsaker
-                        ? _.orderBy(fagsaker, "fagsakNr").map((element) => (
-                            <option value={element.saksID} key={element.saksID}>
-                              {element.fagsakNr
-                                ? element.fagsakNr
-                                : element.saksID}
-                            </option>
-                          ))
-                        : null}
-                    </Ui.Nav.Select>
-                  </div>
-                  <div className="col-xs-6" />
-                </>
-              )}
-              {visArbeidsforhold && (
-                <>
-                  <div className="col-xs-6 arbeidsforhold">
-                    <Ui.Nav.Row>
-                      <div className="col-xs-6">
-                        <strong>{t("ui:label-aaRegistered")}</strong>
-                        <br />
-                        {t("ui:label-arbeidsforhold")}
-                      </div>
-                      <div className="col-xs-6">
-                        <Ui.Nav.Knapp onClick={getArbeidsforhold}>
-                          {t("ui:form-search")}
-                        </Ui.Nav.Knapp>
-                      </div>
-                    </Ui.Nav.Row>
-                    {arbeidsforhold
-                      ? arbeidsforhold.map(
-                          (arbeidsforholdet: any, index: number) => {
-                            const {
-                              arbeidsforholdIDnav,
-                              navn,
-                              orgnr,
-                              ansettelsesPeriode: { fom, tom },
-                            } = arbeidsforholdet;
-                            const arbeidsForholdErValgt = valgteArbeidsforhold.find(
-                              (item: any) =>
-                                item.arbeidsforholdIDnav === arbeidsforholdIDnav
-                            );
-                            return (
-                              <Ui.Nav.Panel key={index} className="mt-4" border>
-                                <div className="arbeidsforhold-item">
-                                  <div className="arbeidsforhold-desc">
-                                    <div className="mr-3">
-                                      <IkonArbeidsforhold />
-                                    </div>
-                                    <div>
-                                      <strong>{navn}</strong>
-                                      <br />
-                                      {t("ui:label-orgnummer")}:&nbsp;{orgnr}
-                                      <br />
-                                      {t("ui:label-startDate")}:&nbsp;
-                                      {formatterDatoTilNorsk(fom)}
-                                      <br />
-                                      {t("ui:label-endDate")}:&nbsp;
-                                      {formatterDatoTilNorsk(tom)}
-                                    </div>
-                                  </div>
-                                  <div>
-                                    <Ui.Nav.Checkbox
-                                      checked={arbeidsForholdErValgt}
-                                      onChange={(
-                                        e: React.ChangeEvent<HTMLInputElement>
-                                      ) =>
-                                        onArbeidsforholdClick(
-                                          arbeidsforholdet,
-                                          e.target.checked
-                                        )
-                                      }
-                                      label={t("ui:form-choose")}
-                                    />
-                                  </div>
-                                </div>
-                              </Ui.Nav.Panel>
-                            );
-                          }
-                        )
-                      : null}
-                  </div>
-                  <div className="col-xs-6" />
-                </>
-              )}
-              <div
-                className="col-xs-12 buttons mt-4 slideAnimate"
-                style={{ animationDelay: "0.75s" }}
+                    </CenteredButtons>
+                  </Cell>
+                </Tema>
+              </Row>
+            )}
+            {(fagsaker === null || (fagsaker !== undefined && _.isEmpty(fagsaker))) && (
+              <Row>
+                <AlertStripe type='advarsel'>
+                  {t('ui:error-fagsak-notFound')}
+                  <Lenke
+                    href={serverInfo.gosysURL}
+                    ariaLabel={t('ui:form-createNewCaseInGosys')}
+                    target='_blank'
+                  >
+                    {t('ui:form-createNewCaseInGosys')}
+                  </Lenke>
+                  <VerticalSeparatorDiv/>
+                </AlertStripe>
+                <VerticalSeparatorDiv/>
+              </Row>
+            )}
+            {visFagsakerListe && (
+              <Row>
+                <Cell>
+                  <Select
+                    id='id-fagsaker'
+                    label={t('ui:label-fagsak')}
+                    value={valgtSaksId}
+                    onChange={onSakIDChange}
+                    feil={validation.saksId}
+                  >
+                    <option value=''>{t('ui:form-choose')}</option>
+                    {fagsaker && _.orderBy(fagsaker, 'fagsakNr').map((element) => (
+                      <option value={element.saksID} key={element.saksID}>
+                        {element.fagsakNr
+                          ? element.fagsakNr
+                          : element.saksID}
+                      </option>
+                    ))}
+                  </Select>
+                  <VerticalSeparatorDiv/>
+                </Cell>
+                <Cell />
+              </Row>
+            )}
+            {visArbeidsforhold && (
+              <Row>
+                <Cell className='arbeidsforhold'>
+                  <Row>
+                    <Cell>
+                      <strong>{t('ui:label-aaRegistered')}</strong>
+                      <br />
+                      {t('ui:label-arbeidsforhold')}
+                    </Cell>
+                    <Cell>
+                      <Knapp onClick={getArbeidsforhold}>
+                        {t('ui:form-search')}
+                      </Knapp>
+                    </Cell>
+                  </Row>
+                  {arbeidsforhold && arbeidsforhold.map(
+                    (arbeidsforholdet: any, index: number) => {
+                      const {
+                        arbeidsforholdIDnav,
+                        navn,
+                        orgnr,
+                        ansettelsesPeriode: { fom, tom }
+                      } = arbeidsforholdet
+                      const arbeidsForholdErValgt = valgteArbeidsforhold.find(
+                        (item: any) =>
+                          item.arbeidsforholdIDnav === arbeidsforholdIDnav
+                      )
+                      return (
+                        <Panel key={index} className='mt-4' border>
+                          <ArbeidsforholdItem>
+                            <ArbeidsforholdDesc>
+                              <IkonArbeidsforhold />
+                              <HorizontalSeparatorDiv/>
+                              <div>
+                                <strong>{navn}</strong>
+                                <br />
+                                {t('ui:label-orgnummer')}:&nbsp;{orgnr}
+                                <br />
+                                {t('ui:label-startDate')}:&nbsp;
+                                {formatterDatoTilNorsk(fom)}
+                                <br />
+                                {t('ui:label-endDate')}:&nbsp;
+                                {formatterDatoTilNorsk(tom)}
+                              </div>
+                            </ArbeidsforholdDesc>
+                            <div>
+                              <Checkbox
+                                checked={arbeidsForholdErValgt}
+                                onChange={(
+                                  e: React.ChangeEvent<HTMLInputElement>
+                                ) =>
+                                  onArbeidsforholdClick(
+                                    arbeidsforholdet,
+                                    e.target.checked
+                                )}
+                                label={t('ui:form-choose')}
+                              />
+                            </div>
+                          </ArbeidsforholdItem>
+                        </Panel>
+                      )
+                    }
+                  )}
+                </Cell>
+                <Cell/>
+              </Row>
+            )}
+            <VerticalSeparatorDiv/>
+            <Row className='slideAnimate' style={{ animationDelay: '0.75s' }}>
+              <Hovedknapp
+                disabled={sendingSak}
+                onClick={skjemaSubmit}
+                spinner={sendingSak}
               >
-                <Ui.Nav.Hovedknapp
-                  className="mr-4"
-                  disabled={sendingSak}
-                  onClick={skjemaSubmit}
-                  spinner={sendingSak}
-                >
-                  {t("ui:form-createCaseInRina")}
-                </Ui.Nav.Hovedknapp>
-                <Ui.Nav.Flatknapp
-                  aria-label="Navigasjonslink tilbake til forsiden"
-                  onClick={openModal}
-                >
-                  {t("ui:form-resetForm")}
-                </Ui.Nav.Flatknapp>
-              </div>
-              {opprettetSak && opprettetSak.url && (
-                <div className="col-xs-12">
-                  <Ui.Nav.AlertStripe className="mt-4 w-50" type="suksess">
+                {t('ui:form-createCaseInRina')}
+              </Hovedknapp>
+              <HorizontalSeparatorDiv/>
+              <Flatknapp
+                aria-label='Navigasjonslink tilbake til forsiden'
+                onClick={openModal}
+              >
+                {t('ui:form-resetForm')}
+              </Flatknapp>
+            </Row>
+            {opprettetSak && opprettetSak.url && (
+              <Row>
+                <Cell>
+                  <VerticalSeparatorDiv/>
+                  <AlertStripe type='suksess'>
                     <div>
                       <span>
-                        {t("ui:form-caseNumber") +
-                          ": " +
-                          opprettetSak.rinasaksnummer}
+                        {t('ui:form-caseNumber') + ': ' + opprettetSak.rinasaksnummer}
                       </span>
-                      <span className="ml-1 mr-1">
-                        {t("ui:label-is-created")}.
+                      <span className='ml-1 mr-1'>
+                        {t('ui:label-is-created')}.
                       </span>
-                      {opprettetSak.url ? (
-                        <Ui.Nav.Lenke
-                          className="vedlegg__lenke ml-1 mr-1"
+                      {opprettetSak.url && (
+                        <Lenke
+                          className='vedlegg__lenke ml-1 mr-1'
                           href={opprettetSak.url}
-                          target="_blank"
+                          target='_blank'
                         >
-                          {t("ui:form-goToRina")}
-                        </Ui.Nav.Lenke>
-                      ) : null}
+                          {t('ui:form-goToRina')}
+                        </Lenke>
+                      )}
                     </div>
                     <div>
-                      {opprettetSak.rinasaksnummer ? (
+                      {opprettetSak.rinasaksnummer && (
                         <Link
                           to={
-                            "/vedlegg?rinasaksnummer=" +
+                            '/vedlegg?rinasaksnummer=' +
                             opprettetSak.rinasaksnummer
                           }
                         >
-                          {t("ui:label-add-as-attachment-to-sed")}
+                          {t('ui:label-add-as-attachment-to-sed')}
                         </Link>
-                      ) : null}
+                      )}
                     </div>
-                  </Ui.Nav.AlertStripe>
-                </div>
-              )}
-            </Ui.Nav.Row>
+                  </AlertStripe>
+                </Cell>
+                <Cell/>
+              </Row>
+            )}
+            <AbortModal
+              onAbort={onAbort}
+              isOpen={visModal}
+              closeModal={closeModal}
+            />
+          </>
           )}
-          <AbortModal
-            onAbort={onAbort}
-            isOpen={visModal}
-            closeModal={closeModal}
-          />
-        </div>
-        <div className="col-sm-1" />
-      </Ui.Nav.Row>
+        </Content>
+        <Margin/>
+      </Container>
     </TopContainer>
-  );
-};
+  )
+}
 
 OpprettSak.propTypes = {
-  history: PT.any.isRequired,
-};
+  history: PT.any.isRequired
+}
 
-export default OpprettSak;
+export default OpprettSak

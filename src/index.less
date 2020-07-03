@@ -1,7 +1,6 @@
 @coreModulePath: './../node_modules/';
 @nodeModulesPath: './../node_modules/';
 
-
 @frontendModuler: '@{nodeModulesPath}nav-frontend-';
 @indexFil: '-style/src/index';
 
@@ -30,9 +29,6 @@
 @import '@{frontendModuler}lukknapp-style/src/lukknapp-style';
 
 
-@import './constants';
-
-
 /** Denne løsningen har en avhengighet av nav-frontend-typografi-* for å hente inn
  * riktig typografi/fonter i tillegg til riktig base fontstørrelse (se mixin .typo-normal-mixin());
  */
@@ -41,11 +37,15 @@ body {
   margin: 0;
   padding: 0;
 
-  color: @font-color;
+  color: black;
   background: whitesmoke;
 
   .typo-normal-mixin();
   line-height: 1.42857143;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 section {

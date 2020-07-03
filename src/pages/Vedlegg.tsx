@@ -1,16 +1,21 @@
 import * as vedleggActions from 'actions/vedlegg'
-
 import DocumentSearch from 'components/DocumentSearch/DocumentSearch'
+import { Container, Content, Margin, VerticalSeparatorDiv } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { State } from 'declarations/reducers'
 import { Validation } from 'declarations/types'
-import Ui from 'eessi-pensjon-ui'
 import _ from 'lodash'
+import AlertStripe from 'nav-frontend-alertstriper'
+import Hjelpetekst from 'nav-frontend-hjelpetekst'
+import { Hovedknapp } from 'nav-frontend-knapper'
+import Lenke from 'nav-frontend-lenker'
+import { Input } from 'nav-frontend-skjema'
+import { Systemtittel } from 'nav-frontend-typografi'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import './Vedlegg.css'
+import styled from 'styled-components'
 
 export interface VedleggSelector {
   vedlegg: any;
@@ -33,6 +38,10 @@ const mapState = (state: State): VedleggSelector => ({
   dokumentID: state.vedlegg.dokumentID,
   sendingVedlegg: state.loading.sendingVedlegg
 })
+
+const Link = styled(Lenke)`
+  margin-top: 2em;
+`
 
 const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Element => {
   const [mounted, setMounted] = useState(false)
@@ -99,79 +108,83 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
   }
 
   return (
-    <TopContainer className='vedlegg'>
-      <Ui.Nav.Row className='m-0'>
-        <div className='col-sm-2' />
-        <div className='col-sm-8 m-4'>
-          <Ui.Nav.Systemtittel className='mt-4 mb-4'>
+    <TopContainer>
+      <Container>
+        <Margin />
+        <Content>
+          <VerticalSeparatorDiv />
+          <Systemtittel>
             {t('ui:title-vedlegg')}
-          </Ui.Nav.Systemtittel>
+          </Systemtittel>
+          <VerticalSeparatorDiv />
           <div className='noSlideAnimate'>
-            <Ui.Nav.Input
-              id='vedlegg-journalpostID-id'
-              className='mb-4'
+            <Input
+              data-testid='vedlegg-journalpostID-id'
               label={(
                 <div>
                   {t('ui:label-journalpostID')}
-                  <Ui.Nav.Hjelpetekst id='journalPostID'>
+                  <Hjelpetekst id='journalPostID'>
                     {t('ui:help-journalpostID')}
-                  </Ui.Nav.Hjelpetekst>
+                  </Hjelpetekst>
                 </div>
               )}
               onChange={onjournalpostIDChange}
               feil={validation.journalpostID}
             />
           </div>
+          <VerticalSeparatorDiv />
           <div className='noSlideAnimate' style={{ animationDelay: '0.15s' }}>
-
-            <Ui.Nav.Input
-              id='vedlegg-dokumentID-id'
-              className='mb-4'
+            <Input
+              data-testid='vedlegg-dokumentID-id'
               label={(
                 <div>
                   {t('ui:label-dokumentID')}
-                  <Ui.Nav.Hjelpetekst id='dokumentID'>
+                  <Hjelpetekst id='dokumentID'>
                     {t('ui:help-dokumentID')}
-                  </Ui.Nav.Hjelpetekst>
+                  </Hjelpetekst>
                 </div>
               )}
               onChange={onDokumentIDChange}
               feil={validation.dokumentID}
             />
+            <VerticalSeparatorDiv />
           </div>
           <div className='noSlideAnimate' style={{ animationDelay: '0.0s' }}>
             <DocumentSearch
-              className='mb-4'
               validation={validation}
               resetValidation={resetValidation}
               onRinasaksnummerChanged={() => setIsRinaNumberValid(false)}
               onDocumentFound={() => setIsRinaNumberValid(true)}
             />
+            <VerticalSeparatorDiv />
           </div>
-          <div className='vedlegg__submmit slideAnimate' style={{ animationDelay: '0.45s' }}>
-            <Ui.Nav.Hovedknapp
+          <div className='slideAnimate' style={{ animationDelay: '0.45s' }}>
+            <Hovedknapp
               onClick={sendSkjema}
               disabled={sendingVedlegg}
               spinner={sendingVedlegg}
             >
               {sendingVedlegg ? t('ui:label-sendingVedlegg') : t('ui:label-sendVedlegg')}
-            </Ui.Nav.Hovedknapp>
-            {vedlegg ? (
-              <Ui.Nav.AlertStripe className='mt-4' type='suksess'>
-                <div>
-                  <div>Vedlegget: {vedlegg.filnavn || vedlegg.vedleggID}</div>
-                  {vedlegg.url ? (
-                    <Ui.Nav.Lenke href={vedlegg.url} target='_blank' className='vedlegg__lenke'>
-                      Gå direkte til Rina.
-                    </Ui.Nav.Lenke>
-                  ) : null}
-                </div>
-              </Ui.Nav.AlertStripe>
-            ) : null}
+            </Hovedknapp>
+            {vedlegg && (
+              <>
+                <VerticalSeparatorDiv />
+                <AlertStripe type='suksess'>
+                  <div>
+                    <div>Vedlegget: {vedlegg.filnavn || vedlegg.vedleggID}</div>
+                    {vedlegg.url && (
+                      <Link href={vedlegg.url} target='_blank'>
+                        Gå direkte til Rina.
+                      </Link>
+                    )}
+                  </div>
+                </AlertStripe>
+              </>
+            )}
           </div>
-        </div>
-        <div className='col-sm-2' />
-      </Ui.Nav.Row>
+        </Content>
+        <Margin />
+      </Container>
     </TopContainer>
   )
 }
