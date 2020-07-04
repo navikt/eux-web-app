@@ -1,32 +1,23 @@
-@coreModulePath: './../node_modules/';
-@nodeModulesPath: './../node_modules/';
 
-@frontendModuler: '@{nodeModulesPath}nav-frontend-';
-@indexFil: '-style/src/index';
-
-@import '@{frontendModuler}core/less/core';
-@import '@{frontendModuler}typografi@{indexFil}';
-@import '@{frontendModuler}chevron@{indexFil}';
-@import '@{frontendModuler}alertstriper@{indexFil}';
-@import '@{frontendModuler}skjema@{indexFil}';
-@import '@{frontendModuler}knapper@{indexFil}';
-@import '@{frontendModuler}paneler@{indexFil}';
-@import '@{frontendModuler}lenkepanel@{indexFil}';
-@import '@{frontendModuler}ekspanderbartpanel@{indexFil}';
-@import '@{frontendModuler}tabell@{indexFil}';
-@import '@{frontendModuler}alertstriper@{indexFil}';
-@import '@{frontendModuler}grid@{indexFil}';
-@import '@{frontendModuler}stegindikator@{indexFil}';
-@import '@{frontendModuler}modal@{indexFil}';
-
-
-//Disse må importeres separat siden de ikke inneholder src/index.less.
-@import '@{frontendModuler}spinner-style/src/spinner-style';
-@import '@{frontendModuler}lenker-style/src/lenker-style';
-@import '@{frontendModuler}snakkeboble-style/src/snakkeboble-style';
-@import '@{frontendModuler}tabs-style/src/tabs-style';
-@import '@{frontendModuler}hjelpetekst-style/src/hjelpetekst-style';
-@import '@{frontendModuler}lukknapp-style/src/lukknapp-style';
+@import 'nav-frontend-alertstriper-style/src/index';
+@import 'nav-frontend-chevron-style/src/index';
+@import 'nav-frontend-core/less/core';
+@import 'nav-frontend-ekspanderbartpanel-style/src/index';
+@import 'nav-frontend-etiketter-style/src/index';
+@import 'nav-frontend-hjelpetekst-style/src/hjelpetekst-style';
+@import 'nav-frontend-knapper-style/src/index';
+@import 'nav-frontend-lenkepanel-style/src/index';
+@import 'nav-frontend-lenker-style/src/lenker-style';
+@import 'nav-frontend-lukknapp-style/src/lukknapp-style';
+@import 'nav-frontend-modal-style/src/index';
+@import 'nav-frontend-paneler-style/src/index';
+@import 'nav-frontend-popover-style/src/popover-style';
+@import 'nav-frontend-skjema-style/src/index';
+@import 'nav-frontend-spinner-style/src/spinner-style';
+@import 'nav-frontend-tabell-style/src/index';
+@import 'nav-frontend-typografi-style/src/index';
+@import 'nav-frontend-typografi-style/src/fontimports';
+@import 'nav-frontend-veileder-style/src/index';
 
 
 /** Denne løsningen har en avhengighet av nav-frontend-typografi-* for å hente inn

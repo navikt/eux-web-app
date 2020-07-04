@@ -6,7 +6,15 @@ import classNames from 'classnames'
 import AbortModal from 'components/AbortModal/AbortModal'
 import Family from 'components/Family/Family'
 import PersonSearch from 'components/PersonSearch/PersonSearch'
-import { Container, Content, HorizontalSeparatorDiv, Margin, VerticalSeparatorDiv } from 'components/StyledComponents'
+import {
+  Cell,
+  Container,
+  Content,
+  HorizontalSeparatorDiv,
+  Margin,
+  Row,
+  VerticalSeparatorDiv
+} from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
@@ -109,26 +117,6 @@ const mapState = (state: State): OpprettSakSelector => ({
   valgtUnit: state.form.unit
 })
 
-const Row = styled.div`
-  display: flex;
-  flex-direaction: row;
-`
-const Cell = styled.div`
-  flex: 1;
-`
-const Tema = styled.div`
-  display: flex;
-  align-items: flex-end;
-
-  &.feil {
-    align-items: center !important;
-  }
-`
-const CenteredButtons = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
 const ArbeidsforholdItem = styled.div`
   display: flex;
   flex-direction: row;
@@ -139,6 +127,11 @@ const ArbeidsforholdDesc = styled.div`
   display: flex;
   flex-direction: row;
 `
+const AlignCenterCell = styled(Cell)`
+  display: flex;
+  align-items: center;
+`
+
 const OpprettSak: React.FC<OpprettSakProps> = ({
   history
 }: OpprettSakProps): JSX.Element => {
@@ -414,6 +407,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                 </Select>
                 <VerticalSeparatorDiv/>
               </Cell>
+              <HorizontalSeparatorDiv/>
               <Cell
                 className='slideAnimate'
                 style={{ animationDelay: '0.15s' }}
@@ -461,6 +455,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                 </Select>
                 <VerticalSeparatorDiv/>
               </Cell>
+              <HorizontalSeparatorDiv/>
               <Cell
                 className='slideAnimate'
                 style={{ animationDelay: '0.3s' }}
@@ -493,6 +488,8 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                 </Select>
                 <VerticalSeparatorDiv/>
               </Cell>
+            </Row>
+            <Row>
               <Cell
                 className='slideAnimate'
                 style={{ animationDelay: '0.45s' }}
@@ -516,6 +513,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                 />
                 <VerticalSeparatorDiv/>
               </Cell>
+              <HorizontalSeparatorDiv/>
               <Cell
                 className='slideAnimate'
                 style={{ animationDelay: '0.6s' }}
@@ -561,6 +559,10 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                       dispatch({ type: types.FORM_TPSPERSON_ADD_SUCCESS })
                     }}
                     onAlertClose={() => dispatch(clientClear())}
+                    onSearchFnr={(sok) => {
+                      dispatch(sakActions.resetPersonRelatert())
+                      dispatch(sakActions.getPersonRelated(sok))
+                    }}
                   />
                   <VerticalSeparatorDiv/>
                 </Cell>
@@ -568,43 +570,36 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
             </Row>
             {valgtSektor && (
               <Row>
-                <Tema
-                  className={classNames(
-                    'slideAnimate',
-                    { feil: !!validation.tema }
-                  )}
-                >
-                  <Cell>
-                    <Select
-                      id='id-behandlings-tema'
-                      label={t('ui:label-tema')}
-                      value={valgtTema}
-                      onChange={onTemaChange}
-                      feil={validation.tema}
-                    >
-                      <option value=''>{t('ui:form-choose')}</option>)
-                      {temaer && temaer.map((element: any) => (
-                        <option value={element.kode} key={element.kode}>
-                          {element.term}
-                        </option>
-                      ))}
-                    </Select>
-                    <VerticalSeparatorDiv/>
-                  </Cell>
-                  <Cell>
-                    <CenteredButtons>
-                      <div>
-                        <Knapp
-                          onClick={onViewFagsakerClick}
-                          disabled={!isSomething(valgtTema)}
-                        >
-                          {t('ui:form-seeCases')}
-                        </Knapp>
-                        <VerticalSeparatorDiv/>
-                      </div>
-                    </CenteredButtons>
-                  </Cell>
-                </Tema>
+                <Cell className={classNames(
+                  'slideAnimate',
+                  { feil: !!validation.tema }
+                )}>
+                  <Select
+                    id='id-behandlings-tema'
+                    label={t('ui:label-tema')}
+                    value={valgtTema}
+                    onChange={onTemaChange}
+                    feil={validation.tema}
+                  >
+                    <option value=''>{t('ui:form-choose')}</option>)
+                    {temaer && temaer.map((element: any) => (
+                      <option value={element.kode} key={element.kode}>
+                        {element.term}
+                      </option>
+                    ))}
+                  </Select>
+                  <VerticalSeparatorDiv/>
+                </Cell>
+                <HorizontalSeparatorDiv/>
+                <AlignCenterCell>
+                  <Knapp
+                    onClick={onViewFagsakerClick}
+                    disabled={!isSomething(valgtTema)}
+                  >
+                    {t('ui:form-seeCases')}
+                  </Knapp>
+                  <VerticalSeparatorDiv/>
+                </AlignCenterCell>
               </Row>
             )}
             {(fagsaker === null || (fagsaker !== undefined && _.isEmpty(fagsaker))) && (

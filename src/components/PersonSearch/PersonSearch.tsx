@@ -35,53 +35,23 @@ const AlertstripeDiv = styled.div`
   margin-bottom: 1.5rem;
   width: 50%;
 `
-
 const PersonSearchDiv = styled.div`
   margin-bottom: 2em;
-
-  .personsok__skjema {
-    display: flex;
-    flex-direction: row;
-  }
-  .personsok__input {
-    min-width: 24.5em;
-  }
-  .personsok__spinnerwrapper {
-    margin: 2.3em 1em 0 -2.5em;
-  }
-
-  .personsok__knapp {
-    display: flex;
-    flex: 0;
-    height: 2.4em;
-    align-self: flex-start;
-    margin: 1.9em 0 0 1em;
-  }
-
-  .personsok__kort {
-    display: flex !important;
-    flex-direction: row;
-    justify-content: flex-start;
-    margin: .6em 0;
-    align-items: center;
-
-    .fodselsdato {
-      flex: 1;
-    }
-  }
-
-  .personsok__advarsel {
-    margin-top: 1em;
-  }
-
-  .familierelasjoner__knapp__ikon {
-    margin: -0.0em 0.5em 0 0;
-
-    path {
-      stroke: @navBla;
-    }
-  }
 `
+const PersonSearchPanel = styled.div`
+  display: flex;
+  flex-direction: row;
+`
+const PersonSearchInput = styled(Input)`
+  min-width: 24.5em;
+`
+const Button = styled(Knapp)`
+  display: flex;
+  flex: 0;
+  height: 2.4em;
+  align-self: flex-start;
+  margin: 1.9em 0 0 1em;
+ `
 
 const PersonSearch: React.FC<PersonSearchProps> = ({
   alertStatus, alertMessage, alertType, className, initialFnr, gettingPerson,
@@ -140,19 +110,18 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
 
   return (
     <PersonSearchDiv>
-      <div className='personsok__skjema'>
-        <Input
-          id='personsok__input-id'
+      <PersonSearchPanel>
+        <PersonSearchInput
+          data-testid='personsok__input-id'
           label={t('ui:form-searchUser')}
-          className='personsok__input'
           value={_fnr || ''}
           onChange={onChange}
           feil={validation.fnr || localValidation}
         />
-        <Knapp className='personsok__knapp' onClick={sokEtterPerson} disabled={gettingPerson}>
+        <Button onClick={sokEtterPerson} disabled={gettingPerson}>
           {gettingPerson ? <WaitingPanel size='S' message={t('ui:form-searching')} oneLine /> : t('ui:form-search')}
-        </Knapp>
-      </div>
+        </Button>
+      </PersonSearchPanel>
       {alertMessage && alertType === types.SAK_PERSON_GET_FAILURE && (
         <AlertstripeDiv>
           <Alert

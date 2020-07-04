@@ -135,23 +135,18 @@ const SvarPaSed: React.FC = (): JSX.Element => {
               valgteFamilieRelasjoner={valgteFamilieRelasjoner}
               onClickAddRelasjons={(value: any) => addTpsRelation(value)}
               onClickRemoveRelasjons={(value: any) => deleteRelation(value)}
-              onResetPersonRelatert={() => {
-                dispatch(svarpasedActions.resetPersonRelatert())
-              }}
-              onAddFailure={() => {
-                dispatch({
-                  type: types.SVARPASED_TPSPERSON_ADD_FAILURE
-                })
-              }}
+              onResetPersonRelatert={() => dispatch(svarpasedActions.resetPersonRelatert())}
+              onAddFailure={() => dispatch({type: types.SVARPASED_TPSPERSON_ADD_FAILURE})}
               onAddSuccess={(e: any) => {
-                dispatch(
-                  svarpasedActions.addFamilierelasjoner(e)
-                )
-                dispatch({
-                  type: types.SVARPASED_TPSPERSON_ADD_SUCCESS
-                })
+                dispatch(svarpasedActions.addFamilierelasjoner(e))
+                dispatch({type: types.SVARPASED_TPSPERSON_ADD_SUCCESS})
               }}
               onAlertClose={() => dispatch(clientClear())}
+              onSearchFnr={(sok) => {
+                dispatch(svarpasedActions.resetPersonRelatert())
+                dispatch(svarpasedActions.getPersonRelated(sok))
+              }}
+
             />
           )}
           {saksnummer !== undefined && saksnummer !== null && (

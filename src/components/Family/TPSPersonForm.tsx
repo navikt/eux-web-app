@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import Alert, { AlertStatus } from 'components/Alert/Alert'
 import PersonCard from 'components/PersonCard/PersonCard'
-import { VerticalSeparatorDiv } from 'components/StyledComponents'
+import { Cell, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
 import { FamilieRelasjon, Kodeverk, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
@@ -26,6 +26,7 @@ export interface TPSPersonFormProps {
   personRelatert: Person | undefined
   person: Person
   rolleList: Array<Kodeverk>
+  onSearchFnr: (sok: any) => void
   existingFamilyRelationships: Array<FamilieRelasjon>
 }
 
@@ -33,13 +34,7 @@ const Container = styled.div`
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
   display: flex;
-  align-items: flex-end;
-`
-const Content = styled.div`
-  display: flex;
-`
-const BoxContent = styled.div`
-  flex: 1;
+  flex-direction: column;
 `
 const AlertstripeDiv = styled.div`
   margin: 0.5rem;
@@ -49,6 +44,10 @@ const AlertstripeDiv = styled.div`
 `
 const MarginDiv = styled.div`
   margin: 0.5rem;
+`
+const AlignCenterCell = styled(Cell)`
+  display: flex;
+  align-items: center;
 `
 const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
   alertStatus,
@@ -62,6 +61,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
   personRelatert,
   person,
   rolleList,
+  onSearchFnr,
   existingFamilyRelationships
 }: TPSPersonFormProps): JSX.Element => {
   const [sok, setSok] = useState('')
@@ -75,11 +75,12 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
   const { t } = useTranslation()
 
   const sokEtterFnr = () => {
-    // dispatch(sakActions.resetPersonRelatert())
     setPersonRelatert(undefined)
     setTpsPerson(undefined)
-    // dispatch(sakActions.getPersonRelated(sok))
-  }''
+    if (_.isFunction(onSearchFnr)) {
+      onSearchFnr(sok)
+    }
+  }
 
   useEffect(() => {
     if (personRelatert && !_personRelatert) {
@@ -144,12 +145,12 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
 
   return (
     <Container>
-      <Content
+      <Row
         className={classNames(className, 'slideAnimate', {
           feil: !!alertMessage
         })}
       >
-        <BoxContent>
+        <Cell>
           <Input
             data-testid='c-TPSPersonForm__input-fnr-or-dnr-id'
             label={t('ui:label-fnr-or-dnr')}
@@ -158,52 +159,58 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
             onChange={updateSok}
           />
           <VerticalSeparatorDiv />
-        </BoxContent>
-        <BoxContent>
+        </Cell>
+        <HorizontalSeparatorDiv/>
+        <AlignCenterCell>
           <Knapp
             disabled={person.fnr === sok}
             onClick={sokEtterFnr}
           >
             {t('ui:form-search')}
           </Knapp>
-        </BoxContent>
-      </Content>
-      {person.fnr === sok && (
-        <AlertstripeDiv>
-          <AlertStripe type='advarsel'>
-            {t('ui:error-fnr-is-user', { sok: sok })}
-          </AlertStripe>
-        </AlertstripeDiv>
-      )}
-      {tpsperson && (
-        <AlertstripeDiv>
-          <AlertStripe className='mt-4 mb-4' type='advarsel'>
-            {t('ui:error-relation-already-in-tps')}
-          </AlertStripe>
-        </AlertstripeDiv>
-      )}
-      {alertMessage &&
-        (alertType === types.SAK_PERSON_RELATERT_GET_FAILURE ||
-          alertType === types.FORM_TPSPERSON_ADD_FAILURE) && (
-            <AlertstripeDiv>
-          <Alert
-                type='client'
-                fixed={false}
-                message={t(alertMessage)}
-                status={alertStatus as AlertStatus}
-                onClose={onAlertClose}
-              />
-        </AlertstripeDiv>
-      )}
-      {_personRelatert && (
-        <MarginDiv>
-          <PersonCard
-            person={_personRelatert}
-            onAddClick={leggTilPersonOgRolle}
-            rolleList={rolleList}
-          />
-        </MarginDiv>
-      )}
+        </AlignCenterCell>
+      </Row>
+      <VerticalSeparatorDiv/>
+      <Row>
+        <Cell>
+        {person.fnr === sok && (
+          <AlertstripeDiv>
+            <AlertStripe type='advarsel'>
+              {t('ui:error-fnr-is-user', { sok: sok })}
+            </AlertStripe>
+          </AlertstripeDiv>
+        )}
+        {tpsperson && (
+          <AlertstripeDiv>
+            <AlertStripe className='mt-4 mb-4' type='advarsel'>
+              {t('ui:error-relation-already-in-tps')}
+            </AlertStripe>
+          </AlertstripeDiv>
+        )}
+        {alertMessage &&
+          (alertType === types.SAK_PERSON_RELATERT_GET_FAILURE ||
+            alertType === types.FORM_TPSPERSON_ADD_FAILURE) && (
+              <AlertstripeDiv>
+            <Alert
+                  type='client'
+                  fixed={false}
+                  message={t(alertMessage)}
+                  status={alertStatus as AlertStatus}
+                  onClose={onAlertClose}
+                />
+          </AlertstripeDiv>
+        )}
+        {_personRelatert && (
+          <MarginDiv>
+            <PersonCard
+              person={_personRelatert}
+              onAddClick={leggTilPersonOgRolle}
+              rolleList={rolleList}
+            />
+          </MarginDiv>
+          )}
+        </Cell>
+      </Row>
     </Container>
   )
 }
