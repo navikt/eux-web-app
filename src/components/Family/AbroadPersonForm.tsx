@@ -2,7 +2,7 @@ import { clientClear } from 'actions/alert'
 import * as formActions from 'actions/form'
 import Tilsette from 'assets/icons/Tilsette'
 import Alert, { AlertStatus } from 'components/Alert/Alert'
-import { HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'components/StyledComponents'
+import { Cell, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import { FamilieRelasjon, Kodeverk } from 'declarations/types'
@@ -46,21 +46,15 @@ export interface AbroadPersonFormProps {
 const Container = styled.div`
   margin-top: 1,5rem;
 `
-const Row = styled.div`
-  display: flex;
-`
-const Cell = styled.div`
-  flex: 1;
-`
-const AlignEndDiv = styled.div`
- display: flex;
- align-items: flex-end;
-`
 const AlertstripeDiv = styled.div`
   margin: 0.5rem;
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
   width: 50%;
+`
+const AlignCenterCell = styled(Cell)`
+  display: flex;
+  align-items: center;
 `
 const emptyRelation = { fnr: '', fdato: '', land: null, statsborgerskap: null, rolle: '', kjoenn: '', fornavn: '', etternavn: '' }
 
@@ -153,6 +147,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             />
             <VerticalSeparatorDiv />
           </Cell>
+          <HorizontalSeparatorDiv/>
           <Cell className='slideAnimate' style={{ animationDelay: '0.1s' }}>
             <CountrySelect
               label={t('ui:label-landkode')}
@@ -165,6 +160,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             />
             <VerticalSeparatorDiv />
           </Cell>
+          <HorizontalSeparatorDiv/>
           <Cell className='slideAnimate' style={{ animationDelay: '0.1s' }}>
             <CountrySelect
               label={t('ui:label-statsborgerskap')}
@@ -188,6 +184,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             />
             <VerticalSeparatorDiv />
           </Cell>
+          <HorizontalSeparatorDiv/>
           <Cell className='slideAnimate' style={{ animationDelay: '0.3s' }}>
             <Input
               label={t('ui:label-lastname')}
@@ -214,6 +211,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             </Select>
             <VerticalSeparatorDiv />
           </Cell>
+          <HorizontalSeparatorDiv/>
           <Cell className='slideAnimate' style={{ animationDelay: '0.5s' }}>
             <Input
               label={t('ui:form-birthdate')}
@@ -225,6 +223,8 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             />
             <VerticalSeparatorDiv />
           </Cell>
+        </Row>
+        <Row>
           <Cell className='slideAnimate' style={{ animationDelay: '0.6s' }}>
             <Select
               label={t('ui:label-familyRelationship')}
@@ -239,23 +239,20 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             </Select>
             <VerticalSeparatorDiv />
           </Cell>
-        </Row>
-        <Row>
-          <Cell className='slideAnimate' style={{ animationDelay: '0.7s' }}>
-            <AlignEndDiv>
-              <Knapp
-                onClick={addRelation}
-                disabled={!canAddRelation()}
-                className='relasjon familierelasjoner__knapp'
-              >
-                <Tilsette width='20' height='20' color={!canAddRelation() ? 'white' : '#0067C5'} />
-                <HorizontalSeparatorDiv />
-                <span>
-                  {t('ui:form-add')}
-                </span>
-              </Knapp>
-            </AlignEndDiv>
-          </Cell>
+          <HorizontalSeparatorDiv/>
+          <AlignCenterCell className='slideAnimate' style={{ animationDelay: '0.7s' }}>
+            <Knapp
+              onClick={addRelation}
+              disabled={!canAddRelation()}
+              className='relasjon familierelasjoner__knapp'
+            >
+              <Tilsette width='20' height='20' color={!canAddRelation() ? 'white' : '#0067C5'} />
+              <HorizontalSeparatorDiv />
+              <span>
+                {t('ui:form-add')}
+              </span>
+            </Knapp>
+          </AlignCenterCell>
           {alertMessage && alertType === types.FORM_ABROADPERSON_ADD_FAILURE && (
             <AlertstripeDiv>
               <Alert

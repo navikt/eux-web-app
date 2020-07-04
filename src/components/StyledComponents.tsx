@@ -17,3 +17,14 @@ export const VerticalSeparatorDiv = styled.div`
 export const HorizontalSeparatorDiv = styled.div`
   margin-left: ${(props: any) => props['data-size'] || 1}rem;
 `
+export const Row = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
+`
+export const Cell = styled.div`
+  flex: 1;
+`

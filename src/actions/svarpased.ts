@@ -48,6 +48,21 @@ export const getPerson: ActionCreator<ThunkResult<ActionWithPayload>> = (
   })
 }
 
+export const getPersonRelated: ActionCreator<ThunkResult<ActionWithPayload>> = (fnr: string): ThunkResult<ActionWithPayload> => {
+  return realCall({
+    url: sprintf(urls.API_SVARPASED_PERSON_URL, { fnr: fnr }),
+    cascadeFailureError: true,
+    context: {
+      fnr: fnr
+    },
+    type: {
+      request: types.SVARPASED_PERSON_RELATERT_GET_REQUEST,
+      success: types.SVARPASED_PERSON_RELATERT_GET_SUCCESS,
+      failure: types.SVARPASED_PERSON_RELATERT_GET_FAILURE
+    }
+  })
+}
+
 export const addFamilierelasjoner: ActionCreator<ActionWithPayload> = (
   payload: FamilieRelasjon
 ): ActionWithPayload => ({

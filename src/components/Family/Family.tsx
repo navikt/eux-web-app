@@ -22,11 +22,18 @@ export interface FamilySelector {
   onClickAddRelasjons: (p: Person | FamilieRelasjon) => void
   onClickRemoveRelasjons: (p: Person | FamilieRelasjon) => void
   onResetPersonRelatert: () => void
+  onSearchFnr: (sok: any) => void
   onAddFailure: () => void
   onAddSuccess: (e: any) => void
   onAlertClose: () => void
 }
 
+const FamilyPanel = styled(Panel)`
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  background-color: white;
+  padding: 1rem;
+`
 const FamilyArea = styled.div`
   display: flex;
 `
@@ -35,13 +42,14 @@ const FamilySubArea = styled.div`
 `
 const FamilySeparator = styled.div`
   flex: 1;
-  borderLeft: 1px solid lightgrey;
+  border-left: 1px solid lightgrey;
 `
 const MarginDiv = styled.div`
   margin: 0.5rem;
 `
 const Forms = styled.div`
   display: flex;
+  flex-direction: column;
 `
 const Family: React.FC<FamilySelector> = ({
   alertStatus,
@@ -56,7 +64,8 @@ const Family: React.FC<FamilySelector> = ({
   onResetPersonRelatert,
   onAddFailure,
   onAddSuccess,
-  onAlertClose
+  onAlertClose,
+  onSearchFnr
 }): JSX.Element => {
   const [viewFormRelatedUtland, setViewFormRelatedUtland] = useState<boolean>(
     false
@@ -109,11 +118,11 @@ const Family: React.FC<FamilySelector> = ({
 
   return (
     <div data-testid='c-family'>
-      <Systemtittel className='mb-4'>
+      <Systemtittel>
         {t('ui:label-familyRelationships')}
       </Systemtittel>
       <VerticalSeparatorDiv />
-      <Panel border>
+      <FamilyPanel>
         <HorizontalSeparatorDiv />
         <Undertittel>
           {t('ui:form-family-description')}
@@ -179,9 +188,8 @@ const Family: React.FC<FamilySelector> = ({
         </FamilyArea>
 
         <Forms>
-          <VerticalSeparatorDiv data-size='1.5' />
           <div>
-            <HorizontalSeparatorDiv data-size='0.5' />
+            <VerticalSeparatorDiv data-size='1.5' />
             <Ingress>
               {t('ui:form-family-utland-title')}
             </Ingress>
@@ -203,11 +211,8 @@ const Family: React.FC<FamilySelector> = ({
                 : t('ui:label-show-form')}
             </Knapp>
           </div>
-        </Forms>
-        <Forms>
-          <VerticalSeparatorDiv data-size='1.5' />
           <div>
-            <HorizontalSeparatorDiv data-size='0.5' />
+            <VerticalSeparatorDiv data-size='1.5' />
             <Ingress>
               {t('ui:form-family-tps-title')}
             </Ingress>
@@ -228,6 +233,7 @@ const Family: React.FC<FamilySelector> = ({
                   onAddFailure={onAddFailure}
                   onAddSuccess={onAddSuccess}
                   onAlertClose={onAlertClose}
+                  onSearchFnr={onSearchFnr}
                 />
               </>
             )}
@@ -237,7 +243,7 @@ const Family: React.FC<FamilySelector> = ({
             </Knapp>
           </div>
         </Forms>
-      </Panel>
+      </FamilyPanel>
     </div>
   )
 }

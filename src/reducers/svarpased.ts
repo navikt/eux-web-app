@@ -54,6 +54,19 @@ const svarpasedReducer = (
         person: (action as ActionWithPayload).payload
       }
 
+    case types.SVARPASED_PERSON_RELATERT_GET_FAILURE:
+      return {
+        ...state,
+        personRelatert: null
+      }
+
+    case types.SVARPASED_PERSON_RELATERT_GET_SUCCESS:
+      return {
+        ...state,
+        personRelatert: (action as ActionWithPayload).payload
+      }
+
+
     case types.SVARPASED_SED_GET_FAILURE:
       return {
         ...state,

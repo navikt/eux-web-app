@@ -33,9 +33,14 @@ const PersonCardDiv = styled.div`
   align-items: center;
 `
 const PersonCardPanel = styled(Panel)`
-  border: 1ps solid gray;
+  border: 1px solid lightgray;
   background: transparent;
   margin-top: 1.5rem;
+  max-width: 800px;
+  min-width: 400px;
+  padding: 1rem;
+  border-radius: 5px;
+
   &.personNotSelected  {
     border: 3px solid red;
   }
@@ -143,7 +148,8 @@ const PersonCard: React.FC<PersonCardProps> = ({
         <Description>
           <img
             alt={kind}
-            width={40}
+            width={50}
+            height={50}
             src={src}
           />
           <HorizontalSeparatorDiv />

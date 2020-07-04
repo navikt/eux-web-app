@@ -55,8 +55,12 @@ const AlertDiv = styled(AlertStripe)`
   animation: ${fadeIn} 0.5s forwards;
   position: relative;
 
-  .alertstripe .alertstripe__tekst {
+  .alertstripe__tekst {
      flex: auto !important; /* because IE11 */
+     margin: auto 0;
+     max-width: 100vw;
+     display: flex;
+     justify-content: space-between;
   }
   .fixed {
     position: fixed;

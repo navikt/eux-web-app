@@ -64,7 +64,7 @@
     "lint:fix": "standardx src/*.ts* src/*/*.ts* src/*/*/*.ts* src/*/*/*/*.ts* src/*/*/*/*/*.ts* --fix",
     "start": "cross-env NODE_ENV=development npm-run-all -s patch:init patch:env patch:nodelocal echo:env -p start:css start:js",
     "start:javalocal": "cross-env NODE_ENV=development npm-run-all -s patch:init patch:env patch:javalocal echo:env -p start:css start:js",
-    "start:css": "less-watch-compiler --config less.json",
+    "start:css": "less-watch-compiler --run-once --config less.json",
     "start:js": "cross-env PORT=3003 NODE_OPTIONS=--max-old-space-size=4096 react-scripts start",
     "test": "npm run patch:init && npm run patch:env && cross-env NODE_ENV=test react-scripts test",
     "test:clear": "cross-env NODE_ENV=test react-scripts test --clearCache",
