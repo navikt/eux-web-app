@@ -1,31 +1,33 @@
-import { clientClear } from 'actions/alert'
-import PersonSearch from 'components/PersonSearch/PersonSearch'
-import { Container, Content, Margin } from 'components/StyledComponents'
-import TopContainer from 'components/TopContainer/TopContainer'
-import * as types from 'constants/actionTypes'
-import { State } from 'declarations/reducers'
-import Alertstripe from 'nav-frontend-alertstriper'
-import { Knapp } from 'nav-frontend-knapper'
-import { Input, Select } from 'nav-frontend-skjema'
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import * as svarpasedActions from 'actions/svarpased'
-import styled from 'styled-components'
-import { FamilieRelasjon } from 'declarations/types'
-import Family from 'components/Family/Family'
+import { clientClear } from "actions/alert";
+import PersonSearch from "components/PersonSearch/PersonSearch";
+import { Container, Content, Margin } from "components/StyledComponents";
+import TopContainer from "components/TopContainer/TopContainer";
+import * as types from "constants/actionTypes";
+import { State } from "declarations/reducers";
+import Alertstripe from "nav-frontend-alertstriper";
+import { Knapp } from "nav-frontend-knapper";
+import { Input, Select } from "nav-frontend-skjema";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import * as svarpasedActions from "actions/svarpased";
+import styled from "styled-components";
+import { FamilieRelasjon, Validation } from "declarations/types";
+import Family from "components/Family/Family";
+import { SvarpasedState } from "reducers/svarpased";
+import _ from "lodash";
 
 const SaksnummerDiv = styled.div`
   display: flex;
   align-items: flex-end;
   flex-direction: row;
-`
+`;
 const SaksnummerInput = styled(Input)`
   margin-right: 1rem;
-`
+`;
 
 const SetSelect = styled(Select)`
   margin-right: 1rem;
-`
+`;
 
 const mapState = (state: State): any => ({
   alertStatus: state.alert.clientErrorStatus,
@@ -41,15 +43,16 @@ const mapState = (state: State): any => ({
 
   gettingSaksnummer: state.loading.gettingSaksnummer,
   saksnummer: state.svarpased.saksnummer,
-  sed: state.svarpased.sed
-})
+  sed: state.svarpased.sed,
+  svarPasedData: state.svarpased.svarPasedData,
+});
 
 const SvarPaSed: React.FC = (): JSX.Element => {
-  const [_saksnummer, setSaksnummer] = useState(undefined)
-  const [validation, setValidation] = useState<{ [k: string]: any }>({})
-  const [, setIsFnrValid] = useState<boolean>(false)
+  const [_saksnummer, setSaksnummer] = useState(undefined);
+  const [validation, setValidation] = useState<{ [k: string]: any }>({});
+  const [, setIsFnrValid] = useState<boolean>(false);
   // const [_sed, setSed] = useState(undefined);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const {
     alertStatus,
@@ -62,46 +65,97 @@ const SvarPaSed: React.FC = (): JSX.Element => {
     saksnummer,
     familierelasjonKodeverk,
     sed,
-    valgteFamilieRelasjoner
-  }: any = useSelector<State, any>(mapState)
+    valgteFamilieRelasjoner,
+    svarPasedData,
+  }: any = useSelector<State, any>(mapState);
+  const data: SvarpasedState = useSelector<State, SvarpasedState>(
+    (state) => state.svarpased
+  );
 
   const onSaksnummerClick = () => {
-    dispatch(svarpasedActions.getSaksnummer(_saksnummer))
-  }
+    dispatch(svarpasedActions.getSaksnummer(_saksnummer));
+  };
+
+  const validate = (): Validation => {
+    const validation: Validation = {
+      saksnummer: saksnummer ? null : "No saksnummer",
+      //fnr: !valgtFnr ? t('ui:validation-noFnr') : !isFnrValid ? t('ui:validation-uncheckedFnr') : null,
+      //sektor: !valgtSektor ? t('ui:validation-noSektor') : null,
+      //buctype: !valgtBucType ? t('ui:validation-noBuctype') : null,
+      //sedtype: !valgtSedType ? t('ui:validation-noSedtype') : null,
+      //landkode: !valgtLandkode ? t('ui:validation-noLand') : null,
+      //institusjon: !valgtInstitusjon ? t('ui:validation-noInstitusjonsID') : null,
+      //tema: !valgtTema ? t('ui:validation-noTema') : null,
+      //saksId: !valgtSaksId ? t('ui:validation-noSaksId') : null,
+      //unit: visEnheter && !valgtUnit ? t('ui:validation-noUnit') : null
+    };
+    setValidation(validation);
+    return validation;
+  };
 
   const resetAllValidation = () => {
-    setValidation({})
-  }
+    setValidation({});
+  };
+
+  const resetValidation = (key: Array<string> | string): void => {
+    const newValidation = _.cloneDeep(validation);
+    if (_.isString(key)) {
+      newValidation[key] = null;
+    }
+    if (_.isArray(key)) {
+      key.forEach((k) => {
+        newValidation[k] = null;
+      });
+    }
+    setValidation(newValidation);
+  };
+
+  const isValid = (_validation: Validation): boolean => {
+    return _.find(_.values(_validation), (e) => e !== null) === undefined;
+  };
+
+  const sendData = (): void => {
+    console.log("Hopp Hopp" + validate());
+    if (isValid(validate())) {
+      console.log("Happ Happ" + validate());
+      dispatch(svarpasedActions.sendSvarPaSedData(data));
+    }
+  };
 
   const onSetChange = (e: any) => {
-    dispatch(svarpasedActions.getSed(e.target.value))
-  }
+    //resetValidation([]);
+    dispatch(svarpasedActions.getSed(e.target.value));
+  };
 
   const addTpsRelation = (relation: FamilieRelasjon): void => {
     /* Person fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
     dispatch(
       svarpasedActions.addFamilierelasjoner({
         ...relation,
-        nasjonalitet: 'NO'
+        nasjonalitet: "NO",
       })
-    )
-  }
+    );
+  };
 
   const deleteRelation = (relation: FamilieRelasjon): void => {
-    dispatch(svarpasedActions.removeFamilierelasjoner(relation))
-  }
+    dispatch(svarpasedActions.removeFamilierelasjoner(relation));
+  };
 
-  console.log('gettingSaksnummer: ', gettingSaksnummer)
+  console.log("gettingSaksnummer: ", gettingSaksnummer);
   return (
-    <TopContainer className='p-svarpased'>
+    <TopContainer className="p-svarpased">
       <Container>
         <Margin />
         <Content>
           <SaksnummerDiv>
             <SaksnummerInput
-              label='saksnummer'
-              bredde='M'
-              onChange={(e: any) => setSaksnummer(e.target.value)}
+              label="saksnummer"
+              bredde="M"
+              feil={validation.saksnummer}
+              onChange={(e: any) => {
+                setSaksnummer(e.target.value);
+                resetValidation("saksnummer");
+              }}
             />
             <Knapp onClick={onSaksnummerClick}>Hent</Knapp>
           </SaksnummerDiv>
@@ -110,16 +164,16 @@ const SvarPaSed: React.FC = (): JSX.Element => {
             alertStatus={alertStatus}
             alertMessage={alertMessage}
             alertType={alertType}
-            initialFnr=''
+            initialFnr=""
             person={person}
             gettingPerson={gettingPerson}
-            className='slideAnimate'
+            className="slideAnimate"
             validation={validation}
             resetAllValidation={resetAllValidation}
             onFnrChange={() => setIsFnrValid(false)}
             onPersonFound={() => setIsFnrValid(true)}
             onSearchPerformed={(_fnr) => {
-              dispatch(svarpasedActions.getPerson(_fnr))
+              dispatch(svarpasedActions.getPerson(_fnr));
             }}
             onPersonRemoved={() => {}}
             onAlertClose={() => dispatch(clientClear())}
@@ -135,41 +189,45 @@ const SvarPaSed: React.FC = (): JSX.Element => {
               valgteFamilieRelasjoner={valgteFamilieRelasjoner}
               onClickAddRelasjons={(value: any) => addTpsRelation(value)}
               onClickRemoveRelasjons={(value: any) => deleteRelation(value)}
-              onResetPersonRelatert={() => dispatch(svarpasedActions.resetPersonRelatert())}
-              onAddFailure={() => dispatch({type: types.SVARPASED_TPSPERSON_ADD_FAILURE})}
+              onResetPersonRelatert={() =>
+                dispatch(svarpasedActions.resetPersonRelatert())
+              }
+              onAddFailure={() =>
+                dispatch({ type: types.SVARPASED_TPSPERSON_ADD_FAILURE })
+              }
               onAddSuccess={(e: any) => {
-                dispatch(svarpasedActions.addFamilierelasjoner(e))
-                dispatch({type: types.SVARPASED_TPSPERSON_ADD_SUCCESS})
+                dispatch(svarpasedActions.addFamilierelasjoner(e));
+                dispatch({ type: types.SVARPASED_TPSPERSON_ADD_SUCCESS });
               }}
               onAlertClose={() => dispatch(clientClear())}
               onSearchFnr={(sok) => {
-                dispatch(svarpasedActions.resetPersonRelatert())
-                dispatch(svarpasedActions.getPersonRelated(sok))
+                dispatch(svarpasedActions.resetPersonRelatert());
+                dispatch(svarpasedActions.getPersonRelated(sok));
               }}
-
             />
           )}
           {saksnummer !== undefined && saksnummer !== null && (
             <SetSelect onChange={onSetChange}>
               {saksnummer?.map((s: any) => {
-                return <option key={s.sed}>{s.sed}</option>
+                return <option key={s.sed}>{s.sed}</option>;
               })}
             </SetSelect>
           )}
 
-          {saksnummer === null && (
-            <Alertstripe type='feil'>
-              Fail
-            </Alertstripe>
-          )}
+          {saksnummer === null && <Alertstripe type="feil">Fail</Alertstripe>}
           {JSON.stringify(saksnummer)}
           {JSON.stringify(sed)}
           {JSON.stringify(person)}
+          <Knapp onClick={() => sendData()}>Send Data</Knapp>
+          {!_.isNil(svarPasedData) && (
+            <Alertstripe type="suksess">{svarPasedData.message}</Alertstripe>
+          )}
         </Content>
+
         <Margin />
       </Container>
     </TopContainer>
-  )
-}
+  );
+};
 
-export default SvarPaSed
+export default SvarPaSed;
