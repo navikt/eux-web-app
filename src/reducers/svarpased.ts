@@ -1,14 +1,15 @@
-import { ActionWithPayload } from 'js-fetch-api'
-import { Action } from 'redux'
-import * as types from 'constants/actionTypes'
-import _ from 'lodash'
+import { ActionWithPayload } from "js-fetch-api";
+import { Action } from "redux";
+import * as types from "constants/actionTypes";
+import _ from "lodash";
 
 export interface SvarpasedState {
-  saksnummer: Array<any> | undefined
-  sed: any
-  person: any
-  personRelatert: any
-  familierelasjoner: Array<any>
+  saksnummer: Array<any> | undefined;
+  sed: any;
+  person: any;
+  personRelatert: any;
+  familierelasjoner: Array<any>;
+  svarPasedData: any;
 }
 
 export const initialSvarpasedState: SvarpasedState = {
@@ -16,8 +17,9 @@ export const initialSvarpasedState: SvarpasedState = {
   sed: undefined,
   person: undefined,
   personRelatert: undefined,
-  familierelasjoner: []
-}
+  familierelasjoner: [],
+  svarPasedData: undefined,
+};
 
 const svarpasedReducer = (
   state: SvarpasedState = initialSvarpasedState,
@@ -27,58 +29,69 @@ const svarpasedReducer = (
     case types.SVARPASED_SAKSNUMMER_GET_SUCCESS:
       return {
         ...state,
-        saksnummer: (action as ActionWithPayload).payload
-      }
+        saksnummer: (action as ActionWithPayload).payload,
+      };
 
     case types.SVARPASED_SED_GET_SUCCESS:
       return {
         ...state,
-        sed: (action as ActionWithPayload).payload
-      }
+        sed: (action as ActionWithPayload).payload,
+      };
 
     case types.SVARPASED_SAKSNUMMER_GET_FAILURE:
       return {
         ...state,
-        saksnummer: null
-      }
+        saksnummer: null,
+      };
 
     case types.SVARPASED_PERSON_GET_FAILURE:
       return {
         ...state,
-        person: null
-      }
+        person: null,
+      };
 
     case types.SVARPASED_PERSON_GET_SUCCESS:
       return {
         ...state,
-        person: (action as ActionWithPayload).payload
-      }
+        person: (action as ActionWithPayload).payload,
+      };
 
     case types.SVARPASED_PERSON_RELATERT_GET_FAILURE:
       return {
         ...state,
-        personRelatert: null
-      }
+        personRelatert: null,
+      };
 
     case types.SVARPASED_PERSON_RELATERT_GET_SUCCESS:
       return {
         ...state,
-        personRelatert: (action as ActionWithPayload).payload
-      }
+        personRelatert: (action as ActionWithPayload).payload,
+      };
 
+    case types.SVARPASED_SENDSVARPASEDDATA_POST_SUCCESS:
+      return {
+        ...state,
+        svarPasedData: (action as ActionWithPayload).payload,
+      };
+
+    case types.SVARPASED_SENDSVARPASEDDATA_POST_FAILURE:
+      return {
+        ...state,
+        svarPasedData: null,
+      };
 
     case types.SVARPASED_SED_GET_FAILURE:
       return {
         ...state,
-        sed: null
-      }
+        sed: null,
+      };
     case types.SVARPASED_FAMILIERELASJONER_ADD:
       return {
         ...state,
         familierelasjoner: state.familierelasjoner.concat(
           (action as ActionWithPayload).payload
-        )
-      }
+        ),
+      };
 
     case types.SVARPASED_FAMILIERELASJONER_REMOVE:
       return {
@@ -86,12 +99,12 @@ const svarpasedReducer = (
         familierelasjoner: _.filter(
           state.familierelasjoner,
           (i) => i.fnr !== (action as ActionWithPayload).payload.fnr
-        )
-      }
+        ),
+      };
 
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default svarpasedReducer
+export default svarpasedReducer;
