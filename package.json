@@ -7,7 +7,7 @@
     "classnames": "^2.2.6",
     "eessi-kodeverk": "1.4.2",
     "history": "^4.9.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "lodash.throttle": "^4.1.1",
     "moment": "^2.24.0",
     "nav-frontend-alertstriper": "^1.0.27",
