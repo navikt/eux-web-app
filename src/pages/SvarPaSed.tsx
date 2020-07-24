@@ -7,7 +7,7 @@ import { State } from "declarations/reducers";
 import Alertstripe from "nav-frontend-alertstriper";
 import { Knapp } from "nav-frontend-knapper";
 import { Input, Select } from "nav-frontend-skjema";
-import React, { useState } from "react";
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import * as svarpasedActions from "actions/svarpased";
 import styled from "styled-components";
@@ -47,10 +47,16 @@ const mapState = (state: State): any => ({
   svarPasedData: state.svarpased.svarPasedData,
 });
 
-const SvarPaSed: React.FC = (): JSX.Element => {
-  const [_saksnummer, setSaksnummer] = useState(undefined);
+export interface SvarPaSedProps {
+  location: any;
+}
+
+const SvarPaSed: React.FC<SvarPaSedProps> = ({ location }: SvarPaSedProps): JSX.Element => {
+  const [_saksnummer, setSaksnummer] = useState<string | undefined>(undefined);
   const [validation, setValidation] = useState<{ [k: string]: any }>({});
   const [, setIsFnrValid] = useState<boolean>(false);
+  const [mounted, setMounted] = useState<boolean>(false)
+  const [fnr, setFnr] = useState<string>('')
   // const [_sed, setSed] = useState(undefined);
   const dispatch = useDispatch();
 
@@ -61,7 +67,6 @@ const SvarPaSed: React.FC = (): JSX.Element => {
     gettingPerson,
     person,
     personRelatert,
-    gettingSaksnummer,
     saksnummer,
     familierelasjonKodeverk,
     sed,
@@ -141,7 +146,24 @@ const SvarPaSed: React.FC = (): JSX.Element => {
     dispatch(svarpasedActions.removeFamilierelasjoner(relation));
   };
 
-  console.log("gettingSaksnummer: ", gettingSaksnummer);
+  useEffect(() => {
+    if (!mounted) {
+      const params: URLSearchParams = new URLSearchParams(location.search)
+      const rinasaksnummerParam = params.get('rinasaksnummer')
+      const fnrParam = params.get('fnr')
+      if (rinasaksnummerParam) {
+        setSaksnummer(rinasaksnummerParam)
+        dispatch(svarpasedActions.getSaksnummer(rinasaksnummerParam));
+      }
+      if (fnrParam) {
+        setFnr(fnrParam)
+        dispatch(svarpasedActions.getPerson(fnrParam));
+      }
+      setMounted(true)
+    }
+
+  }, [dispatch, mounted, location.search])
+
   return (
     <TopContainer className="p-svarpased">
       <Container>
@@ -151,6 +173,7 @@ const SvarPaSed: React.FC = (): JSX.Element => {
             <SaksnummerInput
               label="saksnummer"
               bredde="M"
+              value={_saksnummer}
               feil={validation.saksnummer}
               onChange={(e: any) => {
                 setSaksnummer(e.target.value);
@@ -164,7 +187,7 @@ const SvarPaSed: React.FC = (): JSX.Element => {
             alertStatus={alertStatus}
             alertMessage={alertMessage}
             alertType={alertType}
-            initialFnr=""
+            initialFnr={fnr}
             person={person}
             gettingPerson={gettingPerson}
             className="slideAnimate"
