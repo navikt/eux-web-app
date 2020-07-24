@@ -132,7 +132,9 @@ const Family: React.FC<FamilySelector> = ({
 
   return (
     <div data-testid="c-family">
-      <Systemtittel>{t("ui:label-familyRelationships")}</Systemtittel>
+      <Systemtittel>
+        {t("ui:label-familyRelationships")}
+      </Systemtittel>
       <VerticalSeparatorDiv />
       <FamilyPanel>
         <HorizontalSeparatorDiv />

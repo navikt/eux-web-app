@@ -1,11 +1,12 @@
-import { clientClear } from "actions/alert";
-import * as appActions from "actions/app";
-import * as formActions from "actions/form";
-import * as sakActions from "actions/sak";
-import classNames from "classnames";
-import AbortModal from "components/AbortModal/AbortModal";
-import Family from "components/Family/Family";
-import PersonSearch from "components/PersonSearch/PersonSearch";
+import { clientClear } from 'actions/alert'
+import * as appActions from 'actions/app'
+import * as formActions from 'actions/form'
+import * as sakActions from 'actions/sak'
+import classNames from 'classnames'
+import AbortModal from 'components/AbortModal/AbortModal'
+import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
+import Family from 'components/Family/Family'
+import PersonSearch from 'components/PersonSearch/PersonSearch'
 import {
   Cell,
   Container,
@@ -13,35 +14,26 @@ import {
   HorizontalSeparatorDiv,
   Margin,
   Row,
-  VerticalSeparatorDiv,
-} from "components/StyledComponents";
-import TopContainer from "components/TopContainer/TopContainer";
-import * as types from "constants/actionTypes";
-import { State } from "declarations/reducers";
-import {
-  Enheter,
-  FagSaker,
-  FamilieRelasjon,
-  Person,
-  Validation,
-} from "declarations/types";
-import * as EKV from "eessi-kodeverk";
-import CountrySelect from "landvelger";
-import _ from "lodash";
-import AlertStripe from "nav-frontend-alertstriper";
-import { Flatknapp, Hovedknapp, Knapp } from "nav-frontend-knapper";
-import Lenke from "nav-frontend-lenker";
-import Panel from "nav-frontend-paneler";
-import { Checkbox, Select } from "nav-frontend-skjema";
-import { Systemtittel } from "nav-frontend-typografi";
-import PT from "prop-types";
-import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import IkonArbeidsforhold from "resources/images/ikon-arbeidsforhold";
-import styled from "styled-components";
-import { formatterDatoTilNorsk } from "utils/dato";
+  VerticalSeparatorDiv
+} from 'components/StyledComponents'
+import TopContainer from 'components/TopContainer/TopContainer'
+import * as types from 'constants/actionTypes'
+import { State } from 'declarations/reducers'
+import { Enheter, FagSaker, FamilieRelasjon, Person, Validation } from 'declarations/types'
+import * as EKV from 'eessi-kodeverk'
+import CountrySelect from 'landvelger'
+import _ from 'lodash'
+import AlertStripe from 'nav-frontend-alertstriper'
+import { Flatknapp, Hovedknapp, Knapp } from 'nav-frontend-knapper'
+import Lenke from 'nav-frontend-lenker'
+import { Select } from 'nav-frontend-skjema'
+import { Systemtittel } from 'nav-frontend-typografi'
+import PT from 'prop-types'
+import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import styled from 'styled-components'
 
 export interface OpprettSakProps {
   history: any;
@@ -123,16 +115,6 @@ const mapState = (state: State): OpprettSakSelector => ({
   valgtUnit: state.form.unit,
 });
 
-const ArbeidsforholdItem = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-`;
-const ArbeidsforholdDesc = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
 const AlignCenterCell = styled(Cell)`
   display: flex;
   align-items: center;
@@ -352,18 +334,6 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
   const onSakIDChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     resetValidation("saksId");
     dispatch(formActions.set("saksId", event.target.value));
-  };
-
-  const getArbeidsforhold = (): void => {
-    dispatch(sakActions.getArbeidsforhold(person?.fnr));
-  };
-
-  const onArbeidsforholdClick = (item: any, checked: boolean): void => {
-    if (checked) {
-      dispatch(formActions.addArbeidsforhold(item));
-    } else {
-      dispatch(formActions.removeArbeidsforhold(item));
-    }
   };
 
   const addTpsRelation = (relation: FamilieRelasjon): void => {
@@ -678,73 +648,18 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                 </Row>
               )}
               {visArbeidsforhold && (
-                <Row>
-                  <Cell className="arbeidsforhold">
-                    <Row>
-                      <Cell>
-                        <strong>{t("ui:label-aaRegistered")}</strong>
-                        <br />
-                        {t("ui:label-arbeidsforhold")}
-                      </Cell>
-                      <Cell>
-                        <Knapp onClick={getArbeidsforhold}>
-                          {t("ui:form-search")}
-                        </Knapp>
-                      </Cell>
-                    </Row>
-                    {arbeidsforhold &&
-                      arbeidsforhold.map(
-                        (arbeidsforholdet: any, index: number) => {
-                          const {
-                            arbeidsforholdIDnav,
-                            navn,
-                            orgnr,
-                            ansettelsesPeriode: { fom, tom },
-                          } = arbeidsforholdet;
-                          const arbeidsForholdErValgt = valgteArbeidsforhold.find(
-                            (item: any) =>
-                              item.arbeidsforholdIDnav === arbeidsforholdIDnav
-                          );
-                          return (
-                            <Panel key={index} className="mt-4" border>
-                              <ArbeidsforholdItem>
-                                <ArbeidsforholdDesc>
-                                  <IkonArbeidsforhold />
-                                  <HorizontalSeparatorDiv />
-                                  <div>
-                                    <strong>{navn}</strong>
-                                    <br />
-                                    {t("ui:label-orgnummer")}:&nbsp;{orgnr}
-                                    <br />
-                                    {t("ui:label-startDate")}:&nbsp;
-                                    {formatterDatoTilNorsk(fom)}
-                                    <br />
-                                    {t("ui:label-endDate")}:&nbsp;
-                                    {formatterDatoTilNorsk(tom)}
-                                  </div>
-                                </ArbeidsforholdDesc>
-                                <div>
-                                  <Checkbox
-                                    checked={arbeidsForholdErValgt}
-                                    onChange={(
-                                      e: React.ChangeEvent<HTMLInputElement>
-                                    ) =>
-                                      onArbeidsforholdClick(
-                                        arbeidsforholdet,
-                                        e.target.checked
-                                      )
-                                    }
-                                    label={t("ui:form-choose")}
-                                  />
-                                </div>
-                              </ArbeidsforholdItem>
-                            </Panel>
-                          );
-                        }
-                      )}
-                  </Cell>
-                  <Cell />
-                </Row>
+                <Arbeidsforhold
+                  getArbeidsforhold={() => {
+                    dispatch(sakActions.getArbeidsforhold(person?.fnr));
+                  }}
+                  valgteArbeidsforhold={valgteArbeidsforhold}
+                  arbeidsforhold={arbeidsforhold}
+                  onArbeidsforholdClick={(item: any, checked: boolean) =>
+                    dispatch(checked ?
+                      formActions.addArbeidsforhold(item) :
+                      formActions.removeArbeidsforhold(item))
+                  }
+                />
               )}
               <VerticalSeparatorDiv />
               <Row className="slideAnimate" style={{ animationDelay: "0.75s" }}>

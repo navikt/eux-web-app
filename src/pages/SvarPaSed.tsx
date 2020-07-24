@@ -1,6 +1,7 @@
 import { clientClear } from "actions/alert";
+import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
 import PersonSearch from "components/PersonSearch/PersonSearch";
-import { Container, Content, Margin } from "components/StyledComponents";
+import { Container, Content, Margin, VerticalSeparatorDiv } from 'components/StyledComponents'
 import TopContainer from "components/TopContainer/TopContainer";
 import * as types from "constants/actionTypes";
 import { State } from "declarations/reducers";
@@ -25,8 +26,8 @@ const SaksnummerInput = styled(Input)`
   margin-right: 1rem;
 `;
 
-const SetSelect = styled(Select)`
-  margin-right: 1rem;
+const SedSelect = styled(Select)`
+  width: 25%;
 `;
 
 const mapState = (state: State): any => ({
@@ -37,9 +38,10 @@ const mapState = (state: State): any => ({
 
   person: state.svarpased.person,
   personRelatert: state.svarpased.personRelatert,
-  // familierelasjonKodeverk: state.svarpased.
   familierelasjonKodeverk: state.sak.familierelasjoner,
   valgteFamilieRelasjoner: state.svarpased.familierelasjoner,
+  arbeidsforhold: state.svarpased.arbeidsforhold,
+  valgteArbeidsforhold: state.svarpased.valgteArbeidsforhold,
 
   gettingSaksnummer: state.loading.gettingSaksnummer,
   saksnummer: state.svarpased.saksnummer,
@@ -64,12 +66,14 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({ location }: SvarPaSedProps): JSX.
     alertStatus,
     alertMessage,
     alertType,
+    arbeidsforhold,
     gettingPerson,
     person,
     personRelatert,
     saksnummer,
     familierelasjonKodeverk,
     sed,
+    valgteArbeidsforhold,
     valgteFamilieRelasjoner,
     svarPasedData,
   }: any = useSelector<State, any>(mapState);
@@ -127,7 +131,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({ location }: SvarPaSedProps): JSX.
     }
   };
 
-  const onSetChange = (e: any) => {
+  const onSedChange = (e: any) => {
     //resetValidation([]);
     dispatch(svarpasedActions.getSed(e.target.value));
   };
@@ -158,6 +162,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({ location }: SvarPaSedProps): JSX.
       if (fnrParam) {
         setFnr(fnrParam)
         dispatch(svarpasedActions.getPerson(fnrParam));
+        dispatch(svarpasedActions.getArbeidsforhold(fnrParam));
       }
       setMounted(true)
     }
@@ -165,13 +170,13 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({ location }: SvarPaSedProps): JSX.
   }, [dispatch, mounted, location.search])
 
   return (
-    <TopContainer className="p-svarpased">
+    <TopContainer>
       <Container>
         <Margin />
         <Content>
           <SaksnummerDiv>
             <SaksnummerInput
-              label="saksnummer"
+              label="Saksnummer"
               bredde="M"
               value={_saksnummer}
               feil={validation.saksnummer}
@@ -182,7 +187,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({ location }: SvarPaSedProps): JSX.
             />
             <Knapp onClick={onSaksnummerClick}>Hent</Knapp>
           </SaksnummerDiv>
-
+          <VerticalSeparatorDiv/>
           <PersonSearch
             alertStatus={alertStatus}
             alertMessage={alertMessage}
@@ -201,43 +206,62 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({ location }: SvarPaSedProps): JSX.
             onPersonRemoved={() => {}}
             onAlertClose={() => dispatch(clientClear())}
           />
-          {person !== undefined && person !== null && (
-            <Family
-              alertStatus={alertStatus}
-              alertMessage={alertMessage}
-              alertType={alertType}
-              familierelasjonKodeverk={familierelasjonKodeverk}
-              personRelatert={personRelatert}
-              person={person}
-              valgteFamilieRelasjoner={valgteFamilieRelasjoner}
-              onClickAddRelasjons={(value: any) => addTpsRelation(value)}
-              onClickRemoveRelasjons={(value: any) => deleteRelation(value)}
-              onResetPersonRelatert={() =>
-                dispatch(svarpasedActions.resetPersonRelatert())
-              }
-              onAddFailure={() =>
-                dispatch({ type: types.SVARPASED_TPSPERSON_ADD_FAILURE })
-              }
-              onAddSuccess={(e: any) => {
-                dispatch(svarpasedActions.addFamilierelasjoner(e));
-                dispatch({ type: types.SVARPASED_TPSPERSON_ADD_SUCCESS });
-              }}
-              onAlertClose={() => dispatch(clientClear())}
-              onSearchFnr={(sok) => {
-                dispatch(svarpasedActions.resetPersonRelatert());
-                dispatch(svarpasedActions.getPersonRelated(sok));
-              }}
-            />
-          )}
-          {saksnummer !== undefined && saksnummer !== null && (
-            <SetSelect onChange={onSetChange}>
+          {saksnummer && (
+            <SedSelect
+              label={'Velg svar SED'}
+              onChange={onSedChange}
+            >
+              <option key=''>-</option>
               {saksnummer?.map((s: any) => {
-                return <option key={s.sed}>{s.sed}</option>;
+                return <option key={s.value}>{s.label}</option>;
               })}
-            </SetSelect>
+            </SedSelect>
+          )}
+          <VerticalSeparatorDiv/>
+          {!_.isNil(person) && (
+            <>
+              <Family
+                alertStatus={alertStatus}
+                alertMessage={alertMessage}
+                alertType={alertType}
+                familierelasjonKodeverk={familierelasjonKodeverk}
+                personRelatert={personRelatert}
+                person={person}
+                valgteFamilieRelasjoner={valgteFamilieRelasjoner}
+                onClickAddRelasjons={(value: any) => addTpsRelation(value)}
+                onClickRemoveRelasjons={(value: any) => deleteRelation(value)}
+                onResetPersonRelatert={() =>
+                  dispatch(svarpasedActions.resetPersonRelatert())
+                }
+                onAddFailure={() =>
+                  dispatch({ type: types.SVARPASED_TPSPERSON_ADD_FAILURE })
+                }
+                onAddSuccess={(e: any) => {
+                  dispatch(svarpasedActions.addFamilierelasjoner(e));
+                  dispatch({ type: types.SVARPASED_TPSPERSON_ADD_SUCCESS });
+                }}
+                onAlertClose={() => dispatch(clientClear())}
+                onSearchFnr={(sok) => {
+                  dispatch(svarpasedActions.resetPersonRelatert());
+                  dispatch(svarpasedActions.getPersonRelated(sok));
+                }}
+              />
+            <VerticalSeparatorDiv/>
+            <Arbeidsforhold
+              getArbeidsforhold={() => {
+                dispatch(svarpasedActions.getArbeidsforhold(person?.fnr));
+              }}
+              valgteArbeidsforhold={valgteArbeidsforhold}
+              arbeidsforhold={arbeidsforhold}
+              onArbeidsforholdClick={(item: any, checked: boolean) =>
+                dispatch(checked ?
+                  svarpasedActions.addArbeidsforhold(item) :
+                  svarpasedActions.removeArbeidsforhold(item))
+              }
+            />
+          </>
           )}
 
-          {saksnummer === null && <Alertstripe type="feil">Fail</Alertstripe>}
           {JSON.stringify(saksnummer)}
           {JSON.stringify(sed)}
           {JSON.stringify(person)}

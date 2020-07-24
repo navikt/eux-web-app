@@ -1,24 +1,29 @@
+import { Arbeidsforhold } from 'declarations/types'
 import { ActionWithPayload } from "js-fetch-api";
 import { Action } from "redux";
 import * as types from "constants/actionTypes";
 import _ from "lodash";
 
 export interface SvarpasedState {
-  saksnummer: Array<any> | undefined;
-  sed: any;
+  arbeidsforhold: Arbeidsforhold;
+  familierelasjoner: Array<any>;
   person: any;
   personRelatert: any;
-  familierelasjoner: Array<any>;
+  saksnummer: Array<any> | undefined;
+  sed: any;
   svarPasedData: any;
+  valgteArbeidsforhold: Arbeidsforhold;
 }
 
 export const initialSvarpasedState: SvarpasedState = {
+  arbeidsforhold: [],
   saksnummer: undefined,
   sed: undefined,
   person: undefined,
   personRelatert: undefined,
   familierelasjoner: [],
   svarPasedData: undefined,
+  valgteArbeidsforhold: []
 };
 
 const svarpasedReducer = (
@@ -26,6 +31,25 @@ const svarpasedReducer = (
   action: Action | ActionWithPayload
 ) => {
   switch (action.type) {
+
+    case types.SVARPASED_ARBEIDSFORHOLD_GET_SUCCESS:
+      return {
+        ...state,
+        arbeidsforhold: (action as ActionWithPayload).payload
+      }
+
+    case types.SVARPASED_ARBEIDSFORHOLD_ADD:
+      return {
+        ...state,
+        valgteArbeidsforhold: state.valgteArbeidsforhold.concat((action as ActionWithPayload).payload)
+      }
+
+    case types.SVARPASED_ARBEIDSFORHOLD_REMOVE:
+      return {
+        ...state,
+        valgteArbeidsforhold: _.filter(state.valgteArbeidsforhold, i => i !== (action as ActionWithPayload).payload)
+      }
+
     case types.SVARPASED_SAKSNUMMER_GET_SUCCESS:
       return {
         ...state,
