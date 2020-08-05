@@ -26,6 +26,7 @@ import _ from 'lodash'
 import AlertStripe from 'nav-frontend-alertstriper'
 import { Flatknapp, Hovedknapp, Knapp } from 'nav-frontend-knapper'
 import Lenke from 'nav-frontend-lenker'
+import Panel from 'nav-frontend-paneler'
 import { Select } from 'nav-frontend-skjema'
 import { Systemtittel } from 'nav-frontend-typografi'
 import PT from 'prop-types'
@@ -119,7 +120,12 @@ const AlignCenterCell = styled(Cell)`
   display: flex;
   align-items: center;
 `;
-
+const FamilyPanel = styled(Panel)`
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  background-color: white;
+  padding: 1rem;
+`;
 const OpprettSak: React.FC<OpprettSakProps> = ({
   history,
 }: OpprettSakProps): JSX.Element => {
@@ -535,36 +541,42 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
               <Row>
                 {valgtSektor === "FB" && (
                   <Cell className="slideAnimate">
-                    <Family
-                      alertStatus={alertStatus}
-                      alertMessage={alertMessage}
-                      alertType={alertType}
-                      familierelasjonKodeverk={familierelasjonKodeverk}
-                      personRelatert={personRelatert}
-                      person={person}
-                      valgteFamilieRelasjoner={valgteFamilieRelasjoner}
-                      onClickAddRelasjons={(value: any) =>
-                        addTpsRelation(value)
-                      }
-                      onClickRemoveRelasjons={(value: any) =>
-                        deleteRelation(value)
-                      }
-                      onResetPersonRelatert={() =>
-                        dispatch(sakActions.resetPersonRelatert())
-                      }
-                      onAddFailure={() =>
-                        dispatch({ type: types.FORM_TPSPERSON_ADD_FAILURE })
-                      }
-                      onAddSuccess={(e: any) => {
-                        dispatch(formActions.addFamilierelasjoner(e));
-                        dispatch({ type: types.FORM_TPSPERSON_ADD_SUCCESS });
-                      }}
-                      onAlertClose={() => dispatch(clientClear())}
-                      onSearchFnr={(sok) => {
-                        dispatch(sakActions.resetPersonRelatert());
-                        dispatch(sakActions.getPersonRelated(sok));
-                      }}
-                    />
+                    <Systemtittel>
+                      {t("ui:label-familyRelationships")}
+                    </Systemtittel>
+                    <VerticalSeparatorDiv />
+                    <FamilyPanel>
+                      <Family
+                        alertStatus={alertStatus}
+                        alertMessage={alertMessage}
+                        alertType={alertType}
+                        familierelasjonKodeverk={familierelasjonKodeverk}
+                        personRelatert={personRelatert}
+                        person={person}
+                        valgteFamilieRelasjoner={valgteFamilieRelasjoner}
+                        onClickAddRelasjons={(value: any) =>
+                          addTpsRelation(value)
+                        }
+                        onClickRemoveRelasjons={(value: any) =>
+                          deleteRelation(value)
+                        }
+                        onResetPersonRelatert={() =>
+                          dispatch(sakActions.resetPersonRelatert())
+                        }
+                        onAddFailure={() =>
+                          dispatch({ type: types.FORM_TPSPERSON_ADD_FAILURE })
+                        }
+                        onAddSuccess={(e: any) => {
+                          dispatch(formActions.addFamilierelasjoner(e));
+                          dispatch({ type: types.FORM_TPSPERSON_ADD_SUCCESS });
+                        }}
+                        onAlertClose={() => dispatch(clientClear())}
+                        onSearchFnr={(sok) => {
+                          dispatch(sakActions.resetPersonRelatert());
+                          dispatch(sakActions.getPersonRelated(sok));
+                        }}
+                      />
+                    </FamilyPanel>
                     <VerticalSeparatorDiv />
                   </Cell>
                 )}

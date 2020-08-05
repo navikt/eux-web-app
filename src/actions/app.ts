@@ -50,3 +50,14 @@ export const getUtgaarDato: ActionCreator<ThunkResult<ActionWithPayload>> = (): 
     }
   })
 }
+
+export const logMeAgain: ActionCreator<ThunkResult<ActionWithPayload>> = (): ThunkResult<ActionWithPayload> => {
+  return realCall({
+    url: urls.API_REAUTENTISERING_URL,
+    type: {
+      request: types.APP_LOGMEAGAIN_GET_REQUEST,
+      success: types.APP_LOGMEAGAIN_GET_SUCCESS,
+      failure: types.APP_LOGMEAGAIN_GET_FAILURE
+    }
+  })
+}

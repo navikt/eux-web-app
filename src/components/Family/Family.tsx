@@ -1,23 +1,14 @@
-import TPSPersonForm from "components/Family/TPSPersonForm";
-import AbroadPersonForm from "components/Family/AbroadPersonForm";
-import PersonCard from "components/PersonCard/PersonCard";
-import {
-  HorizontalSeparatorDiv,
-  VerticalSeparatorDiv,
-} from "components/StyledComponents";
-import { FamilieRelasjon, Kodeverk, Person } from "declarations/types";
-import _ from "lodash";
-import { Knapp } from "nav-frontend-knapper";
-import {
-  Ingress,
-  Systemtittel,
-  UndertekstBold,
-  Undertittel,
-} from "nav-frontend-typografi";
-import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
-import Panel from "nav-frontend-paneler";
-import styled from "styled-components";
+import AbroadPersonForm from 'components/Family/AbroadPersonForm'
+import TPSPersonForm from 'components/Family/TPSPersonForm'
+import PersonCard from 'components/PersonCard/PersonCard'
+import { HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'components/StyledComponents'
+import { FamilieRelasjon, Kodeverk, Person } from 'declarations/types'
+import _ from 'lodash'
+import { Knapp } from 'nav-frontend-knapper'
+import { Ingress, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
+import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
 
 export interface FamilySelector {
   alertStatus: string | undefined;
@@ -36,12 +27,6 @@ export interface FamilySelector {
   onAlertClose: () => void;
 }
 
-const FamilyPanel = styled(Panel)`
-  border: 1px solid lightgray;
-  border-radius: 5px;
-  background-color: white;
-  padding: 1rem;
-`;
 const FamilyArea = styled.div`
   display: flex;
 `;
@@ -132,127 +117,121 @@ const Family: React.FC<FamilySelector> = ({
 
   return (
     <div data-testid="c-family">
-      <Systemtittel>
-        {t("ui:label-familyRelationships")}
-      </Systemtittel>
+      <HorizontalSeparatorDiv />
+      <Undertittel>{t("ui:form-family-description")}</Undertittel>
       <VerticalSeparatorDiv />
-      <FamilyPanel>
-        <HorizontalSeparatorDiv />
-        <Undertittel>{t("ui:form-family-description")}</Undertittel>
-        <VerticalSeparatorDiv />
-        <FamilyArea>
-          <FamilySubArea>
-            <HorizontalSeparatorDiv />
-            <Ingress>{t("ui:form-family-relations-in-tps")}</Ingress>
-            {remainingRelationsFromTPS.map((relation: FamilieRelasjon) => (
-              <MarginDiv key={relation.fnr}>
-                <PersonCard
-                  className="slideAnimate personNotSelected"
-                  key={relation.fnr}
-                  person={relation}
-                  familierelasjonKodeverk={familierelasjonKodeverk}
-                  onAddClick={(value) => onClickAddRelasjons(value)}
-                />
-              </MarginDiv>
-            ))}
-            {!_.isEmpty(person!.relasjoner) &&
-              _.isEmpty(remainingRelationsFromTPS) && (
-                <>
-                  <HorizontalSeparatorDiv data-size="0.5" />
-                  <VerticalSeparatorDiv data-size="1.5" />
-                  <UndertekstBold>
-                    ({t("ui:form-family-added-all")})
-                  </UndertekstBold>
-                </>
-              )}
-            {_.isEmpty(person!.relasjoner) && (
+      <FamilyArea>
+        <FamilySubArea>
+          <HorizontalSeparatorDiv />
+          <Ingress>{t("ui:form-family-relations-in-tps")}</Ingress>
+          {remainingRelationsFromTPS.map((relation: FamilieRelasjon) => (
+            <MarginDiv key={relation.fnr}>
+              <PersonCard
+                className="slideAnimate personNotSelected"
+                key={relation.fnr}
+                person={relation}
+                familierelasjonKodeverk={familierelasjonKodeverk}
+                onAddClick={(value) => onClickAddRelasjons(value)}
+              />
+            </MarginDiv>
+          ))}
+          {!_.isEmpty(person!.relasjoner) &&
+            _.isEmpty(remainingRelationsFromTPS) && (
               <>
                 <HorizontalSeparatorDiv data-size="0.5" />
                 <VerticalSeparatorDiv data-size="1.5" />
                 <UndertekstBold>
-                  ({t("ui:form-family-none-in-tps")})
+                  ({t("ui:form-family-added-all")})
                 </UndertekstBold>
               </>
             )}
-          </FamilySubArea>
-          <FamilySeparator />
-          <FamilySubArea>
-            <HorizontalSeparatorDiv />
-            <Ingress>
-              {t("ui:form-family-chosen")}&nbsp;(
-              {valgteFamilieRelasjoner ? valgteFamilieRelasjoner.length : 0})
-            </Ingress>
-            {valgteFamilieRelasjoner &&
-              valgteFamilieRelasjoner.map((relation: FamilieRelasjon) => (
-                <MarginDiv key={relation.fnr}>
-                  <PersonCard
-                    className="slideAnimate personSelected"
-                    key={relation.fnr}
-                    familierelasjonKodeverk={familierelasjonKodeverk}
-                    person={relation}
-                    onRemoveClick={(value) => onClickRemoveRelasjons(value)}
-                  />
-                </MarginDiv>
-              ))}
-          </FamilySubArea>
-        </FamilyArea>
+          {_.isEmpty(person!.relasjoner) && (
+            <>
+              <HorizontalSeparatorDiv data-size="0.5" />
+              <VerticalSeparatorDiv data-size="1.5" />
+              <UndertekstBold>
+                ({t("ui:form-family-none-in-tps")})
+              </UndertekstBold>
+            </>
+          )}
+        </FamilySubArea>
+        <FamilySeparator />
+        <FamilySubArea>
+          <HorizontalSeparatorDiv />
+          <Ingress>
+            {t("ui:form-family-chosen")}&nbsp;(
+            {valgteFamilieRelasjoner ? valgteFamilieRelasjoner.length : 0})
+          </Ingress>
+          {valgteFamilieRelasjoner &&
+            valgteFamilieRelasjoner.map((relation: FamilieRelasjon) => (
+              <MarginDiv key={relation.fnr}>
+                <PersonCard
+                  className="slideAnimate personSelected"
+                  key={relation.fnr}
+                  familierelasjonKodeverk={familierelasjonKodeverk}
+                  person={relation}
+                  onRemoveClick={(value) => onClickRemoveRelasjons(value)}
+                />
+              </MarginDiv>
+            ))}
+        </FamilySubArea>
+      </FamilyArea>
 
-        <Forms>
-          <div>
-            <VerticalSeparatorDiv data-size="1.5" />
-            <Ingress>{t("ui:form-family-utland-title")}</Ingress>
-            {viewFormRelatedUtland && (
-              <>
-                <VerticalSeparatorDiv />
-                <AbroadPersonForm
-                  person={person}
-                  rolleList={rolleList}
-                  existingFamilyRelationships={(
-                    valgteFamilieRelasjoner || []
-                  ).concat(remainingRelationsFromTPS || [])}
-                />
-              </>
-            )}
-            <VerticalSeparatorDiv />
-            <Knapp onClick={toggleFormRelatedUtland}>
-              {viewFormRelatedUtland
-                ? t("ui:label-hide-form")
-                : t("ui:label-show-form")}
-            </Knapp>
-          </div>
-          <div>
-            <VerticalSeparatorDiv data-size="1.5" />
-            <Ingress>{t("ui:form-family-tps-title")}</Ingress>
-            {viewFormRelatedTPS && person && (
-              <>
-                <VerticalSeparatorDiv />
-                <TPSPersonForm
-                  alertStatus={alertStatus}
-                  alertMessage={alertMessage}
-                  alertType={alertType}
-                  personRelatert={personRelatert}
-                  person={person}
-                  rolleList={rolleList}
-                  existingFamilyRelationships={(
-                    valgteFamilieRelasjoner || []
-                  ).concat(remainingRelationsFromTPS || [])}
-                  onResetPersonRelatert={onResetPersonRelatert}
-                  onAddFailure={onAddFailure}
-                  onAddSuccess={onAddSuccess}
-                  onAlertClose={onAlertClose}
-                  onSearchFnr={onSearchFnr}
-                />
-              </>
-            )}
-            <VerticalSeparatorDiv />
-            <Knapp onClick={toggleFormRelatedTPS}>
-              {viewFormRelatedTPS
-                ? t("ui:label-hide-form")
-                : t("ui:label-show-form")}
-            </Knapp>
-          </div>
-        </Forms>
-      </FamilyPanel>
+      <Forms>
+        <div>
+          <VerticalSeparatorDiv data-size="1.5" />
+          <Ingress>{t("ui:form-family-utland-title")}</Ingress>
+          {viewFormRelatedUtland && (
+            <>
+              <VerticalSeparatorDiv />
+              <AbroadPersonForm
+                person={person}
+                rolleList={rolleList}
+                existingFamilyRelationships={(
+                  valgteFamilieRelasjoner || []
+                ).concat(remainingRelationsFromTPS || [])}
+              />
+            </>
+          )}
+          <VerticalSeparatorDiv />
+          <Knapp onClick={toggleFormRelatedUtland}>
+            {viewFormRelatedUtland
+              ? t("ui:label-hide-form")
+              : t("ui:label-show-form")}
+          </Knapp>
+        </div>
+        <div>
+          <VerticalSeparatorDiv data-size="1.5" />
+          <Ingress>{t("ui:form-family-tps-title")}</Ingress>
+          {viewFormRelatedTPS && person && (
+            <>
+              <VerticalSeparatorDiv />
+              <TPSPersonForm
+                alertStatus={alertStatus}
+                alertMessage={alertMessage}
+                alertType={alertType}
+                personRelatert={personRelatert}
+                person={person}
+                rolleList={rolleList}
+                existingFamilyRelationships={(
+                  valgteFamilieRelasjoner || []
+                ).concat(remainingRelationsFromTPS || [])}
+                onResetPersonRelatert={onResetPersonRelatert}
+                onAddFailure={onAddFailure}
+                onAddSuccess={onAddSuccess}
+                onAlertClose={onAlertClose}
+                onSearchFnr={onSearchFnr}
+              />
+            </>
+          )}
+          <VerticalSeparatorDiv />
+          <Knapp onClick={toggleFormRelatedTPS}>
+            {viewFormRelatedTPS
+              ? t("ui:label-hide-form")
+              : t("ui:label-show-form")}
+          </Knapp>
+        </div>
+      </Forms>
     </div>
   );
 };

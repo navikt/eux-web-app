@@ -1,4 +1,5 @@
 import { closeModal, openModal } from 'actions/ui'
+import { logMeAgain } from 'actions/app'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -66,6 +67,10 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
               main: true,
               text: t('ui:ok-got-it'),
               onClick: dispatch(closeModal)
+            }, {
+              main: false,
+              text: t('ui:log-me-again'),
+              onClick: dispatch(logMeAgain)
             }]
           }))
         }

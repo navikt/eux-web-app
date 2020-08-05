@@ -6,9 +6,11 @@ import TopContainer from "components/TopContainer/TopContainer";
 import * as types from "constants/actionTypes";
 import { State } from "declarations/reducers";
 import Alertstripe from "nav-frontend-alertstriper";
+import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel'
 import { Knapp } from "nav-frontend-knapper";
 import { Input, Select } from "nav-frontend-skjema";
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from "react-redux";
 import * as svarpasedActions from "actions/svarpased";
 import styled from "styled-components";
@@ -47,20 +49,20 @@ const mapState = (state: State): any => ({
   saksnummer: state.svarpased.saksnummer,
   sed: state.svarpased.sed,
   svarPasedData: state.svarpased.svarPasedData,
-});
+})
 
 export interface SvarPaSedProps {
-  location: any;
+  location: any
 }
 
 const SvarPaSed: React.FC<SvarPaSedProps> = ({ location }: SvarPaSedProps): JSX.Element => {
-  const [_saksnummer, setSaksnummer] = useState<string | undefined>(undefined);
-  const [validation, setValidation] = useState<{ [k: string]: any }>({});
-  const [, setIsFnrValid] = useState<boolean>(false);
+  const [_saksnummer, setSaksnummer] = useState<string | undefined>(undefined)
+  const [validation, setValidation] = useState<{ [k: string]: any }>({})
+  const [, setIsFnrValid] = useState<boolean>(false)
   const [mounted, setMounted] = useState<boolean>(false)
   const [fnr, setFnr] = useState<string>('')
-  // const [_sed, setSed] = useState(undefined);
-  const dispatch = useDispatch();
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
 
   const {
     alertStatus,
@@ -72,14 +74,13 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({ location }: SvarPaSedProps): JSX.
     personRelatert,
     saksnummer,
     familierelasjonKodeverk,
-    sed,
     valgteArbeidsforhold,
     valgteFamilieRelasjoner,
     svarPasedData,
-  }: any = useSelector<State, any>(mapState);
+  }: any = useSelector<State, any>(mapState)
   const data: SvarpasedState = useSelector<State, SvarpasedState>(
     (state) => state.svarpased
-  );
+  )
 
   const onSaksnummerClick = () => {
     dispatch(svarpasedActions.getSaksnummer(_saksnummer));
@@ -220,57 +221,61 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({ location }: SvarPaSedProps): JSX.
           <VerticalSeparatorDiv/>
           {!_.isNil(person) && (
             <>
-              <Family
-                alertStatus={alertStatus}
-                alertMessage={alertMessage}
-                alertType={alertType}
-                familierelasjonKodeverk={familierelasjonKodeverk}
-                personRelatert={personRelatert}
-                person={person}
-                valgteFamilieRelasjoner={valgteFamilieRelasjoner}
-                onClickAddRelasjons={(value: any) => addTpsRelation(value)}
-                onClickRemoveRelasjons={(value: any) => deleteRelation(value)}
-                onResetPersonRelatert={() =>
-                  dispatch(svarpasedActions.resetPersonRelatert())
-                }
-                onAddFailure={() =>
-                  dispatch({ type: types.SVARPASED_TPSPERSON_ADD_FAILURE })
-                }
-                onAddSuccess={(e: any) => {
-                  dispatch(svarpasedActions.addFamilierelasjoner(e));
-                  dispatch({ type: types.SVARPASED_TPSPERSON_ADD_SUCCESS });
-                }}
-                onAlertClose={() => dispatch(clientClear())}
-                onSearchFnr={(sok) => {
-                  dispatch(svarpasedActions.resetPersonRelatert());
-                  dispatch(svarpasedActions.getPersonRelated(sok));
-                }}
-              />
-            <VerticalSeparatorDiv/>
-            <Arbeidsforhold
-              getArbeidsforhold={() => {
-                dispatch(svarpasedActions.getArbeidsforhold(person?.fnr));
-              }}
-              valgteArbeidsforhold={valgteArbeidsforhold}
-              arbeidsforhold={arbeidsforhold}
-              onArbeidsforholdClick={(item: any, checked: boolean) =>
-                dispatch(checked ?
-                  svarpasedActions.addArbeidsforhold(item) :
-                  svarpasedActions.removeArbeidsforhold(item))
-              }
-            />
-          </>
+              <Ekspanderbartpanel tittel={t('ui:label-familyRelationships')}>
+                <Family
+                  alertStatus={alertStatus}
+                  alertMessage={alertMessage}
+                  alertType={alertType}
+                  familierelasjonKodeverk={familierelasjonKodeverk}
+                  personRelatert={personRelatert}
+                  person={person}
+                  valgteFamilieRelasjoner={valgteFamilieRelasjoner}
+                  onClickAddRelasjons={(value: any) => addTpsRelation(value)}
+                  onClickRemoveRelasjons={(value: any) => deleteRelation(value)}
+                  onResetPersonRelatert={() =>
+                    dispatch(svarpasedActions.resetPersonRelatert())
+                  }
+                  onAddFailure={() =>
+                    dispatch({ type: types.SVARPASED_TPSPERSON_ADD_FAILURE })
+                  }
+                  onAddSuccess={(e: any) => {
+                    dispatch(svarpasedActions.addFamilierelasjoner(e));
+                    dispatch({ type: types.SVARPASED_TPSPERSON_ADD_SUCCESS });
+                  }}
+                  onAlertClose={() => dispatch(clientClear())}
+                  onSearchFnr={(sok) => {
+                    dispatch(svarpasedActions.resetPersonRelatert())
+                    dispatch(svarpasedActions.getPersonRelated(sok))
+                  }}
+                />
+              </Ekspanderbartpanel>
+              <VerticalSeparatorDiv/>
+              <Ekspanderbartpanel tittel={t('ui:label-arbeidsforhold')}>
+                <Arbeidsforhold
+                  getArbeidsforhold={() => {
+                    dispatch(svarpasedActions.getArbeidsforhold(person?.fnr));
+                  }}
+                  valgteArbeidsforhold={valgteArbeidsforhold}
+                  arbeidsforhold={arbeidsforhold}
+                  onArbeidsforholdClick={(item: any, checked: boolean) =>
+                    dispatch(checked ?
+                      svarpasedActions.addArbeidsforhold(item) :
+                      svarpasedActions.removeArbeidsforhold(item))
+                  }
+                />
+              </Ekspanderbartpanel>
+            </>
           )}
-
-          {JSON.stringify(saksnummer)}
-          {JSON.stringify(sed)}
-          {JSON.stringify(person)}
-          <Knapp onClick={() => sendData()}>Send Data</Knapp>
+          <VerticalSeparatorDiv/>
+          {person && (
+            <Knapp onClick={sendData}>
+              Send Data
+            </Knapp>
+          )}
           {!_.isNil(svarPasedData) && (
             <Alertstripe type="suksess">{svarPasedData.message}</Alertstripe>
           )}
         </Content>
-
         <Margin />
       </Container>
     </TopContainer>
