@@ -1,5 +1,6 @@
 import { clientClear } from "actions/alert";
 import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
+import Inntekt from 'components/Inntekt/Inntekt'
 import PersonSearch from "components/PersonSearch/PersonSearch";
 import { Container, Content, Margin, VerticalSeparatorDiv } from 'components/StyledComponents'
 import TopContainer from "components/TopContainer/TopContainer";
@@ -263,6 +264,10 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({ location }: SvarPaSedProps): JSX.
                       svarpasedActions.removeArbeidsforhold(item))
                   }
                 />
+              </Ekspanderbartpanel>
+              <VerticalSeparatorDiv/>
+              <Ekspanderbartpanel tittel={t('ui:label-inntekt')}>
+                <Inntekt/>
               </Ekspanderbartpanel>
             </>
           )}

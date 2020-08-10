@@ -62,8 +62,10 @@
   "label-familyRelationships" : "Familierelasjon(er)",
   "label-firstname": "Fornavn",
   "label-fnr-or-dnr": "Fødsels eller dnr",
+  "label-fraDato": "Fra dato",
   "label-gender" : "Kjønn",
   "label-highContrast": "Høy kontrast",
+  "label-inntekt": "Inntekt",
   "label-institusjon": "Mottaker institusjon",
   "label-journalpostID": "JournalpostID",
   "label-landkode": "Land",
@@ -79,6 +81,7 @@
   "label-sektor": "Fagområde",
   "label-startDate": "StartDato",
   "label-tema": "Velg behandlingstema",
+  "label-tilDato" : "Til dato",
   "label-hide-form": "Skjul Skjema",
   "label-show-form": "Vis Skjema",
 
