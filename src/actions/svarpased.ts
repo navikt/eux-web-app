@@ -121,6 +121,25 @@ export const removeArbeidsforhold: ActionCreator<ActionWithPayload> = (payload: 
   payload: payload
 })
 
+export const fetchInntekt: ActionCreator<ThunkResult<ActionWithPayload>> = (data : any): ThunkResult<ActionWithPayload> => {
+
+  return realCall({
+    url: sprintf(urls.API_SAK_INNTEKT_URL, {
+      fnr: data.fnr,
+      fraDato: data.fraDato,
+      tilDato: data.tilDato,
+      tema: data.tema
+    }),
+    method: 'GET',
+    type: {
+      request: types.SVARPASED_INNTEKT_GET_REQUEST,
+      success: types.SVARPASED_INNTEKT_GET_SUCCESS,
+      failure: types.SVARPASED_INNTEKT_GET_FAILURE
+    }
+  })
+}
+
+
 /*
 export const createSak: ActionCreator<ThunkResult<ActionWithPayload>> = (data: any): ThunkResult<ActionWithPayload> => {
 

@@ -45,6 +45,7 @@ const mapState = (state: State): any => ({
   valgteFamilieRelasjoner: state.svarpased.familierelasjoner,
   arbeidsforhold: state.svarpased.arbeidsforhold,
   valgteArbeidsforhold: state.svarpased.valgteArbeidsforhold,
+  inntekter: state.svarpased.inntekter,
 
   gettingSaksnummer: state.loading.gettingSaksnummer,
   saksnummer: state.svarpased.saksnummer,
@@ -71,6 +72,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({ location }: SvarPaSedProps): JSX.
     alertType,
     arbeidsforhold,
     gettingPerson,
+    inntekter,
     person,
     personRelatert,
     saksnummer,
@@ -267,7 +269,11 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({ location }: SvarPaSedProps): JSX.
               </Ekspanderbartpanel>
               <VerticalSeparatorDiv/>
               <Ekspanderbartpanel tittel={t('ui:label-inntekt')}>
-                <Inntekt/>
+                <Inntekt
+                  fnr={person.fnr}
+                  inntekter={inntekter}
+                  onInntektChange={() => {}}
+                />
               </Ekspanderbartpanel>
             </>
           )}

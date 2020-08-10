@@ -125,3 +125,12 @@ export interface FagSak {
 export type FagSaker = Array<FagSak>
 
 export type Validation = {[k: string]: string | null}
+
+export type Inntekter = Array<Inntekt>
+
+export interface Inntekt {
+  fraDato: string,
+  tilDato:  string,
+  beloep: number,
+  type: string
+}

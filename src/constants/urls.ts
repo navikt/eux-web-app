@@ -11,7 +11,7 @@ export const API_SAK_SEND_POST_URL = API_BASE_URL + "/rina/sak";
 // Registre
 export const API_SAK_ARBEIDSFORHOLD_URL = API_BASE_URL + "/arbeidsforhold/%(fnr)s";
 export const API_SAK_FAGSAKER_URL = API_BASE_URL + "/fagsaker/%(fnr)s/?sektor=%(sektor)s&tema=%(tema)s";
-export const API_SAK_INNTEKT_URL = API_BASE_URL + "/inntekt/?fnr=%(fnr)s&fraDato=%(fraDato)s&tema=%(tema)s&tilDato=%(tilDato)s";
+export const API_SAK_INNTEKT_URL = API_BASE_URL + "/inntekt/%(fnr)s/%(fraDato)s/%(tilDato)s/%(tema)s";
 export const API_SAK_PERSON_URL = API_BASE_URL + "/personer/?fnr=%(fnr)s";
 
 // Saksbehandler
