@@ -1,4 +1,4 @@
-import { Arbeidsforhold } from 'declarations/types'
+import { Arbeidsforhold, Inntekter } from 'declarations/types'
 import { ActionWithPayload } from "js-fetch-api";
 import { Action } from "redux";
 import * as types from "constants/actionTypes";
@@ -13,6 +13,7 @@ export interface SvarpasedState {
   sed: any;
   svarPasedData: any;
   valgteArbeidsforhold: Arbeidsforhold;
+  inntekter: Inntekter | undefined;
 }
 
 export const initialSvarpasedState: SvarpasedState = {
@@ -23,7 +24,8 @@ export const initialSvarpasedState: SvarpasedState = {
   personRelatert: undefined,
   familierelasjoner: [],
   svarPasedData: undefined,
-  valgteArbeidsforhold: []
+  valgteArbeidsforhold: [],
+  inntekter: undefined
 };
 
 const svarpasedReducer = (
@@ -125,6 +127,13 @@ const svarpasedReducer = (
           (i) => i.fnr !== (action as ActionWithPayload).payload.fnr
         ),
       };
+
+    case types.SVARPASED_INNTEKT_GET_SUCCESS:
+
+      return {
+        ...state,
+        inntekter: (action as ActionWithPayload).payload
+      }
 
     default:
       return state;
