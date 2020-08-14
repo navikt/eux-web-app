@@ -24,7 +24,6 @@ i18n
     react: {
       wait: true,
       bindI18n: 'languageChange loaded',
-      bindStore: 'added removed',
       nsMode: 'default'
     }
   }, (err) => {
