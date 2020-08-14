@@ -267,7 +267,10 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
             className='slideAnimate'
             validation={validation}
             resetAllValidation={resetAllValidation}
-            onFnrChange={() => setIsFnrValid(false)}
+            onFnrChange={() => {
+              setIsFnrValid(false)
+              dispatch(sakActions.resetPerson())
+            }}
             onPersonFound={() => setIsFnrValid(true)}
           />
           {person ? (
