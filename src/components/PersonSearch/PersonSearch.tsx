@@ -1,16 +1,16 @@
-import Alert, { AlertStatus } from 'components/Alert/Alert'
-import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
-import * as types from 'constants/actionTypes'
-import { Person } from 'declarations/types'
-import { ValidationPropType } from 'declarations/types.pt'
-import _ from 'lodash'
-import { Knapp } from 'nav-frontend-knapper'
-import { Input } from 'nav-frontend-skjema'
-import PT from 'prop-types'
-import React, { useCallback, useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
-import PersonCard from '../PersonCard/PersonCard'
+import Alert, { AlertStatus } from "components/Alert/Alert";
+import WaitingPanel from "components/WaitingPanel/WaitingPanel";
+import * as types from "constants/actionTypes";
+import { Person } from "declarations/types";
+import { ValidationPropType } from "declarations/types.pt";
+import _ from "lodash";
+import { Knapp } from "nav-frontend-knapper";
+import { Input } from "nav-frontend-skjema";
+import PT from "prop-types";
+import React, { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+import PersonCard from "../PersonCard/PersonCard";
 
 export interface PersonSearchProps {
   alertStatus: string | undefined;
@@ -21,7 +21,7 @@ export interface PersonSearchProps {
   gettingPerson: boolean;
   onAlertClose: () => void;
   onFnrChange?: () => void;
-  onPersonFound? : (person: Person) => void;
+  onPersonFound?: (person: Person) => void;
   onSearchPerformed: (fnr: any) => void;
   onPersonRemoved: () => void;
   person?: Person;
@@ -34,98 +34,116 @@ const AlertstripeDiv = styled.div`
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
   width: 50%;
-`
+`;
 const PersonSearchDiv = styled.div`
   margin-bottom: 2em;
-`
+`;
 const PersonSearchPanel = styled.div`
   display: flex;
   flex-direction: row;
-`
+`;
 const PersonSearchInput = styled(Input)`
   min-width: 24.5em;
-`
+`;
 const Button = styled(Knapp)`
   display: flex;
   flex: 0;
   height: 2.4em;
   align-self: flex-start;
   margin: 1.9em 0 0 1em;
- `
+`;
 
 const PersonSearch: React.FC<PersonSearchProps> = ({
-  alertStatus, alertMessage, alertType, className, initialFnr, gettingPerson,
-  onAlertClose, onFnrChange, onPersonFound, onPersonRemoved, onSearchPerformed, person,
-  resetAllValidation, validation
+  alertStatus,
+  alertMessage,
+  alertType,
+  className,
+  initialFnr,
+  gettingPerson,
+  onAlertClose,
+  onFnrChange,
+  onPersonFound,
+  onPersonRemoved,
+  onSearchPerformed,
+  person,
+  resetAllValidation,
+  validation,
 }: PersonSearchProps): JSX.Element => {
-  const { t } = useTranslation()
-  const [_fnr, setFnr] = useState<string | undefined>(initialFnr)
-  const [_person, setPerson] = useState<Person | undefined>(undefined)
-  const [localValidation, setLocalValidation] = useState<string |undefined>(undefined)
+  const { t } = useTranslation();
+  const [_fnr, setFnr] = useState<string | undefined>(initialFnr);
+  const [_person, setPerson] = useState<Person | undefined>(undefined);
+  const [localValidation, setLocalValidation] = useState<string | undefined>(
+    undefined
+  );
 
   const isPersonValid = useCallback(
-    (person: Person) => (person?.fornavn?.length !== undefined && person?.fnr !== undefined)
-    , []
-  )
+    (person: Person) =>
+      person?.fornavn?.length !== undefined && person?.fnr !== undefined,
+    []
+  );
 
   useEffect(() => {
     if (person && !_person && isPersonValid(person)) {
-      setPerson(person)
+      setPerson(person);
       if (_.isFunction(onPersonFound)) {
-        onPersonFound(person)
+        onPersonFound(person);
       }
     }
-  }, [person, _person, isPersonValid, onPersonFound])
+  }, [person, _person, isPersonValid, onPersonFound]);
 
   const sokEtterPerson = (): void => {
-    const fnrPattern = /^[0-9]{11}$/
+    const fnrPattern = /^[0-9]{11}$/;
     if (_fnr && !fnrPattern.test(_fnr)) {
-      setLocalValidation(t('ui:validation-invalidFnr'))
-      return
+      setLocalValidation(t("ui:validation-invalidFnr"));
+      return;
     }
-    setLocalValidation(undefined)
-    setPerson(undefined)
+    setLocalValidation(undefined);
+    setPerson(undefined);
     if (_.isFunction(onSearchPerformed)) {
-      onSearchPerformed(_fnr)
+      onSearchPerformed(_fnr);
     }
-  }
+  };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setLocalValidation(undefined)
-    resetAllValidation()
+    setLocalValidation(undefined);
+    resetAllValidation();
     if (_.isFunction(onFnrChange)) {
-      onFnrChange()
+      onFnrChange();
     }
-    setFnr(e.target.value.trim())
-  }
+    setFnr(e.target.value.trim());
+  };
 
   const onRemovePerson = (): void => {
-    setLocalValidation(undefined)
-    resetAllValidation()
-    setPerson(undefined)
+    setLocalValidation(undefined);
+    resetAllValidation();
+    setPerson(undefined);
     if (_.isFunction(onPersonRemoved)) {
-      onPersonRemoved()
+      onPersonRemoved();
     }
-  }
+  };
 
   return (
     <PersonSearchDiv>
       <PersonSearchPanel>
         <PersonSearchInput
-          data-testid='personsok__input-id'
-          label={t('ui:form-searchUser')}
-          value={_fnr || ''}
+          data-testid="personsok__input-id"
+          label={t("ui:form-searchUser")}
+          value={_fnr || ""}
           onChange={onChange}
           feil={validation.fnr || localValidation}
         />
         <Button onClick={sokEtterPerson} disabled={gettingPerson}>
-          {gettingPerson ? <WaitingPanel size='S' message={t('ui:form-searching')} oneLine /> : t('ui:form-search')}
+          {gettingPerson ? (
+            <WaitingPanel size="S" message={t("ui:form-searching")} oneLine />
+          ) : (
+            t("ui:form-search")
+          )}
         </Button>
       </PersonSearchPanel>
       {alertMessage && alertType === types.SAK_PERSON_GET_FAILURE && (
         <AlertstripeDiv>
           <Alert
-            type='client'
+            type="client"
             fixed={false}
             message={t(alertMessage)}
             status={alertStatus as AlertStatus}
@@ -133,17 +151,23 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
           />
         </AlertstripeDiv>
       )}
-      {person && isPersonValid(person) && <PersonCard className='neutral' person={person} onRemoveClick={onRemovePerson} />}
+      {person && isPersonValid(person) && (
+        <PersonCard
+          className="neutral"
+          person={person}
+          onRemoveClick={onRemovePerson}
+        />
+      )}
     </PersonSearchDiv>
-  )
-}
+  );
+};
 
 PersonSearch.propTypes = {
   className: PT.string,
   onFnrChange: PT.func,
   onPersonFound: PT.func,
   resetAllValidation: PT.func.isRequired,
-  validation: ValidationPropType.isRequired
-}
+  validation: ValidationPropType.isRequired,
+};
 
-export default PersonSearch
+export default PersonSearch;
