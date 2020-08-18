@@ -269,7 +269,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({ history } : OpprettSakProps): J
             resetAllValidation={resetAllValidation}
             onFnrChange={() => {
               setIsFnrValid(false)
-              dispatch(sakActions.resetPerson())
+              dispatch(appActions.cleanData())
             }}
             onPersonFound={() => setIsFnrValid(true)}
           />
