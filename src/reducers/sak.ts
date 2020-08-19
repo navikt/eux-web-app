@@ -65,6 +65,12 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
         fagsaker: null
       }
 
+    case types.SAK_FAGSAKER_RESET:
+      return {
+        ...state,
+        fagsaker: undefined
+      }
+
     case types.SAK_INSTITUSJONER_GET_SUCCESS:
       return {
         ...state,
