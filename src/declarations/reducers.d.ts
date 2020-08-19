@@ -3,6 +3,7 @@ import { AppState } from 'reducers/app'
 import { FormState } from 'reducers/form'
 import { LoadingState } from 'reducers/loading'
 import { SakState } from 'reducers/sak'
+import { SvarpasedState } from 'reducers/svarpased'
 import { UiState } from 'reducers/ui'
 import { VedleggState } from 'reducers/vedlegg'
 
@@ -13,5 +14,6 @@ export interface State {
   loading: LoadingState,
   sak: SakState,
   ui: UiState,
-  vedlegg: VedleggState
+  vedlegg: VedleggState,
+  svarpased: SvarpasedState
 }

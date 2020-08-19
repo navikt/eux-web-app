@@ -62,8 +62,10 @@
   "label-familyRelationships" : "Familierelasjon(er)",
   "label-firstname": "Fornavn",
   "label-fnr-or-dnr": "Fødsels eller dnr",
+  "label-fraDato": "Fra dato",
   "label-gender" : "Kjønn",
   "label-highContrast": "Høy kontrast",
+  "label-inntekt": "Inntekt",
   "label-institusjon": "Mottaker institusjon",
   "label-journalpostID": "JournalpostID",
   "label-landkode": "Land",
@@ -79,11 +81,13 @@
   "label-sektor": "Fagområde",
   "label-startDate": "StartDato",
   "label-tema": "Velg behandlingstema",
+  "label-tilDato" : "Til dato",
   "label-hide-form": "Skjul Skjema",
   "label-show-form": "Vis Skjema",
 
   "menu-createCase" : "Opprett sak",
   "menu-addAttachment": "Legg ved vedlegg til SED",
+  "menu-svarpased": "Svar på SED",
 
   "modal-abort-contentLabel": "Bekreft navigasjon tilbake til forsiden",
   "modal-abort-title": " Er du sikker på at du vil avbryte? ",
@@ -97,6 +101,7 @@
   "session-expire-title" : "Du vil snart bli logget ut",
   "session-expire-text" : "Husk å lagre opplysningene. Hvis du ønsker å fortsette, må du logge inn igjen.  Du blir logget ut om {{minutes}} minutter",
   "ok-got-it" : "Ok, stemmer det",
+  "log-me-again": "Logg på nytt",
 
   "title-newcase": "Opprett Sak",
   "title-vedlegg": "Vedleggsinformasjon",

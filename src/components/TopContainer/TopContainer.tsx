@@ -2,19 +2,20 @@ import { clientClear, clientError } from 'actions/alert'
 import { closeModal } from 'actions/ui'
 import classNames from 'classnames'
 import Header from 'components/Header/Header'
+import Modal from 'components/Modal/Modal'
 import SessionMonitor from 'components/SessionMonitor/SessionMonitor'
 import Version from 'components/Version/Version'
 import { State } from 'declarations/reducers'
-import Ui from 'eessi-pensjon-ui'
-import { ModalContent } from 'eessi-pensjon-ui/dist/declarations/components'
+import { ModalContent } from 'declarations/components'
 import _ from 'lodash'
 import PT from 'prop-types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import styled from 'styled-components'
 import useErrorBoundary from 'use-error-boundary'
+import Alert from 'components/Alert/Alert'
 import Error from 'pages/Error'
-import './TopContainer.css'
 
 export interface TopContainerProps {
   className?: string;
@@ -39,6 +40,12 @@ const mapState = (state: State): TopContainerSelector => ({
   modal: state.ui.modal
 })
 
+const Main = styled.main`
+  padding: 0px;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+`
 export const TopContainer: React.FC<TopContainerProps> = ({
   className, children, fluid = true
 }: TopContainerProps): JSX.Element => {
@@ -71,23 +78,29 @@ export const TopContainer: React.FC<TopContainerProps> = ({
     <ErrorBoundary
       renderError={({ error }: any) => <Error error={error} />}
     >
-      <Header className={classNames({ highContrast: highContrast })} />
-      <Ui.Alert
+      <Header
+        className={classNames({ highContrast: highContrast })}
+      />
+      <Alert
         type='server'
         message={getServerErrorMessage()}
         error={error}
         onClose={onClear}
       />
-      {modal !== undefined ? (
-        <Ui.Modal
+      {modal !== undefined && (
+        <Modal
           appElement={(document.getElementById('main') || document.body)}
           modal={modal}
           onModalClose={handleModalClose}
         />
-      ) : null}
-      <main id='main' role='main' className={classNames(className, '_container', 'p-0', { 'container-fluid': fluid, highContrast: highContrast })}>
+      )}
+      <Main
+        id='main'
+        role='main'
+        className={classNames(className, { highContrast: highContrast })}
+      >
         {children}
-      </main>
+      </Main>
       <SessionMonitor
         expirationTime={expirationTime!}
       />

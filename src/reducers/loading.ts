@@ -1,6 +1,6 @@
-import * as types from 'constants/actionTypes'
-import _ from 'lodash'
-import { Action } from 'redux'
+import * as types from "constants/actionTypes";
+import _ from "lodash";
+import { Action } from "redux";
 
 export interface LoadingState {
   [k: string]: boolean;
@@ -16,12 +16,16 @@ export const initialLoadingState: LoadingState = {
   gettingSaksbehandler: false,
   gettingServerinfo: false,
   sendingVedlegg: false,
-  sendingSak: false
-}
+  sendingSak: false,
+  gettingSaksnummer: false,
+};
 
-const loadingReducer = (state: LoadingState = initialLoadingState, action: Action) => {
-  if (_.endsWith(action.type, '/ERROR')) {
-    return initialLoadingState
+const loadingReducer = (
+  state: LoadingState = initialLoadingState,
+  action: Action
+) => {
+  if (_.endsWith(action.type, "/ERROR")) {
+    return initialLoadingState;
   }
 
   switch (action.type) {
@@ -29,139 +33,165 @@ const loadingReducer = (state: LoadingState = initialLoadingState, action: Actio
     case types.SAK_ARBEIDSFORHOLD_GET_REQUEST:
       return {
         ...state,
-        gettingArbeidsforhold: true
-      }
+        gettingArbeidsforhold: true,
+      };
 
     case types.SAK_ARBEIDSFORHOLD_GET_SUCCESS:
     case types.SAK_ARBEIDSFORHOLD_GET_FAILURE:
       return {
         ...state,
-        gettingArbeidsforhold: false
-      }
+        gettingArbeidsforhold: false,
+      };
 
     case types.VEDLEGG_DOKUMENT_GET_REQUEST:
       return {
         ...state,
-        gettingDokument: true
-      }
+        gettingDokument: true,
+      };
 
     case types.VEDLEGG_DOKUMENT_GET_SUCCESS:
     case types.VEDLEGG_DOKUMENT_GET_FAILURE:
       return {
         ...state,
-        gettingDokument: false
-      }
+        gettingDokument: false,
+      };
 
     case types.SAK_FAGSAKER_GET_REQUEST:
       return {
         ...state,
-        gettingFagsaker: true
-      }
+        gettingFagsaker: true,
+      };
 
     case types.SAK_FAGSAKER_GET_SUCCESS:
     case types.SAK_FAGSAKER_GET_FAILURE:
       return {
         ...state,
-        gettingFagsaker: false
-      }
+        gettingFagsaker: false,
+      };
 
     case types.SAK_INSTITUSJONER_GET_REQUEST:
       return {
         ...state,
-        gettingInstitusjoner: true
-      }
+        gettingInstitusjoner: true,
+      };
 
     case types.SAK_INSTITUSJONER_GET_SUCCESS:
     case types.SAK_INSTITUSJONER_GET_FAILURE:
       return {
         ...state,
-        gettingInstitusjoner: false
-      }
+        gettingInstitusjoner: false,
+      };
 
     case types.SAK_LANDKODER_GET_REQUEST:
       return {
         ...state,
-        gettingLandkoder: true
-      }
+        gettingLandkoder: true,
+      };
 
     case types.SAK_LANDKODER_GET_SUCCESS:
     case types.SAK_LANDKODER_GET_FAILURE:
       return {
         ...state,
-        gettingLandkoder: false
-      }
+        gettingLandkoder: false,
+      };
 
     case types.SAK_PERSON_GET_REQUEST:
       return {
         ...state,
-        gettingPerson: true
-      }
+        gettingPerson: true,
+      };
 
     case types.SAK_PERSON_GET_SUCCESS:
     case types.SAK_PERSON_GET_FAILURE:
       return {
         ...state,
-        gettingPerson: false
-      }
+        gettingPerson: false,
+      };
 
     case types.SAK_SEND_POST_REQUEST:
       return {
         ...state,
-        sendingSak: true
-      }
+        sendingSak: true,
+      };
 
     case types.SAK_SEND_POST_SUCCESS:
     case types.SAK_SEND_POST_FAILURE:
       return {
         ...state,
-        sendingSak: false
-      }
+        sendingSak: false,
+      };
+
+    case types.SVARPASED_SAKSNUMMER_GET_REQUEST:
+      return {
+        ...state,
+        sendingSvarPaSedData: true,
+      };
+
+    case types.SVARPASED_SAKSNUMMER_GET_SUCCESS:
+    case types.SVARPASED_SAKSNUMMER_GET_FAILURE:
+      return {
+        ...state,
+        gettingSaksnummer: false,
+      };
+
+    case types.SVARPASED_SENDSVARPASEDDATA_POST_REQUEST:
+      return {
+        ...state,
+        gettingSaksnummer: true,
+      };
+
+    case types.SVARPASED_SENDSVARPASEDDATA_POST_SUCCESS:
+    case types.SVARPASED_SENDSVARPASEDDATA_POST_FAILURE:
+      return {
+        ...state,
+        gettingSaksnummer: false,
+      };
 
     case types.VEDLEGG_POST_REQUEST:
       return {
         ...state,
-        sendingVedlegg: true
-      }
+        sendingVedlegg: true,
+      };
 
     case types.VEDLEGG_POST_SUCCESS:
     case types.VEDLEGG_POST_FAILURE:
       return {
         ...state,
-        sendingVedlegg: false
-      }
+        sendingVedlegg: false,
+      };
 
     case types.APP_SAKSBEHANDLER_GET_REQUEST:
       return {
         ...state,
-        gettingSaksbehandler: true
-      }
+        gettingSaksbehandler: true,
+      };
 
     case types.APP_SAKSBEHANDLER_GET_SUCCESS:
     case types.APP_SAKSBEHANDLER_GET_FAILURE:
       return {
         ...state,
-        gettingSaksbehandler: false
-      }
+        gettingSaksbehandler: false,
+      };
 
     case types.APP_SERVERINFO_GET_REQUEST:
       return {
         ...state,
-        gettingServerinfo: true
-      }
+        gettingServerinfo: true,
+      };
 
     case types.APP_SERVERINFO_GET_SUCCESS:
     case types.APP_SERVERINFO_GET_FAILURE:
       return {
         ...state,
-        gettingServerinfo: false
-      }
+        gettingServerinfo: false,
+      };
 
     case types.APP_CLEAN_DATA:
-      return initialLoadingState
+      return initialLoadingState;
 
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default loadingReducer
+export default loadingReducer;

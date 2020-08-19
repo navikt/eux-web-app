@@ -1,14 +1,21 @@
-import classNames from 'classnames'
+import kvinne from 'assets/icons/icon-kvinne.png'
+import mann from 'assets/icons/icon-mann.png'
+import ukjent from 'assets/icons/icon-ukjent.png'
+import Tilsette from 'assets/icons/Tilsette'
+import Trashcan from 'assets/icons/Trashcan'
+import { HorizontalSeparatorDiv } from 'components/StyledComponents'
 import { FamilieRelasjon, Kodeverk, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
-import Ui from 'eessi-pensjon-ui'
 import _ from 'lodash'
+import { Knapp } from 'nav-frontend-knapper'
+import Panel from 'nav-frontend-paneler'
+import { Select } from 'nav-frontend-skjema'
+import { Undertittel } from 'nav-frontend-typografi'
 import PT from 'prop-types'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
 import { formatterDatoTilNorsk } from 'utils/dato'
-
-import './PersonCard.css'
 
 export interface PersonCardProps {
   className?: string,
@@ -19,6 +26,61 @@ export interface PersonCardProps {
   rolleList?: Array<Kodeverk>;
 }
 
+const PersonCardDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`
+const PersonCardPanel = styled(Panel)`
+  border: 1px solid lightgray;
+  background: transparent;
+  margin-top: 1.5rem;
+  max-width: 800px;
+  min-width: 400px;
+  padding: 1rem;
+  border-radius: 5px;
+
+  &.personNotSelected  {
+    border: 3px solid red;
+  }
+  &.personSelected  {
+    border: 3px solid green;
+  }
+  &.neutral {
+    background: white;
+  }
+`
+const Description = styled.div`
+  display: flex;
+`
+const Undertitle = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+const RemoveButton = styled(Knapp)`
+  display: flex;
+  align-self: center;
+  justify-self: flex-end;
+`
+const ButtonLabel = styled.div`
+  display: flex;
+  align-self: center;
+`
+/* .knapp--disabled {
+    path {
+      stroke: @white !important;
+    }
+  }
+
+  .familierelasjoner__knapp {
+
+    &:hover:not(.knapp--disabled) {
+      .familierelasjoner__knapp__ikon path {
+        stroke: @white !important;
+      }
+    }
+  } */
 const PersonCard: React.FC<PersonCardProps> = ({
   className, familierelasjonKodeverk, onAddClick, onRemoveClick, person, rolleList
 }: PersonCardProps): JSX.Element => {
@@ -28,10 +90,13 @@ const PersonCard: React.FC<PersonCardProps> = ({
   const { t } = useTranslation()
 
   let kind: string = 'nav-unknown-icon'
+  let src = ukjent
   if (kjoenn === 'K') {
     kind = 'nav-woman-icon'
+    src = kvinne
   } else if (kjoenn === 'M') {
     kind = 'nav-man-icon'
+    src = mann
   }
 
   let rolleTerm
@@ -78,60 +143,68 @@ const PersonCard: React.FC<PersonCardProps> = ({
   }
 
   return (
-    <div className={classNames(className, 'c-personCard')}>
-      <Ui.Nav.Panel border style={{ background: 'transparent' }} className='mt-4'>
-        <div className='personcard'>
-          <div className='personcard__desc'>
-            <Ui.Icons className='mr-3' kind={kind} size={40} />
-            <div className='panelheader__tittel'>
-              <Ui.Nav.Undertittel className='panelheader__tittel__hoved'>
-                {fornavn}
-                {' '}
-                {etternavn}
-                {(person as FamilieRelasjon).rolle ? ' - ' + rolleTerm : ''}
-              </Ui.Nav.Undertittel>
-              <div className='panelheader__undertittel'>
-                <div>{t('ui:form-fnr') + ' : ' + fnr}</div>
-                <div>{t('ui:form-birthdate') + ': ' + formatterDatoTilNorsk(fdato)}</div>
-              </div>
-            </div>
+    <PersonCardPanel className={className}>
+      <PersonCardDiv>
+        <Description>
+          <img
+            alt={kind}
+            width={50}
+            height={50}
+            src={src}
+          />
+          <HorizontalSeparatorDiv />
+          <div data-testid='panelheader__tittel'>
+            <Undertittel data-testid='panelheader__tittel__hoved'>
+              {fornavn}
+              {' '}
+              {etternavn}
+              {(person as FamilieRelasjon).rolle ? ' - ' + rolleTerm : ''}
+            </Undertittel>
+            <Undertitle>
+              <div>{t('ui:form-fnr') + ' : ' + fnr}</div>
+              <div>{t('ui:form-birthdate') + ': ' + formatterDatoTilNorsk(fdato)}</div>
+            </Undertitle>
           </div>
-          {rolleList !== undefined ? (
-            <Ui.Nav.Select
-              id='id-familirelasjon-rolle'
-              label={t('ui:label-familyRelationship')}
-              className='familierelasjoner__input'
-              value={(person as FamilieRelasjon).rolle}
-              onChange={updateFamilyRelation}
-            >
-              <option value=''>{t('ui:form-choose')}</option>
-              {rolleList ? rolleList.map((element: Kodeverk) => (
-                <option value={element.kode} key={element.kode}>{element.term}</option>)
-              ) : null}
-            </Ui.Nav.Select>
-          ) : null}
-          {_.isFunction(onRemoveClick) ? (
-            <Ui.Nav.Knapp
-              className='familierelasjoner__knapp familierelasjoner__knapp--slett'
-              onClick={() => _onRemoveClick(person)}
-            >
-              <Ui.Icons kind='trashcan' color='#0067C5' size='20' className='familierelasjoner__knapp__ikon mr-3' />
-              <div className='familierelasjoner__knapp__label'>{t('ui:form-remove')}</div>
-            </Ui.Nav.Knapp>
-          ) : null}
-          {_.isFunction(onAddClick) ? (
-            <Ui.Nav.Knapp
-              className='familierelasjoner__knapp familierelasjoner__knapp--legg-til'
-              disabled={rolleList !== undefined && !rolle}
-              onClick={() => _onAddClick(person)}
-            >
-              <Ui.Icons kind='tilsette' size='20' className='familierelasjoner__knapp__ikon mr-3' />
-              <div className='familierelasjoner__knapp__label'>{t('ui:form-add')}</div>
-            </Ui.Nav.Knapp>
-          ) : null}
-        </div>
-      </Ui.Nav.Panel>
-    </div>
+        </Description>
+        {rolleList !== undefined && (
+          <Select
+            label={t('ui:label-familyRelationship')}
+            date-testid='familierelasjoner__select-familirelasjon-rolle'
+            value={(person as FamilieRelasjon).rolle}
+            onChange={updateFamilyRelation}
+          >
+            <option value=''>{t('ui:form-choose')}</option>
+            {rolleList && rolleList.map((element: Kodeverk) => (
+              <option value={element.kode} key={element.kode}>{element.term}</option>)
+            )}
+          </Select>
+        )}
+        {_.isFunction(onRemoveClick) && (
+          <RemoveButton
+            onClick={() => _onRemoveClick(person)}
+          >
+            <Trashcan color='#0067C5' width='20' height='20' />
+            <HorizontalSeparatorDiv />
+            <ButtonLabel>
+              {t('ui:form-remove')}
+            </ButtonLabel>
+          </RemoveButton>
+        )}
+        {_.isFunction(onAddClick) && (
+          <Knapp
+            data-testid='familierelasjoner__knapp--legg-til'
+            disabled={rolleList !== undefined && !rolle}
+            onClick={() => _onAddClick(person)}
+          >
+            <Tilsette width='20' />
+            <HorizontalSeparatorDiv />
+            <ButtonLabel>
+              {t('ui:form-add')}
+            </ButtonLabel>
+          </Knapp>
+        )}
+      </PersonCardDiv>
+    </PersonCardPanel>
   )
 }
 

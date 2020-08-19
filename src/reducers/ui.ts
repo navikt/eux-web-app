@@ -1,6 +1,6 @@
 import * as types from 'constants/actionTypes'
-import { ModalContent } from 'eessi-pensjon-ui/dist/declarations/components'
-import { ActionWithPayload } from 'eessi-pensjon-ui/dist/declarations/types'
+import { ModalContent } from 'declarations/components'
+import { ActionWithPayload } from 'js-fetch-api'
 import { Action } from 'redux'
 
 export interface UiState {
