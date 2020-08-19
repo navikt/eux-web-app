@@ -1,7 +1,7 @@
 import { closeModal, openModal } from 'actions/ui'
 import { logMeAgain } from 'actions/app'
 import PT from 'prop-types'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
@@ -41,6 +41,10 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
+  const logMe = useCallback(() => {
+    dispatch(logMeAgain())
+  },[dispatch])
+
   useEffect(() => {
     const getDiff = (expirationTime: any, now: any) => {
       const _now: Date = now || new Date()
@@ -70,7 +74,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
             }, {
               main: false,
               text: t('ui:log-me-again'),
-              onClick: dispatch(logMeAgain)
+              onClick: logMe
             }]
           }))
         }
@@ -83,7 +87,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       checkTimeout()
       setMounted(true)
     }
-  }, [checkInterval, dispatch, expirationTime, millisecondsForWarning, mounted, now, sessionExpiredReload, t])
+  }, [checkInterval, dispatch, expirationTime, logMe, millisecondsForWarning, mounted, now, sessionExpiredReload, t])
 
   return (
     <SessionMonitorDiv>
