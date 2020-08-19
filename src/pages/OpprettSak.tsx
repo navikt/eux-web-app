@@ -330,7 +330,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
   const onTemaChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     resetValidation(["tema", "saksId"]);
     dispatch(formActions.set("tema", event.target.value));
-    dispatch(formActions.set("fagsaker", undefined));
+    dispatch(formActions.set("saksId", ""));
   };
 
   const onViewFagsakerClick = (): void => {
