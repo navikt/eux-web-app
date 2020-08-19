@@ -87,7 +87,7 @@
 
   "menu-createCase" : "Opprett sak",
   "menu-addAttachment": "Legg ved vedlegg til SED",
-  "menu-svarpased": "Svar på SED",
+  "menu-svarpased": "Svar på SED (ikke klar til prod)",
 
   "modal-abort-contentLabel": "Bekreft navigasjon tilbake til forsiden",
   "modal-abort-title": " Er du sikker på at du vil avbryte? ",
