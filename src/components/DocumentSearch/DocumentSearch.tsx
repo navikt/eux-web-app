@@ -1,16 +1,18 @@
 import * as vedleggActions from 'actions/vedlegg'
-import 'components/DocumentSearch/DocumentSearch.css'
 import classNames from 'classnames'
+import { VerticalSeparatorDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Dokument, Validation } from 'declarations/types'
 import { ValidationPropType } from 'declarations/types.pt'
-import Ui from 'eessi-pensjon-ui'
 import _ from 'lodash'
 import moment from 'moment'
+import { Knapp } from 'nav-frontend-knapper'
+import { Input, Select } from 'nav-frontend-skjema'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import styled from 'styled-components'
 
 export interface DocumentSearchSelector {
   gettingDokument: boolean;
@@ -33,6 +35,19 @@ const mapState = (state: State): DocumentSearchSelector => ({
   rinasaksnummer: state.vedlegg.rinasaksnummer,
   rinadokumentID: state.vedlegg.rinadokumentID
 })
+
+const Form = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  &.feil {
+    align-items: center !important;
+  }
+`
+const Rinasaknummer = styled(Input)`
+  flex: 2;
+  margin-right: 1rem;
+`
 
 const DocumentSearch: React.FC<DocumentSearchProps> = ({
   className, onDocumentFound, onRinasaksnummerChanged, resetValidation, validation
@@ -67,7 +82,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
     dispatch(vedleggActions.set('rinasaksnummer', e.target.value))
   }
 
-  const onRinadokumentIDChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const onRinadokumentIDChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     resetValidation('rinadokumentID')
     dispatch(vedleggActions.set('rinadokumentID', e.target.value))
   }
@@ -75,42 +90,43 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
   const yyyMMdd = (dato: string): string => moment(dato).format('YYYY-MM-DD')
 
   return (
-    <div className={classNames(className, 'dokumentsok')}>
-      <div className={classNames('dokumentsok__form', { feil: !!validation.rinadokumentID })}>
-        <Ui.Nav.Input
+    <div className={className}>
+      <Form className={classNames({ feil: !!validation.rinadokumentID })}>
+        <Rinasaknummer
           label={t('ui:label-rinasaksnummer')}
-          id='dokumentsok__form__input-id'
-          className='dokumentsok__form__input'
+          data-testid='dokumentsok__form__input-id'
           value={rinasaksnummer}
           onChange={onRinaSaksnummerChange}
           feil={validation.rinasaksnummer}
         />
-        <Ui.Nav.Knapp
-          className='dokumentsok__knapp'
+        <Knapp
           onClick={sokEtterDokument}
           spinner={gettingDokument}
         >
           {t('ui:form-search')}
-        </Ui.Nav.Knapp>
-      </div>
-      <div className='dokumentsok__card mt-4 mb-4 slideAnimate'>
-        <Ui.Nav.Select
-          id='dokumentsok__card-select-id'
-          className='dokumentsok__card-select'
+        </Knapp>
+      </Form>
+      <VerticalSeparatorDiv />
+      <div data-testid='dokumentsok__card slideAnimate'>
+        <Select
+          data-testid='dokumentsok__card-select-id'
           label={t('ui:label-rinadokumentID')}
           onChange={onRinadokumentIDChange}
           value={rinadokumentID}
           feil={validation.rinadokumentID}
           disabled={!_dokument}
         >
-          <option value=''>{t('ui:form-choose')}</option>
+          <option value=''>
+            {t('ui:form-choose')}
+          </option>
           {dokument?.map((element: Dokument) => (
             <option value={element.rinadokumentID} key={element.rinadokumentID}>
               {element.kode + (element.opprettetdato ? ' (' + yyyMMdd(element.opprettetdato) + ')' : '')}
             </option>)
           )}
-        </Ui.Nav.Select>
+        </Select>
       </div>
+      <VerticalSeparatorDiv />
       {dokument === null || dokument?.length === 0 ? <p>{t('ui:error-noDocumentFound')}</p> : null}
     </div>
   )

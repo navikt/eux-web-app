@@ -2,8 +2,8 @@ import * as EKV from 'eessi-kodeverk'
 import * as sakActions from 'actions/sak'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { realCall as originalCall } from 'eessi-pensjon-ui/dist/api'
-jest.mock('eessi-pensjon-ui/dist/api', () => ({
+import { realCall as originalCall } from 'js-fetch-api'
+jest.mock('js-fetch-api', () => ({
   realCall: jest.fn()
 }))
 const realCall: jest.Mock = originalCall as jest.Mock<typeof originalCall>

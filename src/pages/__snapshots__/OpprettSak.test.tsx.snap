@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages/OpprettSak/OpprettSak Renders 1`] = `
+exports['pages/OpprettSak/OpprettSak Renders 1'] = `
 <OpprettSak
   history={Object {}}
 >
@@ -291,4 +291,4 @@ exports[`pages/OpprettSak/OpprettSak Renders 1`] = `
     </UseErrorBoundaryWrapper>
   </TopContainer>
 </OpprettSak>
-`;
+`

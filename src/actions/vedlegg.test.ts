@@ -2,9 +2,9 @@ import * as vedleggActions from 'actions/vedlegg'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { VedleggPayload } from 'declarations/types'
-import { realCall as originalCall } from 'eessi-pensjon-ui/dist/api'
+import { realCall as originalCall } from 'js-fetch-api'
 
-jest.mock('eessi-pensjon-ui/dist/api', () => ({
+jest.mock('js-fetch-api', () => ({
   realCall: jest.fn()
 }))
 const realCall: jest.Mock = originalCall as jest.Mock<typeof originalCall>

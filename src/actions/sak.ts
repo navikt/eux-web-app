@@ -1,14 +1,13 @@
 import * as EKV from 'eessi-kodeverk'
-import { ActionWithPayload, ThunkResult } from 'eessi-pensjon-ui/dist/declarations/types'
+import { realCall, ActionWithPayload, ThunkResult } from 'js-fetch-api'
 import moment from 'moment'
 import { Action, ActionCreator } from 'redux'
-import * as api from 'eessi-pensjon-ui/dist/api'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 const sprintf = require('sprintf-js').sprintf
 
 export const getArbeidsforhold: ActionCreator<ThunkResult<ActionWithPayload>> = (fnr: string): ThunkResult<ActionWithPayload> => {
-  return api.realCall({
+  return realCall({
     url: sprintf(urls.API_SAK_ARBEIDSFORHOLD_URL, { fnr: fnr }),
     type: {
       request: types.SAK_ARBEIDSFORHOLD_GET_REQUEST,
@@ -19,7 +18,7 @@ export const getArbeidsforhold: ActionCreator<ThunkResult<ActionWithPayload>> = 
 }
 
 export const getFagsaker: ActionCreator<ThunkResult<ActionWithPayload>> = (fnr: string, sektor: string, tema: string): ThunkResult<ActionWithPayload> => {
-  return api.realCall({
+  return realCall({
     url: sprintf(urls.API_SAK_FAGSAKER_URL, { fnr: fnr, sektor: sektor, tema: tema }),
     type: {
       request: types.SAK_FAGSAKER_GET_REQUEST,
@@ -30,7 +29,7 @@ export const getFagsaker: ActionCreator<ThunkResult<ActionWithPayload>> = (fnr: 
 }
 
 export const getInstitusjoner: ActionCreator<ThunkResult<ActionWithPayload>> = (buctype: string, landkode: string): ThunkResult<ActionWithPayload> => {
-  return api.realCall({
+  return realCall({
     url: sprintf(urls.API_SAK_INSTITUSJONER_URL, { buctype: buctype, landkode: landkode }),
     type: {
       request: types.SAK_INSTITUSJONER_GET_REQUEST,
@@ -41,7 +40,7 @@ export const getInstitusjoner: ActionCreator<ThunkResult<ActionWithPayload>> = (
 }
 
 export const getLandkoder: ActionCreator<ThunkResult<ActionWithPayload>> = (buctype: string): ThunkResult<ActionWithPayload> => {
-  return api.realCall({
+  return realCall({
     url: sprintf(urls.API_SAK_LANDKODER_URL, { buctype: buctype }),
     type: {
       request: types.SAK_LANDKODER_GET_REQUEST,
@@ -52,7 +51,7 @@ export const getLandkoder: ActionCreator<ThunkResult<ActionWithPayload>> = (buct
 }
 
 export const getPerson: ActionCreator<ThunkResult<ActionWithPayload>> = (fnr: string): ThunkResult<ActionWithPayload> => {
-  return api.realCall({
+  return realCall({
     url: sprintf(urls.API_SAK_PERSON_URL, { fnr: fnr }),
     cascadeFailureError: true,
     type: {
@@ -64,7 +63,7 @@ export const getPerson: ActionCreator<ThunkResult<ActionWithPayload>> = (fnr: st
 }
 
 export const getPersonRelated: ActionCreator<ThunkResult<ActionWithPayload>> = (fnr: string): ThunkResult<ActionWithPayload> => {
-  return api.realCall({
+  return realCall({
     url: sprintf(urls.API_SAK_PERSON_URL, { fnr: fnr }),
     cascadeFailureError: true,
     context: {
@@ -115,7 +114,7 @@ export const createSak: ActionCreator<ThunkResult<ActionWithPayload>> = (data: a
     }))
   }
 
-  return api.realCall({
+  return realCall({
     url: urls.API_SAK_SEND_POST_URL,
     method: 'POST',
     payload: payload,

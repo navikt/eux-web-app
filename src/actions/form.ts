@@ -1,6 +1,6 @@
 import * as types from 'constants/actionTypes'
 import { Arbeidsforholdet, FamilieRelasjon } from 'declarations/types'
-import { ActionWithPayload } from 'eessi-pensjon-ui/dist/declarations/types'
+import { ActionWithPayload } from 'js-fetch-api'
 import { ActionCreator } from 'redux'
 
 export const set = (key: string, value: string | undefined) => ({

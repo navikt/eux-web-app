@@ -1,89 +1,125 @@
-import { clientClear } from 'actions/alert'
-import * as formActions from 'actions/form'
-import * as sakActions from 'actions/sak'
 import classNames from 'classnames'
+import Alert, { AlertStatus } from 'components/Alert/Alert'
 import PersonCard from 'components/PersonCard/PersonCard'
+import { Cell, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
-import { State } from 'declarations/reducers'
 import { FamilieRelasjon, Kodeverk, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
-import Ui from 'eessi-pensjon-ui'
 import _ from 'lodash'
+import AlertStripe from 'nav-frontend-alertstriper'
+import { Knapp } from 'nav-frontend-knapper'
+import { Input } from 'nav-frontend-skjema'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
-import './TPSPersonForm.css'
-
-const mapState = (state: State): TPSPersonFormSelector => ({
-  alertStatus: state.alert.clientErrorStatus,
-  alertMessage: state.alert.clientErrorMessage,
-  alertType: state.alert.type,
-  personRelatert: state.sak.personRelatert,
-  person: state.sak.person
-})
-
-export interface TPSPersonFormSelector {
-  alertStatus: string | undefined;
-  alertMessage: string | undefined;
-  alertType: string | undefined;
-  personRelatert: Person | undefined;
-  person: Person;
-}
+import styled from 'styled-components'
 
 export interface TPSPersonFormProps {
-  className ?: string;
-  rolleList: Array<Kodeverk>;
+  alertStatus: string | undefined
+  alertMessage: string | undefined
+  alertType: string | undefined
+  className?: string
+  onAddFailure: () => void
+  onAlertClose: () => void
+  onAddSuccess: (e: any) => void
+  onResetPersonRelatert: () => void
+  personRelatert: Person | undefined
+  person: Person
+  rolleList: Array<Kodeverk>
+  onSearchFnr: (sok: any) => void
   existingFamilyRelationships: Array<FamilieRelasjon>
 }
 
+const Container = styled.div`
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+`
+const AlertstripeDiv = styled.div`
+  margin: 0.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  width: 50%;
+`
+const MarginDiv = styled.div`
+  margin: 0.5rem;
+`
+const AlignCenterCell = styled(Cell)`
+  display: flex;
+  align-items: center;
+`
 const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
-  className, rolleList, existingFamilyRelationships
+  alertStatus,
+  alertMessage,
+  alertType,
+  className,
+  onAddFailure,
+  onAddSuccess,
+  onAlertClose,
+  onResetPersonRelatert,
+  personRelatert,
+  person,
+  rolleList,
+  onSearchFnr,
+  existingFamilyRelationships
 }: TPSPersonFormProps): JSX.Element => {
   const [sok, setSok] = useState('')
-  const [_personRelatert, setPersonRelatert] = useState<FamilieRelasjon | undefined>(undefined)
-  const [tpsperson, setTpsPerson] = useState<FamilieRelasjon | undefined>(undefined)
+  const [_personRelatert, setPersonRelatert] = useState<
+    FamilieRelasjon | undefined
+  >(undefined)
+  const [tpsperson, setTpsPerson] = useState<FamilieRelasjon | undefined>(
+    undefined
+  )
 
   const { t } = useTranslation()
-  const dispatch = useDispatch()
-  const { alertStatus, alertMessage, alertType, personRelatert, person }: TPSPersonFormSelector = useSelector<State, TPSPersonFormSelector>(mapState)
 
   const sokEtterFnr = () => {
-    dispatch(sakActions.resetPersonRelatert())
     setPersonRelatert(undefined)
     setTpsPerson(undefined)
-    dispatch(sakActions.getPersonRelated(sok))
+    if (_.isFunction(onSearchFnr)) {
+      onSearchFnr(sok)
+    }
   }
 
   useEffect(() => {
     if (personRelatert && !_personRelatert) {
       // Fjern relasjoner array, NOTE! det er kun relasjoner som har rolle.
-      const person = (_.omit(personRelatert, 'relasjoner'))
-      const tpsperson = personRelatert && personRelatert.relasjoner
-        ? personRelatert.relasjoner.find((elem: FamilieRelasjon) => elem.fnr === person.fnr)
-        : undefined
+      const person = _.omit(personRelatert, 'relasjoner')
+      const tpsperson =
+        personRelatert && personRelatert.relasjoner
+          ? personRelatert.relasjoner.find(
+            (elem: FamilieRelasjon) => elem.fnr === person.fnr
+          )
+          : undefined
       setTpsPerson(tpsperson)
       if (!tpsperson) {
         setPersonRelatert(person)
       } else {
-        dispatch(sakActions.resetPersonRelatert())
+        if (onResetPersonRelatert) {
+          onResetPersonRelatert()
+        }
         setPersonRelatert(undefined)
       }
     }
-  }, [personRelatert, _personRelatert, dispatch])
+  }, [personRelatert, _personRelatert, onResetPersonRelatert])
 
   const updateSok = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSok(e.target.value)
     setPersonRelatert(undefined)
-    dispatch(sakActions.resetPersonRelatert())
+    if (onResetPersonRelatert) {
+      onResetPersonRelatert()
+    }
   }
 
   const conflictingPerson = (): boolean => {
     const { fnr } = _personRelatert!
-    if (_.find(existingFamilyRelationships, f => f.fnr === fnr) !== undefined) {
-      dispatch({
-        type: types.FORM_TPSPERSON_ADD_FAILURE
-      })
+    if (
+      _.find(existingFamilyRelationships, (f) => f.fnr === fnr) !== undefined
+    ) {
+      if (onAddFailure) {
+        onAddFailure()
+      }
       return true
     }
     return false
@@ -94,81 +130,88 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
       setSok('')
       setPersonRelatert(undefined)
       setTpsPerson(undefined)
-
-      dispatch(sakActions.resetPersonRelatert())
+      if (onResetPersonRelatert) {
+        onResetPersonRelatert()
+      }
       /* Person fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
-
-      dispatch(formActions.addFamilierelasjoner({
-        ...person,
-        nasjonalitet: 'NO'
-      }))
-      dispatch({
-        type: types.FORM_TPSPERSON_ADD_SUCCESS
-      })
+      if (onAddSuccess) {
+        onAddSuccess({
+          ...person,
+          nasjonalitet: 'NO'
+        })
+      }
     }
   }
 
   return (
-    <div className='mt-4 mb-4'>
-      <div className={classNames(className, 'c-TPSPersonForm', 'slideAnimate', { feil: !!alertMessage })}>
-        <div className='w-50 mr-3'>
-          <Ui.Nav.Input
-            id='c-TPSPersonForm__input-fnr-or-dnr-id'
+    <Container>
+      <Row
+        className={classNames(className, 'slideAnimate', {
+          feil: !!alertMessage
+        })}
+      >
+        <Cell>
+          <Input
+            data-testid='c-TPSPersonForm__input-fnr-or-dnr-id'
             label={t('ui:label-fnr-or-dnr')}
             placeholder={t('ui:label-fnr-or-dnr')}
             value={sok}
             onChange={updateSok}
           />
-        </div>
-        <div className='w-50'>
-          <Ui.Nav.Knapp
+          <VerticalSeparatorDiv />
+        </Cell>
+        <HorizontalSeparatorDiv/>
+        <AlignCenterCell>
+          <Knapp
             disabled={person.fnr === sok}
-            className='annenpersonsok__knapp'
             onClick={sokEtterFnr}
           >
             {t('ui:form-search')}
-          </Ui.Nav.Knapp>
-        </div>
-      </div>
-      {(person.fnr === sok) ? (
-        <div className='m-2'>
-          <Ui.Nav.AlertStripe className='w-50 mt-4 mb-4' type='advarsel'>
-            {t('ui:error-fnr-is-user', { sok: sok })}
-          </Ui.Nav.AlertStripe>
-        </div>
-      ) : null}
-      {tpsperson ? (
-        <div className='m-2'>
-          <Ui.Nav.AlertStripe className='mt-4 mb-4' type='advarsel'>
-            {t('ui:error-relation-already-in-tps')}
-          </Ui.Nav.AlertStripe>
-        </div>
-      ) : null}
-      {alertMessage && (
-        alertType === types.SAK_PERSON_RELATERT_GET_FAILURE ||
-        alertType === types.FORM_TPSPERSON_ADD_FAILURE
-      ) && (
-        <div className='m-2'>
-          <Ui.Alert
-            className='mt-4 mb-4 w-50'
-            type='client'
-            fixed={false}
-            message={t(alertMessage)}
-            status={alertStatus}
-            onClose={() => dispatch(clientClear())}
-          />
-        </div>
-      )}
-      {_personRelatert ? (
-        <div className='m-2'>
-          <PersonCard
-            person={_personRelatert}
-            onAddClick={leggTilPersonOgRolle}
-            rolleList={rolleList}
-          />
-        </div>
-      ) : null}
-    </div>
+          </Knapp>
+        </AlignCenterCell>
+      </Row>
+      <VerticalSeparatorDiv/>
+      <Row>
+        <Cell>
+        {person.fnr === sok && (
+          <AlertstripeDiv>
+            <AlertStripe type='advarsel'>
+              {t('ui:error-fnr-is-user', { sok: sok })}
+            </AlertStripe>
+          </AlertstripeDiv>
+        )}
+        {tpsperson && (
+          <AlertstripeDiv>
+            <AlertStripe className='mt-4 mb-4' type='advarsel'>
+              {t('ui:error-relation-already-in-tps')}
+            </AlertStripe>
+          </AlertstripeDiv>
+        )}
+        {alertMessage &&
+          (alertType === types.SAK_PERSON_RELATERT_GET_FAILURE ||
+            alertType === types.FORM_TPSPERSON_ADD_FAILURE) && (
+              <AlertstripeDiv>
+            <Alert
+                  type='client'
+                  fixed={false}
+                  message={t(alertMessage)}
+                  status={alertStatus as AlertStatus}
+                  onClose={onAlertClose}
+                />
+          </AlertstripeDiv>
+        )}
+        {_personRelatert && (
+          <MarginDiv>
+            <PersonCard
+              person={_personRelatert}
+              onAddClick={leggTilPersonOgRolle}
+              rolleList={rolleList}
+            />
+          </MarginDiv>
+          )}
+        </Cell>
+      </Row>
+    </Container>
   )
 }
 

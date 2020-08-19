@@ -1,17 +1,17 @@
 import { toggleHighContrast } from 'actions/ui'
-import classNames from 'classnames'
+import { HorizontalSeparatorDiv } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import { Saksbehandler } from 'declarations/types'
-import Ui from 'eessi-pensjon-ui'
+import Lenke from 'nav-frontend-lenker'
+import { Undertittel } from 'nav-frontend-typografi'
 import PT from 'prop-types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import NEESSILogo from 'resources/images/nEESSI'
-
-import './Header.css'
+import styled from 'styled-components'
 
 export interface HeaderSelector {
   saksbehandler: Saksbehandler | undefined
@@ -24,6 +24,46 @@ export interface HeaderProps {
 export const mapState = (state: State): HeaderSelector => ({
   saksbehandler: state.app.saksbehandler
 })
+
+const HeaderContent = styled.header`
+  background-color: #99c2e8;
+  display: flex;
+  flex-direction: row;
+  height: 4rem;
+  justify-content: space-between;
+  align-items: center;
+`
+const Brand = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+`
+const Skillelinje = styled.div`
+  border-left: 1px solid #02329c;
+  display: flex;
+  height: 30px;
+`
+const Title = styled.div`
+  color: #02329c;
+  display: flex;
+  font-size: 14pt;
+  font-weight: bold;
+  padding-left: 15px;
+`
+const SaksbehandlerDiv = styled.div`
+  align-items: flex-end;
+  display: flex;
+  flex-direction: row;
+  margin-right: 1rem;
+  align-items: center;
+`
+const Name = styled.div`
+  color: #02329c;
+  font-weight: bold;
+  display: flex;
+  margin: auto 0;
+  padding: 0.3em;
+`
 
 const Header: React.FC<HeaderProps> = ({ className }: HeaderProps): JSX.Element => {
   const { saksbehandler }: HeaderSelector = useSelector<State, HeaderSelector>(mapState)
@@ -41,20 +81,22 @@ const Header: React.FC<HeaderProps> = ({ className }: HeaderProps): JSX.Element 
   }
 
   return (
-    <header className={classNames(className, 'c-header')}>
-      <div className='c-header__brand'>
+    <HeaderContent className={className}>
+      <Brand>
         <Link to='/' onClick={cleanData} className='ml-2 mr-2'>
           <NEESSILogo />
         </Link>
-        <div className='c-header__skillelinje' />
-        <div className='c-header__tittel'><span>{t('ui:app-name')}</span></div>
-      </div>
-      <Ui.Nav.Undertittel>
+        <Skillelinje />
+        <Title>
+          {t('ui:app-name')}
+        </Title>
+      </Brand>
+      <Undertittel>
         {t('ui:app-title')}
-      </Ui.Nav.Undertittel>
-      <div className='c-header__saksbehandler'>
-        <Ui.Nav.Lenke
-          className='c-header__highcontrast-link mr-3'
+      </Undertittel>
+      <SaksbehandlerDiv>
+        <Lenke
+          data-testid='c-header__highcontrast-link'
           href='#highContrast'
           onClick={(e: React.MouseEvent) => {
             e.preventDefault()
@@ -63,14 +105,15 @@ const Header: React.FC<HeaderProps> = ({ className }: HeaderProps): JSX.Element 
           }}
         >
           {t('ui:label-highContrast')}
-        </Ui.Nav.Lenke>
-        {saksbehandler && saksbehandler.navn ? (
-          <div className='saksbehandler__navn'>
+        </Lenke>
+        <HorizontalSeparatorDiv />
+        {saksbehandler && saksbehandler.navn && (
+          <Name>
             {saksbehandler.navn}
-          </div>
-        ) : null}
-      </div>
-    </header>
+          </Name>
+        )}
+      </SaksbehandlerDiv>
+    </HeaderContent>
   )
 }
 

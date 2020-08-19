@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages/Vedlegg Renders 1`] = `
+exports['pages/Vedlegg Renders 1'] = `
 <Vedlegg
   location={
     Object {
@@ -410,4 +410,4 @@ exports[`pages/Vedlegg Renders 1`] = `
     </UseErrorBoundaryWrapper>
   </TopContainer>
 </Vedlegg>
-`;
+`
