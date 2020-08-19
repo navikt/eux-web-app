@@ -81,6 +81,10 @@ export const resetPerson: ActionCreator<Action> = (): Action => ({
   type: types.SAK_PERSON_RESET
 })
 
+export const resetFagsaker: ActionCreator<Action> = (): Action => ({
+  type: types.SAK_FAGSAKER_RESET
+})
+
 export const resetPersonRelatert: ActionCreator<Action> = (): Action => ({
   type: types.SAK_PERSON_RELATERT_RESET
 })
