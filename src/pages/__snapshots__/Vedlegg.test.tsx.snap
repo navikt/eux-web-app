@@ -1,0 +1,413 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports['pages/Vedlegg Renders 1'] = `
+<Vedlegg
+  location={
+    Object {
+      "hash": "",
+      "host": "",
+      "hostname": "",
+      "href": "",
+      "origin": "",
+      "pathname": "",
+      "port": "",
+      "protocol": "",
+      "search": "",
+    }
+  }
+>
+  <TopContainer
+    className="vedlegg"
+  >
+    <UseErrorBoundaryWrapper
+      renderError={[Function]}
+    >
+      <ErrorBoundary
+        onDidCatch={[Function]}
+        renderError={[Function]}
+      >
+        <Header
+          className=""
+        >
+          <header
+            className="c-header"
+          >
+            <div
+              className="c-header__brand"
+            >
+              <Link
+                className="ml-2 mr-2"
+                onClick={[Function]}
+                to="/"
+              >
+                <div
+                  className="mock-link"
+                />
+              </Link>
+              <div
+                className="c-header__skillelinje"
+              />
+              <div
+                className="c-header__tittel"
+              >
+                <span>
+                  ui:app-name
+                </span>
+              </div>
+            </div>
+            <Undertittel>
+              <n
+                type="undertittel"
+              >
+                <h2
+                  className="typo-undertittel"
+                >
+                  ui:app-title
+                </h2>
+              </n>
+            </Undertittel>
+            <div
+              className="c-header__saksbehandler"
+            >
+              <Lenke
+                className="c-header__highcontrast-link mr-3"
+                href="#highContrast"
+                onClick={[Function]}
+              >
+                <a
+                  className="lenke c-header__highcontrast-link mr-3"
+                  href="#highContrast"
+                  onClick={[Function]}
+                >
+                  ui:label-highContrast
+                </a>
+              </Lenke>
+            </div>
+          </header>
+        </Header>
+        <Alert
+          onClose={[Function]}
+          type="server"
+        />
+        <main
+          className="vedlegg _container p-0 container-fluid"
+          id="main"
+          role="main"
+        >
+          <Row
+            className="m-0"
+          >
+            <div
+              className="row m-0"
+            >
+              <div
+                className="col-sm-2"
+              />
+              <div
+                className="col-sm-8 m-4"
+              >
+                <Systemtittel
+                  className="mt-4 mb-4"
+                >
+                  <n
+                    className="mt-4 mb-4"
+                    type="systemtittel"
+                  >
+                    <h2
+                      className="typo-systemtittel mt-4 mb-4"
+                    >
+                      ui:title-vedlegg
+                    </h2>
+                  </n>
+                </Systemtittel>
+                <div
+                  className="noSlideAnimate"
+                >
+                  <Input
+                    bredde="fullbredde"
+                    className="mb-4"
+                    id="vedlegg-journalpostID-id"
+                    label={
+                      <div>
+                        ui:label-journalpostID
+                        <Hjelpetekst
+                          id="journalPostID"
+                        >
+                          ui:help-journalpostID
+                        </Hjelpetekst>
+                      </div>
+                    }
+                    onChange={[Function]}
+                  >
+                    <div
+                      className="skjemaelement mb-4"
+                    >
+                      <t
+                        htmlFor="vedlegg-journalpostID-id"
+                      >
+                        <label
+                          className="skjemaelement__label"
+                          htmlFor="vedlegg-journalpostID-id"
+                        >
+                          <div>
+                            ui:label-journalpostID
+                            <Hjelpetekst
+                              id="journalPostID"
+                            >
+                              <div
+                                className="mock-hjelpetekst"
+                              >
+                                ui:help-journalpostID
+                              </div>
+                            </Hjelpetekst>
+                          </div>
+                        </label>
+                      </t>
+                      <input
+                        aria-invalid={false}
+                        className="skjemaelement__input input--fullbredde"
+                        id="vedlegg-journalpostID-id"
+                        onChange={[Function]}
+                        type="text"
+                      />
+                    </div>
+                  </Input>
+                </div>
+                <div
+                  className="noSlideAnimate"
+                  style={
+                    Object {
+                      "animationDelay": "0.15s",
+                    }
+                  }
+                >
+                  <Input
+                    bredde="fullbredde"
+                    className="mb-4"
+                    id="vedlegg-dokumentID-id"
+                    label={
+                      <div>
+                        ui:label-dokumentID
+                        <Hjelpetekst
+                          id="dokumentID"
+                        >
+                          ui:help-dokumentID
+                        </Hjelpetekst>
+                      </div>
+                    }
+                    onChange={[Function]}
+                  >
+                    <div
+                      className="skjemaelement mb-4"
+                    >
+                      <t
+                        htmlFor="vedlegg-dokumentID-id"
+                      >
+                        <label
+                          className="skjemaelement__label"
+                          htmlFor="vedlegg-dokumentID-id"
+                        >
+                          <div>
+                            ui:label-dokumentID
+                            <Hjelpetekst
+                              id="dokumentID"
+                            >
+                              <div
+                                className="mock-hjelpetekst"
+                              >
+                                ui:help-dokumentID
+                              </div>
+                            </Hjelpetekst>
+                          </div>
+                        </label>
+                      </t>
+                      <input
+                        aria-invalid={false}
+                        className="skjemaelement__input input--fullbredde"
+                        id="vedlegg-dokumentID-id"
+                        onChange={[Function]}
+                        type="text"
+                      />
+                    </div>
+                  </Input>
+                </div>
+                <div
+                  className="noSlideAnimate"
+                  style={
+                    Object {
+                      "animationDelay": "0.0s",
+                    }
+                  }
+                >
+                  <DocumentSearch
+                    className="mb-4"
+                    onDocumentFound={[Function]}
+                    onRinasaksnummerChanged={[Function]}
+                    resetValidation={[Function]}
+                    validation={Object {}}
+                  >
+                    <div
+                      className="mb-4 dokumentsok"
+                    >
+                      <div
+                        className="dokumentsok__form"
+                      >
+                        <Input
+                          bredde="fullbredde"
+                          className="dokumentsok__form__input"
+                          id="dokumentsok__form__input-id"
+                          label="ui:label-rinasaksnummer"
+                          onChange={[Function]}
+                        >
+                          <div
+                            className="skjemaelement dokumentsok__form__input"
+                          >
+                            <t
+                              htmlFor="dokumentsok__form__input-id"
+                            >
+                              <label
+                                className="skjemaelement__label"
+                                htmlFor="dokumentsok__form__input-id"
+                              >
+                                ui:label-rinasaksnummer
+                              </label>
+                            </t>
+                            <input
+                              aria-invalid={false}
+                              className="skjemaelement__input input--fullbredde"
+                              id="dokumentsok__form__input-id"
+                              onChange={[Function]}
+                              type="text"
+                            />
+                          </div>
+                        </Input>
+                        <Knapp
+                          className="dokumentsok__knapp"
+                          onClick={[Function]}
+                        >
+                          <KnappBase
+                            autoDisableVedSpinner={false}
+                            className="dokumentsok__knapp"
+                            disabled={false}
+                            htmlType="submit"
+                            inaktivKlasseVedDisabled={false}
+                            kompakt={false}
+                            mini={false}
+                            onClick={[Function]}
+                            spinner={false}
+                            type="standard"
+                          >
+                            <button
+                              className="knapp dokumentsok__knapp knapp--standard"
+                              disabled={false}
+                              onClick={[Function]}
+                              type="submit"
+                            >
+                              ui:form-search
+                            </button>
+                          </KnappBase>
+                        </Knapp>
+                      </div>
+                      <div
+                        className="dokumentsok__card mt-4 mb-4 slideAnimate"
+                      >
+                        <Select
+                          bredde="fullbredde"
+                          className="dokumentsok__card-select"
+                          disabled={true}
+                          id="dokumentsok__card-select-id"
+                          label="ui:label-rinadokumentID"
+                          onChange={[Function]}
+                        >
+                          <div
+                            className="skjemaelement dokumentsok__card-select"
+                          >
+                            <t
+                              htmlFor="dokumentsok__card-select-id"
+                            >
+                              <label
+                                className="skjemaelement__label"
+                                htmlFor="dokumentsok__card-select-id"
+                              >
+                                ui:label-rinadokumentID
+                              </label>
+                            </t>
+                            <div
+                              className="selectContainer input--fullbredde"
+                            >
+                              <select
+                                aria-invalid={false}
+                                className="skjemaelement__input"
+                                disabled={true}
+                                id="dokumentsok__card-select-id"
+                                onChange={[Function]}
+                              >
+                                <option
+                                  value=""
+                                >
+                                  ui:form-choose
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+                        </Select>
+                      </div>
+                    </div>
+                  </DocumentSearch>
+                </div>
+                <div
+                  className="vedlegg__submmit slideAnimate"
+                  style={
+                    Object {
+                      "animationDelay": "0.45s",
+                    }
+                  }
+                >
+                  <Hovedknapp
+                    disabled={false}
+                    onClick={[Function]}
+                    spinner={false}
+                  >
+                    <KnappBase
+                      autoDisableVedSpinner={false}
+                      className={null}
+                      disabled={false}
+                      htmlType="submit"
+                      inaktivKlasseVedDisabled={false}
+                      kompakt={false}
+                      mini={false}
+                      onClick={[Function]}
+                      spinner={false}
+                      type="hoved"
+                    >
+                      <button
+                        className="knapp knapp--hoved"
+                        disabled={false}
+                        onClick={[Function]}
+                        type="submit"
+                      >
+                        ui:label-sendVedlegg
+                      </button>
+                    </KnappBase>
+                  </Hovedknapp>
+                </div>
+              </div>
+              <div
+                className="col-sm-2"
+              />
+            </div>
+          </Row>
+        </main>
+        <SessionMonitor>
+          <styled.div>
+            <div
+              className="sc-AxjAm kmXdIo"
+            />
+          </styled.div>
+        </SessionMonitor>
+        <Version />
+      </ErrorBoundary>
+    </UseErrorBoundaryWrapper>
+  </TopContainer>
+</Vedlegg>
+`
