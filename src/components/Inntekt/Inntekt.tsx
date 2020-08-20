@@ -1,4 +1,5 @@
 import * as svarpasedActions from "actions/svarpased";
+import classNames from 'classnames'
 import { Inntekter, Validation } from "declarations/types";
 import { Knapp } from "nav-frontend-knapper";
 import { Input, Select } from "nav-frontend-skjema";
@@ -14,9 +15,7 @@ import {
 import styled from "styled-components";
 import _ from "lodash";
 import { vaskInputDato } from "utils/dato";
-import "nav-frontend-tabell-style";
-import InntektsTabell from "components/Inntekt/InntektsTabell";
-import { css } from "@emotion/core";
+import InntektsTabell from "components/Inntekt/InntektsTabell"
 
 interface InntektProps {
   fnr: string;
@@ -29,11 +28,30 @@ const AlignCenterCell = styled(Cell)`
   align-items: center;
 `;
 
-const pStyle = css({
-  backgroundColor: "purple",
-  width: "100%",
-});
-
+const SokKnapp = styled(Knapp)`
+   &.feil {
+      margin-bottom: 1rem;
+   }
+   margin-bottom: 3rem;
+`
+const AlignedRow = styled(Row)`
+  align-items: flex-end;
+  &.feil {
+    align-items: center !important;
+  }
+`
+const AlignedInput = styled(Input)`
+  margin-bottom: 3rem;
+  &.feil {
+    margin-bottom: 0rem !important;
+  }
+`
+const AlignedSelect = styled(Select)`
+  margin-bottom: 3rem;
+  &.feil {
+    margin-bottom: 0rem !important;
+  }
+`
 interface IncomeSearch {
   fraDato: string;
   tilDato: string;
@@ -136,13 +154,14 @@ const Inntekt: React.FC<InntektProps> = ({
 
   return (
     <>
-      <Row>
+      <AlignedRow className={classNames({feil: !isValid(validation)  })}>
         <Cell className="slideAnimate">
-          <Input
+          <AlignedInput
             label={t("ui:label-fraDato")}
             feil={validation.fraDato}
             value={inntektSøk.fraDato}
             placeholder="DD.MM.ÅÅÅÅ"
+            className={classNames({feil: validation.fraDato})}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               updateIncomeSearch("fraDato", e);
               resetValidation("fraDato");
@@ -155,11 +174,12 @@ const Inntekt: React.FC<InntektProps> = ({
         </Cell>
         <HorizontalSeparatorDiv />
         <Cell className="slideAnimate" style={{ animationDelay: "0.4s" }}>
-          <Input
+          <AlignedInput
             label={t("ui:label-tilDato")}
             feil={validation.tilDato}
             value={inntektSøk.tilDato}
             placeholder="DD.MM.ÅÅÅÅ"
+            className={classNames({feil: validation.tilDato  })}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               updateIncomeSearch("tilDato", e);
               resetValidation("tilDato");
@@ -172,10 +192,11 @@ const Inntekt: React.FC<InntektProps> = ({
         </Cell>
         <HorizontalSeparatorDiv />
         <Cell className="slideAnimate" style={{ animationDelay: "0.5s" }}>
-          <Select
+          <AlignedSelect
             label={t("ui:label-tema")}
             feil={validation.tema}
             value={inntektSøk.tema}
+            className={classNames({feil: validation.tema  })}
             onChange={(e: any) => {
               updateTema("tema", e.target.value);
               resetValidation("tema");
@@ -188,7 +209,7 @@ const Inntekt: React.FC<InntektProps> = ({
             <option value="KON" key="KON">
               Kontantstøtte
             </option>
-          </Select>
+          </AlignedSelect>
           <VerticalSeparatorDiv />
         </Cell>
         <HorizontalSeparatorDiv />
@@ -196,13 +217,17 @@ const Inntekt: React.FC<InntektProps> = ({
           className="slideAnimate"
           style={{ animationDelay: "0.6s" }}
         >
-          <Knapp onClick={() => addSearch()}>Søk</Knapp>
+          <SokKnapp
+            className={classNames({feil: !isValid(validation)  })}
+            onClick={() => addSearch()}>
+            Søk
+          </SokKnapp>
           <VerticalSeparatorDiv />
         </AlignCenterCell>
-      </Row>
+      </AlignedRow>
       {!_.isNil(inntekter) && (
         <div>
-          <InntektsTabell inntekter={inntekter} css={pStyle}></InntektsTabell>
+          <InntektsTabell inntekter={inntekter}/>
         </div>
       )}
 
