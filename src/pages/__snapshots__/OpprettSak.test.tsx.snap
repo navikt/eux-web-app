@@ -1,0 +1,294 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports['pages/OpprettSak/OpprettSak Renders 1'] = `
+<OpprettSak
+  history={Object {}}
+>
+  <TopContainer
+    className="opprettsak"
+  >
+    <UseErrorBoundaryWrapper
+      renderError={[Function]}
+    >
+      <ErrorBoundary
+        onDidCatch={[Function]}
+        renderError={[Function]}
+      >
+        <Header
+          className=""
+        >
+          <header
+            className="c-header"
+          >
+            <div
+              className="c-header__brand"
+            >
+              <Link
+                className="ml-2 mr-2"
+                onClick={[Function]}
+                to="/"
+              >
+                <div
+                  className="mock-link"
+                />
+              </Link>
+              <div
+                className="c-header__skillelinje"
+              />
+              <div
+                className="c-header__tittel"
+              >
+                <span>
+                  ui:app-name
+                </span>
+              </div>
+            </div>
+            <Undertittel>
+              <n
+                type="undertittel"
+              >
+                <h2
+                  className="typo-undertittel"
+                >
+                  ui:app-title
+                </h2>
+              </n>
+            </Undertittel>
+            <div
+              className="c-header__saksbehandler"
+            >
+              <Lenke
+                className="c-header__highcontrast-link mr-3"
+                href="#highContrast"
+                onClick={[Function]}
+              >
+                <a
+                  className="lenke c-header__highcontrast-link mr-3"
+                  href="#highContrast"
+                  onClick={[Function]}
+                >
+                  ui:label-highContrast
+                </a>
+              </Lenke>
+            </div>
+          </header>
+        </Header>
+        <Alert
+          onClose={[Function]}
+          type="server"
+        />
+        <main
+          className="opprettsak _container p-0 container-fluid"
+          id="main"
+          role="main"
+        >
+          <Row
+            className="m-0 p-4"
+          >
+            <div
+              className="row m-0 p-4"
+            >
+              <div
+                className="col-sm-1"
+              />
+              <div
+                className="col-sm-10"
+              >
+                <Systemtittel
+                  className="mb-4"
+                >
+                  <n
+                    className="mb-4"
+                    type="systemtittel"
+                  >
+                    <h2
+                      className="typo-systemtittel mb-4"
+                    >
+                      ui:title-newcase
+                    </h2>
+                  </n>
+                </Systemtittel>
+                <PersonSearch
+                  className="slideAnimate"
+                  onFnrChange={[Function]}
+                  onPersonFound={[Function]}
+                  resetAllValidation={[Function]}
+                  validation={Object {}}
+                >
+                  <div
+                    className="personsok slideAnimate"
+                  >
+                    <div
+                      className="personsok__skjema"
+                    >
+                      <Input
+                        bredde="fullbredde"
+                        className="personsok__input"
+                        id="personsok__input-id"
+                        label="ui:form-searchUser"
+                        onChange={[Function]}
+                        value=""
+                      >
+                        <div
+                          className="skjemaelement personsok__input"
+                        >
+                          <t
+                            htmlFor="personsok__input-id"
+                          >
+                            <label
+                              className="skjemaelement__label"
+                              htmlFor="personsok__input-id"
+                            >
+                              ui:form-searchUser
+                            </label>
+                          </t>
+                          <input
+                            aria-invalid={false}
+                            className="skjemaelement__input input--fullbredde"
+                            id="personsok__input-id"
+                            onChange={[Function]}
+                            type="text"
+                            value=""
+                          />
+                        </div>
+                      </Input>
+                      <Knapp
+                        className="personsok__knapp"
+                        onClick={[Function]}
+                      >
+                        <KnappBase
+                          autoDisableVedSpinner={false}
+                          className="personsok__knapp"
+                          disabled={false}
+                          htmlType="submit"
+                          inaktivKlasseVedDisabled={false}
+                          kompakt={false}
+                          mini={false}
+                          onClick={[Function]}
+                          spinner={false}
+                          type="standard"
+                        >
+                          <button
+                            className="knapp personsok__knapp knapp--standard"
+                            disabled={false}
+                            onClick={[Function]}
+                            type="submit"
+                          >
+                            ui:form-search
+                          </button>
+                        </KnappBase>
+                      </Knapp>
+                    </div>
+                  </div>
+                </PersonSearch>
+                <AbortModal
+                  closeModal={[Function]}
+                  isOpen={false}
+                  onAbort={[Function]}
+                >
+                  <Modal
+                    ariaHideApp={false}
+                    closeButton={false}
+                    closeTimeoutMS={0}
+                    contentLabel="ui:modal-abort-contentLabel"
+                    isOpen={false}
+                    onRequestClose={[Function]}
+                    shouldCloseOnOverlayClick={true}
+                  >
+                    <t
+                      ariaHideApp={false}
+                      bodyOpenClassName="ReactModal__Body--open"
+                      className="modal"
+                      closeTimeoutMS={0}
+                      contentLabel="ui:modal-abort-contentLabel"
+                      isOpen={false}
+                      onRequestClose={[Function]}
+                      overlayClassName="modal__overlay"
+                      parentSelector={[Function]}
+                      portalClassName="ReactModalPortal"
+                      role="dialog"
+                      shouldCloseOnEsc={true}
+                      shouldCloseOnOverlayClick={true}
+                      shouldFocusAfterRender={true}
+                      shouldReturnFocusAfterClose={true}
+                    >
+                      <Portal
+                        containerInfo={
+                          <div
+                            class="ReactModalPortal"
+                          />
+                        }
+                      >
+                        <t
+                          ariaHideApp={false}
+                          bodyOpenClassName="ReactModal__Body--open"
+                          className="modal"
+                          closeTimeoutMS={0}
+                          contentLabel="ui:modal-abort-contentLabel"
+                          defaultStyles={
+                            Object {
+                              "content": Object {
+                                "WebkitOverflowScrolling": "touch",
+                                "background": "#fff",
+                                "border": "1px solid #ccc",
+                                "borderRadius": "4px",
+                                "bottom": "40px",
+                                "left": "40px",
+                                "outline": "none",
+                                "overflow": "auto",
+                                "padding": "20px",
+                                "position": "absolute",
+                                "right": "40px",
+                                "top": "40px",
+                              },
+                              "overlay": Object {
+                                "backgroundColor": "rgba(255, 255, 255, 0.75)",
+                                "bottom": 0,
+                                "left": 0,
+                                "position": "fixed",
+                                "right": 0,
+                                "top": 0,
+                              },
+                            }
+                          }
+                          isOpen={false}
+                          onRequestClose={[Function]}
+                          overlayClassName="modal__overlay"
+                          parentSelector={[Function]}
+                          portalClassName="ReactModalPortal"
+                          role="dialog"
+                          shouldCloseOnEsc={true}
+                          shouldCloseOnOverlayClick={true}
+                          shouldFocusAfterRender={true}
+                          shouldReturnFocusAfterClose={true}
+                          style={
+                            Object {
+                              "content": Object {},
+                              "overlay": Object {},
+                            }
+                          }
+                        />
+                      </Portal>
+                    </t>
+                  </Modal>
+                </AbortModal>
+              </div>
+              <div
+                className="col-sm-1"
+              />
+            </div>
+          </Row>
+        </main>
+        <SessionMonitor>
+          <styled.div>
+            <div
+              className="sc-AxjAm kmXdIo"
+            />
+          </styled.div>
+        </SessionMonitor>
+        <Version />
+      </ErrorBoundary>
+    </UseErrorBoundaryWrapper>
+  </TopContainer>
+</OpprettSak>
+`

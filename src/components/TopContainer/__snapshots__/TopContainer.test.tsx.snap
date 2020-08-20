@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports['components/TopContainer Renders 1'] = `
+<TopContainer
+  header="mockHeader"
+>
+  <UseErrorBoundaryWrapper
+    renderError={[Function]}
+  >
+    <ErrorBoundary
+      onDidCatch={[Function]}
+      renderError={[Function]}
+    >
+      <Header
+        className=""
+      >
+        <header
+          className="c-header"
+        >
+          <div
+            className="c-header__brand"
+          >
+            <Link
+              className="ml-2 mr-2"
+              onClick={[Function]}
+              to="/"
+            >
+              <div
+                className="mock-link"
+              />
+            </Link>
+            <div
+              className="c-header__skillelinje"
+            />
+            <div
+              className="c-header__tittel"
+            >
+              <span>
+                ui:app-name
+              </span>
+            </div>
+          </div>
+          <Undertittel>
+            <n
+              type="undertittel"
+            >
+              <h2
+                className="typo-undertittel"
+              >
+                ui:app-title
+              </h2>
+            </n>
+          </Undertittel>
+          <div
+            className="c-header__saksbehandler"
+          >
+            <Lenke
+              className="c-header__highcontrast-link mr-3"
+              href="#highContrast"
+              onClick={[Function]}
+            >
+              <a
+                className="lenke c-header__highcontrast-link mr-3"
+                href="#highContrast"
+                onClick={[Function]}
+              >
+                ui:label-highContrast
+              </a>
+            </Lenke>
+          </div>
+        </header>
+      </Header>
+      <Alert
+        onClose={[Function]}
+        type="server"
+      />
+      <main
+        className="_container p-0 container-fluid"
+        id="main"
+        role="main"
+      >
+        <div
+          id="TEST_CHILD"
+        />
+      </main>
+      <SessionMonitor>
+        <styled.div>
+          <div
+            className="sc-AxjAm kmXdIo"
+          />
+        </styled.div>
+      </SessionMonitor>
+      <Version />
+    </ErrorBoundary>
+  </UseErrorBoundaryWrapper>
+</TopContainer>
+`

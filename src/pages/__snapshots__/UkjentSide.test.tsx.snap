@@ -1,0 +1,138 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports['pages/OpprettSak/OpprettSak Renders 1'] = `
+<UkjentSide
+  location={
+    Object {
+      "hash": "",
+      "host": "",
+      "hostname": "",
+      "href": "",
+      "origin": "",
+      "pathname": "",
+      "port": "",
+      "protocol": "",
+      "search": "",
+    }
+  }
+>
+  <Component
+    className="p-ukjentSide"
+  >
+    <div
+      className="mock-topContainer"
+    >
+      <Row
+        className="m-0"
+      >
+        <div
+          className="row m-0"
+        >
+          <div
+            className="col-sm-1"
+          />
+          <div
+            className="col-sm-10 m-4"
+          >
+            <AlertStripe
+              form="default"
+              size="1.5em"
+              type="advarsel"
+            >
+              <div
+                className="alertstripe alertstripe--advarsel"
+              >
+                <span
+                  className="alertstripe__ikon"
+                >
+                  <span
+                    className="sr-only"
+                  >
+                    advarsel
+                  </span>
+                  <Ikon
+                    kind="advarsel-sirkel-fyll"
+                    size="1.5em"
+                  >
+                    <svg
+                      focusable="false"
+                      height="1.5em"
+                      kind="advarsel-sirkel-fyll"
+                      viewBox="0 0 24 24"
+                      width="1.5em"
+                    >
+                      <g
+                        fill="none"
+                        fillRule="evenodd"
+                      >
+                        <path
+                          d="M12.205-.004l-.214.002a12.225 12.225 0 0 0-8.517 3.659C1.179 5.977-.053 9.013.002 12.208c.115 6.613 5.296 11.793 11.795 11.793l.212-.002c6.726-.116 12.105-5.595 11.99-12.21C23.883 5.178 18.702-.003 12.204-.003z"
+                          fill="#FFA733"
+                          fillRule="nonzero"
+                        />
+                        <path
+                          d="M12.027 19H12A1.499 1.499 0 0 1 11.973 16L12 16a1.501 1.501 0 0 1 .027 3z"
+                          fill="#3E3832"
+                        />
+                        <path
+                          d="M12 5a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V6a1 1 0 0 1 1-1z"
+                          fill="#3E3832"
+                          fillRule="nonzero"
+                        />
+                      </g>
+                    </svg>
+                  </Ikon>
+                </span>
+                <Normaltekst
+                  className="alertstripe__tekst"
+                  tag="div"
+                >
+                  <n
+                    className="alertstripe__tekst"
+                    tag="div"
+                    type="normaltekst"
+                  >
+                    <div
+                      className="typo-normal alertstripe__tekst"
+                    >
+                      <Systemtittel>
+                        <n
+                          type="systemtittel"
+                        >
+                          <h2
+                            className="typo-systemtittel"
+                          >
+                            ui:error-unknownPage-cantFindRoute
+                          </h2>
+                        </n>
+                      </Systemtittel>
+                    </div>
+                  </n>
+                </Normaltekst>
+              </div>
+            </AlertStripe>
+            <p>
+              ui:error-unknownPage-description
+            </p>
+            <Lenke
+              ariaLabel="ui:error-unknownPage-linkToRoot-ariaLabel"
+              href="/"
+            >
+              <a
+                aria-label="ui:error-unknownPage-linkToRoot-ariaLabel"
+                className="lenke"
+                href="/"
+              >
+                ui:error-unknownPage-linkToRoot
+              </a>
+            </Lenke>
+          </div>
+          <div
+            className="col-sm-1"
+          />
+        </div>
+      </Row>
+    </div>
+  </Component>
+</UkjentSide>
+`
