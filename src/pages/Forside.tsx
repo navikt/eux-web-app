@@ -31,7 +31,7 @@ const Forside: React.FC = (): JSX.Element => {
             >
               {t('ui:menu-addAttachment')}
             </Lenkepanel>
-            <Lenkepanel
+            {/*<Lenkepanel
               tittelProps='undertittel'
               className='slideAnimate'
               style={{ animationDelay: '0.3s' }}
@@ -39,7 +39,7 @@ const Forside: React.FC = (): JSX.Element => {
               href='#'
             >
               {t('ui:menu-svarpased')}
-            </Lenkepanel>
+            </Lenkepanel>*/}
           </>
         </Content>
         <Margin />
