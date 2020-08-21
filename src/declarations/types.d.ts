@@ -1,4 +1,4 @@
-import { PeriodePropType } from 'declarations/types.pt'
+import { PeriodePropType } from "declarations/types.pt";
 
 export interface Period {
   fom?: string;
@@ -9,10 +9,10 @@ export interface Arbeidsforholdet {
   arbeidsforholdIDnav?: number;
   orgnr?: string;
   navn?: string;
-  ansettelsesPeriode?: PeriodePropType
+  ansettelsesPeriode?: PeriodePropType;
 }
 
-export type Arbeidsforhold = Array<Arbeidsforholdet>
+export type Arbeidsforhold = Array<Arbeidsforholdet>;
 
 export interface Kodeverk {
   kode: string;
@@ -20,16 +20,16 @@ export interface Kodeverk {
 }
 
 export interface BucTyper {
-  awod: Array<Kodeverk>,
-  administrative: Array<Kodeverk>,
-  family: Array<Kodeverk>,
-  horizontal: Array<Kodeverk>,
-  legislation: Array<Kodeverk>,
-  miscellaneous: Array<Kodeverk>,
-  pensions: Array<Kodeverk>,
-  recovery: Array<Kodeverk>,
-  sickness: Array<Kodeverk>,
-  unemployment: Array<Kodeverk>
+  awod: Array<Kodeverk>;
+  administrative: Array<Kodeverk>;
+  family: Array<Kodeverk>;
+  horizontal: Array<Kodeverk>;
+  legislation: Array<Kodeverk>;
+  miscellaneous: Array<Kodeverk>;
+  pensions: Array<Kodeverk>;
+  recovery: Array<Kodeverk>;
+  sickness: Array<Kodeverk>;
+  unemployment: Array<Kodeverk>;
 }
 
 export interface Person {
@@ -38,7 +38,7 @@ export interface Person {
   fornavn?: string;
   etternavn?: string;
   kjoenn?: string;
-  relasjoner?: Array<FamilieRelasjon>
+  relasjoner?: Array<FamilieRelasjon>;
 }
 
 export interface FamilieRelasjon extends Person {
@@ -61,7 +61,7 @@ export interface ServerInfo {
   veraUrl: string;
   gosysURL: string;
 }
-export type Enheter = Array<Enhet>
+export type Enheter = Array<Enhet>;
 
 export interface Enhet {
   enhetId: string;
@@ -91,25 +91,25 @@ export interface Dokument {
 export interface VedleggSendResponse {
   filnavn?: string;
   vedleggID: string;
-  url: string
+  url: string;
 }
 
 export interface Tema {
-  awod: Array<Kodeverk>,
-  family: Array<Kodeverk>,
-  horizontal: Array<Kodeverk>,
-  legislation: Array<Kodeverk>,
-  miscellaneous: Array<Kodeverk>,
-  pensions: Array<Kodeverk>,
-  recovery: Array<Kodeverk>,
-  sickness: Array<Kodeverk>,
-  unemployment: Array<Kodeverk>
+  awod: Array<Kodeverk>;
+  family: Array<Kodeverk>;
+  horizontal: Array<Kodeverk>;
+  legislation: Array<Kodeverk>;
+  miscellaneous: Array<Kodeverk>;
+  pensions: Array<Kodeverk>;
+  recovery: Array<Kodeverk>;
+  sickness: Array<Kodeverk>;
+  unemployment: Array<Kodeverk>;
 }
 
 export interface Kodemaps {
-  BUC2SEDS: {[k: string]: Array<string>},
-  SEKTOR2BUC: {[k: string]: string},
-  SEKTOR2FAGSAK: {[k: string]: string}
+  BUC2SEDS: { [k: string]: Array<string> };
+  SEKTOR2BUC: { [k: string]: string };
+  SEKTOR2FAGSAK: { [k: string]: string };
 }
 
 export interface FagSak {
@@ -122,15 +122,15 @@ export interface FagSak {
   fagsakNr?: string;
 }
 
-export type FagSaker = Array<FagSak>
+export type FagSaker = Array<FagSak>;
 
-export type Validation = {[k: string]: string | null}
+export type Validation = { [k: string]: string | null };
 
-export type Inntekter = Array<Inntekt>
+export type Inntekter = Array<Inntekt>;
 
 export interface Inntekt {
-  fraDato: string,
-  tilDato:  string,
-  beloep: number,
-  type: string
+  fraDato: string;
+  tilDato: string;
+  beloep: number;
+  type: string;
 }
