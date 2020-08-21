@@ -1,5 +1,5 @@
 import * as svarpasedActions from "actions/svarpased";
-import classNames from 'classnames'
+import classNames from "classnames";
 import { Inntekter, Validation } from "declarations/types";
 import { Knapp } from "nav-frontend-knapper";
 import { Input, Select } from "nav-frontend-skjema";
@@ -15,7 +15,7 @@ import {
 import styled from "styled-components";
 import _ from "lodash";
 import { vaskInputDato } from "utils/dato";
-import InntektsTabell from "components/Inntekt/InntektsTabell"
+import InntektsTabell from "components/Inntekt/InntektsTabell";
 
 interface InntektProps {
   fnr: string;
@@ -29,29 +29,29 @@ const AlignCenterCell = styled(Cell)`
 `;
 
 const SokKnapp = styled(Knapp)`
-   &.feil {
-      margin-bottom: 1rem;
-   }
-   margin-bottom: 3rem;
-`
+  &.feil {
+    margin-bottom: 1rem;
+  }
+  margin-bottom: 3rem;
+`;
 const AlignedRow = styled(Row)`
   align-items: flex-end;
   &.feil {
     align-items: center !important;
   }
-`
+`;
 const AlignedInput = styled(Input)`
   margin-bottom: 3rem;
   &.feil {
     margin-bottom: 0rem !important;
   }
-`
+`;
 const AlignedSelect = styled(Select)`
   margin-bottom: 3rem;
   &.feil {
     margin-bottom: 0rem !important;
   }
-`
+`;
 interface IncomeSearch {
   fraDato: string;
   tilDato: string;
@@ -84,6 +84,11 @@ const Inntekt: React.FC<InntektProps> = ({
         tema: inntektSøk.tema,
       })
     );
+    test();
+  };
+
+  const test = () => {
+    if (inntekter !== undefined) console.log("inntekter from test", inntekter);
   };
 
   const updateIncomeSearch = (
@@ -154,14 +159,14 @@ const Inntekt: React.FC<InntektProps> = ({
 
   return (
     <>
-      <AlignedRow className={classNames({feil: !isValid(validation)  })}>
+      <AlignedRow className={classNames({ feil: !isValid(validation) })}>
         <Cell className="slideAnimate">
           <AlignedInput
             label={t("ui:label-fraDato")}
             feil={validation.fraDato}
             value={inntektSøk.fraDato}
             placeholder="DD.MM.ÅÅÅÅ"
-            className={classNames({feil: validation.fraDato})}
+            className={classNames({ feil: validation.fraDato })}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               updateIncomeSearch("fraDato", e);
               resetValidation("fraDato");
@@ -179,7 +184,7 @@ const Inntekt: React.FC<InntektProps> = ({
             feil={validation.tilDato}
             value={inntektSøk.tilDato}
             placeholder="DD.MM.ÅÅÅÅ"
-            className={classNames({feil: validation.tilDato  })}
+            className={classNames({ feil: validation.tilDato })}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               updateIncomeSearch("tilDato", e);
               resetValidation("tilDato");
@@ -196,7 +201,7 @@ const Inntekt: React.FC<InntektProps> = ({
             label={t("ui:label-tema")}
             feil={validation.tema}
             value={inntektSøk.tema}
-            className={classNames({feil: validation.tema  })}
+            className={classNames({ feil: validation.tema })}
             onChange={(e: any) => {
               updateTema("tema", e.target.value);
               resetValidation("tema");
@@ -218,8 +223,9 @@ const Inntekt: React.FC<InntektProps> = ({
           style={{ animationDelay: "0.6s" }}
         >
           <SokKnapp
-            className={classNames({feil: !isValid(validation)  })}
-            onClick={() => addSearch()}>
+            className={classNames({ feil: !isValid(validation) })}
+            onClick={() => addSearch()}
+          >
             Søk
           </SokKnapp>
           <VerticalSeparatorDiv />
@@ -227,7 +233,7 @@ const Inntekt: React.FC<InntektProps> = ({
       </AlignedRow>
       {!_.isNil(inntekter) && (
         <div>
-          <InntektsTabell inntekter={inntekter}/>
+          <InntektsTabell inntekter={inntekter} />
         </div>
       )}
 
