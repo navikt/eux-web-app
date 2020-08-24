@@ -16,11 +16,12 @@ import styled from "styled-components";
 import _ from "lodash";
 import { vaskInputDato } from "utils/dato";
 import InntektsTabell from "components/Inntekt/InntektsTabell";
+import { Item } from "tabell";
 
 interface InntektProps {
   fnr: string;
   inntekter: Inntekter | undefined;
-  onInntektChange: () => void;
+  onSelectedInntekt: (items: Array<Item>) => void;
 }
 
 const AlignCenterCell = styled(Cell)`
@@ -67,7 +68,7 @@ const emptyIncomeSearch = {
 const Inntekt: React.FC<InntektProps> = ({
   fnr,
   inntekter,
-  onInntektChange,
+  onSelectedInntekt,
 }: InntektProps) => {
   const { t } = useTranslation();
   const [inntektSøk, setInntektSøk] = useState<IncomeSearch>(emptyIncomeSearch);
@@ -84,11 +85,6 @@ const Inntekt: React.FC<InntektProps> = ({
         tema: inntektSøk.tema,
       })
     );
-    test();
-  };
-
-  const test = () => {
-    if (inntekter !== undefined) console.log("inntekter from test", inntekter);
   };
 
   const updateIncomeSearch = (
@@ -96,7 +92,6 @@ const Inntekt: React.FC<InntektProps> = ({
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ): void => {
     const value = event.currentTarget.value;
-    console.log("updateIncomeSearch", value);
     setInntektSøk({
       ...inntektSøk,
       [felt]: value || "",
@@ -233,7 +228,10 @@ const Inntekt: React.FC<InntektProps> = ({
       </AlignedRow>
       {!_.isNil(inntekter) && (
         <div>
-          <InntektsTabell inntekter={inntekter} />
+          <InntektsTabell
+            inntekter={inntekter}
+            onSelectedInntekt={onSelectedInntekt}
+          />
         </div>
       )}
 

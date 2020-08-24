@@ -1,54 +1,34 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Inntekt } from "declarations/types";
-import InntektsTabellRow from "components/Inntekt/InntektsTabellRow";
-import TableSorter from "tabell";
-import { Item } from "../../../node_modules/tabell/lib/index";
+//import InntektsTabellRow from "components/Inntekt/InntektsTabellRow";
+import TableSorter, { Item } from "tabell";
 //import EtikettLiten from "./EtikettLiten";
 
 interface InntektsTabellProps {
   inntekter: Inntekt[] | undefined;
+  onSelectedInntekt: (items: Array<Item>) => void;
 }
 
 const InntektsTabell: React.FunctionComponent<InntektsTabellProps> = ({
   inntekter,
+  onSelectedInntekt,
 }) => {
+  const formatterPenger = (penger: number) =>
+    `${new Intl.NumberFormat("nb-NO", {
+      style: "decimal",
+      maximumFractionDigits: 2,
+    }).format(penger)} kr`;
+
   const mapInntektTilItem = (inntekt: Inntekt, index: number): Item => {
+    inntekt.beloep = formatterPenger(Number.parseInt(inntekt.beloep, 10));
     return {
       key: index.toString(),
       ...inntekt,
     } as Item;
   };
 
-  useEffect(() => {
-    if (inntekter !== undefined) {
-      inntekter.forEach((value: any, index: number) => {
-        mapInntektTilItem(value, index);
-      });
-    } else console.log("inntekter useEffect", inntekter);
-  }, [inntekter]);
-
   return (
     <div>
-      <table className="tabell">
-        <thead>
-          <tr>
-            <th>Fra Dato</th>
-            <th>Til Dato</th>
-            <th>Beløp</th>
-            <th>Type</th>
-          </tr>
-        </thead>
-        <tbody>
-          {inntekter?.map((inntekt: Inntekt) => (
-            <InntektsTabellRow
-              fraDato={inntekt.fraDato}
-              tilDato={inntekt.tilDato}
-              beloep={inntekt.beloep}
-              type={inntekt.type}
-            />
-          ))}
-        </tbody>
-      </table>
       <TableSorter
         items={
           inntekter
@@ -64,10 +44,11 @@ const InntektsTabell: React.FunctionComponent<InntektsTabellProps> = ({
         selectable={true}
         sortable={true}
         compact={false}
+        onRowSelectChange={onSelectedInntekt}
         columns={[
           { id: "fraDato", label: "Fra Dato", type: "date", filterText: "" },
           { id: "tilDato", label: "Til Dato", type: "date", filterText: "" },
-          { id: "beloep", label: "Beløp", type: "number", filterText: "" },
+          { id: "beloep", label: "Beløp", type: "string", filterText: "" },
           {
             id: "type",
             label: "Type",
