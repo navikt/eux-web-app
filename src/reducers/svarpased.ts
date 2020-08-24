@@ -1,4 +1,4 @@
-import { Arbeidsforhold, Inntekter } from 'declarations/types'
+import { Arbeidsforhold, Inntekter } from "declarations/types";
 import { ActionWithPayload } from "js-fetch-api";
 import { Action } from "redux";
 import * as types from "constants/actionTypes";
@@ -14,6 +14,7 @@ export interface SvarpasedState {
   svarPasedData: any;
   valgteArbeidsforhold: Arbeidsforhold;
   inntekter: Inntekter | undefined;
+  selectedInntekter: Inntekter | undefined;
 }
 
 export const initialSvarpasedState: SvarpasedState = {
@@ -25,7 +26,8 @@ export const initialSvarpasedState: SvarpasedState = {
   familierelasjoner: [],
   svarPasedData: undefined,
   valgteArbeidsforhold: [],
-  inntekter: undefined
+  inntekter: undefined,
+  selectedInntekter: undefined,
 };
 
 const svarpasedReducer = (
@@ -33,24 +35,28 @@ const svarpasedReducer = (
   action: Action | ActionWithPayload
 ) => {
   switch (action.type) {
-
     case types.SVARPASED_ARBEIDSFORHOLD_GET_SUCCESS:
       return {
         ...state,
-        arbeidsforhold: (action as ActionWithPayload).payload
-      }
+        arbeidsforhold: (action as ActionWithPayload).payload,
+      };
 
     case types.SVARPASED_ARBEIDSFORHOLD_ADD:
       return {
         ...state,
-        valgteArbeidsforhold: state.valgteArbeidsforhold.concat((action as ActionWithPayload).payload)
-      }
+        valgteArbeidsforhold: state.valgteArbeidsforhold.concat(
+          (action as ActionWithPayload).payload
+        ),
+      };
 
     case types.SVARPASED_ARBEIDSFORHOLD_REMOVE:
       return {
         ...state,
-        valgteArbeidsforhold: _.filter(state.valgteArbeidsforhold, i => i !== (action as ActionWithPayload).payload)
-      }
+        valgteArbeidsforhold: _.filter(
+          state.valgteArbeidsforhold,
+          (i) => i !== (action as ActionWithPayload).payload
+        ),
+      };
 
     case types.SVARPASED_SAKSNUMMER_GET_SUCCESS:
       return {
@@ -129,11 +135,16 @@ const svarpasedReducer = (
       };
 
     case types.SVARPASED_INNTEKT_GET_SUCCESS:
-
       return {
         ...state,
-        inntekter: (action as ActionWithPayload).payload
-      }
+        inntekter: (action as ActionWithPayload).payload,
+      };
+
+    case types.SVARPASED_SELECTED_INNTEKT_SUCCESS:
+      return {
+        ...state,
+        selectedInntekter: (action as ActionWithPayload).payload,
+      };
 
     default:
       return state;
