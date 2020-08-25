@@ -1,3 +1,4 @@
+import { Normaltekst } from 'nav-frontend-typografi'
 import React from "react";
 import { Inntekt } from "declarations/types";
 //import InntektsTabellRow from "components/Inntekt/InntektsTabellRow";
@@ -20,7 +21,6 @@ const InntektsTabell: React.FunctionComponent<InntektsTabellProps> = ({
     }).format(penger)} kr`;
 
   const mapInntektTilItem = (inntekt: Inntekt, index: number): Item => {
-    inntekt.beloep = formatterPenger(Number.parseInt(inntekt.beloep, 10));
     return {
       key: index.toString(),
       ...inntekt,
@@ -48,7 +48,13 @@ const InntektsTabell: React.FunctionComponent<InntektsTabellProps> = ({
         columns={[
           { id: "fraDato", label: "Fra Dato", type: "date", filterText: "" },
           { id: "tilDato", label: "Til Dato", type: "date", filterText: "" },
-          { id: "beloep", label: "Beløp", type: "string", filterText: "" },
+          { id: "beloep", label: "Beløp", type: "object", filterText: "" ,
+          renderCell: (item, value) => (
+            <Normaltekst>{
+              formatterPenger(Number.parseInt(item.beloep, 10))
+            }</Normaltekst>
+          )
+          },
           {
             id: "type",
             label: "Type",
