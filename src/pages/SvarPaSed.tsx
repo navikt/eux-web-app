@@ -20,7 +20,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import * as svarpasedActions from "actions/svarpased";
 import styled from "styled-components";
-import { FamilieRelasjon, Validation } from "declarations/types";
+import { FamilieRelasjon, Inntekter, Inntekt as IInntekt, Validation } from 'declarations/types'
 import Family from "components/Family/Family";
 import { SvarpasedState } from "reducers/svarpased";
 import _ from "lodash";
@@ -168,9 +168,15 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
   };
 
   const onSelectedInntekt = (items: Array<Item>) => {
+    const inntekter: Inntekter = items.map(item => ({
+      beloep: item.beloep,
+      fraDato: item.fraDato,
+      tilDato: item.tilDato,
+      type: item.type
+    } as IInntekt))
     console.log("onSelectedInntekt selectedInntekter", selectedInntekter);
-    console.log("onSelectedInntekt items", items);
-    if (items) dispatch(svarpasedActions.sendSeletedInntekt(items));
+    console.log("onSelectedInntekt items", inntekter);
+    if (items) dispatch(svarpasedActions.sendSeletedInntekt(inntekter));
   };
 
   useEffect(() => {
