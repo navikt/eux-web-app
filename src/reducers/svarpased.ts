@@ -64,12 +64,6 @@ const svarpasedReducer = (
         saksnummer: (action as ActionWithPayload).payload,
       };
 
-    case types.SVARPASED_SED_GET_SUCCESS:
-      return {
-        ...state,
-        sed: (action as ActionWithPayload).payload,
-      };
-
     case types.SVARPASED_SAKSNUMMER_GET_FAILURE:
       return {
         ...state,
@@ -112,10 +106,10 @@ const svarpasedReducer = (
         svarPasedData: null,
       };
 
-    case types.SVARPASED_SED_GET_FAILURE:
+    case types.SVARPASED_SET_SED:
       return {
         ...state,
-        sed: null,
+        sed: (action as ActionWithPayload).payload,
       };
     case types.SVARPASED_FAMILIERELASJONER_ADD:
       return {
@@ -144,6 +138,21 @@ const svarpasedReducer = (
       return {
         ...state,
         selectedInntekter: (action as ActionWithPayload).payload,
+      };
+
+    case types.APP_CLEAN_DATA:
+      return {
+        ...state,
+        person: undefined,
+        familierelasjoner: undefined,
+        algteArbeidsforhold: undefined,
+        inntekter: undefined,
+      };
+
+    case types.SAK_PERSON_RESET:
+      return {
+        ...state,
+        person: undefined,
       };
 
     default:

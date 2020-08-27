@@ -1,12 +1,12 @@
-import { clientClear } from 'actions/alert'
-import * as appActions from 'actions/app'
-import * as formActions from 'actions/form'
-import * as sakActions from 'actions/sak'
-import classNames from 'classnames'
-import AbortModal from 'components/AbortModal/AbortModal'
-import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
-import Family from 'components/Family/Family'
-import PersonSearch from 'components/PersonSearch/PersonSearch'
+import { clientClear } from "actions/alert";
+import * as appActions from "actions/app";
+import * as formActions from "actions/form";
+import * as sakActions from "actions/sak";
+import classNames from "classnames";
+import AbortModal from "components/AbortModal/AbortModal";
+import Arbeidsforhold from "components/Arbeidsforhold/Arbeidsforhold";
+import Family from "components/Family/Family";
+import PersonSearch from "components/PersonSearch/PersonSearch";
 import {
   Cell,
   Container,
@@ -14,27 +14,33 @@ import {
   HorizontalSeparatorDiv,
   Margin,
   Row,
-  VerticalSeparatorDiv
-} from 'components/StyledComponents'
-import TopContainer from 'components/TopContainer/TopContainer'
-import * as types from 'constants/actionTypes'
-import { State } from 'declarations/reducers'
-import { Enheter, FagSaker, FamilieRelasjon, Person, Validation } from 'declarations/types'
-import * as EKV from 'eessi-kodeverk'
-import CountrySelect from 'landvelger'
-import _ from 'lodash'
-import AlertStripe from 'nav-frontend-alertstriper'
-import { Flatknapp, Hovedknapp, Knapp } from 'nav-frontend-knapper'
-import Lenke from 'nav-frontend-lenker'
-import Panel from 'nav-frontend-paneler'
-import { Select } from 'nav-frontend-skjema'
-import { Systemtittel } from 'nav-frontend-typografi'
-import PT from 'prop-types'
-import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
-import styled from 'styled-components'
+  VerticalSeparatorDiv,
+} from "components/StyledComponents";
+import TopContainer from "components/TopContainer/TopContainer";
+import * as types from "constants/actionTypes";
+import { State } from "declarations/reducers";
+import {
+  Enheter,
+  FagSaker,
+  FamilieRelasjon,
+  Person,
+  Validation,
+} from "declarations/types";
+import * as EKV from "eessi-kodeverk";
+import CountrySelect from "landvelger";
+import _ from "lodash";
+import AlertStripe from "nav-frontend-alertstriper";
+import { Flatknapp, Hovedknapp, Knapp } from "nav-frontend-knapper";
+import Lenke from "nav-frontend-lenker";
+import Panel from "nav-frontend-paneler";
+import { Select } from "nav-frontend-skjema";
+import { Systemtittel } from "nav-frontend-typografi";
+import PT from "prop-types";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 export interface OpprettSakProps {
   history: any;
@@ -330,7 +336,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
   const onTemaChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     resetValidation(["tema", "saksId"]);
     dispatch(formActions.set("tema", event.target.value));
-    dispatch(sakActions.resetFagsaker())
+    dispatch(sakActions.resetFagsaker());
     dispatch(formActions.set("saksId", ""));
   };
 
@@ -375,15 +381,17 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
             validation={validation}
             resetAllValidation={resetAllValidation}
             onFnrChange={() => {
-              setIsFnrValid(false)
-              dispatch(appActions.cleanData())
+              setIsFnrValid(false);
+              dispatch(appActions.cleanData());
             }}
             onPersonFound={() => setIsFnrValid(true)}
             onSearchPerformed={(_fnr) => {
               dispatch(formActions.set("fnr", _fnr));
               dispatch(sakActions.getPerson(_fnr));
             }}
-            onPersonRemoved={() => dispatch(sakActions.resetPerson())}
+            onPersonRemoved={() => {
+              dispatch(sakActions.resetPerson());
+            }}
             onAlertClose={() => dispatch(clientClear())}
           />
           {person && (
@@ -671,9 +679,11 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   valgteArbeidsforhold={valgteArbeidsforhold}
                   arbeidsforhold={arbeidsforhold}
                   onArbeidsforholdClick={(item: any, checked: boolean) =>
-                    dispatch(checked ?
-                      formActions.addArbeidsforhold(item) :
-                      formActions.removeArbeidsforhold(item))
+                    dispatch(
+                      checked
+                        ? formActions.addArbeidsforhold(item)
+                        : formActions.removeArbeidsforhold(item)
+                    )
                   }
                 />
               )}
