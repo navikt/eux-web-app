@@ -1,9 +1,7 @@
-import { Normaltekst } from 'nav-frontend-typografi'
+import { Normaltekst } from "nav-frontend-typografi";
 import React from "react";
 import { Inntekt } from "declarations/types";
-//import InntektsTabellRow from "components/Inntekt/InntektsTabellRow";
 import TableSorter, { Item } from "tabell";
-//import EtikettLiten from "./EtikettLiten";
 
 interface InntektsTabellProps {
   inntekter: Inntekt[] | undefined;
@@ -48,19 +46,22 @@ const InntektsTabell: React.FunctionComponent<InntektsTabellProps> = ({
         columns={[
           { id: "fraDato", label: "Fra Dato", type: "date", filterText: "" },
           { id: "tilDato", label: "Til Dato", type: "date", filterText: "" },
-          { id: "beloep", label: "Beløp", type: "object", filterText: "" ,
-          renderCell: (item, value) => (
-            <Normaltekst>{
-              formatterPenger(Number.parseInt(item.beloep, 10))
-            }</Normaltekst>
-          )
+          {
+            id: "beloep",
+            label: "Beløp",
+            type: "object",
+            filterText: "",
+            renderCell: (item, value) => (
+              <Normaltekst>
+                {formatterPenger(Number.parseInt(item.beloep, 10))}
+              </Normaltekst>
+            ),
           },
           {
             id: "type",
             label: "Type",
             type: "string",
             filterText: "",
-            //renderCell: (item, value) => <EtikettLiten>{value}</EtikettLiten>,
           },
         ]}
       />

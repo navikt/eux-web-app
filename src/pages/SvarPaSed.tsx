@@ -1,4 +1,6 @@
 import { clientClear } from "actions/alert";
+import * as appActions from "actions/app";
+import * as sakActions from "actions/sak";
 import Arbeidsforhold from "components/Arbeidsforhold/Arbeidsforhold";
 import Inntekt from "components/Inntekt/Inntekt";
 import PersonSearch from "components/PersonSearch/PersonSearch";
@@ -20,7 +22,12 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import * as svarpasedActions from "actions/svarpased";
 import styled from "styled-components";
-import { FamilieRelasjon, Inntekter, Inntekt as IInntekt, Validation } from 'declarations/types'
+import {
+  FamilieRelasjon,
+  Inntekter,
+  Inntekt as IInntekt,
+  Validation,
+} from "declarations/types";
 import Family from "components/Family/Family";
 import { SvarpasedState } from "reducers/svarpased";
 import _ from "lodash";
@@ -44,7 +51,6 @@ const mapState = (state: State): any => ({
   alertMessage: state.alert.clientErrorMessage,
   alertType: state.alert.type,
   gettingPerson: state.loading.gettingPerson,
-
   person: state.svarpased.person,
   personRelatert: state.svarpased.personRelatert,
   familierelasjonKodeverk: state.sak.familierelasjoner,
@@ -52,11 +58,19 @@ const mapState = (state: State): any => ({
   arbeidsforhold: state.svarpased.arbeidsforhold,
   valgteArbeidsforhold: state.svarpased.valgteArbeidsforhold,
   inntekter: state.svarpased.inntekter,
-  selectedInntekter: state.svarpased.selectedInntekter,
   gettingSaksnummer: state.loading.gettingSaksnummer,
   saksnummer: state.svarpased.saksnummer,
   sed: state.svarpased.sed,
   svarPasedData: state.svarpased.svarPasedData,
+});
+
+const mapStateTwo = (state: State): any => ({
+  sed: state.svarpased.sed,
+  person: state.svarpased.person,
+  saksnummer: state.svarpased.saksnummer,
+  inntekter: state.svarpased.selectedInntekter,
+  arbeidsforhold: state.svarpased.valgteArbeidsforhold,
+  familieRelasjoner: state.svarpased.familierelasjoner,
 });
 
 export interface SvarPaSedProps {
@@ -75,13 +89,13 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
   const dispatch = useDispatch();
 
   const {
+    sed,
     alertStatus,
     alertMessage,
     alertType,
     arbeidsforhold,
     gettingPerson,
     inntekter,
-    selectedInntekter,
     person,
     personRelatert,
     saksnummer,
@@ -90,9 +104,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
     valgteFamilieRelasjoner,
     svarPasedData,
   }: any = useSelector<State, any>(mapState);
-  const data: SvarpasedState = useSelector<State, SvarpasedState>(
-    (state) => state.svarpased
-  );
+  const data: SvarpasedState = useSelector<State, SvarpasedState>(mapStateTwo);
 
   const onSaksnummerClick = () => {
     dispatch(svarpasedActions.getSaksnummer(_saksnummer));
@@ -101,15 +113,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
   const validate = (): Validation => {
     const validation: Validation = {
       saksnummer: saksnummer ? null : "No saksnummer",
-      //fnr: !valgtFnr ? t('ui:validation-noFnr') : !isFnrValid ? t('ui:validation-uncheckedFnr') : null,
-      //sektor: !valgtSektor ? t('ui:validation-noSektor') : null,
-      //buctype: !valgtBucType ? t('ui:validation-noBuctype') : null,
-      //sedtype: !valgtSedType ? t('ui:validation-noSedtype') : null,
-      //landkode: !valgtLandkode ? t('ui:validation-noLand') : null,
-      //institusjon: !valgtInstitusjon ? t('ui:validation-noInstitusjonsID') : null,
-      //tema: !valgtTema ? t('ui:validation-noTema') : null,
-      //saksId: !valgtSaksId ? t('ui:validation-noSaksId') : null,
-      //unit: visEnheter && !valgtUnit ? t('ui:validation-noUnit') : null
+      sed: !sed ? t("ui:validation-noSedtype") : null,
     };
     setValidation(validation);
     return validation;
@@ -137,20 +141,14 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
   };
 
   const sendData = (): void => {
-    console.log("Hopp Hopp", validate());
-    console.log("selectedInntekter", selectedInntekter);
     dispatch(svarpasedActions.sendSvarPaSedData(data));
     if (isValid(validate())) {
-      console.log("Happ Happ" + validate());
-      console.log("selectedInntekter", selectedInntekter);
       dispatch(svarpasedActions.sendSvarPaSedData(data));
     }
-    console.log("selectedInntekter", selectedInntekter);
   };
 
   const onSedChange = (e: any) => {
-    //resetValidation([]);
-    dispatch(svarpasedActions.getSed(e.target.value));
+    dispatch(svarpasedActions.setSed(e.target.value));
   };
 
   const addTpsRelation = (relation: FamilieRelasjon): void => {
@@ -168,15 +166,18 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
   };
 
   const onSelectedInntekt = (items: Array<Item>) => {
-    const inntekter: Inntekter = items.map(item => ({
-      beloep: item.beloep,
-      fraDato: item.fraDato,
-      tilDato: item.tilDato,
-      type: item.type
-    } as IInntekt))
-    console.log("onSelectedInntekt selectedInntekter", selectedInntekter);
-    console.log("onSelectedInntekt items", inntekter);
-    if (items) dispatch(svarpasedActions.sendSeletedInntekt(inntekter));
+    const inntekter: Inntekter = items.map(
+      (item) =>
+        ({
+          beloep: item.beloep,
+          fraDato: item.fraDato,
+          tilDato: item.tilDato,
+          type: item.type,
+        } as IInntekt)
+    );
+    if (items) {
+      dispatch(svarpasedActions.sendSeletedInntekt(inntekter));
+    }
   };
 
   useEffect(() => {
@@ -226,16 +227,25 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
             className="slideAnimate"
             validation={validation}
             resetAllValidation={resetAllValidation}
-            onFnrChange={() => setIsFnrValid(false)}
+            onFnrChange={() => {
+              setIsFnrValid(false);
+              dispatch(appActions.cleanData());
+            }}
             onPersonFound={() => setIsFnrValid(true)}
             onSearchPerformed={(_fnr) => {
               dispatch(svarpasedActions.getPerson(_fnr));
             }}
-            onPersonRemoved={() => {}}
+            onPersonRemoved={() => {
+              dispatch(sakActions.resetPerson());
+            }}
             onAlertClose={() => dispatch(clientClear())}
           />
           {saksnummer && (
-            <SedSelect label={"Velg svar SED"} onChange={onSedChange}>
+            <SedSelect
+              label={"Velg svar SED"}
+              onChange={onSedChange}
+              feil={validation.sed}
+            >
               <option key="">-</option>
               {saksnummer?.map((s: any) => {
                 return <option key={s.value}>{s.label}</option>;

@@ -24,20 +24,12 @@ export const getSaksnummer: ActionCreator<ThunkResult<ActionWithPayload>> = (
   });
 };
 
-export const getSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
-  sed: string
-): ThunkResult<ActionWithPayload> => {
-  return realCall({
-    url: sprintf(urls.API_SVARPASED_SED_URL, {
-      sed: sed,
-    }),
-    type: {
-      request: types.SVARPASED_SED_GET_REQUEST,
-      success: types.SVARPASED_SED_GET_SUCCESS,
-      failure: types.SVARPASED_SED_GET_FAILURE,
-    },
-  });
-};
+export const setSed: ActionCreator<ActionWithPayload> = (
+  payload: string
+): ActionWithPayload => ({
+  type: types.SVARPASED_SET_SED,
+  payload: payload,
+});
 
 export const getPerson: ActionCreator<ThunkResult<ActionWithPayload>> = (
   fnr: string
@@ -101,6 +93,7 @@ export const sendSvarPaSedData: ActionCreator<ThunkResult<
       success: types.SVARPASED_SENDSVARPASEDDATA_POST_SUCCESS,
       failure: types.SVARPASED_SENDSVARPASEDDATA_POST_FAILURE,
     },
+    body: payload,
   });
 };
 
@@ -156,47 +149,3 @@ export const sendSeletedInntekt: ActionCreator<ActionWithPayload> = (
   type: types.SVARPASED_SELECTED_INNTEKT_SUCCESS,
   payload: payload,
 });
-
-/*
-export const sendSeletedInntekt: ActionCreator<ThunkResult<
-  ActionWithPayload
->> = (payload: Inntekt): ThunkResult<ActionWithPayload> => {
-  return realCall({
-    method: "POST",
-    type: {
-      request: types.SVARPASED_SELECTED_INNTEKT_REQUEST,
-      success: types.SVARPASED_SELECTED_INNTEKT_SUCCESS,
-      failure: types.SVARPASED_SELECTED_INNTEKT_FAILURE,
-    },
-    payload: payload,
-  });
-};
-*/
-/*
-export const createSak: ActionCreator<ThunkResult<ActionWithPayload>> = (data: any): ThunkResult<ActionWithPayload> => {
-
-  return realCall({
-    url: urls.API_SAK_SEND_POST_URL,
-    method: 'POST',
-    payload: payload,
-    type: {
-      request: types.SAK_SEND_POST_REQUEST,
-      success: types.SAK_SEND_POST_SUCCESS,
-      failure: types.SAK_SEND_POST_FAILURE
-    }
-  })
-}
-*/
-/*
-export const getSaksnummer: ActionCreator<ThunkResult<ActionWithPayload>> = (
-  saksnummer: string
-): ThunkResult<ActionWithPayload> => {
-  return realCall({
-    url: sprintf(urls.API_SVARPASED_SAKSNUMMER_URL, { saksnummer: saksnummer }),
-    type: {
-      request: types.SVARPASED_SAKSNUMMER_GET_REQUEST,
-      success: types.SVARPASED_SAKSNUMMER_GET_SUCCESS,
-      failure: types.SVARPASED_SAKSNUMMER_GET_FAILURE,
-    },
-  });
-};*/
