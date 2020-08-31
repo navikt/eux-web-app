@@ -1,54 +1,70 @@
+import { Normaltekst } from "nav-frontend-typografi";
 import React from "react";
-import "nav-frontend-tabell-style";
 import { Inntekt } from "declarations/types";
-import InntektsTabellRow from "components/Inntekt/InntektsTabellRow";
-//import { Cell } from "components/StyledComponents";
-//import styled from "styled-components";
-import { css } from "@emotion/core";
+import TableSorter, { Item } from "tabell";
 
 interface InntektsTabellProps {
   inntekter: Inntekt[] | undefined;
+  onSelectedInntekt: (items: Array<Item>) => void;
 }
-
-/*
-const TableCell = styled(Cell)`
-  display: flex;
-  background-color: purple;
-`;
-*/
-
-const pStyle = css({
-  backgroundColor: "purple",
-  width: "100%",
-});
-
-//className="tabell"
 
 const InntektsTabell: React.FunctionComponent<InntektsTabellProps> = ({
   inntekter,
+  onSelectedInntekt,
 }) => {
+  const formatterPenger = (penger: number) =>
+    `${new Intl.NumberFormat("nb-NO", {
+      style: "decimal",
+      maximumFractionDigits: 2,
+    }).format(penger)} kr`;
+
+  const mapInntektTilItem = (inntekt: Inntekt, index: number): Item => {
+    return {
+      key: index.toString(),
+      ...inntekt,
+    } as Item;
+  };
+
   return (
-    <div css={pStyle}>
-      <table className="tabell">
-        <thead>
-          <tr>
-            <th>Fra Dato</th>
-            <th>Til Dato</th>
-            <th>Beløp</th>
-            <th>Type</th>
-          </tr>
-        </thead>
-        <tbody>
-          {inntekter?.map((inntekt: Inntekt) => (
-            <InntektsTabellRow
-              fraDato={inntekt.fraDato}
-              tilDato={inntekt.tilDato}
-              beloep={inntekt.beloep}
-              type={inntekt.type}
-            />
-          ))}
-        </tbody>
-      </table>
+    <div>
+      <TableSorter
+        items={
+          inntekter
+            ? inntekter.map((inntekt: Inntekt, index: number) =>
+                mapInntektTilItem(inntekt, index)
+              )
+            : []
+        }
+        itemsPerPage={10}
+        loading={false}
+        animatable={true}
+        searchable={true}
+        selectable={true}
+        sortable={true}
+        compact={false}
+        onRowSelectChange={onSelectedInntekt}
+        columns={[
+          { id: "fraDato", label: "Fra Dato", type: "date", filterText: "" },
+          { id: "tilDato", label: "Til Dato", type: "date", filterText: "" },
+          {
+            id: "beloep",
+            label: "Beløp",
+            type: "object",
+            filterText: "",
+            renderCell: (item, value) => (
+              <Normaltekst>
+                {formatterPenger(Number.parseInt(item.beloep, 10))}
+              </Normaltekst>
+            ),
+          },
+          {
+            id: "type",
+            label: "Type",
+            type: "string",
+            filterText: "",
+          },
+        ]}
+      />
     </div>
   );
 };

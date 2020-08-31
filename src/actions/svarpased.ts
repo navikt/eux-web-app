@@ -2,7 +2,11 @@ import * as types from "constants/actionTypes";
 import * as urls from "constants/urls";
 import { realCall, ActionWithPayload, ThunkResult } from "js-fetch-api";
 import { Action, ActionCreator } from "redux";
-import { Arbeidsforholdet, FamilieRelasjon } from 'declarations/types'
+import {
+  Arbeidsforholdet,
+  FamilieRelasjon,
+  Inntekter,
+} from "declarations/types";
 import { SvarpasedState } from "reducers/svarpased";
 
 const sprintf = require("sprintf-js").sprintf;
@@ -20,20 +24,12 @@ export const getSaksnummer: ActionCreator<ThunkResult<ActionWithPayload>> = (
   });
 };
 
-export const getSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
-  sed: string
-): ThunkResult<ActionWithPayload> => {
-  return realCall({
-    url: sprintf(urls.API_SVARPASED_SED_URL, {
-      sed: sed,
-    }),
-    type: {
-      request: types.SVARPASED_SED_GET_REQUEST,
-      success: types.SVARPASED_SED_GET_SUCCESS,
-      failure: types.SVARPASED_SED_GET_FAILURE,
-    },
-  });
-};
+export const setSed: ActionCreator<ActionWithPayload> = (
+  payload: string
+): ActionWithPayload => ({
+  type: types.SVARPASED_SET_SED,
+  payload: payload,
+});
 
 export const getPerson: ActionCreator<ThunkResult<ActionWithPayload>> = (
   fnr: string
@@ -97,74 +93,59 @@ export const sendSvarPaSedData: ActionCreator<ThunkResult<
       success: types.SVARPASED_SENDSVARPASEDDATA_POST_SUCCESS,
       failure: types.SVARPASED_SENDSVARPASEDDATA_POST_FAILURE,
     },
+    body: payload,
   });
 };
 
-export const getArbeidsforhold: ActionCreator<ThunkResult<ActionWithPayload>> = (fnr: string): ThunkResult<ActionWithPayload> => {
+export const getArbeidsforhold: ActionCreator<ThunkResult<
+  ActionWithPayload
+>> = (fnr: string): ThunkResult<ActionWithPayload> => {
   return realCall({
     url: sprintf(urls.API_SAK_ARBEIDSFORHOLD_URL, { fnr: fnr }),
     type: {
       request: types.SVARPASED_ARBEIDSFORHOLD_GET_REQUEST,
       success: types.SVARPASED_ARBEIDSFORHOLD_GET_SUCCESS,
-      failure: types.SVARPASED_ARBEIDSFORHOLD_GET_FAILURE
-    }
-  })
-}
+      failure: types.SVARPASED_ARBEIDSFORHOLD_GET_FAILURE,
+    },
+  });
+};
 
-export const addArbeidsforhold: ActionCreator<ActionWithPayload> = (payload: Arbeidsforholdet): ActionWithPayload => ({
+export const addArbeidsforhold: ActionCreator<ActionWithPayload> = (
+  payload: Arbeidsforholdet
+): ActionWithPayload => ({
   type: types.SVARPASED_ARBEIDSFORHOLD_ADD,
-  payload: payload
-})
+  payload: payload,
+});
 
-export const removeArbeidsforhold: ActionCreator<ActionWithPayload> = (payload: Arbeidsforholdet): ActionWithPayload => ({
+export const removeArbeidsforhold: ActionCreator<ActionWithPayload> = (
+  payload: Arbeidsforholdet
+): ActionWithPayload => ({
   type: types.SVARPASED_ARBEIDSFORHOLD_REMOVE,
-  payload: payload
-})
+  payload: payload,
+});
 
-export const fetchInntekt: ActionCreator<ThunkResult<ActionWithPayload>> = (data : any): ThunkResult<ActionWithPayload> => {
-
+export const fetchInntekt: ActionCreator<ThunkResult<ActionWithPayload>> = (
+  data: any
+): ThunkResult<ActionWithPayload> => {
   return realCall({
     url: sprintf(urls.API_SAK_INNTEKT_URL, {
       fnr: data.fnr,
       fraDato: data.fraDato,
       tilDato: data.tilDato,
-      tema: data.tema
+      tema: data.tema,
     }),
-    method: 'GET',
+    method: "GET",
     type: {
       request: types.SVARPASED_INNTEKT_GET_REQUEST,
       success: types.SVARPASED_INNTEKT_GET_SUCCESS,
-      failure: types.SVARPASED_INNTEKT_GET_FAILURE
-    }
-  })
-}
-
-
-/*
-export const createSak: ActionCreator<ThunkResult<ActionWithPayload>> = (data: any): ThunkResult<ActionWithPayload> => {
-
-  return realCall({
-    url: urls.API_SAK_SEND_POST_URL,
-    method: 'POST',
-    payload: payload,
-    type: {
-      request: types.SAK_SEND_POST_REQUEST,
-      success: types.SAK_SEND_POST_SUCCESS,
-      failure: types.SAK_SEND_POST_FAILURE
-    }
-  })
-}
-*/
-/*
-export const getSaksnummer: ActionCreator<ThunkResult<ActionWithPayload>> = (
-  saksnummer: string
-): ThunkResult<ActionWithPayload> => {
-  return realCall({
-    url: sprintf(urls.API_SVARPASED_SAKSNUMMER_URL, { saksnummer: saksnummer }),
-    type: {
-      request: types.SVARPASED_SAKSNUMMER_GET_REQUEST,
-      success: types.SVARPASED_SAKSNUMMER_GET_SUCCESS,
-      failure: types.SVARPASED_SAKSNUMMER_GET_FAILURE,
+      failure: types.SVARPASED_INNTEKT_GET_FAILURE,
     },
   });
-};*/
+};
+
+export const sendSeletedInntekt: ActionCreator<ActionWithPayload> = (
+  payload: Inntekter
+): ActionWithPayload => ({
+  type: types.SVARPASED_SELECTED_INNTEKT_SUCCESS,
+  payload: payload,
+});

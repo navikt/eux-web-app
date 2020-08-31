@@ -1,24 +1,37 @@
 import { clientClear } from "actions/alert";
-import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
-import Inntekt from 'components/Inntekt/Inntekt'
+import * as appActions from "actions/app";
+import * as sakActions from "actions/sak";
+import Arbeidsforhold from "components/Arbeidsforhold/Arbeidsforhold";
+import Inntekt from "components/Inntekt/Inntekt";
 import PersonSearch from "components/PersonSearch/PersonSearch";
-import { Container, Content, Margin, VerticalSeparatorDiv } from 'components/StyledComponents'
+import {
+  Container,
+  Content,
+  Margin,
+  VerticalSeparatorDiv,
+} from "components/StyledComponents";
 import TopContainer from "components/TopContainer/TopContainer";
 import * as types from "constants/actionTypes";
 import { State } from "declarations/reducers";
 import Alertstripe from "nav-frontend-alertstriper";
-import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel'
+import Ekspanderbartpanel from "nav-frontend-ekspanderbartpanel";
 import { Knapp } from "nav-frontend-knapper";
 import { Input, Select } from "nav-frontend-skjema";
-import React, { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import * as svarpasedActions from "actions/svarpased";
 import styled from "styled-components";
-import { FamilieRelasjon, Validation } from "declarations/types";
+import {
+  FamilieRelasjon,
+  Inntekter,
+  Inntekt as IInntekt,
+  Validation,
+} from "declarations/types";
 import Family from "components/Family/Family";
 import { SvarpasedState } from "reducers/svarpased";
 import _ from "lodash";
+import { Item } from "tabell";
 
 const SaksnummerDiv = styled.div`
   display: flex;
@@ -38,7 +51,6 @@ const mapState = (state: State): any => ({
   alertMessage: state.alert.clientErrorMessage,
   alertType: state.alert.type,
   gettingPerson: state.loading.gettingPerson,
-
   person: state.svarpased.person,
   personRelatert: state.svarpased.personRelatert,
   familierelasjonKodeverk: state.sak.familierelasjoner,
@@ -46,27 +58,38 @@ const mapState = (state: State): any => ({
   arbeidsforhold: state.svarpased.arbeidsforhold,
   valgteArbeidsforhold: state.svarpased.valgteArbeidsforhold,
   inntekter: state.svarpased.inntekter,
-
   gettingSaksnummer: state.loading.gettingSaksnummer,
   saksnummer: state.svarpased.saksnummer,
   sed: state.svarpased.sed,
   svarPasedData: state.svarpased.svarPasedData,
-})
+});
+
+const mapStateTwo = (state: State): any => ({
+  sed: state.svarpased.sed,
+  person: state.svarpased.person,
+  saksnummer: state.svarpased.saksnummer,
+  inntekter: state.svarpased.selectedInntekter,
+  arbeidsforhold: state.svarpased.valgteArbeidsforhold,
+  familieRelasjoner: state.svarpased.familierelasjoner,
+});
 
 export interface SvarPaSedProps {
-  location: any
+  location: any;
 }
 
-const SvarPaSed: React.FC<SvarPaSedProps> = ({ location }: SvarPaSedProps): JSX.Element => {
-  const [_saksnummer, setSaksnummer] = useState<string | undefined>(undefined)
-  const [validation, setValidation] = useState<{ [k: string]: any }>({})
-  const [, setIsFnrValid] = useState<boolean>(false)
-  const [mounted, setMounted] = useState<boolean>(false)
-  const [fnr, setFnr] = useState<string>('')
-  const { t } = useTranslation()
-  const dispatch = useDispatch()
+const SvarPaSed: React.FC<SvarPaSedProps> = ({
+  location,
+}: SvarPaSedProps): JSX.Element => {
+  const [_saksnummer, setSaksnummer] = useState<string | undefined>(undefined);
+  const [validation, setValidation] = useState<{ [k: string]: any }>({});
+  const [, setIsFnrValid] = useState<boolean>(false);
+  const [mounted, setMounted] = useState<boolean>(false);
+  const [fnr, setFnr] = useState<string>("");
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const {
+    sed,
     alertStatus,
     alertMessage,
     alertType,
@@ -80,10 +103,8 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({ location }: SvarPaSedProps): JSX.
     valgteArbeidsforhold,
     valgteFamilieRelasjoner,
     svarPasedData,
-  }: any = useSelector<State, any>(mapState)
-  const data: SvarpasedState = useSelector<State, SvarpasedState>(
-    (state) => state.svarpased
-  )
+  }: any = useSelector<State, any>(mapState);
+  const data: SvarpasedState = useSelector<State, SvarpasedState>(mapStateTwo);
 
   const onSaksnummerClick = () => {
     dispatch(svarpasedActions.getSaksnummer(_saksnummer));
@@ -92,15 +113,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({ location }: SvarPaSedProps): JSX.
   const validate = (): Validation => {
     const validation: Validation = {
       saksnummer: saksnummer ? null : "No saksnummer",
-      //fnr: !valgtFnr ? t('ui:validation-noFnr') : !isFnrValid ? t('ui:validation-uncheckedFnr') : null,
-      //sektor: !valgtSektor ? t('ui:validation-noSektor') : null,
-      //buctype: !valgtBucType ? t('ui:validation-noBuctype') : null,
-      //sedtype: !valgtSedType ? t('ui:validation-noSedtype') : null,
-      //landkode: !valgtLandkode ? t('ui:validation-noLand') : null,
-      //institusjon: !valgtInstitusjon ? t('ui:validation-noInstitusjonsID') : null,
-      //tema: !valgtTema ? t('ui:validation-noTema') : null,
-      //saksId: !valgtSaksId ? t('ui:validation-noSaksId') : null,
-      //unit: visEnheter && !valgtUnit ? t('ui:validation-noUnit') : null
+      sed: !sed ? t("ui:validation-noSedtype") : null,
     };
     setValidation(validation);
     return validation;
@@ -128,16 +141,14 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({ location }: SvarPaSedProps): JSX.
   };
 
   const sendData = (): void => {
-    console.log("Hopp Hopp" + validate());
+    dispatch(svarpasedActions.sendSvarPaSedData(data));
     if (isValid(validate())) {
-      console.log("Happ Happ" + validate());
       dispatch(svarpasedActions.sendSvarPaSedData(data));
     }
   };
 
   const onSedChange = (e: any) => {
-    //resetValidation([]);
-    dispatch(svarpasedActions.getSed(e.target.value));
+    dispatch(svarpasedActions.setSed(e.target.value));
   };
 
   const addTpsRelation = (relation: FamilieRelasjon): void => {
@@ -154,24 +165,38 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({ location }: SvarPaSedProps): JSX.
     dispatch(svarpasedActions.removeFamilierelasjoner(relation));
   };
 
+  const onSelectedInntekt = (items: Array<Item>) => {
+    const inntekter: Inntekter = items.map(
+      (item) =>
+        ({
+          beloep: item.beloep,
+          fraDato: item.fraDato,
+          tilDato: item.tilDato,
+          type: item.type,
+        } as IInntekt)
+    );
+    if (items) {
+      dispatch(svarpasedActions.sendSeletedInntekt(inntekter));
+    }
+  };
+
   useEffect(() => {
     if (!mounted) {
-      const params: URLSearchParams = new URLSearchParams(location.search)
-      const rinasaksnummerParam = params.get('rinasaksnummer')
-      const fnrParam = params.get('fnr')
+      const params: URLSearchParams = new URLSearchParams(location.search);
+      const rinasaksnummerParam = params.get("rinasaksnummer");
+      const fnrParam = params.get("fnr");
       if (rinasaksnummerParam) {
-        setSaksnummer(rinasaksnummerParam)
+        setSaksnummer(rinasaksnummerParam);
         dispatch(svarpasedActions.getSaksnummer(rinasaksnummerParam));
       }
       if (fnrParam) {
-        setFnr(fnrParam)
+        setFnr(fnrParam);
         dispatch(svarpasedActions.getPerson(fnrParam));
         dispatch(svarpasedActions.getArbeidsforhold(fnrParam));
       }
-      setMounted(true)
+      setMounted(true);
     }
-
-  }, [dispatch, mounted, location.search])
+  }, [dispatch, mounted, location.search]);
 
   return (
     <TopContainer>
@@ -191,7 +216,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({ location }: SvarPaSedProps): JSX.
             />
             <Knapp onClick={onSaksnummerClick}>Hent</Knapp>
           </SaksnummerDiv>
-          <VerticalSeparatorDiv/>
+          <VerticalSeparatorDiv />
           <PersonSearch
             alertStatus={alertStatus}
             alertMessage={alertMessage}
@@ -202,29 +227,35 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({ location }: SvarPaSedProps): JSX.
             className="slideAnimate"
             validation={validation}
             resetAllValidation={resetAllValidation}
-            onFnrChange={() => setIsFnrValid(false)}
+            onFnrChange={() => {
+              setIsFnrValid(false);
+              dispatch(appActions.cleanData());
+            }}
             onPersonFound={() => setIsFnrValid(true)}
             onSearchPerformed={(_fnr) => {
               dispatch(svarpasedActions.getPerson(_fnr));
             }}
-            onPersonRemoved={() => {}}
+            onPersonRemoved={() => {
+              dispatch(sakActions.resetPerson());
+            }}
             onAlertClose={() => dispatch(clientClear())}
           />
           {saksnummer && (
             <SedSelect
-              label={'Velg svar SED'}
+              label={"Velg svar SED"}
               onChange={onSedChange}
+              feil={validation.sed}
             >
-              <option key=''>-</option>
+              <option key="">-</option>
               {saksnummer?.map((s: any) => {
                 return <option key={s.value}>{s.label}</option>;
               })}
             </SedSelect>
           )}
-          <VerticalSeparatorDiv/>
+          <VerticalSeparatorDiv />
           {!_.isNil(person) && (
             <>
-              <Ekspanderbartpanel tittel={t('ui:label-familyRelationships')}>
+              <Ekspanderbartpanel tittel={t("ui:label-familyRelationships")}>
                 <Family
                   alertStatus={alertStatus}
                   alertMessage={alertMessage}
@@ -247,13 +278,13 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({ location }: SvarPaSedProps): JSX.
                   }}
                   onAlertClose={() => dispatch(clientClear())}
                   onSearchFnr={(sok) => {
-                    dispatch(svarpasedActions.resetPersonRelatert())
-                    dispatch(svarpasedActions.getPersonRelated(sok))
+                    dispatch(svarpasedActions.resetPersonRelatert());
+                    dispatch(svarpasedActions.getPersonRelated(sok));
                   }}
                 />
               </Ekspanderbartpanel>
-              <VerticalSeparatorDiv/>
-              <Ekspanderbartpanel tittel={t('ui:label-arbeidsforhold')}>
+              <VerticalSeparatorDiv />
+              <Ekspanderbartpanel tittel={t("ui:label-arbeidsforhold")}>
                 <Arbeidsforhold
                   getArbeidsforhold={() => {
                     dispatch(svarpasedActions.getArbeidsforhold(person?.fnr));
@@ -261,28 +292,26 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({ location }: SvarPaSedProps): JSX.
                   valgteArbeidsforhold={valgteArbeidsforhold}
                   arbeidsforhold={arbeidsforhold}
                   onArbeidsforholdClick={(item: any, checked: boolean) =>
-                    dispatch(checked ?
-                      svarpasedActions.addArbeidsforhold(item) :
-                      svarpasedActions.removeArbeidsforhold(item))
+                    dispatch(
+                      checked
+                        ? svarpasedActions.addArbeidsforhold(item)
+                        : svarpasedActions.removeArbeidsforhold(item)
+                    )
                   }
                 />
               </Ekspanderbartpanel>
-              <VerticalSeparatorDiv/>
-              <Ekspanderbartpanel tittel={t('ui:label-inntekt')}>
+              <VerticalSeparatorDiv />
+              <Ekspanderbartpanel tittel={t("ui:label-inntekt")}>
                 <Inntekt
                   fnr={person.fnr}
                   inntekter={inntekter}
-                  onInntektChange={() => {}}
+                  onSelectedInntekt={onSelectedInntekt}
                 />
               </Ekspanderbartpanel>
             </>
           )}
-          <VerticalSeparatorDiv/>
-          {person && (
-            <Knapp onClick={sendData}>
-              Send Data
-            </Knapp>
-          )}
+          <VerticalSeparatorDiv />
+          {person && <Knapp onClick={sendData}>Send Data</Knapp>}
           {!_.isNil(svarPasedData) && (
             <Alertstripe type="suksess">{svarPasedData.message}</Alertstripe>
           )}
