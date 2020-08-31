@@ -31,15 +31,17 @@ const Forside: React.FC = (): JSX.Element => {
             >
               {t('ui:menu-addAttachment')}
             </Lenkepanel>
-            <Lenkepanel
-              tittelProps='undertittel'
-              className='slideAnimate'
-              style={{ animationDelay: '0.3s' }}
-              linkCreator={(props: any) => (<Link to='/svarpased' {...props} />)}
-              href='#'
-            >
-              {t('ui:menu-svarpased')}
-            </Lenkepanel>
+            {window.location.hostname !== 'eux-helloeu-app-q2.nais.preprod.local' && (
+              <Lenkepanel
+                tittelProps='undertittel'
+                className='slideAnimate'
+                style={{ animationDelay: '0.3s' }}
+                linkCreator={(props: any) => (<Link to='/svarpased' {...props} />)}
+                href='#'
+              >
+                {t('ui:menu-svarpased')}
+              </Lenkepanel>
+            )}
           </>
         </Content>
         <Margin />
