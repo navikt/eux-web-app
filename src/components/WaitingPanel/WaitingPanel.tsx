@@ -28,7 +28,7 @@ const WaitingPanelDiv = styled.div`
 `
 
 const WaitingPanel: React.FC<WaitingPanelProps> = ({
-  className, size = 'M', style = {}, message = 'Vennligst vent...', oneLine = false
+  size = 'M', style = {}, message = 'Vennligst vent...', oneLine = false
 }: WaitingPanelProps): JSX.Element | null => (
   <WaitingPanelDiv
     style={style}

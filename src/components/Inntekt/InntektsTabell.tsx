@@ -1,7 +1,7 @@
-import { Normaltekst } from "nav-frontend-typografi";
-import React from "react";
-import { Inntekt } from "declarations/types";
-import TableSorter, { Item } from "tabell";
+import { Normaltekst } from 'nav-frontend-typografi'
+import React from 'react'
+import { Inntekt } from 'declarations/types'
+import TableSorter, { Item } from 'tabell'
 
 interface InntektsTabellProps {
   inntekter: Inntekt[] | undefined;
@@ -10,20 +10,20 @@ interface InntektsTabellProps {
 
 const InntektsTabell: React.FunctionComponent<InntektsTabellProps> = ({
   inntekter,
-  onSelectedInntekt,
+  onSelectedInntekt
 }) => {
   const formatterPenger = (penger: number) =>
-    `${new Intl.NumberFormat("nb-NO", {
-      style: "decimal",
-      maximumFractionDigits: 2,
-    }).format(penger)} kr`;
+    `${new Intl.NumberFormat('nb-NO', {
+      style: 'decimal',
+      maximumFractionDigits: 2
+    }).format(penger)} kr`
 
   const mapInntektTilItem = (inntekt: Inntekt, index: number): Item => {
     return {
       key: index.toString(),
-      ...inntekt,
-    } as Item;
-  };
+      ...inntekt
+    } as Item
+  }
 
   return (
     <div>
@@ -31,41 +31,41 @@ const InntektsTabell: React.FunctionComponent<InntektsTabellProps> = ({
         items={
           inntekter
             ? inntekter.map((inntekt: Inntekt, index: number) =>
-                mapInntektTilItem(inntekt, index)
-              )
+              mapInntektTilItem(inntekt, index)
+            )
             : []
         }
         itemsPerPage={10}
         loading={false}
-        animatable={true}
-        searchable={true}
-        selectable={true}
-        sortable={true}
+        animatable
+        searchable
+        selectable
+        sortable
         compact={false}
         onRowSelectChange={onSelectedInntekt}
         columns={[
-          { id: "fraDato", label: "Fra Dato", type: "date", filterText: "" },
-          { id: "tilDato", label: "Til Dato", type: "date", filterText: "" },
+          { id: 'fraDato', label: 'Fra Dato', type: 'date', filterText: '' },
+          { id: 'tilDato', label: 'Til Dato', type: 'date', filterText: '' },
           {
-            id: "beloep",
-            label: "Beløp",
-            type: "object",
-            filterText: "",
-            renderCell: (item, value) => (
+            id: 'beloep',
+            label: 'Beløp',
+            type: 'object',
+            filterText: '',
+            renderCell: (item) => (
               <Normaltekst>
                 {formatterPenger(Number.parseInt(item.beloep, 10))}
               </Normaltekst>
-            ),
+            )
           },
           {
-            id: "type",
-            label: "Type",
-            type: "string",
-            filterText: "",
-          },
+            id: 'type',
+            label: 'Type',
+            type: 'string',
+            filterText: ''
+          }
         ]}
       />
     </div>
-  );
-};
-export default InntektsTabell;
+  )
+}
+export default InntektsTabell

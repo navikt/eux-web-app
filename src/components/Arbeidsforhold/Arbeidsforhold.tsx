@@ -21,11 +21,11 @@ const ArbeidsforholdItem = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-`;
+`
 const ArbeidsforholdDesc = styled.div`
   display: flex;
   flex-direction: row;
-`;
+`
 
 const ArbeidsforholdButton = styled.div`
   display: flex;
@@ -35,15 +35,14 @@ const ArbeidsforholdButton = styled.div`
 const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
   arbeidsforhold, getArbeidsforhold, valgteArbeidsforhold, onArbeidsforholdClick
 }: ArbeidsforholdProps) => {
-
   const { t } = useTranslation()
   return (
     <Row>
-      <Cell className="arbeidsforhold">
+      <Cell className='arbeidsforhold'>
         <Row>
           <Cell>
             <Systemtittel>
-              {t("ui:label-aaRegistered")}
+              {t('ui:label-aaRegistered')}
             </Systemtittel>
           </Cell>
         </Row>
@@ -51,11 +50,11 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
           <Cell>
             <ArbeidsforholdButton>
               <span>
-                {t("ui:label-arbeidsforhold")}
+                {t('ui:label-arbeidsforhold')}
               </span>
-              <HorizontalSeparatorDiv/>
+              <HorizontalSeparatorDiv />
               <Knapp onClick={getArbeidsforhold}>
-                {t("ui:form-search")}
+                {t('ui:form-search')}
               </Knapp>
             </ArbeidsforholdButton>
           </Cell>
@@ -67,15 +66,15 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
               arbeidsforholdIDnav,
               navn,
               orgnr,
-              ansettelsesPeriode: { fom, tom },
-            } = arbeidsforholdet;
+              ansettelsesPeriode: { fom, tom }
+            } = arbeidsforholdet
             const arbeidsForholdErValgt = valgteArbeidsforhold.find(
               (item: any) =>
                 item.arbeidsforholdIDnav === arbeidsforholdIDnav
-            );
+            )
             return (
               <>
-                <VerticalSeparatorDiv data-size='0.5'/>
+                <VerticalSeparatorDiv data-size='0.5' />
                 <Panel key={index} border>
                   <ArbeidsforholdItem>
                     <ArbeidsforholdDesc>
@@ -84,34 +83,30 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
                       <div>
                         <strong>{navn}</strong>
                         <br />
-                        {t("ui:label-orgnummer")}:&nbsp;{orgnr}
+                        {t('ui:label-orgnummer')}:&nbsp;{orgnr}
                         <br />
-                        {t("ui:label-startDate")}:&nbsp;
+                        {t('ui:label-startDate')}:&nbsp;
                         {formatterDatoTilNorsk(fom)}
                         <br />
-                        {t("ui:label-endDate")}:&nbsp;
+                        {t('ui:label-endDate')}:&nbsp;
                         {formatterDatoTilNorsk(tom)}
                       </div>
                     </ArbeidsforholdDesc>
                     <div>
                       <Checkbox
                         checked={arbeidsForholdErValgt}
-                        onChange={(
-                          e: React.ChangeEvent<HTMLInputElement>
-                        ) =>
-                          onArbeidsforholdClick(
-                            arbeidsforholdet,
-                            e.target.checked
-                          )
-                        }
-                        label={t("ui:form-choose")}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => onArbeidsforholdClick(
+                          arbeidsforholdet,
+                          e.target.checked
+                        )}
+                        label={t('ui:form-choose')}
                       />
                     </div>
                   </ArbeidsforholdItem>
                 </Panel>
-                <VerticalSeparatorDiv data-size='0.5'/>
+                <VerticalSeparatorDiv data-size='0.5' />
               </>
-            );
+            )
           }
         )}
       </Cell>
