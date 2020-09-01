@@ -101,8 +101,9 @@ const Version = () => {
   }
   return (
     <VersionDiv
-      className={classnames({'App__versjonering--vis': visVersjonDetaljer })}
-      onClick={toggleVersjon}>
+      className={classnames({ 'App__versjonering--vis': visVersjonDetaljer })}
+      onClick={toggleVersjon}
+    >
       <ExpandButton>
         {versjon}
       </ExpandButton>

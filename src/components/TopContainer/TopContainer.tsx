@@ -47,7 +47,7 @@ const Main = styled.main`
   flex-direction: column;
 `
 export const TopContainer: React.FC<TopContainerProps> = ({
-  className, children, fluid = true
+  className, children
 }: TopContainerProps): JSX.Element => {
   const {
     serverErrorMessage, error, expirationTime, highContrast, modal

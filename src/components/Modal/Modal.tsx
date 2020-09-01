@@ -10,7 +10,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 export interface ModalProps {
-  appElement?: Element;
+  appElement?: any;
   className?: string;
   onModalClose?: () => void;
   closeButton?: boolean;

@@ -160,7 +160,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
           />
           <VerticalSeparatorDiv />
         </Cell>
-        <HorizontalSeparatorDiv/>
+        <HorizontalSeparatorDiv />
         <AlignCenterCell>
           <Knapp
             disabled={person.fnr === sok}
@@ -170,45 +170,47 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
           </Knapp>
         </AlignCenterCell>
       </Row>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <Row>
         <Cell>
-        {person.fnr === sok && (
-          <AlertstripeDiv>
-            <AlertStripe type='advarsel'>
-              {t('ui:error-fnr-is-user', { sok: sok })}
-            </AlertStripe>
-          </AlertstripeDiv>
-        )}
-        {tpsperson && (
-          <AlertstripeDiv>
-            <AlertStripe className='mt-4 mb-4' type='advarsel'>
-              {t('ui:error-relation-already-in-tps')}
-            </AlertStripe>
-          </AlertstripeDiv>
-        )}
-        {alertMessage &&
+          {person.fnr === sok && (
+            <AlertstripeDiv>
+              <AlertStripe type='advarsel'>
+                {t('ui:error-fnr-is-user', { sok: sok })}
+              </AlertStripe>
+            </AlertstripeDiv>
+          )}
+          {tpsperson && (
+            <AlertstripeDiv>
+              <AlertStripe className='mt-4 mb-4' type='advarsel'>
+                {t('ui:error-relation-already-in-tps')}
+              </AlertStripe>
+            </AlertstripeDiv>
+          )}
+          {alertMessage &&
           (alertType === types.SAK_PERSON_RELATERT_GET_FAILURE ||
-            alertType === types.FORM_TPSPERSON_ADD_FAILURE) && (
+            alertType === types.FORM_TPSPERSON_ADD_FAILURE) &&
+            (
               <AlertstripeDiv>
-            <Alert
+                <Alert
                   type='client'
                   fixed={false}
                   message={t(alertMessage)}
                   status={alertStatus as AlertStatus}
                   onClose={onAlertClose}
                 />
-          </AlertstripeDiv>
-        )}
-        {_personRelatert && (
-          <MarginDiv>
-            <PersonCard
-              person={_personRelatert}
-              onAddClick={leggTilPersonOgRolle}
-              rolleList={rolleList}
-            />
-          </MarginDiv>
-          )}
+              </AlertstripeDiv>
+            )}
+          {_personRelatert &&
+            (
+              <MarginDiv>
+                <PersonCard
+                  person={_personRelatert}
+                  onAddClick={leggTilPersonOgRolle}
+                  rolleList={rolleList}
+                />
+              </MarginDiv>
+            )}
         </Cell>
       </Row>
     </Container>
