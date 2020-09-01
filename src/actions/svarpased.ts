@@ -1,15 +1,15 @@
-import * as types from "constants/actionTypes";
-import * as urls from "constants/urls";
-import { realCall, ActionWithPayload, ThunkResult } from "js-fetch-api";
-import { Action, ActionCreator } from "redux";
+import * as types from 'constants/actionTypes'
+import * as urls from 'constants/urls'
+import { realCall, ActionWithPayload, ThunkResult } from 'js-fetch-api'
+import { Action, ActionCreator } from 'redux'
 import {
   Arbeidsforholdet,
   FamilieRelasjon,
-  Inntekter,
-} from "declarations/types";
-import { SvarpasedState } from "reducers/svarpased";
+  Inntekter
+} from 'declarations/types'
+import { SvarpasedState } from 'reducers/svarpased'
 
-const sprintf = require("sprintf-js").sprintf;
+const sprintf = require('sprintf-js').sprintf
 
 export const getSaksnummer: ActionCreator<ThunkResult<ActionWithPayload>> = (
   saksnummer: string
@@ -19,17 +19,17 @@ export const getSaksnummer: ActionCreator<ThunkResult<ActionWithPayload>> = (
     type: {
       request: types.SVARPASED_SAKSNUMMER_GET_REQUEST,
       success: types.SVARPASED_SAKSNUMMER_GET_SUCCESS,
-      failure: types.SVARPASED_SAKSNUMMER_GET_FAILURE,
-    },
-  });
-};
+      failure: types.SVARPASED_SAKSNUMMER_GET_FAILURE
+    }
+  })
+}
 
 export const setSed: ActionCreator<ActionWithPayload> = (
   payload: string
 ): ActionWithPayload => ({
   type: types.SVARPASED_SET_SED,
-  payload: payload,
-});
+  payload: payload
+})
 
 export const getPerson: ActionCreator<ThunkResult<ActionWithPayload>> = (
   fnr: string
@@ -40,10 +40,10 @@ export const getPerson: ActionCreator<ThunkResult<ActionWithPayload>> = (
     type: {
       request: types.SVARPASED_PERSON_GET_REQUEST,
       success: types.SVARPASED_PERSON_GET_SUCCESS,
-      failure: types.SVARPASED_PERSON_GET_FAILURE,
-    },
-  });
-};
+      failure: types.SVARPASED_PERSON_GET_FAILURE
+    }
+  })
+}
 
 export const getPersonRelated: ActionCreator<ThunkResult<ActionWithPayload>> = (
   fnr: string
@@ -52,50 +52,50 @@ export const getPersonRelated: ActionCreator<ThunkResult<ActionWithPayload>> = (
     url: sprintf(urls.API_SVARPASED_PERSON_URL, { fnr: fnr }),
     cascadeFailureError: true,
     context: {
-      fnr: fnr,
+      fnr: fnr
     },
     type: {
       request: types.SVARPASED_PERSON_RELATERT_GET_REQUEST,
       success: types.SVARPASED_PERSON_RELATERT_GET_SUCCESS,
-      failure: types.SVARPASED_PERSON_RELATERT_GET_FAILURE,
-    },
-  });
-};
+      failure: types.SVARPASED_PERSON_RELATERT_GET_FAILURE
+    }
+  })
+}
 
 export const addFamilierelasjoner: ActionCreator<ActionWithPayload> = (
   payload: FamilieRelasjon
 ): ActionWithPayload => ({
   type: types.SVARPASED_FAMILIERELASJONER_ADD,
-  payload: payload,
-});
+  payload: payload
+})
 
 export const removeFamilierelasjoner: ActionCreator<ActionWithPayload> = (
   payload: FamilieRelasjon
 ): ActionWithPayload => ({
   type: types.SVARPASED_FAMILIERELASJONER_REMOVE,
-  payload: payload,
-});
+  payload: payload
+})
 
 export const resetPersonRelatert: ActionCreator<Action> = (): Action => ({
-  type: types.SVARPASED_PERSON_RELATERT_RESET,
-});
+  type: types.SVARPASED_PERSON_RELATERT_RESET
+})
 
 export const sendSvarPaSedData: ActionCreator<ThunkResult<
   ActionWithPayload
 >> = (payload: SvarpasedState): ThunkResult<ActionWithPayload> => {
   return realCall({
-    method: "POST",
+    method: 'POST',
     url: sprintf(urls.API_SVARPASED_SENDSVARPASEDDATA_POST_URL, {
-      payload: payload,
+      payload: payload
     }),
     type: {
       request: types.SVARPASED_SENDSVARPASEDDATA_POST_REQUEST,
       success: types.SVARPASED_SENDSVARPASEDDATA_POST_SUCCESS,
-      failure: types.SVARPASED_SENDSVARPASEDDATA_POST_FAILURE,
+      failure: types.SVARPASED_SENDSVARPASEDDATA_POST_FAILURE
     },
-    body: payload,
-  });
-};
+    body: payload
+  })
+}
 
 export const getArbeidsforhold: ActionCreator<ThunkResult<
   ActionWithPayload
@@ -105,24 +105,24 @@ export const getArbeidsforhold: ActionCreator<ThunkResult<
     type: {
       request: types.SVARPASED_ARBEIDSFORHOLD_GET_REQUEST,
       success: types.SVARPASED_ARBEIDSFORHOLD_GET_SUCCESS,
-      failure: types.SVARPASED_ARBEIDSFORHOLD_GET_FAILURE,
-    },
-  });
-};
+      failure: types.SVARPASED_ARBEIDSFORHOLD_GET_FAILURE
+    }
+  })
+}
 
 export const addArbeidsforhold: ActionCreator<ActionWithPayload> = (
   payload: Arbeidsforholdet
 ): ActionWithPayload => ({
   type: types.SVARPASED_ARBEIDSFORHOLD_ADD,
-  payload: payload,
-});
+  payload: payload
+})
 
 export const removeArbeidsforhold: ActionCreator<ActionWithPayload> = (
   payload: Arbeidsforholdet
 ): ActionWithPayload => ({
   type: types.SVARPASED_ARBEIDSFORHOLD_REMOVE,
-  payload: payload,
-});
+  payload: payload
+})
 
 export const fetchInntekt: ActionCreator<ThunkResult<ActionWithPayload>> = (
   data: any
@@ -132,20 +132,20 @@ export const fetchInntekt: ActionCreator<ThunkResult<ActionWithPayload>> = (
       fnr: data.fnr,
       fraDato: data.fraDato,
       tilDato: data.tilDato,
-      tema: data.tema,
+      tema: data.tema
     }),
-    method: "GET",
+    method: 'GET',
     type: {
       request: types.SVARPASED_INNTEKT_GET_REQUEST,
       success: types.SVARPASED_INNTEKT_GET_SUCCESS,
-      failure: types.SVARPASED_INNTEKT_GET_FAILURE,
-    },
-  });
-};
+      failure: types.SVARPASED_INNTEKT_GET_FAILURE
+    }
+  })
+}
 
 export const sendSeletedInntekt: ActionCreator<ActionWithPayload> = (
   payload: Inntekter
 ): ActionWithPayload => ({
   type: types.SVARPASED_SELECTED_INNTEKT_SUCCESS,
-  payload: payload,
-});
+  payload: payload
+})

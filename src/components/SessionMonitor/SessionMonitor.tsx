@@ -43,7 +43,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
 
   const logMe = useCallback(() => {
     dispatch(logMeAgain())
-  },[dispatch])
+  }, [dispatch])
 
   useEffect(() => {
     const getDiff = (expirationTime: any, now: any) => {
