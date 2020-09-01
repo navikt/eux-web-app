@@ -32,6 +32,10 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
     return initialAlertState
   }
 
+  if (action.type === types.SAK_PERSON_RELATERT_GET_REQUEST) {
+    return initialAlertState
+  }
+
   if (action.type === types.FORM_ABROADPERSON_ADD_SUCCESS) {
     return initialAlertState
   }
