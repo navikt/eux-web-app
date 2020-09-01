@@ -169,7 +169,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
       fdato?.match(/\d{2}\.\d{2}\.\d{4}/) !== null
     );
   };
-  /*
+
   const conflictingPerson = (): boolean => {
     const { fnr } = relation;
     if (
@@ -182,7 +182,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
     }
     return false;
   };
-*/
+
   const validate = (): Validation => {
     const validation: Validation = {
       //saksnummer: saksnummer ? null : "No saksnummer",
@@ -224,19 +224,15 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
 
   const addRelation = (): void => {
     if (isValid(validate())) {
-      console.log("Every thing ready for sending" + validate());
-      dispatch(formActions.addFamilierelasjoner(trimFamilyRelation(relation)));
-      dispatch({ type: types.FORM_ABROADPERSON_ADD_SUCCESS });
+      if (canAddRelation() && !conflictingPerson()) {
+        setRelation(emptyRelation);
+        dispatch(formActions.addFamilierelasjoner(trimFamilyRelation(relation)));
+        dispatch({
+          type: types.FORM_ABROADPERSON_ADD_SUCCESS,
+        });
+      }
     }
-    /*
-    if (canAddRelation() && !conflictingPerson()) {
-      setRelation(emptyRelation);
-      dispatch(formActions.addFamilierelasjoner(trimFamilyRelation(relation)));
-      dispatch({
-        type: types.FORM_ABROADPERSON_ADD_SUCCESS,
-      });
-    }*/
-  };
+  }
 
   return (
     <Container>
@@ -396,7 +392,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             style={{ animationDelay: "0.7s" }}
           >
             <Knapp
-              onClick={() => addRelation()}
+              onClick={addRelation}
               className="relasjon familierelasjoner__knapp"
             >
               <Tilsette
