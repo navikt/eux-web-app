@@ -69,7 +69,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   validation
 }: PersonSearchProps): JSX.Element => {
   const { t } = useTranslation()
-  const [_fnr, setFnr] = useState<string | undefined>(initialFnr)
+  const [_fnr, setFnr] = useState<string | undefined>(undefined)
   const [_person, setPerson] = useState<Person | undefined>(undefined)
   const [localValidation, setLocalValidation] = useState<string | undefined>(
     undefined
@@ -89,6 +89,12 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
       }
     }
   }, [person, _person, isPersonValid, onPersonFound])
+
+  useEffect(() => {
+    if (initialFnr && !_fnr) {
+      setFnr(initialFnr)
+    }
+  }, [_fnr,initialFnr])
 
   const sokEtterPerson = (): void => {
     const fnrPattern = /^[0-9]{11}$/

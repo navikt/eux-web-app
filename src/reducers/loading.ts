@@ -17,7 +17,8 @@ export const initialLoadingState: LoadingState = {
   gettingServerinfo: false,
   sendingVedlegg: false,
   sendingSak: false,
-  gettingSaksnummer: false
+  sendingSvarPaSed: false,
+  gettingSeds: false
 }
 
 const loadingReducer = (
@@ -121,30 +122,30 @@ const loadingReducer = (
         sendingSak: false
       }
 
-    case types.SVARPASED_SAKSNUMMER_GET_REQUEST:
+    case types.SVARPASED_SEDS_GET_REQUEST:
       return {
         ...state,
-        sendingSvarPaSedData: true
+        gettingSeds: true
       }
 
-    case types.SVARPASED_SAKSNUMMER_GET_SUCCESS:
-    case types.SVARPASED_SAKSNUMMER_GET_FAILURE:
+    case types.SVARPASED_SEDS_GET_SUCCESS:
+    case types.SVARPASED_SEDS_GET_FAILURE:
       return {
         ...state,
-        gettingSaksnummer: false
+        gettingSeds: false
       }
 
     case types.SVARPASED_SENDSVARPASEDDATA_POST_REQUEST:
       return {
         ...state,
-        gettingSaksnummer: true
+        sendingSvarPaSed: true
       }
 
     case types.SVARPASED_SENDSVARPASEDDATA_POST_SUCCESS:
     case types.SVARPASED_SENDSVARPASEDDATA_POST_FAILURE:
       return {
         ...state,
-        gettingSaksnummer: false
+        sendingSvarPaSed: false
       }
 
     case types.VEDLEGG_POST_REQUEST:
