@@ -59,7 +59,7 @@ const mapState = (state: State): any => ({
   valgteArbeidsforhold: state.svarpased.valgteArbeidsforhold,
   inntekter: state.svarpased.inntekter,
   gettingSaksnummer: state.loading.gettingSaksnummer,
-  saksnummer: state.svarpased.saksnummer,
+  seds: state.svarpased.seds,
   sed: state.svarpased.sed,
   svarPasedData: state.svarpased.svarPasedData
 })
@@ -67,7 +67,6 @@ const mapState = (state: State): any => ({
 const mapStateTwo = (state: State): any => ({
   sed: state.svarpased.sed,
   person: state.svarpased.person,
-  saksnummer: state.svarpased.saksnummer,
   inntekter: state.svarpased.selectedInntekter,
   arbeidsforhold: state.svarpased.valgteArbeidsforhold,
   familieRelasjoner: state.svarpased.familierelasjoner
@@ -98,7 +97,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
     inntekter,
     person,
     personRelatert,
-    saksnummer,
+    seds,
     familierelasjonKodeverk,
     valgteArbeidsforhold,
     valgteFamilieRelasjoner,
@@ -107,12 +106,12 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
   const data: SvarpasedState = useSelector<State, SvarpasedState>(mapStateTwo)
 
   const onSaksnummerClick = () => {
-    dispatch(svarpasedActions.getSaksnummer(_saksnummer))
+    dispatch(svarpasedActions.getSeds(_saksnummer))
   }
 
   const validate = (): Validation => {
     const validation: Validation = {
-      saksnummer: saksnummer ? null : 'No saksnummer',
+      saksnummer: _saksnummer ? null : 'No saksnummer',
       sed: !sed ? t('ui:validation-noSedtype') : null
     }
     setValidation(validation)
@@ -186,7 +185,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
       const fnrParam = params.get('fnr')
       if (rinasaksnummerParam) {
         setSaksnummer(rinasaksnummerParam)
-        dispatch(svarpasedActions.getSaksnummer(rinasaksnummerParam))
+        dispatch(svarpasedActions.getSeds(rinasaksnummerParam))
       }
       if (fnrParam) {
         setFnr(fnrParam)
@@ -239,48 +238,54 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
             }}
             onAlertClose={() => dispatch(clientClear())}
           />
-          {saksnummer && (
+          {seds && (
             <SedSelect
               label='Velg svar SED'
               onChange={onSedChange}
               feil={validation.sed}
             >
               <option key=''>-</option>
-              {saksnummer?.map((s: any) => {
-                return <option key={s.value}>{s.label}</option>
-              })}
+              {seds?.map((s: any) => (
+                <option key={s.documentId} value={s.documentType}>
+                  {s.documentType}
+                </option>
+              ))}
             </SedSelect>
           )}
           <VerticalSeparatorDiv />
           {!_.isNil(person) && (
             <>
-              <Ekspanderbartpanel tittel={t('ui:label-familyRelationships')}>
-                <Family
-                  alertStatus={alertStatus}
-                  alertMessage={alertMessage}
-                  alertType={alertType}
-                  familierelasjonKodeverk={familierelasjonKodeverk}
-                  personRelatert={personRelatert}
-                  person={person}
-                  valgteFamilieRelasjoner={valgteFamilieRelasjoner}
-                  onClickAddRelasjons={(value: any) => addTpsRelation(value)}
-                  onClickRemoveRelasjons={(value: any) => deleteRelation(value)}
-                  onResetPersonRelatert={() =>
-                    dispatch(svarpasedActions.resetPersonRelatert())}
-                  onAddFailure={() =>
-                    dispatch({ type: types.SVARPASED_TPSPERSON_ADD_FAILURE })}
-                  onAddSuccess={(e: any) => {
-                    dispatch(svarpasedActions.addFamilierelasjoner(e))
-                    dispatch({ type: types.SVARPASED_TPSPERSON_ADD_SUCCESS })
-                  }}
-                  onAlertClose={() => dispatch(clientClear())}
-                  onSearchFnr={(sok) => {
-                    dispatch(svarpasedActions.resetPersonRelatert())
-                    dispatch(svarpasedActions.getPersonRelated(sok))
-                  }}
-                />
-              </Ekspanderbartpanel>
-              <VerticalSeparatorDiv />
+            {sed?.startsWith('F') && (
+              <>
+                <Ekspanderbartpanel tittel={t('ui:label-familyRelationships')}>
+                  <Family
+                    alertStatus={alertStatus}
+                    alertMessage={alertMessage}
+                    alertType={alertType}
+                    familierelasjonKodeverk={familierelasjonKodeverk}
+                    personRelatert={personRelatert}
+                    person={person}
+                    valgteFamilieRelasjoner={valgteFamilieRelasjoner}
+                    onClickAddRelasjons={(value: any) => addTpsRelation(value)}
+                    onClickRemoveRelasjons={(value: any) => deleteRelation(value)}
+                    onResetPersonRelatert={() =>
+                      dispatch(svarpasedActions.resetPersonRelatert())}
+                    onAddFailure={() =>
+                      dispatch({ type: types.SVARPASED_TPSPERSON_ADD_FAILURE })}
+                    onAddSuccess={(e: any) => {
+                      dispatch(svarpasedActions.addFamilierelasjoner(e))
+                      dispatch({ type: types.SVARPASED_TPSPERSON_ADD_SUCCESS })
+                    }}
+                    onAlertClose={() => dispatch(clientClear())}
+                    onSearchFnr={(sok) => {
+                      dispatch(svarpasedActions.resetPersonRelatert())
+                      dispatch(svarpasedActions.getPersonRelated(sok))
+                    }}
+                  />
+                </Ekspanderbartpanel>
+                <VerticalSeparatorDiv />
+              </>
+            )}
               <Ekspanderbartpanel tittel={t('ui:label-arbeidsforhold')}>
                 <Arbeidsforhold
                   getArbeidsforhold={() => {
