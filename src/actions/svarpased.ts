@@ -15,7 +15,7 @@ export const getSaksnummer: ActionCreator<ThunkResult<ActionWithPayload>> = (
   saksnummer: string
 ): ThunkResult<ActionWithPayload> => {
   return realCall({
-    url: sprintf(urls.API_SVARPASED_SAKSNUMMER_URL, { saksnummer: saksnummer }),
+    url: sprintf(urls.API_SVARPASED_TYPER_URL, { rinasaksnummer: saksnummer }),
     type: {
       request: types.SVARPASED_SAKSNUMMER_GET_REQUEST,
       success: types.SVARPASED_SAKSNUMMER_GET_SUCCESS,
@@ -82,11 +82,11 @@ export const resetPersonRelatert: ActionCreator<Action> = (): Action => ({
 
 export const sendSvarPaSedData: ActionCreator<ThunkResult<
   ActionWithPayload
->> = (payload: SvarpasedState): ThunkResult<ActionWithPayload> => {
+>> = (rinaSakId: string, payload: SvarpasedState): ThunkResult<ActionWithPayload> => {
   return realCall({
     method: 'POST',
-    url: sprintf(urls.API_SVARPASED_SENDSVARPASEDDATA_POST_URL, {
-      payload: payload
+    url: sprintf(urls.API_SVARPASED_SEND_POST_URL, {
+      rinaSakId: rinaSakId
     }),
     type: {
       request: types.SVARPASED_SENDSVARPASEDDATA_POST_REQUEST,

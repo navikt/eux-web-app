@@ -141,9 +141,8 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
   }
 
   const sendData = (): void => {
-    dispatch(svarpasedActions.sendSvarPaSedData(data))
     if (isValid(validate())) {
-      dispatch(svarpasedActions.sendSvarPaSedData(data))
+      dispatch(svarpasedActions.sendSvarPaSedData(_saksnummer, data))
     }
   }
 
