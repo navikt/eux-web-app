@@ -42,8 +42,8 @@ const appReducer = (state: AppState = initialAppState, action: ActionWithPayload
     case types.APP_UTGAARDATO_GET_SUCCESS: {
       const now = action.payload.naa ? new Date(action.payload.naa) : new Date()
       const expirationTime = action.payload.utgaarDato
-        ? new Date(action.payload.utgaarDato) :
-         new Date(new Date().setMinutes(now.getMinutes() + 10))
+        ? new Date(action.payload.utgaarDato)
+        : new Date(new Date().setMinutes(now.getMinutes() + 10))
       return {
         ...state,
         expirationTime: expirationTime

@@ -16,7 +16,7 @@ export const API_SAK_ARBEIDSFORHOLD_URL =
 export const API_SAK_FAGSAKER_URL =
   API_BASE_URL + '/fagsaker/%(fnr)s/?sektor=%(sektor)s&tema=%(tema)s'
 export const API_SAK_INNTEKT_URL =
-  API_BASE_URL + '/inntekt/%(fnr)s/%(fraDato)s/%(tilDato)s/%(tema)s'
+  API_BASE_URL + '/inntekt/%(fnr)s?fraDato=%(fraDato)s&tilDato=%(tilDato)s&tema=%(tema)s'
 export const API_SAK_PERSON_URL = API_BASE_URL + '/personer/?fnr=%(fnr)s'
 export const API_SVARPASED_PERSON_URL = API_BASE_URL + '/personer/?fnr=%(fnr)s'
 
@@ -25,7 +25,7 @@ export const API_SAKSBEHANDLER_URL = API_BASE_URL + '/saksbehandler'
 export const API_ENHETER_URL = API_BASE_URL + '/saksbehandler/enheter'
 export const API_REAUTENTISERING_URL =
   API_BASE_URL + '/saksbehandler/reautentisering'
-//export const API_DELETE_TOKEN_URL = API_BASE_URL + '/saksbehandler/token'
+// export const API_DELETE_TOKEN_URL = API_BASE_URL + '/saksbehandler/token'
 export const API_UTGAARDATO_URL = API_BASE_URL + '/saksbehandler/utgaarDato'
 
 // Server informasjon
