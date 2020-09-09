@@ -14,7 +14,6 @@ import {
 } from 'components/StyledComponents'
 import styled from 'styled-components'
 import _ from 'lodash'
-import { vaskInputDato } from 'utils/dato'
 import InntektsTabell from 'components/Inntekt/InntektsTabell'
 import { Item } from 'tabell'
 

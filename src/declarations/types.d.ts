@@ -38,7 +38,7 @@ export interface Person {
   fornavn?: string
   etternavn?: string
   kjoenn?: string
-  relasjoner?: Array<FamilieRelasjon>
+  relasjoner?: Array<any>// Array<FamilieRelasjon>
 }
 
 export interface FamilieRelasjon extends Person {

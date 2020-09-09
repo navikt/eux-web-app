@@ -154,7 +154,7 @@ exports['components/Family/Family Renders 1'] = `
                                   className="typo-undertittel panelheader__tittel__hoved"
                                 >
                                   PEN
-                                   
+
                                   BLYANT
                                    - Ektefelle til
                                 </h2>
@@ -350,7 +350,7 @@ exports['components/Family/Family Renders 1'] = `
                                   className="typo-undertittel panelheader__tittel__hoved"
                                 >
                                   LITEN
-                                   
+
                                   BLYANT
                                    - Barn av
                                 </h2>
@@ -475,7 +475,7 @@ exports['components/Family/Family Renders 1'] = `
                     className="typo-ingress ml-2"
                   >
                     ui:form-family-chosen
-                     (
+                    (
                     0
                     )
                   </p>

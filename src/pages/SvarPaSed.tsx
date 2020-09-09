@@ -255,37 +255,37 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
           <VerticalSeparatorDiv />
           {!_.isNil(person) && (
             <>
-            {sed?.startsWith('F') && (
-              <>
-                <Ekspanderbartpanel tittel={t('ui:label-familyRelationships')}>
-                  <Family
-                    alertStatus={alertStatus}
-                    alertMessage={alertMessage}
-                    alertType={alertType}
-                    familierelasjonKodeverk={familierelasjonKodeverk}
-                    personRelatert={personRelatert}
-                    person={person}
-                    valgteFamilieRelasjoner={valgteFamilieRelasjoner}
-                    onClickAddRelasjons={(value: any) => addTpsRelation(value)}
-                    onClickRemoveRelasjons={(value: any) => deleteRelation(value)}
-                    onResetPersonRelatert={() =>
-                      dispatch(svarpasedActions.resetPersonRelatert())}
-                    onAddFailure={() =>
-                      dispatch({ type: types.SVARPASED_TPSPERSON_ADD_FAILURE })}
-                    onAddSuccess={(e: any) => {
-                      dispatch(svarpasedActions.addFamilierelasjoner(e))
-                      dispatch({ type: types.SVARPASED_TPSPERSON_ADD_SUCCESS })
-                    }}
-                    onAlertClose={() => dispatch(clientClear())}
-                    onSearchFnr={(sok) => {
-                      dispatch(svarpasedActions.resetPersonRelatert())
-                      dispatch(svarpasedActions.getPersonRelated(sok))
-                    }}
-                  />
-                </Ekspanderbartpanel>
-                <VerticalSeparatorDiv />
-              </>
-            )}
+              {sed?.startsWith('F') && (
+                <>
+                  <Ekspanderbartpanel tittel={t('ui:label-familyRelationships')}>
+                    <Family
+                      alertStatus={alertStatus}
+                      alertMessage={alertMessage}
+                      alertType={alertType}
+                      familierelasjonKodeverk={familierelasjonKodeverk}
+                      personRelatert={personRelatert}
+                      person={person}
+                      valgteFamilieRelasjoner={valgteFamilieRelasjoner}
+                      onClickAddRelasjons={(value: any) => addTpsRelation(value)}
+                      onClickRemoveRelasjons={(value: any) => deleteRelation(value)}
+                      onResetPersonRelatert={() =>
+                        dispatch(svarpasedActions.resetPersonRelatert())}
+                      onAddFailure={() =>
+                        dispatch({ type: types.SVARPASED_TPSPERSON_ADD_FAILURE })}
+                      onAddSuccess={(e: any) => {
+                        dispatch(svarpasedActions.addFamilierelasjoner(e))
+                        dispatch({ type: types.SVARPASED_TPSPERSON_ADD_SUCCESS })
+                      }}
+                      onAlertClose={() => dispatch(clientClear())}
+                      onSearchFnr={(sok) => {
+                        dispatch(svarpasedActions.resetPersonRelatert())
+                        dispatch(svarpasedActions.getPersonRelated(sok))
+                      }}
+                    />
+                  </Ekspanderbartpanel>
+                  <VerticalSeparatorDiv />
+                </>
+              )}
               <Ekspanderbartpanel tittel={t('ui:label-arbeidsforhold')}>
                 <Arbeidsforhold
                   getArbeidsforhold={() => {
