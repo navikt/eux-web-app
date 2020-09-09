@@ -123,11 +123,12 @@ const Inntekt: React.FC<InntektProps> = ({
     felt: string,
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
-    const nyDato = vaskInputDato(event.currentTarget.value) || ''
-    setInntektSøk({
-      ...inntektSøk,
-      [felt]: nyDato
-    })
+    if (event.currentTarget.value.match(/\d{4}-\d{2}/)) {
+      setInntektSøk({
+        ...inntektSøk,
+        [felt]: event.currentTarget.value
+      })
+    }
   }
 
   const validate = (): Validation => {
@@ -160,7 +161,7 @@ const Inntekt: React.FC<InntektProps> = ({
             label={t('ui:label-fraDato')}
             feil={validation.fraDato}
             value={inntektSøk.fraDato}
-            placeholder='DD.MM.ÅÅÅÅ'
+            placeholder='ÅÅÅÅ-MM'
             className={classNames({ feil: validation.fraDato })}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               updateIncomeSearch('fraDato', e)
@@ -177,7 +178,7 @@ const Inntekt: React.FC<InntektProps> = ({
             label={t('ui:label-tilDato')}
             feil={validation.tilDato}
             value={inntektSøk.tilDato}
-            placeholder='DD.MM.ÅÅÅÅ'
+            placeholder='ÅÅÅÅ-MM'
             className={classNames({ feil: validation.tilDato })}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               updateIncomeSearch('tilDato', e)
@@ -201,10 +202,10 @@ const Inntekt: React.FC<InntektProps> = ({
             }}
           >
             <option value=''>{t('ui:form-choose')}</option>
-            <option value='BAR' key='BAR'>
+            <option value='BARNETRYGD' key='BARNETRYGD'>
               Barnetrygd
             </option>
-            <option value='KON' key='KON'>
+            <option value='KONTANTSTØTTE' key='KONTANTSTØTTE'>
               Kontantstøtte
             </option>
           </AlignedSelect>
