@@ -94,7 +94,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
     if (initialFnr && !_fnr) {
       setFnr(initialFnr)
     }
-  }, [_fnr,initialFnr])
+  }, [_fnr, initialFnr])
 
   const sokEtterPerson = (): void => {
     const fnrPattern = /^[0-9]{11}$/
