@@ -72,19 +72,7 @@ const Inntekt: React.FC<InntektProps> = ({
   const { t } = useTranslation()
   const [inntektSøk, setInntektSøk] = useState<IncomeSearch>(emptyIncomeSearch)
   const [validation, setValidation] = useState<{ [k: string]: any }>({})
-
   const dispatch = useDispatch()
-
-  const fetchInntekt = () => {
-    dispatch(
-      svarpasedActions.fetchInntekt({
-        fnr: fnr,
-        fraDato: inntektSøk.fraDato,
-        tilDato: inntektSøk.tilDato,
-        tema: inntektSøk.tema
-      })
-    )
-  }
 
   const updateIncomeSearch = (
     felt: string,
@@ -132,8 +120,16 @@ const Inntekt: React.FC<InntektProps> = ({
 
   const validate = (): Validation => {
     const validation: Validation = {
-      fraDato: inntektSøk.fraDato ? null : 'Velg en gyldig dato',
-      tilDato: inntektSøk.tilDato ? null : 'Velg en gyldig dato',
+      fraDato: !inntektSøk.fraDato ? 'Velg en gyldig dato' :
+        !inntektSøk.fraDato.match(/\d{4}-\d{2}/) ? 'Datoen må være ÅÅÅÅ-MM' :
+          parseInt(inntektSøk.fraDato.split('-')[0]) < 2015 ?  'Datoen må være over 2015' :
+            parseInt(inntektSøk.fraDato.split('-')[1]) > 12 ?  'Datoen ha em ugyldig måned' :
+              null,
+      tilDato: !inntektSøk.tilDato ?  'Velg en gyldig dato' :
+        !inntektSøk.tilDato.match(/\d{4}-\d{2}/) ? 'Datoen må være ÅÅÅÅ-MM' :
+          parseInt(inntektSøk.tilDato.split('-')[0]) < 2015 ?  'Datoen må være over 2015' :
+            parseInt(inntektSøk.tilDato.split('-')[1]) > 12 ?  'Datoen ha em ugyldig måned' :
+             null,
       tema: inntektSøk.tema ? null : 'Du må velge et tema'
     }
     setValidation(validation)
@@ -144,11 +140,16 @@ const Inntekt: React.FC<InntektProps> = ({
     return _.find(_.values(_validation), (e) => e !== null) === undefined
   }
 
-  const addSearch = (): void => {
-    console.log('addSearch inntektSøk', inntektSøk)
+  const fetchInntekt = () => {
     if (isValid(validate())) {
-      console.log('Every thing ready for sending' + validate())
-      fetchInntekt()
+      dispatch(
+        svarpasedActions.fetchInntekt({
+          fnr: fnr,
+          fraDato: inntektSøk.fraDato,
+          tilDato: inntektSøk.tilDato,
+          tema: inntektSøk.tema
+        })
+      )
     }
   }
 
@@ -217,7 +218,7 @@ const Inntekt: React.FC<InntektProps> = ({
         >
           <SokKnapp
             className={classNames({ feil: !isValid(validation) })}
-            onClick={() => addSearch()}
+            onClick={fetchInntekt}
           >
             Søk
           </SokKnapp>
@@ -232,10 +233,6 @@ const Inntekt: React.FC<InntektProps> = ({
           />
         </div>
       )}
-
-      {/* inntekter?.map((inntekt: IInntekt) => (
-        <>{JSON.stringify(inntekt)}</>
-      )) */}
     </>
   )
 }
