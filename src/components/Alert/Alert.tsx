@@ -8,6 +8,7 @@ import styled, { keyframes } from 'styled-components'
 
 export type AlertStatus = 'OK' | 'ERROR' | 'WARNING'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type AlertStatusClasses = {[status in AlertStatus]: AlertStripeType}
 
 type AlertType = 'client' | 'server'
