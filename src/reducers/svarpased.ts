@@ -1,4 +1,4 @@
-import { Arbeidsforhold, Inntekter } from 'declarations/types'
+import { Arbeidsforhold, Inntekter, Sed } from 'declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
 import { Action } from 'redux'
 import * as types from 'constants/actionTypes'
@@ -9,8 +9,8 @@ export interface SvarpasedState {
   familierelasjoner: Array<any>;
   person: any;
   personRelatert: any;
-  seds: Array<any> | undefined;
-  sed: any;
+  seds: Array<Sed> | undefined;
+  sed: Sed | undefined;
   svarPasedData: any;
   valgteArbeidsforhold: Arbeidsforhold;
   inntekter: Inntekter | undefined;
@@ -141,13 +141,7 @@ const svarpasedReducer = (
       }
 
     case types.APP_CLEAN_DATA:
-      return {
-        ...state,
-        person: undefined,
-        familierelasjoner: undefined,
-        algteArbeidsforhold: undefined,
-        inntekter: undefined
-      }
+      return initialSvarpasedState
 
     case types.SAK_PERSON_RESET:
       return {

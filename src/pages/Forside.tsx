@@ -31,9 +31,7 @@ const Forside: React.FC = (): JSX.Element => {
             >
               {t('ui:menu-addAttachment')}
             </Lenkepanel>
-            {window.location.hostname !== 'eux-helloeu-app-q2.nais.preprod.local' &&
-             window.location.hostname !== 'eux-helloeu-app.nais.adeo.no' &&
-            (
+            {/*(
               <Lenkepanel
                 tittelProps='undertittel'
                 className='slideAnimate'
@@ -43,7 +41,7 @@ const Forside: React.FC = (): JSX.Element => {
               >
                 {t('ui:menu-svarpased')}
               </Lenkepanel>
-            )}
+            )*/}
           </>
         </Content>
         <Margin />

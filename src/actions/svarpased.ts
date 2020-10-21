@@ -5,7 +5,7 @@ import { Action, ActionCreator } from 'redux'
 import {
   Arbeidsforholdet,
   FamilieRelasjon,
-  Inntekter
+  Inntekter, Sed
 } from 'declarations/types'
 import { SvarpasedState } from 'reducers/svarpased'
 
@@ -25,7 +25,7 @@ export const getSeds: ActionCreator<ThunkResult<ActionWithPayload>> = (
 }
 
 export const setSed: ActionCreator<ActionWithPayload> = (
-  payload: string
+  payload: Sed
 ): ActionWithPayload => ({
   type: types.SVARPASED_SET_SED,
   payload: payload
@@ -82,11 +82,13 @@ export const resetPersonRelatert: ActionCreator<Action> = (): Action => ({
 
 export const sendSvarPaSedData: ActionCreator<ThunkResult<
   ActionWithPayload
->> = (rinaSakId: string, payload: SvarpasedState): ThunkResult<ActionWithPayload> => {
+>> = (rinaSakId: string, sedId: string, sedType: string, payload: SvarpasedState): ThunkResult<ActionWithPayload> => {
   return realCall({
     method: 'POST',
     url: sprintf(urls.API_SVARPASED_SEND_POST_URL, {
-      rinaSakId: rinaSakId
+      rinaSakId: rinaSakId,
+      sedId: sedId,
+      sedType: sedType
     }),
     type: {
       request: types.SVARPASED_SENDSVARPASEDDATA_POST_REQUEST,

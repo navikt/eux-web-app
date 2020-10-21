@@ -7,7 +7,7 @@ export const API_SAK_INSTITUSJONER_URL =
   API_BASE_URL + '/institusjoner/%(buctype)s/?landkode=%(landkode)s'
 export const API_SAK_LANDKODER_URL = API_BASE_URL + '/landkoder/%(buctype)s'
 export const API_SAK_SEND_POST_URL = API_BASE_URL + '/rina/sak'
-export const API_SVARPASED_SEND_POST_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed'
+export const API_SVARPASED_SEND_POST_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/svarsed/%(sedType)s'
 export const API_SVARPASED_TYPER_URL = API_BASE_URL + '/rina/svarsedtyper?rinasaksnummer=%(rinasaksnummer)s'
 
 // Registre

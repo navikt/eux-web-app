@@ -26,7 +26,7 @@ import {
   FamilieRelasjon,
   Inntekter,
   Inntekt as IInntekt,
-  Validation
+  Validation, Sed
 } from 'declarations/types'
 import Family from 'components/Family/Family'
 import { SvarpasedState } from 'reducers/svarpased'
@@ -141,12 +141,15 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
 
   const sendData = (): void => {
     if (isValid(validate())) {
-      dispatch(svarpasedActions.sendSvarPaSedData(_saksnummer, data))
+      dispatch(svarpasedActions.sendSvarPaSedData(_saksnummer, sed.documentId, sed.documentType, data))
     }
   }
 
   const onSedChange = (e: any) => {
-    dispatch(svarpasedActions.setSed(e.target.value))
+    const selectedSed: Sed | undefined = _.find(seds, (s: Sed) => s.documentType === e.target.value)
+    if (selectedSed) {
+      dispatch(svarpasedActions.setSed(selectedSed))
+    }
   }
 
   const addTpsRelation = (relation: FamilieRelasjon): void => {
@@ -245,9 +248,9 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
               feil={validation.sed}
             >
               <option key=''>-</option>
-              {seds?.map((s: any) => (
-                <option key={s.documentId} value={s.documentType}>
-                  {s.documentType}
+              {seds?.map((sed: Sed) => (
+                <option key={sed.documentId} value={sed.documentType}>
+                  {sed.documentType}
                 </option>
               ))}
             </SedSelect>
@@ -255,7 +258,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
           <VerticalSeparatorDiv />
           {!_.isNil(person) && (
             <>
-              {sed?.startsWith('F') && (
+              {sed?.documentType.startsWith('F') && (
                 <>
                   <Ekspanderbartpanel tittel={t('ui:label-familyRelationships')}>
                     <Family

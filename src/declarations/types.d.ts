@@ -135,3 +135,9 @@ export interface Inntekt {
 }
 
 export type Inntekter = Array<Inntekt>
+
+export interface Sed {
+  documentId: string
+  documentType: string
+  operation: string
+}
