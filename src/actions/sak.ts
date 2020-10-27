@@ -2,8 +2,8 @@ import * as EKV from 'eessi-kodeverk'
 import { realCall, ActionWithPayload, ThunkResult } from 'js-fetch-api'
 import moment from 'moment'
 import { Action, ActionCreator } from 'redux'
-import * as types from 'constants/actionTypes'
-import * as urls from 'constants/urls'
+import * as types from '../constants/actionTypes'
+import * as urls from '../constants/urls'
 const sprintf = require('sprintf-js').sprintf
 
 export const getArbeidsforhold: ActionCreator<ThunkResult<ActionWithPayload>> = (fnr: string): ThunkResult<ActionWithPayload> => {

@@ -1,5 +1,5 @@
-import { Container, Content, Margin } from 'components/StyledComponents'
-import TopContainer from 'components/TopContainer/TopContainer'
+import { Container, Content, Margin } from '../components/StyledComponents'
+import TopContainer from '../components/TopContainer/TopContainer'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
@@ -31,7 +31,7 @@ const Forside: React.FC = (): JSX.Element => {
             >
               {t('ui:menu-addAttachment')}
             </Lenkepanel>
-            {/*(
+            {/* (
               <Lenkepanel
                 tittelProps='undertittel'
                 className='slideAnimate'
@@ -41,7 +41,7 @@ const Forside: React.FC = (): JSX.Element => {
               >
                 {t('ui:menu-svarpased')}
               </Lenkepanel>
-            )*/}
+            ) */}
           </>
         </Content>
         <Margin />

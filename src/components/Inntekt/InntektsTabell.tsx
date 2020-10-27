@@ -1,6 +1,6 @@
 import { Normaltekst } from 'nav-frontend-typografi'
 import React from 'react'
-import { Inntekt } from 'declarations/types'
+import { Inntekt } from '../../declarations/types'
 import TableSorter, { Item } from 'tabell'
 
 interface InntektsTabellProps {

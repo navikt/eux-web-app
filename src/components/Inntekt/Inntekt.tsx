@@ -1,6 +1,6 @@
-import * as svarpasedActions from 'actions/svarpased'
+import * as svarpasedActions from '../../actions/svarpased'
 import classNames from 'classnames'
-import { Inntekter, Validation } from 'declarations/types'
+import { Inntekter, Validation } from '../../declarations/types'
 import { Knapp } from 'nav-frontend-knapper'
 import { Input, Select } from 'nav-frontend-skjema'
 import React, { useState } from 'react'
@@ -11,10 +11,10 @@ import {
   Row,
   HorizontalSeparatorDiv,
   VerticalSeparatorDiv
-} from 'components/StyledComponents'
+} from '../StyledComponents'
 import styled from 'styled-components'
 import _ from 'lodash'
-import InntektsTabell from 'components/Inntekt/InntektsTabell'
+import InntektsTabell from './InntektsTabell'
 import { Item } from 'tabell'
 
 interface InntektProps {
@@ -120,16 +120,16 @@ const Inntekt: React.FC<InntektProps> = ({
 
   const validate = (): Validation => {
     const validation: Validation = {
-      fraDato: !inntektSøk.fraDato ? 'Velg en gyldig dato' :
-        !inntektSøk.fraDato.match(/\d{4}-\d{2}/) ? 'Datoen må være ÅÅÅÅ-MM' :
-          parseInt(inntektSøk.fraDato.split('-')[0]) < 2015 ?  'Datoen må være over 2015' :
-            parseInt(inntektSøk.fraDato.split('-')[1]) > 12 ?  'Datoen ha em ugyldig måned' :
-              null,
-      tilDato: !inntektSøk.tilDato ?  'Velg en gyldig dato' :
-        !inntektSøk.tilDato.match(/\d{4}-\d{2}/) ? 'Datoen må være ÅÅÅÅ-MM' :
-          parseInt(inntektSøk.tilDato.split('-')[0]) < 2015 ?  'Datoen må være over 2015' :
-            parseInt(inntektSøk.tilDato.split('-')[1]) > 12 ?  'Datoen ha em ugyldig måned' :
-             null,
+      fraDato: !inntektSøk.fraDato ? 'Velg en gyldig dato'
+        : !inntektSøk.fraDato.match(/\d{4}-\d{2}/) ? 'Datoen må være ÅÅÅÅ-MM'
+          : parseInt(inntektSøk.fraDato.split('-')[0]) < 2015 ? 'Datoen må være over 2015'
+            : parseInt(inntektSøk.fraDato.split('-')[1]) > 12 ? 'Datoen ha em ugyldig måned'
+              : null,
+      tilDato: !inntektSøk.tilDato ? 'Velg en gyldig dato'
+        : !inntektSøk.tilDato.match(/\d{4}-\d{2}/) ? 'Datoen må være ÅÅÅÅ-MM'
+          : parseInt(inntektSøk.tilDato.split('-')[0]) < 2015 ? 'Datoen må være over 2015'
+            : parseInt(inntektSøk.tilDato.split('-')[1]) > 12 ? 'Datoen ha em ugyldig måned'
+              : null,
       tema: inntektSøk.tema ? null : 'Du må velge et tema'
     }
     setValidation(validation)

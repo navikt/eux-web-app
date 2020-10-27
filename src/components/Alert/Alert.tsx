@@ -1,4 +1,4 @@
-import FilledRemoveCircle from 'assets/icons/filled-version-remove-circle'
+import FilledRemoveCircle from '../../assets/icons/filled-version-remove-circle'
 import classNames from 'classnames'
 import _ from 'lodash'
 import AlertStripe, { AlertStripeType } from 'nav-frontend-alertstriper'

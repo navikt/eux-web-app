@@ -1,13 +1,13 @@
-import * as types from 'constants/actionTypes'
-import * as urls from 'constants/urls'
+import * as types from '../constants/actionTypes'
+import * as urls from '../constants/urls'
 import { realCall, ActionWithPayload, ThunkResult } from 'js-fetch-api'
 import { Action, ActionCreator } from 'redux'
 import {
   Arbeidsforholdet,
   FamilieRelasjon,
   Inntekter, Sed
-} from 'declarations/types'
-import { SvarpasedState } from 'reducers/svarpased'
+} from '../declarations/types'
+import { SvarpasedState } from '../reducers/svarpased'
 
 const sprintf = require('sprintf-js').sprintf
 

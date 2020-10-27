@@ -1,5 +1,5 @@
-import { closeModal, openModal } from 'actions/ui'
-import { logMeAgain } from 'actions/app'
+import { closeModal, openModal } from '../../actions/ui'
+import { logMeAgain } from '../../actions/app'
 import PT from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'

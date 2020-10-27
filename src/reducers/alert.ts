@@ -1,4 +1,4 @@
-import * as types from 'constants/actionTypes'
+import * as types from '../constants/actionTypes'
 import { ActionWithPayload } from 'js-fetch-api'
 import _ from 'lodash'
 import { Action } from 'redux'

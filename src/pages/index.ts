@@ -1,8 +1,8 @@
-import Forside from 'pages/Forside'
-import OpprettSak from 'pages/OpprettSak'
-import Vedlegg from 'pages/Vedlegg'
-import UkjentSide from 'pages/UkjentSide'
-import SvarPaSed from 'pages/SvarPaSed'
+import Forside from './Forside'
+import OpprettSak from './OpprettSak'
+import Vedlegg from './Vedlegg'
+import UkjentSide from './UkjentSide'
+import SvarPaSed from './SvarPaSed'
 
 export default {
   Forside,

@@ -1,5 +1,5 @@
-import * as types from 'constants/actionTypes'
-import { Arbeidsforholdet, FamilieRelasjon } from 'declarations/types'
+import * as types from '../constants/actionTypes'
+import { Arbeidsforholdet, FamilieRelasjon } from '../declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
 import { ActionCreator } from 'redux'
 

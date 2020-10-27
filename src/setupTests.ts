@@ -1,5 +1,5 @@
 import Enzyme, { mount, render, shallow } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17'
 import { act } from 'react-dom/test-utils'
 import { useDispatch, useSelector } from 'react-redux'
 jest.mock('react-redux')

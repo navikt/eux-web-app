@@ -1,6 +1,6 @@
 import classnames from 'classnames'
-import { State } from 'declarations/reducers'
-import { ServerInfo } from 'declarations/types'
+import { State } from '../../declarations/reducers'
+import { ServerInfo } from '../../declarations/types'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'

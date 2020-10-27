@@ -1,13 +1,13 @@
-import { Cell, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'components/StyledComponents'
+import { Cell, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from '../StyledComponents'
 import { Knapp } from 'nav-frontend-knapper'
 import Panel from 'nav-frontend-paneler'
 import { Checkbox } from 'nav-frontend-skjema'
 import { Systemtittel } from 'nav-frontend-typografi'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import IkonArbeidsforhold from 'resources/images/ikon-arbeidsforhold'
+import IkonArbeidsforhold from '../../resources/images/ikon-arbeidsforhold'
 import styled from 'styled-components'
-import { formatterDatoTilNorsk } from 'utils/dato'
+import { formatterDatoTilNorsk } from '../../utils/dato'
 
 export interface ArbeidsforholdProps {
   getArbeidsforhold: () => void

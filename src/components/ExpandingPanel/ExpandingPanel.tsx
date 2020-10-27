@@ -1,5 +1,4 @@
 import classNames from 'classnames'
-import _ from 'lodash'
 import { guid } from 'nav-frontend-js-utils'
 import { theme, themeHighContrast } from 'nav-styled-component-theme'
 import PT from 'prop-types'
@@ -78,10 +77,18 @@ const ExpandingPanel: React.FC<ExpandingPanelProps> = ({
   }, [open, _open])
 
   const handleOnClick = (e: React.MouseEvent): void => {
-    setOpen(!_open)
-    if (_.isFunction(onClick)) {
-      onClick(e)
+    e.preventDefault()
+    handleOpenToggle()
+  }
+
+  const handleKeyboard = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleOpenToggle()
     }
+  }
+
+  const handleOpenToggle = (): void => {
+    setOpen(!_open)
   }
 
   const onRestProxy = (): void => {
@@ -118,6 +125,9 @@ const ExpandingPanel: React.FC<ExpandingPanelProps> = ({
         <div
           className='ekspanderbartPanel__hode'
           onClick={handleOnClick}
+          onKeyDown={handleKeyboard}
+          role='button'
+          tabIndex={0}
           aria-expanded={_open}
           {...ariaControls}
         >

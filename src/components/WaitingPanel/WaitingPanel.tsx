@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { HorizontalSeparatorDiv } from 'components/StyledComponents'
+import { HorizontalSeparatorDiv } from '../StyledComponents'
 import Spinner from 'nav-frontend-spinner'
 import { Normaltekst } from 'nav-frontend-typografi'
 import PT from 'prop-types'

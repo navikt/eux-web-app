@@ -1,22 +1,22 @@
-import { clientClear } from 'actions/alert'
-import * as formActions from 'actions/form'
-import Tilsette from 'assets/icons/Tilsette'
-import Alert, { AlertStatus } from 'components/Alert/Alert'
+import { clientClear } from '../../actions/alert'
+import * as formActions from '../../actions/form'
+import Tilsette from '../../assets/icons/Tilsette'
+import Alert, { AlertStatus } from '../../components/Alert/Alert'
 import {
   Cell,
   HorizontalSeparatorDiv,
   Row,
   VerticalSeparatorDiv
-} from 'components/StyledComponents'
-import * as types from 'constants/actionTypes'
-import { State } from 'declarations/reducers'
+} from '../../components/StyledComponents'
+import * as types from '../../constants/actionTypes'
+import { State } from '../../declarations/reducers'
 import {
   FamilieRelasjon,
   Kodeverk,
   Validation,
   Person
-} from 'declarations/types'
-import { KodeverkPropType } from 'declarations/types.pt'
+} from '../../declarations/types'
+import { KodeverkPropType } from '../../declarations/types.pt'
 import { CountryFilter } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
@@ -29,7 +29,7 @@ import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { vaskInputDato } from 'utils/dato'
+import { vaskInputDato } from '../../utils/dato'
 
 export interface AbroadPersonFormSelector {
   alertStatus: string | undefined;

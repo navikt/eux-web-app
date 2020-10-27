@@ -1,12 +1,12 @@
-import { clientClear } from 'actions/alert'
-import * as appActions from 'actions/app'
-import * as formActions from 'actions/form'
-import * as sakActions from 'actions/sak'
+import { clientClear } from '../actions/alert'
+import * as appActions from '../actions/app'
+import * as formActions from '../actions/form'
+import * as sakActions from '../actions/sak'
 import classNames from 'classnames'
-import AbortModal from 'components/AbortModal/AbortModal'
-import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
-import Family from 'components/Family/Family'
-import PersonSearch from 'components/PersonSearch/PersonSearch'
+import AbortModal from '../components/AbortModal/AbortModal'
+import Arbeidsforhold from '../components/Arbeidsforhold/Arbeidsforhold'
+import Family from '../components/Family/Family'
+import PersonSearch from '../components/PersonSearch/PersonSearch'
 import {
   Cell,
   Container,
@@ -15,17 +15,17 @@ import {
   Margin,
   Row,
   VerticalSeparatorDiv
-} from 'components/StyledComponents'
-import TopContainer from 'components/TopContainer/TopContainer'
-import * as types from 'constants/actionTypes'
-import { State } from 'declarations/reducers'
+} from '../components/StyledComponents'
+import TopContainer from '../components/TopContainer/TopContainer'
+import * as types from '../constants/actionTypes'
+import { State } from '../declarations/reducers'
 import {
   Enheter,
   FagSaker,
   FamilieRelasjon,
   Person,
   Validation
-} from 'declarations/types'
+} from '../declarations/types'
 import * as EKV from 'eessi-kodeverk'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'

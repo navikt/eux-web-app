@@ -1,18 +1,18 @@
-import { clientClear } from 'actions/alert'
-import * as appActions from 'actions/app'
-import * as sakActions from 'actions/sak'
-import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
-import Inntekt from 'components/Inntekt/Inntekt'
-import PersonSearch from 'components/PersonSearch/PersonSearch'
+import { clientClear } from '../actions/alert'
+import * as appActions from '../actions/app'
+import * as sakActions from '../actions/sak'
+import Arbeidsforhold from '../components/Arbeidsforhold/Arbeidsforhold'
+import Inntekt from '../components/Inntekt/Inntekt'
+import PersonSearch from '../components/PersonSearch/PersonSearch'
 import {
   Container,
   Content,
   Margin,
   VerticalSeparatorDiv
-} from 'components/StyledComponents'
-import TopContainer from 'components/TopContainer/TopContainer'
-import * as types from 'constants/actionTypes'
-import { State } from 'declarations/reducers'
+} from '../components/StyledComponents'
+import TopContainer from '../components/TopContainer/TopContainer'
+import * as types from '../constants/actionTypes'
+import { State } from '../declarations/reducers'
 import Alertstripe from 'nav-frontend-alertstriper'
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel'
 import { Knapp } from 'nav-frontend-knapper'
@@ -20,16 +20,16 @@ import { Input, Select } from 'nav-frontend-skjema'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import * as svarpasedActions from 'actions/svarpased'
+import * as svarpasedActions from '../actions/svarpased'
 import styled from 'styled-components'
 import {
   FamilieRelasjon,
   Inntekter,
   Inntekt as IInntekt,
   Validation, Sed
-} from 'declarations/types'
-import Family from 'components/Family/Family'
-import { SvarpasedState } from 'reducers/svarpased'
+} from '../declarations/types'
+import Family from '../components/Family/Family'
+import { SvarpasedState } from '../reducers/svarpased'
 import _ from 'lodash'
 import { Item } from 'tabell'
 

@@ -1,5 +1,5 @@
-import * as types from 'constants/actionTypes'
-import * as urls from 'constants/urls'
+import * as types from '../constants/actionTypes'
+import * as urls from '../constants/urls'
 import { realCall, ActionWithPayload, ThunkResult } from 'js-fetch-api'
 import { Action, ActionCreator } from 'redux'
 

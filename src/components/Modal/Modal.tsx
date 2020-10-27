@@ -1,5 +1,5 @@
-import { ModalContent } from 'declarations/components'
-import { ModalContentPropType } from 'declarations/components.pt'
+import { ModalContent } from '../../declarations/components'
+import { ModalContentPropType } from '../../declarations/components.pt'
 import _ from 'lodash'
 import Knapp, { Hovedknapp } from 'nav-frontend-knapper'
 import Lukknapp from 'nav-frontend-lukknapp'

@@ -1,7 +1,7 @@
-import { Arbeidsforhold, Inntekter, Sed } from 'declarations/types'
+import { Arbeidsforhold, Inntekter, Sed } from '../declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
 import { Action } from 'redux'
-import * as types from 'constants/actionTypes'
+import * as types from '../constants/actionTypes'
 import _ from 'lodash'
 
 export interface SvarpasedState {

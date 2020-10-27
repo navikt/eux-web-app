@@ -1,6 +1,6 @@
 import { mount, ReactWrapper } from 'enzyme'
 import React from 'react'
-import { stageSelector } from 'setupTests'
+import { stageSelector } from '../setupTests'
 import Vedlegg, { VedleggProps, VedleggSelector } from './Vedlegg'
 
 jest.mock('react-router-dom', () => ({

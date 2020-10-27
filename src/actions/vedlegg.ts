@@ -1,6 +1,6 @@
-import * as types from 'constants/actionTypes'
-import * as urls from 'constants/urls'
-import { VedleggPayload } from 'declarations/types'
+import * as types from '../constants/actionTypes'
+import * as urls from '../constants/urls'
+import { VedleggPayload } from '../declarations/types'
 import { realCall, ActionWithPayload, ThunkResult } from 'js-fetch-api'
 import { ActionCreator } from 'redux'
 const sprintf = require('sprintf-js').sprintf
