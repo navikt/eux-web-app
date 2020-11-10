@@ -24,10 +24,17 @@ export const getSeds: ActionCreator<ThunkResult<ActionWithPayload>> = (
   })
 }
 
-export const setSed: ActionCreator<ActionWithPayload> = (
+export const setSvarSed: ActionCreator<ActionWithPayload> = (
   payload: Sed
 ): ActionWithPayload => ({
-  type: types.SVARPASED_SET_SED,
+  type: types.SVARPASED_SVARSED_SET,
+  payload: payload
+})
+
+export const setSpørreSed: ActionCreator<ActionWithPayload> = (
+  payload: Sed
+): ActionWithPayload => ({
+  type: types.SVARPASED_SPØRRESED_SET,
   payload: payload
 })
 

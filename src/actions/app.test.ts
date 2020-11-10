@@ -1,6 +1,6 @@
-import * as appActions from 'actions/app'
-import * as types from 'constants/actionTypes'
-import * as urls from 'constants/urls'
+import * as appActions from './app'
+import * as types from '../constants/actionTypes'
+import * as urls from '../constants/urls'
 import { realCall as originalCall } from 'js-fetch-api'
 jest.mock('js-fetch-api', () => ({
   realCall: jest.fn()

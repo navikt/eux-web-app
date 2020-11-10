@@ -10,7 +10,8 @@ export interface SvarpasedState {
   person: any;
   personRelatert: any;
   seds: Array<Sed> | undefined;
-  sed: Sed | undefined;
+  spørreSed: Sed | undefined;
+  svarSed: Sed | undefined;
   svarPasedData: any;
   valgteArbeidsforhold: Arbeidsforhold;
   inntekter: Inntekter | undefined;
@@ -20,7 +21,8 @@ export interface SvarpasedState {
 export const initialSvarpasedState: SvarpasedState = {
   arbeidsforhold: [],
   seds: undefined,
-  sed: undefined,
+  spørreSed: undefined,
+  svarSed: undefined,
   person: undefined,
   personRelatert: undefined,
   familierelasjoner: [],
@@ -106,11 +108,18 @@ const svarpasedReducer = (
         svarPasedData: null
       }
 
-    case types.SVARPASED_SET_SED:
+    case types.SVARPASED_SPØRRESED_SET:
       return {
         ...state,
-        sed: (action as ActionWithPayload).payload
+        spørreSed: (action as ActionWithPayload).payload
       }
+
+    case types.SVARPASED_SVARSED_SET:
+      return {
+        ...state,
+        svarSed: (action as ActionWithPayload).payload
+      }
+
     case types.SVARPASED_FAMILIERELASJONER_ADD:
       return {
         ...state,

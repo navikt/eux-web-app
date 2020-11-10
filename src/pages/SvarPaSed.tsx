@@ -49,7 +49,8 @@ const mapState = (state: State): any => ({
   valgteArbeidsforhold: state.svarpased.valgteArbeidsforhold,
   inntekter: state.svarpased.inntekter,
   gettingSaksnummer: state.loading.gettingSaksnummer,
-  sed: state.svarpased.sed,
+  spørreSed: state.svarpased.spørreSed,
+  svarSed: state.svarpased.svarSed,
   seds: state.svarpased.seds,
   svarPasedData: state.svarpased.svarPasedData
 })
@@ -59,7 +60,7 @@ const mapStateTwo = (state: State): any => ({
   familieRelasjoner: state.svarpased.familierelasjoner,
   inntekter: state.svarpased.selectedInntekter,
   person: state.svarpased.person,
-  sed: state.svarpased.sed
+  sed: state.svarpased.svarSed
 })
 
 export interface SvarPaSedProps {
@@ -88,6 +89,8 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
     person,
     personRelatert,
     seds,
+    spørreSed,
+    svarSed,
     familierelasjonKodeverk,
     valgteArbeidsforhold,
     valgteFamilieRelasjoner,
@@ -135,10 +138,18 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
     }
   }
 
-  const onSedChange = (e: any) => {
+  const onSpørreSedChange = (e: any) => {
     const selectedSed: Sed | undefined = _.find(seds, (s: Sed) => s.documentType === e.target.value)
     if (selectedSed) {
-      dispatch(svarpasedActions.setSed(selectedSed))
+      dispatch(svarpasedActions.setSpørreSed(selectedSed))
+    }
+  }
+
+
+  const onSvarSedChange = (e: any) => {
+    const selectedSed: Sed | undefined = _.find(seds, (s: Sed) => s.documentType === e.target.value)
+    if (selectedSed) {
+      dispatch(svarpasedActions.setSvarSed(selectedSed))
     }
   }
 
@@ -212,6 +223,41 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
             <Knapp onClick={onSaksnummerClick}>Hent</Knapp>
           </SaksnummerDiv>
           <VerticalSeparatorDiv />
+          {seds && (
+            <>
+              <SedSelect
+                label={t('ui:label-chooseSpørreSed')}
+                onChange={onSpørreSedChange}
+                feil={validation.spørreSd}
+              >
+                <option key=''>-</option>
+                {seds?.map((sed: Sed) => (
+                  <option key={sed.documentId} value={sed.documentType} selected={spørreSed ? spørreSed.documentId === sed.documentId : false}>
+                    {sed.documentType}
+                  </option>
+                ))}
+              </SedSelect>
+              <VerticalSeparatorDiv />
+            </>
+          )}
+
+          {seds && (
+            <>
+              <SedSelect
+                label={t('ui:label-chooseSvarSed')}
+                onChange={onSvarSedChange}
+                feil={validation.svarSed}
+              >
+                <option key=''>-</option>
+                {seds?.map((sed: Sed) => (
+                  <option key={sed.documentId} value={sed.documentType} selected={svarSed ? svarSed.documentId === sed.documentId : false}>
+                    {sed.documentType}
+                  </option>
+                ))}
+              </SedSelect>
+              <VerticalSeparatorDiv />
+            </>
+          )}
           <PersonSearch
             alertStatus={alertStatus}
             alertMessage={alertMessage}
@@ -235,20 +281,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
             }}
             onAlertClose={() => dispatch(clientClear())}
           />
-          {seds && (
-            <SedSelect
-              label='Velg svar SED'
-              onChange={onSedChange}
-              feil={validation.sed}
-            >
-              <option key=''>-</option>
-              {seds?.map((sed: Sed) => (
-                <option key={sed.documentId} value={sed.documentType}>
-                  {sed.documentType}
-                </option>
-              ))}
-            </SedSelect>
-          )}
+
           <VerticalSeparatorDiv />
           {!_.isNil(person) && (
             <>
