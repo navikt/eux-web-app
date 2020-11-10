@@ -2,13 +2,19 @@ import * as sakActions from 'actions/sak'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { realCall as originalCall } from 'js-fetch-api'
+
+import mockArbeidsforhold from 'mocks/arbeidsforhold'
+import mockFamilierelasjon from 'mocks/familierelasjon'
+import mockOpprettSak from 'mocks/opprettSak'
+
 jest.mock('js-fetch-api', () => ({
   realCall: jest.fn()
 }))
-const realCall: jest.Mock = originalCall as jest.Mock<typeof originalCall>
+const realCall: jest.Mock = originalCall as unknown as jest.Mock<typeof originalCall>
 const sprintf = require('sprintf-js').sprintf
 
-describe('actions/app', () => {
+describe('actions/sak', () => {
+
   afterEach(() => {
     realCall.mockReset()
   })
@@ -17,15 +23,47 @@ describe('actions/app', () => {
     realCall.mockRestore()
   })
 
-  it('getArbeidsforhold()', () => {
+
+  it('addArbeidsforhold()', () => {
+    const generatedResult = sakActions.addArbeidsforhold(mockArbeidsforhold)
+    expect(generatedResult).toMatchObject({
+      type: types.SAK_ARBEIDSFORHOLD_ADD,
+      payload: mockArbeidsforhold
+    })
+  })
+
+  it('addFamilierelasjoner()', () => {
+    const generatedResult = sakActions.addFamilierelasjoner(mockFamilierelasjon)
+    expect(generatedResult).toMatchObject({
+      type: types.SAK_FAMILIERELASJONER_ADD,
+      payload: mockFamilierelasjon
+    })
+  })
+
+  it('createSak()', () => {
+
+    sakActions.createSak(mockOpprettSak)
+    expect(realCall)
+      .toBeCalledWith(expect.objectContaining({
+        method: 'POST',
+        type: {
+          request: types.SAK_SEND_REQUEST,
+          success: types.SAK_SEND_SUCCESS,
+          failure: types.SAK_SEND_FAILURE
+        },
+        url: sprintf(urls.API_SAK_SEND_URL)
+      }))
+  })
+
+  it('getArbeidsforholdList()', () => {
     const mockFnr = '12345678901'
-    sakActions.getArbeidsforhold(mockFnr)
+    sakActions.getArbeidsforholdList(mockFnr)
     expect(realCall)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.SAK_ARBEIDSFORHOLD_GET_REQUEST,
-          success: types.SAK_ARBEIDSFORHOLD_GET_SUCCESS,
-          failure: types.SAK_ARBEIDSFORHOLD_GET_FAILURE
+          request: types.SAK_ARBEIDSFORHOLDLIST_GET_REQUEST,
+          success: types.SAK_ARBEIDSFORHOLDLIST_GET_SUCCESS,
+          failure: types.SAK_ARBEIDSFORHOLDLIST_GET_FAILURE
         },
         url: sprintf(urls.API_SAK_ARBEIDSFORHOLD_URL, { fnr: mockFnr })
       }))
@@ -104,6 +142,22 @@ describe('actions/app', () => {
       }))
   })
 
+  it('removeArbeidsforhold()', () => {
+    const generatedResult = sakActions.removeArbeidsforhold(mockArbeidsforhold)
+    expect(generatedResult).toMatchObject({
+      type: types.SAK_ARBEIDSFORHOLD_REMOVE,
+      payload: mockArbeidsforhold
+    })
+  })
+
+  it('removeFamilierelasjoner()', () => {
+    const generatedResult = sakActions.removeFamilierelasjoner(mockFamilierelasjon)
+    expect(generatedResult).toMatchObject({
+      type: types.SAK_FAMILIERELASJONER_REMOVE,
+      payload: mockFamilierelasjon
+    })
+  })
+
   it('resetPerson()', () => {
     const generatedResult = sakActions.resetPerson()
     expect(generatedResult)
@@ -120,74 +174,14 @@ describe('actions/app', () => {
       })
   })
 
-  it('createSak()', () => {
-    const mockData = {
-      buctype: 'P_BUC_MOCK',
-      fnr: '12354678901',
-      landKode: 'AA',
-      institusjonsID: 'NAV',
-      saksID: '123',
-      sedtype: 'SED_MOCK',
-      sektor: 'SEKTOR_MOCK',
-      arbeidsforhold: [{
-        ansettelsesPeriode: {
-          fom: '01.01.1970',
-          tom: '01.01.2000'
-        },
-        arbeidsforholdIDnav: 123,
-        navn: 'navn',
-        orgnr: '123456789'
-      }],
-      familierelasjoner: [{
-        fnr: '12345678901',
-        fdato: '01.01.1970',
-        nasjonalitet: 'Norge',
-        rolle: 'samboer',
-        kjoenn: 'M',
-        fornavn: 'Ola',
-        etternavn: 'Nordmann'
-      }]
-    }
-
-    sakActions.createSak(mockData)
-    expect(realCall)
-      .toBeCalledWith(expect.objectContaining({
-        method: 'POST',
-        type: {
-          request: types.SAK_SEND_POST_REQUEST,
-          success: types.SAK_SEND_POST_SUCCESS,
-          failure: types.SAK_SEND_POST_FAILURE
-        },
-        url: sprintf(urls.API_SAK_SEND_POST_URL),
-        payload: {
-          buctype: 'P_BUC_MOCK',
-          fnr: '12354678901',
-          landKode: 'AA',
-          institusjonsID: 'NAV',
-          saksID: '123',
-          sedtype: 'SED_MOCK',
-          sektor: 'SEKTOR_MOCK',
-          tilleggsopplysninger: {
-            arbeidsforhold: [{
-              ansettelsesPeriode: {
-                fom: '01.01.1970',
-                tom: '01.01.2000'
-              },
-              arbeidsforholdIDnav: 123,
-              navn: 'navn',
-              orgnr: '123456789'
-            }],
-            familierelasjoner: [{
-              fnr: '12345678901',
-              fdato: '1970-01-01',
-              nasjonalitet: 'Norge',
-              rolle: 'samboer',
-              kjoenn: 'M',
-              fornavn: 'Ola',
-              etternavn: 'Nordmann'
-            }]
-          }
-        }
-      }))
+  it('setProperty()', () => {
+    const generatedResult = sakActions.setProperty('key', 'value')
+    expect(generatedResult).toMatchObject({
+      type: types.SAK_PROPERTY_SET,
+      payload: {
+        key: 'key',
+        value: 'value'
+      }
+    })
   })
 })

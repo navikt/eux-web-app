@@ -1,5 +1,5 @@
-import * as types from '../constants/actionTypes'
-import { ModalContent } from '../declarations/components'
+import * as types from 'constants/actionTypes'
+import { ModalContent } from 'declarations/components'
 import { ActionWithPayload } from 'js-fetch-api'
 import { Action } from 'redux'
 

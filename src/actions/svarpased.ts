@@ -1,5 +1,5 @@
-import * as types from '../constants/actionTypes'
-import * as urls from '../constants/urls'
+import * as types from 'constants/actionTypes'
+import * as urls from 'constants/urls'
 import { realCall, ActionWithPayload, ThunkResult } from 'js-fetch-api'
 import { Action, ActionCreator } from 'redux'
 import {
@@ -106,15 +106,15 @@ export const sendSvarPaSedData: ActionCreator<ThunkResult<
   })
 }
 
-export const getArbeidsforhold: ActionCreator<ThunkResult<
+export const getArbeidsforholdList: ActionCreator<ThunkResult<
   ActionWithPayload
 >> = (fnr: string): ThunkResult<ActionWithPayload> => {
   return realCall({
     url: sprintf(urls.API_SAK_ARBEIDSFORHOLD_URL, { fnr: fnr }),
     type: {
-      request: types.SVARPASED_ARBEIDSFORHOLD_GET_REQUEST,
-      success: types.SVARPASED_ARBEIDSFORHOLD_GET_SUCCESS,
-      failure: types.SVARPASED_ARBEIDSFORHOLD_GET_FAILURE
+      request: types.SVARPASED_ARBEIDSFORHOLDLIST_GET_REQUEST,
+      success: types.SVARPASED_ARBEIDSFORHOLDLIST_GET_SUCCESS,
+      failure: types.SVARPASED_ARBEIDSFORHOLDLIST_GET_FAILURE
     }
   })
 }

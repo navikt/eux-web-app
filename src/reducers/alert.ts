@@ -36,11 +36,11 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
     return initialAlertState
   }
 
-  if (action.type === types.FORM_ABROADPERSON_ADD_SUCCESS) {
+  if (action.type === types.SAK_ABROADPERSON_ADD_SUCCESS) {
     return initialAlertState
   }
 
-  if (action.type === types.FORM_TPSPERSON_ADD_SUCCESS) {
+  if (action.type === types.SAK_TPSPERSON_ADD_SUCCESS) {
     return initialAlertState
   }
 
@@ -84,11 +84,11 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         clientErrorMessage = 'ui:error-personRelated-notFound'
         break
 
-      case types.FORM_ABROADPERSON_ADD_FAILURE:
+      case types.SAK_ABROADPERSON_ADD_FAILURE:
         clientErrorMessage = 'ui:error-abroadperson-exists'
         break
 
-      case types.FORM_TPSPERSON_ADD_FAILURE:
+      case types.SAK_TPSPERSON_ADD_FAILURE:
         clientErrorMessage = 'ui:error-tpsperson-exists'
         break
 

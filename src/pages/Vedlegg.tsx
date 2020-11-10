@@ -56,7 +56,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
       const params: URLSearchParams = new URLSearchParams(location.search)
       const rinasaksnummer = params.get('rinasaksnummer')
       if (rinasaksnummer) {
-        dispatch(vedleggActions.set('rinasaksnummer', rinasaksnummer))
+        dispatch(vedleggActions.propertySet('rinasaksnummer', rinasaksnummer))
       }
       setMounted(true)
     }
@@ -99,12 +99,12 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
 
   const onjournalpostIDChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     resetValidation('journalpostID')
-    dispatch(vedleggActions.set('journalpostID', e.target.value))
+    dispatch(vedleggActions.propertySet('journalpostID', e.target.value))
   }
 
   const onDokumentIDChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     resetValidation('dokumentID')
-    dispatch(vedleggActions.set('dokumentID', e.target.value))
+    dispatch(vedleggActions.propertySet('dokumentID', e.target.value))
   }
 
   return (

@@ -118,7 +118,7 @@ export const Modal: React.FC<ModalProps> = ({
                     >
                       {button.text}
                     </MainButton>
-                  )
+                    )
                   : (
                     <OtherButton
                       id='c-modal__other-button-id'
@@ -127,7 +127,7 @@ export const Modal: React.FC<ModalProps> = ({
                     >
                       {button.text}
                     </OtherButton>
-                  )
+                    )
               })}
             </ModalButtons>
           )}

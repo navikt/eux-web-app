@@ -45,6 +45,7 @@ export interface FamilieRelasjon extends Person {
   land?: string | null | undefined
   statsborgerskap?: string | null | undefined
   rolle?: string
+  nasjonalitet?: string
 }
 
 export interface Saksbehandler {
@@ -150,3 +151,12 @@ export interface UtgaarDatoPayload {
 export interface LogMeAgainPayload {
   Location: string
 }
+
+export interface Institusjon {
+  institusjonsID: string
+  navn: string
+  landkode: string
+  buctype: string
+}
+
+export type Institusjoner = Array<Institusjon>

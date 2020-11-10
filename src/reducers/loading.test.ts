@@ -36,16 +36,16 @@ describe('reducers/loading', () => {
     ).toEqual(initialLoadingState)
   })
 
-  it('SAK_ARBEIDSFORHOLD_GET_REQUEST', () => {
-    simulateRequest(types.SAK_ARBEIDSFORHOLD_GET_REQUEST, 'gettingArbeidsforhold')
+  it('SAK_ARBEIDSFORHOLDLIST_GET_REQUEST', () => {
+    simulateRequest(types.SAK_ARBEIDSFORHOLDLIST_GET_REQUEST, 'gettingArbeidsforhold')
   })
 
-  it('SAK_ARBEIDSFORHOLD_GET_SUCCESS', () => {
-    simulateSuccess(types.SAK_ARBEIDSFORHOLD_GET_SUCCESS, 'gettingArbeidsforhold')
+  it('SAK_ARBEIDSFORHOLDLIST_GET_SUCCESS', () => {
+    simulateSuccess(types.SAK_ARBEIDSFORHOLDLIST_GET_SUCCESS, 'gettingArbeidsforhold')
   })
 
-  it('SAK_ARBEIDSFORHOLD_GET_FAILURE', () => {
-    simulateFailure(types.SAK_ARBEIDSFORHOLD_GET_FAILURE, 'gettingArbeidsforhold')
+  it('SAK_ARBEIDSFORHOLDLIST_GET_FAILURE', () => {
+    simulateFailure(types.SAK_ARBEIDSFORHOLDLIST_GET_FAILURE, 'gettingArbeidsforhold')
   })
 
   it('VEDLEGG_DOKUMENT_GET_REQUEST', () => {
@@ -108,16 +108,16 @@ describe('reducers/loading', () => {
     simulateFailure(types.SAK_PERSON_GET_FAILURE, 'gettingPerson')
   })
 
-  it('SAK_SEND_POST_REQUEST', () => {
-    simulateRequest(types.SAK_SEND_POST_REQUEST, 'sendingSak')
+  it('SAK_SEND_REQUEST', () => {
+    simulateRequest(types.SAK_SEND_REQUEST, 'sendingSak')
   })
 
-  it('SAK_SEND_POST_SUCCESS', () => {
-    simulateSuccess(types.SAK_SEND_POST_SUCCESS, 'sendingSak')
+  it('SAK_SEND_SUCCESS', () => {
+    simulateSuccess(types.SAK_SEND_SUCCESS, 'sendingSak')
   })
 
-  it('SAK_SEND_POST_FAILURE', () => {
-    simulateFailure(types.SAK_SEND_POST_FAILURE, 'sendingSak')
+  it('SAK_SEND_FAILURE', () => {
+    simulateFailure(types.SAK_SEND_FAILURE, 'sendingSak')
   })
 
   it('VEDLEGG_POST_REQUEST', () => {

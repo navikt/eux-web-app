@@ -1,13 +1,13 @@
 import * as vedleggActions from 'actions/vedlegg'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { VedleggPayload } from 'declarations/types'
 import { realCall as originalCall } from 'js-fetch-api'
+import mockVedleggPayload from 'mocks/vedlegg'
 
 jest.mock('js-fetch-api', () => ({
   realCall: jest.fn()
 }))
-const realCall: jest.Mock = originalCall as jest.Mock<typeof originalCall>
+const realCall: jest.Mock = originalCall as unknown as jest.Mock<typeof originalCall>
 const sprintf = require('sprintf-js').sprintf
 
 describe('actions/vedlegg', () => {
@@ -19,26 +19,6 @@ describe('actions/vedlegg', () => {
     realCall.mockRestore()
   })
 
-  it('sendVedlegg()', () => {
-    const mockVedleggPayload: VedleggPayload = {
-      dokumentID: '123',
-      rinadokumentID: '456',
-      journalpostID: '789',
-      rinaNrErGyldig: true,
-      rinaNrErSjekket: true,
-      rinasaksnummer: '100'
-    }
-    vedleggActions.sendVedlegg(mockVedleggPayload)
-    expect(realCall)
-      .toBeCalledWith(expect.objectContaining({
-        type: {
-          request: types.VEDLEGG_POST_REQUEST,
-          success: types.VEDLEGG_POST_SUCCESS,
-          failure: types.VEDLEGG_POST_FAILURE
-        },
-        url: urls.API_VEDLEGG_POST_URL
-      }))
-  })
 
   it('getDokument()', () => {
     const mockRinasaksnummer = '12345678901'
@@ -54,14 +34,27 @@ describe('actions/vedlegg', () => {
       }))
   })
 
-  it('set()', () => {
-    const generatedResult = vedleggActions.set('key', 'value')
+  it('propertySet()', () => {
+    const generatedResult = vedleggActions.propertySet('key', 'value')
     expect(generatedResult).toMatchObject({
-      type: types.VEDLEGG_VALUE_SET,
+      type: types.VEDLEGG_PROPERTY_SET,
       payload: {
         key: 'key',
         value: 'value'
       }
     })
+  })
+
+  it('sendVedlegg()', () => {
+    vedleggActions.sendVedlegg(mockVedleggPayload)
+    expect(realCall)
+      .toBeCalledWith(expect.objectContaining({
+        type: {
+          request: types.VEDLEGG_POST_REQUEST,
+          success: types.VEDLEGG_POST_SUCCESS,
+          failure: types.VEDLEGG_POST_FAILURE
+        },
+        url: urls.API_VEDLEGG_POST_URL
+      }))
   })
 })

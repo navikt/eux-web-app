@@ -1,12 +1,13 @@
 import * as types from 'constants/actionTypes'
+import formReducer, { initialFormState } from 'reducers/form'
 import sakReducer, { initialSakState } from './sak'
 
 describe('reducers/sak', () => {
-  it('SAK_ARBEIDSFORHOLD_GET_SUCCESS', () => {
+  it('SAK_ARBEIDSFORHOLDLIST_GET_SUCCESS', () => {
     const payload = 'mockPayload'
     expect(
       sakReducer(initialSakState, {
-        type: types.SAK_ARBEIDSFORHOLD_GET_SUCCESS,
+        type: types.SAK_ARBEIDSFORHOLDLIST_GET_SUCCESS,
         payload: payload
       })
     ).toEqual({
@@ -182,13 +183,13 @@ describe('reducers/sak', () => {
     })
   })
 
-  it('SAK_SEND_POST_SUCCESS', () => {
+  it('SAK_SEND_SUCCESS', () => {
     const payload = 'mockPayload'
     expect(
       sakReducer({
         ...initialSakState
       }, {
-        type: types.SAK_SEND_POST_SUCCESS,
+        type: types.SAK_SEND_SUCCESS,
         payload: payload
       })
     ).toEqual({
@@ -224,6 +225,104 @@ describe('reducers/sak', () => {
     ).toEqual({
       ...initialSakState,
       kjoenn: [{ term: 'kvinne', kode: 'K' }]
+    })
+  })
+
+  it('APP_CLEAN_DATA', () => {
+    expect(
+      formReducer({
+        ...initialFormState,
+        fnr: '123'
+      }, {
+        type: types.APP_CLEAN_DATA
+      })
+    ).toEqual(initialFormState)
+  })
+
+  it('SAK_PERSON_RESET', () => {
+    expect(
+      formReducer({
+        ...initialFormState,
+        fnr: '123'
+      }, {
+        type: types.SAK_PERSON_RESET
+      })
+    ).toEqual(initialFormState)
+  })
+
+  it('SAK_PROPERTY_SET', () => {
+    expect(
+      formReducer(initialFormState,
+        {
+          type: types.SAK_PROPERTY_SET,
+          payload: {
+            key: 'foo',
+            value: 'bar'
+          }
+        })
+    ).toEqual({
+      ...initialFormState,
+      foo: 'bar'
+    })
+  })
+
+  it('FORM_ARBEIDSFORHOLD_ADD', () => {
+    expect(
+      formReducer({
+        ...initialFormState,
+        arbeidsforhold: [1]
+      }, {
+        type: types.FORM_ARBEIDSFORHOLD_ADD,
+        payload: 2
+      })
+    ).toEqual({
+      ...initialFormState,
+      arbeidsforhold: [1, 2]
+    })
+  })
+
+  it('FORM_ARBEIDSFORHOLD_REMOVE', () => {
+    expect(
+      formReducer({
+        ...initialFormState,
+        arbeidsforhold: [1, 2]
+      }, {
+        type: types.FORM_ARBEIDSFORHOLD_REMOVE,
+        payload: 2
+      })
+    ).toEqual({
+      ...initialFormState,
+      arbeidsforhold: [1]
+    })
+  })
+
+  it('FORM_FAMILIERELASJONER_ADD', () => {
+    expect(
+      formReducer({
+        ...initialFormState,
+        familierelasjoner: [{ fnr: 1 }]
+      }, {
+        type: types.FORM_FAMILIERELASJONER_ADD,
+        payload: { fnr: 2 }
+      })
+    ).toEqual({
+      ...initialFormState,
+      familierelasjoner: [{ fnr: 1 }, { fnr: 2 }]
+    })
+  })
+
+  it('FORM_FAMILIERELASJONER_REMOVE', () => {
+    expect(
+      formReducer({
+        ...initialFormState,
+        familierelasjoner: [{ fnr: 1 }, { fnr: 2 }]
+      }, {
+        type: types.FORM_FAMILIERELASJONER_REMOVE,
+        payload: { fnr: 2 }
+      })
+    ).toEqual({
+      ...initialFormState,
+      familierelasjoner: [{ fnr: 1 }]
     })
   })
 })

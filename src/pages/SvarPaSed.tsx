@@ -145,7 +145,6 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
     }
   }
 
-
   const onSvarSedChange = (e: any) => {
     const selectedSed: Sed | undefined = _.find(seds, (s: Sed) => s.documentType === e.target.value)
     if (selectedSed) {
@@ -198,7 +197,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
       if (fnrParam) {
         setFnr(fnrParam)
         dispatch(svarpasedActions.getPerson(fnrParam))
-        dispatch(svarpasedActions.getArbeidsforhold(fnrParam))
+        dispatch(svarpasedActions.getArbeidsforholdList(fnrParam))
       }
       setMounted(true)
     }
@@ -320,8 +319,8 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
                 <>
                   <Ekspanderbartpanel tittel={t('ui:label-arbeidsforhold')}>
                     <Arbeidsforhold
-                      getArbeidsforhold={() => {
-                        dispatch(svarpasedActions.getArbeidsforhold(person?.fnr))
+                      getArbeidsforholdList={() => {
+                        dispatch(svarpasedActions.getArbeidsforholdList(person?.fnr))
                       }}
                       valgteArbeidsforhold={valgteArbeidsforhold}
                       arbeidsforhold={arbeidsforhold}

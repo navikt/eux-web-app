@@ -31,14 +31,14 @@ const loadingReducer = (
 
   switch (action.type) {
     // SAK
-    case types.SAK_ARBEIDSFORHOLD_GET_REQUEST:
+    case types.SAK_ARBEIDSFORHOLDLIST_GET_REQUEST:
       return {
         ...state,
         gettingArbeidsforhold: true
       }
 
-    case types.SAK_ARBEIDSFORHOLD_GET_SUCCESS:
-    case types.SAK_ARBEIDSFORHOLD_GET_FAILURE:
+    case types.SAK_ARBEIDSFORHOLDLIST_GET_SUCCESS:
+    case types.SAK_ARBEIDSFORHOLDLIST_GET_FAILURE:
       return {
         ...state,
         gettingArbeidsforhold: false
@@ -109,14 +109,14 @@ const loadingReducer = (
         gettingPerson: false
       }
 
-    case types.SAK_SEND_POST_REQUEST:
+    case types.SAK_SEND_REQUEST:
       return {
         ...state,
         sendingSak: true
       }
 
-    case types.SAK_SEND_POST_SUCCESS:
-    case types.SAK_SEND_POST_FAILURE:
+    case types.SAK_SEND_SUCCESS:
+    case types.SAK_SEND_FAILURE:
       return {
         ...state,
         sendingSak: false

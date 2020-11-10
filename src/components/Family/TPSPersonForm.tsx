@@ -89,8 +89,8 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
       const tpsperson =
         personRelatert && personRelatert.relasjoner
           ? personRelatert.relasjoner.find(
-            (elem: FamilieRelasjon) => elem.fnr === person.fnr
-          )
+              (elem: FamilieRelasjon) => elem.fnr === person.fnr
+            )
           : undefined
       setTpsPerson(tpsperson)
       if (!tpsperson) {
@@ -189,7 +189,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
           )}
           {alertMessage &&
           (alertType === types.SAK_PERSON_RELATERT_GET_FAILURE ||
-            alertType === types.FORM_TPSPERSON_ADD_FAILURE) &&
+            alertType === types.SAK_TPSPERSON_ADD_FAILURE) &&
             (
               <AlertstripeDiv>
                 <Alert

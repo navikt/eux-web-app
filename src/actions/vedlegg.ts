@@ -5,18 +5,6 @@ import { realCall, ActionWithPayload, ThunkResult } from 'js-fetch-api'
 import { ActionCreator } from 'redux'
 const sprintf = require('sprintf-js').sprintf
 
-export const sendVedlegg: ActionCreator<ThunkResult<ActionWithPayload>> = (payload: VedleggPayload): ThunkResult<ActionWithPayload> => {
-  return realCall({
-    url: urls.API_VEDLEGG_POST_URL,
-    method: 'POST',
-    payload: payload,
-    type: {
-      request: types.VEDLEGG_POST_REQUEST,
-      success: types.VEDLEGG_POST_SUCCESS,
-      failure: types.VEDLEGG_POST_FAILURE
-    }
-  })
-}
 
 export const getDokument: ActionCreator<ThunkResult<ActionWithPayload>> = (rinasaksnummer: string): ThunkResult<ActionWithPayload> => {
   return realCall({
@@ -29,10 +17,23 @@ export const getDokument: ActionCreator<ThunkResult<ActionWithPayload>> = (rinas
   })
 }
 
-export const set = (key: string, value: string | undefined) => ({
-  type: types.VEDLEGG_VALUE_SET,
+export const propertySet = (key: string, value: string | undefined) => ({
+  type: types.VEDLEGG_PROPERTY_SET,
   payload: {
     key: key,
     value: value
   }
 })
+
+export const sendVedlegg: ActionCreator<ThunkResult<ActionWithPayload>> = (payload: VedleggPayload): ThunkResult<ActionWithPayload> => {
+  return realCall({
+    url: urls.API_VEDLEGG_POST_URL,
+    method: 'POST',
+    payload: payload,
+    type: {
+      request: types.VEDLEGG_POST_REQUEST,
+      success: types.VEDLEGG_POST_SUCCESS,
+      failure: types.VEDLEGG_POST_FAILURE
+    }
+  })
+}

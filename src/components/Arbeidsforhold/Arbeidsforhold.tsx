@@ -10,9 +10,9 @@ import styled from 'styled-components'
 import { formatterDatoTilNorsk } from '../../utils/dato'
 
 export interface ArbeidsforholdProps {
-  getArbeidsforhold: () => void
+  getArbeidsforholdList: () => void
   valgteArbeidsforhold: any
-  arbeidsforhold: any
+  arbeidsforholdList: any
   onArbeidsforholdClick: (x: any, y: any) => void
 }
 
@@ -33,7 +33,7 @@ const ArbeidsforholdButton = styled.div`
   align-items: center;
 `
 const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
-  arbeidsforhold, getArbeidsforhold, valgteArbeidsforhold, onArbeidsforholdClick
+  arbeidsforholdList, getArbeidsforholdList, valgteArbeidsforhold, onArbeidsforholdClick
 }: ArbeidsforholdProps) => {
   const { t } = useTranslation()
   return (
@@ -53,14 +53,14 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
                 {t('ui:label-arbeidsforhold')}
               </span>
               <HorizontalSeparatorDiv />
-              <Knapp onClick={getArbeidsforhold}>
+              <Knapp onClick={getArbeidsforholdList}>
                 {t('ui:form-search')}
               </Knapp>
             </ArbeidsforholdButton>
           </Cell>
         </Row>
-        {arbeidsforhold &&
-        arbeidsforhold.map(
+        {arbeidsforholdList &&
+        arbeidsforholdList.map(
           (arbeidsforholdet: any, index: number) => {
             const {
               arbeidsforholdIDnav,

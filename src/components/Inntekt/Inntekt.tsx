@@ -122,14 +122,14 @@ const Inntekt: React.FC<InntektProps> = ({
     const validation: Validation = {
       fraDato: !inntektSøk.fraDato ? 'Velg en gyldig dato'
         : !inntektSøk.fraDato.match(/\d{4}-\d{2}/) ? 'Datoen må være ÅÅÅÅ-MM'
-          : parseInt(inntektSøk.fraDato.split('-')[0]) < 2015 ? 'Datoen må være over 2015'
-            : parseInt(inntektSøk.fraDato.split('-')[1]) > 12 ? 'Datoen ha em ugyldig måned'
-              : null,
+            : parseInt(inntektSøk.fraDato.split('-')[0]) < 2015 ? 'Datoen må være over 2015'
+              : parseInt(inntektSøk.fraDato.split('-')[1]) > 12 ? 'Datoen ha em ugyldig måned'
+                : null,
       tilDato: !inntektSøk.tilDato ? 'Velg en gyldig dato'
         : !inntektSøk.tilDato.match(/\d{4}-\d{2}/) ? 'Datoen må være ÅÅÅÅ-MM'
-          : parseInt(inntektSøk.tilDato.split('-')[0]) < 2015 ? 'Datoen må være over 2015'
-            : parseInt(inntektSøk.tilDato.split('-')[1]) > 12 ? 'Datoen ha em ugyldig måned'
-              : null,
+            : parseInt(inntektSøk.tilDato.split('-')[0]) < 2015 ? 'Datoen må være over 2015'
+              : parseInt(inntektSøk.tilDato.split('-')[1]) > 12 ? 'Datoen ha em ugyldig måned'
+                : null,
       tema: inntektSøk.tema ? null : 'Du må velge et tema'
     }
     setValidation(validation)

@@ -37,7 +37,7 @@ const svarpasedReducer = (
   action: Action | ActionWithPayload
 ) => {
   switch (action.type) {
-    case types.SVARPASED_ARBEIDSFORHOLD_GET_SUCCESS:
+    case types.SVARPASED_ARBEIDSFORHOLDLIST_GET_SUCCESS:
       return {
         ...state,
         arbeidsforhold: (action as ActionWithPayload).payload

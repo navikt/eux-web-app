@@ -176,7 +176,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
       _.find(existingFamilyRelationships, (f) => f.fnr === fnr) !== undefined
     ) {
       dispatch({
-        type: types.FORM_ABROADPERSON_ADD_FAILURE
+        type: types.SAK_ABROADPERSON_ADD_FAILURE
       })
       return true
     }
@@ -228,7 +228,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
         setRelation(emptyRelation)
         dispatch(formActions.addFamilierelasjoner(trimFamilyRelation(relation)))
         dispatch({
-          type: types.FORM_ABROADPERSON_ADD_SUCCESS
+          type: types.SAK_ABROADPERSON_ADD_SUCCESS
         })
       }
     }
@@ -403,7 +403,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               <span>{t('ui:form-add')}</span>
             </Knapp>
           </AlignCenterCell>
-          {alertMessage && alertType === types.FORM_ABROADPERSON_ADD_FAILURE && (
+          {alertMessage && alertType === types.SAK_ABROADPERSON_ADD_FAILURE && (
             <AlertstripeDiv>
               <Alert
                 type='client'

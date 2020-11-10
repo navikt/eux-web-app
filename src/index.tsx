@@ -20,7 +20,7 @@ import './index.css'
 const store: Store = createStore(combineReducers(reducers), applyMiddleware(thunk))
 
 if (!IS_PRODUCTION) {
-  var axe = require('react-axe')
+  const axe = require('react-axe')
   axe(React, ReactDOM, 1000)
 } else {
   Sentry.init()

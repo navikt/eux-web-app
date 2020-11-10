@@ -74,17 +74,17 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
 
   const onRinaSaksnummerChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setDokument(undefined)
-    dispatch(vedleggActions.set('dokument', undefined))
+    dispatch(vedleggActions.propertySet('dokument', undefined))
     if (_.isFunction(onRinasaksnummerChanged)) {
       onRinasaksnummerChanged()
     }
     resetValidation('rinasaksnummer')
-    dispatch(vedleggActions.set('rinasaksnummer', e.target.value))
+    dispatch(vedleggActions.propertySet('rinasaksnummer', e.target.value))
   }
 
   const onRinadokumentIDChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     resetValidation('rinadokumentID')
-    dispatch(vedleggActions.set('rinadokumentID', e.target.value))
+    dispatch(vedleggActions.propertySet('rinadokumentID', e.target.value))
   }
 
   const yyyMMdd = (dato: string): string => moment(dato).format('YYYY-MM-DD')

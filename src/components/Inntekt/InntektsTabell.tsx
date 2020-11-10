@@ -31,8 +31,8 @@ const InntektsTabell: React.FunctionComponent<InntektsTabellProps> = ({
         items={
           inntekter
             ? inntekter.map((inntekt: Inntekt, index: number) =>
-              mapInntektTilItem(inntekt, index)
-            )
+                mapInntektTilItem(inntekt, index)
+              )
             : []
         }
         itemsPerPage={10}
