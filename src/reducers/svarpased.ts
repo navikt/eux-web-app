@@ -141,7 +141,12 @@ const svarpasedReducer = (
       }
 
     case types.APP_CLEAN_DATA:
-      return initialSvarpasedState
+
+      // keep seds, they are for the sed dropdown options
+      return {
+        ...initialSvarpasedState,
+        seds: state.seds
+      }
 
     case types.SAK_PERSON_RESET:
       return {

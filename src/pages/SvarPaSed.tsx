@@ -1,18 +1,4 @@
-import { clientClear } from '../actions/alert'
-import * as appActions from '../actions/app'
-import * as sakActions from '../actions/sak'
-import Arbeidsforhold from '../components/Arbeidsforhold/Arbeidsforhold'
-import Inntekt from '../components/Inntekt/Inntekt'
-import PersonSearch from '../components/PersonSearch/PersonSearch'
-import {
-  Container,
-  Content,
-  Margin,
-  VerticalSeparatorDiv
-} from '../components/StyledComponents'
-import TopContainer from '../components/TopContainer/TopContainer'
-import * as types from '../constants/actionTypes'
-import { State } from '../declarations/reducers'
+import _ from 'lodash'
 import Alertstripe from 'nav-frontend-alertstriper'
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel'
 import { Knapp } from 'nav-frontend-knapper'
@@ -20,18 +6,22 @@ import { Input, Select } from 'nav-frontend-skjema'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import * as svarpasedActions from '../actions/svarpased'
 import styled from 'styled-components'
-import {
-  FamilieRelasjon,
-  Inntekter,
-  Inntekt as IInntekt,
-  Validation, Sed
-} from '../declarations/types'
-import Family from '../components/Family/Family'
-import { SvarpasedState } from '../reducers/svarpased'
-import _ from 'lodash'
 import { Item } from 'tabell'
+import { clientClear } from '../actions/alert'
+import * as appActions from '../actions/app'
+import * as sakActions from '../actions/sak'
+import * as svarpasedActions from '../actions/svarpased'
+import Arbeidsforhold from '../components/Arbeidsforhold/Arbeidsforhold'
+import Family from '../components/Family/Family'
+import Inntekt from '../components/Inntekt/Inntekt'
+import PersonSearch from '../components/PersonSearch/PersonSearch'
+import { Container, Content, Margin, VerticalSeparatorDiv } from '../components/StyledComponents'
+import TopContainer from '../components/TopContainer/TopContainer'
+import * as types from '../constants/actionTypes'
+import { State } from '../declarations/reducers'
+import { FamilieRelasjon, Inntekt as IInntekt, Inntekter, Sed, Validation } from '../declarations/types'
+import { SvarpasedState } from '../reducers/svarpased'
 
 const SaksnummerDiv = styled.div`
   display: flex;
@@ -59,17 +49,17 @@ const mapState = (state: State): any => ({
   valgteArbeidsforhold: state.svarpased.valgteArbeidsforhold,
   inntekter: state.svarpased.inntekter,
   gettingSaksnummer: state.loading.gettingSaksnummer,
-  seds: state.svarpased.seds,
   sed: state.svarpased.sed,
+  seds: state.svarpased.seds,
   svarPasedData: state.svarpased.svarPasedData
 })
 
 const mapStateTwo = (state: State): any => ({
-  sed: state.svarpased.sed,
-  person: state.svarpased.person,
-  inntekter: state.svarpased.selectedInntekter,
   arbeidsforhold: state.svarpased.valgteArbeidsforhold,
-  familieRelasjoner: state.svarpased.familierelasjoner
+  familieRelasjoner: state.svarpased.familierelasjoner,
+  inntekter: state.svarpased.selectedInntekter,
+  person: state.svarpased.person,
+  sed: state.svarpased.sed
 })
 
 export interface SvarPaSedProps {
@@ -161,6 +151,10 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
       })
     )
   }
+
+  const showArbeidsforhold = (): boolean => sed.documentType === 'U002' || sed.documentType === 'U007'
+
+  const showInntekt = (): boolean => sed.documentType === 'U004'
 
   const deleteRelation = (relation: FamilieRelasjon): void => {
     dispatch(svarpasedActions.removeFamilierelasjoner(relation))
@@ -289,28 +283,34 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
                   <VerticalSeparatorDiv />
                 </>
               )}
-              <Ekspanderbartpanel tittel={t('ui:label-arbeidsforhold')}>
-                <Arbeidsforhold
-                  getArbeidsforhold={() => {
-                    dispatch(svarpasedActions.getArbeidsforhold(person?.fnr))
-                  }}
-                  valgteArbeidsforhold={valgteArbeidsforhold}
-                  arbeidsforhold={arbeidsforhold}
-                  onArbeidsforholdClick={(item: any, checked: boolean) => dispatch(
-                    checked
-                      ? svarpasedActions.addArbeidsforhold(item)
-                      : svarpasedActions.removeArbeidsforhold(item)
-                  )}
-                />
-              </Ekspanderbartpanel>
-              <VerticalSeparatorDiv />
-              <Ekspanderbartpanel tittel={t('ui:label-inntekt')}>
-                <Inntekt
-                  fnr={person.fnr}
-                  inntekter={inntekter}
-                  onSelectedInntekt={onSelectedInntekt}
-                />
-              </Ekspanderbartpanel>
+              {showArbeidsforhold() && (
+                <>
+                  <Ekspanderbartpanel tittel={t('ui:label-arbeidsforhold')}>
+                    <Arbeidsforhold
+                      getArbeidsforhold={() => {
+                        dispatch(svarpasedActions.getArbeidsforhold(person?.fnr))
+                      }}
+                      valgteArbeidsforhold={valgteArbeidsforhold}
+                      arbeidsforhold={arbeidsforhold}
+                      onArbeidsforholdClick={(item: any, checked: boolean) => dispatch(
+                        checked
+                          ? svarpasedActions.addArbeidsforhold(item)
+                          : svarpasedActions.removeArbeidsforhold(item)
+                      )}
+                    />
+                  </Ekspanderbartpanel>
+                  <VerticalSeparatorDiv />
+                </>
+              )}
+              {showInntekt() && (
+                <Ekspanderbartpanel tittel={t('ui:label-inntekt')}>
+                  '<Inntekt
+                    fnr={person.fnr}
+                    inntekter={inntekter}
+                    onSelectedInntekt={onSelectedInntekt}
+                  />
+                </Ekspanderbartpanel>
+              )}
             </>
           )}
           <VerticalSeparatorDiv />
