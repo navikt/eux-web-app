@@ -1,6 +1,6 @@
-import * as types from '../constants/actionTypes'
-import { Arbeidsforhold, BucTyper, FagSaker, Kodemaps, Kodeverk, OpprettetSak, Tema } from '../declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
+import * as types from '../constants/actionTypes'
+import { Arbeidsforhold, FagSaker, OpprettetSak } from '../declarations/types'
 
 export interface SakState {
   arbeidsforhold: Arbeidsforhold | undefined;
@@ -9,34 +9,15 @@ export interface SakState {
   person: any;
   opprettetSak: OpprettetSak | undefined;
   personRelatert: any;
-
-  // comes from eessi-kodeverk
-  buctyper: BucTyper | undefined;
-  familierelasjoner: Array<Kodeverk> | undefined;
-  kjoenn: Array<Kodeverk> | undefined;
-  landkoder: Array<Kodeverk> | undefined;
-  sektor: Array<Kodeverk> | undefined;
-  sedtyper: Array<Kodeverk> | undefined;
-  tema: Tema | undefined;
-  kodemaps: Kodemaps | undefined;
 }
 
 export const initialSakState: SakState = {
   arbeidsforhold: undefined,
   fagsaker: undefined,
   institusjoner: undefined,
-  landkoder: undefined,
   person: undefined,
   opprettetSak: undefined,
-  personRelatert: undefined,
-
-  buctyper: undefined,
-  familierelasjoner: undefined,
-  kjoenn: undefined,
-  sektor: undefined,
-  sedtyper: undefined,
-  tema: undefined,
-  kodemaps: undefined
+  personRelatert: undefined
 }
 
 const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload) => {
@@ -123,12 +104,6 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
       return {
         ...state,
         opprettetSak: action.payload
-      }
-
-    case types.SAK_PRELOAD:
-      return {
-        ...state,
-        ...action.payload
       }
 
     case types.APP_CLEAN_DATA:

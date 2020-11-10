@@ -1,4 +1,3 @@
-import * as EKV from 'eessi-kodeverk'
 import * as sakActions from 'actions/sak'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
@@ -190,19 +189,5 @@ describe('actions/app', () => {
           }
         }
       }))
-  })
-
-  it('preload()', () => {
-    const generatedResult = sakActions.preload()
-    expect(generatedResult)
-      .toMatchObject({
-        type: types.SAK_PRELOAD,
-        payload: {
-          ...EKV.KTObjects,
-          kodemaps: {
-            ...EKV.Kodemaps
-          }
-        }
-      })
   })
 })

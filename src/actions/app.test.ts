@@ -1,45 +1,35 @@
-import * as appActions from './app'
-import * as types from '../constants/actionTypes'
-import * as urls from '../constants/urls'
-import { realCall as originalCall } from 'js-fetch-api'
+import * as appActions from 'actions/app'
+import * as types from 'constants/actionTypes'
+import * as urls from 'constants/urls'
+import EKV from "eessi-kodeverk"
+import { call as originalCall } from 'js-fetch-api'
+import { Action } from 'redux'
+
 jest.mock('js-fetch-api', () => ({
-  realCall: jest.fn()
+  call: jest.fn()
 }))
-const realCall: jest.Mock = originalCall as jest.Mock<typeof originalCall>
+const call: jest.Mock = originalCall as jest.Mock<typeof originalCall>
 
 describe('actions/app', () => {
   afterEach(() => {
-    realCall.mockReset()
+    call.mockReset()
   })
 
   afterAll(() => {
-    realCall.mockRestore()
+    call.mockRestore()
   })
 
   it('cleanData()', () => {
-    const generatedResult = appActions.cleanData()
+    const generatedResult: Action = appActions.cleanData()
     expect(generatedResult)
       .toMatchObject({
         type: types.APP_CLEAN_DATA
       })
   })
 
-  it('getSaksbehandler()', () => {
-    appActions.getSaksbehandler()
-    expect(realCall)
-      .toBeCalledWith(expect.objectContaining({
-        type: {
-          request: types.APP_SAKSBEHANDLER_GET_REQUEST,
-          success: types.APP_SAKSBEHANDLER_GET_SUCCESS,
-          failure: types.APP_SAKSBEHANDLER_GET_FAILURE
-        },
-        url: urls.API_SAKSBEHANDLER_URL
-      }))
-  })
-
   it('getEnheter()', () => {
     appActions.getEnheter()
-    expect(realCall)
+    expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
           request: types.APP_ENHETER_GET_REQUEST,
@@ -50,16 +40,56 @@ describe('actions/app', () => {
       }))
   })
 
-  it('getServerinfo()', () => {
-    appActions.getServerinfo()
-    expect(realCall)
+  it('getSaksbehandler()', () => {
+    appActions.getSaksbehandler()
+    expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.APP_SERVERINFO_GET_REQUEST,
-          success: types.APP_SERVERINFO_GET_SUCCESS,
-          failure: types.APP_SERVERINFO_GET_FAILURE
+          request: types.APP_SAKSBEHANDLER_GET_REQUEST,
+          success: types.APP_SAKSBEHANDLER_GET_SUCCESS,
+          failure: types.APP_SAKSBEHANDLER_GET_FAILURE
         },
-        url: urls.API_SERVERINFO_URL
+        url: urls.API_SAKSBEHANDLER_URL
       }))
+  })
+
+  it('getUtgaarDato()', () => {
+    appActions.getUtgaarDato()
+    expect(call)
+      .toBeCalledWith(expect.objectContaining({
+        type: {
+          request: types.APP_UTGAARDATO_GET_REQUEST,
+          success: types.APP_UTGAARDATO_GET_SUCCESS,
+          failure: types.APP_UTGAARDATO_GET_FAILURE
+        },
+        url: urls.API_UTGAARDATO_URL
+      }))
+  })
+
+  it('logMeAgain()', () => {
+    appActions.logMeAgain()
+    expect(call)
+      .toBeCalledWith(expect.objectContaining({
+        type: {
+          request: types.APP_LOGMEAGAIN_REQUEST,
+          success: types.APP_LOGMEAGAIN_SUCCESS,
+          failure: types.APP_LOGMEAGAIN_FAILURE
+        },
+        url: urls.API_REAUTENTISERING_URL
+      }))
+  })
+
+  it('preload()', () => {
+    const generatedResult = appActions.preload()
+    expect(generatedResult)
+      .toMatchObject({
+        type: types.APP_PRELOAD,
+        payload: {
+          ...EKV.KTObjects,
+          kodemaps: {
+            ...EKV.Kodemaps
+          }
+        }
+      })
   })
 })

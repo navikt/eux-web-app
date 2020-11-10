@@ -11,7 +11,6 @@ import * as reducers from './reducers'
 import { I18nextProvider } from 'react-i18next'
 import i18n from './i18n'
 import Pages from './pages'
-import * as sakActions from './actions/sak'
 import * as appActions from './actions/app'
 import { unregister } from './registerServiceWorker'
 import * as Utils from './utils/utils'
@@ -28,7 +27,7 @@ if (!IS_PRODUCTION) {
 }
 
 (window as any).frontendlogger.info(Utils.buildinfo())
-store.dispatch(sakActions.preload())
+store.dispatch(appActions.preload())
 // @ts-ignore
 store.dispatch(appActions.getSaksbehandler())
 // @ts-ignore

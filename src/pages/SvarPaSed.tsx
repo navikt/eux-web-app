@@ -43,7 +43,7 @@ const mapState = (state: State): any => ({
   gettingPerson: state.loading.gettingPerson,
   person: state.svarpased.person,
   personRelatert: state.svarpased.personRelatert,
-  familierelasjonKodeverk: state.sak.familierelasjoner,
+  familierelasjonKodeverk: state.app.familierelasjoner,
   valgteFamilieRelasjoner: state.svarpased.familierelasjoner,
   arbeidsforhold: state.svarpased.arbeidsforhold,
   valgteArbeidsforhold: state.svarpased.valgteArbeidsforhold,

@@ -2,6 +2,8 @@ import Enzyme, { mount, render, shallow } from 'enzyme'
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17'
 import { act } from 'react-dom/test-utils'
 import { useDispatch, useSelector } from 'react-redux'
+import 'jest-styled-components'
+
 jest.mock('react-redux')
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -14,12 +16,19 @@ Enzyme.configure({ adapter: new Adapter() });
 // eslint-disable-next-line no-undef
 HTMLCanvasElement.prototype.getContext = jest.fn()
 window.scrollTo = jest.fn()
-window.location.reload = jest.fn()
+
 Object.defineProperty(window, 'getComputedStyle', {
   value: () => ({
     getPropertyValue: () => ('')
   })
 })
+
+jest.mock('amplitude-js', () => ({
+  getInstance: () => ({
+    init: jest.fn(),
+    logEvent: jest.fn()
+  })
+}))
 
 jest.mock('i18next', () => {
   const use = jest.fn()
@@ -33,10 +42,6 @@ jest.mock('i18next', () => {
   use.mockImplementation(() => result)
   return result
 })
-
-jest.mock('uuid', () => ({
-  v4: 'mock_uuid'
-}))
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key })

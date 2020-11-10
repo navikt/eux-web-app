@@ -1,4 +1,4 @@
-import * as EKV from 'eessi-kodeverk'
+
 import { realCall, ActionWithPayload, ThunkResult } from 'js-fetch-api'
 import moment from 'moment'
 import { Action, ActionCreator } from 'redux'
@@ -130,23 +130,3 @@ export const createSak: ActionCreator<ThunkResult<ActionWithPayload>> = (data: a
   })
 }
 
-/*
-KTObjects: {
-  buctyper: buctyper,
-  familierelasjoner: familierelasjoner,
-  kjoenn: kjoenn,
-  landkoder: landkoder,
-  sektor: sektor,
-  sedtyper: sedtyper,
-  tema: tema
-};
-*/
-export const preload = () => ({
-  type: types.SAK_PRELOAD,
-  payload: {
-    ...EKV.KTObjects,
-    kodemaps: {
-      ...EKV.Kodemaps
-    }
-  } // kodemaps: { BUC2SEDS, SEKTOR2FAGSAK, SEKTOR2BUC }
-})

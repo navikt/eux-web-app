@@ -141,3 +141,12 @@ export interface Sed {
   documentType: string
   operation: string
 }
+
+export interface UtgaarDatoPayload {
+  naa?: string
+  utgaarDato: string
+}
+
+export interface LogMeAgainPayload {
+  Location: string
+}

@@ -1,4 +1,4 @@
-import alertReducer, { initialAlertState } from './alert'
+import alertReducer, { initialAlertState } from 'reducers/alert'
 import * as types from 'constants/actionTypes'
 
 describe('reducers/alert', () => {

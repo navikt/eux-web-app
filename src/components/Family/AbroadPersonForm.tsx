@@ -50,8 +50,8 @@ const mapState = (state: State): AbroadPersonFormSelector => ({
   alertStatus: state.alert.clientErrorStatus,
   alertMessage: state.alert.clientErrorMessage,
   alertType: state.alert.type,
-  kjoenn: state.sak.kjoenn,
-  landkoder: state.sak.landkoder
+  kjoenn: state.app.kjoenn,
+  landkoder: state.app.landkoder
 })
 
 const Container = styled.div`

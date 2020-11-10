@@ -1,7 +1,8 @@
-import appReducer, { initialAppState } from './app'
+import appReducer, { initialAppState } from 'reducers/app'
 import * as types from 'constants/actionTypes'
 
 describe('reducers/app', () => {
+
   it('APP_SAKSBEHANDLER_GET_SUCCESS', () => {
     const mockPayload = 'mockPayload'
     expect(
