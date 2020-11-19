@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import IkonArbeidsforhold from 'resources/images/ikon-arbeidsforhold'
 import { formatterDatoTilNorsk } from 'utils/dato'
-import { Cell, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'components/StyledComponents'
+import { Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'components/StyledComponents'
 
 const ArbeidsforholdItem = styled.div`
   display: flex;
@@ -40,16 +40,16 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
   const { t } = useTranslation()
   return (
     <Row>
-      <Cell className='arbeidsforhold'>
+      <Column className='arbeidsforhold'>
         <Row>
-          <Cell>
+          <Column>
             <Systemtittel>
               {t('ui:label-aaRegistered')}
             </Systemtittel>
-          </Cell>
+          </Column>
         </Row>
         <Row>
-          <Cell>
+          <Column>
             <ArbeidsforholdButton>
               <span>
                 {t('ui:label-arbeidsforhold')}
@@ -59,7 +59,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
                 {t('ui:form-search')}
               </Knapp>
             </ArbeidsforholdButton>
-          </Cell>
+          </Column>
         </Row>
         {arbeidsforholdList && arbeidsforholdList.map(
           (arbeidsforholdet: Arbeidsforholdet, index: number) => {
@@ -69,9 +69,9 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
               orgnr,
               ansettelsesPeriode: { fom, tom }
             } = arbeidsforholdet
-            const arbeidsForholdErValgt: boolean = valgteArbeidsforhold.find(
+            const arbeidsForholdErValgt: boolean = valgteArbeidsforhold ? valgteArbeidsforhold.find(
               (item: Arbeidsforholdet) => item.arbeidsforholdIDnav === arbeidsforholdIDnav
-            ) !== undefined
+            ) !== undefined : false
             return (
               <>
                 <VerticalSeparatorDiv data-size='0.5' />
@@ -109,8 +109,8 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
             )
           }
         )}
-      </Cell>
-      <Cell />
+      </Column>
+      <Column />
     </Row>
   )
 }

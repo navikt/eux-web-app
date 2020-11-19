@@ -19,12 +19,15 @@ export const HorizontalSeparatorDiv = styled.div`
 `
 export const Row = styled.div`
   display: flex;
-  width: 100%;
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
   flex-direction: column;
   @media (min-width: 768px) {
     flex-direction: row;
   }
 `
-export const Cell = styled.div`
+export const Column = styled.div`
   flex: 1;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 `

@@ -47,10 +47,10 @@ export const createSak: ActionCreator<ThunkResult<ActionWithPayload<any>>> = (
   if (data.enhet) {
     payload.enhet = data.enhet
   }
-  if (data.arbeidsforhold.length > 0) {
+  if (data.arbeidsforhold && data.arbeidsforhold.length > 0) {
     payload.tilleggsopplysninger.arbeidsforhold = data.arbeidsforhold
   }
-  if (data.familierelasjoner.length > 0) {
+  if (data.familierelasjoner && data.familierelasjoner.length > 0) {
     payload.tilleggsopplysninger.familierelasjoner = data.familierelasjoner.map((relasjon: any) => ({
       ...relasjon,
       fdato: relasjon.fdato.indexOf('-') > 0

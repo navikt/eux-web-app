@@ -139,7 +139,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
   }
 
   const isValid = (_validation: Validation): boolean => {
-    return _.find(_.values(_validation), (e) => e !== null) === undefined
+    return _.find(_.values(_validation), (e) => e !== undefined) === undefined
   }
 
   const sendData = (): void => {
@@ -283,10 +283,11 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
             alertType={alertType}
             alertTypesWatched={[types.SVARPASED_PERSON_GET_FAILURE]}
             initialFnr={_fnr}
+            id='svarpased__pearsonsearch'
             person={person}
             gettingPerson={gettingPerson}
             className='slideAnimate'
-            validation={_validation}
+            validation={_validation.fnr}
             resetAllValidation={() => resetValidation()}
             onFnrChange={() => {
               setIsFnrValid(false)

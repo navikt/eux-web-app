@@ -1,16 +1,15 @@
 import Alert from 'components/Alert/Alert'
+import PersonCard from 'components/PersonCard/PersonCard'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { AlertStatus } from 'declarations/components'
 import { Person } from 'declarations/types'
-import { ValidationPropType } from 'declarations/types.pt'
 import _ from 'lodash'
 import { Knapp } from 'nav-frontend-knapper'
-import { Input } from 'nav-frontend-skjema'
+import { FeiloppsummeringFeil, Input } from 'nav-frontend-skjema'
 import PT from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import PersonCard from 'components/PersonCard/PersonCard'
 
 const AlertstripeDiv = styled.div`
   margin: 0.5rem;
@@ -42,6 +41,7 @@ export interface PersonSearchProps {
   alertType: string | undefined
   alertTypesWatched: Array<string> | undefined
   className?: string
+  id: string
   initialFnr: any
   gettingPerson: boolean
   onAlertClose: () => void
@@ -51,7 +51,7 @@ export interface PersonSearchProps {
   onPersonRemoved: () => void
   person?: Person
   resetAllValidation: () => void
-  validation: any
+  validation: FeiloppsummeringFeil | undefined
 }
 
 const PersonSearch: React.FC<PersonSearchProps> = ({
@@ -59,6 +59,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   alertMessage,
   alertType,
   alertTypesWatched = [],
+  id,
   initialFnr,
   gettingPerson,
   onAlertClose,
@@ -99,6 +100,10 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   }, [_fnr, initialFnr])
 
   const sokEtterPerson = (): void => {
+    if (!_fnr) {
+      setLocalValidation(t('ui:validation-noFnr'))
+      return
+    }
     const fnrPattern = /^[0-9]{11}$/
     if (_fnr && !fnrPattern.test(_fnr)) {
       setLocalValidation(t('ui:validation-invalidFnr'))
@@ -133,11 +138,12 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
     <PersonSearchDiv>
       <PersonSearchPanel>
         <PersonSearchInput
-          data-test-id='personsok__input-id'
+          id={id}
+          data-test-id={id}
           label={t('ui:form-searchUser')}
           value={_fnr || ''}
           onChange={onChange}
-          feil={validation.fnr || localValidation}
+          feil={validation ? validation.feilmelding : localValidation}
         />
         <Button onClick={sokEtterPerson} disabled={gettingPerson}>
           {gettingPerson ? (
@@ -173,8 +179,8 @@ PersonSearch.propTypes = {
   className: PT.string,
   onFnrChange: PT.func,
   onPersonFound: PT.func,
-  resetAllValidation: PT.func.isRequired,
-  validation: ValidationPropType.isRequired
+  resetAllValidation: PT.func.isRequired
+  // validation: FeiloppsummeringFeilPropType
 }
 
 export default PersonSearch

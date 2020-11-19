@@ -7,7 +7,7 @@ import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
 import Family from 'components/Family/Family'
 import PersonSearch from 'components/PersonSearch/PersonSearch'
 import {
-  Cell,
+  Column,
   Container,
   Content,
   HorizontalSeparatorDiv,
@@ -18,7 +18,18 @@ import {
 import TopContainer from 'components/TopContainer/TopContainer'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
-import { Enheter, FagSaker, FamilieRelasjon, Person, Validation } from 'declarations/types'
+import {
+  Arbeidsforholdet,
+  Enhet,
+  Enheter,
+  FagSak,
+  FagSaker,
+  FamilieRelasjon,
+  Institusjon,
+  Kodeverk,
+  Person,
+  Validation
+} from 'declarations/types'
 import * as EKV from 'eessi-kodeverk'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
@@ -26,7 +37,7 @@ import AlertStripe from 'nav-frontend-alertstriper'
 import { Flatknapp, Hovedknapp, Knapp } from 'nav-frontend-knapper'
 import Lenke from 'nav-frontend-lenker'
 import Panel from 'nav-frontend-paneler'
-import { Select } from 'nav-frontend-skjema'
+import { Feiloppsummering, FeiloppsummeringFeil, Select } from 'nav-frontend-skjema'
 import { Systemtittel } from 'nav-frontend-typografi'
 import PT from 'prop-types'
 import React, { useState } from 'react'
@@ -35,7 +46,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-const AlignCenterCell = styled(Cell)`
+const AlignCenterColumn = styled(Column)`
   display: flex;
   align-items: center;
 `
@@ -45,47 +56,50 @@ const FamilyPanel = styled(Panel)`
   background-color: white;
   padding: 1rem;
 `
+const FlexDiv = styled.div`
+  display: flex;
+`
 
 export interface OpprettSakProps {
-  history: any;
+  history: any
 }
 
 export interface OpprettSakSelector {
-  alertStatus: any;
-  alertMessage: any;
-  alertType: any;
+  alertStatus: any
+  alertMessage: any
+  alertType: any
 
-  enheter: Enheter | undefined;
-  serverInfo: any;
+  enheter: Enheter | undefined
+  serverInfo: any
 
-  sendingSak: boolean;
-  gettingPerson: boolean;
+  sendingSak: boolean
+  gettingPerson: boolean
 
-  arbeidsforholdList: any;
-  buctyper: any;
-  fagsaker: FagSaker | undefined | null;
-  familierelasjonKodeverk: any;
-  kodemaps: any;
-  institusjoner: any;
-  landkoder: any;
-  opprettetSak: any;
-  person: Person | undefined;
-  personRelatert: Person | undefined;
-  sedtyper: any;
-  sektor: any;
-  tema: any;
+  arbeidsforholdList: any
+  buctyper: any
+  fagsaker: FagSaker | undefined | null
+  familierelasjonKodeverk: any
+  kodemaps: any
+  institusjoner: any
+  landkoder: any
+  opprettetSak: any
+  person: Person | undefined
+  personRelatert: Person | undefined
+  sedtyper: any
+  sektor: any
+  tema: any
 
-  valgteArbeidsforhold: any;
-  valgtBucType: any;
-  valgteFamilieRelasjoner: any;
-  valgtFnr: any;
-  valgtInstitusjon: any;
-  valgtLandkode: any;
-  valgtSaksId: any;
-  valgtSedType: any;
-  valgtSektor: any;
-  valgtTema: any;
-  valgtUnit: any;
+  valgteArbeidsforhold: any
+  valgtBucType: any
+  valgteFamilieRelasjoner: any
+  valgtFnr: any
+  valgtInstitusjon: any
+  valgtLandkode: any
+  valgtSaksId: any
+  valgtSedType: any
+  valgtSektor: any
+  valgtTema: any
+  valgtUnit: any
 }
 
 const mapState = (state: State): OpprettSakSelector => ({
@@ -164,13 +178,13 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
   const dispatch = useDispatch()
   const { t } = useTranslation()
 
-  const [_visModal, setVisModal] = useState(false)
-  const [_validation, setValidation] = useState<{ [k: string]: any }>({})
+  const [_visModal, setVisModal] = useState<boolean>(false)
+  const [_validation, setValidation] = useState<Validation>({})
   const [_isFnrValid, setIsFnrValid] = useState<boolean>(false)
 
-  const temaer = !kodemaps ? [] : !valgtSektor ? [] : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor]]
-  const _buctyper = !kodemaps ? [] : !valgtSektor ? [] : buctyper[kodemaps.SEKTOR2FAGSAK[valgtSektor]]
-  let _sedtyper = !kodemaps ? [] : !valgtSektor || !valgtBucType ? [] : kodemaps.BUC2SEDS[valgtSektor][valgtBucType]
+  const temaer: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor]]
+  const _buctyper: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : buctyper[kodemaps.SEKTOR2FAGSAK[valgtSektor]]
+  let _sedtyper: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor || !valgtBucType ? [] : kodemaps.BUC2SEDS[valgtSektor][valgtBucType]
 
   if (!(_sedtyper && _sedtyper.length)) {
     _sedtyper = []
@@ -181,57 +195,96 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
     return acc
   }, [])
 
-  const isSomething = (value: any): boolean =>
-    !_.isNil(value) && !_.isEmpty(value)
-  const visFagsakerListe: boolean =
-    isSomething(valgtSektor) && isSomething(tema) && isSomething(fagsaker)
-  const visArbeidsforhold: boolean =
-    EKV.Koder.sektor.FB === valgtSektor &&
-    EKV.Koder.buctyper.family.FB_BUC_01 === valgtBucType &&
-    isSomething(valgtSedType)
-  const visEnheter = valgtSektor === 'HZ' || valgtSektor === 'SI'
+  const isSomething = (value: any): boolean => !_.isNil(value) && !_.isEmpty(value)
+  const visFagsakerListe: boolean = isSomething(valgtSektor) && isSomething(tema) && isSomething(fagsaker)
+  const visArbeidsforhold: boolean = EKV.Koder.sektor.FB === valgtSektor &&
+    EKV.Koder.buctyper.family.FB_BUC_01 === valgtBucType && isSomething(valgtSedType)
+  const visEnheter: boolean = valgtSektor === 'HZ' || valgtSektor === 'SI'
 
-  const validate = (): { [k: string]: any } => {
-    const validation: { [k: string]: any } = {
+  const validate = (): Validation => {
+    const validation: Validation = {
       fnr: !valgtFnr
-        ? t('ui:validation-noFnr')
+        ? {
+          feilmelding: t('ui:validation-noFnr'),
+          skjemaelementId: 'opprettsak__fnr'
+        } as FeiloppsummeringFeil
         : !_isFnrValid
-            ? t('ui:validation-uncheckedFnr')
-            : null,
-      sektor: !valgtSektor ? t('ui:validation-noSektor') : null,
-      buctype: !valgtBucType ? t('ui:validation-noBuctype') : null,
-      sedtype: !valgtSedType ? t('ui:validation-noSedtype') : null,
-      landkode: !valgtLandkode ? t('ui:validation-noLand') : null,
+            ? {
+              feilmelding: t('ui:validation-uncheckedFnr'),
+              skjemaelementId: 'opprettsak__fnr'
+            } as FeiloppsummeringFeil
+            : undefined,
+      sektor: !valgtSektor
+        ? {
+          feilmelding: t('ui:validation-noSektor'),
+          skjemaelementId: 'opprettsak__sektor'
+        } as FeiloppsummeringFeil
+        : undefined,
+      buctype: !valgtBucType
+        ? {
+          feilmelding: t('ui:validation-noBuctype'),
+          skjemaelementId: 'opprettsak__buctype'
+        } as FeiloppsummeringFeil
+        : undefined,
+      sedtype: !valgtSedType
+        ? {
+          feilmelding: t('ui:validation-noSedtype'),
+          skjemaelementId: 'opprettsak__sedtype'
+        } as FeiloppsummeringFeil
+        : undefined,
+      landkode: !valgtLandkode
+        ? {
+          feilmelding: t('ui:validation-noLand'),
+          skjemaelementId: 'opprettsak__landkode'
+        } as FeiloppsummeringFeil
+        : undefined,
       institusjon: !valgtInstitusjon
-        ? t('ui:validation-noInstitusjonsID')
-        : null,
-      tema: !valgtTema ? t('ui:validation-noTema') : null,
-      saksId: !valgtSaksId ? t('ui:validation-noSaksId') : null,
-      unit: visEnheter && !valgtUnit ? t('ui:validation-noUnit') : null
+        ? {
+          feilmelding: t('ui:validation-noInstitusjonsID'),
+          skjemaelementId: 'opprettsak__institusjon'
+        } as FeiloppsummeringFeil
+        : undefined,
+      tema: !valgtTema
+        ? {
+          feilmelding: t('ui:validation-noTema'),
+          skjemaelementId: 'opprettsak__tema'
+        } as FeiloppsummeringFeil
+        : undefined,
+      saksId: !valgtSaksId
+        ? {
+          feilmelding: t('ui:validation-noSaksId'),
+          skjemaelementId: 'opprettsak__saksId'
+        } as FeiloppsummeringFeil
+        : undefined,
+      unit: visEnheter && !valgtUnit
+        ? {
+          feilmelding: t('ui:validation-noUnit'),
+          skjemaelementId: 'opprettsak__unit'
+        } as FeiloppsummeringFeil
+        : undefined
     }
     setValidation(validation)
     return validation
   }
 
-  const resetAllValidation = () => {
-    setValidation({})
-  }
-
-  const resetValidation = (key: Array<string> | string): void => {
+  const resetValidation = (key?: Array<string> | string): void => {
     const newValidation = _.cloneDeep(_validation)
+    if (!key) {
+      setValidation({})
+    }
     if (_.isString(key)) {
-      newValidation[key] = null
+      newValidation[key] = undefined
     }
     if (_.isArray(key)) {
       key.forEach((k) => {
-        newValidation[k] = null
+        newValidation[k] = undefined
       })
     }
     setValidation(newValidation)
   }
 
   const isValid = (_validation: Validation): boolean => {
-    return _.find(_.values(_validation), (e) => e !== null) === undefined
+    return _.find(_.values(_validation), (e) => e !== undefined) === undefined
   }
 
   const skjemaSubmit = (): void => {
@@ -273,31 +326,27 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
 
   const onSektorChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     resetValidation('sektor')
-    resetValidation('unit')
     dispatch(sakActions.setProperty('unit', undefined))
     dispatch(sakActions.setProperty('sektor', e.target.value))
   }
 
-  const onBuctypeChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ): void => {
-    resetValidation(['buctype', 'landkode'])
+  const onBuctypeChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     const buctype = event.target.value
-    dispatch(sakActions.setProperty('buctype', buctype))
+    resetValidation(['buctype', 'landkode'])
     dispatch(sakActions.setProperty('landkode', undefined))
     dispatch(sakActions.setProperty('sedtype', undefined))
     dispatch(sakActions.setProperty('institution', undefined))
+    dispatch(sakActions.setProperty('buctype', buctype))
     dispatch(sakActions.getLandkoder(buctype))
-  }
-
-  const onSedtypeChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    resetValidation('sedtype')
-    dispatch(sakActions.setProperty('sedtype', e.target.value))
   }
 
   const onSedtypeSet = (e: string): void => {
     resetValidation('sedtype')
     dispatch(sakActions.setProperty('sedtype', e))
+  }
+
+  const onSedtypeChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+    onSedtypeSet(e.target.value)
   }
 
   const onLandkodeChange = (country: any): void => {
@@ -307,9 +356,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
     dispatch(sakActions.getInstitusjoner(valgtBucType, landKode))
   }
 
-  const onInstitusjonChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ): void => {
+  const onInstitusjonChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     resetValidation('institusjon')
     dispatch(sakActions.setProperty('institusjon', event.target.value))
   }
@@ -330,211 +377,205 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
     dispatch(sakActions.setProperty('saksId', event.target.value))
   }
 
-  const addTpsRelation = (relation: FamilieRelasjon): void => {
-    /* Person fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
-    dispatch(
-      sakActions.addFamilierelasjoner({
-        ...relation,
-        nasjonalitet: 'NO'
-      })
-    )
-  }
-
-  const deleteRelation = (relation: FamilieRelasjon): void => {
-    dispatch(sakActions.removeFamilierelasjoner(relation))
-  }
-
   return (
-    <TopContainer className='opprettsak'>
+    <TopContainer>
       <Container>
         <Margin />
         <Content>
-          <Systemtittel>{t('ui:title-newcase')}</Systemtittel>
+          <Systemtittel>
+            {t('ui:title-newcase')}
+          </Systemtittel>
           <VerticalSeparatorDiv />
           <PersonSearch
             alertStatus={alertStatus}
             alertMessage={alertMessage}
             alertType={alertType}
             alertTypesWatched={[types.SAK_PERSON_GET_FAILURE]}
-            initialFnr=''
-            person={person}
-            gettingPerson={gettingPerson}
             className='slideAnimate'
-            validation={_validation}
-            resetAllValidation={resetAllValidation}
+            data-test-id='opprettsak__fnr'
+            gettingPerson={gettingPerson}
+            id='opprettsak__fnr'
+            initialFnr=''
             onFnrChange={() => {
               setIsFnrValid(false)
               dispatch(appActions.cleanData())
             }}
             onPersonFound={() => setIsFnrValid(true)}
-            onSearchPerformed={(_fnr) => {
-              dispatch(sakActions.setProperty('fnr', _fnr))
-              dispatch(sakActions.getPerson(_fnr))
+            onSearchPerformed={(fnr: string) => {
+              dispatch(sakActions.setProperty('fnr', fnr))
+              dispatch(sakActions.getPerson(fnr))
             }}
-            onPersonRemoved={() => {
-              dispatch(sakActions.resetPerson())
-            }}
+            onPersonRemoved={() => dispatch(sakActions.resetPerson())}
             onAlertClose={() => dispatch(clientClear())}
+            person={person}
+            resetAllValidation={() => resetValidation()}
+            validation={_validation.fnr}
           />
-          {person && (
+          {isSomething(person) && (
             <>
               <Row>
-                <Cell className='slideAnimate' style={{ animationDelay: '0s' }}>
+                <Column
+                  className='slideAnimate'
+                  style={{ animationDelay: '0s' }}
+                >
                   <Select
-                    id='id-sektor'
+                    data-test-id='opprettsak__sektor'
+                    feil={_validation.sektor ? _validation.sektor.feilmelding : undefined}
+                    id='opprettsak__sektor'
                     label={t('ui:label-sektor')}
-                    disabled={!person}
                     onChange={onSektorChange}
                     value={valgtSektor}
-                    feil={_validation.sektor}
                   >
-                    <option value=''>{t('ui:form-choose')}</option>
+                    <option value=''>
+                      {t('ui:form-choose')}
+                    </option>
                     {sektor &&
-                      _.orderBy(sektor, 'term').map((element: any) => (
-                        <option value={element.kode} key={element.kode}>
-                          {element.term}
+                      _.orderBy(sektor, 'term').map((k: Kodeverk) => (
+                        <option value={k.kode} key={k.kode}>
+                          {k.term}
                         </option>
                       ))}
                   </Select>
                   <VerticalSeparatorDiv />
-                </Cell>
+                </Column>
                 <HorizontalSeparatorDiv />
-                <Cell
+                <Column
                   className='slideAnimate'
                   style={{ animationDelay: '0.15s' }}
                 >
                   {visEnheter && (
                     <Select
-                      id='id-enhet'
+                      data-test-id='oprettsak__unit'
+                      feil={_validation.unit ? _validation.unit.feilmelding : undefined}
+                      id='oprettsak__unit'
                       label={t('ui:label-unit')}
                       onChange={onUnitChange}
                       value={valgtUnit}
-                      feil={_validation.unit}
                     >
-                      <option value=''>{t('ui:form-choose')}</option>
+                      <option value=''>
+                        {t('ui:form-choose')}
+                      </option>
                       {sektor &&
-                        _.orderBy(enheter, 'navn').map((element: any) => (
-                          <option value={element.enhetId} key={element.enhetId}>
-                            {element.navn}
+                        _.orderBy(enheter, 'navn').map((e: Enhet) => (
+                          <option value={e.enhetId} key={e.enhetId}>
+                            {e.navn}
                           </option>
                         ))}
                     </Select>
                   )}
                   <VerticalSeparatorDiv />
-                </Cell>
+                </Column>
               </Row>
               <Row>
-                <Cell
-                  className='slideAnimate'
-                  style={{ animationDelay: '0.15s' }}
-                >
-                  <Select
-                    id='id-buctype'
-                    label={t('ui:label-buc')}
-                    disabled={!isSomething(valgtSektor)}
-                    onChange={onBuctypeChange}
-                    value={valgtBucType}
-                    feil={_validation.buctype}
-                  >
-                    <option value=''>{t('ui:form-choose')}</option>
-                    {_buctyper &&
-                      _.orderBy(_buctyper, 'kode').map((element: any) => (
-                        <option value={element.kode} key={element.kode}>
-                          {element.kode} - {element.term}
-                        </option>
-                      ))}
-                  </Select>
-                  <VerticalSeparatorDiv />
-                </Cell>
-                <HorizontalSeparatorDiv />
-                <Cell
+                <Column
                   className='slideAnimate'
                   style={{ animationDelay: '0.3s' }}
                 >
                   <Select
-                    id='id-sedtype'
-                    label={t('ui:label-sed')}
-                    disabled={
-                      !isSomething(valgtBucType) || !isSomething(valgtSektor)
-                    }
-                    onChange={onSedtypeChange}
-                    value={valgtSedType}
-                    feil={_validation.sedtype}
+                    data-test-id='opprettsak__buctype'
+                    disabled={!isSomething(valgtSektor)}
+                    feil={_validation.buctype ? _validation.buctype.feilmelding : undefined}
+                    id='opprettsak__buctype'
+                    label={t('ui:label-buc')}
+                    onChange={onBuctypeChange}
+                    value={valgtBucType}
                   >
-                    <option value=''>{t('ui:form-choose')}</option>)
-                    {_sedtyper &&
-                      _sedtyper.map((element: any) => {
-                        // if only one element, select it
-                        if (
-                          _sedtyper.length === 1 &&
-                          valgtSedType !== element.kode
-                        ) {
-                          onSedtypeSet(element.kode)
-                        }
-                        return (
-                          <option value={element.kode} key={element.kode}>
-                            {element.kode} - {element.term}
-                          </option>
-                        )
-                      })}
-                  </Select>
-                  <VerticalSeparatorDiv />
-                </Cell>
-              </Row>
-              <Row>
-                <Cell
-                  className='slideAnimate'
-                  style={{ animationDelay: '0.45s' }}
-                >
-                  <CountrySelect
-                    label={t('ui:label-landkode')}
-                    lang='nb'
-                    placeholder={t('ui:form-choose')}
-                    menuPortalTarget={document.body}
-                    disabled={!isSomething(person)}
-                    includeList={
-                      landkoder
-                        ? _.orderBy(landkoder, 'term').map(
-                            (element: any) => element.kode
-                          )
-                        : []
-                    }
-                    onOptionSelected={onLandkodeChange}
-                    value={valgtLandkode}
-                    error={_validation.landkode}
-                  />
-                  <VerticalSeparatorDiv />
-                </Cell>
-                <HorizontalSeparatorDiv />
-                <Cell
-                  className='slideAnimate'
-                  style={{ animationDelay: '0.6s' }}
-                >
-                  <Select
-                    id='id-institusjon'
-                    disabled={!isSomething(valgtLandkode)}
-                    value={valgtInstitusjon}
-                    onChange={onInstitusjonChange}
-                    label={t('ui:label-institusjon')}
-                    feil={_validation.institusjon}
-                  >
-                    <option value=''>{t('ui:form-choose')}</option>)
-                    {institusjoner &&
-                      _.orderBy(institusjoner, 'term').map((element: any) => (
-                        <option
-                          value={element.institusjonsID}
-                          key={element.institusjonsID}
-                        >
-                          {element.navn}
+                    <option value=''>
+                      {t('ui:form-choose')}
+                    </option>
+                    {_buctyper &&
+                      _.orderBy(_buctyper, 'kode').map((k: Kodeverk) => (
+                        <option value={k.kode} key={k.kode}>
+                          {k.kode} - {k.term}
                         </option>
                       ))}
                   </Select>
                   <VerticalSeparatorDiv />
-                </Cell>
+                </Column>
+                <HorizontalSeparatorDiv />
+                <Column
+                  className='slideAnimate'
+                  style={{ animationDelay: '0.45s' }}
+                >
+                  <Select
+                    data-test-id='opprettsak__sedtype'
+                    disabled={!isSomething(valgtBucType) || !isSomething(valgtSektor)}
+                    feil={_validation.sedtype ? _validation.sedtype?.feilmelding : undefined}
+                    id='opprettsak__sedtype'
+                    label={t('ui:label-sed')}
+                    onChange={onSedtypeChange}
+                    value={valgtSedType}
+                  >
+                    <option value=''>
+                      {t('ui:form-choose')}
+                    </option>)
+                    {_sedtyper && _sedtyper.map((k: Kodeverk) => {
+                      // if only one element, select it
+                      if (_sedtyper.length === 1 && valgtSedType !== k.kode) {
+                        onSedtypeSet(k.kode)
+                      }
+                      return (
+                        <option value={k.kode} key={k.kode}>
+                          {k.kode} - {k.term}
+                        </option>
+                      )
+                    })}
+                  </Select>
+                  <VerticalSeparatorDiv />
+                </Column>
+              </Row>
+              <Row>
+                <Column
+                  className='slideAnimate'
+                  style={{ animationDelay: '0.6s' }}
+                >
+                  <CountrySelect
+                    data-test-id='opprettsak__landkode'
+                    error={_validation.landkode ? _validation.landkode.feilmelding : undefined}
+                    id='opprettsak__landkode'
+                    includeList={landkoder ? _.orderBy(landkoder, 'term').map((k: Kodeverk) => k.kode) : []}
+                    label={t('ui:label-landkode')}
+                    lang='nb'
+                    menuPortalTarget={document.body}
+                    onOptionSelected={onLandkodeChange}
+                    placeholder={t('ui:form-choose')}
+                    value={valgtLandkode}
+                  />
+                  <VerticalSeparatorDiv />
+                </Column>
+                <HorizontalSeparatorDiv />
+                <Column
+                  className='slideAnimate'
+                  style={{ animationDelay: '0.75s' }}
+                >
+                  <Select
+                    data-test-id='opprettsak__institusjon'
+                    disabled={!isSomething(valgtLandkode)}
+                    feil={_validation.institusjon ? _validation.institusjon.feilmelding : undefined}
+                    id='opprettsak__institusjon'
+                    label={t('ui:label-institusjon')}
+                    onChange={onInstitusjonChange}
+                    value={valgtInstitusjon}
+                  >
+                    <option value=''>
+                      {t('ui:form-choose')}
+                    </option>)
+                    {institusjoner &&
+                      _.orderBy(institusjoner, 'term').map((i: Institusjon) => (
+                        <option
+                          value={i.institusjonsID}
+                          key={i.institusjonsID}
+                        >
+                          {i.navn}
+                        </option>
+                      ))}
+                  </Select>
+                  <VerticalSeparatorDiv />
+                </Column>
               </Row>
               <Row>
                 {valgtSektor === 'FB' && (
-                  <Cell className='slideAnimate'>
+                  <Column className='slideAnimate'>
                     <Systemtittel>
                       {t('ui:label-familyRelationships')}
                     </Systemtittel>
@@ -544,7 +585,9 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                         alertStatus={alertStatus}
                         alertMessage={alertMessage}
                         alertType={alertType}
-                        abroadPersonFormAlertTypesWatched={[types.SAK_ABROADPERSON_ADD_FAILURE]}
+                        abroadPersonFormAlertTypesWatched={[
+                          types.SAK_ABROADPERSON_ADD_FAILURE
+                        ]}
                         TPSPersonFormAlertTypesWatched={[
                           types.SAK_PERSON_RELATERT_GET_FAILURE,
                           types.SAK_TPSPERSON_ADD_FAILURE
@@ -554,57 +597,63 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                         person={person}
                         valgteFamilieRelasjoner={valgteFamilieRelasjoner}
                         onAbroadPersonAddedFailure={() => dispatch({ type: types.SAK_ABROADPERSON_ADD_FAILURE })}
-                        onAbroadPersonAddedSuccess={(_relation) => {
-                          dispatch(sakActions.addFamilierelasjoner(_relation))
-                          dispatch({
-                            type: types.SAK_ABROADPERSON_ADD_SUCCESS
-                          })
+                        onAbroadPersonAddedSuccess={(relation: FamilieRelasjon) => {
+                          dispatch(sakActions.addFamilierelasjoner(relation))
+                          dispatch({ type: types.SAK_ABROADPERSON_ADD_SUCCESS })
                         }}
-                        onRelationAdded={(value: any) => addTpsRelation(value)}
-                        onRelationRemoved={(value: any) => deleteRelation(value)}
+                        onRelationAdded={(relation: FamilieRelasjon) => {
+                          /* Person fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
+                          dispatch(
+                            sakActions.addFamilierelasjoner({
+                              ...relation,
+                              nasjonalitet: 'NO'
+                            })
+                          )
+                        }}
+                        onRelationRemoved={(relation: FamilieRelasjon) => dispatch(sakActions.removeFamilierelasjoner(relation))}
                         onRelationReset={() => dispatch(sakActions.resetPersonRelatert())}
                         onTPSPersonAddedFailure={() => dispatch({ type: types.SAK_TPSPERSON_ADD_FAILURE })}
-                        onTPSPersonAddedSuccess={(e: any) => {
-                          dispatch(sakActions.addFamilierelasjoner(e))
+                        onTPSPersonAddedSuccess={(relation: FamilieRelasjon) => {
+                          dispatch(sakActions.addFamilierelasjoner(relation))
                           dispatch({ type: types.SAK_TPSPERSON_ADD_SUCCESS })
                         }}
                         onAlertClose={() => dispatch(clientClear())}
-                        onSearchFnr={(sok) => {
+                        onSearchFnr={(fnrQuery: string) => {
                           dispatch(sakActions.resetPersonRelatert())
-                          dispatch(sakActions.getPersonRelated(sok))
+                          dispatch(sakActions.getPersonRelated(fnrQuery))
                         }}
                       />
                     </FamilyPanel>
                     <VerticalSeparatorDiv />
-                  </Cell>
+                  </Column>
                 )}
               </Row>
               {valgtSektor && (
                 <Row>
-                  <Cell
-                    className={classNames('slideAnimate', {
-                      feil: !!_validation.tema
-                    })}
+                  <Column
+                    className={classNames('slideAnimate', { feil: !!_validation.tema })}
                   >
                     <Select
-                      id='id-behandlings-tema'
+                      data-test-id='opprettsak__tema'
+                      feil={_validation.tema ? _validation.tema.feilmelding : undefined}
+                      id='opprettsak__tema'
                       label={t('ui:label-tema')}
-                      value={valgtTema}
                       onChange={onTemaChange}
-                      feil={_validation.tema}
+                      value={valgtTema}
                     >
-                      <option value=''>{t('ui:form-choose')}</option>)
-                      {temaer &&
-                        temaer.map((element: any) => (
-                          <option value={element.kode} key={element.kode}>
-                            {element.term}
-                          </option>
-                        ))}
+                      <option value=''>
+                        {t('ui:form-choose')}
+                      </option>)
+                      {temaer && temaer.map((k: Kodeverk) => (
+                        <option value={k.kode} key={k.kode}>
+                          {k.term}
+                        </option>
+                      ))}
                     </Select>
                     <VerticalSeparatorDiv />
-                  </Cell>
+                  </Column>
                   <HorizontalSeparatorDiv />
-                  <AlignCenterCell>
+                  <AlignCenterColumn>
                     <Knapp
                       onClick={onViewFagsakerClick}
                       disabled={!isSomething(valgtTema)}
@@ -612,68 +661,68 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                       {t('ui:form-seeCases')}
                     </Knapp>
                     <VerticalSeparatorDiv />
-                  </AlignCenterCell>
+                  </AlignCenterColumn>
                 </Row>
               )}
-              {(fagsaker === null ||
-                (fagsaker !== undefined && _.isEmpty(fagsaker))) &&
-                (
-                  <Row>
-                    <AlertStripe type='advarsel'>
-                      {t('ui:error-fagsak-notFound')}
-                      <Lenke
-                        href={serverInfo.gosysURL}
-                        ariaLabel={t('ui:form-createNewCaseInGosys')}
-                        target='_blank'
-                      >
-                        {t('ui:form-createNewCaseInGosys')}
-                      </Lenke>
-                      <VerticalSeparatorDiv />
-                    </AlertStripe>
+              {(fagsaker === null || (fagsaker !== undefined && _.isEmpty(fagsaker))) && (
+                <Row>
+                  <AlertStripe type='advarsel'>
+                    {t('ui:error-fagsak-notFound')}
+                    <Lenke
+                      href={serverInfo.gosysURL}
+                      ariaLabel={t('ui:form-createNewCaseInGosys')}
+                      target='_blank'
+                    >
+                      {t('ui:form-createNewCaseInGosys')}
+                    </Lenke>
                     <VerticalSeparatorDiv />
-                  </Row>
-                )}
+                  </AlertStripe>
+                  <VerticalSeparatorDiv />
+                </Row>
+              )}
               {visFagsakerListe && (
                 <Row>
-                  <Cell>
+                  <Column>
                     <Select
-                      id='id-fagsaker'
+                      data-test-id='opprettsak__fagsaker'
+                      feil={_validation.saksId ? _validation.saksId.feilmelding : undefined}
+                      id='opprettsak__fagsaker'
                       label={t('ui:label-fagsak')}
-                      value={valgtSaksId}
                       onChange={onSakIDChange}
-                      feil={_validation.saksId}
+                      value={valgtSaksId}
                     >
-                      <option value=''>{t('ui:form-choose')}</option>
+                      <option value=''>
+                        {t('ui:form-choose')}
+                      </option>
                       {fagsaker &&
-                        _.orderBy(fagsaker, 'fagsakNr').map((element) => (
-                          <option value={element.saksID} key={element.saksID}>
-                            {element.fagsakNr
-                              ? element.fagsakNr
-                              : element.saksID}
+                        _.orderBy(fagsaker, 'fagsakNr').map((f: FagSak) => (
+                          <option value={f.saksID} key={f.saksID}>
+                            {f.fagsakNr || f.saksID}
                           </option>
                         ))}
                     </Select>
                     <VerticalSeparatorDiv />
-                  </Cell>
-                  <Cell />
+                  </Column>
+                  <Column />
                 </Row>
               )}
               {visArbeidsforhold && (
                 <Arbeidsforhold
-                  getArbeidsforholdList={() => {
-                    dispatch(sakActions.getArbeidsforholdList(person?.fnr))
-                  }}
+                  getArbeidsforholdList={() => dispatch(sakActions.getArbeidsforholdList(person?.fnr))}
                   valgteArbeidsforhold={valgteArbeidsforhold}
                   arbeidsforholdList={arbeidsforholdList}
-                  onArbeidsforholdClick={(item: any, checked: boolean) => dispatch(
+                  onArbeidsforholdClick={(a: Arbeidsforholdet, checked: boolean) => dispatch(
                     checked
-                      ? sakActions.addArbeidsforhold(item)
-                      : sakActions.removeArbeidsforhold(item)
+                      ? sakActions.addArbeidsforhold(a)
+                      : sakActions.removeArbeidsforhold(a)
                   )}
                 />
               )}
               <VerticalSeparatorDiv />
-              <Row className='slideAnimate' style={{ animationDelay: '0.75s' }}>
+              <Row
+                className='slideAnimate'
+                style={{ animationDelay: '0.9s' }}
+              >
                 <Hovedknapp
                   disabled={sendingSak}
                   onClick={skjemaSubmit}
@@ -689,45 +738,58 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   {t('ui:form-resetForm')}
                 </Flatknapp>
               </Row>
+              {!isValid(_validation) && (
+                <>
+                  <VerticalSeparatorDiv data-size='2' />
+                  <Row>
+                    <Column>
+                      <Feiloppsummering
+                        data-test-id='opprettsak__feiloppsummering'
+                        tittel={t('ui:validation-feiloppsummering')}
+                        feil={Object.values(_validation).filter(v => v !== undefined) as Array<FeiloppsummeringFeil>}
+                      />
+                    </Column>
+                    <HorizontalSeparatorDiv data-size='2' />
+                    <Column />
+                  </Row>
+                </>
+              )}
               {opprettetSak && opprettetSak.url && (
                 <Row>
-                  <Cell>
+                  <Column>
                     <VerticalSeparatorDiv />
                     <AlertStripe type='suksess'>
-                      <div>
+                      <FlexDiv>
                         <span>
-                          {t('ui:form-caseNumber') +
-                            ': ' +
-                            opprettetSak.rinasaksnummer}
+                          {t('ui:form-caseNumber') + ': ' + opprettetSak.rinasaksnummer}
                         </span>
-                        <span className='ml-1 mr-1'>
+                        <HorizontalSeparatorDiv data-size='0.25' />
+                        <span>
                           {t('ui:label-is-created')}.
                         </span>
+                        <HorizontalSeparatorDiv data-size='0.25' />
                         {opprettetSak.url && (
                           <Lenke
-                            className='vedlegg__lenke ml-1 mr-1'
+                            className='vedlegg__lenke'
                             href={opprettetSak.url}
                             target='_blank'
                           >
                             {t('ui:form-goToRina')}
                           </Lenke>
                         )}
-                      </div>
+                      </FlexDiv>
                       <div>
                         {opprettetSak.rinasaksnummer && (
                           <Link
-                            to={
-                              '/vedlegg?rinasaksnummer=' +
-                              opprettetSak.rinasaksnummer
-                            }
+                            to={'/vedlegg?rinasaksnummer=' + opprettetSak.rinasaksnummer}
                           >
                             {t('ui:label-add-as-attachment-to-sed')}
                           </Link>
                         )}
                       </div>
                     </AlertStripe>
-                  </Cell>
-                  <Cell />
+                  </Column>
+                  <Column />
                 </Row>
               )}
               <AbortModal

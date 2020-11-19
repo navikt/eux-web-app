@@ -15,6 +15,9 @@ export interface Arbeidsforholdet {
 
 export type Arbeidsforhold = Array<Arbeidsforholdet>
 
+export type StringMap = {[k: string]: string}
+export type ArrayStringMap = {[k: string]: Array<string>}
+
 export interface Kodeverk {
   kode: string
   term: string
@@ -110,9 +113,9 @@ export interface Tema {
 }
 
 export interface Kodemaps {
-  BUC2SEDS: { [k: string]: Array<string> }
-  SEKTOR2BUC: { [k: string]: string }
-  SEKTOR2FAGSAK: { [k: string]: string }
+  BUC2SEDS: ArrayStringMap
+  SEKTOR2BUC: StringMap
+  SEKTOR2FAGSAK: StringMap
 }
 
 export interface FagSak {

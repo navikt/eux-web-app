@@ -1,6 +1,6 @@
 import Tilsette from 'assets/icons/Tilsette'
 import Alert from 'components/Alert/Alert'
-import { Cell, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'components/StyledComponents'
+import { Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'components/StyledComponents'
 import { AlertStatus } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import { FamilieRelasjon, Kodeverk, Person, Validation } from 'declarations/types'
@@ -28,7 +28,7 @@ const AlertstripeDiv = styled.div`
   margin-bottom: 1.5rem;
   width: 50%;
 `
-const AlignCenterCell = styled(Cell)`
+const AlignCenterColumn = styled(Column)`
   display: flex;
   align-items: center;
 `
@@ -233,7 +233,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
       <VerticalSeparatorDiv />
       <Panel data-test-id='familierelasjoner__utland__wrapper'>
         <Row>
-          <Cell className='slideAnimate'>
+          <Column className='slideAnimate'>
             <Input
               data-test-id='familierelasjoner__input-fnr-id'
               feil={_validation.fnr ? _validation.fnr.feilmelding : undefined}
@@ -245,9 +245,9 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               value={_relation.fnr}
             />
             <VerticalSeparatorDiv />
-          </Cell>
+          </Column>
           <HorizontalSeparatorDiv />
-          <Cell className='slideAnimate' style={{ animationDelay: '0.1s' }}>
+          <Column className='slideAnimate' style={{ animationDelay: '0.1s' }}>
             <CountrySelect
               data-test-id='familierelasjoner__input-land'
               error={_validation.land ? _validation.land.feilmelding : undefined}
@@ -262,9 +262,9 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               value={_relation.land}
             />
             <VerticalSeparatorDiv />
-          </Cell>
+          </Column>
           <HorizontalSeparatorDiv />
-          <Cell className='slideAnimate' style={{ animationDelay: '0.2s' }}>
+          <Column className='slideAnimate' style={{ animationDelay: '0.2s' }}>
             <CountrySelect
               data-test-id='familierelasjoner__input-statsborgerskap'
               error={_validation.statsborgerskap ? _validation.statsborgerskap.feilmelding : undefined}
@@ -279,10 +279,10 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               value={_relation.statsborgerskap}
             />
             <VerticalSeparatorDiv />
-          </Cell>
+          </Column>
         </Row>
         <Row>
-          <Cell className='slideAnimate' style={{ animationDelay: '0.3s' }}>
+          <Column className='slideAnimate' style={{ animationDelay: '0.3s' }}>
             <Input
               data-test-id='familierelasjoner__input-fornavn'
               feil={_validation.fornavn ? _validation.fornavn.feilmelding : undefined}
@@ -294,9 +294,9 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               value={_relation.fornavn}
             />
             <VerticalSeparatorDiv />
-          </Cell>
+          </Column>
           <HorizontalSeparatorDiv />
-          <Cell className='slideAnimate' style={{ animationDelay: '0.4s' }}>
+          <Column className='slideAnimate' style={{ animationDelay: '0.4s' }}>
             <Input
               data-test-id='familierelasjoner__input-etternavn'
               feil={_validation.etternavn ? _validation.etternavn.feilmelding : undefined}
@@ -308,10 +308,10 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               value={_relation.etternavn}
             />
             <VerticalSeparatorDiv />
-          </Cell>
+          </Column>
         </Row>
         <Row>
-          <Cell className='slideAnimate' style={{ animationDelay: '0.5s' }}>
+          <Column className='slideAnimate' style={{ animationDelay: '0.5s' }}>
             <Select
               data-test-id='familierelasjoner__select-kjoenn'
               feil={_validation.kjoenn ? _validation.kjoenn.feilmelding : undefined}
@@ -334,9 +334,9 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
                 ))}
             </Select>
             <VerticalSeparatorDiv />
-          </Cell>
+          </Column>
           <HorizontalSeparatorDiv />
-          <Cell className='slideAnimate' style={{ animationDelay: '0.6s' }}>
+          <Column className='slideAnimate' style={{ animationDelay: '0.6s' }}>
             <Input
               data-test-id='familierelasjoner__input-fdato'
               feil={_validation.fdato ? _validation.fdato.feilmelding : undefined}
@@ -350,10 +350,10 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               value={_relation.fdato}
             />
             <VerticalSeparatorDiv />
-          </Cell>
+          </Column>
         </Row>
         <Row>
-          <Cell className='slideAnimate' style={{ animationDelay: '0.7s' }}>
+          <Column className='slideAnimate' style={{ animationDelay: '0.7s' }}>
             <Select
               data-test-id='familierelasjoner__input-familierelasjon'
               feil={_validation.rolle ? _validation.rolle.feilmelding : undefined}
@@ -374,9 +374,9 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               ))}
             </Select>
             <VerticalSeparatorDiv />
-          </Cell>
+          </Column>
           <HorizontalSeparatorDiv />
-          <AlignCenterCell
+          <AlignCenterColumn
             className='slideAnimate'
             style={{ animationDelay: '0.8s' }}
           >
@@ -392,7 +392,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               <HorizontalSeparatorDiv />
               <span>{t('ui:form-add')}</span>
             </Knapp>
-          </AlignCenterCell>
+          </AlignCenterColumn>
           {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (
             <AlertstripeDiv>
               <Alert

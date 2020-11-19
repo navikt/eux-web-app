@@ -63,7 +63,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
   }, [mounted, dispatch, location])
 
   const isValid = (_validation: Validation): boolean => {
-    return _.find(_.values(_validation), e => e !== null) === undefined
+    return _.find(_.values(_validation), e => e !== undefined) === undefined
   }
 
   const validate = (): Validation => {

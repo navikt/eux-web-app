@@ -108,6 +108,7 @@
   "title-newcase": "Opprett Sak",
   "title-vedlegg": "Vedleggsinformasjon",
 
+  "validation-feiloppsummering" : "For å gå videre må du rette opp følgende:",
   "validation-invalidFnr": "Fnr må ha 11 siffer",
   "validation-noDokumentID": "Du må taste inn en dokumentID",
   "validation-noJournalpostID": "Du må taste inn en journalpostID",

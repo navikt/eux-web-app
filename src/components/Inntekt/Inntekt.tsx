@@ -1,6 +1,6 @@
 import * as svarpasedActions from 'actions/svarpased'
 import classNames from 'classnames'
-import { Cell, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'components/StyledComponents'
+import { Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'components/StyledComponents'
 import { IncomeSearch } from 'declarations/components'
 import { Inntekter, Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -13,7 +13,7 @@ import styled from 'styled-components'
 import { Item } from 'tabell'
 import InntektsTabell from './InntektsTabell'
 
-const AlignCenterCell = styled(Cell)`
+const AlignCenterColumn = styled(Column)`
   display: flex;
   align-items: center;
 `
@@ -109,7 +109,7 @@ const Inntekt: React.FC<InntektProps> = ({
   }
 
   const isValid = (_validation: Validation): boolean => {
-    return _.find(_.values(_validation), (e) => e !== null) === undefined
+    return _.find(_.values(_validation), (e) => e !== undefined) === undefined
   }
 
   const performValidation = (): boolean => {
@@ -159,7 +159,7 @@ const Inntekt: React.FC<InntektProps> = ({
   return (
     <>
       <AlignedRow className={classNames({ feil: !isValid(validation) })}>
-        <Cell className='slideAnimate'>
+        <Column className='slideAnimate'>
           <AlignedInput
             id='inntekt-fradato'
             data-test-id='inntekt-fradato'
@@ -176,9 +176,9 @@ const Inntekt: React.FC<InntektProps> = ({
               updateDate('fraDato', e)}
           />
           <VerticalSeparatorDiv />
-        </Cell>
+        </Column>
         <HorizontalSeparatorDiv />
-        <Cell className='slideAnimate' style={{ animationDelay: '0.25s' }}>
+        <Column className='slideAnimate' style={{ animationDelay: '0.25s' }}>
           <AlignedInput
             id='inntekt-tildato'
             data-test-id='inntekt-tildato'
@@ -195,9 +195,9 @@ const Inntekt: React.FC<InntektProps> = ({
               updateDate('tilDato', e)}
           />
           <VerticalSeparatorDiv />
-        </Cell>
+        </Column>
         <HorizontalSeparatorDiv />
-        <Cell className='slideAnimate' style={{ animationDelay: '0.5s' }}>
+        <Column className='slideAnimate' style={{ animationDelay: '0.5s' }}>
           <AlignedSelect
             id='inntekt-tema'
             data-test-id='inntekt-tema'
@@ -221,9 +221,9 @@ const Inntekt: React.FC<InntektProps> = ({
             </option>
           </AlignedSelect>
           <VerticalSeparatorDiv />
-        </Cell>
+        </Column>
         <HorizontalSeparatorDiv />
-        <AlignCenterCell
+        <AlignCenterColumn
           className='slideAnimate'
           style={{ animationDelay: '0.6s' }}
         >
@@ -234,7 +234,7 @@ const Inntekt: React.FC<InntektProps> = ({
             Søk
           </SokKnapp>
           <VerticalSeparatorDiv />
-        </AlignCenterCell>
+        </AlignCenterColumn>
       </AlignedRow>
       {!_.isNil(inntekter) && (
         <div>

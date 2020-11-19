@@ -43,7 +43,7 @@ export const initialSakState: SakState = {
   unit: undefined
 }
 
-const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload) => {
+const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload = {type: '', payload: undefined}) => {
   switch (action.type) {
     case types.SAK_ARBEIDSFORHOLDLIST_GET_SUCCESS:
       return {
@@ -133,8 +133,9 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
       // reset all but stuff that comes from eessi-kodeverk
       return {
         ...state,
-        arbeidsforhold: undefined,
+        arbeidsforhold: [],
         fagsaker: undefined,
+        familierelasjoner: [],
         institusjonList: undefined,
         person: undefined,
         opprettetSak: undefined,
@@ -150,7 +151,7 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
     case types.SAK_ARBEIDSFORHOLD_ADD:
       return {
         ...state,
-        arbeidsforhold: state.arbeidsforhold.concat((action as ActionWithPayload).payload)
+        arbeidsforhold: (state.arbeidsforhold || []).concat((action as ActionWithPayload).payload)
       }
 
     case types.SAK_ARBEIDSFORHOLD_REMOVE:
@@ -162,7 +163,7 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
     case types.SAK_FAMILIERELASJONER_ADD:
       return {
         ...state,
-        familierelasjoner: state.familierelasjoner.concat((action as ActionWithPayload).payload)
+        familierelasjoner: (state.familierelasjoner || []).concat((action as ActionWithPayload).payload)
       }
 
     case types.SAK_FAMILIERELASJONER_REMOVE:

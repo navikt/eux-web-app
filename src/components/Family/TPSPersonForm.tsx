@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import Alert from 'components/Alert/Alert'
 import PersonCard from 'components/PersonCard/PersonCard'
-import { Cell, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'components/StyledComponents'
+import { Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'components/StyledComponents'
 import { AlertStatus } from 'declarations/components'
 import { FamilieRelasjon, Kodeverk, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
@@ -29,7 +29,7 @@ const AlertstripeDiv = styled.div`
 const MarginDiv = styled.div`
   margin: 0.5rem;
 `
-const AlignCenterCell = styled(Cell)`
+const AlignCenterColumn = styled(Column)`
   display: flex;
   align-items: center;
 `
@@ -141,7 +141,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
       <Row
         className={classNames(className, 'slideAnimate', { feil: !!alertMessage })}
       >
-        <Cell>
+        <Column>
           <Input
             data-test-id='c-TPSPersonForm__input-fnr-or-dnr-id'
             label={t('ui:label-fnr-or-dnr')}
@@ -150,20 +150,20 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
             onChange={updateQuery}
           />
           <VerticalSeparatorDiv />
-        </Cell>
+        </Column>
         <HorizontalSeparatorDiv />
-        <AlignCenterCell>
+        <AlignCenterColumn>
           <Knapp
             disabled={person.fnr === _query}
             onClick={sokEtterFnr}
           >
             {t('ui:form-search')}
           </Knapp>
-        </AlignCenterCell>
+        </AlignCenterColumn>
       </Row>
       <VerticalSeparatorDiv />
       <Row>
-        <Cell>
+        <Column>
           {person.fnr === _query && (
             <AlertstripeDiv>
               <AlertStripe type='advarsel'>
@@ -198,7 +198,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
               />
             </MarginDiv>
           )}
-        </Cell>
+        </Column>
       </Row>
     </Container>
   )

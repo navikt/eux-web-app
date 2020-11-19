@@ -184,7 +184,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
             disabled={rolleList !== undefined && !rolle}
             onClick={() => _onAddClick(person)}
           >
-            <Tilsette width='20' />
+            <Tilsette width={20} />
             <HorizontalSeparatorDiv />
             <ButtonLabel>
               {t('ui:form-add')}

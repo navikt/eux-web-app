@@ -36,7 +36,7 @@ export const initialAppState: AppState = {
   kodemaps: undefined
 }
 
-const appReducer = (state: AppState = initialAppState, action: ActionWithPayload) => {
+const appReducer = (state: AppState = initialAppState, action: ActionWithPayload = { type: '', payload: undefined }) => {
   switch (action.type) {
     case types.APP_SAKSBEHANDLER_GET_SUCCESS:
       try {

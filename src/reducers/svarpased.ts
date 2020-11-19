@@ -34,7 +34,7 @@ export const initialSvarpasedState: SvarpasedState = {
 
 const svarpasedReducer = (
   state: SvarpasedState = initialSvarpasedState,
-  action: Action | ActionWithPayload
+  action: Action | ActionWithPayload = { type: '', payload: undefined }
 ) => {
   switch (action.type) {
     case types.SVARPASED_ARBEIDSFORHOLDLIST_GET_SUCCESS:
