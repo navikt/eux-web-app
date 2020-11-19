@@ -113,31 +113,45 @@ const Inntekt: React.FC<InntektProps> = ({
   }
 
   const performValidation = (): boolean => {
-    const fraDato: string | undefined = !inntektSøk.fraDato ? 'validation-noFraDato'
-      : !inntektSøk.fraDato.match(/\d{4}-\d{2}/) ? 'validation-fraDatoFormat'
-          : parseInt(inntektSøk.fraDato.split('-')[0]) < 2015 ? 'validation-fraDato2015'
-            : parseInt(inntektSøk.fraDato.split('-')[1]) > 12 ? 'validation-fraDatoMonth'
+    const fraDato: string | undefined = !inntektSøk.fraDato
+      ? 'validation-noFraDato'
+      : !inntektSøk.fraDato.match(/\d{4}-\d{2}/)
+          ? 'validation-fraDatoFormat'
+          : parseInt(inntektSøk.fraDato.split('-')[0]) < 2015
+            ? 'validation-fraDato2015'
+            : parseInt(inntektSøk.fraDato.split('-')[1]) > 12
+              ? 'validation-fraDatoMonth'
               : undefined
 
-    const tilDato: string | undefined = !inntektSøk.tilDato ? 'validation-noTilDato'
-      : !inntektSøk.tilDato.match(/\d{4}-\d{2}/) ? 'validation-tilDatoFormat'
-          : parseInt(inntektSøk.tilDato.split('-')[0]) < 2015 ? 'validation-tilDato2015'
-            : parseInt(inntektSøk.tilDato.split('-')[1]) > 12 ? 'validation-tilDatoMonth'
+    const tilDato: string | undefined = !inntektSøk.tilDato
+      ? 'validation-noTilDato'
+      : !inntektSøk.tilDato.match(/\d{4}-\d{2}/)
+          ? 'validation-tilDatoFormat'
+          : parseInt(inntektSøk.tilDato.split('-')[0]) < 2015
+            ? 'validation-tilDato2015'
+            : parseInt(inntektSøk.tilDato.split('-')[1]) > 12
+              ? 'validation-tilDatoMonth'
               : undefined
 
     const validation: Validation = {
-      fraDato: fraDato ? {
-        feilmelding: t(fraDato),
-        skjemaelementId: 'inntekt-fradato'
-      } as FeiloppsummeringFeil : undefined,
-      tilDato: tilDato ? {
-        feilmelding: t(tilDato),
-        skjemaelementId: 'inntekt-tildato'
-      } as FeiloppsummeringFeil : undefined,
-      tema: !inntektSøk.tema ? {
-        feilmelding: t('validation-noTema'),
-        skjemaelementId: 'inntekt-tema'
-      } as FeiloppsummeringFeil : undefined
+      fraDato: fraDato
+        ? {
+          feilmelding: t(fraDato),
+          skjemaelementId: 'inntekt-fradato'
+        } as FeiloppsummeringFeil
+        : undefined,
+      tilDato: tilDato
+        ? {
+          feilmelding: t(tilDato),
+          skjemaelementId: 'inntekt-tildato'
+        } as FeiloppsummeringFeil
+        : undefined,
+      tema: !inntektSøk.tema
+        ? {
+          feilmelding: t('validation-noTema'),
+          skjemaelementId: 'inntekt-tema'
+        } as FeiloppsummeringFeil
+        : undefined
     }
     setValidation(validation)
     return isValid(validation)

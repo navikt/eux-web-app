@@ -104,10 +104,12 @@ export const Modal: React.FC<ModalProps> = ({
           {_modal.modalButtons && (
             <ModalButtons>
               {_modal.modalButtons.map(button => {
-                const handleClick = _.isFunction(button.onClick) ? () => {
-                  button.onClick!()
-                  closeModal()
-                } : closeModal
+                const handleClick = _.isFunction(button.onClick)
+                  ? () => {
+                    button.onClick!()
+                    closeModal()
+                    }
+                  : closeModal
                 return button.main
                   ? (
                     <MainButton

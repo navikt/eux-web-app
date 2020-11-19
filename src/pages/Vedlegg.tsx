@@ -68,25 +68,36 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
 
   const validate = (): Validation => {
     const validation = {
-      journalpostID: !journalpostID ? {
-        feilmelding: t('ui:validation-noJournalpostID'),
-        skjemaelementId: 'vedlegg-journalpostID-id'
-      } as FeiloppsummeringFeil : undefined,
-      dokumentID: !dokumentID ? {
-        feilmelding: t('ui:validation-noDokumentID'),
-        skjemaelementId: 'vedlegg-dokumentID-id'
-      } : undefined,
-      rinasaksnummer: !rinasaksnummer ? {
-        feilmelding: t('ui:validation-noSaksnummer'),
-        skjemaelementId: ''
-      } : (!isRinaNumberValid ? {
-        feilmelding: t('ui:validation-unverifiedSaksnummer'),
-        skjemaelementId: ''
-      } : undefined),
-      rinadokumentID: !rinadokumentID ? {
-        feilmelding: t('ui:validation-noRinadokumentID'),
-        skjemaelementId: ''
-      } : undefined
+      journalpostID: !journalpostID
+        ? {
+          feilmelding: t('ui:validation-noJournalpostID'),
+          skjemaelementId: 'vedlegg-journalpostID-id'
+        } as FeiloppsummeringFeil
+        : undefined,
+      dokumentID: !dokumentID
+        ? {
+          feilmelding: t('ui:validation-noDokumentID'),
+          skjemaelementId: 'vedlegg-dokumentID-id'
+        } as FeiloppsummeringFeil
+        : undefined,
+      rinasaksnummer: !rinasaksnummer
+        ? {
+          feilmelding: t('ui:validation-noSaksnummer'),
+          skjemaelementId: ''
+        } as FeiloppsummeringFeil
+        : (!isRinaNumberValid
+            ? {
+                feilmelding: t('ui:validation-unverifiedSaksnummer'),
+                skjemaelementId: ''
+              }
+            : undefined
+          ),
+      rinadokumentID: !rinadokumentID
+        ? {
+          feilmelding: t('ui:validation-noRinadokumentID'),
+          skjemaelementId: ''
+        } as FeiloppsummeringFeil
+        : undefined
     }
     setValidation(validation)
     return validation
@@ -190,7 +201,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
                   <div>
                     <div>Vedlegget: {vedlegg.filnavn || vedlegg.vedleggID}</div>
                     {vedlegg.url && (
-                      <Link href={vedlegg.url} target='_blank'>
+                      <Link href={vedlegg.url} rel='noreferrer' target='_blank'>
                         Gå direkte til Rina.
                       </Link>
                     )}

@@ -146,11 +146,9 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
           feil={validation ? validation.feilmelding : localValidation}
         />
         <Button onClick={sokEtterPerson} disabled={gettingPerson}>
-          {gettingPerson ? (
-            <WaitingPanel size='S' message={t('ui:form-searching')} oneLine />
-          ) : (
-            t('ui:form-search')
-          )}
+          {gettingPerson
+            ? <WaitingPanel size='S' message={t('ui:form-searching')} oneLine />
+            : t('ui:form-search')}
         </Button>
       </PersonSearchPanel>
       {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (

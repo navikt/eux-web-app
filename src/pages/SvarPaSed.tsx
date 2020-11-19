@@ -109,14 +109,18 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
 
   const validate = (): Validation => {
     const validation: Validation = {
-      saksnummer: !_saksnummer ? {
-        feilmelding: t('ui:validation-noSaksnummer'),
-        skjemaelementId: 'svarpased__saksnummer-input'
-      } as FeiloppsummeringFeil : undefined,
-      svarSed: !svarSed ? {
-        feilmelding: t('ui:validation-noSedtype'),
-        skjemaelementId: 'svarpased__svarsed-select'
-      } as FeiloppsummeringFeil : undefined
+      saksnummer: !_saksnummer
+        ? {
+          feilmelding: t('ui:validation-noSaksnummer'),
+          skjemaelementId: 'svarpased__saksnummer-input'
+        } as FeiloppsummeringFeil
+        : undefined,
+      svarSed: !svarSed
+        ? {
+          feilmelding: t('ui:validation-noSedtype'),
+          skjemaelementId: 'svarpased__svarsed-select'
+        } as FeiloppsummeringFeil
+        : undefined
     }
     setValidation(validation)
     return validation
@@ -366,7 +370,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
               )}
               {showInntekt() && (
                 <Ekspanderbartpanel tittel={t('ui:label-inntekt')}>
-                  '<Inntekt
+                  <Inntekt
                     fnr={person.fnr}
                     inntekter={inntekter}
                     onSelectedInntekt={onSelectedInntekt}

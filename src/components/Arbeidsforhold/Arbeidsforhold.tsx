@@ -69,11 +69,11 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
               orgnr,
               ansettelsesPeriode: { fom, tom }
             } = arbeidsforholdet
-            const arbeidsForholdErValgt: boolean = valgteArbeidsforhold ? valgteArbeidsforhold.find(
-              (item: Arbeidsforholdet) => item.arbeidsforholdIDnav === arbeidsforholdIDnav
-            ) !== undefined : false
+            const arbeidsForholdErValgt: boolean = valgteArbeidsforhold
+              ? valgteArbeidsforhold.find((item: Arbeidsforholdet) => item.arbeidsforholdIDnav === arbeidsforholdIDnav) !== undefined
+              : false
             return (
-              <>
+              <div key={arbeidsforholdIDnav}>
                 <VerticalSeparatorDiv data-size='0.5' />
                 <Panel key={index} border>
                   <ArbeidsforholdItem>
@@ -105,7 +105,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
                   </ArbeidsforholdItem>
                 </Panel>
                 <VerticalSeparatorDiv data-size='0.5' />
-              </>
+              </div>
             )
           }
         )}

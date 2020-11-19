@@ -43,7 +43,7 @@ export const initialSakState: SakState = {
   unit: undefined
 }
 
-const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload = {type: '', payload: undefined}) => {
+const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload = { type: '', payload: undefined }) => {
   switch (action.type) {
     case types.SAK_ARBEIDSFORHOLDLIST_GET_SUCCESS:
       return {

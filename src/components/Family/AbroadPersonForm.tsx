@@ -164,38 +164,54 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
   const performValidation = (): boolean => {
     const validation: Validation = {
       // saksnummer: saksnummer ? null : "No saksnummer",
-      fnr: _relation.fnr ? undefined : {
-        feilmelding: t('ui:validation-noFnr'),
-        skjemaelementId: 'familierelasjoner__input-fnr-id'
-      } as FeiloppsummeringFeil,
-      fornavn: _relation.fornavn ? undefined : {
-        feilmelding: t('ui:validation-noFirstName'),
-        skjemaelementId: 'familierelasjoner__input-fornavn'
-      } as FeiloppsummeringFeil,
-      etternavn: _relation.etternavn ? undefined : {
-        feilmelding: t('ui:validation-noLastName'),
-        skjemaelementId: 'familierelasjoner__input-etternavn'
-      } as FeiloppsummeringFeil,
-      kjoenn: _relation.kjoenn ? undefined : {
-        feilmelding: t('ui:validation-noGender'),
-        skjemaelementId: 'familierelasjoner__select-kjoenn'
-      } as FeiloppsummeringFeil,
-      fdato: _relation.fdato ? undefined : {
-        feilmelding: t('ui:validation-noFdato'),
-        skjemaelementId: 'familierelasjoner__input-fdato'
-      } as FeiloppsummeringFeil,
-      rolle: _relation.rolle ? undefined : {
-        feilmelding: t('ui:validation-noRolle'),
-        skjemaelementId: 'familierelasjoner__input-familierelasjon'
-      } as FeiloppsummeringFeil,
-      land: _relation.land ? undefined : {
-        feilmelding: t('ui:validation-noLand'),
-        skjemaelementId: 'familierelasjoner__input-land'
-      } as FeiloppsummeringFeil,
-      statsborgerskap: _relation.land ? undefined : {
-        feilmelding: t('ui:validation-noNationality'),
-        skjemaelementId: 'familierelasjoner__input-statsborgerskap'
-      } as FeiloppsummeringFeil
+      fnr: _relation.fnr
+        ? undefined
+        : {
+          feilmelding: t('ui:validation-noFnr'),
+          skjemaelementId: 'familierelasjoner__input-fnr-id'
+        } as FeiloppsummeringFeil,
+      fornavn: _relation.fornavn
+        ? undefined
+        : {
+          feilmelding: t('ui:validation-noFirstName'),
+          skjemaelementId: 'familierelasjoner__input-fornavn'
+        } as FeiloppsummeringFeil,
+      etternavn: _relation.etternavn
+        ? undefined
+        : {
+          feilmelding: t('ui:validation-noLastName'),
+          skjemaelementId: 'familierelasjoner__input-etternavn'
+        } as FeiloppsummeringFeil,
+      kjoenn: _relation.kjoenn
+        ? undefined
+        : {
+          feilmelding: t('ui:validation-noGender'),
+          skjemaelementId: 'familierelasjoner__select-kjoenn'
+        } as FeiloppsummeringFeil,
+      fdato: _relation.fdato
+        ? undefined
+        : {
+          feilmelding: t('ui:validation-noFdato'),
+          skjemaelementId: 'familierelasjoner__input-fdato'
+        } as FeiloppsummeringFeil,
+      rolle: _relation.rolle
+        ? undefined
+        : {
+          feilmelding: t('ui:validation-noRolle'),
+          skjemaelementId: 'familierelasjoner__input-familierelasjon'
+        } as FeiloppsummeringFeil,
+      land: _relation.land
+        ? undefined
+        : {
+          feilmelding: t('ui:validation-noLand'),
+          skjemaelementId: 'familierelasjoner__input-land'
+        } as FeiloppsummeringFeil,
+      statsborgerskap: _relation.land
+        ? undefined
+        : {
+          feilmelding: t('ui:validation-noNationality'),
+          skjemaelementId: 'familierelasjoner__input-statsborgerskap'
+        } as FeiloppsummeringFeil
     } as Validation
     setValidation(validation)
     return hasNoValidationErrors(validation)
