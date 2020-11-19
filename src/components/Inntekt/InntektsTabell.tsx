@@ -1,6 +1,6 @@
 import { Normaltekst } from 'nav-frontend-typografi'
 import React from 'react'
-import { Inntekt } from '../../declarations/types'
+import { Inntekt } from 'declarations/types'
 import TableSorter, { Item } from 'tabell'
 
 interface InntektsTabellProps {
@@ -28,13 +28,7 @@ const InntektsTabell: React.FunctionComponent<InntektsTabellProps> = ({
   return (
     <div>
       <TableSorter
-        items={
-          inntekter
-            ? inntekter.map((inntekt: Inntekt, index: number) =>
-                mapInntektTilItem(inntekt, index)
-              )
-            : []
-        }
+        items={inntekter ? inntekter.map((inntekt: Inntekt, index: number) => mapInntektTilItem(inntekt, index)) : []}
         itemsPerPage={10}
         loading={false}
         animatable

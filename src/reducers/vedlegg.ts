@@ -1,5 +1,5 @@
-import * as types from '../constants/actionTypes'
-import { VedleggSendResponse } from '../declarations/types'
+import * as types from 'constants/actionTypes'
+import { VedleggSendResponse } from 'declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
 
 export interface VedleggState {
@@ -46,7 +46,7 @@ const vedleggReducer = (state: VedleggState = initialVedleggState, action: Actio
         dokument: action.payload
       }
 
-    case types.VEDLEGG_VALUE_SET:
+    case types.VEDLEGG_PROPERTY_SET:
       return {
         ...state,
         [action.payload.key]: action.payload.value

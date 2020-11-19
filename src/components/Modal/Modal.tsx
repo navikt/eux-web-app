@@ -1,5 +1,5 @@
-import { ModalContent } from '../../declarations/components'
-import { ModalContentPropType } from '../../declarations/components.pt'
+import { ModalContent } from 'declarations/components'
+import { ModalContentPropType } from 'declarations/components.pt'
 import _ from 'lodash'
 import Knapp, { Hovedknapp } from 'nav-frontend-knapper'
 import Lukknapp from 'nav-frontend-lukknapp'
@@ -8,15 +8,6 @@ import { Undertittel } from 'nav-frontend-typografi'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-
-export interface ModalProps {
-  appElement?: any;
-  className?: string;
-  onModalClose?: () => void;
-  closeButton?: boolean;
-  closeButtonLabel?: string;
-  modal: ModalContent | undefined;
-}
 
 const ModalDiv = styled(NavModal)`
   width: auto !important;
@@ -46,6 +37,15 @@ const OtherButton = styled(Knapp)`
   margin-right: 1rem;
   margin-bottom: 1rem;
 `
+
+export interface ModalProps {
+  appElement?: any;
+  className?: string;
+  onModalClose?: () => void;
+  closeButton?: boolean;
+  closeButtonLabel?: string;
+  modal: ModalContent | undefined;
+}
 
 export const Modal: React.FC<ModalProps> = ({
   appElement = document.body, className, onModalClose, closeButton = true, closeButtonLabel = '', modal

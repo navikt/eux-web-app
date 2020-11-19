@@ -1,18 +1,10 @@
 import classNames from 'classnames'
-import { HorizontalSeparatorDiv } from '../StyledComponents'
+import { HorizontalSeparatorDiv } from 'components/StyledComponents'
 import Spinner from 'nav-frontend-spinner'
 import { Normaltekst } from 'nav-frontend-typografi'
 import PT from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
-
-export interface WaitingPanelProps {
-  className?: string;
-  size?: 'XXS'| 'XS' | 'S'| 'M' | 'L'| 'XL'| 'XXL' | 'XXXL';
-  style?: React.CSSProperties;
-  message?: string,
-  oneLine?: boolean
-}
 
 const WaitingPanelDiv = styled.div`
   display: flex;
@@ -26,6 +18,14 @@ const WaitingPanelDiv = styled.div`
     vertical-align: top;
   }
 `
+
+export interface WaitingPanelProps {
+  className?: string;
+  size?: 'XXS'| 'XS' | 'S'| 'M' | 'L'| 'XL'| 'XXL' | 'XXXL';
+  style?: React.CSSProperties;
+  message?: string,
+  oneLine?: boolean
+}
 
 const WaitingPanel: React.FC<WaitingPanelProps> = ({
   size = 'M', style = {}, message = 'Vennligst vent...', oneLine = false

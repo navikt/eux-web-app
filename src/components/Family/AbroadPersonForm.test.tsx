@@ -13,12 +13,20 @@ jest.mock('react-router-dom', () => ({
 describe('components/Family/AbroadPersonForm', () => {
   let wrapper: ReactWrapper
   const initialMockProps: AbroadPersonFormProps = {
-    rolleList: familierelasjoner
+    existingFamilyRelationships: [],
+    rolleList: familierelasjoner,
+    onAlertClose: jest.fn(),
+    onAbroadPersonAddedFailure: jest.fn(),
+    onAbroadPersonAddedSuccess: jest.fn(),
+    person: {}
   }
 
   const defaultSelector: AbroadPersonFormSelector = {
-    kjoenn: kjoenn,
-    landkoder: landkoder
+    alertStatus: undefined,
+    alertMessage: undefined,
+    alertType: undefined,
+    kjoennList: kjoenn,
+    landkoderList: landkoder
   }
 
   beforeAll(() => {
@@ -33,12 +41,12 @@ describe('components/Family/AbroadPersonForm', () => {
     wrapper.unmount()
   })
 
-  it('Renders', () => {
+  it('Render: match snapshot', () => {
     expect(wrapper.isEmptyRender()).toBeFalsy()
     expect(wrapper).toMatchSnapshot()
   })
 
-  it('HTML structure', () => {
+  it('Render: HTML structure', () => {
     expect(wrapper.exists('.c-abroadPersonForm')).toBeTruthy()
   })
 })

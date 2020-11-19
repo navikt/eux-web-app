@@ -33,12 +33,12 @@ describe('components/DocumentSearch/DocumentSearch', () => {
     wrapper.unmount()
   })
 
-  it('Renders', () => {
+  it('Render: match snapshot', () => {
     expect(wrapper.isEmptyRender()).toBeFalsy()
     expect(wrapper).toMatchSnapshot()
   })
 
-  it('HTML structure', () => {
+  it('Render: HTML structure', () => {
     expect(wrapper.exists('div.dokumentsok')).toBeTruthy()
   })
 })

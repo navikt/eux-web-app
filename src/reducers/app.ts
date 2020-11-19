@@ -1,5 +1,5 @@
-import * as types from '../constants/actionTypes'
-import { BucTyper, Enheter, Kodemaps, Kodeverk, Saksbehandler, ServerInfo, Tema } from '../declarations/types'
+import * as types from 'constants/actionTypes'
+import { BucTyper, Enheter, Kodemaps, Kodeverk, Saksbehandler, ServerInfo, Tema } from 'declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
 
 export interface AppState {

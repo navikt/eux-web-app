@@ -14,29 +14,40 @@ describe('pages/OpprettSak/OpprettSak', () => {
   }
 
   const defaultSelector: OpprettSakSelector = {
-    arbeidsforhold: undefined,
+    alertMessage: undefined,
+    alertStatus: undefined,
+    alertType: undefined,
+
+    enheter: undefined,
+    serverInfo: undefined,
     buctyper: undefined,
-    sedtyper: undefined,
-    fagsaker: undefined,
-    institusjoner: undefined,
+    familierelasjonKodeverk: undefined,
     kodemaps: undefined,
     landkoder: undefined,
-    opprettetSak: undefined,
-    person: undefined,
+    sedtyper: undefined,
     sektor: undefined,
-    sendingSak: false,
-    serverInfo: undefined,
     tema: undefined,
+
+    sendingSak: false,
+    gettingPerson: false,
+
+    arbeidsforholdList: undefined,
     valgteArbeidsforhold: undefined,
     valgtBucType: undefined,
-    valgtFnr: undefined,
     valgteFamilieRelasjoner: undefined,
+    fagsaker: undefined,
+    valgtFnr: undefined,
     valgtInstitusjon: undefined,
+    institusjoner: undefined,
     valgtLandkode: undefined,
+    opprettetSak: undefined,
+    person: undefined,
+    personRelatert: undefined,
+    valgtSaksId: undefined,
     valgtSedType: undefined,
     valgtSektor: undefined,
-    valgtSaksId: undefined,
-    valgtTema: undefined
+    valgtTema: undefined,
+    valgtUnit: undefined
   }
 
   beforeAll(() => {

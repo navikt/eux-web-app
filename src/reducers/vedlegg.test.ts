@@ -69,12 +69,12 @@ describe('reducers/app', () => {
     })
   })
 
-  it('VEDLEGG_VALUE_SET', () => {
+  it('VEDLEGG_PROPERTY_SET', () => {
     expect(
       vedleggReducer({
         ...initialVedleggState
       }, {
-        type: types.VEDLEGG_VALUE_SET,
+        type: types.VEDLEGG_PROPERTY_SET,
         payload: {
           key: 'foo',
           value: 'bar'

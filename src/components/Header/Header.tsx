@@ -1,8 +1,8 @@
-import { toggleHighContrast } from '../../actions/ui'
-import { HorizontalSeparatorDiv } from '../StyledComponents'
-import * as types from '../../constants/actionTypes'
-import { State } from '../../declarations/reducers'
-import { Saksbehandler } from '../../declarations/types'
+import { toggleHighContrast } from 'actions/ui'
+import { HorizontalSeparatorDiv } from 'components/StyledComponents'
+import * as types from 'constants/actionTypes'
+import { State } from 'declarations/reducers'
+import { Saksbehandler } from 'declarations/types'
 import Lenke from 'nav-frontend-lenker'
 import { Undertittel } from 'nav-frontend-typografi'
 import PT from 'prop-types'
@@ -10,20 +10,8 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import NEESSILogo from '../../resources/images/nEESSI'
+import NEESSILogo from 'resources/images/nEESSI'
 import styled from 'styled-components'
-
-export interface HeaderSelector {
-  saksbehandler: Saksbehandler | undefined
-}
-
-export interface HeaderProps {
-  className?: string;
-}
-
-export const mapState = (state: State): HeaderSelector => ({
-  saksbehandler: state.app.saksbehandler
-})
 
 const HeaderContent = styled.header`
   background-color: #99c2e8;
@@ -65,6 +53,18 @@ const Name = styled.div`
   padding: 0.3em;
 `
 
+export interface HeaderSelector {
+  saksbehandler: Saksbehandler | undefined
+}
+
+export interface HeaderProps {
+  className?: string;
+}
+
+export const mapState = (state: State): HeaderSelector => ({
+  saksbehandler: state.app.saksbehandler
+})
+
 const Header: React.FC<HeaderProps> = ({ className }: HeaderProps): JSX.Element => {
   const { saksbehandler }: HeaderSelector = useSelector<State, HeaderSelector>(mapState)
   const { t } = useTranslation()
@@ -74,11 +74,7 @@ const Header: React.FC<HeaderProps> = ({ className }: HeaderProps): JSX.Element 
     dispatch(toggleHighContrast())
   }
 
-  const cleanData = () => {
-    dispatch({
-      type: types.APP_CLEAN_DATA
-    })
-  }
+  const cleanData = () => dispatch({ type: types.APP_CLEAN_DATA })
 
   return (
     <HeaderContent className={className}>
@@ -96,7 +92,7 @@ const Header: React.FC<HeaderProps> = ({ className }: HeaderProps): JSX.Element 
       </Undertittel>
       <SaksbehandlerDiv>
         <Lenke
-          data-testid='c-header__highcontrast-link'
+          data-test-id='c-header__highcontrast-link'
           href='#highContrast'
           onClick={(e: React.MouseEvent) => {
             e.preventDefault()

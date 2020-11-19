@@ -2,31 +2,27 @@ import * as types from 'constants/actionTypes'
 import { mount, ReactWrapper } from 'enzyme'
 import React from 'react'
 import samplePerson from 'resources/tests/samplePerson'
-import { stageSelector } from 'setupTests'
-import PersonSearch, { PersonSearchProps, PersonSearchSelector } from './PersonSearch'
+import PersonSearch, { PersonSearchProps } from './PersonSearch'
 
 describe('components/PersonSearch/PersonSearch', () => {
   let wrapper: ReactWrapper
   const initialMockProps: PersonSearchProps = {
-    className: 'mock-className',
-    onFnrChange: jest.fn(),
-    onPersonFound: jest.fn(),
-    resetAllValidation: jest.fn(),
-    validation: {}
-  }
-
-  const defaultSelector: PersonSearchSelector = {
     alertStatus: 'ERROR',
     alertMessage: 'message',
     alertType: types.SAK_PERSON_GET_FAILURE,
-    fnr: '12345678901',
+    alertTypesWatched: [types.SAK_PERSON_GET_FAILURE],
+    className: 'mock-className',
+    initialFnr: '12345678901',
     gettingPerson: false,
-    person: samplePerson
+    onAlertClose: jest.fn(),
+    onFnrChange: jest.fn(),
+    onPersonFound: jest.fn(),
+    onPersonRemoved: jest.fn(),
+    onSearchPerformed: jest.fn(),
+    person: samplePerson,
+    resetAllValidation: jest.fn(),
+    validation: {}
   }
-
-  beforeAll(() => {
-    stageSelector(defaultSelector, {})
-  })
 
   beforeEach(() => {
     wrapper = mount(<PersonSearch {...initialMockProps} />)
@@ -36,12 +32,12 @@ describe('components/PersonSearch/PersonSearch', () => {
     wrapper.unmount()
   })
 
-  it('Renders', () => {
+  it('Render: match snapshot', () => {
     expect(wrapper.isEmptyRender()).toBeFalsy()
     expect(wrapper).toMatchSnapshot()
   })
 
-  it('HTML structure', () => {
+  it('Render: HTML structure', () => {
     expect(wrapper.exists('.personsok')).toBeTruthy()
   })
 })

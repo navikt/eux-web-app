@@ -1,11 +1,11 @@
-import { Arbeidsforhold, Inntekter, Sed } from '../declarations/types'
+import { Arbeidsforhold, Inntekter, Sed } from 'declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
 import { Action } from 'redux'
-import * as types from '../constants/actionTypes'
+import * as types from 'constants/actionTypes'
 import _ from 'lodash'
 
 export interface SvarpasedState {
-  arbeidsforhold: Arbeidsforhold;
+  arbeidsforholdList: Arbeidsforhold;
   familierelasjoner: Array<any>;
   person: any;
   personRelatert: any;
@@ -19,7 +19,7 @@ export interface SvarpasedState {
 }
 
 export const initialSvarpasedState: SvarpasedState = {
-  arbeidsforhold: [],
+  arbeidsforholdList: [],
   seds: undefined,
   spørreSed: undefined,
   svarSed: undefined,
@@ -40,7 +40,7 @@ const svarpasedReducer = (
     case types.SVARPASED_ARBEIDSFORHOLDLIST_GET_SUCCESS:
       return {
         ...state,
-        arbeidsforhold: (action as ActionWithPayload).payload
+        arbeidsforholdList: (action as ActionWithPayload).payload
       }
 
     case types.SVARPASED_ARBEIDSFORHOLD_ADD:
@@ -157,10 +157,16 @@ const svarpasedReducer = (
         seds: state.seds
       }
 
-    case types.SAK_PERSON_RESET:
+    case types.SVARPASED_PERSON_RESET:
       return {
         ...state,
         person: undefined
+      }
+
+    case types.SVARPASED_PERSON_RELATERT_RESET:
+      return {
+        ...state,
+        personRelatert: undefined
       }
 
     default:

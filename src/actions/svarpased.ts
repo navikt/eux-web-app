@@ -6,8 +6,8 @@ import {
   Arbeidsforholdet,
   FamilieRelasjon,
   Inntekter, Sed
-} from '../declarations/types'
-import { SvarpasedState } from '../reducers/svarpased'
+} from 'declarations/types'
+import { SvarpasedState } from 'reducers/svarpased'
 
 const sprintf = require('sprintf-js').sprintf
 
@@ -81,6 +81,10 @@ export const removeFamilierelasjoner: ActionCreator<ActionWithPayload> = (
 ): ActionWithPayload => ({
   type: types.SVARPASED_FAMILIERELASJONER_REMOVE,
   payload: payload
+})
+
+export const resetPerson: ActionCreator<Action> = (): Action => ({
+  type: types.SVARPASED_PERSON_RESET
 })
 
 export const resetPersonRelatert: ActionCreator<Action> = (): Action => ({

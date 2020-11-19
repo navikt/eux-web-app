@@ -1,40 +1,18 @@
-import * as vedleggActions from '../../actions/vedlegg'
+import * as vedleggActions from 'actions/vedlegg'
 import classNames from 'classnames'
-import { VerticalSeparatorDiv } from '../../components/StyledComponents'
-import { State } from '../../declarations/reducers'
-import { Dokument, Validation } from '../../declarations/types'
-import { ValidationPropType } from '../../declarations/types.pt'
+import { VerticalSeparatorDiv } from 'components/StyledComponents'
+import { State } from 'declarations/reducers'
+import { Dokument, Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
 import { Knapp } from 'nav-frontend-knapper'
 import { Input, Select } from 'nav-frontend-skjema'
+import { Normaltekst } from 'nav-frontend-typografi'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-
-export interface DocumentSearchSelector {
-  gettingDokument: boolean;
-  dokument: Array<Dokument> | undefined;
-  rinadokumentID: string | undefined;
-  rinasaksnummer: string | undefined;
-}
-
-export interface DocumentSearchProps {
-  className ?: string;
-  onDocumentFound? : (dokument: Array<Dokument>) => void;
-  onRinasaksnummerChanged?: () => void;
-  resetValidation: (k: string) => void;
-  validation: Validation;
-}
-
-const mapState = (state: State): DocumentSearchSelector => ({
-  gettingDokument: state.loading.gettingDokument,
-  dokument: state.vedlegg.dokument,
-  rinasaksnummer: state.vedlegg.rinasaksnummer,
-  rinadokumentID: state.vedlegg.rinadokumentID
-})
 
 const Form = styled.div`
   display: flex;
@@ -49,8 +27,30 @@ const Rinasaknummer = styled(Input)`
   margin-right: 1rem;
 `
 
+export interface DocumentSearchSelector {
+  dokument: Array<Dokument> | undefined
+  gettingDokument: boolean
+  rinadokumentID: string | undefined
+  rinasaksnummer: string | undefined
+}
+
+export interface DocumentSearchProps {
+  className ?: string
+  onDocumentFound? : (dokument: Array<Dokument>) => void
+  onRinasaksnummerChanged?: () => void
+  resetValidation: (k: string) => void
+  validation: Validation
+}
+
+const mapState = (state: State): DocumentSearchSelector => ({
+  dokument: state.vedlegg.dokument,
+  gettingDokument: state.loading.gettingDokument,
+  rinasaksnummer: state.vedlegg.rinasaksnummer,
+  rinadokumentID: state.vedlegg.rinadokumentID
+})
+
 const DocumentSearch: React.FC<DocumentSearchProps> = ({
-  className, onDocumentFound, onRinasaksnummerChanged, resetValidation, validation
+  className, onDocumentFound, onRinasaksnummerChanged, resetValidation, validation = {}
 }: DocumentSearchProps): JSX.Element => {
   const { dokument, gettingDokument, rinasaksnummer, rinadokumentID }: DocumentSearchSelector = useSelector<State, DocumentSearchSelector>(mapState)
   const dispatch = useDispatch()
@@ -93,11 +93,11 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
     <div className={className}>
       <Form className={classNames({ feil: !!validation.rinadokumentID })}>
         <Rinasaknummer
-          label={t('ui:label-rinasaksnummer')}
-          data-testid='dokumentsok__form__input-id'
-          value={rinasaksnummer}
-          onChange={onRinaSaksnummerChange}
+          data-test-id='dokumentsok__form__input-id'
           feil={validation.rinasaksnummer}
+          label={t('ui:label-rinasaksnummer')}
+          onChange={onRinaSaksnummerChange}
+          value={rinasaksnummer}
         />
         <Knapp
           onClick={sokEtterDokument}
@@ -107,14 +107,14 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
         </Knapp>
       </Form>
       <VerticalSeparatorDiv />
-      <div data-testid='dokumentsok__card slideAnimate'>
+      <div data-test-id='dokumentsok__card slideAnimate'>
         <Select
-          data-testid='dokumentsok__card-select-id'
+          data-test-id='dokumentsok__card-select-id'
+          disabled={!_dokument}
+          feil={validation.rinadokumentID}
           label={t('ui:label-rinadokumentID')}
           onChange={onRinadokumentIDChange}
           value={rinadokumentID}
-          feil={validation.rinadokumentID}
-          disabled={!_dokument}
         >
           <option value=''>
             {t('ui:form-choose')}
@@ -127,7 +127,11 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
         </Select>
       </div>
       <VerticalSeparatorDiv />
-      {dokument === null || dokument?.length === 0 ? <p>{t('ui:error-noDocumentFound')}</p> : null}
+      {(dokument === null || dokument?.length === 0) && (
+        <Normaltekst>
+          {t('ui:error-noDocumentFound')}
+        </Normaltekst>
+      )}
     </div>
   )
 }
@@ -136,8 +140,8 @@ DocumentSearch.propTypes = {
   className: PT.string,
   onDocumentFound: PT.func,
   onRinasaksnummerChanged: PT.func,
-  resetValidation: PT.func.isRequired,
-  validation: ValidationPropType.isRequired
+  resetValidation: PT.func.isRequired
+  // validation: ValidationPropType.isRequired
 }
 
 export default DocumentSearch

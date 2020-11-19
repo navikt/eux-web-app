@@ -1,7 +1,7 @@
 import mockArbeidsforhold from 'mocks/arbeidsforhold'
 import mockFamilierelasjon from 'mocks/familierelasjon'
 
-export default  {
+export default {
   buctype: 'P_BUC_MOCK',
   fnr: '12354678901',
   landKode: 'AA',

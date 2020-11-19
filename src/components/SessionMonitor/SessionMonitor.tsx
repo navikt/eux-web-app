@@ -6,14 +6,6 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 
-export interface SessionMonitorProps {
-  checkInterval?: number;
-  expirationTime?: Date;
-  millisecondsForWarning?: number;
-  sessionExpiredReload?: number;
-  now?: Date;
-}
-
 const SessionMonitorDiv = styled.div`
   position: fixed;
   bottom: 0;
@@ -25,6 +17,15 @@ const SessionMonitorDiv = styled.div`
   padding: 0em 0.5em;
   z-index: 99999;
 `
+
+export interface SessionMonitorProps {
+  checkInterval?: number;
+  expirationTime?: Date;
+  millisecondsForWarning?: number;
+  sessionExpiredReload?: number;
+  now?: Date;
+}
+
 const SessionMonitor: React.FC<SessionMonitorProps> = ({
   /* check every minute */
   checkInterval = 1000 * 60,

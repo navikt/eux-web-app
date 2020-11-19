@@ -1,8 +1,8 @@
-import Alert, { AlertStatus } from '../Alert/Alert'
-import WaitingPanel from '../WaitingPanel/WaitingPanel'
-import * as types from '../../constants/actionTypes'
-import { Person } from '../../declarations/types'
-import { ValidationPropType } from '../../declarations/types.pt'
+import Alert from 'components/Alert/Alert'
+import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
+import { AlertStatus } from 'declarations/components'
+import { Person } from 'declarations/types'
+import { ValidationPropType } from 'declarations/types.pt'
 import _ from 'lodash'
 import { Knapp } from 'nav-frontend-knapper'
 import { Input } from 'nav-frontend-skjema'
@@ -10,24 +10,7 @@ import PT from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import PersonCard from '../PersonCard/PersonCard'
-
-export interface PersonSearchProps {
-  alertStatus: string | undefined;
-  alertMessage: string | undefined;
-  alertType: string | undefined;
-  className?: string;
-  initialFnr: any;
-  gettingPerson: boolean;
-  onAlertClose: () => void;
-  onFnrChange?: () => void;
-  onPersonFound?: (person: Person) => void;
-  onSearchPerformed: (fnr: any) => void;
-  onPersonRemoved: () => void;
-  person?: Person;
-  resetAllValidation: () => void;
-  validation: any;
-}
+import PersonCard from 'components/PersonCard/PersonCard'
 
 const AlertstripeDiv = styled.div`
   margin: 0.5rem;
@@ -53,10 +36,29 @@ const Button = styled(Knapp)`
   margin: 1.9em 0 0 1em;
 `
 
+export interface PersonSearchProps {
+  alertStatus: string | undefined
+  alertMessage: string | undefined
+  alertType: string | undefined
+  alertTypesWatched: Array<string> | undefined
+  className?: string
+  initialFnr: any
+  gettingPerson: boolean
+  onAlertClose: () => void
+  onFnrChange?: () => void
+  onPersonFound?: (person: Person) => void
+  onSearchPerformed: (fnr: any) => void
+  onPersonRemoved: () => void
+  person?: Person
+  resetAllValidation: () => void
+  validation: any
+}
+
 const PersonSearch: React.FC<PersonSearchProps> = ({
   alertStatus,
   alertMessage,
   alertType,
+  alertTypesWatched = [],
   initialFnr,
   gettingPerson,
   onAlertClose,
@@ -131,7 +133,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
     <PersonSearchDiv>
       <PersonSearchPanel>
         <PersonSearchInput
-          data-testid='personsok__input-id'
+          data-test-id='personsok__input-id'
           label={t('ui:form-searchUser')}
           value={_fnr || ''}
           onChange={onChange}
@@ -145,7 +147,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
           )}
         </Button>
       </PersonSearchPanel>
-      {alertMessage && alertType === types.SAK_PERSON_GET_FAILURE && (
+      {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (
         <AlertstripeDiv>
           <Alert
             type='client'

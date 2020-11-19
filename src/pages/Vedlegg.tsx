@@ -1,15 +1,15 @@
-import * as vedleggActions from '../actions/vedlegg'
-import DocumentSearch from '../components/DocumentSearch/DocumentSearch'
-import { Container, Content, Margin, VerticalSeparatorDiv } from '../components/StyledComponents'
-import TopContainer from '../components/TopContainer/TopContainer'
-import { State } from '../declarations/reducers'
-import { Validation } from '../declarations/types'
+import * as vedleggActions from 'actions/vedlegg'
+import DocumentSearch from 'components/DocumentSearch/DocumentSearch'
+import { Container, Content, Margin, VerticalSeparatorDiv } from 'components/StyledComponents'
+import TopContainer from 'components/TopContainer/TopContainer'
+import { State } from 'declarations/reducers'
+import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import AlertStripe from 'nav-frontend-alertstriper'
 import Hjelpetekst from 'nav-frontend-hjelpetekst'
 import { Hovedknapp } from 'nav-frontend-knapper'
 import Lenke from 'nav-frontend-lenker'
-import { Input } from 'nav-frontend-skjema'
+import { FeiloppsummeringFeil, Input } from 'nav-frontend-skjema'
 import { Systemtittel } from 'nav-frontend-typografi'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
@@ -68,10 +68,25 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
 
   const validate = (): Validation => {
     const validation = {
-      journalpostID: !journalpostID ? t('ui:validation-noJournalpostID') : null,
-      dokumentID: !dokumentID ? t('ui:validation-noDokumentID') : null,
-      rinasaksnummer: !rinasaksnummer ? t('ui:validation-noSaksnummer') : (!isRinaNumberValid ? t('ui:validation-unverifiedSaksnummer') : null),
-      rinadokumentID: !rinadokumentID ? t('ui:validation-noRinadokumentID') : null
+      journalpostID: !journalpostID ? {
+        feilmelding: t('ui:validation-noJournalpostID'),
+        skjemaelementId: 'vedlegg-journalpostID-id'
+      } as FeiloppsummeringFeil : undefined,
+      dokumentID: !dokumentID ? {
+        feilmelding: t('ui:validation-noDokumentID'),
+        skjemaelementId: 'vedlegg-dokumentID-id'
+      } : undefined,
+      rinasaksnummer: !rinasaksnummer ? {
+        feilmelding: t('ui:validation-noSaksnummer'),
+        skjemaelementId: ''
+      } : (!isRinaNumberValid ? {
+        feilmelding: t('ui:validation-unverifiedSaksnummer'),
+        skjemaelementId: ''
+      } : undefined),
+      rinadokumentID: !rinadokumentID ? {
+        feilmelding: t('ui:validation-noRinadokumentID'),
+        skjemaelementId: ''
+      } : undefined
     }
     setValidation(validation)
     return validation
@@ -80,7 +95,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
   const resetValidation = (key: string): void => {
     setValidation({
       ...validation,
-      [key]: null
+      [key]: undefined
     })
   }
 
@@ -119,7 +134,8 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
           <VerticalSeparatorDiv />
           <div className='noSlideAnimate'>
             <Input
-              data-testid='vedlegg-journalpostID-id'
+              id='vedlegg-journalpostID-id'
+              data-test-id='vedlegg-journalpostID-id'
               label={(
                 <div>
                   {t('ui:label-journalpostID')}
@@ -135,7 +151,8 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
           <VerticalSeparatorDiv />
           <div className='noSlideAnimate' style={{ animationDelay: '0.15s' }}>
             <Input
-              data-testid='vedlegg-dokumentID-id'
+              id='vedlegg-dokumentID-id'
+              data-test-id='vedlegg-dokumentID-id'
               label={(
                 <div>
                   {t('ui:label-dokumentID')}

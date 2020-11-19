@@ -19,7 +19,6 @@ describe('actions/vedlegg', () => {
     realCall.mockRestore()
   })
 
-
   it('getDokument()', () => {
     const mockRinasaksnummer = '12345678901'
     vedleggActions.getDokument(mockRinasaksnummer)

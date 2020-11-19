@@ -1,6 +1,6 @@
 import { mount, ReactWrapper } from 'enzyme'
 import React from 'react'
-import ExpandingPanel, { ExpandingPanelProps } from './ExpandingPanel'
+import ExpandingPanel, { ExpandingPanelDiv, ExpandingPanelProps } from './ExpandingPanel'
 
 describe('components/ExpandingPanel/ExpandingPanel', () => {
   let wrapper: ReactWrapper
@@ -13,7 +13,9 @@ describe('components/ExpandingPanel/ExpandingPanel', () => {
     },
     children: <div />,
     heading: <h2>heading</h2>,
-    onClick: jest.fn(),
+    highContrast: false,
+    onClose: jest.fn(),
+    onOpen: jest.fn(),
     open: false,
     renderContentWhenClosed: false
   }
@@ -26,20 +28,20 @@ describe('components/ExpandingPanel/ExpandingPanel', () => {
     wrapper.unmount()
   })
 
-  it('Renders', () => {
+  it('Render: match snapshot', () => {
     expect(wrapper.isEmptyRender()).toBeFalsy()
     expect(wrapper).toMatchSnapshot()
   })
 
-  it('Has proper HTML structure', () => {
-    expect(wrapper.find('.c-expandingpanel')).toBeTruthy()
-    expect(wrapper.find('.ekspanderbartPanel__hode')).toBeTruthy()
-    expect(wrapper.find('.ekspanderbartPanel__flex-wrapper')).toBeTruthy()
-    expect(wrapper.find('.ekspanderbartPanel__knapp')).toBeTruthy()
-    expect(wrapper.find('article.ekspanderbartPanel__innhold')).toBeTruthy()
+  it('Render: has proper HTML structure', () => {
+    expect(wrapper.find(ExpandingPanelDiv)).toBeTruthy()
+    expect(wrapper.find('[data-test-id=\'c-expandingpanel__head-id\']')).toBeTruthy()
+    expect(wrapper.find('[data-test-id=\'c-expandingpanel__body-id\']')).toBeTruthy()
+    expect(wrapper.find('[data-test-id=\'c-expandingpanel__button-id\']')).toBeTruthy()
+    expect(wrapper.find('[data-test-id=\'c-expandingpanel__content-id\']')).toBeTruthy()
   })
 
-  it('Opens', () => {
+  it('Handling: opens when clicked', () => {
     expect(wrapper.exists('.ekspanderbartPanel--apen')).toBeFalsy()
     expect(wrapper.exists('.ekspanderbartPanel--lukket')).toBeTruthy()
     wrapper.find('.ekspanderbartPanel__knapp').hostNodes().simulate('click')

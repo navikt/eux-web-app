@@ -14,7 +14,6 @@ const realCall: jest.Mock = originalCall as unknown as jest.Mock<typeof original
 const sprintf = require('sprintf-js').sprintf
 
 describe('actions/sak', () => {
-
   afterEach(() => {
     realCall.mockReset()
   })
@@ -22,7 +21,6 @@ describe('actions/sak', () => {
   afterAll(() => {
     realCall.mockRestore()
   })
-
 
   it('addArbeidsforhold()', () => {
     const generatedResult = sakActions.addArbeidsforhold(mockArbeidsforhold)
@@ -41,7 +39,6 @@ describe('actions/sak', () => {
   })
 
   it('createSak()', () => {
-
     sakActions.createSak(mockOpprettSak)
     expect(realCall)
       .toBeCalledWith(expect.objectContaining({

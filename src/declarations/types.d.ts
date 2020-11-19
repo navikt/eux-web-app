@@ -1,4 +1,5 @@
 import { PeriodePropType } from 'declarations/types.pt'
+import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 
 export interface Period {
   fom?: string
@@ -6,10 +7,10 @@ export interface Period {
 }
 
 export interface Arbeidsforholdet {
-  arbeidsforholdIDnav?: number
-  orgnr?: string
-  navn?: string
   ansettelsesPeriode?: PeriodePropType
+  arbeidsforholdIDnav?: number
+  navn?: string
+  orgnr?: string
 }
 
 export type Arbeidsforhold = Array<Arbeidsforholdet>
@@ -126,8 +127,6 @@ export interface FagSak {
 
 export type FagSaker = Array<FagSak>
 
-export type Validation = { [k: string]: string | null }
-
 export interface Inntekt {
   fraDato: string
   tilDato: string
@@ -160,3 +159,5 @@ export interface Institusjon {
 }
 
 export type Institusjoner = Array<Institusjon>
+
+export type Validation = {[key: string]: FeiloppsummeringFeil | undefined}

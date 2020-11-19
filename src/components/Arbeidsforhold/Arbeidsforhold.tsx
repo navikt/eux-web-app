@@ -1,20 +1,14 @@
-import { Cell, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from '../StyledComponents'
+import { Arbeidsforholdet } from 'declarations/types'
 import { Knapp } from 'nav-frontend-knapper'
 import Panel from 'nav-frontend-paneler'
 import { Checkbox } from 'nav-frontend-skjema'
 import { Systemtittel } from 'nav-frontend-typografi'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import IkonArbeidsforhold from '../../resources/images/ikon-arbeidsforhold'
 import styled from 'styled-components'
-import { formatterDatoTilNorsk } from '../../utils/dato'
-
-export interface ArbeidsforholdProps {
-  getArbeidsforholdList: () => void
-  valgteArbeidsforhold: any
-  arbeidsforholdList: any
-  onArbeidsforholdClick: (x: any, y: any) => void
-}
+import IkonArbeidsforhold from 'resources/images/ikon-arbeidsforhold'
+import { formatterDatoTilNorsk } from 'utils/dato'
+import { Cell, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'components/StyledComponents'
 
 const ArbeidsforholdItem = styled.div`
   display: flex;
@@ -32,9 +26,17 @@ const ArbeidsforholdButton = styled.div`
   justify-content: space-between;
   align-items: center;
 `
+
+export interface ArbeidsforholdProps {
+  getArbeidsforholdList: () => void
+  valgteArbeidsforhold: Array<Arbeidsforholdet>
+  arbeidsforholdList: Array<Arbeidsforholdet>
+  onArbeidsforholdClick: (a: Arbeidsforholdet, checked: boolean) => void
+}
+
 const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
   arbeidsforholdList, getArbeidsforholdList, valgteArbeidsforhold, onArbeidsforholdClick
-}: ArbeidsforholdProps) => {
+}: ArbeidsforholdProps): JSX.Element => {
   const { t } = useTranslation()
   return (
     <Row>
@@ -59,19 +61,17 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
             </ArbeidsforholdButton>
           </Cell>
         </Row>
-        {arbeidsforholdList &&
-        arbeidsforholdList.map(
-          (arbeidsforholdet: any, index: number) => {
+        {arbeidsforholdList && arbeidsforholdList.map(
+          (arbeidsforholdet: Arbeidsforholdet, index: number) => {
             const {
               arbeidsforholdIDnav,
               navn,
               orgnr,
               ansettelsesPeriode: { fom, tom }
             } = arbeidsforholdet
-            const arbeidsForholdErValgt = valgteArbeidsforhold.find(
-              (item: any) =>
-                item.arbeidsforholdIDnav === arbeidsforholdIDnav
-            )
+            const arbeidsForholdErValgt: boolean = valgteArbeidsforhold.find(
+              (item: Arbeidsforholdet) => item.arbeidsforholdIDnav === arbeidsforholdIDnav
+            ) !== undefined
             return (
               <>
                 <VerticalSeparatorDiv data-size='0.5' />

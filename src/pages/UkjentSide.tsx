@@ -1,5 +1,5 @@
-import { Container, Content, Margin } from '../components/StyledComponents'
-import TopContainer from '../components/TopContainer/TopContainer'
+import { Container, Content, Margin } from 'components/StyledComponents'
+import TopContainer from 'components/TopContainer/TopContainer'
 import Alertstripe from 'nav-frontend-alertstriper'
 import Lenke from 'nav-frontend-lenker'
 import { Systemtittel } from 'nav-frontend-typografi'

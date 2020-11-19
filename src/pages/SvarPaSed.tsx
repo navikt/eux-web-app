@@ -1,27 +1,26 @@
+import { clientClear } from 'actions/alert'
+import * as appActions from 'actions/app'
+import * as svarpasedActions from 'actions/svarpased'
+import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
+import Family from 'components/Family/Family'
+import Inntekt from 'components/Inntekt/Inntekt'
+import PersonSearch from 'components/PersonSearch/PersonSearch'
+import { Container, Content, Margin, VerticalSeparatorDiv } from 'components/StyledComponents'
+import TopContainer from 'components/TopContainer/TopContainer'
+import * as types from 'constants/actionTypes'
+import { State } from 'declarations/reducers'
+import { FamilieRelasjon, Inntekt as IInntekt, Inntekter, Sed, Validation } from 'declarations/types'
 import _ from 'lodash'
 import Alertstripe from 'nav-frontend-alertstriper'
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel'
 import { Knapp } from 'nav-frontend-knapper'
-import { Input, Select } from 'nav-frontend-skjema'
+import { FeiloppsummeringFeil, Input, Select } from 'nav-frontend-skjema'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import { SvarpasedState } from 'reducers/svarpased'
 import styled from 'styled-components'
 import { Item } from 'tabell'
-import { clientClear } from '../actions/alert'
-import * as appActions from '../actions/app'
-import * as sakActions from '../actions/sak'
-import * as svarpasedActions from '../actions/svarpased'
-import Arbeidsforhold from '../components/Arbeidsforhold/Arbeidsforhold'
-import Family from '../components/Family/Family'
-import Inntekt from '../components/Inntekt/Inntekt'
-import PersonSearch from '../components/PersonSearch/PersonSearch'
-import { Container, Content, Margin, VerticalSeparatorDiv } from '../components/StyledComponents'
-import TopContainer from '../components/TopContainer/TopContainer'
-import * as types from '../constants/actionTypes'
-import { State } from '../declarations/reducers'
-import { FamilieRelasjon, Inntekt as IInntekt, Inntekter, Sed, Validation } from '../declarations/types'
-import { SvarpasedState } from '../reducers/svarpased'
 
 const SaksnummerDiv = styled.div`
   display: flex;
@@ -40,19 +39,22 @@ const mapState = (state: State): any => ({
   alertStatus: state.alert.clientErrorStatus,
   alertMessage: state.alert.clientErrorMessage,
   alertType: state.alert.type,
+
+  familierelasjonKodeverk: state.app.familierelasjoner,
+
   gettingPerson: state.loading.gettingPerson,
+  gettingSaksnummer: state.loading.gettingSaksnummer,
+
+  arbeidsforholdList: state.svarpased.arbeidsforholdList,
+  inntekter: state.svarpased.inntekter,
   person: state.svarpased.person,
   personRelatert: state.svarpased.personRelatert,
-  familierelasjonKodeverk: state.app.familierelasjoner,
-  valgteFamilieRelasjoner: state.svarpased.familierelasjoner,
-  arbeidsforhold: state.svarpased.arbeidsforhold,
-  valgteArbeidsforhold: state.svarpased.valgteArbeidsforhold,
-  inntekter: state.svarpased.inntekter,
-  gettingSaksnummer: state.loading.gettingSaksnummer,
   spørreSed: state.svarpased.spørreSed,
   svarSed: state.svarpased.svarSed,
   seds: state.svarpased.seds,
-  svarPasedData: state.svarpased.svarPasedData
+  svarPasedData: state.svarpased.svarPasedData,
+  valgteFamilieRelasjoner: state.svarpased.familierelasjoner,
+  valgteArbeidsforhold: state.svarpased.valgteArbeidsforhold
 })
 
 const mapStateTwo = (state: State): any => ({
@@ -71,30 +73,33 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
   location
 }: SvarPaSedProps): JSX.Element => {
   const [_saksnummer, setSaksnummer] = useState<string | undefined>(undefined)
-  const [validation, setValidation] = useState<{ [k: string]: any }>({})
+  const [_validation, setValidation] = useState<Validation>({})
   const [, setIsFnrValid] = useState<boolean>(false)
-  const [mounted, setMounted] = useState<boolean>(false)
-  const [fnr, setFnr] = useState<string>('')
+  const [_mounted, setMounted] = useState<boolean>(false)
+  const [_fnr, setFnr] = useState<string>('')
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
   const {
-    sed,
     alertStatus,
     alertMessage,
     alertType,
-    arbeidsforhold,
+
+    familierelasjonKodeverk,
+
+    // gettingSaksnummer,
     gettingPerson,
+
+    arbeidsforholdList,
     inntekter,
     person,
     personRelatert,
     seds,
     spørreSed,
     svarSed,
-    familierelasjonKodeverk,
+    svarPasedData,
     valgteArbeidsforhold,
-    valgteFamilieRelasjoner,
-    svarPasedData
+    valgteFamilieRelasjoner
   }: any = useSelector<State, any>(mapState)
   const data: SvarpasedState = useSelector<State, SvarpasedState>(mapStateTwo)
 
@@ -104,25 +109,30 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
 
   const validate = (): Validation => {
     const validation: Validation = {
-      saksnummer: _saksnummer ? null : 'No saksnummer',
-      sed: !sed ? t('ui:validation-noSedtype') : null
+      saksnummer: !_saksnummer ? {
+        feilmelding: t('ui:validation-noSaksnummer'),
+        skjemaelementId: 'svarpased__saksnummer-input'
+      } as FeiloppsummeringFeil : undefined,
+      svarSed: !svarSed ? {
+        feilmelding: t('ui:validation-noSedtype'),
+        skjemaelementId: 'svarpased__svarsed-select'
+      } as FeiloppsummeringFeil : undefined
     }
     setValidation(validation)
     return validation
   }
 
-  const resetAllValidation = () => {
-    setValidation({})
-  }
-
-  const resetValidation = (key: Array<string> | string): void => {
-    const newValidation = _.cloneDeep(validation)
+  const resetValidation = (key?: Array<string> | string): void => {
+    const newValidation = _.cloneDeep(_validation)
+    if (!key) {
+      setValidation({})
+    }
     if (_.isString(key)) {
-      newValidation[key] = null
+      newValidation[key] = undefined
     }
     if (_.isArray(key)) {
       key.forEach((k) => {
-        newValidation[k] = null
+        newValidation[k] = undefined
       })
     }
     setValidation(newValidation)
@@ -134,7 +144,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
 
   const sendData = (): void => {
     if (isValid(validate())) {
-      dispatch(svarpasedActions.sendSvarPaSedData(_saksnummer, sed.documentId, sed.documentType, data))
+      dispatch(svarpasedActions.sendSvarPaSedData(_saksnummer, svarSed.documentId, svarSed.documentType, data))
     }
   }
 
@@ -162,13 +172,9 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
     )
   }
 
-  const showArbeidsforhold = (): boolean => sed.documentType === 'U002' || sed.documentType === 'U007'
+  const showArbeidsforhold = (): boolean => svarSed.documentType === 'U002' || svarSed.documentType === 'U007'
 
-  const showInntekt = (): boolean => sed.documentType === 'U004'
-
-  const deleteRelation = (relation: FamilieRelasjon): void => {
-    dispatch(svarpasedActions.removeFamilierelasjoner(relation))
-  }
+  const showInntekt = (): boolean => svarSed.documentType === 'U004'
 
   const onSelectedInntekt = (items: Array<Item>) => {
     const inntekter: Inntekter = items.map(
@@ -186,7 +192,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
   }
 
   useEffect(() => {
-    if (!mounted) {
+    if (!_mounted) {
       const params: URLSearchParams = new URLSearchParams(location.search)
       const rinasaksnummerParam = params.get('rinasaksnummer')
       const fnrParam = params.get('fnr')
@@ -201,7 +207,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
       }
       setMounted(true)
     }
-  }, [dispatch, mounted, location.search])
+  }, [dispatch, _mounted, location.search])
 
   return (
     <TopContainer>
@@ -210,10 +216,12 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
         <Content>
           <SaksnummerDiv>
             <SaksnummerInput
-              label='Saksnummer'
               bredde='M'
+              id='svarpased__saksnummer-input'
+              data-test-id='svarpased__saksnummer-input'
+              label='Saksnummer'
               value={_saksnummer}
-              feil={validation.saksnummer}
+              feil={_validation.saksnummer ? _validation.saksnummer.feilmelding : undefined}
               onChange={(e: any) => {
                 setSaksnummer(e.target.value)
                 resetValidation('saksnummer')
@@ -225,13 +233,19 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
           {seds && (
             <>
               <SedSelect
+                data-test-id='svarpased__sporresed-select'
+                id='svarpased__sporresed-select'
                 label={t('ui:label-chooseSpørreSed')}
                 onChange={onSpørreSedChange}
-                feil={validation.spørreSd}
+                feil={_validation.spørreSed ? _validation.spørreSed.feilmelding : undefined}
               >
                 <option key=''>-</option>
                 {seds?.map((sed: Sed) => (
-                  <option key={sed.documentId} value={sed.documentType} selected={spørreSed ? spørreSed.documentId === sed.documentId : false}>
+                  <option
+                    key={sed.documentId}
+                    value={sed.documentType}
+                    selected={spørreSed ? spørreSed.documentId === sed.documentId : false}
+                  >
                     {sed.documentType}
                   </option>
                 ))}
@@ -243,13 +257,19 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
           {seds && (
             <>
               <SedSelect
+                data-test-id='svarpased__svarsed-select'
+                id='svarpased__svarsed-select'
                 label={t('ui:label-chooseSvarSed')}
                 onChange={onSvarSedChange}
-                feil={validation.svarSed}
+                feil={_validation.svarSed ? _validation.svarSed.feilmelding : undefined}
               >
                 <option key=''>-</option>
                 {seds?.map((sed: Sed) => (
-                  <option key={sed.documentId} value={sed.documentType} selected={svarSed ? svarSed.documentId === sed.documentId : false}>
+                  <option
+                    key={sed.documentId}
+                    value={sed.documentType}
+                    selected={svarSed ? svarSed.documentId === sed.documentId : false}
+                  >
                     {sed.documentType}
                   </option>
                 ))}
@@ -261,22 +281,23 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
             alertStatus={alertStatus}
             alertMessage={alertMessage}
             alertType={alertType}
-            initialFnr={fnr}
+            alertTypesWatched={[types.SVARPASED_PERSON_GET_FAILURE]}
+            initialFnr={_fnr}
             person={person}
             gettingPerson={gettingPerson}
             className='slideAnimate'
-            validation={validation}
-            resetAllValidation={resetAllValidation}
+            validation={_validation}
+            resetAllValidation={() => resetValidation()}
             onFnrChange={() => {
               setIsFnrValid(false)
               dispatch(appActions.cleanData())
             }}
             onPersonFound={() => setIsFnrValid(true)}
-            onSearchPerformed={(_fnr) => {
-              dispatch(svarpasedActions.getPerson(_fnr))
+            onSearchPerformed={(fnr) => {
+              dispatch(svarpasedActions.getPerson(fnr))
             }}
             onPersonRemoved={() => {
-              dispatch(sakActions.resetPerson())
+              dispatch(svarpasedActions.resetPerson())
             }}
             onAlertClose={() => dispatch(clientClear())}
           />
@@ -284,24 +305,32 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
           <VerticalSeparatorDiv />
           {!_.isNil(person) && (
             <>
-              {sed?.documentType.startsWith('F') && (
+              {svarSed?.documentType.startsWith('F') && (
                 <>
                   <Ekspanderbartpanel tittel={t('ui:label-familyRelationships')}>
                     <Family
                       alertStatus={alertStatus}
                       alertMessage={alertMessage}
                       alertType={alertType}
+                      abroadPersonFormAlertTypesWatched={[types.SVARPASED_ABROADPERSON_ADD_FAILURE]}
+                      TPSPersonFormAlertTypesWatched={[
+                        types.SVARPASED_PERSON_RELATERT_GET_FAILURE,
+                        types.SVARPASED_TPSPERSON_ADD_FAILURE
+                      ]}
                       familierelasjonKodeverk={familierelasjonKodeverk}
                       personRelatert={personRelatert}
                       person={person}
                       valgteFamilieRelasjoner={valgteFamilieRelasjoner}
-                      onClickAddRelasjons={(value: any) => addTpsRelation(value)}
-                      onClickRemoveRelasjons={(value: any) => deleteRelation(value)}
-                      onResetPersonRelatert={() =>
-                        dispatch(svarpasedActions.resetPersonRelatert())}
-                      onAddFailure={() =>
-                        dispatch({ type: types.SVARPASED_TPSPERSON_ADD_FAILURE })}
-                      onAddSuccess={(e: any) => {
+                      onAbroadPersonAddedFailure={() => dispatch({ type: types.SVARPASED_ABROADPERSON_ADD_FAILURE })}
+                      onAbroadPersonAddedSuccess={(_relation) => {
+                        dispatch(svarpasedActions.addFamilierelasjoner(_relation))
+                        dispatch({ type: types.SVARPASED_ABROADPERSON_ADD_SUCCESS })
+                      }}
+                      onRelationAdded={(relation: FamilieRelasjon) => addTpsRelation(relation)}
+                      onRelationRemoved={(relation: FamilieRelasjon) => dispatch(svarpasedActions.removeFamilierelasjoner(relation))}
+                      onRelationReset={() => dispatch(svarpasedActions.resetPersonRelatert())}
+                      onTPSPersonAddedFailure={() => dispatch({ type: types.SVARPASED_TPSPERSON_ADD_FAILURE })}
+                      onTPSPersonAddedSuccess={(e: any) => {
                         dispatch(svarpasedActions.addFamilierelasjoner(e))
                         dispatch({ type: types.SVARPASED_TPSPERSON_ADD_SUCCESS })
                       }}
@@ -323,7 +352,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
                         dispatch(svarpasedActions.getArbeidsforholdList(person?.fnr))
                       }}
                       valgteArbeidsforhold={valgteArbeidsforhold}
-                      arbeidsforhold={arbeidsforhold}
+                      arbeidsforholdList={arbeidsforholdList}
                       onArbeidsforholdClick={(item: any, checked: boolean) => dispatch(
                         checked
                           ? svarpasedActions.addArbeidsforhold(item)

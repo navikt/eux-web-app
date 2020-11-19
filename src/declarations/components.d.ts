@@ -14,3 +14,18 @@ export interface ModalContent {
 }
 
 export type AllowedLocaleString = 'en' | 'nb'
+
+export type AlertStatus = 'OK' | 'ERROR' | 'WARNING'
+
+export interface AlertError {
+  status?: AlertStatus
+  message?: JSX.Element | string
+  error?: string | undefined
+  uuid ?: string | undefined
+}
+
+export interface IncomeSearch {
+  fraDato: string
+  tilDato: string
+  tema: string
+}

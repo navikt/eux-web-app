@@ -1,33 +1,22 @@
-import * as svarpasedActions from '../../actions/svarpased'
+import * as svarpasedActions from 'actions/svarpased'
 import classNames from 'classnames'
-import { Inntekter, Validation } from '../../declarations/types'
+import { Cell, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'components/StyledComponents'
+import { IncomeSearch } from 'declarations/components'
+import { Inntekter, Validation } from 'declarations/types'
+import _ from 'lodash'
 import { Knapp } from 'nav-frontend-knapper'
-import { Input, Select } from 'nav-frontend-skjema'
+import { FeiloppsummeringFeil, Input, Select } from 'nav-frontend-skjema'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import {
-  Cell,
-  Row,
-  HorizontalSeparatorDiv,
-  VerticalSeparatorDiv
-} from '../StyledComponents'
 import styled from 'styled-components'
-import _ from 'lodash'
-import InntektsTabell from './InntektsTabell'
 import { Item } from 'tabell'
-
-interface InntektProps {
-  fnr: string;
-  inntekter: Inntekter | undefined;
-  onSelectedInntekt: (items: Array<Item>) => void;
-}
+import InntektsTabell from './InntektsTabell'
 
 const AlignCenterCell = styled(Cell)`
   display: flex;
   align-items: center;
 `
-
 const SokKnapp = styled(Knapp)`
   &.feil {
     margin-bottom: 1rem;
@@ -52,13 +41,14 @@ const AlignedSelect = styled(Select)`
     margin-bottom: 0rem !important;
   }
 `
-interface IncomeSearch {
-  fraDato: string;
-  tilDato: string;
-  tema: string;
+
+interface InntektProps {
+  fnr: string
+  inntekter: Inntekter | undefined
+  onSelectedInntekt: (items: Array<Item>) => void
 }
 
-const emptyIncomeSearch = {
+const emptyIncomeSearch: IncomeSearch = {
   fraDato: '',
   tilDato: '',
   tema: ''
@@ -118,30 +108,43 @@ const Inntekt: React.FC<InntektProps> = ({
     }
   }
 
-  const validate = (): Validation => {
-    const validation: Validation = {
-      fraDato: !inntektSøk.fraDato ? 'Velg en gyldig dato'
-        : !inntektSøk.fraDato.match(/\d{4}-\d{2}/) ? 'Datoen må være ÅÅÅÅ-MM'
-            : parseInt(inntektSøk.fraDato.split('-')[0]) < 2015 ? 'Datoen må være over 2015'
-              : parseInt(inntektSøk.fraDato.split('-')[1]) > 12 ? 'Datoen ha em ugyldig måned'
-                : null,
-      tilDato: !inntektSøk.tilDato ? 'Velg en gyldig dato'
-        : !inntektSøk.tilDato.match(/\d{4}-\d{2}/) ? 'Datoen må være ÅÅÅÅ-MM'
-            : parseInt(inntektSøk.tilDato.split('-')[0]) < 2015 ? 'Datoen må være over 2015'
-              : parseInt(inntektSøk.tilDato.split('-')[1]) > 12 ? 'Datoen ha em ugyldig måned'
-                : null,
-      tema: inntektSøk.tema ? null : 'Du må velge et tema'
-    }
-    setValidation(validation)
-    return validation
-  }
-
   const isValid = (_validation: Validation): boolean => {
     return _.find(_.values(_validation), (e) => e !== null) === undefined
   }
 
+  const performValidation = (): boolean => {
+    const fraDato: string | undefined = !inntektSøk.fraDato ? 'validation-noFraDato'
+      : !inntektSøk.fraDato.match(/\d{4}-\d{2}/) ? 'validation-fraDatoFormat'
+          : parseInt(inntektSøk.fraDato.split('-')[0]) < 2015 ? 'validation-fraDato2015'
+            : parseInt(inntektSøk.fraDato.split('-')[1]) > 12 ? 'validation-fraDatoMonth'
+              : undefined
+
+    const tilDato: string | undefined = !inntektSøk.tilDato ? 'validation-noTilDato'
+      : !inntektSøk.tilDato.match(/\d{4}-\d{2}/) ? 'validation-tilDatoFormat'
+          : parseInt(inntektSøk.tilDato.split('-')[0]) < 2015 ? 'validation-tilDato2015'
+            : parseInt(inntektSøk.tilDato.split('-')[1]) > 12 ? 'validation-tilDatoMonth'
+              : undefined
+
+    const validation: Validation = {
+      fraDato: fraDato ? {
+        feilmelding: t(fraDato),
+        skjemaelementId: 'inntekt-fradato'
+      } as FeiloppsummeringFeil : undefined,
+      tilDato: tilDato ? {
+        feilmelding: t(tilDato),
+        skjemaelementId: 'inntekt-tildato'
+      } as FeiloppsummeringFeil : undefined,
+      tema: !inntektSøk.tema ? {
+        feilmelding: t('validation-noTema'),
+        skjemaelementId: 'inntekt-tema'
+      } as FeiloppsummeringFeil : undefined
+    }
+    setValidation(validation)
+    return isValid(validation)
+  }
+
   const fetchInntekt = () => {
-    if (isValid(validate())) {
+    if (performValidation()) {
       dispatch(
         svarpasedActions.fetchInntekt({
           fnr: fnr,
@@ -158,8 +161,10 @@ const Inntekt: React.FC<InntektProps> = ({
       <AlignedRow className={classNames({ feil: !isValid(validation) })}>
         <Cell className='slideAnimate'>
           <AlignedInput
+            id='inntekt-fradato'
+            data-test-id='inntekt-fradato'
             label={t('ui:label-fraDato')}
-            feil={validation.fraDato}
+            feil={validation.fraDato ? validation.fraDato.feilmelding : undefined}
             value={inntektSøk.fraDato}
             placeholder='ÅÅÅÅ-MM'
             className={classNames({ feil: validation.fraDato })}
@@ -173,10 +178,12 @@ const Inntekt: React.FC<InntektProps> = ({
           <VerticalSeparatorDiv />
         </Cell>
         <HorizontalSeparatorDiv />
-        <Cell className='slideAnimate' style={{ animationDelay: '0.4s' }}>
+        <Cell className='slideAnimate' style={{ animationDelay: '0.25s' }}>
           <AlignedInput
+            id='inntekt-tildato'
+            data-test-id='inntekt-tildato'
             label={t('ui:label-tilDato')}
-            feil={validation.tilDato}
+            feil={validation.tilDato ? validation.tilDato.feilmelding : undefined}
             value={inntektSøk.tilDato}
             placeholder='ÅÅÅÅ-MM'
             className={classNames({ feil: validation.tilDato })}
@@ -192,8 +199,10 @@ const Inntekt: React.FC<InntektProps> = ({
         <HorizontalSeparatorDiv />
         <Cell className='slideAnimate' style={{ animationDelay: '0.5s' }}>
           <AlignedSelect
+            id='inntekt-tema'
+            data-test-id='inntekt-tema'
             label={t('ui:label-tema')}
-            feil={validation.tema}
+            feil={validation.tema ? validation.tema.feilmelding : undefined}
             value={inntektSøk.tema}
             className={classNames({ feil: validation.tema })}
             onChange={(e: any) => {
@@ -201,7 +210,9 @@ const Inntekt: React.FC<InntektProps> = ({
               resetValidation('tema')
             }}
           >
-            <option value=''>{t('ui:form-choose')}</option>
+            <option value=''>
+              {t('ui:form-choose')}
+            </option>
             <option value='BARNETRYGD' key='BARNETRYGD'>
               Barnetrygd
             </option>

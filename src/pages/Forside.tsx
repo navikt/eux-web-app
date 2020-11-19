@@ -1,5 +1,5 @@
-import { Container, Content, Margin } from '../components/StyledComponents'
-import TopContainer from '../components/TopContainer/TopContainer'
+import { Container, Content, Margin } from 'components/StyledComponents'
+import TopContainer from 'components/TopContainer/TopContainer'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'

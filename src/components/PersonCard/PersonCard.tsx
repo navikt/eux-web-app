@@ -1,11 +1,11 @@
-import kvinne from '../../assets/icons/icon-kvinne.png'
-import mann from '../../assets/icons/icon-mann.png'
-import ukjent from '../../assets/icons/icon-ukjent.png'
-import Tilsette from '../../assets/icons/Tilsette'
-import Trashcan from '../../assets/icons/Trashcan'
-import { HorizontalSeparatorDiv } from '..//StyledComponents'
-import { FamilieRelasjon, Kodeverk, Person } from '../../declarations/types'
-import { KodeverkPropType } from '../../declarations/types.pt'
+import kvinne from 'assets/icons/icon-kvinne.png'
+import mann from 'assets/icons/icon-mann.png'
+import ukjent from 'assets/icons/icon-ukjent.png'
+import Tilsette from 'assets/icons/Tilsette'
+import Trashcan from 'assets/icons/Trashcan'
+import { HorizontalSeparatorDiv } from 'components/StyledComponents'
+import { FamilieRelasjon, Kodeverk, Person } from 'declarations/types'
+import { KodeverkPropType } from 'declarations/types.pt'
 import _ from 'lodash'
 import { Knapp } from 'nav-frontend-knapper'
 import Panel from 'nav-frontend-paneler'
@@ -15,16 +15,7 @@ import PT from 'prop-types'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { formatterDatoTilNorsk } from '../../utils/dato'
-
-export interface PersonCardProps {
-  className?: string,
-  familierelasjonKodeverk?: Array<Kodeverk>;
-  onAddClick?: (p: Person | FamilieRelasjon) => void;
-  onRemoveClick?: (p: Person | FamilieRelasjon) => void;
-  person: Person | FamilieRelasjon;
-  rolleList?: Array<Kodeverk>;
-}
+import { formatterDatoTilNorsk } from 'utils/dato'
 
 const PersonCardDiv = styled.div`
   display: flex;
@@ -67,24 +58,19 @@ const ButtonLabel = styled.div`
   display: flex;
   align-self: center;
 `
-/* .knapp--disabled {
-    path {
-      stroke: @white !important;
-    }
-  }
 
-  .familierelasjoner__knapp {
+export interface PersonCardProps {
+  className?: string
+  familierelasjonKodeverk?: Array<Kodeverk>
+  onAddClick?: (p: Person | FamilieRelasjon) => void
+  onRemoveClick?: (p: Person | FamilieRelasjon) => void
+  person: Person | FamilieRelasjon
+  rolleList?: Array<Kodeverk>
+}
 
-    &:hover:not(.knapp--disabled) {
-      .familierelasjoner__knapp__ikon path {
-        stroke: @white !important;
-      }
-    }
-  } */
 const PersonCard: React.FC<PersonCardProps> = ({
   className, familierelasjonKodeverk, onAddClick, onRemoveClick, person, rolleList
 }: PersonCardProps): JSX.Element => {
-  // const [_person, setPerson] = useState<Person | FamilieRelasjon>(person)
   const [rolle, setRolle] = useState<any>(undefined)
   const { fnr, fdato, fornavn, etternavn, kjoenn } = (person as FamilieRelasjon)
   const { t } = useTranslation()
@@ -110,7 +96,9 @@ const PersonCard: React.FC<PersonCardProps> = ({
       rolleObjekt = rolleList.find((item: any) => item.kode === (person as FamilieRelasjon).rolle)
     }
     const kodeverkObjektTilTerm = (kodeverkObjekt: any) => {
-      if (!kodeverkObjekt || !kodeverkObjekt.term) return undefined
+      if (!kodeverkObjekt || !kodeverkObjekt.term) {
+        return undefined
+      }
       return Object.keys(kodeverkObjekt).includes('term') ? kodeverkObjekt.term : undefined
     }
 
@@ -153,8 +141,8 @@ const PersonCard: React.FC<PersonCardProps> = ({
             src={src}
           />
           <HorizontalSeparatorDiv />
-          <div data-testid='panelheader__tittel'>
-            <Undertittel data-testid='panelheader__tittel__hoved'>
+          <div data-test-id='panelheader__tittel'>
+            <Undertittel data-test-id='panelheader__tittel__hoved'>
               {fornavn}
               {' '}
               {etternavn}
@@ -192,7 +180,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
         )}
         {_.isFunction(onAddClick) && (
           <Knapp
-            data-testid='familierelasjoner__knapp--legg-til'
+            data-test-id='familierelasjoner__knapp--legg-til'
             disabled={rolleList !== undefined && !rolle}
             onClick={() => _onAddClick(person)}
           >

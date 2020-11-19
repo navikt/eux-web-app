@@ -3,26 +3,25 @@ import { familierelasjoner } from 'eessi-kodeverk/lib/familierelasjoner'
 import { mount, ReactWrapper } from 'enzyme'
 import React from 'react'
 import samplePerson from 'resources/tests/samplePerson'
-import { stageSelector } from 'setupTests'
-import TPSPersonForm, { TPSPersonFormProps, TPSPersonFormSelector } from './TPSPersonForm'
+import TPSPersonForm, { TPSPersonFormProps } from './TPSPersonForm'
 
 describe('components/Family/TPSPersonForm', () => {
   let wrapper: ReactWrapper
   const initialMockProps: TPSPersonFormProps = {
-    rolleList: familierelasjoner
-  }
-
-  const defaultSelector: TPSPersonFormSelector = {
     alertStatus: 'OK',
     alertMessage: 'Message',
     alertType: types.SAK_PERSON_RELATERT_GET_FAILURE,
+    alertTypesWatched: [],
+    existingFamilyRelationships: [],
+    onAlertClose: jest.fn(),
+    onRelationReset: jest.fn(),
+    onSearchFnr: jest.fn(),
+    onTPSPersonAddedFailure: jest.fn(),
+    onTPSPersonAddedSuccess: jest.fn(),
+    person: samplePerson,
     personRelatert: undefined,
-    person: samplePerson
+    rolleList: familierelasjoner
   }
-
-  beforeAll(() => {
-    stageSelector(defaultSelector, {})
-  })
 
   beforeEach(() => {
     wrapper = mount(<TPSPersonForm {...initialMockProps} />)
@@ -32,12 +31,12 @@ describe('components/Family/TPSPersonForm', () => {
     wrapper.unmount()
   })
 
-  it('Renders', () => {
+  it('Render: match snapshot', () => {
     expect(wrapper.isEmptyRender()).toBeFalsy()
     expect(wrapper).toMatchSnapshot()
   })
 
-  it('HTML structure', () => {
+  it('Render: HTML structure', () => {
     expect(wrapper.exists('.c-TPSPersonForm')).toBeTruthy()
   })
 })

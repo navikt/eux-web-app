@@ -1,48 +1,46 @@
 import { ActionWithPayload } from 'js-fetch-api'
 import _ from 'lodash'
-import * as types from '../constants/actionTypes'
-import { Arbeidsforhold, FagSaker, OpprettetSak } from '../declarations/types'
+import * as types from 'constants/actionTypes'
+import { Arbeidsforhold, FagSaker, FamilieRelasjon, Institusjon, OpprettetSak, Person } from 'declarations/types'
 
 export interface SakState {
-  arbeidsforhold: Arbeidsforhold | undefined;
-  fagsaker: FagSaker | undefined | null;
-  institusjoner: any;
-  person: any;
-  opprettetSak: OpprettetSak | undefined;
-  personRelatert: any;
-
-  fnr: any
-  unit: any
-  sedtype: any
+  arbeidsforholdList: Arbeidsforhold | undefined
+  arbeidsforhold: Arbeidsforhold
   buctype: any
-  sektor: any
-  landkode: any
-  institusjon: any
+  familierelasjoner: Array<FamilieRelasjon>
+  fagsaker: FagSaker | undefined | null
+  fnr: string | undefined
+  institusjon: Institusjon | undefined
+  institusjonList: Array<Institusjon> | undefined
+  landkode: string | undefined
+  opprettetSak: OpprettetSak | undefined
+  person: Person | undefined
+  personRelatert: FamilieRelasjon | undefined
   saksId: any
+  sektor: any
+  sedtype: any
   tema: any
-  familierelasjoner: Array<any>
-  arbeidsforholdList: Array<any> | undefined
+  unit: any
 }
 
 export const initialSakState: SakState = {
   arbeidsforholdList: undefined,
-  fagsaker: undefined,
-  institusjoner: undefined,
-  person: undefined,
-  opprettetSak: undefined,
-  personRelatert: undefined,
-
-  fnr: undefined,
-  unit: undefined,
-  sedtype: undefined,
+  arbeidsforhold: [],
   buctype: undefined,
-  sektor: undefined,
-  landkode: undefined,
-  institusjon: undefined,
-  saksId: undefined,
-  tema: undefined,
+  fagsaker: undefined,
   familierelasjoner: [],
-  arbeidsforhold: []
+  fnr: undefined,
+  institusjonList: undefined,
+  institusjon: undefined,
+  landkode: undefined,
+  opprettetSak: undefined,
+  person: undefined,
+  personRelatert: undefined,
+  saksId: undefined,
+  sedtype: undefined,
+  sektor: undefined,
+  tema: undefined,
+  unit: undefined
 }
 
 const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload) => {
@@ -80,7 +78,7 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
     case types.SAK_INSTITUSJONER_GET_SUCCESS:
       return {
         ...state,
-        institusjoner: action.payload
+        institusjonList: action.payload
       }
 
     case types.SAK_LANDKODER_GET_SUCCESS:
@@ -137,14 +135,11 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
         ...state,
         arbeidsforhold: undefined,
         fagsaker: undefined,
-        institusjoner: undefined,
+        institusjonList: undefined,
         person: undefined,
         opprettetSak: undefined,
         personRelatert: undefined
       }
-
-    case types.SAK_PERSON_RESET:
-      return initialFormState
 
     case types.SAK_PROPERTY_SET:
       return {
@@ -152,25 +147,25 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
         [(action as ActionWithPayload).payload.key]: (action as ActionWithPayload).payload.value
       }
 
-    case types.FORM_ARBEIDSFORHOLD_ADD:
+    case types.SAK_ARBEIDSFORHOLD_ADD:
       return {
         ...state,
         arbeidsforhold: state.arbeidsforhold.concat((action as ActionWithPayload).payload)
       }
 
-    case types.FORM_ARBEIDSFORHOLD_REMOVE:
+    case types.SAK_ARBEIDSFORHOLD_REMOVE:
       return {
         ...state,
         arbeidsforhold: _.filter(state.arbeidsforhold, i => i !== (action as ActionWithPayload).payload)
       }
 
-    case types.FORM_FAMILIERELASJONER_ADD:
+    case types.SAK_FAMILIERELASJONER_ADD:
       return {
         ...state,
         familierelasjoner: state.familierelasjoner.concat((action as ActionWithPayload).payload)
       }
 
-    case types.FORM_FAMILIERELASJONER_REMOVE:
+    case types.SAK_FAMILIERELASJONER_REMOVE:
       return {
         ...state,
         familierelasjoner: _.filter(state.familierelasjoner, i => i.fnr !== (action as ActionWithPayload).payload.fnr)
@@ -180,7 +175,6 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
 
       return state
   }
-
 }
 
 export default sakReducer

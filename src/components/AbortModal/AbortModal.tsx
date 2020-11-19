@@ -10,12 +10,6 @@ if (document && document.getElementById('root')) {
   Modal.setAppElement('#root')
 }
 
-export interface AbortModalProps {
-  closeModal: () => void;
-  onAbort: () => void;
-  isOpen?: boolean;
-}
-
 const Content = styled.div`
   margin: 1.5em 2em 3em 2em;
   text-align: center;
@@ -29,7 +23,15 @@ const Buttons = styled.div`
   display: flex;
 `
 
-const AbortModal: React.FC<AbortModalProps> = ({ closeModal, onAbort, isOpen = false }: AbortModalProps): JSX.Element => {
+export interface AbortModalProps {
+  closeModal: () => void
+  isOpen?: boolean
+  onAbort: () => void
+}
+
+const AbortModal: React.FC<AbortModalProps> = ({
+  closeModal, isOpen = false, onAbort
+}: AbortModalProps): JSX.Element => {
   const { t } = useTranslation()
   return (
     <Modal

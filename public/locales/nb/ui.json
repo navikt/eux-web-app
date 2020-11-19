@@ -123,5 +123,22 @@
   "validation-unverifiedSaksnummer": "Uverifisert RINA saksnummer",
   "validation-uncheckedFnr": "Uverifisert fødselsnummer",
   "validation-noFnr": "Du må velge fødselsnummer",
-  "validation-noUnit": "Du må velge enhet"
+  "validation-noFirstName": "Du må taste inn fornavn",
+  "validation-noLastName": "Du må taste inn etternavn",
+  "validation-noGender": "Kjønn er ikke valgt",
+  "validation-noFdato": "Ingen dato valgt",
+  "validation-noUnit": "Du må velge enhet",
+  "validation-noRolle": "Ingen rolle valgt",
+  "validation-noNationality": "Du har ikke valg statsborgerskap",
+  "validation-noFraDato": "Velg en gyldig dato",
+  "validation-noTilDato": "Velg en gyldig dato",
+  "validation-fraDatoFormat" : "Datoen må være ÅÅÅÅ-MM",
+  "validation-tilDatoFormat" : "Datoen må være ÅÅÅÅ-MM",
+  "validation-fraDato2015" : "Datoen må være over 2015",
+  "validation-tilDato2015" : "Datoen må være over 2015",
+  "validation-fraDatoMonth" : "Datoen ha em ugyldig måned",
+  "validation-tilDatoMonth" : "Datoen ha em ugyldig måned",
+  "validation-noTema" :"Du må velge et tema",
+  "validation-noSaksnummer" : "Ingen saksnummer"
 }
+

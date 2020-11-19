@@ -1,12 +1,11 @@
-import { clientClear } from '../actions/alert'
-import * as appActions from '../actions/app'
-import * as formActions from '../actions/form'
-import * as sakActions from '../actions/sak'
+import { clientClear } from 'actions/alert'
+import * as appActions from 'actions/app'
+import * as sakActions from 'actions/sak'
 import classNames from 'classnames'
-import AbortModal from '../components/AbortModal/AbortModal'
-import Arbeidsforhold from '../components/Arbeidsforhold/Arbeidsforhold'
-import Family from '../components/Family/Family'
-import PersonSearch from '../components/PersonSearch/PersonSearch'
+import AbortModal from 'components/AbortModal/AbortModal'
+import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
+import Family from 'components/Family/Family'
+import PersonSearch from 'components/PersonSearch/PersonSearch'
 import {
   Cell,
   Container,
@@ -15,17 +14,11 @@ import {
   Margin,
   Row,
   VerticalSeparatorDiv
-} from '../components/StyledComponents'
-import TopContainer from '../components/TopContainer/TopContainer'
-import * as types from '../constants/actionTypes'
-import { State } from '../declarations/reducers'
-import {
-  Enheter,
-  FagSaker,
-  FamilieRelasjon,
-  Person,
-  Validation
-} from '../declarations/types'
+} from 'components/StyledComponents'
+import TopContainer from 'components/TopContainer/TopContainer'
+import * as types from 'constants/actionTypes'
+import { State } from 'declarations/reducers'
+import { Enheter, FagSaker, FamilieRelasjon, Person, Validation } from 'declarations/types'
 import * as EKV from 'eessi-kodeverk'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
@@ -41,6 +34,17 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+
+const AlignCenterCell = styled(Cell)`
+  display: flex;
+  align-items: center;
+`
+const FamilyPanel = styled(Panel)`
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  background-color: white;
+  padding: 1rem;
+`
 
 export interface OpprettSakProps {
   history: any;
@@ -91,47 +95,36 @@ const mapState = (state: State): OpprettSakSelector => ({
 
   enheter: state.app.enheter,
   serverInfo: state.app.serverinfo,
+  buctyper: state.app.buctyper,
+  familierelasjonKodeverk: state.app.familierelasjoner,
+  kodemaps: state.app.kodemaps,
+  landkoder: state.app.landkoder,
+  sedtyper: state.app.sedtyper,
+  sektor: state.app.sektor,
+  tema: state.app.tema,
 
   sendingSak: state.loading.sendingSak,
   gettingPerson: state.loading.gettingPerson,
 
   arbeidsforholdList: state.sak.arbeidsforholdList,
-  buctyper: state.app.buctyper,
+  valgteArbeidsforhold: state.sak.arbeidsforhold,
+  valgtBucType: state.sak.buctype,
+  valgteFamilieRelasjoner: state.sak.familierelasjoner,
   fagsaker: state.sak.fagsaker,
-  familierelasjonKodeverk: state.app.familierelasjoner,
-  kodemaps: state.app.kodemaps,
-  institusjoner: state.sak.institusjoner,
-  landkoder: state.app.landkoder,
+  valgtFnr: state.sak.fnr,
+  valgtInstitusjon: state.sak.institusjon,
+  institusjoner: state.sak.institusjonList,
+  valgtLandkode: state.sak.landkode,
   opprettetSak: state.sak.opprettetSak,
   person: state.sak.person,
   personRelatert: state.sak.personRelatert,
-  sedtyper: state.app.sedtyper,
-  sektor: state.app.sektor,
-  tema: state.app.tema,
-
-  valgteArbeidsforhold: state.form.arbeidsforhold,
-  valgtBucType: state.form.buctype,
-  valgteFamilieRelasjoner: state.form.familierelasjoner,
-  valgtFnr: state.form.fnr,
-  valgtInstitusjon: state.form.institusjon,
-  valgtLandkode: state.form.landkode,
-  valgtSaksId: state.form.saksId,
-  valgtSedType: state.form.sedtype,
-  valgtSektor: state.form.sektor,
-  valgtTema: state.form.tema,
-  valgtUnit: state.form.unit
+  valgtSaksId: state.sak.saksId,
+  valgtSedType: state.sak.sedtype,
+  valgtSektor: state.sak.sektor,
+  valgtTema: state.sak.tema,
+  valgtUnit: state.sak.unit
 })
 
-const AlignCenterCell = styled(Cell)`
-  display: flex;
-  align-items: center;
-`
-const FamilyPanel = styled(Panel)`
-  border: 1px solid lightgray;
-  border-radius: 5px;
-  background-color: white;
-  padding: 1rem;
-`
 const OpprettSak: React.FC<OpprettSakProps> = ({
   history
 }: OpprettSakProps): JSX.Element => {
@@ -171,25 +164,13 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
   const dispatch = useDispatch()
   const { t } = useTranslation()
 
-  const [visModal, setVisModal] = useState(false)
-  const [validation, setValidation] = useState<{ [k: string]: any }>({})
-  const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
+  const [_visModal, setVisModal] = useState(false)
+  const [_validation, setValidation] = useState<{ [k: string]: any }>({})
+  const [_isFnrValid, setIsFnrValid] = useState<boolean>(false)
 
-  const temaer = !kodemaps
-    ? []
-    : !valgtSektor
-        ? []
-        : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor]]
-  const _buctyper = !kodemaps
-    ? []
-    : !valgtSektor
-        ? []
-        : buctyper[kodemaps.SEKTOR2FAGSAK[valgtSektor]]
-  let _sedtyper = !kodemaps
-    ? []
-    : !valgtSektor || !valgtBucType
-        ? []
-        : kodemaps.BUC2SEDS[valgtSektor][valgtBucType]
+  const temaer = !kodemaps ? [] : !valgtSektor ? [] : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor]]
+  const _buctyper = !kodemaps ? [] : !valgtSektor ? [] : buctyper[kodemaps.SEKTOR2FAGSAK[valgtSektor]]
+  let _sedtyper = !kodemaps ? [] : !valgtSektor || !valgtBucType ? [] : kodemaps.BUC2SEDS[valgtSektor][valgtBucType]
 
   if (!(_sedtyper && _sedtyper.length)) {
     _sedtyper = []
@@ -210,11 +191,11 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
     isSomething(valgtSedType)
   const visEnheter = valgtSektor === 'HZ' || valgtSektor === 'SI'
 
-  const validate = (): Validation => {
-    const validation: Validation = {
+  const validate = (): { [k: string]: any } => {
+    const validation: { [k: string]: any } = {
       fnr: !valgtFnr
         ? t('ui:validation-noFnr')
-        : !isFnrValid
+        : !_isFnrValid
             ? t('ui:validation-uncheckedFnr')
             : null,
       sektor: !valgtSektor ? t('ui:validation-noSektor') : null,
@@ -237,7 +218,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
   }
 
   const resetValidation = (key: Array<string> | string): void => {
-    const newValidation = _.cloneDeep(validation)
+    const newValidation = _.cloneDeep(_validation)
     if (_.isString(key)) {
       newValidation[key] = null
     }
@@ -287,14 +268,14 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
 
   const onUnitChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     resetValidation('unit')
-    dispatch(formActions.setProperty('unit', e.target.value))
+    dispatch(sakActions.setProperty('unit', e.target.value))
   }
 
   const onSektorChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     resetValidation('sektor')
     resetValidation('unit')
-    dispatch(formActions.setProperty('unit', undefined))
-    dispatch(formActions.setProperty('sektor', e.target.value))
+    dispatch(sakActions.setProperty('unit', undefined))
+    dispatch(sakActions.setProperty('sektor', e.target.value))
   }
 
   const onBuctypeChange = (
@@ -302,27 +283,27 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
   ): void => {
     resetValidation(['buctype', 'landkode'])
     const buctype = event.target.value
-    dispatch(formActions.setProperty('buctype', buctype))
-    dispatch(formActions.setProperty('landkode', undefined))
-    dispatch(formActions.setProperty('sedtype', undefined))
-    dispatch(formActions.setProperty('institution', undefined))
+    dispatch(sakActions.setProperty('buctype', buctype))
+    dispatch(sakActions.setProperty('landkode', undefined))
+    dispatch(sakActions.setProperty('sedtype', undefined))
+    dispatch(sakActions.setProperty('institution', undefined))
     dispatch(sakActions.getLandkoder(buctype))
   }
 
   const onSedtypeChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     resetValidation('sedtype')
-    dispatch(formActions.setProperty('sedtype', e.target.value))
+    dispatch(sakActions.setProperty('sedtype', e.target.value))
   }
 
   const onSedtypeSet = (e: string): void => {
     resetValidation('sedtype')
-    dispatch(formActions.setProperty('sedtype', e))
+    dispatch(sakActions.setProperty('sedtype', e))
   }
 
   const onLandkodeChange = (country: any): void => {
     resetValidation(['landkode', 'institusjon'])
     const landKode = country.value
-    dispatch(formActions.setProperty('landkode', landKode))
+    dispatch(sakActions.setProperty('landkode', landKode))
     dispatch(sakActions.getInstitusjoner(valgtBucType, landKode))
   }
 
@@ -330,14 +311,14 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
     event: React.ChangeEvent<HTMLSelectElement>
   ): void => {
     resetValidation('institusjon')
-    dispatch(formActions.setProperty('institusjon', event.target.value))
+    dispatch(sakActions.setProperty('institusjon', event.target.value))
   }
 
   const onTemaChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     resetValidation(['tema', 'saksId'])
-    dispatch(formActions.setProperty('tema', event.target.value))
+    dispatch(sakActions.setProperty('tema', event.target.value))
     dispatch(sakActions.resetFagsaker())
-    dispatch(formActions.setProperty('saksId', ''))
+    dispatch(sakActions.setProperty('saksId', ''))
   }
 
   const onViewFagsakerClick = (): void => {
@@ -346,13 +327,13 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
 
   const onSakIDChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     resetValidation('saksId')
-    dispatch(formActions.setProperty('saksId', event.target.value))
+    dispatch(sakActions.setProperty('saksId', event.target.value))
   }
 
   const addTpsRelation = (relation: FamilieRelasjon): void => {
     /* Person fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
     dispatch(
-      formActions.addFamilierelasjoner({
+      sakActions.addFamilierelasjoner({
         ...relation,
         nasjonalitet: 'NO'
       })
@@ -360,7 +341,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
   }
 
   const deleteRelation = (relation: FamilieRelasjon): void => {
-    dispatch(formActions.removeFamilierelasjoner(relation))
+    dispatch(sakActions.removeFamilierelasjoner(relation))
   }
 
   return (
@@ -374,11 +355,12 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
             alertStatus={alertStatus}
             alertMessage={alertMessage}
             alertType={alertType}
+            alertTypesWatched={[types.SAK_PERSON_GET_FAILURE]}
             initialFnr=''
             person={person}
             gettingPerson={gettingPerson}
             className='slideAnimate'
-            validation={validation}
+            validation={_validation}
             resetAllValidation={resetAllValidation}
             onFnrChange={() => {
               setIsFnrValid(false)
@@ -386,7 +368,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
             }}
             onPersonFound={() => setIsFnrValid(true)}
             onSearchPerformed={(_fnr) => {
-              dispatch(formActions.setProperty('fnr', _fnr))
+              dispatch(sakActions.setProperty('fnr', _fnr))
               dispatch(sakActions.getPerson(_fnr))
             }}
             onPersonRemoved={() => {
@@ -404,7 +386,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     disabled={!person}
                     onChange={onSektorChange}
                     value={valgtSektor}
-                    feil={validation.sektor}
+                    feil={_validation.sektor}
                   >
                     <option value=''>{t('ui:form-choose')}</option>
                     {sektor &&
@@ -427,7 +409,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                       label={t('ui:label-unit')}
                       onChange={onUnitChange}
                       value={valgtUnit}
-                      feil={validation.unit}
+                      feil={_validation.unit}
                     >
                       <option value=''>{t('ui:form-choose')}</option>
                       {sektor &&
@@ -452,7 +434,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     disabled={!isSomething(valgtSektor)}
                     onChange={onBuctypeChange}
                     value={valgtBucType}
-                    feil={validation.buctype}
+                    feil={_validation.buctype}
                   >
                     <option value=''>{t('ui:form-choose')}</option>
                     {_buctyper &&
@@ -477,7 +459,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     }
                     onChange={onSedtypeChange}
                     value={valgtSedType}
-                    feil={validation.sedtype}
+                    feil={_validation.sedtype}
                   >
                     <option value=''>{t('ui:form-choose')}</option>)
                     {_sedtyper &&
@@ -519,7 +501,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     }
                     onOptionSelected={onLandkodeChange}
                     value={valgtLandkode}
-                    error={validation.landkode}
+                    error={_validation.landkode}
                   />
                   <VerticalSeparatorDiv />
                 </Cell>
@@ -534,7 +516,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     value={valgtInstitusjon}
                     onChange={onInstitusjonChange}
                     label={t('ui:label-institusjon')}
-                    feil={validation.institusjon}
+                    feil={_validation.institusjon}
                   >
                     <option value=''>{t('ui:form-choose')}</option>)
                     {institusjoner &&
@@ -562,20 +544,28 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                         alertStatus={alertStatus}
                         alertMessage={alertMessage}
                         alertType={alertType}
+                        abroadPersonFormAlertTypesWatched={[types.SAK_ABROADPERSON_ADD_FAILURE]}
+                        TPSPersonFormAlertTypesWatched={[
+                          types.SAK_PERSON_RELATERT_GET_FAILURE,
+                          types.SAK_TPSPERSON_ADD_FAILURE
+                        ]}
                         familierelasjonKodeverk={familierelasjonKodeverk}
                         personRelatert={personRelatert}
                         person={person}
                         valgteFamilieRelasjoner={valgteFamilieRelasjoner}
-                        onClickAddRelasjons={(value: any) =>
-                          addTpsRelation(value)}
-                        onClickRemoveRelasjons={(value: any) =>
-                          deleteRelation(value)}
-                        onResetPersonRelatert={() =>
-                          dispatch(sakActions.resetPersonRelatert())}
-                        onAddFailure={() =>
-                          dispatch({ type: types.SAK_TPSPERSON_ADD_FAILURE })}
-                        onAddSuccess={(e: any) => {
-                          dispatch(formActions.addFamilierelasjoner(e))
+                        onAbroadPersonAddedFailure={() => dispatch({ type: types.SAK_ABROADPERSON_ADD_FAILURE })}
+                        onAbroadPersonAddedSuccess={(_relation) => {
+                          dispatch(sakActions.addFamilierelasjoner(_relation))
+                          dispatch({
+                            type: types.SAK_ABROADPERSON_ADD_SUCCESS
+                          })
+                        }}
+                        onRelationAdded={(value: any) => addTpsRelation(value)}
+                        onRelationRemoved={(value: any) => deleteRelation(value)}
+                        onRelationReset={() => dispatch(sakActions.resetPersonRelatert())}
+                        onTPSPersonAddedFailure={() => dispatch({ type: types.SAK_TPSPERSON_ADD_FAILURE })}
+                        onTPSPersonAddedSuccess={(e: any) => {
+                          dispatch(sakActions.addFamilierelasjoner(e))
                           dispatch({ type: types.SAK_TPSPERSON_ADD_SUCCESS })
                         }}
                         onAlertClose={() => dispatch(clientClear())}
@@ -593,7 +583,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                 <Row>
                   <Cell
                     className={classNames('slideAnimate', {
-                      feil: !!validation.tema
+                      feil: !!_validation.tema
                     })}
                   >
                     <Select
@@ -601,7 +591,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                       label={t('ui:label-tema')}
                       value={valgtTema}
                       onChange={onTemaChange}
-                      feil={validation.tema}
+                      feil={_validation.tema}
                     >
                       <option value=''>{t('ui:form-choose')}</option>)
                       {temaer &&
@@ -651,7 +641,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                       label={t('ui:label-fagsak')}
                       value={valgtSaksId}
                       onChange={onSakIDChange}
-                      feil={validation.saksId}
+                      feil={_validation.saksId}
                     >
                       <option value=''>{t('ui:form-choose')}</option>
                       {fagsaker &&
@@ -677,8 +667,8 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   arbeidsforholdList={arbeidsforholdList}
                   onArbeidsforholdClick={(item: any, checked: boolean) => dispatch(
                     checked
-                      ? formActions.addArbeidsforhold(item)
-                      : formActions.removeArbeidsforhold(item)
+                      ? sakActions.addArbeidsforhold(item)
+                      : sakActions.removeArbeidsforhold(item)
                   )}
                 />
               )}
@@ -742,7 +732,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
               )}
               <AbortModal
                 onAbort={onAbort}
-                isOpen={visModal}
+                isOpen={_visModal}
                 closeModal={closeModal}
               />
             </>

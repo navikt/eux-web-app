@@ -8,7 +8,7 @@ jest.mock('actions/ui', () => ({
   closeModal: jest.fn()
 }))
 
-describe('components/SessionMonitor', () => {
+describe('components/SessionMonitor/SessionMonitor', () => {
   let wrapper: ReactWrapper
   const initialMockProps: SessionMonitorProps = {
     expirationTime: new Date(2020, 1, 1)
