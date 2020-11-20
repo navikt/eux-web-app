@@ -21,7 +21,7 @@ describe('components/PersonSearch/PersonSearch', () => {
     onSearchPerformed: jest.fn(),
     person: samplePerson,
     resetAllValidation: jest.fn(),
-    validation: {}
+    validation: undefined
   }
 
   beforeEach(() => {

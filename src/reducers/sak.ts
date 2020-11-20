@@ -10,7 +10,7 @@ export interface SakState {
   familierelasjoner: Array<FamilieRelasjon>
   fagsaker: FagSaker | undefined | null
   fnr: string | undefined
-  institusjon: Institusjon | undefined
+  institusjon: string | undefined
   institusjonList: Array<Institusjon> | undefined
   landkode: string | undefined
   opprettetSak: OpprettetSak | undefined

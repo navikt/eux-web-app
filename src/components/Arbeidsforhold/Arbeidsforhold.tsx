@@ -30,7 +30,7 @@ const ArbeidsforholdButton = styled.div`
 export interface ArbeidsforholdProps {
   getArbeidsforholdList: () => void
   valgteArbeidsforhold: Array<Arbeidsforholdet>
-  arbeidsforholdList: Array<Arbeidsforholdet>
+  arbeidsforholdList: Array<Arbeidsforholdet> | undefined
   onArbeidsforholdClick: (a: Arbeidsforholdet, checked: boolean) => void
 }
 

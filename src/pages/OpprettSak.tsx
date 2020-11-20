@@ -17,20 +17,27 @@ import {
 } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
 import * as types from 'constants/actionTypes'
+import { AlertStatus } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import {
   Arbeidsforholdet,
+  BucTyper,
   Enhet,
   Enheter,
   FagSak,
   FagSaker,
   FamilieRelasjon,
   Institusjon,
+  Kodemaps,
   Kodeverk,
+  OpprettetSak,
   Person,
+  ServerInfo,
+  Tema,
   Validation
 } from 'declarations/types'
 import * as EKV from 'eessi-kodeverk'
+import { History } from 'history'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import AlertStripe from 'nav-frontend-alertstriper'
@@ -61,49 +68,49 @@ const FlexDiv = styled.div`
 `
 
 export interface OpprettSakProps {
-  history: any
+  history: History
 }
 
 export interface OpprettSakSelector {
-  alertStatus: any
-  alertMessage: any
-  alertType: any
+  alertStatus: AlertStatus | undefined
+  alertMessage: string | undefined
+  alertType: string | undefined
 
   enheter: Enheter | undefined
-  serverInfo: any
+  serverInfo: ServerInfo | undefined
 
   sendingSak: boolean
   gettingPerson: boolean
 
-  arbeidsforholdList: any
-  buctyper: any
+  arbeidsforholdList: Array<Arbeidsforholdet> | undefined
+  buctyper: BucTyper | undefined
   fagsaker: FagSaker | undefined | null
-  familierelasjonKodeverk: any
-  kodemaps: any
-  institusjoner: any
-  landkoder: any
-  opprettetSak: any
+  familierelasjonKodeverk: Array<Kodeverk> | undefined
+  kodemaps: Kodemaps | undefined
+  institusjoner: Array<Institusjon> | undefined
+  landkoder: Array<Kodeverk> | undefined
+  opprettetSak: OpprettetSak | undefined
   person: Person | undefined
   personRelatert: Person | undefined
-  sedtyper: any
-  sektor: any
-  tema: any
+  sedtyper: Array<Kodeverk> | undefined
+  sektor: Array<Kodeverk> | undefined
+  tema: Tema | undefined
 
-  valgteArbeidsforhold: any
-  valgtBucType: any
-  valgteFamilieRelasjoner: any
-  valgtFnr: any
-  valgtInstitusjon: any
-  valgtLandkode: any
-  valgtSaksId: any
-  valgtSedType: any
-  valgtSektor: any
-  valgtTema: any
-  valgtUnit: any
+  valgteArbeidsforhold: Array<Arbeidsforholdet>
+  valgtBucType: string | undefined
+  valgteFamilieRelasjoner: Array<FamilieRelasjon>
+  valgtFnr: string | undefined
+  valgtInstitusjon: string | undefined
+  valgtLandkode: string | undefined
+  valgtSaksId: string | undefined
+  valgtSedType: string | undefined
+  valgtSektor: string | undefined
+  valgtTema: string | undefined
+  valgtUnit: string | undefined
 }
 
 const mapState = (state: State): OpprettSakSelector => ({
-  alertStatus: state.alert.clientErrorStatus,
+  alertStatus: state.alert.clientErrorStatus as AlertStatus,
   alertMessage: state.alert.clientErrorMessage,
   alertType: state.alert.type,
 
@@ -182,9 +189,9 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
   const [_validation, setValidation] = useState<Validation>({})
   const [_isFnrValid, setIsFnrValid] = useState<boolean>(false)
 
-  const temaer: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor]]
-  const _buctyper: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : buctyper[kodemaps.SEKTOR2FAGSAK[valgtSektor]]
-  let _sedtyper: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor || !valgtBucType ? [] : kodemaps.BUC2SEDS[valgtSektor][valgtBucType]
+  const temaer: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : !tema ? [] : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor] as keyof Tema]
+  const _buctyper: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : !buctyper ? [] : buctyper[kodemaps.SEKTOR2FAGSAK[valgtSektor] as keyof BucTyper]
+  let _sedtyper: Array<Kodeverk | string> = !kodemaps ? [] : !valgtSektor ? [] : !valgtBucType ? [] : kodemaps.BUC2SEDS[valgtSektor][valgtBucType]
 
   if (!(_sedtyper && _sedtyper.length)) {
     _sedtyper = []
@@ -509,14 +516,14 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     <option value=''>
                       {t('ui:form-choose')}
                     </option>)
-                    {_sedtyper && _sedtyper.map((k: Kodeverk) => {
+                    {_sedtyper && _sedtyper.map((k: string | Kodeverk) => {
                       // if only one element, select it
-                      if (_sedtyper.length === 1 && valgtSedType !== k.kode) {
-                        onSedtypeSet(k.kode)
+                      if (_sedtyper.length === 1 && valgtSedType !== (k as Kodeverk).kode) {
+                        onSedtypeSet((k as Kodeverk).kode)
                       }
                       return (
-                        <option value={k.kode} key={k.kode}>
-                          {k.kode} - {k.term}
+                        <option value={(k as Kodeverk).kode} key={(k as Kodeverk).kode}>
+                          {(k as Kodeverk).kode} - {(k as Kodeverk).term}
                         </option>
                       )
                     })}
@@ -668,13 +675,15 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                 <Row>
                   <AlertStripe type='advarsel'>
                     {t('ui:error-fagsak-notFound')}
-                    <Lenke
-                      href={serverInfo.gosysURL}
-                      ariaLabel={t('ui:form-createNewCaseInGosys')}
-                      target='_blank'
-                    >
-                      {t('ui:form-createNewCaseInGosys')}
-                    </Lenke>
+                    {serverInfo && (
+                      <Lenke
+                        href={serverInfo?.gosysURL}
+                        ariaLabel={t('ui:form-createNewCaseInGosys')}
+                        target='_blank'
+                      >
+                        {t('ui:form-createNewCaseInGosys')}
+                      </Lenke>
+                    )}
                     <VerticalSeparatorDiv />
                   </AlertStripe>
                   <VerticalSeparatorDiv />

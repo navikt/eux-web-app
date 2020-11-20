@@ -4,7 +4,7 @@ import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { Route, Router, Switch } from 'react-router'
-import { applyMiddleware, combineReducers, createStore, Store } from 'redux'
+import { applyMiddleware, compose, combineReducers, createStore, Store } from 'redux'
 import thunk from 'redux-thunk'
 import { IS_PRODUCTION } from './constants/environment'
 import * as reducers from './reducers'
@@ -17,7 +17,8 @@ import * as Utils from './utils/utils'
 import * as Sentry from './metrics/sentry'
 import './index.css'
 
-const store: Store = createStore(combineReducers(reducers), applyMiddleware(thunk))
+const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+const store: Store = createStore(combineReducers(reducers), composeEnhancers(applyMiddleware(thunk)))
 
 if (!IS_PRODUCTION) {
   const axe = require('react-axe')

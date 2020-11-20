@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import Clipboard from './Clipboard'
 
 export interface VersjonSelector {
-  serverInfo: ServerInfo | undefined;
+  serverInfo: ServerInfo | undefined
 }
 
 const mapState = (state: State): VersjonSelector => ({

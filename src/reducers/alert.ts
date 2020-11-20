@@ -24,23 +24,14 @@ export const initialAlertState: AlertState = {
 const alertReducer = (state: AlertState = initialAlertState, action: Action | ActionWithPayload = { type: '' }) => {
   let clientErrorMessage: string | undefined, serverErrorMessage: string, clientErrorStatus: string
 
-  if (action.type === types.ALERT_CLIENT_CLEAR) {
-    return initialAlertState
-  }
-
-  if (action.type === types.SAK_PERSON_GET_REQUEST) {
-    return initialAlertState
-  }
-
-  if (action.type === types.SAK_PERSON_RELATERT_GET_REQUEST) {
-    return initialAlertState
-  }
-
-  if (action.type === types.SAK_ABROADPERSON_ADD_SUCCESS) {
-    return initialAlertState
-  }
-
-  if (action.type === types.SAK_TPSPERSON_ADD_SUCCESS) {
+  if (
+    action.type === types.ALERT_CLIENT_CLEAR ||
+    action.type === types.APP_CLEAN_DATA ||
+    action.type === types.SAK_PERSON_RELATERT_RESET ||
+    action.type === types.SAK_PERSON_GET_REQUEST ||
+    action.type === types.SAK_PERSON_RELATERT_GET_REQUEST ||
+    action.type === types.SAK_ABROADPERSON_ADD_SUCCESS ||
+    action.type === types.SAK_TPSPERSON_ADD_SUCCESS) {
     return initialAlertState
   }
 
@@ -53,10 +44,6 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
       case types.SERVER_UNAUTHORIZED_ERROR:
         serverErrorMessage = 'ui:serverAuthenticationError'
         break
-
-      case types.APP_CLEAN_DATA:
-      case types.SAK_PERSON_RELATERT_RESET:
-        return initialAlertState
 
       default:
         serverErrorMessage = (action as ActionWithPayload).payload.message || 'ui:serverInternalError'
@@ -90,6 +77,10 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
 
       case types.SAK_TPSPERSON_ADD_FAILURE:
         clientErrorMessage = 'ui:error-tpsperson-exists'
+        break
+
+      case types.SVARPASED_SENDSVARPASEDDATA_POST_FAILURE:
+        clientErrorMessage = 'ui:error-svarPaSed-failure'
         break
 
       default:

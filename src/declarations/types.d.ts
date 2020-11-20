@@ -17,6 +17,7 @@ export type Arbeidsforhold = Array<Arbeidsforholdet>
 
 export type StringMap = {[k: string]: string}
 export type ArrayStringMap = {[k: string]: Array<string>}
+export type ArrayStringMapMap = {[k: string]: ArrayStringMap}
 
 export interface Kodeverk {
   kode: string
@@ -113,7 +114,7 @@ export interface Tema {
 }
 
 export interface Kodemaps {
-  BUC2SEDS: ArrayStringMap
+  BUC2SEDS: ArrayStringMapMap
   SEKTOR2BUC: StringMap
   SEKTOR2FAGSAK: StringMap
 }

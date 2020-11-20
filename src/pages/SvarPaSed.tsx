@@ -1,20 +1,30 @@
 import { clientClear } from 'actions/alert'
 import * as appActions from 'actions/app'
 import * as svarpasedActions from 'actions/svarpased'
+import Alert from 'components/Alert/Alert'
 import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
 import Family from 'components/Family/Family'
 import Inntekt from 'components/Inntekt/Inntekt'
 import PersonSearch from 'components/PersonSearch/PersonSearch'
-import { Container, Content, Margin, VerticalSeparatorDiv } from 'components/StyledComponents'
+import {
+  Column,
+  Container,
+  Content,
+  HorizontalSeparatorDiv,
+  Margin,
+  Row,
+  VerticalSeparatorDiv
+} from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
 import * as types from 'constants/actionTypes'
+import { AlertStatus } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import { FamilieRelasjon, Inntekt as IInntekt, Inntekter, Sed, Validation } from 'declarations/types'
 import _ from 'lodash'
 import Alertstripe from 'nav-frontend-alertstriper'
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel'
 import { Knapp } from 'nav-frontend-knapper'
-import { FeiloppsummeringFeil, Input, Select } from 'nav-frontend-skjema'
+import { Feiloppsummering, FeiloppsummeringFeil, Input, Select } from 'nav-frontend-skjema'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -34,6 +44,12 @@ const SaksnummerInput = styled(Input)`
 const SedSelect = styled(Select)`
   width: 25%;
 `
+const AlertstripeDiv = styled.div`
+  margin: 0.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  width: 50%;
+`
 
 const mapState = (state: State): any => ({
   alertStatus: state.alert.clientErrorStatus,
@@ -44,6 +60,7 @@ const mapState = (state: State): any => ({
 
   gettingPerson: state.loading.gettingPerson,
   gettingSaksnummer: state.loading.gettingSaksnummer,
+  sendingSvarPaSed: state.loading.sendingSvarPaSed,
 
   arbeidsforholdList: state.svarpased.arbeidsforholdList,
   inntekter: state.svarpased.inntekter,
@@ -72,14 +89,13 @@ export interface SvarPaSedProps {
 const SvarPaSed: React.FC<SvarPaSedProps> = ({
   location
 }: SvarPaSedProps): JSX.Element => {
-  const [_saksnummer, setSaksnummer] = useState<string | undefined>(undefined)
-  const [_validation, setValidation] = useState<Validation>({})
-  const [, setIsFnrValid] = useState<boolean>(false)
-  const [_mounted, setMounted] = useState<boolean>(false)
-  const [_fnr, setFnr] = useState<string>('')
   const { t } = useTranslation()
   const dispatch = useDispatch()
-
+  const [, setIsFnrValid] = useState<boolean>(false)
+  const [_fnr, setFnr] = useState<string>('')
+  const [_mounted, setMounted] = useState<boolean>(false)
+  const [_saksnummer, setSaksnummer] = useState<string | undefined>(undefined)
+  const [_validation, setValidation] = useState<Validation>({})
   const {
     alertStatus,
     alertMessage,
@@ -87,8 +103,9 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
 
     familierelasjonKodeverk,
 
-    // gettingSaksnummer,
+    gettingSaksnummer,
     gettingPerson,
+    sendingSvarPaSed,
 
     arbeidsforholdList,
     inntekter,
@@ -161,6 +178,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
 
   const onSvarSedChange = (e: any) => {
     const selectedSed: Sed | undefined = _.find(seds, (s: Sed) => s.documentType === e.target.value)
+    resetValidation('svarSed')
     if (selectedSed) {
       dispatch(svarpasedActions.setSvarSed(selectedSed))
     }
@@ -176,9 +194,9 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
     )
   }
 
-  const showArbeidsforhold = (): boolean => svarSed.documentType === 'U002' || svarSed.documentType === 'U007'
+  const showArbeidsforhold = (): boolean => svarSed?.documentType === 'U002' || svarSed?.documentType === 'U007'
 
-  const showInntekt = (): boolean => svarSed.documentType === 'U004'
+  const showInntekt = (): boolean => svarSed?.documentType === 'U004'
 
   const onSelectedInntekt = (items: Array<Item>) => {
     const inntekter: Inntekter = items.map(
@@ -198,8 +216,8 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
   useEffect(() => {
     if (!_mounted) {
       const params: URLSearchParams = new URLSearchParams(location.search)
-      const rinasaksnummerParam = params.get('rinasaksnummer')
-      const fnrParam = params.get('fnr')
+      const rinasaksnummerParam: string | null = params.get('rinasaksnummer')
+      const fnrParam : string | null = params.get('fnr')
       if (rinasaksnummerParam) {
         setSaksnummer(rinasaksnummerParam)
         dispatch(svarpasedActions.getSeds(rinasaksnummerParam))
@@ -221,8 +239,8 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
           <SaksnummerDiv>
             <SaksnummerInput
               bredde='M'
-              id='svarpased__saksnummer-input'
               data-test-id='svarpased__saksnummer-input'
+              id='svarpased__saksnummer-input'
               label='Saksnummer'
               value={_saksnummer}
               feil={_validation.saksnummer ? _validation.saksnummer.feilmelding : undefined}
@@ -231,7 +249,12 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
                 resetValidation('saksnummer')
               }}
             />
-            <Knapp onClick={onSaksnummerClick}>Hent</Knapp>
+            <Knapp
+              spinner={gettingSaksnummer}
+              onClick={onSaksnummerClick}
+            >
+              {t('ui:form-get')}
+            </Knapp>
           </SaksnummerDiv>
           <VerticalSeparatorDiv />
           {seds && (
@@ -255,11 +278,6 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
                 ))}
               </SedSelect>
               <VerticalSeparatorDiv />
-            </>
-          )}
-
-          {seds && (
-            <>
               <SedSelect
                 data-test-id='svarpased__svarsed-select'
                 id='svarpased__svarsed-select'
@@ -286,27 +304,22 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
             alertMessage={alertMessage}
             alertType={alertType}
             alertTypesWatched={[types.SVARPASED_PERSON_GET_FAILURE]}
+            className='slideAnimate'
+            gettingPerson={gettingPerson}
             initialFnr={_fnr}
             id='svarpased__pearsonsearch'
-            person={person}
-            gettingPerson={gettingPerson}
-            className='slideAnimate'
-            validation={_validation.fnr}
-            resetAllValidation={() => resetValidation()}
             onFnrChange={() => {
               setIsFnrValid(false)
               dispatch(appActions.cleanData())
             }}
             onPersonFound={() => setIsFnrValid(true)}
-            onSearchPerformed={(fnr) => {
-              dispatch(svarpasedActions.getPerson(fnr))
-            }}
-            onPersonRemoved={() => {
-              dispatch(svarpasedActions.resetPerson())
-            }}
+            onSearchPerformed={(fnr) => dispatch(svarpasedActions.getPerson(fnr))}
+            onPersonRemoved={() => dispatch(svarpasedActions.resetPerson())}
             onAlertClose={() => dispatch(clientClear())}
+            person={person}
+            resetAllValidation={() => resetValidation()}
+            validation={_validation.fnr}
           />
-
           <VerticalSeparatorDiv />
           {!_.isNil(person) && (
             <>
@@ -353,9 +366,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
                 <>
                   <Ekspanderbartpanel tittel={t('ui:label-arbeidsforhold')}>
                     <Arbeidsforhold
-                      getArbeidsforholdList={() => {
-                        dispatch(svarpasedActions.getArbeidsforholdList(person?.fnr))
-                      }}
+                      getArbeidsforholdList={() => dispatch(svarpasedActions.getArbeidsforholdList(person?.fnr))}
                       valgteArbeidsforhold={valgteArbeidsforhold}
                       arbeidsforholdList={arbeidsforholdList}
                       onArbeidsforholdClick={(item: any, checked: boolean) => dispatch(
@@ -377,12 +388,47 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
                   />
                 </Ekspanderbartpanel>
               )}
+              <VerticalSeparatorDiv />
+              <Knapp
+                onClick={sendData}
+                disabled={sendingSvarPaSed}
+                spinner={sendingSvarPaSed}
+              >
+                {sendingSvarPaSed ? t('ui:label-sendingSvarSed') : t('ui:label-sendSvarSed')}
+              </Knapp>
+              {!isValid(_validation) && (
+                <>
+                  <VerticalSeparatorDiv data-size='2' />
+                  <Row>
+                    <Column>
+                      <Feiloppsummering
+                        data-test-id='opprettsak__feiloppsummering'
+                        tittel={t('ui:validation-feiloppsummering')}
+                        feil={Object.values(_validation).filter(v => v !== undefined) as Array<FeiloppsummeringFeil>}
+                      />
+                    </Column>
+                    <HorizontalSeparatorDiv data-size='2' />
+                    <Column />
+                  </Row>
+                </>
+              )}
+              {alertMessage && alertType && [types.SVARPASED_SENDSVARPASEDDATA_POST_FAILURE].indexOf(alertType) >= 0 && (
+                <AlertstripeDiv>
+                  <Alert
+                    type='client'
+                    fixed={false}
+                    message={t(alertMessage)}
+                    status={alertStatus as AlertStatus}
+                    onClose={() => dispatch(clientClear())}
+                  />
+                </AlertstripeDiv>
+              )}
+              {!_.isNil(svarPasedData) && (
+                <Alertstripe type='suksess'>
+                  {svarPasedData.message}
+                </Alertstripe>
+              )}
             </>
-          )}
-          <VerticalSeparatorDiv />
-          {person && <Knapp onClick={sendData}>Send Data</Knapp>}
-          {!_.isNil(svarPasedData) && (
-            <Alertstripe type='suksess'>{svarPasedData.message}</Alertstripe>
           )}
         </Content>
         <Margin />
