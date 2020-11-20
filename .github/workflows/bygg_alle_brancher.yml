@@ -68,7 +68,7 @@ jobs:
           RAW_SEMVER=`node -pe "require('./package.json').version"`
           SEMVER=`echo -e "${RAW_SEMVER}" | tr -d '[:space:]'`
           echo "semver=${SEMVER}"
-          echo "::set-env name=SEMVER::$SEMVER"
+          echo "name=SEMVER::$SEMVER" >> $GITHUB_ENV
 
           echo "## CI=true && npm run-script test:ci"
 
