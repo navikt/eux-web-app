@@ -1,8 +1,205 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports['components/PersonSearch/PersonSearch Renders 1'] = `
+exports[`components/PersonSearch/PersonSearch Render: match snapshot 1`] = `
+.c5 {
+  opacity: 0;
+  -webkit-animation: cJoqxJ 0.5s forwards;
+  animation: cJoqxJ 0.5s forwards;
+  position: relative;
+}
+
+.c5 .alertstripe__tekst {
+  -webkit-flex: auto !important;
+  -ms-flex: auto !important;
+  flex: auto !important;
+  margin: auto 0;
+  max-width: 100vw;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.c5 .fixed {
+  position: fixed;
+  top: 0.25rem;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.c5 .closeIcon {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  cursor: pointer;
+}
+
+.c5 .type-server {
+  border-radius: 0px !important;
+  border: 0px !important;
+}
+
+.c5 .type-server .alertstripe__tekst {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  max-width: none !important;
+}
+
+.c6 {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  cursor: pointer;
+}
+
+.c10 {
+  margin-left: 1rem;
+}
+
+.c8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c7 {
+  border: 1px solid lightgray;
+  background: transparent;
+  margin-top: 1.5rem;
+  max-width: 800px;
+  min-width: 400px;
+  padding: 1rem;
+  border-radius: 5px;
+}
+
+.c7.personNotSelected {
+  border: 3px solid red;
+}
+
+.c7.personSelected {
+  border: 3px solid green;
+}
+
+.c7.neutral {
+  background: white;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  justify-self: flex-end;
+}
+
+.c13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c4 {
+  margin: 0.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  width: 50%;
+}
+
+.c0 {
+  margin-bottom: 2em;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.c2 {
+  min-width: 24.5em;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  height: 2.4em;
+  -webkit-align-self: flex-start;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
+  margin: 1.9em 0 0 1em;
+}
+
 <PersonSearch
+  alertMessage="message"
+  alertStatus="ERROR"
+  alertType="SAK/PERSON/GET/FAILURE"
+  alertTypesWatched={
+    Array [
+      "SAK/PERSON/GET/FAILURE",
+    ]
+  }
   className="mock-className"
+  gettingPerson={false}
+  initialFnr="12345678901"
+  onAlertClose={[MockFunction]}
   onFnrChange={[MockFunction]}
   onPersonFound={
     [MockFunction] {
@@ -43,379 +240,400 @@ exports['components/PersonSearch/PersonSearch Renders 1'] = `
       ],
     }
   }
-  resetAllValidation={[MockFunction]}
-  validation={Object {}}
->
-  <div
-    className="personsok mock-className"
-  >
-    <div
-      className="personsok__skjema"
-    >
-      <Input
-        bredde="fullbredde"
-        className="personsok__input"
-        id="personsok__input-id"
-        label="ui:form-searchUser"
-        onChange={[Function]}
-        value="12345678901"
-      >
-        <div
-          className="skjemaelement personsok__input"
-        >
-          <t
-            htmlFor="personsok__input-id"
-          >
-            <label
-              className="skjemaelement__label"
-              htmlFor="personsok__input-id"
-            >
-              ui:form-searchUser
-            </label>
-          </t>
-          <input
-            aria-invalid={false}
-            className="skjemaelement__input input--fullbredde"
-            id="personsok__input-id"
-            onChange={[Function]}
-            type="text"
-            value="12345678901"
-          />
-        </div>
-      </Input>
-      <Knapp
-        className="personsok__knapp"
-        disabled={false}
-        onClick={[Function]}
-      >
-        <KnappBase
-          autoDisableVedSpinner={false}
-          className="personsok__knapp"
-          disabled={false}
-          htmlType="submit"
-          inaktivKlasseVedDisabled={false}
-          kompakt={false}
-          mini={false}
-          onClick={[Function]}
-          spinner={false}
-          type="standard"
-        >
-          <button
-            className="knapp personsok__knapp knapp--standard"
-            disabled={false}
-            onClick={[Function]}
-            type="submit"
-          >
-            ui:form-search
-          </button>
-        </KnappBase>
-      </Knapp>
-    </div>
-    <Alert
-      className="mt-4 mb-4 w-50"
-      fixed={false}
-      message="message"
-      onClose={[Function]}
-      status="ERROR"
-      type="client"
-    >
-      <AlertStripe
-        className="c-alert c-alert__type-client c-alert__status-ERROR mt-4 mb-4 w-50"
-        form="default"
-        size="1.5em"
-        type="feil"
-      >
-        <div
-          className="alertstripe c-alert c-alert__type-client c-alert__status-ERROR mt-4 mb-4 w-50 alertstripe--feil"
-        >
-          <span
-            className="alertstripe__ikon"
-          >
-            <span
-              className="sr-only"
-            >
-              feil
-            </span>
-            <Ikon
-              kind="feil-sirkel-fyll"
-              size="1.5em"
-            >
-              <svg
-                focusable="false"
-                height="1.5em"
-                kind="feil-sirkel-fyll"
-                viewBox="0 0 24 24"
-                width="1.5em"
-              >
-                <g
-                  fill="none"
-                  fillRule="evenodd"
-                >
-                  <path
-                    d="M11.999 0C5.395 0 .013 5.372 0 11.976a11.923 11.923 0 0 0 3.498 8.493A11.925 11.925 0 0 0 11.977 24H12c6.603 0 11.986-5.373 12-11.978C24.013 5.406 18.64.012 11.999 0z"
-                    fill="#A13A28"
-                    fillRule="nonzero"
-                  />
-                  <path
-                    d="M12 10.651l3.372-3.372a.954.954 0 1 1 1.349 1.35L13.349 12l3.372 3.372a.954.954 0 1 1-1.35 1.349L12 13.349 8.628 16.72a.954.954 0 1 1-1.349-1.35L10.651 12 7.28 8.628A.954.954 0 1 1 8.63 7.28L12 10.651z"
-                    fill="#FFF"
-                    fillRule="nonzero"
-                  />
-                </g>
-              </svg>
-            </Ikon>
-          </span>
-          <Normaltekst
-            className="alertstripe__tekst"
-            tag="div"
-          >
-            <n
-              className="alertstripe__tekst"
-              tag="div"
-              type="normaltekst"
-            >
-              <div
-                className="typo-normal alertstripe__tekst"
-              >
-                message
-                <Icons
-                  className="closeIcon"
-                  kind="solidclose"
-                  onClick={[Function]}
-                >
-                  <FontAwesomeIcon
-                    border={false}
-                    className="closeIcon"
-                    fixedWidth={false}
-                    flip={null}
-                    icon={
-                      Object {
-                        "icon": Array [
-                          512,
-                          512,
-                          Array [],
-                          "f057",
-                          "M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z",
-                        ],
-                        "iconName": "times-circle",
-                        "prefix": "fas",
-                      }
-                    }
-                    inverse={false}
-                    kind="solidclose"
-                    listItem={false}
-                    mask={null}
-                    onClick={[Function]}
-                    pull={null}
-                    pulse={false}
-                    rotation={null}
-                    size="1x"
-                    spin={false}
-                    swapOpacity={false}
-                    symbol={false}
-                    title=""
-                    transform={null}
-                  >
-                    <svg
-                      aria-hidden="true"
-                      className="svg-inline--fa fa-times-circle fa-w-16 fa-1x closeIcon"
-                      data-icon="times-circle"
-                      data-prefix="fas"
-                      focusable="false"
-                      kind="solidclose"
-                      onClick={[Function]}
-                      role="img"
-                      style={Object {}}
-                      viewBox="0 0 512 512"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"
-                        fill="currentColor"
-                        style={Object {}}
-                      />
-                    </svg>
-                  </FontAwesomeIcon>
-                </Icons>
-              </div>
-            </n>
-          </Normaltekst>
-        </div>
-      </AlertStripe>
-    </Alert>
-    <PersonCard
-      className="neutral"
-      onRemoveClick={[Function]}
-      person={
+  onPersonRemoved={[MockFunction]}
+  onSearchPerformed={[MockFunction]}
+  person={
+    Object {
+      "etternavn": "BLYANT",
+      "fdato": "1961-02-02",
+      "fnr": "02026100715",
+      "fornavn": "STOR",
+      "kjoenn": "M",
+      "relasjoner": Array [
         Object {
           "etternavn": "BLYANT",
-          "fdato": "1961-02-02",
-          "fnr": "02026100715",
-          "fornavn": "STOR",
+          "fdato": "1961-04-08",
+          "fnr": "02026100714",
+          "fornavn": "PEN",
+          "kjoenn": "K",
+          "rolle": "EKTE",
+        },
+        Object {
+          "etternavn": "BLYANT",
+          "fdato": "1980-02-02",
+          "fnr": "02026100713",
+          "fornavn": "LITEN",
           "kjoenn": "M",
-          "relasjoner": Array [
-            Object {
-              "etternavn": "BLYANT",
-              "fdato": "1961-04-08",
-              "fnr": "02026100714",
-              "fornavn": "PEN",
-              "kjoenn": "K",
-              "rolle": "EKTE",
-            },
-            Object {
-              "etternavn": "BLYANT",
-              "fdato": "1980-02-02",
-              "fnr": "02026100713",
-              "fornavn": "LITEN",
-              "kjoenn": "M",
-              "rolle": "BARN",
-            },
-          ],
-        }
-      }
+          "rolle": "BARN",
+        },
+      ],
+    }
+  }
+  resetAllValidation={[MockFunction]}
+>
+  <styled.div>
+    <div
+      className="c0"
     >
-      <div
-        className="neutral c-personCard"
-      >
-        <Panel
-          border={true}
-          className="mt-4"
-          style={
-            Object {
-              "background": "transparent",
-            }
-          }
+      <styled.div>
+        <div
+          className="c1"
         >
-          <div
-            className="panel mt-4 panel--border"
-            style={
-              Object {
-                "background": "transparent",
-              }
-            }
+          <Styled(Input)
+            label="ui:form-searchUser"
+            onChange={[Function]}
+            value="12345678901"
           >
-            <div
-              className="personcard"
+            <Input
+              bredde="fullbredde"
+              className="c2"
+              label="ui:form-searchUser"
+              onChange={[Function]}
+              value="12345678901"
             >
               <div
-                className="personcard__desc"
+                className="skjemaelement c2"
               >
-                <Icons
-                  className="mr-3"
-                  kind="nav-man-icon"
-                  size={40}
+                <Label
+                  htmlFor="182161559-2855-8941-14103-9113304175516"
                 >
-                  <img
-                    alt="man-icon"
-                    className="mr-3"
-                    height={40}
-                    kind="nav-man-icon"
-                    size={40}
-                    src="data:image/png;base64,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"
-                    width={40}
-                  />
-                </Icons>
-                <div
-                  className="panelheader__tittel"
-                >
-                  <Undertittel
-                    className="panelheader__tittel__hoved"
+                  <label
+                    className="skjemaelement__label"
+                    htmlFor="182161559-2855-8941-14103-9113304175516"
                   >
-                    <n
-                      className="panelheader__tittel__hoved"
-                      type="undertittel"
-                    >
-                      <h2
-                        className="typo-undertittel panelheader__tittel__hoved"
-                      >
-                        STOR
-                         
-                        BLYANT
-                      </h2>
-                    </n>
-                  </Undertittel>
-                  <div
-                    className="panelheader__undertittel"
-                  >
-                    <div>
-                      ui:form-fnr : 02026100715
-                    </div>
-                    <div>
-                      ui:form-birthdate: 02.02.1961
-                    </div>
-                  </div>
-                </div>
+                    ui:form-searchUser
+                  </label>
+                </Label>
+                <input
+                  aria-invalid={false}
+                  className="skjemaelement__input input--fullbredde"
+                  id="182161559-2855-8941-14103-9113304175516"
+                  onChange={[Function]}
+                  type="text"
+                  value="12345678901"
+                />
               </div>
-              <Knapp
-                className="familierelasjoner__knapp familierelasjoner__knapp--slett"
+            </Input>
+          </Styled(Input)>
+          <Styled(Knapp)
+            disabled={false}
+            onClick={[Function]}
+          >
+            <Knapp
+              className="c3"
+              disabled={false}
+              onClick={[Function]}
+            >
+              <KnappBase
+                autoDisableVedSpinner={false}
+                className="c3"
+                disabled={false}
+                htmlType="submit"
+                inaktivKlasseVedDisabled={false}
+                kompakt={false}
+                mini={false}
                 onClick={[Function]}
+                spinner={false}
+                type="standard"
               >
-                <KnappBase
-                  autoDisableVedSpinner={false}
-                  className="familierelasjoner__knapp familierelasjoner__knapp--slett"
+                <button
+                  className="knapp c3 knapp--standard"
                   disabled={false}
-                  htmlType="submit"
-                  inaktivKlasseVedDisabled={false}
-                  kompakt={false}
-                  mini={false}
                   onClick={[Function]}
-                  spinner={false}
-                  type="standard"
+                  type="submit"
                 >
-                  <button
-                    className="knapp familierelasjoner__knapp familierelasjoner__knapp--slett knapp--standard"
-                    disabled={false}
-                    onClick={[Function]}
-                    type="submit"
+                  ui:form-search
+                </button>
+              </KnappBase>
+            </Knapp>
+          </Styled(Knapp)>
+        </div>
+      </styled.div>
+      <styled.div>
+        <div
+          className="c4"
+        >
+          <Alert
+            fixed={false}
+            message="message"
+            onClose={[MockFunction]}
+            status="ERROR"
+            type="client"
+          >
+            <Styled(AlertStripe)
+              className="type-client status-ERROR"
+              role="alert"
+              type="feil"
+            >
+              <AlertStripe
+                className="c5 type-client status-ERROR"
+                form="default"
+                role="alert"
+                size="1.5em"
+                type="feil"
+              >
+                <div
+                  className="alertstripe c5 type-client status-ERROR alertstripe--feil"
+                  role="alert"
+                >
+                  <span
+                    className="alertstripe__ikon"
                   >
-                    <Icons
-                      className="familierelasjoner__knapp__ikon mr-3"
-                      color="#0067C5"
-                      kind="trashcan"
-                      size="20"
+                    <span
+                      className="sr-only"
                     >
-                      <Pe
-                        className="familierelasjoner__knapp__ikon mr-3"
-                        color="#0067C5"
-                        height={20}
-                        kind="trashcan"
-                        size="20"
-                        width={20}
+                      feil
+                    </span>
+                    <Icon
+                      kind="feil-sirkel-fyll"
+                      size="1.5em"
+                    >
+                      <svg
+                        focusable="false"
+                        height="1.5em"
+                        kind="feil-sirkel-fyll"
+                        viewBox="0 0 24 24"
+                        width="1.5em"
                       >
-                        <svg
-                          className="familierelasjoner__knapp__ikon mr-3"
-                          color="#0067C5"
-                          focusable="false"
-                          height={20}
-                          kind="trashcan"
-                          size="20"
-                          viewBox="0 0 24 24"
-                          width={20}
+                        <g
+                          fill="none"
+                          fillRule="evenodd"
                         >
                           <path
-                            d="M3.516 3.5h16v20h-16zm4-3h8v3h-8zm-6.5 3h22M7.516 7v12m4-12v12m4-12v12"
-                            fill="none"
-                            stroke="#0067C5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeMiterlimit="10"
+                            d="M11.999 0C5.395 0 .013 5.372 0 11.976a11.923 11.923 0 0 0 3.498 8.493A11.925 11.925 0 0 0 11.977 24H12c6.603 0 11.986-5.373 12-11.978C24.013 5.406 18.64.012 11.999 0z"
+                            fill="#A13A28"
+                            fillRule="nonzero"
                           />
-                        </svg>
-                      </Pe>
-                    </Icons>
-                    <div
-                      className="familierelasjoner__knapp__label"
+                          <path
+                            d="M12 10.651l3.372-3.372a.954.954 0 1 1 1.349 1.35L13.349 12l3.372 3.372a.954.954 0 1 1-1.35 1.349L12 13.349 8.628 16.72a.954.954 0 1 1-1.349-1.35L10.651 12 7.28 8.628A.954.954 0 1 1 8.63 7.28L12 10.651z"
+                            fill="#FFF"
+                            fillRule="nonzero"
+                          />
+                        </g>
+                      </svg>
+                    </Icon>
+                  </span>
+                  <Normaltekst
+                    className="alertstripe__tekst"
+                    tag="div"
+                  >
+                    <TypografiBase
+                      className="alertstripe__tekst"
+                      tag="div"
+                      type="normaltekst"
                     >
-                      ui:form-remove
+                      <div
+                        className="typo-normal alertstripe__tekst"
+                      >
+                        message
+                        <Styled(_default)
+                          data-test-id="c-alert__close-icon"
+                          onClick={[Function]}
+                        >
+                          <_default
+                            className="c6"
+                            data-test-id="c-alert__close-icon"
+                            onClick={[Function]}
+                          >
+                            <svg
+                              className="c6"
+                              contentScriptType="text/ecmascript"
+                              contentStyleType="text/css"
+                              data-test-id="c-alert__close-icon"
+                              enableBackground="new 0 0 24 24"
+                              height={24}
+                              id="Filled_Version"
+                              onClick={[Function]}
+                              preserveAspectRatio="xMidYMid meet"
+                              version="1.1"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              x="0px"
+                              xmlns="http://www.w3.org/2000/svg"
+                              y="0px"
+                              zoomAndPan="magnify"
+                            >
+                              <path
+                                d="M11.499,0C5.17,0,0.012,5.148,0,11.477c-0.006,3.072,1.184,5.962,3.352,8.139c2.168,2.176,5.054,3.378,8.126,3.384H11.5  c6.328,0,11.487-5.149,11.5-11.479C23.012,5.181,17.863,0.012,11.499,0z M11.5,22.5L11.5,22.5L11.5,22.5L11.5,22.5z M16.088,15.398  c0.194,0.195,0.193,0.512-0.002,0.707c-0.098,0.098-0.225,0.146-0.353,0.146c-0.127,0-0.256-0.049-0.354-0.146l-3.882-3.898  l-3.896,3.882c-0.098,0.098-0.226,0.146-0.354,0.146c-0.128,0-0.255-0.049-0.353-0.146c-0.195-0.196-0.195-0.513,0.001-0.707  l3.897-3.882L6.91,7.602C6.715,7.406,6.716,7.09,6.912,6.896C7.107,6.699,7.424,6.7,7.619,6.897l3.881,3.897l3.896-3.881  c0.195-0.195,0.513-0.195,0.707,0.001c0.195,0.195,0.195,0.512-0.001,0.707l-3.896,3.882L16.088,15.398z"
+                                fill="#3e3832"
+                              />
+                            </svg>
+                          </_default>
+                        </Styled(_default)>
+                      </div>
+                    </TypografiBase>
+                  </Normaltekst>
+                </div>
+              </AlertStripe>
+            </Styled(AlertStripe)>
+          </Alert>
+        </div>
+      </styled.div>
+      <PersonCard
+        className="neutral"
+        onRemoveClick={[Function]}
+        person={
+          Object {
+            "etternavn": "BLYANT",
+            "fdato": "1961-02-02",
+            "fnr": "02026100715",
+            "fornavn": "STOR",
+            "kjoenn": "M",
+            "relasjoner": Array [
+              Object {
+                "etternavn": "BLYANT",
+                "fdato": "1961-04-08",
+                "fnr": "02026100714",
+                "fornavn": "PEN",
+                "kjoenn": "K",
+                "rolle": "EKTE",
+              },
+              Object {
+                "etternavn": "BLYANT",
+                "fdato": "1980-02-02",
+                "fnr": "02026100713",
+                "fornavn": "LITEN",
+                "kjoenn": "M",
+                "rolle": "BARN",
+              },
+            ],
+          }
+        }
+      >
+        <Styled(Panel)
+          className="neutral"
+        >
+          <Panel
+            border={false}
+            className="c7 neutral"
+          >
+            <div
+              className="panel c7 neutral"
+            >
+              <styled.div>
+                <div
+                  className="c8"
+                >
+                  <styled.div>
+                    <div
+                      className="c9"
+                    >
+                      <img
+                        alt="nav-man-icon"
+                        height={50}
+                        src="icon-mann.png"
+                        width={50}
+                      />
+                      <styled.div>
+                        <div
+                          className="c10"
+                        />
+                      </styled.div>
+                      <div
+                        data-test-id="panelheader__tittel"
+                      >
+                        <Undertittel
+                          data-test-id="panelheader__tittel__hoved"
+                        >
+                          <TypografiBase
+                            data-test-id="panelheader__tittel__hoved"
+                            type="undertittel"
+                          >
+                            <h2
+                              className="typo-undertittel"
+                              data-test-id="panelheader__tittel__hoved"
+                            >
+                              STOR
+                               
+                              BLYANT
+                            </h2>
+                          </TypografiBase>
+                        </Undertittel>
+                        <styled.div>
+                          <div
+                            className="c11"
+                          >
+                            <div>
+                              ui:form-fnr : 02026100715
+                            </div>
+                            <div>
+                              ui:form-birthdate: 02.02.1961
+                            </div>
+                          </div>
+                        </styled.div>
+                      </div>
                     </div>
-                  </button>
-                </KnappBase>
-              </Knapp>
+                  </styled.div>
+                  <Styled(Knapp)
+                    onClick={[Function]}
+                  >
+                    <Knapp
+                      className="c12"
+                      onClick={[Function]}
+                    >
+                      <KnappBase
+                        autoDisableVedSpinner={false}
+                        className="c12"
+                        disabled={false}
+                        htmlType="submit"
+                        inaktivKlasseVedDisabled={false}
+                        kompakt={false}
+                        mini={false}
+                        onClick={[Function]}
+                        spinner={false}
+                        type="standard"
+                      >
+                        <button
+                          className="knapp c12 knapp--standard"
+                          disabled={false}
+                          onClick={[Function]}
+                          type="submit"
+                        >
+                          <_default
+                            color="#0067C5"
+                            height="20"
+                            width="20"
+                          >
+                            <svg
+                              color="#0067C5"
+                              focusable="false"
+                              height="20"
+                              viewBox="0 0 24 24"
+                              width="20"
+                            >
+                              <path
+                                d="M3.516 3.5h16v20h-16zm4-3h8v3h-8zm-6.5 3h22M7.516 7v12m4-12v12m4-12v12"
+                                fill="none"
+                                stroke="#0067C5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeMiterlimit="10"
+                              />
+                            </svg>
+                          </_default>
+                          <styled.div>
+                            <div
+                              className="c10"
+                            />
+                          </styled.div>
+                          <styled.div>
+                            <div
+                              className="c13"
+                            >
+                              ui:form-remove
+                            </div>
+                          </styled.div>
+                        </button>
+                      </KnappBase>
+                    </Knapp>
+                  </Styled(Knapp)>
+                </div>
+              </styled.div>
             </div>
-          </div>
-        </Panel>
-      </div>
-    </PersonCard>
-  </div>
+          </Panel>
+        </Styled(Panel)>
+      </PersonCard>
+    </div>
+  </styled.div>
 </PersonSearch>
-`
+`;

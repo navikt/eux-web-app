@@ -1,8 +1,71 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports['components/Alert/Alert Renders 1'] = `
+exports[`components/Alert/Alert Render: match snapshot 1`] = `
+.c0 {
+  opacity: 0;
+  -webkit-animation: cJoqxJ 0.5s forwards;
+  animation: cJoqxJ 0.5s forwards;
+  position: relative;
+}
+
+.c0 .alertstripe__tekst {
+  -webkit-flex: auto !important;
+  -ms-flex: auto !important;
+  flex: auto !important;
+  margin: auto 0;
+  max-width: 100vw;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.c0 .fixed {
+  position: fixed;
+  top: 0.25rem;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.c0 .closeIcon {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  cursor: pointer;
+}
+
+.c0 .type-server {
+  border-radius: 0px !important;
+  border: 0px !important;
+}
+
+.c0 .type-server .alertstripe__tekst {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  max-width: none !important;
+}
+
+.c1 {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  cursor: pointer;
+}
+
 <Alert
-  error={Object {}}
   message="mockErrorMessage"
   onClose={[MockFunction]}
   status="OK"
@@ -10,16 +73,19 @@ exports['components/Alert/Alert Renders 1'] = `
 >
   <Styled(AlertStripe)
     className="type-server status-OK"
+    role="alert"
     type="suksess"
   >
     <AlertStripe
-      className="sc-AxjAm haOqKw type-server status-OK"
+      className="c0 type-server status-OK"
       form="default"
+      role="alert"
       size="1.5em"
       type="suksess"
     >
       <div
-        className="alertstripe sc-AxjAm haOqKw type-server status-OK alertstripe--suksess"
+        className="alertstripe c0 type-server status-OK alertstripe--suksess"
+        role="alert"
       >
         <span
           className="alertstripe__ikon"
@@ -69,31 +135,40 @@ exports['components/Alert/Alert Renders 1'] = `
               className="typo-normal alertstripe__tekst"
             >
               mockErrorMessage
-              <_default
+              <Styled(_default)
+                data-test-id="c-alert__close-icon"
                 onClick={[Function]}
               >
-                <svg
-                  contentScriptType="text/ecmascript"
-                  contentStyleType="text/css"
-                  enableBackground="new 0 0 24 24"
-                  height={24}
-                  id="Filled_Version"
+                <_default
+                  className="c1"
+                  data-test-id="c-alert__close-icon"
                   onClick={[Function]}
-                  preserveAspectRatio="xMidYMid meet"
-                  version="1.1"
-                  viewBox="0 0 24 24"
-                  width={24}
-                  x="0px"
-                  xmlns="http://www.w3.org/2000/svg"
-                  y="0px"
-                  zoomAndPan="magnify"
                 >
-                  <path
-                    d="M11.499,0C5.17,0,0.012,5.148,0,11.477c-0.006,3.072,1.184,5.962,3.352,8.139c2.168,2.176,5.054,3.378,8.126,3.384H11.5  c6.328,0,11.487-5.149,11.5-11.479C23.012,5.181,17.863,0.012,11.499,0z M11.5,22.5L11.5,22.5L11.5,22.5L11.5,22.5z M16.088,15.398  c0.194,0.195,0.193,0.512-0.002,0.707c-0.098,0.098-0.225,0.146-0.353,0.146c-0.127,0-0.256-0.049-0.354-0.146l-3.882-3.898  l-3.896,3.882c-0.098,0.098-0.226,0.146-0.354,0.146c-0.128,0-0.255-0.049-0.353-0.146c-0.195-0.196-0.195-0.513,0.001-0.707  l3.897-3.882L6.91,7.602C6.715,7.406,6.716,7.09,6.912,6.896C7.107,6.699,7.424,6.7,7.619,6.897l3.881,3.897l3.896-3.881  c0.195-0.195,0.513-0.195,0.707,0.001c0.195,0.195,0.195,0.512-0.001,0.707l-3.896,3.882L16.088,15.398z"
-                    fill="#3e3832"
-                  />
-                </svg>
-              </_default>
+                  <svg
+                    className="c1"
+                    contentScriptType="text/ecmascript"
+                    contentStyleType="text/css"
+                    data-test-id="c-alert__close-icon"
+                    enableBackground="new 0 0 24 24"
+                    height={24}
+                    id="Filled_Version"
+                    onClick={[Function]}
+                    preserveAspectRatio="xMidYMid meet"
+                    version="1.1"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    x="0px"
+                    xmlns="http://www.w3.org/2000/svg"
+                    y="0px"
+                    zoomAndPan="magnify"
+                  >
+                    <path
+                      d="M11.499,0C5.17,0,0.012,5.148,0,11.477c-0.006,3.072,1.184,5.962,3.352,8.139c2.168,2.176,5.054,3.378,8.126,3.384H11.5  c6.328,0,11.487-5.149,11.5-11.479C23.012,5.181,17.863,0.012,11.499,0z M11.5,22.5L11.5,22.5L11.5,22.5L11.5,22.5z M16.088,15.398  c0.194,0.195,0.193,0.512-0.002,0.707c-0.098,0.098-0.225,0.146-0.353,0.146c-0.127,0-0.256-0.049-0.354-0.146l-3.882-3.898  l-3.896,3.882c-0.098,0.098-0.226,0.146-0.354,0.146c-0.128,0-0.255-0.049-0.353-0.146c-0.195-0.196-0.195-0.513,0.001-0.707  l3.897-3.882L6.91,7.602C6.715,7.406,6.716,7.09,6.912,6.896C7.107,6.699,7.424,6.7,7.619,6.897l3.881,3.897l3.896-3.881  c0.195-0.195,0.513-0.195,0.707,0.001c0.195,0.195,0.195,0.512-0.001,0.707l-3.896,3.882L16.088,15.398z"
+                      fill="#3e3832"
+                    />
+                  </svg>
+                </_default>
+              </Styled(_default)>
             </div>
           </TypografiBase>
         </Normaltekst>
@@ -101,4 +176,4 @@ exports['components/Alert/Alert Renders 1'] = `
     </AlertStripe>
   </Styled(AlertStripe)>
 </Alert>
-`
+`;

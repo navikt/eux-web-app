@@ -1,13 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports['components/AbortModal/AbortModal Renders 1'] = `
+exports[`components/AbortModal/AbortModal Render: match snapshot 1`] = `
+.c0 {
+  margin: 1.5em 2em 3em 2em;
+  text-align: center;
+}
+
+.c1 {
+  padding: 2em;
+  margin-bottom: 1em;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 <AbortModal
   closeModal={[MockFunction]}
   isOpen={true}
   onAbort={[MockFunction]}
 >
-  <Modal
-    ariaHideApp={false}
+  <ModalWrapper
     closeButton={false}
     closeTimeoutMS={0}
     contentLabel="ui:modal-abort-contentLabel"
@@ -15,8 +31,8 @@ exports['components/AbortModal/AbortModal Renders 1'] = `
     onRequestClose={[MockFunction]}
     shouldCloseOnOverlayClick={true}
   >
-    <t
-      ariaHideApp={false}
+    <Modal
+      ariaHideApp={true}
       bodyOpenClassName="ReactModal__Body--open"
       className="modal"
       closeTimeoutMS={0}
@@ -34,7 +50,24 @@ exports['components/AbortModal/AbortModal Renders 1'] = `
     >
       <Portal
         containerInfo={
-          <div
+          .c0 {
+  margin: 1.5em 2em 3em 2em;
+  text-align: center;
+}
+
+.c1 {
+  padding: 2em;
+  margin-bottom: 1em;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+<div
             class="ReactModalPortal"
           >
             <div
@@ -48,46 +81,33 @@ exports['components/AbortModal/AbortModal Renders 1'] = `
               >
                 <section>
                   <div
-                    class="modal__innhold"
+                    class="c0"
                   >
-                    <div
-                      align="center"
-                      class="container-fluid"
+                    <h2
+                      class="typo-undertittel"
                     >
-                      <h2
-                        class="typo-undertittel"
+                      ui:modal-abort-title
+                    </h2>
+                    <p
+                      class="typo-normal c1"
+                    >
+                      ui:modal-abort-description
+                    </p>
+                    <div
+                      class="c2"
+                    >
+                      <button
+                        class="knapp knapp--hoved"
+                        type="submit"
                       >
-                        ui:modal-abort-title
-                      </h2>
-                      <p
-                        class="typo-normal modal__tekst"
+                        ui:modal-abort-yes-button
+                      </button>
+                      <button
+                        class="knapp knapp--standard"
+                        type="submit"
                       >
-                        ui:modal-abort-description
-                      </p>
-                      <div
-                        class="row"
-                      >
-                        <div
-                          class="col-xs-6"
-                        >
-                          <button
-                            class="knapp modal__knapp knapp--hoved"
-                            type="submit"
-                          >
-                            ui:modal-abort-yes-button
-                          </button>
-                        </div>
-                        <div
-                          class="col-xs-6"
-                        >
-                          <button
-                            class="knapp modal__knapp knapp--standard"
-                            type="submit"
-                          >
-                            ui:modal-abort-no-continue
-                          </button>
-                        </div>
-                      </div>
+                        ui:modal-abort-no-continue
+                      </button>
                     </div>
                   </div>
                 </section>
@@ -96,8 +116,8 @@ exports['components/AbortModal/AbortModal Renders 1'] = `
           </div>
         }
       >
-        <t
-          ariaHideApp={false}
+        <ModalPortal
+          ariaHideApp={true}
           bodyOpenClassName="ReactModal__Body--open"
           className="modal"
           closeTimeoutMS={0}
@@ -163,117 +183,101 @@ exports['components/AbortModal/AbortModal Renders 1'] = `
               tabIndex="-1"
             >
               <section>
-                <div
-                  className="modal__innhold"
-                >
-                  <Container
-                    align="center"
-                    fluid={true}
+                <styled.div>
+                  <div
+                    className="c0"
                   >
-                    <div
-                      align="center"
-                      className="container-fluid"
-                    >
-                      <Undertittel>
-                        <n
-                          type="undertittel"
-                        >
-                          <h2
-                            className="typo-undertittel"
-                          >
-                            ui:modal-abort-title
-                          </h2>
-                        </n>
-                      </Undertittel>
-                      <Normaltekst
-                        className="modal__tekst"
+                    <Undertittel>
+                      <TypografiBase
+                        type="undertittel"
                       >
-                        <n
-                          className="modal__tekst"
+                        <h2
+                          className="typo-undertittel"
+                        >
+                          ui:modal-abort-title
+                        </h2>
+                      </TypografiBase>
+                    </Undertittel>
+                    <Styled(Normaltekst)>
+                      <Normaltekst
+                        className="c1"
+                      >
+                        <TypografiBase
+                          className="c1"
                           type="normaltekst"
                         >
                           <p
-                            className="typo-normal modal__tekst"
+                            className="typo-normal c1"
                           >
                             ui:modal-abort-description
                           </p>
-                        </n>
+                        </TypografiBase>
                       </Normaltekst>
-                      <Row>
-                        <div
-                          className="row"
+                    </Styled(Normaltekst)>
+                    <styled.div>
+                      <div
+                        className="c2"
+                      >
+                        <Hovedknapp
+                          onClick={[MockFunction]}
                         >
-                          <div
-                            className="col-xs-6"
+                          <KnappBase
+                            autoDisableVedSpinner={false}
+                            className={null}
+                            disabled={false}
+                            htmlType="submit"
+                            inaktivKlasseVedDisabled={false}
+                            kompakt={false}
+                            mini={false}
+                            onClick={[MockFunction]}
+                            spinner={false}
+                            type="hoved"
                           >
-                            <Hovedknapp
-                              className="modal__knapp"
+                            <button
+                              className="knapp knapp--hoved"
+                              disabled={false}
                               onClick={[MockFunction]}
+                              type="submit"
                             >
-                              <KnappBase
-                                autoDisableVedSpinner={false}
-                                className="modal__knapp"
-                                disabled={false}
-                                htmlType="submit"
-                                inaktivKlasseVedDisabled={false}
-                                kompakt={false}
-                                mini={false}
-                                onClick={[MockFunction]}
-                                spinner={false}
-                                type="hoved"
-                              >
-                                <button
-                                  className="knapp modal__knapp knapp--hoved"
-                                  disabled={false}
-                                  onClick={[MockFunction]}
-                                  type="submit"
-                                >
-                                  ui:modal-abort-yes-button
-                                </button>
-                              </KnappBase>
-                            </Hovedknapp>
-                          </div>
-                          <div
-                            className="col-xs-6"
+                              ui:modal-abort-yes-button
+                            </button>
+                          </KnappBase>
+                        </Hovedknapp>
+                        <Knapp
+                          onClick={[MockFunction]}
+                        >
+                          <KnappBase
+                            autoDisableVedSpinner={false}
+                            className={null}
+                            disabled={false}
+                            htmlType="submit"
+                            inaktivKlasseVedDisabled={false}
+                            kompakt={false}
+                            mini={false}
+                            onClick={[MockFunction]}
+                            spinner={false}
+                            type="standard"
                           >
-                            <Knapp
-                              className="modal__knapp"
+                            <button
+                              className="knapp knapp--standard"
+                              disabled={false}
                               onClick={[MockFunction]}
+                              type="submit"
                             >
-                              <KnappBase
-                                autoDisableVedSpinner={false}
-                                className="modal__knapp"
-                                disabled={false}
-                                htmlType="submit"
-                                inaktivKlasseVedDisabled={false}
-                                kompakt={false}
-                                mini={false}
-                                onClick={[MockFunction]}
-                                spinner={false}
-                                type="standard"
-                              >
-                                <button
-                                  className="knapp modal__knapp knapp--standard"
-                                  disabled={false}
-                                  onClick={[MockFunction]}
-                                  type="submit"
-                                >
-                                  ui:modal-abort-no-continue
-                                </button>
-                              </KnappBase>
-                            </Knapp>
-                          </div>
-                        </div>
-                      </Row>
-                    </div>
-                  </Container>
-                </div>
+                              ui:modal-abort-no-continue
+                            </button>
+                          </KnappBase>
+                        </Knapp>
+                      </div>
+                    </styled.div>
+                  </div>
+                </styled.div>
               </section>
             </div>
           </div>
-        </t>
+        </ModalPortal>
       </Portal>
-    </t>
-  </Modal>
+    </Modal>
+  </ModalWrapper>
 </AbortModal>
-`
+`;

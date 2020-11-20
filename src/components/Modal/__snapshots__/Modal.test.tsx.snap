@@ -1,6 +1,41 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports['components/Modal Renders 1'] = `
+exports[`components/Modal Renders 1`] = `
+.c0 {
+  width: auto !important;
+  height: auto !important;
+}
+
+.c1 {
+  position: absolute !important;
+  right: 0.5rem;
+  top: 0.5rem;
+  z-index: 999;
+}
+
+.c2 {
+  text-align: center;
+}
+
+.c3 {
+  margin: 1.5rem;
+  text-align: center;
+}
+
+.c4 {
+  text-align: center;
+}
+
+.c5 {
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+}
+
+.c6 {
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+}
+
 <Modal
   closeButton={true}
   modal={
@@ -29,7 +64,7 @@ exports['components/Modal Renders 1'] = `
     onRequestClose={[Function]}
   >
     <ModalWrapper
-      className="sc-AxjAm hawIiK"
+      className="c0"
       closeButton={false}
       closeTimeoutMS={0}
       contentLabel="contentLabel"
@@ -40,7 +75,7 @@ exports['components/Modal Renders 1'] = `
       <Modal
         ariaHideApp={true}
         bodyOpenClassName="ReactModal__Body--open"
-        className="modal sc-AxjAm hawIiK"
+        className="modal c0"
         closeTimeoutMS={0}
         contentLabel="contentLabel"
         isOpen={true}
@@ -56,7 +91,42 @@ exports['components/Modal Renders 1'] = `
       >
         <Portal
           containerInfo={
-            <div
+            .c0 {
+  width: auto !important;
+  height: auto !important;
+}
+
+.c1 {
+  position: absolute !important;
+  right: 0.5rem;
+  top: 0.5rem;
+  z-index: 999;
+}
+
+.c2 {
+  text-align: center;
+}
+
+.c3 {
+  margin: 1.5rem;
+  text-align: center;
+}
+
+.c4 {
+  text-align: center;
+}
+
+.c5 {
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+}
+
+.c6 {
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+}
+
+<div
               class="ReactModalPortal"
             >
               <div
@@ -64,41 +134,41 @@ exports['components/Modal Renders 1'] = `
               >
                 <div
                   aria-label="contentLabel"
-                  class="ReactModal__Content ReactModal__Content--after-open modal sc-AxjAm hawIiK"
+                  class="ReactModal__Content ReactModal__Content--after-open modal c0"
                   role="dialog"
                   tabindex="-1"
                 >
                   <section>
                     <div>
                       <button
-                        class="lukknapp sc-AxirZ LdPNm"
+                        class="lukknapp c1"
                       >
                         <span
                           class="text-hide"
                         />
                       </button>
                       <h2
-                        class="typo-undertittel sc-AxiKw cxroOZ"
+                        class="typo-undertittel c2"
                       >
                         mockModalTitle
                       </h2>
                       <div
-                        class="sc-AxhCb eKClpE"
+                        class="c3"
                       >
                         mockModalText
                       </div>
                       <div
-                        class="sc-AxhUy gKsWfU"
+                        class="c4"
                       >
                         <button
-                          class="knapp sc-AxgMl jjlIhM knapp--hoved"
+                          class="knapp c5 knapp--hoved"
                           id="c-modal__main-button-id"
                           type="submit"
                         >
                           modalMainButtonText
                         </button>
                         <button
-                          class="knapp sc-AxheI ecGQWq knapp--standard"
+                          class="knapp c6 knapp--standard"
                           id="c-modal__other-button-id"
                           type="submit"
                         >
@@ -115,7 +185,7 @@ exports['components/Modal Renders 1'] = `
           <ModalPortal
             ariaHideApp={true}
             bodyOpenClassName="ReactModal__Body--open"
-            className="modal sc-AxjAm hawIiK"
+            className="modal c0"
             closeTimeoutMS={0}
             contentLabel="contentLabel"
             defaultStyles={
@@ -169,7 +239,7 @@ exports['components/Modal Renders 1'] = `
             >
               <div
                 aria-label="contentLabel"
-                className="ReactModal__Content ReactModal__Content--after-open modal sc-AxjAm hawIiK"
+                className="ReactModal__Content ReactModal__Content--after-open modal c0"
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 onMouseDown={[Function]}
@@ -185,13 +255,13 @@ exports['components/Modal Renders 1'] = `
                     >
                       <Lukknapp
                         bla={false}
-                        className="sc-AxirZ LdPNm"
+                        className="c1"
                         hvit={false}
                         onClick={[Function]}
                         overstHjorne={false}
                       >
                         <button
-                          className="lukknapp sc-AxirZ LdPNm"
+                          className="lukknapp c1"
                           onClick={[Function]}
                         >
                           <span
@@ -202,14 +272,14 @@ exports['components/Modal Renders 1'] = `
                     </Styled(Lukknapp)>
                     <Styled(Undertittel)>
                       <Undertittel
-                        className="sc-AxiKw cxroOZ"
+                        className="c2"
                       >
                         <TypografiBase
-                          className="sc-AxiKw cxroOZ"
+                          className="c2"
                           type="undertittel"
                         >
                           <h2
-                            className="typo-undertittel sc-AxiKw cxroOZ"
+                            className="typo-undertittel c2"
                           >
                             mockModalTitle
                           </h2>
@@ -218,14 +288,14 @@ exports['components/Modal Renders 1'] = `
                     </Styled(Undertittel)>
                     <styled.div>
                       <div
-                        className="sc-AxhCb eKClpE"
+                        className="c3"
                       >
                         mockModalText
                       </div>
                     </styled.div>
                     <styled.div>
                       <div
-                        className="sc-AxhUy gKsWfU"
+                        className="c4"
                       >
                         <Styled(Hovedknapp)
                           disabled={false}
@@ -234,14 +304,14 @@ exports['components/Modal Renders 1'] = `
                           onClick={[Function]}
                         >
                           <Hovedknapp
-                            className="sc-AxgMl jjlIhM"
+                            className="c5"
                             disabled={false}
                             id="c-modal__main-button-id"
                             onClick={[Function]}
                           >
                             <KnappBase
                               autoDisableVedSpinner={false}
-                              className="sc-AxgMl jjlIhM"
+                              className="c5"
                               disabled={false}
                               htmlType="submit"
                               id="c-modal__main-button-id"
@@ -253,7 +323,7 @@ exports['components/Modal Renders 1'] = `
                               type="hoved"
                             >
                               <button
-                                className="knapp sc-AxgMl jjlIhM knapp--hoved"
+                                className="knapp c5 knapp--hoved"
                                 disabled={false}
                                 id="c-modal__main-button-id"
                                 onClick={[Function]}
@@ -271,7 +341,7 @@ exports['components/Modal Renders 1'] = `
                         >
                           <KnappBase
                             autoDisableVedSpinner={false}
-                            className="sc-AxheI ecGQWq"
+                            className="c6"
                             disabled={false}
                             htmlType="submit"
                             id="c-modal__other-button-id"
@@ -283,7 +353,7 @@ exports['components/Modal Renders 1'] = `
                             type="standard"
                           >
                             <button
-                              className="knapp sc-AxheI ecGQWq knapp--standard"
+                              className="knapp c6 knapp--standard"
                               disabled={false}
                               id="c-modal__other-button-id"
                               onClick={[Function]}
@@ -305,4 +375,4 @@ exports['components/Modal Renders 1'] = `
     </ModalWrapper>
   </Styled(ModalWrapper)>
 </Modal>
-`
+`;

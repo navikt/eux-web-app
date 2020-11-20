@@ -70,8 +70,6 @@ jobs:
           echo "semver=${SEMVER}"
           echo "name=SEMVER::$SEMVER" >> $GITHUB_ENV
 
-          echo "## CI=true && npm run-script test:ci"
-
           echo "npm run build"
           npm run build
 
