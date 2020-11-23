@@ -68,8 +68,7 @@ jobs:
           RAW_SEMVER=`node -pe "require('./package.json').version"`
           SEMVER=`echo -e "${RAW_SEMVER}" | tr -d '[:space:]'`
           echo "semver=${SEMVER}"
-          echo "name=SEMVER::$SEMVER" >> $GITHUB_ENV
-          echo "semver=${SEMVER}" >> $GITHUB_ENV
+          echo "semver=$SEMVER" >> $GITHUB_ENV
 
           echo "npm run build"
           npm run build
@@ -102,8 +101,8 @@ jobs:
           echo "versionZipfile=${versionZipfile}"
           mv ${zipFile} ${versionZipfile}
 
-          echo "version=`$version`" >> $GITHUB_ENV
-          echo "versionZipfile=`$versionZipfile`" >> $GITHUB_ENV
+          echo "version=$version" >> $GITHUB_ENV
+          echo "versionZipfile=$versionZipfile" >> $GITHUB_ENV
 
       # DEPLOY MAVEN ARTIFACT
       - name: "Deploy Maven artifact to NAV IKT's GitHub Package Registry"
