@@ -69,6 +69,7 @@ jobs:
           SEMVER=`echo -e "${RAW_SEMVER}" | tr -d '[:space:]'`
           echo "semver=${SEMVER}"
           echo "name=SEMVER::$SEMVER" >> $GITHUB_ENV
+          echo "semver=${SEMVER}" >> $GITHUB_ENV
 
           echo "npm run build"
           npm run build
