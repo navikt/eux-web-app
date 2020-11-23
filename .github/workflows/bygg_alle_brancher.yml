@@ -101,8 +101,8 @@ jobs:
           echo "versionZipfile=${versionZipfile}"
           mv ${zipFile} ${versionZipfile}
 
-          echo "version=$version" >> $GITHUB_ENV
-          echo "versionZipfile=$versionZipfile" >> $GITHUB_ENV
+          echo "version=`$version`" >> $GITHUB_ENV
+          echo "versionZipfile=`$versionZipfile`" >> $GITHUB_ENV
 
       # DEPLOY MAVEN ARTIFACT
       - name: "Deploy Maven artifact to NAV IKT's GitHub Package Registry"
@@ -113,6 +113,6 @@ jobs:
           echo "  <groupId>no.nav.eux</groupId>"
           echo "  <artifactId>${application}</artifactId>"
           echo "  <version>${version}</version>"
-          echo "<dependency>"
+          echo "</dependency>"
 
           mvn --settings settings.xml deploy:deploy-file -Dfile=${versionZipfile} -DartifactId=${application} -DgroupId=no.nav.eux -Dversion=${version} -Ddescription='Eux-web-app JavaScript resources.' -Durl=https://maven.pkg.github.com/navikt/eux-web-app -DrepositoryId=github
