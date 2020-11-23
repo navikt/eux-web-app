@@ -101,8 +101,8 @@ jobs:
           echo "versionZipfile=${versionZipfile}"
           mv ${zipFile} ${versionZipfile}
 
-          echo "::name=version::$version" >> $GITHUB_ENV
-          echo "::name=versionZipfile::$versionZipfile" >> $GITHUB_ENV
+          echo "version=$version" >> $GITHUB_ENV
+          echo "versionZipfile=$versionZipfile" >> $GITHUB_ENV
 
       # DEPLOY MAVEN ARTIFACT
       - name: "Deploy Maven artifact to NAV IKT's GitHub Package Registry"
