@@ -1,28 +1,28 @@
 import * as vedleggActions from 'actions/vedlegg'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { realCall as originalCall } from 'js-fetch-api'
+import { call as originalCall } from 'js-fetch-api'
 import mockVedleggPayload from 'mocks/vedlegg'
 
 jest.mock('js-fetch-api', () => ({
-  realCall: jest.fn()
+  call: jest.fn()
 }))
-const realCall: jest.Mock = originalCall as unknown as jest.Mock<typeof originalCall>
+const call: jest.Mock = originalCall as unknown as jest.Mock<typeof originalCall>
 const sprintf = require('sprintf-js').sprintf
 
 describe('actions/vedlegg', () => {
   afterEach(() => {
-    realCall.mockReset()
+    call.mockReset()
   })
 
   afterAll(() => {
-    realCall.mockRestore()
+    call.mockRestore()
   })
 
   it('getDokument()', () => {
     const mockRinasaksnummer = '12345678901'
     vedleggActions.getDokument(mockRinasaksnummer)
-    expect(realCall)
+    expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
           request: types.VEDLEGG_DOKUMENT_GET_REQUEST,
@@ -46,7 +46,7 @@ describe('actions/vedlegg', () => {
 
   it('sendVedlegg()', () => {
     vedleggActions.sendVedlegg(mockVedleggPayload)
-    expect(realCall)
+    expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
           request: types.VEDLEGG_POST_REQUEST,

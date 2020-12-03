@@ -2,8 +2,14 @@ import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { Enheter, LogMeAgainPayload, Saksbehandler, ServerInfo, UtgaarDatoPayload } from 'declarations/types'
 import EKV from 'eessi-kodeverk'
-import { ActionWithPayload, realCall, ThunkResult } from 'js-fetch-api'
+import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
+import _ from 'lodash'
 import { Action, ActionCreator } from 'redux'
+import mockEnhet from 'mocks/enhet'
+import mockSaksbehandler from 'eux-schema/mock_data/saksbehandler.json'
+import mockServerInfo from 'mocks/serverinfo'
+import mockUtgaarDato from 'mocks/utgaarDato'
+import mockReautorisering from 'mocks/reautorisering'
 
 export const cleanData: ActionCreator<Action> = (): Action => ({
   type: types.APP_CLEAN_DATA
@@ -11,8 +17,9 @@ export const cleanData: ActionCreator<Action> = (): Action => ({
 
 export const getEnheter: ActionCreator<ThunkResult<ActionWithPayload<Enheter>>> = (
 ): ThunkResult<ActionWithPayload<Enheter>> => {
-  return realCall({
+  return call({
     url: urls.API_ENHETER_URL,
+    expectedPayload: mockEnhet,
     type: {
       request: types.APP_ENHETER_GET_REQUEST,
       success: types.APP_ENHETER_GET_SUCCESS,
@@ -23,8 +30,9 @@ export const getEnheter: ActionCreator<ThunkResult<ActionWithPayload<Enheter>>> 
 
 export const getSaksbehandler: ActionCreator<ThunkResult<ActionWithPayload<Saksbehandler>>> = (
 ): ThunkResult<ActionWithPayload<Saksbehandler>> => {
-  return realCall({
+  return call({
     url: urls.API_SAKSBEHANDLER_URL,
+    expectedPayload: _.sample(mockSaksbehandler),
     type: {
       request: types.APP_SAKSBEHANDLER_GET_REQUEST,
       success: types.APP_SAKSBEHANDLER_GET_SUCCESS,
@@ -35,8 +43,9 @@ export const getSaksbehandler: ActionCreator<ThunkResult<ActionWithPayload<Saksb
 
 export const getServerinfo: ActionCreator<ThunkResult<ActionWithPayload<ServerInfo>>> = (
 ): ThunkResult<ActionWithPayload<ServerInfo>> => {
-  return realCall({
+  return call({
     url: urls.API_SERVERINFO_URL,
+    expectedPayload: mockServerInfo(),
     type: {
       request: types.APP_SERVERINFO_GET_REQUEST,
       success: types.APP_SERVERINFO_GET_SUCCESS,
@@ -47,8 +56,9 @@ export const getServerinfo: ActionCreator<ThunkResult<ActionWithPayload<ServerIn
 
 export const getUtgaarDato: ActionCreator<ThunkResult<ActionWithPayload<UtgaarDatoPayload>>> = (
 ): ThunkResult<ActionWithPayload<UtgaarDatoPayload>> => {
-  return realCall({
+  return call({
     url: urls.API_UTGAARDATO_URL,
+    expectedPayload: mockUtgaarDato,
     type: {
       request: types.APP_UTGAARDATO_GET_REQUEST,
       success: types.APP_UTGAARDATO_GET_SUCCESS,
@@ -59,8 +69,9 @@ export const getUtgaarDato: ActionCreator<ThunkResult<ActionWithPayload<UtgaarDa
 
 export const logMeAgain: ActionCreator<ThunkResult<ActionWithPayload<LogMeAgainPayload>>> = (
 ): ThunkResult<ActionWithPayload<LogMeAgainPayload>> => {
-  return realCall({
+  return call({
     url: urls.API_REAUTENTISERING_URL,
+    expectedPayload: mockReautorisering,
     type: {
       request: types.APP_LOGMEAGAIN_REQUEST,
       success: types.APP_LOGMEAGAIN_SUCCESS,

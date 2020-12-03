@@ -4,9 +4,16 @@ import {
   FagSaker,
   FamilieRelasjon,
   Institusjoner,
-  Kodeverk, Person
+  Kodeverk,
+  Person
 } from 'declarations/types'
-import { ActionWithPayload, realCall, ThunkResult } from 'js-fetch-api'
+import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
+import mockSendSak from 'mocks/sendSak'
+import mockArbeidsforholdList from 'mocks/arbeidsforholdList'
+import mockFagsakerList from 'mocks/fagsakerList'
+import mockInstitutionList from 'mocks/institutionList'
+import mockLandkoderList from 'mocks/landkoderList'
+import mockPerson from 'mocks/person'
 import moment from 'moment'
 import { Action, ActionCreator } from 'redux'
 import * as types from 'constants/actionTypes'
@@ -63,10 +70,11 @@ export const createSak: ActionCreator<ThunkResult<ActionWithPayload<any>>> = (
     }))
   }
 
-  return realCall({
+  return call({
     url: urls.API_SAK_SEND_URL,
     method: 'POST',
     payload: payload,
+    expectedPayload: mockSendSak,
     type: {
       request: types.SAK_SEND_REQUEST,
       success: types.SAK_SEND_SUCCESS,
@@ -78,8 +86,9 @@ export const createSak: ActionCreator<ThunkResult<ActionWithPayload<any>>> = (
 export const getArbeidsforholdList: ActionCreator<ThunkResult<ActionWithPayload<Arbeidsforhold>>> = (
   fnr: string
 ): ThunkResult<ActionWithPayload<Arbeidsforhold>> => {
-  return realCall({
+  return call({
     url: sprintf(urls.API_SAK_ARBEIDSFORHOLD_URL, { fnr: fnr }),
+    expectedPayload: mockArbeidsforholdList({ fnr: fnr }),
     type: {
       request: types.SAK_ARBEIDSFORHOLDLIST_GET_REQUEST,
       success: types.SAK_ARBEIDSFORHOLDLIST_GET_SUCCESS,
@@ -91,8 +100,9 @@ export const getArbeidsforholdList: ActionCreator<ThunkResult<ActionWithPayload<
 export const getFagsaker: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>> = (
   fnr: string, sektor: string, tema: string
 ): ThunkResult<ActionWithPayload<FagSaker>> => {
-  return realCall({
+  return call({
     url: sprintf(urls.API_SAK_FAGSAKER_URL, { fnr: fnr, sektor: sektor, tema: tema }),
+    expectedPayload: mockFagsakerList({ fnr: fnr, sektor: sektor, tema: tema }),
     type: {
       request: types.SAK_FAGSAKER_GET_REQUEST,
       success: types.SAK_FAGSAKER_GET_SUCCESS,
@@ -104,8 +114,9 @@ export const getFagsaker: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>
 export const getInstitusjoner: ActionCreator<ThunkResult<ActionWithPayload<Institusjoner>>> = (
   buctype: string, landkode: string
 ): ThunkResult<ActionWithPayload<Institusjoner>> => {
-  return realCall({
+  return call({
     url: sprintf(urls.API_SAK_INSTITUSJONER_URL, { buctype: buctype, landkode: landkode }),
+    expectedPayload: mockInstitutionList({ buctype: buctype, landkode: landkode }),
     type: {
       request: types.SAK_INSTITUSJONER_GET_REQUEST,
       success: types.SAK_INSTITUSJONER_GET_SUCCESS,
@@ -117,8 +128,9 @@ export const getInstitusjoner: ActionCreator<ThunkResult<ActionWithPayload<Insti
 export const getLandkoder: ActionCreator<ThunkResult<ActionWithPayload<Array<Kodeverk>>>> = (
   buctype: string
 ): ThunkResult<ActionWithPayload<Array<Kodeverk>>> => {
-  return realCall({
+  return call({
     url: sprintf(urls.API_SAK_LANDKODER_URL, { buctype: buctype }),
+    expectedPayload: mockLandkoderList({ buctype: buctype }),
     type: {
       request: types.SAK_LANDKODER_GET_REQUEST,
       success: types.SAK_LANDKODER_GET_SUCCESS,
@@ -130,8 +142,9 @@ export const getLandkoder: ActionCreator<ThunkResult<ActionWithPayload<Array<Kod
 export const getPerson: ActionCreator<ThunkResult<ActionWithPayload<Person>>> = (
   fnr: string
 ): ThunkResult<ActionWithPayload<Person>> => {
-  return realCall({
+  return call({
     url: sprintf(urls.API_SAK_PERSON_URL, { fnr: fnr }),
+    expectedPayload: mockPerson({ fnr: fnr }),
     cascadeFailureError: true,
     type: {
       request: types.SAK_PERSON_GET_REQUEST,
@@ -144,8 +157,9 @@ export const getPerson: ActionCreator<ThunkResult<ActionWithPayload<Person>>> = 
 export const getPersonRelated: ActionCreator<ThunkResult<ActionWithPayload<Person>>> = (
   fnr: string
 ): ThunkResult<ActionWithPayload<Person>> => {
-  return realCall({
+  return call({
     url: sprintf(urls.API_SAK_PERSON_URL, { fnr: fnr }),
+    expectedPayload: mockPerson({ fnr: fnr }),
     cascadeFailureError: true,
     context: {
       fnr: fnr

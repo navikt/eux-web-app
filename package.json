@@ -1,8 +1,7 @@
 {
   "name": "neessi",
-  "version": "3.4.0",
+  "version": "4.0.0",
   "private": true,
-  "proxy": "http://localhost:3002",
   "scripts": {
     "echo:env": "node ./scripts/echoenv.js",
     "patch:init": "node ./scripts/patchinit.js",
@@ -33,6 +32,7 @@
     "classnames": "^2.2.6",
     "core-js": "^3.8.1",
     "eessi-kodeverk": "1.4.2",
+    "eux-schema": "^0.4.0",
     "history": "4.10.1",
     "i18next": "^19.8.4",
     "i18next-browser-languagedetector": "^6.0.1",
@@ -208,6 +208,6 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-  "_id": "neessi@3.4.0",
+  "_id": "neessi@4.0.0",
   "disabled-homepage": "http://eesi2.no/melosys"
 }

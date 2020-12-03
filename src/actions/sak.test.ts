@@ -1,25 +1,25 @@
 import * as sakActions from 'actions/sak'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { realCall as originalCall } from 'js-fetch-api'
+import { call as originalCall } from 'js-fetch-api'
 
 import mockArbeidsforhold from 'mocks/arbeidsforhold'
 import mockFamilierelasjon from 'mocks/familierelasjon'
 import mockOpprettSak from 'mocks/opprettSak'
 
 jest.mock('js-fetch-api', () => ({
-  realCall: jest.fn()
+  call: jest.fn()
 }))
-const realCall: jest.Mock = originalCall as unknown as jest.Mock<typeof originalCall>
+const call: jest.Mock = originalCall as unknown as jest.Mock<typeof originalCall>
 const sprintf = require('sprintf-js').sprintf
 
 describe('actions/sak', () => {
   afterEach(() => {
-    realCall.mockReset()
+    call.mockReset()
   })
 
   afterAll(() => {
-    realCall.mockRestore()
+    call.mockRestore()
   })
 
   it('addArbeidsforhold()', () => {
@@ -40,7 +40,7 @@ describe('actions/sak', () => {
 
   it('createSak()', () => {
     sakActions.createSak(mockOpprettSak)
-    expect(realCall)
+    expect(call)
       .toBeCalledWith(expect.objectContaining({
         method: 'POST',
         type: {
@@ -55,7 +55,7 @@ describe('actions/sak', () => {
   it('getArbeidsforholdList()', () => {
     const mockFnr = '12345678901'
     sakActions.getArbeidsforholdList(mockFnr)
-    expect(realCall)
+    expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
           request: types.SAK_ARBEIDSFORHOLDLIST_GET_REQUEST,
@@ -71,7 +71,7 @@ describe('actions/sak', () => {
     const mockSektor = 'mockSektor'
     const mockTema = 'mockTema'
     sakActions.getFagsaker(mockFnr, mockSektor, mockTema)
-    expect(realCall)
+    expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
           request: types.SAK_FAGSAKER_GET_REQUEST,
@@ -86,7 +86,7 @@ describe('actions/sak', () => {
     const mockBuctype = 'P_BUC_MOCK'
     const mockLandkode = 'AA'
     sakActions.getInstitusjoner(mockBuctype, mockLandkode)
-    expect(realCall)
+    expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
           request: types.SAK_INSTITUSJONER_GET_REQUEST,
@@ -100,7 +100,7 @@ describe('actions/sak', () => {
   it('getLandkoder()', () => {
     const mockBuctype = 'P_BUC_MOCK'
     sakActions.getLandkoder(mockBuctype)
-    expect(realCall)
+    expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
           request: types.SAK_LANDKODER_GET_REQUEST,
@@ -114,7 +114,7 @@ describe('actions/sak', () => {
   it('getPerson()', () => {
     const mockFnr = '12345678901'
     sakActions.getPerson(mockFnr)
-    expect(realCall)
+    expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
           request: types.SAK_PERSON_GET_REQUEST,
@@ -128,7 +128,7 @@ describe('actions/sak', () => {
   it('getPersonRelated()', () => {
     const mockFnr = '12345678901'
     sakActions.getPersonRelated(mockFnr)
-    expect(realCall)
+    expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
           request: types.SAK_PERSON_RELATERT_GET_REQUEST,

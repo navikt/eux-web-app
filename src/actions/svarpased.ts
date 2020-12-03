@@ -1,15 +1,29 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { realCall, ActionWithPayload, ThunkResult } from 'js-fetch-api'
+import { Arbeidsforholdet, FamilieRelasjon, Inntekter, SedOversikt } from 'declarations/types'
+import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
+import mockArbeidsforholdList from 'mocks/arbeidsforholdList'
+import mockInntekt from 'mocks/inntekt'
+import mockPerson from 'mocks/person'
+import mockSvarpasedTyper from 'mocks/svarpasedTyper'
+import { SvarpasedState } from 'reducers/svarpased'
 import { Action, ActionCreator } from 'redux'
-import {
-  Arbeidsforholdet,
-  FamilieRelasjon,
-  Inntekter,
-  SedOversikt, SvarSed
-} from 'declarations/types'
 
 const sprintf = require('sprintf-js').sprintf
+
+export const getSeds: ActionCreator<ThunkResult<ActionWithPayload>> = (
+  saksnummer: string
+): ThunkResult<ActionWithPayload> => {
+  return call({
+    url: sprintf(urls.API_SVARPASED_TYPER_URL, { rinasaksnummer: saksnummer }),
+    expectedPayload: mockSvarpasedTyper,
+    type: {
+      request: types.SVARPASED_SEDS_GET_REQUEST,
+      success: types.SVARPASED_SEDS_GET_SUCCESS,
+      failure: types.SVARPASED_SEDS_GET_FAILURE
+    }
+  })
+}
 
 export const getSvarSedOversikt: ActionCreator<ThunkResult<ActionWithPayload>> = (
   saksnummer: string
@@ -55,8 +69,9 @@ export const setSpørreSed: ActionCreator<ActionWithPayload> = (
 export const getPerson: ActionCreator<ThunkResult<ActionWithPayload>> = (
   fnr: string
 ): ThunkResult<ActionWithPayload> => {
-  return realCall({
+  return call({
     url: sprintf(urls.API_SVARPASED_PERSON_URL, { fnr: fnr }),
+    expectedPerson: mockPerson({ fnr: fnr }),
     cascadeFailureError: true,
     type: {
       request: types.SVARPASED_PERSON_GET_REQUEST,
@@ -69,8 +84,9 @@ export const getPerson: ActionCreator<ThunkResult<ActionWithPayload>> = (
 export const getPersonRelated: ActionCreator<ThunkResult<ActionWithPayload>> = (
   fnr: string
 ): ThunkResult<ActionWithPayload> => {
-  return realCall({
+  return call({
     url: sprintf(urls.API_SVARPASED_PERSON_URL, { fnr: fnr }),
+    expectedPerson: mockPerson({ fnr: fnr }),
     cascadeFailureError: true,
     context: {
       fnr: fnr
@@ -107,14 +123,17 @@ export const resetPersonRelatert: ActionCreator<Action> = (): Action => ({
 
 export const sendSvarPaSedData: ActionCreator<ThunkResult<
   ActionWithPayload
->> = (rinaSakId: string, sedId: string, sedType: string, payload: SvarSed): ThunkResult<ActionWithPayload> => {
-  return realCall({
+>> = (rinaSakId: string, sedId: string, sedType: string, payload: SvarpasedState): ThunkResult<ActionWithPayload> => {
+  return call({
     method: 'POST',
     url: sprintf(urls.API_SVARPASED_SEND_POST_URL, {
       rinaSakId: rinaSakId,
       sedId: sedId,
       sedType: sedType
     }),
+    expectedPayload: {
+      foo: 'bar'
+    },
     type: {
       request: types.SVARPASED_SENDSVARPASEDDATA_POST_REQUEST,
       success: types.SVARPASED_SENDSVARPASEDDATA_POST_SUCCESS,
@@ -127,8 +146,9 @@ export const sendSvarPaSedData: ActionCreator<ThunkResult<
 export const getArbeidsforholdList: ActionCreator<ThunkResult<
   ActionWithPayload
 >> = (fnr: string): ThunkResult<ActionWithPayload> => {
-  return realCall({
+  return call({
     url: sprintf(urls.API_SAK_ARBEIDSFORHOLD_URL, { fnr: fnr }),
+    expectedPayload: mockArbeidsforholdList({ fnr: fnr }),
     type: {
       request: types.SVARPASED_ARBEIDSFORHOLDLIST_GET_REQUEST,
       success: types.SVARPASED_ARBEIDSFORHOLDLIST_GET_SUCCESS,
@@ -154,7 +174,7 @@ export const removeArbeidsforhold: ActionCreator<ActionWithPayload> = (
 export const fetchInntekt: ActionCreator<ThunkResult<ActionWithPayload>> = (
   data: any
 ): ThunkResult<ActionWithPayload> => {
-  return realCall({
+  return call({
     url: sprintf(urls.API_SAK_INNTEKT_URL, {
       fnr: data.fnr,
       fraDato: data.fraDato,
@@ -162,6 +182,7 @@ export const fetchInntekt: ActionCreator<ThunkResult<ActionWithPayload>> = (
       tema: data.tema
     }),
     method: 'GET',
+    expectedPayload: mockInntekt,
     type: {
       request: types.SVARPASED_INNTEKT_GET_REQUEST,
       success: types.SVARPASED_INNTEKT_GET_SUCCESS,

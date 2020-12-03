@@ -2,21 +2,21 @@ import * as appActions from 'actions/app'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import EKV from 'eessi-kodeverk'
-import { realCall as originalCall } from 'js-fetch-api'
+import { call as originalCall } from 'js-fetch-api'
 import { Action } from 'redux'
 
 jest.mock('js-fetch-api', () => ({
-  realCall: jest.fn()
+  call: jest.fn()
 }))
-const realCall: jest.Mock = originalCall as unknown as jest.Mock<typeof originalCall>
+const call: jest.Mock = originalCall as unknown as jest.Mock<typeof originalCall>
 
 describe('actions/app', () => {
   afterEach(() => {
-    realCall.mockReset()
+    call.mockReset()
   })
 
   afterAll(() => {
-    realCall.mockRestore()
+    call.mockRestore()
   })
 
   it('cleanData()', () => {
@@ -29,7 +29,7 @@ describe('actions/app', () => {
 
   it('getEnheter()', () => {
     appActions.getEnheter()
-    expect(realCall)
+    expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
           request: types.APP_ENHETER_GET_REQUEST,
@@ -42,7 +42,7 @@ describe('actions/app', () => {
 
   it('getSaksbehandler()', () => {
     appActions.getSaksbehandler()
-    expect(realCall)
+    expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
           request: types.APP_SAKSBEHANDLER_GET_REQUEST,
@@ -55,7 +55,7 @@ describe('actions/app', () => {
 
   it('getUtgaarDato()', () => {
     appActions.getUtgaarDato()
-    expect(realCall)
+    expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
           request: types.APP_UTGAARDATO_GET_REQUEST,
@@ -68,7 +68,7 @@ describe('actions/app', () => {
 
   it('logMeAgain()', () => {
     appActions.logMeAgain()
-    expect(realCall)
+    expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
           request: types.APP_LOGMEAGAIN_REQUEST,
