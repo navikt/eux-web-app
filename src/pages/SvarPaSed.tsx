@@ -19,7 +19,7 @@ import TopContainer from 'components/TopContainer/TopContainer'
 import * as types from 'constants/actionTypes'
 import { AlertStatus } from 'declarations/components'
 import { State } from 'declarations/reducers'
-import { FamilieRelasjon, Inntekt as IInntekt, Inntekter, Sed, Validation } from 'declarations/types'
+import { FamilieRelasjon, Inntekt as IInntekt, Inntekter, SedOversikt, Validation } from 'declarations/types'
 import _ from 'lodash'
 import Alertstripe from 'nav-frontend-alertstriper'
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel'
@@ -68,7 +68,8 @@ const mapState = (state: State): any => ({
   personRelatert: state.svarpased.personRelatert,
   spørreSed: state.svarpased.spørreSed,
   svarSed: state.svarpased.svarSed,
-  seds: state.svarpased.seds,
+  svarPaSedOversikt: state.svarpased.svarPaSedOversikt,
+  //seds: state.svarpased.seds,
   svarPasedData: state.svarpased.svarPasedData,
   valgteFamilieRelasjoner: state.svarpased.familierelasjoner,
   valgteArbeidsforhold: state.svarpased.valgteArbeidsforhold
@@ -111,9 +112,10 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
     inntekter,
     person,
     personRelatert,
-    seds,
+    //seds,
     spørreSed,
     svarSed,
+    svarPaSedOversikt,
     svarPasedData,
     valgteArbeidsforhold,
     valgteFamilieRelasjoner
@@ -121,7 +123,8 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
   const data: SvarpasedState = useSelector<State, SvarpasedState>(mapStateTwo)
 
   const onSaksnummerClick = () => {
-    dispatch(svarpasedActions.getSeds(_saksnummer))
+    //dispatch(svarpasedActions.getSeds(_saksnummer))
+    dispatch(svarpasedActions.getSvarSedOversikt(_saksnummer))
   }
 
   const validate = (): Validation => {
@@ -165,22 +168,24 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
 
   const sendData = (): void => {
     if (isValid(validate())) {
-      dispatch(svarpasedActions.sendSvarPaSedData(_saksnummer, svarSed.documentId, svarSed.documentType, data))
+      dispatch(svarpasedActions.sendSvarPaSedData(_saksnummer, svarSed.queryDocumentId, svarSed.replySedType, data))
     }
   }
 
   const onSpørreSedChange = (e: any) => {
-    const selectedSed: Sed | undefined = _.find(seds, (s: Sed) => s.documentType === e.target.value)
+    const selectedSed: string | undefined = e.target.value
     if (selectedSed) {
       dispatch(svarpasedActions.setSpørreSed(selectedSed))
     }
   }
 
   const onSvarSedChange = (e: any) => {
-    const selectedSed: Sed | undefined = _.find(seds, (s: Sed) => s.documentType === e.target.value)
-    resetValidation('svarSed')
-    if (selectedSed) {
-      dispatch(svarpasedActions.setSvarSed(selectedSed))
+    if (svarPaSedOversikt && spørreSed) {
+      const selectedSed: SedOversikt | undefined = _.find(svarPaSedOversikt[spørreSed], (s: SedOversikt) => s.replySedType === e.target.value)
+      resetValidation('svarSed')
+      if (selectedSed) {
+        dispatch(svarpasedActions.setSvarSed(selectedSed))
+      }
     }
   }
 
@@ -194,9 +199,9 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
     )
   }
 
-  const showArbeidsforhold = (): boolean => svarSed?.documentType === 'U002' || svarSed?.documentType === 'U007'
+  const showArbeidsforhold = (): boolean => svarSed?.replySedType === 'U002' || svarSed?.replySedType === 'U007'
 
-  const showInntekt = (): boolean => svarSed?.documentType === 'U004'
+  const showInntekt = (): boolean => svarSed?.replySedType === 'U004'
 
   const onSelectedInntekt = (items: Array<Item>) => {
     const inntekter: Inntekter = items.map(
@@ -220,7 +225,8 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
       const fnrParam : string | null = params.get('fnr')
       if (rinasaksnummerParam) {
         setSaksnummer(rinasaksnummerParam)
-        dispatch(svarpasedActions.getSeds(rinasaksnummerParam))
+        //dispatch(svarpasedActions.getSeds(rinasaksnummerParam))
+        dispatch(svarpasedActions.getSvarSedOversikt(rinasaksnummerParam))
       }
       if (fnrParam) {
         setFnr(fnrParam)
@@ -257,7 +263,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
             </Knapp>
           </SaksnummerDiv>
           <VerticalSeparatorDiv />
-          {seds && (
+          {svarPaSedOversikt && (
             <>
               <SedSelect
                 data-test-id='svarpased__sporresed-select'
@@ -267,35 +273,37 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
                 feil={_validation.spørreSed ? _validation.spørreSed.feilmelding : undefined}
               >
                 <option key=''>-</option>
-                {seds?.map((sed: Sed) => (
+                {Object.keys(svarPaSedOversikt)?.map((sed: string) => (
                   <option
-                    key={sed.documentId}
-                    value={sed.documentType}
-                    selected={spørreSed ? spørreSed.documentId === sed.documentId : false}
+                    key={sed}
+                    value={sed}
+                    selected={spørreSed ? spørreSed === sed : false}
                   >
-                    {sed.documentType}
+                    {sed}
                   </option>
                 ))}
               </SedSelect>
               <VerticalSeparatorDiv />
-              <SedSelect
-                data-test-id='svarpased__svarsed-select'
-                id='svarpased__svarsed-select'
-                label={t('ui:label-chooseSvarSed')}
-                onChange={onSvarSedChange}
-                feil={_validation.svarSed ? _validation.svarSed.feilmelding : undefined}
-              >
-                <option key=''>-</option>
-                {seds?.map((sed: Sed) => (
-                  <option
-                    key={sed.documentId}
-                    value={sed.documentType}
-                    selected={svarSed ? svarSed.documentId === sed.documentId : false}
-                  >
-                    {sed.documentType}
-                  </option>
-                ))}
-              </SedSelect>
+              {spørreSed && (
+                <SedSelect
+                  data-test-id='svarpased__svarsed-select'
+                  id='svarpased__svarsed-select'
+                  label={t('ui:label-chooseSvarSed')}
+                  onChange={onSvarSedChange}
+                  feil={_validation.svarSed ? _validation.svarSed.feilmelding : undefined}
+                >
+                  <option key=''>-</option>
+                  {svarPaSedOversikt[spørreSed].map((sed: SedOversikt) => (
+                    <option
+                      key={sed.queryDocumentId}
+                      value={sed.replySedType}
+                      selected={svarSed ? svarSed.queryDocumentId === sed.queryDocumentId : false}
+                    >
+                      {sed.replySedType} - {sed.replyDisplay}
+                    </option>
+                  ))}
+                </SedSelect>
+              )}
               <VerticalSeparatorDiv />
             </>
           )}
@@ -323,7 +331,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
           <VerticalSeparatorDiv />
           {!_.isNil(person) && (
             <>
-              {svarSed?.documentType.startsWith('F') && (
+              {svarSed?.replySedType.startsWith('F') && (
                 <>
                   <Ekspanderbartpanel tittel={t('ui:label-familyRelationships')}>
                     <Family

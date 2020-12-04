@@ -5,7 +5,8 @@ import { Action, ActionCreator } from 'redux'
 import {
   Arbeidsforholdet,
   FamilieRelasjon,
-  Inntekter, Sed
+  Inntekter,
+  SedOversikt
 } from 'declarations/types'
 import { SvarpasedState } from 'reducers/svarpased'
 
@@ -24,15 +25,28 @@ export const getSeds: ActionCreator<ThunkResult<ActionWithPayload>> = (
   })
 }
 
+export const getSvarSedOversikt: ActionCreator<ThunkResult<ActionWithPayload>> = (
+  saksnummer: string
+): ThunkResult<ActionWithPayload> => {
+  return realCall({
+    url: sprintf(urls.API_SVARPASED_OVERSIKT_URL, { rinasaksnummer: saksnummer }),
+    type: {
+      request: types.SVARPASED_OVERSIKT_GET_REQUEST,
+      success: types.SVARPASED_OVERSIKT_GET_SUCCESS,
+      failure: types.SVARPASED_OVERSIKT_GET_FAILURE
+    }
+  })
+}
+
 export const setSvarSed: ActionCreator<ActionWithPayload> = (
-  payload: Sed
+  payload: SedOversikt
 ): ActionWithPayload => ({
   type: types.SVARPASED_SVARSED_SET,
   payload: payload
 })
 
 export const setSpørreSed: ActionCreator<ActionWithPayload> = (
-  payload: Sed
+  payload: string
 ): ActionWithPayload => ({
   type: types.SVARPASED_SPØRRESED_SET,
   payload: payload

@@ -1,21 +1,22 @@
-import { Arbeidsforhold, Inntekter, Sed } from 'declarations/types'
+import { Arbeidsforhold, Inntekter, Sed, SvarPaSedOversikt } from 'declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
 import { Action } from 'redux'
 import * as types from 'constants/actionTypes'
 import _ from 'lodash'
 
 export interface SvarpasedState {
-  arbeidsforholdList: Arbeidsforhold;
-  familierelasjoner: Array<any>;
-  person: any;
-  personRelatert: any;
-  seds: Array<Sed> | undefined;
-  spørreSed: Sed | undefined;
-  svarSed: Sed | undefined;
-  svarPasedData: any;
-  valgteArbeidsforhold: Arbeidsforhold;
-  inntekter: Inntekter | undefined;
-  selectedInntekter: Inntekter | undefined;
+  arbeidsforholdList: Arbeidsforhold
+  familierelasjoner: Array<any>
+  person: any
+  personRelatert: any
+  seds: Array<Sed> | undefined
+  spørreSed: string | undefined
+  svarSed: Sed | undefined
+  svarPaSedOversikt: SvarPaSedOversikt | undefined
+  svarPasedData: any
+  valgteArbeidsforhold: Arbeidsforhold
+  inntekter: Inntekter | undefined
+  selectedInntekter: Inntekter | undefined
 }
 
 export const initialSvarpasedState: SvarpasedState = {
@@ -23,6 +24,7 @@ export const initialSvarpasedState: SvarpasedState = {
   seds: undefined,
   spørreSed: undefined,
   svarSed: undefined,
+  svarPaSedOversikt: undefined,
   person: undefined,
   personRelatert: undefined,
   familierelasjoner: [],
@@ -70,6 +72,18 @@ const svarpasedReducer = (
       return {
         ...state,
         seds: null
+      }
+
+    case types.SVARPASED_OVERSIKT_GET_SUCCESS:
+      return {
+        ...state,
+        svarPaSedOversikt: (action as ActionWithPayload).payload
+      }
+
+    case types.SVARPASED_OVERSIKT_GET_FAILURE:
+      return {
+        ...state,
+        svarPaSedOversikt: null
       }
 
     case types.SVARPASED_PERSON_GET_FAILURE:
@@ -154,7 +168,10 @@ const svarpasedReducer = (
       // keep seds, they are for the sed dropdown options
       return {
         ...initialSvarpasedState,
-        seds: state.seds
+        seds: state.seds,
+        svarPaSedOversikt: state.svarPaSedOversikt,
+        spørreSed: state.spørreSed,
+        svarSed: state.svarSed
       }
 
     case types.SVARPASED_PERSON_RESET:

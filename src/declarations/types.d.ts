@@ -140,6 +140,13 @@ export interface Inntekt {
 
 export type Inntekter = Array<Inntekt>
 
+export type SvarPaSedOversikt = {[k in string]: Array<SedOversikt>}
+export interface SedOversikt {
+  replySedType: string
+  replyDisplay: string
+  queryDocumentId: string
+}
+
 export interface Sed {
   documentId: string
   documentType: string
