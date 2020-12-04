@@ -18,8 +18,8 @@ export const initialLoadingState: LoadingState = {
   sendingVedlegg: false,
   sendingSak: false,
   sendingSvarPaSed: false,
-  queryingSvarPaSedOversikt: false,
-  queryingSvarSed: false
+  queryingSvarSed: false,
+  queryingSaksnummerOrFnr: false
 }
 
 const loadingReducer = (
@@ -110,6 +110,19 @@ const loadingReducer = (
         gettingPerson: false
       }
 
+    case types.SVARPASED_SAKSNUMMERORFNR_QUERY_REQUEST:
+      return {
+        ...state,
+        queryingSaksnummerOrFnr: true
+      }
+
+    case types.SVARPASED_SAKSNUMMERORFNR_QUERY_SUCCESS:
+    case types.SVARPASED_SAKSNUMMERORFNR_QUERY_FAILURE:
+      return {
+        ...state,
+        queryingSaksnummerOrFnr: false
+      }
+
     case types.SAK_SEND_REQUEST:
       return {
         ...state,
@@ -134,6 +147,19 @@ const loadingReducer = (
       return {
         ...state,
         queryingSvarPaSedOversikt: false
+    }
+
+    case types.SVARPASED_SEDS_GET_REQUEST:
+      return {
+        ...state,
+        gettingSeds: true
+      }
+
+    case types.SVARPASED_SEDS_GET_SUCCESS:
+    case types.SVARPASED_SEDS_GET_FAILURE:
+      return {
+        ...state,
+        gettingSeds: false
       }
 
     case types.SVARPASED_SVARSED_QUERY_REQUEST:

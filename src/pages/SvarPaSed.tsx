@@ -1,17 +1,32 @@
 import { clientClear } from 'actions/alert'
 import * as appActions from 'actions/app'
+import { setSpørreSed } from 'actions/svarpased'
 import * as svarpasedActions from 'actions/svarpased'
+import Tilsette from 'assets/icons/Tilsette'
+import Trashcan from 'assets/icons/Trashcan'
+import classNames from 'classnames'
 import Alert from 'components/Alert/Alert'
 import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
 import Family from 'components/Family/Family'
 import Inntekt from 'components/Inntekt/Inntekt'
-import PersonSearch from 'components/PersonSearch/PersonSearch'
+import PersonCard from 'components/PersonCard/PersonCard'
+import SEDPanel from 'components/SEDPanel/SEDPanel'
 import {
+  AlignCenterColumn,
+  AlignedRow,
   Column,
   Container,
   Content,
+  HiddenFormContainer, HighContrastFlatknapp,
+  HighContrastHovedknapp,
+  HighContrastInput,
+  HighContrastKnapp,
+  HighContrastPanel,
   HorizontalSeparatorDiv,
+  LineSeparator,
   Margin,
+  RadioEl,
+  RadioGroup,
   Row,
   VerticalSeparatorDiv
 } from 'components/StyledComponents'
@@ -35,6 +50,7 @@ import AlertStripe from 'nav-frontend-alertstriper'
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel'
 import { Knapp } from 'nav-frontend-knapper'
 import { Feiloppsummering, FeiloppsummeringFeil, Input, Select } from 'nav-frontend-skjema'
+import { Normaltekst, Systemtittel, Undertittel } from 'nav-frontend-typografi'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -42,25 +58,19 @@ import { SvarpasedState } from 'reducers/svarpased'
 import styled from 'styled-components'
 import { Item } from 'tabell'
 
-const InputAndButtonDiv = styled.div`
-  display: flex;
-  align-items: flex-end;
-  flex-direction: row;
-`
-const SaksnummerInput = styled(Input)`
+const SaksnummerOrFnrInput = styled(HighContrastInput)`
   margin-right: 1rem;
 `
-const SedSelect = styled(Select)`
-  width: 25%;
+const FlexDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `
 const AlertstripeDiv = styled.div`
   margin: 0.5rem;
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
   width: 50%;
-`
-const FlexDiv = styled.div`
-  display: flex;
 `
 const mapState = (state: State): any => ({
   alertStatus: state.alert.clientErrorStatus,
@@ -70,21 +80,24 @@ const mapState = (state: State): any => ({
   familierelasjonKodeverk: state.app.familierelasjoner,
 
   gettingPerson: state.loading.gettingPerson,
-  sendingSvarPaSed: state.loading.sendingSvarPaSed,
+  queryingSaksnummerOrFnr: state.loading.queryingSaksnummerOrFnr,
   queryingSvarSed: state.loading.queryingSvarSed,
-  queryingSvarPaSedOversikt: state.loading.queryingSvarPaSedOversikt,
+  sendingSvarPaSed: state.loading.sendingSvarPaSed,
 
   arbeidsforholdList: state.svarpased.arbeidsforholdList,
   inntekter: state.svarpased.inntekter,
   person: state.svarpased.person,
   personRelatert: state.svarpased.personRelatert,
+  previousSpørreSed: state.svarpased.previousSpørreSed,
   spørreSed: state.svarpased.spørreSed,
   svarSed: state.svarpased.svarSed,
   svarPaSedOversikt: state.svarpased.svarPaSedOversikt,
   svarPasedData: state.svarpased.svarPasedData,
   valgteFamilieRelasjoner: state.svarpased.familierelasjoner,
   valgteArbeidsforhold: state.svarpased.valgteArbeidsforhold,
-  valgtSvarSed: state.svarpased.valgtSvarSed
+  valgtSvarSed: state.svarpased.valgtSvarSed,
+
+  highContrast: state.ui.highContrast
 })
 
 export interface SvarPaSedProps {
@@ -96,10 +109,12 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
 }: SvarPaSedProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const [_person, setPerson] = useState<Person | null | undefined>(undefined)
-  const [_fnr, setFnr] = useState<string>('')
+  const [, setIsFnrValid] = useState<boolean>(false)
+  const [_addFormal, setAddFormal] = useState<boolean>(false)
+  const [_newFormal, setNewFormal] = useState<string>('')
+  const [_formal, setFormal] = useState<Array<string>>([])
   const [_mounted, setMounted] = useState<boolean>(false)
-  const [_saksnummer, setSaksnummer] = useState<string | undefined>(undefined)
+  const [_saksnummerOrFnr, setSaksnummerOrFnr] = useState<string | undefined>(undefined)
   const [_validation, setValidation] = useState<Validation>({})
   const {
     alertStatus,
@@ -109,33 +124,57 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
     familierelasjonKodeverk,
 
     gettingPerson,
-    sendingSvarPaSed,
+    queryingSaksnummerOrFnr,
     queryingSvarSed,
-    queryingSvarPaSedOversikt,
+    sendingSvarPaSed,
 
     arbeidsforholdList,
     inntekter,
     person,
     personRelatert,
+    previousSpørreSed,
     spørreSed,
     svarSed,
     svarPaSedOversikt,
     svarPasedData,
     valgteArbeidsforhold,
     valgteFamilieRelasjoner,
-    valgtSvarSed
+    valgtSvarSed,
+
+    highContrast
   }: any = useSelector<State, SvarpasedState>(mapState)
 
-  const onSaksnummerClick = () => {
-    dispatch(svarpasedActions.getSvarSedOversikt(_saksnummer))
+/*  const onSaksnummerClick = () => {
+    dispatch(svarpasedActions.getSvarSedOversikt(_saksnummerOrFnr))
+  }
+*/
+  const onSaksnummerOrFnrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(appActions.cleanData())
+    setSaksnummerOrFnr(e.target.value)
+    setIsFnrValid(false)
+    resetValidation('saksnummerOrFnr')
+  }
+
+  const onSaksnummerOrFnrClick = () => {
+    if (!_saksnummerOrFnr) {
+      setValidation({
+        ..._validation,
+        saksnummerOrFnr: {
+          feilmelding: t('ui:validation-noSaksnummerOrFnr'),
+          skjemaelementId: 'svarpased__saksnummerOrFnr-input'
+        } as FeiloppsummeringFeil
+      })
+    } else {
+      dispatch(svarpasedActions.querySaksnummerOrFnr(_saksnummerOrFnr))
+    }
   }
 
   const validate = (): Validation => {
     const validation: Validation = {
-      saksnummer: !_saksnummer
+      saksnummerOrFnr: !_saksnummerOrFnr
         ? {
-          feilmelding: t('ui:validation-noSaksnummer'),
-          skjemaelementId: 'svarpased__saksnummer-input'
+          feilmelding: t('ui:validation-noSaksnummerOrFnr'),
+          skjemaelementId: 'svarpased__saksnummerOrFnr-input'
         } as FeiloppsummeringFeil
         : undefined,
       svarSed: !valgtSvarSed
@@ -171,50 +210,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
 
   const sendData = (): void => {
     if (isValid(validate())) {
-      const payload: SvarSed = _.cloneDeep(svarSed)
-
-      if (payload.sedType !== 'U004') {
-        // fix arbeidsforhold
-        payload.perioderAnsattMedForsikring = []
-        valgteArbeidsforhold.map((a: Arbeidsforholdet) => {
-          const periode: Periode = {
-            startdato: a.ansettelsesPeriode!.fom!
-          }
-          if (a.ansettelsesPeriode!.tom!) {
-            periode.sluttdato = a.ansettelsesPeriode!.tom!
-          } else {
-            periode.aapenPeriodeType = 'åpen_sluttdato'
-          }
-          payload.perioderAnsattMedForsikring?.push({
-            arbeidsgiver: {
-              navn: a?.navn || '',
-              identifikatorer: [{
-                type: 'organisasjonsnummer',
-                id: a?.orgnr || ''
-              }]
-            },
-            typeTrygdeforhold: 'ansettelsesforhold_som_utgjør_forsikringsperiode',
-            periode: periode
-          })
-        })
-      } else {
-        // fix inntekt
-        payload.loennsopplysninger = []
-        inntekter.map((i: IInntekt) => {
-          payload.loennsopplysninger!.push({
-            periode: {
-              startdato: i.fraDato + '-01',
-              sluttdato: i.tilDato + '-01'
-            },
-            inntekter: [{
-              type: i.type,
-              beloep: '' + i.beloep,
-              valuta: 'NOK'
-            }]
-          })
-        })
-      }
-      dispatch(svarpasedActions.sendSvarPaSedData(_saksnummer, valgtSvarSed.querySedDocumentId, valgtSvarSed.replySedType, payload))
+      dispatch(svarpasedActions.sendSvarPaSedData(_saksnummerOrFnr, valgtSvarSed.querySedDocumentId, valgtSvarSed.replySedType, data))
     }
   }
 
@@ -225,18 +221,10 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
     }
   }
 
-  const onSvarSedChange = (e: any) => {
-    if (svarPaSedOversikt && spørreSed) {
-      const selectedSed: SedOversikt | undefined = _.find(svarPaSedOversikt[spørreSed], (s: SedOversikt) => s.replySedType === e.target.value)
-      resetValidation('svarSed')
-      if (selectedSed) {
-        dispatch(svarpasedActions.setSvarSed(selectedSed))
-      }
-    }
-  }
-
-  const onSvarSedClick = () => {
-    dispatch(svarpasedActions.querySvarSed(_saksnummer, valgtSvarSed.querySedDocumentId, valgtSvarSed.replySedType))
+  const onSvarSedClick = (sedOversikt: SedOversikt) => {
+    resetValidation('svarSed')
+    setSpørreSed()
+    dispatch(svarpasedActions.querySvarSed(_saksnummerOrFnr, sedOversikt))
   }
 
   const addTpsRelation = (relation: FamilieRelasjon): void => {
@@ -273,8 +261,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
       const params: URLSearchParams = new URLSearchParams(location.search)
       const rinasaksnummerParam: string | null = params.get('rinasaksnummer')
       if (rinasaksnummerParam) {
-        setSaksnummer(rinasaksnummerParam)
-        dispatch(svarpasedActions.getSvarSedOversikt(rinasaksnummerParam))
+        dispatch(svarpasedActions.querySaksnummerOrFnr(rinasaksnummerParam))
       }
       setMounted(true)
     }
@@ -305,133 +292,181 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
       <Container>
         <Margin />
         <Content>
-          <InputAndButtonDiv>
-            <SaksnummerInput
-              bredde='M'
-              data-test-id='svarpased__saksnummer-input'
-              id='svarpased__saksnummer-input'
-              label='Saksnummer'
-              value={_saksnummer}
-              feil={_validation.saksnummer ? _validation.saksnummer.feilmelding : undefined}
-              onChange={(e: any) => {
-                setSaksnummer(e.target.value)
-                resetValidation('saksnummer')
-              }}
-            />
-            <Knapp
-              disabled={queryingSvarPaSedOversikt}
-              spinner={queryingSvarPaSedOversikt}
-              onClick={onSaksnummerClick}
-            >
-              {queryingSvarPaSedOversikt ? t('ui:form-getting') : t('ui:form-get')}
-            </Knapp>
-          </InputAndButtonDiv>
+          <Systemtittel>
+            {t('ui:title-svarpased')}
+          </Systemtittel>
+          <VerticalSeparatorDiv data-size='2'/>
+          <AlignedRow className={classNames({ feil: _validation.saksnummerOrFnr })}>
+            <Column>
+              <SaksnummerOrFnrInput
+                bredde='L'
+                data-test-id='svarpased__saksnummerOrFnr-input'
+                feil={_validation.saksnummerOrFnr ? _validation.saksnummerOrFnr.feilmelding : undefined}
+                id='svarpased__saksnummerOrFnr-input'
+                label={t('ui:label-saksnummerOrFnr')}
+                onChange={onSaksnummerOrFnrChange}
+                placeholder={t('ui:placeholder-saksnummerOrFnr')}
+                value={_saksnummerOrFnr}
+              />
+            </Column>
+            <AlignCenterColumn>
+              <HighContrastKnapp
+                disabled={queryingSaksnummerOrFnr}
+                spinner={queryingSaksnummerOrFnr}
+                onClick={onSaksnummerOrFnrClick}
+              >
+                {queryingSaksnummerOrFnr ? t('ui:form-searching') : t('ui:form-search')}
+              </HighContrastKnapp>
+            </AlignCenterColumn>
+            <Column/>
+          </AlignedRow>
           <VerticalSeparatorDiv />
           {svarPaSedOversikt && (
             <>
-              <SedSelect
-                data-test-id='svarpased__sporresed-select'
-                id='svarpased__sporresed-select'
-                label={t('ui:label-chooseSpørreSed')}
-                onChange={onSpørreSedChange}
-                feil={_validation.spørreSed ? _validation.spørreSed.feilmelding : undefined}
-              >
-                <option key=''>-</option>
-                {Object.keys(svarPaSedOversikt)?.map((sed: string) => (
-                  <option
-                    key={sed}
-                    value={sed}
-                    selected={spørreSed ? spørreSed === sed : false}
+              <Row>
+                <Column>
+                  <RadioGroup
+                    legend={t('ui:label-searchResultsForSaksnummerOrFnr', {
+                      antall: Object.keys(svarPaSedOversikt).length,
+                      saksnummerOrFnr: _saksnummerOrFnr
+                    })}
+                    feil={undefined}
                   >
-                    {sed}
-                  </option>
-                ))}
-              </SedSelect>
-              <VerticalSeparatorDiv />
-              {spørreSed && (
-                <InputAndButtonDiv>
-                  <SedSelect
-                    data-test-id='svarpased__svarsed-select'
-                    id='svarpased__svarsed-select'
-                    label={t('ui:label-chooseSvarSed')}
-                    onChange={onSvarSedChange}
-                    feil={_validation.svarSed ? _validation.svarSed.feilmelding : undefined}
-                  >
-                    <option key=''>-</option>
-                    {svarPaSedOversikt[spørreSed]
-                      .filter((s: SedOversikt) => {
-                        const pattern = spørreSed.match(/^(\D+)/)
-                        if (pattern) {
-                          return s.replySedType.startsWith(pattern[0])
-                        } else {
-                          return false
-                        }
-                      })
-                      .map((sed: SedOversikt, i: number) => (
-                        <option
-                          key={spørreSed + '-' +sed.replySedType + '-' + sed.querySedDocumentId + '-' + i}
-                          value={sed.replySedType}
-                          selected={valgtSvarSed ? valgtSvarSed.querySedDocumentId === sed.querySedDocumentId : false}
-                        >
-                          {sed.replySedType} - {sed.replySedDisplay}
-                        </option>
-                      ))}
-                  </SedSelect>
-                  {valgtSvarSed && (
-                    <>
-                      <HorizontalSeparatorDiv data-size='2' />
-                      <Knapp
-                        disabled={queryingSvarSed}
-                        spinner={queryingSvarSed}
-                        onClick={onSvarSedClick}
-                      >
-                        {queryingSvarSed ? t('ui:form-getting') : t('ui:form-get')}
-                      </Knapp>
-                    </>
-                  )}
-                </InputAndButtonDiv>
-              )}
-              {!_.isNil(svarSed) && (
-                <>
-                  <VerticalSeparatorDiv data-size='2' />
-                  <PersonSearch
-                    alertStatus={alertStatus}
-                    alertMessage={alertMessage}
-                    alertType={alertType}
-                    alertTypesWatched={[types.SVARPASED_PERSON_GET_FAILURE]}
-                    className='slideAnimate'
-                    data-test-id='svarpased__fnr'
-                    gettingPerson={gettingPerson}
-                    key={'svarpased__fnr__' + _fnr}
-                    id='svarpased__fnr'
-                    initialFnr={_fnr}
-                    onFnrChange={() => {
-                      dispatch(appActions.cleanData())
-                      setPerson(null)
-                    }}
-                    onSearchPerformed={(fnr: string) => {
-                      setFnr(fnr)
-                      setPerson(undefined)
-                      dispatch(svarpasedActions.getPerson(fnr))
-                      dispatch(svarpasedActions.getArbeidsforholdList(fnr))
-                    }}
-                    onPersonRemoved={() => {
-                      setFnr('')
-                      dispatch(svarpasedActions.resetPerson())
-                      setPerson(null)
-                    }}
-                    onAlertClose={() => dispatch(clientClear())}
-                    person={_person}
-                    resetAllValidation={() => resetValidation()}
-                    validation={_validation.fnr}
-                  />
-                </>
-              )}
-              <VerticalSeparatorDiv />
+                    {Object.keys(svarPaSedOversikt)?.map((sed: string) => (
+                      <>
+                        <RadioEl
+                          name={'svarpased__saksnummerOrFnr-results'}
+                          value={sed}
+                          checked={spørreSed === sed}
+                          label={sed}
+                          className='slideAnimate'
+                          onChange={onSpørreSedChange}
+                        />
+                        {svarPaSedOversikt[sed].map((sedoversikt: SedOversikt) => (
+                          <HiddenFormContainer className={classNames({
+                            slideOpen: previousSpørreSed !== sed && spørreSed === sed,
+                            slideClose: previousSpørreSed === sed && spørreSed !== sed,
+                            closed: !( (previousSpørreSed !== sed && spørreSed === sed) || (previousSpørreSed === sed && spørreSed !== sed))
+                          })}>
+                            <HighContrastPanel>
+                              <FlexDiv>
+                                <div>
+                                  <Normaltekst>
+                                    {sedoversikt.replySedType} {sedoversikt.replyDisplay}
+                                  </Normaltekst>
+                                  <Normaltekst>
+                                    {sedoversikt.queryDocumentId}
+                                  </Normaltekst>
+                                </div>
+                                <HorizontalSeparatorDiv/>
+                                <HighContrastHovedknapp
+                                  disabled={queryingSvarSed}
+                                  spinner={queryingSvarSed}
+                                  mini
+                                  kompakt
+                                  onClick={() => onSvarSedClick(sedoversikt)}
+                                  >
+                                  {queryingSvarSed ? t('ui:label-replying') : t('ui:label-reply')}
+                                </HighContrastHovedknapp>
+                              </FlexDiv>
+                            </HighContrastPanel>
+                            <VerticalSeparatorDiv/>
+                          </HiddenFormContainer>
+                        ))}
+                      </>
+                    ))}
+
+                  </RadioGroup>
+                </Column>
+                <Column/>
+              </Row>
             </>
           )}
+          <VerticalSeparatorDiv data-size='2'/>
+          {svarSed && (
+            <Row>
+              <Column style={{flex: 2}}>
+                <Systemtittel>
+                  {svarSed.replySedType} - {svarSed.replyDisplay}
+                </Systemtittel>
+                <VerticalSeparatorDiv/>
+                <Undertittel>
+                  {t('ui:label-choosePurpose')}
+                </Undertittel>
+                <VerticalSeparatorDiv/>
+                {_formal && _formal.map(f => (
+                  <FlexDiv>
+                    <Normaltekst>
+                      {f}
+                    </Normaltekst>
+                    <HighContrastFlatknapp
+                      mini
+                      kompakt
+                      onClick={() => setFormal(_.filter(_formal, _f => _f !== f))}
+                    >
+                      <Trashcan/>
+                      <HorizontalSeparatorDiv data-size='0.5'/>
+                      {t('ui:form-remove')}
+                    </HighContrastFlatknapp>
+                  </FlexDiv>
+                ))}
+              {!_addFormal ? (
+                <>
+                  <HighContrastFlatknapp
+                    onClick={() => setAddFormal(!_addFormal)}
+                  >
+                    <Tilsette/>
+                    <HorizontalSeparatorDiv data-size='0.5'/>
+                    {t('ui:form-addPurpose')}
+                  </HighContrastFlatknapp>
+                </>
+              ) : (
+                <FlexDiv>
+                  <HighContrastInput
+                    bredde='XXL'
+                    style={{flex: 2}}
+                    value={_newFormal}
+                    onChange={(e) => setNewFormal(e.target.value)}
+                  >
+                  </HighContrastInput>
+                  <HorizontalSeparatorDiv data-size='0.5'/>
+                  <FlexDiv>
+                    <HighContrastKnapp
+                      mini
+                      kompakt
+                      onClick={() => {
+                        setFormal(_formal.concat(_newFormal))
+                        setNewFormal('')
+                      }}
+                    >
+                      <Tilsette/>
+                      <HorizontalSeparatorDiv data-size='0.5'/>
+                      {t('ui:form-add')}
+                    </HighContrastKnapp>
+                    <HorizontalSeparatorDiv data-size='0.5'/>
+                    <HighContrastFlatknapp
+                      mini
+                      kompakt
+                      onClick={() => setAddFormal(!_addFormal)}
+                    >
+                      {t('ui:form-cancel')}
+                    </HighContrastFlatknapp>
+                  </FlexDiv>
+                </FlexDiv>
+              )}
+              </Column>
+              <VerticalSeparatorDiv />
+              <LineSeparator>&nbsp;</LineSeparator>
+              <VerticalSeparatorDiv />
+              <Column>
+                <SEDPanel svarSed={svarSed}/>
+              </Column>
+            </Row>
+          )}
           <VerticalSeparatorDiv />
-          {!_.isNil(_person) && (
+
+
+          {!_.isNil(person) && (
             <>
               {valgtSvarSed?.replySedType.startsWith('F') && (
                 <>
@@ -492,7 +527,8 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
               {showInntekt() && _person && _person!.fnr && (
                 <Ekspanderbartpanel tittel={t('ui:label-inntekt')}>
                   <Inntekt
-                    fnr={_person.fnr}
+                    fnr={person.fnr}
+                    highContrast={highContrast}
                     inntekter={inntekter}
                     onSelectedInntekt={onSelectedInntekt}
                   />

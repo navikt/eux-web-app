@@ -14,13 +14,13 @@ export const animationOpen = keyframes`
     max-height: 0;
   }
   100% {
-    max-height: 150em;
+    max-height: 10em;
     height: 100%;
   }
 `
 export const animationClose = keyframes`
   0% {
-    max-height: 150em;
+    max-height: 10em;
     height: 100%;
   }
   100% {

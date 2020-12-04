@@ -1,20 +1,21 @@
 import { toggleHighContrast } from 'actions/ui'
-import { HorizontalSeparatorDiv } from 'components/StyledComponents'
+import { HighContrastLink, HorizontalSeparatorDiv } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import { Saksbehandler } from 'declarations/types'
-import Lenke from 'nav-frontend-lenker'
 import { Undertittel } from 'nav-frontend-typografi'
+import { theme, themeHighContrast, themeKeys } from 'nav-styled-component-theme'
 import PT from 'prop-types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import NEESSILogo from 'resources/images/nEESSI'
-import styled from 'styled-components'
+import styled, { ThemeProvider } from 'styled-components'
 
 const HeaderContent = styled.header`
-  background-color: #99c2e8;
+  background-color: ${({theme}: any) => theme.type === 'themeHighContrast' ? theme[themeKeys.MAIN_BACKGROUND_COLOR] : '#99c2e8'};
+  color: ${({theme}: any) => theme[themeKeys.MAIN_FONT_COLOR]};
   display: flex;
   flex-direction: row;
   height: 4rem;
@@ -25,18 +26,20 @@ const Brand = styled.div`
   align-items: center;
   display: flex;
   flex-direction: row;
+  margin-left: 1rem;
 `
 const Skillelinje = styled.div`
-  border-left: 1px solid #02329c;
+  border-left: 1px solid ${({theme}: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
   display: flex;
   height: 30px;
+  margin-left: 1rem;
+  margin-right: 1rem;
 `
 const Title = styled.div`
-  color: #02329c;
+  color: ${({theme}: any) => theme.type === 'themeHighContrast' ? theme[themeKeys.MAIN_FONT_COLOR] : '#02329c'};
   display: flex;
   font-size: 14pt;
   font-weight: bold;
-  padding-left: 15px;
 `
 const SaksbehandlerDiv = styled.div`
   align-items: flex-end;
@@ -46,7 +49,7 @@ const SaksbehandlerDiv = styled.div`
   align-items: center;
 `
 const Name = styled.div`
-  color: #02329c;
+  color: ${({theme}: any) => theme.type === 'themeHighContrast' ? theme[themeKeys.MAIN_FONT_COLOR] : '#02329c'};
   font-weight: bold;
   display: flex;
   margin: auto 0;
@@ -58,14 +61,14 @@ export interface HeaderSelector {
 }
 
 export interface HeaderProps {
-  className?: string;
+  highContrast: boolean
 }
 
 export const mapState = (state: State): HeaderSelector => ({
   saksbehandler: state.app.saksbehandler
 })
 
-const Header: React.FC<HeaderProps> = ({ className }: HeaderProps): JSX.Element => {
+const Header: React.FC<HeaderProps> = ({ highContrast }: HeaderProps): JSX.Element => {
   const { saksbehandler }: HeaderSelector = useSelector<State, HeaderSelector>(mapState)
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -77,44 +80,46 @@ const Header: React.FC<HeaderProps> = ({ className }: HeaderProps): JSX.Element 
   const cleanData = () => dispatch({ type: types.APP_CLEAN_DATA })
 
   return (
-    <HeaderContent className={className}>
-      <Brand>
-        <Link to='/' onClick={cleanData} className='ml-2 mr-2'>
-          <NEESSILogo />
-        </Link>
-        <Skillelinje />
-        <Title>
-          {t('ui:app-name')}
-        </Title>
-      </Brand>
-      <Undertittel>
-        {t('ui:app-title')}
-      </Undertittel>
-      <SaksbehandlerDiv>
-        <Lenke
-          data-test-id='c-header__highcontrast-link'
-          href='#highContrast'
-          onClick={(e: React.MouseEvent) => {
-            e.preventDefault()
-            e.stopPropagation()
-            handleHighContrastToggle()
-          }}
-        >
-          {t('ui:label-highContrast')}
-        </Lenke>
-        <HorizontalSeparatorDiv />
-        {saksbehandler && saksbehandler.navn && (
-          <Name>
-            {saksbehandler.navn}
-          </Name>
-        )}
-      </SaksbehandlerDiv>
-    </HeaderContent>
+    <ThemeProvider theme={highContrast ? themeHighContrast : theme}>
+      <HeaderContent>
+        <Brand>
+          <Link to='/' onClick={cleanData}>
+            <NEESSILogo />
+          </Link>
+          <Skillelinje />
+          <Title>
+            {t('ui:app-name')}
+          </Title>
+        </Brand>
+        <Undertittel>
+          {t('ui:app-title')}
+        </Undertittel>
+        <SaksbehandlerDiv>
+          <HighContrastLink
+            data-test-id='c-header__highcontrast-link'
+            href='#highContrast'
+            onClick={(e: React.MouseEvent) => {
+              e.preventDefault()
+              e.stopPropagation()
+              handleHighContrastToggle()
+            }}
+          >
+            {t('ui:label-highContrast')}
+          </HighContrastLink>
+          <HorizontalSeparatorDiv />
+          {saksbehandler && saksbehandler.navn && (
+            <Name>
+              {saksbehandler.navn}
+            </Name>
+          )}
+        </SaksbehandlerDiv>
+      </HeaderContent>
+    </ThemeProvider>
   )
 }
 
 Header.propTypes = {
-  className: PT.string
+  highContrast: PT.bool.isRequired
 }
 
 export default Header

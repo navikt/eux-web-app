@@ -1,11 +1,19 @@
 import * as svarpasedActions from 'actions/svarpased'
 import classNames from 'classnames'
-import { Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'components/StyledComponents'
+import {
+  AlignCenterColumn,
+  AlignedInput,
+  AlignedRow,
+  AlignedSelect,
+  Column,
+  HorizontalSeparatorDiv,
+  VerticalSeparatorDiv
+} from 'components/StyledComponents'
 import { IncomeSearch } from 'declarations/components'
 import { Inntekter, Validation } from 'declarations/types'
 import _ from 'lodash'
 import { Knapp } from 'nav-frontend-knapper'
-import { FeiloppsummeringFeil, Input, Select } from 'nav-frontend-skjema'
+import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
@@ -13,37 +21,16 @@ import styled from 'styled-components'
 import { Item } from 'tabell'
 import InntektsTabell from './InntektsTabell'
 
-const AlignCenterColumn = styled(Column)`
-  display: flex;
-  align-items: center;
-`
 const SokKnapp = styled(Knapp)`
   &.feil {
     margin-bottom: 1rem;
   }
   margin-bottom: 3rem;
 `
-const AlignedRow = styled(Row)`
-  align-items: flex-end;
-  &.feil {
-    align-items: center !important;
-  }
-`
-const AlignedInput = styled(Input)`
-  margin-bottom: 3rem;
-  &.feil {
-    margin-bottom: 0rem !important;
-  }
-`
-const AlignedSelect = styled(Select)`
-  margin-bottom: 3rem;
-  &.feil {
-    margin-bottom: 0rem !important;
-  }
-`
 
 interface InntektProps {
   fnr: string
+  highContrast: boolean
   inntekter: Inntekter | undefined
   onSelectedInntekt: (items: Array<Item>) => void
 }
@@ -56,6 +43,7 @@ const emptyIncomeSearch: IncomeSearch = {
 
 const Inntekt: React.FC<InntektProps> = ({
   fnr,
+  highContrast,
   inntekter,
   onSelectedInntekt
 }: InntektProps) => {
@@ -214,6 +202,7 @@ const Inntekt: React.FC<InntektProps> = ({
         <Column className='slideAnimate' style={{ animationDelay: '0.5s' }}>
           <AlignedSelect
             id='inntekt-tema'
+            highContrast={highContrast}
             data-test-id='inntekt-tema'
             label={t('ui:label-tema')}
             feil={validation.tema ? validation.tema.feilmelding : undefined}

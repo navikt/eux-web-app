@@ -8,28 +8,38 @@ import Version from 'components/Version/Version'
 import { State } from 'declarations/reducers'
 import { ModalContent } from 'declarations/components'
 import _ from 'lodash'
+import { theme, themeHighContrast, themeKeys } from 'nav-styled-component-theme'
 import PT from 'prop-types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import styled from 'styled-components'
+import styled, { ThemeProvider } from 'styled-components'
 import useErrorBoundary from 'use-error-boundary'
 import Alert from 'components/Alert/Alert'
 import Error from 'pages/Error'
 
+const Main = styled.main`
+  padding: 0px;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  color: ${({theme} : any) => theme[themeKeys.MAIN_FONT_COLOR]};
+  background-color: ${({theme} : any) => theme.type === 'themeHighContrast' ? theme[themeKeys.MAIN_BACKGROUND_COLOR] : 'whitesmoke'};
+`
+
 export interface TopContainerProps {
-  className?: string;
-  children?: JSX.Element | Array<JSX.Element | null>;
-  fluid?: boolean;
-  header?: string | JSX.Element;
+  className?: string
+  children?: JSX.Element | Array<JSX.Element | null>
+  fluid?: boolean
+  header?: string | JSX.Element
 }
 
 export interface TopContainerSelector {
-  serverErrorMessage: string | undefined;
-  error: any | undefined;
-  expirationTime: Date | undefined;
-  highContrast: boolean;
-  modal: ModalContent | undefined;
+  serverErrorMessage: string | undefined
+  error: any | undefined
+  expirationTime: Date | undefined
+  highContrast: boolean
+  modal: ModalContent | undefined
 }
 
 const mapState = (state: State): TopContainerSelector => ({
@@ -40,12 +50,7 @@ const mapState = (state: State): TopContainerSelector => ({
   modal: state.ui.modal
 })
 
-const Main = styled.main`
-  padding: 0px;
-  flex: 1 0 auto;
-  display: flex;
-  flex-direction: column;
-`
+
 export const TopContainer: React.FC<TopContainerProps> = ({
   className, children
 }: TopContainerProps): JSX.Element => {
@@ -75,37 +80,39 @@ export const TopContainer: React.FC<TopContainerProps> = ({
   }
 
   return (
-    <ErrorBoundary
-      renderError={({ error }: any) => <Error error={error} />}
-    >
-      <Header
-        className={classNames({ highContrast: highContrast })}
-      />
-      <Alert
-        type='server'
-        message={getServerErrorMessage()}
-        error={error}
-        onClose={onClear}
-      />
-      {modal !== undefined && (
-        <Modal
-          appElement={(document.getElementById('main') || document.body)}
-          modal={modal}
-          onModalClose={handleModalClose}
-        />
-      )}
-      <Main
-        id='main'
-        role='main'
-        className={classNames(className, { highContrast: highContrast })}
+    <ThemeProvider theme={highContrast ? themeHighContrast : theme}>
+      <ErrorBoundary
+        renderError={({ error }: any) => <Error error={error} />}
       >
-        {children}
-      </Main>
-      <SessionMonitor
-        expirationTime={expirationTime!}
-      />
-      <Version />
-    </ErrorBoundary>
+        <Header
+          highContrast={highContrast}
+        />
+        <Alert
+          type='server'
+          message={getServerErrorMessage()}
+          error={error}
+          onClose={onClear}
+        />
+        {modal !== undefined && (
+          <Modal
+            appElement={(document.getElementById('main') || document.body)}
+            modal={modal}
+            onModalClose={handleModalClose}
+          />
+        )}
+        <Main
+          id='main'
+          role='main'
+          className={classNames(className, { highContrast: highContrast })}
+        >
+          {children}
+        </Main>
+        <SessionMonitor
+          expirationTime={expirationTime!}
+        />
+        <Version />
+      </ErrorBoundary>
+    </ThemeProvider>
   )
 }
 

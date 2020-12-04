@@ -1,4 +1,4 @@
-import { Container, Content, Margin } from 'components/StyledComponents'
+import { Container, Content, Margin, VerticalSeparatorDiv } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -15,33 +15,34 @@ const Forside: React.FC = (): JSX.Element => {
         <Content>
           <>
             <Lenkepanel
-              tittelProps='undertittel'
               className='slideAnimate'
-              linkCreator={(props: any) => (<Link to='/opprett' {...props} />)}
               href='#'
+              linkCreator={(props: any) => (<Link to='/opprett' {...props} />)}
+              tittelProps='undertittel'
             >
               {t('ui:menu-createCase')}
             </Lenkepanel>
+            <VerticalSeparatorDiv data-size='2'/>
             <Lenkepanel
-              tittelProps='undertittel'
               className='slideAnimate'
-              style={{ animationDelay: '0.15s' }}
-              linkCreator={(props: any) => (<Link to='/vedlegg' {...props} />)}
               href='#'
+              linkCreator={(props: any) => (<Link to='/vedlegg' {...props} />)}
+              style={{ animationDelay: '0.15s' }}
+              tittelProps='undertittel'
             >
               {t('ui:menu-addAttachment')}
             </Lenkepanel>
-            {/* (
-              <Lenkepanel
-                tittelProps='undertittel'
-                className='slideAnimate'
-                style={{ animationDelay: '0.3s' }}
-                linkCreator={(props: any) => (<Link to='/svarpased' {...props} />)}
-                href='#'
-              >
-                {t('ui:menu-svarpased')}
-              </Lenkepanel>
-            ) */}
+            <VerticalSeparatorDiv data-size='2'/>
+            <Lenkepanel
+              className='slideAnimate'
+              href='#'
+              linkCreator={(props: any) => (<Link to='/svarpased' {...props} />)}
+              style={{ animationDelay: '0.3s' }}
+              tittelProps='undertittel'
+            >
+              {t('ui:menu-svarpased')}
+            </Lenkepanel>
+
           </>
         </Content>
         <Margin />

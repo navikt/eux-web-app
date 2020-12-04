@@ -20,7 +20,9 @@
   "error-page-footer" : "",
 
   "form-add": "Legg til",
+  "form-addPurpose": "Legg til ny formål",
   "form-birthdate" : "Fødselsdato",
+  "form-cancel": "Avbryt",
   "form-caseNumber" : "Saksnummer",
   "form-createCaseInRina" : "Opprett sak i RINA",
   "form-createNewCaseInGosys" : "Lenke til Gosys",
@@ -58,6 +60,7 @@
   "label-attached": "Vedlegget",
   "label-birthDate": "Fodselsdato",
   "label-buc": "BUC",
+  "label-choosePurpose" : "Velg formål",
   "label-chooseSpørreSed" : "Velg spørre SED",
   "label-chooseSvarSed" : "Velg svar SED",
   "label-dokumentID": "DokumentID",
@@ -80,8 +83,12 @@
   "label-name": "Navn",
   "label-nationality": "Nasjonalitet",
   "label-orgnummer": "Orgnr",
+  "label-reply": "Besvar",
+  "label-replying": "Besvaring...",
   "label-rinasaksnummer": "RINA saksnummer",
   "label-rinadokumentID": "Velg SED Type",
+  "label-saksnummerOrFnr" : "Søk på RINA saksnummer eller f.nr./d.nr.",
+  "label-searchResultsForSaksnummerOrFnr" : "{{antall}} treff for: {{saksnummerOrFnr}}",
   "label-sed": "SED",
   "label-sektor": "Fagområde",
   "label-sendSvarSed" : "Send SED",
@@ -97,14 +104,16 @@
   "label-userInSed": "Bruker i SED",
 
   "menu-createCase" : "Opprett sak",
-  "menu-addAttachment": "Legg ved vedlegg til SED",
-  "menu-svarpased": "Svar på SED (ikke klar til prod)",
+  "menu-addAttachment": "Legg vedlegg til SED",
+  "menu-svarpased": "Svar på SED",
 
   "modal-abort-contentLabel": "Bekreft navigasjon tilbake til forsiden",
   "modal-abort-title": " Er du sikker på at du vil avbryte? ",
   "modal-abort-description": "Informasjonen du har fylt inn hittil vil ikke bli lagret.",
   "modal-abort-yes-button": "JA, AVBRYT",
   "modal-abort-no-continue": "NEI, FORTSETT",
+
+  "placeholder-saksnummerOrFnr" : "Skriv inn...",
 
   "serverInternalError" : "Serverfeil",
   "serverAuthenticationError" : "Uautorisert",
@@ -116,6 +125,7 @@
 
   "title-newcase": "Opprett Sak",
   "title-vedlegg": "Vedleggsinformasjon",
+  "title-svarpased": "Svar på SED",
 
   "validation-feiloppsummering" : "For å gå videre må du rette opp følgende:",
   "validation-invalidFnr": "Fnr må ha 11 siffer",
@@ -149,6 +159,6 @@
   "validation-fraDatoMonth" : "Datoen ha em ugyldig måned",
   "validation-tilDatoMonth" : "Datoen ha em ugyldig måned",
   "validation-noTema" :"Du må velge et tema",
-  "validation-noSaksnummer" : "Ingen saksnummer"
+  "validation-noSaksnummerOrFnr" : "Ingen saksnummer eller f.nr./d.nr."
 }
 

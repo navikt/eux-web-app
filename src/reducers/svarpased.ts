@@ -9,6 +9,7 @@ export interface SvarpasedState {
   familierelasjoner: Array<any>
   person: Person | null | undefined
   personRelatert: any
+  previousSpørreSed: string | undefined
   spørreSed: string | undefined
   svarSed: SvarSed | undefined
   svarPaSedOversikt: SvarPaSedOversikt | undefined
@@ -21,6 +22,7 @@ export interface SvarpasedState {
 
 export const initialSvarpasedState: SvarpasedState = {
   arbeidsforholdList: [],
+  previousSpørreSed: undefined,
   spørreSed: undefined,
   svarSed: undefined,
   svarPaSedOversikt: undefined,
@@ -77,7 +79,10 @@ const svarpasedReducer = (
     case types.SVARPASED_SVARSED_QUERY_SUCCESS:
       return {
         ...state,
-        svarSed: (action as ActionWithPayload).payload
+        svarSed: {
+          ...(action as ActionWithPayload).context.sedOversikt,
+          ...(action as ActionWithPayload).payload
+        }
       }
 
     case types.SVARPASED_SVARSED_QUERY_FAILURE:
@@ -110,6 +115,12 @@ const svarpasedReducer = (
         personRelatert: (action as ActionWithPayload).payload
       }
 
+    case types.SVARPASED_SAKSNUMMERORFNR_QUERY_SUCCESS:
+      return {
+        ...state,
+        svarPaSedOversikt: (action as ActionWithPayload).payload
+      }
+
     case types.SVARPASED_SENDSVARPASEDDATA_POST_SUCCESS:
       return {
         ...state,
@@ -125,6 +136,7 @@ const svarpasedReducer = (
     case types.SVARPASED_SPØRRESED_SET:
       return {
         ...state,
+        previousSpørreSed: state.spørreSed,
         spørreSed: (action as ActionWithPayload).payload
       }
 
@@ -169,6 +181,7 @@ const svarpasedReducer = (
       return {
         ...initialSvarpasedState,
         svarPaSedOversikt: state.svarPaSedOversikt,
+        previousSpørreSed: state.previousSpørreSed,
         spørreSed: state.spørreSed,
         svarSed: state.svarSed,
         valgtSvarSed: state.valgtSvarSed,
