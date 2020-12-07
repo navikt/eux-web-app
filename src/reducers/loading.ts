@@ -19,7 +19,8 @@ export const initialLoadingState: LoadingState = {
   sendingSak: false,
   sendingSvarPaSed: false,
   sendingSvarPaSedOversikt: false,
-  gettingSeds: false
+  gettingSeds: false,
+  queryingSvarSed: false
 }
 
 const loadingReducer = (
@@ -146,6 +147,19 @@ const loadingReducer = (
       return {
         ...state,
         sendingSvarPaSedOversikt: false
+      }
+
+    case types.SVARPASED_SVARSED_QUERY_REQUEST:
+      return {
+        ...state,
+        queryingSvarSed: true
+      }
+
+    case types.SVARPASED_SVARSED_QUERY_SUCCESS:
+    case types.SVARPASED_SVARSED_QUERY_FAILURE:
+      return {
+        ...state,
+        queryingSvarSed: false
       }
 
     case types.SVARPASED_SENDSVARPASEDDATA_POST_REQUEST:

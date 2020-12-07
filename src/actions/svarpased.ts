@@ -38,6 +38,20 @@ export const getSvarSedOversikt: ActionCreator<ThunkResult<ActionWithPayload>> =
   })
 }
 
+export const querySvarSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
+  saksnummer: string
+): ThunkResult<ActionWithPayload> => {
+  return realCall({
+    url: sprintf(urls.API_SVARPASED_SVARSED_QUERY_URL, { rinasaksnummer: saksnummer }),
+    expectedPayload: {},
+    type: {
+      request: types.SVARPASED_SVARSED_QUERY_REQUEST,
+      success: types.SVARPASED_SVARSED_QUERY_SUCCESS,
+      failure: types.SVARPASED_SVARSED_QUERY_FAILURE
+    }
+  })
+}
+
 export const setSvarSed: ActionCreator<ActionWithPayload> = (
   payload: SedOversikt
 ): ActionWithPayload => ({
