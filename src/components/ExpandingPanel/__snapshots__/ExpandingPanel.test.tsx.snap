@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/ExpandingPanel/ExpandingPanel Render: match snapshot 1`] = `
+exports['components/ExpandingPanel/ExpandingPanel Render: match snapshot 1'] = `
 .c0.ekspanderbartPanel--apen .ReactCollapse--collapse {
   will-change: max-height,height;
   max-height: 150em;
@@ -242,4 +242,4 @@ exports[`components/ExpandingPanel/ExpandingPanel Render: match snapshot 1`] = `
     </styled.div>
   </Component>
 </ExpandingPanel>
-`;
+`

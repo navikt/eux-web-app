@@ -1,4 +1,4 @@
-import { Arbeidsforhold, Inntekter, Sed, SvarPaSedOversikt } from 'declarations/types'
+import { Arbeidsforhold, Inntekter, Sed, SvarSed, SvarPaSedOversikt } from 'declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
 import { Action } from 'redux'
 import * as types from 'constants/actionTypes'
@@ -11,10 +11,11 @@ export interface SvarpasedState {
   personRelatert: any
   seds: Array<Sed> | undefined
   spørreSed: string | undefined
-  svarSed: Sed | undefined
+  svarSed: SvarSed | undefined
   svarPaSedOversikt: SvarPaSedOversikt | undefined
   svarPasedData: any
   valgteArbeidsforhold: Arbeidsforhold
+  valgtSvarSed: Sed | undefined
   inntekter: Inntekter | undefined
   selectedInntekter: Inntekter | undefined
 }
@@ -30,6 +31,7 @@ export const initialSvarpasedState: SvarpasedState = {
   familierelasjoner: [],
   svarPasedData: undefined,
   valgteArbeidsforhold: [],
+  valgtSvarSed: undefined,
   inntekter: undefined,
   selectedInntekter: undefined
 }
@@ -86,6 +88,18 @@ const svarpasedReducer = (
         svarPaSedOversikt: null
       }
 
+    case types.SVARPASED_SVARSED_QUERY_SUCCESS:
+      return {
+        ...state,
+        svarSed: (action as ActionWithPayload).payload
+      }
+
+    case types.SVARPASED_SVARSED_QUERY_FAILURE:
+      return {
+        ...state,
+        svarSed: null
+      }
+
     case types.SVARPASED_PERSON_GET_FAILURE:
       return {
         ...state,
@@ -131,7 +145,7 @@ const svarpasedReducer = (
     case types.SVARPASED_SVARSED_SET:
       return {
         ...state,
-        svarSed: (action as ActionWithPayload).payload
+        valgtSvarSed: (action as ActionWithPayload).payload
       }
 
     case types.SVARPASED_FAMILIERELASJONER_ADD:

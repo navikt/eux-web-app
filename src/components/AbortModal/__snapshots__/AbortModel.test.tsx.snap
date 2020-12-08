@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/AbortModal/AbortModal Render: match snapshot 1`] = `
+exports['components/AbortModal/AbortModal Render: match snapshot 1'] = `
 .c0 {
   margin: 1.5em 2em 3em 2em;
   text-align: center;
@@ -280,4 +280,4 @@ exports[`components/AbortModal/AbortModal Render: match snapshot 1`] = `
     </Modal>
   </ModalWrapper>
 </AbortModal>
-`;
+`

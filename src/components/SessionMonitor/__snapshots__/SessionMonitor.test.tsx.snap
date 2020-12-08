@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/SessionMonitor/SessionMonitor Renders 1`] = `
+exports['components/SessionMonitor/SessionMonitor Renders 1'] = `
 .c0 {
   position: fixed;
   bottom: 0;
@@ -28,4 +28,4 @@ exports[`components/SessionMonitor/SessionMonitor Renders 1`] = `
     </div>
   </styled.div>
 </SessionMonitor>
-`;
+`

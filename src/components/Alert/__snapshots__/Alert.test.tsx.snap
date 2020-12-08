@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/Alert/Alert Render: match snapshot 1`] = `
+exports['components/Alert/Alert Render: match snapshot 1'] = `
 .c0 {
   opacity: 0;
   -webkit-animation: cJoqxJ 0.5s forwards;
@@ -176,4 +176,4 @@ exports[`components/Alert/Alert Render: match snapshot 1`] = `
     </AlertStripe>
   </Styled(AlertStripe)>
 </Alert>
-`;
+`

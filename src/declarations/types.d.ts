@@ -153,6 +153,112 @@ export interface Sed {
   operation: string
 }
 
+export interface Arbeidsgiver {
+  arbeidsgiver: {
+    navn: string
+    adresse: {
+      gate: string
+      postnummer: string
+      by: string
+      land: string
+      bygning: string
+      region: string
+    },
+    identifikator: Array<{
+      type: string
+      id: string
+    }>
+  },
+  kreverinformasjonomtypearberidsforhold?: string
+  kreverinformasjonomantallarbeidstimer?: string
+  kreverinformasjonominntekt?:string
+}
+
+export interface SvarSed {
+  sedType: string
+  sedVersjon: string
+  bruker: {
+    personInfo: {
+      fornavn: string,
+      etternavn: string
+      kjoenn: string
+      foedselsdato: string
+      statsborgerskap: Array<{land: string}>
+      pin: Array<{
+        land: string
+        sektor: string
+        identifikator: string
+        institusjonsid: string
+        institusjonsnavn: string
+      }>
+      pinmangler: {
+        foedested: {
+          by: string
+          region: string
+          land: string
+        },
+        far: {
+          fornavn: string
+          etternavnvedfoedsel: string
+        },
+        mor: {
+          fornavn: string
+          etternavnvedfoedsel: string
+        },
+        etternavnvedfoedsel: string
+        fornavnvedfoedsel: string
+      }
+    }
+  },
+  anmodningsperiode: {
+    fastperiode: {
+      startdato: string
+      sluttdato: string
+    },
+    aapenperiode: {
+      startdato: string
+      type: string
+    }
+  },
+  lokaleSakIder: Array<{
+    saksnummer: string
+    institusjonsnavn: string
+    institusjonsid: string
+    land: string
+  }>,
+  dagpengeperioder: Array<{
+    periode: {
+      fastperiode: {
+        startdato: string
+        sluttdato: string
+      },
+      aapenperiode: {
+        startdato: string
+        type: string
+      }
+    },
+    institusjon: {
+      navn: string
+      id: string
+      idmangler: {
+        navn: string
+        adresse: {
+          gate: string
+          postnummer: string
+          by: string
+          land: string
+          bygning: string
+          region: string
+        }
+      }
+    }
+  }>,
+  ansattmedforsikring: Array<Arbeidsgiver>,
+  selvstendigmedforsikring: Array<Arbeidsgiver>,
+  ansattutenforsikring: Array<Arbeidsgiver>,
+  selvstendigutenforsikring: Array<Arbeidsgiver>
+}
+
 export interface UtgaarDatoPayload {
   naa?: string
   utgaarDato: string

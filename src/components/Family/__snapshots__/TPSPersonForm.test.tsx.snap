@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/Family/TPSPersonForm Render: match snapshot 1`] = `
+exports['components/Family/TPSPersonForm Render: match snapshot 1'] = `
 .c3 {
   margin-bottom: 1rem;
 }
@@ -235,4 +235,4 @@ exports[`components/Family/TPSPersonForm Render: match snapshot 1`] = `
     </div>
   </styled.div>
 </TPSPersonForm>
-`;
+`

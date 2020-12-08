@@ -9,7 +9,7 @@ export const API_SAK_SEND_URL = API_BASE_URL + '/rina/sak'
 export const API_SVARPASED_SEND_POST_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed'
 export const API_SVARPASED_TYPER_URL = API_BASE_URL + '/rina/svarsedtyper?rinasaksnummer=%(rinasaksnummer)s'
 export const API_SVARPASED_OVERSIKT_URL = API_BASE_URL + '/rina/sak/%(rinasaksnummer)s/svarsedoversikt'
-export const API_SVARPASED_SVARSED_QUERY_URL = '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/svarsed/%(sedType)s'
+export const API_SVARPASED_SVARSED_QUERY_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/svarsed/%(sedType)s'
 
 // Registre
 export const API_SAK_ARBEIDSFORHOLD_URL = API_BASE_URL + '/arbeidsforhold/%(fnr)s'

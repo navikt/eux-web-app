@@ -25,6 +25,7 @@ import Alertstripe from 'nav-frontend-alertstriper'
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel'
 import { Knapp } from 'nav-frontend-knapper'
 import { Feiloppsummering, FeiloppsummeringFeil, Input, Select } from 'nav-frontend-skjema'
+import { Normaltekst } from 'nav-frontend-typografi'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -32,7 +33,7 @@ import { SvarpasedState } from 'reducers/svarpased'
 import styled from 'styled-components'
 import { Item } from 'tabell'
 
-const SaksnummerDiv = styled.div`
+const InputAndButtonDiv = styled.div`
   display: flex;
   align-items: flex-end;
   flex-direction: row;
@@ -61,6 +62,7 @@ const mapState = (state: State): any => ({
   gettingPerson: state.loading.gettingPerson,
   gettingSaksnummer: state.loading.gettingSaksnummer,
   sendingSvarPaSed: state.loading.sendingSvarPaSed,
+  queryingSvarSed: state.loading.queryingSvarSed,
 
   arbeidsforholdList: state.svarpased.arbeidsforholdList,
   inntekter: state.svarpased.inntekter,
@@ -69,10 +71,11 @@ const mapState = (state: State): any => ({
   spørreSed: state.svarpased.spørreSed,
   svarSed: state.svarpased.svarSed,
   svarPaSedOversikt: state.svarpased.svarPaSedOversikt,
-  //seds: state.svarpased.seds,
+  // seds: state.svarpased.seds,
   svarPasedData: state.svarpased.svarPasedData,
   valgteFamilieRelasjoner: state.svarpased.familierelasjoner,
-  valgteArbeidsforhold: state.svarpased.valgteArbeidsforhold
+  valgteArbeidsforhold: state.svarpased.valgteArbeidsforhold,
+  valgtSvarSed: state.svarpased.valgtSvarSed
 })
 
 const mapStateTwo = (state: State): any => ({
@@ -80,7 +83,7 @@ const mapStateTwo = (state: State): any => ({
   familieRelasjoner: state.svarpased.familierelasjoner,
   inntekter: state.svarpased.selectedInntekter,
   person: state.svarpased.person,
-  sed: state.svarpased.svarSed
+  sed: state.svarpased.valgtSvarSed
 })
 
 export interface SvarPaSedProps {
@@ -107,23 +110,25 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
     gettingSaksnummer,
     gettingPerson,
     sendingSvarPaSed,
+    queryingSvarSed,
 
     arbeidsforholdList,
     inntekter,
     person,
     personRelatert,
-    //seds,
+    // seds,
     spørreSed,
     svarSed,
     svarPaSedOversikt,
     svarPasedData,
     valgteArbeidsforhold,
-    valgteFamilieRelasjoner
+    valgteFamilieRelasjoner,
+    valgtSvarSed
   }: any = useSelector<State, any>(mapState)
   const data: SvarpasedState = useSelector<State, SvarpasedState>(mapStateTwo)
 
   const onSaksnummerClick = () => {
-    //dispatch(svarpasedActions.getSeds(_saksnummer))
+    // dispatch(svarpasedActions.getSeds(_saksnummer))
     dispatch(svarpasedActions.getSvarSedOversikt(_saksnummer))
   }
 
@@ -168,7 +173,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
 
   const sendData = (): void => {
     if (isValid(validate())) {
-      dispatch(svarpasedActions.sendSvarPaSedData(_saksnummer, svarSed.queryDocumentId, svarSed.replySedType, data))
+      dispatch(svarpasedActions.sendSvarPaSedData(_saksnummer, valgtSvarSed.queryDocumentId, valgtSvarSed.replySedType, data))
     }
   }
 
@@ -189,6 +194,10 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
     }
   }
 
+  const onSvarSedClick = () => {
+    dispatch(svarpasedActions.querySvarSed(_saksnummer, valgtSvarSed.queryDocumentId, valgtSvarSed.replySedType))
+  }
+
   const addTpsRelation = (relation: FamilieRelasjon): void => {
     /* Person fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
     dispatch(
@@ -199,9 +208,9 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
     )
   }
 
-  const showArbeidsforhold = (): boolean => svarSed?.replySedType === 'U002' || svarSed?.replySedType === 'U007'
+  const showArbeidsforhold = (): boolean => valgtSvarSed?.replySedType === 'U002' || valgtSvarSed?.replySedType === 'U007'
 
-  const showInntekt = (): boolean => svarSed?.replySedType === 'U004'
+  const showInntekt = (): boolean => valgtSvarSed?.replySedType === 'U004'
 
   const onSelectedInntekt = (items: Array<Item>) => {
     const inntekter: Inntekter = items.map(
@@ -225,7 +234,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
       const fnrParam : string | null = params.get('fnr')
       if (rinasaksnummerParam) {
         setSaksnummer(rinasaksnummerParam)
-        //dispatch(svarpasedActions.getSeds(rinasaksnummerParam))
+        // dispatch(svarpasedActions.getSeds(rinasaksnummerParam))
         dispatch(svarpasedActions.getSvarSedOversikt(rinasaksnummerParam))
       }
       if (fnrParam) {
@@ -242,7 +251,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
       <Container>
         <Margin />
         <Content>
-          <SaksnummerDiv>
+          <InputAndButtonDiv>
             <SaksnummerInput
               bredde='M'
               data-test-id='svarpased__saksnummer-input'
@@ -261,7 +270,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
             >
               {t('ui:form-get')}
             </Knapp>
-          </SaksnummerDiv>
+          </InputAndButtonDiv>
           <VerticalSeparatorDiv />
           {svarPaSedOversikt && (
             <>
@@ -285,24 +294,54 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
               </SedSelect>
               <VerticalSeparatorDiv />
               {spørreSed && (
-                <SedSelect
-                  data-test-id='svarpased__svarsed-select'
-                  id='svarpased__svarsed-select'
-                  label={t('ui:label-chooseSvarSed')}
-                  onChange={onSvarSedChange}
-                  feil={_validation.svarSed ? _validation.svarSed.feilmelding : undefined}
-                >
-                  <option key=''>-</option>
-                  {svarPaSedOversikt[spørreSed].map((sed: SedOversikt) => (
-                    <option
-                      key={sed.queryDocumentId}
-                      value={sed.replySedType}
-                      selected={svarSed ? svarSed.queryDocumentId === sed.queryDocumentId : false}
-                    >
-                      {sed.replySedType} - {sed.replyDisplay}
-                    </option>
-                  ))}
-                </SedSelect>
+                <InputAndButtonDiv>
+                  <SedSelect
+                    data-test-id='svarpased__svarsed-select'
+                    id='svarpased__svarsed-select'
+                    label={t('ui:label-chooseSvarSed')}
+                    onChange={onSvarSedChange}
+                    feil={_validation.svarSed ? _validation.svarSed.feilmelding : undefined}
+                  >
+                    <option key=''>-</option>
+                    {svarPaSedOversikt[spørreSed].map((sed: SedOversikt) => (
+                      <option
+                        key={sed.queryDocumentId}
+                        value={sed.replySedType}
+                        selected={valgtSvarSed ? valgtSvarSed.queryDocumentId === sed.queryDocumentId : false}
+                      >
+                        {sed.replySedType} - {sed.replyDisplay}
+                      </option>
+                    ))}
+                  </SedSelect>
+                  {valgtSvarSed && (
+                    <>
+                      <HorizontalSeparatorDiv data-size='2' />
+                      <Knapp
+                        disabled={queryingSvarSed}
+                        spinner={queryingSvarSed}
+                        onClick={onSvarSedClick}
+                      >
+                        {t('ui:form-get')}
+                      </Knapp>
+                    </>
+                  )}
+                </InputAndButtonDiv>
+              )}
+              {svarSed && (
+                <>
+                  <VerticalSeparatorDiv data-size='2' />
+                  <fieldset style={{ width: '50%' }}>
+                    <legend>
+                      {t('ui:label-userInSed')}
+                    </legend>
+                    <Normaltekst>
+                      {t('ui:label-name')}: {svarSed.bruker.personInfo.fornavn} {svarSed.bruker.personInfo.etternavn}
+                    </Normaltekst>
+                    <Normaltekst>
+                      {t('ui:label-birthDate')}: {svarSed.bruker.personInfo.foedselsdato}
+                    </Normaltekst>
+                  </fieldset>
+                </>
               )}
               <VerticalSeparatorDiv />
             </>
@@ -331,7 +370,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
           <VerticalSeparatorDiv />
           {!_.isNil(person) && (
             <>
-              {svarSed?.replySedType.startsWith('F') && (
+              {valgtSvarSed?.replySedType.startsWith('F') && (
                 <>
                   <Ekspanderbartpanel tittel={t('ui:label-familyRelationships')}>
                     <Family

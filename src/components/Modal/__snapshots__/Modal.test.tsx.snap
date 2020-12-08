@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/Modal Renders 1`] = `
+exports['components/Modal Renders 1'] = `
 .c0 {
   width: auto !important;
   height: auto !important;
@@ -375,4 +375,4 @@ exports[`components/Modal Renders 1`] = `
     </ModalWrapper>
   </Styled(ModalWrapper)>
 </Modal>
-`;
+`

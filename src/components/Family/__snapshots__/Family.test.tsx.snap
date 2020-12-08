@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/Family/Family Renders 1`] = `
+exports['components/Family/Family Renders 1'] = `
 .c1 {
   margin-bottom: 1rem;
 }
@@ -752,4 +752,4 @@ exports[`components/Family/Family Renders 1`] = `
     </styled.div>
   </div>
 </Family>
-`;
+`

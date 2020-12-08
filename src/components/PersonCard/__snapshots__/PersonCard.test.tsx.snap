@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/PersonCard/PersonCard Renders 1`] = `
+exports['components/PersonCard/PersonCard Renders 1'] = `
 .c3 {
   margin-left: 1rem;
 }
@@ -440,4 +440,4 @@ exports[`components/PersonCard/PersonCard Renders 1`] = `
     </Panel>
   </Styled(Panel)>
 </PersonCard>
-`;
+`
