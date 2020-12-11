@@ -1,62 +1,16 @@
-import { clientClear } from 'actions/alert'
-import * as appActions from 'actions/app'
-import { setSpørreSed } from 'actions/svarpased'
+import { setStatusParam } from 'actions/app'
 import * as svarpasedActions from 'actions/svarpased'
-import Tilsette from 'assets/icons/Tilsette'
-import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
-import Alert from 'components/Alert/Alert'
-import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
-import Family from 'components/Family/Family'
-import Inntekt from 'components/Inntekt/Inntekt'
-import PersonCard from 'components/PersonCard/PersonCard'
-import SEDPanel from 'components/SEDPanel/SEDPanel'
-import {
-  AlignCenterColumn,
-  AlignedRow,
-  Column,
-  Container,
-  Content,
-  HiddenFormContainer, HighContrastFlatknapp,
-  HighContrastHovedknapp,
-  HighContrastInput,
-  HighContrastKnapp,
-  HighContrastPanel,
-  HorizontalSeparatorDiv,
-  LineSeparator,
-  Margin,
-  RadioEl,
-  RadioGroup,
-  Row,
-  VerticalSeparatorDiv
-} from 'components/StyledComponents'
+import { fadeIn, fadeOut } from 'components/keyframes'
+import { Container, Content, Margin, VerticalSeparatorDiv } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
-import * as types from 'constants/actionTypes'
-import { AlertStatus } from 'declarations/components'
-import { State } from 'declarations/reducers'
-import {
-  Arbeidsforholdet,
-  FamilieRelasjon,
-  Inntekt as IInntekt,
-  Inntekter,
-  Periode,
-  Person,
-  SedOversikt,
-  SvarSed,
-  Validation
-} from 'declarations/types'
-import _ from 'lodash'
-import AlertStripe from 'nav-frontend-alertstriper'
-import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel'
-import { Knapp } from 'nav-frontend-knapper'
-import { Feiloppsummering, FeiloppsummeringFeil, Input, Select } from 'nav-frontend-skjema'
-import { Normaltekst, Systemtittel, Undertittel } from 'nav-frontend-typografi'
-import React, { useEffect, useState } from 'react'
+import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
+import { Systemtittel } from 'nav-frontend-typografi'
+import PT from 'prop-types'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
-import { SvarpasedState } from 'reducers/svarpased'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
-import { Item } from 'tabell'
 
 const SaksnummerOrFnrInput = styled(HighContrastInput)`
   margin-right: 1rem;
@@ -127,165 +81,214 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
     queryingSaksnummerOrFnr,
     queryingSvarSed,
     sendingSvarPaSed,
+=======
+>>>>>>> Using slider for SvarPaSed
 
-    arbeidsforholdList,
-    inntekter,
-    person,
-    personRelatert,
-    previousSpørreSed,
-    spørreSed,
-    svarSed,
-    svarPaSedOversikt,
-    svarPasedData,
-    valgteArbeidsforhold,
-    valgteFamilieRelasjoner,
-    valgtSvarSed,
+import Step1 from './SvarPaSed/Step1'
+import Step2 from './SvarPaSed/Step2'
 
-    highContrast
-  }: any = useSelector<State, SvarpasedState>(mapState)
+const transition = 1000
+const timeout = 1001
+const zoomOutTransition = 100
 
-/*  const onSaksnummerClick = () => {
-    dispatch(svarpasedActions.getSvarSedOversikt(_saksnummerOrFnr))
-  }
-*/
-  const onSaksnummerOrFnrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(appActions.cleanData())
-    setSaksnummerOrFnr(e.target.value)
-    setIsFnrValid(false)
-    resetValidation('saksnummerOrFnr')
-  }
-
-  const onSaksnummerOrFnrClick = () => {
-    if (!_saksnummerOrFnr) {
-      setValidation({
-        ..._validation,
-        saksnummerOrFnr: {
-          feilmelding: t('ui:validation-noSaksnummerOrFnr'),
-          skjemaelementId: 'svarpased__saksnummerOrFnr-input'
-        } as FeiloppsummeringFeil
-      })
-    } else {
-      dispatch(svarpasedActions.querySaksnummerOrFnr(_saksnummerOrFnr))
+const AnimatableDiv = styled.div`
+  flex: 1;
+  background: inherit;
+  &.animate {
+    will-change: transform, opacity;
+    pointer-events: none;
+    * {
+      pointer-events: none;
     }
+    transition: transform ${transition}ms ease-in-out;
   }
+  &.left {
+    transform: translateX(0%);
+  }
+  &.right {
+    transform: translateX(20%);
+  }
+  &.alt_left {
+    transform: translateX(-120%);
+  }
+  &.alt_right {
+    transform: translateX(-100%);
+  }
+  &.A_going_to_left {
+    transform: translateX(-120%);
+    animation: ${fadeOut} ${transition}ms forwards;
+  }
+  &.A_going_to_right {
+    animation: ${fadeIn} ${transition}ms forwards;
+    transform: translateX(0%);
+  }
+  &.B_going_to_left {
+    animation: ${fadeIn} ${transition}ms forwards;
+    transform: translateX(-100%);
+  }
+  &.B_going_to_right {
+    animation: ${fadeOut} ${transition}ms forwards;
+    transform: translateX(20%);
+  }
+`
+export const ContainerDiv = styled.div`
+  width: 100%;
+  display: block;
+  overflow: hidden;
+  will-change: transform;
+  &.shrink {
+    transform: scale(0.98);
+    transform-origin: center center;
+    transition: transform ${zoomOutTransition}ms ease-in;
+  }
+  &:not(.shrink) {
+    transform: scale(1);
+    transform-origin: center center;
+    transition: transform ${zoomOutTransition}ms ease-out;
+  }
+`
+const WaitingPanelDiv = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+`
+export const WindowDiv = styled.div`
+  width: 200%;
+  display: flex;
+  overflow: hidden;
+`
 
-  const validate = (): Validation => {
-    const validation: Validation = {
-      saksnummerOrFnr: !_saksnummerOrFnr
-        ? {
-          feilmelding: t('ui:validation-noSaksnummerOrFnr'),
-          skjemaelementId: 'svarpased__saksnummerOrFnr-input'
-        } as FeiloppsummeringFeil
-        : undefined,
-      svarSed: !valgtSvarSed
-        ? {
-          feilmelding: t('ui:validation-noSedtype'),
-          skjemaelementId: 'svarpased__svarsed-select'
-        } as FeiloppsummeringFeil
-        : undefined
+export interface SvarPaSedPageProps {
+  allowFullScreen?: boolean
+  onFullFocus?: () => void
+  onRestoreFocus?: () => void
+  waitForMount?: boolean
+  location: any
+  setMode: (mode: string, from: string, callback?: () => void) => void
+}
+
+export type Mode = '1'| '2'
+
+export enum Slide {
+  LEFT,
+  RIGHT,
+  ALT_LEFT,
+  ALT_RIGHT,
+  A_GOING_TO_LEFT,
+  A_GOING_TO_RIGHT,
+  B_GOING_TO_LEFT,
+  B_GOING_TO_RIGHT
+}
+
+export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
+  location,
+  waitForMount = true
+}: SvarPaSedPageProps): JSX.Element => {
+  const dispatch = useDispatch()
+  const { t } = useTranslation()
+  const [_mounted, setMounted] = useState<boolean>(!waitForMount)
+  const [positionA, setPositionA] = useState<Slide>(Slide.LEFT)
+  const [positionB, setPositionB] = useState<Slide>(Slide.RIGHT)
+  const [contentA, setContentA] = useState<any>(null)
+  const [contentB, setContentB] = useState<any>(null)
+  const [animating, setAnimating] = useState<boolean>(false)
+
+  const WaitingDiv = (
+    <WaitingPanelDiv>
+      <WaitingPanel />
+    </WaitingPanelDiv>
+  )
+
+  const _setMode = useCallback((newMode: string, from: string, callback?: () => void) => {
+    if (animating) {
+      return
     }
-    setValidation(validation)
-    return validation
-  }
-
-  const resetValidation = (key?: Array<string> | string): void => {
-    const newValidation = _.cloneDeep(_validation)
-    if (!key) {
-      setValidation({})
+    if (newMode === '1') {
+      if (!from || from === 'none') {
+        setPositionA(Slide.LEFT)
+        setPositionB(Slide.RIGHT)
+        if (callback) {
+          callback()
+        }
+      }
+      if (from === 'back') {
+        setPositionA(Slide.A_GOING_TO_RIGHT)
+        setPositionB(Slide.B_GOING_TO_RIGHT)
+        setAnimating(true)
+        setTimeout(() => {
+          console.log('Timeout end')
+          setPositionA(Slide.LEFT)
+          setPositionB(Slide.RIGHT)
+          setAnimating(false)
+          if (callback) {
+            callback()
+          }
+        }, timeout)
+      }
+      setContentA(<Step1 mode={newMode} setMode={_setMode} />)
     }
-    if (_.isString(key)) {
-      newValidation[key] = undefined
+    if (newMode === '2') {
+      if (!from || from === 'none') {
+        setPositionA(Slide.ALT_LEFT)
+        setPositionB(Slide.ALT_RIGHT)
+        if (callback) {
+          callback()
+        }
+      }
+      if (from === 'forward') {
+        setPositionA(Slide.A_GOING_TO_LEFT)
+        setPositionB(Slide.B_GOING_TO_LEFT)
+        setAnimating(true)
+        setTimeout(() => {
+          console.log('Timeout end')
+          setPositionA(Slide.ALT_LEFT)
+          setPositionB(Slide.ALT_RIGHT)
+          setAnimating(false)
+          if (callback) {
+            callback()
+          }
+        }, timeout)
+      }
+      setContentB(<Step2 mode={newMode} setMode={_setMode} />)
     }
-    if (_.isArray(key)) {
-      key.forEach((k) => {
-        newValidation[k] = undefined
-      })
-    }
-    setValidation(newValidation)
-  }
-
-  const isValid = (_validation: Validation): boolean => {
-    return _.find(_.values(_validation), (e) => e !== undefined) === undefined
-  }
-
-  const sendData = (): void => {
-    if (isValid(validate())) {
-      dispatch(svarpasedActions.sendSvarPaSedData(_saksnummerOrFnr, valgtSvarSed.querySedDocumentId, valgtSvarSed.replySedType, data))
-    }
-  }
-
-  const onSpørreSedChange = (e: any) => {
-    const selectedSed: string | undefined = e.target.value
-    if (selectedSed) {
-      dispatch(svarpasedActions.setSpørreSed(selectedSed))
-    }
-  }
-
-  const onSvarSedClick = (sedOversikt: SedOversikt) => {
-    resetValidation('svarSed')
-    setSpørreSed()
-    dispatch(svarpasedActions.querySvarSed(_saksnummerOrFnr, sedOversikt))
-  }
-
-  const addTpsRelation = (relation: FamilieRelasjon): void => {
-    /* Person fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
-    dispatch(
-      svarpasedActions.addFamilierelasjoner({
-        ...relation,
-        nasjonalitet: 'NO'
-      })
-    )
-  }
-
-  const showArbeidsforhold = (): boolean => valgtSvarSed?.replySedType === 'U002' || valgtSvarSed?.replySedType === 'U017'
-
-  const showInntekt = (): boolean => valgtSvarSed?.replySedType === 'U004'
-
-  const onSelectedInntekt = (items: Array<Item>) => {
-    const inntekter: Inntekter = items.map(
-      (item) =>
-        ({
-          beloep: item.beloep,
-          fraDato: item.fraDato,
-          tilDato: item.tilDato,
-          type: item.type
-        } as IInntekt)
-    )
-    if (items) {
-      dispatch(svarpasedActions.sendSeletedInntekt(inntekter))
-    }
-  }
+  }, [animating, dispatch])//, allowFullScreen, onFullFocus, onRestoreFocus])
 
   useEffect(() => {
     if (!_mounted) {
       const params: URLSearchParams = new URLSearchParams(location.search)
       const rinasaksnummerParam: string | null = params.get('rinasaksnummer')
-      if (rinasaksnummerParam) {
-        dispatch(svarpasedActions.querySaksnummerOrFnr(rinasaksnummerParam))
+
+      const fnrParam : string | null = params.get('fnr')
+      if (rinasaksnummerParam || fnrParam) {
+        setStatusParam('rinasaksnummerOrFnr', rinasaksnummerParam || fnrParam || undefined)
+        dispatch(svarpasedActions.querySaksnummerOrFnr(rinasaksnummerParam || fnrParam || undefined))
       }
+
+      setContentA(<Step1 mode='1' setMode={_setMode} />)
+      _setMode('1', 'none')
       setMounted(true)
     }
-  }, [dispatch, _mounted, location.search])
+  }, [dispatch, _mounted, _setMode, WaitingDiv, location.search])
 
-  // when I have fnr:
-  //
-  useEffect(() => {
-    if (person === undefined && !gettingPerson && !_.isNil(svarSed)) {
-      const pin = _.find(svarSed.bruker.personInfo.pin, p => p.land === 'NO')
-      if (pin) {
-        const fnr = pin.identifikator
-        dispatch(svarpasedActions.getPerson(fnr))
-        dispatch(svarpasedActions.getArbeidsforholdList(fnr))
-      }
-    }
-  }, [person, _person, gettingPerson, svarSed])
 
-  useEffect(() => {
-    if (!_.isNil(person) && _person === undefined) {
-      setPerson(person)
-      setFnr(person.fnr)
-    }
-  }, [person, person, _fnr])
+  if (!_mounted) {
+    return WaitingDiv
+  }
+
+  const cls = (position: Slide) => ({
+    animate: ![Slide.LEFT, Slide.RIGHT, Slide.ALT_LEFT, Slide.ALT_RIGHT].includes(position),
+    A_going_to_left: Slide.A_GOING_TO_LEFT === position,
+    A_going_to_right: Slide.A_GOING_TO_RIGHT === position,
+    B_going_to_left: Slide.B_GOING_TO_LEFT === position,
+    B_going_to_right: Slide.B_GOING_TO_RIGHT === position,
+    alt_left: Slide.ALT_LEFT === position,
+    alt_right: Slide.ALT_RIGHT === position,
+    right: Slide.RIGHT === position,
+    left: Slide.LEFT === position
+  })
 
   return (
     <TopContainer>
@@ -295,296 +298,26 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
           <Systemtittel>
             {t('ui:title-svarpased')}
           </Systemtittel>
-          <VerticalSeparatorDiv data-size='2'/>
-          <AlignedRow className={classNames({ feil: _validation.saksnummerOrFnr })}>
-            <Column>
-              <SaksnummerOrFnrInput
-                bredde='L'
-                data-test-id='svarpased__saksnummerOrFnr-input'
-                feil={_validation.saksnummerOrFnr ? _validation.saksnummerOrFnr.feilmelding : undefined}
-                id='svarpased__saksnummerOrFnr-input'
-                label={t('ui:label-saksnummerOrFnr')}
-                onChange={onSaksnummerOrFnrChange}
-                placeholder={t('ui:placeholder-saksnummerOrFnr')}
-                value={_saksnummerOrFnr}
-              />
-            </Column>
-            <AlignCenterColumn>
-              <HighContrastKnapp
-                disabled={queryingSaksnummerOrFnr}
-                spinner={queryingSaksnummerOrFnr}
-                onClick={onSaksnummerOrFnrClick}
-              >
-                {queryingSaksnummerOrFnr ? t('ui:form-searching') : t('ui:form-search')}
-              </HighContrastKnapp>
-            </AlignCenterColumn>
-            <Column/>
-          </AlignedRow>
-          <VerticalSeparatorDiv />
-          {svarPaSedOversikt && (
-            <>
-              <Row>
-                <Column>
-                  <RadioGroup
-                    legend={t('ui:label-searchResultsForSaksnummerOrFnr', {
-                      antall: Object.keys(svarPaSedOversikt).length,
-                      saksnummerOrFnr: _saksnummerOrFnr
-                    })}
-                    feil={undefined}
-                  >
-                    {Object.keys(svarPaSedOversikt)?.map((sed: string) => (
-                      <>
-                        <RadioEl
-                          name={'svarpased__saksnummerOrFnr-results'}
-                          value={sed}
-                          checked={spørreSed === sed}
-                          label={sed}
-                          className='slideAnimate'
-                          onChange={onSpørreSedChange}
-                        />
-                        {svarPaSedOversikt[sed].map((sedoversikt: SedOversikt) => (
-                          <HiddenFormContainer className={classNames({
-                            slideOpen: previousSpørreSed !== sed && spørreSed === sed,
-                            slideClose: previousSpørreSed === sed && spørreSed !== sed,
-                            closed: !( (previousSpørreSed !== sed && spørreSed === sed) || (previousSpørreSed === sed && spørreSed !== sed))
-                          })}>
-                            <HighContrastPanel>
-                              <FlexDiv>
-                                <div>
-                                  <Normaltekst>
-                                    {sedoversikt.replySedType} {sedoversikt.replyDisplay}
-                                  </Normaltekst>
-                                  <Normaltekst>
-                                    {sedoversikt.queryDocumentId}
-                                  </Normaltekst>
-                                </div>
-                                <HorizontalSeparatorDiv/>
-                                <HighContrastHovedknapp
-                                  disabled={queryingSvarSed}
-                                  spinner={queryingSvarSed}
-                                  mini
-                                  kompakt
-                                  onClick={() => onSvarSedClick(sedoversikt)}
-                                  >
-                                  {queryingSvarSed ? t('ui:label-replying') : t('ui:label-reply')}
-                                </HighContrastHovedknapp>
-                              </FlexDiv>
-                            </HighContrastPanel>
-                            <VerticalSeparatorDiv/>
-                          </HiddenFormContainer>
-                        ))}
-                      </>
-                    ))}
-
-                  </RadioGroup>
-                </Column>
-                <Column/>
-              </Row>
-            </>
-          )}
-          <VerticalSeparatorDiv data-size='2'/>
-          {svarSed && (
-            <Row>
-              <Column style={{flex: 2}}>
-                <Systemtittel>
-                  {svarSed.replySedType} - {svarSed.replyDisplay}
-                </Systemtittel>
-                <VerticalSeparatorDiv/>
-                <Undertittel>
-                  {t('ui:label-choosePurpose')}
-                </Undertittel>
-                <VerticalSeparatorDiv/>
-                {_formal && _formal.map(f => (
-                  <FlexDiv>
-                    <Normaltekst>
-                      {f}
-                    </Normaltekst>
-                    <HighContrastFlatknapp
-                      mini
-                      kompakt
-                      onClick={() => setFormal(_.filter(_formal, _f => _f !== f))}
-                    >
-                      <Trashcan/>
-                      <HorizontalSeparatorDiv data-size='0.5'/>
-                      {t('ui:form-remove')}
-                    </HighContrastFlatknapp>
-                  </FlexDiv>
-                ))}
-              {!_addFormal ? (
-                <>
-                  <HighContrastFlatknapp
-                    onClick={() => setAddFormal(!_addFormal)}
-                  >
-                    <Tilsette/>
-                    <HorizontalSeparatorDiv data-size='0.5'/>
-                    {t('ui:form-addPurpose')}
-                  </HighContrastFlatknapp>
-                </>
-              ) : (
-                <FlexDiv>
-                  <HighContrastInput
-                    bredde='XXL'
-                    style={{flex: 2}}
-                    value={_newFormal}
-                    onChange={(e) => setNewFormal(e.target.value)}
-                  >
-                  </HighContrastInput>
-                  <HorizontalSeparatorDiv data-size='0.5'/>
-                  <FlexDiv>
-                    <HighContrastKnapp
-                      mini
-                      kompakt
-                      onClick={() => {
-                        setFormal(_formal.concat(_newFormal))
-                        setNewFormal('')
-                      }}
-                    >
-                      <Tilsette/>
-                      <HorizontalSeparatorDiv data-size='0.5'/>
-                      {t('ui:form-add')}
-                    </HighContrastKnapp>
-                    <HorizontalSeparatorDiv data-size='0.5'/>
-                    <HighContrastFlatknapp
-                      mini
-                      kompakt
-                      onClick={() => setAddFormal(!_addFormal)}
-                    >
-                      {t('ui:form-cancel')}
-                    </HighContrastFlatknapp>
-                  </FlexDiv>
-                </FlexDiv>
-              )}
-              </Column>
-              <VerticalSeparatorDiv />
-              <LineSeparator>&nbsp;</LineSeparator>
-              <VerticalSeparatorDiv />
-              <Column>
-                <SEDPanel svarSed={svarSed}/>
-              </Column>
-            </Row>
-          )}
-          <VerticalSeparatorDiv />
-
-
-          {!_.isNil(person) && (
-            <>
-              {valgtSvarSed?.replySedType.startsWith('F') && (
-                <>
-                  <Ekspanderbartpanel tittel={t('ui:label-familyRelationships')}>
-                    <Family
-                      alertStatus={alertStatus}
-                      alertMessage={alertMessage}
-                      alertType={alertType}
-                      abroadPersonFormAlertTypesWatched={[types.SVARPASED_ABROADPERSON_ADD_FAILURE]}
-                      TPSPersonFormAlertTypesWatched={[
-                        types.SVARPASED_PERSON_RELATERT_GET_FAILURE,
-                        types.SVARPASED_TPSPERSON_ADD_FAILURE
-                      ]}
-                      familierelasjonKodeverk={familierelasjonKodeverk}
-                      personRelatert={personRelatert}
-                      person={_person}
-                      valgteFamilieRelasjoner={valgteFamilieRelasjoner}
-                      onAbroadPersonAddedFailure={() => dispatch({ type: types.SVARPASED_ABROADPERSON_ADD_FAILURE })}
-                      onAbroadPersonAddedSuccess={(_relation) => {
-                        dispatch(svarpasedActions.addFamilierelasjoner(_relation))
-                        dispatch({ type: types.SVARPASED_ABROADPERSON_ADD_SUCCESS })
-                      }}
-                      onRelationAdded={(relation: FamilieRelasjon) => addTpsRelation(relation)}
-                      onRelationRemoved={(relation: FamilieRelasjon) => dispatch(svarpasedActions.removeFamilierelasjoner(relation))}
-                      onRelationReset={() => dispatch(svarpasedActions.resetPersonRelatert())}
-                      onTPSPersonAddedFailure={() => dispatch({ type: types.SVARPASED_TPSPERSON_ADD_FAILURE })}
-                      onTPSPersonAddedSuccess={(e: any) => {
-                        dispatch(svarpasedActions.addFamilierelasjoner(e))
-                        dispatch({ type: types.SVARPASED_TPSPERSON_ADD_SUCCESS })
-                      }}
-                      onAlertClose={() => dispatch(clientClear())}
-                      onSearchFnr={(sok) => {
-                        dispatch(svarpasedActions.resetPersonRelatert())
-                        dispatch(svarpasedActions.getPersonRelated(sok))
-                      }}
-                    />
-                  </Ekspanderbartpanel>
-                  <VerticalSeparatorDiv />
-                </>
-              )}
-              {showArbeidsforhold() && (
-                <>
-                  <Ekspanderbartpanel tittel={t('ui:label-arbeidsforhold')}>
-                    <Arbeidsforhold
-                      getArbeidsforholdList={() => dispatch(svarpasedActions.getArbeidsforholdList(_person?.fnr))}
-                      valgteArbeidsforhold={valgteArbeidsforhold}
-                      arbeidsforholdList={arbeidsforholdList}
-                      onArbeidsforholdClick={(item: any, checked: boolean) => dispatch(
-                        checked
-                          ? svarpasedActions.addArbeidsforhold(item)
-                          : svarpasedActions.removeArbeidsforhold(item)
-                      )}
-                    />
-                  </Ekspanderbartpanel>
-                  <VerticalSeparatorDiv />
-                </>
-              )}
-              {showInntekt() && _person && _person!.fnr && (
-                <Ekspanderbartpanel tittel={t('ui:label-inntekt')}>
-                  <Inntekt
-                    fnr={person.fnr}
-                    highContrast={highContrast}
-                    inntekter={inntekter}
-                    onSelectedInntekt={onSelectedInntekt}
-                  />
-                </Ekspanderbartpanel>
-              )}
-              <VerticalSeparatorDiv />
-              <Knapp
-                onClick={sendData}
-                disabled={sendingSvarPaSed}
-                spinner={sendingSvarPaSed}
-              >
-                {sendingSvarPaSed ? t('ui:label-sendingSvarSed') : t('ui:label-sendSvarSed')}
-              </Knapp>
-              {!isValid(_validation) && (
-                <>
-                  <VerticalSeparatorDiv data-size='2' />
-                  <Row>
-                    <Column>
-                      <Feiloppsummering
-                        data-test-id='opprettsak__feiloppsummering'
-                        tittel={t('ui:validation-feiloppsummering')}
-                        feil={Object.values(_validation).filter(v => v !== undefined) as Array<FeiloppsummeringFeil>}
-                      />
-                    </Column>
-                    <HorizontalSeparatorDiv data-size='2' />
-                    <Column />
-                  </Row>
-                </>
-              )}
-              {alertMessage && alertType && [types.SVARPASED_SENDSVARPASEDDATA_POST_FAILURE].indexOf(alertType) >= 0 && (
-                <AlertstripeDiv>
-                  <Alert
-                    type='client'
-                    fixed={false}
-                    message={t(alertMessage)}
-                    status={alertStatus as AlertStatus}
-                    onClose={() => dispatch(clientClear())}
-                  />
-                </AlertstripeDiv>
-              )}
-              {!_.isNil(svarPasedData) && (
-                <AlertStripe type='suksess'>
-                  <FlexDiv>
-                    <span>
-                      {t('ui:form-sedId') + ': ' + svarPasedData.sedId}
-                    </span>
-                    <HorizontalSeparatorDiv data-size='0.25' />
-                    <span>
-                      {t('ui:label-is-created')}.
-                    </span>
-                    <HorizontalSeparatorDiv data-size='0.25' />
-                  </FlexDiv>
-                </AlertStripe>
-              )}
-            </>
-          )}
+          <VerticalSeparatorDiv data-size='2' />
+          <div>
+            <VerticalSeparatorDiv />
+            <ContainerDiv className={classNames({ shrink: animating })}>
+              <WindowDiv>
+                <AnimatableDiv
+                  key='animatableDivA'
+                  className={classNames(cls(positionA))}
+                >
+                  {contentA}
+                </AnimatableDiv>
+                <AnimatableDiv
+                  key='animatableDivB'
+                  className={classNames(cls(positionB))}
+                >
+                  {contentB}
+                </AnimatableDiv>
+              </WindowDiv>
+            </ContainerDiv>
+          </div>
         </Content>
         <Margin />
       </Container>
@@ -592,4 +325,11 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
   )
 }
 
-export default SvarPaSed
+SvarPaSedPage.propTypes = {
+  allowFullScreen: PT.bool.isRequired,
+  onFullFocus: PT.func.isRequired,
+  onRestoreFocus: PT.func.isRequired,
+  waitForMount: PT.bool
+}
+
+export default SvarPaSedPage

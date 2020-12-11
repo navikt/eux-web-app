@@ -22,7 +22,7 @@ const Forside: React.FC = (): JSX.Element => {
             >
               {t('ui:menu-createCase')}
             </Lenkepanel>
-            <VerticalSeparatorDiv data-size='2'/>
+            <VerticalSeparatorDiv data-size='2' />
             <Lenkepanel
               className='slideAnimate'
               href='#'
@@ -32,7 +32,7 @@ const Forside: React.FC = (): JSX.Element => {
             >
               {t('ui:menu-addAttachment')}
             </Lenkepanel>
-            <VerticalSeparatorDiv data-size='2'/>
+            <VerticalSeparatorDiv data-size='2' />
             <Lenkepanel
               className='slideAnimate'
               href='#'

@@ -139,8 +139,7 @@ export interface Inntekt {
 
 export type Inntekter = Array<Inntekt>
 
-export type SvarPaSedOversikt = {[k in string]: Array<SedOversikt>}
-export interface SedOversikt {
+export interface ConnectedSed {
   replySedType: string
   replySedDisplay: string
   querySedDocumentId: string
@@ -151,6 +150,7 @@ export interface Periode {
   sluttdato?: string
   aapenPeriodeType?: string
 }
+export type Seds = {[k in string]: Array<ConnectedSed>}
 
 export interface Arbeidsgiver {
   arbeidsgiver: {
@@ -172,7 +172,7 @@ export interface Arbeidsgiver {
   typeTrygdeforhold?: string
 }
 
-export interface SvarSed {
+export interface ReplySed {
   sedType: string
   sedVersjon: string
   bruker: {

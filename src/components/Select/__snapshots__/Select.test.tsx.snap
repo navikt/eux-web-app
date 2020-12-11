@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/Select/Select Render: match snapshot 1`] = `
+exports['components/Select/Select Render: match snapshot 1'] = `
 <Select
   highContrast={false}
 >
@@ -1226,4 +1226,4 @@ exports[`components/Select/Select Render: match snapshot 1`] = `
     </Select>
   </StateManager>
 </Select>
-`;
+`

@@ -14,8 +14,8 @@ import NEESSILogo from 'resources/images/nEESSI'
 import styled, { ThemeProvider } from 'styled-components'
 
 const HeaderContent = styled.header`
-  background-color: ${({theme}: any) => theme.type === 'themeHighContrast' ? theme[themeKeys.MAIN_BACKGROUND_COLOR] : '#99c2e8'};
-  color: ${({theme}: any) => theme[themeKeys.MAIN_FONT_COLOR]};
+  background-color: ${({ theme }: any) => theme.type === 'themeHighContrast' ? theme[themeKeys.MAIN_BACKGROUND_COLOR] : '#99c2e8'};
+  color: ${({ theme }: any) => theme[themeKeys.MAIN_FONT_COLOR]};
   display: flex;
   flex-direction: row;
   height: 4rem;
@@ -29,14 +29,14 @@ const Brand = styled.div`
   margin-left: 1rem;
 `
 const Skillelinje = styled.div`
-  border-left: 1px solid ${({theme}: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
+  border-left: 1px solid ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
   display: flex;
   height: 30px;
   margin-left: 1rem;
   margin-right: 1rem;
 `
 const Title = styled.div`
-  color: ${({theme}: any) => theme.type === 'themeHighContrast' ? theme[themeKeys.MAIN_FONT_COLOR] : '#02329c'};
+  color: ${({ theme }: any) => theme.type === 'themeHighContrast' ? theme[themeKeys.MAIN_FONT_COLOR] : '#02329c'};
   display: flex;
   font-size: 14pt;
   font-weight: bold;
@@ -49,7 +49,7 @@ const SaksbehandlerDiv = styled.div`
   align-items: center;
 `
 const Name = styled.div`
-  color: ${({theme}: any) => theme.type === 'themeHighContrast' ? theme[themeKeys.MAIN_FONT_COLOR] : '#02329c'};
+  color: ${({ theme }: any) => theme.type === 'themeHighContrast' ? theme[themeKeys.MAIN_FONT_COLOR] : '#02329c'};
   font-weight: bold;
   display: flex;
   margin: auto 0;

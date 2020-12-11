@@ -23,8 +23,8 @@ const Main = styled.main`
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
-  color: ${({theme} : any) => theme[themeKeys.MAIN_FONT_COLOR]};
-  background-color: ${({theme} : any) => theme.type === 'themeHighContrast' ? theme[themeKeys.MAIN_BACKGROUND_COLOR] : 'whitesmoke'};
+  color: ${({ theme } : any) => theme[themeKeys.MAIN_FONT_COLOR]};
+  background-color: ${({ theme } : any) => theme.type === 'themeHighContrast' ? theme[themeKeys.MAIN_BACKGROUND_COLOR] : 'whitesmoke'};
 `
 
 export interface TopContainerProps {
@@ -49,7 +49,6 @@ const mapState = (state: State): TopContainerSelector => ({
   highContrast: state.ui.highContrast,
   modal: state.ui.modal
 })
-
 
 export const TopContainer: React.FC<TopContainerProps> = ({
   className, children

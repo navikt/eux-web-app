@@ -1,5 +1,5 @@
 import { HighContrastPanel } from 'components/StyledComponents'
-import { SvarSed } from 'declarations/types'
+import { ReplySed } from 'declarations/types'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import { themeKeys } from 'nav-styled-component-theme'
 import React from 'react'
@@ -30,20 +30,19 @@ const Dl = styled.dl`
   }
 `
 interface SEDPanelProps {
-  svarSed: SvarSed
+  replysed: ReplySed
 }
 
-const SEDPanel = ({svarSed}: SEDPanelProps) => {
-
+const SEDPanel = ({ replysed }: SEDPanelProps) => {
   const { t } = useTranslation()
   return (
     <HighContrastPanel>
       <Undertittel>
-        {svarSed.sedType} v{svarSed.sedVersjon}
+        {replysed.sedType} v{replysed.sedVersjon}
       </Undertittel>
       <Dl>
         <Dt>Periode:</Dt>
-        <Dd></Dd>
+        <Dd />
 
       </Dl>
       <Normaltekst>
@@ -51,15 +50,13 @@ const SEDPanel = ({svarSed}: SEDPanelProps) => {
       </Normaltekst>
       <Dl>
         <Dt>{t('ui:label-name')}</Dt>
-        <Dd>{svarSed.bruker.personInfo.fornavn} {svarSed.bruker.personInfo.etternavn} ({svarSed.bruker.personInfo.kjoenn})</Dd>
+        <Dd>{replysed.bruker.personInfo.fornavn} {replysed.bruker.personInfo.etternavn} ({replysed.bruker.personInfo.kjoenn})</Dd>
         <Dt>{t('ui:label-birthDate')}</Dt>
-        <Dd>{svarSed.bruker.personInfo.foedselsdato}</Dd>
-     </Dl>
+        <Dd>{replysed.bruker.personInfo.foedselsdato}</Dd>
+      </Dl>
 
     </HighContrastPanel>
   )
-
 }
-
 
 export default SEDPanel

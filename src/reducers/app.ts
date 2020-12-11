@@ -1,6 +1,8 @@
 import * as types from 'constants/actionTypes'
+import { Params } from 'declarations/app'
 import { BucTyper, Enheter, Kodemaps, Kodeverk, Saksbehandler, ServerInfo, Tema } from 'declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
+import _ from 'lodash'
 
 export interface AppState {
   buctyper: BucTyper | undefined
@@ -17,6 +19,8 @@ export interface AppState {
   sedtyper: Array<Kodeverk> | undefined
   tema: Tema | undefined
   kodemaps: Kodemaps | undefined
+
+  params: Params
 }
 
 export const initialAppState: AppState = {
@@ -33,11 +37,31 @@ export const initialAppState: AppState = {
   sektor: undefined,
   sedtyper: undefined,
   tema: undefined,
-  kodemaps: undefined
+  kodemaps: undefined,
+
+  params: {}
 }
 
 const appReducer = (state: AppState = initialAppState, action: ActionWithPayload = { type: '', payload: undefined }) => {
+  let newParams: Params
+
   switch (action.type) {
+    case types.APP_PARAM_SET:
+      newParams = _.cloneDeep(state.params)
+      newParams[action.payload.key] = action.payload.value
+      return {
+        ...state,
+        params: newParams
+      }
+
+    case types.APP_PARAM_UNSET:
+      newParams = _.cloneDeep(state.params)
+      delete newParams[action.payload.key]
+      return {
+        ...state,
+        params: newParams
+      }
+
     case types.APP_SAKSBEHANDLER_GET_SUCCESS:
       try {
         (window as any).frontendlogger.info(action.payload)

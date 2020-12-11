@@ -10,6 +10,7 @@ import mockSaksbehandler from 'eux-schema/mock_data/saksbehandler.json'
 import mockServerInfo from 'mocks/serverinfo'
 import mockUtgaarDato from 'mocks/utgaarDato'
 import mockReautorisering from 'mocks/reautorisering'
+import { ParamPayload } from 'declarations/app'
 
 export const cleanData: ActionCreator<Action> = (): Action => ({
   type: types.APP_CLEAN_DATA
@@ -99,4 +100,24 @@ export const preload = () => ({
       ...EKV.Kodemaps
     }
   } // kodemaps: { BUC2SEDS, SEKTOR2FAGSAK, SEKTOR2BUC }
+})
+
+export const setStatusParam: ActionCreator<ActionWithPayload<ParamPayload>> = (
+  key: string,
+  value: any
+): ActionWithPayload<ParamPayload> => ({
+  type: types.APP_PARAM_SET,
+  payload: {
+    key: key,
+    value: value
+  } as ParamPayload
+})
+
+export const unsetStatusParam: ActionCreator<ActionWithPayload<ParamPayload>> = (
+  key: string
+): ActionWithPayload<ParamPayload> => ({
+  type: types.APP_PARAM_UNSET,
+  payload: {
+    key: key
+  } as ParamPayload
 })

@@ -1,4 +1,4 @@
-import { Arbeidsforhold, Inntekter, SvarSed, SvarPaSedOversikt, Person, SedOversikt } from 'declarations/types'
+import { Arbeidsforhold, Inntekter, ReplySed } from 'declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
 import { Action } from 'redux'
 import * as types from 'constants/actionTypes'
@@ -7,33 +7,31 @@ import _ from 'lodash'
 export interface SvarpasedState {
   arbeidsforholdList: Arbeidsforhold
   familierelasjoner: Array<any>
-  person: Person | null | undefined
-  personRelatert: any
-  previousSpørreSed: string | undefined
-  spørreSed: string | undefined
-  svarSed: SvarSed | undefined
-  svarPaSedOversikt: SvarPaSedOversikt | undefined
-  svarPasedData: { sedId: string } | null | undefined
-  valgteArbeidsforhold: Arbeidsforhold
-  valgtSvarSed: SedOversikt | undefined
   inntekter: Inntekter | undefined
+  parentSed: string | undefined
+  person: any
+  personRelatert: any
+  previousParentSed: string | undefined
+  replySed: ReplySed | undefined
+  saksnummerOrFnr: string | undefined
   selectedInntekter: Inntekter | undefined
+  svarPasedData: any
+  valgteArbeidsforhold: Arbeidsforhold
 }
 
 export const initialSvarpasedState: SvarpasedState = {
   arbeidsforholdList: [],
-  previousSpørreSed: undefined,
-  spørreSed: undefined,
-  svarSed: undefined,
-  svarPaSedOversikt: undefined,
+  familierelasjoner: [],
+  inntekter: undefined,
+  parentSed: undefined,
   person: undefined,
   personRelatert: undefined,
-  familierelasjoner: [],
+  previousParentSed: undefined,
+  replySed: undefined,
+  saksnummerOrFnr: undefined,
+  selectedInntekter: undefined,
   svarPasedData: undefined,
-  valgteArbeidsforhold: [],
-  valgtSvarSed: undefined,
-  inntekter: undefined,
-  selectedInntekter: undefined
+  valgteArbeidsforhold: []
 }
 
 const svarpasedReducer = (
@@ -64,31 +62,19 @@ const svarpasedReducer = (
         )
       }
 
-    case types.SVARPASED_OVERSIKT_GET_SUCCESS:
+    case types.SVARPASED_REPLYSED_QUERY_SUCCESS:
       return {
         ...state,
-        svarPaSedOversikt: (action as ActionWithPayload).payload
-      }
-
-    case types.SVARPASED_OVERSIKT_GET_FAILURE:
-      return {
-        ...state,
-        svarPaSedOversikt: null
-      }
-
-    case types.SVARPASED_SVARSED_QUERY_SUCCESS:
-      return {
-        ...state,
-        svarSed: {
-          ...(action as ActionWithPayload).context.sedOversikt,
+        replySed: {
+          ...(action as ActionWithPayload).context.connectedSed,
           ...(action as ActionWithPayload).payload
         }
       }
 
-    case types.SVARPASED_SVARSED_QUERY_FAILURE:
+    case types.SVARPASED_REPLYSED_QUERY_FAILURE:
       return {
         ...state,
-        svarSed: null
+        replySed: null
       }
 
     case types.SVARPASED_PERSON_GET_FAILURE:
@@ -118,7 +104,8 @@ const svarpasedReducer = (
     case types.SVARPASED_SAKSNUMMERORFNR_QUERY_SUCCESS:
       return {
         ...state,
-        svarPaSedOversikt: (action as ActionWithPayload).payload
+        seds: (action as ActionWithPayload).payload,
+        saksnummerOrFnr: (action as ActionWithPayload).context.saksnummerOrFnr
       }
 
     case types.SVARPASED_SENDSVARPASEDDATA_POST_SUCCESS:
@@ -133,17 +120,17 @@ const svarpasedReducer = (
         svarPasedData: null
       }
 
-    case types.SVARPASED_SPØRRESED_SET:
+    case types.SVARPASED_PARENTSED_SET:
       return {
         ...state,
-        previousSpørreSed: state.spørreSed,
-        spørreSed: (action as ActionWithPayload).payload
+        previousParentSed: state.parentSed,
+        parentSed: (action as ActionWithPayload).payload
       }
 
-    case types.SVARPASED_SVARSED_SET:
+    case types.SVARPASED_REPLYSED_RESET:
       return {
         ...state,
-        valgtSvarSed: (action as ActionWithPayload).payload
+        replySed: undefined
       }
 
     case types.SVARPASED_FAMILIERELASJONER_ADD:
@@ -180,12 +167,10 @@ const svarpasedReducer = (
       // keep seds, they are for the sed dropdown options
       return {
         ...initialSvarpasedState,
-        svarPaSedOversikt: state.svarPaSedOversikt,
-        previousSpørreSed: state.previousSpørreSed,
-        spørreSed: state.spørreSed,
-        svarSed: state.svarSed,
-        valgtSvarSed: state.valgtSvarSed,
-        person: state.person
+        seds: state.seds,
+        previousParentSed: state.previousParentSed,
+        parentSed: state.parentSed,
+        replySed: state.replySed
       }
 
     case types.SVARPASED_PERSON_RESET:
