@@ -5,7 +5,7 @@ import Panel from 'nav-frontend-paneler'
 import { Input, Radio, RadioGruppe } from 'nav-frontend-skjema'
 import { themeKeys } from 'nav-styled-component-theme'
 import styled from 'styled-components'
-import { animationClose, animationOpen } from './keyframes'
+import { animationClose, animationLeft, animationOpen, animationRight } from './keyframes'
 
 export const AlignedSelect = styled(Select)`
   margin-bottom: 3rem;
@@ -17,12 +17,18 @@ export const Margin = styled.div`
   flex: 1;
 `
 export const Content = styled.div`
-  flex: 10;
-  margin: 3rem;
+  flex: 6;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+`
+export const SideBar = styled.div`
+  display: flex;
+  min-width: 21.5rem;
 `
 export const Container = styled.div`
   display: flex;
   margin: 0px;
+  margin-top: 3rem;
 `
 export const VerticalSeparatorDiv = styled.div`
   margin-bottom: ${(props: any) => props['data-size'] || 1}rem;
@@ -107,9 +113,9 @@ export const RadioGroup = styled(RadioGruppe)`
 export const RadioEl = styled(Radio)`
   flex: 1;
   border-radius: 4px;
-  border: 1px solid ${props => props.checked ? '#005B82' : 'lightgray'};
-  box-shadow: 0px 3px 5px ${props => props.checked ? '#005B82' : 'whitesmoke'};
-  background-color: ${props => props.checked ? 'white' : 'whitesmoke'};
+  border: 1px solid ${({checked, theme}: any) => checked ? theme[themeKeys.MAIN_INTERACTIVE_COLOR] : theme[themeKeys.MAIN_DISABLED_COLOR]};
+  box-shadow: 0px 3px 5px ${({checked, theme}: any) => checked ? theme[themeKeys.MAIN_INTERACTIVE_COLOR] : theme[themeKeys.MAIN_DISABLED_COLOR]};
+  background-color: ${({checked, theme}: any) => checked ? theme[themeKeys.MAIN_BACKGROUND_COLOR] : theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
   animation-delay: ${props => ((0.2 * parseInt('' + props.step || '0')) + 's')};
   .skjemaelement__label {
     display: block;
@@ -166,9 +172,23 @@ export const HiddenFormContainer = styled.div`
     max-height: 0;
   }
 `
-export const LineSeparator = styled.div`
-   border-left: 1px solid ${({ theme }) => theme[themeKeys.MAIN_BORDER_COLOR]};
+export const HiddenSidebar = styled.div`
+  min-width: 21.5rem;
+  &.slideOpen {
+    will-change: margin-left;
+    margin-left: 0px;
+    animation: ${animationLeft} 0.5s ease;
+  }
+  &.slideClose {
+    will-change: margin-left;
+    margin-left: 21.5rem;
+    animation: ${animationRight} 0.5s ease;
+  }
+  &.closed {
+    margin-left: 21.5rem;
+  }
 `
+
 export const HighContrastFlatknapp = styled(Flatknapp)`
   color: ${({ theme }) => theme[themeKeys.MAIN_INTERACTIVE_COLOR]};
   background-color: transparent;

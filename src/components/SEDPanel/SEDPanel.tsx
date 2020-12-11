@@ -30,15 +30,15 @@ const Dl = styled.dl`
   }
 `
 interface SEDPanelProps {
-  replysed: ReplySed
+  replySed: ReplySed
 }
 
-const SEDPanel = ({ replysed }: SEDPanelProps) => {
+const SEDPanel = ({ replySed }: SEDPanelProps) => {
   const { t } = useTranslation()
   return (
     <HighContrastPanel>
       <Undertittel>
-        {replysed.sedType} v{replysed.sedVersjon}
+        {replySed.sedType} v{replySed.sedVersjon}
       </Undertittel>
       <Dl>
         <Dt>Periode:</Dt>
@@ -50,9 +50,9 @@ const SEDPanel = ({ replysed }: SEDPanelProps) => {
       </Normaltekst>
       <Dl>
         <Dt>{t('ui:label-name')}</Dt>
-        <Dd>{replysed.bruker.personInfo.fornavn} {replysed.bruker.personInfo.etternavn} ({replysed.bruker.personInfo.kjoenn})</Dd>
+        <Dd>{replySed.bruker.personInfo.fornavn} {replySed.bruker.personInfo.etternavn} ({replySed.bruker.personInfo.kjoenn})</Dd>
         <Dt>{t('ui:label-birthDate')}</Dt>
-        <Dd>{replysed.bruker.personInfo.foedselsdato}</Dd>
+        <Dd>{replySed.bruker.personInfo.foedselsdato}</Dd>
       </Dl>
 
     </HighContrastPanel>

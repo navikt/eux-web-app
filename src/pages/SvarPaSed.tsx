@@ -2,14 +2,16 @@ import { setStatusParam } from 'actions/app'
 import * as svarpasedActions from 'actions/svarpased'
 import classNames from 'classnames'
 import { fadeIn, fadeOut } from 'components/keyframes'
-import { Container, Content, Margin, VerticalSeparatorDiv } from 'components/StyledComponents'
+import { Container, Content, Margin, SideBar, VerticalSeparatorDiv } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
+import { State } from 'declarations/reducers'
 import { Systemtittel } from 'nav-frontend-typografi'
+import SEDDetails from 'pages/SvarPaSed/SEDDetails'
 import PT from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 const SaksnummerOrFnrInput = styled(HighContrastInput)`
@@ -87,8 +89,8 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
 import Step1 from './SvarPaSed/Step1'
 import Step2 from './SvarPaSed/Step2'
 
-const transition = 1000
-const timeout = 1001
+const transition = 500
+const timeout = 501
 const zoomOutTransition = 100
 
 const AnimatableDiv = styled.div`
@@ -183,11 +185,16 @@ export enum Slide {
   B_GOING_TO_RIGHT
 }
 
+const mapState = (state: State): any => ({
+  highContrast: state.ui.highContrast
+})
+
 export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
   location,
   waitForMount = true
 }: SvarPaSedPageProps): JSX.Element => {
   const dispatch = useDispatch()
+  const { highContrast } = useSelector<State, any>(mapState)
   const { t } = useTranslation()
   const [_mounted, setMounted] = useState<boolean>(!waitForMount)
   const [positionA, setPositionA] = useState<Slide>(Slide.LEFT)
@@ -319,6 +326,9 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
             </ContainerDiv>
           </div>
         </Content>
+        <SideBar>
+          <SEDDetails highContrast={highContrast} />
+        </SideBar>
         <Margin />
       </Container>
     </TopContainer>

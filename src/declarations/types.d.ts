@@ -174,7 +174,10 @@ export interface Arbeidsgiver {
 
 export interface ReplySed {
   sedType: string
-  sedVersjon: string
+  sedVersjon: string,
+  replySedType?: string,
+  replyDisplay?: string,
+  queryDocumentId?: string,
   bruker: {
     personInfo: {
       fornavn: string,

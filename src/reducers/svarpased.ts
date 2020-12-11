@@ -12,6 +12,7 @@ export interface SvarpasedState {
   person: any
   personRelatert: any
   previousParentSed: string | undefined
+  previousReplySed: ReplySed | undefined
   replySed: ReplySed | undefined
   saksnummerOrFnr: string | undefined
   selectedInntekter: Inntekter | undefined
@@ -27,6 +28,7 @@ export const initialSvarpasedState: SvarpasedState = {
   person: undefined,
   personRelatert: undefined,
   previousParentSed: undefined,
+  previousReplySed: undefined,
   replySed: undefined,
   saksnummerOrFnr: undefined,
   selectedInntekter: undefined,
@@ -65,6 +67,7 @@ const svarpasedReducer = (
     case types.SVARPASED_REPLYSED_QUERY_SUCCESS:
       return {
         ...state,
+        previousReplySed: state.replySed,
         replySed: {
           ...(action as ActionWithPayload).context.connectedSed,
           ...(action as ActionWithPayload).payload
@@ -74,6 +77,7 @@ const svarpasedReducer = (
     case types.SVARPASED_REPLYSED_QUERY_FAILURE:
       return {
         ...state,
+        previousReplySed: state.replySed,
         replySed: null
       }
 
@@ -130,6 +134,7 @@ const svarpasedReducer = (
     case types.SVARPASED_REPLYSED_RESET:
       return {
         ...state,
+        previousReplySed: state.replySed,
         replySed: undefined
       }
 
@@ -170,6 +175,7 @@ const svarpasedReducer = (
         seds: state.seds,
         previousParentSed: state.previousParentSed,
         parentSed: state.parentSed,
+        previousReplySed: state.previousReplySed,
         replySed: state.replySed
       }
 

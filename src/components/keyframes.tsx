@@ -30,3 +30,20 @@ export const animationClose = keyframes`
     height: 0%;
   }
 `
+
+export const animationLeft = keyframes`
+  0% {
+    margin-left: 21.5rem;
+  }
+  100% {
+    margin-left: 0px;
+  }
+`
+export const animationRight = keyframes`
+    0% {
+    margin-left: 0px;
+  }
+  100% {
+    margin-left: 21.5rem;
+  }
+`

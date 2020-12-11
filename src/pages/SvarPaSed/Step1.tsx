@@ -136,9 +136,11 @@ const Step1: React.FC<SvarPaSedProps> = ({
   return (
     <ThemeProvider theme={highContrast ? themeHighContrast : theme}>
       <AlignedRow className={classNames({ feil: _validation.saksnummerOrFnr })}>
-        <Column>
+        <Column
+           style={{flex: 2}}
+        >
           <SaksnummerOrFnrInput
-            bredde='L'
+            bredde='fullbredde'
             data-test-id='svarpased__saksnummerOrFnr-input'
             feil={_validation.saksnummerOrFnr ? _validation.saksnummerOrFnr.feilmelding : undefined}
             id='svarpased__saksnummerOrFnr-input'
@@ -157,7 +159,6 @@ const Step1: React.FC<SvarPaSedProps> = ({
             {queryingSaksnummerOrFnr ? t('ui:form-searching') : t('ui:form-search')}
           </HighContrastKnapp>
         </AlignCenterColumn>
-        <Column />
       </AlignedRow>
       <VerticalSeparatorDiv />
       {seds && (
@@ -219,7 +220,6 @@ const Step1: React.FC<SvarPaSedProps> = ({
                 ))}
               </RadioGroup>
             </Column>
-            <Column />
           </Row>
         </>
       )}

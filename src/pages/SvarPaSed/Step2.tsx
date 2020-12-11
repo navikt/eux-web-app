@@ -6,7 +6,6 @@ import Alert from 'components/Alert/Alert'
 import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
 import Family from 'components/Family/Family'
 import Inntekt from 'components/Inntekt/Inntekt'
-import SEDPanel from 'components/SEDPanel/SEDPanel'
 import {
   Column,
   HighContrastFlatknapp,
@@ -14,14 +13,13 @@ import {
   HighContrastKnapp,
   HighContrastLink,
   HorizontalSeparatorDiv,
-  LineSeparator,
   Row,
   VerticalSeparatorDiv
 } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
 import { AlertStatus } from 'declarations/components'
 import { State } from 'declarations/reducers'
-import { FamilieRelasjon, Inntekt as IInntekt, Inntekter, Validation } from 'declarations/types'
+import { FamilieRelasjon, Inntekt as IInntekt, Inntekter, ReplySed, Validation } from 'declarations/types'
 import _ from 'lodash'
 import Alertstripe from 'nav-frontend-alertstriper'
 import { VenstreChevron } from 'nav-frontend-chevron'
@@ -114,11 +112,12 @@ const Step2: React.FC<SvarPaSedProps> = ({
   const [_formal, setFormal] = useState<Array<string>>([])
   const [_validation, setValidation] = useState<Validation>({})
 
+  const [_replySed, ] = useState<ReplySed | undefined>(replySed)
   const data: SvarpasedState = useSelector<State, SvarpasedState>(mapStateTwo)
 
   const validate = (): Validation => {
     const validation: Validation = {
-      replysed: !replySed
+      replysed: !_replySed
         ? {
           feilmelding: t('ui:validation-noSedtype'),
           skjemaelementId: 'svarpased__replysed-select'
@@ -150,8 +149,8 @@ const Step2: React.FC<SvarPaSedProps> = ({
   }
 
   const sendData = (): void => {
-    if (isValid(validate())) {
-      dispatch(svarpasedActions.sendSvarPaSedData(saksnummerOrFnr, replySed.queryDocumentId, replySed.replySedType, data))
+    if (_replySed && isValid(validate())) {
+      dispatch(svarpasedActions.sendSvarPaSedData(saksnummerOrFnr, _replySed!.queryDocumentId, _replySed!.replySedType, data))
     }
   }
 
@@ -165,9 +164,16 @@ const Step2: React.FC<SvarPaSedProps> = ({
     )
   }
 
-  const showArbeidsforhold = (): boolean => replySed?.replySedType === 'U002' || replySed?.replySedType === 'U007'
+  const showArbeidsforhold = (): boolean => _replySed?.replySedType === 'U002' || _replySed?.replySedType === 'U007'
 
-  const showInntekt = (): boolean => replySed?.replySedType === 'U004'
+  const showInntekt = (): boolean => _replySed?.replySedType === 'U004'
+
+  const onGoBackClick = () => {
+    if (mode === '2') {
+      dispatch(svarpasedActions.resetReplySed())
+      setMode('1', 'back')
+    }
+  }
 
   const onSelectedInntekt = (items: Array<Item>) => {
     const inntekter: Inntekter = items.map(
@@ -186,29 +192,21 @@ const Step2: React.FC<SvarPaSedProps> = ({
 
   return (
     <>
-      <Row>
-        <Column>
+      <FlexDiv>
           <HighContrastLink
             href='#'
-            onClick={() => {
-              if (mode === '2') {
-                setMode('1', 'back', () => {
-                  dispatch(svarpasedActions.resetReplySed())
-                })
-              }
-            }}
+            onClick={onGoBackClick}
           >
             <VenstreChevron />
             <HorizontalSeparatorDiv data-size='0.5' />
             {t('ui:form-back')}
           </HighContrastLink>
-        </Column>
-
-      </Row>
+      </FlexDiv>
+      <VerticalSeparatorDiv/>
       <Row>
         <Column style={{ flex: 2 }}>
           <Systemtittel>
-            {replySed?.replySedType} - {replySed?.replyDisplay}
+            {_replySed?.replySedType} - {_replySed?.replyDisplay}
           </Systemtittel>
           <VerticalSeparatorDiv />
           <Undertittel>
@@ -247,12 +245,13 @@ const Step2: React.FC<SvarPaSedProps> = ({
               )
             : (
               <FlexDiv>
-                <HighContrastInput
-                  bredde='XXL'
-                  style={{ flex: 2 }}
-                  value={_newFormal}
-                  onChange={(e) => setNewFormal(e.target.value)}
-                />
+                <div style={{flex: 2}}>
+                  <HighContrastInput
+                    bredde='fullbredde'
+                    value={_newFormal}
+                    onChange={(e) => setNewFormal(e.target.value)}
+                  />
+                </div>
                 <HorizontalSeparatorDiv data-size='0.5' />
                 <FlexDiv>
                   <HighContrastKnapp
@@ -279,19 +278,11 @@ const Step2: React.FC<SvarPaSedProps> = ({
               </FlexDiv>
               )}
         </Column>
-        <VerticalSeparatorDiv />
-        <LineSeparator>&nbsp;</LineSeparator>
-        <VerticalSeparatorDiv />
-        {replySed && (
-          <Column>
-            <SEDPanel replysed={replySed} />
-          </Column>
-        )}
       </Row>
       <VerticalSeparatorDiv />
       {!_.isNil(person) && (
         <>
-          {replySed?.replySedType.startsWith('F') && (
+          {_replySed?.replySedType?.startsWith('F') && (
             <>
               <Ekspanderbartpanel tittel={t('ui:label-familyRelationships')}>
                 <Family
