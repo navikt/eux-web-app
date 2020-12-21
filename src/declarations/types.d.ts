@@ -166,10 +166,16 @@ export interface Arbeidsgiver {
     identifikatorer: Array<{
       type: string
       id: string
-    }>
-  }
-  periode?: Periode
-  typeTrygdeforhold?: string
+    }>,
+    periode: {
+      startdato: string
+      sluttdato: string
+    },
+    typeTrygdeforhold: string
+  },
+  kreverinformasjonomtypearberidsforhold?: string
+  kreverinformasjonomantallarbeidstimer?: string
+  kreverinformasjonominntekt?:string
 }
 
 export interface ReplySed {
@@ -211,15 +217,22 @@ export interface ReplySed {
       }
     }
   },
-  anmodningsperiode: Periode,
+  anmodningsperiode: {
+    startdato: string
+    aapenPeriodeType: string
+  },
   lokaleSakIder: Array<{
     saksnummer: string
     institusjonsnavn: string
     institusjonsid: string
     land: string
   }>,
+  perioderAnsattMedForsikring: Array<Arbeidsgiver>,
   perioderDagpenger?: Array<{
-    periode: Periode,
+    periode: {
+      startdato: string
+      sluttdato: string
+    },
     institusjon: {
       navn: string
       id: string
