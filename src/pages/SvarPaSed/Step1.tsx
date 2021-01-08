@@ -137,7 +137,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
     <ThemeProvider theme={highContrast ? themeHighContrast : theme}>
       <AlignedRow className={classNames({ feil: _validation.saksnummerOrFnr })}>
         <Column
-           style={{flex: 2}}
+          style={{ flex: 2 }}
         >
           <SaksnummerOrFnrInput
             bredde='fullbredde'
@@ -195,10 +195,10 @@ const Step1: React.FC<SvarPaSedProps> = ({
                           <FlexDiv>
                             <div>
                               <Normaltekst>
-                                {connectedSed.replySedType} {connectedSed.replyDisplay}
+                                {connectedSed.replySedType} {connectedSed.replySedDisplay}
                               </Normaltekst>
                               <Normaltekst>
-                                {connectedSed.queryDocumentId}
+                                {connectedSed.querySedDocumentId}
                               </Normaltekst>
                             </div>
                             <HorizontalSeparatorDiv />

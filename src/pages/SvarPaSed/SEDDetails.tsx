@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux'
 import styled, { ThemeProvider } from 'styled-components'
 
 const FadingLineSeparator = styled.div`
-   border-left: 1px solid ${({theme}) => theme[themeKeys.MAIN_BORDER_COLOR]};
+   border-left: 1px solid ${({ theme }) => theme[themeKeys.MAIN_BORDER_COLOR]};
    opacity: 0;
    &.fadeIn {
      animation: ${fadeIn} 0.5s forwards;
@@ -24,11 +24,10 @@ const mapState = (state: State): any => ({
   replySed: state.svarpased.replySed
 })
 
-const SEDDetails = ({highContrast}: any) => {
-
+const SEDDetails = ({ highContrast }: any) => {
   const { replySed, previousReplySed } = useSelector<State, any>(mapState)
 
-  const [_replySed, setReplySed ] = useState(replySed)
+  const [_replySed, setReplySed] = useState(replySed)
 
   useEffect(() => {
     if (replySed && !previousReplySed) {
@@ -39,31 +38,32 @@ const SEDDetails = ({highContrast}: any) => {
   return (
     <ThemeProvider theme={highContrast ? themeHighContrast : theme}>
       <FadingLineSeparator
-        className={classNames( {
+        className={classNames({
           fadeIn: replySed && !previousReplySed,
           fadeOut: previousReplySed && !replySed
         })}
       >
         &nbsp;
       </FadingLineSeparator>
-      <HorizontalSeparatorDiv data-size='1.5'/>
+      <HorizontalSeparatorDiv data-size='1.5' />
       <div
         style={{
           overflow: 'hidden',
           width: '21.5rem'
         }}
-        >
+      >
         <HiddenSidebar
-        className={classNames('z', {
-        slideOpen: replySed && !previousReplySed,
-        slideClose: previousReplySed && !replySed,
-        closed: !replySed && !previousReplySed,
-      })}>
+          className={classNames('z', {
+            slideOpen: replySed && !previousReplySed,
+            slideClose: previousReplySed && !replySed,
+            closed: !replySed && !previousReplySed
+          })}
+        >
           {_replySed && <SEDPanel replySed={_replySed} />}
-      </HiddenSidebar>
+        </HiddenSidebar>
       </div>
     </ThemeProvider>
-   )
+  )
 }
 
 export default SEDDetails

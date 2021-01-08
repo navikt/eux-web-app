@@ -182,8 +182,8 @@ export interface ReplySed {
   sedType: string
   sedVersjon: string,
   replySedType?: string,
-  replyDisplay?: string,
-  queryDocumentId?: string,
+  replySedDisplay?: string,
+  querySedDocumentId?: string,
   bruker: {
     personInfo: {
       fornavn: string,

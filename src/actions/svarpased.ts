@@ -51,7 +51,7 @@ export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload>> = (
   return call({
     url: sprintf(urls.API_SVARPASED_REPLYSED_QUERY_URL, {
       rinaSakId: saksnummer,
-      sedId: connectedSed.queryDocumentId,
+      sedId: connectedSed.querySedDocumentId,
       sedType: connectedSed.replySedType
     }),
     expectedPayload: mockReplySed,

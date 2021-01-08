@@ -113,9 +113,9 @@ export const RadioGroup = styled(RadioGruppe)`
 export const RadioEl = styled(Radio)`
   flex: 1;
   border-radius: 4px;
-  border: 1px solid ${({checked, theme}: any) => checked ? theme[themeKeys.MAIN_INTERACTIVE_COLOR] : theme[themeKeys.MAIN_DISABLED_COLOR]};
-  box-shadow: 0px 3px 5px ${({checked, theme}: any) => checked ? theme[themeKeys.MAIN_INTERACTIVE_COLOR] : theme[themeKeys.MAIN_DISABLED_COLOR]};
-  background-color: ${({checked, theme}: any) => checked ? theme[themeKeys.MAIN_BACKGROUND_COLOR] : theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
+  border: 1px solid ${({ checked, theme }: any) => checked ? theme[themeKeys.MAIN_INTERACTIVE_COLOR] : theme[themeKeys.MAIN_DISABLED_COLOR]};
+  box-shadow: 0px 3px 5px ${({ checked, theme }: any) => checked ? theme[themeKeys.MAIN_INTERACTIVE_COLOR] : theme[themeKeys.MAIN_DISABLED_COLOR]};
+  background-color: ${({ checked, theme }: any) => checked ? theme[themeKeys.MAIN_BACKGROUND_COLOR] : theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
   animation-delay: ${props => ((0.2 * parseInt('' + props.step || '0')) + 's')};
   .skjemaelement__label {
     display: block;

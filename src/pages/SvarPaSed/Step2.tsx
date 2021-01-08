@@ -112,7 +112,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
   const [_formal, setFormal] = useState<Array<string>>([])
   const [_validation, setValidation] = useState<Validation>({})
 
-  const [_replySed, ] = useState<ReplySed | undefined>(replySed)
+  const [_replySed] = useState<ReplySed | undefined>(replySed)
   const data: SvarpasedState = useSelector<State, SvarpasedState>(mapStateTwo)
 
   const validate = (): Validation => {
@@ -150,7 +150,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
 
   const sendData = (): void => {
     if (_replySed && isValid(validate())) {
-      dispatch(svarpasedActions.sendSvarPaSedData(saksnummerOrFnr, _replySed!.queryDocumentId, _replySed!.replySedType, data))
+      dispatch(svarpasedActions.sendSvarPaSedData(saksnummerOrFnr, _replySed!.querySedDocumentId, _replySed!.replySedType, data))
     }
   }
 
@@ -193,20 +193,20 @@ const Step2: React.FC<SvarPaSedProps> = ({
   return (
     <>
       <FlexDiv>
-          <HighContrastLink
-            href='#'
-            onClick={onGoBackClick}
-          >
-            <VenstreChevron />
-            <HorizontalSeparatorDiv data-size='0.5' />
-            {t('ui:form-back')}
-          </HighContrastLink>
+        <HighContrastLink
+          href='#'
+          onClick={onGoBackClick}
+        >
+          <VenstreChevron />
+          <HorizontalSeparatorDiv data-size='0.5' />
+          {t('ui:form-back')}
+        </HighContrastLink>
       </FlexDiv>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <Row>
         <Column style={{ flex: 2 }}>
           <Systemtittel>
-            {_replySed?.replySedType} - {_replySed?.replyDisplay}
+            {_replySed?.replySedType} - {_replySed?.replySedDisplay}
           </Systemtittel>
           <VerticalSeparatorDiv />
           <Undertittel>
@@ -245,7 +245,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
               )
             : (
               <FlexDiv>
-                <div style={{flex: 2}}>
+                <div style={{ flex: 2 }}>
                   <HighContrastInput
                     bredde='fullbredde'
                     value={_newFormal}
