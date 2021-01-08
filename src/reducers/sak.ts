@@ -134,12 +134,20 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
       return {
         ...state,
         arbeidsforhold: [],
+        buctype: undefined,
         fagsaker: undefined,
         familierelasjoner: [],
         institusjonList: undefined,
-        person: undefined,
+        institusjon: undefined,
+        landkode: undefined,
         opprettetSak: undefined,
-        personRelatert: undefined
+        person: undefined,
+        personRelatert: undefined,
+        saksId: undefined,
+        sedtype: undefined,
+        sektor: undefined,
+        tema: undefined,
+        unit: undefined
       }
 
     case types.SAK_PROPERTY_SET:
