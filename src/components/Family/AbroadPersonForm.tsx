@@ -243,6 +243,8 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
     }
   }
 
+  console.log(_relation)
+
   return (
     <Container className={className}>
       <Normaltekst>{t('ui:form-family-utland-add-form-title')}</Normaltekst>
@@ -268,6 +270,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               data-test-id='familierelasjoner__input-land'
               error={_validation.land ? _validation.land.feilmelding : undefined}
               label={t('ui:label-landkode')}
+              key={'familierelasjoner__input-land-' + _relation.land}
               menuPortalTarget={document.body}
               includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
               onOptionSelected={(e: any) => {
@@ -275,7 +278,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
                 resetValidation('land')
               }}
               placeholder={t('ui:form-choose')}
-              value={_relation.land}
+              values={_relation.land}
             />
             <VerticalSeparatorDiv />
           </Column>
@@ -286,13 +289,14 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               error={_validation.statsborgerskap ? _validation.statsborgerskap.feilmelding : undefined}
               includeList={CountryFilter.STANDARD}
               label={t('ui:label-statsborgerskap')}
+              key={'familierelasjoner__input-statsborgerskap' + _relation.statsborgerskap}
               menuPortalTarget={document.body}
               placeholder={t('ui:form-choose')}
               onOptionSelected={(e: any) => {
                 updateCountry('statsborgerskap', e.value)
                 resetValidation('statsborgerskap')
               }}
-              value={_relation.statsborgerskap}
+              values={_relation.statsborgerskap}
             />
             <VerticalSeparatorDiv />
           </Column>
