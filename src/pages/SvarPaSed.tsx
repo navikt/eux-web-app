@@ -1,11 +1,10 @@
 import { clientClear } from 'actions/alert'
-import * as appActions from 'actions/app'
 import * as svarpasedActions from 'actions/svarpased'
 import Alert from 'components/Alert/Alert'
 import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
 import Family from 'components/Family/Family'
 import Inntekt from 'components/Inntekt/Inntekt'
-import PersonSearch from 'components/PersonSearch/PersonSearch'
+import PersonCard from 'components/PersonCard/PersonCard'
 import {
   Column,
   Container,
@@ -25,7 +24,6 @@ import Alertstripe from 'nav-frontend-alertstriper'
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel'
 import { Knapp } from 'nav-frontend-knapper'
 import { Feiloppsummering, FeiloppsummeringFeil, Input, Select } from 'nav-frontend-skjema'
-import { Normaltekst } from 'nav-frontend-typografi'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -90,13 +88,13 @@ export interface SvarPaSedProps {
   location: any;
 }
 
+
+
 const SvarPaSed: React.FC<SvarPaSedProps> = ({
   location
 }: SvarPaSedProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const [, setIsFnrValid] = useState<boolean>(false)
-  const [_fnr, setFnr] = useState<string>('')
   const [_mounted, setMounted] = useState<boolean>(false)
   const [_saksnummer, setSaksnummer] = useState<string | undefined>(undefined)
   const [_validation, setValidation] = useState<Validation>({})
@@ -107,8 +105,8 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
 
     familierelasjonKodeverk,
 
-    gettingSaksnummer,
     gettingPerson,
+    gettingSaksnummer,
     sendingSvarPaSed,
     queryingSvarSed,
 
@@ -124,7 +122,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
     valgteArbeidsforhold,
     valgteFamilieRelasjoner,
     valgtSvarSed
-  }: any = useSelector<State, any>(mapState)
+  }: any = useSelector<State, SvarpasedState>(mapState)
   const data: SvarpasedState = useSelector<State, SvarpasedState>(mapStateTwo)
 
   const onSaksnummerClick = () => {
@@ -173,7 +171,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
 
   const sendData = (): void => {
     if (isValid(validate())) {
-      dispatch(svarpasedActions.sendSvarPaSedData(_saksnummer, valgtSvarSed.queryDocumentId, valgtSvarSed.replySedType, data))
+      dispatch(svarpasedActions.sendSvarPaSedData(_saksnummer, valgtSvarSed.querySedDocumentId, valgtSvarSed.replySedType, data))
     }
   }
 
@@ -195,7 +193,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
   }
 
   const onSvarSedClick = () => {
-    dispatch(svarpasedActions.querySvarSed(_saksnummer, valgtSvarSed.queryDocumentId, valgtSvarSed.replySedType))
+    dispatch(svarpasedActions.querySvarSed(_saksnummer, valgtSvarSed.querySedDocumentId, valgtSvarSed.replySedType))
   }
 
   const addTpsRelation = (relation: FamilieRelasjon): void => {
@@ -231,20 +229,28 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
     if (!_mounted) {
       const params: URLSearchParams = new URLSearchParams(location.search)
       const rinasaksnummerParam: string | null = params.get('rinasaksnummer')
-      const fnrParam : string | null = params.get('fnr')
       if (rinasaksnummerParam) {
         setSaksnummer(rinasaksnummerParam)
         // dispatch(svarpasedActions.getSeds(rinasaksnummerParam))
         dispatch(svarpasedActions.getSvarSedOversikt(rinasaksnummerParam))
       }
-      if (fnrParam) {
-        setFnr(fnrParam)
-        dispatch(svarpasedActions.getPerson(fnrParam))
-        dispatch(svarpasedActions.getArbeidsforholdList(fnrParam))
-      }
       setMounted(true)
     }
   }, [dispatch, _mounted, location.search])
+
+  // when I have fnr:
+//
+  useEffect(() => {
+    if (_.isNil(person) && !gettingPerson && !_.isNil(svarSed)) {
+
+      const pin = _.find(svarSed.bruker.personInfo.pin, p => p.land === 'NO')
+      if (pin) {
+        const fnr = pin.identifikator
+        dispatch(svarpasedActions.getPerson(fnr))
+        dispatch(svarpasedActions.getArbeidsforholdList(fnr))
+      }
+    }
+  }, [person, gettingPerson, svarSed])
 
   return (
     <TopContainer>
@@ -305,11 +311,11 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
                     <option key=''>-</option>
                     {svarPaSedOversikt[spørreSed].map((sed: SedOversikt) => (
                       <option
-                        key={sed.queryDocumentId}
+                        key={sed.querySedDocumentId}
                         value={sed.replySedType}
-                        selected={valgtSvarSed ? valgtSvarSed.queryDocumentId === sed.queryDocumentId : false}
+                        selected={valgtSvarSed ? valgtSvarSed.querySedDocumentId === sed.querySedDocumentId : false}
                       >
-                        {sed.replySedType} - {sed.replyDisplay}
+                        {sed.replySedType} - {sed.replySedDisplay}
                       </option>
                     ))}
                   </SedSelect>
@@ -321,7 +327,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
                         spinner={queryingSvarSed}
                         onClick={onSvarSedClick}
                       >
-                        {t('ui:form-get')}
+                        {queryingSvarSed ? t('ui:form-getting') : t('ui:form-get')}
                       </Knapp>
                     </>
                   )}
@@ -334,39 +340,15 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
                     <legend>
                       {t('ui:label-userInSed')}
                     </legend>
-                    <Normaltekst>
-                      {t('ui:label-name')}: {svarSed.bruker.personInfo.fornavn} {svarSed.bruker.personInfo.etternavn}
-                    </Normaltekst>
-                    <Normaltekst>
-                      {t('ui:label-birthDate')}: {svarSed.bruker.personInfo.foedselsdato}
-                    </Normaltekst>
+                    {!_.isNil(person) && (
+                      <PersonCard person={person}/>
+                    )}
                   </fieldset>
                 </>
               )}
               <VerticalSeparatorDiv />
             </>
           )}
-          <PersonSearch
-            alertStatus={alertStatus}
-            alertMessage={alertMessage}
-            alertType={alertType}
-            alertTypesWatched={[types.SVARPASED_PERSON_GET_FAILURE]}
-            className='slideAnimate'
-            gettingPerson={gettingPerson}
-            initialFnr={_fnr}
-            id='svarpased__pearsonsearch'
-            onFnrChange={() => {
-              setIsFnrValid(false)
-              dispatch(appActions.cleanData())
-            }}
-            onPersonFound={() => setIsFnrValid(true)}
-            onSearchPerformed={(fnr) => dispatch(svarpasedActions.getPerson(fnr))}
-            onPersonRemoved={() => dispatch(svarpasedActions.resetPerson())}
-            onAlertClose={() => dispatch(clientClear())}
-            person={person}
-            resetAllValidation={() => resetValidation()}
-            validation={_validation.fnr}
-          />
           <VerticalSeparatorDiv />
           {!_.isNil(person) && (
             <>
