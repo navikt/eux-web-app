@@ -1,4 +1,4 @@
-import { HighContrastPanel } from 'components/StyledComponents'
+import { HighContrastPanel } from 'nav-hoykontrast'
 import { ReplySed } from 'declarations/types'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import { themeKeys } from 'nav-styled-component-theme'

@@ -8,12 +8,13 @@ import Version from 'components/Version/Version'
 import { State } from 'declarations/reducers'
 import { ModalContent } from 'declarations/components'
 import _ from 'lodash'
-import { theme, themeHighContrast, themeKeys } from 'nav-styled-component-theme'
+import { themeKeys } from 'nav-styled-component-theme'
+import NavHighContrast from 'nav-hoykontrast'
 import PT from 'prop-types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import styled, { ThemeProvider } from 'styled-components'
+import styled from 'styled-components'
 import useErrorBoundary from 'use-error-boundary'
 import Alert from 'components/Alert/Alert'
 import Error from 'pages/Error'
@@ -79,7 +80,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
   }
 
   return (
-    <ThemeProvider theme={highContrast ? themeHighContrast : theme}>
+    <NavHighContrast highContrast={highContrast}>
       <ErrorBoundary
         renderError={({ error }: any) => <Error error={error} />}
       >
@@ -111,7 +112,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
         />
         <Version />
       </ErrorBoundary>
-    </ThemeProvider>
+    </NavHighContrast>
   )
 }
 

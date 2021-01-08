@@ -1,12 +1,13 @@
 import classNames from 'classnames'
-import { fadeIn, fadeOut } from 'components/keyframes'
 import SEDPanel from 'components/SEDPanel/SEDPanel'
-import { HiddenSidebar, HorizontalSeparatorDiv } from 'components/StyledComponents'
+import { HiddenSidebar } from 'components/StyledComponents'
+import { HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import { State } from 'declarations/reducers'
-import { theme, themeHighContrast, themeKeys } from 'nav-styled-component-theme'
+import { themeKeys } from 'nav-styled-component-theme'
+import NavHighContrast, { fadeIn, fadeOut } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import styled, { ThemeProvider } from 'styled-components'
+import styled from 'styled-components'
 
 const FadingLineSeparator = styled.div`
    border-left: 1px solid ${({ theme }) => theme[themeKeys.MAIN_BORDER_COLOR]};
@@ -36,7 +37,7 @@ const SEDDetails = ({ highContrast }: any) => {
   }, [replySed, previousReplySed])
 
   return (
-    <ThemeProvider theme={highContrast ? themeHighContrast : theme}>
+    <NavHighContrast highContrast={highContrast}>
       <FadingLineSeparator
         className={classNames({
           fadeIn: replySed && !previousReplySed,
@@ -62,7 +63,7 @@ const SEDDetails = ({ highContrast }: any) => {
           {_replySed && <SEDPanel replySed={_replySed} />}
         </HiddenSidebar>
       </div>
-    </ThemeProvider>
+    </NavHighContrast>
   )
 }
 

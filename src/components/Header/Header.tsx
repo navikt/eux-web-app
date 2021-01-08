@@ -1,17 +1,18 @@
 import { toggleHighContrast } from 'actions/ui'
-import { HighContrastLink, HorizontalSeparatorDiv } from 'components/StyledComponents'
+import { HighContrastLink, HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import { Saksbehandler } from 'declarations/types'
 import { Undertittel } from 'nav-frontend-typografi'
-import { theme, themeHighContrast, themeKeys } from 'nav-styled-component-theme'
+import { themeKeys } from 'nav-styled-component-theme'
 import PT from 'prop-types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import NEESSILogo from 'resources/images/nEESSI'
-import styled, { ThemeProvider } from 'styled-components'
+import styled from 'styled-components'
+import NavHighContrast from 'nav-hoykontrast'
 
 const HeaderContent = styled.header`
   background-color: ${({ theme }: any) => theme.type === 'themeHighContrast' ? theme[themeKeys.MAIN_BACKGROUND_COLOR] : '#99c2e8'};
@@ -80,7 +81,7 @@ const Header: React.FC<HeaderProps> = ({ highContrast }: HeaderProps): JSX.Eleme
   const cleanData = () => dispatch({ type: types.APP_CLEAN_DATA })
 
   return (
-    <ThemeProvider theme={highContrast ? themeHighContrast : theme}>
+    <NavHighContrast highContrast={highContrast}>
       <HeaderContent>
         <Brand>
           <Link to='/' onClick={cleanData}>
@@ -114,7 +115,7 @@ const Header: React.FC<HeaderProps> = ({ highContrast }: HeaderProps): JSX.Eleme
           )}
         </SaksbehandlerDiv>
       </HeaderContent>
-    </ThemeProvider>
+    </NavHighContrast>
   )
 }
 

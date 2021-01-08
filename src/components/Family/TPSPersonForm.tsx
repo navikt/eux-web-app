@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import Alert from 'components/Alert/Alert'
 import PersonCard from 'components/PersonCard/PersonCard'
-import { Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'components/StyledComponents'
+import { Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import { AlertStatus } from 'declarations/components'
 import { FamilieRelasjon, Kodeverk, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'

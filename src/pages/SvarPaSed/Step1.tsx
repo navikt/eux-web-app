@@ -1,11 +1,16 @@
 import * as appActions from 'actions/app'
 import * as svarpasedActions from 'actions/svarpased'
 import classNames from 'classnames'
-import {
+import { HiddenFormContainer } from 'components/StyledComponents'
+import { State } from 'declarations/reducers'
+import { ConnectedSed, Validation } from 'declarations/types'
+import _ from 'lodash'
+import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { Normaltekst } from 'nav-frontend-typografi'
+import NavHighContrast, {
   AlignCenterColumn,
   AlignedRow,
   Column,
-  HiddenFormContainer,
   HighContrastHovedknapp,
   HighContrastInput,
   HighContrastKnapp,
@@ -15,17 +20,11 @@ import {
   RadioGroup,
   Row,
   VerticalSeparatorDiv
-} from 'components/StyledComponents'
-import { State } from 'declarations/reducers'
-import { ConnectedSed, Validation } from 'declarations/types'
-import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
-import { Normaltekst } from 'nav-frontend-typografi'
-import { theme, themeHighContrast } from 'nav-styled-component-theme'
+} from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import styled, { ThemeProvider } from 'styled-components'
+import styled from 'styled-components'
 
 const SaksnummerOrFnrInput = styled(HighContrastInput)`
   margin-right: 1rem;
@@ -134,7 +133,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
   }, [replySed, mode])
 
   return (
-    <ThemeProvider theme={highContrast ? themeHighContrast : theme}>
+    <NavHighContrast highContrast={highContrast}>
       <AlignedRow className={classNames({ feil: _validation.saksnummerOrFnr })}>
         <Column
           style={{ flex: 2 }}
@@ -143,6 +142,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
             bredde='fullbredde'
             data-test-id='svarpased__saksnummerOrFnr-input'
             feil={_validation.saksnummerOrFnr ? _validation.saksnummerOrFnr.feilmelding : undefined}
+            highContrast={highContrast}
             id='svarpased__saksnummerOrFnr-input'
             label={t('ui:label-saksnummerOrFnr')}
             onChange={onSaksnummerOrFnrChange}
@@ -223,7 +223,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
           </Row>
         </>
       )}
-    </ThemeProvider>
+    </NavHighContrast>
   )
 }
 

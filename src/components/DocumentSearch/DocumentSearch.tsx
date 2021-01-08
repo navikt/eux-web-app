@@ -1,6 +1,6 @@
 import * as vedleggActions from 'actions/vedlegg'
 import classNames from 'classnames'
-import { VerticalSeparatorDiv } from 'components/StyledComponents'
+import { VerticalSeparatorDiv } from 'nav-hoykontrast'
 import { State } from 'declarations/reducers'
 import { Dokument, Validation } from 'declarations/types'
 import _ from 'lodash'

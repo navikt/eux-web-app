@@ -1,4 +1,4 @@
-import { Container, Content, Margin } from 'components/StyledComponents'
+import { Container, Content, Margin } from 'nav-hoykontrast'
 import TopContainer from 'components/TopContainer/TopContainer'
 import Alertstripe from 'nav-frontend-alertstriper'
 import Lenke from 'nav-frontend-lenker'

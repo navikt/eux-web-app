@@ -1,6 +1,6 @@
 import Tilsette from 'assets/icons/Tilsette'
 import Alert from 'components/Alert/Alert'
-import { Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'components/StyledComponents'
+import { Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import { AlertStatus } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import { FamilieRelasjon, Kodeverk, Person, Validation } from 'declarations/types'

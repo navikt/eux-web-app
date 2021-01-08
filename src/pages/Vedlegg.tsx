@@ -1,6 +1,6 @@
 import * as vedleggActions from 'actions/vedlegg'
 import DocumentSearch from 'components/DocumentSearch/DocumentSearch'
-import { Container, Content, HorizontalSeparatorDiv, Margin, VerticalSeparatorDiv } from 'components/StyledComponents'
+import { Container, Content, HorizontalSeparatorDiv, Margin, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { State } from 'declarations/reducers'
 import { Validation, VedleggSendResponse } from 'declarations/types'

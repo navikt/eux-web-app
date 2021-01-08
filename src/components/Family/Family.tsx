@@ -6,7 +6,7 @@ import PersonCard from 'components/PersonCard/PersonCard'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'components/StyledComponents'
+import { HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import AbroadPersonForm from './AbroadPersonForm'
 import TPSPersonForm from './TPSPersonForm'
 

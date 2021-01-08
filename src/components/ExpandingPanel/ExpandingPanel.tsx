@@ -1,23 +1,23 @@
 import classNames from 'classnames'
-import { animationClose, animationOpen } from 'components/keyframes'
+import { animationClose, animationOpen } from 'nav-hoykontrast'
 import { guid } from 'nav-frontend-js-utils'
-import { theme, themeHighContrast } from 'nav-styled-component-theme'
+import NavHighContrast from 'nav-hoykontrast'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { Collapse, UnmountClosed } from 'react-collapse'
 import { useTranslation } from 'react-i18next'
-import styled, { ThemeProvider } from 'styled-components'
+import styled from 'styled-components'
 
 export const ExpandingPanelDiv = styled.div`
   &.ekspanderbartPanel--apen .ReactCollapse--collapse {
     will-change: max-height, height;
     max-height: 150em;
-    animation: ${animationOpen} 250ms ease;
+    animation: ${animationOpen(150)} 250ms ease;
   }
   &.ekspanderbartPanel--lukket .ReactCollapse--collapse {
     will-change: max-height, height;
     max-height: 0;
-    animation: ${animationClose} 250ms ease;
+    animation: ${animationClose(150)} 250ms ease;
   }
 `
 
@@ -93,7 +93,7 @@ const ExpandingPanel: React.FC<ExpandingPanelProps> = ({
   const CollapseComponent: any = renderContentWhenClosed ? Collapse : UnmountClosed
 
   return (
-    <ThemeProvider theme={highContrast ? themeHighContrast : theme}>
+    <NavHighContrast highContrast={highContrast}>
       <ExpandingPanelDiv
         id={id}
         style={style}
@@ -146,7 +146,7 @@ const ExpandingPanel: React.FC<ExpandingPanelProps> = ({
           </article>
         </CollapseComponent>
       </ExpandingPanelDiv>
-    </ThemeProvider>
+    </NavHighContrast>
   )
 }
 

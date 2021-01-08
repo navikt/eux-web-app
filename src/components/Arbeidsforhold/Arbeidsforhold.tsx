@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import IkonArbeidsforhold from 'resources/images/ikon-arbeidsforhold'
 import { formatterDatoTilNorsk } from 'utils/dato'
-import { Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'components/StyledComponents'
+import { Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 
 const ArbeidsforholdItem = styled.div`
   display: flex;

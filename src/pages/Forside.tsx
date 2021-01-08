@@ -1,4 +1,4 @@
-import { Container, Content, Margin, VerticalSeparatorDiv } from 'components/StyledComponents'
+import { Container, Content, Margin, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import TopContainer from 'components/TopContainer/TopContainer'
 import React from 'react'
 import { useTranslation } from 'react-i18next'

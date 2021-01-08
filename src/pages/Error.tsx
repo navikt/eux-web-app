@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import ExpandingPanel from 'components/ExpandingPanel/ExpandingPanel'
-import { VerticalSeparatorDiv } from 'components/StyledComponents'
+import { VerticalSeparatorDiv } from 'nav-hoykontrast'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { State } from 'declarations/reducers'
 import PT from 'prop-types'

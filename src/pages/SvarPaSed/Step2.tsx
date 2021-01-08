@@ -15,7 +15,7 @@ import {
   HorizontalSeparatorDiv,
   Row,
   VerticalSeparatorDiv
-} from 'components/StyledComponents'
+} from 'nav-hoykontrast'
 import * as types from 'constants/actionTypes'
 import { AlertStatus } from 'declarations/components'
 import { State } from 'declarations/reducers'
@@ -249,7 +249,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
                   <HighContrastInput
                     bredde='fullbredde'
                     value={_newFormal}
-                    onChange={(e) => setNewFormal(e.target.value)}
+                    onChange={(e: any) => setNewFormal(e.target.value)}
                   />
                 </div>
                 <HorizontalSeparatorDiv data-size='0.5' />
