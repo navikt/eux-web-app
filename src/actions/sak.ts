@@ -14,6 +14,11 @@ import * as urls from 'constants/urls'
 
 const sprintf = require('sprintf-js').sprintf
 
+export const sakCleanData: ActionCreator<Action> = (): Action => ({
+  type: types.SAK_CLEAN_DATA
+})
+
+
 export const addArbeidsforhold: ActionCreator<ActionWithPayload<Arbeidsforholdet>> = (
   payload: Arbeidsforholdet
 ): ActionWithPayload<Arbeidsforholdet> => ({

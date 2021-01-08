@@ -126,7 +126,29 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
     case types.SAK_SEND_SUCCESS:
       return {
         ...state,
-        opprettetSak: action.payload
+        opprettetSak: action.payload,
+        // do an app reset
+        arbeidsforhold: [],
+        buctype: undefined,
+        fagsaker: undefined,
+        familierelasjoner: [],
+        institusjonList: undefined,
+        institusjon: undefined,
+        landkode: undefined,
+        person: undefined,
+        personRelatert: undefined,
+        saksId: undefined,
+        sedtype: undefined,
+        sektor: undefined,
+        tema: undefined,
+        unit: undefined,
+        fnr: undefined
+      }
+
+    case types.SAK_CLEAN_DATA:
+      return {
+        ...state,
+        opprettetSak: undefined
       }
 
     case types.APP_CLEAN_DATA:
@@ -140,7 +162,6 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
         institusjonList: undefined,
         institusjon: undefined,
         landkode: undefined,
-        opprettetSak: undefined,
         person: undefined,
         personRelatert: undefined,
         saksId: undefined,

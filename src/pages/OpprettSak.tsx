@@ -322,6 +322,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
   }
 
   const onAbort = (): void => {
+    dispatch(sakActions.sakCleanData())
     dispatch(appActions.cleanData())
     history.push('/')
   }
@@ -405,11 +406,13 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
             initialFnr=''
             onFnrChange={() => {
               setIsFnrValid(false)
+              dispatch(sakActions.sakCleanData())
               dispatch(appActions.cleanData())
             }}
             onPersonFound={() => setIsFnrValid(true)}
             onSearchPerformed={(fnr: string) => {
               dispatch(sakActions.setProperty('fnr', fnr))
+              dispatch(sakActions.sakCleanData())
               dispatch(sakActions.getPerson(fnr))
             }}
             onPersonRemoved={() => dispatch(sakActions.resetPerson())}
@@ -763,51 +766,51 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   </Row>
                 </>
               )}
-              {opprettetSak && opprettetSak.url && (
-                <Row>
-                  <Column>
-                    <VerticalSeparatorDiv />
-                    <AlertStripe type='suksess'>
-                      <FlexDiv>
-                        <span>
-                          {t('ui:form-caseNumber') + ': ' + opprettetSak.rinasaksnummer}
-                        </span>
-                        <HorizontalSeparatorDiv data-size='0.25' />
-                        <span>
-                          {t('ui:label-is-created')}.
-                        </span>
-                        <HorizontalSeparatorDiv data-size='0.25' />
-                        {opprettetSak.url && (
-                          <Lenke
-                            className='vedlegg__lenke'
-                            href={opprettetSak.url}
-                            target='_blank'
-                          >
-                            {t('ui:form-goToRina')}
-                          </Lenke>
-                        )}
-                      </FlexDiv>
-                      <div>
-                        {opprettetSak.rinasaksnummer && (
-                          <Link
-                            to={'/vedlegg?rinasaksnummer=' + opprettetSak.rinasaksnummer}
-                          >
-                            {t('ui:label-add-as-attachment-to-sed')}
-                          </Link>
-                        )}
-                      </div>
-                    </AlertStripe>
-                  </Column>
-                  <Column />
-                </Row>
-              )}
-              <AbortModal
-                onAbort={onAbort}
-                isOpen={_visModal}
-                closeModal={closeModal}
-              />
             </>
           )}
+          {opprettetSak && opprettetSak.url && (
+            <Row>
+              <Column>
+                <VerticalSeparatorDiv />
+                <AlertStripe type='suksess'>
+                  <FlexDiv>
+                    <span>
+                      {t('ui:form-caseNumber') + ': ' + opprettetSak.rinasaksnummer}
+                    </span>
+                    <HorizontalSeparatorDiv data-size='0.25' />
+                    <span>
+                      {t('ui:label-is-created')}.
+                    </span>
+                    <HorizontalSeparatorDiv data-size='0.25' />
+                    {opprettetSak.url && (
+                      <Lenke
+                        className='vedlegg__lenke'
+                        href={opprettetSak.url}
+                        target='_blank'
+                      >
+                        {t('ui:form-goToRina')}
+                      </Lenke>
+                    )}
+                  </FlexDiv>
+                  <div>
+                    {opprettetSak.rinasaksnummer && (
+                      <Link
+                        to={'/vedlegg?rinasaksnummer=' + opprettetSak.rinasaksnummer}
+                      >
+                        {t('ui:label-add-as-attachment-to-sed')}
+                      </Link>
+                    )}
+                  </div>
+                </AlertStripe>
+              </Column>
+              <Column />
+            </Row>
+          )}
+          <AbortModal
+            onAbort={onAbort}
+            isOpen={_visModal}
+            closeModal={closeModal}
+          />
         </Content>
         <Margin />
       </Container>
