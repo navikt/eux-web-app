@@ -16,7 +16,7 @@ export default {
         {
           land: 'NO',
           sektor: 'yrkesskade_og_yrkessykdom',
-          identifikator: 'æøå',
+          identifikator: '02026100715',
           institusjonsid: 'æøå',
           institusjonsnavn: 'æøå'
         }

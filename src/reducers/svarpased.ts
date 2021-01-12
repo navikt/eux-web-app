@@ -68,10 +68,7 @@ const svarpasedReducer = (
       return {
         ...state,
         previousReplySed: state.replySed,
-        replySed: {
-          ...(action as ActionWithPayload).context.connectedSed,
-          ...(action as ActionWithPayload).payload
-        }
+        replySed: (action as ActionWithPayload).payload
       }
 
     case types.SVARPASED_REPLYSED_QUERY_FAILURE:

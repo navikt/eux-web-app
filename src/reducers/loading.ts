@@ -7,6 +7,8 @@ export interface LoadingState {
 }
 
 export const initialLoadingState: LoadingState = {
+  creatingSedWithAttachments: false,
+  creatingSedEditInRINA: false,
   gettingArbeidsforhold: false,
   gettingDokument: false,
   gettingFagsaker: false,

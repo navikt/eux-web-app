@@ -149,6 +149,9 @@ export const ContainerDiv = styled.div`
     transition: transform ${zoomOutTransition}ms ease-out;
   }
 `
+export const ContentDiv = styled(Content)`
+  flex: 1;
+`
 const WaitingPanelDiv = styled.div`
   flex: 1;
   display: flex;

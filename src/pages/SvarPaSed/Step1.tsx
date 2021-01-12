@@ -128,7 +128,11 @@ const Step1: React.FC<SvarPaSedProps> = ({
 
   useEffect(() => {
     if (replySed && mode === '1') {
-      setMode('2', 'forward')
+      const pin = _.find(replySed.bruker.personInfo.pin, f => f.land === 'NO')
+      if (pin) {
+        dispatch(svarpasedActions.getPerson(pin.identifikator))
+        setMode('2', 'forward')
+      }
     }
   }, [replySed, mode])
 

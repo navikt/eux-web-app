@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import SEDPanel from 'components/SEDPanel/SEDPanel'
-import { HiddenSidebar } from 'components/StyledComponents'
+import { FadingLineSeparator, HiddenSidebar } from 'components/StyledComponents'
 import { HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import { State } from 'declarations/reducers'
 import { themeKeys } from 'nav-styled-component-theme'
@@ -8,17 +8,6 @@ import NavHighContrast, { fadeIn, fadeOut } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
-
-const FadingLineSeparator = styled.div`
-   border-left: 1px solid ${({ theme }) => theme[themeKeys.MAIN_BORDER_COLOR]};
-   opacity: 0;
-   &.fadeIn {
-     animation: ${fadeIn} 0.5s forwards;
-   }
-   &.fadeOut {
-     animation: ${fadeOut} 0.5s forwards;
-   }
-`
 
 const mapState = (state: State): any => ({
   previousReplySed: state.svarpased.previousReplySed,

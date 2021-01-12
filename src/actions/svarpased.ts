@@ -54,9 +54,9 @@ export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload>> = (
       sedId: connectedSed.querySedDocumentId,
       sedType: connectedSed.replySedType
     }),
-    expectedPayload: mockReplySed,
-    context: {
-      connectedSed: connectedSed
+    expectedPayload: {
+      ...mockReplySed,
+      ...connectedSed
     },
     type: {
       request: types.SVARPASED_REPLYSED_QUERY_REQUEST,

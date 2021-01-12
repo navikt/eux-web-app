@@ -1,12 +1,23 @@
 import Select from 'components/Select/Select'
+import { themeKeys } from "nav-styled-component-theme"
 import styled from 'styled-components'
-import { animationClose,  animationOpen,  animationLeft, animationRight } from 'nav-hoykontrast'
+import { animationClose, animationOpen, animationLeft, animationRight, fadeIn, fadeOut } from 'nav-hoykontrast'
 
 export const AlignedSelect = styled(Select)`
   margin-bottom: 3rem;
   &.feil {
     margin-bottom: 0rem !important;
   }
+`
+export const FadingLineSeparator = styled.div`
+   border-left: 1px solid ${({ theme }) => theme[themeKeys.MAIN_BORDER_COLOR]};
+   opacity: 0;
+   &.fadeIn {
+     animation: ${fadeIn} 0.5s forwards;
+   }
+   &.fadeOut {
+     animation: ${fadeOut} 0.5s forwards;
+   }
 `
 export const SideBar = styled.div`
   display: flex;
