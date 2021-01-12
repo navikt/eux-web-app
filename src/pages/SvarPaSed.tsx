@@ -1,10 +1,12 @@
 import { clientClear } from 'actions/alert'
+import * as appActions from 'actions/app'
+import * as sakActions from 'actions/sak'
 import * as svarpasedActions from 'actions/svarpased'
 import Alert from 'components/Alert/Alert'
 import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
 import Family from 'components/Family/Family'
 import Inntekt from 'components/Inntekt/Inntekt'
-import PersonCard from 'components/PersonCard/PersonCard'
+import PersonSearch from 'components/PersonSearch/PersonSearch'
 import {
   Column,
   Container,
@@ -18,7 +20,7 @@ import TopContainer from 'components/TopContainer/TopContainer'
 import * as types from 'constants/actionTypes'
 import { AlertStatus } from 'declarations/components'
 import { State } from 'declarations/reducers'
-import { FamilieRelasjon, Inntekt as IInntekt, Inntekter, SedOversikt, Validation } from 'declarations/types'
+import { FamilieRelasjon, Inntekt as IInntekt, Inntekter, Person, SedOversikt, Validation } from 'declarations/types'
 import _ from 'lodash'
 import Alertstripe from 'nav-frontend-alertstriper'
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel'
@@ -95,6 +97,8 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
 }: SvarPaSedProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
+  const [_person, setPerson] = useState<Person |undefined>(undefined)
+  const [_fnr, setFnr] = useState<string>('')
   const [_mounted, setMounted] = useState<boolean>(false)
   const [_saksnummer, setSaksnummer] = useState<string | undefined>(undefined)
   const [_validation, setValidation] = useState<Validation>({})
@@ -138,7 +142,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
           skjemaelementId: 'svarpased__saksnummer-input'
         } as FeiloppsummeringFeil
         : undefined,
-      svarSed: !svarSed
+      svarSed: !valgtSvarSed
         ? {
           feilmelding: t('ui:validation-noSedtype'),
           skjemaelementId: 'svarpased__svarsed-select'
@@ -242,7 +246,6 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
 //
   useEffect(() => {
     if (_.isNil(person) && !gettingPerson && !_.isNil(svarSed)) {
-
       const pin = _.find(svarSed.bruker.personInfo.pin, p => p.land === 'NO')
       if (pin) {
         const fnr = pin.identifikator
@@ -250,7 +253,14 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
         dispatch(svarpasedActions.getArbeidsforholdList(fnr))
       }
     }
-  }, [person, gettingPerson, svarSed])
+  }, [person, _person, gettingPerson, svarSed])
+
+  useEffect(() => {
+    if (!_.isNil(person) && !_fnr && _.isNil(_person)) {
+      setPerson(person)
+      setFnr(person.fnr)
+    }
+  }, [person, person, _fnr])
 
   return (
     <TopContainer>
@@ -333,24 +343,44 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
                   )}
                 </InputAndButtonDiv>
               )}
-              {svarSed && (
+              {!_.isNil(svarSed) && (
                 <>
                   <VerticalSeparatorDiv data-size='2' />
-                  <fieldset style={{ width: '50%' }}>
-                    <legend>
-                      {t('ui:label-userInSed')}
-                    </legend>
-                    {!_.isNil(person) && (
-                      <PersonCard person={person}/>
-                    )}
-                  </fieldset>
+                  <PersonSearch
+                    alertStatus={alertStatus}
+                    alertMessage={alertMessage}
+                    alertType={alertType}
+                    alertTypesWatched={[types.SVARPASED_PERSON_GET_FAILURE]}
+                    className='slideAnimate'
+                    data-test-id='svarpased__fnr'
+                    gettingPerson={gettingPerson}
+                    key={'svarpased__fnr__' + _fnr}
+                    id='svarpased__fnr'
+                    initialFnr={_fnr}
+                    onFnrChange={(fnr: string) => {
+                      setFnr(fnr)
+                      dispatch(appActions.cleanData())
+                      setPerson(undefined)
+                    }}
+                    onSearchPerformed={(fnr: string) => {
+                      setFnr('')
+                      setPerson(undefined)
+                      dispatch(svarpasedActions.getPerson(fnr))
+                      dispatch(svarpasedActions.getArbeidsforholdList(fnr))
+                    }}
+                    onPersonRemoved={() => dispatch(sakActions.resetPerson())}
+                    onAlertClose={() => dispatch(clientClear())}
+                    person={_person}
+                    resetAllValidation={() => resetValidation()}
+                    validation={_validation.fnr}
+                  />
                 </>
               )}
               <VerticalSeparatorDiv />
             </>
           )}
           <VerticalSeparatorDiv />
-          {!_.isNil(person) && (
+          {!_.isNil(_person) && (
             <>
               {valgtSvarSed?.replySedType.startsWith('F') && (
                 <>

@@ -45,7 +45,7 @@ export interface PersonSearchProps {
   initialFnr: any
   gettingPerson: boolean
   onAlertClose: () => void
-  onFnrChange?: () => void
+  onFnrChange?: (newFnr: string) => void
   onPersonFound?: (person: Person) => void
   onSearchPerformed: (fnr: any) => void
   onPersonRemoved: () => void
@@ -119,10 +119,11 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setLocalValidation(undefined)
     resetAllValidation()
+    const newFnr = e.target.value.trim()
+    setFnr(newFnr)
     if (_.isFunction(onFnrChange)) {
-      onFnrChange()
+      onFnrChange(newFnr)
     }
-    setFnr(e.target.value.trim())
   }
 
   const onRemovePerson = (): void => {
