@@ -103,7 +103,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
           onClick={sokEtterDokument}
           spinner={gettingDokument}
         >
-          {t('ui:form-search')}
+          {t('ui:label-search')}
         </Knapp>
       </Form>
       <VerticalSeparatorDiv />
@@ -117,7 +117,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
           value={rinadokumentID}
         >
           <option value=''>
-            {t('ui:form-choose')}
+            {t('ui:label-choose')}
           </option>
           {dokument?.map((element: Dokument) => (
             <option value={element.rinadokumentID} key={element.rinadokumentID}>

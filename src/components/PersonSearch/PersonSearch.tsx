@@ -141,15 +141,15 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
         <PersonSearchInput
           id={id}
           data-test-id={id}
-          label={t('ui:form-searchUser')}
+          label={t('ui:label-searchUser')}
           value={_fnr || ''}
           onChange={onChange}
           feil={validation ? validation.feilmelding : localValidation}
         />
         <Button onClick={sokEtterPerson} disabled={gettingPerson}>
           {gettingPerson
-            ? <WaitingPanel size='S' message={t('ui:form-searching')} oneLine />
-            : t('ui:form-search')}
+            ? <WaitingPanel size='S' message={t('ui:loading-searching')} oneLine />
+            : t('ui:label-search')}
         </Button>
       </PersonSearchPanel>
       {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (

@@ -437,7 +437,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     value={valgtSektor}
                   >
                     <option value=''>
-                      {t('ui:form-choose')}
+                      {t('ui:label-choose')}
                     </option>
                     {sektor &&
                       _.orderBy(sektor, 'term').map((k: Kodeverk) => (
@@ -463,7 +463,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                       value={valgtUnit}
                     >
                       <option value=''>
-                        {t('ui:form-choose')}
+                        {t('ui:label-choose')}
                       </option>
                       {sektor &&
                         _.orderBy(enheter, 'navn').map((e: Enhet) => (
@@ -491,7 +491,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     value={valgtBucType}
                   >
                     <option value=''>
-                      {t('ui:form-choose')}
+                      {t('ui:label-choose')}
                     </option>
                     {_buctyper &&
                       _.orderBy(_buctyper, 'kode').map((k: Kodeverk) => (
@@ -517,7 +517,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     value={valgtSedType}
                   >
                     <option value=''>
-                      {t('ui:form-choose')}
+                      {t('ui:label-choose')}
                     </option>)
                     {_sedtyper && _sedtyper.map((k: string | Kodeverk) => {
                       // if only one element, select it
@@ -548,7 +548,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     lang='nb'
                     menuPortalTarget={document.body}
                     onOptionSelected={onLandkodeChange}
-                    placeholder={t('ui:form-choose')}
+                    placeholder={t('ui:label-choose')}
                     value={valgtLandkode}
                   />
                   <VerticalSeparatorDiv />
@@ -568,7 +568,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     value={valgtInstitusjon}
                   >
                     <option value=''>
-                      {t('ui:form-choose')}
+                      {t('ui:label-choose')}
                     </option>)
                     {institusjoner &&
                       _.orderBy(institusjoner, 'term').map((i: Institusjon) => (
@@ -652,7 +652,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                       value={valgtTema}
                     >
                       <option value=''>
-                        {t('ui:form-choose')}
+                        {t('ui:label-choose')}
                       </option>)
                       {temaer && temaer.map((k: Kodeverk) => (
                         <option value={k.kode} key={k.kode}>
@@ -668,7 +668,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                       onClick={onViewFagsakerClick}
                       disabled={!isSomething(valgtTema)}
                     >
-                      {t('ui:form-seeCases')}
+                      {t('ui:label-seeCases')}
                     </Knapp>
                     <VerticalSeparatorDiv />
                   </AlignCenterColumn>
@@ -681,10 +681,10 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     {serverInfo && (
                       <Lenke
                         href={serverInfo?.gosysURL}
-                        ariaLabel={t('ui:form-createNewCaseInGosys')}
+                        ariaLabel={t('ui:label-createNewCaseInGosys')}
                         target='_blank'
                       >
-                        {t('ui:form-createNewCaseInGosys')}
+                        {t('ui:label-createNewCaseInGosys')}
                       </Lenke>
                     )}
                     <VerticalSeparatorDiv />
@@ -704,7 +704,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                       value={valgtSaksId}
                     >
                       <option value=''>
-                        {t('ui:form-choose')}
+                        {t('ui:label-choose')}
                       </option>
                       {fagsaker &&
                         _.orderBy(fagsaker, 'fagsakNr').map((f: FagSak) => (
@@ -740,14 +740,14 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   onClick={skjemaSubmit}
                   spinner={sendingSak}
                 >
-                  {t('ui:form-createCaseInRina')}
+                  {t('ui:label-createCaseInRina')}
                 </Hovedknapp>
                 <HorizontalSeparatorDiv />
                 <Flatknapp
                   aria-label='Navigasjonslink tilbake til forsiden'
                   onClick={openModal}
                 >
-                  {t('ui:form-resetForm')}
+                  {t('ui:label-resetForm')}
                 </Flatknapp>
               </Row>
               {!isValid(_validation) && (
@@ -775,7 +775,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                 <AlertStripe type='suksess'>
                   <FlexDiv>
                     <span>
-                      {t('ui:form-caseNumber') + ': ' + opprettetSak.rinasaksnummer}
+                      {t('ui:label-caseNumber') + ': ' + opprettetSak.rinasaksnummer}
                     </span>
                     <HorizontalSeparatorDiv data-size='0.25' />
                     <span>
@@ -788,7 +788,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                         href={opprettetSak.url}
                         target='_blank'
                       >
-                        {t('ui:form-goToRina')}
+                        {t('ui:label-goToRina')}
                       </Lenke>
                     )}
                   </FlexDiv>

@@ -197,7 +197,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
               disabled={sendingVedlegg}
               spinner={sendingVedlegg}
             >
-              {sendingVedlegg ? t('ui:label-sendingVedlegg') : t('ui:label-sendVedlegg')}
+              {sendingVedlegg ? t('ui:loading-sendingVedlegg') : t('ui:label-sendVedlegg')}
             </Hovedknapp>
             {vedlegg && (
               <>
@@ -207,7 +207,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
                     <div>{t('ui:attached')}: {vedlegg.filnavn || vedlegg.vedleggID}</div>
                     {vedlegg.url && (
                       <Link href={vedlegg.url} rel='noreferrer' target='_blank'>
-                        {t('ui:form-goToRina')}
+                        {t('ui:label-goToRina')}
                       </Link>
                     )}
                   </div>

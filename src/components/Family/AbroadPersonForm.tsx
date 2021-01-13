@@ -247,7 +247,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
 
   return (
     <Container className={className}>
-      <Normaltekst>{t('ui:form-family-utland-add-form-title')}</Normaltekst>
+      <Normaltekst>{t('ui:label-family-utland-add-form-title')}</Normaltekst>
       <VerticalSeparatorDiv />
       <Panel data-test-id='familierelasjoner__utland__wrapper'>
         <Row>
@@ -277,7 +277,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
                 updateCountry('land', e.value)
                 resetValidation('land')
               }}
-              placeholder={t('ui:form-choose')}
+              placeholder={t('ui:label-choose')}
               values={_relation.land}
             />
             <VerticalSeparatorDiv />
@@ -291,7 +291,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               label={t('ui:label-statsborgerskap')}
               key={'familierelasjoner__input-statsborgerskap' + _relation.statsborgerskap}
               menuPortalTarget={document.body}
-              placeholder={t('ui:form-choose')}
+              placeholder={t('ui:label-choose')}
               onOptionSelected={(e: any) => {
                 updateCountry('statsborgerskap', e.value)
                 resetValidation('statsborgerskap')
@@ -344,7 +344,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               value={_relation.kjoenn}
             >
               <option value='' disabled>
-                {t('ui:form-choose')}
+                {t('ui:label-choose')}
               </option>
               {kjoennList &&
                 kjoennList.map((element: Kodeverk) => (
@@ -360,7 +360,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             <Input
               data-test-id='familierelasjoner__input-fdato'
               feil={_validation.fdato ? _validation.fdato.feilmelding : undefined}
-              label={t('ui:form-birthdate')}
+              label={t('ui:label-birthdate')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 updateRelation('fdato', e)
                 resetValidation('fdato')
@@ -385,7 +385,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               value={_relation.rolle}
             >
               <option value='' disabled>
-                {t('ui:form-choose')}
+                {t('ui:label-choose')}
               </option>
               {rolleList.map((element: Kodeverk) => (
                 <option value={element.kode} key={element.kode}>
@@ -410,7 +410,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
                 color={!canAddRelation() ? 'white' : '#0067C5'}
               />
               <HorizontalSeparatorDiv />
-              <span>{t('ui:form-add')}</span>
+              <span>{t('ui:label-add')}</span>
             </Knapp>
           </AlignCenterColumn>
           {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (

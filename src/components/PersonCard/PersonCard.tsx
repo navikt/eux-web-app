@@ -104,7 +104,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
 
     rolleTerm = kodeverkObjektTilTerm(rolleObjekt)
     if (!rolleTerm) {
-      rolleTerm = t('ui:form-unknownRolle')
+      rolleTerm = t('ui:label-unknownRolle')
     }
   }
 
@@ -149,8 +149,8 @@ const PersonCard: React.FC<PersonCardProps> = ({
               {(person as FamilieRelasjon).rolle ? ' - ' + rolleTerm : ''}
             </Undertittel>
             <Undertitle>
-              <div>{t('ui:form-fnr') + ' : ' + fnr}</div>
-              <div>{t('ui:form-birthdate') + ': ' + formatterDatoTilNorsk(fdato)}</div>
+              <div>{t('ui:label-fnr') + ' : ' + fnr}</div>
+              <div>{t('ui:label-birthdate') + ': ' + formatterDatoTilNorsk(fdato)}</div>
             </Undertitle>
           </div>
         </Description>
@@ -161,7 +161,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
             value={(person as FamilieRelasjon).rolle}
             onChange={updateFamilyRelation}
           >
-            <option value=''>{t('ui:form-choose')}</option>
+            <option value=''>{t('ui:label-choose')}</option>
             {rolleList && rolleList.map((element: Kodeverk) => (
               <option value={element.kode} key={element.kode}>{element.term}</option>)
             )}
@@ -174,7 +174,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
             <Trashcan color='#0067C5' width='20' height='20' />
             <HorizontalSeparatorDiv />
             <ButtonLabel>
-              {t('ui:form-remove')}
+              {t('ui:label-remove')}
             </ButtonLabel>
           </RemoveButton>
         )}
@@ -187,7 +187,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
             <Tilsette width={20} />
             <HorizontalSeparatorDiv />
             <ButtonLabel>
-              {t('ui:form-add')}
+              {t('ui:label-add')}
             </ButtonLabel>
           </Knapp>
         )}

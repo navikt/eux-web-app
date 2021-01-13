@@ -5,7 +5,7 @@ import { Person } from 'declarations/types'
 import { Checkbox } from 'nav-frontend-skjema'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import { HighContrastFlatknapp, HighContrastPanel, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
@@ -42,7 +42,9 @@ const FlexDiv = styled.div`
 const mapState = (state: State): any => ({
   familierelasjonKodeverk: state.app.familierelasjoner,
   personRelatert: state.svarpased.personRelatert,
-  valgteFamilieRelasjoner: state.svarpased.familierelasjoner
+  valgteFamilieRelasjoner: state.svarpased.familierelasjoner,
+
+  gettingPerson: state.loading.gettingPerson
 })
 
 const FamilyManager: React.FC<FamilyManagerProps> = ({
@@ -53,36 +55,50 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
  //   familierelasjonKodeverk,
   //  personRelatert,
   //  valgteFamilieRelasjoner
+    gettingPerson
   }: any = useSelector<State, any>(mapState)
+  const [ _person, setPerson ] = useState<Person | undefined>(undefined)
   const { t } = useTranslation()
 
   const onAddNewPerson = () => {}
 
+  const onSelectPerson = (p: Person) => {
+    setPerson(p)
+  }
+
   return (
     <PanelDiv>
       <Undertittel>
-        {t('ui:form-familymanager-title')}
+        {t('ui:label-familymanager-title')}
       </Undertittel>
       <VerticalSeparatorDiv/>
       <HighContrastPanel>
         <FlexDiv>
           <LeftDiv>
-            <CheckboxDiv>
-              <Normaltekst>
-                dfgdffdg  {person?.fornavn}
-              </Normaltekst>
-              <Checkbox label='' onChange={() => {}}
-              />
-            </CheckboxDiv>
+            { person && (
+              <CheckboxDiv>
+                <Normaltekst>
+                   {person?.fornavn + ' ' + person?.etternavn + ' (' + person?.kjoenn + ')'}
+                </Normaltekst>
+                <Checkbox
+                  label=''
+                  checked={_person && _person.fnr === person.fnr}
+                  onChange={() => onSelectPerson(person)}
+                />
+              </CheckboxDiv>
+            )}
             <VerticalSeparatorDiv/>
             {person?.relasjoner?.map(r => {
               return (
                 <>
                 <CheckboxDiv>
                   <Normaltekst>
-                    dfgdffdg  {r.fornavn}
+                    {r?.fornavn + ' ' + r?.etternavn + ' - ' + r.rolle + ' (' + r?.kjoenn + ')'}
                   </Normaltekst>
-                  <Checkbox label='' onChange={() => {}}
+                  <Checkbox
+                    label=''
+                    checked={_person && _person.fnr === r.fnr}
+                    onChange={() => onSelectPerson(r)}
                   />
                 </CheckboxDiv>
                 <VerticalSeparatorDiv/>
@@ -97,13 +113,14 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
               >
                 <Tilsette />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('ui:form-add-person')}
+                {t('ui:label-add-person')}
               </HighContrastFlatknapp>
             </CheckboxDiv>
           </LeftDiv>
         <FadingLineSeparator className='fadeIn'/>
         <RightDiv>
-          dgfhfgdgdfg
+          { !_person ? t('ui:label-no-person-selected') : undefined}
+          {gettingPerson ?  t('ui:loading-getting-person') : undefined}
         </RightDiv>
         </FlexDiv>
       </HighContrastPanel>

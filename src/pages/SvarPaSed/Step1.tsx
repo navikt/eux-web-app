@@ -160,7 +160,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
             spinner={queryingSaksnummerOrFnr}
             onClick={onSaksnummerOrFnrClick}
           >
-            {queryingSaksnummerOrFnr ? t('ui:form-searching') : t('ui:form-search')}
+            {queryingSaksnummerOrFnr ? t('ui:loading-searching') : t('ui:label-search')}
           </HighContrastKnapp>
         </AlignCenterColumn>
       </AlignedRow>
@@ -213,7 +213,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                               kompakt
                               onClick={() => onReplySedClick(connectedSed)}
                             >
-                              {queryingReplySed ? t('ui:label-replying') : t('ui:label-reply')}
+                              {queryingReplySed ? t('ui:loading-replying') : t('ui:label-reply')}
                             </HighContrastHovedknapp>
                           </FlexDiv>
                         </HighContrastPanel>

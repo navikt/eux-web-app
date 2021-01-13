@@ -82,7 +82,7 @@ export const getPerson: ActionCreator<ThunkResult<ActionWithPayload>> = (
 ): ThunkResult<ActionWithPayload> => {
   return call({
     url: sprintf(urls.API_SVARPASED_PERSON_URL, { fnr: fnr }),
-    expectedPerson: mockPerson({ fnr: fnr }),
+    expectedPayload: mockPerson({ fnr: fnr }),
     cascadeFailureError: true,
     type: {
       request: types.SVARPASED_PERSON_GET_REQUEST,
@@ -97,7 +97,7 @@ export const getPersonRelated: ActionCreator<ThunkResult<ActionWithPayload>> = (
 ): ThunkResult<ActionWithPayload> => {
   return call({
     url: sprintf(urls.API_SVARPASED_PERSON_URL, { fnr: fnr }),
-    expectedPerson: mockPerson({ fnr: fnr }),
+    expectedPayload: mockPerson({ fnr: fnr }),
     cascadeFailureError: true,
     context: {
       fnr: fnr

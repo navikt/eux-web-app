@@ -56,7 +56,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
               </span>
               <HorizontalSeparatorDiv />
               <Knapp onClick={getArbeidsforholdList}>
-                {t('ui:form-search')}
+                {t('ui:label-search')}
               </Knapp>
             </ArbeidsforholdButton>
           </Column>
@@ -104,13 +104,22 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
                           label={t('ui:form-choose')}
                         />
                       </div>
-                    </ArbeidsforholdItem>
-                  </Panel>
-                  <VerticalSeparatorDiv data-size='0.5'/>
-                </div>
-              )
-            }
-            return undefined
+                    </ArbeidsforholdDesc>
+                    <div>
+                      <Checkbox
+                        checked={arbeidsForholdErValgt}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => onArbeidsforholdClick(
+                          arbeidsforholdet,
+                          e.target.checked
+                        )}
+                        label={t('ui:label-choose')}
+                      />
+                    </div>
+                  </ArbeidsforholdItem>
+                </Panel>
+                <VerticalSeparatorDiv data-size='0.5' />
+              </div>
+            )
           }
         ).filter(e => e !== undefined)}
       </Column>

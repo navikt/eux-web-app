@@ -1,10 +1,11 @@
 import Tilsette from 'assets/icons/Tilsette'
 import Trashcan from 'assets/icons/Trashcan'
+import Select from 'components/Select/Select'
+import { Option } from 'declarations/app'
 import _ from 'lodash'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   HighContrastFlatknapp,
-  HighContrastInput,
   HighContrastKnapp,
   HorizontalSeparatorDiv,
   VerticalSeparatorDiv
@@ -20,33 +21,67 @@ const FlexDiv = styled.div`
 `
 
 interface PurposeProps {
+  highContrast: boolean
   initialPurposes: Array<string>
   onPurposeChange?: (e: Array<string>) => void
 }
 
+
+
 const Purpose: React.FC<PurposeProps> = ({
+  highContrast,
   initialPurposes = [],
   onPurposeChange
 }: PurposeProps) => {
-  const [_addFormal, setAddFormal] = useState<boolean>(false)
-  const [_newFormal, setNewFormal] = useState<string>('')
-  const [_formal, setFormal] = useState<Array<string>>(initialPurposes)
   const { t } = useTranslation()
+  const purposeOptions = [{
+    label: t('ui:option-purpose-1'), value: t('ui:option-purpose-1')
+  }, {
+    label: t('ui:option-purpose-2'), value: t('ui:option-purpose-2')
+  }, {
+    label: t('ui:option-purpose-3'), value: t('ui:option-purpose-3')
+  }, {
+    label: t('ui:option-purpose-4'), value: t('ui:option-purpose-4')
+  }, {
+    label: t('ui:option-purpose-5'), value: t('ui:option-purpose-5')
+  }, {
+    label: t('ui:option-purpose-6'), value: t('ui:option-purpose-6')
+  }, {
+    label: t('ui:option-purpose-7'), value: t('ui:option-purpose-7')
+  }, {
+    label: t('ui:option-purpose-8'), value: t('ui:option-purpose-8')
+  }]
+  const [_addPurpose, setAddPurpose] = useState<boolean>(false)
+  const [_newPurpose, setNewPurpose] = useState<Option | undefined>(undefined)
+  const [_purposes, setPurposes] = useState<Array<string>>(initialPurposes)
+  const [_purposeValues, setPurposeValues ] = useState<Array<Option>>(
+    _.filter(purposeOptions, p => initialPurposes.indexOf(p.value) < 0)
+  )
 
-  const onRemoveFormal = (f: any) => {
-    const newFormal = _.filter(_formal, _f => _f !== f)
-    setFormal(newFormal)
+  const onRemovePurpose = (f: any) => {
+    const newPurpose = _.filter(_purposes, _f => _f !== f)
+    const newPurposeValues = _.filter(purposeOptions, p => newPurpose.indexOf(p.value) < 0)
+    setPurposes(newPurpose)
+    setPurposeValues(newPurposeValues)
     if (onPurposeChange) {
-      onPurposeChange(newFormal)
+      onPurposeChange(newPurpose)
     }
   }
 
-  const onAddFormal = () => {
-    const newFormal = _formal.concat(_newFormal)
-    setFormal(newFormal)
-    setNewFormal('')
-    if (onPurposeChange) {
-      onPurposeChange(newFormal)
+  const onPurposeChanged = (o: Option) => {
+    setNewPurpose(o)
+  }
+
+  const onAddPurpose = () => {
+    if (_newPurpose) {
+      const newPurpose = _purposes.concat(_newPurpose.value)
+      const newPurposeValues = _.filter(purposeOptions, p => newPurpose.indexOf(p.value) < 0)
+      setPurposes(newPurpose)
+      setPurposeValues(newPurposeValues)
+      setNewPurpose(undefined)
+      if (onPurposeChange) {
+        onPurposeChange(newPurpose)
+      }
     }
   }
 
@@ -56,7 +91,7 @@ const Purpose: React.FC<PurposeProps> = ({
         {t('ui:label-choosePurpose')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      {_formal && _formal.map(f => (
+      {_purposes && _purposes.map(f => (
         <FlexDiv
           key={f}
         >
@@ -66,33 +101,35 @@ const Purpose: React.FC<PurposeProps> = ({
           <HighContrastFlatknapp
             mini
             kompakt
-            onClick={() => onRemoveFormal(f)}
+            onClick={() => onRemovePurpose(f)}
           >
             <Trashcan />
             <HorizontalSeparatorDiv data-size='0.5' />
-            {t('ui:form-remove')}
+            {t('ui:label-remove')}
           </HighContrastFlatknapp>
         </FlexDiv>
       ))}
-      {!_addFormal
+      {!_addPurpose
         ? (
           <>
             <HighContrastFlatknapp
-              onClick={() => setAddFormal(!_addFormal)}
+              onClick={() => setAddPurpose(!_addPurpose)}
             >
               <Tilsette />
               <HorizontalSeparatorDiv data-size='0.5' />
-              {t('ui:form-addPurpose')}
+              {t('ui:label-add-new-purpose')}
             </HighContrastFlatknapp>
           </>
         )
         : (
           <FlexDiv>
             <div style={{ flex: 2 }}>
-              <HighContrastInput
-                bredde='fullbredde'
-                value={_newFormal}
-                onChange={(e: any) => setNewFormal(e.target.value)}
+              <Select
+                id='purpose__select'
+                highContrast={highContrast}
+                value={_newPurpose}
+                onChange={onPurposeChanged}
+                options={_purposeValues}
               />
             </div>
             <HorizontalSeparatorDiv data-size='0.5' />
@@ -100,19 +137,19 @@ const Purpose: React.FC<PurposeProps> = ({
               <HighContrastKnapp
                 mini
                 kompakt
-                onClick={onAddFormal}
+                onClick={onAddPurpose}
               >
                 <Tilsette />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('ui:form-add')}
+                {t('ui:label-add')}
               </HighContrastKnapp>
               <HorizontalSeparatorDiv data-size='0.5' />
               <HighContrastFlatknapp
                 mini
                 kompakt
-                onClick={() => setAddFormal(!_addFormal)}
+                onClick={() => setAddPurpose(!_addPurpose)}
               >
-                {t('ui:form-cancel')}
+                {t('ui:label-cancel')}
               </HighContrastFlatknapp>
             </FlexDiv>
           </FlexDiv>

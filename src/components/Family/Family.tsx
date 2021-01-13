@@ -110,14 +110,14 @@ const Family: React.FC<FamilyProps> = ({
     <div data-test-id='c-family'>
       <HorizontalSeparatorDiv />
       <Undertittel>
-        {t('ui:form-family-description')}
+        {t('ui:label-family-description')}
       </Undertittel>
       <VerticalSeparatorDiv />
       <FamilyArea>
         <FamilySubArea>
           <HorizontalSeparatorDiv />
           <Ingress>
-            {t('ui:form-family-relations-in-tps')}
+            {t('ui:label-family-relations-in-tps')}
           </Ingress>
           {remainingRelationsFromTPS.map((relation: FamilieRelasjon) => (
             <MarginDiv key={relation.fnr}>
@@ -135,7 +135,7 @@ const Family: React.FC<FamilyProps> = ({
               <HorizontalSeparatorDiv data-size='0.5' />
               <VerticalSeparatorDiv data-size='1.5' />
               <UndertekstBold>
-                ({t('ui:form-family-added-all')})
+                ({t('ui:label-family-added-all')})
               </UndertekstBold>
             </>
           )}
@@ -144,7 +144,7 @@ const Family: React.FC<FamilyProps> = ({
               <HorizontalSeparatorDiv data-size='0.5' />
               <VerticalSeparatorDiv data-size='1.5' />
               <UndertekstBold>
-                ({t('ui:form-family-none-in-tps')})
+                ({t('ui:label-family-none-in-tps')})
               </UndertekstBold>
             </>
           )}
@@ -153,7 +153,7 @@ const Family: React.FC<FamilyProps> = ({
         <FamilySubArea>
           <HorizontalSeparatorDiv />
           <Ingress>
-            {t('ui:form-family-chosen')}&nbsp;({valgteFamilieRelasjoner ? valgteFamilieRelasjoner.length : 0})
+            {t('ui:label-family-chosen')}&nbsp;({valgteFamilieRelasjoner ? valgteFamilieRelasjoner.length : 0})
           </Ingress>
           {valgteFamilieRelasjoner && valgteFamilieRelasjoner.map((relation: FamilieRelasjon) => (
             <MarginDiv key={relation.fnr}>
@@ -172,7 +172,7 @@ const Family: React.FC<FamilyProps> = ({
         <div>
           <VerticalSeparatorDiv data-size='1.5' />
           <Ingress>
-            {t('ui:form-family-utland-title')}
+            {t('ui:label-family-utland-title')}
           </Ingress>
           {_viewAbroadPersonForm && (
             <>
@@ -203,7 +203,7 @@ const Family: React.FC<FamilyProps> = ({
         <div>
           <VerticalSeparatorDiv data-size='1.5' />
           <Ingress>
-            {t('ui:form-family-tps-title')}
+            {t('ui:label-family-tps-title')}
           </Ingress>
           {_viewTPSRelatedForm && person && (
             <>

@@ -39,11 +39,12 @@ const FlexDiv = styled.div`
   justify-content: space-between;
 `
 const Step2Div = styled.div`
+  padding: 0.5rem;
 `
 
 const ButtonsDiv = styled.div`
   display: flex;
-  width: 20px;
+  flex-wrap: wrap;
 `
 
 const AlertstripeDiv = styled.div`
@@ -224,7 +225,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
         >
           <VenstreChevron />
           <HorizontalSeparatorDiv data-size='0.5' />
-          {t('ui:form-back')}
+          {t('ui:label-back')}
         </HighContrastLink>
       </FlexDiv>
       <VerticalSeparatorDiv />
@@ -237,6 +238,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
           <Purpose
             initialPurposes={_purpose}
             onPurposeChange={(p => setPurpose(p))}
+            highContrast={highContrast}
           />
         </Column>
       </Row>
@@ -315,8 +317,8 @@ const Step2: React.FC<SvarPaSedProps> = ({
       <VerticalSeparatorDiv data-size='2'/>
       <TextAreaDiv>
         <HighContrastTextArea
-          label={t('ui:form-comment-title')}
-          placeholder={t('ui:form-comment-placeholder')}
+          label={t('ui:label-comment-title')}
+          placeholder={t('ui:label-comment-placeholder')}
           onChange={(e: any) => setComment(e.target.value)}
           value={_comment}
         />
@@ -329,41 +331,53 @@ const Step2: React.FC<SvarPaSedProps> = ({
       >
         <Tilsette />
         <HorizontalSeparatorDiv data-size='0.5' />
-        {t('ui:form-preview-sed')}
+        {t('ui:label-preview-sed')}
       </HighContrastFlatknapp>
       <VerticalSeparatorDiv data-size='2'/>
       <ButtonsDiv>
-        <HighContrastHovedknapp
-          onClick={sendReplySed}
-          disabled={sendingSvarPaSed}
-          spinner={sendingSvarPaSed}
-        >
-          {sendingSvarPaSed ? t('ui:label-sendingReplySed') : t('ui:label-sendReplySed')}
-        </HighContrastHovedknapp>
+        <div>
+          <HighContrastHovedknapp
+            onClick={sendReplySed}
+            disabled={sendingSvarPaSed}
+            spinner={sendingSvarPaSed}
+          >
+            {sendingSvarPaSed ? t('ui:loading-sendingReplySed') : t('ui:label-sendReplySed')}
+          </HighContrastHovedknapp>
+          <VerticalSeparatorDiv data-size='0.5'/>
+        </div>
         <HorizontalSeparatorDiv/>
-        <HighContrastKnapp
-          onClick={createSedWithAttachments}
-          disabled={creatingSedWithAttachments}
-          spinner={creatingSedWithAttachments}
-        >
-          {t('ui:label-createSedWithAttachments')}
-        </HighContrastKnapp>
+        <div>
+          <HighContrastKnapp
+            onClick={createSedWithAttachments}
+            disabled={creatingSedWithAttachments}
+            spinner={creatingSedWithAttachments}
+          >
+            {t('ui:label-createSedWithAttachments')}
+          </HighContrastKnapp>
+          <VerticalSeparatorDiv data-size='0.5'/>
+        </div>
         <HorizontalSeparatorDiv/>
-        <HighContrastKnapp
-          onClick={createSedEditInRINA}
-          disabled={creatingSedEditInRINA}
-          spinner={creatingSedEditInRINA}
-        >
-          {t('ui:label-createSedEditInRINA')}
-        </HighContrastKnapp>
+        <div>
+          <HighContrastKnapp
+            onClick={createSedEditInRINA}
+            disabled={creatingSedEditInRINA}
+            spinner={creatingSedEditInRINA}
+          >
+            {t('ui:label-createSedEditInRINA')}
+          </HighContrastKnapp>
+          <VerticalSeparatorDiv data-size='0.5'/>
+        </div>
         <HorizontalSeparatorDiv/>
-        <HighContrastKnapp
-          onClick={saveSed}
-          disabled={savingSed}
-          spinner={savingSed}
-        >
-          {t('ui:label-saveSed')}
-        </HighContrastKnapp>
+        <div>
+          <HighContrastKnapp
+            onClick={saveSed}
+            disabled={savingSed}
+            spinner={savingSed}
+          >
+            {t('ui:label-saveSed')}
+          </HighContrastKnapp>
+          <VerticalSeparatorDiv data-size='0.5'/>
+        </div>
       </ButtonsDiv>
         {!isValid(_validation) && (
         <>

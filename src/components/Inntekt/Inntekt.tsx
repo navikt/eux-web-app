@@ -218,7 +218,7 @@ const Inntekt: React.FC<InntektProps> = ({
             }}
           >
             <option value=''>
-              {t('ui:form-choose')}
+              {t('ui:label-choose')}
             </option>
             <option value='BARNETRYGD' key='BARNETRYGD'>
               Barnetrygd
