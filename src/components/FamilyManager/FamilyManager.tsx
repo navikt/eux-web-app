@@ -22,6 +22,7 @@ interface FamilyManagerProps {
 
 const LeftDiv = styled.div`
   flex: 1;
+  align-self: flex-start;
 `
 
 const RightDiv = styled.div`
@@ -85,13 +86,14 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
   //  valgteFamilieRelasjoner
     gettingPerson
   }: any = useSelector<State, any>(mapState)
-  const [_editPerson, setEditPerson] = useState<Person | undefined>(undefined)
+  const [_editPersons, setEditPersons] = useState<Array<Person>>([])
+  const [_editCurrentPerson, setEditCurrentPerson] = useState<Person | undefined>(undefined)
   const [_selectedPersons, setSelectedPersons] = useState<Array<Person>>([])
-  const [_showPersonOption, setShowPersonOption] = useState<boolean>(false)
   const [_personOption, setPersonOption] = useState<string | undefined>(undefined)
   const { t } = useTranslation()
 
-  const changePersonOption = (o: string) => {
+  const changePersonOption = (p: Person, o: string) => {
+    setEditCurrentPerson(p)
     setPersonOption(o)
   }
   const options = [
@@ -114,11 +116,19 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
 
   const onAddNewPerson = () => {}
 
-  const onEditPerson = (p: Person) => {
-    const alreadyEditingPerson = _editPerson && p === _editPerson
-    setEditPerson(alreadyEditingPerson ? undefined : p)
-    setShowPersonOption(!alreadyEditingPerson)
-    setPersonOption(alreadyEditingPerson ? undefined : 'personopplysninger')
+  const onEditPerson = (person: Person) => {
+
+    const alreadyEditingPerson = _.find(_editPersons, p => p.fnr === person.fnr) !== undefined
+    const isEditCurrentPerson = _editCurrentPerson && _editCurrentPerson.fnr === person.fnr
+    setEditCurrentPerson(isEditCurrentPerson ? undefined : person)
+    let newEditPersons
+    if (alreadyEditingPerson) {
+      newEditPersons = _.filter(_editPersons, p => p.fnr !== person.fnr)
+    } else {
+      newEditPersons = _editPersons.concat(person)
+    }
+    setEditPersons(newEditPersons)
+    setPersonOption(isEditCurrentPerson ? undefined : 'personopplysninger')
   }
 
   const onSelectPerson = (p: Person, checked: boolean) => {
@@ -151,10 +161,10 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
                 <CheckboxDiv>
                   <PersonDiv
                     onClick={() => onEditPerson(person)}
-                    className={classNames({selected: _editPerson && _editPerson.fnr === person.fnr})}
+                    className={classNames({selected: _editCurrentPerson && _editCurrentPerson.fnr === person.fnr})}
                   >
                     <FlexDiv>
-                    <Chevron type={_editPerson && person === _editPerson ? 'ned' : 'høyre'} />
+                    <Chevron type={_.find(_editPersons, p => p.fnr === person.fnr) !== undefined ? 'ned' : 'høyre'} />
                     {_.find(_selectedPersons, p => p.fnr === person.fnr) !== undefined ?
                       (
                       <Undertittel>
@@ -173,12 +183,12 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSelectPerson(person, e.target.checked)}
                   />
                 </CheckboxDiv>
-                {_editPerson && person === _editPerson && _showPersonOption && options.map(o => {
+                {_.find(_editPersons, p => p.fnr === person.fnr) !== undefined && options.map(o => {
                   return (
                     <OptionDiv
                       key={o.value}
-                      className={classNames({ selected: _personOption === o.value })}
-                      onClick={() => changePersonOption(o.value)}
+                      className={classNames({ selected: _editCurrentPerson && _editCurrentPerson.fnr === person.fnr && _personOption === o.value })}
+                      onClick={() => changePersonOption(person, o.value)}
                     >
                       <FilledCheckCircle color='green' />
                       <FilledRemoveCircle color='red' />
@@ -215,11 +225,11 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
           <FadingLineSeparator className='fadeIn' />
           <RightDiv>
             {gettingPerson ? t('ui:loading-getting-person') : undefined}
-            {!_editPerson
+            {!_editCurrentPerson
               ? t('ui:label-no-person-selected')
               : (
                 <>
-                  {_personOption === 'personopplysninger' && <PersonOpplysninger person={_editPerson} />}
+                  {_personOption === 'personopplysninger' && <PersonOpplysninger person={_editCurrentPerson} />}
                 </>
                 )}
           </RightDiv>
