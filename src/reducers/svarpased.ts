@@ -186,7 +186,8 @@ const svarpasedReducer = (
         svarPaSedOversikt: state.svarPaSedOversikt,
         spørreSed: state.spørreSed,
         svarSed: state.svarSed,
-        valgtSvarSed: state.valgtSvarSed
+        valgtSvarSed: state.valgtSvarSed,
+        person: state.person
       }
 
     case types.SVARPASED_PERSON_RESET:

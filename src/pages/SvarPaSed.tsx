@@ -255,7 +255,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
   }, [person, _person, gettingPerson, svarSed])
 
   useEffect(() => {
-    if (!_.isNil(person) && !_fnr && _person === undefined) {
+    if (!_.isNil(person) && _person === undefined) {
       setPerson(person)
       setFnr(person.fnr)
     }
@@ -357,18 +357,18 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
                     key={'svarpased__fnr__' + _fnr}
                     id='svarpased__fnr'
                     initialFnr={_fnr}
-                    onFnrChange={(fnr: string) => {
-                      setFnr(fnr)
+                    onFnrChange={() => {
                       dispatch(appActions.cleanData())
                       setPerson(null)
                     }}
                     onSearchPerformed={(fnr: string) => {
-                      setFnr('')
+                      setFnr(fnr)
                       setPerson(undefined)
                       dispatch(svarpasedActions.getPerson(fnr))
                       dispatch(svarpasedActions.getArbeidsforholdList(fnr))
                     }}
                     onPersonRemoved={() => {
+                      setFnr('')
                       dispatch(svarpasedActions.resetPerson())
                       setPerson(null)
                     }}
@@ -399,7 +399,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
                       ]}
                       familierelasjonKodeverk={familierelasjonKodeverk}
                       personRelatert={personRelatert}
-                      person={person}
+                      person={_person}
                       valgteFamilieRelasjoner={valgteFamilieRelasjoner}
                       onAbroadPersonAddedFailure={() => dispatch({ type: types.SVARPASED_ABROADPERSON_ADD_FAILURE })}
                       onAbroadPersonAddedSuccess={(_relation) => {
@@ -428,7 +428,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
                 <>
                   <Ekspanderbartpanel tittel={t('ui:label-arbeidsforhold')}>
                     <Arbeidsforhold
-                      getArbeidsforholdList={() => dispatch(svarpasedActions.getArbeidsforholdList(person?.fnr))}
+                      getArbeidsforholdList={() => dispatch(svarpasedActions.getArbeidsforholdList(_person?.fnr))}
                       valgteArbeidsforhold={valgteArbeidsforhold}
                       arbeidsforholdList={arbeidsforholdList}
                       onArbeidsforholdClick={(item: any, checked: boolean) => dispatch(
@@ -441,10 +441,10 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
                   <VerticalSeparatorDiv />
                 </>
               )}
-              {showInntekt() && (
+              {showInntekt() && _person && _person!.fnr && (
                 <Ekspanderbartpanel tittel={t('ui:label-inntekt')}>
                   <Inntekt
-                    fnr={person.fnr}
+                    fnr={_person.fnr}
                     inntekter={inntekter}
                     onSelectedInntekt={onSelectedInntekt}
                   />
