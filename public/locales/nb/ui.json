@@ -30,6 +30,7 @@
   "label-add-birthplace": "Legg til fødested",
   "label-add-new-purpose": "Legg til ny formål",
   "label-add-person": "Legg til person(er)",
+  "label-add-remove-persons": "Legg til/fjern person(er)",
   "label-arbeidsforhold": "Arbeidsforhold/Arbeidsgivere",
   "label-attached": "Vedlegget",
   "label-back" : "Tilbake",
@@ -112,6 +113,7 @@
   "label-unit": "Enhet",
   "label-userInSed": "Bruker i SED",
   "label-utenlandskPin" : "Utenlandsk PIN",
+  "label-whole-family" : "Hele familien",
   "label-woman": "Kvinne",
 
   "loading-getting-person" : "Hent personinfo...",
