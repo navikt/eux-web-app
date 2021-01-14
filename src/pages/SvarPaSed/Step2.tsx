@@ -163,7 +163,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
   }
 
   const showFamily = () => {
-    //return _replySed?.replySedType?.startsWith('F')
+    // return _replySed?.replySedType?.startsWith('F')
     return true
   }
 
@@ -180,15 +180,15 @@ const Step2: React.FC<SvarPaSedProps> = ({
 
   const onPreviewSed = () => {}
 
-  /*const addTpsRelation = (relation: FamilieRelasjon): void => {
+  /* const addTpsRelation = (relation: FamilieRelasjon): void => {
     /* Person fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
-    /*dispatch(
+  /* dispatch(
       svarpasedActions.addFamilierelasjoner({
         ...relation,
         nasjonalitet: 'NO'
       })
     )
-  }*/
+  } */
 
   const showArbeidsforhold = (): boolean => _replySed?.replySedType === 'U002' || _replySed?.replySedType === 'U007'
 
@@ -249,7 +249,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
             person={person}
 
           />
-            {/*<Ekspanderbartpanel tittel={t('ui:label-familyRelationships')}>
+          {/* <Ekspanderbartpanel tittel={t('ui:label-familyRelationships')}>
             <Family
               alertStatus={alertStatus}
               alertMessage={alertMessage}
@@ -314,7 +314,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
           />
         </Ekspanderbartpanel>
       )}
-      <VerticalSeparatorDiv data-size='2'/>
+      <VerticalSeparatorDiv data-size='2' />
       <TextAreaDiv>
         <HighContrastTextArea
           label={t('ui:label-comment-title')}
@@ -323,7 +323,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
           value={_comment}
         />
       </TextAreaDiv>
-      <VerticalSeparatorDiv data-size='2'/>
+      <VerticalSeparatorDiv data-size='2' />
       <HighContrastFlatknapp
         mini
         kompakt
@@ -333,7 +333,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
         <HorizontalSeparatorDiv data-size='0.5' />
         {t('ui:label-preview-sed')}
       </HighContrastFlatknapp>
-      <VerticalSeparatorDiv data-size='2'/>
+      <VerticalSeparatorDiv data-size='2' />
       <ButtonsDiv>
         <div>
           <HighContrastHovedknapp
@@ -343,9 +343,9 @@ const Step2: React.FC<SvarPaSedProps> = ({
           >
             {sendingSvarPaSed ? t('ui:loading-sendingReplySed') : t('ui:label-sendReplySed')}
           </HighContrastHovedknapp>
-          <VerticalSeparatorDiv data-size='0.5'/>
+          <VerticalSeparatorDiv data-size='0.5' />
         </div>
-        <HorizontalSeparatorDiv/>
+        <HorizontalSeparatorDiv />
         <div>
           <HighContrastKnapp
             onClick={createSedWithAttachments}
@@ -354,9 +354,9 @@ const Step2: React.FC<SvarPaSedProps> = ({
           >
             {t('ui:label-createSedWithAttachments')}
           </HighContrastKnapp>
-          <VerticalSeparatorDiv data-size='0.5'/>
+          <VerticalSeparatorDiv data-size='0.5' />
         </div>
-        <HorizontalSeparatorDiv/>
+        <HorizontalSeparatorDiv />
         <div>
           <HighContrastKnapp
             onClick={createSedEditInRINA}
@@ -365,9 +365,9 @@ const Step2: React.FC<SvarPaSedProps> = ({
           >
             {t('ui:label-createSedEditInRINA')}
           </HighContrastKnapp>
-          <VerticalSeparatorDiv data-size='0.5'/>
+          <VerticalSeparatorDiv data-size='0.5' />
         </div>
-        <HorizontalSeparatorDiv/>
+        <HorizontalSeparatorDiv />
         <div>
           <HighContrastKnapp
             onClick={saveSed}
@@ -376,10 +376,10 @@ const Step2: React.FC<SvarPaSedProps> = ({
           >
             {t('ui:label-saveSed')}
           </HighContrastKnapp>
-          <VerticalSeparatorDiv data-size='0.5'/>
+          <VerticalSeparatorDiv data-size='0.5' />
         </div>
       </ButtonsDiv>
-        {!isValid(_validation) && (
+      {!isValid(_validation) && (
         <>
           <VerticalSeparatorDiv data-size='2' />
           <Row>

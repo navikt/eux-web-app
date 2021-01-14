@@ -283,7 +283,6 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
     }
   }, [dispatch, _mounted, _setMode, WaitingDiv, location.search])
 
-
   if (!_mounted) {
     return WaitingDiv
   }

@@ -1,5 +1,5 @@
 import Select from 'components/Select/Select'
-import { themeKeys } from "nav-styled-component-theme"
+import { themeKeys } from 'nav-styled-component-theme'
 import styled from 'styled-components'
 import { animationClose, animationOpen, animationLeft, animationRight, fadeIn, fadeOut } from 'nav-hoykontrast'
 
@@ -58,5 +58,3 @@ export const HiddenSidebar = styled.div`
     margin-left: 21.5rem;
   }
 `
-
-

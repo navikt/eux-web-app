@@ -1,18 +1,18 @@
 import * as svarpasedActions from 'actions/svarpased'
 import classNames from 'classnames'
 import {
-  AlignedSelect,
+  AlignedSelect
 } from 'components/StyledComponents'
 import {
   AlignedInput
-} from 'nav-hoykontrast'
-import {
+  ,
   AlignCenterColumn,
   AlignedRow,
   Column,
   HorizontalSeparatorDiv,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
+
 import { IncomeSearch } from 'declarations/components'
 import { Inntekter, Validation } from 'declarations/types'
 import _ from 'lodash'

@@ -1,7 +1,7 @@
 import classNames from 'classnames'
-import { animationClose, animationOpen } from 'nav-hoykontrast'
+import NavHighContrast, { animationClose, animationOpen } from 'nav-hoykontrast'
 import { guid } from 'nav-frontend-js-utils'
-import NavHighContrast from 'nav-hoykontrast'
+
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { Collapse, UnmountClosed } from 'react-collapse'

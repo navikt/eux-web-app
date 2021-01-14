@@ -26,8 +26,6 @@ interface PurposeProps {
   onPurposeChange?: (e: Array<string>) => void
 }
 
-
-
 const Purpose: React.FC<PurposeProps> = ({
   highContrast,
   initialPurposes = [],
@@ -54,7 +52,7 @@ const Purpose: React.FC<PurposeProps> = ({
   const [_addPurpose, setAddPurpose] = useState<boolean>(false)
   const [_newPurpose, setNewPurpose] = useState<Option | undefined>(undefined)
   const [_purposes, setPurposes] = useState<Array<string>>(initialPurposes)
-  const [_purposeValues, setPurposeValues ] = useState<Array<Option>>(
+  const [_purposeValues, setPurposeValues] = useState<Array<Option>>(
     _.filter(purposeOptions, p => initialPurposes.indexOf(p.value) < 0)
   )
 
@@ -120,7 +118,7 @@ const Purpose: React.FC<PurposeProps> = ({
               {t('ui:label-add-new-purpose')}
             </HighContrastFlatknapp>
           </>
-        )
+          )
         : (
           <FlexDiv>
             <div style={{ flex: 2 }}>
@@ -153,8 +151,8 @@ const Purpose: React.FC<PurposeProps> = ({
               </HighContrastFlatknapp>
             </FlexDiv>
           </FlexDiv>
-        )}
-      </>
+          )}
+    </>
   )
 }
 

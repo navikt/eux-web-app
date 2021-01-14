@@ -1,5 +1,5 @@
 import { toggleHighContrast } from 'actions/ui'
-import { HighContrastLink, HorizontalSeparatorDiv } from 'nav-hoykontrast'
+import NavHighContrast, { HighContrastLink, HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import { Saksbehandler } from 'declarations/types'
@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import NEESSILogo from 'resources/images/nEESSI'
 import styled from 'styled-components'
-import NavHighContrast from 'nav-hoykontrast'
 
 const HeaderContent = styled.header`
   background-color: ${({ theme }: any) => theme.type === 'themeHighContrast' ? theme[themeKeys.MAIN_BACKGROUND_COLOR] : '#99c2e8'};

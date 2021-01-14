@@ -1,4 +1,5 @@
 import Tilsette from 'assets/icons/Tilsette'
+import classNames from 'classnames'
 import { FadingLineSeparator } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Person } from 'declarations/types'
@@ -9,6 +10,9 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
+import FilledRemoveCircle from 'assets/icons/filled-version-remove-circle'
+import FilledCheckCircle from 'assets/icons/filled-version-check-circle-2'
+import PersonOpplysninger from './PersonOpplysninger'
 
 interface FamilyManagerProps {
   person: Person | undefined
@@ -16,7 +20,6 @@ interface FamilyManagerProps {
 
 const LeftDiv = styled.div`
   flex: 1;
-  padding: 0.5rem;
 `
 
 const RightDiv = styled.div`
@@ -34,9 +37,23 @@ const CheckboxDiv = styled.div`
   .skjemaelement {
      display: flex;
   }
+  padding: 1rem 0.5rem;
+`
+const OptionDiv = styled.div`
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  &.selected {
+     background-color: lightgrey;
+     border-left: 5px solid blue;
+  }
 `
 const FlexDiv = styled.div`
   display: flex;
+`
+const CustomHighContrastPanel = styled(HighContrastPanel)`
+  padding: 0rem;
 `
 
 const mapState = (state: State): any => ({
@@ -50,20 +67,37 @@ const mapState = (state: State): any => ({
 const FamilyManager: React.FC<FamilyManagerProps> = ({
   person
 }: FamilyManagerProps) => {
-
   const {
- //   familierelasjonKodeverk,
+    //   familierelasjonKodeverk,
   //  personRelatert,
   //  valgteFamilieRelasjoner
     gettingPerson
   }: any = useSelector<State, any>(mapState)
-  const [ _person, setPerson ] = useState<Person | undefined>(undefined)
+  const [_person, setPerson] = useState<Person | undefined>(undefined)
+  const [_showPersonOption, setShowPersonOption] = useState<boolean>(false)
+
+  const [_personOption, setPersonOption] = useState<string | undefined>(undefined)
   const { t } = useTranslation()
 
+  const changePersonOption = (o: string) => {
+    setPersonOption(o)
+  }
+  const options = [
+    { label: t('ui:option-familymanager-1'), value: 'personopplysninger' },
+    { label: t('ui:option-familymanager-2'), value: 'nasjonalitet' },
+    { label: t('ui:option-familymanager-3'), value: 'adresser' },
+    { label: t('ui:option-familymanager-4'), value: 'kontaktinformasjon' },
+    { label: t('ui:option-familymanager-5'), value: 'trygdeordninger' },
+    { label: t('ui:option-familymanager-6'), value: 'familierelasjon' },
+    { label: t('ui:option-familymanager-7'), value: 'personensstatus' }
+  ]
   const onAddNewPerson = () => {}
 
   const onSelectPerson = (p: Person) => {
-    setPerson(p)
+    const alreadySelectedPerson = _person && p === _person
+    setPerson(alreadySelectedPerson ? undefined : p)
+    setShowPersonOption(!alreadySelectedPerson)
+    setPersonOption(alreadySelectedPerson ? undefined : 'personopplysninger')
   }
 
   return (
@@ -71,40 +105,46 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
       <Undertittel>
         {t('ui:label-familymanager-title')}
       </Undertittel>
-      <VerticalSeparatorDiv/>
-      <HighContrastPanel>
+      <VerticalSeparatorDiv />
+      <CustomHighContrastPanel>
         <FlexDiv>
           <LeftDiv>
-            { person && (
-              <CheckboxDiv>
-                <Normaltekst>
-                   {person?.fornavn + ' ' + person?.etternavn + ' (' + person?.kjoenn + ')'}
-                </Normaltekst>
-                <Checkbox
-                  label=''
-                  checked={_person && _person.fnr === person.fnr}
-                  onChange={() => onSelectPerson(person)}
-                />
-              </CheckboxDiv>
-            )}
-            <VerticalSeparatorDiv/>
-            {person?.relasjoner?.map(r => {
-              return (
-                <>
+            {person && (
+              <>
                 <CheckboxDiv>
-                  <Normaltekst>
-                    {r?.fornavn + ' ' + r?.etternavn + ' - ' + r.rolle + ' (' + r?.kjoenn + ')'}
-                  </Normaltekst>
+                  {_person && person === _person
+                    ? (
+                      <Undertittel>
+                        {person?.fornavn + ' ' + person?.etternavn + ' (' + person?.kjoenn + ')'}
+                      </Undertittel>
+                      ) : (
+                        <Normaltekst>
+                          {person?.fornavn + ' ' + person?.etternavn + ' (' + person?.kjoenn + ')'}
+                        </Normaltekst>
+                      )}
                   <Checkbox
                     label=''
-                    checked={_person && _person.fnr === r.fnr}
-                    onChange={() => onSelectPerson(r)}
+                    checked={_person && _person.fnr === person.fnr}
+                    onChange={() => onSelectPerson(person)}
                   />
                 </CheckboxDiv>
-                <VerticalSeparatorDiv/>
-                </>
-              )
-            })}
+                {_showPersonOption && options.map(o => {
+                  return (
+                    <OptionDiv
+                      key={o.value}
+                      className={classNames({ selected: _personOption === o.value })}
+                      onClick={() => changePersonOption(o.value)}
+                    >
+                      <FilledCheckCircle color='green' />
+                      <FilledRemoveCircle color='red' />
+                      <HorizontalSeparatorDiv data-size='0.5' />
+                      {o.label}
+                    </OptionDiv>
+                  )
+                })}
+              </>
+            )}
+            <VerticalSeparatorDiv />
             <CheckboxDiv>
               <HighContrastFlatknapp
                 mini
@@ -117,13 +157,19 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
               </HighContrastFlatknapp>
             </CheckboxDiv>
           </LeftDiv>
-        <FadingLineSeparator className='fadeIn'/>
-        <RightDiv>
-          { !_person ? t('ui:label-no-person-selected') : undefined}
-          {gettingPerson ?  t('ui:loading-getting-person') : undefined}
-        </RightDiv>
+          <FadingLineSeparator className='fadeIn' />
+          <RightDiv>
+            {gettingPerson ? t('ui:loading-getting-person') : undefined}
+            {!_person
+              ? t('ui:label-no-person-selected')
+              : (
+                <>
+                  {_personOption === 'personopplysninger' && <PersonOpplysninger person={_person} />}
+                </>
+                )}
+          </RightDiv>
         </FlexDiv>
-      </HighContrastPanel>
+      </CustomHighContrastPanel>
     </PanelDiv>
   )
 }

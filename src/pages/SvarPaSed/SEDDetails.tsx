@@ -1,13 +1,11 @@
 import classNames from 'classnames'
 import SEDPanel from 'components/SEDPanel/SEDPanel'
 import { FadingLineSeparator, HiddenSidebar } from 'components/StyledComponents'
-import { HorizontalSeparatorDiv } from 'nav-hoykontrast'
+import NavHighContrast, { HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import { State } from 'declarations/reducers'
-import { themeKeys } from 'nav-styled-component-theme'
-import NavHighContrast, { fadeIn, fadeOut } from 'nav-hoykontrast'
+
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import styled from 'styled-components'
 
 const mapState = (state: State): any => ({
   previousReplySed: state.svarpased.previousReplySed,
