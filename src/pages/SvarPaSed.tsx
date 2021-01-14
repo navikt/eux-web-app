@@ -1,6 +1,5 @@
 import { clientClear } from 'actions/alert'
 import * as appActions from 'actions/app'
-import * as sakActions from 'actions/sak'
 import * as svarpasedActions from 'actions/svarpased'
 import Alert from 'components/Alert/Alert'
 import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
@@ -60,9 +59,9 @@ const mapState = (state: State): any => ({
   familierelasjonKodeverk: state.app.familierelasjoner,
 
   gettingPerson: state.loading.gettingPerson,
-  gettingSaksnummer: state.loading.gettingSaksnummer,
   sendingSvarPaSed: state.loading.sendingSvarPaSed,
   queryingSvarSed: state.loading.queryingSvarSed,
+  queryingSvarPaSedOversikt: state.loading.queryingSvarPaSedOversikt,
 
   arbeidsforholdList: state.svarpased.arbeidsforholdList,
   inntekter: state.svarpased.inntekter,
@@ -97,7 +96,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
 }: SvarPaSedProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const [_person, setPerson] = useState<Person |undefined>(undefined)
+  const [_person, setPerson] = useState<Person | null | undefined>(undefined)
   const [_fnr, setFnr] = useState<string>('')
   const [_mounted, setMounted] = useState<boolean>(false)
   const [_saksnummer, setSaksnummer] = useState<string | undefined>(undefined)
@@ -110,9 +109,9 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
     familierelasjonKodeverk,
 
     gettingPerson,
-    gettingSaksnummer,
     sendingSvarPaSed,
     queryingSvarSed,
+    queryingSvarPaSedOversikt,
 
     arbeidsforholdList,
     inntekter,
@@ -245,7 +244,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
   // when I have fnr:
 //
   useEffect(() => {
-    if (_.isNil(person) && !gettingPerson && !_.isNil(svarSed)) {
+    if (person === undefined && !gettingPerson && !_.isNil(svarSed)) {
       const pin = _.find(svarSed.bruker.personInfo.pin, p => p.land === 'NO')
       if (pin) {
         const fnr = pin.identifikator
@@ -256,7 +255,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
   }, [person, _person, gettingPerson, svarSed])
 
   useEffect(() => {
-    if (!_.isNil(person) && !_fnr && _.isNil(_person)) {
+    if (!_.isNil(person) && !_fnr && _person === undefined) {
       setPerson(person)
       setFnr(person.fnr)
     }
@@ -281,10 +280,11 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
               }}
             />
             <Knapp
-              spinner={gettingSaksnummer}
+              disabled={queryingSvarPaSedOversikt}
+              spinner={queryingSvarPaSedOversikt}
               onClick={onSaksnummerClick}
             >
-              {t('ui:form-get')}
+              {queryingSvarPaSedOversikt ? t('ui:form-getting') : t('ui:form-get')}
             </Knapp>
           </InputAndButtonDiv>
           <VerticalSeparatorDiv />
@@ -360,7 +360,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
                     onFnrChange={(fnr: string) => {
                       setFnr(fnr)
                       dispatch(appActions.cleanData())
-                      setPerson(undefined)
+                      setPerson(null)
                     }}
                     onSearchPerformed={(fnr: string) => {
                       setFnr('')
@@ -368,7 +368,10 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
                       dispatch(svarpasedActions.getPerson(fnr))
                       dispatch(svarpasedActions.getArbeidsforholdList(fnr))
                     }}
-                    onPersonRemoved={() => dispatch(sakActions.resetPerson())}
+                    onPersonRemoved={() => {
+                      dispatch(svarpasedActions.resetPerson())
+                      setPerson(null)
+                    }}
                     onAlertClose={() => dispatch(clientClear())}
                     person={_person}
                     resetAllValidation={() => resetValidation()}

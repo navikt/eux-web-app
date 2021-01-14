@@ -49,7 +49,7 @@ export interface PersonSearchProps {
   onPersonFound?: (person: Person) => void
   onSearchPerformed: (fnr: any) => void
   onPersonRemoved: () => void
-  person?: Person
+  person?: Person | null | undefined
   resetAllValidation: () => void
   validation: FeiloppsummeringFeil | undefined
 }
@@ -73,7 +73,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
 }: PersonSearchProps): JSX.Element => {
   const { t } = useTranslation()
   const [_fnr, setFnr] = useState<string | undefined>(undefined)
-  const [_person, setPerson] = useState<Person | undefined>(undefined)
+  const [_person, setPerson] = useState<Person | null | undefined>(undefined)
   const [localValidation, setLocalValidation] = useState<string | undefined>(
     undefined
   )

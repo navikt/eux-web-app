@@ -1,4 +1,4 @@
-import { Arbeidsforhold, Inntekter, Sed, SvarSed, SvarPaSedOversikt } from 'declarations/types'
+import { Arbeidsforhold, Inntekter, Sed, SvarSed, SvarPaSedOversikt, Person } from 'declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
 import { Action } from 'redux'
 import * as types from 'constants/actionTypes'
@@ -7,7 +7,7 @@ import _ from 'lodash'
 export interface SvarpasedState {
   arbeidsforholdList: Arbeidsforhold
   familierelasjoner: Array<any>
-  person: any
+  person: Person | null | undefined
   personRelatert: any
   seds: Array<Sed> | undefined
   spørreSed: string | undefined
@@ -185,13 +185,14 @@ const svarpasedReducer = (
         seds: state.seds,
         svarPaSedOversikt: state.svarPaSedOversikt,
         spørreSed: state.spørreSed,
-        svarSed: state.svarSed
+        svarSed: state.svarSed,
+        valgtSvarSed: state.valgtSvarSed
       }
 
     case types.SVARPASED_PERSON_RESET:
       return {
         ...state,
-        person: undefined
+        person: null
       }
 
     case types.SVARPASED_PERSON_RELATERT_RESET:

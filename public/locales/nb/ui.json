@@ -35,6 +35,7 @@
   "form-family-tps-title": "Person uten registrert relasjon i TPS",
   "form-fnr" : "Fødselsnummer",
   "form-get" : "Hent",
+  "form-getting" : "Henter...",
   "form-goToRina" : "Gå direkte til Rina",
   "form-remove" : "Fjern",
   "form-rolle": "Rolle",
