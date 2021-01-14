@@ -43,10 +43,10 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   person
 }:PersonOpplysningerProps): JSX.Element => {
 
-  const [_etternavn, setEtternavn] = useState<string | undefined>(person?.etternavn || '')
-  const [_fodselsdato, setFodselsdato] = useState<string | undefined>('')
-  const [_fornavn, setFornavn] = useState<string | undefined>(person?.fornavn || '')
-  const [_kjoenn, setKjoenn] = useState<string | undefined>(person?.kjoenn || 'U')
+  const [_etternavn, setEtternavn] = useState<string | undefined>( undefined)
+  const [_fodselsdato, setFodselsdato] = useState<string | undefined>(undefined)
+  const [_fornavn, setFornavn] = useState<string | undefined>(undefined)
+  const [_kjoenn, setKjoenn] = useState<string | undefined>(undefined)
   const [_land, setLand] = useState<string | undefined>(undefined)
   const [_mounted, setMounted] = useState<boolean>(false)
   const [_norwegianPin, setNorwegianPin] = useState<string | undefined>(undefined)
@@ -105,13 +105,21 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
     }
   }, [_mounted])
 
+   useEffect(() => {
+     setEtternavn(person?.etternavn || '')
+     setFodselsdato('')
+     setFornavn(person?.fornavn || '')
+     setKjoenn(person?.kjoenn || 'U')
+   }, [person])
+
   return (
     <PersonOpplysningerDiv>
       <Row>
         <Column>
           <HighContrastInput
-            data-test-id='c-familymanager-personopplysninger-fornavn-input'
-            id='c-familymanager-personopplysninger-fornavn'
+            data-test-id={'c-familymanager-personopplysninger-' + person.fnr + '-fornavn-input'}
+            key={'c-familymanager-personopplysninger-' + person.fnr + '-fornavn-key'}
+            id={'c-familymanager-personopplysninger-' + person.fnr + '-fornavn'}
             onChange={onFornavnChange}
             value={_fornavn}
             label={t('ui:label-firstname')}
@@ -120,8 +128,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         <HorizontalSeparatorDiv />
         <Column>
           <HighContrastInput
-            data-test-id='c-familymanager-personopplysninger-etternavn-input'
-            id='c-familymanager-personopplysninger-etternavn'
+            data-test-id={'c-familymanager-personopplysninger-' + person.fnr + '-etternavn-input'}
+            key={'c-familymanager-personopplysninger-' + person.fnr + '-etternavn-key'}
+            id={'c-familymanager-personopplysninger-' + person.fnr + '-etternavn'}
             onChange={onEtternavnChange}
             value={_etternavn}
             label={t('ui:label-lastname')}
@@ -130,8 +139,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         <HorizontalSeparatorDiv />
         <Column>
           <HighContrastInput
-            data-test-id='c-familymanager-personopplysninger-fodselsdato-input'
-            id='c-familymanager-personopplysninger-fodselsdato'
+            data-test-id={'c-familymanager-personopplysninger-' + person.fnr + '-fodselsdato-input'}
+            key={'c-familymanager-personopplysninger-' + person.fnr + '-fodselsdato-key'}
+            id={'c-familymanager-personopplysninger-' + person.fnr + '-fodselsdato'}
             onChange={onFodselsdatoChange}
             value={_fodselsdato}
             placeholder={t('ui:placeholder-birthDate')}
@@ -144,7 +154,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         <Column>
           <HighContrastRadioPanelGroup
             checked={_kjoenn}
-            data-test-id='c-familymanager-personopplysninger-kjoenn-radiogroup'
+            data-test-id={'c-familymanager-personopplysninger-' + person.fnr + '-kjoenn-radiogroup'}
+            key={'c-familymanager-personopplysninger-' + person.fnr + '-kjoenn-key'}
+            id={'c-familymanager-personopplysninger-' + person.fnr + '-kjoenn'}
             feil={undefined}
             legend={t('ui:label-gender')}
             name='c-familymanager-personopplysninger-kjoenn-radiogroup'
@@ -161,8 +173,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
       <Row>
         <Column>
           <HighContrastInput
-            data-test-id='c-familymanager-personopplysninger-utenlandskpin-input'
-            id='c-familymanager-personopplysninger-utenlandskpin'
+            data-test-id={'c-familymanager-personopplysninger-' + person.fnr + '-utenlandskpin-input'}
+            key={'c-familymanager-personopplysninger-' + person.fnr + '-utenlandskpin-key'}
+            id={'c-familymanager-personopplysninger-' + person.fnr + '-utenlandskpin'}
             onChange={onUtenlandskPinChange}
             value={_utenlandskPin}
             label={t('ui:label-utenlandskPin')}
@@ -170,8 +183,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         </Column>
         <Column data-flex='2'>
           <CountrySelect
-            data-test-id='c-familymanager-personopplysninger-land-countryselect'
-            id='c-familymanager-personopplysninger-land'
+            data-test-id={'c-familymanager-personopplysninger-' + person.fnr + '-land-countryselect'}
+            key={'c-familymanager-personopplysninger-' + person.fnr + '-land-key'}
+            id={'c-familymanager-personopplysninger-' + person.fnr + '-land'}
             onChange={onUtenlandskPinChange}
             label={t('ui:label-landkode')}
             menuPortalTarget={document.body}
@@ -190,8 +204,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
           <FlexDiv>
             <HighContrastInput
               bredde='XL'
-              data-test-id='c-familymanager-personopplysninger-norwegianpin-input'
-              id='c-familymanager-personopplysninger-norwegianpin'
+              data-test-id={'c-familymanager-personopplysninger-' + person.fnr + '-norwegianpin-input'}
+              key={'c-familymanager-personopplysninger-' + person.fnr + '-norwegianpin-key'}
+              id={'c-familymanager-personopplysninger-' + person.fnr + '-norwegianpin'}
               onChange={onNorwegianPinChange}
               value={_norwegianPin}
               label={t('ui:label-norwegian-fnr')}

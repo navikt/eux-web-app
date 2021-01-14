@@ -2,7 +2,7 @@ import Tilsette from 'assets/icons/Tilsette'
 import classNames from 'classnames'
 import { FadingLineSeparator } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { Person } from 'declarations/types'
+import { FamilieRelasjon, Person } from 'declarations/types'
 import { Checkbox } from 'nav-frontend-skjema'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import { HighContrastFlatknapp, HighContrastPanel, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
@@ -13,6 +13,8 @@ import styled from 'styled-components'
 import FilledRemoveCircle from 'assets/icons/filled-version-remove-circle'
 import FilledCheckCircle from 'assets/icons/filled-version-check-circle-2'
 import PersonOpplysninger from './PersonOpplysninger'
+import _ from 'lodash'
+import Chevron from 'nav-frontend-chevron'
 
 interface FamilyManagerProps {
   person: Person | undefined
@@ -30,6 +32,15 @@ const PanelDiv = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
+`
+const PersonDiv = styled.div`
+  &:hover {
+     background-color: lightblue;
+  }
+`
+const PersonsDiv = styled.div`
+  display: flex;
+  flex-direction: column;
 `
 const CheckboxDiv = styled.div`
   display: flex;
@@ -51,6 +62,7 @@ const OptionDiv = styled.div`
 `
 const FlexDiv = styled.div`
   display: flex;
+  align-items: center;
 `
 const CustomHighContrastPanel = styled(HighContrastPanel)`
   padding: 0rem;
@@ -73,9 +85,9 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
   //  valgteFamilieRelasjoner
     gettingPerson
   }: any = useSelector<State, any>(mapState)
-  const [_person, setPerson] = useState<Person | undefined>(undefined)
+  const [_editPerson, setEditPerson] = useState<Person | undefined>(undefined)
+  const [_selectedPersons, setSelectedPersons] = useState<Array<Person>>([])
   const [_showPersonOption, setShowPersonOption] = useState<boolean>(false)
-
   const [_personOption, setPersonOption] = useState<string | undefined>(undefined)
   const { t } = useTranslation()
 
@@ -91,13 +103,38 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
     { label: t('ui:option-familymanager-6'), value: 'familierelasjon' },
     { label: t('ui:option-familymanager-7'), value: 'personensstatus' }
   ]
+
+  let personPlusRelations: Array<Person | FamilieRelasjon> = []
+  if (person?.relasjoner) {
+    personPlusRelations = personPlusRelations.concat(person?.relasjoner)
+  }
+  if (person) {
+    personPlusRelations = personPlusRelations.concat(person).reverse()
+  }
+
   const onAddNewPerson = () => {}
 
-  const onSelectPerson = (p: Person) => {
-    const alreadySelectedPerson = _person && p === _person
-    setPerson(alreadySelectedPerson ? undefined : p)
-    setShowPersonOption(!alreadySelectedPerson)
-    setPersonOption(alreadySelectedPerson ? undefined : 'personopplysninger')
+  const onEditPerson = (p: Person) => {
+    const alreadyEditingPerson = _editPerson && p === _editPerson
+    setEditPerson(alreadyEditingPerson ? undefined : p)
+    setShowPersonOption(!alreadyEditingPerson)
+    setPersonOption(alreadyEditingPerson ? undefined : 'personopplysninger')
+  }
+
+  const onSelectPerson = (p: Person, checked: boolean) => {
+    if (checked) {
+      setSelectedPersons(_selectedPersons.concat(p))
+    } else {
+      setSelectedPersons(_.filter(_selectedPersons, _p => _p.fnr !== p.fnr))
+    }
+  }
+
+  const onSelectAllPersons = (checked: boolean) => {
+    if (checked) {
+      setSelectedPersons(personPlusRelations)
+    } else {
+      setSelectedPersons([])
+    }
   }
 
   return (
@@ -109,26 +146,34 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
       <CustomHighContrastPanel>
         <FlexDiv>
           <LeftDiv>
-            {person && (
-              <>
+            {personPlusRelations.map(person => (
+              <PersonsDiv>
                 <CheckboxDiv>
-                  {_person && person === _person
-                    ? (
+                  <PersonDiv
+                    onClick={() => onEditPerson(person)}
+                    className={classNames({selected: _editPerson && _editPerson.fnr === person.fnr})}
+                  >
+                    <FlexDiv>
+                    <Chevron type={_editPerson && person === _editPerson ? 'ned' : 'høyre'} />
+                    {_.find(_selectedPersons, p => p.fnr === person.fnr) !== undefined ?
+                      (
                       <Undertittel>
                         {person?.fornavn + ' ' + person?.etternavn + ' (' + person?.kjoenn + ')'}
                       </Undertittel>
                       ) : (
-                        <Normaltekst>
-                          {person?.fornavn + ' ' + person?.etternavn + ' (' + person?.kjoenn + ')'}
-                        </Normaltekst>
-                      )}
+                      <Normaltekst>
+                       {person?.fornavn + ' ' + person?.etternavn + ' (' + person?.kjoenn + ')'}
+                      </Normaltekst>
+                    )}
+                    </FlexDiv>
+                  </PersonDiv>
                   <Checkbox
                     label=''
-                    checked={_person && _person.fnr === person.fnr}
-                    onChange={() => onSelectPerson(person)}
+                    checked={_.find(_selectedPersons, p => p.fnr === person.fnr) !== undefined}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSelectPerson(person, e.target.checked)}
                   />
                 </CheckboxDiv>
-                {_showPersonOption && options.map(o => {
+                {_editPerson && person === _editPerson && _showPersonOption && options.map(o => {
                   return (
                     <OptionDiv
                       key={o.value}
@@ -142,9 +187,19 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
                     </OptionDiv>
                   )
                 })}
-              </>
-            )}
-            <VerticalSeparatorDiv />
+              </PersonsDiv>
+            ))}
+
+            <CheckboxDiv>
+              <Normaltekst>
+                {'Hele familien'}
+              </Normaltekst>
+              <Checkbox
+                label=''
+                checked={_selectedPersons.length === personPlusRelations.length}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSelectAllPersons(e.target.checked)}
+              />
+            </CheckboxDiv>
             <CheckboxDiv>
               <HighContrastFlatknapp
                 mini
@@ -160,11 +215,11 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
           <FadingLineSeparator className='fadeIn' />
           <RightDiv>
             {gettingPerson ? t('ui:loading-getting-person') : undefined}
-            {!_person
+            {!_editPerson
               ? t('ui:label-no-person-selected')
               : (
                 <>
-                  {_personOption === 'personopplysninger' && <PersonOpplysninger person={_person} />}
+                  {_personOption === 'personopplysninger' && <PersonOpplysninger person={_editPerson} />}
                 </>
                 )}
           </RightDiv>
