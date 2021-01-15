@@ -147,12 +147,6 @@ export interface SedOversikt {
   querySedDocumentId: string
 }
 
-export interface Sed {
-  documentId: string
-  documentType: string
-  operation: string
-}
-
 export interface Arbeidsgiver {
   arbeidsgiver: {
     navn: string

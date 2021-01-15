@@ -1,4 +1,4 @@
-import { Arbeidsforhold, Inntekter, Sed, SvarSed, SvarPaSedOversikt, Person } from 'declarations/types'
+import { Arbeidsforhold, Inntekter, SvarSed, SvarPaSedOversikt, Person, SedOversikt } from 'declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
 import { Action } from 'redux'
 import * as types from 'constants/actionTypes'
@@ -9,20 +9,18 @@ export interface SvarpasedState {
   familierelasjoner: Array<any>
   person: Person | null | undefined
   personRelatert: any
-  seds: Array<Sed> | undefined
   spørreSed: string | undefined
   svarSed: SvarSed | undefined
   svarPaSedOversikt: SvarPaSedOversikt | undefined
   svarPasedData: any
   valgteArbeidsforhold: Arbeidsforhold
-  valgtSvarSed: Sed | undefined
+  valgtSvarSed: SedOversikt | undefined
   inntekter: Inntekter | undefined
   selectedInntekter: Inntekter | undefined
 }
 
 export const initialSvarpasedState: SvarpasedState = {
   arbeidsforholdList: [],
-  seds: undefined,
   spørreSed: undefined,
   svarSed: undefined,
   svarPaSedOversikt: undefined,
@@ -62,18 +60,6 @@ const svarpasedReducer = (
           state.valgteArbeidsforhold,
           (i) => i !== (action as ActionWithPayload).payload
         )
-      }
-
-    case types.SVARPASED_SEDS_GET_SUCCESS:
-      return {
-        ...state,
-        seds: (action as ActionWithPayload).payload
-      }
-
-    case types.SVARPASED_SEDS_GET_FAILURE:
-      return {
-        ...state,
-        seds: null
       }
 
     case types.SVARPASED_OVERSIKT_GET_SUCCESS:
@@ -182,7 +168,6 @@ const svarpasedReducer = (
       // keep seds, they are for the sed dropdown options
       return {
         ...initialSvarpasedState,
-        seds: state.seds,
         svarPaSedOversikt: state.svarPaSedOversikt,
         spørreSed: state.spørreSed,
         svarSed: state.svarSed,

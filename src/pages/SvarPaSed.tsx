@@ -70,7 +70,6 @@ const mapState = (state: State): any => ({
   spørreSed: state.svarpased.spørreSed,
   svarSed: state.svarpased.svarSed,
   svarPaSedOversikt: state.svarpased.svarPaSedOversikt,
-  // seds: state.svarpased.seds,
   svarPasedData: state.svarpased.svarPasedData,
   valgteFamilieRelasjoner: state.svarpased.familierelasjoner,
   valgteArbeidsforhold: state.svarpased.valgteArbeidsforhold,
@@ -82,14 +81,13 @@ const mapStateTwo = (state: State): any => ({
   familieRelasjoner: state.svarpased.familierelasjoner,
   inntekter: state.svarpased.selectedInntekter,
   person: state.svarpased.person,
-  sed: state.svarpased.valgtSvarSed
+  sed: state.svarpased.valgtSvarSed,
+  sedType: state.svarpased.valgtSvarSed?.replySedType
 })
 
 export interface SvarPaSedProps {
   location: any;
 }
-
-
 
 const SvarPaSed: React.FC<SvarPaSedProps> = ({
   location
@@ -117,7 +115,6 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
     inntekter,
     person,
     personRelatert,
-    // seds,
     spørreSed,
     svarSed,
     svarPaSedOversikt,
@@ -129,7 +126,6 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
   const data: SvarpasedState = useSelector<State, SvarpasedState>(mapStateTwo)
 
   const onSaksnummerClick = () => {
-    // dispatch(svarpasedActions.getSeds(_saksnummer))
     dispatch(svarpasedActions.getSvarSedOversikt(_saksnummer))
   }
 
@@ -234,7 +230,6 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
       const rinasaksnummerParam: string | null = params.get('rinasaksnummer')
       if (rinasaksnummerParam) {
         setSaksnummer(rinasaksnummerParam)
-        // dispatch(svarpasedActions.getSeds(rinasaksnummerParam))
         dispatch(svarpasedActions.getSvarSedOversikt(rinasaksnummerParam))
       }
       setMounted(true)

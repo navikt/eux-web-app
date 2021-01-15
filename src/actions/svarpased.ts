@@ -12,19 +12,6 @@ import { SvarpasedState } from 'reducers/svarpased'
 
 const sprintf = require('sprintf-js').sprintf
 
-export const getSeds: ActionCreator<ThunkResult<ActionWithPayload>> = (
-  saksnummer: string
-): ThunkResult<ActionWithPayload> => {
-  return realCall({
-    url: sprintf(urls.API_SVARPASED_TYPER_URL, { rinasaksnummer: saksnummer }),
-    type: {
-      request: types.SVARPASED_SEDS_GET_REQUEST,
-      success: types.SVARPASED_SEDS_GET_SUCCESS,
-      failure: types.SVARPASED_SEDS_GET_FAILURE
-    }
-  })
-}
-
 export const getSvarSedOversikt: ActionCreator<ThunkResult<ActionWithPayload>> = (
   saksnummer: string
 ): ThunkResult<ActionWithPayload> => {
