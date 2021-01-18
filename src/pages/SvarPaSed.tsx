@@ -314,7 +314,16 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
                     feil={_validation.svarSed ? _validation.svarSed.feilmelding : undefined}
                   >
                     <option key=''>-</option>
-                    {svarPaSedOversikt[spørreSed].map((sed: SedOversikt) => (
+                    {svarPaSedOversikt[spørreSed]
+                      .filter((s: SedOversikt) => {
+                        let pattern = spørreSed.match(/^(\D+)/)
+                        if (pattern) {
+                          return s.replySedType.startsWith(pattern[0])
+                        } else {
+                          return false
+                        }
+                      })
+                      .map((sed: SedOversikt) => (
                       <option
                         key={sed.querySedDocumentId}
                         value={sed.replySedType}
