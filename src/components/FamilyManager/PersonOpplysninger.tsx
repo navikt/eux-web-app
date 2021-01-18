@@ -46,10 +46,15 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   const [_etternavn, setEtternavn] = useState<string | undefined>( undefined)
   const [_fodselsdato, setFodselsdato] = useState<string | undefined>(undefined)
   const [_fornavn, setFornavn] = useState<string | undefined>(undefined)
+  const [_foundPerson, setFoundPerson] = useState<string | undefined>(undefined)
   const [_kjoenn, setKjoenn] = useState<string | undefined>(undefined)
   const [_land, setLand] = useState<string | undefined>(undefined)
   const [_mounted, setMounted] = useState<boolean>(false)
+  const [_newFodestedBy, setNewFodestedBy] = useState<string | undefined>(undefined)
+  const [_newFodestedRegion, setNewFodestedRegion] = useState<string | undefined>(undefined)
+  const [_newFodestedLand, setNewFodestedLand] = useState<string | undefined>(undefined)
   const [_norwegianPin, setNorwegianPin] = useState<string | undefined>(undefined)
+  const [_seeAddBirthPlace, setSeeAddBirthPlace] = useState<boolean>(false)
   const [_utenlandskPin, setUtenlandskPin] = useState<string | undefined>(undefined)
   const [_isDirty, setIsDirty] = useState<boolean>(false)
   const {landkoderList}: PersonOpplysningerSelector = useSelector<State, PersonOpplysningerSelector>(mapState)
@@ -91,10 +96,11 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   }
 
   // TODO
-  const onSearchUser = () => {}
-
-  // TODO
-  const onAddBirthPlace = () => {}
+  const onSearchUser = () => {
+    setFoundPerson(
+      'bla bla bla bla'
+    )
+  }
 
   useEffect(() => {
     if (!_mounted) {
@@ -220,29 +226,69 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
           </FlexDiv>
           <VerticalSeparatorDiv data-size='0.5'/>
           <div>
-            {t('ui:label-norwegian-fnr-description')}
+            {_foundPerson || t('ui:label-norwegian-fnr-description')}
           </div>
         </Column>
       </Row>
       <VerticalSeparatorDiv />
-      <Row>
-        <Column>
-          <Undertittel>
-            {t('ui:label-birthPlace')}
-          </Undertittel>
-          <VerticalSeparatorDiv data-size='0.5'/>
-          <HighContrastFlatknapp
-            mini
-            kompakt
-            onClick={onAddBirthPlace}
-          >
-            <Tilsette />
-            <HorizontalSeparatorDiv data-size='0.5' />
-            {t('ui:label-add-birthplace')}
-          </HighContrastFlatknapp>
+      {_seeAddBirthPlace ? (
+        <Row>
+          <Column>
+            <HighContrastInput
+              data-test-id={'c-familymanager-personopplysninger-fodested-by-input'}
+              id={'c-familymanager-personopplysninger-fodested-by'}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewFodestedBy(e.target.value)}
+              value={_newFodestedBy}
+              label={t('ui:label-by')}
+            />
+          </Column>
+          <HorizontalSeparatorDiv/>
+          <Column>
+          <HighContrastInput
+            data-test-id={'c-familymanager-personopplysninger-fodested-region-input'}
+            id={'c-familymanager-personopplysninger-fodested-region'}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewFodestedRegion(e.target.value)}
+            value={_newFodestedRegion}
+            label={t('ui:label-region')}
+          />
+          </Column>
+          <HorizontalSeparatorDiv/>
+          <Column>
+          <CountrySelect
+            data-test-id={'c-familymanager-personopplysninger-fodested-land-countryselect'}
+            id={'c-familymanager-personopplysninger-fodested-land'}
+            label={t('ui:label-landkode')}
+            menuPortalTarget={document.body}
+            includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
+            onOptionSelected={(e: any) => {
+              setNewFodestedLand(e.value)
+              return true
+            }}
+            placeholder={t('ui:label-choose')}
+            values={_newFodestedLand}
+          />
+          </Column>
+        </Row>
+        ) : (
+        <Row>
+          <Column>
+            <Undertittel>
+              {t('ui:label-birthPlace')}
+            </Undertittel>
+            <VerticalSeparatorDiv data-size='0.5'/>
+            <HighContrastFlatknapp
+              mini
+              kompakt
+              onClick={() => setSeeAddBirthPlace(true)}
+            >
+              <Tilsette />
+              <HorizontalSeparatorDiv data-size='0.5' />
+              {t('ui:label-add-birthplace')}
+            </HighContrastFlatknapp>
 
-        </Column>
-      </Row>
+          </Column>
+        </Row>
+      )}
       {_isDirty && '*'}
     </PersonOpplysningerDiv>
   )
