@@ -1,4 +1,4 @@
-import { Arbeidsforhold, Inntekter, ReplySed } from 'declarations/types'
+import { Arbeidsforhold, Inntekter, ReplySed, Seds } from 'declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
 import { Action } from 'redux'
 import * as types from 'constants/actionTypes'
@@ -16,6 +16,7 @@ export interface SvarpasedState {
   replySed: ReplySed | undefined
   saksnummerOrFnr: string | undefined
   selectedInntekter: Inntekter | undefined
+  seds: Seds | undefined
   svarPasedData: any
   valgteArbeidsforhold: Arbeidsforhold
 }
@@ -30,6 +31,7 @@ export const initialSvarpasedState: SvarpasedState = {
   previousParentSed: undefined,
   previousReplySed: undefined,
   replySed: undefined,
+  seds: undefined,
   saksnummerOrFnr: undefined,
   selectedInntekter: undefined,
   svarPasedData: undefined,

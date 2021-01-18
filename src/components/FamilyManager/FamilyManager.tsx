@@ -2,9 +2,8 @@ import FilledCheckCircle from 'assets/icons/filled-version-check-circle-2'
 import FilledRemoveCircle from 'assets/icons/filled-version-remove-circle'
 import Tilsette from 'assets/icons/Tilsette'
 import classNames from 'classnames'
-import Modal from 'components/Modal/Modal'
+import FamilyManagerModal from 'components/FamilyManager/FamilyManagerModal'
 import { FadingLineSeparator } from 'components/StyledComponents'
-import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import { FamilieRelasjon, Person } from 'declarations/types'
 import _ from 'lodash'
@@ -21,6 +20,7 @@ import PersonOpplysninger from './PersonOpplysninger'
 interface FamilyManagerProps {
   person: Person | undefined
 }
+
 
 const LeftDiv = styled.div`
   flex: 1;
@@ -90,7 +90,7 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
   }: any = useSelector<State, any>(mapState)
   const [_editPersons, setEditPersons] = useState<Array<Person>>([])
   const [_editCurrentPerson, setEditCurrentPerson] = useState<Person | undefined>(undefined)
-  const [_modal, setModal] = useState<ModalContent | undefined>(undefined)
+  const [_modal, setModal] = useState<boolean>(false)
   const [_selectedPersons, setSelectedPersons] = useState<Array<Person>>([])
   const [_personOption, setPersonOption] = useState<string | undefined>(undefined)
   const { t } = useTranslation()
@@ -99,6 +99,7 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
     setEditCurrentPerson(p)
     setPersonOption(o)
   }
+
   const options = [
     { label: t('ui:option-familymanager-1'), value: 'personopplysninger' },
     { label: t('ui:option-familymanager-2'), value: 'nasjonalitet' },
@@ -117,25 +118,9 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
     personPlusRelations = personPlusRelations.concat(person).reverse()
   }
 
-  const onAddNewPerson = () => {
-    setModal({
-      modalTitle: t('ui:label-add-remove-persons'),
-      modalContent: (
-        <>
-          <div>fla</div>
-          </>
-      ),
-      modalButtons: [{
-        main: true,
-        text: t('ui:ok-got-it'),
-        onClick: () => {}
-      }, {
-        main: false,
-        text: t('ui:log-me-again'),
-        onClick: () => {}
-      }],
-      closeButton: true
-    })
+  const onPersonsChanged = (p: Array<Person | FamilieRelasjon>) => {
+    console.log('fdgdfgdf' + p)
+
   }
 
   const onEditPerson = (person: Person) => {
@@ -169,9 +154,19 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
     }
   }
 
+  const onAddNewPerson = () => {
+    setModal(true)
+  }
+
   return (
     <PanelDiv>
-      {_modal && <Modal modal={_modal} closeButton={false}/>}
+      {_modal && (
+        <FamilyManagerModal
+          personPlusRelations={personPlusRelations}
+          onPersonsChanged={onPersonsChanged}
+          onModalClose={() => setModal(false)}
+        />
+        )}
       <Undertittel>
         {t('ui:label-familymanager-title')}
       </Undertittel>

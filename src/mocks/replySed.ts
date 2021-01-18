@@ -42,8 +42,8 @@ export default {
   },
   anmodningsperiode: {
     fastperiode: {
-      startdato: 'æøå',
-      sluttdato: 'æøå'
+      startdato: '2020-01-01',
+      sluttdato: '2020-12-31'
     },
     aapenperiode: {
       startdato: 'æøå',
