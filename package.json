@@ -33,6 +33,7 @@
     "core-js": "^3.8.2",
     "eessi-kodeverk": "1.4.2",
     "eux-schema": "^0.4.0",
+    "flagg-ikoner": "^1.0.8",
     "history": "4.10.1",
     "i18next": "^19.8.4",
     "i18next-browser-languagedetector": "^6.0.1",

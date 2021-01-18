@@ -219,7 +219,8 @@ export interface ReplySed {
   },
   anmodningsperiode: {
     startdato: string
-    aapenPeriodeType: string
+    sluttdato?: string
+    aapenPeriodeType?: string
   },
   lokaleSakIder: Array<{
     saksnummer: string
