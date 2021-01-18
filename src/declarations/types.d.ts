@@ -147,6 +147,12 @@ export interface SedOversikt {
   querySedDocumentId: string
 }
 
+export interface Periode {
+  startdato: string
+  sluttdato?: string
+  aapenPeriodeType?: string
+}
+
 export interface Arbeidsgiver {
   arbeidsgiver: {
     navn: string
@@ -162,10 +168,9 @@ export interface Arbeidsgiver {
       type: string
       id: string
     }>
-  },
-  kreverinformasjonomtypearberidsforhold?: string
-  kreverinformasjonomantallarbeidstimer?: string
-  kreverinformasjonominntekt?:string
+  }
+  periode?: Periode
+  typeTrygdeforhold: string
 }
 
 export interface SvarSed {
@@ -177,7 +182,7 @@ export interface SvarSed {
       etternavn: string
       kjoenn: string
       foedselsdato: string
-      statsborgerskap: Array<{land: string}>
+      statsborgerskap: Array<{ land: string }>
       pin: Array<{
         land: string
         sektor: string
@@ -204,37 +209,19 @@ export interface SvarSed {
       }
     }
   },
-  anmodningsperiode: {
-    fastperiode: {
-      startdato: string
-      sluttdato: string
-    },
-    aapenperiode: {
-      startdato: string
-      type: string
-    }
-  },
+  anmodningsperiode: Periode,
   lokaleSakIder: Array<{
     saksnummer: string
     institusjonsnavn: string
     institusjonsid: string
     land: string
   }>,
-  dagpengeperioder: Array<{
-    periode: {
-      fastperiode: {
-        startdato: string
-        sluttdato: string
-      },
-      aapenperiode: {
-        startdato: string
-        type: string
-      }
-    },
+  perioderDagpenger: Array<{
+    periode: Periode,
     institusjon: {
       navn: string
       id: string
-      idmangler: {
+      idmangler?: {
         navn: string
         adresse: {
           gate: string
@@ -247,10 +234,25 @@ export interface SvarSed {
       }
     }
   }>,
-  ansattmedforsikring: Array<Arbeidsgiver>,
-  selvstendigmedforsikring: Array<Arbeidsgiver>,
-  ansattutenforsikring: Array<Arbeidsgiver>,
-  selvstendigutenforsikring: Array<Arbeidsgiver>
+  rettTilYtelse?: {
+    bekreftelsesgrunn: string
+    periode: Periode
+    avvisningsgrunn: string
+  },
+  loennsopplysninger?: Array<{
+    periode: Periode
+    ansettelsestype: string
+    inntekter: Array<{
+      type: string
+      typeAnnen: string
+      beloep: string
+      valuta: string
+    }>,
+    arbeidsdager: string
+    arbeidstimer: string
+  }>,
+  perioderAnsattUtenForsikring: Array<Arbeidsgiver>,
+  perioderAnsattMedForsikring: Array<Arbeidsgiver>
 }
 
 export interface UtgaarDatoPayload {

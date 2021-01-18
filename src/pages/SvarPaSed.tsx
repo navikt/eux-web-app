@@ -19,7 +19,15 @@ import TopContainer from 'components/TopContainer/TopContainer'
 import * as types from 'constants/actionTypes'
 import { AlertStatus } from 'declarations/components'
 import { State } from 'declarations/reducers'
-import { FamilieRelasjon, Inntekt as IInntekt, Inntekter, Person, SedOversikt, Validation } from 'declarations/types'
+import {
+  FamilieRelasjon,
+  Inntekt as IInntekt,
+  Inntekter,
+  Person,
+  SedOversikt,
+  SvarSed,
+  Validation
+} from 'declarations/types'
 import _ from 'lodash'
 import Alertstripe from 'nav-frontend-alertstriper'
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel'
@@ -76,17 +84,8 @@ const mapState = (state: State): any => ({
   valgtSvarSed: state.svarpased.valgtSvarSed
 })
 
-const mapStateTwo = (state: State): any => ({
-  arbeidsforhold: state.svarpased.valgteArbeidsforhold,
-  familieRelasjoner: state.svarpased.familierelasjoner,
-  inntekter: state.svarpased.selectedInntekter,
-  person: state.svarpased.person,
-  sed: state.svarpased.valgtSvarSed,
-  sedType: state.svarpased.valgtSvarSed?.replySedType
-})
-
 export interface SvarPaSedProps {
-  location: any;
+  location: any
 }
 
 const SvarPaSed: React.FC<SvarPaSedProps> = ({
@@ -123,7 +122,6 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
     valgteFamilieRelasjoner,
     valgtSvarSed
   }: any = useSelector<State, SvarpasedState>(mapState)
-  const data: SvarpasedState = useSelector<State, SvarpasedState>(mapStateTwo)
 
   const onSaksnummerClick = () => {
     dispatch(svarpasedActions.getSvarSedOversikt(_saksnummer))
@@ -170,7 +168,16 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
 
   const sendData = (): void => {
     if (isValid(validate())) {
-      dispatch(svarpasedActions.sendSvarPaSedData(_saksnummer, valgtSvarSed.querySedDocumentId, valgtSvarSed.replySedType, data))
+
+      let payload: SvarSed = _.cloneDeep(svarSed)
+
+      // fix arbeidsforhold
+      // fix familierelasjon
+      // fix inntekt
+
+
+
+      dispatch(svarpasedActions.sendSvarPaSedData(_saksnummer, valgtSvarSed.querySedDocumentId, valgtSvarSed.replySedType, payload))
     }
   }
 

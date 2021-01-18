@@ -6,7 +6,7 @@ import {
   Arbeidsforholdet,
   FamilieRelasjon,
   Inntekter,
-  SedOversikt
+  SedOversikt, SvarSed
 } from 'declarations/types'
 import { SvarpasedState } from 'reducers/svarpased'
 
@@ -108,7 +108,7 @@ export const resetPersonRelatert: ActionCreator<Action> = (): Action => ({
 
 export const sendSvarPaSedData: ActionCreator<ThunkResult<
   ActionWithPayload
->> = (rinaSakId: string, sedId: string, sedType: string, payload: SvarpasedState): ThunkResult<ActionWithPayload> => {
+>> = (rinaSakId: string, sedId: string, sedType: string, payload: SvarSed): ThunkResult<ActionWithPayload> => {
   return realCall({
     method: 'POST',
     url: sprintf(urls.API_SVARPASED_SEND_POST_URL, {
