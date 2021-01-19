@@ -20,7 +20,7 @@ const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
   const _theme = props.highContrast ? themeHighContrast : theme
   return (
     <>
-      {props.label && <label>{props.label}</label>}
+      {props.label && <label className='skjemaelement__label'>{props.label}</label>}
       <ReactSelect
         inputId={props.id}
         className={classNames({ skjemaelement__feilmelding: !!props.feil })}

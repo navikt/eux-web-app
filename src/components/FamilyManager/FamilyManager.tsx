@@ -16,6 +16,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
+import Kontaktinformasjon from './Kontaktinformasjon'
 import Nasjonalitet from './Nasjonalitet'
 import PersonOpplysninger from './PersonOpplysninger'
 
@@ -78,7 +79,9 @@ const mapState = (state: State): any => ({
   personRelatert: state.svarpased.personRelatert,
   valgteFamilieRelasjoner: state.svarpased.familierelasjoner,
 
-  gettingPerson: state.loading.gettingPerson
+  gettingPerson: state.loading.gettingPerson,
+
+  highContrast: state.ui.highContrast
 })
 
 const FamilyManager: React.FC<FamilyManagerProps> = ({
@@ -88,7 +91,8 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
     //   familierelasjonKodeverk,
   //  personRelatert,
   //  valgteFamilieRelasjoner
-    gettingPerson
+    gettingPerson,
+    highContrast
   }: any = useSelector<State, any>(mapState)
   const [_editPersons, setEditPersons] = useState<Array<Person>>([])
   const [_editCurrentPerson, setEditCurrentPerson] = useState<Person | undefined>(undefined)
@@ -247,9 +251,10 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
               ? t('ui:label-no-person-selected')
               : (
                 <>
-                  {_personOption === 'personopplysninger' && <PersonOpplysninger person={_editCurrentPerson} />}
-                  {_personOption === 'nasjonalitet' && <Nasjonalitet person={_editCurrentPerson} />}
-                  {_personOption === 'adresser' && <Adresser person={_editCurrentPerson} />}
+                  {_personOption === 'personopplysninger' && <PersonOpplysninger highContrast={highContrast} person={_editCurrentPerson} />}
+                  {_personOption === 'nasjonalitet' && <Nasjonalitet highContrast={highContrast} person={_editCurrentPerson} />}
+                  {_personOption === 'adresser' && <Adresser highContrast={highContrast} person={_editCurrentPerson} />}
+                  {_personOption === 'kontaktinformasjon' && <Kontaktinformasjon highContrast={highContrast} person={_editCurrentPerson} />}
                 </>
                 )}
           </RightDiv>

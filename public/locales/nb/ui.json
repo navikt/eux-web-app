@@ -57,6 +57,7 @@
   "label-createSedEditInRINA" : "Opprett SED, rediger i RINA",
   "label-dokumentID": "DokumentID",
   "label-endDate": "SluttDato",
+  "label-epost": "E-postadresse",
   "label-fagsak" : "Velg fagsak",
   "label-family-chosen": "Valgte familierelasjoner",
   "label-family-description": "Vennligst velg familierelasjoner SEDen angår",
@@ -126,7 +127,9 @@
   "label-statsborgerskap" : "Statsborgerskap",
   "label-startDate": "StartDato",
   "label-tema": "Velg behandlingstema",
+  "label-telefonnummer": "Telefonnummer",
   "label-tilDato" : "Til dato",
+  "label-type": "Type",
   "label-unknown": "Ukjent",
   "label-unknownRolle": "(ukjent rolle)",
   "label-unknownNationality": "(ukjent nasjonalitetet)",
@@ -169,6 +172,11 @@
   "option-familymanager-6" : "6. Familierelasjon",
   "option-familymanager-7" : "7. Personens status",
 
+  "option-work": "Arbeid",
+  "option-home": "Hjemme",
+
+  "placeholder-input-default" : "Skriv inn...",
+  "placeholder-select-default" : "Velg...",
   "placeholder-saksnummerOrFnr" : "Skriv inn...",
   "placeholder-birthDate" : "DD-MM-ÅÅÅÅ",
 

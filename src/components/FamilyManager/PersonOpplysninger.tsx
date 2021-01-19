@@ -19,6 +19,7 @@ import styled from 'styled-components'
 
 interface PersonOpplysningerProps {
   person: Person
+  highContrast: boolean
 }
 const PersonOpplysningerDiv = styled.div`
   padding: 1rem;

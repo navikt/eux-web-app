@@ -19,7 +19,8 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 interface NasjonalitetProps {
-  person: Person
+  person: Person,
+  highContrast: boolean
 }
 const NasjonalitetDiv = styled.div`
   padding: 1rem;

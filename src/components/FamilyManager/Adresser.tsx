@@ -19,7 +19,8 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 interface AdresseProps {
-  person: Person
+  person: Person,
+  highContrast: boolean
 }
 const AdresseDiv = styled.div`
   padding: 1rem;

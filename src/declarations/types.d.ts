@@ -42,7 +42,7 @@ export interface Person {
   fornavn?: string
   etternavn?: string
   kjoenn?: string
-  relasjoner?: Array<any>// Array<FamilieRelasjon>
+  relasjoner?: Array<FamilieRelasjon>
 }
 
 export interface FamilieRelasjon extends Person {
@@ -167,10 +167,7 @@ export interface Arbeidsgiver {
       type: string
       id: string
     }>,
-    periode: {
-      startdato: string
-      sluttdato: string
-    },
+    periode: Periode
     typeTrygdeforhold: string
   },
   kreverinformasjonomtypearberidsforhold?: string
@@ -230,10 +227,7 @@ export interface ReplySed {
   }>,
   perioderAnsattMedForsikring: Array<Arbeidsgiver>,
   perioderDagpenger?: Array<{
-    periode: {
-      startdato: string
-      sluttdato: string
-    },
+    periode: Periode
     institusjon: {
       navn: string
       id: string
@@ -263,14 +257,13 @@ export interface ReplySed {
       typeAnnen?: string
       beloep: string
       valuta: string
-    }>,
+    }>
     arbeidsdager?: string
     arbeidstimer?: string
   }>,
   perioderAnsattUtenForsikring?: Array<Arbeidsgiver>,
   perioderAnsattMedForsikring?: Array<Arbeidsgiver>
-}
-
+  }>
 export interface UtgaarDatoPayload {
   naa?: string
   utgaarDato: string
