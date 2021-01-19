@@ -4,6 +4,7 @@ import Tilsette from 'assets/icons/Tilsette'
 import classNames from 'classnames'
 import Adresser from 'components/FamilyManager/Adresser'
 import FamilyManagerModal from 'components/FamilyManager/FamilyManagerModal'
+import Trygdeordning from 'components/FamilyManager/Trygdeordning'
 import { FadingLineSeparator } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { FamilieRelasjon, Person } from 'declarations/types'
@@ -255,6 +256,7 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
                   {_personOption === 'nasjonalitet' && <Nasjonalitet highContrast={highContrast} person={_editCurrentPerson} />}
                   {_personOption === 'adresser' && <Adresser highContrast={highContrast} person={_editCurrentPerson} />}
                   {_personOption === 'kontaktinformasjon' && <Kontaktinformasjon highContrast={highContrast} person={_editCurrentPerson} />}
+                  {_personOption === 'trygdeordninger' && <Trygdeordning highContrast={highContrast} person={_editCurrentPerson} />}
                 </>
                 )}
           </RightDiv>

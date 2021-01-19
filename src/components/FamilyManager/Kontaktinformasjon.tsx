@@ -61,9 +61,11 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
             label={t('ui:label-type')}
             onChange={(e) => onTypeChanged(e.value)}
             options={[{
-               label: t('ui:option-work'), value: 'arbeid'
-            }, {
-               label: t('ui:option-home'), value: 'hjemme'
+               label: t('ui:option-work'), value: 'Arbeid'
+              }, {
+                label: t('ui:option-home'), value: 'Hjem'
+              }, {
+               label: t('ui:option-mobile'), value: 'Mobil'
             }]}
             placeholder={t('ui:placeholder-select-default')}
             value={_type}
