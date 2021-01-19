@@ -204,8 +204,8 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
       inntekter.map((i: IInntekt) => {
         payload.loennsopplysninger!.push({
           periode: {
-            startdato: i.fraDato,
-            sluttdato: i.tilDato
+            startdato: i.fraDato + '-01',
+            sluttdato: i.tilDato + '-01'
           },
           inntekter: [{
             type: i.type,
