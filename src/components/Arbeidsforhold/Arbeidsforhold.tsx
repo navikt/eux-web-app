@@ -67,8 +67,9 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
               arbeidsforholdIDnav,
               navn,
               orgnr,
-              ansettelsesPeriode: { fom, tom }
+              ansettelsesPeriode
             } = arbeidsforholdet
+            const { fom, tom } = ansettelsesPeriode!
             const arbeidsForholdErValgt: boolean = valgteArbeidsforhold
               ? valgteArbeidsforhold.find((item: Arbeidsforholdet) => item.arbeidsforholdIDnav === arbeidsforholdIDnav) !== undefined
               : false

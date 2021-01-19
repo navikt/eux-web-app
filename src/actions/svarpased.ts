@@ -8,7 +8,6 @@ import {
   Inntekter,
   SedOversikt, SvarSed
 } from 'declarations/types'
-import { SvarpasedState } from 'reducers/svarpased'
 
 const sprintf = require('sprintf-js').sprintf
 

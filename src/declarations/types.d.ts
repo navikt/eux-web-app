@@ -1,4 +1,3 @@
-import { PeriodePropType } from 'declarations/types.pt'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 
 export interface Period {
@@ -7,7 +6,7 @@ export interface Period {
 }
 
 export interface Arbeidsforholdet {
-  ansettelsesPeriode?: PeriodePropType
+  ansettelsesPeriode?: Period
   arbeidsforholdIDnav?: number
   navn?: string
   orgnr?: string
@@ -156,7 +155,7 @@ export interface Periode {
 export interface Arbeidsgiver {
   arbeidsgiver: {
     navn: string
-    adresse: {
+    adresse?: {
       gate: string
       postnummer: string
       by: string
@@ -170,7 +169,7 @@ export interface Arbeidsgiver {
     }>
   }
   periode?: Periode
-  typeTrygdeforhold: string
+  typeTrygdeforhold?: string
 }
 
 export interface SvarSed {
@@ -241,15 +240,15 @@ export interface SvarSed {
   },
   loennsopplysninger?: Array<{
     periode: Periode
-    ansettelsestype: string
+    ansettelsestype?: string
     inntekter: Array<{
       type: string
-      typeAnnen: string
+      typeAnnen?: string
       beloep: string
       valuta: string
     }>,
-    arbeidsdager: string
-    arbeidstimer: string
+    arbeidsdager?: string
+    arbeidstimer?: string
   }>,
   perioderAnsattUtenForsikring: Array<Arbeidsgiver>,
   perioderAnsattMedForsikring: Array<Arbeidsgiver>

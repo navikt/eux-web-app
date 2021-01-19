@@ -20,9 +20,10 @@ import * as types from 'constants/actionTypes'
 import { AlertStatus } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import {
+  Arbeidsforholdet,
   FamilieRelasjon,
   Inntekt as IInntekt,
-  Inntekter,
+  Inntekter, Periode,
   Person,
   SedOversikt,
   SvarSed,
@@ -168,15 +169,51 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
 
   const sendData = (): void => {
     if (isValid(validate())) {
-
-      let payload: SvarSed = _.cloneDeep(svarSed)
+      const payload: SvarSed = _.cloneDeep(svarSed)
 
       // fix arbeidsforhold
+      payload.perioderAnsattMedForsikring = []
+      valgteArbeidsforhold.map((a: Arbeidsforholdet) => {
+        if (a.navn && a.orgnr) {
+          let periode: Periode = {
+            startdato: a.ansettelsesPeriode!.fom!
+          }
+          if (a.ansettelsesPeriode!.tom!) {
+            periode.sluttdato = a.ansettelsesPeriode!.tom!
+          } else {
+            periode.aapenPeriodeType = 'åpen_sluttdato'
+          }
+          payload.perioderAnsattMedForsikring.push({
+            arbeidsgiver: {
+              navn: a.navn,
+              identifikator: [{
+                type: 'organisasjonsnummer',
+                id: a.orgnr
+              }]
+            },
+            typeTrygdeforhold: 'ansettelsesforhold_som_utgjør_forsikringsperiode',
+            periode: periode
+          })
+        }
+      })
+
       // fix familierelasjon
+
       // fix inntekt
-
-
-
+      payload.loennsopplysninger = []
+      inntekter.map((i: IInntekt) => {
+        payload.loennsopplysninger!.push({
+          periode: {
+            startdato: i.fraDato,
+            sluttdato: i.tilDato
+          },
+          inntekter: [{
+            type: i.type,
+            beloep: '' + i.beloep,
+            valuta: "NOK"
+          }]
+        })
+      })
       dispatch(svarpasedActions.sendSvarPaSedData(_saksnummer, valgtSvarSed.querySedDocumentId, valgtSvarSed.replySedType, payload))
     }
   }
@@ -244,7 +281,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
   }, [dispatch, _mounted, location.search])
 
   // when I have fnr:
-//
+  //
   useEffect(() => {
     if (person === undefined && !gettingPerson && !_.isNil(svarSed)) {
       const pin = _.find(svarSed.bruker.personInfo.pin, p => p.land === 'NO')
@@ -323,7 +360,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
                     <option key=''>-</option>
                     {svarPaSedOversikt[spørreSed]
                       .filter((s: SedOversikt) => {
-                        let pattern = spørreSed.match(/^(\D+)/)
+                        const pattern = spørreSed.match(/^(\D+)/)
                         if (pattern) {
                           return s.replySedType.startsWith(pattern[0])
                         } else {
@@ -331,14 +368,14 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
                         }
                       })
                       .map((sed: SedOversikt) => (
-                      <option
-                        key={sed.querySedDocumentId}
-                        value={sed.replySedType}
-                        selected={valgtSvarSed ? valgtSvarSed.querySedDocumentId === sed.querySedDocumentId : false}
-                      >
-                        {sed.replySedType} - {sed.replySedDisplay}
-                      </option>
-                    ))}
+                        <option
+                          key={sed.querySedDocumentId}
+                          value={sed.replySedType}
+                          selected={valgtSvarSed ? valgtSvarSed.querySedDocumentId === sed.querySedDocumentId : false}
+                        >
+                          {sed.replySedType} - {sed.replySedDisplay}
+                        </option>
+                      ))}
                   </SedSelect>
                   {valgtSvarSed && (
                     <>
