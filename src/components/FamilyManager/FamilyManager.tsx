@@ -15,6 +15,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
+import Nasjonalitet from './Nasjonalitet'
 import PersonOpplysninger from './PersonOpplysninger'
 
 interface FamilyManagerProps {
@@ -30,6 +31,7 @@ const LeftDiv = styled.div`
 const RightDiv = styled.div`
   flex: 2;
   padding: 0.5rem;
+  align-self: flex-start;
 `
 const PanelDiv = styled.div`
   display: flex;
@@ -248,6 +250,7 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
               : (
                 <>
                   {_personOption === 'personopplysninger' && <PersonOpplysninger person={_editCurrentPerson} />}
+                  {_personOption === 'nasjonalitet' && <Nasjonalitet person={_editCurrentPerson} />}
                 </>
                 )}
           </RightDiv>
