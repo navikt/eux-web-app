@@ -67,14 +67,13 @@ interface FamilyManagerModalProps {
 }
 
 const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
-   appElement = document.body,
-   onModalClose,
-   onPersonsChanged,
-   closeButton,
-   personPlusRelations
- }: FamilyManagerModalProps) => {
-
-  const {t} = useTranslation()
+  appElement = document.body,
+  onModalClose,
+  onPersonsChanged,
+  closeButton,
+  personPlusRelations
+}: FamilyManagerModalProps) => {
+  const { t } = useTranslation()
   const [_extraPersons, setExtraPersons] = useState<Array<Person | FamilieRelasjon>>([])
   const [_newPersonFnr, setNewPersonFnr] = useState<string>('')
   const [_newPersonName, setNewPersonName] = useState<string>('')
@@ -128,9 +127,9 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
 
   return (
     <ModalDiv
-      isOpen={true}
+      isOpen
       onRequestClose={closeModal}
-      closeButton={true}
+      closeButton
       contentLabel='contentLabel'
     >
       <div>
@@ -171,32 +170,32 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
               </CheckboxDiv>
             </FlexDiv>
           ))}
-          <hr/>
-          <VerticalSeparatorDiv/>
+          <hr />
+          <VerticalSeparatorDiv />
           <Undertittel>
             {t('ui:label-add-new-person')}
           </Undertittel>
           <AlignCenterRow>
             <Column>
               <HighContrastInput
-                data-test-id={'c-familymanager-personopplysninger-newperson-fnr-input'}
-                id={'c-familymanager-personopplysninger-newperson-fnr'}
+                data-test-id='c-familymanager-personopplysninger-newperson-fnr-input'
+                id='c-familymanager-personopplysninger-newperson-fnr'
                 onChange={onNewPersonFnrChange}
                 value={_newPersonFnr}
                 label={t('ui:label-fnr')}
               />
-              <HorizontalSeparatorDiv/>
+              <HorizontalSeparatorDiv />
             </Column>
             <Column>
               <HighContrastInput
-                data-test-id={'c-familymanager-personopplysninger-newperson-navn-input'}
-                key={'c-familymanager-personopplysninger-newperson-navn-key'}
-                id={'c-familymanager-personopplysninger-newperson-navn'}
+                data-test-id='c-familymanager-personopplysninger-newperson-navn-input'
+                key='c-familymanager-personopplysninger-newperson-navn-key'
+                id='c-familymanager-personopplysninger-newperson-navn'
                 onChange={onNewPersonNameChange}
                 value={_newPersonName}
                 label={t('ui:label-name')}
               />
-              <HorizontalSeparatorDiv/>
+              <HorizontalSeparatorDiv />
             </Column>
             <Column>
               <Knapp
@@ -210,7 +209,7 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
               </Knapp>
             </Column>
           </AlignCenterRow>
-          <VerticalSeparatorDiv/>
+          <VerticalSeparatorDiv />
         </>
         <ModalButtons>
           <MainButton
@@ -222,7 +221,7 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
           >
             {t('ui:label-save')}
           </MainButton>
-          <HorizontalSeparatorDiv/>
+          <HorizontalSeparatorDiv />
           <OtherButton
             id='c-modal__other-button-id'
             onClick={closeModal}

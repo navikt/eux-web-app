@@ -47,7 +47,7 @@ const SEDPanel = ({ replySed }: SEDPanelProps) => {
       <Undertittel>
         {replySed.sedType} v{replySed.sedVersjon}
       </Undertittel>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <UndertekstBold>
         {t('ui:label-userInSed')}:
       </UndertekstBold>
@@ -61,8 +61,8 @@ const SEDPanel = ({ replySed }: SEDPanelProps) => {
           <FlagList
             size='S'
             type='circle'
-            items={replySed.bruker.personInfo.statsborgerskap.map(s => ({country: s.land}))}
-            />
+            items={replySed.bruker.personInfo.statsborgerskap.map(s => ({ country: s.land }))}
+          />
         </Dd>
         <Dt>
           {t('ui:label-pin')}
@@ -71,13 +71,13 @@ const SEDPanel = ({ replySed }: SEDPanelProps) => {
           <Dd>
             {replySed.bruker.personInfo.pin.map(p => (
               <FlexDiv key={p.identifikator}>
-              <Flag
-                 label={countryData.findByValue(p.land)}
-                 country={p.land}
-                 size='S'
-                 type='circle'
-              />
-              <HorizontalSeparatorDiv data-size='0.5'/>
+                <Flag
+                  label={countryData.findByValue(p.land)}
+                  country={p.land}
+                  size='S'
+                  type='circle'
+                />
+                <HorizontalSeparatorDiv data-size='0.5' />
                 {p.sektor} - {p.identifikator} - {p.institusjonsid} - {p.institusjonsnavn}
               </FlexDiv>
             ))}
@@ -85,63 +85,63 @@ const SEDPanel = ({ replySed }: SEDPanelProps) => {
         )}
         {replySed.bruker.personInfo.pinmangler && (
           <>
-          <Dt>
+            <Dt>
               {t('ui:label-birthPlace')}
-          </Dt>
-          <Dd>
-            <Flag
-              label={countryData.findByValue(replySed.bruker.personInfo.pinmangler.foedested.land)}
-              country={replySed.bruker.personInfo.pinmangler.foedested.land}
-              size='S'
-              type='circle'
+            </Dt>
+            <Dd>
+              <Flag
+                label={countryData.findByValue(replySed.bruker.personInfo.pinmangler.foedested.land)}
+                country={replySed.bruker.personInfo.pinmangler.foedested.land}
+                size='S'
+                type='circle'
               />
-          <HorizontalSeparatorDiv data-size='0.5'/>
-          {replySed.bruker.personInfo.pinmangler.foedested.by} - {replySed.bruker.personInfo.pinmangler.foedested.region}
-          </Dd>
-          <Dt>
-            {t('ui:label-father')}
-          </Dt>
-          <Dd>
-            {replySed.bruker.personInfo.pinmangler.far.fornavn} {replySed.bruker.personInfo.pinmangler.far.etternavnvedfoedsel}
-          </Dd>
-          <Dt>
-          {t('ui:label-mother')}
-          </Dt>
-          <Dd>
-          {replySed.bruker.personInfo.pinmangler.mor.fornavn} {replySed.bruker.personInfo.pinmangler.mor.etternavnvedfoedsel}
-          </Dd>
-          <Dt>
-          {t('ui:label-nameatbirth')}
-          </Dt>
-          <Dd>
-          {replySed.bruker.personInfo.pinmangler.fornavnvedfoedsel} {replySed.bruker.personInfo.pinmangler.etternavnvedfoedsel}
-          </Dd>
-         </>
+              <HorizontalSeparatorDiv data-size='0.5' />
+              {replySed.bruker.personInfo.pinmangler.foedested.by} - {replySed.bruker.personInfo.pinmangler.foedested.region}
+            </Dd>
+            <Dt>
+              {t('ui:label-father')}
+            </Dt>
+            <Dd>
+              {replySed.bruker.personInfo.pinmangler.far.fornavn} {replySed.bruker.personInfo.pinmangler.far.etternavnvedfoedsel}
+            </Dd>
+            <Dt>
+              {t('ui:label-mother')}
+            </Dt>
+            <Dd>
+              {replySed.bruker.personInfo.pinmangler.mor.fornavn} {replySed.bruker.personInfo.pinmangler.mor.etternavnvedfoedsel}
+            </Dd>
+            <Dt>
+              {t('ui:label-nameatbirth')}
+            </Dt>
+            <Dd>
+              {replySed.bruker.personInfo.pinmangler.fornavnvedfoedsel} {replySed.bruker.personInfo.pinmangler.etternavnvedfoedsel}
+            </Dd>
+          </>
         )}
       </Dl>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <Dl>
         <Dt>
           {t('ui:label-periode')}:
         </Dt>
         <Dd>
           {replySed.anmodningsperiode.startdato} -
-          {replySed.anmodningsperiode.sluttdato ?  replySed.anmodningsperiode.sluttdato : ''}
+          {replySed.anmodningsperiode.sluttdato ? replySed.anmodningsperiode.sluttdato : ''}
         </Dd>
       </Dl>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <UndertekstBold>
         {t('ui:label-local-sakId')}:
       </UndertekstBold>
       <Dl>
         {replySed.lokaleSakIder.map(s => (
-          <>
-          <Dt>
-            {t('ui:label-saksnummer')}
-          </Dt>
-          <Dd>
-            {s.saksnummer}
-          </Dd>
+          <div key={s.saksnummer}>
+            <Dt>
+              {t('ui:label-saksnummer')}
+            </Dt>
+            <Dd>
+              {s.saksnummer}
+            </Dd>
             <Dt>
               {t('ui:label-institusjon')}
             </Dt>
@@ -153,18 +153,14 @@ const SEDPanel = ({ replySed }: SEDPanelProps) => {
                 size='S'
                 type='circle'
               />
-              <HorizontalSeparatorDiv data-size='0.5'/>
+              <HorizontalSeparatorDiv data-size='0.5' />
               {s.institusjonsnavn} - {s.institusjonsid}
             </Dd>
-          </>
-      ))}
+          </div>
+        ))}
       </Dl>
 
-
-
-
     </HighContrastPanel>
-
 
   )
 }
@@ -176,4 +172,4 @@ export default SEDPanel
     <Dt>Periode:</Dt>
     <Dd />
 
-  </Dl>*/
+  </Dl> */

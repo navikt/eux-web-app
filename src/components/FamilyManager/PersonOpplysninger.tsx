@@ -42,8 +42,7 @@ const mapState = (state: State): PersonOpplysningerSelector => ({
 const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   person
 }:PersonOpplysningerProps): JSX.Element => {
-
-  const [_etternavn, setEtternavn] = useState<string | undefined>( undefined)
+  const [_etternavn, setEtternavn] = useState<string | undefined>(undefined)
   const [_fodselsdato, setFodselsdato] = useState<string | undefined>(undefined)
   const [_fornavn, setFornavn] = useState<string | undefined>(undefined)
   const [_foundPerson, setFoundPerson] = useState<string | undefined>(undefined)
@@ -57,7 +56,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   const [_seeAddBirthPlace, setSeeAddBirthPlace] = useState<boolean>(false)
   const [_utenlandskPin, setUtenlandskPin] = useState<string | undefined>(undefined)
   const [_isDirty, setIsDirty] = useState<boolean>(false)
-  const {landkoderList}: PersonOpplysningerSelector = useSelector<State, PersonOpplysningerSelector>(mapState)
+  const { landkoderList }: PersonOpplysningerSelector = useSelector<State, PersonOpplysningerSelector>(mapState)
   const { t } = useTranslation()
 
   const onFornavnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -111,12 +110,12 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
     }
   }, [_mounted])
 
-   useEffect(() => {
-     setEtternavn(person?.etternavn || '')
-     setFodselsdato('')
-     setFornavn(person?.fornavn || '')
-     setKjoenn(person?.kjoenn || 'U')
-   }, [person])
+  useEffect(() => {
+    setEtternavn(person?.etternavn || '')
+    setFodselsdato('')
+    setFornavn(person?.fornavn || '')
+    setKjoenn(person?.kjoenn || 'U')
+  }, [person])
 
   return (
     <PersonOpplysningerDiv>
@@ -217,14 +216,14 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
               value={_norwegianPin}
               label={t('ui:label-norwegian-fnr')}
             />
-            <HorizontalSeparatorDiv/>
+            <HorizontalSeparatorDiv />
             <HighContrastKnapp
               onClick={onSearchUser}
             >
               {t('ui:label-searchUser')}
             </HighContrastKnapp>
           </FlexDiv>
-          <VerticalSeparatorDiv data-size='0.5'/>
+          <VerticalSeparatorDiv data-size='0.5' />
           <div>
             {_foundPerson || t('ui:label-norwegian-fnr-description')}
           </div>
@@ -235,47 +234,47 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         <Row>
           <Column>
             <HighContrastInput
-              data-test-id={'c-familymanager-personopplysninger-fodested-by-input'}
-              id={'c-familymanager-personopplysninger-fodested-by'}
+              data-test-id='c-familymanager-personopplysninger-fodested-by-input'
+              id='c-familymanager-personopplysninger-fodested-by'
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewFodestedBy(e.target.value)}
               value={_newFodestedBy}
               label={t('ui:label-by')}
             />
           </Column>
-          <HorizontalSeparatorDiv/>
+          <HorizontalSeparatorDiv />
           <Column>
-          <HighContrastInput
-            data-test-id={'c-familymanager-personopplysninger-fodested-region-input'}
-            id={'c-familymanager-personopplysninger-fodested-region'}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewFodestedRegion(e.target.value)}
-            value={_newFodestedRegion}
-            label={t('ui:label-region')}
-          />
+            <HighContrastInput
+              data-test-id='c-familymanager-personopplysninger-fodested-region-input'
+              id='c-familymanager-personopplysninger-fodested-region'
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewFodestedRegion(e.target.value)}
+              value={_newFodestedRegion}
+              label={t('ui:label-region')}
+            />
           </Column>
-          <HorizontalSeparatorDiv/>
+          <HorizontalSeparatorDiv />
           <Column>
-          <CountrySelect
-            data-test-id={'c-familymanager-personopplysninger-fodested-land-countryselect'}
-            id={'c-familymanager-personopplysninger-fodested-land'}
-            label={t('ui:label-landkode')}
-            menuPortalTarget={document.body}
-            includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
-            onOptionSelected={(e: any) => {
-              setNewFodestedLand(e.value)
-              return true
-            }}
-            placeholder={t('ui:label-choose')}
-            values={_newFodestedLand}
-          />
+            <CountrySelect
+              data-test-id='c-familymanager-personopplysninger-fodested-land-countryselect'
+              id='c-familymanager-personopplysninger-fodested-land'
+              label={t('ui:label-landkode')}
+              menuPortalTarget={document.body}
+              includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
+              onOptionSelected={(e: any) => {
+                setNewFodestedLand(e.value)
+                return true
+              }}
+              placeholder={t('ui:label-choose')}
+              values={_newFodestedLand}
+            />
           </Column>
         </Row>
-        ) : (
+      ) : (
         <Row>
           <Column>
             <Undertittel>
               {t('ui:label-birthPlace')}
             </Undertittel>
-            <VerticalSeparatorDiv data-size='0.5'/>
+            <VerticalSeparatorDiv data-size='0.5' />
             <HighContrastFlatknapp
               mini
               kompakt

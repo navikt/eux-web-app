@@ -2,6 +2,7 @@ import FilledCheckCircle from 'assets/icons/filled-version-check-circle-2'
 import FilledRemoveCircle from 'assets/icons/filled-version-remove-circle'
 import Tilsette from 'assets/icons/Tilsette'
 import classNames from 'classnames'
+import Adresser from 'components/FamilyManager/Adresser'
 import FamilyManagerModal from 'components/FamilyManager/FamilyManagerModal'
 import { FadingLineSeparator } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
@@ -21,7 +22,6 @@ import PersonOpplysninger from './PersonOpplysninger'
 interface FamilyManagerProps {
   person: Person | undefined
 }
-
 
 const LeftDiv = styled.div`
   flex: 1;
@@ -122,11 +122,9 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
 
   const onPersonsChanged = (p: Array<Person | FamilieRelasjon>) => {
     console.log('fdgdfgdf' + p)
-
   }
 
   const onEditPerson = (person: Person) => {
-
     const alreadyEditingPerson = _.find(_editPersons, p => p.fnr === person.fnr) !== undefined
     const isEditCurrentPerson = _editCurrentPerson && _editCurrentPerson.fnr === person.fnr
     setEditCurrentPerson(isEditCurrentPerson ? undefined : person)
@@ -168,7 +166,7 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
           onPersonsChanged={onPersonsChanged}
           onModalClose={() => setModal(false)}
         />
-        )}
+      )}
       <Undertittel>
         {t('ui:label-familymanager-title')}
       </Undertittel>
@@ -181,20 +179,20 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
                 <CheckboxDiv>
                   <PersonDiv
                     onClick={() => onEditPerson(person)}
-                    className={classNames({selected: _editCurrentPerson && _editCurrentPerson.fnr === person.fnr})}
+                    className={classNames({ selected: _editCurrentPerson && _editCurrentPerson.fnr === person.fnr })}
                   >
                     <FlexDiv>
-                    <Chevron type={_.find(_editPersons, p => p.fnr === person.fnr) !== undefined ? 'ned' : 'høyre'} />
-                    {_.find(_selectedPersons, p => p.fnr === person.fnr) !== undefined ?
-                      (
-                      <Undertittel>
-                        {person?.fornavn + ' ' + person?.etternavn + ' (' + person?.kjoenn + ')'}
-                      </Undertittel>
-                      ) : (
-                      <Normaltekst>
-                       {person?.fornavn + ' ' + person?.etternavn + ' (' + person?.kjoenn + ')'}
-                      </Normaltekst>
-                    )}
+                      <Chevron type={_.find(_editPersons, p => p.fnr === person.fnr) !== undefined ? 'ned' : 'høyre'} />
+                      {_.find(_selectedPersons, p => p.fnr === person.fnr) !== undefined
+                        ? (
+                          <Undertittel>
+                            {person?.fornavn + ' ' + person?.etternavn + ' (' + person?.kjoenn + ')'}
+                          </Undertittel>
+                          ) : (
+                            <Normaltekst>
+                              {person?.fornavn + ' ' + person?.etternavn + ' (' + person?.kjoenn + ')'}
+                            </Normaltekst>
+                          )}
                     </FlexDiv>
                   </PersonDiv>
                   <Checkbox
@@ -251,6 +249,7 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
                 <>
                   {_personOption === 'personopplysninger' && <PersonOpplysninger person={_editCurrentPerson} />}
                   {_personOption === 'nasjonalitet' && <Nasjonalitet person={_editCurrentPerson} />}
+                  {_personOption === 'adresser' && <Adresser person={_editCurrentPerson} />}
                 </>
                 )}
           </RightDiv>

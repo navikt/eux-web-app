@@ -195,7 +195,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                           closed: !((previousParentSed !== sed && parentSed === sed) || (previousParentSed === sed && parentSed !== sed))
                         })}
                       >
-                        <HighContrastPanel style={{marginLeft: '3rem'}}>
+                        <HighContrastPanel style={{ marginLeft: '3rem' }}>
                           <FlexDiv>
                             <div>
                               <Normaltekst>
