@@ -161,6 +161,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
           <HighContrastRadioPanelGroup
             checked={_kjoenn}
             data-test-id={'c-familymanager-personopplysninger-' + person.fnr + '-kjoenn-radiogroup'}
+            data-multiple-line='false'
             key={'c-familymanager-personopplysninger-' + person.fnr + '-kjoenn-key'}
             id={'c-familymanager-personopplysninger-' + person.fnr + '-kjoenn'}
             feil={undefined}

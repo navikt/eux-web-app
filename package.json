@@ -27,7 +27,7 @@
     "test:coverage": "cross-env NODE_ENV=test react-scripts test --coverage  --watchAll=false"
   },
   "dependencies": {
-    "@sentry/browser": "^5.30.0",
+    "@sentry/browser": "^6.0.0",
     "amplitude-js": "^7.4.1",
     "classnames": "^2.2.6",
     "core-js": "^3.8.3",
@@ -73,7 +73,7 @@
     "nav-frontend-spinner-style": "^0.2.9",
     "nav-frontend-tabell-style": "^0.2.35",
     "nav-frontend-typografi": "^2.0.39",
-    "nav-hoykontrast": "^1.0.2",
+    "nav-hoykontrast": "^1.0.4",
     "nav-styled-component-theme": "^1.0.7",
     "react": "^17.0.1",
     "react-collapse": "^5.1.0",
@@ -110,7 +110,6 @@
     "cross-env": "^7.0.3",
     "dotenv-save": "^1.2.0",
     "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.5",
     "enzyme-to-json": "^3.6.1",
     "git-branch": "^2.0.1",
     "identity-obj-proxy": "^3.0.0",
