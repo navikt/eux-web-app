@@ -247,7 +247,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
         <>
           <FamilyManager
             person={person}
-
+            highContrast={highContrast}
           />
           {/* <Ekspanderbartpanel tittel={t('ui:label-familyRelationships')}>
             <Family
