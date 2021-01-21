@@ -1,6 +1,6 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { Arbeidsforholdet, FamilieRelasjon, Inntekter, ConnectedSed } from 'declarations/types'
+import { Arbeidsforholdet, FamilieRelasjon, Inntekter, ConnectedSed, Validation } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockArbeidsforholdList from 'mocks/arbeidsforholdList'
 import mockInntekt from 'mocks/inntekt'
@@ -207,4 +207,21 @@ export const sendSeletedInntekt: ActionCreator<ActionWithPayload> = (
 ): ActionWithPayload => ({
   type: types.SVARPASED_SELECTED_INNTEKT_SUCCESS,
   payload: payload
+})
+
+export const setAllValidation = (
+  newValidation: Validation
+): ActionWithPayload => ({
+  type: types.SVARPASED_VALIDATION_ALL_SET,
+  payload: newValidation
+})
+
+export const setSingleValidation = (
+  key: any, value: any
+): ActionWithPayload => ({
+  type: types.SVARPASED_VALIDATION_ALL_SET,
+  payload: {
+    key: key,
+    value: value
+  }
 })

@@ -1,21 +1,20 @@
 import { setStatusParam } from 'actions/app'
 import * as svarpasedActions from 'actions/svarpased'
 import classNames from 'classnames'
-import { Container, Content, fadeIn, fadeOut, Margin, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import { SideBar } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { State } from 'declarations/reducers'
 import { Systemtittel } from 'nav-frontend-typografi'
+import { Container, Content, fadeIn, fadeOut, Margin, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import SEDDetails from 'pages/SvarPaSed/SEDDetails'
+import Step1 from 'pages/SvarPaSed/Step1'
+import Step2 from 'pages/SvarPaSed/Step2'
 import PT from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-
-import Step1 from './SvarPaSed/Step1'
-import Step2 from './SvarPaSed/Step2'
 
 const transition = 500
 const timeout = 501

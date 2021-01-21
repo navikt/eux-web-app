@@ -1,6 +1,7 @@
 import { clientClear } from 'actions/alert'
 import * as svarpasedActions from 'actions/svarpased'
 import Tilsette from 'assets/icons/Tilsette'
+import classNames from 'classnames'
 import Alert from 'components/Alert/Alert'
 import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
 import FamilyManager from 'components/FamilyManager/FamilyManager'
@@ -14,10 +15,10 @@ import _ from 'lodash'
 import Alertstripe from 'nav-frontend-alertstriper'
 import { VenstreChevron } from 'nav-frontend-chevron'
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel'
-import { Feiloppsummering, FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Systemtittel } from 'nav-frontend-typografi'
 import {
-  Column, HighContrastFlatknapp,
+  Column,
+  HighContrastFlatknapp,
   HighContrastHovedknapp,
   HighContrastKnapp,
   HighContrastLink,
@@ -26,12 +27,14 @@ import {
   Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
+import ValidationBox from 'pages/SvarPaSed/ValidationBox'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { SvarpasedState } from 'reducers/svarpased'
 import styled from 'styled-components'
 import { Item } from 'tabell'
+import { validate } from './validation'
 
 const FlexDiv = styled.div`
   display: flex;
@@ -77,6 +80,7 @@ const mapState = (state: State): any => ({
   svarPasedData: state.svarpased.svarPasedData,
   valgteArbeidsforhold: state.svarpased.valgteArbeidsforhold,
   replySed: state.svarpased.replySed,
+  validation: state.svarpased.validation,
 
   highContrast: state.ui.highContrast
 })
@@ -118,6 +122,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
     svarPasedData,
     valgteArbeidsforhold,
     replySed,
+    validation,
 
     highContrast
   }: any = useSelector<State, any>(mapState)
@@ -125,41 +130,11 @@ const Step2: React.FC<SvarPaSedProps> = ({
   const [_comment, setComment] = useState<string>('')
   const [_purpose, setPurpose] = useState<Array<string>>([])
   const [_replySed] = useState<ReplySed | undefined>(replySed)
-  const [_validation, setValidation] = useState<Validation>({})
 
   const data: SvarpasedState = useSelector<State, SvarpasedState>(mapStateTwo)
 
-  const validate = (): Validation => {
-    const validation: Validation = {
-      replysed: !_replySed
-        ? {
-          feilmelding: t('ui:validation-noSedtype'),
-          skjemaelementId: 'svarpased__replysed-select'
-        } as FeiloppsummeringFeil
-        : undefined
-    }
-    setValidation(validation)
-    return validation
-  }
-  /*
-  const resetValidation = (key?: Array<string> | string): void => {
-    const newValidation = _.cloneDeep(_validation)
-    if (!key) {
-      setValidation({})
-    }
-    if (_.isString(key)) {
-      newValidation[key] = undefined
-    }
-    if (_.isArray(key)) {
-      key.forEach((k) => {
-        newValidation[k] = undefined
-      })
-    }
-    setValidation(newValidation)
-  }
-*/
-  const isValid = (_validation: Validation): boolean => {
-    return _.find(_.values(_validation), (e) => e !== undefined) === undefined
+  const isValid = (validation: Validation): boolean => {
+    return _.find(_.values(validation), (e) => e !== undefined) === undefined
   }
 
   const showFamily = () => {
@@ -168,27 +143,31 @@ const Step2: React.FC<SvarPaSedProps> = ({
   }
 
   const sendReplySed = (): void => {
-    if (_replySed && isValid(validate())) {
-      dispatch(svarpasedActions.sendSvarPaSedData(saksnummerOrFnr, _replySed!.querySedDocumentId, _replySed!.replySedType, data))
+
+    if (_replySed) {
+      const newValidation = validate({
+        comment: _comment,
+        purpose: _purpose,
+        person: person
+      })
+      dispatch(svarpasedActions.setAllValidation(newValidation))
+      if (isValid(newValidation)) {
+        dispatch(svarpasedActions.sendSvarPaSedData(saksnummerOrFnr, _replySed!.querySedDocumentId, _replySed!.replySedType, data))
+      }
     }
   }
+
+  // TODO
   const createSedWithAttachments = () => {}
 
+  // TODO
   const createSedEditInRINA = () => {}
 
+  // TODO
   const saveSed = () => {}
 
+  // TODO
   const onPreviewSed = () => {}
-
-  /* const addTpsRelation = (relation: FamilieRelasjon): void => {
-    /* Person fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
-  /* dispatch(
-      svarpasedActions.addFamilierelasjoner({
-        ...relation,
-        nasjonalitet: 'NO'
-      })
-    )
-  } */
 
   const showArbeidsforhold = (): boolean => _replySed?.replySedType === 'U002' || _replySed?.replySedType === 'U007'
 
@@ -239,51 +218,14 @@ const Step2: React.FC<SvarPaSedProps> = ({
             initialPurposes={_purpose}
             onPurposeChange={(p => setPurpose(p))}
             highContrast={highContrast}
+            feil={validation.purpose}
           />
         </Column>
       </Row>
       <VerticalSeparatorDiv />
       {showFamily() && (
         <>
-          <FamilyManager
-            person={person}
-            highContrast={highContrast}
-          />
-          {/* <Ekspanderbartpanel tittel={t('ui:label-familyRelationships')}>
-            <Family
-              alertStatus={alertStatus}
-              alertMessage={alertMessage}
-              alertType={alertType}
-              abroadPersonFormAlertTypesWatched={[types.SVARPASED_ABROADPERSON_ADD_FAILURE]}
-              TPSPersonFormAlertTypesWatched={[
-                types.SVARPASED_PERSON_RELATERT_GET_FAILURE,
-                types.SVARPASED_TPSPERSON_ADD_FAILURE
-              ]}
-              familierelasjonKodeverk={familierelasjonKodeverk}
-              personRelatert={personRelatert}
-              person={person}
-              valgteFamilieRelasjoner={valgteFamilieRelasjoner}
-              onAbroadPersonAddedFailure={() => dispatch({ type: types.SVARPASED_ABROADPERSON_ADD_FAILURE })}
-              onAbroadPersonAddedSuccess={(_relation) => {
-                dispatch(svarpasedActions.addFamilierelasjoner(_relation))
-                dispatch({ type: types.SVARPASED_ABROADPERSON_ADD_SUCCESS })
-              }}
-              onRelationAdded={(relation: FamilieRelasjon) => addTpsRelation(relation)}
-              onRelationRemoved={(relation: FamilieRelasjon) => dispatch(svarpasedActions.removeFamilierelasjoner(relation))}
-              onRelationReset={() => dispatch(svarpasedActions.resetPersonRelatert())}
-              onTPSPersonAddedFailure={() => dispatch({ type: types.SVARPASED_TPSPERSON_ADD_FAILURE })}
-              onTPSPersonAddedSuccess={(e: any) => {
-                dispatch(svarpasedActions.addFamilierelasjoner(e))
-                dispatch({ type: types.SVARPASED_TPSPERSON_ADD_SUCCESS })
-              }}
-              onAlertClose={() => dispatch(clientClear())}
-              onSearchFnr={(sok) => {
-                dispatch(svarpasedActions.resetPersonRelatert())
-                dispatch(svarpasedActions.getPersonRelated(sok))
-              }}
-            />
-          </Ekspanderbartpanel>
-          */}
+          <FamilyManager/>
           <VerticalSeparatorDiv />
         </>
       )}
@@ -317,10 +259,14 @@ const Step2: React.FC<SvarPaSedProps> = ({
       <VerticalSeparatorDiv data-size='2' />
       <TextAreaDiv>
         <HighContrastTextArea
+          data-test-id='c-svarpased-comment-textarea'
+          id='c-svarpased-comment-textarea'
+          className={classNames({'skjemaelement__input--harFeil' : validation.comment})}
           label={t('ui:label-comment-title')}
           placeholder={t('ui:label-comment-placeholder')}
           onChange={(e: any) => setComment(e.target.value)}
           value={_comment}
+          feil={validation.comment ? t(validation.comment.feilmelding) : undefined}
         />
       </TextAreaDiv>
       <VerticalSeparatorDiv data-size='2' />
@@ -379,22 +325,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
           <VerticalSeparatorDiv data-size='0.5' />
         </div>
       </ButtonsDiv>
-      {!isValid(_validation) && (
-        <>
-          <VerticalSeparatorDiv data-size='2' />
-          <Row>
-            <Column>
-              <Feiloppsummering
-                data-test-id='opprettsak__feiloppsummering'
-                tittel={t('ui:validation-feiloppsummering')}
-                feil={Object.values(_validation).filter(v => v !== undefined) as Array<FeiloppsummeringFeil>}
-              />
-            </Column>
-            <HorizontalSeparatorDiv data-size='2' />
-            <Column />
-          </Row>
-        </>
-      )}
+      <ValidationBox validation={validation}/>
       {alertMessage && alertType && [types.SVARPASED_SENDSVARPASEDDATA_POST_FAILURE].indexOf(alertType) >= 0 && (
         <AlertstripeDiv>
           <Alert

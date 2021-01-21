@@ -24,16 +24,64 @@ import Kontaktinformasjon from './Kontaktinformasjon'
 import Nasjonalitet from './Nasjonalitet'
 import PersonOpplysninger from './PersonOpplysninger'
 
-interface FamilyManagerProps {
-  person: Person | undefined
-  highContrast: boolean
-}
-
+const CheckboxDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  .skjemaelement {
+     display: flex;
+  }
+`
+const FlexDiv = styled.div`
+  display: flex;
+  align-items: center;
+`
 const LeftDiv = styled.div`
   flex: 1;
   align-self: flex-start;
 `
-
+const OptionDiv = styled.div`
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    background-color: ${(props: any) => props['data-highContrast'] ?
+      themeHighContrast[themeKeys.MAIN_HOVER_COLOR] :
+      theme[themeKeys.MAIN_HOVER_COLOR] };
+  }
+  &.selected {
+    background-color: ${(props: any) => props['data-highContrast'] ?
+      themeHighContrast[themeKeys.ALTERNATIVE_BACKGROUND_COLOR] :
+      theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR] };
+     border-left: 5px solid ${(props: any) => props['data-highContrast'] ?
+      themeHighContrast[themeKeys.MAIN_INTERACTIVE_COLOR] :
+      theme[themeKeys.MAIN_INTERACTIVE_COLOR] };
+  }
+`
+const PanelDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`
+const PersonCheckbox = styled(Checkbox)`
+  padding: 1rem 0.5rem;
+`
+const PersonsDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+const PersonDiv = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 1rem 0.5rem;
+  flex: 1;
+  &:hover {
+   background-color: ${(props: any) => props['data-highContrast'] ?
+     themeHighContrast[themeKeys.MAIN_HOVER_COLOR] :
+     theme[themeKeys.MAIN_HOVER_COLOR] };
+  }
+`
 const RightFlexStartDiv = styled.div`
   flex: 2;
   padding: 0.5rem;
@@ -45,70 +93,23 @@ const RightFlexCenterDiv = styled.div`
   align-self: flex-center;
   text-align: center;
 `
-
-const PanelDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-`
-const PersonsDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-`
-const CheckboxDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  .skjemaelement {
-     display: flex;
-  }
-  &:hover {
-     background-color: ${(props: any) => props['data-highContrast'] ? themeHighContrast[themeKeys.MAIN_HOVER_COLOR] : theme[themeKeys.MAIN_HOVER_COLOR] };;
-  }
-  padding: 1rem 0.5rem;
-`
-const OptionDiv = styled.div`
-  padding: 0.5rem;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  &.selected {
-     background-color: ${(props: any) => props['data-highContrast'] ? themeHighContrast[themeKeys.ALTERNATIVE_BACKGROUND_COLOR] : theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR] };
-     border-left: 5px solid ${(props: any) => props['data-highContrast'] ? themeHighContrast[themeKeys.MAIN_INTERACTIVE_COLOR] : theme[themeKeys.MAIN_INTERACTIVE_COLOR] };
-  }
-`
-const FlexDiv = styled.div`
-  display: flex;
-  align-items: center;
-`
-
-const PersonDiv = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-`
-
 const CustomHighContrastPanel = styled(HighContrastPanel)`
   padding: 0rem;
 `
 
 const mapState = (state: State): any => ({
   familierelasjonKodeverk: state.app.familierelasjoner,
-  personRelatert: state.svarpased.personRelatert,
-  valgteFamilieRelasjoner: state.svarpased.familierelasjoner,
-
   gettingPerson: state.loading.gettingPerson,
-
+  person: state.svarpased.person,
+  highContrast: state.ui.highContrast
 })
 
-const FamilyManager: React.FC<FamilyManagerProps> = ({
-  person,
-  highContrast
-}: FamilyManagerProps) => {
+const FamilyManager: React.FC = () => {
   const {
     familierelasjonKodeverk,
-  //  personRelatert,
-  //  valgteFamilieRelasjoner
-    gettingPerson
+    gettingPerson,
+    highContrast,
+    person
   }: any = useSelector<State, any>(mapState)
   const [_editPersons, setEditPersons] = useState<Array<Person>>([])
   const [_editCurrentPerson, setEditCurrentPerson] = useState<Person | undefined>(undefined)
@@ -140,9 +141,8 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
     personPlusRelations = personPlusRelations.concat(person).reverse()
   }
 
-  const onPersonsChanged = (p: Array<Person | FamilieRelasjon>) => {
-    console.log('fdgdfgdf' + p)
-  }
+  // TODO
+  const onPersonsChanged = (p: Array<Person | FamilieRelasjon>) => {}
 
   const onEditPerson = (person: Person) => {
     const alreadyEditingPerson = _.find(_editPersons, p => p.fnr === person.fnr) !== undefined
@@ -205,11 +205,12 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
                       return false
                     }}
                     style={{animationDelay:  i * 0.1 + 's' }}
-                    className={classNames({
+                    className={classNames('personDiv',{
                       slideAnimate: true,
                       selected: _editCurrentPerson && _editCurrentPerson.fnr === person.fnr })}
                   >
                     <Chevron type={_.find(_editPersons, p => p.fnr === person.fnr) !== undefined ? 'ned' : 'høyre'} />
+                    <HorizontalSeparatorDiv data-size='0.5'/>
                     {_.find(_selectedPersons, p => p.fnr === person.fnr) !== undefined
                       ? (
                         <Undertittel>
@@ -221,7 +222,7 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
                           </Normaltekst>
                         )}
                   </PersonDiv>
-                  <Checkbox
+                  <PersonCheckbox
                     label=''
                     checked={_.find(_selectedPersons, p => p.fnr === person.fnr) !== undefined}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -252,27 +253,29 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
               </PersonsDiv>
             ))}
 
-            <CheckboxDiv>
-              <Normaltekst>
-                {t('ui:label-whole-family')}
-              </Normaltekst>
-              <Checkbox
-                label=''
-                checked={_selectedPersons.length === personPlusRelations.length}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSelectAllPersons(e.target.checked)}
-              />
-            </CheckboxDiv>
-            <CheckboxDiv>
-              <HighContrastFlatknapp
-                mini
-                kompakt
-                onClick={onAddNewPerson}
-              >
-                <Tilsette />
-                <HorizontalSeparatorDiv data-size='0.5' />
-                {t('ui:label-add-person')}
-              </HighContrastFlatknapp>
-            </CheckboxDiv>
+              <CheckboxDiv>
+                <div style={{padding: '1rem 0.5rem'}}>
+                  <Normaltekst>
+                  {t('ui:label-whole-family')}
+                </Normaltekst>
+                </div>
+                <PersonCheckbox
+                  label=''
+                  checked={_selectedPersons.length === personPlusRelations.length}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSelectAllPersons(e.target.checked)}
+                />
+              </CheckboxDiv>
+              <CheckboxDiv>
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  onClick={onAddNewPerson}
+                >
+                  <Tilsette />
+                  <HorizontalSeparatorDiv data-size='0.5' />
+                  {t('ui:label-add-person')}
+                </HighContrastFlatknapp>
+              </CheckboxDiv>
           </LeftDiv>
           <FadingLineSeparator className='fadeIn' />
           {(gettingPerson || !_editCurrentPerson) ? (

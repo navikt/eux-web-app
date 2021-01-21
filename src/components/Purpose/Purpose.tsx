@@ -3,7 +3,8 @@ import Trashcan from 'assets/icons/Trashcan'
 import Select from 'components/Select/Select'
 import { Option } from 'declarations/app'
 import _ from 'lodash'
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { Feilmelding, Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   HighContrastFlatknapp,
   HighContrastKnapp,
@@ -21,12 +22,14 @@ const FlexDiv = styled.div`
 `
 
 interface PurposeProps {
+  feil: FeiloppsummeringFeil | undefined
   highContrast: boolean
   initialPurposes: Array<string>
   onPurposeChange?: (e: Array<string>) => void
 }
 
 const Purpose: React.FC<PurposeProps> = ({
+  feil,
   highContrast,
   initialPurposes = [],
   onPurposeChange
@@ -123,7 +126,8 @@ const Purpose: React.FC<PurposeProps> = ({
           <FlexDiv>
             <div style={{ flex: 2 }}>
               <Select
-                id='purpose__select'
+                data-test-id='c-purpose-select'
+                id='c-purpose-select'
                 highContrast={highContrast}
                 value={_newPurpose}
                 onChange={onPurposeChanged}
@@ -152,6 +156,11 @@ const Purpose: React.FC<PurposeProps> = ({
             </FlexDiv>
           </FlexDiv>
           )}
+      {feil && (
+        <div role='alert' aria-live='assertive' className='feilmelding skjemaelement__feilmelding'>
+          <Feilmelding>{t(feil.feilmelding)}</Feilmelding>
+        </div>
+      )}
     </>
   )
 }

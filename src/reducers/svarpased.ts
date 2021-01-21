@@ -1,4 +1,4 @@
-import { Arbeidsforhold, Inntekter, ReplySed, Seds } from 'declarations/types'
+import { Arbeidsforhold, Inntekter, Person, ReplySed, Seds, Validation } from 'declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
 import { Action } from 'redux'
 import * as types from 'constants/actionTypes'
@@ -9,7 +9,8 @@ export interface SvarpasedState {
   familierelasjoner: Array<any>
   inntekter: Inntekter | undefined
   parentSed: string | undefined
-  person: any
+  person: Person | undefined
+  personBackup:  Person | undefined
   personRelatert: any
   previousParentSed: string | undefined
   previousReplySed: ReplySed | undefined
@@ -18,7 +19,8 @@ export interface SvarpasedState {
   selectedInntekter: Inntekter | undefined
   seds: Seds | undefined
   svarPasedData: any
-  valgteArbeidsforhold: Arbeidsforhold
+  valgteArbeidsforhold: Arbeidsforhold,
+  validation: Validation
 }
 
 export const initialSvarpasedState: SvarpasedState = {
@@ -27,6 +29,7 @@ export const initialSvarpasedState: SvarpasedState = {
   inntekter: undefined,
   parentSed: undefined,
   person: undefined,
+  personBackup: undefined,
   personRelatert: undefined,
   previousParentSed: undefined,
   previousReplySed: undefined,
@@ -35,7 +38,8 @@ export const initialSvarpasedState: SvarpasedState = {
   saksnummerOrFnr: undefined,
   selectedInntekter: undefined,
   svarPasedData: undefined,
-  valgteArbeidsforhold: []
+  valgteArbeidsforhold: [],
+  validation: {}
 }
 
 const svarpasedReducer = (
@@ -83,13 +87,15 @@ const svarpasedReducer = (
     case types.SVARPASED_PERSON_GET_FAILURE:
       return {
         ...state,
-        person: null
+        person: null,
+        personBackup: null
       }
 
     case types.SVARPASED_PERSON_GET_SUCCESS:
       return {
         ...state,
-        person: (action as ActionWithPayload).payload
+        person: (action as ActionWithPayload).payload,
+        personBackup: (action as ActionWithPayload).payload
       }
 
     case types.SVARPASED_PERSON_RELATERT_GET_FAILURE:
@@ -181,13 +187,28 @@ const svarpasedReducer = (
     case types.SVARPASED_PERSON_RESET:
       return {
         ...state,
-        person: null
+        person: null,
+        personBackup: null
       }
 
     case types.SVARPASED_PERSON_RELATERT_RESET:
       return {
         ...state,
         personRelatert: undefined
+      }
+
+    case types.SVARPASED_VALIDATION_ALL_SET:
+      return {
+        ...state,
+        validation: (action as ActionWithPayload).payload
+      }
+
+    case types.SVARPASED_VALIDATION_SINGLE_SET:
+      const newValidation = _.cloneDeep(state.validation)
+      newValidation[(action as ActionWithPayload).payload.key] = (action as ActionWithPayload).payload.value
+      return {
+        ...state,
+        validation: newValidation
       }
 
     default:
