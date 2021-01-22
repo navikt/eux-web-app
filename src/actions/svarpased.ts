@@ -1,6 +1,6 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { Arbeidsforholdet, FamilieRelasjon, Inntekter, ConnectedSed, Validation } from 'declarations/types'
+import { Arbeidsforholdet, FamilieRelasjon, Inntekter, ConnectedSed, Validation, Person } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockArbeidsforholdList from 'mocks/arbeidsforholdList'
 import mockInntekt from 'mocks/inntekt'
@@ -214,6 +214,13 @@ export const setAllValidation = (
 ): ActionWithPayload => ({
   type: types.SVARPASED_VALIDATION_ALL_SET,
   payload: newValidation
+})
+
+export const setPersonPlusRelations = (
+  personPlusRelations: Array<Person>
+): ActionWithPayload => ({
+  type: types.SVARPASED_PERSONPLUSRELATIONS_SET,
+  payload: personPlusRelations
 })
 
 export const setSingleValidation = (

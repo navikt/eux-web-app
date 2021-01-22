@@ -43,6 +43,61 @@ export interface Person {
   etternavn?: string
   kjoenn?: string
   relasjoner?: Array<FamilieRelasjon>
+  personopplysninger?: {
+    fornavn?: string
+    etternavn?: string
+    fodselsdato?: string
+    kjoenn?: string
+    utenlandskpin?: string
+    land ?: string
+    norskpersonnummer ?: string
+    fodestedby?: string
+    fodestedregion?: string
+    fodestedland?: string
+  },
+  nasjonaliteter?: Array<{
+    nasjonalitet?: string
+    fomdato ?: string
+  }>,
+  adresser?: Array<{
+    type ?: string
+    gateadresse ?: string
+    postnummer ?: string
+    by ?: string
+    region ?: string
+    land ?: string
+  }>,
+  kontaktinformasjon?: {
+    telefonnummer?: string,
+    type ?: string,
+    epostadresse ?: string
+  }
+  trygdeordning?: {
+    dekket?: Array<{
+      startdato?: string
+      sluttdato?: string
+    }>,
+    udekket?: Array<{
+      startdato?: string
+      sluttdato?: string
+    }>,
+    familie?: Array<{
+      startdato?: string
+      sluttdato?: string
+    }>
+  }
+  familierelasjon?: {
+    type ?: string
+    startdato ?: string
+    sluttdato ?: string
+    annetrelasjon ?: string
+    navn ?: string
+    dato ?: string
+    livetogether ?: string
+  }
+  personensstatus?: {
+    arbeidsforhold ?: string
+  }
 }
 
 export interface FamilieRelasjon extends Person {

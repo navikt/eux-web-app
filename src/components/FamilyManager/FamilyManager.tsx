@@ -1,5 +1,6 @@
-//import FilledCheckCircle from 'assets/icons/filled-version-check-circle-2'
-//import FilledRemoveCircle from 'assets/icons/filled-version-remove-circle'
+import FilledCheckCircle from 'assets/icons/filled-version-check-circle-2'
+import { setPersonPlusRelations } from 'actions/svarpased'
+import FilledRemoveCircle from 'assets/icons/filled-version-remove-circle'
 import Tilsette from 'assets/icons/Tilsette'
 import classNames from 'classnames'
 import Adresser from 'components/FamilyManager/Adresser'
@@ -18,10 +19,10 @@ import { HighContrastFlatknapp, HighContrastPanel, HorizontalSeparatorDiv, Verti
 import { theme, themeHighContrast, themeKeys } from 'nav-styled-component-theme'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import Kontaktinformasjon from './Kontaktinformasjon'
-import Nasjonalitet from './Nasjonalitet'
+import Nasjonaliteter from './Nasjonaliteter'
 import PersonOpplysninger from './PersonOpplysninger'
 
 const CheckboxDiv = styled.div`
@@ -99,8 +100,10 @@ const CustomHighContrastPanel = styled(HighContrastPanel)`
 
 const mapState = (state: State): any => ({
   familierelasjonKodeverk: state.app.familierelasjoner,
+  landkoderList: state.app.landkoder,
   gettingPerson: state.loading.gettingPerson,
-  person: state.svarpased.person,
+  personPlusRelations: state.svarpased.personPlusRelations,
+  validation: state.svarpased.validation,
   highContrast: state.ui.highContrast
 })
 
@@ -109,7 +112,9 @@ const FamilyManager: React.FC = () => {
     familierelasjonKodeverk,
     gettingPerson,
     highContrast,
-    person
+    landkoderList,
+    personPlusRelations,
+    validation
   }: any = useSelector<State, any>(mapState)
   const [_editPersons, setEditPersons] = useState<Array<Person>>([])
   const [_editCurrentPerson, setEditCurrentPerson] = useState<Person | undefined>(undefined)
@@ -117,6 +122,7 @@ const FamilyManager: React.FC = () => {
   const [_selectedPersons, setSelectedPersons] = useState<Array<Person>>([])
   const [_personOption, setPersonOption] = useState<string | undefined>(undefined)
   const { t } = useTranslation()
+  const dispatch = useDispatch()
 
   const changePersonOption = (p: Person, o: string) => {
     setEditCurrentPerson(p)
@@ -125,7 +131,7 @@ const FamilyManager: React.FC = () => {
 
   const options = [
     { label: t('ui:option-familymanager-1'), value: 'personopplysninger' },
-    { label: t('ui:option-familymanager-2'), value: 'nasjonalitet' },
+    { label: t('ui:option-familymanager-2'), value: 'nasjonaliteter' },
     { label: t('ui:option-familymanager-3'), value: 'adresser' },
     { label: t('ui:option-familymanager-4'), value: 'kontaktinformasjon' },
     { label: t('ui:option-familymanager-5'), value: 'trygdeordninger' },
@@ -133,16 +139,8 @@ const FamilyManager: React.FC = () => {
     { label: t('ui:option-familymanager-7'), value: 'personensstatus' }
   ]
 
-  let personPlusRelations: Array<Person | FamilieRelasjon> = []
-  if (person?.relasjoner) {
-    personPlusRelations = personPlusRelations.concat(person?.relasjoner)
-  }
-  if (person) {
-    personPlusRelations = personPlusRelations.concat(person).reverse()
-  }
-
   // TODO
-  const onPersonsChanged = (p: Array<Person | FamilieRelasjon>) => {}
+  const onPersonsChanged = (p: Array<Person | FamilieRelasjon>) => { p}
 
   const onEditPerson = (person: Person) => {
     const alreadyEditingPerson = _.find(_editPersons, p => p.fnr === person.fnr) !== undefined
@@ -174,6 +172,20 @@ const FamilyManager: React.FC = () => {
     }
   }
 
+  const onValueChanged = (fnr: string, category: string, key: string, value: any) => {
+
+    let newPersonsPlusRelations = personPlusRelations.map((p: Person) => {
+      if (fnr !== p.fnr) {
+        return p
+      }
+      const newP: Person = _.cloneDeep(p)
+      // @ts-ignore
+      newP[category][key] = value
+      return newP
+    })
+    dispatch(setPersonPlusRelations(newPersonsPlusRelations))
+  }
+
   const onAddNewPerson = () => {
     setModal(true)
   }
@@ -194,7 +206,7 @@ const FamilyManager: React.FC = () => {
       <CustomHighContrastPanel>
         <FlexDiv>
           <LeftDiv>
-            {personPlusRelations.map((person, i) => (
+            {personPlusRelations.map((person: Person, i: number) => (
               <PersonsDiv>
                 <CheckboxDiv
                   data-highContrast={highContrast}
@@ -211,6 +223,12 @@ const FamilyManager: React.FC = () => {
                   >
                     <Chevron type={_.find(_editPersons, p => p.fnr === person.fnr) !== undefined ? 'ned' : 'høyre'} />
                     <HorizontalSeparatorDiv data-size='0.5'/>
+                    {validation['person-' + person.fnr] && (
+                      <>
+                        <FilledRemoveCircle color='red' />
+                        <HorizontalSeparatorDiv data-size='0.5'/>
+                      </>
+                    )}
                     {_.find(_selectedPersons, p => p.fnr === person.fnr) !== undefined
                       ? (
                         <Undertittel>
@@ -243,8 +261,11 @@ const FamilyManager: React.FC = () => {
                       })}
                       onClick={() => changePersonOption(person, o.value)}
                     >
-                      {/*<FilledCheckCircle color='green' />*/}
-                      {/*<FilledRemoveCircle color='red' />*/}
+                      {validation.hasOwnProperty('person-' + person.fnr + '-' + o.value) &&
+                      (validation['person-' + person.fnr + '-' + o.value] === undefined ?
+                        <FilledCheckCircle color='green' /> :
+                        <FilledRemoveCircle color='red' />
+                      )}
                       <HorizontalSeparatorDiv data-size='0.5' />
                       {o.label}
                     </OptionDiv>
@@ -252,7 +273,6 @@ const FamilyManager: React.FC = () => {
                 })}
               </PersonsDiv>
             ))}
-
               <CheckboxDiv>
                 <div style={{padding: '1rem 0.5rem'}}>
                   <Normaltekst>
@@ -285,8 +305,16 @@ const FamilyManager: React.FC = () => {
             </RightFlexCenterDiv>
           ) : (
             <RightFlexStartDiv>
-              {_personOption === 'personopplysninger' && <PersonOpplysninger highContrast={highContrast} person={_editCurrentPerson} />}
-              {_personOption === 'nasjonalitet' && <Nasjonalitet highContrast={highContrast} person={_editCurrentPerson} />}
+              {_personOption === 'personopplysninger' && (
+                <PersonOpplysninger
+                  highContrast={highContrast}
+                  landkoderList={landkoderList}
+                  onValueChanged={onValueChanged}
+                  person={_editCurrentPerson}
+                  validation={validation}
+                />
+              )}
+              {_personOption === 'nasjonaliteter' && <Nasjonaliteter highContrast={highContrast} person={_editCurrentPerson} />}
               {_personOption === 'adresser' && <Adresser highContrast={highContrast} person={_editCurrentPerson} />}
               {_personOption === 'kontaktinformasjon' && <Kontaktinformasjon highContrast={highContrast} person={_editCurrentPerson} />}
               {_personOption === 'trygdeordninger' && <Trygdeordning highContrast={highContrast} person={_editCurrentPerson} />}

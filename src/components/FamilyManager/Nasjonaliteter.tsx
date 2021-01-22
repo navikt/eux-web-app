@@ -45,8 +45,8 @@ interface Nationality {
   fomdato: string
 }
 
-const Nasjonalitet: React.FC<NasjonalitetProps> = ({
-  person
+const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
+  //person
 }:NasjonalitetProps): JSX.Element => {
   const [_nationalities, setNationalities] = useState<Array<Nationality>>([])
   const [_currentNationality, setCurrentNationality] = useState<string | undefined>(undefined)
@@ -98,9 +98,8 @@ const Nasjonalitet: React.FC<NasjonalitetProps> = ({
       <AlignEndRow>
         <Column>
           <CountrySelect
-            data-test-id='c-familymanager-nasjonalitet-countryselect'
-            key={'c-familymanager-personopplysninger-' + person.fnr + '-land-key'}
-            id={'c-familymanager-personopplysninger-' + person.fnr + '-land'}
+            data-test-id={'c-familymanager-nasjonaliteter-' + i + '-land-countryselect'}
+            id={'c-familymanager-personopplysninger-' + i + '-land'}
             label={t('ui:label-landkode')}
             menuPortalTarget={document.body}
             includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
@@ -112,9 +111,8 @@ const Nasjonalitet: React.FC<NasjonalitetProps> = ({
         <HorizontalSeparatorDiv />
         <Column>
           <HighContrastInput
-            data-test-id={'c-familymanager-personopplysninger-' + person.fnr + '-fornavn-input'}
-            key={'c-familymanager-personopplysninger-' + person.fnr + '-fornavn-key'}
-            id={'c-familymanager-personopplysninger-' + person.fnr + '-fornavn'}
+            data-test-id={'c-familymanager-nasjonaliteter-' + i + '-fomdato-input'}
+            id={'c-familymanager-personopplysninger-' + i + '-fomdato'}
             onChange={(e: any) => onFomdatoChanged(e.target.value, i)}
             value={n.fomdato}
             label={t('ui:label-firstname')}
@@ -174,7 +172,6 @@ const Nasjonalitet: React.FC<NasjonalitetProps> = ({
       ) : (
         <Row>
           <Column>
-
             <HighContrastFlatknapp
               mini
               kompakt
@@ -193,4 +190,4 @@ const Nasjonalitet: React.FC<NasjonalitetProps> = ({
   )
 }
 
-export default Nasjonalitet
+export default Nasjonaliteter

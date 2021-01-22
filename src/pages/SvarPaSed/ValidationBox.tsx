@@ -30,6 +30,7 @@ const ValidationBox: React.FC<ValidationBoxProps> = ({
             tittel={t('ui:validation-feiloppsummering')}
             feil={Object.values(validation)
               .filter(v => v !== undefined)
+              .filter(v => v?.feilmelding !== 'notnull')
               .map(v => ({
                 feilmelding: t(v!.feilmelding),
                 skjemaelementId: v!.skjemaelementId

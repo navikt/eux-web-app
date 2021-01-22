@@ -77,6 +77,7 @@ const mapState = (state: State): any => ({
   arbeidsforholdList: state.svarpased.arbeidsforholdList,
   inntekter: state.svarpased.inntekter,
   person: state.svarpased.person,
+  personPlusRelations: state.svarpased.personPlusRelations,
   svarPasedData: state.svarpased.svarPasedData,
   valgteArbeidsforhold: state.svarpased.valgteArbeidsforhold,
   replySed: state.svarpased.replySed,
@@ -118,6 +119,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
     arbeidsforholdList,
     inntekter,
     person,
+    personPlusRelations,
 
     svarPasedData,
     valgteArbeidsforhold,
@@ -148,7 +150,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
       const newValidation = validate({
         comment: _comment,
         purpose: _purpose,
-        person: person
+        personPlusRelations: personPlusRelations
       })
       dispatch(svarpasedActions.setAllValidation(newValidation))
       if (isValid(newValidation)) {

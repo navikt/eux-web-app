@@ -1,4 +1,4 @@
-import { Arbeidsforhold, Inntekter, Person, ReplySed, Seds, Validation } from 'declarations/types'
+import { Arbeidsforhold, FamilieRelasjon, Inntekter, Person, ReplySed, Seds, Validation } from 'declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
 import { Action } from 'redux'
 import * as types from 'constants/actionTypes'
@@ -10,7 +10,7 @@ export interface SvarpasedState {
   inntekter: Inntekter | undefined
   parentSed: string | undefined
   person: Person | undefined
-  personBackup:  Person | undefined
+  personPlusRelations: Array<Person | FamilieRelasjon> | undefined
   personRelatert: any
   previousParentSed: string | undefined
   previousReplySed: ReplySed | undefined
@@ -29,7 +29,7 @@ export const initialSvarpasedState: SvarpasedState = {
   inntekter: undefined,
   parentSed: undefined,
   person: undefined,
-  personBackup: undefined,
+  personPlusRelations: [],
   personRelatert: undefined,
   previousParentSed: undefined,
   previousReplySed: undefined,
@@ -88,14 +88,62 @@ const svarpasedReducer = (
       return {
         ...state,
         person: null,
-        personBackup: null
+        personPlusRelations: []
       }
 
     case types.SVARPASED_PERSON_GET_SUCCESS:
+
+      let person: Person = (action as ActionWithPayload).payload
+      let personPlusRelations: Array<Person | FamilieRelasjon> = []
+      person.personopplysninger = {
+        fornavn: person.fornavn,
+        etternavn: person.etternavn,
+        kjoenn: person.kjoenn,
+        fodselsdato: person.fdato,
+        norskpersonnummer: person.fnr
+      }
+
+      if (person?.relasjoner) {
+        personPlusRelations = personPlusRelations.concat(
+          person?.relasjoner.map(r => ({
+            fnr: r.fnr,
+            fdato: r.fdato,
+            fornavn: r.fornavn,
+            etternavn: r.etternavn,
+            kjoenn: r.kjoenn,
+            personopplysninger: {
+              fornavn: r.fornavn,
+              etternavn: r.etternavn,
+              kjoenn: r.kjoenn,
+              fodselsdato: r.fdato,
+              norskpersonnummer: person.fnr
+            },
+            adresser: [{
+              land : r.land
+            }],
+            familierelasjon: {
+              type: r.rolle
+            },
+            nasjonaliteter: [{
+              nasjonalitet: r.statsborgerskap
+            }]
+          } as Person))
+        )
+      }
+      if (person) {
+        personPlusRelations = personPlusRelations.concat(person).reverse()
+      }
+
       return {
         ...state,
-        person: (action as ActionWithPayload).payload,
-        personBackup: (action as ActionWithPayload).payload
+        person: person,
+        personPlusRelations: personPlusRelations
+      }
+
+    case types.SVARPASED_PERSONPLUSRELATIONS_SET:
+      return {
+        ...state,
+        personPlusRelations: (action as ActionWithPayload).payload
       }
 
     case types.SVARPASED_PERSON_RELATERT_GET_FAILURE:
@@ -188,7 +236,7 @@ const svarpasedReducer = (
       return {
         ...state,
         person: null,
-        personBackup: null
+        personPlusRelations: []
       }
 
     case types.SVARPASED_PERSON_RELATERT_RESET:

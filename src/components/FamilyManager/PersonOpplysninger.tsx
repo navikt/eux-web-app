@@ -1,10 +1,10 @@
 import Tilsette from 'assets/icons/Tilsette'
-import { State } from 'declarations/reducers'
-import { Kodeverk, Person } from 'declarations/types'
+import { Kodeverk, Person, Validation } from 'declarations/types'
 import CountrySelect from 'landvelger'
 import { Undertittel } from 'nav-frontend-typografi'
 import {
-  Column, HighContrastFlatknapp,
+  Column,
+  HighContrastFlatknapp,
   HighContrastInput,
   HighContrastKnapp,
   HighContrastRadioPanelGroup,
@@ -14,12 +14,14 @@ import {
 } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 interface PersonOpplysningerProps {
   person: Person
+  landkoderList: Array<Kodeverk>
   highContrast: boolean
+  validation: Validation
+  onValueChanged: (fnr:string, category: string, key: string, value: any) => void
 }
 const PersonOpplysningerDiv = styled.div`
   padding: 1rem;
@@ -32,16 +34,12 @@ const FlexDiv = styled.div`
   align-items: flex-end;
 `
 
-interface PersonOpplysningerSelector {
-  landkoderList: any
-}
-
-const mapState = (state: State): PersonOpplysningerSelector => ({
-  landkoderList: state.app.landkoder
-})
-
 const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
-  person
+  //highContrast,
+  landkoderList,
+  person,
+  validation,
+  onValueChanged
 }:PersonOpplysningerProps): JSX.Element => {
   const [_etternavn, setEtternavn] = useState<string | undefined>(undefined)
   const [_fodselsdato, setFodselsdato] = useState<string | undefined>(undefined)
@@ -57,12 +55,12 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   const [_seeAddBirthPlace, setSeeAddBirthPlace] = useState<boolean>(false)
   const [_utenlandskPin, setUtenlandskPin] = useState<string | undefined>(undefined)
   const [_isDirty, setIsDirty] = useState<boolean>(false)
-  const { landkoderList }: PersonOpplysningerSelector = useSelector<State, PersonOpplysningerSelector>(mapState)
   const { t } = useTranslation()
 
   const onFornavnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsDirty(true)
     setFornavn(e.target.value)
+    onValueChanged(person!.fnr!, 'personopplysninger', 'fornavn', e.target.value)
   }
 
   const onEtternavnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -129,6 +127,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             onChange={onFornavnChange}
             value={_fornavn}
             label={t('ui:label-firstname')}
+            feil={validation['person-' + person.fnr + '-personopplysninger-fornavn'] ?
+              t(validation['person-' + person.fnr + '-personopplysninger-fornavn']!.feilmelding)
+              : undefined}
           />
         </Column>
         <HorizontalSeparatorDiv />

@@ -230,6 +230,7 @@
   "validation-noFdato": "Ingen dato valgt",
   "validation-noFirstName": "Du må taste inn fornavn",
   "validation-noFnr": "Du må velge fødselsnummer",
+  "validation-noFornavn": "Ingen fornavn",
   "validation-noFraDato": "Velg en gyldig dato",
   "validation-noGender": "Kjønn er ikke valgt",
   "validation-noInstitusjonsID": "Du må velge institusjon",
