@@ -171,49 +171,50 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
     if (isValid(validate())) {
       const payload: SvarSed = _.cloneDeep(svarSed)
 
-      // fix arbeidsforhold
-      payload.perioderAnsattMedForsikring = []
-      valgteArbeidsforhold.map((a: Arbeidsforholdet) => {
-        if (a.navn && a.orgnr) {
-          let periode: Periode = {
-            startdato: a.ansettelsesPeriode!.fom!
-          }
-          if (a.ansettelsesPeriode!.tom!) {
-            periode.sluttdato = a.ansettelsesPeriode!.tom!
-          } else {
-            periode.aapenPeriodeType = 'åpen_sluttdato'
-          }
-          payload.perioderAnsattMedForsikring.push({
-            arbeidsgiver: {
-              navn: a.navn,
-              identifikator: [{
-                type: 'organisasjonsnummer',
-                id: a.orgnr
-              }]
-            },
-            typeTrygdeforhold: 'ansettelsesforhold_som_utgjør_forsikringsperiode',
-            periode: periode
-          })
-        }
-      })
+      if (payload.sedType !== 'U004') {
 
-      // fix familierelasjon
-
-      // fix inntekt
-      payload.loennsopplysninger = []
-      inntekter.map((i: IInntekt) => {
-        payload.loennsopplysninger!.push({
-          periode: {
-            startdato: i.fraDato + '-01',
-            sluttdato: i.tilDato + '-01'
-          },
-          inntekter: [{
-            type: i.type,
-            beloep: '' + i.beloep,
-            valuta: "NOK"
-          }]
+        // fix arbeidsforhold
+        payload.perioderAnsattMedForsikring = []
+        valgteArbeidsforhold.map((a: Arbeidsforholdet) => {
+          if (a.navn && a.orgnr) {
+            let periode: Periode = {
+              startdato: a.ansettelsesPeriode!.fom!
+            }
+            if (a.ansettelsesPeriode!.tom!) {
+              periode.sluttdato = a.ansettelsesPeriode!.tom!
+            } else {
+              periode.aapenPeriodeType = 'åpen_sluttdato'
+            }
+            payload.perioderAnsattMedForsikring?.push({
+              arbeidsgiver: {
+                navn: a.navn,
+                identifikator: [{
+                  type: 'organisasjonsnummer',
+                  id: a.orgnr
+                }]
+              },
+              typeTrygdeforhold: 'ansettelsesforhold_som_utgjør_forsikringsperiode',
+              periode: periode
+            })
+          }
         })
-      })
+      } else {
+        // fix inntekt
+        payload.loennsopplysninger = []
+        inntekter.map((i: IInntekt) => {
+          payload.loennsopplysninger!.push({
+            periode: {
+              startdato: i.fraDato + '-01',
+              sluttdato: i.tilDato + '-01'
+            },
+            inntekter: [{
+              type: i.type,
+              beloep: '' + i.beloep,
+              valuta: "NOK"
+            }]
+          })
+        })
+      }
       dispatch(svarpasedActions.sendSvarPaSedData(_saksnummer, valgtSvarSed.querySedDocumentId, valgtSvarSed.replySedType, payload))
     }
   }

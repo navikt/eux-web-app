@@ -215,7 +215,7 @@ export interface SvarSed {
     institusjonsid: string
     land: string
   }>,
-  perioderDagpenger: Array<{
+  perioderDagpenger?: Array<{
     periode: Periode,
     institusjon: {
       navn: string
@@ -250,8 +250,8 @@ export interface SvarSed {
     arbeidsdager?: string
     arbeidstimer?: string
   }>,
-  perioderAnsattUtenForsikring: Array<Arbeidsgiver>,
-  perioderAnsattMedForsikring: Array<Arbeidsgiver>
+  perioderAnsattUtenForsikring?: Array<Arbeidsgiver>,
+  perioderAnsattMedForsikring?: Array<Arbeidsgiver>
 }
 
 export interface UtgaarDatoPayload {
