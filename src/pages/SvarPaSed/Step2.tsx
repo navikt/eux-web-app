@@ -145,11 +145,11 @@ const Step2: React.FC<SvarPaSedProps> = ({
   }
 
   const sendReplySed = (): void => {
-
     if (_replySed) {
       const newValidation = validate({
         comment: _comment,
         purpose: _purpose,
+        t: t,
         personPlusRelations: personPlusRelations
       })
       dispatch(svarpasedActions.setAllValidation(newValidation))
@@ -224,11 +224,11 @@ const Step2: React.FC<SvarPaSedProps> = ({
           />
         </Column>
       </Row>
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv data-size='2'/>
       {showFamily() && (
         <>
-          <FamilyManager/>
-          <VerticalSeparatorDiv />
+          <FamilyManager />
+          <VerticalSeparatorDiv data-size='2'/>
         </>
       )}
       {showArbeidsforhold() && (
@@ -258,17 +258,17 @@ const Step2: React.FC<SvarPaSedProps> = ({
           />
         </Ekspanderbartpanel>
       )}
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv/>
       <TextAreaDiv>
         <HighContrastTextArea
           data-test-id='c-svarpased-comment-textarea'
           id='c-svarpased-comment-textarea'
-          className={classNames({'skjemaelement__input--harFeil' : validation.comment})}
+          className={classNames({ 'skjemaelement__input--harFeil': validation.comment })}
           label={t('ui:label-comment-title')}
           placeholder={t('ui:label-comment-placeholder')}
           onChange={(e: any) => setComment(e.target.value)}
           value={_comment}
-          feil={validation.comment ? t(validation.comment.feilmelding) : undefined}
+          feil={validation.comment ? validation.comment.feilmelding : undefined}
         />
       </TextAreaDiv>
       <VerticalSeparatorDiv data-size='2' />
@@ -327,7 +327,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
           <VerticalSeparatorDiv data-size='0.5' />
         </div>
       </ButtonsDiv>
-      <ValidationBox validation={validation}/>
+      <ValidationBox validation={validation} />
       {alertMessage && alertType && [types.SVARPASED_SENDSVARPASEDDATA_POST_FAILURE].indexOf(alertType) >= 0 && (
         <AlertstripeDiv>
           <Alert

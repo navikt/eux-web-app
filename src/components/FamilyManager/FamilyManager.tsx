@@ -17,21 +17,16 @@ import { Checkbox } from 'nav-frontend-skjema'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import { HighContrastFlatknapp, HighContrastPanel, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import { theme, themeHighContrast, themeKeys } from 'nav-styled-component-theme'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import Kontaktinformasjon from './Kontaktinformasjon'
 import Nasjonaliteter from './Nasjonaliteter'
 import PersonOpplysninger from './PersonOpplysninger'
+import Tooltip from 'rc-tooltip'
 
-const CheckboxDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  .skjemaelement {
-     display: flex;
-  }
-`
+
 const FlexDiv = styled.div`
   display: flex;
   align-items: center;
@@ -46,23 +41,30 @@ const OptionDiv = styled.div`
   align-items: center;
   cursor: pointer;
   &:hover {
-    background-color: ${(props: any) => props['data-highContrast'] ?
-      themeHighContrast[themeKeys.MAIN_HOVER_COLOR] :
-      theme[themeKeys.MAIN_HOVER_COLOR] };
+    background-color: ${(props: any) => props['data-highContrast']
+      ? themeHighContrast[themeKeys.MAIN_HOVER_COLOR]
+      : theme[themeKeys.MAIN_HOVER_COLOR]};
   }
   &.selected {
-    background-color: ${(props: any) => props['data-highContrast'] ?
-      themeHighContrast[themeKeys.ALTERNATIVE_BACKGROUND_COLOR] :
-      theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR] };
-     border-left: 5px solid ${(props: any) => props['data-highContrast'] ?
-      themeHighContrast[themeKeys.MAIN_INTERACTIVE_COLOR] :
-      theme[themeKeys.MAIN_INTERACTIVE_COLOR] };
+    background-color: ${(props: any) => props['data-highContrast']
+      ? themeHighContrast[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]
+      : theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
+     border-left: 5px solid ${(props: any) => props['data-highContrast']
+      ? themeHighContrast[themeKeys.MAIN_INTERACTIVE_COLOR]
+      : theme[themeKeys.MAIN_INTERACTIVE_COLOR]};
   }
 `
 const PanelDiv = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
+`
+const PersonAndCheckboxDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  .skjemaelement {
+     display: flex;
+  }
 `
 const PersonCheckbox = styled(Checkbox)`
   padding: 1rem 0.5rem;
@@ -78,24 +80,35 @@ const PersonDiv = styled.div`
   padding: 1rem 0.5rem;
   flex: 1;
   &:hover {
-   background-color: ${(props: any) => props['data-highContrast'] ?
-     themeHighContrast[themeKeys.MAIN_HOVER_COLOR] :
-     theme[themeKeys.MAIN_HOVER_COLOR] };
+   background-color: ${(props: any) => props['data-highContrast']
+     ? themeHighContrast[themeKeys.MAIN_HOVER_COLOR]
+     : theme[themeKeys.MAIN_HOVER_COLOR]};
   }
 `
+const CheckboxDiv = styled.div`
+  &:hover {
+   background-color: ${(props: any) => props['data-highContrast']
+  ? themeHighContrast[themeKeys.MAIN_HOVER_COLOR]
+  : theme[themeKeys.MAIN_HOVER_COLOR]};
+  }
+`
+
 const RightFlexStartDiv = styled.div`
-  flex: 2;
+  flex: 3;
   padding: 0.5rem;
   align-self: flex-start;
 `
 const RightFlexCenterDiv = styled.div`
-  flex: 2;
+  flex: 3;
   padding: 0.5rem;
   align-self: flex-center;
   text-align: center;
 `
 const CustomHighContrastPanel = styled(HighContrastPanel)`
   padding: 0rem;
+`
+const MarginDiv = styled.div`
+  padding: 1rem 0.5rem;
 `
 
 const mapState = (state: State): any => ({
@@ -116,10 +129,14 @@ const FamilyManager: React.FC = () => {
     personPlusRelations,
     validation
   }: any = useSelector<State, any>(mapState)
+  // list of persons with open forms
   const [_editPersons, setEditPersons] = useState<Array<Person>>([])
+  // person with current form selected
   const [_editCurrentPerson, setEditCurrentPerson] = useState<Person | undefined>(undefined)
   const [_modal, setModal] = useState<boolean>(false)
+  // list of selected persons
   const [_selectedPersons, setSelectedPersons] = useState<Array<Person>>([])
+  // the name of person form currently selected
   const [_personOption, setPersonOption] = useState<string | undefined>(undefined)
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -140,7 +157,7 @@ const FamilyManager: React.FC = () => {
   ]
 
   // TODO
-  const onPersonsChanged = (p: Array<Person | FamilieRelasjon>) => { p}
+  const onPersonsChanged = (p: Array<Person | FamilieRelasjon>) => { p }
 
   const onEditPerson = (person: Person) => {
     const alreadyEditingPerson = _.find(_editPersons, p => p.fnr === person.fnr) !== undefined
@@ -173,8 +190,7 @@ const FamilyManager: React.FC = () => {
   }
 
   const onValueChanged = (fnr: string, category: string, key: string, value: any) => {
-
-    let newPersonsPlusRelations = personPlusRelations.map((p: Person) => {
+    const newPersonsPlusRelations = personPlusRelations.map((p: Person) => {
       if (fnr !== p.fnr) {
         return p
       }
@@ -189,6 +205,16 @@ const FamilyManager: React.FC = () => {
   const onAddNewPerson = () => {
     setModal(true)
   }
+
+  // refresh _editCurrentPerson from personPlusRelations, as the forms update its data.
+  useEffect(() => {
+    if (_editCurrentPerson) {
+      let person = _.find(personPlusRelations, p => p.fnr === _editCurrentPerson.fnr)
+      if (person) {
+        setEditCurrentPerson(person)
+      }
+    }
+  }, [personPlusRelations])
 
   return (
     <PanelDiv>
@@ -208,38 +234,56 @@ const FamilyManager: React.FC = () => {
           <LeftDiv>
             {personPlusRelations.map((person: Person, i: number) => (
               <PersonsDiv>
-                <CheckboxDiv
+                <PersonAndCheckboxDiv
                   data-highContrast={highContrast}
                 >
+                  <Tooltip
+                    overlay={(
+                      <span>{t('ui:label-click-for-menu', {person: person?.fornavn + ' ' + person?.etternavn})}</span>
+                    )}
+                    mouseEnterDelay={0.4}
+                    trigger={['hover']}
+                  >
                   <PersonDiv
                     onClick={() => {
                       onEditPerson(person)
                       return false
                     }}
-                    style={{animationDelay:  i * 0.1 + 's' }}
-                    className={classNames('personDiv',{
+                    style={{ animationDelay: i * 0.1 + 's' }}
+                    className={classNames('personDiv', {
                       slideAnimate: true,
-                      selected: _editCurrentPerson && _editCurrentPerson.fnr === person.fnr })}
+                      selected: _editCurrentPerson && _editCurrentPerson.fnr === person.fnr
+                    })}
                   >
                     <Chevron type={_.find(_editPersons, p => p.fnr === person.fnr) !== undefined ? 'ned' : 'høyre'} />
-                    <HorizontalSeparatorDiv data-size='0.5'/>
+                    <HorizontalSeparatorDiv data-size='0.5' />
                     {validation['person-' + person.fnr] && (
                       <>
                         <FilledRemoveCircle color='red' />
-                        <HorizontalSeparatorDiv data-size='0.5'/>
+                        <HorizontalSeparatorDiv data-size='0.5' />
                       </>
                     )}
                     {_.find(_selectedPersons, p => p.fnr === person.fnr) !== undefined
                       ? (
-                        <Undertittel>
+                        <Undertittel style={{whiteSpace: 'nowrap'}}>
                           {person?.fornavn + ' ' + person?.etternavn + ' (' + person?.kjoenn + ')'}
                         </Undertittel>
                         ) : (
-                          <Normaltekst>
+                          <Normaltekst style={{whiteSpace: 'nowrap'}}>
                             {person?.fornavn + ' ' + person?.etternavn + ' (' + person?.kjoenn + ')'}
                           </Normaltekst>
                         )}
                   </PersonDiv>
+                  </Tooltip>
+                  <Tooltip
+                      overlay={(
+                      <span>{t('ui:label-click-for-select', {person: person?.fornavn + ' ' + person?.etternavn})}</span>
+                      )}
+                      mouseEnterDelay={0.4}
+                      trigger={['hover']}
+                      >
+                        <CheckboxDiv>
+
                   <PersonCheckbox
                     label=''
                     checked={_.find(_selectedPersons, p => p.fnr === person.fnr) !== undefined}
@@ -248,13 +292,15 @@ const FamilyManager: React.FC = () => {
                       e.stopPropagation()
                     }}
                   />
-                </CheckboxDiv>
+                 </CheckboxDiv>
+                 </Tooltip>
+                </PersonAndCheckboxDiv>
                 {_.find(_editPersons, p => p.fnr === person.fnr) !== undefined && options.map((o, i) => {
                   return (
                     <OptionDiv
                       data-highContrast={highContrast}
                       key={o.value}
-                      style={{animationDelay:  i * 0.1 + 's' }}
+                      style={{ animationDelay: i * 0.1 + 's' }}
                       className={classNames({
                         slideAnimate: true,
                         selected: _editCurrentPerson && _editCurrentPerson.fnr === person.fnr && _personOption === o.value
@@ -262,9 +308,9 @@ const FamilyManager: React.FC = () => {
                       onClick={() => changePersonOption(person, o.value)}
                     >
                       {validation.hasOwnProperty('person-' + person.fnr + '-' + o.value) &&
-                      (validation['person-' + person.fnr + '-' + o.value] === undefined ?
-                        <FilledCheckCircle color='green' /> :
-                        <FilledRemoveCircle color='red' />
+                      (validation['person-' + person.fnr + '-' + o.value] === undefined
+                        ? <FilledCheckCircle color='green' />
+                        : <FilledRemoveCircle color='red' />
                       )}
                       <HorizontalSeparatorDiv data-size='0.5' />
                       {o.label}
@@ -273,29 +319,29 @@ const FamilyManager: React.FC = () => {
                 })}
               </PersonsDiv>
             ))}
-              <CheckboxDiv>
-                <div style={{padding: '1rem 0.5rem'}}>
-                  <Normaltekst>
+            <PersonAndCheckboxDiv>
+              <MarginDiv>
+                <Normaltekst>
                   {t('ui:label-whole-family')}
                 </Normaltekst>
-                </div>
-                <PersonCheckbox
-                  label=''
-                  checked={_selectedPersons.length === personPlusRelations.length}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSelectAllPersons(e.target.checked)}
-                />
-              </CheckboxDiv>
-              <CheckboxDiv>
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
-                  onClick={onAddNewPerson}
-                >
-                  <Tilsette />
-                  <HorizontalSeparatorDiv data-size='0.5' />
-                  {t('ui:label-add-person')}
-                </HighContrastFlatknapp>
-              </CheckboxDiv>
+              </MarginDiv>
+              <PersonCheckbox
+                label=''
+                checked={_selectedPersons.length === personPlusRelations.length}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSelectAllPersons(e.target.checked)}
+              />
+            </PersonAndCheckboxDiv>
+            <MarginDiv>
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                onClick={onAddNewPerson}
+              >
+                <Tilsette />
+                <HorizontalSeparatorDiv data-size='0.5' />
+                {t('ui:label-add-person')}
+              </HighContrastFlatknapp>
+            </MarginDiv>
           </LeftDiv>
           <FadingLineSeparator className='fadeIn' />
           {(gettingPerson || !_editCurrentPerson) ? (
@@ -321,7 +367,7 @@ const FamilyManager: React.FC = () => {
               {_personOption === 'familierelasjon' && <Familierelasjon familierelasjonKodeverk={familierelasjonKodeverk} highContrast={highContrast} person={_editCurrentPerson} />}
               {_personOption === 'personensstatus' && <PersonensStatus highContrast={highContrast} person={_editCurrentPerson} />}
             </RightFlexStartDiv>
-            )}
+          )}
         </FlexDiv>
       </CustomHighContrastPanel>
     </PanelDiv>

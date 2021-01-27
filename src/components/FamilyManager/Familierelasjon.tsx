@@ -79,7 +79,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
       <Undertittel>
         {t('ui:label-familierelasjon-title')}
       </Undertittel>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <Row>
         <Column data-flex='2'>
           <Select
@@ -100,8 +100,8 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
         </Column>
         <Column>
           <HighContrastInput
-            data-test-id={'c-familymanager-familierelasjonr-startdato-input'}
-            id={'c-familymanager-familierelasjonr-startdato-input'}
+            data-test-id='c-familymanager-familierelasjonr-startdato-input'
+            id='c-familymanager-familierelasjonr-startdato-input'
             onChange={(e: any) => onStartDatoChanged(e.target.value)}
             value={_startDato}
             label={t('ui:label-startDate')}
@@ -110,8 +110,8 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
         </Column>
         <Column>
           <HighContrastInput
-            data-test-id={'c-familymanager-familierelasjonr-sluttdato-input'}
-            id={'c-familymanager-familierelasjonr-sluttdato-input'}
+            data-test-id='c-familymanager-familierelasjonr-sluttdato-input'
+            id='c-familymanager-familierelasjonr-sluttdato-input'
             onChange={(e: any) => onSluttDatoChanged(e.target.value)}
             value={_sluttDato}
             label={t('ui:label-endDate')}
@@ -119,28 +119,28 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
           />
         </Column>
       </Row>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       {_relasjon === 'other' && (
         <>
           <Row>
             <Column>
               <HighContrastInput
-                data-test-id={'c-familymanager-familierelasjonr-other-input'}
-                id={'c-familymanager-familierelasjonr-other-input'}
+                data-test-id='c-familymanager-familierelasjonr-other-input'
+                id='c-familymanager-familierelasjonr-other-input'
                 onChange={(e: any) => onOtherRelasjonChanged(e.target.value)}
                 value={_otherRelasjon}
                 label={t('ui:label-other-relation')}
                 placeholder={t('ui:placeholder-input-default')}
               />
             </Column>
-            <Column/>
+            <Column />
           </Row>
-          <HorizontalSeparatorDiv/>
+          <HorizontalSeparatorDiv />
           <Row>
             <Column data-flex='2'>
               <HighContrastInput
-                data-test-id={'c-familymanager-familierelasjonr-navn-input'}
-                id={'c-familymanager-familierelasjonr-navn-input'}
+                data-test-id='c-familymanager-familierelasjonr-navn-input'
+                id='c-familymanager-familierelasjonr-navn-input'
                 onChange={(e: any) => onNameChanged(e.target.value)}
                 value={_name}
                 label={t('ui:label-person-name')}
@@ -149,8 +149,8 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
             </Column>
             <Column>
               <HighContrastInput
-                data-test-id={'c-familymanager-familierelasjonr-date-input'}
-                id={'c-familymanager-familierelasjonr-date-input'}
+                data-test-id='c-familymanager-familierelasjonr-date-input'
+                id='c-familymanager-familierelasjonr-date-input'
                 onChange={(e: any) => onDateChanged(e.target.value)}
                 value={_date}
                 label={t('ui:label-date-relation')}
@@ -158,13 +158,13 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
               />
             </Column>
           </Row>
-          <HorizontalSeparatorDiv/>
+          <HorizontalSeparatorDiv />
           <Row>
             <Column data-flex='2'>
               <HighContrastRadioPanelGroup
                 checked={_livesTogether}
-                data-test-id={'c-familymanager-familierelasjonr-livetogether-radiogroup'}
-                id={'c-familymanager-familierelasjonr-livetogether-radiogroup'}
+                data-test-id='c-familymanager-familierelasjonr-livetogether-radiogroup'
+                id='c-familymanager-familierelasjonr-livetogether-radiogroup'
                 feil={undefined}
                 legend={t('ui:label-live-together')}
                 name='c-familymanager-familierelasjonr-livetogether-radiogroup'
@@ -175,9 +175,9 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                 onChange={(e: any) => onLivesTogetherChanged(e.target.value)}
               />
             </Column>
-            <Column/>
+            <Column />
           </Row>
-       </>
+        </>
       )}
       {_isDirty && '*'}
     </FamilierelasjonDiv>

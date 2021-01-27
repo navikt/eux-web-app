@@ -1,4 +1,5 @@
 import Tilsette from 'assets/icons/Tilsette'
+import Trashcan from 'assets/icons/Trashcan'
 import { Kodeverk, Person, Validation } from 'declarations/types'
 import CountrySelect from 'landvelger'
 import { Undertittel } from 'nav-frontend-typografi'
@@ -35,62 +36,70 @@ const FlexDiv = styled.div`
 `
 
 const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
-  //highContrast,
+  // highContrast,
   landkoderList,
   person,
   validation,
   onValueChanged
 }:PersonOpplysningerProps): JSX.Element => {
-  const [_etternavn, setEtternavn] = useState<string | undefined>(undefined)
-  const [_fodselsdato, setFodselsdato] = useState<string | undefined>(undefined)
-  const [_fornavn, setFornavn] = useState<string | undefined>(undefined)
   const [_foundPerson, setFoundPerson] = useState<string | undefined>(undefined)
-  const [_kjoenn, setKjoenn] = useState<string | undefined>(undefined)
-  const [_land, setLand] = useState<string | undefined>(undefined)
-  const [_mounted, setMounted] = useState<boolean>(false)
-  const [_newFodestedBy, setNewFodestedBy] = useState<string | undefined>(undefined)
-  const [_newFodestedRegion, setNewFodestedRegion] = useState<string | undefined>(undefined)
-  const [_newFodestedLand, setNewFodestedLand] = useState<string | undefined>(undefined)
-  const [_norwegianPin, setNorwegianPin] = useState<string | undefined>(undefined)
-  const [_seeAddBirthPlace, setSeeAddBirthPlace] = useState<boolean>(false)
-  const [_utenlandskPin, setUtenlandskPin] = useState<string | undefined>(undefined)
   const [_isDirty, setIsDirty] = useState<boolean>(false)
   const { t } = useTranslation()
 
   const onFornavnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsDirty(true)
-    setFornavn(e.target.value)
     onValueChanged(person!.fnr!, 'personopplysninger', 'fornavn', e.target.value)
   }
 
   const onEtternavnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsDirty(true)
-    setEtternavn(e.target.value)
+    onValueChanged(person!.fnr!, 'personopplysninger', 'etternavn', e.target.value)
   }
 
   const onFodselsdatoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsDirty(true)
-    setFodselsdato(e.target.value)
+    onValueChanged(person!.fnr!, 'personopplysninger', 'fodselsdato', e.target.value)
   }
 
   const onKjoennChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsDirty(true)
-    setKjoenn(e.target.value)
+    onValueChanged(person!.fnr!, 'personopplysninger', 'kjoenn', e.target.value)
   }
 
   const onUtenlandskPinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsDirty(true)
-    setUtenlandskPin(e.target.value)
+    onValueChanged(person!.fnr!, 'personopplysninger', 'utenlandskPin', e.target.value)
   }
 
   const onLandChange = (e: string) => {
     setIsDirty(true)
-    setLand(e)
+    onValueChanged(person!.fnr!, 'personopplysninger', 'land', e)
   }
 
   const onNorwegianPinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsDirty(true)
-    setNorwegianPin(e.target.value)
+    onValueChanged(person!.fnr!, 'personopplysninger', 'norwegianPin', e.target.value)
+  }
+
+  const onFodestedByChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsDirty(true)
+    onValueChanged(person!.fnr!, 'personopplysninger', 'fodestedBy', e.target.value)
+  }
+
+  const onFodestedRegionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsDirty(true)
+    onValueChanged(person!.fnr!, 'personopplysninger', 'fodestedRegion', e.target.value)
+  }
+
+  const onFodestedLandChange = (e: any) => {
+    setIsDirty(true)
+    onValueChanged(person!.fnr!, 'personopplysninger', 'fodestedLand', e.target.value)
+    return true
+  }
+
+  const onSetAddBirthPlace = (value: boolean) => {
+    setIsDirty(true)
+    onValueChanged(person!.fnr!, 'personopplysninger', 'fodested', value)
   }
 
   // TODO
@@ -101,45 +110,43 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   }
 
   useEffect(() => {
-    if (!_mounted) {
-      setMounted(true)
+    // prefill personopplysning with the raw data
+    if (person?.personopplysninger?.fornavn === undefined) {
+      onValueChanged(person!.fnr!, 'personopplysninger', 'fornavn', person?.fornavn)
     }
-    return () => {
-      console.log('unmounting')
+    if (person?.personopplysninger?.etternavn === undefined) {
+      onValueChanged(person!.fnr!, 'personopplysninger', 'etternavn', person?.etternavn)
     }
-  }, [_mounted])
-
-  useEffect(() => {
-    setEtternavn(person?.etternavn || '')
-    setFodselsdato('')
-    setFornavn(person?.fornavn || '')
-    setKjoenn(person?.kjoenn || 'U')
+    if (person?.personopplysninger?.kjoenn === undefined) {
+      onValueChanged(person!.fnr!, 'personopplysninger', 'kjoenn', person?.kjoenn)
+    }
   }, [person])
 
   return (
-    <PersonOpplysningerDiv>
+    <PersonOpplysningerDiv key={person.fnr}>
       <Row>
         <Column>
           <HighContrastInput
             data-test-id={'c-familymanager-personopplysninger-' + person.fnr + '-fornavn-input'}
-            key={'c-familymanager-personopplysninger-' + person.fnr + '-fornavn-key'}
-            id={'c-familymanager-personopplysninger-' + person.fnr + '-fornavn'}
-            onChange={onFornavnChange}
-            value={_fornavn}
-            label={t('ui:label-firstname')}
-            feil={validation['person-' + person.fnr + '-personopplysninger-fornavn'] ?
-              t(validation['person-' + person.fnr + '-personopplysninger-fornavn']!.feilmelding)
+            feil={validation['person-' + person.fnr + '-personopplysninger-fornavn']
+              ? validation['person-' + person.fnr + '-personopplysninger-fornavn']!.feilmelding
               : undefined}
+            id={'c-familymanager-personopplysninger-' + person.fnr + '-fornavn-input'}
+            onChange={onFornavnChange}
+            value={person?.personopplysninger?.fornavn}
+            label={t('ui:label-firstname')}
           />
         </Column>
         <HorizontalSeparatorDiv />
         <Column>
           <HighContrastInput
             data-test-id={'c-familymanager-personopplysninger-' + person.fnr + '-etternavn-input'}
-            key={'c-familymanager-personopplysninger-' + person.fnr + '-etternavn-key'}
-            id={'c-familymanager-personopplysninger-' + person.fnr + '-etternavn'}
+            feil={validation['person-' + person.fnr + '-personopplysninger-etternavn']
+              ? validation['person-' + person.fnr + '-personopplysninger-etternavn']!.feilmelding
+              : undefined}
+            id={'c-familymanager-personopplysninger-' + person.fnr + '-etternavn-input'}
             onChange={onEtternavnChange}
-            value={_etternavn}
+            value={person?.personopplysninger?.etternavn}
             label={t('ui:label-lastname')}
           />
         </Column>
@@ -147,10 +154,12 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         <Column>
           <HighContrastInput
             data-test-id={'c-familymanager-personopplysninger-' + person.fnr + '-fodselsdato-input'}
-            key={'c-familymanager-personopplysninger-' + person.fnr + '-fodselsdato-key'}
-            id={'c-familymanager-personopplysninger-' + person.fnr + '-fodselsdato'}
+            feil={validation['person-' + person.fnr + '-personopplysninger-fodselsdato']
+              ? validation['person-' + person.fnr + '-personopplysninger-fodselsdato']!.feilmelding
+              : undefined}
+            id={'c-familymanager-personopplysninger-' + person.fnr + '-fodselsdato-input'}
             onChange={onFodselsdatoChange}
-            value={_fodselsdato}
+            value={person?.personopplysninger?.fodselsdato}
             placeholder={t('ui:placeholder-birthDate')}
             label={t('ui:label-birthDate')}
           />
@@ -160,20 +169,21 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
       <Row>
         <Column>
           <HighContrastRadioPanelGroup
-            checked={_kjoenn}
-            data-test-id={'c-familymanager-personopplysninger-' + person.fnr + '-kjoenn-radiogroup'}
+            checked={person?.personopplysninger?.kjoenn}
             data-multiple-line='false'
-            key={'c-familymanager-personopplysninger-' + person.fnr + '-kjoenn-key'}
-            id={'c-familymanager-personopplysninger-' + person.fnr + '-kjoenn'}
-            feil={undefined}
+            data-test-id={'c-familymanager-personopplysninger-' + person.fnr + '-kjoenn-radiogroup'}
+            feil={validation['person-' + person.fnr + '-personopplysninger-kjoenn']
+              ? validation['person-' + person.fnr + '-personopplysninger-kjoenn']!.feilmelding
+              : undefined}
+            id={'c-familymanager-personopplysninger-' + person.fnr + '-kjoenn-radiogroup'}
             legend={t('ui:label-gender')}
-            name='c-familymanager-personopplysninger-kjoenn-radiogroup'
+            name={'c-familymanager-personopplysninger-' + person.fnr + '-kjoenn-radiogroup'}
+            onChange={onKjoennChange}
             radios={[
               { label: t('ui:label-woman'), value: 'K' },
               { label: t('ui:label-man'), value: 'M' },
               { label: t('ui:label-unknown'), value: 'U' }
             ]}
-            onChange={onKjoennChange}
           />
         </Column>
       </Row>
@@ -181,28 +191,32 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
       <Row>
         <Column>
           <HighContrastInput
-            data-test-id={'c-familymanager-personopplysninger-' + person.fnr + '-utenlandskpin-input'}
-            key={'c-familymanager-personopplysninger-' + person.fnr + '-utenlandskpin-key'}
-            id={'c-familymanager-personopplysninger-' + person.fnr + '-utenlandskpin'}
-            onChange={onUtenlandskPinChange}
-            value={_utenlandskPin}
+            data-test-id={'c-familymanager-personopplysninger-' + person.fnr + '-utenlandskPin-input'}
+            feil={validation['person-' + person.fnr + '-personopplysninger-utenlandskPin']
+              ? validation['person-' + person.fnr + '-personopplysninger-utenlandskPin']!.feilmelding
+              : undefined}
+            id={'c-familymanager-personopplysninger-' + person.fnr + '-utenlandskPin-input'}
             label={t('ui:label-utenlandskPin')}
+            onChange={onUtenlandskPinChange}
+            value={person?.personopplysninger?.utenlandskPin}
           />
         </Column>
         <Column data-flex='2'>
           <CountrySelect
             data-test-id={'c-familymanager-personopplysninger-' + person.fnr + '-land-countryselect'}
-            key={'c-familymanager-personopplysninger-' + person.fnr + '-land-key'}
-            id={'c-familymanager-personopplysninger-' + person.fnr + '-land'}
-            onChange={onUtenlandskPinChange}
+            error={validation['person-' + person.fnr + '-personopplysninger-land']
+              ? validation['person-' + person.fnr + '-personopplysninger-land']!.feilmelding
+              : undefined}
+            id={'c-familymanager-personopplysninger-' + person.fnr + '-land-countryselect'}
+            includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
             label={t('ui:label-landkode')}
             menuPortalTarget={document.body}
-            includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
+            onChange={onUtenlandskPinChange}
             onOptionSelected={(e: any) => {
               onLandChange(e.value)
             }}
             placeholder={t('ui:label-choose')}
-            values={_land}
+            values={person?.personopplysninger?.land}
           />
         </Column>
       </Row>
@@ -213,11 +227,13 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             <HighContrastInput
               bredde='XL'
               data-test-id={'c-familymanager-personopplysninger-' + person.fnr + '-norwegianpin-input'}
-              key={'c-familymanager-personopplysninger-' + person.fnr + '-norwegianpin-key'}
-              id={'c-familymanager-personopplysninger-' + person.fnr + '-norwegianpin'}
-              onChange={onNorwegianPinChange}
-              value={_norwegianPin}
+              feil={validation['person-' + person.fnr + '-personopplysninger-norwegianpin']
+                ? validation['person-' + person.fnr + '-personopplysninger-norwegianpin']!.feilmelding
+                : undefined}
+              id={'c-familymanager-personopplysninger-' + person.fnr + '-norwegianpin-input'}
               label={t('ui:label-norwegian-fnr')}
+              onChange={onNorwegianPinChange}
+              value={person?.personopplysninger?.norskpersonnummer}
             />
             <HorizontalSeparatorDiv />
             <HighContrastKnapp
@@ -233,44 +249,66 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         </Column>
       </Row>
       <VerticalSeparatorDiv />
-      {_seeAddBirthPlace ? (
+      {person.personopplysninger?.fodested ? (
+        <>
         <Row>
           <Column>
             <HighContrastInput
-              data-test-id='c-familymanager-personopplysninger-fodested-by-input'
-              id='c-familymanager-personopplysninger-fodested-by'
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewFodestedBy(e.target.value)}
-              value={_newFodestedBy}
+              data-test-id={'c-familymanager-personopplysninger-' + person.fnr + '-fodestedby-input'}
+              feil={validation['person-' + person.fnr + '-personopplysninger-fodestedby']
+                ? validation['person-' + person.fnr + '-personopplysninger-fodestedby']!.feilmelding
+                : undefined}
+              id={'c-familymanager-personopplysninger-' + person.fnr + '-fodestedby-input'}
               label={t('ui:label-by')}
+              onChange={onFodestedByChange}
+              value={person?.personopplysninger?.fodestedBy}
             />
           </Column>
           <HorizontalSeparatorDiv />
           <Column>
             <HighContrastInput
-              data-test-id='c-familymanager-personopplysninger-fodested-region-input'
-              id='c-familymanager-personopplysninger-fodested-region'
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewFodestedRegion(e.target.value)}
-              value={_newFodestedRegion}
+              data-test-id={'c-familymanager-personopplysninger-' + person.fnr + '-fodestedregion-input'}
+              feil={validation['person-' + person.fnr + '-personopplysninger-fodestedregion']
+                ? validation['person-' + person.fnr + '-personopplysninger-fodestedregion']!.feilmelding
+                : undefined}
+              id={'c-familymanager-personopplysninger-' + person.fnr + '-fodestedregion-input'}
               label={t('ui:label-region')}
+              onChange={onFodestedRegionChange}
+              value={person?.personopplysninger?.fodestedRegion}
             />
           </Column>
           <HorizontalSeparatorDiv />
           <Column>
             <CountrySelect
-              data-test-id='c-familymanager-personopplysninger-fodested-land-countryselect'
-              id='c-familymanager-personopplysninger-fodested-land'
+              data-test-id={'c-familymanager-personopplysninger-' + person.fnr + '-fodestedland-countryselect'}
+              error={validation['person-' + person.fnr + '-personopplysninger-fodestedland']
+                ? validation['person-' + person.fnr + '-personopplysninger-fodestedland']!.feilmelding
+                : undefined}
+              id={'c-familymanager-personopplysninger-' + person.fnr + '-fodestedland-countryselect'}
+              includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
               label={t('ui:label-landkode')}
               menuPortalTarget={document.body}
-              includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
-              onOptionSelected={(e: any) => {
-                setNewFodestedLand(e.value)
-                return true
-              }}
+              onOptionSelected={onFodestedLandChange}
               placeholder={t('ui:label-choose')}
-              values={_newFodestedLand}
+              values={person?.personopplysninger?.fodestedLand}
             />
           </Column>
         </Row>
+          <VerticalSeparatorDiv/>
+        <Row>
+          <Column>
+            <HighContrastFlatknapp
+              mini
+              kompakt
+              onClick={() => onSetAddBirthPlace(false)}
+            >
+              <Trashcan />
+              <HorizontalSeparatorDiv data-size='0.5' />
+              {t('ui:label-remove-birthplace')}
+            </HighContrastFlatknapp>
+          </Column>
+        </Row>
+        </>
       ) : (
         <Row>
           <Column>
@@ -281,13 +319,12 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             <HighContrastFlatknapp
               mini
               kompakt
-              onClick={() => setSeeAddBirthPlace(true)}
+              onClick={() => onSetAddBirthPlace(true)}
             >
               <Tilsette />
               <HorizontalSeparatorDiv data-size='0.5' />
               {t('ui:label-add-birthplace')}
             </HighContrastFlatknapp>
-
           </Column>
         </Row>
       )}

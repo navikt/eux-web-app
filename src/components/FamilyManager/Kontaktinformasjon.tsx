@@ -45,8 +45,8 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
       <Row>
         <Column data-flex='2'>
           <HighContrastInput
-            data-test-id={'c-familymanager-kontaktinformasjonr-telefonnummer-input'}
-            id={'c-familymanager-kontaktinformasjonr-telefonnummer-input'}
+            data-test-id='c-familymanager-kontaktinformasjonr-telefonnummer-input'
+            id='c-familymanager-kontaktinformasjonr-telefonnummer-input'
             onChange={(e: any) => onTelefonnummerChanged(e.target.value)}
             value={_telefonnummer}
             label={t('ui:label-telefonnummer')}
@@ -61,30 +61,30 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
             label={t('ui:label-type')}
             onChange={(e) => onTypeChanged(e.value)}
             options={[{
-               label: t('ui:option-work'), value: 'Arbeid'
-              }, {
-                label: t('ui:option-home'), value: 'Hjem'
-              }, {
-               label: t('ui:option-mobile'), value: 'Mobil'
+              label: t('ui:option-work'), value: 'Arbeid'
+            }, {
+              label: t('ui:option-home'), value: 'Hjem'
+            }, {
+              label: t('ui:option-mobile'), value: 'Mobil'
             }]}
             placeholder={t('ui:placeholder-select-default')}
             value={_type}
           />
         </Column>
       </Row>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <Row>
         <Column data-flex='2'>
           <HighContrastInput
-            data-test-id={'c-familymanager-Kontaktinformasjonr-epost-input'}
-            id={'c-familymanager-Kontaktinformasjonr-epost-input'}
+            data-test-id='c-familymanager-Kontaktinformasjonr-epost-input'
+            id='c-familymanager-Kontaktinformasjonr-epost-input'
             onChange={(e: any) => onEpostChanged(e.target.value)}
             value={_epost}
             label={t('ui:label-epost')}
             placeholder={t('ui:placeholder-input-default')}
           />
         </Column>
-        <Column/>
+        <Column />
       </Row>
       {_isDirty && '*'}
     </KontaktinformasjonDiv>

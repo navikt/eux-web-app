@@ -15,7 +15,7 @@ const LesMerDiv = styled.div`
  }
 `
 
-const LesMer: React.FC<LesMerProps> = ({visibleText, invisibleText, moreText, lessText}: LesMerProps): JSX.Element => {
+const LesMer: React.FC<LesMerProps> = ({ visibleText, invisibleText, moreText, lessText }: LesMerProps): JSX.Element => {
   const [_showInvisible, setShowInvisible] = useState<boolean>(false)
   return (
     <LesMerDiv>

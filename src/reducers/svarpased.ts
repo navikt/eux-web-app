@@ -93,7 +93,7 @@ const svarpasedReducer = (
 
     case types.SVARPASED_PERSON_GET_SUCCESS:
 
-      let person: Person = (action as ActionWithPayload).payload
+      const person: Person = (action as ActionWithPayload).payload
       let personPlusRelations: Array<Person | FamilieRelasjon> = []
       person.personopplysninger = {
         fornavn: person.fornavn,
@@ -119,7 +119,7 @@ const svarpasedReducer = (
               norskpersonnummer: person.fnr
             },
             adresser: [{
-              land : r.land
+              land: r.land
             }],
             familierelasjon: {
               type: r.rolle

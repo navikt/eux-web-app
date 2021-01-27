@@ -48,12 +48,13 @@ export interface Person {
     etternavn?: string
     fodselsdato?: string
     kjoenn?: string
-    utenlandskpin?: string
+    utenlandskPin?: string
     land ?: string
     norskpersonnummer ?: string
-    fodestedby?: string
-    fodestedregion?: string
-    fodestedland?: string
+    fodested?: boolean
+    fodestedBy?: string
+    fodestedRegion?: string
+    fodestedLand?: string
   },
   nasjonaliteter?: Array<{
     nasjonalitet?: string
@@ -318,7 +319,8 @@ export interface ReplySed {
   }>,
   perioderAnsattUtenForsikring?: Array<Arbeidsgiver>,
   perioderAnsattMedForsikring?: Array<Arbeidsgiver>
-  }>
+}
+
 export interface UtgaarDatoPayload {
   naa?: string
   utgaarDato: string

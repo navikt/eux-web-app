@@ -138,7 +138,8 @@ const Step1: React.FC<SvarPaSedProps> = ({
 
   return (
     <NavHighContrast highContrast={highContrast}>
-      <AlignedRow className={classNames({ feil: _validation.saksnummerOrFnr })}>
+      <AlignedRow
+        className={classNames('slideAnimate', { feil: _validation.saksnummerOrFnr })}>
         <Column
           style={{ flex: 2 }}
         >

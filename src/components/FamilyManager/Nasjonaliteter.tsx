@@ -46,7 +46,7 @@ interface Nationality {
 }
 
 const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
-  //person
+  // person
 }:NasjonalitetProps): JSX.Element => {
   const [_nationalities, setNationalities] = useState<Array<Nationality>>([])
   const [_currentNationality, setCurrentNationality] = useState<string | undefined>(undefined)

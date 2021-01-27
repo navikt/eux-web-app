@@ -110,10 +110,13 @@ const Purpose: React.FC<PurposeProps> = ({
           </HighContrastFlatknapp>
         </FlexDiv>
       ))}
+      <VerticalSeparatorDiv/>
       {!_addPurpose
         ? (
           <>
             <HighContrastFlatknapp
+              mini
+              kompakt
               onClick={() => setAddPurpose(!_addPurpose)}
             >
               <Tilsette />
@@ -158,7 +161,9 @@ const Purpose: React.FC<PurposeProps> = ({
           )}
       {feil && (
         <div role='alert' aria-live='assertive' className='feilmelding skjemaelement__feilmelding'>
-          <Feilmelding>{t(feil.feilmelding)}</Feilmelding>
+          <Feilmelding>
+            {feil.feilmelding}
+          </Feilmelding>
         </div>
       )}
     </>

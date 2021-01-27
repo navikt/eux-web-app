@@ -37,7 +37,7 @@ type What = 'startdato' | 'sluttdato'
 
 const Trygdeordning: React.FC<TrygdeordningProps> = ({
   // person,
- // highContrast
+  // highContrast
 }: TrygdeordningProps): JSX.Element => {
   const [_perioder, setPerioder] = useState<{[k in Category]: Array<Periode>}>({
     dekket: [], udekket: [], familie: []
@@ -46,20 +46,20 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
   const { t } = useTranslation()
 
   const onAdd = (category: Category) => {
-    let newPerioder = _.cloneDeep(_perioder)
-    newPerioder[category] = newPerioder[category].concat({startdato: '', sluttdato: ''})
+    const newPerioder = _.cloneDeep(_perioder)
+    newPerioder[category] = newPerioder[category].concat({ startdato: '', sluttdato: '' })
     setPerioder(newPerioder)
   }
 
   const onRemoved = (category: Category, i: number) => {
-    let newPerioder = _.cloneDeep(_perioder)
+    const newPerioder = _.cloneDeep(_perioder)
     newPerioder[category].splice(i, 1)
     setPerioder(newPerioder)
   }
 
   const onChanged = (e: string, what: What, category: Category, i: number) => {
     setIsDirty(true)
-    let newPerioder = _.cloneDeep(_perioder)
+    const newPerioder = _.cloneDeep(_perioder)
     newPerioder[category][i][what] = e
     setPerioder(newPerioder)
   }
@@ -97,43 +97,43 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
           </HighContrastFlatknapp>
         </Column>
       </Row>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
     </>
   )
 
   const renderCategory = (category: Category) => {
     return (
       <>
-        <VerticalSeparatorDiv/>
-      <Ingress>
-        {t('ui:label-trygdeordningen-' + category)}
-      </Ingress>
-        <VerticalSeparatorDiv/>
-      <Row>
-        <Column>
-          <label className='skjemaelement__label'>
-            {t('ui:label-startDate')}
-          </label>
-        </Column>
-        <Column>
-          <label className='skjemaelement__label'>
-            {t('ui:label-endDate')}
-          </label>
-        </Column>
-        <Column/>
-      </Row>
-      <VerticalSeparatorDiv/>
-      {_perioder[category].map((n, i) => (renderRow(n, category, i)))}
-      <HighContrastFlatknapp
-        mini
-        kompakt
-        onClick={() => onAdd(category)}
-      >
-        <Tilsette/>
-        <HorizontalSeparatorDiv data-size='0.5'/>
-        {t('ui:label-add-new-period')}
-      </HighContrastFlatknapp>
-    </>
+        <VerticalSeparatorDiv />
+        <Ingress>
+          {t('ui:label-trygdeordningen-' + category)}
+        </Ingress>
+        <VerticalSeparatorDiv />
+        <Row>
+          <Column>
+            <label className='skjemaelement__label'>
+              {t('ui:label-startDate')}
+            </label>
+          </Column>
+          <Column>
+            <label className='skjemaelement__label'>
+              {t('ui:label-endDate')}
+            </label>
+          </Column>
+          <Column />
+        </Row>
+        <VerticalSeparatorDiv />
+        {_perioder[category].map((n, i) => (renderRow(n, category, i)))}
+        <HighContrastFlatknapp
+          mini
+          kompakt
+          onClick={() => onAdd(category)}
+        >
+          <Tilsette />
+          <HorizontalSeparatorDiv data-size='0.5' />
+          {t('ui:label-add-new-period')}
+        </HighContrastFlatknapp>
+      </>
     )
   }
 

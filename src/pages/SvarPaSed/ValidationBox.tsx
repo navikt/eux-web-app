@@ -12,15 +12,14 @@ interface ValidationBoxProps {
 const ValidationBox: React.FC<ValidationBoxProps> = ({
   validation
 }: ValidationBoxProps): JSX.Element => {
-
   const { t } = useTranslation()
 
   const isValid = _.find(_.values(validation), (e) => e !== undefined) === undefined
 
   if (isValid) {
-    return <div/>
+    return <div />
   }
-  return(
+  return (
     <div>
       <VerticalSeparatorDiv data-size='2' />
       <Row>
