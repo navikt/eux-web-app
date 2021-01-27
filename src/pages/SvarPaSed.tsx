@@ -23,14 +23,15 @@ import {
   Arbeidsforholdet,
   FamilieRelasjon,
   Inntekt as IInntekt,
-  Inntekter, Periode,
+  Inntekter,
+  Periode,
   Person,
   SedOversikt,
   SvarSed,
   Validation
 } from 'declarations/types'
 import _ from 'lodash'
-import Alertstripe from 'nav-frontend-alertstriper'
+import AlertStripe from 'nav-frontend-alertstriper'
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel'
 import { Knapp } from 'nav-frontend-knapper'
 import { Feiloppsummering, FeiloppsummeringFeil, Input, Select } from 'nav-frontend-skjema'
@@ -49,7 +50,6 @@ const InputAndButtonDiv = styled.div`
 const SaksnummerInput = styled(Input)`
   margin-right: 1rem;
 `
-
 const SedSelect = styled(Select)`
   width: 25%;
 `
@@ -59,7 +59,9 @@ const AlertstripeDiv = styled.div`
   margin-bottom: 1.5rem;
   width: 50%;
 `
-
+const FlexDiv = styled.div`
+  display: flex;
+`
 const mapState = (state: State): any => ({
   alertStatus: state.alert.clientErrorStatus,
   alertMessage: state.alert.clientErrorMessage,
@@ -172,12 +174,11 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
       const payload: SvarSed = _.cloneDeep(svarSed)
 
       if (payload.sedType !== 'U004') {
-
         // fix arbeidsforhold
         payload.perioderAnsattMedForsikring = []
         valgteArbeidsforhold.map((a: Arbeidsforholdet) => {
           if (a.navn && a.orgnr) {
-            let periode: Periode = {
+            const periode: Periode = {
               startdato: a.ansettelsesPeriode!.fom!
             }
             if (a.ansettelsesPeriode!.tom!) {
@@ -210,7 +211,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
             inntekter: [{
               type: i.type,
               beloep: '' + i.beloep,
-              valuta: "NOK"
+              valuta: 'NOK'
             }]
           })
         })
@@ -250,7 +251,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
     )
   }
 
-  const showArbeidsforhold = (): boolean => valgtSvarSed?.replySedType === 'U002' || valgtSvarSed?.replySedType === 'U007'
+  const showArbeidsforhold = (): boolean => valgtSvarSed?.replySedType === 'U002' || valgtSvarSed?.replySedType === 'U017'
 
   const showInntekt = (): boolean => valgtSvarSed?.replySedType === 'U004'
 
@@ -535,9 +536,18 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
                 </AlertstripeDiv>
               )}
               {!_.isNil(svarPasedData) && (
-                <Alertstripe type='suksess'>
-                  {svarPasedData.message}
-                </Alertstripe>
+                <AlertStripe type='suksess'>
+                  <FlexDiv>
+                    <span>
+                      {t('ui:form-sedId') + ': ' + svarPasedData.sedId}
+                    </span>
+                    <HorizontalSeparatorDiv data-size='0.25' />
+                    <span>
+                      {t('ui:label-is-created')}.
+                    </span>
+                    <HorizontalSeparatorDiv data-size='0.25' />
+                  </FlexDiv>
+                </AlertStripe>
               )}
             </>
           )}

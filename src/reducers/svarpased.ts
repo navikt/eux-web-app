@@ -12,7 +12,7 @@ export interface SvarpasedState {
   spørreSed: string | undefined
   svarSed: SvarSed | undefined
   svarPaSedOversikt: SvarPaSedOversikt | undefined
-  svarPasedData: any
+  svarPasedData: { sedId: string } | null | undefined
   valgteArbeidsforhold: Arbeidsforhold
   valgtSvarSed: SedOversikt | undefined
   inntekter: Inntekter | undefined
