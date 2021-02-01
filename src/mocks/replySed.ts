@@ -6,7 +6,7 @@ export default {
       fornavn: 'æøå',
       etternavn: 'æøå',
       kjoenn: 'M',
-      foedselsdato: 'æøå',
+      foedselsdato: '01-01-2020',
       statsborgerskap: [
         {
           land: 'NO'

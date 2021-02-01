@@ -17,6 +17,7 @@ export const initialLoadingState: LoadingState = {
   gettingPerson: false,
   gettingSaksbehandler: false,
   gettingServerinfo: false,
+  searchingPerson: false,
   sendingVedlegg: false,
   sendingSak: false,
   sendingSvarPaSed: false,
@@ -110,6 +111,19 @@ const loadingReducer = (
       return {
         ...state,
         gettingPerson: false
+      }
+
+    case types.SVARPASED_PERSON_SEARCH_REQUEST:
+      return {
+        ...state,
+        searchingPerson: true
+      }
+
+    case types.SVARPASED_PERSON_SEARCH_SUCCESS:
+    case types.SVARPASED_PERSON_SEARCH_FAILURE:
+      return {
+        ...state,
+        searchingPerson: false
       }
 
     case types.SVARPASED_SAKSNUMMERORFNR_QUERY_REQUEST:

@@ -92,6 +92,21 @@ export const getPerson: ActionCreator<ThunkResult<ActionWithPayload>> = (
   })
 }
 
+export const searchPerson: ActionCreator<ThunkResult<ActionWithPayload>> = (
+  fnr: string
+): ThunkResult<ActionWithPayload> => {
+  return call({
+    url: sprintf(urls.API_SVARPASED_PERSON_URL, { fnr: fnr }),
+    expectedPayload: mockPerson({ fnr: fnr }),
+    cascadeFailureError: true,
+    type: {
+      request: types.SVARPASED_PERSON_SEARCH_REQUEST,
+      success: types.SVARPASED_PERSON_SEARCH_SUCCESS,
+      failure: types.SVARPASED_PERSON_SEARCH_FAILURE
+    }
+  })
+}
+
 export const getPersonRelated: ActionCreator<ThunkResult<ActionWithPayload>> = (
   fnr: string
 ): ThunkResult<ActionWithPayload> => {

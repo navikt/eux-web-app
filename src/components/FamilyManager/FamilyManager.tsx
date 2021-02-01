@@ -113,11 +113,13 @@ const MarginDiv = styled.div`
 
 const mapState = (state: State): any => ({
   familierelasjonKodeverk: state.app.familierelasjoner,
-  landkoderList: state.app.landkoder,
+  highContrast: state.ui.highContrast,
   gettingPerson: state.loading.gettingPerson,
+  landkoderList: state.app.landkoder,
   personPlusRelations: state.svarpased.personPlusRelations,
-  validation: state.svarpased.validation,
-  highContrast: state.ui.highContrast
+  searchingPerson: state.loading.searchingPerson,
+  searchedPerson: state.svarpased.searchedPerson,
+  validation: state.svarpased.validation
 })
 
 const FamilyManager: React.FC = () => {
@@ -127,6 +129,8 @@ const FamilyManager: React.FC = () => {
     highContrast,
     landkoderList,
     personPlusRelations,
+    searchingPerson,
+    searchedPerson,
     validation
   }: any = useSelector<State, any>(mapState)
   // list of persons with open forms
@@ -357,6 +361,8 @@ const FamilyManager: React.FC = () => {
                   landkoderList={landkoderList}
                   onValueChanged={onValueChanged}
                   person={_editCurrentPerson}
+                  searchingPerson={searchingPerson}
+                  searchedPerson={searchedPerson}
                   validation={validation}
                 />
               )}

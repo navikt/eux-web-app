@@ -1,8 +1,9 @@
+import { searchPerson } from 'actions/svarpased'
 import Tilsette from 'assets/icons/Tilsette'
 import Trashcan from 'assets/icons/Trashcan'
 import { Kodeverk, Person, Validation } from 'declarations/types'
 import CountrySelect from 'landvelger'
-import { Undertittel } from 'nav-frontend-typografi'
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
   HighContrastFlatknapp,
@@ -15,12 +16,15 @@ import {
 } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 
 interface PersonOpplysningerProps {
   person: Person
   landkoderList: Array<Kodeverk>
   highContrast: boolean
+  searchingPerson: boolean
+  searchedPerson: Person | undefined
   validation: Validation
   onValueChanged: (fnr:string, category: string, key: string, value: any) => void
 }
@@ -40,11 +44,13 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   landkoderList,
   person,
   validation,
+  searchedPerson,
+  searchingPerson,
   onValueChanged
 }:PersonOpplysningerProps): JSX.Element => {
-  const [_foundPerson, setFoundPerson] = useState<string | undefined>(undefined)
   const [_isDirty, setIsDirty] = useState<boolean>(false)
   const { t } = useTranslation()
+  const dispatch = useDispatch()
 
   const onFornavnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsDirty(true)
@@ -58,7 +64,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
 
   const onFodselsdatoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsDirty(true)
-    onValueChanged(person!.fnr!, 'personopplysninger', 'fodselsdato', e.target.value)
+    onValueChanged(person!.fnr!, 'personopplysninger', 'foedselsdato', e.target.value)
   }
 
   const onKjoennChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,11 +108,8 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
     onValueChanged(person!.fnr!, 'personopplysninger', 'fodested', value)
   }
 
-  // TODO
   const onSearchUser = () => {
-    setFoundPerson(
-      'bla bla bla bla'
-    )
+    dispatch(searchPerson(person.personopplysninger?.norskpersonnummer))
   }
 
   useEffect(() => {
@@ -116,6 +119,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
     }
     if (person?.personopplysninger?.etternavn === undefined) {
       onValueChanged(person!.fnr!, 'personopplysninger', 'etternavn', person?.etternavn)
+    }
+    if (person?.personopplysninger?.foedselsdato === undefined) {
+      onValueChanged(person!.fnr!, 'personopplysninger', 'etternavn', person?.fdato)
     }
     if (person?.personopplysninger?.kjoenn === undefined) {
       onValueChanged(person!.fnr!, 'personopplysninger', 'kjoenn', person?.kjoenn)
@@ -134,7 +140,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             id={'c-familymanager-personopplysninger-' + person.fnr + '-fornavn-input'}
             onChange={onFornavnChange}
             value={person?.personopplysninger?.fornavn}
-            label={t('ui:label-firstname')}
+            label={t('ui:label-firstname') + ' *'}
           />
         </Column>
         <HorizontalSeparatorDiv />
@@ -147,21 +153,21 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             id={'c-familymanager-personopplysninger-' + person.fnr + '-etternavn-input'}
             onChange={onEtternavnChange}
             value={person?.personopplysninger?.etternavn}
-            label={t('ui:label-lastname')}
+            label={t('ui:label-lastname') + ' *'}
           />
         </Column>
         <HorizontalSeparatorDiv />
         <Column>
           <HighContrastInput
-            data-test-id={'c-familymanager-personopplysninger-' + person.fnr + '-fodselsdato-input'}
-            feil={validation['person-' + person.fnr + '-personopplysninger-fodselsdato']
-              ? validation['person-' + person.fnr + '-personopplysninger-fodselsdato']!.feilmelding
+            data-test-id={'c-familymanager-personopplysninger-' + person.fnr + '-foedselsdato-input'}
+            feil={validation['person-' + person.fnr + '-personopplysninger-foedselsdato']
+              ? validation['person-' + person.fnr + '-personopplysninger-foedselsdato']!.feilmelding
               : undefined}
-            id={'c-familymanager-personopplysninger-' + person.fnr + '-fodselsdato-input'}
+            id={'c-familymanager-personopplysninger-' + person.fnr + '-foedselsdato-input'}
             onChange={onFodselsdatoChange}
-            value={person?.personopplysninger?.fodselsdato}
+            value={person?.personopplysninger?.foedselsdato}
             placeholder={t('ui:placeholder-birthDate')}
-            label={t('ui:label-birthDate')}
+            label={t('ui:label-birthDate') + ' *'}
           />
         </Column>
       </Row>
@@ -176,7 +182,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
               ? validation['person-' + person.fnr + '-personopplysninger-kjoenn']!.feilmelding
               : undefined}
             id={'c-familymanager-personopplysninger-' + person.fnr + '-kjoenn-radiogroup'}
-            legend={t('ui:label-gender')}
+            legend={t('ui:label-gender') + ' *'}
             name={'c-familymanager-personopplysninger-' + person.fnr + '-kjoenn-radiogroup'}
             onChange={onKjoennChange}
             radios={[
@@ -237,14 +243,20 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             />
             <HorizontalSeparatorDiv />
             <HighContrastKnapp
+              disabled={searchingPerson}
+              spinner={searchingPerson}
               onClick={onSearchUser}
             >
-              {t('ui:label-searchUser')}
+              {searchingPerson ? t('ui:label-searching') : t('ui:label-searchUser')}
             </HighContrastKnapp>
           </FlexDiv>
           <VerticalSeparatorDiv data-size='0.5' />
           <div>
-            {_foundPerson || t('ui:label-norwegian-fnr-description')}
+            {searchedPerson && (
+              <Normaltekst>
+                {person?.fornavn + ' ' + person?.etternavn + ' (' + person?.kjoenn + ')'}
+              </Normaltekst>
+            )}
           </div>
         </Column>
       </Row>

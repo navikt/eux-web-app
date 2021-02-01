@@ -16,6 +16,7 @@ export interface SvarpasedState {
   previousReplySed: ReplySed | undefined
   replySed: ReplySed | undefined
   saksnummerOrFnr: string | undefined
+  searchedPerson: Person | undefined
   selectedInntekter: Inntekter | undefined
   seds: Seds | undefined
   svarPasedData: any
@@ -34,6 +35,7 @@ export const initialSvarpasedState: SvarpasedState = {
   previousParentSed: undefined,
   previousReplySed: undefined,
   replySed: undefined,
+  searchedPerson: undefined,
   seds: undefined,
   saksnummerOrFnr: undefined,
   selectedInntekter: undefined,
@@ -99,7 +101,7 @@ const svarpasedReducer = (
         fornavn: person.fornavn,
         etternavn: person.etternavn,
         kjoenn: person.kjoenn,
-        fodselsdato: person.fdato,
+        foedselsdato: person.fdato,
         norskpersonnummer: person.fnr
       }
 
@@ -115,7 +117,7 @@ const svarpasedReducer = (
               fornavn: r.fornavn,
               etternavn: r.etternavn,
               kjoenn: r.kjoenn,
-              fodselsdato: r.fdato,
+              foedselsdato: r.fdato,
               norskpersonnummer: person.fnr
             },
             adresser: [{
@@ -138,6 +140,24 @@ const svarpasedReducer = (
         ...state,
         person: person,
         personPlusRelations: personPlusRelations
+      }
+
+    case types.SVARPASED_PERSON_SEARCH_REQUEST:
+      return {
+        ...state,
+        searchedPerson: undefined
+      }
+
+    case types.SVARPASED_PERSON_SEARCH_SUCCESS:
+      return {
+        ...state,
+        searchedPerson: (action as ActionWithPayload).payload
+      }
+
+    case types.SVARPASED_PERSON_SEARCH_FAILURE:
+      return {
+        ...state,
+        searchedPerson: null
       }
 
     case types.SVARPASED_PERSONPLUSRELATIONS_SET:

@@ -45,11 +45,11 @@ export const validate = (options: any): Validation => {
       personOpplysningFail = true
     }
 
-    value = (p.personopplysninger?.fodselsdato) ? undefined : {
+    value = (p.personopplysninger?.foedselsdato) ? undefined : {
       feilmelding: t('ui:validation-noFodselsdato', {person: personName}),
-      skjemaelementId: 'c-familymanager-personopplysninger-' + p.fnr + '-fodselsdato-input'
+      skjemaelementId: 'c-familymanager-personopplysninger-' + p.fnr + '-foedselsdato-input'
     } as FeiloppsummeringFeil
-    v['person-' + p.fnr + '-personopplysninger-fodselsdato'] = value
+    v['person-' + p.fnr + '-personopplysninger-foedselsdato'] = value
     if (value) {
       personFail = true
       personOpplysningFail = true
@@ -60,26 +60,6 @@ export const validate = (options: any): Validation => {
       skjemaelementId: 'c-familymanager-personopplysninger-' + p.fnr + '-kjoenn-radiogroup'
     } as FeiloppsummeringFeil
     v['person-' + p.fnr + '-personopplysninger-kjoenn'] = value
-    if (value) {
-      personFail = true
-      personOpplysningFail = true
-    }
-
-    value = (p.personopplysninger?.utenlandskPin) ? undefined : {
-      feilmelding: t('ui:validation-noUtenlandskPin', {person: personName}),
-      skjemaelementId: 'c-familymanager-personopplysninger-' + p.fnr + '-utenlandskPin-input'
-    } as FeiloppsummeringFeil
-    v['person-' + p.fnr + '-personopplysninger-utenlandskPin'] = value
-    if (value) {
-      personFail = true
-      personOpplysningFail = true
-    }
-
-    value = (p.personopplysninger?.land) ? undefined : {
-      feilmelding: t('ui:validation-noLand', {person: personName}),
-      skjemaelementId: 'c-familymanager-personopplysninger-' + p.fnr + '-land-countryselect'
-    } as FeiloppsummeringFeil
-    v['person-' + p.fnr + '-personopplysninger-land'] = value
     if (value) {
       personFail = true
       personOpplysningFail = true
