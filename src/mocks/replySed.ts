@@ -1,180 +1,21 @@
-export default {
-  sedType: 'U002',
-  sedVersjon: '4.2',
-  bruker: {
-    personInfo: {
-      fornavn: 'æøå',
-      etternavn: 'æøå',
-      kjoenn: 'M',
-      foedselsdato: '01-01-2020',
-      statsborgerskap: [
-        {
-          land: 'NO'
-        }
-      ],
-      pin: [
-        {
-          land: 'NO',
-          sektor: 'yrkesskade_og_yrkessykdom',
-          identifikator: '02026100715',
-          institusjonsid: 'æøå',
-          institusjonsnavn: 'æøå'
-        }
-      ],
-      pinmangler: {
-        foedested: {
-          by: 'æøå',
-          region: 'æøå',
-          land: 'NO'
-        },
-        far: {
-          fornavn: 'æøå',
-          etternavnvedfoedsel: 'æøå'
-        },
-        mor: {
-          fornavn: 'æøå',
-          etternavnvedfoedsel: 'æøå'
-        },
-        etternavnvedfoedsel: 'æøå',
-        fornavnvedfoedsel: 'æøå'
-      }
-    }
-  },
-  anmodningsperiode: {
-    fastperiode: {
-      startdato: '2020-01-01',
-      sluttdato: '2020-12-31'
-    },
-    aapenperiode: {
-      startdato: 'æøå',
-      type: 'åpen_sluttdato'
-    }
-  },
-  lokaleSakIder: [
-    {
-      saksnummer: 'æøå',
-      institusjonsnavn: 'æøå',
-      institusjonsid: 'æøå',
-      land: 'NO'
-    }
-  ],
-  dagpengeperioder: [
-    {
-      periode: {
-        fastperiode: {
-          startdato: 'æøå',
-          sluttdato: 'æøå'
-        },
-        aapenperiode: {
-          startdato: 'æøå',
-          type: 'åpen_sluttdato'
-        }
-      },
-      institusjon: {
-        navn: 'æøå',
-        id: 'æøå',
-        idmangler: {
-          navn: 'æøå',
-          adresse: {
-            gate: 'æøå',
-            postnummer: 'æøå',
-            by: 'æøå',
-            land: 'NO',
-            bygning: 'æøå',
-            region: 'æøå'
-          }
-        }
-      }
-    }
-  ],
-  ansattmedforsikring: [
-    {
-      arbeidsgiver: {
-        navn: 'æøå',
-        adresse: {
-          gate: 'æøå',
-          postnummer: 'æøå',
-          by: 'æøå',
-          land: 'NO',
-          bygning: 'æøå',
-          region: 'æøå'
-        },
-        identifikator: [
-          {
-            type: 'registrering',
-            id: 'æøå'
-          }
-        ]
-      }
-    }
-  ],
-  selvstendigmedforsikring: [
-    {
-      arbeidsgiver: {
-        navn: 'æøå',
-        adresse: {
-          gate: 'æøå',
-          postnummer: 'æøå',
-          by: 'æøå',
-          land: 'NO',
-          bygning: 'æøå',
-          region: 'æøå'
-        },
-        identifikator: [
-          {
-            type: 'registrering',
-            id: 'æøå'
-          }
-        ]
-      }
-    }
-  ],
-  ansattutenforsikring: [
-    {
-      arbeidsgiver: {
-        navn: 'æøå',
-        adresse: {
-          gate: 'æøå',
-          postnummer: 'æøå',
-          by: 'æøå',
-          land: 'NO',
-          bygning: 'æøå',
-          region: 'æøå'
-        },
-        identifikator: [
-          {
-            type: 'registrering',
-            id: 'æøå'
-          }
-        ]
-      },
-      kreverinformasjonomtypearberidsforhold: 'ja',
-      kreverinformasjonomantallarbeidstimer: 'ja',
-      kreverinformasjonominntekt: 'ja'
-    }
-  ],
-  selvstendigutenforsikring: [
-    {
-      arbeidsgiver: {
-        navn: 'æøå',
-        adresse: {
-          gate: 'æøå',
-          postnummer: 'æøå',
-          by: 'æøå',
-          land: 'NO',
-          bygning: 'æøå',
-          region: 'æøå'
-        },
-        identifikator: [
-          {
-            type: 'registrering',
-            id: 'æøå'
-          }
-        ]
-      },
-      kreverinformasjonomtypearberidsforhold: 'ja',
-      kreverinformasjonomantallarbeidstimer: 'ja',
-      kreverinformasjonominntekt: 'ja'
-    }
-  ]
+
+import { ReplySed } from 'declarations/sed'
+import f002 from './seds/f002.json'
+import u002 from './seds/u002.json'
+import u004 from './seds/u004.json'
+import u017 from './seds/u017.json'
+
+type SedTypes = 'F002' | 'U002' | 'U004' | 'U017'
+
+const seds: {[k in SedTypes]: ReplySed} = {
+  F002: f002,
+  U002: u002,
+  U004: u004,
+  U017: u017
 }
+
+const getReplySed = (sedType: string): ReplySed | undefined => Object.prototype.hasOwnProperty.call(seds, sedType)
+  ? seds[sedType as SedTypes]
+  : undefined
+
+export default getReplySed

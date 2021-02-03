@@ -1,5 +1,5 @@
+import { setReplySed } from 'actions/svarpased'
 import FilledCheckCircle from 'assets/icons/filled-version-check-circle-2'
-import { setPersonPlusRelations } from 'actions/svarpased'
 import FilledRemoveCircle from 'assets/icons/filled-version-remove-circle'
 import Tilsette from 'assets/icons/Tilsette'
 import classNames from 'classnames'
@@ -10,6 +10,7 @@ import PersonensStatus from 'components/FamilyManager/PersonensStatus'
 import Trygdeordning from 'components/FamilyManager/Trygdeordning'
 import { FadingLineSeparator } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
+import { PersonInfo, ReplySed } from 'declarations/sed'
 import { FamilieRelasjon, Person } from 'declarations/types.d'
 import _ from 'lodash'
 import Chevron from 'nav-frontend-chevron'
@@ -17,7 +18,7 @@ import { Checkbox } from 'nav-frontend-skjema'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import { HighContrastFlatknapp, HighContrastPanel, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import { theme, themeHighContrast, themeKeys } from 'nav-styled-component-theme'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
@@ -25,7 +26,6 @@ import Kontaktinformasjon from './Kontaktinformasjon'
 import Nasjonaliteter from './Nasjonaliteter'
 import PersonOpplysninger from './PersonOpplysninger'
 import Tooltip from 'rc-tooltip'
-
 
 const FlexDiv = styled.div`
   display: flex;
@@ -116,7 +116,7 @@ const mapState = (state: State): any => ({
   highContrast: state.ui.highContrast,
   gettingPerson: state.loading.gettingPerson,
   landkoderList: state.app.landkoder,
-  personPlusRelations: state.svarpased.personPlusRelations,
+  replySed: state.svarpased.replySed,
   searchingPerson: state.loading.searchingPerson,
   searchedPerson: state.svarpased.searchedPerson,
   validation: state.svarpased.validation
@@ -128,26 +128,34 @@ const FamilyManager: React.FC = () => {
     gettingPerson,
     highContrast,
     landkoderList,
-    personPlusRelations,
+    replySed,
     searchingPerson,
     searchedPerson,
     validation
   }: any = useSelector<State, any>(mapState)
   // list of persons with open forms
-  const [_editPersons, setEditPersons] = useState<Array<Person>>([])
-  // person with current form selected
-  const [_editCurrentPerson, setEditCurrentPerson] = useState<Person | undefined>(undefined)
+  const [_editPersonIDs, setEditPersonIDs] = useState<Array<string>>([])
+  // person with current form visible
+  const [_editCurrentPersonID, setEditCurrentPersonID] = useState<string | undefined>(undefined)
   const [_modal, setModal] = useState<boolean>(false)
   // list of selected persons
-  const [_selectedPersons, setSelectedPersons] = useState<Array<Person>>([])
+  const [_selectedPersonIDs, setSelectedPersonIDs] = useState<Array<string>>([])
   // the name of person form currently selected
-  const [_personOption, setPersonOption] = useState<string | undefined>(undefined)
+  const [_menuOption, setMenuOption] = useState<string | undefined>(undefined)
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
-  const changePersonOption = (p: Person, o: string) => {
-    setEditCurrentPerson(p)
-    setPersonOption(o)
+  const brukerNr = 0
+  const ektefelleNr = brukerNr + (replySed.ektefelle ? 1 : 0)
+  const annenPersonNr = ektefelleNr + (replySed.annenPerson ? 1 : 0)
+  const barnNr = annenPersonNr + (replySed.barn ? 1 : 0)
+  const totalPeople = annenPersonNr + (replySed.barn ? replySed.barn.length : 0) + 1 // 1 = bruker
+
+  const changePersonOption = (personID: string | undefined, menuOption: string) => {
+    if (personID) {
+      setEditCurrentPersonID(personID)
+      setMenuOption(menuOption)
+    }
   }
 
   const options = [
@@ -160,71 +168,160 @@ const FamilyManager: React.FC = () => {
     { label: t('ui:option-familymanager-7'), value: 'personensstatus' }
   ]
 
-  // TODO
+  // TODO when added/removed people
   const onPersonsChanged = (p: Array<Person | FamilieRelasjon>) => { p }
 
-  const onEditPerson = (person: Person) => {
-    const alreadyEditingPerson = _.find(_editPersons, p => p.fnr === person.fnr) !== undefined
-    const isEditCurrentPerson = _editCurrentPerson && _editCurrentPerson.fnr === person.fnr
-    setEditCurrentPerson(isEditCurrentPerson ? undefined : person)
-    let newEditPersons
-    if (alreadyEditingPerson) {
-      newEditPersons = _.filter(_editPersons, p => p.fnr !== person.fnr)
-    } else {
-      newEditPersons = _editPersons.concat(person)
+  const onEditPerson = (id: string | undefined) => {
+    if (id) {
+      const alreadyEditingPerson = _.find(_editPersonIDs, _id => _id === id) !== undefined
+      const isEditCurrentPerson = _editCurrentPersonID === id
+      setEditCurrentPersonID(isEditCurrentPerson ? undefined : id)
+      const newEditPersons = alreadyEditingPerson ? _.filter(_editPersonIDs, _id => _id !== id) : _editPersonIDs.concat(id)
+      setEditPersonIDs(newEditPersons)
+      setMenuOption(isEditCurrentPerson ? undefined : options[0].value)
     }
-    setEditPersons(newEditPersons)
-    setPersonOption(isEditCurrentPerson ? undefined : 'personopplysninger')
   }
 
-  const onSelectPerson = (p: Person, checked: boolean) => {
-    if (checked) {
-      setSelectedPersons(_selectedPersons.concat(p))
-    } else {
-      setSelectedPersons(_.filter(_selectedPersons, _p => _p.fnr !== p.fnr))
+  const onSelectPerson = (id: string | undefined, checked: boolean) => {
+    if (id) {
+      setSelectedPersonIDs(checked
+        ? _selectedPersonIDs.concat(id)
+        : _.filter(_selectedPersonIDs, _id => _id !== id)
+      )
     }
   }
 
   const onSelectAllPersons = (checked: boolean) => {
     if (checked) {
-      setSelectedPersons(personPlusRelations)
+      let allPersons = []
+      allPersons.push('bruker')
+      if (replySed.ektefelle) {
+        allPersons.push('ektefelle')
+      }
+      if (replySed.annenPerson) {
+        allPersons.push('annenPerson')
+      }
+      if (replySed.barn) {
+        allPersons = allPersons.concat(replySed.barn.map((b: any, i: number) => `barn[${i}]`))
+      }
+      setSelectedPersonIDs(allPersons)
     } else {
-      setSelectedPersons([])
+      setSelectedPersonIDs([])
     }
   }
 
-  const onValueChanged = (fnr: string, category: string, key: string, value: any) => {
-    const newPersonsPlusRelations = personPlusRelations.map((p: Person) => {
-      if (fnr !== p.fnr) {
-        return p
-      }
-      const newP: Person = _.cloneDeep(p)
-      // @ts-ignore
-      newP[category][key] = value
-      return newP
-    })
-    dispatch(setPersonPlusRelations(newPersonsPlusRelations))
+  const onValueChanged = (needleString: string | Array<string>, value: any) => {
+    const newReplySed = _.cloneDeep(replySed)
+    _.set(newReplySed, needleString, value)
+    dispatch(setReplySed(newReplySed))
   }
 
   const onAddNewPerson = () => {
     setModal(true)
   }
 
-  // refresh _editCurrentPerson from personPlusRelations, as the forms update its data.
-  useEffect(() => {
-    if (_editCurrentPerson) {
-      let person = _.find(personPlusRelations, p => p.fnr === _editCurrentPerson.fnr)
-      if (person) {
-        setEditCurrentPerson(person)
-      }
-    }
-  }, [personPlusRelations])
+  const renderPerson = (replySed: ReplySed, personId: string, totalIndex: number) => {
+    const personInfo: PersonInfo = _.get(replySed, `${personId}.personInfo`)
+    const editing: boolean = _.find(_editPersonIDs, _id => _id === personId) !== undefined
+    const selected: boolean = _.find(_selectedPersonIDs, _id => _id === personId) !== undefined
+    return (
+      <PersonsDiv>
+        <PersonAndCheckboxDiv
+          data-highContrast={highContrast}
+        >
+          <Tooltip
+            overlay={(
+              <span>
+                {t('ui:label-click-for-menu', { person: personInfo?.fornavn + ' ' + personInfo?.etternavn })}
+              </span>
+            )}
+            mouseEnterDelay={0.4}
+            trigger={['hover']}
+          >
+            <PersonDiv
+              onClick={() => {
+                onEditPerson(personId)
+                return false
+              }}
+              style={{ animationDelay: totalIndex * 0.1 + 's' }}
+              className={classNames('personDiv', {
+                slideAnimate: true,
+                selected: _editCurrentPersonID === personId
+              })}
+            >
+              <Chevron type={editing ? 'ned' : 'høyre'} />
+              <HorizontalSeparatorDiv data-size='0.5' />
+              {validation['person-' + personId] && (
+                <>
+                  <FilledRemoveCircle color='red' />
+                  <HorizontalSeparatorDiv data-size='0.5' />
+                </>
+              )}
+              {selected
+                ? (
+                  <Undertittel style={{ whiteSpace: 'nowrap' }}>
+                    {personInfo?.fornavn + ' ' + personInfo?.etternavn + ' (' + personInfo?.kjoenn + ')'}
+                  </Undertittel>
+                  )
+                : (
+                  <Normaltekst style={{ whiteSpace: 'nowrap' }}>
+                    {personInfo?.fornavn + ' ' + personInfo?.etternavn + ' (' + personInfo?.kjoenn + ')'}
+                  </Normaltekst>
+                  )}
+            </PersonDiv>
+          </Tooltip>
+          <Tooltip
+            overlay={(
+              <span>
+                {t('ui:label-click-for-select', { person: personInfo?.fornavn + ' ' + personInfo?.etternavn })}
+              </span>
+            )}
+            mouseEnterDelay={0.4}
+            trigger={['hover']}
+          >
+            <CheckboxDiv>
+              <PersonCheckbox
+                label=''
+                checked={selected}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  onSelectPerson(personId, e.target.checked)
+                  e.stopPropagation()
+                }}
+              />
+            </CheckboxDiv>
+          </Tooltip>
+        </PersonAndCheckboxDiv>
+        {editing && options.map((o, i) => {
+          return (
+            <OptionDiv
+              data-highContrast={highContrast}
+              key={o.value}
+              style={{ animationDelay: i * 0.1 + 's' }}
+              className={classNames({
+                slideAnimate: true,
+                selected: _editCurrentPersonID === personId && _menuOption === o.value
+              })}
+              onClick={() => changePersonOption(personId, o.value)}
+            >
+              {validation.hasOwnProperty('person-' + personId + '-' + o.value) &&
+              (validation['person-' + personId + '-' + o.value] === undefined
+                ? <FilledCheckCircle color='green' />
+                : <FilledRemoveCircle color='red' />
+              )}
+              <HorizontalSeparatorDiv data-size='0.5' />
+              {o.label}
+            </OptionDiv>
+          )
+        })}
+      </PersonsDiv>
+    )
+  }
 
   return (
     <PanelDiv>
       {_modal && (
         <FamilyManagerModal
-          personPlusRelations={personPlusRelations}
+          replySed={replySed}
           onPersonsChanged={onPersonsChanged}
           onModalClose={() => setModal(false)}
         />
@@ -236,93 +333,10 @@ const FamilyManager: React.FC = () => {
       <CustomHighContrastPanel>
         <FlexDiv>
           <LeftDiv>
-            {personPlusRelations.map((person: Person, i: number) => (
-              <PersonsDiv>
-                <PersonAndCheckboxDiv
-                  data-highContrast={highContrast}
-                >
-                  <Tooltip
-                    overlay={(
-                      <span>{t('ui:label-click-for-menu', {person: person?.fornavn + ' ' + person?.etternavn})}</span>
-                    )}
-                    mouseEnterDelay={0.4}
-                    trigger={['hover']}
-                  >
-                  <PersonDiv
-                    onClick={() => {
-                      onEditPerson(person)
-                      return false
-                    }}
-                    style={{ animationDelay: i * 0.1 + 's' }}
-                    className={classNames('personDiv', {
-                      slideAnimate: true,
-                      selected: _editCurrentPerson && _editCurrentPerson.fnr === person.fnr
-                    })}
-                  >
-                    <Chevron type={_.find(_editPersons, p => p.fnr === person.fnr) !== undefined ? 'ned' : 'høyre'} />
-                    <HorizontalSeparatorDiv data-size='0.5' />
-                    {validation['person-' + person.fnr] && (
-                      <>
-                        <FilledRemoveCircle color='red' />
-                        <HorizontalSeparatorDiv data-size='0.5' />
-                      </>
-                    )}
-                    {_.find(_selectedPersons, p => p.fnr === person.fnr) !== undefined
-                      ? (
-                        <Undertittel style={{whiteSpace: 'nowrap'}}>
-                          {person?.fornavn + ' ' + person?.etternavn + ' (' + person?.kjoenn + ')'}
-                        </Undertittel>
-                        ) : (
-                          <Normaltekst style={{whiteSpace: 'nowrap'}}>
-                            {person?.fornavn + ' ' + person?.etternavn + ' (' + person?.kjoenn + ')'}
-                          </Normaltekst>
-                        )}
-                  </PersonDiv>
-                  </Tooltip>
-                  <Tooltip
-                      overlay={(
-                      <span>{t('ui:label-click-for-select', {person: person?.fornavn + ' ' + person?.etternavn})}</span>
-                      )}
-                      mouseEnterDelay={0.4}
-                      trigger={['hover']}
-                      >
-                        <CheckboxDiv>
-
-                  <PersonCheckbox
-                    label=''
-                    checked={_.find(_selectedPersons, p => p.fnr === person.fnr) !== undefined}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      onSelectPerson(person, e.target.checked)
-                      e.stopPropagation()
-                    }}
-                  />
-                 </CheckboxDiv>
-                 </Tooltip>
-                </PersonAndCheckboxDiv>
-                {_.find(_editPersons, p => p.fnr === person.fnr) !== undefined && options.map((o, i) => {
-                  return (
-                    <OptionDiv
-                      data-highContrast={highContrast}
-                      key={o.value}
-                      style={{ animationDelay: i * 0.1 + 's' }}
-                      className={classNames({
-                        slideAnimate: true,
-                        selected: _editCurrentPerson && _editCurrentPerson.fnr === person.fnr && _personOption === o.value
-                      })}
-                      onClick={() => changePersonOption(person, o.value)}
-                    >
-                      {validation.hasOwnProperty('person-' + person.fnr + '-' + o.value) &&
-                      (validation['person-' + person.fnr + '-' + o.value] === undefined
-                        ? <FilledCheckCircle color='green' />
-                        : <FilledRemoveCircle color='red' />
-                      )}
-                      <HorizontalSeparatorDiv data-size='0.5' />
-                      {o.label}
-                    </OptionDiv>
-                  )
-                })}
-              </PersonsDiv>
-            ))}
+            {renderPerson(replySed, 'bruker', brukerNr)}
+            {replySed.ektefelle && renderPerson(replySed, 'ektefelle', ektefelleNr)}
+            {replySed.annenPerson && renderPerson(replySed, 'annenPerson', annenPersonNr)}
+            {replySed.barn && replySed.barn.map((b: PersonInfo, i: number) => renderPerson(replySed, `barn[${i}]`, barnNr + i))}
             <PersonAndCheckboxDiv>
               <MarginDiv>
                 <Normaltekst>
@@ -331,7 +345,7 @@ const FamilyManager: React.FC = () => {
               </MarginDiv>
               <PersonCheckbox
                 label=''
-                checked={_selectedPersons.length === personPlusRelations.length}
+                checked={_selectedPersonIDs.length === totalPeople}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSelectAllPersons(e.target.checked)}
               />
             </PersonAndCheckboxDiv>
@@ -348,30 +362,68 @@ const FamilyManager: React.FC = () => {
             </MarginDiv>
           </LeftDiv>
           <FadingLineSeparator className='fadeIn' />
-          {(gettingPerson || !_editCurrentPerson) ? (
+          {(gettingPerson || !_editCurrentPersonID) ? (
             <RightFlexCenterDiv>
               {gettingPerson ? t('ui:loading-getting-person') : undefined}
-              {!_editCurrentPerson ? t('ui:label-no-person-selected') : undefined}
+              {!_editCurrentPersonID ? t('ui:label-no-person-selected') : undefined}
             </RightFlexCenterDiv>
           ) : (
             <RightFlexStartDiv>
-              {_personOption === 'personopplysninger' && (
+              {_menuOption === 'personopplysninger' && (
                 <PersonOpplysninger
                   highContrast={highContrast}
                   landkoderList={landkoderList}
                   onValueChanged={onValueChanged}
-                  person={_editCurrentPerson}
+                  personID={_editCurrentPersonID}
+                  replySed={replySed}
                   searchingPerson={searchingPerson}
                   searchedPerson={searchedPerson}
                   validation={validation}
                 />
               )}
-              {_personOption === 'nasjonaliteter' && <Nasjonaliteter highContrast={highContrast} person={_editCurrentPerson} />}
-              {_personOption === 'adresser' && <Adresser highContrast={highContrast} person={_editCurrentPerson} />}
-              {_personOption === 'kontaktinformasjon' && <Kontaktinformasjon highContrast={highContrast} person={_editCurrentPerson} />}
-              {_personOption === 'trygdeordninger' && <Trygdeordning highContrast={highContrast} person={_editCurrentPerson} />}
-              {_personOption === 'familierelasjon' && <Familierelasjon familierelasjonKodeverk={familierelasjonKodeverk} highContrast={highContrast} person={_editCurrentPerson} />}
-              {_personOption === 'personensstatus' && <PersonensStatus highContrast={highContrast} person={_editCurrentPerson} />}
+              {_menuOption === 'nasjonaliteter' && (
+                <Nasjonaliteter
+                  highContrast={highContrast}
+                  personID={_editCurrentPersonID}
+                  replySed={replySed}
+                />
+              )}
+              {_menuOption === 'adresser' && (
+                <Adresser
+                  highContrast={highContrast}
+                  personID={_editCurrentPersonID}
+                  replySed={replySed}
+                />
+              )}
+              {_menuOption === 'kontaktinformasjon' && (
+                <Kontaktinformasjon
+                  highContrast={highContrast}
+                  personID={_editCurrentPersonID}
+                  replySed={replySed}
+                />
+              )}
+              {_menuOption === 'trygdeordninger' && (
+                <Trygdeordning
+                  highContrast={highContrast}
+                  personID={_editCurrentPersonID}
+                  replySed={replySed}
+                />
+              )}
+              {_menuOption === 'familierelasjon' && (
+                <Familierelasjon
+                  familierelasjonKodeverk={familierelasjonKodeverk}
+                  highContrast={highContrast}
+                  personID={_editCurrentPersonID}
+                  replySed={replySed}
+                />
+              )}
+              {_menuOption === 'personensstatus' && (
+                <PersonensStatus
+                  highContrast={highContrast}
+                  personID={_editCurrentPersonID}
+                  replySed={replySed}
+                />
+              )}
             </RightFlexStartDiv>
           )}
         </FlexDiv>

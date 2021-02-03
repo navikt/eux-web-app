@@ -110,7 +110,7 @@ const Purpose: React.FC<PurposeProps> = ({
           </HighContrastFlatknapp>
         </FlexDiv>
       ))}
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       {!_addPurpose
         ? (
           <>

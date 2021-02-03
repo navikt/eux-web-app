@@ -43,6 +43,7 @@ const mapState = (state: State): any => ({
   queryingReplySed: state.loading.queryingReplySed,
 
   previousParentSed: state.svarpased.previousParentSed,
+  previousReplySed: state.svarpased.previousReplySed,
   parentSed: state.svarpased.parentSed,
   seds: state.svarpased.seds,
   replySed: state.svarpased.replySed,
@@ -67,6 +68,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
     queryingReplySed,
 
     previousParentSed,
+    previousReplySed,
     parentSed,
     replySed,
     seds,
@@ -127,19 +129,16 @@ const Step1: React.FC<SvarPaSedProps> = ({
   }
 
   useEffect(() => {
-    if (replySed && mode === '1') {
-      const pin = _.find(replySed.bruker.personInfo.pin, f => f.land === 'NO')
-      if (pin) {
-        dispatch(svarpasedActions.getPerson(pin.identifikator))
-        setMode('2', 'forward')
-      }
+    if (replySed && !previousReplySed && mode === '1') {
+      setMode('2', 'forward')
     }
-  }, [replySed, mode])
+  }, [previousReplySed, replySed, mode])
 
   return (
     <NavHighContrast highContrast={highContrast}>
       <AlignedRow
-        className={classNames('slideAnimate', { feil: _validation.saksnummerOrFnr })}>
+        className={classNames('slideAnimate', { feil: _validation.saksnummerOrFnr })}
+      >
         <Column
           style={{ flex: 2 }}
         >

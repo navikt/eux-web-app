@@ -1,5 +1,6 @@
 import Tilsette from 'assets/icons/Tilsette'
 import Trashcan from 'assets/icons/Trashcan'
+import { ReplySed } from 'declarations/sed'
 import { Person } from 'declarations/types'
 import _ from 'lodash'
 import { Ingress, Undertittel } from 'nav-frontend-typografi'
@@ -16,8 +17,9 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 interface TrygdeordningProps {
-  person: Person,
   highContrast: boolean
+  personID: string
+  replySed: ReplySed
 }
 const KontaktinformasjonDiv = styled.div`
   padding: 1rem;

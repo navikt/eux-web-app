@@ -1,6 +1,97 @@
-import { Person, Validation } from 'declarations/types'
+import { Validation } from 'declarations/types.d'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+
+export const validatePerson = (v: Validation, t: any, options: any, personID: string): void => {
+  let personFail = false
+  let personOpplysningFail = false
+  const p = _.get(options.replySed, personID)
+  const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
+
+  let value = (p.personInfo.fornavn) ? undefined : {
+    feilmelding: t('ui:validation-noFornavn', { person: personName }),
+    skjemaelementId: 'c-familymanager-' + personID + '-personopplysninger-fornavn-input'
+  } as FeiloppsummeringFeil
+  v['person-' + personID + '-personopplysninger-fornavn'] = value
+  if (value) {
+    personFail = true
+    personOpplysningFail = true
+  }
+
+  value = (p.personInfo.etternavn) ? undefined : {
+    feilmelding: t('ui:validation-noEtternavn', { person: personName }),
+    skjemaelementId: 'c-familymanager-' + personID + '-personopplysninger-etternavn-input'
+  } as FeiloppsummeringFeil
+  v['person-' + personID + '-personopplysninger-etternavn'] = value
+  if (value) {
+    personFail = true
+    personOpplysningFail = true
+  }
+
+  value = (p.personInfo.foedselsdato) ? undefined : {
+    feilmelding: t('ui:validation-noFodselsdato', { person: personName }),
+    skjemaelementId: 'c-familymanager-' + personID + '-personopplysninger-foedselsdato-input'
+  } as FeiloppsummeringFeil
+  v['person-' + personID + '-personopplysninger-foedselsdato'] = value
+  if (value) {
+    personFail = true
+    personOpplysningFail = true
+  }
+
+  value = (p.personInfo.kjoenn) ? undefined : {
+    feilmelding: t('ui:validation-noKjoenn', { person: personName }),
+    skjemaelementId: 'c-familymanager-' + personID + '-personopplysninger-kjoenn-radiogroup'
+  } as FeiloppsummeringFeil
+  v['person-' + personID + '-personopplysninger-kjoenn'] = value
+  if (value) {
+    personFail = true
+    personOpplysningFail = true
+  }
+
+  if (_.get(options.replySed, `toDelete.${personID}.foedested.visible`)) {
+    value = (p.personInfo.pinMangler.foedested.by) ? undefined : {
+      feilmelding: t('ui:validation-noFoedestedBy', { person: personName }),
+      skjemaelementId: 'c-familymanager-' + personID + '-personopplysninger-foedested-by-input'
+    } as FeiloppsummeringFeil
+    v['person-' + personID + '-personopplysninger-foedested-by'] = value
+    if (value) {
+      personFail = true
+      personOpplysningFail = true
+    }
+
+    value = (p.personInfo.pinMangler.foedested.region) ? undefined : {
+      feilmelding: t('ui:validation-noFoedestedRegion', { person: personName }),
+      skjemaelementId: 'c-familymanager-' + personID + '-personopplysninger-foedested-region-input'
+    } as FeiloppsummeringFeil
+    v['person-' + personID + '-personopplysninger-foedested-region'] = value
+    if (value) {
+      personFail = true
+      personOpplysningFail = true
+    }
+
+    value = (p.personInfo.pinMangler.foedested.land) ? undefined : {
+      feilmelding: t('ui:validation-noFoedestedLand', { person: personName }),
+      skjemaelementId: 'c-familymanager-' + personID + '-personopplysninger-foedested-land-countryselect'
+    } as FeiloppsummeringFeil
+    v['person-' + personID + '-personopplysninger-foedested-land'] = value
+    if (value) {
+      personFail = true
+      personOpplysningFail = true
+    }
+  } else {
+    delete v['person-' + p.fnr + '-personopplysninger-foedested-by']
+    delete v['person-' + p.fnr + '-personopplysninger-foedested-region']
+    delete v['person-' + p.fnr + '-personopplysninger-foedested-land']
+  }
+
+  v['person-' + personID + '-personopplysninger'] = personOpplysningFail ? {
+    feilmelding: 'notnull', skjemaelementId: ''
+  } as FeiloppsummeringFeil : undefined
+
+  v['person-' + personID] = personFail ? {
+    feilmelding: 'notnull', skjemaelementId: ''
+  } as FeiloppsummeringFeil : undefined
+}
 
 export const validate = (options: any): Validation => {
   const v: Validation = {}
@@ -17,98 +108,7 @@ export const validate = (options: any): Validation => {
     skjemaelementId: 'c-svarpased-comment-textarea'
   } as FeiloppsummeringFeil
 
-  options.personPlusRelations.forEach((p: Person) => {
-    let personFail = false
-
-    // PersonOpplysning
-    let personOpplysningFail = false
-
-    let personName = p.fornavn + ' ' + p.etternavn
-
-    let value = (p.personopplysninger?.fornavn) ? undefined : {
-      feilmelding: t('ui:validation-noFornavn', {person: personName}),
-      skjemaelementId: 'c-familymanager-personopplysninger-' + p.fnr + '-fornavn-input'
-    } as FeiloppsummeringFeil
-    v['person-' + p.fnr + '-personopplysninger-fornavn'] = value
-    if (value) {
-      personFail = true
-      personOpplysningFail = true
-    }
-
-    value = (p.personopplysninger?.etternavn) ? undefined : {
-      feilmelding: t('ui:validation-noEtternavn', {person: personName}),
-      skjemaelementId: 'c-familymanager-personopplysninger-' + p.fnr + '-etternavn-input'
-    } as FeiloppsummeringFeil
-    v['person-' + p.fnr + '-personopplysninger-etternavn'] = value
-    if (value) {
-      personFail = true
-      personOpplysningFail = true
-    }
-
-    value = (p.personopplysninger?.foedselsdato) ? undefined : {
-      feilmelding: t('ui:validation-noFodselsdato', {person: personName}),
-      skjemaelementId: 'c-familymanager-personopplysninger-' + p.fnr + '-foedselsdato-input'
-    } as FeiloppsummeringFeil
-    v['person-' + p.fnr + '-personopplysninger-foedselsdato'] = value
-    if (value) {
-      personFail = true
-      personOpplysningFail = true
-    }
-
-    value = (p.personopplysninger?.kjoenn) ? undefined : {
-      feilmelding: t('ui:validation-noKjoenn', {person: personName}),
-      skjemaelementId: 'c-familymanager-personopplysninger-' + p.fnr + '-kjoenn-radiogroup'
-    } as FeiloppsummeringFeil
-    v['person-' + p.fnr + '-personopplysninger-kjoenn'] = value
-    if (value) {
-      personFail = true
-      personOpplysningFail = true
-    }
-
-    if (p.personopplysninger?.fodested) {
-      value = (p.personopplysninger?.fodestedBy) ? undefined : {
-        feilmelding: t('ui:validation-noFodestedBy', {person: personName}),
-        skjemaelementId: 'c-familymanager-personopplysninger-' + p.fnr + '-fodestedby-input'
-      } as FeiloppsummeringFeil
-      v['person-' + p.fnr + '-personopplysninger-fodestedby'] = value
-      if (value) {
-        personFail = true
-        personOpplysningFail = true
-      }
-
-      value = (p.personopplysninger?.fodestedRegion) ? undefined : {
-        feilmelding: t('ui:validation-noFodestedRegion', {person: personName}),
-        skjemaelementId: 'c-familymanager-personopplysninger-' + p.fnr + '-fodestedregion-input'
-      } as FeiloppsummeringFeil
-      v['person-' + p.fnr + '-personopplysninger-fodestedregion'] = value
-      if (value) {
-        personFail = true
-        personOpplysningFail = true
-      }
-
-      value = (p.personopplysninger?.fodestedLand) ? undefined : {
-        feilmelding: t('ui:validation-noFodestedLand', {person: personName}),
-        skjemaelementId: 'c-familymanager-personopplysninger-' + p.fnr + '-fodestedland-countryselect'
-      } as FeiloppsummeringFeil
-      v['person-' + p.fnr + '-personopplysninger-fodestedland'] = value
-      if (value) {
-        personFail = true
-        personOpplysningFail = true
-      }
-    } else {
-      delete v['person-' + p.fnr + '-personopplysninger-fodestedby']
-      delete v['person-' + p.fnr + '-personopplysninger-fodestedregion']
-      delete v['person-' + p.fnr + '-personopplysninger-fodestedland']
-    }
-
-    v['person-' + p.fnr + '-personopplysninger'] = personOpplysningFail ? {
-      feilmelding: 'notnull', skjemaelementId: ''
-    } as FeiloppsummeringFeil : undefined
-
-    v['person-' + p.fnr] = personFail ? {
-      feilmelding: 'notnull', skjemaelementId: ''
-    } as FeiloppsummeringFeil : undefined
-  })
+  validatePerson(v, t, options, 'bruker')
 
   return v
 }

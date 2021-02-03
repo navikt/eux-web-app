@@ -11,15 +11,15 @@ export interface Adresse {
 
 export interface Aktivitet {
   perioderMedAktivitet?: {
-    type: string,
+    type: string
     perioder: Array<Periode>
-  },
+  }
   perioderUtenAktivitet?: {
-    type: string,
+    type: string
     perioder: Array<Periode>
-  },
+  }
   perioderUkjentAktivitet?: {
-    ytterligereinfo: string,
+    ytterligereinfo: string
     perioder: Array<Periode>
   }
 }
@@ -33,14 +33,14 @@ export interface Periode {
 export interface Arbeidsgiver {
   arbeidsgiver: {
     navn: string
-    adresse?: Adresse,
+    adresse?: Adresse
     identifikator: Array<{
       type: string
       id: string
-    }>,
+    }>
     periode: Periode
     typeTrygdeforhold: string
-  },
+  }
   kreverinformasjonomtypearberidsforhold?: string
   kreverinformasjonomantallarbeidstimer?: string
   kreverinformasjonominntekt?:string
@@ -62,38 +62,40 @@ export interface FamilieRelasjon2 {
   annenRelasjonPersonNavn: string
   annenRelasjonType: string
   borSammen: string
-  periode: Array<Periode>
+  periode: Periode
   relasjonInfo: string
   relasjonType: string
 }
 
+export interface Pin {
+  land ?: string
+  sektor ?: string
+  identifikator ?: string
+  institusjonsid ?: string
+  institusjonsnavn ?: string
+}
+
 export interface PersonInfo {
-  fornavn: string,
+  fornavn: string
   etternavn: string
   kjoenn: string
   foedselsdato: string
   statsborgerskap: Array<{ land: string }>
-  pin: Array<{
-    land: string
-    sektor: string
-    identifikator: string
-    institusjonsid: string
-    institusjonsnavn: string
-  }>
-  pinmangler: {
+  pin: Array<Pin>
+  pinMangler: {
     foedested: {
       by: string
       region: string
       land: string
-    },
+    }
     far: {
       fornavn: string
       etternavnVedFoedsel: string
-    },
+    }
     mor: {
       fornavn: string
       etternavnVedFoedsel: string
-    },
+    }
     etternavnVedFoedsel: string
     fornavnVedFoedsel: string
   }
@@ -101,7 +103,7 @@ export interface PersonInfo {
 
 export interface Person {
   adresser ?: Array<Adresse>
-  aktivitet ?: Aktivitet,
+  aktivitet ?: Aktivitet
   epost ?: Array<Epost>
   familierelasjoner ?: Array<FamilieRelasjon2>
   flyttegrunn ?: Flyttegrunn
@@ -118,32 +120,31 @@ export interface Person {
   periodeMedTrygd ?: Array<Periode>
   periodeMedYtelser ?: Array<Periode>
   perioderUtenforTrygdeordning ?: Array<Periode>
-  personInfo ?: PersonInfo
+  personInfo: PersonInfo
   telefon ?: Array<Telefon>
   ytterligereInfo ?: string
 }
 
 export interface Telefon {
   type: string
-  number: string
+  nummer: string
 }
 
 export interface Utbetaling {
-  barnetsNavn: string
-  begrunnelse: string
+  barnetsNavn?: string
+  begrunnelse?: string
   beloep: string
   mottakersNavn: string
   sluttdato: string
   startdato: string
-  utbetalingshyppighet: string
+  utbetalingshyppighet?: string
   valuta: string
-  vedtaksdato: string
-  ytelse: string
-  ytterligereInfo: string
+  vedtaksdato?: string
+  ytelse?: string
+  ytterligereInfo?: string
 }
 
 export interface BaseReplySed {
-  anmodningsperiode: Array<Periode>
   bruker: Person
   querySedDocumentId?: string
   replySedDisplay?: string
@@ -153,6 +154,8 @@ export interface BaseReplySed {
 }
 
 export interface USed extends BaseReplySed {
+  toDelete?: any
+  anmodningsperiode: Periode
   lokaleSakIder: Array<{
     saksnummer: string
     institusjonsnavn: string
@@ -161,11 +164,17 @@ export interface USed extends BaseReplySed {
   }>
 }
 
-export interface F002Sed extends BaseReplySed {
-  annenPersonen: Person,
+export interface FSed extends BaseReplySed {
+  anmodningsperioder: Array<Periode>
+}
+
+export interface F002Sed extends FSed {
+  annenPerson: Person
   barn: Array<{
-    adresser?: Array<Adresse>,
-    barnetilhoerigheter?: Array<Periode>
+    adresser?: Array<Adresse>
+    barnetilhoerigheter?: Array<{
+      periode: Periode
+    }>
     flyttegrunn?: Flyttegrunn
     personInfo: PersonInfo
     motregning?: Utbetaling
@@ -175,7 +184,7 @@ export interface F002Sed extends BaseReplySed {
   endredeForhold: Array<string>
   familie: {
     motregninger: Array<Utbetaling>
-    ytelse: Array<Utbetaling>
+    ytelser: Array<Utbetaling>
   }
   formaal: Array<string>
   krav: {

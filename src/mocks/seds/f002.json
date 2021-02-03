@@ -1,0 +1,936 @@
+{
+  "sedType": "F002",
+  "sedVersjon": "4.2",
+  "bruker": {
+    "personInfo": {
+      "fornavn": "F002 bruker Fornavn",
+      "etternavn": "F002 bruker Etternavn",
+      "kjoenn": "M",
+      "foedselsdato": "2020-01-01",
+      "statsborgerskap": [
+        {
+          "land": "NO"
+        },
+        {
+          "land": "SE"
+        }
+      ],
+      "pin": [
+        {
+          "land": "NO",
+          "sektor": "yrkesskade_og_yrkessykdom1",
+          "identifikator": "10000000001",
+          "institusjonsid": "F002 bruker Institusjons ID 1",
+          "institusjonsnavn": "F002 bruker Institusjons navn 1"
+        },
+        {
+          "land": "SE",
+          "sektor": "yrkesskade_og_yrkessykdom2",
+          "identifikator": "20000000001",
+          "institusjonsid": "F002 bruker Institusjons ID 2",
+          "institusjonsnavn": "F002 bruker Institusjons navn 2"
+        }
+      ],
+      "pinMangler": {
+        "etternavnVedFoedsel": "F002 bruker Etternavn Ved Foedsel",
+        "fornavnVedFoedsel": "F002 bruker Fornavn Ved Foedsel",
+        "foedested": {
+          "by": "F002 bruker foedsted by",
+          "region": "F002 bruker foedsted region",
+          "land": "NO"
+        },
+        "far": {
+          "fornavn": "F002 bruker far fornavn",
+          "etternavnVedFoedsel": "F002 bruker far etternavnVedFoedsel"
+        },
+        "mor": {
+          "fornavn": "F002 bruker mor fornavn",
+          "etternavnVedFoedsel": "F002 bruker mor etternavnVedFoedsel"
+        }
+      }
+    },
+    "adresser": [
+      {
+        "type": "bosted",
+        "gate": "F002 bruker adresser1 gate",
+        "postnummer": "F002 bruker adresser1 postnummer",
+        "by": "F002 bruker adresser1 by",
+        "land": "NO",
+        "bygning": "F002 bruker adresser1 bygning",
+        "region": "F002 bruker adresser1 region"
+      },
+      {
+        "type": "opphold",
+        "gate": "F002 bruker adresser2 gate",
+        "postnummer": "F002 bruker adresser2 postnummer",
+        "by": "F002 bruker adresser2 by",
+        "land": "NO",
+        "bygning": "F002 bruker adresser2 bygning",
+        "region": "F002 bruker adresser2 region"
+      }
+    ],
+    "epost": [
+      {
+        "adresse": "F002-bruker-Epost-1@nav.no"
+      },
+      {
+        "adresse": "F002-bruker-Epost-2@nav.no"
+      }
+    ],
+    "telefon": [
+      {
+        "type": "hjem",
+        "nummer": "+4790000001"
+      },
+      {
+        "type": "mobil",
+        "nummer": "+4790000002"
+      }
+    ],
+    "perioderMedArbeid": [
+      {
+        "startdato": "1970-01-01",
+        "sluttdato": "1970-12-31"
+      },
+      {
+        "startdato": "1971-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    ],
+    "perioderMedTrygd": [
+      {
+        "startdato": "1972-01-01",
+        "sluttdato": "1972-12-31"
+      },
+      {
+        "startdato": "1973-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    ],
+    "perioderMedITrygdeordning": [
+      {
+        "startdato": "1974-01-01",
+        "sluttdato": "1974-12-31"
+      },
+      {
+        "startdato": "1975-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    ],
+    "perioderUtenforTrygdeordning": [
+      {
+        "startdato": "1976-01-01",
+        "sluttdato": "1976-12-31"
+      },
+      {
+        "startdato": "1977-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    ],
+    "perioderMedYtelser": [
+      {
+        "startdato": "1978-01-01",
+        "sluttdato": "1978-12-31"
+      },
+      {
+        "startdato": "1979-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    ],
+    "ikkeRettTilYtelser": {
+      "typeGrunn": "krav_ikke_framsatt",
+      "typeGrunnAnnen": "F002 bruker typeGrunnAnnen"
+    },
+    "perioderMedPensjon": [
+      {
+        "pensjonstype": "alderspensjon",
+        "periode": {
+          "startdato": "1980-01-01",
+          "sluttdato": "1980-12-31"
+        }
+      },
+      {
+        "pensjonstype": "alderspensjon",
+        "periode": {
+          "startdato": "1981-01-01",
+          "aapenPeriodeType": "åpen_sluttdato"
+        }
+      }
+    ],
+    "aktivitet": {
+      "perioderMedAktivitet": {
+        "type": "ansatt",
+        "perioder": [
+          {
+            "startdato": "1982-01-01",
+            "sluttdato": "1982-12-31"
+          },
+          {
+            "startdato": "1983-01-01",
+            "aapenPeriodeType": "åpen_sluttdato"
+          }
+        ]
+      },
+      "perioderUtenAktivitet": {
+        "type": "inaktiv",
+        "perioder": [
+          {
+            "startdato": "1984-01-01",
+            "sluttdato": "1984-12-31"
+          },
+          {
+            "startdato": "1985-01-01",
+            "aapenPeriodeType": "åpen_sluttdato"
+          }
+        ]
+      },
+      "perioderUkjentAktivitet": {
+        "ytterligereinfo": "F002 bruker ytterligereinfo",
+        "perioder": [
+          {
+            "startdato": "1986-01-01",
+            "sluttdato": "1986-12-31"
+          },
+          {
+            "startdato": "1987-01-01",
+            "aapenPeriodeType": "åpen_sluttdato"
+          }
+        ]
+      }
+    },
+    "flyttegrunn": {
+      "personligSituasjon": "F002 bruker personligSituasjon",
+      "perioder": [
+        {
+          "startdato": "1988-01-01",
+          "sluttdato": "1988-12-31"
+        },
+        {
+          "startdato": "1989-01-01",
+          "aapenPeriodeType": "åpen_sluttdato"
+        }
+      ],
+      "datoFlyttetTilMottakerlandet": "1990-01-01",
+      "datoFlyttetTilAvsenderlandet": "1991-01-01"
+    },
+    "familierelasjoner": [
+      {
+        "relasjonType": "gift",
+        "relasjonInfo": "F002 bruker relasjonInfo",
+        "periode": {
+          "startdato": "1992-01-01",
+          "aapenPeriodeType": "åpen_sluttdato"
+        },
+        "borSammen": "ja",
+        "annenRelasjonType": "F002 bruker annenRelasjonType",
+        "annenRelasjonPersonNavn": "F002 bruker annenRelasjonPersonNavn",
+        "annenRelasjonDato": "F002 bruker annenRelasjonDato"
+      }
+    ],
+    "ytterligereInfo": "F002 bruker ytterligereInfo"
+  },
+  "ektefelle": {
+    "personInfo": {
+      "fornavn": "F002 ektefelle fornavn",
+      "etternavn": "F002 ektefelle etternavn",
+      "kjoenn": "K",
+      "foedselsdato": "1993-01-01",
+      "statsborgerskap": [
+        {
+          "land": "DK"
+        },
+        {
+          "land": "FI"
+        }
+      ],
+      "pin": [
+        {
+          "land": "NO",
+          "sektor": "yrkesskade_og_yrkessykdom",
+          "identifikator": "10000000002",
+          "institusjonsid": "F002 ektefelle institusjons ID 1",
+          "institusjonsnavn": "F002 ektefelle institusjons navn 1"
+        },
+        {
+          "land": "DK",
+          "sektor": "yrkesskade_og_yrkessykdom",
+          "identifikator": "20000000002",
+          "institusjonsid": "F002 ektefelle institusjons ID 2",
+          "institusjonsnavn": "F002 ektefelle institusjons navn 2"
+        }
+      ],
+      "pinMangler": {
+        "etternavnVedFoedsel": "F002 ektefelle foedested region",
+        "fornavnVedFoedsel": "F002 ektefelle fornavnVedFoedsel",
+        "foedested": {
+          "by": "F002 ektefelle foedested by",
+          "region": "F002 ektefelle foedested region",
+          "land": "NO"
+        },
+        "far": {
+          "fornavn": "F002 ektefelle far fornavn",
+          "etternavnVedFoedsel": "F002 ektefelle far etternavnVedFoedsel"
+        },
+        "mor": {
+          "fornavn": "F002 ektefelle mor fornavn",
+          "etternavnVedFoedsel": "F002 ektefelle mor etternavnVedFoedsel"
+        }
+      }
+    },
+    "adresser": [
+      {
+        "type": "bosted",
+        "gate": "F002 ektefelle adresse1 gate",
+        "postnummer": "F002 ektefelle adresse1 postnummer",
+        "by": "F002 ektefelle adresse1 by",
+        "land": "NO",
+        "bygning": "F002 ektefelle adresse1 bygning",
+        "region": "F002 ektefelle adresse1 region"
+      },
+      {
+        "type": "opphold",
+        "gate": "F002 ektefelle adresse2 gate",
+        "postnummer": "F002 ektefelle adresse2 postnummer",
+        "by": "F002 ektefelle adresse2 by",
+        "land": "NO",
+        "bygning": "F002 ektefelle adresse2 bygning",
+        "region": "F002 ektefelle adresse2 region"
+      }
+    ],
+    "epost": [
+      {
+        "adresse": "F002-ektefelle-Epost-1@nav.no"
+      },
+      {
+        "adresse": "F002-ektefelle-Epost-2@nav.no"
+      }
+    ],
+    "telefon": [
+      {
+        "type": "hjem",
+        "nummer": "+4790000003"
+      },
+      {
+        "type": "mobil",
+        "nummer": "+4790000004"
+      }
+    ],
+    "perioderMedArbeid": [
+      {
+        "startdato": "1990-01-01",
+        "sluttdato": "1990-12-31"
+      },
+      {
+        "startdato": "1991-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    ],
+    "perioderMedTrygd": [
+      {
+        "startdato": "1992-01-01",
+        "sluttdato": "1992-12-31"
+      },
+      {
+        "startdato": "1992-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    ],
+    "perioderMedITrygdeordning": [
+      {
+        "startdato": "1993-01-01",
+        "sluttdato": "1993-12-31"
+      },
+      {
+        "startdato": "1994-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    ],
+    "perioderUtenforTrygdeordning": [
+      {
+        "startdato": "1995-01-01",
+        "sluttdato": "1995-12-31"
+      },
+      {
+        "startdato": "1996-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    ],
+    "perioderMedYtelser": [
+      {
+        "startdato": "1997-01-01",
+        "sluttdato": "1997-12-31"
+      },
+      {
+        "startdato": "1998-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    ],
+    "ikkeRettTilYtelser": {
+      "typeGrunn": "krav_ikke_framsatt",
+      "typeGrunnAnnen": "F002 ektefelle typeGrunnAnnen"
+    },
+    "perioderMedPensjon": [
+      {
+        "pensjonstype": "alderspensjon",
+        "periode": {
+          "startdato": "1999-01-01",
+          "sluttdato": "1999-12-31"
+        }
+      },
+      {
+        "pensjonstype": "alderspensjon",
+        "periode": {
+          "startdato": "2000-01-01",
+          "aapenPeriodeType": "åpen_sluttdato"
+        }
+      }
+    ],
+    "aktivitet": {
+      "perioderMedAktivitet": {
+        "type": "ansatt",
+        "perioder": [
+          {
+            "startdato": "2001-01-01",
+            "sluttdato": "2001-12-31"
+          },
+          {
+            "startdato": "2002-01-01",
+            "aapenPeriodeType": "åpen_sluttdato"
+          }
+        ]
+      },
+      "perioderUtenAktivitet": {
+        "type": "inaktiv",
+        "perioder": [
+          {
+            "startdato": "2003-01-01",
+            "sluttdato": "2003-12-31"
+          },
+          {
+            "startdato": "2004-01-01",
+            "aapenPeriodeType": "åpen_sluttdato"
+          }
+        ]
+      },
+      "perioderUkjentAktivitet": {
+        "ytterligereinfo": "F002 ektefelle ytterligereinfo",
+        "perioder": [
+          {
+            "startdato": "2005-01-01",
+            "sluttdato": "2005-12-31"
+          },
+          {
+            "startdato": "2006-01-01",
+            "aapenPeriodeType": "åpen_sluttdato"
+          }
+        ]
+      }
+    },
+    "flyttegrunn": {
+      "personligSituasjon": "F002 ektfelle flyttegrunn personligSituasjon",
+      "perioder": [
+        {
+          "startdato": "2007-01-01",
+          "sluttdato": "2007-12-31"
+        },
+        {
+          "startdato": "2008-01-01",
+          "aapenPeriodeType": "åpen_sluttdato"
+        }
+      ],
+      "datoFlyttetTilMottakerlandet": "2009-01-01",
+      "datoFlyttetTilAvsenderlandet": "2010-01-01"
+    },
+    "familierelasjoner": [
+      {
+        "relasjonType": "gift",
+        "relasjonInfo": "F002 ektefelle relasjonInfo",
+        "periode": {
+          "startdato": "2011-01-01",
+          "aapenPeriodeType": "åpen_sluttdato"
+        },
+        "borSammen": "ja",
+        "annenRelasjonType": "F002 ektefelle annenRelasjonType",
+        "annenRelasjonPersonNavn": "F002 ektefelle annenRelasjonPersonNavn",
+        "annenRelasjonDato": "F002 ektefelle annenRelasjonDato"
+      }
+    ],
+    "ytterligereInfo": "F002 ektefelle ytterligereInfo"
+  },
+  "annenPerson": {
+    "personInfo": {
+      "fornavn": "F002 annenPerson fornavn",
+      "etternavn": "F002 annenPerson etternavn",
+      "kjoenn": "U",
+      "foedselsdato": "2012-01-01",
+      "statsborgerskap": [
+        {
+          "land": "NO"
+        },
+        {
+          "land": "SE"
+        }
+      ],
+      "pin": [
+        {
+          "land": "NO",
+          "sektor": "yrkesskade_og_yrkessykdom",
+          "identifikator": "10000000003",
+          "institusjonsid": "F002 annenPerson institusjons ID 1",
+          "institusjonsnavn": "F002 annenPerson institusjons navn 1"
+        },
+        {
+          "land": "SE",
+          "sektor": "yrkesskade_og_yrkessykdom",
+          "identifikator": "20000000003",
+          "institusjonsid": "F002 annenPerson institusjons ID 2",
+          "institusjonsnavn": "F002 annenPerson institusjons navn 2"
+        }
+      ],
+      "pinMangler": {
+        "etternavnVedFoedsel": "F002 annenPerson etternavnVedFoedsel",
+        "fornavnVedFoedsel": "F002 annenPerson fornavnVedFoedsel",
+        "foedested": {
+          "by": "F002 annenPerson foedested by",
+          "region": "F002 annenPerson foedested region",
+          "land": "NO"
+        },
+        "far": {
+          "fornavn": "F002 annenPerson  far fornavn",
+          "etternavnVedFoedsel": "F002 annenPerson far etternavnVedFoedsel"
+        },
+        "mor": {
+          "fornavn": "F002 annenPerson  mor fornavn",
+          "etternavnVedFoedsel": "F002 annenPerson mor etternavnVedFoedsel"
+        }
+      }
+    },
+    "adresser": [
+      {
+        "type": "bosted",
+        "gate": "F002 annenPerson adresse1 gate",
+        "postnummer": "F002 annenPerson adresse1 postnummer",
+        "by": "F002 annenPerson adresse1 by",
+        "land": "NO",
+        "bygning": "F002 annenPerson adresse1 bygning",
+        "region": "F002 annenPerson adresse1 region"
+      },
+      {
+        "type": "opphold",
+        "gate": "F002 annenPerson adresse2 gate",
+        "postnummer": "F002 annenPerson adresse2 postnummer",
+        "by": "F002 annenPerson adresse2 by",
+        "land": "NO",
+        "bygning": "F002 annenPerson adresse2 bygning",
+        "region": "F002 annenPerson adresse2 region"
+      }
+    ],
+    "epost": [
+      {
+        "adresse": "F002-annenPerson-Epost-1@nav.no"
+      },
+      {
+        "adresse": "F002-annenPerson-Epost-2@nav.no"
+      }
+    ],
+    "telefon": [
+      {
+        "type": "hjem",
+        "nummer": "+4790000005"
+      },
+      {
+        "type": "mobil",
+        "nummer": "+4790000006"
+      }
+    ],
+    "perioderMedArbeid": [
+      {
+        "startdato": "2013-01-01",
+        "sluttdato": "2013-12-31"
+      },
+      {
+        "startdato": "2014-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    ],
+    "perioderMedTrygd": [
+      {
+        "startdato": "2015-01-01",
+        "sluttdato": "2015-12-31"
+      },
+      {
+        "startdato": "2016-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    ],
+    "perioderMedITrygdeordning": [
+      {
+        "startdato": "2017-01-01",
+        "sluttdato": "2017-12-31"
+      },
+      {
+        "startdato": "2018-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    ],
+    "perioderUtenforTrygdeordning": [
+      {
+        "startdato": "2019-01-01",
+        "sluttdato": "2019-12-31"
+      },
+      {
+        "startdato": "2020-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    ],
+    "perioderMedYtelser": [
+      {
+        "startdato": "2021-01-01",
+        "sluttdato": "2021-12-31"
+      },
+      {
+        "startdato": "2022-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    ],
+    "ikkeRettTilYtelser": {
+      "typeGrunn": "krav_ikke_framsatt",
+      "typeGrunnAnnen": "F002 annenPerson typeGrunnAnnen"
+    },
+    "perioderMedPensjon": [
+      {
+        "pensjonstype": "alderspensjon",
+        "periode": {
+          "startdato": "2023-01-01",
+          "sluttdato": "2023-12-31"
+        }
+      },
+      {
+        "pensjonstype": "alderspensjon",
+        "periode": {
+          "startdato": "2024-01-01",
+          "aapenPeriodeType": "åpen_sluttdato"
+        }
+      }
+    ],
+    "aktivitet": {
+      "perioderMedAktivitet": {
+        "type": "ansatt",
+        "perioder": [
+          {
+            "startdato": "2025-01-01",
+            "sluttdato": "2025-12-31"
+          },
+          {
+            "startdato": "2026-01-01",
+            "aapenPeriodeType": "åpen_sluttdato"
+          }
+        ]
+      },
+      "perioderUtenAktivitet": {
+        "type": "inaktiv",
+        "perioder": [
+          {
+            "startdato": "2027-01-01",
+            "sluttdato": "2027-12-31"
+          },
+          {
+            "startdato": "2028-01-01",
+            "aapenPeriodeType": "åpen_sluttdato"
+          }
+        ]
+      },
+      "perioderUkjentAktivitet": {
+        "ytterligereinfo": "F002 annenPerson ytterligereinfo",
+        "perioder": [
+          {
+            "startdato": "2029-01-01",
+            "sluttdato": "2029-12-31"
+          },
+          {
+            "startdato": "2030-01-01",
+            "aapenPeriodeType": "åpen_sluttdato"
+          }
+        ]
+      }
+    },
+    "flyttegrunn": {
+      "personligSituasjon": "F002 annenPerson personligSituasjon",
+      "perioder": [
+        {
+          "startdato": "2031-01-01",
+          "sluttdato": "2031-12-31"
+        },
+        {
+          "startdato": "2032-01-01",
+          "aapenPeriodeType": "åpen_sluttdato"
+        }
+      ],
+      "datoFlyttetTilMottakerlandet": "2033-01-01",
+      "datoFlyttetTilAvsenderlandet": "2034-01-01"
+    },
+    "familierelasjoner": [
+      {
+        "relasjonType": "gift",
+        "relasjonInfo": "F002 annenPerson relasjonInfo",
+        "periode": {
+          "startdato": "2035-01-01",
+          "aapenPeriodeType": "åpen_sluttdato"
+        },
+        "borSammen": "ja",
+        "annenRelasjonType": "F002 annenPerson annenRelasjonType",
+        "annenRelasjonPersonNavn": "F002 annenPerson annenRelasjonPersonNavn",
+        "annenRelasjonDato": "F002 annenPerson annenRelasjonDato"
+      }
+    ],
+    "ytterligereInfo": "F002 annenPerson ytterligereInfo"
+  },
+  "barn": [
+    {
+      "personInfo": {
+        "fornavn": "F002 barn1 fornavn",
+        "etternavn": "F002 barn1 etternavn",
+        "kjoenn": "M",
+        "foedselsdato": "2036-01-01",
+        "statsborgerskap": [
+          {
+            "land": "NO"
+          },
+          {
+            "land": "SE"
+          }
+        ],
+        "pin": [
+          {
+            "land": "NO",
+            "sektor": "yrkesskade_og_yrkessykdom",
+            "identifikator": "10000000004",
+            "institusjonsid": "F002 barn1 institusjons ID 1",
+            "institusjonsnavn": "F002 barn1 institusjons navn 1"
+          },
+          {
+            "land": "SE",
+            "sektor": "yrkesskade_og_yrkessykdom",
+            "identifikator": "20000000004",
+            "institusjonsid": "F002 barn1 institusjons ID 2",
+            "institusjonsnavn": "F002 barn1 institusjons navn 2"
+          }
+        ],
+        "pinMangler": {
+          "etternavnVedFoedsel": "F002 barn1 etternavnVedFoedsel",
+          "fornavnVedFoedsel": "F002 barn1 fornavnVedFoedsel",
+          "foedested": {
+            "by": "F002 barn1 foedested by",
+            "region": "F002 barn1 foedested region",
+            "land": "NO"
+          },
+          "far": {
+            "fornavn": "F002 barn1 far fornavn",
+            "etternavnVedFoedsel": "F002 barn1 far etternavnVedFoedsel"
+          },
+          "mor": {
+            "fornavn": "F002 barn1 mor fornavn",
+            "etternavnVedFoedsel": "F002 barn1 mor etternavnVedFoedsel"
+          }
+        }
+      },
+      "adresser": [
+        {
+          "type": "bosted",
+          "gate": "F002 barn1 adresse1 gate",
+          "postnummer": "F002 barn1 adresse1 postnummer",
+          "by": "F002 barn1 adresse1 by",
+          "land": "NO",
+          "bygning": "F002 barn1 adresse1 bygning",
+          "region": "F002 barn1 adresse1 region"
+        },
+        {
+          "type": "opphold",
+          "gate": "F002 barn1 adresse2 gate",
+          "postnummer": "F002 barn1 adresse2 postnummer",
+          "by": "F002 barn1 adresse2 by",
+          "land": "NO",
+          "bygning": "F002 barn1 adresse2 bygning",
+          "region": "F002 barn1 adresse2 region"
+        }
+      ],
+      "barnetilhoerigheter": [
+        {
+          "periode": {
+            "startdato": "2037-01-01",
+            "aapenPeriodeType": "åpen_sluttdato"
+          }
+        }
+      ],
+      "flyttegrunn": {
+        "personligSituasjon": "F002 barn1 personligSituasjon",
+        "perioder": [
+          {
+            "startdato": "2038-01-01",
+            "sluttdato": "2038-12-31"
+          },
+          {
+            "startdato": "2039-01-01",
+            "aapenPeriodeType": "åpen_sluttdato"
+          }
+        ],
+        "datoFlyttetTilMottakerlandet": "2040-01-01",
+        "datoFlyttetTilAvsenderlandet": "2041-01-01"
+      }
+    },
+    {
+      "personInfo": {
+        "fornavn": "F002 barn2 fornavn",
+        "etternavn": "F002 barn2 etternavn",
+        "kjoenn": "K",
+        "foedselsdato": "2042-01-01",
+        "statsborgerskap": [
+          {
+            "land": "DK"
+          },
+          {
+            "land": "FI"
+          }
+        ],
+        "pin": [
+          {
+            "land": "NO",
+            "sektor": "yrkesskade_og_yrkessykdom",
+            "identifikator": "10000000005",
+            "institusjonsid": "F002 barn2 institusjons ID 1",
+            "institusjonsnavn": "F002 barn2 institusjons navn 1"
+          },
+          {
+            "land": "SE",
+            "sektor": "yrkesskade_og_yrkessykdom",
+            "identifikator": "20000000005",
+            "institusjonsid": "F002 barn2 institusjons ID 2",
+            "institusjonsnavn": "F002 barn2 institusjons navn 2"
+          }
+        ],
+        "pinMangler": {
+          "etternavnVedFoedsel": "F002 barn2 etternavnVedFoedsel",
+          "fornavnVedFoedsel": "F002 barn2 fornavnVedFoedsel",
+          "foedested": {
+            "by": "F002 barn2 foedested by",
+            "region": "F002 barn2 foedested region",
+            "land": "NO"
+          },
+          "far": {
+            "fornavn": "F002 barn2 far fornavn",
+            "etternavnVedFoedsel": "F002 barn2 far etternavnVedFoedsel"
+          },
+          "mor": {
+            "fornavn": "F002 barn2 mor fornavn",
+            "etternavnVedFoedsel": "F002 barn2 mor etternavnVedFoedsel"
+          }
+        }
+      },
+      "ytelse": {
+        "startdato": "2043-01-01",
+        "sluttdato": "2044-01-01",
+        "beloep": "100",
+        "valuta": "NOK",
+        "utbetalingshyppighet": "F002 barn2 ytelse utbetalingshyppighet",
+        "ytelse": "F002 barn2 ytelse ytelse",
+        "mottakersNavn": "F002 barn2 ytelse mottakersNavn",
+        "barnetsNavn": "F002 barn2 ytelse barnetsNavn"
+      },
+      "motregning": {
+        "startdato": "2045-01-01",
+        "sluttdato": "2046-01-01",
+        "beloep": "200",
+        "valuta": "NOK",
+        "utbetalingshyppighet": "F002 barn2 motregning utbetalingshyppighet",
+        "ytelse": "F002 barn2 motregning ytelse",
+        "mottakersNavn": "F002 barn2 motregning mottakersNavn",
+        "barnetsNavn": "F002 barn2 motregning barnetsNavn",
+        "vedtaksdato": "2047-01-01",
+        "begrunnelse": "F002 barn2 motregning begrunnelse",
+        "ytterligereInfo": "F002 barn2 motregning ytterligereInfo"
+      }
+    }
+  ],
+  "familie": {
+    "ytelser": [
+      {
+        "startdato": "2048-01-01",
+        "sluttdato": "2049-01-01",
+        "beloep": "300",
+        "valuta": "NOK",
+        "mottakersNavn": "F002 barn2 familie ytelser mottakersNavn 1",
+        "antallpersoner": "1"
+      },
+      {
+        "startdato": "2050-01-01",
+        "sluttdato": "2051-01-01",
+        "beloep": "400",
+        "valuta": "NOK",
+        "mottakersNavn": "F002 barn2 familie ytelser mottakersNavn 2",
+        "antallpersoner": "2"
+      }
+    ],
+    "motregninger": [
+      {
+        "startdato": "2052-01-01",
+        "sluttdato": "2053-01-01",
+        "beloep": "500",
+        "valuta": "NOK",
+        "mottakersNavn": "F002 barn2 familie motregninger mottakersNavn 1",
+        "vedtaksdato": "2054-01-01",
+        "begrunnelse": "F002 barn2 familie motregninger begrunnelse 1"
+      },
+      {
+        "startdato": "2055-01-01",
+        "sluttdato": "2056-01-01",
+        "beloep": "600",
+        "valuta": "NOK",
+        "mottakersNavn": "F002 barn2 familie motregninger mottakersNavn 2",
+        "vedtaksdato": "2057-01-01",
+        "begrunnelse": "F002 barn2 familie motregninger begrunnelse 2"
+      }
+    ]
+  },
+  "anmodningsperioder": [
+    {
+      "startdato": "2057-01-01",
+      "sluttdato": "2057-12-31"
+    },
+    {
+      "startdato": "2058-01-01",
+      "aapenPeriodeType": "åpen_sluttdato"
+    }
+  ],
+  "formaal": [
+    "F002 formaal 1"
+  ],
+  "krav": {
+    "kravMottattDato": "2059-01-01",
+    "kravType": "F002 krav type",
+    "infoType": "F002 info type",
+    "infoPresisering": "F002 krav info Presisering"
+  },
+  "utbetalingTilInstitusjon": {
+    "id": "F002 utbetalingTilInstitusjon id",
+    "navn": "F002 utbetalingTilInstitusjon navn",
+    "kontoOrdinaer": {
+      "swift": "F002 kontoOrdinaer swift",
+      "adresse": {
+        "gate": "F002 kontoOrdinaer gate",
+        "postnummer": "F002 kontoOrdinaer postnummer",
+        "by": "F002 kontoOrdinaer by",
+        "land": "NO",
+        "bygning": "F002 kontoOrdinaer bygning",
+        "region": "F002 kontoOrdinaer region"
+      }
+    },
+    "kontoSepa": {
+      "iban": "F002 kontoSepa iban",
+      "swift": "F002 kontoSepa swift"
+    },
+    "begrunnelse": "F002 kontoSepa begrunnelse"
+  },
+  "endredeForhold": [
+    "hele_familien"
+  ]
+}

@@ -1,4 +1,4 @@
-import { Person } from 'declarations/types'
+import { ReplySed } from 'declarations/sed'
 import { Undertittel } from 'nav-frontend-typografi'
 import { Column, HighContrastRadioPanelGroup, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
@@ -8,8 +8,9 @@ import styled from 'styled-components'
 import LesMer from 'components/LesMer/LesMer'
 
 interface PersonensStatusProps {
-  person: Person,
   highContrast: boolean
+  personID: string
+  replySed: ReplySed
 }
 const PersonensStatusDiv = styled.div`
   padding: 1rem;

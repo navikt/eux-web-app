@@ -1,0 +1,74 @@
+{
+  "sedVersjon": "4.2",
+  "bruker": {
+    "personInfo": {
+      "fornavn": "æøå",
+      "etternavn": "æøå",
+      "kjoenn": "M",
+      "foedselsdato": "2001-01-01",
+      "statsborgerskap": [
+        {
+          "land": "NO"
+        }
+      ],
+      "pin": [
+        {
+          "land": "NO",
+          "sektor": "yrkesskade_og_yrkessykdom",
+          "identifikator": "æøå",
+          "institusjonsid": "ES:3100",
+          "institusjonsnavn": "æøå"
+        }
+      ],
+      "pinMangler": {
+        "foedested": {
+          "by": "æøå",
+          "region": "æøå",
+          "land": "NO"
+        },
+        "far": {
+          "fornavn": "æøå",
+          "etternavnVedFoedsel": "æøå"
+        },
+        "mor": {
+          "fornavn": "æøå",
+          "etternavnVedFoedsel": "æøå"
+        },
+        "etternavnVedFoedsel": "æøå",
+        "fornavnVedFoedsel": "æøå"
+      }
+    }
+  },
+  "anmodningsperiode": {
+    "startdato": "2001-01-01",
+    "aapenPeriodeType": "åpen_sluttdato"
+  },
+  "lokaleSakIder": [
+    {
+      "saksnummer": "æøå",
+      "institusjonsnavn": "æøå",
+      "institusjonsid": "ES:3100",
+      "land": "NO"
+    }
+  ],
+  "sedType": "U004",
+  "loennsopplysninger": [
+    {
+      "periode": {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      },
+      "ansettelsestype": "ansettelsesforhold",
+      "inntekter": [
+        {
+          "type": "nettoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet",
+          "typeAnnen": "æøå",
+          "beloep": "æøå",
+          "valuta": "NOK"
+        }
+      ],
+      "arbeidsdager": "æøå",
+      "arbeidstimer": "æøå"
+    }
+  ]
+}

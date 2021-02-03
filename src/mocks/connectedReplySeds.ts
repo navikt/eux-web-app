@@ -1,8 +1,8 @@
 export default {
-  H001: [
+  F001: [
     {
-      replySedType: 'X008',
-      replySedDisplay: 'Invalidate SED',
+      replySedType: 'F002',
+      replySedDisplay: 'F002',
       querySedDocumentId: '301bfea5632444b48d5f933fe0c090e7'
     }
   ],

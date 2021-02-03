@@ -1,19 +1,12 @@
 import Tilsette from 'assets/icons/Tilsette'
-import Trashcan from 'assets/icons/Trashcan'
+import { ReplySed } from 'declarations/sed'
 import { FamilieRelasjon, Person } from 'declarations/types'
 import _ from 'lodash'
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper'
 import Lukknapp from 'nav-frontend-lukknapp'
 import NavModal from 'nav-frontend-modal'
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
-import {
-  Column,
-  HighContrastFlatknapp,
-  HighContrastInput,
-  HorizontalSeparatorDiv,
-  Row,
-  VerticalSeparatorDiv
-} from 'nav-hoykontrast'
+import { Undertittel } from 'nav-frontend-typografi'
+import { Column, HighContrastInput, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -45,7 +38,7 @@ const OtherButton = styled(Knapp)`
 const AlignCenterRow = styled(Row)`
    align-items: center;
 `
-const CheckboxDiv = styled.div`
+/* const CheckboxDiv = styled.div`
   display: flex;
   justify-content: space-between;
   .skjemaelement {
@@ -57,21 +50,21 @@ const FlexDiv = styled.div`
   display: flex;
   align-items: center;
 `
-
+*/
 interface FamilyManagerModalProps {
   appElement?: any
   onModalClose?: () => void
   onPersonsChanged: (p: Array<Person | FamilieRelasjon>) => void
   closeButton?: boolean
-  personPlusRelations: Array<Person | FamilieRelasjon>
+  replySed: ReplySed
 }
 
 const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
   appElement = document.body,
   onModalClose,
   onPersonsChanged,
-  closeButton,
-  personPlusRelations
+  closeButton
+  // replySed
 }: FamilyManagerModalProps) => {
   const { t } = useTranslation()
   const [_extraPersons, setExtraPersons] = useState<Array<Person | FamilieRelasjon>>([])
@@ -95,10 +88,10 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
   NavModal.setAppElement(appElement)
 
   // TODO
-  const onRemovePerson = (person: Person) => {
+  /* const onRemovePerson = (person: Person) => {
     const newPersons = _.filter(_extraPersons, f => f !== person)
     setExtraPersons(newPersons)
-  }
+  } */
 
   // TODO
   const onNewPersonFnrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -143,16 +136,15 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
         <Title>
           {t('ui:label-add-remove-persons')}
         </Title>
-
         <>
-          {personPlusRelations.map(person => (
+          {/* personPlusRelations.map(person => (
             <CheckboxDiv key={person.fnr}>
               <Normaltekst>
                 {person?.fornavn + ' ' + person?.etternavn + ' (' + person?.kjoenn + ')'}
               </Normaltekst>
             </CheckboxDiv>
-          ))}
-          {_extraPersons.map(person => (
+          )) */}
+          {/* _extraPersons.map(person => (
             <FlexDiv key={person.fnr}>
               <CheckboxDiv>
                 <Normaltekst>
@@ -169,7 +161,7 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
                 </HighContrastFlatknapp>
               </CheckboxDiv>
             </FlexDiv>
-          ))}
+          )) */}
           <hr />
           <VerticalSeparatorDiv />
           <Undertittel>

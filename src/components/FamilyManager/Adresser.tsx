@@ -1,6 +1,7 @@
 import Tilsette from 'assets/icons/Tilsette'
 import Trashcan from 'assets/icons/Trashcan'
 import { State } from 'declarations/reducers'
+import { ReplySed } from 'declarations/sed'
 import { Kodeverk, Person } from 'declarations/types'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
@@ -19,8 +20,9 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 interface AdresseProps {
-  person: Person,
   highContrast: boolean
+  personID: string
+  replySed: ReplySed
 }
 const AdresseDiv = styled.div`
   padding: 1rem;

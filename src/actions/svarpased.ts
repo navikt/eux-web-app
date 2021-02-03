@@ -1,6 +1,7 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { Arbeidsforholdet, FamilieRelasjon, Inntekter, ConnectedSed, Validation, Person } from 'declarations/types'
+import { ReplySed } from 'declarations/sed'
+import { Arbeidsforholdet, FamilieRelasjon, Inntekter, ConnectedSed, Validation } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockArbeidsforholdList from 'mocks/arbeidsforholdList'
 import mockInntekt from 'mocks/inntekt'
@@ -48,6 +49,7 @@ export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload>>
 export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload>> = (
   saksnummer: string, connectedSed: ConnectedSed
 ): ThunkResult<ActionWithPayload> => {
+  const mockSed = mockReplySed(connectedSed.replySedType)
   return call({
     url: sprintf(urls.API_SVARPASED_REPLYSED_QUERY_URL, {
       rinaSakId: saksnummer,
@@ -55,7 +57,7 @@ export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload>> = (
       sedType: connectedSed.replySedType
     }),
     expectedPayload: {
-      ...mockReplySed,
+      ...mockSed,
       ...connectedSed
     },
     type: {
@@ -70,27 +72,19 @@ export const resetReplySed: ActionCreator<Action> = (): Action => ({
   type: types.SVARPASED_REPLYSED_RESET
 })
 
+export const setReplySed: ActionCreator<ActionWithPayload> = (
+  replySed: ReplySed
+): ActionWithPayload => ({
+  type: types.SVARPASED_REPLYSED_SET,
+  payload: replySed
+})
+
 export const setParentSed: ActionCreator<ActionWithPayload> = (
   payload: string
 ): ActionWithPayload => ({
   type: types.SVARPASED_PARENTSED_SET,
   payload: payload
 })
-
-export const getPerson: ActionCreator<ThunkResult<ActionWithPayload>> = (
-  fnr: string
-): ThunkResult<ActionWithPayload> => {
-  return call({
-    url: sprintf(urls.API_SVARPASED_PERSON_URL, { fnr: fnr }),
-    expectedPayload: mockPerson({ fnr: fnr }),
-    cascadeFailureError: true,
-    type: {
-      request: types.SVARPASED_PERSON_GET_REQUEST,
-      success: types.SVARPASED_PERSON_GET_SUCCESS,
-      failure: types.SVARPASED_PERSON_GET_FAILURE
-    }
-  })
-}
 
 export const searchPerson: ActionCreator<ThunkResult<ActionWithPayload>> = (
   fnr: string
@@ -229,13 +223,6 @@ export const setAllValidation = (
 ): ActionWithPayload => ({
   type: types.SVARPASED_VALIDATION_ALL_SET,
   payload: newValidation
-})
-
-export const setPersonPlusRelations = (
-  personPlusRelations: Array<Person>
-): ActionWithPayload => ({
-  type: types.SVARPASED_PERSONPLUSRELATIONS_SET,
-  payload: personPlusRelations
 })
 
 export const setSingleValidation = (

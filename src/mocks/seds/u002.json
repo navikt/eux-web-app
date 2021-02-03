@@ -1,0 +1,97 @@
+{
+  "sedVersjon": "4.2",
+  "bruker": {
+    "personInfo": {
+      "fornavn": "U002fornavn",
+      "etternavn": "U002etternavn",
+      "kjoenn": "M",
+      "foedselsdato": "2000-02-02",
+      "statsborgerskap": [
+        {
+          "land": "NO"
+        }
+      ],
+      "pinMangler": {
+        "etternavnVedFoedsel": "U002etternavnVedFoedsel",
+        "fornavnVedFoedsel": "U002fornavnVedFoedsel",
+        "foedested": {
+          "by": "U002by",
+          "region": "U002region",
+          "land": "NO"
+        },
+        "far": {
+          "fornavn": "U002farfornavn",
+          "etternavnVedFoedsel": "U002faretternavnVedFoedsel"
+        },
+        "mor": {
+          "fornavn": "U002morfornavn",
+          "etternavnVedFoedsel": "U002moretternavnVedFoedsel"
+        }
+      },
+      "pin": [
+        {
+          "land": "NO",
+          "sektor": "yrkesskade_og_yrkessykdom",
+          "identifikator": "æøå",
+          "institusjonsid": "ES:3100",
+          "institusjonsnavn": "æøå"
+        }
+      ]
+    }
+  },
+  "perioderAnsattMedForsikring": [
+    {
+      "arbeidsgiver": {
+        "navn": "æøå",
+        "identifikatorer": [
+          {
+            "type": "organisasjonsnummer",
+            "id": "æøå"
+          }
+        ],
+        "adresse": {
+          "gate": "æøå",
+          "postnummer": "æøå",
+          "by": "æøå",
+          "land": "NO",
+          "bygning": "æøå",
+          "region": "æøå"
+        }
+      },
+      "periode": {
+        "startdato": "2010-01-01",
+        "sluttdato": "2020-02-02"
+      },
+      "typeTrygdeforhold": "ansettelsesforhold_som_utgjør_forsikringsperiode"
+    }
+  ],
+  "lokaleSakIder": [
+    {
+      "saksnummer": "æøå",
+      "institusjonsnavn": "æøå",
+      "institusjonsid": "ES:3100",
+      "land": "NO"
+    }
+  ],
+  "anmodningsperiode": {
+    "startdato": "2010-01-01",
+    "aapenPeriodeType": "åpen_sluttdato"
+  },
+  "sisteAnsettelseInfo": {
+    "opphoerRettighet": "æøå",
+    "opphoerYtelse": "æøå",
+    "utbetalinger": [
+      {
+        "utbetalingType": "inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet",
+        "loennTilDato": "æøå",
+        "feriedagerTilGode": "æøå",
+        "valuta": "NOK",
+        "beloep": "æøå"
+      }
+    ],
+    "typeGrunnOpphoerAnsatt": "oppsagt_av_arbeidsgiver",
+    "annenGrunnOpphoerAnsatt": "æøå",
+    "grunnOpphoerSelvstendig": "æøå"
+  },
+  "sedType": "U002"
+}

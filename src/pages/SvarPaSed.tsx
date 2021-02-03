@@ -226,6 +226,7 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
     left: Slide.LEFT === position
   })
 
+  console.log('rendering')
   return (
     <TopContainer>
       <Container>

@@ -1,4 +1,5 @@
 import Select from 'components/Select/Select'
+import { ReplySed } from 'declarations/sed'
 import { Person } from 'declarations/types'
 import { Column, HighContrastInput, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
@@ -6,8 +7,9 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 interface KontaktinformasjonProps {
-  person: Person,
   highContrast: boolean
+  personID: string
+  replySed: ReplySed
 }
 const KontaktinformasjonDiv = styled.div`
   padding: 1rem;

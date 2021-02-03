@@ -10,7 +10,7 @@ import Purpose from 'components/Purpose/Purpose'
 import * as types from 'constants/actionTypes'
 import { AlertStatus } from 'declarations/components'
 import { State } from 'declarations/reducers'
-import { Inntekt as IInntekt, Inntekter, ReplySed, Validation } from 'declarations/types'
+import { Inntekt as IInntekt, Inntekter, Validation } from 'declarations/types'
 import _ from 'lodash'
 import Alertstripe from 'nav-frontend-alertstriper'
 import { VenstreChevron } from 'nav-frontend-chevron'
@@ -67,7 +67,7 @@ const mapState = (state: State): any => ({
   alertMessage: state.alert.clientErrorMessage,
   alertType: state.alert.type,
 
-  rinasaksnummerOrFnrParam: state.app.params.rinasaksnummerOrFnr,
+  rinasaksnummerOrFnr: state.app.params.rinasaksnummerOrFnr,
 
   creatingSedWithAttachments: state.loading.creatingSedWithAttachments,
   creatingSedEditInRINA: state.loading.creatingSedEditInRINA,
@@ -76,11 +76,9 @@ const mapState = (state: State): any => ({
 
   arbeidsforholdList: state.svarpased.arbeidsforholdList,
   inntekter: state.svarpased.inntekter,
-  person: state.svarpased.person,
-  personPlusRelations: state.svarpased.personPlusRelations,
+  replySed: state.svarpased.replySed,
   svarPasedData: state.svarpased.svarPasedData,
   valgteArbeidsforhold: state.svarpased.valgteArbeidsforhold,
-  replySed: state.svarpased.replySed,
   validation: state.svarpased.validation,
 
   highContrast: state.ui.highContrast
@@ -90,7 +88,6 @@ const mapStateTwo = (state: State): any => ({
   arbeidsforhold: state.svarpased.valgteArbeidsforhold,
   familieRelasjoner: state.svarpased.familierelasjoner,
   inntekter: state.svarpased.selectedInntekter,
-  person: state.svarpased.person,
   sed: state.svarpased.replySed
 })
 
@@ -109,7 +106,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
     alertMessage,
     alertType,
 
-    saksnummerOrFnr,
+    rinasaksnummerOrFnr,
 
     creatingSedWithAttachments,
     creatingSedEditInRINA,
@@ -118,12 +115,9 @@ const Step2: React.FC<SvarPaSedProps> = ({
 
     arbeidsforholdList,
     inntekter,
-    person,
-    personPlusRelations,
-
+    replySed,
     svarPasedData,
     valgteArbeidsforhold,
-    replySed,
     validation,
 
     highContrast
@@ -131,30 +125,30 @@ const Step2: React.FC<SvarPaSedProps> = ({
 
   const [_comment, setComment] = useState<string>('')
   const [_purpose, setPurpose] = useState<Array<string>>([])
-  const [_replySed] = useState<ReplySed | undefined>(replySed)
+
+  const fnr = _.find(replySed?.bruker.personInfo.pin, p => p.land === 'NO')?.fnr
 
   const data: SvarpasedState = useSelector<State, SvarpasedState>(mapStateTwo)
 
-  const isValid = (validation: Validation): boolean => {
-    return _.find(_.values(validation), (e) => e !== undefined) === undefined
-  }
+  const isValid = (validation: Validation): boolean => _.find(_.values(validation), (e) => e !== undefined) === undefined
 
-  const showFamily = () => {
-    // return _replySed?.replySedType?.startsWith('F')
-    return true
-  }
+  const showArbeidsforhold = (): boolean => replySed?.replySedType === 'U002' || replySed?.replySedType === 'U007'
+
+  const showFamily = (): boolean => replySed?.replySedType?.startsWith('F') || false
+
+  const showInntekt = (): boolean => replySed?.replySedType === 'U004'
 
   const sendReplySed = (): void => {
-    if (_replySed) {
+    if (replySed) {
       const newValidation = validate({
         comment: _comment,
         purpose: _purpose,
         t: t,
-        personPlusRelations: personPlusRelations
+        replySed: replySed
       })
       dispatch(svarpasedActions.setAllValidation(newValidation))
       if (isValid(newValidation)) {
-        dispatch(svarpasedActions.sendSvarPaSedData(saksnummerOrFnr, _replySed!.querySedDocumentId, _replySed!.replySedType, data))
+        dispatch(svarpasedActions.sendSvarPaSedData(rinasaksnummerOrFnr, replySed!.querySedDocumentId, replySed!.replySedType, data))
       }
     }
   }
@@ -171,10 +165,6 @@ const Step2: React.FC<SvarPaSedProps> = ({
   // TODO
   const onPreviewSed = () => {}
 
-  const showArbeidsforhold = (): boolean => _replySed?.replySedType === 'U002' || _replySed?.replySedType === 'U007'
-
-  const showInntekt = (): boolean => _replySed?.replySedType === 'U004'
-
   const onGoBackClick = () => {
     if (mode === '2') {
       dispatch(svarpasedActions.resetReplySed())
@@ -184,13 +174,12 @@ const Step2: React.FC<SvarPaSedProps> = ({
 
   const onSelectedInntekt = (items: Array<Item>) => {
     const inntekter: Inntekter = items.map(
-      (item) =>
-        ({
-          beloep: item.beloep,
-          fraDato: item.fraDato,
-          tilDato: item.tilDato,
-          type: item.type
-        } as IInntekt)
+      (item) => ({
+        beloep: item.beloep,
+        fraDato: item.fraDato,
+        tilDato: item.tilDato,
+        type: item.type
+      } as IInntekt)
     )
     if (items) {
       dispatch(svarpasedActions.sendSeletedInntekt(inntekter))
@@ -213,7 +202,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
       <Row>
         <Column style={{ flex: 2 }}>
           <Systemtittel>
-            {_replySed?.replySedType} - {_replySed?.replySedDisplay}
+            {replySed ? replySed.replySedType + ' - ' + replySed.replySedDisplay : ''}
           </Systemtittel>
           <VerticalSeparatorDiv />
           <Purpose
@@ -224,18 +213,18 @@ const Step2: React.FC<SvarPaSedProps> = ({
           />
         </Column>
       </Row>
-      <VerticalSeparatorDiv data-size='2'/>
+      <VerticalSeparatorDiv data-size='2' />
       {showFamily() && (
         <>
           <FamilyManager />
-          <VerticalSeparatorDiv data-size='2'/>
+          <VerticalSeparatorDiv data-size='2' />
         </>
       )}
       {showArbeidsforhold() && (
         <>
           <Ekspanderbartpanel tittel={t('ui:label-arbeidsforhold')}>
             <Arbeidsforhold
-              getArbeidsforholdList={() => dispatch(svarpasedActions.getArbeidsforholdList(person?.fnr))}
+              getArbeidsforholdList={() => dispatch(svarpasedActions.getArbeidsforholdList(fnr))}
               valgteArbeidsforhold={valgteArbeidsforhold}
               arbeidsforholdList={arbeidsforholdList}
               onArbeidsforholdClick={(item: any, checked: boolean) => dispatch(
@@ -251,14 +240,14 @@ const Step2: React.FC<SvarPaSedProps> = ({
       {showInntekt() && (
         <Ekspanderbartpanel tittel={t('ui:label-inntekt')}>
           <Inntekt
-            fnr={person.fnr}
+            fnr={fnr}
             highContrast={highContrast}
             inntekter={inntekter}
             onSelectedInntekt={onSelectedInntekt}
           />
         </Ekspanderbartpanel>
       )}
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <TextAreaDiv>
         <HighContrastTextArea
           data-test-id='c-svarpased-comment-textarea'

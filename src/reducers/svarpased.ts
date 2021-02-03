@@ -1,16 +1,15 @@
-import { Arbeidsforhold, FamilieRelasjon, Inntekter, Person, ReplySed, Seds, Validation } from 'declarations/types'
-import { ActionWithPayload } from 'js-fetch-api'
-import { Action } from 'redux'
 import * as types from 'constants/actionTypes'
+import { ReplySed } from 'declarations/sed.d'
+import { Arbeidsforhold, Inntekter, Person, Seds, Validation } from 'declarations/types.d'
+import { ActionWithPayload } from 'js-fetch-api'
 import _ from 'lodash'
+import { Action } from 'redux'
 
 export interface SvarpasedState {
   arbeidsforholdList: Arbeidsforhold
   familierelasjoner: Array<any>
   inntekter: Inntekter | undefined
   parentSed: string | undefined
-  person: Person | undefined
-  personPlusRelations: Array<Person | FamilieRelasjon> | undefined
   personRelatert: any
   previousParentSed: string | undefined
   previousReplySed: ReplySed | undefined
@@ -29,8 +28,6 @@ export const initialSvarpasedState: SvarpasedState = {
   familierelasjoner: [],
   inntekter: undefined,
   parentSed: undefined,
-  person: undefined,
-  personPlusRelations: [],
   personRelatert: undefined,
   previousParentSed: undefined,
   previousReplySed: undefined,
@@ -76,7 +73,10 @@ const svarpasedReducer = (
       return {
         ...state,
         previousReplySed: state.replySed,
-        replySed: (action as ActionWithPayload).payload
+        replySed: {
+          ...(action as ActionWithPayload).payload,
+          toDelete: {}
+        }
       }
 
     case types.SVARPASED_REPLYSED_QUERY_FAILURE:
@@ -84,62 +84,6 @@ const svarpasedReducer = (
         ...state,
         previousReplySed: state.replySed,
         replySed: null
-      }
-
-    case types.SVARPASED_PERSON_GET_FAILURE:
-      return {
-        ...state,
-        person: null,
-        personPlusRelations: []
-      }
-
-    case types.SVARPASED_PERSON_GET_SUCCESS:
-
-      const person: Person = (action as ActionWithPayload).payload
-      let personPlusRelations: Array<Person | FamilieRelasjon> = []
-      person.personopplysninger = {
-        fornavn: person.fornavn,
-        etternavn: person.etternavn,
-        kjoenn: person.kjoenn,
-        foedselsdato: person.fdato,
-        norskpersonnummer: person.fnr
-      }
-
-      if (person?.relasjoner) {
-        personPlusRelations = personPlusRelations.concat(
-          person?.relasjoner.map(r => ({
-            fnr: r.fnr,
-            fdato: r.fdato,
-            fornavn: r.fornavn,
-            etternavn: r.etternavn,
-            kjoenn: r.kjoenn,
-            personopplysninger: {
-              fornavn: r.fornavn,
-              etternavn: r.etternavn,
-              kjoenn: r.kjoenn,
-              foedselsdato: r.fdato,
-              norskpersonnummer: person.fnr
-            },
-            adresser: [{
-              land: r.land
-            }],
-            familierelasjon: {
-              type: r.rolle
-            },
-            nasjonaliteter: [{
-              nasjonalitet: r.statsborgerskap
-            }]
-          } as Person))
-        )
-      }
-      if (person) {
-        personPlusRelations = personPlusRelations.concat(person).reverse()
-      }
-
-      return {
-        ...state,
-        person: person,
-        personPlusRelations: personPlusRelations
       }
 
     case types.SVARPASED_PERSON_SEARCH_REQUEST:
@@ -158,12 +102,6 @@ const svarpasedReducer = (
       return {
         ...state,
         searchedPerson: null
-      }
-
-    case types.SVARPASED_PERSONPLUSRELATIONS_SET:
-      return {
-        ...state,
-        personPlusRelations: (action as ActionWithPayload).payload
       }
 
     case types.SVARPASED_PERSON_RELATERT_GET_FAILURE:
@@ -202,6 +140,13 @@ const svarpasedReducer = (
         ...state,
         previousParentSed: state.parentSed,
         parentSed: (action as ActionWithPayload).payload
+      }
+
+    case types.SVARPASED_REPLYSED_SET:
+      return {
+        ...state,
+        previousReplySed: state.replySed,
+        replySed: (action as ActionWithPayload).payload
       }
 
     case types.SVARPASED_REPLYSED_RESET:
@@ -252,13 +197,6 @@ const svarpasedReducer = (
         replySed: state.replySed
       }
 
-    case types.SVARPASED_PERSON_RESET:
-      return {
-        ...state,
-        person: null,
-        personPlusRelations: []
-      }
-
     case types.SVARPASED_PERSON_RELATERT_RESET:
       return {
         ...state,
@@ -271,13 +209,14 @@ const svarpasedReducer = (
         validation: (action as ActionWithPayload).payload
       }
 
-    case types.SVARPASED_VALIDATION_SINGLE_SET:
+    case types.SVARPASED_VALIDATION_SINGLE_SET: {
       const newValidation = _.cloneDeep(state.validation)
       newValidation[(action as ActionWithPayload).payload.key] = (action as ActionWithPayload).payload.value
       return {
         ...state,
         validation: newValidation
       }
+    }
 
     default:
       return state

@@ -1,5 +1,6 @@
 import Select from 'components/Select/Select'
-import { Kodeverk, Person } from 'declarations/types'
+import { ReplySed } from 'declarations/sed'
+import { Kodeverk } from 'declarations/types'
 import { Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
@@ -14,9 +15,10 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 interface FamilierelasjonProps {
-  familierelasjonKodeverk: Array<Kodeverk>,
-  person: Person,
+  familierelasjonKodeverk: Array<Kodeverk>
   highContrast: boolean
+  personID: string
+  replySed: ReplySed
 }
 const FamilierelasjonDiv = styled.div`
   padding: 1rem;

@@ -1,4 +1,4 @@
-import { ReplySed } from 'declarations/types'
+import { FSed, ReplySed, USed } from 'declarations/sed.d'
 import Flag, { FlagList } from 'flagg-ikoner'
 import CountryData from 'land-verktoy'
 import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
@@ -42,7 +42,7 @@ const SEDPanel = ({ replySed }: SEDPanelProps) => {
   const { t } = useTranslation()
   const countryData = CountryData.getCountryInstance('nb')
 
-  return (
+  return replySed && (
     <HighContrastPanel>
       <Undertittel>
         {replySed.sedType} v{replySed.sedVersjon}
@@ -73,7 +73,7 @@ const SEDPanel = ({ replySed }: SEDPanelProps) => {
               <FlexDiv key={p.identifikator}>
                 <Flag
                   label={countryData.findByValue(p.land)}
-                  country={p.land}
+                  country={p.land!}
                   size='S'
                   type='circle'
                 />
@@ -83,38 +83,38 @@ const SEDPanel = ({ replySed }: SEDPanelProps) => {
             ))}
           </Dd>
         )}
-        {replySed.bruker.personInfo.pinmangler && (
+        {replySed.bruker.personInfo.pinMangler && (
           <>
             <Dt>
               {t('ui:label-birthPlace')}
             </Dt>
             <Dd>
               <Flag
-                label={countryData.findByValue(replySed.bruker.personInfo.pinmangler.foedested.land)}
-                country={replySed.bruker.personInfo.pinmangler.foedested.land}
+                label={countryData.findByValue(replySed.bruker.personInfo.pinMangler.foedested.land)}
+                country={replySed.bruker.personInfo.pinMangler.foedested.land}
                 size='S'
                 type='circle'
               />
               <HorizontalSeparatorDiv data-size='0.5' />
-              {replySed.bruker.personInfo.pinmangler.foedested.by} - {replySed.bruker.personInfo.pinmangler.foedested.region}
+              {replySed.bruker.personInfo.pinMangler.foedested.by} - {replySed.bruker.personInfo.pinMangler.foedested.region}
             </Dd>
             <Dt>
               {t('ui:label-father')}
             </Dt>
             <Dd>
-              {replySed.bruker.personInfo.pinmangler.far.fornavn} {replySed.bruker.personInfo.pinmangler.far.etternavnvedfoedsel}
+              {replySed.bruker.personInfo.pinMangler.far.fornavn} {replySed.bruker.personInfo.pinMangler.far.etternavnVedFoedsel}
             </Dd>
             <Dt>
               {t('ui:label-mother')}
             </Dt>
             <Dd>
-              {replySed.bruker.personInfo.pinmangler.mor.fornavn} {replySed.bruker.personInfo.pinmangler.mor.etternavnvedfoedsel}
+              {replySed.bruker.personInfo.pinMangler.mor.fornavn} {replySed.bruker.personInfo.pinMangler.mor.etternavnVedFoedsel}
             </Dd>
             <Dt>
               {t('ui:label-nameatbirth')}
             </Dt>
             <Dd>
-              {replySed.bruker.personInfo.pinmangler.fornavnvedfoedsel} {replySed.bruker.personInfo.pinmangler.etternavnvedfoedsel}
+              {replySed.bruker.personInfo.pinMangler.fornavnVedFoedsel} {replySed.bruker.personInfo.pinMangler.etternavnVedFoedsel}
             </Dd>
           </>
         )}
@@ -124,17 +124,25 @@ const SEDPanel = ({ replySed }: SEDPanelProps) => {
         <Dt>
           {t('ui:label-periode')}:
         </Dt>
-        <Dd>
-          {replySed.anmodningsperiode.startdato} -
-          {replySed.anmodningsperiode.sluttdato ? replySed.anmodningsperiode.sluttdato : ''}
-        </Dd>
+        {(replySed as USed).anmodningsperiode && (
+          <Dd>
+            {(replySed as USed).anmodningsperiode.startdato} -
+            {(replySed as USed).anmodningsperiode.sluttdato ? (replySed as USed).anmodningsperiode.sluttdato : ''}
+          </Dd>
+        )}
+        {(replySed as FSed).anmodningsperioder && (replySed as FSed).anmodningsperioder.map(p => (
+          <Dd key={p.startdato}>
+            {p.startdato} -
+            {p.sluttdato ? p.sluttdato : ''}
+          </Dd>
+        ))}
       </Dl>
       <VerticalSeparatorDiv />
       <UndertekstBold>
         {t('ui:label-local-sakId')}:
       </UndertekstBold>
       <Dl>
-        {replySed.lokaleSakIder.map(s => (
+        {(replySed as USed).lokaleSakIder && (replySed as USed).lokaleSakIder.map(s => (
           <div key={s.saksnummer}>
             <Dt>
               {t('ui:label-saksnummer')}

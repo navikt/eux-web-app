@@ -1,5 +1,10 @@
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 
+export interface Period {
+  fom: string
+  tom: string
+}
+
 export interface Arbeidsforholdet {
   ansettelsesPeriode?: Period
   arbeidsforholdIDnav?: number
@@ -57,55 +62,6 @@ export interface Person {
   etternavn?: string
   kjoenn?: string
   relasjoner?: Array<FamilieRelasjon>
-  personopplysninger?: {
-    fornavn?: string
-    etternavn?: string
-    foedselsdato?: string
-    kjoenn?: string
-    utenlandskPin?: string
-    land ?: string
-    norskpersonnummer ?: string
-    fodested?: boolean
-    fodestedBy?: string
-    fodestedRegion?: string
-    fodestedLand?: string
-  },
-  nasjonaliteter?: Array<{
-    nasjonalitet?: string
-    fomdato ?: string
-  }>,
-  adresser?: Array<Adresse>,
-  kontaktinformasjon?: {
-    telefonnummer?: string,
-    type ?: string,
-    epostadresse ?: string
-  }
-  trygdeordning?: {
-    dekket?: Array<{
-      startdato?: string
-      sluttdato?: string
-    }>,
-    udekket?: Array<{
-      startdato?: string
-      sluttdato?: string
-    }>,
-    familie?: Array<{
-      startdato?: string
-      sluttdato?: string
-    }>
-  }
-  familierelasjon?: {
-    type ?: string
-    startdato ?: string
-    sluttdato ?: string
-    annetrelasjon ?: string
-    navn ?: string
-    dato ?: string
-    livetogether ?: string
-  }
-  personensstatus?: {
-    arbeidsforhold ?: string
-  }
 }
 
 export interface FagSak {
