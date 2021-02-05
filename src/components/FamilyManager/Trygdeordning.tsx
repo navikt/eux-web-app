@@ -1,7 +1,6 @@
 import Tilsette from 'assets/icons/Tilsette'
 import Trashcan from 'assets/icons/Trashcan'
 import { ReplySed } from 'declarations/sed'
-import { Person } from 'declarations/types'
 import _ from 'lodash'
 import { Ingress, Undertittel } from 'nav-frontend-typografi'
 import {

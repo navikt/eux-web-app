@@ -82,7 +82,7 @@ export interface PersonInfo {
   foedselsdato: string
   statsborgerskap: Array<{ land: string }>
   pin: Array<Pin>
-  pinMangler: {
+  pinMangler?: {
     foedested: {
       by: string
       region: string

@@ -81,6 +81,7 @@
   "label-firstname": "Fornavn",
   "label-fomdato": "F.o.m dato",
   "label-fnr" : "Fødselsnummer",
+  "label-fnr-dnr" : "F.nummer/d-nr.",
   "label-fnr-or-dnr": "Fødsels eller dnr",
   "label-fraDato": "Fra dato",
   "label-freetext": "Fritekst",
@@ -108,6 +109,7 @@
   "label-no-person-selected" : "Velg personer for å se og fylle inn opplysninger.",
   "label-norwegian-fnr" : "Norsk personnummer",
   "label-norwegian-fnr-description": "Finn bruker på norsk personnummer og hent opplysninger fra TPS",
+  "label-not-available": "Ikke tilgjengelig",
   "label-oppholdsland": "Oppholdsland",
   "label-orgnummer": "Orgnr",
   "label-other": "Annet",
@@ -209,6 +211,11 @@
   "placeholder-select-default" : "Velg...",
   "placeholder-saksnummerOrFnr" : "Skriv inn...",
   "placeholder-birthDate" : "DD-MM-ÅÅÅÅ",
+
+  "relationship-bruker": "Bruker",
+  "relationship-ektefelle": "Ektefelle",
+  "relationship-annenPerson": "Annen person",
+  "relationship-barn": "Barn",
 
   "serverInternalError" : "Serverfeil",
   "serverAuthenticationError" : "Uautorisert",

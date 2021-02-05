@@ -126,7 +126,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
   const [_comment, setComment] = useState<string>('')
   const [_purpose, setPurpose] = useState<Array<string>>([])
 
-  const fnr = _.find(replySed?.bruker.personInfo.pin, p => p.land === 'NO')?.fnr
+  const fnr = _.find(replySed?.bruker?.personInfo.pin, p => p.land === 'NO')?.fnr
 
   const data: SvarpasedState = useSelector<State, SvarpasedState>(mapStateTwo)
 

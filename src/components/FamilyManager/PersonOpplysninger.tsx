@@ -241,7 +241,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
               onUtenlandskLandChange(e.value)
             }}
             placeholder={t('ui:label-choose')}
-            values={_.find(_.get(replySed, `${personID}.personInfo.pin`), p => p.land !== 'NO').land}
+            values={_.find(_.get(replySed, `${personID}.personInfo.pin`), p => p.land !== 'NO')?.land}
           />
         </Column>
       </Row>
@@ -258,7 +258,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
               id={'c-familymanager-' + personID + '-personopplysninger-norwegianpin-input'}
               label={t('ui:label-norwegian-fnr')}
               onChange={onNorwegianPinChange}
-              value={_.find(_.get(replySed, `${personID}.personInfo.pin`), p => p.land === 'NO').identifikator}
+              value={_.find(_.get(replySed, `${personID}.personInfo.pin`), p => p.land === 'NO')?.identifikator}
             />
             <HorizontalSeparatorDiv />
             <HighContrastKnapp

@@ -13,7 +13,7 @@ interface SelectProps extends Props<Option> {
   feil?: Feiloppsummering
   onChange: (e: any) => void
   highContrast: boolean
-  value: any
+  value?: any
 }
 
 const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {

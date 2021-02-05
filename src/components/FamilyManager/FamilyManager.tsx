@@ -1,6 +1,7 @@
 import { setReplySed } from 'actions/svarpased'
 import FilledCheckCircle from 'assets/icons/filled-version-check-circle-2'
 import FilledRemoveCircle from 'assets/icons/filled-version-remove-circle'
+import Barn from 'assets/icons/icon-barn'
 import Tilsette from 'assets/icons/Tilsette'
 import classNames from 'classnames'
 import Adresser from 'components/FamilyManager/Adresser'
@@ -11,13 +12,13 @@ import Trygdeordning from 'components/FamilyManager/Trygdeordning'
 import { FadingLineSeparator } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { PersonInfo, ReplySed } from 'declarations/sed'
-import { FamilieRelasjon, Person } from 'declarations/types.d'
 import _ from 'lodash'
 import Chevron from 'nav-frontend-chevron'
 import { Checkbox } from 'nav-frontend-skjema'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import { HighContrastFlatknapp, HighContrastPanel, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import { theme, themeHighContrast, themeKeys } from 'nav-styled-component-theme'
+import Tooltip from 'rc-tooltip'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -25,7 +26,6 @@ import styled from 'styled-components'
 import Kontaktinformasjon from './Kontaktinformasjon'
 import Nasjonaliteter from './Nasjonaliteter'
 import PersonOpplysninger from './PersonOpplysninger'
-import Tooltip from 'rc-tooltip'
 
 const FlexDiv = styled.div`
   display: flex;
@@ -168,9 +168,6 @@ const FamilyManager: React.FC = () => {
     { label: t('ui:option-familymanager-7'), value: 'personensstatus' }
   ]
 
-  // TODO when added/removed people
-  const onPersonsChanged = (p: Array<Person | FamilieRelasjon>) => { p }
-
   const onEditPerson = (id: string | undefined) => {
     if (id) {
       const alreadyEditingPerson = _.find(_editPersonIDs, _id => _id === id) !== undefined
@@ -260,14 +257,20 @@ const FamilyManager: React.FC = () => {
               {selected
                 ? (
                   <Undertittel style={{ whiteSpace: 'nowrap' }}>
-                    {personInfo?.fornavn + ' ' + personInfo?.etternavn + ' (' + personInfo?.kjoenn + ')'}
+                    {personInfo?.fornavn + ' ' + personInfo?.etternavn + ' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')'}
                   </Undertittel>
                   )
                 : (
                   <Normaltekst style={{ whiteSpace: 'nowrap' }}>
-                    {personInfo?.fornavn + ' ' + personInfo?.etternavn + ' (' + personInfo?.kjoenn + ')'}
+                    {personInfo?.fornavn + ' ' + personInfo?.etternavn + ' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')'}
                   </Normaltekst>
                   )}
+              {personId.startsWith('barn[') && (
+                <>
+                  <HorizontalSeparatorDiv data-size='0.5'/>
+                  <Barn/>
+                </>
+                )}
             </PersonDiv>
           </Tooltip>
           <Tooltip
@@ -321,8 +324,8 @@ const FamilyManager: React.FC = () => {
     <PanelDiv>
       {_modal && (
         <FamilyManagerModal
+          highContrast={highContrast}
           replySed={replySed}
-          onPersonsChanged={onPersonsChanged}
           onModalClose={() => setModal(false)}
         />
       )}
@@ -333,7 +336,7 @@ const FamilyManager: React.FC = () => {
       <CustomHighContrastPanel>
         <FlexDiv>
           <LeftDiv>
-            {renderPerson(replySed, 'bruker', brukerNr)}
+            {replySed.bruker && renderPerson(replySed, 'bruker', brukerNr)}
             {replySed.ektefelle && renderPerson(replySed, 'ektefelle', ektefelleNr)}
             {replySed.annenPerson && renderPerson(replySed, 'annenPerson', annenPersonNr)}
             {replySed.barn && replySed.barn.map((b: PersonInfo, i: number) => renderPerson(replySed, `barn[${i}]`, barnNr + i))}
