@@ -387,8 +387,11 @@ const FamilyManager: React.FC = () => {
               {_menuOption === 'nasjonaliteter' && (
                 <Nasjonaliteter
                   highContrast={highContrast}
+                  landkoderList={landkoderList}
+                  onValueChanged={onValueChanged}
                   personID={_editCurrentPersonID}
                   replySed={replySed}
+                  validation={validation}
                 />
               )}
               {_menuOption === 'adresser' && (

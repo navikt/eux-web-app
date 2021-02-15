@@ -1,8 +1,7 @@
 import Tilsette from 'assets/icons/Tilsette'
 import Trashcan from 'assets/icons/Trashcan'
-import { State } from 'declarations/reducers'
-import { ReplySed } from 'declarations/sed'
-import { Kodeverk } from 'declarations/types'
+import { ReplySed, Statsborgerskap } from 'declarations/sed'
+import { Kodeverk, Validation } from 'declarations/types'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { UndertekstBold } from 'nav-frontend-typografi'
@@ -16,13 +15,15 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 interface NasjonalitetProps {
   highContrast: boolean
+  landkoderList: Array<Kodeverk>
+  onValueChanged: (needle: string, value: any) => void
   personID: string
   replySed: ReplySed
+  validation: Validation
 }
 const NasjonalitetDiv = styled.div`
   padding: 1rem;
@@ -30,121 +31,111 @@ const NasjonalitetDiv = styled.div`
     width: 100%;
   }
 `
-const AlignEndRow = styled(Row)`
-  align-items: flex-end;
+const AlignStartRow = styled(Row)`
+  align-items: flex-start;
 `
 
-interface PersonOpplysningerSelector {
-  landkoderList: any
-}
-
-const mapState = (state: State): PersonOpplysningerSelector => ({
-  landkoderList: state.app.landkoder
-})
-
-interface Nationality {
-  nasjonalitet: string
-  fomdato: string
-}
-
 const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
-  // person
+  landkoderList,
+  onValueChanged,
+  personID,
+  replySed,
+  validation
 }:NasjonalitetProps): JSX.Element => {
-  const [_nationalities, setNationalities] = useState<Array<Nationality>>([])
+
   const [_currentNationality, setCurrentNationality] = useState<string | undefined>(undefined)
   const [_currentFomdato, setCurrentFomdato] = useState<string>('')
   const [_seeNewNationalityForm, setSeeNewNationalityForm] = useState<boolean>(false)
   const [_isDirty, setIsDirty] = useState<boolean>(false)
-  const { landkoderList }: PersonOpplysningerSelector = useSelector<State, PersonOpplysningerSelector>(mapState)
   const { t } = useTranslation()
+  const statsborgerskaps: Array<Statsborgerskap> = _.get(replySed, `${personID}.personInfo.statsborgerskap`)
 
   const onNationalityRemove = (i: number) => {
-    const newNationalities = _.cloneDeep(_nationalities)
-    newNationalities.splice(i, 1)
+    const newStatsborgerskaps = _.cloneDeep(statsborgerskaps)
+    newStatsborgerskaps.splice(i, 1)
     setIsDirty(true)
-    setNationalities(newNationalities)
+    onValueChanged(`${personID}.personInfo.statsborgerskap`, newStatsborgerskaps)
   }
 
-  const onNationalityAdd = (_n: Nationality) => {
-    const newNationalities = _nationalities.concat(_n)
+  const onNationalityAdd = () => {
+    const newStatsborgerskaps = _.cloneDeep(statsborgerskaps)
+    newStatsborgerskaps.push({
+      land: _currentNationality!,
+      fomdato: _currentFomdato
+    })
     setIsDirty(true)
-    setNationalities(newNationalities)
+    onValueChanged(`${personID}.personInfo.statsborgerskap`, newStatsborgerskaps)
     setCurrentNationality(undefined)
     setCurrentFomdato('')
   }
 
   const onFomdatoChanged = (e: string, i: number) => {
-    setIsDirty(true)
     if (i < 0) {
       setCurrentFomdato(e)
     } else {
-      const newNationalities = _.cloneDeep(_nationalities)
-      newNationalities[i].fomdato = e
-      setNationalities(newNationalities)
+      const newStatsborgerskaps = _.cloneDeep(statsborgerskaps)
+      newStatsborgerskaps[i].fomdato = e
+      setIsDirty(true)
+      onValueChanged(`${personID}.personInfo.statsborgerskap`, newStatsborgerskaps)
     }
   }
 
   const onNationalitySelected = (e: string, i: number) => {
-    setIsDirty(true)
     if (i < 0) {
       setCurrentNationality(e)
     } else {
-      const newNationalities = _.cloneDeep(_nationalities)
-      _nationalities[i].nasjonalitet = e
-      setNationalities(newNationalities)
+      const newStatsborgerskaps = _.cloneDeep(statsborgerskaps)
+      statsborgerskaps[i].land = e
+      setIsDirty(true)
+      onValueChanged(`${personID}.personInfo.statsborgerskap`, newStatsborgerskaps)
     }
   }
 
-  const renderRow = (n: Nationality, i: number) => (
+  const renderRow = (s: Statsborgerskap | null , i: number) => (
     <>
-      <AlignEndRow>
+      <AlignStartRow>
         <Column>
           <CountrySelect
-            data-test-id={'c-familymanager-nasjonaliteter-' + i + '-land-countryselect'}
-            id={'c-familymanager-personopplysninger-' + i + '-land'}
-            label={t('ui:label-landkode')}
+            data-test-id={'c-familymanager-' + personID + '-nasjonaliteter-' + i + '-land-countryselect'}
+            id={'c-familymanager-' + personID + '-nasjonaliteter-' + i + '-land-countryselect'}
+            label={''}
             menuPortalTarget={document.body}
             includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
             onOptionSelected={(e: any) => onNationalitySelected(e.value, i)}
             placeholder={t('ui:label-choose')}
-            values={n.nasjonalitet}
+            values={i < 0 ? _currentNationality : s!.land}
+            error={validation['person-' + personID + '-nasjonaliteter-' + i + '-land']
+              ? validation['person-' + personID + '-nasjonaliteter-' + i + '-land']!.feilmelding
+              : undefined}
           />
         </Column>
         <HorizontalSeparatorDiv />
         <Column>
           <HighContrastInput
-            data-test-id={'c-familymanager-nasjonaliteter-' + i + '-fomdato-input'}
-            id={'c-familymanager-personopplysninger-' + i + '-fomdato'}
+            data-test-id={'c-familymanager-' + personID + '-nasjonaliteter-' + i + '-fomdato-input'}
+            feil={validation['person-' + personID + '-nasjonaliteter-' + i + '-fomdato']
+              ? validation['person-' + personID + '-nasjonaliteter-' + i + '-fomdato']!.feilmelding
+              : undefined}
+            id={'c-familymanager-' + personID + '-nasjonaliteter-' + i + '-fomdato'}
             onChange={(e: any) => onFomdatoChanged(e.target.value, i)}
-            value={n.fomdato}
-            label={t('ui:label-firstname')}
+            value={i < 0 ? _currentFomdato : s!.fomdato}
+            label={''}
+            placeholder={t('ui:placeholder-date-default')}
           />
         </Column>
         <HorizontalSeparatorDiv />
         <Column>
-          {i < 0 ? (
-            <HighContrastFlatknapp
-              mini
-              kompakt
-              onClick={() => onNationalityAdd(n)}
-            >
-              <Tilsette />
-              <HorizontalSeparatorDiv data-size='0.5' />
-              {t('ui:label-add')}
-            </HighContrastFlatknapp>
-          ) : (
-            <HighContrastFlatknapp
-              mini
-              kompakt
-              onClick={() => onNationalityRemove(i)}
-            >
-              <Trashcan />
-              <HorizontalSeparatorDiv data-size='0.5' />
-              {t('ui:label-remove')}
-            </HighContrastFlatknapp>
-          )}
+          <HighContrastFlatknapp
+            mini
+            kompakt
+            onClick={() => (i < 0  ? onNationalityAdd() : onNationalityRemove(i))}
+          >
+            { i < 0 ? <Tilsette /> : <Trashcan />}
+            <HorizontalSeparatorDiv data-size='0.5' />
+            {i < 0 ? t('ui:label-add') : t('ui:label-remove')}
+          </HighContrastFlatknapp>
         </Column>
-      </AlignEndRow>
+      </AlignStartRow>
       <HorizontalSeparatorDiv />
     </>
   )
@@ -165,27 +156,25 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
         <Column />
       </Row>
       <VerticalSeparatorDiv />
-      {_nationalities.map((n, i) => (renderRow(n, i)))}
-      {_seeNewNationalityForm ? (
-        renderRow({
-          nasjonalitet: _currentNationality,
-          fomdato: _currentFomdato
-        } as Nationality, -1)
-      ) : (
-        <Row>
-          <Column>
-            <HighContrastFlatknapp
-              mini
-              kompakt
-              onClick={() => setSeeNewNationalityForm(true)}
-            >
-              <Tilsette />
-              <HorizontalSeparatorDiv data-size='0.5' />
-              {t('ui:label-add-nationality')}
-            </HighContrastFlatknapp>
+      {statsborgerskaps.map(renderRow)}
+      <hr/>
+      {_seeNewNationalityForm ?
+        renderRow(null, -1) :
+        (
+          <Row>
+            <Column>
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                onClick={() => setSeeNewNationalityForm(true)}
+              >
+                <Tilsette />
+                <HorizontalSeparatorDiv data-size='0.5' />
+                {t('ui:label-add-nationality')}
+              </HighContrastFlatknapp>
 
-          </Column>
-        </Row>
+            </Column>
+          </Row>
       )}
       {_isDirty && '*'}
     </NasjonalitetDiv>

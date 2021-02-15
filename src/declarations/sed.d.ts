@@ -75,12 +75,17 @@ export interface Pin {
   institusjonsnavn ?: string
 }
 
+export interface Statsborgerskap {
+  land: string,
+  fomdato?: string
+}
+
 export interface PersonInfo {
   fornavn: string
   etternavn: string
   kjoenn: string
   foedselsdato: string
-  statsborgerskap: Array<{ land: string }>
+  statsborgerskap: Array<Statsborgerskap>
   pin: Array<Pin>
   pinMangler?: {
     foedested: {
