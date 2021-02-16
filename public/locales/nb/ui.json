@@ -90,6 +90,7 @@
   "label-gender" : "Kjønn",
   "label-get" : "Hent",
   "label-goToRina" : "Gå direkte til Rina",
+  "label-goToSedInRina" : "Gå til SED i Rina",
   "label-hide-form": "Skjul Skjema",
   "label-highContrast": "Høy kontrast",
   "label-inntekt": "Inntekt",
@@ -98,7 +99,9 @@
   "label-journalpostID": "JournalpostID",
   "label-kontaktadresse": "Kontaktadresse",
   "label-landkode": "Land",
+  "label-land": "Land",
   "label-lastname": "Etternavn",
+  "label-lastModified": "Siste oppdatert",
   "label-live-together": "Bor søkeren i samme husstand som personen",
   "label-local-sakId": "Lokale sakID",
   "label-man" : "Mann",
@@ -223,6 +226,10 @@
 
   "session-expire-title" : "Du vil snart bli logget ut",
   "session-expire-text" : "Husk å lagre opplysningene. Hvis du ønsker å fortsette, må du logge inn igjen.  Du blir logget ut om {{minutes}} minutter",
+
+  "status-sent" : "Sendt",
+  "status-received" : "Mottatt",
+
   "ok-got-it" : "Ok, stemmer det",
   "log-me-again": "Logg inn på nytt",
 
@@ -238,7 +245,8 @@
   "validation-invalidDate": "Ugyldig dato til {{person}}",
   "validation-noBuctype": "Du må velge buctype",
   "validation-noComment": "Ingen ytterlige forespørsler eller informasjon til SED",
-  "validation-noCountry": "Ingen statsborgerskaps land til {{person}}",
+  "validation-noAddressCountry": "Ingen adresses land til {{person}}",
+  "validation-noBirthCountry": "Ingen statsborgerskaps land til {{person}}",
   "validation-noDokumentID": "Du må taste inn en dokumentID",
   "validation-noEtternavn": "Ingen etternavn til {{person}}",
   "validation-noFdato": "Ingen dato valgt",

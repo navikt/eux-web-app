@@ -1,12 +1,16 @@
 import * as appActions from 'actions/app'
 import * as svarpasedActions from 'actions/svarpased'
 import classNames from 'classnames'
+import Flag from 'flagg-ikoner'
+import CountryData, { CountryList } from 'land-verktoy'
+import Etikett from 'nav-frontend-etiketter'
 import { HiddenFormContainer } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { ConnectedSed, Validation } from 'declarations/types'
 import _ from 'lodash'
+import Lenke from 'nav-frontend-lenker'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
-import { Normaltekst } from 'nav-frontend-typografi'
+import { Normaltekst, Undertekst, Undertittel } from 'nav-frontend-typografi'
 import NavHighContrast, {
   AlignCenterColumn,
   AlignedRow,
@@ -25,6 +29,9 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
+import ReceivedIcon from 'assets/icons/mailbox-4'
+import SentIcon from 'assets/icons/email-send-1'
+import ExternalLink from  'assets/icons/line-version-logout'
 
 const SaksnummerOrFnrInput = styled(HighContrastInput)`
   margin-right: 1rem;
@@ -34,7 +41,15 @@ const FlexDiv = styled.div`
   align-items: center;
   justify-content: space-between;
 `
-
+const PileCenterDiv = styled.div`
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+`
+const PileLeftDiv = styled.div`
+  flex-direction: column;
+  display: flex;
+`
 const mapState = (state: State): any => ({
 
   rinasaksnummerOrFnrParam: state.app.params.rinasaksnummerOrFnr,
@@ -79,6 +94,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
   const [_saksnummerOrFnr, setSaksnummerOrFnr] = useState<string | undefined>(rinasaksnummerOrFnrParam)
   const [_validation, setValidation] = useState<Validation>({})
 
+  const countryInstance: CountryList = CountryData.getCountryInstance('nb')
   const onSaksnummerOrFnrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(appActions.cleanData())
     setSaksnummerOrFnr(e.target.value)
@@ -90,7 +106,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
     if (!_saksnummerOrFnr) {
       setValidation({
         ..._validation,
-        saksnummerOrFnr: {
+        saksnummerOrFƒnr: {
           feilmelding: t('ui:validation-noSaksnummerOrFnr'),
           skjemaelementId: 'svarpased__saksnummerOrFnr-input'
         } as FeiloppsummeringFeil
@@ -176,52 +192,103 @@ const Step1: React.FC<SvarPaSedProps> = ({
                 })}
                 feil={undefined}
               >
-                {Object.keys(seds)?.map((sed: string) => (
-                  <div key={sed}>
-                    <RadioEl
-                      name='svarpased__saksnummerOrFnr-results'
-                      value={sed}
-                      checked={parentSed === sed}
-                      label={sed}
-                      className='slideAnimate'
-                      onChange={onParentSedChange}
-                    />
-                    {seds[sed].map((connectedSed: ConnectedSed) => (
-                      <HiddenFormContainer
-                        key={sed + '-' + connectedSed.replySedType}
-                        className={classNames({
-                          slideOpen: previousParentSed !== sed && parentSed === sed,
-                          slideClose: previousParentSed === sed && parentSed !== sed,
-                          closed: !((previousParentSed !== sed && parentSed === sed) || (previousParentSed === sed && parentSed !== sed))
-                        })}
-                      >
-                        <HighContrastPanel style={{ marginLeft: '3rem' }}>
-                          <FlexDiv>
-                            <div>
+                {Object.keys(seds)?.map((sed: string) => {
+                  const country = countryInstance.findByValue(seds[sed].land)
+                  return (
+                    <div key={sed}>
+                      <RadioEl
+                        name='svarpased__saksnummerOrFnr-results'
+                        value={sed}
+                        checked={parentSed === sed}
+                        label={(
+                          <>
+                            <Undertittel>{sed}</Undertittel>
+                            <Normaltekst>
+                              <span>{t('ui:label-caseNumber') + ': ' + seds[sed].saksnummer}</span>
+                              <HorizontalSeparatorDiv/>
+                              <Lenke href='#'>
+                                <span>{t('ui:label-goToRina')}</span>
+                                <HorizontalSeparatorDiv data-size='0.35'/>
+                                <ExternalLink/>
+                              </Lenke>
+                            </Normaltekst>
+                            <FlexDiv style={{width: '1px'}}>
                               <Normaltekst>
-                                {connectedSed.replySedType} {connectedSed.replySedDisplay}
+                                {t('ui:label-land')}:
                               </Normaltekst>
+                              <HorizontalSeparatorDiv data-size='0.35'/>
+                              <Flag
+                                size='XS'
+                                type='circle'
+                                label={country?.label || ''}
+                                country={country?.value || ''}
+                              />
+                              <HorizontalSeparatorDiv data-size='0.35'/>
                               <Normaltekst>
-                                {connectedSed.querySedDocumentId}
+                                {country?.label}
                               </Normaltekst>
-                            </div>
-                            <HorizontalSeparatorDiv />
-                            <HighContrastHovedknapp
-                              disabled={queryingReplySed}
-                              spinner={queryingReplySed}
-                              mini
-                              kompakt
-                              onClick={() => onReplySedClick(connectedSed)}
-                            >
-                              {queryingReplySed ? t('ui:loading-replying') : t('ui:label-reply')}
-                            </HighContrastHovedknapp>
-                          </FlexDiv>
-                        </HighContrastPanel>
-                        <VerticalSeparatorDiv />
-                      </HiddenFormContainer>
-                    ))}
-                  </div>
-                ))}
+                            </FlexDiv>
+                            <Normaltekst>
+                              {t('ui:label-institusjon') + ': ' + seds[sed].institusjon}
+                            </Normaltekst>
+                            <Etikett mini type='info'>
+                              {t('ui:label-lastModified') + ': ' + seds[sed].sisteOppdatert}
+                            </Etikett>
+                          </>
+                        )}
+                        className='slideAnimate'
+                        onChange={onParentSedChange}
+                        />
+                        {seds[sed].seds.map((connectedSed: ConnectedSed) => (
+                          <HiddenFormContainer
+                            key={sed + '-' + connectedSed.replySedType}
+                            className={classNames({
+                            slideOpen: previousParentSed !== sed && parentSed === sed,
+                            slideClose: previousParentSed === sed && parentSed !== sed,
+                            closed: !((previousParentSed !== sed && parentSed === sed) || (previousParentSed === sed && parentSed !== sed))
+                            })}
+                          >
+                            <HighContrastPanel style={{ marginLeft: '3rem' }}>
+                              <FlexDiv>
+                                <PileCenterDiv>
+                                  {connectedSed.status === 'received' && <ReceivedIcon/>}
+                                  {connectedSed.status === 'sent' && <SentIcon/>}
+                                  <Undertekst>{t('ui:status-' + connectedSed.status)}</Undertekst>
+                                </PileCenterDiv>
+                                <HorizontalSeparatorDiv />
+                                <PileLeftDiv style={{flex: 2}}>
+                                  <div>
+                                    <Undertittel>
+                                      {connectedSed.replySedType} - {connectedSed.replySedDisplay}
+                                    </Undertittel>
+                                    <Normaltekst>
+                                      {t('ui:label-lastModified') + ': ' + seds[sed].sisteOppdatert}
+                                    </Normaltekst>
+                                    <Lenke href='#'>
+                                      <span>{t('ui:label-goToSedInRina')}</span>
+                                      <HorizontalSeparatorDiv data-size='0.35'/>
+                                      <ExternalLink/>
+                                    </Lenke>
+                                  </div>
+                                </PileLeftDiv>
+                                <HorizontalSeparatorDiv />
+                                <HighContrastHovedknapp
+                                  disabled={queryingReplySed}
+                                  spinner={queryingReplySed}
+                                  mini
+                                  kompakt
+                                  onClick={() => onReplySedClick(connectedSed)}
+                                >
+                                  {queryingReplySed ? t('ui:loading-replying') : t('ui:label-reply')}
+                                </HighContrastHovedknapp>
+                              </FlexDiv>
+                            </HighContrastPanel>
+                            <VerticalSeparatorDiv />
+                          </HiddenFormContainer>
+                        ))}
+                      </div>
+                    )}
+                  )}
               </RadioGroup>
             </Column>
           </Row>

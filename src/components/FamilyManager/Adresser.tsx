@@ -74,8 +74,6 @@ const Adresser: React.FC<AdresseProps> = ({
       region: _currentRegion
     })
     setIsDirty(true)
-    onValueChanged(`${personID}.adresser`, newAdresses)
-
     setCurrentType(undefined)
     setCurrentGate('')
     setCurrentPostnummer('')
@@ -83,6 +81,7 @@ const Adresser: React.FC<AdresseProps> = ({
     setCurrentBygning('')
     setCurrentRegion('')
     setCurrentLand('')
+    onValueChanged(`${personID}.adresser`, newAdresses)
   }
 
   const onTypeChanged = (e: string, i: number) => {
@@ -194,7 +193,7 @@ const Adresser: React.FC<AdresseProps> = ({
               : undefined}
             id={'c-familymanager-' + personID + '-adresser-' + i + '-gate-input'}
             onChange={(e: any) => onGateChanged(e.target.value, i)}
-            value={a?.gate}
+            value={i < 0 ? _currentGate : a?.gate}
             label={t('ui:label-gateadresse')}
           />
         </Column>
@@ -206,7 +205,7 @@ const Adresser: React.FC<AdresseProps> = ({
               : undefined}
             id={'c-familymanager-' + personID + '-adresser-' + i + '-bygning-input'}
             onChange={(e: any) => onBygningChanged(e.target.value, i)}
-            value={a?.bygning}
+            value={i < 0 ? _currentBygning : a?.bygning}
             label={t('ui:label-bygning')}
           />
         </Column>
@@ -221,11 +220,11 @@ const Adresser: React.FC<AdresseProps> = ({
               : undefined}
             id={'c-familymanager-' + personID + '-adresser-' + i + '-postnummer-input'}
             onChange={(e: any) => onPostnummerChanged(e.target.value, i)}
-            value={a?.postnummer}
+            value={i < 0 ? _currentPostnummer : a?.postnummer}
             label={t('ui:label-postnummer')}
           />
         </Column>
-        <Column data-flex='2'>
+        <Column>
           <HighContrastInput
             data-test-id={'c-familymanager-' + personID + '-adresser-' + i + '-by-input'}
             feil={validation['person-' + personID + '-adresser-' + i + '-by']
@@ -233,10 +232,11 @@ const Adresser: React.FC<AdresseProps> = ({
               : undefined}
             id={'c-familymanager-' + personID + '-adresser-' + i + '-by-input'}
             onChange={(e: any) => onByChanged(e.target.value, i)}
-            value={a?.by}
+            value={i < 0 ? _currentBy : a?.by}
             label={t('ui:label-by')}
           />
         </Column>
+        <Column/>
       </AlignStartRow>
       <HorizontalSeparatorDiv />
       <AlignStartRow>
@@ -248,7 +248,7 @@ const Adresser: React.FC<AdresseProps> = ({
               : undefined}
             id={'c-familymanager-' + personID + '-adresser-' + i + '-region-input'}
             onChange={(e: any) => onRegionChanged(e.target.value, i)}
-            value={a?.region}
+            value={i < 0 ? _currentRegion : a?.region}
             label={t('ui:label-region')}
           />
         </Column>
@@ -264,32 +264,32 @@ const Adresser: React.FC<AdresseProps> = ({
             includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
             onOptionSelected={(e: any) => onLandChanged(e.value, i)}
             placeholder={t('ui:label-choose')}
-            values={a?.land}
+            values={i < 0 ? _currentLand : a?.land}
           />
         </Column>
         <Column style={{ alignSelf: 'flex-end' }}>
           <HighContrastFlatknapp
             mini
             kompakt
-            onClick={() => i < 0  ? onAdresseAdd() : onAdresseRemove(i)}
+            onClick={() => i < 0 ? onAdresseAdd() : onAdresseRemove(i)}
           >
-          { i < 0 ? <Tilsette /> : <Trashcan /> }
-          <HorizontalSeparatorDiv data-size='0.5' />
-          { i < 0 ?  t('ui:label-add') : t('ui:label-remove')}
+            {i < 0 ? <Tilsette /> : <Trashcan />}
+            <HorizontalSeparatorDiv data-size='0.5' />
+            {i < 0 ? t('ui:label-add') : t('ui:label-remove')}
           </HighContrastFlatknapp>
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv data-size='3'/>
     </>
   )
 
   return (
     <AdresseDiv>
       {adresses?.map((a, i) => (renderRow(a, i)))}
-      <hr/>
-      {_seeNewAdresseForm ?
-        renderRow(null,-1) :
-        (
+      <hr />
+      {_seeNewAdresseForm
+        ? renderRow(null, -1)
+        : (
           <Row>
             <Column>
               <HighContrastFlatknapp

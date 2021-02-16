@@ -42,7 +42,6 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
   replySed,
   validation
 }:NasjonalitetProps): JSX.Element => {
-
   const [_currentNationality, setCurrentNationality] = useState<string | undefined>(undefined)
   const [_currentFomdato, setCurrentFomdato] = useState<string>('')
   const [_seeNewNationalityForm, setSeeNewNationalityForm] = useState<boolean>(false)
@@ -92,7 +91,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
     }
   }
 
-  const renderRow = (s: Statsborgerskap | null , i: number) => (
+  const renderRow = (s: Statsborgerskap | null, i: number) => (
     <>
       <AlignStartRow>
         <Column>
@@ -127,9 +126,9 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
           <HighContrastFlatknapp
             mini
             kompakt
-            onClick={() => (i < 0  ? onNationalityAdd() : onNationalityRemove(i))}
+            onClick={() => (i < 0 ? onNationalityAdd() : onNationalityRemove(i))}
           >
-            { i < 0 ? <Tilsette /> : <Trashcan />}
+            {i < 0 ? <Tilsette /> : <Trashcan />}
             <HorizontalSeparatorDiv data-size='0.5' />
             {i < 0 ? t('ui:label-add') : t('ui:label-remove')}
           </HighContrastFlatknapp>
@@ -156,10 +155,10 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
       </Row>
       <VerticalSeparatorDiv />
       {statsborgerskaps.map(renderRow)}
-      <hr/>
-      {_seeNewNationalityForm ?
-        renderRow(null, -1) :
-        (
+      <hr />
+      {_seeNewNationalityForm
+        ? renderRow(null, -1)
+        : (
           <Row>
             <Column>
               <HighContrastFlatknapp
@@ -174,7 +173,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
 
             </Column>
           </Row>
-      )}
+          )}
       {_isDirty && '*'}
     </NasjonalitetDiv>
   )

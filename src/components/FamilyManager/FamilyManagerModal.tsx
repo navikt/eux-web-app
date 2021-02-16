@@ -131,8 +131,8 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
   }
 
   const onNewPersonAdd = () => {
-    let newReplySed = _.cloneDeep(_replySed)
-    let personInfo: PersonInfo = {
+    const newReplySed = _.cloneDeep(_replySed)
+    const personInfo: PersonInfo = {
       fornavn: _newPersonName,
       etternavn: '',
       foedselsdato: '',
@@ -175,23 +175,22 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
     dispatch(setReplySed(_replySed))
   }
 
-  let relationOptions = []
-
+  const relationOptions = []
 
   relationOptions.push({
-    label: t('ui:relationship-bruker') + (!!_replySed.bruker ? '(' + t('ui:label-not-available')+ ')' : ''),
+    label: t('ui:relationship-bruker') + (_replySed.bruker ? '(' + t('ui:label-not-available') + ')' : ''),
     value: 'bruker',
     isDisabled: !!_replySed.bruker
   })
 
   relationOptions.push({
-    label: t('ui:relationship-ektefelle') + (!!(_replySed as F002Sed).ektefelle ? '(' + t('ui:label-not-available')+ ')' : ''),
+    label: t('ui:relationship-ektefelle') + ((_replySed as F002Sed).ektefelle ? '(' + t('ui:label-not-available') + ')' : ''),
     value: 'ektefelle',
     isDisabled: !!(_replySed as F002Sed).ektefelle
   })
 
   relationOptions.push({
-    label: t('ui:relationship-annenPerson')  + (!!(_replySed as F002Sed).annenPerson ? '(' + t('ui:label-not-available')+ ')' : ''),
+    label: t('ui:relationship-annenPerson') + ((_replySed as F002Sed).annenPerson ? '(' + t('ui:label-not-available') + ')' : ''),
     value: 'annenPerson',
     isDisabled: !!(_replySed as F002Sed).annenPerson
   })
@@ -202,27 +201,27 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
   })
 
   const getPersonLabel = (personId: string) => {
-    let id = personId.startsWith('barn[') ? 'barn' : personId
+    const id = personId.startsWith('barn[') ? 'barn' : personId
     return t('ui:relationship-' + id)
   }
 
   const renderPerson = (personId: string, i: number) => {
     const p = _.get(_replySed, `${personId}.personInfo`)
     return (
-      <FlexDiv className='slideAnimate' style={{animationDelay: i * 0.1 + 's' }} key={personId}>
+      <FlexDiv className='slideAnimate' style={{ animationDelay: i * 0.1 + 's' }} key={personId}>
         <CheckboxDiv>
-         <FlexDiv>
-           <Normaltekst>
+          <FlexDiv>
+            <Normaltekst>
               {p?.fornavn + ' ' + p?.etternavn + ' (' + getPersonLabel(personId) + ')'}
-           </Normaltekst>
-           {personId.startsWith('barn[') && (
-             <>
-               <HorizontalSeparatorDiv data-size='0.5'/>
-               <Barn/>
-             </>
-          )}
-         </FlexDiv>
-         <HighContrastFlatknapp
+            </Normaltekst>
+            {personId.startsWith('barn[') && (
+              <>
+                <HorizontalSeparatorDiv data-size='0.5' />
+                <Barn />
+              </>
+            )}
+          </FlexDiv>
+          <HighContrastFlatknapp
             mini
             kompakt
             onClick={() => onRemovePerson(personId)}
@@ -256,12 +255,12 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
           {t('ui:label-add-remove-persons')}
         </Title>
         <>
-          {_replySed.bruker && renderPerson( 'bruker', brukerNr)}
-          {(_replySed as F002Sed).ektefelle && renderPerson( 'ektefelle', ektefelleNr)}
-          {(_replySed as F002Sed).annenPerson && renderPerson( 'annenPerson', annenPersonNr)}
-          {(_replySed as F002Sed).barn && (_replySed as F002Sed).barn.map((b: any, i: number) => renderPerson( `barn[${i}]`, barnNr + i))}
+          {_replySed.bruker && renderPerson('bruker', brukerNr)}
+          {(_replySed as F002Sed).ektefelle && renderPerson('ektefelle', ektefelleNr)}
+          {(_replySed as F002Sed).annenPerson && renderPerson('annenPerson', annenPersonNr)}
+          {(_replySed as F002Sed).barn && (_replySed as F002Sed).barn.map((b: any, i: number) => renderPerson(`barn[${i}]`, barnNr + i))}
           <hr />
-          <VerticalSeparatorDiv data-size='2'/>
+          <VerticalSeparatorDiv data-size='2' />
           <Undertittel>
             {t('ui:label-add-new-person')}
           </Undertittel>
@@ -299,6 +298,7 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
                 options={relationOptions}
                 placeholder={t('ui:placeholder-select-default')}
                 selectedValue={_newPersonRelation}
+                menuPlacement={'auto'}
               />
               <HorizontalSeparatorDiv />
             </Column>

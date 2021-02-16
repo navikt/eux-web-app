@@ -267,10 +267,10 @@ const FamilyManager: React.FC = () => {
                   )}
               {personId.startsWith('barn[') && (
                 <>
-                  <HorizontalSeparatorDiv data-size='0.5'/>
-                  <Barn/>
+                  <HorizontalSeparatorDiv data-size='0.5' />
+                  <Barn />
                 </>
-                )}
+              )}
             </PersonDiv>
           </Tooltip>
           <Tooltip

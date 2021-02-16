@@ -37,6 +37,8 @@ export interface BucTyper {
 }
 
 export interface ConnectedSed {
+  status: string
+  sisteOppdatert: string
   replySedType: string
   replySedDisplay: string
   querySedDocumentId: string
@@ -121,7 +123,15 @@ export interface Saksbehandler {
   navn?: string
 }
 
-export type Seds = {[k in string]: Array<ConnectedSed>}
+export interface Sed {
+  saksnummer: string
+  land: string
+  institusjon: string
+  sisteOppdatert: string
+  seds: Array<ConnectedSed>
+}
+
+export type Seds = { [k in string]: Sed }
 
 export interface ServerInfo {
   namespace: string

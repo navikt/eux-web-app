@@ -4,7 +4,13 @@ import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { validateNasjonaliteter } from './validation/nasjonaliteter'
 import { validatePersonOpplysning } from './validation/personopplysninger'
+import { validateAdresser } from './validation/adresser'
 
+export const performValidation = (v: Validation, t: any, options: any, personId: string) => {
+  validatePersonOpplysning(v, t, options, personId)
+  validateNasjonaliteter(v, t, options, personId)
+  validateAdresser(v, t, options, personId)
+}
 
 export const validate = (options: any): Validation => {
   const v: Validation = {}
@@ -21,19 +27,16 @@ export const validate = (options: any): Validation => {
     skjemaelementId: 'c-svarpased-comment-textarea'
   } as FeiloppsummeringFeil
 
-  validatePersonOpplysning(v, t, options, 'bruker')
-  validateNasjonaliteter(v, t, options, 'bruker')
+  performValidation(v, t, options, 'bruker')
+
   if (options.replySed.ektefelle) {
-    validatePersonOpplysning(v, t, options, 'ektefelle')
-    validateNasjonaliteter(v, t, options, 'ektefelle')
+    performValidation(v, t, options, 'ektefelle')
   }
   if (options.replySed.annenPerson) {
-    validatePersonOpplysning(v, t, options, 'annenPerson')
-    validateNasjonaliteter(v, t, options, 'annenPerson')
+    performValidation(v, t, options, 'annenPerson')
   }
   if (options.replySed.barn) {
-    options.replySed.barn.forEach((b: Person, i: number) => validatePersonOpplysning(v, t, options, `barn[${i}]`))
-    options.replySed.barn.forEach((b: Person, i: number) => validateNasjonaliteter(v, t, options, `barn[${i}]`))
+    options.replySed.barn.forEach((b: Person, i: number) => performValidation(v, t, options, `barn[${i}]`))
   }
   return v
 }
