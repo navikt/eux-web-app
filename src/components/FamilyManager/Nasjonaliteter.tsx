@@ -65,6 +65,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
     })
     setIsDirty(true)
     onValueChanged(`${personID}.personInfo.statsborgerskap`, newStatsborgerskaps)
+
     setCurrentNationality(undefined)
     setCurrentFomdato('')
   }
@@ -98,7 +99,6 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
           <CountrySelect
             data-test-id={'c-familymanager-' + personID + '-nasjonaliteter-' + i + '-land-countryselect'}
             id={'c-familymanager-' + personID + '-nasjonaliteter-' + i + '-land-countryselect'}
-            label={''}
             menuPortalTarget={document.body}
             includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
             onOptionSelected={(e: any) => onNationalitySelected(e.value, i)}
@@ -119,7 +119,6 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
             id={'c-familymanager-' + personID + '-nasjonaliteter-' + i + '-fomdato'}
             onChange={(e: any) => onFomdatoChanged(e.target.value, i)}
             value={i < 0 ? _currentFomdato : s!.fomdato}
-            label={''}
             placeholder={t('ui:placeholder-date-default')}
           />
         </Column>
