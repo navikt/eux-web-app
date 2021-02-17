@@ -306,7 +306,7 @@ const FamilyManager: React.FC = () => {
               })}
               onClick={() => changePersonOption(personId, o.value)}
             >
-              {validation.hasOwnProperty('person-' + personId + '-' + o.value) &&
+              {Object.prototype.hasOwnProperty.call(validation, 'person-' + personId + '-' + o.value) &&
               (validation['person-' + personId + '-' + o.value] === undefined
                 ? <FilledCheckCircle color='green' />
                 : <FilledRemoveCircle color='red' />
@@ -365,76 +365,80 @@ const FamilyManager: React.FC = () => {
             </MarginDiv>
           </LeftDiv>
           <FadingLineSeparator className='fadeIn' />
-          {(gettingPerson || !_editCurrentPersonID) ? (
-            <RightFlexCenterDiv>
-              {gettingPerson ? t('ui:loading-getting-person') : undefined}
-              {!_editCurrentPersonID ? t('ui:label-no-person-selected') : undefined}
-            </RightFlexCenterDiv>
-          ) : (
-            <RightFlexStartDiv>
-              {_menuOption === 'personopplysninger' && (
-                <PersonOpplysninger
-                  highContrast={highContrast}
-                  landkoderList={landkoderList}
-                  onValueChanged={onValueChanged}
-                  personID={_editCurrentPersonID}
-                  replySed={replySed}
-                  searchingPerson={searchingPerson}
-                  searchedPerson={searchedPerson}
-                  validation={validation}
-                />
+          {(gettingPerson || !_editCurrentPersonID)
+            ? (
+              <RightFlexCenterDiv>
+                {gettingPerson ? t('ui:loading-getting-person') : undefined}
+                {!_editCurrentPersonID ? t('ui:label-no-person-selected') : undefined}
+              </RightFlexCenterDiv>
+              )
+            : (
+              <RightFlexStartDiv>
+                {_menuOption === 'personopplysninger' && (
+                  <PersonOpplysninger
+                    highContrast={highContrast}
+                    landkoderList={landkoderList}
+                    onValueChanged={onValueChanged}
+                    personID={_editCurrentPersonID}
+                    replySed={replySed}
+                    searchingPerson={searchingPerson}
+                    searchedPerson={searchedPerson}
+                    validation={validation}
+                  />
+                )}
+                {_menuOption === 'nasjonaliteter' && (
+                  <Nasjonaliteter
+                    highContrast={highContrast}
+                    landkoderList={landkoderList}
+                    onValueChanged={onValueChanged}
+                    personID={_editCurrentPersonID}
+                    replySed={replySed}
+                    validation={validation}
+                  />
+                )}
+                {_menuOption === 'adresser' && (
+                  <Adresser
+                    highContrast={highContrast}
+                    landkoderList={landkoderList}
+                    onValueChanged={onValueChanged}
+                    personID={_editCurrentPersonID}
+                    replySed={replySed}
+                    validation={validation}
+                  />
+                )}
+                {_menuOption === 'kontaktinformasjon' && (
+                  <Kontaktinformasjon
+                    highContrast={highContrast}
+                    onValueChanged={onValueChanged}
+                    personID={_editCurrentPersonID}
+                    replySed={replySed}
+                    validation={validation}
+                  />
+                )}
+                {_menuOption === 'trygdeordninger' && (
+                  <Trygdeordning
+                    highContrast={highContrast}
+                    personID={_editCurrentPersonID}
+                    replySed={replySed}
+                  />
+                )}
+                {_menuOption === 'familierelasjon' && (
+                  <Familierelasjon
+                    familierelasjonKodeverk={familierelasjonKodeverk}
+                    highContrast={highContrast}
+                    personID={_editCurrentPersonID}
+                    replySed={replySed}
+                  />
+                )}
+                {_menuOption === 'personensstatus' && (
+                  <PersonensStatus
+                    highContrast={highContrast}
+                    personID={_editCurrentPersonID}
+                    replySed={replySed}
+                  />
+                )}
+              </RightFlexStartDiv>
               )}
-              {_menuOption === 'nasjonaliteter' && (
-                <Nasjonaliteter
-                  highContrast={highContrast}
-                  landkoderList={landkoderList}
-                  onValueChanged={onValueChanged}
-                  personID={_editCurrentPersonID}
-                  replySed={replySed}
-                  validation={validation}
-                />
-              )}
-              {_menuOption === 'adresser' && (
-                <Adresser
-                  highContrast={highContrast}
-                  landkoderList={landkoderList}
-                  onValueChanged={onValueChanged}
-                  personID={_editCurrentPersonID}
-                  replySed={replySed}
-                  validation={validation}
-                />
-              )}
-              {_menuOption === 'kontaktinformasjon' && (
-                <Kontaktinformasjon
-                  highContrast={highContrast}
-                  personID={_editCurrentPersonID}
-                  replySed={replySed}
-                />
-              )}
-              {_menuOption === 'trygdeordninger' && (
-                <Trygdeordning
-                  highContrast={highContrast}
-                  personID={_editCurrentPersonID}
-                  replySed={replySed}
-                />
-              )}
-              {_menuOption === 'familierelasjon' && (
-                <Familierelasjon
-                  familierelasjonKodeverk={familierelasjonKodeverk}
-                  highContrast={highContrast}
-                  personID={_editCurrentPersonID}
-                  replySed={replySed}
-                />
-              )}
-              {_menuOption === 'personensstatus' && (
-                <PersonensStatus
-                  highContrast={highContrast}
-                  personID={_editCurrentPersonID}
-                  replySed={replySed}
-                />
-              )}
-            </RightFlexStartDiv>
-          )}
         </FlexDiv>
       </CustomHighContrastPanel>
     </PanelDiv>

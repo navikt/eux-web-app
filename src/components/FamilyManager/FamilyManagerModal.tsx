@@ -298,7 +298,7 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
                 options={relationOptions}
                 placeholder={t('ui:placeholder-select-default')}
                 selectedValue={_newPersonRelation}
-                menuPlacement={'auto'}
+                menuPlacement='auto'
               />
               <HorizontalSeparatorDiv />
             </Column>

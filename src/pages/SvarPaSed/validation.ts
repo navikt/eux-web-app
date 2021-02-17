@@ -17,15 +17,19 @@ export const validate = (options: any): Validation => {
   const t = options.t
   // Step 2 form
 
-  v.purpose = !_.isEmpty(options.purpose) ? undefined : {
-    feilmelding: t('ui:validation-noPurpose'),
-    skjemaelementId: 'c-purpose-select'
-  } as FeiloppsummeringFeil
+  v.purpose = !_.isEmpty(options.purpose)
+    ? undefined
+    : {
+      feilmelding: t('ui:validation-noPurpose'),
+      skjemaelementId: 'c-purpose-select'
+    } as FeiloppsummeringFeil
 
-  v.comment = options.comment ? undefined : {
-    feilmelding: t('ui:validation-noComment'),
-    skjemaelementId: 'c-svarpased-comment-textarea'
-  } as FeiloppsummeringFeil
+  v.comment = options.comment
+    ? undefined
+    : {
+      feilmelding: t('ui:validation-noComment'),
+      skjemaelementId: 'c-svarpased-comment-textarea'
+    } as FeiloppsummeringFeil
 
   performValidation(v, t, options, 'bruker')
 

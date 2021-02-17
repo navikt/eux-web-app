@@ -9,23 +9,29 @@ export const validateAdresser = (v: Validation, t: any, options: any, personID: 
   const p = _.get(options.replySed, personID)
   const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
 
-  p.adresser?.map((a: Adresse, i: number) => {
-    let value = (a.land) ? undefined : {
-      feilmelding: t('ui:validation-noAddressCountry', { person: personName }),
-      skjemaelementId: 'c-familymanager-' + personID + '-adresser-' + i + '-land-countryselect'
-    } as FeiloppsummeringFeil
+  p.adresser?.forEach((a: Adresse, i: number) => {
+    const value = (a.land)
+      ? undefined
+      : {
+        feilmelding: t('ui:validation-noAddressCountry', { person: personName }),
+        skjemaelementId: 'c-familymanager-' + personID + '-adresser-' + i + '-land-countryselect'
+      } as FeiloppsummeringFeil
     v['person-' + personID + '-adresser-' + i + '-land'] = value
     if (value) {
       personFail = true
       adresserFail = true
     }
 
-    v['person-' + personID + '-adresser'] = adresserFail ? {
-      feilmelding: 'notnull', skjemaelementId: ''
-    } as FeiloppsummeringFeil : undefined
+    v['person-' + personID + '-adresser'] = adresserFail
+      ? {
+        feilmelding: 'notnull', skjemaelementId: ''
+      } as FeiloppsummeringFeil
+      : undefined
 
-    v['person-' + personID] = personFail ? {
-      feilmelding: 'notnull', skjemaelementId: ''
-    } as FeiloppsummeringFeil : undefined
+    v['person-' + personID] = personFail
+      ? {
+        feilmelding: 'notnull', skjemaelementId: ''
+      } as FeiloppsummeringFeil
+      : undefined
   })
 }

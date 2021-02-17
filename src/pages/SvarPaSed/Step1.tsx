@@ -31,7 +31,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import ReceivedIcon from 'assets/icons/mailbox-4'
 import SentIcon from 'assets/icons/email-send-1'
-import ExternalLink from  'assets/icons/line-version-logout'
+import ExternalLink from 'assets/icons/line-version-logout'
 
 const SaksnummerOrFnrInput = styled(HighContrastInput)`
   margin-right: 1rem;
@@ -205,25 +205,25 @@ const Step1: React.FC<SvarPaSedProps> = ({
                             <Undertittel>{sed}</Undertittel>
                             <Normaltekst>
                               <span>{t('ui:label-caseNumber') + ': ' + seds[sed].saksnummer}</span>
-                              <HorizontalSeparatorDiv/>
+                              <HorizontalSeparatorDiv />
                               <Lenke href='#'>
                                 <span>{t('ui:label-goToRina')}</span>
-                                <HorizontalSeparatorDiv data-size='0.35'/>
-                                <ExternalLink/>
+                                <HorizontalSeparatorDiv data-size='0.35' />
+                                <ExternalLink />
                               </Lenke>
                             </Normaltekst>
-                            <FlexDiv style={{width: '1px'}}>
+                            <FlexDiv style={{ width: '1px' }}>
                               <Normaltekst>
                                 {t('ui:label-land')}:
                               </Normaltekst>
-                              <HorizontalSeparatorDiv data-size='0.35'/>
+                              <HorizontalSeparatorDiv data-size='0.35' />
                               <Flag
                                 size='XS'
                                 type='circle'
                                 label={country?.label || ''}
                                 country={country?.value || ''}
                               />
-                              <HorizontalSeparatorDiv data-size='0.35'/>
+                              <HorizontalSeparatorDiv data-size='0.35' />
                               <Normaltekst>
                                 {country?.label}
                               </Normaltekst>
@@ -238,57 +238,58 @@ const Step1: React.FC<SvarPaSedProps> = ({
                         )}
                         className='slideAnimate'
                         onChange={onParentSedChange}
-                        />
-                        {seds[sed].seds.map((connectedSed: ConnectedSed) => (
-                          <HiddenFormContainer
-                            key={sed + '-' + connectedSed.replySedType}
-                            className={classNames({
+                      />
+                      {seds[sed].seds.map((connectedSed: ConnectedSed) => (
+                        <HiddenFormContainer
+                          key={sed + '-' + connectedSed.replySedType}
+                          className={classNames({
                             slideOpen: previousParentSed !== sed && parentSed === sed,
                             slideClose: previousParentSed === sed && parentSed !== sed,
                             closed: !((previousParentSed !== sed && parentSed === sed) || (previousParentSed === sed && parentSed !== sed))
-                            })}
-                          >
-                            <HighContrastPanel style={{ marginLeft: '3rem' }}>
-                              <FlexDiv>
-                                <PileCenterDiv>
-                                  {connectedSed.status === 'received' && <ReceivedIcon/>}
-                                  {connectedSed.status === 'sent' && <SentIcon/>}
-                                  <Undertekst>{t('ui:status-' + connectedSed.status)}</Undertekst>
-                                </PileCenterDiv>
-                                <HorizontalSeparatorDiv />
-                                <PileLeftDiv style={{flex: 2}}>
-                                  <div>
-                                    <Undertittel>
-                                      {connectedSed.replySedType} - {connectedSed.replySedDisplay}
-                                    </Undertittel>
-                                    <Normaltekst>
-                                      {t('ui:label-lastModified') + ': ' + seds[sed].sisteOppdatert}
-                                    </Normaltekst>
-                                    <Lenke href='#'>
-                                      <span>{t('ui:label-goToSedInRina')}</span>
-                                      <HorizontalSeparatorDiv data-size='0.35'/>
-                                      <ExternalLink/>
-                                    </Lenke>
-                                  </div>
-                                </PileLeftDiv>
-                                <HorizontalSeparatorDiv />
-                                <HighContrastHovedknapp
-                                  disabled={queryingReplySed}
-                                  spinner={queryingReplySed}
-                                  mini
-                                  kompakt
-                                  onClick={() => onReplySedClick(connectedSed)}
-                                >
-                                  {queryingReplySed ? t('ui:loading-replying') : t('ui:label-reply')}
-                                </HighContrastHovedknapp>
-                              </FlexDiv>
-                            </HighContrastPanel>
-                            <VerticalSeparatorDiv />
-                          </HiddenFormContainer>
-                        ))}
-                      </div>
-                    )}
-                  )}
+                          })}
+                        >
+                          <HighContrastPanel style={{ marginLeft: '3rem' }}>
+                            <FlexDiv>
+                              <PileCenterDiv>
+                                {connectedSed.status === 'received' && <ReceivedIcon />}
+                                {connectedSed.status === 'sent' && <SentIcon />}
+                                <Undertekst>{t('ui:status-' + connectedSed.status)}</Undertekst>
+                              </PileCenterDiv>
+                              <HorizontalSeparatorDiv />
+                              <PileLeftDiv style={{ flex: 2 }}>
+                                <div>
+                                  <Undertittel>
+                                    {connectedSed.replySedType} - {connectedSed.replySedDisplay}
+                                  </Undertittel>
+                                  <Normaltekst>
+                                    {t('ui:label-lastModified') + ': ' + seds[sed].sisteOppdatert}
+                                  </Normaltekst>
+                                  <Lenke href='#'>
+                                    <span>{t('ui:label-goToSedInRina')}</span>
+                                    <HorizontalSeparatorDiv data-size='0.35' />
+                                    <ExternalLink />
+                                  </Lenke>
+                                </div>
+                              </PileLeftDiv>
+                              <HorizontalSeparatorDiv />
+                              <HighContrastHovedknapp
+                                disabled={queryingReplySed}
+                                spinner={queryingReplySed}
+                                mini
+                                kompakt
+                                onClick={() => onReplySedClick(connectedSed)}
+                              >
+                                {queryingReplySed ? t('ui:loading-replying') : t('ui:label-reply')}
+                              </HighContrastHovedknapp>
+                            </FlexDiv>
+                          </HighContrastPanel>
+                          <VerticalSeparatorDiv />
+                        </HiddenFormContainer>
+                      ))}
+                    </div>
+                  )
+                }
+                )}
               </RadioGroup>
             </Column>
           </Row>

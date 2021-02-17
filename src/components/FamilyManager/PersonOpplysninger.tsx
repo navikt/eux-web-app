@@ -282,85 +282,87 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         </Column>
       </Row>
       <VerticalSeparatorDiv />
-      {_.get(replySed, `toDelete.${personID}.foedested.visible`) ? (
-        <>
+      {_.get(replySed, `toDelete.${personID}.foedested.visible`)
+        ? (
+          <>
+            <Row>
+              <Column>
+                <HighContrastInput
+                  data-test-id={'c-familymanager-' + personID + '-personopplysninger-foedestedby-input'}
+                  feil={validation['person-' + personID + '-personopplysninger-foedested-by']
+                    ? validation['person-' + personID + '-personopplysninger-foedested-by']!.feilmelding
+                    : undefined}
+                  id={'c-familymanager-' + personID + '-personopplysninger-foedestedby-input'}
+                  label={t('ui:label-by')}
+                  onChange={onFoedestedByChange}
+                  value={_.get(replySed, `${personID}.personInfo.pinMangler.foedested.by`)}
+                />
+              </Column>
+              <HorizontalSeparatorDiv />
+              <Column>
+                <HighContrastInput
+                  data-test-id={'c-familymanager-' + personID + '-personopplysninger-foedested-region-input'}
+                  feil={validation['person-' + personID + '-personopplysninger-foedested-region']
+                    ? validation['person-' + personID + '-personopplysninger-foedested-region']!.feilmelding
+                    : undefined}
+                  id={'c-familymanager-' + personID + '-personopplysninger-foedested-region-input'}
+                  label={t('ui:label-region')}
+                  onChange={onFoedestedRegionChange}
+                  value={_.get(replySed, `${personID}.personInfo.pinMangler.foedested.region`)}
+                />
+              </Column>
+              <HorizontalSeparatorDiv />
+              <Column>
+                <CountrySelect
+                  data-test-id={'c-familymanager-' + personID + '-personopplysninger-foedested-land-countryselect'}
+                  error={validation['person-' + personID + '-personopplysninger-foedested-land']
+                    ? validation['person-' + personID + '-personopplysninger-foedested-land']!.feilmelding
+                    : undefined}
+                  id={'c-familymanager-' + personID + '-personopplysninger-foedested-land-countryselect'}
+                  includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
+                  label={t('ui:label-landkode')}
+                  menuPortalTarget={document.body}
+                  onOptionSelected={onFoedestedLandChange}
+                  placeholder={t('ui:label-choose')}
+                  values={_.get(replySed, `${personID}.personInfo.pinMangler.foedested.land`)}
+                />
+              </Column>
+            </Row>
+            <VerticalSeparatorDiv />
+            <Row>
+              <Column>
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  onClick={() => onSetAddBirthPlace(false)}
+                >
+                  <Trashcan />
+                  <HorizontalSeparatorDiv data-size='0.5' />
+                  {t('ui:label-remove-birthplace')}
+                </HighContrastFlatknapp>
+              </Column>
+            </Row>
+          </>
+          )
+        : (
           <Row>
             <Column>
-              <HighContrastInput
-                data-test-id={'c-familymanager-' + personID + '-personopplysninger-foedestedby-input'}
-                feil={validation['person-' + personID + '-personopplysninger-foedested-by']
-                  ? validation['person-' + personID + '-personopplysninger-foedested-by']!.feilmelding
-                  : undefined}
-                id={'c-familymanager-' + personID + '-personopplysninger-foedestedby-input'}
-                label={t('ui:label-by')}
-                onChange={onFoedestedByChange}
-                value={_.get(replySed, `${personID}.personInfo.pinMangler.foedested.by`)}
-              />
-            </Column>
-            <HorizontalSeparatorDiv />
-            <Column>
-              <HighContrastInput
-                data-test-id={'c-familymanager-' + personID + '-personopplysninger-foedested-region-input'}
-                feil={validation['person-' + personID + '-personopplysninger-foedested-region']
-                  ? validation['person-' + personID + '-personopplysninger-foedested-region']!.feilmelding
-                  : undefined}
-                id={'c-familymanager-' + personID + '-personopplysninger-foedested-region-input'}
-                label={t('ui:label-region')}
-                onChange={onFoedestedRegionChange}
-                value={_.get(replySed, `${personID}.personInfo.pinMangler.foedested.region`)}
-              />
-            </Column>
-            <HorizontalSeparatorDiv />
-            <Column>
-              <CountrySelect
-                data-test-id={'c-familymanager-' + personID + '-personopplysninger-foedested-land-countryselect'}
-                error={validation['person-' + personID + '-personopplysninger-foedested-land']
-                  ? validation['person-' + personID + '-personopplysninger-foedested-land']!.feilmelding
-                  : undefined}
-                id={'c-familymanager-' + personID + '-personopplysninger-foedested-land-countryselect'}
-                includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
-                label={t('ui:label-landkode')}
-                menuPortalTarget={document.body}
-                onOptionSelected={onFoedestedLandChange}
-                placeholder={t('ui:label-choose')}
-                values={_.get(replySed, `${personID}.personInfo.pinMangler.foedested.land`)}
-              />
-            </Column>
-          </Row>
-          <VerticalSeparatorDiv />
-          <Row>
-            <Column>
+              <Undertittel>
+                {t('ui:label-birthPlace')}
+              </Undertittel>
+              <VerticalSeparatorDiv data-size='0.5' />
               <HighContrastFlatknapp
                 mini
                 kompakt
-                onClick={() => onSetAddBirthPlace(false)}
+                onClick={() => onSetAddBirthPlace(true)}
               >
-                <Trashcan />
+                <Tilsette />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('ui:label-remove-birthplace')}
+                {t('ui:label-add-birthplace')}
               </HighContrastFlatknapp>
             </Column>
           </Row>
-        </>
-      ) : (
-        <Row>
-          <Column>
-            <Undertittel>
-              {t('ui:label-birthPlace')}
-            </Undertittel>
-            <VerticalSeparatorDiv data-size='0.5' />
-            <HighContrastFlatknapp
-              mini
-              kompakt
-              onClick={() => onSetAddBirthPlace(true)}
-            >
-              <Tilsette />
-              <HorizontalSeparatorDiv data-size='0.5' />
-              {t('ui:label-add-birthplace')}
-            </HighContrastFlatknapp>
-          </Column>
-        </Row>
-      )}
+          )}
       {_isDirty && '*'}
     </PersonOpplysningerDiv>
   )

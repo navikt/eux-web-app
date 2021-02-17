@@ -36,7 +36,6 @@ const AlignStartRow = styled(Row)`
 `
 
 const Adresser: React.FC<AdresseProps> = ({
-  // person
   landkoderList,
   onValueChanged,
   personID,
@@ -236,7 +235,7 @@ const Adresser: React.FC<AdresseProps> = ({
             label={t('ui:label-by')}
           />
         </Column>
-        <Column/>
+        <Column />
       </AlignStartRow>
       <HorizontalSeparatorDiv />
       <AlignStartRow>
@@ -279,7 +278,7 @@ const Adresser: React.FC<AdresseProps> = ({
           </HighContrastFlatknapp>
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='3'/>
+      <VerticalSeparatorDiv data-size='3' />
     </>
   )
 
