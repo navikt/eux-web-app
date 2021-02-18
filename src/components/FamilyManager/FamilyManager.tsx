@@ -418,8 +418,10 @@ const FamilyManager: React.FC = () => {
                 {_menuOption === 'trygdeordninger' && (
                   <Trygdeordning
                     highContrast={highContrast}
+                    onValueChanged={onValueChanged}
                     personID={_editCurrentPersonID}
                     replySed={replySed}
+                    validation={validation}
                   />
                 )}
                 {_menuOption === 'familierelasjon' && (
