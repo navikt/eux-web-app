@@ -104,9 +104,14 @@ export const validatePersonOpplysning = (v: Validation, t: any, options: any, pe
     } as FeiloppsummeringFeil
     : undefined
 
-  v['person-' + personID] = personFail
-    ? {
+  const personFailMessage = personFail ?
+    {
       feilmelding: 'notnull', skjemaelementId: ''
     } as FeiloppsummeringFeil
     : undefined
+
+  if (! (v['person-' + personID] !== undefined && personFailMessage === undefined) ) {
+    v['person-' + personID] = personFailMessage
+  }
+
 }

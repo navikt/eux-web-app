@@ -39,7 +39,7 @@ type PageCategory = 'dekkede' | 'udekkede' | 'familieYtelse'
 
 type What = 'startdato' | 'sluttdato' | 'category'
 
-type PensjonType = 'alderspensjon' | 'uførhet' | 'enkepensjon' | 'barnepensjon=' | 'etterlattepensjon'
+//type PensjonType = 'alderspensjon' | 'uførhet' | 'enkepensjon' | 'barnepensjon=' | 'etterlattepensjon'
 
 const Trygdeordning: React.FC<TrygdeordningProps> = ({
   highContrast,

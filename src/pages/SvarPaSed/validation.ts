@@ -6,14 +6,14 @@ import { validateNasjonaliteter } from './validation/nasjonaliteter'
 import { validatePersonOpplysning } from './validation/personopplysninger'
 import { validateAdresser } from './validation/adresser'
 import { validateKontaktsinformasjon } from './validation/kontaktinformasjon'
-import { validateTrygdordninger } from './validation/trygdordninger'
+import { validateTrygdeordninger } from './validation/trygdeordninger'
 
 export const performValidation = (v: Validation, t: any, options: any, personId: string) => {
   validatePersonOpplysning(v, t, options, personId)
   validateNasjonaliteter(v, t, options, personId)
   validateAdresser(v, t, options, personId)
   validateKontaktsinformasjon(v, t, options, personId)
-  validateTrygdordninger(v, t, options, personId)
+  validateTrygdeordninger(v, t, options, personId)
 }
 
 export const validate = (options: any): Validation => {
