@@ -212,12 +212,13 @@
   "option-personensstatus-5" : "Personen har permisjon uten lønn",
   "option-personensstatus-5-more" : "Personen har permisjon uten lønn på grunn av omsorg for barn eller en tilsvarende periode i samsvar med lovgivningen i avsenderlandet",
 
-  "option-trygdeordning-perioderUtenforTrygdeordning": "Perioder utenfor trygdeordning",
-  "option-trygdeordning-perioderMedArbeid" : "Perioder med arbeid",
-  "option-trygdeordning-perioderMedTrygd" : "Perioder med trygd",
-  "option-trygdeordning-perioderMedITrygdeordning" : "Perioder med ITrygdeordning",
-  "option-trygdeordning-perioderMedYtelser" : "Perioder med ytelser",
-  "option-trygdeordning-perioderMedPensjon" : "Perioder med pensjon",
+  "option-trygdeordning-perioderMedArbeid" : "Arbeid",
+  "option-trygdeordning-perioderMedTrygd" : "Trygd",
+  "option-trygdeordning-perioderMedYtelser" : "Ytelser",
+  "option-trygdeordning-perioderMedPensjon" : "Pensjon",
+
+  "option-trygdeordning-alderspensjon" : "Alderspensjon",
+  "option-trygdeordning-uførhet" : "Uførhet",
 
   "placeholder-date-default" : "DD.MM.ÅÅÅÅ",
   "placeholder-input-default" : "Skriv inn...",

@@ -9,6 +9,12 @@ export interface Adresse {
   type?: string
 }
 
+export interface Periode {
+  startdato: string
+  sluttdato?: string
+  aapenPeriodeType?: string
+}
+
 export interface Aktivitet {
   perioderMedAktivitet?: {
     type: string
@@ -24,10 +30,9 @@ export interface Aktivitet {
   }
 }
 
-export interface Periode {
-  startdato: string
-  sluttdato?: string
-  aapenPeriodeType?: string
+export interface PensjonPeriode {
+  pensjonstype: string
+  periode: Periode
 }
 
 export interface Arbeidsgiver {
@@ -118,10 +123,7 @@ export interface Person {
   }
   perioderMedArbeid ?: Array<Periode>
   perioderMedITrygdeordning ?: Array<Periode>
-  perioderMedPensjon ?: Array<{
-    pensjonstype: string
-    periode: Periode
-  }>
+  perioderMedPensjon ?: Array<PensjonPeriode>
   periodeMedTrygd ?: Array<Periode>
   periodeMedYtelser ?: Array<Periode>
   perioderUtenforTrygdeordning ?: Array<Periode>

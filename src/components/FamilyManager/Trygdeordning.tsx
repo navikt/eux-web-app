@@ -1,10 +1,10 @@
 import Tilsette from 'assets/icons/Tilsette'
 import Trashcan from 'assets/icons/Trashcan'
 import Select from 'components/Select/Select'
-import { Periode, ReplySed } from 'declarations/sed'
+import { PensjonPeriode, Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { Ingress, Undertekst, Undertittel } from 'nav-frontend-typografi'
+import { Ingress, Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
   HighContrastFlatknapp,
@@ -15,6 +15,7 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { OptionsType } from 'react-select'
 import styled from 'styled-components'
 
 interface TrygdeordningProps {
@@ -37,9 +38,9 @@ type SedCategory = 'perioderMedArbeid' | 'perioderMedTrygd' |
 
 type PageCategory = 'dekkede' | 'udekkede' | 'familieYtelse'
 
-type What = 'startdato' | 'sluttdato' | 'category'
+type What = 'startdato' | 'sluttdato' | 'category' |  'pensjontype'
 
-//type PensjonType = 'alderspensjon' | 'uførhet' | 'enkepensjon' | 'barnepensjon=' | 'etterlattepensjon'
+type PensjonType = 'alderspensjon' | 'uførhet' // | 'enkepensjon' | 'barnepensjon=' | 'etterlattepensjon'
 
 const Trygdeordning: React.FC<TrygdeordningProps> = ({
   highContrast,
@@ -54,16 +55,14 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
   const [_currentSluttDato, setCurrentSluttDato] = useState<{[k in PageCategory]: string}>({
     dekkede: '', udekkede: '', familieYtelse: ''
   })
-  const [_currentCategory, setCurrentCategory] = useState<{[k in PageCategory]: SedCategory | undefined}>({
-    dekkede: undefined, udekkede: undefined, familieYtelse: undefined
-  })
+  const [_currentCategory, setCurrentCategory] = useState<SedCategory | undefined>(undefined)
+  const [_currentPensjonType, setCurrentPensjonType] = useState<PensjonType | undefined>(undefined)
   const [_seeNewForm, setSeeNewForm] = useState<{[k in PageCategory]: boolean}>({
     dekkede: false, udekkede: false, familieYtelse: false
   })
-
   const [_isDirty, setIsDirty] = useState<boolean>(false)
   const { t } = useTranslation()
-  const perioder: {[k in SedCategory]: Array<Periode>} = {
+  const perioder: {[k in SedCategory]: Array<Periode | PensjonPeriode>} = {
     perioderMedArbeid: _.get(replySed, `${personID}.perioderMedArbeid`),
     perioderMedTrygd: _.get(replySed, `${personID}.perioderMedTrygd`),
     perioderMedITrygdeordning: _.get(replySed, `${personID}.perioderMedITrygdeordning`),
@@ -73,16 +72,23 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
   }
 
   const onRemoved = (newSedCategory: SedCategory, i: number) => {
-    const newPerioder: Array<Periode> = _.cloneDeep(perioder[newSedCategory])
+    const newPerioder: Array<Periode | PensjonPeriode> = _.cloneDeep(perioder[newSedCategory])
     newPerioder.splice(i, 1)
     setIsDirty(true)
     onValueChanged(`${personID}.${newSedCategory}`, newPerioder)
   }
 
-  const onAdd = (pageCategory: PageCategory) => {
-    if (!_.isNil(_currentCategory[pageCategory])) {
-      const newSedCategory: SedCategory = _currentCategory[pageCategory]!
-      let newPerioder: Array<Periode> = _.cloneDeep(perioder[newSedCategory])
+  const onAdd = (pageCategory: PageCategory, newSedCategory: SedCategory | null) => {
+
+    let sedCategory: SedCategory | null = newSedCategory
+    if (_.isNil(sedCategory)) {
+      sedCategory = _currentCategory as SedCategory
+    }
+    if (!_.isNil(sedCategory)) {
+      let newPerioder: Array<Periode | PensjonPeriode> = _.cloneDeep(perioder[sedCategory])
+      if (_.isNil(newPerioder)) {
+        newPerioder = []
+      }
       const newPeriode: Periode = {
         startdato: _currentStartDato[pageCategory]
       }
@@ -91,8 +97,23 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
       } else {
         newPeriode.aapenPeriodeType = 'åpen_sluttdato'
       }
-      newPerioder = newPerioder.concat(newPeriode)
+
+      if (sedCategory === 'perioderMedPensjon') {
+        if (_currentPensjonType) {
+          newPerioder = (newPerioder as Array<PensjonPeriode>).concat({
+            pensjonstype: _currentPensjonType,
+            periode: newPeriode
+          })
+          setCurrentPensjonType(undefined)
+        } else {
+          return
+        }
+      } else {
+        newPerioder = newPerioder.concat(newPeriode)
+      }
       setIsDirty(true)
+
+      // resetting form values
       setCurrentStartDato({
         ..._currentStartDato,
         [pageCategory]: ''
@@ -101,12 +122,16 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
         ..._currentSluttDato,
         [pageCategory]: ''
       })
-      setCurrentCategory({
-        ..._currentCategory,
-        [pageCategory]: undefined
-      })
-      onValueChanged(`${personID}.${newSedCategory}`, newPerioder)
+      if (_currentCategory === sedCategory) {
+        setCurrentCategory(undefined)
+      }
+      onValueChanged(`${personID}.${sedCategory}`, newPerioder)
     }
+
+    setSeeNewForm({
+      ..._seeNewForm,
+      [pageCategory]: false
+    })
   }
 
   const onChanged = (e: string, what: What, pageCategory: PageCategory, newSedCategory: SedCategory | null, i: number) => {
@@ -124,58 +149,63 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
         })
       }
       if (what === 'category') {
-        setCurrentCategory({
-          ..._currentCategory,
-          [pageCategory]: e
-        })
+        setCurrentCategory(e as SedCategory)
+      }
+      if (what === 'pensjontype') {
+        setCurrentPensjonType(e as PensjonType)
       }
     } else {
       setIsDirty(true)
+      const newPerioder: Array<Periode | PensjonPeriode> = _.cloneDeep(perioder[newSedCategory!])
+
       if (what === 'startdato' || what === 'sluttdato') {
-        const newPerioder: Array<Periode> = _.cloneDeep(perioder[newSedCategory!])
-        newPerioder[i][what] = e
+        if (newSedCategory === 'perioderMedPensjon') {
+          (newPerioder[i] as PensjonPeriode).periode[what] = e
+        } else {
+          (newPerioder[i] as Periode)[what] = e
+        }
         onValueChanged(`${personID}.${newSedCategory}`, newPerioder)
+      }
+      if (what === 'pensjontype') {
+        (newPerioder[i] as PensjonPeriode).pensjonstype = e
+        onValueChanged(`${personID}.${newSedCategory}`, newPerioder)
+      }
+      if (what === 'category') {
+        // TODO: this doesn't work
+        onRemoved(newSedCategory!, i)
+        onAdd(pageCategory, e as SedCategory)
       }
     }
   }
 
-  const existsDekket = (perioder.perioderMedArbeid.length + perioder.perioderMedTrygd.length +
-    perioder.perioderMedITrygdeordning.length + perioder.perioderMedYtelser.length) > 0
+  const existsDekket = perioder.perioderMedITrygdeordning.length > 0
 
-  const existsUdekket = (perioder.perioderUtenforTrygdeordning.length + perioder.perioderMedPensjon.length) > 0
+  const existsUdekket = perioder.perioderUtenforTrygdeordning.length > 0
 
   const existsFamilieYtelser = (perioder.perioderMedArbeid.length + perioder.perioderMedTrygd.length +
-    perioder.perioderMedITrygdeordning.length + perioder.perioderMedYtelser.length + perioder.perioderMedPensjon.length) > 0
+     perioder.perioderMedYtelser.length + perioder.perioderMedPensjon.length) > 0
 
-  const selectOptions = {
-    dekkede: [{
-      label: t('ui:option-trygdeordning-perioderMedArbeid'), value: 'perioderMedArbeid'
-    }, {
-      label: t('ui:option-trygdeordning-perioderMedTrygd'), value: 'perioderMedTrygd'
-    }, {
-      label: t('ui:option-trygdeordning-perioderMedITrygdeordning'), value: 'perioderMedITrygdeordning'
-    }, {
-      label: t('ui:option-trygdeordning-perioderMedYtelser'), value: 'perioderMedYtelser'
-    }],
-    udekkede: [{
-      label: t('ui:option-trygdeordning-perioderUtenforTrygdeordning'), value: 'perioderUtenforTrygdeordning'
-    }, {
-      label: t('ui:option-trygdeordning-perioderMedPensjon'), value: 'perioderMedPensjon'
-    }],
-    familieYtelse: [{
-      label: t('ui:option-trygdeordning-perioderMedArbeid'), value: 'perioderMedArbeid'
-    }, {
-      label: t('ui:option-trygdeordning-perioderMedTrygd'), value: 'perioderMedTrygd'
-    }, {
-      label: t('ui:option-trygdeordning-perioderMedITrygdeordning'), value: 'perioderMedITrygdeordning'
-    }, {
-      label: t('ui:option-trygdeordning-perioderMedYtelser'), value: 'perioderMedYtelser'
-    }, {
-      label: t('ui:option-trygdeordning-perioderMedPensjon'), value: 'perioderMedPensjon'
-    }]
-  }
+  const selectCategoryOptions: OptionsType<{label: string, value: SedCategory}> = [{
+    label: t('ui:option-trygdeordning-perioderMedArbeid'), value: 'perioderMedArbeid'
+  }, {
+    label: t('ui:option-trygdeordning-perioderMedTrygd'), value: 'perioderMedTrygd'
+  }, {
+    label: t('ui:option-trygdeordning-perioderMedYtelser'), value: 'perioderMedYtelser'
+  }, {
+    label: t('ui:option-trygdeordning-perioderMedPensjon'), value: 'perioderMedPensjon'
+  }]
 
-  const renderRow = (e: Periode | null, pageCategory: PageCategory, sedCategory: SedCategory | null, i: number) => (
+  const getCategoryOption = (value: string | undefined | null) => _.find(selectCategoryOptions, s => s.value === value)
+
+  const selectPensjonTypeOptions: Array<{label: string, value: PensjonType}> = [{
+    label: t('ui:option-trygdeordning-alderspensjon'), value: 'alderspensjon'
+  }, {
+    label: t('ui:option-trygdeordning-uførhet'), value: 'uførhet'
+  }]
+
+  const getPensjonTypeOption = (value: string | undefined | null) => _.find(selectPensjonTypeOptions, s => s.value === value)
+
+  const renderRow = (e: Periode | PensjonPeriode | null, pageCategory: PageCategory, sedCategory: SedCategory | null, i: number) => (
     <>
       <Row>
         <Column>
@@ -186,7 +216,9 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
               : undefined}
             id={'c-familymanager-' + personID + '-trygdeordning-' + sedCategory + '-' + i + '-startdato-input'}
             onChange={(e: any) => onChanged(e.target.value, 'startdato', pageCategory, sedCategory, i)}
-            value={i < 0 ? _currentStartDato[pageCategory] : e?.startdato}
+            value={i < 0 ? _currentStartDato[pageCategory] : (
+              sedCategory === 'perioderMedPensjon' ? (e as PensjonPeriode).periode.startdato : (e as Periode).startdato
+            )}
             placeholder={t('ui:placeholder-date-default')}
           />
         </Column>
@@ -198,44 +230,84 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
               : undefined}
             id={'c-familymanager-' + personID + '-trygdeordning-' + sedCategory + '-' + i + '-sluttdato-input'}
             onChange={(e: any) => onChanged(e.target.value, 'sluttdato', pageCategory, sedCategory, i)}
-            value={i < 0 ? _currentSluttDato[pageCategory] : e?.sluttdato}
+            value={i < 0 ? _currentSluttDato[pageCategory] : (
+              sedCategory === 'perioderMedPensjon' ? (e as PensjonPeriode).periode.sluttdato : (e as Periode).sluttdato
+            )}
             placeholder={t('ui:placeholder-date-default')}
           />
         </Column>
-        <Column>
-          {i < 0
-            ? (
-              <Select
-                data-test-id={'c-familymanager-' + personID + '-trygdeordning-' + sedCategory + '-' + i + '-sedCategory-select'}
-                error={validation['person-' + personID + '-trygdeordning-' + sedCategory + '-' + i + '-sedCategory']
-                  ? validation['person-' + personID + '-trygdeordning-' + sedCategory + '-' + i + '-sedCategory']!.feilmelding
-                  : undefined}
-                highContrast={highContrast}
-                id={'c-familymanager-' + personID + '-trygdeordning-' + sedCategory + '-' + i + '-sedCategory-select'}
-                onChange={(e: any) => onChanged(e.value, 'category', pageCategory, sedCategory, i)}
-                options={selectOptions[pageCategory]}
-                placeholder={t('ui:placeholder-select-default')}
-                selectedValue={_currentCategory[pageCategory]}
-              />
-              )
-            : (
-              <Undertekst>
-                {t('ui:option-trygdeordning-' + sedCategory)}
-              </Undertekst>
-              )}
-        </Column>
-        <Column>
-          <HighContrastFlatknapp
-            mini
-            kompakt
-            onClick={() => i < 0 ? onAdd(pageCategory) : onRemoved(sedCategory!, i)}
-          >
-            {i < 0 ? <Tilsette /> : <Trashcan />}
-            <HorizontalSeparatorDiv data-size='0.5' />
-            {i < 0 ? t('ui:label-add') : t('ui:label-remove')}
-          </HighContrastFlatknapp>
-        </Column>
+        {pageCategory !== 'familieYtelse' ? (
+         <Column>
+            <HighContrastFlatknapp
+              mini
+              kompakt
+              onClick={() => i < 0 ? onAdd(pageCategory, sedCategory) : onRemoved(sedCategory!, i)}
+            >
+              {i < 0 ? <Tilsette /> : <Trashcan />}
+              <HorizontalSeparatorDiv data-size='0.5' />
+              {i < 0 ? t('ui:label-add') : t('ui:label-remove')}
+            </HighContrastFlatknapp>
+          </Column>
+        ) : (
+          <Column/>
+        )}
       </Row>
+      {pageCategory === 'familieYtelse' && (
+      <>
+        <VerticalSeparatorDiv data-size='0.5'/>
+        <Row>
+          <Column>
+            <Select
+              data-test-id={'c-familymanager-' + personID + '-trygdeordning-' + sedCategory + '-' + i + '-sedCategory-select'}
+              error={validation['person-' + personID + '-trygdeordning-' + sedCategory + '-' + i + '-sedCategory']
+                ? validation['person-' + personID + '-trygdeordning-' + sedCategory + '-' + i + '-sedCategory']!.feilmelding
+                : undefined}
+              highContrast={highContrast}
+              id={'c-familymanager-' + personID + '-trygdeordning-' + sedCategory + '-' + i + '-sedCategory-select'}
+              onChange={(e: any) => onChanged(e.value, 'category', pageCategory, sedCategory, i)}
+              options={selectCategoryOptions}
+              placeholder={t('ui:placeholder-select-default')}
+              selectedValue={getCategoryOption(i < 0 ? _currentCategory : sedCategory)}
+              defaultValue={getCategoryOption(i < 0 ? _currentCategory : sedCategory)}
+            />
+          </Column>
+          {(
+            (i < 0 && _currentCategory === 'perioderMedPensjon') ||
+            (i >= 0 && sedCategory === 'perioderMedPensjon')
+          ) ? (
+          <Column>
+            <Select
+            data-test-id={'c-familymanager-' + personID + '-trygdeordning-' + sedCategory + '-' + i + '-pensjontype-select'}
+            error={validation['person-' + personID + '-trygdeordning-' + sedCategory + '-' + i + '-pensjontype']
+              ? validation['person-' + personID + '-trygdeordning-' + sedCategory + '-' + i + '-pensjontype']!.feilmelding
+              : undefined}
+            highContrast={highContrast}
+            id={'c-familymanager-' + personID + '-trygdeordning-' + sedCategory + '-' + i + '-pensjontype-select'}
+            onChange={(e: any) => onChanged(e.value, 'pensjontype', pageCategory, sedCategory, i)}
+            options={selectPensjonTypeOptions}
+            placeholder={t('ui:placeholder-select-default')}
+            selectedValue={getPensjonTypeOption(i < 0 ? _currentPensjonType : (e as PensjonPeriode)?.pensjonstype)}
+            defaultValue={getPensjonTypeOption(i < 0 ? _currentPensjonType : (e as PensjonPeriode)?.pensjonstype)}
+          />
+          </Column>
+          ) :
+          (
+            <Column/>
+          )}
+          <Column>
+            <HighContrastFlatknapp
+              mini
+              kompakt
+              onClick={() => i < 0 ? onAdd(pageCategory, sedCategory) : onRemoved(sedCategory!, i)}
+            >
+              {i < 0 ? <Tilsette /> : <Trashcan />}
+              <HorizontalSeparatorDiv data-size='0.5' />
+              {i < 0 ? t('ui:label-add') : t('ui:label-remove')}
+            </HighContrastFlatknapp>
+          </Column>
+        </Row>
+      </>
+      )}
       <VerticalSeparatorDiv />
     </>
   )
@@ -286,12 +358,9 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
           </Row>
         )}
         <VerticalSeparatorDiv />
-        {perioder.perioderMedArbeid.map((p, i) => renderRow(p, 'dekkede', 'perioderMedArbeid', i))}
-        {perioder.perioderMedTrygd.map((p, i) => renderRow(p, 'dekkede', 'perioderMedTrygd', i))}
         {perioder.perioderMedITrygdeordning.map((p, i) => renderRow(p, 'dekkede', 'perioderMedITrygdeordning', i))}
-        {perioder.perioderMedYtelser.map((p, i) => renderRow(p, 'dekkede', 'perioderMedYtelser', i))}
         {_seeNewForm.dekkede
-          ? renderRow(null, 'dekkede', null, -1)
+          ? renderRow(null, 'dekkede', 'perioderMedITrygdeordning', -1)
           : renderAddButton('dekkede')}
         <hr />
         <VerticalSeparatorDiv data-size={2} />
@@ -316,9 +385,8 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
         )}
         <VerticalSeparatorDiv />
         {perioder.perioderUtenforTrygdeordning.map((p, i) => renderRow(p, 'udekkede', 'perioderUtenforTrygdeordning', i))}
-        {perioder.perioderMedPensjon.map((p, i) => renderRow(p, 'udekkede', 'perioderMedPensjon', i))}
         {_seeNewForm.udekkede
-          ? renderRow(null, 'udekkede', null, -1)
+          ? renderRow(null, 'udekkede', 'perioderUtenforTrygdeordning', -1)
           : renderAddButton('udekkede')}
         <hr />
         <VerticalSeparatorDiv data-size={2} />
@@ -344,10 +412,9 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
         <VerticalSeparatorDiv />
         {perioder.perioderMedArbeid.map((p, i) => renderRow(p, 'familieYtelse', 'perioderMedArbeid', i))}
         {perioder.perioderMedTrygd.map((p, i) => renderRow(p, 'familieYtelse', 'perioderMedTrygd', i))}
-        {perioder.perioderMedITrygdeordning.map((p, i) => renderRow(p, 'familieYtelse', 'perioderMedITrygdeordning', i))}
         {perioder.perioderMedYtelser.map((p, i) => renderRow(p, 'familieYtelse', 'perioderMedYtelser', i))}
         {perioder.perioderMedPensjon.map((p, i) => renderRow(p, 'familieYtelse', 'perioderMedPensjon', i))}
-        {_seeNewForm.udekkede
+        {_seeNewForm.familieYtelse
           ? renderRow(null, 'familieYtelse', null, -1)
           : renderAddButton('familieYtelse')}
       </>

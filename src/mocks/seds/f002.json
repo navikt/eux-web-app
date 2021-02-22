@@ -3,8 +3,8 @@
   "sedVersjon": "4.2",
   "bruker": {
     "personInfo": {
-      "fornavn": "F002 bruker Fornavn",
-      "etternavn": "F002 bruker Etternavn",
+      "fornavn": "Homer",
+      "etternavn": "Simpson",
       "kjoenn": "M",
       "foedselsdato": "2020-01-01",
       "statsborgerskap": [
@@ -32,20 +32,20 @@
         }
       ],
       "pinMangler": {
-        "etternavnVedFoedsel": "F002 bruker Etternavn Ved Foedsel",
-        "fornavnVedFoedsel": "F002 bruker Fornavn Ved Foedsel",
+        "etternavnVedFoedsel": "Simpson",
+        "fornavnVedFoedsel": "Homer",
         "foedested": {
-          "by": "F002 bruker foedsted by",
-          "region": "F002 bruker foedsted region",
-          "land": "NO"
+          "by": "Springfield",
+          "region": "Springfield",
+          "land": "US"
         },
         "far": {
-          "fornavn": "F002 bruker far fornavn",
-          "etternavnVedFoedsel": "F002 bruker far etternavnVedFoedsel"
+          "fornavn": "Grandpa",
+          "etternavnVedFoedsel": "Simpson"
         },
         "mor": {
-          "fornavn": "F002 bruker mor fornavn",
-          "etternavnVedFoedsel": "F002 bruker mor etternavnVedFoedsel"
+          "fornavn": "Grandma",
+          "etternavnVedFoedsel": "Simpson"
         }
       }
     },
@@ -231,8 +231,8 @@
   },
   "ektefelle": {
     "personInfo": {
-      "fornavn": "F002 ektefelle fornavn",
-      "etternavn": "F002 ektefelle etternavn",
+      "fornavn": "Marge",
+      "etternavn": "Simpson",
       "kjoenn": "K",
       "foedselsdato": "1993-01-01",
       "statsborgerskap": [
