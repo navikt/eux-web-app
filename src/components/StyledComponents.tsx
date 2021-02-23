@@ -1,7 +1,6 @@
 import Select from 'components/Select/Select'
-import { themeKeys } from 'nav-styled-component-theme'
 import styled from 'styled-components'
-import { animationClose, animationOpen, animationLeft, animationRight, fadeIn, fadeOut } from 'nav-hoykontrast'
+import { themeKeys, animationClose, animationOpen, animationLeft, animationRight, fadeIn, fadeOut } from 'nav-hoykontrast'
 
 export const AlignedSelect = styled(Select)`
   margin-bottom: 3rem;

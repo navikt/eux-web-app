@@ -459,8 +459,8 @@
   },
   "annenPerson": {
     "personInfo": {
-      "fornavn": "F002 annenPerson fornavn",
-      "etternavn": "F002 annenPerson etternavn",
+      "fornavn": "Grandpa",
+      "etternavn": "Simpson",
       "kjoenn": "U",
       "foedselsdato": "2012-01-01",
       "statsborgerskap": [
@@ -688,8 +688,8 @@
   "barn": [
     {
       "personInfo": {
-        "fornavn": "F002 barn1 fornavn",
-        "etternavn": "F002 barn1 etternavn",
+        "fornavn": "Bart",
+        "etternavn": "Simpson",
         "kjoenn": "M",
         "foedselsdato": "2036-01-01",
         "statsborgerskap": [
@@ -780,8 +780,8 @@
     },
     {
       "personInfo": {
-        "fornavn": "F002 barn2 fornavn",
-        "etternavn": "F002 barn2 etternavn",
+        "fornavn": "Lisa",
+        "etternavn": "Simpson",
         "kjoenn": "K",
         "foedselsdato": "2042-01-01",
         "statsborgerskap": [

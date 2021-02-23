@@ -171,9 +171,30 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
         onValueChanged(`${personID}.${newSedCategory}`, newPerioder)
       }
       if (what === 'category') {
-        // TODO: this doesn't work
-        onRemoved(newSedCategory!, i)
-        onAdd(pageCategory, e as SedCategory)
+        let removedPeriode: Periode | PensjonPeriode = newPerioder.splice(i, 1)[0]
+        onValueChanged(`${personID}.${newSedCategory}`, newPerioder)
+
+        let otherPerioder: Array<Periode | PensjonPeriode> = _.cloneDeep(perioder[e as SedCategory])
+
+        // if removedPerioder is perioderMedPensjon and e is not, convert
+        if (newSedCategory === 'perioderMedPensjon') {
+          if (e !== 'perioderMedPensjon') {
+            otherPerioder = otherPerioder.concat((removedPeriode as PensjonPeriode).periode)
+          } else {
+            otherPerioder = otherPerioder.concat(removedPeriode)
+          }
+        } else {
+          if (e !== 'perioderMedPensjon') {
+            otherPerioder = otherPerioder.concat(removedPeriode)
+          } else {
+            // add a pensjontype alderspensjon
+            otherPerioder = otherPerioder.concat({
+              periode: (removedPeriode as Periode),
+              pensjonstype: 'alderspensjon'
+            })
+          }
+        }
+        onValueChanged(`${personID}.${e}`, otherPerioder)
       }
     }
   }

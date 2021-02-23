@@ -2,7 +2,7 @@ import { Option } from 'declarations/app'
 import Feiloppsummering from 'nav-frontend-skjema/lib/feiloppsummering'
 import React from 'react'
 import { Feilmelding } from 'nav-frontend-typografi'
-import { theme, themeKeys, themeHighContrast } from 'nav-styled-component-theme'
+import { theme, themeKeys, themeHighContrast } from 'nav-hoykontrast'
 import classNames from 'classnames'
 import ReactSelect, { Props } from 'react-select'
 

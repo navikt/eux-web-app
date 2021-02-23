@@ -3,7 +3,6 @@ import * as svarpasedActions from 'actions/svarpased'
 import classNames from 'classnames'
 import Flag from 'flagg-ikoner'
 import CountryData, { CountryList } from 'land-verktoy'
-import Etikett from 'nav-frontend-etiketter'
 import { HiddenFormContainer } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { ConnectedSed, Validation } from 'declarations/types'
@@ -49,6 +48,12 @@ const PileCenterDiv = styled.div`
 const PileLeftDiv = styled.div`
   flex-direction: column;
   display: flex;
+`
+const Etikett = styled.div`
+  padding: 0.35rem;
+  background-color: lightgrey;
+  border-radius: 5px;
+  display: inline-block;
 `
 const mapState = (state: State): any => ({
 
@@ -231,7 +236,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                             <Normaltekst>
                               {t('ui:label-institusjon') + ': ' + seds[sed].institusjon}
                             </Normaltekst>
-                            <Etikett mini type='info'>
+                            <Etikett>
                               {t('ui:label-lastModified') + ': ' + seds[sed].sisteOppdatert}
                             </Etikett>
                           </>
