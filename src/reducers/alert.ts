@@ -84,8 +84,8 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         break
 
       default:
-        if (action.payload && action.payload.error) {
-          clientErrorMessage = action.payload.error
+        if ((action as ActionWithPayload).payload && (action as ActionWithPayload).payload.error) {
+          clientErrorMessage = (action as ActionWithPayload).payload.error
         } else {
           clientErrorMessage = 'ui:error'
         }

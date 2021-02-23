@@ -177,27 +177,25 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
         // fix arbeidsforhold
         payload.perioderAnsattMedForsikring = []
         valgteArbeidsforhold.map((a: Arbeidsforholdet) => {
-          if (a.navn && a.orgnr) {
-            const periode: Periode = {
-              startdato: a.ansettelsesPeriode!.fom!
-            }
-            if (a.ansettelsesPeriode!.tom!) {
-              periode.sluttdato = a.ansettelsesPeriode!.tom!
-            } else {
-              periode.aapenPeriodeType = 'åpen_sluttdato'
-            }
-            payload.perioderAnsattMedForsikring?.push({
-              arbeidsgiver: {
-                navn: a.navn,
-                identifikator: [{
-                  type: 'organisasjonsnummer',
-                  id: a.orgnr
-                }]
-              },
-              typeTrygdeforhold: 'ansettelsesforhold_som_utgjør_forsikringsperiode',
-              periode: periode
-            })
+          const periode: Periode = {
+            startdato: a.ansettelsesPeriode!.fom!
           }
+          if (a.ansettelsesPeriode!.tom!) {
+            periode.sluttdato = a.ansettelsesPeriode!.tom!
+          } else {
+            periode.aapenPeriodeType = 'åpen_sluttdato'
+          }
+          payload.perioderAnsattMedForsikring?.push({
+            arbeidsgiver: {
+              navn: a?.navn || '',
+              identifikator: [{
+                type: 'organisasjonsnummer',
+                id: a?.orgnr || ''
+              }]
+            },
+            typeTrygdeforhold: 'ansettelsesforhold_som_utgjør_forsikringsperiode',
+            periode: periode
+          })
         })
       } else {
         // fix inntekt
