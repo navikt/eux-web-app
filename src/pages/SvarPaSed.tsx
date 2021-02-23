@@ -188,7 +188,7 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
           payload.perioderAnsattMedForsikring?.push({
             arbeidsgiver: {
               navn: a?.navn || '',
-              identifikator: [{
+              identifikatorer: [{
                 type: 'organisasjonsnummer',
                 id: a?.orgnr || ''
               }]

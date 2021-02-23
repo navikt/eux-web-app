@@ -163,7 +163,7 @@ export interface Arbeidsgiver {
       bygning: string
       region: string
     },
-    identifikator: Array<{
+    identifikatorer: Array<{
       type: string
       id: string
     }>
