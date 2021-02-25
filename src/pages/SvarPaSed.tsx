@@ -367,9 +367,9 @@ const SvarPaSed: React.FC<SvarPaSedProps> = ({
                           return false
                         }
                       })
-                      .map((sed: SedOversikt) => (
+                      .map((sed: SedOversikt, i: number) => (
                         <option
-                          key={sed.querySedDocumentId}
+                          key={spørreSed + '-' +sed.replySedType + '-' + sed.querySedDocumentId + '-' + i}
                           value={sed.replySedType}
                           selected={valgtSvarSed ? valgtSvarSed.querySedDocumentId === sed.querySedDocumentId : false}
                         >
