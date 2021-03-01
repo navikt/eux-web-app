@@ -7,7 +7,6 @@ import { HiddenFormContainer } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { ConnectedSed, Validation } from 'declarations/types'
 import _ from 'lodash'
-import Lenke from 'nav-frontend-lenker'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Normaltekst, Undertekst, Undertittel } from 'nav-frontend-typografi'
 import NavHighContrast, {
@@ -17,11 +16,12 @@ import NavHighContrast, {
   HighContrastHovedknapp,
   HighContrastInput,
   HighContrastKnapp,
+  HighContrastLink,
   HighContrastPanel,
   HorizontalSeparatorDiv,
   RadioEl,
   RadioGroup,
-  Row,
+  Row, themeKeys,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
@@ -40,6 +40,10 @@ const FlexDiv = styled.div`
   align-items: center;
   justify-content: space-between;
 `
+const LeftDiv = styled.div`
+  display: flex;
+  align-items: center;
+`
 const PileCenterDiv = styled.div`
   flex-direction: column;
   display: flex;
@@ -51,7 +55,7 @@ const PileLeftDiv = styled.div`
 `
 const Etikett = styled.div`
   padding: 0.35rem;
-  background-color: lightgrey;
+  background-color: ${({theme}) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
   border-radius: 5px;
   display: inline-block;
 `
@@ -208,15 +212,15 @@ const Step1: React.FC<SvarPaSedProps> = ({
                         label={(
                           <>
                             <Undertittel>{sed}</Undertittel>
-                            <Normaltekst>
+                            <LeftDiv>
                               <span>{t('ui:label-caseNumber') + ': ' + seds[sed].saksnummer}</span>
                               <HorizontalSeparatorDiv />
-                              <Lenke href='#'>
+                              <HighContrastLink href='#'>
                                 <span>{t('ui:label-goToRina')}</span>
                                 <HorizontalSeparatorDiv data-size='0.35' />
                                 <ExternalLink />
-                              </Lenke>
-                            </Normaltekst>
+                              </HighContrastLink>
+                            </LeftDiv>
                             <FlexDiv style={{ width: '1px' }}>
                               <Normaltekst>
                                 {t('ui:label-land')}:
@@ -258,6 +262,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                               <PileCenterDiv>
                                 {connectedSed.status === 'received' && <ReceivedIcon />}
                                 {connectedSed.status === 'sent' && <SentIcon />}
+                                <VerticalSeparatorDiv data-size='0.35'/>
                                 <Undertekst>{t('ui:status-' + connectedSed.status)}</Undertekst>
                               </PileCenterDiv>
                               <HorizontalSeparatorDiv />
@@ -266,14 +271,16 @@ const Step1: React.FC<SvarPaSedProps> = ({
                                   <Undertittel>
                                     {connectedSed.replySedType} - {connectedSed.replySedDisplay}
                                   </Undertittel>
+                                  <VerticalSeparatorDiv data-size='0.35' />
                                   <Normaltekst>
                                     {t('ui:label-lastModified') + ': ' + seds[sed].sisteOppdatert}
                                   </Normaltekst>
-                                  <Lenke href='#'>
+                                  <VerticalSeparatorDiv data-size='0.35' />
+                                  <HighContrastLink href='#'>
                                     <span>{t('ui:label-goToSedInRina')}</span>
                                     <HorizontalSeparatorDiv data-size='0.35' />
                                     <ExternalLink />
-                                  </Lenke>
+                                  </HighContrastLink>
                                 </div>
                               </PileLeftDiv>
                               <HorizontalSeparatorDiv />
