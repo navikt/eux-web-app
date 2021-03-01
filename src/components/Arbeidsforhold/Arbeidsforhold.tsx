@@ -73,43 +73,46 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
             const arbeidsForholdErValgt: boolean = valgteArbeidsforhold
               ? valgteArbeidsforhold.find((item: Arbeidsforholdet) => item.arbeidsforholdIDnav === arbeidsforholdIDnav) !== undefined
               : false
-            return (
-              <div key={arbeidsforholdIDnav}>
-                <VerticalSeparatorDiv data-size='0.5' />
-                <Panel key={index} border>
-                  <ArbeidsforholdItem>
-                    <ArbeidsforholdDesc>
-                      <IkonArbeidsforhold />
-                      <HorizontalSeparatorDiv />
+            if (navn && orgnr) {
+              return (
+                <div key={arbeidsforholdIDnav}>
+                  <VerticalSeparatorDiv data-size='0.5'/>
+                  <Panel key={index} border>
+                    <ArbeidsforholdItem>
+                      <ArbeidsforholdDesc>
+                        <IkonArbeidsforhold/>
+                        <HorizontalSeparatorDiv/>
+                        <div>
+                          <strong>{navn}</strong>
+                          <br/>
+                          {t('ui:label-orgnummer')}:&nbsp;{orgnr}
+                          <br/>
+                          {t('ui:label-startDate')}:&nbsp;
+                          {formatterDatoTilNorsk(fom)}
+                          <br/>
+                          {t('ui:label-endDate')}:&nbsp;
+                          {formatterDatoTilNorsk(tom)}
+                        </div>
+                      </ArbeidsforholdDesc>
                       <div>
-                        <strong>{navn}</strong>
-                        <br />
-                        {t('ui:label-orgnummer')}:&nbsp;{orgnr}
-                        <br />
-                        {t('ui:label-startDate')}:&nbsp;
-                        {formatterDatoTilNorsk(fom)}
-                        <br />
-                        {t('ui:label-endDate')}:&nbsp;
-                        {formatterDatoTilNorsk(tom)}
+                        <Checkbox
+                          checked={arbeidsForholdErValgt}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onArbeidsforholdClick(
+                            arbeidsforholdet,
+                            e.target.checked
+                          )}
+                          label={t('ui:form-choose')}
+                        />
                       </div>
-                    </ArbeidsforholdDesc>
-                    <div>
-                      <Checkbox
-                        checked={arbeidsForholdErValgt}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => onArbeidsforholdClick(
-                          arbeidsforholdet,
-                          e.target.checked
-                        )}
-                        label={t('ui:form-choose')}
-                      />
-                    </div>
-                  </ArbeidsforholdItem>
-                </Panel>
-                <VerticalSeparatorDiv data-size='0.5' />
-              </div>
-            )
+                    </ArbeidsforholdItem>
+                  </Panel>
+                  <VerticalSeparatorDiv data-size='0.5'/>
+                </div>
+              )
+            }
+            return undefined
           }
-        )}
+        ).filter(e => e !== undefined)}
       </Column>
       <Column />
     </Row>
