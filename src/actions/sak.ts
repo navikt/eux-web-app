@@ -88,7 +88,7 @@ export const getArbeidsforholdList: ActionCreator<ThunkResult<ActionWithPayload<
 ): ThunkResult<ActionWithPayload<Arbeidsforhold>> => {
   return call({
     url: sprintf(urls.API_SAK_ARBEIDSFORHOLD_URL, { fnr: fnr }),
-    expectedPayload: mockArbeidsforholdList({ fnr: fnr }),
+    expectedPayload: mockArbeidsforholdList(fnr),
     type: {
       request: types.SAK_ARBEIDSFORHOLDLIST_GET_REQUEST,
       success: types.SAK_ARBEIDSFORHOLDLIST_GET_SUCCESS,

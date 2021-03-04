@@ -9,7 +9,7 @@ export interface LoadingState {
 export const initialLoadingState: LoadingState = {
   creatingSedWithAttachments: false,
   creatingSedEditInRINA: false,
-  gettingArbeidsforhold: false,
+  gettingArbeidsforholdList: false,
   gettingDokument: false,
   gettingFagsaker: false,
   gettingInstitusjoner: false,
@@ -36,16 +36,19 @@ const loadingReducer = (
   switch (action.type) {
     // SAK
     case types.SAK_ARBEIDSFORHOLDLIST_GET_REQUEST:
+    case types.SVARPASED_ARBEIDSFORHOLDLIST_GET_REQUEST:
       return {
         ...state,
-        gettingArbeidsforhold: true
+        gettingArbeidsforholdList: true
       }
 
     case types.SAK_ARBEIDSFORHOLDLIST_GET_SUCCESS:
+    case types.SVARPASED_ARBEIDSFORHOLDLIST_GET_SUCCESS:
     case types.SAK_ARBEIDSFORHOLDLIST_GET_FAILURE:
+    case types.SVARPASED_ARBEIDSFORHOLDLIST_GET_FAILURE:
       return {
         ...state,
-        gettingArbeidsforhold: false
+        gettingArbeidsforholdList: false
       }
 
     case types.VEDLEGG_DOKUMENT_GET_REQUEST:

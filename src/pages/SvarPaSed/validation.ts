@@ -7,6 +7,7 @@ import { validatePersonOpplysning } from './validation/personopplysninger'
 import { validateAdresser } from './validation/adresser'
 import { validateKontaktsinformasjon } from './validation/kontaktinformasjon'
 import { validateTrygdeordninger } from './validation/trygdeordninger'
+import { validateFamilierelasjon } from './validation/familierelasjon'
 
 export const performValidation = (v: Validation, t: any, options: any, personId: string) => {
   validatePersonOpplysning(v, t, options, personId)
@@ -14,6 +15,7 @@ export const performValidation = (v: Validation, t: any, options: any, personId:
   validateAdresser(v, t, options, personId)
   validateKontaktsinformasjon(v, t, options, personId)
   validateTrygdeordninger(v, t, options, personId)
+  validateFamilierelasjon(v, t, options, personId)
 }
 
 export const validate = (options: any): Validation => {

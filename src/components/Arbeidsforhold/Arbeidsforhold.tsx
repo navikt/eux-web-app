@@ -28,18 +28,24 @@ const ArbeidsforholdButton = styled.div`
 `
 
 export interface ArbeidsforholdProps {
-  getArbeidsforholdList: () => void
-  valgteArbeidsforhold: Array<Arbeidsforholdet>
   arbeidsforholdList: Array<Arbeidsforholdet> | undefined
+  getArbeidsforholdList: () => void
+  gettingArbeidsforholdList?: boolean
+  valgteArbeidsforhold: Array<Arbeidsforholdet>
   onArbeidsforholdClick: (a: Arbeidsforholdet, checked: boolean) => void
 }
 
 const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
-  arbeidsforholdList, getArbeidsforholdList, valgteArbeidsforhold, onArbeidsforholdClick
+  arbeidsforholdList,
+  gettingArbeidsforholdList = false,
+  getArbeidsforholdList,
+  valgteArbeidsforhold,
+  onArbeidsforholdClick
 }: ArbeidsforholdProps): JSX.Element => {
   const { t } = useTranslation()
+  console.log(arbeidsforholdList)
   return (
-    <Row>
+    <Row key={JSON.stringify(arbeidsforholdList)}>
       <Column className='arbeidsforhold'>
         <Row>
           <Column>
@@ -55,8 +61,11 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
                 {t('ui:label-arbeidsforhold')}
               </span>
               <HorizontalSeparatorDiv />
-              <Knapp onClick={getArbeidsforholdList}>
-                {t('ui:label-search')}
+              <Knapp
+                disabled={gettingArbeidsforholdList}
+                spinner={gettingArbeidsforholdList}
+                onClick={getArbeidsforholdList}>
+                {gettingArbeidsforholdList ? t('ui:label-searching') : t('ui:label-search')}
               </Knapp>
             </ArbeidsforholdButton>
           </Column>
@@ -69,7 +78,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
               orgnr,
               ansettelsesPeriode
             } = arbeidsforholdet
-            const { fom, tom } = ansettelsesPeriode!
+            const {fom, tom} = ansettelsesPeriode!
             const arbeidsForholdErValgt: boolean = valgteArbeidsforhold
               ? valgteArbeidsforhold.find((item: Arbeidsforholdet) => item.arbeidsforholdIDnav === arbeidsforholdIDnav) !== undefined
               : false
@@ -101,27 +110,16 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
                             arbeidsforholdet,
                             e.target.checked
                           )}
-                          label={t('ui:form-choose')}
+                          label={t('ui:label-choose')}
                         />
                       </div>
-                    </ArbeidsforholdDesc>
-                    <div>
-                      <Checkbox
-                        checked={arbeidsForholdErValgt}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => onArbeidsforholdClick(
-                          arbeidsforholdet,
-                          e.target.checked
-                        )}
-                        label={t('ui:label-choose')}
-                      />
-                    </div>
-                  </ArbeidsforholdItem>
-                </Panel>
-                <VerticalSeparatorDiv data-size='0.5' />
-              </div>
-            )
-          }
-        ).filter(e => e !== undefined)}
+                    </ArbeidsforholdItem>
+                  </Panel>
+                  <VerticalSeparatorDiv data-size='0.5'/>
+                </div>
+              )
+            }
+          }).filter(e => e !== undefined)}
       </Column>
       <Column />
     </Row>

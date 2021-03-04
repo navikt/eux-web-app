@@ -1,3 +1,4 @@
+import * as svarpasedActions from 'actions/svarpased'
 import { setReplySed } from 'actions/svarpased'
 import FilledCheckCircle from 'assets/icons/filled-version-check-circle-2'
 import FilledRemoveCircle from 'assets/icons/filled-version-remove-circle'
@@ -111,19 +112,24 @@ const MarginDiv = styled.div`
 `
 
 const mapState = (state: State): any => ({
+  arbeidsforholdList: state.svarpased.arbeidsforholdList,
   familierelasjonKodeverk: state.app.familierelasjoner,
   highContrast: state.ui.highContrast,
+  gettingArbeidsforholdList: state.loading.gettingArbeidsforholdList,
   gettingPerson: state.loading.gettingPerson,
   landkoderList: state.app.landkoder,
   replySed: state.svarpased.replySed,
   searchingPerson: state.loading.searchingPerson,
   searchedPerson: state.svarpased.searchedPerson,
+  valgteArbeidsforhold: state.svarpased.valgteArbeidsforhold,
   validation: state.svarpased.validation
 })
 
 const FamilyManager: React.FC = () => {
   const {
+    arbeidsforholdList,
     familierelasjonKodeverk,
+    gettingArbeidsforholdList,
     gettingPerson,
     highContrast,
     landkoderList,
@@ -427,15 +433,24 @@ const FamilyManager: React.FC = () => {
                   <Familierelasjon
                     familierelasjonKodeverk={familierelasjonKodeverk}
                     highContrast={highContrast}
+                    onValueChanged={onValueChanged}
                     personID={_editCurrentPersonID}
                     replySed={replySed}
+                    validation={validation}
                   />
                 )}
                 {_menuOption === 'personensstatus' && (
                   <PersonensStatus
                     highContrast={highContrast}
+                    onValueChanged={onValueChanged}
                     personID={_editCurrentPersonID}
                     replySed={replySed}
+                    validation={validation}
+                    gettingArbeidsforholdList={gettingArbeidsforholdList}
+                    getArbeidsforholdList={(fnr: string | undefined) => {
+                      if (fnr) dispatch(svarpasedActions.getArbeidsforholdList(fnr))
+                    }}
+                    arbeidsforholdList={arbeidsforholdList}
                   />
                 )}
               </RightFlexStartDiv>

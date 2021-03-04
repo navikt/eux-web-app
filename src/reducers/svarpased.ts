@@ -6,7 +6,7 @@ import _ from 'lodash'
 import { Action } from 'redux'
 
 export interface SvarpasedState {
-  arbeidsforholdList: Arbeidsforhold
+  arbeidsforholdList: Arbeidsforhold | undefined
   familierelasjoner: Array<any>
   inntekter: Inntekter | undefined
   parentSed: string | undefined
@@ -24,7 +24,7 @@ export interface SvarpasedState {
 }
 
 export const initialSvarpasedState: SvarpasedState = {
-  arbeidsforholdList: [],
+  arbeidsforholdList: undefined,
   familierelasjoner: [],
   inntekter: undefined,
   parentSed: undefined,

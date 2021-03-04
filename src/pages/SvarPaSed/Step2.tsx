@@ -3,7 +3,6 @@ import * as svarpasedActions from 'actions/svarpased'
 import Tilsette from 'assets/icons/Tilsette'
 import classNames from 'classnames'
 import Alert from 'components/Alert/Alert'
-import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
 import FamilyManager from 'components/FamilyManager/FamilyManager'
 import Inntekt from 'components/Inntekt/Inntekt'
 import Purpose from 'components/Purpose/Purpose'
@@ -74,11 +73,9 @@ const mapState = (state: State): any => ({
   savingSed: state.loading.savingSed,
   sendingSvarPaSed: state.loading.sendingSvarPaSed,
 
-  arbeidsforholdList: state.svarpased.arbeidsforholdList,
   inntekter: state.svarpased.inntekter,
   replySed: state.svarpased.replySed,
   svarPasedData: state.svarpased.svarPasedData,
-  valgteArbeidsforhold: state.svarpased.valgteArbeidsforhold,
   validation: state.svarpased.validation,
 
   highContrast: state.ui.highContrast
@@ -113,11 +110,9 @@ const Step2: React.FC<SvarPaSedProps> = ({
     savingSed,
     sendingSvarPaSed,
 
-    arbeidsforholdList,
     inntekter,
     replySed,
     svarPasedData,
-    valgteArbeidsforhold,
     validation,
 
     highContrast
@@ -131,8 +126,6 @@ const Step2: React.FC<SvarPaSedProps> = ({
   const data: SvarpasedState = useSelector<State, SvarpasedState>(mapStateTwo)
 
   const isValid = (validation: Validation): boolean => _.find(_.values(validation), (e) => e !== undefined) === undefined
-
-  const showArbeidsforhold = (): boolean => replySed?.replySedType === 'U002' || replySed?.replySedType === 'U007'
 
   const showFamily = (): boolean => replySed?.replySedType?.startsWith('F') || false
 
@@ -218,23 +211,6 @@ const Step2: React.FC<SvarPaSedProps> = ({
         <>
           <FamilyManager />
           <VerticalSeparatorDiv data-size='2' />
-        </>
-      )}
-      {showArbeidsforhold() && (
-        <>
-          <Ekspanderbartpanel tittel={t('ui:label-arbeidsforhold')}>
-            <Arbeidsforhold
-              getArbeidsforholdList={() => dispatch(svarpasedActions.getArbeidsforholdList(fnr))}
-              valgteArbeidsforhold={valgteArbeidsforhold}
-              arbeidsforholdList={arbeidsforholdList}
-              onArbeidsforholdClick={(item: any, checked: boolean) => dispatch(
-                checked
-                  ? svarpasedActions.addArbeidsforhold(item)
-                  : svarpasedActions.removeArbeidsforhold(item)
-              )}
-            />
-          </Ekspanderbartpanel>
-          <VerticalSeparatorDiv />
         </>
       )}
       {showInntekt() && (

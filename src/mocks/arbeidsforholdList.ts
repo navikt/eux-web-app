@@ -1,6 +1,6 @@
-import * as arbeidsforholdList from 'eux-schema/mock_data/arbeidsforhold/arbeidsforhold.json'
+import arbeidsforholdList from 'eux-schema/mock_data/arbeidsforhold/arbeidsforhold.json'
 
-export default ({ fnr }: any) => {
+export default (fnr: any) => {
   if (!fnr) {
     return 'Fødselsnummer mangler'
   }

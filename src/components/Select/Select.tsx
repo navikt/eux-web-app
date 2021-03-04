@@ -1,5 +1,4 @@
 import { Option } from 'declarations/app'
-import Feiloppsummering from 'nav-frontend-skjema/lib/feiloppsummering'
 import React from 'react'
 import { Feilmelding } from 'nav-frontend-typografi'
 import { theme, themeKeys, themeHighContrast } from 'nav-hoykontrast'
@@ -10,7 +9,7 @@ interface SelectProps extends Props<Option> {
   className?: string
   id: string
   label?: string
-  feil?: Feiloppsummering
+  feil?: string
   onChange: (e: any) => void
   highContrast: boolean
   value?: any
@@ -28,12 +27,12 @@ const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
         styles={{
           control: (styles: any) => ({
             ...styles,
-            borderWidth: props.feil ? '2px' : _theme.type === 'themeHighContrast' ? '2px' : '1px',
+            borderWidth: props.feil ? '2px' : _theme[themeKeys.MAIN_BORDER_WIDTH],
             borderColor: props.feil ? _theme[themeKeys.REDERROR] : _theme[themeKeys.MAIN_BORDER_COLOR],
             borderStyle: 'solid',
             borderRadius: _theme[themeKeys.MAIN_BORDER_RADIUS],
             color: _theme[themeKeys.MAIN_FONT_COLOR],
-            backgroundColor: _theme[themeKeys.MAIN_BACKGROUND_COLOR]
+            backgroundColor: _theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]
           }),
           singleValue: (styles: any) => ({
             ...styles,
@@ -49,10 +48,10 @@ const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
           }),
           menuList: (styles: any) => ({
             ...styles,
-            borderWidth: _theme.type === 'themeHighContrast' ? '2px' : '1px',
-            borderColor: _theme.type === 'themeHighContrast' ? _theme.white : _theme.navGra60,
+            borderWidth: _theme[themeKeys.MAIN_BORDER_WIDTH],
+            borderColor:  _theme[themeKeys.MAIN_BORDER_COLOR],
             borderStyle: 'solid',
-            backgroundColor: _theme[themeKeys.MAIN_BACKGROUND_COLOR]
+            backgroundColor: _theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]
           }),
           option: (styles: any, { isDisabled, isFocused, isSelected }) => ({
             ...styles,
@@ -67,7 +66,7 @@ const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
               ? _theme[themeKeys.MAIN_FOCUS_COLOR]
               : isSelected
                 ? _theme[themeKeys.MAIN_INTERACTIVE_COLOR]
-                : _theme[themeKeys.MAIN_BACKGROUND_COLOR]
+                : _theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]
           })
         }}
         {...props}
