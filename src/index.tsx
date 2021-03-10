@@ -94,7 +94,7 @@ store.dispatch(appActions.getUtgaarDato())
 
 ReactDOM.render(
   <I18nextProvider i18n={i18n}>
-    <GlobalStyle/>
+    <GlobalStyle />
     <Provider store={store}>
       <Suspense fallback={<span>...</span>}>
         <Router history={createBrowserHistory()}>

@@ -61,13 +61,13 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
 
   const onFamilieRelasjonAdd = () => {
     const newFamilieRelasjoner = _.cloneDeep(familierelasjoner)
-    let periode: Periode = {
+    const periode: Periode = {
       startdato: _currentStartDato
     }
     if (_currentSluttDato) {
       periode.sluttdato = _currentSluttDato
     } else {
-      periode.aapenPeriodeType = "åpen_sluttdato"
+      periode.aapenPeriodeType = 'åpen_sluttdato'
     }
     newFamilieRelasjoner.push({
       relasjonType: _currentRelasjonType,
@@ -198,7 +198,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
               : undefined}
             id={'c-familymanager-' + personID + '-familierelasjon-' + i + '-startdato-input'}
             onChange={(e: any) => setStartDato(e.target.value, i)}
-            value={i < 0 ? _currentStartDato: s?.periode.startdato}
+            value={i < 0 ? _currentStartDato : s?.periode.startdato}
             label={t('ui:label-startDate')}
             placeholder={t('ui:placeholder-date-default')}
           />
@@ -211,95 +211,95 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
               : undefined}
             id={'c-familymanager-' + personID + '-familierelasjon-' + i + '-sluttdato-input'}
             onChange={(e: any) => setSluttDato(e.target.value, i)}
-            value={i < 0 ? _currentSluttDato: s?.periode.sluttdato}
+            value={i < 0 ? _currentSluttDato : s?.periode.sluttdato}
             label={t('ui:label-endDate')}
             placeholder={t('ui:placeholder-date-default')}
           />
         </Column>
       </Row>
-    <VerticalSeparatorDiv />
-    {(i < 0 ? _currentRelasjonType === 'other' : s?.relasjonType === 'other') && (
-      <>
-        <Row>
-          <Column>
-            <HighContrastInput
-              data-test-id={'c-familymanager-' + personID + '-familierelasjon-' + i + '-annenrelasjontype-input'}
-              feil={validation['person-' + personID + '-familierelasjon-' + i + '-annenrelasjontype']
-                ? validation['person-' + personID + '-familierelasjon-' + i + '-annenrelasjontype']!.feilmelding
-                : undefined}
-              id={'c-familymanager-' + personID + '-familierelasjon-' + i + '-annenrelasjontype-input'}
-              onChange={(e: any) => setAnnenRelasjonType(e.target.value, i)}
-              value={i < 0 ? _currentAnnenRelasjonType: s?.annenRelasjonType}
-              label={t('ui:label-other-relation')}
-              placeholder={t('ui:placeholder-date-default')}
-            />
-          </Column>
-          <Column />
-        </Row>
-        <HorizontalSeparatorDiv />
-        <Row>
-          <Column data-flex='2'>
-            <HighContrastInput
-              data-test-id={'c-familymanager-' + personID + '-familierelasjon-' + i + '-annenrelasjonpersonnavn-input'}
-              feil={validation['person-' + personID + '-familierelasjon-' + i + '-annenrelasjonpersonnavn']
-                ? validation['person-' + personID + '-familierelasjon-' + i + '-annenrelasjonpersonnavn']!.feilmelding
-                : undefined}
-              id={'c-familymanager-' + personID + '-familierelasjon-' + i + '-annenrelasjonpersonnavn-input'}
-              onChange={(e: any) => setAnnenRelasjonPersonNavn(e.target.value, i)}
-              value={i < 0 ? _currentAnnenRelasjonPersonNavn: s?.annenRelasjonPersonNavn}
-              label={t('ui:label-person-name')}
-              placeholder={t('ui:placeholder-date-default')}
-            />
-          </Column>
-          <Column>
-            <HighContrastInput
-              data-test-id={'c-familymanager-' + personID + '-familierelasjon-' + i + '-annenrelasjondato-input'}
-              feil={validation['person-' + personID + '-familierelasjon-' + i + '-annenrelasjondato']
-                ? validation['person-' + personID + '-familierelasjon-' + i + '-annenrelasjondato']!.feilmelding
-                : undefined}
-              id={'c-familymanager-' + personID + '-familierelasjon-' + i + '-annenrelasjondato-input'}
-              onChange={(e: any) => setAnnenRelasjonDato(e.target.value, i)}
-              value={i < 0 ? _currentAnnenRelasjonDato: s?.annenRelasjonDato}
-              label={t('ui:label-date-relation')}
-              placeholder={t('ui:placeholder-date-default')}
-            />
-          </Column>
-        </Row>
-        <HorizontalSeparatorDiv />
-        <Row>
-          <Column data-flex='2'>
-            <HighContrastRadioPanelGroup
-              checked={i < 0 ? _currentBorSammen: s?.borSammen }
-              data-test-id={'c-familymanager' + personID + '-familierelasjon-' + i + '-borsammen-radiogroup'}
-              id={'c-familymanager' + personID + '-familierelasjon-' + i + '-borsammen-radiogroup'}
-              feil={validation['person-' + personID + '-familierelasjon-' + i + '-borsammen']
-                ? validation['person-' + personID + '-familierelasjon-' + i + '-borsammen']!.feilmelding
-                : undefined}
-              legend={t('ui:label-live-together')}
-              name={'c-familymanager' + personID + '-familierelasjon-' + i + '-borsammen'}
-              radios={[
-                { label: t('ui:label-yes'), value: 'ja' },
-                { label: t('ui:label-no'), value: 'nei' }
-              ]}
-              onChange={(e: any) => setBorSammen(e.target.value, i)}
-            />
-          </Column>
-        </Row>
-      </>
-    )}
-    <Row>
-      <Column>
-        <HighContrastFlatknapp
-          mini
-          kompakt
-          onClick={() => (i < 0 ? onFamilieRelasjonAdd() : onFamilieRelasjonRemove(i))}
-        >
-          {i < 0 ? <Tilsette /> : <Trashcan />}
-          <HorizontalSeparatorDiv data-size='0.5' />
-          {i < 0 ? t('ui:label-add') : t('ui:label-remove')}
-        </HighContrastFlatknapp>
-      </Column>
-    </Row>
+      <VerticalSeparatorDiv />
+      {(i < 0 ? _currentRelasjonType === 'other' : s?.relasjonType === 'other') && (
+        <>
+          <Row>
+            <Column>
+              <HighContrastInput
+                data-test-id={'c-familymanager-' + personID + '-familierelasjon-' + i + '-annenrelasjontype-input'}
+                feil={validation['person-' + personID + '-familierelasjon-' + i + '-annenrelasjontype']
+                  ? validation['person-' + personID + '-familierelasjon-' + i + '-annenrelasjontype']!.feilmelding
+                  : undefined}
+                id={'c-familymanager-' + personID + '-familierelasjon-' + i + '-annenrelasjontype-input'}
+                onChange={(e: any) => setAnnenRelasjonType(e.target.value, i)}
+                value={i < 0 ? _currentAnnenRelasjonType : s?.annenRelasjonType}
+                label={t('ui:label-other-relation')}
+                placeholder={t('ui:placeholder-date-default')}
+              />
+            </Column>
+            <Column />
+          </Row>
+          <HorizontalSeparatorDiv />
+          <Row>
+            <Column data-flex='2'>
+              <HighContrastInput
+                data-test-id={'c-familymanager-' + personID + '-familierelasjon-' + i + '-annenrelasjonpersonnavn-input'}
+                feil={validation['person-' + personID + '-familierelasjon-' + i + '-annenrelasjonpersonnavn']
+                  ? validation['person-' + personID + '-familierelasjon-' + i + '-annenrelasjonpersonnavn']!.feilmelding
+                  : undefined}
+                id={'c-familymanager-' + personID + '-familierelasjon-' + i + '-annenrelasjonpersonnavn-input'}
+                onChange={(e: any) => setAnnenRelasjonPersonNavn(e.target.value, i)}
+                value={i < 0 ? _currentAnnenRelasjonPersonNavn : s?.annenRelasjonPersonNavn}
+                label={t('ui:label-person-name')}
+                placeholder={t('ui:placeholder-date-default')}
+              />
+            </Column>
+            <Column>
+              <HighContrastInput
+                data-test-id={'c-familymanager-' + personID + '-familierelasjon-' + i + '-annenrelasjondato-input'}
+                feil={validation['person-' + personID + '-familierelasjon-' + i + '-annenrelasjondato']
+                  ? validation['person-' + personID + '-familierelasjon-' + i + '-annenrelasjondato']!.feilmelding
+                  : undefined}
+                id={'c-familymanager-' + personID + '-familierelasjon-' + i + '-annenrelasjondato-input'}
+                onChange={(e: any) => setAnnenRelasjonDato(e.target.value, i)}
+                value={i < 0 ? _currentAnnenRelasjonDato : s?.annenRelasjonDato}
+                label={t('ui:label-date-relation')}
+                placeholder={t('ui:placeholder-date-default')}
+              />
+            </Column>
+          </Row>
+          <HorizontalSeparatorDiv />
+          <Row>
+            <Column data-flex='2'>
+              <HighContrastRadioPanelGroup
+                checked={i < 0 ? _currentBorSammen : s?.borSammen}
+                data-test-id={'c-familymanager' + personID + '-familierelasjon-' + i + '-borsammen-radiogroup'}
+                id={'c-familymanager' + personID + '-familierelasjon-' + i + '-borsammen-radiogroup'}
+                feil={validation['person-' + personID + '-familierelasjon-' + i + '-borsammen']
+                  ? validation['person-' + personID + '-familierelasjon-' + i + '-borsammen']!.feilmelding
+                  : undefined}
+                legend={t('ui:label-live-together')}
+                name={'c-familymanager' + personID + '-familierelasjon-' + i + '-borsammen'}
+                radios={[
+                  { label: t('ui:label-yes'), value: 'ja' },
+                  { label: t('ui:label-no'), value: 'nei' }
+                ]}
+                onChange={(e: any) => setBorSammen(e.target.value, i)}
+              />
+            </Column>
+          </Row>
+        </>
+      )}
+      <Row>
+        <Column>
+          <HighContrastFlatknapp
+            mini
+            kompakt
+            onClick={() => (i < 0 ? onFamilieRelasjonAdd() : onFamilieRelasjonRemove(i))}
+          >
+            {i < 0 ? <Tilsette /> : <Trashcan />}
+            <HorizontalSeparatorDiv data-size='0.5' />
+            {i < 0 ? t('ui:label-add') : t('ui:label-remove')}
+          </HighContrastFlatknapp>
+        </Column>
+      </Row>
     </>
   )
 
@@ -327,7 +327,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
               </HighContrastFlatknapp>
             </Column>
           </Row>
-        )}
+          )}
       {_isDirty && '*'}
     </FamilierelasjonDiv>
   )

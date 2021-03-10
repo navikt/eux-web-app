@@ -65,111 +65,113 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
   arbeidsforholdet, editable, index, selected, personID,
   onArbeidsforholdClick, onArbeidsforholdDelete = () => {}, onArbeidsforholdEdited = () => {}
 }: ArbeidsforholdetProps): JSX.Element => {
-
   const {
     arbeidsforholdIDnav,
     navn,
     orgnr,
     ansettelsesPeriode
   } = arbeidsforholdet
-  const {t} = useTranslation()
-  const [ isEditing, setIsEditing ] = useState<boolean>(false)
-  const [ isDeleting, setIsDeleting ] = useState<boolean>(false)
+  const { t } = useTranslation()
+  const [isEditing, setIsEditing] = useState<boolean>(false)
+  const [isDeleting, setIsDeleting] = useState<boolean>(false)
   const [_currentArbeidsperiodeStartDato, setCurrentArbeidsperiodeStartDato] = useState<string>(arbeidsforholdet.ansettelsesPeriode?.fom || '')
   const [_currentArbeidsperiodeSluttDato, setCurrentArbeidsperiodeSluttDato] = useState<string>(arbeidsforholdet.ansettelsesPeriode?.tom || '')
   const [_currentArbeidsperiodeOrgnr, setCurrentArbeidsperiodeOrgnr] = useState<string>(arbeidsforholdet.orgnr || '')
-  const [_currentArbeidsperiodeNavn, setCurrentArbeidsperiodeNavn] = useState<string>(arbeidsforholdet.navn ||  '')
-
+  const [_currentArbeidsperiodeNavn, setCurrentArbeidsperiodeNavn] = useState<string>(arbeidsforholdet.navn || '')
 
   const hasError = true
-  const {fom, tom} = ansettelsesPeriode!
+  const { fom, tom } = ansettelsesPeriode!
 
   if (!navn || !orgnr) {
-    return <div/>
+    return <div />
   }
   return (
     <div key={arbeidsforholdIDnav}>
-      <VerticalSeparatorDiv data-size='0.5'/>
+      <VerticalSeparatorDiv data-size='0.5' />
       <ArbeidsforholdPanel key={index} border>
         <ArbeidsforholdItem>
           <ArbeidsforholdDesc>
-            <IkonArbeidsforhold/>
-            <HorizontalSeparatorDiv/>
+            <IkonArbeidsforhold />
+            <HorizontalSeparatorDiv />
             <div>
-              {isEditing ? (
-                <Row>
-                  <Column>
-                <HighContrastInput
-                  data-test-id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-navn-input'}
-                  feil={undefined}
-                  id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-navn-input'}
-                  onChange={(e: any) => setCurrentArbeidsperiodeNavn(e.target.value)}
-                  value={_currentArbeidsperiodeNavn}
-                  label={t('ui:label-navn')}
-                  placeholder={t('ui:placeholder-input-default')}
-                />
-                  </Column>
-                  <Column>
-                    <HighContrastInput
-                      data-test-id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-orgnr-input'}
-                      feil={undefined}
-                      id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-orgnr-input'}
-                      onChange={(e: any) => setCurrentArbeidsperiodeOrgnr(e.target.value)}
-                      value={_currentArbeidsperiodeOrgnr}
-                      label={t('ui:label-orgnr')}
-                      placeholder={t('ui:placeholder-input-default')}
-                    />
-                  </Column>
-                </Row>
-              ): (
-                <>
-                  <strong>{navn}</strong>
-                  <br/>
-                  {t('ui:label-orgnummer')}:&nbsp;{orgnr}
-                  <br/>
-                </>
-              )}
-              {isEditing ? (
-                <>
-                  <VerticalSeparatorDiv data-size='0.5'/>
-                <Row>
-                  <Column>
-                    <HighContrastInput
-                      data-test-id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-startdato-input'}
-                      feil={undefined}
-                      id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-startdato-input'}
-                      onChange={(e: any) => setCurrentArbeidsperiodeStartDato(e.target.value)}
-                      value={_currentArbeidsperiodeStartDato}
-                      label={t('ui:label-endDate')}
-                      placeholder={t('ui:placeholder-date-default')}
-                    />
-                  </Column>
-                  <Column>
-                    <HighContrastInput
-                      data-test-id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-sluttdato-input'}
-                      feil={undefined}
-                      id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-sluttdato-input'}
-                      onChange={(e: any) => setCurrentArbeidsperiodeSluttDato(e.target.value)}
-                      value={_currentArbeidsperiodeSluttDato}
-                      label={t('ui:label-endDate')}
-                      placeholder={t('ui:placeholder-date-default')}
+              {isEditing
+                ? (
+                  <Row>
+                    <Column>
+                      <HighContrastInput
+                        data-test-id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-navn-input'}
+                        feil={undefined}
+                        id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-navn-input'}
+                        onChange={(e: any) => setCurrentArbeidsperiodeNavn(e.target.value)}
+                        value={_currentArbeidsperiodeNavn}
+                        label={t('ui:label-navn')}
+                        placeholder={t('ui:placeholder-input-default')}
                       />
-                  </Column>
-                </Row>
-                </>
-              ) : (
-                <>
-                  {t('ui:label-startDate')}:&nbsp;
-                  {formatterDatoTilNorsk(fom)}
-                  <br/>
-                  {t('ui:label-startDate')}:&nbsp;
-                  {formatterDatoTilNorsk(tom)}
-                  <br/>
-                </>
-              )}
+                    </Column>
+                    <Column>
+                      <HighContrastInput
+                        data-test-id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-orgnr-input'}
+                        feil={undefined}
+                        id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-orgnr-input'}
+                        onChange={(e: any) => setCurrentArbeidsperiodeOrgnr(e.target.value)}
+                        value={_currentArbeidsperiodeOrgnr}
+                        label={t('ui:label-orgnr')}
+                        placeholder={t('ui:placeholder-input-default')}
+                      />
+                    </Column>
+                  </Row>
+                  )
+                : (
+                  <>
+                    <strong>{navn}</strong>
+                    <br />
+                    {t('ui:label-orgnummer')}:&nbsp;{orgnr}
+                    <br />
+                  </>
+                  )}
+              {isEditing
+                ? (
+                  <>
+                    <VerticalSeparatorDiv data-size='0.5' />
+                    <Row>
+                      <Column>
+                        <HighContrastInput
+                          data-test-id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-startdato-input'}
+                          feil={undefined}
+                          id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-startdato-input'}
+                          onChange={(e: any) => setCurrentArbeidsperiodeStartDato(e.target.value)}
+                          value={_currentArbeidsperiodeStartDato}
+                          label={t('ui:label-endDate')}
+                          placeholder={t('ui:placeholder-date-default')}
+                        />
+                      </Column>
+                      <Column>
+                        <HighContrastInput
+                          data-test-id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-sluttdato-input'}
+                          feil={undefined}
+                          id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-sluttdato-input'}
+                          onChange={(e: any) => setCurrentArbeidsperiodeSluttDato(e.target.value)}
+                          value={_currentArbeidsperiodeSluttDato}
+                          label={t('ui:label-endDate')}
+                          placeholder={t('ui:placeholder-date-default')}
+                        />
+                      </Column>
+                    </Row>
+                  </>
+                  )
+                : (
+                  <>
+                    {t('ui:label-startDate')}:&nbsp;
+                    {formatterDatoTilNorsk(fom)}
+                    <br />
+                    {t('ui:label-startDate')}:&nbsp;
+                    {formatterDatoTilNorsk(tom)}
+                    <br />
+                  </>
+                  )}
               {isEditing && (
                 <>
-                  <VerticalSeparatorDiv/>
+                  <VerticalSeparatorDiv />
                   <HighContrastKnapp
                     mini
                     kompakt
@@ -181,8 +183,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                           fom: _currentArbeidsperiodeStartDato,
                           tom: _currentArbeidsperiodeSluttDato
                         }
-                      } as Arbeidsforholdet)
-                    }
+                      } as Arbeidsforholdet)}
                   >
                     <Tilsette />
                     <HorizontalSeparatorDiv data-size='0.5' />
@@ -196,7 +197,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                   >
                     {t('ui:label-cancel')}
                   </HighContrastFlatknapp>
-               </>
+                </>
               )}
             </div>
           </ArbeidsforholdDesc>
@@ -204,24 +205,24 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
             {editable && !isEditing && !isDeleting && (
               <>
                 <div>
-                  <TrashcanIcon onClick={() => setIsDeleting(!isDeleting)}/>
-                  <HorizontalSeparatorDiv data-size='0.5'/>
+                  <TrashcanIcon onClick={() => setIsDeleting(!isDeleting)} />
+                  <HorizontalSeparatorDiv data-size='0.5' />
                 </div>
                 <div>
-                  <EditIcon onClick={() => setIsEditing(!isEditing)}/>
-                  <HorizontalSeparatorDiv data-size='0.5'/>
+                  <EditIcon onClick={() => setIsEditing(!isEditing)} />
+                  <HorizontalSeparatorDiv data-size='0.5' />
                 </div>
               </>
             )}
             {!isEditing && !isDeleting && (
               <Checkbox
-              checked={selected}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onArbeidsforholdClick(
-                arbeidsforholdet,
-                e.target.checked
-              )}
-              label={t('ui:label-choose')}
-            />
+                checked={selected}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onArbeidsforholdClick(
+                  arbeidsforholdet,
+                  e.target.checked
+                )}
+                label={t('ui:label-choose')}
+              />
             )}
           </ArbeidsforholdDesc>
           {isDeleting && (
@@ -229,13 +230,12 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
               <strong>
                 Are you sure?
               </strong>
-              <VerticalSeparatorDiv/>
+              <VerticalSeparatorDiv />
               <HighContrastKnapp
                 mini
                 kompakt
                 onClick={() =>
-                  onArbeidsforholdDelete(arbeidsforholdet)
-                }
+                  onArbeidsforholdDelete(arbeidsforholdet)}
               >
                 <Trashcan />
                 <HorizontalSeparatorDiv data-size='0.5' />
@@ -263,7 +263,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
           </AlertStripeAdvarsel>
         )}
       </ArbeidsforholdPanel>
-      <VerticalSeparatorDiv data-size='0.5'/>
+      <VerticalSeparatorDiv data-size='0.5' />
     </div>
   )
 }

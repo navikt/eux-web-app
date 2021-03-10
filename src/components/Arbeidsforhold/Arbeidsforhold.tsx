@@ -1,5 +1,4 @@
 import { Knapp } from 'nav-frontend-knapper'
-import { Systemtittel } from 'nav-frontend-typografi'
 import { Column, HorizontalSeparatorDiv, Row } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -41,29 +40,25 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
   return (
     <Row>
       <Column className='arbeidsforhold'>
-        <Row>
-          <Column>
-            <Systemtittel>
-              {t('ui:label-aaRegistered')}
-            </Systemtittel>
-          </Column>
-        </Row>
-        <Row>
-          <Column>
-            <ArbeidsforholdButton>
-              <span>
-                {t('ui:label-arbeidsforhold')}
-              </span>
-              <HorizontalSeparatorDiv />
-              <Knapp
-                disabled={gettingArbeidsforholdList}
-                spinner={gettingArbeidsforholdList}
-                onClick={getArbeidsforholdList}>
-                {gettingArbeidsforholdList ? t('ui:label-searching') : t('ui:label-search')}
-              </Knapp>
-            </ArbeidsforholdButton>
-          </Column>
-        </Row>
+        {!arbeidsforholdList && (
+          <Row>
+            <Column>
+              <ArbeidsforholdButton>
+                <span>
+                  {t('ui:label-arbeidsforhold')}
+                </span>
+                <HorizontalSeparatorDiv />
+                <Knapp
+                  disabled={gettingArbeidsforholdList}
+                  spinner={gettingArbeidsforholdList}
+                  onClick={getArbeidsforholdList}
+                >
+                  {gettingArbeidsforholdList ? t('ui:label-searching') : t('ui:label-search')}
+                </Knapp>
+              </ArbeidsforholdButton>
+            </Column>
+          </Row>
+        )}
         {arbeidsforholdList && arbeidsforholdList.map(
           (arbeidsforholdet: Arbeidsforholdet, index: number) => {
             const selected: boolean = valgteArbeidsforhold
@@ -74,6 +69,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
                 arbeidsforholdet={arbeidsforholdet}
                 editable={editable}
                 selected={selected}
+                key={index}
                 index={index}
                 onArbeidsforholdClick={onArbeidsforholdClick}
                 onArbeidsforholdDelete={onArbeidsforholdDelete}
@@ -83,7 +79,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
             )
           }
 
-          ).filter(e => e !== undefined)}
+        ).filter(e => e !== undefined)}
       </Column>
     </Row>
   )

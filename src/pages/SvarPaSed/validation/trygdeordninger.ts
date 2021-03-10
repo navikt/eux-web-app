@@ -4,7 +4,6 @@ import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 
 const validatePeriod = (category: string, v: Validation, t: any, options: any, personID: string) => {
-
   let personFail = false
   let trygdeordningFail = false
   const p = _.get(options.replySed, `${personID}`)
@@ -13,7 +12,7 @@ const validatePeriod = (category: string, v: Validation, t: any, options: any, p
 
   console.log(category, personID, per)
   per?.forEach((_p: Periode, i: number) => {
-    let value = (_p.startdato)
+    const value = (_p.startdato)
       ? undefined
       : {
         feilmelding: t('ui:validation-noStartDato', { person: personName }),
@@ -25,23 +24,23 @@ const validatePeriod = (category: string, v: Validation, t: any, options: any, p
       trygdeordningFail = true
     }
 
-    const personTrygdeordningFailMessage = trygdeordningFail ?
-      {
+    const personTrygdeordningFailMessage = trygdeordningFail
+      ? {
         feilmelding: 'notnull', skjemaelementId: ''
       } as FeiloppsummeringFeil
       : undefined
 
-    if (! (v['person-' + personID + '-trygdeordningFail'] !== undefined &&
-      personTrygdeordningFailMessage === undefined) ) {
+    if (!(v['person-' + personID + '-trygdeordningFail'] !== undefined &&
+      personTrygdeordningFailMessage === undefined)) {
       v['person-' + personID + '-trygdeordningFail'] = personTrygdeordningFailMessage
     }
 
-    const personFailMessage = personFail ?
-      {
+    const personFailMessage = personFail
+      ? {
         feilmelding: 'notnull', skjemaelementId: ''
       } as FeiloppsummeringFeil
       : undefined
-    if (! (v['person-' + personID] !== undefined && personFailMessage === undefined) ) {
+    if (!(v['person-' + personID] !== undefined && personFailMessage === undefined)) {
       v['person-' + personID] = personFailMessage
     }
   })
@@ -53,5 +52,5 @@ export const validateTrygdeordninger = (v: Validation, t: any, options: any, per
   validatePeriod('perioderMedITrygdeordning', v, t, options, personID)
   validatePeriod('perioderUtenforTrygdeordning', v, t, options, personID)
   validatePeriod('perioderMedYtelser', v, t, options, personID)
-  //validatePeriod('perioderMedPensjon', v, t, options, personID)
+  // validatePeriod('perioderMedPensjon', v, t, options, personID)
 }

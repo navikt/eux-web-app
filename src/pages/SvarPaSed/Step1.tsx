@@ -55,7 +55,7 @@ const PileLeftDiv = styled.div`
 `
 const Etikett = styled.div`
   padding: 0.35rem;
-  background-color: ${({theme}) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
+  background-color: ${({ theme }) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
   border-radius: 5px;
   display: inline-block;
 `
@@ -262,7 +262,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                               <PileCenterDiv>
                                 {connectedSed.status === 'received' && <ReceivedIcon />}
                                 {connectedSed.status === 'sent' && <SentIcon />}
-                                <VerticalSeparatorDiv data-size='0.35'/>
+                                <VerticalSeparatorDiv data-size='0.35' />
                                 <Undertekst>{t('ui:status-' + connectedSed.status)}</Undertekst>
                               </PileCenterDiv>
                               <HorizontalSeparatorDiv />

@@ -120,7 +120,6 @@
     "read-pkg": "^5.2.0",
     "shelljs": "^0.8.4",
     "standardx": "^7.0.0",
-    "ts-jest": "^26.5.3",
     "typescript": "^4.1.5",
     "write-pkg": "^4.0.0"
   },

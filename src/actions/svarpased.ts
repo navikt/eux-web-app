@@ -166,7 +166,7 @@ export const sendSvarPaSedData: ActionCreator<ThunkResult<
 export const getArbeidsforholdList: ActionCreator<ThunkResult<
   ActionWithPayload
 >> = (fnr: string): ThunkResult<ActionWithPayload> => {
-  console.log( mockArbeidsforholdList(fnr))
+  console.log(mockArbeidsforholdList(fnr))
   return call({
     url: sprintf(urls.API_SAK_ARBEIDSFORHOLD_URL, { fnr: fnr }),
     expectedPayload: mockArbeidsforholdList(fnr),
