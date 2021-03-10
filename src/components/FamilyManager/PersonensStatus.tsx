@@ -1,12 +1,12 @@
 import Tilsette from 'assets/icons/Tilsette'
 import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
 import { ReplySed } from 'declarations/sed'
-import { Arbeidsforholdet, Validation } from 'declarations/types'
+import { Arbeidsforholdet, Period, Validation } from 'declarations/types'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
-  HighContrastFlatknapp,
+  HighContrastFlatknapp, HighContrastInput, HighContrastKnapp,
   HighContrastRadioPanelGroup,
   HorizontalSeparatorDiv,
   Row,
@@ -37,10 +37,9 @@ const PersonensStatusDiv = styled.div`
 `
 
 const PersonensStatus: React.FC<PersonensStatusProps> = ({
-/*  highContrast,
-  onValueChanged,
-
-  validation,*/
+  //highContrast,
+  //onValueChanged,
+  validation,
   gettingArbeidsforholdList,
   personID,
   replySed,
@@ -54,6 +53,12 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
   const [_seeNewPeriodeInSender, setSeeNewPeriodeInSender] = useState<boolean>(false)
   const [_seeNewReasonToComing, setSeeNewReasonToComing] = useState<boolean>(false)
   const [_seeNewArbeidsperiode, setSeeNewArbeidsperiode] = useState<boolean>(false)
+
+  const [_currentArbeidsperiodeStartDato, setCurrentArbeidsperiodeStartDato] = useState<string>('')
+  const [_currentArbeidsperiodeSluttDato, setCurrentArbeidsperiodeSluttDato] = useState<string>('')
+  const [_currentArbeidsperiodeOrgnr, setCurrentArbeidsperiodeOrgnr] = useState<string>('')
+  const [_currentArbeidsperiodeNavn, setCurrentArbeidsperiodeNavn] = useState<string>('')
+
   const { t } = useTranslation()
   const fnr: string | undefined = _.find(_.get(replySed, `${personID}.personInfo.pin`), p => p.land === 'NO')?.identifikator
 
@@ -70,6 +75,26 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
   const onArbeidsforholdChanged = (e: string) => {
     setIsDirty(true)
     setArbeidsforhold(e)
+  }
+
+  const onAddArbeidsPeriode = () => {
+    let newArbeidsforholdList = _.cloneDeep(_arbeidsforholdList)
+    if (!newArbeidsforholdList) {
+      newArbeidsforholdList = []
+    }
+    let periode = {
+      fom: _currentArbeidsperiodeStartDato
+    } as Period
+    if (_currentArbeidsperiodeSluttDato) {
+      periode.tom = _currentArbeidsperiodeSluttDato
+    }
+
+    newArbeidsforholdList = newArbeidsforholdList.concat({
+      ansettelsesPeriode: periode,
+      orgnr: _currentArbeidsperiodeOrgnr,
+      navn: _currentArbeidsperiodeNavn
+    } as Arbeidsforholdet)
+    setArbeidsforholdList(newArbeidsforholdList)
   }
 
   useEffect(() => {
@@ -126,11 +151,17 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
       {_arbeidsforhold === 'arbeidsforhold-1' && (
         <>
           <Arbeidsforhold
+            editable
+            personID={personID}
             getArbeidsforholdList={() => getArbeidsforholdList(fnr)}
             valgteArbeidsforhold={_valgteArbeidsforhold}
             arbeidsforholdList={_arbeidsforholdList}
             onArbeidsforholdClick={onArbeidsforholdClick}
             gettingArbeidsforholdList={gettingArbeidsforholdList}
+            onArbeidsforholdEdited={() => {}}
+            onArbeidsforholdDelete={(a: Arbeidsforholdet) =>
+              setArbeidsforholdList(_.filter(_arbeidsforholdList, _a => _a.orgnr === a.orgnr))
+            }
           />
 
           {!_seeNewArbeidsperiode ? (
@@ -144,13 +175,93 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
               {t('ui:label-add-new-arbeidsperiode')}
             </HighContrastFlatknapp>
             ) : (
-            <div>Ad</div>
+              <>
+                <Row>
+                  <Column>
+                    <HighContrastInput
+                      data-test-id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-startdato-input'}
+                      feil={validation['person-' + personID + '-personensstatus-arbeidsperiode-startdato']
+                        ? validation['person-' + personID + '-personensstatus-arbeidsperiode-startdato']!.feilmelding
+                        : undefined}
+                      id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-startdato-input'}
+                      onChange={(e: any) => setCurrentArbeidsperiodeStartDato(e.target.value)}
+                      value={_currentArbeidsperiodeStartDato}
+                      label={t('ui:label-startDate')}
+                      placeholder={t('ui:placeholder-date-default')}
+                    />
+                  </Column>
+                  <Column>
+                    <HighContrastInput
+                    data-test-id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-sluttdato-input'}
+                    feil={validation['person-' + personID + '-personensstatus-arbeidsperiode-sluttdato']
+                    ? validation['person-' + personID + '-personensstatus-arbeidsperiode-sluttdato']!.feilmelding
+                    : undefined}
+                    id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-sluttdato-input'}
+                    onChange={(e: any) => setCurrentArbeidsperiodeSluttDato(e.target.value)}
+                    value={_currentArbeidsperiodeSluttDato}
+                    label={t('ui:label-endDate')}
+                    placeholder={t('ui:placeholder-date-default')}
+                    />
+                  </Column>
+              </Row>
+              <VerticalSeparatorDiv data-size='0.5'/>
+              <Row>
+                <Column>
+                  <HighContrastInput
+                    data-test-id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-orgnr-input'}
+                    feil={validation['person-' + personID + '-personensstatus-arbeidsperiode-orgnr']
+                      ? validation['person-' + personID + '-personensstatus-arbeidsperiode-orgnr']!.feilmelding
+                      : undefined}
+                    id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-orgnr-input'}
+                    onChange={(e: any) => setCurrentArbeidsperiodeOrgnr(e.target.value)}
+                    value={_currentArbeidsperiodeOrgnr}
+                    label={t('ui:label-orgnr')}
+                    placeholder={t('ui:placeholder-input-default')}
+                  />
+                </Column>
+                <Column>
+                  <HighContrastInput
+                    data-test-id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-navn-input'}
+                    feil={validation['person-' + personID + '-personensstatus-arbeidsperiode-navn']
+                      ? validation['person-' + personID + '-personensstatus-arbeidsperiode-navn']!.feilmelding
+                      : undefined}
+                    id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-navn-input'}
+                    onChange={(e: any) => setCurrentArbeidsperiodeNavn(e.target.value)}
+                    value={_currentArbeidsperiodeNavn}
+                    label={t('ui:label-navn')}
+                    placeholder={t('ui:placeholder-input-default')}
+                  />
+                </Column>
+              </Row>
+              <VerticalSeparatorDiv data-size='0.5'/>
+              <Row>
+                <Column>
+                  <HighContrastKnapp
+                    mini
+                    kompakt
+                    onClick={onAddArbeidsPeriode}
+                  >
+                    <Tilsette />
+                    <HorizontalSeparatorDiv data-size='0.5' />
+                    {t('ui:label-add')}
+                  </HighContrastKnapp>
+                  <HorizontalSeparatorDiv data-size='0.5' />
+                  <HighContrastFlatknapp
+                    mini
+                    kompakt
+                    onClick={() => setSeeNewArbeidsperiode(!_seeNewArbeidsperiode)}
+                  >
+                    {t('ui:label-cancel')}
+                  </HighContrastFlatknapp>
+                </Column>
+              </Row>
+            </>
           )}
 
           <VerticalSeparatorDiv data-size='2'/>
           <Undertittel>
             {t('ui:label-periode-in-sender')}
-          </Undertittel>
+          </Undertittel>Da
           <VerticalSeparatorDiv/>
 
           {!_seeNewPeriodeInSender ? (

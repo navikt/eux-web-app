@@ -30,7 +30,7 @@
   "label-add-birthplace": "Legg til fødested",
   "label-add-nationality": "Legg til ny nasjonalitet",
   "label-add-new-adresse": "Legg til ny adresse/seksjon",
-  "label-add-new-arbeidsperiod": "Legg til ny arbeidsperiode",
+  "label-add-new-arbeidsperiode": "Legg til ny arbeidsperiode",
   "label-add-new-epost": "Legg til ny epost",
   "label-add-new-relationship" : "Legg til ny familierelasjon",
   "label-add-new-period": "Legg til ny periode",
@@ -253,6 +253,12 @@
   "title-newcase": "Opprett Sak",
   "title-vedlegg": "Vedleggsinformasjon",
   "title-svarpased": "Svar på SED",
+
+  "warning-conflict-aa-1": "Mulig avvik mellom ",
+  "warning-conflict-aa-link-1": "AA Registeret",
+  "warning-conflict-aa-2": " og ",
+  "warning-conflict-aa-link-2": "A-Inntekt",
+
 
   "validation-feiloppsummering" : "For å gå videre må du rette opp følgende:",
   "validation-fraDato2015" : "Datoen må være over 2015",
