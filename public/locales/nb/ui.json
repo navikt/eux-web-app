@@ -21,6 +21,7 @@
 
   "help-dokumentID": "DokumnetID finner du ved å åpne «Dokumentinformasjon» i journalposten i Gosys",
   "help-journalpostID": "Journalpost ID finner du ved å åpne journalposten i Gosys",
+  "help-familieytelser-beløp":"Beløp for hele familie. Beløp per barn legges under barn i sidemenyen",
 
   "label-aaRegistered" : "AA Registeret",
   "label-abroad-id": "Utenlandsk ID",

@@ -1,10 +1,12 @@
+import HelpIcon from 'assets/icons/HelpIcon'
 import Select from 'components/Select/Select'
 import { ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import { Undertittel } from 'nav-frontend-typografi'
-import { Column, HighContrastInput, HighContrastRadioPanelGroup, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { Column, HighContrastInput, HighContrastRadioPanelGroup, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import Tooltip from 'rc-tooltip'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -20,6 +22,16 @@ const RelasjonDiv = styled.div`
   padding: 1rem;
   fieldset {
     width: 100%;
+  }
+`
+const FlexDiv = styled.div`
+  display: flex;
+  align-items: center;
+`
+const HelpProperIcon = styled(HelpIcon)`
+  &.hjelpetekst__ikon {
+    width: 22px;
+    height: 22px;
   }
 `
 
@@ -134,7 +146,15 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             id={'c-familymanager-' + personID + '-beløpNavnOgValuta-amount-input'}
             onChange={(e: any) => setAmount(e.target.value)}
             value={_currentAmount}
-            label={t('ui:label-amount')}
+            label={(
+              <FlexDiv>
+                <span>{t('ui:label-amount')}</span>
+                <HorizontalSeparatorDiv data-size='0.5'/>
+                <Tooltip placement='top' trigger={['hover']} overlay={<span>{t('ui:help-familieytelser-beløp')}</span>}>
+                  <HelpProperIcon className='hjelpetekst__ikon' />
+                </Tooltip>
+              </FlexDiv>
+            )}
             placeholder={t('ui:placeholder-input-default')}
           />
         </Column>
