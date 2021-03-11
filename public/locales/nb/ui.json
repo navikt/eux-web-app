@@ -113,6 +113,7 @@
   "label-girl" : "Jente",
   "label-goToRina" : "Gå direkte til Rina",
   "label-goToSedInRina" : "Gå til SED i Rina",
+  "label-grant-number" : "Antall det innvilges for",
   "label-hide-form": "Skjul Skjema",
   "label-highContrast": "Høy kontrast",
   "label-inntekt": "Inntekt",
@@ -240,6 +241,7 @@
   "option-familymanager-8" : "4. Relasjoner",
   "option-familymanager-9" : "5. Grunnlag For Bosetting",
   "option-familymanager-10" : "6. Beløp, navn og valuta",
+  "option-familymanager-11" : "1. Familieytelser",
 
   "option-work": "Arbeid",
   "option-home": "Hjem",
@@ -302,6 +304,7 @@
   "title-svarpased": "Svar på SED",
 
   "title-amount-name-and-currency": "Beløp, navn og valuta for familieytelser for barn",
+  "title-amount-for-whole-familie": "Beløp for familieytelse(r) for hele familien",
   "title-grant-date": "Innvilgelsdato for ytelser",
 
   "warning-conflict-aa-1": "Mulig avvik mellom ",

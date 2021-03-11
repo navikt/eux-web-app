@@ -26,12 +26,12 @@ import {
   themeKeys,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
-import Tooltip from 'rc-tooltip'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import BeløpNavnOgValuta from './BeløpNavnOgValuta'
+import Familieytelser from './Familieytelser'
 import GrunnlagForBosetting from './GrunnlagForBosetting'
 import Kontaktinformasjon from './Kontaktinformasjon'
 import Nasjonaliteter from './Nasjonaliteter'
@@ -164,6 +164,7 @@ const FamilyManager: React.FC = () => {
   const ektefelleNr = brukerNr + (replySed.ektefelle ? 1 : 0)
   const annenPersonNr = ektefelleNr + (replySed.annenPerson ? 1 : 0)
   const barnNr = annenPersonNr + (replySed.barn ? 1 : 0)
+  const familieNr = barnNr + 1
   const totalPeople = annenPersonNr + (replySed.barn ? replySed.barn.length : 0) + 1 // 1 = bruker
 
   const changePersonOption = (personID: string | undefined, menuOption: string) => {
@@ -174,16 +175,17 @@ const FamilyManager: React.FC = () => {
   }
 
   const options = [
-    { label: t('ui:option-familymanager-1'), value: 'personopplysninger', normal: true, barn: true },
-    { label: t('ui:option-familymanager-2'), value: 'nasjonaliteter', normal: true, barn: true },
-    { label: t('ui:option-familymanager-3'), value: 'adresser', normal: true, barn: true },
-    { label: t('ui:option-familymanager-4'), value: 'kontaktinformasjon', normal: true, barn: false },
-    { label: t('ui:option-familymanager-5'), value: 'trygdeordninger', normal: true, barn: false },
-    { label: t('ui:option-familymanager-6'), value: 'familierelasjon', normal: true, barn: false },
-    { label: t('ui:option-familymanager-7'), value: 'personensstatus', normal: true, barn: false },
-    { label: t('ui:option-familymanager-8'), value: 'relasjoner', normal: false, barn: true },
-    { label: t('ui:option-familymanager-9'), value: 'grunnlagForBosetting', normal: false, barn: true },
-    { label: t('ui:option-familymanager-10'), value: 'beløpNavnOgValuta', normal: false, barn: true },
+    { label: t('ui:option-familymanager-1'), value: 'personopplysninger', normal: true, barn: true, family: false },
+    { label: t('ui:option-familymanager-2'), value: 'nasjonaliteter', normal: true, barn: true, family: false },
+    { label: t('ui:option-familymanager-3'), value: 'adresser', normal: true, barn: true, family: false },
+    { label: t('ui:option-familymanager-4'), value: 'kontaktinformasjon', normal: true, barn: false, family: false},
+    { label: t('ui:option-familymanager-5'), value: 'trygdeordninger', normal: true, barn: false, family: false },
+    { label: t('ui:option-familymanager-6'), value: 'familierelasjon', normal: true, barn: false, family: false },
+    { label: t('ui:option-familymanager-7'), value: 'personensstatus', normal: true, barn: false, family: false },
+    { label: t('ui:option-familymanager-8'), value: 'relasjoner', normal: false, barn: true, family: false },
+    { label: t('ui:option-familymanager-9'), value: 'grunnlagForBosetting', normal: false, barn: true, family: false },
+    { label: t('ui:option-familymanager-10'), value: 'beløpNavnOgValuta', normal: false, barn: true, family: false },
+    { label: t('ui:option-familymanager-11'), value: 'familieytelser', normal: false, barn: false, family: true },
   ]
 
   const onEditPerson = (id: string | undefined) => {
@@ -236,84 +238,75 @@ const FamilyManager: React.FC = () => {
   }
 
   const renderPerson = (replySed: ReplySed, personId: string, totalIndex: number) => {
-    const personInfo: PersonInfo = _.get(replySed, `${personId}.personInfo`)
+    const personInfo: PersonInfo | undefined = _.get(replySed, `${personId}.personInfo`) // undefined for family
     const editing: boolean = _.find(_editPersonIDs, _id => _id === personId) !== undefined
-    const selected: boolean = _.find(_selectedPersonIDs, _id => _id === personId) !== undefined
+    const selected: boolean = personId === 'familie' ?
+      _selectedPersonIDs.length === totalPeople :
+      _.find(_selectedPersonIDs, _id => _id === personId) !== undefined
     return (
       <PersonsDiv>
         <PersonAndCheckboxDiv
           data-highContrast={highContrast}
         >
-          <Tooltip
-            overlay={(
-              <span>
-                {t('ui:label-click-for-menu', { person: personInfo?.fornavn + ' ' + personInfo?.etternavn })}
-              </span>
-            )}
-            mouseEnterDelay={0.4}
-            trigger={['hover']}
+          <PersonDiv
+            onClick={() => {
+              onEditPerson(personId)
+              return false
+            }}
+            style={{ animationDelay: totalIndex * 0.1 + 's' }}
+            className={classNames('personDiv', {
+              slideAnimate: true,
+              selected: _editCurrentPersonID === personId
+            })}
           >
-            <PersonDiv
-              onClick={() => {
-                onEditPerson(personId)
-                return false
-              }}
-              style={{ animationDelay: totalIndex * 0.1 + 's' }}
-              className={classNames('personDiv', {
-                slideAnimate: true,
-                selected: _editCurrentPersonID === personId
-              })}
-            >
-              <Chevron type={editing ? 'ned' : 'høyre'} />
-              <HorizontalSeparatorDiv data-size='0.5' />
-              {validation['person-' + personId] && (
-                <>
-                  <FilledRemoveCircle color='red' />
-                  <HorizontalSeparatorDiv data-size='0.5' />
-                </>
-              )}
-              {selected
-                ? (
-                  <Undertittel style={{ whiteSpace: 'nowrap' }}>
-                    {personInfo?.fornavn + ' ' + personInfo?.etternavn + ' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')'}
-                  </Undertittel>
-                  )
-                : (
-                  <Normaltekst style={{ whiteSpace: 'nowrap' }}>
-                    {personInfo?.fornavn + ' ' + personInfo?.etternavn + ' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')'}
-                  </Normaltekst>
-                  )}
-              {personId.startsWith('barn[') && (
-                <>
-                  <HorizontalSeparatorDiv data-size='0.5' />
-                  <Barn />
-                </>
-              )}
-            </PersonDiv>
-          </Tooltip>
-          <Tooltip
-            overlay={(
-              <span>
-                {t('ui:label-click-for-select', { person: personInfo?.fornavn + ' ' + personInfo?.etternavn })}
-              </span>
+            <Chevron type={editing ? 'ned' : 'høyre'} />
+            <HorizontalSeparatorDiv data-size='0.5' />
+            {validation['person-' + personId] && (
+              <>
+                <FilledRemoveCircle color='red' />
+                <HorizontalSeparatorDiv data-size='0.5' />
+              </>
             )}
-            mouseEnterDelay={0.4}
-            trigger={['hover']}
-          >
-            <CheckboxDiv>
-              <PersonCheckbox
-                label=''
-                checked={selected}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            {selected
+              ? (
+                <Undertittel style={{ whiteSpace: 'nowrap' }}>
+                  { personId === 'familie' ?
+                    t('ui:label-whole-family') :
+                    personInfo?.fornavn + ' ' + personInfo?.etternavn + ' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')'}
+                </Undertittel>
+                )
+              : (
+                <Normaltekst style={{ whiteSpace: 'nowrap' }}>
+                  { personId === 'familie' ?
+                    t('ui:label-whole-family') :
+                    personInfo?.fornavn + ' ' + personInfo?.etternavn + ' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')'}
+                </Normaltekst>
+                )}
+            {personId.startsWith('barn[') && (
+              <>
+                <HorizontalSeparatorDiv data-size='0.5' />
+                <Barn />
+              </>
+            )}
+          </PersonDiv>
+          <CheckboxDiv>
+            <PersonCheckbox
+              label=''
+              checked={selected}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                if (personId === 'familie') {
+                  onSelectAllPersons(e.target.checked)
+                } else {
                   onSelectPerson(personId, e.target.checked)
-                  e.stopPropagation()
-                }}
-              />
-            </CheckboxDiv>
-          </Tooltip>
+                }
+                e.stopPropagation()
+              }}
+            />
+          </CheckboxDiv>
         </PersonAndCheckboxDiv>
         {editing && options
-          .filter(o => personId.startsWith('barn') ? o.barn : o.normal)
+          .filter(o => personId.startsWith('barn') ? o.barn :
+            personId === 'familie' ? o.family : o.normal)
           .map((o, i) => {
           return (
             <OptionDiv
@@ -360,18 +353,7 @@ const FamilyManager: React.FC = () => {
             {replySed.ektefelle && renderPerson(replySed, 'ektefelle', ektefelleNr)}
             {replySed.annenPerson && renderPerson(replySed, 'annenPerson', annenPersonNr)}
             {replySed.barn && replySed.barn.map((b: PersonInfo, i: number) => renderPerson(replySed, `barn[${i}]`, barnNr + i))}
-            <PersonAndCheckboxDiv>
-              <MarginDiv>
-                <Normaltekst>
-                  {t('ui:label-whole-family')}
-                </Normaltekst>
-              </MarginDiv>
-              <PersonCheckbox
-                label=''
-                checked={_selectedPersonIDs.length === totalPeople}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSelectAllPersons(e.target.checked)}
-              />
-            </PersonAndCheckboxDiv>
+            {renderPerson(replySed, 'familie',familieNr)}
             <MarginDiv>
               <HighContrastFlatknapp
                 mini
@@ -489,6 +471,15 @@ const FamilyManager: React.FC = () => {
                 )}
                 {_menuOption === 'beløpNavnOgValuta' && (
                   <BeløpNavnOgValuta
+                    highContrast={highContrast}
+                    onValueChanged={onValueChanged}
+                    personID={_editCurrentPersonID}
+                    replySed={replySed}
+                    validation={validation}
+                  />
+                )}
+                {_menuOption === 'familieytelser' && (
+                  <Familieytelser
                     highContrast={highContrast}
                     onValueChanged={onValueChanged}
                     personID={_editCurrentPersonID}
