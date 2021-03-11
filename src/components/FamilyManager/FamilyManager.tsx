@@ -31,6 +31,8 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
+import BeløpNavnOgValuta from './BeløpNavnOgValuta'
+import GrunnlagForBosetting from './GrunnlagForBosetting'
 import Kontaktinformasjon from './Kontaktinformasjon'
 import Nasjonaliteter from './Nasjonaliteter'
 import PersonOpplysninger from './PersonOpplysninger'
@@ -474,6 +476,24 @@ const FamilyManager: React.FC = () => {
                       if (fnr) dispatch(svarpasedActions.getArbeidsforholdList(fnr))
                     }}
                     arbeidsforholdList={arbeidsforholdList}
+                  />
+                )}
+                {_menuOption === 'grunnlagForBosetting' && (
+                  <GrunnlagForBosetting
+                    highContrast={highContrast}
+                    onValueChanged={onValueChanged}
+                    personID={_editCurrentPersonID}
+                    replySed={replySed}
+                    validation={validation}
+                  />
+                )}
+                {_menuOption === 'beløpNavnOgValuta' && (
+                  <BeløpNavnOgValuta
+                    highContrast={highContrast}
+                    onValueChanged={onValueChanged}
+                    personID={_editCurrentPersonID}
+                    replySed={replySed}
+                    validation={validation}
                   />
                 )}
               </>
