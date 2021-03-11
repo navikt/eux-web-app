@@ -148,9 +148,9 @@ const Step1: React.FC<SvarPaSedProps> = ({
     }
   }
 
-  const onReplySedClick = (connectedSed: ConnectedSed) => {
+  const onReplySedClick = (connectedSed: ConnectedSed, saksnummer: string) => {
     resetValidation('replysed')
-    dispatch(svarpasedActions.queryReplySed(_saksnummerOrFnr, connectedSed))
+    dispatch(svarpasedActions.queryReplySed(_saksnummerOrFnr, connectedSed, saksnummer))
   }
 
   useEffect(() => {
@@ -289,7 +289,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                                 spinner={queryingReplySed}
                                 mini
                                 kompakt
-                                onClick={() => onReplySedClick(connectedSed)}
+                                onClick={() => onReplySedClick(connectedSed, seds[sed].saksnummer)}
                               >
                                 {queryingReplySed ? t('ui:loading-replying') : t('ui:label-reply')}
                               </HighContrastHovedknapp>

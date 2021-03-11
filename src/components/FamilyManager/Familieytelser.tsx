@@ -37,12 +37,11 @@ const HelpProperIcon = styled(HelpIcon)`
 
 const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
   highContrast,
-  //onValueChanged,
+  // onValueChanged,
   personID,
-  //replySed,
+  // replySed,
   validation
 }:FamilieYtelserProps): JSX.Element => {
-
   const [_currentDesignationPerformance, setCurrentDesignationPerformance] = useState<string>('')
   const [_currentGrantNumber, setCurrentGrantNumber] = useState<string>('')
   const [_currentAmount, setCurrentAmount] = useState<string>('')
@@ -70,14 +69,14 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
     setIsDirty(true)
   }
 
-   const setCurrency = (e: Country) => {
+  const setCurrency = (e: Country) => {
     setCurrentCurrency(e)
     setIsDirty(true)
   }
 
   const setGrantStartDate = (e: string) => {
     setCurrentGrantStartDate(e)
-   setIsDirty(true)
+    setIsDirty(true)
   }
 
   const setGrantEndDate = (e: string) => {
@@ -135,7 +134,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
           />
         </Column>
       </Row>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <Row>
         <Column>
           <HighContrastInput
@@ -149,7 +148,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             label={(
               <FlexDiv>
                 <span>{t('ui:label-amount')}</span>
-                <HorizontalSeparatorDiv data-size='0.5'/>
+                <HorizontalSeparatorDiv data-size='0.5' />
                 <Tooltip placement='top' trigger={['hover']} overlay={<span>{t('ui:help-familieytelser-beløp')}</span>}>
                   <HelpProperIcon className='hjelpetekst__ikon' />
                 </Tooltip>
@@ -174,23 +173,23 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
           />
         </Column>
       </Row>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <Undertittel>
         {t('ui:title-grant-date')}
       </Undertittel>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <Row>
         <Column>
           <HighContrastInput
-          data-test-id={'c-familymanager-' + personID + '-beløpNavnOgValuta-startdato-input'}
-          feil={validation['person-' + personID + '-beløpNavnOgValuta-startdato']
-          ? validation['person-' + personID + '-beløpNavnOgValuta-startdato']!.feilmelding
-          : undefined}
-          id={'c-familymanager-' + personID + '-beløpNavnOgValuta-startdato-input'}
-          onChange={(e: any) => setGrantStartDate(e.target.value)}
-          value={_currentGrantStartDate}
-          label={t('ui:label-startDate')}
-          placeholder={t('ui:placeholder-date-default')}
+            data-test-id={'c-familymanager-' + personID + '-beløpNavnOgValuta-startdato-input'}
+            feil={validation['person-' + personID + '-beløpNavnOgValuta-startdato']
+              ? validation['person-' + personID + '-beløpNavnOgValuta-startdato']!.feilmelding
+              : undefined}
+            id={'c-familymanager-' + personID + '-beløpNavnOgValuta-startdato-input'}
+            onChange={(e: any) => setGrantStartDate(e.target.value)}
+            value={_currentGrantStartDate}
+            label={t('ui:label-startDate')}
+            placeholder={t('ui:placeholder-date-default')}
           />
         </Column>
         <Column>
@@ -207,7 +206,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
           />
         </Column>
       </Row>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <Row>
         <Column>
           <HighContrastInput
@@ -223,7 +222,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
           />
         </Column>
       </Row>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <Row>
         <Column>
           <HighContrastRadioPanelGroup

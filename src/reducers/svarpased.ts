@@ -75,6 +75,7 @@ const svarpasedReducer = (
         previousReplySed: state.replySed,
         replySed: {
           ...(action as ActionWithPayload).payload,
+          saksnummer: (action as ActionWithPayload).context.saksnummer,
           toDelete: {}
         }
       }

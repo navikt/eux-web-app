@@ -27,13 +27,12 @@ const TextAreaDiv = styled.div`
   }
 `
 const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
-  //highContrast,
-  //onValueChanged,
+  // highContrast,
+  // onValueChanged,
   personID,
-  //replySed,
+  // replySed,
   validation
 }:GrunnlagForBosettingProps): JSX.Element => {
-
   const [_currentSluttDato, setCurrentSluttDato] = useState<string>('')
   const [_currentStartDato, setCurrentStartDato] = useState<string>('')
   const [_currentSenderDato, setCurrentSenderDato] = useState<string>('')
@@ -43,7 +42,6 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
 
   const [_isDirty, setIsDirty] = useState<boolean>(false)
   const { t } = useTranslation()
-
 
   const setAvsenderDato = (e: string) => {
     setCurrentSenderDato(e)
@@ -61,8 +59,8 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
   }
 
   const setStartDato = (e: string) => {
-   setCurrentStartDato(e)
-   setIsDirty(true)
+    setCurrentStartDato(e)
+    setIsDirty(true)
   }
 
   const setElementsOfPersonalSituation = (e: string) => {
@@ -104,7 +102,7 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
           />
         </Column>
       </Row>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <Row>
         <Column>
           <HighContrastInput
@@ -123,15 +121,15 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
       <Row>
         <Column>
           <HighContrastInput
-          data-test-id={'c-familymanager-' + personID + '-grunnlag-mottakerdato-input'}
-          feil={validation['person-' + personID + '-grunnlag-mottakerdato']
-          ? validation['person-' + personID + '-grunnlag-mottakerdato']!.feilmelding
-          : undefined}
-          id={'c-familymanager-' + personID + '-grunnlag-mottakerdato-input'}
-          onChange={(e: any) => setMottakerDato(e.target.value)}
-          value={_currentReceiverDato}
-          label={t('ui:label-moving-date-receiver')}
-          placeholder={t('ui:placeholder-date-default')}
+            data-test-id={'c-familymanager-' + personID + '-grunnlag-mottakerdato-input'}
+            feil={validation['person-' + personID + '-grunnlag-mottakerdato']
+              ? validation['person-' + personID + '-grunnlag-mottakerdato']!.feilmelding
+              : undefined}
+            id={'c-familymanager-' + personID + '-grunnlag-mottakerdato-input'}
+            onChange={(e: any) => setMottakerDato(e.target.value)}
+            value={_currentReceiverDato}
+            label={t('ui:label-moving-date-receiver')}
+            placeholder={t('ui:placeholder-date-default')}
           />
         </Column>
       </Row>
@@ -141,8 +139,10 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
             <HighContrastTextArea
               data-test-id={'c-familymanager-' + personID + '-personensstatus-selvstendig-info-textarea'}
               id={'c-familymanager-' + personID + '-personensstatus-selvstendig-info-textarea'}
-              className={classNames({ 'skjemaelement__input--harFeil':
-                  validation['c-familymanager-' + personID + '-personensstatus-selvstendig-info-textarea'] })}
+              className={classNames({
+                'skjemaelement__input--harFeil':
+                  validation['c-familymanager-' + personID + '-personensstatus-selvstendig-info-textarea']
+              })}
               placeholder={t('ui:placeholder-input-default')}
               label={t('ui:label-elements-of-personal-situation')}
               onChange={(e: any) => setElementsOfPersonalSituation(e.target.value)}

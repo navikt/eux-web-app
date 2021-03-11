@@ -25,12 +25,11 @@ const RelasjonDiv = styled.div`
 
 const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
   highContrast,
-  //onValueChanged,
+  // onValueChanged,
   personID,
-  //replySed,
+  // replySed,
   validation
 }:GrunnlagForBosettingProps): JSX.Element => {
-
   const [_currentName, setCurrentName] = useState<string>('')
   const [_currentDesignationPerformance, setCurrentDesignationPerformance] = useState<string>('')
   const [_currentAmount, setCurrentAmount] = useState<string>('')
@@ -58,14 +57,14 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
     setIsDirty(true)
   }
 
-   const setCurrency = (e: Country) => {
+  const setCurrency = (e: Country) => {
     setCurrentCurrency(e)
     setIsDirty(true)
   }
 
   const setGrantStartDate = (e: string) => {
     setCurrentGrantStartDate(e)
-   setIsDirty(true)
+    setIsDirty(true)
   }
 
   const setGrantEndDate = (e: string) => {
@@ -104,26 +103,26 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
           />
         </Column>
         <Column>
-        <Select
-          data-test-id={'c-familymanager-' + personID + '-beløpNavnOgValuta-designationOfPerformance-select'}
-          error={validation['person-' + personID + '-beløpNavnOgValuta-designationOfPerformance']
-            ? validation['person-' + personID + '-beløpNavnOgValuta-designationOfPerformance']!.feilmelding
-            : undefined}
-          highContrast={highContrast}
-          id={'c-familymanager-' + personID + '-beløpNavnOgValuta-designationOfPerformance-select'}
-          label={t('ui:label-designation-of-performance')}
-          onChange={(e: any) => setDesignationPerformance(e.value)}
-          options={[{
-            label: t('ui:option-declarationOfPerformance-barnetrygd'), value: 'Barnetrygd'
-          }, {
-            label: t('ui:option-declarationOfPerformance-kontantstøtte'), value: 'Kontantstøtte'
-          }]}
-          placeholder={t('ui:placeholder-select-default')}
-          selectedValue={_currentDesignationPerformance}
-        />
+          <Select
+            data-test-id={'c-familymanager-' + personID + '-beløpNavnOgValuta-designationOfPerformance-select'}
+            error={validation['person-' + personID + '-beløpNavnOgValuta-designationOfPerformance']
+              ? validation['person-' + personID + '-beløpNavnOgValuta-designationOfPerformance']!.feilmelding
+              : undefined}
+            highContrast={highContrast}
+            id={'c-familymanager-' + personID + '-beløpNavnOgValuta-designationOfPerformance-select'}
+            label={t('ui:label-designation-of-performance')}
+            onChange={(e: any) => setDesignationPerformance(e.value)}
+            options={[{
+              label: t('ui:option-declarationOfPerformance-barnetrygd'), value: 'Barnetrygd'
+            }, {
+              label: t('ui:option-declarationOfPerformance-kontantstøtte'), value: 'Kontantstøtte'
+            }]}
+            placeholder={t('ui:placeholder-select-default')}
+            selectedValue={_currentDesignationPerformance}
+          />
         </Column>
       </Row>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <Row>
         <Column>
           <HighContrastInput
@@ -154,23 +153,23 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
           />
         </Column>
       </Row>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <Undertittel>
         {t('ui:title-grant-date')}
       </Undertittel>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <Row>
         <Column>
           <HighContrastInput
-          data-test-id={'c-familymanager-' + personID + '-beløpNavnOgValuta-startdato-input'}
-          feil={validation['person-' + personID + '-beløpNavnOgValuta-startdato']
-          ? validation['person-' + personID + '-beløpNavnOgValuta-startdato']!.feilmelding
-          : undefined}
-          id={'c-familymanager-' + personID + '-beløpNavnOgValuta-startdato-input'}
-          onChange={(e: any) => setGrantStartDate(e.target.value)}
-          value={_currentGrantStartDate}
-          label={t('ui:label-startDate')}
-          placeholder={t('ui:placeholder-date-default')}
+            data-test-id={'c-familymanager-' + personID + '-beløpNavnOgValuta-startdato-input'}
+            feil={validation['person-' + personID + '-beløpNavnOgValuta-startdato']
+              ? validation['person-' + personID + '-beløpNavnOgValuta-startdato']!.feilmelding
+              : undefined}
+            id={'c-familymanager-' + personID + '-beløpNavnOgValuta-startdato-input'}
+            onChange={(e: any) => setGrantStartDate(e.target.value)}
+            value={_currentGrantStartDate}
+            label={t('ui:label-startDate')}
+            placeholder={t('ui:placeholder-date-default')}
           />
         </Column>
         <Column>
@@ -187,7 +186,7 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
           />
         </Column>
       </Row>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <Row>
         <Column>
           <HighContrastInput
@@ -203,7 +202,7 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
           />
         </Column>
       </Row>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <Row>
         <Column>
           <HighContrastRadioPanelGroup

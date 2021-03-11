@@ -44,7 +44,7 @@ const FlexDiv = styled.div`
 const LeftDiv = styled.div`
   flex: 1;
   align-self: flex-start;
-  border-right: 1px solid ${({theme}: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
+  border-right: 1px solid ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
 `
 const OptionDiv = styled.div`
   padding: 0.5rem;
@@ -106,7 +106,7 @@ const CheckboxDiv = styled.div`
 const RightDiv = styled.div`
   flex: 3;
   padding: 0.5rem;
-  border-left: 1px solid ${({theme}: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
+  border-left: 1px solid ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
   margin-left: -1px;
   align-self: flex-start;
   min-width: 400px;
@@ -178,14 +178,14 @@ const FamilyManager: React.FC = () => {
     { label: t('ui:option-familymanager-1'), value: 'personopplysninger', normal: true, barn: true, family: false },
     { label: t('ui:option-familymanager-2'), value: 'nasjonaliteter', normal: true, barn: true, family: false },
     { label: t('ui:option-familymanager-3'), value: 'adresser', normal: true, barn: true, family: false },
-    { label: t('ui:option-familymanager-4'), value: 'kontaktinformasjon', normal: true, barn: false, family: false},
+    { label: t('ui:option-familymanager-4'), value: 'kontaktinformasjon', normal: true, barn: false, family: false },
     { label: t('ui:option-familymanager-5'), value: 'trygdeordninger', normal: true, barn: false, family: false },
     { label: t('ui:option-familymanager-6'), value: 'familierelasjon', normal: true, barn: false, family: false },
     { label: t('ui:option-familymanager-7'), value: 'personensstatus', normal: true, barn: false, family: false },
     { label: t('ui:option-familymanager-8'), value: 'relasjoner', normal: false, barn: true, family: false },
     { label: t('ui:option-familymanager-9'), value: 'grunnlagForBosetting', normal: false, barn: true, family: false },
     { label: t('ui:option-familymanager-10'), value: 'beløpNavnOgValuta', normal: false, barn: true, family: false },
-    { label: t('ui:option-familymanager-11'), value: 'familieytelser', normal: false, barn: false, family: true },
+    { label: t('ui:option-familymanager-11'), value: 'familieytelser', normal: false, barn: false, family: true }
   ]
 
   const onEditPerson = (id: string | undefined) => {
@@ -240,9 +240,9 @@ const FamilyManager: React.FC = () => {
   const renderPerson = (replySed: ReplySed, personId: string, totalIndex: number) => {
     const personInfo: PersonInfo | undefined = _.get(replySed, `${personId}.personInfo`) // undefined for family
     const editing: boolean = _.find(_editPersonIDs, _id => _id === personId) !== undefined
-    const selected: boolean = personId === 'familie' ?
-      _selectedPersonIDs.length === totalPeople :
-      _.find(_selectedPersonIDs, _id => _id === personId) !== undefined
+    const selected: boolean = personId === 'familie'
+      ? _selectedPersonIDs.length === totalPeople
+      : _.find(_selectedPersonIDs, _id => _id === personId) !== undefined
     return (
       <PersonsDiv>
         <PersonAndCheckboxDiv
@@ -270,16 +270,16 @@ const FamilyManager: React.FC = () => {
             {selected
               ? (
                 <Undertittel style={{ whiteSpace: 'nowrap' }}>
-                  { personId === 'familie' ?
-                    t('ui:label-whole-family') :
-                    personInfo?.fornavn + ' ' + personInfo?.etternavn + ' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')'}
+                  {personId === 'familie'
+                    ? t('ui:label-whole-family')
+                    : personInfo?.fornavn + ' ' + personInfo?.etternavn + ' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')'}
                 </Undertittel>
                 )
               : (
                 <Normaltekst style={{ whiteSpace: 'nowrap' }}>
-                  { personId === 'familie' ?
-                    t('ui:label-whole-family') :
-                    personInfo?.fornavn + ' ' + personInfo?.etternavn + ' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')'}
+                  {personId === 'familie'
+                    ? t('ui:label-whole-family')
+                    : personInfo?.fornavn + ' ' + personInfo?.etternavn + ' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')'}
                 </Normaltekst>
                 )}
             {personId.startsWith('barn[') && (
@@ -305,30 +305,30 @@ const FamilyManager: React.FC = () => {
           </CheckboxDiv>
         </PersonAndCheckboxDiv>
         {editing && options
-          .filter(o => personId.startsWith('barn') ? o.barn :
-            personId === 'familie' ? o.family : o.normal)
+          .filter(o => personId.startsWith('barn') ? o.barn
+            : personId === 'familie' ? o.family : o.normal)
           .map((o, i) => {
-          return (
-            <OptionDiv
-              data-highContrast={highContrast}
-              key={o.value}
-              style={{ animationDelay: i * 0.1 + 's' }}
-              className={classNames({
-                slideAnimate: true,
-                selected: _editCurrentPersonID === personId && _menuOption === o.value
-              })}
-              onClick={() => changePersonOption(personId, o.value)}
-            >
-              {Object.prototype.hasOwnProperty.call(validation, 'person-' + personId + '-' + o.value) &&
+            return (
+              <OptionDiv
+                data-highContrast={highContrast}
+                key={o.value}
+                style={{ animationDelay: i * 0.1 + 's' }}
+                className={classNames({
+                  slideAnimate: true,
+                  selected: _editCurrentPersonID === personId && _menuOption === o.value
+                })}
+                onClick={() => changePersonOption(personId, o.value)}
+              >
+                {Object.prototype.hasOwnProperty.call(validation, 'person-' + personId + '-' + o.value) &&
               (validation['person-' + personId + '-' + o.value] === undefined
                 ? <FilledCheckCircle color='green' />
                 : <FilledRemoveCircle color='red' />
               )}
-              <HorizontalSeparatorDiv data-size='0.5' />
-              {o.label}
-            </OptionDiv>
-          )
-        })}
+                <HorizontalSeparatorDiv data-size='0.5' />
+                {o.label}
+              </OptionDiv>
+            )
+          })}
       </PersonsDiv>
     )
   }
@@ -353,7 +353,7 @@ const FamilyManager: React.FC = () => {
             {replySed.ektefelle && renderPerson(replySed, 'ektefelle', ektefelleNr)}
             {replySed.annenPerson && renderPerson(replySed, 'annenPerson', annenPersonNr)}
             {replySed.barn && replySed.barn.map((b: PersonInfo, i: number) => renderPerson(replySed, `barn[${i}]`, barnNr + i))}
-            {renderPerson(replySed, 'familie',familieNr)}
+            {renderPerson(replySed, 'familie', familieNr)}
             <MarginDiv>
               <HighContrastFlatknapp
                 mini
@@ -367,128 +367,128 @@ const FamilyManager: React.FC = () => {
             </MarginDiv>
           </LeftDiv>
           <RightDiv>
-          {(gettingPerson || !_editCurrentPersonID)
-            ? (
-              <RightFlexCenterDiv>
-                {gettingPerson ? t('ui:loading-getting-person') : undefined}
-                {!_editCurrentPersonID ? t('ui:label-no-person-selected') : undefined}
-              </RightFlexCenterDiv>
-              )
-            : (
-              <>
-                {_menuOption === 'personopplysninger' && (
-                  <PersonOpplysninger
-                    highContrast={highContrast}
-                    landkoderList={landkoderList}
-                    onValueChanged={onValueChanged}
-                    personID={_editCurrentPersonID}
-                    replySed={replySed}
-                    searchingPerson={searchingPerson}
-                    searchedPerson={searchedPerson}
-                    validation={validation}
-                  />
+            {(gettingPerson || !_editCurrentPersonID)
+              ? (
+                <RightFlexCenterDiv>
+                  {gettingPerson ? t('ui:loading-getting-person') : undefined}
+                  {!_editCurrentPersonID ? t('ui:label-no-person-selected') : undefined}
+                </RightFlexCenterDiv>
+                )
+              : (
+                <>
+                  {_menuOption === 'personopplysninger' && (
+                    <PersonOpplysninger
+                      highContrast={highContrast}
+                      landkoderList={landkoderList}
+                      onValueChanged={onValueChanged}
+                      personID={_editCurrentPersonID}
+                      replySed={replySed}
+                      searchingPerson={searchingPerson}
+                      searchedPerson={searchedPerson}
+                      validation={validation}
+                    />
+                  )}
+                  {_menuOption === 'nasjonaliteter' && (
+                    <Nasjonaliteter
+                      highContrast={highContrast}
+                      landkoderList={landkoderList}
+                      onValueChanged={onValueChanged}
+                      personID={_editCurrentPersonID}
+                      replySed={replySed}
+                      validation={validation}
+                    />
+                  )}
+                  {_menuOption === 'adresser' && (
+                    <Adresser
+                      highContrast={highContrast}
+                      landkoderList={landkoderList}
+                      onValueChanged={onValueChanged}
+                      personID={_editCurrentPersonID}
+                      replySed={replySed}
+                      validation={validation}
+                    />
+                  )}
+                  {_menuOption === 'kontaktinformasjon' && (
+                    <Kontaktinformasjon
+                      highContrast={highContrast}
+                      onValueChanged={onValueChanged}
+                      personID={_editCurrentPersonID}
+                      replySed={replySed}
+                      validation={validation}
+                    />
+                  )}
+                  {_menuOption === 'trygdeordninger' && (
+                    <Trygdeordning
+                      highContrast={highContrast}
+                      onValueChanged={onValueChanged}
+                      personID={_editCurrentPersonID}
+                      replySed={replySed}
+                      validation={validation}
+                    />
+                  )}
+                  {_menuOption === 'familierelasjon' && (
+                    <Familierelasjon
+                      familierelasjonKodeverk={familierelasjonKodeverk}
+                      highContrast={highContrast}
+                      onValueChanged={onValueChanged}
+                      personID={_editCurrentPersonID}
+                      replySed={replySed}
+                      validation={validation}
+                    />
+                  )}
+                  {_menuOption === 'relasjoner' && (
+                    <Relasjon
+                      familierelasjonKodeverk={familierelasjonKodeverk}
+                      highContrast={highContrast}
+                      onValueChanged={onValueChanged}
+                      personID={_editCurrentPersonID}
+                      replySed={replySed}
+                      validation={validation}
+                    />
+                  )}
+                  {_menuOption === 'personensstatus' && (
+                    <PersonensStatus
+                      highContrast={highContrast}
+                      onValueChanged={onValueChanged}
+                      personID={_editCurrentPersonID}
+                      replySed={replySed}
+                      validation={validation}
+                      gettingArbeidsforholdList={gettingArbeidsforholdList}
+                      getArbeidsforholdList={(fnr: string | undefined) => {
+                        if (fnr) dispatch(svarpasedActions.getArbeidsforholdList(fnr))
+                      }}
+                      arbeidsforholdList={arbeidsforholdList}
+                    />
+                  )}
+                  {_menuOption === 'grunnlagForBosetting' && (
+                    <GrunnlagForBosetting
+                      highContrast={highContrast}
+                      onValueChanged={onValueChanged}
+                      personID={_editCurrentPersonID}
+                      replySed={replySed}
+                      validation={validation}
+                    />
+                  )}
+                  {_menuOption === 'beløpNavnOgValuta' && (
+                    <BeløpNavnOgValuta
+                      highContrast={highContrast}
+                      onValueChanged={onValueChanged}
+                      personID={_editCurrentPersonID}
+                      replySed={replySed}
+                      validation={validation}
+                    />
+                  )}
+                  {_menuOption === 'familieytelser' && (
+                    <Familieytelser
+                      highContrast={highContrast}
+                      onValueChanged={onValueChanged}
+                      personID={_editCurrentPersonID}
+                      replySed={replySed}
+                      validation={validation}
+                    />
+                  )}
+                </>
                 )}
-                {_menuOption === 'nasjonaliteter' && (
-                  <Nasjonaliteter
-                    highContrast={highContrast}
-                    landkoderList={landkoderList}
-                    onValueChanged={onValueChanged}
-                    personID={_editCurrentPersonID}
-                    replySed={replySed}
-                    validation={validation}
-                  />
-                )}
-                {_menuOption === 'adresser' && (
-                  <Adresser
-                    highContrast={highContrast}
-                    landkoderList={landkoderList}
-                    onValueChanged={onValueChanged}
-                    personID={_editCurrentPersonID}
-                    replySed={replySed}
-                    validation={validation}
-                  />
-                )}
-                {_menuOption === 'kontaktinformasjon' && (
-                  <Kontaktinformasjon
-                    highContrast={highContrast}
-                    onValueChanged={onValueChanged}
-                    personID={_editCurrentPersonID}
-                    replySed={replySed}
-                    validation={validation}
-                  />
-                )}
-                {_menuOption === 'trygdeordninger' && (
-                  <Trygdeordning
-                    highContrast={highContrast}
-                    onValueChanged={onValueChanged}
-                    personID={_editCurrentPersonID}
-                    replySed={replySed}
-                    validation={validation}
-                  />
-                )}
-                {_menuOption === 'familierelasjon' && (
-                  <Familierelasjon
-                    familierelasjonKodeverk={familierelasjonKodeverk}
-                    highContrast={highContrast}
-                    onValueChanged={onValueChanged}
-                    personID={_editCurrentPersonID}
-                    replySed={replySed}
-                    validation={validation}
-                  />
-                )}
-                {_menuOption === 'relasjoner' && (
-                  <Relasjon
-                    familierelasjonKodeverk={familierelasjonKodeverk}
-                    highContrast={highContrast}
-                    onValueChanged={onValueChanged}
-                    personID={_editCurrentPersonID}
-                    replySed={replySed}
-                    validation={validation}
-                  />
-                )}
-                {_menuOption === 'personensstatus' && (
-                  <PersonensStatus
-                    highContrast={highContrast}
-                    onValueChanged={onValueChanged}
-                    personID={_editCurrentPersonID}
-                    replySed={replySed}
-                    validation={validation}
-                    gettingArbeidsforholdList={gettingArbeidsforholdList}
-                    getArbeidsforholdList={(fnr: string | undefined) => {
-                      if (fnr) dispatch(svarpasedActions.getArbeidsforholdList(fnr))
-                    }}
-                    arbeidsforholdList={arbeidsforholdList}
-                  />
-                )}
-                {_menuOption === 'grunnlagForBosetting' && (
-                  <GrunnlagForBosetting
-                    highContrast={highContrast}
-                    onValueChanged={onValueChanged}
-                    personID={_editCurrentPersonID}
-                    replySed={replySed}
-                    validation={validation}
-                  />
-                )}
-                {_menuOption === 'beløpNavnOgValuta' && (
-                  <BeløpNavnOgValuta
-                    highContrast={highContrast}
-                    onValueChanged={onValueChanged}
-                    personID={_editCurrentPersonID}
-                    replySed={replySed}
-                    validation={validation}
-                  />
-                )}
-                {_menuOption === 'familieytelser' && (
-                  <Familieytelser
-                    highContrast={highContrast}
-                    onValueChanged={onValueChanged}
-                    personID={_editCurrentPersonID}
-                    replySed={replySed}
-                    validation={validation}
-                  />
-                )}
-              </>
-              )}
           </RightDiv>
         </FlexDiv>
       </CustomHighContrastPanel>

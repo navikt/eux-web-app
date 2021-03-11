@@ -27,7 +27,7 @@ const TextAreaDiv = styled.div`
 
 const Op2Selvstendig = ({
   personID, validation
- }: any) => {
+}: any) => {
   const { t } = useTranslation()
   const [_perioder, setPerioder] = useState<Array<Periode>>([])
   const [_currentStartDato, setCurrentStartDato] = useState<string>('')
@@ -35,26 +35,26 @@ const Op2Selvstendig = ({
   const [_seeNewForm, setSeeNewForm] = useState<boolean>(false)
   const [_comment, setComment] = useState<string>('')
 
-  const setStartDato  = (e: string, i: number) => {
+  const setStartDato = (e: string, i: number) => {
     if (i < 0) {
       setCurrentStartDato(e)
     } else {
-      let newPerioder = _.cloneDeep(_perioder)
+      const newPerioder = _.cloneDeep(_perioder)
       newPerioder[i].startdato = e
       setPerioder(newPerioder)
-      //onValueChanged(`${personID}.XXX`, newPerioder)
+      // onValueChanged(`${personID}.XXX`, newPerioder)
       setCurrentStartDato('')
     }
   }
 
-  const setSluttDato  = (e: string, i: number) => {
+  const setSluttDato = (e: string, i: number) => {
     if (i < 0) {
       setCurrentSluttDato(e)
     } else {
-      let newPerioder = _.cloneDeep(_perioder)
+      const newPerioder = _.cloneDeep(_perioder)
       newPerioder[i].sluttdato = e
       setPerioder(newPerioder)
-      //onValueChanged(`${personID}.XXX`, newPerioder)
+      // onValueChanged(`${personID}.XXX`, newPerioder)
       setCurrentSluttDato('')
     }
   }
@@ -66,12 +66,11 @@ const Op2Selvstendig = ({
   }
 
   const onAdd = () => {
-
     let newPerioder: Array<Periode> = _.cloneDeep(_perioder)
     if (_.isNil(newPerioder)) {
       newPerioder = []
     }
-    let newPeriode = {
+    const newPeriode = {
       startdato: _currentStartDato
     } as Periode
     if (_currentSluttDato) {
@@ -95,7 +94,7 @@ const Op2Selvstendig = ({
             : undefined}
           id={'c-familymanager-' + personID + '-personensstatus-selvstendig-' + i + '-startdato-input'}
           onChange={(e: any) => setStartDato(e.target.value, i)}
-          value={i < 0 ? _currentStartDato: p?.startdato}
+          value={i < 0 ? _currentStartDato : p?.startdato}
           label={t('ui:label-startDate')}
           placeholder={t('ui:placeholder-date-default')}
         />
@@ -108,7 +107,7 @@ const Op2Selvstendig = ({
             : undefined}
           id={'c-familymanager-' + personID + '-personensstatus-selvstendig-' + i + '-sluttdato-input'}
           onChange={(e: any) => setSluttDato(e.target.value, i)}
-          value={i < 0 ? _currentSluttDato: p?.sluttdato}
+          value={i < 0 ? _currentSluttDato : p?.sluttdato}
           label={t('ui:label-endDate')}
           placeholder={t('ui:placeholder-date-default')}
         />
@@ -136,7 +135,7 @@ const Op2Selvstendig = ({
       {_perioder.map(renderRow)}
       <hr />
       {_seeNewForm && renderRow(undefined, -1)}
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <Row>
         <Column>
           <HighContrastFlatknapp
@@ -150,13 +149,15 @@ const Op2Selvstendig = ({
           </HighContrastFlatknapp>
         </Column>
       </Row>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <TextAreaDiv>
         <HighContrastTextArea
           data-test-id={'c-familymanager-' + personID + '-personensstatus-selvstendig-info-textarea'}
           id={'c-familymanager-' + personID + '-personensstatus-selvstendig-info-textarea'}
-          className={classNames({ 'skjemaelement__input--harFeil':
-              validation['c-familymanager-' + personID + '-personensstatus-selvstendig-info-textarea'] })}
+          className={classNames({
+            'skjemaelement__input--harFeil':
+              validation['c-familymanager-' + personID + '-personensstatus-selvstendig-info-textarea']
+          })}
           placeholder={t('ui:placeholder-texttosed')}
           label={t('ui:label-additional-information')}
           onChange={(e: any) => setComment(e.target.value)}

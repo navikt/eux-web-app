@@ -24,7 +24,7 @@ type PensjonType = 'alderspensjon' | 'uførhet' // | 'enkepensjon' | 'barnepensj
 
 const Op3Other = ({
   highContrast, personID, validation
- }: any) => {
+}: any) => {
   const { t } = useTranslation()
   const [_perioder, setPerioder] = useState<Array<PensjonPeriode>>([])
   const [_currentStartDato, setCurrentStartDato] = useState<string>('')
@@ -32,38 +32,38 @@ const Op3Other = ({
   const [_currentPensjonType, setCurrentPensjonType] = useState<string>('')
   const [_seeNewForm, setSeeNewForm] = useState<boolean>(false)
 
-  const setStartDato  = (e: string, i: number) => {
+  const setStartDato = (e: string, i: number) => {
     if (i < 0) {
       setCurrentStartDato(e)
     } else {
-      let newPerioder = _.cloneDeep(_perioder)
+      const newPerioder = _.cloneDeep(_perioder)
       newPerioder[i].periode.startdato = e
       setPerioder(newPerioder)
-      //onValueChanged(`${personID}.XXX`, newPerioder)
+      // onValueChanged(`${personID}.XXX`, newPerioder)
       setCurrentStartDato('')
     }
   }
 
-  const setSluttDato  = (e: string, i: number) => {
+  const setSluttDato = (e: string, i: number) => {
     if (i < 0) {
       setCurrentSluttDato(e)
     } else {
-      let newPerioder = _.cloneDeep(_perioder)
+      const newPerioder = _.cloneDeep(_perioder)
       newPerioder[i].periode.sluttdato = e
       setPerioder(newPerioder)
-      //onValueChanged(`${personID}.XXX`, newPerioder)
+      // onValueChanged(`${personID}.XXX`, newPerioder)
       setCurrentSluttDato('')
     }
   }
 
-  const setPensjonType  = (e: string, i: number) => {
+  const setPensjonType = (e: string, i: number) => {
     if (i < 0) {
       setCurrentPensjonType(e)
     } else {
-      let newPerioder = _.cloneDeep(_perioder)
+      const newPerioder = _.cloneDeep(_perioder)
       newPerioder[i].pensjonstype = e
       setPerioder(newPerioder)
-      //onValueChanged(`${personID}.XXX`, newPerioder)
+      // onValueChanged(`${personID}.XXX`, newPerioder)
       setCurrentPensjonType('')
     }
   }
@@ -75,12 +75,11 @@ const Op3Other = ({
   }
 
   const onAdd = () => {
-
     let newPerioder: Array<PensjonPeriode> = _.cloneDeep(_perioder)
     if (_.isNil(newPerioder)) {
       newPerioder = []
     }
-    let newPeriode = {
+    const newPeriode = {
       startdato: _currentStartDato
     } as Periode
     if (_currentSluttDato) {
@@ -105,7 +104,6 @@ const Op3Other = ({
 
   const getPensjonTypeOption = (value: string | undefined | null) => _.find(selectPensjonTypeOptions, s => s.value === value)
 
-
   const renderRow = (p: PensjonPeriode | undefined, i: number) => (
     <AlignEndRow>
       <Column>
@@ -116,7 +114,7 @@ const Op3Other = ({
             : undefined}
           id={'c-familymanager-' + personID + '-personensstatus-selvstendig-' + i + '-startdato-input'}
           onChange={(e: any) => setStartDato(e.target.value, i)}
-          value={i < 0 ? _currentStartDato: p?.periode.startdato}
+          value={i < 0 ? _currentStartDato : p?.periode.startdato}
           label={t('ui:label-startDate')}
           placeholder={t('ui:placeholder-date-default')}
         />
@@ -129,25 +127,25 @@ const Op3Other = ({
             : undefined}
           id={'c-familymanager-' + personID + '-personensstatus-selvstendig-' + i + '-sluttdato-input'}
           onChange={(e: any) => setSluttDato(e.target.value, i)}
-          value={i < 0 ? _currentSluttDato: p?.periode.sluttdato}
+          value={i < 0 ? _currentSluttDato : p?.periode.sluttdato}
           label={t('ui:label-endDate')}
           placeholder={t('ui:placeholder-date-default')}
         />
       </Column>
       <Column>
         <Select
-        data-test-id={'c-familymanager-' + personID + '-personensstatus-selvstendig-' + '-' + i + '-pensjontype-select'}
-        error={validation['person-' + personID + '-personensstatus-selvstendig-' + '-' + i + '-pensjontype']
-          ? validation['person-' + personID + '-personensstatus-selvstendig-' + '-' + i + '-pensjontype']!.feilmelding
-          : undefined}
-        highContrast={highContrast}
-        id={'c-familymanager-' + personID + '-personensstatus-selvstendig-' + i + '-pensjontype-select'}
-        onChange={(e: any) => setPensjonType(e.value, i)}
-        options={selectPensjonTypeOptions}
-        placeholder={t('ui:placeholder-select-default')}
-        selectedValue={getPensjonTypeOption(i < 0 ? _currentPensjonType : (p as PensjonPeriode)?.pensjonstype)}
-        defaultValue={getPensjonTypeOption(i < 0 ? _currentPensjonType : (p as PensjonPeriode)?.pensjonstype)}
-      />
+          data-test-id={'c-familymanager-' + personID + '-personensstatus-selvstendig-' + '-' + i + '-pensjontype-select'}
+          error={validation['person-' + personID + '-personensstatus-selvstendig-' + '-' + i + '-pensjontype']
+            ? validation['person-' + personID + '-personensstatus-selvstendig-' + '-' + i + '-pensjontype']!.feilmelding
+            : undefined}
+          highContrast={highContrast}
+          id={'c-familymanager-' + personID + '-personensstatus-selvstendig-' + i + '-pensjontype-select'}
+          onChange={(e: any) => setPensjonType(e.value, i)}
+          options={selectPensjonTypeOptions}
+          placeholder={t('ui:placeholder-select-default')}
+          selectedValue={getPensjonTypeOption(i < 0 ? _currentPensjonType : (p as PensjonPeriode)?.pensjonstype)}
+          defaultValue={getPensjonTypeOption(i < 0 ? _currentPensjonType : (p as PensjonPeriode)?.pensjonstype)}
+        />
       </Column>
       <Column>
         <HighContrastFlatknapp
@@ -172,7 +170,7 @@ const Op3Other = ({
       {_perioder.map(renderRow)}
       <hr />
       {_seeNewForm && renderRow(undefined, -1)}
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <Row>
         <Column>
           <HighContrastFlatknapp

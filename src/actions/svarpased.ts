@@ -47,18 +47,22 @@ export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload>>
 }
 
 export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload>> = (
-  saksnummer: string, connectedSed: ConnectedSed
+  saksnummerOrFnr: string, connectedSed: ConnectedSed, saksnummer: string
 ): ThunkResult<ActionWithPayload> => {
   const mockSed = mockReplySed(connectedSed.replySedType)
   return call({
     url: sprintf(urls.API_SVARPASED_REPLYSED_QUERY_URL, {
-      rinaSakId: saksnummer,
+      rinaSakId: saksnummerOrFnr,
       sedId: connectedSed.querySedDocumentId,
       sedType: connectedSed.replySedType
     }),
     expectedPayload: {
       ...mockSed,
-      ...connectedSed
+      ...connectedSed,
+      saksnummer: saksnummer
+    },
+    context: {
+      saksnummer: saksnummer
     },
     type: {
       request: types.SVARPASED_REPLYSED_QUERY_REQUEST,

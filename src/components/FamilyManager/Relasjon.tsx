@@ -26,12 +26,11 @@ const CenterRow = styled(Row)`
 `
 const Relasjon: React.FC<RelasjonProps> = ({
   highContrast,
-  //onValueChanged,
+  // onValueChanged,
   personID,
-  //replySed,
+  // replySed,
   validation
 }:RelasjonProps): JSX.Element => {
-
   const [_currentRelasjon, setCurrentRelasjon] = useState<string>('')
   const [_currentRelasjonType, setCurrentRelasjonType] = useState<string>('')
   const [_currentSluttDato, setCurrentSluttDato] = useState<string>('')
@@ -47,14 +46,14 @@ const Relasjon: React.FC<RelasjonProps> = ({
   const { t } = useTranslation()
 
   const relasjonTypeOptions = [
-    {label: t('ui:option-relasjon-1'), value: 'option-relasjon-1'},
-    {label: t('ui:option-relasjon-2'), value: 'option-relasjon-2'},
-    {label: t('ui:option-relasjon-3'), value: 'option-relasjon-3'},
-    {label: t('ui:option-relasjon-4'), value: 'option-relasjon-4'},
-    {label: t('ui:option-relasjon-5'), value: 'option-relasjon-5'},
-    {label: t('ui:option-relasjon-6'), value: 'option-relasjon-6'},
-    {label: t('ui:option-relasjon-7'), value: 'option-relasjon-7'},
-    {label: t('ui:option-relasjon-8'), value: 'option-relasjon-8'}
+    { label: t('ui:option-relasjon-1'), value: 'option-relasjon-1' },
+    { label: t('ui:option-relasjon-2'), value: 'option-relasjon-2' },
+    { label: t('ui:option-relasjon-3'), value: 'option-relasjon-3' },
+    { label: t('ui:option-relasjon-4'), value: 'option-relasjon-4' },
+    { label: t('ui:option-relasjon-5'), value: 'option-relasjon-5' },
+    { label: t('ui:option-relasjon-6'), value: 'option-relasjon-6' },
+    { label: t('ui:option-relasjon-7'), value: 'option-relasjon-7' },
+    { label: t('ui:option-relasjon-8'), value: 'option-relasjon-8' }
   ]
 
   const setRelasjon = (e: string) => {
@@ -73,8 +72,8 @@ const Relasjon: React.FC<RelasjonProps> = ({
   }
 
   const setStartDato = (e: string) => {
-   setCurrentStartDato(e)
-   setIsDirty(true)
+    setCurrentStartDato(e)
+    setIsDirty(true)
   }
 
   const setForeldreansvar = (e: string) => {
@@ -138,23 +137,23 @@ const Relasjon: React.FC<RelasjonProps> = ({
         onChange={(e: any) => setRelasjon(e.target.value)}
       />
       <Row>
-          <Column>
-            <Select
-              data-test-id={'c-familymanager-' + personID + '-relasjon-relasjontype-select'}
-              feil={validation['person-' + personID + '-relasjon-relasjontype']
-                ? validation['person-' + personID + '-relasjon-relasjontype']!.feilmelding
-                : undefined}
-              highContrast={highContrast}
-              id={'c-familymanager-' + personID + '-relasjon-relasjontype-select'}
-              label={t('ui:label-type')}
-              onChange={(e) => setRelasjonType(e.value)}
-              options={relasjonTypeOptions}
-              placeholder={t('ui:placeholder-select-default')}
-              selectedValue={_currentRelasjonType}
-            />
-          </Column>
+        <Column>
+          <Select
+            data-test-id={'c-familymanager-' + personID + '-relasjon-relasjontype-select'}
+            feil={validation['person-' + personID + '-relasjon-relasjontype']
+              ? validation['person-' + personID + '-relasjon-relasjontype']!.feilmelding
+              : undefined}
+            highContrast={highContrast}
+            id={'c-familymanager-' + personID + '-relasjon-relasjontype-select'}
+            label={t('ui:label-type')}
+            onChange={(e) => setRelasjonType(e.value)}
+            options={relasjonTypeOptions}
+            placeholder={t('ui:placeholder-select-default')}
+            selectedValue={_currentRelasjonType}
+          />
+        </Column>
       </Row>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <UndertekstBold>
         {t('ui:label-relation-duration')}
       </UndertekstBold>
@@ -198,11 +197,11 @@ const Relasjon: React.FC<RelasjonProps> = ({
         name={'c-familymanager-' + personID + '-foreldreansvar-radiogroup'}
         radios={[
           { label: t('ui:label-yes'), value: 'ja' },
-          { label: t('ui:label-no'), value: 'nei' },
+          { label: t('ui:label-no'), value: 'nei' }
         ]}
         onChange={(e: any) => setForeldreansvar(e.target.value)}
       />
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <UndertekstBold>
         {t('ui:label-children-in-household')}
       </UndertekstBold>
@@ -223,7 +222,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
             name={'c-familymanager-' + personID + '-question1-radiogroup'}
             radios={[
               { label: t('ui:label-yes'), value: 'ja' },
-              { label: t('ui:label-no'), value: 'nei' },
+              { label: t('ui:label-no'), value: 'nei' }
             ]}
             onChange={(e: any) => setQuestion1(e.target.value)}
           />
@@ -247,7 +246,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
             name={'c-familymanager-' + personID + '-question2-radiogroup'}
             radios={[
               { label: t('ui:label-yes'), value: 'ja' },
-              { label: t('ui:label-no'), value: 'nei' },
+              { label: t('ui:label-no'), value: 'nei' }
             ]}
             onChange={(e: any) => setQuestion2(e.target.value)}
           />
@@ -271,7 +270,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
             name={'c-familymanager-' + personID + '-question3-radiogroup'}
             radios={[
               { label: t('ui:label-yes'), value: 'ja' },
-              { label: t('ui:label-no'), value: 'nei' },
+              { label: t('ui:label-no'), value: 'nei' }
             ]}
             onChange={(e: any) => setQuestion3(e.target.value)}
           />
@@ -295,7 +294,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
             name={'c-familymanager-' + personID + '-question4-radiogroup'}
             radios={[
               { label: t('ui:label-yes'), value: 'ja' },
-              { label: t('ui:label-no'), value: 'nei' },
+              { label: t('ui:label-no'), value: 'nei' }
             ]}
             onChange={(e: any) => setQuestion4(e.target.value)}
           />

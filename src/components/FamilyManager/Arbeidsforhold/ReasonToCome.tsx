@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next'
 
 const ReasonToCome = ({
   personID,
-  validation,
+  validation
 }: any) => {
   const { t } = useTranslation()
   const [_seeNewReasonToComing, setSeeNewReasonToComing] = useState<boolean>(false)
@@ -40,7 +40,7 @@ const ReasonToCome = ({
             <HorizontalSeparatorDiv data-size='0.5' />
             {t('ui:label-add-new-reason-to-coming')}
           </HighContrastFlatknapp>
-        )
+          )
         : (
           <div>
             <UndertekstBold>
@@ -105,7 +105,7 @@ const ReasonToCome = ({
               </Column>
             </Row>
           </div>
-        )}
+          )}
     </>
   )
 }
