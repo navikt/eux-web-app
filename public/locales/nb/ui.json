@@ -19,7 +19,6 @@
   "error-page-description" : "Vennligst rapporter feilen i Porten slik at vi kan rette den. Kopier innholdet i detaljert feilmelding under og lim det inn i saken i Porten.",
   "error-page-footer" : "",
 
-
   "help-dokumentID": "DokumnetID finner du ved å åpne «Dokumentinformasjon» i journalposten i Gosys",
   "help-journalpostID": "Journalpost ID finner du ved å åpne journalposten i Gosys",
 
@@ -53,6 +52,7 @@
   "label-birthPlace": "Fødested",
   "label-bostedsland" : "Bostedsland",
   "label-buc": "BUC",
+  "label-boy" : "Gutt",
   "label-by": "By",
   "label-bygning": "Bygning",
   "label-cancel": "Avbryt",
@@ -99,6 +99,7 @@
   "label-gateadresse": "Gateadresse",
   "label-gender" : "Kjønn",
   "label-get" : "Hent",
+  "label-girl" : "Jente",
   "label-goToRina" : "Gå direkte til Rina",
   "label-goToSedInRina" : "Gå til SED i Rina",
   "label-hide-form": "Skjul Skjema",
@@ -214,6 +215,9 @@
   "option-familymanager-5" : "5. Trygdeordninger",
   "option-familymanager-6" : "6. Familierelasjon",
   "option-familymanager-7" : "7. Personens status",
+  "option-familymanager-8" : "4. Relasjoner",
+  "option-familymanager-9" : "5. Grunnlag For Bosetting",
+  "option-familymanager-10" : "6. Beløp, navn og valuta",
 
   "option-work": "Arbeid",
   "option-home": "Hjem",
@@ -267,7 +271,6 @@
   "warning-conflict-aa-link-1": "AA Registeret",
   "warning-conflict-aa-2": " og ",
   "warning-conflict-aa-link-2": "A-Inntekt",
-
 
   "validation-feiloppsummering" : "For å gå videre må du rette opp følgende:",
   "validation-fraDato2015" : "Datoen må være over 2015",

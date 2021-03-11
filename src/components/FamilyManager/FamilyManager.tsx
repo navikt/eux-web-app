@@ -10,14 +10,21 @@ import Familierelasjon from 'components/FamilyManager/Familierelasjon'
 import FamilyManagerModal from 'components/FamilyManager/FamilyManagerModal'
 import PersonensStatus from 'components/FamilyManager/PersonensStatus'
 import Trygdeordning from 'components/FamilyManager/Trygdeordning'
-import { FadingLineSeparator } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { PersonInfo, ReplySed } from 'declarations/sed'
 import _ from 'lodash'
 import Chevron from 'nav-frontend-chevron'
 import { Checkbox } from 'nav-frontend-skjema'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
-import { theme, themeHighContrast, themeKeys, HighContrastFlatknapp, HighContrastPanel, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import {
+  HighContrastFlatknapp,
+  HighContrastPanel,
+  HorizontalSeparatorDiv,
+  theme,
+  themeHighContrast,
+  themeKeys,
+  VerticalSeparatorDiv
+} from 'nav-hoykontrast'
 import Tooltip from 'rc-tooltip'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -34,6 +41,7 @@ const FlexDiv = styled.div`
 const LeftDiv = styled.div`
   flex: 1;
   align-self: flex-start;
+  border-right: 1px solid ${({theme}: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
 `
 const OptionDiv = styled.div`
   padding: 0.5rem;
@@ -92,16 +100,15 @@ const CheckboxDiv = styled.div`
   : theme[themeKeys.MAIN_HOVER_COLOR]};
   }
 `
-
-const RightFlexStartDiv = styled.div`
+const RightDiv = styled.div`
   flex: 3;
   padding: 0.5rem;
+  border-left: 1px solid ${({theme}: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
+  margin-left: -1px;
   align-self: flex-start;
+  min-width: 400px;
 `
 const RightFlexCenterDiv = styled.div`
-  flex: 3;
-  padding: 0.5rem;
-  align-self: flex-center;
   text-align: center;
 `
 const CustomHighContrastPanel = styled(HighContrastPanel)`
@@ -115,7 +122,7 @@ const mapState = (state: State): any => ({
   arbeidsforholdList: state.svarpased.arbeidsforholdList,
   familierelasjonKodeverk: state.app.familierelasjoner,
   highContrast: state.ui.highContrast,
-  gettingArbeidsforholdList: state.loading.gettingArbeidsforholdList,
+  gettingArbeidfsforholdList: state.loading.gettingArbeidsforholdList,
   gettingPerson: state.loading.gettingPerson,
   landkoderList: state.app.landkoder,
   replySed: state.svarpased.replySed,
@@ -164,13 +171,16 @@ const FamilyManager: React.FC = () => {
   }
 
   const options = [
-    { label: t('ui:option-familymanager-1'), value: 'personopplysninger' },
-    { label: t('ui:option-familymanager-2'), value: 'nasjonaliteter' },
-    { label: t('ui:option-familymanager-3'), value: 'adresser' },
-    { label: t('ui:option-familymanager-4'), value: 'kontaktinformasjon' },
-    { label: t('ui:option-familymanager-5'), value: 'trygdeordninger' },
-    { label: t('ui:option-familymanager-6'), value: 'familierelasjon' },
-    { label: t('ui:option-familymanager-7'), value: 'personensstatus' }
+    { label: t('ui:option-familymanager-1'), value: 'personopplysninger', normal: true, barn: true },
+    { label: t('ui:option-familymanager-2'), value: 'nasjonaliteter', normal: true, barn: true },
+    { label: t('ui:option-familymanager-3'), value: 'adresser', normal: true, barn: true },
+    { label: t('ui:option-familymanager-4'), value: 'kontaktinformasjon', normal: true, barn: false },
+    { label: t('ui:option-familymanager-5'), value: 'trygdeordninger', normal: true, barn: false },
+    { label: t('ui:option-familymanager-6'), value: 'familierelasjon', normal: true, barn: false },
+    { label: t('ui:option-familymanager-7'), value: 'personensstatus', normal: true, barn: false },
+    { label: t('ui:option-familymanager-8'), value: 'relasjoner', normal: false, barn: true },
+    { label: t('ui:option-familymanager-9'), value: 'grunnlagForBosetting', normal: false, barn: true },
+    { label: t('ui:option-familymanager-10'), value: 'beløpNavnOgValuta', normal: false, barn: true },
   ]
 
   const onEditPerson = (id: string | undefined) => {
@@ -299,7 +309,9 @@ const FamilyManager: React.FC = () => {
             </CheckboxDiv>
           </Tooltip>
         </PersonAndCheckboxDiv>
-        {editing && options.map((o, i) => {
+        {editing && options
+          .filter(o => personId.startsWith('barn') ? o.barn : o.normal)
+          .map((o, i) => {
           return (
             <OptionDiv
               data-highContrast={highContrast}
@@ -369,7 +381,7 @@ const FamilyManager: React.FC = () => {
               </HighContrastFlatknapp>
             </MarginDiv>
           </LeftDiv>
-          <FadingLineSeparator className='fadeIn' />
+          <RightDiv>
           {(gettingPerson || !_editCurrentPersonID)
             ? (
               <RightFlexCenterDiv>
@@ -378,7 +390,7 @@ const FamilyManager: React.FC = () => {
               </RightFlexCenterDiv>
               )
             : (
-              <RightFlexStartDiv>
+              <>
                 {_menuOption === 'personopplysninger' && (
                   <PersonOpplysninger
                     highContrast={highContrast}
@@ -453,8 +465,9 @@ const FamilyManager: React.FC = () => {
                     arbeidsforholdList={arbeidsforholdList}
                   />
                 )}
-              </RightFlexStartDiv>
+              </>
               )}
+          </RightDiv>
         </FlexDiv>
       </CustomHighContrastPanel>
     </PanelDiv>

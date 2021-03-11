@@ -205,8 +205,8 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             name={'c-familymanager-' + personID + '-personopplysninger-kjoenn-radiogroup'}
             onChange={onKjoennChange}
             radios={[
-              { label: t('ui:label-woman'), value: 'K' },
-              { label: t('ui:label-man'), value: 'M' },
+              { label: t(personID?.startsWith('barn') ? 'ui:label-girl' : 'ui:label-woman'), value: 'K' },
+              { label: t(personID?.startsWith('barn') ? 'ui:label-boy' : 'ui:label-man'), value: 'M' },
               { label: t('ui:label-unknown'), value: 'U' }
             ]}
           />
@@ -271,11 +271,15 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
           </FlexDiv>
           <VerticalSeparatorDiv data-size='0.5' />
           <div>
-            {searchedPerson && (
+            {searchedPerson ? (
               <Normaltekst>
                 {_.get(replySed, `${personID}.personInfo.fornavn`) + ' ' +
                  _.get(replySed, `${personID}.personInfo.etternavn`) + ' (' +
                  _.get(replySed, `${personID}.personInfo.kjoenn`) + ')'}
+              </Normaltekst>
+            ) : (
+              <Normaltekst>
+                {t('ui:label-norwegian-fnr-description')}
               </Normaltekst>
             )}
           </div>

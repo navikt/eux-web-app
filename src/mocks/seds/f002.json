@@ -18,17 +18,17 @@
       "pin": [
         {
           "land": "NO",
-          "sektor": "yrkesskade_og_yrkessykdom1",
+          "sektor": "yrkesskade og yrkessykdom1",
           "identifikator": "10000000001",
-          "institusjonsid": "F002 bruker Institusjons ID 1",
-          "institusjonsnavn": "F002 bruker Institusjons navn 1"
+          "institusjonsid": "InstitusjonsID",
+          "institusjonsnavn": "Navn"
         },
         {
           "land": "SE",
-          "sektor": "yrkesskade_og_yrkessykdom2",
+          "sektor": "yrkesskade og yrkessykdom2",
           "identifikator": "20000000001",
-          "institusjonsid": "F002 bruker Institusjons ID 2",
-          "institusjonsnavn": "F002 bruker Institusjons navn 2"
+          "institusjonsid": "InstitusjonsID2",
+          "institusjonsnavn": "Navn2"
         }
       ],
       "pinMangler": {

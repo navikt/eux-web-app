@@ -77,7 +77,9 @@ const SEDPanel = ({ replySed }: SEDPanelProps) => {
                   type='circle'
                 />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {p.sektor} - {p.identifikator} - {p.institusjonsid} - {p.institusjonsnavn}
+                <div>
+                  {p.sektor} - {p.identifikator} - {p.institusjonsid} - {p.institusjonsnavn}
+                </div>
               </FlexDiv>
             ))}
           </Dd>

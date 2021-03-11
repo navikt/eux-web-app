@@ -12,9 +12,11 @@ export const FadingLineSeparator = styled.div`
    border-left: 1px solid ${({ theme }) => theme[themeKeys.MAIN_BORDER_COLOR]};
    opacity: 0;
    &.fadeIn {
+     opacity: 1;
      animation: ${fadeIn} 0.5s forwards;
    }
    &.fadeOut {
+     opacity: 0;
      animation: ${fadeOut} 0.5s forwards;
    }
 `
