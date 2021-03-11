@@ -169,7 +169,7 @@ const Adresser: React.FC<AdresseProps> = ({
             data-test-id={'c-familymanager-' + personID + '-adresser-' + i + '-type-radiogroup'}
             id={'c-familymanager-' + personID + '-adresser-' + i + '-type-radiogroup'}
             feil={validation['person-' + personID + '-adresser-' + i + '-type-radiogroup']
-              ? validation['person-' + personID + '-adresser-' + i + '-typetype']!.feilmelding
+              ? validation['person-' + personID + '-adresser-' + i + '-type']!.feilmelding
               : undefined}
             legend={t('ui:label-adresse')}
             name={'c-familymanager-' + personID + '-adresser-radiogroup'}

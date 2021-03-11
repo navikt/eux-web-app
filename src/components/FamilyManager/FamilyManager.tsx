@@ -9,6 +9,7 @@ import Adresser from 'components/FamilyManager/Adresser'
 import Familierelasjon from 'components/FamilyManager/Familierelasjon'
 import FamilyManagerModal from 'components/FamilyManager/FamilyManagerModal'
 import PersonensStatus from 'components/FamilyManager/PersonensStatus'
+import Relasjon from 'components/FamilyManager/Relasjon'
 import Trygdeordning from 'components/FamilyManager/Trygdeordning'
 import { State } from 'declarations/reducers'
 import { PersonInfo, ReplySed } from 'declarations/sed'
@@ -443,6 +444,16 @@ const FamilyManager: React.FC = () => {
                 )}
                 {_menuOption === 'familierelasjon' && (
                   <Familierelasjon
+                    familierelasjonKodeverk={familierelasjonKodeverk}
+                    highContrast={highContrast}
+                    onValueChanged={onValueChanged}
+                    personID={_editCurrentPersonID}
+                    replySed={replySed}
+                    validation={validation}
+                  />
+                )}
+                {_menuOption === 'relasjoner' && (
+                  <Relasjon
                     familierelasjonKodeverk={familierelasjonKodeverk}
                     highContrast={highContrast}
                     onValueChanged={onValueChanged}
