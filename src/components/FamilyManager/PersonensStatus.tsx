@@ -1,18 +1,13 @@
-import Tilsette from 'assets/icons/Tilsette'
+import Avsenderlandet from 'components/FamilyManager/Arbeidsforhold/Avsenderlandet'
 import Op1Ansatt from 'components/FamilyManager/Arbeidsforhold/Op1Ansatt'
+import Op2Selvstendig from 'components/FamilyManager/Arbeidsforhold/Op2Selvstendig'
+import Op3Other from 'components/FamilyManager/Arbeidsforhold/Op3Other'
+import ReasonToCome from 'components/FamilyManager/Arbeidsforhold/ReasonToCome'
 import LesMer from 'components/LesMer/LesMer'
 import { ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
-import {
-  Column,
-  HighContrastFlatknapp,
-  HighContrastInput,
-  HighContrastRadioPanelGroup,
-  HorizontalSeparatorDiv,
-  Row,
-  VerticalSeparatorDiv
-} from 'nav-hoykontrast'
+import { Undertittel } from 'nav-frontend-typografi'
+import { Column, HighContrastRadioPanelGroup, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -47,16 +42,6 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
 }:PersonensStatusProps): JSX.Element => {
   const [_arbeidsforhold, setArbeidsforhold] = useState<string>('')
   const [_isDirty, setIsDirty] = useState<boolean>(false)
-
-  const [_seeNewPeriodeInSender, setSeeNewPeriodeInSender] = useState<boolean>(false)
-  const [_seeNewReasonToComing, setSeeNewReasonToComing] = useState<boolean>(false)
-
-  const [_currentMedlemsperiodeStartDato, setCurrentMedlemsperiodeStartDato] = useState<string>('')
-  const [_currentMedlemsperiodeSluttDato, setCurrentMedlemsperiodeSluttDato] = useState<string>('')
-  const [_currentDurationStayStartDato, setCurrentDurationStayStartDato] = useState<string>('')
-  const [_currentDurationStaySluttDato, setCurrentDurationStaySluttDato] = useState<string>('')
-  const [_currentDurationStaySender, setCurrentDurationStaySender] = useState<string>('')
-  const [_currentDurationStayReceiver, setCurrentDurationStayReceiver] = useState<string>('')
 
   const { t } = useTranslation()
 
@@ -120,148 +105,39 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
           validation={validation}
         />
       )}
-
-      {(_arbeidsforhold === 'arbeidsforhold-1' || _arbeidsforhold === 'arbeidsforhold-2') && (
-        <>
-          <VerticalSeparatorDiv data-size='2' />
-          <Undertittel>
-            {t('ui:label-periode-in-sender')}
-          </Undertittel>
-          <VerticalSeparatorDiv />
-          {!_seeNewPeriodeInSender
-            ? (
-              <HighContrastFlatknapp
-                mini
-                kompakt
-                onClick={() => setSeeNewPeriodeInSender(true)}
-              >
-                <Tilsette />
-                <HorizontalSeparatorDiv data-size='0.5' />
-                {t('ui:label-add-new-periode-in-sender')}
-              </HighContrastFlatknapp>
-              )
-            : (
-              <div>
-                <UndertekstBold>
-                  {t('ui:label-medlemperiode')}
-                </UndertekstBold>
-                <VerticalSeparatorDiv />
-                <Row>
-                  <Column>
-                    <HighContrastInput
-                      data-test-id={'c-familymanager-' + personID + '-personensstatus-medlemsperiode-startdato-input'}
-                      feil={validation['person-' + personID + '-personensstatus-medlemsperiode-startdato']
-                        ? validation['person-' + personID + '-personensstatus-medlemsperiode-startdato']!.feilmelding
-                        : undefined}
-                      id={'c-familymanager-' + personID + '-personensstatus-medlemsperiode-startdato-input'}
-                      onChange={(e: any) => setCurrentMedlemsperiodeStartDato(e.target.value)}
-                      value={_currentMedlemsperiodeStartDato}
-                      label={t('ui:label-startDate')}
-                      placeholder={t('ui:placeholder-date-default')}
-                    />
-                  </Column>
-                  <Column>
-                    <HighContrastInput
-                      data-test-id={'c-familymanager-' + personID + '-personensstatus-medlemsperiode-sluttdato-input'}
-                      feil={validation['person-' + personID + '-personensstatus-medlemsperiode-sluttdato']
-                        ? validation['person-' + personID + '-personensstatus-medlemsperiode-sluttdato']!.feilmelding
-                        : undefined}
-                      id={'c-familymanager-' + personID + '-personensstatus-medlemsperiode-sluttdato-input'}
-                      onChange={(e: any) => setCurrentMedlemsperiodeSluttDato(e.target.value)}
-                      value={_currentMedlemsperiodeSluttDato}
-                      label={t('ui:label-endDate')}
-                      placeholder={t('ui:placeholder-date-default')}
-                    />
-                  </Column>
-                </Row>
-              </div>
-              )}
-
-          <VerticalSeparatorDiv data-size='2' />
-          <Undertittel>
-            {t('ui:label-reason-for-coming')}
-          </Undertittel>
-          <VerticalSeparatorDiv />
-
-          {!_seeNewReasonToComing
-            ? (
-              <HighContrastFlatknapp
-                mini
-                kompakt
-                onClick={() => setSeeNewReasonToComing(true)}
-              >
-                <Tilsette />
-                <HorizontalSeparatorDiv data-size='0.5' />
-                {t('ui:label-add-new-reason-to-coming')}
-              </HighContrastFlatknapp>
-              )
-            : (
-              <div>
-                <UndertekstBold>
-                  {t('ui:label-duration-stay')}
-                </UndertekstBold>
-                <VerticalSeparatorDiv />
-                <Row>
-                  <Column>
-                    <HighContrastInput
-                      data-test-id={'c-familymanager-' + personID + '-personensstatus-durationstay-startdato-input'}
-                      feil={validation['person-' + personID + '-personensstatus-durationstay-startdato']
-                        ? validation['person-' + personID + '-personensstatus-durationstay-startdato']!.feilmelding
-                        : undefined}
-                      id={'c-familymanager-' + personID + '-personensstatus-durationstay-startdato-input'}
-                      onChange={(e: any) => setCurrentDurationStayStartDato(e.target.value)}
-                      value={_currentDurationStayStartDato}
-                      label={t('ui:label-startDate')}
-                      placeholder={t('ui:placeholder-date-default')}
-                    />
-                  </Column>
-                  <Column>
-                    <HighContrastInput
-                      data-test-id={'c-familymanager-' + personID + '-personensstatus-durationStay-sluttdato-input'}
-                      feil={validation['person-' + personID + '-personensstatus-durationStay-sluttdato']
-                        ? validation['person-' + personID + '-personensstatus-durationStay-sluttdato']!.feilmelding
-                        : undefined}
-                      id={'c-familymanager-' + personID + '-personensstatus-durationStay-sluttdato-input'}
-                      onChange={(e: any) => setCurrentDurationStaySluttDato(e.target.value)}
-                      value={_currentDurationStaySluttDato}
-                      label={t('ui:label-endDate')}
-                      placeholder={t('ui:placeholder-date-default')}
-                    />
-                  </Column>
-                </Row>
-                <VerticalSeparatorDiv />
-                <Row>
-                  <Column>
-                    <HighContrastInput
-                      data-test-id={'c-familymanager-' + personID + '-personensstatus-durationStay-startdato-input'}
-                      feil={validation['person-' + personID + '-personensstatus-durationStay-startdato']
-                        ? validation['person-' + personID + '-personensstatus-durationStay-startdato']!.feilmelding
-                        : undefined}
-                      id={'c-familymanager-' + personID + '-personensstatus-durationStay-startdato-input'}
-                      onChange={(e: any) => setCurrentDurationStaySender(e.target.value)}
-                      value={_currentDurationStaySender}
-                      label={t('ui:label-moving-date-sender')}
-                      placeholder={t('ui:placeholder-date-default')}
-                    />
-                  </Column>
-                  <Column>
-                    <HighContrastInput
-                      data-test-id={'c-familymanager-' + personID + '-personensstatus-durationStay-sluttdato-input'}
-                      feil={validation['person-' + personID + '-personensstatus-durationStay-sluttdato']
-                        ? validation['person-' + personID + '-personensstatus-durationStay-sluttdato']!.feilmelding
-                        : undefined}
-                      id={'c-familymanager-' + personID + '-personensstatus-durationStay-sluttdato-input'}
-                      onChange={(e: any) => setCurrentDurationStayReceiver(e.target.value)}
-                      value={_currentDurationStayReceiver}
-                      label={t('ui:label-moving-date-receiver')}
-                      placeholder={t('ui:placeholder-date-default')}
-                    />
-                  </Column>
-                </Row>
-              </div>
-              )}
-        </>
+      {(_arbeidsforhold !== 'arbeidsforhold-1') && (
+        <Op2Selvstendig
+          arbeidsforholdList={arbeidsforholdList}
+          getArbeidsforholdList={getArbeidsforholdList}
+          gettingArbeidsforholdList={gettingArbeidsforholdList}
+          replySed={replySed}
+          personID={personID}
+          validation={validation}
+        />
       )}
+      {(_arbeidsforhold !== 'arbeidsforhold-1' && _arbeidsforhold !== 'arbeidsforhold-2') && (
+        <Op3Other
+          arbeidsforholdList={arbeidsforholdList}
+          getArbeidsforholdList={getArbeidsforholdList}
+          gettingArbeidsforholdList={gettingArbeidsforholdList}
+          replySed={replySed}
+          personID={personID}
+          validation={validation}
+        />
+      )}
+      <>
+        <VerticalSeparatorDiv data-size='2' />
+        <Avsenderlandet
+          personID={personID}
+          validation={validation}
+        />
+        <VerticalSeparatorDiv data-size='2' />
+        <ReasonToCome
+          personID={personID}
+          validation={validation}
+        />
+      </>
+
       {_isDirty && '*'}
     </PersonensStatusDiv>
   )
