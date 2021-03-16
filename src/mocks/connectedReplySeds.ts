@@ -9,7 +9,7 @@ export default {
         status: 'received',
         sisteOppdatert: '2020-01-01',
         replySedType: 'F002',
-        replySedDisplay: 'F002',
+        replySedDisplay: 'Description for F002',
         querySedDocumentId: '301bfea5632444b48d5f933fe0c090e7'
       }
     ]

@@ -25,7 +25,7 @@
     "test:coverage": "cross-env NODE_ENV=test react-scripts test --coverage  --watchAll=false"
   },
   "dependencies": {
-    "@sentry/browser": "^6.2.1",
+    "@sentry/browser": "^6.2.2",
     "amplitude-js": "^7.4.4",
     "classnames": "^2.2.6",
     "core-js": "^3.9.1",
@@ -36,7 +36,7 @@
     "i18next": "^19.9.2",
     "i18next-browser-languagedetector": "^6.0.1",
     "i18next-xhr-backend": "^3.2.2",
-    "js-fetch-api": "^1.0.7",
+    "js-fetch-api": "^1.0.8",
     "land-verktoy": "^1.0.6",
     "landvelger": "^1.1.9",
     "lodash": "^4.17.21",
@@ -71,12 +71,12 @@
     "nav-frontend-spinner-style": "^1.0.2",
     "nav-frontend-tabell-style": "^1.0.7",
     "nav-frontend-typografi": "^3.0.4",
-    "nav-hoykontrast": "^1.1.3",
+    "nav-hoykontrast": "^1.1.5",
     "rc-tooltip": "^5.1.0",
     "react": "^17.0.1",
     "react-collapse": "^5.1.0",
     "react-dom": "^17.0.1",
-    "react-i18next": "^11.8.9",
+    "react-i18next": "^11.8.10",
     "react-modal": "^3.12.1",
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
@@ -95,9 +95,9 @@
     "@types/history": "^4.7.8",
     "@types/jest": "^26.0.20",
     "@types/lodash": "^4.14.168",
-    "@types/react": "^17.0.2",
+    "@types/react": "^17.0.3",
     "@types/react-collapse": "^5.0.0",
-    "@types/react-dom": "^17.0.1",
+    "@types/react-dom": "^17.0.2",
     "@types/react-redux": "^7.1.16",
     "@types/react-router-dom": "^5.1.7",
     "@types/react-select": "^4.0.13",
@@ -123,7 +123,9 @@
     "typescript": "^4.1.5",
     "write-pkg": "^4.0.0"
   },
-  "resolutions": {},
+  "resolutions": {
+    "react": "^17.0.1"
+  },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
     "parserOptions": {

@@ -756,6 +756,13 @@
       ],
       "barnetilhoerigheter": [
         {
+          "borIBrukersHushold": "ja",
+          "borIEktefellesHushold": "ja",
+          "borIAnnenPersonsHushold": "ja",
+          "borPaaInstitusjon": "ja",
+          "erDeltForeldreansvar": "ja",
+          "relasjonTilPerson": "søker",
+          "relasjonType": "eget_barn",
           "periode": {
             "startdato": "2037-01-01",
             "aapenPeriodeType": "åpen_sluttdato"
@@ -776,55 +783,6 @@
         ],
         "datoFlyttetTilMottakerlandet": "2040-01-01",
         "datoFlyttetTilAvsenderlandet": "2041-01-01"
-      }
-    },
-    {
-      "personInfo": {
-        "fornavn": "Lisa",
-        "etternavn": "Simpson",
-        "kjoenn": "K",
-        "foedselsdato": "2042-01-01",
-        "statsborgerskap": [
-          {
-            "land": "DK"
-          },
-          {
-            "land": "FI"
-          }
-        ],
-        "pin": [
-          {
-            "land": "NO",
-            "sektor": "yrkesskade_og_yrkessykdom",
-            "identifikator": "10000000005",
-            "institusjonsid": "F002 barn2 institusjons ID 1",
-            "institusjonsnavn": "F002 barn2 institusjons navn 1"
-          },
-          {
-            "land": "SE",
-            "sektor": "yrkesskade_og_yrkessykdom",
-            "identifikator": "20000000005",
-            "institusjonsid": "F002 barn2 institusjons ID 2",
-            "institusjonsnavn": "F002 barn2 institusjons navn 2"
-          }
-        ],
-        "pinMangler": {
-          "etternavnVedFoedsel": "F002 barn2 etternavnVedFoedsel",
-          "fornavnVedFoedsel": "F002 barn2 fornavnVedFoedsel",
-          "foedested": {
-            "by": "F002 barn2 foedested by",
-            "region": "F002 barn2 foedested region",
-            "land": "NO"
-          },
-          "far": {
-            "fornavn": "F002 barn2 far fornavn",
-            "etternavnVedFoedsel": "F002 barn2 far etternavnVedFoedsel"
-          },
-          "mor": {
-            "fornavn": "F002 barn2 mor fornavn",
-            "etternavnVedFoedsel": "F002 barn2 mor etternavnVedFoedsel"
-          }
-        }
       },
       "ytelse": {
         "startdato": "2043-01-01",
@@ -832,7 +790,129 @@
         "beloep": "100",
         "valuta": "NOK",
         "utbetalingshyppighet": "F002 barn2 ytelse utbetalingshyppighet",
-        "ytelse": "F002 barn2 ytelse ytelse",
+        "ytelseNavn": "F002 barn2 ytelse ytelse",
+        "mottakersNavn": "F002 barn2 ytelse mottakersNavn",
+        "barnetsNavn": "F002 barn2 ytelse barnetsNavn"
+      },
+      "motregning": {
+        "startdato": "2045-01-01",
+        "sluttdato": "2046-01-01",
+        "beloep": "200",
+        "valuta": "NOK",
+        "utbetalingshyppighet": "F002 barn2 motregning utbetalingshyppighet",
+        "ytelseNavn": "F002 barn2 motregning ytelse",
+        "mottakersNavn": "F002 barn2 motregning mottakersNavn",
+        "barnetsNavn": "F002 barn2 motregning barnetsNavn",
+        "vedtaksdato": "2047-01-01",
+        "begrunnelse": "F002 barn2 motregning begrunnelse",
+        "ytterligereInfo": "F002 barn2 motregning ytterligereInfo"
+      }
+    },
+    {
+      "personInfo": {
+        "fornavn": "Lisa",
+        "etternavn": "Simpson",
+        "kjoenn": "K",
+        "foedselsdato": "2036-01-01",
+        "statsborgerskap": [
+          {
+            "land": "NO"
+          },
+          {
+            "land": "SE"
+          }
+        ],
+        "pin": [
+          {
+            "land": "NO",
+            "sektor": "yrkesskade_og_yrkessykdom",
+            "identifikator": "10000000004",
+            "institusjonsid": "F002 barn1 institusjons ID 1",
+            "institusjonsnavn": "F002 barn1 institusjons navn 1"
+          },
+          {
+            "land": "SE",
+            "sektor": "yrkesskade_og_yrkessykdom",
+            "identifikator": "20000000004",
+            "institusjonsid": "F002 barn1 institusjons ID 2",
+            "institusjonsnavn": "F002 barn1 institusjons navn 2"
+          }
+        ],
+        "pinMangler": {
+          "etternavnVedFoedsel": "F002 barn1 etternavnVedFoedsel",
+          "fornavnVedFoedsel": "F002 barn1 fornavnVedFoedsel",
+          "foedested": {
+            "by": "F002 barn1 foedested by",
+            "region": "F002 barn1 foedested region",
+            "land": "NO"
+          },
+          "far": {
+            "fornavn": "F002 barn1 far fornavn",
+            "etternavnVedFoedsel": "F002 barn1 far etternavnVedFoedsel"
+          },
+          "mor": {
+            "fornavn": "F002 barn1 mor fornavn",
+            "etternavnVedFoedsel": "F002 barn1 mor etternavnVedFoedsel"
+          }
+        }
+      },
+      "adresser": [
+        {
+          "type": "bosted",
+          "gate": "F002 barn1 adresse1 gate",
+          "postnummer": "F002 barn1 adresse1 postnummer",
+          "by": "F002 barn1 adresse1 by",
+          "land": "NO",
+          "bygning": "F002 barn1 adresse1 bygning",
+          "region": "F002 barn1 adresse1 region"
+        },
+        {
+          "type": "opphold",
+          "gate": "F002 barn1 adresse2 gate",
+          "postnummer": "F002 barn1 adresse2 postnummer",
+          "by": "F002 barn1 adresse2 by",
+          "land": "NO",
+          "bygning": "F002 barn1 adresse2 bygning",
+          "region": "F002 barn1 adresse2 region"
+        }
+      ],
+      "barnetilhoerigheter": [
+        {
+          "borIBrukersHushold": "ja",
+          "borIEktefellesHushold": "ja",
+          "borIAnnenPersonsHushold": "ja",
+          "borPaaInstitusjon": "ja",
+          "erDeltForeldreansvar": "ja",
+          "relasjonTilPerson": "søker",
+          "relasjonType": "eget_barn",
+          "periode": {
+            "startdato": "2037-01-01",
+            "aapenPeriodeType": "åpen_sluttdato"
+          }
+        }
+      ],
+      "flyttegrunn": {
+        "personligSituasjon": "F002 barn1 personligSituasjon",
+        "perioder": [
+          {
+            "startdato": "2038-01-01",
+            "sluttdato": "2038-12-31"
+          },
+          {
+            "startdato": "2039-01-01",
+            "aapenPeriodeType": "åpen_sluttdato"
+          }
+        ],
+        "datoFlyttetTilMottakerlandet": "2040-01-01",
+        "datoFlyttetTilAvsenderlandet": "2041-01-01"
+      },
+      "ytelse": {
+        "startdato": "2043-01-01",
+        "sluttdato": "2044-01-01",
+        "beloep": "100",
+        "valuta": "NOK",
+        "utbetalingshyppighet": "F002 barn2 ytelse utbetalingshyppighet",
+        "ytelseNavn": "F002 barn2 ytelse ytelse",
         "mottakersNavn": "F002 barn2 ytelse mottakersNavn",
         "barnetsNavn": "F002 barn2 ytelse barnetsNavn"
       },
@@ -859,7 +939,10 @@
         "beloep": "300",
         "valuta": "NOK",
         "mottakersNavn": "F002 barn2 familie ytelser mottakersNavn 1",
-        "antallpersoner": "1"
+        "antallpersoner": "1",
+        "utbetalingshyppighet": "år",
+        "ytelseNavn": "betegnelse ytelse",
+        "mottakersNavn": "mottakers navn2"
       },
       {
         "startdato": "2050-01-01",
@@ -867,27 +950,38 @@
         "beloep": "400",
         "valuta": "NOK",
         "mottakersNavn": "F002 barn2 familie ytelser mottakersNavn 2",
-        "antallpersoner": "2"
+        "antallpersoner": "2",
+        "utbetalingshyppighet": "år",
+        "ytelseNavn": "betegnelse ytelse",
+        "mottakersNavn": "mottakers navn2"
       }
     ],
     "motregninger": [
       {
+        "antallPersoner": "3",
         "startdato": "2052-01-01",
         "sluttdato": "2053-01-01",
         "beloep": "500",
         "valuta": "NOK",
+        "utbetalingshyppighet": "år",
+        "ytelseNavn": "ytelse navn",
         "mottakersNavn": "F002 barn2 familie motregninger mottakersNavn 1",
         "vedtaksdato": "2054-01-01",
-        "begrunnelse": "F002 barn2 familie motregninger begrunnelse 1"
+        "begrunnelse": "F002 barn2 familie motregninger begrunnelse 1",
+        "ytterligereInfo": "ytterligere"
       },
       {
+        "antallPersoner": "3",
         "startdato": "2055-01-01",
         "sluttdato": "2056-01-01",
         "beloep": "600",
         "valuta": "NOK",
+        "utbetalingshyppighet": "år",
+        "ytelseNavn": "ytelse navn",
         "mottakersNavn": "F002 barn2 familie motregninger mottakersNavn 2",
         "vedtaksdato": "2057-01-01",
-        "begrunnelse": "F002 barn2 familie motregninger begrunnelse 2"
+        "begrunnelse": "F002 barn2 familie motregninger begrunnelse 2",
+        "ytterligereInfo": "ytterligere"
       }
     ]
   },
@@ -902,7 +996,9 @@
     }
   ],
   "formaal": [
-    "F002 formaal 1"
+    "mottak_av_søknad_om_familieytelser",
+    "informasjon_om_endrede_forhold",
+    "vedtak"
   ],
   "krav": {
     "kravMottattDato": "2059-01-01",
@@ -914,7 +1010,9 @@
     "id": "F002 utbetalingTilInstitusjon id",
     "navn": "F002 utbetalingTilInstitusjon navn",
     "kontoOrdinaer": {
-      "swift": "F002 kontoOrdinaer swift",
+      "bankensNavn": "bank",
+      "kontonummer": "F002 kontoSepa iban",
+      "swift": "F002 kontoSepa swift",
       "adresse": {
         "gate": "F002 kontoOrdinaer gate",
         "postnummer": "F002 kontoOrdinaer postnummer",
@@ -923,10 +1021,6 @@
         "bygning": "F002 kontoOrdinaer bygning",
         "region": "F002 kontoOrdinaer region"
       }
-    },
-    "kontoSepa": {
-      "iban": "F002 kontoSepa iban",
-      "swift": "F002 kontoSepa swift"
     },
     "begrunnelse": "F002 kontoSepa begrunnelse"
   },

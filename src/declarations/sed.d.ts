@@ -147,7 +147,7 @@ export interface Utbetaling {
   utbetalingshyppighet?: string
   valuta: string
   vedtaksdato?: string
-  ytelse?: string
+  ytelseNavn?: string
   ytterligereInfo?: string
 }
 
@@ -174,6 +174,7 @@ export interface USed extends BaseReplySed {
 
 export interface FSed extends BaseReplySed {
   anmodningsperioder: Array<Periode>
+  formaal: Array<string>
 }
 
 export interface F002Sed extends FSed {
@@ -181,6 +182,13 @@ export interface F002Sed extends FSed {
   barn: Array<{
     adresser?: Array<Adresse>
     barnetilhoerigheter?: Array<{
+      borIBrukersHushold: string
+      borIEktefellesHushold: string
+      borIAnnenPersonsHushold: string
+      borPaaInstitusjon: string
+      erDeltForeldreansvar: string
+      relasjonTilPerson: string
+      relasjonType: string
       periode: Periode
     }>
     flyttegrunn?: Flyttegrunn
@@ -194,7 +202,6 @@ export interface F002Sed extends FSed {
     motregninger: Array<Utbetaling>
     ytelser: Array<Utbetaling>
   }
-  formaal: Array<string>
   krav: {
     infoPresisering: string
     infoType: string
@@ -204,15 +211,13 @@ export interface F002Sed extends FSed {
   utbetalingTilInstitusjon: {
     begrunnelse: string
     id: string
+    navn: string
     kontoOrdinaer: {
+      bankensNavn: string
+      kontonummer: string
       adresse: Adresse
       swift: string
     }
-    kontoSepa: {
-      iban: string
-      swift: string
-    }
-    navn: string
   }
 }
 

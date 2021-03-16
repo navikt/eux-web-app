@@ -5,14 +5,12 @@ import { SideBar } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { State } from 'declarations/reducers'
-import { Systemtittel } from 'nav-frontend-typografi'
-import { Container, Content, fadeIn, fadeOut, Margin, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { Container, Content, fadeIn, fadeOut, Margin } from 'nav-hoykontrast'
 import SEDDetails from 'pages/SvarPaSed/SEDDetails'
 import Step1 from 'pages/SvarPaSed/Step1'
 import Step2 from 'pages/SvarPaSed/Step2'
 import PT from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 
@@ -125,7 +123,6 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
 }: SvarPaSedPageProps): JSX.Element => {
   const dispatch = useDispatch()
   const { highContrast } = useSelector<State, any>(mapState)
-  const { t } = useTranslation()
   const [_mounted, setMounted] = useState<boolean>(!waitForMount)
   const [positionA, setPositionA] = useState<Slide>(Slide.LEFT)
   const [positionB, setPositionB] = useState<Slide>(Slide.RIGHT)
@@ -231,29 +228,22 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
       <Container>
         <Margin />
         <Content>
-          <Systemtittel>
-            {t('ui:title-svarpased')}
-          </Systemtittel>
-          <VerticalSeparatorDiv data-size='2' />
-          <div>
-            <VerticalSeparatorDiv />
-            <ContainerDiv className={classNames({ shrink: animating })}>
-              <WindowDiv>
-                <AnimatableDiv
-                  key='animatableDivA'
-                  className={classNames(cls(positionA))}
-                >
-                  {contentA}
-                </AnimatableDiv>
-                <AnimatableDiv
-                  key='animatableDivB'
-                  className={classNames(cls(positionB))}
-                >
-                  {contentB}
-                </AnimatableDiv>
-              </WindowDiv>
-            </ContainerDiv>
-          </div>
+          <ContainerDiv className={classNames({ shrink: animating })}>
+            <WindowDiv>
+              <AnimatableDiv
+                key='animatableDivA'
+                className={classNames(cls(positionA))}
+              >
+                {contentA}
+              </AnimatableDiv>
+              <AnimatableDiv
+                key='animatableDivB'
+                className={classNames(cls(positionB))}
+              >
+                {contentB}
+              </AnimatableDiv>
+            </WindowDiv>
+          </ContainerDiv>
         </Content>
         <SideBar>
           <SEDDetails highContrast={highContrast} />

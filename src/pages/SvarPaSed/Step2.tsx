@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import Alert from 'components/Alert/Alert'
 import FamilyManager from 'components/FamilyManager/FamilyManager'
 import Inntekt from 'components/Inntekt/Inntekt'
-import Purpose from 'components/Purpose/Purpose'
+import Formaal from 'components/Formaal/Formaal'
 import * as types from 'constants/actionTypes'
 import { AlertStatus } from 'declarations/components'
 import { State } from 'declarations/reducers'
@@ -119,7 +119,6 @@ const Step2: React.FC<SvarPaSedProps> = ({
   }: any = useSelector<State, any>(mapState)
 
   const [_comment, setComment] = useState<string>('')
-  const [_purpose, setPurpose] = useState<Array<string>>([])
 
   const fnr = _.find(replySed?.bruker?.personInfo.pin, p => p.land === 'NO')?.fnr
 
@@ -135,7 +134,6 @@ const Step2: React.FC<SvarPaSedProps> = ({
     if (replySed) {
       const newValidation = validate({
         comment: _comment,
-        purpose: _purpose,
         t: t,
         replySed: replySed
       })
@@ -193,18 +191,18 @@ const Step2: React.FC<SvarPaSedProps> = ({
       </FlexDiv>
       <VerticalSeparatorDiv />
       <Row>
-        <Column style={{ flex: 2 }}>
+        <Column>
           <Systemtittel>
             {replySed ? replySed.replySedType + ' - ' + replySed.replySedDisplay : ''}
           </Systemtittel>
           <VerticalSeparatorDiv />
-          <Purpose
-            initialPurposes={_purpose}
-            onPurposeChange={(p => setPurpose(p))}
+          <Formaal
+            feil={validation.formaal}
+            replySed={replySed}
             highContrast={highContrast}
-            feil={validation.purpose}
           />
         </Column>
+        <Column/>
       </Row>
       <VerticalSeparatorDiv data-size='2' />
       {showFamily() && (

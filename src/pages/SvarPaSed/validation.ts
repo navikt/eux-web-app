@@ -23,12 +23,14 @@ export const validate = (options: any): Validation => {
   const t = options.t
   // Step 2 form
 
-  v.purpose = !_.isEmpty(options.purpose)
-    ? undefined
-    : {
-      feilmelding: t('ui:validation-noPurpose'),
-      skjemaelementId: 'c-purpose-select'
-    } as FeiloppsummeringFeil
+  if (options.replySed.sedType.startsWith('F')) {
+    v.formaal = !_.isEmpty(options.replySed.formaal)
+      ? undefined
+      : {
+        feilmelding: t('ui:validation-noFormaal'),
+        skjemaelementId: 'svarpased-formaal-select'
+      } as FeiloppsummeringFeil
+  }
 
   v.comment = options.comment
     ? undefined
