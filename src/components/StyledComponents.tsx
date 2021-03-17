@@ -22,7 +22,7 @@ export const FadingLineSeparator = styled.div`
 `
 export const SideBarDiv = styled.div`
   display: flex;
-  min-width: 21.5rem;
+  flex: 0 0 21.5rem;
 `
 export const HiddenFormContainer = styled.div`
   overflow: hidden;

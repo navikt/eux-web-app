@@ -109,7 +109,7 @@ const RightDiv = styled.div`
   border-left: 1px solid ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
   margin-left: -1px;
   align-self: flex-start;
-  min-width: 400px;
+  min-width: 200px;
 `
 const RightFlexCenterDiv = styled.div`
   text-align: center;

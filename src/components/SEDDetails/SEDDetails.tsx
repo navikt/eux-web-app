@@ -23,6 +23,7 @@ const SEDDetails = ({ replySed }: SEDDetailsProps) => {
   const { t } = useTranslation()
   const [isEditing, setIsEditing ] = useState<boolean>(false)
 
+  const toggleEditing = () => setIsEditing(!isEditing)
   if (!replySed) {
     return <div/>
   }
@@ -33,14 +34,11 @@ const SEDDetails = ({ replySed }: SEDDetailsProps) => {
         <Undertittel>
         {t('ui:label-rinasaksnummer') + ': ' + replySed.saksnummer}
         </Undertittel>
-        <EditIcon onClick={() => setIsEditing(!isEditing)}/>
+        <EditIcon onClick={toggleEditing}/>
       </FlexDiv>
       <VerticalSeparatorDiv />
-      {isEditing ? (
-        <SEDDetailsEdit replySed={replySed}/>
-      ) : (
-        <SEDDetailsView replySed={replySed}/>
-      )}
+      {isEditing ? <SEDDetailsEdit replySed={replySed} onSave={toggleEditing} onCancel={toggleEditing}/> :
+        <SEDDetailsView replySed={replySed}/>}
     </HighContrastPanel>
 
   )

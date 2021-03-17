@@ -31,7 +31,7 @@ const Formaal: React.FC<FormaalProps> = ({
   replySed
 }: FormaalProps) => {
 
-  const [_formaals, setFormaals] = useState<Array<string>>((replySed as FSed).formaal || [])
+  const [_formaals, setFormaals] = useState<Array<string>>((replySed as FSed)?.formaal || [])
   const _hasFormaal = !!(replySed as FSed).formaal
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -162,8 +162,8 @@ const Formaal: React.FC<FormaalProps> = ({
           <FlexDiv>
             <div style={{ flex: 2 }}>
               <Select
-                data-test-id='svarpased-formaal-select'
-                id='svarpased-formaal-select'
+                data-test-id='c-svarpased-formaal-select'
+                id='c-svarpased-formaal-select'
                 highContrast={highContrast}
                 value={_newFormaal}
                 onChange={onFormaalChanged}

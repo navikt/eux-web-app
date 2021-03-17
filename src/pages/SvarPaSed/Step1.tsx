@@ -21,9 +21,9 @@ import NavHighContrast, {
   HighContrastKnapp,
   HighContrastLink,
   HighContrastPanel,
+  HighContrastRadioGroup,
   HorizontalSeparatorDiv,
   RadioElementBorder,
-  RadioGroup,
   themeKeys,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
@@ -55,6 +55,7 @@ const PileLeftDiv = styled.div`
 `
 const Etikett = styled.div`
   padding: 0.35rem;
+  color:  ${({ theme }) => theme[themeKeys.MAIN_FONT_COLOR]} !important;
   background-color: ${({ theme }) => theme[themeKeys.MAIN_BACKGROUND_COLOR]};
   border-radius: 5px;
   border: 1px solid ${({ theme }) => theme[themeKeys.MAIN_BORDER_COLOR]};
@@ -196,7 +197,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
       </AlignedRow>
       <VerticalSeparatorDiv />
       {seds && (
-        <RadioGroup
+        <HighContrastRadioGroup
           legend={t('ui:label-searchResultsForSaksnummerOrFnr', {
             antall: Object.keys(seds).length,
             saksnummerOrFnr: _saksnummerOrFnr
@@ -311,7 +312,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
             )
           }
         )}
-        </RadioGroup>
+        </HighContrastRadioGroup>
       )}
       </ContainerDiv>
     </NavHighContrast>

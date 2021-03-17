@@ -50,6 +50,7 @@ const SideBar = ({ highContrast }: any) => {
           {_replySed && <SEDDetails replySed={_replySed} />}
         </HiddenSidebar>
       </div>
+      <HorizontalSeparatorDiv data-size='1.5' />
     </NavHighContrast>
   )
 }

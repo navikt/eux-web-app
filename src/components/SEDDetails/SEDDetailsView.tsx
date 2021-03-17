@@ -1,8 +1,8 @@
-import { FSed, USed } from 'declarations/sed'
-import Flag, { FlagList } from 'flagg-ikoner'
-import CountryData from 'land-verktoy'
-import { UndertekstBold } from 'nav-frontend-typografi'
-import { HorizontalSeparatorDiv, themeKeys, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { F002Sed, FSed, ReplySed, USed } from 'declarations/sed'
+import { FlagList } from 'flagg-ikoner'
+import { Normaltekst, UndertekstBold } from 'nav-frontend-typografi'
+import FilledCheckCircle from 'assets/icons/filled-version-check-circle-2'
+import { themeKeys, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -18,6 +18,8 @@ const Dt = styled.dt`
   width: 40%;
   padding-bottom: 0.25rem;
   padding-top: 0.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
   .typo-element {
     margin-left: 0.5rem;
   }
@@ -32,142 +34,95 @@ const Dl = styled.dl`
 `
 const FlexDiv = styled.div`
   display: flex;
-  justify-content: space-between;
 `
 
-const SEDDetailsView = ({
-  replySed
-}: any) => {
-  const { t } = useTranslation()
-  //const validation: Validation = {}
-  const countryData = CountryData.getCountryInstance('nb')
+export interface SEDDetailsViewProps {
+  replySed: ReplySed
+}
 
+const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
+  replySed
+}: SEDDetailsViewProps): JSX.Element => {
+  const { t } = useTranslation()
   return (
     <>
       <Dl>
         <Dt>
           {t('ui:label-periode')}:
         </Dt>
-        {(replySed as USed).anmodningsperiode && (
-          <Dd>
+        <Dd>
+          {(replySed as USed).anmodningsperiode && (
             <UndertekstBold>
               {(replySed as USed).anmodningsperiode.startdato} -
               {(replySed as USed).anmodningsperiode.sluttdato ? (replySed as USed).anmodningsperiode.sluttdato : '...'}
             </UndertekstBold>
-          </Dd>
-        )}
-        {(replySed as FSed).anmodningsperioder && (replySed as FSed).anmodningsperioder.map((p) => (
-          <Dd key={p.startdato}>
-            <UndertekstBold>
+          )}
+          {(replySed as FSed).anmodningsperioder && (replySed as FSed).anmodningsperioder.map((p) => (
+            <UndertekstBold key={p.startdato}>
               {p.startdato} - {p.sluttdato ? p.sluttdato : '...'}
             </UndertekstBold>
-          </Dd>
-        ))}
+          ))}
+        </Dd>
       </Dl>
-      <UndertekstBold>
-        {t('ui:label-userInSed')}:
-      </UndertekstBold>
+      <VerticalSeparatorDiv/>
       <Dl>
-        <Dt>{t('ui:label-name')}</Dt>
-        <Dd>{replySed.bruker.personInfo.fornavn} {replySed.bruker.personInfo.etternavn} ({replySed.bruker.personInfo.kjoenn})</Dd>
-        <Dt>{t('ui:label-birthDate')}</Dt>
-        <Dd>{replySed.bruker.personInfo.foedselsdato}</Dd>
-        <Dt>{t('ui:label-nationality')}</Dt>
+        <Dt>{t('ui:label-searcher')}</Dt>
         <Dd>
+          <span>
+            {replySed.bruker.personInfo.fornavn} {replySed.bruker.personInfo.etternavn} ({replySed.bruker.personInfo.kjoenn})
+          </span>
           <FlagList
             size='S'
             type='circle'
             items={replySed.bruker.personInfo.statsborgerskap.map((s: any) => ({ country: s.land }))}
           />
         </Dd>
-        <Dt>
-          {t('ui:label-pin')}
-        </Dt>
-        {replySed.bruker.personInfo.pin && (
-          <Dd>
-            {replySed.bruker.personInfo.pin.map((p: any) => (
-              <FlexDiv key={p.identifikator}>
-                <Flag
-                  label={countryData.findByValue(p.land)}
-                  country={p.land!}
-                  size='S'
-                  type='circle'
-                />
-                <HorizontalSeparatorDiv data-size='0.5' />
-                <div>
-                  {p.sektor} - {p.identifikator} - {p.institusjonsid} - {p.institusjonsnavn}
-                </div>
-              </FlexDiv>
-            ))}
-          </Dd>
-        )}
-        {replySed.bruker.personInfo.pinMangler && (
-          <>
-            <Dt>
-              {t('ui:label-birthPlace')}
-            </Dt>
-            <Dd>
-              <Flag
-                label={countryData.findByValue(replySed.bruker.personInfo.pinMangler.foedested.land)}
-                country={replySed.bruker.personInfo.pinMangler.foedested.land}
-                size='S'
-                type='circle'
-              />
-              <HorizontalSeparatorDiv data-size='0.5' />
-              {replySed.bruker.personInfo.pinMangler.foedested.by} - {replySed.bruker.personInfo.pinMangler.foedested.region}
-            </Dd>
-            <Dt>
-              {t('ui:label-father')}
-            </Dt>
-            <Dd>
-              {replySed.bruker.personInfo.pinMangler.far.fornavn} {replySed.bruker.personInfo.pinMangler.far.etternavnVedFoedsel}
-            </Dd>
-            <Dt>
-              {t('ui:label-mother')}
-            </Dt>
-            <Dd>
-              {replySed.bruker.personInfo.pinMangler.mor.fornavn} {replySed.bruker.personInfo.pinMangler.mor.etternavnVedFoedsel}
-            </Dd>
-            <Dt>
-              {t('ui:label-nameatbirth')}
-            </Dt>
-            <Dd>
-              {replySed.bruker.personInfo.pinMangler.fornavnVedFoedsel} {replySed.bruker.personInfo.pinMangler.etternavnVedFoedsel}
-            </Dd>
-          </>
-        )}
+        <Dt>{t('ui:relationship-ektefelle')}</Dt>
+        <Dd>
+           <span>
+             {(replySed as F002Sed).ektefelle ? (replySed as F002Sed).ektefelle.personInfo.fornavn + ' '  +
+               (replySed as F002Sed).ektefelle.personInfo.etternavn +
+            ' (' + (replySed as F002Sed).ektefelle.personInfo.kjoenn + ')' : '-'}
+           </span>
+          <FlagList
+            size='S'
+            type='circle'
+            items={(replySed as F002Sed).ektefelle.personInfo.statsborgerskap.map((s: any) => ({ country: s.land }))}
+          />
+        </Dd>
       </Dl>
-
       <VerticalSeparatorDiv />
-      <UndertekstBold>
-        {t('ui:label-local-sakId')}:
-      </UndertekstBold>
       <Dl>
-        {(replySed as USed).lokaleSakIder && (replySed as USed).lokaleSakIder.map(s => (
-          <div key={s.saksnummer}>
-            <Dt>
-              {t('ui:label-saksnummer')}
-            </Dt>
-            <Dd>
-              {s.saksnummer}
-            </Dd>
-            <Dt>
-              {t('ui:label-institusjon')}
-            </Dt>
-            <Dd>
-
-              <Flag
-                label={countryData.findByValue(s.land)}
-                country={s.land}
-                size='S'
-                type='circle'
-              />
-              <HorizontalSeparatorDiv data-size='0.5' />
-              {s.institusjonsnavn} - {s.institusjonsid}
-            </Dd>
-          </div>
-        ))}
+        <Dt>
+          {t('ui:label-caseOwner')}
+        </Dt>
+        <Dd>
+          ?
+        </Dd>
+        <Dt>
+          {t('ui:label-sender')}
+        </Dt>
+        <Dd>
+          ?
+        </Dd>
       </Dl>
+      <VerticalSeparatorDiv />
+      <Dl>
+        <Dt>
+          {t('ui:label-typeKrav')}
+        </Dt>
+        <Dd>
+          {t('ui:kravType-' + (replySed as F002Sed).krav.kravType)}
+        </Dd>
+      </Dl>
+      <VerticalSeparatorDiv />
+      <FlexDiv>
+        <FilledCheckCircle color='green' width={18} height={18}/>
+        <HorizontalSeparatorDiv data-size='0.5'/>
+        <Normaltekst>
+          {t('ui:info-confirm-information')}
+        </Normaltekst>
+      </FlexDiv>
     </>
   )
 }

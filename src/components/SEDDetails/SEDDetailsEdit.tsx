@@ -1,195 +1,301 @@
-import { FSed, USed } from 'declarations/sed'
-import Flag, { FlagList } from 'flagg-ikoner'
-import CountryData from 'land-verktoy'
+//import { setReplySed } from 'actions/svarpased'
+import { setReplySed } from 'actions/svarpased'
+import { F002Sed, FSed, Periode, ReplySed, USed } from 'declarations/sed'
+import { Validation } from 'declarations/types'
+import _ from 'lodash'
 import { UndertekstBold } from 'nav-frontend-typografi'
-import { HorizontalSeparatorDiv, themeKeys, VerticalSeparatorDiv } from 'nav-hoykontrast'
-import React from 'react'
+import {
+  HighContrastHovedknapp,
+  HighContrastInput,
+  HighContrastKnapp,
+  HighContrastRadio,
+  HighContrastRadioGroup,
+  HorizontalSeparatorDiv,
+  VerticalSeparatorDiv
+} from 'nav-hoykontrast'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 
-const Dd = styled.dd`
-  width: 60%;
-  padding-bottom: 0.25rem;
-  padding-top: 0.25rem;
-  margin-bottom: 0;
-  margin-inline-start: 0;
-`
-const Dt = styled.dt`
-  width: 40%;
-  padding-bottom: 0.25rem;
-  padding-top: 0.25rem;
-  .typo-element {
-    margin-left: 0.5rem;
-  }
-`
-const Dl = styled.dl`
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  .odd {
-    background-color: ${({ theme }) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
-  }
-`
 const FlexDiv = styled.div`
   display: flex;
-  justify-content: space-between;
 `
 
-const SEDDetailsEdit = ({
-                        replySed
-                      }: any) => {
-  const { t } = useTranslation()
-  //const validation: Validation = {}
-  const countryData = CountryData.getCountryInstance('nb')
+export interface SEDDetailsEditProps {
+  replySed: ReplySed
+  onCancel: () => void
+  onSave: () => void
+}
 
-  /*
+const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
+ replySed,
+ onCancel,
+ onSave = () => {}
+}: SEDDetailsEditProps): JSX.Element => {
+  const { t } = useTranslation()
+  const validation: Validation = {}
+  const dispatch = useDispatch()
+
+  const [_anmodningsperiode, setAnmodningsperiode] = useState<Periode>((replySed as USed).anmodningsperiode)
+  const [_anmodningsperioder, setAnmodningsperioder] = useState<Array<Periode>>((replySed as FSed).anmodningsperioder)
+
+  const [_brukerFornavn, setBrukerFornavn] = useState<string>(replySed.bruker.personInfo.fornavn)
+  const [_brukerEtternavn, setBrukerEtternavn] = useState<string>(replySed.bruker.personInfo.etternavn)
+  const [_ektefelleFornavn, setEktefelleFornavn] = useState<string>((replySed as F002Sed).ektefelle?.personInfo.fornavn)
+  const [_ektefelleEtternavn, setEktefelleEtternavn] = useState<string>((replySed as F002Sed).ektefelle?.personInfo.etternavn)
+
+  const [_sakseier, setSakseier] = useState<string>('')
+  const [_avsenderinstitusjon, setAvsenderinstitusjon] = useState<string>('')
+  const [_typeKrav, setTypeKrav] = useState<string>((replySed as F002Sed).krav.kravType)
+  const [_informasjon, setInformasjon] = useState<string>((replySed as F002Sed).krav.kravType)
+
   const setAnmodningsperiodeStartDato = (e: string) => {
-    onValueChanged('anmodningsperiode.startdato', e)
+    setAnmodningsperiode({
+      ..._anmodningsperiode,
+      startdato: e
+    })
   }
   const setAnmodningsperiodeSluttDato = (e: string) => {
-    onValueChanged('anmodningsperiode.sluttdato', e)
+    setAnmodningsperiode({
+      ..._anmodningsperiode,
+      sluttdato: e
+    })
+  }
+  const setAnmodningsperioderStartDato = (e: string, i: number) => {
+    const newAnmodningsperioder = _.cloneDeep(_anmodningsperioder)
+    newAnmodningsperioder[i].startdato = e
+    setAnmodningsperioder(newAnmodningsperioder)
   }
 
-  const setAnmodningsperioderStartDato = (e: string, i: number) => {
-    onValueChanged(`anmodningsperioder[${i}].startdato`, e)
-  }
   const setAnmodningsperioderSluttDato = (e: string, i: number) => {
-    onValueChanged(`anmodningsperioder[${i}].sluttdato`, e)
+    const newAnmodningsperioder = _.cloneDeep(_anmodningsperioder)
+    newAnmodningsperioder[i].sluttdato = e
+    setAnmodningsperioder(newAnmodningsperioder)
   }
-  const onValueChanged = (needleString: string | Array<string>, value: any) => {
+
+  const saveChanges = () => {
     const newReplySed = _.cloneDeep(replySed)
-    _.set(newReplySed, needleString, value)
+    newReplySed.bruker.personInfo.fornavn = _brukerFornavn
     dispatch(setReplySed(newReplySed))
+    onSave()
   }
-*/
+
   return (
     <>
-      <Dl>
-        <Dt>
-          {t('ui:label-periode')}:
-        </Dt>
-        {(replySed as USed).anmodningsperiode && (
-          <Dd>
-            <UndertekstBold>
-              {(replySed as USed).anmodningsperiode.startdato} -
-              {(replySed as USed).anmodningsperiode.sluttdato ? (replySed as USed).anmodningsperiode.sluttdato : '...'}
-            </UndertekstBold>
-          </Dd>
-        )}
-        {(replySed as FSed).anmodningsperioder && (replySed as FSed).anmodningsperioder.map((p) => (
-          <Dd key={p.startdato}>
-            <UndertekstBold>
-              {p.startdato} - {p.sluttdato ? p.sluttdato : '...'}
-            </UndertekstBold>
-          </Dd>
-        ))}
-      </Dl>
       <UndertekstBold>
-        {t('ui:label-userInSed')}:
+        {t('ui:label-periode')}:
       </UndertekstBold>
-      <Dl>
-        <Dt>{t('ui:label-name')}</Dt>
-        <Dd>{replySed.bruker.personInfo.fornavn} {replySed.bruker.personInfo.etternavn} ({replySed.bruker.personInfo.kjoenn})</Dd>
-        <Dt>{t('ui:label-birthDate')}</Dt>
-        <Dd>{replySed.bruker.personInfo.foedselsdato}</Dd>
-        <Dt>{t('ui:label-nationality')}</Dt>
-        <Dd>
-          <FlagList
-            size='S'
-            type='circle'
-            items={replySed.bruker.personInfo.statsborgerskap.map((s: any) => ({ country: s.land }))}
-          />
-        </Dd>
-        <Dt>
-          {t('ui:label-pin')}
-        </Dt>
-        {replySed.bruker.personInfo.pin && (
-          <Dd>
-            {replySed.bruker.personInfo.pin.map((p: any) => (
-              <FlexDiv key={p.identifikator}>
-                <Flag
-                  label={countryData.findByValue(p.land)}
-                  country={p.land!}
-                  size='S'
-                  type='circle'
-                />
-                <HorizontalSeparatorDiv data-size='0.5' />
-                <div>
-                  {p.sektor} - {p.identifikator} - {p.institusjonsid} - {p.institusjonsnavn}
-                </div>
-              </FlexDiv>
-            ))}
-          </Dd>
-        )}
-        {replySed.bruker.personInfo.pinMangler && (
-          <>
-            <Dt>
-              {t('ui:label-birthPlace')}
-            </Dt>
-            <Dd>
-              <Flag
-                label={countryData.findByValue(replySed.bruker.personInfo.pinMangler.foedested.land)}
-                country={replySed.bruker.personInfo.pinMangler.foedested.land}
-                size='S'
-                type='circle'
-              />
-              <HorizontalSeparatorDiv data-size='0.5' />
-              {replySed.bruker.personInfo.pinMangler.foedested.by} - {replySed.bruker.personInfo.pinMangler.foedested.region}
-            </Dd>
-            <Dt>
-              {t('ui:label-father')}
-            </Dt>
-            <Dd>
-              {replySed.bruker.personInfo.pinMangler.far.fornavn} {replySed.bruker.personInfo.pinMangler.far.etternavnVedFoedsel}
-            </Dd>
-            <Dt>
-              {t('ui:label-mother')}
-            </Dt>
-            <Dd>
-              {replySed.bruker.personInfo.pinMangler.mor.fornavn} {replySed.bruker.personInfo.pinMangler.mor.etternavnVedFoedsel}
-            </Dd>
-            <Dt>
-              {t('ui:label-nameatbirth')}
-            </Dt>
-            <Dd>
-              {replySed.bruker.personInfo.pinMangler.fornavnVedFoedsel} {replySed.bruker.personInfo.pinMangler.etternavnVedFoedsel}
-            </Dd>
-          </>
-        )}
-      </Dl>
-
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv data-size='0.5'/>
+      {_anmodningsperiode && (
+        <>
+          <FlexDiv className='slideAnimate'>
+            <HighContrastInput
+              data-test-id={'c-seddetails-anmodningsperiode-startdato-input'}
+              feil={validation['seddetails-anmodningsperiode-startdato']
+                ? validation['seddetails-anmodningsperiode-startdato']!.feilmelding
+                : undefined}
+              id={'c-seddetails-anmodningsperiode-startdato-input'}
+              onChange={(e: any) => setAnmodningsperiodeStartDato(e.target.value)}
+              value={_anmodningsperiode.startdato}
+              placeholder={t('ui:placeholder-date-default')}
+            />
+          <HorizontalSeparatorDiv data-size='0.35'/>
+            <HighContrastInput
+              data-test-id={'c-seddetails-anmodningsperiode-sluttdato-input'}
+              feil={validation['seddetails-anmodningsperiode-sluttdato']
+                ? validation['seddetails-anmodningsperiode-sluttdato']!.feilmelding
+                : undefined}
+              id={'c-seddetails-anmodningsperiode-sluttdato-input'}
+              onChange={(e: any) => setAnmodningsperiodeSluttDato(e.target.value)}
+              value={_anmodningsperiode.sluttdato}
+              placeholder={t('ui:placeholder-date-default')}
+            />
+          </FlexDiv>
+          <VerticalSeparatorDiv data-size='0.5'/>
+        </>
+      )}
+      {_anmodningsperioder && _anmodningsperioder.map((p, i) => (
+        <>
+          <FlexDiv className='slideAnimate' style={{animationDelay: i * 0.1 + 's'}}>
+            <HighContrastInput
+              data-test-id={'c-seddetails-anmodningsperioder[' + i + ']-startdato-input'}
+              feil={validation['seddetails--anmodningsperioder[' + i + ']-startdato']
+                ? validation['seddetails--anmodningsperioder[' + i + ']-startdato']!.feilmelding
+                : undefined}
+              id={'c-seddetails-anmodningsperioder[' + i + ']-startdato-input'}
+              onChange={(e: any) => setAnmodningsperioderStartDato(e.target.value, i)}
+              value={_anmodningsperioder[i].startdato}
+              placeholder={t('ui:placeholder-date-default')}
+            />
+            <HorizontalSeparatorDiv data-size='0.35'/>
+            <HighContrastInput
+              data-test-id={'c-seddetails-anmodningsperioder[' + i + ']-sluttdato-input'}
+              feil={validation['seddetails-anmodningsperioder[' + i + ']-sluttdato']
+                ? validation['seddetails-anmodningsperioder[' + i + ']-sluttdato']!.feilmelding
+                : undefined}
+              id={'c-seddetails-anmodningsperioder[' + i + ']-sluttdato-input'}
+              onChange={(e: any) => setAnmodningsperioderSluttDato(e.target.value, i)}
+              value={_anmodningsperioder[i].sluttdato}
+              placeholder={t('ui:placeholder-date-default')}
+            />
+          </FlexDiv>
+          <VerticalSeparatorDiv data-size='0.5'/>
+        </>
+      ))}
+      <VerticalSeparatorDiv/>
       <UndertekstBold>
-        {t('ui:label-local-sakId')}:
+        {t('ui:label-searcher')}
       </UndertekstBold>
-      <Dl>
-        {(replySed as USed).lokaleSakIder && (replySed as USed).lokaleSakIder.map(s => (
-          <div key={s.saksnummer}>
-            <Dt>
-              {t('ui:label-saksnummer')}
-            </Dt>
-            <Dd>
-              {s.saksnummer}
-            </Dd>
-            <Dt>
-              {t('ui:label-institusjon')}
-            </Dt>
-            <Dd>
+      <VerticalSeparatorDiv data-size='0.5'/>
+      <FlexDiv className='slideAnimate' style={{animationDelay: '0.2s'}}>
+        <HighContrastInput
+          data-test-id={'c-seddetails-søker-fornavn-input'}
+          feil={validation['seddetails-søker-fornavn']
+            ? validation['seddetails-søker-fornavn']!.feilmelding
+            : undefined}
+          id={'c-seddetails-søker-fornavn-input'}
+          onChange={(e: any) => setBrukerFornavn(e.target.value)}
+          value={_brukerFornavn}
+          placeholder={t('ui:label-firstname')}
+        />
+        <HorizontalSeparatorDiv data-size='0.35'/>
+        <HighContrastInput
+          data-test-id={'c-seddetails-søker-etternavn-input'}
+          feil={validation['seddetails-søker-etternavn']
+            ? validation['seddetails-søker-etternavn']!.feilmelding
+            : undefined}
+          id={'c-seddetails-søker-etternavn-input'}
+          onChange={(e: any) => setBrukerEtternavn(e.target.value)}
+          value={_brukerEtternavn}
+          placeholder={t('ui:label-lastname')}
+        />
+      </FlexDiv>
+      <VerticalSeparatorDiv/>
+      <UndertekstBold>
+        {t('ui:relationship-ektefelle')}
+      </UndertekstBold>
+      <VerticalSeparatorDiv data-size='0.5'/>
+      <FlexDiv className='slideAnimate' style={{animationDelay: '0.3s'}}>
+        <HighContrastInput
+          data-test-id={'c-seddetails-ektefelle-fornavn-input'}
+          feil={validation['seddetails-ektefelle-fornavn']
+            ? validation['seddetails-ektefelle-fornavn']!.feilmelding
+            : undefined}
+          id={'c-seddetails-ektefelle-fornavn-input'}
+          onChange={(e: any) => setEktefelleFornavn(e.target.value)}
+          value={_ektefelleFornavn}
+          placeholder={t('ui:label-firstname')}
+        />
+        <HorizontalSeparatorDiv data-size='0.35'/>
+        <HighContrastInput
+          data-test-id={'c-seddetails-ektefelle-etternavn-input'}
+          feil={validation['seddetails-ektefelle-etternavn']
+            ? validation['seddetails-ektefelle-etternavn']!.feilmelding
+            : undefined}
+          id={'c-seddetails-ektefelle-etternavn-input'}
+          onChange={(e: any) => setEktefelleEtternavn(e.target.value)}
+          value={_ektefelleEtternavn}
+          placeholder={t('ui:label-lastname')}
+        />
+      </FlexDiv>
+      <VerticalSeparatorDiv/>
+      <div className='slideAnimate' style={{animationDelay: '0.4s'}}>
+        <HighContrastInput
+          data-test-id={'c-seddetails-sakseier-input'}
+          feil={validation['seddetails-sakseier']
+            ? validation['seddetails-sakseier']!.feilmelding
+            : undefined}
+          id={'c-seddetails-sakseier-input'}
+          onChange={(e: any) => setSakseier(e.target.value)}
+          value={_sakseier}
+          label={t('ui:label-caseOwner')}
+          placeholder={t('ui:placeholder-input-default')}
+        />
+      </div>
+      <VerticalSeparatorDiv data-size='0.5'/>
+      <div className='slideAnimate' style={{animationDelay: '0.5s'}}>
+        <HighContrastInput
+          data-test-id={'c-seddetails-avsenderinstitusjon-input'}
+          feil={validation['seddetails-avsenderinstitusjon']
+            ? validation['seddetails-avsenderinstitusjon']!.feilmelding
+            : undefined}
+          id={'c-seddetails-avsenderinstitusjon-input'}
+          onChange={(e: any) => setAvsenderinstitusjon(e.target.value)}
+          value={_avsenderinstitusjon}
+          label={t('ui:label-sender')}
+          placeholder={t('ui:placeholder-input-default')}
+        />
+      </div>
+      <VerticalSeparatorDiv/>
+      <div className='slideAnimate' style={{animationDelay: '0.6s'}}>
+        <HighContrastRadioGroup
+        legend={t('ui:label-typeKrav')}
+        data-test-id={'c-seddetails-typeKrav-radiogroup'}
+        feil={validation['seddetails-typeKrav']
+          ? validation['seddetails-typeKrav']!.feilmelding
+          : undefined}
+        id={'c-seddetails-typeKrav-radiogroup'}
+      >
+        <HighContrastRadio
+          name={'c-seddetails-typeKrav-radiogroup'}
+          checked={_typeKrav === 'nytt_krav'}
+          label={t('ui:kravType-nytt_krav')}
+          onClick={() => setTypeKrav('nytt_krav')}
+        />
+        <HighContrastRadio
+          checked={_typeKrav === 'endrete_omstendigheter'}
+          name={'c-seddetails-typeKrav-radiogroup'}
+          label={t('ui:kravType-endrete_omstendigheter')}
+          onClick={() => setTypeKrav('endrete_omstendigheter')}
+        />
+      </HighContrastRadioGroup>
+      </div>
+      <VerticalSeparatorDiv/>
+      <div className='slideAnimate' style={{animationDelay: '0.7s'}}>
+      <HighContrastRadioGroup
+        legend={t('ui:label-application-information')}
+        data-test-id={'c-seddetails-informasjon-radiogroup'}
+        feil={validation['seddetails-informasjon']
+          ? validation['seddetails-informasjon']!.feilmelding
+          : undefined}
+        id={'c-seddetails-informasjon-radiogroup'}
+      >
+        <HighContrastRadio
+          name={'c-seddetails-informasjon-radiogroup'}
+          checked={_informasjon === 'vi_bekrefter_leverte_opplysninger'}
+          label={t('ui:info-confirm-information')}
+          onClick={() => setInformasjon('vi_bekrefter_leverte_opplysninger')}
+        />
+        <HighContrastRadio
+          checked={_informasjon === 'gi_oss_punktvise_opplysninger'}
+          name={'c-seddetails-informasjon-radiogroup'}
+          label={t('ui:info-point-information')}
+          onClick={() => setInformasjon('gi_oss_punktvise_opplysninger')}
+        />
+      </HighContrastRadioGroup>
+      </div>
+      <VerticalSeparatorDiv/>
+      <div className='slideAnimate' style={{animationDelay: '0.8s'}}>
+        <HighContrastHovedknapp
+          kompakt mini
+          onClick={saveChanges}
+        >
+          {t('ui:label-save')}
+        </HighContrastHovedknapp>
+        <HorizontalSeparatorDiv data-size='0.5'/>
+        <HighContrastKnapp
+          kompakt mini
+          onClick={onCancel}
+        >
+          {t('ui:label-cancel')}
+        </HighContrastKnapp>
 
-              <Flag
-                label={countryData.findByValue(s.land)}
-                country={s.land}
-                size='S'
-                type='circle'
-              />
-              <HorizontalSeparatorDiv data-size='0.5' />
-              {s.institusjonsnavn} - {s.institusjonsid}
-            </Dd>
-          </div>
-        ))}
-      </Dl>
+      </div>
     </>
   )
 }
 
 export default SEDDetailsEdit
+
+

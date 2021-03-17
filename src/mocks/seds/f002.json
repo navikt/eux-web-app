@@ -1002,7 +1002,7 @@
   ],
   "krav": {
     "kravMottattDato": "2059-01-01",
-    "kravType": "F002 krav type",
+    "kravType": "nytt_krav",
     "infoType": "F002 info type",
     "infoPresisering": "F002 krav info Presisering"
   },

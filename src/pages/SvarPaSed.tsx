@@ -76,6 +76,7 @@ export const ContainerDiv = styled.div`
 `
 export const ContentDiv = styled(Content)`
   flex: 1;
+  max-width: 60vw;
 `
 const WaitingPanelDiv = styled.div`
   flex: 1;
