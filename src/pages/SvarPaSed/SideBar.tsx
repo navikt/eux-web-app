@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import SEDPanel from 'components/SEDPanel/SEDPanel'
+import SEDDetails from 'components/SEDDetails/SEDDetails'
 import { FadingLineSeparator, HiddenSidebar } from 'components/StyledComponents'
 import NavHighContrast, { HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import { State } from 'declarations/reducers'
@@ -12,7 +12,7 @@ const mapState = (state: State): any => ({
   replySed: state.svarpased.replySed
 })
 
-const SEDDetails = ({ highContrast }: any) => {
+const SideBar = ({ highContrast }: any) => {
   const { replySed, previousReplySed } = useSelector<State, any>(mapState)
 
   const [_replySed, setReplySed] = useState(replySed)
@@ -47,11 +47,11 @@ const SEDDetails = ({ highContrast }: any) => {
             closed: !replySed && !previousReplySed
           })}
         >
-          {_replySed && <SEDPanel replySed={_replySed} />}
+          {_replySed && <SEDDetails replySed={_replySed} />}
         </HiddenSidebar>
       </div>
     </NavHighContrast>
   )
 }
 
-export default SEDDetails
+export default SideBar

@@ -1,12 +1,12 @@
 import { setStatusParam } from 'actions/app'
 import * as svarpasedActions from 'actions/svarpased'
 import classNames from 'classnames'
-import { SideBar } from 'components/StyledComponents'
+import { SideBarDiv } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { State } from 'declarations/reducers'
 import { Container, Content, fadeIn, fadeOut, Margin } from 'nav-hoykontrast'
-import SEDDetails from 'pages/SvarPaSed/SEDDetails'
+import SideBar from 'pages/SvarPaSed/SideBar'
 import Step1 from 'pages/SvarPaSed/Step1'
 import Step2 from 'pages/SvarPaSed/Step2'
 import PT from 'prop-types'
@@ -245,9 +245,9 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
             </WindowDiv>
           </ContainerDiv>
         </Content>
-        <SideBar>
-          <SEDDetails highContrast={highContrast} />
-        </SideBar>
+        <SideBarDiv>
+          <SideBar highContrast={highContrast} />
+        </SideBarDiv>
         <Margin />
       </Container>
     </TopContainer>

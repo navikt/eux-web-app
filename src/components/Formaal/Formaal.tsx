@@ -49,6 +49,7 @@ const Formaal: React.FC<FormaalProps> = ({
 
   const [_addFormaal, setAddFormaal] = useState<boolean>(false)
   const [_newFormaal, setNewFormaal] = useState<Option | undefined>(undefined)
+  const [_confirmDeleteFormaal, setConfirmDeleteFormaal] = useState<Array<string>>([])
   const [_formaalValues, setFormaalValues] = useState<Array<Option>>(
     _.filter(formaalOptions, p => _formaals.indexOf(p.value) < 0)
   )
@@ -75,6 +76,14 @@ const Formaal: React.FC<FormaalProps> = ({
     }
   }
 
+  const addCandidateForDeletion = (p: string) => {
+     setConfirmDeleteFormaal(_confirmDeleteFormaal.concat(p))
+  }
+
+  const removeCandidateForDeletion = (p: string) => {
+    setConfirmDeleteFormaal(_.filter(_confirmDeleteFormaal, _p => _p !== p))
+  }
+
   const onFormaalChanged = (o: Option) => {
     setNewFormaal(o)
   }
@@ -89,22 +98,51 @@ const Formaal: React.FC<FormaalProps> = ({
         {t('ui:title-chooseFormaal')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      {_formaals && _formaals.map((p: string) => (
-        <FlexDiv className='slideAnimate' key={p}>
-          <Normaltekst>
-            {_.find(formaalOptions, _p => _p.value === p)?.label}
-          </Normaltekst>
-          <HighContrastFlatknapp
-            mini
-            kompakt
-            onClick={() => onRemoveFormaal(p)}
-          >
-            <Trashcan />
-            <HorizontalSeparatorDiv data-size='0.5' />
-            {t('ui:label-remove')}
-          </HighContrastFlatknapp>
-        </FlexDiv>
-      ))}
+      {_formaals && _formaals.map((p: string) => {
+        const candidateForDeletion = _confirmDeleteFormaal.indexOf(p) >= 0
+        return (
+          <FlexDiv className='slideAnimate' key={p}>
+            <Normaltekst>
+              {_.find(formaalOptions, _p => _p.value === p)?.label}
+            </Normaltekst>
+            {candidateForDeletion ? (
+              <FlexDiv>
+                <Normaltekst>
+                  {t('ui:label-sure')}
+                </Normaltekst>
+                <HorizontalSeparatorDiv data-size='0.5'/>
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  onClick={() => onRemoveFormaal(p)}
+                >
+                  {t('ui:label-yes')}
+                </HighContrastFlatknapp>
+                <HorizontalSeparatorDiv data-size='0.5'/>
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  onClick={() => removeCandidateForDeletion(p)}
+                >
+                  {t('ui:label-no')}
+                </HighContrastFlatknapp>
+              </FlexDiv>
+              ) :
+              (
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  onClick={() => addCandidateForDeletion(p)}
+                >
+                  <Trashcan/>
+                  <HorizontalSeparatorDiv data-size='0.5'/>
+                  {t('ui:label-remove')}
+                </HighContrastFlatknapp>
+              )
+            }
+          </FlexDiv>
+        )
+      })}
       <VerticalSeparatorDiv />
       {!_addFormaal
         ? (

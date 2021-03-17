@@ -35,7 +35,7 @@ const FlexDiv = styled.div`
   justify-content: space-between;
 `
 
-const SEDPanelEdit = ({
+const SEDDetailsEdit = ({
                         replySed
                       }: any) => {
   const { t } = useTranslation()
@@ -192,4 +192,4 @@ const SEDPanelEdit = ({
   )
 }
 
-export default SEDPanelEdit
+export default SEDDetailsEdit

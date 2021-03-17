@@ -20,7 +20,7 @@ export const FadingLineSeparator = styled.div`
      animation: ${fadeOut} 0.5s forwards;
    }
 `
-export const SideBar = styled.div`
+export const SideBarDiv = styled.div`
   display: flex;
   min-width: 21.5rem;
 `

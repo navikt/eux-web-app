@@ -5,8 +5,8 @@ import { HighContrastPanel, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import SEDPanelEdit from './SEDPanelEdit'
-import SEDPanelView from './SEDPanelView'
+import SEDDetailsEdit from './SEDDetailsEdit'
+import SEDDetailsView from './SEDDetailsView'
 
 const FlexDiv = styled.div`
   display: flex;
@@ -15,11 +15,11 @@ const FlexDiv = styled.div`
 const EditIcon = styled(Edit)`
   cursor: pointer;
 `
-interface SEDPanelProps {
+interface SEDDetailsProps {
   replySed: ReplySed
 }
 
-const SEDPanel = ({ replySed }: SEDPanelProps) => {
+const SEDDetails = ({ replySed }: SEDDetailsProps) => {
   const { t } = useTranslation()
   const [isEditing, setIsEditing ] = useState<boolean>(false)
 
@@ -37,13 +37,13 @@ const SEDPanel = ({ replySed }: SEDPanelProps) => {
       </FlexDiv>
       <VerticalSeparatorDiv />
       {isEditing ? (
-        <SEDPanelEdit replySed={replySed}/>
+        <SEDDetailsEdit replySed={replySed}/>
       ) : (
-        <SEDPanelView replySed={replySed}/>
+        <SEDDetailsView replySed={replySed}/>
       )}
     </HighContrastPanel>
 
   )
 }
 
-export default SEDPanel
+export default SEDDetails
