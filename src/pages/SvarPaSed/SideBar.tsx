@@ -47,7 +47,7 @@ const SideBar = ({ highContrast }: any) => {
             closed: !replySed && !previousReplySed
           })}
         >
-          {_replySed && <SEDDetails replySed={_replySed} />}
+          {_replySed && <SEDDetails highContrast={highContrast} replySed={_replySed} />}
         </HiddenSidebar>
       </div>
       <HorizontalSeparatorDiv data-size='1.5' />

@@ -1,3 +1,4 @@
+import Advarsel from 'assets/icons/advarsel'
 import { F002Sed, FSed, ReplySed, USed } from 'declarations/sed'
 import { FlagList } from 'flagg-ikoner'
 import { Normaltekst, UndertekstBold } from 'nav-frontend-typografi'
@@ -35,7 +36,13 @@ const Dl = styled.dl`
 const FlexDiv = styled.div`
   display: flex;
 `
-
+const Blockquote = styled.blockquote`
+  border-left: 2px solid gray;
+  padding-left: 1rem;
+  margin-inline-start: 1rem;
+  margin-inline-end: 0rem;
+  font-style: italic;
+`
 export interface SEDDetailsViewProps {
   replySed: ReplySed
 }
@@ -122,6 +129,22 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
         <Normaltekst>
           {t('ui:info-confirm-information')}
         </Normaltekst>
+      </FlexDiv>
+      <VerticalSeparatorDiv/>
+      <FlexDiv>
+        <Advarsel width={18} height={18}/>
+        <HorizontalSeparatorDiv data-size='0.5'/>
+        <Normaltekst>
+          {t('ui:info-point-information')}
+        </Normaltekst>
+      </FlexDiv>
+      <FlexDiv>
+        <Blockquote>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          Sed ac quam quis libero sagittis faucibus. Duis posuere neque sem,
+          sed efficitur libero ultrices a. Curabitur ut nisl ultricies, gravida
+          diam et, faucibus metus. Donec fringilla tristique est.
+        </Blockquote>
       </FlexDiv>
     </>
   )
