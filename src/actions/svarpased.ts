@@ -11,7 +11,20 @@ import mockConnectedReplySeds from 'mocks/connectedReplySeds'
 import { SvarpasedState } from 'reducers/svarpased'
 import { Action, ActionCreator } from 'redux'
 import validator from '@navikt/fnrvalidator'
+import mockPreview from 'mocks/previewFile'
 const sprintf = require('sprintf-js').sprintf
+
+export const getPreviewFile = () => {
+  return call({
+    url: urls.API_PREVIEW_FILE_URL,
+    expectedPayload:  mockPreview(),
+    type: {
+      request: types.SVARPASED_PREVIEW_FILE_REQUEST,
+      success: types.SVARPASED_PREVIEW_FILE_SUCCESS,
+      failure: types.SVARPASED_PREVIEW_FILE_FAILURE
+    }
+  })
+}
 
 export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload>> = (
   saksnummerOrFnr: string

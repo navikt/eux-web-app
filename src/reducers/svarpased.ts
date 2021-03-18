@@ -11,6 +11,7 @@ export interface SvarpasedState {
   inntekter: Inntekter | undefined
   parentSed: string | undefined
   personRelatert: any
+  previewFile: any
   previousParentSed: string | undefined
   previousReplySed: ReplySed | undefined
   replySed: ReplySed | undefined
@@ -29,6 +30,7 @@ export const initialSvarpasedState: SvarpasedState = {
   inntekter: undefined,
   parentSed: undefined,
   personRelatert: undefined,
+  previewFile: undefined,
   previousParentSed: undefined,
   previousReplySed: undefined,
   replySed: undefined,
@@ -115,6 +117,18 @@ const svarpasedReducer = (
       return {
         ...state,
         personRelatert: (action as ActionWithPayload).payload
+      }
+
+    case types.SVARPASED_PREVIEW_FILE_SUCCESS:
+      return {
+        ...state,
+        previewFile: (action as ActionWithPayload).payload
+      }
+
+    case types.SVARPASED_PREVIEW_FILE_FAILURE:
+      return {
+        ...state,
+        previewFile: null
       }
 
     case types.SVARPASED_SAKSNUMMERORFNR_QUERY_SUCCESS:

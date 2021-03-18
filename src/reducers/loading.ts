@@ -15,6 +15,7 @@ export const initialLoadingState: LoadingState = {
   gettingInstitusjoner: false,
   gettingLandkoder: false,
   gettingPerson: false,
+  gettingPreviewFile: false,
   gettingSaksbehandler: false,
   gettingServerinfo: false,
   searchingPerson: false,
@@ -114,6 +115,19 @@ const loadingReducer = (
       return {
         ...state,
         gettingPerson: false
+      }
+
+    case types.SVARPASED_PREVIEW_FILE_REQUEST:
+      return {
+        ...state,
+        gettingPreviewFile: true
+      }
+
+    case types.SVARPASED_PREVIEW_FILE_SUCCESS:
+    case types.SVARPASED_PREVIEW_FILE_FAILURE:
+      return {
+        ...state,
+        gettingPreviewFile: false
       }
 
     case types.SVARPASED_PERSON_SEARCH_REQUEST:

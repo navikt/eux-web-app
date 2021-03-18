@@ -1,3 +1,7 @@
+export const HOST = window.location.hostname
+const FULL_HOST = window.location.protocol + '//' + HOST
+export const BASE_URL = FULL_HOST + (window.location.port ? ':' + window.location.port : '')
+
 export const API_BASE_URL = '/api'
 
 // See https://eux-helloeu-app-q2.nais.preprod.local/swagger-ui.html
@@ -36,3 +40,6 @@ export const API_SERVERINFO_URL = API_BASE_URL + '/serverinfo'
 // Vedlegg
 export const API_VEDLEGG_POST_URL = API_BASE_URL + '/rina/vedlegg'
 export const API_VEDLEGG_DOKUMENT_URL = API_BASE_URL + '/rina/dokumenter/?rinasaksnummer=%(rinasaksnummer)s'
+
+// TO DO
+export const API_PREVIEW_FILE_URL = ''

@@ -1,13 +1,14 @@
 import { clientClear } from 'actions/alert'
+import { getPreviewFile } from 'actions/svarpased'
 import * as svarpasedActions from 'actions/svarpased'
 import Tilsette from 'assets/icons/Tilsette'
 import classNames from 'classnames'
 import Alert from 'components/Alert/Alert'
 import FamilyManager from 'components/FamilyManager/FamilyManager'
-import Inntekt from 'components/Inntekt/Inntekt'
 import Formaal from 'components/Formaal/Formaal'
+import Inntekt from 'components/Inntekt/Inntekt'
 import * as types from 'constants/actionTypes'
-import { AlertStatus } from 'declarations/components'
+import { AlertStatus, ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import { Inntekt as IInntekt, Inntekter, Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -27,12 +28,15 @@ import {
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import ValidationBox from 'pages/SvarPaSed/ValidationBox'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { SvarpasedState } from 'reducers/svarpased'
 import styled from 'styled-components'
 import { Item } from 'tabell'
+import FileFC, { File } from 'forhandsvisningsfil'
+import Modal from 'components/Modal/Modal'
+
 import { validate } from './validation'
 
 const FlexDiv = styled.div`
@@ -70,10 +74,12 @@ const mapState = (state: State): any => ({
 
   creatingSedWithAttachments: state.loading.creatingSedWithAttachments,
   creatingSedEditInRINA: state.loading.creatingSedEditInRINA,
+  gettingPreviewFile: state.loading.gettingPreviewFile,
   savingSed: state.loading.savingSed,
   sendingSvarPaSed: state.loading.sendingSvarPaSed,
 
   inntekter: state.svarpased.inntekter,
+  previewFile: state.svarpased.previewFile,
   replySed: state.svarpased.replySed,
   svarPasedData: state.svarpased.svarPasedData,
   validation: state.svarpased.validation,
@@ -107,10 +113,12 @@ const Step2: React.FC<SvarPaSedProps> = ({
 
     creatingSedWithAttachments,
     creatingSedEditInRINA,
+    gettingPreviewFile,
     savingSed,
     sendingSvarPaSed,
 
     inntekter,
+    previewFile,
     replySed,
     svarPasedData,
     validation,
@@ -119,6 +127,8 @@ const Step2: React.FC<SvarPaSedProps> = ({
   }: any = useSelector<State, any>(mapState)
 
   const [_comment, setComment] = useState<string>('')
+  const [_modal, setModal] = useState<ModalContent | undefined>(undefined)
+  const [_previewFile, setPreviewFile] = useState<any | undefined>(undefined)
 
   const fnr = _.find(replySed?.bruker?.personInfo.pin, p => p.land === 'NO')?.fnr
 
@@ -153,8 +163,34 @@ const Step2: React.FC<SvarPaSedProps> = ({
   // TODO
   const saveSed = () => {}
 
+  const showModal = (previewFile: File) => {
+    setModal({
+      closeButton: true,
+      modalContent: (
+        <div
+          style={{ cursor: 'pointer' }}
+        >
+          <FileFC
+            file={previewFile}
+            width={600}
+            height={800}
+            tema='simple'
+            viewOnePage={false}
+            onContentClick={() => setModal(undefined)}
+          />
+        </div>
+      )
+    })
+  }
+
   // TODO
-  const onPreviewSed = () => {}
+  const onPreviewSed = () => {
+    if (!_previewFile) {
+      dispatch(getPreviewFile())
+    } else {
+      showModal(_previewFile)
+    }
+  }
 
   const onGoBackClick = () => {
     if (mode === '2') {
@@ -177,8 +213,21 @@ const Step2: React.FC<SvarPaSedProps> = ({
     }
   }
 
+  useEffect(() => {
+    if (!_previewFile && previewFile) {
+      setPreviewFile(previewFile)
+      showModal(previewFile)
+    }
+  }, [ previewFile, _previewFile])
+
   return (
     <Step2Div>
+      {_modal && (
+        <Modal
+          modal={_modal}
+          onModalClose={() => setModal(undefined)}
+        />
+      )}
       <FlexDiv>
         <HighContrastLink
           href='#'
@@ -238,11 +287,13 @@ const Step2: React.FC<SvarPaSedProps> = ({
       <HighContrastFlatknapp
         mini
         kompakt
+        disabled={gettingPreviewFile}
+        spinner={gettingPreviewFile}
         onClick={onPreviewSed}
       >
         <Tilsette />
         <HorizontalSeparatorDiv data-size='0.5' />
-        {t('ui:label-preview-sed')}
+          {gettingPreviewFile ? t('ui:label-loading-file') : t('ui:label-preview-sed')}
       </HighContrastFlatknapp>
       <VerticalSeparatorDiv data-size='2' />
       <ButtonsDiv>
