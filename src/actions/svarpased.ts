@@ -17,7 +17,7 @@ const sprintf = require('sprintf-js').sprintf
 export const getPreviewFile = () => {
   return call({
     url: urls.API_PREVIEW_FILE_URL,
-    expectedPayload:  mockPreview(),
+    expectedPayload: mockPreview,
     type: {
       request: types.SVARPASED_PREVIEW_FILE_REQUEST,
       success: types.SVARPASED_PREVIEW_FILE_SUCCESS,

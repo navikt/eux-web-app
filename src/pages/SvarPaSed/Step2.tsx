@@ -299,6 +299,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
       <ButtonsDiv>
         <div>
           <HighContrastHovedknapp
+            mini
             onClick={sendReplySed}
             disabled={sendingSvarPaSed}
             spinner={sendingSvarPaSed}
@@ -310,17 +311,19 @@ const Step2: React.FC<SvarPaSedProps> = ({
         <HorizontalSeparatorDiv />
         <div>
           <HighContrastKnapp
+            mini
             onClick={createSedWithAttachments}
             disabled={creatingSedWithAttachments}
             spinner={creatingSedWithAttachments}
           >
-            {t('ui:label-createSedWithAttachments')}
+            {t('ui:label-addAttachments')}
           </HighContrastKnapp>
           <VerticalSeparatorDiv data-size='0.5' />
         </div>
         <HorizontalSeparatorDiv />
         <div>
           <HighContrastKnapp
+            mini
             onClick={createSedEditInRINA}
             disabled={creatingSedEditInRINA}
             spinner={creatingSedEditInRINA}
@@ -332,6 +335,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
         <HorizontalSeparatorDiv />
         <div>
           <HighContrastKnapp
+            mini
             onClick={saveSed}
             disabled={savingSed}
             spinner={savingSed}

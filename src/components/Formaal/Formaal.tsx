@@ -32,7 +32,7 @@ const Formaal: React.FC<FormaalProps> = ({
 }: FormaalProps) => {
 
   const [_formaals, setFormaals] = useState<Array<string>>((replySed as FSed)?.formaal || [])
-  const _hasFormaal = !!(replySed as FSed).formaal
+  const _hasFormaal = !!(replySed as FSed)?.formaal
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
