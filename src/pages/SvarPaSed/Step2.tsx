@@ -65,6 +65,10 @@ const TextAreaDiv = styled.div`
     width: 100%;
   }
 `
+const MinimalContentDiv = styled.div`
+  min-height: 200px;
+  min-width: 600px;
+`
 
 const mapState = (state: State): any => ({
   alertStatus: state.alert.clientErrorStatus,
@@ -130,7 +134,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
   const [_comment, setComment] = useState<string>('')
   const [_modal, setModal] = useState<ModalContent | undefined>(undefined)
   const [_previewFile, setPreviewFile] = useState<any | undefined>(undefined)
-
+  const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
   const fnr = _.find(replySed?.bruker?.personInfo.pin, p => p.land === 'NO')?.fnr
 
   const data: SvarpasedState = useSelector<State, SvarpasedState>(mapStateTwo)
@@ -150,6 +154,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
       })
       dispatch(svarpasedActions.setAllValidation(newValidation))
       if (isValid(newValidation)) {
+        setViewSendSedModal(true)
         dispatch(svarpasedActions.sendSvarPaSedData(rinasaksnummerOrFnr, replySed!.querySedDocumentId, replySed!.replySedType, data))
       }
     }
@@ -227,6 +232,47 @@ const Step2: React.FC<SvarPaSedProps> = ({
         <Modal
           highContrast={highContrast}
           modal={_modal}
+          onModalClose={() => setModal(undefined)}
+        />
+      )}
+      {_viewSendSedModal && (
+        <Modal
+          highContrast={highContrast}
+          modal={{
+            closeButton: false,
+            modalContent: (
+              <MinimalContentDiv>
+                {sendingSvarPaSed && <span>{t('ui:loading-sendingReplySed')}</span>}
+                {alertMessage && alertType && [types.SVARPASED_SENDSVARPASEDDATA_POST_FAILURE].indexOf(alertType) >= 0 && (
+                  <AlertstripeDiv>
+                    <Alert
+                    type='client'
+                    fixed={false}
+                    message={t(alertMessage)}
+                    status={alertStatus as AlertStatus}
+                    onClose={() => dispatch(clientClear())}
+                    />
+                  </AlertstripeDiv>
+                  )}
+                {!_.isNil(svarPasedData) && (
+                  <>
+                  <Alertstripe type='suksess'>
+                  {svarPasedData.message}
+                  </Alertstripe>
+                    <HighContrastHovedknapp
+                      mini
+                      onClick={() => {
+                        setViewSendSedModal(false)
+                        onGoBackClick()
+                      }}
+                    >
+                      {t('ui:label-close')}
+                    </HighContrastHovedknapp>
+                  </>
+                )}
+              </MinimalContentDiv>
+            )
+          }}
           onModalClose={() => setModal(undefined)}
         />
       )}
@@ -353,22 +399,6 @@ const Step2: React.FC<SvarPaSedProps> = ({
         </div>
       </ButtonsDiv>
       <ValidationBox validation={validation} />
-      {alertMessage && alertType && [types.SVARPASED_SENDSVARPASEDDATA_POST_FAILURE].indexOf(alertType) >= 0 && (
-        <AlertstripeDiv>
-          <Alert
-            type='client'
-            fixed={false}
-            message={t(alertMessage)}
-            status={alertStatus as AlertStatus}
-            onClose={() => dispatch(clientClear())}
-          />
-        </AlertstripeDiv>
-      )}
-      {!_.isNil(svarPasedData) && (
-        <Alertstripe type='suksess'>
-          {svarPasedData.message}
-        </Alertstripe>
-      )}
     </Step2Div>
   )
 }
