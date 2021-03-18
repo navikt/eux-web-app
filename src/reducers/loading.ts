@@ -117,14 +117,14 @@ const loadingReducer = (
         gettingPerson: false
       }
 
-    case types.SVARPASED_PREVIEW_FILE_REQUEST:
+    case types.SVARPASED_PREVIEW_REQUEST:
       return {
         ...state,
         gettingPreviewFile: true
       }
 
-    case types.SVARPASED_PREVIEW_FILE_SUCCESS:
-    case types.SVARPASED_PREVIEW_FILE_FAILURE:
+    case types.SVARPASED_PREVIEW_SUCCESS:
+    case types.SVARPASED_PREVIEW_FAILURE:
       return {
         ...state,
         gettingPreviewFile: false

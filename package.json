@@ -25,6 +25,9 @@
     "test:coverage": "cross-env NODE_ENV=test react-scripts test --coverage  --watchAll=false"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.34",
+    "@fortawesome/free-solid-svg-icons": "^5.15.2",
+    "@fortawesome/react-fontawesome": "^0.1.14",
     "@sentry/browser": "^6.2.2",
     "amplitude-js": "^8.0.0",
     "classnames": "^2.2.6",
@@ -33,6 +36,7 @@
     "eux-schema": "^0.4.0",
     "flagg-ikoner": "^1.1.1",
     "forhandsvisningsfil": "^1.1.3",
+    "fremdriftslinje": "^1.0.5",
     "history": "4.10.1",
     "i18next": "^19.9.2",
     "i18next-browser-languagedetector": "^6.0.1",

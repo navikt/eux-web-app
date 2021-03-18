@@ -1,0 +1,1203 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`applications/BUC/components/InstitutionList/InstitutionList Render: match snapshot 1`] = `
+.c13 {
+  -webkit-align-items: baseline;
+  -webkit-box-align: baseline;
+  -ms-flex-align: baseline;
+  align-items: baseline;
+  background-color: #0067c5;
+  color: #FFFFFF;
+  border-color: #0067c5;
+}
+
+.c13:hover:not(:disabled) {
+  background-color: #0067c5;
+  border-color: #0067c5;
+  color: #FFFFFF;
+}
+
+.c13:hover:not(:disabled) svg {
+  color: #FFFFFF;
+}
+
+.c13:hover:not(:disabled) svg path {
+  stroke: #FFFFFF;
+}
+
+.c13:disabled {
+  color: #FFFFFF;
+  background-color: #78706a;
+}
+
+.c13 svg {
+  color: #0067c5;
+}
+
+.c13 svg path {
+  stroke: #0067c5;
+}
+
+ui-fss.g11[id="c12"] {
+  content: "c13,";
+}
+
+.c15 {
+  background-color: inherit;
+  color: #0067c5;
+  border-color: #0067c5;
+}
+
+.c15:hover:not(:disabled) {
+  background-color: #0067c5;
+  color: #FFFFFF;
+}
+
+.c15:hover:not(:disabled) svg {
+  color: #FFFFFF;
+}
+
+.c15:hover:not(:disabled) svg path {
+  stroke: #FFFFFF;
+}
+
+.c15 svg {
+  color: #0067c5;
+}
+
+.c15 svg path {
+  stroke: #0067c5;
+}
+
+ui-fss.g13[id="c14"] {
+  content: "c15,";
+}
+
+.c1 {
+  display: block;
+  padding: 1rem 1rem 1rem 1rem;
+  border-radius: 4px;
+  position: relative;
+  -webkit-box-flex: 0;
+  -webkit-flex-grow: 0;
+  -ms-flex-positive: 0;
+  flex-grow: 0;
+  overflow: inherit;
+  max-height: 100%;
+  margin-bottom: 0;
+  z-index: 1010;
+  color: #3e3832;
+  background-color: #FFFFFF;
+}
+
+ui-fss.g28[id="c0"] {
+  content: "c1,";
+}
+
+.c7 {
+  position: absolute !important;
+  right: 0.5rem;
+  top: 0.5rem;
+  z-index: 999;
+}
+
+ui-fss.g30[id="c6"] {
+  content: "c7,";
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+ui-fss.g33[id="c8"] {
+  content: "c9,";
+}
+
+.c11 {
+  margin-right: 1rem;
+  margin-top: 0.5rem;
+  margin-botton: 0.5rem;
+}
+
+ui-fss.g34[id="c10"] {
+  content: "c11,";
+}
+
+.c3 {
+  z-index: 40000;
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  top: -3rem;
+}
+
+ui-fss.g35[id="c2"] {
+  content: "c3,";
+}
+
+.c5 {
+  overflow: auto;
+  max-height: 85vh;
+}
+
+.c5.icon {
+  margin-top: 3rem;
+}
+
+.c5.buttons {
+  margin-top: 3rem;
+}
+
+ui-fss.g36[id="c4"] {
+  content: "c5,";
+}
+
+<SEDAttachmentModal
+  highContrast={false}
+  onFinishedSelection={[MockFunction]}
+  onModalClose={[MockFunction]}
+  sedAttachments={
+    Array [
+      Object {
+        "date": 1970-01-31T23:00:00.000Z,
+        "dokumentInfoId": "4",
+        "hasSubrows": false,
+        "journalpostId": "1",
+        "key": "1",
+        "tema": "tema",
+        "title": "title",
+        "type": "joark",
+        "variant": Object {
+          "filnavn": "mockFilnavn",
+          "variantformat": "mockVariant",
+        },
+      },
+    ]
+  }
+  tableId="test-id"
+>
+  <W
+    highContrast={false}
+  >
+    <Component
+      theme={
+        Object {
+          "alternative-background-color": "#FFFFFF",
+          "black": "#000000",
+          "border-radius-base": "4px",
+          "border-radius-large": "6px",
+          "border-radius-small": "2px",
+          "container-desktop": "(940px + @grid-gutter-width)",
+          "container-large-desktop": "(1140px + @grid-gutter-width)",
+          "container-lg": "(1140px + @grid-gutter-width)",
+          "container-md": "(940px + @grid-gutter-width)",
+          "container-sm": "(720px + @grid-gutter-width)",
+          "container-tablet": "(720px + @grid-gutter-width)",
+          "fokusFarge": "#19548a",
+          "grayBackground": "#e9e7e7",
+          "grayIcon": "#b7b1a9",
+          "grayInactive": "#78706a",
+          "grayModia": "#333333",
+          "grid-columns": "12",
+          "grid-float-breakpoint": "768px",
+          "grid-float-breakpoint-max": "(@grid-float-breakpoint - 1)",
+          "grid-gutter-width": "16px",
+          "inverted-font-color": "#FFFFFF",
+          "line-height-large": "1.3333333",
+          "line-height-small": "1.5",
+          "main-active-color": "#66a4dc",
+          "main-background-color": "#f1f1f1",
+          "main-border-color": "#78706a",
+          "main-border-radius": "4px",
+          "main-border-width": "1px",
+          "main-disabled-color": "#78706a",
+          "main-error-color": "#ba3a26",
+          "main-focus-color": "#19548a",
+          "main-font-color": "#3e3832",
+          "main-hover-color": "#cce1f3",
+          "main-interactive-color": "#0067c5",
+          "main-success-color": "#06893a",
+          "main-warning-color": "#ff9100",
+          "navBakgrunn": "#ffffff",
+          "navBla": "#0067c5",
+          "navBlaDarken20": "#32414f",
+          "navBlaDarken40": "#254b6d",
+          "navBlaDarken60": "#19548a",
+          "navBlaDarken80": "#0c5ea8",
+          "navBlaLighten20": "#cce1f3",
+          "navBlaLighten40": "#99c2e8",
+          "navBlaLighten60": "#66a4dc",
+          "navBlaLighten80": "#3385d1",
+          "navDypBla": "#005b82",
+          "navDypBlaDarken20": "#323f42",
+          "navDypBlaDarken40": "#254652",
+          "navDypBlaDarken60": "#194d62",
+          "navDypBlaDarken80": "#0c5472",
+          "navDypBlaLighten20": "#ccdee6",
+          "navDypBlaLighten40": "#99bdcd",
+          "navDypBlaLighten60": "#669db4",
+          "navDypBlaLighten80": "#337c9b",
+          "navGra20": "#c6c2bf",
+          "navGra40": "#b7b1a9",
+          "navGra60": "#78706a",
+          "navGra80": "#59514b",
+          "navGraBakgrunn": "#f1f1f1",
+          "navGronn": "#06893a",
+          "navGronnDarken20": "#334834",
+          "navGronnDarken40": "#285835",
+          "navGronnDarken60": "#1c6937",
+          "navGronnDarken80": "#117938",
+          "navGronnLighten20": "#cde7d8",
+          "navGronnLighten40": "#9bd0b0",
+          "navGronnLighten60": "#6ab889",
+          "navGronnLighten80": "#38a161",
+          "navLilla": "#634689",
+          "navLillaDarken20": "#453b43",
+          "navLillaDarken40": "#4d3e55",
+          "navLillaDarken60": "#544066",
+          "navLillaDarken80": "#5c4378",
+          "navLillaLighten20": "#e0dae7",
+          "navLillaLighten40": "#c1b5d0",
+          "navLillaLighten60": "#a190b8",
+          "navLillaLighten80": "#826ba1",
+          "navLimeGronn": "#a2ad00",
+          "navLimeGronnDarken20": "#524f28",
+          "navLimeGronnDarken40": "#66671e",
+          "navLimeGronnDarken60": "#7a7e14",
+          "navLimeGronnDarken80": "#8e960a",
+          "navLimeGronnLighten20": "#ecefcc",
+          "navLimeGronnLighten40": "#dade99",
+          "navLimeGronnLighten60": "#c7ce66",
+          "navLimeGronnLighten80": "#b5bd33",
+          "navLysBla": "#66cbec",
+          "navLysBlaDarken20": "#465557",
+          "navLysBlaDarken40": "#4e737c",
+          "navLysBlaDarken60": "#5690a2",
+          "navLysBlaDarken80": "#5eaec7",
+          "navLysBlaLighten20": "#e0f5fb",
+          "navLysBlaLighten40": "#c2eaf7",
+          "navLysBlaLighten60": "#a3e0f4",
+          "navLysBlaLighten80": "#85d5f0",
+          "navLysGra": "#e9e7e7",
+          "navMorkGra": "#3e3832",
+          "navOransje": "#ff9100",
+          "navOransjeDarken20": "#654a28",
+          "navOransjeDarken40": "#8b5c1e",
+          "navOransjeDarken60": "#b26d14",
+          "navOransjeDarken80": "#d87f0a",
+          "navOransjeLighten20": "#ffe9cc",
+          "navOransjeLighten40": "#ffd399",
+          "navOransjeLighten60": "#ffbd66",
+          "navOransjeLighten80": "#ffa733",
+          "navRod": "#c30000",
+          "navRodDarken20": "#592d28",
+          "navRodDarken40": "#73221e",
+          "navRodDarken60": "#8e1614",
+          "navRodDarken80": "#a80b0a",
+          "navRodLighten20": "#f3cccc",
+          "navRodLighten40": "#e79999",
+          "navRodLighten60": "#db6666",
+          "navRodLighten80": "#cf3333",
+          "orangeFocus": "#ffbd66",
+          "orangeFocusDarken20": "#65533c",
+          "orangeFocusDarken40": "#8b6d47",
+          "orangeFocusDarken60": "#b28851",
+          "orangeFocusDarken80": "#d8a25c",
+          "orangeFocusLighten20": "#fff2e0",
+          "orangeFocusLighten40": "#ffe5c2",
+          "orangeFocusLighten60": "#ffd7a3",
+          "orangeFocusLighten80": "#ffca85",
+          "padding-base-horizontal": "12px",
+          "padding-base-vertical": "6px",
+          "padding-large-horizontal": "16px",
+          "padding-large-vertical": "10px",
+          "padding-small-horizontal": "10px",
+          "padding-small-vertical": "5px",
+          "padding-xs-horizontal": "5px",
+          "padding-xs-vertical": "1px",
+          "pinkErrorBg": "#f3e3e3",
+          "redError": "#ba3a26",
+          "redErrorDarken20": "#573830",
+          "redErrorDarken40": "#70392d",
+          "redErrorDarken60": "#88392b",
+          "redErrorDarken80": "#a13a28",
+          "redErrorLighten20": "#f1d8d4",
+          "redErrorLighten40": "#e3b0a8",
+          "redErrorLighten60": "#d6897d",
+          "redErrorLighten80": "#c86151",
+          "screen-desktop": "992px",
+          "screen-lg": "1200px",
+          "screen-lg-desktop": "1200px",
+          "screen-lg-min": "1200px",
+          "screen-md": "992px",
+          "screen-md-max": "(@screen-lg-min - 1)",
+          "screen-md-min": "992px",
+          "screen-sm": "768px",
+          "screen-sm-max": "(@screen-md-min - 1)",
+          "screen-sm-min": "768px",
+          "screen-tablet": "768px",
+          "screen-xs-max": "(@screen-sm-min - 1)",
+          "type": "theme",
+          "white": "#FFFFFF",
+        }
+      }
+    >
+      <Modal
+        highContrast={false}
+        icon={<Document />}
+        modal={
+          Object {
+            "closeButton": true,
+            "modalButtons": Array [
+              Object {
+                "main": true,
+                "onClick": [Function],
+                "text": "buc:form-addSelectedAttachments",
+              },
+              Object {
+                "onClick": [Function],
+                "text": "ui:cancel",
+              },
+            ],
+            "modalContent": <React.Fragment>
+              <Unknown
+                data-test-id="a-buc-c-sedattachmentmodal__joarkbrowser-id"
+                existingItems={
+                  Array [
+                    Object {
+                      "date": 1970-01-31T23:00:00.000Z,
+                      "dokumentInfoId": "4",
+                      "hasSubrows": false,
+                      "journalpostId": "1",
+                      "key": "1",
+                      "tema": "tema",
+                      "title": "title",
+                      "type": "joark",
+                      "variant": Object {
+                        "filnavn": "mockFilnavn",
+                        "variantformat": "mockVariant",
+                      },
+                    },
+                  ]
+                }
+                mode="select"
+                onRowSelectChange={[Function]}
+                tableId="test-id"
+              />
+            </React.Fragment>,
+          }
+        }
+        onModalClose={[MockFunction]}
+      >
+        <W
+          highContrast={false}
+        >
+          <Component
+            theme={
+              Object {
+                "alternative-background-color": "#FFFFFF",
+                "black": "#000000",
+                "border-radius-base": "4px",
+                "border-radius-large": "6px",
+                "border-radius-small": "2px",
+                "container-desktop": "(940px + @grid-gutter-width)",
+                "container-large-desktop": "(1140px + @grid-gutter-width)",
+                "container-lg": "(1140px + @grid-gutter-width)",
+                "container-md": "(940px + @grid-gutter-width)",
+                "container-sm": "(720px + @grid-gutter-width)",
+                "container-tablet": "(720px + @grid-gutter-width)",
+                "fokusFarge": "#19548a",
+                "grayBackground": "#e9e7e7",
+                "grayIcon": "#b7b1a9",
+                "grayInactive": "#78706a",
+                "grayModia": "#333333",
+                "grid-columns": "12",
+                "grid-float-breakpoint": "768px",
+                "grid-float-breakpoint-max": "(@grid-float-breakpoint - 1)",
+                "grid-gutter-width": "16px",
+                "inverted-font-color": "#FFFFFF",
+                "line-height-large": "1.3333333",
+                "line-height-small": "1.5",
+                "main-active-color": "#66a4dc",
+                "main-background-color": "#f1f1f1",
+                "main-border-color": "#78706a",
+                "main-border-radius": "4px",
+                "main-border-width": "1px",
+                "main-disabled-color": "#78706a",
+                "main-error-color": "#ba3a26",
+                "main-focus-color": "#19548a",
+                "main-font-color": "#3e3832",
+                "main-hover-color": "#cce1f3",
+                "main-interactive-color": "#0067c5",
+                "main-success-color": "#06893a",
+                "main-warning-color": "#ff9100",
+                "navBakgrunn": "#ffffff",
+                "navBla": "#0067c5",
+                "navBlaDarken20": "#32414f",
+                "navBlaDarken40": "#254b6d",
+                "navBlaDarken60": "#19548a",
+                "navBlaDarken80": "#0c5ea8",
+                "navBlaLighten20": "#cce1f3",
+                "navBlaLighten40": "#99c2e8",
+                "navBlaLighten60": "#66a4dc",
+                "navBlaLighten80": "#3385d1",
+                "navDypBla": "#005b82",
+                "navDypBlaDarken20": "#323f42",
+                "navDypBlaDarken40": "#254652",
+                "navDypBlaDarken60": "#194d62",
+                "navDypBlaDarken80": "#0c5472",
+                "navDypBlaLighten20": "#ccdee6",
+                "navDypBlaLighten40": "#99bdcd",
+                "navDypBlaLighten60": "#669db4",
+                "navDypBlaLighten80": "#337c9b",
+                "navGra20": "#c6c2bf",
+                "navGra40": "#b7b1a9",
+                "navGra60": "#78706a",
+                "navGra80": "#59514b",
+                "navGraBakgrunn": "#f1f1f1",
+                "navGronn": "#06893a",
+                "navGronnDarken20": "#334834",
+                "navGronnDarken40": "#285835",
+                "navGronnDarken60": "#1c6937",
+                "navGronnDarken80": "#117938",
+                "navGronnLighten20": "#cde7d8",
+                "navGronnLighten40": "#9bd0b0",
+                "navGronnLighten60": "#6ab889",
+                "navGronnLighten80": "#38a161",
+                "navLilla": "#634689",
+                "navLillaDarken20": "#453b43",
+                "navLillaDarken40": "#4d3e55",
+                "navLillaDarken60": "#544066",
+                "navLillaDarken80": "#5c4378",
+                "navLillaLighten20": "#e0dae7",
+                "navLillaLighten40": "#c1b5d0",
+                "navLillaLighten60": "#a190b8",
+                "navLillaLighten80": "#826ba1",
+                "navLimeGronn": "#a2ad00",
+                "navLimeGronnDarken20": "#524f28",
+                "navLimeGronnDarken40": "#66671e",
+                "navLimeGronnDarken60": "#7a7e14",
+                "navLimeGronnDarken80": "#8e960a",
+                "navLimeGronnLighten20": "#ecefcc",
+                "navLimeGronnLighten40": "#dade99",
+                "navLimeGronnLighten60": "#c7ce66",
+                "navLimeGronnLighten80": "#b5bd33",
+                "navLysBla": "#66cbec",
+                "navLysBlaDarken20": "#465557",
+                "navLysBlaDarken40": "#4e737c",
+                "navLysBlaDarken60": "#5690a2",
+                "navLysBlaDarken80": "#5eaec7",
+                "navLysBlaLighten20": "#e0f5fb",
+                "navLysBlaLighten40": "#c2eaf7",
+                "navLysBlaLighten60": "#a3e0f4",
+                "navLysBlaLighten80": "#85d5f0",
+                "navLysGra": "#e9e7e7",
+                "navMorkGra": "#3e3832",
+                "navOransje": "#ff9100",
+                "navOransjeDarken20": "#654a28",
+                "navOransjeDarken40": "#8b5c1e",
+                "navOransjeDarken60": "#b26d14",
+                "navOransjeDarken80": "#d87f0a",
+                "navOransjeLighten20": "#ffe9cc",
+                "navOransjeLighten40": "#ffd399",
+                "navOransjeLighten60": "#ffbd66",
+                "navOransjeLighten80": "#ffa733",
+                "navRod": "#c30000",
+                "navRodDarken20": "#592d28",
+                "navRodDarken40": "#73221e",
+                "navRodDarken60": "#8e1614",
+                "navRodDarken80": "#a80b0a",
+                "navRodLighten20": "#f3cccc",
+                "navRodLighten40": "#e79999",
+                "navRodLighten60": "#db6666",
+                "navRodLighten80": "#cf3333",
+                "orangeFocus": "#ffbd66",
+                "orangeFocusDarken20": "#65533c",
+                "orangeFocusDarken40": "#8b6d47",
+                "orangeFocusDarken60": "#b28851",
+                "orangeFocusDarken80": "#d8a25c",
+                "orangeFocusLighten20": "#fff2e0",
+                "orangeFocusLighten40": "#ffe5c2",
+                "orangeFocusLighten60": "#ffd7a3",
+                "orangeFocusLighten80": "#ffca85",
+                "padding-base-horizontal": "12px",
+                "padding-base-vertical": "6px",
+                "padding-large-horizontal": "16px",
+                "padding-large-vertical": "10px",
+                "padding-small-horizontal": "10px",
+                "padding-small-vertical": "5px",
+                "padding-xs-horizontal": "5px",
+                "padding-xs-vertical": "1px",
+                "pinkErrorBg": "#f3e3e3",
+                "redError": "#ba3a26",
+                "redErrorDarken20": "#573830",
+                "redErrorDarken40": "#70392d",
+                "redErrorDarken60": "#88392b",
+                "redErrorDarken80": "#a13a28",
+                "redErrorLighten20": "#f1d8d4",
+                "redErrorLighten40": "#e3b0a8",
+                "redErrorLighten60": "#d6897d",
+                "redErrorLighten80": "#c86151",
+                "screen-desktop": "992px",
+                "screen-lg": "1200px",
+                "screen-lg-desktop": "1200px",
+                "screen-lg-min": "1200px",
+                "screen-md": "992px",
+                "screen-md-max": "(@screen-lg-min - 1)",
+                "screen-md-min": "992px",
+                "screen-sm": "768px",
+                "screen-sm-max": "(@screen-md-min - 1)",
+                "screen-sm-min": "768px",
+                "screen-tablet": "768px",
+                "screen-xs-max": "(@screen-sm-min - 1)",
+                "type": "theme",
+                "white": "#FFFFFF",
+              }
+            }
+          >
+            <Memo(l) />
+            <Styled(Modal)
+              isOpen={true}
+              onRequestClose={[Function]}
+              overlayClassName="modal__overlay"
+            >
+              <Modal
+                ariaHideApp={true}
+                bodyOpenClassName="ReactModal__Body--open"
+                className="c0 c1"
+                closeTimeoutMS={0}
+                contentElement={[Function]}
+                isOpen={true}
+                onRequestClose={[Function]}
+                overlayClassName="modal__overlay"
+                overlayElement={[Function]}
+                parentSelector={[Function]}
+                portalClassName="ReactModalPortal"
+                preventScroll={false}
+                role="dialog"
+                shouldCloseOnEsc={true}
+                shouldCloseOnOverlayClick={true}
+                shouldFocusAfterRender={true}
+                shouldReturnFocusAfterClose={true}
+              >
+                <Portal
+                  containerInfo={
+                    .c13 {
+  -webkit-align-items: baseline;
+  -webkit-box-align: baseline;
+  -ms-flex-align: baseline;
+  align-items: baseline;
+  background-color: #0067c5;
+  color: #FFFFFF;
+  border-color: #0067c5;
+}
+
+.c13:hover:not(:disabled) {
+  background-color: #0067c5;
+  border-color: #0067c5;
+  color: #FFFFFF;
+}
+
+.c13:hover:not(:disabled) svg {
+  color: #FFFFFF;
+}
+
+.c13:hover:not(:disabled) svg path {
+  stroke: #FFFFFF;
+}
+
+.c13:disabled {
+  color: #FFFFFF;
+  background-color: #78706a;
+}
+
+.c13 svg {
+  color: #0067c5;
+}
+
+.c13 svg path {
+  stroke: #0067c5;
+}
+
+ui-fss.g11[id="c12"] {
+  content: "c13,";
+}
+
+.c15 {
+  background-color: inherit;
+  color: #0067c5;
+  border-color: #0067c5;
+}
+
+.c15:hover:not(:disabled) {
+  background-color: #0067c5;
+  color: #FFFFFF;
+}
+
+.c15:hover:not(:disabled) svg {
+  color: #FFFFFF;
+}
+
+.c15:hover:not(:disabled) svg path {
+  stroke: #FFFFFF;
+}
+
+.c15 svg {
+  color: #0067c5;
+}
+
+.c15 svg path {
+  stroke: #0067c5;
+}
+
+ui-fss.g13[id="c14"] {
+  content: "c15,";
+}
+
+.c1 {
+  display: block;
+  padding: 1rem 1rem 1rem 1rem;
+  border-radius: 4px;
+  position: relative;
+  -webkit-box-flex: 0;
+  -webkit-flex-grow: 0;
+  -ms-flex-positive: 0;
+  flex-grow: 0;
+  overflow: inherit;
+  max-height: 100%;
+  margin-bottom: 0;
+  z-index: 1010;
+  color: #3e3832;
+  background-color: #FFFFFF;
+}
+
+ui-fss.g28[id="c0"] {
+  content: "c1,";
+}
+
+.c7 {
+  position: absolute !important;
+  right: 0.5rem;
+  top: 0.5rem;
+  z-index: 999;
+}
+
+ui-fss.g30[id="c6"] {
+  content: "c7,";
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+ui-fss.g33[id="c8"] {
+  content: "c9,";
+}
+
+.c11 {
+  margin-right: 1rem;
+  margin-top: 0.5rem;
+  margin-botton: 0.5rem;
+}
+
+ui-fss.g34[id="c10"] {
+  content: "c11,";
+}
+
+.c3 {
+  z-index: 40000;
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  top: -3rem;
+}
+
+ui-fss.g35[id="c2"] {
+  content: "c3,";
+}
+
+.c5 {
+  overflow: auto;
+  max-height: 85vh;
+}
+
+.c5.icon {
+  margin-top: 3rem;
+}
+
+.c5.buttons {
+  margin-top: 3rem;
+}
+
+ui-fss.g36[id="c4"] {
+  content: "c5,";
+}
+
+<div
+                      class="ReactModalPortal"
+                    >
+                      <div
+                        class="ReactModal__Overlay ReactModal__Overlay--after-open modal__overlay"
+                      >
+                        <div
+                          aria-modal="true"
+                          class="ReactModal__Content ReactModal__Content--after-open c0 c1"
+                          role="dialog"
+                          tabindex="-1"
+                        >
+                          <div
+                            class="c2 c3"
+                          >
+                            <svg
+                              height="100"
+                              width="100"
+                              xmlns="http://www.w3.org/2000/svg"
+                              xmlns:xlink="http://www.w3.org/1999/xlink"
+                            >
+                              <defs>
+                                <circle
+                                  cx="50"
+                                  cy="50"
+                                  id="a"
+                                  r="50"
+                                />
+                              </defs>
+                              <g
+                                fill="none"
+                                fill-rule="evenodd"
+                              >
+                                <g>
+                                  <mask
+                                    fill="#fff"
+                                    id="b"
+                                  >
+                                    <use
+                                      xlink:href="#a"
+                                    />
+                                  </mask>
+                                  <g
+                                    mask="url(#b)"
+                                  >
+                                    <path
+                                      d="M-8 100h126V0H-8z"
+                                      fill="#99BDCD"
+                                    />
+                                  </g>
+                                </g>
+                                <path
+                                  d="M70.224 21.607H30.076a2.989 2.989 0 0 0-2.998 2.983v50.37a2.967 2.967 0 0 0 .88 2.11c.066.064.138.131.214.19a2.988 2.988 0 0 0 1.904.683h40.148c1.657 0 3-1.336 3-2.982V24.59a2.99 2.99 0 0 0-3-2.984"
+                                  fill="#515658"
+                                />
+                                <path
+                                  d="M30.792 32.618V71.37a2.508 2.508 0 0 0 2.515 2.502h33.686a2.508 2.508 0 0 0 2.516-2.502V26.876a2.509 2.509 0 0 0-2.516-2.5H39.549l-8.757 8.242z"
+                                  fill="#FFF"
+                                />
+                                <path
+                                  d="M39.55 24.376v5.738a2.51 2.51 0 0 1-2.517 2.504h-6.241l8.757-8.242z"
+                                  fill="#C0C0BE"
+                                />
+                                <path
+                                  d="M50.152 23.008a.966.966 0 0 1-.971-.963c0-.534.434-.966.97-.966.535 0 .97.432.97.966a.967.967 0 0 1-.97.963m5.994-3.944h-3.612v-.663a2.375 2.375 0 0 0-2.381-2.368 2.374 2.374 0 0 0-2.384 2.368v.663h-3.61a3.217 3.217 0 0 0-3.226 3.207v3.856h18.437V22.27a3.216 3.216 0 0 0-3.224-3.207"
+                                  fill="#2F3237"
+                                />
+                                <path
+                                  d="M44.303 44.337h19.654v-2.173H44.303zM44.303 49.252h19.654V47.08H44.303zM44.303 54.167h19.654v-2.172H44.303zM44.303 59.083h19.654V56.91H44.303zM42.102 41.322h-4.025v3.858H42.102v-3.858zm-3.173 3.016h2.32v-2.173h-2.32v2.173zM42.102 46.237h-4.025v3.858H42.102v-3.858zm-3.173 3.015h2.32V47.08h-2.32v2.172zM42.102 51.152h-4.025V55.01H42.102V51.152zm-3.173 3.014h2.32v-2.17h-2.32v2.17zM42.102 56.068h-4.025v3.858H42.102v-3.858zm-3.173 3.015h2.32v-2.172h-2.32v2.172z"
+                                  fill="#A59D96"
+                                />
+                                <path
+                                  d="M38.107 41.08l2.172 2.456 3.057-3.904M38.107 46.116l2.172 2.457 3.057-3.904"
+                                  stroke="#2F3237"
+                                  stroke-width="2.361"
+                                />
+                              </g>
+                            </svg>
+                          </div>
+                          <div
+                            class="c4 c5 icon"
+                          >
+                            <button
+                              class="lukknapp c6 c7"
+                              data-test-id="c-modal__close-button-id"
+                            >
+                              <span
+                                class="text-hide"
+                              />
+                            </button>
+                            <div
+                              data-test-id="mock-joarkbrowser"
+                            />
+                          </div>
+                          <div
+                            class="c8 c9 buttons"
+                          >
+                            <div
+                              class="c10 c11"
+                            >
+                              <button
+                                class="knapp c12 c13 knapp--hoved"
+                                data-test-id="c-modal__button-id-0"
+                                id="c-modal__button-id-0"
+                                type="submit"
+                              >
+                                buc:form-addSelectedAttachments
+                              </button>
+                            </div>
+                            <div
+                              class="c10 c11"
+                            >
+                              <button
+                                class="knapp c14 c15 knapp--standard"
+                                data-test-id="c-modal__button-id-1"
+                                id="c-modal__button-id-1"
+                                type="submit"
+                              >
+                                ui:cancel
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                >
+                  <ModalPortal
+                    ariaHideApp={true}
+                    bodyOpenClassName="ReactModal__Body--open"
+                    className="c0 c1"
+                    closeTimeoutMS={0}
+                    contentElement={[Function]}
+                    defaultStyles={
+                      Object {
+                        "content": Object {
+                          "WebkitOverflowScrolling": "touch",
+                          "background": "#fff",
+                          "border": "1px solid #ccc",
+                          "borderRadius": "4px",
+                          "bottom": "40px",
+                          "left": "40px",
+                          "outline": "none",
+                          "overflow": "auto",
+                          "padding": "20px",
+                          "position": "absolute",
+                          "right": "40px",
+                          "top": "40px",
+                        },
+                        "overlay": Object {
+                          "backgroundColor": "rgba(255, 255, 255, 0.75)",
+                          "bottom": 0,
+                          "left": 0,
+                          "position": "fixed",
+                          "right": 0,
+                          "top": 0,
+                        },
+                      }
+                    }
+                    isOpen={true}
+                    onRequestClose={[Function]}
+                    overlayClassName="modal__overlay"
+                    overlayElement={[Function]}
+                    parentSelector={[Function]}
+                    portalClassName="ReactModalPortal"
+                    preventScroll={false}
+                    role="dialog"
+                    shouldCloseOnEsc={true}
+                    shouldCloseOnOverlayClick={true}
+                    shouldFocusAfterRender={true}
+                    shouldReturnFocusAfterClose={true}
+                    style={
+                      Object {
+                        "content": Object {},
+                        "overlay": Object {},
+                      }
+                    }
+                  >
+                    <div
+                      className="ReactModal__Overlay ReactModal__Overlay--after-open modal__overlay"
+                      onClick={[Function]}
+                      onMouseDown={[Function]}
+                      style={Object {}}
+                    >
+                      <div
+                        aria-modal={true}
+                        className="ReactModal__Content ReactModal__Content--after-open c0 c1"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        onMouseDown={[Function]}
+                        onMouseUp={[Function]}
+                        role="dialog"
+                        style={Object {}}
+                        tabIndex="-1"
+                      >
+                        <styled.div>
+                          <div
+                            className="c2 c3"
+                          >
+                            <Document>
+                              <svg
+                                height="100"
+                                width="100"
+                                xmlns="http://www.w3.org/2000/svg"
+                                xmlnsXlink="http://www.w3.org/1999/xlink"
+                              >
+                                <defs>
+                                  <circle
+                                    cx="50"
+                                    cy="50"
+                                    id="a"
+                                    r="50"
+                                  />
+                                </defs>
+                                <g
+                                  fill="none"
+                                  fillRule="evenodd"
+                                >
+                                  <g>
+                                    <mask
+                                      fill="#fff"
+                                      id="b"
+                                    >
+                                      <use
+                                        xlinkHref="#a"
+                                      />
+                                    </mask>
+                                    <g
+                                      mask="url(#b)"
+                                    >
+                                      <path
+                                        d="M-8 100h126V0H-8z"
+                                        fill="#99BDCD"
+                                      />
+                                    </g>
+                                  </g>
+                                  <path
+                                    d="M70.224 21.607H30.076a2.989 2.989 0 0 0-2.998 2.983v50.37a2.967 2.967 0 0 0 .88 2.11c.066.064.138.131.214.19a2.988 2.988 0 0 0 1.904.683h40.148c1.657 0 3-1.336 3-2.982V24.59a2.99 2.99 0 0 0-3-2.984"
+                                    fill="#515658"
+                                  />
+                                  <path
+                                    d="M30.792 32.618V71.37a2.508 2.508 0 0 0 2.515 2.502h33.686a2.508 2.508 0 0 0 2.516-2.502V26.876a2.509 2.509 0 0 0-2.516-2.5H39.549l-8.757 8.242z"
+                                    fill="#FFF"
+                                  />
+                                  <path
+                                    d="M39.55 24.376v5.738a2.51 2.51 0 0 1-2.517 2.504h-6.241l8.757-8.242z"
+                                    fill="#C0C0BE"
+                                  />
+                                  <path
+                                    d="M50.152 23.008a.966.966 0 0 1-.971-.963c0-.534.434-.966.97-.966.535 0 .97.432.97.966a.967.967 0 0 1-.97.963m5.994-3.944h-3.612v-.663a2.375 2.375 0 0 0-2.381-2.368 2.374 2.374 0 0 0-2.384 2.368v.663h-3.61a3.217 3.217 0 0 0-3.226 3.207v3.856h18.437V22.27a3.216 3.216 0 0 0-3.224-3.207"
+                                    fill="#2F3237"
+                                  />
+                                  <path
+                                    d="M44.303 44.337h19.654v-2.173H44.303zM44.303 49.252h19.654V47.08H44.303zM44.303 54.167h19.654v-2.172H44.303zM44.303 59.083h19.654V56.91H44.303zM42.102 41.322h-4.025v3.858H42.102v-3.858zm-3.173 3.016h2.32v-2.173h-2.32v2.173zM42.102 46.237h-4.025v3.858H42.102v-3.858zm-3.173 3.015h2.32V47.08h-2.32v2.172zM42.102 51.152h-4.025V55.01H42.102V51.152zm-3.173 3.014h2.32v-2.17h-2.32v2.17zM42.102 56.068h-4.025v3.858H42.102v-3.858zm-3.173 3.015h2.32v-2.172h-2.32v2.172z"
+                                    fill="#A59D96"
+                                  />
+                                  <path
+                                    d="M38.107 41.08l2.172 2.456 3.057-3.904M38.107 46.116l2.172 2.457 3.057-3.904"
+                                    stroke="#2F3237"
+                                    strokeWidth="2.361"
+                                  />
+                                </g>
+                              </svg>
+                            </Document>
+                          </div>
+                        </styled.div>
+                        <styled.div
+                          className="icon"
+                        >
+                          <div
+                            className="c4 c5 icon"
+                          >
+                            <Styled(Lukknapp)
+                              data-test-id="c-modal__close-button-id"
+                              onClick={[Function]}
+                            >
+                              <Lukknapp
+                                bla={false}
+                                className="c6 c7"
+                                data-test-id="c-modal__close-button-id"
+                                hvit={false}
+                                onClick={[Function]}
+                                overstHjorne={false}
+                              >
+                                <button
+                                  className="lukknapp c6 c7"
+                                  data-test-id="c-modal__close-button-id"
+                                  onClick={[Function]}
+                                >
+                                  <span
+                                    className="text-hide"
+                                  />
+                                </button>
+                              </Lukknapp>
+                            </Styled(Lukknapp)>
+                            <Component
+                              data-test-id="a-buc-c-sedattachmentmodal__joarkbrowser-id"
+                              existingItems={
+                                Array [
+                                  Object {
+                                    "date": 1970-01-31T23:00:00.000Z,
+                                    "dokumentInfoId": "4",
+                                    "hasSubrows": false,
+                                    "journalpostId": "1",
+                                    "key": "1",
+                                    "tema": "tema",
+                                    "title": "title",
+                                    "type": "joark",
+                                    "variant": Object {
+                                      "filnavn": "mockFilnavn",
+                                      "variantformat": "mockVariant",
+                                    },
+                                  },
+                                ]
+                              }
+                              mode="select"
+                              onRowSelectChange={[Function]}
+                              tableId="test-id"
+                            >
+                              <div
+                                data-test-id="mock-joarkbrowser"
+                              />
+                            </Component>
+                          </div>
+                        </styled.div>
+                        <styled.div
+                          className="buttons"
+                        >
+                          <div
+                            className="c8 c9 buttons"
+                          >
+                            <styled.div
+                              key="0"
+                            >
+                              <div
+                                className="c10 c11"
+                              >
+                                <Styled(o)
+                                  data-test-id="c-modal__button-id-0"
+                                  disabled={false}
+                                  id="c-modal__button-id-0"
+                                  key="buc:form-addSelectedAttachments"
+                                  onClick={[Function]}
+                                >
+                                  <o
+                                    className="c12 c13"
+                                    data-test-id="c-modal__button-id-0"
+                                    disabled={false}
+                                    id="c-modal__button-id-0"
+                                    onClick={[Function]}
+                                  >
+                                    <c
+                                      autoDisableVedSpinner={false}
+                                      className="c12 c13"
+                                      data-test-id="c-modal__button-id-0"
+                                      disabled={false}
+                                      htmlType="submit"
+                                      id="c-modal__button-id-0"
+                                      inaktivKlasseVedDisabled={false}
+                                      kompakt={false}
+                                      mini={false}
+                                      onClick={[Function]}
+                                      spinner={false}
+                                      type="hoved"
+                                    >
+                                      <button
+                                        className="knapp c12 c13 knapp--hoved"
+                                        data-test-id="c-modal__button-id-0"
+                                        disabled={false}
+                                        id="c-modal__button-id-0"
+                                        onClick={[Function]}
+                                        type="submit"
+                                      >
+                                        buc:form-addSelectedAttachments
+                                      </button>
+                                    </c>
+                                  </o>
+                                </Styled(o)>
+                              </div>
+                            </styled.div>
+                            <styled.div
+                              key="1"
+                            >
+                              <div
+                                className="c10 c11"
+                              >
+                                <Styled(o)
+                                  data-test-id="c-modal__button-id-1"
+                                  disabled={false}
+                                  id="c-modal__button-id-1"
+                                  key="ui:cancel"
+                                  onClick={[Function]}
+                                >
+                                  <o
+                                    className="c14 c15"
+                                    data-test-id="c-modal__button-id-1"
+                                    disabled={false}
+                                    id="c-modal__button-id-1"
+                                    onClick={[Function]}
+                                  >
+                                    <c
+                                      autoDisableVedSpinner={false}
+                                      className="c14 c15"
+                                      data-test-id="c-modal__button-id-1"
+                                      disabled={false}
+                                      htmlType="submit"
+                                      id="c-modal__button-id-1"
+                                      inaktivKlasseVedDisabled={false}
+                                      kompakt={false}
+                                      mini={false}
+                                      onClick={[Function]}
+                                      spinner={false}
+                                      type="standard"
+                                    >
+                                      <button
+                                        className="knapp c14 c15 knapp--standard"
+                                        data-test-id="c-modal__button-id-1"
+                                        disabled={false}
+                                        id="c-modal__button-id-1"
+                                        onClick={[Function]}
+                                        type="submit"
+                                      >
+                                        ui:cancel
+                                      </button>
+                                    </c>
+                                  </o>
+                                </Styled(o)>
+                              </div>
+                            </styled.div>
+                          </div>
+                        </styled.div>
+                      </div>
+                    </div>
+                  </ModalPortal>
+                </Portal>
+              </Modal>
+            </Styled(Modal)>
+          </Component>
+        </W>
+      </Modal>
+    </Component>
+  </W>
+</SEDAttachmentModal>
+`;

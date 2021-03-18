@@ -119,13 +119,13 @@ const svarpasedReducer = (
         personRelatert: (action as ActionWithPayload).payload
       }
 
-    case types.SVARPASED_PREVIEW_FILE_SUCCESS:
+    case types.SVARPASED_PREVIEW_SUCCESS:
       return {
         ...state,
         previewFile: (action as ActionWithPayload).payload
       }
 
-    case types.SVARPASED_PREVIEW_FILE_FAILURE:
+    case types.SVARPASED_PREVIEW_FAILURE:
       return {
         ...state,
         previewFile: null

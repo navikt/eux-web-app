@@ -16,12 +16,12 @@ const sprintf = require('sprintf-js').sprintf
 
 export const getPreviewFile = () => {
   return call({
-    url: urls.API_PREVIEW_FILE_URL,
+    url: urls.API_PREVIEW_URL,
     expectedPayload: mockPreview,
     type: {
-      request: types.SVARPASED_PREVIEW_FILE_REQUEST,
-      success: types.SVARPASED_PREVIEW_FILE_SUCCESS,
-      failure: types.SVARPASED_PREVIEW_FILE_FAILURE
+      request: types.SVARPASED_PREVIEW_REQUEST,
+      success: types.SVARPASED_PREVIEW_SUCCESS,
+      failure: types.SVARPASED_PREVIEW_FAILURE
     }
   })
 }

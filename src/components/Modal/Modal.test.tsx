@@ -1,10 +1,11 @@
 import { mount, ReactWrapper } from 'enzyme'
 import React from 'react'
-import { Modal, ModalProps } from './Modal'
+import Modal, { ModalProps } from './Modal'
 
 describe('components/Modal', () => {
   let wrapper: ReactWrapper
   const initialMockProps: ModalProps = {
+    highContrast: false,
     modal: {
       modalTitle: 'mockModalTitle',
       modalText: 'mockModalText',
@@ -21,35 +22,35 @@ describe('components/Modal', () => {
     closeButton: true
   }
 
-  it('Renders', () => {
+  it('Render: match snapshot', () => {
     wrapper = mount(<Modal {...initialMockProps} />)
     expect(wrapper.isEmptyRender()).toBeFalsy()
     expect(wrapper).toMatchSnapshot()
   })
 
-  it('Has proper HTML structure', () => {
+  it('Render: has proper HTML structure', () => {
     wrapper = mount(<Modal {...initialMockProps} />)
-    expect(wrapper.find('.c-modal__title').hostNodes().render().text()).toEqual(initialMockProps.modal!.modalTitle)
-    expect(wrapper.find('.c-modal__text').hostNodes().render().text()).toEqual(initialMockProps.modal!.modalText)
-    expect(wrapper.find('#c-modal__main-button-id').hostNodes().render().text()).toEqual(initialMockProps.modal!.modalButtons![0].text)
-    expect(wrapper.find('#c-modal__other-button-id').hostNodes().render().text()).toEqual(initialMockProps.modal!.modalButtons![1].text)
+    expect(wrapper.find('[data-test-id=\'c-modal__title-id\']').hostNodes().render().text()).toEqual(initialMockProps.modal!.modalTitle)
+    expect(wrapper.find('[data-test-id=\'c-modal__text-id\']').hostNodes().render().text()).toEqual(initialMockProps.modal!.modalText)
+    expect(wrapper.find('[data-test-id=\'c-modal__button-id-0\']').hostNodes().render().text()).toEqual(initialMockProps.modal!.modalButtons![0].text)
+    expect(wrapper.find('[data-test-id=\'c-modal__button-id-1\']').hostNodes().render().text()).toEqual(initialMockProps.modal!.modalButtons![1].text)
   })
 
-  it('Buttons are active', () => {
+  it('Handling: buttons are active', () => {
     wrapper = mount(<Modal {...initialMockProps} />);
     (initialMockProps.modal!.modalButtons![0].onClick as jest.Mock).mockReset();
     (initialMockProps.modal!.modalButtons![1].onClick as jest.Mock).mockReset()
-    wrapper.find('#c-modal__main-button-id').hostNodes().simulate('click')
+    wrapper.find('[data-test-id=\'c-modal__button-id-0\']').hostNodes().simulate('click')
     expect(initialMockProps.modal!.modalButtons![0].onClick).toHaveBeenCalled()
 
-    wrapper.find('#c-modal__other-button-id').hostNodes().simulate('click')
+    wrapper.find('[data-test-id=\'c-modal__button-id-1\']').hostNodes().simulate('click')
     expect(initialMockProps.modal!.modalButtons![1].onClick).toHaveBeenCalled()
   })
 
-  it('close buttons clicked', () => {
+  it('Handling: close buttons clicked', () => {
     (initialMockProps.onModalClose as jest.Mock).mockReset()
     wrapper = mount(<Modal {...initialMockProps} />)
-    wrapper.find('.c-modal__close-button').hostNodes().simulate('click')
+    wrapper.find('[data-test-id=\'c-modal__close-button-id\']').hostNodes().simulate('click')
     expect(initialMockProps.onModalClose).toHaveBeenCalled()
   })
 })

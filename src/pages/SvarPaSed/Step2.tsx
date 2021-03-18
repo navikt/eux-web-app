@@ -4,6 +4,7 @@ import * as svarpasedActions from 'actions/svarpased'
 import Tilsette from 'assets/icons/Tilsette'
 import classNames from 'classnames'
 import Alert from 'components/Alert/Alert'
+import Attachments from 'components/Attachments/Attachments'
 import FamilyManager from 'components/FamilyManager/FamilyManager'
 import Formaal from 'components/Formaal/Formaal'
 import Inntekt from 'components/Inntekt/Inntekt'
@@ -224,6 +225,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
     <Step2Div>
       {_modal && (
         <Modal
+          highContrast={highContrast}
           modal={_modal}
           onModalClose={() => setModal(undefined)}
         />
@@ -284,6 +286,11 @@ const Step2: React.FC<SvarPaSedProps> = ({
         />
       </TextAreaDiv>
       <VerticalSeparatorDiv data-size='2' />
+      <Attachments
+        highContrast={highContrast}
+        onSedCreated={() => {}}
+        sed={undefined}
+      />
       <HighContrastFlatknapp
         mini
         kompakt

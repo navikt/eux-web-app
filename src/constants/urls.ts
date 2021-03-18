@@ -42,4 +42,7 @@ export const API_VEDLEGG_POST_URL = API_BASE_URL + '/rina/vedlegg'
 export const API_VEDLEGG_DOKUMENT_URL = API_BASE_URL + '/rina/dokumenter/?rinasaksnummer=%(rinasaksnummer)s'
 
 // TO DO
-export const API_PREVIEW_FILE_URL = ''
+export const API_PREVIEW_URL = ''
+export const API_JOARK_LIST_URL =  '/metadata/%(userId)s'
+export const API_JOARK_GET_URL = '/hentdokument/%(journalpostId)s/%(dokumentInfoId)s/%(variantformat)s'
+export const API_JOARK_ATTACHMENT_URL =  '/vedlegg/%(aktoerId)s/%(rinaId)s/%(rinaDokumentId)s/%(journalpostId)s/%(dokumentInfoId)s/%(variantformat)s'

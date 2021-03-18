@@ -94,6 +94,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
         />
         {modal !== undefined && (
           <Modal
+            highContrast={highContrast}
             appElement={(document.getElementById('main') || document.body)}
             modal={modal}
             onModalClose={handleModalClose}
