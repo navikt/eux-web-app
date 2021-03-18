@@ -1,5 +1,6 @@
 //import { setReplySed } from 'actions/svarpased'
 import { setReplySed } from 'actions/svarpased'
+import classNames from 'classnames'
 import { F002Sed, FSed, Periode, ReplySed, USed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -10,6 +11,7 @@ import {
   HighContrastKnapp,
   HighContrastRadio,
   HighContrastRadioGroup,
+  HighContrastTextArea,
   HorizontalSeparatorDiv,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
@@ -49,6 +51,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
   const [_avsenderinstitusjon, setAvsenderinstitusjon] = useState<string>('')
   const [_typeKrav, setTypeKrav] = useState<string>((replySed as F002Sed).krav.kravType)
   const [_informasjon, setInformasjon] = useState<string>((replySed as F002Sed).krav.kravType)
+  const [_clarification, setClarification] = useState<string>('')
 
   const setAnmodningsperiodeStartDato = (e: string) => {
     setAnmodningsperiode({
@@ -273,6 +276,26 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           label={t('ui:info-point-information')}
           onClick={() => setInformasjon('gi_oss_punktvise_opplysninger')}
         />
+        {_informasjon === 'gi_oss_punktvise_opplysninger' && (
+          <div className='slideAnimate'>
+            <VerticalSeparatorDiv/>
+            <HighContrastTextArea
+              style={{width: '100%', minHeight: '6rem'}}
+              data-test-id={'c-seddetails-clarification-textarea'}
+              id={'c-seddetails-clarification-textarea'}
+              className={classNames({
+                'skjemaelement__input--harFeil':
+                  validation['seddetails-clarification']
+              })}
+              placeholder={t('ui:placeholder-input-default')}
+              label={t('ui:label-clarification')}
+              value={_clarification}
+              feil={validation['seddetails-clarification']
+                ? validation['seddetails-clarification']!.feilmelding
+                : undefined}
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setClarification(e.target.value)}/>
+          </div>
+        )}
       </HighContrastRadioGroup>
       </div>
       <VerticalSeparatorDiv/>

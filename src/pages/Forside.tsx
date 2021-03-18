@@ -13,7 +13,7 @@ const Forside: React.FC = (): JSX.Element => {
       <Container>
         <Margin />
         <Content>
-          <>
+          <div style={{minWidth: '800px'}}>
             <Lenkepanel
               className='slideAnimate'
               href='#'
@@ -43,7 +43,7 @@ const Forside: React.FC = (): JSX.Element => {
               {t('ui:indexpage-svarSed')}
             </Lenkepanel>
 
-          </>
+          </div>
         </Content>
         <Margin />
       </Container>
