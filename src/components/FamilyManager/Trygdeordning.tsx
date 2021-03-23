@@ -1,4 +1,4 @@
-import Tilsette from 'assets/icons/Tilsette'
+import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
 import Select from 'components/Select/Select'
 import { PensjonPeriode, Periode, ReplySed } from 'declarations/sed'
@@ -270,7 +270,7 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
                 kompakt
                 onClick={() => i < 0 ? onAdd(pageCategory, sedCategory) : onRemoved(sedCategory!, i)}
               >
-                {i < 0 ? <Tilsette /> : <Trashcan />}
+                {i < 0 ? <Add /> : <Trashcan />}
                 <HorizontalSeparatorDiv data-size='0.5' />
                 {i < 0 ? t('label:add') : t('label:remove')}
               </HighContrastFlatknapp>
@@ -329,7 +329,7 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
                 kompakt
                 onClick={() => i < 0 ? onAdd(pageCategory, sedCategory) : onRemoved(sedCategory!, i)}
               >
-                {i < 0 ? <Tilsette /> : <Trashcan />}
+                {i < 0 ? <Add /> : <Trashcan />}
                 <HorizontalSeparatorDiv data-size='0.5' />
                 {i < 0 ? t('label:add') : t('label:remove')}
               </HighContrastFlatknapp>
@@ -352,7 +352,7 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
             [pageCategory]: true
           })}
         >
-          <Tilsette />
+          <Add />
           <HorizontalSeparatorDiv data-size='0.5' />
           {t('label:add-new-periode')}
         </HighContrastFlatknapp>

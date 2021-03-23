@@ -1,4 +1,4 @@
-import Tilsette from 'assets/icons/Tilsette'
+import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
 import Select from 'components/Select/Select'
 import { FamilieRelasjon2, Periode, ReplySed } from 'declarations/sed'
@@ -294,7 +294,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
             kompakt
             onClick={() => (i < 0 ? onFamilieRelasjonAdd() : onFamilieRelasjonRemove(i))}
           >
-            {i < 0 ? <Tilsette /> : <Trashcan />}
+            {i < 0 ? <Add /> : <Trashcan />}
             <HorizontalSeparatorDiv data-size='0.5' />
             {i < 0 ? t('label:add') : t('label:remove')}
           </HighContrastFlatknapp>
@@ -321,7 +321,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                 kompakt
                 onClick={() => setSeeNewFamilieRelasjon(true)}
               >
-                <Tilsette />
+                <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />
                 {t('label:add-new-relationship')}
               </HighContrastFlatknapp>

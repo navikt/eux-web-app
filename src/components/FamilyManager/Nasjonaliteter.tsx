@@ -1,4 +1,4 @@
-import Tilsette from 'assets/icons/Tilsette'
+import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
 import { ReplySed, Statsborgerskap } from 'declarations/sed'
 import { Kodeverk, Validation } from 'declarations/types'
@@ -128,7 +128,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
             kompakt
             onClick={() => (i < 0 ? onNationalityAdd() : onNationalityRemove(i))}
           >
-            {i < 0 ? <Tilsette /> : <Trashcan />}
+            {i < 0 ? <Add /> : <Trashcan />}
             <HorizontalSeparatorDiv data-size='0.5' />
             {i < 0 ? t('label:add') : t('label:remove')}
           </HighContrastFlatknapp>
@@ -166,7 +166,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
                 kompakt
                 onClick={() => setSeeNewNationalityForm(true)}
               >
-                <Tilsette />
+                <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />
                 {t('label:add-nationality')}
               </HighContrastFlatknapp>

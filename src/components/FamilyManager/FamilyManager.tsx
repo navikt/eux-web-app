@@ -1,9 +1,9 @@
 import * as svarpasedActions from 'actions/svarpased'
 import { setReplySed } from 'actions/svarpased'
-import FilledCheckCircle from 'assets/icons/filled-version-check-circle-2'
-import FilledRemoveCircle from 'assets/icons/filled-version-remove-circle'
-import Barn from 'assets/icons/icon-barn'
-import Tilsette from 'assets/icons/Tilsette'
+import FilledCheckCircle from 'assets/icons/CheckCircle'
+import FilledRemoveCircle from 'assets/icons/RemoveCircle'
+import Barn from 'assets/icons/Child'
+import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import Adresser from 'components/FamilyManager/Adresser'
 import Familierelasjon from 'components/FamilyManager/Familierelasjon'
@@ -125,7 +125,7 @@ const mapState = (state: State): any => ({
   arbeidsforholdList: state.svarpased.arbeidsforholdList,
   familierelasjonKodeverk: state.app.familierelasjoner,
   highContrast: state.ui.highContrast,
-  gettingArbeidfsforholdList: state.loading.gettingArbeidsforholdList,
+  gettingArbeidsforholdList: state.loading.gettingArbeidsforholdList,
   gettingPerson: state.loading.gettingPerson,
   landkoderList: state.app.landkoder,
   replySed: state.svarpased.replySed,
@@ -257,7 +257,7 @@ const FamilyManager: React.FC = () => {
             }}
             style={{ animationDelay: totalIndex * 0.1 + 's' }}
             className={classNames('personDiv', {
-              slideAnimate: true,
+              slideInFromLeft: true,
               selected: _editCurrentPersonID === personId
             })}
           >
@@ -316,7 +316,7 @@ const FamilyManager: React.FC = () => {
                 key={o.value}
                 style={{ animationDelay: i * 0.1 + 's' }}
                 className={classNames({
-                  slideAnimate: true,
+                  slideInFromLeft: true,
                   selected: _editCurrentPersonID === personId && _menuOption === o.value
                 })}
                 onClick={() => changePersonOption(personId, o.value)}
@@ -362,7 +362,7 @@ const FamilyManager: React.FC = () => {
                 kompakt
                 onClick={onAddNewPerson}
               >
-                <Tilsette />
+                <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />
                 {t('label:add-person')}
               </HighContrastFlatknapp>

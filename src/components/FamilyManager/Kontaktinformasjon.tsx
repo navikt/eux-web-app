@@ -1,4 +1,4 @@
-import Tilsette from 'assets/icons/Tilsette'
+import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
 import Select from 'components/Select/Select'
 import { Epost, ReplySed, Telefon } from 'declarations/sed'
@@ -157,7 +157,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
             kompakt
             onClick={() => i < 0 ? onTelefonAdd() : onTelefonRemoved(i)}
           >
-            {i < 0 ? <Tilsette /> : <Trashcan />}
+            {i < 0 ? <Add /> : <Trashcan />}
             <HorizontalSeparatorDiv data-size='0.5' />
             {i < 0 ? t('label:add') : t('label:remove')}
           </HighContrastFlatknapp>
@@ -185,7 +185,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
             kompakt
             onClick={() => i < 0 ? onEpostAdd() : onEpostRemoved(i)}
           >
-            {i < 0 ? <Tilsette /> : <Trashcan />}
+            {i < 0 ? <Add /> : <Trashcan />}
             <HorizontalSeparatorDiv data-size='0.5' />
             {i < 0 ? t('label:add') : t('label:remove')}
           </HighContrastFlatknapp>
@@ -223,7 +223,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
                 kompakt
                 onClick={() => setSeeNewTelefonForm(true)}
               >
-                <Tilsette />
+                <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />
                 {t('label:add-new-telefon')}
               </HighContrastFlatknapp>
@@ -252,7 +252,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
                 kompakt
                 onClick={() => setSeeNewEpostForm(true)}
               >
-                <Tilsette />
+                <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />
                 {t('label:add-new-epost')}
               </HighContrastFlatknapp>

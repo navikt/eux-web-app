@@ -1,4 +1,4 @@
-import Tilsette from 'assets/icons/Tilsette'
+import Add from 'assets/icons/Add'
 import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
@@ -33,7 +33,7 @@ const Avsenderlandet = ({
             kompakt
             onClick={() => setSeeNewPeriodeInSender(true)}
           >
-            <Tilsette />
+            <Add />
             <HorizontalSeparatorDiv data-size='0.5' />
             {t('label:add-new-periode-in-sender')}
           </HighContrastFlatknapp>

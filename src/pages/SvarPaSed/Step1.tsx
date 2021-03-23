@@ -1,8 +1,8 @@
 import * as appActions from 'actions/app'
 import * as svarpasedActions from 'actions/svarpased'
-import SentIcon from 'assets/icons/email-send-1'
-import ExternalLink from 'assets/icons/line-version-logout'
-import ReceivedIcon from 'assets/icons/mailbox-4'
+import SentIcon from 'assets/icons/Send'
+import ExternalLink from 'assets/icons/Logout'
+import ReceivedIcon from 'assets/icons/Email'
 import classNames from 'classnames'
 import { HiddenFormContainer } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
@@ -168,7 +168,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
       </Systemtittel>
       <VerticalSeparatorDiv data-size='2'/>
       <AlignedRow
-        className={classNames('slideAnimate', { feil: _validation.saksnummerOrFnr })}
+        className={classNames('slideInFromLeft', { feil: _validation.saksnummerOrFnr })}
       >
         <HorizontalSeparatorDiv data-size='0.1'/>
         <Column data-flex='2'>
@@ -254,7 +254,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                       </Etikett>
                     </>
                   )}
-                  className='slideAnimate'
+                  className='slideInFromLeft'
                   onChange={onParentSedChange}
                 />
                 {seds[sed].seds.map((connectedSed: ConnectedSed) => (

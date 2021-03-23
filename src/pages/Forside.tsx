@@ -15,7 +15,7 @@ const Forside: React.FC = (): JSX.Element => {
         <Content>
           <div style={{minWidth: '800px'}}>
             <Lenkepanel
-              className='slideAnimate'
+              className='slideInFromLeft'
               href='#'
               linkCreator={(props: any) => (<Link to='/opprett' {...props} />)}
               tittelProps='undertittel'
@@ -24,7 +24,7 @@ const Forside: React.FC = (): JSX.Element => {
             </Lenkepanel>
             <VerticalSeparatorDiv />
             <Lenkepanel
-              className='slideAnimate'
+              className='slideInFromLeft'
               href='#'
               linkCreator={(props: any) => (<Link to='/vedlegg' {...props} />)}
               style={{ animationDelay: '0.15s' }}
@@ -34,7 +34,7 @@ const Forside: React.FC = (): JSX.Element => {
             </Lenkepanel>
             <VerticalSeparatorDiv />
             <Lenkepanel
-              className='slideAnimate'
+              className='slideInFromLeft'
               href='#'
               linkCreator={(props: any) => (<Link to='/svarpased' {...props} />)}
               style={{ animationDelay: '0.3s' }}

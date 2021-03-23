@@ -16,7 +16,7 @@ import * as appActions from './actions/app'
 import { unregister } from './registerServiceWorker'
 import * as Utils from './utils/utils'
 import * as Sentry from './metrics/sentry'
-import { slideInFromLeft } from 'nav-hoykontrast'
+import { slideInFromLeft, slideInFromRight, slideInFromTop, slideInFromBottom } from 'nav-hoykontrast'
 
 import 'nav-frontend-alertstriper-style/dist/main.css'
 import 'nav-frontend-core/dist/main.css'
@@ -64,10 +64,25 @@ section {
   margin:1em 0;
 }
 
-.slideAnimate {
+.slideInFromLeft {
   opacity: 0;
   transform: translateX(-20px);
   animation: ${slideInFromLeft(20)} 0.3s forwards;
+}
+.slideInFromRight {
+  opacity: 0;
+  transform: translateX(20px);
+  animation: ${slideInFromRight(20)} 0.3s forwards;
+}
+.slideInFromTop {
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: ${slideInFromTop(20)} 0.3s forwards;
+}
+.slideInFromBottom {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: ${slideInFromBottom(20)} 0.3s forwards;
 }
 `
 

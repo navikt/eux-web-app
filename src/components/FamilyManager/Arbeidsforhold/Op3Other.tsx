@@ -1,4 +1,4 @@
-import Tilsette from 'assets/icons/Tilsette'
+import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
 import Select from 'components/Select/Select'
 import { PensjonPeriode, Periode } from 'declarations/sed'
@@ -153,7 +153,7 @@ const Op3Other = ({
           kompakt
           onClick={() => i < 0 ? onAdd() : onRemove(i)}
         >
-          {i < 0 ? <Tilsette /> : <Trashcan />}
+          {i < 0 ? <Add /> : <Trashcan />}
           <HorizontalSeparatorDiv data-size='0.5' />
           {i < 0 ? t('label:add') : t('label:remove')}
         </HighContrastFlatknapp>
@@ -178,7 +178,7 @@ const Op3Other = ({
             kompakt
             onClick={() => setSeeNewForm(!_seeNewForm)}
           >
-            <Tilsette />
+            <Add />
             <HorizontalSeparatorDiv data-size='0.5' />
             {t('label:add-new-periode')}
           </HighContrastFlatknapp>

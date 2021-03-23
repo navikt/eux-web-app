@@ -27,7 +27,7 @@ export const validateNasjonaliteter = (v: Validation, t: any, options: any, pers
       value = s.fomdato.match(/\d{2}\.\d{2}\.\d{4}/)
         ? undefined
         : {
-          feilmelding: t('message:validation-invalidDate', { person: personName }),
+          feilmelding: t('message:validation-invalidDateForPerson', { person: personName }),
           skjemaelementId: 'c-familymanager-' + personID + '-nasjonaliteter-' + i + '-fomdato-input'
         } as FeiloppsummeringFeil
     }

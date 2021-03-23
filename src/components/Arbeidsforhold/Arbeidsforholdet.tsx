@@ -1,8 +1,12 @@
+import Add from 'assets/icons/Add'
 import Edit from 'assets/icons/Edit'
-import Tilsette from 'assets/icons/Tilsette'
 import Trashcan from 'assets/icons/Trashcan'
+import { FlexCenterDiv, FlexDiv, PaddedFlexDiv, PileDiv } from 'components/StyledComponents'
+import { Arbeidsforholdet, Validation } from 'declarations/types.d'
+import _ from 'lodash'
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper'
-import { Checkbox } from 'nav-frontend-skjema'
+import { Checkbox, FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { Normaltekst, UndertekstBold } from 'nav-frontend-typografi'
 import {
   Column,
   HighContrastFlatknapp,
@@ -19,7 +23,6 @@ import { useTranslation } from 'react-i18next'
 import IkonArbeidsforhold from 'resources/images/ikon-arbeidsforhold'
 import styled from 'styled-components'
 import { formatterDatoTilNorsk } from 'utils/dato'
-import { Arbeidsforholdet } from 'declarations/types.d'
 
 const ArbeidsforholdPanel = styled(HighContrastPanel)`
   padding: 0rem !important;
@@ -31,39 +34,33 @@ const TrashcanIcon = styled(Trashcan)`
   width: 20px;
   cursor: pointer;
 `
-const FlexDiv = styled.div`
-  display: flex;
-  flex-direction: row;
+const FlexDivNoWrap = styled(FlexDiv)`
   flex-wrap: wrap;
 `
 const PaddedLink = styled(HighContrastLink)`
   padding: 0rem 0.35rem;
 `
-const ArbeidsforholdItem = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-`
-const ArbeidsforholdDesc = styled.div`
-  display: flex;
-  flex-direction: row;
-  padding: 1rem;
-`
+
 export interface ArbeidsforholdetProps {
   arbeidsforholdet: Arbeidsforholdet
   editable?: boolean
   index: number
+  onArbeidsforholdSelect: (a: Arbeidsforholdet, checked: boolean) => void
+  onArbeidsforholdEdit?: (a: Arbeidsforholdet, index: number) => void
+  onArbeidsforholdDelete?: (index: number) => void
   personID: string
   selected?: boolean
-  onArbeidsforholdClick: (a: Arbeidsforholdet, checked: boolean) => void
-  onArbeidsforholdEdited?: (a: Arbeidsforholdet) => void
-  onArbeidsforholdDelete?: (a: Arbeidsforholdet) => void
 }
 
 const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
-  arbeidsforholdet, editable, index, selected, personID,
-  onArbeidsforholdClick, onArbeidsforholdDelete = () => {}, onArbeidsforholdEdited = () => {}
+  arbeidsforholdet,
+  editable,
+  index,
+  selected,
+  onArbeidsforholdSelect,
+  onArbeidsforholdDelete = () => {},
+  onArbeidsforholdEdit = () => {},
+  personID
 }: ArbeidsforholdetProps): JSX.Element => {
   const {
     arbeidsforholdIDnav,
@@ -71,196 +68,314 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
     orgnr,
     ansettelsesPeriode
   } = arbeidsforholdet
-  const { t } = useTranslation()
-  const [isEditing, setIsEditing] = useState<boolean>(false)
-  const [isDeleting, setIsDeleting] = useState<boolean>(false)
-  const [_currentArbeidsperiodeStartDato, setCurrentArbeidsperiodeStartDato] = useState<string>(arbeidsforholdet.ansettelsesPeriode?.fom || '')
-  const [_currentArbeidsperiodeSluttDato, setCurrentArbeidsperiodeSluttDato] = useState<string>(arbeidsforholdet.ansettelsesPeriode?.tom || '')
-  const [_currentArbeidsperiodeOrgnr, setCurrentArbeidsperiodeOrgnr] = useState<string>(arbeidsforholdet.orgnr || '')
-  const [_currentArbeidsperiodeNavn, setCurrentArbeidsperiodeNavn] = useState<string>(arbeidsforholdet.navn || '')
-
-  const hasError = true
   const { fom, tom } = ansettelsesPeriode!
+  const { t } = useTranslation()
+  const hasError = true
+
+  const [_isDeleting, setIsDeleting] = useState<boolean>(false)
+  const [_isEditing, setIsEditing] = useState<boolean>(false)
+  const [_navn, setNavn] = useState<string>(navn || '')
+  const [_orgnr, setOrgnr] = useState<string>(orgnr || '')
+  const [_startDato, setStartDato] = useState<string>(fom || '')
+  const [_sluttDato, setSluttDato] = useState<string>(tom || '')
+  const [_validation, setValidation] = useState<Validation>({})
+
+  const resetValidation = (key: string): void => {
+    setValidation({
+      ..._validation,
+      [key]: undefined
+    })
+  }
+
+  const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
+
+  const performValidation = (): boolean => {
+    let validation: Validation = {}
+    if (!_navn) {
+      validation['arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-navn'] = {
+        skjemaelementId: 'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-navn-input',
+        feilmelding: t('message:validation-noName'),
+      } as FeiloppsummeringFeil
+    }
+    if (!_orgnr) {
+      validation['arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-orgnr'] = {
+        skjemaelementId: 'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-orgnr-input',
+        feilmelding: t('message:validation-noOrgnr'),
+      } as FeiloppsummeringFeil
+    }
+    if (!_startDato) {
+      validation['arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-startdato'] = {
+        skjemaelementId: 'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-startdato-input',
+        feilmelding: t('message:validation-noDate'),
+      } as FeiloppsummeringFeil
+    }
+    if (_startDato && !_startDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
+      validation['arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-startdato'] = {
+        skjemaelementId: 'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-startdato-input',
+        feilmelding: t('message:validation-invalidDate'),
+      } as FeiloppsummeringFeil
+    }
+    if (!_sluttDato) {
+      validation['arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-sluttdato'] = {
+        skjemaelementId: 'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-sluttdato-input',
+        feilmelding: t('message:validation-noDate'),
+      } as FeiloppsummeringFeil
+    }
+    if (_sluttDato && !_sluttDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
+      validation['arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-sluttdato'] = {
+        skjemaelementId: 'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-sluttdato-input',
+        feilmelding: t('message:validation-invalidDate')
+      } as FeiloppsummeringFeil
+    }
+    setValidation(validation)
+    return hasNoValidationErrors(validation)
+  }
+
+    const onNameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    resetValidation('arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-navn')
+    setNavn(e.target.value)
+  }
+
+  const onOrgnrChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    resetValidation('arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-orgnr')
+    setOrgnr(e.target.value)
+  }
+
+  const onStartDatoChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    resetValidation('arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-startdato')
+    setStartDato(e.target.value)
+  }
+
+  const onSluttDatoChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    resetValidation('arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-sluttdato')
+    setSluttDato(e.target.value)
+  }
+
+  const onSaveButtonClicked = () => {
+    const valid = performValidation()
+    if (valid) {
+      onArbeidsforholdEdit({
+        navn: _navn,
+        orgnr: _orgnr,
+        ansettelsesPeriode: {
+          fom: _startDato,
+          tom: _sluttDato
+        }
+      } as Arbeidsforholdet,
+        index)
+      setIsEditing(false)
+    }
+  }
+
+  const onEditButtonClicked  = () => {
+    setIsEditing(true)
+    setOrgnr(orgnr || '')
+    setNavn(navn || '')
+    setStartDato(fom)
+    setSluttDato(tom)
+  }
+
+  const onCancelButtonClicked = () => {
+    setIsEditing(false)
+    setOrgnr('')
+    setNavn('')
+    setStartDato('')
+    setSluttDato('')
+  }
+
+  const onSelectCheckboxClicked = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onArbeidsforholdSelect(arbeidsforholdet, e.target.checked)
+  }
 
   if (!navn || !orgnr) {
     return <div />
   }
   return (
-    <div key={arbeidsforholdIDnav}>
+    <div
+      className='slideInFromLeft'
+      key={arbeidsforholdIDnav}
+      style={{animationDelay : (index * 0.1) + 's'}}
+    >
       <VerticalSeparatorDiv data-size='0.5' />
       <ArbeidsforholdPanel key={index} border>
-        <ArbeidsforholdItem>
-          <ArbeidsforholdDesc>
+        <FlexCenterDiv>
+          <PaddedFlexDiv  className='slideInFromLeft'>
             <IkonArbeidsforhold />
             <HorizontalSeparatorDiv />
             <div>
-              {isEditing
-                ? (
-                  <Row>
-                    <Column>
-                      <HighContrastInput
-                        data-test-id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-navn-input'}
-                        feil={undefined}
-                        id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-navn-input'}
-                        onChange={(e: any) => setCurrentArbeidsperiodeNavn(e.target.value)}
-                        value={_currentArbeidsperiodeNavn}
-                        label={t('label:navn')}
-                        placeholder={t('elements:placeholder-input-default')}
-                      />
-                    </Column>
-                    <Column>
-                      <HighContrastInput
-                        data-test-id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-orgnr-input'}
-                        feil={undefined}
-                        id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-orgnr-input'}
-                        onChange={(e: any) => setCurrentArbeidsperiodeOrgnr(e.target.value)}
-                        value={_currentArbeidsperiodeOrgnr}
-                        label={t('label:orgnr')}
-                        placeholder={t('elements:placeholder-input-default')}
-                      />
-                    </Column>
-                  </Row>
-                  )
-                : (
-                  <>
-                    <strong>{navn}</strong>
-                    <br />
-                    {t('label:orgnummer')}:&nbsp;{orgnr}
-                    <br />
-                  </>
-                  )}
-              {isEditing
-                ? (
+              {_isEditing ? (
+                <Row>
+                  <Column>
+                    <HighContrastInput
+                      data-test-id={'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-navn-input'}
+                      feil={_validation['arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-navn']?.feilmelding}
+                      id={'c-arbeidsforholdet-' + personID + '-arbeidsforholdet[' + index + ']-navn-input'}
+                      label={t('label:name')}
+                      onChange={onNameChanged}
+                      placeholder={t('elements:placeholder-input-default')}
+                      value={_navn}
+                    />
+                  </Column>
+                  <Column>
+                    <HighContrastInput
+                      data-test-id={'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-orgnr-input'}
+                      feil={_validation['arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-orgnr']?.feilmelding}
+                      id={'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-orgnr-input'}
+                      onChange={onOrgnrChanged}
+                      value={_orgnr}
+                      label={t('label:orgnr')}
+                      placeholder={t('elements:placeholder-input-default')}
+                    />
+                  </Column>
+                </Row>
+              ) :
+                (
+                  <div>
+                    <UndertekstBold>
+                      {navn}
+                    </UndertekstBold>
+                    <Normaltekst>
+                      {t('label:orgnr')}:&nbsp;{orgnr}
+                    </Normaltekst>
+                  </div>
+                )
+              }
+              {_isEditing ?
+                (
                   <>
                     <VerticalSeparatorDiv data-size='0.5' />
                     <Row>
                       <Column>
                         <HighContrastInput
-                          data-test-id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-startdato-input'}
-                          feil={undefined}
-                          id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-startdato-input'}
-                          onChange={(e: any) => setCurrentArbeidsperiodeStartDato(e.target.value)}
-                          value={_currentArbeidsperiodeStartDato}
+                          data-test-id={'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-startdato-input'}
+                          feil={_validation['arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-startdato']?.feilmelding}
+                          id={'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-startdato-input'}
                           label={t('label:endDate')}
+                          onChange={onStartDatoChanged}
                           placeholder={t('elements:placeholder-date-default')}
+                          value={_startDato}
                         />
                       </Column>
                       <Column>
                         <HighContrastInput
-                          data-test-id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-sluttdato-input'}
-                          feil={undefined}
-                          id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-sluttdato-input'}
-                          onChange={(e: any) => setCurrentArbeidsperiodeSluttDato(e.target.value)}
-                          value={_currentArbeidsperiodeSluttDato}
+                          data-test-id={'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-sluttdato-input'}
+                          feil={_validation['arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-sluttdato']?.feilmelding}
+                          id={'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-sluttdato-input'}
                           label={t('label:endDate')}
+                          onChange={onSluttDatoChanged}
                           placeholder={t('elements:placeholder-date-default')}
+                          value={_sluttDato}
                         />
                       </Column>
                     </Row>
                   </>
                   )
                 : (
-                  <>
-                    {t('label:startDate')}:&nbsp;
-                    {formatterDatoTilNorsk(fom)}
-                    <br />
-                    {t('label:startDate')}:&nbsp;
-                    {formatterDatoTilNorsk(tom)}
-                    <br />
-                  </>
-                  )}
-              {isEditing && (
-                <>
-                  <VerticalSeparatorDiv />
-                  <HighContrastKnapp
-                    mini
-                    kompakt
-                    onClick={() =>
-                      onArbeidsforholdEdited({
-                        navn: _currentArbeidsperiodeNavn,
-                        orgnr: _currentArbeidsperiodeOrgnr,
-                        ansettelsesPeriode: {
-                          fom: _currentArbeidsperiodeStartDato,
-                          tom: _currentArbeidsperiodeSluttDato
-                        }
-                      } as Arbeidsforholdet)}
-                  >
-                    <Tilsette />
-                    <HorizontalSeparatorDiv data-size='0.5' />
-                    {t('label:add')}
-                  </HighContrastKnapp>
-                  <HorizontalSeparatorDiv data-size='0.5' />
-                  <HighContrastFlatknapp
-                    mini
-                    kompakt
-                    onClick={() => setIsEditing(!isEditing)}
-                  >
-                    {t('label:cancel')}
-                  </HighContrastFlatknapp>
-                </>
-              )}
+                  <div>
+                    <Normaltekst>
+                      {t('label:startDate')}:&nbsp;{formatterDatoTilNorsk(fom)}
+                    </Normaltekst>
+                    <Normaltekst>
+                      {t('label:startDate')}:&nbsp;{formatterDatoTilNorsk(tom)}
+                    </Normaltekst>
+                  </div>
+                )}
             </div>
-          </ArbeidsforholdDesc>
-          <ArbeidsforholdDesc>
-            {editable && !isEditing && !isDeleting && (
+          </PaddedFlexDiv>
+          <PaddedFlexDiv className='slideInFromRight'  style={{animationDelay: '0.3s'}}>
+            {editable && !_isEditing && !_isDeleting && (
               <>
-                <div>
-                  <TrashcanIcon onClick={() => setIsDeleting(!isDeleting)} />
-                  <HorizontalSeparatorDiv data-size='0.5' />
-                </div>
-                <div>
-                  <EditIcon onClick={() => setIsEditing(!isEditing)} />
-                  <HorizontalSeparatorDiv data-size='0.5' />
-                </div>
+                <HighContrastFlatknapp kompakt style={{
+                  marginTop: '-0.5rem',
+                  marginRight: '-0.5rem'
+                }}
+                 onClick={() => setIsDeleting(!_isDeleting)}
+                >
+                  <TrashcanIcon/>
+                </HighContrastFlatknapp>
+                <HorizontalSeparatorDiv data-size='0.5' />
+                <HighContrastFlatknapp kompakt style={{
+                  marginTop: '-0.5rem',
+                  marginRight: '-0.5rem'
+                }}
+                 onClick={onEditButtonClicked}
+                >
+                  <EditIcon/>
+                </HighContrastFlatknapp>
+                <HorizontalSeparatorDiv />
               </>
             )}
-            {!isEditing && !isDeleting && (
+            {!_isEditing && !_isDeleting && (
               <Checkbox
                 checked={selected}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onArbeidsforholdClick(
-                  arbeidsforholdet,
-                  e.target.checked
-                )}
+                onChange={onSelectCheckboxClicked}
                 label={t('label:choose')}
               />
             )}
-          </ArbeidsforholdDesc>
-          {isDeleting && (
-            <div>
+            {_isEditing && (
+              <div>
+                <VerticalSeparatorDiv />
+                <HighContrastKnapp
+                  mini
+                  kompakt
+                  onClick={onSaveButtonClicked}
+                >
+                  <Add />
+                  <HorizontalSeparatorDiv data-size='0.5' />
+                  {t('elements:button-add')}
+                </HighContrastKnapp>
+                <HorizontalSeparatorDiv data-size='0.5' />
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  onClick={onCancelButtonClicked}
+                >
+                  {t('elements:button-cancel')}
+                </HighContrastFlatknapp>
+              </div>
+            )}
+          </PaddedFlexDiv>
+          {_isDeleting && (
+            <PileDiv className='slideInFromRight'>
               <strong>
-                Are you sure?
+                {t('label:areYouSure')}
               </strong>
               <VerticalSeparatorDiv />
-              <HighContrastKnapp
-                mini
-                kompakt
-                onClick={() =>
-                  onArbeidsforholdDelete(arbeidsforholdet)}
-              >
-                <Trashcan />
+              <FlexDiv>
+                <HighContrastKnapp
+                  mini
+                  kompakt
+                  onClick={() =>
+                    onArbeidsforholdDelete(index)}
+                >
+                  <Trashcan />
+                  <HorizontalSeparatorDiv data-size='0.5' />
+                  {t('elements:button-remove')}
+                </HighContrastKnapp>
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('label:remove')}
-              </HighContrastKnapp>
-              <HorizontalSeparatorDiv data-size='0.5' />
-              <HighContrastFlatknapp
-                mini
-                kompakt
-                onClick={() => setIsDeleting(!isDeleting)}
-              >
-                {t('label:cancel')}
-              </HighContrastFlatknapp>
-            </div>
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  onClick={() => setIsDeleting(!_isDeleting)}
+                >
+                  {t('elements:button-cancel')}
+                </HighContrastFlatknapp>
+                <HorizontalSeparatorDiv/>
+              </FlexDiv>
+            </PileDiv>
           )}
-        </ArbeidsforholdItem>
+        </FlexCenterDiv>
         {hasError && (
-          <AlertStripeAdvarsel>
-            <FlexDiv>
-              {t('message:warning-conflict-aa-1')}
-              <PaddedLink href='#'>{t('message:warning-conflict-aa-link-1')}</PaddedLink>
-              {t('message:warning-conflict-aa-2')}
-              <PaddedLink href='#'>{t('message:warning-conflict-aa-link-2')}</PaddedLink>
-            </FlexDiv>
-          </AlertStripeAdvarsel>
+          <div className='slideInFromBottom' style={{animationDelay: '0.2s'}}>
+            <AlertStripeAdvarsel>
+              <FlexDivNoWrap>
+                {t('message:warning-conflict-aa-1')}
+                <PaddedLink href='#'>{t('message:warning-conflict-aa-link-1')}</PaddedLink>
+                {t('message:warning-conflict-aa-2')}
+                <PaddedLink href='#'>{t('message:warning-conflict-aa-link-2')}</PaddedLink>
+              </FlexDivNoWrap>
+            </AlertStripeAdvarsel>
+          </div>
         )}
       </ArbeidsforholdPanel>
       <VerticalSeparatorDiv data-size='0.5' />

@@ -1,4 +1,4 @@
-import Tilsette from 'assets/icons/Tilsette'
+import Add from 'assets/icons/Add'
 import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
@@ -36,7 +36,7 @@ const ReasonToCome = ({
             kompakt
             onClick={() => setSeeNewReasonToComing(true)}
           >
-            <Tilsette />
+            <Add />
             <HorizontalSeparatorDiv data-size='0.5' />
             {t('label:add-new-reason-to-coming')}
           </HighContrastFlatknapp>

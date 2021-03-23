@@ -1,5 +1,5 @@
 import { searchPerson } from 'actions/svarpased'
-import Tilsette from 'assets/icons/Tilsette'
+import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
 import { Pin, ReplySed } from 'declarations/sed'
 import { Kodeverk, Person, Validation } from 'declarations/types'
@@ -360,7 +360,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
                 kompakt
                 onClick={() => onSetAddBirthPlace(true)}
               >
-                <Tilsette />
+                <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />
                 {t('label:add-birthplace')}
               </HighContrastFlatknapp>

@@ -1,61 +1,49 @@
+import { Arbeidsforholdet } from 'declarations/types.d'
 import { Knapp } from 'nav-frontend-knapper'
-import { Column, HorizontalSeparatorDiv, Row } from 'nav-hoykontrast'
+import { Column, Row } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
 import ArbeidsforholdetFC from './Arbeidsforholdet'
-import { Arbeidsforholdet } from 'declarations/types.d'
-
-const ArbeidsforholdButton = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`
 
 export interface ArbeidsforholdProps {
   arbeidsforholdList: Array<Arbeidsforholdet> | undefined
   editable?: boolean
-  getArbeidsforholdList: () => void
+  getArbeidsforholdList?: () => void
   gettingArbeidsforholdList?: boolean
   personID?: string
+  onArbeidsforholdSelect: (a: Arbeidsforholdet, checked: boolean) => void
+  onArbeidsforholdEdit?: (a: Arbeidsforholdet, index: number) => void
+  onArbeidsforholdDelete?: (index: number) => void
+  searchable?: boolean
   valgteArbeidsforhold: Array<Arbeidsforholdet>
-  onArbeidsforholdClick: (a: Arbeidsforholdet, checked: boolean) => void
-  onArbeidsforholdEdited?: (a: Arbeidsforholdet) => void
-  onArbeidsforholdDelete?: (a: Arbeidsforholdet) => void
 }
 
 const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
-  editable = false,
   arbeidsforholdList,
+  editable = false,
   gettingArbeidsforholdList = false,
-  getArbeidsforholdList,
+  getArbeidsforholdList = () => {},
   personID,
-  valgteArbeidsforhold,
-  onArbeidsforholdClick,
-  onArbeidsforholdEdited = () => {},
-  onArbeidsforholdDelete = () => {}
+  onArbeidsforholdSelect,
+  onArbeidsforholdEdit = () => {},
+  onArbeidsforholdDelete = () => {},
+  searchable = false,
+  valgteArbeidsforhold
 }: ArbeidsforholdProps): JSX.Element => {
   const { t } = useTranslation()
-
   return (
     <Row>
       <Column className='arbeidsforhold'>
-        {!arbeidsforholdList && (
+        {searchable && !arbeidsforholdList && (
           <Row>
             <Column>
-              <ArbeidsforholdButton>
-                <span>
-                  {t('label:arbeidsforhold')}
-                </span>
-                <HorizontalSeparatorDiv />
-                <Knapp
-                  disabled={gettingArbeidsforholdList}
-                  spinner={gettingArbeidsforholdList}
-                  onClick={getArbeidsforholdList}
-                >
-                  {gettingArbeidsforholdList ? t('label:searching') : t('label:search')}
-                </Knapp>
-              </ArbeidsforholdButton>
+              <Knapp
+                disabled={gettingArbeidsforholdList}
+                spinner={gettingArbeidsforholdList}
+                onClick={getArbeidsforholdList}
+              >
+                {gettingArbeidsforholdList ? t('label:searching') : t('elements:button-search-for-arbeidsforhold')}
+              </Knapp>
             </Column>
           </Row>
         )}
@@ -69,11 +57,11 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
                 arbeidsforholdet={arbeidsforholdet}
                 editable={editable}
                 selected={selected}
-                key={index}
+                key={arbeidsforholdet.orgnr + '-' + index}
                 index={index}
-                onArbeidsforholdClick={onArbeidsforholdClick}
+                onArbeidsforholdSelect={onArbeidsforholdSelect}
                 onArbeidsforholdDelete={onArbeidsforholdDelete}
-                onArbeidsforholdEdited={onArbeidsforholdEdited}
+                onArbeidsforholdEdit={onArbeidsforholdEdit}
                 personID={personID!}
               />
             )

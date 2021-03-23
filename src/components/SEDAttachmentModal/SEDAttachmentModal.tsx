@@ -1,4 +1,4 @@
-import Document from 'assets/icons/document'
+import Document from 'assets/icons/Document'
 import JoarkBrowser from 'components/JoarkBrowser/JoarkBrowser'
 import Modal from 'components/Modal/Modal'
 import { JoarkBrowserItems } from 'declarations/attachments'

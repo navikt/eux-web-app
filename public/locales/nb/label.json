@@ -1,13 +1,25 @@
 {
-  "aaRegistered" : "AA Registeret",
+  "areYouSure": "Sikker?",
+
+  "choose" : "Velg",
+
+  "endDate": "Sluttdato",
+
+  "name": "Navn",
+
+  "orgnr": "Orgnr.",
+
+  "startDate": "Startdato",
+
+
+
   "abroad-id": "Utenlandsk ID",
-  "add": "Legg til",
+
   "addAttachments" : "Legg til vedlegg",
   "add-as-attachment-to-sed" : "Legge til vedlegg til SED",
   "add-birthplace": "Legg til fødested",
   "add-nationality": "Legg til ny nasjonalitet",
   "add-new-adresse": "Legg til ny adresse/seksjon",
-  "add-new-arbeidsperiode": "Legg til ny arbeidsperiode",
   "add-new-epost": "Legg til ny epost",
   "add-new-relationship" : "Legg til ny familierelasjon",
   "add-new-periode": "Legg til ny periode",
@@ -21,7 +33,6 @@
   "addAttachments" : "Legg til vedlegg",
   "allKids-radiogroup" : "Vedtak angående alle barn som er oppgitt i denne SEDen",
   "allKids-select": "Avhuk de barn vedtaket <strong><U>ikke</U></strong> gjelder",
-  "added-arbeidsforhold": "Tillagte arbeidsperioder",
   "additional-information": "Ytterligere informasjon",
   "adresse": "Adresse",
   "amount": "Beløp",
@@ -38,7 +49,7 @@
   "boy" : "Gutt",
   "by": "By",
   "bygning": "Bygning",
-  "cancel": "Avbryt",
+
   "caseNumber" : "Saksnummer",
   "caseOwner" : "Motpart/sakseier",
   "children-in-household": "Barn i husstanden",
@@ -47,7 +58,7 @@
   "children-in-household-question-3": "Bor barnet i samme husstand som den aktuelle personen?",
   "children-in-household-question-4": "Bor barnet i institusjon?",
   "children-name": "Barnets navn",
-  "choose" : "Velg",
+
   "chooseSpørreSed" : "Velg spørre SED",
   "chooseSvarSed" : "Velg svar SED",
   "click-for-menu" : "Klikk på navn for å åpne/slutt skjemaer for {{person}}",
@@ -65,7 +76,7 @@
   "dokumentID": "DokumentID",
   "duration-stay": "Oppholdets varighet",
   "elements-of-personal-situation": "Elementer i personlig situasjon",
-  "endDate": "Sluttdato",
+
   "epost": "E-postadresse",
   "fagsak" : "Velg fagsak",
   "familierelasjon-title": "Familierelasjon til ektefelle eller annen person",
@@ -118,7 +129,7 @@
   "moving-date-sender": "Flyttedato til avsenderlandet",
   "moving-date-receiver": "Flyttedato til mottakerslandet",
   "mother": "Mor",
-  "name": "Navn",
+
   "nameatbirth": "Navn ved fødsel",
   "nationality": "Nasjonalitet",
   "no" : "Nei",
@@ -128,7 +139,7 @@
   "not-available": "Ikke tilgjengelig",
   "oppholdsland": "Oppholdsland",
   "opplysninger": "Hvilke opplysninger...?",
-  "orgnummer": "Orgnr",
+
   "other": "Annet",
   "other-person": "Annet person",
   "other-relation": "Annen relasjon",
@@ -145,7 +156,6 @@
   "reason-for-coming" : "Grunnlag for bosetting",
   "receiver-name": "Mottakers navn",
   "relation-duration": "Relasjonens varighet",
-  "remove" : "Fjern",
   "remove-birthplace" : "Fjern fødested",
   "reply": "Besvar",
   "resetForm": "AVSLUTT UTFYLLING",
@@ -159,7 +169,7 @@
   "saksnummerOrFnr" : "Søk på RINA saksnummer eller f.nr./d.nr.",
   "save": "Lagre",
   "saveSed": "Lagre",
-  "search" : "Søk",
+
   "searcher" : "Søker",
   "searching" : "Søker...",
   "searchResultsForSaksnummerOrFnr" : "{{antall}} treff for: {{saksnummerOrFnr}}",
@@ -175,8 +185,7 @@
   "shared-custody": "Delt foreldreansvar",
   "show-form": "Vis Skjema",
   "statsborgerskap" : "Statsborgerskap",
-  "startDate": "Startdato",
-  "sure": "Sikker?",
+
   "tema": "Velg behandlingstema",
   "telefonnummer": "Telefonnummer",
   "tilDato" : "Til dato",

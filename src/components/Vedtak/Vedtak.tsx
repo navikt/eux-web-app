@@ -1,4 +1,4 @@
-import Tilsette from 'assets/icons/Tilsette'
+import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
 import Select from 'components/Select/Select'
@@ -183,7 +183,7 @@ const Vedtak: React.FC<VedtakProps> = ({
             kompakt
             onClick={() => (i < 0 ? onAdd() : onRemove(i))}
           >
-            {i < 0 ? <Tilsette /> : <Trashcan />}
+            {i < 0 ? <Add /> : <Trashcan />}
             <HorizontalSeparatorDiv data-size='0.5' />
             {i < 0 ? t('label:add') : t('label:remove')}
           </HighContrastFlatknapp>
@@ -314,7 +314,7 @@ const Vedtak: React.FC<VedtakProps> = ({
                   kompakt
                   onClick={() => setSeeNewPeriode(true)}
                 >
-                  <Tilsette />
+                  <Add />
                   <HorizontalSeparatorDiv data-size='0.5' />
                   {t('label:add-new-periode')}
                 </HighContrastFlatknapp>

@@ -1,5 +1,5 @@
 import Edit from 'assets/icons/Edit'
-import FilledRemoveCircle from 'assets/icons/filled-version-remove-circle'
+import FilledRemoveCircle from 'assets/icons/RemoveCircle'
 import { ReplySed } from 'declarations/sed.d'
 import { Undertittel } from 'nav-frontend-typografi'
 import { HighContrastPanel, HighContrastFlatknapp, VerticalSeparatorDiv } from 'nav-hoykontrast'

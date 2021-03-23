@@ -1,6 +1,6 @@
 import { setReplySed } from 'actions/svarpased'
-import Barn from 'assets/icons/icon-barn'
-import Tilsette from 'assets/icons/Tilsette'
+import Barn from 'assets/icons/Child'
+import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
 import Select from 'components/Select/Select'
 import { F002Sed, PersonInfo, ReplySed } from 'declarations/sed'
@@ -208,7 +208,7 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
   const renderPerson = (personId: string, i: number) => {
     const p = _.get(_replySed, `${personId}.personInfo`)
     return (
-      <FlexDiv className='slideAnimate' style={{ animationDelay: i * 0.1 + 's' }} key={personId}>
+      <FlexDiv className='slideInFromLeft' style={{ animationDelay: i * 0.1 + 's' }} key={personId}>
         <CheckboxDiv>
           <FlexDiv>
             <Normaltekst>
@@ -308,7 +308,7 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
                 id='c-familymanager-personopplysninger-newperson-button'
                 onClick={onNewPersonAdd}
               >
-                <Tilsette width={20} />
+                <Add width={20} />
                 <HorizontalSeparatorDiv />
                 {t('label:add')}
               </Knapp>

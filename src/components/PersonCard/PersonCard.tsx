@@ -1,7 +1,7 @@
-import kvinne from 'assets/icons/icon-kvinne.png'
-import mann from 'assets/icons/icon-mann.png'
-import ukjent from 'assets/icons/icon-ukjent.png'
-import Tilsette from 'assets/icons/Tilsette'
+import kvinne from 'assets/icons/Woman.png'
+import mann from 'assets/icons/Man.png'
+import ukjent from 'assets/icons/Unknown.png'
+import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
 import { HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import { FamilieRelasjon, Kodeverk, Person } from 'declarations/types'
@@ -184,7 +184,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
             disabled={rolleList !== undefined && !rolle}
             onClick={() => _onAddClick(person)}
           >
-            <Tilsette width={20} />
+            <Add width={20} />
             <HorizontalSeparatorDiv />
             <ButtonLabel>
               {t('label:add')}

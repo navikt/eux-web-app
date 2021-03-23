@@ -6,6 +6,7 @@ describe('components/AbortModal/AbortModal', () => {
   let wrapper: ReactWrapper
   const initialMockProps: AbortModalProps = {
     closeModal: jest.fn(),
+    highContrast: false,
     isOpen: true,
     onAbort: jest.fn()
   }

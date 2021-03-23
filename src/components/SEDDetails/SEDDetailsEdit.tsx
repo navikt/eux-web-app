@@ -92,7 +92,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       <VerticalSeparatorDiv data-size='0.5'/>
       {_anmodningsperiode && (
         <>
-          <FlexDiv className='slideAnimate'>
+          <FlexDiv className='slideInFromLeft'>
             <HighContrastInput
               data-test-id={'c-seddetails-anmodningsperiode-startdato-input'}
               feil={validation['seddetails-anmodningsperiode-startdato']
@@ -120,7 +120,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       )}
       {_anmodningsperioder && _anmodningsperioder.map((p, i) => (
         <>
-          <FlexDiv className='slideAnimate' style={{animationDelay: i * 0.1 + 's'}}>
+          <FlexDiv className='slideInFromLeft' style={{animationDelay: i * 0.1 + 's'}}>
             <HighContrastInput
               data-test-id={'c-seddetails-anmodningsperioder[' + i + ']-startdato-input'}
               feil={validation['seddetails--anmodningsperioder[' + i + ']-startdato']
@@ -151,7 +151,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
         {t('label:searcher')}
       </UndertekstBold>
       <VerticalSeparatorDiv data-size='0.5'/>
-      <FlexDiv className='slideAnimate' style={{animationDelay: '0.2s'}}>
+      <FlexDiv className='slideInFromLeft' style={{animationDelay: '0.2s'}}>
         <HighContrastInput
           data-test-id={'c-seddetails-søker-fornavn-input'}
           feil={validation['seddetails-søker-fornavn']
@@ -179,7 +179,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
         {t('ui:relationship-ektefelle')}
       </UndertekstBold>
       <VerticalSeparatorDiv data-size='0.5'/>
-      <FlexDiv className='slideAnimate' style={{animationDelay: '0.3s'}}>
+      <FlexDiv className='slideInFromLeft' style={{animationDelay: '0.3s'}}>
         <HighContrastInput
           data-test-id={'c-seddetails-ektefelle-fornavn-input'}
           feil={validation['seddetails-ektefelle-fornavn']
@@ -203,7 +203,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
         />
       </FlexDiv>
       <VerticalSeparatorDiv/>
-      <div className='slideAnimate' style={{animationDelay: '0.4s'}}>
+      <div className='slideInFromLeft' style={{animationDelay: '0.4s'}}>
         <HighContrastInput
           data-test-id={'c-seddetails-sakseier-input'}
           feil={validation['seddetails-sakseier']
@@ -217,7 +217,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
         />
       </div>
       <VerticalSeparatorDiv data-size='0.5'/>
-      <div className='slideAnimate' style={{animationDelay: '0.5s'}}>
+      <div className='slideInFromLeft' style={{animationDelay: '0.5s'}}>
         <HighContrastInput
           data-test-id={'c-seddetails-avsenderinstitusjon-input'}
           feil={validation['seddetails-avsenderinstitusjon']
@@ -231,7 +231,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
         />
       </div>
       <VerticalSeparatorDiv/>
-      <div className='slideAnimate' style={{animationDelay: '0.6s'}}>
+      <div className='slideInFromLeft' style={{animationDelay: '0.6s'}}>
         <HighContrastRadioGroup
         legend={t('label:typeKrav')}
         data-test-id={'c-seddetails-typeKrav-radiogroup'}
@@ -255,7 +255,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       </HighContrastRadioGroup>
       </div>
       <VerticalSeparatorDiv/>
-      <div className='slideAnimate' style={{animationDelay: '0.7s'}}>
+      <div className='slideInFromLeft' style={{animationDelay: '0.7s'}}>
       <HighContrastRadioGroup
         legend={t('label:application-information')}
         data-test-id={'c-seddetails-informasjon-radiogroup'}
@@ -277,7 +277,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           onClick={() => setInformasjon('gi_oss_punktvise_opplysninger')}
         />
         {_informasjon === 'gi_oss_punktvise_opplysninger' && (
-          <div className='slideAnimate'>
+          <div className='slideInFromLeft'>
             <VerticalSeparatorDiv/>
             <HighContrastTextArea
               style={{width: '100%', minHeight: '6rem'}}
@@ -299,7 +299,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       </HighContrastRadioGroup>
       </div>
       <VerticalSeparatorDiv/>
-      <div className='slideAnimate' style={{animationDelay: '0.8s'}}>
+      <div className='slideInFromLeft' style={{animationDelay: '0.8s'}}>
         <HighContrastHovedknapp
           kompakt mini
           onClick={saveChanges}

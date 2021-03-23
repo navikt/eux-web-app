@@ -7,12 +7,6 @@
   "info-confirm-information" : "Vi bekrefter leverte opplysninger",
   "info-point-information" : "Gi oss punktvise opplysninger",
 
-  "modal-abort-contentLabel": "Bekreft navigasjon tilbake til forsiden",
-  "modal-abort-title": " Er du sikker på at du vil avbryte? ",
-  "modal-abort-description": "Informasjonen du har fylt inn hittil vil ikke bli lagret.",
-  "modal-abort-yes-button": "JA, AVBRYT",
-  "modal-abort-no-continue": "NEI, FORTSETT",
-
   "relationship-bruker": "Bruker",
   "relationship-ektefelle": "Ektefelle",
   "relationship-annenPerson": "Annen person",
@@ -30,6 +24,8 @@
   "ok-got-it" : "Ok, stemmer det",
   "log-me-again": "Logg inn på nytt",
 
+  "title-aaRegistered" : "AA Registeret",
+  "title-added-arbeidsforhold": "Tillagte arbeidsperioder",
   "title-amount-name-and-currency": "Beløp, navn og valuta for familieytelser for barn",
   "title-amount-for-whole-familie": "Beløp for familieytelse(r) for hele familien",
   "title-chooseFormaal" : "Velg formål",

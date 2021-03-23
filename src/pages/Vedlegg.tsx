@@ -146,7 +146,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
             {t('ui:title-vedlegg')}
           </Systemtittel>
           <VerticalSeparatorDiv />
-          <div className='noSlideAnimate'>
+          <div className='noslideInFromLeft'>
             <Input
               id='vedlegg-journalpostID'
               data-test-id='vedlegg-journalpostID'
@@ -164,7 +164,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
             />
           </div>
           <VerticalSeparatorDiv />
-          <div className='noSlideAnimate' style={{ animationDelay: '0.15s' }}>
+          <div className='noslideInFromLeft' style={{ animationDelay: '0.15s' }}>
             <Input
               id='vedlegg-dokumentID'
               data-test-id='vedlegg-dokumentID'
@@ -182,7 +182,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
             />
             <VerticalSeparatorDiv />
           </div>
-          <div className='noSlideAnimate' style={{ animationDelay: '0.3s' }}>
+          <div className='noslideInFromLeft' style={{ animationDelay: '0.3s' }}>
             <DocumentSearch
               validation={_validation}
               resetValidation={resetValidation}
@@ -191,7 +191,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
             />
             <VerticalSeparatorDiv />
           </div>
-          <div className='slideAnimate' style={{ animationDelay: '0.45s' }}>
+          <div className='slideInFromLeft' style={{ animationDelay: '0.45s' }}>
             <Hovedknapp
               onClick={sendSkjema}
               disabled={sendingVedlegg}

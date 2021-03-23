@@ -1,7 +1,7 @@
 import { clientClear } from 'actions/alert'
 import { getPreviewFile } from 'actions/svarpased'
 import * as svarpasedActions from 'actions/svarpased'
-import Tilsette from 'assets/icons/Tilsette'
+import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import Alert from 'components/Alert/Alert'
 import Attachments from 'components/Attachments/Attachments'
@@ -359,7 +359,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
         spinner={gettingPreviewFile}
         onClick={onPreviewSed}
       >
-        <Tilsette />
+        <Add />
         <HorizontalSeparatorDiv data-size='0.5' />
           {gettingPreviewFile ? t('label:loading-file') : t('label:preview-sed')}
       </HighContrastFlatknapp>

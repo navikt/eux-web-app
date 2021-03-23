@@ -107,6 +107,8 @@ export interface OpprettSakSelector {
   valgtSektor: string | undefined
   valgtTema: string | undefined
   valgtUnit: string | undefined
+
+  highContrast: boolean
 }
 
 const mapState = (state: State): OpprettSakSelector => ({
@@ -143,7 +145,9 @@ const mapState = (state: State): OpprettSakSelector => ({
   valgtSedType: state.sak.sedtype,
   valgtSektor: state.sak.sektor,
   valgtTema: state.sak.tema,
-  valgtUnit: state.sak.unit
+  valgtUnit: state.sak.unit,
+
+  highContrast: state.ui.highContrast
 })
 
 const OpprettSak: React.FC<OpprettSakProps> = ({
@@ -180,7 +184,8 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
     valgtSedType,
     valgtSektor,
     valgtTema,
-    valgtUnit
+    valgtUnit,
+    highContrast
   }: OpprettSakSelector = useSelector<State, OpprettSakSelector>(mapState)
   const dispatch = useDispatch()
   const { t } = useTranslation()
@@ -399,7 +404,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
             alertMessage={alertMessage}
             alertType={alertType}
             alertTypesWatched={[types.SAK_PERSON_GET_FAILURE]}
-            className='slideAnimate'
+            className='slideInFromLeft'
             data-test-id='opprettsak__fnr'
             gettingPerson={gettingPerson}
             id='opprettsak__fnr'
@@ -425,7 +430,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
             <>
               <Row>
                 <Column
-                  className='slideAnimate'
+                  className='slideInFromLeft'
                   style={{ animationDelay: '0s' }}
                 >
                   <Select
@@ -450,7 +455,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                 </Column>
                 <HorizontalSeparatorDiv />
                 <Column
-                  className='slideAnimate'
+                  className='slideInFromLeft'
                   style={{ animationDelay: '0.15s' }}
                 >
                   {visEnheter && (
@@ -478,7 +483,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
               </Row>
               <Row>
                 <Column
-                  className='slideAnimate'
+                  className='slideInFromLeft'
                   style={{ animationDelay: '0.3s' }}
                 >
                   <Select
@@ -504,7 +509,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                 </Column>
                 <HorizontalSeparatorDiv />
                 <Column
-                  className='slideAnimate'
+                  className='slideInFromLeft'
                   style={{ animationDelay: '0.45s' }}
                 >
                   <Select
@@ -536,7 +541,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
               </Row>
               <Row>
                 <Column
-                  className='slideAnimate'
+                  className='slideInFromLeft'
                   style={{ animationDelay: '0.6s' }}
                 >
                   <CountrySelect
@@ -555,7 +560,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                 </Column>
                 <HorizontalSeparatorDiv />
                 <Column
-                  className='slideAnimate'
+                  className='slideInFromLeft'
                   style={{ animationDelay: '0.75s' }}
                 >
                   <Select
@@ -585,7 +590,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
               </Row>
               <Row>
                 {valgtSektor === 'FB' && (
-                  <Column className='slideAnimate'>
+                  <Column className='slideInFromLeft'>
                     <Systemtittel>
                       {t('label:familyRelationships')}
                     </Systemtittel>
@@ -641,7 +646,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
               {valgtSektor && (
                 <Row>
                   <Column
-                    className={classNames('slideAnimate', { feil: !!_validation.tema })}
+                    className={classNames('slideInFromLeft', { feil: !!_validation.tema })}
                   >
                     <Select
                       data-test-id='opprettsak__tema'
@@ -723,7 +728,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   getArbeidsforholdList={() => dispatch(sakActions.getArbeidsforholdList(person?.fnr))}
                   valgteArbeidsforhold={valgteArbeidsforhold}
                   arbeidsforholdList={arbeidsforholdList}
-                  onArbeidsforholdClick={(a: Arbeidsforholdet, checked: boolean) => dispatch(
+                  onArbeidsforholdSelect={(a: Arbeidsforholdet, checked: boolean) => dispatch(
                     checked
                       ? sakActions.addArbeidsforhold(a)
                       : sakActions.removeArbeidsforhold(a)
@@ -732,7 +737,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
               )}
               <VerticalSeparatorDiv />
               <Row
-                className='slideAnimate'
+                className='slideInFromLeft'
                 style={{ animationDelay: '0.9s' }}
               >
                 <Hovedknapp
@@ -807,9 +812,10 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
             </Row>
           )}
           <AbortModal
-            onAbort={onAbort}
-            isOpen={_visModal}
             closeModal={closeModal}
+            highContrast={highContrast}
+            isOpen={_visModal}
+            onAbort={onAbort}
           />
         </Content>
         <Margin />

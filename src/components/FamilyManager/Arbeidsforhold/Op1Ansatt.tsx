@@ -1,14 +1,14 @@
-import Tilsette from 'assets/icons/Tilsette'
+import Add from 'assets/icons/Add'
 import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
-import ArbeidsforholdetFC from 'components/Arbeidsforhold/Arbeidsforholdet'
 import { ReplySed } from 'declarations/sed'
 import { Arbeidsforholdet, Period, Validation } from 'declarations/types'
 import _ from 'lodash'
-import { Systemtittel, Undertittel } from 'nav-frontend-typografi'
+import { Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
   HighContrastFlatknapp,
-  HighContrastInput, HighContrastKnapp,
+  HighContrastInput,
+  HighContrastKnapp,
   HorizontalSeparatorDiv,
   Row,
   VerticalSeparatorDiv
@@ -30,19 +30,20 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
 }: Op1AnsattProps) => {
   const { t } = useTranslation()
 
-  const [_arbeidsforholdList, setArbeidsforholdList] = useState<Array<Arbeidsforholdet> | undefined>(undefined)
-
   const [_addedArbeidsforholdList, setAddedArbeidsforholdList] = useState<Array<Arbeidsforholdet>>([])
+  const [_existingArbeidsforholdList, setExistingArbeidsforholdList] = useState<Array<Arbeidsforholdet> | undefined>(undefined)
+
   const [_currentArbeidsperiodeStartDato, setCurrentArbeidsperiodeStartDato] = useState<string>('')
   const [_currentArbeidsperiodeSluttDato, setCurrentArbeidsperiodeSluttDato] = useState<string>('')
   const [_currentArbeidsperiodeOrgnr, setCurrentArbeidsperiodeOrgnr] = useState<string>('')
   const [_currentArbeidsperiodeNavn, setCurrentArbeidsperiodeNavn] = useState<string>('')
+
   const [_seeNewArbeidsperiode, setSeeNewArbeidsperiode] = useState<boolean>(false)
   const [_valgteArbeidsforhold, setValgtArbeidsforhold] = useState<Array<Arbeidsforholdet>>([])
 
   const fnr: string | undefined = _.find(_.get(replySed, `${personID}.personInfo.pin`), p => p.land === 'NO')?.identifikator
 
-  const onArbeidsforholdClick = (item: any, checked: boolean) => {
+  const onArbeidsforholdSelect = (item: any, checked: boolean) => {
     let newValgtArbeidsforhold: Array<Arbeidsforholdet>
     if (checked) {
       newValgtArbeidsforhold = _valgteArbeidsforhold.concat(item)
@@ -50,6 +51,48 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
       newValgtArbeidsforhold = _.filter(_valgteArbeidsforhold, v => v !== item)
     }
     setValgtArbeidsforhold(newValgtArbeidsforhold)
+  }
+
+  const onExistingArbeidsforholdEdit = (a: Arbeidsforholdet, index: number) => {
+    let newArbeidsforholdList = _.cloneDeep(_existingArbeidsforholdList)
+    if (newArbeidsforholdList) {
+      newArbeidsforholdList[index] = a
+      setExistingArbeidsforholdList(newArbeidsforholdList)
+    }
+  }
+
+  const onAddedArbeidsforholdEdit = (a: Arbeidsforholdet, index: number) => {
+    let newAddedArbeidsforholdList = _.cloneDeep(_addedArbeidsforholdList)
+    if (newAddedArbeidsforholdList) {
+      newAddedArbeidsforholdList[index] = a
+      setAddedArbeidsforholdList(newAddedArbeidsforholdList)
+    }
+  }
+
+  const onExistingArbeidsforholdDelete = (index: number) => {
+    let newArbeidsforholdList: Array<Arbeidsforholdet> | undefined = _.cloneDeep(_existingArbeidsforholdList)
+    let deletedArbeidsforhold: Array<Arbeidsforholdet> | undefined = newArbeidsforholdList?.splice(index, 1)
+    setExistingArbeidsforholdList(newArbeidsforholdList)
+
+    if (deletedArbeidsforhold && deletedArbeidsforhold.length > 0) {
+      let newValgtArbeidsforhold: Array<Arbeidsforholdet> = _.filter(_valgteArbeidsforhold, v => v.orgnr !== deletedArbeidsforhold![0].orgnr)
+      if (newValgtArbeidsforhold.length !== _valgteArbeidsforhold.length) {
+        setValgtArbeidsforhold(newValgtArbeidsforhold)
+      }
+    }
+  }
+
+  const onAddedArbeidsforholdDelete = (index: number) => {
+    let newAddedArbeidsforholdList: Array<Arbeidsforholdet> | undefined = _.cloneDeep(_addedArbeidsforholdList)
+    let deletedArbeidsforhold: Array<Arbeidsforholdet> | undefined = newAddedArbeidsforholdList?.splice(index, 1)
+    setAddedArbeidsforholdList(newAddedArbeidsforholdList)
+
+    if (deletedArbeidsforhold && deletedArbeidsforhold.length > 0) {
+      let newValgtArbeidsforhold: Array<Arbeidsforholdet> = _.filter(_valgteArbeidsforhold, v => v.orgnr !== deletedArbeidsforhold![0].orgnr)
+      if (newValgtArbeidsforhold.length !== _valgteArbeidsforhold.length) {
+        setValgtArbeidsforhold(newValgtArbeidsforhold)
+      }
+    }
   }
 
   const onAddArbeidsPeriode = () => {
@@ -70,51 +113,49 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
   }
 
   useEffect(() => {
-    if (_arbeidsforholdList === undefined && arbeidsforholdList !== undefined) {
-      setArbeidsforholdList(arbeidsforholdList)
+    if (_existingArbeidsforholdList === undefined && arbeidsforholdList !== undefined) {
+      setExistingArbeidsforholdList(arbeidsforholdList)
     }
-  }, [_arbeidsforholdList, arbeidsforholdList, setArbeidsforholdList])
+  }, [_existingArbeidsforholdList, arbeidsforholdList, setExistingArbeidsforholdList])
 
   return (
     <>
-      <Systemtittel>
-        {t('label:aaRegistered')}
-      </Systemtittel>
-
+      <Undertittel>
+        {t('ui:title-aaRegistered')}
+      </Undertittel>
+      <VerticalSeparatorDiv/>
       <Arbeidsforhold
         editable
+        searchable
         personID={personID}
         getArbeidsforholdList={() => getArbeidsforholdList(fnr)}
         valgteArbeidsforhold={_valgteArbeidsforhold}
-        arbeidsforholdList={_arbeidsforholdList}
-        onArbeidsforholdClick={onArbeidsforholdClick}
+        arbeidsforholdList={_existingArbeidsforholdList}
+        onArbeidsforholdSelect={onArbeidsforholdSelect}
         gettingArbeidsforholdList={gettingArbeidsforholdList}
-        onArbeidsforholdEdited={() => {}}
-        onArbeidsforholdDelete={(a: Arbeidsforholdet) =>
-          setArbeidsforholdList(_.filter(_arbeidsforholdList, _a => _a.orgnr === a.orgnr))}
+        onArbeidsforholdEdit={onExistingArbeidsforholdEdit}
+        onArbeidsforholdDelete={onExistingArbeidsforholdDelete}
       />
-
+      <VerticalSeparatorDiv/>
       {!_.isEmpty(_addedArbeidsforholdList) && (
         <>
           <Undertittel>
-            {t('label:added-arbeidsforhold')}
+            {t('ui:title-added-arbeidsforhold')}
           </Undertittel>
-          {_addedArbeidsforholdList?.map((a, i) => (
-            <ArbeidsforholdetFC
-              arbeidsforholdet={a}
-              editable
-              key={i}
-              index={i}
-              onArbeidsforholdClick={() => {}}
-              onArbeidsforholdDelete={(a: Arbeidsforholdet) =>
-                setAddedArbeidsforholdList(_.filter(_addedArbeidsforholdList, _a => _a.orgnr === a.orgnr))}
-              onArbeidsforholdEdited={() => {}}
-              personID={personID}
-            />
-          ))}
+          <VerticalSeparatorDiv/>
+          <Arbeidsforhold
+            editable
+            searchable={false}
+            personID={personID}
+            valgteArbeidsforhold={_valgteArbeidsforhold}
+            arbeidsforholdList={_addedArbeidsforholdList}
+            onArbeidsforholdSelect={onArbeidsforholdSelect}
+            onArbeidsforholdEdit={onAddedArbeidsforholdEdit}
+            onArbeidsforholdDelete={onAddedArbeidsforholdDelete}
+          />
         </>
       )}
-
+      <VerticalSeparatorDiv/>
       {!_seeNewArbeidsperiode
         ? (
           <HighContrastFlatknapp
@@ -122,9 +163,9 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
             kompakt
             onClick={() => setSeeNewArbeidsperiode(true)}
           >
-            <Tilsette />
+            <Add />
             <HorizontalSeparatorDiv data-size='0.5' />
-            {t('label:add-new-arbeidsperiode')}
+            {t('elements:button-add-new-arbeidsperiode')}
           </HighContrastFlatknapp>
           )
         : (
@@ -194,7 +235,7 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
                   kompakt
                   onClick={onAddArbeidsPeriode}
                 >
-                  <Tilsette />
+                  <Add />
                   <HorizontalSeparatorDiv data-size='0.5' />
                   {t('label:add')}
                 </HighContrastKnapp>

@@ -1,8 +1,8 @@
-import Advarsel from 'assets/icons/advarsel'
+import Warning from 'assets/icons/Warning'
 import { F002Sed, FSed, ReplySed, USed } from 'declarations/sed'
 import { FlagList } from 'flagg-ikoner'
 import { Normaltekst, UndertekstBold } from 'nav-frontend-typografi'
-import FilledCheckCircle from 'assets/icons/filled-version-check-circle-2'
+import FilledCheckCircle from 'assets/icons/CheckCircle'
 import { themeKeys, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -132,7 +132,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
       </FlexDiv>
       <VerticalSeparatorDiv/>
       <FlexDiv>
-        <Advarsel width={18} height={18}/>
+        <Warning width={18} height={18}/>
         <HorizontalSeparatorDiv data-size='0.5'/>
         <Normaltekst>
           {t('ui:info-point-information')}

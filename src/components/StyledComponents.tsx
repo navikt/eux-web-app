@@ -8,6 +8,22 @@ export const AlignedSelect = styled(Select)`
     margin-bottom: 0rem !important;
   }
 `
+export const FlexDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+`
+export const PileDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center
+`
+export const FlexCenterDiv = styled(FlexDiv)`
+  align-items: center;
+  justify-content: space-between;
+`
+export const PaddedFlexDiv = styled(FlexDiv)`
+  padding: 1rem;
+`
 export const FadingLineSeparator = styled.div`
    border-left: 1px solid ${({ theme }) => theme[themeKeys.MAIN_BORDER_COLOR]};
    opacity: 0;

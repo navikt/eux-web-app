@@ -1,6 +1,7 @@
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper'
+import { FlexDiv } from 'components/StyledComponents'
 import Modal from 'nav-frontend-modal'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import NavHighContrast, { HighContrastHovedknapp, HighContrastKnapp } from 'nav-hoykontrast'
 import PT from 'prop-types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -19,18 +20,15 @@ const Text = styled(Normaltekst)`
   padding: 2em;
   margin-bottom: 1em;
 `
-const Buttons = styled.div`
-  display: flex;
-`
-
 export interface AbortModalProps {
   closeModal: () => void
+  highContrast: boolean
   isOpen?: boolean
   onAbort: () => void
 }
 
 const AbortModal: React.FC<AbortModalProps> = ({
-  closeModal, isOpen = false, onAbort
+  closeModal, highContrast, isOpen = false, onAbort
 }: AbortModalProps): JSX.Element => {
   const { t } = useTranslation()
   return (
@@ -40,30 +38,33 @@ const AbortModal: React.FC<AbortModalProps> = ({
       closeButton={false}
       contentLabel={t('ui:modal-abort-contentLabel')}
     >
-      <Content>
-        <Undertittel>
-          {t('ui:modal-abort-title')}
-        </Undertittel>
-        <Text>
-          {t('ui:modal-abort-description')}
-        </Text>
-        <Buttons>
-          <Hovedknapp onClick={onAbort}>
-            {t('ui:modal-abort-yes-button')}
-          </Hovedknapp>
-          <Knapp onClick={closeModal}>
-            {t('ui:modal-abort-no-continue')}
-          </Knapp>
-        </Buttons>
-      </Content>
+      <NavHighContrast highContrast={highContrast}>
+        <Content>
+          <Undertittel>
+            {t('ui:modal-abort-title')}
+          </Undertittel>
+          <Text>
+            {t('ui:modal-abort-description')}
+          </Text>
+          <FlexDiv>
+            <HighContrastHovedknapp onClick={onAbort}>
+              {t('ui:modal-abort-yes-cancel')}
+            </HighContrastHovedknapp>
+            <HighContrastKnapp onClick={closeModal}>
+              {t('ui:modal-abort-no-continue')}
+            </HighContrastKnapp>
+          </FlexDiv>
+        </Content>
+      </NavHighContrast>
     </Modal>
   )
 }
 
 AbortModal.propTypes = {
   closeModal: PT.func.isRequired,
-  onAbort: PT.func.isRequired,
-  isOpen: PT.bool
+  highContrast: PT.bool.isRequired,
+  isOpen: PT.bool,
+  onAbort: PT.func.isRequired
 }
 
 export default AbortModal

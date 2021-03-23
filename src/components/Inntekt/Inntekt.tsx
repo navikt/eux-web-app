@@ -165,7 +165,7 @@ const Inntekt: React.FC<InntektProps> = ({
   return (
     <>
       <AlignedRow className={classNames({ feil: !isValid(validation) })}>
-        <Column className='slideAnimate'>
+        <Column className='slideInFromLeft'>
           <AlignedInput
             id='inntekt-fradato'
             data-test-id='inntekt-fradato'
@@ -184,7 +184,7 @@ const Inntekt: React.FC<InntektProps> = ({
           <VerticalSeparatorDiv />
         </Column>
         <HorizontalSeparatorDiv />
-        <Column className='slideAnimate' style={{ animationDelay: '0.25s' }}>
+        <Column className='slideInFromLeft' style={{ animationDelay: '0.25s' }}>
           <AlignedInput
             id='inntekt-tildato'
             data-test-id='inntekt-tildato'
@@ -203,7 +203,7 @@ const Inntekt: React.FC<InntektProps> = ({
           <VerticalSeparatorDiv />
         </Column>
         <HorizontalSeparatorDiv />
-        <Column className='slideAnimate' style={{ animationDelay: '0.5s' }}>
+        <Column className='slideInFromLeft' style={{ animationDelay: '0.5s' }}>
           <AlignedSelect
             id='inntekt-tema'
             highContrast={highContrast}
@@ -231,7 +231,7 @@ const Inntekt: React.FC<InntektProps> = ({
         </Column>
         <HorizontalSeparatorDiv />
         <AlignCenterColumn
-          className='slideAnimate'
+          className='slideInFromLeft'
           style={{ animationDelay: '0.6s' }}
         >
           <SokKnapp

@@ -139,7 +139,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
   return (
     <Container>
       <Row
-        className={classNames(className, 'slideAnimate', { feil: !!alertMessage })}
+        className={classNames(className, 'slideInFromLeft', { feil: !!alertMessage })}
       >
         <Column>
           <Input

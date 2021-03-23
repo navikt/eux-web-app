@@ -1,10 +1,10 @@
-import { AlertErrorPropType } from 'declarations/components.pt'
-import FilledRemoveCircle from 'assets/icons/filled-version-remove-circle'
+import FilledRemoveCircle from 'assets/icons/RemoveCircle'
 import classNames from 'classnames'
-import { fadeIn } from 'nav-hoykontrast'
 import { AlertError, AlertStatus } from 'declarations/components'
+import { AlertErrorPropType } from 'declarations/components.pt'
 import _ from 'lodash'
 import AlertStripe, { AlertStripeType } from 'nav-frontend-alertstriper'
+import { fadeIn } from 'nav-hoykontrast'
 import PT from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
@@ -88,9 +88,6 @@ export const Alert: React.FC<AlertProps> = ({
     if (_.isString(error)) {
       return error
     }
-    /* if (error.status) {
-      errorMessage.push(error.status)
-    } */
     if (error.message) {
       errorMessage.push(error.message)
     }

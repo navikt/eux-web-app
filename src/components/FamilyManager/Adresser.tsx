@@ -1,4 +1,4 @@
-import Tilsette from 'assets/icons/Tilsette'
+import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
 import { Adresse, ReplySed } from 'declarations/sed'
 import { Kodeverk, Validation } from 'declarations/types'
@@ -272,7 +272,7 @@ const Adresser: React.FC<AdresseProps> = ({
             kompakt
             onClick={() => i < 0 ? onAdresseAdd() : onAdresseRemove(i)}
           >
-            {i < 0 ? <Tilsette /> : <Trashcan />}
+            {i < 0 ? <Add /> : <Trashcan />}
             <HorizontalSeparatorDiv data-size='0.5' />
             {i < 0 ? t('label:add') : t('label:remove')}
           </HighContrastFlatknapp>
@@ -296,7 +296,7 @@ const Adresser: React.FC<AdresseProps> = ({
                 kompakt
                 onClick={() => setSeeNewAdresseForm(true)}
               >
-                <Tilsette />
+                <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />
                 {t('label:add-new-adresse')}
               </HighContrastFlatknapp>

@@ -1,0 +1,47 @@
+FOR VALIDATION: remove c-, -{type}
+
+IDs 												VALIDATION
+
+c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-navn-input         - {INTERNAL} arbeidsforhold-{personID}-arbeidsforholdet[{i}]-navn
+c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-orgnr-input        - {INTERNAL} arbeidsforhold-{personID}-arbeidsforholdet[{i}]-orgnr
+c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-startdato-input    - {INTERNAL} arbeidsforhold-{personID}-arbeidsforholdet[{i}]-startdato
+c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-sluttdato-input    - {INTERNAL} arbeidsforhold-{personID}-arbeidsforholdet[{i}]-sluttdato
+
+
+
+
+
+c-formaal-select                                    - formaal
+c-step2-comment-textarea                            - comment
+-
+c-seddetails-anmodningsperiode-startdato-input      - seddetails-anmodningsperiode-startdato
+c-seddetails-anmodningsperiode-sluttdato-input      - seddetails-anmodningsperiode-sluttdato
+c-seddetails-anmodningsperioder[i]-startdato-input
+c-seddetails-anmodningsperioder[i]-sluttdato-input
+c-seddetails-søker-fornavn-input
+c-seddetails-søker-etternavn-input
+c-seddetails-ektefelle-fornavn-input
+c-seddetails-ektefelle-etternavn-input
+c-seddetails-sakseier-input
+c-seddetails-avsenderinstitusjon-input
+c-seddetails-typeKrav-radiogroup
+c-seddetails-informasjon-radiogroup
+c-seddetails-opplysninger-textarea
+-
+c-vedtak-allkids-radiogroup
+c-vedtak-startdato-input
+c-vedtak-sluttdato-input
+c-vedtak-type-select
+c-vedtak-reason-textarea
+
+
+use camelcase, use norwegian fpr awkward traks possible,
+
+add slideAnimate
+check that all calls go to nv-hoykontrast
+chek minimum FlexDiv calls
+
+Clean ActionTypes later
+Clean Attachments later
+
+

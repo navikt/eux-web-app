@@ -1,4 +1,4 @@
-import Tilsette from 'assets/icons/Tilsette'
+import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
 import Select from 'components/Select/Select'
@@ -28,7 +28,6 @@ const PanelDiv = styled.div`
   flex-direction: column;
   flex: 1;
 `
-
 const TextAreaDiv = styled.div`
   textarea {
     width: 100%;
@@ -46,13 +45,18 @@ export interface PeriodeAndVedtak {
   vedtak: string
 }
 
+export interface NameAndBenefit {
+  navn: string
+  betegnelsePåYtelse: string
+}
+
 const Motregning: React.FC<MotregningProps> = ({
   highContrast,
   replySed
 }: MotregningProps): JSX.Element => {
 
   const { t } = useTranslation()
-  const [_allKids, setAllKids] = useState<string | undefined>(undefined)
+  const [_motregning, setMotregning] = useState<string | undefined>(undefined)
   const [_startDato, setStartDato] = useState<string>('')
   const [_sluttDato, setSluttDato] = useState<string>('')
   const [_reason, setReason] = useState<string>('')
@@ -181,7 +185,7 @@ const Motregning: React.FC<MotregningProps> = ({
             kompakt
             onClick={() => (i < 0 ? onAdd() : onRemove(i))}
           >
-            {i < 0 ? <Tilsette /> : <Trashcan />}
+            {i < 0 ? <Add /> : <Trashcan />}
             <HorizontalSeparatorDiv data-size='0.5' />
             {i < 0 ? t('label:add') : t('label:remove')}
           </HighContrastFlatknapp>
@@ -209,18 +213,18 @@ const Motregning: React.FC<MotregningProps> = ({
 
             <HighContrastRadio
             name={'c-vedtak-allkids'}
-            checked={_allKids === 'ja'}
+            checked={_motregning === 'ja'}
               label={t('label:motregning-request-1')}
-            onClick={() => setAllKids('ja') }/>
+            onClick={() => setMotregning('ja') }/>
           <VerticalSeparatorDiv/>
             <HighContrastRadio
             name={'c-vedtak-allkids'}
-            checked={_allKids === 'nei'}
+            checked={_motregning === 'nei'}
             label={t('label:motregning-request-2')}
-            onClick={() => setAllKids('nei') }/>
+            onClick={() => setMotregning('nei') }/>
 
         </HighContrastRadioGroup>
-        {_allKids === 'nei' && (
+        {_motregning === 'nei' && (
           <>
            <div dangerouslySetInnerHTML={{__html: t('label:allKids-select') + ':'}}>
            </div>
@@ -314,7 +318,7 @@ const Motregning: React.FC<MotregningProps> = ({
                   kompakt
                   onClick={() => setSeeNewPeriode(true)}
                 >
-                  <Tilsette />
+                  <Add />
                   <HorizontalSeparatorDiv data-size='0.5' />
                   {t('label:add-new-periode')}
                 </HighContrastFlatknapp>

@@ -1,5 +1,5 @@
 import { setReplySed } from 'actions/svarpased'
-import Tilsette from 'assets/icons/Tilsette'
+import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
 import Select from 'components/Select/Select'
 import { Option } from 'declarations/app'
@@ -98,14 +98,14 @@ const Formaal: React.FC<FormaalProps> = ({
       {_formaals && _formaals.map((p: string) => {
         const candidateForDeletion = _confirmDeleteFormaal.indexOf(p) >= 0
         return (
-          <FlexDiv className='slideAnimate' key={p}>
+          <FlexDiv className='slideInFromLeft' key={p}>
             <Normaltekst>
               {_.find(formaalOptions, _p => _p.value === p)?.label}
             </Normaltekst>
             {candidateForDeletion ? (
               <FlexDiv>
                 <Normaltekst>
-                  {t('label:sure')}
+                  {t('label:areYouSure')}
                 </Normaltekst>
                 <HorizontalSeparatorDiv data-size='0.5'/>
                 <HighContrastFlatknapp
@@ -149,7 +149,7 @@ const Formaal: React.FC<FormaalProps> = ({
               kompakt
               onClick={() => setAddFormaal(!_addFormaal)}
             >
-              <Tilsette />
+              <Add />
               <HorizontalSeparatorDiv data-size='0.5' />
               {t('label:add-new-formaal')}
             </HighContrastFlatknapp>
@@ -174,7 +174,7 @@ const Formaal: React.FC<FormaalProps> = ({
                 kompakt
                 onClick={onAddFormaal}
               >
-                <Tilsette />
+                <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />
                 {t('label:add')}
               </HighContrastKnapp>

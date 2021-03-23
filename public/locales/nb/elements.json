@@ -1,4 +1,12 @@
 {
+  "button-add": "Legg til",
+  "button-add-new-arbeidsperiode": "Legg til ny arbeidsperiode",
+  "button-cancel": "Avbryt",
+  "button-search-for-arbeidsforhold" : "Søk arbeidsforhold",
+  "button-remove" : "Fjern",
+
+
+
   "option-formaal-1": "Mottak av søknad om familieytelser",
   "option-formaal-2": "Informasjon om endrede forhold",
   "option-formaal-3": "Svar på kontroll eller årlig kontroll",

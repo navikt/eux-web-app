@@ -107,7 +107,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
         </Knapp>
       </Form>
       <VerticalSeparatorDiv />
-      <div data-test-id='dokumentsok__card slideAnimate'>
+      <div data-test-id='dokumentsok__card slideInFromLeft'>
         <Select
           data-test-id='dokumentsok__card-select-id'
           disabled={!_dokument}
