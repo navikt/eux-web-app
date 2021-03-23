@@ -45,7 +45,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
             <Column>
               <ArbeidsforholdButton>
                 <span>
-                  {t('ui:label-arbeidsforhold')}
+                  {t('label:arbeidsforhold')}
                 </span>
                 <HorizontalSeparatorDiv />
                 <Knapp
@@ -53,7 +53,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
                   spinner={gettingArbeidsforholdList}
                   onClick={getArbeidsforholdList}
                 >
-                  {gettingArbeidsforholdList ? t('ui:label-searching') : t('ui:label-search')}
+                  {gettingArbeidsforholdList ? t('label:searching') : t('label:search')}
                 </Knapp>
               </ArbeidsforholdButton>
             </Column>

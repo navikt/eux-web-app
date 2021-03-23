@@ -50,9 +50,9 @@ export interface ErrorProps {
 
 export const Error = ({ error }: ErrorProps) => {
   const { t } = useTranslation()
-  const title = t('ui:error-page-title')
-  const description = t('ui:error-page-description')
-  const footer = t('ui:error-page-footer')
+  const title = t('message:error-page-title')
+  const description = t('message:error-page-description')
+  const footer = t('message:error-page-footer')
   const { highContrast } = useSelector<State, ErrorPageSelector>(mapState)
 
   return (
@@ -67,7 +67,7 @@ export const Error = ({ error }: ErrorProps) => {
             highContrast={highContrast}
             data-test-id='p-error__content-error-id'
             className={classNames('p-error__content-error', 's-border')}
-            heading={t('ui:error-header')}
+            heading={t('message:error-header')}
           >
             <div dangerouslySetInnerHTML={{ __html: '<pre>' + error.stack + '</pre>' }} />
           </Panel>

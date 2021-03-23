@@ -11,7 +11,7 @@ export const validatePersonOpplysning = (v: Validation, t: any, options: any, pe
   let value = (p.personInfo.fornavn)
     ? undefined
     : {
-      feilmelding: t('ui:validation-noFornavn', { person: personName }),
+      feilmelding: t('message:validation-noFornavn', { person: personName }),
       skjemaelementId: 'c-familymanager-' + personID + '-personopplysninger-fornavn-input'
     } as FeiloppsummeringFeil
   v['person-' + personID + '-personopplysninger-fornavn'] = value
@@ -23,7 +23,7 @@ export const validatePersonOpplysning = (v: Validation, t: any, options: any, pe
   value = (p.personInfo.etternavn)
     ? undefined
     : {
-      feilmelding: t('ui:validation-noEtternavn', { person: personName }),
+      feilmelding: t('message:validation-noEtternavn', { person: personName }),
       skjemaelementId: 'c-familymanager-' + personID + '-personopplysninger-etternavn-input'
     } as FeiloppsummeringFeil
   v['person-' + personID + '-personopplysninger-etternavn'] = value
@@ -35,7 +35,7 @@ export const validatePersonOpplysning = (v: Validation, t: any, options: any, pe
   value = (p.personInfo.foedselsdato)
     ? undefined
     : {
-      feilmelding: t('ui:validation-noFoedselsdato', { person: personName }),
+      feilmelding: t('message:validation-noFoedselsdato', { person: personName }),
       skjemaelementId: 'c-familymanager-' + personID + '-personopplysninger-foedselsdato-input'
     } as FeiloppsummeringFeil
   v['person-' + personID + '-personopplysninger-foedselsdato'] = value
@@ -47,7 +47,7 @@ export const validatePersonOpplysning = (v: Validation, t: any, options: any, pe
   value = (p.personInfo.kjoenn)
     ? undefined
     : {
-      feilmelding: t('ui:validation-noKjoenn', { person: personName }),
+      feilmelding: t('message:validation-noKjoenn', { person: personName }),
       skjemaelementId: 'c-familymanager-' + personID + '-personopplysninger-kjoenn-radiogroup'
     } as FeiloppsummeringFeil
   v['person-' + personID + '-personopplysninger-kjoenn'] = value
@@ -60,7 +60,7 @@ export const validatePersonOpplysning = (v: Validation, t: any, options: any, pe
     value = (p.personInfo.pinMangler?.foedested.by)
       ? undefined
       : {
-        feilmelding: t('ui:validation-noFoedestedBy', { person: personName }),
+        feilmelding: t('message:validation-noFoedestedBy', { person: personName }),
         skjemaelementId: 'c-familymanager-' + personID + '-personopplysninger-foedested-by-input'
       } as FeiloppsummeringFeil
     v['person-' + personID + '-personopplysninger-foedested-by'] = value
@@ -72,7 +72,7 @@ export const validatePersonOpplysning = (v: Validation, t: any, options: any, pe
     value = (p.personInfo.pinMangler?.foedested.region)
       ? undefined
       : {
-        feilmelding: t('ui:validation-noFoedestedRegion', { person: personName }),
+        feilmelding: t('message:validation-noFoedestedRegion', { person: personName }),
         skjemaelementId: 'c-familymanager-' + personID + '-personopplysninger-foedested-region-input'
       } as FeiloppsummeringFeil
     v['person-' + personID + '-personopplysninger-foedested-region'] = value
@@ -84,7 +84,7 @@ export const validatePersonOpplysning = (v: Validation, t: any, options: any, pe
     value = (p.personInfo.pinMangler?.foedested.land)
       ? undefined
       : {
-        feilmelding: t('ui:validation-noFoedestedLand', { person: personName }),
+        feilmelding: t('message:validation-noFoedestedLand', { person: personName }),
         skjemaelementId: 'c-familymanager-' + personID + '-personopplysninger-foedested-land-countryselect'
       } as FeiloppsummeringFeil
     v['person-' + personID + '-personopplysninger-foedested-land'] = value

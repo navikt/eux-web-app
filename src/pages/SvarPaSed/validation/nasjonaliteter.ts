@@ -13,7 +13,7 @@ export const validateNasjonaliteter = (v: Validation, t: any, options: any, pers
     let value = (s.land)
       ? undefined
       : {
-        feilmelding: t('ui:validation-noBirthCountry', { person: personName }),
+        feilmelding: t('message:validation-noBirthCountry', { person: personName }),
         skjemaelementId: 'c-familymanager-' + personID + '-nasjonaliteter-' + i + '-land-countryselect'
       } as FeiloppsummeringFeil
     v['person-' + personID + '-nasjonaliteter-' + i + '-land'] = value
@@ -27,7 +27,7 @@ export const validateNasjonaliteter = (v: Validation, t: any, options: any, pers
       value = s.fomdato.match(/\d{2}\.\d{2}\.\d{4}/)
         ? undefined
         : {
-          feilmelding: t('ui:validation-invalidDate', { person: personName }),
+          feilmelding: t('message:validation-invalidDate', { person: personName }),
           skjemaelementId: 'c-familymanager-' + personID + '-nasjonaliteter-' + i + '-fomdato-input'
         } as FeiloppsummeringFeil
     }

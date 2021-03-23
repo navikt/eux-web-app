@@ -20,12 +20,12 @@ const UkjentSide: React.FC<UkjentSideProps> = ({ location }: UkjentSideProps): J
         <Content>
           <Alertstripe type='advarsel'>
             <Systemtittel>
-              {t('ui:error-unknownPage-cantFindRoute', { pathname: location.pathname })}
+              {t('message:error-unknownPage-cantFindRoute', { pathname: location.pathname })}
             </Systemtittel>
           </Alertstripe>
-          <p>{t('ui:error-unknownPage-description')}</p>
-          <Lenke href='/' ariaLabel={t('ui:error-unknownPage-linkToRoot-ariaLabel')}>
-            {t('ui:error-unknownPage-linkToRoot')}
+          <p>{t('message:error-unknownPage-description')}</p>
+          <Lenke href='/' ariaLabel={t('message:error-unknownPage-linkToRoot-ariaLabel')}>
+            {t('message:error-unknownPage-linkToRoot')}
           </Lenke>
         </Content>
         <Margin />

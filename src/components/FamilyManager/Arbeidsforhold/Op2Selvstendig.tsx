@@ -95,8 +95,8 @@ const Op2Selvstendig = ({
           id={'c-familymanager-' + personID + '-personensstatus-selvstendig-' + i + '-startdato-input'}
           onChange={(e: any) => setStartDato(e.target.value, i)}
           value={i < 0 ? _currentStartDato : p?.startdato}
-          label={t('ui:label-startDate')}
-          placeholder={t('ui:placeholder-date-default')}
+          label={t('label:startDate')}
+          placeholder={t('elements:placeholder-date-default')}
         />
       </Column>
       <Column>
@@ -108,8 +108,8 @@ const Op2Selvstendig = ({
           id={'c-familymanager-' + personID + '-personensstatus-selvstendig-' + i + '-sluttdato-input'}
           onChange={(e: any) => setSluttDato(e.target.value, i)}
           value={i < 0 ? _currentSluttDato : p?.sluttdato}
-          label={t('ui:label-endDate')}
-          placeholder={t('ui:placeholder-date-default')}
+          label={t('label:endDate')}
+          placeholder={t('elements:placeholder-date-default')}
         />
       </Column>
       <Column>
@@ -120,7 +120,7 @@ const Op2Selvstendig = ({
         >
           {i < 0 ? <Tilsette /> : <Trashcan />}
           <HorizontalSeparatorDiv data-size='0.5' />
-          {i < 0 ? t('ui:label-add') : t('ui:label-remove')}
+          {i < 0 ? t('label:add') : t('label:remove')}
         </HighContrastFlatknapp>
       </Column>
     </AlignEndRow>
@@ -129,7 +129,7 @@ const Op2Selvstendig = ({
   return (
     <>
       <Undertittel>
-        {t('ui:label-ansettelsesperioder')}
+        {t('label:ansettelsesperioder')}
       </Undertittel>
       <VerticalSeparatorDiv />
       {_perioder.map(renderRow)}
@@ -145,7 +145,7 @@ const Op2Selvstendig = ({
           >
             <Tilsette />
             <HorizontalSeparatorDiv data-size='0.5' />
-            {t('ui:label-add-new-period')}
+            {t('label:add-new-periode')}
           </HighContrastFlatknapp>
         </Column>
       </Row>
@@ -158,8 +158,8 @@ const Op2Selvstendig = ({
             'skjemaelement__input--harFeil':
               validation['c-familymanager-' + personID + '-personensstatus-selvstendig-info-textarea']
           })}
-          placeholder={t('ui:placeholder-texttosed')}
-          label={t('ui:label-additional-information')}
+          placeholder={t('elements:placeholder-texttosed')}
+          label={t('label:additional-information')}
           onChange={(e: any) => setComment(e.target.value)}
           value={_comment}
           feil={undefined}

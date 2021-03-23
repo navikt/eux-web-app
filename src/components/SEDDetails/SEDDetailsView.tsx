@@ -55,7 +55,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
     <>
       <Dl>
         <Dt>
-          {t('ui:label-periode')}:
+          {t('label:periode')}:
         </Dt>
         <Dd>
           {(replySed as USed).anmodningsperiode && (
@@ -73,7 +73,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
       </Dl>
       <VerticalSeparatorDiv/>
       <Dl>
-        <Dt>{t('ui:label-searcher')}</Dt>
+        <Dt>{t('label:searcher')}</Dt>
         <Dd>
           <span>
             {replySed.bruker.personInfo.fornavn} {replySed.bruker.personInfo.etternavn} ({replySed.bruker.personInfo.kjoenn})
@@ -101,13 +101,13 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
       <VerticalSeparatorDiv />
       <Dl>
         <Dt>
-          {t('ui:label-caseOwner')}
+          {t('label:caseOwner')}
         </Dt>
         <Dd>
           ?
         </Dd>
         <Dt>
-          {t('ui:label-sender')}
+          {t('label:sender')}
         </Dt>
         <Dd>
           ?
@@ -116,7 +116,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
       <VerticalSeparatorDiv />
       <Dl>
         <Dt>
-          {t('ui:label-typeKrav')}
+          {t('label:typeKrav')}
         </Dt>
         <Dd>
           {t('ui:kravType-' + (replySed as F002Sed).krav.kravType)}

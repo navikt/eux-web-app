@@ -23,7 +23,7 @@ const Avsenderlandet = ({
   return (
     <>
       <Undertittel>
-        {t('ui:label-periode-in-sender')}
+        {t('label:periode-in-sender')}
       </Undertittel>
       <VerticalSeparatorDiv />
       {!_seeNewPeriodeInSender
@@ -35,13 +35,13 @@ const Avsenderlandet = ({
           >
             <Tilsette />
             <HorizontalSeparatorDiv data-size='0.5' />
-            {t('ui:label-add-new-periode-in-sender')}
+            {t('label:add-new-periode-in-sender')}
           </HighContrastFlatknapp>
           )
         : (
           <div>
             <UndertekstBold>
-              {t('ui:label-medlemperiode')}
+              {t('label:medlemperiode')}
             </UndertekstBold>
             <VerticalSeparatorDiv />
             <Row>
@@ -54,8 +54,8 @@ const Avsenderlandet = ({
                   id={'c-familymanager-' + personID + '-personensstatus-medlemsperiode-startdato-input'}
                   onChange={(e: any) => setCurrentMedlemsperiodeStartDato(e.target.value)}
                   value={_currentMedlemsperiodeStartDato}
-                  label={t('ui:label-startDate')}
-                  placeholder={t('ui:placeholder-date-default')}
+                  label={t('label:startDate')}
+                  placeholder={t('elements:placeholder-date-default')}
                 />
               </Column>
               <Column>
@@ -67,8 +67,8 @@ const Avsenderlandet = ({
                   id={'c-familymanager-' + personID + '-personensstatus-medlemsperiode-sluttdato-input'}
                   onChange={(e: any) => setCurrentMedlemsperiodeSluttDato(e.target.value)}
                   value={_currentMedlemsperiodeSluttDato}
-                  label={t('ui:label-endDate')}
-                  placeholder={t('ui:placeholder-date-default')}
+                  label={t('label:endDate')}
+                  placeholder={t('elements:placeholder-date-default')}
                 />
               </Column>
             </Row>

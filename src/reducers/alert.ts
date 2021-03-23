@@ -64,23 +64,23 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
 
     switch (action.type) {
       case types.SAK_PERSON_GET_FAILURE:
-        clientErrorMessage = 'ui:error-person-notFound'
+        clientErrorMessage = 'message:error-person-notFound'
         break
 
       case types.SAK_PERSON_RELATERT_GET_FAILURE:
-        clientErrorMessage = 'ui:error-personRelated-notFound'
+        clientErrorMessage = 'message:error-personRelated-notFound'
         break
 
       case types.SAK_ABROADPERSON_ADD_FAILURE:
-        clientErrorMessage = 'ui:error-abroadperson-exists'
+        clientErrorMessage = 'message:error-abroadperson-exists'
         break
 
       case types.SAK_TPSPERSON_ADD_FAILURE:
-        clientErrorMessage = 'ui:error-tpsperson-exists'
+        clientErrorMessage = 'message:error-tpsperson-exists'
         break
 
       case types.SVARPASED_SENDSVARPASEDDATA_POST_FAILURE:
-        clientErrorMessage = 'ui:error-svarPaSed-failure'
+        clientErrorMessage = 'message:error-svarPaSed-failure'
         break
 
       default:

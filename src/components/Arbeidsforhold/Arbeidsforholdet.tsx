@@ -104,8 +104,8 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                         id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-navn-input'}
                         onChange={(e: any) => setCurrentArbeidsperiodeNavn(e.target.value)}
                         value={_currentArbeidsperiodeNavn}
-                        label={t('ui:label-navn')}
-                        placeholder={t('ui:placeholder-input-default')}
+                        label={t('label:navn')}
+                        placeholder={t('elements:placeholder-input-default')}
                       />
                     </Column>
                     <Column>
@@ -115,8 +115,8 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                         id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-orgnr-input'}
                         onChange={(e: any) => setCurrentArbeidsperiodeOrgnr(e.target.value)}
                         value={_currentArbeidsperiodeOrgnr}
-                        label={t('ui:label-orgnr')}
-                        placeholder={t('ui:placeholder-input-default')}
+                        label={t('label:orgnr')}
+                        placeholder={t('elements:placeholder-input-default')}
                       />
                     </Column>
                   </Row>
@@ -125,7 +125,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                   <>
                     <strong>{navn}</strong>
                     <br />
-                    {t('ui:label-orgnummer')}:&nbsp;{orgnr}
+                    {t('label:orgnummer')}:&nbsp;{orgnr}
                     <br />
                   </>
                   )}
@@ -141,8 +141,8 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                           id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-startdato-input'}
                           onChange={(e: any) => setCurrentArbeidsperiodeStartDato(e.target.value)}
                           value={_currentArbeidsperiodeStartDato}
-                          label={t('ui:label-endDate')}
-                          placeholder={t('ui:placeholder-date-default')}
+                          label={t('label:endDate')}
+                          placeholder={t('elements:placeholder-date-default')}
                         />
                       </Column>
                       <Column>
@@ -152,8 +152,8 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                           id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-' + index + '-sluttdato-input'}
                           onChange={(e: any) => setCurrentArbeidsperiodeSluttDato(e.target.value)}
                           value={_currentArbeidsperiodeSluttDato}
-                          label={t('ui:label-endDate')}
-                          placeholder={t('ui:placeholder-date-default')}
+                          label={t('label:endDate')}
+                          placeholder={t('elements:placeholder-date-default')}
                         />
                       </Column>
                     </Row>
@@ -161,10 +161,10 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                   )
                 : (
                   <>
-                    {t('ui:label-startDate')}:&nbsp;
+                    {t('label:startDate')}:&nbsp;
                     {formatterDatoTilNorsk(fom)}
                     <br />
-                    {t('ui:label-startDate')}:&nbsp;
+                    {t('label:startDate')}:&nbsp;
                     {formatterDatoTilNorsk(tom)}
                     <br />
                   </>
@@ -187,7 +187,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                   >
                     <Tilsette />
                     <HorizontalSeparatorDiv data-size='0.5' />
-                    {t('ui:label-add')}
+                    {t('label:add')}
                   </HighContrastKnapp>
                   <HorizontalSeparatorDiv data-size='0.5' />
                   <HighContrastFlatknapp
@@ -195,7 +195,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                     kompakt
                     onClick={() => setIsEditing(!isEditing)}
                   >
-                    {t('ui:label-cancel')}
+                    {t('label:cancel')}
                   </HighContrastFlatknapp>
                 </>
               )}
@@ -221,7 +221,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                   arbeidsforholdet,
                   e.target.checked
                 )}
-                label={t('ui:label-choose')}
+                label={t('label:choose')}
               />
             )}
           </ArbeidsforholdDesc>
@@ -239,7 +239,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
               >
                 <Trashcan />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('ui:label-remove')}
+                {t('label:remove')}
               </HighContrastKnapp>
               <HorizontalSeparatorDiv data-size='0.5' />
               <HighContrastFlatknapp
@@ -247,7 +247,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                 kompakt
                 onClick={() => setIsDeleting(!isDeleting)}
               >
-                {t('ui:label-cancel')}
+                {t('label:cancel')}
               </HighContrastFlatknapp>
             </div>
           )}
@@ -255,10 +255,10 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
         {hasError && (
           <AlertStripeAdvarsel>
             <FlexDiv>
-              {t('ui:warning-conflict-aa-1')}
-              <PaddedLink href='#'>{t('ui:warning-conflict-aa-link-1')}</PaddedLink>
-              {t('ui:warning-conflict-aa-2')}
-              <PaddedLink href='#'>{t('ui:warning-conflict-aa-link-2')}</PaddedLink>
+              {t('message:warning-conflict-aa-1')}
+              <PaddedLink href='#'>{t('message:warning-conflict-aa-link-1')}</PaddedLink>
+              {t('message:warning-conflict-aa-2')}
+              <PaddedLink href='#'>{t('message:warning-conflict-aa-link-2')}</PaddedLink>
             </FlexDiv>
           </AlertStripeAdvarsel>
         )}

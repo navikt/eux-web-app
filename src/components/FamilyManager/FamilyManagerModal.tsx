@@ -178,19 +178,19 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
   const relationOptions = []
 
   relationOptions.push({
-    label: t('ui:relationship-bruker') + (_replySed.bruker ? '(' + t('ui:label-not-available') + ')' : ''),
+    label: t('ui:relationship-bruker') + (_replySed.bruker ? '(' + t('label:not-available') + ')' : ''),
     value: 'bruker',
     isDisabled: !!_replySed.bruker
   })
 
   relationOptions.push({
-    label: t('ui:relationship-ektefelle') + ((_replySed as F002Sed).ektefelle ? '(' + t('ui:label-not-available') + ')' : ''),
+    label: t('ui:relationship-ektefelle') + ((_replySed as F002Sed).ektefelle ? '(' + t('label:not-available') + ')' : ''),
     value: 'ektefelle',
     isDisabled: !!(_replySed as F002Sed).ektefelle
   })
 
   relationOptions.push({
-    label: t('ui:relationship-annenPerson') + ((_replySed as F002Sed).annenPerson ? '(' + t('ui:label-not-available') + ')' : ''),
+    label: t('ui:relationship-annenPerson') + ((_replySed as F002Sed).annenPerson ? '(' + t('label:not-available') + ')' : ''),
     value: 'annenPerson',
     isDisabled: !!(_replySed as F002Sed).annenPerson
   })
@@ -228,7 +228,7 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
           >
             <Trashcan />
             <HorizontalSeparatorDiv data-size='0.5' />
-            {t('ui:label-remove')}
+            {t('label:remove')}
           </HighContrastFlatknapp>
         </CheckboxDiv>
       </FlexDiv>
@@ -252,7 +252,7 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
           </CloseButton>
         )}
         <Title>
-          {t('ui:label-add-remove-persons')}
+          {t('label:add-remove-persons')}
         </Title>
         <>
           {_replySed.bruker && renderPerson('bruker', brukerNr)}
@@ -262,7 +262,7 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
           <hr />
           <VerticalSeparatorDiv data-size='2' />
           <Undertittel>
-            {t('ui:label-add-new-person')}
+            {t('label:add-new-person')}
           </Undertittel>
           <VerticalSeparatorDiv />
           <AlignCenterRow>
@@ -272,8 +272,8 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
                 id='c-familymanager-personopplysninger-newperson-fnr'
                 onChange={onNewPersonFnrChange}
                 value={_newPersonFnr}
-                label={t('ui:label-fnr-dnr')}
-                placeholder={t('ui:placeholder-input-default')}
+                label={t('label:fnr-dnr')}
+                placeholder={t('elements:placeholder-input-default')}
               />
               <HorizontalSeparatorDiv />
             </Column>
@@ -283,8 +283,8 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
                 id='c-familymanager-personopplysninger-newperson-navn'
                 onChange={onNewPersonNameChange}
                 value={_newPersonName}
-                label={t('ui:label-name')}
-                placeholder={t('ui:placeholder-input-default')}
+                label={t('label:name')}
+                placeholder={t('elements:placeholder-input-default')}
               />
               <HorizontalSeparatorDiv />
             </Column>
@@ -293,10 +293,10 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
                 data-test-id='c-familymanager-personopplysninger-newperson-navn-input'
                 id='c-familymanager-personopplysninger-newperson-navn'
                 highContrast={highContrast}
-                label={t('ui:label-familyRelationship')}
+                label={t('label:familyRelationship')}
                 onChange={onNewPersonRelationChange}
                 options={relationOptions}
-                placeholder={t('ui:placeholder-select-default')}
+                placeholder={t('elements:placeholder-select-default')}
                 selectedValue={_newPersonRelation}
                 menuPlacement='auto'
               />
@@ -310,7 +310,7 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
               >
                 <Tilsette width={20} />
                 <HorizontalSeparatorDiv />
-                {t('ui:label-add')}
+                {t('label:add')}
               </Knapp>
             </Column>
           </AlignCenterRow>
@@ -324,14 +324,14 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
               closeModal()
             }}
           >
-            {t('ui:label-save')}
+            {t('label:save')}
           </MainButton>
           <HorizontalSeparatorDiv />
           <OtherButton
             id='c-modal__other-button-id'
             onClick={closeModal}
           >
-            {t('ui:label-cancel')}
+            {t('label:cancel')}
           </OtherButton>
         </ModalButtons>
       </div>

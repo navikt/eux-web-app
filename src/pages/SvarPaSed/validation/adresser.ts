@@ -13,7 +13,7 @@ export const validateAdresser = (v: Validation, t: any, options: any, personID: 
     const value = (a.land)
       ? undefined
       : {
-        feilmelding: t('ui:validation-noAddressCountry', { person: personName }),
+        feilmelding: t('message:validation-noAddressCountry', { person: personName }),
         skjemaelementId: 'c-familymanager-' + personID + '-adresser-' + i + '-land-countryselect'
       } as FeiloppsummeringFeil
     v['person-' + personID + '-adresser-' + i + '-land'] = value

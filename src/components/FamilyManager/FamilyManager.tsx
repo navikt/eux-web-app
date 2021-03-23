@@ -175,17 +175,17 @@ const FamilyManager: React.FC = () => {
   }
 
   const options = [
-    { label: t('ui:option-familymanager-1'), value: 'personopplysninger', normal: true, barn: true, family: false },
-    { label: t('ui:option-familymanager-2'), value: 'nasjonaliteter', normal: true, barn: true, family: false },
-    { label: t('ui:option-familymanager-3'), value: 'adresser', normal: true, barn: true, family: false },
-    { label: t('ui:option-familymanager-4'), value: 'kontaktinformasjon', normal: true, barn: false, family: false },
-    { label: t('ui:option-familymanager-5'), value: 'trygdeordninger', normal: true, barn: false, family: false },
-    { label: t('ui:option-familymanager-6'), value: 'familierelasjon', normal: true, barn: false, family: false },
-    { label: t('ui:option-familymanager-7'), value: 'personensstatus', normal: true, barn: false, family: false },
-    { label: t('ui:option-familymanager-8'), value: 'relasjoner', normal: false, barn: true, family: false },
-    { label: t('ui:option-familymanager-9'), value: 'grunnlagForBosetting', normal: false, barn: true, family: false },
-    { label: t('ui:option-familymanager-10'), value: 'beløpNavnOgValuta', normal: false, barn: true, family: false },
-    { label: t('ui:option-familymanager-11'), value: 'familieytelser', normal: false, barn: false, family: true }
+    { label: t('elements:option-familymanager-1'), value: 'personopplysninger', normal: true, barn: true, family: false },
+    { label: t('elements:option-familymanager-2'), value: 'nasjonaliteter', normal: true, barn: true, family: false },
+    { label: t('elements:option-familymanager-3'), value: 'adresser', normal: true, barn: true, family: false },
+    { label: t('elements:option-familymanager-4'), value: 'kontaktinformasjon', normal: true, barn: false, family: false },
+    { label: t('elements:option-familymanager-5'), value: 'trygdeordninger', normal: true, barn: false, family: false },
+    { label: t('elements:option-familymanager-6'), value: 'familierelasjon', normal: true, barn: false, family: false },
+    { label: t('elements:option-familymanager-7'), value: 'personensstatus', normal: true, barn: false, family: false },
+    { label: t('elements:option-familymanager-8'), value: 'relasjoner', normal: false, barn: true, family: false },
+    { label: t('elements:option-familymanager-9'), value: 'grunnlagForBosetting', normal: false, barn: true, family: false },
+    { label: t('elements:option-familymanager-10'), value: 'beløpNavnOgValuta', normal: false, barn: true, family: false },
+    { label: t('elements:option-familymanager-11'), value: 'familieytelser', normal: false, barn: false, family: true }
   ]
 
   const onEditPerson = (id: string | undefined) => {
@@ -273,14 +273,14 @@ const FamilyManager: React.FC = () => {
               ? (
                 <Undertittel style={{ whiteSpace: 'nowrap' }}>
                   {personId === 'familie'
-                    ? t('ui:label-whole-family')
+                    ? t('label:whole-family')
                     : personInfo?.fornavn + ' ' + personInfo?.etternavn + ' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')'}
                 </Undertittel>
                 )
               : (
                 <Normaltekst style={{ whiteSpace: 'nowrap' }}>
                   {personId === 'familie'
-                    ? t('ui:label-whole-family')
+                    ? t('label:whole-family')
                     : personInfo?.fornavn + ' ' + personInfo?.etternavn + ' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')'}
                 </Normaltekst>
                 )}
@@ -345,7 +345,7 @@ const FamilyManager: React.FC = () => {
         />
       )}
       <Undertittel>
-        {t('ui:label-familymanager-title')}
+        {t('label:familymanager-title')}
       </Undertittel>
       <VerticalSeparatorDiv />
       <CustomHighContrastPanel>
@@ -364,7 +364,7 @@ const FamilyManager: React.FC = () => {
               >
                 <Tilsette />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('ui:label-add-person')}
+                {t('label:add-person')}
               </HighContrastFlatknapp>
             </MarginDiv>
           </LeftDiv>
@@ -372,8 +372,8 @@ const FamilyManager: React.FC = () => {
             {(gettingPerson || !_editCurrentPersonID)
               ? (
                 <RightFlexCenterDiv>
-                  {gettingPerson ? t('ui:loading-getting-person') : undefined}
-                  {!_editCurrentPersonID ? t('ui:label-no-person-selected') : undefined}
+                  {gettingPerson ? t('message:loading-getting-person') : undefined}
+                  {!_editCurrentPersonID ? t('label:no-person-selected') : undefined}
                 </RightFlexCenterDiv>
                 )
               : (

@@ -101,7 +101,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
             menuPortalTarget={document.body}
             includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
             onOptionSelected={(e: any) => onNationalitySelected(e.value, i)}
-            placeholder={t('ui:label-choose')}
+            placeholder={t('label:choose')}
             values={i < 0 ? _currentNationality : s!.land}
             error={validation['person-' + personID + '-nasjonaliteter-' + i + '-land']
               ? validation['person-' + personID + '-nasjonaliteter-' + i + '-land']!.feilmelding
@@ -118,7 +118,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
             id={'c-familymanager-' + personID + '-nasjonaliteter-' + i + '-fomdato'}
             onChange={(e: any) => onFomdatoChanged(e.target.value, i)}
             value={i < 0 ? _currentFomdato : s!.fomdato}
-            placeholder={t('ui:placeholder-date-default')}
+            placeholder={t('elements:placeholder-date-default')}
           />
         </Column>
         <HorizontalSeparatorDiv />
@@ -130,7 +130,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
           >
             {i < 0 ? <Tilsette /> : <Trashcan />}
             <HorizontalSeparatorDiv data-size='0.5' />
-            {i < 0 ? t('ui:label-add') : t('ui:label-remove')}
+            {i < 0 ? t('label:add') : t('label:remove')}
           </HighContrastFlatknapp>
         </Column>
       </AlignStartRow>
@@ -143,12 +143,12 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
       <Row>
         <Column>
           <UndertekstBold>
-            {t('ui:label-nationality')}
+            {t('label:nationality')}
           </UndertekstBold>
         </Column>
         <Column>
           <UndertekstBold>
-            {t('ui:label-fomdato')}
+            {t('label:fomdato')}
           </UndertekstBold>
         </Column>
         <Column />
@@ -168,7 +168,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
               >
                 <Tilsette />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('ui:label-add-nationality')}
+                {t('label:add-nationality')}
               </HighContrastFlatknapp>
 
             </Column>

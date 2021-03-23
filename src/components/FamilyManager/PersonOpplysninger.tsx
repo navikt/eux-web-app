@@ -159,7 +159,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             id={'c-familymanager-' + personID + '-personopplysninger-fornavn-input'}
             onChange={onFornavnChange}
             value={_.get(replySed, `${personID}.personInfo.fornavn`)}
-            label={t('ui:label-firstname') + ' *'}
+            label={t('label:firstname') + ' *'}
           />
         </Column>
         <HorizontalSeparatorDiv />
@@ -172,7 +172,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             id={'c-familymanager-' + personID + '-personopplysninger-etternavn-input'}
             onChange={onEtternavnChange}
             value={_.get(replySed, `${personID}.personInfo.etternavn`)}
-            label={t('ui:label-lastname') + ' *'}
+            label={t('label:lastname') + ' *'}
           />
         </Column>
         <HorizontalSeparatorDiv />
@@ -185,8 +185,8 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             id={'c-familymanager-' + personID + '-personopplysninger-foedselsdato-input'}
             onChange={onFodselsdatoChange}
             value={_.get(replySed, `${personID}.personInfo.foedselsdato`)}
-            placeholder={t('ui:placeholder-birthDate')}
-            label={t('ui:label-birthDate') + ' *'}
+            placeholder={t('elements:placeholder-birthDate')}
+            label={t('label:birthDate') + ' *'}
           />
         </Column>
       </Row>
@@ -201,13 +201,13 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
               ? validation['person-' + personID + '-personopplysninger-kjoenn']!.feilmelding
               : undefined}
             id={'c-familymanager-' + personID + '-personopplysninger-kjoenn-radiogroup'}
-            legend={t('ui:label-gender') + ' *'}
+            legend={t('label:gender') + ' *'}
             name={'c-familymanager-' + personID + '-personopplysninger-kjoenn-radiogroup'}
             onChange={onKjoennChange}
             radios={[
-              { label: t(personID?.startsWith('barn') ? 'ui:label-girl' : 'ui:label-woman'), value: 'K' },
-              { label: t(personID?.startsWith('barn') ? 'ui:label-boy' : 'ui:label-man'), value: 'M' },
-              { label: t('ui:label-unknown'), value: 'U' }
+              { label: t(personID?.startsWith('barn') ? 'label:girl' : 'label:woman'), value: 'K' },
+              { label: t(personID?.startsWith('barn') ? 'label:boy' : 'label:man'), value: 'M' },
+              { label: t('label:unknown'), value: 'U' }
             ]}
           />
         </Column>
@@ -221,7 +221,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
               ? validation['person-' + personID + '-personopplysninger-utenlandskPin']!.feilmelding
               : undefined}
             id={'c-familymanager-' + personID + '-personopplysninger-utenlandskPin-input'}
-            label={t('ui:label-utenlandskPin')}
+            label={t('label:utenlandskPin')}
             onChange={onUtenlandskPinChange}
             value={_.find(_.get(replySed, `${personID}.personInfo.pin`), p => p.land !== 'NO')?.identifikator}
           />
@@ -234,13 +234,13 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
               : undefined}
             id={'c-familymanager-' + personID + '-personopplysninger-land-countryselect'}
             includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
-            label={t('ui:label-landkode')}
+            label={t('label:landkode')}
             menuPortalTarget={document.body}
             onChange={onUtenlandskLandChange}
             onOptionSelected={(e: any) => {
               onUtenlandskLandChange(e.value)
             }}
-            placeholder={t('ui:label-choose')}
+            placeholder={t('label:choose')}
             values={_.find(_.get(replySed, `${personID}.personInfo.pin`), p => p.land !== 'NO')?.land}
           />
         </Column>
@@ -256,7 +256,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
                 ? validation['person-' + personID + '-personopplysninger-norwegianpin']!.feilmelding
                 : undefined}
               id={'c-familymanager-' + personID + '-personopplysninger-norwegianpin-input'}
-              label={t('ui:label-norwegian-fnr')}
+              label={t('label:norwegian-fnr')}
               onChange={onNorwegianPinChange}
               value={_.find(_.get(replySed, `${personID}.personInfo.pin`), p => p.land === 'NO')?.identifikator}
             />
@@ -266,7 +266,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
               spinner={searchingPerson}
               onClick={onSearchUser}
             >
-              {searchingPerson ? t('ui:label-searching') : t('ui:label-searchUser')}
+              {searchingPerson ? t('label:searching') : t('label:searchUser')}
             </HighContrastKnapp>
           </FlexDiv>
           <VerticalSeparatorDiv data-size='0.5' />
@@ -279,7 +279,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
               </Normaltekst>
             ) : (
               <Normaltekst>
-                {t('ui:label-norwegian-fnr-description')}
+                {t('label:norwegian-fnr-description')}
               </Normaltekst>
             )}
           </div>
@@ -297,7 +297,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
                     ? validation['person-' + personID + '-personopplysninger-foedested-by']!.feilmelding
                     : undefined}
                   id={'c-familymanager-' + personID + '-personopplysninger-foedestedby-input'}
-                  label={t('ui:label-by')}
+                  label={t('label:by')}
                   onChange={onFoedestedByChange}
                   value={_.get(replySed, `${personID}.personInfo.pinMangler.foedested.by`)}
                 />
@@ -310,7 +310,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
                     ? validation['person-' + personID + '-personopplysninger-foedested-region']!.feilmelding
                     : undefined}
                   id={'c-familymanager-' + personID + '-personopplysninger-foedested-region-input'}
-                  label={t('ui:label-region')}
+                  label={t('label:region')}
                   onChange={onFoedestedRegionChange}
                   value={_.get(replySed, `${personID}.personInfo.pinMangler.foedested.region`)}
                 />
@@ -324,10 +324,10 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
                     : undefined}
                   id={'c-familymanager-' + personID + '-personopplysninger-foedested-land-countryselect'}
                   includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
-                  label={t('ui:label-landkode')}
+                  label={t('label:landkode')}
                   menuPortalTarget={document.body}
                   onOptionSelected={onFoedestedLandChange}
-                  placeholder={t('ui:label-choose')}
+                  placeholder={t('label:choose')}
                   values={_.get(replySed, `${personID}.personInfo.pinMangler.foedested.land`)}
                 />
               </Column>
@@ -342,7 +342,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
                 >
                   <Trashcan />
                   <HorizontalSeparatorDiv data-size='0.5' />
-                  {t('ui:label-remove-birthplace')}
+                  {t('label:remove-birthplace')}
                 </HighContrastFlatknapp>
               </Column>
             </Row>
@@ -352,7 +352,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
           <Row>
             <Column>
               <Undertittel>
-                {t('ui:label-birthPlace')}
+                {t('label:birthPlace')}
               </Undertittel>
               <VerticalSeparatorDiv data-size='0.5' />
               <HighContrastFlatknapp
@@ -362,7 +362,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
               >
                 <Tilsette />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('ui:label-add-birthplace')}
+                {t('label:add-birthplace')}
               </HighContrastFlatknapp>
             </Column>
           </Row>

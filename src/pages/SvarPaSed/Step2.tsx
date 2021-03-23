@@ -8,6 +8,7 @@ import Attachments from 'components/Attachments/Attachments'
 import FamilyManager from 'components/FamilyManager/FamilyManager'
 import Formaal from 'components/Formaal/Formaal'
 import Inntekt from 'components/Inntekt/Inntekt'
+import Motregning from 'components/Motregning/Motregning'
 import Vedtak from 'components/Vedtak/Vedtak'
 import * as types from 'constants/actionTypes'
 import { AlertStatus, ModalContent } from 'declarations/components'
@@ -143,6 +144,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
   const isValid = (validation: Validation): boolean => _.find(_.values(validation), (e) => e !== undefined) === undefined
 
   const showFamily = (): boolean => replySed?.replySedType?.startsWith('F') || false
+  const showMotregning = (): boolean => (true)
   const showVedtak = (): boolean => (true)
   const showInntekt = (): boolean => replySed?.replySedType === 'U004'
 
@@ -243,7 +245,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
             closeButton: false,
             modalContent: (
               <MinimalContentDiv>
-                {sendingSvarPaSed && <span>{t('ui:loading-sendingReplySed')}</span>}
+                {sendingSvarPaSed && <span>{t('message:loading-sendingReplySed')}</span>}
                 {alertMessage && alertType && [types.SVARPASED_SENDSVARPASEDDATA_POST_FAILURE].indexOf(alertType) >= 0 && (
                   <AlertstripeDiv>
                     <Alert
@@ -267,7 +269,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
                         onGoBackClick()
                       }}
                     >
-                      {t('ui:label-close')}
+                      {t('label:close')}
                     </HighContrastHovedknapp>
                   </>
                 )}
@@ -284,7 +286,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
         >
           <VenstreChevron />
           <HorizontalSeparatorDiv data-size='0.5' />
-          {t('ui:label-back')}
+          {t('label:back')}
         </HighContrastLink>
       </FlexDiv>
       <VerticalSeparatorDiv />
@@ -311,12 +313,18 @@ const Step2: React.FC<SvarPaSedProps> = ({
       )}
       {showVedtak() && (
         <>
-          <Vedtak highContrast={highContrast}/>
+          <Vedtak highContrast={highContrast} replySed={replySed}/>
+          <VerticalSeparatorDiv data-size='2' />
+        </>
+      )}
+      {showMotregning() && (
+        <>
+          <Motregning highContrast={highContrast} replySed={replySed}/>
           <VerticalSeparatorDiv data-size='2' />
         </>
       )}
       {showInntekt() && (
-        <Ekspanderbartpanel tittel={t('ui:label-inntekt')}>
+        <Ekspanderbartpanel tittel={t('label:inntekt')}>
           <Inntekt
             fnr={fnr}
             highContrast={highContrast}
@@ -331,8 +339,8 @@ const Step2: React.FC<SvarPaSedProps> = ({
           data-test-id='c-step2-comment-textarea'
           id='c-step2-comment-textarea'
           className={classNames({ 'skjemaelement__input--harFeil': validation.comment })}
-          label={t('ui:label-comment-title')}
-          placeholder={t('ui:label-comment-placeholder')}
+          label={t('label:comment-title')}
+          placeholder={t('label:comment-placeholder')}
           onChange={(e: any) => setComment(e.target.value)}
           value={_comment}
           feil={validation.comment ? validation.comment.feilmelding : undefined}
@@ -353,7 +361,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
       >
         <Tilsette />
         <HorizontalSeparatorDiv data-size='0.5' />
-          {gettingPreviewFile ? t('ui:label-loading-file') : t('ui:label-preview-sed')}
+          {gettingPreviewFile ? t('label:loading-file') : t('label:preview-sed')}
       </HighContrastFlatknapp>
       <VerticalSeparatorDiv data-size='2' />
       <ButtonsDiv>
@@ -364,7 +372,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
             disabled={sendingSvarPaSed}
             spinner={sendingSvarPaSed}
           >
-            {sendingSvarPaSed ? t('ui:loading-sendingReplySed') : t('ui:label-sendReplySed')}
+            {sendingSvarPaSed ? t('message:loading-sendingReplySed') : t('label:sendReplySed')}
           </HighContrastHovedknapp>
           <VerticalSeparatorDiv data-size='0.5' />
         </div>
@@ -376,7 +384,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
             disabled={creatingSedWithAttachments}
             spinner={creatingSedWithAttachments}
           >
-            {t('ui:label-addAttachments')}
+            {t('label:addAttachments')}
           </HighContrastKnapp>
           <VerticalSeparatorDiv data-size='0.5' />
         </div>
@@ -388,7 +396,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
             disabled={creatingSedEditInRINA}
             spinner={creatingSedEditInRINA}
           >
-            {t('ui:label-createSedEditInRINA')}
+            {t('label:createSedEditInRINA')}
           </HighContrastKnapp>
           <VerticalSeparatorDiv data-size='0.5' />
         </div>
@@ -400,7 +408,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
             disabled={savingSed}
             spinner={savingSed}
           >
-            {t('ui:label-saveSed')}
+            {t('label:saveSed')}
           </HighContrastKnapp>
           <VerticalSeparatorDiv data-size='0.5' />
         </div>

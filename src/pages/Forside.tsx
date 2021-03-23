@@ -20,7 +20,7 @@ const Forside: React.FC = (): JSX.Element => {
               linkCreator={(props: any) => (<Link to='/opprett' {...props} />)}
               tittelProps='undertittel'
             >
-              {t('ui:indexpage-createCase')}
+              {t('app:indexpage-createCase')}
             </Lenkepanel>
             <VerticalSeparatorDiv />
             <Lenkepanel
@@ -30,7 +30,7 @@ const Forside: React.FC = (): JSX.Element => {
               style={{ animationDelay: '0.15s' }}
               tittelProps='undertittel'
             >
-              {t('ui:indexpage-addAttachment')}
+              {t('app:indexpage-addAttachment')}
             </Lenkepanel>
             <VerticalSeparatorDiv />
             <Lenkepanel
@@ -40,7 +40,7 @@ const Forside: React.FC = (): JSX.Element => {
               style={{ animationDelay: '0.3s' }}
               tittelProps='undertittel'
             >
-              {t('ui:indexpage-svarSed')}
+              {t('app:indexpage-svarSed')}
             </Lenkepanel>
 
           </div>

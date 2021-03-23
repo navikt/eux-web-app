@@ -87,11 +87,11 @@ const Header: React.FC<HeaderProps> = ({ highContrast }: HeaderProps): JSX.Eleme
           </Link>
           <Skillelinje />
           <Title>
-            {t('ui:app-name')}
+            {t('app:name')}
           </Title>
         </Brand>
         <Undertittel>
-          {t('ui:app-title')}
+          {t('app:title')}
         </Undertittel>
         <SaksbehandlerDiv>
           <HighContrastLink
@@ -103,7 +103,7 @@ const Header: React.FC<HeaderProps> = ({ highContrast }: HeaderProps): JSX.Eleme
               handleHighContrastToggle()
             }}
           >
-            {t('ui:label-highContrast')}
+            {t('label:highContrast')}
           </HighContrastLink>
           <HorizontalSeparatorDiv />
           {saksbehandler && saksbehandler.navn && (

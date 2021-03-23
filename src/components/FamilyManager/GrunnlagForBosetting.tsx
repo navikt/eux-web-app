@@ -71,7 +71,7 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
   return (
     <RelasjonDiv>
       <Undertittel>
-        {t('ui:label-duration-stay')}
+        {t('label:duration-stay')}
       </Undertittel>
       <VerticalSeparatorDiv />
       <Row>
@@ -84,8 +84,8 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
             id={'c-familymanager-' + personID + '-grunnlag-startdato-input'}
             onChange={(e: any) => setStartDato(e.target.value)}
             value={_currentStartDato}
-            label={t('ui:label-startDate')}
-            placeholder={t('ui:placeholder-date-default')}
+            label={t('label:startDate')}
+            placeholder={t('elements:placeholder-date-default')}
           />
         </Column>
         <Column>
@@ -97,8 +97,8 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
             id={'c-familymanager-' + personID + '-grunnlag-startdato-sluttdato-input'}
             onChange={(e: any) => setSluttDato(e.target.value)}
             value={_currentSluttDato}
-            label={t('ui:label-endDate')}
-            placeholder={t('ui:placeholder-date-default')}
+            label={t('label:endDate')}
+            placeholder={t('elements:placeholder-date-default')}
           />
         </Column>
       </Row>
@@ -113,8 +113,8 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
             id={'c-familymanager-' + personID + '-grunnlag-avsenderdato-input'}
             onChange={(e: any) => setAvsenderDato(e.target.value)}
             value={_currentSenderDato}
-            label={t('ui:label-moving-date-sender')}
-            placeholder={t('ui:placeholder-date-default')}
+            label={t('label:moving-date-sender')}
+            placeholder={t('elements:placeholder-date-default')}
           />
         </Column>
       </Row>
@@ -128,8 +128,8 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
             id={'c-familymanager-' + personID + '-grunnlag-mottakerdato-input'}
             onChange={(e: any) => setMottakerDato(e.target.value)}
             value={_currentReceiverDato}
-            label={t('ui:label-moving-date-receiver')}
-            placeholder={t('ui:placeholder-date-default')}
+            label={t('label:moving-date-receiver')}
+            placeholder={t('elements:placeholder-date-default')}
           />
         </Column>
       </Row>
@@ -143,8 +143,8 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
                 'skjemaelement__input--harFeil':
                   validation['c-familymanager-' + personID + '-personensstatus-selvstendig-info-textarea']
               })}
-              placeholder={t('ui:placeholder-input-default')}
-              label={t('ui:label-elements-of-personal-situation')}
+              placeholder={t('elements:placeholder-input-default')}
+              label={t('label:elements-of-personal-situation')}
               onChange={(e: any) => setElementsOfPersonalSituation(e.target.value)}
               value={_currentElementsOfPersonalSituation}
               feil={undefined}

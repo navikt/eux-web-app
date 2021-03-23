@@ -109,14 +109,14 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
               : undefined}
             highContrast={highContrast}
             id={'c-familymanager-' + personID + '-familieytelser-designationOfPerformance-select'}
-            label={t('ui:label-designation-of-performance')}
+            label={t('label:designation-of-performance')}
             onChange={(e: any) => setDesignationPerformance(e.value)}
             options={[{
-              label: t('ui:option-declarationOfPerformance-barnetrygd'), value: 'Barnetrygd'
+              label: t('elements:option-declarationOfPerformance-barnetrygd'), value: 'Barnetrygd'
             }, {
-              label: t('ui:option-declarationOfPerformance-kontantstøtte'), value: 'Kontantstøtte'
+              label: t('elements:option-declarationOfPerformance-kontantstøtte'), value: 'Kontantstøtte'
             }]}
-            placeholder={t('ui:placeholder-select-default')}
+            placeholder={t('elements:placeholder-select-default')}
             selectedValue={_currentDesignationPerformance}
           />
         </Column>
@@ -129,8 +129,8 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             id={'c-familymanager-' + personID + '-familieytelser-grantNumber-input'}
             onChange={(e: any) => setGrantNumber(e.target.value)}
             value={_currentGrantNumber}
-            label={t('ui:label-grant-number')}
-            placeholder={t('ui:placeholder-input-default')}
+            label={t('label:grant-number')}
+            placeholder={t('elements:placeholder-input-default')}
           />
         </Column>
       </Row>
@@ -147,14 +147,14 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             value={_currentAmount}
             label={(
               <FlexDiv>
-                <span>{t('ui:label-amount')}</span>
+                <span>{t('label:amount')}</span>
                 <HorizontalSeparatorDiv data-size='0.5' />
-                <Tooltip placement='top' trigger={['hover']} overlay={<span>{t('ui:help-familieytelser-beløp')}</span>}>
+                <Tooltip placement='top' trigger={['hover']} overlay={<span>{t('message:help-familieytelser-beløp')}</span>}>
                   <HelpProperIcon className='hjelpetekst__ikon' />
                 </Tooltip>
               </FlexDiv>
             )}
-            placeholder={t('ui:placeholder-input-default')}
+            placeholder={t('elements:placeholder-input-default')}
           />
         </Column>
         <Column>
@@ -162,8 +162,8 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             highContrast={highContrast}
             data-test-id={'c-familymanager-' + personID + '-beløpNavnOgValuta-currency-countryselect'}
             id={'c-familymanager-' + personID + '-beløpNavnOgValuta-currency-countryselect'}
-            ariaLabel={t('ui:label-currency')}
-            label={t('ui:label-currency')}
+            ariaLabel={t('label:currency')}
+            label={t('label:currency')}
             menuPortalTarget={document.body}
             values={_currentCurrency}
             locale='nb'
@@ -188,8 +188,8 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             id={'c-familymanager-' + personID + '-beløpNavnOgValuta-startdato-input'}
             onChange={(e: any) => setGrantStartDate(e.target.value)}
             value={_currentGrantStartDate}
-            label={t('ui:label-startDate')}
-            placeholder={t('ui:placeholder-date-default')}
+            label={t('label:startDate')}
+            placeholder={t('elements:placeholder-date-default')}
           />
         </Column>
         <Column>
@@ -201,8 +201,8 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             id={'c-familymanager-' + personID + '-beløpNavnOgValuta-sluttdato-input'}
             onChange={(e: any) => setGrantEndDate(e.target.value)}
             value={_currentGrantEndDate}
-            label={t('ui:label-endDate')}
-            placeholder={t('ui:placeholder-date-default')}
+            label={t('label:endDate')}
+            placeholder={t('elements:placeholder-date-default')}
           />
         </Column>
       </Row>
@@ -217,8 +217,8 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             id={'c-familymanager-' + personID + '-beløpNavnOgValuta-receiverName-input'}
             onChange={(e: any) => setReceiverName(e.target.value)}
             value={_currentReceiverName}
-            label={t('ui:label-receiver-name')}
-            placeholder={t('ui:placeholder-input-default')}
+            label={t('label:receiver-name')}
+            placeholder={t('elements:placeholder-input-default')}
           />
         </Column>
       </Row>
@@ -233,10 +233,10 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
               ? validation['person-' + personID + '-frequency']!.feilmelding
               : undefined}
             name={'c-familymanager-' + personID + '-frequency-radiogroup'}
-            legend={t('ui:label-period-frequency')}
+            legend={t('label:period-frequency')}
             radios={[
-              { label: t('ui:label-monthly'), value: 'Månedlig' },
-              { label: t('ui:label-yearly'), value: 'Årlig' }
+              { label: t('label:monthly'), value: 'Månedlig' },
+              { label: t('label:yearly'), value: 'Årlig' }
             ]}
             onChange={(e: any) => setFrequency(e.target.value)}
           />

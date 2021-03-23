@@ -78,7 +78,7 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
   return (
     <>
       <Systemtittel>
-        {t('ui:label-aaRegistered')}
+        {t('label:aaRegistered')}
       </Systemtittel>
 
       <Arbeidsforhold
@@ -97,7 +97,7 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
       {!_.isEmpty(_addedArbeidsforholdList) && (
         <>
           <Undertittel>
-            {t('ui:label-added-arbeidsforhold')}
+            {t('label:added-arbeidsforhold')}
           </Undertittel>
           {_addedArbeidsforholdList?.map((a, i) => (
             <ArbeidsforholdetFC
@@ -124,7 +124,7 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
           >
             <Tilsette />
             <HorizontalSeparatorDiv data-size='0.5' />
-            {t('ui:label-add-new-arbeidsperiode')}
+            {t('label:add-new-arbeidsperiode')}
           </HighContrastFlatknapp>
           )
         : (
@@ -139,8 +139,8 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
                   id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-startdato-input'}
                   onChange={(e: any) => setCurrentArbeidsperiodeStartDato(e.target.value)}
                   value={_currentArbeidsperiodeStartDato}
-                  label={t('ui:label-startDate')}
-                  placeholder={t('ui:placeholder-date-default')}
+                  label={t('label:startDate')}
+                  placeholder={t('elements:placeholder-date-default')}
                 />
               </Column>
               <Column>
@@ -152,8 +152,8 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
                   id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-sluttdato-input'}
                   onChange={(e: any) => setCurrentArbeidsperiodeSluttDato(e.target.value)}
                   value={_currentArbeidsperiodeSluttDato}
-                  label={t('ui:label-endDate')}
-                  placeholder={t('ui:placeholder-date-default')}
+                  label={t('label:endDate')}
+                  placeholder={t('elements:placeholder-date-default')}
                 />
               </Column>
             </Row>
@@ -168,8 +168,8 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
                   id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-orgnr-input'}
                   onChange={(e: any) => setCurrentArbeidsperiodeOrgnr(e.target.value)}
                   value={_currentArbeidsperiodeOrgnr}
-                  label={t('ui:label-orgnr')}
-                  placeholder={t('ui:placeholder-input-default')}
+                  label={t('label:orgnr')}
+                  placeholder={t('elements:placeholder-input-default')}
                 />
               </Column>
               <Column>
@@ -181,8 +181,8 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
                   id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-navn-input'}
                   onChange={(e: any) => setCurrentArbeidsperiodeNavn(e.target.value)}
                   value={_currentArbeidsperiodeNavn}
-                  label={t('ui:label-navn')}
-                  placeholder={t('ui:placeholder-input-default')}
+                  label={t('label:navn')}
+                  placeholder={t('elements:placeholder-input-default')}
                 />
               </Column>
             </Row>
@@ -196,7 +196,7 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
                 >
                   <Tilsette />
                   <HorizontalSeparatorDiv data-size='0.5' />
-                  {t('ui:label-add')}
+                  {t('label:add')}
                 </HighContrastKnapp>
                 <HorizontalSeparatorDiv data-size='0.5' />
                 <HighContrastFlatknapp
@@ -204,7 +204,7 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
                   kompakt
                   onClick={() => setSeeNewArbeidsperiode(!_seeNewArbeidsperiode)}
                 >
-                  {t('ui:label-cancel')}
+                  {t('label:cancel')}
                 </HighContrastFlatknapp>
               </Column>
             </Row>

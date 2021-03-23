@@ -87,7 +87,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
   return (
     <>
       <UndertekstBold>
-        {t('ui:label-periode')}:
+        {t('label:periode')}:
       </UndertekstBold>
       <VerticalSeparatorDiv data-size='0.5'/>
       {_anmodningsperiode && (
@@ -101,7 +101,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               id={'c-seddetails-anmodningsperiode-startdato-input'}
               onChange={(e: any) => setAnmodningsperiodeStartDato(e.target.value)}
               value={_anmodningsperiode.startdato}
-              placeholder={t('ui:placeholder-date-default')}
+              placeholder={t('elements:placeholder-date-default')}
             />
           <HorizontalSeparatorDiv data-size='0.35'/>
             <HighContrastInput
@@ -112,7 +112,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               id={'c-seddetails-anmodningsperiode-sluttdato-input'}
               onChange={(e: any) => setAnmodningsperiodeSluttDato(e.target.value)}
               value={_anmodningsperiode.sluttdato}
-              placeholder={t('ui:placeholder-date-default')}
+              placeholder={t('elements:placeholder-date-default')}
             />
           </FlexDiv>
           <VerticalSeparatorDiv data-size='0.5'/>
@@ -129,7 +129,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               id={'c-seddetails-anmodningsperioder[' + i + ']-startdato-input'}
               onChange={(e: any) => setAnmodningsperioderStartDato(e.target.value, i)}
               value={_anmodningsperioder[i].startdato}
-              placeholder={t('ui:placeholder-date-default')}
+              placeholder={t('elements:placeholder-date-default')}
             />
             <HorizontalSeparatorDiv data-size='0.35'/>
             <HighContrastInput
@@ -140,7 +140,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               id={'c-seddetails-anmodningsperioder[' + i + ']-sluttdato-input'}
               onChange={(e: any) => setAnmodningsperioderSluttDato(e.target.value, i)}
               value={_anmodningsperioder[i].sluttdato}
-              placeholder={t('ui:placeholder-date-default')}
+              placeholder={t('elements:placeholder-date-default')}
             />
           </FlexDiv>
           <VerticalSeparatorDiv data-size='0.5'/>
@@ -148,7 +148,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       ))}
       <VerticalSeparatorDiv/>
       <UndertekstBold>
-        {t('ui:label-searcher')}
+        {t('label:searcher')}
       </UndertekstBold>
       <VerticalSeparatorDiv data-size='0.5'/>
       <FlexDiv className='slideAnimate' style={{animationDelay: '0.2s'}}>
@@ -160,7 +160,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           id={'c-seddetails-søker-fornavn-input'}
           onChange={(e: any) => setBrukerFornavn(e.target.value)}
           value={_brukerFornavn}
-          placeholder={t('ui:label-firstname')}
+          placeholder={t('label:firstname')}
         />
         <HorizontalSeparatorDiv data-size='0.35'/>
         <HighContrastInput
@@ -171,7 +171,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           id={'c-seddetails-søker-etternavn-input'}
           onChange={(e: any) => setBrukerEtternavn(e.target.value)}
           value={_brukerEtternavn}
-          placeholder={t('ui:label-lastname')}
+          placeholder={t('label:lastname')}
         />
       </FlexDiv>
       <VerticalSeparatorDiv/>
@@ -188,7 +188,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           id={'c-seddetails-ektefelle-fornavn-input'}
           onChange={(e: any) => setEktefelleFornavn(e.target.value)}
           value={_ektefelleFornavn}
-          placeholder={t('ui:label-firstname')}
+          placeholder={t('label:firstname')}
         />
         <HorizontalSeparatorDiv data-size='0.35'/>
         <HighContrastInput
@@ -199,7 +199,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           id={'c-seddetails-ektefelle-etternavn-input'}
           onChange={(e: any) => setEktefelleEtternavn(e.target.value)}
           value={_ektefelleEtternavn}
-          placeholder={t('ui:label-lastname')}
+          placeholder={t('label:lastname')}
         />
       </FlexDiv>
       <VerticalSeparatorDiv/>
@@ -212,8 +212,8 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           id={'c-seddetails-sakseier-input'}
           onChange={(e: any) => setSakseier(e.target.value)}
           value={_sakseier}
-          label={t('ui:label-caseOwner')}
-          placeholder={t('ui:placeholder-input-default')}
+          label={t('label:caseOwner')}
+          placeholder={t('elements:placeholder-input-default')}
         />
       </div>
       <VerticalSeparatorDiv data-size='0.5'/>
@@ -226,14 +226,14 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           id={'c-seddetails-avsenderinstitusjon-input'}
           onChange={(e: any) => setAvsenderinstitusjon(e.target.value)}
           value={_avsenderinstitusjon}
-          label={t('ui:label-sender')}
-          placeholder={t('ui:placeholder-input-default')}
+          label={t('label:sender')}
+          placeholder={t('elements:placeholder-input-default')}
         />
       </div>
       <VerticalSeparatorDiv/>
       <div className='slideAnimate' style={{animationDelay: '0.6s'}}>
         <HighContrastRadioGroup
-        legend={t('ui:label-typeKrav')}
+        legend={t('label:typeKrav')}
         data-test-id={'c-seddetails-typeKrav-radiogroup'}
         feil={validation['seddetails-typeKrav']
           ? validation['seddetails-typeKrav']!.feilmelding
@@ -257,7 +257,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       <VerticalSeparatorDiv/>
       <div className='slideAnimate' style={{animationDelay: '0.7s'}}>
       <HighContrastRadioGroup
-        legend={t('ui:label-application-information')}
+        legend={t('label:application-information')}
         data-test-id={'c-seddetails-informasjon-radiogroup'}
         feil={validation['seddetails-informasjon']
           ? validation['seddetails-informasjon']!.feilmelding
@@ -287,8 +287,8 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
                 'skjemaelement__input--harFeil':
                   validation['seddetails-opplysninger']
               })}
-              placeholder={t('ui:placeholder-input-default')}
-              label={t('ui:label-opplysninger')}
+              placeholder={t('elements:placeholder-input-default')}
+              label={t('label:opplysninger')}
               value={_opplysninger}
               feil={validation['seddetails-opplysninger']
                 ? validation['seddetails-opplysninger']!.feilmelding
@@ -304,14 +304,14 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           kompakt mini
           onClick={saveChanges}
         >
-          {t('ui:label-save')}
+          {t('label:save')}
         </HighContrastHovedknapp>
         <HorizontalSeparatorDiv data-size='0.5'/>
         <HighContrastKnapp
           kompakt mini
           onClick={onCancel}
         >
-          {t('ui:label-cancel')}
+          {t('label:cancel')}
         </HighContrastKnapp>
 
       </div>

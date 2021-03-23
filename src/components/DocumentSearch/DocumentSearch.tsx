@@ -95,7 +95,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
         <Rinasaknummer
           data-test-id='dokumentsok__form__input-id'
           feil={validation.rinasaksnummer}
-          label={t('ui:label-rinasaksnummer')}
+          label={t('label:rinasaksnummer')}
           onChange={onRinaSaksnummerChange}
           value={rinasaksnummer}
         />
@@ -103,7 +103,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
           onClick={sokEtterDokument}
           spinner={gettingDokument}
         >
-          {t('ui:label-search')}
+          {t('label:search')}
         </Knapp>
       </Form>
       <VerticalSeparatorDiv />
@@ -112,12 +112,12 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
           data-test-id='dokumentsok__card-select-id'
           disabled={!_dokument}
           feil={validation.rinadokumentID}
-          label={t('ui:label-rinadokumentID')}
+          label={t('label:rinadokumentID')}
           onChange={onRinadokumentIDChange}
           value={rinadokumentID}
         >
           <option value=''>
-            {t('ui:label-choose')}
+            {t('label:choose')}
           </option>
           {dokument?.map((element: Dokument) => (
             <option value={element.rinadokumentID} key={element.rinadokumentID}>
@@ -129,7 +129,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
       <VerticalSeparatorDiv />
       {(dokument === null || dokument?.length === 0) && (
         <Normaltekst>
-          {t('ui:error-noDocumentFound')}
+          {t('message:error-noDocumentFound')}
         </Normaltekst>
       )}
     </div>

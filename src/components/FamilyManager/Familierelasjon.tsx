@@ -178,15 +178,15 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
               : undefined}
             highContrast={highContrast}
             id={'c-familymanager-' + personID + '-familierelasjon-' + i + '-relasjontype-select'}
-            label={t('ui:label-type')}
+            label={t('label:type')}
             onChange={(e) => setRelasjonType(e.value, i)}
             options={familierelasjonKodeverk.map((f: Kodeverk) => ({
               label: f.term, value: f.kode
             })).concat({
-              label: `${t('ui:label-other')} (${t('ui:label-freetext')})`,
+              label: `${t('label:other')} (${t('label:freetext')})`,
               value: 'other'
             })}
-            placeholder={t('ui:placeholder-select-default')}
+            placeholder={t('elements:placeholder-select-default')}
             selectedValue={i < 0 ? _currentRelasjonType : s!.relasjonType}
           />
         </Column>
@@ -199,8 +199,8 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
             id={'c-familymanager-' + personID + '-familierelasjon-' + i + '-startdato-input'}
             onChange={(e: any) => setStartDato(e.target.value, i)}
             value={i < 0 ? _currentStartDato : s?.periode.startdato}
-            label={t('ui:label-startDate')}
-            placeholder={t('ui:placeholder-date-default')}
+            label={t('label:startDate')}
+            placeholder={t('elements:placeholder-date-default')}
           />
         </Column>
         <Column>
@@ -212,8 +212,8 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
             id={'c-familymanager-' + personID + '-familierelasjon-' + i + '-sluttdato-input'}
             onChange={(e: any) => setSluttDato(e.target.value, i)}
             value={i < 0 ? _currentSluttDato : s?.periode.sluttdato}
-            label={t('ui:label-endDate')}
-            placeholder={t('ui:placeholder-date-default')}
+            label={t('label:endDate')}
+            placeholder={t('elements:placeholder-date-default')}
           />
         </Column>
       </Row>
@@ -230,8 +230,8 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                 id={'c-familymanager-' + personID + '-familierelasjon-' + i + '-annenrelasjontype-input'}
                 onChange={(e: any) => setAnnenRelasjonType(e.target.value, i)}
                 value={i < 0 ? _currentAnnenRelasjonType : s?.annenRelasjonType}
-                label={t('ui:label-other-relation')}
-                placeholder={t('ui:placeholder-date-default')}
+                label={t('label:other-relation')}
+                placeholder={t('elements:placeholder-date-default')}
               />
             </Column>
             <Column />
@@ -247,8 +247,8 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                 id={'c-familymanager-' + personID + '-familierelasjon-' + i + '-annenrelasjonpersonnavn-input'}
                 onChange={(e: any) => setAnnenRelasjonPersonNavn(e.target.value, i)}
                 value={i < 0 ? _currentAnnenRelasjonPersonNavn : s?.annenRelasjonPersonNavn}
-                label={t('ui:label-person-name')}
-                placeholder={t('ui:placeholder-date-default')}
+                label={t('label:person-name')}
+                placeholder={t('elements:placeholder-date-default')}
               />
             </Column>
             <Column>
@@ -260,8 +260,8 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                 id={'c-familymanager-' + personID + '-familierelasjon-' + i + '-annenrelasjondato-input'}
                 onChange={(e: any) => setAnnenRelasjonDato(e.target.value, i)}
                 value={i < 0 ? _currentAnnenRelasjonDato : s?.annenRelasjonDato}
-                label={t('ui:label-date-relation')}
-                placeholder={t('ui:placeholder-date-default')}
+                label={t('label:date-relation')}
+                placeholder={t('elements:placeholder-date-default')}
               />
             </Column>
           </Row>
@@ -275,11 +275,11 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                 feil={validation['person-' + personID + '-familierelasjon-' + i + '-borsammen']
                   ? validation['person-' + personID + '-familierelasjon-' + i + '-borsammen']!.feilmelding
                   : undefined}
-                legend={t('ui:label-live-together')}
+                legend={t('label:live-together')}
                 name={'c-familymanager' + personID + '-familierelasjon-' + i + '-borsammen'}
                 radios={[
-                  { label: t('ui:label-yes'), value: 'ja' },
-                  { label: t('ui:label-no'), value: 'nei' }
+                  { label: t('label:yes'), value: 'ja' },
+                  { label: t('label:no'), value: 'nei' }
                 ]}
                 onChange={(e: any) => setBorSammen(e.target.value, i)}
               />
@@ -296,7 +296,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
           >
             {i < 0 ? <Tilsette /> : <Trashcan />}
             <HorizontalSeparatorDiv data-size='0.5' />
-            {i < 0 ? t('ui:label-add') : t('ui:label-remove')}
+            {i < 0 ? t('label:add') : t('label:remove')}
           </HighContrastFlatknapp>
         </Column>
       </Row>
@@ -306,7 +306,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
   return (
     <FamilierelasjonDiv>
       <Undertittel>
-        {t('ui:label-familierelasjon-title')}
+        {t('label:familierelasjon-title')}
       </Undertittel>
       <VerticalSeparatorDiv />
       {familierelasjoner.map(renderRow)}
@@ -323,7 +323,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
               >
                 <Tilsette />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('ui:label-add-new-relationship')}
+                {t('label:add-new-relationship')}
               </HighContrastFlatknapp>
             </Column>
           </Row>

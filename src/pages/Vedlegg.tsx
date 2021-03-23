@@ -73,31 +73,31 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
     const validation = {
       journalpostID: !journalpostID
         ? {
-          feilmelding: t('ui:validation-noJournalpostID'),
+          feilmelding: t('message:validation-noJournalpostID'),
           skjemaelementId: 'vedlegg-journalpostID-id'
         } as FeiloppsummeringFeil
         : undefined,
       dokumentID: !dokumentID
         ? {
-          feilmelding: t('ui:validation-noDokumentID'),
+          feilmelding: t('message:validation-noDokumentID'),
           skjemaelementId: 'vedlegg-dokumentID-id'
         } as FeiloppsummeringFeil
         : undefined,
       rinasaksnummer: !rinasaksnummer
         ? {
-          feilmelding: t('ui:validation-noSaksnummer'),
+          feilmelding: t('message:validation-noSaksnummer'),
           skjemaelementId: ''
         } as FeiloppsummeringFeil
         : (!_isRinaNumberValid
             ? {
-                feilmelding: t('ui:validation-unverifiedSaksnummer'),
+                feilmelding: t('message:validation-unverifiedSaksnummer'),
                 skjemaelementId: ''
               }
             : undefined
           ),
       rinadokumentID: !rinadokumentID
         ? {
-          feilmelding: t('ui:validation-noRinadokumentID'),
+          feilmelding: t('message:validation-noRinadokumentID'),
           skjemaelementId: ''
         } as FeiloppsummeringFeil
         : undefined
@@ -152,10 +152,10 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
               data-test-id='vedlegg-journalpostID'
               label={(
                 <FlexDiv>
-                  {t('ui:label-journalpostID')}
+                  {t('label:journalpostID')}
                   <HorizontalSeparatorDiv data-size='0.35' />
                   <Hjelpetekst id='journalPostID'>
-                    {t('ui:help-journalpostID')}
+                    {t('message:help-journalpostID')}
                   </Hjelpetekst>
                 </FlexDiv>
               )}
@@ -170,10 +170,10 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
               data-test-id='vedlegg-dokumentID'
               label={(
                 <FlexDiv>
-                  {t('ui:label-dokumentID')}
+                  {t('label:dokumentID')}
                   <HorizontalSeparatorDiv data-size='0.35' />
                   <Hjelpetekst id='dokumentID'>
-                    {t('ui:help-dokumentID')}
+                    {t('message:help-dokumentID')}
                   </Hjelpetekst>
                 </FlexDiv>
               )}
@@ -197,7 +197,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
               disabled={sendingVedlegg}
               spinner={sendingVedlegg}
             >
-              {sendingVedlegg ? t('ui:loading-sendingVedlegg') : t('ui:label-sendVedlegg')}
+              {sendingVedlegg ? t('message:loading-sendingVedlegg') : t('label:sendVedlegg')}
             </Hovedknapp>
             {vedlegg && (
               <>
@@ -207,7 +207,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
                     <div>{t('ui:attached')}: {vedlegg.filnavn || vedlegg.vedleggID}</div>
                     {vedlegg.url && (
                       <Link href={vedlegg.url} rel='noreferrer' target='_blank'>
-                        {t('ui:label-goToRina')}
+                        {t('label:goToRina')}
                       </Link>
                     )}
                   </div>

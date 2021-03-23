@@ -55,7 +55,7 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
       <Row>
         <Column>
           <Undertittel>
-            {t('ui:label-arbeidsforhold-type')}
+            {t('label:arbeidsforhold-type')}
           </Undertittel>
           <VerticalSeparatorDiv />
           <HighContrastRadioPanelGroup
@@ -67,26 +67,26 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
             feil={undefined}
             name='c-familymanager-personenstatus-arbeidsforhold-radiogroup'
             radios={[
-              { label: t('ui:option-personensstatus-1'), value: 'arbeidsforhold-1' },
-              { label: t('ui:option-personensstatus-2'), value: 'arbeidsforhold-2' },
+              { label: t('elements:option-personensstatus-1'), value: 'arbeidsforhold-1' },
+              { label: t('elements:option-personensstatus-2'), value: 'arbeidsforhold-2' },
               {
                 label: (
                   <LesMer
-                    visibleText={t('ui:option-personensstatus-3')}
-                    invisibleText={t('ui:option-personensstatus-3-more')}
-                    moreText={t('ui:label-see-more')}
-                    lessText={t('ui:label-see-less')}
+                    visibleText={t('elements:option-personensstatus-3')}
+                    invisibleText={t('elements:option-personensstatus-3-more')}
+                    moreText={t('label:see-more')}
+                    lessText={t('label:see-less')}
                   />),
                 value: 'arbeidsforhold-3'
               },
-              { label: t('ui:option-personensstatus-4'), value: 'arbeidsforhold-4' },
+              { label: t('elements:option-personensstatus-4'), value: 'arbeidsforhold-4' },
               {
                 label: (
                   <LesMer
-                    visibleText={t('ui:option-personensstatus-5')}
-                    invisibleText={t('ui:option-personensstatus-5-more')}
-                    moreText={t('ui:label-see-more')}
-                    lessText={t('ui:label-see-less')}
+                    visibleText={t('elements:option-personensstatus-5')}
+                    invisibleText={t('elements:option-personensstatus-5-more')}
+                    moreText={t('label:see-more')}
+                    lessText={t('label:see-less')}
                   />),
                 value: 'arbeidsforhold-5'
               }

@@ -13,7 +13,7 @@ export const validateFamilierelasjon = (v: Validation, t: any, options: any, per
     const value = (f.periode.startdato)
       ? undefined
       : {
-        feilmelding: t('ui:validation-noStartDato', { person: personName }),
+        feilmelding: t('message:validation-noStartDato', { person: personName }),
         skjemaelementId: 'c-familymanager-' + personID + '-familierelasjon-' + i + '-startdato-input'
       } as FeiloppsummeringFeil
     v['person-' + personID + '-familierelasjon-' + i + '-startdato'] = value

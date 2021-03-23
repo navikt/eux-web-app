@@ -206,21 +206,21 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
      perioder.perioderMedYtelser.length + perioder.perioderMedPensjon.length) > 0
 
   const selectCategoryOptions: OptionsType<{label: string, value: SedCategory}> = [{
-    label: t('ui:option-trygdeordning-perioderMedArbeid'), value: 'perioderMedArbeid'
+    label: t('elements:option-trygdeordning-perioderMedArbeid'), value: 'perioderMedArbeid'
   }, {
-    label: t('ui:option-trygdeordning-perioderMedTrygd'), value: 'perioderMedTrygd'
+    label: t('elements:option-trygdeordning-perioderMedTrygd'), value: 'perioderMedTrygd'
   }, {
-    label: t('ui:option-trygdeordning-perioderMedYtelser'), value: 'perioderMedYtelser'
+    label: t('elements:option-trygdeordning-perioderMedYtelser'), value: 'perioderMedYtelser'
   }, {
-    label: t('ui:option-trygdeordning-perioderMedPensjon'), value: 'perioderMedPensjon'
+    label: t('elements:option-trygdeordning-perioderMedPensjon'), value: 'perioderMedPensjon'
   }]
 
   const getCategoryOption = (value: string | undefined | null) => _.find(selectCategoryOptions, s => s.value === value)
 
   const selectPensjonTypeOptions: Array<{label: string, value: PensjonType}> = [{
-    label: t('ui:option-trygdeordning-alderspensjon'), value: 'alderspensjon'
+    label: t('elements:option-trygdeordning-alderspensjon'), value: 'alderspensjon'
   }, {
-    label: t('ui:option-trygdeordning-uførhet'), value: 'uførhet'
+    label: t('elements:option-trygdeordning-uførhet'), value: 'uførhet'
   }]
 
   const getPensjonTypeOption = (value: string | undefined | null) => _.find(selectPensjonTypeOptions, s => s.value === value)
@@ -242,7 +242,7 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
                   ? (e as PensjonPeriode).periode.startdato
                   : (e as Periode).startdato
                 )}
-            placeholder={t('ui:placeholder-date-default')}
+            placeholder={t('elements:placeholder-date-default')}
           />
         </Column>
         <Column>
@@ -259,7 +259,7 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
                   ? (e as PensjonPeriode).periode.sluttdato
                   : (e as Periode).sluttdato
                 )}
-            placeholder={t('ui:placeholder-date-default')}
+            placeholder={t('elements:placeholder-date-default')}
           />
         </Column>
         {pageCategory !== 'familieYtelse'
@@ -272,7 +272,7 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
               >
                 {i < 0 ? <Tilsette /> : <Trashcan />}
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {i < 0 ? t('ui:label-add') : t('ui:label-remove')}
+                {i < 0 ? t('label:add') : t('label:remove')}
               </HighContrastFlatknapp>
             </Column>
             )
@@ -294,7 +294,7 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
                 id={'c-familymanager-' + personID + '-trygdeordning-' + sedCategory + '-' + i + '-sedCategory-select'}
                 onChange={(e: any) => onChanged(e.value, 'category', pageCategory, sedCategory, i)}
                 options={selectCategoryOptions}
-                placeholder={t('ui:placeholder-select-default')}
+                placeholder={t('elements:placeholder-select-default')}
                 selectedValue={getCategoryOption(i < 0 ? _currentCategory : sedCategory)}
                 defaultValue={getCategoryOption(i < 0 ? _currentCategory : sedCategory)}
               />
@@ -314,7 +314,7 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
                     id={'c-familymanager-' + personID + '-trygdeordning-' + sedCategory + '-' + i + '-pensjontype-select'}
                     onChange={(e: any) => onChanged(e.value, 'pensjontype', pageCategory, sedCategory, i)}
                     options={selectPensjonTypeOptions}
-                    placeholder={t('ui:placeholder-select-default')}
+                    placeholder={t('elements:placeholder-select-default')}
                     selectedValue={getPensjonTypeOption(i < 0 ? _currentPensjonType : (e as PensjonPeriode)?.pensjonstype)}
                     defaultValue={getPensjonTypeOption(i < 0 ? _currentPensjonType : (e as PensjonPeriode)?.pensjonstype)}
                   />
@@ -331,7 +331,7 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
               >
                 {i < 0 ? <Tilsette /> : <Trashcan />}
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {i < 0 ? t('ui:label-add') : t('ui:label-remove')}
+                {i < 0 ? t('label:add') : t('label:remove')}
               </HighContrastFlatknapp>
             </Column>
           </Row>
@@ -354,7 +354,7 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
         >
           <Tilsette />
           <HorizontalSeparatorDiv data-size='0.5' />
-          {t('ui:label-add-new-period')}
+          {t('label:add-new-periode')}
         </HighContrastFlatknapp>
       </Column>
     </Row>
@@ -363,24 +363,24 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
   return (
     <KontaktinformasjonDiv>
       <Undertittel>
-        {t('ui:label-dekning-trygdeordningen')}
+        {t('label:dekning-trygdeordningen')}
       </Undertittel>
       <>
         <VerticalSeparatorDiv />
         <Ingress>
-          {t('ui:label-trygdeordningen-dekkede')}
+          {t('label:trygdeordningen-dekkede')}
         </Ingress>
         <VerticalSeparatorDiv />
         {existsDekket && (
           <Row>
             <Column>
               <label className='skjemaelement__label'>
-                {t('ui:label-startDate')}
+                {t('label:startDate')}
               </label>
             </Column>
             <Column>
               <label className='skjemaelement__label'>
-                {t('ui:label-endDate')}
+                {t('label:endDate')}
               </label>
             </Column>
             <Column />
@@ -394,19 +394,19 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
         <hr />
         <VerticalSeparatorDiv data-size={2} />
         <Ingress>
-          {t('ui:label-trygdeordningen-udekkede')}
+          {t('label:trygdeordningen-udekkede')}
         </Ingress>
         <VerticalSeparatorDiv />
         {existsUdekket && (
           <Row>
             <Column>
               <label className='skjemaelement__label'>
-                {t('ui:label-startDate')}
+                {t('label:startDate')}
               </label>
             </Column>
             <Column>
               <label className='skjemaelement__label'>
-                {t('ui:label-endDate')}
+                {t('label:endDate')}
               </label>
             </Column>
             <Column />
@@ -420,19 +420,19 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
         <hr />
         <VerticalSeparatorDiv data-size={2} />
         <Ingress>
-          {t('ui:label-trygdeordningen-familieYtelse')}
+          {t('label:trygdeordningen-familieYtelse')}
         </Ingress>
         <VerticalSeparatorDiv />
         {existsFamilieYtelser && (
           <Row>
             <Column>
               <label className='skjemaelement__label'>
-                {t('ui:label-startDate')}
+                {t('label:startDate')}
               </label>
             </Column>
             <Column>
               <label className='skjemaelement__label'>
-                {t('ui:label-endDate')}
+                {t('label:endDate')}
               </label>
             </Column>
             <Column />

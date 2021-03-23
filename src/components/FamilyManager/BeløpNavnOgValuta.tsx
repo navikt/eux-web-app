@@ -98,8 +98,8 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
             id={'c-familymanager-' + personID + '-beløpNavnOgValuta-name-input'}
             onChange={(e: any) => setName(e.target.value)}
             value={_currentName}
-            label={t('ui:label-children-name')}
-            placeholder={t('ui:placeholder-date-default')}
+            label={t('label:children-name')}
+            placeholder={t('elements:placeholder-date-default')}
           />
         </Column>
         <Column>
@@ -110,14 +110,14 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
               : undefined}
             highContrast={highContrast}
             id={'c-familymanager-' + personID + '-beløpNavnOgValuta-designationOfPerformance-select'}
-            label={t('ui:label-designation-of-performance')}
+            label={t('label:designation-of-performance')}
             onChange={(e: any) => setDesignationPerformance(e.value)}
             options={[{
-              label: t('ui:option-declarationOfPerformance-barnetrygd'), value: 'Barnetrygd'
+              label: t('elements:option-declarationOfPerformance-barnetrygd'), value: 'Barnetrygd'
             }, {
-              label: t('ui:option-declarationOfPerformance-kontantstøtte'), value: 'Kontantstøtte'
+              label: t('elements:option-declarationOfPerformance-kontantstøtte'), value: 'Kontantstøtte'
             }]}
-            placeholder={t('ui:placeholder-select-default')}
+            placeholder={t('elements:placeholder-select-default')}
             selectedValue={_currentDesignationPerformance}
           />
         </Column>
@@ -133,8 +133,8 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
             id={'c-familymanager-' + personID + '-beløpNavnOgValuta-amount-input'}
             onChange={(e: any) => setAmount(e.target.value)}
             value={_currentAmount}
-            label={t('ui:label-amount')}
-            placeholder={t('ui:placeholder-input-default')}
+            label={t('label:amount')}
+            placeholder={t('elements:placeholder-input-default')}
           />
         </Column>
         <Column>
@@ -142,8 +142,8 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
             highContrast={highContrast}
             data-test-id={'c-familymanager-' + personID + '-beløpNavnOgValuta-currency-countryselect'}
             id={'c-familymanager-' + personID + '-beløpNavnOgValuta-currency-countryselect'}
-            ariaLabel={t('ui:label-currency')}
-            label={t('ui:label-currency')}
+            ariaLabel={t('label:currency')}
+            label={t('label:currency')}
             menuPortalTarget={document.body}
             values={_currentCurrency}
             locale='nb'
@@ -168,8 +168,8 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
             id={'c-familymanager-' + personID + '-beløpNavnOgValuta-startdato-input'}
             onChange={(e: any) => setGrantStartDate(e.target.value)}
             value={_currentGrantStartDate}
-            label={t('ui:label-startDate')}
-            placeholder={t('ui:placeholder-date-default')}
+            label={t('label:startDate')}
+            placeholder={t('elements:placeholder-date-default')}
           />
         </Column>
         <Column>
@@ -181,8 +181,8 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
             id={'c-familymanager-' + personID + '-beløpNavnOgValuta-sluttdato-input'}
             onChange={(e: any) => setGrantEndDate(e.target.value)}
             value={_currentGrantEndDate}
-            label={t('ui:label-endDate')}
-            placeholder={t('ui:placeholder-date-default')}
+            label={t('label:endDate')}
+            placeholder={t('elements:placeholder-date-default')}
           />
         </Column>
       </Row>
@@ -197,8 +197,8 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
             id={'c-familymanager-' + personID + '-beløpNavnOgValuta-receiverName-input'}
             onChange={(e: any) => setReceiverName(e.target.value)}
             value={_currentReceiverName}
-            label={t('ui:label-receiver-name')}
-            placeholder={t('ui:placeholder-input-default')}
+            label={t('label:receiver-name')}
+            placeholder={t('elements:placeholder-input-default')}
           />
         </Column>
       </Row>
@@ -213,10 +213,10 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
               ? validation['person-' + personID + '-frequency']!.feilmelding
               : undefined}
             name={'c-familymanager-' + personID + '-frequency-radiogroup'}
-            legend={t('ui:label-period-frequency')}
+            legend={t('label:period-frequency')}
             radios={[
-              { label: t('ui:label-monthly'), value: 'Månedlig' },
-              { label: t('ui:label-yearly'), value: 'Årlig' }
+              { label: t('label:monthly'), value: 'Månedlig' },
+              { label: t('label:yearly'), value: 'Årlig' }
             ]}
             onChange={(e: any) => setFrequency(e.target.value)}
           />

@@ -128,7 +128,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
             id={'c-familymanager-' + personID + '-kontaktinformasjon-' + i + '-nummer-input'}
             onChange={(e: any) => onNummerChanged(e.target.value, i)}
             value={i < 0 ? _currentNummer : _t?.nummer}
-            placeholder={t('ui:placeholder-input-default')}
+            placeholder={t('elements:placeholder-input-default')}
           />
         </Column>
         <Column>
@@ -141,13 +141,13 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
             highContrast={highContrast}
             onChange={(e) => onTypeChanged(e.value, i)}
             options={[{
-              label: t('ui:option-work'), value: 'Arbeid'
+              label: t('elements:option-work'), value: 'Arbeid'
             }, {
-              label: t('ui:option-home'), value: 'Hjem'
+              label: t('elements:option-home'), value: 'Hjem'
             }, {
-              label: t('ui:option-mobile'), value: 'Mobil'
+              label: t('elements:option-mobile'), value: 'Mobil'
             }]}
-            placeholder={t('ui:placeholder-select-default')}
+            placeholder={t('elements:placeholder-select-default')}
             value={i < 0 ? _currentType : _t?.type}
           />
         </Column>
@@ -159,7 +159,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
           >
             {i < 0 ? <Tilsette /> : <Trashcan />}
             <HorizontalSeparatorDiv data-size='0.5' />
-            {i < 0 ? t('ui:label-add') : t('ui:label-remove')}
+            {i < 0 ? t('label:add') : t('label:remove')}
           </HighContrastFlatknapp>
         </Column>
       </Row>
@@ -176,7 +176,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
             id={'c-familymanager-' + personID + '-kontaktinformasjon-' + i + '-epost-input'}
             onChange={(e: any) => onEpostChanged(e.target.value, i)}
             value={i < 0 ? _currentEpost : e?.adresse}
-            placeholder={t('ui:placeholder-input-default')}
+            placeholder={t('elements:placeholder-input-default')}
           />
         </Column>
         <Column style={{ alignSelf: 'flex-end' }}>
@@ -187,7 +187,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
           >
             {i < 0 ? <Tilsette /> : <Trashcan />}
             <HorizontalSeparatorDiv data-size='0.5' />
-            {i < 0 ? t('ui:label-add') : t('ui:label-remove')}
+            {i < 0 ? t('label:add') : t('label:remove')}
           </HighContrastFlatknapp>
         </Column>
       </Row>
@@ -200,12 +200,12 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
       <Row>
         <Column>
           <UndertekstBold>
-            {t('ui:label-telefonnummer')}
+            {t('label:telefonnummer')}
           </UndertekstBold>
         </Column>
         <Column>
           <UndertekstBold>
-            {t('ui:label-type')}
+            {t('label:type')}
           </UndertekstBold>
         </Column>
         <Column />
@@ -225,7 +225,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
               >
                 <Tilsette />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('ui:label-add-new-telefon')}
+                {t('label:add-new-telefon')}
               </HighContrastFlatknapp>
             </Column>
           </Row>
@@ -234,7 +234,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
       <Row>
         <Column>
           <UndertekstBold>
-            {t('ui:label-epost')}
+            {t('label:epost')}
           </UndertekstBold>
         </Column>
         <Column />
@@ -254,7 +254,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
               >
                 <Tilsette />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('ui:label-add-new-epost')}
+                {t('label:add-new-epost')}
               </HighContrastFlatknapp>
             </Column>
           </Row>

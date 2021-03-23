@@ -13,7 +13,7 @@ export const validateKontaktsinformasjon = (v: Validation, t: any, options: any,
     let value = (_t.type)
       ? undefined
       : {
-        feilmelding: t('ui:validation-noTelefonType', { person: personName }),
+        feilmelding: t('message:validation-noTelefonType', { person: personName }),
         skjemaelementId: 'c-familymanager-' + personID + '-kontaktinformasjon-' + i + '-type-select'
       } as FeiloppsummeringFeil
     v['person-' + personID + '-kontaktinformasjon-' + i + '-type'] = value
@@ -25,7 +25,7 @@ export const validateKontaktsinformasjon = (v: Validation, t: any, options: any,
     value = (_t.nummer)
       ? undefined
       : {
-        feilmelding: t('ui:validation-noTelefonNummer', { person: personName }),
+        feilmelding: t('message:validation-noTelefonNummer', { person: personName }),
         skjemaelementId: 'c-familymanager-' + personID + '-kontaktinformasjon-' + i + '-nummer-input'
       } as FeiloppsummeringFeil
     v['person-' + personID + '-kontaktinformasjon-' + i + '-nummer'] = value
@@ -42,12 +42,12 @@ export const validateKontaktsinformasjon = (v: Validation, t: any, options: any,
       ? (e.adresse.match(emailPattern)
           ? undefined
           : {
-            feilmelding: t('ui:validation-invalidEpostAdresse', { person: personName }),
+            feilmelding: t('message:validation-invalidEpostAdresse', { person: personName }),
             skjemaelementId: 'c-familymanager-' + personID + '-kontaktinformasjon-' + i + '-epost-input'
           } as FeiloppsummeringFeil
         )
       : {
-        feilmelding: t('ui:validation-noEpostAdresse', { person: personName }),
+        feilmelding: t('message:validation-noEpostAdresse', { person: personName }),
         skjemaelementId: 'c-familymanager-' + personID + '-kontaktinformasjon-' + i + '-epost-input'
       } as FeiloppsummeringFeil
     v['person-' + personID + '-kontaktinformasjon-' + i + '-epost'] = value

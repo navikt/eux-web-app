@@ -27,7 +27,7 @@ export const validate = (options: any): Validation => {
     v.formaal = !_.isEmpty(options.replySed.formaal)
       ? undefined
       : {
-        feilmelding: t('ui:validation-noFormaal'),
+        feilmelding: t('message:validation-noFormaal'),
         skjemaelementId: 'svarpased-formaal-select'
       } as FeiloppsummeringFeil
   }
@@ -35,7 +35,7 @@ export const validate = (options: any): Validation => {
   v.comment = options.comment
     ? undefined
     : {
-      feilmelding: t('ui:validation-noComment'),
+      feilmelding: t('message:validation-noComment'),
       skjemaelementId: 'c-svarpased-comment-textarea'
     } as FeiloppsummeringFeil
 

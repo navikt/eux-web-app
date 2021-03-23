@@ -26,7 +26,7 @@ const ValidationBox: React.FC<ValidationBoxProps> = ({
         <Column>
           <Feiloppsummering
             data-test-id='opprettsak__feiloppsummering'
-            tittel={t('ui:validation-feiloppsummering')}
+            tittel={t('message:validation-feiloppsummering')}
             feil={Object.values(validation)
               .filter(v => v !== undefined)
               .filter(v => v?.feilmelding !== 'notnull')

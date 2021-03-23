@@ -119,7 +119,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
       setValidation({
         ..._validation,
         saksnummerOrFnr: {
-          feilmelding: t('ui:validation-noSaksnummerOrFnr'),
+          feilmelding: t('message:validation-noSaksnummerOrFnr'),
           skjemaelementId: 'svarpased__saksnummerOrFnr-input'
         } as FeiloppsummeringFeil
       })
@@ -178,9 +178,9 @@ const Step1: React.FC<SvarPaSedProps> = ({
             feil={_validation.saksnummerOrFnr ? _validation.saksnummerOrFnr.feilmelding : undefined}
             highContrast={highContrast}
             id='svarpased__saksnummerOrFnr-input'
-            label={t('ui:label-saksnummerOrFnr')}
+            label={t('label:saksnummerOrFnr')}
             onChange={onSaksnummerOrFnrChange}
-            placeholder={t('ui:placeholder-input-default')}
+            placeholder={t('elements:placeholder-input-default')}
             value={_saksnummerOrFnr}
           />
         </Column>
@@ -191,14 +191,14 @@ const Step1: React.FC<SvarPaSedProps> = ({
             spinner={queryingSaksnummerOrFnr}
             onClick={onSaksnummerOrFnrClick}
           >
-            {queryingSaksnummerOrFnr ? t('ui:loading-searching') : t('ui:label-search')}
+            {queryingSaksnummerOrFnr ? t('message:loading-searching') : t('label:search')}
           </HighContrastKnapp>
         </AlignCenterColumn>
       </AlignedRow>
       <VerticalSeparatorDiv />
       {seds && (
         <HighContrastRadioGroup
-          legend={t('ui:label-searchResultsForSaksnummerOrFnr', {
+          legend={t('label:searchResultsForSaksnummerOrFnr', {
             antall: Object.keys(seds).length,
             saksnummerOrFnr: _saksnummerOrFnr
           })}
@@ -218,12 +218,12 @@ const Step1: React.FC<SvarPaSedProps> = ({
                       </Undertittel>
                       <LeftDiv>
                         <span>
-                          {t('ui:label-caseNumber') + ': ' + seds[sed].saksnummer}
+                          {t('label:caseNumber') + ': ' + seds[sed].saksnummer}
                         </span>
                         <HorizontalSeparatorDiv />
                         <HighContrastLink href='#'>
                           <span>
-                            {t('ui:label-goToRina')}
+                            {t('label:goToRina')}
                           </span>
                           <HorizontalSeparatorDiv data-size='0.35' />
                           <ExternalLink />
@@ -231,7 +231,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                       </LeftDiv>
                       <FlexDiv style={{ width: '1px' }}>
                         <Normaltekst>
-                          {t('ui:label-land')}:
+                          {t('label:land')}:
                         </Normaltekst>
                         <HorizontalSeparatorDiv data-size='0.35' />
                         <Flag
@@ -246,11 +246,11 @@ const Step1: React.FC<SvarPaSedProps> = ({
                         </Normaltekst>
                       </FlexDiv>
                       <Normaltekst>
-                        {t('ui:label-institusjon') + ': ' + seds[sed].institusjon}
+                        {t('label:institusjon') + ': ' + seds[sed].institusjon}
                       </Normaltekst>
                       <VerticalSeparatorDiv data-size='0.3'/>
                       <Etikett>
-                        {t('ui:label-lastModified') + ': ' + seds[sed].sisteOppdatert}
+                        {t('label:lastModified') + ': ' + seds[sed].sisteOppdatert}
                       </Etikett>
                     </>
                   )}
@@ -283,12 +283,12 @@ const Step1: React.FC<SvarPaSedProps> = ({
                           </Undertittel>
                           <VerticalSeparatorDiv data-size='0.35' />
                           <Normaltekst>
-                            {t('ui:label-lastModified') + ': ' + seds[sed].sisteOppdatert}
+                            {t('label:lastModified') + ': ' + seds[sed].sisteOppdatert}
                           </Normaltekst>
                           <VerticalSeparatorDiv data-size='0.35' />
                           <HighContrastLink href='#'>
                             <span>
-                              {t('ui:label-goToSedInRina')}
+                              {t('label:goToSedInRina')}
                             </span>
                             <HorizontalSeparatorDiv data-size='0.35' />
                             <ExternalLink />
@@ -301,7 +301,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                           mini
                           onClick={() => onReplySedClick(connectedSed, seds[sed].saksnummer)}
                         >
-                          {queryingReplySed ? t('ui:loading-replying') : t('ui:label-reply')}
+                          {queryingReplySed ? t('message:loading-replying') : t('label:reply')}
                         </HighContrastHovedknapp>
                       </FlexDiv>
                     </HighContrastPanel>

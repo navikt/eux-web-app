@@ -167,49 +167,49 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
       fnr: _relation.fnr
         ? undefined
         : {
-          feilmelding: t('ui:validation-noFnr'),
+          feilmelding: t('message:validation-noFnr'),
           skjemaelementId: 'familierelasjoner__input-fnr-id'
         } as FeiloppsummeringFeil,
       fornavn: _relation.fornavn
         ? undefined
         : {
-          feilmelding: t('ui:validation-noFirstName'),
+          feilmelding: t('message:validation-noFirstName'),
           skjemaelementId: 'familierelasjoner__input-fornavn'
         } as FeiloppsummeringFeil,
       etternavn: _relation.etternavn
         ? undefined
         : {
-          feilmelding: t('ui:validation-noLastName'),
+          feilmelding: t('message:validation-noLastName'),
           skjemaelementId: 'familierelasjoner__input-etternavn'
         } as FeiloppsummeringFeil,
       kjoenn: _relation.kjoenn
         ? undefined
         : {
-          feilmelding: t('ui:validation-noGender'),
+          feilmelding: t('message:validation-noGender'),
           skjemaelementId: 'familierelasjoner__select-kjoenn'
         } as FeiloppsummeringFeil,
       fdato: _relation.fdato
         ? undefined
         : {
-          feilmelding: t('ui:validation-noFdato'),
+          feilmelding: t('message:validation-noFdato'),
           skjemaelementId: 'familierelasjoner__input-fdato'
         } as FeiloppsummeringFeil,
       rolle: _relation.rolle
         ? undefined
         : {
-          feilmelding: t('ui:validation-noRolle'),
+          feilmelding: t('message:validation-noRolle'),
           skjemaelementId: 'familierelasjoner__input-familierelasjon'
         } as FeiloppsummeringFeil,
       land: _relation.land
         ? undefined
         : {
-          feilmelding: t('ui:validation-noLand'),
+          feilmelding: t('message:validation-noLand'),
           skjemaelementId: 'familierelasjoner__input-land'
         } as FeiloppsummeringFeil,
       statsborgerskap: _relation.land
         ? undefined
         : {
-          feilmelding: t('ui:validation-noNationality'),
+          feilmelding: t('message:validation-noNationality'),
           skjemaelementId: 'familierelasjoner__input-statsborgerskap'
         } as FeiloppsummeringFeil
     } as Validation
@@ -247,7 +247,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
 
   return (
     <Container className={className}>
-      <Normaltekst>{t('ui:label-family-utland-add-form-title')}</Normaltekst>
+      <Normaltekst>{t('label:family-utland-add-form-title')}</Normaltekst>
       <VerticalSeparatorDiv />
       <Panel data-test-id='familierelasjoner__utland__wrapper'>
         <Row>
@@ -255,7 +255,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             <Input
               data-test-id='familierelasjoner__input-fnr-id'
               feil={_validation.fnr ? _validation.fnr.feilmelding : undefined}
-              label={t('ui:label-abroad-id')}
+              label={t('label:abroad-id')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 updateRelation('fnr', e)
                 resetValidation('fnr')
@@ -269,7 +269,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             <CountrySelect
               data-test-id='familierelasjoner__input-land'
               error={_validation.land ? _validation.land.feilmelding : undefined}
-              label={t('ui:label-landkode')}
+              label={t('label:landkode')}
               key={'familierelasjoner__input-land-' + _relation.land}
               menuPortalTarget={document.body}
               includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
@@ -277,7 +277,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
                 updateCountry('land', e.value)
                 resetValidation('land')
               }}
-              placeholder={t('ui:label-choose')}
+              placeholder={t('label:choose')}
               values={_relation.land}
             />
             <VerticalSeparatorDiv />
@@ -288,10 +288,10 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               data-test-id='familierelasjoner__input-statsborgerskap'
               error={_validation.statsborgerskap ? _validation.statsborgerskap.feilmelding : undefined}
               includeList={CountryFilter.STANDARD}
-              label={t('ui:label-statsborgerskap')}
+              label={t('label:statsborgerskap')}
               key={'familierelasjoner__input-statsborgerskap' + _relation.statsborgerskap}
               menuPortalTarget={document.body}
-              placeholder={t('ui:label-choose')}
+              placeholder={t('label:choose')}
               onOptionSelected={(e: any) => {
                 updateCountry('statsborgerskap', e.value)
                 resetValidation('statsborgerskap')
@@ -306,7 +306,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             <Input
               data-test-id='familierelasjoner__input-fornavn'
               feil={_validation.fornavn ? _validation.fornavn.feilmelding : undefined}
-              label={t('ui:label-firstname')}
+              label={t('label:firstname')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 updateRelation('fornavn', e)
                 resetValidation('fornavn')
@@ -320,7 +320,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             <Input
               data-test-id='familierelasjoner__input-etternavn'
               feil={_validation.etternavn ? _validation.etternavn.feilmelding : undefined}
-              label={t('ui:label-lastname')}
+              label={t('label:lastname')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 updateRelation('etternavn', e)
                 resetValidation('etternavn')
@@ -336,7 +336,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               data-test-id='familierelasjoner__select-kjoenn'
               feil={_validation.kjoenn ? _validation.kjoenn.feilmelding : undefined}
               id='familierelasjoner__select-kjoenn'
-              label={t('ui:label-gender')}
+              label={t('label:gender')}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                 updateRelation('kjoenn', e)
                 resetValidation('kjoenn')
@@ -344,7 +344,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               value={_relation.kjoenn}
             >
               <option value='' disabled>
-                {t('ui:label-choose')}
+                {t('label:choose')}
               </option>
               {kjoennList &&
                 kjoennList.map((element: Kodeverk) => (
@@ -360,7 +360,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             <Input
               data-test-id='familierelasjoner__input-fdato'
               feil={_validation.fdato ? _validation.fdato.feilmelding : undefined}
-              label={t('ui:label-birthdate')}
+              label={t('label:birthdate')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 updateRelation('fdato', e)
                 resetValidation('fdato')
@@ -377,7 +377,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             <Select
               data-test-id='familierelasjoner__input-familierelasjon'
               feil={_validation.rolle ? _validation.rolle.feilmelding : undefined}
-              label={t('ui:label-familyRelationship')}
+              label={t('label:familyRelationship')}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                 updateRelation('rolle', e)
                 resetValidation('rolle')
@@ -385,7 +385,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               value={_relation.rolle}
             >
               <option value='' disabled>
-                {t('ui:label-choose')}
+                {t('label:choose')}
               </option>
               {rolleList.map((element: Kodeverk) => (
                 <option value={element.kode} key={element.kode}>
@@ -410,7 +410,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
                 color={!canAddRelation() ? 'white' : '#0067C5'}
               />
               <HorizontalSeparatorDiv />
-              <span>{t('ui:label-add')}</span>
+              <span>{t('label:add')}</span>
             </Knapp>
           </AlignCenterColumn>
           {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (

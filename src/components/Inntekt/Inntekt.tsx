@@ -169,7 +169,7 @@ const Inntekt: React.FC<InntektProps> = ({
           <AlignedInput
             id='inntekt-fradato'
             data-test-id='inntekt-fradato'
-            label={t('ui:label-fraDato')}
+            label={t('label:fraDato')}
             feil={validation.fraDato ? validation.fraDato.feilmelding : undefined}
             value={inntektSøk.fraDato}
             placeholder='ÅÅÅÅ-MM'
@@ -188,7 +188,7 @@ const Inntekt: React.FC<InntektProps> = ({
           <AlignedInput
             id='inntekt-tildato'
             data-test-id='inntekt-tildato'
-            label={t('ui:label-tilDato')}
+            label={t('label:tilDato')}
             feil={validation.tilDato ? validation.tilDato.feilmelding : undefined}
             value={inntektSøk.tilDato}
             placeholder='ÅÅÅÅ-MM'
@@ -208,7 +208,7 @@ const Inntekt: React.FC<InntektProps> = ({
             id='inntekt-tema'
             highContrast={highContrast}
             data-test-id='inntekt-tema'
-            label={t('ui:label-tema')}
+            label={t('label:tema')}
             feil={validation.tema ? validation.tema.feilmelding : undefined}
             value={inntektSøk.tema}
             className={classNames({ feil: validation.tema })}
@@ -218,7 +218,7 @@ const Inntekt: React.FC<InntektProps> = ({
             }}
           >
             <option value=''>
-              {t('ui:label-choose')}
+              {t('label:choose')}
             </option>
             <option value='BARNETRYGD' key='BARNETRYGD'>
               Barnetrygd

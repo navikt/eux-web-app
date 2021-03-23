@@ -1,0 +1,8 @@
+{
+  "name" : "nEESSI",
+  "title": "Velkommen til nEESSI",
+
+  "indexpage-createCase" : "Opprett sak",
+  "indexpage-addAttachment": "Legg vedlegg til SED",
+  "indexpage-svarSed": "SvarSED eller ny SED i eksisterende sak"
+}

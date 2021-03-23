@@ -25,7 +25,7 @@ const ReasonToCome = ({
   return (
     <>
       <Undertittel>
-        {t('ui:label-reason-for-coming')}
+        {t('label:reason-for-coming')}
       </Undertittel>
       <VerticalSeparatorDiv />
 
@@ -38,13 +38,13 @@ const ReasonToCome = ({
           >
             <Tilsette />
             <HorizontalSeparatorDiv data-size='0.5' />
-            {t('ui:label-add-new-reason-to-coming')}
+            {t('label:add-new-reason-to-coming')}
           </HighContrastFlatknapp>
           )
         : (
           <div>
             <UndertekstBold>
-              {t('ui:label-duration-stay')}
+              {t('label:duration-stay')}
             </UndertekstBold>
             <VerticalSeparatorDiv />
             <Row>
@@ -57,8 +57,8 @@ const ReasonToCome = ({
                   id={'c-familymanager-' + personID + '-personensstatus-durationstay-startdato-input'}
                   onChange={(e: any) => setCurrentDurationStayStartDato(e.target.value)}
                   value={_currentDurationStayStartDato}
-                  label={t('ui:label-startDate')}
-                  placeholder={t('ui:placeholder-date-default')}
+                  label={t('label:startDate')}
+                  placeholder={t('elements:placeholder-date-default')}
                 />
               </Column>
               <Column>
@@ -70,8 +70,8 @@ const ReasonToCome = ({
                   id={'c-familymanager-' + personID + '-personensstatus-durationStay-sluttdato-input'}
                   onChange={(e: any) => setCurrentDurationStaySluttDato(e.target.value)}
                   value={_currentDurationStaySluttDato}
-                  label={t('ui:label-endDate')}
-                  placeholder={t('ui:placeholder-date-default')}
+                  label={t('label:endDate')}
+                  placeholder={t('elements:placeholder-date-default')}
                 />
               </Column>
             </Row>
@@ -86,8 +86,8 @@ const ReasonToCome = ({
                   id={'c-familymanager-' + personID + '-personensstatus-durationStay-startdato-input'}
                   onChange={(e: any) => setCurrentDurationStaySender(e.target.value)}
                   value={_currentDurationStaySender}
-                  label={t('ui:label-moving-date-sender')}
-                  placeholder={t('ui:placeholder-date-default')}
+                  label={t('label:moving-date-sender')}
+                  placeholder={t('elements:placeholder-date-default')}
                 />
               </Column>
               <Column>
@@ -99,8 +99,8 @@ const ReasonToCome = ({
                   id={'c-familymanager-' + personID + '-personensstatus-durationStay-sluttdato-input'}
                   onChange={(e: any) => setCurrentDurationStayReceiver(e.target.value)}
                   value={_currentDurationStayReceiver}
-                  label={t('ui:label-moving-date-receiver')}
-                  placeholder={t('ui:placeholder-date-default')}
+                  label={t('label:moving-date-receiver')}
+                  placeholder={t('elements:placeholder-date-default')}
                 />
               </Column>
             </Row>

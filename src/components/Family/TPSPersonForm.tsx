@@ -144,8 +144,8 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
         <Column>
           <Input
             data-test-id='c-TPSPersonForm__input-fnr-or-dnr-id'
-            label={t('ui:label-fnr-or-dnr')}
-            placeholder={t('ui:label-fnr-or-dnr')}
+            label={t('label:fnr-or-dnr')}
+            placeholder={t('label:fnr-or-dnr')}
             value={_query}
             onChange={updateQuery}
           />
@@ -157,7 +157,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
             disabled={person.fnr === _query}
             onClick={sokEtterFnr}
           >
-            {t('ui:label-search')}
+            {t('label:search')}
           </Knapp>
         </AlignCenterColumn>
       </Row>
@@ -167,14 +167,14 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
           {person.fnr === _query && (
             <AlertstripeDiv>
               <AlertStripe type='advarsel'>
-                {t('ui:error-fnr-is-user', { sok: _query })}
+                {t('message:error-fnr-is-user', { sok: _query })}
               </AlertStripe>
             </AlertstripeDiv>
           )}
           {_tpsperson && (
             <AlertstripeDiv>
               <AlertStripe className='mt-4 mb-4' type='advarsel'>
-                {t('ui:error-relation-already-in-tps')}
+                {t('message:error-relation-already-in-tps')}
               </AlertStripe>
             </AlertstripeDiv>
           )}

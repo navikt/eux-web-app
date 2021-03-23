@@ -97,9 +97,9 @@ const Op3Other = ({
   }
 
   const selectPensjonTypeOptions: Array<{label: string, value: PensjonType}> = [{
-    label: t('ui:option-trygdeordning-alderspensjon'), value: 'alderspensjon'
+    label: t('elements:option-trygdeordning-alderspensjon'), value: 'alderspensjon'
   }, {
-    label: t('ui:option-trygdeordning-uførhet'), value: 'uførhet'
+    label: t('elements:option-trygdeordning-uførhet'), value: 'uførhet'
   }]
 
   const getPensjonTypeOption = (value: string | undefined | null) => _.find(selectPensjonTypeOptions, s => s.value === value)
@@ -115,8 +115,8 @@ const Op3Other = ({
           id={'c-familymanager-' + personID + '-personensstatus-selvstendig-' + i + '-startdato-input'}
           onChange={(e: any) => setStartDato(e.target.value, i)}
           value={i < 0 ? _currentStartDato : p?.periode.startdato}
-          label={t('ui:label-startDate')}
-          placeholder={t('ui:placeholder-date-default')}
+          label={t('label:startDate')}
+          placeholder={t('elements:placeholder-date-default')}
         />
       </Column>
       <Column>
@@ -128,8 +128,8 @@ const Op3Other = ({
           id={'c-familymanager-' + personID + '-personensstatus-selvstendig-' + i + '-sluttdato-input'}
           onChange={(e: any) => setSluttDato(e.target.value, i)}
           value={i < 0 ? _currentSluttDato : p?.periode.sluttdato}
-          label={t('ui:label-endDate')}
-          placeholder={t('ui:placeholder-date-default')}
+          label={t('label:endDate')}
+          placeholder={t('elements:placeholder-date-default')}
         />
       </Column>
       <Column>
@@ -142,7 +142,7 @@ const Op3Other = ({
           id={'c-familymanager-' + personID + '-personensstatus-selvstendig-' + i + '-pensjontype-select'}
           onChange={(e: any) => setPensjonType(e.value, i)}
           options={selectPensjonTypeOptions}
-          placeholder={t('ui:placeholder-select-default')}
+          placeholder={t('elements:placeholder-select-default')}
           selectedValue={getPensjonTypeOption(i < 0 ? _currentPensjonType : (p as PensjonPeriode)?.pensjonstype)}
           defaultValue={getPensjonTypeOption(i < 0 ? _currentPensjonType : (p as PensjonPeriode)?.pensjonstype)}
         />
@@ -155,7 +155,7 @@ const Op3Other = ({
         >
           {i < 0 ? <Tilsette /> : <Trashcan />}
           <HorizontalSeparatorDiv data-size='0.5' />
-          {i < 0 ? t('ui:label-add') : t('ui:label-remove')}
+          {i < 0 ? t('label:add') : t('label:remove')}
         </HighContrastFlatknapp>
       </Column>
     </AlignEndRow>
@@ -164,7 +164,7 @@ const Op3Other = ({
   return (
     <>
       <Undertittel>
-        {t('ui:label-period-with-received-pension-from-sender-country')}
+        {t('label:period-with-received-pension-from-sender-country')}
       </Undertittel>
       <VerticalSeparatorDiv />
       {_perioder.map(renderRow)}
@@ -180,7 +180,7 @@ const Op3Other = ({
           >
             <Tilsette />
             <HorizontalSeparatorDiv data-size='0.5' />
-            {t('ui:label-add-new-period')}
+            {t('label:add-new-periode')}
           </HighContrastFlatknapp>
         </Column>
       </Row>

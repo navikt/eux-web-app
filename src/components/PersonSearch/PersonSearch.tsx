@@ -101,12 +101,12 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
 
   const sokEtterPerson = (): void => {
     if (!_fnr) {
-      setLocalValidation(t('ui:validation-noFnr'))
+      setLocalValidation(t('message:validation-noFnr'))
       return
     }
     const fnrPattern = /^[0-9]{11}$/
     if (_fnr && !fnrPattern.test(_fnr)) {
-      setLocalValidation(t('ui:validation-invalidFnr'))
+      setLocalValidation(t('message:validation-invalidFnr'))
       return
     }
     setLocalValidation(undefined)
@@ -141,15 +141,15 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
         <PersonSearchInput
           id={id}
           data-test-id={id}
-          label={t('ui:label-searchUser')}
+          label={t('label:searchUser')}
           value={_fnr || ''}
           onChange={onChange}
           feil={validation ? validation.feilmelding : localValidation}
         />
         <Button onClick={sokEtterPerson} disabled={gettingPerson}>
           {gettingPerson
-            ? <WaitingPanel size='S' message={t('ui:loading-searching')} oneLine />
-            : t('ui:label-search')}
+            ? <WaitingPanel size='S' message={t('message:loading-searching')} oneLine />
+            : t('label:search')}
         </Button>
       </PersonSearchPanel>
       {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (

@@ -104,7 +104,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
 
     rolleTerm = kodeverkObjektTilTerm(rolleObjekt)
     if (!rolleTerm) {
-      rolleTerm = t('ui:label-unknownRolle')
+      rolleTerm = t('label:unknownRolle')
     }
   }
 
@@ -149,19 +149,19 @@ const PersonCard: React.FC<PersonCardProps> = ({
               {(person as FamilieRelasjon).rolle ? ' - ' + rolleTerm : ''}
             </Undertittel>
             <Undertitle>
-              <div>{t('ui:label-fnr') + ' : ' + fnr}</div>
-              <div>{t('ui:label-birthdate') + ': ' + formatterDatoTilNorsk(fdato)}</div>
+              <div>{t('label:fnr') + ' : ' + fnr}</div>
+              <div>{t('label:birthdate') + ': ' + formatterDatoTilNorsk(fdato)}</div>
             </Undertitle>
           </div>
         </Description>
         {rolleList !== undefined && (
           <Select
-            label={t('ui:label-familyRelationship')}
+            label={t('label:familyRelationship')}
             date-testid='familierelasjoner__select-familirelasjon-rolle'
             value={(person as FamilieRelasjon).rolle}
             onChange={updateFamilyRelation}
           >
-            <option value=''>{t('ui:label-choose')}</option>
+            <option value=''>{t('label:choose')}</option>
             {rolleList && rolleList.map((element: Kodeverk) => (
               <option value={element.kode} key={element.kode}>{element.term}</option>)
             )}
@@ -174,7 +174,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
             <Trashcan color='#0067C5' width='20' height='20' />
             <HorizontalSeparatorDiv />
             <ButtonLabel>
-              {t('ui:label-remove')}
+              {t('label:remove')}
             </ButtonLabel>
           </RemoveButton>
         )}
@@ -187,7 +187,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
             <Tilsette width={20} />
             <HorizontalSeparatorDiv />
             <ButtonLabel>
-              {t('ui:label-add')}
+              {t('label:add')}
             </ButtonLabel>
           </Knapp>
         )}

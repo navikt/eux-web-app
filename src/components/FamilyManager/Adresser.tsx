@@ -171,12 +171,12 @@ const Adresser: React.FC<AdresseProps> = ({
             feil={validation['person-' + personID + '-adresser-' + i + '-type-radiogroup']
               ? validation['person-' + personID + '-adresser-' + i + '-type']!.feilmelding
               : undefined}
-            legend={t('ui:label-adresse')}
+            legend={t('label:adresse')}
             name={'c-familymanager-' + personID + '-adresser-radiogroup'}
             radios={[
-              { label: t('ui:label-bostedsland'), value: 'bosted' },
-              { label: t('ui:label-oppholdsland'), value: 'opphold' },
-              { label: t('ui:label-kontaktadresse'), value: 'kontakt' }
+              { label: t('label:bostedsland'), value: 'bosted' },
+              { label: t('label:oppholdsland'), value: 'opphold' },
+              { label: t('label:kontaktadresse'), value: 'kontakt' }
             ]}
             onChange={(e: any) => onTypeChanged(e.target.value, i)}
           />
@@ -193,7 +193,7 @@ const Adresser: React.FC<AdresseProps> = ({
             id={'c-familymanager-' + personID + '-adresser-' + i + '-gate-input'}
             onChange={(e: any) => onGateChanged(e.target.value, i)}
             value={i < 0 ? _currentGate : a?.gate}
-            label={t('ui:label-gateadresse')}
+            label={t('label:gateadresse')}
           />
         </Column>
         <Column>
@@ -205,7 +205,7 @@ const Adresser: React.FC<AdresseProps> = ({
             id={'c-familymanager-' + personID + '-adresser-' + i + '-bygning-input'}
             onChange={(e: any) => onBygningChanged(e.target.value, i)}
             value={i < 0 ? _currentBygning : a?.bygning}
-            label={t('ui:label-bygning')}
+            label={t('label:bygning')}
           />
         </Column>
       </AlignStartRow>
@@ -220,7 +220,7 @@ const Adresser: React.FC<AdresseProps> = ({
             id={'c-familymanager-' + personID + '-adresser-' + i + '-postnummer-input'}
             onChange={(e: any) => onPostnummerChanged(e.target.value, i)}
             value={i < 0 ? _currentPostnummer : a?.postnummer}
-            label={t('ui:label-postnummer')}
+            label={t('label:postnummer')}
           />
         </Column>
         <Column>
@@ -232,7 +232,7 @@ const Adresser: React.FC<AdresseProps> = ({
             id={'c-familymanager-' + personID + '-adresser-' + i + '-by-input'}
             onChange={(e: any) => onByChanged(e.target.value, i)}
             value={i < 0 ? _currentBy : a?.by}
-            label={t('ui:label-by')}
+            label={t('label:by')}
           />
         </Column>
         <Column />
@@ -248,7 +248,7 @@ const Adresser: React.FC<AdresseProps> = ({
             id={'c-familymanager-' + personID + '-adresser-' + i + '-region-input'}
             onChange={(e: any) => onRegionChanged(e.target.value, i)}
             value={i < 0 ? _currentRegion : a?.region}
-            label={t('ui:label-region')}
+            label={t('label:region')}
           />
         </Column>
         <Column>
@@ -258,11 +258,11 @@ const Adresser: React.FC<AdresseProps> = ({
               ? validation['person-' + personID + '-adresser-' + i + '-land']!.feilmelding
               : undefined}
             id={'c-familymanager-' + personID + '-adresser-' + i + '-land-countryselect'}
-            label={t('ui:label-landkode')}
+            label={t('label:landkode')}
             menuPortalTarget={document.body}
             includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
             onOptionSelected={(e: any) => onLandChanged(e.value, i)}
-            placeholder={t('ui:label-choose')}
+            placeholder={t('label:choose')}
             values={i < 0 ? _currentLand : a?.land}
           />
         </Column>
@@ -274,7 +274,7 @@ const Adresser: React.FC<AdresseProps> = ({
           >
             {i < 0 ? <Tilsette /> : <Trashcan />}
             <HorizontalSeparatorDiv data-size='0.5' />
-            {i < 0 ? t('ui:label-add') : t('ui:label-remove')}
+            {i < 0 ? t('label:add') : t('label:remove')}
           </HighContrastFlatknapp>
         </Column>
       </AlignStartRow>
@@ -298,7 +298,7 @@ const Adresser: React.FC<AdresseProps> = ({
               >
                 <Tilsette />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('ui:label-add-new-adresse')}
+                {t('label:add-new-adresse')}
               </HighContrastFlatknapp>
             </Column>
           </Row>

@@ -15,7 +15,7 @@ const validatePeriod = (category: string, v: Validation, t: any, options: any, p
     const value = (_p.startdato)
       ? undefined
       : {
-        feilmelding: t('ui:validation-noStartDato', { person: personName }),
+        feilmelding: t('message:validation-noStartDato', { person: personName }),
         skjemaelementId: 'c-familymanager-' + personID + '-trygdeordninger-' + '-' + category + '-' + i + '-startdato-input'
       } as FeiloppsummeringFeil
     v['person-' + personID + personID + '-trygdeordninger-' + '-' + category + '-' + i + '-startdato'] = value

@@ -33,7 +33,7 @@ const SEDDetails = ({ highContrast, replySed }: SEDDetailsProps) => {
     <HighContrastPanel>
       <FlexDiv>
         <Undertittel>
-        {t('ui:label-rinasaksnummer') + ': ' + replySed.saksnummer}
+        {t('label:rinasaksnummer') + ': ' + replySed.saksnummer}
         </Undertittel>
         <HighContrastFlatknapp kompakt style={{
           marginTop: '-0.5rem',

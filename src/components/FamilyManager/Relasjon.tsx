@@ -46,14 +46,14 @@ const Relasjon: React.FC<RelasjonProps> = ({
   const { t } = useTranslation()
 
   const relasjonTypeOptions = [
-    { label: t('ui:option-relasjon-1'), value: 'option-relasjon-1' },
-    { label: t('ui:option-relasjon-2'), value: 'option-relasjon-2' },
-    { label: t('ui:option-relasjon-3'), value: 'option-relasjon-3' },
-    { label: t('ui:option-relasjon-4'), value: 'option-relasjon-4' },
-    { label: t('ui:option-relasjon-5'), value: 'option-relasjon-5' },
-    { label: t('ui:option-relasjon-6'), value: 'option-relasjon-6' },
-    { label: t('ui:option-relasjon-7'), value: 'option-relasjon-7' },
-    { label: t('ui:option-relasjon-8'), value: 'option-relasjon-8' }
+    { label: t('elements:option-relasjon-1'), value: 'option-relasjon-1' },
+    { label: t('elements:option-relasjon-2'), value: 'option-relasjon-2' },
+    { label: t('elements:option-relasjon-3'), value: 'option-relasjon-3' },
+    { label: t('elements:option-relasjon-4'), value: 'option-relasjon-4' },
+    { label: t('elements:option-relasjon-5'), value: 'option-relasjon-5' },
+    { label: t('elements:option-relasjon-6'), value: 'option-relasjon-6' },
+    { label: t('elements:option-relasjon-7'), value: 'option-relasjon-7' },
+    { label: t('elements:option-relasjon-8'), value: 'option-relasjon-8' }
   ]
 
   const setRelasjon = (e: string) => {
@@ -104,7 +104,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
   return (
     <RelasjonDiv>
       <Undertittel>
-        {t('ui:label-relasjon-title')}
+        {t('label:relasjon-title')}
       </Undertittel>
       <VerticalSeparatorDiv />
       <HighContrastRadioPanelGroup
@@ -114,11 +114,11 @@ const Relasjon: React.FC<RelasjonProps> = ({
         feil={validation['person-' + personID + '-relasjon-radiogroup']
           ? validation['person-' + personID + '-relasjon']!.feilmelding
           : undefined}
-        legend={t('ui:label-relation-with')}
+        legend={t('label:relation-with')}
         name={'c-familymanager-' + personID + '-relasjon-radiogroup'}
         radios={[
-          { label: t('ui:label-searcher'), value: 'søker' },
-          { label: t('ui:label-deceased'), value: 'avdød' }
+          { label: t('label:searcher'), value: 'søker' },
+          { label: t('label:deceased'), value: 'avdød' }
         ]}
         onChange={(e: any) => setRelasjon(e.target.value)}
       />
@@ -131,8 +131,8 @@ const Relasjon: React.FC<RelasjonProps> = ({
           : undefined}
         name={'c-familymanager-' + personID + '-relasjon-radiogroup'}
         radios={[
-          { label: t('ui:label-partner'), value: 'ektefell/partner' },
-          { label: t('ui:label-other-person'), value: 'annen person' }
+          { label: t('label:partner'), value: 'ektefell/partner' },
+          { label: t('label:other-person'), value: 'annen person' }
         ]}
         onChange={(e: any) => setRelasjon(e.target.value)}
       />
@@ -145,17 +145,17 @@ const Relasjon: React.FC<RelasjonProps> = ({
               : undefined}
             highContrast={highContrast}
             id={'c-familymanager-' + personID + '-relasjon-relasjontype-select'}
-            label={t('ui:label-type')}
+            label={t('label:type')}
             onChange={(e) => setRelasjonType(e.value)}
             options={relasjonTypeOptions}
-            placeholder={t('ui:placeholder-select-default')}
+            placeholder={t('elements:placeholder-select-default')}
             selectedValue={_currentRelasjonType}
           />
         </Column>
       </Row>
       <VerticalSeparatorDiv />
       <UndertekstBold>
-        {t('ui:label-relation-duration')}
+        {t('label:relation-duration')}
       </UndertekstBold>
       <Row>
         <Column>
@@ -167,8 +167,8 @@ const Relasjon: React.FC<RelasjonProps> = ({
             id={'c-familymanager-' + personID + '-relasjon-startdato-input'}
             onChange={(e: any) => setStartDato(e.target.value)}
             value={_currentStartDato}
-            label={t('ui:label-startDate')}
-            placeholder={t('ui:placeholder-date-default')}
+            label={t('label:startDate')}
+            placeholder={t('elements:placeholder-date-default')}
           />
         </Column>
         <Column>
@@ -180,8 +180,8 @@ const Relasjon: React.FC<RelasjonProps> = ({
             id={'c-familymanager-' + personID + '-relasjon-sluttdato-input'}
             onChange={(e: any) => setSluttDato(e.target.value)}
             value={_currentSluttDato}
-            label={t('ui:label-endDate')}
-            placeholder={t('ui:placeholder-date-default')}
+            label={t('label:endDate')}
+            placeholder={t('elements:placeholder-date-default')}
           />
         </Column>
       </Row>
@@ -193,22 +193,22 @@ const Relasjon: React.FC<RelasjonProps> = ({
         feil={validation['person-' + personID + '-foreldreansvar-radiogroup']
           ? validation['person-' + personID + '-foreldreansvar']!.feilmelding
           : undefined}
-        legend={t('ui:label-shared-custody')}
+        legend={t('label:shared-custody')}
         name={'c-familymanager-' + personID + '-foreldreansvar-radiogroup'}
         radios={[
-          { label: t('ui:label-yes'), value: 'ja' },
-          { label: t('ui:label-no'), value: 'nei' }
+          { label: t('label:yes'), value: 'ja' },
+          { label: t('label:no'), value: 'nei' }
         ]}
         onChange={(e: any) => setForeldreansvar(e.target.value)}
       />
       <VerticalSeparatorDiv />
       <UndertekstBold>
-        {t('ui:label-children-in-household')}
+        {t('label:children-in-household')}
       </UndertekstBold>
       <CenterRow>
         <Column data-flex='2'>
           <Normaltekst>
-            {t('ui:label-children-in-household-question-1')}
+            {t('label:children-in-household-question-1')}
           </Normaltekst>
         </Column>
         <Column>
@@ -221,8 +221,8 @@ const Relasjon: React.FC<RelasjonProps> = ({
               : undefined}
             name={'c-familymanager-' + personID + '-question1-radiogroup'}
             radios={[
-              { label: t('ui:label-yes'), value: 'ja' },
-              { label: t('ui:label-no'), value: 'nei' }
+              { label: t('label:yes'), value: 'ja' },
+              { label: t('label:no'), value: 'nei' }
             ]}
             onChange={(e: any) => setQuestion1(e.target.value)}
           />
@@ -232,7 +232,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
       <CenterRow>
         <Column data-flex='2'>
           <Normaltekst>
-            {t('ui:label-children-in-household-question-2')}
+            {t('label:children-in-household-question-2')}
           </Normaltekst>
         </Column>
         <Column>
@@ -245,8 +245,8 @@ const Relasjon: React.FC<RelasjonProps> = ({
               : undefined}
             name={'c-familymanager-' + personID + '-question2-radiogroup'}
             radios={[
-              { label: t('ui:label-yes'), value: 'ja' },
-              { label: t('ui:label-no'), value: 'nei' }
+              { label: t('label:yes'), value: 'ja' },
+              { label: t('label:no'), value: 'nei' }
             ]}
             onChange={(e: any) => setQuestion2(e.target.value)}
           />
@@ -256,7 +256,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
       <CenterRow>
         <Column data-flex='2'>
           <Normaltekst>
-            {t('ui:label-children-in-household-question-3')}
+            {t('label:children-in-household-question-3')}
           </Normaltekst>
         </Column>
         <Column>
@@ -269,8 +269,8 @@ const Relasjon: React.FC<RelasjonProps> = ({
               : undefined}
             name={'c-familymanager-' + personID + '-question3-radiogroup'}
             radios={[
-              { label: t('ui:label-yes'), value: 'ja' },
-              { label: t('ui:label-no'), value: 'nei' }
+              { label: t('label:yes'), value: 'ja' },
+              { label: t('label:no'), value: 'nei' }
             ]}
             onChange={(e: any) => setQuestion3(e.target.value)}
           />
@@ -280,7 +280,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
       <CenterRow>
         <Column data-flex='2'>
           <Normaltekst>
-            {t('ui:label-children-in-household-question-4')}
+            {t('label:children-in-household-question-4')}
           </Normaltekst>
         </Column>
         <Column>
@@ -293,8 +293,8 @@ const Relasjon: React.FC<RelasjonProps> = ({
               : undefined}
             name={'c-familymanager-' + personID + '-question4-radiogroup'}
             radios={[
-              { label: t('ui:label-yes'), value: 'ja' },
-              { label: t('ui:label-no'), value: 'nei' }
+              { label: t('label:yes'), value: 'ja' },
+              { label: t('label:no'), value: 'nei' }
             ]}
             onChange={(e: any) => setQuestion4(e.target.value)}
           />

@@ -28,9 +28,7 @@ const PanelDiv = styled.div`
   flex-direction: column;
   flex: 1;
 `
-const FlexDiv = styled.div`
-  display: flex;
-`
+
 const TextAreaDiv = styled.div`
   textarea {
     width: 100%;
@@ -39,7 +37,7 @@ const TextAreaDiv = styled.div`
 const AlignEndRow = styled(Row)`
   align-items: flex-end;
 `
-export interface VedtakProps {
+export interface MotregningProps {
   highContrast: boolean
   replySed: ReplySed
 }
@@ -48,10 +46,10 @@ export interface PeriodeAndVedtak {
   vedtak: string
 }
 
-const Vedtak: React.FC<VedtakProps> = ({
+const Motregning: React.FC<MotregningProps> = ({
   highContrast,
   replySed
-}: VedtakProps): JSX.Element => {
+}: MotregningProps): JSX.Element => {
 
   const { t } = useTranslation()
   const [_allKids, setAllKids] = useState<string | undefined>(undefined)
@@ -193,32 +191,34 @@ const Vedtak: React.FC<VedtakProps> = ({
     </>
   )
 
+
+
   return (
     <PanelDiv>
       <Undertittel>
-        {t('ui:title-vedtak')}
+        {t('ui:title-motregning')}
       </Undertittel>
       <VerticalSeparatorDiv />
       <HighContrastPanel>
         <HighContrastRadioGroup
-          legend={t('label:allKids-radiogroup')}
+          legend={t('label:motregning-request')}
           feil={_validation['vedtak-allkids']
               ? _validation['vedtak-allkids']!.feilmelding
               : undefined}
           >
-          <FlexDiv>
+
             <HighContrastRadio
             name={'c-vedtak-allkids'}
             checked={_allKids === 'ja'}
-              label={t('label:yes')}
+              label={t('label:motregning-request-1')}
             onClick={() => setAllKids('ja') }/>
-          <HorizontalSeparatorDiv data-size='2'/>
+          <VerticalSeparatorDiv/>
             <HighContrastRadio
             name={'c-vedtak-allkids'}
             checked={_allKids === 'nei'}
-            label={t('label:no')}
+            label={t('label:motregning-request-2')}
             onClick={() => setAllKids('nei') }/>
-          </FlexDiv>
+
         </HighContrastRadioGroup>
         {_allKids === 'nei' && (
           <>
@@ -327,4 +327,4 @@ const Vedtak: React.FC<VedtakProps> = ({
 }
 
 
-export default Vedtak
+export default Motregning

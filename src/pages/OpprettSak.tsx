@@ -212,60 +212,60 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
     const validation: Validation = {
       fnr: !valgtFnr
         ? {
-          feilmelding: t('ui:validation-noFnr'),
+          feilmelding: t('message:validation-noFnr'),
           skjemaelementId: 'opprettsak__fnr'
         } as FeiloppsummeringFeil
         : !_isFnrValid
             ? {
-              feilmelding: t('ui:validation-uncheckedFnr'),
+              feilmelding: t('message:validation-uncheckedFnr'),
               skjemaelementId: 'opprettsak__fnr'
             } as FeiloppsummeringFeil
             : undefined,
       sektor: !valgtSektor
         ? {
-          feilmelding: t('ui:validation-noSektor'),
+          feilmelding: t('message:validation-noSektor'),
           skjemaelementId: 'opprettsak__sektor'
         } as FeiloppsummeringFeil
         : undefined,
       buctype: !valgtBucType
         ? {
-          feilmelding: t('ui:validation-noBuctype'),
+          feilmelding: t('message:validation-noBuctype'),
           skjemaelementId: 'opprettsak__buctype'
         } as FeiloppsummeringFeil
         : undefined,
       sedtype: !valgtSedType
         ? {
-          feilmelding: t('ui:validation-noSedtype'),
+          feilmelding: t('message:validation-noSedtype'),
           skjemaelementId: 'opprettsak__sedtype'
         } as FeiloppsummeringFeil
         : undefined,
       landkode: !valgtLandkode
         ? {
-          feilmelding: t('ui:validation-noLand'),
+          feilmelding: t('message:validation-noLand'),
           skjemaelementId: 'opprettsak__landkode'
         } as FeiloppsummeringFeil
         : undefined,
       institusjon: !valgtInstitusjon
         ? {
-          feilmelding: t('ui:validation-noInstitusjonsID'),
+          feilmelding: t('message:validation-noInstitusjonsID'),
           skjemaelementId: 'opprettsak__institusjon'
         } as FeiloppsummeringFeil
         : undefined,
       tema: !valgtTema
         ? {
-          feilmelding: t('ui:validation-noTema'),
+          feilmelding: t('message:validation-noTema'),
           skjemaelementId: 'opprettsak__tema'
         } as FeiloppsummeringFeil
         : undefined,
       saksId: !valgtSaksId
         ? {
-          feilmelding: t('ui:validation-noSaksId'),
+          feilmelding: t('message:validation-noSaksId'),
           skjemaelementId: 'opprettsak__saksId'
         } as FeiloppsummeringFeil
         : undefined,
       unit: visEnheter && !valgtUnit
         ? {
-          feilmelding: t('ui:validation-noUnit'),
+          feilmelding: t('message:validation-noUnit'),
           skjemaelementId: 'opprettsak__unit'
         } as FeiloppsummeringFeil
         : undefined
@@ -432,12 +432,12 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     data-test-id='opprettsak__sektor'
                     feil={_validation.sektor ? _validation.sektor.feilmelding : undefined}
                     id='opprettsak__sektor'
-                    label={t('ui:label-sektor')}
+                    label={t('label:sektor')}
                     onChange={onSektorChange}
                     value={valgtSektor}
                   >
                     <option value=''>
-                      {t('ui:label-choose')}
+                      {t('label:choose')}
                     </option>
                     {sektor &&
                       _.orderBy(sektor, 'term').map((k: Kodeverk) => (
@@ -458,12 +458,12 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                       data-test-id='oprettsak__unit'
                       feil={_validation.unit ? _validation.unit.feilmelding : undefined}
                       id='oprettsak__unit'
-                      label={t('ui:label-unit')}
+                      label={t('label:unit')}
                       onChange={onUnitChange}
                       value={valgtUnit}
                     >
                       <option value=''>
-                        {t('ui:label-choose')}
+                        {t('label:choose')}
                       </option>
                       {sektor &&
                         _.orderBy(enheter, 'navn').map((e: Enhet) => (
@@ -486,12 +486,12 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     disabled={!isSomething(valgtSektor)}
                     feil={_validation.buctype ? _validation.buctype.feilmelding : undefined}
                     id='opprettsak__buctype'
-                    label={t('ui:label-buc')}
+                    label={t('label:buc')}
                     onChange={onBuctypeChange}
                     value={valgtBucType}
                   >
                     <option value=''>
-                      {t('ui:label-choose')}
+                      {t('label:choose')}
                     </option>
                     {_buctyper &&
                       _.orderBy(_buctyper, 'kode').map((k: Kodeverk) => (
@@ -512,12 +512,12 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     disabled={!isSomething(valgtBucType) || !isSomething(valgtSektor)}
                     feil={_validation.sedtype ? _validation.sedtype?.feilmelding : undefined}
                     id='opprettsak__sedtype'
-                    label={t('ui:label-sed')}
+                    label={t('label:sed')}
                     onChange={onSedtypeChange}
                     value={valgtSedType}
                   >
                     <option value=''>
-                      {t('ui:label-choose')}
+                      {t('label:choose')}
                     </option>)
                     {_sedtyper && _sedtyper.map((k: string | Kodeverk) => {
                       // if only one element, select it
@@ -544,11 +544,11 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     error={_validation.landkode ? _validation.landkode.feilmelding : undefined}
                     id='opprettsak__landkode'
                     includeList={landkoder ? _.orderBy(landkoder, 'term').map((k: Kodeverk) => k.kode) : []}
-                    label={t('ui:label-landkode')}
+                    label={t('label:landkode')}
                     lang='nb'
                     menuPortalTarget={document.body}
                     onOptionSelected={onLandkodeChange}
-                    placeholder={t('ui:label-choose')}
+                    placeholder={t('label:choose')}
                     value={valgtLandkode}
                   />
                   <VerticalSeparatorDiv />
@@ -563,12 +563,12 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     disabled={!isSomething(valgtLandkode)}
                     feil={_validation.institusjon ? _validation.institusjon.feilmelding : undefined}
                     id='opprettsak__institusjon'
-                    label={t('ui:label-institusjon')}
+                    label={t('label:institusjon')}
                     onChange={onInstitusjonChange}
                     value={valgtInstitusjon}
                   >
                     <option value=''>
-                      {t('ui:label-choose')}
+                      {t('label:choose')}
                     </option>)
                     {institusjoner &&
                       _.orderBy(institusjoner, 'term').map((i: Institusjon) => (
@@ -587,7 +587,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                 {valgtSektor === 'FB' && (
                   <Column className='slideAnimate'>
                     <Systemtittel>
-                      {t('ui:label-familyRelationships')}
+                      {t('label:familyRelationships')}
                     </Systemtittel>
                     <VerticalSeparatorDiv />
                     <FamilyPanel>
@@ -647,12 +647,12 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                       data-test-id='opprettsak__tema'
                       feil={_validation.tema ? _validation.tema.feilmelding : undefined}
                       id='opprettsak__tema'
-                      label={t('ui:label-tema')}
+                      label={t('label:tema')}
                       onChange={onTemaChange}
                       value={valgtTema}
                     >
                       <option value=''>
-                        {t('ui:label-choose')}
+                        {t('label:choose')}
                       </option>)
                       {temaer && temaer.map((k: Kodeverk) => (
                         <option value={k.kode} key={k.kode}>
@@ -668,7 +668,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                       onClick={onViewFagsakerClick}
                       disabled={!isSomething(valgtTema)}
                     >
-                      {t('ui:label-seeCases')}
+                      {t('label:seeCases')}
                     </Knapp>
                     <VerticalSeparatorDiv />
                   </AlignCenterColumn>
@@ -677,14 +677,14 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
               {(fagsaker === null || (fagsaker !== undefined && _.isEmpty(fagsaker))) && (
                 <Row>
                   <AlertStripe type='advarsel'>
-                    {t('ui:error-fagsak-notFound')}
+                    {t('message:error-fagsak-notFound')}
                     {serverInfo && (
                       <Lenke
                         href={serverInfo?.gosysURL}
-                        ariaLabel={t('ui:label-createNewCaseInGosys')}
+                        ariaLabel={t('label:createNewCaseInGosys')}
                         target='_blank'
                       >
-                        {t('ui:label-createNewCaseInGosys')}
+                        {t('label:createNewCaseInGosys')}
                       </Lenke>
                     )}
                     <VerticalSeparatorDiv />
@@ -699,12 +699,12 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                       data-test-id='opprettsak__fagsaker'
                       feil={_validation.saksId ? _validation.saksId.feilmelding : undefined}
                       id='opprettsak__fagsaker'
-                      label={t('ui:label-fagsak')}
+                      label={t('label:fagsak')}
                       onChange={onSakIDChange}
                       value={valgtSaksId}
                     >
                       <option value=''>
-                        {t('ui:label-choose')}
+                        {t('label:choose')}
                       </option>
                       {fagsaker &&
                         _.orderBy(fagsaker, 'fagsakNr').map((f: FagSak) => (
@@ -740,14 +740,14 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   onClick={skjemaSubmit}
                   spinner={sendingSak}
                 >
-                  {t('ui:label-createCaseInRina')}
+                  {t('label:createCaseInRina')}
                 </Hovedknapp>
                 <HorizontalSeparatorDiv />
                 <Flatknapp
                   aria-label='Navigasjonslink tilbake til forsiden'
                   onClick={openModal}
                 >
-                  {t('ui:label-resetForm')}
+                  {t('label:resetForm')}
                 </Flatknapp>
               </Row>
               {!isValid(_validation) && (
@@ -757,7 +757,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     <Column>
                       <Feiloppsummering
                         data-test-id='opprettsak__feiloppsummering'
-                        tittel={t('ui:validation-feiloppsummering')}
+                        tittel={t('message:validation-feiloppsummering')}
                         feil={Object.values(_validation).filter(v => v !== undefined) as Array<FeiloppsummeringFeil>}
                       />
                     </Column>
@@ -775,11 +775,11 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                 <AlertStripe type='suksess'>
                   <FlexDiv>
                     <span>
-                      {t('ui:label-caseNumber') + ': ' + opprettetSak.rinasaksnummer}
+                      {t('label:caseNumber') + ': ' + opprettetSak.rinasaksnummer}
                     </span>
                     <HorizontalSeparatorDiv data-size='0.25' />
                     <span>
-                      {t('ui:label-is-created')}.
+                      {t('label:is-created')}.
                     </span>
                     <HorizontalSeparatorDiv data-size='0.25' />
                     {opprettetSak.url && (
@@ -788,7 +788,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                         href={opprettetSak.url}
                         target='_blank'
                       >
-                        {t('ui:label-goToRina')}
+                        {t('label:goToRina')}
                       </Lenke>
                     )}
                   </FlexDiv>
@@ -797,7 +797,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                       <Link
                         to={'/vedlegg?rinasaksnummer=' + opprettetSak.rinasaksnummer}
                       >
-                        {t('ui:label-add-as-attachment-to-sed')}
+                        {t('label:add-as-attachment-to-sed')}
                       </Link>
                     )}
                   </div>
