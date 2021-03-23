@@ -51,7 +51,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
   const [_avsenderinstitusjon, setAvsenderinstitusjon] = useState<string>('')
   const [_typeKrav, setTypeKrav] = useState<string>((replySed as F002Sed).krav.kravType)
   const [_informasjon, setInformasjon] = useState<string>((replySed as F002Sed).krav.kravType)
-  const [_clarification, setClarification] = useState<string>('')
+  const [_opplysninger, setOpplysninger] = useState<string>('')
 
   const setAnmodningsperiodeStartDato = (e: string) => {
     setAnmodningsperiode({
@@ -281,19 +281,19 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
             <VerticalSeparatorDiv/>
             <HighContrastTextArea
               style={{width: '100%', minHeight: '6rem'}}
-              data-test-id={'c-seddetails-clarification-textarea'}
-              id={'c-seddetails-clarification-textarea'}
+              data-test-id={'c-seddetails-opplysninger-textarea'}
+              id={'c-seddetails-opplysninger-textarea'}
               className={classNames({
                 'skjemaelement__input--harFeil':
-                  validation['seddetails-clarification']
+                  validation['seddetails-opplysninger']
               })}
               placeholder={t('ui:placeholder-input-default')}
-              label={t('ui:label-clarification')}
-              value={_clarification}
-              feil={validation['seddetails-clarification']
-                ? validation['seddetails-clarification']!.feilmelding
+              label={t('ui:label-opplysninger')}
+              value={_opplysninger}
+              feil={validation['seddetails-opplysninger']
+                ? validation['seddetails-opplysninger']!.feilmelding
                 : undefined}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setClarification(e.target.value)}/>
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setOpplysninger(e.target.value)}/>
           </div>
         )}
       </HighContrastRadioGroup>

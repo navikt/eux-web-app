@@ -30,12 +30,8 @@ const Formaal: React.FC<FormaalProps> = ({
   highContrast,
   replySed
 }: FormaalProps) => {
-
-  const [_formaals, setFormaals] = useState<Array<string>>((replySed as FSed)?.formaal || [])
-  const _hasFormaal = !!(replySed as FSed)?.formaal
   const { t } = useTranslation()
   const dispatch = useDispatch()
-
   const formaalOptions = [
     {label: t('ui:option-formaal-1'), value: 'mottak_av_søknad_om_familieytelser'},
     {label: t('ui:option-formaal-2'), value: 'informasjon_om_endrede_forhold'},
@@ -45,14 +41,15 @@ const Formaal: React.FC<FormaalProps> = ({
     {label: t('ui:option-formaal-6'), value: 'motregning'},
     {label: t('ui:option-formaal-7'), value: 'prosedyre_ved_uenighet'},
     {label: t('ui:option-formaal-8'), value: 'refusjon_i_henhold_til_artikkel_58_i_forordningen'}
-   ]
-
+  ]
+  const [_formaals, setFormaals] = useState<Array<string>>((replySed as FSed)?.formaal || [])
   const [_addFormaal, setAddFormaal] = useState<boolean>(false)
   const [_newFormaal, setNewFormaal] = useState<Option | undefined>(undefined)
   const [_confirmDeleteFormaal, setConfirmDeleteFormaal] = useState<Array<string>>([])
   const [_formaalValues, setFormaalValues] = useState<Array<Option>>(
     _.filter(formaalOptions, p => _formaals.indexOf(p.value) < 0)
   )
+  const _hasFormaal = !!(replySed as FSed)?.formaal
 
   const saveFormaalChange = (newFormaals: Array<string>) => {
     const newFormaalValues = _.filter(formaalOptions, p => newFormaals.indexOf(p.value) < 0)
@@ -162,8 +159,8 @@ const Formaal: React.FC<FormaalProps> = ({
           <FlexDiv>
             <div style={{ flex: 2 }}>
               <Select
-                data-test-id='c-svarpased-formaal-select'
-                id='c-svarpased-formaal-select'
+                data-test-id='c-formaal-select'
+                id='c-formaal-select'
                 highContrast={highContrast}
                 value={_newFormaal}
                 onChange={onFormaalChanged}

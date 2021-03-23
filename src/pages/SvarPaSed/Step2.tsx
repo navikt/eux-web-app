@@ -8,6 +8,7 @@ import Attachments from 'components/Attachments/Attachments'
 import FamilyManager from 'components/FamilyManager/FamilyManager'
 import Formaal from 'components/Formaal/Formaal'
 import Inntekt from 'components/Inntekt/Inntekt'
+import Vedtak from 'components/Vedtak/Vedtak'
 import * as types from 'constants/actionTypes'
 import { AlertStatus, ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
@@ -142,7 +143,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
   const isValid = (validation: Validation): boolean => _.find(_.values(validation), (e) => e !== undefined) === undefined
 
   const showFamily = (): boolean => replySed?.replySedType?.startsWith('F') || false
-
+  const showVedtak = (): boolean => (true)
   const showInntekt = (): boolean => replySed?.replySedType === 'U004'
 
   const sendReplySed = (): void => {
@@ -308,6 +309,12 @@ const Step2: React.FC<SvarPaSedProps> = ({
           <VerticalSeparatorDiv data-size='2' />
         </>
       )}
+      {showVedtak() && (
+        <>
+          <Vedtak highContrast={highContrast}/>
+          <VerticalSeparatorDiv data-size='2' />
+        </>
+      )}
       {showInntekt() && (
         <Ekspanderbartpanel tittel={t('ui:label-inntekt')}>
           <Inntekt
@@ -321,8 +328,8 @@ const Step2: React.FC<SvarPaSedProps> = ({
       <VerticalSeparatorDiv />
       <TextAreaDiv>
         <HighContrastTextArea
-          data-test-id='c-svarpased-comment-textarea'
-          id='c-svarpased-comment-textarea'
+          data-test-id='c-step2-comment-textarea'
+          id='c-step2-comment-textarea'
           className={classNames({ 'skjemaelement__input--harFeil': validation.comment })}
           label={t('ui:label-comment-title')}
           placeholder={t('ui:label-comment-placeholder')}
