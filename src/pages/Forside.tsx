@@ -13,7 +13,7 @@ const Forside: React.FC = (): JSX.Element => {
       <Container>
         <Margin />
         <Content>
-          <div style={{minWidth: '800px'}}>
+          <div style={{ minWidth: '800px' }}>
             <Lenkepanel
               className='slideInFromLeft'
               href='#'

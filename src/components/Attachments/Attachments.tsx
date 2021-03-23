@@ -109,7 +109,6 @@ const Attachments: React.FC<AttachmentsProps> = ({
     }
     // if sed is sent, we can start sending attachments
     if (_sedSent && !_sendingAttachments && !_attachmentsSent) {
-
       const joarksToUpload: JoarkBrowserItems = _.filter(_sedAttachments, (att) => att.type === 'joark')
 
       if (_.isEmpty(joarksToUpload)) {
@@ -128,7 +127,6 @@ const Attachments: React.FC<AttachmentsProps> = ({
       dispatch(createSavingAttachmentJob(joarksToUpload))
     }
   }, [_attachmentsSent, dispatch, _onFinished, _sendingAttachments, _sedAttachments, _sedSent])
-
 
   return (
     <>

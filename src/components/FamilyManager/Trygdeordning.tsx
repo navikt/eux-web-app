@@ -375,12 +375,12 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
           <Row>
             <Column>
               <label className='skjemaelement__label'>
-                {t('label:startDate')}
+                {t('label:start-date')}
               </label>
             </Column>
             <Column>
               <label className='skjemaelement__label'>
-                {t('label:endDate')}
+                {t('label:end-date')}
               </label>
             </Column>
             <Column />
@@ -401,12 +401,12 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
           <Row>
             <Column>
               <label className='skjemaelement__label'>
-                {t('label:startDate')}
+                {t('label:start-date')}
               </label>
             </Column>
             <Column>
               <label className='skjemaelement__label'>
-                {t('label:endDate')}
+                {t('label:end-date')}
               </label>
             </Column>
             <Column />
@@ -427,12 +427,12 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
           <Row>
             <Column>
               <label className='skjemaelement__label'>
-                {t('label:startDate')}
+                {t('label:start-date')}
               </label>
             </Column>
             <Column>
               <label className='skjemaelement__label'>
-                {t('label:endDate')}
+                {t('label:end-date')}
               </label>
             </Column>
             <Column />

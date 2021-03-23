@@ -84,7 +84,7 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
             id={'c-familymanager-' + personID + '-grunnlag-startdato-input'}
             onChange={(e: any) => setStartDato(e.target.value)}
             value={_currentStartDato}
-            label={t('label:startDate')}
+            label={t('label:start-date')}
             placeholder={t('elements:placeholder-date-default')}
           />
         </Column>
@@ -97,7 +97,7 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
             id={'c-familymanager-' + personID + '-grunnlag-startdato-sluttdato-input'}
             onChange={(e: any) => setSluttDato(e.target.value)}
             value={_currentSluttDato}
-            label={t('label:endDate')}
+            label={t('label:end-date')}
             placeholder={t('elements:placeholder-date-default')}
           />
         </Column>

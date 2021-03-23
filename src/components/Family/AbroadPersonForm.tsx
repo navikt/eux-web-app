@@ -269,7 +269,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             <CountrySelect
               data-test-id='familierelasjoner__input-land'
               error={_validation.land ? _validation.land.feilmelding : undefined}
-              label={t('label:landkode')}
+              label={t('label:land')}
               key={'familierelasjoner__input-land-' + _relation.land}
               menuPortalTarget={document.body}
               includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
@@ -377,7 +377,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             <Select
               data-test-id='familierelasjoner__input-familierelasjon'
               feil={_validation.rolle ? _validation.rolle.feilmelding : undefined}
-              label={t('label:familyRelationship')}
+              label={t('label:family-relationship')}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                 updateRelation('rolle', e)
                 resetValidation('rolle')
@@ -410,7 +410,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
                 color={!canAddRelation() ? 'white' : '#0067C5'}
               />
               <HorizontalSeparatorDiv />
-              <span>{t('label:add')}</span>
+              <span>{t('elements:button-add')}</span>
             </Knapp>
           </AlignCenterColumn>
           {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (

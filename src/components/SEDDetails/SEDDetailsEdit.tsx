@@ -1,4 +1,4 @@
-//import { setReplySed } from 'actions/svarpased'
+// import { setReplySed } from 'actions/svarpased'
 import { setReplySed } from 'actions/svarpased'
 import classNames from 'classnames'
 import { F002Sed, FSed, Periode, ReplySed, USed } from 'declarations/sed'
@@ -31,9 +31,9 @@ export interface SEDDetailsEditProps {
 }
 
 const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
- replySed,
- onCancel,
- onSave = () => {}
+  replySed,
+  onCancel,
+  onSave = () => {}
 }: SEDDetailsEditProps): JSX.Element => {
   const { t } = useTranslation()
   const validation: Validation = {}
@@ -89,38 +89,38 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       <UndertekstBold>
         {t('label:periode')}:
       </UndertekstBold>
-      <VerticalSeparatorDiv data-size='0.5'/>
+      <VerticalSeparatorDiv data-size='0.5' />
       {_anmodningsperiode && (
         <>
           <FlexDiv className='slideInFromLeft'>
             <HighContrastInput
-              data-test-id={'c-seddetails-anmodningsperiode-startdato-input'}
+              data-test-id='c-seddetails-anmodningsperiode-startdato-input'
               feil={validation['seddetails-anmodningsperiode-startdato']
                 ? validation['seddetails-anmodningsperiode-startdato']!.feilmelding
                 : undefined}
-              id={'c-seddetails-anmodningsperiode-startdato-input'}
+              id='c-seddetails-anmodningsperiode-startdato-input'
               onChange={(e: any) => setAnmodningsperiodeStartDato(e.target.value)}
               value={_anmodningsperiode.startdato}
               placeholder={t('elements:placeholder-date-default')}
             />
-          <HorizontalSeparatorDiv data-size='0.35'/>
+            <HorizontalSeparatorDiv data-size='0.35' />
             <HighContrastInput
-              data-test-id={'c-seddetails-anmodningsperiode-sluttdato-input'}
+              data-test-id='c-seddetails-anmodningsperiode-sluttdato-input'
               feil={validation['seddetails-anmodningsperiode-sluttdato']
                 ? validation['seddetails-anmodningsperiode-sluttdato']!.feilmelding
                 : undefined}
-              id={'c-seddetails-anmodningsperiode-sluttdato-input'}
+              id='c-seddetails-anmodningsperiode-sluttdato-input'
               onChange={(e: any) => setAnmodningsperiodeSluttDato(e.target.value)}
               value={_anmodningsperiode.sluttdato}
               placeholder={t('elements:placeholder-date-default')}
             />
           </FlexDiv>
-          <VerticalSeparatorDiv data-size='0.5'/>
+          <VerticalSeparatorDiv data-size='0.5' />
         </>
       )}
       {_anmodningsperioder && _anmodningsperioder.map((p, i) => (
         <>
-          <FlexDiv className='slideInFromLeft' style={{animationDelay: i * 0.1 + 's'}}>
+          <FlexDiv className='slideInFromLeft' style={{ animationDelay: i * 0.1 + 's' }}>
             <HighContrastInput
               data-test-id={'c-seddetails-anmodningsperioder[' + i + ']-startdato-input'}
               feil={validation['seddetails--anmodningsperioder[' + i + ']-startdato']
@@ -131,7 +131,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               value={_anmodningsperioder[i].startdato}
               placeholder={t('elements:placeholder-date-default')}
             />
-            <HorizontalSeparatorDiv data-size='0.35'/>
+            <HorizontalSeparatorDiv data-size='0.35' />
             <HighContrastInput
               data-test-id={'c-seddetails-anmodningsperioder[' + i + ']-sluttdato-input'}
               feil={validation['seddetails-anmodningsperioder[' + i + ']-sluttdato']
@@ -143,170 +143,171 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               placeholder={t('elements:placeholder-date-default')}
             />
           </FlexDiv>
-          <VerticalSeparatorDiv data-size='0.5'/>
+          <VerticalSeparatorDiv data-size='0.5' />
         </>
       ))}
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <UndertekstBold>
         {t('label:searcher')}
       </UndertekstBold>
-      <VerticalSeparatorDiv data-size='0.5'/>
-      <FlexDiv className='slideInFromLeft' style={{animationDelay: '0.2s'}}>
+      <VerticalSeparatorDiv data-size='0.5' />
+      <FlexDiv className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
         <HighContrastInput
-          data-test-id={'c-seddetails-søker-fornavn-input'}
+          data-test-id='c-seddetails-søker-fornavn-input'
           feil={validation['seddetails-søker-fornavn']
             ? validation['seddetails-søker-fornavn']!.feilmelding
             : undefined}
-          id={'c-seddetails-søker-fornavn-input'}
+          id='c-seddetails-søker-fornavn-input'
           onChange={(e: any) => setBrukerFornavn(e.target.value)}
           value={_brukerFornavn}
           placeholder={t('label:firstname')}
         />
-        <HorizontalSeparatorDiv data-size='0.35'/>
+        <HorizontalSeparatorDiv data-size='0.35' />
         <HighContrastInput
-          data-test-id={'c-seddetails-søker-etternavn-input'}
+          data-test-id='c-seddetails-søker-etternavn-input'
           feil={validation['seddetails-søker-etternavn']
             ? validation['seddetails-søker-etternavn']!.feilmelding
             : undefined}
-          id={'c-seddetails-søker-etternavn-input'}
+          id='c-seddetails-søker-etternavn-input'
           onChange={(e: any) => setBrukerEtternavn(e.target.value)}
           value={_brukerEtternavn}
           placeholder={t('label:lastname')}
         />
       </FlexDiv>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <UndertekstBold>
         {t('ui:relationship-ektefelle')}
       </UndertekstBold>
-      <VerticalSeparatorDiv data-size='0.5'/>
-      <FlexDiv className='slideInFromLeft' style={{animationDelay: '0.3s'}}>
+      <VerticalSeparatorDiv data-size='0.5' />
+      <FlexDiv className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
         <HighContrastInput
-          data-test-id={'c-seddetails-ektefelle-fornavn-input'}
+          data-test-id='c-seddetails-ektefelle-fornavn-input'
           feil={validation['seddetails-ektefelle-fornavn']
             ? validation['seddetails-ektefelle-fornavn']!.feilmelding
             : undefined}
-          id={'c-seddetails-ektefelle-fornavn-input'}
+          id='c-seddetails-ektefelle-fornavn-input'
           onChange={(e: any) => setEktefelleFornavn(e.target.value)}
           value={_ektefelleFornavn}
           placeholder={t('label:firstname')}
         />
-        <HorizontalSeparatorDiv data-size='0.35'/>
+        <HorizontalSeparatorDiv data-size='0.35' />
         <HighContrastInput
-          data-test-id={'c-seddetails-ektefelle-etternavn-input'}
+          data-test-id='c-seddetails-ektefelle-etternavn-input'
           feil={validation['seddetails-ektefelle-etternavn']
             ? validation['seddetails-ektefelle-etternavn']!.feilmelding
             : undefined}
-          id={'c-seddetails-ektefelle-etternavn-input'}
+          id='c-seddetails-ektefelle-etternavn-input'
           onChange={(e: any) => setEktefelleEtternavn(e.target.value)}
           value={_ektefelleEtternavn}
           placeholder={t('label:lastname')}
         />
       </FlexDiv>
-      <VerticalSeparatorDiv/>
-      <div className='slideInFromLeft' style={{animationDelay: '0.4s'}}>
+      <VerticalSeparatorDiv />
+      <div className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
         <HighContrastInput
-          data-test-id={'c-seddetails-sakseier-input'}
+          data-test-id='c-seddetails-sakseier-input'
           feil={validation['seddetails-sakseier']
             ? validation['seddetails-sakseier']!.feilmelding
             : undefined}
-          id={'c-seddetails-sakseier-input'}
+          id='c-seddetails-sakseier-input'
           onChange={(e: any) => setSakseier(e.target.value)}
           value={_sakseier}
           label={t('label:caseOwner')}
           placeholder={t('elements:placeholder-input-default')}
         />
       </div>
-      <VerticalSeparatorDiv data-size='0.5'/>
-      <div className='slideInFromLeft' style={{animationDelay: '0.5s'}}>
+      <VerticalSeparatorDiv data-size='0.5' />
+      <div className='slideInFromLeft' style={{ animationDelay: '0.5s' }}>
         <HighContrastInput
-          data-test-id={'c-seddetails-avsenderinstitusjon-input'}
+          data-test-id='c-seddetails-avsenderinstitusjon-input'
           feil={validation['seddetails-avsenderinstitusjon']
             ? validation['seddetails-avsenderinstitusjon']!.feilmelding
             : undefined}
-          id={'c-seddetails-avsenderinstitusjon-input'}
+          id='c-seddetails-avsenderinstitusjon-input'
           onChange={(e: any) => setAvsenderinstitusjon(e.target.value)}
           value={_avsenderinstitusjon}
           label={t('label:sender')}
           placeholder={t('elements:placeholder-input-default')}
         />
       </div>
-      <VerticalSeparatorDiv/>
-      <div className='slideInFromLeft' style={{animationDelay: '0.6s'}}>
+      <VerticalSeparatorDiv />
+      <div className='slideInFromLeft' style={{ animationDelay: '0.6s' }}>
         <HighContrastRadioGroup
-        legend={t('label:typeKrav')}
-        data-test-id={'c-seddetails-typeKrav-radiogroup'}
-        feil={validation['seddetails-typeKrav']
-          ? validation['seddetails-typeKrav']!.feilmelding
-          : undefined}
-        id={'c-seddetails-typeKrav-radiogroup'}
-      >
-        <HighContrastRadio
-          name={'c-seddetails-typeKrav-radiogroup'}
-          checked={_typeKrav === 'nytt_krav'}
-          label={t('ui:kravType-nytt_krav')}
-          onClick={() => setTypeKrav('nytt_krav')}
-        />
-        <HighContrastRadio
-          checked={_typeKrav === 'endrete_omstendigheter'}
-          name={'c-seddetails-typeKrav-radiogroup'}
-          label={t('ui:kravType-endrete_omstendigheter')}
-          onClick={() => setTypeKrav('endrete_omstendigheter')}
-        />
-      </HighContrastRadioGroup>
+          legend={t('label:typeKrav')}
+          data-test-id='c-seddetails-typeKrav-radiogroup'
+          feil={validation['seddetails-typeKrav']
+            ? validation['seddetails-typeKrav']!.feilmelding
+            : undefined}
+          id='c-seddetails-typeKrav-radiogroup'
+        >
+          <HighContrastRadio
+            name='c-seddetails-typeKrav-radiogroup'
+            checked={_typeKrav === 'nytt_krav'}
+            label={t('ui:kravType-nytt_krav')}
+            onClick={() => setTypeKrav('nytt_krav')}
+          />
+          <HighContrastRadio
+            checked={_typeKrav === 'endrete_omstendigheter'}
+            name='c-seddetails-typeKrav-radiogroup'
+            label={t('ui:kravType-endrete_omstendigheter')}
+            onClick={() => setTypeKrav('endrete_omstendigheter')}
+          />
+        </HighContrastRadioGroup>
       </div>
-      <VerticalSeparatorDiv/>
-      <div className='slideInFromLeft' style={{animationDelay: '0.7s'}}>
-      <HighContrastRadioGroup
-        legend={t('label:application-information')}
-        data-test-id={'c-seddetails-informasjon-radiogroup'}
-        feil={validation['seddetails-informasjon']
-          ? validation['seddetails-informasjon']!.feilmelding
-          : undefined}
-        id={'c-seddetails-informasjon-radiogroup'}
-      >
-        <HighContrastRadio
-          name={'c-seddetails-informasjon-radiogroup'}
-          checked={_informasjon === 'vi_bekrefter_leverte_opplysninger'}
-          label={t('ui:info-confirm-information')}
-          onClick={() => setInformasjon('vi_bekrefter_leverte_opplysninger')}
-        />
-        <HighContrastRadio
-          checked={_informasjon === 'gi_oss_punktvise_opplysninger'}
-          name={'c-seddetails-informasjon-radiogroup'}
-          label={t('ui:info-point-information')}
-          onClick={() => setInformasjon('gi_oss_punktvise_opplysninger')}
-        />
-        {_informasjon === 'gi_oss_punktvise_opplysninger' && (
-          <div className='slideInFromLeft'>
-            <VerticalSeparatorDiv/>
-            <HighContrastTextArea
-              style={{width: '100%', minHeight: '6rem'}}
-              data-test-id={'c-seddetails-opplysninger-textarea'}
-              id={'c-seddetails-opplysninger-textarea'}
-              className={classNames({
-                'skjemaelement__input--harFeil':
+      <VerticalSeparatorDiv />
+      <div className='slideInFromLeft' style={{ animationDelay: '0.7s' }}>
+        <HighContrastRadioGroup
+          legend={t('label:application-information')}
+          data-test-id='c-seddetails-informasjon-radiogroup'
+          feil={validation['seddetails-informasjon']
+            ? validation['seddetails-informasjon']!.feilmelding
+            : undefined}
+          id='c-seddetails-informasjon-radiogroup'
+        >
+          <HighContrastRadio
+            name='c-seddetails-informasjon-radiogroup'
+            checked={_informasjon === 'vi_bekrefter_leverte_opplysninger'}
+            label={t('ui:info-confirm-information')}
+            onClick={() => setInformasjon('vi_bekrefter_leverte_opplysninger')}
+          />
+          <HighContrastRadio
+            checked={_informasjon === 'gi_oss_punktvise_opplysninger'}
+            name='c-seddetails-informasjon-radiogroup'
+            label={t('ui:info-point-information')}
+            onClick={() => setInformasjon('gi_oss_punktvise_opplysninger')}
+          />
+          {_informasjon === 'gi_oss_punktvise_opplysninger' && (
+            <div className='slideInFromLeft'>
+              <VerticalSeparatorDiv />
+              <HighContrastTextArea
+                style={{ width: '100%', minHeight: '6rem' }}
+                data-test-id='c-seddetails-opplysninger-textarea'
+                id='c-seddetails-opplysninger-textarea'
+                className={classNames({
+                  'skjemaelement__input--harFeil':
                   validation['seddetails-opplysninger']
-              })}
-              placeholder={t('elements:placeholder-input-default')}
-              label={t('label:opplysninger')}
-              value={_opplysninger}
-              feil={validation['seddetails-opplysninger']
-                ? validation['seddetails-opplysninger']!.feilmelding
-                : undefined}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setOpplysninger(e.target.value)}/>
-          </div>
-        )}
-      </HighContrastRadioGroup>
+                })}
+                placeholder={t('elements:placeholder-input-default')}
+                label={t('label:opplysninger')}
+                value={_opplysninger}
+                feil={validation['seddetails-opplysninger']
+                  ? validation['seddetails-opplysninger']!.feilmelding
+                  : undefined}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setOpplysninger(e.target.value)}
+              />
+            </div>
+          )}
+        </HighContrastRadioGroup>
       </div>
-      <VerticalSeparatorDiv/>
-      <div className='slideInFromLeft' style={{animationDelay: '0.8s'}}>
+      <VerticalSeparatorDiv />
+      <div className='slideInFromLeft' style={{ animationDelay: '0.8s' }}>
         <HighContrastHovedknapp
           kompakt mini
           onClick={saveChanges}
         >
           {t('label:save')}
         </HighContrastHovedknapp>
-        <HorizontalSeparatorDiv data-size='0.5'/>
+        <HorizontalSeparatorDiv data-size='0.5' />
         <HighContrastKnapp
           kompakt mini
           onClick={onCancel}
@@ -320,5 +321,3 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
 }
 
 export default SEDDetailsEdit
-
-

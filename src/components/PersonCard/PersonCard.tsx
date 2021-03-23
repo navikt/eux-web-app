@@ -156,7 +156,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
         </Description>
         {rolleList !== undefined && (
           <Select
-            label={t('label:familyRelationship')}
+            label={t('label:family-relationship')}
             date-testid='familierelasjoner__select-familirelasjon-rolle'
             value={(person as FamilieRelasjon).rolle}
             onChange={updateFamilyRelation}

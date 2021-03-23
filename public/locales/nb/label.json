@@ -1,19 +1,50 @@
 {
-  "areYouSure": "Sikker?",
+  "abroad-id": "Utenlandsk ID",
+  "arbeidsperiode": "Arbeidsperiode",
+  "are-you-sure": "Sikker?",
+
+  "birthdate": "Fødselsdato",
 
   "choose" : "Velg",
 
-  "endDate": "Sluttdato",
+  "end-date": "Sluttdato",
+
+  "family-added-all": "Du har lagt til alle som fantes i listen",
+  "family-chosen": "Valgte familierelasjoner",
+  "family-none-in-tps": "Ingen familierelasjoner funnet i TPS",
+  "family-relationship" : "Familierelasjon",
+  "family-relationships" : "Familierelasjon(er)",
+  "family-relations-in-tps": "Familierelasjoner registrert i TPS",
+  "firstname": "Fornavn",
+  "fnr-dnr" : "F.nummer/d-nr.",
+  "formaal": "Formål",
+
+  "gender" : "Kjønn",
+
+  "hide-form": "Skjul skjema",
+
+  "land": "Land",
+  "lastname": "Etternavn",
+
+  "medlemsperiode" : "Medlemsperiode",
 
   "name": "Navn",
 
+  "open": "Åpen",
   "orgnr": "Orgnr.",
 
-  "startDate": "Startdato",
+  "period-in-sender-country": "Trygdeperiode i avsenderlandet",
+
+  "rina-saksnummer": "RINA saksnummer",
+  "rina-document-id": "Velg SED Type",
+
+  "show-form": "Vis skjema",
+
+  "start-date": "Startdato",
+  "statsborgerskap" : "Statsborgerskap",
 
 
 
-  "abroad-id": "Utenlandsk ID",
 
   "addAttachments" : "Legg til vedlegg",
   "add-as-attachment-to-sed" : "Legge til vedlegg til SED",
@@ -23,9 +54,7 @@
   "add-new-epost": "Legg til ny epost",
   "add-new-relationship" : "Legg til ny familierelasjon",
   "add-new-periode": "Legg til ny periode",
-  "add-new-periode-in-sender": "Legg til trygdeperiode",
   "add-new-person": "Legg til ny person",
-  "add-new-formaal": "Legg til ny formål",
   "add-new-reason-to-coming": "Legg til grunnlag for bosetting",
   "add-new-telefon": "Legg til ny telefon",
   "add-person": "Legg til person(er)",
@@ -42,7 +71,7 @@
   "arbeidsforhold-type": "Type arbeidsforhold",
   "attached": "Vedlegget",
   "back" : "Tilbake",
-  "birthDate": "Fødselsdato",
+
   "birthPlace": "Fødested",
   "bostedsland" : "Bostedsland",
   "buc": "BUC",
@@ -80,48 +109,39 @@
   "epost": "E-postadresse",
   "fagsak" : "Velg fagsak",
   "familierelasjon-title": "Familierelasjon til ektefelle eller annen person",
-  "family-chosen": "Valgte familierelasjoner",
-  "family-description": "Vennligst velg familierelasjoner SEDen angår",
-  "family-none-in-tps": "Ingen familierelasjoner funnet i TPS",
-  "family-relations-in-tps": "Familierelasjoner registrert i TPS",
-  "family-utland-title": "Person uten fødsels- eller d-nummer",
+
+
   "family-utland-add-title": "Du kan også legge til familierelasjoner fra utlandet som ikke er oppført i TPS",
-  "family-tps-title": "Person uten registrert relasjon i TPS",
-  "family-added-all": "Du har lagt til alle som fantes i listen",
   "familymanager-title" : "Velg personer og fyll inn opplysninger",
-  "familyRelationship" : "Familierelasjon",
-  "familyRelationships" : "Familierelasjon(er)",
   "father": "Far",
-  "firstname": "Fornavn",
+
   "fomdato": "F.o.m dato",
   "fnr" : "Fødselsnummer",
-  "fnr-dnr" : "F.nummer/d-nr.",
-  "fnr-or-dnr": "Fødsels eller dnr",
+
   "fraDato": "Fra dato",
   "freetext": "Fritekst",
   "gateadresse": "Gateadresse",
-  "gender" : "Kjønn",
+
   "get" : "Hent",
   "girl" : "Jente",
   "goToRina" : "Gå direkte til Rina",
   "goToSedInRina" : "Gå til SED i Rina",
   "grant-number" : "Antall det innvilges for",
-  "hide-form": "Skjul Skjema",
+
   "highContrast": "Høy kontrast",
   "inntekt": "Inntekt",
   "institusjon": "Mottaker institusjon",
   "is-created": "er opprettet",
   "journalpostID": "JournalpostID",
   "kontaktadresse": "Kontaktadresse",
-  "landkode": "Land",
-  "land": "Land",
-  "lastname": "Etternavn",
+
+
   "lastModified": "Siste oppdatert",
   "live-together": "Bor søkeren i samme husstand som personen",
   "loading-file": "Laster ned filen...",
   "local-sakId": "Lokale sakID",
   "man" : "Mann",
-  "medlemperiode" : "Medlemsperiode",
+
   "monthly": "Månedlig",
   "motregning-request": "Anmodning eller svar på anmodning om motregning av familieytelser for barn",
   "motregning-request-1": "Anmodning om motregning per barn",
@@ -147,7 +167,6 @@
   "period-frequency": "Avgrensning av periode",
   "periode": "Periode",
   "perioder": "Perioder",
-  "periode-in-sender": "Trygdeperiode i avsenderlandet",
   "period-with-received-pension-from-sender-country": "Periode med mottatt pensjon i avsenderlandet",
   "person-name": "Navn på person",
   "pin": "PIN",
@@ -162,8 +181,7 @@
   "region" : "Region",
   "relasjon-title": "Relasjon til det enkelte barn",
   "relation-with" : "Relasjon med",
-  "rinasaksnummer": "RINA saksnummer",
-  "rinadokumentID": "Velg SED Type",
+
   "rolle": "Rolle",
   "saksnummer" : "Saksnummer",
   "saksnummerOrFnr" : "Søk på RINA saksnummer eller f.nr./d.nr.",
@@ -183,8 +201,7 @@
   "sendReplySed" : "Send svarSED",
   "sendVedlegg" : "Send vedlegg",
   "shared-custody": "Delt foreldreansvar",
-  "show-form": "Vis Skjema",
-  "statsborgerskap" : "Statsborgerskap",
+
 
   "tema": "Velg behandlingstema",
   "telefonnummer": "Telefonnummer",

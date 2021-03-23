@@ -115,7 +115,7 @@ const Op3Other = ({
           id={'c-familymanager-' + personID + '-personensstatus-selvstendig-' + i + '-startdato-input'}
           onChange={(e: any) => setStartDato(e.target.value, i)}
           value={i < 0 ? _currentStartDato : p?.periode.startdato}
-          label={t('label:startDate')}
+          label={t('label:start-date')}
           placeholder={t('elements:placeholder-date-default')}
         />
       </Column>
@@ -128,7 +128,7 @@ const Op3Other = ({
           id={'c-familymanager-' + personID + '-personensstatus-selvstendig-' + i + '-sluttdato-input'}
           onChange={(e: any) => setSluttDato(e.target.value, i)}
           value={i < 0 ? _currentSluttDato : p?.periode.sluttdato}
-          label={t('label:endDate')}
+          label={t('label:end-date')}
           placeholder={t('elements:placeholder-date-default')}
         />
       </Column>

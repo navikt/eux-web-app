@@ -188,7 +188,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             id={'c-familymanager-' + personID + '-beløpNavnOgValuta-startdato-input'}
             onChange={(e: any) => setGrantStartDate(e.target.value)}
             value={_currentGrantStartDate}
-            label={t('label:startDate')}
+            label={t('label:start-date')}
             placeholder={t('elements:placeholder-date-default')}
           />
         </Column>
@@ -201,7 +201,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             id={'c-familymanager-' + personID + '-beløpNavnOgValuta-sluttdato-input'}
             onChange={(e: any) => setGrantEndDate(e.target.value)}
             value={_currentGrantEndDate}
-            label={t('label:endDate')}
+            label={t('label:end-date')}
             placeholder={t('elements:placeholder-date-default')}
           />
         </Column>

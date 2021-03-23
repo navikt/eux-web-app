@@ -549,7 +549,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     error={_validation.landkode ? _validation.landkode.feilmelding : undefined}
                     id='opprettsak__landkode'
                     includeList={landkoder ? _.orderBy(landkoder, 'term').map((k: Kodeverk) => k.kode) : []}
-                    label={t('label:landkode')}
+                    label={t('label:land')}
                     lang='nb'
                     menuPortalTarget={document.body}
                     onOptionSelected={onLandkodeChange}
@@ -592,7 +592,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                 {valgtSektor === 'FB' && (
                   <Column className='slideInFromLeft'>
                     <Systemtittel>
-                      {t('label:familyRelationships')}
+                      {t('label:family-relationships')}
                     </Systemtittel>
                     <VerticalSeparatorDiv />
                     <FamilyPanel>

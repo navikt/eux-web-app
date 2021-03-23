@@ -52,13 +52,12 @@ const Vedtak: React.FC<VedtakProps> = ({
   highContrast,
   replySed
 }: VedtakProps): JSX.Element => {
-
   const { t } = useTranslation()
   const [_allKids, setAllKids] = useState<string | undefined>(undefined)
   const [_startDato, setStartDato] = useState<string>('')
   const [_sluttDato, setSluttDato] = useState<string>('')
   const [_reason, setReason] = useState<string>('')
-  const [_validation, ] = useState<Validation>({})
+  const [_validation] = useState<Validation>({})
   const [_vedtakType, setVedtakType] = useState<string | undefined>(undefined)
   const [_perioderAndVedtak, setPerioderAndVedtak] = useState<Array<PeriodeAndVedtak>>([])
 
@@ -125,10 +124,10 @@ const Vedtak: React.FC<VedtakProps> = ({
   }
 
   const vedtakTypeOptions = [
-    {label: t('elements:option-vedtaktype-1'), value: '1'},
-    {label: t('elements:option-vedtaktype-2'), value: '2'},
-    {label: t('elements:option-vedtaktype-3'), value: '3'},
-    {label: t('elements:option-vedtaktype-4'), value: '4'}
+    { label: t('elements:option-vedtaktype-1'), value: '1' },
+    { label: t('elements:option-vedtaktype-2'), value: '2' },
+    { label: t('elements:option-vedtaktype-3'), value: '3' },
+    { label: t('elements:option-vedtaktype-4'), value: '4' }
   ]
 
   const renderPeriodeAndVedtak = (p: PeriodeAndVedtak | null, i: number) => (
@@ -143,7 +142,7 @@ const Vedtak: React.FC<VedtakProps> = ({
             id={'c-vedtak-startdato[' + i + ']-input'}
             onChange={(e: any) => setMoreStartDato(e.target.value, i)}
             value={i < 0 ? _currentStartDato : p?.periode.startdato}
-            label={t('label:startDate')}
+            label={t('label:start-date')}
             placeholder={t('elements:placeholder-date-default')}
           />
         </Column>
@@ -156,7 +155,7 @@ const Vedtak: React.FC<VedtakProps> = ({
             id={'c-vedtak-sluttdato[' + i + ']-input'}
             onChange={(e: any) => setMoreSluttDato(e.target.value, i)}
             value={i < 0 ? _currentSluttDato : p?.periode.sluttdato}
-            label={t('label:endDate')}
+            label={t('label:end-date')}
             placeholder={t('elements:placeholder-date-default')}
           />
         </Column>
@@ -189,7 +188,7 @@ const Vedtak: React.FC<VedtakProps> = ({
           </HighContrastFlatknapp>
         </Column>
       </AlignEndRow>
-      <VerticalSeparatorDiv data-size='0.5'/>
+      <VerticalSeparatorDiv data-size='0.5' />
     </>
   )
 
@@ -203,87 +202,88 @@ const Vedtak: React.FC<VedtakProps> = ({
         <HighContrastRadioGroup
           legend={t('label:allKids-radiogroup')}
           feil={_validation['vedtak-allkids']
-              ? _validation['vedtak-allkids']!.feilmelding
-              : undefined}
-          >
+            ? _validation['vedtak-allkids']!.feilmelding
+            : undefined}
+        >
           <FlexDiv>
             <HighContrastRadio
-            name={'c-vedtak-allkids'}
-            checked={_allKids === 'ja'}
+              name='c-vedtak-allkids'
+              checked={_allKids === 'ja'}
               label={t('label:yes')}
-            onClick={() => setAllKids('ja') }/>
-          <HorizontalSeparatorDiv data-size='2'/>
+              onClick={() => setAllKids('ja')}
+            />
+            <HorizontalSeparatorDiv data-size='2' />
             <HighContrastRadio
-            name={'c-vedtak-allkids'}
-            checked={_allKids === 'nei'}
-            label={t('label:no')}
-            onClick={() => setAllKids('nei') }/>
+              name='c-vedtak-allkids'
+              checked={_allKids === 'nei'}
+              label={t('label:no')}
+              onClick={() => setAllKids('nei')}
+            />
           </FlexDiv>
         </HighContrastRadioGroup>
         {_allKids === 'nei' && (
           <>
-           <div dangerouslySetInnerHTML={{__html: t('label:allKids-select') + ':'}}>
-           </div>
-            <VerticalSeparatorDiv/>
-          {(replySed as F002Sed)?.barn?.map(b => (
-            <>
-              <Checkbox label={b.personInfo.fornavn + ' ' + b.personInfo.etternavn}/>
-              <VerticalSeparatorDiv data-size='0.5'/>
-            </>
-          ))}
+            <div dangerouslySetInnerHTML={{ __html: t('label:allKids-select') + ':' }} />
+            <VerticalSeparatorDiv />
+            {(replySed as F002Sed)?.barn?.map(b => (
+              <>
+                <Checkbox label={b.personInfo.fornavn + ' ' + b.personInfo.etternavn} />
+                <VerticalSeparatorDiv data-size='0.5' />
+              </>
+            ))}
           </>
         )}
 
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <Row>
           <Column>
             <HighContrastInput
-              data-test-id={'c-vedtak-startdato-input'}
-              id={'c-vedtak-startdato-input'}
+              data-test-id='c-vedtak-startdato-input'
+              id='c-vedtak-startdato-input'
               feil={_validation['vedtak-startdato']
                 ? _validation['vedtak-startdato']!.feilmelding
                 : undefined}
               onChange={(e: any) => setStartDato(e.target.value)}
               value={_startDato}
-              label={t('label:startDate')}
+              label={t('label:start-date')}
               placeholder={t('elements:placeholder-date-default')}
             />
           </Column>
           <Column>
             <HighContrastInput
-              data-test-id={'c-vedtak-sluttdato-input'}
-              id={'c-vedtak-sluttdato-input'}
+              data-test-id='c-vedtak-sluttdato-input'
+              id='c-vedtak-sluttdato-input'
               feil={_validation['vedtak-sluttdato']
                 ? _validation['vedtak-sluttdato']!.feilmelding
                 : undefined}
               onChange={(e: any) => setSluttDato(e.target.value)}
               value={_sluttDato}
-              label={t('label:endDate')}
+              label={t('label:end-date')}
               placeholder={t('elements:placeholder-date-default')}
             />
           </Column>
-          <Column/>
+          <Column />
         </Row>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <Row>
           <Column>
             <Select
-            data-test-id={'c-vedtak-type-select'}
-            error={_validation['vedtak-type']
-              ? _validation['vedtak-type']!.feilmelding
-              : undefined}
-            highContrast={highContrast}
-            id={'c-vedtak-type-select'}
-            label={t('label:vedtak-type')}
-            onChange={(e: any) => setVedtakType(e.value)}
-            options={vedtakTypeOptions}
-            placeholder={t('elements:placeholder-select-default')}
-            selectedValue={_vedtakType}
-          />
+              data-test-id='c-vedtak-type-select'
+              error={_validation['vedtak-type']
+                ? _validation['vedtak-type']!.feilmelding
+                : undefined}
+              highContrast={highContrast}
+              id='c-vedtak-type-select'
+              label={t('label:vedtak-type')}
+              onChange={(e: any) => setVedtakType(e.value)}
+              options={vedtakTypeOptions}
+              placeholder={t('elements:placeholder-select-default')}
+              selectedValue={_vedtakType}
+            />
           </Column>
-          <Column/>
+          <Column />
         </Row>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <Row>
           <Column>
             <TextAreaDiv>
@@ -299,9 +299,9 @@ const Vedtak: React.FC<VedtakProps> = ({
               />
             </TextAreaDiv>
           </Column>
-          <Column/>
+          <Column />
         </Row>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         {_perioderAndVedtak.map(renderPeriodeAndVedtak)}
         <hr />
         {_seeNewPeriode
@@ -320,11 +320,10 @@ const Vedtak: React.FC<VedtakProps> = ({
                 </HighContrastFlatknapp>
               </Column>
             </Row>
-          )}
+            )}
       </HighContrastPanel>
     </PanelDiv>
   )
 }
-
 
 export default Vedtak

@@ -186,7 +186,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             onChange={onFodselsdatoChange}
             value={_.get(replySed, `${personID}.personInfo.foedselsdato`)}
             placeholder={t('elements:placeholder-birthDate')}
-            label={t('label:birthDate') + ' *'}
+            label={t('label:birthdate') + ' *'}
           />
         </Column>
       </Row>
@@ -234,7 +234,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
               : undefined}
             id={'c-familymanager-' + personID + '-personopplysninger-land-countryselect'}
             includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
-            label={t('label:landkode')}
+            label={t('label:land')}
             menuPortalTarget={document.body}
             onChange={onUtenlandskLandChange}
             onOptionSelected={(e: any) => {
@@ -324,7 +324,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
                     : undefined}
                   id={'c-familymanager-' + personID + '-personopplysninger-foedested-land-countryselect'}
                   includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
-                  label={t('label:landkode')}
+                  label={t('label:land')}
                   menuPortalTarget={document.body}
                   onOptionSelected={onFoedestedLandChange}
                   placeholder={t('label:choose')}

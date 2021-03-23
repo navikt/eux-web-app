@@ -74,7 +74,6 @@ export const setJoarkItemPreview: ActionCreator<ActionWithPayload<JoarkBrowserIt
   payload: item
 })
 
-
 export const createSavingAttachmentJob: ActionCreator<ActionWithPayload<JoarkBrowserItems>> = (
   joarkBrowserItems: JoarkBrowserItems
 ): ActionWithPayload<JoarkBrowserItems> => ({

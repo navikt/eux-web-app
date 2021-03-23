@@ -71,7 +71,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
           ))}
         </Dd>
       </Dl>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <Dl>
         <Dt>{t('label:searcher')}</Dt>
         <Dd>
@@ -86,11 +86,11 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
         </Dd>
         <Dt>{t('ui:relationship-ektefelle')}</Dt>
         <Dd>
-           <span>
-             {(replySed as F002Sed).ektefelle ? (replySed as F002Sed).ektefelle.personInfo.fornavn + ' '  +
+          <span>
+            {(replySed as F002Sed).ektefelle ? (replySed as F002Sed).ektefelle.personInfo.fornavn + ' ' +
                (replySed as F002Sed).ektefelle.personInfo.etternavn +
             ' (' + (replySed as F002Sed).ektefelle.personInfo.kjoenn + ')' : '-'}
-           </span>
+          </span>
           <FlagList
             size='S'
             type='circle'
@@ -124,16 +124,16 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
       </Dl>
       <VerticalSeparatorDiv />
       <FlexDiv>
-        <FilledCheckCircle color='green' width={18} height={18}/>
-        <HorizontalSeparatorDiv data-size='0.5'/>
+        <FilledCheckCircle color='green' width={18} height={18} />
+        <HorizontalSeparatorDiv data-size='0.5' />
         <Normaltekst>
           {t('ui:info-confirm-information')}
         </Normaltekst>
       </FlexDiv>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <FlexDiv>
-        <Warning width={18} height={18}/>
-        <HorizontalSeparatorDiv data-size='0.5'/>
+        <Warning width={18} height={18} />
+        <HorizontalSeparatorDiv data-size='0.5' />
         <Normaltekst>
           {t('ui:info-point-information')}
         </Normaltekst>

@@ -144,8 +144,8 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
         <Column>
           <Input
             data-test-id='c-TPSPersonForm__input-fnr-or-dnr-id'
-            label={t('label:fnr-or-dnr')}
-            placeholder={t('label:fnr-or-dnr')}
+            label={t('label:fnr-dnr')}
+            placeholder={t('label:fnr-dnr')}
             value={_query}
             onChange={updateQuery}
           />
@@ -157,7 +157,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
             disabled={person.fnr === _query}
             onClick={sokEtterFnr}
           >
-            {t('label:search')}
+            {t('elements:button-search')}
           </Knapp>
         </AlignCenterColumn>
       </Row>

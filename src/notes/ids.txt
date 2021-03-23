@@ -2,18 +2,20 @@ FOR VALIDATION: remove c-, -{type}
 
 IDs 												VALIDATION
 
-c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-navn-input         - {INTERNAL} arbeidsforhold-{personID}-arbeidsforholdet[{i}]-navn
-c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-orgnr-input        - {INTERNAL} arbeidsforhold-{personID}-arbeidsforholdet[{i}]-orgnr
-c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-startdato-input    - {INTERNAL} arbeidsforhold-{personID}-arbeidsforholdet[{i}]-startdato
-c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-sluttdato-input    - {INTERNAL} arbeidsforhold-{personID}-arbeidsforholdet[{i}]-sluttdato
+c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-navn-input              - {INTERNAL} arbeidsforhold-{personID}-arbeidsforholdet[{i}]-navn
+c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-orgnr-input             - {INTERNAL} arbeidsforhold-{personID}-arbeidsforholdet[{i}]-orgnr
+c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-startdato-input         - {INTERNAL} arbeidsforhold-{personID}-arbeidsforholdet[{i}]-startdato
+c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-sluttdato-input         - {INTERNAL} arbeidsforhold-{personID}-arbeidsforholdet[{i}]-sluttdato
 
-
-
-
+c-familymanager-{personID}-personensstatus-medlemsperiode-startdato-input - {GLOBAL}
+c-familymanager-{personID}-personensstatus-medlemsperiode-sluttdato-input - {GLOBAL}
+c-familymanager-{personID}-personensstatus-arbeidsperiode-startdato-input - {INTERNAL}
+c-familymanager-{personID}-personensstatus-arbeidsperiode-sluttdato-input - {INTERNAL}
+c-familymanager-{personID}-personensstatus-arbeidsperiode-orgnr-input     - {INTERNAL}
+c-familymanager-{personID}-personensstatus-arbeidsperiode-navn-input      - {INTERNAL}
 
 c-formaal-select                                    - formaal
-c-step2-comment-textarea                            - comment
--
+
 c-seddetails-anmodningsperiode-startdato-input      - seddetails-anmodningsperiode-startdato
 c-seddetails-anmodningsperiode-sluttdato-input      - seddetails-anmodningsperiode-sluttdato
 c-seddetails-anmodningsperioder[i]-startdato-input
@@ -27,7 +29,9 @@ c-seddetails-avsenderinstitusjon-input
 c-seddetails-typeKrav-radiogroup
 c-seddetails-informasjon-radiogroup
 c-seddetails-opplysninger-textarea
--
+
+c-step2-comment-textarea                            - comment
+
 c-vedtak-allkids-radiogroup
 c-vedtak-startdato-input
 c-vedtak-sluttdato-input

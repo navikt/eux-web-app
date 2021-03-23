@@ -54,13 +54,12 @@ const Motregning: React.FC<MotregningProps> = ({
   highContrast,
   replySed
 }: MotregningProps): JSX.Element => {
-
   const { t } = useTranslation()
   const [_motregning, setMotregning] = useState<string | undefined>(undefined)
   const [_startDato, setStartDato] = useState<string>('')
   const [_sluttDato, setSluttDato] = useState<string>('')
   const [_reason, setReason] = useState<string>('')
-  const [_validation, ] = useState<Validation>({})
+  const [_validation] = useState<Validation>({})
   const [_vedtakType, setVedtakType] = useState<string | undefined>(undefined)
   const [_perioderAndVedtak, setPerioderAndVedtak] = useState<Array<PeriodeAndVedtak>>([])
 
@@ -127,10 +126,10 @@ const Motregning: React.FC<MotregningProps> = ({
   }
 
   const vedtakTypeOptions = [
-    {label: t('elements:option-vedtaktype-1'), value: '1'},
-    {label: t('elements:option-vedtaktype-2'), value: '2'},
-    {label: t('elements:option-vedtaktype-3'), value: '3'},
-    {label: t('elements:option-vedtaktype-4'), value: '4'}
+    { label: t('elements:option-vedtaktype-1'), value: '1' },
+    { label: t('elements:option-vedtaktype-2'), value: '2' },
+    { label: t('elements:option-vedtaktype-3'), value: '3' },
+    { label: t('elements:option-vedtaktype-4'), value: '4' }
   ]
 
   const renderPeriodeAndVedtak = (p: PeriodeAndVedtak | null, i: number) => (
@@ -145,7 +144,7 @@ const Motregning: React.FC<MotregningProps> = ({
             id={'c-vedtak-startdato[' + i + ']-input'}
             onChange={(e: any) => setMoreStartDato(e.target.value, i)}
             value={i < 0 ? _currentStartDato : p?.periode.startdato}
-            label={t('label:startDate')}
+            label={t('label:start-date')}
             placeholder={t('elements:placeholder-date-default')}
           />
         </Column>
@@ -158,7 +157,7 @@ const Motregning: React.FC<MotregningProps> = ({
             id={'c-vedtak-sluttdato[' + i + ']-input'}
             onChange={(e: any) => setMoreSluttDato(e.target.value, i)}
             value={i < 0 ? _currentSluttDato : p?.periode.sluttdato}
-            label={t('label:endDate')}
+            label={t('label:end-date')}
             placeholder={t('elements:placeholder-date-default')}
           />
         </Column>
@@ -191,11 +190,9 @@ const Motregning: React.FC<MotregningProps> = ({
           </HighContrastFlatknapp>
         </Column>
       </AlignEndRow>
-      <VerticalSeparatorDiv data-size='0.5'/>
+      <VerticalSeparatorDiv data-size='0.5' />
     </>
   )
-
-
 
   return (
     <PanelDiv>
@@ -207,87 +204,88 @@ const Motregning: React.FC<MotregningProps> = ({
         <HighContrastRadioGroup
           legend={t('label:motregning-request')}
           feil={_validation['vedtak-allkids']
-              ? _validation['vedtak-allkids']!.feilmelding
-              : undefined}
-          >
+            ? _validation['vedtak-allkids']!.feilmelding
+            : undefined}
+        >
 
-            <HighContrastRadio
-            name={'c-vedtak-allkids'}
+          <HighContrastRadio
+            name='c-vedtak-allkids'
             checked={_motregning === 'ja'}
-              label={t('label:motregning-request-1')}
-            onClick={() => setMotregning('ja') }/>
-          <VerticalSeparatorDiv/>
-            <HighContrastRadio
-            name={'c-vedtak-allkids'}
+            label={t('label:motregning-request-1')}
+            onClick={() => setMotregning('ja')}
+          />
+          <VerticalSeparatorDiv />
+          <HighContrastRadio
+            name='c-vedtak-allkids'
             checked={_motregning === 'nei'}
             label={t('label:motregning-request-2')}
-            onClick={() => setMotregning('nei') }/>
+            onClick={() => setMotregning('nei')}
+          />
 
         </HighContrastRadioGroup>
         {_motregning === 'nei' && (
           <>
-           <div dangerouslySetInnerHTML={{__html: t('label:allKids-select') + ':'}}>
-           </div>
-            <VerticalSeparatorDiv/>
-          {(replySed as F002Sed)?.barn?.map(b => (
-            <>
-              <Checkbox label={b.personInfo.fornavn + ' ' + b.personInfo.etternavn}/>
-              <VerticalSeparatorDiv data-size='0.5'/>
-            </>
-          ))}
+            <div dangerouslySetInnerHTML={{ __html: t('label:allKids-select') + ':' }} />
+            <VerticalSeparatorDiv />
+            {(replySed as F002Sed)?.barn?.map(b => (
+              <>
+                <Checkbox label={b.personInfo.fornavn + ' ' + b.personInfo.etternavn} />
+                <VerticalSeparatorDiv data-size='0.5' />
+              </>
+            ))}
           </>
         )}
 
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <Row>
           <Column>
             <HighContrastInput
-              data-test-id={'c-vedtak-startdato-input'}
-              id={'c-vedtak-startdato-input'}
+              data-test-id='c-vedtak-startdato-input'
+              id='c-vedtak-startdato-input'
               feil={_validation['vedtak-startdato']
                 ? _validation['vedtak-startdato']!.feilmelding
                 : undefined}
               onChange={(e: any) => setStartDato(e.target.value)}
               value={_startDato}
-              label={t('label:startDate')}
+              label={t('label:start-date')}
               placeholder={t('elements:placeholder-date-default')}
             />
           </Column>
           <Column>
             <HighContrastInput
-              data-test-id={'c-vedtak-sluttdato-input'}
-              id={'c-vedtak-sluttdato-input'}
+              data-test-id='c-vedtak-sluttdato-input'
+              id='c-vedtak-sluttdato-input'
               feil={_validation['vedtak-sluttdato']
                 ? _validation['vedtak-sluttdato']!.feilmelding
                 : undefined}
               onChange={(e: any) => setSluttDato(e.target.value)}
               value={_sluttDato}
-              label={t('label:endDate')}
+              label={t('label:end-date')}
               placeholder={t('elements:placeholder-date-default')}
             />
           </Column>
-          <Column/>
+          <Column />
         </Row>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <Row>
           <Column>
             <Select
-            data-test-id={'c-vedtak-type-select'}
-            error={_validation['vedtak-type']
-              ? _validation['vedtak-type']!.feilmelding
-              : undefined}
-            highContrast={highContrast}
-            id={'c-vedtak-type-select'}
-            label={t('label:vedtak-type')}
-            onChange={(e: any) => setVedtakType(e.value)}
-            options={vedtakTypeOptions}
-            placeholder={t('elements:placeholder-select-default')}
-            selectedValue={_vedtakType}
-          />
+              data-test-id='c-vedtak-type-select'
+              error={_validation['vedtak-type']
+                ? _validation['vedtak-type']!.feilmelding
+                : undefined}
+              highContrast={highContrast}
+              id='c-vedtak-type-select'
+              label={t('label:vedtak-type')}
+              onChange={(e: any) => setVedtakType(e.value)}
+              options={vedtakTypeOptions}
+              placeholder={t('elements:placeholder-select-default')}
+              selectedValue={_vedtakType}
+            />
           </Column>
-          <Column/>
+          <Column />
         </Row>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <Row>
           <Column>
             <TextAreaDiv>
@@ -303,9 +301,9 @@ const Motregning: React.FC<MotregningProps> = ({
               />
             </TextAreaDiv>
           </Column>
-          <Column/>
+          <Column />
         </Row>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         {_perioderAndVedtak.map(renderPeriodeAndVedtak)}
         <hr />
         {_seeNewPeriode
@@ -324,11 +322,10 @@ const Motregning: React.FC<MotregningProps> = ({
                 </HighContrastFlatknapp>
               </Column>
             </Row>
-          )}
+            )}
       </HighContrastPanel>
     </PanelDiv>
   )
 }
-
 
 export default Motregning

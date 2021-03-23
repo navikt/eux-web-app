@@ -195,8 +195,8 @@ const FamilyManager: React.FC = () => {
       setEditCurrentPersonID(isEditCurrentPerson ? undefined : id)
       const newEditPersons = alreadyEditingPerson ? _.filter(_editPersonIDs, _id => _id !== id) : _editPersonIDs.concat(id)
       setEditPersonIDs(newEditPersons)
-      setMenuOption(isEditCurrentPerson ? undefined :
-        id === 'familie' ? _.find(options, o => o.family)?.value : options[0].value
+      setMenuOption(isEditCurrentPerson ? undefined
+        : id === 'familie' ? _.find(options, o => o.family)?.value : options[0].value
       )
     }
   }

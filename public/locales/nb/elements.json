@@ -1,10 +1,10 @@
 {
   "button-add": "Legg til",
-  "button-add-new-arbeidsperiode": "Legg til ny arbeidsperiode",
+  "button-add-new-x": "Legg til ny {{x}}",
   "button-cancel": "Avbryt",
-  "button-search-for-arbeidsforhold" : "Søk arbeidsforhold",
+  "button-search" : "Søk",
+  "button-search-for-x" : "Søk {{x}}",
   "button-remove" : "Fjern",
-
 
 
   "option-formaal-1": "Mottak av søknad om familieytelser",

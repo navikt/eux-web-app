@@ -3,6 +3,7 @@ import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
 import { ReplySed } from 'declarations/sed'
 import { Arbeidsforholdet, Period, Validation } from 'declarations/types'
 import _ from 'lodash'
+import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
@@ -22,26 +23,76 @@ export interface Op1AnsattProps {
   getArbeidsforholdList: (fnr: string | undefined) => void,
   replySed: ReplySed,
   personID: string
-  validation: Validation
 }
 
 const Op1Ansatt: React.FC<Op1AnsattProps> = ({
-  arbeidsforholdList, replySed, personID, gettingArbeidsforholdList, getArbeidsforholdList, validation
+  arbeidsforholdList,
+  getArbeidsforholdList,
+  gettingArbeidsforholdList,
+  personID,
+  replySed,
 }: Op1AnsattProps) => {
   const { t } = useTranslation()
 
   const [_addedArbeidsforholdList, setAddedArbeidsforholdList] = useState<Array<Arbeidsforholdet>>([])
   const [_existingArbeidsforholdList, setExistingArbeidsforholdList] = useState<Array<Arbeidsforholdet> | undefined>(undefined)
 
-  const [_currentArbeidsperiodeStartDato, setCurrentArbeidsperiodeStartDato] = useState<string>('')
-  const [_currentArbeidsperiodeSluttDato, setCurrentArbeidsperiodeSluttDato] = useState<string>('')
-  const [_currentArbeidsperiodeOrgnr, setCurrentArbeidsperiodeOrgnr] = useState<string>('')
-  const [_currentArbeidsperiodeNavn, setCurrentArbeidsperiodeNavn] = useState<string>('')
+  const [_newStartDato, setNewStartDato] = useState<string>('')
+  const [_newSluttDato, setNewSluttDato] = useState<string>('')
+  const [_newOrgnr, setNewOrgnr] = useState<string>('')
+  const [_newNavn, setNewNavn] = useState<string>('')
 
   const [_seeNewArbeidsperiode, setSeeNewArbeidsperiode] = useState<boolean>(false)
   const [_valgteArbeidsforhold, setValgtArbeidsforhold] = useState<Array<Arbeidsforholdet>>([])
+  const [_validation, setValidation] = useState<Validation>({})
 
   const fnr: string | undefined = _.find(_.get(replySed, `${personID}.personInfo.pin`), p => p.land === 'NO')?.identifikator
+  const namespace = 'c-familymanager-' + personID + '-personensstatus-arbeidsperiode'
+
+  const resetValidation = (key: string): void => {
+    setValidation({
+      ..._validation,
+      [key]: undefined
+    })
+  }
+
+  const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
+
+  const performValidation = (): boolean => {
+    const validation: Validation = {}
+    if (!_newNavn) {
+      validation[namespace + '-navn'] = {
+        skjemaelementId: 'c-' + namespace + '-navn-input',
+        feilmelding: t('message:validation-noName')
+      } as FeiloppsummeringFeil
+    }
+    if (!_newOrgnr) {
+      validation[namespace + '-orgnr'] = {
+        skjemaelementId: 'c-' + namespace + '-orgnr-input',
+        feilmelding: t('message:validation-noOrgnr')
+      } as FeiloppsummeringFeil
+    }
+    if (!_newStartDato) {
+      validation[namespace + '-startdato'] = {
+        skjemaelementId: 'c-' + namespace + '-startdato-input',
+        feilmelding: t('message:validation-noDate')
+      } as FeiloppsummeringFeil
+    }
+    if (_newStartDato && !_newStartDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
+      validation[namespace + '-startdato'] = {
+        skjemaelementId: 'c-' + namespace + '-startdato-input',
+        feilmelding: t('message:validation-invalidDate')
+      } as FeiloppsummeringFeil
+    }
+    if (_newSluttDato && !_newSluttDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
+      validation[namespace + '-sluttdato'] = {
+        skjemaelementId: 'c-' + namespace + '-sluttdato-input',
+        feilmelding: t('message:validation-invalidDate')
+      } as FeiloppsummeringFeil
+    }
+    setValidation(validation)
+    return hasNoValidationErrors(validation)
+  }
 
   const onArbeidsforholdSelect = (item: any, checked: boolean) => {
     let newValgtArbeidsforhold: Array<Arbeidsforholdet>
@@ -54,7 +105,7 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
   }
 
   const onExistingArbeidsforholdEdit = (a: Arbeidsforholdet, index: number) => {
-    let newArbeidsforholdList = _.cloneDeep(_existingArbeidsforholdList)
+    const newArbeidsforholdList = _.cloneDeep(_existingArbeidsforholdList)
     if (newArbeidsforholdList) {
       newArbeidsforholdList[index] = a
       setExistingArbeidsforholdList(newArbeidsforholdList)
@@ -62,7 +113,7 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
   }
 
   const onAddedArbeidsforholdEdit = (a: Arbeidsforholdet, index: number) => {
-    let newAddedArbeidsforholdList = _.cloneDeep(_addedArbeidsforholdList)
+    const newAddedArbeidsforholdList = _.cloneDeep(_addedArbeidsforholdList)
     if (newAddedArbeidsforholdList) {
       newAddedArbeidsforholdList[index] = a
       setAddedArbeidsforholdList(newAddedArbeidsforholdList)
@@ -70,12 +121,12 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
   }
 
   const onExistingArbeidsforholdDelete = (index: number) => {
-    let newArbeidsforholdList: Array<Arbeidsforholdet> | undefined = _.cloneDeep(_existingArbeidsforholdList)
-    let deletedArbeidsforhold: Array<Arbeidsforholdet> | undefined = newArbeidsforholdList?.splice(index, 1)
+    const newArbeidsforholdList: Array<Arbeidsforholdet> | undefined = _.cloneDeep(_existingArbeidsforholdList)
+    const deletedArbeidsforhold: Array<Arbeidsforholdet> | undefined = newArbeidsforholdList?.splice(index, 1)
     setExistingArbeidsforholdList(newArbeidsforholdList)
 
     if (deletedArbeidsforhold && deletedArbeidsforhold.length > 0) {
-      let newValgtArbeidsforhold: Array<Arbeidsforholdet> = _.filter(_valgteArbeidsforhold, v => v.orgnr !== deletedArbeidsforhold![0].orgnr)
+      const newValgtArbeidsforhold: Array<Arbeidsforholdet> = _.filter(_valgteArbeidsforhold, v => v.orgnr !== deletedArbeidsforhold![0].orgnr)
       if (newValgtArbeidsforhold.length !== _valgteArbeidsforhold.length) {
         setValgtArbeidsforhold(newValgtArbeidsforhold)
       }
@@ -83,33 +134,69 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
   }
 
   const onAddedArbeidsforholdDelete = (index: number) => {
-    let newAddedArbeidsforholdList: Array<Arbeidsforholdet> | undefined = _.cloneDeep(_addedArbeidsforholdList)
-    let deletedArbeidsforhold: Array<Arbeidsforholdet> | undefined = newAddedArbeidsforholdList?.splice(index, 1)
+    const newAddedArbeidsforholdList: Array<Arbeidsforholdet> | undefined = _.cloneDeep(_addedArbeidsforholdList)
+    const deletedArbeidsforhold: Array<Arbeidsforholdet> | undefined = newAddedArbeidsforholdList?.splice(index, 1)
     setAddedArbeidsforholdList(newAddedArbeidsforholdList)
 
     if (deletedArbeidsforhold && deletedArbeidsforhold.length > 0) {
-      let newValgtArbeidsforhold: Array<Arbeidsforholdet> = _.filter(_valgteArbeidsforhold, v => v.orgnr !== deletedArbeidsforhold![0].orgnr)
+      const newValgtArbeidsforhold: Array<Arbeidsforholdet> = _.filter(_valgteArbeidsforhold, v => v.orgnr !== deletedArbeidsforhold![0].orgnr)
       if (newValgtArbeidsforhold.length !== _valgteArbeidsforhold.length) {
         setValgtArbeidsforhold(newValgtArbeidsforhold)
       }
     }
   }
 
-  const onAddArbeidsPeriode = () => {
-    let newAddedArbeidsforholdList = _.cloneDeep(_addedArbeidsforholdList)
-    const periode = {
-      fom: _currentArbeidsperiodeStartDato
-    } as Period
-    if (_currentArbeidsperiodeSluttDato) {
-      periode.tom = _currentArbeidsperiodeSluttDato
-    }
+  const resetForm = () => {
+    setNewNavn('')
+    setNewOrgnr('')
+    setNewSluttDato('')
+    setNewStartDato('')
+    setValidation({})
+  }
 
-    newAddedArbeidsforholdList = newAddedArbeidsforholdList.concat({
-      ansettelsesPeriode: periode,
-      orgnr: _currentArbeidsperiodeOrgnr,
-      navn: _currentArbeidsperiodeNavn
-    } as Arbeidsforholdet)
-    setAddedArbeidsforholdList(newAddedArbeidsforholdList)
+  const onAddClicked = () => {
+    let valid = performValidation()
+    if (valid) {
+      let newAddedArbeidsforholdList = _.cloneDeep(_addedArbeidsforholdList)
+      const periode = {
+        fom: _newStartDato
+      } as Period
+      if (_newSluttDato) {
+        periode.tom = _newSluttDato
+      }
+      newAddedArbeidsforholdList = newAddedArbeidsforholdList.concat({
+        ansettelsesPeriode: periode,
+        orgnr: _newOrgnr,
+        navn: _newNavn
+      } as Arbeidsforholdet)
+      setAddedArbeidsforholdList(newAddedArbeidsforholdList)
+      resetForm()
+    }
+  }
+
+  const onCancelClicked = () => {
+    resetForm()
+    setSeeNewArbeidsperiode(!_seeNewArbeidsperiode)
+  }
+
+  const onStartDatoChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    resetValidation(namespace + '-startdato')
+    setNewStartDato(e.target.value)
+  }
+
+  const onSluttDatoChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    resetValidation(namespace + '-sluttdato')
+    setNewSluttDato(e.target.value)
+  }
+
+  const onOrgnrChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    resetValidation(namespace + '-orgnr')
+    setNewOrgnr(e.target.value)
+  }
+
+  const onNameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    resetValidation(namespace + '-navn')
+    setNewNavn(e.target.value)
   }
 
   useEffect(() => {
@@ -123,7 +210,7 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
       <Undertittel>
         {t('ui:title-aaRegistered')}
       </Undertittel>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <Arbeidsforhold
         editable
         searchable
@@ -136,13 +223,13 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
         onArbeidsforholdEdit={onExistingArbeidsforholdEdit}
         onArbeidsforholdDelete={onExistingArbeidsforholdDelete}
       />
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       {!_.isEmpty(_addedArbeidsforholdList) && (
         <>
           <Undertittel>
-            {t('ui:title-added-arbeidsforhold')}
+            {t('ui:title-added-arbeidsperiode')}
           </Undertittel>
-          <VerticalSeparatorDiv/>
+          <VerticalSeparatorDiv />
           <Arbeidsforhold
             editable
             searchable={false}
@@ -155,7 +242,7 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
           />
         </>
       )}
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       {!_seeNewArbeidsperiode
         ? (
           <HighContrastFlatknapp
@@ -165,67 +252,67 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
           >
             <Add />
             <HorizontalSeparatorDiv data-size='0.5' />
-            {t('elements:button-add-new-arbeidsperiode')}
+            {t('elements:button-add-new-x', {
+              x: t('label:arbeidsperiode').toLowerCase()
+            })}
           </HighContrastFlatknapp>
           )
         : (
           <>
+            <Undertittel>
+              {t('ui:title-add-arbeidsperiode')}
+            </Undertittel>
+            <VerticalSeparatorDiv />
             <Row>
               <Column>
                 <HighContrastInput
-                  data-test-id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-startdato-input'}
-                  feil={validation['person-' + personID + '-personensstatus-arbeidsperiode-startdato']
-                    ? validation['person-' + personID + '-personensstatus-arbeidsperiode-startdato']!.feilmelding
-                    : undefined}
-                  id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-startdato-input'}
-                  onChange={(e: any) => setCurrentArbeidsperiodeStartDato(e.target.value)}
-                  value={_currentArbeidsperiodeStartDato}
-                  label={t('label:startDate')}
+                  data-test-id={'c-' + namespace + '-startdato-input'}
+                  feil={_validation[namespace + '-startdato']?.feilmelding}
+                  id={namespace + '-startdato-input'}
+                  label={t('label:start-date')}
+                  onChange={onStartDatoChanged}
                   placeholder={t('elements:placeholder-date-default')}
+                  value={_newStartDato}
                 />
               </Column>
               <Column>
                 <HighContrastInput
-                  data-test-id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-sluttdato-input'}
-                  feil={validation['person-' + personID + '-personensstatus-arbeidsperiode-sluttdato']
-                    ? validation['person-' + personID + '-personensstatus-arbeidsperiode-sluttdato']!.feilmelding
-                    : undefined}
-                  id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-sluttdato-input'}
-                  onChange={(e: any) => setCurrentArbeidsperiodeSluttDato(e.target.value)}
-                  value={_currentArbeidsperiodeSluttDato}
-                  label={t('label:endDate')}
+                  data-test-id={'c-' + namespace + '-sluttdato-input'}
+                  feil={_validation[namespace + '-sluttdato']?.feilmelding}
+                  id={'c-' + namespace + '-sluttdato-input'}
+                  label={t('label:end-date')}
+                  onChange={onSluttDatoChanged}
                   placeholder={t('elements:placeholder-date-default')}
+                  value={_newSluttDato}
                 />
               </Column>
+              <Column/>
             </Row>
             <VerticalSeparatorDiv data-size='0.5' />
             <Row>
               <Column>
                 <HighContrastInput
-                  data-test-id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-orgnr-input'}
-                  feil={validation['person-' + personID + '-personensstatus-arbeidsperiode-orgnr']
-                    ? validation['person-' + personID + '-personensstatus-arbeidsperiode-orgnr']!.feilmelding
-                    : undefined}
-                  id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-orgnr-input'}
-                  onChange={(e: any) => setCurrentArbeidsperiodeOrgnr(e.target.value)}
-                  value={_currentArbeidsperiodeOrgnr}
+                  data-test-id={'c-' + namespace + '-orgnr-input'}
+                  feil={_validation[namespace + '-orgnr']?.feilmelding}
+                  id={'c-' + namespace + '-orgnr-input'}
                   label={t('label:orgnr')}
+                  onChange={onOrgnrChanged}
                   placeholder={t('elements:placeholder-input-default')}
+                  value={_newOrgnr}
                 />
               </Column>
               <Column>
                 <HighContrastInput
-                  data-test-id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-navn-input'}
-                  feil={validation['person-' + personID + '-personensstatus-arbeidsperiode-navn']
-                    ? validation['person-' + personID + '-personensstatus-arbeidsperiode-navn']!.feilmelding
-                    : undefined}
-                  id={'c-familymanager-' + personID + '-personensstatus-arbeidsperiode-navn-input'}
-                  onChange={(e: any) => setCurrentArbeidsperiodeNavn(e.target.value)}
-                  value={_currentArbeidsperiodeNavn}
-                  label={t('label:navn')}
+                  data-test-id={'c-' + namespace + '-navn-input'}
+                  feil={_validation[namespace + '-navn']?.feilmelding}
+                  id={'c-' + namespace + '-navn-input'}
+                  label={t('label:name')}
+                  onChange={onNameChanged}
                   placeholder={t('elements:placeholder-input-default')}
+                  value={_newNavn}
                 />
               </Column>
+              <Column/>
             </Row>
             <VerticalSeparatorDiv />
             <Row>
@@ -233,19 +320,19 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
                 <HighContrastKnapp
                   mini
                   kompakt
-                  onClick={onAddArbeidsPeriode}
+                  onClick={onAddClicked}
                 >
                   <Add />
                   <HorizontalSeparatorDiv data-size='0.5' />
-                  {t('label:add')}
+                  {t('elements:button-add')}
                 </HighContrastKnapp>
                 <HorizontalSeparatorDiv data-size='0.5' />
                 <HighContrastFlatknapp
                   mini
                   kompakt
-                  onClick={() => setSeeNewArbeidsperiode(!_seeNewArbeidsperiode)}
+                  onClick={onCancelClicked}
                 >
-                  {t('label:cancel')}
+                  {t('elements:button-cancel')}
                 </HighContrastFlatknapp>
               </Column>
             </Row>

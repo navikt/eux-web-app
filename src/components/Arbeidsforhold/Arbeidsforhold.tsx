@@ -42,7 +42,9 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
                 spinner={gettingArbeidsforholdList}
                 onClick={getArbeidsforholdList}
               >
-                {gettingArbeidsforholdList ? t('label:searching') : t('elements:button-search-for-arbeidsforhold')}
+                {gettingArbeidsforholdList
+                  ? t('label:searching')
+                  : t('elements:button-search-for-x', { x: t('label:arbeidsforhold').toLowerCase() })}
               </Knapp>
             </Column>
           </Row>

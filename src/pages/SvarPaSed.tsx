@@ -228,7 +228,7 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
     <TopContainer>
       <Container>
         <Margin />
-        <Content style={{flex: 6}}>
+        <Content style={{ flex: 6 }}>
           <ContainerDiv className={classNames({ shrink: animating })}>
             <WindowDiv>
               <AnimatableDiv

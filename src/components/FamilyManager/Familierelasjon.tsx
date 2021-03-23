@@ -199,7 +199,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
             id={'c-familymanager-' + personID + '-familierelasjon-' + i + '-startdato-input'}
             onChange={(e: any) => setStartDato(e.target.value, i)}
             value={i < 0 ? _currentStartDato : s?.periode.startdato}
-            label={t('label:startDate')}
+            label={t('label:start-date')}
             placeholder={t('elements:placeholder-date-default')}
           />
         </Column>
@@ -212,7 +212,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
             id={'c-familymanager-' + personID + '-familierelasjon-' + i + '-sluttdato-input'}
             onChange={(e: any) => setSluttDato(e.target.value, i)}
             value={i < 0 ? _currentSluttDato : s?.periode.sluttdato}
-            label={t('label:endDate')}
+            label={t('label:end-date')}
             placeholder={t('elements:placeholder-date-default')}
           />
         </Column>

@@ -95,7 +95,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
         <Rinasaknummer
           data-test-id='dokumentsok__form__input-id'
           feil={validation.rinasaksnummer}
-          label={t('label:rinasaksnummer')}
+          label={t('label:rina-saksnummer')}
           onChange={onRinaSaksnummerChange}
           value={rinasaksnummer}
         />
@@ -103,7 +103,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
           onClick={sokEtterDokument}
           spinner={gettingDokument}
         >
-          {t('label:search')}
+          {t('elements:button-search')}
         </Knapp>
       </Form>
       <VerticalSeparatorDiv />
@@ -112,7 +112,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
           data-test-id='dokumentsok__card-select-id'
           disabled={!_dokument}
           feil={validation.rinadokumentID}
-          label={t('label:rinadokumentID')}
+          label={t('label:rina-document-id')}
           onChange={onRinadokumentIDChange}
           value={rinadokumentID}
         >

@@ -57,7 +57,7 @@ const ReasonToCome = ({
                   id={'c-familymanager-' + personID + '-personensstatus-durationstay-startdato-input'}
                   onChange={(e: any) => setCurrentDurationStayStartDato(e.target.value)}
                   value={_currentDurationStayStartDato}
-                  label={t('label:startDate')}
+                  label={t('label:start-date')}
                   placeholder={t('elements:placeholder-date-default')}
                 />
               </Column>
@@ -70,7 +70,7 @@ const ReasonToCome = ({
                   id={'c-familymanager-' + personID + '-personensstatus-durationStay-sluttdato-input'}
                   onChange={(e: any) => setCurrentDurationStaySluttDato(e.target.value)}
                   value={_currentDurationStaySluttDato}
-                  label={t('label:endDate')}
+                  label={t('label:end-date')}
                   placeholder={t('elements:placeholder-date-default')}
                 />
               </Column>

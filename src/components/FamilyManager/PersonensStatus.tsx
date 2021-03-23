@@ -102,7 +102,6 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
           gettingArbeidsforholdList={gettingArbeidsforholdList}
           replySed={replySed}
           personID={personID}
-          validation={validation}
         />
       )}
       {(_arbeidsforhold !== 'arbeidsforhold-1') && (

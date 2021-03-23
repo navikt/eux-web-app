@@ -227,7 +227,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
       setPreviewFile(previewFile)
       showModal(previewFile)
     }
-  }, [ previewFile, _previewFile])
+  }, [previewFile, _previewFile])
 
   return (
     <Step2Div>
@@ -249,19 +249,19 @@ const Step2: React.FC<SvarPaSedProps> = ({
                 {alertMessage && alertType && [types.SVARPASED_SENDSVARPASEDDATA_POST_FAILURE].indexOf(alertType) >= 0 && (
                   <AlertstripeDiv>
                     <Alert
-                    type='client'
-                    fixed={false}
-                    message={t(alertMessage)}
-                    status={alertStatus as AlertStatus}
-                    onClose={() => dispatch(clientClear())}
+                      type='client'
+                      fixed={false}
+                      message={t(alertMessage)}
+                      status={alertStatus as AlertStatus}
+                      onClose={() => dispatch(clientClear())}
                     />
                   </AlertstripeDiv>
-                  )}
+                )}
                 {!_.isNil(svarPasedData) && (
                   <>
-                  <Alertstripe type='suksess'>
-                  {svarPasedData.message}
-                  </Alertstripe>
+                    <Alertstripe type='suksess'>
+                      {svarPasedData.message}
+                    </Alertstripe>
                     <HighContrastHovedknapp
                       mini
                       onClick={() => {
@@ -302,7 +302,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
             highContrast={highContrast}
           />
         </Column>
-        <Column/>
+        <Column />
       </Row>
       <VerticalSeparatorDiv data-size='2' />
       {showFamily() && (
@@ -313,13 +313,13 @@ const Step2: React.FC<SvarPaSedProps> = ({
       )}
       {showVedtak() && (
         <>
-          <Vedtak highContrast={highContrast} replySed={replySed}/>
+          <Vedtak highContrast={highContrast} replySed={replySed} />
           <VerticalSeparatorDiv data-size='2' />
         </>
       )}
       {showMotregning() && (
         <>
-          <Motregning highContrast={highContrast} replySed={replySed}/>
+          <Motregning highContrast={highContrast} replySed={replySed} />
           <VerticalSeparatorDiv data-size='2' />
         </>
       )}
@@ -361,7 +361,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
       >
         <Add />
         <HorizontalSeparatorDiv data-size='0.5' />
-          {gettingPreviewFile ? t('label:loading-file') : t('label:preview-sed')}
+        {gettingPreviewFile ? t('label:loading-file') : t('label:preview-sed')}
       </HighContrastFlatknapp>
       <VerticalSeparatorDiv data-size='2' />
       <ButtonsDiv>

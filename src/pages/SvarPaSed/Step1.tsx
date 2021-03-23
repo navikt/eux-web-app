@@ -163,112 +163,112 @@ const Step1: React.FC<SvarPaSedProps> = ({
   return (
     <NavHighContrast highContrast={highContrast}>
       <ContainerDiv>
-      <Systemtittel>
-        {t('ui:title-svarSed')}
-      </Systemtittel>
-      <VerticalSeparatorDiv data-size='2'/>
-      <AlignedRow
-        className={classNames('slideInFromLeft', { feil: _validation.saksnummerOrFnr })}
-      >
-        <HorizontalSeparatorDiv data-size='0.1'/>
-        <Column data-flex='2'>
-          <HighContrastInput
-            bredde='fullbredde'
-            data-test-id='svarpased__saksnummerOrFnr-input'
-            feil={_validation.saksnummerOrFnr ? _validation.saksnummerOrFnr.feilmelding : undefined}
-            highContrast={highContrast}
-            id='svarpased__saksnummerOrFnr-input'
-            label={t('label:saksnummerOrFnr')}
-            onChange={onSaksnummerOrFnrChange}
-            placeholder={t('elements:placeholder-input-default')}
-            value={_saksnummerOrFnr}
-          />
-        </Column>
-        <HorizontalSeparatorDiv/>
-        <AlignCenterColumn>
-          <HighContrastKnapp
-            disabled={queryingSaksnummerOrFnr}
-            spinner={queryingSaksnummerOrFnr}
-            onClick={onSaksnummerOrFnrClick}
-          >
-            {queryingSaksnummerOrFnr ? t('message:loading-searching') : t('label:search')}
-          </HighContrastKnapp>
-        </AlignCenterColumn>
-      </AlignedRow>
-      <VerticalSeparatorDiv />
-      {seds && (
-        <HighContrastRadioGroup
-          legend={t('label:searchResultsForSaksnummerOrFnr', {
-            antall: Object.keys(seds).length,
-            saksnummerOrFnr: _saksnummerOrFnr
-          })}
+        <Systemtittel>
+          {t('ui:title-svarSed')}
+        </Systemtittel>
+        <VerticalSeparatorDiv data-size='2' />
+        <AlignedRow
+          className={classNames('slideInFromLeft', { feil: _validation.saksnummerOrFnr })}
         >
-          {Object.keys(seds)?.map((sed: string) => {
-            const country = countryInstance.findByValue(seds[sed].land)
-            return (
-              <div key={sed}>
-                <RadioElementBorder
-                  name='svarpased__saksnummerOrFnr-results'
-                  value={sed}
-                  checked={parentSed === sed}
-                  label={(
-                    <>
-                      <Undertittel>
-                        {sed}
-                      </Undertittel>
-                      <LeftDiv>
-                        <span>
+          <HorizontalSeparatorDiv data-size='0.1' />
+          <Column data-flex='2'>
+            <HighContrastInput
+              bredde='fullbredde'
+              data-test-id='svarpased__saksnummerOrFnr-input'
+              feil={_validation.saksnummerOrFnr ? _validation.saksnummerOrFnr.feilmelding : undefined}
+              highContrast={highContrast}
+              id='svarpased__saksnummerOrFnr-input'
+              label={t('label:saksnummerOrFnr')}
+              onChange={onSaksnummerOrFnrChange}
+              placeholder={t('elements:placeholder-input-default')}
+              value={_saksnummerOrFnr}
+            />
+          </Column>
+          <HorizontalSeparatorDiv />
+          <AlignCenterColumn>
+            <HighContrastKnapp
+              disabled={queryingSaksnummerOrFnr}
+              spinner={queryingSaksnummerOrFnr}
+              onClick={onSaksnummerOrFnrClick}
+            >
+              {queryingSaksnummerOrFnr ? t('message:loading-searching') : t('label:search')}
+            </HighContrastKnapp>
+          </AlignCenterColumn>
+        </AlignedRow>
+        <VerticalSeparatorDiv />
+        {seds && (
+          <HighContrastRadioGroup
+            legend={t('label:searchResultsForSaksnummerOrFnr', {
+              antall: Object.keys(seds).length,
+              saksnummerOrFnr: _saksnummerOrFnr
+            })}
+          >
+            {Object.keys(seds)?.map((sed: string) => {
+              const country = countryInstance.findByValue(seds[sed].land)
+              return (
+                <div key={sed}>
+                  <RadioElementBorder
+                    name='svarpased__saksnummerOrFnr-results'
+                    value={sed}
+                    checked={parentSed === sed}
+                    label={(
+                      <>
+                        <Undertittel>
+                          {sed}
+                        </Undertittel>
+                        <LeftDiv>
+                          <span>
                           {t('label:caseNumber') + ': ' + seds[sed].saksnummer}
                         </span>
-                        <HorizontalSeparatorDiv />
-                        <HighContrastLink href='#'>
+                          <HorizontalSeparatorDiv />
+                          <HighContrastLink href='#'>
                           <span>
                             {t('label:goToRina')}
                           </span>
                           <HorizontalSeparatorDiv data-size='0.35' />
                           <ExternalLink />
                         </HighContrastLink>
-                      </LeftDiv>
-                      <FlexDiv style={{ width: '1px' }}>
-                        <Normaltekst>
+                        </LeftDiv>
+                        <FlexDiv style={{ width: '1px' }}>
+                          <Normaltekst>
                           {t('label:land')}:
                         </Normaltekst>
-                        <HorizontalSeparatorDiv data-size='0.35' />
-                        <Flag
+                          <HorizontalSeparatorDiv data-size='0.35' />
+                          <Flag
                           size='XS'
                           type='circle'
                           label={country?.label || ''}
                           country={country?.value || ''}
                         />
-                        <HorizontalSeparatorDiv data-size='0.35' />
-                        <Normaltekst>
+                          <HorizontalSeparatorDiv data-size='0.35' />
+                          <Normaltekst>
                           {country?.label}
                         </Normaltekst>
-                      </FlexDiv>
-                      <Normaltekst>
-                        {t('label:institusjon') + ': ' + seds[sed].institusjon}
-                      </Normaltekst>
-                      <VerticalSeparatorDiv data-size='0.3'/>
-                      <Etikett>
-                        {t('label:lastModified') + ': ' + seds[sed].sisteOppdatert}
-                      </Etikett>
-                    </>
+                        </FlexDiv>
+                        <Normaltekst>
+                          {t('label:institusjon') + ': ' + seds[sed].institusjon}
+                        </Normaltekst>
+                        <VerticalSeparatorDiv data-size='0.3' />
+                        <Etikett>
+                          {t('label:lastModified') + ': ' + seds[sed].sisteOppdatert}
+                        </Etikett>
+                      </>
                   )}
-                  className='slideInFromLeft'
-                  onChange={onParentSedChange}
-                />
-                {seds[sed].seds.map((connectedSed: ConnectedSed) => (
-                  <HiddenFormContainer
-                    key={sed + '-' + connectedSed.replySedType}
-                    className={classNames({
-                      slideOpen: previousParentSed !== sed && parentSed === sed,
-                      slideClose: previousParentSed === sed && parentSed !== sed,
-                      closed: !((previousParentSed !== sed && parentSed === sed) || (previousParentSed === sed && parentSed !== sed))
-                    })}
-                  >
-                    <HighContrastPanel style={{ marginLeft: '3rem' }}>
-                      <FlexDiv>
-                        <PileCenterDiv>
+                    className='slideInFromLeft'
+                    onChange={onParentSedChange}
+                  />
+                  {seds[sed].seds.map((connectedSed: ConnectedSed) => (
+                    <HiddenFormContainer
+                      key={sed + '-' + connectedSed.replySedType}
+                      className={classNames({
+                        slideOpen: previousParentSed !== sed && parentSed === sed,
+                        slideClose: previousParentSed === sed && parentSed !== sed,
+                        closed: !((previousParentSed !== sed && parentSed === sed) || (previousParentSed === sed && parentSed !== sed))
+                      })}
+                    >
+                      <HighContrastPanel style={{ marginLeft: '3rem' }}>
+                        <FlexDiv>
+                          <PileCenterDiv>
                           {connectedSed.status === 'received' && <ReceivedIcon />}
                           {connectedSed.status === 'sent' && <SentIcon />}
                           <VerticalSeparatorDiv data-size='0.35' />
@@ -276,8 +276,8 @@ const Step1: React.FC<SvarPaSedProps> = ({
                             {t('ui:status-' + connectedSed.status)}
                           </Undertekst>
                         </PileCenterDiv>
-                        <HorizontalSeparatorDiv />
-                        <PileLeftDiv style={{ flex: 2 }}>
+                          <HorizontalSeparatorDiv />
+                          <PileLeftDiv style={{ flex: 2 }}>
                           <Undertittel>
                             {connectedSed.replySedType} - {connectedSed.replySedDisplay}
                           </Undertittel>
@@ -294,8 +294,8 @@ const Step1: React.FC<SvarPaSedProps> = ({
                             <ExternalLink />
                           </HighContrastLink>
                         </PileLeftDiv>
-                        <HorizontalSeparatorDiv />
-                        <HighContrastHovedknapp
+                          <HorizontalSeparatorDiv />
+                          <HighContrastHovedknapp
                           disabled={queryingReplySed}
                           spinner={queryingReplySed}
                           mini
@@ -303,17 +303,17 @@ const Step1: React.FC<SvarPaSedProps> = ({
                         >
                           {queryingReplySed ? t('message:loading-replying') : t('label:reply')}
                         </HighContrastHovedknapp>
-                      </FlexDiv>
-                    </HighContrastPanel>
-                    <VerticalSeparatorDiv />
-                  </HiddenFormContainer>
-                ))}
-              </div>
-            )
-          }
+                        </FlexDiv>
+                      </HighContrastPanel>
+                      <VerticalSeparatorDiv />
+                    </HiddenFormContainer>
+                  ))}
+                </div>
+              )
+            }
+            )}
+          </HighContrastRadioGroup>
         )}
-        </HighContrastRadioGroup>
-      )}
       </ContainerDiv>
     </NavHighContrast>
   )

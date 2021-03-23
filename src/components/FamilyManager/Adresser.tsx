@@ -258,7 +258,7 @@ const Adresser: React.FC<AdresseProps> = ({
               ? validation['person-' + personID + '-adresser-' + i + '-land']!.feilmelding
               : undefined}
             id={'c-familymanager-' + personID + '-adresser-' + i + '-land-countryselect'}
-            label={t('label:landkode')}
+            label={t('label:land')}
             menuPortalTarget={document.body}
             includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
             onOptionSelected={(e: any) => onLandChanged(e.value, i)}

@@ -71,6 +71,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
   const { fom, tom } = ansettelsesPeriode!
   const { t } = useTranslation()
   const hasError = true
+  const namespace = 'arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']'
 
   const [_isDeleting, setIsDeleting] = useState<boolean>(false)
   const [_isEditing, setIsEditing] = useState<boolean>(false)
@@ -90,40 +91,40 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
   const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
 
   const performValidation = (): boolean => {
-    let validation: Validation = {}
+    const validation: Validation = {}
     if (!_navn) {
-      validation['arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-navn'] = {
-        skjemaelementId: 'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-navn-input',
-        feilmelding: t('message:validation-noName'),
+      validation[namespace + '-navn'] = {
+        skjemaelementId: 'c-' + namespace + '-navn-input',
+        feilmelding: t('message:validation-noName')
       } as FeiloppsummeringFeil
     }
     if (!_orgnr) {
-      validation['arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-orgnr'] = {
-        skjemaelementId: 'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-orgnr-input',
-        feilmelding: t('message:validation-noOrgnr'),
+      validation[namespace + '-orgnr'] = {
+        skjemaelementId: 'c-' + namespace + '-orgnr-input',
+        feilmelding: t('message:validation-noOrgnr')
       } as FeiloppsummeringFeil
     }
     if (!_startDato) {
-      validation['arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-startdato'] = {
-        skjemaelementId: 'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-startdato-input',
-        feilmelding: t('message:validation-noDate'),
+      validation[namespace + '-startdato'] = {
+        skjemaelementId: 'c-' + namespace + '-startdato-input',
+        feilmelding: t('message:validation-noDate')
       } as FeiloppsummeringFeil
     }
     if (_startDato && !_startDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
-      validation['arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-startdato'] = {
-        skjemaelementId: 'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-startdato-input',
-        feilmelding: t('message:validation-invalidDate'),
+      validation[namespace + '-startdato'] = {
+        skjemaelementId: 'c-' + namespace + '-startdato-input',
+        feilmelding: t('message:validation-invalidDate')
       } as FeiloppsummeringFeil
     }
     if (!_sluttDato) {
-      validation['arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-sluttdato'] = {
-        skjemaelementId: 'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-sluttdato-input',
-        feilmelding: t('message:validation-noDate'),
+      validation[namespace + '-sluttdato'] = {
+        skjemaelementId: 'c-' + namespace + '-sluttdato-input',
+        feilmelding: t('message:validation-noDate')
       } as FeiloppsummeringFeil
     }
     if (_sluttDato && !_sluttDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
-      validation['arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-sluttdato'] = {
-        skjemaelementId: 'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-sluttdato-input',
+      validation[namespace + '-sluttdato'] = {
+        skjemaelementId: 'c-' + namespace + '-sluttdato-input',
         feilmelding: t('message:validation-invalidDate')
       } as FeiloppsummeringFeil
     }
@@ -131,23 +132,23 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
     return hasNoValidationErrors(validation)
   }
 
-    const onNameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    resetValidation('arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-navn')
+  const onNameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    resetValidation(namespace + '-navn')
     setNavn(e.target.value)
   }
 
   const onOrgnrChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    resetValidation('arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-orgnr')
+    resetValidation(namespace + '-orgnr')
     setOrgnr(e.target.value)
   }
 
   const onStartDatoChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    resetValidation('arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-startdato')
+    resetValidation(namespace + '-startdato')
     setStartDato(e.target.value)
   }
 
   const onSluttDatoChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    resetValidation('arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-sluttdato')
+    resetValidation(namespace + '-sluttdato')
     setSluttDato(e.target.value)
   }
 
@@ -162,12 +163,12 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
           tom: _sluttDato
         }
       } as Arbeidsforholdet,
-        index)
+      index)
       setIsEditing(false)
     }
   }
 
-  const onEditButtonClicked  = () => {
+  const onEditButtonClicked = () => {
     setIsEditing(true)
     setOrgnr(orgnr || '')
     setNavn(navn || '')
@@ -194,12 +195,12 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
     <div
       className='slideInFromLeft'
       key={arbeidsforholdIDnav}
-      style={{animationDelay : (index * 0.1) + 's'}}
+      style={{ animationDelay: (index * 0.1) + 's' }}
     >
       <VerticalSeparatorDiv data-size='0.5' />
       <ArbeidsforholdPanel key={index} border>
         <FlexCenterDiv>
-          <PaddedFlexDiv  className='slideInFromLeft'>
+          <PaddedFlexDiv className='slideInFromLeft'>
             <IkonArbeidsforhold />
             <HorizontalSeparatorDiv />
             <div>
@@ -207,9 +208,9 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                 <Row>
                   <Column>
                     <HighContrastInput
-                      data-test-id={'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-navn-input'}
-                      feil={_validation['arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-navn']?.feilmelding}
-                      id={'c-arbeidsforholdet-' + personID + '-arbeidsforholdet[' + index + ']-navn-input'}
+                      data-test-id={'c-' + namespace + '-navn-input'}
+                      feil={_validation[namespace + '-navn']?.feilmelding}
+                      id={'c-' + namespace + '-navn-input'}
                       label={t('label:name')}
                       onChange={onNameChanged}
                       placeholder={t('elements:placeholder-input-default')}
@@ -218,9 +219,9 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                   </Column>
                   <Column>
                     <HighContrastInput
-                      data-test-id={'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-orgnr-input'}
-                      feil={_validation['arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-orgnr']?.feilmelding}
-                      id={'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-orgnr-input'}
+                      data-test-id={'c-' + namespace + '-orgnr-input'}
+                      feil={_validation[namespace + '-orgnr']?.feilmelding}
+                      id={'c-' + namespace + '-orgnr-input'}
                       onChange={onOrgnrChanged}
                       value={_orgnr}
                       label={t('label:orgnr')}
@@ -228,8 +229,8 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                     />
                   </Column>
                 </Row>
-              ) :
-                (
+              )
+                : (
                   <div>
                     <UndertekstBold>
                       {navn}
@@ -238,19 +239,18 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                       {t('label:orgnr')}:&nbsp;{orgnr}
                     </Normaltekst>
                   </div>
-                )
-              }
-              {_isEditing ?
-                (
+                  )}
+              {_isEditing
+                ? (
                   <>
                     <VerticalSeparatorDiv data-size='0.5' />
                     <Row>
                       <Column>
                         <HighContrastInput
-                          data-test-id={'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-startdato-input'}
-                          feil={_validation['arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-startdato']?.feilmelding}
-                          id={'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-startdato-input'}
-                          label={t('label:endDate')}
+                          data-test-id={'c-' + namespace + '-startdato-input'}
+                          feil={_validation[namespace + '-startdato']?.feilmelding}
+                          id={'c-' + namespace + '-startdato-input'}
+                          label={t('label:end-date')}
                           onChange={onStartDatoChanged}
                           placeholder={t('elements:placeholder-date-default')}
                           value={_startDato}
@@ -258,10 +258,10 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                       </Column>
                       <Column>
                         <HighContrastInput
-                          data-test-id={'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-sluttdato-input'}
-                          feil={_validation['arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-sluttdato']?.feilmelding}
-                          id={'c-arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']-sluttdato-input'}
-                          label={t('label:endDate')}
+                          data-test-id={'c-' + namespace + '-sluttdato-input'}
+                          feil={_validation[namespace + '-sluttdato']?.feilmelding}
+                          id={'c-' + namespace + '-sluttdato-input'}
+                          label={t('label:end-date')}
                           onChange={onSluttDatoChanged}
                           placeholder={t('elements:placeholder-date-default')}
                           value={_sluttDato}
@@ -273,34 +273,36 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                 : (
                   <div>
                     <Normaltekst>
-                      {t('label:startDate')}:&nbsp;{formatterDatoTilNorsk(fom)}
+                      {t('label:start-date')}:&nbsp;{formatterDatoTilNorsk(fom)}
                     </Normaltekst>
                     <Normaltekst>
-                      {t('label:startDate')}:&nbsp;{formatterDatoTilNorsk(tom)}
+                      {t('label:start-date')}:&nbsp;{formatterDatoTilNorsk(tom)}
                     </Normaltekst>
                   </div>
-                )}
+                  )}
             </div>
           </PaddedFlexDiv>
-          <PaddedFlexDiv className='slideInFromRight'  style={{animationDelay: '0.3s'}}>
+          <PaddedFlexDiv className='slideInFromRight' style={{ animationDelay: '0.3s' }}>
             {editable && !_isEditing && !_isDeleting && (
               <>
-                <HighContrastFlatknapp kompakt style={{
-                  marginTop: '-0.5rem',
-                  marginRight: '-0.5rem'
-                }}
-                 onClick={() => setIsDeleting(!_isDeleting)}
+                <HighContrastFlatknapp
+                  kompakt style={{
+                    marginTop: '-0.5rem',
+                    marginRight: '-0.5rem'
+                  }}
+                  onClick={() => setIsDeleting(!_isDeleting)}
                 >
-                  <TrashcanIcon/>
+                  <TrashcanIcon />
                 </HighContrastFlatknapp>
                 <HorizontalSeparatorDiv data-size='0.5' />
-                <HighContrastFlatknapp kompakt style={{
-                  marginTop: '-0.5rem',
-                  marginRight: '-0.5rem'
-                }}
-                 onClick={onEditButtonClicked}
+                <HighContrastFlatknapp
+                  kompakt style={{
+                    marginTop: '-0.5rem',
+                    marginRight: '-0.5rem'
+                  }}
+                  onClick={onEditButtonClicked}
                 >
-                  <EditIcon/>
+                  <EditIcon />
                 </HighContrastFlatknapp>
                 <HorizontalSeparatorDiv />
               </>
@@ -338,7 +340,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
           {_isDeleting && (
             <PileDiv className='slideInFromRight'>
               <strong>
-                {t('label:areYouSure')}
+                {t('label:are-you-sure')}
               </strong>
               <VerticalSeparatorDiv />
               <FlexDiv>
@@ -360,13 +362,13 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                 >
                   {t('elements:button-cancel')}
                 </HighContrastFlatknapp>
-                <HorizontalSeparatorDiv/>
+                <HorizontalSeparatorDiv />
               </FlexDiv>
             </PileDiv>
           )}
         </FlexCenterDiv>
         {hasError && (
-          <div className='slideInFromBottom' style={{animationDelay: '0.2s'}}>
+          <div className='slideInFromBottom' style={{ animationDelay: '0.2s' }}>
             <AlertStripeAdvarsel>
               <FlexDivNoWrap>
                 {t('message:warning-conflict-aa-1')}

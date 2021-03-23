@@ -2,6 +2,7 @@ import { setReplySed } from 'actions/svarpased'
 import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
 import Select from 'components/Select/Select'
+import { FlexCenterDiv } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
 import { FSed, ReplySed } from 'declarations/sed'
 import _ from 'lodash'
@@ -11,13 +12,6 @@ import { HighContrastFlatknapp, HighContrastKnapp, HorizontalSeparatorDiv, Verti
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import styled from 'styled-components'
-
-const FlexDiv = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
 
 interface FormaalProps {
   feil: FeiloppsummeringFeil | undefined
@@ -33,18 +27,19 @@ const Formaal: React.FC<FormaalProps> = ({
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const formaalOptions = [
-    {label: t('elements:option-formaal-1'), value: 'mottak_av_søknad_om_familieytelser'},
-    {label: t('elements:option-formaal-2'), value: 'informasjon_om_endrede_forhold'},
-    {label: t('elements:option-formaal-3'), value: 'svar_på_kontroll_eller_årlig_kontroll'},
-    {label: t('elements:option-formaal-4'), value: 'svar_på_anmodning_om_informasjon'},
-    {label: t('elements:option-formaal-5'), value: 'vedtak'},
-    {label: t('elements:option-formaal-6'), value: 'motregning'},
-    {label: t('elements:option-formaal-7'), value: 'prosedyre_ved_uenighet'},
-    {label: t('elements:option-formaal-8'), value: 'refusjon_i_henhold_til_artikkel_58_i_forordningen'}
+    { label: t('elements:option-formaal-1'), value: 'mottak_av_søknad_om_familieytelser' },
+    { label: t('elements:option-formaal-2'), value: 'informasjon_om_endrede_forhold' },
+    { label: t('elements:option-formaal-3'), value: 'svar_på_kontroll_eller_årlig_kontroll' },
+    { label: t('elements:option-formaal-4'), value: 'svar_på_anmodning_om_informasjon' },
+    { label: t('elements:option-formaal-5'), value: 'vedtak' },
+    { label: t('elements:option-formaal-6'), value: 'motregning' },
+    { label: t('elements:option-formaal-7'), value: 'prosedyre_ved_uenighet' },
+    { label: t('elements:option-formaal-8'), value: 'refusjon_i_henhold_til_artikkel_58_i_forordningen' }
   ]
   const [_formaals, setFormaals] = useState<Array<string>>((replySed as FSed)?.formaal || [])
   const [_addFormaal, setAddFormaal] = useState<boolean>(false)
   const [_newFormaal, setNewFormaal] = useState<Option | undefined>(undefined)
+  const [_newFormaalIndex, setNewFormaalIndex] = useState<number | undefined>(undefined)
   const [_confirmDeleteFormaal, setConfirmDeleteFormaal] = useState<Array<string>>([])
   const [_formaalValues, setFormaalValues] = useState<Array<Option>>(
     _.filter(formaalOptions, p => _formaals.indexOf(p.value) < 0)
@@ -60,33 +55,35 @@ const Formaal: React.FC<FormaalProps> = ({
       formaal: newFormaals
     }))
   }
-  const onRemoveFormaal = (f: any) => {
-    const newFormaals = _.filter(_formaals, _f => _f !== f)
+  const onRemoveFormaal = (formaal: string) => {
+    removeCandidateForDeletion(formaal)
+    const newFormaals = _.filter(_formaals, _f => _f !== formaal)
     saveFormaalChange(newFormaals)
   }
 
   const onAddFormaal = () => {
     if (_newFormaal) {
       const newFormaals = _formaals.concat(_newFormaal.value)
+      setNewFormaalIndex(newFormaals.length - 1)
       saveFormaalChange(newFormaals)
       setNewFormaal(undefined)
     }
   }
 
-  const addCandidateForDeletion = (p: string) => {
-     setConfirmDeleteFormaal(_confirmDeleteFormaal.concat(p))
+  const addCandidateForDeletion = (formaal: string) => {
+    setConfirmDeleteFormaal(_confirmDeleteFormaal.concat(formaal))
   }
 
-  const removeCandidateForDeletion = (p: string) => {
-    setConfirmDeleteFormaal(_.filter(_confirmDeleteFormaal, _p => _p !== p))
+  const removeCandidateForDeletion = (formaal: string) => {
+    setConfirmDeleteFormaal(_.filter(_confirmDeleteFormaal, _f => _f !== formaal))
   }
 
-  const onFormaalChanged = (o: Option) => {
-    setNewFormaal(o)
+  const onFormaalChanged = (option: Option) => {
+    setNewFormaal(option)
   }
 
   if (!_hasFormaal) {
-    return <div/>
+    return <div />
   }
 
   return (
@@ -95,55 +92,58 @@ const Formaal: React.FC<FormaalProps> = ({
         {t('ui:title-chooseFormaal')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      {_formaals && _formaals.map((p: string) => {
-        const candidateForDeletion = _confirmDeleteFormaal.indexOf(p) >= 0
+      {_formaals && _formaals.map((formaal: string, i: number) => {
+        const candidateForDeletion = _confirmDeleteFormaal.indexOf(formaal) >= 0
         return (
-          <FlexDiv className='slideInFromLeft' key={p}>
+          <FlexCenterDiv
+            className='slideInFromLeft'
+            style={{ animationDelay: i === _newFormaalIndex ? '0s' : (i * 0.1) + 's' }}
+            key={formaal}
+          >
             <Normaltekst>
-              {_.find(formaalOptions, _p => _p.value === p)?.label}
+              {_.find(formaalOptions, _f => _f.value === formaal)?.label}
             </Normaltekst>
             {candidateForDeletion ? (
-              <FlexDiv>
+              <FlexCenterDiv className='slideInFromRight'>
                 <Normaltekst>
-                  {t('label:areYouSure')}
+                  {t('label:are-you-sure')}
                 </Normaltekst>
-                <HorizontalSeparatorDiv data-size='0.5'/>
+                <HorizontalSeparatorDiv data-size='0.5' />
                 <HighContrastFlatknapp
                   mini
                   kompakt
-                  onClick={() => onRemoveFormaal(p)}
+                  onClick={() => onRemoveFormaal(formaal)}
                 >
                   {t('label:yes')}
                 </HighContrastFlatknapp>
-                <HorizontalSeparatorDiv data-size='0.5'/>
+                <HorizontalSeparatorDiv data-size='0.5' />
                 <HighContrastFlatknapp
                   mini
                   kompakt
-                  onClick={() => removeCandidateForDeletion(p)}
+                  onClick={() => removeCandidateForDeletion(formaal)}
                 >
                   {t('label:no')}
                 </HighContrastFlatknapp>
-              </FlexDiv>
-              ) :
-              (
+              </FlexCenterDiv>
+            )
+              : (
                 <HighContrastFlatknapp
                   mini
                   kompakt
-                  onClick={() => addCandidateForDeletion(p)}
+                  onClick={() => addCandidateForDeletion(formaal)}
                 >
-                  <Trashcan/>
-                  <HorizontalSeparatorDiv data-size='0.5'/>
-                  {t('label:remove')}
+                  <Trashcan />
+                  <HorizontalSeparatorDiv data-size='0.5' />
+                  {t('elements:button-remove')}
                 </HighContrastFlatknapp>
-              )
-            }
-          </FlexDiv>
+                )}
+          </FlexCenterDiv>
         )
       })}
       <VerticalSeparatorDiv />
       {!_addFormaal
         ? (
-          <>
+          <div className='slideInFromLeft'>
             <HighContrastFlatknapp
               mini
               kompakt
@@ -151,12 +151,12 @@ const Formaal: React.FC<FormaalProps> = ({
             >
               <Add />
               <HorizontalSeparatorDiv data-size='0.5' />
-              {t('label:add-new-formaal')}
+              {t('elements:button-add-new-x', { x: t('label:formaal').toLowerCase() })}
             </HighContrastFlatknapp>
-          </>
+          </div>
           )
         : (
-          <FlexDiv>
+          <FlexCenterDiv>
             <div style={{ flex: 2 }}>
               <Select
                 data-test-id='c-formaal-select'
@@ -168,7 +168,7 @@ const Formaal: React.FC<FormaalProps> = ({
               />
             </div>
             <HorizontalSeparatorDiv data-size='0.5' />
-            <FlexDiv>
+            <FlexCenterDiv>
               <HighContrastKnapp
                 mini
                 kompakt
@@ -176,7 +176,7 @@ const Formaal: React.FC<FormaalProps> = ({
               >
                 <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('label:add')}
+                {t('elements:button-add')}
               </HighContrastKnapp>
               <HorizontalSeparatorDiv data-size='0.5' />
               <HighContrastFlatknapp
@@ -184,10 +184,10 @@ const Formaal: React.FC<FormaalProps> = ({
                 kompakt
                 onClick={() => setAddFormaal(!_addFormaal)}
               >
-                {t('label:cancel')}
+                {t('elements:button-cancel')}
               </HighContrastFlatknapp>
-            </FlexDiv>
-          </FlexDiv>
+            </FlexCenterDiv>
+          </FlexCenterDiv>
           )}
       {feil && (
         <div role='alert' aria-live='assertive' className='feilmelding skjemaelement__feilmelding'>
