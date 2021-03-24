@@ -178,31 +178,31 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
   const relationOptions = []
 
   relationOptions.push({
-    label: t('ui:relationship-bruker') + (_replySed.bruker ? '(' + t('label:not-available') + ')' : ''),
+    label: t('app:relationship-bruker') + (_replySed.bruker ? '(' + t('label:not-available') + ')' : ''),
     value: 'bruker',
     isDisabled: !!_replySed.bruker
   })
 
   relationOptions.push({
-    label: t('ui:relationship-ektefelle') + ((_replySed as F002Sed).ektefelle ? '(' + t('label:not-available') + ')' : ''),
+    label: t('app:relationship-ektefelle') + ((_replySed as F002Sed).ektefelle ? '(' + t('label:not-available') + ')' : ''),
     value: 'ektefelle',
     isDisabled: !!(_replySed as F002Sed).ektefelle
   })
 
   relationOptions.push({
-    label: t('ui:relationship-annenPerson') + ((_replySed as F002Sed).annenPerson ? '(' + t('label:not-available') + ')' : ''),
+    label: t('app:relationship-annenPerson') + ((_replySed as F002Sed).annenPerson ? '(' + t('label:not-available') + ')' : ''),
     value: 'annenPerson',
     isDisabled: !!(_replySed as F002Sed).annenPerson
   })
 
   relationOptions.push({
-    label: t('ui:relationship-barn'),
+    label: t('app:relationship-barn'),
     value: 'barn'
   })
 
   const getPersonLabel = (personId: string) => {
     const id = personId.startsWith('barn[') ? 'barn' : personId
-    return t('ui:relationship-' + id)
+    return t('app:relationship-' + id)
   }
 
   const renderPerson = (personId: string, i: number) => {
@@ -248,7 +248,7 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
           <CloseButton
             onClick={onCloseButtonClicked}
           >
-            {t('ui:close')}
+            {t('app:close')}
           </CloseButton>
         )}
         <Title>
@@ -273,7 +273,7 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
                 onChange={onNewPersonFnrChange}
                 value={_newPersonFnr}
                 label={t('label:fnr-dnr')}
-                placeholder={t('elements:placeholder-input-default')}
+                placeholder={t('el:placeholder-input-default')}
               />
               <HorizontalSeparatorDiv />
             </Column>
@@ -284,7 +284,7 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
                 onChange={onNewPersonNameChange}
                 value={_newPersonName}
                 label={t('label:name')}
-                placeholder={t('elements:placeholder-input-default')}
+                placeholder={t('el:placeholder-input-default')}
               />
               <HorizontalSeparatorDiv />
             </Column>
@@ -296,7 +296,7 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
                 label={t('label:family-relationship')}
                 onChange={onNewPersonRelationChange}
                 options={relationOptions}
-                placeholder={t('elements:placeholder-select-default')}
+                placeholder={t('el:placeholder-select-default')}
                 selectedValue={_newPersonRelation}
                 menuPlacement='auto'
               />

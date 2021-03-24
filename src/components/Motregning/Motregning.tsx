@@ -126,10 +126,10 @@ const Motregning: React.FC<MotregningProps> = ({
   }
 
   const vedtakTypeOptions = [
-    { label: t('elements:option-vedtaktype-1'), value: '1' },
-    { label: t('elements:option-vedtaktype-2'), value: '2' },
-    { label: t('elements:option-vedtaktype-3'), value: '3' },
-    { label: t('elements:option-vedtaktype-4'), value: '4' }
+    { label: t('el:option-vedtaktype-1'), value: '1' },
+    { label: t('el:option-vedtaktype-2'), value: '2' },
+    { label: t('el:option-vedtaktype-3'), value: '3' },
+    { label: t('el:option-vedtaktype-4'), value: '4' }
   ]
 
   const renderPeriodeAndVedtak = (p: PeriodeAndVedtak | null, i: number) => (
@@ -145,7 +145,7 @@ const Motregning: React.FC<MotregningProps> = ({
             onChange={(e: any) => setMoreStartDato(e.target.value, i)}
             value={i < 0 ? _currentStartDato : p?.periode.startdato}
             label={t('label:start-date')}
-            placeholder={t('elements:placeholder-date-default')}
+            placeholder={t('el:placeholder-date-default')}
           />
         </Column>
         <Column>
@@ -158,7 +158,7 @@ const Motregning: React.FC<MotregningProps> = ({
             onChange={(e: any) => setMoreSluttDato(e.target.value, i)}
             value={i < 0 ? _currentSluttDato : p?.periode.sluttdato}
             label={t('label:end-date')}
-            placeholder={t('elements:placeholder-date-default')}
+            placeholder={t('el:placeholder-date-default')}
           />
         </Column>
         <Column>
@@ -173,7 +173,7 @@ const Motregning: React.FC<MotregningProps> = ({
             label={t('label:vedtak-type')}
             onChange={(e: any) => setMoreVedtakType(e.value, i)}
             options={vedtakTypeOptions}
-            placeholder={t('elements:placeholder-select-default')}
+            placeholder={t('el:placeholder-select-default')}
             defaultValue={_.find(vedtakTypeOptions, v => v.value === (i < 0 ? _currentVedtakType : p?.vedtak))}
             selectedValue={i < 0 ? _currentVedtakType : p?.vedtak}
           />
@@ -197,7 +197,7 @@ const Motregning: React.FC<MotregningProps> = ({
   return (
     <PanelDiv>
       <Undertittel>
-        {t('ui:title-motregning')}
+        {t('el:title-motregning')}
       </Undertittel>
       <VerticalSeparatorDiv />
       <HighContrastPanel>
@@ -248,7 +248,7 @@ const Motregning: React.FC<MotregningProps> = ({
               onChange={(e: any) => setStartDato(e.target.value)}
               value={_startDato}
               label={t('label:start-date')}
-              placeholder={t('elements:placeholder-date-default')}
+              placeholder={t('el:placeholder-date-default')}
             />
           </Column>
           <Column>
@@ -261,7 +261,7 @@ const Motregning: React.FC<MotregningProps> = ({
               onChange={(e: any) => setSluttDato(e.target.value)}
               value={_sluttDato}
               label={t('label:end-date')}
-              placeholder={t('elements:placeholder-date-default')}
+              placeholder={t('el:placeholder-date-default')}
             />
           </Column>
           <Column />
@@ -279,7 +279,7 @@ const Motregning: React.FC<MotregningProps> = ({
               label={t('label:vedtak-type')}
               onChange={(e: any) => setVedtakType(e.value)}
               options={vedtakTypeOptions}
-              placeholder={t('elements:placeholder-select-default')}
+              placeholder={t('el:placeholder-select-default')}
               selectedValue={_vedtakType}
             />
           </Column>

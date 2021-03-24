@@ -26,6 +26,7 @@ import { formatterDatoTilNorsk } from 'utils/dato'
 
 const ArbeidsforholdPanel = styled(HighContrastPanel)`
   padding: 0rem !important;
+  max-width: 800px;
 `
 const EditIcon = styled(Edit)`
   cursor: pointer;
@@ -153,8 +154,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
   }
 
   const onSaveButtonClicked = () => {
-    const valid = performValidation()
-    if (valid) {
+    if (performValidation()) {
       onArbeidsforholdEdit({
         navn: _navn,
         orgnr: _orgnr,
@@ -213,7 +213,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                       id={'c-' + namespace + '-navn-input'}
                       label={t('label:name')}
                       onChange={onNameChanged}
-                      placeholder={t('elements:placeholder-input-default')}
+                      placeholder={t('el:placeholder-input-default')}
                       value={_navn}
                     />
                   </Column>
@@ -225,7 +225,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                       onChange={onOrgnrChanged}
                       value={_orgnr}
                       label={t('label:orgnr')}
-                      placeholder={t('elements:placeholder-input-default')}
+                      placeholder={t('el:placeholder-input-default')}
                     />
                   </Column>
                 </Row>
@@ -252,7 +252,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                           id={'c-' + namespace + '-startdato-input'}
                           label={t('label:end-date')}
                           onChange={onStartDatoChanged}
-                          placeholder={t('elements:placeholder-date-default')}
+                          placeholder={t('el:placeholder-date-default')}
                           value={_startDato}
                         />
                       </Column>
@@ -263,7 +263,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                           id={'c-' + namespace + '-sluttdato-input'}
                           label={t('label:end-date')}
                           onChange={onSluttDatoChanged}
-                          placeholder={t('elements:placeholder-date-default')}
+                          placeholder={t('el:placeholder-date-default')}
                           value={_sluttDato}
                         />
                       </Column>
@@ -324,7 +324,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                 >
                   <Add />
                   <HorizontalSeparatorDiv data-size='0.5' />
-                  {t('elements:button-add')}
+                  {t('el:button-add')}
                 </HighContrastKnapp>
                 <HorizontalSeparatorDiv data-size='0.5' />
                 <HighContrastFlatknapp
@@ -332,7 +332,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                   kompakt
                   onClick={onCancelButtonClicked}
                 >
-                  {t('elements:button-cancel')}
+                  {t('el:button-cancel')}
                 </HighContrastFlatknapp>
               </div>
             )}
@@ -352,7 +352,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                 >
                   <Trashcan />
                   <HorizontalSeparatorDiv data-size='0.5' />
-                  {t('elements:button-remove')}
+                  {t('el:button-remove')}
                 </HighContrastKnapp>
                 <HorizontalSeparatorDiv data-size='0.5' />
                 <HighContrastFlatknapp
@@ -360,7 +360,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                   kompakt
                   onClick={() => setIsDeleting(!_isDeleting)}
                 >
-                  {t('elements:button-cancel')}
+                  {t('el:button-cancel')}
                 </HighContrastFlatknapp>
                 <HorizontalSeparatorDiv />
               </FlexDiv>

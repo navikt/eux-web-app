@@ -97,7 +97,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
   return (
     <RelasjonDiv>
       <Undertittel>
-        {t('ui:title-amount-for-whole-familie')}
+        {t('el:title-amount-for-whole-familie')}
       </Undertittel>
       <VerticalSeparatorDiv />
       <Row>
@@ -112,11 +112,11 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             label={t('label:designation-of-performance')}
             onChange={(e: any) => setDesignationPerformance(e.value)}
             options={[{
-              label: t('elements:option-declarationOfPerformance-barnetrygd'), value: 'Barnetrygd'
+              label: t('el:option-declarationOfPerformance-barnetrygd'), value: 'Barnetrygd'
             }, {
-              label: t('elements:option-declarationOfPerformance-kontantstøtte'), value: 'Kontantstøtte'
+              label: t('el:option-declarationOfPerformance-kontantstøtte'), value: 'Kontantstøtte'
             }]}
-            placeholder={t('elements:placeholder-select-default')}
+            placeholder={t('el:placeholder-select-default')}
             selectedValue={_currentDesignationPerformance}
           />
         </Column>
@@ -130,7 +130,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             onChange={(e: any) => setGrantNumber(e.target.value)}
             value={_currentGrantNumber}
             label={t('label:grant-number')}
-            placeholder={t('elements:placeholder-input-default')}
+            placeholder={t('el:placeholder-input-default')}
           />
         </Column>
       </Row>
@@ -154,7 +154,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
                 </Tooltip>
               </FlexDiv>
             )}
-            placeholder={t('elements:placeholder-input-default')}
+            placeholder={t('el:placeholder-input-default')}
           />
         </Column>
         <Column>
@@ -175,7 +175,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
       </Row>
       <VerticalSeparatorDiv />
       <Undertittel>
-        {t('ui:title-grant-date')}
+        {t('el:title-grant-date')}
       </Undertittel>
       <VerticalSeparatorDiv />
       <Row>
@@ -189,7 +189,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             onChange={(e: any) => setGrantStartDate(e.target.value)}
             value={_currentGrantStartDate}
             label={t('label:start-date')}
-            placeholder={t('elements:placeholder-date-default')}
+            placeholder={t('el:placeholder-date-default')}
           />
         </Column>
         <Column>
@@ -202,7 +202,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             onChange={(e: any) => setGrantEndDate(e.target.value)}
             value={_currentGrantEndDate}
             label={t('label:end-date')}
-            placeholder={t('elements:placeholder-date-default')}
+            placeholder={t('el:placeholder-date-default')}
           />
         </Column>
       </Row>
@@ -218,7 +218,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             onChange={(e: any) => setReceiverName(e.target.value)}
             value={_currentReceiverName}
             label={t('label:receiver-name')}
-            placeholder={t('elements:placeholder-input-default')}
+            placeholder={t('el:placeholder-input-default')}
           />
         </Column>
       </Row>

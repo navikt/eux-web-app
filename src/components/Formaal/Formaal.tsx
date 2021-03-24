@@ -27,14 +27,14 @@ const Formaal: React.FC<FormaalProps> = ({
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const formaalOptions = [
-    { label: t('elements:option-formaal-1'), value: 'mottak_av_søknad_om_familieytelser' },
-    { label: t('elements:option-formaal-2'), value: 'informasjon_om_endrede_forhold' },
-    { label: t('elements:option-formaal-3'), value: 'svar_på_kontroll_eller_årlig_kontroll' },
-    { label: t('elements:option-formaal-4'), value: 'svar_på_anmodning_om_informasjon' },
-    { label: t('elements:option-formaal-5'), value: 'vedtak' },
-    { label: t('elements:option-formaal-6'), value: 'motregning' },
-    { label: t('elements:option-formaal-7'), value: 'prosedyre_ved_uenighet' },
-    { label: t('elements:option-formaal-8'), value: 'refusjon_i_henhold_til_artikkel_58_i_forordningen' }
+    { label: t('el:option-formaal-1'), value: 'mottak_av_søknad_om_familieytelser' },
+    { label: t('el:option-formaal-2'), value: 'informasjon_om_endrede_forhold' },
+    { label: t('el:option-formaal-3'), value: 'svar_på_kontroll_eller_årlig_kontroll' },
+    { label: t('el:option-formaal-4'), value: 'svar_på_anmodning_om_informasjon' },
+    { label: t('el:option-formaal-5'), value: 'vedtak' },
+    { label: t('el:option-formaal-6'), value: 'motregning' },
+    { label: t('el:option-formaal-7'), value: 'prosedyre_ved_uenighet' },
+    { label: t('el:option-formaal-8'), value: 'refusjon_i_henhold_til_artikkel_58_i_forordningen' }
   ]
   const [_formaals, setFormaals] = useState<Array<string>>((replySed as FSed)?.formaal || [])
   const [_addFormaal, setAddFormaal] = useState<boolean>(false)
@@ -89,7 +89,7 @@ const Formaal: React.FC<FormaalProps> = ({
   return (
     <>
       <Undertittel>
-        {t('ui:title-chooseFormaal')}
+        {t('el:title-chooseFormaal')}
       </Undertittel>
       <VerticalSeparatorDiv />
       {_formaals && _formaals.map((formaal: string, i: number) => {
@@ -134,7 +134,7 @@ const Formaal: React.FC<FormaalProps> = ({
                 >
                   <Trashcan />
                   <HorizontalSeparatorDiv data-size='0.5' />
-                  {t('elements:button-remove')}
+                  {t('el:button-remove')}
                 </HighContrastFlatknapp>
                 )}
           </FlexCenterDiv>
@@ -151,7 +151,7 @@ const Formaal: React.FC<FormaalProps> = ({
             >
               <Add />
               <HorizontalSeparatorDiv data-size='0.5' />
-              {t('elements:button-add-new-x', { x: t('label:formaal').toLowerCase() })}
+              {t('el:button-add-new-x', { x: t('label:formaal').toLowerCase() })}
             </HighContrastFlatknapp>
           </div>
           )
@@ -176,7 +176,7 @@ const Formaal: React.FC<FormaalProps> = ({
               >
                 <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('elements:button-add')}
+                {t('el:button-add')}
               </HighContrastKnapp>
               <HorizontalSeparatorDiv data-size='0.5' />
               <HighContrastFlatknapp
@@ -184,7 +184,7 @@ const Formaal: React.FC<FormaalProps> = ({
                 kompakt
                 onClick={() => setAddFormaal(!_addFormaal)}
               >
-                {t('elements:button-cancel')}
+                {t('el:button-cancel')}
               </HighContrastFlatknapp>
             </FlexCenterDiv>
           </FlexCenterDiv>

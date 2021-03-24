@@ -97,9 +97,9 @@ const Op3Other = ({
   }
 
   const selectPensjonTypeOptions: Array<{label: string, value: PensjonType}> = [{
-    label: t('elements:option-trygdeordning-alderspensjon'), value: 'alderspensjon'
+    label: t('el:option-trygdeordning-alderspensjon'), value: 'alderspensjon'
   }, {
-    label: t('elements:option-trygdeordning-uførhet'), value: 'uførhet'
+    label: t('el:option-trygdeordning-uførhet'), value: 'uførhet'
   }]
 
   const getPensjonTypeOption = (value: string | undefined | null) => _.find(selectPensjonTypeOptions, s => s.value === value)
@@ -116,7 +116,7 @@ const Op3Other = ({
           onChange={(e: any) => setStartDato(e.target.value, i)}
           value={i < 0 ? _currentStartDato : p?.periode.startdato}
           label={t('label:start-date')}
-          placeholder={t('elements:placeholder-date-default')}
+          placeholder={t('el:placeholder-date-default')}
         />
       </Column>
       <Column>
@@ -129,7 +129,7 @@ const Op3Other = ({
           onChange={(e: any) => setSluttDato(e.target.value, i)}
           value={i < 0 ? _currentSluttDato : p?.periode.sluttdato}
           label={t('label:end-date')}
-          placeholder={t('elements:placeholder-date-default')}
+          placeholder={t('el:placeholder-date-default')}
         />
       </Column>
       <Column>
@@ -142,7 +142,7 @@ const Op3Other = ({
           id={'c-familymanager-' + personID + '-personensstatus-selvstendig-' + i + '-pensjontype-select'}
           onChange={(e: any) => setPensjonType(e.value, i)}
           options={selectPensjonTypeOptions}
-          placeholder={t('elements:placeholder-select-default')}
+          placeholder={t('el:placeholder-select-default')}
           selectedValue={getPensjonTypeOption(i < 0 ? _currentPensjonType : (p as PensjonPeriode)?.pensjonstype)}
           defaultValue={getPensjonTypeOption(i < 0 ? _currentPensjonType : (p as PensjonPeriode)?.pensjonstype)}
         />

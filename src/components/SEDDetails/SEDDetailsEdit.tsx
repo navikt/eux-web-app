@@ -101,7 +101,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               id='c-seddetails-anmodningsperiode-startdato-input'
               onChange={(e: any) => setAnmodningsperiodeStartDato(e.target.value)}
               value={_anmodningsperiode.startdato}
-              placeholder={t('elements:placeholder-date-default')}
+              placeholder={t('el:placeholder-date-default')}
             />
             <HorizontalSeparatorDiv data-size='0.35' />
             <HighContrastInput
@@ -112,7 +112,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               id='c-seddetails-anmodningsperiode-sluttdato-input'
               onChange={(e: any) => setAnmodningsperiodeSluttDato(e.target.value)}
               value={_anmodningsperiode.sluttdato}
-              placeholder={t('elements:placeholder-date-default')}
+              placeholder={t('el:placeholder-date-default')}
             />
           </FlexDiv>
           <VerticalSeparatorDiv data-size='0.5' />
@@ -129,7 +129,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               id={'c-seddetails-anmodningsperioder[' + i + ']-startdato-input'}
               onChange={(e: any) => setAnmodningsperioderStartDato(e.target.value, i)}
               value={_anmodningsperioder[i].startdato}
-              placeholder={t('elements:placeholder-date-default')}
+              placeholder={t('el:placeholder-date-default')}
             />
             <HorizontalSeparatorDiv data-size='0.35' />
             <HighContrastInput
@@ -140,7 +140,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               id={'c-seddetails-anmodningsperioder[' + i + ']-sluttdato-input'}
               onChange={(e: any) => setAnmodningsperioderSluttDato(e.target.value, i)}
               value={_anmodningsperioder[i].sluttdato}
-              placeholder={t('elements:placeholder-date-default')}
+              placeholder={t('el:placeholder-date-default')}
             />
           </FlexDiv>
           <VerticalSeparatorDiv data-size='0.5' />
@@ -176,7 +176,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       </FlexDiv>
       <VerticalSeparatorDiv />
       <UndertekstBold>
-        {t('ui:relationship-ektefelle')}
+        {t('app:relationship-ektefelle')}
       </UndertekstBold>
       <VerticalSeparatorDiv data-size='0.5' />
       <FlexDiv className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
@@ -213,7 +213,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           onChange={(e: any) => setSakseier(e.target.value)}
           value={_sakseier}
           label={t('label:caseOwner')}
-          placeholder={t('elements:placeholder-input-default')}
+          placeholder={t('el:placeholder-input-default')}
         />
       </div>
       <VerticalSeparatorDiv data-size='0.5' />
@@ -227,7 +227,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           onChange={(e: any) => setAvsenderinstitusjon(e.target.value)}
           value={_avsenderinstitusjon}
           label={t('label:sender')}
-          placeholder={t('elements:placeholder-input-default')}
+          placeholder={t('el:placeholder-input-default')}
         />
       </div>
       <VerticalSeparatorDiv />
@@ -243,13 +243,13 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           <HighContrastRadio
             name='c-seddetails-typeKrav-radiogroup'
             checked={_typeKrav === 'nytt_krav'}
-            label={t('ui:kravType-nytt_krav')}
+            label={t('app:kravType-nytt_krav')}
             onClick={() => setTypeKrav('nytt_krav')}
           />
           <HighContrastRadio
             checked={_typeKrav === 'endrete_omstendigheter'}
             name='c-seddetails-typeKrav-radiogroup'
-            label={t('ui:kravType-endrete_omstendigheter')}
+            label={t('app:kravType-endrete_omstendigheter')}
             onClick={() => setTypeKrav('endrete_omstendigheter')}
           />
         </HighContrastRadioGroup>
@@ -267,13 +267,13 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           <HighContrastRadio
             name='c-seddetails-informasjon-radiogroup'
             checked={_informasjon === 'vi_bekrefter_leverte_opplysninger'}
-            label={t('ui:info-confirm-information')}
+            label={t('app:info-confirm-information')}
             onClick={() => setInformasjon('vi_bekrefter_leverte_opplysninger')}
           />
           <HighContrastRadio
             checked={_informasjon === 'gi_oss_punktvise_opplysninger'}
             name='c-seddetails-informasjon-radiogroup'
-            label={t('ui:info-point-information')}
+            label={t('app:info-point-information')}
             onClick={() => setInformasjon('gi_oss_punktvise_opplysninger')}
           />
           {_informasjon === 'gi_oss_punktvise_opplysninger' && (
@@ -287,7 +287,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
                   'skjemaelement__input--harFeil':
                   validation['seddetails-opplysninger']
                 })}
-                placeholder={t('elements:placeholder-input-default')}
+                placeholder={t('el:placeholder-input-default')}
                 label={t('label:opplysninger')}
                 value={_opplysninger}
                 feil={validation['seddetails-opplysninger']

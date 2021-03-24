@@ -17,7 +17,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-export interface Op1AnsattProps {
+export interface AnsattProps {
   arbeidsforholdList: Array<Arbeidsforholdet>
   gettingArbeidsforholdList: boolean
   getArbeidsforholdList: (fnr: string | undefined) => void,
@@ -25,13 +25,13 @@ export interface Op1AnsattProps {
   personID: string
 }
 
-const Op1Ansatt: React.FC<Op1AnsattProps> = ({
+const Ansatt: React.FC<AnsattProps> = ({
   arbeidsforholdList,
   getArbeidsforholdList,
   gettingArbeidsforholdList,
   personID,
   replySed,
-}: Op1AnsattProps) => {
+}: AnsattProps) => {
   const { t } = useTranslation()
 
   const [_addedArbeidsforholdList, setAddedArbeidsforholdList] = useState<Array<Arbeidsforholdet>>([])
@@ -47,7 +47,7 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
   const [_validation, setValidation] = useState<Validation>({})
 
   const fnr: string | undefined = _.find(_.get(replySed, `${personID}.personInfo.pin`), p => p.land === 'NO')?.identifikator
-  const namespace = 'c-familymanager-' + personID + '-personensstatus-arbeidsperiode'
+  const namespace = 'c-familymanager-' + personID + '-personensstatus-ansatt'
 
   const resetValidation = (key: string): void => {
     setValidation({
@@ -155,8 +155,7 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
   }
 
   const onAddClicked = () => {
-    let valid = performValidation()
-    if (valid) {
+    if (performValidation()) {
       let newAddedArbeidsforholdList = _.cloneDeep(_addedArbeidsforholdList)
       const periode = {
         fom: _newStartDato
@@ -208,7 +207,7 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
   return (
     <>
       <Undertittel>
-        {t('ui:title-aaRegistered')}
+        {t('el:title-registered-arbeidsperiode')}
       </Undertittel>
       <VerticalSeparatorDiv />
       <Arbeidsforhold
@@ -227,7 +226,7 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
       {!_.isEmpty(_addedArbeidsforholdList) && (
         <>
           <Undertittel>
-            {t('ui:title-added-arbeidsperiode')}
+            {t('el:title-added-arbeidsperiode')}
           </Undertittel>
           <VerticalSeparatorDiv />
           <Arbeidsforhold
@@ -252,7 +251,7 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
           >
             <Add />
             <HorizontalSeparatorDiv data-size='0.5' />
-            {t('elements:button-add-new-x', {
+            {t('el:button-add-new-x', {
               x: t('label:arbeidsperiode').toLowerCase()
             })}
           </HighContrastFlatknapp>
@@ -260,7 +259,7 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
         : (
           <>
             <Undertittel>
-              {t('ui:title-add-arbeidsperiode')}
+              {t('el:title-add-arbeidsperiode')}
             </Undertittel>
             <VerticalSeparatorDiv />
             <Row>
@@ -271,7 +270,7 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
                   id={namespace + '-startdato-input'}
                   label={t('label:start-date')}
                   onChange={onStartDatoChanged}
-                  placeholder={t('elements:placeholder-date-default')}
+                  placeholder={t('el:placeholder-date-default')}
                   value={_newStartDato}
                 />
               </Column>
@@ -282,7 +281,7 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
                   id={'c-' + namespace + '-sluttdato-input'}
                   label={t('label:end-date')}
                   onChange={onSluttDatoChanged}
-                  placeholder={t('elements:placeholder-date-default')}
+                  placeholder={t('el:placeholder-date-default')}
                   value={_newSluttDato}
                 />
               </Column>
@@ -297,7 +296,7 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
                   id={'c-' + namespace + '-orgnr-input'}
                   label={t('label:orgnr')}
                   onChange={onOrgnrChanged}
-                  placeholder={t('elements:placeholder-input-default')}
+                  placeholder={t('el:placeholder-input-default')}
                   value={_newOrgnr}
                 />
               </Column>
@@ -308,7 +307,7 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
                   id={'c-' + namespace + '-navn-input'}
                   label={t('label:name')}
                   onChange={onNameChanged}
-                  placeholder={t('elements:placeholder-input-default')}
+                  placeholder={t('el:placeholder-input-default')}
                   value={_newNavn}
                 />
               </Column>
@@ -324,7 +323,7 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
                 >
                   <Add />
                   <HorizontalSeparatorDiv data-size='0.5' />
-                  {t('elements:button-add')}
+                  {t('el:button-add')}
                 </HighContrastKnapp>
                 <HorizontalSeparatorDiv data-size='0.5' />
                 <HighContrastFlatknapp
@@ -332,7 +331,7 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
                   kompakt
                   onClick={onCancelClicked}
                 >
-                  {t('elements:button-cancel')}
+                  {t('el:button-cancel')}
                 </HighContrastFlatknapp>
               </Column>
             </Row>
@@ -342,4 +341,4 @@ const Op1Ansatt: React.FC<Op1AnsattProps> = ({
   )
 }
 
-export default Op1Ansatt
+export default Ansatt

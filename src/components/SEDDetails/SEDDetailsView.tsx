@@ -84,7 +84,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
             items={replySed.bruker.personInfo.statsborgerskap.map((s: any) => ({ country: s.land }))}
           />
         </Dd>
-        <Dt>{t('ui:relationship-ektefelle')}</Dt>
+        <Dt>{t('app:relationship-ektefelle')}</Dt>
         <Dd>
           <span>
             {(replySed as F002Sed).ektefelle ? (replySed as F002Sed).ektefelle.personInfo.fornavn + ' ' +
@@ -119,7 +119,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
           {t('label:typeKrav')}
         </Dt>
         <Dd>
-          {t('ui:kravType-' + (replySed as F002Sed).krav.kravType)}
+          {t('app:kravType-' + (replySed as F002Sed).krav.kravType)}
         </Dd>
       </Dl>
       <VerticalSeparatorDiv />
@@ -127,7 +127,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
         <FilledCheckCircle color='green' width={18} height={18} />
         <HorizontalSeparatorDiv data-size='0.5' />
         <Normaltekst>
-          {t('ui:info-confirm-information')}
+          {t('app:info-confirm-information')}
         </Normaltekst>
       </FlexDiv>
       <VerticalSeparatorDiv />
@@ -135,7 +135,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
         <Warning width={18} height={18} />
         <HorizontalSeparatorDiv data-size='0.5' />
         <Normaltekst>
-          {t('ui:info-point-information')}
+          {t('app:info-point-information')}
         </Normaltekst>
       </FlexDiv>
       <FlexDiv>

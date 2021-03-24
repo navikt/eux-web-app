@@ -118,7 +118,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
             id={'c-familymanager-' + personID + '-nasjonaliteter-' + i + '-fomdato'}
             onChange={(e: any) => onFomdatoChanged(e.target.value, i)}
             value={i < 0 ? _currentFomdato : s!.fomdato}
-            placeholder={t('elements:placeholder-date-default')}
+            placeholder={t('el:placeholder-date-default')}
           />
         </Column>
         <HorizontalSeparatorDiv />

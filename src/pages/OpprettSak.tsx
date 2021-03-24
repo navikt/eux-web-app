@@ -396,7 +396,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
         <Margin />
         <Content>
           <Systemtittel>
-            {t('ui:title-newcase')}
+            {t('el:title-newcase')}
           </Systemtittel>
           <VerticalSeparatorDiv />
           <PersonSearch

@@ -85,7 +85,7 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
             onChange={(e: any) => setStartDato(e.target.value)}
             value={_currentStartDato}
             label={t('label:start-date')}
-            placeholder={t('elements:placeholder-date-default')}
+            placeholder={t('el:placeholder-date-default')}
           />
         </Column>
         <Column>
@@ -98,7 +98,7 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
             onChange={(e: any) => setSluttDato(e.target.value)}
             value={_currentSluttDato}
             label={t('label:end-date')}
-            placeholder={t('elements:placeholder-date-default')}
+            placeholder={t('el:placeholder-date-default')}
           />
         </Column>
       </Row>
@@ -114,7 +114,7 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
             onChange={(e: any) => setAvsenderDato(e.target.value)}
             value={_currentSenderDato}
             label={t('label:moving-date-sender')}
-            placeholder={t('elements:placeholder-date-default')}
+            placeholder={t('el:placeholder-date-default')}
           />
         </Column>
       </Row>
@@ -129,7 +129,7 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
             onChange={(e: any) => setMottakerDato(e.target.value)}
             value={_currentReceiverDato}
             label={t('label:moving-date-receiver')}
-            placeholder={t('elements:placeholder-date-default')}
+            placeholder={t('el:placeholder-date-default')}
           />
         </Column>
       </Row>
@@ -143,7 +143,7 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
                 'skjemaelement__input--harFeil':
                   validation['c-familymanager-' + personID + '-personensstatus-selvstendig-info-textarea']
               })}
-              placeholder={t('elements:placeholder-input-default')}
+              placeholder={t('el:placeholder-input-default')}
               label={t('label:elements-of-personal-situation')}
               onChange={(e: any) => setElementsOfPersonalSituation(e.target.value)}
               value={_currentElementsOfPersonalSituation}

@@ -139,7 +139,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
       <ButtonsDiv>
         {item.journalpostId && item.dokumentInfoId && (
           <HighContrastKnapp
-            data-tip={t('ui:preview')}
+            data-tip={t('app:preview')}
             kompakt
             mini
             disabled={previewing}
@@ -362,7 +362,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
         items={_items}
         context={context}
         labels={{
-          type: t('ui:attachments').toLowerCase()
+          type: t('app:attachments').toLowerCase()
         }}
         itemsPerPage={30}
         compact
@@ -374,16 +374,16 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
         columns={[
           {
             id: 'tema',
-            label: t('ui:tema'),
+            label: t('app:tema'),
             type: 'string',
             renderCell: (item: any, value: any) => <Element>{value}</Element>
           }, {
             id: 'title',
-            label: t('ui:title'),
+            label: t('app:title'),
             type: 'string'
           }, {
             id: 'date',
-            label: t('ui:date'),
+            label: t('app:date'),
             type: 'date',
             dateFormat: 'DD.MM.YYYY'
           }, {

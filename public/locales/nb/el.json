@@ -1,6 +1,7 @@
 {
   "button-add": "Legg til",
   "button-add-new-x": "Legg til ny {{x}}",
+  "button-add-attachments" : "Legg til vedlegg",
   "button-cancel": "Avbryt",
   "button-search" : "Søk",
   "button-search-for-x" : "Søk {{x}}",
@@ -68,5 +69,25 @@
   "placeholder-input-default": "Skriv inn...",
   "placeholder-select-default": "Velg...",
   "placeholder-birthDate": "DD-MM-ÅÅÅÅ",
-  "placeholder-texttosed": "Skriv inn tekst til SED"
+  "placeholder-texttosed": "Skriv inn tekst til SED",
+
+  "title-registered-arbeidsperiode" : "Registeret arbeidsperiode",
+  "title-add-arbeidsperiode": "Legg til arbeidsperiode",
+  "title-added-arbeidsperiode": "Tillagte arbeidsperioder",
+  "title-family-description": "Vennligst velg familierelasjoner SEDen angår",
+  "title-family-tps": "Person uten registrert relasjon i TPS",
+  "title-family-utland": "Person uten fødsels- eller d-nummer",
+  "title-family-utland-add-form": "Du kan også legge til familierelasjoner fra utlandet som ikke er oppført i TPS",
+
+  "title-periods-in-sender-country": "Trygdeperiode i avsenderlandet",
+
+  "title-amount-name-and-currency": "Beløp, navn og valuta for familieytelser for barn",
+  "title-amount-for-whole-familie": "Beløp for familieytelse(r) for hele familien",
+  "title-chooseFormaal" : "Velg formål",
+  "title-grant-date": "Innvilgelsdato for ytelser",
+  "title-motregning": "Motregning",
+  "title-newcase": "Opprett Sak",
+  "title-vedlegg": "Vedleggsinformasjon",
+  "title-vedtak": "Vedtak",
+  "title-svarSed": "Velg RINA-sak og opprett SED"
 }

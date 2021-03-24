@@ -1,6 +1,15 @@
 import Select from 'components/Select/Select'
 import styled from 'styled-components'
-import { themeKeys, animationClose, animationOpen, animationLeft, animationRight, fadeIn, fadeOut } from 'nav-hoykontrast'
+import {
+  themeKeys,
+  animationClose,
+  animationOpen,
+  animationLeft,
+  animationRight,
+  fadeIn,
+  fadeOut,
+  Row
+} from 'nav-hoykontrast'
 
 export const AlignedSelect = styled(Select)`
   margin-bottom: 3rem;
@@ -23,6 +32,9 @@ export const FlexCenterDiv = styled(FlexDiv)`
 `
 export const PaddedFlexDiv = styled(FlexDiv)`
   padding: 1rem;
+`
+export const AlignEndRow = styled(Row)`
+  align-items: flex-end;
 `
 export const FadingLineSeparator = styled.div`
    border-left: 1px solid ${({ theme }) => theme[themeKeys.MAIN_BORDER_COLOR]};

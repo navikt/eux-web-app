@@ -206,21 +206,21 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
      perioder.perioderMedYtelser.length + perioder.perioderMedPensjon.length) > 0
 
   const selectCategoryOptions: OptionsType<{label: string, value: SedCategory}> = [{
-    label: t('elements:option-trygdeordning-perioderMedArbeid'), value: 'perioderMedArbeid'
+    label: t('el:option-trygdeordning-perioderMedArbeid'), value: 'perioderMedArbeid'
   }, {
-    label: t('elements:option-trygdeordning-perioderMedTrygd'), value: 'perioderMedTrygd'
+    label: t('el:option-trygdeordning-perioderMedTrygd'), value: 'perioderMedTrygd'
   }, {
-    label: t('elements:option-trygdeordning-perioderMedYtelser'), value: 'perioderMedYtelser'
+    label: t('el:option-trygdeordning-perioderMedYtelser'), value: 'perioderMedYtelser'
   }, {
-    label: t('elements:option-trygdeordning-perioderMedPensjon'), value: 'perioderMedPensjon'
+    label: t('el:option-trygdeordning-perioderMedPensjon'), value: 'perioderMedPensjon'
   }]
 
   const getCategoryOption = (value: string | undefined | null) => _.find(selectCategoryOptions, s => s.value === value)
 
   const selectPensjonTypeOptions: Array<{label: string, value: PensjonType}> = [{
-    label: t('elements:option-trygdeordning-alderspensjon'), value: 'alderspensjon'
+    label: t('el:option-trygdeordning-alderspensjon'), value: 'alderspensjon'
   }, {
-    label: t('elements:option-trygdeordning-uførhet'), value: 'uførhet'
+    label: t('el:option-trygdeordning-uførhet'), value: 'uførhet'
   }]
 
   const getPensjonTypeOption = (value: string | undefined | null) => _.find(selectPensjonTypeOptions, s => s.value === value)
@@ -242,7 +242,7 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
                   ? (e as PensjonPeriode).periode.startdato
                   : (e as Periode).startdato
                 )}
-            placeholder={t('elements:placeholder-date-default')}
+            placeholder={t('el:placeholder-date-default')}
           />
         </Column>
         <Column>
@@ -259,7 +259,7 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
                   ? (e as PensjonPeriode).periode.sluttdato
                   : (e as Periode).sluttdato
                 )}
-            placeholder={t('elements:placeholder-date-default')}
+            placeholder={t('el:placeholder-date-default')}
           />
         </Column>
         {pageCategory !== 'familieYtelse'
@@ -294,7 +294,7 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
                 id={'c-familymanager-' + personID + '-trygdeordning-' + sedCategory + '-' + i + '-sedCategory-select'}
                 onChange={(e: any) => onChanged(e.value, 'category', pageCategory, sedCategory, i)}
                 options={selectCategoryOptions}
-                placeholder={t('elements:placeholder-select-default')}
+                placeholder={t('el:placeholder-select-default')}
                 selectedValue={getCategoryOption(i < 0 ? _currentCategory : sedCategory)}
                 defaultValue={getCategoryOption(i < 0 ? _currentCategory : sedCategory)}
               />
@@ -314,7 +314,7 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
                     id={'c-familymanager-' + personID + '-trygdeordning-' + sedCategory + '-' + i + '-pensjontype-select'}
                     onChange={(e: any) => onChanged(e.value, 'pensjontype', pageCategory, sedCategory, i)}
                     options={selectPensjonTypeOptions}
-                    placeholder={t('elements:placeholder-select-default')}
+                    placeholder={t('el:placeholder-select-default')}
                     selectedValue={getPensjonTypeOption(i < 0 ? _currentPensjonType : (e as PensjonPeriode)?.pensjonstype)}
                     defaultValue={getPensjonTypeOption(i < 0 ? _currentPensjonType : (e as PensjonPeriode)?.pensjonstype)}
                   />

@@ -164,7 +164,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
     <NavHighContrast highContrast={highContrast}>
       <ContainerDiv>
         <Systemtittel>
-          {t('ui:title-svarSed')}
+          {t('el:title-svarSed')}
         </Systemtittel>
         <VerticalSeparatorDiv data-size='2' />
         <AlignedRow
@@ -180,7 +180,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
               id='svarpased__saksnummerOrFnr-input'
               label={t('label:saksnummerOrFnr')}
               onChange={onSaksnummerOrFnrChange}
-              placeholder={t('elements:placeholder-input-default')}
+              placeholder={t('el:placeholder-input-default')}
               value={_saksnummerOrFnr}
             />
           </Column>
@@ -191,7 +191,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
               spinner={queryingSaksnummerOrFnr}
               onClick={onSaksnummerOrFnrClick}
             >
-              {queryingSaksnummerOrFnr ? t('message:loading-searching') : t('label:search')}
+              {queryingSaksnummerOrFnr ? t('message:loading-searching') : t('el:button-search')}
             </HighContrastKnapp>
           </AlignCenterColumn>
         </AlignedRow>
@@ -273,7 +273,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                           {connectedSed.status === 'sent' && <SentIcon />}
                           <VerticalSeparatorDiv data-size='0.35' />
                           <Undertekst>
-                            {t('ui:status-' + connectedSed.status)}
+                            {t('app:status-' + connectedSed.status)}
                           </Undertekst>
                         </PileCenterDiv>
                           <HorizontalSeparatorDiv />

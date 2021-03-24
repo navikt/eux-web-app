@@ -384,7 +384,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
             disabled={creatingSedWithAttachments}
             spinner={creatingSedWithAttachments}
           >
-            {t('label:addAttachments')}
+            {t('el:button-add-attachments')}
           </HighContrastKnapp>
           <VerticalSeparatorDiv data-size='0.5' />
         </div>

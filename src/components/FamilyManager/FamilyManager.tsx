@@ -175,17 +175,17 @@ const FamilyManager: React.FC = () => {
   }
 
   const options = [
-    { label: t('elements:option-familymanager-1'), value: 'personopplysninger', normal: true, barn: true, family: false },
-    { label: t('elements:option-familymanager-2'), value: 'nasjonaliteter', normal: true, barn: true, family: false },
-    { label: t('elements:option-familymanager-3'), value: 'adresser', normal: true, barn: true, family: false },
-    { label: t('elements:option-familymanager-4'), value: 'kontaktinformasjon', normal: true, barn: false, family: false },
-    { label: t('elements:option-familymanager-5'), value: 'trygdeordninger', normal: true, barn: false, family: false },
-    { label: t('elements:option-familymanager-6'), value: 'familierelasjon', normal: true, barn: false, family: false },
-    { label: t('elements:option-familymanager-7'), value: 'personensstatus', normal: true, barn: false, family: false },
-    { label: t('elements:option-familymanager-8'), value: 'relasjoner', normal: false, barn: true, family: false },
-    { label: t('elements:option-familymanager-9'), value: 'grunnlagForBosetting', normal: false, barn: true, family: false },
-    { label: t('elements:option-familymanager-10'), value: 'beløpNavnOgValuta', normal: false, barn: true, family: false },
-    { label: t('elements:option-familymanager-11'), value: 'familieytelser', normal: false, barn: false, family: true }
+    { label: t('el:option-familymanager-1'), value: 'personopplysninger', normal: true, barn: true, family: false },
+    { label: t('el:option-familymanager-2'), value: 'nasjonaliteter', normal: true, barn: true, family: false },
+    { label: t('el:option-familymanager-3'), value: 'adresser', normal: true, barn: true, family: false },
+    { label: t('el:option-familymanager-4'), value: 'kontaktinformasjon', normal: true, barn: false, family: false },
+    { label: t('el:option-familymanager-5'), value: 'trygdeordninger', normal: true, barn: false, family: false },
+    { label: t('el:option-familymanager-6'), value: 'familierelasjon', normal: true, barn: false, family: false },
+    { label: t('el:option-familymanager-7'), value: 'personensstatus', normal: true, barn: false, family: false },
+    { label: t('el:option-familymanager-8'), value: 'relasjoner', normal: false, barn: true, family: false },
+    { label: t('el:option-familymanager-9'), value: 'grunnlagForBosetting', normal: false, barn: true, family: false },
+    { label: t('el:option-familymanager-10'), value: 'beløpNavnOgValuta', normal: false, barn: true, family: false },
+    { label: t('el:option-familymanager-11'), value: 'familieytelser', normal: false, barn: false, family: true }
   ]
 
   const onEditPerson = (id: string | undefined) => {

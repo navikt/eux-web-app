@@ -234,8 +234,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
   }
 
   const addRelation = (): void => {
-    const valid: boolean = performValidation()
-    if (valid) {
+    if (performValidation()) {
       if (canAddRelation() && !conflictingPerson()) {
         setRelation(emptyFamilieRelasjon)
         onAbroadPersonAddedSuccess(trimFamilyRelation(_relation))
@@ -243,11 +242,9 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
     }
   }
 
-  console.log(_relation)
-
   return (
     <Container className={className}>
-      <Normaltekst>{t('label:family-utland-add-form-title')}</Normaltekst>
+      <Normaltekst>{t('el:title-family-utland-add-form')}</Normaltekst>
       <VerticalSeparatorDiv />
       <Panel data-test-id='familierelasjoner__utland__wrapper'>
         <Row>
@@ -277,7 +274,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
                 updateCountry('land', e.value)
                 resetValidation('land')
               }}
-              placeholder={t('label:choose')}
+              placeholder={t('el:placeholder-select-default')}
               values={_relation.land}
             />
             <VerticalSeparatorDiv />
@@ -291,7 +288,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               label={t('label:statsborgerskap')}
               key={'familierelasjoner__input-statsborgerskap' + _relation.statsborgerskap}
               menuPortalTarget={document.body}
-              placeholder={t('label:choose')}
+              placeholder={t('el:placeholder-select-default')}
               onOptionSelected={(e: any) => {
                 updateCountry('statsborgerskap', e.value)
                 resetValidation('statsborgerskap')
@@ -344,7 +341,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               value={_relation.kjoenn}
             >
               <option value='' disabled>
-                {t('label:choose')}
+                {t('el:placeholder-select-default')}
               </option>
               {kjoennList &&
                 kjoennList.map((element: Kodeverk) => (
@@ -366,7 +363,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
                 resetValidation('fdato')
               }}
               onBlur={(e: React.FocusEvent<HTMLInputElement>) => updateDate('fdato', e)}
-              placeholder='DD.MM.ÅÅÅÅ'
+              placeholder={t('el:placeholder-date-default')}
               value={_relation.fdato}
             />
             <VerticalSeparatorDiv />
@@ -385,7 +382,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               value={_relation.rolle}
             >
               <option value='' disabled>
-                {t('label:choose')}
+                {t('el:placeholder-select-default')}
               </option>
               {rolleList.map((element: Kodeverk) => (
                 <option value={element.kode} key={element.kode}>
@@ -410,7 +407,9 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
                 color={!canAddRelation() ? 'white' : '#0067C5'}
               />
               <HorizontalSeparatorDiv />
-              <span>{t('elements:button-add')}</span>
+              <span>
+                {t('el:button-add')}
+              </span>
             </Knapp>
           </AlignCenterColumn>
           {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (

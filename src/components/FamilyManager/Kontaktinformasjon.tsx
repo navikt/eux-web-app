@@ -128,7 +128,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
             id={'c-familymanager-' + personID + '-kontaktinformasjon-' + i + '-nummer-input'}
             onChange={(e: any) => onNummerChanged(e.target.value, i)}
             value={i < 0 ? _currentNummer : _t?.nummer}
-            placeholder={t('elements:placeholder-input-default')}
+            placeholder={t('el:placeholder-input-default')}
           />
         </Column>
         <Column>
@@ -141,13 +141,13 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
             highContrast={highContrast}
             onChange={(e) => onTypeChanged(e.value, i)}
             options={[{
-              label: t('elements:option-work'), value: 'Arbeid'
+              label: t('el:option-work'), value: 'Arbeid'
             }, {
-              label: t('elements:option-home'), value: 'Hjem'
+              label: t('el:option-home'), value: 'Hjem'
             }, {
-              label: t('elements:option-mobile'), value: 'Mobil'
+              label: t('el:option-mobile'), value: 'Mobil'
             }]}
-            placeholder={t('elements:placeholder-select-default')}
+            placeholder={t('el:placeholder-select-default')}
             value={i < 0 ? _currentType : _t?.type}
           />
         </Column>
@@ -176,7 +176,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
             id={'c-familymanager-' + personID + '-kontaktinformasjon-' + i + '-epost-input'}
             onChange={(e: any) => onEpostChanged(e.target.value, i)}
             value={i < 0 ? _currentEpost : e?.adresse}
-            placeholder={t('elements:placeholder-input-default')}
+            placeholder={t('el:placeholder-input-default')}
           />
         </Column>
         <Column style={{ alignSelf: 'flex-end' }}>

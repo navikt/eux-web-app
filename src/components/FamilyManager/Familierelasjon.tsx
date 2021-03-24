@@ -186,7 +186,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
               label: `${t('label:other')} (${t('label:freetext')})`,
               value: 'other'
             })}
-            placeholder={t('elements:placeholder-select-default')}
+            placeholder={t('el:placeholder-select-default')}
             selectedValue={i < 0 ? _currentRelasjonType : s!.relasjonType}
           />
         </Column>
@@ -200,7 +200,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
             onChange={(e: any) => setStartDato(e.target.value, i)}
             value={i < 0 ? _currentStartDato : s?.periode.startdato}
             label={t('label:start-date')}
-            placeholder={t('elements:placeholder-date-default')}
+            placeholder={t('el:placeholder-date-default')}
           />
         </Column>
         <Column>
@@ -213,7 +213,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
             onChange={(e: any) => setSluttDato(e.target.value, i)}
             value={i < 0 ? _currentSluttDato : s?.periode.sluttdato}
             label={t('label:end-date')}
-            placeholder={t('elements:placeholder-date-default')}
+            placeholder={t('el:placeholder-date-default')}
           />
         </Column>
       </Row>
@@ -231,7 +231,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                 onChange={(e: any) => setAnnenRelasjonType(e.target.value, i)}
                 value={i < 0 ? _currentAnnenRelasjonType : s?.annenRelasjonType}
                 label={t('label:other-relation')}
-                placeholder={t('elements:placeholder-date-default')}
+                placeholder={t('el:placeholder-date-default')}
               />
             </Column>
             <Column />
@@ -248,7 +248,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                 onChange={(e: any) => setAnnenRelasjonPersonNavn(e.target.value, i)}
                 value={i < 0 ? _currentAnnenRelasjonPersonNavn : s?.annenRelasjonPersonNavn}
                 label={t('label:person-name')}
-                placeholder={t('elements:placeholder-date-default')}
+                placeholder={t('el:placeholder-date-default')}
               />
             </Column>
             <Column>
@@ -261,7 +261,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                 onChange={(e: any) => setAnnenRelasjonDato(e.target.value, i)}
                 value={i < 0 ? _currentAnnenRelasjonDato : s?.annenRelasjonDato}
                 label={t('label:date-relation')}
-                placeholder={t('elements:placeholder-date-default')}
+                placeholder={t('el:placeholder-date-default')}
               />
             </Column>
           </Row>

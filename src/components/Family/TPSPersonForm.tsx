@@ -157,7 +157,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
             disabled={person.fnr === _query}
             onClick={sokEtterFnr}
           >
-            {t('elements:button-search')}
+            {t('el:button-search')}
           </Knapp>
         </AlignCenterColumn>
       </Row>

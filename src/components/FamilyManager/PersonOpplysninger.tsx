@@ -185,7 +185,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             id={'c-familymanager-' + personID + '-personopplysninger-foedselsdato-input'}
             onChange={onFodselsdatoChange}
             value={_.get(replySed, `${personID}.personInfo.foedselsdato`)}
-            placeholder={t('elements:placeholder-birthDate')}
+            placeholder={t('el:placeholder-birthDate')}
             label={t('label:birthdate') + ' *'}
           />
         </Column>

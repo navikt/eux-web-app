@@ -1,6 +1,6 @@
 import Avsenderlandet from 'components/FamilyManager/Arbeidsforhold/Avsenderlandet'
-import Op1Ansatt from 'components/FamilyManager/Arbeidsforhold/Op1Ansatt'
-import Op2Selvstendig from 'components/FamilyManager/Arbeidsforhold/Op2Selvstendig'
+import Ansatt from 'components/FamilyManager/Arbeidsforhold/Ansatt'
+import NotAnsatt from 'components/FamilyManager/Arbeidsforhold/NotAnsatt'
 import Op3Other from 'components/FamilyManager/Arbeidsforhold/Op3Other'
 import ReasonToCome from 'components/FamilyManager/Arbeidsforhold/ReasonToCome'
 import LesMer from 'components/LesMer/LesMer'
@@ -67,24 +67,24 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
             feil={undefined}
             name='c-familymanager-personenstatus-arbeidsforhold-radiogroup'
             radios={[
-              { label: t('elements:option-personensstatus-1'), value: 'arbeidsforhold-1' },
-              { label: t('elements:option-personensstatus-2'), value: 'arbeidsforhold-2' },
+              { label: t('el:option-personensstatus-1'), value: 'arbeidsforhold-1' },
+              { label: t('el:option-personensstatus-2'), value: 'arbeidsforhold-2' },
               {
                 label: (
                   <LesMer
-                    visibleText={t('elements:option-personensstatus-3')}
-                    invisibleText={t('elements:option-personensstatus-3-more')}
+                    visibleText={t('el:option-personensstatus-3')}
+                    invisibleText={t('el:option-personensstatus-3-more')}
                     moreText={t('label:see-more')}
                     lessText={t('label:see-less')}
                   />),
                 value: 'arbeidsforhold-3'
               },
-              { label: t('elements:option-personensstatus-4'), value: 'arbeidsforhold-4' },
+              { label: t('el:option-personensstatus-4'), value: 'arbeidsforhold-4' },
               {
                 label: (
                   <LesMer
-                    visibleText={t('elements:option-personensstatus-5')}
-                    invisibleText={t('elements:option-personensstatus-5-more')}
+                    visibleText={t('el:option-personensstatus-5')}
+                    invisibleText={t('el:option-personensstatus-5-more')}
                     moreText={t('label:see-more')}
                     lessText={t('label:see-less')}
                   />),
@@ -96,7 +96,7 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
         </Column>
       </Row>
       {_arbeidsforhold === 'arbeidsforhold-1' && (
-        <Op1Ansatt
+        <Ansatt
           arbeidsforholdList={arbeidsforholdList}
           getArbeidsforholdList={getArbeidsforholdList}
           gettingArbeidsforholdList={gettingArbeidsforholdList}
@@ -105,7 +105,7 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
         />
       )}
       {(_arbeidsforhold !== 'arbeidsforhold-1') && (
-        <Op2Selvstendig
+        <NotAnsatt
           arbeidsforholdList={arbeidsforholdList}
           getArbeidsforholdList={getArbeidsforholdList}
           gettingArbeidsforholdList={gettingArbeidsforholdList}

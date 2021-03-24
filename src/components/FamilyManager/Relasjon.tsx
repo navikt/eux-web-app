@@ -46,14 +46,14 @@ const Relasjon: React.FC<RelasjonProps> = ({
   const { t } = useTranslation()
 
   const relasjonTypeOptions = [
-    { label: t('elements:option-relasjon-1'), value: 'option-relasjon-1' },
-    { label: t('elements:option-relasjon-2'), value: 'option-relasjon-2' },
-    { label: t('elements:option-relasjon-3'), value: 'option-relasjon-3' },
-    { label: t('elements:option-relasjon-4'), value: 'option-relasjon-4' },
-    { label: t('elements:option-relasjon-5'), value: 'option-relasjon-5' },
-    { label: t('elements:option-relasjon-6'), value: 'option-relasjon-6' },
-    { label: t('elements:option-relasjon-7'), value: 'option-relasjon-7' },
-    { label: t('elements:option-relasjon-8'), value: 'option-relasjon-8' }
+    { label: t('el:option-relasjon-1'), value: 'option-relasjon-1' },
+    { label: t('el:option-relasjon-2'), value: 'option-relasjon-2' },
+    { label: t('el:option-relasjon-3'), value: 'option-relasjon-3' },
+    { label: t('el:option-relasjon-4'), value: 'option-relasjon-4' },
+    { label: t('el:option-relasjon-5'), value: 'option-relasjon-5' },
+    { label: t('el:option-relasjon-6'), value: 'option-relasjon-6' },
+    { label: t('el:option-relasjon-7'), value: 'option-relasjon-7' },
+    { label: t('el:option-relasjon-8'), value: 'option-relasjon-8' }
   ]
 
   const setRelasjon = (e: string) => {
@@ -148,7 +148,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
             label={t('label:type')}
             onChange={(e) => setRelasjonType(e.value)}
             options={relasjonTypeOptions}
-            placeholder={t('elements:placeholder-select-default')}
+            placeholder={t('el:placeholder-select-default')}
             selectedValue={_currentRelasjonType}
           />
         </Column>
@@ -168,7 +168,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
             onChange={(e: any) => setStartDato(e.target.value)}
             value={_currentStartDato}
             label={t('label:start-date')}
-            placeholder={t('elements:placeholder-date-default')}
+            placeholder={t('el:placeholder-date-default')}
           />
         </Column>
         <Column>
@@ -181,7 +181,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
             onChange={(e: any) => setSluttDato(e.target.value)}
             value={_currentSluttDato}
             label={t('label:end-date')}
-            placeholder={t('elements:placeholder-date-default')}
+            placeholder={t('el:placeholder-date-default')}
           />
         </Column>
       </Row>

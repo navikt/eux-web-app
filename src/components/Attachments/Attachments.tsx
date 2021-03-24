@@ -132,7 +132,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
     <>
       <VerticalSeparatorDiv data-size='2' />
       <label className='skjemaelement__label'>
-        {t('ui:attachments')}
+        {t('label:attachments')}
       </label>
       <VerticalSeparatorDiv />
       <HighContrastKnapp

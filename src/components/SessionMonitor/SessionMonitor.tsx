@@ -66,15 +66,15 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
         }
         if (diff < millisecondsForWarning) {
           dispatch(openModal({
-            modalTitle: t('ui:session-expire-title'),
-            modalText: t('ui:session-expire-text', { minutes: Math.ceil(Math.abs(diff / 1000 / 60)) }),
+            modalTitle: t('app:session-expire-title'),
+            modalText: t('app:session-expire-text', { minutes: Math.ceil(Math.abs(diff / 1000 / 60)) }),
             modalButtons: [{
               main: true,
-              text: t('ui:ok-got-it'),
+              text: t('app:ok-got-it'),
               onClick: dispatch(closeModal)
             }, {
               main: false,
-              text: t('ui:log-me-again'),
+              text: t('app:log-me-again'),
               onClick: logMe
             }]
           }))

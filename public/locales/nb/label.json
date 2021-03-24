@@ -1,7 +1,9 @@
 {
   "abroad-id": "Utenlandsk ID",
+  "arbeidsforhold": "Arbeidsforhold/Arbeidsgivere",
   "arbeidsperiode": "Arbeidsperiode",
-  "are-you-sure": "Sikker?",
+  "are-you-sure": "Er du sikker?",
+  "attachments" : "Vedlegg",
 
   "birthdate": "Fødselsdato",
 
@@ -15,6 +17,7 @@
   "family-relationship" : "Familierelasjon",
   "family-relationships" : "Familierelasjon(er)",
   "family-relations-in-tps": "Familierelasjoner registrert i TPS",
+
   "firstname": "Fornavn",
   "fnr-dnr" : "F.nummer/d-nr.",
   "formaal": "Formål",
@@ -38,15 +41,11 @@
   "rina-saksnummer": "RINA saksnummer",
   "rina-document-id": "Velg SED Type",
 
+  "searching" : "Søker...",
   "show-form": "Vis skjema",
-
   "start-date": "Startdato",
   "statsborgerskap" : "Statsborgerskap",
 
-
-
-
-  "addAttachments" : "Legg til vedlegg",
   "add-as-attachment-to-sed" : "Legge til vedlegg til SED",
   "add-birthplace": "Legg til fødested",
   "add-nationality": "Legg til ny nasjonalitet",
@@ -67,7 +66,7 @@
   "amount": "Beløp",
   "ansettelsesperioder" : "Ansettelsesperiode(r)",
   "application-information": "Informasjon om søknaden",
-  "arbeidsforhold": "Arbeidsforhold/Arbeidsgivere",
+
   "arbeidsforhold-type": "Type arbeidsforhold",
   "attached": "Vedlegget",
   "back" : "Tilbake",
@@ -111,7 +110,6 @@
   "familierelasjon-title": "Familierelasjon til ektefelle eller annen person",
 
 
-  "family-utland-add-title": "Du kan også legge til familierelasjoner fra utlandet som ikke er oppført i TPS",
   "familymanager-title" : "Velg personer og fyll inn opplysninger",
   "father": "Far",
 
@@ -189,7 +187,7 @@
   "saveSed": "Lagre",
 
   "searcher" : "Søker",
-  "searching" : "Søker...",
+
   "searchResultsForSaksnummerOrFnr" : "{{antall}} treff for: {{saksnummerOrFnr}}",
   "searchUser": "Finn bruker",
   "sed": "SED",

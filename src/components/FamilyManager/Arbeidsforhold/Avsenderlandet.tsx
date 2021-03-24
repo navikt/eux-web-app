@@ -16,7 +16,7 @@ const Avsenderlandet = ({
   validation
 }: any) => {
   const { t } = useTranslation()
-  const namespace = 'familymanager-' + personID + '-personensstatus-medlemsperiode'
+  const namespace = 'familymanager-' + personID + '-personensstatus-avsenderlandet'
   const [_seeNewPeriodeInSender, setSeeNewPeriodeInSender] = useState<boolean>(false)
   const [_startDato, setStartDato] = useState<string>('')
   const [_sluttDato, setSluttDato] = useState<string>('')
@@ -24,7 +24,7 @@ const Avsenderlandet = ({
   return (
     <>
       <Undertittel>
-        {t('ui:title-periods-in-sender-country')}
+        {t('el:title-periods-in-sender-country')}
       </Undertittel>
       <VerticalSeparatorDiv />
       {!_seeNewPeriodeInSender
@@ -36,7 +36,7 @@ const Avsenderlandet = ({
           >
             <Add />
             <HorizontalSeparatorDiv data-size='0.5' />
-            {t('elements:button-add-new-x', {
+            {t('el:button-add-new-x', {
               x: t('label:period-in-sender-country').toLowerCase()
             })}
           </HighContrastFlatknapp>
@@ -55,7 +55,7 @@ const Avsenderlandet = ({
                   id={namespace + '-startdato-input'}
                   label={t('label:start-date')}
                   onChange={(e: any) => setStartDato(e.target.value)}
-                  placeholder={t('elements:placeholder-date-default')}
+                  placeholder={t('el:placeholder-date-default')}
                   value={_startDato}
                 />
               </Column>
@@ -66,7 +66,7 @@ const Avsenderlandet = ({
                   id={'c-' + namespace + '-sluttdato-input'}
                   label={t('label:end-date')}
                   onChange={(e: any) => setSluttDato(e.target.value)}
-                  placeholder={t('elements:placeholder-date-default')}
+                  placeholder={t('el:placeholder-date-default')}
                   value={_sluttDato}
                 />
               </Column>

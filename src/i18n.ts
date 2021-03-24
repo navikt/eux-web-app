@@ -12,9 +12,9 @@ i18n
     fallbackLng: {
       default: ['nb']
     },
-    debug: false,
-    ns: ['app', 'ui', 'elements', 'label', 'message'],
-    defaultNS: 'ui',
+    debug: true,
+    ns: ['app', 'el', 'label', 'message'],
+    defaultNS: 'label',
     backend: {
       loadPath: '/locales/{{lng}}/{{ns}}.json'
     },

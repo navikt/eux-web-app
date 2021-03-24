@@ -143,7 +143,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
         <Content>
           <VerticalSeparatorDiv />
           <Systemtittel>
-            {t('ui:title-vedlegg')}
+            {t('el:title-vedlegg')}
           </Systemtittel>
           <VerticalSeparatorDiv />
           <div className='noslideInFromLeft'>
@@ -204,7 +204,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
                 <VerticalSeparatorDiv />
                 <AlertStripe type='suksess'>
                   <div>
-                    <div>{t('ui:attached')}: {vedlegg.filnavn || vedlegg.vedleggID}</div>
+                    <div>{t('app:attached')}: {vedlegg.filnavn || vedlegg.vedleggID}</div>
                     {vedlegg.url && (
                       <Link href={vedlegg.url} rel='noreferrer' target='_blank'>
                         {t('label:goToRina')}

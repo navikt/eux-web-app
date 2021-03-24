@@ -150,7 +150,7 @@ const SEDAttachmentSender: React.FC<SEDAttachmentSenderProps> = ({
               onCancel()
             }}
           >
-            {t('ui:cancel')}
+            {t('app:cancel')}
           </HighContrastKnapp>
         </>
       )}

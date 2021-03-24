@@ -1,3 +1,4 @@
+import { FlexDiv, PileDiv } from 'components/StyledComponents'
 import { FamilieRelasjon, Kodeverk, Person } from 'declarations/types'
 import _ from 'lodash'
 import { Knapp } from 'nav-frontend-knapper'
@@ -10,9 +11,6 @@ import { HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import AbroadPersonForm from './AbroadPersonForm'
 import TPSPersonForm from './TPSPersonForm'
 
-const FamilyArea = styled.div`
-  display: flex;
-`
 const FamilySubArea = styled.div`
   flex: 10;
 `
@@ -22,10 +20,6 @@ const FamilySeparator = styled.div`
 `
 const MarginDiv = styled.div`
   margin: 0.5rem;
-`
-const Forms = styled.div`
-  display: flex;
-  flex-direction: column;
 `
 
 export interface FamilyProps {
@@ -110,10 +104,10 @@ const Family: React.FC<FamilyProps> = ({
     <div data-test-id='c-family'>
       <HorizontalSeparatorDiv />
       <Undertittel>
-        {t('ui:title-family-description')}
+        {t('el:title-family-description')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      <FamilyArea>
+      <FlexDiv>
         <FamilySubArea>
           <HorizontalSeparatorDiv />
           <Ingress>
@@ -167,12 +161,12 @@ const Family: React.FC<FamilyProps> = ({
             </MarginDiv>
           ))}
         </FamilySubArea>
-      </FamilyArea>
-      <Forms>
+      </FlexDiv>
+      <PileDiv>
         <div>
           <VerticalSeparatorDiv data-size='1.5' />
           <Ingress>
-            {t('ui:title-family-utland')}
+            {t('el:title-family-utland')}
           </Ingress>
           {_viewAbroadPersonForm && (
             <>
@@ -203,7 +197,7 @@ const Family: React.FC<FamilyProps> = ({
         <div>
           <VerticalSeparatorDiv data-size='1.5' />
           <Ingress>
-            {t('label:family-tps-title')}
+            {t('el:title-family-tps')}
           </Ingress>
           {_viewTPSRelatedForm && person && (
             <>
@@ -232,7 +226,7 @@ const Family: React.FC<FamilyProps> = ({
               : t('label:show-form')}
           </Knapp>
         </div>
-      </Forms>
+      </PileDiv>
     </div>
   )
 }

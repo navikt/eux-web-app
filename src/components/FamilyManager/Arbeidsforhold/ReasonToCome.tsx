@@ -58,7 +58,7 @@ const ReasonToCome = ({
                   onChange={(e: any) => setCurrentDurationStayStartDato(e.target.value)}
                   value={_currentDurationStayStartDato}
                   label={t('label:start-date')}
-                  placeholder={t('elements:placeholder-date-default')}
+                  placeholder={t('el:placeholder-date-default')}
                 />
               </Column>
               <Column>
@@ -71,7 +71,7 @@ const ReasonToCome = ({
                   onChange={(e: any) => setCurrentDurationStaySluttDato(e.target.value)}
                   value={_currentDurationStaySluttDato}
                   label={t('label:end-date')}
-                  placeholder={t('elements:placeholder-date-default')}
+                  placeholder={t('el:placeholder-date-default')}
                 />
               </Column>
             </Row>
@@ -87,7 +87,7 @@ const ReasonToCome = ({
                   onChange={(e: any) => setCurrentDurationStaySender(e.target.value)}
                   value={_currentDurationStaySender}
                   label={t('label:moving-date-sender')}
-                  placeholder={t('elements:placeholder-date-default')}
+                  placeholder={t('el:placeholder-date-default')}
                 />
               </Column>
               <Column>
@@ -100,7 +100,7 @@ const ReasonToCome = ({
                   onChange={(e: any) => setCurrentDurationStayReceiver(e.target.value)}
                   value={_currentDurationStayReceiver}
                   label={t('label:moving-date-receiver')}
-                  placeholder={t('elements:placeholder-date-default')}
+                  placeholder={t('el:placeholder-date-default')}
                 />
               </Column>
             </Row>

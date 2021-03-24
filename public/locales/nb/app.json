@@ -9,6 +9,30 @@
   "modal-abort-contentLabel": "Bekreft navigasjon tilbake til forsiden",
   "modal-abort-description": "Informasjonen du har fylt inn hittil vil ikke bli lagret.",
   "modal-abort-no-continue": "NEI, FORTSETT",
-  "modal-abort-title": " Er du sikker på at du vil avbryte? ",
-  "modal-abort-yes-cancel": "JA, AVBRYT"
+  "modal-abort-title": "Er du sikker på at du vil avbryte?",
+  "modal-abort-yes-cancel": "JA, AVBRYT",
+
+  "kravType-nytt_krav" : "Nytt krav",
+  "kravType-endrete_omstendigheter" : "Endrete Omstendigheter",
+
+  "info-confirm-information" : "Vi bekrefter leverte opplysninger",
+  "info-point-information" : "Gi oss punktvise opplysninger",
+
+  "relationship-bruker": "Bruker",
+  "relationship-ektefelle": "Ektefelle",
+  "relationship-annenPerson": "Annen person",
+  "relationship-barn": "Barn",
+
+  "serverInternalError" : "Serverfeil",
+  "serverAuthenticationError" : "Uautorisert",
+
+  "session-expire-title" : "Du vil snart bli logget ut",
+  "session-expire-text" : "Husk å lagre opplysningene. Hvis du ønsker å fortsette, må du logge inn igjen.  Du blir logget ut om {{minutes}} minutter",
+
+  "status-sent" : "Sendt",
+  "status-received" : "Mottatt",
+
+  "ok-got-it" : "Ok, stemmer det",
+  "log-me-again": "Logg inn på nytt"
+
 }
