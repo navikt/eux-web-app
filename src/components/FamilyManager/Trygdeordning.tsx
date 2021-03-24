@@ -60,7 +60,6 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
   const [_seeNewForm, setSeeNewForm] = useState<{[k in PageCategory]: boolean}>({
     dekkede: false, udekkede: false, familieYtelse: false
   })
-  const [_isDirty, setIsDirty] = useState<boolean>(false)
   const { t } = useTranslation()
   const perioder: {[k in SedCategory]: Array<Periode | PensjonPeriode>} = {
     perioderMedArbeid: _.get(replySed, `${personID}.perioderMedArbeid`),
@@ -74,7 +73,6 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
   const onRemoved = (newSedCategory: SedCategory, i: number) => {
     const newPerioder: Array<Periode | PensjonPeriode> = _.cloneDeep(perioder[newSedCategory])
     newPerioder.splice(i, 1)
-    setIsDirty(true)
     onValueChanged(`${personID}.${newSedCategory}`, newPerioder)
   }
 
@@ -110,7 +108,6 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
       } else {
         newPerioder = newPerioder.concat(newPeriode)
       }
-      setIsDirty(true)
 
       // resetting form values
       setCurrentStartDato({
@@ -154,7 +151,6 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
         setCurrentPensjonType(e as PensjonType)
       }
     } else {
-      setIsDirty(true)
       const newPerioder: Array<Periode | PensjonPeriode> = _.cloneDeep(perioder[newSedCategory!])
 
       if (what === 'startdato' || what === 'sluttdato') {
@@ -447,7 +443,6 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
           ? renderRow(null, 'familieYtelse', null, -1)
           : renderAddButton('familieYtelse')}
       </>
-      {_isDirty && '*'}
     </KontaktinformasjonDiv>
   )
 }

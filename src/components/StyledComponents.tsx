@@ -30,6 +30,9 @@ export const FlexCenterDiv = styled(FlexDiv)`
   align-items: center;
   justify-content: space-between;
 `
+export const PaddedDiv = styled.div`
+  padding: 1rem;
+`
 export const PaddedFlexDiv = styled(FlexDiv)`
   padding: 1rem;
 `

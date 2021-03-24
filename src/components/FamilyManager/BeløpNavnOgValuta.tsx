@@ -1,158 +1,142 @@
 import Select from 'components/Select/Select'
+import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import { ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
+import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
 import { Column, HighContrastInput, HighContrastRadioPanelGroup, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
 
-interface GrunnlagForBosettingProps {
+interface BeløpNavnOgValutaProps {
   highContrast: boolean
   onValueChanged: (needle: string, value: any) => void
   personID: string
   replySed: ReplySed
   validation: Validation
 }
-const RelasjonDiv = styled.div`
-  padding: 1rem;
-  fieldset {
-    width: 100%;
-  }
-`
 
-const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
+const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
   highContrast,
   // onValueChanged,
   personID,
   // replySed,
   validation
-}:GrunnlagForBosettingProps): JSX.Element => {
-  const [_currentName, setCurrentName] = useState<string>('')
-  const [_currentDesignationPerformance, setCurrentDesignationPerformance] = useState<string>('')
-  const [_currentAmount, setCurrentAmount] = useState<string>('')
-  const [_currentCurrency, setCurrentCurrency] = useState<Country | undefined>(undefined)
-  const [_currentGrantStartDate, setCurrentGrantStartDate] = useState<string>('')
-  const [_currentGrantEndDate, setCurrentGrantEndDate] = useState<string>('')
-  const [_currentReceiverName, setCurrentReceiverName] = useState<string>('')
-  const [_currentFrequency, setCurrentFrequency] = useState<string>('')
+}: BeløpNavnOgValutaProps): JSX.Element => {
 
-  const [_isDirty, setIsDirty] = useState<boolean>(false)
   const { t } = useTranslation()
+  const [_newName, setNewName] = useState<string>('')
+  const [_newBenefitCause, setNewBenefitCause] = useState<string>('')
+  const [_newAmount, setNewAmount] = useState<string>('')
+  const [_newCurrency, setNewCurrency] = useState<Country | undefined>(undefined)
+  const [_newStartDato, setNewStartDato] = useState<string>('')
+  const [_newSluttDato, setNewSluttDato] = useState<string>('')
+  const [_newReceiver, setNewReceiver] = useState<string>('')
+  const [_newFrequency, setNewFrequency] = useState<string>('')
+  const namespace = 'familymanager-' + personID + '-beløpNavnOgValuta'
+
+  const benefitCauseOptions = [{
+    label: t('el:option-benefitCause-barnetrygd'), value: 'Barnetrygd'
+  }, {
+    label: t('el:option-benefitCause-kontantstøtte'), value: 'Kontantstøtte'
+  }]
 
   const setName = (e: string) => {
-    setCurrentName(e)
-    setIsDirty(true)
+    setNewName(e)
   }
 
-  const setDesignationPerformance = (e: string) => {
-    setCurrentDesignationPerformance(e)
-    setIsDirty(true)
+  const setBenefitCause = (e: string) => {
+    setNewBenefitCause(e)
   }
 
   const setAmount = (e: string) => {
-    setCurrentAmount(e)
-    setIsDirty(true)
+    setNewAmount(e)
   }
 
   const setCurrency = (e: Country) => {
-    setCurrentCurrency(e)
-    setIsDirty(true)
+    setNewCurrency(e)
   }
 
-  const setGrantStartDate = (e: string) => {
-    setCurrentGrantStartDate(e)
-    setIsDirty(true)
+  const setStartDato = (e: string) => {
+    setNewStartDato(e)
   }
 
-  const setGrantEndDate = (e: string) => {
-    setCurrentGrantEndDate(e)
-    setIsDirty(true)
+  const setSluttDato = (e: string) => {
+    setNewSluttDato(e)
   }
 
-  const setReceiverName = (e: string) => {
-    setCurrentReceiverName(e)
-    setIsDirty(true)
+  const setReceiver = (e: string) => {
+    setNewReceiver(e)
   }
 
   const setFrequency = (e: string) => {
-    setCurrentFrequency(e)
-    setIsDirty(true)
+    setNewFrequency(e)
   }
 
   return (
-    <RelasjonDiv>
+    <PaddedDiv>
       <Undertittel>
         {t('el:title-amount-name-and-currency')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      <Row>
+      <AlignStartRow className='slideInFromLeft'>
         <Column>
           <HighContrastInput
-            data-test-id={'c-familymanager-' + personID + '-beløpNavnOgValuta-name-input'}
-            feil={validation['person-' + personID + '-beløpNavnOgValuta-name']
-              ? validation['person-' + personID + '-beløpNavnOgValuta-name']!.feilmelding
-              : undefined}
-            id={'c-familymanager-' + personID + '-beløpNavnOgValuta-name-input'}
-            onChange={(e: any) => setName(e.target.value)}
-            value={_currentName}
+            data-test-id={'c-' + namespace + '-name-input'}
+            feil={validation[namespace + '-name']?.feilmelding}
+            id={'c-' + namespace + '-name-input'}
             label={t('label:children-name')}
-            placeholder={t('el:placeholder-date-default')}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+            placeholder={t('el:placeholder-input-default')}
+            value={_newName}
           />
         </Column>
         <Column>
           <Select
-            data-test-id={'c-familymanager-' + personID + '-beløpNavnOgValuta-designationOfPerformance-select'}
-            error={validation['person-' + personID + '-beløpNavnOgValuta-designationOfPerformance']
-              ? validation['person-' + personID + '-beløpNavnOgValuta-designationOfPerformance']!.feilmelding
-              : undefined}
+            data-test-id={'c-' + namespace + '-benefitCause-select'}
+            feil={validation[namespace + '-benefitCause']?.feilmelding}
             highContrast={highContrast}
-            id={'c-familymanager-' + personID + '-beløpNavnOgValuta-designationOfPerformance-select'}
-            label={t('label:designation-of-performance')}
-            onChange={(e: any) => setDesignationPerformance(e.value)}
-            options={[{
-              label: t('el:option-declarationOfPerformance-barnetrygd'), value: 'Barnetrygd'
-            }, {
-              label: t('el:option-declarationOfPerformance-kontantstøtte'), value: 'Kontantstøtte'
-            }]}
+            id={'c-' + namespace + '-benefitCause-select'}
+            label={t('label:benefit-cause')}
+            onChange={(e: any) => setBenefitCause(e.value)}
+            options={benefitCauseOptions}
             placeholder={t('el:placeholder-select-default')}
-            selectedValue={_currentDesignationPerformance}
+            selectedValue={_.find(benefitCauseOptions, b => b.value === _newBenefitCause)}
+            defaultValue={_.find(benefitCauseOptions, b => b.value === _newBenefitCause)}
           />
         </Column>
-      </Row>
+      </AlignStartRow>
       <VerticalSeparatorDiv />
-      <Row>
+      <AlignStartRow>
         <Column>
           <HighContrastInput
-            data-test-id={'c-familymanager-' + personID + '-beløpNavnOgValuta-amount-input'}
-            feil={validation['person-' + personID + '-beløpNavnOgValuta-amount']
-              ? validation['person-' + personID + '-beløpNavnOgValuta-amount']!.feilmelding
-              : undefined}
-            id={'c-familymanager-' + personID + '-beløpNavnOgValuta-amount-input'}
-            onChange={(e: any) => setAmount(e.target.value)}
-            value={_currentAmount}
+            data-test-id={'c-' + namespace + '-amount-input'}
+            feil={validation[namespace + '-amount']?.feilmelding}
+            id={'c-' + namespace + '-amount-input'}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAmount(e.target.value)}
+            value={_newAmount}
             label={t('label:amount')}
             placeholder={t('el:placeholder-input-default')}
           />
         </Column>
         <Column>
           <CountrySelect
-            highContrast={highContrast}
-            data-test-id={'c-familymanager-' + personID + '-beløpNavnOgValuta-currency-countryselect'}
-            id={'c-familymanager-' + personID + '-beløpNavnOgValuta-currency-countryselect'}
             ariaLabel={t('label:currency')}
+            data-test-id={'c-' + namespace + '-currency-countryselect'}
+            error={validation[namespace + '-currency']?.feilmelding}
+            highContrast={highContrast}
+            id={'c-' + namespace + '-currency-countryselect'}
             label={t('label:currency')}
-            menuPortalTarget={document.body}
-            values={_currentCurrency}
             locale='nb'
-            error={undefined}
-            type='currency'
+            menuPortalTarget={document.body}
             onOptionSelected={(country: Country) => setCurrency(country)}
+            type='currency'
+            values={_newCurrency}
           />
         </Column>
-      </Row>
+      </AlignStartRow>
       <VerticalSeparatorDiv />
       <Undertittel>
         {t('el:title-grant-date')}
@@ -161,26 +145,22 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
       <Row>
         <Column>
           <HighContrastInput
-            data-test-id={'c-familymanager-' + personID + '-beløpNavnOgValuta-startdato-input'}
-            feil={validation['person-' + personID + '-beløpNavnOgValuta-startdato']
-              ? validation['person-' + personID + '-beløpNavnOgValuta-startdato']!.feilmelding
-              : undefined}
-            id={'c-familymanager-' + personID + '-beløpNavnOgValuta-startdato-input'}
-            onChange={(e: any) => setGrantStartDate(e.target.value)}
-            value={_currentGrantStartDate}
+            data-test-id={'c-' + namespace + '-startdato-input'}
+            feil={validation[namespace + '-startdato']?.feilmelding}
+            id={'c-' + namespace + '-startdato-input'}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value)}
+            value={_newStartDato}
             label={t('label:start-date')}
             placeholder={t('el:placeholder-date-default')}
           />
         </Column>
         <Column>
           <HighContrastInput
-            data-test-id={'c-familymanager-' + personID + '-beløpNavnOgValuta-sluttdato-input'}
-            feil={validation['person-' + personID + '-beløpNavnOgValuta-sluttdato']
-              ? validation['person-' + personID + '-beløpNavnOgValuta-sluttdato']!.feilmelding
-              : undefined}
-            id={'c-familymanager-' + personID + '-beløpNavnOgValuta-sluttdato-input'}
-            onChange={(e: any) => setGrantEndDate(e.target.value)}
-            value={_currentGrantEndDate}
+            data-test-id={'c-' + namespace + '-sluttdato-input'}
+            feil={validation[namespace + '-sluttdato']?.feilmelding}
+            id={'c-' + namespace + '-sluttdato-input'}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value)}
+            value={_newSluttDato}
             label={t('label:end-date')}
             placeholder={t('el:placeholder-date-default')}
           />
@@ -190,13 +170,11 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
       <Row>
         <Column>
           <HighContrastInput
-            data-test-id={'c-familymanager-' + personID + '-beløpNavnOgValuta-receiverName-input'}
-            feil={validation['person-' + personID + '-beløpNavnOgValuta-receiverName']
-              ? validation['person-' + personID + '-beløpNavnOgValuta-receiverName']!.feilmelding
-              : undefined}
-            id={'c-familymanager-' + personID + '-beløpNavnOgValuta-receiverName-input'}
-            onChange={(e: any) => setReceiverName(e.target.value)}
-            value={_currentReceiverName}
+            data-test-id={'c-' + namespace + '-receiver-input'}
+            feil={validation[ namespace + '--receiver']?.feilmelding}
+            id={'c-' + namespace + '-receiver-input'}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setReceiver(e.target.value)}
+            value={_newReceiver}
             label={t('label:receiver-name')}
             placeholder={t('el:placeholder-input-default')}
           />
@@ -206,13 +184,11 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
       <Row>
         <Column>
           <HighContrastRadioPanelGroup
-            checked={_currentFrequency}
-            data-test-id={'c-familymanager-' + personID + '-beløpNavnOgValuta-frequency-radiogroup'}
-            id={'c-familymanager-' + personID + '-frequency-radiogroup'}
-            feil={validation['person-' + personID + '-frequency-radiogroup']
-              ? validation['person-' + personID + '-frequency']!.feilmelding
-              : undefined}
-            name={'c-familymanager-' + personID + '-frequency-radiogroup'}
+            checked={_newFrequency}
+            data-test-id={'c-' + namespace + '-frequency-radiogroup'}
+            id={'c-' + namespace + '-frequency-radiogroup'}
+            feil={validation[namespace + '-frequency']?.feilmelding}
+            name={namespace + '-frequency'}
             legend={t('label:period-frequency')}
             radios={[
               { label: t('label:monthly'), value: 'Månedlig' },
@@ -222,9 +198,8 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
           />
         </Column>
       </Row>
-      {_isDirty && '*'}
-    </RelasjonDiv>
+    </PaddedDiv>
   )
 }
 
-export default Relasjon
+export default BeløpNavnOgValuta

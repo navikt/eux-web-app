@@ -16,7 +16,7 @@ import {
   Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
-import React, { useState } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
@@ -52,32 +52,26 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   searchingPerson,
   validation
 }:PersonOpplysningerProps): JSX.Element => {
-  const [_isDirty, setIsDirty] = useState<boolean>(false)
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
   const onFornavnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsDirty(true)
     onValueChanged(`${personID}.personInfo.fornavn`, e.target.value)
   }
 
   const onEtternavnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsDirty(true)
     onValueChanged(`${personID}.personInfo.etternavn`, e.target.value)
   }
 
   const onFodselsdatoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsDirty(true)
     onValueChanged(`${personID}.personInfo.foedselsdato`, e.target.value)
   }
 
   const onKjoennChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsDirty(true)
     onValueChanged(`${personID}.personInfo.kjoenn`, e.target.value)
   }
 
   const onUtenlandskPinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsDirty(true)
     const pin: Array<Pin> = _.get(replySed, `${personID}.personInfo.pin`)
     const utendanskPinIndex = _.findIndex(pin, p => p.land !== 'NO')
     if (utendanskPinIndex >= 0) {
@@ -91,7 +85,6 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   }
 
   const onUtenlandskLandChange = (land: string) => {
-    setIsDirty(true)
     const pin: Array<Pin> = _.get(replySed, `${personID}.personInfo.pin`)
     const utendanskPinIndex = _.findIndex(pin, p => p.land !== 'NO')
     if (utendanskPinIndex >= 0) {
@@ -105,7 +98,6 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   }
 
   const onNorwegianPinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsDirty(true)
     const pin: Array<Pin> = _.get(replySed, `${personID}.personInfo.pin`)
     const norwegianPinIndex = _.findIndex(pin, p => p.land === 'NO')
     if (norwegianPinIndex >= 0) {
@@ -119,17 +111,14 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   }
 
   const onFoedestedByChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsDirty(true)
     onValueChanged(`${personID}.personInfo.pinMangler.foedested.by`, e.target.value)
   }
 
   const onFoedestedRegionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsDirty(true)
     onValueChanged(`${personID}.personInfo.pinMangler.foedested.region`, e.target.value)
   }
 
   const onFoedestedLandChange = (land: string) => {
-    setIsDirty(true)
     onValueChanged(`${personID}.personInfo.pinMangler.foedested.land`, land)
     return true
   }
@@ -139,7 +128,6 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   }
 
   const onSearchUser = () => {
-    setIsDirty(true)
     const pin: Array<Pin> = _.get(replySed, `${personID}.personInfo.pin`)
     const norwegianPin = _.find(pin, p => p.land === 'NO')
     if (norwegianPin) {
@@ -367,7 +355,6 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             </Column>
           </Row>
           )}
-      {_isDirty && '*'}
     </PersonOpplysningerDiv>
   )
 }

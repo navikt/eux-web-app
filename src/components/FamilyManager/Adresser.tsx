@@ -1,7 +1,7 @@
 import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
-import { AlignStartRow, FlexCenterDiv } from 'components/StyledComponents'
+import { AlignStartRow, FlexCenterDiv, PaddedDiv } from 'components/StyledComponents'
 import { Adresse, ReplySed } from 'declarations/sed'
 import { Kodeverk, Validation } from 'declarations/types'
 import CountrySelect from 'landvelger'
@@ -18,7 +18,6 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
 import { validateAdresse } from 'validation/adresser'
 
 interface AdresseProps {
@@ -29,12 +28,6 @@ interface AdresseProps {
   replySed: ReplySed
   validation: Validation
 }
-const AdresseDiv = styled.div`
-  padding: 1rem;
-  fieldset {
-    width: 100%;
-  }
-`
 
 const Adresser: React.FC<AdresseProps> = ({
   landkoderList,
@@ -55,7 +48,6 @@ const Adresser: React.FC<AdresseProps> = ({
   const [_newLand, setNewLand] = useState<string>('')
 
   const [_seeNewForm, setSeeNewForm] = useState<boolean>(false)
-  const [_isDirty, setIsDirty] = useState<boolean>(false)
   const [_validation, setValidation] = useState<Validation>({})
 
   const adresses: Array<Adresse> = _.get(replySed, `${personID}.adresser`)
@@ -112,7 +104,6 @@ const Adresser: React.FC<AdresseProps> = ({
     } else {
       const newAdresses = _.cloneDeep(adresses)
       newAdresses[i].type = type
-      setIsDirty(true)
       onValueChanged(`${personID}.adresser`, newAdresses)
     }
   }
@@ -124,7 +115,6 @@ const Adresser: React.FC<AdresseProps> = ({
     } else {
       const newAdresses = _.cloneDeep(adresses)
       newAdresses[i].gate = gate
-      setIsDirty(true)
       onValueChanged(`${personID}.adresser`, newAdresses)
     }
   }
@@ -136,7 +126,6 @@ const Adresser: React.FC<AdresseProps> = ({
     } else {
       const newAdresses = _.cloneDeep(adresses)
       newAdresses[i].postnummer = postnummer
-      setIsDirty(true)
       onValueChanged(`${personID}.adresser`, newAdresses)
     }
   }
@@ -148,7 +137,6 @@ const Adresser: React.FC<AdresseProps> = ({
     } else {
       const newAdresses = _.cloneDeep(adresses)
       newAdresses[i].by = by
-      setIsDirty(true)
       onValueChanged(`${personID}.adresser`, newAdresses)
     }
   }
@@ -160,7 +148,6 @@ const Adresser: React.FC<AdresseProps> = ({
     } else {
       const newAdresses = _.cloneDeep(adresses)
       newAdresses[i].bygning = bygning
-      setIsDirty(true)
       onValueChanged(`${personID}.adresser`, newAdresses)
     }
   }
@@ -172,7 +159,6 @@ const Adresser: React.FC<AdresseProps> = ({
     } else {
       const newAdresses = _.cloneDeep(adresses)
       newAdresses[i].region = region
-      setIsDirty(true)
       onValueChanged(`${personID}.adresser`, newAdresses)
     }
   }
@@ -184,7 +170,6 @@ const Adresser: React.FC<AdresseProps> = ({
     } else {
       const newAdresses = _.cloneDeep(adresses)
       newAdresses[i].land = land
-      setIsDirty(true)
       onValueChanged(`${personID}.adresser`, newAdresses)
     }
   }
@@ -208,7 +193,6 @@ const Adresser: React.FC<AdresseProps> = ({
   const onRemove = (index: number) => {
     const newAdresses = _.cloneDeep(adresses)
     const deletedAddresses: Array<Adresse> = newAdresses.splice(index, 1)
-    setIsDirty(true)
     if ( deletedAddresses && deletedAddresses.length > 0) {
       removeCandidateForDeletion(deletedAddresses[0].type + '-' + deletedAddresses[0].postnummer)
     }
@@ -406,7 +390,7 @@ const Adresser: React.FC<AdresseProps> = ({
   }
 
   return (
-    <AdresseDiv>
+    <PaddedDiv>
       {adresses?.map((a, i) => (renderRow(a, i)))}
       <hr />
       <VerticalSeparatorDiv />
@@ -427,8 +411,7 @@ const Adresser: React.FC<AdresseProps> = ({
             </Column>
           </Row>
           )}
-      {_isDirty && '*'}
-    </AdresseDiv>
+    </PaddedDiv>
   )
 }
 

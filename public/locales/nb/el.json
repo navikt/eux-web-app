@@ -62,8 +62,8 @@
   "option-trygdeordning-alderspensjon": "Alderspensjon",
   "option-trygdeordning-uførhet": "Uførhet",
 
-  "option-declarationOfPerformance-barnetrygd": "Barnetrygd",
-  "option-declarationOfPerformance-kontantstøtte": "Kontantstøtte",
+  "option-benefitCause-barnetrygd": "Barnetrygd",
+  "option-benefitCause-kontantstøtte": "Kontantstøtte",
 
   "placeholder-date-default": "DD.MM.ÅÅÅÅ",
   "placeholder-input-default": "Skriv inn...",
@@ -73,24 +73,22 @@
 
   "title-add-arbeidsperiode": "Legg til arbeidsperiode",
   "title-added-arbeidsperiode": "Tillagte arbeidsperioder",
+  "title-amount-name-and-currency": "Beløp, navn og valuta for familieytelser for barn",
+  "title-amount-for-whole-familie": "Beløp for familieytelse(r) for hele familien",
   "title-ansettelsesperioder" : "Ansettelsesperiode(r)",
-
+  "title-choose-formaal" : "Velg formål",
   "title-family-description": "Vennligst velg familierelasjoner SEDen angår",
   "title-family-tps": "Person uten registrert relasjon i TPS",
   "title-family-utland": "Person uten fødsels- eller d-nummer",
   "title-family-utland-add-form": "Du kan også legge til familierelasjoner fra utlandet som ikke er oppført i TPS",
+  "title-grant-date": "Innvilgelsdato for ytelser",
+  "title-motregning": "Motregning",
+  "title-newcase": "Opprett Sak",
   "title-periods-in-sender-country": "Trygdeperiode i avsenderlandet",
   "title-period-with-received-pension-from-sender-country": "Periode med mottatt pensjon i avsenderlandet",
   "title-reason-for-coming" : "Grunnlag for bosetting",
   "title-registered-arbeidsperiode" : "Registeret arbeidsperiode",
-
-  "title-amount-name-and-currency": "Beløp, navn og valuta for familieytelser for barn",
-  "title-amount-for-whole-familie": "Beløp for familieytelse(r) for hele familien",
-  "title-chooseFormaal" : "Velg formål",
-  "title-grant-date": "Innvilgelsdato for ytelser",
-  "title-motregning": "Motregning",
-  "title-newcase": "Opprett Sak",
+  "title-svarSed": "Velg RINA-sak og opprett SED",
   "title-vedlegg": "Vedleggsinformasjon",
-  "title-vedtak": "Vedtak",
-  "title-svarSed": "Velg RINA-sak og opprett SED"
+  "title-vedtak": "Vedtak"
 }

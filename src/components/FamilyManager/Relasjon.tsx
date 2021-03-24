@@ -42,7 +42,6 @@ const Relasjon: React.FC<RelasjonProps> = ({
   const [_currentQuestion3, setCurrentQuestion3] = useState<string>('')
   const [_currentQuestion4, setCurrentQuestion4] = useState<string>('')
 
-  const [_isDirty, setIsDirty] = useState<boolean>(false)
   const { t } = useTranslation()
 
   const relasjonTypeOptions = [
@@ -58,47 +57,38 @@ const Relasjon: React.FC<RelasjonProps> = ({
 
   const setRelasjon = (e: string) => {
     setCurrentRelasjon(e)
-    setIsDirty(true)
   }
 
   const setRelasjonType = (e: string) => {
     setCurrentRelasjonType(e)
-    setIsDirty(true)
   }
 
   const setSluttDato = (e: string) => {
     setCurrentSluttDato(e)
-    setIsDirty(true)
   }
 
   const setStartDato = (e: string) => {
     setCurrentStartDato(e)
-    setIsDirty(true)
   }
 
   const setForeldreansvar = (e: string) => {
     setCurrentForeldreansvar(e)
-    setIsDirty(true)
   }
 
   const setQuestion1 = (e: string) => {
     setCurrentQuestion1(e)
-    setIsDirty(true)
   }
 
   const setQuestion2 = (e: string) => {
     setCurrentQuestion2(e)
-    setIsDirty(true)
   }
 
   const setQuestion3 = (e: string) => {
     setCurrentQuestion3(e)
-    setIsDirty(true)
   }
 
   const setQuestion4 = (e: string) => {
     setCurrentQuestion4(e)
-    setIsDirty(true)
   }
 
   return (
@@ -300,8 +290,6 @@ const Relasjon: React.FC<RelasjonProps> = ({
           />
         </Column>
       </CenterRow>
-
-      {_isDirty && '*'}
     </RelasjonDiv>
   )
 }

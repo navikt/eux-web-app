@@ -89,7 +89,7 @@ const Formaal: React.FC<FormaalProps> = ({
   return (
     <>
       <Undertittel>
-        {t('el:title-chooseFormaal')}
+        {t('el:title-choose-formaal')}
       </Undertittel>
       <VerticalSeparatorDiv />
       {_formaals && _formaals.map((formaal: string, i: number) => {

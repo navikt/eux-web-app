@@ -45,14 +45,12 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
   const [_currentNationality, setCurrentNationality] = useState<string | undefined>(undefined)
   const [_currentFomdato, setCurrentFomdato] = useState<string>('')
   const [_seeNewNationalityForm, setSeeNewNationalityForm] = useState<boolean>(false)
-  const [_isDirty, setIsDirty] = useState<boolean>(false)
   const { t } = useTranslation()
   const statsborgerskaps: Array<Statsborgerskap> = _.get(replySed, `${personID}.personInfo.statsborgerskap`)
 
   const onNationalityRemove = (i: number) => {
     const newStatsborgerskaps = _.cloneDeep(statsborgerskaps)
     newStatsborgerskaps.splice(i, 1)
-    setIsDirty(true)
     onValueChanged(`${personID}.personInfo.statsborgerskap`, newStatsborgerskaps)
   }
 
@@ -62,7 +60,6 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
       land: _currentNationality!,
       fomdato: _currentFomdato
     })
-    setIsDirty(true)
     onValueChanged(`${personID}.personInfo.statsborgerskap`, newStatsborgerskaps)
 
     setCurrentNationality(undefined)
@@ -75,7 +72,6 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
     } else {
       const newStatsborgerskaps = _.cloneDeep(statsborgerskaps)
       newStatsborgerskaps[i].fomdato = e
-      setIsDirty(true)
       onValueChanged(`${personID}.personInfo.statsborgerskap`, newStatsborgerskaps)
     }
   }
@@ -86,7 +82,6 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
     } else {
       const newStatsborgerskaps = _.cloneDeep(statsborgerskaps)
       statsborgerskaps[i].land = e
-      setIsDirty(true)
       onValueChanged(`${personID}.personInfo.statsborgerskap`, newStatsborgerskaps)
     }
   }
@@ -174,7 +169,6 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
             </Column>
           </Row>
           )}
-      {_isDirty && '*'}
     </NasjonalitetDiv>
   )
 }

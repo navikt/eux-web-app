@@ -42,7 +42,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
   // replySed,
   validation
 }:FamilieYtelserProps): JSX.Element => {
-  const [_currentDesignationPerformance, setCurrentDesignationPerformance] = useState<string>('')
+  const [_currentBenefitCause, setCurrentBenefitCause] = useState<string>('')
   const [_currentGrantNumber, setCurrentGrantNumber] = useState<string>('')
   const [_currentAmount, setCurrentAmount] = useState<string>('')
   const [_currentCurrency, setCurrentCurrency] = useState<Country | undefined>(undefined)
@@ -50,48 +50,38 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
   const [_currentGrantEndDate, setCurrentGrantEndDate] = useState<string>('')
   const [_currentReceiverName, setCurrentReceiverName] = useState<string>('')
   const [_currentFrequency, setCurrentFrequency] = useState<string>('')
-
-  const [_isDirty, setIsDirty] = useState<boolean>(false)
   const { t } = useTranslation()
 
   const setGrantNumber = (e: string) => {
     setCurrentGrantNumber(e)
-    setIsDirty(true)
   }
 
-  const setDesignationPerformance = (e: string) => {
-    setCurrentDesignationPerformance(e)
-    setIsDirty(true)
+  const setBenefitCause = (e: string) => {
+    setCurrentBenefitCause(e)
   }
 
   const setAmount = (e: string) => {
     setCurrentAmount(e)
-    setIsDirty(true)
   }
 
   const setCurrency = (e: Country) => {
     setCurrentCurrency(e)
-    setIsDirty(true)
   }
 
   const setGrantStartDate = (e: string) => {
     setCurrentGrantStartDate(e)
-    setIsDirty(true)
   }
 
   const setGrantEndDate = (e: string) => {
     setCurrentGrantEndDate(e)
-    setIsDirty(true)
   }
 
   const setReceiverName = (e: string) => {
     setCurrentReceiverName(e)
-    setIsDirty(true)
   }
 
   const setFrequency = (e: string) => {
     setCurrentFrequency(e)
-    setIsDirty(true)
   }
 
   return (
@@ -103,21 +93,21 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
       <Row>
         <Column>
           <Select
-            data-test-id={'c-familymanager-' + personID + '-familieytelser-designationOfPerformance-select'}
-            error={validation['person-' + personID + '-familieytelser-designationOfPerformance']
-              ? validation['person-' + personID + '-familieytelser-designationOfPerformance']!.feilmelding
+            data-test-id={'c-familymanager-' + personID + '-familieytelser-benefitCause-select'}
+            error={validation['person-' + personID + '-familieytelser-benefitCause']
+              ? validation['person-' + personID + '-familieytelser-benefitCause']!.feilmelding
               : undefined}
             highContrast={highContrast}
-            id={'c-familymanager-' + personID + '-familieytelser-designationOfPerformance-select'}
+            id={'c-familymanager-' + personID + '-familieytelser-benefitCause-select'}
             label={t('label:designation-of-performance')}
-            onChange={(e: any) => setDesignationPerformance(e.value)}
+            onChange={(e: any) => setBenefitCause(e.value)}
             options={[{
-              label: t('el:option-declarationOfPerformance-barnetrygd'), value: 'Barnetrygd'
+              label: t('el:option-benefitCause-barnetrygd'), value: 'Barnetrygd'
             }, {
-              label: t('el:option-declarationOfPerformance-kontantstøtte'), value: 'Kontantstøtte'
+              label: t('el:option-benefitCause-kontantstøtte'), value: 'Kontantstøtte'
             }]}
             placeholder={t('el:placeholder-select-default')}
-            selectedValue={_currentDesignationPerformance}
+            selectedValue={_currentBenefitCause}
           />
         </Column>
         <Column>
@@ -242,7 +232,6 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
           />
         </Column>
       </Row>
-      {_isDirty && '*'}
     </RelasjonDiv>
   )
 }

@@ -42,7 +42,6 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
   const [_currentEpost, setCurrentEpost] = useState<string>('')
   const [_seeNewTelefonForm, setSeeNewTelefonForm] = useState<boolean>(false)
   const [_seeNewEpostForm, setSeeNewEpostForm] = useState<boolean>(false)
-  const [_isDirty, setIsDirty] = useState<boolean>(false)
   const { t } = useTranslation()
   const telefoner: Array<Telefon> = _.get(replySed, `${personID}.telefon`)
   const eposter: Array<Epost> = _.get(replySed, `${personID}.epost`)
@@ -50,14 +49,12 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
   const onTelefonRemoved = (i: number) => {
     const newTelefoner = _.cloneDeep(telefoner)
     newTelefoner.splice(i, 1)
-    setIsDirty(true)
     onValueChanged(`${personID}.telefon`, newTelefoner)
   }
 
   const onEpostRemoved = (i: number) => {
     const newEposter = _.cloneDeep(eposter)
     newEposter.splice(i, 1)
-    setIsDirty(true)
     onValueChanged(`${personID}.epost`, newEposter)
   }
 
@@ -67,7 +64,6 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
       type: _currentType,
       nummer: _currentNummer
     })
-    setIsDirty(true)
     setCurrentType('')
     setCurrentNummer('')
     onValueChanged(`${personID}.telefon`, newTelefoner)
@@ -78,7 +74,6 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
     newEposter.push({
       adresse: _currentEpost
     })
-    setIsDirty(true)
     setCurrentEpost('')
     onValueChanged(`${personID}.epost`, newEposter)
   }
@@ -89,7 +84,6 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
     } else {
       const newTelefoner = _.cloneDeep(telefoner)
       newTelefoner[i].type = e
-      setIsDirty(true)
       onValueChanged(`${personID}.telefon`, newTelefoner)
     }
   }
@@ -100,7 +94,6 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
     } else {
       const newTelefoner = _.cloneDeep(telefoner)
       newTelefoner[i].nummer = e
-      setIsDirty(true)
       onValueChanged(`${personID}.telefon`, newTelefoner)
     }
   }
@@ -111,7 +104,6 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
     } else {
       const newEposter = _.cloneDeep(eposter)
       newEposter[i].adresse = e
-      setIsDirty(true)
       onValueChanged(`${personID}.epost`, newEposter)
     }
   }
@@ -259,7 +251,6 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
             </Column>
           </Row>
           )}
-      {_isDirty && '*'}
     </KontaktinformasjonDiv>
   )
 }

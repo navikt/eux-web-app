@@ -2,17 +2,21 @@
   "abroad-id": "Utenlandsk ID",
   "additional-information": "Ytterligere informasjon",
   "adresse": "Adresse",
+  "amount": "Beløp",
   "arbeidsforhold": "Arbeidsforhold/Arbeidsgivere",
   "arbeidsperiode": "Arbeidsperiode",
   "are-you-sure": "Er du sikker?",
   "attachments" : "Vedlegg",
 
+  "benefit-cause": "Betegnelse på ytelse",
   "birthdate": "Fødselsdato",
   "bostedsland" : "Bostedsland",
   "by": "By",
   "bygning": "Bygning",
 
+  "children-name": "Barnets navn",
   "choose" : "Velg",
+  "currency": "Valuta",
 
   "end-date": "Sluttdato",
 
@@ -38,19 +42,23 @@
   "lastname": "Etternavn",
 
   "medlemsperiode" : "Medlemsperiode",
+  "monthly": "Månedlig",
   "moving-date-sender": "Flyttedato til avsenderlandet",
   "moving-date-receiver": "Flyttedato til mottakerslandet",
 
   "name": "Navn",
+
 
   "open": "Åpen",
   "oppholdsland": "Oppholdsland",
   "orgnr": "Orgnr.",
 
   "periode": "Periode",
+  "period-frequency": "Avgrensning av periode",
   "period-in-sender-country": "Trygdeperiode i avsenderlandet",
   "postnummer": "Postnummer",
 
+  "receiver-name": "Mottakers navn",
   "region" : "Region",
   "rina-saksnummer": "RINA saksnummer",
   "rina-document-id": "Velg SED Type",
@@ -61,6 +69,8 @@
   "statsborgerskap" : "Statsborgerskap",
 
   "type-pensjon": "Type pensjon",
+
+  "yearly": "Årlig",
 
   "---------" : "--------",
 
@@ -78,7 +88,6 @@
   "allKids-radiogroup" : "Vedtak angående alle barn som er oppgitt i denne SEDen",
   "allKids-select": "Avhuk de barn vedtaket <strong><U>ikke</U></strong> gjelder",
 
-  "amount": "Beløp",
   "application-information": "Informasjon om søknaden",
 
   "arbeidsforhold-type": "Type arbeidsforhold",
@@ -96,7 +105,7 @@
   "children-in-household-question-2": "Bor barnet i samme husstand som ektefellen/partneren?",
   "children-in-household-question-3": "Bor barnet i samme husstand som den aktuelle personen?",
   "children-in-household-question-4": "Bor barnet i institusjon?",
-  "children-name": "Barnets navn",
+
 
   "chooseSpørreSed" : "Velg spørre SED",
   "chooseSvarSed" : "Velg svar SED",
@@ -107,11 +116,10 @@
   "createCaseInRina" : "Opprett sak i RINA",
   "createNewCaseInGosys" : "Lenke til Gosys",
   "createSedEditInRINA" : "Opprett SED, rediger i RINA",
-  "currency": "Valuta",
   "date-relation": "Dato for relasjon",
   "deceased" : "Avdød",
   "dekning-trygdeordningen" : "Dekning av trygdeordningen",
-  "designation-of-performance": "Betegnelse på ytelse",
+
   "dokumentID": "DokumentID",
   "duration-stay": "Oppholdets varighet",
   "elements-of-personal-situation": "Elementer i personlig situasjon",
@@ -149,7 +157,7 @@
   "local-sakId": "Lokale sakID",
   "man" : "Mann",
 
-  "monthly": "Månedlig",
+
   "motregning-request": "Anmodning eller svar på anmodning om motregning av familieytelser for barn",
   "motregning-request-1": "Anmodning om motregning per barn",
   "motregning-request-2": "Svar på anmodning om motregning per barn",
@@ -170,7 +178,6 @@
   "other-person": "Annet person",
   "other-relation": "Annen relasjon",
   "partner": "Ektefelle/partner",
-  "period-frequency": "Avgrensning av periode",
 
   "perioder": "Perioder",
   "person-name": "Navn på person",
@@ -178,7 +185,7 @@
 
   "preview-sed": "Forhåndsvis SED",
 
-  "receiver-name": "Mottakers navn",
+
   "relation-duration": "Relasjonens varighet",
   "remove-birthplace" : "Fjern fødested",
   "reply": "Besvar",
@@ -224,6 +231,5 @@
   "vedtak-type" : "Vedtak type",
   "whole-family" : "Hele familien",
   "woman": "Kvinne",
-  "yearly": "Årlig",
   "yes": "Ja"
 }

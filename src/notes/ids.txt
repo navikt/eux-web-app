@@ -1,6 +1,28 @@
-FOR VALIDATION: remove c-, -{type}
-
 IDs 									                                               			VALIDATION
+
+c-familymanager-{personID}-adresser-type-radiogroup
+c-familymanager-{personID}-adresser-gate-input
+c-familymanager-{personID}-adresser-postnummer-input
+c-familymanager-{personID}-adresser-by-input
+c-familymanager-{personID}-adresser-land-countryselect
+c-familymanager-{personID}-adresser-bygning-input
+c-familymanager-{personID}-adresser-region-input
+c-familymanager-{personID}-adresser[{i}]-type-radiogroup
+c-familymanager-{personID}-adresser[{i}]-gate-input
+c-familymanager-{personID}-adresser[{i}]-postnummer-input
+c-familymanager-{personID}-adresser[{i}]-by-input
+c-familymanager-{personID}-adresser[{i}]-land-countryselect
+c-familymanager-{personID}-adresser[{i}]-bygning-input
+c-familymanager-{personID}-adresser[{i}]-region-input
+
+c-familymanager-{personID}-beløpNavnOgValuta-name-input
+c-familymanager-{personID}-beløpNavnOgValuta-benefitCause-select
+c-familymanager-{personID}-beløpNavnOgValuta-amount-input
+c-familymanager-{personID}-beløpNavnOgValuta-currency-countryselect
+c-familymanager-{personID}-beløpNavnOgValuta-startdato-input
+c-familymanager-{personID}-beløpNavnOgValuta-sluttdato-input
+c-familymanager-{personID}-beløpNavnOgValuta-receiver-input
+c-familymanager-{personID}-beløpNavnOgValuta-frequency-radiogroup
 
 c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-navn-input              - {INTERNAL} arbeidsforhold-{personID}-arbeidsforholdet[{i}]-navn
 c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-orgnr-input             - {INTERNAL} arbeidsforhold-{personID}-arbeidsforholdet[{i}]-orgnr
@@ -28,22 +50,6 @@ c-familymanager-{personID}-personensstatus-reasontocome-startdato-input         
 c-familymanager-{personID}-personensstatus-reasontocome-sluttdato-input             - {GLOBAL}
 c-familymanager-{personID}-personensstatus-reasontocome-sender-input             - {GLOBAL}
 c-familymanager-{personID}-personensstatus-reasontocome-receiver-input             - {GLOBAL}
-
-c-familymanager-{personID}-adresser-type-radiogroup
-c-familymanager-{personID}-adresser-gate-input
-c-familymanager-{personID}-adresser-postnummer-input
-c-familymanager-{personID}-adresser-by-input
-c-familymanager-{personID}-adresser-land-countryselect
-c-familymanager-{personID}-adresser-bygning-input
-c-familymanager-{personID}-adresser-region-input
-c-familymanager-{personID}-adresser[{i}]-type-radiogroup
-c-familymanager-{personID}-adresser[{i}]-gate-input
-c-familymanager-{personID}-adresser[{i}]-postnummer-input
-c-familymanager-{personID}-adresser[{i}]-by-input
-c-familymanager-{personID}-adresser[{i}]-land-countryselect
-c-familymanager-{personID}-adresser[{i}]-bygning-input
-c-familymanager-{personID}-adresser[{i}]-region-input
-
 
 c-formaal-select                                    - formaal
 

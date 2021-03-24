@@ -35,32 +35,26 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
 
   const [_currentElementsOfPersonalSituation, setCurrentElementsOfPersonalSituation] = useState<string>('')
 
-  const [_isDirty, setIsDirty] = useState<boolean>(false)
   const { t } = useTranslation()
 
   const setAvsenderDato = (e: string) => {
     setCurrentSenderDato(e)
-    setIsDirty(true)
   }
 
   const setMottakerDato = (e: string) => {
     setCurrentReceiverDato(e)
-    setIsDirty(true)
   }
 
   const setSluttDato = (e: string) => {
     setCurrentSluttDato(e)
-    setIsDirty(true)
   }
 
   const setStartDato = (e: string) => {
     setCurrentStartDato(e)
-    setIsDirty(true)
   }
 
   const setElementsOfPersonalSituation = (e: string) => {
     setCurrentElementsOfPersonalSituation(e)
-    setIsDirty(true)
   }
 
   return (
@@ -147,7 +141,6 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
           </TextAreaDiv>
         </Column>
       </Row>
-      {_isDirty && '*'}
     </RelasjonDiv>
   )
 }

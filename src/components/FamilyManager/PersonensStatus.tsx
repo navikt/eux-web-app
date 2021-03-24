@@ -41,12 +41,10 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
   arbeidsforholdList
 }:PersonensStatusProps): JSX.Element => {
   const [_arbeidsforhold, setArbeidsforhold] = useState<string>('')
-  const [_isDirty, setIsDirty] = useState<boolean>(false)
 
   const { t } = useTranslation()
 
   const onArbeidsforholdChanged = (e: string) => {
-    setIsDirty(true)
     setArbeidsforhold(e)
   }
 
@@ -129,8 +127,6 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
           validation={validation}
         />
       </>
-
-      {_isDirty && '*'}
     </PersonensStatusDiv>
   )
 }
