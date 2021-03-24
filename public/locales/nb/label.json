@@ -1,11 +1,16 @@
 {
   "abroad-id": "Utenlandsk ID",
+  "additional-information": "Ytterligere informasjon",
+  "adresse": "Adresse",
   "arbeidsforhold": "Arbeidsforhold/Arbeidsgivere",
   "arbeidsperiode": "Arbeidsperiode",
   "are-you-sure": "Er du sikker?",
   "attachments" : "Vedlegg",
 
   "birthdate": "Fødselsdato",
+  "bostedsland" : "Bostedsland",
+  "by": "By",
+  "bygning": "Bygning",
 
   "choose" : "Velg",
 
@@ -22,22 +27,31 @@
   "fnr-dnr" : "F.nummer/d-nr.",
   "formaal": "Formål",
 
+  "gateadresse": "Gateadresse",
   "gender" : "Kjønn",
 
   "hide-form": "Skjul skjema",
+
+  "kontaktadresse": "Kontaktadresse",
 
   "land": "Land",
   "lastname": "Etternavn",
 
   "medlemsperiode" : "Medlemsperiode",
+  "moving-date-sender": "Flyttedato til avsenderlandet",
+  "moving-date-receiver": "Flyttedato til mottakerslandet",
 
   "name": "Navn",
 
   "open": "Åpen",
+  "oppholdsland": "Oppholdsland",
   "orgnr": "Orgnr.",
 
+  "periode": "Periode",
   "period-in-sender-country": "Trygdeperiode i avsenderlandet",
+  "postnummer": "Postnummer",
 
+  "region" : "Region",
   "rina-saksnummer": "RINA saksnummer",
   "rina-document-id": "Velg SED Type",
 
@@ -46,13 +60,15 @@
   "start-date": "Startdato",
   "statsborgerskap" : "Statsborgerskap",
 
+  "type-pensjon": "Type pensjon",
+
+  "---------" : "--------",
+
   "add-as-attachment-to-sed" : "Legge til vedlegg til SED",
   "add-birthplace": "Legg til fødested",
   "add-nationality": "Legg til ny nasjonalitet",
-  "add-new-adresse": "Legg til ny adresse/seksjon",
   "add-new-epost": "Legg til ny epost",
   "add-new-relationship" : "Legg til ny familierelasjon",
-  "add-new-periode": "Legg til ny periode",
   "add-new-person": "Legg til ny person",
   "add-new-reason-to-coming": "Legg til grunnlag for bosetting",
   "add-new-telefon": "Legg til ny telefon",
@@ -61,10 +77,8 @@
   "addAttachments" : "Legg til vedlegg",
   "allKids-radiogroup" : "Vedtak angående alle barn som er oppgitt i denne SEDen",
   "allKids-select": "Avhuk de barn vedtaket <strong><U>ikke</U></strong> gjelder",
-  "additional-information": "Ytterligere informasjon",
-  "adresse": "Adresse",
+
   "amount": "Beløp",
-  "ansettelsesperioder" : "Ansettelsesperiode(r)",
   "application-information": "Informasjon om søknaden",
 
   "arbeidsforhold-type": "Type arbeidsforhold",
@@ -72,11 +86,8 @@
   "back" : "Tilbake",
 
   "birthPlace": "Fødested",
-  "bostedsland" : "Bostedsland",
   "buc": "BUC",
   "boy" : "Gutt",
-  "by": "By",
-  "bygning": "Bygning",
 
   "caseNumber" : "Saksnummer",
   "caseOwner" : "Motpart/sakseier",
@@ -118,7 +129,6 @@
 
   "fraDato": "Fra dato",
   "freetext": "Fritekst",
-  "gateadresse": "Gateadresse",
 
   "get" : "Hent",
   "girl" : "Jente",
@@ -131,7 +141,6 @@
   "institusjon": "Mottaker institusjon",
   "is-created": "er opprettet",
   "journalpostID": "JournalpostID",
-  "kontaktadresse": "Kontaktadresse",
 
 
   "lastModified": "Siste oppdatert",
@@ -144,8 +153,7 @@
   "motregning-request": "Anmodning eller svar på anmodning om motregning av familieytelser for barn",
   "motregning-request-1": "Anmodning om motregning per barn",
   "motregning-request-2": "Svar på anmodning om motregning per barn",
-  "moving-date-sender": "Flyttedato til avsenderlandet",
-  "moving-date-receiver": "Flyttedato til mottakerslandet",
+
   "mother": "Mor",
 
   "nameatbirth": "Navn ved fødsel",
@@ -155,7 +163,7 @@
   "norwegian-fnr" : "Norsk personnummer",
   "norwegian-fnr-description": "Finn bruker på norsk personnummer og hent opplysninger fra TPS",
   "not-available": "Ikke tilgjengelig",
-  "oppholdsland": "Oppholdsland",
+
   "opplysninger": "Hvilke opplysninger...?",
 
   "other": "Annet",
@@ -163,20 +171,18 @@
   "other-relation": "Annen relasjon",
   "partner": "Ektefelle/partner",
   "period-frequency": "Avgrensning av periode",
-  "periode": "Periode",
+
   "perioder": "Perioder",
-  "period-with-received-pension-from-sender-country": "Periode med mottatt pensjon i avsenderlandet",
   "person-name": "Navn på person",
   "pin": "PIN",
-  "postnummer": "Postnummer",
+
   "preview-sed": "Forhåndsvis SED",
-  "reason-for-coming" : "Grunnlag for bosetting",
+
   "receiver-name": "Mottakers navn",
   "relation-duration": "Relasjonens varighet",
   "remove-birthplace" : "Fjern fødested",
   "reply": "Besvar",
   "resetForm": "AVSLUTT UTFYLLING",
-  "region" : "Region",
   "relasjon-title": "Relasjon til det enkelte barn",
   "relation-with" : "Relasjon med",
 

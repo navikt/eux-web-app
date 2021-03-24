@@ -1,7 +1,7 @@
 import Avsenderlandet from 'components/FamilyManager/Arbeidsforhold/Avsenderlandet'
 import Ansatt from 'components/FamilyManager/Arbeidsforhold/Ansatt'
 import NotAnsatt from 'components/FamilyManager/Arbeidsforhold/NotAnsatt'
-import Op3Other from 'components/FamilyManager/Arbeidsforhold/Op3Other'
+import WithSubsidies from 'components/FamilyManager/Arbeidsforhold/WithSubsidies'
 import ReasonToCome from 'components/FamilyManager/Arbeidsforhold/ReasonToCome'
 import LesMer from 'components/LesMer/LesMer'
 import { ReplySed } from 'declarations/sed'
@@ -31,7 +31,7 @@ const PersonensStatusDiv = styled.div`
 `
 
 const PersonensStatus: React.FC<PersonensStatusProps> = ({
-  // highContrast,
+  highContrast,
   // onValueChanged,
   validation,
   gettingArbeidsforholdList,
@@ -106,20 +106,13 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
       )}
       {(_arbeidsforhold !== 'arbeidsforhold-1') && (
         <NotAnsatt
-          arbeidsforholdList={arbeidsforholdList}
-          getArbeidsforholdList={getArbeidsforholdList}
-          gettingArbeidsforholdList={gettingArbeidsforholdList}
-          replySed={replySed}
           personID={personID}
           validation={validation}
         />
       )}
       {(_arbeidsforhold !== 'arbeidsforhold-1' && _arbeidsforhold !== 'arbeidsforhold-2') && (
-        <Op3Other
-          arbeidsforholdList={arbeidsforholdList}
-          getArbeidsforholdList={getArbeidsforholdList}
-          gettingArbeidsforholdList={gettingArbeidsforholdList}
-          replySed={replySed}
+        <WithSubsidies
+          highContrast={highContrast}
           personID={personID}
           validation={validation}
         />

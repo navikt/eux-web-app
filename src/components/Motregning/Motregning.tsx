@@ -2,6 +2,7 @@ import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
 import Select from 'components/Select/Select'
+import { TextAreaDiv } from 'components/StyledComponents'
 import { F002Sed, Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -27,11 +28,6 @@ const PanelDiv = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-`
-const TextAreaDiv = styled.div`
-  textarea {
-    width: 100%;
-  }
 `
 const AlignEndRow = styled(Row)`
   align-items: flex-end;

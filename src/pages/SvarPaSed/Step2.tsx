@@ -41,6 +41,7 @@ import FileFC, { File } from 'forhandsvisningsfil'
 import Modal from 'components/Modal/Modal'
 
 import { validate } from './validation'
+import { TextAreaDiv } from 'components/StyledComponents'
 
 const FlexDiv = styled.div`
   display: flex;
@@ -61,11 +62,6 @@ const AlertstripeDiv = styled.div`
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
   width: 50%;
-`
-const TextAreaDiv = styled.div`
-  textarea {
-    width: 100%;
-  }
 `
 const MinimalContentDiv = styled.div`
   min-height: 200px;

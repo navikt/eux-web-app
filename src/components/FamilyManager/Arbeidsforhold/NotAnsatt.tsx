@@ -1,12 +1,13 @@
 import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
-import { AlignEndRow } from 'components/StyledComponents'
+import { AlignStartRow, FlexCenterDiv, TextAreaDiv } from 'components/StyledComponents'
 import { Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
+import moment from 'moment'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
-import { Undertittel } from 'nav-frontend-typografi'
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
   HighContrastFlatknapp,
@@ -18,23 +19,24 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
 
-const TextAreaDiv = styled.div`
-  textarea {
-    width: 100%;
-  }
-`
-const NotAnsatt = ({
+export interface NotAnsattProps {
+  personID: string
+  validation: Validation
+}
+
+const NotAnsatt: React.FC<NotAnsattProps> = ({
   personID, validation
-}: any) => {
+}: NotAnsattProps): JSX.Element => {
   const { t } = useTranslation()
   const [_perioder, setPerioder] = useState<Array<Periode>>([])
+  const [_comment, setComment] = useState<string>('')
+  const [_confirmDelete, setConfirmDelete] = useState<Array<string>>([])
   const [_newStartDato, setNewStartDato] = useState<string>('')
   const [_newSluttDato, setNewSluttDato] = useState<string>('')
   const [_seeNewForm, setSeeNewForm] = useState<boolean>(false)
-  const [_comment, setComment] = useState<string>('')
   const [_validation, setValidation] = useState<Validation>({})
+
   const namespace = 'familymanager-' + personID + '-personensstatus-notansatt'
 
   const resetValidation = (key: string): void => {
@@ -60,6 +62,12 @@ const NotAnsatt = ({
         feilmelding: t('message:validation-invalidDate')
       } as FeiloppsummeringFeil
     }
+    if (_.find(_perioder, p => p.startdato === _newStartDato)) {
+      validation[namespace + '-startdato'] = {
+        skjemaelementId: 'c-' + namespace + '-startdato-input',
+        feilmelding: t('message:validation-duplicateStartDate')
+      } as FeiloppsummeringFeil
+    }
     if (_newSluttDato && !_newSluttDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
       validation[namespace + '-sluttdato'] = {
         skjemaelementId: 'c-' + namespace + '-sluttdato-input',
@@ -70,26 +78,36 @@ const NotAnsatt = ({
     return hasNoValidationErrors(validation)
   }
 
-  const setStartDato = (e: string, i: number) => {
+  const onAddNewClicked = () => setSeeNewForm(true)
+
+  const addCandidateForDeletion = (key: string) => {
+    setConfirmDelete(_confirmDelete.concat(key))
+  }
+
+  const removeCandidateForDeletion = (key: string) => {
+    setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
+  }
+
+  const setStartDato = (dato: string, i: number) => {
     if (i < 0) {
-      setNewStartDato(e)
+      setNewStartDato(dato)
       resetValidation( namespace + '-startdato')
     } else {
       const newPerioder = _.cloneDeep(_perioder)
-      newPerioder[i].startdato = e
+      newPerioder[i].startdato = dato
       setPerioder(newPerioder)
       // onValueChanged(`${personID}.XXX`, newPerioder)
       setNewStartDato('')
     }
   }
 
-  const setSluttDato = (e: string, i: number) => {
+  const setSluttDato = (dato: string, i: number) => {
     if (i < 0) {
-      setNewSluttDato(e)
+      setNewSluttDato(dato)
       resetValidation( namespace + '-sluttdato')
     } else {
       const newPerioder = _.cloneDeep(_perioder)
-      newPerioder[i].sluttdato = e
+      newPerioder[i].sluttdato = dato
       setPerioder(newPerioder)
       // onValueChanged(`${personID}.XXX`, newPerioder)
       setNewSluttDato('')
@@ -107,10 +125,13 @@ const NotAnsatt = ({
     resetForm()
   }
 
-  const onRemove = (i: number) => {
+  const onRemove = (index: number) => {
     const newPerioder: Array<Periode> = _.cloneDeep(_perioder)
-    newPerioder.splice(i, 1)
+    const deletedPeriods: Array<Periode> = newPerioder.splice(index, 1)
     setPerioder(newPerioder)
+    if ( deletedPeriods && deletedPeriods.length > 0) {
+      removeCandidateForDeletion(deletedPeriods[0].startdato)
+    }
     // onValueChanged(`${personID}.XXX`, newPerioder)
   }
 
@@ -133,104 +154,142 @@ const NotAnsatt = ({
       setPerioder(newPerioder)
       resetForm()
       // onValueChanged(`${personID}.XXX`, newPerioder)
-      setSeeNewForm(!_seeNewForm)
     }
   }
 
-  const renderRow = (p: Periode | undefined, i: number) => (
-    <AlignEndRow>
-      <Column>
-        <HighContrastInput
-          data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-startdato-input'}
-          feil={i < 0 ?
-            _validation[namespace + '-startdato']?.feilmelding :
-            validation[namespace + '[' + i + ']-startdato']?.feilmelding}
-          id={'c-' + namespace + '[' + i + ']-startdato-input'}
-          label={t('label:start-date')}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value, i)}
-          placeholder={t('el:placeholder-date-default')}
-          value={i < 0 ? _newStartDato : p?.startdato}
-        />
-      </Column>
-      <Column>
-        <HighContrastInput
-          data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-input'}
-          feil={i < 0 ?
-            _validation[namespace + '-sluttdato']?.feilmelding :
-            validation[namespace + '[' + i + ']-sluttdato']?.feilmelding}
-          id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-input'}
-          label={t('label:end-date')}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value, i)}
-          placeholder={t('el:placeholder-date-default')}
-          value={i < 0 ? _newSluttDato : p?.sluttdato}
-        />
+  const renderRow = (p: Periode | undefined, i: number) => {
 
-      </Column>
-      <Column>
-        <div>
-          <HighContrastFlatknapp
-          mini
-          kompakt
-          onClick={() => i < 0 ? onAdd() : onRemove(i)}
+    const key = i < 0 ? 'new' : p?.startdato // assume startdato is unique
+    const startDatoError = i < 0 ? _validation[namespace + '-startdato']?.feilmelding : validation[namespace + '[' + i + ']-startdato']?.feilmelding
+    const sluttDatoError = i < 0 ? _validation[namespace + '-sluttdato']?.feilmelding : validation[namespace + '[' + i + ']-sluttdato']?.feilmelding
+    const candidateForDeletion =  i < 0 ? false : key && _confirmDelete.indexOf(key) >= 0
+
+    return (
+      <>
+        <AlignStartRow
+          className={classNames('slideInFromLeft')}
         >
-          {i < 0 ? <Add /> : <Trashcan />}
-          <HorizontalSeparatorDiv data-size='0.5' />
-          {i < 0 ? t('label:add') : t('label:remove')}
-        </HighContrastFlatknapp>
-          {_seeNewForm && i < 0 && (
-            <>
-              <HorizontalSeparatorDiv/>
+        <Column>
+          <HighContrastInput
+            data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-startdato-input'}
+            feil={startDatoError}
+            id={'c-' + namespace + '[' + i + ']-startdato-input'}
+            label={t('label:start-date')}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value, i)}
+            placeholder={t('el:placeholder-date-default')}
+            value={i < 0 ? _newStartDato : p?.startdato}
+          />
+        </Column>
+        <Column>
+          <HighContrastInput
+            data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-input'}
+            feil={sluttDatoError}
+            id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-input'}
+            label={t('label:end-date')}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value, i)}
+            placeholder={t('el:placeholder-date-default')}
+            value={i < 0 ? _newSluttDato : p?.sluttdato}
+          />
+        </Column>
+        <Column>
+          {candidateForDeletion ? (
+            <FlexCenterDiv className={classNames('nolabel', 'slideInFromRight')}>
+              <Normaltekst>
+                {t('label:are-you-sure')}
+              </Normaltekst>
+              <HorizontalSeparatorDiv data-size='0.5' />
               <HighContrastFlatknapp
                 mini
                 kompakt
-                onClick={onCancel}
+                onClick={() => onRemove(i)}
               >
-            {t('el:button-cancel')}
-          </HighContrastFlatknapp>
-          </>
-          )}
-        </div>
-      </Column>
-    </AlignEndRow>
-  )
+                {t('label:yes')}
+              </HighContrastFlatknapp>
+              <HorizontalSeparatorDiv data-size='0.5' />
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                onClick={() => removeCandidateForDeletion(key!)}
+              >
+                {t('label:no')}
+              </HighContrastFlatknapp>
+            </FlexCenterDiv>
+          )
+          : (
+            <div className={classNames('nolabel')}>
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                onClick={() => i < 0 ? onAdd() : addCandidateForDeletion(key!)}
+              >
+                {i < 0 ? <Add/> : <Trashcan/>}
+                <HorizontalSeparatorDiv data-size='0.5'/>
+                {i < 0 ? t('el:button-add') : t('el:button-remove')}
+              </HighContrastFlatknapp>
+              {_seeNewForm && i < 0 && (
+                <>
+                  <HorizontalSeparatorDiv/>
+                  <HighContrastFlatknapp
+                    mini
+                    kompakt
+                    onClick={onCancel}
+                  >
+                    {t('el:button-cancel')}
+                  </HighContrastFlatknapp>
+                </>
+              )}
+            </div>
+            )}
+        </Column>
+      </AlignStartRow>
+      <VerticalSeparatorDiv/>
+      </>
+    )
+  }
 
   return (
     <>
       <Undertittel>
-        {t('label:ansettelsesperioder')}
+        {t('el:title-ansettelsesperioder')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      {_perioder.map(renderRow)}
+      {_perioder
+        .sort((a, b) =>
+          moment(a.startdato).isSameOrAfter(moment(b.startdato)) ? -1 : 1
+        )
+        .map(renderRow)}
       <hr />
-      {_seeNewForm && renderRow(undefined, -1)}
       <VerticalSeparatorDiv />
-      <Row>
-        <Column>
-          <HighContrastFlatknapp
-            mini
-            kompakt
-            onClick={() => setSeeNewForm(!_seeNewForm)}
-          >
-            <Add />
-            <HorizontalSeparatorDiv data-size='0.5' />
-            {t('label:add-new-periode')}
-          </HighContrastFlatknapp>
-        </Column>
+      {_seeNewForm ?
+        renderRow(undefined, -1) :
+        (
+        <Row>
+          <Column>
+            <HighContrastFlatknapp
+              mini
+              kompakt
+              onClick={onAddNewClicked}
+            >
+              <Add />
+              <HorizontalSeparatorDiv data-size='0.5' />
+              {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+            </HighContrastFlatknapp>
+          </Column>
       </Row>
+      )}
       <VerticalSeparatorDiv />
       <TextAreaDiv>
         <HighContrastTextArea
-          data-test-id={'c-familymanager-' + personID + '-personensstatus-selvstendig-info-textarea'}
-          id={'c-familymanager-' + personID + '-personensstatus-selvstendig-info-textarea'}
           className={classNames({
-            'skjemaelement__input--harFeil':
-              validation['c-familymanager-' + personID + '-personensstatus-selvstendig-info-textarea']
+            'skjemaelement__input--harFeil': validation[namespace + '-comment']?.feilmelding
           })}
-          placeholder={t('el:placeholder-texttosed')}
+          data-test-id={'c-' + namespace + '-comment-textarea'}
+          feil={validation[namespace + '-comment']?.feilmelding}
+          id={'c-' + namespace + '-comment-textarea'}
           label={t('label:additional-information')}
-          onChange={(e: any) => setComment(e.target.value)}
+          placeholder={t('el:placeholder-text-to-sed')}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setComment(e.target.value)}
           value={_comment}
-          feil={undefined}
         />
       </TextAreaDiv>
     </>

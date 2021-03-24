@@ -7,15 +7,42 @@ c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-orgnr-input             - {INT
 c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-startdato-input         - {INTERNAL} arbeidsforhold-{personID}-arbeidsforholdet[{i}]-startdato
 c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-sluttdato-input         - {INTERNAL} arbeidsforhold-{personID}-arbeidsforholdet[{i}]-sluttdato
 
-c-familymanager-{personID}-personensstatus-avsenderlandet-startdato-input - {GLOBAL}
-c-familymanager-{personID}-personensstatus-avsenderlandet-sluttdato-input - {GLOBAL}
-c-familymanager-{personID}-personensstatus-ansatt-startdato-input         - {INTERNAL}
-c-familymanager-{personID}-personensstatus-ansatt-sluttdato-input         - {INTERNAL}
-c-familymanager-{personID}-personensstatus-ansatt-orgnr-input             - {INTERNAL}
-c-familymanager-{personID}-personensstatus-ansatt-navn-input              - {INTERNAL}
-c-familymanager-{personID}-personensstatus-notansatt[{i}]-startdato-input - {GLOBAL}
-c-familymanager-{personID}-personensstatus-notansatt-startdato-input      - {INTERNAL}
+c-familymanager-{personID}-personensstatus-avsenderlandet-startdato-input         - {GLOBAL}
+c-familymanager-{personID}-personensstatus-avsenderlandet-sluttdato-input         - {GLOBAL}
+c-familymanager-{personID}-personensstatus-ansatt-startdato-input                 - {INTERNAL}
+c-familymanager-{personID}-personensstatus-ansatt-sluttdato-input                 - {INTERNAL}
+c-familymanager-{personID}-personensstatus-ansatt-orgnr-input                     - {INTERNAL}
+c-familymanager-{personID}-personensstatus-ansatt-navn-input                      - {INTERNAL}
+c-familymanager-{personID}-personensstatus-notansatt-startdato-input              - {INTERNAL}
+c-familymanager-{personID}-personensstatus-notansatt-sluttdato-input              - {INTERNAL}
+c-familymanager-{personID}-personensstatus-notansatt-comment-textarea             - {GLOBAL}
+c-familymanager-{personID}-personensstatus-notansatt[{i}]-startdato-input         - {GLOBAL}
+c-familymanager-{personID}-personensstatus-notansatt[{i}]-sluttdato-input         - {GLOBAL}
+c-familymanager-{personID}-personensstatus-withsubsidies-startdato-input         - {INTERNAL}
+c-familymanager-{personID}-personensstatus-withsubsidies-sluttdato-input         - {INTERNAL}
+c-familymanager-{personID}-personensstatus-withsubsidies-pensjonytpe-select      - {INTERNAL}
+c-familymanager-{personID}-personensstatus-withsubsidies[{i}]-startdato-input    - {GLOBAL}
+c-familymanager-{personID}-personensstatus-withsubsidies[{i}]-sluttdato-input    - {GLOBAL}
+c-familymanager-{personID}-personensstatus-withsubsidies[{i}]-pensjonytpe-select - {GLOBAL}
+c-familymanager-{personID}-personensstatus-reasontocome-startdato-input             - {GLOBAL}
+c-familymanager-{personID}-personensstatus-reasontocome-sluttdato-input             - {GLOBAL}
+c-familymanager-{personID}-personensstatus-reasontocome-sender-input             - {GLOBAL}
+c-familymanager-{personID}-personensstatus-reasontocome-receiver-input             - {GLOBAL}
 
+c-familymanager-{personID}-adresser-type-radiogroup
+c-familymanager-{personID}-adresser-gate-input
+c-familymanager-{personID}-adresser-postnummer-input
+c-familymanager-{personID}-adresser-by-input
+c-familymanager-{personID}-adresser-land-countryselect
+c-familymanager-{personID}-adresser-bygning-input
+c-familymanager-{personID}-adresser-region-input
+c-familymanager-{personID}-adresser[{i}]-type-radiogroup
+c-familymanager-{personID}-adresser[{i}]-gate-input
+c-familymanager-{personID}-adresser[{i}]-postnummer-input
+c-familymanager-{personID}-adresser[{i}]-by-input
+c-familymanager-{personID}-adresser[{i}]-land-countryselect
+c-familymanager-{personID}-adresser[{i}]-bygning-input
+c-familymanager-{personID}-adresser[{i}]-region-input
 
 
 c-formaal-select                                    - formaal
@@ -36,6 +63,8 @@ c-seddetails-opplysninger-textarea
 
 c-step2-comment-textarea                            - comment
 
+= = =
+
 c-vedtak-allkids-radiogroup
 c-vedtak-startdato-input
 c-vedtak-sluttdato-input
@@ -51,5 +80,7 @@ chek minimum FlexDiv calls
 
 Clean ActionTypes later
 Clean Attachments later
+
+NotAnsatt: bom template
 
 

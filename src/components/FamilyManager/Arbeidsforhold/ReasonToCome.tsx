@@ -1,111 +1,143 @@
 import Add from 'assets/icons/Add'
+import classNames from 'classnames'
+import { AlignStartRow } from 'components/StyledComponents'
+import { Validation } from 'declarations/types'
 import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
   HighContrastFlatknapp,
   HighContrastInput,
   HorizontalSeparatorDiv,
-  Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-const ReasonToCome = ({
+export interface ReasonToComeProps {
+  personID: string
+  validation: Validation
+}
+
+const ReasonToCome: React.FC<ReasonToComeProps> = ({
   personID,
   validation
-}: any) => {
+}: ReasonToComeProps): JSX.Element => {
   const { t } = useTranslation()
-  const [_seeNewReasonToComing, setSeeNewReasonToComing] = useState<boolean>(false)
-  const [_currentDurationStayStartDato, setCurrentDurationStayStartDato] = useState<string>('')
-  const [_currentDurationStaySluttDato, setCurrentDurationStaySluttDato] = useState<string>('')
-  const [_currentDurationStaySender, setCurrentDurationStaySender] = useState<string>('')
-  const [_currentDurationStayReceiver, setCurrentDurationStayReceiver] = useState<string>('')
+  const [_newStartDato, setNewStartDato] = useState<string>('')
+  const [_newSluttDato, setNewSluttDato] = useState<string>('')
+  const [_newSender, setNewSender] = useState<string>('')
+  const [_newReceiver, setNewReceiver] = useState<string>('')
+  const [_seeNewForm, setSeeNewForm] = useState<boolean>(false)
+
+  const namespace = 'familymanager-' + personID + '-personensstatus-reasontocome'
+
+  const onStartDatoChange = (dato: string) => {
+    setNewStartDato(dato)
+    // onValueChanged(`${personID}.XXX`, dato)
+  }
+
+  const onSluttDatoChange = (dato: string) => {
+    setNewSluttDato(dato)
+    // onValueChanged(`${personID}.XXX`, dato)
+  }
+
+  const onSenderChange = (sender: string) => {
+    setNewSender(sender)
+    // onValueChanged(`${personID}.XXX`, sender)
+  }
+
+  const onReceiverChange = (receiver: string) => {
+    setNewReceiver(receiver)
+    // onValueChanged(`${personID}.XXX`, receiver)
+  }
 
   return (
     <>
       <Undertittel>
-        {t('label:reason-for-coming')}
+        {t('el:title-reason-for-coming')}
       </Undertittel>
       <VerticalSeparatorDiv />
 
-      {!_seeNewReasonToComing
+      {!_seeNewForm
         ? (
-          <HighContrastFlatknapp
-            mini
-            kompakt
-            onClick={() => setSeeNewReasonToComing(true)}
-          >
-            <Add />
-            <HorizontalSeparatorDiv data-size='0.5' />
-            {t('label:add-new-reason-to-coming')}
-          </HighContrastFlatknapp>
+            <div className='slideInFromLeft'>
+            <HighContrastFlatknapp
+              mini
+              kompakt
+              onClick={() => setSeeNewForm(true)}
+            >
+              <Add />
+              <HorizontalSeparatorDiv data-size='0.5' />
+              {t('label:add-new-reason-to-coming')}
+            </HighContrastFlatknapp>
+          </div>
+
           )
         : (
           <div>
-            <UndertekstBold>
+            <UndertekstBold className='slideInFromLeft'>
               {t('label:duration-stay')}
             </UndertekstBold>
             <VerticalSeparatorDiv />
-            <Row>
+            <AlignStartRow
+              className={classNames('slideInFromLeft')}
+              style={{animationDelay: '0.1s'}}
+            >
               <Column>
                 <HighContrastInput
-                  data-test-id={'c-familymanager-' + personID + '-personensstatus-durationstay-startdato-input'}
-                  feil={validation['person-' + personID + '-personensstatus-durationstay-startdato']
-                    ? validation['person-' + personID + '-personensstatus-durationstay-startdato']!.feilmelding
-                    : undefined}
-                  id={'c-familymanager-' + personID + '-personensstatus-durationstay-startdato-input'}
-                  onChange={(e: any) => setCurrentDurationStayStartDato(e.target.value)}
-                  value={_currentDurationStayStartDato}
+                  data-test-id={'c-' + namespace + '-startdato-input'}
+                  feil={validation[namespace + '-startdato']}
+                  id={'c-' + namespace + '-startdato-input'}
                   label={t('label:start-date')}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => onStartDatoChange(e.target.value)}
                   placeholder={t('el:placeholder-date-default')}
+                  value={_newStartDato}
                 />
               </Column>
               <Column>
                 <HighContrastInput
-                  data-test-id={'c-familymanager-' + personID + '-personensstatus-durationStay-sluttdato-input'}
-                  feil={validation['person-' + personID + '-personensstatus-durationStay-sluttdato']
-                    ? validation['person-' + personID + '-personensstatus-durationStay-sluttdato']!.feilmelding
-                    : undefined}
-                  id={'c-familymanager-' + personID + '-personensstatus-durationStay-sluttdato-input'}
-                  onChange={(e: any) => setCurrentDurationStaySluttDato(e.target.value)}
-                  value={_currentDurationStaySluttDato}
+                  data-test-id={'c-' + namespace + '-sluttdato-input'}
+                  feil={validation[namespace + '-sluttdato']}
+                  id={'c-' + namespace + '-sluttdato-input'}
                   label={t('label:end-date')}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSluttDatoChange(e.target.value)}
                   placeholder={t('el:placeholder-date-default')}
+                  value={_newSluttDato}
                 />
               </Column>
-            </Row>
+              <Column/>
+            </AlignStartRow>
             <VerticalSeparatorDiv />
-            <Row>
+            <AlignStartRow
+              className={classNames('slideInFromLeft')}
+              style={{animationDelay: '0.2s'}}
+            >
               <Column>
                 <HighContrastInput
-                  data-test-id={'c-familymanager-' + personID + '-personensstatus-durationStay-startdato-input'}
-                  feil={validation['person-' + personID + '-personensstatus-durationStay-startdato']
-                    ? validation['person-' + personID + '-personensstatus-durationStay-startdato']!.feilmelding
-                    : undefined}
-                  id={'c-familymanager-' + personID + '-personensstatus-durationStay-startdato-input'}
-                  onChange={(e: any) => setCurrentDurationStaySender(e.target.value)}
-                  value={_currentDurationStaySender}
+                  data-test-id={'c-' + namespace + '-sender-input'}
+                  feil={validation[namespace + '-sender']}
+                  id={'c-' + namespace + '-sender-input'}
                   label={t('label:moving-date-sender')}
-                  placeholder={t('el:placeholder-date-default')}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSenderChange(e.target.value)}
+                  placeholder={t('el:placeholder-input-default')}
+                  value={_newSender}
                 />
               </Column>
               <Column>
                 <HighContrastInput
-                  data-test-id={'c-familymanager-' + personID + '-personensstatus-durationStay-sluttdato-input'}
-                  feil={validation['person-' + personID + '-personensstatus-durationStay-sluttdato']
-                    ? validation['person-' + personID + '-personensstatus-durationStay-sluttdato']!.feilmelding
-                    : undefined}
-                  id={'c-familymanager-' + personID + '-personensstatus-durationStay-sluttdato-input'}
-                  onChange={(e: any) => setCurrentDurationStayReceiver(e.target.value)}
-                  value={_currentDurationStayReceiver}
+                  data-test-id={'c-' + namespace + '-receiver-input'}
+                  feil={validation[namespace + '-receiver']}
+                  id={'c-' + namespace + '-receiver-input'}
                   label={t('label:moving-date-receiver')}
-                  placeholder={t('el:placeholder-date-default')}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => onReceiverChange(e.target.value)}
+                  placeholder={t('el:placeholder-input-default')}
+                  value={_newReceiver}
                 />
               </Column>
-            </Row>
+              <Column/>
+            </AlignStartRow>
           </div>
-          )}
+        )}
     </>
   )
 }

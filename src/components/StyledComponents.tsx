@@ -36,6 +36,9 @@ export const PaddedFlexDiv = styled(FlexDiv)`
 export const AlignEndRow = styled(Row)`
   align-items: flex-end;
 `
+export const AlignStartRow = styled(Row)`
+  align-items: flex-start;
+`
 export const FadingLineSeparator = styled.div`
    border-left: 1px solid ${({ theme }) => theme[themeKeys.MAIN_BORDER_COLOR]};
    opacity: 0;
@@ -85,5 +88,10 @@ export const HiddenSidebar = styled.div`
   }
   &.closed {
     margin-left: 21.5rem;
+  }
+`
+export const TextAreaDiv = styled.div`
+  textarea {
+    width: 100%;
   }
 `

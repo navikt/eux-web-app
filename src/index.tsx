@@ -63,7 +63,9 @@ section {
 .panelSeksjon {
   margin:1em 0;
 }
-
+.nolabel {
+  margin-top: 2rem;
+}
 .slideInFromLeft {
   opacity: 0;
   transform: translateX(-20px);

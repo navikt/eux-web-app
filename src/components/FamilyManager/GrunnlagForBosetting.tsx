@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+import { TextAreaDiv } from 'components/StyledComponents'
 import { ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { Undertittel } from 'nav-frontend-typografi'
@@ -17,12 +18,6 @@ interface GrunnlagForBosettingProps {
 const RelasjonDiv = styled.div`
   padding: 1rem;
   fieldset {
-    width: 100%;
-  }
-`
-
-const TextAreaDiv = styled.div`
-  textarea {
     width: 100%;
   }
 `

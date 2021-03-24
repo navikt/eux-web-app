@@ -1,21 +1,26 @@
-import { Person } from 'declarations/sed'
+import { Adresse, Person } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
-import { validateNasjonaliteter } from './validation/nasjonaliteter'
-import { validatePersonOpplysning } from './validation/personopplysninger'
-import { validateAdresser } from './validation/adresser'
-import { validateKontaktsinformasjon } from './validation/kontaktinformasjon'
-import { validateTrygdeordninger } from './validation/trygdeordninger'
-import { validateFamilierelasjon } from './validation/familierelasjon'
+import { validateNasjonaliteter } from 'validation/nasjonaliteter'
+import { validatePersonOpplysning } from 'validation/personopplysninger'
+import { validateAdresser } from 'validation/adresser'
+import { validateKontaktsinformasjon } from 'validation/kontaktinformasjon'
+import { validateTrygdeordninger } from 'validation/trygdeordninger'
+import { validateFamilierelasjon } from 'validation/familierelasjon'
 
-export const performValidation = (v: Validation, t: any, options: any, personId: string) => {
-  validatePersonOpplysning(v, t, options, personId)
-  validateNasjonaliteter(v, t, options, personId)
-  validateAdresser(v, t, options, personId)
-  validateKontaktsinformasjon(v, t, options, personId)
-  validateTrygdeordninger(v, t, options, personId)
-  validateFamilierelasjon(v, t, options, personId)
+export const performValidation = (v: Validation, t: any, options: any, personID: string) => {
+
+  const adresser: Array<Adresse> = _.get(options.replySed, `${personID}.adresser`)
+  const p = _.get(options.replySed, personID)
+  const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
+
+  validatePersonOpplysning(v, t, options, personID)
+  validateNasjonaliteter(v, t, options, personID)
+  validateAdresser(v, adresser, t, `familymanager-${personID}-adresser`, personName)
+  validateKontaktsinformasjon(v, t, options, personID)
+  validateTrygdeordninger(v, t, options, personID)
+  validateFamilierelasjon(v, t, options, personID)
 }
 
 export const validate = (options: any): Validation => {

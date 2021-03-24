@@ -1,9 +1,12 @@
 import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
+import classNames from 'classnames'
+import { AlignStartRow, FlexCenterDiv } from 'components/StyledComponents'
 import { Adresse, ReplySed } from 'declarations/sed'
 import { Kodeverk, Validation } from 'declarations/types'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
+import { Normaltekst } from 'nav-frontend-typografi'
 import {
   Column,
   HighContrastFlatknapp,
@@ -16,6 +19,7 @@ import {
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
+import { validateAdresse } from 'validation/adresser'
 
 interface AdresseProps {
   highContrast: boolean
@@ -31,9 +35,6 @@ const AdresseDiv = styled.div`
     width: 100%;
   }
 `
-const AlignStartRow = styled(Row)`
-  align-items: flex-start;
-`
 
 const Adresser: React.FC<AdresseProps> = ({
   landkoderList,
@@ -42,251 +43,374 @@ const Adresser: React.FC<AdresseProps> = ({
   replySed,
   validation
 }:AdresseProps): JSX.Element => {
-  const [_currentType, setCurrentType] = useState<string | undefined>(undefined)
-  const [_currentGate, setCurrentGate] = useState<string>('')
-  const [_currentPostnummer, setCurrentPostnummer] = useState<string>('')
-  const [_currentBy, setCurrentBy] = useState<string>('')
-  const [_currentBygning, setCurrentBygning] = useState<string>('')
-  const [_currentRegion, setCurrentRegion] = useState<string>('')
-  const [_currentLand, setCurrentLand] = useState<string>('')
-  const [_seeNewAdresseForm, setSeeNewAdresseForm] = useState<boolean>(false)
-  const [_isDirty, setIsDirty] = useState<boolean>(false)
   const { t } = useTranslation()
+  const [_confirmDelete, setConfirmDelete] = useState<Array<string>>([])
+
+  const [_newType, setNewType] = useState<string | undefined>(undefined)
+  const [_newGate, setNewGate] = useState<string>('')
+  const [_newPostnummer, setNewPostnummer] = useState<string>('')
+  const [_newBy, setNewBy] = useState<string>('')
+  const [_newBygning, setNewBygning] = useState<string>('')
+  const [_newRegion, setNewRegion] = useState<string>('')
+  const [_newLand, setNewLand] = useState<string>('')
+
+  const [_seeNewForm, setSeeNewForm] = useState<boolean>(false)
+  const [_isDirty, setIsDirty] = useState<boolean>(false)
+  const [_validation, setValidation] = useState<Validation>({})
+
   const adresses: Array<Adresse> = _.get(replySed, `${personID}.adresser`)
+  const namespace = 'familymanager-' + personID + '-adresser'
 
-  const onAdresseRemove = (i: number) => {
-    const newAdresses = _.cloneDeep(adresses)
-    newAdresses.splice(i, 1)
-    setIsDirty(true)
-    onValueChanged(`${personID}.adresser`, newAdresses)
-  }
+  const p = _.get(replySed, personID)
+  const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
 
-  const onAdresseAdd = () => {
-    const newAdresses = _.cloneDeep(adresses)
-    newAdresses.push({
-      type: _currentType,
-      gate: _currentGate,
-      postnummer: _currentPostnummer,
-      by: _currentBy,
-      land: _currentLand,
-      bygning: _currentBygning,
-      region: _currentRegion
+  const resetValidation = (key: string): void => {
+    setValidation({
+      ..._validation,
+      [key]: undefined
     })
+  }
+
+  const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
+
+  const performValidation = (): boolean => {
+    let newValidation: Validation = {}
+    validateAdresse(
+      newValidation,
+      {
+        bygning: _newBygning,
+        region: _newRegion,
+        postnummer: _newPostnummer,
+        by: _newBy,
+        gate: _newGate,
+        land: _newLand,
+        type: _newType
+      },
+      -1,
+      t,
+      namespace,
+      personName
+    )
+    setValidation(newValidation)
+    return hasNoValidationErrors(newValidation)
+  }
+
+  const onAddNewClicked = () => setSeeNewForm(true)
+
+  const addCandidateForDeletion = (key: string) => {
+    setConfirmDelete(_confirmDelete.concat(key))
+  }
+
+  const removeCandidateForDeletion = (key: string) => {
+    setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
+  }
+
+  const onTypeChanged = (type: string, i: number) => {
+    if (i < 0) {
+      setNewType(type)
+      resetValidation( namespace + '-type')
+    } else {
+      const newAdresses = _.cloneDeep(adresses)
+      newAdresses[i].type = type
+      setIsDirty(true)
+      onValueChanged(`${personID}.adresser`, newAdresses)
+    }
+  }
+
+  const onGateChanged = (gate: string, i: number) => {
+    if (i < 0) {
+      setNewGate(gate)
+      resetValidation( namespace + '-gate')
+    } else {
+      const newAdresses = _.cloneDeep(adresses)
+      newAdresses[i].gate = gate
+      setIsDirty(true)
+      onValueChanged(`${personID}.adresser`, newAdresses)
+    }
+  }
+
+  const onPostnummerChanged = (postnummer: string, i: number) => {
+    if (i < 0) {
+      setNewPostnummer(postnummer)
+      resetValidation( namespace + '-postnummer')
+    } else {
+      const newAdresses = _.cloneDeep(adresses)
+      newAdresses[i].postnummer = postnummer
+      setIsDirty(true)
+      onValueChanged(`${personID}.adresser`, newAdresses)
+    }
+  }
+
+  const onByChanged = (by: string, i: number) => {
+    if (i < 0) {
+      setNewBy(by)
+      resetValidation( namespace + '-by')
+    } else {
+      const newAdresses = _.cloneDeep(adresses)
+      newAdresses[i].by = by
+      setIsDirty(true)
+      onValueChanged(`${personID}.adresser`, newAdresses)
+    }
+  }
+
+  const onBygningChanged = (bygning: string, i: number) => {
+    if (i < 0) {
+      setNewBygning(bygning)
+      resetValidation( namespace + '-bygning')
+    } else {
+      const newAdresses = _.cloneDeep(adresses)
+      newAdresses[i].bygning = bygning
+      setIsDirty(true)
+      onValueChanged(`${personID}.adresser`, newAdresses)
+    }
+  }
+
+  const onRegionChanged = (region: string, i: number) => {
+    if (i < 0) {
+      setNewRegion(region)
+      resetValidation( namespace + '-region')
+    } else {
+      const newAdresses = _.cloneDeep(adresses)
+      newAdresses[i].region = region
+      setIsDirty(true)
+      onValueChanged(`${personID}.adresser`, newAdresses)
+    }
+  }
+
+  const onLandChanged = (land: string, i: number) => {
+    if (i < 0) {
+      setNewLand(land)
+      resetValidation( namespace + '-land')
+    } else {
+      const newAdresses = _.cloneDeep(adresses)
+      newAdresses[i].land = land
+      setIsDirty(true)
+      onValueChanged(`${personID}.adresser`, newAdresses)
+    }
+  }
+
+  const resetForm = () => {
+    setNewType(undefined)
+    setNewGate('')
+    setNewPostnummer('')
+    setNewBy('')
+    setNewBygning('')
+    setNewRegion('')
+    setNewLand('')
+    setValidation({})
+  }
+
+  const onCancel = () => {
+    setSeeNewForm(false)
+    resetForm()
+  }
+
+  const onRemove = (index: number) => {
+    const newAdresses = _.cloneDeep(adresses)
+    const deletedAddresses: Array<Adresse> = newAdresses.splice(index, 1)
     setIsDirty(true)
-    setCurrentType(undefined)
-    setCurrentGate('')
-    setCurrentPostnummer('')
-    setCurrentBy('')
-    setCurrentBygning('')
-    setCurrentRegion('')
-    setCurrentLand('')
+    if ( deletedAddresses && deletedAddresses.length > 0) {
+      removeCandidateForDeletion(deletedAddresses[0].type + '-' + deletedAddresses[0].postnummer)
+    }
     onValueChanged(`${personID}.adresser`, newAdresses)
   }
 
-  const onTypeChanged = (e: string, i: number) => {
-    if (i < 0) {
-      setCurrentType(e)
-    } else {
-      const newAdresses = _.cloneDeep(adresses)
-      newAdresses[i].type = e
-      setIsDirty(true)
+  const onAdd = () => {
+    if (performValidation()) {
+      let newAdresses: Array<Adresse> = _.cloneDeep(adresses)
+      if (_.isNil(newAdresses)) {
+        newAdresses = []
+      }
+      newAdresses = newAdresses.concat({
+        type: _newType,
+        gate: _newGate,
+        postnummer: _newPostnummer,
+        by: _newBy,
+        land: _newLand,
+        bygning: _newBygning,
+        region: _newRegion
+      })
+      resetForm()
       onValueChanged(`${personID}.adresser`, newAdresses)
     }
   }
 
-  const onGateChanged = (e: string, i: number) => {
-    if (i < 0) {
-      setCurrentGate(e)
-    } else {
-      const newAdresses = _.cloneDeep(adresses)
-      newAdresses[i].gate = e
-      setIsDirty(true)
-      onValueChanged(`${personID}.adresser`, newAdresses)
-    }
-  }
+  const renderRow = (a: Adresse | null, i: number) => {
+    const key = i < 0 ? 'new' : a?.type + '-' + a?.postnummer
+    const candidateForDeletion = i < 0 ? false : key && _confirmDelete.indexOf(key) >= 0
+    const typeError = i < 0 ? _validation[namespace + '-type']?.feilmelding : validation[namespace + '[' + i + ']-type']?.feilmelding
+    const gateError = i < 0 ? _validation[namespace + '-gate']?.feilmelding : validation[namespace + '[' + i + ']-gate']?.feilmelding
+    const bygningError = i < 0 ? _validation[namespace + '-bygning']?.feilmelding : validation[namespace + '[' + i + ']-bygning']?.feilmelding
+    const postnummerError = i < 0 ? _validation[namespace + '-postnummer']?.feilmelding : validation[namespace + '[' + i + ']-postnummer']?.feilmelding
+    const byError = i < 0 ? _validation[namespace + '-by']?.feilmelding : validation[namespace + '[' + i + ']-by']?.feilmelding
+    const regionError = i < 0 ? _validation[namespace + '-region']?.feilmelding : validation[namespace + '[' + i + ']-region']?.feilmelding
+    const landError = i < 0 ? _validation[namespace + '-land']?.feilmelding : validation[namespace + '[' + i + ']-land']?.feilmelding
 
-  const onPostnummerChanged = (e: string, i: number) => {
-    if (i < 0) {
-      setCurrentPostnummer(e)
-    } else {
-      const newAdresses = _.cloneDeep(adresses)
-      newAdresses[i].postnummer = e
-      setIsDirty(true)
-      onValueChanged(`${personID}.adresser`, newAdresses)
-    }
+    return (
+      <>
+        <AlignStartRow className={classNames('slideInFromLeft')} >
+          <Column data-flex='3'>
+            <HighContrastRadioPanelGroup
+              checked={i < 0 ? _newType : a!.type}
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-type-radiogroup'}
+              feil={typeError}
+              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-type-radiogroup'}
+              legend={t('label:adresse')}
+              name={namespace + (i >= 0 ? '[' + i + ']' : '') + '-type'}
+              radios={[
+                {label: t('label:bostedsland'), value: 'bosted'},
+                {label: t('label:oppholdsland'), value: 'opphold'},
+                {label: t('label:kontaktadresse'), value: 'kontakt'}
+              ]}
+              onChange={(e: any) => onTypeChanged(e.target.value, i)}
+            />
+          </Column>
+          <Column/>
+        </AlignStartRow>
+        <VerticalSeparatorDiv/>
+        <AlignStartRow
+          className={classNames('slideInFromLeft')}
+          style={{animationDelay: '0.1s'}}
+        >
+          <Column data-flex='2'>
+            <HighContrastInput
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-gate-input'}
+              feil={gateError}
+              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-gate-input'}
+              label={t('label:gateadresse')}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onGateChanged(e.target.value, i)}
+              value={i < 0 ? _newGate : a?.gate}
+            />
+          </Column>
+          <Column>
+            <HighContrastInput
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-bygning-input'}
+              feil={bygningError}
+              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-bygning-input'}
+              label={t('label:bygning')}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onBygningChanged(e.target.value, i)}
+              value={i < 0 ? _newBygning : a?.bygning}
+            />
+          </Column>
+          <Column/>
+        </AlignStartRow>
+        <VerticalSeparatorDiv/>
+        <AlignStartRow
+          className={classNames('slideInFromLeft')}
+          style={{animationDelay: '0.2s'}}
+        >
+          <Column>
+            <HighContrastInput
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-postnummer-input'}
+              feil={postnummerError}
+              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-postnummer-input'}
+              label={t('label:postnummer')}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onPostnummerChanged(e.target.value, i)}
+              value={i < 0 ? _newPostnummer : a?.postnummer}
+            />
+          </Column>
+          <Column data-flex='2'>
+            <HighContrastInput
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-by-input'}
+              feil={byError}
+              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-by-input'}
+              label={t('label:by')}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onByChanged(e.target.value, i)}
+              value={i < 0 ? _newBy : a?.by}
+            />
+          </Column>
+          <Column/>
+        </AlignStartRow>
+        <VerticalSeparatorDiv/>
+        <AlignStartRow
+          className={classNames('slideInFromLeft')}
+          style={{animationDelay: '0.3s'}}
+        >
+          <Column data-flex='1.5'>
+            <HighContrastInput
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-region-input'}
+              feil={regionError}
+              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-region-input'}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onRegionChanged(e.target.value, i)}
+              value={i < 0 ? _newRegion : a?.region}
+              label={t('label:region')}
+            />
+          </Column>
+          <Column data-flex='1.5'>
+            <CountrySelect
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-land-countryselect'}
+              error={landError}
+              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-land-countryselect'}
+              label={t('label:land')}
+              menuPortalTarget={document.body}
+              includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
+              onOptionSelected={(e: any) => onLandChanged(e.value, i)}
+              placeholder={t('el:placeholder-select-default')}
+              values={i < 0 ? _newLand : a?.land}
+            />
+          </Column>
+          <Column>
+            {candidateForDeletion ? (
+              <FlexCenterDiv className={classNames('nolabel', 'slideInFromRight')}>
+                <Normaltekst>
+                  {t('label:are-you-sure')}
+                </Normaltekst>
+                <HorizontalSeparatorDiv data-size='0.5' />
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  onClick={() => onRemove(i)}
+                >
+                  {t('label:yes')}
+                </HighContrastFlatknapp>
+                <HorizontalSeparatorDiv data-size='0.5' />
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  onClick={() => removeCandidateForDeletion(key!)}
+                >
+                  {t('label:no')}
+                </HighContrastFlatknapp>
+              </FlexCenterDiv>
+              )
+              : (
+                <div className={classNames('nolabel')}>
+                  <HighContrastFlatknapp
+                    mini
+                    kompakt
+                    onClick={() => i < 0 ? onAdd() : addCandidateForDeletion(key!)}
+                  >
+                    {i < 0 ? <Add/> : <Trashcan/>}
+                    <HorizontalSeparatorDiv data-size='0.5'/>
+                    {i < 0 ? t('el:button-add') : t('el:button-remove')}
+                  </HighContrastFlatknapp>
+                  {_seeNewForm && i < 0 && (
+                    <>
+                      <HorizontalSeparatorDiv/>
+                      <HighContrastFlatknapp
+                        mini
+                        kompakt
+                        onClick={onCancel}
+                      >
+                        {t('el:button-cancel')}
+                      </HighContrastFlatknapp>
+                    </>
+                  )}
+                </div>
+              )}
+          </Column>
+        </AlignStartRow>
+        <VerticalSeparatorDiv data-size='2'/>
+      </>
+    )
   }
-
-  const onByChanged = (e: string, i: number) => {
-    if (i < 0) {
-      setCurrentBy(e)
-    } else {
-      const newAdresses = _.cloneDeep(adresses)
-      newAdresses[i].by = e
-      setIsDirty(true)
-      onValueChanged(`${personID}.adresser`, newAdresses)
-    }
-  }
-
-  const onBygningChanged = (e: string, i: number) => {
-    if (i < 0) {
-      setCurrentBygning(e)
-    } else {
-      const newAdresses = _.cloneDeep(adresses)
-      newAdresses[i].bygning = e
-      setIsDirty(true)
-      onValueChanged(`${personID}.adresser`, newAdresses)
-    }
-  }
-
-  const onRegionChanged = (e: string, i: number) => {
-    if (i < 0) {
-      setCurrentRegion(e)
-    } else {
-      const newAdresses = _.cloneDeep(adresses)
-      newAdresses[i].region = e
-      setIsDirty(true)
-      onValueChanged(`${personID}.adresser`, newAdresses)
-    }
-  }
-
-  const onLandChanged = (e: string, i: number) => {
-    if (i < 0) {
-      setCurrentLand(e)
-    } else {
-      const newAdresses = _.cloneDeep(adresses)
-      newAdresses[i].land = e
-      setIsDirty(true)
-      onValueChanged(`${personID}.adresser`, newAdresses)
-    }
-  }
-
-  const renderRow = (a: Adresse | null, i: number) => (
-    <>
-      <AlignStartRow>
-        <Column>
-          <HighContrastRadioPanelGroup
-            checked={i < 0 ? _currentType : a!.type}
-            data-test-id={'c-familymanager-' + personID + '-adresser-' + i + '-type-radiogroup'}
-            id={'c-familymanager-' + personID + '-adresser-' + i + '-type-radiogroup'}
-            feil={validation['person-' + personID + '-adresser-' + i + '-type-radiogroup']
-              ? validation['person-' + personID + '-adresser-' + i + '-type']!.feilmelding
-              : undefined}
-            legend={t('label:adresse')}
-            name={'c-familymanager-' + personID + '-adresser-radiogroup'}
-            radios={[
-              { label: t('label:bostedsland'), value: 'bosted' },
-              { label: t('label:oppholdsland'), value: 'opphold' },
-              { label: t('label:kontaktadresse'), value: 'kontakt' }
-            ]}
-            onChange={(e: any) => onTypeChanged(e.target.value, i)}
-          />
-        </Column>
-      </AlignStartRow>
-      <HorizontalSeparatorDiv />
-      <AlignStartRow>
-        <Column data-flex='2'>
-          <HighContrastInput
-            data-test-id={'c-familymanager-' + personID + '-adresser-' + i + '-gate-input'}
-            feil={validation['person-' + personID + '-adresser-' + i + '-gate']
-              ? validation['person-' + personID + '-adresser-' + i + '-gate']!.feilmelding
-              : undefined}
-            id={'c-familymanager-' + personID + '-adresser-' + i + '-gate-input'}
-            onChange={(e: any) => onGateChanged(e.target.value, i)}
-            value={i < 0 ? _currentGate : a?.gate}
-            label={t('label:gateadresse')}
-          />
-        </Column>
-        <Column>
-          <HighContrastInput
-            data-test-id={'c-familymanager-' + personID + '-adresser-' + i + '-bygning-input'}
-            feil={validation['person-' + personID + '-adresser-' + i + '-bygning']
-              ? validation['person-' + personID + '-adresser-' + i + '-bygning']!.feilmelding
-              : undefined}
-            id={'c-familymanager-' + personID + '-adresser-' + i + '-bygning-input'}
-            onChange={(e: any) => onBygningChanged(e.target.value, i)}
-            value={i < 0 ? _currentBygning : a?.bygning}
-            label={t('label:bygning')}
-          />
-        </Column>
-      </AlignStartRow>
-      <HorizontalSeparatorDiv />
-      <AlignStartRow>
-        <Column>
-          <HighContrastInput
-            data-test-id={'c-familymanager-' + personID + '-adresser-' + i + '-postnummer-input'}
-            feil={validation['person-' + personID + '-adresser-' + i + '-gate']
-              ? validation['person-' + personID + '-adresser-' + i + '-gate']!.feilmelding
-              : undefined}
-            id={'c-familymanager-' + personID + '-adresser-' + i + '-postnummer-input'}
-            onChange={(e: any) => onPostnummerChanged(e.target.value, i)}
-            value={i < 0 ? _currentPostnummer : a?.postnummer}
-            label={t('label:postnummer')}
-          />
-        </Column>
-        <Column>
-          <HighContrastInput
-            data-test-id={'c-familymanager-' + personID + '-adresser-' + i + '-by-input'}
-            feil={validation['person-' + personID + '-adresser-' + i + '-by']
-              ? validation['person-' + personID + '-adresser-' + i + '-by']!.feilmelding
-              : undefined}
-            id={'c-familymanager-' + personID + '-adresser-' + i + '-by-input'}
-            onChange={(e: any) => onByChanged(e.target.value, i)}
-            value={i < 0 ? _currentBy : a?.by}
-            label={t('label:by')}
-          />
-        </Column>
-        <Column />
-      </AlignStartRow>
-      <HorizontalSeparatorDiv />
-      <AlignStartRow>
-        <Column>
-          <HighContrastInput
-            data-test-id={'c-familymanager-' + personID + '-adresser-' + i + '-region-input'}
-            feil={validation['person-' + personID + '-adresser-' + i + '-region']
-              ? validation['person-' + personID + '-adresser-' + i + '-region']!.feilmelding
-              : undefined}
-            id={'c-familymanager-' + personID + '-adresser-' + i + '-region-input'}
-            onChange={(e: any) => onRegionChanged(e.target.value, i)}
-            value={i < 0 ? _currentRegion : a?.region}
-            label={t('label:region')}
-          />
-        </Column>
-        <Column>
-          <CountrySelect
-            data-test-id={'c-familymanager-' + personID + '-adresser-' + i + '-land-countryselect'}
-            error={validation['person-' + personID + '-adresser-' + i + '-land']
-              ? validation['person-' + personID + '-adresser-' + i + '-land']!.feilmelding
-              : undefined}
-            id={'c-familymanager-' + personID + '-adresser-' + i + '-land-countryselect'}
-            label={t('label:land')}
-            menuPortalTarget={document.body}
-            includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
-            onOptionSelected={(e: any) => onLandChanged(e.value, i)}
-            placeholder={t('label:choose')}
-            values={i < 0 ? _currentLand : a?.land}
-          />
-        </Column>
-        <Column style={{ alignSelf: 'flex-end' }}>
-          <HighContrastFlatknapp
-            mini
-            kompakt
-            onClick={() => i < 0 ? onAdresseAdd() : onAdresseRemove(i)}
-          >
-            {i < 0 ? <Add /> : <Trashcan />}
-            <HorizontalSeparatorDiv data-size='0.5' />
-            {i < 0 ? t('label:add') : t('label:remove')}
-          </HighContrastFlatknapp>
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv data-size='3' />
-    </>
-  )
 
   return (
     <AdresseDiv>
       {adresses?.map((a, i) => (renderRow(a, i)))}
       <hr />
-      {_seeNewAdresseForm
+      <VerticalSeparatorDiv />
+      {_seeNewForm
         ? renderRow(null, -1)
         : (
           <Row>
@@ -294,11 +418,11 @@ const Adresser: React.FC<AdresseProps> = ({
               <HighContrastFlatknapp
                 mini
                 kompakt
-                onClick={() => setSeeNewAdresseForm(true)}
+                onClick={onAddNewClicked}
               >
                 <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('label:add-new-adresse')}
+                {t('el:button-add-new-x', { x: t('label:adresse').toLowerCase() })}
               </HighContrastFlatknapp>
             </Column>
           </Row>
