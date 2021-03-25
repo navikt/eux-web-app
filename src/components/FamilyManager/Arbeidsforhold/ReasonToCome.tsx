@@ -68,7 +68,7 @@ const ReasonToCome: React.FC<ReasonToComeProps> = ({
             >
               <Add />
               <HorizontalSeparatorDiv data-size='0.5' />
-              {t('label:add-new-reason-to-coming')}
+              {t('el:button-add-new-x', { x: t('label:reason-for-coming').toLowerCase() })}
             </HighContrastFlatknapp>
           </div>
 

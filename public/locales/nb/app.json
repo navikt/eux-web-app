@@ -18,10 +18,6 @@
   "info-confirm-information" : "Vi bekrefter leverte opplysninger",
   "info-point-information" : "Gi oss punktvise opplysninger",
 
-  "relationship-bruker": "Bruker",
-  "relationship-ektefelle": "Ektefelle",
-  "relationship-annenPerson": "Annen person",
-  "relationship-barn": "Barn",
 
   "serverInternalError" : "Serverfeil",
   "serverAuthenticationError" : "Uautorisert",

@@ -1,4 +1,4 @@
-import { FlexDiv, PileDiv } from 'components/StyledComponents'
+import { FlexDiv, PileCenterDiv } from 'components/StyledComponents'
 import { FamilieRelasjon, Kodeverk, Person } from 'declarations/types'
 import _ from 'lodash'
 import { Knapp } from 'nav-frontend-knapper'
@@ -162,7 +162,7 @@ const Family: React.FC<FamilyProps> = ({
           ))}
         </FamilySubArea>
       </FlexDiv>
-      <PileDiv>
+      <PileCenterDiv>
         <div>
           <VerticalSeparatorDiv data-size='1.5' />
           <Ingress>
@@ -226,7 +226,7 @@ const Family: React.FC<FamilyProps> = ({
               : t('label:show-form')}
           </Knapp>
         </div>
-      </PileDiv>
+      </PileCenterDiv>
     </div>
   )
 }

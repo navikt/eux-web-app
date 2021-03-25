@@ -1,9 +1,12 @@
 import { setReplySed } from 'actions/svarpased'
-import Barn from 'assets/icons/Child'
 import Add from 'assets/icons/Add'
+import Barn from 'assets/icons/Child'
 import Trashcan from 'assets/icons/Trashcan'
+import classNames from 'classnames'
 import Select from 'components/Select/Select'
+import { AlignStartRow, FlexCenterDiv, FlexDiv } from 'components/StyledComponents'
 import { F002Sed, PersonInfo, ReplySed } from 'declarations/sed'
+import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper'
 import Lukknapp from 'nav-frontend-lukknapp'
@@ -14,7 +17,6 @@ import {
   HighContrastFlatknapp,
   HighContrastInput,
   HorizontalSeparatorDiv,
-  Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useRef, useState } from 'react'
@@ -46,9 +48,6 @@ const OtherButton = styled(Knapp)`
   margin-right: 1rem;
   margin-bottom: 1rem;
 `
-const AlignCenterRow = styled(Row)`
-   align-items: center;
-`
 const CheckboxDiv = styled.div`
   display: flex;
   justify-content: space-between;
@@ -58,12 +57,8 @@ const CheckboxDiv = styled.div`
   width: 100%;
   padding: 1rem 0.5rem;
 `
-const FlexDiv = styled.div`
-  display: flex;
-  align-items: center;
-`
 
-interface FamilyManagerModalProps {
+interface AddPersonModalProps {
   appElement?: any
   highContrast: boolean
   onModalClose?: () => void
@@ -71,26 +66,75 @@ interface FamilyManagerModalProps {
   replySed: ReplySed
 }
 
-const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
+const AddPersonModal: React.FC<AddPersonModalProps> = ({
   appElement = document.body,
   highContrast,
   closeButton,
   onModalClose,
   replySed
-}: FamilyManagerModalProps) => {
+}: AddPersonModalProps) => {
   const { t } = useTranslation()
+  const [_confirmDelete, setConfirmDelete] = useState<Array<string>>([])
   const [_newPersonFnr, setNewPersonFnr] = useState<string>('')
   const [_newPersonName, setNewPersonName] = useState<string>('')
   const [_newPersonRelation, setNewPersonRelation] = useState<string | undefined>(undefined)
   const [_replySed, _setReplySed] = useState<ReplySed>(replySed)
   const componentRef = useRef(null)
-
+  const [_validation, setValidation] = useState<Validation>({})
   const dispatch = useDispatch()
+  const namespace = 'familymanager-addpersonmodal'
 
   const brukerNr = 0
   const ektefelleNr = brukerNr + ((_replySed as F002Sed).ektefelle ? 1 : 0)
   const annenPersonNr = ektefelleNr + ((_replySed as F002Sed).annenPerson ? 1 : 0)
   const barnNr = annenPersonNr + ((_replySed as F002Sed).barn ? 1 : 0)
+
+  const resetValidation = (key: string): void => {
+    setValidation({
+      ..._validation,
+      [key]: undefined
+    })
+  }
+
+  const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
+
+  const performValidation = (): boolean => {
+    let newValidation: Validation = {}
+    if (!_newPersonFnr) {
+      newValidation[namespace + '-fnr'] = {
+        feilmelding: t('message:validation-noFnr'),
+        skjemaelementId: 'c-' + namespace + '-fnr-input'
+      }
+    }
+    if (_newPersonFnr && !_newPersonFnr.match(/^\d{11}$/)) {
+      newValidation[namespace + '-fnr'] = {
+        feilmelding: t('message:validation-invalidFnr'),
+        skjemaelementId: 'c-' + namespace + '-fnr-input'
+      }
+    }
+    if (!_newPersonName) {
+      newValidation[namespace + '-navn'] = {
+        feilmelding: t('message:validation-noName'),
+        skjemaelementId: 'c-' + namespace + '-navn-input'
+      }
+    }
+    if (!_newPersonName) {
+      newValidation[namespace + '-relasjon'] = {
+        feilmelding: t('message:validation-noRelation'),
+        skjemaelementId: 'c-' + namespace + '-relasjon-select'
+      }
+    }
+    setValidation(newValidation)
+    return hasNoValidationErrors(newValidation)
+  }
+
+  const addCandidateForDeletion = (key: string) => {
+    setConfirmDelete(_confirmDelete.concat(key))
+  }
+
+  const removeCandidateForDeletion = (key: string) => {
+    setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
+  }
 
   const closeModal = (): void => {
     if (_.isFunction(onModalClose)) {
@@ -119,56 +163,69 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
   }
 
   const onNewPersonFnrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    resetValidation(namespace + '-fnr')
     setNewPersonFnr(e.target.value)
   }
 
   const onNewPersonNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    resetValidation(namespace + '-navn')
     setNewPersonName(e.target.value)
   }
 
   const onNewPersonRelationChange = (e: any) => {
+    resetValidation(namespace + '-relasjon')
     setNewPersonRelation(e.value)
   }
 
+  const resetForm = () => {
+    setNewPersonFnr('')
+    setNewPersonName('')
+    setNewPersonRelation('')
+    setValidation({})
+  }
+
   const onNewPersonAdd = () => {
-    const newReplySed = _.cloneDeep(_replySed)
-    const personInfo: PersonInfo = {
-      fornavn: _newPersonName,
-      etternavn: '',
-      foedselsdato: '',
-      kjoenn: 'U',
-      statsborgerskap: [],
-      pin: [{
-        identifikator: _newPersonFnr
-      }]
-    }
-    if (_newPersonRelation === 'barn') {
-      if (!Object.prototype.hasOwnProperty.call(newReplySed, 'barn')) {
-        (newReplySed as F002Sed).barn = [{
-          personInfo: personInfo
+    if (performValidation()) {
+      const newReplySed = _.cloneDeep(_replySed)
+      const personInfo: PersonInfo = {
+        fornavn: _newPersonName,
+        etternavn: '',
+        foedselsdato: '',
+        kjoenn: 'U',
+        statsborgerskap: [],
+        pin: [{
+          identifikator: _newPersonFnr
         }]
-      } else {
-        (newReplySed as F002Sed).barn.push({
+      }
+      if (_newPersonRelation === 'barn') {
+        if (!Object.prototype.hasOwnProperty.call(newReplySed, 'barn')) {
+          (newReplySed as F002Sed).barn = [{
+            personInfo: personInfo
+          }]
+        } else {
+          (newReplySed as F002Sed).barn.push({
+            personInfo: personInfo
+          })
+        }
+      }
+      if (_newPersonRelation === 'bruker') {
+        newReplySed.bruker = {
           personInfo: personInfo
-        })
+        }
       }
-    }
-    if (_newPersonRelation === 'bruker') {
-      newReplySed.bruker = {
-        personInfo: personInfo
+      if (_newPersonRelation === 'ektefelle') {
+        (newReplySed as F002Sed).ektefelle = {
+          personInfo: personInfo
+        }
       }
-    }
-    if (_newPersonRelation === 'ektefelle') {
-      (newReplySed as F002Sed).ektefelle = {
-        personInfo: personInfo
+      if (_newPersonRelation === 'annenPerson') {
+        (newReplySed as F002Sed).annenPerson = {
+          personInfo: personInfo
+        }
       }
+      _setReplySed(newReplySed)
+      resetForm()
     }
-    if (_newPersonRelation === 'annenPerson') {
-      (newReplySed as F002Sed).annenPerson = {
-        personInfo: personInfo
-      }
-    }
-    _setReplySed(newReplySed)
   }
 
   const onSavePersons = () => {
@@ -178,39 +235,41 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
   const relationOptions = []
 
   relationOptions.push({
-    label: t('app:relationship-bruker') + (_replySed.bruker ? '(' + t('label:not-available') + ')' : ''),
+    label: t('el:option-relationship-bruker') + (_replySed.bruker ? '(' + t('label:not-available') + ')' : ''),
     value: 'bruker',
     isDisabled: !!_replySed.bruker
   })
 
   relationOptions.push({
-    label: t('app:relationship-ektefelle') + ((_replySed as F002Sed).ektefelle ? '(' + t('label:not-available') + ')' : ''),
+    label: t('el:option-relationship-ektefelle') + ((_replySed as F002Sed).ektefelle ? '(' + t('label:not-available') + ')' : ''),
     value: 'ektefelle',
     isDisabled: !!(_replySed as F002Sed).ektefelle
   })
 
   relationOptions.push({
-    label: t('app:relationship-annenPerson') + ((_replySed as F002Sed).annenPerson ? '(' + t('label:not-available') + ')' : ''),
+    label: t('el:option-relationship-annenPerson') + ((_replySed as F002Sed).annenPerson ? '(' + t('label:not-available') + ')' : ''),
     value: 'annenPerson',
     isDisabled: !!(_replySed as F002Sed).annenPerson
   })
 
   relationOptions.push({
-    label: t('app:relationship-barn'),
+    label: t('el:option-relationship-barn'),
     value: 'barn'
   })
 
-  const getPersonLabel = (personId: string) => {
+  const getPersonLabel = (personId: string): string => {
     const id = personId.startsWith('barn[') ? 'barn' : personId
-    return t('app:relationship-' + id)
+    return t('el:option-relationship-' + id)
   }
 
   const renderPerson = (personId: string, i: number) => {
     const p = _.get(_replySed, `${personId}.personInfo`)
+    const candidateForDeletion = _confirmDelete.indexOf(personId) >= 0
+
     return (
       <FlexDiv className='slideInFromLeft' style={{ animationDelay: i * 0.1 + 's' }} key={personId}>
         <CheckboxDiv>
-          <FlexDiv>
+          <FlexCenterDiv>
             <Normaltekst>
               {p?.fornavn + ' ' + p?.etternavn + ' (' + getPersonLabel(personId) + ')'}
             </Normaltekst>
@@ -220,16 +279,40 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
                 <Barn />
               </>
             )}
-          </FlexDiv>
+          </FlexCenterDiv>
+          {candidateForDeletion ? (
+            <FlexCenterDiv className={classNames('slideInFromRight')}>
+              <Normaltekst>
+                {t('label:are-you-sure')}
+              </Normaltekst>
+              <HorizontalSeparatorDiv data-size='0.5'/>
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                onClick={() => onRemovePerson(personId)}
+              >
+                {t('label:yes')}
+              </HighContrastFlatknapp>
+              <HorizontalSeparatorDiv data-size='0.5'/>
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                onClick={() => removeCandidateForDeletion(personId!)}
+              >
+                {t('label:no')}
+              </HighContrastFlatknapp>
+            </FlexCenterDiv>
+          ) : (
           <HighContrastFlatknapp
             mini
             kompakt
-            onClick={() => onRemovePerson(personId)}
+            onClick={() => addCandidateForDeletion(personId)}
           >
             <Trashcan />
             <HorizontalSeparatorDiv data-size='0.5' />
-            {t('label:remove')}
+            {t('el:button-remove')}
           </HighContrastFlatknapp>
+          )}
         </CheckboxDiv>
       </FlexDiv>
     )
@@ -243,16 +326,16 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
       closeButton
       contentLabel='contentLabel'
     >
-      <div id='xxx'>
+      <div>
         {closeButton && (
           <CloseButton
             onClick={onCloseButtonClicked}
           >
-            {t('app:close')}
+            {t('label:close')}
           </CloseButton>
         )}
         <Title>
-          {t('label:add-remove-persons')}
+          {t('el:title-add-remove-persons')}
         </Title>
         <>
           {_replySed.bruker && renderPerson('bruker', brukerNr)}
@@ -262,58 +345,64 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
           <hr />
           <VerticalSeparatorDiv data-size='2' />
           <Undertittel>
-            {t('label:add-new-person')}
+            {t('el:button-add-new-x', { x: t('label:person').toLowerCase() })}
           </Undertittel>
           <VerticalSeparatorDiv />
-          <AlignCenterRow>
+          <AlignStartRow className='slideInFromLeft'>
             <Column>
               <HighContrastInput
-                data-test-id='c-familymanager-personopplysninger-newperson-fnr-input'
-                id='c-familymanager-personopplysninger-newperson-fnr'
-                onChange={onNewPersonFnrChange}
-                value={_newPersonFnr}
+                data-test-id={'c-' + namespace + '-fnr-input'}
+                feil={_validation[namespace + '-fnr']?.feilmelding}
+                id={'c-' + namespace + '-fnr-input'}
                 label={t('label:fnr-dnr')}
+                onChange={onNewPersonFnrChange}
                 placeholder={t('el:placeholder-input-default')}
+                value={_newPersonFnr}
               />
               <HorizontalSeparatorDiv />
             </Column>
             <Column>
               <HighContrastInput
-                data-test-id='c-familymanager-personopplysninger-newperson-navn-input'
-                id='c-familymanager-personopplysninger-newperson-navn'
-                onChange={onNewPersonNameChange}
-                value={_newPersonName}
+                data-test-id={'c-' + namespace + '-navn-input'}
+                feil={_validation[namespace + '-navn']?.feilmelding}
+                id={'c-' + namespace + '-navn-input'}
                 label={t('label:name')}
+                onChange={onNewPersonNameChange}
                 placeholder={t('el:placeholder-input-default')}
+                value={_newPersonName}
               />
               <HorizontalSeparatorDiv />
             </Column>
             <Column>
               <Select
-                data-test-id='c-familymanager-personopplysninger-newperson-navn-input'
-                id='c-familymanager-personopplysninger-newperson-navn'
+                data-test-id={'c-' + namespace + '-relasjon-select'}
+                feil={_validation[namespace + '-relasjon']?.feilmelding}
+                id={'c-' + namespace + '-relasjon-select'}
                 highContrast={highContrast}
                 label={t('label:family-relationship')}
+                menuPlacement='auto'
                 onChange={onNewPersonRelationChange}
                 options={relationOptions}
                 placeholder={t('el:placeholder-select-default')}
-                selectedValue={_newPersonRelation}
-                menuPlacement='auto'
+                selectedValue={_.find(relationOptions, o => o.value === _newPersonRelation)}
+                defaultValue={_.find(relationOptions, o => o.value === _newPersonRelation)}
               />
               <HorizontalSeparatorDiv />
             </Column>
             <Column>
-              <Knapp
-                data-test-id='c-familymanager-personopplysninger-newperson-button'
-                id='c-familymanager-personopplysninger-newperson-button'
-                onClick={onNewPersonAdd}
-              >
-                <Add width={20} />
-                <HorizontalSeparatorDiv />
-                {t('label:add')}
-              </Knapp>
+              <div className='nolabel'>
+                <Knapp
+                  mini
+                  kompakt
+                  onClick={onNewPersonAdd}
+                >
+                  <Add width={20} />
+                  <HorizontalSeparatorDiv />
+                  {t('el:button-add')}
+                </Knapp>
+              </div>
             </Column>
-          </AlignCenterRow>
+          </AlignStartRow>
           <VerticalSeparatorDiv />
         </>
         <ModalButtons>
@@ -331,7 +420,7 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
             id='c-modal__other-button-id'
             onClick={closeModal}
           >
-            {t('label:cancel')}
+            {t('el:button-cancel')}
           </OtherButton>
         </ModalButtons>
       </div>
@@ -339,4 +428,4 @@ const FamilyManagerModal: React.FC<FamilyManagerModalProps> = ({
   )
 }
 
-export default FamilyManagerModal
+export default AddPersonModal

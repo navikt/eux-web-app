@@ -1,7 +1,8 @@
 {
   "button-add": "Legg til",
-  "button-add-new-x": "Legg til ny {{x}}",
   "button-add-attachments" : "Legg til vedlegg",
+  "button-add-new-x": "Legg til ny {{x}}",
+  "button-add-person": "Legg til person(er)",
   "button-cancel": "Avbryt",
   "button-search" : "Søk",
   "button-search-for-x" : "Søk {{x}}",
@@ -46,6 +47,11 @@
   "option-personensstatus-5": "Personen har permisjon uten lønn",
   "option-personensstatus-5-more": "Personen har permisjon uten lønn på grunn av omsorg for barn eller en tilsvarende periode i samsvar med lovgivningen i avsenderlandet",
 
+  "option-relationship-bruker": "Bruker",
+  "option-relationship-ektefelle": "Ektefelle",
+  "option-relationship-annenPerson": "Annen person",
+  "option-relationship-barn": "Barn",
+
   "option-relasjon-1": "Daglig omsorg for barnet",
   "option-relasjon-2": "Barn født i ekteskap",
   "option-relasjon-3": "Eget barn",
@@ -72,11 +78,14 @@
   "placeholder-text-to-sed": "Skriv inn tekst til SED",
 
   "title-add-arbeidsperiode": "Legg til arbeidsperiode",
+  "title-add-remove-persons": "Legg til/fjern person(er)",
   "title-added-arbeidsperiode": "Tillagte arbeidsperioder",
   "title-amount-name-and-currency": "Beløp, navn og valuta for familieytelser for barn",
   "title-amount-for-whole-familie": "Beløp for familieytelse(r) for hele familien",
   "title-ansettelsesperioder" : "Ansettelsesperiode(r)",
   "title-choose-formaal" : "Velg formål",
+  "title-familierelasjon": "Familierelasjon til ektefelle eller annen person",
+  "title-familymanager" : "Velg personer og fyll inn opplysninger",
   "title-family-description": "Vennligst velg familierelasjoner SEDen angår",
   "title-family-tps": "Person uten registrert relasjon i TPS",
   "title-family-utland": "Person uten fødsels- eller d-nummer",

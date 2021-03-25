@@ -101,7 +101,8 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
     setConfirmDelete(_confirmDelete.concat(key))
   }
 
-  const removeCandidateForDeletion = (key: string) => {
+  const removeCandidateForDeletion = (key: string | null) => {
+    if (!key) {return null}
     setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
   }
 
@@ -158,12 +159,16 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
     resetForm()
   }
 
+  const getKey = (p: PensjonPeriode): string => {
+    return p?.periode.startdato // assume startdato is unique
+  }
+
   const onRemove = (index: number) => {
     const newPerioder: Array<PensjonPeriode> = _.cloneDeep(_perioder)
     const deletedPeriods: Array<PensjonPeriode> = newPerioder.splice(index, 1)
     setPerioder(newPerioder)
     if ( deletedPeriods && deletedPeriods.length > 0) {
-      removeCandidateForDeletion(deletedPeriods[0].periode.startdato)
+      removeCandidateForDeletion(getKey(deletedPeriods[0]))
     }
     // onValueChanged(`${personID}.XXX`, newPerioder)
   }
@@ -201,12 +206,13 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
 
   const getPensjonTypeOption = (value: string | undefined | null) => _.find(selectPensjonTypeOptions, s => s.value === value)
 
+  const getErrorFor = (index: number, el: string): string | undefined => {
+    return index < 0 ? _validation[namespace + '-' + el]?.feilmelding : validation[namespace + '[' + index + ']-' + el]?.feilmelding
+  }
+
   const renderRow = (p: PensjonPeriode | undefined, i: number) => {
 
-    const key = i < 0 ? 'new' : p?.periode.startdato // assume startdato is unique
-    const startDatoError = i < 0 ? _validation[namespace + '-startdato']?.feilmelding : validation[namespace + '[' + i + ']-startdato']?.feilmelding
-    const sluttDatoError = i < 0 ? _validation[namespace + '-sluttdato']?.feilmelding : validation[namespace + '[' + i + ']-sluttdato']?.feilmelding
-    const pensjonTypeError = i < 0 ? _validation[namespace + '-pensjontype']?.feilmelding : validation[namespace + '[' + i + ']-sluttdato']?.feilmelding
+    const key = p ? getKey(p) : 'new'
     const candidateForDeletion = i < 0 ? false : key && _confirmDelete.indexOf(key) >= 0
 
     return (
@@ -215,7 +221,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
           <Column>
             <HighContrastInput
               data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-startdato-input'}
-              feil={startDatoError}
+              feil={getErrorFor(i, 'startdato')}
               id={'c-' + namespace + '[' + i + ']-startdato-input'}
               label={t('label:start-date')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value, i)}
@@ -226,7 +232,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
           <Column>
             <HighContrastInput
               data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-input'}
-              feil={sluttDatoError}
+              feil={getErrorFor(i, 'sluttdato')}
               id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-input'}
               label={t('label:end-date')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value, i)}
@@ -241,7 +247,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
           <Column>
             <Select
               data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-pensjontype-select'}
-              feil={pensjonTypeError}
+              feil={getErrorFor(i, 'pensjontype')}
               highContrast={highContrast}
               id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-pensjontype-select'}
               label={t('label:type-pensjon')}

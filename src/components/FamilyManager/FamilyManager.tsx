@@ -1,16 +1,17 @@
 import * as svarpasedActions from 'actions/svarpased'
 import { setReplySed } from 'actions/svarpased'
-import FilledCheckCircle from 'assets/icons/CheckCircle'
-import FilledRemoveCircle from 'assets/icons/RemoveCircle'
-import Barn from 'assets/icons/Child'
 import Add from 'assets/icons/Add'
+import FilledCheckCircle from 'assets/icons/CheckCircle'
+import Barn from 'assets/icons/Child'
+import FilledRemoveCircle from 'assets/icons/RemoveCircle'
 import classNames from 'classnames'
 import Adresser from 'components/FamilyManager/Adresser'
 import Familierelasjon from 'components/FamilyManager/Familierelasjon'
-import FamilyManagerModal from 'components/FamilyManager/FamilyManagerModal'
+import AddPersonModal from 'components/FamilyManager/AddPersonModal'
 import PersonensStatus from 'components/FamilyManager/PersonensStatus'
 import Relasjon from 'components/FamilyManager/Relasjon'
 import Trygdeordning from 'components/FamilyManager/Trygdeordning'
+import { FlexCenterDiv, PileDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { PersonInfo, ReplySed } from 'declarations/sed'
 import _ from 'lodash'
@@ -37,24 +38,21 @@ import Kontaktinformasjon from './Kontaktinformasjon'
 import Nasjonaliteter from './Nasjonaliteter'
 import PersonOpplysninger from './PersonOpplysninger'
 
-const FlexDiv = styled.div`
-  display: flex;
-  align-items: center;
-`
 const LeftDiv = styled.div`
   flex: 1;
   align-self: flex-start;
   border-right: 1px solid ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
 `
 const OptionDiv = styled.div`
+  transition: all 0.3s ease-in-out;
   padding: 0.5rem;
   display: flex;
   align-items: center;
   cursor: pointer;
   &:hover {
     background-color: ${(props: any) => props['data-highContrast']
-      ? themeHighContrast[themeKeys.MAIN_HOVER_COLOR]
-      : theme[themeKeys.MAIN_HOVER_COLOR]};
+      ? themeHighContrast[themeKeys.ALTERNATIVE_HOVER_COLOR]
+      : theme[themeKeys.ALTERNATIVE_HOVER_COLOR]};
   }
   &.selected {
     background-color: ${(props: any) => props['data-highContrast']
@@ -65,11 +63,7 @@ const OptionDiv = styled.div`
       : theme[themeKeys.MAIN_INTERACTIVE_COLOR]};
   }
 `
-const PanelDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-`
+
 const PersonAndCheckboxDiv = styled.div`
   display: flex;
   justify-content: space-between;
@@ -85,22 +79,25 @@ const PersonsDiv = styled.div`
   flex-direction: column;
 `
 const PersonDiv = styled.div`
+  transition: all 0.3s ease-in-out;
   display: flex;
   align-items: center;
   cursor: pointer;
   padding: 1rem 0.5rem;
   flex: 1;
+  transition: all 0.3s ease-in-out;
   &:hover {
    background-color: ${(props: any) => props['data-highContrast']
-     ? themeHighContrast[themeKeys.MAIN_HOVER_COLOR]
-     : theme[themeKeys.MAIN_HOVER_COLOR]};
+     ? themeHighContrast[themeKeys.ALTERNATIVE_HOVER_COLOR]
+     : theme[themeKeys.ALTERNATIVE_HOVER_COLOR]};
   }
 `
 const CheckboxDiv = styled.div`
+  transition: all 0.3s ease-in-out;
   &:hover {
    background-color: ${(props: any) => props['data-highContrast']
-  ? themeHighContrast[themeKeys.MAIN_HOVER_COLOR]
-  : theme[themeKeys.MAIN_HOVER_COLOR]};
+  ? themeHighContrast[themeKeys.ALTERNATIVE_HOVER_COLOR]
+  : theme[themeKeys.ALTERNATIVE_HOVER_COLOR]};
   }
 `
 const RightDiv = styled.div`
@@ -336,20 +333,20 @@ const FamilyManager: React.FC = () => {
   }
 
   return (
-    <PanelDiv>
+    <PileDiv>
       {_modal && (
-        <FamilyManagerModal
+        <AddPersonModal
           highContrast={highContrast}
           replySed={replySed}
           onModalClose={() => setModal(false)}
         />
       )}
       <Undertittel>
-        {t('label:familymanager-title')}
+        {t('el:title-familymanager')}
       </Undertittel>
       <VerticalSeparatorDiv />
       <CustomHighContrastPanel>
-        <FlexDiv>
+        <FlexCenterDiv>
           <LeftDiv>
             {replySed.bruker && renderPerson(replySed, 'bruker', brukerNr)}
             {replySed.ektefelle && renderPerson(replySed, 'ektefelle', ektefelleNr)}
@@ -364,7 +361,7 @@ const FamilyManager: React.FC = () => {
               >
                 <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('label:add-person')}
+                {t('el:button-add-person')}
               </HighContrastFlatknapp>
             </MarginDiv>
           </LeftDiv>
@@ -492,9 +489,9 @@ const FamilyManager: React.FC = () => {
                 </>
                 )}
           </RightDiv>
-        </FlexDiv>
+        </FlexCenterDiv>
       </CustomHighContrastPanel>
-    </PanelDiv>
+    </PileDiv>
   )
 }
 

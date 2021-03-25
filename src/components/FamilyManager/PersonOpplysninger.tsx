@@ -254,7 +254,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
               spinner={searchingPerson}
               onClick={onSearchUser}
             >
-              {searchingPerson ? t('label:searching') : t('label:searchUser')}
+              {searchingPerson ? t('message:loading-searching') : t('label:searchUser')}
             </HighContrastKnapp>
           </FlexDiv>
           <VerticalSeparatorDiv data-size='0.5' />

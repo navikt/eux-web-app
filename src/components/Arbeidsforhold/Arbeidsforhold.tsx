@@ -43,7 +43,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
                 onClick={getArbeidsforholdList}
               >
                 {gettingArbeidsforholdList
-                  ? t('label:searching')
+                  ? t('message:loading-searching')
                   : t('el:button-search-for-x', { x: t('label:arbeidsforhold').toLowerCase() })}
               </Knapp>
             </Column>

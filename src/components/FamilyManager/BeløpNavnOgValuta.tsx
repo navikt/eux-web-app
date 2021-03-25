@@ -6,7 +6,7 @@ import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
-import { Column, HighContrastInput, HighContrastRadioPanelGroup, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { Column, HighContrastInput, HighContrastRadioPanelGroup, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -109,7 +109,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow>
+      <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.1s'}}>
         <Column>
           <HighContrastInput
             data-test-id={'c-' + namespace + '-amount-input'}
@@ -138,11 +138,11 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <Undertittel>
+      <Undertittel className='slideInFromLeft' style={{animationDelay: '0.2s'}}>
         {t('el:title-grant-date')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      <Row>
+      <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.3s'}}>
         <Column>
           <HighContrastInput
             data-test-id={'c-' + namespace + '-startdato-input'}
@@ -165,9 +165,9 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
             placeholder={t('el:placeholder-date-default')}
           />
         </Column>
-      </Row>
+      </AlignStartRow>
       <VerticalSeparatorDiv />
-      <Row>
+      <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.4s'}}>
         <Column>
           <HighContrastInput
             data-test-id={'c-' + namespace + '-receiver-input'}
@@ -179,9 +179,9 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
             placeholder={t('el:placeholder-input-default')}
           />
         </Column>
-      </Row>
+      </AlignStartRow>
       <VerticalSeparatorDiv />
-      <Row>
+      <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.5s'}}>
         <Column>
           <HighContrastRadioPanelGroup
             checked={_newFrequency}
@@ -197,7 +197,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
             onChange={(e: any) => setFrequency(e.target.value)}
           />
         </Column>
-      </Row>
+      </AlignStartRow>
     </PaddedDiv>
   )
 }

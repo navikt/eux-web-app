@@ -1,7 +1,7 @@
 import Add from 'assets/icons/Add'
 import Edit from 'assets/icons/Edit'
 import Trashcan from 'assets/icons/Trashcan'
-import { FlexCenterDiv, FlexDiv, PaddedFlexDiv, PileDiv } from 'components/StyledComponents'
+import { FlexCenterDiv, FlexDiv, PaddedFlexDiv, PileCenterDiv } from 'components/StyledComponents'
 import { Arbeidsforholdet, Validation } from 'declarations/types.d'
 import _ from 'lodash'
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper'
@@ -338,7 +338,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
             )}
           </PaddedFlexDiv>
           {_isDeleting && (
-            <PileDiv className='slideInFromRight'>
+            <PileCenterDiv className='slideInFromRight'>
               <strong>
                 {t('label:are-you-sure')}
               </strong>
@@ -364,7 +364,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                 </HighContrastFlatknapp>
                 <HorizontalSeparatorDiv />
               </FlexDiv>
-            </PileDiv>
+            </PileCenterDiv>
           )}
         </FlexCenterDiv>
         {hasError && (

@@ -24,6 +24,8 @@ export const FlexDiv = styled.div`
 export const PileDiv = styled.div`
   display: flex;
   flex-direction: column;
+`
+export const PileCenterDiv = styled(PileDiv)`
   align-items: center
 `
 export const FlexCenterDiv = styled(FlexDiv)`
@@ -38,6 +40,9 @@ export const PaddedFlexDiv = styled(FlexDiv)`
 `
 export const AlignEndRow = styled(Row)`
   align-items: flex-end;
+`
+export const AlignCenterRow = styled(Row)`
+  align-items: center;
 `
 export const AlignStartRow = styled(Row)`
   align-items: flex-start;

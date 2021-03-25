@@ -190,11 +190,15 @@ const Adresser: React.FC<AdresseProps> = ({
     resetForm()
   }
 
+  const getKey = (a: Adresse): string => {
+    return a.type + '-' + a.postnummer
+  }
+
   const onRemove = (index: number) => {
     const newAdresses = _.cloneDeep(adresses)
     const deletedAddresses: Array<Adresse> = newAdresses.splice(index, 1)
     if ( deletedAddresses && deletedAddresses.length > 0) {
-      removeCandidateForDeletion(deletedAddresses[0].type + '-' + deletedAddresses[0].postnummer)
+      removeCandidateForDeletion(getKey(deletedAddresses[0]))
     }
     onValueChanged(`${personID}.adresser`, newAdresses)
   }
@@ -219,25 +223,22 @@ const Adresser: React.FC<AdresseProps> = ({
     }
   }
 
+  const getErrorFor = (index: number, el: string): string | undefined => {
+    return index < 0 ? _validation[namespace + '-' + el]?.feilmelding : validation[namespace + '[' + index + ']-' + el]?.feilmelding
+  }
+
   const renderRow = (a: Adresse | null, i: number) => {
-    const key = i < 0 ? 'new' : a?.type + '-' + a?.postnummer
+    const key = a ? getKey(a) : 'new'
     const candidateForDeletion = i < 0 ? false : key && _confirmDelete.indexOf(key) >= 0
-    const typeError = i < 0 ? _validation[namespace + '-type']?.feilmelding : validation[namespace + '[' + i + ']-type']?.feilmelding
-    const gateError = i < 0 ? _validation[namespace + '-gate']?.feilmelding : validation[namespace + '[' + i + ']-gate']?.feilmelding
-    const bygningError = i < 0 ? _validation[namespace + '-bygning']?.feilmelding : validation[namespace + '[' + i + ']-bygning']?.feilmelding
-    const postnummerError = i < 0 ? _validation[namespace + '-postnummer']?.feilmelding : validation[namespace + '[' + i + ']-postnummer']?.feilmelding
-    const byError = i < 0 ? _validation[namespace + '-by']?.feilmelding : validation[namespace + '[' + i + ']-by']?.feilmelding
-    const regionError = i < 0 ? _validation[namespace + '-region']?.feilmelding : validation[namespace + '[' + i + ']-region']?.feilmelding
-    const landError = i < 0 ? _validation[namespace + '-land']?.feilmelding : validation[namespace + '[' + i + ']-land']?.feilmelding
 
     return (
       <>
-        <AlignStartRow className={classNames('slideInFromLeft')} >
+        <AlignStartRow className={classNames('slideInFromLeft')}>
           <Column data-flex='3'>
             <HighContrastRadioPanelGroup
               checked={i < 0 ? _newType : a!.type}
               data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-type-radiogroup'}
-              feil={typeError}
+              feil={getErrorFor(i, 'type')}
               id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-type-radiogroup'}
               legend={t('label:adresse')}
               name={namespace + (i >= 0 ? '[' + i + ']' : '') + '-type'}
@@ -259,7 +260,7 @@ const Adresser: React.FC<AdresseProps> = ({
           <Column data-flex='2'>
             <HighContrastInput
               data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-gate-input'}
-              feil={gateError}
+              feil={getErrorFor(i, 'gate')}
               id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-gate-input'}
               label={t('label:gateadresse')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onGateChanged(e.target.value, i)}
@@ -269,7 +270,7 @@ const Adresser: React.FC<AdresseProps> = ({
           <Column>
             <HighContrastInput
               data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-bygning-input'}
-              feil={bygningError}
+              feil={getErrorFor(i, 'bygning')}
               id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-bygning-input'}
               label={t('label:bygning')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onBygningChanged(e.target.value, i)}
@@ -286,7 +287,7 @@ const Adresser: React.FC<AdresseProps> = ({
           <Column>
             <HighContrastInput
               data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-postnummer-input'}
-              feil={postnummerError}
+              feil={getErrorFor(i, 'postnummer')}
               id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-postnummer-input'}
               label={t('label:postnummer')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onPostnummerChanged(e.target.value, i)}
@@ -296,7 +297,7 @@ const Adresser: React.FC<AdresseProps> = ({
           <Column data-flex='2'>
             <HighContrastInput
               data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-by-input'}
-              feil={byError}
+              feil={getErrorFor(i, 'by')}
               id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-by-input'}
               label={t('label:by')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onByChanged(e.target.value, i)}
@@ -313,7 +314,7 @@ const Adresser: React.FC<AdresseProps> = ({
           <Column data-flex='1.5'>
             <HighContrastInput
               data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-region-input'}
-              feil={regionError}
+              feil={getErrorFor(i, 'region')}
               id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-region-input'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onRegionChanged(e.target.value, i)}
               value={i < 0 ? _newRegion : a?.region}
@@ -323,7 +324,7 @@ const Adresser: React.FC<AdresseProps> = ({
           <Column data-flex='1.5'>
             <CountrySelect
               data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-land-countryselect'}
-              error={landError}
+              error={getErrorFor(i, 'land')}
               id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-land-countryselect'}
               label={t('label:land')}
               menuPortalTarget={document.body}

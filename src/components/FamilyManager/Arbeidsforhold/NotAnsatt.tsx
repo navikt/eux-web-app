@@ -125,12 +125,16 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
     resetForm()
   }
 
+  const getKey = (p: Periode): string  => {
+    return p?.startdato // assume startdato is unique
+  }
+
   const onRemove = (index: number) => {
     const newPerioder: Array<Periode> = _.cloneDeep(_perioder)
     const deletedPeriods: Array<Periode> = newPerioder.splice(index, 1)
     setPerioder(newPerioder)
     if ( deletedPeriods && deletedPeriods.length > 0) {
-      removeCandidateForDeletion(deletedPeriods[0].startdato)
+      removeCandidateForDeletion(getKey(deletedPeriods[0]))
     }
     // onValueChanged(`${personID}.XXX`, newPerioder)
   }
@@ -157,11 +161,13 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
     }
   }
 
+  const getErrorFor = (index: number, el: string): string | null | undefined => {
+    return index < 0 ? _validation[namespace + '-' + el]?.feilmelding : validation[namespace + '[' + index + ']-' + el]?.feilmelding
+  }
+
   const renderRow = (p: Periode | undefined, i: number) => {
 
-    const key = i < 0 ? 'new' : p?.startdato // assume startdato is unique
-    const startDatoError = i < 0 ? _validation[namespace + '-startdato']?.feilmelding : validation[namespace + '[' + i + ']-startdato']?.feilmelding
-    const sluttDatoError = i < 0 ? _validation[namespace + '-sluttdato']?.feilmelding : validation[namespace + '[' + i + ']-sluttdato']?.feilmelding
+    const key = p ? getKey(p) : 'new'
     const candidateForDeletion =  i < 0 ? false : key && _confirmDelete.indexOf(key) >= 0
 
     return (
@@ -172,7 +178,7 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
         <Column>
           <HighContrastInput
             data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-startdato-input'}
-            feil={startDatoError}
+            feil={getErrorFor(i, 'startdato')}
             id={'c-' + namespace + '[' + i + ']-startdato-input'}
             label={t('label:start-date')}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value, i)}
@@ -183,7 +189,7 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
         <Column>
           <HighContrastInput
             data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-input'}
-            feil={sluttDatoError}
+            feil={getErrorFor(i, 'sluttdato')}
             id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-input'}
             label={t('label:end-date')}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value, i)}
