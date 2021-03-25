@@ -74,6 +74,7 @@
   "validation-noOrgnr": "Ingen orgnr",
   "validation-noNameToPerson": "Ingen navn på person til {{person}}",
   "validation-noPensjonType": "Ingen type pensjon",
+  "validation-noPensjonTypeTilPerson": "Ingen type pensjon til {{person}}",
   "validation-noRelation": "Ingen relasjon valgt",
   "validation-noRelationDateForPerson": "Ingen dato for relasjon til {{person}}",
   "validation-noRinadokumentID": "Du må velge en SED",

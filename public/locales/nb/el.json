@@ -85,6 +85,7 @@
   "title-ansettelsesperioder" : "Ansettelsesperiode(r)",
   "title-arbeidsforhold-type": "Type arbeidsforhold",
   "title-choose-formaal" : "Velg formål",
+  "title-dekning-trygdeordningen" : "Dekning av trygdeordningen",
   "title-duration-stay": "Oppholdets varighet",
   "title-familierelasjon": "Familierelasjon til ektefelle eller annen person",
   "title-familymanager" : "Velg personer og fyll inn opplysninger",
@@ -99,7 +100,11 @@
   "title-period-with-received-pension-from-sender-country": "Periode med mottatt pensjon i avsenderlandet",
   "title-reason-for-coming" : "Grunnlag for bosetting",
   "title-registered-arbeidsperiode" : "Registeret arbeidsperiode",
+  "title-relasjon-til-barn": "Relasjon til det enkelte barn",
   "title-svarSed": "Velg RINA-sak og opprett SED",
+  "title-trygdeordningen-dekkede": "Dekkede perioder",
+  "title-trygdeordningen-familieYtelse": "Periode for rett til familieytelser perioder",
+  "title-trygdeordningen-udekkede": "Udekkede perioder",
   "title-vedlegg": "Vedleggsinformasjon",
   "title-vedtak": "Vedtak"
 }

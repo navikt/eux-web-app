@@ -1,11 +1,12 @@
 import Select from 'components/Select/Select'
+import { AlignCenterRow, PaddedDiv } from 'components/StyledComponents'
 import { ReplySed } from 'declarations/sed'
 import { Kodeverk, Validation } from 'declarations/types'
+import _ from 'lodash'
 import { Normaltekst, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import { Column, HighContrastInput, HighContrastRadioPanelGroup, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
 
 interface RelasjonProps {
   familierelasjonKodeverk: Array<Kodeverk>
@@ -15,15 +16,7 @@ interface RelasjonProps {
   replySed: ReplySed
   validation: Validation
 }
-const RelasjonDiv = styled.div`
-  padding: 1rem;
-  fieldset {
-    width: 100%;
-  }
-`
-const CenterRow = styled(Row)`
-  align-items: center;
-`
+
 const Relasjon: React.FC<RelasjonProps> = ({
   highContrast,
   // onValueChanged,
@@ -31,18 +24,19 @@ const Relasjon: React.FC<RelasjonProps> = ({
   // replySed,
   validation
 }:RelasjonProps): JSX.Element => {
-  const [_currentRelasjon, setCurrentRelasjon] = useState<string>('')
-  const [_currentRelasjonType, setCurrentRelasjonType] = useState<string>('')
-  const [_currentSluttDato, setCurrentSluttDato] = useState<string>('')
-  const [_currentStartDato, setCurrentStartDato] = useState<string>('')
-  const [_currentForeldreansvar, setCurrentForeldreansvar] = useState<string>('')
+  const [_newRelasjon, setNewRelasjon] = useState<string>('')
+  const [_newRelasjonType, setNewRelasjonType] = useState<string>('')
+  const [_newSluttDato, setNewSluttDato] = useState<string>('')
+  const [_newStartDato, setNewStartDato] = useState<string>('')
+  const [_newForeldreansvar, setNewForeldreansvar] = useState<string>('')
 
-  const [_currentQuestion1, setCurrentQuestion1] = useState<string>('')
-  const [_currentQuestion2, setCurrentQuestion2] = useState<string>('')
-  const [_currentQuestion3, setCurrentQuestion3] = useState<string>('')
-  const [_currentQuestion4, setCurrentQuestion4] = useState<string>('')
+  const [_newQuestion1, setNewQuestion1] = useState<string>('')
+  const [_newQuestion2, setNewQuestion2] = useState<string>('')
+  const [_newQuestion3, setNewQuestion3] = useState<string>('')
+  const [_newQuestion4, setNewQuestion4] = useState<string>('')
 
   const { t } = useTranslation()
+  const namespace = 'familymanager-' + personID + '-relasjon'
 
   const relasjonTypeOptions = [
     { label: t('el:option-relasjon-1'), value: 'option-relasjon-1' },
@@ -56,146 +50,154 @@ const Relasjon: React.FC<RelasjonProps> = ({
   ]
 
   const setRelasjon = (e: string) => {
-    setCurrentRelasjon(e)
+    setNewRelasjon(e)
   }
 
   const setRelasjonType = (e: string) => {
-    setCurrentRelasjonType(e)
+    setNewRelasjonType(e)
   }
 
   const setSluttDato = (e: string) => {
-    setCurrentSluttDato(e)
+    setNewSluttDato(e)
   }
 
   const setStartDato = (e: string) => {
-    setCurrentStartDato(e)
+    setNewStartDato(e)
   }
 
   const setForeldreansvar = (e: string) => {
-    setCurrentForeldreansvar(e)
+    setNewForeldreansvar(e)
   }
 
   const setQuestion1 = (e: string) => {
-    setCurrentQuestion1(e)
+    setNewQuestion1(e)
   }
 
   const setQuestion2 = (e: string) => {
-    setCurrentQuestion2(e)
+    setNewQuestion2(e)
   }
 
   const setQuestion3 = (e: string) => {
-    setCurrentQuestion3(e)
+    setNewQuestion3(e)
   }
 
   const setQuestion4 = (e: string) => {
-    setCurrentQuestion4(e)
+    setNewQuestion4(e)
   }
 
   return (
-    <RelasjonDiv>
-      <Undertittel>
-        {t('label:relasjon-title')}
+    <PaddedDiv>
+      <Undertittel className='slideInFromLeft'>
+        {t('el:title-relasjon-til-barn')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      <HighContrastRadioPanelGroup
-        checked={_currentRelasjon}
-        data-test-id={'c-familymanager-' + personID + '-relasjon-radiogroup'}
-        id={'c-familymanager-' + personID + '-relasjon-radiogroup'}
-        feil={validation['person-' + personID + '-relasjon-radiogroup']
-          ? validation['person-' + personID + '-relasjon']!.feilmelding
-          : undefined}
-        legend={t('label:relation-with')}
-        name={'c-familymanager-' + personID + '-relasjon-radiogroup'}
-        radios={[
-          { label: t('label:searcher'), value: 'søker' },
-          { label: t('label:deceased'), value: 'avdød' }
-        ]}
-        onChange={(e: any) => setRelasjon(e.target.value)}
-      />
-      <HighContrastRadioPanelGroup
-        checked={_currentRelasjon}
-        data-test-id={'c-familymanager-' + personID + '-relasjon-radiogroup'}
-        id={'c-familymanager-' + personID + '-relasjon-radiogroup'}
-        feil={validation['person-' + personID + '-relasjon-radiogroup']
-          ? validation['person-' + personID + '-relasjon']!.feilmelding
-          : undefined}
-        name={'c-familymanager-' + personID + '-relasjon-radiogroup'}
-        radios={[
-          { label: t('label:partner'), value: 'ektefell/partner' },
-          { label: t('label:other-person'), value: 'annen person' }
-        ]}
-        onChange={(e: any) => setRelasjon(e.target.value)}
-      />
-      <Row>
+      <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+        <Column data-flex='2'>
+          <HighContrastRadioPanelGroup
+            checked={_newRelasjon}
+            data-no-border
+            data-test-id={'c-' + namespace + '-med-radiogroup'}
+            feil={validation[namespace + '-relasjon']?.feilmelding}
+            id={'c-' + namespace + '-relasjon-radiogroup'}
+            legend={t('label:relation-with')}
+            name={'c-' + namespace + '-relasjon-radiogroup'}
+            radios={[
+              { label: t('label:søker'), value: 'søker' },
+              { label: t('label:avdød'), value: 'avdød' }
+            ]}
+            onChange={(e: any) => setRelasjon(e.target.value)}
+          />
+          <VerticalSeparatorDiv data-size='0.25' />
+          <HighContrastRadioPanelGroup
+            checked={_newRelasjon}
+            data-no-border
+            data-test-id={'c-' + namespace + '-med-radiogroup'}
+            feil={validation[namespace + '-relasjon']?.feilmelding}
+            id={'c-' + namespace + '-relasjon-radiogroup'}
+            name={'c-' + namespace + '-relasjon-radiogroup'}
+            radios={[
+              { label: t('label:partner'), value: 'ektefell/partner' },
+              { label: t('label:annen-person'), value: 'annen person' }
+            ]}
+            onChange={(e: any) => setRelasjon(e.target.value)}
+          />
+        </Column>
+        <Column />
+      </Row>
+      <VerticalSeparatorDiv />
+      <Row style={{ animationDelay: '0.2s' }}>
         <Column>
           <Select
-            data-test-id={'c-familymanager-' + personID + '-relasjon-relasjontype-select'}
-            feil={validation['person-' + personID + '-relasjon-relasjontype']
-              ? validation['person-' + personID + '-relasjon-relasjontype']!.feilmelding
-              : undefined}
+            data-test-id={'c-' + namespace + '-type-select'}
+            feil={validation[namespace + '-type']?.feilmelding}
             highContrast={highContrast}
-            id={'c-familymanager-' + personID + '-relasjon-relasjontype-select'}
+            id={'c-' + namespace + '-type-select'}
             label={t('label:type')}
+            menuPortalTarget={document.body}
             onChange={(e) => setRelasjonType(e.value)}
             options={relasjonTypeOptions}
             placeholder={t('el:placeholder-select-default')}
-            selectedValue={_currentRelasjonType}
+            selectedValue={_.find(relasjonTypeOptions, b => b.value === _newRelasjonType)}
+            defaultValue={_.find(relasjonTypeOptions, b => b.value === _newRelasjonType)}
           />
         </Column>
+        <Column />
       </Row>
       <VerticalSeparatorDiv />
-      <UndertekstBold>
+      <UndertekstBold className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
         {t('label:relation-duration')}
       </UndertekstBold>
-      <Row>
+      <VerticalSeparatorDiv />
+      <Row className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
         <Column>
           <HighContrastInput
-            data-test-id={'c-familymanager-' + personID + '-relasjon-startdato-input'}
-            feil={validation['person-' + personID + '-relasjon-startdato']
-              ? validation['person-' + personID + '-relasjon-startdato']!.feilmelding
-              : undefined}
-            id={'c-familymanager-' + personID + '-relasjon-startdato-input'}
-            onChange={(e: any) => setStartDato(e.target.value)}
-            value={_currentStartDato}
+            data-test-id={'c-' + namespace + '-startdato-input'}
+            feil={validation[namespace + '-startdato']?.feilmelding}
+            id={'c-' + namespace + '-startdato-input'}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value)}
+            value={_newStartDato}
             label={t('label:start-date')}
             placeholder={t('el:placeholder-date-default')}
           />
         </Column>
         <Column>
           <HighContrastInput
-            data-test-id={'c-familymanager-' + personID + '-relasjon-sluttdato-input'}
-            feil={validation['person-' + personID + '-relasjon-sluttdato']
-              ? validation['person-' + personID + '-relasjon-sluttdato']!.feilmelding
-              : undefined}
-            id={'c-familymanager-' + personID + '-relasjon-sluttdato-input'}
-            onChange={(e: any) => setSluttDato(e.target.value)}
-            value={_currentSluttDato}
+            data-test-id={'c-' + namespace + '-sluttdato-input'}
+            feil={validation[namespace + '-sluttdato']?.feilmelding}
+            id={'c-' + namespace + '-sluttdato-input'}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value)}
+            value={_newSluttDato}
             label={t('label:end-date')}
             placeholder={t('el:placeholder-date-default')}
           />
         </Column>
+        <Column />
       </Row>
       <VerticalSeparatorDiv />
-      <HighContrastRadioPanelGroup
-        checked={_currentForeldreansvar}
-        data-test-id={'c-familymanager-' + personID + '-foreldreansvar-radiogroup'}
-        id={'c-familymanager-' + personID + '-foreldreansvar-radiogroup'}
-        feil={validation['person-' + personID + '-foreldreansvar-radiogroup']
-          ? validation['person-' + personID + '-foreldreansvar']!.feilmelding
-          : undefined}
-        legend={t('label:shared-custody')}
-        name={'c-familymanager-' + personID + '-foreldreansvar-radiogroup'}
-        radios={[
-          { label: t('label:yes'), value: 'ja' },
-          { label: t('label:no'), value: 'nei' }
-        ]}
-        onChange={(e: any) => setForeldreansvar(e.target.value)}
-      />
+      <Row className='slideInFromLeft' style={{ animationDelay: '0.5s' }}>
+        <Column>
+          <HighContrastRadioPanelGroup
+            checked={_newForeldreansvar}
+            data-no-border
+            data-test-id={'c-' + namespace + '-foreldreansvar-radiogroup'}
+            feil={validation[namespace + '-foreldreansvar']?.feilmelding}
+            id={'c-' + namespace + '-foreldreansvar-radiogroup'}
+            legend={t('label:shared-custody')}
+            name={'c-' + namespace + '-foreldreansvar-radiogroup'}
+            radios={[
+              { label: t('label:yes'), value: 'ja' },
+              { label: t('label:no'), value: 'nei' }
+            ]}
+            onChange={(e: any) => setForeldreansvar(e.target.value)}
+          />
+        </Column>
+        <Column />
+      </Row>
       <VerticalSeparatorDiv />
-      <UndertekstBold>
+      <UndertekstBold className='slideInFromLeft' style={{ animationDelay: '0.6s' }}>
         {t('label:children-in-household')}
       </UndertekstBold>
-      <CenterRow>
+      <AlignCenterRow className='slideInFromLeft' style={{ animationDelay: '0.7s' }}>
         <Column data-flex='2'>
           <Normaltekst>
             {t('label:children-in-household-question-1')}
@@ -203,13 +205,12 @@ const Relasjon: React.FC<RelasjonProps> = ({
         </Column>
         <Column>
           <HighContrastRadioPanelGroup
-            checked={_currentQuestion1}
-            data-test-id={'c-familymanager-' + personID + '-question1-radiogroup'}
-            id={'c-familymanager-' + personID + '-question1-radiogroup'}
-            feil={validation['person-' + personID + '-question1-radiogroup']
-              ? validation['person-' + personID + '-question1']!.feilmelding
-              : undefined}
-            name={'c-familymanager-' + personID + '-question1-radiogroup'}
+            checked={_newQuestion1}
+            data-no-border
+            data-test-id={'c-' + namespace + '-bomedsokeren-radiogroup'}
+            feil={validation[namespace + '-bomedsokeren']?.feilmelding}
+            id={'c-' + namespace + '-bomedsokeren-radiogroup'}
+            name={namespace + '-bomedsokeren'}
             radios={[
               { label: t('label:yes'), value: 'ja' },
               { label: t('label:no'), value: 'nei' }
@@ -217,9 +218,8 @@ const Relasjon: React.FC<RelasjonProps> = ({
             onChange={(e: any) => setQuestion1(e.target.value)}
           />
         </Column>
-      </CenterRow>
-
-      <CenterRow>
+      </AlignCenterRow>
+      <AlignCenterRow className='slideInFromLeft' style={{ animationDelay: '0.8s' }}>
         <Column data-flex='2'>
           <Normaltekst>
             {t('label:children-in-household-question-2')}
@@ -227,13 +227,12 @@ const Relasjon: React.FC<RelasjonProps> = ({
         </Column>
         <Column>
           <HighContrastRadioPanelGroup
-            checked={_currentQuestion2}
-            data-test-id={'c-familymanager-' + personID + '-question2-radiogroup'}
-            id={'c-familymanager-' + personID + '-question2-radiogroup'}
-            feil={validation['person-' + personID + '-question2-radiogroup']
-              ? validation['person-' + personID + '-question2']!.feilmelding
-              : undefined}
-            name={'c-familymanager-' + personID + '-question2-radiogroup'}
+            checked={_newQuestion2}
+            data-no-border
+            data-test-id={'c-' + namespace + '-bomedektefellen-radiogroup'}
+            feil={validation[namespace + '-bomedektefellenp']?.feilmelding}
+            id={'c-' + namespace + '-bomedektefellen-radiogroup'}
+            name={namespace + '-bomedektefellen'}
             radios={[
               { label: t('label:yes'), value: 'ja' },
               { label: t('label:no'), value: 'nei' }
@@ -241,9 +240,8 @@ const Relasjon: React.FC<RelasjonProps> = ({
             onChange={(e: any) => setQuestion2(e.target.value)}
           />
         </Column>
-      </CenterRow>
-
-      <CenterRow>
+      </AlignCenterRow>
+      <AlignCenterRow className='slideInFromLeft' style={{ animationDelay: '0.9s' }}>
         <Column data-flex='2'>
           <Normaltekst>
             {t('label:children-in-household-question-3')}
@@ -251,13 +249,12 @@ const Relasjon: React.FC<RelasjonProps> = ({
         </Column>
         <Column>
           <HighContrastRadioPanelGroup
-            checked={_currentQuestion3}
-            data-test-id={'c-familymanager-' + personID + '-question3-radiogroup'}
-            id={'c-familymanager-' + personID + '-question3-radiogroup'}
-            feil={validation['person-' + personID + '-question3-radiogroup']
-              ? validation['person-' + personID + '-question3']!.feilmelding
-              : undefined}
-            name={'c-familymanager-' + personID + '-question3-radiogroup'}
+            checked={_newQuestion3}
+            data-no-border
+            data-test-id={'c-' + namespace + '-bomedaktuelle-radiogroup'}
+            feil={validation[namespace + '-bomedaktuelle']?.feilmelding}
+            id={'c-' + namespace + '-bomedaktuelle-radiogroup'}
+            name={namespace + '-bomedaktuelle'}
             radios={[
               { label: t('label:yes'), value: 'ja' },
               { label: t('label:no'), value: 'nei' }
@@ -265,9 +262,8 @@ const Relasjon: React.FC<RelasjonProps> = ({
             onChange={(e: any) => setQuestion3(e.target.value)}
           />
         </Column>
-      </CenterRow>
-
-      <CenterRow>
+      </AlignCenterRow>
+      <AlignCenterRow className='slideInFromLeft' style={{ animationDelay: '1.0s' }}>
         <Column data-flex='2'>
           <Normaltekst>
             {t('label:children-in-household-question-4')}
@@ -275,13 +271,12 @@ const Relasjon: React.FC<RelasjonProps> = ({
         </Column>
         <Column>
           <HighContrastRadioPanelGroup
-            checked={_currentQuestion4}
-            data-test-id={'c-familymanager-' + personID + '-question4-radiogroup'}
-            id={'c-familymanager-' + personID + '-question4-radiogroup'}
-            feil={validation['person-' + personID + '-question4-radiogroup']
-              ? validation['person-' + personID + '-question4']!.feilmelding
-              : undefined}
-            name={'c-familymanager-' + personID + '-question4-radiogroup'}
+            checked={_newQuestion4}
+            data-no-border
+            data-test-id={'c-' + namespace + '-boiinstitusjon-radiogroup'}
+            feil={validation[namespace + '-boiinstitusjon']?.feilmelding}
+            id={'c-' + namespace + '-boiinstitusjon-radiogroup'}
+            name={namespace + '-boiinstitusjon'}
             radios={[
               { label: t('label:yes'), value: 'ja' },
               { label: t('label:no'), value: 'nei' }
@@ -289,8 +284,8 @@ const Relasjon: React.FC<RelasjonProps> = ({
             onChange={(e: any) => setQuestion4(e.target.value)}
           />
         </Column>
-      </CenterRow>
-    </RelasjonDiv>
+      </AlignCenterRow>
+    </PaddedDiv>
   )
 }
 

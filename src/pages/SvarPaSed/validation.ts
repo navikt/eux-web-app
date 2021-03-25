@@ -1,4 +1,13 @@
-import { Adresse, Epost, FamilieRelasjon2, Person, PersonInfo, Statsborgerskap, Telefon } from 'declarations/sed'
+import {
+  Adresse,
+  Epost,
+  FamilieRelasjon2, PensjonPeriode,
+  Periode,
+  Person,
+  PersonInfo,
+  Statsborgerskap,
+  Telefon
+} from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
@@ -16,6 +25,14 @@ export const performValidation = (v: Validation, t: any, options: any, personID:
   const telefoner: Array<Telefon> = _.get(options.replySed, `${personID}.telefon`)
   const eposter: Array<Epost> = _.get(options.replySed, `${personID}.epost`)
   const statsborgerskaper: Array<Statsborgerskap> = _.get(options.replySed, `${personID}.statsborgerskap`)
+  const perioder: {[k in string]: Array<Periode | PensjonPeriode>} = {
+    perioderMedArbeid: _.get(options.replySed, `${personID}.perioderMedArbeid`),
+    perioderMedTrygd: _.get(options.replySed, `${personID}.perioderMedTrygd`),
+    perioderMedITrygdeordning: _.get(options.replySed, `${personID}.perioderMedITrygdeordning`),
+    perioderUtenforTrygdeordning: _.get(options.replySed, `${personID}.perioderUtenforTrygdeordning`),
+    perioderMedYtelser: _.get(options.replySed, `${personID}.perioderMedYtelser`),
+    perioderMedPensjon: _.get(options.replySed, `${personID}.perioderMedPensjon`)
+  }
 
   const personName = personInfo.fornavn + ' ' + personInfo.etternavn
 
@@ -24,7 +41,7 @@ export const performValidation = (v: Validation, t: any, options: any, personID:
   validateAdresser(v, adresser, t, `familymanager-${personID}-adresser`, personName)
   validateKontaktsinformasjonTelefoner(v, telefoner, t, `familymanager-${personID}-kontaktinformasjon-telefon`, personName)
   validateKontaktsinformasjonEposter(v, eposter, t, `familymanager-${personID}-kontaktinformasjon-epost`, personName)
-  validateTrygdeordninger(v, t, options, personID)
+  validateTrygdeordninger(v, perioder, t, `familymanager-${personID}-trygdeordninger`, personName)
   validateFamilierelasjoner(v, familierelasjoner, t, `familymanager-${personID}-familierelasjoner`, personName)
 }
 

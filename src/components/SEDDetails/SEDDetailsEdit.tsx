@@ -247,10 +247,10 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
             onClick={() => setTypeKrav('nytt_krav')}
           />
           <HighContrastRadio
-            checked={_typeKrav === 'endrete_omstendigheter'}
+            checked={_typeKrav === 'endrede_omstendigheter'}
             name='c-seddetails-typeKrav-radiogroup'
-            label={t('app:kravType-endrete_omstendigheter')}
-            onClick={() => setTypeKrav('endrete_omstendigheter')}
+            label={t('app:kravType-endrede_omstendigheter')}
+            onClick={() => setTypeKrav('endrede_omstendigheter')}
           />
         </HighContrastRadioGroup>
       </div>

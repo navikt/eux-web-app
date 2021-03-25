@@ -3,10 +3,12 @@
   "additional-information": "Ytterligere informasjon",
   "adresse": "Adresse",
   "amount": "Beløp",
+  "annen-person": "Annet person",
   "arbeidsforhold": "Arbeidsforhold/Arbeidsgivere",
   "arbeidsperiode": "Arbeidsperiode",
   "are-you-sure": "Er du sikker?",
   "attachments" : "Vedlegg",
+  "avdød" : "Avdød",
 
   "benefit-cause": "Betegnelse på ytelse",
   "birthdate": "Fødselsdato",
@@ -17,6 +19,12 @@
   "bygning": "Bygning",
 
   "children-name": "Barnets navn",
+  "children-in-household": "Barn i husstanden",
+  "children-in-household-question-1": "Bor barnet i samme husstand som søkeren?",
+  "children-in-household-question-2": "Bor barnet i samme husstand som ektefellen/partneren?",
+  "children-in-household-question-3": "Bor barnet i samme husstand som den aktuelle personen?",
+  "children-in-household-question-4": "Bor barnet i institusjon?",
+
   "choose" : "Velg",
   "close": "Lukk",
   "currency": "Valuta",
@@ -70,6 +78,7 @@
   "orgnr": "Orgnr.",
   "other-relation": "Annen relasjon",
 
+  "partner": "Ektefelle/partner",
   "periode": "Periode",
   "period-frequency": "Avgrensning av periode",
   "period-in-sender-country": "Trygdeperiode i avsenderlandet",
@@ -86,9 +95,11 @@
   "save": "Lagre",
   "see-less": "Se mindre",
   "see-more": "Ler mer",
+  "shared-custody": "Delt foreldreansvar",
   "show-form": "Vis skjema",
   "start-date": "Startdato",
   "statsborgerskap" : "Statsborgerskap",
+  "søker" : "Søker",
 
   "telefonnummer": "Telefonnummer",
   "type": "Type",
@@ -107,28 +118,17 @@
   "---------" : "--------",
 
   "add-as-attachment-to-sed" : "Legge til vedlegg til SED",
-
-
   "addAttachments" : "Legg til vedlegg",
   "allKids-radiogroup" : "Vedtak angående alle barn som er oppgitt i denne SEDen",
   "allKids-select": "Avhuk de barn vedtaket <strong><U>ikke</U></strong> gjelder",
-
   "application-information": "Informasjon om søknaden",
-
   "attached": "Vedlegget",
+
   "back" : "Tilbake",
-
-
   "buc": "BUC",
 
   "caseNumber" : "Saksnummer",
   "caseOwner" : "Motpart/sakseier",
-  "children-in-household": "Barn i husstanden",
-  "children-in-household-question-1": "Bor barnet i samme husstand som søkeren?",
-  "children-in-household-question-2": "Bor barnet i samme husstand som ektefellen/partneren?",
-  "children-in-household-question-3": "Bor barnet i samme husstand som den aktuelle personen?",
-  "children-in-household-question-4": "Bor barnet i institusjon?",
-
   "chooseSpørreSed" : "Velg spørre SED",
   "chooseSvarSed" : "Velg svar SED",
   "click-for-menu" : "Klikk på navn for å åpne/slutt skjemaer for {{person}}",
@@ -139,18 +139,11 @@
   "createNewCaseInGosys" : "Lenke til Gosys",
   "createSedEditInRINA" : "Opprett SED, rediger i RINA",
 
-  "deceased" : "Avdød",
-  "dekning-trygdeordningen" : "Dekning av trygdeordningen",
-
   "dokumentID": "DokumentID",
 
   "fagsak" : "Velg fagsak",
-
-
   "father": "Far",
-
   "fnr" : "Fødselsnummer",
-
   "fraDato": "Fra dato",
   "freetext": "Fritekst",
 
@@ -165,64 +158,43 @@
   "is-created": "er opprettet",
   "journalpostID": "JournalpostID",
 
-
   "lastModified": "Siste oppdatert",
   "loading-file": "Laster ned filen...",
   "local-sakId": "Lokale sakID",
 
-
   "motregning-request": "Anmodning eller svar på anmodning om motregning av familieytelser for barn",
   "motregning-request-1": "Anmodning om motregning per barn",
   "motregning-request-2": "Svar på anmodning om motregning per barn",
-
   "mother": "Mor",
 
   "nameatbirth": "Navn ved fødsel",
 
-
-
   "opplysninger": "Hvilke opplysninger...?",
-
   "other": "Annet",
-  "other-person": "Annet person",
-  "partner": "Ektefelle/partner",
 
   "perioder": "Perioder",
   "pin": "PIN",
-
   "preview-sed": "Forhåndsvis SED",
-
 
   "relation-duration": "Relasjonens varighet",
   "reply": "Besvar",
   "resetForm": "AVSLUTT UTFYLLING",
-  "relasjon-title": "Relasjon til det enkelte barn",
   "relation-with" : "Relasjon med",
-
   "rolle": "Rolle",
+
   "saksnummer" : "Saksnummer",
   "saksnummerOrFnr" : "Søk på RINA saksnummer eller f.nr./d.nr.",
-
   "saveSed": "Lagre",
-
-  "searcher" : "Søker",
-
   "searchResultsForSaksnummerOrFnr" : "{{antall}} treff for: {{saksnummerOrFnr}}",
   "sed": "SED",
   "seeCases": "Vis saker",
-
   "sektor": "Fagområde",
   "sender" : "Avsenderinstitusjon",
   "sendReplySed" : "Send svarSED",
   "sendVedlegg" : "Send vedlegg",
-  "shared-custody": "Delt foreldreansvar",
-
 
   "tema": "Velg behandlingstema",
   "tilDato" : "Til dato",
-  "trygdeordningen-dekkede": "Dekkede perioder",
-  "trygdeordningen-familieYtelse": "Periode for rett til familieytelser perioder",
-  "trygdeordningen-udekkede": "Udekkede perioder",
 
   "typeKrav": "Type krav",
 

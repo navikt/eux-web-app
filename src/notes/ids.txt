@@ -109,6 +109,38 @@ c-familymanager-{personID}-personensstatus-reasontocome-sluttdato-input         
 c-familymanager-{personID}-personensstatus-reasontocome-sender-input              - {GLOBAL}
 c-familymanager-{personID}-personensstatus-reasontocome-receiver-input            - {GLOBAL}
 
+c-familymanager-{personID}-relasjon-med-radioroup               - {GLOBAL}
+c-familymanager-{personID}-relasjon-type-select                 - {GLOBAL}
+c-familymanager-{personID}-relasjon-startdato-input             - {GLOBAL}
+c-familymanager-{personID}-relasjon-sluttdato-input             - {GLOBAL}
+c-familymanager-{personID}-relasjon-bomedsokeren-radioroup      - {GLOBAL}
+c-familymanager-{personID}-relasjon-bomedektefellen-radioroup   - {GLOBAL}
+c-familymanager-{personID}-relasjon-bomedaktuelle-radioroup     - {GLOBAL}
+c-familymanager-{personID}-relasjon-boiinstitusjon-radioroup    - {GLOBAL}
+
+c-familymanager-{personID}-trygdeordninger-dekkede-startdato-input               - {INTERNAL}
+c-familymanager-{personID}-trygdeordninger-dekkede-sluttdato-input               - {INTERNAL}
+c-familymanager-{personID}-trygdeordninger-udekkede-startdato-input                - {INTERNAL}
+c-familymanager-{personID}-trygdeordninger-udekkede-sluttdato-input                - {INTERNAL}
+c-familymanager-{personID}-trygdeordninger-familieYtelse-startdato-input       - {INTERNAL}
+c-familymanager-{personID}-trygdeordninger-familieYtelse-sluttdato-input       - {INTERNAL}
+c-familymanager-{personID}-trygdeordninger-familieYtelse-category-select       - {INTERNAL}
+c-familymanager-{personID}-trygdeordninger-familieYtelse-pensjontype-select       - {INTERNAL}
+
+c-familymanager-{personID}-trygdeordninger-perioderMedArbeid[i]-startdato-input            - {GLOBAL}
+c-familymanager-{personID}-trygdeordninger-perioderMedArbeid[i]-sluttdato-input            - {GLOBAL}
+c-familymanager-{personID}-trygdeordninger-perioderMedTrygd[i]-startdato-input             - {GLOBAL}
+c-familymanager-{personID}-trygdeordninger-perioderMedTrygd[i]-sluttdato-input             - {GLOBAL}
+c-familymanager-{personID}-trygdeordninger-perioderMedITrygdeordning[i]-startdato-input    - {GLOBAL}
+c-familymanager-{personID}-trygdeordninger-perioderMedITrygdeordning[i]-sluttdato-input    - {GLOBAL}
+c-familymanager-{personID}-trygdeordninger-perioderUtenforTrygdeordning[i]-startdato-input - {GLOBAL}
+c-familymanager-{personID}-trygdeordninger-perioderUtenforTrygdeordning[i]-sluttdato-input - {GLOBAL}
+c-familymanager-{personID}-trygdeordninger-perioderMedYtelser[i]-startdato-input           - {GLOBAL}
+c-familymanager-{personID}-trygdeordninger-perioderMedYtelser[i]-sluttdato-input           - {GLOBAL}
+c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-periode-startdato-input   - {GLOBAL}
+c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-periode-sluttdato-input   - {GLOBAL}
+c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-pensjontype-select        - {GLOBAL}
+
 c-formaal-select                                    - formaal
 
 c-seddetails-anmodningsperiode-startdato-input      - seddetails-anmodningsperiode-startdato

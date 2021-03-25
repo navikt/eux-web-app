@@ -184,6 +184,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
         <Column>
           <HighContrastRadioPanelGroup
             checked={_newFrequency}
+            data-no-border
             data-test-id={'c-' + namespace + '-frequency-radiogroup'}
             id={'c-' + namespace + '-frequency-radiogroup'}
             feil={validation[namespace + '-frequency']?.feilmelding}
