@@ -1,72 +1,108 @@
 import { Epost, Telefon } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 
-export const validateKontaktsinformasjon = (v: Validation, t: any, options: any, personID: string): void => {
-  let personFail = false
-  let kontakinformasjonFail = false
-  const p = _.get(options.replySed, personID)
-  const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
+export const validateKontaktsinformasjonTelefon = (
+  v: Validation,
+  telefon: Telefon,
+  index: number,
+  t: any,
+  namespace: string,
+  personName: string
+): void => {
+  let generalFail: boolean = false
 
-  p.telefon?.forEach((_t: Telefon, i: number) => {
-    let value = (_t.type)
-      ? undefined
-      : {
-        feilmelding: t('message:validation-noTelefonType', { person: personName }),
-        skjemaelementId: 'c-familymanager-' + personID + '-kontaktinformasjon-' + i + '-type-select'
-      } as FeiloppsummeringFeil
-    v['person-' + personID + '-kontaktinformasjon-' + i + '-type'] = value
-    if (value) {
-      personFail = true
-      kontakinformasjonFail = true
-    }
+  let value = (telefon.type)
+    ? undefined
+    : {
+      feilmelding: t('message:validation-noTelephoneTypeForPerson', { person: personName }),
+      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-type-select'
+    } as FeiloppsummeringFeil
+  v[namespace + (index < 0 ? '' : '[' + index + ']') + '-type'] = value
+  if (value) {
+    generalFail = true
+  }
 
-    value = (_t.nummer)
-      ? undefined
-      : {
-        feilmelding: t('message:validation-noTelefonNummer', { person: personName }),
-        skjemaelementId: 'c-familymanager-' + personID + '-kontaktinformasjon-' + i + '-nummer-input'
-      } as FeiloppsummeringFeil
-    v['person-' + personID + '-kontaktinformasjon-' + i + '-nummer'] = value
-    if (value) {
-      personFail = true
-      kontakinformasjonFail = true
-    }
-  })
+  value = (telefon.nummer)
+    ? undefined
+    : {
+      feilmelding: t('message:validation-noTelephoneNumberForPerson', { person: personName }),
+      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-nummer-select'
+    } as FeiloppsummeringFeil
+  v[namespace + (index < 0 ? '' : '[' + index + ']') + '-nummer'] = value
+  if (value) {
+    generalFail = true
+  }
 
+  if (generalFail) {
+    const namespaceBits = namespace.split('-')
+    namespaceBits[0] = 'person'
+    const personNamespace = namespaceBits[0] + '-' + namespaceBits[1]
+    const categoryNamespace = namespaceBits.join('-')
+    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+  }
+}
+
+export const validateKontaktsinformasjonEpost = (
+  v: Validation,
+  epost: Epost,
+  index: number,
+  t: any,
+  namespace: string,
+  personName: string
+): void => {
   const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  let generalFail: boolean = false
 
-  p.epost?.forEach((e: Epost, i: number) => {
-    const value = (e.adresse)
-      ? (e.adresse.match(emailPattern)
-          ? undefined
-          : {
-            feilmelding: t('message:validation-invalidEpostAdresse', { person: personName }),
-            skjemaelementId: 'c-familymanager-' + personID + '-kontaktinformasjon-' + i + '-epost-input'
-          } as FeiloppsummeringFeil
-        )
-      : {
-        feilmelding: t('message:validation-noEpostAdresse', { person: personName }),
-        skjemaelementId: 'c-familymanager-' + personID + '-kontaktinformasjon-' + i + '-epost-input'
-      } as FeiloppsummeringFeil
-    v['person-' + personID + '-kontaktinformasjon-' + i + '-epost'] = value
+  const value = epost
+    ? (epost.adresse.match(emailPattern)
+        ? undefined
+        : {
+          feilmelding: t('message:validation-invalidEpostForPerson', { person: personName }),
+          skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-adresse-input'
+        } as FeiloppsummeringFeil
+      )
+    : {
+      feilmelding: t('message:validation-noEpostAdresseForPerson', { person: personName }),
+      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-adresse-input'
+    } as FeiloppsummeringFeil
 
-    if (value) {
-      personFail = true
-      kontakinformasjonFail = true
-    }
+  v[namespace + '-adresse'] = value
+
+  if (value) {
+    generalFail = true
+  }
+  if (generalFail) {
+    const namespaceBits = namespace.split('-')
+    namespaceBits[0] = 'person'
+    const personNamespace = namespaceBits[0] + '-' + namespaceBits[1]
+    const categoryNamespace = namespaceBits.join('-')
+    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+  }
+}
+
+export const validateKontaktsinformasjonTelefoner = (
+  validation: Validation,
+  telefoner: Array<Telefon>,
+  t: any,
+  namespace: string,
+  personName: string
+): void => {
+  telefoner?.forEach((telefon: Telefon, index: number) => {
+    validateKontaktsinformasjonTelefon(validation, telefon, index, t, namespace, personName)
   })
+}
 
-  v['person-' + personID + '-kontaktinformasjon'] = kontakinformasjonFail
-    ? {
-      feilmelding: 'notnull', skjemaelementId: ''
-    } as FeiloppsummeringFeil
-    : undefined
-
-  v['person-' + personID] = personFail
-    ? {
-      feilmelding: 'notnull', skjemaelementId: ''
-    } as FeiloppsummeringFeil
-    : undefined
+export const validateKontaktsinformasjonEposter = (
+  validation: Validation,
+  eposter: Array<Epost>,
+  t: any,
+  namespace: string,
+  personName: string
+): void => {
+  eposter?.forEach((epost: Epost, index: number) => {
+    validateKontaktsinformasjonEpost(validation, epost, index, t, namespace, personName)
+  })
 }

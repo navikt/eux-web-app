@@ -103,29 +103,30 @@ const Formaal: React.FC<FormaalProps> = ({
             <Normaltekst>
               {_.find(formaalOptions, _f => _f.value === formaal)?.label}
             </Normaltekst>
-            {candidateForDeletion ? (
-              <FlexCenterDiv className='slideInFromRight'>
-                <Normaltekst>
-                  {t('label:are-you-sure')}
-                </Normaltekst>
-                <HorizontalSeparatorDiv data-size='0.5' />
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
-                  onClick={() => onRemoveFormaal(formaal)}
-                >
-                  {t('label:yes')}
-                </HighContrastFlatknapp>
-                <HorizontalSeparatorDiv data-size='0.5' />
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
-                  onClick={() => removeCandidateForDeletion(formaal)}
-                >
-                  {t('label:no')}
-                </HighContrastFlatknapp>
-              </FlexCenterDiv>
-            )
+            {candidateForDeletion
+              ? (
+                <FlexCenterDiv className='slideInFromRight'>
+                  <Normaltekst>
+                    {t('label:are-you-sure')}
+                  </Normaltekst>
+                  <HorizontalSeparatorDiv data-size='0.5' />
+                  <HighContrastFlatknapp
+                    mini
+                    kompakt
+                    onClick={() => onRemoveFormaal(formaal)}
+                  >
+                    {t('label:yes')}
+                  </HighContrastFlatknapp>
+                  <HorizontalSeparatorDiv data-size='0.5' />
+                  <HighContrastFlatknapp
+                    mini
+                    kompakt
+                    onClick={() => removeCandidateForDeletion(formaal)}
+                  >
+                    {t('label:no')}
+                  </HighContrastFlatknapp>
+                </FlexCenterDiv>
+                )
               : (
                 <HighContrastFlatknapp
                   mini

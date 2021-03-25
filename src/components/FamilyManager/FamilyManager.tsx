@@ -192,8 +192,11 @@ const FamilyManager: React.FC = () => {
       setEditCurrentPersonID(isEditCurrentPerson ? undefined : id)
       const newEditPersons = alreadyEditingPerson ? _.filter(_editPersonIDs, _id => _id !== id) : _editPersonIDs.concat(id)
       setEditPersonIDs(newEditPersons)
-      setMenuOption(isEditCurrentPerson ? undefined
-        : id === 'familie' ? _.find(options, o => o.family)?.value : options[0].value
+      setMenuOption(isEditCurrentPerson
+        ? undefined
+        : id === 'familie'
+          ? _.find(options, o => o.family)?.value
+          : options[0].value
       )
     }
   }
@@ -304,8 +307,12 @@ const FamilyManager: React.FC = () => {
           </CheckboxDiv>
         </PersonAndCheckboxDiv>
         {editing && options
-          .filter(o => personId.startsWith('barn') ? o.barn
-            : personId === 'familie' ? o.family : o.normal)
+          .filter(o => personId.startsWith('barn')
+            ? o.barn
+            : personId === 'familie'
+              ? o.family
+              : o.normal
+          )
           .map((o, i) => {
             return (
               <OptionDiv

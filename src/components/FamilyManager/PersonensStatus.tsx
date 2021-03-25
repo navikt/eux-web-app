@@ -1,16 +1,16 @@
-import Avsenderlandet from 'components/FamilyManager/Arbeidsforhold/Avsenderlandet'
 import Ansatt from 'components/FamilyManager/Arbeidsforhold/Ansatt'
+import Avsenderlandet from 'components/FamilyManager/Arbeidsforhold/Avsenderlandet'
 import NotAnsatt from 'components/FamilyManager/Arbeidsforhold/NotAnsatt'
-import WithSubsidies from 'components/FamilyManager/Arbeidsforhold/WithSubsidies'
 import ReasonToCome from 'components/FamilyManager/Arbeidsforhold/ReasonToCome'
+import WithSubsidies from 'components/FamilyManager/Arbeidsforhold/WithSubsidies'
 import LesMer from 'components/LesMer/LesMer'
+import { PaddedDiv } from 'components/StyledComponents'
 import { ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { Undertittel } from 'nav-frontend-typografi'
 import { Column, HighContrastRadioPanelGroup, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
 
 interface PersonensStatusProps {
   gettingArbeidsforholdList: boolean
@@ -23,12 +23,6 @@ interface PersonensStatusProps {
   getArbeidsforholdList: (fnr: string | undefined) => void,
   arbeidsforholdList: any
 }
-const PersonensStatusDiv = styled.div`
-  padding: 1rem;
-  fieldset {
-    width: 100%;
-  }
-`
 
 const PersonensStatus: React.FC<PersonensStatusProps> = ({
   highContrast,
@@ -41,29 +35,24 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
   arbeidsforholdList
 }:PersonensStatusProps): JSX.Element => {
   const [_arbeidsforhold, setArbeidsforhold] = useState<string>('')
-
   const { t } = useTranslation()
-
-  const onArbeidsforholdChanged = (e: string) => {
-    setArbeidsforhold(e)
-  }
-
+  const namespace = 'familymanager-' + personID + '-personensstatus'
   return (
-    <PersonensStatusDiv>
-      <Row>
+    <PaddedDiv>
+      <Row className='slideInFromLeft'>
         <Column>
           <Undertittel>
-            {t('label:arbeidsforhold-type')}
+            {t('el:title-arbeidsforhold-type')}
           </Undertittel>
           <VerticalSeparatorDiv />
           <HighContrastRadioPanelGroup
-            data-multiple-line='true'
-            data-no-border='true'
             checked={_arbeidsforhold}
-            data-test-id='c-familymanager-personenstatus-arbeidsforhold-radiogroup'
-            id='c-familymanager-personenstatus-arbeidsforhold-radiogroup'
-            feil={undefined}
-            name='c-familymanager-personenstatus-arbeidsforhold-radiogroup'
+            data-multiple-line
+            data-no-border
+            data-test-id={'c-' + namespace + '-type-radiogroup'}
+            feil={validation[namespace + '-type']?.feilmelding}
+            id={'c-' + namespace + '-type-radiogroup'}
+            name={namespace + '-type'}
             radios={[
               { label: t('el:option-personensstatus-1'), value: 'arbeidsforhold-1' },
               { label: t('el:option-personensstatus-2'), value: 'arbeidsforhold-2' },
@@ -89,7 +78,7 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
                 value: 'arbeidsforhold-5'
               }
             ]}
-            onChange={(e: any) => onArbeidsforholdChanged(e.target.value)}
+            onChange={(e: any) => setArbeidsforhold(e.target.value)}
           />
         </Column>
       </Row>
@@ -127,7 +116,7 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
           validation={validation}
         />
       </>
-    </PersonensStatusDiv>
+    </PaddedDiv>
   )
 }
 

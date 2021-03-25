@@ -11,7 +11,6 @@ export interface State {
   alert: AlertState,
   app: AppState,
   attachments: AttachmentsState,
-  form: FormState,
   loading: LoadingState,
   sak: SakState,
   ui: UiState,

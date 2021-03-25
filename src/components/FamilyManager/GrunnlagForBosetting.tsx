@@ -1,9 +1,9 @@
 import classNames from 'classnames'
-import { TextAreaDiv } from 'components/StyledComponents'
+import { AlignStartRow, TextAreaDiv } from 'components/StyledComponents'
 import { ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { Undertittel } from 'nav-frontend-typografi'
-import { Column, HighContrastInput, HighContrastTextArea, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { Column, HighContrastInput, HighContrastTextArea, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -28,119 +28,109 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
   // replySed,
   validation
 }:GrunnlagForBosettingProps): JSX.Element => {
-  const [_currentSluttDato, setCurrentSluttDato] = useState<string>('')
-  const [_currentStartDato, setCurrentStartDato] = useState<string>('')
-  const [_currentSenderDato, setCurrentSenderDato] = useState<string>('')
-  const [_currentReceiverDato, setCurrentReceiverDato] = useState<string>('')
-
-  const [_currentElementsOfPersonalSituation, setCurrentElementsOfPersonalSituation] = useState<string>('')
-
+  const [_newSluttDato, setNewSluttDato] = useState<string>('')
+  const [_newStartDato, setNewStartDato] = useState<string>('')
+  const [_newSenderDato, setNewSenderDato] = useState<string>('')
+  const [_newReceiverDato, setNewReceiverDato] = useState<string>('')
+  const [_newElementsOfPersonalSituation, setNewElementsOfPersonalSituation] = useState<string>('')
   const { t } = useTranslation()
+  const namespace = `familymanager-${personID}-grunnlagforbosetting`
 
   const setAvsenderDato = (e: string) => {
-    setCurrentSenderDato(e)
+    setNewSenderDato(e)
   }
 
   const setMottakerDato = (e: string) => {
-    setCurrentReceiverDato(e)
+    setNewReceiverDato(e)
   }
 
   const setSluttDato = (e: string) => {
-    setCurrentSluttDato(e)
+    setNewSluttDato(e)
   }
 
   const setStartDato = (e: string) => {
-    setCurrentStartDato(e)
+    setNewStartDato(e)
   }
 
   const setElementsOfPersonalSituation = (e: string) => {
-    setCurrentElementsOfPersonalSituation(e)
+    setNewElementsOfPersonalSituation(e)
   }
 
   return (
     <RelasjonDiv>
       <Undertittel>
-        {t('label:duration-stay')}
+        {t('el:title-duration-stay')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      <Row>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.0s' }}>
         <Column>
           <HighContrastInput
-            data-test-id={'c-familymanager-' + personID + '-grunnlag-startdato-input'}
-            feil={validation['person-' + personID + '-grunnlag-startdato']
-              ? validation['person-' + personID + '-grunnlag-startdato']!.feilmelding
-              : undefined}
-            id={'c-familymanager-' + personID + '-grunnlag-startdato-input'}
-            onChange={(e: any) => setStartDato(e.target.value)}
-            value={_currentStartDato}
+            data-test-id={'c-' + namespace + '-startdato-input'}
+            feil={validation[namespace + '-startdato']?.feilmelding}
+            id={'c-' + namespace + '-startdato-input'}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value)}
+            value={_newStartDato}
             label={t('label:start-date')}
             placeholder={t('el:placeholder-date-default')}
           />
         </Column>
         <Column>
           <HighContrastInput
-            data-test-id={'c-familymanager-' + personID + '-grunnlag-startdato-input'}
-            feil={validation['person-' + personID + '-grunnlag-startdato-sluttdato']
-              ? validation['person-' + personID + '-grunnlag-startdato-sluttdato']!.feilmelding
-              : undefined}
-            id={'c-familymanager-' + personID + '-grunnlag-startdato-sluttdato-input'}
-            onChange={(e: any) => setSluttDato(e.target.value)}
-            value={_currentSluttDato}
+            data-test-id={'c-' + namespace + '-startdato-input'}
+            feil={validation[namespace + '-sluttdato']?.feilmelding}
+            id={'c-' + namespace + '-startdato-sluttdato-input'}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value)}
+            value={_newSluttDato}
             label={t('label:end-date')}
             placeholder={t('el:placeholder-date-default')}
           />
         </Column>
-      </Row>
+      </AlignStartRow>
       <VerticalSeparatorDiv />
-      <Row>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column>
           <HighContrastInput
-            data-test-id={'c-familymanager-' + personID + '-grunnlag-avsenderdato-input'}
-            feil={validation['person-' + personID + '-grunnlag-avsenderdato']
-              ? validation['person-' + personID + '-grunnlag-avsenderdato']!.feilmelding
-              : undefined}
-            id={'c-familymanager-' + personID + '-grunnlag-avsenderdato-input'}
-            onChange={(e: any) => setAvsenderDato(e.target.value)}
-            value={_currentSenderDato}
+            data-test-id={'c-' + namespace + '-avsenderdato-input'}
+            feil={validation[namespace + '-avsenderdato']?.feilmelding}
+            id={'c-' + namespace + '-avsenderdato-input'}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAvsenderDato(e.target.value)}
+            value={_newSenderDato}
             label={t('label:moving-date-sender')}
             placeholder={t('el:placeholder-date-default')}
           />
         </Column>
-      </Row>
-      <Row>
+      </AlignStartRow>
+      <VerticalSeparatorDiv />
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
         <Column>
           <HighContrastInput
-            data-test-id={'c-familymanager-' + personID + '-grunnlag-mottakerdato-input'}
-            feil={validation['person-' + personID + '-grunnlag-mottakerdato']
-              ? validation['person-' + personID + '-grunnlag-mottakerdato']!.feilmelding
-              : undefined}
-            id={'c-familymanager-' + personID + '-grunnlag-mottakerdato-input'}
-            onChange={(e: any) => setMottakerDato(e.target.value)}
-            value={_currentReceiverDato}
+            data-test-id={'c-' + namespace + '-mottakerdato-input'}
+            feil={validation[namespace + '-mottakerdato']?.feilmelding}
+            id={'c-' + namespace + '-mottakerdato-input'}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMottakerDato(e.target.value)}
+            value={_newReceiverDato}
             label={t('label:moving-date-receiver')}
             placeholder={t('el:placeholder-date-default')}
           />
         </Column>
-      </Row>
-      <Row>
+      </AlignStartRow>
+      <VerticalSeparatorDiv />
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
         <Column>
           <TextAreaDiv>
             <HighContrastTextArea
-              data-test-id={'c-familymanager-' + personID + '-personensstatus-selvstendig-info-textarea'}
-              id={'c-familymanager-' + personID + '-personensstatus-selvstendig-info-textarea'}
-              className={classNames({
-                'skjemaelement__input--harFeil':
-                  validation['c-familymanager-' + personID + '-personensstatus-selvstendig-info-textarea']
-              })}
-              placeholder={t('el:placeholder-input-default')}
+              className={classNames({ 'skjemaelement__input--harFeil': validation[+namespace + '-elementer'] })}
+              data-test-id={'c-' + namespace + '-elementer-textarea'}
+              feil={validation[+namespace + '-elementer']}
+              id={'c-' + namespace + '-elementer-textarea'}
               label={t('label:elements-of-personal-situation')}
-              onChange={(e: any) => setElementsOfPersonalSituation(e.target.value)}
-              value={_currentElementsOfPersonalSituation}
-              feil={undefined}
+              placeholder={t('el:placeholder-input-default')}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setElementsOfPersonalSituation(e.target.value)}
+              value={_newElementsOfPersonalSituation}
             />
           </TextAreaDiv>
         </Column>
-      </Row>
+      </AlignStartRow>
     </RelasjonDiv>
   )
 }

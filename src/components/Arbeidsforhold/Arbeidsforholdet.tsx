@@ -204,32 +204,33 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
             <IkonArbeidsforhold />
             <HorizontalSeparatorDiv />
             <div>
-              {_isEditing ? (
-                <Row>
-                  <Column>
-                    <HighContrastInput
-                      data-test-id={'c-' + namespace + '-navn-input'}
-                      feil={_validation[namespace + '-navn']?.feilmelding}
-                      id={'c-' + namespace + '-navn-input'}
-                      label={t('label:name')}
-                      onChange={onNameChanged}
-                      placeholder={t('el:placeholder-input-default')}
-                      value={_navn}
-                    />
-                  </Column>
-                  <Column>
-                    <HighContrastInput
-                      data-test-id={'c-' + namespace + '-orgnr-input'}
-                      feil={_validation[namespace + '-orgnr']?.feilmelding}
-                      id={'c-' + namespace + '-orgnr-input'}
-                      onChange={onOrgnrChanged}
-                      value={_orgnr}
-                      label={t('label:orgnr')}
-                      placeholder={t('el:placeholder-input-default')}
-                    />
-                  </Column>
-                </Row>
-              )
+              {_isEditing
+                ? (
+                  <Row>
+                    <Column>
+                      <HighContrastInput
+                        data-test-id={'c-' + namespace + '-navn-input'}
+                        feil={_validation[namespace + '-navn']?.feilmelding}
+                        id={'c-' + namespace + '-navn-input'}
+                        label={t('label:name')}
+                        onChange={onNameChanged}
+                        placeholder={t('el:placeholder-input-default')}
+                        value={_navn}
+                      />
+                    </Column>
+                    <Column>
+                      <HighContrastInput
+                        data-test-id={'c-' + namespace + '-orgnr-input'}
+                        feil={_validation[namespace + '-orgnr']?.feilmelding}
+                        id={'c-' + namespace + '-orgnr-input'}
+                        onChange={onOrgnrChanged}
+                        value={_orgnr}
+                        label={t('label:orgnr')}
+                        placeholder={t('el:placeholder-input-default')}
+                      />
+                    </Column>
+                  </Row>
+                  )
                 : (
                   <div>
                     <UndertekstBold>

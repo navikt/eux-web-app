@@ -3,50 +3,79 @@ import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 
-export const validateNasjonaliteter = (v: Validation, t: any, options: any, personID: string): void => {
-  let personFail = false
-  let nasjonaliteterFail = false
-  const p = _.get(options.replySed, personID)
-  const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
+export const validateNasjonalitet = (
+  v: Validation,
+  statsborgerskap: Statsborgerskap,
+  statsborgerskaper: Array<Statsborgerskap>,
+  index: number,
+  t: any,
+  namespace: string,
+  personName: string
+): void => {
+  let generalFail: boolean = false
 
-  p.personInfo.statsborgerskap.forEach((s: Statsborgerskap, i: number) => {
-    let value = (s.land)
-      ? undefined
-      : {
-        feilmelding: t('message:validation-noBirthCountry', { person: personName }),
-        skjemaelementId: 'c-familymanager-' + personID + '-nasjonaliteter-' + i + '-land-countryselect'
-      } as FeiloppsummeringFeil
-    v['person-' + personID + '-nasjonaliteter-' + i + '-land'] = value
-    if (value) {
-      personFail = true
-      nasjonaliteterFail = true
-    }
+  let value = (statsborgerskap.land)
+    ? undefined
+    : {
+      feilmelding: t('message:validation-noBirthCountryForPerson', { person: personName }),
+      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-land-countryselect'
+    } as FeiloppsummeringFeil
+  v[namespace + (index < 0 ? '' : '[' + index + ']') + '-land'] = value
+  if (value) {
+    generalFail = true
+  }
 
-    value = undefined
-    if (s.fomdato && s.fomdato.length > 0) {
-      value = s.fomdato.match(/\d{2}\.\d{2}\.\d{4}/)
-        ? undefined
-        : {
-          feilmelding: t('message:validation-invalidDateForPerson', { person: personName }),
-          skjemaelementId: 'c-familymanager-' + personID + '-nasjonaliteter-' + i + '-fomdato-input'
-        } as FeiloppsummeringFeil
-    }
-    v['person-' + personID + '-nasjonaliteter-' + i + '-fomdato'] = value
-    if (value) {
-      personFail = true
-      nasjonaliteterFail = true
-    }
+  value = _.find(statsborgerskaper, s => s.land === statsborgerskap.land) === null
+    ? undefined
+    : {
+      feilmelding: t('message:validation-duplicateBirthCountry'),
+      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-land-countryselect'
+    } as FeiloppsummeringFeil
+  v[namespace + (index < 0 ? '' : '[' + index + ']') + '-land'] = value
+  if (value) {
+    generalFail = true
+  }
+
+  value = (statsborgerskap.fomdato)
+    ? undefined
+    : {
+      feilmelding: t('message:validation-noDateForPerson', { person: personName }),
+      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-fomdato-input'
+    } as FeiloppsummeringFeil
+  v[namespace + (index < 0 ? '' : '[' + index + ']') + '-fomdato'] = value
+  if (value) {
+    generalFail = true
+  }
+
+  value = (statsborgerskap.fomdato && statsborgerskap.fomdato.match(/\d{2}\.\d{2}\.\d{4}/))
+    ? undefined
+    : {
+      feilmelding: t('message:validation-invalidDateForPerson', { person: personName }),
+      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-fomdato-input'
+    } as FeiloppsummeringFeil
+  v[namespace + (index < 0 ? '' : '[' + index + ']') + '-fomdato'] = value
+  if (value) {
+    generalFail = true
+  }
+
+  if (generalFail) {
+    const namespaceBits = namespace.split('-')
+    namespaceBits[0] = 'person'
+    const personNamespace = namespaceBits[0] + '-' + namespaceBits[1]
+    const categoryNamespace = namespaceBits.join('-')
+    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+  }
+}
+
+export const validateNasjonaliteter = (
+  validation: Validation,
+  statsborgerskaper: Array<Statsborgerskap>,
+  t: any,
+  namespace: string,
+  personName: string
+): void => {
+  statsborgerskaper?.forEach((statsborgerskap: Statsborgerskap, index: number) => {
+    validateNasjonalitet(validation, statsborgerskap, statsborgerskaper, index, t, namespace, personName)
   })
-
-  v['person-' + personID + '-nasjonaliteter'] = nasjonaliteterFail
-    ? {
-      feilmelding: 'notnull', skjemaelementId: ''
-    } as FeiloppsummeringFeil
-    : undefined
-
-  v['person-' + personID] = personFail
-    ? {
-      feilmelding: 'notnull', skjemaelementId: ''
-    } as FeiloppsummeringFeil
-    : undefined
 }

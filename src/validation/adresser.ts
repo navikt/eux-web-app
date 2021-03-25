@@ -10,9 +10,10 @@ export const validateAdresse = (
   namespace: string,
   personName: string
 ): void => {
-
   let generalFail: boolean = false
-  let value = (adresse.land) ? undefined : {
+  let value = (adresse.land)
+    ? undefined
+    : {
       feilmelding: t('message:validation-noAddressCountryForPerson', { person: personName }),
       skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-land-countryselect'
     } as FeiloppsummeringFeil
@@ -21,28 +22,34 @@ export const validateAdresse = (
   if (value) {
     generalFail = true
   }
-  value = (adresse.gate) ? undefined : {
-    feilmelding: t('message:validation-noAddressStreetForPerson', { person: personName }),
-    skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-gate-input'
-  } as FeiloppsummeringFeil
+  value = (adresse.gate)
+    ? undefined
+    : {
+      feilmelding: t('message:validation-noAddressStreetForPerson', { person: personName }),
+      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-gate-input'
+    } as FeiloppsummeringFeil
 
   v[namespace + (index < 0 ? '' : '[' + index + ']') + '-gate'] = value
   if (value) {
     generalFail = true
   }
-  value = (adresse.postnummer) ? undefined : {
-    feilmelding: t('message:validation-noAddressPostnummerForPerson', { person: personName }),
-    skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-postnummer-input'
-  } as FeiloppsummeringFeil
+  value = (adresse.postnummer)
+    ? undefined
+    : {
+      feilmelding: t('message:validation-noAddressPostnummerForPerson', { person: personName }),
+      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-postnummer-input'
+    } as FeiloppsummeringFeil
 
   v[namespace + (index < 0 ? '' : '[' + index + ']') + '-postnummer'] = value
   if (value) {
     generalFail = true
   }
-  value = (adresse.by) ? undefined : {
-    feilmelding: t('message:validation-noAddressCityForPerson', { person: personName }),
-    skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-by-input'
-  } as FeiloppsummeringFeil
+  value = (adresse.by)
+    ? undefined
+    : {
+      feilmelding: t('message:validation-noAddressCityForPerson', { person: personName }),
+      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-by-input'
+    } as FeiloppsummeringFeil
 
   v[namespace + (index < 0 ? '' : '[' + index + ']') + '-by'] = value
   if (value) {
@@ -50,12 +57,12 @@ export const validateAdresse = (
   }
 
   if (generalFail) {
-    let namespaceBits = namespace.split('-')
+    const namespaceBits = namespace.split('-')
     namespaceBits[0] = 'person'
-    let personNamespace =  namespaceBits[0]  + '-' +  namespaceBits[1]
-    let categoryNamespace =  namespaceBits.join('-')
-    v[personNamespace] = {feilmelding: 'notnull', skjemaelementId: ''} as FeiloppsummeringFeil
-    v[categoryNamespace] = {feilmelding: 'notnull', skjemaelementId: ''} as FeiloppsummeringFeil
+    const personNamespace = namespaceBits[0] + '-' + namespaceBits[1]
+    const categoryNamespace = namespaceBits.join('-')
+    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }
 }
 
@@ -66,7 +73,6 @@ export const validateAdresser = (
   namespace: string,
   personName: string
 ): void => {
-
   adresser?.forEach((adresse: Adresse, index: number) => {
     validateAdresse(validation, adresse, index, t, namespace, personName)
   })

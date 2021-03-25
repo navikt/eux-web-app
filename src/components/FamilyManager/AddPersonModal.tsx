@@ -99,7 +99,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
   const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
 
   const performValidation = (): boolean => {
-    let newValidation: Validation = {}
+    const newValidation: Validation = {}
     if (!_newPersonFnr) {
       newValidation[namespace + '-fnr'] = {
         feilmelding: t('message:validation-noFnr'),
@@ -280,39 +280,41 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
               </>
             )}
           </FlexCenterDiv>
-          {candidateForDeletion ? (
-            <FlexCenterDiv className={classNames('slideInFromRight')}>
-              <Normaltekst>
-                {t('label:are-you-sure')}
-              </Normaltekst>
-              <HorizontalSeparatorDiv data-size='0.5'/>
+          {candidateForDeletion
+            ? (
+              <FlexCenterDiv className={classNames('slideInFromRight')}>
+                <Normaltekst>
+                  {t('label:are-you-sure')}
+                </Normaltekst>
+                <HorizontalSeparatorDiv data-size='0.5' />
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  onClick={() => onRemovePerson(personId)}
+                >
+                  {t('label:yes')}
+                </HighContrastFlatknapp>
+                <HorizontalSeparatorDiv data-size='0.5' />
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  onClick={() => removeCandidateForDeletion(personId!)}
+                >
+                  {t('label:no')}
+                </HighContrastFlatknapp>
+              </FlexCenterDiv>
+              )
+            : (
               <HighContrastFlatknapp
                 mini
                 kompakt
-                onClick={() => onRemovePerson(personId)}
+                onClick={() => addCandidateForDeletion(personId)}
               >
-                {t('label:yes')}
+                <Trashcan />
+                <HorizontalSeparatorDiv data-size='0.5' />
+                {t('el:button-remove')}
               </HighContrastFlatknapp>
-              <HorizontalSeparatorDiv data-size='0.5'/>
-              <HighContrastFlatknapp
-                mini
-                kompakt
-                onClick={() => removeCandidateForDeletion(personId!)}
-              >
-                {t('label:no')}
-              </HighContrastFlatknapp>
-            </FlexCenterDiv>
-          ) : (
-          <HighContrastFlatknapp
-            mini
-            kompakt
-            onClick={() => addCandidateForDeletion(personId)}
-          >
-            <Trashcan />
-            <HorizontalSeparatorDiv data-size='0.5' />
-            {t('el:button-remove')}
-          </HighContrastFlatknapp>
-          )}
+              )}
         </CheckboxDiv>
       </FlexDiv>
     )

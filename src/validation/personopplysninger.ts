@@ -1,116 +1,99 @@
+import { PersonInfo } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 
-export const validatePersonOpplysning = (v: Validation, t: any, options: any, personID: string): void => {
-  let personFail = false
-  let personOpplysningFail = false
-  const p = _.get(options.replySed, personID)
-  const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
+export const validatePersonOpplysning = (
+  v: Validation,
+  personInfo: PersonInfo,
+  t: any,
+  namespace: string,
+  personName: string
+): void => {
+  let generalFail: boolean = false
 
-  let value = (p.personInfo.fornavn)
+  let value = (personInfo.fornavn)
     ? undefined
     : {
       feilmelding: t('message:validation-noFornavnForPerson', { person: personName }),
-      skjemaelementId: 'c-familymanager-' + personID + '-personopplysninger-fornavn-input'
+      skjemaelementId: 'c-' + namespace + '-fornavn-input'
     } as FeiloppsummeringFeil
-  v['person-' + personID + '-personopplysninger-fornavn'] = value
+  v[namespace + '-fornavn'] = value
   if (value) {
-    personFail = true
-    personOpplysningFail = true
+    generalFail = true
   }
 
-  value = (p.personInfo.etternavn)
+  value = (personInfo.etternavn)
     ? undefined
     : {
       feilmelding: t('message:validation-noEtternavnForPerson', { person: personName }),
-      skjemaelementId: 'c-familymanager-' + personID + '-personopplysninger-etternavn-input'
+      skjemaelementId: 'c-' + namespace + '-etternavn-input'
     } as FeiloppsummeringFeil
-  v['person-' + personID + '-personopplysninger-etternavn'] = value
+  v[namespace + '-etternavn'] = value
   if (value) {
-    personFail = true
-    personOpplysningFail = true
+    generalFail = true
   }
 
-  value = (p.personInfo.foedselsdato)
+  value = (personInfo.foedselsdato)
     ? undefined
     : {
       feilmelding: t('message:validation-noFoedselsdatoForPerson', { person: personName }),
-      skjemaelementId: 'c-familymanager-' + personID + '-personopplysninger-foedselsdato-input'
+      skjemaelementId: 'c-' + namespace + '-foedselsdato-input'
     } as FeiloppsummeringFeil
-  v['person-' + personID + '-personopplysninger-foedselsdato'] = value
+  v[namespace + '-foedselsdato'] = value
   if (value) {
-    personFail = true
-    personOpplysningFail = true
+    generalFail = true
   }
 
-  value = (p.personInfo.kjoenn)
+  value = (personInfo.kjoenn)
     ? undefined
     : {
       feilmelding: t('message:validation-noKjoenn', { person: personName }),
-      skjemaelementId: 'c-familymanager-' + personID + '-personopplysninger-kjoenn-radiogroup'
+      skjemaelementId: 'c-' + namespace + '-kjoenn-radiogroup'
     } as FeiloppsummeringFeil
-  v['person-' + personID + '-personopplysninger-kjoenn'] = value
+  v[namespace + '-kjoenn'] = value
   if (value) {
-    personFail = true
-    personOpplysningFail = true
+    generalFail = true
   }
 
-  if (_.get(options.replySed, `toDelete.${personID}.foedested.visible`)) {
-    value = (p.personInfo.pinMangler?.foedested.by)
-      ? undefined
-      : {
-        feilmelding: t('message:validation-noFoedestedByForPerson', { person: personName }),
-        skjemaelementId: 'c-familymanager-' + personID + '-personopplysninger-foedested-by-input'
-      } as FeiloppsummeringFeil
-    v['person-' + personID + '-personopplysninger-foedested-by'] = value
-    if (value) {
-      personFail = true
-      personOpplysningFail = true
-    }
-
-    value = (p.personInfo.pinMangler?.foedested.region)
-      ? undefined
-      : {
-        feilmelding: t('message:validation-noFoedestedRegionForPerson', { person: personName }),
-        skjemaelementId: 'c-familymanager-' + personID + '-personopplysninger-foedested-region-input'
-      } as FeiloppsummeringFeil
-    v['person-' + personID + '-personopplysninger-foedested-region'] = value
-    if (value) {
-      personFail = true
-      personOpplysningFail = true
-    }
-
-    value = (p.personInfo.pinMangler?.foedested.land)
-      ? undefined
-      : {
-        feilmelding: t('message:validation-noFoedestedLandForPerson', { person: personName }),
-        skjemaelementId: 'c-familymanager-' + personID + '-personopplysninger-foedested-land-countryselect'
-      } as FeiloppsummeringFeil
-    v['person-' + personID + '-personopplysninger-foedested-land'] = value
-    if (value) {
-      personFail = true
-      personOpplysningFail = true
-    }
-  } else {
-    delete v['person-' + p.fnr + '-personopplysninger-foedested-by']
-    delete v['person-' + p.fnr + '-personopplysninger-foedested-region']
-    delete v['person-' + p.fnr + '-personopplysninger-foedested-land']
+  value = (personInfo.pinMangler?.foedested.by)
+    ? undefined
+    : {
+      feilmelding: t('message:validation-noFoedestedByForPerson', { person: personName }),
+      skjemaelementId: 'c-' + namespace + '-foedested-by-input'
+    } as FeiloppsummeringFeil
+  v[namespace + '-foedested-by'] = value
+  if (value) {
+    generalFail = true
   }
 
-  v['person-' + personID + '-personopplysninger'] = personOpplysningFail
-    ? {
-      feilmelding: 'notnull', skjemaelementId: ''
+  value = (personInfo.pinMangler?.foedested.region)
+    ? undefined
+    : {
+      feilmelding: t('message:validation-noFoedestedRegionForPerson', { person: personName }),
+      skjemaelementId: 'c-' + namespace + '-foedested-region-input'
     } as FeiloppsummeringFeil
-    : undefined
+  v[namespace + '-foedested-region'] = value
+  if (value) {
+    generalFail = true
+  }
 
-  const personFailMessage = personFail
-    ? {
-      feilmelding: 'notnull', skjemaelementId: ''
+  value = (personInfo.pinMangler?.foedested.land)
+    ? undefined
+    : {
+      feilmelding: t('message:validation-noFoedestedLandForPerson', { person: personName }),
+      skjemaelementId: 'c-' + namespace + '-foedested-land-countryselect'
     } as FeiloppsummeringFeil
-    : undefined
+  v[namespace + '-foedested-land'] = value
+  if (value) {
+    generalFail = true
+  }
 
-  if (!(v['person-' + personID] !== undefined && personFailMessage === undefined)) {
-    v['person-' + personID] = personFailMessage
+  if (generalFail) {
+    const namespaceBits = namespace.split('-')
+    namespaceBits[0] = 'person'
+    const personNamespace = namespaceBits[0] + '-' + namespaceBits[1]
+    const categoryNamespace = namespaceBits.join('-')
+    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }
 }

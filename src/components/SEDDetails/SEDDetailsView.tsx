@@ -87,9 +87,11 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
         <Dt>{t('app:relationship-ektefelle')}</Dt>
         <Dd>
           <span>
-            {(replySed as F002Sed).ektefelle ? (replySed as F002Sed).ektefelle.personInfo.fornavn + ' ' +
+            {(replySed as F002Sed).ektefelle
+              ? (replySed as F002Sed).ektefelle.personInfo.fornavn + ' ' +
                (replySed as F002Sed).ektefelle.personInfo.etternavn +
-            ' (' + (replySed as F002Sed).ektefelle.personInfo.kjoenn + ')' : '-'}
+            ' (' + (replySed as F002Sed).ektefelle.personInfo.kjoenn + ')'
+              : '-'}
           </span>
           <FlagList
             size='S'

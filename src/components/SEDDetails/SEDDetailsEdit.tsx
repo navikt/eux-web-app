@@ -119,7 +119,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
         </>
       )}
       {_anmodningsperioder && _anmodningsperioder.map((p, i) => (
-        <>
+        <div key={i}>
           <FlexDiv className='slideInFromLeft' style={{ animationDelay: i * 0.1 + 's' }}>
             <HighContrastInput
               data-test-id={'c-seddetails-anmodningsperioder[' + i + ']-startdato-input'}
@@ -144,7 +144,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
             />
           </FlexDiv>
           <VerticalSeparatorDiv data-size='0.5' />
-        </>
+        </div>
       ))}
       <VerticalSeparatorDiv />
       <UndertekstBold>

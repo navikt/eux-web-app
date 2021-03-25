@@ -1,25 +1,29 @@
-import { Adresse, FamilieRelasjon2, Person } from 'declarations/sed'
+import { Adresse, Epost, FamilieRelasjon2, Person, PersonInfo, Statsborgerskap, Telefon } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { validateNasjonaliteter } from 'validation/nasjonaliteter'
 import { validatePersonOpplysning } from 'validation/personopplysninger'
 import { validateAdresser } from 'validation/adresser'
-import { validateKontaktsinformasjon } from 'validation/kontaktinformasjon'
+import { validateKontaktsinformasjonTelefoner, validateKontaktsinformasjonEposter } from 'validation/kontaktinformasjon'
 import { validateTrygdeordninger } from 'validation/trygdeordninger'
 import { validateFamilierelasjoner } from 'validation/familierelasjon'
 
 export const performValidation = (v: Validation, t: any, options: any, personID: string) => {
-
   const adresser: Array<Adresse> = _.get(options.replySed, `${personID}.adresser`)
+  const personInfo: PersonInfo = _.get(options.replySed, `${personID}.personInfo`)
   const familierelasjoner: Array<FamilieRelasjon2> = _.get(options.replySed, `${personID}.familierelasjoner`)
-  const p = _.get(options.replySed, personID)
-  const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
+  const telefoner: Array<Telefon> = _.get(options.replySed, `${personID}.telefon`)
+  const eposter: Array<Epost> = _.get(options.replySed, `${personID}.epost`)
+  const statsborgerskaper: Array<Statsborgerskap> = _.get(options.replySed, `${personID}.statsborgerskap`)
 
-  validatePersonOpplysning(v, t, options, personID)
-  validateNasjonaliteter(v, t, options, personID)
+  const personName = personInfo.fornavn + ' ' + personInfo.etternavn
+
+  validatePersonOpplysning(v, personInfo, t, `familymanager-${personID}-personopplysning`, personName)
+  validateNasjonaliteter(v, statsborgerskaper, t, `familymanager-${personID}-statsborgerskap`, personName)
   validateAdresser(v, adresser, t, `familymanager-${personID}-adresser`, personName)
-  validateKontaktsinformasjon(v, t, options, personID)
+  validateKontaktsinformasjonTelefoner(v, telefoner, t, `familymanager-${personID}-kontaktinformasjon-telefon`, personName)
+  validateKontaktsinformasjonEposter(v, eposter, t, `familymanager-${personID}-kontaktinformasjon-epost`, personName)
   validateTrygdeordninger(v, t, options, personID)
   validateFamilierelasjoner(v, familierelasjoner, t, `familymanager-${personID}-familierelasjoner`, personName)
 }

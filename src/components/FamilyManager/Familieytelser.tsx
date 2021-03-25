@@ -41,7 +41,6 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
   // replySed,
   validation
 }:FamilieYtelserProps): JSX.Element => {
-
   const { t } = useTranslation()
   const [_newBenefitCause, setNewBenefitCause] = useState<string>('')
   const [_newNumber, setNewNumber] = useState<string>('')
@@ -103,7 +102,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             data-test-id={'c-' + namespace + '-benefitCause-select'}
             error={validation[namespace + '-benefitCause']?.feilmelding}
             highContrast={highContrast}
-            id={'c-' + namespace +  '-benefitCause-select'}
+            id={'c-' + namespace + '-benefitCause-select'}
             label={t('label:benefit-cause')}
             onChange={(e: any) => setBenefitCause(e.value)}
             options={benefitCauseOptions}
@@ -125,7 +124,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.1s'}}>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column>
           <HighContrastInput
             data-test-id={'c-' + namespace + '-amount-input'}
@@ -162,11 +161,11 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <Undertittel className='slideInFromLeft' style={{animationDelay: '0.2s'}}>
+      <Undertittel className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
         {t('el:title-grant-date')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.3s'}}>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
         <Column>
           <HighContrastInput
             data-test-id={'c-' + namespace + '-startdato-input'}
@@ -191,11 +190,11 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.4s'}}>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
         <Column>
           <HighContrastInput
             data-test-id={'c-' + namespace + '-receiver-input'}
-            feil={validation[ namespace + '--receiver']?.feilmelding}
+            feil={validation[namespace + '--receiver']?.feilmelding}
             id={'c-' + namespace + '-receiver-input'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setReceiver(e.target.value)}
             value={_newReceiver}
@@ -205,7 +204,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.5s'}}>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.5s' }}>
         <Column>
           <HighContrastRadioPanelGroup
             checked={_newFrequency}

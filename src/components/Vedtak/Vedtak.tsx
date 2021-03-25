@@ -222,10 +222,10 @@ const Vedtak: React.FC<VedtakProps> = ({
             <div dangerouslySetInnerHTML={{ __html: t('label:allKids-select') + ':' }} />
             <VerticalSeparatorDiv />
             {(replySed as F002Sed)?.barn?.map(b => (
-              <>
+              <div key={b.personInfo.fornavn + ' ' + b.personInfo.etternavn}>
                 <Checkbox label={b.personInfo.fornavn + ' ' + b.personInfo.etternavn} />
                 <VerticalSeparatorDiv data-size='0.5' />
-              </>
+              </div>
             ))}
           </>
         )}

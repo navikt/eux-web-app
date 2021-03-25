@@ -66,7 +66,7 @@ const Adresser: React.FC<AdresseProps> = ({
   const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
 
   const performValidation = (): boolean => {
-    let newValidation: Validation = {}
+    const newValidation: Validation = {}
     validateAdresse(
       newValidation,
       {
@@ -100,7 +100,7 @@ const Adresser: React.FC<AdresseProps> = ({
   const onTypeChanged = (type: string, i: number) => {
     if (i < 0) {
       setNewType(type)
-      resetValidation( namespace + '-type')
+      resetValidation(namespace + '-type')
     } else {
       const newAdresses = _.cloneDeep(adresses)
       newAdresses[i].type = type
@@ -111,7 +111,7 @@ const Adresser: React.FC<AdresseProps> = ({
   const onGateChanged = (gate: string, i: number) => {
     if (i < 0) {
       setNewGate(gate)
-      resetValidation( namespace + '-gate')
+      resetValidation(namespace + '-gate')
     } else {
       const newAdresses = _.cloneDeep(adresses)
       newAdresses[i].gate = gate
@@ -122,7 +122,7 @@ const Adresser: React.FC<AdresseProps> = ({
   const onPostnummerChanged = (postnummer: string, i: number) => {
     if (i < 0) {
       setNewPostnummer(postnummer)
-      resetValidation( namespace + '-postnummer')
+      resetValidation(namespace + '-postnummer')
     } else {
       const newAdresses = _.cloneDeep(adresses)
       newAdresses[i].postnummer = postnummer
@@ -133,7 +133,7 @@ const Adresser: React.FC<AdresseProps> = ({
   const onByChanged = (by: string, i: number) => {
     if (i < 0) {
       setNewBy(by)
-      resetValidation( namespace + '-by')
+      resetValidation(namespace + '-by')
     } else {
       const newAdresses = _.cloneDeep(adresses)
       newAdresses[i].by = by
@@ -144,7 +144,7 @@ const Adresser: React.FC<AdresseProps> = ({
   const onBygningChanged = (bygning: string, i: number) => {
     if (i < 0) {
       setNewBygning(bygning)
-      resetValidation( namespace + '-bygning')
+      resetValidation(namespace + '-bygning')
     } else {
       const newAdresses = _.cloneDeep(adresses)
       newAdresses[i].bygning = bygning
@@ -155,7 +155,7 @@ const Adresser: React.FC<AdresseProps> = ({
   const onRegionChanged = (region: string, i: number) => {
     if (i < 0) {
       setNewRegion(region)
-      resetValidation( namespace + '-region')
+      resetValidation(namespace + '-region')
     } else {
       const newAdresses = _.cloneDeep(adresses)
       newAdresses[i].region = region
@@ -166,7 +166,7 @@ const Adresser: React.FC<AdresseProps> = ({
   const onLandChanged = (land: string, i: number) => {
     if (i < 0) {
       setNewLand(land)
-      resetValidation( namespace + '-land')
+      resetValidation(namespace + '-land')
     } else {
       const newAdresses = _.cloneDeep(adresses)
       newAdresses[i].land = land
@@ -197,7 +197,7 @@ const Adresser: React.FC<AdresseProps> = ({
   const onRemove = (index: number) => {
     const newAdresses = _.cloneDeep(adresses)
     const deletedAddresses: Array<Adresse> = newAdresses.splice(index, 1)
-    if ( deletedAddresses && deletedAddresses.length > 0) {
+    if (deletedAddresses && deletedAddresses.length > 0) {
       removeCandidateForDeletion(getKey(deletedAddresses[0]))
     }
     onValueChanged(`${personID}.adresser`, newAdresses)
@@ -243,19 +243,19 @@ const Adresser: React.FC<AdresseProps> = ({
               legend={t('label:adresse')}
               name={namespace + (i >= 0 ? '[' + i + ']' : '') + '-type'}
               radios={[
-                {label: t('label:bostedsland'), value: 'bosted'},
-                {label: t('label:oppholdsland'), value: 'opphold'},
-                {label: t('label:kontaktadresse'), value: 'kontakt'}
+                { label: t('label:bostedsland'), value: 'bosted' },
+                { label: t('label:oppholdsland'), value: 'opphold' },
+                { label: t('label:kontaktadresse'), value: 'kontakt' }
               ]}
               onChange={(e: any) => onTypeChanged(e.target.value, i)}
             />
           </Column>
-          <Column/>
+          <Column />
         </AlignStartRow>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{animationDelay: '0.1s'}}
+          style={{ animationDelay: '0.1s' }}
         >
           <Column data-flex='2'>
             <HighContrastInput
@@ -277,12 +277,12 @@ const Adresser: React.FC<AdresseProps> = ({
               value={i < 0 ? _newBygning : a?.bygning}
             />
           </Column>
-          <Column/>
+          <Column />
         </AlignStartRow>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{animationDelay: '0.2s'}}
+          style={{ animationDelay: '0.2s' }}
         >
           <Column>
             <HighContrastInput
@@ -304,12 +304,12 @@ const Adresser: React.FC<AdresseProps> = ({
               value={i < 0 ? _newBy : a?.by}
             />
           </Column>
-          <Column/>
+          <Column />
         </AlignStartRow>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{animationDelay: '0.3s'}}
+          style={{ animationDelay: '0.3s' }}
         >
           <Column data-flex='1.5'>
             <HighContrastInput
@@ -335,29 +335,30 @@ const Adresser: React.FC<AdresseProps> = ({
             />
           </Column>
           <Column>
-            {candidateForDeletion ? (
-              <FlexCenterDiv className={classNames('nolabel', 'slideInFromRight')}>
-                <Normaltekst>
-                  {t('label:are-you-sure')}
-                </Normaltekst>
-                <HorizontalSeparatorDiv data-size='0.5' />
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
-                  onClick={() => onRemove(i)}
-                >
-                  {t('label:yes')}
-                </HighContrastFlatknapp>
-                <HorizontalSeparatorDiv data-size='0.5' />
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
-                  onClick={() => removeCandidateForDeletion(key!)}
-                >
-                  {t('label:no')}
-                </HighContrastFlatknapp>
-              </FlexCenterDiv>
-              )
+            {candidateForDeletion
+              ? (
+                <FlexCenterDiv className={classNames('nolabel', 'slideInFromRight')}>
+                  <Normaltekst>
+                    {t('label:are-you-sure')}
+                  </Normaltekst>
+                  <HorizontalSeparatorDiv data-size='0.5' />
+                  <HighContrastFlatknapp
+                    mini
+                    kompakt
+                    onClick={() => onRemove(i)}
+                  >
+                    {t('label:yes')}
+                  </HighContrastFlatknapp>
+                  <HorizontalSeparatorDiv data-size='0.5' />
+                  <HighContrastFlatknapp
+                    mini
+                    kompakt
+                    onClick={() => removeCandidateForDeletion(key!)}
+                  >
+                    {t('label:no')}
+                  </HighContrastFlatknapp>
+                </FlexCenterDiv>
+                )
               : (
                 <div className={classNames('nolabel')}>
                   <HighContrastFlatknapp
@@ -365,13 +366,13 @@ const Adresser: React.FC<AdresseProps> = ({
                     kompakt
                     onClick={() => i < 0 ? onAdd() : addCandidateForDeletion(key!)}
                   >
-                    {i < 0 ? <Add/> : <Trashcan/>}
-                    <HorizontalSeparatorDiv data-size='0.5'/>
+                    {i < 0 ? <Add /> : <Trashcan />}
+                    <HorizontalSeparatorDiv data-size='0.5' />
                     {i < 0 ? t('el:button-add') : t('el:button-remove')}
                   </HighContrastFlatknapp>
                   {_seeNewForm && i < 0 && (
                     <>
-                      <HorizontalSeparatorDiv/>
+                      <HorizontalSeparatorDiv />
                       <HighContrastFlatknapp
                         mini
                         kompakt
@@ -382,10 +383,10 @@ const Adresser: React.FC<AdresseProps> = ({
                     </>
                   )}
                 </div>
-              )}
+                )}
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv data-size='2'/>
+        <VerticalSeparatorDiv data-size='2' />
       </>
     )
   }

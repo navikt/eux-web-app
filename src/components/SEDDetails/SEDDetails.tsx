@@ -45,7 +45,8 @@ const SEDDetails = ({ highContrast, replySed }: SEDDetailsProps) => {
           </HighContrastFlatknapp>
         </FlexDiv>
         <VerticalSeparatorDiv />
-        {isEditing ? <SEDDetailsEdit replySed={replySed} onSave={toggleEditing} onCancel={toggleEditing} />
+        {isEditing
+          ? <SEDDetailsEdit replySed={replySed} onSave={toggleEditing} onCancel={toggleEditing} />
           : <SEDDetailsView replySed={replySed} />}
       </HighContrastPanel>
     </NavHighContrast>

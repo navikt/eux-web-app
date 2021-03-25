@@ -75,7 +75,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
   const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
 
   const performValidation = (): boolean => {
-    let newValidation: Validation = {}
+    const newValidation: Validation = {}
     validateFamilierelasjon(
       newValidation,
       {
@@ -106,14 +106,14 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
   }
 
   const removeCandidateForDeletion = (key: string | null) => {
-    if (!key) {return null}
+    if (!key) { return null }
     setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
   }
 
   const setRelasjonType = (e: string, i: number) => {
     if (i < 0) {
       setNewRelasjonType(e)
-      resetValidation( namespace + '-relasjontype')
+      resetValidation(namespace + '-relasjontype')
     } else {
       const newFamilieRelasjoner = _.cloneDeep(familierelasjoner)
       newFamilieRelasjoner[i].relasjonType = e
@@ -124,7 +124,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
   const setSluttDato = (e: string, i: number) => {
     if (i < 0) {
       setNewSluttDato(e)
-      resetValidation( namespace + '-sluttdato')
+      resetValidation(namespace + '-sluttdato')
     } else {
       const newFamilieRelasjoner = _.cloneDeep(familierelasjoner)
       newFamilieRelasjoner[i].periode.sluttdato = e
@@ -135,7 +135,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
   const setStartDato = (e: string, i: number) => {
     if (i < 0) {
       setNewStartDato(e)
-      resetValidation( namespace + '-startdato')
+      resetValidation(namespace + '-startdato')
     } else {
       const newFamilieRelasjoner = _.cloneDeep(familierelasjoner)
       newFamilieRelasjoner[i].periode.startdato = e
@@ -146,7 +146,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
   const setAnnenRelasjonType = (e: string, i: number) => {
     if (i < 0) {
       setNewAnnenRelasjonType(e)
-      resetValidation( namespace + '-annenrelasjontype')
+      resetValidation(namespace + '-annenrelasjontype')
     } else {
       const newFamilieRelasjoner = _.cloneDeep(familierelasjoner)
       newFamilieRelasjoner[i].annenRelasjonType = e
@@ -157,7 +157,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
   const setAnnenRelasjonPersonNavn = (e: string, i: number) => {
     if (i < 0) {
       setNewAnnenRelasjonPersonNavn(e)
-      resetValidation( namespace + '-annenrelasjonpersonnavn')
+      resetValidation(namespace + '-annenrelasjonpersonnavn')
     } else {
       const newFamilieRelasjoner = _.cloneDeep(familierelasjoner)
       newFamilieRelasjoner[i].annenRelasjonPersonNavn = e
@@ -168,7 +168,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
   const setAnnenRelasjonDato = (e: string, i: number) => {
     if (i < 0) {
       setNewAnnenRelasjonDato(e)
-      resetValidation( namespace + '-annenrelasjondato')
+      resetValidation(namespace + '-annenrelasjondato')
     } else {
       const newFamilieRelasjoner = _.cloneDeep(familierelasjoner)
       newFamilieRelasjoner[i].annenRelasjonDato = e
@@ -179,7 +179,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
   const setBorSammen = (e: string, i: number) => {
     if (i < 0) {
       setNewBorSammen(e)
-      resetValidation( namespace + '-borsammen')
+      resetValidation(namespace + '-borsammen')
     } else {
       const newFamilieRelasjoner = _.cloneDeep(familierelasjoner)
       newFamilieRelasjoner[i].borSammen = e
@@ -204,7 +204,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
   }
 
   const getKey = (f: FamilieRelasjon2): string => {
-     return f.relasjonType + '-' + f.periode.startdato
+    return f.relasjonType + '-' + f.periode.startdato
   }
 
   const onRemove = (i: number) => {
@@ -292,12 +292,13 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
             />
           </Column>
           <Column>
-            {candidateForDeletion ? (
+            {candidateForDeletion
+              ? (
                 <FlexCenterDiv className={classNames('nolabel', 'slideInFromRight')}>
                   <Normaltekst>
                     {t('label:are-you-sure')}
                   </Normaltekst>
-                  <HorizontalSeparatorDiv data-size='0.5'/>
+                  <HorizontalSeparatorDiv data-size='0.5' />
                   <HighContrastFlatknapp
                     mini
                     kompakt
@@ -305,7 +306,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                   >
                     {t('label:yes')}
                   </HighContrastFlatknapp>
-                  <HorizontalSeparatorDiv data-size='0.5'/>
+                  <HorizontalSeparatorDiv data-size='0.5' />
                   <HighContrastFlatknapp
                     mini
                     kompakt
@@ -314,7 +315,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                     {t('label:no')}
                   </HighContrastFlatknapp>
                 </FlexCenterDiv>
-              )
+                )
               : (
                 <div className={classNames('nolabel')}>
                   <HighContrastFlatknapp
@@ -322,13 +323,13 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                     kompakt
                     onClick={() => i < 0 ? onAdd() : addCandidateForDeletion(key!)}
                   >
-                    {i < 0 ? <Add/> : <Trashcan/>}
-                    <HorizontalSeparatorDiv data-size='0.5'/>
+                    {i < 0 ? <Add /> : <Trashcan />}
+                    <HorizontalSeparatorDiv data-size='0.5' />
                     {i < 0 ? t('el:button-add') : t('el:button-remove')}
                   </HighContrastFlatknapp>
                   {_seeNewForm && i < 0 && (
                     <>
-                      <HorizontalSeparatorDiv/>
+                      <HorizontalSeparatorDiv />
                       <HighContrastFlatknapp
                         mini
                         kompakt
@@ -339,10 +340,10 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                     </>
                   )}
                 </div>
-              )}
+                )}
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         {(i < 0 ? _newRelasjonType === 'other' : familierelasjon?.relasjonType === 'other') && (
           <>
             <AlignStartRow className={classNames('slideInFromLeft')}>
@@ -357,10 +358,10 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                   placeholder={t('el:placeholder-input-default')}
                 />
               </Column>
-              <Column data-flex='2'/>
+              <Column data-flex='2' />
             </AlignStartRow>
-            <VerticalSeparatorDiv/>
-            <AlignStartRow className={classNames('slideInFromLeft')} style={{animationDelay: '0.1s'}}>
+            <VerticalSeparatorDiv />
+            <AlignStartRow className={classNames('slideInFromLeft')} style={{ animationDelay: '0.1s' }}>
               <Column data-flex='2'>
                 <HighContrastInput
                   data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-annenrelasjonpersonnavn-input'}
@@ -383,10 +384,10 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                   value={i < 0 ? _newAnnenRelasjonDato : familierelasjon?.annenRelasjonDato}
                 />
               </Column>
-              <Column/>
+              <Column />
             </AlignStartRow>
-            <VerticalSeparatorDiv/>
-            <AlignStartRow className={classNames('slideInFromLeft')} style={{animationDelay: '0.2s'}}>
+            <VerticalSeparatorDiv />
+            <AlignStartRow className={classNames('slideInFromLeft')} style={{ animationDelay: '0.2s' }}>
               <Column data-flex='2'>
                 <HighContrastRadioPanelGroup
                   checked={i < 0 ? _newBorSammen : familierelasjon?.borSammen}
@@ -397,17 +398,17 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                   legend={t('label:live-together')}
                   name={namespace + (i >= 0 ? '[' + i + ']' : '') + '-borsammen'}
                   radios={[
-                    {label: t('label:yes'), value: 'ja'},
-                    {label: t('label:no'), value: 'nei'}
+                    { label: t('label:yes'), value: 'ja' },
+                    { label: t('label:no'), value: 'nei' }
                   ]}
                   onChange={(e: any) => setBorSammen(e.target.value, i)}
                 />
               </Column>
-              <Column data-flex='2'/>
+              <Column data-flex='2' />
             </AlignStartRow>
           </>
         )}
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
       </>
     )
   }

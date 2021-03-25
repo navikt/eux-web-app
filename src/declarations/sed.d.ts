@@ -162,7 +162,6 @@ export interface BaseReplySed {
 }
 
 export interface USed extends BaseReplySed {
-  toDelete?: any
   anmodningsperiode: Periode
   lokaleSakIder: Array<{
     saksnummer: string

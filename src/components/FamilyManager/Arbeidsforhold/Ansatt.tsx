@@ -30,7 +30,7 @@ const Ansatt: React.FC<AnsattProps> = ({
   getArbeidsforholdList,
   gettingArbeidsforholdList,
   personID,
-  replySed,
+  replySed
 }: AnsattProps) => {
   const { t } = useTranslation()
 
@@ -285,7 +285,7 @@ const Ansatt: React.FC<AnsattProps> = ({
                   value={_newSluttDato}
                 />
               </Column>
-              <Column/>
+              <Column />
             </Row>
             <VerticalSeparatorDiv data-size='0.5' />
             <Row>
@@ -311,7 +311,7 @@ const Ansatt: React.FC<AnsattProps> = ({
                   value={_newNavn}
                 />
               </Column>
-              <Column/>
+              <Column />
             </Row>
             <VerticalSeparatorDiv />
             <Row>

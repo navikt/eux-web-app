@@ -21,7 +21,13 @@ const LesMer: React.FC<LesMerProps> = ({ visibleText, invisibleText, moreText, l
     <LesMerDiv>
       {_showInvisible ? invisibleText : visibleText}
       &nbsp;
-      <HighContrastLink href='#' onClick={() => setShowInvisible(!_showInvisible)}>
+      <HighContrastLink
+        href='#' onClick={(e: any) => {
+          e.stopPropagation()
+          e.preventDefault()
+          setShowInvisible(!_showInvisible)
+        }}
+      >
         {_showInvisible ? lessText : moreText}
       </HighContrastLink>
     </LesMerDiv>

@@ -102,14 +102,14 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
   }
 
   const removeCandidateForDeletion = (key: string | null) => {
-    if (!key) {return null}
+    if (!key) { return null }
     setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
   }
 
   const setStartDato = (dato: string, i: number) => {
     if (i < 0) {
       setNewStartDato(dato)
-      resetValidation( namespace + '-startdato')
+      resetValidation(namespace + '-startdato')
     } else {
       const newPerioder = _.cloneDeep(_perioder)
       newPerioder[i].periode.startdato = dato
@@ -122,7 +122,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
   const setSluttDato = (dato: string, i: number) => {
     if (i < 0) {
       setNewSluttDato(dato)
-      resetValidation( namespace + '-sluttdato')
+      resetValidation(namespace + '-sluttdato')
     } else {
       const newPerioder = _.cloneDeep(_perioder)
       newPerioder[i].periode.sluttdato = dato
@@ -136,7 +136,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
     if (type) {
       if (i < 0) {
         setNewPensjonType(type)
-        resetValidation( namespace + '-pensjontype')
+        resetValidation(namespace + '-pensjontype')
       } else {
         const newPerioder = _.cloneDeep(_perioder)
         newPerioder[i].pensjonstype = type
@@ -167,7 +167,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
     const newPerioder: Array<PensjonPeriode> = _.cloneDeep(_perioder)
     const deletedPeriods: Array<PensjonPeriode> = newPerioder.splice(index, 1)
     setPerioder(newPerioder)
-    if ( deletedPeriods && deletedPeriods.length > 0) {
+    if (deletedPeriods && deletedPeriods.length > 0) {
       removeCandidateForDeletion(getKey(deletedPeriods[0]))
     }
     // onValueChanged(`${personID}.XXX`, newPerioder)
@@ -211,7 +211,6 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
   }
 
   const renderRow = (p: PensjonPeriode | undefined, i: number) => {
-
     const key = p ? getKey(p) : 'new'
     const candidateForDeletion = i < 0 ? false : key && _confirmDelete.indexOf(key) >= 0
 
@@ -240,7 +239,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
               value={i < 0 ? _newSluttDato : p?.periode.sluttdato}
             />
           </Column>
-          <Column/>
+          <Column />
         </AlignStartRow>
         <VerticalSeparatorDiv />
         <AlignStartRow>
@@ -258,31 +257,32 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
               defaultValue={getPensjonTypeOption(i < 0 ? _newPensjonType : (p as PensjonPeriode)?.pensjonstype)}
             />
           </Column>
-          <Column/>
+          <Column />
           <Column>
-            {candidateForDeletion ? (
-              <FlexCenterDiv className={classNames('nolabel', 'slideInFromRight')}>
-                <Normaltekst>
-                  {t('label:are-you-sure')}
-                </Normaltekst>
-                <HorizontalSeparatorDiv data-size='0.5'/>
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
-                  onClick={() => onRemove(i)}
-                >
-                  {t('label:yes')}
-                </HighContrastFlatknapp>
-                <HorizontalSeparatorDiv data-size='0.5'/>
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
-                  onClick={() => removeCandidateForDeletion(key!)}
-                >
-                  {t('label:no')}
-                </HighContrastFlatknapp>
-              </FlexCenterDiv>
-              )
+            {candidateForDeletion
+              ? (
+                <FlexCenterDiv className={classNames('nolabel', 'slideInFromRight')}>
+                  <Normaltekst>
+                    {t('label:are-you-sure')}
+                  </Normaltekst>
+                  <HorizontalSeparatorDiv data-size='0.5' />
+                  <HighContrastFlatknapp
+                    mini
+                    kompakt
+                    onClick={() => onRemove(i)}
+                  >
+                    {t('label:yes')}
+                  </HighContrastFlatknapp>
+                  <HorizontalSeparatorDiv data-size='0.5' />
+                  <HighContrastFlatknapp
+                    mini
+                    kompakt
+                    onClick={() => removeCandidateForDeletion(key!)}
+                  >
+                    {t('label:no')}
+                  </HighContrastFlatknapp>
+                </FlexCenterDiv>
+                )
               : (
                 <div className={classNames('nolabel')}>
                   <HighContrastFlatknapp
@@ -290,13 +290,13 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
                     kompakt
                     onClick={() => i < 0 ? onAdd() : addCandidateForDeletion(key!)}
                   >
-                    {i < 0 ? <Add/> : <Trashcan/>}
-                    <HorizontalSeparatorDiv data-size='0.5'/>
+                    {i < 0 ? <Add /> : <Trashcan />}
+                    <HorizontalSeparatorDiv data-size='0.5' />
                     {i < 0 ? t('el:button-add') : t('el:button-remove')}
                   </HighContrastFlatknapp>
                   {_seeNewForm && i < 0 && (
                     <>
-                      <HorizontalSeparatorDiv/>
+                      <HorizontalSeparatorDiv />
                       <HighContrastFlatknapp
                         mini
                         kompakt
@@ -307,10 +307,10 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
                     </>
                   )}
                 </div>
-              )}
+                )}
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
       </div>
     )
   }
@@ -327,9 +327,9 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
         ).map(renderRow)}
       <hr />
       <VerticalSeparatorDiv />
-      {_seeNewForm ?
-        renderRow(undefined, -1) :
-        (
+      {_seeNewForm
+        ? renderRow(undefined, -1)
+        : (
           <Row>
             <Column>
               <HighContrastFlatknapp
@@ -343,7 +343,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
               </HighContrastFlatknapp>
             </Column>
           </Row>
-        )}
+          )}
 
       <VerticalSeparatorDiv />
     </>

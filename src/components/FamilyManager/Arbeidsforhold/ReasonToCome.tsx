@@ -60,7 +60,7 @@ const ReasonToCome: React.FC<ReasonToComeProps> = ({
 
       {!_seeNewForm
         ? (
-            <div className='slideInFromLeft'>
+          <div className='slideInFromLeft'>
             <HighContrastFlatknapp
               mini
               kompakt
@@ -81,7 +81,7 @@ const ReasonToCome: React.FC<ReasonToComeProps> = ({
             <VerticalSeparatorDiv />
             <AlignStartRow
               className={classNames('slideInFromLeft')}
-              style={{animationDelay: '0.1s'}}
+              style={{ animationDelay: '0.1s' }}
             >
               <Column>
                 <HighContrastInput
@@ -105,12 +105,12 @@ const ReasonToCome: React.FC<ReasonToComeProps> = ({
                   value={_newSluttDato}
                 />
               </Column>
-              <Column/>
+              <Column />
             </AlignStartRow>
             <VerticalSeparatorDiv />
             <AlignStartRow
               className={classNames('slideInFromLeft')}
-              style={{animationDelay: '0.2s'}}
+              style={{ animationDelay: '0.2s' }}
             >
               <Column>
                 <HighContrastInput
@@ -119,7 +119,7 @@ const ReasonToCome: React.FC<ReasonToComeProps> = ({
                   id={'c-' + namespace + '-sender-input'}
                   label={t('label:moving-date-sender')}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSenderChange(e.target.value)}
-                  placeholder={t('el:placeholder-input-default')}
+                  placeholder={t('el:placeholder-date-default')}
                   value={_newSender}
                 />
               </Column>
@@ -130,14 +130,14 @@ const ReasonToCome: React.FC<ReasonToComeProps> = ({
                   id={'c-' + namespace + '-receiver-input'}
                   label={t('label:moving-date-receiver')}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => onReceiverChange(e.target.value)}
-                  placeholder={t('el:placeholder-input-default')}
+                  placeholder={t('el:placeholder-date-default')}
                   value={_newReceiver}
                 />
               </Column>
-              <Column/>
+              <Column />
             </AlignStartRow>
           </div>
-        )}
+          )}
     </>
   )
 }

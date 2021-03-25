@@ -1,7 +1,7 @@
 import { searchPerson } from 'actions/svarpased'
 import Add from 'assets/icons/Add'
-import Trashcan from 'assets/icons/Trashcan'
-import { Pin, ReplySed } from 'declarations/sed'
+import { PaddedDiv } from 'components/StyledComponents'
+import { PersonInfo, Pin, ReplySed } from 'declarations/sed'
 import { Kodeverk, Person, Validation } from 'declarations/types'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
@@ -16,10 +16,9 @@ import {
   Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import styled from 'styled-components'
 
 interface PersonOpplysningerProps {
   landkoderList: Array<Kodeverk>
@@ -31,16 +30,6 @@ interface PersonOpplysningerProps {
   validation: Validation
   onValueChanged: (needle: string, value: any) => void
 }
-const PersonOpplysningerDiv = styled.div`
-  padding: 1rem;
-  fieldset {
-    width: 100%;
-  }
-`
-const FlexDiv = styled.div`
-  display: flex;
-  align-items: flex-end;
-`
 
 const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   // highContrast,
@@ -54,6 +43,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
 }:PersonOpplysningerProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
+  const namespace = 'familymanager-' + personID + '-personopplysninger'
+  const personInfo: PersonInfo = _.get(replySed, `${personID}.personInfo`)
+  const [_seeNewForm, setSeeNewForm] = useState<boolean>(false)
 
   const onFornavnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onValueChanged(`${personID}.personInfo.fornavn`, e.target.value)
@@ -72,7 +64,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   }
 
   const onUtenlandskPinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const pin: Array<Pin> = _.get(replySed, `${personID}.personInfo.pin`)
+    const pin: Array<Pin> = _.cloneDeep(personInfo.pin)
     const utendanskPinIndex = _.findIndex(pin, p => p.land !== 'NO')
     if (utendanskPinIndex >= 0) {
       pin[utendanskPinIndex].identifikator = e.target.value
@@ -85,7 +77,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   }
 
   const onUtenlandskLandChange = (land: string) => {
-    const pin: Array<Pin> = _.get(replySed, `${personID}.personInfo.pin`)
+    const pin: Array<Pin> = _.cloneDeep(personInfo.pin)
     const utendanskPinIndex = _.findIndex(pin, p => p.land !== 'NO')
     if (utendanskPinIndex >= 0) {
       pin[utendanskPinIndex].land = land
@@ -98,7 +90,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   }
 
   const onNorwegianPinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const pin: Array<Pin> = _.get(replySed, `${personID}.personInfo.pin`)
+    const pin: Array<Pin> = _.cloneDeep(personInfo.pin)
     const norwegianPinIndex = _.findIndex(pin, p => p.land === 'NO')
     if (norwegianPinIndex >= 0) {
       pin[norwegianPinIndex].identifikator = e.target.value
@@ -123,74 +115,59 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
     return true
   }
 
-  const onSetAddBirthPlace = (value: boolean) => {
-    onValueChanged(`toDelete.${personID}.foedested.visible`, value)
-  }
-
   const onSearchUser = () => {
-    const pin: Array<Pin> = _.get(replySed, `${personID}.personInfo.pin`)
-    const norwegianPin = _.find(pin, p => p.land === 'NO')
+    const norwegianPin = _.find(personInfo.pin, p => p.land === 'NO')
     if (norwegianPin) {
       dispatch(searchPerson(norwegianPin.identifikator))
     }
   }
 
   return (
-    <PersonOpplysningerDiv key={personID}>
-      <Row>
+    <PaddedDiv key={personID}>
+      <Row className='slideInFromLeft'>
         <Column>
           <HighContrastInput
-            data-test-id={'c-familymanager-' + personID + '-personopplysninger-fornavn-input'}
-            feil={validation['person-' + personID + '-personopplysninger-fornavn']
-              ? validation['person-' + personID + '-personopplysninger-fornavn']!.feilmelding
-              : undefined}
-            id={'c-familymanager-' + personID + '-personopplysninger-fornavn-input'}
+            data-test-id={'c-' + namespace + '-fornavn-input'}
+            feil={validation[namespace + '-fornavn']?.feilmelding}
+            id={'c-' + namespace + '-fornavn-input'}
             onChange={onFornavnChange}
-            value={_.get(replySed, `${personID}.personInfo.fornavn`)}
+            value={personInfo.fornavn}
             label={t('label:firstname') + ' *'}
           />
         </Column>
-        <HorizontalSeparatorDiv />
         <Column>
           <HighContrastInput
-            data-test-id={'c-familymanager-' + personID + '-personopplysninger-etternavn-input'}
-            feil={validation['person-' + personID + '-personopplysninger-etternavn']
-              ? validation['person-' + personID + '-personopplysninger-etternavn']!.feilmelding
-              : undefined}
-            id={'c-familymanager-' + personID + '-personopplysninger-etternavn-input'}
+            data-test-id={'c-' + namespace + '-etternavn-input'}
+            feil={validation[namespace + '-etternavn']?.feilmelding}
+            id={'c-' + namespace + '-etternavn-input'}
             onChange={onEtternavnChange}
-            value={_.get(replySed, `${personID}.personInfo.etternavn`)}
+            value={personInfo.etternavn}
             label={t('label:lastname') + ' *'}
           />
         </Column>
-        <HorizontalSeparatorDiv />
         <Column>
           <HighContrastInput
-            data-test-id={'c-familymanager-' + personID + '-personopplysninger-foedselsdato-input'}
-            feil={validation['person-' + personID + '-personopplysninger-foedselsdato']
-              ? validation['person-' + personID + '-personopplysninger-foedselsdato']!.feilmelding
-              : undefined}
-            id={'c-familymanager-' + personID + '-personopplysninger-foedselsdato-input'}
+            data-test-id={'c-' + namespace + '-foedselsdato-input'}
+            feil={validation[namespace + '-foedselsdato']?.feilmelding}
+            id={'c-' + namespace + '-foedselsdato-input'}
             onChange={onFodselsdatoChange}
-            value={_.get(replySed, `${personID}.personInfo.foedselsdato`)}
-            placeholder={t('el:placeholder-birthDate')}
+            value={personInfo.foedselsdato}
+            placeholder={t('el:placeholder-date-default')}
             label={t('label:birthdate') + ' *'}
           />
         </Column>
       </Row>
       <VerticalSeparatorDiv />
-      <Row>
+      <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column>
           <HighContrastRadioPanelGroup
-            checked={_.get(replySed, `${personID}.personInfo.kjoenn`)}
-            data-multiple-line='false'
-            data-test-id={'c-familymanager-' + personID + '-personopplysninger-kjoenn-radiogroup'}
-            feil={validation['person-' + personID + '-personopplysninger-kjoenn']
-              ? validation['person-' + personID + '-personopplysninger-kjoenn']!.feilmelding
-              : undefined}
-            id={'c-familymanager-' + personID + '-personopplysninger-kjoenn-radiogroup'}
+            checked={personInfo.kjoenn}
+            data-no-border
+            data-test-id={'c-' + namespace + '-kjoenn-radiogroup'}
+            feil={validation[namespace + '-kjoenn']?.feilmelding}
+            id={'c-' + namespace + '-kjoenn-radiogroup'}
             legend={t('label:gender') + ' *'}
-            name={'c-familymanager-' + personID + '-personopplysninger-kjoenn-radiogroup'}
+            name={namespace + '-kjoenn'}
             onChange={onKjoennChange}
             radios={[
               { label: t(personID?.startsWith('barn') ? 'label:girl' : 'label:woman'), value: 'K' },
@@ -201,161 +178,138 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         </Column>
       </Row>
       <VerticalSeparatorDiv />
-      <Row>
+      <Row className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
         <Column>
           <HighContrastInput
-            data-test-id={'c-familymanager-' + personID + '-personopplysninger-utenlandskPin-input'}
-            feil={validation['person-' + personID + '-personopplysninger-utenlandskPin']
-              ? validation['person-' + personID + '-personopplysninger-utenlandskPin']!.feilmelding
-              : undefined}
-            id={'c-familymanager-' + personID + '-personopplysninger-utenlandskPin-input'}
-            label={t('label:utenlandskPin')}
+            data-test-id={'c-' + namespace + '-utenlandskpin-nummer-input'}
+            feil={validation[namespace + '-utenlandskpin-nummer']?.feilmelding}
+            id={'c-' + namespace + '-utenlandskpin-nummer-input'}
+            label={t('label:utenlandsk-pin')}
             onChange={onUtenlandskPinChange}
-            value={_.find(_.get(replySed, `${personID}.personInfo.pin`), p => p.land !== 'NO')?.identifikator}
+            value={_.find(personInfo.pin, p => p.land !== 'NO')?.identifikator}
           />
         </Column>
         <Column data-flex='2'>
           <CountrySelect
-            data-test-id={'c-familymanager-' + personID + '-personopplysninger-land-countryselect'}
-            error={validation['person-' + personID + '-personopplysninger-land']
-              ? validation['person-' + personID + '-personopplysninger-land']!.feilmelding
-              : undefined}
-            id={'c-familymanager-' + personID + '-personopplysninger-land-countryselect'}
+            data-test-id={'c-' + namespace + '-utenlandskpin-land-countryselect'}
+            error={validation[namespace + '-utenlandskpin-land']?.feilmelding}
+            id={'c-' + namespace + '-utenlandskpin-land-countryselect'}
             includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
             label={t('label:land')}
             menuPortalTarget={document.body}
             onChange={onUtenlandskLandChange}
-            onOptionSelected={(e: any) => {
-              onUtenlandskLandChange(e.value)
-            }}
-            placeholder={t('label:choose')}
-            values={_.find(_.get(replySed, `${personID}.personInfo.pin`), p => p.land !== 'NO')?.land}
+            onOptionSelected={(e: any) => onUtenlandskLandChange(e.value)}
+            placeholder={t('el:placeholder-select-default')}
+            values={_.find(personInfo.pin, p => p.land !== 'NO')?.land}
           />
         </Column>
       </Row>
       <VerticalSeparatorDiv />
+      <Row className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
+        <Column>
+          <HighContrastInput
+            data-test-id={'c-' + namespace + '-norskpin-nummer-input'}
+            feil={validation[namespace + '-norskpin-nummer']?.feilmelding}
+            id={'c-' + namespace + '-norskpin-nummer-input'}
+            label={t('label:norwegian-fnr')}
+            onChange={onNorwegianPinChange}
+            value={_.find(personInfo.pin, p => p.land === 'NO')?.identifikator}
+          />
+        </Column>
+        <Column>
+          <HighContrastKnapp
+            className='nolabel'
+            disabled={searchingPerson}
+            spinner={searchingPerson}
+            onClick={onSearchUser}
+          >
+            {searchingPerson
+              ? t('message:loading-searching')
+              : t('el:button-search-for-x', { x: t('label:person').toLowerCase() })}
+          </HighContrastKnapp>
+        </Column>
+        <Column />
+      </Row>
+      <VerticalSeparatorDiv data-size='0.5' />
       <Row>
         <Column>
-          <FlexDiv>
-            <HighContrastInput
-              bredde='XL'
-              data-test-id={'c-familymanager-' + personID + '-personopplysninger-norwegianpin-input'}
-              feil={validation['person-' + personID + '-personopplysninger-norwegianpin']
-                ? validation['person-' + personID + '-personopplysninger-norwegianpin']!.feilmelding
-                : undefined}
-              id={'c-familymanager-' + personID + '-personopplysninger-norwegianpin-input'}
-              label={t('label:norwegian-fnr')}
-              onChange={onNorwegianPinChange}
-              value={_.find(_.get(replySed, `${personID}.personInfo.pin`), p => p.land === 'NO')?.identifikator}
-            />
-            <HorizontalSeparatorDiv />
-            <HighContrastKnapp
-              disabled={searchingPerson}
-              spinner={searchingPerson}
-              onClick={onSearchUser}
-            >
-              {searchingPerson ? t('message:loading-searching') : t('label:searchUser')}
-            </HighContrastKnapp>
-          </FlexDiv>
-          <VerticalSeparatorDiv data-size='0.5' />
-          <div>
-            {searchedPerson ? (
+          {searchedPerson
+            ? (
               <Normaltekst>
                 {_.get(replySed, `${personID}.personInfo.fornavn`) + ' ' +
-                 _.get(replySed, `${personID}.personInfo.etternavn`) + ' (' +
-                 _.get(replySed, `${personID}.personInfo.kjoenn`) + ')'}
+            _.get(replySed, `${personID}.personInfo.etternavn`) + ' (' +
+            _.get(replySed, `${personID}.personInfo.kjoenn`) + ')'}
               </Normaltekst>
-            ) : (
-              <Normaltekst>
-                {t('label:norwegian-fnr-description')}
-              </Normaltekst>
-            )}
-          </div>
+              ) : (
+                <Normaltekst>
+                  {t('label:norwegian-fnr-description')}
+                </Normaltekst>
+              )}
         </Column>
       </Row>
       <VerticalSeparatorDiv />
-      {_.get(replySed, `toDelete.${personID}.foedested.visible`)
+      <Row className='slideInFromLeft'>
+        <Column>
+          <Undertittel>
+            {t('label:birthplace')}
+          </Undertittel>
+        </Column>
+      </Row>
+      <VerticalSeparatorDiv data-size='0.5' />
+      {_seeNewForm
         ? (
-          <>
-            <Row>
-              <Column>
-                <HighContrastInput
-                  data-test-id={'c-familymanager-' + personID + '-personopplysninger-foedestedby-input'}
-                  feil={validation['person-' + personID + '-personopplysninger-foedested-by']
-                    ? validation['person-' + personID + '-personopplysninger-foedested-by']!.feilmelding
-                    : undefined}
-                  id={'c-familymanager-' + personID + '-personopplysninger-foedestedby-input'}
-                  label={t('label:by')}
-                  onChange={onFoedestedByChange}
-                  value={_.get(replySed, `${personID}.personInfo.pinMangler.foedested.by`)}
-                />
-              </Column>
-              <HorizontalSeparatorDiv />
-              <Column>
-                <HighContrastInput
-                  data-test-id={'c-familymanager-' + personID + '-personopplysninger-foedested-region-input'}
-                  feil={validation['person-' + personID + '-personopplysninger-foedested-region']
-                    ? validation['person-' + personID + '-personopplysninger-foedested-region']!.feilmelding
-                    : undefined}
-                  id={'c-familymanager-' + personID + '-personopplysninger-foedested-region-input'}
-                  label={t('label:region')}
-                  onChange={onFoedestedRegionChange}
-                  value={_.get(replySed, `${personID}.personInfo.pinMangler.foedested.region`)}
-                />
-              </Column>
-              <HorizontalSeparatorDiv />
-              <Column>
-                <CountrySelect
-                  data-test-id={'c-familymanager-' + personID + '-personopplysninger-foedested-land-countryselect'}
-                  error={validation['person-' + personID + '-personopplysninger-foedested-land']
-                    ? validation['person-' + personID + '-personopplysninger-foedested-land']!.feilmelding
-                    : undefined}
-                  id={'c-familymanager-' + personID + '-personopplysninger-foedested-land-countryselect'}
-                  includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
-                  label={t('label:land')}
-                  menuPortalTarget={document.body}
-                  onOptionSelected={onFoedestedLandChange}
-                  placeholder={t('label:choose')}
-                  values={_.get(replySed, `${personID}.personInfo.pinMangler.foedested.land`)}
-                />
-              </Column>
-            </Row>
-            <VerticalSeparatorDiv />
-            <Row>
-              <Column>
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
-                  onClick={() => onSetAddBirthPlace(false)}
-                >
-                  <Trashcan />
-                  <HorizontalSeparatorDiv data-size='0.5' />
-                  {t('label:remove-birthplace')}
-                </HighContrastFlatknapp>
-              </Column>
-            </Row>
-          </>
+          <Row className='slideInFromLeft'>
+            <Column>
+              <HighContrastInput
+                data-test-id={'c-' + namespace + '-foedested-by-input'}
+                feil={validation[namespace + '-foedested-by']?.feilmelding}
+                id={'c-' + namespace + '-foedestedby-input'}
+                label={t('label:by')}
+                onChange={onFoedestedByChange}
+                value={personInfo.pinMangler?.foedested.by}
+              />
+            </Column>
+            <Column>
+              <HighContrastInput
+                data-test-id={'c-' + namespace + '-foedested-region-input'}
+                feil={validation[namespace + '-foedested-region']?.feilmelding}
+                id={'c-' + namespace + '-foedested-region-input'}
+                label={t('label:region')}
+                onChange={onFoedestedRegionChange}
+                value={personInfo.pinMangler?.foedested.region}
+              />
+            </Column>
+            <Column>
+              <CountrySelect
+                data-test-id={'c-' + namespace + '-foedested-land-countryselect'}
+                error={validation[namespace + '-foedested-land']?.feilmelding}
+                id={'c-' + namespace + '-foedested-land-countryselect'}
+                includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
+                label={t('label:land')}
+                menuPortalTarget={document.body}
+                onOptionSelected={onFoedestedLandChange}
+                placeholder={t('el:placeholder-select-default')}
+                values={personInfo.pinMangler?.foedested.land}
+              />
+            </Column>
+          </Row>
           )
         : (
-          <Row>
+          <Row className='slideInFromLeft'>
             <Column>
-              <Undertittel>
-                {t('label:birthPlace')}
-              </Undertittel>
-              <VerticalSeparatorDiv data-size='0.5' />
               <HighContrastFlatknapp
                 mini
                 kompakt
-                onClick={() => onSetAddBirthPlace(true)}
+                onClick={() => setSeeNewForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('label:add-birthplace')}
+                {t('el:button-add-birthplace')}
               </HighContrastFlatknapp>
             </Column>
           </Row>
           )}
-    </PersonOpplysningerDiv>
+    </PaddedDiv>
   )
 }
 

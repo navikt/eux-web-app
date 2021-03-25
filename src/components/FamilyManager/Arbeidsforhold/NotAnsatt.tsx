@@ -91,7 +91,7 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
   const setStartDato = (dato: string, i: number) => {
     if (i < 0) {
       setNewStartDato(dato)
-      resetValidation( namespace + '-startdato')
+      resetValidation(namespace + '-startdato')
     } else {
       const newPerioder = _.cloneDeep(_perioder)
       newPerioder[i].startdato = dato
@@ -104,7 +104,7 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
   const setSluttDato = (dato: string, i: number) => {
     if (i < 0) {
       setNewSluttDato(dato)
-      resetValidation( namespace + '-sluttdato')
+      resetValidation(namespace + '-sluttdato')
     } else {
       const newPerioder = _.cloneDeep(_perioder)
       newPerioder[i].sluttdato = dato
@@ -125,7 +125,7 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
     resetForm()
   }
 
-  const getKey = (p: Periode): string  => {
+  const getKey = (p: Periode): string => {
     return p?.startdato // assume startdato is unique
   }
 
@@ -133,7 +133,7 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
     const newPerioder: Array<Periode> = _.cloneDeep(_perioder)
     const deletedPeriods: Array<Periode> = newPerioder.splice(index, 1)
     setPerioder(newPerioder)
-    if ( deletedPeriods && deletedPeriods.length > 0) {
+    if (deletedPeriods && deletedPeriods.length > 0) {
       removeCandidateForDeletion(getKey(deletedPeriods[0]))
     }
     // onValueChanged(`${personID}.XXX`, newPerioder)
@@ -166,89 +166,89 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
   }
 
   const renderRow = (p: Periode | undefined, i: number) => {
-
     const key = p ? getKey(p) : 'new'
-    const candidateForDeletion =  i < 0 ? false : key && _confirmDelete.indexOf(key) >= 0
+    const candidateForDeletion = i < 0 ? false : key && _confirmDelete.indexOf(key) >= 0
 
     return (
       <>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
         >
-        <Column>
-          <HighContrastInput
-            data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-startdato-input'}
-            feil={getErrorFor(i, 'startdato')}
-            id={'c-' + namespace + '[' + i + ']-startdato-input'}
-            label={t('label:start-date')}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value, i)}
-            placeholder={t('el:placeholder-date-default')}
-            value={i < 0 ? _newStartDato : p?.startdato}
-          />
-        </Column>
-        <Column>
-          <HighContrastInput
-            data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-input'}
-            feil={getErrorFor(i, 'sluttdato')}
-            id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-input'}
-            label={t('label:end-date')}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value, i)}
-            placeholder={t('el:placeholder-date-default')}
-            value={i < 0 ? _newSluttDato : p?.sluttdato}
-          />
-        </Column>
-        <Column>
-          {candidateForDeletion ? (
-            <FlexCenterDiv className={classNames('nolabel', 'slideInFromRight')}>
-              <Normaltekst>
-                {t('label:are-you-sure')}
-              </Normaltekst>
-              <HorizontalSeparatorDiv data-size='0.5' />
-              <HighContrastFlatknapp
-                mini
-                kompakt
-                onClick={() => onRemove(i)}
-              >
-                {t('label:yes')}
-              </HighContrastFlatknapp>
-              <HorizontalSeparatorDiv data-size='0.5' />
-              <HighContrastFlatknapp
-                mini
-                kompakt
-                onClick={() => removeCandidateForDeletion(key!)}
-              >
-                {t('label:no')}
-              </HighContrastFlatknapp>
-            </FlexCenterDiv>
-          )
-          : (
-            <div className={classNames('nolabel')}>
-              <HighContrastFlatknapp
-                mini
-                kompakt
-                onClick={() => i < 0 ? onAdd() : addCandidateForDeletion(key!)}
-              >
-                {i < 0 ? <Add/> : <Trashcan/>}
-                <HorizontalSeparatorDiv data-size='0.5'/>
-                {i < 0 ? t('el:button-add') : t('el:button-remove')}
-              </HighContrastFlatknapp>
-              {_seeNewForm && i < 0 && (
-                <>
-                  <HorizontalSeparatorDiv/>
+          <Column>
+            <HighContrastInput
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-startdato-input'}
+              feil={getErrorFor(i, 'startdato')}
+              id={'c-' + namespace + '[' + i + ']-startdato-input'}
+              label={t('label:start-date')}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value, i)}
+              placeholder={t('el:placeholder-date-default')}
+              value={i < 0 ? _newStartDato : p?.startdato}
+            />
+          </Column>
+          <Column>
+            <HighContrastInput
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-input'}
+              feil={getErrorFor(i, 'sluttdato')}
+              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-input'}
+              label={t('label:end-date')}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value, i)}
+              placeholder={t('el:placeholder-date-default')}
+              value={i < 0 ? _newSluttDato : p?.sluttdato}
+            />
+          </Column>
+          <Column>
+            {candidateForDeletion
+              ? (
+                <FlexCenterDiv className={classNames('nolabel', 'slideInFromRight')}>
+                  <Normaltekst>
+                    {t('label:are-you-sure')}
+                  </Normaltekst>
+                  <HorizontalSeparatorDiv data-size='0.5' />
                   <HighContrastFlatknapp
                     mini
                     kompakt
-                    onClick={onCancel}
+                    onClick={() => onRemove(i)}
                   >
-                    {t('el:button-cancel')}
+                    {t('label:yes')}
                   </HighContrastFlatknapp>
-                </>
-              )}
-            </div>
-            )}
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv/>
+                  <HorizontalSeparatorDiv data-size='0.5' />
+                  <HighContrastFlatknapp
+                    mini
+                    kompakt
+                    onClick={() => removeCandidateForDeletion(key!)}
+                  >
+                    {t('label:no')}
+                  </HighContrastFlatknapp>
+                </FlexCenterDiv>
+                )
+              : (
+                <div className={classNames('nolabel')}>
+                  <HighContrastFlatknapp
+                    mini
+                    kompakt
+                    onClick={() => i < 0 ? onAdd() : addCandidateForDeletion(key!)}
+                  >
+                    {i < 0 ? <Add /> : <Trashcan />}
+                    <HorizontalSeparatorDiv data-size='0.5' />
+                    {i < 0 ? t('el:button-add') : t('el:button-remove')}
+                  </HighContrastFlatknapp>
+                  {_seeNewForm && i < 0 && (
+                    <>
+                      <HorizontalSeparatorDiv />
+                      <HighContrastFlatknapp
+                        mini
+                        kompakt
+                        onClick={onCancel}
+                      >
+                        {t('el:button-cancel')}
+                      </HighContrastFlatknapp>
+                    </>
+                  )}
+                </div>
+                )}
+          </Column>
+        </AlignStartRow>
+        <VerticalSeparatorDiv />
       </>
     )
   }
@@ -266,23 +266,23 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
         .map(renderRow)}
       <hr />
       <VerticalSeparatorDiv />
-      {_seeNewForm ?
-        renderRow(undefined, -1) :
-        (
-        <Row>
-          <Column>
-            <HighContrastFlatknapp
-              mini
-              kompakt
-              onClick={onAddNewClicked}
-            >
-              <Add />
-              <HorizontalSeparatorDiv data-size='0.5' />
-              {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-            </HighContrastFlatknapp>
-          </Column>
-      </Row>
-      )}
+      {_seeNewForm
+        ? renderRow(undefined, -1)
+        : (
+          <Row>
+            <Column>
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                onClick={onAddNewClicked}
+              >
+                <Add />
+                <HorizontalSeparatorDiv data-size='0.5' />
+                {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+              </HighContrastFlatknapp>
+            </Column>
+          </Row>
+          )}
       <VerticalSeparatorDiv />
       <TextAreaDiv>
         <HighContrastTextArea

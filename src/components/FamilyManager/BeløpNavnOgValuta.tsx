@@ -25,7 +25,6 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
   // replySed,
   validation
 }: BeløpNavnOgValutaProps): JSX.Element => {
-
   const { t } = useTranslation()
   const [_newName, setNewName] = useState<string>('')
   const [_newBenefitCause, setNewBenefitCause] = useState<string>('')
@@ -109,7 +108,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.1s'}}>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column>
           <HighContrastInput
             data-test-id={'c-' + namespace + '-amount-input'}
@@ -138,11 +137,11 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <Undertittel className='slideInFromLeft' style={{animationDelay: '0.2s'}}>
+      <Undertittel className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
         {t('el:title-grant-date')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.3s'}}>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
         <Column>
           <HighContrastInput
             data-test-id={'c-' + namespace + '-startdato-input'}
@@ -167,11 +166,11 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.4s'}}>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
         <Column>
           <HighContrastInput
             data-test-id={'c-' + namespace + '-receiver-input'}
-            feil={validation[ namespace + '--receiver']?.feilmelding}
+            feil={validation[namespace + '--receiver']?.feilmelding}
             id={'c-' + namespace + '-receiver-input'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setReceiver(e.target.value)}
             value={_newReceiver}
@@ -181,7 +180,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.5s'}}>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.5s' }}>
         <Column>
           <HighContrastRadioPanelGroup
             checked={_newFrequency}

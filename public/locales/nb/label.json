@@ -10,7 +10,9 @@
 
   "benefit-cause": "Betegnelse på ytelse",
   "birthdate": "Fødselsdato",
+  "birthplace": "Fødested",
   "bostedsland" : "Bostedsland",
+  "boy" : "Gutt",
   "by": "By",
   "bygning": "Bygning",
 
@@ -21,7 +23,9 @@
 
   "date-relation": "Dato for relasjon",
 
+  "elements-of-personal-situation": "Elementer i personlig situasjon",
   "end-date": "Sluttdato",
+  "epost": "E-postadresse",
 
   "family-added-all": "Du har lagt til alle som fantes i listen",
   "family-chosen": "Valgte familierelasjoner",
@@ -32,10 +36,12 @@
 
   "firstname": "Fornavn",
   "fnr-dnr" : "F.nummer/d-nr.",
+  "fomdato": "F.o.m dato",
   "formaal": "Formål",
 
   "gateadresse": "Gateadresse",
   "gender" : "Kjønn",
+  "girl" : "Jente",
 
   "hide-form": "Skjul skjema",
 
@@ -45,14 +51,18 @@
   "lastname": "Etternavn",
   "live-together": "Bor søkeren i samme husstand som personen",
 
+  "man" : "Mann",
   "medlemsperiode" : "Medlemsperiode",
   "monthly": "Månedlig",
   "moving-date-sender": "Flyttedato til avsenderlandet",
   "moving-date-receiver": "Flyttedato til mottakerslandet",
 
   "name": "Navn",
+  "nationality": "Nasjonalitet",
   "no" : "Nei",
   "no-person-selected" : "Velg personer for å se og fylle inn opplysninger.",
+  "norwegian-fnr" : "Norsk PIN",
+  "norwegian-fnr-description": "Finn bruker på norsk personnummer og hent opplysninger fra TPS",
   "not-available": "Ikke tilgjengelig",
 
   "open": "Åpen",
@@ -74,12 +84,20 @@
   "rina-document-id": "Velg SED Type",
 
   "save": "Lagre",
+  "see-less": "Se mindre",
+  "see-more": "Ler mer",
   "show-form": "Vis skjema",
   "start-date": "Startdato",
   "statsborgerskap" : "Statsborgerskap",
 
+  "telefonnummer": "Telefonnummer",
   "type": "Type",
   "type-pensjon": "Type pensjon",
+
+  "unknown": "Ukjent",
+  "utenlandsk-pin" : "Utenlandsk PIN",
+
+  "woman": "Kvinne",
 
   "yearly": "Årlig",
   "yes": "Ja",
@@ -89,10 +107,6 @@
   "---------" : "--------",
 
   "add-as-attachment-to-sed" : "Legge til vedlegg til SED",
-  "add-birthplace": "Legg til fødested",
-  "add-nationality": "Legg til ny nasjonalitet",
-  "add-new-epost": "Legg til ny epost",
-  "add-new-telefon": "Legg til ny telefon",
 
 
   "addAttachments" : "Legg til vedlegg",
@@ -101,13 +115,11 @@
 
   "application-information": "Informasjon om søknaden",
 
-  "arbeidsforhold-type": "Type arbeidsforhold",
   "attached": "Vedlegget",
   "back" : "Tilbake",
 
-  "birthPlace": "Fødested",
+
   "buc": "BUC",
-  "boy" : "Gutt",
 
   "caseNumber" : "Saksnummer",
   "caseOwner" : "Motpart/sakseier",
@@ -131,23 +143,18 @@
   "dekning-trygdeordningen" : "Dekning av trygdeordningen",
 
   "dokumentID": "DokumentID",
-  "duration-stay": "Oppholdets varighet",
-  "elements-of-personal-situation": "Elementer i personlig situasjon",
 
-  "epost": "E-postadresse",
   "fagsak" : "Velg fagsak",
 
 
   "father": "Far",
 
-  "fomdato": "F.o.m dato",
   "fnr" : "Fødselsnummer",
 
   "fraDato": "Fra dato",
   "freetext": "Fritekst",
 
   "get" : "Hent",
-  "girl" : "Jente",
   "goToRina" : "Gå direkte til Rina",
   "goToSedInRina" : "Gå til SED i Rina",
   "grant-number" : "Antall det innvilges for",
@@ -162,7 +169,6 @@
   "lastModified": "Siste oppdatert",
   "loading-file": "Laster ned filen...",
   "local-sakId": "Lokale sakID",
-  "man" : "Mann",
 
 
   "motregning-request": "Anmodning eller svar på anmodning om motregning av familieytelser for barn",
@@ -172,10 +178,8 @@
   "mother": "Mor",
 
   "nameatbirth": "Navn ved fødsel",
-  "nationality": "Nasjonalitet",
 
-  "norwegian-fnr" : "Norsk personnummer",
-  "norwegian-fnr-description": "Finn bruker på norsk personnummer og hent opplysninger fra TPS",
+
 
   "opplysninger": "Hvilke opplysninger...?",
 
@@ -190,7 +194,6 @@
 
 
   "relation-duration": "Relasjonens varighet",
-  "remove-birthplace" : "Fjern fødested",
   "reply": "Besvar",
   "resetForm": "AVSLUTT UTFYLLING",
   "relasjon-title": "Relasjon til det enkelte barn",
@@ -205,11 +208,9 @@
   "searcher" : "Søker",
 
   "searchResultsForSaksnummerOrFnr" : "{{antall}} treff for: {{saksnummerOrFnr}}",
-  "searchUser": "Finn bruker",
   "sed": "SED",
   "seeCases": "Vis saker",
-  "see-less": "Se mindre",
-  "see-more": "Ler mer",
+
   "sektor": "Fagområde",
   "sender" : "Avsenderinstitusjon",
   "sendReplySed" : "Send svarSED",
@@ -218,20 +219,17 @@
 
 
   "tema": "Velg behandlingstema",
-  "telefonnummer": "Telefonnummer",
   "tilDato" : "Til dato",
   "trygdeordningen-dekkede": "Dekkede perioder",
   "trygdeordningen-familieYtelse": "Periode for rett til familieytelser perioder",
   "trygdeordningen-udekkede": "Udekkede perioder",
 
   "typeKrav": "Type krav",
-  "unknown": "Ukjent",
+
   "unknownRolle": "(ukjent rolle)",
   "unknownNationality": "(ukjent nasjonalitetet)",
   "unit": "Enhet",
   "userInSed": "Bruker i SED",
-  "utenlandskPin" : "Utenlandsk PIN",
-  "vedtak-type" : "Vedtak type",
-  "woman": "Kvinne"
+  "vedtak-type" : "Vedtak type"
 
 }

@@ -137,7 +137,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
       newValidation[key] = undefined
     }
     if (_.isArray(key)) {
-      key.forEach((k) => newValidation[k] = undefined)
+      key.forEach((k) => (newValidation[k] = undefined))
     }
     setValidation(newValidation)
   }
@@ -218,32 +218,32 @@ const Step1: React.FC<SvarPaSedProps> = ({
                         </Undertittel>
                         <LeftDiv>
                           <span>
-                          {t('label:caseNumber') + ': ' + seds[sed].saksnummer}
-                        </span>
+                            {t('label:caseNumber') + ': ' + seds[sed].saksnummer}
+                          </span>
                           <HorizontalSeparatorDiv />
                           <HighContrastLink href='#'>
-                          <span>
-                            {t('label:goToRina')}
-                          </span>
-                          <HorizontalSeparatorDiv data-size='0.35' />
-                          <ExternalLink />
-                        </HighContrastLink>
+                            <span>
+                              {t('label:goToRina')}
+                            </span>
+                            <HorizontalSeparatorDiv data-size='0.35' />
+                            <ExternalLink />
+                          </HighContrastLink>
                         </LeftDiv>
                         <FlexDiv style={{ width: '1px' }}>
                           <Normaltekst>
-                          {t('label:land')}:
-                        </Normaltekst>
+                            {t('label:land')}:
+                          </Normaltekst>
                           <HorizontalSeparatorDiv data-size='0.35' />
                           <Flag
-                          size='XS'
-                          type='circle'
-                          label={country?.label || ''}
-                          country={country?.value || ''}
-                        />
+                            size='XS'
+                            type='circle'
+                            label={country?.label || ''}
+                            country={country?.value || ''}
+                          />
                           <HorizontalSeparatorDiv data-size='0.35' />
                           <Normaltekst>
-                          {country?.label}
-                        </Normaltekst>
+                            {country?.label}
+                          </Normaltekst>
                         </FlexDiv>
                         <Normaltekst>
                           {t('label:institusjon') + ': ' + seds[sed].institusjon}
@@ -269,40 +269,40 @@ const Step1: React.FC<SvarPaSedProps> = ({
                       <HighContrastPanel style={{ marginLeft: '3rem' }}>
                         <FlexDiv>
                           <PileCenterDiv>
-                          {connectedSed.status === 'received' && <ReceivedIcon />}
-                          {connectedSed.status === 'sent' && <SentIcon />}
-                          <VerticalSeparatorDiv data-size='0.35' />
-                          <Undertekst>
-                            {t('app:status-' + connectedSed.status)}
-                          </Undertekst>
-                        </PileCenterDiv>
+                            {connectedSed.status === 'received' && <ReceivedIcon />}
+                            {connectedSed.status === 'sent' && <SentIcon />}
+                            <VerticalSeparatorDiv data-size='0.35' />
+                            <Undertekst>
+                              {t('app:status-' + connectedSed.status)}
+                            </Undertekst>
+                          </PileCenterDiv>
                           <HorizontalSeparatorDiv />
                           <PileLeftDiv style={{ flex: 2 }}>
-                          <Undertittel>
-                            {connectedSed.replySedType} - {connectedSed.replySedDisplay}
-                          </Undertittel>
-                          <VerticalSeparatorDiv data-size='0.35' />
-                          <Normaltekst>
-                            {t('label:lastModified') + ': ' + seds[sed].sisteOppdatert}
-                          </Normaltekst>
-                          <VerticalSeparatorDiv data-size='0.35' />
-                          <HighContrastLink href='#'>
-                            <span>
-                              {t('label:goToSedInRina')}
-                            </span>
-                            <HorizontalSeparatorDiv data-size='0.35' />
-                            <ExternalLink />
-                          </HighContrastLink>
-                        </PileLeftDiv>
+                            <Undertittel>
+                              {connectedSed.replySedType} - {connectedSed.replySedDisplay}
+                            </Undertittel>
+                            <VerticalSeparatorDiv data-size='0.35' />
+                            <Normaltekst>
+                              {t('label:lastModified') + ': ' + seds[sed].sisteOppdatert}
+                            </Normaltekst>
+                            <VerticalSeparatorDiv data-size='0.35' />
+                            <HighContrastLink href='#'>
+                              <span>
+                                {t('label:goToSedInRina')}
+                              </span>
+                              <HorizontalSeparatorDiv data-size='0.35' />
+                              <ExternalLink />
+                            </HighContrastLink>
+                          </PileLeftDiv>
                           <HorizontalSeparatorDiv />
                           <HighContrastHovedknapp
-                          disabled={queryingReplySed}
-                          spinner={queryingReplySed}
-                          mini
-                          onClick={() => onReplySedClick(connectedSed, seds[sed].saksnummer)}
-                        >
-                          {queryingReplySed ? t('message:loading-replying') : t('label:reply')}
-                        </HighContrastHovedknapp>
+                            disabled={queryingReplySed}
+                            spinner={queryingReplySed}
+                            mini
+                            onClick={() => onReplySedClick(connectedSed, seds[sed].saksnummer)}
+                          >
+                            {queryingReplySed ? t('message:loading-replying') : t('label:reply')}
+                          </HighContrastHovedknapp>
                         </FlexDiv>
                       </HighContrastPanel>
                       <VerticalSeparatorDiv />
