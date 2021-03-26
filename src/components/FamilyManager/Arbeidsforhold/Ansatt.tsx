@@ -62,31 +62,31 @@ const Ansatt: React.FC<AnsattProps> = ({
     const validation: Validation = {}
     if (!_newNavn) {
       validation[namespace + '-navn'] = {
-        skjemaelementId: 'c-' + namespace + '-navn-input',
+        skjemaelementId: 'c-' + namespace + '-navn-text',
         feilmelding: t('message:validation-noName')
       } as FeiloppsummeringFeil
     }
     if (!_newOrgnr) {
       validation[namespace + '-orgnr'] = {
-        skjemaelementId: 'c-' + namespace + '-orgnr-input',
+        skjemaelementId: 'c-' + namespace + '-orgnr-text',
         feilmelding: t('message:validation-noOrgnr')
       } as FeiloppsummeringFeil
     }
     if (!_newStartDato) {
       validation[namespace + '-startdato'] = {
-        skjemaelementId: 'c-' + namespace + '-startdato-input',
+        skjemaelementId: 'c-' + namespace + '-startdato-date',
         feilmelding: t('message:validation-noDate')
       } as FeiloppsummeringFeil
     }
     if (_newStartDato && !_newStartDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
       validation[namespace + '-startdato'] = {
-        skjemaelementId: 'c-' + namespace + '-startdato-input',
+        skjemaelementId: 'c-' + namespace + '-startdato-date',
         feilmelding: t('message:validation-invalidDate')
       } as FeiloppsummeringFeil
     }
     if (_newSluttDato && !_newSluttDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
       validation[namespace + '-sluttdato'] = {
-        skjemaelementId: 'c-' + namespace + '-sluttdato-input',
+        skjemaelementId: 'c-' + namespace + '-sluttdato-date',
         feilmelding: t('message:validation-invalidDate')
       } as FeiloppsummeringFeil
     }
@@ -265,9 +265,9 @@ const Ansatt: React.FC<AnsattProps> = ({
             <Row>
               <Column>
                 <HighContrastInput
-                  data-test-id={'c-' + namespace + '-startdato-input'}
+                  data-test-id={'c-' + namespace + '-startdato-date'}
                   feil={_validation[namespace + '-startdato']?.feilmelding}
-                  id={namespace + '-startdato-input'}
+                  id={namespace + '-startdato-date'}
                   label={t('label:start-date')}
                   onChange={onStartDatoChanged}
                   placeholder={t('el:placeholder-date-default')}
@@ -276,9 +276,9 @@ const Ansatt: React.FC<AnsattProps> = ({
               </Column>
               <Column>
                 <HighContrastInput
-                  data-test-id={'c-' + namespace + '-sluttdato-input'}
+                  data-test-id={'c-' + namespace + '-sluttdato-date'}
                   feil={_validation[namespace + '-sluttdato']?.feilmelding}
-                  id={'c-' + namespace + '-sluttdato-input'}
+                  id={'c-' + namespace + '-sluttdato-date'}
                   label={t('label:end-date')}
                   onChange={onSluttDatoChanged}
                   placeholder={t('el:placeholder-date-default')}
@@ -291,9 +291,9 @@ const Ansatt: React.FC<AnsattProps> = ({
             <Row>
               <Column>
                 <HighContrastInput
-                  data-test-id={'c-' + namespace + '-orgnr-input'}
+                  data-test-id={'c-' + namespace + '-orgnr-text'}
                   feil={_validation[namespace + '-orgnr']?.feilmelding}
-                  id={'c-' + namespace + '-orgnr-input'}
+                  id={'c-' + namespace + '-orgnr-text'}
                   label={t('label:orgnr')}
                   onChange={onOrgnrChanged}
                   placeholder={t('el:placeholder-input-default')}
@@ -302,9 +302,9 @@ const Ansatt: React.FC<AnsattProps> = ({
               </Column>
               <Column>
                 <HighContrastInput
-                  data-test-id={'c-' + namespace + '-navn-input'}
+                  data-test-id={'c-' + namespace + '-navn-text'}
                   feil={_validation[namespace + '-navn']?.feilmelding}
-                  id={'c-' + namespace + '-navn-input'}
+                  id={'c-' + namespace + '-navn-text'}
                   label={t('label:name')}
                   onChange={onNameChanged}
                   placeholder={t('el:placeholder-input-default')}

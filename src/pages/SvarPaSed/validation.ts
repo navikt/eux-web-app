@@ -55,7 +55,7 @@ export const validate = (options: any): Validation => {
       ? undefined
       : {
         feilmelding: t('message:validation-noFormaal'),
-        skjemaelementId: 'svarpased-formaal-select'
+        skjemaelementId: 'svarpased-formaal-text'
       } as FeiloppsummeringFeil
   }
 
@@ -63,7 +63,7 @@ export const validate = (options: any): Validation => {
     ? undefined
     : {
       feilmelding: t('message:validation-noComment'),
-      skjemaelementId: 'c-svarpased-comment-textarea'
+      skjemaelementId: 'c-svarpased-comment-text'
     } as FeiloppsummeringFeil
 
   performValidation(v, t, options, 'bruker')

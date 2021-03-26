@@ -5,6 +5,7 @@ import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
 import Select from 'components/Select/Select'
 import { AlignStartRow, FlexCenterDiv, FlexDiv } from 'components/StyledComponents'
+import { Option } from 'declarations/app'
 import { F002Sed, PersonInfo, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -57,6 +58,9 @@ const CheckboxDiv = styled.div`
   width: 100%;
   padding: 1rem 0.5rem;
 `
+interface MyOption extends Option {
+  isDisabled: boolean
+}
 
 interface AddPersonModalProps {
   appElement?: any
@@ -103,25 +107,25 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
     if (!_newPersonFnr) {
       newValidation[namespace + '-fnr'] = {
         feilmelding: t('message:validation-noFnr'),
-        skjemaelementId: 'c-' + namespace + '-fnr-input'
+        skjemaelementId: 'c-' + namespace + '-fnr-text'
       }
     }
     if (_newPersonFnr && !_newPersonFnr.match(/^\d{11}$/)) {
       newValidation[namespace + '-fnr'] = {
         feilmelding: t('message:validation-invalidFnr'),
-        skjemaelementId: 'c-' + namespace + '-fnr-input'
+        skjemaelementId: 'c-' + namespace + '-fnr-text'
       }
     }
     if (!_newPersonName) {
       newValidation[namespace + '-navn'] = {
         feilmelding: t('message:validation-noName'),
-        skjemaelementId: 'c-' + namespace + '-navn-input'
+        skjemaelementId: 'c-' + namespace + '-navn-text'
       }
     }
     if (!_newPersonName) {
       newValidation[namespace + '-relasjon'] = {
         feilmelding: t('message:validation-noRelation'),
-        skjemaelementId: 'c-' + namespace + '-relasjon-select'
+        skjemaelementId: 'c-' + namespace + '-relasjon-text'
       }
     }
     setValidation(newValidation)
@@ -232,7 +236,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
     dispatch(setReplySed(_replySed))
   }
 
-  const relationOptions = []
+  const relationOptions: Array<MyOption> = []
 
   relationOptions.push({
     label: t('el:option-relationship-bruker') + (_replySed.bruker ? '(' + t('label:not-available') + ')' : ''),
@@ -254,7 +258,8 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
 
   relationOptions.push({
     label: t('el:option-relationship-barn'),
-    value: 'barn'
+    value: 'barn',
+    isDisabled: false
   })
 
   const getPersonLabel = (personId: string): string => {
@@ -353,9 +358,9 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
           <AlignStartRow className='slideInFromLeft'>
             <Column>
               <HighContrastInput
-                data-test-id={'c-' + namespace + '-fnr-input'}
+                data-test-id={'c-' + namespace + '-fnr-text'}
                 feil={_validation[namespace + '-fnr']?.feilmelding}
-                id={'c-' + namespace + '-fnr-input'}
+                id={'c-' + namespace + '-fnr-text'}
                 label={t('label:fnr-dnr')}
                 onChange={onNewPersonFnrChange}
                 placeholder={t('el:placeholder-input-default')}
@@ -365,9 +370,9 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
             </Column>
             <Column>
               <HighContrastInput
-                data-test-id={'c-' + namespace + '-navn-input'}
+                data-test-id={'c-' + namespace + '-navn-text'}
                 feil={_validation[namespace + '-navn']?.feilmelding}
-                id={'c-' + namespace + '-navn-input'}
+                id={'c-' + namespace + '-navn-text'}
                 label={t('label:name')}
                 onChange={onNewPersonNameChange}
                 placeholder={t('el:placeholder-input-default')}
@@ -377,9 +382,9 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
             </Column>
             <Column>
               <Select
-                data-test-id={'c-' + namespace + '-relasjon-select'}
+                data-test-id={'c-' + namespace + '-relasjon-text'}
                 feil={_validation[namespace + '-relasjon']?.feilmelding}
-                id={'c-' + namespace + '-relasjon-select'}
+                id={'c-' + namespace + '-relasjon-text'}
                 highContrast={highContrast}
                 label={t('label:family-relationship')}
                 menuPlacement='auto'

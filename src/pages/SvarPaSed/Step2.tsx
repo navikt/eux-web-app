@@ -118,8 +118,8 @@ const Step2: React.FC<SvarPaSedProps> = ({
   const isValid = (validation: Validation): boolean => _.find(_.values(validation), (e) => e !== undefined) === undefined
 
   const showFamily = (): boolean => replySed?.replySedType?.startsWith('F') || false
-  const showMotregning = (): boolean => (true)
-  const showVedtak = (): boolean => (true)
+  const showMotregning = (): boolean => (replySed.formaal.indexOf('motregning') >= 0)
+  const showVedtak = (): boolean => (replySed.formaal.indexOf('vedtak') >= 0)
   const showInntekt = (): boolean => replySed?.replySedType === 'U004'
 
   const sendReplySed = (): void => {
@@ -258,7 +258,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
       )}
       {showVedtak() && (
         <>
-          <Vedtak highContrast={highContrast} replySed={replySed} />
+          <Vedtak highContrast={highContrast} replySed={replySed} validation={validation}/>
           <VerticalSeparatorDiv data-size='2' />
         </>
       )}
@@ -281,8 +281,8 @@ const Step2: React.FC<SvarPaSedProps> = ({
       <VerticalSeparatorDiv />
       <TextAreaDiv>
         <HighContrastTextArea
-          data-test-id='c-step2-comment-textarea'
-          id='c-step2-comment-textarea'
+          data-test-id='c-step2-comment-text'
+          id='c-step2-comment-text'
           className={classNames({ 'skjemaelement__input--harFeil': validation.comment })}
           label={t('label:comment-title')}
           placeholder={t('label:comment-placeholder')}

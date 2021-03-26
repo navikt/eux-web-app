@@ -120,7 +120,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
         ..._validation,
         saksnummerOrFnr: {
           feilmelding: t('message:validation-noSaksnummerOrFnr'),
-          skjemaelementId: 'svarpased__saksnummerOrFnr-input'
+          skjemaelementId: 'svarpased__saksnummerOrFnr-text'
         } as FeiloppsummeringFeil
       })
     } else {
@@ -174,10 +174,10 @@ const Step1: React.FC<SvarPaSedProps> = ({
           <Column data-flex='2'>
             <HighContrastInput
               bredde='fullbredde'
-              data-test-id='svarpased__saksnummerOrFnr-input'
+              data-test-id='svarpased__saksnummerOrFnr-text'
               feil={_validation.saksnummerOrFnr ? _validation.saksnummerOrFnr.feilmelding : undefined}
               highContrast={highContrast}
-              id='svarpased__saksnummerOrFnr-input'
+              id='svarpased__saksnummerOrFnr-text'
               label={t('label:saksnummerOrFnr')}
               onChange={onSaksnummerOrFnrChange}
               placeholder={t('el:placeholder-input-default')}
@@ -218,7 +218,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                         </Undertittel>
                         <LeftDiv>
                           <span>
-                            {t('label:caseNumber') + ': ' + seds[sed].saksnummer}
+                            {t('label:saksnummer') + ': ' + seds[sed].saksnummer}
                           </span>
                           <HorizontalSeparatorDiv />
                           <HighContrastLink href='#'>

@@ -122,7 +122,7 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
       if (!_newCategory) {
         newValidation[namespace + '-' + pageCategory + '-category'] = {
           feilmelding: t('message:validation-noPensjonTypeTilPerson', { person: personName }),
-          skjemaelementId: 'c-' + namespace + '-category-select'
+          skjemaelementId: 'c-' + namespace + '-category-text'
         } as FeiloppsummeringFeil
         setValidation({
           ..._validation,
@@ -403,9 +403,9 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
         <AlignStartRow className={classNames('slideInFromLeft')}>
           <Column>
             <HighContrastInput
-              data-test-id={'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-startdato-input'}
+              data-test-id={'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-startdato-date'}
               feil={getErrorFor(pageCategory, sedCategory, index, 'startdato')}
-              id={'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-startdato-input'}
+              id={'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-startdato-date'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChanged(pageCategory, sedCategory, e.target.value, 'startdato', index)}
               value={index < 0
                 ? _newStartDato[pageCategory]
@@ -418,9 +418,9 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
           </Column>
           <Column>
             <HighContrastInput
-              data-test-id={'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-sluttdato-input'}
+              data-test-id={'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-sluttdato-date'}
               feil={getErrorFor(pageCategory, sedCategory, index, 'sluttdato')}
-              id={'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-sluttdato-input'}
+              id={'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-sluttdato-date'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChanged(pageCategory, sedCategory, e.target.value, 'sluttdato', index)}
               value={index < 0
                 ? _newSluttDato[pageCategory]
@@ -452,10 +452,10 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
                 {index < 0
                   ? (
                     <Select
-                      data-test-id={'c-' + namespace + '-' + pageCategory + '-category-select'}
+                      data-test-id={'c-' + namespace + '-' + pageCategory + '-category-text'}
                       feil={getErrorFor(pageCategory, sedCategory, index, 'category')}
                       highContrast={highContrast}
-                      id={'c-' + namespace + '-' + pageCategory + '-category-select'}
+                      id={'c-' + namespace + '-' + pageCategory + '-category-text'}
                       onChange={(e: any) => onChanged(pageCategory, sedCategory, e.value, 'category', index)}
                       options={selectCategoryOptions}
                       placeholder={t('el:placeholder-select-default')}
@@ -476,10 +476,10 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
                 ? (
                   <Column>
                     <Select
-                      data-test-id={'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-pensjonstype-select'}
+                      data-test-id={'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-pensjonstype-text'}
                       error={getErrorFor(pageCategory, sedCategory, index, 'pensjonstype')}
                       highContrast={highContrast}
-                      id={'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-pensjonstype-select'}
+                      id={'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-pensjonstype-text'}
                       onChange={(e: any) => onChanged(pageCategory, sedCategory, e.value, 'pensjonstype', index)}
                       options={selectPensjonsTypeOptions}
                       placeholder={t('el:placeholder-select-default')}

@@ -3,7 +3,7 @@ import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
 import Select from 'components/Select/Select'
 import { FlexCenterDiv } from 'components/StyledComponents'
-import { Option } from 'declarations/app'
+import { Option, Options } from 'declarations/app'
 import { FSed, ReplySed } from 'declarations/sed'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema/lib/feiloppsummering'
@@ -26,7 +26,7 @@ const Formaal: React.FC<FormaalProps> = ({
 }: FormaalProps) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const formaalOptions = [
+  const formaalOptions: Options = [
     { label: t('el:option-formaal-1'), value: 'mottak_av_søknad_om_familieytelser' },
     { label: t('el:option-formaal-2'), value: 'informasjon_om_endrede_forhold' },
     { label: t('el:option-formaal-3'), value: 'svar_på_kontroll_eller_årlig_kontroll' },
@@ -160,8 +160,8 @@ const Formaal: React.FC<FormaalProps> = ({
           <FlexCenterDiv>
             <div style={{ flex: 2 }}>
               <Select
-                data-test-id='c-formaal-select'
-                id='c-formaal-select'
+                data-test-id='c-formaal-text'
+                id='c-formaal-text'
                 highContrast={highContrast}
                 value={_newFormaal}
                 onChange={onFormaalChanged}

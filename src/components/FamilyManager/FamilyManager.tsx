@@ -12,6 +12,7 @@ import PersonensStatus from 'components/FamilyManager/PersonensStatus'
 import Relasjon from 'components/FamilyManager/Relasjon'
 import Trygdeordning from 'components/FamilyManager/Trygdeordning'
 import { FlexCenterDiv, PileDiv } from 'components/StyledComponents'
+import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { PersonInfo, ReplySed } from 'declarations/sed'
 import _ from 'lodash'
@@ -171,7 +172,7 @@ const FamilyManager: React.FC = () => {
     }
   }
 
-  const options = [
+  const options: Options = [
     { label: t('el:option-familymanager-1'), value: 'personopplysninger', normal: true, barn: true, family: false },
     { label: t('el:option-familymanager-2'), value: 'nasjonaliteter', normal: true, barn: true, family: false },
     { label: t('el:option-familymanager-3'), value: 'adresser', normal: true, barn: true, family: false },
@@ -195,7 +196,7 @@ const FamilyManager: React.FC = () => {
       setMenuOption(isEditCurrentPerson
         ? undefined
         : id === 'familie'
-          ? _.find(options, o => o.family)?.value
+          ? _.find(options, o => o.family === true)?.value
           : options[0].value
       )
     }

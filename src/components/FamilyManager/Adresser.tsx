@@ -237,9 +237,9 @@ const Adresser: React.FC<AdresseProps> = ({
           <Column data-flex='3'>
             <HighContrastRadioPanelGroup
               checked={i < 0 ? _newType : a!.type}
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-type-radiogroup'}
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-type-text'}
               feil={getErrorFor(i, 'type')}
-              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-type-radiogroup'}
+              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-type-text'}
               legend={t('label:adresse')}
               name={namespace + (i >= 0 ? '[' + i + ']' : '') + '-type'}
               radios={[
@@ -259,9 +259,9 @@ const Adresser: React.FC<AdresseProps> = ({
         >
           <Column data-flex='2'>
             <HighContrastInput
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-gate-input'}
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-gate-text'}
               feil={getErrorFor(i, 'gate')}
-              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-gate-input'}
+              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-gate-text'}
               label={t('label:gateadresse')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onGateChanged(e.target.value, i)}
               value={i < 0 ? _newGate : a?.gate}
@@ -269,9 +269,9 @@ const Adresser: React.FC<AdresseProps> = ({
           </Column>
           <Column>
             <HighContrastInput
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-bygning-input'}
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-bygning-text'}
               feil={getErrorFor(i, 'bygning')}
-              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-bygning-input'}
+              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-bygning-text'}
               label={t('label:bygning')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onBygningChanged(e.target.value, i)}
               value={i < 0 ? _newBygning : a?.bygning}
@@ -286,9 +286,9 @@ const Adresser: React.FC<AdresseProps> = ({
         >
           <Column>
             <HighContrastInput
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-postnummer-input'}
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-postnummer-text'}
               feil={getErrorFor(i, 'postnummer')}
-              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-postnummer-input'}
+              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-postnummer-text'}
               label={t('label:postnummer')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onPostnummerChanged(e.target.value, i)}
               value={i < 0 ? _newPostnummer : a?.postnummer}
@@ -296,9 +296,9 @@ const Adresser: React.FC<AdresseProps> = ({
           </Column>
           <Column data-flex='2'>
             <HighContrastInput
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-by-input'}
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-by-text'}
               feil={getErrorFor(i, 'by')}
-              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-by-input'}
+              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-by-text'}
               label={t('label:by')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onByChanged(e.target.value, i)}
               value={i < 0 ? _newBy : a?.by}
@@ -313,9 +313,9 @@ const Adresser: React.FC<AdresseProps> = ({
         >
           <Column data-flex='1.5'>
             <HighContrastInput
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-region-input'}
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-region-text'}
               feil={getErrorFor(i, 'region')}
-              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-region-input'}
+              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-region-text'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onRegionChanged(e.target.value, i)}
               value={i < 0 ? _newRegion : a?.region}
               label={t('label:region')}
@@ -323,9 +323,9 @@ const Adresser: React.FC<AdresseProps> = ({
           </Column>
           <Column data-flex='1.5'>
             <CountrySelect
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-land-countryselect'}
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-land-text'}
               error={getErrorFor(i, 'land')}
-              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-land-countryselect'}
+              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-land-text'}
               label={t('label:land')}
               menuPortalTarget={document.body}
               includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}

@@ -127,9 +127,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
       <Row className='slideInFromLeft'>
         <Column>
           <HighContrastInput
-            data-test-id={'c-' + namespace + '-fornavn-input'}
+            data-test-id={'c-' + namespace + '-fornavn-text'}
             feil={validation[namespace + '-fornavn']?.feilmelding}
-            id={'c-' + namespace + '-fornavn-input'}
+            id={'c-' + namespace + '-fornavn-text'}
             onChange={onFornavnChange}
             value={personInfo.fornavn}
             label={t('label:firstname') + ' *'}
@@ -137,9 +137,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         </Column>
         <Column>
           <HighContrastInput
-            data-test-id={'c-' + namespace + '-etternavn-input'}
+            data-test-id={'c-' + namespace + '-etternavn-text'}
             feil={validation[namespace + '-etternavn']?.feilmelding}
-            id={'c-' + namespace + '-etternavn-input'}
+            id={'c-' + namespace + '-etternavn-text'}
             onChange={onEtternavnChange}
             value={personInfo.etternavn}
             label={t('label:lastname') + ' *'}
@@ -147,9 +147,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         </Column>
         <Column>
           <HighContrastInput
-            data-test-id={'c-' + namespace + '-foedselsdato-input'}
+            data-test-id={'c-' + namespace + '-foedselsdato-text'}
             feil={validation[namespace + '-foedselsdato']?.feilmelding}
-            id={'c-' + namespace + '-foedselsdato-input'}
+            id={'c-' + namespace + '-foedselsdato-text'}
             onChange={onFodselsdatoChange}
             value={personInfo.foedselsdato}
             placeholder={t('el:placeholder-date-default')}
@@ -163,9 +163,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
           <HighContrastRadioPanelGroup
             checked={personInfo.kjoenn}
             data-no-border
-            data-test-id={'c-' + namespace + '-kjoenn-radiogroup'}
+            data-test-id={'c-' + namespace + '-kjoenn-text'}
             feil={validation[namespace + '-kjoenn']?.feilmelding}
-            id={'c-' + namespace + '-kjoenn-radiogroup'}
+            id={'c-' + namespace + '-kjoenn-text'}
             legend={t('label:gender') + ' *'}
             name={namespace + '-kjoenn'}
             onChange={onKjoennChange}
@@ -181,9 +181,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
       <Row className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
         <Column>
           <HighContrastInput
-            data-test-id={'c-' + namespace + '-utenlandskpin-nummer-input'}
+            data-test-id={'c-' + namespace + '-utenlandskpin-nummer-text'}
             feil={validation[namespace + '-utenlandskpin-nummer']?.feilmelding}
-            id={'c-' + namespace + '-utenlandskpin-nummer-input'}
+            id={'c-' + namespace + '-utenlandskpin-nummer-text'}
             label={t('label:utenlandsk-pin')}
             onChange={onUtenlandskPinChange}
             value={_.find(personInfo.pin, p => p.land !== 'NO')?.identifikator}
@@ -191,9 +191,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         </Column>
         <Column data-flex='2'>
           <CountrySelect
-            data-test-id={'c-' + namespace + '-utenlandskpin-land-countryselect'}
+            data-test-id={'c-' + namespace + '-utenlandskpin-land-text'}
             error={validation[namespace + '-utenlandskpin-land']?.feilmelding}
-            id={'c-' + namespace + '-utenlandskpin-land-countryselect'}
+            id={'c-' + namespace + '-utenlandskpin-land-text'}
             includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
             label={t('label:land')}
             menuPortalTarget={document.body}
@@ -208,9 +208,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
       <Row className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
         <Column>
           <HighContrastInput
-            data-test-id={'c-' + namespace + '-norskpin-nummer-input'}
+            data-test-id={'c-' + namespace + '-norskpin-nummer-text'}
             feil={validation[namespace + '-norskpin-nummer']?.feilmelding}
-            id={'c-' + namespace + '-norskpin-nummer-input'}
+            id={'c-' + namespace + '-norskpin-nummer-text'}
             label={t('label:norwegian-fnr')}
             onChange={onNorwegianPinChange}
             value={_.find(personInfo.pin, p => p.land === 'NO')?.identifikator}
@@ -261,9 +261,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
           <Row className='slideInFromLeft'>
             <Column>
               <HighContrastInput
-                data-test-id={'c-' + namespace + '-foedested-by-input'}
+                data-test-id={'c-' + namespace + '-foedested-by-text'}
                 feil={validation[namespace + '-foedested-by']?.feilmelding}
-                id={'c-' + namespace + '-foedestedby-input'}
+                id={'c-' + namespace + '-foedestedby-text'}
                 label={t('label:by')}
                 onChange={onFoedestedByChange}
                 value={personInfo.pinMangler?.foedested.by}
@@ -271,9 +271,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             </Column>
             <Column>
               <HighContrastInput
-                data-test-id={'c-' + namespace + '-foedested-region-input'}
+                data-test-id={'c-' + namespace + '-foedested-region-text'}
                 feil={validation[namespace + '-foedested-region']?.feilmelding}
-                id={'c-' + namespace + '-foedested-region-input'}
+                id={'c-' + namespace + '-foedested-region-text'}
                 label={t('label:region')}
                 onChange={onFoedestedRegionChange}
                 value={personInfo.pinMangler?.foedested.region}
@@ -281,9 +281,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             </Column>
             <Column>
               <CountrySelect
-                data-test-id={'c-' + namespace + '-foedested-land-countryselect'}
+                data-test-id={'c-' + namespace + '-foedested-land-text'}
                 error={validation[namespace + '-foedested-land']?.feilmelding}
-                id={'c-' + namespace + '-foedested-land-countryselect'}
+                id={'c-' + namespace + '-foedested-land-text'}
                 includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
                 label={t('label:land')}
                 menuPortalTarget={document.body}

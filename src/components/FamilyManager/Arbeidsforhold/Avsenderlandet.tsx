@@ -50,9 +50,9 @@ const Avsenderlandet = ({
             <Row>
               <Column>
                 <HighContrastInput
-                  data-test-id={'c-' + namespace + '-startdato-input'}
+                  data-test-id={'c-' + namespace + '-startdato-date'}
                   feil={validation[namespace + '-startdato']?.feilmelding}
-                  id={namespace + '-startdato-input'}
+                  id={namespace + '-startdato-date'}
                   label={t('label:start-date')}
                   onChange={(e: any) => setStartDato(e.target.value)}
                   placeholder={t('el:placeholder-date-default')}
@@ -61,9 +61,9 @@ const Avsenderlandet = ({
               </Column>
               <Column>
                 <HighContrastInput
-                  data-test-id={'c-' + namespace + '-sluttdato-input'}
+                  data-test-id={'c-' + namespace + '-sluttdato-date'}
                   feil={validation[namespace + '-sluttdato']?.feilmelding}
-                  id={'c-' + namespace + '-sluttdato-input'}
+                  id={'c-' + namespace + '-sluttdato-date'}
                   label={t('label:end-date')}
                   onChange={(e: any) => setSluttDato(e.target.value)}
                   placeholder={t('el:placeholder-date-default')}

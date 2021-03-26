@@ -85,9 +85,9 @@ const ReasonToCome: React.FC<ReasonToComeProps> = ({
             >
               <Column>
                 <HighContrastInput
-                  data-test-id={'c-' + namespace + '-startdato-input'}
+                  data-test-id={'c-' + namespace + '-startdato-date'}
                   feil={validation[namespace + '-startdato']}
-                  id={'c-' + namespace + '-startdato-input'}
+                  id={'c-' + namespace + '-startdato-date'}
                   label={t('label:start-date')}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => onStartDatoChange(e.target.value)}
                   placeholder={t('el:placeholder-date-default')}
@@ -96,9 +96,9 @@ const ReasonToCome: React.FC<ReasonToComeProps> = ({
               </Column>
               <Column>
                 <HighContrastInput
-                  data-test-id={'c-' + namespace + '-sluttdato-input'}
+                  data-test-id={'c-' + namespace + '-sluttdato-date'}
                   feil={validation[namespace + '-sluttdato']}
-                  id={'c-' + namespace + '-sluttdato-input'}
+                  id={'c-' + namespace + '-sluttdato-date'}
                   label={t('label:end-date')}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSluttDatoChange(e.target.value)}
                   placeholder={t('el:placeholder-date-default')}
@@ -114,9 +114,9 @@ const ReasonToCome: React.FC<ReasonToComeProps> = ({
             >
               <Column>
                 <HighContrastInput
-                  data-test-id={'c-' + namespace + '-sender-input'}
+                  data-test-id={'c-' + namespace + '-sender-text'}
                   feil={validation[namespace + '-sender']}
-                  id={'c-' + namespace + '-sender-input'}
+                  id={'c-' + namespace + '-sender-text'}
                   label={t('label:moving-date-sender')}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSenderChange(e.target.value)}
                   placeholder={t('el:placeholder-date-default')}
@@ -125,9 +125,9 @@ const ReasonToCome: React.FC<ReasonToComeProps> = ({
               </Column>
               <Column>
                 <HighContrastInput
-                  data-test-id={'c-' + namespace + '-receiver-input'}
+                  data-test-id={'c-' + namespace + '-receiver-text'}
                   feil={validation[namespace + '-receiver']}
-                  id={'c-' + namespace + '-receiver-input'}
+                  id={'c-' + namespace + '-receiver-text'}
                   label={t('label:moving-date-receiver')}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => onReceiverChange(e.target.value)}
                   placeholder={t('el:placeholder-date-default')}

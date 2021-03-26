@@ -49,9 +49,9 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
             checked={_arbeidsforhold}
             data-multiple-line
             data-no-border
-            data-test-id={'c-' + namespace + '-type-radiogroup'}
+            data-test-id={'c-' + namespace + '-type-text'}
             feil={validation[namespace + '-type']?.feilmelding}
-            id={'c-' + namespace + '-type-radiogroup'}
+            id={'c-' + namespace + '-type-text'}
             name={namespace + '-type'}
             radios={[
               { label: t('el:option-personensstatus-1'), value: 'arbeidsforhold-1' },

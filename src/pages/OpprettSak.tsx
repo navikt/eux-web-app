@@ -780,7 +780,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                 <AlertStripe type='suksess'>
                   <FlexDiv>
                     <span>
-                      {t('label:caseNumber') + ': ' + opprettetSak.rinasaksnummer}
+                      {t('label:saksnummer') + ': ' + opprettetSak.rinasaksnummer}
                     </span>
                     <HorizontalSeparatorDiv data-size='0.25' />
                     <span>

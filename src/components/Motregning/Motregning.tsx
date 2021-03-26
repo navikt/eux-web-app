@@ -2,9 +2,11 @@ import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
 import Select from 'components/Select/Select'
-import { TextAreaDiv } from 'components/StyledComponents'
+import { PileDiv, TextAreaDiv } from 'components/StyledComponents'
+import { Options } from 'declarations/app'
 import { F002Sed, Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
+import { Country } from 'land-verktoy'
 import _ from 'lodash'
 import { Checkbox } from 'nav-frontend-skjema'
 import { Undertittel } from 'nav-frontend-typografi'
@@ -14,7 +16,7 @@ import {
   HighContrastInput,
   HighContrastPanel,
   HighContrastRadio,
-  HighContrastRadioGroup,
+  HighContrastRadioGroup, HighContrastRadioPanelGroup,
   HighContrastTextArea,
   HorizontalSeparatorDiv,
   Row,
@@ -22,26 +24,14 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
 
-const PanelDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-`
-const AlignEndRow = styled(Row)`
-  align-items: flex-end;
-`
 export interface MotregningProps {
   highContrast: boolean
   replySed: ReplySed
-}
-export interface PeriodeAndVedtak {
-  periode: Periode
-  vedtak: string
+  validation: Validation
 }
 
-export interface NameAndBenefit {
+export interface NavnOgBetegnelse {
   navn: string
   betegnelsePåYtelse: string
 }
@@ -51,18 +41,20 @@ const Motregning: React.FC<MotregningProps> = ({
   replySed
 }: MotregningProps): JSX.Element => {
   const { t } = useTranslation()
-  const [_motregning, setMotregning] = useState<string | undefined>(undefined)
+  const [_confirmDelete, _setConfirmDelete] = useState<Array<string>>([])
+  const [_motregning, _setMotregning] = useState<string | undefined>(undefined)
+  const [_navnOgBetegnelse, _setNavnOgBetegnelse] = useState<Array<NavnOgBetegnelse>>([])
+  const [_amount, _setAmount] = useState<string>('')
+  const [_currency, _setCurrency] = useState<Country | undefined>(undefined)
   const [_startDato, setStartDato] = useState<string>('')
   const [_sluttDato, setSluttDato] = useState<string>('')
-  const [_reason, setReason] = useState<string>('')
-  const [_validation] = useState<Validation>({})
-  const [_vedtakType, setVedtakType] = useState<string | undefined>(undefined)
-  const [_perioderAndVedtak, setPerioderAndVedtak] = useState<Array<PeriodeAndVedtak>>([])
+  const [_frequency, _setFrequency] = useState<string | undefined>(undefined)
+  const [_receiver, _setReceiver] = useState<string | undefined>(undefined)
+  const [_grunner, _setGrunner] = useState<string | undefined>(undefined)
+  const [_ytterligereInformasjon, _setYtterligereInformasjon] = useState<string | undefined>(undefined)
 
-  const [_currentStartDato, setCurrentStartDato] = useState<string>('')
-  const [_currentSluttDato, setCurrentSluttDato] = useState<string>('')
-  const [_currentVedtakType, setCurrentVedtakType] = useState<string>('')
-  const [_seeNewPeriode, setSeeNewPeriode] = useState<boolean>(false)
+  const [_validation, _setValidation] = useState<Validation>({})
+  const [_seeNewForm, _setSeeNewform] = useState<boolean>(false)
 
   const setMoreStartDato = (s: string, i: number) => {
     if (i < 0) {
@@ -121,7 +113,7 @@ const Motregning: React.FC<MotregningProps> = ({
     setCurrentVedtakType('')
   }
 
-  const vedtakTypeOptions = [
+  const vedtakTypeOptions: Options = [
     { label: t('el:option-vedtaktype-1'), value: '1' },
     { label: t('el:option-vedtaktype-2'), value: '2' },
     { label: t('el:option-vedtaktype-3'), value: '3' },
@@ -133,11 +125,11 @@ const Motregning: React.FC<MotregningProps> = ({
       <AlignEndRow>
         <Column>
           <HighContrastInput
-            data-test-id={'c-vedtak-startdato[' + i + ']-input'}
+            data-test-id={'c-vedtak-startdato[' + i + ']-text'}
             feil={_validation['vedtak-startdato[' + i + ']']
               ? _validation['vedtak-startdato[' + i + ']']!.feilmelding
               : undefined}
-            id={'c-vedtak-startdato[' + i + ']-input'}
+            id={'c-vedtak-startdato[' + i + ']-text'}
             onChange={(e: any) => setMoreStartDato(e.target.value, i)}
             value={i < 0 ? _currentStartDato : p?.periode.startdato}
             label={t('label:start-date')}
@@ -146,11 +138,11 @@ const Motregning: React.FC<MotregningProps> = ({
         </Column>
         <Column>
           <HighContrastInput
-            data-test-id={'c-vedtak-sluttdato[' + i + ']-input'}
+            data-test-id={'c-vedtak-sluttdato[' + i + ']-text'}
             feil={_validation['vedtak-sluttdato[' + i + ']']
               ? _validation['vedtak-sluttdato[' + i + ']']!.feilmelding
               : undefined}
-            id={'c-vedtak-sluttdato[' + i + ']-input'}
+            id={'c-vedtak-sluttdato[' + i + ']-text'}
             onChange={(e: any) => setMoreSluttDato(e.target.value, i)}
             value={i < 0 ? _currentSluttDato : p?.periode.sluttdato}
             label={t('label:end-date')}
@@ -160,12 +152,12 @@ const Motregning: React.FC<MotregningProps> = ({
         <Column>
           <Select
             key={'c-vedtak-type[' + i + ']-select-key'}
-            data-test-id={'c-vedtak-type[' + i + ']-select'}
+            data-test-id={'c-vedtak-type[' + i + ']-text'}
             error={_validation['vedtak-type[' + i + ']']
               ? _validation['vedtak-type[' + i + ']']!.feilmelding
               : undefined}
             highContrast={highContrast}
-            id={'c-vedtak-type[' + i + ']-select'}
+            id={'c-vedtak-type[' + i + ']-text'}
             label={t('label:vedtak-type')}
             onChange={(e: any) => setMoreVedtakType(e.value, i)}
             options={vedtakTypeOptions}
@@ -191,7 +183,7 @@ const Motregning: React.FC<MotregningProps> = ({
   )
 
   return (
-    <PanelDiv>
+    <PileDiv>
       <Undertittel>
         {t('el:title-motregning')}
       </Undertittel>
@@ -236,8 +228,8 @@ const Motregning: React.FC<MotregningProps> = ({
         <Row>
           <Column>
             <HighContrastInput
-              data-test-id='c-vedtak-startdato-input'
-              id='c-vedtak-startdato-input'
+              data-test-id='c-vedtak-startdato-date'
+              id='c-vedtak-startdato-date'
               feil={_validation['vedtak-startdato']
                 ? _validation['vedtak-startdato']!.feilmelding
                 : undefined}
@@ -249,8 +241,8 @@ const Motregning: React.FC<MotregningProps> = ({
           </Column>
           <Column>
             <HighContrastInput
-              data-test-id='c-vedtak-sluttdato-input'
-              id='c-vedtak-sluttdato-input'
+              data-test-id='c-vedtak-sluttdato-date'
+              id='c-vedtak-sluttdato-date'
               feil={_validation['vedtak-sluttdato']
                 ? _validation['vedtak-sluttdato']!.feilmelding
                 : undefined}
@@ -266,12 +258,12 @@ const Motregning: React.FC<MotregningProps> = ({
         <Row>
           <Column>
             <Select
-              data-test-id='c-vedtak-type-select'
+              data-test-id='c-vedtak-type-text'
               error={_validation['vedtak-type']
                 ? _validation['vedtak-type']!.feilmelding
                 : undefined}
               highContrast={highContrast}
-              id='c-vedtak-type-select'
+              id='c-vedtak-type-text'
               label={t('label:vedtak-type')}
               onChange={(e: any) => setVedtakType(e.value)}
               options={vedtakTypeOptions}
@@ -286,8 +278,8 @@ const Motregning: React.FC<MotregningProps> = ({
           <Column>
             <TextAreaDiv>
               <HighContrastTextArea
-                data-test-id='c-vedtak-reason-textarea'
-                id='c-vedtak-reason-textarea'
+                data-test-id='c-vedtak-reason-text'
+                id='c-vedtak-reason-text'
                 className={classNames({ 'skjemaelement__input--harFeil': _validation.comment })}
                 label={t('label:comment-title')}
                 placeholder={t('label:comment-placeholder')}
@@ -325,3 +317,20 @@ const Motregning: React.FC<MotregningProps> = ({
 }
 
 export default Motregning
+
+<Column>
+<HighContrastRadioPanelGroup
+checked={_newFrequency}
+data-no-border
+data-test-id={'c-' + namespace + '-frequency-text'}
+id={'c-' + namespace + '-frequency-text'}
+feil={validation[namespace + '-frequency']?.feilmelding}
+name={namespace + '-frequency'}
+legend={t('label:period-frequency')}
+radios={[
+    { label: t('label:monthly'), value: 'Månedlig' },
+{ label: t('label:yearly'), value: 'Årlig' }
+]}
+onChange={(e: any) => setFrequency(e.target.value)}
+/>
+</Column>

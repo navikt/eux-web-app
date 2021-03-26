@@ -1,175 +1,184 @@
 IDs 									                                             	VALIDATION
 
-c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-navn-input      - {INTERNAL} arbeidsforhold-{personID}-arbeidsforholdet[{i}]-navn
-c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-orgnr-input     - {INTERNAL} arbeidsforhold-{personID}-arbeidsforholdet[{i}]-orgnr
-c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-startdato-input - {INTERNAL} arbeidsforhold-{personID}-arbeidsforholdet[{i}]-startdato
-c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-sluttdato-input - {INTERNAL} arbeidsforhold-{personID}-arbeidsforholdet[{i}]-sluttdato
+c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-navn-text      - {INTERNAL}
+c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-orgnr-text     - {INTERNAL}
+c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-startdato-date - {INTERNAL}
+c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-sluttdato-date - {INTERNAL}
 
-c-familymanager-addpersonmodal-fnr-input       - {INTERNAL}
-c-familymanager-addpersonmodal-navn-input      - {INTERNAL}
-c-familymanager-addpersonmodal-relasjon-select - {INTERNAL}
+c-familymanager-addpersonmodal-fnr-text       - {INTERNAL}
+c-familymanager-addpersonmodal-navn-text      - {INTERNAL}
+c-familymanager-addpersonmodal-relasjon-text  - {INTERNAL}
 
-c-familymanager-{personID}-adresser-type-radiogroup                 - {INTERNAL}
-c-familymanager-{personID}-adresser-gate-input                      - {INTERNAL}
-c-familymanager-{personID}-adresser-postnummer-input                - {INTERNAL}
-c-familymanager-{personID}-adresser-by-input                        - {INTERNAL}
-c-familymanager-{personID}-adresser-land-countryselect              - {INTERNAL}
-c-familymanager-{personID}-adresser-bygning-input                   - {INTERNAL}
-c-familymanager-{personID}-adresser-region-input                    - {INTERNAL}
-c-familymanager-{personID}-adresser[{i}]-type-radiogroup            - {GLOBAL}
-c-familymanager-{personID}-adresser[{i}]-gate-input                 - {GLOBAL}
-c-familymanager-{personID}-adresser[{i}]-postnummer-input           - {GLOBAL}
-c-familymanager-{personID}-adresser[{i}]-by-input                   - {GLOBAL}
-c-familymanager-{personID}-adresser[{i}]-land-countryselect         - {GLOBAL}
-c-familymanager-{personID}-adresser[{i}]-bygning-input              - {GLOBAL}
-c-familymanager-{personID}-adresser[{i}]-region-input               - {GLOBAL}
+c-familymanager-{personID}-adresser-type-text            - {INTERNAL}
+c-familymanager-{personID}-adresser-gate-text            - {INTERNAL}
+c-familymanager-{personID}-adresser-postnummer-text      - {INTERNAL}
+c-familymanager-{personID}-adresser-by-text              - {INTERNAL}
+c-familymanager-{personID}-adresser-land-text            - {INTERNAL}
+c-familymanager-{personID}-adresser-bygning-text         - {INTERNAL}
+c-familymanager-{personID}-adresser-region-text          - {INTERNAL}
+c-familymanager-{personID}-adresser[{i}]-type-text       - {GLOBAL}
+c-familymanager-{personID}-adresser[{i}]-gate-text       - {GLOBAL}
+c-familymanager-{personID}-adresser[{i}]-postnummer-text - {GLOBAL}
+c-familymanager-{personID}-adresser[{i}]-by-text         - {GLOBAL}
+c-familymanager-{personID}-adresser[{i}]-land-text       - {GLOBAL}
+c-familymanager-{personID}-adresser[{i}]-bygning-text    - {GLOBAL}
+c-familymanager-{personID}-adresser[{i}]-region-text     - {GLOBAL}
 
-c-familymanager-{personID}-beløpNavnOgValuta-name-input               - {GLOBAL}
-c-familymanager-{personID}-beløpNavnOgValuta-benefitCause-select      - {GLOBAL}
-c-familymanager-{personID}-beløpNavnOgValuta-amount-input             - {GLOBAL}
-c-familymanager-{personID}-beløpNavnOgValuta-currency-countryselect   - {GLOBAL}
-c-familymanager-{personID}-beløpNavnOgValuta-startdato-input          - {GLOBAL}
-c-familymanager-{personID}-beløpNavnOgValuta-sluttdato-input          - {GLOBAL}
-c-familymanager-{personID}-beløpNavnOgValuta-receiver-input           - {GLOBAL}
-c-familymanager-{personID}-beløpNavnOgValuta-frequency-radiogroup     - {GLOBAL}
+c-familymanager-{personID}-beløpNavnOgValuta-name-text         - {GLOBAL}
+c-familymanager-{personID}-beløpNavnOgValuta-benefitCause-text - {GLOBAL}
+c-familymanager-{personID}-beløpNavnOgValuta-amount-text       - {GLOBAL}
+c-familymanager-{personID}-beløpNavnOgValuta-currency-text     - {GLOBAL}
+c-familymanager-{personID}-beløpNavnOgValuta-startdato-date    - {GLOBAL}
+c-familymanager-{personID}-beløpNavnOgValuta-sluttdato-date    - {GLOBAL}
+c-familymanager-{personID}-beløpNavnOgValuta-receiver-text     - {GLOBAL}
+c-familymanager-{personID}-beløpNavnOgValuta-frequency-text    - {GLOBAL}
 
-c-familymanager-{personID}-familierelasjon-relasjontype                 - {INTERNAL}
-c-familymanager-{personID}-familierelasjon-startdato                    - {INTERNAL}
-c-familymanager-{personID}-familierelasjon-sluttdato                    - {INTERNAL}
-c-familymanager-{personID}-familierelasjon-annenrelasjontype            - {INTERNAL}
-c-familymanager-{personID}-familierelasjon-annenrelasjonpersonnavn      - {INTERNAL}
-c-familymanager-{personID}-familierelasjon-annenrelasjondato            - {INTERNAL}
-c-familymanager-{personID}-familierelasjon-borsammen                    - {INTERNAL}
-c-familymanager-{personID}-familierelasjon[{i}]-relasjontype            - {GLOBAL}
-c-familymanager-{personID}-familierelasjon[{i}]-startdato               - {GLOBAL}
-c-familymanager-{personID}-familierelasjon[{i}]-sluttdato               - {GLOBAL}
-c-familymanager-{personID}-familierelasjon[{i}]-annenrelasjontype       - {GLOBAL}
-c-familymanager-{personID}-familierelasjon[{i}]-annenrelasjonpersonnavn - {GLOBAL}
-c-familymanager-{personID}-familierelasjon[{i}]-annenrelasjondato       - {GLOBAL}
-c-familymanager-{personID}-familierelasjon[{i}]-borsammen               - {GLOBAL}
+c-familymanager-{personID}-familierelasjon-relasjontype-text                 - {INTERNAL}
+c-familymanager-{personID}-familierelasjon-startdato-date                    - {INTERNAL}
+c-familymanager-{personID}-familierelasjon-sluttdato-date                    - {INTERNAL}
+c-familymanager-{personID}-familierelasjon-annenrelasjontype-text            - {INTERNAL}
+c-familymanager-{personID}-familierelasjon-annenrelasjonpersonnavn-text      - {INTERNAL}
+c-familymanager-{personID}-familierelasjon-annenrelasjondato-date            - {INTERNAL}
+c-familymanager-{personID}-familierelasjon-borsammen-text                    - {INTERNAL}
+c-familymanager-{personID}-familierelasjon[{i}]-relasjontype-text            - {GLOBAL}
+c-familymanager-{personID}-familierelasjon[{i}]-startdato-date               - {GLOBAL}
+c-familymanager-{personID}-familierelasjon[{i}]-sluttdato-date               - {GLOBAL}
+c-familymanager-{personID}-familierelasjon[{i}]-annenrelasjontype-text       - {GLOBAL}
+c-familymanager-{personID}-familierelasjon[{i}]-annenrelasjonpersonnavn-text - {GLOBAL}
+c-familymanager-{personID}-familierelasjon[{i}]-annenrelasjondato-date       - {GLOBAL}
+c-familymanager-{personID}-familierelasjon[{i}]-borsammen-text               - {GLOBAL}
 
-c-familymanager-{personID}-familieytelser-number-input            - {GLOBAL}
-c-familymanager-{personID}-familieytelser-benefitCause-select     - {GLOBAL}
-c-familymanager-{personID}-familieytelser-amount-input            - {GLOBAL}
-c-familymanager-{personID}-familieytelser-currency-countryselect  - {GLOBAL}
-c-familymanager-{personID}-familieytelser-startdato-input         - {GLOBAL}
-c-familymanager-{personID}-familieytelser-sluttdato-input         - {GLOBAL}
-c-familymanager-{personID}-familieytelser-receiver-input          - {GLOBAL}
-c-familymanager-{personID}-familieytelser-frequency-radiogroup    - {GLOBAL}
+c-familymanager-{personID}-familieytelser-number-text       - {GLOBAL}
+c-familymanager-{personID}-familieytelser-benefitCause-text - {GLOBAL}
+c-familymanager-{personID}-familieytelser-amount-text       - {GLOBAL}
+c-familymanager-{personID}-familieytelser-currency-text     - {GLOBAL}
+c-familymanager-{personID}-familieytelser-startdato-date    - {GLOBAL}
+c-familymanager-{personID}-familieytelser-sluttdato-date    - {GLOBAL}
+c-familymanager-{personID}-familieytelser-receiver-text     - {GLOBAL}
+c-familymanager-{personID}-familieytelser-frequency-text    - {GLOBAL}
 
-c-familymanager-{personID}-grunnlagforbosetting-startdato-input    - {GLOBAL}
-c-familymanager-{personID}-grunnlagforbosetting-sluttdato-input    - {GLOBAL}
-c-familymanager-{personID}-grunnlagforbosetting-mottakerdato-input - {GLOBAL}
-c-familymanager-{personID}-grunnlagforbosetting-avsenderdato-input - {GLOBAL}
-c-familymanager-{personID}-grunnlagforbosetting-elementer-textarea - {GLOBAL}
+c-familymanager-{personID}-grunnlagforbosetting-startdato-date    - {GLOBAL}
+c-familymanager-{personID}-grunnlagforbosetting-sluttdato-date    - {GLOBAL}
+c-familymanager-{personID}-grunnlagforbosetting-mottakerdato-text - {GLOBAL}
+c-familymanager-{personID}-grunnlagforbosetting-avsenderdato-text - {GLOBAL}
+c-familymanager-{personID}-grunnlagforbosetting-elementer-text    - {GLOBAL}
 
-c-familymanager-{personID}-kontaktinformasjon-telefon-nummer-input      - {INTERNAL}
-c-familymanager-{personID}-kontaktinformasjon-telefon-type-select       - {INTERNAL}
-c-familymanager-{personID}-kontaktinformasjon-epost-adresse-input       - {INTERNAL}
-c-familymanager-{personID}-kontaktinformasjon[{i}]-telefon-nummer-input - {GLOBAL}
-c-familymanager-{personID}-kontaktinformasjon[{i}]-telefon-type-select  - {GLOBAL}
-c-familymanager-{personID}-kontaktinformasjon[{i}]-epost-adresse-input  - {GLOBAL}
+c-familymanager-{personID}-kontaktinformasjon-telefon-nummer-text      - {INTERNAL}
+c-familymanager-{personID}-kontaktinformasjon-telefon-type-text        - {INTERNAL}
+c-familymanager-{personID}-kontaktinformasjon-epost-adresse-text       - {INTERNAL}
+c-familymanager-{personID}-kontaktinformasjon[{i}]-telefon-nummer-text - {GLOBAL}
+c-familymanager-{personID}-kontaktinformasjon[{i}]-telefon-type-text   - {GLOBAL}
+c-familymanager-{personID}-kontaktinformasjon[{i}]-epost-adresse-text  - {GLOBAL}
 
-c-familymanager-{personID}-nasjonaliteter-land-countryselect      - {INTERNAL}
-c-familymanager-{personID}-nasjonaliteter-fomdato-input           - {INTERNAL}
-c-familymanager-{personID}-nasjonaliteter[{i}]-land-countryselect - {GLOBAL}
-c-familymanager-{personID}-nasjonaliteter[{i}]-fomdato-input      - {GLOBAL}
+c-familymanager-{personID}-nasjonaliteter-land-text         - {INTERNAL}
+c-familymanager-{personID}-nasjonaliteter-fomdato-date      - {INTERNAL}
+c-familymanager-{personID}-nasjonaliteter[{i}]-land-text    - {GLOBAL}
+c-familymanager-{personID}-nasjonaliteter[{i}]-fomdato-text - {GLOBAL}
 
-c-familymanager-{personID}-personopplysninger-fornavn-input                     - {GLOBAL}
-c-familymanager-{personID}-personopplysninger-etternavn-input                   - {GLOBAL}
-c-familymanager-{personID}-personopplysninger-foedselsdato-input                - {GLOBAL}
-c-familymanager-{personID}-personopplysninger-kjoenn-radiogroup                 - {GLOBAL}
-c-familymanager-{personID}-personopplysninger-utenlandskpin-nummer-input        - {GLOBAL}
-c-familymanager-{personID}-personopplysninger-utenlandskpin-land-countryselect  - {GLOBAL}
-c-familymanager-{personID}-personopplysninger-norskpin-lnummer-input            - {GLOBAL}
-c-familymanager-{personID}-personopplysninger-fodested-by-input                 - {GLOBAL}
-c-familymanager-{personID}-personopplysninger-fodested-region-input             - {GLOBAL}
-c-familymanager-{personID}-personopplysninger-fodested-land-countryselect       - {GLOBAL}
+c-familymanager-{personID}-personopplysninger-fornavn-text              - {GLOBAL}
+c-familymanager-{personID}-personopplysninger-etternavn-text            - {GLOBAL}
+c-familymanager-{personID}-personopplysninger-foedselsdato-text         - {GLOBAL}
+c-familymanager-{personID}-personopplysninger-kjoenn-radiogroup         - {GLOBAL}
+c-familymanager-{personID}-personopplysninger-utenlandskpin-nummer-text - {GLOBAL}
+c-familymanager-{personID}-personopplysninger-utenlandskpin-land-text   - {GLOBAL}
+c-familymanager-{personID}-personopplysninger-norskpin-nummer-text      - {GLOBAL}
+c-familymanager-{personID}-personopplysninger-fodested-by-text          - {GLOBAL}
+c-familymanager-{personID}-personopplysninger-fodested-region-text      - {GLOBAL}
+c-familymanager-{personID}-personopplysninger-fodested-land-text        - {GLOBAL}
 
-c-familymanager-{personID}-personensstatus-type-radiogroup                        - {GLOBAL}
-c-familymanager-{personID}-personensstatus-avsenderlandet-startdato-input         - {GLOBAL}
-c-familymanager-{personID}-personensstatus-avsenderlandet-sluttdato-input         - {GLOBAL}
-c-familymanager-{personID}-personensstatus-ansatt-startdato-input                 - {INTERNAL}
-c-familymanager-{personID}-personensstatus-ansatt-sluttdato-input                 - {INTERNAL}
-c-familymanager-{personID}-personensstatus-ansatt-orgnr-input                     - {INTERNAL}
-c-familymanager-{personID}-personensstatus-ansatt-navn-input                      - {INTERNAL}
-c-familymanager-{personID}-personensstatus-notansatt-startdato-input              - {INTERNAL}
-c-familymanager-{personID}-personensstatus-notansatt-sluttdato-input              - {INTERNAL}
-c-familymanager-{personID}-personensstatus-notansatt-comment-textarea             - {GLOBAL}
-c-familymanager-{personID}-personensstatus-notansatt[{i}]-startdato-input         - {GLOBAL}
-c-familymanager-{personID}-personensstatus-notansatt[{i}]-sluttdato-input         - {GLOBAL}
-c-familymanager-{personID}-personensstatus-withsubsidies-startdato-input          - {INTERNAL}
-c-familymanager-{personID}-personensstatus-withsubsidies-sluttdato-input          - {INTERNAL}
-c-familymanager-{personID}-personensstatus-withsubsidies-pensjonytpe-select       - {INTERNAL}
-c-familymanager-{personID}-personensstatus-withsubsidies[{i}]-startdato-input     - {GLOBAL}
-c-familymanager-{personID}-personensstatus-withsubsidies[{i}]-sluttdato-input     - {GLOBAL}
-c-familymanager-{personID}-personensstatus-withsubsidies[{i}]-pensjonytpe-select  - {GLOBAL}
-c-familymanager-{personID}-personensstatus-reasontocome-startdato-input           - {GLOBAL}
-c-familymanager-{personID}-personensstatus-reasontocome-sluttdato-input           - {GLOBAL}
-c-familymanager-{personID}-personensstatus-reasontocome-sender-input              - {GLOBAL}
-c-familymanager-{personID}-personensstatus-reasontocome-receiver-input            - {GLOBAL}
+c-familymanager-{personID}-personensstatus-type-text                           - {GLOBAL}
+c-familymanager-{personID}-personensstatus-avsenderlandet-startdato-date       - {GLOBAL}
+c-familymanager-{personID}-personensstatus-avsenderlandet-sluttdato-date       - {GLOBAL}
+c-familymanager-{personID}-personensstatus-ansatt-startdato-date               - {INTERNAL}
+c-familymanager-{personID}-personensstatus-ansatt-sluttdato-date               - {INTERNAL}
+c-familymanager-{personID}-personensstatus-ansatt-orgnr-text                   - {INTERNAL}
+c-familymanager-{personID}-personensstatus-ansatt-navn-text                    - {INTERNAL}
+c-familymanager-{personID}-personensstatus-notansatt-startdato-date            - {INTERNAL}
+c-familymanager-{personID}-personensstatus-notansatt-sluttdato-date            - {INTERNAL}
+c-familymanager-{personID}-personensstatus-notansatt-comment-text              - {GLOBAL}
+c-familymanager-{personID}-personensstatus-notansatt[{i}]-startdato-date       - {GLOBAL}
+c-familymanager-{personID}-personensstatus-notansatt[{i}]-sluttdato-date       - {GLOBAL}
+c-familymanager-{personID}-personensstatus-withsubsidies-startdato-date        - {INTERNAL}
+c-familymanager-{personID}-personensstatus-withsubsidies-sluttdato-date        - {INTERNAL}
+c-familymanager-{personID}-personensstatus-withsubsidies-pensjonytpe-text      - {INTERNAL}
+c-familymanager-{personID}-personensstatus-withsubsidies[{i}]-startdato-date   - {GLOBAL}
+c-familymanager-{personID}-personensstatus-withsubsidies[{i}]-sluttdato-date   - {GLOBAL}
+c-familymanager-{personID}-personensstatus-withsubsidies[{i}]-pensjonytpe-text - {GLOBAL}
+c-familymanager-{personID}-personensstatus-reasontocome-startdato-date         - {GLOBAL}
+c-familymanager-{personID}-personensstatus-reasontocome-sluttdato-date         - {GLOBAL}
+c-familymanager-{personID}-personensstatus-reasontocome-sender-text            - {GLOBAL}
+c-familymanager-{personID}-personensstatus-reasontocome-receiver-text          - {GLOBAL}
 
-c-familymanager-{personID}-relasjon-med-radioroup               - {GLOBAL}
-c-familymanager-{personID}-relasjon-type-select                 - {GLOBAL}
-c-familymanager-{personID}-relasjon-startdato-input             - {GLOBAL}
-c-familymanager-{personID}-relasjon-sluttdato-input             - {GLOBAL}
-c-familymanager-{personID}-relasjon-bomedsokeren-radioroup      - {GLOBAL}
-c-familymanager-{personID}-relasjon-bomedektefellen-radioroup   - {GLOBAL}
-c-familymanager-{personID}-relasjon-bomedaktuelle-radioroup     - {GLOBAL}
-c-familymanager-{personID}-relasjon-boiinstitusjon-radioroup    - {GLOBAL}
+c-familymanager-{personID}-relasjon-med-radioroup             - {GLOBAL}
+c-familymanager-{personID}-relasjon-type-text                 - {GLOBAL}
+c-familymanager-{personID}-relasjon-startdato-date            - {GLOBAL}
+c-familymanager-{personID}-relasjon-sluttdato-date            - {GLOBAL}
+c-familymanager-{personID}-relasjon-bomedsokeren-radioroup    - {GLOBAL}
+c-familymanager-{personID}-relasjon-bomedektefellen-radioroup - {GLOBAL}
+c-familymanager-{personID}-relasjon-bomedaktuelle-radioroup   - {GLOBAL}
+c-familymanager-{personID}-relasjon-boiinstitusjon-radioroup  - {GLOBAL}
 
-c-familymanager-{personID}-trygdeordninger-dekkede-startdato-input             - {INTERNAL}
-c-familymanager-{personID}-trygdeordninger-dekkede-sluttdato-input             - {INTERNAL}
-c-familymanager-{personID}-trygdeordninger-udekkede-startdato-input            - {INTERNAL}
-c-familymanager-{personID}-trygdeordninger-udekkede-sluttdato-input            - {INTERNAL}
-c-familymanager-{personID}-trygdeordninger-familieYtelse-startdato-input       - {INTERNAL}
-c-familymanager-{personID}-trygdeordninger-familieYtelse-sluttdato-input       - {INTERNAL}
-c-familymanager-{personID}-trygdeordninger-familieYtelse-category-select       - {INTERNAL}
-c-familymanager-{personID}-trygdeordninger-familieYtelse-pensjontype-select    - {INTERNAL}
+c-familymanager-{personID}-trygdeordninger-dekkede-startdato-date         - {INTERNAL}
+c-familymanager-{personID}-trygdeordninger-dekkede-sluttdato-date         - {INTERNAL}
+c-familymanager-{personID}-trygdeordninger-udekkede-startdato-date        - {INTERNAL}
+c-familymanager-{personID}-trygdeordninger-udekkede-sluttdato-date        - {INTERNAL}
+c-familymanager-{personID}-trygdeordninger-familieYtelse-startdato-date   - {INTERNAL}
+c-familymanager-{personID}-trygdeordninger-familieYtelse-sluttdato-date   - {INTERNAL}
+c-familymanager-{personID}-trygdeordninger-familieYtelse-category-text    - {INTERNAL}
+c-familymanager-{personID}-trygdeordninger-familieYtelse-pensjontype-text - {INTERNAL}
 
-c-familymanager-{personID}-trygdeordninger-perioderMedArbeid[i]-startdato-input            - {GLOBAL}
-c-familymanager-{personID}-trygdeordninger-perioderMedArbeid[i]-sluttdato-input            - {GLOBAL}
-c-familymanager-{personID}-trygdeordninger-perioderMedTrygd[i]-startdato-input             - {GLOBAL}
-c-familymanager-{personID}-trygdeordninger-perioderMedTrygd[i]-sluttdato-input             - {GLOBAL}
-c-familymanager-{personID}-trygdeordninger-perioderMedITrygdeordning[i]-startdato-input    - {GLOBAL}
-c-familymanager-{personID}-trygdeordninger-perioderMedITrygdeordning[i]-sluttdato-input    - {GLOBAL}
-c-familymanager-{personID}-trygdeordninger-perioderUtenforTrygdeordning[i]-startdato-input - {GLOBAL}
-c-familymanager-{personID}-trygdeordninger-perioderUtenforTrygdeordning[i]-sluttdato-input - {GLOBAL}
-c-familymanager-{personID}-trygdeordninger-perioderMedYtelser[i]-startdato-input           - {GLOBAL}
-c-familymanager-{personID}-trygdeordninger-perioderMedYtelser[i]-sluttdato-input           - {GLOBAL}
-c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-periode-startdato-input   - {GLOBAL}
-c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-periode-sluttdato-input   - {GLOBAL}
-c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-pensjontype-select        - {GLOBAL}
+c-familymanager-{personID}-trygdeordninger-perioderMedArbeid[i]-startdato-date            - {GLOBAL}
+c-familymanager-{personID}-trygdeordninger-perioderMedArbeid[i]-sluttdato-date            - {GLOBAL}
+c-familymanager-{personID}-trygdeordninger-perioderMedTrygd[i]-startdato-date             - {GLOBAL}
+c-familymanager-{personID}-trygdeordninger-perioderMedTrygd[i]-sluttdato-date             - {GLOBAL}
+c-familymanager-{personID}-trygdeordninger-perioderMedITrygdeordning[i]-startdato-date    - {GLOBAL}
+c-familymanager-{personID}-trygdeordninger-perioderMedITrygdeordning[i]-sluttdato-date    - {GLOBAL}
+c-familymanager-{personID}-trygdeordninger-perioderUtenforTrygdeordning[i]-startdato-date - {GLOBAL}
+c-familymanager-{personID}-trygdeordninger-perioderUtenforTrygdeordning[i]-sluttdato-date - {GLOBAL}
+c-familymanager-{personID}-trygdeordninger-perioderMedYtelser[i]-startdato-date           - {GLOBAL}
+c-familymanager-{personID}-trygdeordninger-perioderMedYtelser[i]-sluttdato-date           - {GLOBAL}
+c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-periode-startdato-date   - {GLOBAL}
+c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-periode-sluttdato-date   - {GLOBAL}
+c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-pensjontype-text         - {GLOBAL}
 
-c-formaal-select
+c-formaal-text
 
-c-seddetails-anmodningsperiode-startdato-input
-c-seddetails-anmodningsperiode-sluttdato-input
-c-seddetails-anmodningsperioder[i]-startdato-input
-c-seddetails-anmodningsperioder[i]-sluttdato-input
-c-seddetails-søker-fornavn-input
-c-seddetails-søker-etternavn-input
-c-seddetails-ektefelle-fornavn-input
-c-seddetails-ektefelle-etternavn-input
-c-seddetails-sakseier-input
-c-seddetails-avsenderinstitusjon-input
-c-seddetails-typeKrav-radiogroup
-c-seddetails-informasjon-radiogroup
-c-seddetails-opplysninger-textarea
+c-seddetails-anmodningsperiode-startdato-date
+c-seddetails-anmodningsperiode-sluttdato-date
+c-seddetails-anmodningsperioder[i]-startdato-date
+c-seddetails-anmodningsperioder[i]-sluttdato-date
+c-seddetails-søker-fornavn-text
+c-seddetails-søker-etternavn-text
+c-seddetails-ektefelle-fornavn-text
+c-seddetails-ektefelle-etternavn-text
+c-seddetails-sakseier-text
+c-seddetails-avsenderinstitusjon-text
+c-seddetails-typeKrav-text
+c-seddetails-informasjon-text
+c-seddetails-opplysninger-text
 
-c-step2-comment-textarea
+c-step2-comment-text
 
-= = =
+c-vedtak-allkids-text  - {GLOBAL}
+c-vedtak-whichkids-list  - {GLOBAL}
+c-vedtak-periode-startdato-date  - {GLOBAL}
+c-vedtak-periode-sluttdato-date  - {GLOBAL}
+c-vedtak-type-text  - {GLOBAL}
+c-vedtak-reason-text  - {GLOBAL}
+c-vedtak-perioder-periode-startdato-date  - {INTERNAL}
+c-vedtak-perioder-periode-sluttdato-date  - {INTERNAL}
+c-vedtak-perioder-vedtak-text                - {INTERNAL}
+c-vedtak-perioder[i]-periode-startdato-date  - {GLOBAL}
+c-vedtak-perioder[i]-periode-sluttdato-date  - {GLOBAL}
+c-vedtak-perioder[i]-vedtak-text             - {GLOBAL}
 
-c-vedtak-allkids-radiogroup
-c-vedtak-startdato-input
-c-vedtak-sluttdato-input
-c-vedtak-type-select
-c-vedtak-reason-textarea
 
 Clean ActionTypes later
 Clean Attachments later
 
-Como fazer com aapen_sluttdato
+Como fazer com aapen_sluttdato, format dato
 
-
+- A fazer: Acabar com o Motregning, fazer o prosedyre ved uenighet
+- ligar o prosedyre com o formaal
+- actualizar a resposta para o svarsedoversikt
+- começar a ligação ao svarsed

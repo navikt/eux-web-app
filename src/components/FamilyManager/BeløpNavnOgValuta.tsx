@@ -1,5 +1,6 @@
 import Select from 'components/Select/Select'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
+import { Options } from 'declarations/app'
 import { ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { Country } from 'land-verktoy'
@@ -36,7 +37,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
   const [_newFrequency, setNewFrequency] = useState<string>('')
   const namespace = 'familymanager-' + personID + '-beløpNavnOgValuta'
 
-  const benefitCauseOptions = [{
+  const benefitCauseOptions: Options = [{
     label: t('el:option-benefitCause-barnetrygd'), value: 'Barnetrygd'
   }, {
     label: t('el:option-benefitCause-kontantstøtte'), value: 'Kontantstøtte'
@@ -83,9 +84,9 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
       <AlignStartRow className='slideInFromLeft'>
         <Column>
           <HighContrastInput
-            data-test-id={'c-' + namespace + '-name-input'}
+            data-test-id={'c-' + namespace + '-name-text'}
             feil={validation[namespace + '-name']?.feilmelding}
-            id={'c-' + namespace + '-name-input'}
+            id={'c-' + namespace + '-name-text'}
             label={t('label:children-name')}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
             placeholder={t('el:placeholder-input-default')}
@@ -94,10 +95,10 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
         </Column>
         <Column>
           <Select
-            data-test-id={'c-' + namespace + '-benefitCause-select'}
+            data-test-id={'c-' + namespace + '-benefitCause-text'}
             feil={validation[namespace + '-benefitCause']?.feilmelding}
             highContrast={highContrast}
-            id={'c-' + namespace + '-benefitCause-select'}
+            id={'c-' + namespace + '-benefitCause-text'}
             label={t('label:benefit-cause')}
             onChange={(e: any) => setBenefitCause(e.value)}
             options={benefitCauseOptions}
@@ -111,9 +112,9 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column>
           <HighContrastInput
-            data-test-id={'c-' + namespace + '-amount-input'}
+            data-test-id={'c-' + namespace + '-amount-text'}
             feil={validation[namespace + '-amount']?.feilmelding}
-            id={'c-' + namespace + '-amount-input'}
+            id={'c-' + namespace + '-amount-text'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAmount(e.target.value)}
             value={_newAmount}
             label={t('label:amount')}
@@ -123,10 +124,10 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
         <Column>
           <CountrySelect
             ariaLabel={t('label:currency')}
-            data-test-id={'c-' + namespace + '-currency-countryselect'}
+            data-test-id={'c-' + namespace + '-currency-text'}
             error={validation[namespace + '-currency']?.feilmelding}
             highContrast={highContrast}
-            id={'c-' + namespace + '-currency-countryselect'}
+            id={'c-' + namespace + '-currency-text'}
             label={t('label:currency')}
             locale='nb'
             menuPortalTarget={document.body}
@@ -144,9 +145,9 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
         <Column>
           <HighContrastInput
-            data-test-id={'c-' + namespace + '-startdato-input'}
+            data-test-id={'c-' + namespace + '-startdato-date'}
             feil={validation[namespace + '-startdato']?.feilmelding}
-            id={'c-' + namespace + '-startdato-input'}
+            id={'c-' + namespace + '-startdato-date'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value)}
             value={_newStartDato}
             label={t('label:start-date')}
@@ -155,9 +156,9 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
         </Column>
         <Column>
           <HighContrastInput
-            data-test-id={'c-' + namespace + '-sluttdato-input'}
+            data-test-id={'c-' + namespace + '-sluttdato-date'}
             feil={validation[namespace + '-sluttdato']?.feilmelding}
-            id={'c-' + namespace + '-sluttdato-input'}
+            id={'c-' + namespace + '-sluttdato-date'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value)}
             value={_newSluttDato}
             label={t('label:end-date')}
@@ -169,9 +170,9 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
         <Column>
           <HighContrastInput
-            data-test-id={'c-' + namespace + '-receiver-input'}
+            data-test-id={'c-' + namespace + '-receiver-text'}
             feil={validation[namespace + '--receiver']?.feilmelding}
-            id={'c-' + namespace + '-receiver-input'}
+            id={'c-' + namespace + '-receiver-text'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setReceiver(e.target.value)}
             value={_newReceiver}
             label={t('label:receiver-name')}
@@ -185,8 +186,8 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
           <HighContrastRadioPanelGroup
             checked={_newFrequency}
             data-no-border
-            data-test-id={'c-' + namespace + '-frequency-radiogroup'}
-            id={'c-' + namespace + '-frequency-radiogroup'}
+            data-test-id={'c-' + namespace + '-frequency-text'}
+            id={'c-' + namespace + '-frequency-text'}
             feil={validation[namespace + '-frequency']?.feilmelding}
             name={namespace + '-frequency'}
             legend={t('label:period-frequency')}

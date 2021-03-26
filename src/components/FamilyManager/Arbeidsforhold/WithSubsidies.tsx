@@ -3,6 +3,7 @@ import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
 import Select from 'components/Select/Select'
 import { AlignStartRow, FlexCenterDiv } from 'components/StyledComponents'
+import { Option, Options } from 'declarations/app'
 import { PensjonPeriode, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -21,12 +22,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ValueType } from 'react-select'
 
-type PensjonType = 'alderspensjon' | 'uførhet' // | 'enkepensjon' | 'barnepensjon=' | 'etterlattepensjon'
-
-interface MyOption {
-  label: string,
-  value: PensjonType
-}
+//type PensjonType = 'alderspensjon' | 'uførhet'
 
 interface WithSubsidiesProps {
   highContrast: boolean
@@ -63,31 +59,31 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
     const validation: Validation = {}
     if (!_newStartDato) {
       validation[namespace + '-startdato'] = {
-        skjemaelementId: 'c-' + namespace + '-startdato-input',
+        skjemaelementId: 'c-' + namespace + '-startdato-date',
         feilmelding: t('message:validation-noDate')
       } as FeiloppsummeringFeil
     }
     if (_newStartDato && !_newStartDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
       validation[namespace + '-startdato'] = {
-        skjemaelementId: 'c-' + namespace + '-startdato-input',
+        skjemaelementId: 'c-' + namespace + '-startdato-date',
         feilmelding: t('message:validation-invalidDate')
       } as FeiloppsummeringFeil
     }
     if (_.find(_perioder, p => p.periode.startdato === _newStartDato)) {
       validation[namespace + '-startdato'] = {
-        skjemaelementId: 'c-' + namespace + '-startdato-input',
+        skjemaelementId: 'c-' + namespace + '-startdato-date',
         feilmelding: t('message:validation-duplicateStartDate')
       } as FeiloppsummeringFeil
     }
     if (_newSluttDato && !_newSluttDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
       validation[namespace + '-sluttdato'] = {
-        skjemaelementId: 'c-' + namespace + '-sluttdato-input',
+        skjemaelementId: 'c-' + namespace + '-sluttdato-date',
         feilmelding: t('message:validation-invalidDate')
       } as FeiloppsummeringFeil
     }
     if (!_newPensjonType) {
       validation[namespace + '-pensjontype'] = {
-        skjemaelementId: 'c-' + namespace + '-pensjontype-select',
+        skjemaelementId: 'c-' + namespace + '-pensjontype-text',
         feilmelding: t('message:validation-noPensjonType')
       } as FeiloppsummeringFeil
     }
@@ -198,7 +194,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
     }
   }
 
-  const selectPensjonTypeOptions: Array<MyOption> = [{
+  const selectPensjonTypeOptions: Options = [{
     label: t('el:option-trygdeordning-alderspensjon'), value: 'alderspensjon'
   }, {
     label: t('el:option-trygdeordning-uførhet'), value: 'uførhet'
@@ -219,9 +215,9 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
         <AlignStartRow>
           <Column>
             <HighContrastInput
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-startdato-input'}
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-startdato-date'}
               feil={getErrorFor(i, 'startdato')}
-              id={'c-' + namespace + '[' + i + ']-startdato-input'}
+              id={'c-' + namespace + '[' + i + ']-startdato-date'}
               label={t('label:start-date')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value, i)}
               placeholder={t('el:placeholder-date-default')}
@@ -230,9 +226,9 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
           </Column>
           <Column>
             <HighContrastInput
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-input'}
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-date'}
               feil={getErrorFor(i, 'sluttdato')}
-              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-input'}
+              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-date'}
               label={t('label:end-date')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value, i)}
               placeholder={t('el:placeholder-date-default')}
@@ -245,12 +241,12 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
         <AlignStartRow>
           <Column>
             <Select
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-pensjontype-select'}
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-pensjontype-text'}
               feil={getErrorFor(i, 'pensjontype')}
               highContrast={highContrast}
-              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-pensjontype-select'}
+              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-pensjontype-text'}
               label={t('label:type-pensjon')}
-              onChange={(e: ValueType<MyOption, false>) => setPensjonType(e?.value, i)}
+              onChange={(e: ValueType<Option, false>) => setPensjonType(e?.value, i)}
               options={selectPensjonTypeOptions}
               placeholder={t('el:placeholder-select-default')}
               selectedValue={getPensjonTypeOption(i < 0 ? _newPensjonType : (p as PensjonPeriode)?.pensjonstype)}

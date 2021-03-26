@@ -94,22 +94,22 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
         <>
           <FlexDiv className='slideInFromLeft'>
             <HighContrastInput
-              data-test-id='c-seddetails-anmodningsperiode-startdato-input'
+              data-test-id='c-seddetails-anmodningsperiode-startdato-date'
               feil={validation['seddetails-anmodningsperiode-startdato']
                 ? validation['seddetails-anmodningsperiode-startdato']!.feilmelding
                 : undefined}
-              id='c-seddetails-anmodningsperiode-startdato-input'
+              id='c-seddetails-anmodningsperiode-startdato-date'
               onChange={(e: any) => setAnmodningsperiodeStartDato(e.target.value)}
               value={_anmodningsperiode.startdato}
               placeholder={t('el:placeholder-date-default')}
             />
             <HorizontalSeparatorDiv data-size='0.35' />
             <HighContrastInput
-              data-test-id='c-seddetails-anmodningsperiode-sluttdato-input'
+              data-test-id='c-seddetails-anmodningsperiode-sluttdato-date'
               feil={validation['seddetails-anmodningsperiode-sluttdato']
                 ? validation['seddetails-anmodningsperiode-sluttdato']!.feilmelding
                 : undefined}
-              id='c-seddetails-anmodningsperiode-sluttdato-input'
+              id='c-seddetails-anmodningsperiode-sluttdato-date'
               onChange={(e: any) => setAnmodningsperiodeSluttDato(e.target.value)}
               value={_anmodningsperiode.sluttdato}
               placeholder={t('el:placeholder-date-default')}
@@ -122,22 +122,22 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
         <div key={i}>
           <FlexDiv className='slideInFromLeft' style={{ animationDelay: i * 0.1 + 's' }}>
             <HighContrastInput
-              data-test-id={'c-seddetails-anmodningsperioder[' + i + ']-startdato-input'}
+              data-test-id={'c-seddetails-anmodningsperioder[' + i + ']-startdato-date'}
               feil={validation['seddetails--anmodningsperioder[' + i + ']-startdato']
                 ? validation['seddetails--anmodningsperioder[' + i + ']-startdato']!.feilmelding
                 : undefined}
-              id={'c-seddetails-anmodningsperioder[' + i + ']-startdato-input'}
+              id={'c-seddetails-anmodningsperioder[' + i + ']-startdato-date'}
               onChange={(e: any) => setAnmodningsperioderStartDato(e.target.value, i)}
               value={_anmodningsperioder[i].startdato}
               placeholder={t('el:placeholder-date-default')}
             />
             <HorizontalSeparatorDiv data-size='0.35' />
             <HighContrastInput
-              data-test-id={'c-seddetails-anmodningsperioder[' + i + ']-sluttdato-input'}
+              data-test-id={'c-seddetails-anmodningsperioder[' + i + ']-sluttdato-date'}
               feil={validation['seddetails-anmodningsperioder[' + i + ']-sluttdato']
                 ? validation['seddetails-anmodningsperioder[' + i + ']-sluttdato']!.feilmelding
                 : undefined}
-              id={'c-seddetails-anmodningsperioder[' + i + ']-sluttdato-input'}
+              id={'c-seddetails-anmodningsperioder[' + i + ']-sluttdato-date'}
               onChange={(e: any) => setAnmodningsperioderSluttDato(e.target.value, i)}
               value={_anmodningsperioder[i].sluttdato}
               placeholder={t('el:placeholder-date-default')}
@@ -153,22 +153,22 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       <VerticalSeparatorDiv data-size='0.5' />
       <FlexDiv className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
         <HighContrastInput
-          data-test-id='c-seddetails-søker-fornavn-input'
+          data-test-id='c-seddetails-søker-fornavn-text'
           feil={validation['seddetails-søker-fornavn']
             ? validation['seddetails-søker-fornavn']!.feilmelding
             : undefined}
-          id='c-seddetails-søker-fornavn-input'
+          id='c-seddetails-søker-fornavn-text'
           onChange={(e: any) => setBrukerFornavn(e.target.value)}
           value={_brukerFornavn}
           placeholder={t('label:firstname')}
         />
         <HorizontalSeparatorDiv data-size='0.35' />
         <HighContrastInput
-          data-test-id='c-seddetails-søker-etternavn-input'
+          data-test-id='c-seddetails-søker-etternavn-text'
           feil={validation['seddetails-søker-etternavn']
             ? validation['seddetails-søker-etternavn']!.feilmelding
             : undefined}
-          id='c-seddetails-søker-etternavn-input'
+          id='c-seddetails-søker-etternavn-text'
           onChange={(e: any) => setBrukerEtternavn(e.target.value)}
           value={_brukerEtternavn}
           placeholder={t('label:lastname')}
@@ -181,22 +181,22 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       <VerticalSeparatorDiv data-size='0.5' />
       <FlexDiv className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
         <HighContrastInput
-          data-test-id='c-seddetails-ektefelle-fornavn-input'
+          data-test-id='c-seddetails-ektefelle-fornavn-text'
           feil={validation['seddetails-ektefelle-fornavn']
             ? validation['seddetails-ektefelle-fornavn']!.feilmelding
             : undefined}
-          id='c-seddetails-ektefelle-fornavn-input'
+          id='c-seddetails-ektefelle-fornavn-text'
           onChange={(e: any) => setEktefelleFornavn(e.target.value)}
           value={_ektefelleFornavn}
           placeholder={t('label:firstname')}
         />
         <HorizontalSeparatorDiv data-size='0.35' />
         <HighContrastInput
-          data-test-id='c-seddetails-ektefelle-etternavn-input'
+          data-test-id='c-seddetails-ektefelle-etternavn-text'
           feil={validation['seddetails-ektefelle-etternavn']
             ? validation['seddetails-ektefelle-etternavn']!.feilmelding
             : undefined}
-          id='c-seddetails-ektefelle-etternavn-input'
+          id='c-seddetails-ektefelle-etternavn-text'
           onChange={(e: any) => setEktefelleEtternavn(e.target.value)}
           value={_ektefelleEtternavn}
           placeholder={t('label:lastname')}
@@ -205,25 +205,25 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       <VerticalSeparatorDiv />
       <div className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
         <HighContrastInput
-          data-test-id='c-seddetails-sakseier-input'
+          data-test-id='c-seddetails-sakseier-text'
           feil={validation['seddetails-sakseier']
             ? validation['seddetails-sakseier']!.feilmelding
             : undefined}
-          id='c-seddetails-sakseier-input'
+          id='c-seddetails-sakseier-text'
           onChange={(e: any) => setSakseier(e.target.value)}
           value={_sakseier}
-          label={t('label:caseOwner')}
+          label={t('label:motpart-sakseier')}
           placeholder={t('el:placeholder-input-default')}
         />
       </div>
       <VerticalSeparatorDiv data-size='0.5' />
       <div className='slideInFromLeft' style={{ animationDelay: '0.5s' }}>
         <HighContrastInput
-          data-test-id='c-seddetails-avsenderinstitusjon-input'
+          data-test-id='c-seddetails-avsenderinstitusjon-text'
           feil={validation['seddetails-avsenderinstitusjon']
             ? validation['seddetails-avsenderinstitusjon']!.feilmelding
             : undefined}
-          id='c-seddetails-avsenderinstitusjon-input'
+          id='c-seddetails-avsenderinstitusjon-text'
           onChange={(e: any) => setAvsenderinstitusjon(e.target.value)}
           value={_avsenderinstitusjon}
           label={t('label:sender')}
@@ -234,21 +234,21 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       <div className='slideInFromLeft' style={{ animationDelay: '0.6s' }}>
         <HighContrastRadioGroup
           legend={t('label:typeKrav')}
-          data-test-id='c-seddetails-typeKrav-radiogroup'
+          data-test-id='c-seddetails-typeKrav-text'
           feil={validation['seddetails-typeKrav']
             ? validation['seddetails-typeKrav']!.feilmelding
             : undefined}
-          id='c-seddetails-typeKrav-radiogroup'
+          id='c-seddetails-typeKrav-text'
         >
           <HighContrastRadio
-            name='c-seddetails-typeKrav-radiogroup'
+            name='c-seddetails-typeKrav-text'
             checked={_typeKrav === 'nytt_krav'}
             label={t('app:kravType-nytt_krav')}
             onClick={() => setTypeKrav('nytt_krav')}
           />
           <HighContrastRadio
             checked={_typeKrav === 'endrede_omstendigheter'}
-            name='c-seddetails-typeKrav-radiogroup'
+            name='c-seddetails-typeKrav-text'
             label={t('app:kravType-endrede_omstendigheter')}
             onClick={() => setTypeKrav('endrede_omstendigheter')}
           />
@@ -258,21 +258,21 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       <div className='slideInFromLeft' style={{ animationDelay: '0.7s' }}>
         <HighContrastRadioGroup
           legend={t('label:application-information')}
-          data-test-id='c-seddetails-informasjon-radiogroup'
+          data-test-id='c-seddetails-informasjon-text'
           feil={validation['seddetails-informasjon']
             ? validation['seddetails-informasjon']!.feilmelding
             : undefined}
-          id='c-seddetails-informasjon-radiogroup'
+          id='c-seddetails-informasjon-text'
         >
           <HighContrastRadio
-            name='c-seddetails-informasjon-radiogroup'
+            name='c-seddetails-informasjon-text'
             checked={_informasjon === 'vi_bekrefter_leverte_opplysninger'}
             label={t('app:info-confirm-information')}
             onClick={() => setInformasjon('vi_bekrefter_leverte_opplysninger')}
           />
           <HighContrastRadio
             checked={_informasjon === 'gi_oss_punktvise_opplysninger'}
-            name='c-seddetails-informasjon-radiogroup'
+            name='c-seddetails-informasjon-text'
             label={t('app:info-point-information')}
             onClick={() => setInformasjon('gi_oss_punktvise_opplysninger')}
           />
@@ -281,8 +281,8 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               <VerticalSeparatorDiv />
               <HighContrastTextArea
                 style={{ width: '100%', minHeight: '6rem' }}
-                data-test-id='c-seddetails-opplysninger-textarea'
-                id='c-seddetails-opplysninger-textarea'
+                data-test-id='c-seddetails-opplysninger-text'
+                id='c-seddetails-opplysninger-text'
                 className={classNames({
                   'skjemaelement__input--harFeil':
                   validation['seddetails-opplysninger']

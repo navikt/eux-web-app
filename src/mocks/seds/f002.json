@@ -996,9 +996,8 @@
     }
   ],
   "formaal": [
-    "mottak_av_søknad_om_familieytelser",
-    "informasjon_om_endrede_forhold",
-    "vedtak"
+    "vedtak",
+    "motregning"
   ],
   "krav": {
     "kravMottattDato": "01.01.2059",

@@ -52,25 +52,25 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
     const validation: Validation = {}
     if (!_newStartDato) {
       validation[namespace + '-startdato'] = {
-        skjemaelementId: 'c-' + namespace + '-startdato-input',
+        skjemaelementId: 'c-' + namespace + '-startdato-date',
         feilmelding: t('message:validation-noDate')
       } as FeiloppsummeringFeil
     }
     if (_newStartDato && !_newStartDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
       validation[namespace + '-startdato'] = {
-        skjemaelementId: 'c-' + namespace + '-startdato-input',
+        skjemaelementId: 'c-' + namespace + '-startdato-date',
         feilmelding: t('message:validation-invalidDate')
       } as FeiloppsummeringFeil
     }
     if (_.find(_perioder, p => p.startdato === _newStartDato)) {
       validation[namespace + '-startdato'] = {
-        skjemaelementId: 'c-' + namespace + '-startdato-input',
+        skjemaelementId: 'c-' + namespace + '-startdato-date',
         feilmelding: t('message:validation-duplicateStartDate')
       } as FeiloppsummeringFeil
     }
     if (_newSluttDato && !_newSluttDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
       validation[namespace + '-sluttdato'] = {
-        skjemaelementId: 'c-' + namespace + '-sluttdato-input',
+        skjemaelementId: 'c-' + namespace + '-sluttdato-date',
         feilmelding: t('message:validation-invalidDate')
       } as FeiloppsummeringFeil
     }
@@ -176,9 +176,9 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
         >
           <Column>
             <HighContrastInput
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-startdato-input'}
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-startdato-date'}
               feil={getErrorFor(i, 'startdato')}
-              id={'c-' + namespace + '[' + i + ']-startdato-input'}
+              id={'c-' + namespace + '[' + i + ']-startdato-date'}
               label={t('label:start-date')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value, i)}
               placeholder={t('el:placeholder-date-default')}
@@ -187,9 +187,9 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
           </Column>
           <Column>
             <HighContrastInput
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-input'}
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-date'}
               feil={getErrorFor(i, 'sluttdato')}
-              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-input'}
+              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-date'}
               label={t('label:end-date')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value, i)}
               placeholder={t('el:placeholder-date-default')}
@@ -289,9 +289,9 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
           className={classNames({
             'skjemaelement__input--harFeil': validation[namespace + '-comment']?.feilmelding
           })}
-          data-test-id={'c-' + namespace + '-comment-textarea'}
+          data-test-id={'c-' + namespace + '-comment-text'}
           feil={validation[namespace + '-comment']?.feilmelding}
-          id={'c-' + namespace + '-comment-textarea'}
+          id={'c-' + namespace + '-comment-text'}
           label={t('label:additional-information')}
           placeholder={t('el:placeholder-text-to-sed')}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setComment(e.target.value)}

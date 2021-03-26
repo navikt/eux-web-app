@@ -1,5 +1,6 @@
 import Select from 'components/Select/Select'
 import { AlignCenterRow, PaddedDiv } from 'components/StyledComponents'
+import { Options } from 'declarations/app'
 import { ReplySed } from 'declarations/sed'
 import { Kodeverk, Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -38,7 +39,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
   const { t } = useTranslation()
   const namespace = 'familymanager-' + personID + '-relasjon'
 
-  const relasjonTypeOptions = [
+  const relasjonTypeOptions: Options = [
     { label: t('el:option-relasjon-1'), value: 'option-relasjon-1' },
     { label: t('el:option-relasjon-2'), value: 'option-relasjon-2' },
     { label: t('el:option-relasjon-3'), value: 'option-relasjon-3' },
@@ -96,11 +97,11 @@ const Relasjon: React.FC<RelasjonProps> = ({
           <HighContrastRadioPanelGroup
             checked={_newRelasjon}
             data-no-border
-            data-test-id={'c-' + namespace + '-med-radiogroup'}
+            data-test-id={'c-' + namespace + '-med-text'}
             feil={validation[namespace + '-relasjon']?.feilmelding}
-            id={'c-' + namespace + '-relasjon-radiogroup'}
+            id={'c-' + namespace + '-relasjon-text'}
             legend={t('label:relation-with')}
-            name={'c-' + namespace + '-relasjon-radiogroup'}
+            name={'c-' + namespace + '-relasjon-text'}
             radios={[
               { label: t('label:søker'), value: 'søker' },
               { label: t('label:avdød'), value: 'avdød' }
@@ -111,10 +112,10 @@ const Relasjon: React.FC<RelasjonProps> = ({
           <HighContrastRadioPanelGroup
             checked={_newRelasjon}
             data-no-border
-            data-test-id={'c-' + namespace + '-med-radiogroup'}
+            data-test-id={'c-' + namespace + '-med-text'}
             feil={validation[namespace + '-relasjon']?.feilmelding}
-            id={'c-' + namespace + '-relasjon-radiogroup'}
-            name={'c-' + namespace + '-relasjon-radiogroup'}
+            id={'c-' + namespace + '-relasjon-text'}
+            name={'c-' + namespace + '-relasjon-text'}
             radios={[
               { label: t('label:partner'), value: 'ektefell/partner' },
               { label: t('label:annen-person'), value: 'annen person' }
@@ -128,10 +129,10 @@ const Relasjon: React.FC<RelasjonProps> = ({
       <Row style={{ animationDelay: '0.2s' }}>
         <Column>
           <Select
-            data-test-id={'c-' + namespace + '-type-select'}
+            data-test-id={'c-' + namespace + '-type-text'}
             feil={validation[namespace + '-type']?.feilmelding}
             highContrast={highContrast}
-            id={'c-' + namespace + '-type-select'}
+            id={'c-' + namespace + '-type-text'}
             label={t('label:type')}
             menuPortalTarget={document.body}
             onChange={(e) => setRelasjonType(e.value)}
@@ -151,9 +152,9 @@ const Relasjon: React.FC<RelasjonProps> = ({
       <Row className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
         <Column>
           <HighContrastInput
-            data-test-id={'c-' + namespace + '-startdato-input'}
+            data-test-id={'c-' + namespace + '-startdato-date'}
             feil={validation[namespace + '-startdato']?.feilmelding}
-            id={'c-' + namespace + '-startdato-input'}
+            id={'c-' + namespace + '-startdato-date'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value)}
             value={_newStartDato}
             label={t('label:start-date')}
@@ -162,9 +163,9 @@ const Relasjon: React.FC<RelasjonProps> = ({
         </Column>
         <Column>
           <HighContrastInput
-            data-test-id={'c-' + namespace + '-sluttdato-input'}
+            data-test-id={'c-' + namespace + '-sluttdato-date'}
             feil={validation[namespace + '-sluttdato']?.feilmelding}
-            id={'c-' + namespace + '-sluttdato-input'}
+            id={'c-' + namespace + '-sluttdato-date'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value)}
             value={_newSluttDato}
             label={t('label:end-date')}
@@ -179,11 +180,11 @@ const Relasjon: React.FC<RelasjonProps> = ({
           <HighContrastRadioPanelGroup
             checked={_newForeldreansvar}
             data-no-border
-            data-test-id={'c-' + namespace + '-foreldreansvar-radiogroup'}
+            data-test-id={'c-' + namespace + '-foreldreansvar-text'}
             feil={validation[namespace + '-foreldreansvar']?.feilmelding}
-            id={'c-' + namespace + '-foreldreansvar-radiogroup'}
+            id={'c-' + namespace + '-foreldreansvar-text'}
             legend={t('label:shared-custody')}
-            name={'c-' + namespace + '-foreldreansvar-radiogroup'}
+            name={'c-' + namespace + '-foreldreansvar-text'}
             radios={[
               { label: t('label:yes'), value: 'ja' },
               { label: t('label:no'), value: 'nei' }
@@ -207,9 +208,9 @@ const Relasjon: React.FC<RelasjonProps> = ({
           <HighContrastRadioPanelGroup
             checked={_newQuestion1}
             data-no-border
-            data-test-id={'c-' + namespace + '-bomedsokeren-radiogroup'}
+            data-test-id={'c-' + namespace + '-bomedsokeren-text'}
             feil={validation[namespace + '-bomedsokeren']?.feilmelding}
-            id={'c-' + namespace + '-bomedsokeren-radiogroup'}
+            id={'c-' + namespace + '-bomedsokeren-text'}
             name={namespace + '-bomedsokeren'}
             radios={[
               { label: t('label:yes'), value: 'ja' },
@@ -229,9 +230,9 @@ const Relasjon: React.FC<RelasjonProps> = ({
           <HighContrastRadioPanelGroup
             checked={_newQuestion2}
             data-no-border
-            data-test-id={'c-' + namespace + '-bomedektefellen-radiogroup'}
+            data-test-id={'c-' + namespace + '-bomedektefellen-text'}
             feil={validation[namespace + '-bomedektefellenp']?.feilmelding}
-            id={'c-' + namespace + '-bomedektefellen-radiogroup'}
+            id={'c-' + namespace + '-bomedektefellen-text'}
             name={namespace + '-bomedektefellen'}
             radios={[
               { label: t('label:yes'), value: 'ja' },
@@ -251,9 +252,9 @@ const Relasjon: React.FC<RelasjonProps> = ({
           <HighContrastRadioPanelGroup
             checked={_newQuestion3}
             data-no-border
-            data-test-id={'c-' + namespace + '-bomedaktuelle-radiogroup'}
+            data-test-id={'c-' + namespace + '-bomedaktuelle-text'}
             feil={validation[namespace + '-bomedaktuelle']?.feilmelding}
-            id={'c-' + namespace + '-bomedaktuelle-radiogroup'}
+            id={'c-' + namespace + '-bomedaktuelle-text'}
             name={namespace + '-bomedaktuelle'}
             radios={[
               { label: t('label:yes'), value: 'ja' },
@@ -273,9 +274,9 @@ const Relasjon: React.FC<RelasjonProps> = ({
           <HighContrastRadioPanelGroup
             checked={_newQuestion4}
             data-no-border
-            data-test-id={'c-' + namespace + '-boiinstitusjon-radiogroup'}
+            data-test-id={'c-' + namespace + '-boiinstitusjon-text'}
             feil={validation[namespace + '-boiinstitusjon']?.feilmelding}
-            id={'c-' + namespace + '-boiinstitusjon-radiogroup'}
+            id={'c-' + namespace + '-boiinstitusjon-text'}
             name={namespace + '-boiinstitusjon'}
             radios={[
               { label: t('label:yes'), value: 'ja' },

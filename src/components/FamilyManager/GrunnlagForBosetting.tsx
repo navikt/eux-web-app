@@ -65,9 +65,9 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.0s' }}>
         <Column>
           <HighContrastInput
-            data-test-id={'c-' + namespace + '-startdato-input'}
+            data-test-id={'c-' + namespace + '-startdato-date'}
             feil={validation[namespace + '-startdato']?.feilmelding}
-            id={'c-' + namespace + '-startdato-input'}
+            id={'c-' + namespace + '-startdato-date'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value)}
             value={_newStartDato}
             label={t('label:start-date')}
@@ -76,9 +76,9 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
         </Column>
         <Column>
           <HighContrastInput
-            data-test-id={'c-' + namespace + '-startdato-input'}
+            data-test-id={'c-' + namespace + '-startdato-date'}
             feil={validation[namespace + '-sluttdato']?.feilmelding}
-            id={'c-' + namespace + '-startdato-sluttdato-input'}
+            id={'c-' + namespace + '-startdato-sluttdato-date'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value)}
             value={_newSluttDato}
             label={t('label:end-date')}
@@ -90,9 +90,9 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column>
           <HighContrastInput
-            data-test-id={'c-' + namespace + '-avsenderdato-input'}
+            data-test-id={'c-' + namespace + '-avsenderdato-text'}
             feil={validation[namespace + '-avsenderdato']?.feilmelding}
-            id={'c-' + namespace + '-avsenderdato-input'}
+            id={'c-' + namespace + '-avsenderdato-text'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAvsenderDato(e.target.value)}
             value={_newSenderDato}
             label={t('label:moving-date-sender')}
@@ -104,9 +104,9 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
         <Column>
           <HighContrastInput
-            data-test-id={'c-' + namespace + '-mottakerdato-input'}
+            data-test-id={'c-' + namespace + '-mottakerdato-text'}
             feil={validation[namespace + '-mottakerdato']?.feilmelding}
-            id={'c-' + namespace + '-mottakerdato-input'}
+            id={'c-' + namespace + '-mottakerdato-text'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMottakerDato(e.target.value)}
             value={_newReceiverDato}
             label={t('label:moving-date-receiver')}
@@ -120,9 +120,9 @@ const Relasjon: React.FC<GrunnlagForBosettingProps> = ({
           <TextAreaDiv>
             <HighContrastTextArea
               className={classNames({ 'skjemaelement__input--harFeil': validation[+namespace + '-elementer'] })}
-              data-test-id={'c-' + namespace + '-elementer-textarea'}
+              data-test-id={'c-' + namespace + '-elementer-text'}
               feil={validation[+namespace + '-elementer']}
-              id={'c-' + namespace + '-elementer-textarea'}
+              id={'c-' + namespace + '-elementer-text'}
               label={t('label:elements-of-personal-situation')}
               placeholder={t('el:placeholder-input-default')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setElementsOfPersonalSituation(e.target.value)}

@@ -204,7 +204,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
                 <VerticalSeparatorDiv />
                 <AlertStripe type='suksess'>
                   <div>
-                    <div>{t('app:attached')}: {vedlegg.filnavn || vedlegg.vedleggID}</div>
+                    <div>{t('label:attached')}: {vedlegg.filnavn || vedlegg.vedleggID}</div>
                     {vedlegg.url && (
                       <Link href={vedlegg.url} rel='noreferrer' target='_blank'>
                         {t('label:goToRina')}

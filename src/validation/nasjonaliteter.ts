@@ -18,7 +18,7 @@ export const validateNasjonalitet = (
     ? undefined
     : {
       feilmelding: t('message:validation-noBirthCountryForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-land-countryselect'
+      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-land-text'
     } as FeiloppsummeringFeil
   v[namespace + (index < 0 ? '' : '[' + index + ']') + '-land'] = value
   if (value) {
@@ -29,7 +29,7 @@ export const validateNasjonalitet = (
     ? undefined
     : {
       feilmelding: t('message:validation-duplicateBirthCountry'),
-      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-land-countryselect'
+      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-land-text'
     } as FeiloppsummeringFeil
   v[namespace + (index < 0 ? '' : '[' + index + ']') + '-land'] = value
   if (value) {
@@ -40,7 +40,7 @@ export const validateNasjonalitet = (
     ? undefined
     : {
       feilmelding: t('message:validation-noDateForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-fomdato-input'
+      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-fomdato-date'
     } as FeiloppsummeringFeil
   v[namespace + (index < 0 ? '' : '[' + index + ']') + '-fomdato'] = value
   if (value) {
@@ -51,7 +51,7 @@ export const validateNasjonalitet = (
     ? undefined
     : {
       feilmelding: t('message:validation-invalidDateForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-fomdato-input'
+      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-fomdato-date'
     } as FeiloppsummeringFeil
   v[namespace + (index < 0 ? '' : '[' + index + ']') + '-fomdato'] = value
   if (value) {

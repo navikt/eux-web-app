@@ -16,7 +16,7 @@ export const validateFamilierelasjon = (
     ? undefined
     : {
       feilmelding: t('message:validation-noDateForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-startdato-input'
+      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-startdato-date'
     } as FeiloppsummeringFeil
   v[namespace + (index < 0 ? '' : '[' + index + ']') + '-startdato'] = value
   if (value) {
@@ -28,7 +28,7 @@ export const validateFamilierelasjon = (
       ? undefined
       : {
         feilmelding: t('message:validation-noNameToPerson', { person: personName }),
-        skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-annenrelasjonpersonnavn-input'
+        skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-annenrelasjonpersonnavn-text'
       } as FeiloppsummeringFeil
     v[namespace + (index < 0 ? '' : '[' + index + ']') + '-annenrelasjonpersonnavn'] = value
     if (value) {
@@ -39,7 +39,7 @@ export const validateFamilierelasjon = (
       ? undefined
       : {
         feilmelding: t('message:validation-noRelationDateForPerson', { person: personName }),
-        skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-annenrelasjondato-input'
+        skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-annenrelasjondato-date'
       } as FeiloppsummeringFeil
     v[namespace + (index < 0 ? '' : '[' + index + ']') + '-annenrelasjondato'] = value
     if (value) {
@@ -50,7 +50,7 @@ export const validateFamilierelasjon = (
       ? undefined
       : {
         feilmelding: t('message:validation-noBoSammen', { person: personName }),
-        skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-borsammen-input'
+        skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-borsammen-text'
       } as FeiloppsummeringFeil
     v[namespace + (index < 0 ? '' : '[' + index + ']') + '-borsammen'] = value
     if (value) {

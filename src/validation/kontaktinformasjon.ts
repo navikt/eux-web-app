@@ -16,7 +16,7 @@ export const validateKontaktsinformasjonTelefon = (
     ? undefined
     : {
       feilmelding: t('message:validation-noTelephoneTypeForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-type-select'
+      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-type-text'
     } as FeiloppsummeringFeil
   v[namespace + (index < 0 ? '' : '[' + index + ']') + '-type'] = value
   if (value) {
@@ -27,7 +27,7 @@ export const validateKontaktsinformasjonTelefon = (
     ? undefined
     : {
       feilmelding: t('message:validation-noTelephoneNumberForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-nummer-select'
+      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-nummer-text'
     } as FeiloppsummeringFeil
   v[namespace + (index < 0 ? '' : '[' + index + ']') + '-nummer'] = value
   if (value) {
@@ -60,12 +60,12 @@ export const validateKontaktsinformasjonEpost = (
         ? undefined
         : {
           feilmelding: t('message:validation-invalidEpostForPerson', { person: personName }),
-          skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-adresse-input'
+          skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-adresse-text'
         } as FeiloppsummeringFeil
       )
     : {
       feilmelding: t('message:validation-noEpostAdresseForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-adresse-input'
+      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-adresse-text'
     } as FeiloppsummeringFeil
 
   v[namespace + '-adresse'] = value

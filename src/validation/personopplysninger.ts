@@ -15,7 +15,7 @@ export const validatePersonOpplysning = (
     ? undefined
     : {
       feilmelding: t('message:validation-noFornavnForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + '-fornavn-input'
+      skjemaelementId: 'c-' + namespace + '-fornavn-text'
     } as FeiloppsummeringFeil
   v[namespace + '-fornavn'] = value
   if (value) {
@@ -26,7 +26,7 @@ export const validatePersonOpplysning = (
     ? undefined
     : {
       feilmelding: t('message:validation-noEtternavnForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + '-etternavn-input'
+      skjemaelementId: 'c-' + namespace + '-etternavn-text'
     } as FeiloppsummeringFeil
   v[namespace + '-etternavn'] = value
   if (value) {
@@ -37,7 +37,7 @@ export const validatePersonOpplysning = (
     ? undefined
     : {
       feilmelding: t('message:validation-noFoedselsdatoForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + '-foedselsdato-input'
+      skjemaelementId: 'c-' + namespace + '-foedselsdato-text'
     } as FeiloppsummeringFeil
   v[namespace + '-foedselsdato'] = value
   if (value) {
@@ -48,7 +48,7 @@ export const validatePersonOpplysning = (
     ? undefined
     : {
       feilmelding: t('message:validation-noKjoenn', { person: personName }),
-      skjemaelementId: 'c-' + namespace + '-kjoenn-radiogroup'
+      skjemaelementId: 'c-' + namespace + '-kjoenn-text'
     } as FeiloppsummeringFeil
   v[namespace + '-kjoenn'] = value
   if (value) {
@@ -59,7 +59,7 @@ export const validatePersonOpplysning = (
     ? undefined
     : {
       feilmelding: t('message:validation-noFoedestedByForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + '-foedested-by-input'
+      skjemaelementId: 'c-' + namespace + '-foedested-by-text'
     } as FeiloppsummeringFeil
   v[namespace + '-foedested-by'] = value
   if (value) {
@@ -70,7 +70,7 @@ export const validatePersonOpplysning = (
     ? undefined
     : {
       feilmelding: t('message:validation-noFoedestedRegionForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + '-foedested-region-input'
+      skjemaelementId: 'c-' + namespace + '-foedested-region-text'
     } as FeiloppsummeringFeil
   v[namespace + '-foedested-region'] = value
   if (value) {
@@ -81,7 +81,7 @@ export const validatePersonOpplysning = (
     ? undefined
     : {
       feilmelding: t('message:validation-noFoedestedLandForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + '-foedested-land-countryselect'
+      skjemaelementId: 'c-' + namespace + '-foedested-land-text'
     } as FeiloppsummeringFeil
   v[namespace + '-foedested-land'] = value
   if (value) {

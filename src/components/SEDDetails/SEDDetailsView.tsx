@@ -103,7 +103,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
       <VerticalSeparatorDiv />
       <Dl>
         <Dt>
-          {t('label:caseOwner')}
+          {t('label:motpart-sakseier')}
         </Dt>
         <Dd>
           ?

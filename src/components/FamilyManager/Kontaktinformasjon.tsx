@@ -3,6 +3,7 @@ import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
 import Select from 'components/Select/Select'
 import { AlignStartRow, FlexCenterDiv, PaddedDiv } from 'components/StyledComponents'
+import { Options } from 'declarations/app'
 import { Epost, ReplySed, Telefon } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -54,7 +55,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
   const p = _.get(replySed, personID)
   const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
 
-  const telefonTypeOptions = [{
+  const telefonTypeOptions: Options = [{
     label: t('el:option-telefon-type-work'), value: 'Arbeid'
   }, {
     label: t('el:option-telefon-type-home'), value: 'Hjem'
@@ -241,9 +242,9 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
         >
           <Column>
             <HighContrastInput
-              data-test-id={'c-' + namespaceTelefon + (i >= 0 ? '[' + i + ']' : '') + '-nummer-input'}
+              data-test-id={'c-' + namespaceTelefon + (i >= 0 ? '[' + i + ']' : '') + '-nummer-text'}
               feil={getErrorFor(i, 'telefon', 'nummer')}
-              id={'c-' + namespaceTelefon + (i >= 0 ? '[' + i + ']' : '') + '-nummer-input'}
+              id={'c-' + namespaceTelefon + (i >= 0 ? '[' + i + ']' : '') + '-nummer-text'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onNummerChanged(e.target.value, i)}
               value={i < 0 ? _newNummer : _t?.nummer}
               placeholder={t('el:placeholder-input-default')}
@@ -251,10 +252,10 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
           </Column>
           <Column>
             <Select
-              data-test-id={'c-' + namespaceTelefon + (i >= 0 ? '[' + i + ']' : '') + '-type-select'}
+              data-test-id={'c-' + namespaceTelefon + (i >= 0 ? '[' + i + ']' : '') + '-type-text'}
               feil={getErrorFor(i, 'telefon', 'type')}
               highContrast={highContrast}
-              id={'c-' + namespaceTelefon + (i >= 0 ? '[' + i + ']' : '') + '-type-select'}
+              id={'c-' + namespaceTelefon + (i >= 0 ? '[' + i + ']' : '') + '-type-text'}
               onChange={(e) => onTypeChanged(e.value, i)}
               options={telefonTypeOptions}
               placeholder={t('el:placeholder-select-default')}
@@ -331,9 +332,9 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
         >
           <Column data-flex='2'>
             <HighContrastInput
-              data-test-id={'c-' + namespaceTelefon + (i >= 0 ? '[' + i + ']' : '') + '-adresse-input'}
+              data-test-id={'c-' + namespaceTelefon + (i >= 0 ? '[' + i + ']' : '') + '-adresse-text'}
               feil={getErrorFor(i, 'epost', 'adresse')}
-              id={'c-' + namespaceTelefon + (i >= 0 ? '[' + i + ']' : '') + '-adresse-input'}
+              id={'c-' + namespaceTelefon + (i >= 0 ? '[' + i + ']' : '') + '-adresse-text'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onAdresseChanged(e.target.value, i)}
               value={i < 0 ? _newAdresse : e?.adresse}
               placeholder={t('el:placeholder-input-default')}

@@ -3,6 +3,7 @@ import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
 import Select from 'components/Select/Select'
 import { AlignStartRow, FlexCenterDiv, PaddedDiv } from 'components/StyledComponents'
+import { Options } from 'declarations/app'
 import { FamilieRelasjon2, Periode, ReplySed } from 'declarations/sed'
 import { Kodeverk, Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -58,7 +59,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
   const p = _.get(replySed, personID)
   const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
 
-  const relasjonTypeOptions = familierelasjonKodeverk.map((f: Kodeverk) => ({
+  const relasjonTypeOptions: Options = familierelasjonKodeverk.map((f: Kodeverk) => ({
     label: f.term, value: f.kode
   })).concat({
     label: `${t('label:other')} (${t('label:freetext')})`,
@@ -257,10 +258,10 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
         <AlignStartRow className={classNames('slideInFromLeft')}>
           <Column data-flex='1.5'>
             <Select
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-relasjontype-select'}
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-relasjontype-text'}
               feil={getErrorFor(i, 'relasjonType')}
               highContrast={highContrast}
-              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-relasjontype-select'}
+              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-relasjontype-text'}
               label={t('label:type')}
               onChange={(e) => setRelasjonType(e.value, i)}
               options={relasjonTypeOptions}
@@ -271,9 +272,9 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
           </Column>
           <Column data-flex='0.75'>
             <HighContrastInput
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-startdato-input'}
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-startdato-date'}
               feil={getErrorFor(i, 'startdato')}
-              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-startdato-input'}
+              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-startdato-date'}
               label={t('label:start-date')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value, i)}
               placeholder={t('el:placeholder-date-default')}
@@ -282,9 +283,9 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
           </Column>
           <Column data-flex='0.75'>
             <HighContrastInput
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-input'}
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-date'}
               feil={getErrorFor(i, 'sluttdato')}
-              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-input'}
+              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-date'}
               label={t('label:end-date')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value, i)}
               placeholder={t('el:placeholder-date-default')}
@@ -349,9 +350,9 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
             <AlignStartRow className={classNames('slideInFromLeft')}>
               <Column data-flex='2'>
                 <HighContrastInput
-                  data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-annenrelasjontype-input'}
+                  data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-annenrelasjontype-text'}
                   feil={getErrorFor(i, 'annenrelasjontype')}
-                  id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-annenrelasjontype-input'}
+                  id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-annenrelasjontype-text'}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAnnenRelasjonType(e.target.value, i)}
                   value={i < 0 ? _newAnnenRelasjonType : familierelasjon?.annenRelasjonType}
                   label={t('label:other-relation')}
@@ -364,9 +365,9 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
             <AlignStartRow className={classNames('slideInFromLeft')} style={{ animationDelay: '0.1s' }}>
               <Column data-flex='2'>
                 <HighContrastInput
-                  data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-annenrelasjonpersonnavn-input'}
+                  data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-annenrelasjonpersonnavn-text'}
                   feil={getErrorFor(i, 'annenrelasjonpersonnavn')}
-                  id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-annenrelasjonpersonnavn-input'}
+                  id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-annenrelasjonpersonnavn-text'}
                   label={t('label:person-name')}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAnnenRelasjonPersonNavn(e.target.value, i)}
                   placeholder={t('el:placeholder-input-default')}
@@ -375,9 +376,9 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
               </Column>
               <Column>
                 <HighContrastInput
-                  data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-annenrelasjondato-input'}
+                  data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-annenrelasjondato-date'}
                   feil={getErrorFor(i, 'annenrelasjondato')}
-                  id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-annenrelasjondato-input'}
+                  id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-annenrelasjondato-date'}
                   label={t('label:date-relation')}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAnnenRelasjonDato(e.target.value, i)}
                   placeholder={t('el:placeholder-input-default')}
@@ -391,9 +392,9 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
               <Column data-flex='2'>
                 <HighContrastRadioPanelGroup
                   checked={i < 0 ? _newBorSammen : familierelasjon?.borSammen}
-                  data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-borsammen-radiogroup'}
+                  data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-borsammen-text'}
                   data-no-border
-                  id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-borsammen-radiogroup'}
+                  id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-borsammen-text'}
                   feil={getErrorFor(i, 'borsammen')}
                   legend={t('label:live-together')}
                   name={namespace + (i >= 0 ? '[' + i + ']' : '') + '-borsammen'}

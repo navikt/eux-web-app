@@ -18,7 +18,7 @@ export const validatePeriode = (
     ? undefined
     : {
       feilmelding: t('message:validation-noDateForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-startdato-input'
+      skjemaelementId: 'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-startdato-date'
     } as FeiloppsummeringFeil
   v[namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-startdato'] = value
   if (value) {
@@ -29,7 +29,7 @@ export const validatePeriode = (
     ? undefined
     : {
       feilmelding: t('message:validation-invalidDateForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + '-' + sedCategory + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-startdato-input'
+      skjemaelementId: 'c-' + namespace + '-' + sedCategory + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-startdato-date'
     } as FeiloppsummeringFeil
   v[namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-startdato'] = value
   if (value) {
@@ -41,7 +41,7 @@ export const validatePeriode = (
       ? undefined
       : {
         feilmelding: t('message:validation-invalidDateForPerson', { person: personName }),
-        skjemaelementId: 'c-' + namespace + '-' + sedCategory + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-sluttdato-input'
+        skjemaelementId: 'c-' + namespace + '-' + sedCategory + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-sluttdato-date'
       } as FeiloppsummeringFeil
     v[namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-sluttdato'] = value
     if (value) {
@@ -75,7 +75,7 @@ export const validatePensjonPeriode = (
     ? undefined
     : {
       feilmelding: t('message:validation-noDateForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + '-' + sedCategory + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-periode-startdato-input'
+      skjemaelementId: 'c-' + namespace + '-' + sedCategory + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-periode-startdato-date'
     } as FeiloppsummeringFeil
   v[namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-periode-startdato'] = value
   if (value) {
@@ -86,7 +86,7 @@ export const validatePensjonPeriode = (
     ? undefined
     : {
       feilmelding: t('message:validation-invalidDateForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-periode-startdato-input'
+      skjemaelementId: 'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-periode-startdato-date'
     } as FeiloppsummeringFeil
   v[namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-periode-startdato'] = value
   if (value) {
@@ -97,7 +97,7 @@ export const validatePensjonPeriode = (
       ? undefined
       : {
         feilmelding: t('message:validation-invalidDateForPerson', { person: personName }),
-        skjemaelementId: 'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-periode-sluttdato-input'
+        skjemaelementId: 'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-periode-sluttdato-date'
       } as FeiloppsummeringFeil
     v[namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-periode-sluttdato'] = value
     if (value) {
@@ -109,7 +109,7 @@ export const validatePensjonPeriode = (
     ? undefined
     : {
       feilmelding: t('message:validation-noPensjonTypeTilPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-pensjonstype-select'
+      skjemaelementId: 'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-pensjonstype-text'
     } as FeiloppsummeringFeil
   v[namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-pensjonstype'] = value
   if (value) {

@@ -1,21 +1,27 @@
 {
   "abroad-id": "Utenlandsk ID",
+  "add-as-attachment-to-sed" : "Legge til vedlegg til SED",
   "additional-information": "Ytterligere informasjon",
   "adresse": "Adresse",
+  "allkids-vedtak" : "Vedtak angående alle barn som er oppgitt i denne SEDen",
   "amount": "Beløp",
   "annen-person": "Annet person",
+  "application-information": "Informasjon om søknaden",
   "arbeidsforhold": "Arbeidsforhold/Arbeidsgivere",
   "arbeidsperiode": "Arbeidsperiode",
   "are-you-sure": "Er du sikker?",
+  "attached": "Vedlegget",
   "attachments" : "Vedlegg",
   "attachments-sent" : "Vedlegg sendt",
   "avdød" : "Avdød",
 
+  "back" : "Tilbake",
   "benefit-cause": "Betegnelse på ytelse",
   "birthdate": "Fødselsdato",
   "birthplace": "Fødested",
   "bostedsland" : "Bostedsland",
   "boy" : "Gutt",
+  "buc": "BUC",
   "by": "By",
   "bygning": "Bygning",
 
@@ -25,9 +31,7 @@
   "children-in-household-question-2": "Bor barnet i samme husstand som ektefellen/partneren?",
   "children-in-household-question-3": "Bor barnet i samme husstand som den aktuelle personen?",
   "children-in-household-question-4": "Bor barnet i institusjon?",
-
   "choose" : "Velg",
-
   "currency": "Valuta",
 
   "date-relation": "Dato for relasjon",
@@ -63,6 +67,7 @@
   "man" : "Mann",
   "medlemsperiode" : "Medlemsperiode",
   "monthly": "Månedlig",
+  "motpart-sakseier" : "Motpart/sakseier",
   "moving-date-sender": "Flyttedato til avsenderlandet",
   "moving-date-receiver": "Flyttedato til mottakerslandet",
 
@@ -93,6 +98,7 @@
   "rina-saksnummer": "RINA saksnummer",
   "rina-document-id": "Velg SED Type",
 
+  "saksnummer" : "Saksnummer",
   "save": "Lagre",
   "see-less": "Se mindre",
   "see-more": "Ler mer",
@@ -110,27 +116,18 @@
   "unknown": "Ukjent",
   "utenlandsk-pin" : "Utenlandsk PIN",
 
+  "vedtak-type" : "Vedtak type",
+
   "woman": "Kvinne",
 
   "yearly": "Årlig",
   "yes": "Ja",
 
+  "whichkids-vedtak": "Avhuk de barn vedtaket <strong><U>ikke</U></strong> gjelder",
   "whole-family" : "Hele familien",
 
   "---------" : "--------",
 
-  "add-as-attachment-to-sed" : "Legge til vedlegg til SED",
-  "addAttachments" : "Legg til vedlegg",
-  "allKids-radiogroup" : "Vedtak angående alle barn som er oppgitt i denne SEDen",
-  "allKids-select": "Avhuk de barn vedtaket <strong><U>ikke</U></strong> gjelder",
-  "application-information": "Informasjon om søknaden",
-  "attached": "Vedlegget",
-
-  "back" : "Tilbake",
-  "buc": "BUC",
-
-  "caseNumber" : "Saksnummer",
-  "caseOwner" : "Motpart/sakseier",
   "chooseSpørreSed" : "Velg spørre SED",
   "chooseSvarSed" : "Velg svar SED",
   "click-for-menu" : "Klikk på navn for å åpne/slutt skjemaer for {{person}}",
@@ -204,7 +201,6 @@
   "unknownRolle": "(ukjent rolle)",
   "unknownNationality": "(ukjent nasjonalitetet)",
   "unit": "Enhet",
-  "userInSed": "Bruker i SED",
-  "vedtak-type" : "Vedtak type"
+  "userInSed": "Bruker i SED"
 
 }

@@ -160,9 +160,9 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
         <AlignStartRow className={classNames('slideInFromLeft')}>
           <Column>
             <CountrySelect
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-land-countryselect'}
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-land-text'}
               error={getErrorFor(i, 'land')}
-              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-land-countryselect'}
+              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-land-text'}
               menuPortalTarget={document.body}
               includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
               onOptionSelected={(e: any) => onLandSelected(e.value, i)}
@@ -172,7 +172,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
           </Column>
           <Column>
             <HighContrastInput
-              data-test-id={'c-familymanager-' + personID + '-nasjonaliteter-' + i + '-fomdato-input'}
+              data-test-id={'c-familymanager-' + personID + '-nasjonaliteter-' + i + '-fomdato-date'}
               feil={getErrorFor(i, 'fomdato')}
               id={'c-familymanager-' + personID + '-nasjonaliteter-' + i + '-fomdato'}
               onChange={(e: any) => onFomdatoChanged(e.target.value, i)}

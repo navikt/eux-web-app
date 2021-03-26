@@ -29,10 +29,6 @@
   "loading-sedFinished" : "Ferdig med svarSED",
   "loading-sendingVedlegg" : "Sender vedlegg...",
   "loading-sendingXofY" : "Sender {{current}} av {{total}}",
-  "warning-conflict-aa-1": "Mulig avvik mellom ",
-  "warning-conflict-aa-link-1": "AA Registeret",
-  "warning-conflict-aa-2": " og ",
-  "warning-conflict-aa-link-2": "A-Inntekt",
 
   "validation-duplicateStartDate": "Datoen eksisterer allerede",
   "validation-duplicateBirthCountry": "Statsborgerskapen eksisterer allerede",
@@ -93,9 +89,16 @@
   "validation-noTilDato": "Velg en gyldig dato",
   "validation-noUnit": "Du må velge enhet",
   "validation-noUtenlandskPin": "Du må velge utenlandsk PIN til {{person}}",
+  "validation-noVedtakChoice": "Ingen vedtak valgt",
+  "validation-noVedtakType": "Ingen vedtak type",
   "validation-tilDato2015" : "Datoen må være over 2015",
   "validation-tilDatoFormat" : "Datoen må være ÅÅÅÅ-MM",
   "validation-tilDatoMonth" : "Datoen ha em ugyldig måned",
   "validation-unverifiedSaksnummer": "Uverifisert RINA saksnummer",
-  "validation-uncheckedFnr": "Uverifisert fødselsnummer"
+  "validation-uncheckedFnr": "Uverifisert fødselsnummer",
+
+  "warning-conflict-aa-1": "Mulig avvik mellom ",
+  "warning-conflict-aa-link-1": "AA Registeret",
+  "warning-conflict-aa-2": " og ",
+  "warning-conflict-aa-link-2": "A-Inntekt"
 }
