@@ -7,6 +7,7 @@
 
   "button-add-selected-attachments": "Legg til markerte vedlegg",
   "button-cancel": "Avbryt",
+  "button-close": "Lukk",
   "button-search" : "Søk",
   "button-search-for-x" : "Søk {{x}}",
   "button-remove" : "Fjern",
@@ -87,6 +88,7 @@
   "title-ansettelsesperioder" : "Ansettelsesperiode(r)",
   "title-arbeidsforhold-type": "Type arbeidsforhold",
   "title-choose-formaal" : "Velg formål",
+  "title-creating-sed" : "Send svarSED",
   "title-dekning-trygdeordningen" : "Dekning av trygdeordningen",
   "title-duration-stay": "Oppholdets varighet",
   "title-familierelasjon": "Familierelasjon til ektefelle eller annen person",

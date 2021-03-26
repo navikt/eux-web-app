@@ -2,7 +2,7 @@ import * as svarpasedActions from 'actions/svarpased'
 import { getPreviewFile } from 'actions/svarpased'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
-import AttachmentsTable from 'components/Attachments/AttachmentsTable'
+import Attachments from 'components/Attachments/Attachments'
 import FamilyManager from 'components/FamilyManager/FamilyManager'
 import Formaal from 'components/Formaal/Formaal'
 import Inntekt from 'components/Inntekt/Inntekt'
@@ -292,7 +292,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
         />
       </TextAreaDiv>
       <VerticalSeparatorDiv data-size='2' />
-      <AttachmentsTable
+      <Attachments
         highContrast={highContrast}
         onAttachmentsChanged={(attachments) => setAttachments(attachments)}
       />

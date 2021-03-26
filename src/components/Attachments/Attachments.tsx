@@ -9,15 +9,15 @@ import { HighContrastKnapp, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-export interface AttachmentsTableProps {
+export interface AttachmentsProps {
   highContrast: boolean
   onAttachmentsChanged: (items: JoarkBrowserItems) => void
 }
 
-const AttachmentsTable: React.FC<AttachmentsTableProps> = ({
+const Attachments: React.FC<AttachmentsProps> = ({
   highContrast,
   onAttachmentsChanged
-}: AttachmentsTableProps): JSX.Element => {
+}: AttachmentsProps): JSX.Element => {
 
   const { t } = useTranslation()
   const [_attachmentsTableVisible, setAttachmentsTableVisible] = useState<boolean>(false)
@@ -38,6 +38,7 @@ const AttachmentsTable: React.FC<AttachmentsTableProps> = ({
 
   const onRowViewDelete = (newItems: JoarkBrowserItems): void => {
     setItems(newItems)
+    onAttachmentsChanged(newItems)
   }
 
   return (
@@ -79,4 +80,4 @@ const AttachmentsTable: React.FC<AttachmentsTableProps> = ({
   )
 }
 
-export default AttachmentsTable
+export default Attachments

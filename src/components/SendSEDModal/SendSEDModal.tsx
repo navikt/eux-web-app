@@ -1,37 +1,66 @@
 import { clientClear } from 'actions/alert'
-import { createSavingAttachmentJob, resetSedResponse, resetSedAttachments, sendAttachmentToSed } from 'actions/attachments'
+import {
+  createSavingAttachmentJob,
+  resetSedAttachments,
+  resetSedResponse,
+  sendAttachmentToSed
+} from 'actions/attachments'
+import CheckCircle from 'assets/icons/CheckCircle'
 import Alert from 'components/Alert/Alert'
 import Modal from 'components/Modal/Modal'
+import SEDAttachmentSender from 'components/SEDAttachmentSender/SEDAttachmentSender'
+import { FlexCenterDiv, PileDiv } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
 import { IS_TEST } from 'constants/environment'
 import {
   JoarkBrowserItem,
   JoarkBrowserItems,
-  SavingAttachmentsJob, SEDAttachmentPayload,
+  SavingAttachmentsJob,
+  SEDAttachmentPayload,
   SEDAttachmentPayloadWithFile
 } from 'declarations/attachments'
 import { AlertStatus } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
-import Alertstripe from 'nav-frontend-alertstriper'
-import { HighContrastHovedknapp, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import NavFrontendSpinner from 'nav-frontend-spinner'
+import { Undertittel } from 'nav-frontend-typografi'
+import { HighContrastHovedknapp, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { FullWidthDiv } from 'components/StyledComponents'
-import SEDAttachmentSender from 'components/SEDAttachmentSender/SEDAttachmentSender'
 
 const AlertstripeDiv = styled.div`
   margin: 0.5rem;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  width: 50%;
+  width: 100%;
 `
-const MinimalContentDiv = styled.div`
+const MinimalModalDiv = styled.div`
   min-height: 200px;
   min-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
 `
+const MinimalContentDiv = styled.div`
+  flex: 1;
+  width: 100%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+`
+const SectionDiv = styled.div`
+  flex: 1;
+  align-items: stretch;
+  flex-direction: row;
+  display: flex;
+  justify-content: center;
+`
+const WrapperDiv = styled.div`
+  padding: 1rem;
+  background-color: whitesmoke;
+`
+
 interface SendSEDModalProps {
   highContrast: boolean
   attachments?: JoarkBrowserItems
@@ -44,6 +73,7 @@ const mapState = (state: State): any => ({
   alertMessage: state.alert.clientErrorMessage,
   alertType: state.alert.type,
   creatingSvarPaSed: state.loading.creatingSvarPaSed,
+  replySed: state.svarpased.replySed,
   sedCreatedResponse: state.svarpased.sedCreatedResponse,
 })
 const SendSEDModal: React.FC<SendSEDModalProps> = ({
@@ -58,6 +88,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
     alertMessage,
     alertType,
     creatingSvarPaSed,
+    replySed,
     sedCreatedResponse
   }: any = useSelector<State, any>(mapState)
   const dispatch = useDispatch()
@@ -67,6 +98,8 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
   const [_sedAttachments, setSedAttachments] = useState<JoarkBrowserItems>(attachments)
   const [_sedSent, setSedSent] = useState<boolean>(false)
   const [_finished, setFinished] = useState<boolean>(false)
+
+  const fnr = _.find(replySed?.bruker?.personInfo.pin, p => p.land === 'NO')?.fnr
 
   const sedAttachmentSorter = (a: JoarkBrowserItem, b: JoarkBrowserItem): number => {
     if (b.type === 'joark' && a.type === 'sed') return -1
@@ -108,7 +141,6 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
     // if sed is sent, we can start sending attachments
     if (_sedSent && !_sendingAttachments && !_attachmentsSent) {
       const joarksToUpload: JoarkBrowserItems = _.filter(_sedAttachments, (att) => att.type === 'joark')
-
       if (_.isEmpty(joarksToUpload)) {
         /* istanbul ignore next */
         if (!IS_TEST) {
@@ -117,7 +149,6 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
          _onFinished()
          return
        }
-
        // attachments to send -> start a savingAttachmentsJob
        setSendingAttachments(true)
        dispatch(createSavingAttachmentJob(joarksToUpload))
@@ -131,54 +162,74 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
       modal={{
         closeButton: false,
         modalContent: (
-          <MinimalContentDiv>
-            {creatingSvarPaSed && (
-              <span>{t('message:loading-creatingReplySed')}</span>
-            )}
+          <MinimalModalDiv>
+            <Undertittel>
+              {t('el:title-creating-sed')}
+            </Undertittel>
+            <VerticalSeparatorDiv/>
             {alertMessage && alertType && [types.SVARPASED_SED_CREATE_FAILURE].indexOf(alertType) >= 0 && (
-              <AlertstripeDiv>
-                <Alert
-                  type='client'
-                  fixed={false}
-                  message={t(alertMessage)}
-                  status={alertStatus as AlertStatus}
-                  onClose={() => dispatch(clientClear())}
-                />
-              </AlertstripeDiv>
-            )}
-            {!_.isNil(sedCreatedResponse) && (
               <>
-                <span>{t('message:sed created')}</span>
-
+                <AlertstripeDiv>
+                  <Alert
+                    type='client'
+                    fixed={false}
+                    message={t(alertMessage)}
+                    status={alertStatus as AlertStatus}
+                    onClose={() => dispatch(clientClear())}
+                  />
+                </AlertstripeDiv>
+                <VerticalSeparatorDiv/>
               </>
             )}
-            {_finished && (
-              <>
-              <span>{t('message:finished')}</span>
-
-                <Alertstripe type='suksess'>
-                  {sedCreatedResponse.message}
-                </Alertstripe>
-                <HighContrastHovedknapp
-                  mini
-                  onClick={() => {
-                    dispatch(resetSedResponse())
-                    onModalClose()
-                  }}
-                >
-                  {t('label:close')}
-                </HighContrastHovedknapp>
-              </>
-            )}
-            {(_sendingAttachments || _attachmentsSent) && (
-              <FullWidthDiv>
-                <>
+            <MinimalContentDiv>
+            <SectionDiv>
+              <PileDiv style={{alignItems: 'flex-start'}}>
+                <div>
+                {creatingSvarPaSed && (
+                  <FlexCenterDiv>
+                    <NavFrontendSpinner type='XS'/>
+                    <HorizontalSeparatorDiv data-size='0.5'/>
+                    <span>{t('message:loading-creatingReplySed')}</span>
+                  </FlexCenterDiv>
+                )}
+                {!_.isNil(sedCreatedResponse) && (
+                   <FlexCenterDiv>
+                     <CheckCircle color='green'/>
+                     <HorizontalSeparatorDiv data-size='0.5'/>
+                     <span>{t('message:loading-sedCreated')}</span>
+                   </FlexCenterDiv>
+                )}
+                </div>
+                <VerticalSeparatorDiv data-size='0.5'/>
+                <div>
+                {_finished && (
+                  <FlexCenterDiv>
+                    <CheckCircle color='green'/>
+                    <HorizontalSeparatorDiv data-size='0.5'/>
+                    <span>{t('message:loading-sedFinished')}</span>
+                  </FlexCenterDiv>
+                )}
+                {_sendingAttachments && (
+                  <FlexCenterDiv>
+                    <NavFrontendSpinner type='XS'/>
+                    <HorizontalSeparatorDiv data-size='0.5'/>
+                    <span>{t('message:loading-sendingVedlegg')}</span>
+                  </FlexCenterDiv>
+                )}
+                </div>
+              </PileDiv>
+            </SectionDiv>
+            <SectionDiv>
+              <VerticalSeparatorDiv/>
+              {(_sendingAttachments || _attachmentsSent) && (
+                <MinimalModalDiv>
+                  <WrapperDiv>
                   <SEDAttachmentSender
                     attachmentsError={undefined}
                     payload={{
-                      fnr: '10000000001',
-                      rinaId: sedCreatedResponse.rinssaksnummer,
-                      rinaDokumentId: '456'
+                      fnr: fnr,
+                      rinaId: replySed.saksnummer,
+                      rinaDokumentId: sedCreatedResponse.sedId
                     } as SEDAttachmentPayload}
                     onSaved={_onSaved}
                     onFinished={_onFinished}
@@ -186,18 +237,29 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                     sendAttachmentToSed={_sendAttachmentToSed}
                   />
                   <VerticalSeparatorDiv />
-                </>
-              </FullWidthDiv>
-            )}
-
-
+                  </WrapperDiv>
+                </MinimalModalDiv>
+              )}
+              {_finished && (
+                <div>
+                  <HighContrastHovedknapp
+                  mini
+                  onClick={() => {
+                    dispatch(resetSedResponse())
+                    onModalClose()
+                  }}
+                >
+                  {t('el:button-close')}
+                </HighContrastHovedknapp>
+                </div>
+              )}
+            </SectionDiv>
           </MinimalContentDiv>
-        )
-      }}
+        </MinimalModalDiv>
+      )}}
       onModalClose={onModalClose}
     />
   )
-
 }
 
 export default SendSEDModal

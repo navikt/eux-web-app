@@ -169,8 +169,7 @@ export const createSed: ActionCreator<ThunkResult<
       sedType: sedType
     }),
     expectedPayload: {
-      message: 'done',
-      rinasaksnummer: '123'
+      sedId: '123'
     },
     type: {
       request: types.SVARPASED_SED_CREATE_REQUEST,

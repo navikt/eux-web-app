@@ -333,7 +333,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
           <CloseButton
             onClick={onCloseButtonClicked}
           >
-            {t('label:close')}
+            {t('el:button-close')}
           </CloseButton>
         )}
         <Title>

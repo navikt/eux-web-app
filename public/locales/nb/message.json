@@ -25,6 +25,8 @@
   "loading-replying": "Besvaring...",
   "loading-searching" : "Søker...",
   "loading-creatingReplySed" : "Sender svarSED...",
+  "loading-sedCreated" : "SvarSED opprettet",
+  "loading-sedFinished" : "Ferdig med svarSED",
   "loading-sendingVedlegg" : "Sender vedlegg...",
   "loading-sendingXofY" : "Sender {{current}} av {{total}}",
   "warning-conflict-aa-1": "Mulig avvik mellom ",
