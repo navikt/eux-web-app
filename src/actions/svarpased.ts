@@ -158,7 +158,7 @@ export const resetPersonRelatert: ActionCreator<Action> = (): Action => ({
   type: types.SVARPASED_PERSON_RELATERT_RESET
 })
 
-export const sendSvarPaSedData: ActionCreator<ThunkResult<
+export const createSed: ActionCreator<ThunkResult<
   ActionWithPayload
 >> = (rinaSakId: string, sedId: string, sedType: string, payload: SvarpasedState): ThunkResult<ActionWithPayload> => {
   return call({
@@ -169,12 +169,13 @@ export const sendSvarPaSedData: ActionCreator<ThunkResult<
       sedType: sedType
     }),
     expectedPayload: {
-      foo: 'bar'
+      message: 'done',
+      rinasaksnummer: '123'
     },
     type: {
-      request: types.SVARPASED_SENDSVARPASEDDATA_POST_REQUEST,
-      success: types.SVARPASED_SENDSVARPASEDDATA_POST_SUCCESS,
-      failure: types.SVARPASED_SENDSVARPASEDDATA_POST_FAILURE
+      request: types.SVARPASED_SED_CREATE_REQUEST,
+      success: types.SVARPASED_SED_CREATE_SUCCESS,
+      failure: types.SVARPASED_SED_CREATE_FAILURE
     },
     body: payload
   })

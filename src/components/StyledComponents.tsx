@@ -25,6 +25,9 @@ export const PileDiv = styled.div`
   display: flex;
   flex-direction: column;
 `
+export const FullWidthDiv = styled.div`
+  width: 100%;
+`
 export const PileCenterDiv = styled(PileDiv)`
   align-items: center
 `

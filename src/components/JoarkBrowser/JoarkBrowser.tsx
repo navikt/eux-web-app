@@ -374,16 +374,16 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
         columns={[
           {
             id: 'tema',
-            label: t('app:tema'),
+            label: t('label:tema'),
             type: 'string',
             renderCell: (item: any, value: any) => <Element>{value}</Element>
           }, {
             id: 'title',
-            label: t('app:title'),
+            label: t('label:title'),
             type: 'string'
           }, {
             id: 'date',
-            label: t('app:date'),
+            label: t('label:date'),
             type: 'date',
             dateFormat: 'DD.MM.YYYY'
           }, {

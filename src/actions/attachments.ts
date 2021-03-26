@@ -81,14 +81,10 @@ export const createSavingAttachmentJob: ActionCreator<ActionWithPayload<JoarkBro
   payload: joarkBrowserItems
 })
 
-export const resetSavingAttachmentJob: ActionCreator<Action> = (): Action => ({
-  type: types.ATTACHMENT_SAVINGATTACHMENTJOB_RESET
-})
-
-export const resetSed: ActionCreator<Action> = (): Action => ({
-  type: types.FOO
+export const resetSedResponse: ActionCreator<Action> = (): Action => ({
+  type: types.SVARPASED_SED_RESPONSE_RESET
 })
 
 export const resetSedAttachments: ActionCreator<Action> = (): Action => ({
-  type: types.FOO
+  type: types.ATTACHMENT_RESET
 })

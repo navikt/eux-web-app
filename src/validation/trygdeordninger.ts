@@ -92,16 +92,17 @@ export const validatePensjonPeriode = (
   if (value) {
     generalFail = true
   }
-
-  value = (periode.periode.sluttdato && periode.periode.sluttdato.match(/\d{2}\.\d{2}\.\d{4}/))
-    ? undefined
-    : {
-      feilmelding: t('message:validation-invalidDateForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-periode-sluttdato-input'
-    } as FeiloppsummeringFeil
-  v[namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-periode-sluttdato'] = value
-  if (value) {
-    generalFail = true
+  if (periode?.periode.sluttdato && periode?.periode.sluttdato?.length > 0) {
+    value = (periode.periode.sluttdato.match(/\d{2}\.\d{2}\.\d{4}/))
+      ? undefined
+      : {
+        feilmelding: t('message:validation-invalidDateForPerson', { person: personName }),
+        skjemaelementId: 'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-periode-sluttdato-input'
+      } as FeiloppsummeringFeil
+    v[namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-periode-sluttdato'] = value
+    if (value) {
+      generalFail = true
+    }
   }
 
   value = periode.pensjonstype

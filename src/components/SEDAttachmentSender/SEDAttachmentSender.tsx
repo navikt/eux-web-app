@@ -129,12 +129,12 @@ const SEDAttachmentSender: React.FC<SEDAttachmentSenderProps> = ({
         status={_status}
       >
         <>
-          {_status === 'inprogress' && t('buc:loading-sendingXofY', {
+          {_status === 'inprogress' && t('message:loading-sendingXofY', {
             current: current,
             total: total
           })}
-          {_status === 'done' && t('buc:form-attachmentsSent')}
-          {_status === 'error' && t('buc:error-sendingAttachments')}
+          {_status === 'done' && t('label:attachments-Sent')}
+          {_status === 'error' && t('message:error-sending-attachments')}
         </>
       </ProgressBar>
       {_status === 'inprogress' && _.isFunction(onCancel) && (
@@ -150,7 +150,7 @@ const SEDAttachmentSender: React.FC<SEDAttachmentSenderProps> = ({
               onCancel()
             }}
           >
-            {t('app:cancel')}
+            {t('el:button-cancel')}
           </HighContrastKnapp>
         </>
       )}

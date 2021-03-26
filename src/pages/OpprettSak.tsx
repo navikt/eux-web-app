@@ -652,7 +652,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                       data-test-id='opprettsak__tema'
                       feil={_validation.tema ? _validation.tema.feilmelding : undefined}
                       id='opprettsak__tema'
-                      label={t('label:tema')}
+                      label={t('label:choose-tema')}
                       onChange={onTemaChange}
                       value={valgtTema}
                     >

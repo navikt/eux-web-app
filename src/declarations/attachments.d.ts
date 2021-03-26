@@ -83,7 +83,7 @@ export interface JoarkList {
 }
 
 export interface SEDAttachmentPayload {
-  aktoerId?: string
+  fnr?: string
   rinaId?: string
   rinaDokumentId?: string
 }

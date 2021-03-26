@@ -55,10 +55,10 @@ const SEDAttachmentModal: React.FC<SEDAttachmentModalProps> = ({
           ),
           modalButtons: [{
             main: true,
-            text: t('buc:form-addSelectedAttachments'),
+            text: t('el:button-add-selected-attachments'),
             onClick: onAddAttachmentsButtonClick
           }, {
-            text: t('app:cancel'),
+            text: t('el:button-cancel'),
             onClick: onCancelButtonClick
           }]
         }}

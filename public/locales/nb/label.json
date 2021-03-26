@@ -8,6 +8,7 @@
   "arbeidsperiode": "Arbeidsperiode",
   "are-you-sure": "Er du sikker?",
   "attachments" : "Vedlegg",
+  "attachments-sent" : "Vedlegg sendt",
   "avdød" : "Avdød",
 
   "benefit-cause": "Betegnelse på ytelse",
@@ -96,6 +97,7 @@
   "see-less": "Se mindre",
   "see-more": "Ler mer",
   "shared-custody": "Delt foreldreansvar",
+  "show-attachments-table" : "Vis vedlegg tabell",
   "show-form": "Vis skjema",
   "start-date": "Startdato",
   "statsborgerskap" : "Statsborgerskap",
@@ -193,7 +195,8 @@
   "sendReplySed" : "Send svarSED",
   "sendVedlegg" : "Send vedlegg",
 
-  "tema": "Velg behandlingstema",
+  "choose-tema": "Velg behandlingstema",
+  "tema": "Tema",
   "tilDato" : "Til dato",
 
   "typeKrav": "Type krav",

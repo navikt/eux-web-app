@@ -4,6 +4,8 @@
   "button-add-birthplace": "Legg til fødested",
   "button-add-new-x": "Legg til ny {{x}}",
   "button-add-person": "Legg til person(er)",
+
+  "button-add-selected-attachments": "Legg til markerte vedlegg",
   "button-cancel": "Avbryt",
   "button-search" : "Søk",
   "button-search-for-x" : "Søk {{x}}",

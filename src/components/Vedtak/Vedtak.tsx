@@ -2,7 +2,7 @@ import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
 import Select from 'components/Select/Select'
-import { TextAreaDiv } from 'components/StyledComponents'
+import { AlignStartRow, FlexDiv, PileDiv, TextAreaDiv } from 'components/StyledComponents'
 import { F002Sed, Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -22,19 +22,7 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
 
-const PanelDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-`
-const FlexDiv = styled.div`
-  display: flex;
-`
-const AlignEndRow = styled(Row)`
-  align-items: flex-end;
-`
 export interface VedtakProps {
   highContrast: boolean
   replySed: ReplySed
@@ -49,6 +37,7 @@ const Vedtak: React.FC<VedtakProps> = ({
   replySed
 }: VedtakProps): JSX.Element => {
   const { t } = useTranslation()
+
   const [_allKids, setAllKids] = useState<string | undefined>(undefined)
   const [_startDato, setStartDato] = useState<string>('')
   const [_sluttDato, setSluttDato] = useState<string>('')
@@ -128,7 +117,7 @@ const Vedtak: React.FC<VedtakProps> = ({
 
   const renderPeriodeAndVedtak = (p: PeriodeAndVedtak | null, i: number) => (
     <>
-      <AlignEndRow>
+      <AlignStartRow>
         <Column>
           <HighContrastInput
             data-test-id={'c-vedtak-startdato[' + i + ']-input'}
@@ -183,13 +172,13 @@ const Vedtak: React.FC<VedtakProps> = ({
             {i < 0 ? t('label:add') : t('label:remove')}
           </HighContrastFlatknapp>
         </Column>
-      </AlignEndRow>
+      </AlignStartRow>
       <VerticalSeparatorDiv data-size='0.5' />
     </>
   )
 
   return (
-    <PanelDiv>
+    <PileDiv>
       <Undertittel>
         {t('el:title-vedtak')}
       </Undertittel>
@@ -318,7 +307,7 @@ const Vedtak: React.FC<VedtakProps> = ({
             </Row>
             )}
       </HighContrastPanel>
-    </PanelDiv>
+    </PileDiv>
   )
 }
 

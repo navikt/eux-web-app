@@ -1,21 +1,22 @@
-import { clientClear } from 'actions/alert'
-import { getPreviewFile } from 'actions/svarpased'
 import * as svarpasedActions from 'actions/svarpased'
+import { getPreviewFile } from 'actions/svarpased'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
-import Alert from 'components/Alert/Alert'
-import Attachments from 'components/Attachments/Attachments'
+import AttachmentsTable from 'components/Attachments/AttachmentsTable'
 import FamilyManager from 'components/FamilyManager/FamilyManager'
 import Formaal from 'components/Formaal/Formaal'
 import Inntekt from 'components/Inntekt/Inntekt'
+import Modal from 'components/Modal/Modal'
 import Motregning from 'components/Motregning/Motregning'
+import SendSEDModal from 'components/SendSEDModal/SendSEDModal'
+import { TextAreaDiv } from 'components/StyledComponents'
 import Vedtak from 'components/Vedtak/Vedtak'
-import * as types from 'constants/actionTypes'
-import { AlertStatus, ModalContent } from 'declarations/components'
+import { JoarkBrowserItems } from 'declarations/attachments'
+import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import { Inntekt as IInntekt, Inntekter, Validation } from 'declarations/types'
+import FileFC, { File } from 'forhandsvisningsfil'
 import _ from 'lodash'
-import Alertstripe from 'nav-frontend-alertstriper'
 import { VenstreChevron } from 'nav-frontend-chevron'
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel'
 import { Systemtittel } from 'nav-frontend-typografi'
@@ -37,11 +38,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { SvarpasedState } from 'reducers/svarpased'
 import styled from 'styled-components'
 import { Item } from 'tabell'
-import FileFC, { File } from 'forhandsvisningsfil'
-import Modal from 'components/Modal/Modal'
 
 import { validate } from './validation'
-import { TextAreaDiv } from 'components/StyledComponents'
 
 const FlexDiv = styled.div`
   display: flex;
@@ -57,34 +55,18 @@ const ButtonsDiv = styled.div`
   flex-wrap: wrap;
 `
 
-const AlertstripeDiv = styled.div`
-  margin: 0.5rem;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  width: 50%;
-`
-const MinimalContentDiv = styled.div`
-  min-height: 200px;
-  min-width: 600px;
-`
-
 const mapState = (state: State): any => ({
-  alertStatus: state.alert.clientErrorStatus,
-  alertMessage: state.alert.clientErrorMessage,
-  alertType: state.alert.type,
-
   rinasaksnummerOrFnr: state.app.params.rinasaksnummerOrFnr,
 
   creatingSedWithAttachments: state.loading.creatingSedWithAttachments,
   creatingSedEditInRINA: state.loading.creatingSedEditInRINA,
   gettingPreviewFile: state.loading.gettingPreviewFile,
   savingSed: state.loading.savingSed,
-  sendingSvarPaSed: state.loading.sendingSvarPaSed,
+  creatingSvarPaSed: state.loading.creatingSvarPaSed,
 
   inntekter: state.svarpased.inntekter,
   previewFile: state.svarpased.previewFile,
   replySed: state.svarpased.replySed,
-  svarPasedData: state.svarpased.svarPasedData,
   validation: state.svarpased.validation,
 
   highContrast: state.ui.highContrast
@@ -108,28 +90,24 @@ const Step2: React.FC<SvarPaSedProps> = ({
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const {
-    alertStatus,
-    alertMessage,
-    alertType,
-
     rinasaksnummerOrFnr,
 
     creatingSedWithAttachments,
     creatingSedEditInRINA,
     gettingPreviewFile,
     savingSed,
-    sendingSvarPaSed,
+    creatingSvarPaSed,
 
     inntekter,
     previewFile,
     replySed,
-    svarPasedData,
     validation,
 
     highContrast
   }: any = useSelector<State, any>(mapState)
 
   const [_comment, setComment] = useState<string>('')
+  const [_attachments, setAttachments] = useState<JoarkBrowserItems | undefined>(undefined)
   const [_modal, setModal] = useState<ModalContent | undefined>(undefined)
   const [_previewFile, setPreviewFile] = useState<any | undefined>(undefined)
   const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
@@ -154,7 +132,12 @@ const Step2: React.FC<SvarPaSedProps> = ({
       dispatch(svarpasedActions.setAllValidation(newValidation))
       if (isValid(newValidation)) {
         setViewSendSedModal(true)
-        dispatch(svarpasedActions.sendSvarPaSedData(rinasaksnummerOrFnr, replySed!.querySedDocumentId, replySed!.replySedType, data))
+        dispatch(svarpasedActions.createSed(
+          rinasaksnummerOrFnr,
+          replySed!.querySedDocumentId,
+          replySed!.replySedType,
+          data
+        ))
       }
     }
   }
@@ -168,7 +151,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
   // TODO
   const saveSed = () => {}
 
-  const showModal = (previewFile: File) => {
+  const showPreviewModal = (previewFile: File) => {
     setModal({
       closeButton: true,
       modalContent: (
@@ -193,7 +176,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
     if (!_previewFile) {
       dispatch(getPreviewFile())
     } else {
-      showModal(_previewFile)
+      showPreviewModal(_previewFile)
     }
   }
 
@@ -221,7 +204,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
   useEffect(() => {
     if (!_previewFile && previewFile) {
       setPreviewFile(previewFile)
-      showModal(previewFile)
+      showPreviewModal(previewFile)
     }
   }, [previewFile, _previewFile])
 
@@ -235,44 +218,10 @@ const Step2: React.FC<SvarPaSedProps> = ({
         />
       )}
       {_viewSendSedModal && (
-        <Modal
+        <SendSEDModal
           highContrast={highContrast}
-          modal={{
-            closeButton: false,
-            modalContent: (
-              <MinimalContentDiv>
-                {sendingSvarPaSed && <span>{t('message:loading-sendingReplySed')}</span>}
-                {alertMessage && alertType && [types.SVARPASED_SENDSVARPASEDDATA_POST_FAILURE].indexOf(alertType) >= 0 && (
-                  <AlertstripeDiv>
-                    <Alert
-                      type='client'
-                      fixed={false}
-                      message={t(alertMessage)}
-                      status={alertStatus as AlertStatus}
-                      onClose={() => dispatch(clientClear())}
-                    />
-                  </AlertstripeDiv>
-                )}
-                {!_.isNil(svarPasedData) && (
-                  <>
-                    <Alertstripe type='suksess'>
-                      {svarPasedData.message}
-                    </Alertstripe>
-                    <HighContrastHovedknapp
-                      mini
-                      onClick={() => {
-                        setViewSendSedModal(false)
-                        onGoBackClick()
-                      }}
-                    >
-                      {t('label:close')}
-                    </HighContrastHovedknapp>
-                  </>
-                )}
-              </MinimalContentDiv>
-            )
-          }}
-          onModalClose={() => setModal(undefined)}
+          attachments={_attachments}
+          onModalClose={() => setViewSendSedModal(false)}
         />
       )}
       <FlexDiv>
@@ -343,10 +292,9 @@ const Step2: React.FC<SvarPaSedProps> = ({
         />
       </TextAreaDiv>
       <VerticalSeparatorDiv data-size='2' />
-      <Attachments
+      <AttachmentsTable
         highContrast={highContrast}
-        onSedCreated={() => {}}
-        sed={undefined}
+        onAttachmentsChanged={(attachments) => setAttachments(attachments)}
       />
       <HighContrastFlatknapp
         mini
@@ -365,10 +313,10 @@ const Step2: React.FC<SvarPaSedProps> = ({
           <HighContrastHovedknapp
             mini
             onClick={sendReplySed}
-            disabled={sendingSvarPaSed}
-            spinner={sendingSvarPaSed}
+            disabled={creatingSvarPaSed}
+            spinner={creatingSvarPaSed}
           >
-            {sendingSvarPaSed ? t('message:loading-sendingReplySed') : t('label:sendReplySed')}
+            {creatingSvarPaSed ? t('message:loading-sendingReplySed') : t('label:sendReplySed')}
           </HighContrastHovedknapp>
           <VerticalSeparatorDiv data-size='0.5' />
         </div>

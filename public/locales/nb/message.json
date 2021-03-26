@@ -15,6 +15,7 @@
   "error-page-title" : "Teknisk feil",
   "error-page-description" : "Vennligst rapporter feilen i Porten slik at vi kan rette den. Kopier innholdet i detaljert feilmelding under og lim det inn i saken i Porten.",
   "error-page-footer" : "",
+  "error-sending-attachments" : "Feil å sende vedlegg",
 
   "help-dokumentID": "DokumnetID finner du ved å åpne «Dokumentinformasjon» i journalposten i Gosys",
   "help-journalpostID": "Journalpost ID finner du ved å åpne journalposten i Gosys",
@@ -23,9 +24,9 @@
   "loading-getting-person" : "Hent personinfo...",
   "loading-replying": "Besvaring...",
   "loading-searching" : "Søker...",
-  "loading-sendingReplySed" : "Sender svarSED...",
+  "loading-creatingReplySed" : "Sender svarSED...",
   "loading-sendingVedlegg" : "Sender vedlegg...",
-
+  "loading-sendingXofY" : "Sender {{current}} av {{total}}",
   "warning-conflict-aa-1": "Mulig avvik mellom ",
   "warning-conflict-aa-link-1": "AA Registeret",
   "warning-conflict-aa-2": " og ",

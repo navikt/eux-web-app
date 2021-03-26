@@ -312,7 +312,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           kompakt mini
           onClick={onCancel}
         >
-          {t('label:cancel')}
+          {t('el:button-cancel')}
         </HighContrastKnapp>
 
       </div>

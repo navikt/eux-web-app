@@ -79,7 +79,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         clientErrorMessage = 'message:error-tpsperson-exists'
         break
 
-      case types.SVARPASED_SENDSVARPASEDDATA_POST_FAILURE:
+      case types.SVARPASED_SED_CREATE_FAILURE:
         clientErrorMessage = 'message:error-svarPaSed-failure'
         break
 

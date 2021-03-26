@@ -19,7 +19,7 @@ export interface SvarpasedState {
   searchedPerson: Person | undefined
   selectedInntekter: Inntekter | undefined
   seds: Seds | undefined
-  svarPasedData: any
+  sedCreatedResponse: any
   valgteArbeidsforhold: Arbeidsforhold,
   validation: Validation
 }
@@ -38,7 +38,7 @@ export const initialSvarpasedState: SvarpasedState = {
   seds: undefined,
   saksnummerOrFnr: undefined,
   selectedInntekter: undefined,
-  svarPasedData: undefined,
+  sedCreatedResponse: undefined,
   valgteArbeidsforhold: [],
   validation: {}
 }
@@ -70,6 +70,7 @@ const svarpasedReducer = (
           (i) => i !== (action as ActionWithPayload).payload
         )
       }
+
 
     case types.SVARPASED_REPLYSED_QUERY_SUCCESS:
       return {
@@ -138,16 +139,22 @@ const svarpasedReducer = (
         saksnummerOrFnr: (action as ActionWithPayload).context.saksnummerOrFnr
       }
 
-    case types.SVARPASED_SENDSVARPASEDDATA_POST_SUCCESS:
+    case types.SVARPASED_SED_CREATE_SUCCESS:
       return {
         ...state,
-        svarPasedData: (action as ActionWithPayload).payload
+        sedCreatedResponse: (action as ActionWithPayload).payload
       }
 
-    case types.SVARPASED_SENDSVARPASEDDATA_POST_FAILURE:
+    case types.SVARPASED_SED_CREATE_FAILURE:
       return {
         ...state,
-        svarPasedData: null
+        sedCreatedResponse: null
+      }
+
+    case types.SVARPASED_SED_RESPONSE_RESET:
+      return {
+        ...state,
+        sedCreatedResponse: undefined
       }
 
     case types.SVARPASED_PARENTSED_SET:

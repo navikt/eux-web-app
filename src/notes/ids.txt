@@ -1,4 +1,4 @@
-IDs 									                                               			VALIDATION
+IDs 									                                             	VALIDATION
 
 c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-navn-input      - {INTERNAL} arbeidsforhold-{personID}-arbeidsforholdet[{i}]-navn
 c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-orgnr-input     - {INTERNAL} arbeidsforhold-{personID}-arbeidsforholdet[{i}]-orgnr
@@ -118,14 +118,14 @@ c-familymanager-{personID}-relasjon-bomedektefellen-radioroup   - {GLOBAL}
 c-familymanager-{personID}-relasjon-bomedaktuelle-radioroup     - {GLOBAL}
 c-familymanager-{personID}-relasjon-boiinstitusjon-radioroup    - {GLOBAL}
 
-c-familymanager-{personID}-trygdeordninger-dekkede-startdato-input               - {INTERNAL}
-c-familymanager-{personID}-trygdeordninger-dekkede-sluttdato-input               - {INTERNAL}
-c-familymanager-{personID}-trygdeordninger-udekkede-startdato-input                - {INTERNAL}
-c-familymanager-{personID}-trygdeordninger-udekkede-sluttdato-input                - {INTERNAL}
+c-familymanager-{personID}-trygdeordninger-dekkede-startdato-input             - {INTERNAL}
+c-familymanager-{personID}-trygdeordninger-dekkede-sluttdato-input             - {INTERNAL}
+c-familymanager-{personID}-trygdeordninger-udekkede-startdato-input            - {INTERNAL}
+c-familymanager-{personID}-trygdeordninger-udekkede-sluttdato-input            - {INTERNAL}
 c-familymanager-{personID}-trygdeordninger-familieYtelse-startdato-input       - {INTERNAL}
 c-familymanager-{personID}-trygdeordninger-familieYtelse-sluttdato-input       - {INTERNAL}
 c-familymanager-{personID}-trygdeordninger-familieYtelse-category-select       - {INTERNAL}
-c-familymanager-{personID}-trygdeordninger-familieYtelse-pensjontype-select       - {INTERNAL}
+c-familymanager-{personID}-trygdeordninger-familieYtelse-pensjontype-select    - {INTERNAL}
 
 c-familymanager-{personID}-trygdeordninger-perioderMedArbeid[i]-startdato-input            - {GLOBAL}
 c-familymanager-{personID}-trygdeordninger-perioderMedArbeid[i]-sluttdato-input            - {GLOBAL}
@@ -141,10 +141,10 @@ c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-periode-startda
 c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-periode-sluttdato-input   - {GLOBAL}
 c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-pensjontype-select        - {GLOBAL}
 
-c-formaal-select                                    - formaal
+c-formaal-select
 
-c-seddetails-anmodningsperiode-startdato-input      - seddetails-anmodningsperiode-startdato
-c-seddetails-anmodningsperiode-sluttdato-input      - seddetails-anmodningsperiode-sluttdato
+c-seddetails-anmodningsperiode-startdato-input
+c-seddetails-anmodningsperiode-sluttdato-input
 c-seddetails-anmodningsperioder[i]-startdato-input
 c-seddetails-anmodningsperioder[i]-sluttdato-input
 c-seddetails-søker-fornavn-input
@@ -157,7 +157,7 @@ c-seddetails-typeKrav-radiogroup
 c-seddetails-informasjon-radiogroup
 c-seddetails-opplysninger-textarea
 
-c-step2-comment-textarea                            - comment
+c-step2-comment-textarea
 
 = = =
 
@@ -166,13 +166,6 @@ c-vedtak-startdato-input
 c-vedtak-sluttdato-input
 c-vedtak-type-select
 c-vedtak-reason-textarea
-
-
-use camelcase, use norwegian fpr awkward traks possible,
-
-add slideAnimate
-check that all calls go to nv-hoykontrast
-chek minimum FlexDiv calls
 
 Clean ActionTypes later
 Clean Attachments later
