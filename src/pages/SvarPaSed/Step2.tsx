@@ -8,6 +8,7 @@ import Formaal from 'components/Formaal/Formaal'
 import Inntekt from 'components/Inntekt/Inntekt'
 import Modal from 'components/Modal/Modal'
 import Motregning from 'components/Motregning/Motregning'
+import ProsedyreVedUenighet from 'components/ProsedyreVedUenighet/ProsedyreVedUenighet'
 import SendSEDModal from 'components/SendSEDModal/SendSEDModal'
 import { TextAreaDiv } from 'components/StyledComponents'
 import Vedtak from 'components/Vedtak/Vedtak'
@@ -120,6 +121,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
   const showFamily = (): boolean => replySed?.replySedType?.startsWith('F') || false
   const showMotregning = (): boolean => (replySed.formaal.indexOf('motregning') >= 0)
   const showVedtak = (): boolean => (replySed.formaal.indexOf('vedtak') >= 0)
+  const showProsedyreVedUenighet = (): boolean => (replySed.formaal.indexOf('prosedyre_ved_uenighet') >= 0)
   const showInntekt = (): boolean => replySed?.replySedType === 'U004'
 
   const sendReplySed = (): void => {
@@ -265,6 +267,12 @@ const Step2: React.FC<SvarPaSedProps> = ({
       {showMotregning() && (
         <>
           <Motregning highContrast={highContrast} replySed={replySed} validation={validation}/>
+          <VerticalSeparatorDiv data-size='2' />
+        </>
+      )}
+      {showProsedyreVedUenighet() && (
+        <>
+          <ProsedyreVedUenighet highContrast={highContrast} replySed={replySed} validation={validation}/>
           <VerticalSeparatorDiv data-size='2' />
         </>
       )}

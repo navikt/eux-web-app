@@ -105,7 +105,6 @@ const Motregning: React.FC<MotregningProps> = ({
     resetValidation('motrening-sluttdato')
   }
 
-
   const setNavn = (s: string, i: number) => {
     if (i < 0) {
       _setNewNavn(s)
@@ -152,7 +151,6 @@ const Motregning: React.FC<MotregningProps> = ({
     _setNavnOgBetegnelser(newNavnOgBetegnelser)
   }
 
-
   const onAdd = () => {
     if (performValidation()) {
       let newNavnOgBetegnelser = _.cloneDeep(_navnOgBetegnelser)
@@ -167,6 +165,7 @@ const Motregning: React.FC<MotregningProps> = ({
       _setNavnOgBetegnelser(newNavnOgBetegnelser)
     }
   }
+
   const getErrorFor = (index: number, el: string): string | undefined => {
     return index < 0 ? _validation[namespace + '-navnogbetegnelse-' + el]?.feilmelding : validation[namespace + '-navnogbetegnelse[' + index + ']-' + el]?.feilmelding
   }

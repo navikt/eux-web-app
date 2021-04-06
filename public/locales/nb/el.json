@@ -34,6 +34,13 @@
   "option-familymanager-10": "6. Beløp, navn og valuta",
   "option-familymanager-11": "1. Familieytelser",
 
+  "option-grunn-1": "Periode/status for ansettelsesforhpld eller selvstendig næringsvirksomhet",
+  "option-grunn-2": "Mottaksperiode for pensjon",
+  "option-grunn-3": "Medlemsperiode",
+  "option-grunn-4": "Oppholdets varighet",
+  "option-grunn-5": "Barnets/barnas bosted",
+  "option-grunn-6": "Elementer i personlig situasjon (artikkel 11 i forordning (EF) nr. 987/2009)",
+
   "option-vedtaktype-1": "Vedtak om primærkompetanse under artikkel 68 i forordning (EF) nr. 883/2004",
   "option-vedtaktype-2": "Vedtak om sekundærkompetanse etter artikkel 68 i forordning (EF) nr. 883/2004020",
   "option-vedtaktype-3": "Vedtak om primærkompetanse etter artikkel 58 i forordning (EF) nr. 987/2009",
@@ -103,6 +110,7 @@
   "title-newcase": "Opprett Sak",
   "title-periods-in-sender-country": "Trygdeperiode i avsenderlandet",
   "title-period-with-received-pension-from-sender-country": "Periode med mottatt pensjon i avsenderlandet",
+  "title-procedure-with-complain" : "Prosedyre ved uenighet",
   "title-reason-for-coming" : "Grunnlag for bosetting",
   "title-registered-arbeidsperiode" : "Registeret arbeidsperiode",
   "title-relasjon-til-barn": "Relasjon til det enkelte barn",

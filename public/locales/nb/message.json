@@ -64,6 +64,7 @@
   "validation-noFornavnForPerson": "Ingen fornavn til {{person}}",
   "validation-noFraDato": "Velg en gyldig dato",
   "validation-noGender": "Kjønn er ikke valgt",
+  "validation-noGrunn": "Grunn er ikke valgt",
   "validation-noInstitusjonsID": "Du må velge institusjon",
   "validation-noJournalpostID": "Du må taste inn en journalpostID",
   "validation-noLand": "Du må velge land",

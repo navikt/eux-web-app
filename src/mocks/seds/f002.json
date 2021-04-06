@@ -997,7 +997,8 @@
   ],
   "formaal": [
     "vedtak",
-    "motregning"
+    "motregning",
+    "prosedyre_ved_uenighet"
   ],
   "krav": {
     "kravMottattDato": "01.01.2059",

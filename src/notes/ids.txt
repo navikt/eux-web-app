@@ -157,6 +157,11 @@ c-motregning-receiver-text
 c-motregning-grunner-text
 c-motregning-ytterligereinformasjon-text
 
+c-prosedyreveduenighet-prosedyre[i]-grunn-text
+c-prosedyreveduenighet-prosedyre[i]-person-list
+c-prosedyreveduenighet-prosedyre-grunn-text
+c-prosedyreveduenighet-prosedyre-person-list
+c-prosedyreveduenighet-ytterligere-text
 
 c-seddetails-anmodningsperiode-startdato-date
 c-seddetails-anmodningsperiode-sluttdato-date

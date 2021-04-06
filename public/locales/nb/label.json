@@ -9,7 +9,7 @@
   "anmodning-om-motregning": "Anmodning eller svar på anmodning om motregning av familieytelser for barn",
   "anmodning-om-motregning-barn": "Anmodning om motregning per barn",
   "anmodning-om-motregning-svar-barn": "Svar på anmodning om motregning per barn",
-  "annen-person": "Annet person",
+  "annen-person": "Annen person",
   "application-information": "Informasjon om søknaden",
   "arbeidsforhold": "Arbeidsforhold/Arbeidsgivere",
   "arbeidsperiode": "Arbeidsperiode",
@@ -37,6 +37,7 @@
   "children-in-household-question-3": "Bor barnet i samme husstand som den aktuelle personen?",
   "children-in-household-question-4": "Bor barnet i institusjon?",
   "choose" : "Velg",
+  "concerning-person": "Personen det gjelder",
   "currency": "Valuta",
 
   "date-relation": "Dato for relasjon",
@@ -98,7 +99,10 @@
   "person-name": "Navn på person",
   "postnummer": "Postnummer",
 
+  "reason": "Grunn",
   "reason-for-coming": "grunnlag for bosetting",
+  "reason-for-disagreement": "Grunn til uenighet",
+  "reason-information-for-disagreement": "Ytterligere grunner til uenighet",
   "receiver-name": "Mottakers navn",
   "region" : "Region",
   "rina-saksnummer": "RINA saksnummer",
