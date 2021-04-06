@@ -143,6 +143,21 @@ c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-pensjontype-tex
 
 c-formaal-text
 
+c-motregning-anmodning-text
+c-motregning-navnogbetegnelse[i]-navn-text
+c-motregning-navnogbetegnelse[i]-betegnelse-text
+c-motregning-navnogbetegnelse-navn-text
+c-motregning-navnogbetegnelse-betegnelse-text
+c-motregning-amount-number
+c-motregning-currency-text
+c-motregning-startdato-date
+c-motregning-sluttdato-date
+c-motregning-frequency-text
+c-motregning-receiver-text
+c-motregning-grunner-text
+c-motregning-ytterligereinformasjon-text
+
+
 c-seddetails-anmodningsperiode-startdato-date
 c-seddetails-anmodningsperiode-sluttdato-date
 c-seddetails-anmodningsperioder[i]-startdato-date

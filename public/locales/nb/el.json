@@ -77,6 +77,7 @@
 
   "placeholder-date-default": "DD.MM.ÅÅÅÅ",
   "placeholder-input-default": "Skriv inn...",
+  "placeholder-grunner-default": "Skriv inn begrunnelse...",
   "placeholder-select-default": "Velg...",
   "placeholder-text-to-sed": "Skriv inn tekst til SED",
 

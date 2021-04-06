@@ -264,7 +264,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
       )}
       {showMotregning() && (
         <>
-          <Motregning highContrast={highContrast} replySed={replySed} />
+          <Motregning highContrast={highContrast} replySed={replySed} validation={validation}/>
           <VerticalSeparatorDiv data-size='2' />
         </>
       )}

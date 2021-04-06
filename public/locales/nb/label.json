@@ -5,6 +5,10 @@
   "adresse": "Adresse",
   "allkids-vedtak" : "Vedtak angående alle barn som er oppgitt i denne SEDen",
   "amount": "Beløp",
+  "anmodning-grunner": "Grunner til anmodning om motregning ved for mye utbetalt",
+  "anmodning-om-motregning": "Anmodning eller svar på anmodning om motregning av familieytelser for barn",
+  "anmodning-om-motregning-barn": "Anmodning om motregning per barn",
+  "anmodning-om-motregning-svar-barn": "Svar på anmodning om motregning per barn",
   "annen-person": "Annet person",
   "application-information": "Informasjon om søknaden",
   "arbeidsforhold": "Arbeidsforhold/Arbeidsgivere",
@@ -25,6 +29,7 @@
   "by": "By",
   "bygning": "Bygning",
 
+  "children": "Barn",
   "children-name": "Barnets navn",
   "children-in-household": "Barn i husstanden",
   "children-in-household-question-1": "Bor barnet i samme husstand som søkeren?",
@@ -149,6 +154,7 @@
   "get" : "Hent",
   "goToRina" : "Gå direkte til Rina",
   "goToSedInRina" : "Gå til SED i Rina",
+  "grant" : "Innvilgelse",
   "grant-number" : "Antall det innvilges for",
 
   "highContrast": "Høy kontrast",
@@ -161,9 +167,7 @@
   "loading-file": "Laster ned filen...",
   "local-sakId": "Lokale sakID",
 
-  "motregning-request": "Anmodning eller svar på anmodning om motregning av familieytelser for barn",
-  "motregning-request-1": "Anmodning om motregning per barn",
-  "motregning-request-2": "Svar på anmodning om motregning per barn",
+
   "mother": "Mor",
 
   "nameatbirth": "Navn ved fødsel",

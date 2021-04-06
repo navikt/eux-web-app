@@ -47,6 +47,7 @@
   "validation-noAddressCountryForPerson": "Ingen adresses land til {{person}}",
   "validation-noAddressPostnummerForPerson": "Ingen adresses postnummer til {{person}}",
   "validation-noAddressStreetForPerson": "Ingen adresses gate til {{person}}",
+  "validation-noBetegnelsePåYtelse": "Ingen betegnelse påY ytelse",
   "validation-noBirthCountryForPerson": "Ingen statsborgerskaps land til {{person}}",
   "validation-noDate": "Ingen dato valgt",
   "validation-noDateForPerson": "Ingen dato til {{person}}",
