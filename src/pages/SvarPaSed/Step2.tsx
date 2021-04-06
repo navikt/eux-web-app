@@ -6,6 +6,7 @@ import Attachments from 'components/Attachments/Attachments'
 import FamilyManager from 'components/FamilyManager/FamilyManager'
 import Formaal from 'components/Formaal/Formaal'
 import Inntekt from 'components/Inntekt/Inntekt'
+import KravOmRefusjon from 'components/KravOmRefusjon/KravOmRefusjon'
 import Modal from 'components/Modal/Modal'
 import Motregning from 'components/Motregning/Motregning'
 import ProsedyreVedUenighet from 'components/ProsedyreVedUenighet/ProsedyreVedUenighet'
@@ -119,9 +120,10 @@ const Step2: React.FC<SvarPaSedProps> = ({
   const isValid = (validation: Validation): boolean => _.find(_.values(validation), (e) => e !== undefined) === undefined
 
   const showFamily = (): boolean => replySed?.replySedType?.startsWith('F') || false
-  const showMotregning = (): boolean => (replySed.formaal.indexOf('motregning') >= 0)
-  const showVedtak = (): boolean => (replySed.formaal.indexOf('vedtak') >= 0)
-  const showProsedyreVedUenighet = (): boolean => (replySed.formaal.indexOf('prosedyre_ved_uenighet') >= 0)
+  const showMotregning = (): boolean => (replySed?.formaal?.indexOf('motregning') >= 0)
+  const showVedtak = (): boolean => (replySed?.formaal?.indexOf('vedtak') >= 0)
+  const showProsedyreVedUenighet = (): boolean => (replySed?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0)
+  const showKravOmRefusjon = (): boolean => (replySed?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0)
   const showInntekt = (): boolean => replySed?.replySedType === 'U004'
 
   const sendReplySed = (): void => {
@@ -276,6 +278,13 @@ const Step2: React.FC<SvarPaSedProps> = ({
           <VerticalSeparatorDiv data-size='2' />
         </>
       )}
+      {showKravOmRefusjon() && (
+        <>
+          <KravOmRefusjon highContrast={highContrast} replySed={replySed} validation={validation}/>
+          <VerticalSeparatorDiv data-size='2' />
+        </>
+      )}
+
       {showInntekt() && (
         <Ekspanderbartpanel tittel={t('label:inntekt')}>
           <Inntekt

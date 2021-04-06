@@ -143,6 +143,8 @@ c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-pensjontype-tex
 
 c-formaal-text
 
+c-kravomrefusjon-krav-text
+
 c-motregning-anmodning-text
 c-motregning-navnogbetegnelse[i]-navn-text
 c-motregning-navnogbetegnelse[i]-betegnelse-text
