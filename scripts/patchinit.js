@@ -1,5 +1,5 @@
-const fs = require('fs');
-const dotenv = require('dotenv-save');
+import fs from 'fs';
+import dotenv from 'dotenv-save';
 
 const createDotEnvFileIfnotExists = (dir = `${process.cwd()}/.env`) => !fs.existsSync(dir) && fs.writeFileSync(dir, '');
 createDotEnvFileIfnotExists();

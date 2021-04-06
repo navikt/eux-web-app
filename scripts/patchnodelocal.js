@@ -1,10 +1,10 @@
-const writePkg = require('write-pkg');
-const readPkg = require('read-pkg');
+import writePkg from 'write-pkg';
+import { readPackageSync } from 'read-pkg';
 
 const DEFAULT_NODE_MOCK_SERVER = 'http://localhost:3002';
 
 // Read package.json into js map.
-const pkg = readPkg.sync();
+const pkg = readPackageSync();
 
 const patchPackageNodeLocal = () => {
   if (pkg.homepage) {

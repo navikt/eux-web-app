@@ -1,10 +1,10 @@
-const fs = require('fs');
-const dotenv = require('dotenv-save');
-const writePkg = require('write-pkg');
-const readPkg = require('read-pkg');
+import fs from 'fs';
+import dotenv from 'dotenv-save';
+import writePkg from 'write-pkg';
+import { readPackageSync } from 'read-pkg';
 
 // Read package.json into js map.
-const pkg = readPkg.sync();
+const pkg = readPackageSync();
 if (pkg.homepage) {
   delete pkg.homepage;
   delete pkg._id;

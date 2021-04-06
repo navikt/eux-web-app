@@ -1,13 +1,13 @@
 import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
-import { AlignStartRow, FlexCenterDiv, PileDiv } from 'components/StyledComponents'
+import { AlignStartRow, FlexCenterDiv, PileDiv, TextAreaDiv } from 'components/StyledComponents'
 import { ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { Normaltekst, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
   HighContrastFlatknapp,
@@ -50,8 +50,8 @@ const Motregning: React.FC<MotregningProps> = ({
   const [_sluttDato, _setSluttDato] = useState<string>('')
   const [_frequency, _setFrequency] = useState<string | undefined>(undefined)
   const [_receiver, _setReceiver] = useState<string | undefined>(undefined)
-  const [_grunner, _setGrunner] = useState<string | undefined>(undefined)
-  const [_ytterligereInformasjon, _setYtterligereInformasjon] = useState<string | undefined>(undefined)
+  const [_grunner, _setGrunner] = useState<string>('')
+  const [_ytterligereInformasjon, _setYtterligereInformasjon] = useState<string>('')
 
   const [_newNavn, _setNewNavn] = useState<string | undefined>(undefined)
   const [_newBetegnelse, _setNewBetegnelse] = useState<string | undefined>(undefined)
@@ -204,7 +204,7 @@ const Motregning: React.FC<MotregningProps> = ({
           <Column>
             {candidateForDeletion
               ? (
-                <FlexCenterDiv className={classNames('slideInFromRight')}>
+                <FlexCenterDiv className={classNames('nolabel', 'slideInFromRight')}>
                   <Normaltekst>
                     {t('label:are-you-sure')}
                   </Normaltekst>
@@ -227,7 +227,7 @@ const Motregning: React.FC<MotregningProps> = ({
                 </FlexCenterDiv>
               )
               : (
-                <div>
+                <div className={classNames('nolabel')}>
                   <HighContrastFlatknapp
                     mini
                     kompakt
@@ -305,6 +305,10 @@ const Motregning: React.FC<MotregningProps> = ({
               </Column>
             </Row>
           )}
+        <VerticalSeparatorDiv data-size='2'/>
+        <UndertekstBold>
+          {t('label:family-benefits-information')}
+        </UndertekstBold>
         <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
@@ -338,7 +342,7 @@ const Motregning: React.FC<MotregningProps> = ({
           </Column>
           <Column />
         </AlignStartRow>
-        <VerticalSeparatorDiv />
+        <VerticalSeparatorDiv/>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
           style={{animationDelay: '0.2s'}}
@@ -372,7 +376,7 @@ const Motregning: React.FC<MotregningProps> = ({
           className={classNames('slideInFromLeft')}
           style={{animationDelay: '0.3s'}}
         >
-          <Column>
+          <Column data-flex='2'>
             <HighContrastInput
               data-test-id={'c-' + namespace + '-frequency-text'}
               id={'c-' + namespace + '-frequency-text'}
@@ -390,7 +394,7 @@ const Motregning: React.FC<MotregningProps> = ({
           className={classNames('slideInFromLeft')}
           style={{animationDelay: '0.4s'}}
         >
-          <Column>
+          <Column data-flex='2'>
             <HighContrastInput
               data-test-id={'c-' + namespace + '-receiver-text'}
               id={'c-' + namespace + '-receiver-text'}
@@ -408,7 +412,8 @@ const Motregning: React.FC<MotregningProps> = ({
           className={classNames('slideInFromLeft')}
           style={{animationDelay: '0.5s'}}
         >
-          <Column>
+          <Column data-flex='2'>
+            <TextAreaDiv>
             <HighContrastTextArea
               className={classNames({
                 'skjemaelement__input--harFeil': validation[namespace + '-grunner']?.feilmelding
@@ -421,6 +426,7 @@ const Motregning: React.FC<MotregningProps> = ({
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => _setGrunner(e.target.value)}
               value={_grunner}
             />
+            </TextAreaDiv>
           </Column>
           <Column/>
         </AlignStartRow>
@@ -430,7 +436,8 @@ const Motregning: React.FC<MotregningProps> = ({
           className={classNames('slideInFromLeft')}
           style={{animationDelay: '0.5s'}}
         >
-          <Column>
+          <Column data-flex='2'>
+            <TextAreaDiv>
             <HighContrastTextArea
               className={classNames({
                 'skjemaelement__input--harFeil': validation[namespace + '-ytterligereinformasjon']?.feilmelding
@@ -443,6 +450,7 @@ const Motregning: React.FC<MotregningProps> = ({
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => _setYtterligereInformasjon(e.target.value)}
               value={_ytterligereInformasjon}
             />
+            </TextAreaDiv>
           </Column>
           <Column/>
         </AlignStartRow>

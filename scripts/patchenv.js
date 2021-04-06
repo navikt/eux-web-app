@@ -1,9 +1,9 @@
-const moment = require('moment');
-const dotenv = require('dotenv-save');
-const branch = require('git-branch');
-const readPkg = require('read-pkg');
+import moment from 'moment';
+import dotenv from 'dotenv-save';
+import branch from 'git-branch';
+import { readPackageSync } from 'read-pkg';
 // Read package.json into js map.
-const pkg = readPkg.sync();
+const pkg = readPackageSync();
 
 moment.locale('nb');
 

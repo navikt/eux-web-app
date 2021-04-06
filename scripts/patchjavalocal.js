@@ -1,9 +1,9 @@
-const dotenv = require('dotenv-save');
-const writePkg = require('write-pkg');
-const readPkg = require('read-pkg');
+import dotenv from 'dotenv-save';
+import writePkg from 'write-pkg';
+import { readPackageSync } from 'read-pkg';
 
 // Read package.json into js map.
-const pkg = readPkg.sync();
+const pkg = readPackageSync();
 // get value of 'disabled-hompage'
 const homepage = pkg['disabled-homepage'];
 if (homepage) {
