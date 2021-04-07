@@ -1,7 +1,7 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { ReplySed } from 'declarations/sed'
-import { Arbeidsforholdet, FamilieRelasjon, Inntekter, ConnectedSed, Validation } from 'declarations/types'
+import { Arbeidsforholdet, FamilieRelasjon, Inntekter, Validation, SvarSed } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockArbeidsforholdList from 'mocks/arbeidsforholdList'
 import mockInntekt from 'mocks/inntekt'
@@ -60,18 +60,17 @@ export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload>>
 }
 
 export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload>> = (
-  saksnummerOrFnr: string, connectedSed: ConnectedSed, saksnummer: string
+  saksnummerOrFnr: string, svarSed: SvarSed, saksnummer: string
 ): ThunkResult<ActionWithPayload> => {
-  const mockSed = mockReplySed(connectedSed.replySedType)
+  const mockSed = mockReplySed(svarSed.svarSedType)
   return call({
     url: sprintf(urls.API_SVARPASED_REPLYSED_QUERY_URL, {
       rinaSakId: saksnummerOrFnr,
-      sedId: connectedSed.querySedDocumentId,
-      sedType: connectedSed.replySedType
+      sedId: svarSed.svarSedId,
+      sedType: svarSed.svarSedType
     }),
     expectedPayload: {
       ...mockSed,
-      ...connectedSed,
       saksnummer: saksnummer
     },
     context: {

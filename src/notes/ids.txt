@@ -141,66 +141,56 @@ c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-periode-startda
 c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-periode-sluttdato-date   - {GLOBAL}
 c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-pensjontype-text         - {GLOBAL}
 
-c-formaal-text
+c-formaal-text - {GLOBAL}
 
-c-kravomrefusjon-krav-text
+c-kravomrefusjon-krav-text - {GLOBAL}
 
-c-motregning-anmodning-text
-c-motregning-navnogbetegnelse[i]-navn-text
-c-motregning-navnogbetegnelse[i]-betegnelse-text
-c-motregning-navnogbetegnelse-navn-text
-c-motregning-navnogbetegnelse-betegnelse-text
-c-motregning-amount-number
-c-motregning-currency-text
-c-motregning-startdato-date
-c-motregning-sluttdato-date
-c-motregning-frequency-text
-c-motregning-receiver-text
-c-motregning-grunner-text
-c-motregning-ytterligereinformasjon-text
+c-motregning-anmodning-text                      - {GLOBAL}
+c-motregning-navnogbetegnelse[i]-navn-text       - {GLOBAL}
+c-motregning-navnogbetegnelse[i]-betegnelse-text - {GLOBAL}
+c-motregning-navnogbetegnelse-navn-text          - {INTERNAL}
+c-motregning-navnogbetegnelse-betegnelse-text    - {INTERNAL}
+c-motregning-amount-number                       - {GLOBAL}
+c-motregning-currency-text                       - {GLOBAL}
+c-motregning-startdato-date                      - {GLOBAL}
+c-motregning-sluttdato-date                      - {GLOBAL}
+c-motregning-frequency-text                      - {GLOBAL}
+c-motregning-receiver-text                       - {GLOBAL}
+c-motregning-grunner-text                        - {GLOBAL}
+c-motregning-ytterligereinformasjon-text         - {GLOBAL}
 
-c-prosedyreveduenighet-prosedyre[i]-grunn-text
-c-prosedyreveduenighet-prosedyre[i]-person-list
-c-prosedyreveduenighet-prosedyre-grunn-text
-c-prosedyreveduenighet-prosedyre-person-list
-c-prosedyreveduenighet-ytterligere-text
+c-prosedyreveduenighet-prosedyre[i]-grunn-text  - {GLOBAL}
+c-prosedyreveduenighet-prosedyre[i]-person-list - {GLOBAL}
+c-prosedyreveduenighet-prosedyre-grunn-text     - {INTERNAL}
+c-prosedyreveduenighet-prosedyre-person-list    - {INTERNAL}
+c-prosedyreveduenighet-ytterligere-text         - {GLOBAL}
 
-c-seddetails-anmodningsperiode-startdato-date
-c-seddetails-anmodningsperiode-sluttdato-date
-c-seddetails-anmodningsperioder[i]-startdato-date
-c-seddetails-anmodningsperioder[i]-sluttdato-date
-c-seddetails-søker-fornavn-text
-c-seddetails-søker-etternavn-text
-c-seddetails-ektefelle-fornavn-text
-c-seddetails-ektefelle-etternavn-text
-c-seddetails-sakseier-text
-c-seddetails-avsenderinstitusjon-text
-c-seddetails-typeKrav-text
-c-seddetails-informasjon-text
-c-seddetails-opplysninger-text
+c-seddetails-anmodningsperiode-startdato-date      - {INTERNAL}
+c-seddetails-anmodningsperiode-sluttdato-date      - {INTERNAL}
+c-seddetails-anmodningsperioder[i]-startdato-date  - {GLOBAL}
+c-seddetails-anmodningsperioder[i]-sluttdato-date  - {GLOBAL}
+c-seddetails-søker-fornavn-text                    - {GLOBAL}
+c-seddetails-søker-etternavn-text                  - {GLOBAL}
+c-seddetails-ektefelle-fornavn-text                - {GLOBAL}
+c-seddetails-ektefelle-etternavn-text              - {GLOBAL}
+c-seddetails-sakseier-text                         - {GLOBAL}
+c-seddetails-avsenderinstitusjon-text              - {GLOBAL}
+c-seddetails-typeKrav-text                         - {GLOBAL}
+c-seddetails-informasjon-text                      - {GLOBAL}
+c-seddetails-opplysninger-text                     - {GLOBAL}
 
-c-step2-comment-text
+c-step2-comment-text - {GLOBAL}
 
-c-vedtak-allkids-text  - {GLOBAL}
-c-vedtak-whichkids-list  - {GLOBAL}
-c-vedtak-periode-startdato-date  - {GLOBAL}
-c-vedtak-periode-sluttdato-date  - {GLOBAL}
-c-vedtak-type-text  - {GLOBAL}
-c-vedtak-reason-text  - {GLOBAL}
-c-vedtak-perioder-periode-startdato-date  - {INTERNAL}
-c-vedtak-perioder-periode-sluttdato-date  - {INTERNAL}
+c-vedtak-allkids-text                        - {GLOBAL}
+c-vedtak-whichkids-list                      - {GLOBAL}
+c-vedtak-periode-startdato-date              - {GLOBAL}
+c-vedtak-periode-sluttdato-date              - {GLOBAL}
+c-vedtak-type-text                           - {GLOBAL}
+c-vedtak-reason-text                         - {GLOBAL}
+c-vedtak-perioder-periode-startdato-date     - {INTERNAL}
+c-vedtak-perioder-periode-sluttdato-date     - {INTERNAL}
 c-vedtak-perioder-vedtak-text                - {INTERNAL}
 c-vedtak-perioder[i]-periode-startdato-date  - {GLOBAL}
 c-vedtak-perioder[i]-periode-sluttdato-date  - {GLOBAL}
 c-vedtak-perioder[i]-vedtak-text             - {GLOBAL}
 
-
-Clean ActionTypes later
-Clean Attachments later
-
-Como fazer com aapen_sluttdato, format dato
-
-- A fazer: Acabar com o Motregning, fazer o prosedyre ved uenighet
-- ligar o prosedyre com o formaal
-- actualizar a resposta para o svarsedoversikt
-- começar a ligação ao svarsed

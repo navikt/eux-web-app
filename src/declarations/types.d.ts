@@ -37,12 +37,18 @@ export interface BucTyper {
   unemployment: Array<Kodeverk>
 }
 
+export interface SvarSed {
+  svarSedType: string
+  svarSedDisplay: string
+  svarSedId: string
+}
+
 export interface ConnectedSed {
-  status: string
-  sisteOppdatert: string
-  replySedType: string
-  replySedDisplay: string
-  querySedDocumentId: string
+  erInnkommende: string
+  sedId: string
+  urlSed: string
+  sistEndretDato: string
+  svarSed: Array<SvarSed>
 }
 
 export interface Dokument {
@@ -125,14 +131,17 @@ export interface Saksbehandler {
 }
 
 export interface Sed {
-  saksnummer: string
-  land: string
-  institusjon: string
-  sisteOppdatert: string
-  seds: Array<ConnectedSed>
+  type: string
+  description: string
+  sakId: string
+  motpartLand: string
+  motpartInstitusjon: string
+  sistEndretDato: string
+  urlSak: string
+  sed: Array<ConnectedSed>
 }
 
-export type Seds = { [k in string]: Sed }
+export type Seds = Array<Sed>
 
 export interface ServerInfo {
   namespace: string
