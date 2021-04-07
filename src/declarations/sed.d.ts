@@ -154,9 +154,9 @@ export interface Utbetaling {
 export interface BaseReplySed {
   bruker: Person
   saksnummer ?: string
-  querySedDocumentId?: string
-  replySedDisplay?: string
-  replySedType?: string
+  svarSedId?: string
+  svarSedDisplay?: string
+  svarSedType?: string
   sedType: string
   sedVersjon: string
 }

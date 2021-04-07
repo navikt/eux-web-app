@@ -119,12 +119,12 @@ const Step2: React.FC<SvarPaSedProps> = ({
 
   const isValid = (validation: Validation): boolean => _.find(_.values(validation), (e) => e !== undefined) === undefined
 
-  const showFamily = (): boolean => replySed?.replySedType?.startsWith('F') || false
+  const showFamily = (): boolean => replySed?.sedType?.startsWith('F') || false
   const showMotregning = (): boolean => (replySed?.formaal?.indexOf('motregning') >= 0)
   const showVedtak = (): boolean => (replySed?.formaal?.indexOf('vedtak') >= 0)
   const showProsedyreVedUenighet = (): boolean => (replySed?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0)
   const showKravOmRefusjon = (): boolean => (replySed?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0)
-  const showInntekt = (): boolean => replySed?.replySedType === 'U004'
+  const showInntekt = (): boolean => replySed?.sedType === 'U004'
 
   const sendReplySed = (): void => {
     if (replySed) {
@@ -138,8 +138,8 @@ const Step2: React.FC<SvarPaSedProps> = ({
         setViewSendSedModal(true)
         dispatch(svarpasedActions.createSed(
           rinasaksnummerOrFnr,
-          replySed!.querySedDocumentId,
-          replySed!.replySedType,
+          replySed!.svarSedId,
+          replySed!.svarSedType,
           data
         ))
       }
@@ -242,7 +242,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
       <Row>
         <Column>
           <Systemtittel>
-            {replySed ? replySed.replySedType + ' - ' + replySed.replySedDisplay : ''}
+            {replySed?.sedType}
           </Systemtittel>
           <VerticalSeparatorDiv />
           <Formaal
