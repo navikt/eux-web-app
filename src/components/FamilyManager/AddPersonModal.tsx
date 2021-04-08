@@ -1,8 +1,7 @@
 import { setReplySed } from 'actions/svarpased'
 import Add from 'assets/icons/Add'
 import Barn from 'assets/icons/Child'
-import Trashcan from 'assets/icons/Trashcan'
-import classNames from 'classnames'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Select/Select'
 import { AlignStartRow, FlexCenterDiv, FlexDiv } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
@@ -13,13 +12,7 @@ import { Hovedknapp, Knapp } from 'nav-frontend-knapper'
 import Lukknapp from 'nav-frontend-lukknapp'
 import NavModal from 'nav-frontend-modal'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
-import {
-  Column,
-  HighContrastFlatknapp,
-  HighContrastInput,
-  HorizontalSeparatorDiv,
-  VerticalSeparatorDiv
-} from 'nav-hoykontrast'
+import { Column, HighContrastInput, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
@@ -285,41 +278,13 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
               </>
             )}
           </FlexCenterDiv>
-          {candidateForDeletion
-            ? (
-              <FlexCenterDiv className={classNames('slideInFromRight')}>
-                <Normaltekst>
-                  {t('label:are-you-sure')}
-                </Normaltekst>
-                <HorizontalSeparatorDiv data-size='0.5' />
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
-                  onClick={() => onRemovePerson(personId)}
-                >
-                  {t('label:yes')}
-                </HighContrastFlatknapp>
-                <HorizontalSeparatorDiv data-size='0.5' />
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
-                  onClick={() => removeCandidateForDeletion(personId!)}
-                >
-                  {t('label:no')}
-                </HighContrastFlatknapp>
-              </FlexCenterDiv>
-              )
-            : (
-              <HighContrastFlatknapp
-                mini
-                kompakt
-                onClick={() => addCandidateForDeletion(personId)}
-              >
-                <Trashcan />
-                <HorizontalSeparatorDiv data-size='0.5' />
-                {t('el:button-remove')}
-              </HighContrastFlatknapp>
-              )}
+          <AddRemovePanel
+            existingItem={true}
+            candidateForDeletion={candidateForDeletion}
+            onBeginRemove={() => addCandidateForDeletion(personId)}
+            onConfirmRemove={() => onRemovePerson(personId)}
+            onCancelRemove={() => removeCandidateForDeletion(personId!)}
+          />
         </CheckboxDiv>
       </FlexDiv>
     )

@@ -1,12 +1,11 @@
 import Add from 'assets/icons/Add'
-import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
-import { AlignStartRow, FlexCenterDiv, PaddedDiv } from 'components/StyledComponents'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import { Adresse, ReplySed } from 'declarations/sed'
 import { Kodeverk, Validation } from 'declarations/types'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
-import { Normaltekst } from 'nav-frontend-typografi'
 import {
   Column,
   HighContrastFlatknapp,
@@ -229,7 +228,7 @@ const Adresser: React.FC<AdresseProps> = ({
 
   const renderRow = (a: Adresse | null, i: number) => {
     const key = a ? getKey(a) : 'new'
-    const candidateForDeletion = i < 0 ? false : key && _confirmDelete.indexOf(key) >= 0
+    const candidateForDeletion = i < 0 ? false : !!key && _confirmDelete.indexOf(key) >= 0
 
     return (
       <>
@@ -335,55 +334,16 @@ const Adresser: React.FC<AdresseProps> = ({
             />
           </Column>
           <Column>
-            {candidateForDeletion
-              ? (
-                <FlexCenterDiv className={classNames('nolabel', 'slideInFromRight')}>
-                  <Normaltekst>
-                    {t('label:are-you-sure')}
-                  </Normaltekst>
-                  <HorizontalSeparatorDiv data-size='0.5' />
-                  <HighContrastFlatknapp
-                    mini
-                    kompakt
-                    onClick={() => onRemove(i)}
-                  >
-                    {t('label:yes')}
-                  </HighContrastFlatknapp>
-                  <HorizontalSeparatorDiv data-size='0.5' />
-                  <HighContrastFlatknapp
-                    mini
-                    kompakt
-                    onClick={() => removeCandidateForDeletion(key!)}
-                  >
-                    {t('label:no')}
-                  </HighContrastFlatknapp>
-                </FlexCenterDiv>
-                )
-              : (
-                <div className={classNames('nolabel')}>
-                  <HighContrastFlatknapp
-                    mini
-                    kompakt
-                    onClick={() => i < 0 ? onAdd() : addCandidateForDeletion(key!)}
-                  >
-                    {i < 0 ? <Add /> : <Trashcan />}
-                    <HorizontalSeparatorDiv data-size='0.5' />
-                    {i < 0 ? t('el:button-add') : t('el:button-remove')}
-                  </HighContrastFlatknapp>
-                  {_seeNewForm && i < 0 && (
-                    <>
-                      <HorizontalSeparatorDiv />
-                      <HighContrastFlatknapp
-                        mini
-                        kompakt
-                        onClick={onCancel}
-                      >
-                        {t('el:button-cancel')}
-                      </HighContrastFlatknapp>
-                    </>
-                  )}
-                </div>
-                )}
+            <AddRemovePanel
+              candidateForDeletion={candidateForDeletion}
+              existingItem={(i >= 0)}
+              marginTop={true}
+              onBeginRemove={() => addCandidateForDeletion(key!)}
+              onConfirmRemove={() => onRemove(i)}
+              onCancelRemove={() => removeCandidateForDeletion(key!)}
+              onAddNew={onAdd}
+              onCancelNew={onCancel}
+            />
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv data-size='2' />

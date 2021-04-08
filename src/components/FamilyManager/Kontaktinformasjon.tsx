@@ -1,13 +1,13 @@
 import Add from 'assets/icons/Add'
-import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Select/Select'
-import { AlignStartRow, FlexCenterDiv, PaddedDiv } from 'components/StyledComponents'
+import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { Epost, ReplySed, Telefon } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { Normaltekst, UndertekstBold } from 'nav-frontend-typografi'
+import { UndertekstBold } from 'nav-frontend-typografi'
 import {
   Column,
   HighContrastFlatknapp,
@@ -232,7 +232,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
 
   const renderTelefonRow = (_t: Telefon | null, i: number) => {
     const key = _t ? getKey(_t) : 'new'
-    const candidateForDeletion = i < 0 ? false : key && _confirmDelete.indexOf(key) >= 0
+    const candidateForDeletion = i < 0 ? false : !!key && _confirmDelete.indexOf(key) >= 0
 
     return (
       <>
@@ -264,55 +264,16 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
             />
           </Column>
           <Column>
-            {candidateForDeletion
-              ? (
-                <FlexCenterDiv className={classNames('slideInFromRight')}>
-                  <Normaltekst>
-                    {t('label:are-you-sure')}
-                  </Normaltekst>
-                  <HorizontalSeparatorDiv data-size='0.5' />
-                  <HighContrastFlatknapp
-                    mini
-                    kompakt
-                    onClick={() => onTelefonRemoved(i)}
-                  >
-                    {t('label:yes')}
-                  </HighContrastFlatknapp>
-                  <HorizontalSeparatorDiv data-size='0.5' />
-                  <HighContrastFlatknapp
-                    mini
-                    kompakt
-                    onClick={() => removeCandidateForDeletion(key!)}
-                  >
-                    {t('label:no')}
-                  </HighContrastFlatknapp>
-                </FlexCenterDiv>
-                )
-              : (
-                <div className={classNames('slideInFromRight')}>
-                  <HighContrastFlatknapp
-                    mini
-                    kompakt
-                    onClick={() => i < 0 ? onTelefonAdd() : addCandidateForDeletion(key!)}
-                  >
-                    {i < 0 ? <Add /> : <Trashcan />}
-                    <HorizontalSeparatorDiv data-size='0.5' />
-                    {i < 0 ? t('el:button-add') : t('el:button-remove')}
-                  </HighContrastFlatknapp>
-                  {_seeNewTelefonForm && i < 0 && (
-                    <>
-                      <HorizontalSeparatorDiv />
-                      <HighContrastFlatknapp
-                        mini
-                        kompakt
-                        onClick={onCancel}
-                      >
-                        {t('el:button-cancel')}
-                      </HighContrastFlatknapp>
-                    </>
-                  )}
-                </div>
-                )}
+            <AddRemovePanel
+              candidateForDeletion={candidateForDeletion}
+              existingItem={(i >= 0)}
+              marginTop={false}
+              onBeginRemove={() => addCandidateForDeletion(key!)}
+              onConfirmRemove={() => onTelefonRemoved(i)}
+              onCancelRemove={() => removeCandidateForDeletion(key!)}
+              onAddNew={onTelefonAdd}
+              onCancelNew={() => onCancel('telefon')}
+              />
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />
@@ -322,7 +283,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
 
   const renderEpostRow = (e: Epost | null, i: number) => {
     const key = e ? getKey(e) : 'new'
-    const candidateForDeletion = i < 0 ? false : key && _confirmDelete.indexOf(key) >= 0
+    const candidateForDeletion = i < 0 ? false : !!key && _confirmDelete.indexOf(key) >= 0
 
     return (
       <>
@@ -341,55 +302,16 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
             />
           </Column>
           <Column>
-            {candidateForDeletion
-              ? (
-                <FlexCenterDiv className={classNames('slideInFromRight')}>
-                  <Normaltekst>
-                    {t('label:are-you-sure')}
-                  </Normaltekst>
-                  <HorizontalSeparatorDiv data-size='0.5' />
-                  <HighContrastFlatknapp
-                    mini
-                    kompakt
-                    onClick={() => onEpostRemoved(i)}
-                  >
-                    {t('label:yes')}
-                  </HighContrastFlatknapp>
-                  <HorizontalSeparatorDiv data-size='0.5' />
-                  <HighContrastFlatknapp
-                    mini
-                    kompakt
-                    onClick={() => removeCandidateForDeletion(key!)}
-                  >
-                    {t('label:no')}
-                  </HighContrastFlatknapp>
-                </FlexCenterDiv>
-                )
-              : (
-                <div>
-                  <HighContrastFlatknapp
-                    mini
-                    kompakt
-                    onClick={() => i < 0 ? onEpostAdd() : addCandidateForDeletion(key!)}
-                  >
-                    {i < 0 ? <Add /> : <Trashcan />}
-                    <HorizontalSeparatorDiv data-size='0.5' />
-                    {i < 0 ? t('el:button-add') : t('el:button-remove')}
-                  </HighContrastFlatknapp>
-                  {_seeNewTelefonForm && i < 0 && (
-                    <>
-                      <HorizontalSeparatorDiv />
-                      <HighContrastFlatknapp
-                        mini
-                        kompakt
-                        onClick={onCancel}
-                      >
-                        {t('el:button-cancel')}
-                      </HighContrastFlatknapp>
-                    </>
-                  )}
-                </div>
-                )}
+            <AddRemovePanel
+              candidateForDeletion={candidateForDeletion}
+              existingItem={(i >= 0)}
+              marginTop={false}
+              onBeginRemove={() => addCandidateForDeletion(key!)}
+              onConfirmRemove={() => onEpostRemoved(i)}
+              onCancelRemove={() => removeCandidateForDeletion(key!)}
+              onAddNew={onEpostAdd}
+              onCancelNew={() => onCancel('epost')}
+            />
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />

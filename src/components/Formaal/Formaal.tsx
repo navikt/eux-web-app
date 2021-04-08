@@ -1,6 +1,6 @@
 import { setReplySed } from 'actions/svarpased'
 import Add from 'assets/icons/Add'
-import Trashcan from 'assets/icons/Trashcan'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Select/Select'
 import { FlexCenterDiv } from 'components/StyledComponents'
 import { Option, Options } from 'declarations/app'
@@ -103,41 +103,13 @@ const Formaal: React.FC<FormaalProps> = ({
             <Normaltekst>
               {_.find(formaalOptions, _f => _f.value === formaal)?.label}
             </Normaltekst>
-            {candidateForDeletion
-              ? (
-                <FlexCenterDiv className='slideInFromRight'>
-                  <Normaltekst>
-                    {t('label:are-you-sure')}
-                  </Normaltekst>
-                  <HorizontalSeparatorDiv data-size='0.5' />
-                  <HighContrastFlatknapp
-                    mini
-                    kompakt
-                    onClick={() => onRemoveFormaal(formaal)}
-                  >
-                    {t('label:yes')}
-                  </HighContrastFlatknapp>
-                  <HorizontalSeparatorDiv data-size='0.5' />
-                  <HighContrastFlatknapp
-                    mini
-                    kompakt
-                    onClick={() => removeCandidateForDeletion(formaal)}
-                  >
-                    {t('label:no')}
-                  </HighContrastFlatknapp>
-                </FlexCenterDiv>
-                )
-              : (
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
-                  onClick={() => addCandidateForDeletion(formaal)}
-                >
-                  <Trashcan />
-                  <HorizontalSeparatorDiv data-size='0.5' />
-                  {t('el:button-remove')}
-                </HighContrastFlatknapp>
-                )}
+            <AddRemovePanel
+              candidateForDeletion={candidateForDeletion}
+              existingItem={true}
+              onBeginRemove={() => addCandidateForDeletion(formaal)}
+              onConfirmRemove={() => onRemoveFormaal(formaal)}
+              onCancelRemove={() => removeCandidateForDeletion(formaal)}
+            />
           </FlexCenterDiv>
         )
       })}

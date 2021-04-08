@@ -1,8 +1,8 @@
 import Add from 'assets/icons/Add'
-import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Select/Select'
-import { AlignStartRow, FlexCenterDiv, PaddedDiv } from 'components/StyledComponents'
+import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import { PensjonPeriode, Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -19,7 +19,7 @@ import {
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { OptionsType } from 'react-select'
-import { validatePeriode, validatePensjonPeriode } from 'validation/trygdeordninger'
+import { validatePensjonPeriode, validatePeriode } from 'validation/trygdeordninger'
 
 interface TrygdeordningProps {
   highContrast: boolean
@@ -337,55 +337,16 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
     key :string
   ): JSX.Element => (
     <Column>
-      {candidateForDeletion
-        ? (
-          <FlexCenterDiv className={classNames('slideInFromRight')}>
-            <Normaltekst>
-              {t('label:are-you-sure')}
-            </Normaltekst>
-            <HorizontalSeparatorDiv data-size='0.5' />
-            <HighContrastFlatknapp
-              mini
-              kompakt
-              onClick={() => onRemove(pageCategory, sedCategory, index)}
-            >
-              {t('label:yes')}
-            </HighContrastFlatknapp>
-            <HorizontalSeparatorDiv data-size='0.5' />
-            <HighContrastFlatknapp
-              mini
-              kompakt
-              onClick={() => removeCandidateForDeletion(pageCategory, key!)}
-            >
-              {t('label:no')}
-            </HighContrastFlatknapp>
-          </FlexCenterDiv>
-          )
-        : (
-          <div>
-            <HighContrastFlatknapp
-              mini
-              kompakt
-              onClick={() => index < 0 ? onAdd(pageCategory) : addCandidateForDeletion(pageCategory, key!)}
-            >
-              {index < 0 ? <Add /> : <Trashcan />}
-              <HorizontalSeparatorDiv data-size='0.5' />
-              {index < 0 ? t('el:button-add') : t('el:button-remove')}
-            </HighContrastFlatknapp>
-            {_seeNewForm[pageCategory] && index < 0 && (
-              <>
-                <HorizontalSeparatorDiv />
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
-                  onClick={() => onCancel(pageCategory)}
-                >
-                  {t('el:button-cancel')}
-                </HighContrastFlatknapp>
-              </>
-            )}
-          </div>
-          )}
+      <AddRemovePanel
+        candidateForDeletion={candidateForDeletion}
+        existingItem={(index >= 0)}
+        marginTop={false}
+        onBeginRemove={() =>  addCandidateForDeletion(pageCategory, key!)}
+        onConfirmRemove={() => onRemove(pageCategory, sedCategory, index)}
+        onCancelRemove={() => removeCandidateForDeletion(pageCategory, key!)}
+        onAddNew={() => onAdd(pageCategory)}
+        onCancelNew={() => onCancel(pageCategory)}
+        />
     </Column>
   )
 
