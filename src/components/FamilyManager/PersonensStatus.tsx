@@ -87,6 +87,7 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
           arbeidsforholdList={arbeidsforholdList}
           getArbeidsforholdList={getArbeidsforholdList}
           gettingArbeidsforholdList={gettingArbeidsforholdList}
+          onArbeidsforholdSelectionChange={() => {}}
           replySed={replySed}
           personID={personID}
         />

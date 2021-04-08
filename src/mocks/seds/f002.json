@@ -9,10 +9,12 @@
       "foedselsdato": "01.01.2020",
       "statsborgerskap": [
         {
-          "land": "NO"
+          "land": "NO",
+          "fradato": "2020-01-01"
         },
         {
-          "land": "SE"
+          "land": "SE",
+          "fradato": "2020-01-01"
         }
       ],
       "pin": [

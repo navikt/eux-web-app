@@ -20,7 +20,8 @@ import { useTranslation } from 'react-i18next'
 export interface AnsattProps {
   arbeidsforholdList: Array<Arbeidsforholdet>
   gettingArbeidsforholdList: boolean
-  getArbeidsforholdList: (fnr: string | undefined) => void,
+  getArbeidsforholdList: (fnr: string | undefined) => void
+  onArbeidsforholdSelectionChange: (a: Array<Arbeidsforholdet>) => void
   replySed: ReplySed,
   personID: string
 }
@@ -29,6 +30,7 @@ const Ansatt: React.FC<AnsattProps> = ({
   arbeidsforholdList,
   getArbeidsforholdList,
   gettingArbeidsforholdList,
+  onArbeidsforholdSelectionChange,
   personID,
   replySed
 }: AnsattProps) => {
@@ -43,7 +45,7 @@ const Ansatt: React.FC<AnsattProps> = ({
   const [_newNavn, setNewNavn] = useState<string>('')
 
   const [_seeNewArbeidsperiode, setSeeNewArbeidsperiode] = useState<boolean>(false)
-  const [_valgteArbeidsforhold, setValgtArbeidsforhold] = useState<Array<Arbeidsforholdet>>([])
+  const [_valgteArbeidsforhold, _setValgtArbeidsforhold] = useState<Array<Arbeidsforholdet>>([])
   const [_validation, setValidation] = useState<Validation>({})
 
   const fnr: string | undefined = _.find(_.get(replySed, `${personID}.personInfo.pin`), p => p.land === 'NO')?.identifikator
@@ -92,6 +94,11 @@ const Ansatt: React.FC<AnsattProps> = ({
     }
     setValidation(validation)
     return hasNoValidationErrors(validation)
+  }
+
+  const setValgtArbeidsforhold = (a: Array<Arbeidsforholdet>) => {
+    _setValgtArbeidsforhold(a)
+    onArbeidsforholdSelectionChange(a)
   }
 
   const onArbeidsforholdSelect = (item: any, checked: boolean) => {

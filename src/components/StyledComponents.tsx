@@ -29,10 +29,14 @@ export const FullWidthDiv = styled.div`
   width: 100%;
 `
 export const PileCenterDiv = styled(PileDiv)`
-  align-items: center
+  align-items: center;
 `
 export const FlexCenterDiv = styled(FlexDiv)`
   align-items: center;
+  justify-content: space-between;
+`
+export const FlexStartDiv = styled(FlexDiv)`
+  align-items: flex-start;
   justify-content: space-between;
 `
 export const PaddedDiv = styled.div`
@@ -105,4 +109,12 @@ export const TextAreaDiv = styled.div`
   textarea {
     width: 100%;
   }
+`
+export const Etikett = styled.div`
+  padding: 0.35rem;
+  color:  ${({ theme }) => theme[themeKeys.MAIN_FONT_COLOR]} !important;
+  background-color: ${({ theme }) => theme[themeKeys.MAIN_BACKGROUND_COLOR]};
+  border-radius: 5px;
+  border: 1px solid ${({ theme }) => theme[themeKeys.MAIN_BORDER_COLOR]};
+  display: inline-block;
 `

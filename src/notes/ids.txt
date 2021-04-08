@@ -1,147 +1,152 @@
 IDs 									                                             	VALIDATION
 
-c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-navn-text      - {INTERNAL}
-c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-orgnr-text     - {INTERNAL}
-c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-startdato-date - {INTERNAL}
-c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-sluttdato-date - {INTERNAL}
+ok c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-navn-text      - {INTERNAL} not used
+ok c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-orgnr-text     - {INTERNAL} not used
+ok c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-startdato-date - {INTERNAL} selected: {person}.aktivitet.perioderMedAktivitet.perioder[].startdato
+ok c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-sluttdato-date - {INTERNAL} selected: {person}.aktivitet.perioderMedAktivitet.perioder[].sluttdato
 
-c-familymanager-addpersonmodal-fnr-text       - {INTERNAL}
-c-familymanager-addpersonmodal-navn-text      - {INTERNAL}
-c-familymanager-addpersonmodal-relasjon-text  - {INTERNAL}
+ok c-familymanager-addpersonmodal-fnr-text       - {INTERNAL} not used
+ok c-familymanager-addpersonmodal-navn-text      - {INTERNAL} not used
+ok c-familymanager-addpersonmodal-relasjon-text  - {INTERNAL} not used
 
-c-familymanager-{personID}-adresser-type-text            - {INTERNAL}
-c-familymanager-{personID}-adresser-gate-text            - {INTERNAL}
-c-familymanager-{personID}-adresser-postnummer-text      - {INTERNAL}
-c-familymanager-{personID}-adresser-by-text              - {INTERNAL}
-c-familymanager-{personID}-adresser-land-text            - {INTERNAL}
-c-familymanager-{personID}-adresser-bygning-text         - {INTERNAL}
-c-familymanager-{personID}-adresser-region-text          - {INTERNAL}
-c-familymanager-{personID}-adresser[{i}]-type-text       - {GLOBAL}
-c-familymanager-{personID}-adresser[{i}]-gate-text       - {GLOBAL}
-c-familymanager-{personID}-adresser[{i}]-postnummer-text - {GLOBAL}
-c-familymanager-{personID}-adresser[{i}]-by-text         - {GLOBAL}
-c-familymanager-{personID}-adresser[{i}]-land-text       - {GLOBAL}
-c-familymanager-{personID}-adresser[{i}]-bygning-text    - {GLOBAL}
-c-familymanager-{personID}-adresser[{i}]-region-text     - {GLOBAL}
+ok c-familymanager-{personID}-adresser-type-text            - {INTERNAL} not used
+ok c-familymanager-{personID}-adresser-gate-text            - {INTERNAL} not used
+ok c-familymanager-{personID}-adresser-postnummer-text      - {INTERNAL} not used
+ok c-familymanager-{personID}-adresser-by-text              - {INTERNAL} not used
+ok c-familymanager-{personID}-adresser-land-text            - {INTERNAL} not used
+ok c-familymanager-{personID}-adresser-bygning-text         - {INTERNAL} not used
+ok c-familymanager-{personID}-adresser-region-text          - {INTERNAL} not used
+ok c-familymanager-{personID}-adresser[{i}]-type-text       - {GLOBAL}   {person}.adresser[].type
+ok c-familymanager-{personID}-adresser[{i}]-gate-text       - {GLOBAL}   {person}.adresser[].gate
+ok c-familymanager-{personID}-adresser[{i}]-postnummer-text - {GLOBAL}   {person}.adresser[].postnummer
+ok c-familymanager-{personID}-adresser[{i}]-by-text         - {GLOBAL}   {person}.adresser[].by
+ok c-familymanager-{personID}-adresser[{i}]-land-text       - {GLOBAL}   {person}.adresser[].land
+ok c-familymanager-{personID}-adresser[{i}]-bygning-text    - {GLOBAL}   {person}.adresser[].bygning
+ok c-familymanager-{personID}-adresser[{i}]-region-text     - {GLOBAL}   {person}.adresser[].region
 
-c-familymanager-{personID}-beløpNavnOgValuta-name-text         - {GLOBAL}
-c-familymanager-{personID}-beløpNavnOgValuta-benefitCause-text - {GLOBAL}
-c-familymanager-{personID}-beløpNavnOgValuta-amount-text       - {GLOBAL}
-c-familymanager-{personID}-beløpNavnOgValuta-currency-text     - {GLOBAL}
-c-familymanager-{personID}-beløpNavnOgValuta-startdato-date    - {GLOBAL}
-c-familymanager-{personID}-beløpNavnOgValuta-sluttdato-date    - {GLOBAL}
-c-familymanager-{personID}-beløpNavnOgValuta-receiver-text     - {GLOBAL}
-c-familymanager-{personID}-beløpNavnOgValuta-frequency-text    - {GLOBAL}
+barn:
+ok c-familymanager-{personID}-beløpNavnOgValuta-name-text         - {GLOBAL} barn[].ytelse.barnetsNavn
+ok c-familymanager-{personID}-beløpNavnOgValuta-benefitCause-text - {GLOBAL} barn[].ytelse.ytelseNavn
+ok c-familymanager-{personID}-beløpNavnOgValuta-amount-text       - {GLOBAL} barn[].ytelse.beloep
+ok c-familymanager-{personID}-beløpNavnOgValuta-currency-text     - {GLOBAL} barn[].ytelse.valuta
+ok c-familymanager-{personID}-beløpNavnOgValuta-startdato-date    - {GLOBAL} barn[].ytelse.startdato
+ok c-familymanager-{personID}-beløpNavnOgValuta-sluttdato-date    - {GLOBAL} barn[].ytelse.sluttdato
+ok c-familymanager-{personID}-beløpNavnOgValuta-receiver-text     - {GLOBAL} barn[].ytelse.mottakersNavn
+ok c-familymanager-{personID}-beløpNavnOgValuta-frequency-text    - {GLOBAL} barn[].ytelse.utbetalingshyppighet
 
-c-familymanager-{personID}-familierelasjon-relasjontype-text                 - {INTERNAL}
-c-familymanager-{personID}-familierelasjon-startdato-date                    - {INTERNAL}
-c-familymanager-{personID}-familierelasjon-sluttdato-date                    - {INTERNAL}
-c-familymanager-{personID}-familierelasjon-annenrelasjontype-text            - {INTERNAL}
-c-familymanager-{personID}-familierelasjon-annenrelasjonpersonnavn-text      - {INTERNAL}
-c-familymanager-{personID}-familierelasjon-annenrelasjondato-date            - {INTERNAL}
-c-familymanager-{personID}-familierelasjon-borsammen-text                    - {INTERNAL}
-c-familymanager-{personID}-familierelasjon[{i}]-relasjontype-text            - {GLOBAL}
-c-familymanager-{personID}-familierelasjon[{i}]-startdato-date               - {GLOBAL}
-c-familymanager-{personID}-familierelasjon[{i}]-sluttdato-date               - {GLOBAL}
-c-familymanager-{personID}-familierelasjon[{i}]-annenrelasjontype-text       - {GLOBAL}
-c-familymanager-{personID}-familierelasjon[{i}]-annenrelasjonpersonnavn-text - {GLOBAL}
-c-familymanager-{personID}-familierelasjon[{i}]-annenrelasjondato-date       - {GLOBAL}
-c-familymanager-{personID}-familierelasjon[{i}]-borsammen-text               - {GLOBAL}
+ok c-familymanager-{personID}-familierelasjon-relasjontype-text                 - {INTERNAL} not used
+ok c-familymanager-{personID}-familierelasjon-startdato-date                    - {INTERNAL} not used
+ok c-familymanager-{personID}-familierelasjon-sluttdato-date                    - {INTERNAL} not used
+ok c-familymanager-{personID}-familierelasjon-annenrelasjontype-text            - {INTERNAL} not used
+ok c-familymanager-{personID}-familierelasjon-annenrelasjonpersonnavn-text      - {INTERNAL} not used
+ok c-familymanager-{personID}-familierelasjon-annenrelasjondato-date            - {INTERNAL} not used
+ok c-familymanager-{personID}-familierelasjon-borsammen-text                    - {INTERNAL} not used
+ok c-familymanager-{personID}-familierelasjon[{i}]-relasjontype-text            - {GLOBAL}   {person}.familierelasjoner[].relasjonType
+ok c-familymanager-{personID}-familierelasjon[{i}]-startdato-date               - {GLOBAL}   {person}.familierelasjoner[].periode.startdato
+ok c-familymanager-{personID}-familierelasjon[{i}]-sluttdato-date               - {GLOBAL}   {person}.familierelasjoner[].periode.sluttdato
+ok c-familymanager-{personID}-familierelasjon[{i}]-annenrelasjontype-text       - {GLOBAL}   {person}.familierelasjoner[].annenRelasjonType
+ok c-familymanager-{personID}-familierelasjon[{i}]-annenrelasjonpersonnavn-text - {GLOBAL}   {person}.familierelasjoner[].annenRelasjonPersonNavn
+ok c-familymanager-{personID}-familierelasjon[{i}]-annenrelasjondato-date       - {GLOBAL}   {person}.familierelasjoner[].annenRelasjonDato
+ok c-familymanager-{personID}-familierelasjon[{i}]-borsammen-text               - {GLOBAL}   {person}.familierelasjoner[].borSammen
 
-c-familymanager-{personID}-familieytelser-number-text       - {GLOBAL}
-c-familymanager-{personID}-familieytelser-benefitCause-text - {GLOBAL}
-c-familymanager-{personID}-familieytelser-amount-text       - {GLOBAL}
-c-familymanager-{personID}-familieytelser-currency-text     - {GLOBAL}
-c-familymanager-{personID}-familieytelser-startdato-date    - {GLOBAL}
-c-familymanager-{personID}-familieytelser-sluttdato-date    - {GLOBAL}
-c-familymanager-{personID}-familieytelser-receiver-text     - {GLOBAL}
-c-familymanager-{personID}-familieytelser-frequency-text    - {GLOBAL}
+hele familien
+ok c-familymanager-{personID}-familieytelser-number-text       - {GLOBAL} familie.motregninger[].antallPersoner
+ok c-familymanager-{personID}-familieytelser-benefitCause-text - {GLOBAL} familie.motregninger[].ytelseNavn
+ok c-familymanager-{personID}-familieytelser-amount-text       - {GLOBAL} familie.motregninger[].beloep
+ok c-familymanager-{personID}-familieytelser-currency-text     - {GLOBAL} familie.motregninger[].valuta
+ok c-familymanager-{personID}-familieytelser-startdato-date    - {GLOBAL} familie.motregninger[].startdato
+ok c-familymanager-{personID}-familieytelser-sluttdato-date    - {GLOBAL} familie.motregninger[].sluttdato
+ok c-familymanager-{personID}-familieytelser-receiver-text     - {GLOBAL} familie.motregninger[].mottakersNavn
+ok c-familymanager-{personID}-familieytelser-frequency-text    - {GLOBAL} familie.motregninger[].utbetalingshyppighet
 
-c-familymanager-{personID}-grunnlagforbosetting-startdato-date    - {GLOBAL}
-c-familymanager-{personID}-grunnlagforbosetting-sluttdato-date    - {GLOBAL}
-c-familymanager-{personID}-grunnlagforbosetting-mottakerdato-text - {GLOBAL}
-c-familymanager-{personID}-grunnlagforbosetting-avsenderdato-text - {GLOBAL}
-c-familymanager-{personID}-grunnlagforbosetting-elementer-text    - {GLOBAL}
+barn
+ok c-familymanager-{personID}-grunnlagforbosetting-startdato-date    - {GLOBAL} barn[].flyttegrunn.perioder[].startdato
+ok c-familymanager-{personID}-grunnlagforbosetting-sluttdato-date    - {GLOBAL} barn[].flyttegrunn.perioder[].sluttdato
+ok c-familymanager-{personID}-grunnlagforbosetting-mottakerdato-text - {GLOBAL} barn[].flyttegrunn.personligSituasjon
+ok c-familymanager-{personID}-grunnlagforbosetting-avsenderdato-text - {GLOBAL} barn[].flyttegrunn.datoFlyttetTilAvsenderlandet
+ok c-familymanager-{personID}-grunnlagforbosetting-elementer-text    - {GLOBAL} barn[].flyttegrunn.datoFlyttetTilMottakerlandet
 
-c-familymanager-{personID}-kontaktinformasjon-telefon-nummer-text      - {INTERNAL}
-c-familymanager-{personID}-kontaktinformasjon-telefon-type-text        - {INTERNAL}
-c-familymanager-{personID}-kontaktinformasjon-epost-adresse-text       - {INTERNAL}
-c-familymanager-{personID}-kontaktinformasjon[{i}]-telefon-nummer-text - {GLOBAL}
-c-familymanager-{personID}-kontaktinformasjon[{i}]-telefon-type-text   - {GLOBAL}
-c-familymanager-{personID}-kontaktinformasjon[{i}]-epost-adresse-text  - {GLOBAL}
+ok c-familymanager-{personID}-kontaktinformasjon-telefon-nummer-text      - {INTERNAL} not used
+ok c-familymanager-{personID}-kontaktinformasjon-telefon-type-text        - {INTERNAL} not used
+ok c-familymanager-{personID}-kontaktinformasjon-epost-adresse-text       - {INTERNAL} not used
+ok c-familymanager-{personID}-kontaktinformasjon[{i}]-telefon-nummer-text - {GLOBAL}   {person}.telefon[].nummer
+ok c-familymanager-{personID}-kontaktinformasjon[{i}]-telefon-type-text   - {GLOBAL}   {person}.telefon[].type
+ok c-familymanager-{personID}-kontaktinformasjon[{i}]-epost-adresse-text  - {GLOBAL}   {person}.epost[].adresse
 
-c-familymanager-{personID}-nasjonaliteter-land-text         - {INTERNAL}
-c-familymanager-{personID}-nasjonaliteter-fomdato-date      - {INTERNAL}
-c-familymanager-{personID}-nasjonaliteter[{i}]-land-text    - {GLOBAL}
-c-familymanager-{personID}-nasjonaliteter[{i}]-fomdato-text - {GLOBAL}
+ok c-familymanager-{personID}-nasjonaliteter-land-text         - {INTERNAL} not used
+ok c-familymanager-{personID}-nasjonaliteter-fomdato-date      - {INTERNAL} not used
+ok c-familymanager-{personID}-nasjonaliteter[{i}]-land-text    - {GLOBAL}   {person}.personinfo.statsborgerskap.land
+ok c-familymanager-{personID}-nasjonaliteter[{i}]-fomdato-text - {GLOBAL}   {person}.personinfo.statsborgerskap.fradato
 
-c-familymanager-{personID}-personopplysninger-fornavn-text              - {GLOBAL}
-c-familymanager-{personID}-personopplysninger-etternavn-text            - {GLOBAL}
-c-familymanager-{personID}-personopplysninger-foedselsdato-text         - {GLOBAL}
-c-familymanager-{personID}-personopplysninger-kjoenn-radiogroup         - {GLOBAL}
-c-familymanager-{personID}-personopplysninger-utenlandskpin-nummer-text - {GLOBAL}
-c-familymanager-{personID}-personopplysninger-utenlandskpin-land-text   - {GLOBAL}
-c-familymanager-{personID}-personopplysninger-norskpin-nummer-text      - {GLOBAL}
-c-familymanager-{personID}-personopplysninger-fodested-by-text          - {GLOBAL}
-c-familymanager-{personID}-personopplysninger-fodested-region-text      - {GLOBAL}
-c-familymanager-{personID}-personopplysninger-fodested-land-text        - {GLOBAL}
+ok c-familymanager-{personID}-personopplysninger-fornavn-text              - {GLOBAL} {person}.personInfo.fornavn
+ok c-familymanager-{personID}-personopplysninger-etternavn-text            - {GLOBAL} {person}.personInfo.etternavn
+ok c-familymanager-{personID}-personopplysninger-foedselsdato-text         - {GLOBAL} {person}.personInfo.foedselsdato
+ok c-familymanager-{personID}-personopplysninger-kjoenn-radiogroup         - {GLOBAL} {person}.personInfo.kjoenn
+ok c-familymanager-{personID}-personopplysninger-utenlandskpin-nummer-text - {GLOBAL} {person}.personInfo.pin[].identifikator
+ok c-familymanager-{personID}-personopplysninger-utenlandskpin-land-text   - {GLOBAL} {person}.personInfo.pin[].land
+ok c-familymanager-{personID}-personopplysninger-norskpin-nummer-text      - {GLOBAL} {person}.personInfo.pin[].identifikator
+ok c-familymanager-{personID}-personopplysninger-fodested-by-text          - {GLOBAL} {person}.personInfo.pinMangler.fodested.by
+ok c-familymanager-{personID}-personopplysninger-fodested-region-text      - {GLOBAL} {person}.personInfo.pinMangler.fodested.region
+ok c-familymanager-{personID}-personopplysninger-fodested-land-text        - {GLOBAL} {person}.personInfo.pinMangler.fodested.land
 
-c-familymanager-{personID}-personensstatus-type-text                           - {GLOBAL}
+ok c-familymanager-{personID}-personensstatus-type-text                        - {GLOBAL} {person}.aktivitet.perioderMedAktivitet.type = 'ansatt'
 c-familymanager-{personID}-personensstatus-avsenderlandet-startdato-date       - {GLOBAL}
 c-familymanager-{personID}-personensstatus-avsenderlandet-sluttdato-date       - {GLOBAL}
-c-familymanager-{personID}-personensstatus-ansatt-startdato-date               - {INTERNAL}
-c-familymanager-{personID}-personensstatus-ansatt-sluttdato-date               - {INTERNAL}
-c-familymanager-{personID}-personensstatus-ansatt-orgnr-text                   - {INTERNAL}
-c-familymanager-{personID}-personensstatus-ansatt-navn-text                    - {INTERNAL}
-c-familymanager-{personID}-personensstatus-notansatt-startdato-date            - {INTERNAL}
-c-familymanager-{personID}-personensstatus-notansatt-sluttdato-date            - {INTERNAL}
+ok c-familymanager-{personID}-personensstatus-ansatt-startdato-date            - {INTERNAL} not used
+ok c-familymanager-{personID}-personensstatus-ansatt-sluttdato-date            - {INTERNAL} not used
+ok c-familymanager-{personID}-personensstatus-ansatt-orgnr-text                - {INTERNAL} not used
+ok c-familymanager-{personID}-personensstatus-ansatt-navn-text                 - {INTERNAL} not used
+
+c-familymanager-{personID}-personensstatus-notansatt-startdato-date            - {INTERNAL} not used
+c-familymanager-{personID}-personensstatus-notansatt-sluttdato-date            - {INTERNAL} not used
 c-familymanager-{personID}-personensstatus-notansatt-comment-text              - {GLOBAL}
 c-familymanager-{personID}-personensstatus-notansatt[{i}]-startdato-date       - {GLOBAL}
 c-familymanager-{personID}-personensstatus-notansatt[{i}]-sluttdato-date       - {GLOBAL}
-c-familymanager-{personID}-personensstatus-withsubsidies-startdato-date        - {INTERNAL}
-c-familymanager-{personID}-personensstatus-withsubsidies-sluttdato-date        - {INTERNAL}
-c-familymanager-{personID}-personensstatus-withsubsidies-pensjonytpe-text      - {INTERNAL}
+c-familymanager-{personID}-personensstatus-withsubsidies-startdato-date        - {INTERNAL} not used
+c-familymanager-{personID}-personensstatus-withsubsidies-sluttdato-date        - {INTERNAL} not used
+c-familymanager-{personID}-personensstatus-withsubsidies-pensjonytpe-text      - {INTERNAL} not used
 c-familymanager-{personID}-personensstatus-withsubsidies[{i}]-startdato-date   - {GLOBAL}
 c-familymanager-{personID}-personensstatus-withsubsidies[{i}]-sluttdato-date   - {GLOBAL}
 c-familymanager-{personID}-personensstatus-withsubsidies[{i}]-pensjonytpe-text - {GLOBAL}
-c-familymanager-{personID}-personensstatus-reasontocome-startdato-date         - {GLOBAL}
-c-familymanager-{personID}-personensstatus-reasontocome-sluttdato-date         - {GLOBAL}
-c-familymanager-{personID}-personensstatus-reasontocome-sender-text            - {GLOBAL}
-c-familymanager-{personID}-personensstatus-reasontocome-receiver-text          - {GLOBAL}
+?? c-familymanager-{personID}-personensstatus-reasontocome-startdato-date      - {GLOBAL} {person}.flyttegrunn.perioder[].startdato ???
+?? c-familymanager-{personID}-personensstatus-reasontocome-sluttdato-date      - {GLOBAL} {person}.flyttegrunn.perioder[].sluttdato ???
+ok c-familymanager-{personID}-personensstatus-reasontocome-sender-text         - {GLOBAL} {person}.flyttegrunn.datoFlyttetTilAvsenderlandet
+ok c-familymanager-{personID}-personensstatus-reasontocome-receiver-text       - {GLOBAL} {person}.flyttegrunn.datoFlyttetTilMottakerlandet
 
-c-familymanager-{personID}-relasjon-med-radioroup             - {GLOBAL}
-c-familymanager-{personID}-relasjon-type-text                 - {GLOBAL}
-c-familymanager-{personID}-relasjon-startdato-date            - {GLOBAL}
-c-familymanager-{personID}-relasjon-sluttdato-date            - {GLOBAL}
-c-familymanager-{personID}-relasjon-bomedsokeren-radioroup    - {GLOBAL}
-c-familymanager-{personID}-relasjon-bomedektefellen-radioroup - {GLOBAL}
-c-familymanager-{personID}-relasjon-bomedaktuelle-radioroup   - {GLOBAL}
-c-familymanager-{personID}-relasjon-boiinstitusjon-radioroup  - {GLOBAL}
+barn
+ok c-familymanager-{personID}-relasjon-med-radioroup             - {GLOBAL} barn[].barnetilhoerigheter.relasjonTilPerson
+ok c-familymanager-{personID}-relasjon-type-text                 - {GLOBAL} barn[].barnetilhoerigheter.relasjonType
+ok c-familymanager-{personID}-relasjon-startdato-date            - {GLOBAL} barn[].barnetilhoerigheter.periode.startdato
+ok c-familymanager-{personID}-relasjon-sluttdato-date            - {GLOBAL} barn[].barnetilhoerigheter.periode.sluttdato
+ok c-familymanager-{personID}-relasjon-foreldreansvar-text       - {GLOBAL} barn[].barnetilhoerigheter.erDeltForeldreansvar
+ok c-familymanager-{personID}-relasjon-bomedsokeren-radioroup    - {GLOBAL} barn[].barnetilhoerigheter.borIBrukersHushold
+ok c-familymanager-{personID}-relasjon-bomedektefellen-radioroup - {GLOBAL} barn[].barnetilhoerigheter.borIEktefellesHushold
+ok c-familymanager-{personID}-relasjon-bomedaktuelle-radioroup   - {GLOBAL} barn[].barnetilhoerigheter.borIAnnenPersonsHushold
+ok c-familymanager-{personID}-relasjon-boiinstitusjon-radioroup  - {GLOBAL} barn[].barnetilhoerigheter.borPaaInstitusjon
 
-c-familymanager-{personID}-trygdeordninger-dekkede-startdato-date         - {INTERNAL}
-c-familymanager-{personID}-trygdeordninger-dekkede-sluttdato-date         - {INTERNAL}
-c-familymanager-{personID}-trygdeordninger-udekkede-startdato-date        - {INTERNAL}
-c-familymanager-{personID}-trygdeordninger-udekkede-sluttdato-date        - {INTERNAL}
-c-familymanager-{personID}-trygdeordninger-familieYtelse-startdato-date   - {INTERNAL}
-c-familymanager-{personID}-trygdeordninger-familieYtelse-sluttdato-date   - {INTERNAL}
-c-familymanager-{personID}-trygdeordninger-familieYtelse-category-text    - {INTERNAL}
-c-familymanager-{personID}-trygdeordninger-familieYtelse-pensjontype-text - {INTERNAL}
+ok c-familymanager-{personID}-trygdeordninger-dekkede-startdato-date                         - {INTERNAL} not used
+ok c-familymanager-{personID}-trygdeordninger-dekkede-sluttdato-date                         - {INTERNAL} not used
+ok c-familymanager-{personID}-trygdeordninger-udekkede-startdato-date                        - {INTERNAL} not used
+ok c-familymanager-{personID}-trygdeordninger-udekkede-sluttdato-date                        - {INTERNAL} not used
+ok c-familymanager-{personID}-trygdeordninger-familieYtelse-startdato-date                   - {INTERNAL} not used
+ok c-familymanager-{personID}-trygdeordninger-familieYtelse-sluttdato-date                   - {INTERNAL} not used
+ok c-familymanager-{personID}-trygdeordninger-familieYtelse-category-text                    - {INTERNAL} not used
+ok c-familymanager-{personID}-trygdeordninger-familieYtelse-pensjontype-text                 - {INTERNAL} not used
+ok c-familymanager-{personID}-trygdeordninger-perioderMedArbeid[i]-startdato-date            - {GLOBAL} {person}.perioderMedArbeid[].startdato
+ok c-familymanager-{personID}-trygdeordninger-perioderMedArbeid[i]-sluttdato-date            - {GLOBAL} {person}.perioderMedArbeid[].sluttdato
+ok c-familymanager-{personID}-trygdeordninger-perioderMedTrygd[i]-startdato-date             - {GLOBAL} {person}.perioderMedTrygd[].startdato
+ok c-familymanager-{personID}-trygdeordninger-perioderMedTrygd[i]-sluttdato-date             - {GLOBAL} {person}.perioderMedTrygd[].sluttdato
+ok c-familymanager-{personID}-trygdeordninger-perioderMedITrygdeordning[i]-startdato-date    - {GLOBAL} {person}.perioderMedITrygdeordning[].startdato
+ok c-familymanager-{personID}-trygdeordninger-perioderMedITrygdeordning[i]-sluttdato-date    - {GLOBAL} {person}.perioderMedITrygdeordning[].sluttdato
+ok c-familymanager-{personID}-trygdeordninger-perioderUtenforTrygdeordning[i]-startdato-date - {GLOBAL} {person}.perioderUtenforTrygdeordning[].startdato
+ok c-familymanager-{personID}-trygdeordninger-perioderUtenforTrygdeordning[i]-sluttdato-date - {GLOBAL} {person}.perioderUtenforTrygdeordning[].sluttdato
+ok c-familymanager-{personID}-trygdeordninger-perioderMedYtelser[i]-startdato-date           - {GLOBAL} {person}.perioderMedYtelser[].startdato
+ok c-familymanager-{personID}-trygdeordninger-perioderMedYtelser[i]-sluttdato-date           - {GLOBAL} {person}.perioderMedYtelser[].sluttdato
+ok c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-periode-startdato-date   - {GLOBAL} {person}.perioderMedPensjon[].periode.startdato
+ok c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-periode-sluttdato-date   - {GLOBAL} {person}.perioderMedPensjon[].periode.sluttdato
+ok c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-pensjontype-text         - {GLOBAL} {person}.perioderMedPensjon[].pensjonstype
 
-c-familymanager-{personID}-trygdeordninger-perioderMedArbeid[i]-startdato-date            - {GLOBAL}
-c-familymanager-{personID}-trygdeordninger-perioderMedArbeid[i]-sluttdato-date            - {GLOBAL}
-c-familymanager-{personID}-trygdeordninger-perioderMedTrygd[i]-startdato-date             - {GLOBAL}
-c-familymanager-{personID}-trygdeordninger-perioderMedTrygd[i]-sluttdato-date             - {GLOBAL}
-c-familymanager-{personID}-trygdeordninger-perioderMedITrygdeordning[i]-startdato-date    - {GLOBAL}
-c-familymanager-{personID}-trygdeordninger-perioderMedITrygdeordning[i]-sluttdato-date    - {GLOBAL}
-c-familymanager-{personID}-trygdeordninger-perioderUtenforTrygdeordning[i]-startdato-date - {GLOBAL}
-c-familymanager-{personID}-trygdeordninger-perioderUtenforTrygdeordning[i]-sluttdato-date - {GLOBAL}
-c-familymanager-{personID}-trygdeordninger-perioderMedYtelser[i]-startdato-date           - {GLOBAL}
-c-familymanager-{personID}-trygdeordninger-perioderMedYtelser[i]-sluttdato-date           - {GLOBAL}
-c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-periode-startdato-date   - {GLOBAL}
-c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-periode-sluttdato-date   - {GLOBAL}
-c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-pensjontype-text         - {GLOBAL}
-
-c-formaal-text - {GLOBAL}
+ok c-formaal-text - {GLOBAL} - formaal
 
 c-kravomrefusjon-krav-text - {GLOBAL}
 

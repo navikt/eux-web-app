@@ -4,7 +4,14 @@ import SentIcon from 'assets/icons/Send'
 import ExternalLink from 'assets/icons/Logout'
 import ReceivedIcon from 'assets/icons/Email'
 import classNames from 'classnames'
-import { HiddenFormContainer } from 'components/StyledComponents'
+import {
+  Etikett,
+  FlexDiv,
+  FlexStartDiv,
+  HiddenFormContainer,
+  PileCenterDiv,
+  PileDiv
+} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { ConnectedSed, Sed, SvarSed, Validation } from 'declarations/types'
 import Flag from 'flagg-ikoner'
@@ -16,6 +23,7 @@ import NavHighContrast, {
   AlignCenterColumn,
   AlignedRow,
   Column,
+  HighContrastFlatknapp,
   HighContrastHovedknapp,
   HighContrastInput,
   HighContrastKnapp,
@@ -23,8 +31,7 @@ import NavHighContrast, {
   HighContrastPanel,
   HighContrastRadioGroup,
   HorizontalSeparatorDiv,
-  RadioElementBorder,
-  themeKeys,
+  RadioElementBorder, themeKeys,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
@@ -35,34 +42,19 @@ import styled from 'styled-components'
 const ContainerDiv = styled.div`
   max-width: 1000px;
 `
-const FlexDiv = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-`
 const LeftDiv = styled.div`
   display: flex;
   align-items: center;
 `
-const PileCenterDiv = styled.div`
-  flex-direction: column;
-  display: flex;
-  align-items: center;
+const FilterDiv = styled(FlexDiv)`
+ .selected {
+    text-decoration: underline;
+    text-decoration: bold;
+    color: ${({theme}) => theme[themeKeys.MAIN_ACTIVE_COLOR]} !important;
+ }
 `
-const PileLeftDiv = styled.div`
-  flex-direction: column;
-  display: flex;
-`
-const Etikett = styled.div`
-  padding: 0.35rem;
-  color:  ${({ theme }) => theme[themeKeys.MAIN_FONT_COLOR]} !important;
-  background-color: ${({ theme }) => theme[themeKeys.MAIN_BACKGROUND_COLOR]};
-  border-radius: 5px;
-  border: 1px solid ${({ theme }) => theme[themeKeys.MAIN_BORDER_COLOR]};
-  display: inline-block;
-`
-const mapState = (state: State): any => ({
 
+const mapState = (state: State): any => ({
   rinasaksnummerOrFnrParam: state.app.params.rinasaksnummerOrFnr,
 
   queryingSaksnummerOrFnr: state.loading.queryingSaksnummerOrFnr,
@@ -101,16 +93,15 @@ const Step1: React.FC<SvarPaSedProps> = ({
 
     highContrast
   }: any = useSelector<State, any>(mapState)
-  const [, setIsFnrValid] = useState<boolean>(false)
-  const [_saksnummerOrFnr, setSaksnummerOrFnr] = useState<string | undefined>(rinasaksnummerOrFnrParam)
+  const [_filter, _setFilter] = useState<string | undefined>(undefined)
+  const [_saksnummerOrFnr, _setSaksnummerOrFnr] = useState<string | undefined>(rinasaksnummerOrFnrParam)
   const [_validation, setValidation] = useState<Validation>({})
 
   const countryInstance: CountryList = CountryData.getCountryInstance('nb')
 
   const onSaksnummerOrFnrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(appActions.cleanData())
-    setSaksnummerOrFnr(e.target.value)
-    setIsFnrValid(false)
+    _setSaksnummerOrFnr(e.target.value)
     resetValidation('saksnummerOrFnr')
   }
 
@@ -120,7 +111,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
         ..._validation,
         saksnummerOrFnr: {
           feilmelding: t('message:validation-noSaksnummerOrFnr'),
-          skjemaelementId: 'svarpased__saksnummerOrFnr-text'
+          skjemaelementId: 'c-step1-saksnummerOrFnr-text'
         } as FeiloppsummeringFeil
       })
     } else {
@@ -164,7 +155,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
     <NavHighContrast highContrast={highContrast}>
       <ContainerDiv>
         <Systemtittel>
-          {t('el:title-svarSed')}
+          {t('el:title-svarsed')}
         </Systemtittel>
         <VerticalSeparatorDiv data-size='2' />
         <AlignedRow
@@ -174,11 +165,11 @@ const Step1: React.FC<SvarPaSedProps> = ({
           <Column data-flex='2'>
             <HighContrastInput
               bredde='fullbredde'
-              data-test-id='svarpased__saksnummerOrFnr-text'
-              feil={_validation.saksnummerOrFnr ? _validation.saksnummerOrFnr.feilmelding : undefined}
+              data-test-id='c-step1-saksnummerOrFnr-text'
+              feil={_validation.saksnummerOrFnr?.feilmelding}
               highContrast={highContrast}
-              id='svarpased__saksnummerOrFnr-text'
-              label={t('label:saksnummerOrFnr')}
+              id='c-step1-saksnummerOrFnr-text'
+              label={t('label:saksnummer-or-fnr')}
               onChange={onSaksnummerOrFnrChange}
               placeholder={t('el:placeholder-input-default')}
               value={_saksnummerOrFnr}
@@ -203,7 +194,32 @@ const Step1: React.FC<SvarPaSedProps> = ({
               saksnummerOrFnr: _saksnummerOrFnr
             })}
           >
-            {seds.map((sed: Sed) => {
+          <>
+            <FilterDiv>
+            <HighContrastFlatknapp
+              mini
+              kompakt
+              className={classNames({selected: _filter === undefined})}
+              onClick={() => _setFilter(undefined)}
+            >
+              {t('label:all') + ' (' +seds.length + ')'}
+            </HighContrastFlatknapp>
+            <HorizontalSeparatorDiv/>
+            <HighContrastFlatknapp
+              mini
+              kompakt
+              className={classNames({selected: _filter === 'FB_'})}
+              onClick={() => _setFilter('FB_')}
+            >
+              {t('label:family-benefits') + ' (' +_.filter(seds, (s: Sed) => s.type.startsWith('FB_')).length + ')'}
+            </HighContrastFlatknapp>
+            <HorizontalSeparatorDiv/>
+          </FilterDiv>
+          <VerticalSeparatorDiv/>
+          </>
+            {seds
+              .filter((s: Sed) => _filter ? s.type.startsWith(_filter): true)
+              .map((sed: Sed) => {
               const country = countryInstance.findByValue(sed.motpartLand)
               return (
                 <div key={sed.type + '-' + sed.description}>
@@ -229,7 +245,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                             <ExternalLink />
                           </HighContrastLink>
                         </LeftDiv>
-                        <FlexDiv style={{ width: '1px' }}>
+                        <FlexStartDiv style={{ width: '1px' }}>
                           <Normaltekst>
                             {t('label:land')}:
                           </Normaltekst>
@@ -244,7 +260,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                           <Normaltekst>
                             {country?.label}
                           </Normaltekst>
-                        </FlexDiv>
+                        </FlexStartDiv>
                         <Normaltekst>
                           {t('label:institusjon') + ': ' + sed.motpartInstitusjon}
                         </Normaltekst>
@@ -277,7 +293,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                             </Undertekst>
                           </PileCenterDiv>
                           <HorizontalSeparatorDiv />
-                          <PileLeftDiv style={{ flex: 2 }}>
+                          <PileDiv style={{ flex: 2 }}>
                             {connectedSed.svarSed.map((s: SvarSed) => (
                               <FlexDiv>
                                 <Undertittel>
@@ -304,7 +320,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                               <HorizontalSeparatorDiv data-size='0.35' />
                               <ExternalLink />
                             </HighContrastLink>
-                          </PileLeftDiv>
+                          </PileDiv>
 
                         </FlexDiv>
                       </HighContrastPanel>
