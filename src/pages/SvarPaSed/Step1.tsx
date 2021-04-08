@@ -1,8 +1,8 @@
 import * as appActions from 'actions/app'
 import * as svarpasedActions from 'actions/svarpased'
-import SentIcon from 'assets/icons/Send'
-import ExternalLink from 'assets/icons/Logout'
 import ReceivedIcon from 'assets/icons/Email'
+import ExternalLink from 'assets/icons/Logout'
+import SentIcon from 'assets/icons/Send'
 import classNames from 'classnames'
 import {
   Etikett,
@@ -14,7 +14,6 @@ import {
 } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { ConnectedSed, Sed, SvarSed, Validation } from 'declarations/types'
-import Flag from 'flagg-ikoner'
 import CountryData, { CountryList } from 'land-verktoy'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
@@ -31,7 +30,8 @@ import NavHighContrast, {
   HighContrastPanel,
   HighContrastRadioGroup,
   HorizontalSeparatorDiv,
-  RadioElementBorder, themeKeys,
+  RadioElementBorder,
+  themeKeys,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
@@ -196,25 +196,25 @@ const Step1: React.FC<SvarPaSedProps> = ({
           >
           <>
             <FilterDiv>
-            <HighContrastFlatknapp
-              mini
-              kompakt
-              className={classNames({selected: _filter === undefined})}
-              onClick={() => _setFilter(undefined)}
-            >
-              {t('label:all') + ' (' +seds.length + ')'}
-            </HighContrastFlatknapp>
-            <HorizontalSeparatorDiv/>
-            <HighContrastFlatknapp
-              mini
-              kompakt
-              className={classNames({selected: _filter === 'FB_'})}
-              onClick={() => _setFilter('FB_')}
-            >
-              {t('label:family-benefits') + ' (' +_.filter(seds, (s: Sed) => s.type.startsWith('FB_')).length + ')'}
-            </HighContrastFlatknapp>
-            <HorizontalSeparatorDiv/>
-          </FilterDiv>
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                className={classNames({selected: _filter === undefined})}
+                onClick={() => _setFilter(undefined)}
+              >
+                {t('label:all') + ' (' +seds.length + ')'}
+              </HighContrastFlatknapp>
+              <HorizontalSeparatorDiv/>
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                className={classNames({selected: _filter === 'FB_'})}
+                onClick={() => _setFilter('FB_')}
+              >
+                {t('label:family-benefits') + ' (' +_.filter(seds, (s: Sed) => s.type.startsWith('FB_')).length + ')'}
+              </HighContrastFlatknapp>
+              <HorizontalSeparatorDiv/>
+            </FilterDiv>
           <VerticalSeparatorDiv/>
           </>
             {seds
@@ -245,25 +245,15 @@ const Step1: React.FC<SvarPaSedProps> = ({
                             <ExternalLink />
                           </HighContrastLink>
                         </LeftDiv>
-                        <FlexStartDiv style={{ width: '1px' }}>
+                        <FlexDiv>
                           <Normaltekst>
-                            {t('label:land')}:
+                            {t('label:motpart')}:
                           </Normaltekst>
                           <HorizontalSeparatorDiv data-size='0.35' />
-                          <Flag
-                            size='XS'
-                            type='circle'
-                            label={country?.label || ''}
-                            country={country?.value || ''}
-                          />
-                          <HorizontalSeparatorDiv data-size='0.35' />
                           <Normaltekst>
-                            {country?.label}
+                            {sed.motpartInstitusjon + ' (' + country?.label + ')'}
                           </Normaltekst>
-                        </FlexStartDiv>
-                        <Normaltekst>
-                          {t('label:institusjon') + ': ' + sed.motpartInstitusjon}
-                        </Normaltekst>
+                        </FlexDiv>
                         <VerticalSeparatorDiv data-size='0.3' />
                         <Etikett>
                           {t('label:lastModified') + ': ' + sed.sistEndretDato}
@@ -295,7 +285,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                           <HorizontalSeparatorDiv />
                           <PileDiv style={{ flex: 2 }}>
                             {connectedSed.svarSed.map((s: SvarSed) => (
-                              <FlexDiv>
+                              <FlexStartDiv>
                                 <Undertittel>
                                   {s.svarSedType} - {s.svarSedDisplay}
                                 </Undertittel>
@@ -307,12 +297,8 @@ const Step1: React.FC<SvarPaSedProps> = ({
                                 >
                                   {queryingReplySed ? t('message:loading-replying') : t('label:reply')}
                                 </HighContrastHovedknapp>
-                              </FlexDiv>
+                              </FlexStartDiv>
                             ))}
-                            <Normaltekst>
-                              {t('label:lastModified') + ': ' + connectedSed.sistEndretDato}
-                            </Normaltekst>
-                            <VerticalSeparatorDiv data-size='0.35' />
                             <HighContrastLink href={connectedSed.urlSed}>
                               <span>
                                 {t('label:goToSedInRina')}
@@ -320,8 +306,13 @@ const Step1: React.FC<SvarPaSedProps> = ({
                               <HorizontalSeparatorDiv data-size='0.35' />
                               <ExternalLink />
                             </HighContrastLink>
+                            <VerticalSeparatorDiv data-size='0.35' />
+                            <div>
+                              <Etikett>
+                                {t('label:lastModified') + ': ' + connectedSed.sistEndretDato}
+                              </Etikett>
+                            </div>
                           </PileDiv>
-
                         </FlexDiv>
                       </HighContrastPanel>
                       <VerticalSeparatorDiv />
@@ -329,8 +320,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                   ))}
                 </div>
               )
-            }
-            )}
+            })}
           </HighContrastRadioGroup>
         )}
       </ContainerDiv>

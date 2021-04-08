@@ -111,10 +111,9 @@ export const TextAreaDiv = styled.div`
   }
 `
 export const Etikett = styled.div`
-  padding: 0.35rem;
+  padding: 0.25rem;
   color:  ${({ theme }) => theme[themeKeys.MAIN_FONT_COLOR]} !important;
   background-color: ${({ theme }) => theme[themeKeys.MAIN_BACKGROUND_COLOR]};
   border-radius: 5px;
-  border: 1px solid ${({ theme }) => theme[themeKeys.MAIN_BORDER_COLOR]};
   display: inline-block;
 `
