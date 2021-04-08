@@ -1,12 +1,13 @@
 import { setStatusParam } from 'actions/app'
 import * as svarpasedActions from 'actions/svarpased'
 import classNames from 'classnames'
-import { SideBarDiv } from 'components/StyledComponents'
+import SEDDetails from 'components/SEDDetails/SEDDetails'
+import SEDLoadSave from 'components/SEDLoadSave/SEDLoadSave'
+import { FadingLineSeparator, SideBarDiv } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { State } from 'declarations/reducers'
 import { Container, Content, fadeIn, fadeOut, Margin } from 'nav-hoykontrast'
-import SideBar from 'pages/SvarPaSed/SideBar'
 import Step1 from 'pages/SvarPaSed/Step1'
 import Step2 from 'pages/SvarPaSed/Step2'
 import PT from 'prop-types'
@@ -125,10 +126,14 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
   const dispatch = useDispatch()
   const { highContrast } = useSelector<State, any>(mapState)
   const [_mounted, setMounted] = useState<boolean>(!waitForMount)
-  const [positionA, setPositionA] = useState<Slide>(Slide.LEFT)
-  const [positionB, setPositionB] = useState<Slide>(Slide.RIGHT)
+  const [positionContentA, setPositionContentA] = useState<Slide>(Slide.LEFT)
+  const [positionContentB, setPositionContentB] = useState<Slide>(Slide.RIGHT)
+  const [positionSidebarA, setPositionSidebarA] = useState<Slide>(Slide.RIGHT)
+  const [positionSidebarB, setPositionSidebarB] = useState<Slide>(Slide.LEFT)
   const [contentA, setContentA] = useState<any>(null)
   const [contentB, setContentB] = useState<any>(null)
+  const [sidebarA, setSidebarA] = useState<any>(null)
+  const [sidebarB, setSidebarB] = useState<any>(null)
   const [animating, setAnimating] = useState<boolean>(false)
 
   const WaitingDiv = (
@@ -143,20 +148,26 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
     }
     if (newMode === '1') {
       if (!from || from === 'none') {
-        setPositionA(Slide.LEFT)
-        setPositionB(Slide.RIGHT)
+        setPositionContentA(Slide.LEFT)
+        setPositionContentB(Slide.RIGHT)
+        setPositionSidebarA(Slide.ALT_LEFT)
+        setPositionSidebarB(Slide.ALT_RIGHT)
         if (callback) {
           callback()
         }
       }
       if (from === 'back') {
-        setPositionA(Slide.A_GOING_TO_RIGHT)
-        setPositionB(Slide.B_GOING_TO_RIGHT)
+        setPositionContentA(Slide.A_GOING_TO_RIGHT)
+        setPositionContentB(Slide.B_GOING_TO_RIGHT)
+        setPositionSidebarA(Slide.A_GOING_TO_LEFT)
+        setPositionSidebarB(Slide.B_GOING_TO_LEFT)
         setAnimating(true)
         setTimeout(() => {
           console.log('Timeout end')
-          setPositionA(Slide.LEFT)
-          setPositionB(Slide.RIGHT)
+          setPositionContentA(Slide.LEFT)
+          setPositionContentB(Slide.RIGHT)
+          setPositionSidebarA(Slide.ALT_LEFT)
+          setPositionSidebarB(Slide.ALT_RIGHT)
           setAnimating(false)
           if (callback) {
             callback()
@@ -164,23 +175,34 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
         }, timeout)
       }
       setContentA(<Step1 mode={newMode} setMode={_setMode} />)
+      setSidebarB(
+        <SideBarDiv>
+          <SEDLoadSave setMode={_setMode} highContrast={highContrast}/>
+        </SideBarDiv>
+      )
     }
     if (newMode === '2') {
       if (!from || from === 'none') {
-        setPositionA(Slide.ALT_LEFT)
-        setPositionB(Slide.ALT_RIGHT)
+        setPositionContentA(Slide.ALT_LEFT)
+        setPositionContentB(Slide.ALT_RIGHT)
+        setPositionSidebarA(Slide.LEFT)
+        setPositionSidebarB(Slide.RIGHT)
         if (callback) {
           callback()
         }
       }
       if (from === 'forward') {
-        setPositionA(Slide.A_GOING_TO_LEFT)
-        setPositionB(Slide.B_GOING_TO_LEFT)
+        setPositionContentA(Slide.A_GOING_TO_LEFT)
+        setPositionContentB(Slide.B_GOING_TO_LEFT)
+        setPositionSidebarA(Slide.A_GOING_TO_RIGHT)
+        setPositionSidebarB(Slide.B_GOING_TO_RIGHT)
         setAnimating(true)
         setTimeout(() => {
           console.log('Timeout end')
-          setPositionA(Slide.ALT_LEFT)
-          setPositionB(Slide.ALT_RIGHT)
+          setPositionContentA(Slide.ALT_LEFT)
+          setPositionContentB(Slide.ALT_RIGHT)
+          setPositionSidebarA(Slide.LEFT)
+          setPositionSidebarB(Slide.RIGHT)
           setAnimating(false)
           if (callback) {
             callback()
@@ -188,6 +210,11 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
         }, timeout)
       }
       setContentB(<Step2 mode={newMode} setMode={_setMode} />)
+      setSidebarA(
+        <SideBarDiv>
+          <SEDDetails highContrast={highContrast} />
+        </SideBarDiv>
+      )
     }
   }, [animating, dispatch])//, allowFullScreen, onFullFocus, onRestoreFocus])
 
@@ -203,6 +230,11 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
       }
 
       setContentA(<Step1 mode='1' setMode={_setMode} />)
+      setSidebarB(
+        <SideBarDiv>
+          <SEDLoadSave setMode={_setMode} highContrast={highContrast}/>
+        </SideBarDiv>
+      )
       _setMode('1', 'none')
       setMounted(true)
     }
@@ -233,22 +265,40 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
             <WindowDiv>
               <AnimatableDiv
                 key='animatableDivA'
-                className={classNames(cls(positionA))}
+                className={classNames(cls(positionContentA))}
               >
                 {contentA}
               </AnimatableDiv>
               <AnimatableDiv
                 key='animatableDivB'
-                className={classNames(cls(positionB))}
+                className={classNames(cls(positionContentB))}
               >
                 {contentB}
               </AnimatableDiv>
             </WindowDiv>
           </ContainerDiv>
         </Content>
-        <SideBarDiv>
-          <SideBar highContrast={highContrast} />
-        </SideBarDiv>
+        <FadingLineSeparator className='fadeIn'>
+          &nbsp;
+        </FadingLineSeparator>
+        <Content style={{ width: '21.5rem'}}>
+          <ContainerDiv className={classNames({ shrink: animating })}>
+            <WindowDiv>
+              <AnimatableDiv
+                key='animatableDivA'
+                className={classNames(cls(positionSidebarA))}
+              >
+                {sidebarA}
+              </AnimatableDiv>
+              <AnimatableDiv
+                key='animatableDivB'
+                className={classNames(cls(positionSidebarB))}
+              >
+                {sidebarB}
+              </AnimatableDiv>
+            </WindowDiv>
+          </ContainerDiv>
+        </Content>
         <Margin />
       </Container>
     </TopContainer>

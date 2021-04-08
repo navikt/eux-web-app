@@ -142,6 +142,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
 
   const onReplySedClick = (svarSed: SvarSed, saksnummer: string) => {
     resetValidation('replysed')
+    dispatch(svarpasedActions.resetReplySed())
     dispatch(svarpasedActions.queryReplySed(_saksnummerOrFnr, svarSed, saksnummer))
   }
 

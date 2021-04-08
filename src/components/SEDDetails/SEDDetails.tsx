@@ -1,10 +1,12 @@
 import Edit from 'assets/icons/Edit'
 import FilledRemoveCircle from 'assets/icons/RemoveCircle'
+import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed.d'
 import { Undertittel } from 'nav-frontend-typografi'
 import NavHighContrast, { HighContrastPanel, HighContrastFlatknapp, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 import SEDDetailsEdit from './SEDDetailsEdit'
@@ -16,13 +18,12 @@ const FlexDiv = styled.div`
 `
 interface SEDDetailsProps {
   highContrast: boolean
-  replySed: ReplySed
 }
 
-const SEDDetails = ({ highContrast, replySed }: SEDDetailsProps) => {
+const SEDDetails = ({ highContrast }: SEDDetailsProps) => {
   const { t } = useTranslation()
   const [isEditing, setIsEditing] = useState<boolean>(false)
-
+  const replySed: ReplySed | undefined = useSelector((state: State): ReplySed | undefined => (state.svarpased.replySed))
   const toggleEditing = () => setIsEditing(!isEditing)
   if (!replySed) {
     return <div />

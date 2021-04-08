@@ -10,6 +10,7 @@ import KravOmRefusjon from 'components/KravOmRefusjon/KravOmRefusjon'
 import Modal from 'components/Modal/Modal'
 import Motregning from 'components/Motregning/Motregning'
 import ProsedyreVedUenighet from 'components/ProsedyreVedUenighet/ProsedyreVedUenighet'
+import SaveSEDModal from 'components/SaveSEDModal/SaveSEDModal'
 import SendSEDModal from 'components/SendSEDModal/SendSEDModal'
 import { TextAreaDiv } from 'components/StyledComponents'
 import Vedtak from 'components/Vedtak/Vedtak'
@@ -113,6 +114,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
   const [_modal, setModal] = useState<ModalContent | undefined>(undefined)
   const [_previewFile, setPreviewFile] = useState<any | undefined>(undefined)
   const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
+  const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
   const fnr = _.find(replySed?.bruker?.personInfo.pin, p => p.land === 'NO')?.fnr
 
   const data: SvarpasedState = useSelector<State, SvarpasedState>(mapStateTwo)
@@ -153,7 +155,9 @@ const Step2: React.FC<SvarPaSedProps> = ({
   const createSedEditInRINA = () => {}
 
   // TODO
-  const saveSed = () => {}
+  const onSaveSedClick = () => {
+    setViewSaveSedModal(true)
+  }
 
   const showPreviewModal = (previewFile: File) => {
     setModal({
@@ -186,7 +190,6 @@ const Step2: React.FC<SvarPaSedProps> = ({
 
   const onGoBackClick = () => {
     if (mode === '2') {
-      dispatch(svarpasedActions.resetReplySed())
       setMode('1', 'back')
     }
   }
@@ -228,6 +231,13 @@ const Step2: React.FC<SvarPaSedProps> = ({
           onModalClose={() => setViewSendSedModal(false)}
         />
       )}
+      {_viewSaveSedModal && (
+        <SaveSEDModal
+          highContrast={highContrast}
+          replySed={replySed}
+          onModalClose={() => setViewSaveSedModal(false)}
+        />
+      )}
       <FlexDiv>
         <HighContrastLink
           href='#'
@@ -240,7 +250,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
       </FlexDiv>
       <VerticalSeparatorDiv />
       <Row>
-        <Column>
+        <Column data-flex='2'>
           <Systemtittel>
             {replySed?.sedType}
           </Systemtittel>
@@ -365,7 +375,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
         <div>
           <HighContrastKnapp
             mini
-            onClick={saveSed}
+            onClick={onSaveSedClick}
             disabled={savingSed}
             spinner={savingSed}
           >

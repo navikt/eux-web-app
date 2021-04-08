@@ -1,4 +1,4 @@
-import { Periode } from 'declarations/sed'
+import { Periode, ReplySed } from 'declarations/sed'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 
 export interface Period {
@@ -35,6 +35,12 @@ export interface BucTyper {
   recovery: Array<Kodeverk>
   sickness: Array<Kodeverk>
   unemployment: Array<Kodeverk>
+}
+
+export interface ReplySedEntry {
+  name: string
+  date: string
+  replySed: ReplySed
 }
 
 export interface SvarSed {

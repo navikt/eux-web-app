@@ -2,12 +2,12 @@ import { setReplySed } from 'actions/svarpased'
 import Add from 'assets/icons/Add'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Select/Select'
-import { FlexCenterDiv } from 'components/StyledComponents'
+import { Etikett, FlexCenterDiv } from 'components/StyledComponents'
 import { Option, Options } from 'declarations/app'
 import { FSed, ReplySed } from 'declarations/sed'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema/lib/feiloppsummering'
-import { Feilmelding, Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { Feilmelding, Undertittel } from 'nav-frontend-typografi'
 import { HighContrastFlatknapp, HighContrastKnapp, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -92,7 +92,9 @@ const Formaal: React.FC<FormaalProps> = ({
         {t('el:title-choose-formaal')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      {_formaals && _formaals.map((formaal: string, i: number) => {
+      {_formaals && _formaals
+        .sort((a, b) => a.localeCompare(b))
+        .map((formaal: string, i: number) => {
         const candidateForDeletion = _confirmDeleteFormaal.indexOf(formaal) >= 0
         return (
           <FlexCenterDiv
@@ -100,9 +102,9 @@ const Formaal: React.FC<FormaalProps> = ({
             style={{ animationDelay: i === _newFormaalIndex ? '0s' : (i * 0.1) + 's' }}
             key={formaal}
           >
-            <Normaltekst>
+            <Etikett data-border>
               {_.find(formaalOptions, _f => _f.value === formaal)?.label}
-            </Normaltekst>
+            </Etikett>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
               existingItem={true}
