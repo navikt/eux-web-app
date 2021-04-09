@@ -15,7 +15,7 @@ import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 
 const AlertstripeDiv = styled.div`
-  margin: 0.5rem;
+  padding: 0.5rem;
   width: 100%;
 `
 const MinimalModalDiv = styled.div`
@@ -83,14 +83,15 @@ const SendSEDModal: React.FC<SaveSEDModalProps> = ({
       } else {
         replySeds = []
       }
+      let dateString =  new Date().toDateString()
       let newReplySeds = replySeds!.concat({
         name: _name,
-        date: new Date().toDateString(),
+        date: dateString,
         replySed: replySed
       } as ReplySedEntry)
       await window.localStorage.setItem('replysed', JSON.stringify(newReplySeds, null, 2))
       setSaved(true)
-      setMessage(t('label:saved'))
+      setMessage(t('label:saved-svarsed-draft', {name: _name, date: dateString}))
     }
   }
 
@@ -120,24 +121,26 @@ const SendSEDModal: React.FC<SaveSEDModalProps> = ({
               </>
             )}
             <MinimalContentDiv>
-            <SectionDiv>
-              <PileDiv style={{alignItems: 'flex-start'}}>
-                <div>
-                  <FlexCenterDiv>
-                    <HighContrastInput
-                      data-test-id={'c-savesedmodal-name-text'}
-                      feil={_validation['savesedmodal-name']?.feilmelding}
-                      id={'c-savesedmodal-name-text'}
-                      label={t('label:name')}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
-                      placeholder={t('el:placeholder-input-default')}
-                      value={_name}
-                    />
-                  </FlexCenterDiv>
-                </div>
-                <VerticalSeparatorDiv data-size='0.5'/>
-              </PileDiv>
-            </SectionDiv>
+            {!_saved && (
+              <SectionDiv>
+                <PileDiv style={{alignItems: 'flex-start'}}>
+                  <div>
+                    <FlexCenterDiv>
+                      <HighContrastInput
+                        data-test-id={'c-savesedmodal-name-text'}
+                        feil={_validation['savesedmodal-name']?.feilmelding}
+                        id={'c-savesedmodal-name-text'}
+                        label={t('label:name')}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                        placeholder={t('el:placeholder-input-default')}
+                        value={_name}
+                      />
+                    </FlexCenterDiv>
+                  </div>
+                  <VerticalSeparatorDiv data-size='0.5'/>
+                </PileDiv>
+              </SectionDiv>
+            )}
             <SectionDiv>
               <VerticalSeparatorDiv/>
               {!_saved ? (

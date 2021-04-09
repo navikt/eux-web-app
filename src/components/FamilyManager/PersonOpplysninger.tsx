@@ -1,6 +1,6 @@
 import { searchPerson } from 'actions/svarpased'
 import Add from 'assets/icons/Add'
-import { PaddedDiv } from 'components/StyledComponents'
+import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import { PersonInfo, Pin, ReplySed } from 'declarations/sed'
 import { Kodeverk, Person, Validation } from 'declarations/types'
 import CountrySelect from 'landvelger'
@@ -13,7 +13,6 @@ import {
   HighContrastKnapp,
   HighContrastRadioPanelGroup,
   HorizontalSeparatorDiv,
-  Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
@@ -124,7 +123,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
 
   return (
     <PaddedDiv key={personID}>
-      <Row className='slideInFromLeft'>
+      <AlignStartRow className='slideInFromLeft'>
         <Column>
           <HighContrastInput
             data-test-id={'c-' + namespace + '-fornavn-text'}
@@ -156,9 +155,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             label={t('label:birthdate') + ' *'}
           />
         </Column>
-      </Row>
+      </AlignStartRow>
       <VerticalSeparatorDiv />
-      <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column>
           <HighContrastRadioPanelGroup
             checked={personInfo.kjoenn}
@@ -176,9 +175,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             ]}
           />
         </Column>
-      </Row>
+      </AlignStartRow>
       <VerticalSeparatorDiv />
-      <Row className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
         <Column>
           <HighContrastInput
             data-test-id={'c-' + namespace + '-utenlandskpin-nummer-text'}
@@ -203,9 +202,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             values={_.find(personInfo.pin, p => p.land !== 'NO')?.land}
           />
         </Column>
-      </Row>
+      </AlignStartRow>
       <VerticalSeparatorDiv />
-      <Row className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
         <Column>
           <HighContrastInput
             data-test-id={'c-' + namespace + '-norskpin-nummer-text'}
@@ -229,9 +228,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
           </HighContrastKnapp>
         </Column>
         <Column />
-      </Row>
+      </AlignStartRow>
       <VerticalSeparatorDiv data-size='0.5' />
-      <Row>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
         <Column>
           {searchedPerson
             ? (
@@ -246,19 +245,19 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
                 </Normaltekst>
               )}
         </Column>
-      </Row>
+      </AlignStartRow>
       <VerticalSeparatorDiv />
-      <Row className='slideInFromLeft'>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.5s' }}>
         <Column>
           <Undertittel>
             {t('label:birthplace')}
           </Undertittel>
         </Column>
-      </Row>
+      </AlignStartRow>
       <VerticalSeparatorDiv data-size='0.5' />
       {_seeNewForm
         ? (
-          <Row className='slideInFromLeft'>
+          <AlignStartRow className='slideInFromLeft'>
             <Column>
               <HighContrastInput
                 data-test-id={'c-' + namespace + '-foedested-by-text'}
@@ -292,10 +291,10 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
                 values={personInfo.pinMangler?.foedested.land}
               />
             </Column>
-          </Row>
+          </AlignStartRow>
           )
         : (
-          <Row className='slideInFromLeft'>
+          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.6s' }}>
             <Column>
               <HighContrastFlatknapp
                 mini
@@ -307,7 +306,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
                 {t('el:button-add-birthplace')}
               </HighContrastFlatknapp>
             </Column>
-          </Row>
+          </AlignStartRow>
           )}
     </PaddedDiv>
   )

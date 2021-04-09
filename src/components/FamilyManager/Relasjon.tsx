@@ -1,7 +1,7 @@
 import Select from 'components/Select/Select'
 import { AlignCenterRow, PaddedDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
-import { ReplySed } from 'declarations/sed'
+import { BarnRelasjon, BarnRelasjonType, JaNei, ReplySed } from 'declarations/sed'
 import { Kodeverk, Validation } from 'declarations/types'
 import _ from 'lodash'
 import { Normaltekst, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
@@ -25,36 +25,36 @@ const Relasjon: React.FC<RelasjonProps> = ({
   // replySed,
   validation
 }:RelasjonProps): JSX.Element => {
-  const [_newRelasjon, setNewRelasjon] = useState<string>('')
-  const [_newRelasjonType, setNewRelasjonType] = useState<string>('')
+  const [_newRelasjon, setNewRelasjon] =  useState<BarnRelasjon | undefined>(undefined)
+  const [_newRelasjonType, setNewRelasjonType] = useState<BarnRelasjonType | undefined>(undefined)
   const [_newSluttDato, setNewSluttDato] = useState<string>('')
   const [_newStartDato, setNewStartDato] = useState<string>('')
-  const [_newForeldreansvar, setNewForeldreansvar] = useState<string>('')
+  const [_newForeldreansvar, setNewForeldreansvar] = useState<JaNei | undefined>(undefined)
 
-  const [_newQuestion1, setNewQuestion1] = useState<string>('')
-  const [_newQuestion2, setNewQuestion2] = useState<string>('')
-  const [_newQuestion3, setNewQuestion3] = useState<string>('')
-  const [_newQuestion4, setNewQuestion4] = useState<string>('')
+  const [_newQuestion1, setNewQuestion1] = useState<JaNei | undefined>(undefined)
+  const [_newQuestion2, setNewQuestion2] = useState<JaNei | undefined>(undefined)
+  const [_newQuestion3, setNewQuestion3] = useState<JaNei | undefined>(undefined)
+  const [_newQuestion4, setNewQuestion4] = useState<JaNei | undefined>(undefined)
 
   const { t } = useTranslation()
   const namespace = 'familymanager-' + personID + '-relasjon'
 
   const relasjonTypeOptions: Options = [
-    { label: t('el:option-relasjon-1'), value: 'option-relasjon-1' },
-    { label: t('el:option-relasjon-2'), value: 'option-relasjon-2' },
-    { label: t('el:option-relasjon-3'), value: 'option-relasjon-3' },
-    { label: t('el:option-relasjon-4'), value: 'option-relasjon-4' },
-    { label: t('el:option-relasjon-5'), value: 'option-relasjon-5' },
-    { label: t('el:option-relasjon-6'), value: 'option-relasjon-6' },
-    { label: t('el:option-relasjon-7'), value: 'option-relasjon-7' },
-    { label: t('el:option-relasjon-8'), value: 'option-relasjon-8' }
+    { label: t('el:option-relasjon-1'), value: '01' },
+    { label: t('el:option-relasjon-2'), value: '02' },
+    { label: t('el:option-relasjon-3'), value: '03' },
+    { label: t('el:option-relasjon-4'), value: '04' },
+    { label: t('el:option-relasjon-5'), value: '05' },
+    { label: t('el:option-relasjon-6'), value: '06' },
+    { label: t('el:option-relasjon-7'), value: '07' },
+    { label: t('el:option-relasjon-8'), value: '08' }
   ]
 
-  const setRelasjon = (e: string) => {
+  const setRelasjon = (e: BarnRelasjon) => {
     setNewRelasjon(e)
   }
 
-  const setRelasjonType = (e: string) => {
+  const setRelasjonType = (e: BarnRelasjonType) => {
     setNewRelasjonType(e)
   }
 
@@ -66,23 +66,23 @@ const Relasjon: React.FC<RelasjonProps> = ({
     setNewStartDato(e)
   }
 
-  const setForeldreansvar = (e: string) => {
+  const setForeldreansvar = (e: JaNei) => {
     setNewForeldreansvar(e)
   }
 
-  const setQuestion1 = (e: string) => {
+  const setQuestion1 = (e: JaNei) => {
     setNewQuestion1(e)
   }
 
-  const setQuestion2 = (e: string) => {
+  const setQuestion2 = (e: JaNei) => {
     setNewQuestion2(e)
   }
 
-  const setQuestion3 = (e: string) => {
+  const setQuestion3 = (e: JaNei) => {
     setNewQuestion3(e)
   }
 
-  const setQuestion4 = (e: string) => {
+  const setQuestion4 = (e: JaNei) => {
     setNewQuestion4(e)
   }
 
@@ -103,8 +103,8 @@ const Relasjon: React.FC<RelasjonProps> = ({
             legend={t('label:relation-with')}
             name={'c-' + namespace + '-relasjon-text'}
             radios={[
-              { label: t('label:søker'), value: 'søker' },
-              { label: t('label:avdød'), value: 'avdød' }
+              { label: t('label:søker'), value: '01' },
+              { label: t('label:avdød'), value: '02' }
             ]}
             onChange={(e: any) => setRelasjon(e.target.value)}
           />
@@ -117,8 +117,8 @@ const Relasjon: React.FC<RelasjonProps> = ({
             id={'c-' + namespace + '-relasjon-text'}
             name={'c-' + namespace + '-relasjon-text'}
             radios={[
-              { label: t('label:partner'), value: 'ektefell/partner' },
-              { label: t('label:annen-person'), value: 'annen person' }
+              { label: t('label:partner'), value: '03' },
+              { label: t('label:annen-person'), value: '04' }
             ]}
             onChange={(e: any) => setRelasjon(e.target.value)}
           />

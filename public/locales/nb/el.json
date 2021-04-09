@@ -8,7 +8,10 @@
   "button-add-selected-attachments": "Legg til markerte vedlegg",
   "button-cancel": "Avbryt",
   "button-close": "Lukk",
+  "button-download": "Last ned",
+  "button-load" : "Last inn",
   "button-search" : "Søk",
+  "button-save" : "Lagre",
   "button-search-for-x" : "Søk {{x}}",
   "button-remove" : "Fjern",
 
@@ -115,6 +118,7 @@
   "title-reason-for-coming" : "Grunnlag for bosetting",
   "title-registered-arbeidsperiode" : "Registeret arbeidsperiode",
   "title-relasjon-til-barn": "Relasjon til det enkelte barn",
+  "title-save-sed": "Lagre SvarSED utkast",
   "title-svarsed": "Velg RINA-sak og opprett SED",
   "title-trygdeordningen-dekkede": "Dekkede perioder",
   "title-trygdeordningen-familieYtelse": "Periode for rett til familieytelser perioder",

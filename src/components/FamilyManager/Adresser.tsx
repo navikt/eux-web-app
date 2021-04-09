@@ -2,7 +2,7 @@ import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
-import { Adresse, ReplySed } from 'declarations/sed'
+import { Adresse, AdresseType, ReplySed } from 'declarations/sed'
 import { Kodeverk, Validation } from 'declarations/types'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
@@ -38,7 +38,7 @@ const Adresser: React.FC<AdresseProps> = ({
   const { t } = useTranslation()
   const [_confirmDelete, setConfirmDelete] = useState<Array<string>>([])
 
-  const [_newType, setNewType] = useState<string | undefined>(undefined)
+  const [_newType, setNewType] = useState<AdresseType | undefined>(undefined)
   const [_newGate, setNewGate] = useState<string>('')
   const [_newPostnummer, setNewPostnummer] = useState<string>('')
   const [_newBy, setNewBy] = useState<string>('')
@@ -96,7 +96,7 @@ const Adresser: React.FC<AdresseProps> = ({
     setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
   }
 
-  const onTypeChanged = (type: string, i: number) => {
+  const onTypeChanged = (type: AdresseType, i: number) => {
     if (i < 0) {
       setNewType(type)
       resetValidation(namespace + '-type')
@@ -236,6 +236,7 @@ const Adresser: React.FC<AdresseProps> = ({
           <Column data-flex='3'>
             <HighContrastRadioPanelGroup
               checked={i < 0 ? _newType : a!.type}
+              data-no-border
               data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-type-text'}
               feil={getErrorFor(i, 'type')}
               id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-type-text'}
@@ -243,10 +244,23 @@ const Adresser: React.FC<AdresseProps> = ({
               name={namespace + (i >= 0 ? '[' + i + ']' : '') + '-type'}
               radios={[
                 { label: t('label:bostedsland'), value: 'bosted' },
-                { label: t('label:oppholdsland'), value: 'opphold' },
-                { label: t('label:kontaktadresse'), value: 'kontakt' }
+                { label: t('label:oppholdsland'), value: 'opphold' }
               ]}
-              onChange={(e: any) => onTypeChanged(e.target.value, i)}
+              onChange={(e: any) => onTypeChanged((e.target.value as AdresseType), i)}
+            />
+            <VerticalSeparatorDiv data-size='0.15'/>
+            <HighContrastRadioPanelGroup
+              checked={i < 0 ? _newType : a!.type}
+              data-no-border
+              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-type-text'}
+              feil={getErrorFor(i, 'type')}
+              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-type-text'}
+              name={namespace + (i >= 0 ? '[' + i + ']' : '') + '-type'}
+              radios={[
+                { label: t('label:kontaktadresse'), value: 'kontakt' },
+                { label: t('label:annet'), value: 'annet' }
+              ]}
+              onChange={(e: any) => onTypeChanged((e.target.value as AdresseType), i)}
             />
           </Column>
           <Column />

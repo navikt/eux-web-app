@@ -1,5 +1,6 @@
 import { Adresse } from 'declarations/sed'
 import { Validation } from 'declarations/types'
+import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 
 export const validateAdresse = (
@@ -11,7 +12,19 @@ export const validateAdresse = (
   personName: string
 ): void => {
   let generalFail: boolean = false
-  let value = (adresse.land)
+  let value = (!_.isEmpty(adresse.type))
+    ? undefined
+    : {
+      feilmelding: t('message:validation-noAddressTypeForPerson', { person: personName }),
+      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-type-text'
+    } as FeiloppsummeringFeil
+
+  v[namespace + (index < 0 ? '' : '[' + index + ']') + '-type'] = value
+  if (value) {
+    generalFail = true
+  }
+
+  value = (!_.isEmpty(adresse.land))
     ? undefined
     : {
       feilmelding: t('message:validation-noAddressCountryForPerson', { person: personName }),
@@ -22,7 +35,7 @@ export const validateAdresse = (
   if (value) {
     generalFail = true
   }
-  value = (adresse.gate)
+  value = (!_.isEmpty(adresse.gate))
     ? undefined
     : {
       feilmelding: t('message:validation-noAddressStreetForPerson', { person: personName }),
@@ -33,7 +46,7 @@ export const validateAdresse = (
   if (value) {
     generalFail = true
   }
-  value = (adresse.postnummer)
+  value = (!_.isEmpty(adresse.postnummer))
     ? undefined
     : {
       feilmelding: t('message:validation-noAddressPostnummerForPerson', { person: personName }),
@@ -44,7 +57,7 @@ export const validateAdresse = (
   if (value) {
     generalFail = true
   }
-  value = (adresse.by)
+  value = (!_.isEmpty(adresse.by))
     ? undefined
     : {
       feilmelding: t('message:validation-noAddressCityForPerson', { person: personName }),

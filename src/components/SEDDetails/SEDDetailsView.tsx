@@ -55,7 +55,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
     <>
       <Dl>
         <Dt>
-          {t('label:periode')}:
+          {t('label:periode')}
         </Dt>
         <Dd>
           {(replySed as USed).anmodningsperiode && (
@@ -73,7 +73,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
       </Dl>
       <VerticalSeparatorDiv />
       <Dl>
-        <Dt>{t('label:searcher')}</Dt>
+        <Dt>{t('label:søker')}</Dt>
         <Dd>
           <span>
             {replySed.bruker.personInfo.fornavn} {replySed.bruker.personInfo.etternavn} ({replySed.bruker.personInfo.kjoenn})
@@ -84,7 +84,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
             items={replySed.bruker.personInfo.statsborgerskap.map((s: any) => ({ country: s.land }))}
           />
         </Dd>
-        <Dt>{t('app:relationship-ektefelle')}</Dt>
+        <Dt>{t('label:partner')}</Dt>
         <Dd>
           <span>
             {(replySed as F002Sed).ektefelle

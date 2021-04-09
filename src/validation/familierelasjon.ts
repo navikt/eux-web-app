@@ -23,7 +23,7 @@ export const validateFamilierelasjon = (
     generalFail = true
   }
 
-  if (familierelasjon.relasjonType === 'other') {
+  if (familierelasjon.relasjonType === 'ANNEN') {
     value = (familierelasjon.annenRelasjonPersonNavn)
       ? undefined
       : {

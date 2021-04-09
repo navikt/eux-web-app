@@ -4,11 +4,11 @@ import NotAnsatt from 'components/FamilyManager/Arbeidsforhold/NotAnsatt'
 import ReasonToCome from 'components/FamilyManager/Arbeidsforhold/ReasonToCome'
 import WithSubsidies from 'components/FamilyManager/Arbeidsforhold/WithSubsidies'
 import LesMer from 'components/LesMer/LesMer'
-import { PaddedDiv } from 'components/StyledComponents'
+import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import { ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { Undertittel } from 'nav-frontend-typografi'
-import { Column, HighContrastRadioPanelGroup, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { Column, HighContrastRadioPanelGroup, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -39,7 +39,7 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
   const namespace = 'familymanager-' + personID + '-personensstatus'
   return (
     <PaddedDiv>
-      <Row className='slideInFromLeft'>
+      <AlignStartRow className='slideInFromLeft'>
         <Column>
           <Undertittel>
             {t('el:title-arbeidsforhold-type')}
@@ -81,42 +81,60 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
             onChange={(e: any) => setArbeidsforhold(e.target.value)}
           />
         </Column>
-      </Row>
-      {_arbeidsforhold === 'arbeidsforhold-1' && (
-        <Ansatt
-          arbeidsforholdList={arbeidsforholdList}
-          getArbeidsforholdList={getArbeidsforholdList}
-          gettingArbeidsforholdList={gettingArbeidsforholdList}
-          onArbeidsforholdSelectionChange={() => {}}
-          replySed={replySed}
-          personID={personID}
-        />
-      )}
-      {(_arbeidsforhold !== 'arbeidsforhold-1') && (
-        <NotAnsatt
-          personID={personID}
-          validation={validation}
-        />
-      )}
+      </AlignStartRow>
+      <VerticalSeparatorDiv/>
+      <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.1s'}}>
+        <Column>
+          {_arbeidsforhold === 'arbeidsforhold-1' ? (
+            <Ansatt
+              arbeidsforholdList={arbeidsforholdList}
+              getArbeidsforholdList={getArbeidsforholdList}
+              gettingArbeidsforholdList={gettingArbeidsforholdList}
+              onArbeidsforholdSelectionChange={() => {}}
+              replySed={replySed}
+              personID={personID}
+            />
+          ) : (
+            <NotAnsatt
+              personID={personID}
+              validation={validation}
+            />
+          )}
+        </Column>
+      </AlignStartRow>
       {(_arbeidsforhold !== 'arbeidsforhold-1' && _arbeidsforhold !== 'arbeidsforhold-2') && (
-        <WithSubsidies
-          highContrast={highContrast}
-          personID={personID}
-          validation={validation}
-        />
+        <>
+          <VerticalSeparatorDiv data-size='2'/>
+          <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.2s'}}>
+            <Column>
+              <WithSubsidies
+                highContrast={highContrast}
+                personID={personID}
+                validation={validation}
+              />
+            </Column>
+          </AlignStartRow>
+          <VerticalSeparatorDiv/>
+        </>
       )}
-      <>
-        <VerticalSeparatorDiv data-size='2' />
-        <Avsenderlandet
+      <VerticalSeparatorDiv data-size='2' />
+      <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.3s'}}>
+        <Column>
+          <Avsenderlandet
+            personID={personID}
+            validation={validation}
+          />
+        </Column>
+      </AlignStartRow>
+      <VerticalSeparatorDiv data-size='2' />
+      <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.4s'}}>
+        <Column>
+          <ReasonToCome
           personID={personID}
           validation={validation}
         />
-        <VerticalSeparatorDiv data-size='2' />
-        <ReasonToCome
-          personID={personID}
-          validation={validation}
-        />
-      </>
+        </Column>
+      </AlignStartRow>
     </PaddedDiv>
   )
 }

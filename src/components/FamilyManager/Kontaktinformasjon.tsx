@@ -4,7 +4,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Select/Select'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
-import { Epost, ReplySed, Telefon } from 'declarations/sed'
+import { Epost, ReplySed, Telefon, TelefonType } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { UndertekstBold } from 'nav-frontend-typografi'
@@ -36,7 +36,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
   validation
 }:KontaktinformasjonProps): JSX.Element => {
   const [_newNummer, setNewNummer] = useState<string>('')
-  const [_newType, setNewType] = useState<string>('')
+  const [_newType, setNewType] = useState<TelefonType | undefined>(undefined)
   const [_seeNewTelefonForm, setSeeNewTelefonForm] = useState<boolean>(false)
 
   const [_newAdresse, setNewAdresse] = useState<string>('')
@@ -56,11 +56,11 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
   const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
 
   const telefonTypeOptions: Options = [{
-    label: t('el:option-telefon-type-work'), value: 'Arbeid'
+    label: t('el:option-telefon-type-work'), value: 'arbeid'
   }, {
-    label: t('el:option-telefon-type-home'), value: 'Hjem'
+    label: t('el:option-telefon-type-home'), value: 'hjem'
   }, {
-    label: t('el:option-telefon-type-mobile'), value: 'Mobil'
+    label: t('el:option-telefon-type-mobile'), value: 'mobil'
   }]
 
   const resetValidation = (key: string): void => {
@@ -118,7 +118,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
     setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
   }
 
-  const onTypeChanged = (type: string, i: number) => {
+  const onTypeChanged = (type: TelefonType, i: number) => {
     if (i < 0) {
       setNewType(type)
       resetValidation(namespaceTelefon + '-type')
@@ -153,7 +153,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
 
   const resetForm = (what: string) => {
     if (what === 'telefon') {
-      setNewType('')
+      setNewType(undefined)
       setNewNummer('')
     }
     if (what === 'epost') {
@@ -200,7 +200,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
         newTelefoner = []
       }
       newTelefoner.push({
-        type: _newType,
+        type: _newType!,
         nummer: _newNummer
       })
       resetForm('telefon')
@@ -256,7 +256,8 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
               feil={getErrorFor(i, 'telefon', 'type')}
               highContrast={highContrast}
               id={'c-' + namespaceTelefon + (i >= 0 ? '[' + i + ']' : '') + '-type-text'}
-              onChange={(e) => onTypeChanged(e.value, i)}
+              menuPortalTarget={document.body}
+              onChange={(e) => onTypeChanged(e.value as TelefonType, i)}
               options={telefonTypeOptions}
               placeholder={t('el:placeholder-select-default')}
               selectedValue={getTypeOption(i < 0 ? _newType : _t?.type)}

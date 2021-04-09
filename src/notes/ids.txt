@@ -74,9 +74,9 @@ ok c-familymanager-{personID}-kontaktinformasjon[{i}]-telefon-type-text   - {GLO
 ok c-familymanager-{personID}-kontaktinformasjon[{i}]-epost-adresse-text  - {GLOBAL}   {person}.epost[].adresse
 
 ok c-familymanager-{personID}-nasjonaliteter-land-text         - {INTERNAL} not used
-ok c-familymanager-{personID}-nasjonaliteter-fomdato-date      - {INTERNAL} not used
+ok c-familymanager-{personID}-nasjonaliteter-fradato-date      - {INTERNAL} not used
 ok c-familymanager-{personID}-nasjonaliteter[{i}]-land-text    - {GLOBAL}   {person}.personinfo.statsborgerskap.land
-ok c-familymanager-{personID}-nasjonaliteter[{i}]-fomdato-text - {GLOBAL}   {person}.personinfo.statsborgerskap.fradato
+ok c-familymanager-{personID}-nasjonaliteter[{i}]-fradato-text - {GLOBAL}   {person}.personinfo.statsborgerskap.fradato
 
 ok c-familymanager-{personID}-personopplysninger-fornavn-text              - {GLOBAL} {person}.personInfo.fornavn
 ok c-familymanager-{personID}-personopplysninger-etternavn-text            - {GLOBAL} {person}.personInfo.etternavn
@@ -150,19 +150,19 @@ ok c-formaal-text - {GLOBAL} - formaal
 
 c-kravomrefusjon-krav-text - {GLOBAL}
 
-c-motregning-anmodning-text                      - {GLOBAL}
-c-motregning-navnogbetegnelse[i]-navn-text       - {GLOBAL}
-c-motregning-navnogbetegnelse[i]-betegnelse-text - {GLOBAL}
-c-motregning-navnogbetegnelse-navn-text          - {INTERNAL}
-c-motregning-navnogbetegnelse-betegnelse-text    - {INTERNAL}
-c-motregning-amount-number                       - {GLOBAL}
-c-motregning-currency-text                       - {GLOBAL}
-c-motregning-startdato-date                      - {GLOBAL}
-c-motregning-sluttdato-date                      - {GLOBAL}
-c-motregning-frequency-text                      - {GLOBAL}
-c-motregning-receiver-text                       - {GLOBAL}
-c-motregning-grunner-text                        - {GLOBAL}
-c-motregning-ytterligereinformasjon-text         - {GLOBAL}
+c-motregning-anmodning-text                              - {GLOBAL}
+c-motregning-navnogbetegnelse[i]-navn-text               - {GLOBAL}
+c-motregning-navnogbetegnelse[i]-betegnelsepåytelse-text - {GLOBAL}
+c-motregning-navnogbetegnelse-navn-text                  - {INTERNAL}
+c-motregning-navnogbetegnelse-betegnelsepåytelse-text    - {INTERNAL}
+c-motregning-amount-number                              - {GLOBAL}
+c-motregning-currency-text                              - {GLOBAL}
+c-motregning-startdato-date                             - {GLOBAL}
+c-motregning-sluttdato-date                             - {GLOBAL}
+c-motregning-frequency-text                             - {GLOBAL}
+c-motregning-receiver-text                              - {GLOBAL}
+c-motregning-grunner-text                               - {GLOBAL}
+c-motregning-ytterligereinformasjon-text                - {GLOBAL}
 
 c-prosedyreveduenighet-prosedyre[i]-grunn-text  - {GLOBAL}
 c-prosedyreveduenighet-prosedyre[i]-person-list - {GLOBAL}

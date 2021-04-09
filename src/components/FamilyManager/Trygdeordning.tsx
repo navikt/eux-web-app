@@ -7,7 +7,7 @@ import { PensjonPeriode, Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
-import { Ingress, Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { Ingress, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
   HighContrastFlatknapp,
@@ -329,27 +329,6 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
       : validation[namespace + '-' + category! + '[' + index + ']-' + el]?.feilmelding
   }
 
-  const renderButtons = (
-    pageCategory: PageCategory,
-    sedCategory: SedCategory,
-    index: number,
-    candidateForDeletion: boolean,
-    key :string
-  ): JSX.Element => (
-    <Column>
-      <AddRemovePanel
-        candidateForDeletion={candidateForDeletion}
-        existingItem={(index >= 0)}
-        marginTop={false}
-        onBeginRemove={() =>  addCandidateForDeletion(pageCategory, key!)}
-        onConfirmRemove={() => onRemove(pageCategory, sedCategory, index)}
-        onCancelRemove={() => removeCandidateForDeletion(pageCategory, key!)}
-        onAddNew={() => onAdd(pageCategory)}
-        onCancelNew={() => onCancel(pageCategory)}
-        />
-    </Column>
-  )
-
   const renderRow = (
     p: Periode | PensjonPeriode | null,
     pageCategory: PageCategory,
@@ -392,73 +371,75 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
               placeholder={t('el:placeholder-date-default')}
             />
           </Column>
-
-          {pageCategory !== 'familieYtelse'
-            ? renderButtons(
-                pageCategory,
-                sedCategory!,
-                index,
-                candidateForDeletion,
-                key
-              )
-            : (
-              <Column />
-              )}
+          <Column>
+            {sedCategory !== 'perioderMedPensjon' && (! (index < 0 && pageCategory === 'familieYtelse')) && (
+              <AddRemovePanel
+                candidateForDeletion={candidateForDeletion}
+                existingItem={(index >= 0)}
+                marginTop={false}
+                onBeginRemove={() =>  addCandidateForDeletion(pageCategory, key!)}
+                onConfirmRemove={() => onRemove(pageCategory, sedCategory!, index)}
+                onCancelRemove={() => removeCandidateForDeletion(pageCategory, key!)}
+                onAddNew={() => onAdd(pageCategory)}
+                onCancelNew={() => onCancel(pageCategory)}
+              />
+            )}
+          </Column>
         </AlignStartRow>
         {pageCategory === 'familieYtelse' && (
+          index < 0 || sedCategory === 'perioderMedPensjon'
+        ) && (
           <>
             <VerticalSeparatorDiv data-size='0.5' />
             <AlignStartRow className={classNames('slideInFromLeft')}>
               <Column>
-                {index < 0
-                  ? (
-                    <Select
-                      data-test-id={'c-' + namespace + '-' + pageCategory + '-category-text'}
-                      feil={getErrorFor(pageCategory, sedCategory, index, 'category')}
-                      highContrast={highContrast}
-                      id={'c-' + namespace + '-' + pageCategory + '-category-text'}
-                      onChange={(e: any) => onChanged(pageCategory, sedCategory, e.value, 'category', index)}
-                      options={selectCategoryOptions}
-                      placeholder={t('el:placeholder-select-default')}
-                      selectedValue={getCategoryOption(_newCategory)}
-                      defaultValue={getCategoryOption(_newCategory)}
-                    />
-                    )
-                  : (
-                    <Normaltekst>
-                      {sedCategory}
-                    </Normaltekst>
-                    )}
+                {index < 0 && (
+                  <Select
+                    data-test-id={'c-' + namespace + '-' + pageCategory + '-category-text'}
+                    feil={getErrorFor(pageCategory, sedCategory, index, 'category')}
+                    highContrast={highContrast}
+                    id={'c-' + namespace + '-' + pageCategory + '-category-text'}
+                    menuPortalTarget={document.body}
+                    onChange={(e: any) => onChanged(pageCategory, sedCategory, e.value, 'category', index)}
+                    options={selectCategoryOptions}
+                    placeholder={t('el:placeholder-select-default')}
+                    selectedValue={getCategoryOption(_newCategory)}
+                    defaultValue={getCategoryOption(_newCategory)}
+                  />
+              )}
               </Column>
-              {(
-                (index < 0 && _newCategory === 'perioderMedPensjon') ||
-                (index >= 0 && sedCategory === 'perioderMedPensjon')
-              )
-                ? (
-                  <Column>
+              <Column>
+                {(
+                  (index < 0 && _newCategory === 'perioderMedPensjon') ||
+                  (index >= 0 && sedCategory === 'perioderMedPensjon')
+                )
+                && (
                     <Select
                       data-test-id={'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-pensjonstype-text'}
-                      error={getErrorFor(pageCategory, sedCategory, index, 'pensjonstype')}
+                      feil={getErrorFor(pageCategory, sedCategory, index, 'pensjonstype')}
                       highContrast={highContrast}
                       id={'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-pensjonstype-text'}
+                      menuPortalTarget={document.body}
                       onChange={(e: any) => onChanged(pageCategory, sedCategory, e.value, 'pensjonstype', index)}
                       options={selectPensjonsTypeOptions}
                       placeholder={t('el:placeholder-select-default')}
                       selectedValue={getPensjonsTypeOption(index < 0 ? _newPensjonsType : (p as PensjonPeriode)?.pensjonstype)}
                       defaultValue={getPensjonsTypeOption(index < 0 ? _newPensjonsType : (p as PensjonPeriode)?.pensjonstype)}
                     />
-                  </Column>
-                  )
-                : (
-                  <Column />
                   )}
-              {renderButtons(
-                pageCategory,
-                  sedCategory!,
-                  index,
-                  candidateForDeletion,
-                  key
-              )}
+              </Column>
+              <Column>
+                <AddRemovePanel
+                  candidateForDeletion={candidateForDeletion}
+                  existingItem={(index >= 0)}
+                  marginTop={false}
+                  onBeginRemove={() =>  addCandidateForDeletion(pageCategory, key!)}
+                  onConfirmRemove={() => onRemove(pageCategory, sedCategory!, index)}
+                  onCancelRemove={() => removeCandidateForDeletion(pageCategory, key!)}
+                  onAddNew={() => onAdd(pageCategory)}
+                  onCancelNew={() => onCancel(pageCategory)}
+                />
+              </Column>
             </AlignStartRow>
           </>
         )}
@@ -482,6 +463,21 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
       </Column>
     </Row>
   )
+
+  const titleFor = (item: SedCategory) => {
+    if (_.isEmpty(perioder[item])) {
+      return null
+    }
+    return (
+      <>
+        <VerticalSeparatorDiv/>
+        <UndertekstBold>
+          {t('el:option-trygdeordning-' + item)}
+        </UndertekstBold>
+        <VerticalSeparatorDiv/>
+      </>
+    )
+  }
 
   return (
     <PaddedDiv>
@@ -566,9 +562,13 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
           </Row>
         )}
         <VerticalSeparatorDiv />
+        {titleFor('perioderMedArbeid')}
         {perioder.perioderMedArbeid.map((p, i) => renderRow(p, 'familieYtelse', 'perioderMedArbeid', i))}
+        {titleFor('perioderMedTrygd')}
         {perioder.perioderMedTrygd.map((p, i) => renderRow(p, 'familieYtelse', 'perioderMedTrygd', i))}
+        {titleFor('perioderMedYtelser')}
         {perioder.perioderMedYtelser.map((p, i) => renderRow(p, 'familieYtelse', 'perioderMedYtelser', i))}
+        {titleFor('perioderMedPensjon')}
         {perioder.perioderMedPensjon.map((p, i) => renderRow(p, 'familieYtelse', 'perioderMedPensjon', i))}
         <hr />
         <VerticalSeparatorDiv />

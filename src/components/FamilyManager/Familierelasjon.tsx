@@ -4,7 +4,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Select/Select'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
-import { FamilieRelasjon2, Periode, ReplySed } from 'declarations/sed'
+import { FamilieRelasjon2, Periode, RelasjonType, ReplySed } from 'declarations/sed'
 import { Kodeverk, Validation } from 'declarations/types'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
@@ -42,7 +42,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
 
   const [_confirmDelete, setConfirmDelete] = useState<Array<string>>([])
 
-  const [_newRelasjonType, setNewRelasjonType] = useState<string>('')
+  const [_newRelasjonType, setNewRelasjonType] = useState<RelasjonType | undefined>(undefined)
   const [_newSluttDato, setNewSluttDato] = useState<string>('')
   const [_newStartDato, setNewStartDato] = useState<string>('')
   const [_newAnnenRelasjonType, setNewAnnenRelasjonType] = useState<string>('')
@@ -61,10 +61,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
 
   const relasjonTypeOptions: Options = familierelasjonKodeverk.map((f: Kodeverk) => ({
     label: f.term, value: f.kode
-  })).concat({
-    label: `${t('label:other')} (${t('label:freetext')})`,
-    value: 'other'
-  })
+  }))
 
   const resetValidation = (key: string): void => {
     setValidation({
@@ -111,7 +108,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
     setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
   }
 
-  const setRelasjonType = (e: string, i: number) => {
+  const setRelasjonType = (e: RelasjonType, i: number) => {
     if (i < 0) {
       setNewRelasjonType(e)
       resetValidation(namespace + '-relasjontype')
@@ -189,7 +186,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
   }
 
   const resetForm = () => {
-    setNewRelasjonType('')
+    setNewRelasjonType(undefined)
     setNewSluttDato('')
     setNewStartDato('')
     setNewAnnenRelasjonType('')
@@ -232,7 +229,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
         periode.aapenPeriodeType = 'åpen_sluttdato'
       }
       newFamilieRelasjoner.push({
-        relasjonType: _newRelasjonType,
+        relasjonType: _newRelasjonType!,
         relasjonInfo: '',
         periode: periode,
         borSammen: _newBorSammen,
@@ -263,7 +260,8 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
               highContrast={highContrast}
               id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-relasjontype-text'}
               label={t('label:type')}
-              onChange={(e) => setRelasjonType(e.value, i)}
+              menuPortalTarget={document.body}
+              onChange={(e) => setRelasjonType(e.value as RelasjonType, i)}
               options={relasjonTypeOptions}
               placeholder={t('el:placeholder-select-default')}
               defaultValue={_.find(relasjonTypeOptions, r => (i < 0 ? r.value === _newRelasjonType : r.value === familierelasjon!.relasjonType))}
@@ -306,7 +304,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />
-        {(i < 0 ? _newRelasjonType === 'other' : familierelasjon?.relasjonType === 'other') && (
+        {(i < 0 ? _newRelasjonType === 'ANNEN' : familierelasjon?.relasjonType === 'ANNEN') && (
           <>
             <AlignStartRow className={classNames('slideInFromLeft')}>
               <Column data-flex='2'>

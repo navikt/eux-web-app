@@ -246,6 +246,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
               highContrast={highContrast}
               id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-pensjontype-text'}
               label={t('label:type-pensjon')}
+              menuPortalTarget={document.body}
               onChange={(e: ValueType<Option, false>) => setPensjonType(e?.value, i)}
               options={selectPensjonTypeOptions}
               placeholder={t('el:placeholder-select-default')}

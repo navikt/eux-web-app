@@ -37,7 +37,8 @@ const SEDDetails = ({ highContrast }: SEDDetailsProps) => {
             {t('label:rina-saksnummer') + ': ' + replySed.saksnummer}
           </Undertittel>
           <HighContrastFlatknapp
-            kompakt style={{
+            kompakt
+            style={{
               marginTop: '-0.5rem',
               marginRight: '-0.5rem'
             }}

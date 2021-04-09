@@ -10,6 +10,7 @@
   "anmodning-om-motregning": "Anmodning eller svar på anmodning om motregning av familieytelser for barn",
   "anmodning-om-motregning-barn": "Anmodning om motregning per barn",
   "anmodning-om-motregning-svar-barn": "Svar på anmodning om motregning per barn",
+  "annet": "Annet",
   "annen-person": "Annen person",
   "application-information": "Informasjon om søknaden",
   "arbeidsforhold": "Arbeidsforhold/Arbeidsgivere",
@@ -41,6 +42,7 @@
   "concerning-person": "Personen det gjelder",
   "currency": "Valuta",
 
+  "date": "Dato",
   "date-relation": "Dato for relasjon",
 
   "elements-of-personal-situation": "Elementer i personlig situasjon",
@@ -58,8 +60,8 @@
 
   "firstname": "Fornavn",
   "fnr-dnr" : "F.nummer/d-nr.",
-  "fomdato": "F.o.m dato",
   "formaal": "Formål",
+  "fradato": "Fra dato",
 
   "gateadresse": "Gateadresse",
   "gender" : "Kjønn",
@@ -115,8 +117,9 @@
 
   "saksnummer" : "Saksnummer",
   "saksnummer-or-fnr" : "Søk på RINA saksnummer eller f.nr./d.nr.",
+  "saved-svarsed-draft": "Lagret SvarSED med navn {{name}}, dato {{date}}",
+  "saved-replyseds": "Lagrede svarSED(s)",
 
-  "save": "Lagre",
   "see-less": "Se mindre",
   "see-more": "Ler mer",
   "shared-custody": "Delt foreldreansvar",
@@ -125,6 +128,7 @@
   "start-date": "Startdato",
   "statsborgerskap" : "Statsborgerskap",
   "søker" : "Søker",
+
 
   "telefonnummer": "Telefonnummer",
   "type": "Type",
@@ -197,7 +201,6 @@
   "relation-with" : "Relasjon med",
   "rolle": "Rolle",
 
-  "saveSed": "Lagre",
   "searchResultsForSaksnummerOrFnr" : "{{antall}} treff for: {{saksnummerOrFnr}}",
   "sed": "SED",
   "seeCases": "Vis saker",

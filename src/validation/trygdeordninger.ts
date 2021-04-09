@@ -1,5 +1,6 @@
 import { PensjonPeriode, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
+import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 
 export const validatePeriode = (
@@ -14,7 +15,7 @@ export const validatePeriode = (
 ): void => {
   let generalFail: boolean = false
 
-  let value = (periode.startdato)
+  let value = (!_.isEmpty(periode.startdato))
     ? undefined
     : {
       feilmelding: t('message:validation-noDateForPerson', { person: personName }),
@@ -25,18 +26,22 @@ export const validatePeriode = (
     generalFail = true
   }
 
-  value = (periode.startdato && periode.startdato.match(/\d{2}\.\d{2}\.\d{4}/))
-    ? undefined
-    : {
-      feilmelding: t('message:validation-invalidDateForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + '-' + sedCategory + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-startdato-date'
-    } as FeiloppsummeringFeil
-  v[namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-startdato'] = value
-  if (value) {
-    generalFail = true
+  if (!_.isEmpty(periode.startdato)) {
+    value = (periode.startdato && periode.startdato.match(/\d{2}\.\d{2}\.\d{4}/))
+      ? undefined
+      : {
+        feilmelding: t('message:validation-invalidDateForPerson', {person: personName}),
+        skjemaelementId: 'c-' + namespace + '-' + sedCategory + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-startdato-date'
+      } as FeiloppsummeringFeil
+    if (!v[namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-startdato']) {
+      v[namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-startdato'] = value
+    }
+    if (value) {
+      generalFail = true
+    }
   }
 
-  if (periode?.sluttdato && periode?.sluttdato?.length > 0) {
+  if (!_.isEmpty(periode?.sluttdato)) {
     value = periode?.sluttdato?.match(/\d{2}\.\d{2}\.\d{4}/)
       ? undefined
       : {
@@ -71,7 +76,7 @@ export const validatePensjonPeriode = (
 ): void => {
   let generalFail: boolean = false
 
-  let value = (periode.periode.startdato)
+  let value = (!_.isEmpty(periode.periode.startdato))
     ? undefined
     : {
       feilmelding: t('message:validation-noDateForPerson', { person: personName }),
@@ -82,18 +87,22 @@ export const validatePensjonPeriode = (
     generalFail = true
   }
 
-  value = (periode.periode.startdato && periode.periode.startdato.match(/\d{2}\.\d{2}\.\d{4}/))
-    ? undefined
-    : {
-      feilmelding: t('message:validation-invalidDateForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-periode-startdato-date'
-    } as FeiloppsummeringFeil
-  v[namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-periode-startdato'] = value
-  if (value) {
-    generalFail = true
+  if (!_.isEmpty(periode.periode.startdato)) {
+    value = (periode.periode.startdato.match(/\d{2}\.\d{2}\.\d{4}/))
+      ? undefined
+      : {
+        feilmelding: t('message:validation-invalidDateForPerson', {person: personName}),
+        skjemaelementId: 'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-periode-startdato-date'
+      } as FeiloppsummeringFeil
+    if (!v[namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-periode-startdato']) {
+      v[namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-periode-startdato'] = value
+    }
+    if (value) {
+      generalFail = true
+    }
   }
-  if (periode?.periode.sluttdato && periode?.periode.sluttdato?.length > 0) {
-    value = (periode.periode.sluttdato.match(/\d{2}\.\d{2}\.\d{4}/))
+  if (!_.isEmpty(periode?.periode.sluttdato)) {
+    value = (periode.periode.sluttdato!.match(/\d{2}\.\d{2}\.\d{4}/))
       ? undefined
       : {
         feilmelding: t('message:validation-invalidDateForPerson', { person: personName }),

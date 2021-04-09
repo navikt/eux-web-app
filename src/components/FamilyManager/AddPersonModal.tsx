@@ -5,7 +5,7 @@ import Add from 'assets/icons/Add'
 import Barn from 'assets/icons/Child'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Select/Select'
-import { AlignStartRow, FlexCenterDiv, FlexDiv } from 'components/StyledComponents'
+import { AlignStartRow, FlexCenterDiv, FlexDiv, PaddedDiv } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
 import { F002Sed, PersonInfo, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -51,7 +51,6 @@ const CheckboxDiv = styled.div`
      display: flex;
   }
   width: 100%;
-  padding: 1rem 0.5rem;
 `
 interface MyOption extends Option {
   isDisabled: boolean
@@ -300,7 +299,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
       closeButton
       contentLabel='contentLabel'
     >
-      <div>
+      <PaddedDiv>
         {closeButton && (
           <CloseButton
             onClick={onCloseButtonClicked}
@@ -311,11 +310,13 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
         <Title>
           {t('el:title-add-remove-persons')}
         </Title>
+        <VerticalSeparatorDiv data-size='2'/>
         <>
           {_replySed.bruker && renderPerson('bruker', brukerNr)}
           {(_replySed as F002Sed).ektefelle && renderPerson('ektefelle', ektefelleNr)}
           {(_replySed as F002Sed).annenPerson && renderPerson('annenPerson', annenPersonNr)}
           {(_replySed as F002Sed).barn && (_replySed as F002Sed).barn.map((b: any, i: number) => renderPerson(`barn[${i}]`, barnNr + i))}
+          <VerticalSeparatorDiv/>
           <hr />
           <VerticalSeparatorDiv data-size='2' />
           <Undertittel>
@@ -354,7 +355,8 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
                 id={'c-' + namespace + '-relasjon-text'}
                 highContrast={highContrast}
                 label={t('label:family-relationship')}
-                menuPlacement='auto'
+                menuPlacement='top'
+                menuPortalTarget={document.body}
                 onChange={onNewPersonRelationChange}
                 options={relationOptions}
                 placeholder={t('el:placeholder-select-default')}
@@ -387,7 +389,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
               closeModal()
             }}
           >
-            {t('label:save')}
+            {t('el:button-save')}
           </MainButton>
           <HorizontalSeparatorDiv />
           <OtherButton
@@ -397,7 +399,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
             {t('el:button-cancel')}
           </OtherButton>
         </ModalButtons>
-      </div>
+      </PaddedDiv>
     </ModalDiv>
   )
 }

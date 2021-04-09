@@ -105,6 +105,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             highContrast={highContrast}
             id={'c-' + namespace + '-benefitCause-text'}
             label={t('label:benefit-cause')}
+            menuPortalTarget={document.body}
             onChange={(e: any) => setBenefitCause(e.value)}
             options={benefitCauseOptions}
             placeholder={t('el:placeholder-select-default')}

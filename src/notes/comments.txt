@@ -4,12 +4,5 @@ Clean Attachments later
 
 Como fazer com aapen_sluttdato, format dato
 
-- A fazer: Acabar com o Motregning, fazer o prosedyre ved uenighet
-- ligar o prosedyre com o formaal
-- actualizar a resposta para o svarsedoversikt
-- começar a ligação ao svarsed
 
 
-
-
-- mudar fomdato til fradato

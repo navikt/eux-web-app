@@ -12,7 +12,6 @@ import {
   HighContrastFlatknapp,
   HighContrastInput,
   HorizontalSeparatorDiv,
-  Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
@@ -38,7 +37,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
   const [_confirmDelete, setConfirmDelete] = useState<Array<string>>([])
 
   const [_newLand, setNewLand] = useState<string | undefined>(undefined)
-  const [_newFomdato, setNewFomdato] = useState<string>('')
+  const [_newFradato, setNewFradato] = useState<string>('')
   const [_seeNewForm, setSeeNewForm] = useState<boolean>(false)
   const [_validation, setValidation] = useState<Validation>({})
 
@@ -64,7 +63,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
       newValidation,
       {
         land: _newLand || '',
-        fomdato: _newFomdato
+        fradato: _newFradato
       },
       statsborgerskaper,
       -1,
@@ -86,13 +85,13 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
     setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
   }
 
-  const onFomdatoChanged = (e: string, i: number) => {
+  const onFradatoChanged = (e: string, i: number) => {
     if (i < 0) {
-      setNewFomdato(e)
-      resetValidation(namespace + '-fomdato')
+      setNewFradato(e)
+      resetValidation(namespace + '-fradato')
     } else {
       const newStatsborgerskaper = _.cloneDeep(statsborgerskaper)
-      newStatsborgerskaper[i].fomdato = e
+      newStatsborgerskaper[i].fradato = e
       onValueChanged(`${personID}.personInfo.statsborgerskap`, newStatsborgerskaper)
     }
   }
@@ -110,7 +109,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
 
   const resetForm = () => {
     setNewLand(undefined)
-    setNewFomdato('')
+    setNewFradato('')
     setValidation({})
   }
 
@@ -140,7 +139,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
       }
       newStatsborgerskaper.push({
         land: _newLand!,
-        fomdato: _newFomdato
+        fradato: _newFradato
       })
       resetForm()
       onValueChanged(`${personID}.personInfo.statsborgerskap`, newStatsborgerskaper)
@@ -157,7 +156,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
 
     return (
       <>
-        <AlignStartRow className={classNames('slideInFromLeft')}>
+        <AlignStartRow className={classNames('slideInFromLeft')} style={{animationDelay: (i * 0.1) + 's'}}>
           <Column>
             <CountrySelect
               data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-land-text'}
@@ -172,11 +171,11 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
           </Column>
           <Column>
             <HighContrastInput
-              data-test-id={'c-familymanager-' + personID + '-nasjonaliteter-' + i + '-fomdato-date'}
-              feil={getErrorFor(i, 'fomdato')}
-              id={'c-familymanager-' + personID + '-nasjonaliteter-' + i + '-fomdato'}
-              onChange={(e: any) => onFomdatoChanged(e.target.value, i)}
-              value={i < 0 ? _newFomdato : s!.fomdato}
+              data-test-id={'c-familymanager-' + personID + '-nasjonaliteter-' + i + '-fradato-date'}
+              feil={getErrorFor(i, 'fradato')}
+              id={'c-familymanager-' + personID + '-nasjonaliteter-' + i + '-fradato'}
+              onChange={(e: any) => onFradatoChanged(e.target.value, i)}
+              value={i < 0 ? _newFradato : s!.fradato}
               placeholder={t('el:placeholder-date-default')}
             />
           </Column>
@@ -200,7 +199,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
 
   return (
     <PaddedDiv>
-      <Row className='slideInFromLeft'>
+      <AlignStartRow className='slideInFromLeft'>
         <Column>
           <UndertekstBold>
             {t('label:nationality')}
@@ -208,11 +207,11 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
         </Column>
         <Column>
           <UndertekstBold>
-            {t('label:fomdato')}
+            {t('label:fradato')}
           </UndertekstBold>
         </Column>
         <Column />
-      </Row>
+      </AlignStartRow>
       <VerticalSeparatorDiv />
       {statsborgerskaper.map(renderRow)}
       <hr />
@@ -220,7 +219,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
       {_seeNewForm
         ? renderRow(null, -1)
         : (
-          <Row className='slideInFromLeft'>
+          <AlignStartRow className='slideInFromLeft'>
             <Column>
               <HighContrastFlatknapp
                 mini
@@ -233,7 +232,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
               </HighContrastFlatknapp>
 
             </Column>
-          </Row>
+          </AlignStartRow>
           )}
     </PaddedDiv>
   )

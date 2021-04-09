@@ -14,7 +14,7 @@ export const validateNasjonalitet = (
 ): void => {
   let generalFail: boolean = false
 
-  let value = (statsborgerskap.land)
+  let value = (!_.isEmpty(statsborgerskap.land))
     ? undefined
     : {
       feilmelding: t('message:validation-noBirthCountryForPerson', { person: personName }),
@@ -25,37 +25,45 @@ export const validateNasjonalitet = (
     generalFail = true
   }
 
-  value = _.find(statsborgerskaper, s => s.land === statsborgerskap.land) === null
+  value = _.find(statsborgerskaper, s => s.land === statsborgerskap.land) === undefined
     ? undefined
     : {
       feilmelding: t('message:validation-duplicateBirthCountry'),
       skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-land-text'
     } as FeiloppsummeringFeil
-  v[namespace + (index < 0 ? '' : '[' + index + ']') + '-land'] = value
+
+  if (!v[namespace + (index < 0 ? '' : '[' + index + ']') + '-land']) {
+    v[namespace + (index < 0 ? '' : '[' + index + ']') + '-land'] = value
+  }
   if (value) {
     generalFail = true
   }
 
-  value = (statsborgerskap.fomdato)
+  value = (!_.isEmpty(statsborgerskap.fradato))
     ? undefined
     : {
       feilmelding: t('message:validation-noDateForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-fomdato-date'
+      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-fradato-date'
     } as FeiloppsummeringFeil
-  v[namespace + (index < 0 ? '' : '[' + index + ']') + '-fomdato'] = value
+  v[namespace + (index < 0 ? '' : '[' + index + ']') + '-fradato'] = value
   if (value) {
     generalFail = true
   }
 
-  value = (statsborgerskap.fomdato && statsborgerskap.fomdato.match(/\d{2}\.\d{2}\.\d{4}/))
-    ? undefined
-    : {
-      feilmelding: t('message:validation-invalidDateForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-fomdato-date'
-    } as FeiloppsummeringFeil
-  v[namespace + (index < 0 ? '' : '[' + index + ']') + '-fomdato'] = value
-  if (value) {
-    generalFail = true
+  if (!_.isEmpty(statsborgerskap.fradato)) {
+    value = statsborgerskap.fradato!.match(/\d{2}\.\d{2}\.\d{4}/)
+      ? undefined
+      : {
+        feilmelding: t('message:validation-invalidDateForPerson', {person: personName}),
+        skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-fradato-date'
+      } as FeiloppsummeringFeil
+
+    if (!v[namespace + (index < 0 ? '' : '[' + index + ']') + '-fradato']) {
+      v[namespace + (index < 0 ? '' : '[' + index + ']') + '-fradato'] = value
+    }
+    if (value) {
+      generalFail = true
+    }
   }
 
   if (generalFail) {

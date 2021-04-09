@@ -79,7 +79,7 @@ const Motregning: React.FC<MotregningProps> = ({
       } as NavnOgBetegnelse,
       -1,
       t,
-      namespace
+      namespace + '-navnogbetegnelse'
     )
     _setValidation(newValidation)
     return hasNoValidationErrors(newValidation)
@@ -191,9 +191,9 @@ const Motregning: React.FC<MotregningProps> = ({
           </Column>
           <Column>
             <HighContrastInput
-              data-test-id={'c-' + namespace + '-navnogbetegnelse' + (index >= 0 ? '[' + index + ']' : '') + '-betegnelse-text'}
-              feil={getErrorFor(index, 'betegnelse')}
-              id={'c-' + namespace + '-navnogbetegnelse' + (index >= 0 ? '[' + index + ']' : '') + '-betegnelse-text'}
+              data-test-id={'c-' + namespace + '-navnogbetegnelse' + (index >= 0 ? '[' + index + ']' : '') + '-betegnelsepåytelse-text'}
+              feil={getErrorFor(index, 'betegnelsepåytelse')}
+              id={'c-' + namespace + '-navnogbetegnelse' + (index >= 0 ? '[' + index + ']' : '') + '-betegnelsepåytelse-text'}
               label={t('label:benefit-cause')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBetegnelse(e.target.value, index)}
               placeholder={t('el:placeholder-input-default')}
@@ -239,7 +239,7 @@ const Motregning: React.FC<MotregningProps> = ({
           <VerticalSeparatorDiv />
           <HighContrastRadio
             name={namespace + '-anmodning'}
-            checked={_anmodning === 'nei'}
+            checked={_anmodning === '2'}
             label={t('label:anmodning-om-motregning-svar-barn')}
             onClick={() => _setAnmodning('2')}
           />

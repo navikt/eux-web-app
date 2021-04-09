@@ -1,15 +1,22 @@
 import { setReplySed } from 'actions/svarpased'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import { FlexDiv } from 'components/StyledComponents'
+import { Etikett, FlexCenterDiv, FlexDiv, FlexBaseDiv, PileDiv } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { ReplySed } from 'declarations/sed'
 import { ReplySedEntry } from 'declarations/types'
 import _ from 'lodash'
-import { Normaltekst } from 'nav-frontend-typografi'
-import NavHighContrast, { HighContrastFlatknapp, HighContrastPanel, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { Normaltekst, UndertekstBold } from 'nav-frontend-typografi'
+import NavHighContrast, { HighContrastFlatknapp, HighContrastPanel, VerticalSeparatorDiv, HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
+import styled from 'styled-components'
+
+const LoadSaveDiv = styled(FlexDiv)`
+  width: 100%;
+  min-width: 21rem;
+  flex-direction: column;
+`
 
 interface SEDLoadSaveProps {
   highContrast: boolean
@@ -85,52 +92,97 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
   return (
     <NavHighContrast highContrast={highContrast}>
       <HighContrastPanel>
-        <FlexDiv>
+        <LoadSaveDiv>
           {_loadingSavedItems && (<WaitingPanel />)}
-          {_replySeds === null || _.isEmpty(_replySeds) && (
+          {_replySeds === null || _.isEmpty(_replySeds) ? (
             <Normaltekst>
               {t('label:no-saved-replyseds')}
             </Normaltekst>
-
+          ) : (
+            <Normaltekst>
+              {t('label:saved-replyseds')}
+            </Normaltekst>
           )}
+          <VerticalSeparatorDiv/>
           {_replySeds && _replySeds.map((replySed: ReplySedEntry, i: number) => {
 
             const candidateForDeletion = _confirmDelete.indexOf(replySed.name) >= 0
-
             return (
-           <div>
-             <Normaltekst>
-               {t('label:name') + ': ' + replySed.name}
-             </Normaltekst>
-             <VerticalSeparatorDiv data-size='0.5'/>
-             <Normaltekst>
-               {t('label:date') + ': ' + replySed.date}
-             </Normaltekst>
-             <VerticalSeparatorDiv data-size='0.5'/>
-             <HighContrastFlatknapp
-               mini
-               kompakt
-               onClick={() => onLoad(replySed.replySed)}
-             >
-               {t('label:load')}
-             </HighContrastFlatknapp>
-             <HighContrastFlatknapp
-               mini
-               kompakt
-               onClick={() => onDownload(replySed)}
-             >
-               {t('label:download')}
-             </HighContrastFlatknapp>
-             <AddRemovePanel
-               existingItem={true}
-               candidateForDeletion={candidateForDeletion}
-               onBeginRemove={() => addCandidateForDeletion(replySed.name)}
-               onConfirmRemove={() => onRemove(i)}
-               onCancelRemove={() => removeCandidateForDeletion(replySed.name!)}
-             />
-           </div>
+              <>
+              <Etikett style={{padding: '0.5rem'}}>
+                <PileDiv>
+                  <FlexCenterDiv>
+                    <FlexBaseDiv>
+                      <UndertekstBold>
+                        {t('label:name') + ': '}
+                      </UndertekstBold>
+                      <HorizontalSeparatorDiv data-size='0.5'/>
+                      <Normaltekst>
+                        {replySed.name}
+                      </Normaltekst>
+                    </FlexBaseDiv>
+                    <HorizontalSeparatorDiv/>
+                    <FlexBaseDiv>
+                     <UndertekstBold>
+                       {t('label:date') + ': '}
+                     </UndertekstBold>
+                     <HorizontalSeparatorDiv data-size='0.5'/>
+                     <Normaltekst>
+                       {replySed.date}
+                     </Normaltekst>
+                    </FlexBaseDiv>
+                  </FlexCenterDiv>
+                  <FlexCenterDiv>
+                    <FlexBaseDiv>
+                      <UndertekstBold>
+                        {t('label:saksnummer') + ': '}
+                      </UndertekstBold>
+                      <HorizontalSeparatorDiv data-size='0.5'/>
+                      <Normaltekst>
+                        {replySed.replySed.saksnummer}
+                      </Normaltekst>
+                    </FlexBaseDiv>
+                    <HorizontalSeparatorDiv/>
+                    <FlexBaseDiv>
+                      <UndertekstBold>
+                        {t('label:type') + ': '}
+                      </UndertekstBold>
+                      <HorizontalSeparatorDiv data-size='0.5'/>
+                      <Normaltekst>
+                        {replySed.replySed.sedType}
+                      </Normaltekst>
+                    </FlexBaseDiv>
+                  </FlexCenterDiv>
+                  <VerticalSeparatorDiv data-size='0.5'/>
+                  <FlexBaseDiv>
+                    <HighContrastFlatknapp
+                      mini
+                      kompakt
+                      onClick={() => onLoad(replySed.replySed)}
+                    >
+                      {t('el:button-load')}
+                    </HighContrastFlatknapp>
+                    <HighContrastFlatknapp
+                      mini
+                      kompakt
+                      onClick={() => onDownload(replySed)}
+                    >
+                      {t('el:button-download')}
+                    </HighContrastFlatknapp>
+                    <AddRemovePanel
+                      existingItem={true}
+                      candidateForDeletion={candidateForDeletion}
+                      onBeginRemove={() => addCandidateForDeletion(replySed.name)}
+                      onConfirmRemove={() => onRemove(i)}
+                      onCancelRemove={() => removeCandidateForDeletion(replySed.name!)}
+                    />
+                  </FlexBaseDiv>
+                </PileDiv>
+              </Etikett>
+              <VerticalSeparatorDiv/>
+              </>
           )})}
-        </FlexDiv>
+        </LoadSaveDiv>
       </HighContrastPanel>
     </NavHighContrast>
   )

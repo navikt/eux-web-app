@@ -379,7 +379,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
             disabled={savingSed}
             spinner={savingSed}
           >
-            {t('label:saveSed')}
+            {t('el:button-save')}
           </HighContrastKnapp>
           <VerticalSeparatorDiv data-size='0.5' />
         </div>

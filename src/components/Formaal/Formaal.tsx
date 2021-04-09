@@ -138,6 +138,7 @@ const Formaal: React.FC<FormaalProps> = ({
                 id='c-formaal-text'
                 highContrast={highContrast}
                 value={_newFormaal}
+                menuPortalTarget={document.body}
                 onChange={onFormaalChanged}
                 options={_formaalValues}
               />

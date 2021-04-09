@@ -87,7 +87,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
   return (
     <>
       <UndertekstBold>
-        {t('label:periode')}:
+        {t('label:periode')}
       </UndertekstBold>
       <VerticalSeparatorDiv data-size='0.5' />
       {_anmodningsperiode && (
@@ -148,7 +148,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       ))}
       <VerticalSeparatorDiv />
       <UndertekstBold>
-        {t('label:searcher')}
+        {t('label:søker')}
       </UndertekstBold>
       <VerticalSeparatorDiv data-size='0.5' />
       <FlexDiv className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
@@ -176,7 +176,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       </FlexDiv>
       <VerticalSeparatorDiv />
       <UndertekstBold>
-        {t('app:relationship-ektefelle')}
+        {t('label:partner')}
       </UndertekstBold>
       <VerticalSeparatorDiv data-size='0.5' />
       <FlexDiv className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
@@ -305,7 +305,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           kompakt mini
           onClick={saveChanges}
         >
-          {t('label:save')}
+          {t('el:button-save')}
         </HighContrastHovedknapp>
         <HorizontalSeparatorDiv data-size='0.5' />
         <HighContrastKnapp

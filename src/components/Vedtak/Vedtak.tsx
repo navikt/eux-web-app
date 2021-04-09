@@ -205,7 +205,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
               data-test-id={'c-vedtak-perioder' + (i >= 0 ? '[' + i + ']' : '') + '-periode-startdato-date'}
               feil={getErrorFor(i, 'periode-startdato')}
               id={'c-vedtak-perioder' + (i >= 0 ? '[' + i + ']' : '') + '-periode-startdato-date'}
-              label={'label:start-date'}
+              label={t('label:start-date')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value, i)}
               value={i < 0 ? _newStartDato : p?.periode.startdato}
               placeholder={t('el:placeholder-date-default')}
@@ -216,7 +216,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
               data-test-id={'c-vedtak-perioder' + (i >= 0 ? '[' + i + ']' : '') + '-periode-sluttdato-date'}
               feil={getErrorFor(i, 'periode-sluttdato')}
               id={'c-vedtak-perioder' + (i >= 0 ? '[' + i + ']' : '') + '-periode-sluttdato-date'}
-              label={'label:end-date'}
+              label={t('label:end-date')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value, i)}
               value={i < 0 ? _newSluttDato : p?.periode.sluttdato}
               placeholder={t('el:placeholder-date-default')}
@@ -230,6 +230,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
               highContrast={highContrast}
               id={'c-vedtak-perioder' + (i >= 0 ? '[' + i + ']' : '') + '-vedtak-text'}
               label={t('label:vedtak-type')}
+              menuPortalTarget={document.body}
               onChange={(e: any) => setVedtak(e.value, i)}
               options={vedtakTypeOptions}
               placeholder={t('el:placeholder-select-default')}
@@ -344,6 +345,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
               highContrast={highContrast}
               id='c-vedtak-type-text'
               label={t('label:vedtak-type')}
+              menuPortalTarget={document.body}
               onChange={(e: any) => _setType(e.value)}
               options={vedtakTypeOptions}
               placeholder={t('el:placeholder-select-default')}

@@ -4,8 +4,6 @@ import {
   themeKeys,
   animationClose,
   animationOpen,
-  animationLeft,
-  animationRight,
   fadeIn,
   fadeOut,
   Row
@@ -30,6 +28,10 @@ export const FullWidthDiv = styled.div`
 `
 export const PileCenterDiv = styled(PileDiv)`
   align-items: center;
+`
+export const FlexBaseDiv = styled(FlexDiv)`
+  align-items: baseline;
+  justify-content: space-between;
 `
 export const FlexCenterDiv = styled(FlexDiv)`
   align-items: center;
@@ -87,22 +89,6 @@ export const HiddenFormContainer = styled.div`
   &.closed {
     height: 0%;
     max-height: 0;
-  }
-`
-export const HiddenSidebar = styled.div`
-  min-width: 21.5rem;
-  &.slideOpen {
-    will-change: margin-left;
-    margin-left: 0px;
-    animation: ${animationLeft(21.5)} 0.5s ease;
-  }
-  &.slideClose {
-    will-change: margin-left;
-    margin-left: 21.5rem;
-    animation: ${animationRight(21.5)} 0.5s ease;
-  }
-  &.closed {
-    margin-left: 21.5rem;
   }
 `
 export const TextAreaDiv = styled.div`

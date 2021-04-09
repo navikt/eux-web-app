@@ -76,7 +76,7 @@ const ReasonToCome: React.FC<ReasonToComeProps> = ({
         : (
           <div>
             <UndertekstBold className='slideInFromLeft'>
-              {t('label:duration-stay')}
+              {t('el:title-duration-stay')}
             </UndertekstBold>
             <VerticalSeparatorDiv />
             <AlignStartRow

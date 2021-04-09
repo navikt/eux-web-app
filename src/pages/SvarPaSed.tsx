@@ -281,7 +281,7 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
         <FadingLineSeparator className='fadeIn'>
           &nbsp;
         </FadingLineSeparator>
-        <Content style={{ width: '21.5rem'}}>
+        <Content style={{ width: '23.5rem'}}>
           <ContainerDiv className={classNames({ shrink: animating })}>
             <WindowDiv>
               <AnimatableDiv

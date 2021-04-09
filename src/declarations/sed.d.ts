@@ -1,4 +1,20 @@
 
+export type AdresseType = 'bosted' | 'opphold' | 'kontakt' | 'annet'
+
+export type BarnRelasjon = '01' | '02' | '03' | '04'
+
+export type BarnRelasjonType = '01' | '02' | '03' | '04' | '05' | '06' | '07' | '08'
+
+export type RelasjonType = 'BARN' |'EKTE' | 'REPA' | 'SAMB' | 'ANNEN'
+
+export type Kjoenn = 'K' | 'M' | 'U'
+
+export type TelefonType = 'arbeid' | 'hjemme' | 'mobil'
+
+export type ReplySed = F002Sed | U002Sed | U004Sed | U017Sed
+
+export type JaNei = 'ja' | 'nei'
+
 export interface Adresse {
   by?: string
   bygning?: string
@@ -6,7 +22,7 @@ export interface Adresse {
   land?: string
   postnummer?: string
   region?: string
-  type?: string
+  type?: AdresseType
 }
 
 export interface Periode {
@@ -69,7 +85,7 @@ export interface FamilieRelasjon2 {
   borSammen: string
   periode: Periode
   relasjonInfo: string
-  relasjonType: string
+  relasjonType?: RelasjonType
 }
 
 export interface Pin {
@@ -82,13 +98,13 @@ export interface Pin {
 
 export interface Statsborgerskap {
   land: string,
-  fomdato?: string
+  fradato?: string
 }
 
 export interface PersonInfo {
   fornavn: string
   etternavn: string
-  kjoenn: string
+  kjoenn: Kjoenn
   foedselsdato: string
   statsborgerskap: Array<Statsborgerskap>
   pin: Array<Pin>
@@ -133,7 +149,7 @@ export interface Person {
 }
 
 export interface Telefon {
-  type: string
+  type: TelefonType
   nummer: string
 }
 
@@ -181,13 +197,13 @@ export interface F002Sed extends FSed {
   barn: Array<{
     adresser?: Array<Adresse>
     barnetilhoerigheter?: Array<{
-      borIBrukersHushold: string
-      borIEktefellesHushold: string
-      borIAnnenPersonsHushold: string
-      borPaaInstitusjon: string
-      erDeltForeldreansvar: string
-      relasjonTilPerson: string
-      relasjonType: string
+      borIBrukersHushold: JaNei
+      borIEktefellesHushold: JaNei
+      borIAnnenPersonsHushold: JaNei
+      borPaaInstitusjon: JaNei
+      erDeltForeldreansvar: JaNei
+      relasjonTilPerson: BarnRelasjon
+      relasjonType?: BarnRelasjonType
       periode: Periode
     }>
     flyttegrunn?: Flyttegrunn
@@ -261,5 +277,3 @@ export interface U017Sed extends USed {
     avvisningsgrunn: string
   }
 }
-
-export type ReplySed = F002Sed | U002Sed | U004Sed | U017Sed

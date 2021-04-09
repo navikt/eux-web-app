@@ -1,10 +1,11 @@
 import { Epost, Telefon } from 'declarations/sed'
 import { Validation } from 'declarations/types'
+import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 
 export const validateKontaktsinformasjonTelefon = (
   v: Validation,
-  telefon: Telefon,
+  telefon: Telefon | {type: any, nummer: any},
   index: number,
   t: any,
   namespace: string,
@@ -12,7 +13,7 @@ export const validateKontaktsinformasjonTelefon = (
 ): void => {
   let generalFail: boolean = false
 
-  let value = (telefon.type)
+  let value = (!_.isEmpty(telefon.type))
     ? undefined
     : {
       feilmelding: t('message:validation-noTelephoneTypeForPerson', { person: personName }),
@@ -23,7 +24,7 @@ export const validateKontaktsinformasjonTelefon = (
     generalFail = true
   }
 
-  value = (telefon.nummer)
+  value = (!_.isEmpty(telefon.nummer))
     ? undefined
     : {
       feilmelding: t('message:validation-noTelephoneNumberForPerson', { person: personName }),
@@ -55,7 +56,7 @@ export const validateKontaktsinformasjonEpost = (
   const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   let generalFail: boolean = false
 
-  const value = epost
+  const value = !_.isEmpty(epost.adresse)
     ? (epost.adresse.match(emailPattern)
         ? undefined
         : {
@@ -64,7 +65,7 @@ export const validateKontaktsinformasjonEpost = (
         } as FeiloppsummeringFeil
       )
     : {
-      feilmelding: t('message:validation-noEpostAdresseForPerson', { person: personName }),
+      feilmelding: t('message:validation-noEpostForPerson', { person: personName }),
       skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-adresse-text'
     } as FeiloppsummeringFeil
 

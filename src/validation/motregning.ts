@@ -32,7 +32,7 @@ export const validateMotregning = (
       skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-betegnelsepåytelse-text'
     } as FeiloppsummeringFeil
 
-  v[namespace + '-navn'] = value
+  v[namespace + '-betegnelsepåytelse'] = value
 
 
   if (generalFail) {
