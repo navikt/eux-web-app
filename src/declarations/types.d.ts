@@ -43,18 +43,15 @@ export interface ReplySedEntry {
   replySed: ReplySed
 }
 
-export interface SvarSed {
-  svarSedType: string
-  svarSedDisplay: string
-  svarSedId: string
-}
-
 export interface ConnectedSed {
-  erInnkommende: string
+  sedTittel: string
+  sedType: string
   sedId: string
-  urlSed: string
+  sedUrl: string
+  status: string
   sistEndretDato: string
-  svarSed: Array<SvarSed>
+  svarsedType: string
+  svarsedDisplay: string
 }
 
 export interface Dokument {
@@ -137,14 +134,14 @@ export interface Saksbehandler {
 }
 
 export interface Sed {
-  type: string
-  description: string
+  sakType: string
+  sakTittel: string
   sakId: string
-  motpartLand: string
+  sakUrl: string
+  motpart: Array<string>
   motpartInstitusjon: string
   sistEndretDato: string
-  urlSak: string
-  sed: Array<ConnectedSed>
+  sedListe: Array<ConnectedSed>
 }
 
 export type Seds = Array<Sed>

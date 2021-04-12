@@ -171,8 +171,8 @@ export interface BaseReplySed {
   bruker: Person
   saksnummer ?: string
   svarSedId?: string
-  svarSedDisplay?: string
-  svarSedType?: string
+  svarsedDisplay?: string
+  svarsedType?: string
   sedType: string
   sedVersjon: string
 }

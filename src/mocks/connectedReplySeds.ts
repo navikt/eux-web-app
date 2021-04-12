@@ -1,75 +1,65 @@
 export default [
   {
+    "sakTittel": "Beslutte komponent myndighet",
+    "sakType": "FB_BUC_01",
     "sakId": "1166592",
-    "motpartLand": "PL",
-    "motpartInstitusjon": "Lodzkie Voivodeship Office in Lodz",
-    "urlSak": "http://foo.com",
+    "sakUrl": "http://foo.com",
     "sistEndretDato": "2020-01-01",
-    "type": "FB_BUC_01",
-    "description": "Beslutte komponent myndighet",
-    "sed": [
+    "motpart": [
+      "Lodzkie Voivodeship Office in Lodz (Polen)"
+    ],
+    "sedListe": [
       {
-        "erInnkommende": "ja",
+        "sedTittel": "Description for F001",
+        "status": "received",
+        "sedType": "F001",
         "sedId": "603e18ebd5b549b1b5c0f53c58558115",
-        "urlSed": "http://...",
+        "sedUrl": "http://...",
         "sistEndretDato": "2020-01-02",
-        "svarSed": [
-          {
-            "svarSedId": "103e18ebd5b549b1b5c0f53c58558111",
-            "svarSedType": "F002",
-            "svarSedDisplay": "Description for F002"
-          }
-        ]
+        "svarsedType": "F002",
+        "svarsedDisplay": "Description for F002"
       },
       {
-        "erInnkommende": "nei",
+        "sedTittel": "Description for U001",
+        "status": "sent",
+        "sedType": "U001",
         "sedId": "603e18ebd5b549b1b5c0f53c58558116",
-        "urlSed": "http://...",
+        "sedUrl": "http://...",
         "sistEndretDato": "2020-01-03",
-        "svarSed": [
-          {
-            "svarSedId": "103e18ebd5b549b1b5c0f53c58558112",
-            "svarSedType": "U004",
-            "svarSedDisplay": "Description for U004"
-          }
-        ]
-      }
+        "svarsedType": "u002",
+        "svarsedDisplay": "Description for u002"
+      },
+      {
+        "sedTittel": "Description for U003",
+        "status": "new",
+        "sedType": "U003",
+        "sedId": "603e18ebd5b549b1b5c0f53c58558117",
+        "sedUrl": "http://...",
+        "sistEndretDato": "2020-01-04",
+        "svarsedType": "u004",
+        "svarsedDisplay": "Description for u004"
+      },
     ]
   },
   {
-    "sakId": "1166593",
-    "motpartLand": "PL",
-    "motpartInstitusjon": "Lodzkie Voivodeship Office in Lodz",
-    "urlSak": "http://foo.com",
-    "sistEndretDato": "2020-01-01",
-    "type": "P_BUC_01",
-    "description": "Pensjon",
-    "sed": [
+    "sakTittel": "Utveksling av informasjon for å avgjøre et krav for UB",
+    "sakType": "UB_BUC_01",
+    "sakId": "398792",
+    "sakUrl": "https://rina-ss3-q.adeo.no/portal/#/caseManagement/398792?rightView=filtering",
+    "sistEndretDato": "2021-04-07",
+    "motpart": [
+      "NAV ACCEPTANCE TEST 07 (Norge)"
+    ],
+    "sedListe": [
       {
-        "erInnkommende": "ja",
-        "sedId": "603e18ebd5b549b1b5c0f53c58558115",
-        "urlSed": "http://...",
-        "sistEndretDato": "2020-01-02",
-        "svarSed": [
-          {
-            "svarSedId": "103e18ebd5b549b1b5c0f53c58558111",
-            "svarSedType": "F002",
-            "svarSedDisplay": "Description for F002"
-          }
-        ]
-      },
-      {
-        "erInnkommende": "nei",
-        "sedId": "603e18ebd5b549b1b5c0f53c58558116",
-        "urlSed": "http://...",
-        "sistEndretDato": "2020-01-03",
-        "svarSed": [
-          {
-            "svarSedId": "103e18ebd5b549b1b5c0f53c58558112",
-            "svarSedType": "U004",
-            "svarSedDisplay": "Description for U004"
-          }
-        ]
+        "sedTittel": "Anmodning om trygdehistorikk",
+        "sedType": "U001",
+        "sedId": "8edd012b62d84a768cbd4a734929076d",
+        "sedUrl": "https://rina-ss3-q.adeo.no/portal/#/caseManagement/398792?rightView=filtering&openMode=Read&docId=8edd012b62d84a768cbd4a734929076d",
+        "status": "received",
+        "sistEndretDato": "2021-02-18",
+        "svarsedType": "U002",
+        "svarsedDisplay": "Create U002 Reply"
       }
     ]
   }

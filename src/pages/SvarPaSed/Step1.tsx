@@ -1,5 +1,6 @@
 import * as appActions from 'actions/app'
 import * as svarpasedActions from 'actions/svarpased'
+import FileIcon from 'assets/icons/FileIcon'
 import ReceivedIcon from 'assets/icons/Email'
 import ExternalLink from 'assets/icons/Logout'
 import SentIcon from 'assets/icons/Send'
@@ -13,8 +14,7 @@ import {
   PileDiv
 } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { ConnectedSed, Sed, SvarSed, Validation } from 'declarations/types'
-import CountryData, { CountryList } from 'land-verktoy'
+import { ConnectedSed, Sed, Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Normaltekst, Systemtittel, Undertekst, Undertittel } from 'nav-frontend-typografi'
@@ -97,8 +97,6 @@ const Step1: React.FC<SvarPaSedProps> = ({
   const [_saksnummerOrFnr, _setSaksnummerOrFnr] = useState<string | undefined>(rinasaksnummerOrFnrParam)
   const [_validation, setValidation] = useState<Validation>({})
 
-  const countryInstance: CountryList = CountryData.getCountryInstance('nb')
-
   const onSaksnummerOrFnrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(appActions.cleanData())
     _setSaksnummerOrFnr(e.target.value)
@@ -140,10 +138,10 @@ const Step1: React.FC<SvarPaSedProps> = ({
     }
   }
 
-  const onReplySedClick = (svarSed: SvarSed, saksnummer: string) => {
+  const onReplySedClick = (connectedSed: ConnectedSed, saksnummer: string) => {
     resetValidation('replysed')
     dispatch(svarpasedActions.resetReplySed())
-    dispatch(svarpasedActions.queryReplySed(_saksnummerOrFnr, svarSed, saksnummer))
+    dispatch(svarpasedActions.queryReplySed(_saksnummerOrFnr, connectedSed, saksnummer))
   }
 
   useEffect(() => {
@@ -212,33 +210,31 @@ const Step1: React.FC<SvarPaSedProps> = ({
                 className={classNames({selected: _filter === 'FB_'})}
                 onClick={() => _setFilter('FB_')}
               >
-                {t('label:family-benefits') + ' (' +_.filter(seds, (s: Sed) => s.type.startsWith('FB_')).length + ')'}
+                {t('label:family-benefits') + ' (' +_.filter(seds, (s: Sed) => s.sakType.startsWith('FB_')).length + ')'}
               </HighContrastFlatknapp>
               <HorizontalSeparatorDiv/>
             </FilterDiv>
           <VerticalSeparatorDiv/>
           </>
             {seds
-              .filter((s: Sed) => _filter ? s.type.startsWith(_filter): true)
-              .map((sed: Sed) => {
-              const country = countryInstance.findByValue(sed.motpartLand)
-              return (
-                <div key={sed.type + '-' + sed.description}>
+              .filter((s: Sed) => _filter ? s.sakType.startsWith(_filter): true)
+              .map((sed: Sed) => (
+                <div key={sed.sakType}>
                   <RadioElementBorder
                     name='svarpased__saksnummerOrFnr-results'
-                    value={sed.type}
-                    checked={parentSed === sed.type}
+                    value={sed.sakType}
+                    checked={parentSed === sed.sakType}
                     label={(
                       <>
                         <Undertittel>
-                          {sed.type + ' - ' + sed.description}
+                          {sed.sakType + ' - ' + sed.sakTittel}
                         </Undertittel>
                         <LeftDiv>
                           <span>
                             {t('label:saksnummer') + ': ' + sed.sakId}
                           </span>
                           <HorizontalSeparatorDiv />
-                          <HighContrastLink href={sed.urlSak}>
+                          <HighContrastLink href={sed.sakUrl}>
                             <span>
                               {t('label:goToRina')}
                             </span>
@@ -252,7 +248,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                           </Normaltekst>
                           <HorizontalSeparatorDiv data-size='0.35' />
                           <Normaltekst>
-                            {sed.motpartInstitusjon + ' (' + country?.label + ')'}
+                            {sed.motpart.join(', ')}
                           </Normaltekst>
                         </FlexDiv>
                         <VerticalSeparatorDiv data-size='0.3' />
@@ -264,43 +260,42 @@ const Step1: React.FC<SvarPaSedProps> = ({
                     className='slideInFromLeft'
                     onChange={onParentSedChange}
                   />
-                  {sed.sed.map((connectedSed: ConnectedSed) => (
+                  {sed.sedListe.map((connectedSed: ConnectedSed) => (
                     <HiddenFormContainer
                       key={sed + '-' + connectedSed.sedId}
                       className={classNames({
-                        slideOpen: previousParentSed !== sed.type && parentSed === sed.type,
-                        slideClose: previousParentSed === sed.type && parentSed !== sed.type,
-                        closed: !((previousParentSed !== sed.type && parentSed === sed.type) || (previousParentSed === sed.type && parentSed !== sed.type))
+                        slideOpen: previousParentSed !== sed.sakType && parentSed === sed.sakType,
+                        slideClose: previousParentSed === sed.sakType && parentSed !== sed.sakType,
+                        closed: !((previousParentSed !== sed.sakType && parentSed === sed.sakType) || (previousParentSed === sed.sakType && parentSed !== sed.sakType))
                       })}
                     >
                       <HighContrastPanel style={{ marginLeft: '3rem' }}>
                         <FlexDiv>
                           <PileCenterDiv>
-                            {connectedSed.erInnkommende === 'ja' && <ReceivedIcon />}
-                            {connectedSed.erInnkommende === 'nei' && <SentIcon />}
+                            {connectedSed.status === 'received' && <ReceivedIcon />}
+                            {connectedSed.status === 'sent' && <SentIcon />}
+                            {connectedSed.status === 'new' && <FileIcon />}
                             <VerticalSeparatorDiv data-size='0.35' />
                             <Undertekst>
-                              {t('app:status-received-' + connectedSed.erInnkommende)}
+                              {t('app:status-received-' + connectedSed.status)}
                             </Undertekst>
                           </PileCenterDiv>
                           <HorizontalSeparatorDiv />
                           <PileDiv style={{ flex: 2 }}>
-                            {connectedSed.svarSed.map((s: SvarSed) => (
-                              <FlexStartDiv>
-                                <Undertittel>
-                                  {s.svarSedType} - {s.svarSedDisplay}
-                                </Undertittel>
-                                <HighContrastHovedknapp
-                                  disabled={queryingReplySed}
-                                  spinner={queryingReplySed}
-                                  mini
-                                  onClick={() => onReplySedClick(s, sed.sakId)}
-                                >
-                                  {queryingReplySed ? t('message:loading-replying') : t('label:reply')}
-                                </HighContrastHovedknapp>
-                              </FlexStartDiv>
-                            ))}
-                            <HighContrastLink href={connectedSed.urlSed}>
+                            <FlexStartDiv>
+                              <Undertittel>
+                                {connectedSed.svarsedType} - {connectedSed.svarsedDisplay}
+                              </Undertittel>
+                              <HighContrastHovedknapp
+                                disabled={queryingReplySed}
+                                spinner={queryingReplySed}
+                                mini
+                                onClick={() => onReplySedClick(connectedSed, sed.sakId)}
+                              >
+                                {queryingReplySed ? t('message:loading-replying') : t('label:reply')}
+                              </HighContrastHovedknapp>
+                            </FlexStartDiv>
+                            <HighContrastLink href={connectedSed.sedUrl}>
                               <span>
                                 {t('label:goToSedInRina')}
                               </span>
@@ -320,8 +315,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                     </HiddenFormContainer>
                   ))}
                 </div>
-              )
-            })}
+              ))}
           </HighContrastRadioGroup>
         )}
       </ContainerDiv>

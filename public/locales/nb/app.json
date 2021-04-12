@@ -25,8 +25,9 @@
   "session-expire-title" : "Du vil snart bli logget ut",
   "session-expire-text" : "Husk å lagre opplysningene. Hvis du ønsker å fortsette, må du logge inn igjen.  Du blir logget ut om {{minutes}} minutter",
 
-  "status-received-nei" : "Sendt",
-  "status-received-ja" : "Mottatt",
+  "status-received-sent" : "Sendt",
+  "status-received-received" : "Mottatt",
+  "status-received-new" : "Utkast",
 
   "ok-got-it" : "Ok, stemmer det",
   "log-me-again": "Logg inn på nytt"
