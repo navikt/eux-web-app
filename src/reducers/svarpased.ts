@@ -133,9 +133,12 @@ const svarpasedReducer = (
       }
 
     case types.SVARPASED_SAKSNUMMERORFNR_QUERY_SUCCESS:
+      const seds = _.isArray((action as ActionWithPayload).payload) ?
+        (action as ActionWithPayload).payload :
+        [(action as ActionWithPayload).payload]
       return {
         ...state,
-        seds: (action as ActionWithPayload).payload,
+        seds: seds,
         saksnummerOrFnr: (action as ActionWithPayload).context.saksnummerOrFnr
       }
 

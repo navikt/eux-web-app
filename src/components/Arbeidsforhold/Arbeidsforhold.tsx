@@ -11,6 +11,7 @@ export interface ArbeidsforholdProps {
   getArbeidsforholdList?: () => void
   gettingArbeidsforholdList?: boolean
   personID?: string
+  personFnr?: string
   onArbeidsforholdSelect: (a: Arbeidsforholdet, checked: boolean) => void
   onArbeidsforholdEdit?: (a: Arbeidsforholdet, index: number) => void
   onArbeidsforholdDelete?: (index: number) => void
@@ -24,6 +25,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
   gettingArbeidsforholdList = false,
   getArbeidsforholdList = () => {},
   personID,
+  personFnr,
   onArbeidsforholdSelect,
   onArbeidsforholdEdit = () => {},
   onArbeidsforholdDelete = () => {},
@@ -65,6 +67,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
                 onArbeidsforholdDelete={onArbeidsforholdDelete}
                 onArbeidsforholdEdit={onArbeidsforholdEdit}
                 personID={personID!}
+                personFnr={personFnr}
               />
             )
           }

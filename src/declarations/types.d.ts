@@ -47,11 +47,10 @@ export interface ConnectedSed {
   sedTittel: string
   sedType: string
   sedId: string
+  sedIdParent?: string
   sedUrl: string
   status: string
   sistEndretDato: string
-  svarsedType: string
-  svarsedDisplay: string
 }
 
 export interface Dokument {

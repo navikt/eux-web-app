@@ -10,34 +10,28 @@ export default [
     ],
     "sedListe": [
       {
-        "sedTittel": "Description for F001",
+        "sedTittel": "Description for F002",
         "status": "received",
-        "sedType": "F001",
+        "sedType": "F002",
         "sedId": "603e18ebd5b549b1b5c0f53c58558115",
         "sedUrl": "http://...",
         "sistEndretDato": "2020-01-02",
-        "svarsedType": "F002",
-        "svarsedDisplay": "Description for F002"
       },
       {
-        "sedTittel": "Description for U001",
+        "sedTittel": "Description for U002",
         "status": "sent",
-        "sedType": "U001",
+        "sedType": "U002",
         "sedId": "603e18ebd5b549b1b5c0f53c58558116",
         "sedUrl": "http://...",
-        "sistEndretDato": "2020-01-03",
-        "svarsedType": "u002",
-        "svarsedDisplay": "Description for u002"
+        "sistEndretDato": "2020-01-03"
       },
       {
-        "sedTittel": "Description for U003",
+        "sedTittel": "Description for U004",
         "status": "new",
-        "sedType": "U003",
+        "sedType": "U004",
         "sedId": "603e18ebd5b549b1b5c0f53c58558117",
         "sedUrl": "http://...",
-        "sistEndretDato": "2020-01-04",
-        "svarsedType": "u004",
-        "svarsedDisplay": "Description for u004"
+        "sistEndretDato": "2020-01-04"
       },
     ]
   },
@@ -53,13 +47,11 @@ export default [
     "sedListe": [
       {
         "sedTittel": "Anmodning om trygdehistorikk",
-        "sedType": "U001",
+        "sedType": "U002",
         "sedId": "8edd012b62d84a768cbd4a734929076d",
         "sedUrl": "https://rina-ss3-q.adeo.no/portal/#/caseManagement/398792?rightView=filtering&openMode=Read&docId=8edd012b62d84a768cbd4a734929076d",
         "status": "received",
-        "sistEndretDato": "2021-02-18",
-        "svarsedType": "U002",
-        "svarsedDisplay": "Create U002 Reply"
+        "sistEndretDato": "2021-02-18"
       }
     ]
   }

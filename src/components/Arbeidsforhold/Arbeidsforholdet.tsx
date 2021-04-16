@@ -50,6 +50,7 @@ export interface ArbeidsforholdetProps {
   onArbeidsforholdEdit?: (a: Arbeidsforholdet, index: number) => void
   onArbeidsforholdDelete?: (index: number) => void
   personID: string
+  personFnr?: string
   selected?: boolean
 }
 
@@ -61,7 +62,8 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
   onArbeidsforholdSelect,
   onArbeidsforholdDelete = () => {},
   onArbeidsforholdEdit = () => {},
-  personID
+  personID,
+  personFnr
 }: ArbeidsforholdetProps): JSX.Element => {
   const {
     arbeidsforholdIDnav,
@@ -373,9 +375,17 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
             <AlertStripeAdvarsel>
               <FlexDivNoWrap>
                 {t('message:warning-conflict-aa-1')}
-                <PaddedLink href='#'>{t('message:warning-conflict-aa-link-1')}</PaddedLink>
+                <PaddedLink
+                  href={`https://modapp.adeo.no/aareg-web/?1&rolle=arbeidstaker&ident=${personFnr}#!arbeidsforhold`}
+                >
+                  {t('message:warning-conflict-aa-link-1')}
+                </PaddedLink>
                 {t('message:warning-conflict-aa-2')}
-                <PaddedLink href='#'>{t('message:warning-conflict-aa-link-2')}</PaddedLink>
+                <PaddedLink
+                  href={`https://modapp.adeo.no/a-inntekt/person/${personFnr}?2#!PersonInntektLamell`}
+                  >
+                  {t('message:warning-conflict-aa-link-2')}
+                </PaddedLink>
               </FlexDivNoWrap>
             </AlertStripeAdvarsel>
           </div>

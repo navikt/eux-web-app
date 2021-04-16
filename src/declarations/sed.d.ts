@@ -1,4 +1,3 @@
-
 export type AdresseType = 'bosted' | 'opphold' | 'kontakt' | 'annet'
 
 export type BarnRelasjon = '01' | '02' | '03' | '04'
@@ -170,9 +169,6 @@ export interface Utbetaling {
 export interface BaseReplySed {
   bruker: Person
   saksnummer ?: string
-  svarSedId?: string
-  svarsedDisplay?: string
-  svarsedType?: string
   sedType: string
   sedVersjon: string
 }

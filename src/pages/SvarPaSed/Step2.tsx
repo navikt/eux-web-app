@@ -140,8 +140,8 @@ const Step2: React.FC<SvarPaSedProps> = ({
         setViewSendSedModal(true)
         dispatch(svarpasedActions.createSed(
           rinasaksnummerOrFnr,
-          replySed!.svarSedId,
-          replySed!.svarSedType,
+          replySed!.sedId,
+          replySed!.sedType,
           data
         ))
       }

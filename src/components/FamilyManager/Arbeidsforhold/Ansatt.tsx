@@ -221,6 +221,7 @@ const Ansatt: React.FC<AnsattProps> = ({
         editable
         searchable
         personID={personID}
+        personFnr={fnr!}
         getArbeidsforholdList={() => getArbeidsforholdList(fnr)}
         valgteArbeidsforhold={_valgteArbeidsforhold}
         arbeidsforholdList={_existingArbeidsforholdList}
@@ -240,6 +241,7 @@ const Ansatt: React.FC<AnsattProps> = ({
             editable
             searchable={false}
             personID={personID}
+            personFnr={fnr!}
             valgteArbeidsforhold={_valgteArbeidsforhold}
             arbeidsforholdList={_addedArbeidsforholdList}
             onArbeidsforholdSelect={onArbeidsforholdSelect}

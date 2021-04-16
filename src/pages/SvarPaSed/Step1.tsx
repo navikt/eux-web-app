@@ -284,7 +284,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                           <PileDiv style={{ flex: 2 }}>
                             <FlexStartDiv>
                               <Undertittel>
-                                {connectedSed.svarsedType} - {connectedSed.svarsedDisplay}
+                                {connectedSed.sedType} - {connectedSed.sedTittel}
                               </Undertittel>
                               <HighContrastHovedknapp
                                 disabled={queryingReplySed}
