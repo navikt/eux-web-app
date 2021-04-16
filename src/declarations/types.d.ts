@@ -37,10 +37,10 @@ export interface BucTyper {
   unemployment: Array<Kodeverk>
 }
 
-export interface ReplySedEntry {
+export interface LocalStorageEntry<CustomLocalStorageContent extends any = any> {
   name: string
   date: string
-  replySed: ReplySed
+  content: CustomLocalStorageContent
 }
 
 export interface ConnectedSed {

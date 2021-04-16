@@ -154,7 +154,6 @@ const Step2: React.FC<SvarPaSedProps> = ({
   // TODO
   const createSedEditInRINA = () => {}
 
-  // TODO
   const onSaveSedClick = () => {
     setViewSaveSedModal(true)
   }
@@ -234,7 +233,8 @@ const Step2: React.FC<SvarPaSedProps> = ({
       {_viewSaveSedModal && (
         <SaveSEDModal
           highContrast={highContrast}
-          replySed={replySed}
+          localStorageContent={replySed}
+          storageKey='replysed'
           onModalClose={() => setViewSaveSedModal(false)}
         />
       )}

@@ -3,8 +3,7 @@ import Alert from 'components/Alert/Alert'
 import Modal from 'components/Modal/Modal'
 import { FlexCenterDiv, PileDiv } from 'components/StyledComponents'
 import { AlertStatus } from 'declarations/components'
-import { ReplySed } from 'declarations/sed'
-import { ReplySedEntry, Validation } from 'declarations/types'
+import { LocalStorageEntry, Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Undertittel } from 'nav-frontend-typografi'
@@ -41,17 +40,19 @@ const SectionDiv = styled.div`
   justify-content: center;
 `
 
-interface SaveSEDModalProps {
+interface SaveSEDModalProps<CustomLocalStorageContent extends any = any> {
   highContrast: boolean
-  replySed: ReplySed
   onModalClose: () => void
+  localStorageContent: CustomLocalStorageContent
+  storageKey: string
 }
 
-const SendSEDModal: React.FC<SaveSEDModalProps> = ({
+const SendSEDModal = <CustomLocalStorageContent extends any = any>({
   highContrast,
-  replySed,
-  onModalClose
-}: SaveSEDModalProps): JSX.Element => {
+  onModalClose,
+  localStorageContent,
+  storageKey
+}: SaveSEDModalProps<CustomLocalStorageContent>): JSX.Element => {
 
   const dispatch = useDispatch()
   const { t } = useTranslation()
@@ -76,20 +77,20 @@ const SendSEDModal: React.FC<SaveSEDModalProps> = ({
 
   const onSave = async () => {
     if (performValidation()) {
-      let items: string | null = await window.localStorage.getItem('replysed')
-      let replySeds: Array<ReplySedEntry> | null | undefined = undefined
+      let items: string | null = await window.localStorage.getItem(storageKey)
+      let savedEntries: Array<LocalStorageEntry<CustomLocalStorageContent>> | null | undefined = undefined
       if (_.isString(items)) {
-        replySeds = JSON.parse(items)
+        savedEntries = JSON.parse(items)
       } else {
-        replySeds = []
+        savedEntries = []
       }
       let dateString =  new Date().toDateString()
-      let newReplySeds = replySeds!.concat({
+      let newReplySeds = savedEntries!.concat({
         name: _name,
         date: dateString,
-        replySed: replySed
-      } as ReplySedEntry)
-      await window.localStorage.setItem('replysed', JSON.stringify(newReplySeds, null, 2))
+        content: localStorageContent
+      } as LocalStorageEntry<CustomLocalStorageContent>)
+      await window.localStorage.setItem(storageKey, JSON.stringify(newReplySeds, null, 2))
       setSaved(true)
       setMessage(t('label:saved-svarsed-draft', {name: _name, date: dateString}))
     }

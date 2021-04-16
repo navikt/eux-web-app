@@ -1,15 +1,12 @@
-import { setReplySed } from 'actions/svarpased'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import { Etikett, FlexCenterDiv, FlexDiv, FlexBaseDiv, PileDiv } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
-import { ReplySed } from 'declarations/sed'
-import { ReplySedEntry } from 'declarations/types'
+import { LocalStorageEntry } from 'declarations/types'
 import _ from 'lodash'
 import { Normaltekst, UndertekstBold } from 'nav-frontend-typografi'
 import NavHighContrast, { HighContrastFlatknapp, HighContrastPanel, VerticalSeparatorDiv, HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 
 const LoadSaveDiv = styled(FlexDiv)`
@@ -20,50 +17,46 @@ const LoadSaveDiv = styled(FlexDiv)`
 
 interface SEDLoadSaveProps {
   highContrast: boolean
-  setMode: (mode: string, from: string, callback?: () => void) => void
+  onLoad: (content: any) => void
+  storageKey: string
 }
 
-const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
+const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent extends any>({
   highContrast,
-  setMode
+  onLoad,
+  storageKey
 }: SEDLoadSaveProps) => {
 
-  const [_replySeds, setReplySeds] = useState<Array<ReplySedEntry> | null | undefined>(undefined)
+  const [_savedEntries, setSavedEntries] = useState<Array<LocalStorageEntry<CustomLocalStorageContent>> | null | undefined>(undefined)
   const [_loadingSavedItems, setLoadingSavedItems] = useState<boolean>(false)
   const [_confirmDelete, setConfirmDelete] = useState<Array<string>>([])
   const { t } = useTranslation()
-  const dispatch = useDispatch()
 
   const loadReplySeds = async () => {
     setLoadingSavedItems(true)
-    let items: string | null = await window.localStorage.getItem('replysed')
-    let replySeds: Array<ReplySedEntry> | null | undefined = undefined
+    let items: string | null = await window.localStorage.getItem(storageKey)
+    let savedEntries: Array<LocalStorageEntry<CustomLocalStorageContent>> | null | undefined = undefined
     if (_.isString(items)) {
-      replySeds = JSON.parse(items)
+      savedEntries = JSON.parse(items)
     } else {
-      replySeds = null
+      savedEntries = null
     }
-    setReplySeds(replySeds)
+    setSavedEntries(savedEntries)
     setLoadingSavedItems(false)
   }
 
-  const onLoad = (replySed: ReplySed) => {
-    dispatch(setReplySed(replySed))
-    setMode('2', 'forward')
-  }
-
   const onRemove = async (i: number) => {
-    let newReplySeds = _.cloneDeep(_replySeds)
-    if (!_.isNil(newReplySeds)) {
-      newReplySeds.splice(i, 1)
-      setReplySeds(newReplySeds)
-      await window.localStorage.setItem('replysed', JSON.stringify(newReplySeds))
+    let newSavedEntries = _.cloneDeep(_savedEntries)
+    if (!_.isNil(newSavedEntries)) {
+      newSavedEntries.splice(i, 1)
+      setSavedEntries(newSavedEntries)
+      await window.localStorage.setItem(storageKey, JSON.stringify(newSavedEntries))
     }
   }
 
-  const onDownload = async (replySed: ReplySedEntry) => {
-    const fileName = replySed!.name + '.json'
-    const json = JSON.stringify(replySed.replySed)
+  const onDownload = async (entry: LocalStorageEntry<CustomLocalStorageContent>) => {
+    const fileName = entry!.name + '.json'
+    const json = JSON.stringify(entry.content)
     const blob = new Blob([json],{type:'application/json'})
     const href = await URL.createObjectURL(blob)
     const link = document.createElement('a')
@@ -83,18 +76,18 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
   }
 
   useEffect(() => {
-    if (_replySeds === undefined && !_loadingSavedItems) {
+    if (_savedEntries === undefined && !_loadingSavedItems) {
       loadReplySeds()
       setLoadingSavedItems(true)
     }
-  }, [_replySeds, _loadingSavedItems])
+  }, [_savedEntries, _loadingSavedItems])
 
   return (
     <NavHighContrast highContrast={highContrast}>
       <HighContrastPanel>
         <LoadSaveDiv>
           {_loadingSavedItems && (<WaitingPanel />)}
-          {_replySeds === null || _.isEmpty(_replySeds) ? (
+          {_savedEntries === null || _.isEmpty(_savedEntries) ? (
             <Normaltekst>
               {t('label:no-saved-replyseds')}
             </Normaltekst>
@@ -104,9 +97,9 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
             </Normaltekst>
           )}
           <VerticalSeparatorDiv/>
-          {_replySeds && _replySeds.map((replySed: ReplySedEntry, i: number) => {
+          {_savedEntries && _savedEntries.map((savedEntry: LocalStorageEntry<CustomLocalStorageContent>, i: number) => {
 
-            const candidateForDeletion = _confirmDelete.indexOf(replySed.name) >= 0
+            const candidateForDeletion = _confirmDelete.indexOf(savedEntry.name) >= 0
             return (
               <>
               <Etikett style={{padding: '0.5rem'}}>
@@ -118,7 +111,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
                       </UndertekstBold>
                       <HorizontalSeparatorDiv data-size='0.5'/>
                       <Normaltekst>
-                        {replySed.name}
+                        {savedEntry.name}
                       </Normaltekst>
                     </FlexBaseDiv>
                     <HorizontalSeparatorDiv/>
@@ -128,7 +121,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
                      </UndertekstBold>
                      <HorizontalSeparatorDiv data-size='0.5'/>
                      <Normaltekst>
-                       {replySed.date}
+                       {savedEntry.date}
                      </Normaltekst>
                     </FlexBaseDiv>
                   </FlexCenterDiv>
@@ -139,7 +132,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
                       </UndertekstBold>
                       <HorizontalSeparatorDiv data-size='0.5'/>
                       <Normaltekst>
-                        {replySed.replySed.saksnummer}
+                        {(savedEntry.content as any).saksnummer}
                       </Normaltekst>
                     </FlexBaseDiv>
                     <HorizontalSeparatorDiv/>
@@ -149,7 +142,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
                       </UndertekstBold>
                       <HorizontalSeparatorDiv data-size='0.5'/>
                       <Normaltekst>
-                        {replySed.replySed.sedType}
+                        {(savedEntry.content as any).sedType}
                       </Normaltekst>
                     </FlexBaseDiv>
                   </FlexCenterDiv>
@@ -158,23 +151,23 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
                     <HighContrastFlatknapp
                       mini
                       kompakt
-                      onClick={() => onLoad(replySed.replySed)}
+                      onClick={() => onLoad(savedEntry.content)}
                     >
                       {t('el:button-load')}
                     </HighContrastFlatknapp>
                     <HighContrastFlatknapp
                       mini
                       kompakt
-                      onClick={() => onDownload(replySed)}
+                      onClick={() => onDownload(savedEntry)}
                     >
                       {t('el:button-download')}
                     </HighContrastFlatknapp>
                     <AddRemovePanel
                       existingItem={true}
                       candidateForDeletion={candidateForDeletion}
-                      onBeginRemove={() => addCandidateForDeletion(replySed.name)}
+                      onBeginRemove={() => addCandidateForDeletion(savedEntry.name)}
                       onConfirmRemove={() => onRemove(i)}
-                      onCancelRemove={() => removeCandidateForDeletion(replySed.name!)}
+                      onCancelRemove={() => removeCandidateForDeletion(savedEntry.name!)}
                     />
                   </FlexBaseDiv>
                 </PileDiv>

@@ -35,13 +35,13 @@ export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload>>
   if (result.status === 'valid') {
     type = result.type
     if (result.type === 'fnr') {
-      url = sprintf(urls.API_SVARPASED_FNR_QUERY_URL, { rinasaksnummer: saksnummerOrFnr })
+      url = sprintf(urls.API_SVARPASED_FNR_QUERY_URL, { fnr: saksnummerOrFnr })
     } else {
-      url = sprintf(urls.API_SVARPASED_DNR_QUERY_URL, { rinasaksnummer: saksnummerOrFnr })
+      url = sprintf(urls.API_SVARPASED_DNR_QUERY_URL, { fnr: saksnummerOrFnr })
     }
   } else {
     type = 'saksnummer'
-    url = sprintf(urls.API_SVARPASED_SAKSNUMMER_QUERY_URL, { rinasaksnummer: saksnummerOrFnr })
+    url = sprintf(urls.API_SVARPASED_SAKSNUMMER_QUERY_URL, { rinaSakId: saksnummerOrFnr })
   }
 
   return call({

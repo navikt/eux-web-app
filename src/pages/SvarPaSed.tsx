@@ -1,4 +1,5 @@
 import { setStatusParam } from 'actions/app'
+import { setReplySed } from 'actions/svarpased'
 import * as svarpasedActions from 'actions/svarpased'
 import classNames from 'classnames'
 import SEDDetails from 'components/SEDDetails/SEDDetails'
@@ -7,6 +8,7 @@ import { FadingLineSeparator, SideBarDiv } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { State } from 'declarations/reducers'
+import { ReplySed } from 'declarations/sed'
 import { Container, Content, fadeIn, fadeOut, Margin } from 'nav-hoykontrast'
 import Step1 from 'pages/SvarPaSed/Step1'
 import Step2 from 'pages/SvarPaSed/Step2'
@@ -177,7 +179,13 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
       setContentA(<Step1 mode={newMode} setMode={_setMode} />)
       setSidebarB(
         <SideBarDiv>
-          <SEDLoadSave setMode={_setMode} highContrast={highContrast}/>
+          <SEDLoadSave
+            highContrast={highContrast}
+            storageKey='replysed'
+            onLoad={(replySed: ReplySed) => {
+             dispatch(setReplySed(replySed))
+             _setMode('2', 'forward')
+          }}/>
         </SideBarDiv>
       )
     }
@@ -232,7 +240,13 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
       setContentA(<Step1 mode='1' setMode={_setMode} />)
       setSidebarB(
         <SideBarDiv>
-          <SEDLoadSave setMode={_setMode} highContrast={highContrast}/>
+          <SEDLoadSave
+            highContrast={highContrast}
+            storageKey='replysed'
+            onLoad={(replySed: ReplySed) => {
+            dispatch(setReplySed(replySed))
+            _setMode('2', 'forward')
+          }}/>
         </SideBarDiv>
       )
       _setMode('1', 'none')
