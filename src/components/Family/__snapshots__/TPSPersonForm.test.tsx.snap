@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports['components/Family/TPSPersonForm Render: match snapshot 1'] = `
-.c3 {
-  margin-bottom: 1rem;
-}
-
-.c4 {
-  margin-left: 1rem;
+exports[`components/Family/TPSPersonForm Render: match snapshot 1`] = `
+.c2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 }
 
 .c1 {
@@ -21,12 +21,13 @@ exports['components/Family/TPSPersonForm Render: match snapshot 1'] = `
   flex-direction: column;
 }
 
-.c2 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
+.c4 {
+  display: inline-block;
+  margin-left: 1rem;
+}
+
+.c3 {
+  margin-bottom: 1rem;
 }
 
 .c0 {
@@ -128,10 +129,10 @@ exports['components/Family/TPSPersonForm Render: match snapshot 1'] = `
       className="c0"
     >
       <styled.div
-        className="slideAnimate feil"
+        className="slideInFromLeft feil"
       >
         <div
-          className="c1 slideAnimate feil"
+          className="c1 slideInFromLeft feil"
         >
           <styled.div>
             <div
@@ -140,31 +141,31 @@ exports['components/Family/TPSPersonForm Render: match snapshot 1'] = `
               <Input
                 bredde="fullbredde"
                 data-test-id="c-TPSPersonForm__input-fnr-or-dnr-id"
-                label="ui:label-fnr-or-dnr"
+                label="label:fnr-dnr"
                 onChange={[Function]}
-                placeholder="ui:label-fnr-or-dnr"
+                placeholder="label:fnr-dnr"
                 value=""
               >
                 <div
                   className="skjemaelement"
                 >
                   <Label
-                    htmlFor="2429219441-8469-2051-06327-2056061608530"
+                    htmlFor="136103570-15709-09617-7344-303800342411727"
                   >
                     <label
                       className="skjemaelement__label"
-                      htmlFor="2429219441-8469-2051-06327-2056061608530"
+                      htmlFor="136103570-15709-09617-7344-303800342411727"
                     >
-                      ui:label-fnr-or-dnr
+                      label:fnr-dnr
                     </label>
                   </Label>
                   <input
                     aria-invalid={false}
                     className="skjemaelement__input input--fullbredde"
                     data-test-id="c-TPSPersonForm__input-fnr-or-dnr-id"
-                    id="2429219441-8469-2051-06327-2056061608530"
+                    id="136103570-15709-09617-7344-303800342411727"
                     onChange={[Function]}
-                    placeholder="ui:label-fnr-or-dnr"
+                    placeholder="label:fnr-dnr"
                     type="text"
                     value=""
                   />
@@ -208,7 +209,7 @@ exports['components/Family/TPSPersonForm Render: match snapshot 1'] = `
                     onClick={[Function]}
                     type="submit"
                   >
-                    ui:form-search
+                    el:button-search
                   </button>
                 </KnappBase>
               </Knapp>
@@ -235,4 +236,4 @@ exports['components/Family/TPSPersonForm Render: match snapshot 1'] = `
     </div>
   </styled.div>
 </TPSPersonForm>
-`
+`;

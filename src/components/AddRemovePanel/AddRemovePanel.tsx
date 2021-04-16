@@ -27,11 +27,12 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
   onBeginRemove,
   onCancelRemove,
   onConfirmRemove
-}: AddRemovePanelProps ): JSX.Element => {
+}: AddRemovePanelProps): JSX.Element => {
   const { t } = useTranslation()
 
-  return candidateForDeletion ? (
-      <FlexCenterDiv className={classNames('slideInFromRight', {'nolabel': marginTop})}>
+  return candidateForDeletion
+    ? (
+      <FlexCenterDiv className={classNames('slideInFromRight', { nolabel: marginTop })}>
         <Normaltekst>
           {t('label:are-you-sure')}
         </Normaltekst>
@@ -52,32 +53,32 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
           {t('label:no')}
         </HighContrastFlatknapp>
       </FlexCenterDiv>
-    )
+      )
     : (
-      <div className={classNames({'nolabel': marginTop})}>
+      <div className={classNames({ nolabel: marginTop })}>
         <HighContrastFlatknapp
-        mini
-        kompakt
-        onClick={existingItem ? onBeginRemove: onAddNew}
-      >
+          mini
+          kompakt
+          onClick={existingItem ? onBeginRemove : onAddNew}
+        >
           {!existingItem ? <Add /> : <Trashcan />}
-        <HorizontalSeparatorDiv data-size='0.5' />
-        {!existingItem ? t('el:button-add') : t('el:button-remove')}
-      </HighContrastFlatknapp>
-      {!existingItem && (
-        <>
-          <HorizontalSeparatorDiv />
-          <HighContrastFlatknapp
-            mini
-            kompakt
-            onClick={onCancelNew}
-          >
-            {t('el:button-cancel')}
-          </HighContrastFlatknapp>
-        </>
-      )}
+          <HorizontalSeparatorDiv data-size='0.5' />
+          {!existingItem ? t('el:button-add') : t('el:button-remove')}
+        </HighContrastFlatknapp>
+        {!existingItem && (
+          <>
+            <HorizontalSeparatorDiv />
+            <HighContrastFlatknapp
+              mini
+              kompakt
+              onClick={onCancelNew}
+            >
+              {t('el:button-cancel')}
+            </HighContrastFlatknapp>
+          </>
+        )}
       </div>
-    )
-  }
+      )
+}
 
 export default AddRemovePanel

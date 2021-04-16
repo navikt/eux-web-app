@@ -183,9 +183,10 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
             highContrast={highContrast}
             storageKey='replysed'
             onLoad={(replySed: ReplySed) => {
-             dispatch(setReplySed(replySed))
-             _setMode('2', 'forward')
-          }}/>
+              dispatch(setReplySed(replySed))
+              _setMode('2', 'forward')
+            }}
+          />
         </SideBarDiv>
       )
     }
@@ -244,9 +245,10 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
             highContrast={highContrast}
             storageKey='replysed'
             onLoad={(replySed: ReplySed) => {
-            dispatch(setReplySed(replySed))
-            _setMode('2', 'forward')
-          }}/>
+              dispatch(setReplySed(replySed))
+              _setMode('2', 'forward')
+            }}
+          />
         </SideBarDiv>
       )
       _setMode('1', 'none')
@@ -295,7 +297,7 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
         <FadingLineSeparator className='fadeIn'>
           &nbsp;
         </FadingLineSeparator>
-        <Content style={{ width: '23.5rem'}}>
+        <Content style={{ width: '23.5rem' }}>
           <ContainerDiv className={classNames({ shrink: animating })}>
             <WindowDiv>
               <AnimatableDiv

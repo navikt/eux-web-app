@@ -49,7 +49,6 @@ const joarkReducer = (state: JoarkState = initialJoarkState, action: ActionWithP
       }
 
     case types.ATTACHMENT_SEND_SUCCESS: {
-
       const newlySavedJoarkBrowserItem: JoarkBrowserItem = (action as ActionWithPayload).context.joarkBrowserItem
       const newRemaining = _.reject(state.savingAttachmentsJob!.remaining, (item: JoarkBrowserItem) => {
         return item.dokumentInfoId === newlySavedJoarkBrowserItem.dokumentInfoId &&

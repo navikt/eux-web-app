@@ -9,15 +9,14 @@ export const validateProsedyre = (
   t: any,
   namespace: string
 ): void => {
-
   let generalFail: boolean = false
 
-  let value = prosedyre.person &&  prosedyre.person.length > 0
+  let value = prosedyre.person && prosedyre.person.length > 0
     ? undefined
-        : {
-          feilmelding: t('message:validation-noName'),
-          skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-person'
-        } as FeiloppsummeringFeil
+    : {
+      feilmelding: t('message:validation-noName'),
+      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-person'
+    } as FeiloppsummeringFeil
 
   v[namespace + '-person'] = value
 

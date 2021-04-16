@@ -372,12 +372,12 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
             />
           </Column>
           <Column>
-            {sedCategory !== 'perioderMedPensjon' && (! (index < 0 && pageCategory === 'familieYtelse')) && (
+            {sedCategory !== 'perioderMedPensjon' && (!(index < 0 && pageCategory === 'familieYtelse')) && (
               <AddRemovePanel
                 candidateForDeletion={candidateForDeletion}
                 existingItem={(index >= 0)}
                 marginTop={false}
-                onBeginRemove={() =>  addCandidateForDeletion(pageCategory, key!)}
+                onBeginRemove={() => addCandidateForDeletion(pageCategory, key!)}
                 onConfirmRemove={() => onRemove(pageCategory, sedCategory!, index)}
                 onCancelRemove={() => removeCandidateForDeletion(pageCategory, key!)}
                 onAddNew={() => onAdd(pageCategory)}
@@ -406,34 +406,34 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
                     selectedValue={getCategoryOption(_newCategory)}
                     defaultValue={getCategoryOption(_newCategory)}
                   />
-              )}
+                )}
               </Column>
               <Column>
                 {(
                   (index < 0 && _newCategory === 'perioderMedPensjon') ||
                   (index >= 0 && sedCategory === 'perioderMedPensjon')
-                )
-                && (
-                    <Select
-                      data-test-id={'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-pensjonstype-text'}
-                      feil={getErrorFor(pageCategory, sedCategory, index, 'pensjonstype')}
-                      highContrast={highContrast}
-                      id={'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-pensjonstype-text'}
-                      menuPortalTarget={document.body}
-                      onChange={(e: any) => onChanged(pageCategory, sedCategory, e.value, 'pensjonstype', index)}
-                      options={selectPensjonsTypeOptions}
-                      placeholder={t('el:placeholder-select-default')}
-                      selectedValue={getPensjonsTypeOption(index < 0 ? _newPensjonsType : (p as PensjonPeriode)?.pensjonstype)}
-                      defaultValue={getPensjonsTypeOption(index < 0 ? _newPensjonsType : (p as PensjonPeriode)?.pensjonstype)}
-                    />
-                  )}
+                ) &&
+                (
+                  <Select
+                    data-test-id={'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-pensjonstype-text'}
+                    feil={getErrorFor(pageCategory, sedCategory, index, 'pensjonstype')}
+                    highContrast={highContrast}
+                    id={'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-pensjonstype-text'}
+                    menuPortalTarget={document.body}
+                    onChange={(e: any) => onChanged(pageCategory, sedCategory, e.value, 'pensjonstype', index)}
+                    options={selectPensjonsTypeOptions}
+                    placeholder={t('el:placeholder-select-default')}
+                    selectedValue={getPensjonsTypeOption(index < 0 ? _newPensjonsType : (p as PensjonPeriode)?.pensjonstype)}
+                    defaultValue={getPensjonsTypeOption(index < 0 ? _newPensjonsType : (p as PensjonPeriode)?.pensjonstype)}
+                  />
+                )}
               </Column>
               <Column>
                 <AddRemovePanel
                   candidateForDeletion={candidateForDeletion}
                   existingItem={(index >= 0)}
                   marginTop={false}
-                  onBeginRemove={() =>  addCandidateForDeletion(pageCategory, key!)}
+                  onBeginRemove={() => addCandidateForDeletion(pageCategory, key!)}
                   onConfirmRemove={() => onRemove(pageCategory, sedCategory!, index)}
                   onCancelRemove={() => removeCandidateForDeletion(pageCategory, key!)}
                   onAddNew={() => onAdd(pageCategory)}
@@ -470,11 +470,11 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
     }
     return (
       <>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <UndertekstBold>
           {t('el:option-trygdeordning-' + item)}
         </UndertekstBold>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
       </>
     )
   }

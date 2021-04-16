@@ -22,7 +22,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ValueType } from 'react-select'
 
-//type PensjonType = 'alderspensjon' | 'uførhet'
+// type PensjonType = 'alderspensjon' | 'uførhet'
 
 interface WithSubsidiesProps {
   highContrast: boolean
@@ -259,13 +259,13 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
               existingItem={(i >= 0)}
-              marginTop={true}
+              marginTop
               onBeginRemove={() => addCandidateForDeletion(key!)}
               onConfirmRemove={() => onRemove(i)}
               onCancelRemove={() => removeCandidateForDeletion(key!)}
               onAddNew={onAdd}
               onCancelNew={onCancel}
-              />
+            />
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />

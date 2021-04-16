@@ -1,16 +1,44 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports['components/Family/Family Renders 1'] = `
+exports[`components/Family/Family Renders 1`] = `
+.c0 {
+  display: inline-block;
+  margin-left: 1rem;
+}
+
 .c1 {
   margin-bottom: 1rem;
 }
 
-.c12 {
+.c13 {
   margin-bottom: 1.5rem;
 }
 
-.c0 {
-  margin-left: 1rem;
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.c11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c12 {
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .c6 {
@@ -80,13 +108,6 @@ exports['components/Family/Family Renders 1'] = `
   align-self: center;
 }
 
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
 .c3 {
   -webkit-flex: 10;
   -ms-flex: 10;
@@ -102,16 +123,6 @@ exports['components/Family/Family Renders 1'] = `
 
 .c4 {
   margin: 0.5rem;
-}
-
-.c11 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
 }
 
 <Family
@@ -191,7 +202,7 @@ exports['components/Family/Family Renders 1'] = `
         <h2
           className="typo-undertittel"
         >
-          ui:form-family-description
+          el:title-family-description
         </h2>
       </TypografiBase>
     </Undertittel>
@@ -220,7 +231,7 @@ exports['components/Family/Family Renders 1'] = `
                 <p
                   className="typo-ingress"
                 >
-                  ui:form-family-relations-in-tps
+                  label:family-relations-in-tps
                 </p>
               </TypografiBase>
             </Ingress>
@@ -231,7 +242,7 @@ exports['components/Family/Family Renders 1'] = `
                 className="c4"
               >
                 <PersonCard
-                  className="slideAnimate personNotSelected"
+                  className="slideInFromLeft personNotSelected"
                   familierelasjonKodeverk={
                     Array [
                       Object {
@@ -270,14 +281,14 @@ exports['components/Family/Family Renders 1'] = `
                   }
                 >
                   <Styled(Panel)
-                    className="slideAnimate personNotSelected"
+                    className="slideInFromLeft personNotSelected"
                   >
                     <Panel
                       border={false}
-                      className="c5 slideAnimate personNotSelected"
+                      className="c5 slideInFromLeft personNotSelected"
                     >
                       <div
-                        className="panel c5 slideAnimate personNotSelected"
+                        className="panel c5 slideInFromLeft personNotSelected"
                       >
                         <styled.div>
                           <div
@@ -290,7 +301,7 @@ exports['components/Family/Family Renders 1'] = `
                                 <img
                                   alt="nav-woman-icon"
                                   height={50}
-                                  src="icon-kvinne.png"
+                                  src="Woman.png"
                                   width={50}
                                 />
                                 <styled.div>
@@ -324,10 +335,10 @@ exports['components/Family/Family Renders 1'] = `
                                       className="c8"
                                     >
                                       <div>
-                                        ui:form-fnr : 02026100714
+                                        label:fnr : 02026100714
                                       </div>
                                       <div>
-                                        ui:form-birthdate: 08.04.1961
+                                        label:birthdate: 08.04.1961
                                       </div>
                                     </div>
                                   </styled.div>
@@ -369,7 +380,7 @@ exports['components/Family/Family Renders 1'] = `
                                       xmlns="http://www.w3.org/2000/svg"
                                     >
                                       <title>
-                                        Tilsette
+                                        Add
                                       </title>
                                       <g
                                         fill="none"
@@ -402,7 +413,7 @@ exports['components/Family/Family Renders 1'] = `
                                     <div
                                       className="c9"
                                     >
-                                      ui:form-add
+                                      label:add
                                     </div>
                                   </styled.div>
                                 </button>
@@ -423,7 +434,7 @@ exports['components/Family/Family Renders 1'] = `
                 className="c4"
               >
                 <PersonCard
-                  className="slideAnimate personNotSelected"
+                  className="slideInFromLeft personNotSelected"
                   familierelasjonKodeverk={
                     Array [
                       Object {
@@ -462,14 +473,14 @@ exports['components/Family/Family Renders 1'] = `
                   }
                 >
                   <Styled(Panel)
-                    className="slideAnimate personNotSelected"
+                    className="slideInFromLeft personNotSelected"
                   >
                     <Panel
                       border={false}
-                      className="c5 slideAnimate personNotSelected"
+                      className="c5 slideInFromLeft personNotSelected"
                     >
                       <div
-                        className="panel c5 slideAnimate personNotSelected"
+                        className="panel c5 slideInFromLeft personNotSelected"
                       >
                         <styled.div>
                           <div
@@ -482,7 +493,7 @@ exports['components/Family/Family Renders 1'] = `
                                 <img
                                   alt="nav-man-icon"
                                   height={50}
-                                  src="icon-mann.png"
+                                  src="Man.png"
                                   width={50}
                                 />
                                 <styled.div>
@@ -516,10 +527,10 @@ exports['components/Family/Family Renders 1'] = `
                                       className="c8"
                                     >
                                       <div>
-                                        ui:form-fnr : 02026100713
+                                        label:fnr : 02026100713
                                       </div>
                                       <div>
-                                        ui:form-birthdate: 02.02.1980
+                                        label:birthdate: 02.02.1980
                                       </div>
                                     </div>
                                   </styled.div>
@@ -561,7 +572,7 @@ exports['components/Family/Family Renders 1'] = `
                                       xmlns="http://www.w3.org/2000/svg"
                                     >
                                       <title>
-                                        Tilsette
+                                        Add
                                       </title>
                                       <g
                                         fill="none"
@@ -594,7 +605,7 @@ exports['components/Family/Family Renders 1'] = `
                                     <div
                                       className="c9"
                                     >
-                                      ui:form-add
+                                      label:add
                                     </div>
                                   </styled.div>
                                 </button>
@@ -631,7 +642,7 @@ exports['components/Family/Family Renders 1'] = `
                 <p
                   className="typo-ingress"
                 >
-                  ui:form-family-chosen
+                  label:family-chosen
                    (
                   0
                   )
@@ -642,16 +653,16 @@ exports['components/Family/Family Renders 1'] = `
         </styled.div>
       </div>
     </styled.div>
-    <styled.div>
+    <Styled(styled.div)>
       <div
-        className="c11"
+        className="c11 c12"
       >
         <div>
           <styled.div
             data-size="1.5"
           >
             <div
-              className="c12"
+              className="c13"
               data-size="1.5"
             />
           </styled.div>
@@ -662,7 +673,7 @@ exports['components/Family/Family Renders 1'] = `
               <p
                 className="typo-ingress"
               >
-                ui:form-family-utland-title
+                el:title-family-utland
               </p>
             </TypografiBase>
           </Ingress>
@@ -692,7 +703,7 @@ exports['components/Family/Family Renders 1'] = `
                 onClick={[Function]}
                 type="submit"
               >
-                ui:label-show-form
+                label:show-form
               </button>
             </KnappBase>
           </Knapp>
@@ -702,7 +713,7 @@ exports['components/Family/Family Renders 1'] = `
             data-size="1.5"
           >
             <div
-              className="c12"
+              className="c13"
               data-size="1.5"
             />
           </styled.div>
@@ -713,7 +724,7 @@ exports['components/Family/Family Renders 1'] = `
               <p
                 className="typo-ingress"
               >
-                ui:form-family-tps-title
+                el:title-family-tps
               </p>
             </TypografiBase>
           </Ingress>
@@ -743,13 +754,13 @@ exports['components/Family/Family Renders 1'] = `
                 onClick={[Function]}
                 type="submit"
               >
-                ui:label-show-form
+                label:show-form
               </button>
             </KnappBase>
           </Knapp>
         </div>
       </div>
-    </styled.div>
+    </Styled(styled.div)>
   </div>
 </Family>
-`
+`;

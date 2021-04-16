@@ -95,26 +95,26 @@ const Formaal: React.FC<FormaalProps> = ({
       {_formaals && _formaals
         .sort((a, b) => a.localeCompare(b))
         .map((formaal: string, i: number) => {
-        const candidateForDeletion = _confirmDeleteFormaal.indexOf(formaal) >= 0
-        return (
-          <FlexCenterDiv
-            className='slideInFromLeft'
-            style={{ animationDelay: i === _newFormaalIndex ? '0s' : (i * 0.1) + 's' }}
-            key={formaal}
-          >
-            <Etikett data-border>
-              {_.find(formaalOptions, _f => _f.value === formaal)?.label}
-            </Etikett>
-            <AddRemovePanel
-              candidateForDeletion={candidateForDeletion}
-              existingItem={true}
-              onBeginRemove={() => addCandidateForDeletion(formaal)}
-              onConfirmRemove={() => onRemoveFormaal(formaal)}
-              onCancelRemove={() => removeCandidateForDeletion(formaal)}
-            />
-          </FlexCenterDiv>
-        )
-      })}
+          const candidateForDeletion = _confirmDeleteFormaal.indexOf(formaal) >= 0
+          return (
+            <FlexCenterDiv
+              className='slideInFromLeft'
+              style={{ animationDelay: i === _newFormaalIndex ? '0s' : (i * 0.1) + 's' }}
+              key={formaal}
+            >
+              <Etikett data-border>
+                {_.find(formaalOptions, _f => _f.value === formaal)?.label}
+              </Etikett>
+              <AddRemovePanel
+                candidateForDeletion={candidateForDeletion}
+                existingItem
+                onBeginRemove={() => addCandidateForDeletion(formaal)}
+                onConfirmRemove={() => onRemoveFormaal(formaal)}
+                onCancelRemove={() => removeCandidateForDeletion(formaal)}
+              />
+            </FlexCenterDiv>
+          )
+        })}
       <VerticalSeparatorDiv />
       {!_addFormaal
         ? (

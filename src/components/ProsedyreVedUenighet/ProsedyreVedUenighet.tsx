@@ -35,13 +35,12 @@ export interface Prosedyre {
 
 const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
   highContrast,
-  //replySed,
+  // replySed,
   validation
 }: ProsedyreVedUenighetProps): JSX.Element => {
-
   const { t } = useTranslation()
   const [_confirmDelete, _setConfirmDelete] = useState<Array<string>>([])
-  const [_prosedyrer, _setProsedyrer]= useState<Array<Prosedyre>>([])
+  const [_prosedyrer, _setProsedyrer] = useState<Array<Prosedyre>>([])
 
   const [_newGrunn, _setNewGrunn] = useState<string>('')
   const [_newPerson, _setNewPerson] = useState<Array<string>>([])
@@ -53,12 +52,12 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
   const namespace = 'prosedyreveduenighet'
 
   const grunnOptions: Options = [
-    {label: t('el:option-grunn-1'), value: '1'},
-    {label: t('el:option-grunn-2'), value: '2'},
-    {label: t('el:option-grunn-3'), value: '3'},
-    {label: t('el:option-grunn-4'), value: '4'},
-    {label: t('el:option-grunn-5'), value: '5'},
-    {label: t('el:option-grunn-6'), value: '6'}
+    { label: t('el:option-grunn-1'), value: '1' },
+    { label: t('el:option-grunn-2'), value: '2' },
+    { label: t('el:option-grunn-3'), value: '3' },
+    { label: t('el:option-grunn-4'), value: '4' },
+    { label: t('el:option-grunn-5'), value: '5' },
+    { label: t('el:option-grunn-6'), value: '6' }
   ]
 
   const resetValidation = (key: string): void => {
@@ -168,12 +167,12 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
     }
   }
   const getErrorFor = (index: number, el: string): string | undefined => {
-    return index < 0 ? _validation[namespace + '-prosedyre-' + el]?.feilmelding :
-      validation[namespace + '-prosedyre[' + index + ']-' + el]?.feilmelding
+    return index < 0
+      ? _validation[namespace + '-prosedyre-' + el]?.feilmelding
+      : validation[namespace + '-prosedyre[' + index + ']-' + el]?.feilmelding
   }
 
   const renderProsedyre = (p: Prosedyre | null, index: number) => {
-
     const key = p ? getKey(p) : 'new'
     const candidateForDeletion = index < 0 ? false : !!key && _confirmDelete.indexOf(key) >= 0
 
@@ -192,7 +191,7 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
       <>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{animationDelay: '0.1s'}}
+          style={{ animationDelay: '0.1s' }}
         >
           <Column data-flex='2'>
             <Select
@@ -209,16 +208,16 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
               defaultValue={_.find(grunnOptions, b => b.value === (index < 0 ? _newGrunn : p?.grunn))}
             />
           </Column>
-          <Column/>
+          <Column />
         </AlignStartRow>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{animationDelay: '0.1s'}}
+          style={{ animationDelay: '0.1s' }}
         >
           <Column data-flex='2'>
 
-            <VerticalSeparatorDiv/>
+            <VerticalSeparatorDiv />
 
             <CheckboxGruppe
               legend={t('label:concerning-person')}
@@ -230,32 +229,32 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
                 checked={isChecked('søker')}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPerson('søker', e.target.checked, index)}
               />
-              <VerticalSeparatorDiv data-size='0.5'/>
+              <VerticalSeparatorDiv data-size='0.5' />
               <Checkbox
                 label={t('label:partner')}
                 checked={isChecked('partner')}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPerson('partner', e.target.checked, index)}
               />
-              <VerticalSeparatorDiv data-size='0.5'/>
+              <VerticalSeparatorDiv data-size='0.5' />
               <Checkbox
                 label={t('label:avdød')}
                 checked={isChecked('avdød')}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPerson('avdød', e.target.checked, index)}
               />
-              <VerticalSeparatorDiv data-size='0.5'/>
+              <VerticalSeparatorDiv data-size='0.5' />
               <Checkbox
                 label={t('label:annen-person')}
                 checked={isChecked('annen-person')}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPerson('annen-person', e.target.checked, index)}
               />
             </CheckboxGruppe>
-            <VerticalSeparatorDiv/>
+            <VerticalSeparatorDiv />
           </Column>
           <Column>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}
-              marginTop={true}
+              marginTop
               onBeginRemove={() => addCandidateForDeletion(key!)}
               onConfirmRemove={() => onRemove(index)}
               onCancelRemove={() => removeCandidateForDeletion(key!)}
@@ -264,7 +263,7 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
             />
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
       </>
     )
   }
@@ -296,12 +295,12 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
                 </HighContrastFlatknapp>
               </Column>
             </Row>
-          )}
+            )}
 
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{animationDelay: '0.2s'}}
+          style={{ animationDelay: '0.2s' }}
         >
           <Column>
             <TextAreaDiv>
@@ -320,7 +319,6 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
             </TextAreaDiv>
           </Column>
         </AlignStartRow>
-
 
       </HighContrastPanel>
     </PileDiv>

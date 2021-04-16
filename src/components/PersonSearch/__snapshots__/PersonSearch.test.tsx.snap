@@ -1,10 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports['components/PersonSearch/PersonSearch Render: match snapshot 1'] = `
+exports[`components/PersonSearch/PersonSearch Render: match snapshot 1`] = `
+.c10 {
+  display: inline-block;
+  margin-left: 1rem;
+}
+
 .c5 {
   opacity: 0;
-  -webkit-animation: cJoqxJ 0.5s forwards;
-  animation: cJoqxJ 0.5s forwards;
+  -webkit-animation: jIkTRE 0.5s forwards;
+  animation: jIkTRE 0.5s forwards;
   position: relative;
 }
 
@@ -63,10 +68,6 @@ exports['components/PersonSearch/PersonSearch Render: match snapshot 1'] = `
   top: 0.25rem;
   right: 0.25rem;
   cursor: pointer;
-}
-
-.c10 {
-  margin-left: 1rem;
 }
 
 .c8 {
@@ -280,14 +281,14 @@ exports['components/PersonSearch/PersonSearch Render: match snapshot 1'] = `
           className="c1"
         >
           <Styled(Input)
-            label="ui:form-searchUser"
+            label="label:searchUser"
             onChange={[Function]}
             value="12345678901"
           >
             <Input
               bredde="fullbredde"
               className="c2"
-              label="ui:form-searchUser"
+              label="label:searchUser"
               onChange={[Function]}
               value="12345678901"
             >
@@ -295,19 +296,19 @@ exports['components/PersonSearch/PersonSearch Render: match snapshot 1'] = `
                 className="skjemaelement c2"
               >
                 <Label
-                  htmlFor="182161559-2855-8941-14103-9113304175516"
+                  htmlFor="663813830-23974-0979-03975-3605092879187"
                 >
                   <label
                     className="skjemaelement__label"
-                    htmlFor="182161559-2855-8941-14103-9113304175516"
+                    htmlFor="663813830-23974-0979-03975-3605092879187"
                   >
-                    ui:form-searchUser
+                    label:searchUser
                   </label>
                 </Label>
                 <input
                   aria-invalid={false}
                   className="skjemaelement__input input--fullbredde"
-                  id="182161559-2855-8941-14103-9113304175516"
+                  id="663813830-23974-0979-03975-3605092879187"
                   onChange={[Function]}
                   type="text"
                   value="12345678901"
@@ -342,7 +343,7 @@ exports['components/PersonSearch/PersonSearch Render: match snapshot 1'] = `
                   onClick={[Function]}
                   type="submit"
                 >
-                  ui:form-search
+                  label:search
                 </button>
               </KnappBase>
             </Knapp>
@@ -385,13 +386,17 @@ exports['components/PersonSearch/PersonSearch Render: match snapshot 1'] = `
                       feil
                     </span>
                     <Icon
+                      aria-label="feil-ikon"
                       kind="feil-sirkel-fyll"
+                      role="img"
                       size="1.5em"
                     >
                       <svg
+                        aria-label="feil-ikon"
                         focusable="false"
                         height="1.5em"
                         kind="feil-sirkel-fyll"
+                        role="img"
                         viewBox="0 0 24 24"
                         width="1.5em"
                       >
@@ -521,7 +526,7 @@ exports['components/PersonSearch/PersonSearch Render: match snapshot 1'] = `
                       <img
                         alt="nav-man-icon"
                         height={50}
-                        src="icon-mann.png"
+                        src="Man.png"
                         width={50}
                       />
                       <styled.div>
@@ -554,10 +559,10 @@ exports['components/PersonSearch/PersonSearch Render: match snapshot 1'] = `
                             className="c11"
                           >
                             <div>
-                              ui:form-fnr : 02026100715
+                              label:fnr : 02026100715
                             </div>
                             <div>
-                              ui:form-birthdate: 02.02.1961
+                              label:birthdate: 02.02.1961
                             </div>
                           </div>
                         </styled.div>
@@ -620,7 +625,7 @@ exports['components/PersonSearch/PersonSearch Render: match snapshot 1'] = `
                             <div
                               className="c13"
                             >
-                              ui:form-remove
+                              label:remove
                             </div>
                           </styled.div>
                         </button>
@@ -636,4 +641,4 @@ exports['components/PersonSearch/PersonSearch Render: match snapshot 1'] = `
     </div>
   </styled.div>
 </PersonSearch>
-`
+`;

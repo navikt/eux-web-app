@@ -54,7 +54,7 @@ export const validateNasjonalitet = (
     value = statsborgerskap.fradato!.match(/\d{2}\.\d{2}\.\d{4}/)
       ? undefined
       : {
-        feilmelding: t('message:validation-invalidDateForPerson', {person: personName}),
+        feilmelding: t('message:validation-invalidDateForPerson', { person: personName }),
         skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-fradato-date'
       } as FeiloppsummeringFeil
 

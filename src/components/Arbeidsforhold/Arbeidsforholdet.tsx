@@ -383,7 +383,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                 {t('message:warning-conflict-aa-2')}
                 <PaddedLink
                   href={`https://modapp.adeo.no/a-inntekt/person/${personFnr}?2#!PersonInntektLamell`}
-                  >
+                >
                   {t('message:warning-conflict-aa-link-2')}
                 </PaddedLink>
               </FlexDivNoWrap>

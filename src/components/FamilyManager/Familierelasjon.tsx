@@ -294,13 +294,13 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
               existingItem={(i >= 0)}
-              marginTop={true}
+              marginTop
               onBeginRemove={() => addCandidateForDeletion(key!)}
               onConfirmRemove={() => onRemove(i)}
               onCancelRemove={() => removeCandidateForDeletion(key!)}
               onAddNew={onAdd}
               onCancelNew={onCancel}
-              />
+            />
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />

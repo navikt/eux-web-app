@@ -50,7 +50,7 @@ const FilterDiv = styled(FlexDiv)`
  .selected {
     text-decoration: underline;
     text-decoration: bold;
-    color: ${({theme}) => theme[themeKeys.MAIN_ACTIVE_COLOR]} !important;
+    color: ${({ theme }) => theme[themeKeys.MAIN_ACTIVE_COLOR]} !important;
  }
 `
 
@@ -193,31 +193,31 @@ const Step1: React.FC<SvarPaSedProps> = ({
               saksnummerOrFnr: _saksnummerOrFnr
             })}
           >
-          <>
-            <FilterDiv>
-              <HighContrastFlatknapp
-                mini
-                kompakt
-                className={classNames({selected: _filter === undefined})}
-                onClick={() => _setFilter(undefined)}
-              >
-                {t('label:all') + ' (' +seds.length + ')'}
-              </HighContrastFlatknapp>
-              <HorizontalSeparatorDiv/>
-              <HighContrastFlatknapp
-                mini
-                kompakt
-                className={classNames({selected: _filter === 'FB_'})}
-                onClick={() => _setFilter('FB_')}
-              >
-                {t('label:family-benefits') + ' (' +_.filter(seds, (s: Sed) => s.sakType.startsWith('FB_')).length + ')'}
-              </HighContrastFlatknapp>
-              <HorizontalSeparatorDiv/>
-            </FilterDiv>
-          <VerticalSeparatorDiv/>
-          </>
+            <>
+              <FilterDiv>
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  className={classNames({ selected: _filter === undefined })}
+                  onClick={() => _setFilter(undefined)}
+                >
+                  {t('label:all') + ' (' + seds.length + ')'}
+                </HighContrastFlatknapp>
+                <HorizontalSeparatorDiv />
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  className={classNames({ selected: _filter === 'FB_' })}
+                  onClick={() => _setFilter('FB_')}
+                >
+                  {t('label:family-benefits') + ' (' + _.filter(seds, (s: Sed) => s.sakType.startsWith('FB_')).length + ')'}
+                </HighContrastFlatknapp>
+                <HorizontalSeparatorDiv />
+              </FilterDiv>
+              <VerticalSeparatorDiv />
+            </>
             {seds
-              .filter((s: Sed) => _filter ? s.sakType.startsWith(_filter): true)
+              .filter((s: Sed) => _filter ? s.sakType.startsWith(_filter) : true)
               .map((sed: Sed) => (
                 <div key={sed.sakType}>
                   <RadioElementBorder
@@ -286,14 +286,22 @@ const Step1: React.FC<SvarPaSedProps> = ({
                               <Undertittel>
                                 {connectedSed.sedType} - {connectedSed.sedTittel}
                               </Undertittel>
-                              <HighContrastHovedknapp
-                                disabled={queryingReplySed}
-                                spinner={queryingReplySed}
-                                mini
-                                onClick={() => onReplySedClick(connectedSed, sed.sakId)}
-                              >
-                                {queryingReplySed ? t('message:loading-replying') : t('label:reply')}
-                              </HighContrastHovedknapp>
+                              {connectedSed.svarsedType
+                                ? (
+                                  <HighContrastHovedknapp
+                                    disabled={queryingReplySed}
+                                    spinner={queryingReplySed}
+                                    mini
+                                    onClick={() => onReplySedClick(connectedSed, sed.sakId)}
+                                  >
+                                    {queryingReplySed
+                                      ? t('message:loading-replying')
+                                      : t('label:reply-with', {
+                                        sedtype: connectedSed.svarsedType
+                                      })}
+                                  </HighContrastHovedknapp>
+                                  )
+                                : (<div />)}
                             </FlexStartDiv>
                             <HighContrastLink href={connectedSed.sedUrl}>
                               <span>

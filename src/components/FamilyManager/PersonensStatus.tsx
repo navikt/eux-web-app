@@ -82,30 +82,32 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
           />
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv/>
-      <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.1s'}}>
+      <VerticalSeparatorDiv />
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column>
-          {_arbeidsforhold === 'arbeidsforhold-1' ? (
-            <Ansatt
-              arbeidsforholdList={arbeidsforholdList}
-              getArbeidsforholdList={getArbeidsforholdList}
-              gettingArbeidsforholdList={gettingArbeidsforholdList}
-              onArbeidsforholdSelectionChange={() => {}}
-              replySed={replySed}
-              personID={personID}
-            />
-          ) : (
-            <NotAnsatt
-              personID={personID}
-              validation={validation}
-            />
-          )}
+          {_arbeidsforhold === 'arbeidsforhold-1'
+            ? (
+              <Ansatt
+                arbeidsforholdList={arbeidsforholdList}
+                getArbeidsforholdList={getArbeidsforholdList}
+                gettingArbeidsforholdList={gettingArbeidsforholdList}
+                onArbeidsforholdSelectionChange={() => {}}
+                replySed={replySed}
+                personID={personID}
+              />
+              )
+            : (
+              <NotAnsatt
+                personID={personID}
+                validation={validation}
+              />
+              )}
         </Column>
       </AlignStartRow>
       {(_arbeidsforhold !== 'arbeidsforhold-1' && _arbeidsforhold !== 'arbeidsforhold-2') && (
         <>
-          <VerticalSeparatorDiv data-size='2'/>
-          <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.2s'}}>
+          <VerticalSeparatorDiv data-size='2' />
+          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
             <Column>
               <WithSubsidies
                 highContrast={highContrast}
@@ -114,11 +116,11 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
               />
             </Column>
           </AlignStartRow>
-          <VerticalSeparatorDiv/>
+          <VerticalSeparatorDiv />
         </>
       )}
       <VerticalSeparatorDiv data-size='2' />
-      <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.3s'}}>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
         <Column>
           <Avsenderlandet
             personID={personID}
@@ -127,12 +129,12 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv data-size='2' />
-      <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.4s'}}>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
         <Column>
           <ReasonToCome
-          personID={personID}
-          validation={validation}
-        />
+            personID={personID}
+            validation={validation}
+          />
         </Column>
       </AlignStartRow>
     </PaddedDiv>

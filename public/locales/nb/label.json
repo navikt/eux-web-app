@@ -112,6 +112,7 @@
   "reason-information-for-disagreement": "Ytterligere grunner til uenighet",
   "receiver-name": "Mottakers navn",
   "region" : "Region",
+  "reply-with": "Besvar med {{sedtype}}",
   "rina-saksnummer": "RINA saksnummer",
   "rina-document-id": "Velg SED Type",
 
@@ -196,7 +197,7 @@
   "preview-sed": "Forhåndsvis SED",
 
   "relation-duration": "Relasjonens varighet",
-  "reply": "Besvar",
+
   "resetForm": "AVSLUTT UTFYLLING",
   "relation-with" : "Relasjon med",
   "rolle": "Rolle",

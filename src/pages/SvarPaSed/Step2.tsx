@@ -141,7 +141,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
         dispatch(svarpasedActions.createSed(
           rinasaksnummerOrFnr,
           replySed!.sedId,
-          replySed!.sedType,
+          replySed!.svarsedType,
           data
         ))
       }
@@ -272,25 +272,25 @@ const Step2: React.FC<SvarPaSedProps> = ({
       )}
       {showVedtak() && (
         <>
-          <Vedtak highContrast={highContrast} replySed={replySed} validation={validation}/>
+          <Vedtak highContrast={highContrast} replySed={replySed} validation={validation} />
           <VerticalSeparatorDiv data-size='2' />
         </>
       )}
       {showMotregning() && (
         <>
-          <Motregning highContrast={highContrast} replySed={replySed} validation={validation}/>
+          <Motregning highContrast={highContrast} replySed={replySed} validation={validation} />
           <VerticalSeparatorDiv data-size='2' />
         </>
       )}
       {showProsedyreVedUenighet() && (
         <>
-          <ProsedyreVedUenighet highContrast={highContrast} replySed={replySed} validation={validation}/>
+          <ProsedyreVedUenighet highContrast={highContrast} replySed={replySed} validation={validation} />
           <VerticalSeparatorDiv data-size='2' />
         </>
       )}
       {showKravOmRefusjon() && (
         <>
-          <KravOmRefusjon highContrast={highContrast} replySed={replySed} validation={validation}/>
+          <KravOmRefusjon highContrast={highContrast} replySed={replySed} validation={validation} />
           <VerticalSeparatorDiv data-size='2' />
         </>
       )}

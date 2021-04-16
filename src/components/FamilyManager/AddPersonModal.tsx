@@ -1,5 +1,4 @@
 
-
 import { setReplySed } from 'actions/svarpased'
 import Add from 'assets/icons/Add'
 import Barn from 'assets/icons/Child'
@@ -280,7 +279,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
             )}
           </FlexCenterDiv>
           <AddRemovePanel
-            existingItem={true}
+            existingItem
             candidateForDeletion={candidateForDeletion}
             onBeginRemove={() => addCandidateForDeletion(personId)}
             onConfirmRemove={() => onRemovePerson(personId)}
@@ -310,13 +309,13 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
         <Title>
           {t('el:title-add-remove-persons')}
         </Title>
-        <VerticalSeparatorDiv data-size='2'/>
+        <VerticalSeparatorDiv data-size='2' />
         <>
           {_replySed.bruker && renderPerson('bruker', brukerNr)}
           {(_replySed as F002Sed).ektefelle && renderPerson('ektefelle', ektefelleNr)}
           {(_replySed as F002Sed).annenPerson && renderPerson('annenPerson', annenPersonNr)}
           {(_replySed as F002Sed).barn && (_replySed as F002Sed).barn.map((b: any, i: number) => renderPerson(`barn[${i}]`, barnNr + i))}
-          <VerticalSeparatorDiv/>
+          <VerticalSeparatorDiv />
           <hr />
           <VerticalSeparatorDiv data-size='2' />
           <Undertittel>

@@ -239,10 +239,11 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             _.get(replySed, `${personID}.personInfo.etternavn`) + ' (' +
             _.get(replySed, `${personID}.personInfo.kjoenn`) + ')'}
               </Normaltekst>
-              ) : (
-                <Normaltekst>
-                  {t('label:norwegian-fnr-description')}
-                </Normaltekst>
+              )
+            : (
+              <Normaltekst>
+                {t('label:norwegian-fnr-description')}
+              </Normaltekst>
               )}
         </Column>
       </AlignStartRow>

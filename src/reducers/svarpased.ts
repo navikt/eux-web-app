@@ -71,7 +71,6 @@ const svarpasedReducer = (
         )
       }
 
-
     case types.SVARPASED_REPLYSED_QUERY_SUCCESS:
       return {
         ...state,
@@ -132,15 +131,16 @@ const svarpasedReducer = (
         previewFile: null
       }
 
-    case types.SVARPASED_SAKSNUMMERORFNR_QUERY_SUCCESS:
-      const seds = _.isArray((action as ActionWithPayload).payload) ?
-        (action as ActionWithPayload).payload :
-        [(action as ActionWithPayload).payload]
+    case types.SVARPASED_SAKSNUMMERORFNR_QUERY_SUCCESS: {
+      const seds = _.isArray((action as ActionWithPayload).payload)
+        ? (action as ActionWithPayload).payload
+        : [(action as ActionWithPayload).payload]
       return {
         ...state,
         seds: seds,
         saksnummerOrFnr: (action as ActionWithPayload).context.saksnummerOrFnr
       }
+    }
 
     case types.SVARPASED_SED_CREATE_SUCCESS:
       return {

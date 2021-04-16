@@ -14,11 +14,10 @@ export interface KravOmRefusjonProps {
 }
 
 const KravOmRefusjon: React.FC<KravOmRefusjonProps> = ({
-   //highContrast,
-   //replySed,
-   validation
- }: KravOmRefusjonProps): JSX.Element => {
-
+  // highContrast,
+  // replySed,
+  validation
+}: KravOmRefusjonProps): JSX.Element => {
   const { t } = useTranslation()
 
   const [_ytterligere, _setYtterligere] = useState<string>('')

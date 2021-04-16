@@ -1,4 +1,4 @@
-import { Periode, ReplySed } from 'declarations/sed'
+import { Periode } from 'declarations/sed'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 
 export interface Period {
@@ -51,6 +51,8 @@ export interface ConnectedSed {
   sedUrl: string
   status: string
   sistEndretDato: string
+  svarsedType: string
+  svarsedDisplay: string
 }
 
 export interface Dokument {

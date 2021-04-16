@@ -36,7 +36,6 @@ const VedtakFC: React.FC<VedtakProps> = ({
   replySed,
   validation
 }: VedtakProps): JSX.Element => {
-
   const [_confirmDelete, setConfirmDelete] = useState<Array<string>>([])
 
   const [_allKids, _setAllKids] = useState<string | undefined>(undefined)
@@ -101,9 +100,9 @@ const VedtakFC: React.FC<VedtakProps> = ({
 
   const setWhichKids = (name: string, checked: boolean) => {
     _setWhichKids(
-      checked ?
-        _whichKids?.concat(name) :
-       _.filter(_whichKids, k => k !== name)
+      checked
+        ? _whichKids?.concat(name)
+        : _.filter(_whichKids, k => k !== name)
     )
   }
 
@@ -193,7 +192,6 @@ const VedtakFC: React.FC<VedtakProps> = ({
   }
 
   const renderPeriodeAndVedtak = (p: PeriodeMedVedtak | null, i: number) => {
-
     const key = p ? getKey(p) : 'new'
     const candidateForDeletion = i < 0 ? false : !!key && _confirmDelete.indexOf(key) >= 0
 
@@ -251,7 +249,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
             />
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv data-size='0.5'/>
+        <VerticalSeparatorDiv data-size='0.5' />
       </>
     )
   }
@@ -291,14 +289,16 @@ const VedtakFC: React.FC<VedtakProps> = ({
             {(replySed as F002Sed)?.barn?.map((b, i) => {
               const name = b.personInfo.fornavn + ' ' + b.personInfo.etternavn
               return (
-                <div key={name}
-                     className={classNames('slideInFromLeft')}
-                     style={{animationDelay: (i * 0.1) + 's'}}>
+                <div
+                  key={name}
+                  className={classNames('slideInFromLeft')}
+                  style={{ animationDelay: (i * 0.1) + 's' }}
+                >
                   <Checkbox
                     label={name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setWhichKids(name, e.target.checked)}
                   />
-                  <VerticalSeparatorDiv data-size='0.5'/>
+                  <VerticalSeparatorDiv data-size='0.5' />
                 </div>
               )
             })}
@@ -307,7 +307,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
         <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{animationDelay: '0.1s'}}
+          style={{ animationDelay: '0.1s' }}
         >
           <Column>
             <HighContrastInput
@@ -336,7 +336,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
         <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{animationDelay: '0.2s'}}
+          style={{ animationDelay: '0.2s' }}
         >
           <Column>
             <Select
@@ -358,7 +358,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
         <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{animationDelay: '0.3s'}}
+          style={{ animationDelay: '0.3s' }}
         >
           <Column>
             <TextAreaDiv>

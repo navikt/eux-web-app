@@ -53,7 +53,6 @@ const SendSEDModal = <CustomLocalStorageContent extends any = any>({
   localStorageContent,
   storageKey
 }: SaveSEDModalProps<CustomLocalStorageContent>): JSX.Element => {
-
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const [_name, setName] = useState<string>('')
@@ -77,22 +76,22 @@ const SendSEDModal = <CustomLocalStorageContent extends any = any>({
 
   const onSave = async () => {
     if (performValidation()) {
-      let items: string | null = await window.localStorage.getItem(storageKey)
-      let savedEntries: Array<LocalStorageEntry<CustomLocalStorageContent>> | null | undefined = undefined
+      const items: string | null = await window.localStorage.getItem(storageKey)
+      let savedEntries: Array<LocalStorageEntry<CustomLocalStorageContent>> | null | undefined
       if (_.isString(items)) {
         savedEntries = JSON.parse(items)
       } else {
         savedEntries = []
       }
-      let dateString =  new Date().toDateString()
-      let newReplySeds = savedEntries!.concat({
+      const dateString = new Date().toDateString()
+      const newReplySeds = savedEntries!.concat({
         name: _name,
         date: dateString,
         content: localStorageContent
       } as LocalStorageEntry<CustomLocalStorageContent>)
       await window.localStorage.setItem(storageKey, JSON.stringify(newReplySeds, null, 2))
       setSaved(true)
-      setMessage(t('label:saved-svarsed-draft', {name: _name, date: dateString}))
+      setMessage(t('label:saved-svarsed-draft', { name: _name, date: dateString }))
     }
   }
 
@@ -106,7 +105,7 @@ const SendSEDModal = <CustomLocalStorageContent extends any = any>({
             <Undertittel>
               {t('el:title-save-sed')}
             </Undertittel>
-            <VerticalSeparatorDiv/>
+            <VerticalSeparatorDiv />
             {_message && (
               <>
                 <AlertstripeDiv>
@@ -118,63 +117,66 @@ const SendSEDModal = <CustomLocalStorageContent extends any = any>({
                     onClose={() => dispatch(clientClear())}
                   />
                 </AlertstripeDiv>
-                <VerticalSeparatorDiv/>
+                <VerticalSeparatorDiv />
               </>
             )}
             <MinimalContentDiv>
-            {!_saved && (
-              <SectionDiv>
-                <PileDiv style={{alignItems: 'flex-start'}}>
-                  <div>
-                    <FlexCenterDiv>
-                      <HighContrastInput
-                        data-test-id={'c-savesedmodal-name-text'}
-                        feil={_validation['savesedmodal-name']?.feilmelding}
-                        id={'c-savesedmodal-name-text'}
-                        label={t('label:name')}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
-                        placeholder={t('el:placeholder-input-default')}
-                        value={_name}
-                      />
-                    </FlexCenterDiv>
-                  </div>
-                  <VerticalSeparatorDiv data-size='0.5'/>
-                </PileDiv>
-              </SectionDiv>
-            )}
-            <SectionDiv>
-              <VerticalSeparatorDiv/>
-              {!_saved ? (
-                <div>
-                  <HighContrastHovedknapp
-                    mini
-                    onClick={onSave}
-                  >
-                    {t('el:button-save')}
-                  </HighContrastHovedknapp>
-                  <HorizontalSeparatorDiv/>
-                  <HighContrastFlatknapp
-                    mini
-                    onClick={onModalClose}
-                  >
-                    {t('el:button-cancel')}
-                  </HighContrastFlatknapp>
-
-                </div>
-              ) : (
-                <div>
-                  <HighContrastHovedknapp
-                    mini
-                    onClick={onModalClose}
-                  >
-                    {t('el:button-close')}
-                  </HighContrastHovedknapp>
-                </div>
+              {!_saved && (
+                <SectionDiv>
+                  <PileDiv style={{ alignItems: 'flex-start' }}>
+                    <div>
+                      <FlexCenterDiv>
+                        <HighContrastInput
+                          data-test-id='c-savesedmodal-name-text'
+                          feil={_validation['savesedmodal-name']?.feilmelding}
+                          id='c-savesedmodal-name-text'
+                          label={t('label:name')}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                          placeholder={t('el:placeholder-input-default')}
+                          value={_name}
+                        />
+                      </FlexCenterDiv>
+                    </div>
+                    <VerticalSeparatorDiv data-size='0.5' />
+                  </PileDiv>
+                </SectionDiv>
               )}
-            </SectionDiv>
-          </MinimalContentDiv>
-        </MinimalModalDiv>
-      )}}
+              <SectionDiv>
+                <VerticalSeparatorDiv />
+                {!_saved
+                  ? (
+                    <div>
+                      <HighContrastHovedknapp
+                        mini
+                        onClick={onSave}
+                      >
+                        {t('el:button-save')}
+                      </HighContrastHovedknapp>
+                      <HorizontalSeparatorDiv />
+                      <HighContrastFlatknapp
+                        mini
+                        onClick={onModalClose}
+                      >
+                        {t('el:button-cancel')}
+                      </HighContrastFlatknapp>
+
+                    </div>
+                    )
+                  : (
+                    <div>
+                      <HighContrastHovedknapp
+                        mini
+                        onClick={onModalClose}
+                      >
+                        {t('el:button-close')}
+                      </HighContrastHovedknapp>
+                    </div>
+                    )}
+              </SectionDiv>
+            </MinimalContentDiv>
+          </MinimalModalDiv>
+        )
+      }}
       onModalClose={onModalClose}
     />
   )

@@ -1,7 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports['components/PersonCard/PersonCard Renders 1'] = `
+exports[`components/PersonCard/PersonCard Renders 1`] = `
 .c3 {
+  display: inline-block;
   margin-left: 1rem;
 }
 
@@ -184,7 +185,7 @@ exports['components/PersonCard/PersonCard Renders 1'] = `
                 <img
                   alt="nav-man-icon"
                   height={50}
-                  src="icon-mann.png"
+                  src="Man.png"
                   width={50}
                 />
                 <styled.div>
@@ -217,10 +218,10 @@ exports['components/PersonCard/PersonCard Renders 1'] = `
                       className="c4"
                     >
                       <div>
-                        ui:form-fnr : 02026100715
+                        label:fnr : 02026100715
                       </div>
                       <div>
-                        ui:form-birthdate: 02.02.1961
+                        label:birthdate: 02.02.1961
                       </div>
                     </div>
                   </styled.div>
@@ -231,20 +232,20 @@ exports['components/PersonCard/PersonCard Renders 1'] = `
               bredde="fullbredde"
               date-testid="familierelasjoner__select-familirelasjon-rolle"
               disabled={false}
-              label="ui:label-familyRelationship"
+              label="label:family-relationship"
               onChange={[Function]}
             >
               <div
                 className="skjemaelement"
               >
                 <Label
-                  htmlFor="2540806523-24460-4361-11611-108260189615271"
+                  htmlFor="544321050-7703-18207-27167-1272793367634"
                 >
                   <label
                     className="skjemaelement__label"
-                    htmlFor="2540806523-24460-4361-11611-108260189615271"
+                    htmlFor="544321050-7703-18207-27167-1272793367634"
                   >
-                    ui:label-familyRelationship
+                    label:family-relationship
                   </label>
                 </Label>
                 <div
@@ -255,13 +256,13 @@ exports['components/PersonCard/PersonCard Renders 1'] = `
                     className="skjemaelement__input"
                     date-testid="familierelasjoner__select-familirelasjon-rolle"
                     disabled={false}
-                    id="2540806523-24460-4361-11611-108260189615271"
+                    id="544321050-7703-18207-27167-1272793367634"
                     onChange={[Function]}
                   >
                     <option
                       value=""
                     >
-                      ui:form-choose
+                      label:choose
                     </option>
                     <option
                       key="BARN"
@@ -353,7 +354,7 @@ exports['components/PersonCard/PersonCard Renders 1'] = `
                       <div
                         className="c6"
                       >
-                        ui:form-remove
+                        label:remove
                       </div>
                     </styled.div>
                   </button>
@@ -395,7 +396,7 @@ exports['components/PersonCard/PersonCard Renders 1'] = `
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <title>
-                        Tilsette
+                        Add
                       </title>
                       <g
                         fill="none"
@@ -428,7 +429,7 @@ exports['components/PersonCard/PersonCard Renders 1'] = `
                     <div
                       className="c6"
                     >
-                      ui:form-add
+                      label:add
                     </div>
                   </styled.div>
                 </button>
@@ -440,4 +441,4 @@ exports['components/PersonCard/PersonCard Renders 1'] = `
     </Panel>
   </Styled(Panel)>
 </PersonCard>
-`
+`;

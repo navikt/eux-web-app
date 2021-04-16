@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports['components/Alert/Alert Render: match snapshot 1'] = `
+exports[`components/Alert/Alert Render: match snapshot 1`] = `
 .c0 {
   opacity: 0;
-  -webkit-animation: cJoqxJ 0.5s forwards;
-  animation: cJoqxJ 0.5s forwards;
+  -webkit-animation: jIkTRE 0.5s forwards;
+  animation: jIkTRE 0.5s forwards;
   position: relative;
 }
 
@@ -96,13 +96,17 @@ exports['components/Alert/Alert Render: match snapshot 1'] = `
             suksess
           </span>
           <Icon
+            aria-label="suksess-ikon"
             kind="ok-sirkel-fyll"
+            role="img"
             size="1.5em"
           >
             <svg
+              aria-label="suksess-ikon"
               focusable="false"
               height="1.5em"
               kind="ok-sirkel-fyll"
+              role="img"
               viewBox="0 0 24 24"
               width="1.5em"
             >
@@ -176,4 +180,4 @@ exports['components/Alert/Alert Render: match snapshot 1'] = `
     </AlertStripe>
   </Styled(AlertStripe)>
 </Alert>
-`
+`;

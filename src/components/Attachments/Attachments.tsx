@@ -2,7 +2,7 @@ import { JoarkBrowser } from 'components/JoarkBrowser/JoarkBrowser'
 import SEDAttachmentModal from 'components/SEDAttachmentModal/SEDAttachmentModal'
 import {
   JoarkBrowserItem,
-  JoarkBrowserItems,
+  JoarkBrowserItems
 } from 'declarations/attachments'
 import _ from 'lodash'
 import { HighContrastKnapp, VerticalSeparatorDiv } from 'nav-hoykontrast'
@@ -18,7 +18,6 @@ const Attachments: React.FC<AttachmentsProps> = ({
   highContrast,
   onAttachmentsChanged
 }: AttachmentsProps): JSX.Element => {
-
   const { t } = useTranslation()
   const [_attachmentsTableVisible, setAttachmentsTableVisible] = useState<boolean>(false)
   const [_items, setItems] = useState<JoarkBrowserItems>([])
@@ -51,7 +50,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
       <HighContrastKnapp
         onClick={() => setAttachmentsTableVisible(!_attachmentsTableVisible)}
       >
-        {t( 'label:show-attachments-table')}
+        {t('label:show-attachments-table')}
       </HighContrastKnapp>
       <VerticalSeparatorDiv />
       {_attachmentsTableVisible && (

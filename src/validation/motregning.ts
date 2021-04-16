@@ -9,15 +9,14 @@ export const validateMotregning = (
   t: any,
   namespace: string
 ): void => {
-
   let generalFail: boolean = false
 
   let value = navnOgBetegnelse.navn
-        ? undefined
-        : {
-          feilmelding: t('message:validation-noName'),
-          skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-navn-text'
-        } as FeiloppsummeringFeil
+    ? undefined
+    : {
+      feilmelding: t('message:validation-noName'),
+      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-navn-text'
+    } as FeiloppsummeringFeil
 
   v[namespace + '-navn'] = value
 
@@ -34,7 +33,6 @@ export const validateMotregning = (
 
   v[namespace + '-betegnelsepåytelse'] = value
 
-
   if (generalFail) {
     const namespaceBits = namespace.split('-')
     namespaceBits[0] = 'person'
@@ -44,7 +42,6 @@ export const validateMotregning = (
     v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }
 }
-
 
 export const validateMotregninger = (
   validation: Validation,

@@ -37,7 +37,7 @@ export interface NavnOgBetegnelse {
 
 const Motregning: React.FC<MotregningProps> = ({
   highContrast,
-  //replySed,
+  // replySed,
   validation
 }: MotregningProps): JSX.Element => {
   const { t } = useTranslation()
@@ -171,7 +171,6 @@ const Motregning: React.FC<MotregningProps> = ({
   }
 
   const renderNavnOgBetegnelse = (nob: NavnOgBetegnelse | null, index: number) => {
-
     const key = nob ? getKey(nob) : 'new'
     const candidateForDeletion = index < 0 ? false : !!key && _confirmDelete.indexOf(key) >= 0
 
@@ -204,7 +203,7 @@ const Motregning: React.FC<MotregningProps> = ({
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}
-              marginTop={true}
+              marginTop
               onBeginRemove={() => addCandidateForDeletion(key!)}
               onConfirmRemove={() => onRemove(index)}
               onCancelRemove={() => removeCandidateForDeletion(key!)}
@@ -213,7 +212,7 @@ const Motregning: React.FC<MotregningProps> = ({
             />
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv data-size='0.5'/>
+        <VerticalSeparatorDiv data-size='0.5' />
       </>
     )
   }
@@ -264,20 +263,20 @@ const Motregning: React.FC<MotregningProps> = ({
                 </HighContrastFlatknapp>
               </Column>
             </Row>
-          )}
-        <VerticalSeparatorDiv data-size='2'/>
+            )}
+        <VerticalSeparatorDiv data-size='2' />
         <UndertekstBold>
           {t('label:family-benefits-information')}
         </UndertekstBold>
         <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{animationDelay: '0.1s'}}
+          style={{ animationDelay: '0.1s' }}
         >
           <Column>
             <HighContrastInput
               data-test-id={'c-' + namespace + '-amount-number'}
-              feil={_validation[+ namespace + '-amount']?.feilmelding}
+              feil={_validation[+namespace + '-amount']?.feilmelding}
               id={'c-' + namespace + '-amount-number'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setAmount(e.target.value)}
               value={_amount}
@@ -302,10 +301,10 @@ const Motregning: React.FC<MotregningProps> = ({
           </Column>
           <Column />
         </AlignStartRow>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{animationDelay: '0.2s'}}
+          style={{ animationDelay: '0.2s' }}
         >
           <Column>
             <HighContrastInput
@@ -334,7 +333,7 @@ const Motregning: React.FC<MotregningProps> = ({
         <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{animationDelay: '0.3s'}}
+          style={{ animationDelay: '0.3s' }}
         >
           <Column data-flex='2'>
             <HighContrastInput
@@ -352,7 +351,7 @@ const Motregning: React.FC<MotregningProps> = ({
         <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{animationDelay: '0.4s'}}
+          style={{ animationDelay: '0.4s' }}
         >
           <Column data-flex='2'>
             <HighContrastInput
@@ -370,49 +369,49 @@ const Motregning: React.FC<MotregningProps> = ({
         <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{animationDelay: '0.5s'}}
+          style={{ animationDelay: '0.5s' }}
         >
           <Column data-flex='2'>
             <TextAreaDiv>
-            <HighContrastTextArea
-              className={classNames({
-                'skjemaelement__input--harFeil': validation[namespace + '-grunner']?.feilmelding
-              })}
-              data-test-id={'c-' + namespace + '-grunner-text'}
-              feil={validation[namespace + '-grunner']?.feilmelding}
-              id={'c-' + namespace + '-grunner-text'}
-              label={t('label:anmodning-grunner')}
-              placeholder={t('el:placeholder-grunner-default')}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => _setGrunner(e.target.value)}
-              value={_grunner}
-            />
+              <HighContrastTextArea
+                className={classNames({
+                  'skjemaelement__input--harFeil': validation[namespace + '-grunner']?.feilmelding
+                })}
+                data-test-id={'c-' + namespace + '-grunner-text'}
+                feil={validation[namespace + '-grunner']?.feilmelding}
+                id={'c-' + namespace + '-grunner-text'}
+                label={t('label:anmodning-grunner')}
+                placeholder={t('el:placeholder-grunner-default')}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => _setGrunner(e.target.value)}
+                value={_grunner}
+              />
             </TextAreaDiv>
           </Column>
-          <Column/>
+          <Column />
         </AlignStartRow>
 
         <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{animationDelay: '0.5s'}}
+          style={{ animationDelay: '0.5s' }}
         >
           <Column data-flex='2'>
             <TextAreaDiv>
-            <HighContrastTextArea
-              className={classNames({
-                'skjemaelement__input--harFeil': validation[namespace + '-ytterligereinformasjon']?.feilmelding
-              })}
-              data-test-id={'c-' + namespace + '-ytterligereinformasjon-text'}
-              feil={validation[namespace + '-ytterligereinformasjon']?.feilmelding}
-              id={'c-' + namespace + '-ytterligereinformasjon-text'}
-              label={t('label:additional-information')}
-              placeholder={t('el:placeholder-input-default')}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => _setYtterligereInformasjon(e.target.value)}
-              value={_ytterligereInformasjon}
-            />
+              <HighContrastTextArea
+                className={classNames({
+                  'skjemaelement__input--harFeil': validation[namespace + '-ytterligereinformasjon']?.feilmelding
+                })}
+                data-test-id={'c-' + namespace + '-ytterligereinformasjon-text'}
+                feil={validation[namespace + '-ytterligereinformasjon']?.feilmelding}
+                id={'c-' + namespace + '-ytterligereinformasjon-text'}
+                label={t('label:additional-information')}
+                placeholder={t('el:placeholder-input-default')}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => _setYtterligereInformasjon(e.target.value)}
+                value={_ytterligereInformasjon}
+              />
             </TextAreaDiv>
           </Column>
-          <Column/>
+          <Column />
         </AlignStartRow>
 
       </HighContrastPanel>

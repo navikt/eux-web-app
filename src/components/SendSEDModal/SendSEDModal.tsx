@@ -74,7 +74,7 @@ const mapState = (state: State): any => ({
   alertType: state.alert.type,
   creatingSvarPaSed: state.loading.creatingSvarPaSed,
   replySed: state.svarpased.replySed,
-  sedCreatedResponse: state.svarpased.sedCreatedResponse,
+  sedCreatedResponse: state.svarpased.sedCreatedResponse
 })
 const SendSEDModal: React.FC<SendSEDModalProps> = ({
   highContrast,
@@ -82,7 +82,6 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
   initialSendingAttachments = false,
   onModalClose
 }: SendSEDModalProps): JSX.Element => {
-
   const {
     alertStatus,
     alertMessage,
@@ -144,17 +143,16 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
       if (_.isEmpty(joarksToUpload)) {
         /* istanbul ignore next */
         if (!IS_TEST) {
-           console.log('SEDStart: No attachments to send, concluding')
-         }
-         _onFinished()
-         return
-       }
-       // attachments to send -> start a savingAttachmentsJob
-       setSendingAttachments(true)
-       dispatch(createSavingAttachmentJob(joarksToUpload))
-     }
-   }, [_attachmentsSent, dispatch, _onFinished, sedCreatedResponse, _sendingAttachments, _sedAttachments, _sedSent])
-
+          console.log('SEDStart: No attachments to send, concluding')
+        }
+        _onFinished()
+        return
+      }
+      // attachments to send -> start a savingAttachmentsJob
+      setSendingAttachments(true)
+      dispatch(createSavingAttachmentJob(joarksToUpload))
+    }
+  }, [_attachmentsSent, dispatch, _onFinished, sedCreatedResponse, _sendingAttachments, _sedAttachments, _sedSent])
 
   return (
     <Modal
@@ -166,7 +164,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
             <Undertittel>
               {t('el:title-creating-sed')}
             </Undertittel>
-            <VerticalSeparatorDiv/>
+            <VerticalSeparatorDiv />
             {alertMessage && alertType && [types.SVARPASED_SED_CREATE_FAILURE].indexOf(alertType) >= 0 && (
               <>
                 <AlertstripeDiv>
@@ -178,85 +176,86 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                     onClose={() => dispatch(clientClear())}
                   />
                 </AlertstripeDiv>
-                <VerticalSeparatorDiv/>
+                <VerticalSeparatorDiv />
               </>
             )}
             <MinimalContentDiv>
-            <SectionDiv>
-              <PileDiv style={{alignItems: 'flex-start'}}>
-                <div>
-                {creatingSvarPaSed && (
-                  <FlexCenterDiv>
-                    <NavFrontendSpinner type='XS'/>
-                    <HorizontalSeparatorDiv data-size='0.5'/>
-                    <span>{t('message:loading-creatingReplySed')}</span>
-                  </FlexCenterDiv>
+              <SectionDiv>
+                <PileDiv style={{ alignItems: 'flex-start' }}>
+                  <div>
+                    {creatingSvarPaSed && (
+                      <FlexCenterDiv>
+                        <NavFrontendSpinner type='XS' />
+                        <HorizontalSeparatorDiv data-size='0.5' />
+                        <span>{t('message:loading-creatingReplySed')}</span>
+                      </FlexCenterDiv>
+                    )}
+                    {!_.isNil(sedCreatedResponse) && (
+                      <FlexCenterDiv>
+                        <CheckCircle color='green' />
+                        <HorizontalSeparatorDiv data-size='0.5' />
+                        <span>{t('message:loading-sedCreated')}</span>
+                      </FlexCenterDiv>
+                    )}
+                  </div>
+                  <VerticalSeparatorDiv data-size='0.5' />
+                  <div>
+                    {_finished && (
+                      <FlexCenterDiv>
+                        <CheckCircle color='green' />
+                        <HorizontalSeparatorDiv data-size='0.5' />
+                        <span>{t('message:loading-sedFinished')}</span>
+                      </FlexCenterDiv>
+                    )}
+                    {_sendingAttachments && (
+                      <FlexCenterDiv>
+                        <NavFrontendSpinner type='XS' />
+                        <HorizontalSeparatorDiv data-size='0.5' />
+                        <span>{t('message:loading-sendingVedlegg')}</span>
+                      </FlexCenterDiv>
+                    )}
+                  </div>
+                </PileDiv>
+              </SectionDiv>
+              <SectionDiv>
+                <VerticalSeparatorDiv />
+                {(_sendingAttachments || _attachmentsSent) && (
+                  <MinimalModalDiv>
+                    <WrapperDiv>
+                      <SEDAttachmentSender
+                        attachmentsError={undefined}
+                        payload={{
+                          fnr: fnr,
+                          rinaId: replySed.saksnummer,
+                          rinaDokumentId: sedCreatedResponse.sedId
+                        } as SEDAttachmentPayload}
+                        onSaved={_onSaved}
+                        onFinished={_onFinished}
+                        onCancel={_cancelSendAttachmentToSed}
+                        sendAttachmentToSed={_sendAttachmentToSed}
+                      />
+                      <VerticalSeparatorDiv />
+                    </WrapperDiv>
+                  </MinimalModalDiv>
                 )}
-                {!_.isNil(sedCreatedResponse) && (
-                   <FlexCenterDiv>
-                     <CheckCircle color='green'/>
-                     <HorizontalSeparatorDiv data-size='0.5'/>
-                     <span>{t('message:loading-sedCreated')}</span>
-                   </FlexCenterDiv>
-                )}
-                </div>
-                <VerticalSeparatorDiv data-size='0.5'/>
-                <div>
                 {_finished && (
-                  <FlexCenterDiv>
-                    <CheckCircle color='green'/>
-                    <HorizontalSeparatorDiv data-size='0.5'/>
-                    <span>{t('message:loading-sedFinished')}</span>
-                  </FlexCenterDiv>
+                  <div>
+                    <HighContrastHovedknapp
+                      mini
+                      onClick={() => {
+                        dispatch(resetSedResponse())
+                        onModalClose()
+                      }}
+                    >
+                      {t('el:button-close')}
+                    </HighContrastHovedknapp>
+                  </div>
                 )}
-                {_sendingAttachments && (
-                  <FlexCenterDiv>
-                    <NavFrontendSpinner type='XS'/>
-                    <HorizontalSeparatorDiv data-size='0.5'/>
-                    <span>{t('message:loading-sendingVedlegg')}</span>
-                  </FlexCenterDiv>
-                )}
-                </div>
-              </PileDiv>
-            </SectionDiv>
-            <SectionDiv>
-              <VerticalSeparatorDiv/>
-              {(_sendingAttachments || _attachmentsSent) && (
-                <MinimalModalDiv>
-                  <WrapperDiv>
-                  <SEDAttachmentSender
-                    attachmentsError={undefined}
-                    payload={{
-                      fnr: fnr,
-                      rinaId: replySed.saksnummer,
-                      rinaDokumentId: sedCreatedResponse.sedId
-                    } as SEDAttachmentPayload}
-                    onSaved={_onSaved}
-                    onFinished={_onFinished}
-                    onCancel={_cancelSendAttachmentToSed}
-                    sendAttachmentToSed={_sendAttachmentToSed}
-                  />
-                  <VerticalSeparatorDiv />
-                  </WrapperDiv>
-                </MinimalModalDiv>
-              )}
-              {_finished && (
-                <div>
-                  <HighContrastHovedknapp
-                  mini
-                  onClick={() => {
-                    dispatch(resetSedResponse())
-                    onModalClose()
-                  }}
-                >
-                  {t('el:button-close')}
-                </HighContrastHovedknapp>
-                </div>
-              )}
-            </SectionDiv>
-          </MinimalContentDiv>
-        </MinimalModalDiv>
-      )}}
+              </SectionDiv>
+            </MinimalContentDiv>
+          </MinimalModalDiv>
+        )
+      }}
       onModalClose={onModalClose}
     />
   )

@@ -30,7 +30,7 @@ export const validatePeriode = (
     value = (periode.startdato && periode.startdato.match(/\d{2}\.\d{2}\.\d{4}/))
       ? undefined
       : {
-        feilmelding: t('message:validation-invalidDateForPerson', {person: personName}),
+        feilmelding: t('message:validation-invalidDateForPerson', { person: personName }),
         skjemaelementId: 'c-' + namespace + '-' + sedCategory + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-startdato-date'
       } as FeiloppsummeringFeil
     if (!v[namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-startdato']) {
@@ -91,7 +91,7 @@ export const validatePensjonPeriode = (
     value = (periode.periode.startdato.match(/\d{2}\.\d{2}\.\d{4}/))
       ? undefined
       : {
-        feilmelding: t('message:validation-invalidDateForPerson', {person: personName}),
+        feilmelding: t('message:validation-invalidDateForPerson', { person: personName }),
         skjemaelementId: 'c-' + namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-periode-startdato-date'
       } as FeiloppsummeringFeil
     if (!v[namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']') + '-periode-startdato']) {

@@ -156,7 +156,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
 
     return (
       <>
-        <AlignStartRow className={classNames('slideInFromLeft')} style={{animationDelay: (i * 0.1) + 's'}}>
+        <AlignStartRow className={classNames('slideInFromLeft')} style={{ animationDelay: (i * 0.1) + 's' }}>
           <Column>
             <CountrySelect
               data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-land-text'}

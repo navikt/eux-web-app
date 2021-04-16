@@ -248,7 +248,7 @@ const Adresser: React.FC<AdresseProps> = ({
               ]}
               onChange={(e: any) => onTypeChanged((e.target.value as AdresseType), i)}
             />
-            <VerticalSeparatorDiv data-size='0.15'/>
+            <VerticalSeparatorDiv data-size='0.15' />
             <HighContrastRadioPanelGroup
               checked={i < 0 ? _newType : a!.type}
               data-no-border
@@ -351,7 +351,7 @@ const Adresser: React.FC<AdresseProps> = ({
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
               existingItem={(i >= 0)}
-              marginTop={true}
+              marginTop
               onBeginRemove={() => addCandidateForDeletion(key!)}
               onConfirmRemove={() => onRemove(i)}
               onCancelRemove={() => removeCandidateForDeletion(key!)}

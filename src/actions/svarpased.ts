@@ -62,12 +62,12 @@ export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload>>
 export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload>> = (
   saksnummerOrFnr: string, connectedSed: ConnectedSed, saksnummer: string
 ): ThunkResult<ActionWithPayload> => {
-  const mockSed = mockReplySed(connectedSed.sedType)
+  const mockSed = mockReplySed(connectedSed.svarsedType)
   return call({
     url: sprintf(urls.API_SVARPASED_REPLYSED_QUERY_URL, {
       rinaSakId: saksnummerOrFnr,
       sedId: connectedSed.sedId,
-      sedType: connectedSed.sedType
+      sedType: connectedSed.svarsedType
     }),
     expectedPayload: {
       ...mockSed,
@@ -162,11 +162,7 @@ export const createSed: ActionCreator<ThunkResult<
 >> = (rinaSakId: string, sedId: string, sedType: string, payload: SvarpasedState): ThunkResult<ActionWithPayload> => {
   return call({
     method: 'POST',
-    url: sprintf(urls.API_SVARPASED_SEND_POST_URL, {
-      rinaSakId: rinaSakId,
-      sedId: sedId,
-      sedType: sedType
-    }),
+    url: sprintf(urls.API_SVARPASED_SEND_POST_URL, { rinaSakId: rinaSakId }),
     expectedPayload: {
       sedId: '123'
     },

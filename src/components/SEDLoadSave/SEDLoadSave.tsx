@@ -26,7 +26,6 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
   onLoad,
   storageKey
 }: SEDLoadSaveProps) => {
-
   const [_savedEntries, setSavedEntries] = useState<Array<LocalStorageEntry<CustomLocalStorageContent>> | null | undefined>(undefined)
   const [_loadingSavedItems, setLoadingSavedItems] = useState<boolean>(false)
   const [_confirmDelete, setConfirmDelete] = useState<Array<string>>([])
@@ -34,8 +33,8 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
 
   const loadReplySeds = async () => {
     setLoadingSavedItems(true)
-    let items: string | null = await window.localStorage.getItem(storageKey)
-    let savedEntries: Array<LocalStorageEntry<CustomLocalStorageContent>> | null | undefined = undefined
+    const items: string | null = await window.localStorage.getItem(storageKey)
+    let savedEntries: Array<LocalStorageEntry<CustomLocalStorageContent>> | null | undefined
     if (_.isString(items)) {
       savedEntries = JSON.parse(items)
     } else {
@@ -46,7 +45,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
   }
 
   const onRemove = async (i: number) => {
-    let newSavedEntries = _.cloneDeep(_savedEntries)
+    const newSavedEntries = _.cloneDeep(_savedEntries)
     if (!_.isNil(newSavedEntries)) {
       newSavedEntries.splice(i, 1)
       setSavedEntries(newSavedEntries)
@@ -57,7 +56,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
   const onDownload = async (entry: LocalStorageEntry<CustomLocalStorageContent>) => {
     const fileName = entry!.name + '.json'
     const json = JSON.stringify(entry.content)
-    const blob = new Blob([json],{type:'application/json'})
+    const blob = new Blob([json], { type: 'application/json' })
     const href = await URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = href
@@ -87,94 +86,96 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
       <HighContrastPanel>
         <LoadSaveDiv>
           {_loadingSavedItems && (<WaitingPanel />)}
-          {_savedEntries === null || _.isEmpty(_savedEntries) ? (
-            <Normaltekst>
-              {t('label:no-saved-replyseds')}
-            </Normaltekst>
-          ) : (
-            <Normaltekst>
-              {t('label:saved-replyseds')}
-            </Normaltekst>
-          )}
-          <VerticalSeparatorDiv/>
+          {_savedEntries === null || _.isEmpty(_savedEntries)
+            ? (
+              <Normaltekst>
+                {t('label:no-saved-replyseds')}
+              </Normaltekst>
+              )
+            : (
+              <Normaltekst>
+                {t('label:saved-replyseds')}
+              </Normaltekst>
+              )}
+          <VerticalSeparatorDiv />
           {_savedEntries && _savedEntries.map((savedEntry: LocalStorageEntry<CustomLocalStorageContent>, i: number) => {
-
             const candidateForDeletion = _confirmDelete.indexOf(savedEntry.name) >= 0
             return (
-              <>
-              <Etikett style={{padding: '0.5rem'}}>
-                <PileDiv>
-                  <FlexCenterDiv>
+              <div key={savedEntry.name}>
+                <Etikett style={{ padding: '0.5rem' }}>
+                  <PileDiv>
+                    <FlexCenterDiv>
+                      <FlexBaseDiv>
+                        <UndertekstBold>
+                          {t('label:name') + ': '}
+                        </UndertekstBold>
+                        <HorizontalSeparatorDiv data-size='0.5' />
+                        <Normaltekst>
+                          {savedEntry.name}
+                        </Normaltekst>
+                      </FlexBaseDiv>
+                      <HorizontalSeparatorDiv />
+                      <FlexBaseDiv>
+                        <UndertekstBold>
+                          {t('label:date') + ': '}
+                        </UndertekstBold>
+                        <HorizontalSeparatorDiv data-size='0.5' />
+                        <Normaltekst>
+                          {savedEntry.date}
+                        </Normaltekst>
+                      </FlexBaseDiv>
+                    </FlexCenterDiv>
+                    <FlexCenterDiv>
+                      <FlexBaseDiv>
+                        <UndertekstBold>
+                          {t('label:saksnummer') + ': '}
+                        </UndertekstBold>
+                        <HorizontalSeparatorDiv data-size='0.5' />
+                        <Normaltekst>
+                          {(savedEntry.content as any).saksnummer}
+                        </Normaltekst>
+                      </FlexBaseDiv>
+                      <HorizontalSeparatorDiv />
+                      <FlexBaseDiv>
+                        <UndertekstBold>
+                          {t('label:type') + ': '}
+                        </UndertekstBold>
+                        <HorizontalSeparatorDiv data-size='0.5' />
+                        <Normaltekst>
+                          {(savedEntry.content as any).sedType}
+                        </Normaltekst>
+                      </FlexBaseDiv>
+                    </FlexCenterDiv>
+                    <VerticalSeparatorDiv data-size='0.5' />
                     <FlexBaseDiv>
-                      <UndertekstBold>
-                        {t('label:name') + ': '}
-                      </UndertekstBold>
-                      <HorizontalSeparatorDiv data-size='0.5'/>
-                      <Normaltekst>
-                        {savedEntry.name}
-                      </Normaltekst>
+                      <HighContrastFlatknapp
+                        mini
+                        kompakt
+                        onClick={() => onLoad(savedEntry.content)}
+                      >
+                        {t('el:button-load')}
+                      </HighContrastFlatknapp>
+                      <HighContrastFlatknapp
+                        mini
+                        kompakt
+                        onClick={() => onDownload(savedEntry)}
+                      >
+                        {t('el:button-download')}
+                      </HighContrastFlatknapp>
+                      <AddRemovePanel
+                        existingItem
+                        candidateForDeletion={candidateForDeletion}
+                        onBeginRemove={() => addCandidateForDeletion(savedEntry.name)}
+                        onConfirmRemove={() => onRemove(i)}
+                        onCancelRemove={() => removeCandidateForDeletion(savedEntry.name!)}
+                      />
                     </FlexBaseDiv>
-                    <HorizontalSeparatorDiv/>
-                    <FlexBaseDiv>
-                     <UndertekstBold>
-                       {t('label:date') + ': '}
-                     </UndertekstBold>
-                     <HorizontalSeparatorDiv data-size='0.5'/>
-                     <Normaltekst>
-                       {savedEntry.date}
-                     </Normaltekst>
-                    </FlexBaseDiv>
-                  </FlexCenterDiv>
-                  <FlexCenterDiv>
-                    <FlexBaseDiv>
-                      <UndertekstBold>
-                        {t('label:saksnummer') + ': '}
-                      </UndertekstBold>
-                      <HorizontalSeparatorDiv data-size='0.5'/>
-                      <Normaltekst>
-                        {(savedEntry.content as any).saksnummer}
-                      </Normaltekst>
-                    </FlexBaseDiv>
-                    <HorizontalSeparatorDiv/>
-                    <FlexBaseDiv>
-                      <UndertekstBold>
-                        {t('label:type') + ': '}
-                      </UndertekstBold>
-                      <HorizontalSeparatorDiv data-size='0.5'/>
-                      <Normaltekst>
-                        {(savedEntry.content as any).sedType}
-                      </Normaltekst>
-                    </FlexBaseDiv>
-                  </FlexCenterDiv>
-                  <VerticalSeparatorDiv data-size='0.5'/>
-                  <FlexBaseDiv>
-                    <HighContrastFlatknapp
-                      mini
-                      kompakt
-                      onClick={() => onLoad(savedEntry.content)}
-                    >
-                      {t('el:button-load')}
-                    </HighContrastFlatknapp>
-                    <HighContrastFlatknapp
-                      mini
-                      kompakt
-                      onClick={() => onDownload(savedEntry)}
-                    >
-                      {t('el:button-download')}
-                    </HighContrastFlatknapp>
-                    <AddRemovePanel
-                      existingItem={true}
-                      candidateForDeletion={candidateForDeletion}
-                      onBeginRemove={() => addCandidateForDeletion(savedEntry.name)}
-                      onConfirmRemove={() => onRemove(i)}
-                      onCancelRemove={() => removeCandidateForDeletion(savedEntry.name!)}
-                    />
-                  </FlexBaseDiv>
-                </PileDiv>
-              </Etikett>
-              <VerticalSeparatorDiv/>
-              </>
-          )})}
+                  </PileDiv>
+                </Etikett>
+                <VerticalSeparatorDiv />
+              </div>
+            )
+          })}
         </LoadSaveDiv>
       </HighContrastPanel>
     </NavHighContrast>

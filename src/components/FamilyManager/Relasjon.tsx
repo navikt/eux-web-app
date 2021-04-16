@@ -25,7 +25,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
   // replySed,
   validation
 }:RelasjonProps): JSX.Element => {
-  const [_newRelasjon, setNewRelasjon] =  useState<BarnRelasjon | undefined>(undefined)
+  const [_newRelasjon, setNewRelasjon] = useState<BarnRelasjon | undefined>(undefined)
   const [_newRelasjonType, setNewRelasjonType] = useState<BarnRelasjonType | undefined>(undefined)
   const [_newSluttDato, setNewSluttDato] = useState<string>('')
   const [_newStartDato, setNewStartDato] = useState<string>('')

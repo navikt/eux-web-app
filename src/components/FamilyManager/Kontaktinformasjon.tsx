@@ -274,7 +274,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
               onCancelRemove={() => removeCandidateForDeletion(key!)}
               onAddNew={onTelefonAdd}
               onCancelNew={() => onCancel('telefon')}
-              />
+            />
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />
