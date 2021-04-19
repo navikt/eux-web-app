@@ -2,6 +2,8 @@ import { Adresse } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export const validateAdresse = (
   v: Validation,
@@ -90,3 +92,52 @@ export const validateAdresser = (
     validateAdresse(validation, adresse, index, t, namespace, personName)
   })
 }
+
+const useCustomValidation: () => [
+  Validation,
+  (key: string | undefined) => void,
+  ({data, index, namespace, personName}: any) => boolean
+] = () => {
+
+  const { t } = useTranslation()
+  const [_validation, setValidation] = useState<Validation>({})
+
+  const resetValidation = (key: string | undefined): void => {
+    if (!key) {
+      setValidation({})
+    }
+    setValidation({
+      ..._validation,
+      [key!]: undefined
+    })
+  }
+
+  const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
+
+  const performValidation = ({
+    data,
+    index,
+    namespace,
+    personName
+  }: any): boolean => {
+    const newValidation: Validation = {}
+    validateAdresse(
+      newValidation,
+      data,
+      index,
+      t,
+      namespace,
+      personName
+    )
+    setValidation(newValidation)
+    return hasNoValidationErrors(newValidation)
+  }
+
+  return [
+    _validation,
+    resetValidation,
+    performValidation
+  ]
+}
+
+export default useCustomValidation

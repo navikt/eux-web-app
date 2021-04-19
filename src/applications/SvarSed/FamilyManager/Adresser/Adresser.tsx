@@ -17,7 +17,7 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { validateAdresse } from './validation'
+import useCustomValidation from './validation'
 
 interface AdresseProps {
   highContrast: boolean
@@ -47,7 +47,7 @@ const Adresser: React.FC<AdresseProps> = ({
   const [_newLand, setNewLand] = useState<string>('')
 
   const [_seeNewForm, setSeeNewForm] = useState<boolean>(false)
-  const [_validation, setValidation] = useState<Validation>({})
+  const [_validation, resetValidation, performValidation] = useCustomValidation()
 
   const target = `${personID}.adresser`
   const adresses: Array<Adresse> = _.get(replySed, target)
@@ -55,37 +55,6 @@ const Adresser: React.FC<AdresseProps> = ({
 
   const p = _.get(replySed, personID)
   const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
-
-  const resetValidation = (key: string): void => {
-    setValidation({
-      ..._validation,
-      [key]: undefined
-    })
-  }
-
-  const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
-
-  const performValidation = (): boolean => {
-    const newValidation: Validation = {}
-    validateAdresse(
-      newValidation,
-      {
-        bygning: _newBygning,
-        region: _newRegion,
-        postnummer: _newPostnummer,
-        by: _newBy,
-        gate: _newGate,
-        land: _newLand,
-        type: _newType
-      },
-      -1,
-      t,
-      namespace,
-      personName
-    )
-    setValidation(newValidation)
-    return hasNoValidationErrors(newValidation)
-  }
 
   const onAddNewClicked = () => setSeeNewForm(true)
 
@@ -182,7 +151,7 @@ const Adresser: React.FC<AdresseProps> = ({
     setNewBygning('')
     setNewRegion('')
     setNewLand('')
-    setValidation({})
+    resetValidation(undefined)
   }
 
   const onCancel = () => {
@@ -204,7 +173,21 @@ const Adresser: React.FC<AdresseProps> = ({
   }
 
   const onAdd = () => {
-    if (performValidation()) {
+    const valid = performValidation({
+      data: {
+        bygning: _newBygning,
+        region: _newRegion,
+        postnummer: _newPostnummer,
+        by: _newBy,
+        gate: _newGate,
+        land: _newLand,
+        type: _newType
+      },
+      index: -1,
+      namespace: namespace,
+      personName: personName
+    })
+    if (valid) {
       let newAdresses: Array<Adresse> = _.cloneDeep(adresses)
       if (_.isNil(newAdresses)) {
         newAdresses = []
