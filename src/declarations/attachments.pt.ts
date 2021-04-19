@@ -1,4 +1,4 @@
-import { JoarkBrowserType } from 'components/JoarkBrowser/JoarkBrowser'
+import { JoarkBrowserType } from 'applications/Vedlegg/JoarkBrowser/JoarkBrowser'
 import PT from 'prop-types'
 
 export const JoarkFileVariantPropType = PT.shape({
@@ -53,7 +53,7 @@ export const JoarkBrowserItemWithContentPropType = PT.shape({
 export const JoarkBrowserItemFileType = PT.shape({
   key: PT.string.isRequired,
   hasSubrows: PT.bool.isRequired,
-  type: PT.oneOf<JoarkBrowserType>(['sed', 'sednew', 'joark']).isRequired,
+  type: PT.oneOf<JoarkBrowserType>(['joark']).isRequired,
   journalpostId: PT.string.isRequired,
   dokumentInfoId: PT.string.isRequired,
   variant: JoarkFileVariantPropType.isRequired,

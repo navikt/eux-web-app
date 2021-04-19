@@ -11,12 +11,12 @@ import {
 import { Validation } from 'declarations/types.d'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
-import { validateNasjonaliteter } from 'validation/nasjonaliteter'
-import { validatePersonOpplysning } from 'validation/personopplysninger'
-import { validateAdresser } from 'validation/adresser'
-import { validateKontaktsinformasjonTelefoner, validateKontaktsinformasjonEposter } from 'validation/kontaktinformasjon'
-import { validateTrygdeordninger } from 'validation/trygdeordninger'
-import { validateFamilierelasjoner } from 'validation/familierelasjon'
+import { validateNasjonaliteter } from 'applications/SvarSed/FamilyManager/Nasjonaliteter/validation'
+import { validatePersonOpplysning } from 'applications/SvarSed/FamilyManager/PersonOpplysninger/validation'
+import { validateAdresser } from 'applications/SvarSed/FamilyManager/Adresser/validation'
+import { validateKontaktsinformasjonTelefoner, validateKontaktsinformasjonEposter } from 'applications/SvarSed/FamilyManager/Kontaktinformasjon/validation'
+import { validateTrygdeordninger } from 'applications/SvarSed/FamilyManager/Trygdeordning/validation'
+import { validateFamilierelasjoner } from 'applications/SvarSed/FamilyManager/Familierelasjon/validation'
 
 export const performValidation = (v: Validation, t: any, options: any, personID: string) => {
   const adresser: Array<Adresse> = _.get(options.replySed, `${personID}.adresser`)

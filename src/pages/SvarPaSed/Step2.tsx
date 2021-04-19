@@ -2,18 +2,18 @@ import * as svarpasedActions from 'actions/svarpased'
 import { getPreviewFile } from 'actions/svarpased'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
-import Attachments from 'components/Attachments/Attachments'
-import FamilyManager from 'components/FamilyManager/FamilyManager'
-import Formaal from 'components/Formaal/Formaal'
+import Attachments from 'applications/Vedlegg/Attachments/Attachments'
+import FamilyManager from 'applications/SvarSed/FamilyManager/FamilyManager'
+import Formaal from 'applications/SvarSed/Formaal/Formaal'
 import Inntekt from 'components/Inntekt/Inntekt'
-import KravOmRefusjon from 'components/KravOmRefusjon/KravOmRefusjon'
+import KravOmRefusjon from 'applications/SvarSed/KravOmRefusjon/KravOmRefusjon'
 import Modal from 'components/Modal/Modal'
-import Motregning from 'components/Motregning/Motregning'
-import ProsedyreVedUenighet from 'components/ProsedyreVedUenighet/ProsedyreVedUenighet'
-import SaveSEDModal from 'components/SaveSEDModal/SaveSEDModal'
-import SendSEDModal from 'components/SendSEDModal/SendSEDModal'
+import Motregning from 'applications/SvarSed/Motregning/Motregning'
+import ProsedyreVedUenighet from 'applications/SvarSed/ProsedyreVedUenighet/ProsedyreVedUenighet'
+import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
+import SendSEDModal from 'applications/SvarSed/SendSEDModal/SendSEDModal'
 import { TextAreaDiv } from 'components/StyledComponents'
-import Vedtak from 'components/Vedtak/Vedtak'
+import Vedtak from 'applications/SvarSed/Vedtak/Vedtak'
 import { JoarkBrowserItems } from 'declarations/attachments'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
@@ -308,14 +308,15 @@ const Step2: React.FC<SvarPaSedProps> = ({
       <VerticalSeparatorDiv />
       <TextAreaDiv>
         <HighContrastTextArea
-          data-test-id='c-step2-comment-text'
-          id='c-step2-comment-text'
           className={classNames({ 'skjemaelement__input--harFeil': validation.comment })}
+          data-test-id='c-step2-comment-text'
+          feil={validation.comment?.feilmelding}
+          id='c-step2-comment-text'
           label={t('label:comment-title')}
-          placeholder={t('label:comment-placeholder')}
+          maxLength={500}
           onChange={(e: any) => setComment(e.target.value)}
+          placeholder={t('label:comment-placeholder')}
           value={_comment}
-          feil={validation.comment ? validation.comment.feilmelding : undefined}
         />
       </TextAreaDiv>
       <VerticalSeparatorDiv data-size='2' />

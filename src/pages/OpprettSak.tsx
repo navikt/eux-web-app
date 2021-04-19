@@ -1,20 +1,11 @@
 import { clientClear } from 'actions/alert'
 import * as appActions from 'actions/app'
 import * as sakActions from 'actions/sak'
+import Family from 'applications/OpprettSak/Family/Family'
+import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
 import classNames from 'classnames'
 import AbortModal from 'components/AbortModal/AbortModal'
 import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
-import Family from 'components/Family/Family'
-import PersonSearch from 'components/PersonSearch/PersonSearch'
-import {
-  Column,
-  Container,
-  Content,
-  HorizontalSeparatorDiv,
-  Margin,
-  Row,
-  VerticalSeparatorDiv
-} from 'nav-hoykontrast'
 import TopContainer from 'components/TopContainer/TopContainer'
 import * as types from 'constants/actionTypes'
 import { AlertStatus } from 'declarations/components'
@@ -46,6 +37,7 @@ import Lenke from 'nav-frontend-lenker'
 import Panel from 'nav-frontend-paneler'
 import { Feiloppsummering, FeiloppsummeringFeil, Select } from 'nav-frontend-skjema'
 import { Systemtittel } from 'nav-frontend-typografi'
+import { Column, Container, Content, HorizontalSeparatorDiv, Margin, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import PT from 'prop-types'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
