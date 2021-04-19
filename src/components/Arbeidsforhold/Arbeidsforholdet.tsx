@@ -66,22 +66,22 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
   personFnr
 }: ArbeidsforholdetProps): JSX.Element => {
   const {
-    arbeidsforholdIDnav,
-    navn,
-    orgnr,
-    ansettelsesPeriode
+    //harRegistrertInntekt,
+    arbeidsgiverNavn,
+    arbeidsgiverOrgnr,
+    fraDato,
+    tilDato
   } = arbeidsforholdet
-  const { fom, tom } = ansettelsesPeriode!
   const { t } = useTranslation()
   const hasError = true
   const namespace = 'arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']'
 
   const [_isDeleting, setIsDeleting] = useState<boolean>(false)
   const [_isEditing, setIsEditing] = useState<boolean>(false)
-  const [_navn, setNavn] = useState<string>(navn || '')
-  const [_orgnr, setOrgnr] = useState<string>(orgnr || '')
-  const [_startDato, setStartDato] = useState<string>(fom || '')
-  const [_sluttDato, setSluttDato] = useState<string>(tom || '')
+  const [_arbeidsgiverNavn, setArbeidsgiverNavn] = useState<string>(arbeidsgiverNavn || '')
+  const [_arbeidsgiverOrgnr, setArbeidsgiverOrgnr] = useState<string>(arbeidsgiverOrgnr || '')
+  const [_startDato, setStartDato] = useState<string>(fraDato || '')
+  const [_sluttDato, setSluttDato] = useState<string>(tilDato || '')
   const [_validation, setValidation] = useState<Validation>({})
 
   const resetValidation = (key: string): void => {
@@ -95,13 +95,13 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
 
   const performValidation = (): boolean => {
     const validation: Validation = {}
-    if (!_navn) {
+    if (!_arbeidsgiverNavn) {
       validation[namespace + '-navn'] = {
         skjemaelementId: 'c-' + namespace + '-navn-text',
         feilmelding: t('message:validation-noName')
       } as FeiloppsummeringFeil
     }
-    if (!_orgnr) {
+    if (!_arbeidsgiverOrgnr) {
       validation[namespace + '-orgnr'] = {
         skjemaelementId: 'c-' + namespace + '-orgnr-text',
         feilmelding: t('message:validation-noOrgnr')
@@ -137,12 +137,12 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
 
   const onNameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     resetValidation(namespace + '-navn')
-    setNavn(e.target.value)
+    setArbeidsgiverNavn(e.target.value)
   }
 
   const onOrgnrChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     resetValidation(namespace + '-orgnr')
-    setOrgnr(e.target.value)
+    setArbeidsgiverOrgnr(e.target.value)
   }
 
   const onStartDatoChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -158,12 +158,10 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
   const onSaveButtonClicked = () => {
     if (performValidation()) {
       onArbeidsforholdEdit({
-        navn: _navn,
-        orgnr: _orgnr,
-        ansettelsesPeriode: {
-          fom: _startDato,
-          tom: _sluttDato
-        }
+        arbeidsgiverNavn: _arbeidsgiverNavn,
+        arbeidsgiverOrgnr: _arbeidsgiverOrgnr,
+        fraDato: _startDato,
+        tilDato: _sluttDato
       } as Arbeidsforholdet,
       index)
       setIsEditing(false)
@@ -172,16 +170,16 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
 
   const onEditButtonClicked = () => {
     setIsEditing(true)
-    setOrgnr(orgnr || '')
-    setNavn(navn || '')
-    setStartDato(fom)
-    setSluttDato(tom)
+    setArbeidsgiverOrgnr(_arbeidsgiverOrgnr || '')
+    setArbeidsgiverNavn(_arbeidsgiverNavn || '')
+    setStartDato(_startDato)
+    setSluttDato(_sluttDato)
   }
 
   const onCancelButtonClicked = () => {
     setIsEditing(false)
-    setOrgnr('')
-    setNavn('')
+    setArbeidsgiverOrgnr('')
+    setArbeidsgiverNavn('')
     setStartDato('')
     setSluttDato('')
   }
@@ -190,13 +188,13 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
     onArbeidsforholdSelect(arbeidsforholdet, e.target.checked)
   }
 
-  if (!navn || !orgnr) {
+  if (!_arbeidsgiverNavn || !_arbeidsgiverOrgnr) {
     return <div />
   }
   return (
     <div
       className='slideInFromLeft'
-      key={arbeidsforholdIDnav}
+      key={_arbeidsgiverOrgnr}
       style={{ animationDelay: (index * 0.1) + 's' }}
     >
       <VerticalSeparatorDiv data-size='0.5' />
@@ -217,7 +215,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                         label={t('label:name')}
                         onChange={onNameChanged}
                         placeholder={t('el:placeholder-input-default')}
-                        value={_navn}
+                        value={_arbeidsgiverNavn}
                       />
                     </Column>
                     <Column>
@@ -226,7 +224,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                         feil={_validation[namespace + '-orgnr']?.feilmelding}
                         id={'c-' + namespace + '-orgnr-text'}
                         onChange={onOrgnrChanged}
-                        value={_orgnr}
+                        value={_arbeidsgiverOrgnr}
                         label={t('label:orgnr')}
                         placeholder={t('el:placeholder-input-default')}
                       />
@@ -236,10 +234,10 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                 : (
                   <div>
                     <UndertekstBold>
-                      {navn}
+                      {_arbeidsgiverNavn}
                     </UndertekstBold>
                     <Normaltekst>
-                      {t('label:orgnr')}:&nbsp;{orgnr}
+                      {t('label:orgnr')}:&nbsp;{_arbeidsgiverOrgnr}
                     </Normaltekst>
                   </div>
                   )}
@@ -276,10 +274,10 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                 : (
                   <div>
                     <Normaltekst>
-                      {t('label:start-date')}:&nbsp;{formatterDatoTilNorsk(fom)}
+                      {t('label:start-date')}:&nbsp;{formatterDatoTilNorsk(_startDato)}
                     </Normaltekst>
                     <Normaltekst>
-                      {t('label:start-date')}:&nbsp;{formatterDatoTilNorsk(tom)}
+                      {t('label:start-date')}:&nbsp;{formatterDatoTilNorsk(_sluttDato)}
                     </Normaltekst>
                   </div>
                   )}

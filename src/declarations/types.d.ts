@@ -7,13 +7,20 @@ export interface Period {
 }
 
 export interface Arbeidsforholdet {
-  ansettelsesPeriode?: Period
-  arbeidsforholdIDnav?: number
-  navn?: string
-  orgnr?: string
+  fraDato: string
+  tilDato: string
+  harRegistrertInntekt: string
+  arbeidsgiverNavn: string
+  arbeidsgiverOrgnr: string
 }
 
 export type Arbeidsforhold = Array<Arbeidsforholdet>
+
+export interface Arbeidsperioder {
+  uriArbeidsgiverRegister: string
+  uriInntektRegister:  string
+  arbeidsperioder: Arbeidsforhold
+}
 
 export type StringMap = {[k: string]: string}
 export type ArrayStringMap = {[k: string]: Array<string>}

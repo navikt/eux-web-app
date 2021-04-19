@@ -273,16 +273,20 @@ const FamilyManager: React.FC = () => {
             {selected
               ? (
                 <Undertittel style={{ whiteSpace: 'nowrap' }}>
-                  {personId === 'familie'
-                    ? t('label:whole-family')
-                    : personInfo?.fornavn + ' ' + personInfo?.etternavn + ' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')'}
+                  {personId === 'familie' ?
+                    t('label:whole-family') :
+                    personInfo?.fornavn + ' ' + personInfo?.etternavn +
+                    (personInfo?.statsborgerskap ? ' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')' : '')
+                  }
                 </Undertittel>
                 )
               : (
                 <Normaltekst style={{ whiteSpace: 'nowrap' }}>
-                  {personId === 'familie'
-                    ? t('label:whole-family')
-                    : personInfo?.fornavn + ' ' + personInfo?.etternavn + ' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')'}
+                  {personId === 'familie' ?
+                    t('label:whole-family') :
+                    personInfo?.fornavn + ' ' + personInfo?.etternavn +
+                    (personInfo?.statsborgerskap ? ' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')' : '')
+                  }
                 </Normaltekst>
                 )}
             {personId.startsWith('barn[') && (

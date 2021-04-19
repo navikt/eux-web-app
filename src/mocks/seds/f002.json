@@ -6,31 +6,31 @@
       "fornavn": "Homer",
       "etternavn": "Simpson",
       "kjoenn": "M",
-      "foedselsdato": "01.01.1900",
+      "foedselsdato": "1900-01-01",
       "statsborgerskap": [
         {
           "land": "NO",
-          "fradato": "2020-01-01"
+          "fradato": "1901-01-01"
         },
         {
-          "land": "SE",
-          "fradato": "2020-01-01"
+          "land": "US",
+          "fradato": "1902-01-01"
         }
       ],
       "pin": [
         {
           "land": "NO",
-          "sektor": "yrkesskade og yrkessykdom1",
+          "sektor": "Folkeregistrer",
           "identifikator": "10000000001",
-          "institusjonsid": "InstitusjonsID",
-          "institusjonsnavn": "Navn"
+          "institusjonsid": "NO:DEMO01",
+          "institusjonsnavn": "Skatteetaten"
         },
         {
-          "land": "SE",
-          "sektor": "yrkesskade og yrkessykdom2",
+          "land": "US",
+          "sektor": "Registry",
           "identifikator": "20000000001",
-          "institusjonsid": "InstitusjonsID2",
-          "institusjonsnavn": "Navn2"
+          "institusjonsid": "US:DEMO01",
+          "institusjonsnavn": "US Registry"
         }
       ],
       "pinMangler": {
@@ -42,7 +42,7 @@
           "land": "US"
         },
         "far": {
-          "fornavn": "Grandpa",
+          "fornavn": "Abe",
           "etternavnVedFoedsel": "Simpson"
         },
         "mor": {
@@ -54,29 +54,20 @@
     "adresser": [
       {
         "type": "bosted",
-        "gate": "F002 bruker adresser1 gate",
-        "postnummer": "F002 bruker adresser1 postnummer",
-        "by": "F002 bruker adresser1 by",
-        "land": "NO",
-        "bygning": "F002 bruker adresser1 bygning",
-        "region": "F002 bruker adresser1 region"
-      },
-      {
-        "type": "opphold",
-        "gate": "F002 bruker adresser2 gate",
-        "postnummer": "F002 bruker adresser2 postnummer",
-        "by": "F002 bruker adresser2 by",
-        "land": "NO",
-        "bygning": "F002 bruker adresser2 bygning",
-        "region": "F002 bruker adresser2 region"
+        "gate": "742 Evergreen Terrace",
+        "postnummer": "89011",
+        "by": "Springfield",
+        "land": "US",
+        "bygning": "",
+        "region": "Springfield"
       }
     ],
     "epost": [
       {
-        "adresse": "F002-bruker-Epost-1@nav.no"
+        "adresse": "homer@simpsons.com"
       },
       {
-        "adresse": "F002-bruker-Epost-2@nav.no"
+        "adresse": "homer.simpson@springfield-npp.com"
       }
     ],
     "telefon": [
@@ -91,70 +82,70 @@
     ],
     "perioderMedArbeid": [
       {
-        "startdato": "01.01.1970",
-        "sluttdato": "31.12.1970"
+        "startdato": "1970-01-01",
+        "sluttdato": "1970-12-31"
       },
       {
-        "startdato": "01.01.1971",
+        "startdato": "1971-01-01",
         "aapenPeriodeType": "åpen_sluttdato"
       }
     ],
     "perioderMedTrygd": [
       {
-        "startdato": "01.01.1972",
-        "sluttdato": "31.12.1972"
+        "startdato": "1972-01-01",
+        "sluttdato": "1972-12-31"
       },
       {
-        "startdato": "01.01.1973",
+        "startdato": "1973-01-01",
         "aapenPeriodeType": "åpen_sluttdato"
       }
     ],
     "perioderMedITrygdeordning": [
       {
-        "startdato": "01.01.1974",
-        "sluttdato": "31.12.1974"
+        "startdato": "1974-01-01",
+        "sluttdato": "1974-12-31"
       },
       {
-        "startdato": "01.01.1975",
+        "startdato": "1975-01-01",
         "aapenPeriodeType": "åpen_sluttdato"
       }
     ],
     "perioderUtenforTrygdeordning": [
       {
-        "startdato": "01.01.1976",
-        "sluttdato": "31.12.1976"
+        "startdato": "1976-01-01",
+        "sluttdato": "1976-12-31"
       },
       {
-        "startdato": "01.01.1977",
+        "startdato": "1977-01-01",
         "aapenPeriodeType": "åpen_sluttdato"
       }
     ],
     "perioderMedYtelser": [
       {
-        "startdato": "01.01.1978",
-        "sluttdato": "31.12.1978"
+        "startdato": "1978-01-01",
+        "sluttdato": "1978-12-31"
       },
       {
-        "startdato": "01.01.1979",
+        "startdato": "1979-01-01",
         "aapenPeriodeType": "åpen_sluttdato"
       }
     ],
     "ikkeRettTilYtelser": {
-      "typeGrunn": "krav_ikke_framsatt",
-      "typeGrunnAnnen": "F002 bruker typeGrunnAnnen"
+      "typeGrunn": "type grunn",
+      "typeGrunnAnnen": "type grunn annen"
     },
     "perioderMedPensjon": [
       {
         "pensjonstype": "alderspensjon",
         "periode": {
-          "startdato": "01.01.1980",
-          "sluttdato": "31.12.1980"
+          "startdato": "1980-01-01",
+          "sluttdato": "1980-12-31"
         }
       },
       {
-        "pensjonstype": "alderspensjon",
+        "pensjonstype": "uførhet",
         "periode": {
-          "startdato": "01.01.1981",
+          "startdato": "1981-01-01",
           "aapenPeriodeType": "åpen_sluttdato"
         }
       }
@@ -164,11 +155,11 @@
         "type": "ansatt",
         "perioder": [
           {
-            "startdato": "01.01.1982",
-            "sluttdato": "31.12.1982"
+            "startdato": "1982-01-01",
+            "sluttdato": "1982-12-31"
           },
           {
-            "startdato": "01.01.1983",
+            "startdato": "1983-01-01",
             "aapenPeriodeType": "åpen_sluttdato"
           }
         ]
@@ -177,11 +168,11 @@
         "type": "inaktiv",
         "perioder": [
           {
-            "startdato": "01.01.1984",
-            "sluttdato": "31.12.1984"
+            "startdato": "1984-01-01",
+            "sluttdato": "1984-12-31"
           },
           {
-            "startdato": "01.01.1985",
+            "startdato": "1985-01-01",
             "aapenPeriodeType": "åpen_sluttdato"
           }
         ]
@@ -190,11 +181,11 @@
         "ytterligereinfo": "F002 bruker ytterligereinfo",
         "perioder": [
           {
-            "startdato": "01.01.1986",
-            "sluttdato": "31.12.1986"
+            "startdato": "1986-01-01",
+            "sluttdato": "1986-12-31"
           },
           {
-            "startdato": "01.01.1987",
+            "startdato": "1987-01-01",
             "aapenPeriodeType": "åpen_sluttdato"
           }
         ]
@@ -204,23 +195,23 @@
       "personligSituasjon": "F002 bruker personligSituasjon",
       "perioder": [
         {
-          "startdato": "01.01.1988",
-          "sluttdato": "31.12.1988"
+          "startdato": "1988-01-01",
+          "sluttdato": "1988-12-31"
         },
         {
-          "startdato": "01.01.1989",
+          "startdato": "1989-01-01",
           "aapenPeriodeType": "åpen_sluttdato"
         }
       ],
-      "datoFlyttetTilMottakerlandet": "01.01.1990",
-      "datoFlyttetTilAvsenderlandet": "01.01.1991"
+      "datoFlyttetTilMottakerlandet": "1990-01-01",
+      "datoFlyttetTilAvsenderlandet": "1991-01-01"
     },
     "familierelasjoner": [
       {
         "relasjonType": "gift",
         "relasjonInfo": "F002 bruker relasjonInfo",
         "periode": {
-          "startdato": "01.01.1992",
+          "startdato": "1992-01-01",
           "aapenPeriodeType": "åpen_sluttdato"
         },
         "borSammen": "ja",
@@ -236,13 +227,10 @@
       "fornavn": "Marge",
       "etternavn": "Simpson",
       "kjoenn": "K",
-      "foedselsdato": "01.01.1993",
+      "foedselsdato": "1993-01-01",
       "statsborgerskap": [
         {
-          "land": "DK"
-        },
-        {
-          "land": "FI"
+          "land": "us"
         }
       ],
       "pin": [
@@ -339,7 +327,7 @@
     ],
     "perioderMedITrygdeordning": [
       {
-        "startdato": "01.01.1993",
+        "startdato": "1993-01-01",
         "sluttdato": "31.12.1993"
       },
       {

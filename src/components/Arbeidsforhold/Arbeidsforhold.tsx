@@ -54,14 +54,14 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
         {arbeidsforholdList && arbeidsforholdList.map(
           (arbeidsforholdet: Arbeidsforholdet, index: number) => {
             const selected: boolean = valgteArbeidsforhold
-              ? valgteArbeidsforhold.find((item: Arbeidsforholdet) => item.orgnr === arbeidsforholdet.orgnr) !== undefined
+              ? valgteArbeidsforhold.find((item: Arbeidsforholdet) => item.arbeidsgiverOrgnr === arbeidsforholdet.arbeidsgiverOrgnr) !== undefined
               : false
             return (
               <ArbeidsforholdetFC
                 arbeidsforholdet={arbeidsforholdet}
                 editable={editable}
                 selected={selected}
-                key={arbeidsforholdet.orgnr + '-' + index}
+                key={arbeidsforholdet.arbeidsgiverOrgnr + '-' + index}
                 index={index}
                 onArbeidsforholdSelect={onArbeidsforholdSelect}
                 onArbeidsforholdDelete={onArbeidsforholdDelete}

@@ -2,7 +2,11 @@
 Clean ActionTypes later
 Clean Attachments later
 
-Como fazer com aapen_sluttdato, format dato
 
+
+
+Como fazer com aapen_sluttdato
+format datas
+fazer a equivalências de arbeidsgiver => perioder
 
 

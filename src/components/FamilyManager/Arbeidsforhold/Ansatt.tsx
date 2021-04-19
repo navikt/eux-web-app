@@ -1,7 +1,7 @@
 import Add from 'assets/icons/Add'
 import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
 import { ReplySed } from 'declarations/sed'
-import { Arbeidsforholdet, Period, Validation } from 'declarations/types'
+import { Arbeidsforholdet, Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Undertittel } from 'nav-frontend-typografi'
@@ -133,7 +133,7 @@ const Ansatt: React.FC<AnsattProps> = ({
     setExistingArbeidsforholdList(newArbeidsforholdList)
 
     if (deletedArbeidsforhold && deletedArbeidsforhold.length > 0) {
-      const newValgtArbeidsforhold: Array<Arbeidsforholdet> = _.filter(_valgteArbeidsforhold, v => v.orgnr !== deletedArbeidsforhold![0].orgnr)
+      const newValgtArbeidsforhold: Array<Arbeidsforholdet> = _.filter(_valgteArbeidsforhold, v => v.arbeidsgiverOrgnr !== deletedArbeidsforhold![0].arbeidsgiverOrgnr)
       if (newValgtArbeidsforhold.length !== _valgteArbeidsforhold.length) {
         setValgtArbeidsforhold(newValgtArbeidsforhold)
       }
@@ -146,7 +146,7 @@ const Ansatt: React.FC<AnsattProps> = ({
     setAddedArbeidsforholdList(newAddedArbeidsforholdList)
 
     if (deletedArbeidsforhold && deletedArbeidsforhold.length > 0) {
-      const newValgtArbeidsforhold: Array<Arbeidsforholdet> = _.filter(_valgteArbeidsforhold, v => v.orgnr !== deletedArbeidsforhold![0].orgnr)
+      const newValgtArbeidsforhold: Array<Arbeidsforholdet> = _.filter(_valgteArbeidsforhold, v => v.arbeidsgiverOrgnr !== deletedArbeidsforhold![0].arbeidsgiverOrgnr)
       if (newValgtArbeidsforhold.length !== _valgteArbeidsforhold.length) {
         setValgtArbeidsforhold(newValgtArbeidsforhold)
       }
@@ -164,16 +164,11 @@ const Ansatt: React.FC<AnsattProps> = ({
   const onAddClicked = () => {
     if (performValidation()) {
       let newAddedArbeidsforholdList = _.cloneDeep(_addedArbeidsforholdList)
-      const periode = {
-        fom: _newStartDato
-      } as Period
-      if (_newSluttDato) {
-        periode.tom = _newSluttDato
-      }
       newAddedArbeidsforholdList = newAddedArbeidsforholdList.concat({
-        ansettelsesPeriode: periode,
-        orgnr: _newOrgnr,
-        navn: _newNavn
+        fraDato: _newStartDato,
+        tilDato: _newSluttDato,
+        arbeidsgiverOrgnr: _newOrgnr,
+        arbeidsgiverNavn: _newNavn
       } as Arbeidsforholdet)
       setAddedArbeidsforholdList(newAddedArbeidsforholdList)
       resetForm()

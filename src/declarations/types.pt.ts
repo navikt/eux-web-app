@@ -6,10 +6,10 @@ export const PeriodePropType = PT.shape({
 })
 
 export const ArbeidsforholdetPropType = PT.shape({
-  arbeidsforholdIDnav: PT.number,
-  orgnr: PT.string,
-  navn: PT.string,
-  ansettelsesPeriode: PeriodePropType
+  arbeidsgiverOrgnr: PT.string,
+  arbeidsgiverNavn: PT.string,
+  fraDato: PT.string,
+  tilDato: PT.string
 })
 
 export const ArbeidsforholdPropType = PT.arrayOf(ArbeidsforholdetPropType)

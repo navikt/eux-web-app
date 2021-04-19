@@ -78,11 +78,13 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
           <span>
             {replySed.bruker.personInfo.fornavn} {replySed.bruker.personInfo.etternavn} ({replySed.bruker.personInfo.kjoenn})
           </span>
-          <FlagList
-            size='S'
-            type='circle'
-            items={replySed.bruker.personInfo.statsborgerskap.map((s: any) => ({ country: s.land }))}
-          />
+          {replySed.bruker.personInfo.statsborgerskap && (
+            <FlagList
+              size='S'
+              type='circle'
+              items={replySed.bruker.personInfo.statsborgerskap.map((s: any) => ({ country: s.land }))}
+            />
+          )}
         </Dd>
         <Dt>{t('label:partner')}</Dt>
         <Dd>
@@ -93,11 +95,13 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
             ' (' + (replySed as F002Sed).ektefelle.personInfo.kjoenn + ')'
               : '-'}
           </span>
-          <FlagList
-            size='S'
-            type='circle'
-            items={(replySed as F002Sed).ektefelle.personInfo.statsborgerskap.map((s: any) => ({ country: s.land }))}
-          />
+          {(replySed as F002Sed).ektefelle.personInfo.statsborgerskap && (
+            <FlagList
+              size='S'
+              type='circle'
+              items={(replySed as F002Sed).ektefelle.personInfo.statsborgerskap.map((s: any) => ({ country: s.land }))}
+            />
+          )}
         </Dd>
       </Dl>
       <VerticalSeparatorDiv />
