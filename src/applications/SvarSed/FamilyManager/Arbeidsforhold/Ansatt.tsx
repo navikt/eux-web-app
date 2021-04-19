@@ -1,9 +1,13 @@
+import {
+  validateArbeidsforhold,
+  ValidationArbeidsforholdProps
+} from 'applications/SvarSed/FamilyManager/Arbeidsforhold/ansattValidation'
 import Add from 'assets/icons/Add'
 import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
+import useValidation from 'components/Validation/useValidation'
 import { ReplySed } from 'declarations/sed'
-import { Arbeidsforholdet, Validation } from 'declarations/types'
+import { Arbeidsforholdet, Arbeidsperioder } from 'declarations/types'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
@@ -18,7 +22,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 export interface AnsattProps {
-  arbeidsforholdList: Array<Arbeidsforholdet>
+  arbeidsforholdList: Arbeidsperioder
   gettingArbeidsforholdList: boolean
   getArbeidsforholdList: (fnr: string | undefined) => void
   onArbeidsforholdSelectionChange: (a: Array<Arbeidsforholdet>) => void
@@ -36,8 +40,12 @@ const Ansatt: React.FC<AnsattProps> = ({
 }: AnsattProps) => {
   const { t } = useTranslation()
 
-  const [_addedArbeidsforholdList, setAddedArbeidsforholdList] = useState<Array<Arbeidsforholdet>>([])
-  const [_existingArbeidsforholdList, setExistingArbeidsforholdList] = useState<Array<Arbeidsforholdet> | undefined>(undefined)
+  const [_addedArbeidsforholdList, setAddedArbeidsforholdList] = useState<Arbeidsperioder>(() => ({
+    arbeidsperioder: [],
+    uriArbeidsgiverRegister: '',
+    uriInntektRegister: ''
+  }))
+  const [_existingArbeidsforholdList, setExistingArbeidsforholdList] = useState<Arbeidsperioder | undefined>(undefined)
 
   const [_newStartDato, setNewStartDato] = useState<string>('')
   const [_newSluttDato, setNewSluttDato] = useState<string>('')
@@ -46,56 +54,10 @@ const Ansatt: React.FC<AnsattProps> = ({
 
   const [_seeNewArbeidsperiode, setSeeNewArbeidsperiode] = useState<boolean>(false)
   const [_valgteArbeidsforhold, _setValgtArbeidsforhold] = useState<Array<Arbeidsforholdet>>([])
-  const [_validation, setValidation] = useState<Validation>({})
-
+  const [_validation, resetValidation, performValidation] = useValidation<ValidationArbeidsforholdProps>({}, validateArbeidsforhold)
 
   const fnr: string | undefined = _.find(_.get(replySed, `${personID}.personInfo.pin`), p => p.land === 'NO')?.identifikator
   const namespace = `familymanager-${personID}-personensstatus-ansatt`
-
-  const resetValidation = (key: string): void => {
-    setValidation({
-      ..._validation,
-      [key]: undefined
-    })
-  }
-
-  const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
-
-  const performValidation = (): boolean => {
-    const validation: Validation = {}
-    if (!_newNavn) {
-      validation[namespace + '-navn'] = {
-        skjemaelementId: 'c-' + namespace + '-navn-text',
-        feilmelding: t('message:validation-noName')
-      } as FeiloppsummeringFeil
-    }
-    if (!_newOrgnr) {
-      validation[namespace + '-orgnr'] = {
-        skjemaelementId: 'c-' + namespace + '-orgnr-text',
-        feilmelding: t('message:validation-noOrgnr')
-      } as FeiloppsummeringFeil
-    }
-    if (!_newStartDato) {
-      validation[namespace + '-startdato'] = {
-        skjemaelementId: 'c-' + namespace + '-startdato-date',
-        feilmelding: t('message:validation-noDate')
-      } as FeiloppsummeringFeil
-    }
-    if (_newStartDato && !_newStartDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
-      validation[namespace + '-startdato'] = {
-        skjemaelementId: 'c-' + namespace + '-startdato-date',
-        feilmelding: t('message:validation-invalidDate')
-      } as FeiloppsummeringFeil
-    }
-    if (_newSluttDato && !_newSluttDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
-      validation[namespace + '-sluttdato'] = {
-        skjemaelementId: 'c-' + namespace + '-sluttdato-date',
-        feilmelding: t('message:validation-invalidDate')
-      } as FeiloppsummeringFeil
-    }
-    setValidation(validation)
-    return hasNoValidationErrors(validation)
-  }
 
   const setValgtArbeidsforhold = (a: Array<Arbeidsforholdet>) => {
     _setValgtArbeidsforhold(a)
@@ -115,7 +77,7 @@ const Ansatt: React.FC<AnsattProps> = ({
   const onExistingArbeidsforholdEdit = (a: Arbeidsforholdet, index: number) => {
     const newArbeidsforholdList = _.cloneDeep(_existingArbeidsforholdList)
     if (newArbeidsforholdList) {
-      newArbeidsforholdList[index] = a
+      newArbeidsforholdList.arbeidsperioder[index] = a
       setExistingArbeidsforholdList(newArbeidsforholdList)
     }
   }
@@ -123,18 +85,19 @@ const Ansatt: React.FC<AnsattProps> = ({
   const onAddedArbeidsforholdEdit = (a: Arbeidsforholdet, index: number) => {
     const newAddedArbeidsforholdList = _.cloneDeep(_addedArbeidsforholdList)
     if (newAddedArbeidsforholdList) {
-      newAddedArbeidsforholdList[index] = a
+      newAddedArbeidsforholdList.arbeidsperioder[index] = a
       setAddedArbeidsforholdList(newAddedArbeidsforholdList)
     }
   }
 
   const onExistingArbeidsforholdDelete = (index: number) => {
-    const newArbeidsforholdList: Array<Arbeidsforholdet> | undefined = _.cloneDeep(_existingArbeidsforholdList)
-    const deletedArbeidsforhold: Array<Arbeidsforholdet> | undefined = newArbeidsforholdList?.splice(index, 1)
+    const newArbeidsforholdList: Arbeidsperioder | undefined = _.cloneDeep(_existingArbeidsforholdList)
+    const deletedArbeidsforholdperioder: Array<Arbeidsforholdet> | undefined = newArbeidsforholdList?.arbeidsperioder.splice(index, 1)
     setExistingArbeidsforholdList(newArbeidsforholdList)
 
-    if (deletedArbeidsforhold && deletedArbeidsforhold.length > 0) {
-      const newValgtArbeidsforhold: Array<Arbeidsforholdet> = _.filter(_valgteArbeidsforhold, v => v.arbeidsgiverOrgnr !== deletedArbeidsforhold![0].arbeidsgiverOrgnr)
+    if (deletedArbeidsforholdperioder && deletedArbeidsforholdperioder.length > 0) {
+      const newValgtArbeidsforhold: Array<Arbeidsforholdet> = _.filter(_valgteArbeidsforhold, v =>
+        v.arbeidsgiverOrgnr !== deletedArbeidsforholdperioder![0].arbeidsgiverOrgnr)
       if (newValgtArbeidsforhold.length !== _valgteArbeidsforhold.length) {
         setValgtArbeidsforhold(newValgtArbeidsforhold)
       }
@@ -142,12 +105,13 @@ const Ansatt: React.FC<AnsattProps> = ({
   }
 
   const onAddedArbeidsforholdDelete = (index: number) => {
-    const newAddedArbeidsforholdList: Array<Arbeidsforholdet> | undefined = _.cloneDeep(_addedArbeidsforholdList)
-    const deletedArbeidsforhold: Array<Arbeidsforholdet> | undefined = newAddedArbeidsforholdList?.splice(index, 1)
-    setAddedArbeidsforholdList(newAddedArbeidsforholdList)
+    const newArbeidsforholdList: Arbeidsperioder | undefined = _.cloneDeep(_addedArbeidsforholdList)
+    const deletedArbeidsforholdperioder: Array<Arbeidsforholdet> | undefined = newArbeidsforholdList?.arbeidsperioder.splice(index, 1)
+    setAddedArbeidsforholdList(newArbeidsforholdList)
 
-    if (deletedArbeidsforhold && deletedArbeidsforhold.length > 0) {
-      const newValgtArbeidsforhold: Array<Arbeidsforholdet> = _.filter(_valgteArbeidsforhold, v => v.arbeidsgiverOrgnr !== deletedArbeidsforhold![0].arbeidsgiverOrgnr)
+    if (deletedArbeidsforholdperioder && deletedArbeidsforholdperioder.length > 0) {
+      const newValgtArbeidsforhold: Array<Arbeidsforholdet> = _.filter(_valgteArbeidsforhold, v =>
+        v.arbeidsgiverOrgnr !== deletedArbeidsforholdperioder![0].arbeidsgiverOrgnr)
       if (newValgtArbeidsforhold.length !== _valgteArbeidsforhold.length) {
         setValgtArbeidsforhold(newValgtArbeidsforhold)
       }
@@ -159,18 +123,23 @@ const Ansatt: React.FC<AnsattProps> = ({
     setNewOrgnr('')
     setNewSluttDato('')
     setNewStartDato('')
-    setValidation({})
+    resetValidation(undefined)
   }
 
   const onAddClicked = () => {
-    if (performValidation()) {
-      let newAddedArbeidsforholdList = _.cloneDeep(_addedArbeidsforholdList)
-      newAddedArbeidsforholdList = newAddedArbeidsforholdList.concat({
-        fraDato: _newStartDato,
-        tilDato: _newSluttDato,
-        arbeidsgiverOrgnr: _newOrgnr,
-        arbeidsgiverNavn: _newNavn
-      } as Arbeidsforholdet)
+    const newArbeidsforhold: Arbeidsforholdet = {
+      arbeidsgiverNavn: _newNavn,
+      arbeidsgiverOrgnr: _newOrgnr,
+      fraDato: _newStartDato,
+      tilDato: _newSluttDato
+    }
+    const valid: boolean = performValidation({
+      arbeidsforhold: newArbeidsforhold,
+      namespace: namespace
+    })
+    if (valid) {
+      let newAddedArbeidsforholdList: Arbeidsperioder = _.cloneDeep(_addedArbeidsforholdList)
+      newAddedArbeidsforholdList.arbeidsperioder = newAddedArbeidsforholdList.arbeidsperioder.concat(newArbeidsforhold)
       setAddedArbeidsforholdList(newAddedArbeidsforholdList)
       resetForm()
     }

@@ -251,7 +251,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                           data-test-id={'c-' + namespace + '-startdato-date'}
                           feil={_validation[namespace + '-startdato']?.feilmelding}
                           id={'c-' + namespace + '-startdato-date'}
-                          label={t('label:end-date')}
+                          label={t('label:start-date')}
                           onChange={onStartDatoChanged}
                           placeholder={t('el:placeholder-date-default')}
                           value={_startDato}
@@ -277,7 +277,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                       {t('label:start-date')}:&nbsp;{formatterDatoTilNorsk(_startDato)}
                     </Normaltekst>
                     <Normaltekst>
-                      {t('label:start-date')}:&nbsp;{formatterDatoTilNorsk(_sluttDato)}
+                      {t('label:end-date')}:&nbsp;{formatterDatoTilNorsk(_sluttDato)}
                     </Normaltekst>
                   </div>
                   )}

@@ -1,4 +1,4 @@
-import { Arbeidsforholdet } from 'declarations/types.d'
+import { Arbeidsforholdet, Arbeidsperioder } from 'declarations/types.d'
 import { Knapp } from 'nav-frontend-knapper'
 import { Column, Row } from 'nav-hoykontrast'
 import React from 'react'
@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import ArbeidsforholdetFC from './Arbeidsforholdet'
 
 export interface ArbeidsforholdProps {
-  arbeidsforholdList: Array<Arbeidsforholdet> | undefined
+  arbeidsforholdList: Arbeidsperioder | undefined
   editable?: boolean
   getArbeidsforholdList?: () => void
   gettingArbeidsforholdList?: boolean
@@ -51,7 +51,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
             </Column>
           </Row>
         )}
-        {arbeidsforholdList && arbeidsforholdList.map(
+        {arbeidsforholdList && arbeidsforholdList.arbeidsperioder && arbeidsforholdList.arbeidsperioder.map(
           (arbeidsforholdet: Arbeidsforholdet, index: number) => {
             const selected: boolean = valgteArbeidsforhold
               ? valgteArbeidsforhold.find((item: Arbeidsforholdet) => item.arbeidsgiverOrgnr === arbeidsforholdet.arbeidsgiverOrgnr) !== undefined

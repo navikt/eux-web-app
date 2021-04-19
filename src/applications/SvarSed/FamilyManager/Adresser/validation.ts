@@ -2,19 +2,27 @@ import { Adresse } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
-import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { TFunction } from 'react-i18next'
+
+export interface ValidationAddressProps {
+  adresse: Adresse
+  index: number
+  namespace: string
+  personName: string
+}
 
 export const validateAdresse = (
   v: Validation,
-  adresse: Adresse,
-  index: number,
-  t: any,
-  namespace: string,
-  personName: string
+  t: TFunction,
+  {
+    adresse,
+    index,
+    namespace,
+    personName
+  }: ValidationAddressProps
 ): void => {
   let generalFail: boolean = false
-  let value = (!_.isEmpty(adresse.type))
+  let value: FeiloppsummeringFeil | undefined = (!_.isEmpty(adresse.type))
     ? undefined
     : {
       feilmelding: t('message:validation-noAddressTypeForPerson', { person: personName }),
@@ -83,61 +91,17 @@ export const validateAdresse = (
 
 export const validateAdresser = (
   validation: Validation,
+  t: TFunction,
   adresser: Array<Adresse>,
-  t: any,
   namespace: string,
   personName: string
 ): void => {
   adresser?.forEach((adresse: Adresse, index: number) => {
-    validateAdresse(validation, adresse, index, t, namespace, personName)
-  })
-}
-
-const useCustomValidation: () => [
-  Validation,
-  (key: string | undefined) => void,
-  ({data, index, namespace, personName}: any) => boolean
-] = () => {
-
-  const { t } = useTranslation()
-  const [_validation, setValidation] = useState<Validation>({})
-
-  const resetValidation = (key: string | undefined): void => {
-    if (!key) {
-      setValidation({})
-    }
-    setValidation({
-      ..._validation,
-      [key!]: undefined
-    })
-  }
-
-  const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
-
-  const performValidation = ({
-    data,
-    index,
-    namespace,
-    personName
-  }: any): boolean => {
-    const newValidation: Validation = {}
-    validateAdresse(
-      newValidation,
-      data,
+    validateAdresse(validation, t, {
+      adresse,
       index,
-      t,
       namespace,
       personName
-    )
-    setValidation(newValidation)
-    return hasNoValidationErrors(newValidation)
-  }
-
-  return [
-    _validation,
-    resetValidation,
-    performValidation
-  ]
+    })
+  })
 }
-
-export default useCustomValidation

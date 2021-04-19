@@ -1,7 +1,7 @@
 import { Periode } from 'declarations/sed'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 
-export interface Period {
+export interface OldPeriod {
   fom: string
   tom: string
 }
@@ -9,7 +9,7 @@ export interface Period {
 export interface Arbeidsforholdet {
   fraDato: string
   tilDato: string
-  harRegistrertInntekt: string
+  harRegistrertInntekt?: string
   arbeidsgiverNavn: string
   arbeidsgiverOrgnr: string
 }

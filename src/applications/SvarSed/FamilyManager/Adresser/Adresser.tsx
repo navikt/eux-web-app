@@ -2,6 +2,7 @@ import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
+import useValidation from 'components/Validation/useValidation'
 import { Adresse, AdresseType, ReplySed } from 'declarations/sed'
 import { Kodeverk, Validation } from 'declarations/types'
 import CountrySelect from 'landvelger'
@@ -17,7 +18,7 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import useCustomValidation from './validation'
+import { validateAdresse, ValidationAddressProps } from './validation'
 
 interface AdresseProps {
   highContrast: boolean
@@ -36,18 +37,18 @@ const Adresser: React.FC<AdresseProps> = ({
   validation
 }:AdresseProps): JSX.Element => {
   const { t } = useTranslation()
-  const [_confirmDelete, setConfirmDelete] = useState<Array<string>>([])
 
-  const [_newType, setNewType] = useState<AdresseType | undefined>(undefined)
-  const [_newGate, setNewGate] = useState<string>('')
-  const [_newPostnummer, setNewPostnummer] = useState<string>('')
-  const [_newBy, setNewBy] = useState<string>('')
-  const [_newBygning, setNewBygning] = useState<string>('')
-  const [_newRegion, setNewRegion] = useState<string>('')
-  const [_newLand, setNewLand] = useState<string>('')
+  const [_newType, _setNewType] = useState<AdresseType | undefined>(undefined)
+  const [_newGate, _setNewGate] = useState<string>('')
+  const [_newPostnummer, _setNewPostnummer] = useState<string>('')
+  const [_newBy, _setNewBy] = useState<string>('')
+  const [_newBygning, _setNewBygning] = useState<string>('')
+  const [_newRegion, _setNewRegion] = useState<string>('')
+  const [_newLand, _setNewLand] = useState<string>('')
 
-  const [_seeNewForm, setSeeNewForm] = useState<boolean>(false)
-  const [_validation, resetValidation, performValidation] = useCustomValidation()
+  const [_confirmDelete, _setConfirmDelete] = useState<Array<string>>([])
+  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
+  const [_validation, resetValidation, performValidation] = useValidation<ValidationAddressProps>({}, validateAdresse)
 
   const target = `${personID}.adresser`
   const adresses: Array<Adresse> = _.get(replySed, target)
@@ -56,19 +57,19 @@ const Adresser: React.FC<AdresseProps> = ({
   const p = _.get(replySed, personID)
   const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
 
-  const onAddNewClicked = () => setSeeNewForm(true)
+  const onAddNewClicked = () => _setSeeNewForm(true)
 
   const addCandidateForDeletion = (key: string) => {
-    setConfirmDelete(_confirmDelete.concat(key))
+    _setConfirmDelete(_confirmDelete.concat(key))
   }
 
   const removeCandidateForDeletion = (key: string) => {
-    setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
+    _setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
   }
 
-  const onTypeChanged = (type: AdresseType, i: number) => {
+  const setType = (type: AdresseType, i: number) => {
     if (i < 0) {
-      setNewType(type)
+      _setNewType(type)
       resetValidation(namespace + '-type')
     } else {
       const newAdresses = _.cloneDeep(adresses)
@@ -77,9 +78,9 @@ const Adresser: React.FC<AdresseProps> = ({
     }
   }
 
-  const onGateChanged = (gate: string, i: number) => {
+  const setGate = (gate: string, i: number) => {
     if (i < 0) {
-      setNewGate(gate)
+      _setNewGate(gate)
       resetValidation(namespace + '-gate')
     } else {
       const newAdresses = _.cloneDeep(adresses)
@@ -88,9 +89,9 @@ const Adresser: React.FC<AdresseProps> = ({
     }
   }
 
-  const onPostnummerChanged = (postnummer: string, i: number) => {
+  const setPostnummer = (postnummer: string, i: number) => {
     if (i < 0) {
-      setNewPostnummer(postnummer)
+      _setNewPostnummer(postnummer)
       resetValidation(namespace + '-postnummer')
     } else {
       const newAdresses = _.cloneDeep(adresses)
@@ -99,9 +100,9 @@ const Adresser: React.FC<AdresseProps> = ({
     }
   }
 
-  const onByChanged = (by: string, i: number) => {
+  const setBy = (by: string, i: number) => {
     if (i < 0) {
-      setNewBy(by)
+      _setNewBy(by)
       resetValidation(namespace + '-by')
     } else {
       const newAdresses = _.cloneDeep(adresses)
@@ -110,9 +111,9 @@ const Adresser: React.FC<AdresseProps> = ({
     }
   }
 
-  const onBygningChanged = (bygning: string, i: number) => {
+  const setBygning = (bygning: string, i: number) => {
     if (i < 0) {
-      setNewBygning(bygning)
+      _setNewBygning(bygning)
       resetValidation(namespace + '-bygning')
     } else {
       const newAdresses = _.cloneDeep(adresses)
@@ -121,9 +122,9 @@ const Adresser: React.FC<AdresseProps> = ({
     }
   }
 
-  const onRegionChanged = (region: string, i: number) => {
+  const setRegion = (region: string, i: number) => {
     if (i < 0) {
-      setNewRegion(region)
+      _setNewRegion(region)
       resetValidation(namespace + '-region')
     } else {
       const newAdresses = _.cloneDeep(adresses)
@@ -132,9 +133,9 @@ const Adresser: React.FC<AdresseProps> = ({
     }
   }
 
-  const onLandChanged = (land: string, i: number) => {
+  const setLand = (land: string, i: number) => {
     if (i < 0) {
-      setNewLand(land)
+      _setNewLand(land)
       resetValidation(namespace + '-land')
     } else {
       const newAdresses = _.cloneDeep(adresses)
@@ -144,18 +145,18 @@ const Adresser: React.FC<AdresseProps> = ({
   }
 
   const resetForm = () => {
-    setNewType(undefined)
-    setNewGate('')
-    setNewPostnummer('')
-    setNewBy('')
-    setNewBygning('')
-    setNewRegion('')
-    setNewLand('')
+    _setNewType(undefined)
+    _setNewGate('')
+    _setNewPostnummer('')
+    _setNewBy('')
+    _setNewBygning('')
+    _setNewRegion('')
+    _setNewLand('')
     resetValidation(undefined)
   }
 
   const onCancel = () => {
-    setSeeNewForm(false)
+    _setSeeNewForm(false)
     resetForm()
   }
 
@@ -173,8 +174,7 @@ const Adresser: React.FC<AdresseProps> = ({
   }
 
   const onAdd = () => {
-    const valid = performValidation({
-      data: {
+    const newAdresse: Adresse = {
         bygning: _newBygning,
         region: _newRegion,
         postnummer: _newPostnummer,
@@ -182,7 +182,9 @@ const Adresser: React.FC<AdresseProps> = ({
         gate: _newGate,
         land: _newLand,
         type: _newType
-      },
+    }
+    const valid: boolean = performValidation({
+      adresse: newAdresse,
       index: -1,
       namespace: namespace,
       personName: personName
@@ -192,15 +194,7 @@ const Adresser: React.FC<AdresseProps> = ({
       if (_.isNil(newAdresses)) {
         newAdresses = []
       }
-      newAdresses = newAdresses.concat({
-        type: _newType,
-        gate: _newGate,
-        postnummer: _newPostnummer,
-        by: _newBy,
-        land: _newLand,
-        bygning: _newBygning,
-        region: _newRegion
-      })
+      newAdresses = newAdresses.concat(newAdresse)
       resetForm()
       onValueChanged(target, newAdresses)
     }
@@ -230,7 +224,7 @@ const Adresser: React.FC<AdresseProps> = ({
                 { label: t('label:bostedsland'), value: 'bosted' },
                 { label: t('label:oppholdsland'), value: 'opphold' }
               ]}
-              onChange={(e: any) => onTypeChanged((e.target.value as AdresseType), i)}
+              onChange={(e: any) => setType((e.target.value as AdresseType), i)}
             />
             <VerticalSeparatorDiv data-size='0.15' />
             <HighContrastRadioPanelGroup
@@ -244,7 +238,7 @@ const Adresser: React.FC<AdresseProps> = ({
                 { label: t('label:kontaktadresse'), value: 'kontakt' },
                 { label: t('label:annet'), value: 'annet' }
               ]}
-              onChange={(e: any) => onTypeChanged((e.target.value as AdresseType), i)}
+              onChange={(e: any) => setType((e.target.value as AdresseType), i)}
             />
           </Column>
           <Column />
@@ -260,7 +254,7 @@ const Adresser: React.FC<AdresseProps> = ({
               feil={getErrorFor(i, 'gate')}
               id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-gate-text'}
               label={t('label:gateadresse')}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onGateChanged(e.target.value, i)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGate(e.target.value, i)}
               value={i < 0 ? _newGate : a?.gate}
             />
           </Column>
@@ -270,7 +264,7 @@ const Adresser: React.FC<AdresseProps> = ({
               feil={getErrorFor(i, 'bygning')}
               id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-bygning-text'}
               label={t('label:bygning')}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onBygningChanged(e.target.value, i)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBygning(e.target.value, i)}
               value={i < 0 ? _newBygning : a?.bygning}
             />
           </Column>
@@ -287,7 +281,7 @@ const Adresser: React.FC<AdresseProps> = ({
               feil={getErrorFor(i, 'postnummer')}
               id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-postnummer-text'}
               label={t('label:postnummer')}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onPostnummerChanged(e.target.value, i)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPostnummer(e.target.value, i)}
               value={i < 0 ? _newPostnummer : a?.postnummer}
             />
           </Column>
@@ -297,7 +291,7 @@ const Adresser: React.FC<AdresseProps> = ({
               feil={getErrorFor(i, 'by')}
               id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-by-text'}
               label={t('label:by')}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onByChanged(e.target.value, i)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBy(e.target.value, i)}
               value={i < 0 ? _newBy : a?.by}
             />
           </Column>
@@ -313,7 +307,7 @@ const Adresser: React.FC<AdresseProps> = ({
               data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-region-text'}
               feil={getErrorFor(i, 'region')}
               id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-region-text'}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onRegionChanged(e.target.value, i)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRegion(e.target.value, i)}
               value={i < 0 ? _newRegion : a?.region}
               label={t('label:region')}
             />
@@ -326,7 +320,7 @@ const Adresser: React.FC<AdresseProps> = ({
               label={t('label:land')}
               menuPortalTarget={document.body}
               includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
-              onOptionSelected={(e: any) => onLandChanged(e.value, i)}
+              onOptionSelected={(e: any) => setLand(e.value, i)}
               placeholder={t('el:placeholder-select-default')}
               values={i < 0 ? _newLand : a?.land}
             />

@@ -1,10 +1,18 @@
 import { ActionWithPayload } from 'js-fetch-api'
 import _ from 'lodash'
 import * as types from 'constants/actionTypes'
-import { Arbeidsforhold, FagSaker, FamilieRelasjon, Institusjon, OpprettetSak, Person } from 'declarations/types'
+import {
+  Arbeidsforhold,
+  Arbeidsperioder,
+  FagSaker,
+  FamilieRelasjon,
+  Institusjon,
+  OpprettetSak,
+  Person
+} from 'declarations/types'
 
 export interface SakState {
-  arbeidsforholdList: Arbeidsforhold | undefined
+  arbeidsforholdList: Arbeidsperioder | undefined
   arbeidsforhold: Arbeidsforhold
   buctype: any
   familierelasjoner: Array<FamilieRelasjon>

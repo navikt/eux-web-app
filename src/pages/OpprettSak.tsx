@@ -11,7 +11,7 @@ import * as types from 'constants/actionTypes'
 import { AlertStatus } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import {
-  Arbeidsforholdet,
+  Arbeidsforholdet, Arbeidsperioder,
   BucTyper,
   Enhet,
   Enheter,
@@ -74,7 +74,7 @@ export interface OpprettSakSelector {
   sendingSak: boolean
   gettingPerson: boolean
 
-  arbeidsforholdList: Array<Arbeidsforholdet> | undefined
+  arbeidsforholdList: Arbeidsperioder | undefined
   buctyper: BucTyper | undefined
   fagsaker: FagSaker | undefined | null
   familierelasjonKodeverk: Array<Kodeverk> | undefined

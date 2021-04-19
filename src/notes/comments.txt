@@ -3,10 +3,21 @@ Clean ActionTypes later
 Clean Attachments later
 
 
+Fazer revisão:
+  - ordem: hierarquia ficheiros
+
+   : rectificar validation
+   : connectar (e update ao ids.txt)
+   : reformatar datas
+
+         aapen_sluttdato
+         format DD.MM.YYYY -> YYYY-MM-DD
 
 
-Como fazer com aapen_sluttdato
-format datas
+
 fazer a equivalências de arbeidsgiver => perioder
 
+
+. input
+    onChange:
 
