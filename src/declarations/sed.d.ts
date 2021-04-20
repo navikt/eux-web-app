@@ -31,18 +31,15 @@ export interface Periode {
 }
 
 export interface Aktivitet {
-  perioderMedAktivitet?: {
-    type: string
-    perioder: Array<Periode>
-  }
-  perioderUtenAktivitet?: {
-    type: string
-    perioder: Array<Periode>
-  }
-  perioderUkjentAktivitet?: {
-    ytterligereinfo: string
-    perioder: Array<Periode>
-  }
+  type?: string
+  ytterligereinfo ?: string
+  perioder: Array<Periode>
+}
+
+export interface Aktiviteter {
+  perioderMedAktivitet?: Array<Aktivitet>
+  perioderUtenAktivitet?: Array<Aktivitet>
+  perioderUkjentAktivitet?:Array<Aktivitet>
 }
 
 export interface PensjonPeriode {
@@ -128,7 +125,7 @@ export interface PersonInfo {
 
 export interface Person {
   adresser ?: Array<Adresse>
-  aktivitet ?: Aktivitet
+  aktivitet ?: Aktiviteter
   epost ?: Array<Epost>
   familierelasjoner ?: Array<FamilieRelasjon2>
   flyttegrunn ?: Flyttegrunn

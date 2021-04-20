@@ -1,17 +1,21 @@
+import {
+  validateNotAnsatte,
+  ValidationNotAnsattProps
+} from 'applications/SvarSed/FamilyManager/Arbeidsforhold/notAnsattValidation'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import Period from 'components/Period/Period'
 import { AlignStartRow, TextAreaDiv } from 'components/StyledComponents'
-import { Periode } from 'declarations/sed'
+import useValidation from 'components/Validation/useValidation'
+import { Aktivitet, Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
   HighContrastFlatknapp,
-  HighContrastInput,
   HighContrastTextArea,
   HorizontalSeparatorDiv,
   Row,
@@ -21,62 +25,37 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 export interface NotAnsattProps {
+  onValueChanged: (needle: string, value: any) => void
   personID: string
+  replySed: ReplySed
   validation: Validation
 }
 
 const NotAnsatt: React.FC<NotAnsattProps> = ({
-  personID, validation
+   onValueChanged,
+   personID,
+   replySed,
+   validation
 }: NotAnsattProps): JSX.Element => {
   const { t } = useTranslation()
-  const [_perioder, setPerioder] = useState<Array<Periode>>([])
-  const [_comment, setComment] = useState<string>('')
-  const [_confirmDelete, setConfirmDelete] = useState<Array<string>>([])
+
   const [_newStartDato, setNewStartDato] = useState<string>('')
   const [_newSluttDato, setNewSluttDato] = useState<string>('')
+
+  const [_confirmDelete, setConfirmDelete] = useState<Array<string>>([])
   const [_seeNewForm, setSeeNewForm] = useState<boolean>(false)
-  const [_validation, setValidation] = useState<Validation>({})
+  const [_validation, resetValidation, performValidation] = useValidation<ValidationNotAnsattProps>({}, validateNotAnsatte)
 
-  const namespace = 'familymanager-' + personID + '-personensstatus-notansatt'
+  const target: string = `${personID}.aktivitet.perioderMedAktivitet`
+  let perioderMedAktivitet = _.get(replySed, target)
+  let indexOfAktivitetSelvstendig: number = _.findIndex(perioderMedAktivitet, (p: Aktivitet) => p.type === 'selvstendig')
+  let updatedTarget: string = `${personID}.aktivitet.perioderMedAktivitet[${indexOfAktivitetSelvstendig}]`
+  let perioderMedAktivitetSelvstendig: Aktivitet = _.get(replySed, updatedTarget)
 
-  const resetValidation = (key: string): void => {
-    setValidation({
-      ..._validation,
-      [key]: undefined
-    })
-  }
+  const [_comment, _setComment] = useState<string>(perioderMedAktivitetSelvstendig?.ytterligereinfo ?? '')
 
-  const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
+  const namespace = `familymanager-${personID}-personensstatus-notansatt`
 
-  const performValidation = (): boolean => {
-    const validation: Validation = {}
-    if (!_newStartDato) {
-      validation[namespace + '-startdato'] = {
-        skjemaelementId: 'c-' + namespace + '-startdato-date',
-        feilmelding: t('message:validation-noDate')
-      } as FeiloppsummeringFeil
-    }
-    if (_newStartDato && !_newStartDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
-      validation[namespace + '-startdato'] = {
-        skjemaelementId: 'c-' + namespace + '-startdato-date',
-        feilmelding: t('message:validation-invalidDate')
-      } as FeiloppsummeringFeil
-    }
-    if (_.find(_perioder, p => p.startdato === _newStartDato)) {
-      validation[namespace + '-startdato'] = {
-        skjemaelementId: 'c-' + namespace + '-startdato-date',
-        feilmelding: t('message:validation-duplicateStartDate')
-      } as FeiloppsummeringFeil
-    }
-    if (_newSluttDato && !_newSluttDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
-      validation[namespace + '-sluttdato'] = {
-        skjemaelementId: 'c-' + namespace + '-sluttdato-date',
-        feilmelding: t('message:validation-invalidDate')
-      } as FeiloppsummeringFeil
-    }
-    setValidation(validation)
-    return hasNoValidationErrors(validation)
-  }
 
   const onAddNewClicked = () => setSeeNewForm(true)
 
@@ -93,10 +72,9 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
       setNewStartDato(dato)
       resetValidation(namespace + '-startdato')
     } else {
-      const newPerioder = _.cloneDeep(_perioder)
-      newPerioder[i].startdato = dato
-      setPerioder(newPerioder)
-      // onValueChanged(`${personID}.XXX`, newPerioder)
+      const newPerioder: Aktivitet = _.cloneDeep(perioderMedAktivitetSelvstendig)
+      newPerioder.perioder[i].startdato = dato
+      onValueChanged(updatedTarget, newPerioder)
       setNewStartDato('')
     }
   }
@@ -106,18 +84,33 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
       setNewSluttDato(dato)
       resetValidation(namespace + '-sluttdato')
     } else {
-      const newPerioder = _.cloneDeep(_perioder)
-      newPerioder[i].sluttdato = dato
-      setPerioder(newPerioder)
-      // onValueChanged(`${personID}.XXX`, newPerioder)
+      const newPerioder: Aktivitet = _.cloneDeep(perioderMedAktivitetSelvstendig)
+      newPerioder.perioder[i].sluttdato = dato
+      onValueChanged(updatedTarget, newPerioder)
       setNewSluttDato('')
     }
+  }
+
+  const setComment = () => {
+    if (indexOfAktivitetSelvstendig < 0) {
+      perioderMedAktivitetSelvstendig = {
+        type: 'selvstendig',
+        perioder: [],
+        ytterligereinfo: _comment
+      } as Aktivitet
+      perioderMedAktivitet = perioderMedAktivitet.concat(perioderMedAktivitetSelvstendig)
+      indexOfAktivitetSelvstendig = perioderMedAktivitet.length - 1
+      updatedTarget = `${personID}.aktivitet.perioderMedAktivitet[${indexOfAktivitetSelvstendig}]`
+    }
+    const newPerioderMedAktivitetSelvstendig: Aktivitet = _.cloneDeep(perioderMedAktivitetSelvstendig)
+    newPerioderMedAktivitetSelvstendig.ytterligereinfo = _comment
+    onValueChanged(updatedTarget, newPerioderMedAktivitetSelvstendig)
   }
 
   const resetForm = () => {
     setNewStartDato('')
     setNewSluttDato('')
-    setValidation({})
+    resetValidation(undefined)
   }
 
   const onCancel = () => {
@@ -130,34 +123,49 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
   }
 
   const onRemove = (index: number) => {
-    const newPerioder: Array<Periode> = _.cloneDeep(_perioder)
-    const deletedPeriods: Array<Periode> = newPerioder.splice(index, 1)
-    setPerioder(newPerioder)
+
+    const newPerioderMedAktivitetSelvstendig: Aktivitet = _.cloneDeep(perioderMedAktivitetSelvstendig)
+    const deletedPeriods: Array<Periode> = newPerioderMedAktivitetSelvstendig.perioder.splice(index, 1)
     if (deletedPeriods && deletedPeriods.length > 0) {
       removeCandidateForDeletion(getKey(deletedPeriods[0]))
     }
-    // onValueChanged(`${personID}.XXX`, newPerioder)
+    onValueChanged(updatedTarget, newPerioderMedAktivitetSelvstendig)
   }
 
   const onAdd = () => {
-    if (performValidation()) {
-      let newPerioder: Array<Periode> = _.cloneDeep(_perioder)
-      if (_.isNil(newPerioder)) {
-        newPerioder = []
-      }
-      const newPeriode = {
-        startdato: _newStartDato
-      } as Periode
-      if (_newSluttDato) {
-        newPeriode.sluttdato = _newSluttDato
-      } else {
-        newPeriode.aapenPeriodeType = 'åpen_sluttdato'
+    const newPeriode: Periode = {
+      startdato: _newStartDato
+    }
+    if (_newSluttDato) {
+      newPeriode.sluttdato = _newSluttDato
+    } else {
+      newPeriode.aapenPeriodeType = 'åpen_sluttdato'
+    }
+
+    const valid: boolean = performValidation({
+      period: newPeriode,
+      otherPeriods: perioderMedAktivitetSelvstendig?.perioder,
+      index: -1,
+      namespace
+    })
+
+    if (valid) {
+      if (indexOfAktivitetSelvstendig < 0) {
+        perioderMedAktivitetSelvstendig = {
+          type: 'selvstendig',
+          perioder: [],
+          ytterligereinfo: _comment
+        } as Aktivitet
+        perioderMedAktivitet = perioderMedAktivitet.concat(perioderMedAktivitetSelvstendig)
+        indexOfAktivitetSelvstendig = perioderMedAktivitet.length - 1
+        updatedTarget = `${personID}.aktivitet.perioderMedAktivitet[${indexOfAktivitetSelvstendig}]`
       }
 
-      newPerioder = newPerioder.concat(newPeriode)
-      setPerioder(newPerioder)
+      let newPerioderMedAktivitet: Array<Aktivitet> = _.cloneDeep(perioderMedAktivitet)
+      newPerioderMedAktivitet[indexOfAktivitetSelvstendig].perioder =
+        newPerioderMedAktivitet[indexOfAktivitetSelvstendig].perioder.concat(newPeriode)
       resetForm()
-      // onValueChanged(`${personID}.XXX`, newPerioder)
+      onValueChanged(target, newPerioderMedAktivitet)
     }
   }
 
@@ -174,28 +182,17 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
         <AlignStartRow
           className={classNames('slideInFromLeft')}
         >
-          <Column>
-            <HighContrastInput
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-startdato-date'}
-              feil={getErrorFor(i, 'startdato')}
-              id={'c-' + namespace + '[' + i + ']-startdato-date'}
-              label={t('label:start-date')}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value, i)}
-              placeholder={t('el:placeholder-date-default')}
-              value={i < 0 ? _newStartDato : p?.startdato}
-            />
-          </Column>
-          <Column>
-            <HighContrastInput
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-date'}
-              feil={getErrorFor(i, 'sluttdato')}
-              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-date'}
-              label={t('label:end-date')}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value, i)}
-              placeholder={t('el:placeholder-date-default')}
-              value={i < 0 ? _newSluttDato : p?.sluttdato}
-            />
-          </Column>
+          <Period
+            index={i}
+            key={_newStartDato + _newSluttDato}
+            namespace={namespace}
+            errorStartDato={getErrorFor(i, 'startdato')}
+            errorSluttDato={getErrorFor(i, 'sluttdato')}
+            setStartDato={setStartDato}
+            setSluttDato={setSluttDato}
+            valueStartDato={i < 0 ? _newStartDato : p?.startdato}
+            valueSluttDato={i < 0 ? _newSluttDato : p?.sluttdato}
+          />
           <Column>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
@@ -220,11 +217,12 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
         {t('el:title-ansettelsesperioder')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      {_perioder
-        .sort((a, b) =>
-          moment(a.startdato).isSameOrAfter(moment(b.startdato)) ? -1 : 1
+      {perioderMedAktivitetSelvstendig?.perioder
+        ?.sort((a, b) =>
+          moment(a.startdato, 'YYYY-MM-DD')
+            .isSameOrBefore(moment(b.startdato, 'YYYY-MM-DD')) ? -1 : 1
         )
-        .map(renderRow)}
+        ?.map(renderRow)}
       <hr />
       <VerticalSeparatorDiv />
       {_seeNewForm
@@ -255,7 +253,8 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
           id={'c-' + namespace + '-comment-text'}
           label={t('label:additional-information')}
           maxLength={500}
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setComment(e.target.value)}
+          onBlur={setComment}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => _setComment(e.target.value)}
           placeholder={t('el:placeholder-text-to-sed')}
           value={_comment}
         />

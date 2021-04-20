@@ -151,20 +151,35 @@
       }
     ],
     "aktivitet": {
-      "perioderMedAktivitet": {
-        "type": "ansatt",
-        "perioder": [
-          {
-            "startdato": "1982-01-01",
-            "sluttdato": "1982-12-31"
-          },
-          {
-            "startdato": "1983-01-01",
-            "aapenPeriodeType": "åpen_sluttdato"
-          }
-        ]
-      },
-      "perioderUtenAktivitet": {
+      "perioderMedAktivitet": [
+        {
+          "type": "ansatt",
+          "perioder": [
+            {
+              "startdato": "1982-01-01",
+              "sluttdato": "1982-12-31"
+            },
+            {
+              "startdato": "1983-01-01",
+              "aapenPeriodeType": "åpen_sluttdato"
+            }
+          ]
+        },
+        {
+          "type": "selvstendig",
+          "perioder": [
+            {
+              "startdato": "1982-01-02",
+              "sluttdato": "1982-12-30"
+            },
+            {
+              "startdato": "1983-01-02",
+              "aapenPeriodeType": "åpen_sluttdato"
+            }
+          ]
+        }
+      ],
+      "perioderUtenAktivitet": [{
         "type": "inaktiv",
         "perioder": [
           {
@@ -176,8 +191,8 @@
             "aapenPeriodeType": "åpen_sluttdato"
           }
         ]
-      },
-      "perioderUkjentAktivitet": {
+      }],
+      "perioderUkjentAktivitet": [{
         "ytterligereinfo": "F002 bruker ytterligereinfo",
         "perioder": [
           {
@@ -189,7 +204,7 @@
             "aapenPeriodeType": "åpen_sluttdato"
           }
         ]
-      }
+      }]
     },
     "flyttegrunn": {
       "personligSituasjon": "F002 bruker personligSituasjon",
@@ -376,45 +391,9 @@
       }
     ],
     "aktivitet": {
-      "perioderMedAktivitet": {
-        "type": "ansatt",
-        "perioder": [
-          {
-            "startdato": "01.01.2001",
-            "sluttdato": "31.12.2001"
-          },
-          {
-            "startdato": "01.01.2002",
-            "aapenPeriodeType": "åpen_sluttdato"
-          }
-        ]
-      },
-      "perioderUtenAktivitet": {
-        "type": "inaktiv",
-        "perioder": [
-          {
-            "startdato": "01.01.2003",
-            "sluttdato": "31.12.2003"
-          },
-          {
-            "startdato": "01.01.2004",
-            "aapenPeriodeType": "åpen_sluttdato"
-          }
-        ]
-      },
-      "perioderUkjentAktivitet": {
-        "ytterligereinfo": "F002 ektefelle ytterligereinfo",
-        "perioder": [
-          {
-            "startdato": "01.01.2005",
-            "sluttdato": "31.12.2005"
-          },
-          {
-            "startdato": "01.01.2006",
-            "aapenPeriodeType": "åpen_sluttdato"
-          }
-        ]
-      }
+      "perioderMedAktivitet": [],
+      "perioderUtenAktivitet": [],
+      "perioderUkjentAktivitet": []
     },
     "flyttegrunn": {
       "personligSituasjon": "F002 ektfelle flyttegrunn personligSituasjon",
@@ -604,45 +583,9 @@
       }
     ],
     "aktivitet": {
-      "perioderMedAktivitet": {
-        "type": "ansatt",
-        "perioder": [
-          {
-            "startdato": "01.01.2025",
-            "sluttdato": "31.12.2025"
-          },
-          {
-            "startdato": "01.01.2026",
-            "aapenPeriodeType": "åpen_sluttdato"
-          }
-        ]
-      },
-      "perioderUtenAktivitet": {
-        "type": "inaktiv",
-        "perioder": [
-          {
-            "startdato": "01.01.2027",
-            "sluttdato": "31.12.2027"
-          },
-          {
-            "startdato": "01.01.2028",
-            "aapenPeriodeType": "åpen_sluttdato"
-          }
-        ]
-      },
-      "perioderUkjentAktivitet": {
-        "ytterligereinfo": "F002 annenPerson ytterligereinfo",
-        "perioder": [
-          {
-            "startdato": "01.01.2029",
-            "sluttdato": "31.12.2029"
-          },
-          {
-            "startdato": "01.01.2030",
-            "aapenPeriodeType": "åpen_sluttdato"
-          }
-        ]
-      }
+      "perioderMedAktivitet": [],
+      "perioderUtenAktivitet": [],
+      "perioderUkjentAktivitet": []
     },
     "flyttegrunn": {
       "personligSituasjon": "F002 annenPerson personligSituasjon",

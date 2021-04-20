@@ -2,8 +2,8 @@ IDs 									                                             	VALIDATION
 
 ok c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-navn-text      - {INTERNAL} not used
 ok c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-orgnr-text     - {INTERNAL} not used
-ok c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-startdato-date - {CONNECTED} selected: {person}.aktivitet.perioderMedAktivitet.perioder[].startdato
-ok c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-sluttdato-date - {CONNECTED} selected: {person}.aktivitet.perioderMedAktivitet.perioder[].sluttdato
+ok c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-startdato-date - {GLOBAL} selected: {person}.aktivitet.perioderMedAktivitet[type='ansatt'].perioder[].startdato
+ok c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-sluttdato-date - {GLOBAL} selected: {person}.aktivitet.perioderMedAktivitet[type='ansatt'].perioder[].sluttdato
 
 ok c-familymanager-addpersonmodal-fnr-text       - {INTERNAL} not used
 ok c-familymanager-addpersonmodal-navn-text      - {INTERNAL} not used
@@ -16,13 +16,13 @@ ok c-familymanager-{personID}-adresser-by-text              - {INTERNAL} not use
 ok c-familymanager-{personID}-adresser-land-text            - {INTERNAL} not used
 ok c-familymanager-{personID}-adresser-bygning-text         - {INTERNAL} not used
 ok c-familymanager-{personID}-adresser-region-text          - {INTERNAL} not used
-ok c-familymanager-{personID}-adresser[{i}]-type-text       - {CONNECTED} {person}.adresser[].type
-ok c-familymanager-{personID}-adresser[{i}]-gate-text       - {CONNECTED} {person}.adresser[].gate
-ok c-familymanager-{personID}-adresser[{i}]-postnummer-text - {CONNECTED} {person}.adresser[].postnummer
-ok c-familymanager-{personID}-adresser[{i}]-by-text         - {CONNECTED} {person}.adresser[].by
-ok c-familymanager-{personID}-adresser[{i}]-land-text       - {CONNECTED} {person}.adresser[].land
-ok c-familymanager-{personID}-adresser[{i}]-bygning-text    - {CONNECTED} {person}.adresser[].bygning
-ok c-familymanager-{personID}-adresser[{i}]-region-text     - {CONNECTED} {person}.adresser[].region
+ok c-familymanager-{personID}-adresser[{i}]-type-text       - {CONNECTED!} {person}.adresser[].type
+ok c-familymanager-{personID}-adresser[{i}]-gate-text       - {CONNECTED!} {person}.adresser[].gate
+ok c-familymanager-{personID}-adresser[{i}]-postnummer-text - {CONNECTED!} {person}.adresser[].postnummer
+ok c-familymanager-{personID}-adresser[{i}]-by-text         - {CONNECTED!} {person}.adresser[].by
+ok c-familymanager-{personID}-adresser[{i}]-land-text       - {CONNECTED!} {person}.adresser[].land
+ok c-familymanager-{personID}-adresser[{i}]-bygning-text    - {CONNECTED!} {person}.adresser[].bygning
+ok c-familymanager-{personID}-adresser[{i}]-region-text     - {CONNECTED!} {person}.adresser[].region
 
 barn:
 ok c-familymanager-{personID}-beløpNavnOgValuta-name-text         - {GLOBAL} barn[].ytelse.barnetsNavn
@@ -90,9 +90,9 @@ ok c-familymanager-{personID}-personopplysninger-fodested-by-text          - {GL
 ok c-familymanager-{personID}-personopplysninger-fodested-region-text      - {GLOBAL} {person}.personInfo.pinMangler.fodested.region
 ok c-familymanager-{personID}-personopplysninger-fodested-land-text        - {GLOBAL} {person}.personInfo.pinMangler.fodested.land
 
-ok c-familymanager-{personID}-personensstatus-type-text                          - {CONNECTED} {person}.aktivitet.perioderMedAktivitet.type = 'ansatt'
-ok c-familymanager-{personID}-personensstatus-avsenderlandet[{i}]-startdato-date - {CONNECTED} {person}.aktivitet.perioderMedTrygd[].startdato
-ok c-familymanager-{personID}-personensstatus-avsenderlandet[{i}]-sluttdato-date - {CONNECTED} {person}.aktivitet.perioderMedTrygd[].sluttdato
+ok c-familymanager-{personID}-personensstatus-type-text                          - {INTERNAL} {person}.aktivitet.perioderMedAktivitet.type = 'ansatt'
+ok c-familymanager-{personID}-personensstatus-avsenderlandet[{i}]-startdato-date - {CONNECTED!} {person}.aktivitet.perioderMedTrygd[].startdato
+ok c-familymanager-{personID}-personensstatus-avsenderlandet[{i}]-sluttdato-date - {CONNECTED!} {person}.aktivitet.perioderMedTrygd[].sluttdato
 ok c-familymanager-{personID}-personensstatus-ansatt-startdato-date              - {INTERNAL} not used
 ok c-familymanager-{personID}-personensstatus-ansatt-sluttdato-date              - {INTERNAL} not used
 ok c-familymanager-{personID}-personensstatus-ansatt-orgnr-text                  - {INTERNAL} not used
@@ -100,9 +100,9 @@ ok c-familymanager-{personID}-personensstatus-ansatt-navn-text                  
 
 c-familymanager-{personID}-personensstatus-notansatt-startdato-date            - {INTERNAL} not used
 c-familymanager-{personID}-personensstatus-notansatt-sluttdato-date            - {INTERNAL} not used
-c-familymanager-{personID}-personensstatus-notansatt-comment-text              - {GLOBAL}
-c-familymanager-{personID}-personensstatus-notansatt[{i}]-startdato-date       - {GLOBAL}
-c-familymanager-{personID}-personensstatus-notansatt[{i}]-sluttdato-date       - {GLOBAL}
+c-familymanager-{personID}-personensstatus-notansatt-comment-text              - {?????}
+c-familymanager-{personID}-personensstatus-notansatt[{i}]-startdato-date       - {?????}
+c-familymanager-{personID}-personensstatus-notansatt[{i}]-sluttdato-date       - {?????}
 c-familymanager-{personID}-personensstatus-withsubsidies-startdato-date        - {INTERNAL} not used
 c-familymanager-{personID}-personensstatus-withsubsidies-sluttdato-date        - {INTERNAL} not used
 c-familymanager-{personID}-personensstatus-withsubsidies-pensjonytpe-text      - {INTERNAL} not used

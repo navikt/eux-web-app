@@ -38,6 +38,7 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
   const { t } = useTranslation()
 
   const namespace = `familymanager-${personID}-personensstatus`
+  // TODO: filter perioderMedAktivitet with "ansatt"... or pass the whole
   const target = `${personID}.aktivitet.perioderMedAktivitet.perioder`
 
   const onArbeidsforholdSelectionChange = (selectedArbeidsforhold: Array<Arbeidsforholdet>) => {
@@ -114,7 +115,9 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
               )
             : (
               <NotAnsatt
+                onValueChanged={onValueChanged}
                 personID={personID}
+                replySed={replySed}
                 validation={validation}
               />
               )}
@@ -139,10 +142,10 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
         <Column>
           <Avsenderlandet
+            onValueChanged={onValueChanged}
             personID={personID}
             replySed={replySed}
             validation={validation}
-            onValueChanged={onValueChanged}
           />
         </Column>
       </AlignStartRow>
@@ -150,10 +153,10 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
         <Column>
           <GrunnlagforBosetting
+            onValueChanged={onValueChanged}
             personID={personID}
             replySed={replySed}
             validation={validation}
-            onValueChanged={onValueChanged}
           />
         </Column>
       </AlignStartRow>

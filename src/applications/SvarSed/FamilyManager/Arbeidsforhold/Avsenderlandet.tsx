@@ -175,6 +175,8 @@ const Avsenderlandet = ({
             .isSameOrAfter(moment(b.startdato, 'YYYY-MM-DD')) ? -1 : 1
         )
         ?.map(renderRow)}
+      <hr />
+      <VerticalSeparatorDiv />
       {_seeNewForm
         ? renderRow(undefined, -1)
         : (

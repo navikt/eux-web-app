@@ -5,14 +5,14 @@ import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
 
-export interface ValidationAvsenderlandetProps {
+export interface ValidationNotAnsattProps {
   period: Periode
   otherPeriods: Array<Periode>
   index: number
   namespace: string
 }
 
-export const validateAvsenderlandet = (
+export const validateNotAnsatte = (
   v: Validation,
   t: TFunction,
   {
@@ -20,7 +20,7 @@ export const validateAvsenderlandet = (
     otherPeriods,
     index,
     namespace
-  }: ValidationAvsenderlandetProps
+  }: ValidationNotAnsattProps
 ): void => {
 
   validatePeriod(v, t, {
@@ -29,6 +29,7 @@ export const validateAvsenderlandet = (
     namespace
   })
   let idx = (index < 0 ? '' : '[' + index + ']')
+
   if (!v[namespace + '-startdato'] &&
     _.find(otherPeriods, p => p.startdato === period.startdato)) {
     v[namespace + '-startdato'] = {

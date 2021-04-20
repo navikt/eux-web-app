@@ -26,6 +26,7 @@ export const validatePeriod = (
       feilmelding: t('message:validation-noDate')
     } as FeiloppsummeringFeil
   }
+
   if (period.startdato && !period.startdato.match(datePattern)) {
     v[namespace + '-startdato'] = {
       skjemaelementId: 'c-' + namespace + (index >= 0 ? '[' + index + ']' : '') + '-startdato-date',
