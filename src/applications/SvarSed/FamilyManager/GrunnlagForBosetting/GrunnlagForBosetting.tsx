@@ -1,17 +1,18 @@
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import DateInput from 'components/DateInput/DateInput'
+import Period from 'components/Period/Period'
 import { AlignStartRow, TextAreaDiv } from 'components/StyledComponents'
+import useValidation from 'components/Validation/useValidation'
 import { Flyttegrunn, Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
   HighContrastFlatknapp,
-  HighContrastInput,
   HighContrastTextArea,
   HorizontalSeparatorDiv,
   Row,
@@ -19,6 +20,7 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { validateGrunnlagForBosetting, ValidationGrunnlagForBosettingProps } from './validation'
 
 interface GrunnlagForBosettingProps {
   onValueChanged: (needle: string, value: any) => void
@@ -33,98 +35,64 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
   replySed,
   validation
 }:GrunnlagForBosettingProps): JSX.Element => {
-  const [_confirmDelete, setConfirmDelete] = useState<Array<string>>([])
-  const [_newSluttDato, setNewSluttDato] = useState<string>('')
-  const [_newStartDato, setNewStartDato] = useState<string>('')
-  const [_seeNewForm, setSeeNewForm] = useState<boolean>(false)
-  const [_validation, setValidation] = useState<Validation>({})
-
   const { t } = useTranslation()
+
+  const [_newSluttDato, _setNewSluttDato] = useState<string>('')
+  const [_newStartDato, _setNewStartDato] = useState<string>('')
+
+  const [_confirmDelete, _setConfirmDelete] = useState<Array<string>>([])
+  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
+  const [_validation, resetValidation, performValidation] = useValidation<ValidationGrunnlagForBosettingProps>({}, validateGrunnlagForBosetting)
 
   const target = `${personID}.flyttegrunn`
   const flyttegrunn: Flyttegrunn = _.get(replySed, target)
   const namespace = `familymanager-${personID}-grunnlagforbosetting`
 
-  const resetValidation = (key: string): void => {
-    setValidation({
-      ..._validation,
-      [key]: undefined
-    })
-  }
-
-  const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
-
-  const performValidation = (): boolean => {
-    const validation: Validation = {}
-    if (!_newStartDato) {
-      validation[namespace + '-startdato'] = {
-        skjemaelementId: 'c-' + namespace + '-startdato-date',
-        feilmelding: t('message:validation-noDate')
-      } as FeiloppsummeringFeil
-    }
-    if (_newStartDato && !_newStartDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
-      validation[namespace + '-startdato'] = {
-        skjemaelementId: 'c-' + namespace + '-startdato-date',
-        feilmelding: t('message:validation-invalidDate')
-      } as FeiloppsummeringFeil
-    }
-    if (_.find(flyttegrunn.perioder, p => p.startdato === _newStartDato)) {
-      validation[namespace + '-startdato'] = {
-        skjemaelementId: 'c-' + namespace + '-startdato-date',
-        feilmelding: t('message:validation-duplicateStartDate')
-      } as FeiloppsummeringFeil
-    }
-    if (_newSluttDato && !_newSluttDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
-      validation[namespace + '-sluttdato'] = {
-        skjemaelementId: 'c-' + namespace + '-sluttdato-date',
-        feilmelding: t('message:validation-invalidDate')
-      } as FeiloppsummeringFeil
-    }
-    setValidation(validation)
-    return hasNoValidationErrors(validation)
-  }
-
-  const onAddNewClicked = () => setSeeNewForm(true)
+  const onAddNewClicked = () => _setSeeNewForm(true)
 
   const addCandidateForDeletion = (key: string) => {
-    setConfirmDelete(_confirmDelete.concat(key))
+    _setConfirmDelete(_confirmDelete.concat(key))
   }
 
   const removeCandidateForDeletion = (key: string) => {
-    setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
+    _setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
   }
 
-  const setAvsenderDato = (e: string) => {
+  const setAvsenderDato = (dato: string) => {
     resetValidation(namespace + '-avsenderdato')
-    onValueChanged(`${target}.datoFlyttetTilAvsenderlandet`, e)
+    onValueChanged(`${target}.datoFlyttetTilAvsenderlandet`, dato)
   }
 
-  const setMottakerDato = (e: string) => {
+  const setMottakerDato = (dato: string) => {
     resetValidation(namespace + '-mottakerdato')
-    onValueChanged(`${target}.datoFlyttetTilMottakerlandet`, e)
+    onValueChanged(`${target}.datoFlyttetTilMottakerlandet`, dato)
   }
 
   const setStartDato = (dato: string, i: number) => {
     if (i < 0) {
-      setNewStartDato(dato)
+      _setNewStartDato(dato)
       resetValidation(namespace + '-startdato')
     } else {
-      const newPerioder = _.cloneDeep(flyttegrunn.perioder)
+      const newPerioder: Array<Periode> = _.cloneDeep(flyttegrunn.perioder)
       newPerioder[i].startdato = dato
       onValueChanged(`${target}.perioder`, newPerioder)
-      setNewStartDato('')
     }
   }
 
   const setSluttDato = (dato: string, i: number) => {
     if (i < 0) {
-      setNewSluttDato(dato)
+      _setNewSluttDato(dato)
       resetValidation(namespace + '-sluttdato')
     } else {
-      const newPerioder = _.cloneDeep(flyttegrunn.perioder)
-      newPerioder[i].sluttdato = dato
+      const newPerioder: Array<Periode> = _.cloneDeep(flyttegrunn.perioder)
+      if (dato === '') {
+        delete newPerioder[i].sluttdato
+        newPerioder[i].aapenPeriodeType = 'åpen_sluttdato'
+      } else {
+        delete newPerioder[i].aapenPeriodeType
+        newPerioder[i].sluttdato = dato
+      }
       onValueChanged(`${target}.perioder`, newPerioder)
-      setNewSluttDato('')
     }
   }
 
@@ -134,13 +102,13 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
   }
 
   const resetForm = () => {
-    setNewStartDato('')
-    setNewSluttDato('')
-    setValidation({})
+    _setNewStartDato('')
+    _setNewSluttDato('')
+    resetValidation()
   }
 
   const onCancel = () => {
-    setSeeNewForm(false)
+    _setSeeNewForm(false)
     resetForm()
   }
 
@@ -158,20 +126,27 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
   }
 
   const onAdd = () => {
-    if (performValidation()) {
+    const newPeriode: Periode = {
+      startdato: _newStartDato
+    }
+    if (_newSluttDato) {
+      newPeriode.sluttdato = _newSluttDato
+    } else {
+      newPeriode.aapenPeriodeType = 'åpen_sluttdato'
+    }
+
+    const valid: boolean = performValidation({
+      period: newPeriode,
+      otherPeriods: flyttegrunn.perioder,
+      index: -1,
+      namespace
+    })
+
+    if (valid) {
       let newPerioder: Array<Periode> = _.cloneDeep(flyttegrunn.perioder)
       if (_.isNil(newPerioder)) {
         newPerioder = []
       }
-      const newPeriode = {
-        startdato: _newStartDato
-      } as Periode
-      if (_newSluttDato) {
-        newPeriode.sluttdato = _newSluttDato
-      } else {
-        newPeriode.aapenPeriodeType = 'åpen_sluttdato'
-      }
-
       newPerioder = newPerioder.concat(newPeriode)
       resetForm()
       onValueChanged(`${target}.perioder`, newPerioder)
@@ -182,37 +157,25 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
     return index < 0 ? _validation[namespace + '-' + el]?.feilmelding : validation[namespace + '[' + index + ']-' + el]?.feilmelding
   }
 
-  const renderRow = (p: Periode | undefined, i: number) => {
-    const key = p ? getKey(p) : 'new'
+  const renderRow = (periode: Periode | undefined, i: number) => {
+    const key = periode ? getKey(periode) : 'new'
     const candidateForDeletion = i < 0 ? false : !!key && _confirmDelete.indexOf(key) >= 0
-
     return (
       <>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
         >
-          <Column>
-            <HighContrastInput
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-startdato-date'}
-              feil={getErrorFor(i, 'startdato')}
-              id={'c-' + namespace + '[' + i + ']-startdato-date'}
-              label={t('label:startdato')}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value, i)}
-              placeholder={t('el:placeholder-date-default')}
-              value={i < 0 ? _newStartDato : p?.startdato}
-            />
-          </Column>
-          <Column>
-            <HighContrastInput
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-date'}
-              feil={getErrorFor(i, 'sluttdato')}
-              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-date'}
-              label={t('label:sluttdato')}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value, i)}
-              placeholder={t('el:placeholder-date-default')}
-              value={i < 0 ? _newSluttDato : p?.sluttdato}
-            />
-          </Column>
+          <Period
+            index={i}
+            key={_newStartDato + _newSluttDato}
+            namespace={namespace}
+            errorStartDato={getErrorFor(i, 'startdato')}
+            errorSluttDato={getErrorFor(i, 'sluttdato')}
+            setStartDato={setStartDato}
+            setSluttDato={setSluttDato}
+            valueStartDato={i < 0 ? _newStartDato : periode?.startdato}
+            valueSluttDato={i < 0 ? _newSluttDato : periode?.sluttdato}
+          />
           <Column>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
@@ -239,7 +202,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
       <VerticalSeparatorDiv />
       {flyttegrunn.perioder
         .sort((a, b) =>
-          moment(a.startdato).isSameOrAfter(moment(b.startdato)) ? -1 : 1
+          moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1
         )
         .map(renderRow)}
       {_seeNewForm
@@ -262,39 +225,37 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column>
-          <HighContrastInput
-            data-test-id={'c-' + namespace + '-avsenderdato-text'}
-            feil={validation[namespace + '-avsenderdato']?.feilmelding}
-            id={'c-' + namespace + '-avsenderdato-text'}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAvsenderDato(e.target.value)}
-            value={flyttegrunn.datoFlyttetTilAvsenderlandet}
+          <DateInput
+            error={validation[namespace + '-avsenderdato']?.feilmelding}
+            namespace={namespace + '-avsenderdato'}
+            index={-1}
+            key={flyttegrunn.datoFlyttetTilAvsenderlandet}
             label={t('label:flyttedato-til-avsenderlandet')}
-            placeholder={t('el:placeholder-date-default')}
+            setDato={setAvsenderDato}
+            value={flyttegrunn.datoFlyttetTilAvsenderlandet}
           />
         </Column>
+        <Column>
+          <DateInput
+            error={validation[namespace + '-mottakerdato']?.feilmelding}
+            namespace={namespace + '-mottakerdato'}
+            index={-1}
+            key={flyttegrunn.datoFlyttetTilMottakerlandet}
+            label={t('label:flyttedato-til-mottakerslandet')}
+            setDato={setMottakerDato}
+            value={flyttegrunn.datoFlyttetTilMottakerlandet}
+          />
+        </Column>
+        <Column/>
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
-        <Column>
-          <HighContrastInput
-            data-test-id={'c-' + namespace + '-mottakerdato-text'}
-            feil={validation[namespace + '-mottakerdato']?.feilmelding}
-            id={'c-' + namespace + '-mottakerdato-text'}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMottakerDato(e.target.value)}
-            value={flyttegrunn.datoFlyttetTilMottakerlandet}
-            label={t('label:flyttedato-til-mottakerslandet')}
-            placeholder={t('el:placeholder-date-default')}
-          />
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
-        <Column>
+        <Column data-flex='2'>
           <TextAreaDiv>
             <HighContrastTextArea
               className={classNames({ 'skjemaelement__input--harFeil': validation[+namespace + '-elementer'] })}
               data-test-id={'c-' + namespace + '-elementer-text'}
-              feil={validation[+namespace + '-elementer']}
+              feil={validation[namespace + '-elementer']}
               id={'c-' + namespace + '-elementer-text'}
               label={t('label:elementter-i-personlig-situasjon')}
               maxLength={500}
@@ -304,6 +265,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
             />
           </TextAreaDiv>
         </Column>
+        <Column/>
       </AlignStartRow>
     </>
   )

@@ -32,6 +32,7 @@
 
   "validation-duplicateStartDate": "Datoen eksisterer allerede",
   "validation-duplicateBirthCountry": "Statsborgerskapen eksisterer allerede",
+  "validation-endDateBeforeStartDate": "Sluttdato er tidligere enn startdato",
   "validation-feiloppsummering" : "For å gå videre må du rette opp følgende:",
   "validation-fraDato2015" : "Datoen må være over 2015",
   "validation-fraDatoFormat" : "Datoen må være ÅÅÅÅ-MM",

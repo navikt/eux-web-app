@@ -16,9 +16,8 @@ Fazer revisão:
 fazer a equivalências de arbeidsgiver => perioder
 
 
-. input
-    onChange:
-
+na familierelasjon, pode ser que envie borSammen, etc com REPA/EKTE/etc
+confirmar que backend limpa
 
 
  grep -rho -e "'label:[^']*'" * | sort -u

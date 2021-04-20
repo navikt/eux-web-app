@@ -1,7 +1,8 @@
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import Period, { toFinalDateFormat } from 'components/Period/Period'
+import DateInput from 'components/DateInput/DateInput'
+import Period from 'components/Period/Period'
 import Select from 'components/Select/Select'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import useValidation from 'components/Validation/useValidation'
@@ -41,6 +42,9 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
   validation
 }:FamilierelasjonProps): JSX.Element => {
   const { t } = useTranslation()
+  const target = `${personID}.familierelasjoner`
+  const familierelasjoner: Array<FamilieRelasjon> = _.get(replySed, target)
+  const namespace = `familymanager-${personID}-familierelasjon`
 
   const [_newRelasjonType, _setNewRelasjonType] = useState<RelasjonType | undefined>(undefined)
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')
@@ -53,10 +57,6 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
   const [_confirmDelete, _setConfirmDelete] = useState<Array<string>>([])
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, resetValidation, performValidation] = useValidation<ValidationFamilierelasjonProps>({}, validateFamilierelasjon)
-
-  const target = `${personID}.familierelasjoner`
-  const familierelasjoner: Array<FamilieRelasjon> = _.get(replySed, target)
-  const namespace = `familymanager-${personID}-familierelasjon`
 
   const p = _.get(replySed, personID)
   const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
@@ -143,7 +143,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
       resetValidation(namespace + '-annenrelasjondato')
     } else {
       const newFamilieRelasjoner = _.cloneDeep(familierelasjoner)
-      newFamilieRelasjoner[i].annenRelasjonDato = toFinalDateFormat(dato)
+      newFamilieRelasjoner[i].annenRelasjonDato = dato
       onValueChanged(target, newFamilieRelasjoner)
     }
   }
@@ -201,11 +201,14 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
     const newFamilierelasjon: FamilieRelasjon = {
       relasjonType: _newRelasjonType,
       relasjonInfo: '',
-      periode: newPeriode,
-      borSammen: _newBorSammen as JaNei,
-      annenRelasjonType: _newAnnenRelasjonType,
-      annenRelasjonPersonNavn: _newAnnenRelasjonPersonNavn,
-      annenRelasjonDato: _newAnnenRelasjonDato
+      periode: newPeriode
+    }
+
+    if (_newRelasjonType === 'ANNEN' as RelasjonType) {
+      newFamilierelasjon.borSammen = _newBorSammen as JaNei,
+      newFamilierelasjon.annenRelasjonType = _newAnnenRelasjonType
+      newFamilierelasjon.annenRelasjonPersonNavn = _newAnnenRelasjonPersonNavn
+      newFamilierelasjon.annenRelasjonDato = _newAnnenRelasjonDato
     }
 
     const valid: boolean = performValidation({
@@ -308,13 +311,13 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                 />
               </Column>
               <Column>
-                <HighContrastInput
-                  data-test-id={'c-' + namespace + idx + '-annenrelasjondato-date'}
-                  feil={getErrorFor(i, 'annenrelasjondato')}
-                  id={'c-' + namespace + idx + '-annenrelasjondato-date'}
+                <DateInput
+                  error={getErrorFor(i, 'annenrelasjondato')}
+                  namespace={namespace + idx + '-annenrelasjondato'}
+                  index={i}
+                  key={i < 0 ? _newAnnenRelasjonDato : familierelasjon?.annenRelasjonDato}
                   label={t('label:dato-for-relasjon')}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAnnenRelasjonDato(e.target.value, i)}
-                  placeholder={t('el:placeholder-input-default')}
+                  setDato={setAnnenRelasjonDato}
                   value={i < 0 ? _newAnnenRelasjonDato : familierelasjon?.annenRelasjonDato}
                 />
               </Column>

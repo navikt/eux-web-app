@@ -2,25 +2,38 @@ import { Statsborgerskap } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { TFunction } from 'react-i18next'
+
+export interface ValidationNasjonalitetProps {
+  statsborgerskap: Statsborgerskap
+  statsborgerskaper: Array<Statsborgerskap>
+  index: number
+  namespace: string
+  personName: string
+}
+
+const datePattern = /^\d{4}-\d{2}-\d{2}$/
 
 export const validateNasjonalitet = (
   v: Validation,
-  statsborgerskap: Statsborgerskap,
-  statsborgerskaper: Array<Statsborgerskap>,
-  index: number,
-  t: any,
-  namespace: string,
-  personName: string
+  t: TFunction,
+  {
+    statsborgerskap,
+    statsborgerskaper,
+    index,
+    namespace,
+    personName
+  }: ValidationNasjonalitetProps
 ): void => {
   let generalFail: boolean = false
-
-  let value = (!_.isEmpty(statsborgerskap.land))
+  const idx = (index >= 0 ? '[' + index + ']' : '')
+  let value: FeiloppsummeringFeil |undefined = (!_.isEmpty(statsborgerskap.land))
     ? undefined
     : {
       feilmelding: t('message:validation-noBirthCountryForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-land-text'
+      skjemaelementId: 'c-' + namespace +idx + '-land-text'
     } as FeiloppsummeringFeil
-  v[namespace + (index < 0 ? '' : '[' + index + ']') + '-land'] = value
+  v[namespace + idx + '-land'] = value
   if (value) {
     generalFail = true
   }
@@ -29,11 +42,11 @@ export const validateNasjonalitet = (
     ? undefined
     : {
       feilmelding: t('message:validation-duplicateBirthCountry'),
-      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-land-text'
+      skjemaelementId: 'c-' + namespace + idx + '-land-text'
     } as FeiloppsummeringFeil
 
-  if (!v[namespace + (index < 0 ? '' : '[' + index + ']') + '-land']) {
-    v[namespace + (index < 0 ? '' : '[' + index + ']') + '-land'] = value
+  if (!v[namespace + idx + '-land']) {
+    v[namespace + idx + '-land'] = value
   }
   if (value) {
     generalFail = true
@@ -43,23 +56,23 @@ export const validateNasjonalitet = (
     ? undefined
     : {
       feilmelding: t('message:validation-noDateForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-fradato-date'
+      skjemaelementId: 'c-' + namespace + idx + '-fradato-date'
     } as FeiloppsummeringFeil
-  v[namespace + (index < 0 ? '' : '[' + index + ']') + '-fradato'] = value
+  v[namespace + idx + '-fradato'] = value
   if (value) {
     generalFail = true
   }
 
   if (!_.isEmpty(statsborgerskap.fradato)) {
-    value = statsborgerskap.fradato!.match(/\d{2}\.\d{2}\.\d{4}/)
+    value = statsborgerskap.fradato!.match(datePattern)
       ? undefined
       : {
         feilmelding: t('message:validation-invalidDateForPerson', { person: personName }),
-        skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-fradato-date'
+        skjemaelementId: 'c-' + namespace + idx + '-fradato-date'
       } as FeiloppsummeringFeil
 
-    if (!v[namespace + (index < 0 ? '' : '[' + index + ']') + '-fradato']) {
-      v[namespace + (index < 0 ? '' : '[' + index + ']') + '-fradato'] = value
+    if (!v[namespace + idx + '-fradato']) {
+      v[namespace +idx + '-fradato'] = value
     }
     if (value) {
       generalFail = true
@@ -78,12 +91,12 @@ export const validateNasjonalitet = (
 
 export const validateNasjonaliteter = (
   validation: Validation,
-  statsborgerskaper: Array<Statsborgerskap>,
   t: any,
+  statsborgerskaper: Array<Statsborgerskap>,
   namespace: string,
   personName: string
 ): void => {
   statsborgerskaper?.forEach((statsborgerskap: Statsborgerskap, index: number) => {
-    validateNasjonalitet(validation, statsborgerskap, statsborgerskaper, index, t, namespace, personName)
+    validateNasjonalitet(validation, t, {statsborgerskap, statsborgerskaper, index, namespace, personName})
   })
 }

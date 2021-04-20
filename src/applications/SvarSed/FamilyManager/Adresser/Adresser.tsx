@@ -37,6 +37,9 @@ const Adresser: React.FC<AdresseProps> = ({
   validation
 }:AdresseProps): JSX.Element => {
   const { t } = useTranslation()
+  const target = `${personID}.adresser`
+  const adresses: Array<Adresse> = _.get(replySed, target)
+  const namespace = `familymanager-${personID}-adresser`
 
   const [_newType, _setNewType] = useState<AdresseType | undefined>(undefined)
   const [_newGate, _setNewGate] = useState<string>('')
@@ -49,10 +52,6 @@ const Adresser: React.FC<AdresseProps> = ({
   const [_confirmDelete, _setConfirmDelete] = useState<Array<string>>([])
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, resetValidation, performValidation] = useValidation<ValidationAddressProps>({}, validateAdresse)
-
-  const target = `${personID}.adresser`
-  const adresses: Array<Adresse> = _.get(replySed, target)
-  const namespace = `familymanager-${personID}-adresser`
 
   const p = _.get(replySed, personID)
   const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn

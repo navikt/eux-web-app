@@ -1,22 +1,19 @@
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import DateInput from 'components/DateInput/DateInput'
+import { toFinalDateFormat } from 'components/Period/Period'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
+import useValidation from 'components/Validation/useValidation'
 import { ReplySed, Statsborgerskap } from 'declarations/sed'
 import { Kodeverk, Validation } from 'declarations/types'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { UndertekstBold } from 'nav-frontend-typografi'
-import {
-  Column,
-  HighContrastFlatknapp,
-  HighContrastInput,
-  HorizontalSeparatorDiv,
-  VerticalSeparatorDiv
-} from 'nav-hoykontrast'
+import { Column, HighContrastFlatknapp, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { validateNasjonalitet } from './validation'
+import { validateNasjonalitet, ValidationNasjonalitetProps } from './validation'
 
 interface NasjonalitetProps {
   highContrast: boolean
@@ -34,14 +31,15 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
   replySed,
   validation
 }:NasjonalitetProps): JSX.Element => {
-  const [_confirmDelete, setConfirmDelete] = useState<Array<string>>([])
-
-  const [_newLand, setNewLand] = useState<string | undefined>(undefined)
-  const [_newFradato, setNewFradato] = useState<string>('')
-  const [_seeNewForm, setSeeNewForm] = useState<boolean>(false)
-  const [_validation, setValidation] = useState<Validation>({})
-
   const { t } = useTranslation()
+
+  const [_newLand, _setNewLand] = useState<string | undefined>(undefined)
+  const [_newFradato, _setNewFradato] = useState<string>('')
+
+  const [_confirmDelete, _setConfirmDelete] = useState<Array<string>>([])
+  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
+  const [_validation, resetValidation, performValidation] = useValidation<ValidationNasjonalitetProps>({}, validateNasjonalitet)
+
   const target = `${personID}.personInfo.statsborgerskap`
   const statsborgerskaper: Array<Statsborgerskap> = _.get(replySed, target)
   const namespace = `familymanager-${personID}-nasjonaliteter`
@@ -49,73 +47,46 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
   const p = _.get(replySed, personID)
   const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
 
-  const resetValidation = (key: string): void => {
-    setValidation({
-      ..._validation,
-      [key]: undefined
-    })
-  }
-
-  const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
-
-  const performValidation = (): boolean => {
-    const newValidation: Validation = {}
-    validateNasjonalitet(
-      newValidation,
-      {
-        land: _newLand || '',
-        fradato: _newFradato
-      },
-      statsborgerskaper,
-      -1,
-      t,
-      namespace,
-      personName
-    )
-    setValidation(newValidation)
-    return hasNoValidationErrors(newValidation)
-  }
-
-  const onAddNewClicked = () => setSeeNewForm(true)
+  const onAddNewClicked = () => _setSeeNewForm(true)
 
   const addCandidateForDeletion = (key: string) => {
-    setConfirmDelete(_confirmDelete.concat(key))
+    _setConfirmDelete(_confirmDelete.concat(key))
   }
 
   const removeCandidateForDeletion = (key: string) => {
-    setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
+    _setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
   }
 
-  const onFradatoChanged = (e: string, i: number) => {
+  const onFradatoChanged = (dato: string, i: number) => {
     if (i < 0) {
-      setNewFradato(e)
+      _setNewFradato(dato)
       resetValidation(namespace + '-fradato')
     } else {
       const newStatsborgerskaper = _.cloneDeep(statsborgerskaper)
-      newStatsborgerskaper[i].fradato = e
+      newStatsborgerskaper[i].fradato = toFinalDateFormat(dato)
       onValueChanged(target, newStatsborgerskaper)
     }
   }
 
-  const onLandSelected = (e: string, i: number) => {
+  const onLandSelected = (land: string, i: number) => {
     if (i < 0) {
-      setNewLand(e)
+      _setNewLand(land)
       resetValidation(namespace + '-land')
     } else {
       const newStatsborgerskaper = _.cloneDeep(statsborgerskaper)
-      statsborgerskaper[i].land = e
+      statsborgerskaper[i].land = land
       onValueChanged(target, newStatsborgerskaper)
     }
   }
 
   const resetForm = () => {
-    setNewLand(undefined)
-    setNewFradato('')
-    setValidation({})
+    _setNewLand(undefined)
+    _setNewFradato('')
+    resetValidation()
   }
 
   const onCancel = () => {
-    setSeeNewForm(false)
+    _setSeeNewForm(false)
     resetForm()
   }
 
@@ -133,15 +104,26 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
   }
 
   const onAdd = () => {
-    if (performValidation()) {
+
+    const newStatsborgerskap: Statsborgerskap = {
+      land: _newLand || '',
+      fradato: toFinalDateFormat(_newFradato)
+    }
+
+    const valid = performValidation({
+      statsborgerskap: newStatsborgerskap,
+      statsborgerskaper: statsborgerskaper,
+      index: -1,
+      namespace: namespace,
+      personName: personName
+    })
+
+    if (valid) {
       let newStatsborgerskaper = _.cloneDeep(statsborgerskaper)
       if (_.isNil(newStatsborgerskaper)) {
         newStatsborgerskaper = []
       }
-      newStatsborgerskaper.push({
-        land: _newLand!,
-        fradato: _newFradato
-      })
+      newStatsborgerskaper.push(newStatsborgerskap)
       resetForm()
       onValueChanged(target, newStatsborgerskaper)
     }
@@ -154,15 +136,16 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
   const renderRow = (s: Statsborgerskap | null, i: number) => {
     const key = s ? getKey(s) : 'new'
     const candidateForDeletion = i < 0 ? false : !!key && _confirmDelete.indexOf(key) >= 0
+    const idx = (i >= 0 ? '[' + i + ']' : '')
 
     return (
       <>
         <AlignStartRow className={classNames('slideInFromLeft')} style={{ animationDelay: (i * 0.1) + 's' }}>
           <Column>
             <CountrySelect
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-land-text'}
+              data-test-id={'c-' + namespace + idx + '-land-text'}
               error={getErrorFor(i, 'land')}
-              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-land-text'}
+              id={'c-' + namespace +idx + '-land-text'}
               menuPortalTarget={document.body}
               includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
               onOptionSelected={(e: any) => onLandSelected(e.value, i)}
@@ -171,13 +154,14 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
             />
           </Column>
           <Column>
-            <HighContrastInput
-              data-test-id={'c-familymanager-' + personID + '-nasjonaliteter-' + i + '-fradato-date'}
-              feil={getErrorFor(i, 'fradato')}
-              id={'c-familymanager-' + personID + '-nasjonaliteter-' + i + '-fradato'}
-              onChange={(e: any) => onFradatoChanged(e.target.value, i)}
-              value={i < 0 ? _newFradato : s!.fradato}
-              placeholder={t('el:placeholder-date-default')}
+            <DateInput
+              error={getErrorFor(i, 'fradato')}
+              namespace={namespace + idx + '-fradato'}
+              index={i}
+              key={i < 0 ? _newFradato : s!.fradato}
+              label={t('label:dato-for-relasjon')}
+              setDato={onFradatoChanged}
+              value={i < 0 ?_newFradato : s!.fradato}
             />
           </Column>
           <Column>
@@ -214,7 +198,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
         <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      {statsborgerskaper.map(renderRow)}
+      {statsborgerskaper?.map(renderRow)}
       <hr />
       <VerticalSeparatorDiv />
       {_seeNewForm

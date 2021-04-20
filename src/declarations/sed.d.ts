@@ -65,10 +65,10 @@ export interface Flyttegrunn {
 }
 
 export interface FamilieRelasjon {
-  annenRelasjonDato: string
-  annenRelasjonPersonNavn: string
-  annenRelasjonType: string
-  borSammen: JaNei
+  annenRelasjonDato?: string
+  annenRelasjonPersonNavn?: string
+  annenRelasjonType?: string
+  borSammen?: JaNei
   periode: Periode
   relasjonInfo: string
   relasjonType?: RelasjonType

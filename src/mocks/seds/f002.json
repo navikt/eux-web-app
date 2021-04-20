@@ -13,7 +13,7 @@
           "fradato": "1901-01-01"
         },
         {
-          "land": "US",
+          "land": "SE",
           "fradato": "1902-01-01"
         }
       ],
@@ -26,7 +26,7 @@
           "institusjonsnavn": "Skatteetaten"
         },
         {
-          "land": "US",
+          "land": "SE",
           "sektor": "Registry",
           "identifikator": "20000000001",
           "institusjonsid": "US:DEMO01",
@@ -39,7 +39,7 @@
         "foedested": {
           "by": "Springfield",
           "region": "Springfield",
-          "land": "US"
+          "land": "SE"
         },
         "far": {
           "fornavn": "Abe",
@@ -57,7 +57,7 @@
         "gate": "742 Evergreen Terrace",
         "postnummer": "89011",
         "by": "Springfield",
-        "land": "US",
+        "land": "SE",
         "bygning": "",
         "region": "Springfield"
       }
@@ -217,7 +217,7 @@
       "foedselsdato": "1993-01-01",
       "statsborgerskap": [
         {
-          "land": "us"
+          "land": "SE"
         }
       ],
       "pin": [

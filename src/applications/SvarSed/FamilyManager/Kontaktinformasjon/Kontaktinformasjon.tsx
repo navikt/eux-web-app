@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Select/Select'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
+import useValidation from 'components/Validation/useValidation'
 import { Options } from 'declarations/app'
 import { Epost, ReplySed, Telefon, TelefonType } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -18,7 +19,12 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { validateKontaktsinformasjonEpost, validateKontaktsinformasjonTelefon } from './validation'
+import {
+  validateKontaktsinformasjonEpost,
+  validateKontaktsinformasjonTelefon,
+  ValidationKontaktsinformasjonEpostProps,
+  ValidationKontaktsinformasjonTelefonProps
+} from './validation'
 
 interface KontaktinformasjonProps {
   highContrast: boolean
@@ -35,17 +41,20 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
   replySed,
   validation
 }:KontaktinformasjonProps): JSX.Element => {
-  const [_newNummer, setNewNummer] = useState<string>('')
-  const [_newType, setNewType] = useState<TelefonType | undefined>(undefined)
-  const [_seeNewTelefonForm, setSeeNewTelefonForm] = useState<boolean>(false)
-
-  const [_newAdresse, setNewAdresse] = useState<string>('')
-  const [_seeNewEpostForm, setSeeNewEpostForm] = useState<boolean>(false)
-
-  const [_confirmDelete, setConfirmDelete] = useState<Array<string>>([])
-  const [_validation, setValidation] = useState<Validation>({})
-
   const { t } = useTranslation()
+
+  const [_newNummer, _setNewNummer] = useState<string>('')
+  const [_newType, _setNewType] = useState<TelefonType | undefined>(undefined)
+  const [_seeNewTelefonForm, _setSeeNewTelefonForm] = useState<boolean>(false)
+
+  const [_newAdresse, _setNewAdresse] = useState<string>('')
+  const [_seeNewEpostForm, _setSeeNewEpostForm] = useState<boolean>(false)
+
+  const [_confirmDelete, _setConfirmDelete] = useState<Array<string>>([])
+  const [_validationTelefon, resetValidationTelefon, performValidationTelefon] =
+    useValidation<ValidationKontaktsinformasjonTelefonProps>({}, validateKontaktsinformasjonTelefon)
+  const [_validationEpost, resetValidationEpost, performValidationEpost] =
+    useValidation<ValidationKontaktsinformasjonEpostProps>({}, validateKontaktsinformasjonEpost)
 
   const targetTelefon = `${personID}.telefon`
   const targetEpost = `${personID}.epost`
@@ -65,65 +74,23 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
     label: t('el:option-telefon-type-mobile'), value: 'mobil'
   }]
 
-  const resetValidation = (key: string): void => {
-    setValidation({
-      ..._validation,
-      [key]: undefined
-    })
-  }
-
-  const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
-
-  const performValidationTelefon = (): boolean => {
-    const newValidation: Validation = {}
-    validateKontaktsinformasjonTelefon(
-      newValidation,
-      {
-        type: _newType,
-        nummer: _newNummer
-      },
-      -1,
-      t,
-      namespaceTelefon,
-      personName
-    )
-    setValidation(newValidation)
-    return hasNoValidationErrors(newValidation)
-  }
-
-  const performValidationEpost = (): boolean => {
-    const newValidation: Validation = {}
-    validateKontaktsinformasjonEpost(
-      newValidation,
-      {
-        adresse: _newAdresse
-      },
-      -1,
-      t,
-      namespaceEpost,
-      personName
-    )
-    setValidation(newValidation)
-    return hasNoValidationErrors(newValidation)
-  }
-
   const onAddNewClicked = (what: string) => {
-    if (what === 'telefon') setSeeNewTelefonForm(true)
-    if (what === 'epost') setSeeNewEpostForm(true)
+    if (what === 'telefon') _setSeeNewTelefonForm(true)
+    if (what === 'epost') _setSeeNewEpostForm(true)
   }
 
   const addCandidateForDeletion = (key: string) => {
-    setConfirmDelete(_confirmDelete.concat(key))
+    _setConfirmDelete(_confirmDelete.concat(key))
   }
 
   const removeCandidateForDeletion = (key: string) => {
-    setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
+    _setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
   }
 
   const onTypeChanged = (type: TelefonType, i: number) => {
     if (i < 0) {
-      setNewType(type)
-      resetValidation(namespaceTelefon + '-type')
+      _setNewType(type)
+      resetValidationTelefon(namespaceTelefon + '-type')
     } else {
       const newTelefoner = _.cloneDeep(telefoner)
       newTelefoner[i].type = type
@@ -133,8 +100,8 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
 
   const onNummerChanged = (nummer: string, i: number) => {
     if (i < 0) {
-      setNewNummer(nummer)
-      resetValidation(namespaceTelefon + '-nummer')
+      _setNewNummer(nummer)
+      resetValidationTelefon(namespaceTelefon + '-nummer')
     } else {
       const newTelefoner = _.cloneDeep(telefoner)
       newTelefoner[i].nummer = nummer
@@ -144,8 +111,8 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
 
   const onAdresseChanged = (adresse: string, i: number) => {
     if (i < 0) {
-      setNewAdresse(adresse)
-      resetValidation(namespaceEpost + '-adresse')
+      _setNewAdresse(adresse)
+      resetValidationEpost(namespaceEpost + '-adresse')
     } else {
       const newEposter = _.cloneDeep(eposter)
       newEposter[i].adresse = adresse
@@ -155,18 +122,19 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
 
   const resetForm = (what: string) => {
     if (what === 'telefon') {
-      setNewType(undefined)
-      setNewNummer('')
+      _setNewType(undefined)
+      _setNewNummer('')
+      resetValidationTelefon()
     }
     if (what === 'epost') {
-      setNewAdresse('')
+      _setNewAdresse('')
+      resetValidationEpost()
     }
-    setValidation({})
   }
 
   const onCancel = (what: string) => {
-    if (what === 'telefon') setSeeNewTelefonForm(false)
-    if (what === 'epost') setSeeNewEpostForm(false)
+    if (what === 'telefon') _setSeeNewTelefonForm(false)
+    if (what === 'epost') _setSeeNewEpostForm(false)
     resetForm(what)
   }
 
@@ -196,30 +164,49 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
   }
 
   const onTelefonAdd = () => {
-    if (performValidationTelefon()) {
+    const newTelefon: Telefon |  {type: any, nummer: any} = {
+      type: _newType,
+      nummer: _newNummer
+    }
+
+    const valid: boolean = performValidationTelefon({
+      telefon: newTelefon,
+      index: -1,
+      namespace: namespaceTelefon,
+      personName: personName
+    })
+
+    if (valid) {
       let newTelefoner = _.cloneDeep(telefoner)
       if (_.isNil(newTelefoner)) {
         newTelefoner = []
       }
-      newTelefoner.push({
-        type: _newType!,
-        nummer: _newNummer
-      })
+      newTelefoner.push(newTelefon)
       resetForm('telefon')
       onValueChanged(targetTelefon, newTelefoner)
     }
   }
 
   const onEpostAdd = () => {
-    if (performValidationEpost()) {
+
+    const newEpost: Epost  = {
+      adresse: _newAdresse
+    }
+
+    const valid: boolean = performValidationEpost({
+      epost: newEpost,
+      index: -1,
+      namespace: namespaceTelefon,
+      personName: personName
+    })
+
+    if (valid) {
       let newEposter = _.cloneDeep(eposter)
 
       if (_.isNil(newEposter)) {
         newEposter = []
       }
-      newEposter.push({
-        adresse: _newAdresse
-      })
+      newEposter.push(newEpost)
       resetForm('epost')
       onValueChanged(targetEpost, newEposter)
     }
@@ -227,6 +214,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
 
   const getErrorFor = (index: number, what: string, el: string): string | undefined => {
     const namespace = what === 'telefon' ? namespaceTelefon : namespaceEpost
+    const _validation = what === 'telefon' ? _validationTelefon : _validationEpost
     return index < 0 ? _validation[namespace + '-' + el]?.feilmelding : validation[namespace + '[' + index + ']-' + el]?.feilmelding
   }
 
@@ -235,7 +223,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
   const renderTelefonRow = (_t: Telefon | null, i: number) => {
     const key = _t ? getKey(_t) : 'new'
     const candidateForDeletion = i < 0 ? false : !!key && _confirmDelete.indexOf(key) >= 0
-
+    const idx = (i >= 0 ? '[' + i + ']' : '')
     return (
       <>
         <AlignStartRow
@@ -244,9 +232,9 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
         >
           <Column>
             <HighContrastInput
-              data-test-id={'c-' + namespaceTelefon + (i >= 0 ? '[' + i + ']' : '') + '-nummer-text'}
+              data-test-id={'c-' + namespaceTelefon + idx + '-nummer-text'}
               feil={getErrorFor(i, 'telefon', 'nummer')}
-              id={'c-' + namespaceTelefon + (i >= 0 ? '[' + i + ']' : '') + '-nummer-text'}
+              id={'c-' + namespaceTelefon + idx + '-nummer-text'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onNummerChanged(e.target.value, i)}
               value={i < 0 ? _newNummer : _t?.nummer}
               placeholder={t('el:placeholder-input-default')}
@@ -254,10 +242,10 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
           </Column>
           <Column>
             <Select
-              data-test-id={'c-' + namespaceTelefon + (i >= 0 ? '[' + i + ']' : '') + '-type-text'}
+              data-test-id={'c-' + namespaceTelefon + idx + '-type-text'}
               feil={getErrorFor(i, 'telefon', 'type')}
               highContrast={highContrast}
-              id={'c-' + namespaceTelefon + (i >= 0 ? '[' + i + ']' : '') + '-type-text'}
+              id={'c-' + namespaceTelefon + idx + '-type-text'}
               menuPortalTarget={document.body}
               onChange={(e) => onTypeChanged(e.value as TelefonType, i)}
               options={telefonTypeOptions}
@@ -287,7 +275,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
   const renderEpostRow = (e: Epost | null, i: number) => {
     const key = e ? getKey(e) : 'new'
     const candidateForDeletion = i < 0 ? false : !!key && _confirmDelete.indexOf(key) >= 0
-
+    const idx = (i >= 0 ? '[' + i + ']' : '')
     return (
       <>
         <AlignStartRow
@@ -296,9 +284,9 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
         >
           <Column data-flex='2'>
             <HighContrastInput
-              data-test-id={'c-' + namespaceTelefon + (i >= 0 ? '[' + i + ']' : '') + '-adresse-text'}
+              data-test-id={'c-' + namespaceTelefon + idx + '-adresse-text'}
               feil={getErrorFor(i, 'epost', 'adresse')}
-              id={'c-' + namespaceTelefon + (i >= 0 ? '[' + i + ']' : '') + '-adresse-text'}
+              id={'c-' + namespaceTelefon + idx + '-adresse-text'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onAdresseChanged(e.target.value, i)}
               value={i < 0 ? _newAdresse : e?.adresse}
               placeholder={t('el:placeholder-input-default')}
