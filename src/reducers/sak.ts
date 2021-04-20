@@ -5,7 +5,7 @@ import {
   Arbeidsforhold,
   Arbeidsperioder,
   FagSaker,
-  FamilieRelasjon,
+  OldFamilieRelasjon,
   Institusjon,
   OpprettetSak,
   Person
@@ -15,7 +15,7 @@ export interface SakState {
   arbeidsforholdList: Arbeidsperioder | undefined
   arbeidsforhold: Arbeidsforhold
   buctype: any
-  familierelasjoner: Array<FamilieRelasjon>
+  familierelasjoner: Array<OldFamilieRelasjon>
   fagsaker: FagSaker | undefined | null
   fnr: string | undefined
   institusjon: string | undefined
@@ -23,7 +23,7 @@ export interface SakState {
   landkode: string | undefined
   opprettetSak: OpprettetSak | undefined
   person: Person | undefined
-  personRelatert: FamilieRelasjon | undefined
+  personRelatert: OldFamilieRelasjon | undefined
   saksId: any
   sektor: any
   sedtype: any

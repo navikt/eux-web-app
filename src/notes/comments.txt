@@ -9,10 +9,8 @@ Fazer revisão:
    : rectificar validation
    : connectar (e update ao ids.txt)
    : reformatar datas
-
          aapen_sluttdato
          format DD.MM.YYYY -> YYYY-MM-DD
-
 
 
 fazer a equivalências de arbeidsgiver => perioder

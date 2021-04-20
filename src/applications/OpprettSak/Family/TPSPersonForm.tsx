@@ -3,7 +3,7 @@ import Alert from 'components/Alert/Alert'
 import PersonCard from 'applications/OpprettSak/PersonCard/PersonCard'
 import { Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import { AlertStatus } from 'declarations/components'
-import { FamilieRelasjon, Kodeverk, Person } from 'declarations/types'
+import { OldFamilieRelasjon, Kodeverk, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
 import _ from 'lodash'
 import AlertStripe from 'nav-frontend-alertstriper'
@@ -40,7 +40,7 @@ export interface TPSPersonFormProps {
   alertType: string | undefined
   alertTypesWatched: Array<string> | undefined
   className?: string
-  existingFamilyRelationships: Array<FamilieRelasjon>
+  existingFamilyRelationships: Array<OldFamilieRelasjon>
   onAlertClose: () => void
   onRelationReset: () => void
   onSearchFnr: (sok: any) => void
@@ -68,8 +68,8 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
   rolleList
 }: TPSPersonFormProps): JSX.Element => {
   const [_query, setQuery] = useState<string>('')
-  const [_personRelatert, setPersonRelatert] = useState<FamilieRelasjon | undefined>(undefined)
-  const [_tpsperson, setTpsPerson] = useState<FamilieRelasjon | undefined>(undefined)
+  const [_personRelatert, setPersonRelatert] = useState<OldFamilieRelasjon | undefined>(undefined)
+  const [_tpsperson, setTpsPerson] = useState<OldFamilieRelasjon | undefined>(undefined)
   const { t } = useTranslation()
 
   const sokEtterFnr = () => {
@@ -85,7 +85,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
       // Fjern relasjoner array, NOTE! det er kun relasjoner som har rolle.
       const person = _.omit(personRelatert, 'relasjoner')
       const tpsperson = personRelatert && personRelatert.relasjoner
-        ? personRelatert.relasjoner.find((elem: FamilieRelasjon) => elem.fnr === person.fnr)
+        ? personRelatert.relasjoner.find((elem: OldFamilieRelasjon) => elem.fnr === person.fnr)
         : undefined
       setTpsPerson(tpsperson)
       if (!tpsperson) {
@@ -118,7 +118,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
     return false
   }
 
-  const leggTilPersonOgRolle = (person: FamilieRelasjon) => {
+  const leggTilPersonOgRolle = (person: OldFamilieRelasjon) => {
     if (!conflictingPerson()) {
       setQuery('')
       setPersonRelatert(undefined)

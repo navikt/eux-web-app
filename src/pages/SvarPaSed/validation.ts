@@ -1,7 +1,7 @@
 import {
   Adresse,
   Epost,
-  FamilieRelasjon2, PensjonPeriode,
+  FamilieRelasjon, PensjonPeriode,
   Periode,
   Person,
   PersonInfo,
@@ -21,7 +21,7 @@ import { validateFamilierelasjoner } from 'applications/SvarSed/FamilyManager/Fa
 export const performValidation = (v: Validation, t: any, options: any, personID: string) => {
   const adresser: Array<Adresse> = _.get(options.replySed, `${personID}.adresser`)
   const personInfo: PersonInfo = _.get(options.replySed, `${personID}.personInfo`)
-  const familierelasjoner: Array<FamilieRelasjon2> = _.get(options.replySed, `${personID}.familierelasjoner`)
+  const familierelasjoner: Array<FamilieRelasjon> = _.get(options.replySed, `${personID}.familierelasjoner`)
   const telefoner: Array<Telefon> = _.get(options.replySed, `${personID}.telefon`)
   const eposter: Array<Epost> = _.get(options.replySed, `${personID}.epost`)
   const statsborgerskaper: Array<Statsborgerskap> = _.get(options.replySed, `${personID}.statsborgerskap`)
@@ -42,7 +42,7 @@ export const performValidation = (v: Validation, t: any, options: any, personID:
   validateKontaktsinformasjonTelefoner(v, telefoner, t, `familymanager-${personID}-kontaktinformasjon-telefon`, personName)
   validateKontaktsinformasjonEposter(v, eposter, t, `familymanager-${personID}-kontaktinformasjon-epost`, personName)
   validateTrygdeordninger(v, perioder, t, `familymanager-${personID}-trygdeordninger`, personName)
-  validateFamilierelasjoner(v, familierelasjoner, t, `familymanager-${personID}-familierelasjoner`, personName)
+  validateFamilierelasjoner(v, t, familierelasjoner, `familymanager-${personID}-familierelasjoner`, personName)
 }
 
 export const validate = (options: any): Validation => {

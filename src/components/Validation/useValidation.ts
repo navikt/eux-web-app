@@ -13,14 +13,14 @@ const useValidation = <ValidationData extends any>(
   ) => void
 ): [
     Validation,
-    (key: string | undefined) => void,
+    (key?: string | undefined) => void,
     (validationData: ValidationData) => boolean
   ] => {
 
   const { t } = useTranslation()
   const [_validation, setValidation] = useState<Validation>(initialValue)
 
-  const resetValidation = (key: string | undefined): void => {
+  const resetValidation = (key: string | undefined = undefined): void => {
     if (!key) {
       setValidation({})
     }

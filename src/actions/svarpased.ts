@@ -1,7 +1,7 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { ReplySed } from 'declarations/sed'
-import { Arbeidsforholdet, FamilieRelasjon, Inntekter, Validation, ConnectedSed } from 'declarations/types'
+import { Arbeidsforholdet, OldFamilieRelasjon, Inntekter, Validation, ConnectedSed } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockArbeidsforholdList from 'mocks/arbeidsforholdList'
 import mockInntekt from 'mocks/inntekt'
@@ -136,14 +136,14 @@ export const getPersonRelated: ActionCreator<ThunkResult<ActionWithPayload>> = (
 }
 
 export const addFamilierelasjoner: ActionCreator<ActionWithPayload> = (
-  payload: FamilieRelasjon
+  payload: OldFamilieRelasjon
 ): ActionWithPayload => ({
   type: types.SVARPASED_FAMILIERELASJONER_ADD,
   payload: payload
 })
 
 export const removeFamilierelasjoner: ActionCreator<ActionWithPayload> = (
-  payload: FamilieRelasjon
+  payload: OldFamilieRelasjon
 ): ActionWithPayload => ({
   type: types.SVARPASED_FAMILIERELASJONER_REMOVE,
   payload: payload

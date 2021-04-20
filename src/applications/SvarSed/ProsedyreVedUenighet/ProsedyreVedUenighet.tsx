@@ -271,7 +271,7 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
   return (
     <PileDiv>
       <Undertittel>
-        {t('el:title-prosedyre-med-uenighet')}
+        {t('el:title-prosedyre-ved-uenighet')}
       </Undertittel>
       <VerticalSeparatorDiv />
       <HighContrastPanel>

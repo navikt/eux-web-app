@@ -1,5 +1,5 @@
 import { FlexDiv, PileCenterDiv } from 'components/StyledComponents'
-import { FamilieRelasjon, Kodeverk, Person } from 'declarations/types'
+import { OldFamilieRelasjon, Kodeverk, Person } from 'declarations/types'
 import _ from 'lodash'
 import { Knapp } from 'nav-frontend-knapper'
 import { Ingress, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
@@ -29,10 +29,10 @@ export interface FamilyProps {
   alertType: string | undefined
   familierelasjonKodeverk: Array<Kodeverk> | undefined
   onAbroadPersonAddedFailure: () => void
-  onAbroadPersonAddedSuccess: (r: FamilieRelasjon) => void
+  onAbroadPersonAddedSuccess: (r: OldFamilieRelasjon) => void
   onAlertClose: () => void
-  onRelationAdded: (p: Person | FamilieRelasjon) => void
-  onRelationRemoved: (p: Person | FamilieRelasjon) => void
+  onRelationAdded: (p: Person | OldFamilieRelasjon) => void
+  onRelationRemoved: (p: Person | OldFamilieRelasjon) => void
   onRelationReset: () => void
   onSearchFnr: (sok: any) => void
   onTPSPersonAddedFailure: () => void
@@ -40,7 +40,7 @@ export interface FamilyProps {
   person: Person | undefined
   personRelatert: Person | undefined
   TPSPersonFormAlertTypesWatched: Array<string> | undefined
-  valgteFamilieRelasjoner: Array<FamilieRelasjon> | undefined
+  valgteFamilieRelasjoner: Array<OldFamilieRelasjon> | undefined
 }
 
 const Family: React.FC<FamilyProps> = ({
@@ -67,8 +67,8 @@ const Family: React.FC<FamilyProps> = ({
   const [_viewTPSRelatedForm, setViewTPSRelatedForm] = useState<boolean>(false)
   const { t } = useTranslation()
 
-  const remainingRelationsFromTPS: Array<FamilieRelasjon> = _.filter(person!.relasjoner, (relation: FamilieRelasjon) =>
-    _.find(valgteFamilieRelasjoner, (valgteRelasjon: FamilieRelasjon) => valgteRelasjon.fnr === relation.fnr) === undefined
+  const remainingRelationsFromTPS: Array<OldFamilieRelasjon> = _.filter(person!.relasjoner, (relation: OldFamilieRelasjon) =>
+    _.find(valgteFamilieRelasjoner, (valgteRelasjon: OldFamilieRelasjon) => valgteRelasjon.fnr === relation.fnr) === undefined
   )
 
   const toggleViewAbroadPersonForm = (): void => {
@@ -83,15 +83,15 @@ const Family: React.FC<FamilyProps> = ({
 
   if (!_.isEmpty(valgteFamilieRelasjoner)) {
     // Hvis ektefelle allerede er lagt til, fjern mulighet for andre typer samlivspartnere
-    if (valgteFamilieRelasjoner?.find((relation: FamilieRelasjon) => relation.rolle === 'EKTE')) {
+    if (valgteFamilieRelasjoner?.find((relation: OldFamilieRelasjon) => relation.rolle === 'EKTE')) {
       ekskluderteVerdier.push('EKTE', 'SAMB', 'REPA')
     }
     // Hvis registret partner allerede er lagt til, fjern mulighet for andre typer samlivspartnere
-    if (valgteFamilieRelasjoner?.find((relation: FamilieRelasjon) => relation.rolle === 'REPA')) {
+    if (valgteFamilieRelasjoner?.find((relation: OldFamilieRelasjon) => relation.rolle === 'REPA')) {
       ekskluderteVerdier.push('EKTE', 'SAMB', 'REPA')
     }
     // Det skal kun være mulig å legge til en relasjon av typen annen
-    if (valgteFamilieRelasjoner?.find((relation: FamilieRelasjon) => relation.rolle === 'ANNEN')) {
+    if (valgteFamilieRelasjoner?.find((relation: OldFamilieRelasjon) => relation.rolle === 'ANNEN')) {
       ekskluderteVerdier.push('ANNEN')
     }
   }
@@ -113,7 +113,7 @@ const Family: React.FC<FamilyProps> = ({
           <Ingress>
             {t('label:familierelasjon-i-tps')}
           </Ingress>
-          {remainingRelationsFromTPS.map((relation: FamilieRelasjon) => (
+          {remainingRelationsFromTPS.map((relation: OldFamilieRelasjon) => (
             <MarginDiv key={relation.fnr}>
               <PersonCard
                 className='slideInFromLeft personNotSelected'
@@ -149,7 +149,7 @@ const Family: React.FC<FamilyProps> = ({
           <Ingress>
             {t('label:valgt-familie')}&nbsp;({valgteFamilieRelasjoner ? valgteFamilieRelasjoner.length : 0})
           </Ingress>
-          {valgteFamilieRelasjoner && valgteFamilieRelasjoner.map((relation: FamilieRelasjon) => (
+          {valgteFamilieRelasjoner && valgteFamilieRelasjoner.map((relation: OldFamilieRelasjon) => (
             <MarginDiv key={relation.fnr}>
               <PersonCard
                 className='slideInFromLeft personSelected'

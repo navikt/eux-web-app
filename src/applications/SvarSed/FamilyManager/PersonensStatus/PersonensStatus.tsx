@@ -1,12 +1,12 @@
-import Ansatt from 'applications/SvarSed/FamilyManager/Arbeidsforhold/Ansatt'
-import Avsenderlandet from 'applications/SvarSed/FamilyManager/Arbeidsforhold/Avsenderlandet'
-import NotAnsatt from 'applications/SvarSed/FamilyManager/Arbeidsforhold/NotAnsatt'
-import WithSubsidies from 'applications/SvarSed/FamilyManager/Arbeidsforhold/WithSubsidies'
 import GrunnlagforBosetting from 'applications/SvarSed/FamilyManager/GrunnlagForBosetting/GrunnlagForBosetting'
+import Ansatt from 'applications/SvarSed/FamilyManager/PersonensStatus/Ansatt'
+import Avsenderlandet from 'applications/SvarSed/FamilyManager/PersonensStatus/Avsenderlandet'
+import NotAnsatt from 'applications/SvarSed/FamilyManager/PersonensStatus/NotAnsatt'
+import WithSubsidies from 'applications/SvarSed/FamilyManager/PersonensStatus/WithSubsidies'
 import LesMer from 'components/LesMer/LesMer'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
-import { Periode, ReplySed } from 'declarations/sed'
-import { Arbeidsforholdet, Validation } from 'declarations/types'
+import { ReplySed } from 'declarations/sed'
+import { Validation } from 'declarations/types'
 import { Undertittel } from 'nav-frontend-typografi'
 import { Column, HighContrastRadioPanelGroup, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
@@ -38,21 +38,6 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
   const { t } = useTranslation()
 
   const namespace = `familymanager-${personID}-personensstatus`
-  // TODO: filter perioderMedAktivitet with "ansatt"... or pass the whole
-  const target = `${personID}.aktivitet.perioderMedAktivitet.perioder`
-
-  const onArbeidsforholdSelectionChange = (selectedArbeidsforhold: Array<Arbeidsforholdet>) => {
-    const perioder: Array<Periode> = selectedArbeidsforhold.map(a => {
-      return {
-        startdato: a.fraDato,
-        sluttdato: a.tilDato
-      }
-    })
-    onValueChanged(target, {
-      type: 'ansatt',
-      perioder: perioder
-    })
-  }
 
   return (
     <PaddedDiv>
@@ -108,7 +93,7 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
                 arbeidsforholdList={arbeidsforholdList}
                 getArbeidsforholdList={getArbeidsforholdList}
                 gettingArbeidsforholdList={gettingArbeidsforholdList}
-                onArbeidsforholdSelectionChange={onArbeidsforholdSelectionChange}
+                onValueChanged={onValueChanged}
                 replySed={replySed}
                 personID={personID}
               />
@@ -130,7 +115,9 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
             <Column>
               <WithSubsidies
                 highContrast={highContrast}
+                onValueChanged={onValueChanged}
                 personID={personID}
+                replySed={replySed}
                 validation={validation}
               />
             </Column>

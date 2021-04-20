@@ -3,7 +3,7 @@ import Alert from 'components/Alert/Alert'
 import { Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import { AlertStatus } from 'declarations/components'
 import { State } from 'declarations/reducers'
-import { FamilieRelasjon, Kodeverk, Person, Validation } from 'declarations/types'
+import { OldFamilieRelasjon, Kodeverk, Person, Validation } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
 import { CountryFilter } from 'land-verktoy'
 import CountrySelect from 'landvelger'
@@ -45,10 +45,10 @@ export interface AbroadPersonFormProps {
   alertTypesWatched: Array<string> | undefined
   className?: string
   rolleList: Array<Kodeverk>
-  existingFamilyRelationships: Array<FamilieRelasjon>
+  existingFamilyRelationships: Array<OldFamilieRelasjon>
   onAlertClose: () => void
   onAbroadPersonAddedFailure: () => void
-  onAbroadPersonAddedSuccess: (r: FamilieRelasjon) => void
+  onAbroadPersonAddedSuccess: (r: OldFamilieRelasjon) => void
   person: Person | undefined
 }
 
@@ -57,7 +57,7 @@ const mapState = (state: State): AbroadPersonFormSelector => ({
   landkoderList: state.app.landkoder
 })
 
-const emptyFamilieRelasjon: FamilieRelasjon = {
+const emptyFamilieRelasjon: OldFamilieRelasjon = {
   fnr: '',
   fdato: '',
   land: null,
@@ -86,7 +86,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
     kjoennList,
     landkoderList
   }: AbroadPersonFormSelector = useSelector<State, AbroadPersonFormSelector>(mapState)
-  const [_relation, setRelation] = useState<FamilieRelasjon>(emptyFamilieRelasjon)
+  const [_relation, setRelation] = useState<OldFamilieRelasjon>(emptyFamilieRelasjon)
   const [_validation, setValidation] = useState<Validation>({})
 
   useEffect(() => {
@@ -123,7 +123,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
     })
   }
 
-  const trimFamilyRelation = (relation: FamilieRelasjon): FamilieRelasjon => {
+  const trimFamilyRelation = (relation: OldFamilieRelasjon): OldFamilieRelasjon => {
     return {
       fnr: relation.fnr ? relation.fnr.trim() : '',
       fdato: relation.fdato ? relation.fdato.trim() : '',
@@ -134,7 +134,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
       land: relation.land,
       statsborgerskap: relation.statsborgerskap,
       rolle: relation.rolle
-    } as FamilieRelasjon
+    } as OldFamilieRelasjon
   }
 
   const canAddRelation = (): boolean => {

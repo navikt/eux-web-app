@@ -7,6 +7,8 @@ export interface ValidationArbeidsforholdProps {
   namespace: string
 }
 
+const datePattern = /^\d{4}-\d{2}-\d{2}$/
+
 export const validateArbeidsforhold = (
   v: Validation,
   t: TFunction,
@@ -33,13 +35,13 @@ export const validateArbeidsforhold = (
       feilmelding: t('message:validation-noDate')
     } as FeiloppsummeringFeil
   }
-  if (arbeidsforhold.fraDato && !arbeidsforhold.fraDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
+  if (arbeidsforhold.fraDato && !arbeidsforhold.fraDato.match(datePattern)) {
     v[namespace + '-startdato'] = {
       skjemaelementId: 'c-' + namespace + '-startdato-date',
       feilmelding: t('message:validation-invalidDate')
     } as FeiloppsummeringFeil
   }
-  if (arbeidsforhold.tilDato && !arbeidsforhold.tilDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
+  if (arbeidsforhold.tilDato && !arbeidsforhold.tilDato.match(datePattern)) {
     v[namespace + '-sluttdato'] = {
       skjemaelementId: 'c-' + namespace + '-sluttdato-date',
       feilmelding: t('message:validation-invalidDate')

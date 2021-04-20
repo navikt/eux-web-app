@@ -14,13 +14,14 @@ export interface PeriodProps {
   valueSluttDato: string | undefined
 }
 
-const toFinalDateFormat = (date: string | undefined): string | undefined => {
-  if (!date) return undefined
+export const toFinalDateFormat = (date: string | undefined): string  => {
+  if (!date) return ''
+  if (date === '') return ''
   const newDate = moment(date, 'DD.MM.YYYY')
   return newDate.isValid() ? newDate.format('YYYY-MM-DD') : date
 }
 
-const toUIDateFormat = (date: string | undefined): string | undefined => {
+export const toUIDateFormat = (date: string | undefined): string | undefined => {
   if (!date) return undefined
   const newDate = moment(date, 'YYYY-MM-DD')
   return newDate.isValid() ? newDate.format('DD.MM.YYYY') : date
@@ -42,16 +43,12 @@ const Period = ({
 
   const onStartDatoBlur = () => {
     const date = toFinalDateFormat(_startDato)
-    if (date) {
-      setStartDato(date, index)
-    }
+    setStartDato(date, index)
   }
 
   const onEndDatoBlur = () => {
     const date = toFinalDateFormat(_sluttDato)
-    if (date) {
-      setSluttDato(date, index)
-    }
+    setSluttDato(date, index)
   }
 
   return (

@@ -1,27 +1,32 @@
-import {
-  validateAvsenderlandet,
-  ValidationAvsenderlandetProps
-} from 'applications/SvarSed/FamilyManager/Arbeidsforhold/avsenderlandetValidation'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Period from 'components/Period/Period'
 import { AlignStartRow } from 'components/StyledComponents'
 import useValidation from 'components/Validation/useValidation'
-import { Periode } from 'declarations/sed'
+import { Periode, ReplySed } from 'declarations/sed'
+import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
 import { Undertittel } from 'nav-frontend-typografi'
 import { Column, HighContrastFlatknapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { validateNotAnsatte, ValidationNotAnsattProps } from './notAnsattValidation'
 
-const Avsenderlandet = ({
-  onValueChanged,
-  personID,
-  replySed,
-  validation
-}: any) => {
+export interface NotAnsattProps {
+  onValueChanged: (needle: string, value: any) => void
+  personID: string
+  replySed: ReplySed
+  validation: Validation
+}
+
+const NotAnsatt: React.FC<NotAnsattProps> = ({
+   onValueChanged,
+   personID,
+   replySed,
+   validation
+}: NotAnsattProps): JSX.Element => {
   const { t } = useTranslation()
 
   const [_newStartDato, _setNewStartDato] = useState<string>('')
@@ -29,11 +34,11 @@ const Avsenderlandet = ({
 
   const [_confirmDelete, _setConfirmDelete] = useState<Array<string>>([])
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, resetValidation, performValidation] = useValidation<ValidationAvsenderlandetProps>({}, validateAvsenderlandet)
+  const [_validation, resetValidation, performValidation] = useValidation<ValidationNotAnsattProps>({}, validateNotAnsatte)
 
-  const target = `${personID}.aktivitet.perioderMedTrygd`
-  const perioderMedTrygd: Array<Periode> = _.get(replySed, target)
-  const namespace = `familymanager-${personID}-personensstatus-avsenderlandet`
+  const target: string = `${personID}.perioderSomSelvstendig`
+  let perioderSomSelvstendig: Array<Periode> = _.get(replySed, target)
+  const namespace = `familymanager-${personID}-personensstatus-notansatt`
 
   const onAddNewClicked = () => _setSeeNewForm(true)
 
@@ -50,10 +55,9 @@ const Avsenderlandet = ({
       _setNewStartDato(dato)
       resetValidation(namespace + '-startdato')
     } else {
-      const newPerioder = _.cloneDeep(perioderMedTrygd)
+      const newPerioder: Array<Periode> = _.cloneDeep(perioderSomSelvstendig)
       newPerioder[i].startdato = dato
       onValueChanged(target, newPerioder)
-      _setNewStartDato('')
     }
   }
 
@@ -62,17 +66,22 @@ const Avsenderlandet = ({
       _setNewSluttDato(dato)
       resetValidation(namespace + '-sluttdato')
     } else {
-      const newPerioder = _.cloneDeep(perioderMedTrygd)
-      newPerioder[i].sluttdato = dato
+      const newPerioder: Array<Periode> = _.cloneDeep(perioderSomSelvstendig)
+      if (dato === '') {
+        delete newPerioder[i].sluttdato
+        newPerioder[i].aapenPeriodeType = 'åpen_sluttdato'
+      } else {
+        delete newPerioder[i].aapenPeriodeType
+        newPerioder[i].sluttdato = dato
+      }
       onValueChanged(target, newPerioder)
-      _setNewSluttDato('')
     }
   }
 
   const resetForm = () => {
     _setNewStartDato('')
     _setNewSluttDato('')
-    resetValidation(undefined)
+    resetValidation()
   }
 
   const onCancel = () => {
@@ -85,7 +94,7 @@ const Avsenderlandet = ({
   }
 
   const onRemove = (index: number) => {
-    const newPerioder: Array<Periode> = _.cloneDeep(perioderMedTrygd)
+    const newPerioder: Array<Periode> = _.cloneDeep(perioderSomSelvstendig)
     const deletedPeriods: Array<Periode> = newPerioder.splice(index, 1)
     if (deletedPeriods && deletedPeriods.length > 0) {
       removeCandidateForDeletion(getKey(deletedPeriods[0]))
@@ -105,13 +114,13 @@ const Avsenderlandet = ({
 
     const valid: boolean = performValidation({
       period: newPeriode,
-      otherPeriods: perioderMedTrygd,
+      otherPeriods: perioderSomSelvstendig,
       index: -1,
       namespace
     })
 
     if (valid) {
-      let newPerioder: Array<Periode> = _.cloneDeep(perioderMedTrygd)
+      let newPerioder: Array<Periode> = _.cloneDeep(perioderSomSelvstendig)
       if (_.isNil(newPerioder)) {
         newPerioder = []
       }
@@ -166,13 +175,13 @@ const Avsenderlandet = ({
   return (
     <>
       <Undertittel>
-        {t('el:title-periods-in-sender-country')}
+        {t('el:title-ansettelsesperioder')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      {perioderMedTrygd
+      {perioderSomSelvstendig
         ?.sort((a, b) =>
           moment(a.startdato, 'YYYY-MM-DD')
-            .isSameOrAfter(moment(b.startdato, 'YYYY-MM-DD')) ? -1 : 1
+            .isSameOrBefore(moment(b.startdato, 'YYYY-MM-DD')) ? -1 : 1
         )
         ?.map(renderRow)}
       <hr />
@@ -189,14 +198,14 @@ const Avsenderlandet = ({
               >
                 <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('el:button-add-new-x', { x: t('label:trygdeperiode-i-avsenderlandet').toLowerCase() })}
+                {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
               </HighContrastFlatknapp>
             </Column>
           </Row>
-        )}
+          )}
       <VerticalSeparatorDiv />
     </>
   )
 }
 
-export default Avsenderlandet
+export default NotAnsatt

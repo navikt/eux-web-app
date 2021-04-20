@@ -17,7 +17,7 @@ import {
   Enheter,
   FagSak,
   FagSaker,
-  FamilieRelasjon,
+  OldFamilieRelasjon,
   Institusjon,
   Kodemaps,
   Kodeverk,
@@ -90,7 +90,7 @@ export interface OpprettSakSelector {
 
   valgteArbeidsforhold: Array<Arbeidsforholdet>
   valgtBucType: string | undefined
-  valgteFamilieRelasjoner: Array<FamilieRelasjon>
+  valgteFamilieRelasjoner: Array<OldFamilieRelasjon>
   valgtFnr: string | undefined
   valgtInstitusjon: string | undefined
   valgtLandkode: string | undefined
@@ -604,11 +604,11 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                         person={person}
                         valgteFamilieRelasjoner={valgteFamilieRelasjoner}
                         onAbroadPersonAddedFailure={() => dispatch({ type: types.SAK_ABROADPERSON_ADD_FAILURE })}
-                        onAbroadPersonAddedSuccess={(relation: FamilieRelasjon) => {
+                        onAbroadPersonAddedSuccess={(relation: OldFamilieRelasjon) => {
                           dispatch(sakActions.addFamilierelasjoner(relation))
                           dispatch({ type: types.SAK_ABROADPERSON_ADD_SUCCESS })
                         }}
-                        onRelationAdded={(relation: FamilieRelasjon) => {
+                        onRelationAdded={(relation: OldFamilieRelasjon) => {
                           /* Person fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
                           dispatch(
                             sakActions.addFamilierelasjoner({
@@ -617,10 +617,10 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                             })
                           )
                         }}
-                        onRelationRemoved={(relation: FamilieRelasjon) => dispatch(sakActions.removeFamilierelasjoner(relation))}
+                        onRelationRemoved={(relation: OldFamilieRelasjon) => dispatch(sakActions.removeFamilierelasjoner(relation))}
                         onRelationReset={() => dispatch(sakActions.resetPersonRelatert())}
                         onTPSPersonAddedFailure={() => dispatch({ type: types.SAK_TPSPERSON_ADD_FAILURE })}
-                        onTPSPersonAddedSuccess={(relation: FamilieRelasjon) => {
+                        onTPSPersonAddedSuccess={(relation: OldFamilieRelasjon) => {
                           dispatch(sakActions.addFamilierelasjoner(relation))
                           dispatch({ type: types.SAK_TPSPERSON_ADD_SUCCESS })
                         }}

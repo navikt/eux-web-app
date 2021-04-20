@@ -1,25 +1,37 @@
-import { FamilieRelasjon2 } from 'declarations/sed'
+import { validatePeriod } from 'components/Period/validation'
+import { FamilieRelasjon } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { TFunction } from 'react-i18next'
+
+export interface ValidationFamilierelasjonProps {
+  familierelasjon: FamilieRelasjon
+  index: number
+  namespace: string
+  personName: string
+}
 
 export const validateFamilierelasjon = (
   v: Validation,
-  familierelasjon: FamilieRelasjon2,
-  index: number,
-  t: any,
-  namespace: string,
-  personName: string
+  t: TFunction,
+  {
+    familierelasjon,
+    index,
+    namespace,
+    personName
+  }: ValidationFamilierelasjonProps
 ): void => {
-  let generalFail: boolean = false
 
-  let value = (familierelasjon.periode.startdato)
-    ? undefined
-    : {
-      feilmelding: t('message:validation-noDateForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-startdato-date'
-    } as FeiloppsummeringFeil
-  v[namespace + (index < 0 ? '' : '[' + index + ']') + '-startdato'] = value
-  if (value) {
+  let value: FeiloppsummeringFeil | undefined
+  let generalFail: boolean = false
+  let idx = (index < 0 ? '' : '[' + index + ']')
+
+  validatePeriod(v, t, {
+    period: familierelasjon.periode,
+    index,
+    namespace
+  })
+  if (v[namespace + idx + '-startdato']) {
     generalFail = true
   }
 
@@ -28,9 +40,9 @@ export const validateFamilierelasjon = (
       ? undefined
       : {
         feilmelding: t('message:validation-noNameToPerson', { person: personName }),
-        skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-annenrelasjonpersonnavn-text'
+        skjemaelementId: 'c-' + namespace + idx + '-annenrelasjonpersonnavn-text'
       } as FeiloppsummeringFeil
-    v[namespace + (index < 0 ? '' : '[' + index + ']') + '-annenrelasjonpersonnavn'] = value
+    v[namespace + idx + '-annenrelasjonpersonnavn'] = value
     if (value) {
       generalFail = true
     }
@@ -39,9 +51,9 @@ export const validateFamilierelasjon = (
       ? undefined
       : {
         feilmelding: t('message:validation-noRelationDateForPerson', { person: personName }),
-        skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-annenrelasjondato-date'
+        skjemaelementId: 'c-' + namespace + idx + '-annenrelasjondato-date'
       } as FeiloppsummeringFeil
-    v[namespace + (index < 0 ? '' : '[' + index + ']') + '-annenrelasjondato'] = value
+    v[namespace + idx + '-annenrelasjondato'] = value
     if (value) {
       generalFail = true
     }
@@ -50,9 +62,9 @@ export const validateFamilierelasjon = (
       ? undefined
       : {
         feilmelding: t('message:validation-noBoSammen', { person: personName }),
-        skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-borsammen-text'
+        skjemaelementId: 'c-' + namespace + idx + '-borsammen-text'
       } as FeiloppsummeringFeil
-    v[namespace + (index < 0 ? '' : '[' + index + ']') + '-borsammen'] = value
+    v[namespace + idx + '-borsammen'] = value
     if (value) {
       generalFail = true
     }
@@ -70,12 +82,17 @@ export const validateFamilierelasjon = (
 
 export const validateFamilierelasjoner = (
   validation: Validation,
-  familierelasjoner: Array<FamilieRelasjon2>,
-  t: any,
+  t: TFunction,
+  familierelasjoner: Array<FamilieRelasjon>,
   namespace: string,
   personName: string
 ): void => {
-  familierelasjoner?.forEach((familierelasjon: FamilieRelasjon2, index: number) => {
-    validateFamilierelasjon(validation, familierelasjon, index, t, namespace, personName)
+  familierelasjoner?.forEach((familierelasjon: FamilieRelasjon, index: number) => {
+    validateFamilierelasjon(validation, t, {
+      familierelasjon,
+      index,
+      namespace,
+      personName
+    })
   })
 }

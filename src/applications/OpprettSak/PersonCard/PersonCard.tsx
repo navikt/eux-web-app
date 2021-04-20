@@ -4,7 +4,7 @@ import ukjent from 'assets/icons/Unknown.png'
 import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
 import { HorizontalSeparatorDiv } from 'nav-hoykontrast'
-import { FamilieRelasjon, Kodeverk, Person } from 'declarations/types'
+import { OldFamilieRelasjon, Kodeverk, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
 import _ from 'lodash'
 import { Knapp } from 'nav-frontend-knapper'
@@ -62,9 +62,9 @@ const ButtonLabel = styled.div`
 export interface PersonCardProps {
   className?: string
   familierelasjonKodeverk?: Array<Kodeverk>
-  onAddClick?: (p: Person | FamilieRelasjon) => void
-  onRemoveClick?: (p: Person | FamilieRelasjon) => void
-  person: Person | FamilieRelasjon
+  onAddClick?: (p: Person | OldFamilieRelasjon) => void
+  onRemoveClick?: (p: Person | OldFamilieRelasjon) => void
+  person: Person | OldFamilieRelasjon
   rolleList?: Array<Kodeverk>
 }
 
@@ -72,7 +72,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
   className, familierelasjonKodeverk, onAddClick, onRemoveClick, person, rolleList
 }: PersonCardProps): JSX.Element => {
   const [rolle, setRolle] = useState<any>(undefined)
-  const { fnr, fdato, fornavn, etternavn, kjoenn } = (person as FamilieRelasjon)
+  const { fnr, fdato, fornavn, etternavn, kjoenn } = (person as OldFamilieRelasjon)
   const { t } = useTranslation()
 
   let kind: string = 'nav-unknown-icon'
@@ -87,13 +87,13 @@ const PersonCard: React.FC<PersonCardProps> = ({
 
   let rolleTerm
 
-  if ((person as FamilieRelasjon).rolle && (familierelasjonKodeverk || rolleList)) {
+  if ((person as OldFamilieRelasjon).rolle && (familierelasjonKodeverk || rolleList)) {
     let rolleObjekt
     if (familierelasjonKodeverk) {
-      rolleObjekt = familierelasjonKodeverk.find((item: any) => item.kode === (person as FamilieRelasjon).rolle)
+      rolleObjekt = familierelasjonKodeverk.find((item: any) => item.kode === (person as OldFamilieRelasjon).rolle)
     }
     if (rolleList) {
-      rolleObjekt = rolleList.find((item: any) => item.kode === (person as FamilieRelasjon).rolle)
+      rolleObjekt = rolleList.find((item: any) => item.kode === (person as OldFamilieRelasjon).rolle)
     }
     const kodeverkObjektTilTerm = (kodeverkObjekt: any) => {
       if (!kodeverkObjekt || !kodeverkObjekt.term) {
@@ -108,18 +108,18 @@ const PersonCard: React.FC<PersonCardProps> = ({
     }
   }
 
-  const _onRemoveClick = (p: Person | FamilieRelasjon) => {
+  const _onRemoveClick = (p: Person | OldFamilieRelasjon) => {
     if (rolle) {
-      (p as FamilieRelasjon).rolle = rolle
+      (p as OldFamilieRelasjon).rolle = rolle
     }
     if (onRemoveClick) {
       onRemoveClick(p)
     }
   }
 
-  const _onAddClick = (p: Person | FamilieRelasjon) => {
+  const _onAddClick = (p: Person | OldFamilieRelasjon) => {
     if (rolle) {
-      (p as FamilieRelasjon).rolle = rolle
+      (p as OldFamilieRelasjon).rolle = rolle
     }
     if (onAddClick) {
       onAddClick(p)
@@ -146,7 +146,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
               {fornavn}
               {' '}
               {etternavn}
-              {(person as FamilieRelasjon).rolle ? ' - ' + rolleTerm : ''}
+              {(person as OldFamilieRelasjon).rolle ? ' - ' + rolleTerm : ''}
             </Undertittel>
             <Undertitle>
               <div>{t('label:fnr') + ' : ' + fnr}</div>
@@ -158,7 +158,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
           <Select
             label={t('label:familierelasjon')}
             date-testid='familierelasjoner__select-familirelasjon-rolle'
-            value={(person as FamilieRelasjon).rolle}
+            value={(person as OldFamilieRelasjon).rolle}
             onChange={updateFamilyRelation}
           >
             <option value=''>{t('label:velg')}</option>

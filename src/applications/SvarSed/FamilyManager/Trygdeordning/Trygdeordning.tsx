@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Select/Select'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
-import { PensjonPeriode, Periode, ReplySed } from 'declarations/sed'
+import { PensjonPeriode, PensjonsType, Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
@@ -36,8 +36,6 @@ type SedCategory = 'perioderMedArbeid' | 'perioderMedTrygd' |
 type PageCategory = 'dekkede' | 'udekkede' | 'familieYtelse'
 
 type What = 'startdato' | 'sluttdato' | 'category' | 'pensjonstype'
-
-type PensjonsType = 'alderspensjon' | 'uførhet'
 
 const Trygdeordning: React.FC<TrygdeordningProps> = ({
   highContrast,

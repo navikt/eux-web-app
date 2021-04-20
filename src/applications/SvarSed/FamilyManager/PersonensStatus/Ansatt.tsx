@@ -1,11 +1,12 @@
+import { toFinalDateFormat } from 'components/Period/Period'
 import {
   validateArbeidsforhold,
   ValidationArbeidsforholdProps
-} from 'applications/SvarSed/FamilyManager/Arbeidsforhold/ansattValidation'
+} from './ansattValidation'
 import Add from 'assets/icons/Add'
 import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
 import useValidation from 'components/Validation/useValidation'
-import { ReplySed } from 'declarations/sed'
+import { Periode, ReplySed } from 'declarations/sed'
 import { Arbeidsforholdet, Arbeidsperioder } from 'declarations/types'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
@@ -25,7 +26,7 @@ export interface AnsattProps {
   arbeidsforholdList: Arbeidsperioder
   gettingArbeidsforholdList: boolean
   getArbeidsforholdList: (fnr: string | undefined) => void
-  onArbeidsforholdSelectionChange: (a: Array<Arbeidsforholdet>) => void
+  onValueChanged: (needle: string, value: any) => void
   replySed: ReplySed
   personID: string
 }
@@ -34,7 +35,7 @@ const Ansatt: React.FC<AnsattProps> = ({
   arbeidsforholdList,
   getArbeidsforholdList,
   gettingArbeidsforholdList,
-  onArbeidsforholdSelectionChange,
+  onValueChanged,
   personID,
   replySed
 }: AnsattProps) => {
@@ -58,6 +59,23 @@ const Ansatt: React.FC<AnsattProps> = ({
 
   const fnr: string | undefined = _.find(_.get(replySed, `${personID}.personInfo.pin`), p => p.land === 'NO')?.identifikator
   const namespace = `familymanager-${personID}-personensstatus-ansatt`
+  const target = `${personID}.perioderSomAnsatt`
+
+
+  const onArbeidsforholdSelectionChange = (selectedArbeidsforhold: Array<Arbeidsforholdet>) => {
+    const perioder: Array<Periode> = selectedArbeidsforhold.map(a => {
+      let periode = {
+        startdato:  toFinalDateFormat(a.fraDato)
+      } as Periode
+      if (a.tilDato) {
+        periode.sluttdato = toFinalDateFormat(a.tilDato)
+      } else {
+        periode.aapenPeriodeType = 'åpen_sluttdato'
+      }
+      return periode
+    })
+    onValueChanged(target, perioder)
+  }
 
   const setValgtArbeidsforhold = (a: Array<Arbeidsforholdet>) => {
     _setValgtArbeidsforhold(a)
@@ -123,15 +141,15 @@ const Ansatt: React.FC<AnsattProps> = ({
     setNewOrgnr('')
     setNewSluttDato('')
     setNewStartDato('')
-    resetValidation(undefined)
+    resetValidation()
   }
 
   const onAddClicked = () => {
     const newArbeidsforhold: Arbeidsforholdet = {
       arbeidsgiverNavn: _newNavn,
       arbeidsgiverOrgnr: _newOrgnr,
-      fraDato: _newStartDato,
-      tilDato: _newSluttDato
+      fraDato: toFinalDateFormat(_newStartDato),
+      tilDato: toFinalDateFormat(_newSluttDato)
     }
     const valid: boolean = performValidation({
       arbeidsforhold: newArbeidsforhold,

@@ -21,9 +21,9 @@ interface BeløpNavnOgValutaProps {
 
 const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
   highContrast,
-  onValueChanged,
+  //onValueChanged,
   personID,
-  replySed,
+  //replySed,
   validation
 }: BeløpNavnOgValutaProps): JSX.Element => {
   const { t } = useTranslation()
@@ -36,8 +36,8 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
   const [_newReceiver, setNewReceiver] = useState<string>('')
   const [_newFrequency, setNewFrequency] = useState<string>('')
 
-  const target = '${personID}.ytelse'
-  const ytelse = _.get(replySed, target)
+  //const target = '${personID}.ytelse'
+  //const ytelse = _.get(replySed, target)
   const namespace = `familymanager-${personID}-beløpNavnOgValuta`
 
   const benefitCauseOptions: Options = [{

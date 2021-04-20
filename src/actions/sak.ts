@@ -2,7 +2,7 @@ import {
   Arbeidsforhold,
   Arbeidsforholdet,
   FagSaker,
-  FamilieRelasjon,
+  OldFamilieRelasjon,
   Institusjoner,
   Kodeverk,
   Person
@@ -32,9 +32,9 @@ export const addArbeidsforhold: ActionCreator<ActionWithPayload<Arbeidsforholdet
   payload: payload
 })
 
-export const addFamilierelasjoner: ActionCreator<ActionWithPayload<FamilieRelasjon>> = (
-  payload: FamilieRelasjon
-): ActionWithPayload<FamilieRelasjon> => ({
+export const addFamilierelasjoner: ActionCreator<ActionWithPayload<OldFamilieRelasjon>> = (
+  payload: OldFamilieRelasjon
+): ActionWithPayload<OldFamilieRelasjon> => ({
   type: types.SAK_FAMILIERELASJONER_ADD,
   payload: payload
 })
@@ -179,9 +179,9 @@ export const removeArbeidsforhold: ActionCreator<ActionWithPayload<Arbeidsforhol
   payload: payload
 })
 
-export const removeFamilierelasjoner: ActionCreator<ActionWithPayload<FamilieRelasjon>> = (
-  payload: FamilieRelasjon
-): ActionWithPayload<FamilieRelasjon> => ({
+export const removeFamilierelasjoner: ActionCreator<ActionWithPayload<OldFamilieRelasjon>> = (
+  payload: OldFamilieRelasjon
+): ActionWithPayload<OldFamilieRelasjon> => ({
   type: types.SAK_FAMILIERELASJONER_REMOVE,
   payload: payload
 })

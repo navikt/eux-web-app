@@ -7,8 +7,8 @@ export interface OldPeriod {
 }
 
 export interface Arbeidsforholdet {
-  fraDato: string
-  tilDato: string
+  fraDato?: string
+  tilDato?: string
   harRegistrertInntekt?: string
   arbeidsgiverNavn: string
   arbeidsgiverOrgnr: string
@@ -81,7 +81,7 @@ export interface Person {
   fornavn?: string
   etternavn?: string
   kjoenn?: string
-  relasjoner?: Array<FamilieRelasjon>
+  relasjoner?: Array<OldFamilieRelasjon>
 }
 
 export interface FagSak {
@@ -96,7 +96,7 @@ export interface FagSak {
 
 export type FagSaker = Array<FagSak>
 
-export interface FamilieRelasjon extends Person {
+export interface OldFamilieRelasjon extends Person {
   land?: string | null | undefined
   statsborgerskap?: string | null | undefined
   rolle?: string

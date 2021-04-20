@@ -150,62 +150,26 @@
         }
       }
     ],
-
-      "perioderMedAktivitet": [
-        {
-          "type": "ansatt",
-          "perioder": [
-            {
-              "startdato": "1982-01-01",
-              "sluttdato": "1982-12-31"
-            },
-            {
-              "startdato": "1983-01-01",
-              "aapenPeriodeType": "åpen_sluttdato"
-            }
-          ]
-        },
-        {
-          "type": "selvstendig",
-          "perioder": [
-            {
-              "startdato": "1982-01-02",
-              "sluttdato": "1982-12-30"
-            },
-            {
-              "startdato": "1983-01-02",
-              "aapenPeriodeType": "åpen_sluttdato"
-            }
-          ]
-        }
-      ],
-      "perioderUtenAktivitet": [{
-        "type": "inaktiv",
-        "perioder": [
-          {
-            "startdato": "1984-01-01",
-            "sluttdato": "1984-12-31"
-          },
-          {
-            "startdato": "1985-01-01",
-            "aapenPeriodeType": "åpen_sluttdato"
-          }
-        ]
-      }],
-      "perioderUkjentAktivitet": [{
-        "ytterligereinfo": "F002 bruker ytterligereinfo",
-        "perioder": [
-          {
-            "startdato": "1986-01-01",
-            "sluttdato": "1986-12-31"
-          },
-          {
-            "startdato": "1987-01-01",
-            "aapenPeriodeType": "åpen_sluttdato"
-          }
-        ]
-      }]
-    },
+    "perioderSomAnsatt": [
+      {
+        "startdato": "1982-01-01",
+        "sluttdato": "1982-12-31"
+      },
+      {
+        "startdato": "1983-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    ],
+    "perioderSomSelvstendig": [
+      {
+        "startdato": "1982-01-02",
+        "sluttdato": "1982-12-30"
+      },
+      {
+        "startdato": "1983-01-02",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    ],
     "flyttegrunn": {
       "personligSituasjon": "F002 bruker personligSituasjon",
       "perioder": [
@@ -223,16 +187,24 @@
     },
     "familierelasjoner": [
       {
-        "relasjonType": "gift",
-        "relasjonInfo": "F002 bruker relasjonInfo",
+        "relasjonType": "REPA",
+        "relasjonInfo": "Gift med Marge",
         "periode": {
           "startdato": "1992-01-01",
           "aapenPeriodeType": "åpen_sluttdato"
+        }
+      },
+      {
+        "relasjonType": "ANNEN",
+        "relasjonInfo": "Relasjon med øl",
+        "periode": {
+          "startdato": "1993-01-01",
+          "aapenPeriodeType": "åpen_sluttdato"
         },
         "borSammen": "ja",
-        "annenRelasjonType": "F002 bruker annenRelasjonType",
-        "annenRelasjonPersonNavn": "F002 bruker annenRelasjonPersonNavn",
-        "annenRelasjonDato": "F002 bruker annenRelasjonDato"
+        "annenRelasjonType": "platonic",
+        "annenRelasjonPersonNavn": "Duff beer",
+        "annenRelasjonDato": "1993-01-02"
       }
     ],
     "ytterligereInfo": "F002 bruker ytterligereInfo"
@@ -390,11 +362,6 @@
         }
       }
     ],
-    "aktivitet": {
-      "perioderMedAktivitet": [],
-      "perioderUtenAktivitet": [],
-      "perioderUkjentAktivitet": []
-    },
     "flyttegrunn": {
       "personligSituasjon": "F002 ektfelle flyttegrunn personligSituasjon",
       "perioder": [
@@ -582,11 +549,6 @@
         }
       }
     ],
-    "aktivitet": {
-      "perioderMedAktivitet": [],
-      "perioderUtenAktivitet": [],
-      "perioderUkjentAktivitet": []
-    },
     "flyttegrunn": {
       "personligSituasjon": "F002 annenPerson personligSituasjon",
       "perioder": [

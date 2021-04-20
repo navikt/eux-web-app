@@ -1,4 +1,4 @@
-import { FamilieRelasjon } from 'declarations/types'
+import { OldFamilieRelasjon } from 'declarations/types'
 
 export default {
   fnr: '12345678901',
@@ -8,4 +8,4 @@ export default {
   kjoenn: 'M',
   fornavn: 'Ola',
   etternavn: 'Nordmann'
-} as FamilieRelasjon
+} as OldFamilieRelasjon

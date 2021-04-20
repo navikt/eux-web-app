@@ -152,7 +152,7 @@ const Adresser: React.FC<AdresseProps> = ({
     _setNewBygning('')
     _setNewRegion('')
     _setNewLand('')
-    resetValidation(undefined)
+    resetValidation()
   }
 
   const onCancel = () => {
@@ -175,13 +175,13 @@ const Adresser: React.FC<AdresseProps> = ({
 
   const onAdd = () => {
     const newAdresse: Adresse = {
-        bygning: _newBygning,
-        region: _newRegion,
-        postnummer: _newPostnummer,
-        by: _newBy,
-        gate: _newGate,
-        land: _newLand,
-        type: _newType
+      bygning: _newBygning,
+      region: _newRegion,
+      postnummer: _newPostnummer,
+      by: _newBy,
+      gate: _newGate,
+      land: _newLand,
+      type: _newType
     }
     const valid: boolean = performValidation({
       adresse: newAdresse,
@@ -207,7 +207,7 @@ const Adresser: React.FC<AdresseProps> = ({
   const renderRow = (a: Adresse | null, i: number) => {
     const key = a ? getKey(a) : 'new'
     const candidateForDeletion = i < 0 ? false : !!key && _confirmDelete.indexOf(key) >= 0
-
+    const idx = (i >= 0 ? '[' + i + ']' : '')
     return (
       <>
         <AlignStartRow className={classNames('slideInFromLeft')}>
@@ -215,11 +215,11 @@ const Adresser: React.FC<AdresseProps> = ({
             <HighContrastRadioPanelGroup
               checked={i < 0 ? _newType : a!.type}
               data-no-border
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-type-text'}
+              data-test-id={'c-' + namespace + idx + '-type-text'}
               feil={getErrorFor(i, 'type')}
-              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-type-text'}
+              id={'c-' + namespace + idx + '-type-text'}
               legend={t('label:adresse')}
-              name={namespace + (i >= 0 ? '[' + i + ']' : '') + '-type'}
+              name={namespace + idx + '-type'}
               radios={[
                 { label: t('label:bostedsland'), value: 'bosted' },
                 { label: t('label:oppholdsland'), value: 'opphold' }
@@ -230,10 +230,10 @@ const Adresser: React.FC<AdresseProps> = ({
             <HighContrastRadioPanelGroup
               checked={i < 0 ? _newType : a!.type}
               data-no-border
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-type-text'}
+              data-test-id={'c-' + namespace + idx + '-type-text'}
               feil={getErrorFor(i, 'type')}
-              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-type-text'}
-              name={namespace + (i >= 0 ? '[' + i + ']' : '') + '-type'}
+              id={'c-' + namespace + idx + '-type-text'}
+              name={namespace + idx + '-type'}
               radios={[
                 { label: t('label:kontaktadresse'), value: 'kontakt' },
                 { label: t('label:annet'), value: 'annet' }
@@ -250,9 +250,9 @@ const Adresser: React.FC<AdresseProps> = ({
         >
           <Column data-flex='2'>
             <HighContrastInput
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-gate-text'}
+              data-test-id={'c-' + namespace + idx + '-gate-text'}
               feil={getErrorFor(i, 'gate')}
-              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-gate-text'}
+              id={'c-' + namespace + idx + '-gate-text'}
               label={t('label:gateadresse')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGate(e.target.value, i)}
               value={i < 0 ? _newGate : a?.gate}
@@ -260,9 +260,9 @@ const Adresser: React.FC<AdresseProps> = ({
           </Column>
           <Column>
             <HighContrastInput
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-bygning-text'}
+              data-test-id={'c-' + namespace + idx + '-bygning-text'}
               feil={getErrorFor(i, 'bygning')}
-              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-bygning-text'}
+              id={'c-' + namespace + idx + '-bygning-text'}
               label={t('label:bygning')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBygning(e.target.value, i)}
               value={i < 0 ? _newBygning : a?.bygning}
@@ -277,9 +277,9 @@ const Adresser: React.FC<AdresseProps> = ({
         >
           <Column>
             <HighContrastInput
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-postnummer-text'}
+              data-test-id={'c-' + namespace +idx + '-postnummer-text'}
               feil={getErrorFor(i, 'postnummer')}
-              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-postnummer-text'}
+              id={'c-' + namespace + idx + '-postnummer-text'}
               label={t('label:postnummer')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPostnummer(e.target.value, i)}
               value={i < 0 ? _newPostnummer : a?.postnummer}
@@ -287,9 +287,9 @@ const Adresser: React.FC<AdresseProps> = ({
           </Column>
           <Column data-flex='2'>
             <HighContrastInput
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-by-text'}
+              data-test-id={'c-' + namespace + idx + '-by-text'}
               feil={getErrorFor(i, 'by')}
-              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-by-text'}
+              id={'c-' + namespace + idx + '-by-text'}
               label={t('label:by')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBy(e.target.value, i)}
               value={i < 0 ? _newBy : a?.by}
@@ -304,9 +304,9 @@ const Adresser: React.FC<AdresseProps> = ({
         >
           <Column data-flex='1.5'>
             <HighContrastInput
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-region-text'}
+              data-test-id={'c-' + namespace + idx + '-region-text'}
               feil={getErrorFor(i, 'region')}
-              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-region-text'}
+              id={'c-' + namespace + idx + '-region-text'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRegion(e.target.value, i)}
               value={i < 0 ? _newRegion : a?.region}
               label={t('label:region')}
@@ -314,9 +314,9 @@ const Adresser: React.FC<AdresseProps> = ({
           </Column>
           <Column data-flex='1.5'>
             <CountrySelect
-              data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-land-text'}
+              data-test-id={'c-' + namespace + idx + '-land-text'}
               error={getErrorFor(i, 'land')}
-              id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-land-text'}
+              id={'c-' + namespace + idx + '-land-text'}
               label={t('label:land')}
               menuPortalTarget={document.body}
               includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}

@@ -14,6 +14,8 @@ export type ReplySed = F002Sed | U002Sed | U004Sed | U017Sed
 
 export type JaNei = 'ja' | 'nei'
 
+export type PensjonsType = 'alderspensjon' | 'uførhet'
+
 export interface Adresse {
   by?: string
   bygning?: string
@@ -28,18 +30,6 @@ export interface Periode {
   startdato: string
   sluttdato?: string
   aapenPeriodeType?: string
-}
-
-export interface Aktivitet {
-  type?: string
-  ytterligereinfo ?: string
-  perioder: Array<Periode>
-}
-
-export interface Aktiviteter {
-  perioderMedAktivitet?: Array<Aktivitet>
-  perioderUtenAktivitet?: Array<Aktivitet>
-  perioderUkjentAktivitet?:Array<Aktivitet>
 }
 
 export interface PensjonPeriode {
@@ -74,11 +64,11 @@ export interface Flyttegrunn {
   personligSituasjon: string
 }
 
-export interface FamilieRelasjon2 {
+export interface FamilieRelasjon {
   annenRelasjonDato: string
   annenRelasjonPersonNavn: string
   annenRelasjonType: string
-  borSammen: string
+  borSammen: JaNei
   periode: Periode
   relasjonInfo: string
   relasjonType?: RelasjonType
@@ -125,9 +115,8 @@ export interface PersonInfo {
 
 export interface Person {
   adresser ?: Array<Adresse>
-  aktivitet ?: Aktiviteter
   epost ?: Array<Epost>
-  familierelasjoner ?: Array<FamilieRelasjon2>
+  familierelasjoner ?: Array<FamilieRelasjon>
   flyttegrunn ?: Flyttegrunn
   ikkeRettTilYtelser ?: {
     typeGrunn: string
@@ -139,6 +128,8 @@ export interface Person {
   periodeMedTrygd ?: Array<Periode>
   periodeMedYtelser ?: Array<Periode>
   perioderUtenforTrygdeordning ?: Array<Periode>
+  perioderSomAnsatt?: Array<Periode>
+  perioderSomSelvstendig?: Array<Periode>
   personInfo: PersonInfo
   telefon ?: Array<Telefon>
   ytterligereInfo ?: string
