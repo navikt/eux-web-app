@@ -111,7 +111,7 @@ const Family: React.FC<FamilyProps> = ({
         <FamilySubArea>
           <HorizontalSeparatorDiv />
           <Ingress>
-            {t('label:family-relations-in-tps')}
+            {t('label:familierelasjon-i-tps')}
           </Ingress>
           {remainingRelationsFromTPS.map((relation: FamilieRelasjon) => (
             <MarginDiv key={relation.fnr}>
@@ -129,7 +129,7 @@ const Family: React.FC<FamilyProps> = ({
               <HorizontalSeparatorDiv data-size='0.5' />
               <VerticalSeparatorDiv data-size='1.5' />
               <UndertekstBold>
-                ({t('label:family-added-all')})
+                ({t('label:familie-alle-lagt-inn')})
               </UndertekstBold>
             </>
           )}
@@ -138,7 +138,7 @@ const Family: React.FC<FamilyProps> = ({
               <HorizontalSeparatorDiv data-size='0.5' />
               <VerticalSeparatorDiv data-size='1.5' />
               <UndertekstBold>
-                ({t('label:family-none-in-tps')})
+                ({t('label:ingen-familie-i-tps')})
               </UndertekstBold>
             </>
           )}
@@ -147,7 +147,7 @@ const Family: React.FC<FamilyProps> = ({
         <FamilySubArea>
           <HorizontalSeparatorDiv />
           <Ingress>
-            {t('label:family-chosen')}&nbsp;({valgteFamilieRelasjoner ? valgteFamilieRelasjoner.length : 0})
+            {t('label:valgt-familie')}&nbsp;({valgteFamilieRelasjoner ? valgteFamilieRelasjoner.length : 0})
           </Ingress>
           {valgteFamilieRelasjoner && valgteFamilieRelasjoner.map((relation: FamilieRelasjon) => (
             <MarginDiv key={relation.fnr}>
@@ -190,8 +190,8 @@ const Family: React.FC<FamilyProps> = ({
             onClick={toggleViewAbroadPersonForm}
           >
             {_viewAbroadPersonForm
-              ? t('label:hide-form')
-              : t('label:show-form')}
+              ? t('label:skjul-skjema')
+              : t('label:vis-skjema')}
           </Knapp>
         </div>
         <div>
@@ -222,8 +222,8 @@ const Family: React.FC<FamilyProps> = ({
           <VerticalSeparatorDiv />
           <Knapp onClick={toggleViewTPSRelatedForm}>
             {_viewTPSRelatedForm
-              ? t('label:hide-form')
-              : t('label:show-form')}
+              ? t('label:skjul-skjema')
+              : t('label:vis-skjema')}
           </Knapp>
         </div>
       </PileCenterDiv>

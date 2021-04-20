@@ -493,12 +493,12 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
           <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
             <Column>
               <label className='skjemaelement__label'>
-                {t('label:start-date')}
+                {t('label:startdato')}
               </label>
             </Column>
             <Column>
               <label className='skjemaelement__label'>
-                {t('label:end-date')}
+                {t('label:sluttdato')}
               </label>
             </Column>
             <Column />
@@ -521,12 +521,12 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
           <Row className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
             <Column>
               <label className='skjemaelement__label'>
-                {t('label:start-date')}
+                {t('label:startdato')}
               </label>
             </Column>
             <Column>
               <label className='skjemaelement__label'>
-                {t('label:end-date')}
+                {t('label:sluttdato')}
               </label>
             </Column>
             <Column />
@@ -549,12 +549,12 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
           <Row className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
             <Column>
               <label className='skjemaelement__label'>
-                {t('label:start-date')}
+                {t('label:startdato')}
               </label>
             </Column>
             <Column>
               <label className='skjemaelement__label'>
-                {t('label:end-date')}
+                {t('label:sluttdato')}
               </label>
             </Column>
             <Column />

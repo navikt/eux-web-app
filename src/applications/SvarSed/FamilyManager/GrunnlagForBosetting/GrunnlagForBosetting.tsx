@@ -196,7 +196,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
               data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-startdato-date'}
               feil={getErrorFor(i, 'startdato')}
               id={'c-' + namespace + '[' + i + ']-startdato-date'}
-              label={t('label:start-date')}
+              label={t('label:startdato')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value, i)}
               placeholder={t('el:placeholder-date-default')}
               value={i < 0 ? _newStartDato : p?.startdato}
@@ -207,7 +207,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
               data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-date'}
               feil={getErrorFor(i, 'sluttdato')}
               id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-date'}
-              label={t('label:end-date')}
+              label={t('label:sluttdato')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value, i)}
               placeholder={t('el:placeholder-date-default')}
               value={i < 0 ? _newSluttDato : p?.sluttdato}
@@ -268,7 +268,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
             id={'c-' + namespace + '-avsenderdato-text'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAvsenderDato(e.target.value)}
             value={flyttegrunn.datoFlyttetTilAvsenderlandet}
-            label={t('label:moving-date-sender')}
+            label={t('label:flyttedato-til-avsenderlandet')}
             placeholder={t('el:placeholder-date-default')}
           />
         </Column>
@@ -282,7 +282,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
             id={'c-' + namespace + '-mottakerdato-text'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMottakerDato(e.target.value)}
             value={flyttegrunn.datoFlyttetTilMottakerlandet}
-            label={t('label:moving-date-receiver')}
+            label={t('label:flyttedato-til-mottakerslandet')}
             placeholder={t('el:placeholder-date-default')}
           />
         </Column>
@@ -296,7 +296,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
               data-test-id={'c-' + namespace + '-elementer-text'}
               feil={validation[+namespace + '-elementer']}
               id={'c-' + namespace + '-elementer-text'}
-              label={t('label:elements-of-personal-situation')}
+              label={t('label:elementter-i-personlig-situasjon')}
               maxLength={500}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setElementsOfPersonalSituation(e.target.value)}
               placeholder={t('el:placeholder-input-default')}

@@ -182,7 +182,7 @@ const Motregning: React.FC<MotregningProps> = ({
               data-test-id={'c-' + namespace + '-navnogbetegnelse' + (index >= 0 ? '[' + index + ']' : '') + '-navn-text'}
               feil={getErrorFor(index, 'navn')}
               id={'c-' + namespace + '-navnogbetegnelse' + (index >= 0 ? '[' + index + ']' : '') + '-navn-text'}
-              label={t('label:children-name')}
+              label={t('label:barnets-navn')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNavn(e.target.value, index)}
               placeholder={t('el:placeholder-input-default')}
               value={index < 0 ? _newNavn : nob?.navn}
@@ -193,7 +193,7 @@ const Motregning: React.FC<MotregningProps> = ({
               data-test-id={'c-' + namespace + '-navnogbetegnelse' + (index >= 0 ? '[' + index + ']' : '') + '-betegnelsepåytelse-text'}
               feil={getErrorFor(index, 'betegnelsepåytelse')}
               id={'c-' + namespace + '-navnogbetegnelse' + (index >= 0 ? '[' + index + ']' : '') + '-betegnelsepåytelse-text'}
-              label={t('label:benefit-cause')}
+              label={t('label:betegnelse-på-ytelse')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBetegnelse(e.target.value, index)}
               placeholder={t('el:placeholder-input-default')}
               value={index < 0 ? _newBetegnelse : nob?.betegnelsePåYtelse}
@@ -259,14 +259,14 @@ const Motregning: React.FC<MotregningProps> = ({
                 >
                   <Add />
                   <HorizontalSeparatorDiv data-size='0.5' />
-                  {t('el:button-add-new-x', { x: t('label:children').toLowerCase() })}
+                  {t('el:button-add-new-x', { x: t('label:barn').toLowerCase() })}
                 </HighContrastFlatknapp>
               </Column>
             </Row>
             )}
         <VerticalSeparatorDiv data-size='2' />
         <UndertekstBold>
-          {t('label:family-benefits-information')}
+          {t('label:informasjon-om-familieytelser')}
         </UndertekstBold>
         <VerticalSeparatorDiv />
         <AlignStartRow
@@ -280,18 +280,18 @@ const Motregning: React.FC<MotregningProps> = ({
               id={'c-' + namespace + '-amount-number'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setAmount(e.target.value)}
               value={_amount}
-              label={t('label:amount')}
+              label={t('label:beløp')}
               placeholder={t('el:placeholder-input-default')}
             />
           </Column>
           <Column>
             <CountrySelect
-              ariaLabel={t('label:currency')}
+              ariaLabel={t('label:valuta')}
               data-test-id={'c-' + namespace + '-currency-text'}
               error={validation[namespace + '-currency']?.feilmelding}
               highContrast={highContrast}
               id={'c-' + namespace + '-currency-text'}
-              label={t('label:currency')}
+              label={t('label:valuta')}
               locale='nb'
               menuPortalTarget={document.body}
               onOptionSelected={(country: Country) => _setCurrency(country)}
@@ -313,7 +313,7 @@ const Motregning: React.FC<MotregningProps> = ({
               feil={_validation[namespace + '-startdato']?.feilmelding}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value)}
               value={_startDato}
-              label={t('label:start-date') + ' (' + t('label:grant').toLowerCase() + ')'}
+              label={t('label:startdato') + ' (' + t('label:innvilgelse').toLowerCase() + ')'}
               placeholder={t('el:placeholder-date-default')}
             />
           </Column>
@@ -324,7 +324,7 @@ const Motregning: React.FC<MotregningProps> = ({
               feil={_validation[namespace + '-sluttdato']?.feilmelding}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value)}
               value={_sluttDato}
-              label={t('label:end-date') + ' (' + t('label:grant').toLowerCase() + ')'}
+              label={t('label:sluttdato') + ' (' + t('label:innvilgelse').toLowerCase() + ')'}
               placeholder={t('el:placeholder-date-default')}
             />
           </Column>
@@ -342,7 +342,7 @@ const Motregning: React.FC<MotregningProps> = ({
               feil={_validation[namespace + '-frequency']?.feilmelding}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setFrequency(e.target.value)}
               value={_frequency}
-              label={t('label:period-frequency')}
+              label={t('label:periode-avgrensing')}
               placeholder={t('el:placeholder-input-default')}
             />
           </Column>
@@ -360,7 +360,7 @@ const Motregning: React.FC<MotregningProps> = ({
               feil={_validation[namespace + '-receiver']?.feilmelding}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setReceiver(e.target.value)}
               value={_receiver}
-              label={t('label:receiver-name')}
+              label={t('label:mottakers-navn')}
               placeholder={t('el:placeholder-input-default')}
             />
           </Column>
@@ -405,7 +405,7 @@ const Motregning: React.FC<MotregningProps> = ({
                 data-test-id={'c-' + namespace + '-ytterligereinformasjon-text'}
                 feil={validation[namespace + '-ytterligereinformasjon']?.feilmelding}
                 id={'c-' + namespace + '-ytterligereinformasjon-text'}
-                label={t('label:additional-information')}
+                label={t('label:ytterligere-informasjon')}
                 maxLength={500}
                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => _setYtterligereInformasjon(e.target.value)}
                 placeholder={t('el:placeholder-input-default')}

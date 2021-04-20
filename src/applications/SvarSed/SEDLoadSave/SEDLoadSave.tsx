@@ -89,12 +89,12 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
           {_savedEntries === null || _.isEmpty(_savedEntries)
             ? (
               <Normaltekst>
-                {t('label:no-saved-replyseds')}
+                {t('label:ingen-lagrende-seds')}
               </Normaltekst>
               )
             : (
               <Normaltekst>
-                {t('label:saved-replyseds')}
+                {t('label:lagrede-seds')}
               </Normaltekst>
               )}
           <VerticalSeparatorDiv />
@@ -107,7 +107,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
                     <FlexCenterDiv>
                       <FlexBaseDiv>
                         <UndertekstBold>
-                          {t('label:name') + ': '}
+                          {t('label:navn') + ': '}
                         </UndertekstBold>
                         <HorizontalSeparatorDiv data-size='0.5' />
                         <Normaltekst>
@@ -117,7 +117,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
                       <HorizontalSeparatorDiv />
                       <FlexBaseDiv>
                         <UndertekstBold>
-                          {t('label:date') + ': '}
+                          {t('label:dato') + ': '}
                         </UndertekstBold>
                         <HorizontalSeparatorDiv data-size='0.5' />
                         <Normaltekst>

@@ -252,7 +252,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             <Input
               data-test-id='familierelasjoner__input-fnr-id'
               feil={_validation.fnr ? _validation.fnr.feilmelding : undefined}
-              label={t('label:abroad-id')}
+              label={t('label:utenlandsk-id')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 updateRelation('fnr', e)
                 resetValidation('fnr')
@@ -303,7 +303,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             <Input
               data-test-id='familierelasjoner__input-fornavn'
               feil={_validation.fornavn ? _validation.fornavn.feilmelding : undefined}
-              label={t('label:firstname')}
+              label={t('label:fornavn')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 updateRelation('fornavn', e)
                 resetValidation('fornavn')
@@ -317,7 +317,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             <Input
               data-test-id='familierelasjoner__input-etternavn'
               feil={_validation.etternavn ? _validation.etternavn.feilmelding : undefined}
-              label={t('label:lastname')}
+              label={t('label:etternavn')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 updateRelation('etternavn', e)
                 resetValidation('etternavn')
@@ -333,7 +333,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               data-test-id='familierelasjoner__select-kjoenn'
               feil={_validation.kjoenn ? _validation.kjoenn.feilmelding : undefined}
               id='familierelasjoner__select-kjoenn'
-              label={t('label:gender')}
+              label={t('label:kjønn')}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                 updateRelation('kjoenn', e)
                 resetValidation('kjoenn')
@@ -357,7 +357,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             <Input
               data-test-id='familierelasjoner__input-fdato'
               feil={_validation.fdato ? _validation.fdato.feilmelding : undefined}
-              label={t('label:birthdate')}
+              label={t('label:fødselsdato')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 updateRelation('fdato', e)
                 resetValidation('fdato')
@@ -374,7 +374,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             <Select
               data-test-id='familierelasjoner__input-familierelasjon'
               feil={_validation.rolle ? _validation.rolle.feilmelding : undefined}
-              label={t('label:family-relationship')}
+              label={t('label:familierelasjon')}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                 updateRelation('rolle', e)
                 resetValidation('rolle')

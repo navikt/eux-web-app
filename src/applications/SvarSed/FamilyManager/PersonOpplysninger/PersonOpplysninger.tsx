@@ -134,7 +134,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             id={'c-' + namespace + '-fornavn-text'}
             onChange={onFornavnChange}
             value={personInfo.fornavn}
-            label={t('label:firstname') + ' *'}
+            label={t('label:fornavn') + ' *'}
           />
         </Column>
         <Column>
@@ -144,7 +144,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             id={'c-' + namespace + '-etternavn-text'}
             onChange={onEtternavnChange}
             value={personInfo.etternavn}
-            label={t('label:lastname') + ' *'}
+            label={t('label:etternavn') + ' *'}
           />
         </Column>
         <Column>
@@ -155,7 +155,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             onChange={onFodselsdatoChange}
             value={personInfo.foedselsdato}
             placeholder={t('el:placeholder-date-default')}
-            label={t('label:birthdate') + ' *'}
+            label={t('label:fødselsdato') + ' *'}
           />
         </Column>
       </AlignStartRow>
@@ -168,13 +168,13 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             data-test-id={'c-' + namespace + '-kjoenn-text'}
             feil={validation[namespace + '-kjoenn']?.feilmelding}
             id={'c-' + namespace + '-kjoenn-text'}
-            legend={t('label:gender') + ' *'}
+            legend={t('label:kjønn') + ' *'}
             name={namespace + '-kjoenn'}
             onChange={onKjoennChange}
             radios={[
-              { label: t(personID?.startsWith('barn') ? 'label:girl' : 'label:woman'), value: 'K' },
-              { label: t(personID?.startsWith('barn') ? 'label:boy' : 'label:man'), value: 'M' },
-              { label: t('label:unknown'), value: 'U' }
+              { label: t(personID?.startsWith('barn') ? 'label:jente' : 'label:kvinne'), value: 'K' },
+              { label: t(personID?.startsWith('barn') ? 'label:gutt' : 'label:mann'), value: 'M' },
+              { label: t('label:ukjent'), value: 'U' }
             ]}
           />
         </Column>
@@ -213,7 +213,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             data-test-id={'c-' + namespace + '-norskpin-nummer-text'}
             feil={validation[namespace + '-norskpin-nummer']?.feilmelding}
             id={'c-' + namespace + '-norskpin-nummer-text'}
-            label={t('label:norwegian-fnr')}
+            label={t('label:norsk-fnr')}
             onChange={onNorwegianPinChange}
             value={_.find(personInfo.pin, p => p.land === 'NO')?.identifikator}
           />
@@ -245,7 +245,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
               )
             : (
               <Normaltekst>
-                {t('label:norwegian-fnr-description')}
+                {t('label:norsk-fnr-beskrivelse')}
               </Normaltekst>
               )}
         </Column>
@@ -254,7 +254,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.5s' }}>
         <Column>
           <Undertittel>
-            {t('label:birthplace')}
+            {t('label:fødested')}
           </Undertittel>
         </Column>
       </AlignStartRow>
@@ -307,7 +307,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
               >
                 <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('el:button-add-birthplace')}
+                {t('el:button-add-new-x', {x: t('label:fødested')})}
               </HighContrastFlatknapp>
             </Column>
           </AlignStartRow>

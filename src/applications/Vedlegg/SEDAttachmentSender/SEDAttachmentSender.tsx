@@ -133,7 +133,7 @@ const SEDAttachmentSender: React.FC<SEDAttachmentSenderProps> = ({
             current: current,
             total: total
           })}
-          {_status === 'done' && t('label:attachments-Sent')}
+          {_status === 'done' && t('label:vedlegg-sendt')}
           {_status === 'error' && t('message:error-sending-attachments')}
         </>
       </ProgressBar>

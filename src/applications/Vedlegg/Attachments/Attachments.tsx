@@ -44,13 +44,13 @@ const Attachments: React.FC<AttachmentsProps> = ({
     <>
       <VerticalSeparatorDiv data-size='2' />
       <label className='skjemaelement__label'>
-        {t('label:attachments')}
+        {t('label:vedlegg')}
       </label>
       <VerticalSeparatorDiv />
       <HighContrastKnapp
         onClick={() => setAttachmentsTableVisible(!_attachmentsTableVisible)}
       >
-        {t('label:show-attachments-table')}
+        {t('label:vis-vedlegg-tabell')}
       </HighContrastKnapp>
       <VerticalSeparatorDiv />
       {_attachmentsTableVisible && (

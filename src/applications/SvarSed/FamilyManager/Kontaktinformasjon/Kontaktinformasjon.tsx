@@ -353,7 +353,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
               >
                 <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('el:button-add-new-x', { x: t('label:telefon').toLowerCase() })}
+                {t('el:button-add-new-x', { x: t('label:telefonnummer').toLowerCase() })}
               </HighContrastFlatknapp>
             </Column>
           </Row>

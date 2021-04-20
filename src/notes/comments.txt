@@ -21,3 +21,6 @@ fazer a equivalências de arbeidsgiver => perioder
 . input
     onChange:
 
+
+
+ grep -rho -e "'label:[^']*'" * | sort -u

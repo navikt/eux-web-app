@@ -90,7 +90,7 @@ ok c-familymanager-{personID}-personopplysninger-fodested-by-text          - {GL
 ok c-familymanager-{personID}-personopplysninger-fodested-region-text      - {GLOBAL} {person}.personInfo.pinMangler.fodested.region
 ok c-familymanager-{personID}-personopplysninger-fodested-land-text        - {GLOBAL} {person}.personInfo.pinMangler.fodested.land
 
-ok c-familymanager-{personID}-personensstatus-type-text                          - {INTERNAL} {person}.aktivitet.perioderMedAktivitet.type = 'ansatt'
+ok c-familymanager-{personID}-personensstatus-type-text                          - {INTERNAL} {person}.aktivitet.perioderMedAktivitet[type='ansatt']
 ok c-familymanager-{personID}-personensstatus-avsenderlandet[{i}]-startdato-date - {CONNECTED!} {person}.aktivitet.perioderMedTrygd[].startdato
 ok c-familymanager-{personID}-personensstatus-avsenderlandet[{i}]-sluttdato-date - {CONNECTED!} {person}.aktivitet.perioderMedTrygd[].sluttdato
 ok c-familymanager-{personID}-personensstatus-ansatt-startdato-date              - {INTERNAL} not used
@@ -100,9 +100,9 @@ ok c-familymanager-{personID}-personensstatus-ansatt-navn-text                  
 
 c-familymanager-{personID}-personensstatus-notansatt-startdato-date            - {INTERNAL} not used
 c-familymanager-{personID}-personensstatus-notansatt-sluttdato-date            - {INTERNAL} not used
-c-familymanager-{personID}-personensstatus-notansatt-comment-text              - {?????}
-c-familymanager-{personID}-personensstatus-notansatt[{i}]-startdato-date       - {?????}
-c-familymanager-{personID}-personensstatus-notansatt[{i}]-sluttdato-date       - {?????}
+c-familymanager-{personID}-personensstatus-notansatt-comment-text              - {CONNECTED!} {person}.aktivitet.perioderMedAktivitet[type='ansatt'].ytterligereinfo
+c-familymanager-{personID}-personensstatus-notansatt[{i}]-startdato-date       - {CONNECTED!} {person}.aktivitet.perioderMedAktivitet[type='ansatt'].perioder[].startdato
+c-familymanager-{personID}-personensstatus-notansatt[{i}]-sluttdato-date       - {CONNECTED!} {person}.aktivitet.perioderMedAktivitet[type='ansatt'].perioder[].sluttdato
 c-familymanager-{personID}-personensstatus-withsubsidies-startdato-date        - {INTERNAL} not used
 c-familymanager-{personID}-personensstatus-withsubsidies-sluttdato-date        - {INTERNAL} not used
 c-familymanager-{personID}-personensstatus-withsubsidies-pensjonytpe-text      - {INTERNAL} not used

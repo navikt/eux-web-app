@@ -126,7 +126,7 @@ const Formaal: React.FC<FormaalProps> = ({
             >
               <Add />
               <HorizontalSeparatorDiv data-size='0.5' />
-              {t('el:button-add-new-x', { x: t('label:formaal').toLowerCase() })}
+              {t('el:button-add-new-x', { x: t('label:formål').toLowerCase() })}
             </HighContrastFlatknapp>
           </div>
           )

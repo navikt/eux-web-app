@@ -189,7 +189,7 @@ const Avsenderlandet = ({
               >
                 <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('el:button-add-new-x', { x: t('label:period-in-sender-country').toLowerCase() })}
+                {t('el:button-add-new-x', { x: t('label:trygdeperiode-i-avsenderlandet').toLowerCase() })}
               </HighContrastFlatknapp>
             </Column>
           </Row>

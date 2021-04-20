@@ -159,7 +159,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           id='c-seddetails-søker-fornavn-text'
           onChange={(e: any) => setBrukerFornavn(e.target.value)}
           value={_brukerFornavn}
-          placeholder={t('label:firstname')}
+          placeholder={t('label:fornavn')}
         />
         <HorizontalSeparatorDiv data-size='0.35' />
         <HighContrastInput
@@ -170,7 +170,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           id='c-seddetails-søker-etternavn-text'
           onChange={(e: any) => setBrukerEtternavn(e.target.value)}
           value={_brukerEtternavn}
-          placeholder={t('label:lastname')}
+          placeholder={t('label:etternavn')}
         />
       </FlexDiv>
       <VerticalSeparatorDiv />
@@ -187,7 +187,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           id='c-seddetails-ektefelle-fornavn-text'
           onChange={(e: any) => setEktefelleFornavn(e.target.value)}
           value={_ektefelleFornavn}
-          placeholder={t('label:firstname')}
+          placeholder={t('label:fornavn')}
         />
         <HorizontalSeparatorDiv data-size='0.35' />
         <HighContrastInput
@@ -198,7 +198,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           id='c-seddetails-ektefelle-etternavn-text'
           onChange={(e: any) => setEktefelleEtternavn(e.target.value)}
           value={_ektefelleEtternavn}
-          placeholder={t('label:lastname')}
+          placeholder={t('label:etternavn')}
         />
       </FlexDiv>
       <VerticalSeparatorDiv />
@@ -218,7 +218,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       <VerticalSeparatorDiv data-size='0.5' />
       <div className='slideInFromLeft' style={{ animationDelay: '0.6s' }}>
         <HighContrastRadioGroup
-          legend={t('label:typeKrav')}
+          legend={t('label:type-krav')}
           data-test-id='c-seddetails-typeKrav-text'
           feil={validation['seddetails-typeKrav']
             ? validation['seddetails-typeKrav']!.feilmelding
@@ -242,7 +242,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       <VerticalSeparatorDiv />
       <div className='slideInFromLeft' style={{ animationDelay: '0.7s' }}>
         <HighContrastRadioGroup
-          legend={t('label:application-information')}
+          legend={t('label:informasjon-om-søknaden')}
           data-test-id='c-seddetails-informasjon-text'
           feil={validation['seddetails-informasjon']
             ? validation['seddetails-informasjon']!.feilmelding

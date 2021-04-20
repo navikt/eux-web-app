@@ -212,7 +212,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                         data-test-id={'c-' + namespace + '-navn-text'}
                         feil={_validation[namespace + '-navn']?.feilmelding}
                         id={'c-' + namespace + '-navn-text'}
-                        label={t('label:name')}
+                        label={t('label:navn')}
                         onChange={onNameChanged}
                         placeholder={t('el:placeholder-input-default')}
                         value={_arbeidsgiverNavn}
@@ -251,7 +251,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                           data-test-id={'c-' + namespace + '-startdato-date'}
                           feil={_validation[namespace + '-startdato']?.feilmelding}
                           id={'c-' + namespace + '-startdato-date'}
-                          label={t('label:start-date')}
+                          label={t('label:startdato')}
                           onChange={onStartDatoChanged}
                           placeholder={t('el:placeholder-date-default')}
                           value={_startDato}
@@ -262,7 +262,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                           data-test-id={'c-' + namespace + '-sluttdato-date'}
                           feil={_validation[namespace + '-sluttdato']?.feilmelding}
                           id={'c-' + namespace + '-sluttdato-date'}
-                          label={t('label:end-date')}
+                          label={t('label:sluttdato')}
                           onChange={onSluttDatoChanged}
                           placeholder={t('el:placeholder-date-default')}
                           value={_sluttDato}
@@ -274,10 +274,10 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                 : (
                   <div>
                     <Normaltekst>
-                      {t('label:start-date')}:&nbsp;{formatterDatoTilNorsk(_startDato)}
+                      {t('label:startdato')}:&nbsp;{formatterDatoTilNorsk(_startDato)}
                     </Normaltekst>
                     <Normaltekst>
-                      {t('label:end-date')}:&nbsp;{formatterDatoTilNorsk(_sluttDato)}
+                      {t('label:sluttdato')}:&nbsp;{formatterDatoTilNorsk(_sluttDato)}
                     </Normaltekst>
                   </div>
                   )}
@@ -312,7 +312,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
               <Checkbox
                 checked={selected}
                 onChange={onSelectCheckboxClicked}
-                label={t('label:choose')}
+                label={t('label:velg')}
               />
             )}
             {_isEditing && (
@@ -341,7 +341,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
           {_isDeleting && (
             <PileCenterDiv className='slideInFromRight'>
               <strong>
-                {t('label:are-you-sure')}
+                {t('label:er-du-sikker')}
               </strong>
               <VerticalSeparatorDiv />
               <FlexDiv>

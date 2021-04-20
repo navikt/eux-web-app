@@ -103,7 +103,7 @@ const Header: React.FC<HeaderProps> = ({ highContrast }: HeaderProps): JSX.Eleme
               handleHighContrastToggle()
             }}
           >
-            {t('label:highContrast')}
+            {t('label:høy-kontrast')}
           </HighContrastLink>
           <HorizontalSeparatorDiv />
           {saksbehandler && saksbehandler.navn && (

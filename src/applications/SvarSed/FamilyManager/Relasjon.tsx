@@ -100,7 +100,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
             data-test-id={'c-' + namespace + '-med-text'}
             feil={validation[namespace + '-relasjon']?.feilmelding}
             id={'c-' + namespace + '-relasjon-text'}
-            legend={t('label:relation-with')}
+            legend={t('label:relasjon-med')}
             name={'c-' + namespace + '-relasjon-text'}
             radios={[
               { label: t('label:søker'), value: '01' },
@@ -146,7 +146,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
       </Row>
       <VerticalSeparatorDiv />
       <UndertekstBold className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
-        {t('label:relation-duration')}
+        {t('label:relasjonens-varighet')}
       </UndertekstBold>
       <VerticalSeparatorDiv />
       <Row className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
@@ -157,7 +157,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
             id={'c-' + namespace + '-startdato-date'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value)}
             value={_newStartDato}
-            label={t('label:start-date')}
+            label={t('label:startdato')}
             placeholder={t('el:placeholder-date-default')}
           />
         </Column>
@@ -168,7 +168,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
             id={'c-' + namespace + '-sluttdato-date'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value)}
             value={_newSluttDato}
-            label={t('label:end-date')}
+            label={t('label:sluttdato')}
             placeholder={t('el:placeholder-date-default')}
           />
         </Column>
@@ -183,11 +183,11 @@ const Relasjon: React.FC<RelasjonProps> = ({
             data-test-id={'c-' + namespace + '-foreldreansvar-text'}
             feil={validation[namespace + '-foreldreansvar']?.feilmelding}
             id={'c-' + namespace + '-foreldreansvar-text'}
-            legend={t('label:shared-custody')}
+            legend={t('label:delt-foreldreansvar')}
             name={'c-' + namespace + '-foreldreansvar-text'}
             radios={[
-              { label: t('label:yes'), value: 'ja' },
-              { label: t('label:no'), value: 'nei' }
+              { label: t('label:ja'), value: 'ja' },
+              { label: t('label:nei'), value: 'nei' }
             ]}
             onChange={(e: any) => setForeldreansvar(e.target.value)}
           />
@@ -196,12 +196,12 @@ const Relasjon: React.FC<RelasjonProps> = ({
       </Row>
       <VerticalSeparatorDiv />
       <UndertekstBold className='slideInFromLeft' style={{ animationDelay: '0.6s' }}>
-        {t('label:children-in-household')}
+        {t('label:barn-i-hustand')}
       </UndertekstBold>
       <AlignCenterRow className='slideInFromLeft' style={{ animationDelay: '0.7s' }}>
         <Column data-flex='2'>
           <Normaltekst>
-            {t('label:children-in-household-question-1')}
+            {t('label:barn-i-hustand-spørsmål-1')}
           </Normaltekst>
         </Column>
         <Column>
@@ -213,8 +213,8 @@ const Relasjon: React.FC<RelasjonProps> = ({
             id={'c-' + namespace + '-bomedsokeren-text'}
             name={namespace + '-bomedsokeren'}
             radios={[
-              { label: t('label:yes'), value: 'ja' },
-              { label: t('label:no'), value: 'nei' }
+              { label: t('label:ja'), value: 'ja' },
+              { label: t('label:nei'), value: 'nei' }
             ]}
             onChange={(e: any) => setQuestion1(e.target.value)}
           />
@@ -223,7 +223,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
       <AlignCenterRow className='slideInFromLeft' style={{ animationDelay: '0.8s' }}>
         <Column data-flex='2'>
           <Normaltekst>
-            {t('label:children-in-household-question-2')}
+            {t('label:barn-i-hustand-spørsmål-2')}
           </Normaltekst>
         </Column>
         <Column>
@@ -235,8 +235,8 @@ const Relasjon: React.FC<RelasjonProps> = ({
             id={'c-' + namespace + '-bomedektefellen-text'}
             name={namespace + '-bomedektefellen'}
             radios={[
-              { label: t('label:yes'), value: 'ja' },
-              { label: t('label:no'), value: 'nei' }
+              { label: t('label:ja'), value: 'ja' },
+              { label: t('label:nei'), value: 'nei' }
             ]}
             onChange={(e: any) => setQuestion2(e.target.value)}
           />
@@ -245,7 +245,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
       <AlignCenterRow className='slideInFromLeft' style={{ animationDelay: '0.9s' }}>
         <Column data-flex='2'>
           <Normaltekst>
-            {t('label:children-in-household-question-3')}
+            {t('label:barn-i-hustand-spørsmål-3')}
           </Normaltekst>
         </Column>
         <Column>
@@ -257,8 +257,8 @@ const Relasjon: React.FC<RelasjonProps> = ({
             id={'c-' + namespace + '-bomedaktuelle-text'}
             name={namespace + '-bomedaktuelle'}
             radios={[
-              { label: t('label:yes'), value: 'ja' },
-              { label: t('label:no'), value: 'nei' }
+              { label: t('label:ja'), value: 'ja' },
+              { label: t('label:nei'), value: 'nei' }
             ]}
             onChange={(e: any) => setQuestion3(e.target.value)}
           />
@@ -267,7 +267,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
       <AlignCenterRow className='slideInFromLeft' style={{ animationDelay: '1.0s' }}>
         <Column data-flex='2'>
           <Normaltekst>
-            {t('label:children-in-household-question-4')}
+            {t('label:barn-i-hustand-spørsmål-4')}
           </Normaltekst>
         </Column>
         <Column>
@@ -279,8 +279,8 @@ const Relasjon: React.FC<RelasjonProps> = ({
             id={'c-' + namespace + '-boiinstitusjon-text'}
             name={namespace + '-boiinstitusjon'}
             radios={[
-              { label: t('label:yes'), value: 'ja' },
-              { label: t('label:no'), value: 'nei' }
+              { label: t('label:ja'), value: 'ja' },
+              { label: t('label:nei'), value: 'nei' }
             ]}
             onChange={(e: any) => setQuestion4(e.target.value)}
           />

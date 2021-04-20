@@ -91,7 +91,7 @@ const SendSEDModal = <CustomLocalStorageContent extends any = any>({
       } as LocalStorageEntry<CustomLocalStorageContent>)
       await window.localStorage.setItem(storageKey, JSON.stringify(newReplySeds, null, 2))
       setSaved(true)
-      setMessage(t('label:saved-svarsed-draft', { name: _name, date: dateString }))
+      setMessage(t('label:lagret-sed-utkast', { name: _name, date: dateString }))
     }
   }
 
@@ -130,7 +130,7 @@ const SendSEDModal = <CustomLocalStorageContent extends any = any>({
                           data-test-id='c-savesedmodal-name-text'
                           feil={_validation['savesedmodal-name']?.feilmelding}
                           id='c-savesedmodal-name-text'
-                          label={t('label:name')}
+                          label={t('label:navn')}
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                           placeholder={t('el:placeholder-input-default')}
                           value={_name}

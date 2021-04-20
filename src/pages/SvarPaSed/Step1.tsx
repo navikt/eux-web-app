@@ -168,7 +168,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
               feil={_validation.saksnummerOrFnr?.feilmelding}
               highContrast={highContrast}
               id='c-step1-saksnummerOrFnr-text'
-              label={t('label:saksnummer-or-fnr')}
+              label={t('label:saksnummer-eller-fnr')}
               onChange={onSaksnummerOrFnrChange}
               placeholder={t('el:placeholder-input-default')}
               value={_saksnummerOrFnr}
@@ -188,7 +188,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
         <VerticalSeparatorDiv />
         {seds && (
           <HighContrastRadioGroup
-            legend={t('label:searchResultsForSaksnummerOrFnr', {
+            legend={t('label:antall-treff-for', {
               antall: seds.length,
               saksnummerOrFnr: _saksnummerOrFnr
             })}
@@ -201,7 +201,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                   className={classNames({ selected: _filter === undefined })}
                   onClick={() => _setFilter(undefined)}
                 >
-                  {t('label:all') + ' (' + seds.length + ')'}
+                  {t('label:alle') + ' (' + seds.length + ')'}
                 </HighContrastFlatknapp>
                 <HorizontalSeparatorDiv />
                 <HighContrastFlatknapp
@@ -210,7 +210,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                   className={classNames({ selected: _filter === 'FB_' })}
                   onClick={() => _setFilter('FB_')}
                 >
-                  {t('label:family-benefits') + ' (' + _.filter(seds, (s: Sed) => s.sakType.startsWith('FB_')).length + ')'}
+                  {t('label:familieytelser') + ' (' + _.filter(seds, (s: Sed) => s.sakType.startsWith('FB_')).length + ')'}
                 </HighContrastFlatknapp>
                 <HorizontalSeparatorDiv />
               </FilterDiv>
@@ -236,7 +236,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                           <HorizontalSeparatorDiv />
                           <HighContrastLink href={sed.sakUrl}>
                             <span>
-                              {t('label:goToRina')}
+                              {t('label:gå-til-rina')}
                             </span>
                             <HorizontalSeparatorDiv data-size='0.35' />
                             <ExternalLink />
@@ -253,7 +253,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                         </FlexDiv>
                         <VerticalSeparatorDiv data-size='0.3' />
                         <Etikett>
-                          {t('label:lastModified') + ': ' + sed.sistEndretDato}
+                          {t('label:siste-oppdatert') + ': ' + sed.sistEndretDato}
                         </Etikett>
                       </>
                   )}
@@ -296,7 +296,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                                   >
                                     {queryingReplySed
                                       ? t('message:loading-replying')
-                                      : t('label:reply-with', {
+                                      : t('label:besvar-med', {
                                         sedtype: connectedSed.svarsedType
                                       })}
                                   </HighContrastHovedknapp>
@@ -305,7 +305,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                             </FlexStartDiv>
                             <HighContrastLink href={connectedSed.sedUrl}>
                               <span>
-                                {t('label:goToSedInRina')}
+                                {t('label:gå-til-sed-i-rina')}
                               </span>
                               <HorizontalSeparatorDiv data-size='0.35' />
                               <ExternalLink />
@@ -313,7 +313,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                             <VerticalSeparatorDiv data-size='0.35' />
                             <div>
                               <Etikett>
-                                {t('label:lastModified') + ': ' + connectedSed.sistEndretDato}
+                                {t('label:siste-oppdatert') + ': ' + connectedSed.sistEndretDato}
                               </Etikett>
                             </div>
                           </PileDiv>

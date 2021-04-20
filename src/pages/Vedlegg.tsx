@@ -152,7 +152,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
               data-test-id='vedlegg-journalpostID'
               label={(
                 <FlexDiv>
-                  {t('label:journalpostID')}
+                  {t('label:journalpost-id')}
                   <HorizontalSeparatorDiv data-size='0.35' />
                   <Hjelpetekst id='journalPostID'>
                     {t('message:help-journalpostID')}
@@ -170,7 +170,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
               data-test-id='vedlegg-dokumentID'
               label={(
                 <FlexDiv>
-                  {t('label:dokumentID')}
+                  {t('label:dokument-id')}
                   <HorizontalSeparatorDiv data-size='0.35' />
                   <Hjelpetekst id='dokumentID'>
                     {t('message:help-dokumentID')}
@@ -197,17 +197,17 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
               disabled={sendingVedlegg}
               spinner={sendingVedlegg}
             >
-              {sendingVedlegg ? t('message:loading-sendingVedlegg') : t('label:sendVedlegg')}
+              {sendingVedlegg ? t('message:loading-sendingVedlegg') : t('label:send-vedlegg')}
             </Hovedknapp>
             {vedlegg && (
               <>
                 <VerticalSeparatorDiv />
                 <AlertStripe type='suksess'>
                   <div>
-                    <div>{t('label:attached')}: {vedlegg.filnavn || vedlegg.vedleggID}</div>
+                    <div>{t('label:vedlagte')}: {vedlegg.filnavn || vedlegg.vedleggID}</div>
                     {vedlegg.url && (
                       <Link href={vedlegg.url} rel='noreferrer' target='_blank'>
-                        {t('label:goToRina')}
+                        {t('label:gå-til-rina')}
                       </Link>
                     )}
                   </div>

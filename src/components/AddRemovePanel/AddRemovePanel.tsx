@@ -34,7 +34,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
     ? (
       <FlexCenterDiv className={classNames('slideInFromRight', { nolabel: marginTop })}>
         <Normaltekst>
-          {t('label:are-you-sure')}
+          {t('label:er-du-sikker')}
         </Normaltekst>
         <HorizontalSeparatorDiv data-size='0.5' />
         <HighContrastFlatknapp
@@ -42,7 +42,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
           kompakt
           onClick={onConfirmRemove}
         >
-          {t('label:yes')}
+          {t('label:ja')}
         </HighContrastFlatknapp>
         <HorizontalSeparatorDiv data-size='0.5' />
         <HighContrastFlatknapp
@@ -50,7 +50,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
           kompakt
           onClick={onCancelRemove}
         >
-          {t('label:no')}
+          {t('label:nei')}
         </HighContrastFlatknapp>
       </FlexCenterDiv>
       )

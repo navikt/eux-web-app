@@ -274,7 +274,7 @@ const FamilyManager: React.FC = () => {
               ? (
                 <Undertittel style={{ whiteSpace: 'nowrap' }}>
                   {personId === 'familie' ?
-                    t('label:whole-family') :
+                    t('label:hele-familien') :
                     personInfo?.fornavn + ' ' + personInfo?.etternavn +
                     (personInfo?.statsborgerskap ? ' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')' : '')
                   }
@@ -283,7 +283,7 @@ const FamilyManager: React.FC = () => {
               : (
                 <Normaltekst style={{ whiteSpace: 'nowrap' }}>
                   {personId === 'familie' ?
-                    t('label:whole-family') :
+                    t('label:hele-familien') :
                     personInfo?.fornavn + ' ' + personInfo?.etternavn +
                     (personInfo?.statsborgerskap ? ' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')' : '')
                   }
@@ -373,7 +373,7 @@ const FamilyManager: React.FC = () => {
               >
                 <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('el:button-add-person')}
+                {t('el:button-add-new-x', {x: t('label:person')})}
               </HighContrastFlatknapp>
             </MarginDiv>
           </LeftDiv>
@@ -382,7 +382,7 @@ const FamilyManager: React.FC = () => {
               ? (
                 <RightFlexCenterDiv>
                   {gettingPerson ? t('message:loading-getting-person') : undefined}
-                  {!_editCurrentPersonID ? t('label:no-person-selected') : undefined}
+                  {!_editCurrentPersonID ? t('label:velg-personer') : undefined}
                 </RightFlexCenterDiv>
                 )
               : (

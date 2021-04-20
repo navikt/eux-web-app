@@ -54,9 +54,9 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
   const namespace = 'familymanager-' + personID + '-familieytelser'
 
   const benefitCauseOptions: Options = [{
-    label: t('el:option-benefitCause-barnetrygd'), value: 'Barnetrygd'
+    label: t('el:option-familieytelser-barnetrygd'), value: 'Barnetrygd'
   }, {
-    label: t('el:option-benefitCause-kontantstøtte'), value: 'Kontantstøtte'
+    label: t('el:option-familieytelser-kontantstøtte'), value: 'Kontantstøtte'
   }]
 
   const setNumber = (e: string) => {
@@ -104,7 +104,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             error={validation[namespace + '-benefitCause']?.feilmelding}
             highContrast={highContrast}
             id={'c-' + namespace + '-benefitCause-text'}
-            label={t('label:benefit-cause')}
+            label={t('label:betegnelse-på-ytelse')}
             menuPortalTarget={document.body}
             onChange={(e: any) => setBenefitCause(e.value)}
             options={benefitCauseOptions}
@@ -120,7 +120,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             id={'c-' + namespace + '-number-text'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNumber(e.target.value)}
             value={_newNumber}
-            label={t('label:grant-number')}
+            label={t('label:antall-innvilges')}
             placeholder={t('el:placeholder-input-default')}
           />
         </Column>
@@ -136,7 +136,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             value={_newAmount}
             label={(
               <FlexCenterDiv>
-                <span>{t('label:amount')}</span>
+                <span>{t('label:beløp')}</span>
                 <HorizontalSeparatorDiv data-size='0.5' />
                 <Tooltip placement='top' trigger={['hover']} overlay={<span>{t('message:help-familieytelser-beløp')}</span>}>
                   <HelpProperIcon className='hjelpetekst__ikon' />
@@ -148,12 +148,12 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
         </Column>
         <Column>
           <CountrySelect
-            ariaLabel={t('label:currency')}
+            ariaLabel={t('label:valuta')}
             data-test-id={'c-' + namespace + '-currency-text'}
             error={validation[namespace + '-currency']?.feilmelding}
             highContrast={highContrast}
             id={'c-' + namespace + '-currency-text'}
-            label={t('label:currency')}
+            label={t('label:valuta')}
             locale='nb'
             menuPortalTarget={document.body}
             onOptionSelected={(country: Country) => setCurrency(country)}
@@ -175,7 +175,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             id={'c-' + namespace + '-startdato-date'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value)}
             value={_newStartDato}
-            label={t('label:start-date')}
+            label={t('label:startdato')}
             placeholder={t('el:placeholder-date-default')}
           />
         </Column>
@@ -186,7 +186,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             id={'c-' + namespace + '-sluttdato-date'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value)}
             value={_newSluttDato}
-            label={t('label:end-date')}
+            label={t('label:sluttdato')}
             placeholder={t('el:placeholder-date-default')}
           />
         </Column>
@@ -200,7 +200,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             id={'c-' + namespace + '-receiver-text'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setReceiver(e.target.value)}
             value={_newReceiver}
-            label={t('label:receiver-name')}
+            label={t('label:mottakers-navn')}
             placeholder={t('el:placeholder-input-default')}
           />
         </Column>
@@ -215,10 +215,10 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             id={'c-' + namespace + '-frequency-text'}
             feil={validation[namespace + '-frequency']?.feilmelding}
             name={namespace + '-frequency'}
-            legend={t('label:period-frequency')}
+            legend={t('label:periode-avgrensing')}
             radios={[
-              { label: t('label:monthly'), value: 'Månedlig' },
-              { label: t('label:yearly'), value: 'Årlig' }
+              { label: t('label:månedlig'), value: 'Månedlig' },
+              { label: t('label:årlig'), value: 'Årlig' }
             ]}
             onChange={(e: any) => setFrequency(e.target.value)}
           />

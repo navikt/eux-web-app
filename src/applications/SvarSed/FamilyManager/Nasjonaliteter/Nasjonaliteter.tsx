@@ -203,12 +203,12 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
       <AlignStartRow className='slideInFromLeft'>
         <Column>
           <UndertekstBold>
-            {t('label:nationality')}
+            {t('label:nasjonalitet')}
           </UndertekstBold>
         </Column>
         <Column>
           <UndertekstBold>
-            {t('label:fradato')}
+            {t('label:fra-dato')}
           </UndertekstBold>
         </Column>
         <Column />
@@ -229,7 +229,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
               >
                 <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('el:button-add-new-x', { x: t('label:nationality').toLowerCase() })}
+                {t('el:button-add-new-x', { x: t('label:nasjonalitet').toLowerCase() })}
               </HighContrastFlatknapp>
 
             </Column>

@@ -52,12 +52,12 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
   const namespace = 'prosedyreveduenighet'
 
   const grunnOptions: Options = [
-    { label: t('el:option-grunn-1'), value: '1' },
-    { label: t('el:option-grunn-2'), value: '2' },
-    { label: t('el:option-grunn-3'), value: '3' },
-    { label: t('el:option-grunn-4'), value: '4' },
-    { label: t('el:option-grunn-5'), value: '5' },
-    { label: t('el:option-grunn-6'), value: '6' }
+    { label: t('el:option-grunn-01'), value: '01' },
+    { label: t('el:option-grunn-02'), value: '02' },
+    { label: t('el:option-grunn-03'), value: '03' },
+    { label: t('el:option-grunn-04'), value: '04' },
+    { label: t('el:option-grunn-05'), value: '05' },
+    { label: t('el:option-grunn-06'), value: '06' }
   ]
 
   const resetValidation = (key: string): void => {
@@ -199,7 +199,7 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
               feil={getErrorFor(index, 'grunn')}
               highContrast={highContrast}
               id={'c-' + namespace + '-prosedyre' + (index >= 0 ? '[' + index + ']' : '') + '-grunn-text'}
-              label={t('label:reason-for-disagreement')}
+              label={t('label:velg-grunn-til-uenighet')}
               menuPortalTarget={document.body}
               onChange={(e: any) => setGrunn(e.value, index)}
               options={grunnOptions}
@@ -220,7 +220,7 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
             <VerticalSeparatorDiv />
 
             <CheckboxGruppe
-              legend={t('label:concerning-person')}
+              legend={t('label:personen-det-gjelder') + ':'}
               feil={getErrorFor(index, 'person')}
             >
 
@@ -271,7 +271,7 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
   return (
     <PileDiv>
       <Undertittel>
-        {t('el:title-procedure-with-complain')}
+        {t('el:title-prosedyre-med-uenighet')}
       </Undertittel>
       <VerticalSeparatorDiv />
       <HighContrastPanel>
@@ -311,7 +311,7 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
                 data-test-id={'c-' + namespace + '-ytterligere-text'}
                 feil={validation[namespace + '-ytterligere']?.feilmelding}
                 id={'c-' + namespace + '-ytterligere-text'}
-                label={t('label:reason-information-for-disagreement')}
+                label={t('label:ytterligere-grunner-til-uenighet')}
                 maxLength={500}
                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => _setYtterligere(e.target.value)}
                 placeholder={t('el:placeholder-input-default')}

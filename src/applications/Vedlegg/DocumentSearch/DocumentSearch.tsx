@@ -112,7 +112,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
           data-test-id='dokumentsok__card-select-id'
           disabled={!_dokument}
           feil={validation.rinadokumentID}
-          label={t('label:rina-document-id')}
+          label={t('label:rina-dokument-id')}
           onChange={onRinadokumentIDChange}
           value={rinadokumentID}
         >

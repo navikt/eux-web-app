@@ -78,8 +78,8 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
                   <LesMer
                     visibleText={t('el:option-personensstatus-3')}
                     invisibleText={t('el:option-personensstatus-3-more')}
-                    moreText={t('label:see-more')}
-                    lessText={t('label:see-less')}
+                    moreText={t('label:vis-mer')}
+                    lessText={t('label:se-mindre')}
                   />),
                 value: 'arbeidsforhold-3'
               },
@@ -89,8 +89,8 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
                   <LesMer
                     visibleText={t('el:option-personensstatus-5')}
                     invisibleText={t('el:option-personensstatus-5-more')}
-                    moreText={t('label:see-more')}
-                    lessText={t('label:see-less')}
+                    moreText={t('label:vis-mer')}
+                    lessText={t('label:se-mindre')}
                   />),
                 value: 'arbeidsforhold-5'
               }

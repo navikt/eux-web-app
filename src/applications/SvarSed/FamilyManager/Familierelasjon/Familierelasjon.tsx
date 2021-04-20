@@ -274,7 +274,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
               data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-startdato-date'}
               feil={getErrorFor(i, 'startdato')}
               id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-startdato-date'}
-              label={t('label:start-date')}
+              label={t('label:startdato')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value, i)}
               placeholder={t('el:placeholder-date-default')}
               value={i < 0 ? _newStartDato : familierelasjon?.periode.startdato}
@@ -285,7 +285,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
               data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-date'}
               feil={getErrorFor(i, 'sluttdato')}
               id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-date'}
-              label={t('label:end-date')}
+              label={t('label:sluttdato')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value, i)}
               placeholder={t('el:placeholder-date-default')}
               value={i < 0 ? _newSluttDato : familierelasjon?.periode.sluttdato}
@@ -315,7 +315,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                   id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-annenrelasjontype-text'}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAnnenRelasjonType(e.target.value, i)}
                   value={i < 0 ? _newAnnenRelasjonType : familierelasjon?.annenRelasjonType}
-                  label={t('label:other-relation')}
+                  label={t('label:annen-relasjon')}
                   placeholder={t('el:placeholder-input-default')}
                 />
               </Column>
@@ -328,7 +328,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                   data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-annenrelasjonpersonnavn-text'}
                   feil={getErrorFor(i, 'annenrelasjonpersonnavn')}
                   id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-annenrelasjonpersonnavn-text'}
-                  label={t('label:person-name')}
+                  label={t('label:person-navn')}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAnnenRelasjonPersonNavn(e.target.value, i)}
                   placeholder={t('el:placeholder-input-default')}
                   value={i < 0 ? _newAnnenRelasjonPersonNavn : familierelasjon?.annenRelasjonPersonNavn}
@@ -339,7 +339,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                   data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-annenrelasjondato-date'}
                   feil={getErrorFor(i, 'annenrelasjondato')}
                   id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-annenrelasjondato-date'}
-                  label={t('label:date-relation')}
+                  label={t('label:dato-for-relasjon')}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAnnenRelasjonDato(e.target.value, i)}
                   placeholder={t('el:placeholder-input-default')}
                   value={i < 0 ? _newAnnenRelasjonDato : familierelasjon?.annenRelasjonDato}
@@ -356,11 +356,11 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                   data-no-border
                   id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-borsammen-text'}
                   feil={getErrorFor(i, 'borsammen')}
-                  legend={t('label:live-together')}
+                  legend={t('label:bor-sammen')}
                   name={namespace + (i >= 0 ? '[' + i + ']' : '') + '-borsammen'}
                   radios={[
-                    { label: t('label:yes'), value: 'ja' },
-                    { label: t('label:no'), value: 'nei' }
+                    { label: t('label:ja'), value: 'ja' },
+                    { label: t('label:nei'), value: 'nei' }
                   ]}
                   onChange={(e: any) => setBorSammen(e.target.value, i)}
                 />
@@ -395,7 +395,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
               >
                 <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('el:button-add-new-x', { x: t('label:family-relationship').toLowerCase() })}
+                {t('el:button-add-new-x', { x: t('label:familierelasjon').toLowerCase() })}
               </HighContrastFlatknapp>
             </Column>
           </Row>

@@ -90,7 +90,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
             data-test-id={'c-' + namespace + '-name-text'}
             feil={validation[namespace + '-name']?.feilmelding}
             id={'c-' + namespace + '-name-text'}
-            label={t('label:children-name')}
+            label={t('label:barnets-navn')}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
             placeholder={t('el:placeholder-input-default')}
             value={_newName}
@@ -102,7 +102,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
             feil={validation[namespace + '-benefitCause']?.feilmelding}
             highContrast={highContrast}
             id={'c-' + namespace + '-benefitCause-text'}
-            label={t('label:benefit-cause')}
+            label={t('label:betegnelse-på-ytelse')}
             menuPortalTarget={document.body}
             onChange={(e: any) => setBenefitCause(e.value)}
             options={benefitCauseOptions}
@@ -121,18 +121,18 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
             id={'c-' + namespace + '-amount-text'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAmount(e.target.value)}
             value={_newAmount}
-            label={t('label:amount')}
+            label={t('label:beløp')}
             placeholder={t('el:placeholder-input-default')}
           />
         </Column>
         <Column>
           <CountrySelect
-            ariaLabel={t('label:currency')}
+            ariaLabel={t('label:valuta')}
             data-test-id={'c-' + namespace + '-currency-text'}
             error={validation[namespace + '-currency']?.feilmelding}
             highContrast={highContrast}
             id={'c-' + namespace + '-currency-text'}
-            label={t('label:currency')}
+            label={t('label:valuta')}
             locale='nb'
             menuPortalTarget={document.body}
             onOptionSelected={(country: Country) => setCurrency(country)}
@@ -154,7 +154,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
             id={'c-' + namespace + '-startdato-date'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value)}
             value={_newStartDato}
-            label={t('label:start-date')}
+            label={t('label:startdato')}
             placeholder={t('el:placeholder-date-default')}
           />
         </Column>
@@ -165,7 +165,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
             id={'c-' + namespace + '-sluttdato-date'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value)}
             value={_newSluttDato}
-            label={t('label:end-date')}
+            label={t('label:sluttdato')}
             placeholder={t('el:placeholder-date-default')}
           />
         </Column>
@@ -179,7 +179,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
             id={'c-' + namespace + '-receiver-text'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setReceiver(e.target.value)}
             value={_newReceiver}
-            label={t('label:receiver-name')}
+            label={t('label:mottakers-navn')}
             placeholder={t('el:placeholder-input-default')}
           />
         </Column>
@@ -194,10 +194,10 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
             id={'c-' + namespace + '-frequency-text'}
             feil={validation[namespace + '-frequency']?.feilmelding}
             name={namespace + '-frequency'}
-            legend={t('label:period-frequency')}
+            legend={t('label:periode-avgrensing')}
             radios={[
-              { label: t('label:monthly'), value: 'Månedlig' },
-              { label: t('label:yearly'), value: 'Årlig' }
+              { label: t('label:månedlig'), value: 'Månedlig' },
+              { label: t('label:årlig'), value: 'Årlig' }
             ]}
             onChange={(e: any) => setFrequency(e.target.value)}
           />

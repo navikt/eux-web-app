@@ -251,7 +251,7 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
           data-test-id={'c-' + namespace + '-comment-text'}
           feil={validation[namespace + '-comment']?.feilmelding}
           id={'c-' + namespace + '-comment-text'}
-          label={t('label:additional-information')}
+          label={t('label:ytterligere-informasjon')}
           maxLength={500}
           onBlur={setComment}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => _setComment(e.target.value)}

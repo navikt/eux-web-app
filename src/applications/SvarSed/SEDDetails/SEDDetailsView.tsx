@@ -116,7 +116,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
       <VerticalSeparatorDiv />
       <Dl>
         <Dt>
-          {t('label:typeKrav')}
+          {t('label:type-krav')}
         </Dt>
         <Dd>
           {t('app:kravType-' + (replySed as F002Sed).krav.kravType)}

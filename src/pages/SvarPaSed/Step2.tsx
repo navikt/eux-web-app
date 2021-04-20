@@ -245,7 +245,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
         >
           <VenstreChevron />
           <HorizontalSeparatorDiv data-size='0.5' />
-          {t('label:back')}
+          {t('label:tilbake')}
         </HighContrastLink>
       </FlexDiv>
       <VerticalSeparatorDiv />
@@ -312,10 +312,10 @@ const Step2: React.FC<SvarPaSedProps> = ({
           data-test-id='c-step2-comment-text'
           feil={validation.comment?.feilmelding}
           id='c-step2-comment-text'
-          label={t('label:comment-title')}
+          label={t('label:ytterligere-informasjon-til-sed')}
           maxLength={500}
           onChange={(e: any) => setComment(e.target.value)}
-          placeholder={t('label:comment-placeholder')}
+          placeholder={t('el:placeholder-sed')}
           value={_comment}
         />
       </TextAreaDiv>
@@ -333,7 +333,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
       >
         <Add />
         <HorizontalSeparatorDiv data-size='0.5' />
-        {gettingPreviewFile ? t('label:loading-file') : t('label:preview-sed')}
+        {gettingPreviewFile ? t('label:laster-ned-filen') : t('label:forhåndsvis-sed')}
       </HighContrastFlatknapp>
       <VerticalSeparatorDiv data-size='2' />
       <ButtonsDiv>
@@ -344,7 +344,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
             disabled={creatingSvarPaSed}
             spinner={creatingSvarPaSed}
           >
-            {creatingSvarPaSed ? t('message:loading-sendingReplySed') : t('label:sendReplySed')}
+            {creatingSvarPaSed ? t('message:loading-sendingReplySed') : t('label:send-svarsed')}
           </HighContrastHovedknapp>
           <VerticalSeparatorDiv data-size='0.5' />
         </div>
@@ -368,7 +368,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
             disabled={creatingSedEditInRINA}
             spinner={creatingSedEditInRINA}
           >
-            {t('label:createSedEditInRINA')}
+            {t('label:opprett-sed-rediger-i-rina')}
           </HighContrastKnapp>
           <VerticalSeparatorDiv data-size='0.5' />
         </div>

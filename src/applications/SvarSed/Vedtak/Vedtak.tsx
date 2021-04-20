@@ -203,7 +203,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
               data-test-id={'c-vedtak-perioder' + (i >= 0 ? '[' + i + ']' : '') + '-periode-startdato-date'}
               feil={getErrorFor(i, 'periode-startdato')}
               id={'c-vedtak-perioder' + (i >= 0 ? '[' + i + ']' : '') + '-periode-startdato-date'}
-              label={t('label:start-date')}
+              label={t('label:startdato')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value, i)}
               value={i < 0 ? _newStartDato : p?.periode.startdato}
               placeholder={t('el:placeholder-date-default')}
@@ -214,7 +214,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
               data-test-id={'c-vedtak-perioder' + (i >= 0 ? '[' + i + ']' : '') + '-periode-sluttdato-date'}
               feil={getErrorFor(i, 'periode-sluttdato')}
               id={'c-vedtak-perioder' + (i >= 0 ? '[' + i + ']' : '') + '-periode-sluttdato-date'}
-              label={t('label:end-date')}
+              label={t('label:sluttdato')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value, i)}
               value={i < 0 ? _newSluttDato : p?.periode.sluttdato}
               placeholder={t('el:placeholder-date-default')}
@@ -263,28 +263,28 @@ const VedtakFC: React.FC<VedtakProps> = ({
       <HighContrastPanel>
         <HighContrastRadioGroup
           className={classNames('slideInFromLeft')}
-          legend={t('label:allkids-vedtak')}
+          legend={t('label:vedtak-angående-alle-barn')}
           feil={_validation['vedtak-allkids']?.feilmelding}
         >
           <FlexDiv>
             <HighContrastRadio
               name='vedtak-allkids'
               checked={_allKids === 'ja'}
-              label={t('label:yes')}
+              label={t('label:ja')}
               onClick={() => _setAllKids('ja')}
             />
             <HorizontalSeparatorDiv data-size='2' />
             <HighContrastRadio
               name='vedtak-allkids'
               checked={_allKids === 'nei'}
-              label={t('label:no')}
+              label={t('label:nei')}
               onClick={() => _setAllKids('nei')}
             />
           </FlexDiv>
         </HighContrastRadioGroup>
         {_allKids === 'nei' && (
           <div className={classNames('slideInFromLeft')}>
-            <div dangerouslySetInnerHTML={{ __html: t('label:whichkids-vedtak') + ':' }} />
+            <div dangerouslySetInnerHTML={{ __html: t('label:avhuk-de-barn-vedtaket') + ':' }} />
             <VerticalSeparatorDiv />
             {(replySed as F002Sed)?.barn?.map((b, i) => {
               const name = b.personInfo.fornavn + ' ' + b.personInfo.etternavn
@@ -316,7 +316,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
               feil={validation['vedtak-startdato']?.feilmelding}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setStartDato(e.target.value)}
               value={_startDato}
-              label={t('label:start-date')}
+              label={t('label:startdato')}
               placeholder={t('el:placeholder-date-default')}
             />
           </Column>
@@ -327,7 +327,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
               feil={validation['vedtak-sluttdato']?.feilmelding}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSluttDato(e.target.value)}
               value={_sluttDato}
-              label={t('label:end-date')}
+              label={t('label:sluttdato')}
               placeholder={t('el:placeholder-date-default')}
             />
           </Column>
@@ -367,7 +367,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
                 data-test-id='c-vedtak-grunnen-text'
                 feil={validation['vedtak-grunnen']?.feilmelding}
                 id='c-vedtak-grunnen-text'
-                label={t('label:comment-title')}
+                label={t('label:ytterligere-informasjon-til-sed')}
                 maxLength={500}
                 onChange={(e: any) => _setGrunnen(e.target.value)}
                 placeholder={t('el:placeholder-input-default')}

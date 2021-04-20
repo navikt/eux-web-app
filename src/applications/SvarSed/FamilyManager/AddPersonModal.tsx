@@ -232,32 +232,32 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
   const relationOptions: Array<MyOption> = []
 
   relationOptions.push({
-    label: t('el:option-relationship-bruker') + (_replySed.bruker ? '(' + t('label:not-available') + ')' : ''),
+    label: t('el:option-familierelasjon-bruker') + (_replySed.bruker ? '(' + t('label:ikke-tilgjengelig') + ')' : ''),
     value: 'bruker',
     isDisabled: !!_replySed.bruker
   })
 
   relationOptions.push({
-    label: t('el:option-relationship-ektefelle') + ((_replySed as F002Sed).ektefelle ? '(' + t('label:not-available') + ')' : ''),
+    label: t('el:option-familierelasjon-ektefelle') + ((_replySed as F002Sed).ektefelle ? '(' + t('label:ikke-tilgjengelig') + ')' : ''),
     value: 'ektefelle',
     isDisabled: !!(_replySed as F002Sed).ektefelle
   })
 
   relationOptions.push({
-    label: t('el:option-relationship-annenPerson') + ((_replySed as F002Sed).annenPerson ? '(' + t('label:not-available') + ')' : ''),
+    label: t('el:option-familierelasjon-annenPerson') + ((_replySed as F002Sed).annenPerson ? '(' + t('label:ikke-tilgjengelig') + ')' : ''),
     value: 'annenPerson',
     isDisabled: !!(_replySed as F002Sed).annenPerson
   })
 
   relationOptions.push({
-    label: t('el:option-relationship-barn'),
+    label: t('el:option-familierelasjon-barn'),
     value: 'barn',
     isDisabled: false
   })
 
   const getPersonLabel = (personId: string): string => {
     const id = personId.startsWith('barn[') ? 'barn' : personId
-    return t('el:option-relationship-' + id)
+    return t('el:option-familierelasjon-' + id)
   }
 
   const renderPerson = (personId: string, i: number) => {
@@ -340,7 +340,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
                 data-test-id={'c-' + namespace + '-navn-text'}
                 feil={_validation[namespace + '-navn']?.feilmelding}
                 id={'c-' + namespace + '-navn-text'}
-                label={t('label:name')}
+                label={t('label:navn')}
                 onChange={onNewPersonNameChange}
                 placeholder={t('el:placeholder-input-default')}
                 value={_newPersonName}
@@ -353,7 +353,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
                 feil={_validation[namespace + '-relasjon']?.feilmelding}
                 id={'c-' + namespace + '-relasjon-text'}
                 highContrast={highContrast}
-                label={t('label:family-relationship')}
+                label={t('label:familierelasjon')}
                 menuPlacement='top'
                 menuPortalTarget={document.body}
                 onChange={onNewPersonRelationChange}

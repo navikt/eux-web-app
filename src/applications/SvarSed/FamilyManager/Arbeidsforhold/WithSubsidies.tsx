@@ -218,7 +218,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
               data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-startdato-date'}
               feil={getErrorFor(i, 'startdato')}
               id={'c-' + namespace + '[' + i + ']-startdato-date'}
-              label={t('label:start-date')}
+              label={t('label:startdato')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value, i)}
               placeholder={t('el:placeholder-date-default')}
               value={i < 0 ? _newStartDato : p?.periode.startdato}
@@ -229,7 +229,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
               data-test-id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-date'}
               feil={getErrorFor(i, 'sluttdato')}
               id={'c-' + namespace + (i >= 0 ? '[' + i + ']' : '') + '-sluttdato-date'}
-              label={t('label:end-date')}
+              label={t('label:sluttdato')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value, i)}
               placeholder={t('el:placeholder-date-default')}
               value={i < 0 ? _newSluttDato : p?.periode.sluttdato}
@@ -276,7 +276,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
   return (
     <>
       <Undertittel>
-        {t('el:title-period-with-received-pension-from-sender-country')}
+        {t('el:title-periode-pensjon-avsenderlandet')}
       </Undertittel>
       <VerticalSeparatorDiv />
       {_perioder
