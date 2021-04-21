@@ -36,7 +36,7 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
   validation
 }: UdekkedePerioderProps): JSX.Element => {
   const { t } = useTranslation()
-  const target =  `${personID}.perioderUtenforTrygdeordning`
+  const target = `${personID}.perioderUtenforTrygdeordning`
   const perioderUtenforTrygdeordning: Array<Periode> = _.get(replySed, target)
   const namespace = `familymanager-${personID}-trygdeordninger`
 
@@ -106,7 +106,6 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
   }
 
   const onAdd = () => {
-
     const newPeriode: Periode = {
       startdato: _newStartDato
     }
@@ -151,14 +150,13 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
       <>
         <AlignStartRow className={classNames('slideInFromLeft')}>
           <Period
-            index={index}
             key={'' + startdato + sluttdato}
             labels={false}
             namespace={namespace + idx}
             errorStartDato={getErrorFor(index, 'startdato')}
             errorSluttDato={getErrorFor(index, 'sluttdato')}
-            setStartDato={setStartDato}
-            setSluttDato={setSluttDato}
+            setStartDato={(dato: string) => setStartDato(dato, index)}
+            setSluttDato={(dato: string) => setSluttDato(dato, index)}
             valueStartDato={startdato}
             valueSluttDato={sluttdato}
           />
@@ -182,46 +180,46 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
 
   return (
     <>
-    <Ingress>
-      {t('el:title-trygdeordningen-udekkede')}
-    </Ingress>
-    <VerticalSeparatorDiv />
-    {perioderUtenforTrygdeordning?.length > 0 && (
-      <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-        <Column>
-          <label className='skjemaelement__label'>
-            {t('label:startdato')}
-          </label>
-        </Column>
-        <Column>
-          <label className='skjemaelement__label'>
-            {t('label:sluttdato')}
-          </label>
-        </Column>
-        <Column />
-      </Row>
-    )}
-    <VerticalSeparatorDiv />
-    {perioderUtenforTrygdeordning?.map(renderRow)}
-    <hr />
-    <VerticalSeparatorDiv />
-    {_seeNewForm ?
-      renderRow(undefined,  -1)
-      : (
-        <Row className='slideInFromLeft'>
+      <Ingress>
+        {t('el:title-trygdeordningen-udekkede')}
+      </Ingress>
+      <VerticalSeparatorDiv />
+      {perioderUtenforTrygdeordning?.length > 0 && (
+        <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
           <Column>
-            <HighContrastFlatknapp
-              mini
-              kompakt
-              onClick={() => _setSeeNewForm(true)}
-            >
-              <Add />
-              <HorizontalSeparatorDiv data-size='0.5' />
-              {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-            </HighContrastFlatknapp>
+            <label className='skjemaelement__label'>
+              {t('label:startdato')}
+            </label>
           </Column>
+          <Column>
+            <label className='skjemaelement__label'>
+              {t('label:sluttdato')}
+            </label>
+          </Column>
+          <Column />
         </Row>
       )}
+      <VerticalSeparatorDiv />
+      {perioderUtenforTrygdeordning?.map(renderRow)}
+      <hr />
+      <VerticalSeparatorDiv />
+      {_seeNewForm
+        ? renderRow(undefined, -1)
+        : (
+          <Row className='slideInFromLeft'>
+            <Column>
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                onClick={() => _setSeeNewForm(true)}
+              >
+                <Add />
+                <HorizontalSeparatorDiv data-size='0.5' />
+                {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+              </HighContrastFlatknapp>
+            </Column>
+          </Row>
+          )}
     </>
   )
 }

@@ -36,10 +36,9 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
   validation
 }: DekkedePerioderProps): JSX.Element => {
   const { t } = useTranslation()
-  const target =  `${personID}.perioderMedITrygdeordning`
+  const target = `${personID}.perioderMedITrygdeordning`
   const perioderMedITrygdeordning: Array<Periode> = _.get(replySed, target)
   const namespace = `familymanager-${personID}-trygdeordninger`
-
 
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')
   const [_newStartDato, _setNewStartDato] = useState<string>('')
@@ -107,7 +106,6 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
   }
 
   const onAdd = () => {
-
     const newPeriode: Periode = {
       startdato: _newStartDato
     }
@@ -146,22 +144,22 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
     const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
     const idx = (index >= 0 ? '-perioderMedITrygdeordning[' + index + ']' : '-dekkede')
 
+    const startdato = index < 0 ? _newStartDato : periode?.startdato
+    const sluttdato = index < 0 ? _newSluttDato : periode?.sluttdato
     return (
       <>
         <AlignStartRow className={classNames('slideInFromLeft')}>
           <Period
-            index={index}
-            key={_newStartDato + _newSluttDato}
+            key={'' + startdato + sluttdato}
             labels={false}
             namespace={namespace + idx}
             errorStartDato={getErrorFor(index, 'startdato')}
             errorSluttDato={getErrorFor(index, 'sluttdato')}
-            setStartDato={setStartDato}
-            setSluttDato={setSluttDato}
-            valueStartDato={index < 0 ? _newStartDato : periode?.startdato}
-            valueSluttDato={index < 0 ? _newSluttDato : periode?.sluttdato}
+            setStartDato={(dato: string) => setStartDato(dato, index)}
+            setSluttDato={(dato: string) => setSluttDato(dato, index)}
+            valueStartDato={startdato}
+            valueSluttDato={sluttdato}
           />
-
           <Column>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
@@ -182,46 +180,46 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
 
   return (
     <>
-    <Ingress>
-      {t('el:title-trygdeordningen-dekkede')}
-    </Ingress>
-    <VerticalSeparatorDiv />
-    {perioderMedITrygdeordning?.length > 0 && (
-      <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-        <Column>
-          <label className='skjemaelement__label'>
-            {t('label:startdato')}
-          </label>
-        </Column>
-        <Column>
-          <label className='skjemaelement__label'>
-            {t('label:sluttdato')}
-          </label>
-        </Column>
-        <Column />
-      </Row>
-    )}
-    <VerticalSeparatorDiv />
-    {perioderMedITrygdeordning?.map(renderRow)}
-    <hr />
-    <VerticalSeparatorDiv />
-    {_seeNewForm ?
-      renderRow(undefined,  -1)
-      : (
-        <Row className='slideInFromLeft'>
+      <Ingress>
+        {t('el:title-trygdeordningen-dekkede')}
+      </Ingress>
+      <VerticalSeparatorDiv />
+      {perioderMedITrygdeordning?.length > 0 && (
+        <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
           <Column>
-            <HighContrastFlatknapp
-              mini
-              kompakt
-              onClick={() => _setSeeNewForm(true)}
-            >
-              <Add />
-              <HorizontalSeparatorDiv data-size='0.5' />
-              {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-            </HighContrastFlatknapp>
+            <label className='skjemaelement__label'>
+              {t('label:startdato')}
+            </label>
           </Column>
+          <Column>
+            <label className='skjemaelement__label'>
+              {t('label:sluttdato')}
+            </label>
+          </Column>
+          <Column />
         </Row>
       )}
+      <VerticalSeparatorDiv />
+      {perioderMedITrygdeordning?.map(renderRow)}
+      <hr />
+      <VerticalSeparatorDiv />
+      {_seeNewForm
+        ? renderRow(undefined, -1)
+        : (
+          <Row className='slideInFromLeft'>
+            <Column>
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                onClick={() => _setSeeNewForm(true)}
+              >
+                <Add />
+                <HorizontalSeparatorDiv data-size='0.5' />
+                {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+              </HighContrastFlatknapp>
+            </Column>
+          </Row>
+          )}
     </>
   )
 }

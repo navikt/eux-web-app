@@ -22,13 +22,12 @@ export const validateGrunnlagForBosetting = (
     namespace
   }: ValidationGrunnlagForBosettingProps
 ): void => {
-
   validatePeriod(v, t, {
     period,
     index,
     namespace
   })
-  let idx = (index < 0 ? '' : '[' + index + ']')
+  const idx = (index < 0 ? '' : '[' + index + ']')
 
   if (!v[namespace + '-startdato'] &&
     _.find(otherPeriods, p => p.startdato === period.startdato)) {

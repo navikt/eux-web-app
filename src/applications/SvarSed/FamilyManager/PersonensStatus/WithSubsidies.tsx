@@ -43,7 +43,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
 }: WithSubsidiesProps): JSX.Element => {
   const { t } = useTranslation()
   const target: string = `${personID}.perioderMedPensjon`
-  let perioderMedPensjon: Array<PensjonPeriode> = _.get(replySed, target)
+  const perioderMedPensjon: Array<PensjonPeriode> = _.get(replySed, target)
   const namespace = `familymanager-${personID}-personensstatus-withsubsidies`
 
   const [_newStartDato, _setNewStartDato] = useState<string>('')
@@ -278,7 +278,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
               </HighContrastFlatknapp>
             </Column>
           </Row>
-        )}
+          )}
       <VerticalSeparatorDiv />
     </>
   )

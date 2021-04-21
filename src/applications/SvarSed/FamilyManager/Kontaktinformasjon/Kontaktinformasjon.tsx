@@ -166,7 +166,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
   }
 
   const onTelefonAdd = () => {
-    const newTelefon: Telefon |  {type: any, nummer: any} = {
+    const newTelefon: Telefon | {type: any, nummer: any} = {
       type: _newType,
       nummer: _newNummer
     }
@@ -190,8 +190,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
   }
 
   const onEpostAdd = () => {
-
-    const newEpost: Epost  = {
+    const newEpost: Epost = {
       adresse: _newAdresse
     }
 

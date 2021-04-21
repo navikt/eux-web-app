@@ -21,10 +21,9 @@ export const validateFamilierelasjon = (
     personName
   }: ValidationFamilierelasjonProps
 ): void => {
-
   let value: FeiloppsummeringFeil | undefined
   let generalFail: boolean = false
-  let idx = (index < 0 ? '' : '[' + index + ']')
+  const idx = (index < 0 ? '' : '[' + index + ']')
 
   validatePeriod(v, t, {
     period: familierelasjon.periode,

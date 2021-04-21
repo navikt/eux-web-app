@@ -17,7 +17,6 @@ const useValidation = <ValidationData extends any>(
     (validationData: ValidationData) => boolean,
     (v: Validation) => void
   ] => {
-
   const { t } = useTranslation()
   const [_validation, setValidation] = useState<Validation>(initialValue)
 

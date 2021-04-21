@@ -217,7 +217,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
     }
 
     if (_newRelasjonType === 'ANNEN' as RelasjonType) {
-      newFamilierelasjon.borSammen = _newBorSammen as JaNei,
+      newFamilierelasjon.borSammen = _newBorSammen
       newFamilierelasjon.annenRelasjonType = _newAnnenRelasjonType
       newFamilierelasjon.annenRelasjonPersonNavn = _newAnnenRelasjonPersonNavn
       newFamilierelasjon.annenRelasjonDato = _newAnnenRelasjonDato
@@ -243,15 +243,17 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
   }
 
   const getErrorFor = (index: number, el: string): string | undefined => {
-    return index < 0 ?
-      _validation[namespace + '-' + el]?.feilmelding :
-      validation[namespace + '[' + index + ']-' + el]?.feilmelding
+    return index < 0
+      ? _validation[namespace + '-' + el]?.feilmelding
+      : validation[namespace + '[' + index + ']-' + el]?.feilmelding
   }
 
   const renderRow = (familierelasjon: FamilieRelasjon | null, index: number) => {
     const key = familierelasjon ? getKey(familierelasjon) : 'new'
     const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
     const idx = (index >= 0 ? '[' + index + ']' : '')
+    const startdato = index < 0 ? _newStartDato : familierelasjon?.periode.startdato
+    const sluttdato = index < 0 ? _newSluttDato : familierelasjon?.periode.sluttdato
     return (
       <>
         <AlignStartRow className={classNames('slideInFromLeft')}>
@@ -267,19 +269,18 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
               options={relasjonTypeOptions}
               placeholder={t('el:placeholder-select-default')}
               defaultValue={_.find(relasjonTypeOptions, r => r.value === (index < 0 ? _newRelasjonType : familierelasjon!.relasjonType))}
-              selectedValue={_.find(relasjonTypeOptions, r => r.value ===  (index < 0 ? _newRelasjonType : familierelasjon!.relasjonType))}
+              selectedValue={_.find(relasjonTypeOptions, r => r.value === (index < 0 ? _newRelasjonType : familierelasjon!.relasjonType))}
             />
           </Column>
           <Period
-            index={index}
-            key={_newStartDato + _newSluttDato}
-            namespace={namespace}
+            key={'' + startdato + sluttdato}
+            namespace={namespace + idx}
             errorStartDato={getErrorFor(index, 'startdato')}
             errorSluttDato={getErrorFor(index, 'sluttdato')}
-            setStartDato={setStartDato}
-            setSluttDato={setSluttDato}
-            valueStartDato={index < 0 ? _newStartDato : familierelasjon?.periode.startdato}
-            valueSluttDato={index < 0 ? _newSluttDato : familierelasjon?.periode.sluttdato}
+            setStartDato={(dato: string) => setStartDato(dato, index)}
+            setSluttDato={(dato: string) => setSluttDato(dato, index)}
+            valueStartDato={startdato}
+            valueSluttDato={sluttdato}
           />
           <Column>
             <AddRemovePanel
@@ -344,7 +345,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                   checked={index < 0 ? _newBorSammen : familierelasjon?.borSammen}
                   data-test-id={'c-' + namespace + idx + '-borsammen-text'}
                   data-no-border
-                  id={'c-' + namespace + idx  + '-borsammen-text'}
+                  id={'c-' + namespace + idx + '-borsammen-text'}
                   feil={getErrorFor(index, 'borsammen')}
                   legend={t('label:bor-sammen')}
                   name={namespace + idx + '-borsammen'}

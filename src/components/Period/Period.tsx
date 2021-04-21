@@ -6,16 +6,16 @@ import { useTranslation } from 'react-i18next'
 export interface PeriodProps {
   errorStartDato: string | null | undefined
   errorSluttDato: string | null | undefined
-  index: number
+  index?: number
   labels?: boolean
   namespace: string
-  setStartDato: (dato: string, index: number) => void
-  setSluttDato: (dato: string, index: number) => void
+  setStartDato: (dato: string) => void
+  setSluttDato: (dato: string) => void
   valueStartDato: string | undefined
   valueSluttDato: string | undefined
 }
 
-export const toFinalDateFormat = (date: string | undefined): string  => {
+export const toFinalDateFormat = (date: string | undefined): string => {
   if (!date) return ''
   if (date === '') return ''
   const newDate = moment(date, 'DD.MM.YYYY')
@@ -31,36 +31,35 @@ export const toUIDateFormat = (date: string | undefined): string | undefined => 
 const Period = ({
   errorStartDato,
   errorSluttDato,
-  index,
   labels = true,
   namespace,
   setStartDato,
   setSluttDato,
   valueStartDato,
   valueSluttDato
- }: PeriodProps) => {
+}: PeriodProps) => {
   const [_startDato, _setStartDato] = useState<string>(() => toUIDateFormat(valueStartDato) ?? '')
   const [_sluttDato, _setSluttDato] = useState<string>(() => toUIDateFormat(valueSluttDato) ?? '')
   const { t } = useTranslation()
 
   const onStartDatoBlur = () => {
     const date = toFinalDateFormat(_startDato)
-    setStartDato(date, index)
+    setStartDato(date)
   }
 
   const onEndDatoBlur = () => {
     const date = toFinalDateFormat(_sluttDato)
-    setSluttDato(date, index)
+    setSluttDato(date)
   }
 
   return (
     <>
       <Column>
         <HighContrastInput
-          data-test-id={'c-' + namespace + (index >= 0 ? '[' + index + ']' : '') + '-startdato-date'}
+          data-test-id={'c-' + namespace + '-startdato-date'}
           feil={errorStartDato}
-          id={'c-' + namespace + '[' + index + ']-startdato-date'}
-          label={labels? t('label:startdato') : ''}
+          id={'c-' + namespace + '-startdato-date'}
+          label={labels ? t('label:startdato') : ''}
           onBlur={onStartDatoBlur}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setStartDato(e.target.value)}
           placeholder={t('el:placeholder-date-default')}
@@ -69,9 +68,9 @@ const Period = ({
       </Column>
       <Column>
         <HighContrastInput
-          data-test-id={'c-' + namespace + (index >= 0 ? '[' + index + ']' : '') + '-sluttdato-date'}
+          data-test-id={'c-' + namespace + '-sluttdato-date'}
           feil={errorSluttDato}
-          id={'c-' + namespace + (index >= 0 ? '[' + index + ']' : '') + '-sluttdato-date'}
+          id={'c-' + namespace + '-sluttdato-date'}
           label={labels ? t('label:sluttdato') : ''}
           onBlur={onEndDatoBlur}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSluttDato(e.target.value)}

@@ -28,7 +28,6 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
   resetValidation,
   validation
 }: TrygdeordningProps): JSX.Element => {
-
   const { t } = useTranslation()
 
   return (

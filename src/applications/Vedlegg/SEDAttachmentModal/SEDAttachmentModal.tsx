@@ -71,7 +71,7 @@ SEDAttachmentModal.propTypes = {
   highContrast: PT.bool.isRequired,
   onFinishedSelection: PT.func.isRequired,
   onModalClose: PT.func.isRequired,
- // sedAttachments: JoarkBrowserItemsFileType.isRequired,
+  // sedAttachments: JoarkBrowserItemsFileType.isRequired,
   tableId: PT.string.isRequired
 }
 

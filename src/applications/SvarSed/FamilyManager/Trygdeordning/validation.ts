@@ -37,10 +37,9 @@ const validateGenericPeriode = (
   pageCategory: string,
   sedCategory: string
 ): void => {
-
   let generalFail: boolean = false
-  let extraNamespace = namespace + '-' + (index < 0 ?  pageCategory : sedCategory)
-  let idx = (index < 0 ? '' : '[' + index + ']')
+  const extraNamespace = namespace + '-' + (index < 0 ? pageCategory : sedCategory)
+  const idx = (index < 0 ? '' : '[' + index + ']')
 
   validatePeriod(
     v,
@@ -83,7 +82,7 @@ export const validateDekkedePeriode = (
     namespace,
     personName
   },
-    'dekkede', 'perioderMedITrygdeordning')
+  'dekkede', 'perioderMedITrygdeordning')
 }
 
 export const validateUdekkedePeriode = (
@@ -97,12 +96,12 @@ export const validateUdekkedePeriode = (
   }: ValidationDekkedePeriodeProps
 ): void => {
   validateGenericPeriode(v, t, {
-      periode,
-      index,
-      namespace,
-      personName
-    },
-    'udekkede', 'perioderUtenforTrygdeordning')
+    periode,
+    index,
+    namespace,
+    personName
+  },
+  'udekkede', 'perioderUtenforTrygdeordning')
 }
 
 export const validateFamilieytelserPeriode = (
@@ -117,9 +116,8 @@ export const validateFamilieytelserPeriode = (
   }: ValidationFamilieytelsePeriodeProps
 ): void => {
   let generalFail: boolean = false
-  let value: FeiloppsummeringFeil | undefined
-  let extraNamespace = namespace + '-' + (index < 0 ?  'familieYtelse' : sedCategory)
-  let idx = (index < 0 ? '' : '[' + index + ']')
+  const extraNamespace = namespace + '-' + (index < 0 ? 'familieYtelse' : sedCategory)
+  const idx = (index < 0 ? '' : '[' + index + ']')
 
   validatePeriod(
     v,
@@ -136,7 +134,7 @@ export const validateFamilieytelserPeriode = (
     generalFail = true
   }
 
-  value = periode.pensjonstype
+  const value: FeiloppsummeringFeil | undefined = periode.pensjonstype
     ? undefined
     : {
       feilmelding: t('message:validation-noPensjonTypeTilPerson', { person: personName }),
@@ -168,9 +166,9 @@ export const validatePerioder = (
 ): void => {
   perioder?.forEach((periode: Periode | PensjonPeriode, index: number) => {
     if (sedCategory === 'perioderMedPensjon') {
-      validateFamilieytelserPeriode(v, t, { periode: (periode as PensjonPeriode), index, namespace, sedCategory, personName})
+      validateFamilieytelserPeriode(v, t, { periode: (periode as PensjonPeriode), index, namespace, sedCategory, personName })
     } else {
-      validateGenericPeriode(v, t, {periode: (periode as Periode), index, namespace, personName}, pageCategory, sedCategory)
+      validateGenericPeriode(v, t, { periode: (periode as Periode), index, namespace, personName }, pageCategory, sedCategory)
     }
   })
 }
@@ -182,11 +180,10 @@ export const validateTrygdeordninger = (
   namespace: string,
   personName: string
 ): void => {
-
-  validatePerioder(v, t, 'perioderMedITrygdeordning', 'dekkede', perioderMap['perioderMedITrygdeordning'], namespace, personName)
-  validatePerioder(v, t, 'perioderUtenforTrygdeordning', 'udekkede', perioderMap['perioderUtenforTrygdeordning'], namespace, personName)
-  validatePerioder(v, t, 'perioderMedArbeid', 'familieYtelse', perioderMap['perioderMedArbeid'], namespace, personName)
-  validatePerioder(v, t, 'perioderMedTrygd', 'familieYtelse', perioderMap['perioderMedTrygd'], namespace, personName)
-  validatePerioder(v, t, 'perioderMedYtelser', 'familieYtelse', perioderMap['perioderMedYtelser'], namespace, personName)
-  validatePerioder(v, t, 'perioderMedPensjon', 'familieYtelse', perioderMap['perioderMedPensjon'], namespace, personName)
+  validatePerioder(v, t, 'perioderMedITrygdeordning', 'dekkede', perioderMap.perioderMedITrygdeordning, namespace, personName)
+  validatePerioder(v, t, 'perioderUtenforTrygdeordning', 'udekkede', perioderMap.perioderUtenforTrygdeordning, namespace, personName)
+  validatePerioder(v, t, 'perioderMedArbeid', 'familieYtelse', perioderMap.perioderMedArbeid, namespace, personName)
+  validatePerioder(v, t, 'perioderMedTrygd', 'familieYtelse', perioderMap.perioderMedTrygd, namespace, personName)
+  validatePerioder(v, t, 'perioderMedYtelser', 'familieYtelse', perioderMap.perioderMedYtelser, namespace, personName)
+  validatePerioder(v, t, 'perioderMedPensjon', 'familieYtelse', perioderMap.perioderMedPensjon, namespace, personName)
 }

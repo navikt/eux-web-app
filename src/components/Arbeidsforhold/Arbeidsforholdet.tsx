@@ -66,7 +66,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
   personFnr
 }: ArbeidsforholdetProps): JSX.Element => {
   const {
-    //harRegistrertInntekt,
+    // harRegistrertInntekt,
     arbeidsgiverNavn,
     arbeidsgiverOrgnr,
     fraDato,

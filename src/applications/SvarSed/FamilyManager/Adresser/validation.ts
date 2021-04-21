@@ -22,7 +22,7 @@ export const validateAdresse = (
   }: ValidationAddressProps
 ): void => {
   let generalFail: boolean = false
-  let idx = (index < 0 ? '' : '[' + index + ']')
+  const idx = (index < 0 ? '' : '[' + index + ']')
   let value: FeiloppsummeringFeil | undefined
 
   value = (!_.isEmpty(adresse.type))

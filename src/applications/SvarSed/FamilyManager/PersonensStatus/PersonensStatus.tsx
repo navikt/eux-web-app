@@ -33,7 +33,7 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
   replySed,
   resetValidation,
   updateReplySed,
-  validation,
+  validation
 }:PersonensStatusProps): JSX.Element => {
   const { t } = useTranslation()
   const namespace = `familymanager-${personID}-personensstatus`

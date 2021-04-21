@@ -22,7 +22,7 @@ export const validateAvsenderlandet = (
     namespace
   }: ValidationAvsenderlandetProps
 ): void => {
-  let idx = (index < 0 ? '' : '[' + index + ']')
+  const idx = (index < 0 ? '' : '[' + index + ']')
 
   validatePeriod(v, t, {
     period,

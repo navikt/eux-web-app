@@ -399,7 +399,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
 }
 
 JoarkBrowser.propTypes = {
-  //existingItems: PT.arrayOf(JoarkBrowserItemFileType.isRequired).isRequired,
+  // existingItems: PT.arrayOf(JoarkBrowserItemFileType.isRequired).isRequired,
   highContrast: PT.bool,
   onRowSelectChange: PT.func,
   onPreviewFile: PT.func,

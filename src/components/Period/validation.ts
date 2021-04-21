@@ -18,43 +18,43 @@ export const validatePeriod = (
   v: Validation,
   t: TFunction,
   {
-   period,
-   index,
-   namespace,
-   personName
+    period,
+    index,
+    namespace,
+    personName
   }: ValidationPeriodProps
 ): void => {
   const idx = (index >= 0 ? '[' + index + ']' : '')
   if (_.isEmpty(period.startdato)) {
     v[namespace + idx + '-startdato'] = {
       skjemaelementId: 'c-' + namespace + idx + '-startdato-date',
-      feilmelding: personName ?
-        t('message:validation-noDateForPerson', { person: personName }) :
-        t('message:validation-noDate')
+      feilmelding: personName
+        ? t('message:validation-noDateForPerson', { person: personName })
+        : t('message:validation-noDate')
     } as FeiloppsummeringFeil
   }
 
   if (!_.isEmpty(period.startdato) && !period.startdato.match(datePattern)) {
     v[namespace + idx + '-startdato'] = {
       skjemaelementId: 'c-' + namespace + idx + '-startdato-date',
-      feilmelding: personName ?
-        t('message:validation-invalidDateForPerson', { person: personName }):
-        t('message:validation-invalidDate')
+      feilmelding: personName
+        ? t('message:validation-invalidDateForPerson', { person: personName })
+        : t('message:validation-invalidDate')
     } as FeiloppsummeringFeil
   }
 
   if (!_.isEmpty(period.sluttdato) && !period.sluttdato!.match(datePattern)) {
     v[namespace + idx + '-sluttdato'] = {
       skjemaelementId: 'c-' + namespace + idx + '-sluttdato-date',
-      feilmelding: personName ?
-        t('message:validation-invalidDateForPerson', { person: personName }) :
-        t('message:validation-invalidDate')
+      feilmelding: personName
+        ? t('message:validation-invalidDateForPerson', { person: personName })
+        : t('message:validation-invalidDate')
     } as FeiloppsummeringFeil
   }
 
   if (!_.isEmpty(period.startdato) && !_.isEmpty(period.sluttdato) &&
     moment(period.startdato, 'YYYY-MM-DD')
-      .isAfter(moment(period.sluttdato,'YYYY-MM-DD'))) {
+      .isAfter(moment(period.sluttdato, 'YYYY-MM-DD'))) {
     v[namespace + idx + '-sluttdato'] = {
       skjemaelementId: 'c-' + namespace + idx + '-sluttdato-date',
       feilmelding: t('message:validation-endDateBeforeStartDate')

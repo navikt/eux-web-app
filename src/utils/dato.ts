@@ -59,4 +59,3 @@ export const formatterDatoTilNorsk = (dato: any) => {
   const momentDato = moment.utc(dato, inputFormat)
   return momentDato.isValid() ? momentDato.local().format('DD.MM.YYYY') : ''
 }
-

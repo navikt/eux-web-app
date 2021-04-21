@@ -59,8 +59,8 @@ const Ansatt: React.FC<AnsattProps> = ({
 
   const onArbeidsforholdSelectionChange = (selectedArbeidsforhold: Array<Arbeidsforholdet>) => {
     const perioder: Array<Periode> = selectedArbeidsforhold.map(a => {
-      let periode = {
-        startdato:  toFinalDateFormat(a.fraDato)
+      const periode = {
+        startdato: toFinalDateFormat(a.fraDato)
       } as Periode
       if (a.tilDato) {
         periode.sluttdato = toFinalDateFormat(a.tilDato)
@@ -151,7 +151,7 @@ const Ansatt: React.FC<AnsattProps> = ({
       namespace: namespace
     })
     if (valid) {
-      let newAddedArbeidsforholdList: Arbeidsperioder = _.cloneDeep(_addedArbeidsforholdList)
+      const newAddedArbeidsforholdList: Arbeidsperioder = _.cloneDeep(_addedArbeidsforholdList)
       newAddedArbeidsforholdList.arbeidsperioder = newAddedArbeidsforholdList.arbeidsperioder.concat(newArbeidsforhold)
       setAddedArbeidsforholdList(newAddedArbeidsforholdList)
       resetForm()
@@ -323,7 +323,7 @@ const Ansatt: React.FC<AnsattProps> = ({
               </Column>
             </Row>
           </>
-        )}
+          )}
     </>
   )
 }

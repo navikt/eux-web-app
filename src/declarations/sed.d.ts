@@ -16,6 +16,10 @@ export type JaNei = 'ja' | 'nei'
 
 export type PensjonsType = 'alderspensjon' | 'uførhet'
 
+export type YtelseNavn = 'Barnetrygd' | 'Kontantstøtte'
+
+export type Utbetalingshyppighet = 'Månedlig'| 'Årlig'
+
 export interface Adresse {
   by?: string
   bygning?: string
@@ -140,18 +144,29 @@ export interface Telefon {
   nummer: string
 }
 
-export interface Utbetaling {
-  barnetsNavn?: string
-  begrunnelse?: string
+export interface Ytelse {
   beloep: string
   mottakersNavn: string
   sluttdato: string
   startdato: string
-  utbetalingshyppighet?: string
+  utbetalingshyppighet: Utbetalingshyppighet
   valuta: string
-  vedtaksdato?: string
-  ytelseNavn?: string
-  ytterligereInfo?: string
+  ytelseNavn: string
+  barnetsNavn?: string
+}
+
+export interface Motregning {
+  barnetsNavn?: string
+  begrunnelse: string
+  beloep: string
+  mottakersNavn: string
+  sluttdato: string
+  startdato: string
+  utbetalingshyppighet: Utbetalingshyppighet
+  valuta: string
+  vedtaksdato: string
+  ytelseNavn: string
+  ytterligereInfo: string
 }
 
 export interface BaseReplySed {
@@ -176,30 +191,32 @@ export interface FSed extends BaseReplySed {
   formaal: Array<string>
 }
 
+export interface Barnetilhoerighet {
+  borIBrukersHushold: JaNei
+  borIEktefellesHushold: JaNei
+  borIAnnenPersonsHushold: JaNei
+  borPaaInstitusjon: JaNei
+  erDeltForeldreansvar: JaNei
+  relasjonTilPerson: BarnRelasjon
+  relasjonType?: BarnRelasjonType
+  periode: Periode
+}
+
 export interface F002Sed extends FSed {
   annenPerson: Person
   barn: Array<{
     adresser?: Array<Adresse>
-    barnetilhoerigheter?: Array<{
-      borIBrukersHushold: JaNei
-      borIEktefellesHushold: JaNei
-      borIAnnenPersonsHushold: JaNei
-      borPaaInstitusjon: JaNei
-      erDeltForeldreansvar: JaNei
-      relasjonTilPerson: BarnRelasjon
-      relasjonType?: BarnRelasjonType
-      periode: Periode
-    }>
+    barnetilhoerigheter?: Array<Barnetilhoerighet>
     flyttegrunn?: Flyttegrunn
     personInfo: PersonInfo
-    motregning?: Utbetaling
-    ytelse?: Utbetaling
+    motregning?: Motregning
+    ytelse?: Ytelse
   }>
   ektefelle: Person
   endredeForhold: Array<string>
   familie: {
-    motregninger: Array<Utbetaling>
-    ytelser: Array<Utbetaling>
+    motregninger: Array<Motregning>
+    ytelser: Array<Ytelse>
   }
   krav: {
     infoPresisering: string

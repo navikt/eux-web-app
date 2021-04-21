@@ -213,9 +213,9 @@ const Adresser: React.FC<AdresseProps> = ({
   }
 
   const getErrorFor = (index: number, el: string): string | undefined => {
-    return index < 0 ?
-      _validation[namespace + '-' + el]?.feilmelding :
-      validation[namespace + '[' + index + ']-' + el]?.feilmelding
+    return index < 0
+      ? _validation[namespace + '-' + el]?.feilmelding
+      : validation[namespace + '[' + index + ']-' + el]?.feilmelding
   }
 
   const renderRow = (a: Adresse | null, index: number) => {
@@ -291,7 +291,7 @@ const Adresser: React.FC<AdresseProps> = ({
         >
           <Column>
             <HighContrastInput
-              data-test-id={'c-' + namespace +idx + '-postnummer-text'}
+              data-test-id={'c-' + namespace + idx + '-postnummer-text'}
               feil={getErrorFor(index, 'postnummer')}
               id={'c-' + namespace + idx + '-postnummer-text'}
               label={t('label:postnummer')}

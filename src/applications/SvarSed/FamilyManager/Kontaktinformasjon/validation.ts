@@ -30,10 +30,9 @@ export const validateKontaktsinformasjonTelefon = (
     personName
   }: ValidationKontaktsinformasjonTelefonProps
 ): void => {
-
   let value: FeiloppsummeringFeil | undefined
   let generalFail: boolean = false
-  let idx = (index < 0 ? '' : '[' + index + ']')
+  const idx = (index < 0 ? '' : '[' + index + ']')
 
   value = (!_.isEmpty(telefon.type))
     ? undefined
@@ -50,7 +49,7 @@ export const validateKontaktsinformasjonTelefon = (
     ? undefined
     : {
       feilmelding: t('message:validation-noTelephoneNumberForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace +idx + '-nummer-text'
+      skjemaelementId: 'c-' + namespace + idx + '-nummer-text'
     } as FeiloppsummeringFeil
   v[namespace + idx + '-nummer'] = value
   if (value) {
@@ -77,11 +76,10 @@ export const validateKontaktsinformasjonEpost = (
     personName
   }: ValidationKontaktsinformasjonEpostProps
 ): void => {
-  let value: FeiloppsummeringFeil | undefined
   let generalFail: boolean = false
-  let idx = (index < 0 ? '' : '[' + index + ']')
+  const idx = (index < 0 ? '' : '[' + index + ']')
 
-  value = !_.isEmpty(epost.adresse)
+  const value: FeiloppsummeringFeil | undefined = !_.isEmpty(epost.adresse)
     ? (epost.adresse.match(emailPattern)
         ? undefined
         : {
@@ -117,7 +115,7 @@ export const validateKontaktsinformasjonTelefoner = (
   personName: string
 ): void => {
   telefoner?.forEach((telefon: Telefon, index: number) => {
-    validateKontaktsinformasjonTelefon(validation, t, {telefon, index, namespace, personName})
+    validateKontaktsinformasjonTelefon(validation, t, { telefon, index, namespace, personName })
   })
 }
 
@@ -129,6 +127,6 @@ export const validateKontaktsinformasjonEposter = (
   personName: string
 ): void => {
   eposter?.forEach((epost: Epost, index: number) => {
-    validateKontaktsinformasjonEpost(validation, t, {epost, index, namespace, personName})
+    validateKontaktsinformasjonEpost(validation, t, { epost, index, namespace, personName })
   })
 }

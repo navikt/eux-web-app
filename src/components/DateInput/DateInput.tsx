@@ -19,7 +19,7 @@ const DateInput = ({
   namespace,
   setDato,
   value
- }: DateInputProps) => {
+}: DateInputProps) => {
   const [_dato, _setDato] = useState<string>(() => toUIDateFormat(value) ?? '')
   const { t } = useTranslation()
 

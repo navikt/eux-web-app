@@ -14,7 +14,7 @@ export default (fnr: any) => {
         arbeidsgiverOrgnr: a.orgnr,
         fraDato: a.ansettelsesPeriode.fom,
         tilDato: a.ansettelsesPeriode.tom,
-        harRegistrertInntekt: parseInt(a.orgnr.substring(a.orgnr.length-1, a.orgnr.length)) < 5 ? 'ja' : 'nei'
+        harRegistrertInntekt: parseInt(a.orgnr.substring(a.orgnr.length - 1, a.orgnr.length)) < 5 ? 'ja' : 'nei'
       }
     }),
     uriArbeidsgiverRegister: 'https://nav.no',

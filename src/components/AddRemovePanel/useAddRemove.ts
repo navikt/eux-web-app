@@ -8,7 +8,6 @@ const useAddRemove = (
   (key: string) => void,
   (key: string) => boolean,
 ] => {
-
   const [_confirmDelete, _setConfirmDelete] = useState<Array<string>>(initialValue)
 
   const addCandidateForDeletion = (key: string) => {

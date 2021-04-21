@@ -1,13 +1,17 @@
-
 import { setReplySed } from 'actions/svarpased'
+import {
+  validateAddPersonModal,
+  ValidationAddPersonModalProps
+} from 'applications/SvarSed/FamilyManager/AddPersonModal/validation'
 import Add from 'assets/icons/Add'
 import Barn from 'assets/icons/Child'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import useAddRemove from 'components/AddRemovePanel/useAddRemove'
 import Select from 'components/Select/Select'
 import { AlignStartRow, FlexCenterDiv, FlexDiv, PaddedDiv } from 'components/StyledComponents'
+import useValidation from 'components/Validation/useValidation'
 import { Option } from 'declarations/app'
 import { F002Sed, PersonInfo, ReplySed } from 'declarations/sed'
-import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper'
 import Lukknapp from 'nav-frontend-lukknapp'
@@ -71,67 +75,22 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
   replySed
 }: AddPersonModalProps) => {
   const { t } = useTranslation()
-  const [_confirmDelete, setConfirmDelete] = useState<Array<string>>([])
-  const [_newPersonFnr, setNewPersonFnr] = useState<string>('')
-  const [_newPersonName, setNewPersonName] = useState<string>('')
-  const [_newPersonRelation, setNewPersonRelation] = useState<string | undefined>(undefined)
-  const [_replySed, _setReplySed] = useState<ReplySed>(replySed)
-  const componentRef = useRef(null)
-  const [_validation, setValidation] = useState<Validation>({})
-  const dispatch = useDispatch()
   const namespace = 'familymanager-addpersonmodal'
+  const componentRef = useRef(null)
+  const dispatch = useDispatch()
+
+  const [_newPersonFnr, _setNewPersonFnr] = useState<string>('')
+  const [_newPersonName, _setNewPersonName] = useState<string>('')
+  const [_newPersonRelation, _setNewPersonRelation] = useState<string | undefined>(undefined)
+
+  const [addCandidateForDeletion, removeCandidateForDeletion, hasKey] = useAddRemove()
+  const [_replySed, _setReplySed] = useState<ReplySed>(replySed)
+  const [_validation, _resetValidation, performValidation] = useValidation<ValidationAddPersonModalProps>({}, validateAddPersonModal)
 
   const brukerNr = 0
   const ektefelleNr = brukerNr + ((_replySed as F002Sed).ektefelle ? 1 : 0)
   const annenPersonNr = ektefelleNr + ((_replySed as F002Sed).annenPerson ? 1 : 0)
   const barnNr = annenPersonNr + ((_replySed as F002Sed).barn ? 1 : 0)
-
-  const resetValidation = (key: string): void => {
-    setValidation({
-      ..._validation,
-      [key]: undefined
-    })
-  }
-
-  const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
-
-  const performValidation = (): boolean => {
-    const newValidation: Validation = {}
-    if (!_newPersonFnr) {
-      newValidation[namespace + '-fnr'] = {
-        feilmelding: t('message:validation-noFnr'),
-        skjemaelementId: 'c-' + namespace + '-fnr-text'
-      }
-    }
-    if (_newPersonFnr && !_newPersonFnr.match(/^\d{11}$/)) {
-      newValidation[namespace + '-fnr'] = {
-        feilmelding: t('message:validation-invalidFnr'),
-        skjemaelementId: 'c-' + namespace + '-fnr-text'
-      }
-    }
-    if (!_newPersonName) {
-      newValidation[namespace + '-navn'] = {
-        feilmelding: t('message:validation-noName'),
-        skjemaelementId: 'c-' + namespace + '-navn-text'
-      }
-    }
-    if (!_newPersonName) {
-      newValidation[namespace + '-relasjon'] = {
-        feilmelding: t('message:validation-noRelation'),
-        skjemaelementId: 'c-' + namespace + '-relasjon-text'
-      }
-    }
-    setValidation(newValidation)
-    return hasNoValidationErrors(newValidation)
-  }
-
-  const addCandidateForDeletion = (key: string) => {
-    setConfirmDelete(_confirmDelete.concat(key))
-  }
-
-  const removeCandidateForDeletion = (key: string) => {
-    setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
-  }
 
   const closeModal = (): void => {
     if (_.isFunction(onModalClose)) {
@@ -160,29 +119,35 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
   }
 
   const onNewPersonFnrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    resetValidation(namespace + '-fnr')
-    setNewPersonFnr(e.target.value)
+    _resetValidation(namespace + '-fnr')
+    _setNewPersonFnr(e.target.value)
   }
 
   const onNewPersonNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    resetValidation(namespace + '-navn')
-    setNewPersonName(e.target.value)
+    _resetValidation(namespace + '-navn')
+    _setNewPersonName(e.target.value)
   }
 
   const onNewPersonRelationChange = (e: any) => {
-    resetValidation(namespace + '-relasjon')
-    setNewPersonRelation(e.value)
+    _resetValidation(namespace + '-relasjon')
+    _setNewPersonRelation(e.value)
   }
 
   const resetForm = () => {
-    setNewPersonFnr('')
-    setNewPersonName('')
-    setNewPersonRelation('')
-    setValidation({})
+    _setNewPersonFnr('')
+    _setNewPersonName('')
+    _setNewPersonRelation('')
+    _resetValidation()
   }
 
-  const onNewPersonAdd = () => {
-    if (performValidation()) {
+  const onAdd = () => {
+    const valid: boolean = performValidation({
+      fnr: _newPersonFnr,
+      navn: _newPersonName,
+      relasjon: _newPersonRelation,
+      namespace
+    })
+    if (valid) {
       const newReplySed = _.cloneDeep(_replySed)
       const personInfo: PersonInfo = {
         fornavn: _newPersonName,
@@ -262,7 +227,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
 
   const renderPerson = (personId: string, i: number) => {
     const p = _.get(_replySed, `${personId}.personInfo`)
-    const candidateForDeletion = _confirmDelete.indexOf(personId) >= 0
+    const candidateForDeletion = hasKey(personId)
 
     return (
       <FlexDiv className='slideInFromLeft' style={{ animationDelay: i * 0.1 + 's' }} key={personId}>
@@ -369,7 +334,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
                 <Knapp
                   mini
                   kompakt
-                  onClick={onNewPersonAdd}
+                  onClick={onAdd}
                 >
                   <Add width={20} />
                   <HorizontalSeparatorDiv />

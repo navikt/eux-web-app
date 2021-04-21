@@ -161,29 +161,32 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
   }
 
   const getErrorFor = (index: number, el: string): string | null | undefined => {
-    return index < 0 ?
-      _validation[namespace + '-' + el]?.feilmelding :
-      validation[namespace + '[' + index + ']-' + el]?.feilmelding
+    return index < 0
+      ? _validation[namespace + '-' + el]?.feilmelding
+      : validation[namespace + '[' + index + ']-' + el]?.feilmelding
   }
 
   const renderRow = (periode: Periode | undefined, index: number) => {
     const key = periode ? getKey(periode) : 'new'
     const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
+    const idx = (index >= 0 ? '[' + index + ']' : '')
+    const startdato = index < 0 ? _newStartDato : periode?.startdato
+    const sluttdato = index < 0 ? _newSluttDato : periode?.sluttdato
+
     return (
       <>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
         >
           <Period
-            index={index}
-            key={_newStartDato + _newSluttDato}
-            namespace={namespace}
+            key={'' + startdato + sluttdato}
+            namespace={namespace + idx}
             errorStartDato={getErrorFor(index, 'startdato')}
             errorSluttDato={getErrorFor(index, 'sluttdato')}
-            setStartDato={setStartDato}
-            setSluttDato={setSluttDato}
-            valueStartDato={index < 0 ? _newStartDato : periode?.startdato}
-            valueSluttDato={index < 0 ? _newSluttDato : periode?.sluttdato}
+            setStartDato={(dato: string) => setStartDato(dato, index)}
+            setSluttDato={(dato: string) => setSluttDato(dato, index)}
+            valueStartDato={startdato}
+            valueSluttDato={sluttdato}
           />
           <Column>
             <AddRemovePanel
@@ -230,7 +233,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
               </HighContrastFlatknapp>
             </Column>
           </Row>
-        )}
+          )}
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column>
@@ -255,7 +258,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
             value={flyttegrunn.datoFlyttetTilMottakerlandet}
           />
         </Column>
-        <Column/>
+        <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
@@ -274,7 +277,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
             />
           </TextAreaDiv>
         </Column>
-        <Column/>
+        <Column />
       </AlignStartRow>
     </>
   )

@@ -1,6 +1,5 @@
 import { getArbeidsforholdList, resetValidation, searchPerson, setReplySed } from 'actions/svarpased'
-import AddPersonModal from 'applications/SvarSed/FamilyManager/AddPersonModal'
-import Relasjon from 'applications/SvarSed/FamilyManager/Relasjon'
+import AddPersonModal from 'applications/SvarSed/FamilyManager/AddPersonModal/AddPersonModal'
 import Add from 'assets/icons/Add'
 import FilledCheckCircle from 'assets/icons/CheckCircle'
 import Barn from 'assets/icons/Child'
@@ -28,14 +27,15 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import Adresser from './Adresser/Adresser'
-import BeløpNavnOgValuta from './BeløpNavnOgValuta'
+import BeløpNavnOgValuta from './BeløpNavnOgValuta/BeløpNavnOgValuta'
 import Familierelasjon from './Familierelasjon/Familierelasjon'
-import Familieytelser from './Familieytelser'
+import Familieytelser from './Familieytelser/Familieytelser'
 import GrunnlagForBosetting from './GrunnlagForBosetting/GrunnlagForBosetting'
 import Kontaktinformasjon from './Kontaktinformasjon/Kontaktinformasjon'
 import Nasjonaliteter from './Nasjonaliteter/Nasjonaliteter'
 import PersonensStatus from './PersonensStatus/PersonensStatus'
 import PersonOpplysninger from './PersonOpplysninger/PersonOpplysninger'
+import Relasjon from './Relasjon/Relasjon'
 import Trygdeordning from './Trygdeordning/Trygdeordning'
 
 const LeftDiv = styled.div`
@@ -287,20 +287,18 @@ const FamilyManager: React.FC = () => {
             {selected
               ? (
                 <Undertittel style={{ whiteSpace: 'nowrap' }}>
-                  {personId === 'familie' ?
-                    t('label:hele-familien') :
-                    personInfo?.fornavn + ' ' + personInfo?.etternavn +
-                    (personInfo?.statsborgerskap ? ' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')' : '')
-                  }
+                  {personId === 'familie'
+                    ? t('label:hele-familien')
+                    : personInfo?.fornavn + ' ' + personInfo?.etternavn +
+                    (personInfo?.statsborgerskap ? ' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')' : '')}
                 </Undertittel>
                 )
               : (
                 <Normaltekst style={{ whiteSpace: 'nowrap' }}>
-                  {personId === 'familie' ?
-                    t('label:hele-familien') :
-                    personInfo?.fornavn + ' ' + personInfo?.etternavn +
-                    (personInfo?.statsborgerskap ? ' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')' : '')
-                  }
+                  {personId === 'familie'
+                    ? t('label:hele-familien')
+                    : personInfo?.fornavn + ' ' + personInfo?.etternavn +
+                    (personInfo?.statsborgerskap ? ' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')' : '')}
                 </Normaltekst>
                 )}
             {personId.startsWith('barn[') && (
@@ -387,7 +385,7 @@ const FamilyManager: React.FC = () => {
               >
                 <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('el:button-add-new-x', {x: t('label:person')})}
+                {t('el:button-add-new-x', { x: t('label:person') })}
               </HighContrastFlatknapp>
             </MarginDiv>
           </LeftDiv>
@@ -406,12 +404,12 @@ const FamilyManager: React.FC = () => {
                       highContrast={highContrast}
                       landkoderList={landkoderList}
                       onSearchingPerson={(id: string) => dispatch(searchPerson(id))}
-                      updateReplySed={updateReplySed}
                       personID={_editCurrentPersonID}
                       resetValidation={_resetValidation}
                       replySed={replySed}
                       searchingPerson={searchingPerson}
                       searchedPerson={searchedPerson}
+                      updateReplySed={updateReplySed}
                       validation={validation}
                     />
                   )}
@@ -419,11 +417,11 @@ const FamilyManager: React.FC = () => {
                     <Nasjonaliteter
                       highContrast={highContrast}
                       landkoderList={landkoderList}
-                      updateReplySed={updateReplySed}
                       personID={_editCurrentPersonID}
                       personName={_editCurrentPersonName!}
                       resetValidation={_resetValidation}
                       replySed={replySed}
+                      updateReplySed={updateReplySed}
                       validation={validation}
                     />
                   )}
@@ -431,22 +429,22 @@ const FamilyManager: React.FC = () => {
                     <Adresser
                       highContrast={highContrast}
                       landkoderList={landkoderList}
-                      updateReplySed={updateReplySed}
                       personID={_editCurrentPersonID}
                       personName={_editCurrentPersonName!}
                       replySed={replySed}
                       resetValidation={_resetValidation}
+                      updateReplySed={updateReplySed}
                       validation={validation}
                     />
                   )}
                   {_menuOption === 'kontaktinformasjon' && (
                     <Kontaktinformasjon
                       highContrast={highContrast}
-                      updateReplySed={updateReplySed}
                       personID={_editCurrentPersonID}
                       personName={_editCurrentPersonName!}
                       replySed={replySed}
                       resetValidation={_resetValidation}
+                      updateReplySed={updateReplySed}
                       validation={validation}
                     />
                   )}
@@ -465,11 +463,11 @@ const FamilyManager: React.FC = () => {
                     <Familierelasjon
                       familierelasjonKodeverk={familierelasjonKodeverk}
                       highContrast={highContrast}
-                      updateReplySed={updateReplySed}
                       personID={_editCurrentPersonID}
                       personName={_editCurrentPersonName!}
                       replySed={replySed}
                       resetValidation={_resetValidation}
+                      updateReplySed={updateReplySed}
                       validation={validation}
                     />
                   )}
@@ -477,9 +475,10 @@ const FamilyManager: React.FC = () => {
                     <Relasjon
                       familierelasjonKodeverk={familierelasjonKodeverk}
                       highContrast={highContrast}
-                      updateReplySed={updateReplySed}
                       personID={_editCurrentPersonID}
                       replySed={replySed}
+                      resetValidation={_resetValidation}
+                      updateReplySed={updateReplySed}
                       validation={validation}
                     />
                   )}
@@ -500,28 +499,30 @@ const FamilyManager: React.FC = () => {
                   )}
                   {_menuOption === 'grunnlagForBosetting' && (
                     <GrunnlagForBosetting
-                      updateReplySed={updateReplySed}
                       personID={_editCurrentPersonID}
                       replySed={replySed}
                       resetValidation={_resetValidation}
+                      updateReplySed={updateReplySed}
                       validation={validation}
                     />
                   )}
                   {_menuOption === 'beløpNavnOgValuta' && (
                     <BeløpNavnOgValuta
                       highContrast={highContrast}
-                      updateReplySed={updateReplySed}
                       personID={_editCurrentPersonID}
                       replySed={replySed}
+                      resetValidation={_resetValidation}
+                      updateReplySed={updateReplySed}
                       validation={validation}
                     />
                   )}
                   {_menuOption === 'familieytelser' && (
                     <Familieytelser
                       highContrast={highContrast}
-                      updateReplySed={updateReplySed}
                       personID={_editCurrentPersonID}
                       replySed={replySed}
+                      resetValidation={_resetValidation}
+                      updateReplySed={updateReplySed}
                       validation={validation}
                     />
                   )}

@@ -19,21 +19,21 @@ import { validateNasjonalitet, ValidationNasjonalitetProps } from './validation'
 interface NasjonalitetProps {
   highContrast: boolean
   landkoderList: Array<Kodeverk>
-  updateReplySed: (needle: string, value: any) => void
   personID: string
   personName: string
   replySed: ReplySed
   resetValidation: (key?: string) => void
+  updateReplySed: (needle: string, value: any) => void
   validation: Validation
 }
 
 const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
   landkoderList,
-  updateReplySed,
   personID,
   personName,
   replySed,
   resetValidation,
+  updateReplySed,
   validation
 }:NasjonalitetProps): JSX.Element => {
   const { t } = useTranslation()
@@ -124,9 +124,9 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
   }
 
   const getErrorFor = (index: number, el: string): string | undefined => {
-    return index < 0 ?
-      _validation[namespace + '-' + el]?.feilmelding :
-      validation[namespace + '[' + index + ']-' + el]?.feilmelding
+    return index < 0
+      ? _validation[namespace + '-' + el]?.feilmelding
+      : validation[namespace + '[' + index + ']-' + el]?.feilmelding
   }
 
   const renderRow = (s: Statsborgerskap | null, i: number) => {
@@ -141,7 +141,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
             <CountrySelect
               data-test-id={'c-' + namespace + idx + '-land-text'}
               error={getErrorFor(i, 'land')}
-              id={'c-' + namespace +idx + '-land-text'}
+              id={'c-' + namespace + idx + '-land-text'}
               menuPortalTarget={document.body}
               includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
               onOptionSelected={(e: any) => onLandSelected(e.value, i)}
@@ -155,9 +155,9 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
               namespace={namespace + idx + '-fradato'}
               index={i}
               key={i < 0 ? _newFradato : s!.fradato}
-              label={''}
+              label=''
               setDato={onFradatoChanged}
-              value={i < 0 ?_newFradato : s!.fradato}
+              value={i < 0 ? _newFradato : s!.fradato}
             />
           </Column>
           <Column>

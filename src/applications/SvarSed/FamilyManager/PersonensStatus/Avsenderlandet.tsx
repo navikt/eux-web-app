@@ -132,33 +132,34 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
     return index < 0 ? _validation[namespace + '-' + el]?.feilmelding : validation[namespace + '[' + index + ']-' + el]?.feilmelding
   }
 
-  const renderRow = (p: Periode | undefined, i: number) => {
-    const key = p ? getKey(p) : 'new'
-    const candidateForDeletion = i < 0 ? false : !!key && hasKey(key)
-
+  const renderRow = (periode: Periode | undefined, index: number) => {
+    const key = periode ? getKey(periode) : 'new'
+    const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
+    const idx = (index >= 0 ? '[' + index + ']' : '')
+    const startdato = index < 0 ? _newStartDato : periode?.startdato
+    const sluttdato = index < 0 ? _newSluttDato : periode?.sluttdato
     return (
       <>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
         >
           <Period
-            index={i}
-            key={_newStartDato + _newSluttDato}
-            namespace={namespace}
-            errorStartDato={getErrorFor(i, 'startdato')}
-            errorSluttDato={getErrorFor(i, 'sluttdato')}
-            setStartDato={setStartDato}
-            setSluttDato={setSluttDato}
-            valueStartDato={i < 0 ? _newStartDato : p?.startdato}
-            valueSluttDato={i < 0 ? _newSluttDato : p?.sluttdato}
+            key={'' + startdato + sluttdato}
+            namespace={namespace + idx}
+            errorStartDato={getErrorFor(index, 'startdato')}
+            errorSluttDato={getErrorFor(index, 'sluttdato')}
+            setStartDato={(dato: string) => setStartDato(dato, index)}
+            setSluttDato={(dato: string) => setSluttDato(dato, index)}
+            valueStartDato={startdato}
+            valueSluttDato={sluttdato}
           />
           <Column>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
-              existingItem={(i >= 0)}
+              existingItem={(index >= 0)}
               marginTop
               onBeginRemove={() => addCandidateForDeletion(key!)}
-              onConfirmRemove={() => onRemove(i)}
+              onConfirmRemove={() => onRemove(index)}
               onCancelRemove={() => removeCandidateForDeletion(key!)}
               onAddNew={onAdd}
               onCancelNew={onCancel}
@@ -178,8 +179,9 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
       <VerticalSeparatorDiv />
       {perioderMedTrygd
         ?.sort((a, b) =>
-          moment(a.startdato, 'YYYY-MM-DD')
-            .isSameOrBefore(moment(b.startdato, 'YYYY-MM-DD')) ? -1 : 1
+          moment(a.startdato, 'YYYY-MM-DD').isSameOrBefore(moment(b.startdato, 'YYYY-MM-DD'))
+            ? -1
+            : 1
         )
         ?.map(renderRow)}
       <hr />
@@ -200,7 +202,7 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
               </HighContrastFlatknapp>
             </Column>
           </Row>
-        )}
+          )}
       <VerticalSeparatorDiv />
     </>
   )

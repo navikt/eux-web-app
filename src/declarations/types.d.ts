@@ -18,7 +18,7 @@ export type Arbeidsforhold = Array<Arbeidsforholdet>
 
 export interface Arbeidsperioder {
   uriArbeidsgiverRegister: string
-  uriInntektRegister:  string
+  uriInntektRegister: string
   arbeidsperioder: Arbeidsforhold
 }
 

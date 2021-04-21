@@ -22,7 +22,7 @@ export const validateNotAnsatte = (
     namespace
   }: ValidationNotAnsattProps
 ): void => {
-  let idx = (index < 0 ? '' : '[' + index + ']')
+  const idx = (index < 0 ? '' : '[' + index + ']')
 
   validatePeriod(v, t, {
     period,

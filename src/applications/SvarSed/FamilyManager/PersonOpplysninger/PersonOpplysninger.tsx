@@ -42,7 +42,6 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   searchingPerson,
   validation
 }:PersonOpplysningerProps): JSX.Element => {
-
   const { t } = useTranslation()
   const target = `${personID}.personInfo`
   const personInfo: PersonInfo = _.get(replySed, target)
@@ -337,7 +336,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
               >
                 <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('el:button-add-new-x', {x: t('label:fødested')})}
+                {t('el:button-add-new-x', { x: t('label:fødested') })}
               </HighContrastFlatknapp>
             </Column>
           </AlignStartRow>

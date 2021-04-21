@@ -102,7 +102,6 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
       _setNewSluttDato(dato)
       _resetValidation(namespace + '-familieYtelse-sluttdato')
     } else {
-
       if (newSedCategory === 'perioderMedPensjon') {
         const newPerioder: Array<PensjonPeriode> = _.cloneDeep(perioder[newSedCategory]) as Array<PensjonPeriode>
         if (dato === '') {
@@ -144,8 +143,8 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
       newPerioder[index].pensjonstype = type
 
       updateReplySed(`${personID}.perioderMedPensjon`, newPerioder)
-      if (validation[namespace + '-perioderMedPensjon[' + index +']-startdato']) {
-        resetValidation(namespace + '-perioderMedPensjon[' + index +']-startdato')
+      if (validation[namespace + '-perioderMedPensjon[' + index + ']-startdato']) {
+        resetValidation(namespace + '-perioderMedPensjon[' + index + ']-startdato')
       }
     }
   }
@@ -170,7 +169,7 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
     return (p as Periode).startdato
   }
 
-  const onRemove = ( i: number, newSedCategory: SedCategory) => {
+  const onRemove = (i: number, newSedCategory: SedCategory) => {
     const newPerioder: Array<Periode | PensjonPeriode> = _.cloneDeep(perioder[newSedCategory])
     const deletedPerioder: Array<Periode | PensjonPeriode> = newPerioder.splice(i, 1)
     if (deletedPerioder && deletedPerioder.length > 0) {
@@ -180,19 +179,17 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
   }
 
   const onAdd = () => {
-
     if (!_newCategory) {
-      let newValidation: Validation = {}
+      const newValidation: Validation = {}
       newValidation[namespace + '-familieYtelse-category'] = {
-          feilmelding: t('message:validation-noPensjonTypeTilPerson', {person: personName}),
-          skjemaelementId: 'c-' + namespace + '-category-text'
-        } as FeiloppsummeringFeil
+        feilmelding: t('message:validation-noPensjonTypeTilPerson', { person: personName }),
+        skjemaelementId: 'c-' + namespace + '-category-text'
+      } as FeiloppsummeringFeil
       _setValidation(newValidation)
       return false
     }
 
-
-    let newPeriode: any = {}
+    const newPeriode: any = {}
 
     if (_newCategory === 'perioderMedPensjon') {
       (newPeriode as PensjonPeriode).pensjonstype = _newPensjonsType!;
@@ -222,7 +219,6 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
     })
 
     if (valid) {
-
       let newPerioder: Array<Periode | PensjonPeriode> = _.cloneDeep(perioder[_newCategory])
       if (_.isNil(newPerioder)) {
         newPerioder = []
@@ -251,24 +247,25 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
     const startdato = index < 0
       ? _newStartDato
       : (sedCategory === 'perioderMedPensjon'
-        ? (periode as PensjonPeriode)?.periode.startdato : (periode as Periode)?.startdato)
+          ? (periode as PensjonPeriode)?.periode.startdato
+          : (periode as Periode)?.startdato)
     const sluttdato = index < 0
       ? _newSluttDato
       : (sedCategory === 'perioderMedPensjon'
-        ? (periode as PensjonPeriode)?.periode.sluttdato : (periode as Periode)?.sluttdato)
+          ? (periode as PensjonPeriode)?.periode.sluttdato
+          : (periode as Periode)?.sluttdato)
 
     return (
       <>
         <AlignStartRow className={classNames('slideInFromLeft')}>
           <Period
-            index={index}
             key={'' + startdato + sluttdato}
             labels={false}
             namespace={namespace + idx}
             errorStartDato={getErrorFor(sedCategory, index, 'startdato')}
             errorSluttDato={getErrorFor(sedCategory, index, 'sluttdato')}
-            setStartDato={(dato: string, i: number) => setStartDato(dato, i, sedCategory)}
-            setSluttDato={(dato: string, i: number) => setSluttDato(dato, i, sedCategory)}
+            setStartDato={(dato: string) => setStartDato(dato, index, sedCategory)}
+            setSluttDato={(dato: string) => setSluttDato(dato, index, sedCategory)}
             valueStartDato={startdato}
             valueSluttDato={sluttdato}
           />
@@ -387,32 +384,33 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
       )}
       <VerticalSeparatorDiv />
       {titleFor('perioderMedArbeid')}
-      {perioder.perioderMedArbeid.map((p, i) => renderRow(p,  'perioderMedArbeid', i))}
+      {perioder.perioderMedArbeid.map((p, i) => renderRow(p, 'perioderMedArbeid', i))}
       {titleFor('perioderMedTrygd')}
-      {perioder.perioderMedTrygd.map((p, i) => renderRow(p,  'perioderMedTrygd', i))}
+      {perioder.perioderMedTrygd.map((p, i) => renderRow(p, 'perioderMedTrygd', i))}
       {titleFor('perioderMedYtelser')}
       {perioder.perioderMedYtelser.map((p, i) => renderRow(p, 'perioderMedYtelser', i))}
       {titleFor('perioderMedPensjon')}
-      {perioder.perioderMedPensjon.map((p, i) => renderRow(p,  'perioderMedPensjon', i))}
+      {perioder.perioderMedPensjon.map((p, i) => renderRow(p, 'perioderMedPensjon', i))}
       <hr />
       <VerticalSeparatorDiv />
       {_seeNewForm
-      ? renderRow(null, null, -1)
-      : (<Row className='slideInFromLeft'>
-        <Column>
-          <HighContrastFlatknapp
-            mini
-            kompakt
-            onClick={() => _setSeeNewForm(true)}
-          >
-            <Add />
-            <HorizontalSeparatorDiv data-size='0.5' />
-            {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-          </HighContrastFlatknapp>
-        </Column>
-      </Row>
-      )}
-  </>
+        ? renderRow(null, null, -1)
+        : (
+          <Row className='slideInFromLeft'>
+            <Column>
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                onClick={() => _setSeeNewForm(true)}
+              >
+                <Add />
+                <HorizontalSeparatorDiv data-size='0.5' />
+                {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+              </HighContrastFlatknapp>
+            </Column>
+          </Row>
+          )}
+    </>
   )
 }
 

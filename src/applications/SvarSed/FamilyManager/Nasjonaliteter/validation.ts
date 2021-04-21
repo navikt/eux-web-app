@@ -29,11 +29,11 @@ export const validateNasjonalitet = (
   const idx = (index >= 0 ? '[' + index + ']' : '')
   let value: FeiloppsummeringFeil |undefined
 
-  value  = (!_.isEmpty(statsborgerskap.land))
+  value = (!_.isEmpty(statsborgerskap.land))
     ? undefined
     : {
       feilmelding: t('message:validation-noBirthCountryForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace +idx + '-land-text'
+      skjemaelementId: 'c-' + namespace + idx + '-land-text'
     } as FeiloppsummeringFeil
   v[namespace + idx + '-land'] = value
   if (value) {
@@ -74,7 +74,7 @@ export const validateNasjonalitet = (
       } as FeiloppsummeringFeil
 
     if (!v[namespace + idx + '-fradato']) {
-      v[namespace +idx + '-fradato'] = value
+      v[namespace + idx + '-fradato'] = value
     }
     if (value) {
       generalFail = true
@@ -99,6 +99,6 @@ export const validateNasjonaliteter = (
   personName: string
 ): void => {
   statsborgerskaper?.forEach((statsborgerskap: Statsborgerskap, index: number) => {
-    validateNasjonalitet(validation, t, {statsborgerskap, statsborgerskaper, index, namespace, personName})
+    validateNasjonalitet(validation, t, { statsborgerskap, statsborgerskaper, index, namespace, personName })
   })
 }
