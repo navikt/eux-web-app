@@ -1,4 +1,4 @@
-import { createSed, getPreviewFile, resetValidation, sendSeletedInntekt } from 'actions/svarpased'
+import { createSed, resetValidation, sendSeletedInntekt } from 'actions/svarpased'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import Attachments from 'applications/Vedlegg/Attachments/Attachments'
@@ -40,7 +40,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { SvarpasedState } from 'reducers/svarpased'
 import styled from 'styled-components'
 import { Item } from 'tabell'
-
+import ReactJson from 'react-json-view'
 import { validate } from './validation'
 
 const FlexDiv = styled.div`
@@ -179,11 +179,21 @@ const Step2: React.FC<SvarPaSedProps> = ({
 
   // TODO
   const onPreviewSed = () => {
-    if (!_previewFile) {
+    setModal({
+      closeButton: true,
+      modalContent: (
+        <div>
+          <ReactJson src={replySed} />
+        </div>
+      )
+    })
+    
+
+    /*if (!_previewFile) {
       dispatch(getPreviewFile())
     } else {
       showPreviewModal(_previewFile)
-    }
+    }*/
   }
 
   const onGoBackClick = () => {
