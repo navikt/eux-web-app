@@ -1,6 +1,7 @@
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import useAddRemove from 'components/AddRemovePanel/useAddRemove'
 import Select from 'components/Select/Select'
 import { AlignStartRow } from 'components/StyledComponents'
 import useValidation from 'components/Validation/useValidation'
@@ -28,6 +29,7 @@ interface WithSubsidiesProps {
   updateReplySed: (needle: string, value: any) => void
   personID: string
   replySed: ReplySed
+  resetValidation: (key?: string) => void
   validation: Validation
 }
 
@@ -36,21 +38,21 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
   updateReplySed,
   personID,
   replySed,
+  resetValidation,
   validation
 }: WithSubsidiesProps): JSX.Element => {
   const { t } = useTranslation()
+  const target: string = `${personID}.perioderMedPensjon`
+  let perioderMedPensjon: Array<PensjonPeriode> = _.get(replySed, target)
+  const namespace = `familymanager-${personID}-personensstatus-withsubsidies`
 
   const [_newStartDato, _setNewStartDato] = useState<string>('')
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')
   const [_newPensjonType, _setNewPensjonType] = useState<string>('')
 
-  const [_confirmDelete, _setConfirmDelete] = useState<Array<string>>([])
+  const [addCandidateForDeletion, removeCandidateForDeletion, hasKey] = useAddRemove()
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, resetValidation, performValidation] = useValidation<ValidationWithSubsidiesProps>({}, validateWithSubsidies)
-
-  const target: string = `${personID}.perioderMedPensjon`
-  let perioderMedPensjon: Array<PensjonPeriode> = _.get(replySed, target)
-  const namespace = 'familymanager-' + personID + '-personensstatus-withsubsidies'
+  const [_validation, _resetValidation, performValidation] = useValidation<ValidationWithSubsidiesProps>({}, validateWithSubsidies)
 
   const selectPensjonTypeOptions: Options = [{
     label: t('el:option-trygdeordning-alderspensjon'), value: 'alderspensjon'
@@ -58,54 +60,52 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
     label: t('el:option-trygdeordning-uførhet'), value: 'uførhet'
   }]
 
-  const onAddNewClicked = () => _setSeeNewForm(true)
-
-  const addCandidateForDeletion = (key: string) => {
-    _setConfirmDelete(_confirmDelete.concat(key))
-  }
-
-  const removeCandidateForDeletion = (key: string | null) => {
-    if (!key) { return null }
-    _setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
-  }
-
-  const setStartDato = (dato: string, i: number) => {
-    if (i < 0) {
+  const setStartDato = (dato: string, index: number) => {
+    if (index < 0) {
       _setNewStartDato(dato)
-      resetValidation(namespace + '-startdato')
+      _resetValidation(namespace + '-startdato')
     } else {
       const newPerioder: Array<PensjonPeriode> = _.cloneDeep(perioderMedPensjon)
-      newPerioder[i].periode.startdato = dato
+      newPerioder[index].periode.startdato = dato
       updateReplySed(target, newPerioder)
+      if (validation[namespace + '-startdato']) {
+        resetValidation(namespace + '-startdato')
+      }
     }
   }
 
-  const setSluttDato = (dato: string, i: number) => {
-    if (i < 0) {
+  const setSluttDato = (dato: string, index: number) => {
+    if (index < 0) {
       _setNewSluttDato(dato)
-      resetValidation(namespace + '-sluttdato')
+      _resetValidation(namespace + '-sluttdato')
     } else {
       const newPerioder: Array<PensjonPeriode> = _.cloneDeep(perioderMedPensjon)
       if (dato === '') {
-        delete newPerioder[i].periode.sluttdato
-        newPerioder[i].periode.aapenPeriodeType = 'åpen_sluttdato'
+        delete newPerioder[index].periode.sluttdato
+        newPerioder[index].periode.aapenPeriodeType = 'åpen_sluttdato'
       } else {
-        delete newPerioder[i].periode.aapenPeriodeType
-        newPerioder[i].periode.sluttdato = dato
+        delete newPerioder[index].periode.aapenPeriodeType
+        newPerioder[index].periode.sluttdato = dato
       }
       updateReplySed(target, newPerioder)
+      if (validation[namespace + '-sluttdato']) {
+        resetValidation(namespace + '-sluttdato')
+      }
     }
   }
 
-  const setPensjonType = (type: string | undefined, i: number) => {
+  const setPensjonType = (type: string | undefined, index: number) => {
     if (type) {
-      if (i < 0) {
+      if (index < 0) {
         _setNewPensjonType(type)
-        resetValidation(namespace + '-pensjontype')
+        _resetValidation(namespace + '-pensjontype')
       } else {
         const newPerioder: Array<PensjonPeriode> = _.cloneDeep(perioderMedPensjon)
-        newPerioder[i].pensjonstype = type
+        newPerioder[index].pensjonstype = type
         updateReplySed(target, newPerioder)
+        if (validation[namespace + '-pensjontype']) {
+          resetValidation(namespace + '-pensjontype')
+        }
       }
     }
   }
@@ -114,7 +114,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
     _setNewStartDato('')
     _setNewSluttDato('')
     _setNewPensjonType('')
-    resetValidation()
+    _resetValidation()
   }
 
   const onCancel = () => {
@@ -184,7 +184,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
 
   const renderRow = (p: PensjonPeriode | undefined, i: number) => {
     const key = p ? getKey(p) : 'new'
-    const candidateForDeletion = i < 0 ? false : !!key && _confirmDelete.indexOf(key) >= 0
+    const candidateForDeletion = i < 0 ? false : !!key && hasKey(key)
     const idx = (i >= 0 ? '[' + i + ']' : '')
     return (
       <div className={classNames('slideInFromLeft')}>
@@ -270,7 +270,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
               <HighContrastFlatknapp
                 mini
                 kompakt
-                onClick={onAddNewClicked}
+                onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />

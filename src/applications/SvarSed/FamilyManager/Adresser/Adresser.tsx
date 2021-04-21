@@ -34,11 +34,11 @@ interface AdresseProps {
 
 const Adresser: React.FC<AdresseProps> = ({
   landkoderList,
-  updateReplySed,
   personID,
   personName,
   replySed,
   resetValidation,
+  updateReplySed,
   validation
 }:AdresseProps): JSX.Element => {
   const { t } = useTranslation()

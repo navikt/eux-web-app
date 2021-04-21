@@ -22,7 +22,6 @@ interface PersonensStatusProps {
   resetValidation: (key?: string) => void
   updateReplySed: (needle: string, value: any) => void
   validation: Validation
-
 }
 
 const PersonensStatus: React.FC<PersonensStatusProps> = ({
@@ -35,12 +34,11 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
   resetValidation,
   updateReplySed,
   validation,
-
 }:PersonensStatusProps): JSX.Element => {
-  const [_arbeidsforhold, setArbeidsforhold] = useState<string>('')
   const { t } = useTranslation()
-
   const namespace = `familymanager-${personID}-personensstatus`
+
+  const [_arbeidsforhold, setArbeidsforhold] = useState<string>('')
 
   return (
     <PaddedDiv>
@@ -96,16 +94,17 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
                 arbeidsforholdList={arbeidsforholdList}
                 getArbeidsforholdList={getArbeidsforholdList}
                 gettingArbeidsforholdList={gettingArbeidsforholdList}
-                updateReplySed={updateReplySed}
                 replySed={replySed}
                 personID={personID}
+                updateReplySed={updateReplySed}
               />
               )
             : (
               <NotAnsatt
-                updateReplySed={updateReplySed}
                 personID={personID}
                 replySed={replySed}
+                resetValidation={resetValidation}
+                updateReplySed={updateReplySed}
                 validation={validation}
               />
               )}
@@ -118,9 +117,10 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
             <Column>
               <WithSubsidies
                 highContrast={highContrast}
-                updateReplySed={updateReplySed}
                 personID={personID}
                 replySed={replySed}
+                resetValidation={resetValidation}
+                updateReplySed={updateReplySed}
                 validation={validation}
               />
             </Column>
@@ -132,9 +132,10 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
         <Column>
           <Avsenderlandet
-            updateReplySed={updateReplySed}
             personID={personID}
             replySed={replySed}
+            resetValidation={resetValidation}
+            updateReplySed={updateReplySed}
             validation={validation}
           />
         </Column>
@@ -143,10 +144,10 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
         <Column>
           <GrunnlagforBosetting
-            updateReplySed={updateReplySed}
             personID={personID}
             replySed={replySed}
             resetValidation={resetValidation}
+            updateReplySed={updateReplySed}
             validation={validation}
           />
         </Column>

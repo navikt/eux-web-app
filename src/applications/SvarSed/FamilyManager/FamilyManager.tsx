@@ -408,6 +408,7 @@ const FamilyManager: React.FC = () => {
                       onSearchingPerson={(id: string) => dispatch(searchPerson(id))}
                       updateReplySed={updateReplySed}
                       personID={_editCurrentPersonID}
+                      resetValidation={_resetValidation}
                       replySed={replySed}
                       searchingPerson={searchingPerson}
                       searchedPerson={searchedPerson}
@@ -452,9 +453,11 @@ const FamilyManager: React.FC = () => {
                   {_menuOption === 'trygdeordninger' && (
                     <Trygdeordning
                       highContrast={highContrast}
-                      updateReplySed={updateReplySed}
                       personID={_editCurrentPersonID}
+                      personName={_editCurrentPersonName!}
                       replySed={replySed}
+                      resetValidation={_resetValidation}
+                      updateReplySed={updateReplySed}
                       validation={validation}
                     />
                   )}

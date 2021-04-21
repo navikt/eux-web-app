@@ -29,6 +29,7 @@ export const validateWithSubsidies = (
     namespace
   })
   let idx = (index < 0 ? '' : '[' + index + ']')
+
   if (!v[namespace + '-startdato'] &&
     _.find(otherPensjonPeriods, p => p.periode.startdato === period.startdato)) {
     v[namespace + '-startdato'] = {

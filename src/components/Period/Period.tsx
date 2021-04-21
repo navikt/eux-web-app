@@ -7,6 +7,7 @@ export interface PeriodProps {
   errorStartDato: string | null | undefined
   errorSluttDato: string | null | undefined
   index: number
+  labels?: boolean
   namespace: string
   setStartDato: (dato: string, index: number) => void
   setSluttDato: (dato: string, index: number) => void
@@ -31,6 +32,7 @@ const Period = ({
   errorStartDato,
   errorSluttDato,
   index,
+  labels = true,
   namespace,
   setStartDato,
   setSluttDato,
@@ -58,7 +60,7 @@ const Period = ({
           data-test-id={'c-' + namespace + (index >= 0 ? '[' + index + ']' : '') + '-startdato-date'}
           feil={errorStartDato}
           id={'c-' + namespace + '[' + index + ']-startdato-date'}
-          label={t('label:startdato')}
+          label={labels? t('label:startdato') : ''}
           onBlur={onStartDatoBlur}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setStartDato(e.target.value)}
           placeholder={t('el:placeholder-date-default')}
@@ -70,7 +72,7 @@ const Period = ({
           data-test-id={'c-' + namespace + (index >= 0 ? '[' + index + ']' : '') + '-sluttdato-date'}
           feil={errorSluttDato}
           id={'c-' + namespace + (index >= 0 ? '[' + index + ']' : '') + '-sluttdato-date'}
-          label={t('label:sluttdato')}
+          label={labels ? t('label:sluttdato') : ''}
           onBlur={onEndDatoBlur}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSluttDato(e.target.value)}
           placeholder={t('el:placeholder-date-default')}

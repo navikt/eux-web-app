@@ -2,16 +2,27 @@ import { PersonInfo } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 
-export const validatePersonOpplysning = (
-  v: Validation,
+export interface validatePersonOpplysningProps {
   personInfo: PersonInfo,
-  t: any,
   namespace: string,
   personName: string
+}
+
+const datePattern = /^\d{4}-\d{2}-\d{2}$/
+
+export const validatePersonOpplysning = (
+  v: Validation,
+  t: any,
+  {
+    personInfo,
+    namespace,
+    personName
+  }: validatePersonOpplysningProps
 ): void => {
   let generalFail: boolean = false
+  let value: FeiloppsummeringFeil | undefined
 
-  let value = (personInfo.fornavn)
+  value = (personInfo.fornavn)
     ? undefined
     : {
       feilmelding: t('message:validation-noFornavnForPerson', { person: personName }),
@@ -42,6 +53,19 @@ export const validatePersonOpplysning = (
   v[namespace + '-foedselsdato'] = value
   if (value) {
     generalFail = true
+  }
+
+  value = (personInfo.foedselsdato.match(datePattern))
+    ? undefined
+    : {
+      feilmelding: t('message:validation-invalidFoedselsdatoForPerson', { person: personName }),
+      skjemaelementId: 'c-' + namespace + '-foedselsdato-text'
+    } as FeiloppsummeringFeil
+  if (!v[namespace + '-foedselsdato'] && value) {
+    v[namespace + '-foedselsdato'] = value
+    if (value) {
+      generalFail = true
+    }
   }
 
   value = (personInfo.kjoenn)

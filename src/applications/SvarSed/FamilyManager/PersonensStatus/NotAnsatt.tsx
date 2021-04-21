@@ -1,6 +1,7 @@
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import useAddRemove from 'components/AddRemovePanel/useAddRemove'
 import Period from 'components/Period/Period'
 import { AlignStartRow } from 'components/StyledComponents'
 import useValidation from 'components/Validation/useValidation'
@@ -15,73 +16,70 @@ import { useTranslation } from 'react-i18next'
 import { validateNotAnsatte, ValidationNotAnsattProps } from './notAnsattValidation'
 
 export interface NotAnsattProps {
-  updateReplySed: (needle: string, value: any) => void
   personID: string
   replySed: ReplySed
+  resetValidation: (key?: string) => void
+  updateReplySed: (needle: string, value: any) => void
   validation: Validation
 }
 
 const NotAnsatt: React.FC<NotAnsattProps> = ({
-   updateReplySed,
    personID,
    replySed,
+   resetValidation,
+   updateReplySed,
    validation
 }: NotAnsattProps): JSX.Element => {
   const { t } = useTranslation()
-
-  const [_newStartDato, _setNewStartDato] = useState<string>('')
-  const [_newSluttDato, _setNewSluttDato] = useState<string>('')
-
-  const [_confirmDelete, _setConfirmDelete] = useState<Array<string>>([])
-  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, resetValidation, performValidation] = useValidation<ValidationNotAnsattProps>({}, validateNotAnsatte)
-
   const target: string = `${personID}.perioderSomSelvstendig`
   let perioderSomSelvstendig: Array<Periode> = _.get(replySed, target)
   const namespace = `familymanager-${personID}-personensstatus-notansatt`
 
-  const onAddNewClicked = () => _setSeeNewForm(true)
+  const [_newStartDato, _setNewStartDato] = useState<string>('')
+  const [_newSluttDato, _setNewSluttDato] = useState<string>('')
 
-  const addCandidateForDeletion = (key: string) => {
-    _setConfirmDelete(_confirmDelete.concat(key))
-  }
+  const [addCandidateForDeletion, removeCandidateForDeletion, hasKey] = useAddRemove()
+  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
+  const [_validation, _resetValidation, performValidation] = useValidation<ValidationNotAnsattProps>({}, validateNotAnsatte)
 
-  const removeCandidateForDeletion = (key: string) => {
-    _setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
-  }
-
-  const setStartDato = (dato: string, i: number) => {
-    if (i < 0) {
+  const setStartDato = (dato: string, index: number) => {
+    if (index < 0) {
       _setNewStartDato(dato)
-      resetValidation(namespace + '-startdato')
+      _resetValidation(namespace + '-startdato')
     } else {
       const newPerioder: Array<Periode> = _.cloneDeep(perioderSomSelvstendig)
-      newPerioder[i].startdato = dato
+      newPerioder[index].startdato = dato
       updateReplySed(target, newPerioder)
+      if (validation[namespace + '-startdato']) {
+        resetValidation(namespace + '-startdato')
+      }
     }
   }
 
-  const setSluttDato = (dato: string, i: number) => {
-    if (i < 0) {
+  const setSluttDato = (dato: string, indx: number) => {
+    if (indx < 0) {
       _setNewSluttDato(dato)
-      resetValidation(namespace + '-sluttdato')
+      _resetValidation(namespace + '-sluttdato')
     } else {
       const newPerioder: Array<Periode> = _.cloneDeep(perioderSomSelvstendig)
       if (dato === '') {
-        delete newPerioder[i].sluttdato
-        newPerioder[i].aapenPeriodeType = 'åpen_sluttdato'
+        delete newPerioder[indx].sluttdato
+        newPerioder[indx].aapenPeriodeType = 'åpen_sluttdato'
       } else {
-        delete newPerioder[i].aapenPeriodeType
-        newPerioder[i].sluttdato = dato
+        delete newPerioder[indx].aapenPeriodeType
+        newPerioder[indx].sluttdato = dato
       }
       updateReplySed(target, newPerioder)
+      if (validation[namespace + '-sluttdato']) {
+        resetValidation(namespace + '-sluttdato')
+      }
     }
   }
 
   const resetForm = () => {
     _setNewStartDato('')
     _setNewSluttDato('')
-    resetValidation()
+    _resetValidation()
   }
 
   const onCancel = () => {
@@ -136,7 +134,7 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
 
   const renderRow = (p: Periode | undefined, i: number) => {
     const key = p ? getKey(p) : 'new'
-    const candidateForDeletion = i < 0 ? false : !!key && _confirmDelete.indexOf(key) >= 0
+    const candidateForDeletion = i < 0 ? false : !!key && hasKey(key)
 
     return (
       <>
@@ -194,7 +192,7 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
               <HighContrastFlatknapp
                 mini
                 kompakt
-                onClick={onAddNewClicked}
+                onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />

@@ -1,10 +1,6 @@
-import { toFinalDateFormat } from 'components/Period/Period'
-import {
-  validateArbeidsforhold,
-  ValidationArbeidsforholdProps
-} from './ansattValidation'
 import Add from 'assets/icons/Add'
 import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
+import { toFinalDateFormat } from 'components/Period/Period'
 import useValidation from 'components/Validation/useValidation'
 import { Periode, ReplySed } from 'declarations/sed'
 import { Arbeidsforholdet, Arbeidsperioder } from 'declarations/types'
@@ -21,6 +17,7 @@ import {
 } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { validateArbeidsforhold, ValidationArbeidsforholdProps } from './ansattValidation'
 
 export interface AnsattProps {
   arbeidsforholdList: Arbeidsperioder
@@ -40,6 +37,9 @@ const Ansatt: React.FC<AnsattProps> = ({
   replySed
 }: AnsattProps) => {
   const { t } = useTranslation()
+  const fnr: string | undefined = _.find(_.get(replySed, `${personID}.personInfo.pin`), p => p.land === 'NO')?.identifikator
+  const namespace = `familymanager-${personID}-personensstatus-ansatt`
+  const target = `${personID}.perioderSomAnsatt`
 
   const [_addedArbeidsforholdList, setAddedArbeidsforholdList] = useState<Arbeidsperioder>(() => ({
     arbeidsperioder: [],
@@ -56,11 +56,6 @@ const Ansatt: React.FC<AnsattProps> = ({
   const [_seeNewArbeidsperiode, setSeeNewArbeidsperiode] = useState<boolean>(false)
   const [_valgteArbeidsforhold, _setValgtArbeidsforhold] = useState<Array<Arbeidsforholdet>>([])
   const [_validation, resetValidation, performValidation] = useValidation<ValidationArbeidsforholdProps>({}, validateArbeidsforhold)
-
-  const fnr: string | undefined = _.find(_.get(replySed, `${personID}.personInfo.pin`), p => p.land === 'NO')?.identifikator
-  const namespace = `familymanager-${personID}-personensstatus-ansatt`
-  const target = `${personID}.perioderSomAnsatt`
-
 
   const onArbeidsforholdSelectionChange = (selectedArbeidsforhold: Array<Arbeidsforholdet>) => {
     const perioder: Array<Periode> = selectedArbeidsforhold.map(a => {
@@ -328,7 +323,7 @@ const Ansatt: React.FC<AnsattProps> = ({
               </Column>
             </Row>
           </>
-          )}
+        )}
     </>
   )
 }

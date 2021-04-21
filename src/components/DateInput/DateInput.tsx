@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 
 export interface DateInputProps {
   error: string | null | undefined
-  index: number
+  index?: number
   label: string
   namespace: string
   setDato: (dato: string, index: number) => void
@@ -14,7 +14,7 @@ export interface DateInputProps {
 
 const DateInput = ({
   error,
-  index,
+  index = -1,
   label,
   namespace,
   setDato,

@@ -14,7 +14,8 @@ const useValidation = <ValidationData extends any>(
 ): [
     Validation,
     (key?: string | undefined) => void,
-    (validationData: ValidationData) => boolean
+    (validationData: ValidationData) => boolean,
+    (v: Validation) => void
   ] => {
 
   const { t } = useTranslation()
@@ -46,7 +47,8 @@ const useValidation = <ValidationData extends any>(
   return [
     _validation,
     resetValidation,
-    performValidation
+    performValidation,
+    setValidation
   ]
 }
 

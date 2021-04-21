@@ -22,13 +22,13 @@ export const validateNotAnsatte = (
     namespace
   }: ValidationNotAnsattProps
 ): void => {
+  let idx = (index < 0 ? '' : '[' + index + ']')
 
   validatePeriod(v, t, {
     period,
     index,
     namespace
   })
-  let idx = (index < 0 ? '' : '[' + index + ']')
 
   if (!v[namespace + '-startdato'] &&
     _.find(otherPeriods, p => p.startdato === period.startdato)) {

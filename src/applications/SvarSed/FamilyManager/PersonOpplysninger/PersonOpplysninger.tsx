@@ -1,4 +1,5 @@
 import Add from 'assets/icons/Add'
+import DateInput from 'components/DateInput/DateInput'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import { PersonInfo, Pin, ReplySed } from 'declarations/sed'
 import { Kodeverk, Person, Validation } from 'declarations/types'
@@ -24,6 +25,7 @@ interface PersonOpplysningerProps {
   updateReplySed: (needle: string, value: any) => void
   personID: string | undefined
   replySed: ReplySed
+  resetValidation: (key?: string) => void
   searchingPerson: boolean
   searchedPerson: Person | undefined
   validation: Validation
@@ -35,6 +37,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   updateReplySed,
   personID,
   replySed,
+  resetValidation,
   searchedPerson,
   searchingPerson,
   validation
@@ -42,25 +45,39 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
 
   const { t } = useTranslation()
   const target = `${personID}.personInfo`
+  const personInfo: PersonInfo = _.get(replySed, target)
   const namespace = `familymanager-${personID}-personopplysninger`
 
-  const personInfo: PersonInfo = _.get(replySed, `${personID}.personInfo`)
   const [_seeNewForm, setSeeNewForm] = useState<boolean>(false)
+  const norwegianPin = _.find(personInfo.pin, p => p.land === 'NO')
+  const utenlandskPin = _.find(personInfo.pin, p => p.land !== 'NO')
 
   const onFornavnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateReplySed(`${target}.fornavn`, e.target.value)
+    if (validation[namespace + '-fornavn']) {
+      resetValidation(namespace + '-fornavn')
+    }
   }
 
   const onEtternavnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateReplySed(`${target}.etternavn`, e.target.value)
+    if (validation[namespace + '-etternavn']) {
+      resetValidation(namespace + '-etternavn')
+    }
   }
 
-  const onFodselsdatoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    updateReplySed(`${target}.foedselsdato`, e.target.value)
+  const onFodselsdatoChange = (dato: string) => {
+    updateReplySed(`${target}.foedselsdato`, dato)
+    if (validation[namespace + '-foedselsdato']) {
+      resetValidation(namespace + '-foedselsdato')
+    }
   }
 
   const onKjoennChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateReplySed(`${target}.kjoenn`, e.target.value)
+    if (validation[namespace + '-kjoenn']) {
+      resetValidation(namespace + '-kjoenn')
+    }
   }
 
   const onUtenlandskPinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,6 +91,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
       })
     }
     updateReplySed(`${target}.pin`, pin)
+    if (validation[namespace + '-utenlandskpin-nummer']) {
+      resetValidation(namespace + '-utenlandskpin-nummer')
+    }
   }
 
   const onUtenlandskLandChange = (land: string) => {
@@ -87,6 +107,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
       })
     }
     updateReplySed(`${target}.pin`, pin)
+    if (validation[namespace + '-utenlandskpin-land']) {
+      resetValidation(namespace + '-utenlandskpin-land')
+    }
   }
 
   const onNorwegianPinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -100,23 +123,33 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
       })
     }
     updateReplySed(`${target}.pin`, pin)
+    if (validation[namespace + '-norskpin-nummer']) {
+      resetValidation(namespace + '-norskpin-nummer')
+    }
   }
 
   const onFoedestedByChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateReplySed(`${target}.pinMangler.foedested.by`, e.target.value)
+    if (validation[namespace + '-foedested-by']) {
+      resetValidation(namespace + '-foedested-by')
+    }
   }
 
   const onFoedestedRegionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateReplySed(`${target}.pinMangler.foedested.region`, e.target.value)
+    if (validation[namespace + '-foedested-region']) {
+      resetValidation(namespace + '-foedested-region')
+    }
   }
 
   const onFoedestedLandChange = (land: string) => {
     updateReplySed(`${target}.pinMangler.foedested.land`, land)
-    return true
+    if (validation[namespace + '-foedested-land']) {
+      resetValidation(namespace + '-foedested-land')
+    }
   }
 
   const onSearchUser = () => {
-    const norwegianPin = _.find(personInfo.pin, p => p.land === 'NO')
     if (norwegianPin && norwegianPin.identifikator) {
       onSearchingPerson(norwegianPin.identifikator)
     }
@@ -130,9 +163,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             data-test-id={'c-' + namespace + '-fornavn-text'}
             feil={validation[namespace + '-fornavn']?.feilmelding}
             id={'c-' + namespace + '-fornavn-text'}
+            label={t('label:fornavn') + ' *'}
             onChange={onFornavnChange}
             value={personInfo.fornavn}
-            label={t('label:fornavn') + ' *'}
           />
         </Column>
         <Column>
@@ -140,20 +173,19 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             data-test-id={'c-' + namespace + '-etternavn-text'}
             feil={validation[namespace + '-etternavn']?.feilmelding}
             id={'c-' + namespace + '-etternavn-text'}
+            label={t('label:etternavn') + ' *'}
             onChange={onEtternavnChange}
             value={personInfo.etternavn}
-            label={t('label:etternavn') + ' *'}
           />
         </Column>
         <Column>
-          <HighContrastInput
-            data-test-id={'c-' + namespace + '-foedselsdato-text'}
-            feil={validation[namespace + '-foedselsdato']?.feilmelding}
-            id={'c-' + namespace + '-foedselsdato-text'}
-            onChange={onFodselsdatoChange}
-            value={personInfo.foedselsdato}
-            placeholder={t('el:placeholder-date-default')}
+          <DateInput
+            error={validation[namespace + '-foedselsdato']?.feilmelding}
+            namespace={namespace + '-foedselsdato'}
+            key={personInfo.foedselsdato}
             label={t('label:fødselsdato') + ' *'}
+            setDato={onFodselsdatoChange}
+            value={personInfo.foedselsdato}
           />
         </Column>
       </AlignStartRow>
@@ -186,7 +218,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             id={'c-' + namespace + '-utenlandskpin-nummer-text'}
             label={t('label:utenlandsk-pin')}
             onChange={onUtenlandskPinChange}
-            value={_.find(personInfo.pin, p => p.land !== 'NO')?.identifikator}
+            value={utenlandskPin?.identifikator}
           />
         </Column>
         <Column data-flex='2'>
@@ -200,7 +232,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             onChange={onUtenlandskLandChange}
             onOptionSelected={(e: any) => onUtenlandskLandChange(e.value)}
             placeholder={t('el:placeholder-select-default')}
-            values={_.find(personInfo.pin, p => p.land !== 'NO')?.land}
+            values={utenlandskPin?.land}
           />
         </Column>
       </AlignStartRow>
@@ -213,7 +245,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             id={'c-' + namespace + '-norskpin-nummer-text'}
             label={t('label:norsk-fnr')}
             onChange={onNorwegianPinChange}
-            value={_.find(personInfo.pin, p => p.land === 'NO')?.identifikator}
+            value={norwegianPin?.identifikator}
           />
         </Column>
         <Column>

@@ -36,7 +36,7 @@ export const performValidation = (v: Validation, t: any, options: any, personID:
 
   const personName = personInfo.fornavn + ' ' + personInfo.etternavn
 
-  validatePersonOpplysning(v, t, personInfo, `familymanager-${personID}-personopplysning`, personName)
+  validatePersonOpplysning(v, t, {personInfo, namespace: `familymanager-${personID}-personopplysning`, personName})
   validateNasjonaliteter(v, t, statsborgerskaper, `familymanager-${personID}-statsborgerskap`, personName)
   validateAdresser(v, t, adresser,`familymanager-${personID}-adresser`, personName)
   validateKontaktsinformasjonTelefoner(v, t, telefoner, `familymanager-${personID}-kontaktinformasjon-telefon`, personName)
