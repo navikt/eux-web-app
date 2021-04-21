@@ -1,6 +1,7 @@
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import useAddRemove from 'components/AddRemovePanel/useAddRemove'
 import DateInput from 'components/DateInput/DateInput'
 import Period from 'components/Period/Period'
 import { AlignStartRow, TextAreaDiv } from 'components/StyledComponents'
@@ -23,88 +24,94 @@ import { useTranslation } from 'react-i18next'
 import { validateGrunnlagForBosetting, ValidationGrunnlagForBosettingProps } from './validation'
 
 interface GrunnlagForBosettingProps {
-  onValueChanged: (needle: string, value: any) => void
+  updateReplySed: (needle: string, value: any) => void
   personID: string
   replySed: ReplySed
+  resetValidation: (key?: string) => void
   validation: Validation
 }
 
 const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
-  onValueChanged,
+  updateReplySed,
   personID,
   replySed,
+  resetValidation,
   validation
 }:GrunnlagForBosettingProps): JSX.Element => {
   const { t } = useTranslation()
-
-  const [_newSluttDato, _setNewSluttDato] = useState<string>('')
-  const [_newStartDato, _setNewStartDato] = useState<string>('')
-
-  const [_confirmDelete, _setConfirmDelete] = useState<Array<string>>([])
-  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, resetValidation, performValidation] = useValidation<ValidationGrunnlagForBosettingProps>({}, validateGrunnlagForBosetting)
-
   const target = `${personID}.flyttegrunn`
   const flyttegrunn: Flyttegrunn = _.get(replySed, target)
   const namespace = `familymanager-${personID}-grunnlagforbosetting`
 
-  const onAddNewClicked = () => _setSeeNewForm(true)
+  const [_newSluttDato, _setNewSluttDato] = useState<string>('')
+  const [_newStartDato, _setNewStartDato] = useState<string>('')
 
-  const addCandidateForDeletion = (key: string) => {
-    _setConfirmDelete(_confirmDelete.concat(key))
-  }
-
-  const removeCandidateForDeletion = (key: string) => {
-    _setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
-  }
+  const [addCandidateForDeletion, removeCandidateForDeletion, hasKey] = useAddRemove()
+  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
+  const [_validation, _resetValidation, performValidation] = useValidation<ValidationGrunnlagForBosettingProps>({}, validateGrunnlagForBosetting)
 
   const setAvsenderDato = (dato: string) => {
-    resetValidation(namespace + '-avsenderdato')
-    onValueChanged(`${target}.datoFlyttetTilAvsenderlandet`, dato)
+    _resetValidation(namespace + '-avsenderdato')
+    updateReplySed(`${target}.datoFlyttetTilAvsenderlandet`, dato)
+    if (validation[namespace + '-avsenderdato']) {
+      resetValidation(namespace + '-avsenderdato')
+    }
   }
 
   const setMottakerDato = (dato: string) => {
-    resetValidation(namespace + '-mottakerdato')
-    onValueChanged(`${target}.datoFlyttetTilMottakerlandet`, dato)
-  }
-
-  const setStartDato = (dato: string, i: number) => {
-    if (i < 0) {
-      _setNewStartDato(dato)
-      resetValidation(namespace + '-startdato')
-    } else {
-      const newPerioder: Array<Periode> = _.cloneDeep(flyttegrunn.perioder)
-      newPerioder[i].startdato = dato
-      onValueChanged(`${target}.perioder`, newPerioder)
+    _resetValidation(namespace + '-mottakerdato')
+    updateReplySed(`${target}.datoFlyttetTilMottakerlandet`, dato)
+    if (validation[namespace + '-mottakerdato']) {
+      resetValidation(namespace + '-mottakerdato')
     }
   }
 
-  const setSluttDato = (dato: string, i: number) => {
-    if (i < 0) {
+  const setStartDato = (dato: string, index: number) => {
+    if (index < 0) {
+      _setNewStartDato(dato)
+      _resetValidation(namespace + '-startdato')
+    } else {
+      const newPerioder: Array<Periode> = _.cloneDeep(flyttegrunn.perioder)
+      newPerioder[index].startdato = dato
+      updateReplySed(`${target}.perioder`, newPerioder)
+      if (validation[namespace + '-startdato']) {
+        resetValidation(namespace + '-startdato')
+      }
+    }
+  }
+
+  const setSluttDato = (dato: string, index: number) => {
+    if (index < 0) {
       _setNewSluttDato(dato)
-      resetValidation(namespace + '-sluttdato')
+      _resetValidation(namespace + '-sluttdato')
     } else {
       const newPerioder: Array<Periode> = _.cloneDeep(flyttegrunn.perioder)
       if (dato === '') {
-        delete newPerioder[i].sluttdato
-        newPerioder[i].aapenPeriodeType = 'åpen_sluttdato'
+        delete newPerioder[index].sluttdato
+        newPerioder[index].aapenPeriodeType = 'åpen_sluttdato'
       } else {
-        delete newPerioder[i].aapenPeriodeType
-        newPerioder[i].sluttdato = dato
+        delete newPerioder[index].aapenPeriodeType
+        newPerioder[index].sluttdato = dato
       }
-      onValueChanged(`${target}.perioder`, newPerioder)
+      updateReplySed(`${target}.perioder`, newPerioder)
+      if (validation[namespace + '-sluttdato']) {
+        resetValidation(namespace + '-sluttdato')
+      }
     }
   }
 
-  const setElementsOfPersonalSituation = (e: string) => {
-    resetValidation(namespace + '-elementer')
-    onValueChanged(`${target}.personligSituasjon`, e)
+  const setElementsOfPersonalSituation = (element: string) => {
+    _resetValidation(namespace + '-elementer')
+    updateReplySed(`${target}.personligSituasjon`, element)
+    if (validation[namespace + '-elementer']) {
+      resetValidation(namespace + '-elementer')
+    }
   }
 
   const resetForm = () => {
     _setNewStartDato('')
     _setNewSluttDato('')
-    resetValidation()
+    _resetValidation()
   }
 
   const onCancel = () => {
@@ -122,7 +129,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
     if (deletedPeriods && deletedPeriods.length > 0) {
       removeCandidateForDeletion(getKey(deletedPeriods[0]))
     }
-    onValueChanged(`${target}.perioder`, newPerioder)
+    updateReplySed(`${target}.perioder`, newPerioder)
   }
 
   const onAdd = () => {
@@ -149,40 +156,42 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
       }
       newPerioder = newPerioder.concat(newPeriode)
       resetForm()
-      onValueChanged(`${target}.perioder`, newPerioder)
+      updateReplySed(`${target}.perioder`, newPerioder)
     }
   }
 
   const getErrorFor = (index: number, el: string): string | null | undefined => {
-    return index < 0 ? _validation[namespace + '-' + el]?.feilmelding : validation[namespace + '[' + index + ']-' + el]?.feilmelding
+    return index < 0 ?
+      _validation[namespace + '-' + el]?.feilmelding :
+      validation[namespace + '[' + index + ']-' + el]?.feilmelding
   }
 
-  const renderRow = (periode: Periode | undefined, i: number) => {
+  const renderRow = (periode: Periode | undefined, index: number) => {
     const key = periode ? getKey(periode) : 'new'
-    const candidateForDeletion = i < 0 ? false : !!key && _confirmDelete.indexOf(key) >= 0
+    const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
     return (
       <>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
         >
           <Period
-            index={i}
+            index={index}
             key={_newStartDato + _newSluttDato}
             namespace={namespace}
-            errorStartDato={getErrorFor(i, 'startdato')}
-            errorSluttDato={getErrorFor(i, 'sluttdato')}
+            errorStartDato={getErrorFor(index, 'startdato')}
+            errorSluttDato={getErrorFor(index, 'sluttdato')}
             setStartDato={setStartDato}
             setSluttDato={setSluttDato}
-            valueStartDato={i < 0 ? _newStartDato : periode?.startdato}
-            valueSluttDato={i < 0 ? _newSluttDato : periode?.sluttdato}
+            valueStartDato={index < 0 ? _newStartDato : periode?.startdato}
+            valueSluttDato={index < 0 ? _newSluttDato : periode?.sluttdato}
           />
           <Column>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
-              existingItem={(i >= 0)}
+              existingItem={(index >= 0)}
               marginTop
               onBeginRemove={() => addCandidateForDeletion(key!)}
-              onConfirmRemove={() => onRemove(i)}
+              onConfirmRemove={() => onRemove(index)}
               onCancelRemove={() => removeCandidateForDeletion(key!)}
               onAddNew={onAdd}
               onCancelNew={onCancel}
@@ -213,7 +222,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
               <HighContrastFlatknapp
                 mini
                 kompakt
-                onClick={onAddNewClicked}
+                onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />

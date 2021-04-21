@@ -23,7 +23,7 @@ import { validatePensjonPeriode, validatePeriode } from './validation'
 
 interface TrygdeordningProps {
   highContrast: boolean
-  onValueChanged: (needle: string, value: any) => void
+  updateReplySed: (needle: string, value: any) => void
   personID: string
   replySed: ReplySed
   validation: Validation
@@ -39,7 +39,7 @@ type What = 'startdato' | 'sluttdato' | 'category' | 'pensjonstype'
 
 const Trygdeordning: React.FC<TrygdeordningProps> = ({
   highContrast,
-  onValueChanged,
+  updateReplySed,
   personID,
   replySed,
   validation
@@ -222,11 +222,11 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
         } else {
           (newPerioder[i] as Periode)[what] = value
         }
-        onValueChanged(`${personID}.${newSedCategory}`, newPerioder)
+        updateReplySed(`${personID}.${newSedCategory}`, newPerioder)
       }
       if (what === 'pensjonstype') {
         (newPerioder[i] as PensjonPeriode).pensjonstype = value
-        onValueChanged(`${personID}.${newSedCategory}`, newPerioder)
+        updateReplySed(`${personID}.${newSedCategory}`, newPerioder)
       }
     }
   }
@@ -271,7 +271,7 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
     if (deletedPerioder && deletedPerioder.length > 0) {
       removeCandidateForDeletion(p, getKey(deletedPerioder[0], newSedCategory))
     }
-    onValueChanged(`${personID}.${newSedCategory}`, newPerioder)
+    updateReplySed(`${personID}.${newSedCategory}`, newPerioder)
   }
 
   const onAdd = (p: PageCategory) => {
@@ -309,7 +309,7 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
         newPerioder = (newPerioder as Array<Periode>).concat(newPeriode)
       }
       resetForm(p)
-      onValueChanged(`${personID}.${category}`, newPerioder)
+      updateReplySed(`${personID}.${category}`, newPerioder)
     }
   }
 

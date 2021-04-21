@@ -16,13 +16,13 @@ ok c-familymanager-{personID}-adresser-by-text              - {INTERNAL} not use
 ok c-familymanager-{personID}-adresser-land-text            - {INTERNAL} not used
 ok c-familymanager-{personID}-adresser-bygning-text         - {INTERNAL} not used
 ok c-familymanager-{personID}-adresser-region-text          - {INTERNAL} not used
-ok c-familymanager-{personID}-adresser[{i}]-type-text       - {CONNECTED!!} {person}.adresser[].type
-ok c-familymanager-{personID}-adresser[{i}]-gate-text       - {CONNECTED!!} {person}.adresser[].gate
-ok c-familymanager-{personID}-adresser[{i}]-postnummer-text - {CONNECTED!!} {person}.adresser[].postnummer
-ok c-familymanager-{personID}-adresser[{i}]-by-text         - {CONNECTED!!} {person}.adresser[].by
-ok c-familymanager-{personID}-adresser[{i}]-land-text       - {CONNECTED!!} {person}.adresser[].land
-ok c-familymanager-{personID}-adresser[{i}]-bygning-text    - {CONNECTED!!} {person}.adresser[].bygning
-ok c-familymanager-{personID}-adresser[{i}]-region-text     - {CONNECTED!!} {person}.adresser[].region
+ok c-familymanager-{personID}-adresser[{i}]-type-text       - {CONNECTED!!!} {person}.adresser[].type
+ok c-familymanager-{personID}-adresser[{i}]-gate-text       - {CONNECTED!!!} {person}.adresser[].gate
+ok c-familymanager-{personID}-adresser[{i}]-postnummer-text - {CONNECTED!!!} {person}.adresser[].postnummer
+ok c-familymanager-{personID}-adresser[{i}]-by-text         - {CONNECTED!!!} {person}.adresser[].by
+ok c-familymanager-{personID}-adresser[{i}]-land-text       - {CONNECTED!!!} {person}.adresser[].land
+ok c-familymanager-{personID}-adresser[{i}]-bygning-text    - {CONNECTED!!!} {person}.adresser[].bygning
+ok c-familymanager-{personID}-adresser[{i}]-region-text     - {CONNECTED!!!} {person}.adresser[].region
 
 barn:
 ok c-familymanager-{personID}-beløpNavnOgValuta-name-text         - {GLOBAL} barn[].ytelse.barnetsNavn
@@ -41,13 +41,13 @@ ok c-familymanager-{personID}-familierelasjon-annenrelasjontype-text            
 ok c-familymanager-{personID}-familierelasjon-annenrelasjonpersonnavn-text      - {INTERNAL} not used
 ok c-familymanager-{personID}-familierelasjon-annenrelasjondato-date            - {INTERNAL} not used
 ok c-familymanager-{personID}-familierelasjon-borsammen-text                    - {INTERNAL} not used
-ok c-familymanager-{personID}-familierelasjon[{i}]-relasjontype-text            - {CONNECTED!!} {person}.familierelasjoner[].relasjonType
-ok c-familymanager-{personID}-familierelasjon[{i}]-startdato-date               - {CONNECTED!!} {person}.familierelasjoner[].periode.startdato
-ok c-familymanager-{personID}-familierelasjon[{i}]-sluttdato-date               - {CONNECTED!!} {person}.familierelasjoner[].periode.sluttdato
-ok c-familymanager-{personID}-familierelasjon[{i}]-annenrelasjontype-text       - {CONNECTED!!} {person}.familierelasjoner[].annenRelasjonType
-ok c-familymanager-{personID}-familierelasjon[{i}]-annenrelasjonpersonnavn-text - {CONNECTED!!} {person}.familierelasjoner[].annenRelasjonPersonNavn
-ok c-familymanager-{personID}-familierelasjon[{i}]-annenrelasjondato-date       - {CONNECTED!!} {person}.familierelasjoner[].annenRelasjonDato
-ok c-familymanager-{personID}-familierelasjon[{i}]-borsammen-text               - {CONNECTED!!} {person}.familierelasjoner[].borSammen
+ok c-familymanager-{personID}-familierelasjon[{i}]-relasjontype-text            - {CONNECTED!!!} {person}.familierelasjoner[].relasjonType
+ok c-familymanager-{personID}-familierelasjon[{i}]-startdato-date               - {CONNECTED!!!} {person}.familierelasjoner[].periode.startdato
+ok c-familymanager-{personID}-familierelasjon[{i}]-sluttdato-date               - {CONNECTED!!!} {person}.familierelasjoner[].periode.sluttdato
+ok c-familymanager-{personID}-familierelasjon[{i}]-annenrelasjontype-text       - {CONNECTED!!!} {person}.familierelasjoner[].annenRelasjonType
+ok c-familymanager-{personID}-familierelasjon[{i}]-annenrelasjonpersonnavn-text - {CONNECTED!!!} {person}.familierelasjoner[].annenRelasjonPersonNavn
+ok c-familymanager-{personID}-familierelasjon[{i}]-annenrelasjondato-date       - {CONNECTED!!!} {person}.familierelasjoner[].annenRelasjonDato
+ok c-familymanager-{personID}-familierelasjon[{i}]-borsammen-text               - {CONNECTED!!!} {person}.familierelasjoner[].borSammen
 
 hele familien
 ok c-familymanager-{personID}-familieytelser-number-text       - {GLOBAL} familie.motregninger[].antallPersoner
@@ -61,23 +61,23 @@ ok c-familymanager-{personID}-familieytelser-frequency-text    - {GLOBAL} famili
 
 ok c-familymanager-{personID}-grunnlagforbosetting-perioder-startdato-date      - {INTERNAL} not used
 ok c-familymanager-{personID}-grunnlagforbosetting-perioder-sluttdato-date      - {INTERNAL} not used
-ok c-familymanager-{personID}-grunnlagforbosetting-perioder[{i}]-startdato-date - {CONNECTED!!} {person}.flyttegrunn.perioder[].startdato
-ok c-familymanager-{personID}-grunnlagforbosetting-perioder[{i}]-sluttdato-date - {CONNECTED!!} {person}.flyttegrunn.perioder[].sluttdato
-ok c-familymanager-{personID}-grunnlagforbosetting-elementer-text               - {CONNECTED!!} {person}.flyttegrunn.personligSituasjon
-ok c-familymanager-{personID}-grunnlagforbosetting-avsenderdato-text            - {CONNECTED!!} {person}.flyttegrunn.datoFlyttetTilAvsenderlandet
-ok c-familymanager-{personID}-grunnlagforbosetting-mottakerdato-text            - {CONNECTED!!} {person}.flyttegrunn.datoFlyttetTilMottakerlandet
+ok c-familymanager-{personID}-grunnlagforbosetting-perioder[{i}]-startdato-date - {CONNECTED!!!} {person}.flyttegrunn.perioder[].startdato
+ok c-familymanager-{personID}-grunnlagforbosetting-perioder[{i}]-sluttdato-date - {CONNECTED!!!} {person}.flyttegrunn.perioder[].sluttdato
+ok c-familymanager-{personID}-grunnlagforbosetting-elementer-text               - {CONNECTED!!!} {person}.flyttegrunn.personligSituasjon
+ok c-familymanager-{personID}-grunnlagforbosetting-avsenderdato-text            - {CONNECTED!!!} {person}.flyttegrunn.datoFlyttetTilAvsenderlandet
+ok c-familymanager-{personID}-grunnlagforbosetting-mottakerdato-text            - {CONNECTED!!!} {person}.flyttegrunn.datoFlyttetTilMottakerlandet
 
 ok c-familymanager-{personID}-kontaktinformasjon-telefon-nummer-text      - {INTERNAL} not used
 ok c-familymanager-{personID}-kontaktinformasjon-telefon-type-text        - {INTERNAL} not used
 ok c-familymanager-{personID}-kontaktinformasjon-epost-adresse-text       - {INTERNAL} not used
-ok c-familymanager-{personID}-kontaktinformasjon[{i}]-telefon-nummer-text - {CONNECTED!!} {person}.telefon[].nummer
-ok c-familymanager-{personID}-kontaktinformasjon[{i}]-telefon-type-text   - {CONNECTED!!} {person}.telefon[].type
-ok c-familymanager-{personID}-kontaktinformasjon[{i}]-epost-adresse-text  - {CONNECTED!!} {person}.epost[].adresse
+ok c-familymanager-{personID}-kontaktinformasjon[{i}]-telefon-nummer-text - {CONNECTED!!!} {person}.telefon[].nummer
+ok c-familymanager-{personID}-kontaktinformasjon[{i}]-telefon-type-text   - {CONNECTED!!!} {person}.telefon[].type
+ok c-familymanager-{personID}-kontaktinformasjon[{i}]-epost-adresse-text  - {CONNECTED!!!} {person}.epost[].adresse
 
 ok c-familymanager-{personID}-nasjonaliteter-land-text         - {INTERNAL} not used
 ok c-familymanager-{personID}-nasjonaliteter-fradato-date      - {INTERNAL} not used
-ok c-familymanager-{personID}-nasjonaliteter[{i}]-land-text    - {CONNECTED!!}   {person}.personinfo.statsborgerskap[].land
-ok c-familymanager-{personID}-nasjonaliteter[{i}]-fradato-text - {CONNECTED!!}   {person}.personinfo.statsborgerskap[].fradato
+ok c-familymanager-{personID}-nasjonaliteter[{i}]-land-text    - {CONNECTED!!!} {person}.personinfo.statsborgerskap[].land
+ok c-familymanager-{personID}-nasjonaliteter[{i}]-fradato-text - {CONNECTED!!!} {person}.personinfo.statsborgerskap[].fradato
 
 ok c-familymanager-{personID}-personopplysninger-fornavn-text              - {GLOBAL} {person}.personInfo.fornavn
 ok c-familymanager-{personID}-personopplysninger-etternavn-text            - {GLOBAL} {person}.personInfo.etternavn

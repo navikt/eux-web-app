@@ -1,5 +1,4 @@
-import * as svarpasedActions from 'actions/svarpased'
-import { setReplySed } from 'actions/svarpased'
+import { getArbeidsforholdList, resetValidation, searchPerson, setReplySed } from 'actions/svarpased'
 import AddPersonModal from 'applications/SvarSed/FamilyManager/AddPersonModal'
 import Relasjon from 'applications/SvarSed/FamilyManager/Relasjon'
 import Add from 'assets/icons/Add'
@@ -150,6 +149,7 @@ const FamilyManager: React.FC = () => {
   const [_editPersonIDs, setEditPersonIDs] = useState<Array<string>>([])
   // person with current form visible
   const [_editCurrentPersonID, setEditCurrentPersonID] = useState<string | undefined>(undefined)
+  const [_editCurrentPersonName, setEditCurrentPersonName] = useState<string | undefined>(undefined)
   const [_modal, setModal] = useState<boolean>(false)
   // list of selected persons
   const [_selectedPersonIDs, setSelectedPersonIDs] = useState<Array<string>>([])
@@ -168,6 +168,9 @@ const FamilyManager: React.FC = () => {
   const changePersonOption = (personID: string | undefined, menuOption: string) => {
     if (personID) {
       setEditCurrentPersonID(personID)
+      const p = _.get(replySed, personID)
+      const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
+      setEditCurrentPersonName(personName)
       setMenuOption(menuOption)
     }
   }
@@ -191,6 +194,13 @@ const FamilyManager: React.FC = () => {
       const alreadyEditingPerson = _.find(_editPersonIDs, _id => _id === id) !== undefined
       const isEditCurrentPerson = _editCurrentPersonID === id
       setEditCurrentPersonID(isEditCurrentPerson ? undefined : id)
+      if (isEditCurrentPerson) {
+        setEditCurrentPersonName(undefined)
+      } else {
+        const p = _.get(replySed, id)
+        const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
+        setEditCurrentPersonName(personName)
+      }
       const newEditPersons = alreadyEditingPerson ? _.filter(_editPersonIDs, _id => _id !== id) : _editPersonIDs.concat(id)
       setEditPersonIDs(newEditPersons)
       setMenuOption(isEditCurrentPerson
@@ -230,10 +240,14 @@ const FamilyManager: React.FC = () => {
     }
   }
 
-  const onValueChanged = (needleString: string | Array<string>, value: any) => {
+  const updateReplySed = (needleString: string | Array<string>, value: any) => {
     const newReplySed = _.cloneDeep(replySed)
     _.set(newReplySed, needleString, value)
     dispatch(setReplySed(newReplySed))
+  }
+
+  const _resetValidation = (key?: string) => {
+    dispatch(resetValidation(key))
   }
 
   const onAddNewPerson = () => {
@@ -391,7 +405,8 @@ const FamilyManager: React.FC = () => {
                     <PersonOpplysninger
                       highContrast={highContrast}
                       landkoderList={landkoderList}
-                      onValueChanged={onValueChanged}
+                      onSearchingPerson={(id: string) => dispatch(searchPerson(id))}
+                      updateReplySed={updateReplySed}
                       personID={_editCurrentPersonID}
                       replySed={replySed}
                       searchingPerson={searchingPerson}
@@ -403,8 +418,10 @@ const FamilyManager: React.FC = () => {
                     <Nasjonaliteter
                       highContrast={highContrast}
                       landkoderList={landkoderList}
-                      onValueChanged={onValueChanged}
+                      updateReplySed={updateReplySed}
                       personID={_editCurrentPersonID}
+                      personName={_editCurrentPersonName!}
+                      resetValidation={_resetValidation}
                       replySed={replySed}
                       validation={validation}
                     />
@@ -413,25 +430,29 @@ const FamilyManager: React.FC = () => {
                     <Adresser
                       highContrast={highContrast}
                       landkoderList={landkoderList}
-                      onValueChanged={onValueChanged}
+                      updateReplySed={updateReplySed}
                       personID={_editCurrentPersonID}
+                      personName={_editCurrentPersonName!}
                       replySed={replySed}
+                      resetValidation={_resetValidation}
                       validation={validation}
                     />
                   )}
                   {_menuOption === 'kontaktinformasjon' && (
                     <Kontaktinformasjon
                       highContrast={highContrast}
-                      onValueChanged={onValueChanged}
+                      updateReplySed={updateReplySed}
                       personID={_editCurrentPersonID}
+                      personName={_editCurrentPersonName!}
                       replySed={replySed}
+                      resetValidation={_resetValidation}
                       validation={validation}
                     />
                   )}
                   {_menuOption === 'trygdeordninger' && (
                     <Trygdeordning
                       highContrast={highContrast}
-                      onValueChanged={onValueChanged}
+                      updateReplySed={updateReplySed}
                       personID={_editCurrentPersonID}
                       replySed={replySed}
                       validation={validation}
@@ -441,9 +462,11 @@ const FamilyManager: React.FC = () => {
                     <Familierelasjon
                       familierelasjonKodeverk={familierelasjonKodeverk}
                       highContrast={highContrast}
-                      onValueChanged={onValueChanged}
+                      updateReplySed={updateReplySed}
                       personID={_editCurrentPersonID}
+                      personName={_editCurrentPersonName!}
                       replySed={replySed}
+                      resetValidation={_resetValidation}
                       validation={validation}
                     />
                   )}
@@ -451,7 +474,7 @@ const FamilyManager: React.FC = () => {
                     <Relasjon
                       familierelasjonKodeverk={familierelasjonKodeverk}
                       highContrast={highContrast}
-                      onValueChanged={onValueChanged}
+                      updateReplySed={updateReplySed}
                       personID={_editCurrentPersonID}
                       replySed={replySed}
                       validation={validation}
@@ -460,29 +483,31 @@ const FamilyManager: React.FC = () => {
                   {_menuOption === 'personensstatus' && (
                     <PersonensStatus
                       arbeidsforholdList={arbeidsforholdList}
-                      highContrast={highContrast}
-                      onValueChanged={onValueChanged}
-                      personID={_editCurrentPersonID}
-                      replySed={replySed}
-                      validation={validation}
                       gettingArbeidsforholdList={gettingArbeidsforholdList}
                       getArbeidsforholdList={(fnr: string | undefined) => {
-                        if (fnr) dispatch(svarpasedActions.getArbeidsforholdList(fnr))
+                        if (fnr) dispatch(getArbeidsforholdList(fnr))
                       }}
+                      highContrast={highContrast}
+                      personID={_editCurrentPersonID}
+                      replySed={replySed}
+                      resetValidation={_resetValidation}
+                      updateReplySed={updateReplySed}
+                      validation={validation}
                     />
                   )}
                   {_menuOption === 'grunnlagForBosetting' && (
                     <GrunnlagForBosetting
-                      onValueChanged={onValueChanged}
+                      updateReplySed={updateReplySed}
                       personID={_editCurrentPersonID}
                       replySed={replySed}
+                      resetValidation={_resetValidation}
                       validation={validation}
                     />
                   )}
                   {_menuOption === 'beløpNavnOgValuta' && (
                     <BeløpNavnOgValuta
                       highContrast={highContrast}
-                      onValueChanged={onValueChanged}
+                      updateReplySed={updateReplySed}
                       personID={_editCurrentPersonID}
                       replySed={replySed}
                       validation={validation}
@@ -491,7 +516,7 @@ const FamilyManager: React.FC = () => {
                   {_menuOption === 'familieytelser' && (
                     <Familieytelser
                       highContrast={highContrast}
-                      onValueChanged={onValueChanged}
+                      updateReplySed={updateReplySed}
                       personID={_editCurrentPersonID}
                       replySed={replySed}
                       validation={validation}

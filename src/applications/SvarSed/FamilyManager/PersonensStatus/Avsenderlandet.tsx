@@ -18,14 +18,14 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 export interface AvsenderlandetProps {
-  onValueChanged: (needle: string, value: any) => void
+  updateReplySed: (needle: string, value: any) => void
   personID: string
   replySed: ReplySed
   validation: Validation
 }
 
 const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
-  onValueChanged,
+  updateReplySed,
   personID,
   replySed,
   validation
@@ -60,7 +60,7 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
     } else {
       const newPerioder: Array<Periode> = _.cloneDeep(perioderMedTrygd)
       newPerioder[i].startdato = dato
-      onValueChanged(target, newPerioder)
+      updateReplySed(target, newPerioder)
     }
   }
 
@@ -77,7 +77,7 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
         delete newPerioder[i].aapenPeriodeType
         newPerioder[i].sluttdato = dato
       }
-      onValueChanged(target, newPerioder)
+      updateReplySed(target, newPerioder)
     }
   }
 
@@ -102,7 +102,7 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
     if (deletedPeriods && deletedPeriods.length > 0) {
       removeCandidateForDeletion(getKey(deletedPeriods[0]))
     }
-    onValueChanged(target, newPerioder)
+    updateReplySed(target, newPerioder)
   }
 
   const onAdd = () => {
@@ -129,7 +129,7 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
       }
       newPerioder = newPerioder.concat(newPeriode)
       resetForm()
-      onValueChanged(target, newPerioder)
+      updateReplySed(target, newPerioder)
     }
   }
 

@@ -22,7 +22,7 @@ import styled from 'styled-components'
 
 interface FamilieYtelserProps {
   highContrast: boolean
-  onValueChanged: (needle: string, value: any) => void
+  updateReplySed: (needle: string, value: any) => void
   personID: string
   replySed: ReplySed
   validation: Validation
@@ -37,7 +37,7 @@ const HelpProperIcon = styled(HelpIcon)`
 
 const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
   highContrast,
-  // onValueChanged,
+  // updateReplySed,
   personID,
   // replySed,
   validation

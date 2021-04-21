@@ -23,7 +23,9 @@ export const validateAdresse = (
 ): void => {
   let generalFail: boolean = false
   let idx = (index < 0 ? '' : '[' + index + ']')
-  let value: FeiloppsummeringFeil | undefined = (!_.isEmpty(adresse.type))
+  let value: FeiloppsummeringFeil | undefined
+
+  value = (!_.isEmpty(adresse.type))
     ? undefined
     : {
       feilmelding: t('message:validation-noAddressTypeForPerson', { person: personName }),

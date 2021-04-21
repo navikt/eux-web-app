@@ -31,6 +31,7 @@ export const validateFamilierelasjon = (
     index,
     namespace
   })
+
   if (v[namespace + idx + '-startdato']) {
     generalFail = true
   }

@@ -15,14 +15,14 @@ import { useTranslation } from 'react-i18next'
 import { validateNotAnsatte, ValidationNotAnsattProps } from './notAnsattValidation'
 
 export interface NotAnsattProps {
-  onValueChanged: (needle: string, value: any) => void
+  updateReplySed: (needle: string, value: any) => void
   personID: string
   replySed: ReplySed
   validation: Validation
 }
 
 const NotAnsatt: React.FC<NotAnsattProps> = ({
-   onValueChanged,
+   updateReplySed,
    personID,
    replySed,
    validation
@@ -57,7 +57,7 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
     } else {
       const newPerioder: Array<Periode> = _.cloneDeep(perioderSomSelvstendig)
       newPerioder[i].startdato = dato
-      onValueChanged(target, newPerioder)
+      updateReplySed(target, newPerioder)
     }
   }
 
@@ -74,7 +74,7 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
         delete newPerioder[i].aapenPeriodeType
         newPerioder[i].sluttdato = dato
       }
-      onValueChanged(target, newPerioder)
+      updateReplySed(target, newPerioder)
     }
   }
 
@@ -99,7 +99,7 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
     if (deletedPeriods && deletedPeriods.length > 0) {
       removeCandidateForDeletion(getKey(deletedPeriods[0]))
     }
-    onValueChanged(target, newPerioder)
+    updateReplySed(target, newPerioder)
   }
 
   const onAdd = () => {
@@ -126,7 +126,7 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
       }
       newPerioder = newPerioder.concat(newPeriode)
       resetForm()
-      onValueChanged(target, newPerioder)
+      updateReplySed(target, newPerioder)
     }
   }
 

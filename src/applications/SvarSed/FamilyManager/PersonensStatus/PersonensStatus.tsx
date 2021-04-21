@@ -13,26 +13,29 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 interface PersonensStatusProps {
+  arbeidsforholdList: any
+  getArbeidsforholdList: (fnr: string | undefined) => void,
   gettingArbeidsforholdList: boolean
   highContrast: boolean
-  onValueChanged: (needle: string, value: any) => void
   personID: string
   replySed: ReplySed
-  validation: Validation,
+  resetValidation: (key?: string) => void
+  updateReplySed: (needle: string, value: any) => void
+  validation: Validation
 
-  getArbeidsforholdList: (fnr: string | undefined) => void,
-  arbeidsforholdList: any
 }
 
 const PersonensStatus: React.FC<PersonensStatusProps> = ({
-  highContrast,
-  onValueChanged,
-  validation,
+  arbeidsforholdList,
+  getArbeidsforholdList,
   gettingArbeidsforholdList,
+  highContrast,
   personID,
   replySed,
-  getArbeidsforholdList,
-  arbeidsforholdList
+  resetValidation,
+  updateReplySed,
+  validation,
+
 }:PersonensStatusProps): JSX.Element => {
   const [_arbeidsforhold, setArbeidsforhold] = useState<string>('')
   const { t } = useTranslation()
@@ -93,14 +96,14 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
                 arbeidsforholdList={arbeidsforholdList}
                 getArbeidsforholdList={getArbeidsforholdList}
                 gettingArbeidsforholdList={gettingArbeidsforholdList}
-                onValueChanged={onValueChanged}
+                updateReplySed={updateReplySed}
                 replySed={replySed}
                 personID={personID}
               />
               )
             : (
               <NotAnsatt
-                onValueChanged={onValueChanged}
+                updateReplySed={updateReplySed}
                 personID={personID}
                 replySed={replySed}
                 validation={validation}
@@ -115,7 +118,7 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
             <Column>
               <WithSubsidies
                 highContrast={highContrast}
-                onValueChanged={onValueChanged}
+                updateReplySed={updateReplySed}
                 personID={personID}
                 replySed={replySed}
                 validation={validation}
@@ -129,7 +132,7 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
         <Column>
           <Avsenderlandet
-            onValueChanged={onValueChanged}
+            updateReplySed={updateReplySed}
             personID={personID}
             replySed={replySed}
             validation={validation}
@@ -140,9 +143,10 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
         <Column>
           <GrunnlagforBosetting
-            onValueChanged={onValueChanged}
+            updateReplySed={updateReplySed}
             personID={personID}
             replySed={replySed}
+            resetValidation={resetValidation}
             validation={validation}
           />
         </Column>

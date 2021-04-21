@@ -1,7 +1,7 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { ReplySed } from 'declarations/sed'
-import { Arbeidsforholdet, OldFamilieRelasjon, Inntekter, Validation, ConnectedSed } from 'declarations/types'
+import { Arbeidsforholdet, OldFamilieRelasjon, Inntekter, ConnectedSed } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockArbeidsforholdList from 'mocks/arbeidsforholdList'
 import mockInntekt from 'mocks/inntekt'
@@ -157,6 +157,16 @@ export const resetPersonRelatert: ActionCreator<Action> = (): Action => ({
   type: types.SVARPASED_PERSON_RELATERT_RESET
 })
 
+export const resetValidation: ActionCreator<ActionWithPayload> = (
+  key?: string
+): ActionWithPayload => ({
+  type: types.SVARPASED_VALIDATION_SET,
+  payload: {
+    key: key,
+    value: undefined
+  }
+})
+
 export const createSed: ActionCreator<ThunkResult<
   ActionWithPayload
 >> = (rinaSakId: string, sedId: string, sedType: string, payload: SvarpasedState): ThunkResult<ActionWithPayload> => {
@@ -229,21 +239,4 @@ export const sendSeletedInntekt: ActionCreator<ActionWithPayload> = (
 ): ActionWithPayload => ({
   type: types.SVARPASED_SELECTED_INNTEKT_SUCCESS,
   payload: payload
-})
-
-export const setAllValidation = (
-  newValidation: Validation
-): ActionWithPayload => ({
-  type: types.SVARPASED_VALIDATION_ALL_SET,
-  payload: newValidation
-})
-
-export const setSingleValidation = (
-  key: any, value: any
-): ActionWithPayload => ({
-  type: types.SVARPASED_VALIDATION_ALL_SET,
-  payload: {
-    key: key,
-    value: value
-  }
 })

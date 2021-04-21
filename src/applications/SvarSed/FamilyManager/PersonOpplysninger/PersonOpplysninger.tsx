@@ -1,4 +1,3 @@
-import { searchPerson } from 'actions/svarpased'
 import Add from 'assets/icons/Add'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import { PersonInfo, Pin, ReplySed } from 'declarations/sed'
@@ -17,52 +16,51 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
 
 interface PersonOpplysningerProps {
   landkoderList: Array<Kodeverk>
   highContrast: boolean
+  onSearchingPerson: (query: string) => void
+  updateReplySed: (needle: string, value: any) => void
   personID: string | undefined
   replySed: ReplySed
   searchingPerson: boolean
   searchedPerson: Person | undefined
   validation: Validation
-  onValueChanged: (needle: string, value: any) => void
 }
 
 const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
-  // highContrast,
   landkoderList,
-  onValueChanged,
+  onSearchingPerson,
+  updateReplySed,
   personID,
   replySed,
   searchedPerson,
   searchingPerson,
   validation
 }:PersonOpplysningerProps): JSX.Element => {
+
   const { t } = useTranslation()
-  const dispatch = useDispatch()
+  const target = `${personID}.personInfo`
+  const namespace = `familymanager-${personID}-personopplysninger`
+
   const personInfo: PersonInfo = _.get(replySed, `${personID}.personInfo`)
   const [_seeNewForm, setSeeNewForm] = useState<boolean>(false)
 
-  const target = `${personID}.personInfo`
-
-  const namespace = `familymanager-${personID}-personopplysninger`
-
   const onFornavnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onValueChanged(`${target}.fornavn`, e.target.value)
+    updateReplySed(`${target}.fornavn`, e.target.value)
   }
 
   const onEtternavnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onValueChanged(`${target}.etternavn`, e.target.value)
+    updateReplySed(`${target}.etternavn`, e.target.value)
   }
 
   const onFodselsdatoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onValueChanged(`${target}.foedselsdato`, e.target.value)
+    updateReplySed(`${target}.foedselsdato`, e.target.value)
   }
 
   const onKjoennChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onValueChanged(`${target}.kjoenn`, e.target.value)
+    updateReplySed(`${target}.kjoenn`, e.target.value)
   }
 
   const onUtenlandskPinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,7 +73,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         identifikator: e.target.value
       })
     }
-    onValueChanged(`${target}.pin`, pin)
+    updateReplySed(`${target}.pin`, pin)
   }
 
   const onUtenlandskLandChange = (land: string) => {
@@ -88,7 +86,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         land: land
       })
     }
-    onValueChanged(`${target}.pin`, pin)
+    updateReplySed(`${target}.pin`, pin)
   }
 
   const onNorwegianPinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -101,26 +99,26 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         identifikator: e.target.value
       })
     }
-    onValueChanged(`${target}.pin`, pin)
+    updateReplySed(`${target}.pin`, pin)
   }
 
   const onFoedestedByChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onValueChanged(`${target}.pinMangler.foedested.by`, e.target.value)
+    updateReplySed(`${target}.pinMangler.foedested.by`, e.target.value)
   }
 
   const onFoedestedRegionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onValueChanged(`${target}.pinMangler.foedested.region`, e.target.value)
+    updateReplySed(`${target}.pinMangler.foedested.region`, e.target.value)
   }
 
   const onFoedestedLandChange = (land: string) => {
-    onValueChanged(`${target}.pinMangler.foedested.land`, land)
+    updateReplySed(`${target}.pinMangler.foedested.land`, land)
     return true
   }
 
   const onSearchUser = () => {
     const norwegianPin = _.find(personInfo.pin, p => p.land === 'NO')
-    if (norwegianPin) {
-      dispatch(searchPerson(norwegianPin.identifikator))
+    if (norwegianPin && norwegianPin.identifikator) {
+      onSearchingPerson(norwegianPin.identifikator)
     }
   }
 

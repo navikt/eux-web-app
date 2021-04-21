@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 interface RelasjonProps {
   familierelasjonKodeverk: Array<Kodeverk>
   highContrast: boolean
-  onValueChanged: (needle: string, value: any) => void
+  updateReplySed: (needle: string, value: any) => void
   personID: string
   replySed: ReplySed
   validation: Validation
@@ -20,7 +20,7 @@ interface RelasjonProps {
 
 const Relasjon: React.FC<RelasjonProps> = ({
   highContrast,
-  // onValueChanged,
+  // updateReplySed,
   personID,
   // replySed,
   validation

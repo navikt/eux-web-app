@@ -25,7 +25,7 @@ import { validateWithSubsidies, ValidationWithSubsidiesProps } from './withSubsi
 
 interface WithSubsidiesProps {
   highContrast: boolean
-  onValueChanged: (needle: string, value: any) => void
+  updateReplySed: (needle: string, value: any) => void
   personID: string
   replySed: ReplySed
   validation: Validation
@@ -33,7 +33,7 @@ interface WithSubsidiesProps {
 
 const WithSubsidies: React.FC<WithSubsidiesProps> = ({
   highContrast,
-  onValueChanged,
+  updateReplySed,
   personID,
   replySed,
   validation
@@ -76,7 +76,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
     } else {
       const newPerioder: Array<PensjonPeriode> = _.cloneDeep(perioderMedPensjon)
       newPerioder[i].periode.startdato = dato
-      onValueChanged(target, newPerioder)
+      updateReplySed(target, newPerioder)
     }
   }
 
@@ -93,7 +93,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
         delete newPerioder[i].periode.aapenPeriodeType
         newPerioder[i].periode.sluttdato = dato
       }
-      onValueChanged(target, newPerioder)
+      updateReplySed(target, newPerioder)
     }
   }
 
@@ -105,7 +105,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
       } else {
         const newPerioder: Array<PensjonPeriode> = _.cloneDeep(perioderMedPensjon)
         newPerioder[i].pensjonstype = type
-        onValueChanged(target, newPerioder)
+        updateReplySed(target, newPerioder)
       }
     }
   }
@@ -132,7 +132,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
     if (deletedPeriods && deletedPeriods.length > 0) {
       removeCandidateForDeletion(getKey(deletedPeriods[0]))
     }
-    onValueChanged(target, newPerioder)
+    updateReplySed(target, newPerioder)
   }
 
   const onAdd = () => {
@@ -172,7 +172,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
         periode: newPeriode
       })
       resetForm()
-      onValueChanged(target, newPensjonPerioder)
+      updateReplySed(target, newPensjonPerioder)
     }
   }
 

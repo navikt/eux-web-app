@@ -30,6 +30,7 @@ export const validateKontaktsinformasjonTelefon = (
     personName
   }: ValidationKontaktsinformasjonTelefonProps
 ): void => {
+
   let value: FeiloppsummeringFeil | undefined
   let generalFail: boolean = false
   let idx = (index < 0 ? '' : '[' + index + ']')

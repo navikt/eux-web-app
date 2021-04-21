@@ -1,6 +1,7 @@
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import useAddRemove from 'components/AddRemovePanel/useAddRemove'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import useValidation from 'components/Validation/useValidation'
 import { Adresse, AdresseType, ReplySed } from 'declarations/sed'
@@ -23,17 +24,21 @@ import { validateAdresse, ValidationAddressProps } from './validation'
 interface AdresseProps {
   highContrast: boolean
   landkoderList: Array<Kodeverk>
-  onValueChanged: (needle: string, value: any) => void
+  updateReplySed: (needle: string, value: any) => void
   personID: string
+  personName: string
   replySed: ReplySed
+  resetValidation: (key?: string) => void
   validation: Validation
 }
 
 const Adresser: React.FC<AdresseProps> = ({
   landkoderList,
-  onValueChanged,
+  updateReplySed,
   personID,
+  personName,
   replySed,
+  resetValidation,
   validation
 }:AdresseProps): JSX.Element => {
   const { t } = useTranslation()
@@ -49,97 +54,105 @@ const Adresser: React.FC<AdresseProps> = ({
   const [_newRegion, _setNewRegion] = useState<string>('')
   const [_newLand, _setNewLand] = useState<string>('')
 
-  const [_confirmDelete, _setConfirmDelete] = useState<Array<string>>([])
+  const [addCandidateForDeletion, removeCandidateForDeletion, hasKey] = useAddRemove()
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, resetValidation, performValidation] = useValidation<ValidationAddressProps>({}, validateAdresse)
+  const [_validation, _resetValidation, performValidation] = useValidation<ValidationAddressProps>({}, validateAdresse)
 
-  const p = _.get(replySed, personID)
-  const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
-
-  const onAddNewClicked = () => _setSeeNewForm(true)
-
-  const addCandidateForDeletion = (key: string) => {
-    _setConfirmDelete(_confirmDelete.concat(key))
-  }
-
-  const removeCandidateForDeletion = (key: string) => {
-    _setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
-  }
-
-  const setType = (type: AdresseType, i: number) => {
-    if (i < 0) {
+  const setType = (type: AdresseType, index: number) => {
+    if (index < 0) {
       _setNewType(type)
-      resetValidation(namespace + '-type')
+      _resetValidation(namespace + '-type')
     } else {
       const newAdresses = _.cloneDeep(adresses)
-      newAdresses[i].type = type
-      onValueChanged(target, newAdresses)
+      newAdresses[index].type = type
+      updateReplySed(target, newAdresses)
+      if (validation[namespace + '-type']) {
+        resetValidation(namespace + '-type')
+      }
     }
   }
 
-  const setGate = (gate: string, i: number) => {
-    if (i < 0) {
+  const setGate = (gate: string, index: number) => {
+    if (index < 0) {
       _setNewGate(gate)
-      resetValidation(namespace + '-gate')
+      _resetValidation(namespace + '-gate')
     } else {
       const newAdresses = _.cloneDeep(adresses)
-      newAdresses[i].gate = gate
-      onValueChanged(target, newAdresses)
+      newAdresses[index].gate = gate
+      updateReplySed(target, newAdresses)
+      if (validation[namespace + '-gate']) {
+        resetValidation(namespace + '-gate')
+      }
     }
   }
 
-  const setPostnummer = (postnummer: string, i: number) => {
-    if (i < 0) {
+  const setPostnummer = (postnummer: string, index: number) => {
+    if (index < 0) {
       _setNewPostnummer(postnummer)
-      resetValidation(namespace + '-postnummer')
+      _resetValidation(namespace + '-postnummer')
     } else {
       const newAdresses = _.cloneDeep(adresses)
-      newAdresses[i].postnummer = postnummer
-      onValueChanged(target, newAdresses)
+      newAdresses[index].postnummer = postnummer
+      updateReplySed(target, newAdresses)
+      if (validation[namespace + '-postnummer']) {
+        resetValidation(namespace + '-postnummer')
+      }
     }
   }
 
-  const setBy = (by: string, i: number) => {
-    if (i < 0) {
+  const setBy = (by: string, index: number) => {
+    if (index < 0) {
       _setNewBy(by)
-      resetValidation(namespace + '-by')
+      _resetValidation(namespace + '-by')
     } else {
       const newAdresses = _.cloneDeep(adresses)
-      newAdresses[i].by = by
-      onValueChanged(target, newAdresses)
+      newAdresses[index].by = by
+      updateReplySed(target, newAdresses)
+      if (validation[namespace + '-by']) {
+        resetValidation(namespace + '-by')
+      }
     }
   }
 
-  const setBygning = (bygning: string, i: number) => {
-    if (i < 0) {
+  const setBygning = (bygning: string, index: number) => {
+    if (index < 0) {
       _setNewBygning(bygning)
-      resetValidation(namespace + '-bygning')
+      _resetValidation(namespace + '-bygning')
     } else {
       const newAdresses = _.cloneDeep(adresses)
-      newAdresses[i].bygning = bygning
-      onValueChanged(target, newAdresses)
+      newAdresses[index].bygning = bygning
+      updateReplySed(target, newAdresses)
+      if (validation[namespace + '-bygning']) {
+        resetValidation(namespace + '-bygning')
+      }
     }
   }
 
-  const setRegion = (region: string, i: number) => {
-    if (i < 0) {
+  const setRegion = (region: string, index: number) => {
+    if (index < 0) {
       _setNewRegion(region)
-      resetValidation(namespace + '-region')
+      _resetValidation(namespace + '-region')
     } else {
       const newAdresses = _.cloneDeep(adresses)
-      newAdresses[i].region = region
-      onValueChanged(target, newAdresses)
+      newAdresses[index].region = region
+      updateReplySed(target, newAdresses)
+      if (validation[namespace + '-region']) {
+        resetValidation(namespace + '-region')
+      }
     }
   }
 
-  const setLand = (land: string, i: number) => {
-    if (i < 0) {
+  const setLand = (land: string, index: number) => {
+    if (index < 0) {
       _setNewLand(land)
-      resetValidation(namespace + '-land')
+      _resetValidation(namespace + '-land')
     } else {
       const newAdresses = _.cloneDeep(adresses)
-      newAdresses[i].land = land
-      onValueChanged(target, newAdresses)
+      newAdresses[index].land = land
+      updateReplySed(target, newAdresses)
+      if (validation[namespace + '-land']) {
+        resetValidation(namespace + '-land')
+      }
     }
   }
 
@@ -151,7 +164,7 @@ const Adresser: React.FC<AdresseProps> = ({
     _setNewBygning('')
     _setNewRegion('')
     _setNewLand('')
-    resetValidation()
+    _resetValidation()
   }
 
   const onCancel = () => {
@@ -169,7 +182,7 @@ const Adresser: React.FC<AdresseProps> = ({
     if (deletedAddresses && deletedAddresses.length > 0) {
       removeCandidateForDeletion(getKey(deletedAddresses[0]))
     }
-    onValueChanged(target, newAdresses)
+    updateReplySed(target, newAdresses)
   }
 
   const onAdd = () => {
@@ -195,27 +208,29 @@ const Adresser: React.FC<AdresseProps> = ({
       }
       newAdresses = newAdresses.concat(newAdresse)
       resetForm()
-      onValueChanged(target, newAdresses)
+      updateReplySed(target, newAdresses)
     }
   }
 
   const getErrorFor = (index: number, el: string): string | undefined => {
-    return index < 0 ? _validation[namespace + '-' + el]?.feilmelding : validation[namespace + '[' + index + ']-' + el]?.feilmelding
+    return index < 0 ?
+      _validation[namespace + '-' + el]?.feilmelding :
+      validation[namespace + '[' + index + ']-' + el]?.feilmelding
   }
 
-  const renderRow = (a: Adresse | null, i: number) => {
+  const renderRow = (a: Adresse | null, index: number) => {
     const key = a ? getKey(a) : 'new'
-    const candidateForDeletion = i < 0 ? false : !!key && _confirmDelete.indexOf(key) >= 0
-    const idx = (i >= 0 ? '[' + i + ']' : '')
+    const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
+    const idx = (index >= 0 ? '[' + index + ']' : '')
     return (
       <>
         <AlignStartRow className={classNames('slideInFromLeft')}>
           <Column data-flex='3'>
             <HighContrastRadioPanelGroup
-              checked={i < 0 ? _newType : a!.type}
+              checked={index < 0 ? _newType : a!.type}
               data-no-border
               data-test-id={'c-' + namespace + idx + '-type-text'}
-              feil={getErrorFor(i, 'type')}
+              feil={getErrorFor(index, 'type')}
               id={'c-' + namespace + idx + '-type-text'}
               legend={t('label:adresse')}
               name={namespace + idx + '-type'}
@@ -223,21 +238,21 @@ const Adresser: React.FC<AdresseProps> = ({
                 { label: t('label:bostedsland'), value: 'bosted' },
                 { label: t('label:oppholdsland'), value: 'opphold' }
               ]}
-              onChange={(e: any) => setType((e.target.value as AdresseType), i)}
+              onChange={(e: any) => setType((e.target.value as AdresseType), index)}
             />
             <VerticalSeparatorDiv data-size='0.15' />
             <HighContrastRadioPanelGroup
-              checked={i < 0 ? _newType : a!.type}
+              checked={index < 0 ? _newType : a!.type}
               data-no-border
               data-test-id={'c-' + namespace + idx + '-type-text'}
-              feil={getErrorFor(i, 'type')}
+              feil={getErrorFor(index, 'type')}
               id={'c-' + namespace + idx + '-type-text'}
               name={namespace + idx + '-type'}
               radios={[
                 { label: t('label:kontaktadresse'), value: 'kontakt' },
                 { label: t('label:annet'), value: 'annet' }
               ]}
-              onChange={(e: any) => setType((e.target.value as AdresseType), i)}
+              onChange={(e: any) => setType((e.target.value as AdresseType), index)}
             />
           </Column>
           <Column />
@@ -250,21 +265,21 @@ const Adresser: React.FC<AdresseProps> = ({
           <Column data-flex='2'>
             <HighContrastInput
               data-test-id={'c-' + namespace + idx + '-gate-text'}
-              feil={getErrorFor(i, 'gate')}
+              feil={getErrorFor(index, 'gate')}
               id={'c-' + namespace + idx + '-gate-text'}
               label={t('label:gateadresse')}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGate(e.target.value, i)}
-              value={i < 0 ? _newGate : a?.gate}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGate(e.target.value, index)}
+              value={index < 0 ? _newGate : a?.gate}
             />
           </Column>
           <Column>
             <HighContrastInput
               data-test-id={'c-' + namespace + idx + '-bygning-text'}
-              feil={getErrorFor(i, 'bygning')}
+              feil={getErrorFor(index, 'bygning')}
               id={'c-' + namespace + idx + '-bygning-text'}
               label={t('label:bygning')}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBygning(e.target.value, i)}
-              value={i < 0 ? _newBygning : a?.bygning}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBygning(e.target.value, index)}
+              value={index < 0 ? _newBygning : a?.bygning}
             />
           </Column>
           <Column />
@@ -277,21 +292,21 @@ const Adresser: React.FC<AdresseProps> = ({
           <Column>
             <HighContrastInput
               data-test-id={'c-' + namespace +idx + '-postnummer-text'}
-              feil={getErrorFor(i, 'postnummer')}
+              feil={getErrorFor(index, 'postnummer')}
               id={'c-' + namespace + idx + '-postnummer-text'}
               label={t('label:postnummer')}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPostnummer(e.target.value, i)}
-              value={i < 0 ? _newPostnummer : a?.postnummer}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPostnummer(e.target.value, index)}
+              value={index < 0 ? _newPostnummer : a?.postnummer}
             />
           </Column>
           <Column data-flex='2'>
             <HighContrastInput
               data-test-id={'c-' + namespace + idx + '-by-text'}
-              feil={getErrorFor(i, 'by')}
+              feil={getErrorFor(index, 'by')}
               id={'c-' + namespace + idx + '-by-text'}
               label={t('label:by')}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBy(e.target.value, i)}
-              value={i < 0 ? _newBy : a?.by}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBy(e.target.value, index)}
+              value={index < 0 ? _newBy : a?.by}
             />
           </Column>
           <Column />
@@ -304,33 +319,33 @@ const Adresser: React.FC<AdresseProps> = ({
           <Column data-flex='1.5'>
             <HighContrastInput
               data-test-id={'c-' + namespace + idx + '-region-text'}
-              feil={getErrorFor(i, 'region')}
+              feil={getErrorFor(index, 'region')}
               id={'c-' + namespace + idx + '-region-text'}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRegion(e.target.value, i)}
-              value={i < 0 ? _newRegion : a?.region}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRegion(e.target.value, index)}
+              value={index < 0 ? _newRegion : a?.region}
               label={t('label:region')}
             />
           </Column>
           <Column data-flex='1.5'>
             <CountrySelect
               data-test-id={'c-' + namespace + idx + '-land-text'}
-              error={getErrorFor(i, 'land')}
+              error={getErrorFor(index, 'land')}
               id={'c-' + namespace + idx + '-land-text'}
               label={t('label:land')}
               menuPortalTarget={document.body}
               includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
-              onOptionSelected={(e: any) => setLand(e.value, i)}
+              onOptionSelected={(e: any) => setLand(e.value, index)}
               placeholder={t('el:placeholder-select-default')}
-              values={i < 0 ? _newLand : a?.land}
+              values={index < 0 ? _newLand : a?.land}
             />
           </Column>
           <Column>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
-              existingItem={(i >= 0)}
+              existingItem={(index >= 0)}
               marginTop
               onBeginRemove={() => addCandidateForDeletion(key!)}
-              onConfirmRemove={() => onRemove(i)}
+              onConfirmRemove={() => onRemove(index)}
               onCancelRemove={() => removeCandidateForDeletion(key!)}
               onAddNew={onAdd}
               onCancelNew={onCancel}
@@ -344,7 +359,7 @@ const Adresser: React.FC<AdresseProps> = ({
 
   return (
     <PaddedDiv>
-      {adresses?.map((a, i) => (renderRow(a, i)))}
+      {adresses?.map(renderRow)}
       <hr />
       <VerticalSeparatorDiv />
       {_seeNewForm
@@ -355,7 +370,7 @@ const Adresser: React.FC<AdresseProps> = ({
               <HighContrastFlatknapp
                 mini
                 kompakt
-                onClick={onAddNewClicked}
+                onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />

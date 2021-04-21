@@ -1,6 +1,7 @@
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import useAddRemove from 'components/AddRemovePanel/useAddRemove'
 import Select from 'components/Select/Select'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import useValidation from 'components/Validation/useValidation'
@@ -28,20 +29,30 @@ import {
 
 interface KontaktinformasjonProps {
   highContrast: boolean
-  onValueChanged: (needle: string, value: any) => void
+  updateReplySed: (needle: string, value: any) => void
   personID: string
+  personName: string
   replySed: ReplySed
+  resetValidation: (key?: string) => void
   validation: Validation
 }
 
 const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
   highContrast,
-  onValueChanged,
+  updateReplySed,
   personID,
+  personName,
   replySed,
+  resetValidation,
   validation
 }:KontaktinformasjonProps): JSX.Element => {
   const { t } = useTranslation()
+  const targetTelefon = `${personID}.telefon`
+  const targetEpost = `${personID}.epost`
+  const telefoner: Array<Telefon> = _.get(replySed, targetTelefon)
+  const eposter: Array<Epost> = _.get(replySed, targetEpost)
+  const namespaceTelefon = `familymanager-${personID}-kontaktinformasjon-telefon`
+  const namespaceEpost = `familymanager-${personID}-kontaktinformasjon-epost`
 
   const [_newNummer, _setNewNummer] = useState<string>('')
   const [_newType, _setNewType] = useState<TelefonType | undefined>(undefined)
@@ -50,21 +61,11 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
   const [_newAdresse, _setNewAdresse] = useState<string>('')
   const [_seeNewEpostForm, _setSeeNewEpostForm] = useState<boolean>(false)
 
-  const [_confirmDelete, _setConfirmDelete] = useState<Array<string>>([])
+  const [addCandidateForDeletion, removeCandidateForDeletion, hasKey] = useAddRemove()
   const [_validationTelefon, resetValidationTelefon, performValidationTelefon] =
     useValidation<ValidationKontaktsinformasjonTelefonProps>({}, validateKontaktsinformasjonTelefon)
   const [_validationEpost, resetValidationEpost, performValidationEpost] =
     useValidation<ValidationKontaktsinformasjonEpostProps>({}, validateKontaktsinformasjonEpost)
-
-  const targetTelefon = `${personID}.telefon`
-  const targetEpost = `${personID}.epost`
-  const telefoner: Array<Telefon> = _.get(replySed, targetTelefon)
-  const eposter: Array<Epost> = _.get(replySed, targetEpost)
-  const namespaceTelefon = `familymanager-${personID}-kontaktinformasjon-telefon`
-  const namespaceEpost = `familymanager-${personID}-kontaktinformasjon-epost`
-
-  const p = _.get(replySed, personID)
-  const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
 
   const telefonTypeOptions: Options = [{
     label: t('el:option-telefon-type-work'), value: 'arbeid'
@@ -79,44 +80,45 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
     if (what === 'epost') _setSeeNewEpostForm(true)
   }
 
-  const addCandidateForDeletion = (key: string) => {
-    _setConfirmDelete(_confirmDelete.concat(key))
-  }
-
-  const removeCandidateForDeletion = (key: string) => {
-    _setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
-  }
-
-  const onTypeChanged = (type: TelefonType, i: number) => {
-    if (i < 0) {
+  const onTypeChanged = (type: TelefonType, index: number) => {
+    if (index < 0) {
       _setNewType(type)
       resetValidationTelefon(namespaceTelefon + '-type')
     } else {
       const newTelefoner = _.cloneDeep(telefoner)
-      newTelefoner[i].type = type
-      onValueChanged(targetTelefon, newTelefoner)
+      newTelefoner[index].type = type
+      updateReplySed(targetTelefon, newTelefoner)
+      if (validation[namespaceTelefon + '-type']) {
+        resetValidation(namespaceTelefon + '-type')
+      }
     }
   }
 
-  const onNummerChanged = (nummer: string, i: number) => {
-    if (i < 0) {
+  const onNummerChanged = (nummer: string, index: number) => {
+    if (index < 0) {
       _setNewNummer(nummer)
       resetValidationTelefon(namespaceTelefon + '-nummer')
     } else {
       const newTelefoner = _.cloneDeep(telefoner)
-      newTelefoner[i].nummer = nummer
-      onValueChanged(targetTelefon, newTelefoner)
+      newTelefoner[index].nummer = nummer
+      updateReplySed(targetTelefon, newTelefoner)
+      if (validation[namespaceTelefon + '-nummer']) {
+        resetValidation(namespaceTelefon + '-nummer')
+      }
     }
   }
 
-  const onAdresseChanged = (adresse: string, i: number) => {
-    if (i < 0) {
+  const onAdresseChanged = (adresse: string, index: number) => {
+    if (index < 0) {
       _setNewAdresse(adresse)
       resetValidationEpost(namespaceEpost + '-adresse')
     } else {
       const newEposter = _.cloneDeep(eposter)
-      newEposter[i].adresse = adresse
-      onValueChanged(targetEpost, newEposter)
+      newEposter[index].adresse = adresse
+      updateReplySed(targetEpost, newEposter)
+      if (validation[namespaceEpost + '-adresse']) {
+        resetValidation(namespaceEpost + '-adresse')
+      }
     }
   }
 
@@ -151,7 +153,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
     if (deletedTelefoner && deletedTelefoner.length > 0) {
       removeCandidateForDeletion(getKey(deletedTelefoner[0]))
     }
-    onValueChanged(targetTelefon, newTelefoner)
+    updateReplySed(targetTelefon, newTelefoner)
   }
 
   const onEpostRemoved = (i: number) => {
@@ -160,7 +162,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
     if (deletedEposter && deletedEposter.length > 0) {
       removeCandidateForDeletion(getKey(deletedEposter[0]))
     }
-    onValueChanged(targetEpost, newEposter)
+    updateReplySed(targetEpost, newEposter)
   }
 
   const onTelefonAdd = () => {
@@ -183,7 +185,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
       }
       newTelefoner.push(newTelefon)
       resetForm('telefon')
-      onValueChanged(targetTelefon, newTelefoner)
+      updateReplySed(targetTelefon, newTelefoner)
     }
   }
 
@@ -208,7 +210,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
       }
       newEposter.push(newEpost)
       resetForm('epost')
-      onValueChanged(targetEpost, newEposter)
+      updateReplySed(targetEpost, newEposter)
     }
   }
 
@@ -220,47 +222,47 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
 
   const getTypeOption = (value: string | undefined | null) => _.find(telefonTypeOptions, s => s.value === value)
 
-  const renderTelefonRow = (_t: Telefon | null, i: number) => {
+  const renderTelefonRow = (_t: Telefon | null, index: number) => {
     const key = _t ? getKey(_t) : 'new'
-    const candidateForDeletion = i < 0 ? false : !!key && _confirmDelete.indexOf(key) >= 0
-    const idx = (i >= 0 ? '[' + i + ']' : '')
+    const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
+    const idx = (index >= 0 ? '[' + index + ']' : '')
     return (
       <>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{ animationDelay: i < 0 ? '0s' : (i * 0.1) + 's' }}
+          style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
         >
           <Column>
             <HighContrastInput
               data-test-id={'c-' + namespaceTelefon + idx + '-nummer-text'}
-              feil={getErrorFor(i, 'telefon', 'nummer')}
+              feil={getErrorFor(index, 'telefon', 'nummer')}
               id={'c-' + namespaceTelefon + idx + '-nummer-text'}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onNummerChanged(e.target.value, i)}
-              value={i < 0 ? _newNummer : _t?.nummer}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onNummerChanged(e.target.value, index)}
+              value={index < 0 ? _newNummer : _t?.nummer}
               placeholder={t('el:placeholder-input-default')}
             />
           </Column>
           <Column>
             <Select
               data-test-id={'c-' + namespaceTelefon + idx + '-type-text'}
-              feil={getErrorFor(i, 'telefon', 'type')}
+              feil={getErrorFor(index, 'telefon', 'type')}
               highContrast={highContrast}
               id={'c-' + namespaceTelefon + idx + '-type-text'}
               menuPortalTarget={document.body}
-              onChange={(e) => onTypeChanged(e.value as TelefonType, i)}
+              onChange={(e) => onTypeChanged(e.value as TelefonType, index)}
               options={telefonTypeOptions}
               placeholder={t('el:placeholder-select-default')}
-              selectedValue={getTypeOption(i < 0 ? _newType : _t?.type)}
-              defaultValue={getTypeOption(i < 0 ? _newType : _t?.type)}
+              selectedValue={getTypeOption(index < 0 ? _newType : _t?.type)}
+              defaultValue={getTypeOption(index < 0 ? _newType : _t?.type)}
             />
           </Column>
           <Column>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
-              existingItem={(i >= 0)}
+              existingItem={(index >= 0)}
               marginTop={false}
               onBeginRemove={() => addCandidateForDeletion(key!)}
-              onConfirmRemove={() => onTelefonRemoved(i)}
+              onConfirmRemove={() => onTelefonRemoved(index)}
               onCancelRemove={() => removeCandidateForDeletion(key!)}
               onAddNew={onTelefonAdd}
               onCancelNew={() => onCancel('telefon')}
@@ -272,33 +274,33 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
     )
   }
 
-  const renderEpostRow = (e: Epost | null, i: number) => {
+  const renderEpostRow = (e: Epost | null, index: number) => {
     const key = e ? getKey(e) : 'new'
-    const candidateForDeletion = i < 0 ? false : !!key && _confirmDelete.indexOf(key) >= 0
-    const idx = (i >= 0 ? '[' + i + ']' : '')
+    const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
+    const idx = (index >= 0 ? '[' + index + ']' : '')
     return (
       <>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{ animationDelay: i < 0 ? '0s' : (i * 0.1) + 's' }}
+          style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
         >
           <Column data-flex='2'>
             <HighContrastInput
               data-test-id={'c-' + namespaceTelefon + idx + '-adresse-text'}
-              feil={getErrorFor(i, 'epost', 'adresse')}
+              feil={getErrorFor(index, 'epost', 'adresse')}
               id={'c-' + namespaceTelefon + idx + '-adresse-text'}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onAdresseChanged(e.target.value, i)}
-              value={i < 0 ? _newAdresse : e?.adresse}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onAdresseChanged(e.target.value, index)}
+              value={index < 0 ? _newAdresse : e?.adresse}
               placeholder={t('el:placeholder-input-default')}
             />
           </Column>
           <Column>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
-              existingItem={(i >= 0)}
+              existingItem={(index >= 0)}
               marginTop={false}
               onBeginRemove={() => addCandidateForDeletion(key!)}
-              onConfirmRemove={() => onEpostRemoved(i)}
+              onConfirmRemove={() => onEpostRemoved(index)}
               onCancelRemove={() => removeCandidateForDeletion(key!)}
               onAddNew={onEpostAdd}
               onCancelNew={() => onCancel('epost')}
@@ -326,7 +328,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
         <Column />
       </Row>
       <VerticalSeparatorDiv />
-      {telefoner?.map((t, i) => (renderTelefonRow(t, i)))}
+      {telefoner?.map(renderTelefonRow)}
       <hr />
       <VerticalSeparatorDiv />
       {_seeNewTelefonForm
@@ -356,7 +358,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
         <Column />
       </Row>
       <VerticalSeparatorDiv />
-      {eposter?.map((e, i) => (renderEpostRow(e, i)))}
+      {eposter?.map(renderEpostRow)}
       <hr />
       {_seeNewEpostForm
         ? renderEpostRow(null, -1)

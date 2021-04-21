@@ -27,7 +27,9 @@ export const validateNasjonalitet = (
 ): void => {
   let generalFail: boolean = false
   const idx = (index >= 0 ? '[' + index + ']' : '')
-  let value: FeiloppsummeringFeil |undefined = (!_.isEmpty(statsborgerskap.land))
+  let value: FeiloppsummeringFeil |undefined
+
+  value  = (!_.isEmpty(statsborgerskap.land))
     ? undefined
     : {
       feilmelding: t('message:validation-noBirthCountryForPerson', { person: personName }),

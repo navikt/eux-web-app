@@ -1,5 +1,4 @@
-import * as svarpasedActions from 'actions/svarpased'
-import { getPreviewFile } from 'actions/svarpased'
+import { createSed, getPreviewFile, resetValidation, sendSeletedInntekt } from 'actions/svarpased'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import Attachments from 'applications/Vedlegg/Attachments/Attachments'
@@ -135,10 +134,10 @@ const Step2: React.FC<SvarPaSedProps> = ({
         t: t,
         replySed: replySed
       })
-      dispatch(svarpasedActions.setAllValidation(newValidation))
+      dispatch(resetValidation())
       if (isValid(newValidation)) {
         setViewSendSedModal(true)
-        dispatch(svarpasedActions.createSed(
+        dispatch(createSed(
           rinasaksnummerOrFnr,
           replySed!.sedId,
           replySed!.svarsedType,
@@ -203,7 +202,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
       } as IInntekt)
     )
     if (items) {
-      dispatch(svarpasedActions.sendSeletedInntekt(inntekter))
+      dispatch(sendSeletedInntekt(inntekter))
     }
   }
 

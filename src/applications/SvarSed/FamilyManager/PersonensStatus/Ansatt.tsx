@@ -26,7 +26,7 @@ export interface AnsattProps {
   arbeidsforholdList: Arbeidsperioder
   gettingArbeidsforholdList: boolean
   getArbeidsforholdList: (fnr: string | undefined) => void
-  onValueChanged: (needle: string, value: any) => void
+  updateReplySed: (needle: string, value: any) => void
   replySed: ReplySed
   personID: string
 }
@@ -35,7 +35,7 @@ const Ansatt: React.FC<AnsattProps> = ({
   arbeidsforholdList,
   getArbeidsforholdList,
   gettingArbeidsforholdList,
-  onValueChanged,
+  updateReplySed,
   personID,
   replySed
 }: AnsattProps) => {
@@ -74,7 +74,7 @@ const Ansatt: React.FC<AnsattProps> = ({
       }
       return periode
     })
-    onValueChanged(target, perioder)
+    updateReplySed(target, perioder)
   }
 
   const setValgtArbeidsforhold = (a: Array<Arbeidsforholdet>) => {

@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next'
 
 interface BeløpNavnOgValutaProps {
   highContrast: boolean
-  onValueChanged: (needle: string, value: any) => void
+  updateReplySed: (needle: string, value: any) => void
   personID: string
   replySed: ReplySed
   validation: Validation
@@ -21,7 +21,7 @@ interface BeløpNavnOgValutaProps {
 
 const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
   highContrast,
-  //onValueChanged,
+  //updateReplySed,
   personID,
   //replySed,
   validation
