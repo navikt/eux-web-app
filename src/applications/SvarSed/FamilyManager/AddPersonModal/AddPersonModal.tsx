@@ -8,7 +8,7 @@ import Barn from 'assets/icons/Child'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import useAddRemove from 'components/AddRemovePanel/useAddRemove'
 import Select from 'components/Select/Select'
-import { AlignStartRow, FlexCenterDiv, FlexDiv, PaddedDiv } from 'components/StyledComponents'
+import { AlignStartRow, FlexBaseDiv, FlexCenterDiv, FlexDiv, PaddedDiv } from 'components/StyledComponents'
 import useValidation from 'components/Validation/useValidation'
 import { Option } from 'declarations/app'
 import { F002Sed, PersonInfo, ReplySed } from 'declarations/sed'
@@ -18,7 +18,7 @@ import Lukknapp from 'nav-frontend-lukknapp'
 import NavModal from 'nav-frontend-modal'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import { Column, HighContrastInput, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
@@ -55,6 +55,11 @@ const CheckboxDiv = styled.div`
   }
   width: 100%;
 `
+const GreySpan = styled.span`
+  color: grey;
+  white-space: nowrap;
+`
+
 interface MyOption extends Option {
   isDisabled: boolean
 }
@@ -76,7 +81,6 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
 }: AddPersonModalProps) => {
   const { t } = useTranslation()
   const namespace = 'familymanager-addpersonmodal'
-  const componentRef = useRef(null)
   const dispatch = useDispatch()
 
   const [_newPersonFnr, _setNewPersonFnr] = useState<string>('')
@@ -194,31 +198,35 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
     dispatch(setReplySed(_replySed))
   }
 
-  const relationOptions: Array<MyOption> = []
+  const getRelationOptions = (): Array<MyOption> => {
+    const relationOptions: Array<MyOption> = []
+    relationOptions.push({
+      label: t('el:option-familierelasjon-bruker') + (_replySed.bruker ? '(' + t('label:ikke-tilgjengelig') + ')' : ''),
+      value: 'bruker',
+      isDisabled: !!_replySed.bruker
+    })
 
-  relationOptions.push({
-    label: t('el:option-familierelasjon-bruker') + (_replySed.bruker ? '(' + t('label:ikke-tilgjengelig') + ')' : ''),
-    value: 'bruker',
-    isDisabled: !!_replySed.bruker
-  })
+    relationOptions.push({
+      label: t('el:option-familierelasjon-ektefelle') + ((_replySed as F002Sed).ektefelle ? '(' + t('label:ikke-tilgjengelig') + ')' : ''),
+      value: 'ektefelle',
+      isDisabled: !!(_replySed as F002Sed).ektefelle
+    })
 
-  relationOptions.push({
-    label: t('el:option-familierelasjon-ektefelle') + ((_replySed as F002Sed).ektefelle ? '(' + t('label:ikke-tilgjengelig') + ')' : ''),
-    value: 'ektefelle',
-    isDisabled: !!(_replySed as F002Sed).ektefelle
-  })
+    relationOptions.push({
+      label: t('el:option-familierelasjon-annenPerson') + ((_replySed as F002Sed).annenPerson ? '(' + t('label:ikke-tilgjengelig') + ')' : ''),
+      value: 'annenPerson',
+      isDisabled: !!(_replySed as F002Sed).annenPerson
+    })
 
-  relationOptions.push({
-    label: t('el:option-familierelasjon-annenPerson') + ((_replySed as F002Sed).annenPerson ? '(' + t('label:ikke-tilgjengelig') + ')' : ''),
-    value: 'annenPerson',
-    isDisabled: !!(_replySed as F002Sed).annenPerson
-  })
+    relationOptions.push({
+      label: t('el:option-familierelasjon-barn'),
+      value: 'barn',
+      isDisabled: false
+    })
+    return relationOptions
+  }
 
-  relationOptions.push({
-    label: t('el:option-familierelasjon-barn'),
-    value: 'barn',
-    isDisabled: false
-  })
+  const relationOptions = getRelationOptions()
 
   const getPersonLabel = (personId: string): string => {
     const id = personId.startsWith('barn[') ? 'barn' : personId
@@ -233,9 +241,15 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
       <FlexDiv className='slideInFromLeft' style={{ animationDelay: i * 0.1 + 's' }} key={personId}>
         <CheckboxDiv>
           <FlexCenterDiv>
-            <Normaltekst>
-              {p?.fornavn + ' ' + p?.etternavn + ' (' + getPersonLabel(personId) + ')'}
-            </Normaltekst>
+            <FlexBaseDiv>
+              <Normaltekst>
+                {p?.fornavn + ' ' + p?.etternavn}
+              </Normaltekst>
+              <HorizontalSeparatorDiv data-size='0.5' />
+              <GreySpan>
+                {'(' + getPersonLabel(personId) + ')'}
+              </GreySpan>
+            </FlexBaseDiv>
             {personId.startsWith('barn[') && (
               <>
                 <HorizontalSeparatorDiv data-size='0.5' />
@@ -255,15 +269,16 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
     )
   }
 
+  console.log('rendering')
+
   return (
     <ModalDiv
-      ref={componentRef}
       isOpen
       onRequestClose={closeModal}
       closeButton
       contentLabel='contentLabel'
     >
-      <PaddedDiv>
+      <PaddedDiv id='add-person-modal-id'>
         {closeButton && (
           <CloseButton
             onClick={onCloseButtonClicked}
@@ -319,7 +334,6 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
                 id={'c-' + namespace + '-relasjon-text'}
                 highContrast={highContrast}
                 label={t('label:familierelasjon')}
-                menuPlacement='top'
                 menuPortalTarget={document.body}
                 onChange={onNewPersonRelationChange}
                 options={relationOptions}

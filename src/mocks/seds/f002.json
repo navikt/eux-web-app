@@ -293,96 +293,42 @@
       }
     ],
     "perioderMedArbeid": [
-      {
-        "startdato": "01.01.1990",
-        "sluttdato": "31.12.1990"
-      },
-      {
-        "startdato": "01.01.1991",
-        "aapenPeriodeType": "åpen_sluttdato"
-      }
     ],
     "perioderMedTrygd": [
-      {
-        "startdato": "01.01.1992",
-        "sluttdato": "31.12.1992"
-      },
-      {
-        "startdato": "01.01.1992",
-        "aapenPeriodeType": "åpen_sluttdato"
-      }
     ],
     "perioderMedITrygdeordning": [
-      {
-        "startdato": "1993-01-01",
-        "sluttdato": "31.12.1993"
-      },
-      {
-        "startdato": "01.01.1994",
-        "aapenPeriodeType": "åpen_sluttdato"
-      }
     ],
     "perioderUtenforTrygdeordning": [
-      {
-        "startdato": "01.01.1995",
-        "sluttdato": "31.12.1995"
-      },
-      {
-        "startdato": "01.01.1996",
-        "aapenPeriodeType": "åpen_sluttdato"
-      }
     ],
     "perioderMedYtelser": [
-      {
-        "startdato": "01.01.1997",
-        "sluttdato": "31.12.1997"
-      },
-      {
-        "startdato": "01.01.1998",
-        "aapenPeriodeType": "åpen_sluttdato"
-      }
     ],
     "ikkeRettTilYtelser": {
       "typeGrunn": "krav_ikke_framsatt",
       "typeGrunnAnnen": "F002 ektefelle typeGrunnAnnen"
     },
     "perioderMedPensjon": [
-      {
-        "pensjonstype": "alderspensjon",
-        "periode": {
-          "startdato": "01.01.1999",
-          "sluttdato": "31.12.1999"
-        }
-      },
-      {
-        "pensjonstype": "alderspensjon",
-        "periode": {
-          "startdato": "01.01.2000",
-          "aapenPeriodeType": "åpen_sluttdato"
-        }
-      }
     ],
     "flyttegrunn": {
       "personligSituasjon": "F002 ektfelle flyttegrunn personligSituasjon",
       "perioder": [
         {
-          "startdato": "01.01.2007",
-          "sluttdato": "31.12.2007"
+          "startdato": "2007-01-01",
+          "sluttdato": "2007-12-31"
         },
         {
-          "startdato": "01.01.2008",
+          "startdato": "2008-01-01",
           "aapenPeriodeType": "åpen_sluttdato"
         }
       ],
-      "datoFlyttetTilMottakerlandet": "01.01.2009",
-      "datoFlyttetTilAvsenderlandet": "01.01.2010"
+      "datoFlyttetTilMottakerlandet": "2009-01-01",
+      "datoFlyttetTilAvsenderlandet": "2010-01-01"
     },
     "familierelasjoner": [
       {
         "relasjonType": "gift",
         "relasjonInfo": "F002 ektefelle relasjonInfo",
         "periode": {
-          "startdato": "01.01.2011",
+          "startdato": "2011-01-01",
           "aapenPeriodeType": "åpen_sluttdato"
         },
         "borSammen": "ja",
@@ -398,7 +344,7 @@
       "fornavn": "Grandpa",
       "etternavn": "Simpson",
       "kjoenn": "U",
-      "foedselsdato": "01.01.2012",
+      "foedselsdato": "2012-01-01",
       "statsborgerskap": [
         {
           "land": "NO"
@@ -480,96 +426,33 @@
       }
     ],
     "perioderMedArbeid": [
-      {
-        "startdato": "01.01.2013",
-        "sluttdato": "31.12.2013"
-      },
-      {
-        "startdato": "01.01.2014",
-        "aapenPeriodeType": "åpen_sluttdato"
-      }
     ],
     "perioderMedTrygd": [
-      {
-        "startdato": "01.01.2015",
-        "sluttdato": "31.12.2015"
-      },
-      {
-        "startdato": "01.01.2016",
-        "aapenPeriodeType": "åpen_sluttdato"
-      }
     ],
     "perioderMedITrygdeordning": [
-      {
-        "startdato": "01.01.2017",
-        "sluttdato": "31.12.2017"
-      },
-      {
-        "startdato": "01.01.2018",
-        "aapenPeriodeType": "åpen_sluttdato"
-      }
     ],
     "perioderUtenforTrygdeordning": [
-      {
-        "startdato": "01.01.2019",
-        "sluttdato": "31.12.2019"
-      },
-      {
-        "startdato": "01.01.2020",
-        "aapenPeriodeType": "åpen_sluttdato"
-      }
     ],
     "perioderMedYtelser": [
-      {
-        "startdato": "01.01.2021",
-        "sluttdato": "31.12.2021"
-      },
-      {
-        "startdato": "01.01.2022",
-        "aapenPeriodeType": "åpen_sluttdato"
-      }
     ],
     "ikkeRettTilYtelser": {
       "typeGrunn": "krav_ikke_framsatt",
       "typeGrunnAnnen": "F002 annenPerson typeGrunnAnnen"
     },
     "perioderMedPensjon": [
-      {
-        "pensjonstype": "alderspensjon",
-        "periode": {
-          "startdato": "01.01.2023",
-          "sluttdato": "31.12.2023"
-        }
-      },
-      {
-        "pensjonstype": "alderspensjon",
-        "periode": {
-          "startdato": "01.01.2024",
-          "aapenPeriodeType": "åpen_sluttdato"
-        }
-      }
     ],
     "flyttegrunn": {
       "personligSituasjon": "F002 annenPerson personligSituasjon",
-      "perioder": [
-        {
-          "startdato": "01.01.2031",
-          "sluttdato": "31.12.2031"
-        },
-        {
-          "startdato": "01.01.2032",
-          "aapenPeriodeType": "åpen_sluttdato"
-        }
-      ],
-      "datoFlyttetTilMottakerlandet": "01.01.2033",
-      "datoFlyttetTilAvsenderlandet": "01.01.2034"
+      "perioder": [],
+      "datoFlyttetTilMottakerlandet": "2033-01-01",
+      "datoFlyttetTilAvsenderlandet": "2034-01-01"
     },
     "familierelasjoner": [
       {
         "relasjonType": "gift",
         "relasjonInfo": "F002 annenPerson relasjonInfo",
         "periode": {
-          "startdato": "01.01.2035",
+          "startdato": "2035-01-01",
           "aapenPeriodeType": "åpen_sluttdato"
         },
         "borSammen": "ja",
@@ -586,7 +469,7 @@
         "fornavn": "Bart",
         "etternavn": "Simpson",
         "kjoenn": "M",
-        "foedselsdato": "01.01.2036",
+        "foedselsdato": "2036-01-01",
         "statsborgerskap": [
           {
             "land": "NO"
@@ -659,7 +542,7 @@
           "relasjonTilPerson": "søker",
           "relasjonType": "eget_barn",
           "periode": {
-            "startdato": "01.01.2037",
+            "startdato": "2037-01-01",
             "aapenPeriodeType": "åpen_sluttdato"
           }
         }
@@ -668,20 +551,20 @@
         "personligSituasjon": "F002 barn1 personligSituasjon",
         "perioder": [
           {
-            "startdato": "01.01.2038",
-            "sluttdato": "31.12.2038"
+            "startdato": "2038-01-01",
+            "sluttdato": "2038-12-31"
           },
           {
-            "startdato": "01.01.2039",
+            "startdato": "2039-01-01",
             "aapenPeriodeType": "åpen_sluttdato"
           }
         ],
-        "datoFlyttetTilMottakerlandet": "01.01.2040",
-        "datoFlyttetTilAvsenderlandet": "01.01.2041"
+        "datoFlyttetTilMottakerlandet": "2040-01-01",
+        "datoFlyttetTilAvsenderlandet": "2041-01-01"
       },
       "ytelse": {
-        "startdato": "01.01.2043",
-        "sluttdato": "01.01.2044",
+        "startdato": "2043-01-01",
+        "sluttdato": "2044-01-01",
         "beloep": "100",
         "valuta": "NOK",
         "utbetalingshyppighet": "F002 barn2 ytelse utbetalingshyppighet",
@@ -690,15 +573,15 @@
         "barnetsNavn": "F002 barn2 ytelse barnetsNavn"
       },
       "motregning": {
-        "startdato": "01.01.2045",
-        "sluttdato": "01.01.2046",
+        "startdato": "2045-01-01",
+        "sluttdato": "2046-01-01",
         "beloep": "200",
         "valuta": "NOK",
         "utbetalingshyppighet": "F002 barn2 motregning utbetalingshyppighet",
         "ytelseNavn": "F002 barn2 motregning ytelse",
         "mottakersNavn": "F002 barn2 motregning mottakersNavn",
         "barnetsNavn": "F002 barn2 motregning barnetsNavn",
-        "vedtaksdato": "01.01.2047",
+        "vedtaksdato": "2047-01-01",
         "begrunnelse": "F002 barn2 motregning begrunnelse",
         "ytterligereInfo": "F002 barn2 motregning ytterligereInfo"
       }
@@ -708,7 +591,7 @@
         "fornavn": "Lisa",
         "etternavn": "Simpson",
         "kjoenn": "K",
-        "foedselsdato": "01.01.2036",
+        "foedselsdato": "2036-01-01",
         "statsborgerskap": [
           {
             "land": "NO"
@@ -781,7 +664,7 @@
           "relasjonTilPerson": "søker",
           "relasjonType": "eget_barn",
           "periode": {
-            "startdato": "01.01.2037",
+            "startdato": "2037-01-01",
             "aapenPeriodeType": "åpen_sluttdato"
           }
         }
@@ -790,20 +673,20 @@
         "personligSituasjon": "F002 barn1 personligSituasjon",
         "perioder": [
           {
-            "startdato": "01.01.2038",
-            "sluttdato": "31.12.2038"
+            "startdato": "2038-01-01",
+            "sluttdato": "2038-12-31"
           },
           {
-            "startdato": "01.01.2039",
+            "startdato": "2039-01-01",
             "aapenPeriodeType": "åpen_sluttdato"
           }
         ],
-        "datoFlyttetTilMottakerlandet": "01.01.2040",
-        "datoFlyttetTilAvsenderlandet": "01.01.2041"
+        "datoFlyttetTilMottakerlandet": "2040-01-01",
+        "datoFlyttetTilAvsenderlandet": "2041-01-01"
       },
       "ytelse": {
-        "startdato": "01.01.2043",
-        "sluttdato": "01.01.2044",
+        "startdato": "2043-01-01",
+        "sluttdato": "2044-01-01",
         "beloep": "100",
         "valuta": "NOK",
         "utbetalingshyppighet": "F002 barn2 ytelse utbetalingshyppighet",
@@ -812,69 +695,45 @@
         "barnetsNavn": "F002 barn2 ytelse barnetsNavn"
       },
       "motregning": {
-        "startdato": "01.01.2045",
-        "sluttdato": "01.01.2046",
+        "startdato": "2045-01-01",
+        "sluttdato": "2046-01-01",
         "beloep": "200",
         "valuta": "NOK",
         "utbetalingshyppighet": "F002 barn2 motregning utbetalingshyppighet",
         "ytelse": "F002 barn2 motregning ytelse",
         "mottakersNavn": "F002 barn2 motregning mottakersNavn",
         "barnetsNavn": "F002 barn2 motregning barnetsNavn",
-        "vedtaksdato": "01.01.2047",
+        "vedtaksdato": "2047-01-01",
         "begrunnelse": "F002 barn2 motregning begrunnelse",
         "ytterligereInfo": "F002 barn2 motregning ytterligereInfo"
       }
     }
   ],
   "familie": {
-    "ytelser": [
-      {
-        "startdato": "01.01.2048",
-        "sluttdato": "01.01.2049",
-        "beloep": "300",
-        "valuta": "NOK",
-        "mottakersNavn": "F002 barn2 familie ytelser mottakersNavn 1",
-        "antallpersoner": "1",
-        "utbetalingshyppighet": "år",
-        "ytelseNavn": "betegnelse ytelse",
-        "mottakersNavn": "mottakers navn2"
-      },
-      {
-        "startdato": "01.01.2050",
-        "sluttdato": "01.01.2051",
-        "beloep": "400",
-        "valuta": "NOK",
-        "mottakersNavn": "F002 barn2 familie ytelser mottakersNavn 2",
-        "antallpersoner": "2",
-        "utbetalingshyppighet": "år",
-        "ytelseNavn": "betegnelse ytelse",
-        "mottakersNavn": "mottakers navn2"
-      }
-    ],
     "motregninger": [
       {
         "antallPersoner": "3",
-        "startdato": "01.01.2052",
-        "sluttdato": "01.01.2053",
+        "startdato": "2052-01-01",
+        "sluttdato": "2053-01-01",
         "beloep": "500",
         "valuta": "NOK",
         "utbetalingshyppighet": "år",
         "ytelseNavn": "ytelse navn",
         "mottakersNavn": "F002 barn2 familie motregninger mottakersNavn 1",
-        "vedtaksdato": "01.01.2054",
+        "vedtaksdato": "2054-01-01",
         "begrunnelse": "F002 barn2 familie motregninger begrunnelse 1",
         "ytterligereInfo": "ytterligere"
       },
       {
         "antallPersoner": "3",
-        "startdato": "01.01.2055",
-        "sluttdato": "01.01.2056",
+        "startdato": "2055-01-01",
+        "sluttdato": "2056-01-01",
         "beloep": "600",
         "valuta": "NOK",
         "utbetalingshyppighet": "år",
         "ytelseNavn": "ytelse navn",
         "mottakersNavn": "F002 barn2 familie motregninger mottakersNavn 2",
-        "vedtaksdato": "01.01.2057",
+        "vedtaksdato": "2057-01-01",
         "begrunnelse": "F002 barn2 familie motregninger begrunnelse 2",
         "ytterligereInfo": "ytterligere"
       }
@@ -882,11 +741,11 @@
   },
   "anmodningsperioder": [
     {
-      "startdato": "01.01.2057",
-      "sluttdato": "31.12.2057"
+      "startdato": "2057-01-01",
+      "sluttdato": "2057-12-31"
     },
     {
-      "startdato": "01.01.2058",
+      "startdato": "2058-01-01",
       "aapenPeriodeType": "åpen_sluttdato"
     }
   ],
@@ -897,7 +756,7 @@
     "refusjon_i_henhold_til_artikkel_58_i_forordningen"
   ],
   "krav": {
-    "kravMottattDato": "01.01.2059",
+    "kravMottattDato": "2059-01-01",
     "kravType": "nytt_krav",
     "infoType": "F002 info type",
     "infoPresisering": "F002 krav info Presisering"

@@ -7,10 +7,13 @@ Clean Attachments later
 3. Ligar arbeidsgiver => perioder
 4. familie.motregninger[0] sounds bad
 5. Antall det innvilges for?!
+6. Where are the mandatory / optional fields?
+
+7. Checkboxes for the persons in familymanager --> what to do with them?
 
 fazer outros forms: betaling
 
  grep -rho -e "'label:[^']*'" * | sort -u
 
 test:
-  - where are the mandatory / optional fields?
+

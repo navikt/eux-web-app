@@ -89,7 +89,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
           {_savedEntries === null || _.isEmpty(_savedEntries)
             ? (
               <Normaltekst>
-                {t('label:ingen-lagrende-seds')}
+                {t('label:ingen-lagrede-seds')}
               </Normaltekst>
               )
             : (

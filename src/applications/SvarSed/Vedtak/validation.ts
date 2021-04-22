@@ -1,11 +1,12 @@
 import { PeriodeMedVedtak, Validation, Vedtak } from 'declarations/types'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { TFunction } from 'react-i18next'
 
 export const validateVedtakPeriode = (
   v: Validation,
   p: PeriodeMedVedtak,
   index: number,
-  t: any
+  t: TFunction
 ): void => {
   v['vedtak-perioder' + (index < 0 ? '' : '[' + index + ']') + '-periode-startdato'] = p.periode.startdato
     ? undefined
@@ -43,7 +44,7 @@ export const validateVedtakPeriode = (
 export const validateVedtakPerioder = (
   v: Validation,
   perioder: Array<PeriodeMedVedtak>,
-  t: any
+  t: TFunction
 ): void => {
   perioder?.forEach((periode: PeriodeMedVedtak, index: number) => {
     validateVedtakPeriode(v, periode, index, t)
@@ -53,7 +54,7 @@ export const validateVedtakPerioder = (
 export const validateVedtak = (
   v: Validation,
   vedtak: Vedtak,
-  t: any
+  t: TFunction
 ): void => {
   v['vedtak-allkids'] = vedtak.allkids
     ? undefined

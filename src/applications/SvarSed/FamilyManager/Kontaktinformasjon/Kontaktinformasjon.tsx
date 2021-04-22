@@ -197,7 +197,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
     const valid: boolean = performValidationEpost({
       epost: newEpost,
       index: -1,
-      namespace: namespaceTelefon,
+      namespace: namespaceEpost,
       personName: personName
     })
 
@@ -316,12 +316,12 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
       <Row className='slideInFromLeft'>
         <Column>
           <UndertekstBold>
-            {t('label:telefonnummer')}
+            {t('label:telefonnummer') + ' *'}
           </UndertekstBold>
         </Column>
         <Column>
           <UndertekstBold>
-            {t('label:type')}
+            {t('label:type') + ' *'}
           </UndertekstBold>
         </Column>
         <Column />
@@ -351,7 +351,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
       <Row className='slideInFromLeft'>
         <Column>
           <UndertekstBold>
-            {t('label:epost')}
+            {t('label:epost') + ' *'}
           </UndertekstBold>
         </Column>
         <Column />

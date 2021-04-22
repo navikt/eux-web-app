@@ -188,7 +188,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
         <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
           <Column>
             <label className='skjemaelement__label'>
-              {t('label:startdato')}
+              {t('label:startdato') + ' *'}
             </label>
           </Column>
           <Column>

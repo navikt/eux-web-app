@@ -1,4 +1,5 @@
 import Add from 'assets/icons/Add'
+import Search from 'assets/icons/Search'
 import DateInput from 'components/DateInput/DateInput'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import { PersonInfo, Pin, ReplySed } from 'declarations/sed'
@@ -51,12 +52,13 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   const norwegianPin = _.find(personInfo.pin, p => p.land === 'NO')
   const utenlandskPin = _.find(personInfo.pin, p => p.land !== 'NO')
 
-  const onFornavnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onFornavnChange = _.throttle((e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('updated')
     updateReplySed(`${target}.fornavn`, e.target.value)
     if (validation[namespace + '-fornavn']) {
       resetValidation(namespace + '-fornavn')
     }
-  }
+  }, 500)
 
   const onEtternavnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateReplySed(`${target}.etternavn`, e.target.value)
@@ -220,7 +222,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             value={utenlandskPin?.identifikator}
           />
         </Column>
-        <Column data-flex='2'>
+        <Column>
           <CountrySelect
             data-test-id={'c-' + namespace + '-utenlandskpin-land-text'}
             error={validation[namespace + '-utenlandskpin-land']?.feilmelding}
@@ -234,6 +236,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             values={utenlandskPin?.land}
           />
         </Column>
+        <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
@@ -254,6 +257,8 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             spinner={searchingPerson}
             onClick={onSearchUser}
           >
+            <Search />
+            <HorizontalSeparatorDiv />
             {searchingPerson
               ? t('message:loading-searching')
               : t('el:button-search-for-x', { x: t('label:person').toLowerCase() })}
@@ -279,7 +284,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
               )}
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv data-size='2' />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.5s' }}>
         <Column>
           <Undertittel>

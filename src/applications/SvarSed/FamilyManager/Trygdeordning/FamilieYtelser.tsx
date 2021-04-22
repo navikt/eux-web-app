@@ -371,7 +371,7 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
         <Row className='slideInFromLeft'>
           <Column>
             <label className='skjemaelement__label'>
-              {t('label:startdato')}
+              {t('label:startdato') + ' *'}
             </label>
           </Column>
           <Column>

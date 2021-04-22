@@ -228,6 +228,12 @@ const svarpasedReducer = (
         personRelatert: undefined
       }
 
+    case types.SVARPASED_VALIDATION_ALL_SET:
+      return {
+        ...state,
+        validation: (action as ActionWithPayload).payload
+      }
+
     case types.SVARPASED_VALIDATION_SET: {
       const { key, value } = (action as ActionWithPayload).payload
       if (!key) {

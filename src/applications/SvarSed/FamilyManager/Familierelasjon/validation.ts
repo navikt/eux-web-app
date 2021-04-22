@@ -28,7 +28,8 @@ export const validateFamilierelasjon = (
   validatePeriod(v, t, {
     period: familierelasjon.periode,
     index,
-    namespace
+    namespace,
+    personName
   })
 
   if (v[namespace + idx + '-startdato']) {

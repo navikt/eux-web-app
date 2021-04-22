@@ -1,3 +1,4 @@
+import { TFunction } from 'react-i18next'
 import { Prosedyre } from './ProsedyreVedUenighet'
 import { Validation } from 'declarations/types'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
@@ -6,7 +7,7 @@ export const validateProsedyre = (
   v: Validation,
   prosedyre: Prosedyre,
   index: number,
-  t: any,
+  t: TFunction,
   namespace: string
 ): void => {
   let generalFail: boolean = false
@@ -46,7 +47,7 @@ export const validateProsedyre = (
 export const validateProsedyrer = (
   validation: Validation,
   prosedyrer :Array<Prosedyre>,
-  t: any,
+  t: TFunction,
   namespace: string
 ): void => {
   prosedyrer?.forEach((p: Prosedyre, index: number) => {

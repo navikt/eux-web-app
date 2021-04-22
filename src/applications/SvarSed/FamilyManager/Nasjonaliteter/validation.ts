@@ -93,7 +93,7 @@ export const validateNasjonalitet = (
 
 export const validateNasjonaliteter = (
   validation: Validation,
-  t: any,
+  t: TFunction,
   statsborgerskaper: Array<Statsborgerskap>,
   namespace: string,
   personName: string

@@ -109,7 +109,7 @@ export const validateKontaktsinformasjonEpost = (
 
 export const validateKontaktsinformasjonTelefoner = (
   validation: Validation,
-  t: any,
+  t: TFunction,
   telefoner: Array<Telefon>,
   namespace: string,
   personName: string
@@ -121,7 +121,7 @@ export const validateKontaktsinformasjonTelefoner = (
 
 export const validateKontaktsinformasjonEposter = (
   validation: Validation,
-  t: any,
+  t: TFunction,
   eposter: Array<Epost>,
   namespace: string,
   personName: string

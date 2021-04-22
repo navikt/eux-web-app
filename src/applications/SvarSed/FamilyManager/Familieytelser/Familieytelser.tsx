@@ -138,7 +138,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             feil={validation[namespace + '-ytelseNavn']?.feilmelding}
             highContrast={highContrast}
             id={'c-' + namespace + '-ytelseNavn-text'}
-            label={t('label:betegnelse-på-motregning')}
+            label={t('label:betegnelse-på-ytelse') + ' *'}
             menuPortalTarget={document.body}
             onChange={(e: any) => setYtelseNavn(e.value)}
             options={ytelseNavnOptions}
@@ -149,12 +149,13 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
         </Column>
         <Column>
           <HighContrastInput
+            type='number'
             data-test-id={'c-' + namespace + '-number-text'}
             feil={validation[namespace + '-number']?.feilmelding}
             id={'c-' + namespace + '-number-text'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNumber(e.target.value)}
             value={_newNumber}
-            label={t('label:antall-innvilges')}
+            label={t('label:antall-innvilges') + ' *'}
             placeholder={t('el:placeholder-input-default')}
           />
         </Column>
@@ -168,7 +169,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             id={'c-' + namespace + '-beloep-text'}
             label={(
               <FlexCenterDiv>
-                <span>{t('label:beløp')}</span>
+                <span>{t('label:beløp') + ' *'}</span>
                 <HorizontalSeparatorDiv data-size='0.5' />
                 <Tooltip placement='top' trigger={['hover']} overlay={<span>{t('message:help-familieytelser-beløp')}</span>}>
                   <HelpProperIcon className='hjelpetekst__ikon' />
@@ -188,7 +189,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             error={validation[namespace + '-valuta']?.feilmelding}
             highContrast={highContrast}
             id={'c-' + namespace + '-valuta-text'}
-            label={t('label:valuta')}
+            label={t('label:valuta') + ' *'}
             locale='nb'
             menuPortalTarget={document.body}
             onOptionSelected={setValuta}
@@ -221,7 +222,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             data-test-id={'c-' + namespace + '-mottakersNavn-text'}
             feil={validation[namespace + '--mottakersNavn']?.feilmelding}
             id={'c-' + namespace + '-mottakersNavn-text'}
-            label={t('label:mottakers-navn')}
+            label={t('label:mottakers-navn') + ' *'}
             onBlur={setMottakersNavn}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setNewMottakersNavn(e.target.value)}
             value={_newMottakersNavn}
@@ -239,7 +240,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             id={'c-' + namespace + '-utbetalingshyppighet-text'}
             feil={validation[namespace + '-utbetalingshyppighet']?.feilmelding}
             name={namespace + '-utbetalingshyppighet'}
-            legend={t('label:periode-avgrensing')}
+            legend={t('label:periode-avgrensing') + ' *'}
             radios={[
               { label: t('label:månedlig'), value: 'Månedlig' },
               { label: t('label:årlig'), value: 'Årlig' }

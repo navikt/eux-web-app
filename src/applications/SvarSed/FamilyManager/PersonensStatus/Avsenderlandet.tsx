@@ -9,7 +9,7 @@ import { Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
-import { Undertittel } from 'nav-frontend-typografi'
+import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import { Column, HighContrastFlatknapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -176,6 +176,10 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
       <Undertittel>
         {t('el:title-periods-in-sender-country')}
       </Undertittel>
+      <VerticalSeparatorDiv />
+      <UndertekstBold>
+        {t('label:medlemsperiode')}
+      </UndertekstBold>
       <VerticalSeparatorDiv />
       {perioderMedTrygd
         ?.sort((a, b) =>

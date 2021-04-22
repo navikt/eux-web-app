@@ -1,4 +1,4 @@
-import { getArbeidsforholdList, resetValidation, searchPerson, setReplySed } from 'actions/svarpased'
+import { getArbeidsforholdList, searchPerson, setReplySed } from 'actions/svarpased'
 import AddPersonModal from 'applications/SvarSed/FamilyManager/AddPersonModal/AddPersonModal'
 import Add from 'assets/icons/Add'
 import FilledCheckCircle from 'assets/icons/CheckCircle'
@@ -8,7 +8,8 @@ import classNames from 'classnames'
 import { FlexCenterDiv, PileDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import { PersonInfo, ReplySed } from 'declarations/sed'
+import { F002Sed, PersonInfo, ReplySed } from 'declarations/sed'
+import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import Chevron from 'nav-frontend-chevron'
 import { Checkbox } from 'nav-frontend-skjema'
@@ -117,6 +118,16 @@ const CustomHighContrastPanel = styled(HighContrastPanel)`
 const MarginDiv = styled.div`
   padding: 1rem 0.5rem;
 `
+const LandSpan = styled.span`
+  color: grey;
+  white-space: nowrap;
+`
+
+export interface FamilyManagerProps {
+  replySed: ReplySed
+  resetValidation: (key?: string) => void
+  validation: Validation
+}
 
 const mapState = (state: State): any => ({
   arbeidsforholdList: state.svarpased.arbeidsforholdList,
@@ -125,14 +136,16 @@ const mapState = (state: State): any => ({
   gettingArbeidsforholdList: state.loading.gettingArbeidsforholdList,
   gettingPerson: state.loading.gettingPerson,
   landkoderList: state.app.landkoder,
-  replySed: state.svarpased.replySed,
   searchingPerson: state.loading.searchingPerson,
   searchedPerson: state.svarpased.searchedPerson,
-  valgteArbeidsforhold: state.svarpased.valgteArbeidsforhold,
-  validation: state.svarpased.validation
+  valgteArbeidsforhold: state.svarpased.valgteArbeidsforhold
 })
 
-const FamilyManager: React.FC = () => {
+const FamilyManager: React.FC<FamilyManagerProps> = ({
+  replySed,
+  resetValidation,
+  validation
+}: FamilyManagerProps) => {
   const {
     arbeidsforholdList,
     familierelasjonKodeverk,
@@ -140,10 +153,8 @@ const FamilyManager: React.FC = () => {
     gettingPerson,
     highContrast,
     landkoderList,
-    replySed,
     searchingPerson,
-    searchedPerson,
-    validation
+    searchedPerson
   }: any = useSelector<State, any>(mapState)
   // list of persons with open forms
   const [_editPersonIDs, setEditPersonIDs] = useState<Array<string>>([])
@@ -159,18 +170,22 @@ const FamilyManager: React.FC = () => {
   const dispatch = useDispatch()
 
   const brukerNr = 0
-  const ektefelleNr = brukerNr + (replySed.ektefelle ? 1 : 0)
-  const annenPersonNr = ektefelleNr + (replySed.annenPerson ? 1 : 0)
-  const barnNr = annenPersonNr + (replySed.barn ? 1 : 0)
+  const ektefelleNr = brukerNr + ((replySed as F002Sed).ektefelle ? 1 : 0)
+  const annenPersonNr = ektefelleNr + ((replySed as F002Sed).annenPerson ? 1 : 0)
+  const barnNr = annenPersonNr + ((replySed as F002Sed).barn ? 1 : 0)
   const familieNr = barnNr + 1
-  const totalPeople = annenPersonNr + (replySed.barn ? replySed.barn.length : 0) + 1 // 1 = bruker
+  const totalPeople = annenPersonNr + ((replySed as F002Sed).barn ? (replySed as F002Sed).barn.length : 0) + 1 // 1 = bruker
 
   const changePersonOption = (personID: string | undefined, menuOption: string) => {
     if (personID) {
       setEditCurrentPersonID(personID)
-      const p = _.get(replySed, personID)
-      const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
-      setEditCurrentPersonName(personName)
+      if (personID !== 'familie') {
+        const p = _.get(replySed, personID)
+        const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
+        setEditCurrentPersonName(personName)
+      } else {
+        setEditCurrentPersonName(t('label:hele-familien'))
+      }
       setMenuOption(menuOption)
     }
   }
@@ -197,9 +212,13 @@ const FamilyManager: React.FC = () => {
       if (isEditCurrentPerson) {
         setEditCurrentPersonName(undefined)
       } else {
-        const p = _.get(replySed, id)
-        const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
-        setEditCurrentPersonName(personName)
+        if (id !== 'familie') {
+          const p = _.get(replySed, id)
+          const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
+          setEditCurrentPersonName(personName)
+        } else {
+          setEditCurrentPersonName(t('label:hele-familien'))
+        }
       }
       const newEditPersons = alreadyEditingPerson ? _.filter(_editPersonIDs, _id => _id !== id) : _editPersonIDs.concat(id)
       setEditPersonIDs(newEditPersons)
@@ -225,14 +244,14 @@ const FamilyManager: React.FC = () => {
     if (checked) {
       let allPersons = []
       allPersons.push('bruker')
-      if (replySed.ektefelle) {
+      if ((replySed as F002Sed).ektefelle) {
         allPersons.push('ektefelle')
       }
-      if (replySed.annenPerson) {
+      if ((replySed as F002Sed).annenPerson) {
         allPersons.push('annenPerson')
       }
-      if (replySed.barn) {
-        allPersons = allPersons.concat(replySed.barn.map((b: any, i: number) => `barn[${i}]`))
+      if ((replySed as F002Sed).barn) {
+        allPersons = allPersons.concat((replySed as F002Sed).barn.map((b: any, i: number) => `barn[${i}]`))
       }
       setSelectedPersonIDs(allPersons)
     } else {
@@ -244,10 +263,6 @@ const FamilyManager: React.FC = () => {
     const newReplySed = _.cloneDeep(replySed)
     _.set(newReplySed, needleString, value)
     dispatch(setReplySed(newReplySed))
-  }
-
-  const _resetValidation = (key?: string) => {
-    dispatch(resetValidation(key))
   }
 
   const onAddNewPerson = () => {
@@ -286,20 +301,34 @@ const FamilyManager: React.FC = () => {
             )}
             {selected
               ? (
-                <Undertittel style={{ whiteSpace: 'nowrap' }}>
-                  {personId === 'familie'
-                    ? t('label:hele-familien')
-                    : personInfo?.fornavn + ' ' + personInfo?.etternavn +
-                    (personInfo?.statsborgerskap ? ' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')' : '')}
-                </Undertittel>
+                <>
+                  <Undertittel style={{ whiteSpace: 'nowrap' }}>
+                    {personId === 'familie'
+                      ? t('label:hele-familien')
+                      : personInfo?.fornavn + ' ' + personInfo?.etternavn}
+                  </Undertittel>
+                  <HorizontalSeparatorDiv data-size='0.5' />
+                  {personInfo?.statsborgerskap && (
+                    <LandSpan>
+                      {' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')'}
+                    </LandSpan>
+                  )}
+                </>
                 )
               : (
-                <Normaltekst style={{ whiteSpace: 'nowrap' }}>
-                  {personId === 'familie'
-                    ? t('label:hele-familien')
-                    : personInfo?.fornavn + ' ' + personInfo?.etternavn +
-                    (personInfo?.statsborgerskap ? ' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')' : '')}
-                </Normaltekst>
+                <>
+                  <Normaltekst style={{ whiteSpace: 'nowrap' }}>
+                    {personId === 'familie'
+                      ? t('label:hele-familien')
+                      : personInfo?.fornavn + ' ' + personInfo?.etternavn}
+                  </Normaltekst>
+                  <HorizontalSeparatorDiv data-size='0.5' />
+                  {personInfo?.statsborgerskap && (
+                    <LandSpan>
+                      {' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')'}
+                    </LandSpan>
+                  )}
+                </>
                 )}
             {personId.startsWith('barn[') && (
               <>
@@ -373,9 +402,9 @@ const FamilyManager: React.FC = () => {
         <FlexCenterDiv>
           <LeftDiv>
             {replySed.bruker && renderPerson(replySed, 'bruker', brukerNr)}
-            {replySed.ektefelle && renderPerson(replySed, 'ektefelle', ektefelleNr)}
-            {replySed.annenPerson && renderPerson(replySed, 'annenPerson', annenPersonNr)}
-            {replySed.barn && replySed.barn.map((b: PersonInfo, i: number) => renderPerson(replySed, `barn[${i}]`, barnNr + i))}
+            {(replySed as F002Sed).ektefelle && renderPerson(replySed, 'ektefelle', ektefelleNr)}
+            {(replySed as F002Sed).annenPerson && renderPerson(replySed, 'annenPerson', annenPersonNr)}
+            {(replySed as F002Sed).barn && (replySed as F002Sed).barn.map((b: any, i: number) => renderPerson(replySed, `barn[${i}]`, barnNr + i))}
             {renderPerson(replySed, 'familie', familieNr)}
             <MarginDiv>
               <HighContrastFlatknapp
@@ -405,7 +434,7 @@ const FamilyManager: React.FC = () => {
                       landkoderList={landkoderList}
                       onSearchingPerson={(id: string) => dispatch(searchPerson(id))}
                       personID={_editCurrentPersonID}
-                      resetValidation={_resetValidation}
+                      resetValidation={resetValidation}
                       replySed={replySed}
                       searchingPerson={searchingPerson}
                       searchedPerson={searchedPerson}
@@ -419,7 +448,7 @@ const FamilyManager: React.FC = () => {
                       landkoderList={landkoderList}
                       personID={_editCurrentPersonID}
                       personName={_editCurrentPersonName!}
-                      resetValidation={_resetValidation}
+                      resetValidation={resetValidation}
                       replySed={replySed}
                       updateReplySed={updateReplySed}
                       validation={validation}
@@ -432,7 +461,7 @@ const FamilyManager: React.FC = () => {
                       personID={_editCurrentPersonID}
                       personName={_editCurrentPersonName!}
                       replySed={replySed}
-                      resetValidation={_resetValidation}
+                      resetValidation={resetValidation}
                       updateReplySed={updateReplySed}
                       validation={validation}
                     />
@@ -443,7 +472,7 @@ const FamilyManager: React.FC = () => {
                       personID={_editCurrentPersonID}
                       personName={_editCurrentPersonName!}
                       replySed={replySed}
-                      resetValidation={_resetValidation}
+                      resetValidation={resetValidation}
                       updateReplySed={updateReplySed}
                       validation={validation}
                     />
@@ -454,7 +483,7 @@ const FamilyManager: React.FC = () => {
                       personID={_editCurrentPersonID}
                       personName={_editCurrentPersonName!}
                       replySed={replySed}
-                      resetValidation={_resetValidation}
+                      resetValidation={resetValidation}
                       updateReplySed={updateReplySed}
                       validation={validation}
                     />
@@ -466,7 +495,7 @@ const FamilyManager: React.FC = () => {
                       personID={_editCurrentPersonID}
                       personName={_editCurrentPersonName!}
                       replySed={replySed}
-                      resetValidation={_resetValidation}
+                      resetValidation={resetValidation}
                       updateReplySed={updateReplySed}
                       validation={validation}
                     />
@@ -477,7 +506,7 @@ const FamilyManager: React.FC = () => {
                       highContrast={highContrast}
                       personID={_editCurrentPersonID}
                       replySed={replySed}
-                      resetValidation={_resetValidation}
+                      resetValidation={resetValidation}
                       updateReplySed={updateReplySed}
                       validation={validation}
                     />
@@ -492,7 +521,7 @@ const FamilyManager: React.FC = () => {
                       highContrast={highContrast}
                       personID={_editCurrentPersonID}
                       replySed={replySed}
-                      resetValidation={_resetValidation}
+                      resetValidation={resetValidation}
                       updateReplySed={updateReplySed}
                       validation={validation}
                     />
@@ -501,7 +530,8 @@ const FamilyManager: React.FC = () => {
                     <GrunnlagForBosetting
                       personID={_editCurrentPersonID}
                       replySed={replySed}
-                      resetValidation={_resetValidation}
+                      resetValidation={resetValidation}
+                      standalone
                       updateReplySed={updateReplySed}
                       validation={validation}
                     />
@@ -511,7 +541,7 @@ const FamilyManager: React.FC = () => {
                       highContrast={highContrast}
                       personID={_editCurrentPersonID}
                       replySed={replySed}
-                      resetValidation={_resetValidation}
+                      resetValidation={resetValidation}
                       updateReplySed={updateReplySed}
                       validation={validation}
                     />
@@ -521,7 +551,7 @@ const FamilyManager: React.FC = () => {
                       highContrast={highContrast}
                       personID={_editCurrentPersonID}
                       replySed={replySed}
-                      resetValidation={_resetValidation}
+                      resetValidation={resetValidation}
                       updateReplySed={updateReplySed}
                       validation={validation}
                     />

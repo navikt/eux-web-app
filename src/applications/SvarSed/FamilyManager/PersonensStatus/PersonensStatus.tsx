@@ -86,31 +86,33 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-        <Column>
-          {_arbeidsforhold === 'arbeidsforhold-1'
-            ? (
-              <Ansatt
-                arbeidsforholdList={arbeidsforholdList}
-                getArbeidsforholdList={getArbeidsforholdList}
-                gettingArbeidsforholdList={gettingArbeidsforholdList}
-                replySed={replySed}
-                personID={personID}
-                updateReplySed={updateReplySed}
-              />
-              )
-            : (
-              <NotAnsatt
-                personID={personID}
-                replySed={replySed}
-                resetValidation={resetValidation}
-                updateReplySed={updateReplySed}
-                validation={validation}
-              />
-              )}
-        </Column>
-      </AlignStartRow>
-      {(_arbeidsforhold !== 'arbeidsforhold-1' && _arbeidsforhold !== 'arbeidsforhold-2') && (
+      {_arbeidsforhold && (
+        <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+          <Column>
+            {_arbeidsforhold === 'arbeidsforhold-1'
+              ? (
+                <Ansatt
+                  arbeidsforholdList={arbeidsforholdList}
+                  getArbeidsforholdList={getArbeidsforholdList}
+                  gettingArbeidsforholdList={gettingArbeidsforholdList}
+                  replySed={replySed}
+                  personID={personID}
+                  updateReplySed={updateReplySed}
+                />
+                )
+              : (
+                <NotAnsatt
+                  personID={personID}
+                  replySed={replySed}
+                  resetValidation={resetValidation}
+                  updateReplySed={updateReplySed}
+                  validation={validation}
+                />
+                )}
+          </Column>
+        </AlignStartRow>
+      )}
+      {_arbeidsforhold && (_arbeidsforhold !== 'arbeidsforhold-1' && _arbeidsforhold !== 'arbeidsforhold-2') && (
         <>
           <VerticalSeparatorDiv data-size='2' />
           <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
@@ -128,30 +130,34 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
           <VerticalSeparatorDiv />
         </>
       )}
-      <VerticalSeparatorDiv data-size='2' />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
-        <Column>
-          <Avsenderlandet
-            personID={personID}
-            replySed={replySed}
-            resetValidation={resetValidation}
-            updateReplySed={updateReplySed}
-            validation={validation}
-          />
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2' />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
-        <Column>
-          <GrunnlagforBosetting
-            personID={personID}
-            replySed={replySed}
-            resetValidation={resetValidation}
-            updateReplySed={updateReplySed}
-            validation={validation}
-          />
-        </Column>
-      </AlignStartRow>
+      {_arbeidsforhold && (
+        <>
+          <VerticalSeparatorDiv data-size='2' />
+          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
+            <Column>
+              <Avsenderlandet
+                personID={personID}
+                replySed={replySed}
+                resetValidation={resetValidation}
+                updateReplySed={updateReplySed}
+                validation={validation}
+              />
+            </Column>
+          </AlignStartRow>
+          <VerticalSeparatorDiv data-size='2' />
+          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
+            <Column>
+              <GrunnlagforBosetting
+                personID={personID}
+                replySed={replySed}
+                resetValidation={resetValidation}
+                updateReplySed={updateReplySed}
+                validation={validation}
+              />
+            </Column>
+          </AlignStartRow>
+        </>
+      )}
     </PaddedDiv>
   )
 }

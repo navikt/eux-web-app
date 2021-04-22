@@ -64,8 +64,8 @@ c-familymanager-{personID}-grunnlagforbosetting-perioder-sluttdato-date      - {
 c-familymanager-{personID}-grunnlagforbosetting-perioder[{i}]-startdato-date - {CONNECTED} {person}.flyttegrunn.perioder[].startdato
 c-familymanager-{personID}-grunnlagforbosetting-perioder[{i}]-sluttdato-date - {CONNECTED} {person}.flyttegrunn.perioder[].sluttdato
 c-familymanager-{personID}-grunnlagforbosetting-elementer-text               - {CONNECTED} {person}.flyttegrunn.personligSituasjon
-c-familymanager-{personID}-grunnlagforbosetting-avsenderdato-text            - {CONNECTED} {person}.flyttegrunn.datoFlyttetTilAvsenderlandet
-c-familymanager-{personID}-grunnlagforbosetting-mottakerdato-text            - {CONNECTED} {person}.flyttegrunn.datoFlyttetTilMottakerlandet
+c-familymanager-{personID}-grunnlagforbosetting-avsenderdato-date            - {CONNECTED} {person}.flyttegrunn.datoFlyttetTilAvsenderlandet
+c-familymanager-{personID}-grunnlagforbosetting-mottakerdato-date            - {CONNECTED} {person}.flyttegrunn.datoFlyttetTilMottakerlandet
 
 c-familymanager-{personID}-kontaktinformasjon-telefon-nummer-text      - {INTERNAL} not used
 c-familymanager-{personID}-kontaktinformasjon-telefon-type-text        - {INTERNAL} not used
@@ -143,7 +143,7 @@ c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-startdato-date 
 c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-sluttdato-date           - {CONNECTED} {person}.perioderMedPensjon[].periode.sluttdato
 c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-pensjontype-text         - {CONNECTED} {person}.perioderMedPensjon[].pensjonstype
 
-c-formaal-text - {GLOBAL} - formaal
+c-step2-formaal-text - {GLOBAL} - formaal
 
 c-kravomrefusjon-krav-text - {GLOBAL}
 

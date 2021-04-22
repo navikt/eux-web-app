@@ -1,18 +1,18 @@
 import Add from 'assets/icons/Add'
 import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
-import { toFinalDateFormat } from 'components/Period/Period'
+import Period, { toFinalDateFormat } from 'components/Period/Period'
+import { AlignStartRow } from 'components/StyledComponents'
 import useValidation from 'components/Validation/useValidation'
 import { Periode, ReplySed } from 'declarations/sed'
 import { Arbeidsforholdet, Arbeidsperioder } from 'declarations/types'
 import _ from 'lodash'
-import { Undertittel } from 'nav-frontend-typografi'
+import { Systemtittel, Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
   HighContrastFlatknapp,
   HighContrastInput,
   HighContrastKnapp,
   HorizontalSeparatorDiv,
-  Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
@@ -163,14 +163,14 @@ const Ansatt: React.FC<AnsattProps> = ({
     setSeeNewArbeidsperiode(!_seeNewArbeidsperiode)
   }
 
-  const onStartDatoChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onStartDatoChanged = (dato: string) => {
     resetValidation(namespace + '-startdato')
-    setNewStartDato(e.target.value)
+    setNewStartDato(dato)
   }
 
-  const onSluttDatoChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onSluttDatoChanged = (dato: string) => {
     resetValidation(namespace + '-sluttdato')
-    setNewSluttDato(e.target.value)
+    setNewSluttDato(dato)
   }
 
   const onOrgnrChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -191,6 +191,10 @@ const Ansatt: React.FC<AnsattProps> = ({
 
   return (
     <>
+      <Systemtittel>
+        {t('el:title-aa-registeret')}
+      </Systemtittel>
+      <VerticalSeparatorDiv />
       <Undertittel>
         {t('el:title-registered-arbeidsperiode')}
       </Undertittel>
@@ -208,9 +212,9 @@ const Ansatt: React.FC<AnsattProps> = ({
         onArbeidsforholdEdit={onExistingArbeidsforholdEdit}
         onArbeidsforholdDelete={onExistingArbeidsforholdDelete}
       />
-      <VerticalSeparatorDiv />
-      {!_.isEmpty(_addedArbeidsforholdList) && (
+      {!_.isEmpty(_addedArbeidsforholdList.arbeidsperioder) && (
         <>
+          <VerticalSeparatorDiv data-size='2' />
           <Undertittel>
             {t('el:title-added-arbeidsperiode')}
           </Undertittel>
@@ -249,33 +253,21 @@ const Ansatt: React.FC<AnsattProps> = ({
               {t('el:title-add-arbeidsperiode')}
             </Undertittel>
             <VerticalSeparatorDiv />
-            <Row>
-              <Column>
-                <HighContrastInput
-                  data-test-id={'c-' + namespace + '-startdato-date'}
-                  feil={_validation[namespace + '-startdato']?.feilmelding}
-                  id={namespace + '-startdato-date'}
-                  label={t('label:startdato')}
-                  onChange={onStartDatoChanged}
-                  placeholder={t('el:placeholder-date-default')}
-                  value={_newStartDato}
-                />
-              </Column>
-              <Column>
-                <HighContrastInput
-                  data-test-id={'c-' + namespace + '-sluttdato-date'}
-                  feil={_validation[namespace + '-sluttdato']?.feilmelding}
-                  id={'c-' + namespace + '-sluttdato-date'}
-                  label={t('label:sluttdato')}
-                  onChange={onSluttDatoChanged}
-                  placeholder={t('el:placeholder-date-default')}
-                  value={_newSluttDato}
-                />
-              </Column>
+            <AlignStartRow className='slideInFromLeft'>
+              <Period
+                key={'' + _newStartDato + _newSluttDato}
+                namespace={namespace}
+                errorStartDato={_validation[namespace + '-startdato']?.feilmelding}
+                errorSluttDato={_validation[namespace + '-sluttdato']?.feilmelding}
+                setStartDato={onStartDatoChanged}
+                setSluttDato={onSluttDatoChanged}
+                valueStartDato={_newStartDato}
+                valueSluttDato={_newSluttDato}
+              />
               <Column />
-            </Row>
+            </AlignStartRow>
             <VerticalSeparatorDiv data-size='0.5' />
-            <Row>
+            <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
               <Column>
                 <HighContrastInput
                   data-test-id={'c-' + namespace + '-orgnr-text'}
@@ -299,9 +291,9 @@ const Ansatt: React.FC<AnsattProps> = ({
                 />
               </Column>
               <Column />
-            </Row>
+            </AlignStartRow>
             <VerticalSeparatorDiv />
-            <Row>
+            <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
               <Column>
                 <HighContrastKnapp
                   mini
@@ -321,7 +313,7 @@ const Ansatt: React.FC<AnsattProps> = ({
                   {t('el:button-cancel')}
                 </HighContrastFlatknapp>
               </Column>
-            </Row>
+            </AlignStartRow>
           </>
           )}
     </>

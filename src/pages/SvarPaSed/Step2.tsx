@@ -1,22 +1,23 @@
-import { createSed, resetValidation, sendSeletedInntekt } from 'actions/svarpased'
-import Add from 'assets/icons/Add'
-import classNames from 'classnames'
-import Attachments from 'applications/Vedlegg/Attachments/Attachments'
+import { createSed, sendSeletedInntekt, setAllValidation } from 'actions/svarpased'
 import FamilyManager from 'applications/SvarSed/FamilyManager/FamilyManager'
 import Formaal from 'applications/SvarSed/Formaal/Formaal'
-import Inntekt from 'components/Inntekt/Inntekt'
 import KravOmRefusjon from 'applications/SvarSed/KravOmRefusjon/KravOmRefusjon'
-import Modal from 'components/Modal/Modal'
 import Motregning from 'applications/SvarSed/Motregning/Motregning'
 import ProsedyreVedUenighet from 'applications/SvarSed/ProsedyreVedUenighet/ProsedyreVedUenighet'
 import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
 import SendSEDModal from 'applications/SvarSed/SendSEDModal/SendSEDModal'
-import { TextAreaDiv } from 'components/StyledComponents'
 import Vedtak from 'applications/SvarSed/Vedtak/Vedtak'
+import Attachments from 'applications/Vedlegg/Attachments/Attachments'
+import Add from 'assets/icons/Add'
+import classNames from 'classnames'
+import Inntekt from 'components/Inntekt/Inntekt'
+import Modal from 'components/Modal/Modal'
+import { FlexCenterDiv, TextAreaDiv } from 'components/StyledComponents'
+import useValidation from 'components/Validation/useValidation'
 import { JoarkBrowserItems } from 'declarations/attachments'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
-import { Inntekt as IInntekt, Inntekter, Validation } from 'declarations/types'
+import { Inntekt as IInntekt, Inntekter } from 'declarations/types'
 import FileFC, { File } from 'forhandsvisningsfil'
 import _ from 'lodash'
 import { VenstreChevron } from 'nav-frontend-chevron'
@@ -36,18 +37,13 @@ import {
 import ValidationBox from 'pages/SvarPaSed/ValidationBox'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import ReactJson from 'react-json-view'
 import { useDispatch, useSelector } from 'react-redux'
 import { SvarpasedState } from 'reducers/svarpased'
 import styled from 'styled-components'
 import { Item } from 'tabell'
-import ReactJson from 'react-json-view'
-import { validate } from './validation'
+import { validateStep2, ValidationStep2Props } from './validation'
 
-const FlexDiv = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
 const Step2Div = styled.div`
   padding: 0.5rem;
 `
@@ -87,7 +83,8 @@ export interface SvarPaSedProps {
 }
 
 const Step2: React.FC<SvarPaSedProps> = ({
-  mode, setMode
+  mode,
+  setMode
 }: SvarPaSedProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -107,18 +104,16 @@ const Step2: React.FC<SvarPaSedProps> = ({
 
     highContrast
   }: any = useSelector<State, any>(mapState)
+  const fnr = _.find(replySed?.bruker?.personInfo.pin, p => p.land === 'NO')?.fnr
+  const data: SvarpasedState = useSelector<State, SvarpasedState>(mapStateTwo)
 
-  const [_comment, setComment] = useState<string>('')
+  const [_comment, _setComment] = useState<string>('')
   const [_attachments, setAttachments] = useState<JoarkBrowserItems | undefined>(undefined)
   const [_modal, setModal] = useState<ModalContent | undefined>(undefined)
   const [_previewFile, setPreviewFile] = useState<any | undefined>(undefined)
   const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
   const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
-  const fnr = _.find(replySed?.bruker?.personInfo.pin, p => p.land === 'NO')?.fnr
-
-  const data: SvarpasedState = useSelector<State, SvarpasedState>(mapStateTwo)
-
-  const isValid = (validation: Validation): boolean => _.find(_.values(validation), (e) => e !== undefined) === undefined
+  const [_validation, _resetValidation, performValidation] = useValidation<ValidationStep2Props>(validation, validateStep2)
 
   const showFamily = (): boolean => replySed?.sedType?.startsWith('F') || false
   const showMotregning = (): boolean => (replySed?.formaal?.indexOf('motregning') >= 0)
@@ -129,13 +124,12 @@ const Step2: React.FC<SvarPaSedProps> = ({
 
   const sendReplySed = (): void => {
     if (replySed) {
-      const newValidation = validate({
+      const valid = performValidation({
         comment: _comment,
-        t: t,
-        replySed: replySed
+        replySed
       })
-      dispatch(resetValidation())
-      if (isValid(newValidation)) {
+
+      if (valid) {
         setViewSendSedModal(true)
         dispatch(createSed(
           rinasaksnummerOrFnr,
@@ -143,6 +137,10 @@ const Step2: React.FC<SvarPaSedProps> = ({
           replySed!.svarsedType,
           data
         ))
+        _resetValidation()
+      } else {
+        // dispatch validation results to all components
+        dispatch(setAllValidation(_validation))
       }
     }
   }
@@ -177,7 +175,6 @@ const Step2: React.FC<SvarPaSedProps> = ({
     })
   }
 
-  // TODO
   const onPreviewSed = () => {
     setModal({
       closeButton: true,
@@ -187,19 +184,17 @@ const Step2: React.FC<SvarPaSedProps> = ({
         </div>
       )
     })
-    
-
-    /*if (!_previewFile) {
-      dispatch(getPreviewFile())
-    } else {
-      showPreviewModal(_previewFile)
-    }*/
   }
 
   const onGoBackClick = () => {
     if (mode === '2') {
       setMode('1', 'back')
     }
+  }
+
+  const setComment = (comment: string) => {
+    _resetValidation('step2-comment')
+    _setComment(comment)
   }
 
   const onSelectedInntekt = (items: Array<Item>) => {
@@ -247,7 +242,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
           onModalClose={() => setViewSaveSedModal(false)}
         />
       )}
-      <FlexDiv>
+      <FlexCenterDiv>
         <HighContrastLink
           href='#'
           onClick={onGoBackClick}
@@ -256,7 +251,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
           <HorizontalSeparatorDiv data-size='0.5' />
           {t('label:tilbake')}
         </HighContrastLink>
-      </FlexDiv>
+      </FlexCenterDiv>
       <VerticalSeparatorDiv />
       <Row>
         <Column data-flex='2'>
@@ -265,7 +260,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
           </Systemtittel>
           <VerticalSeparatorDiv />
           <Formaal
-            feil={validation.formaal}
+            feil={_validation['step2-formaal']}
             replySed={replySed}
             highContrast={highContrast}
           />
@@ -275,31 +270,39 @@ const Step2: React.FC<SvarPaSedProps> = ({
       <VerticalSeparatorDiv data-size='2' />
       {showFamily() && (
         <>
-          <FamilyManager />
+          <FamilyManager
+            replySed={replySed}
+            resetValidation={_resetValidation}
+            validation={_validation}
+          />
           <VerticalSeparatorDiv data-size='2' />
         </>
       )}
       {showVedtak() && (
         <>
-          <Vedtak highContrast={highContrast} replySed={replySed} validation={validation} />
+          <Vedtak
+            highContrast={highContrast}
+            replySed={replySed}
+            validation={_validation}
+          />
           <VerticalSeparatorDiv data-size='2' />
         </>
       )}
       {showMotregning() && (
         <>
-          <Motregning highContrast={highContrast} replySed={replySed} validation={validation} />
+          <Motregning highContrast={highContrast} replySed={replySed} validation={_validation} />
           <VerticalSeparatorDiv data-size='2' />
         </>
       )}
       {showProsedyreVedUenighet() && (
         <>
-          <ProsedyreVedUenighet highContrast={highContrast} replySed={replySed} validation={validation} />
+          <ProsedyreVedUenighet highContrast={highContrast} replySed={replySed} validation={_validation} />
           <VerticalSeparatorDiv data-size='2' />
         </>
       )}
       {showKravOmRefusjon() && (
         <>
-          <KravOmRefusjon highContrast={highContrast} replySed={replySed} validation={validation} />
+          <KravOmRefusjon highContrast={highContrast} replySed={replySed} validation={_validation} />
           <VerticalSeparatorDiv data-size='2' />
         </>
       )}
@@ -317,9 +320,9 @@ const Step2: React.FC<SvarPaSedProps> = ({
       <VerticalSeparatorDiv />
       <TextAreaDiv>
         <HighContrastTextArea
-          className={classNames({ 'skjemaelement__input--harFeil': validation.comment })}
+          className={classNames({ 'skjemaelement__input--harFeil': _validation['step2-comment'] })}
           data-test-id='c-step2-comment-text'
-          feil={validation.comment?.feilmelding}
+          feil={_validation['step2-comment']?.feilmelding}
           id='c-step2-comment-text'
           label={t('label:ytterligere-informasjon-til-sed')}
           maxLength={500}
@@ -394,7 +397,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
           <VerticalSeparatorDiv data-size='0.5' />
         </div>
       </ButtonsDiv>
-      <ValidationBox validation={validation} />
+      <ValidationBox validation={_validation} />
     </Step2Div>
   )
 }

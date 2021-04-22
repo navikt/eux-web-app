@@ -232,7 +232,7 @@ const Adresser: React.FC<AdresseProps> = ({
               data-test-id={'c-' + namespace + idx + '-type-text'}
               feil={getErrorFor(index, 'type')}
               id={'c-' + namespace + idx + '-type-text'}
-              legend={t('label:adresse')}
+              legend={t('label:adresse') + ' *'}
               name={namespace + idx + '-type'}
               radios={[
                 { label: t('label:bostedsland'), value: 'bosted' },
@@ -267,7 +267,7 @@ const Adresser: React.FC<AdresseProps> = ({
               data-test-id={'c-' + namespace + idx + '-gate-text'}
               feil={getErrorFor(index, 'gate')}
               id={'c-' + namespace + idx + '-gate-text'}
-              label={t('label:gateadresse')}
+              label={t('label:gateadresse') + ' *'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGate(e.target.value, index)}
               value={index < 0 ? _newGate : a?.gate}
             />
@@ -294,7 +294,7 @@ const Adresser: React.FC<AdresseProps> = ({
               data-test-id={'c-' + namespace + idx + '-postnummer-text'}
               feil={getErrorFor(index, 'postnummer')}
               id={'c-' + namespace + idx + '-postnummer-text'}
-              label={t('label:postnummer')}
+              label={t('label:postnummer') + ' *'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPostnummer(e.target.value, index)}
               value={index < 0 ? _newPostnummer : a?.postnummer}
             />
@@ -304,7 +304,7 @@ const Adresser: React.FC<AdresseProps> = ({
               data-test-id={'c-' + namespace + idx + '-by-text'}
               feil={getErrorFor(index, 'by')}
               id={'c-' + namespace + idx + '-by-text'}
-              label={t('label:by')}
+              label={t('label:by') + ' *'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBy(e.target.value, index)}
               value={index < 0 ? _newBy : a?.by}
             />
@@ -331,7 +331,7 @@ const Adresser: React.FC<AdresseProps> = ({
               data-test-id={'c-' + namespace + idx + '-land-text'}
               error={getErrorFor(index, 'land')}
               id={'c-' + namespace + idx + '-land-text'}
-              label={t('label:land')}
+              label={t('label:land') + ' *'}
               menuPortalTarget={document.body}
               includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
               onOptionSelected={(e: any) => setLand(e.value, index)}

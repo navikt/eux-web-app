@@ -1,6 +1,7 @@
 import { PersonInfo } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { TFunction } from 'react-i18next'
 
 export interface validatePersonOpplysningProps {
   personInfo: PersonInfo,
@@ -10,9 +11,9 @@ export interface validatePersonOpplysningProps {
 
 const datePattern = /^\d{4}-\d{2}-\d{2}$/
 
-export const validatePersonOpplysning = (
+export const validatePersonOpplysninger = (
   v: Validation,
-  t: any,
+  t: TFunction,
   {
     personInfo,
     namespace,

@@ -1,6 +1,7 @@
+import Search from 'assets/icons/Search'
 import { Arbeidsforholdet, Arbeidsperioder } from 'declarations/types.d'
 import { Knapp } from 'nav-frontend-knapper'
-import { Column, Row } from 'nav-hoykontrast'
+import { Column, HorizontalSeparatorDiv, Row } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import ArbeidsforholdetFC from './Arbeidsforholdet'
@@ -44,6 +45,8 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
                 spinner={gettingArbeidsforholdList}
                 onClick={getArbeidsforholdList}
               >
+                <Search />
+                <HorizontalSeparatorDiv data-size='0.5' />
                 {gettingArbeidsforholdList
                   ? t('message:loading-searching')
                   : t('el:button-search-for-x', { x: t('label:arbeidsforhold').toLowerCase() })}

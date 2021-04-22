@@ -138,7 +138,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
       <ButtonsDiv>
         {item.journalpostId && item.dokumentInfoId && (
           <HighContrastKnapp
-            data-tip={t('app:preview')}
+            data-tip={t('label:preview')}
             kompakt
             mini
             disabled={previewing}
@@ -361,7 +361,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
         items={_items}
         context={context}
         labels={{
-          type: t('app:attachments').toLowerCase()
+          type: t('label:attachments').toLowerCase()
         }}
         itemsPerPage={30}
         compact

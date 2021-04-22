@@ -1,3 +1,4 @@
+import { TFunction } from 'react-i18next'
 import { NavnOgBetegnelse } from './Motregning'
 import { Validation } from 'declarations/types'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
@@ -6,7 +7,7 @@ export const validateMotregning = (
   v: Validation,
   navnOgBetegnelse: NavnOgBetegnelse,
   index: number,
-  t: any,
+  t: TFunction,
   namespace: string
 ): void => {
   let generalFail: boolean = false
@@ -46,7 +47,7 @@ export const validateMotregning = (
 export const validateMotregninger = (
   validation: Validation,
   NavnOgBetegnelser :Array<NavnOgBetegnelse>,
-  t: any,
+  t: TFunction,
   namespace: string
 ): void => {
   NavnOgBetegnelser?.forEach((nob: NavnOgBetegnelse, index: number) => {

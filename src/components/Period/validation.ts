@@ -24,7 +24,7 @@ export const validatePeriod = (
     personName
   }: ValidationPeriodProps
 ): void => {
-  const idx = (index >= 0 ? '[' + index + ']' : '')
+  const idx = (!_.isNil(index) && index >= 0 ? '[' + index + ']' : '')
   if (_.isEmpty(period.startdato)) {
     v[namespace + idx + '-startdato'] = {
       skjemaelementId: 'c-' + namespace + idx + '-startdato-date',

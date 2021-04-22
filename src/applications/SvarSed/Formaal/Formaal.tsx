@@ -1,6 +1,7 @@
 import { setReplySed } from 'actions/svarpased'
 import Add from 'assets/icons/Add'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import useAddRemove from 'components/AddRemovePanel/useAddRemove'
 import Select from 'components/Select/Select'
 import { Etikett, FlexCenterDiv } from 'components/StyledComponents'
 import { Option, Options } from 'declarations/app'
@@ -25,6 +26,7 @@ const Formaal: React.FC<FormaalProps> = ({
   replySed
 }: FormaalProps) => {
   const { t } = useTranslation()
+  const formaal = (replySed as FSed)?.formaal
   const dispatch = useDispatch()
   const formaalOptions: Options = [
     { label: t('el:option-formaal-1'), value: 'mottak_av_søknad_om_familieytelser' },
@@ -36,17 +38,17 @@ const Formaal: React.FC<FormaalProps> = ({
     { label: t('el:option-formaal-7'), value: 'prosedyre_ved_uenighet' },
     { label: t('el:option-formaal-8'), value: 'refusjon_i_henhold_til_artikkel_58_i_forordningen' }
   ]
-  const [_formaals, setFormaals] = useState<Array<string>>((replySed as FSed)?.formaal || [])
+  const [_formaals, setFormaals] = useState<Array<string>>(formaal || [])
   const [_addFormaal, setAddFormaal] = useState<boolean>(false)
   const [_newFormaal, setNewFormaal] = useState<Option | undefined>(undefined)
   const [_newFormaalIndex, setNewFormaalIndex] = useState<number | undefined>(undefined)
-  const [_confirmDeleteFormaal, setConfirmDeleteFormaal] = useState<Array<string>>([])
+
+  const [addCandidateForDeletion, removeCandidateForDeletion, hasKey] = useAddRemove()
   const [_formaalValues, setFormaalValues] = useState<Array<Option>>(
     _.filter(formaalOptions, p => _formaals.indexOf(p.value) < 0)
   )
-  const _hasFormaal = !!(replySed as FSed)?.formaal
 
-  const saveFormaalChange = (newFormaals: Array<string>) => {
+  const saveChanges = (newFormaals: Array<string>) => {
     const newFormaalValues = _.filter(formaalOptions, p => newFormaals.indexOf(p.value) < 0)
     setFormaals(newFormaals)
     setFormaalValues(newFormaalValues)
@@ -55,35 +57,19 @@ const Formaal: React.FC<FormaalProps> = ({
       formaal: newFormaals
     }))
   }
-  const onRemoveFormaal = (formaal: string) => {
+  const onRemove = (formaal: string) => {
     removeCandidateForDeletion(formaal)
     const newFormaals = _.filter(_formaals, _f => _f !== formaal)
-    saveFormaalChange(newFormaals)
+    saveChanges(newFormaals)
   }
 
-  const onAddFormaal = () => {
+  const onAdd = () => {
     if (_newFormaal) {
       const newFormaals = _formaals.concat(_newFormaal.value)
       setNewFormaalIndex(newFormaals.length - 1)
-      saveFormaalChange(newFormaals)
+      saveChanges(newFormaals)
       setNewFormaal(undefined)
     }
-  }
-
-  const addCandidateForDeletion = (formaal: string) => {
-    setConfirmDeleteFormaal(_confirmDeleteFormaal.concat(formaal))
-  }
-
-  const removeCandidateForDeletion = (formaal: string) => {
-    setConfirmDeleteFormaal(_.filter(_confirmDeleteFormaal, _f => _f !== formaal))
-  }
-
-  const onFormaalChanged = (option: Option) => {
-    setNewFormaal(option)
-  }
-
-  if (!_hasFormaal) {
-    return <div />
   }
 
   return (
@@ -95,7 +81,7 @@ const Formaal: React.FC<FormaalProps> = ({
       {_formaals && _formaals
         .sort((a, b) => a.localeCompare(b))
         .map((formaal: string, i: number) => {
-          const candidateForDeletion = _confirmDeleteFormaal.indexOf(formaal) >= 0
+          const candidateForDeletion = hasKey(formaal)
           return (
             <FlexCenterDiv
               className='slideInFromLeft'
@@ -109,7 +95,7 @@ const Formaal: React.FC<FormaalProps> = ({
                 candidateForDeletion={candidateForDeletion}
                 existingItem
                 onBeginRemove={() => addCandidateForDeletion(formaal)}
-                onConfirmRemove={() => onRemoveFormaal(formaal)}
+                onConfirmRemove={() => onRemove(formaal)}
                 onCancelRemove={() => removeCandidateForDeletion(formaal)}
               />
             </FlexCenterDiv>
@@ -134,12 +120,12 @@ const Formaal: React.FC<FormaalProps> = ({
           <FlexCenterDiv>
             <div style={{ flex: 2 }}>
               <Select
-                data-test-id='c-formaal-text'
-                id='c-formaal-text'
+                data-test-id='c-step2-formaal-text'
+                id='c-step2-formaal-text'
                 highContrast={highContrast}
                 value={_newFormaal}
                 menuPortalTarget={document.body}
-                onChange={onFormaalChanged}
+                onChange={(option: Option) => setNewFormaal(option)}
                 options={_formaalValues}
               />
             </div>
@@ -148,7 +134,7 @@ const Formaal: React.FC<FormaalProps> = ({
               <HighContrastKnapp
                 mini
                 kompakt
-                onClick={onAddFormaal}
+                onClick={onAdd}
               >
                 <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />

@@ -183,12 +183,12 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
       <AlignStartRow className='slideInFromLeft'>
         <Column>
           <UndertekstBold>
-            {t('label:nasjonalitet')}
+            {t('label:nasjonalitet') + ' *'}
           </UndertekstBold>
         </Column>
         <Column>
           <UndertekstBold>
-            {t('label:fra-dato')}
+            {t('label:fra-dato') + ' *'}
           </UndertekstBold>
         </Column>
         <Column />

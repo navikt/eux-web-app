@@ -263,7 +263,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
               feil={getErrorFor(index, 'relasjonType')}
               highContrast={highContrast}
               id={'c-' + namespace + idx + '-relasjontype-text'}
-              label={t('label:type')}
+              label={t('label:type') + ' *'}
               menuPortalTarget={document.body}
               onChange={(e) => setRelasjonType(e.value as RelasjonType, index)}
               options={relasjonTypeOptions}
@@ -306,7 +306,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                   id={'c-' + namespace + idx + '-annenrelasjontype-text'}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAnnenRelasjonType(e.target.value, index)}
                   value={index < 0 ? _newAnnenRelasjonType : familierelasjon?.annenRelasjonType}
-                  label={t('label:annen-relasjon')}
+                  label={t('label:annen-relasjon') + ' *'}
                   placeholder={t('el:placeholder-input-default')}
                 />
               </Column>
@@ -319,7 +319,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                   data-test-id={'c-' + namespace + idx + '-annenrelasjonpersonnavn-text'}
                   feil={getErrorFor(index, 'annenrelasjonpersonnavn')}
                   id={'c-' + namespace + idx + '-annenrelasjonpersonnavn-text'}
-                  label={t('label:person-navn')}
+                  label={t('label:person-navn') + ' *'}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAnnenRelasjonPersonNavn(e.target.value, index)}
                   placeholder={t('el:placeholder-input-default')}
                   value={index < 0 ? _newAnnenRelasjonPersonNavn : familierelasjon?.annenRelasjonPersonNavn}
@@ -331,7 +331,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                   namespace={namespace + idx + '-annenrelasjondato'}
                   index={index}
                   key={index < 0 ? _newAnnenRelasjonDato : familierelasjon?.annenRelasjonDato}
-                  label={t('label:dato-for-relasjon')}
+                  label={t('label:dato-for-relasjon') + ' *'}
                   setDato={setAnnenRelasjonDato}
                   value={index < 0 ? _newAnnenRelasjonDato : familierelasjon?.annenRelasjonDato}
                 />
@@ -347,7 +347,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                   data-no-border
                   id={'c-' + namespace + idx + '-borsammen-text'}
                   feil={getErrorFor(index, 'borsammen')}
-                  legend={t('label:bor-sammen')}
+                  legend={t('label:bor-sammen') + ' *'}
                   name={namespace + idx + '-borsammen'}
                   radios={[
                     { label: t('label:ja'), value: 'ja' },

@@ -4,13 +4,13 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import useAddRemove from 'components/AddRemovePanel/useAddRemove'
 import DateInput from 'components/DateInput/DateInput'
 import Period from 'components/Period/Period'
-import { AlignStartRow, TextAreaDiv } from 'components/StyledComponents'
+import { AlignStartRow, PaddedDiv, TextAreaDiv } from 'components/StyledComponents'
 import useValidation from 'components/Validation/useValidation'
 import { Flyttegrunn, Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
-import { Undertittel } from 'nav-frontend-typografi'
+import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
   HighContrastFlatknapp,
@@ -28,6 +28,7 @@ interface GrunnlagForBosettingProps {
   personID: string
   replySed: ReplySed
   resetValidation: (key?: string) => void
+  standalone ?: boolean
   validation: Validation
 }
 
@@ -36,6 +37,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
   personID,
   replySed,
   resetValidation,
+  standalone = false,
   validation
 }:GrunnlagForBosettingProps): JSX.Element => {
   const { t } = useTranslation()
@@ -206,11 +208,11 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
     )
   }
 
-  return (
+  const render = () => (
     <>
-      <Undertittel>
+      <UndertekstBold>
         {t('el:title-duration-stay')}
-      </Undertittel>
+      </UndertekstBold>
       <VerticalSeparatorDiv />
       {flyttegrunn.perioder
         .sort((a, b) =>
@@ -280,6 +282,25 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
         <Column />
       </AlignStartRow>
     </>
+  )
+
+  return (
+    standalone
+      ? (
+        <PaddedDiv>
+          <VerticalSeparatorDiv />
+          {render()}
+        </PaddedDiv>
+        )
+      : (
+        <>
+          <Undertittel>
+            {t('el:title-grunnlag-for-bosetting')}
+          </Undertittel>
+          <VerticalSeparatorDiv />
+          {render()}
+        </>
+        )
   )
 }
 

@@ -2,7 +2,6 @@ import { Option } from 'declarations/app'
 import React from 'react'
 import { Feilmelding } from 'nav-frontend-typografi'
 import { theme, themeKeys, themeHighContrast } from 'nav-hoykontrast'
-import classNames from 'classnames'
 import ReactSelect, { Props } from 'react-select'
 
 interface SelectProps extends Props<Option> {
@@ -22,12 +21,11 @@ const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
       {props.label && <label className='skjemaelement__label'>{props.label}</label>}
       <ReactSelect
         inputId={props.id}
-        className={classNames({ skjemaelement__feilmelding: !!props.feil })}
         isOptionDisabled={(option: any) => option.isDisabled}
         styles={{
           control: (styles: any) => ({
             ...styles,
-            borderWidth: props.feil ? '2px' : _theme[themeKeys.MAIN_BORDER_WIDTH],
+            borderWidth: props.feil ? '3px' : _theme[themeKeys.MAIN_BORDER_WIDTH],
             borderColor: props.feil ? _theme[themeKeys.REDERROR] : _theme[themeKeys.MAIN_BORDER_COLOR],
             borderStyle: 'solid',
             borderRadius: _theme[themeKeys.MAIN_BORDER_RADIUS],
@@ -52,6 +50,10 @@ const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
             borderColor: _theme[themeKeys.MAIN_BORDER_COLOR],
             borderStyle: 'solid',
             backgroundColor: _theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]
+          }),
+          menuPortal: base => ({
+            ...base,
+            zIndex: 9999
           }),
           option: (styles: any, { isDisabled, isFocused, isSelected }) => ({
             ...styles,

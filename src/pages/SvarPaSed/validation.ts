@@ -1,81 +1,127 @@
+import { validateAdresser } from 'applications/SvarSed/FamilyManager/Adresser/validation'
+import { validateBeløpNavnOgValuta } from 'applications/SvarSed/FamilyManager/BeløpNavnOgValuta/validation'
+import { validateFamilierelasjoner } from 'applications/SvarSed/FamilyManager/Familierelasjon/validation'
+import { validateFamilieytelser } from 'applications/SvarSed/FamilyManager/Familieytelser/validation'
+import { validateAllGrunnlagForBosetting } from 'applications/SvarSed/FamilyManager/GrunnlagForBosetting/validation'
+import {
+  validateKontaktsinformasjonEposter,
+  validateKontaktsinformasjonTelefoner
+} from 'applications/SvarSed/FamilyManager/Kontaktinformasjon/validation'
+import { validateNasjonaliteter } from 'applications/SvarSed/FamilyManager/Nasjonaliteter/validation'
+import { validatePersonOpplysninger } from 'applications/SvarSed/FamilyManager/PersonOpplysninger/validation'
+import { validateBarnetilhoerigheter } from 'applications/SvarSed/FamilyManager/Relasjon/validation'
+import { validateTrygdeordninger } from 'applications/SvarSed/FamilyManager/Trygdeordning/validation'
 import {
   Adresse,
+  Barnetilhoerighet,
   Epost,
-  FamilieRelasjon, PensjonPeriode,
+  F002Sed,
+  FamilieRelasjon,
+  Flyttegrunn,
+  Motregning,
+  PensjonPeriode,
   Periode,
   Person,
   PersonInfo,
+  ReplySed,
   Statsborgerskap,
-  Telefon
+  Telefon,
+  Ytelse
 } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
-import { validateNasjonaliteter } from 'applications/SvarSed/FamilyManager/Nasjonaliteter/validation'
-import { validatePersonOpplysning } from 'applications/SvarSed/FamilyManager/PersonOpplysninger/validation'
-import { validateAdresser } from 'applications/SvarSed/FamilyManager/Adresser/validation'
-import { validateKontaktsinformasjonTelefoner, validateKontaktsinformasjonEposter } from 'applications/SvarSed/FamilyManager/Kontaktinformasjon/validation'
-import { validateTrygdeordninger } from 'applications/SvarSed/FamilyManager/Trygdeordning/validation'
-import { validateFamilierelasjoner } from 'applications/SvarSed/FamilyManager/Familierelasjon/validation'
+import { TFunction } from 'react-i18next'
 
-export const performValidation = (v: Validation, t: any, options: any, personID: string) => {
-  const adresser: Array<Adresse> = _.get(options.replySed, `${personID}.adresser`)
-  const personInfo: PersonInfo = _.get(options.replySed, `${personID}.personInfo`)
-  const familierelasjoner: Array<FamilieRelasjon> = _.get(options.replySed, `${personID}.familierelasjoner`)
-  const telefoner: Array<Telefon> = _.get(options.replySed, `${personID}.telefon`)
-  const eposter: Array<Epost> = _.get(options.replySed, `${personID}.epost`)
-  const statsborgerskaper: Array<Statsborgerskap> = _.get(options.replySed, `${personID}.statsborgerskap`)
-  const perioder: {[k in string]: Array<Periode | PensjonPeriode>} = {
-    perioderMedArbeid: _.get(options.replySed, `${personID}.perioderMedArbeid`),
-    perioderMedTrygd: _.get(options.replySed, `${personID}.perioderMedTrygd`),
-    perioderMedITrygdeordning: _.get(options.replySed, `${personID}.perioderMedITrygdeordning`),
-    perioderUtenforTrygdeordning: _.get(options.replySed, `${personID}.perioderUtenforTrygdeordning`),
-    perioderMedYtelser: _.get(options.replySed, `${personID}.perioderMedYtelser`),
-    perioderMedPensjon: _.get(options.replySed, `${personID}.perioderMedPensjon`)
-  }
-
-  const personName = personInfo.fornavn + ' ' + personInfo.etternavn
-
-  validatePersonOpplysning(v, t, { personInfo, namespace: `familymanager-${personID}-personopplysning`, personName })
-  validateNasjonaliteter(v, t, statsborgerskaper, `familymanager-${personID}-statsborgerskap`, personName)
-  validateAdresser(v, t, adresser, `familymanager-${personID}-adresser`, personName)
-  validateKontaktsinformasjonTelefoner(v, t, telefoner, `familymanager-${personID}-kontaktinformasjon-telefon`, personName)
-  validateKontaktsinformasjonEposter(v, t, eposter, `familymanager-${personID}-kontaktinformasjon-epost`, personName)
-  validateTrygdeordninger(v, t, perioder, `familymanager-${personID}-trygdeordninger`, personName)
-  validateFamilierelasjoner(v, t, familierelasjoner, `familymanager-${personID}-familierelasjoner`, personName)
+export interface ValidationStep2Props {
+  comment: string
+  replySed: ReplySed
 }
 
-export const validate = (options: any): Validation => {
-  const v: Validation = {}
-  const t = options.t
-  // Step 2 form
+export const performValidation = (v: Validation, t: TFunction, replySed: ReplySed, personID: string) => {
+  const personInfo: PersonInfo = _.get(replySed, `${personID}.personInfo`)
+  const personName = personInfo.fornavn + ' ' + personInfo.etternavn
+  validatePersonOpplysninger(v, t, { personInfo, namespace: `familymanager-${personID}-personopplysninger`, personName })
 
-  if (options.replySed.sedType.startsWith('F')) {
-    v.formaal = !_.isEmpty(options.replySed.formaal)
-      ? undefined
-      : {
+  const statsborgerskaper: Array<Statsborgerskap> = _.get(replySed, `${personID}.statsborgerskap`)
+  validateNasjonaliteter(v, t, statsborgerskaper, `familymanager-${personID}-nasjonaliteter`, personName)
+
+  const adresser: Array<Adresse> = _.get(replySed, `${personID}.adresser`)
+  validateAdresser(v, t, adresser, `familymanager-${personID}-adresser`, personName)
+
+  if (!personID.startsWith('barn')) {
+    if (personID === 'familie') {
+      const motregninger: Array<Motregning> = _.get(replySed, `${personID}.motregninger`)
+      validateFamilieytelser(v, t, motregninger, `familymanager-${personID}-familieytelser`, personName)
+    } else {
+      const telefoner: Array<Telefon> = _.get(replySed, `${personID}.telefon`)
+      validateKontaktsinformasjonTelefoner(v, t, telefoner, `familymanager-${personID}-kontaktinformasjon-telefon`, personName)
+
+      const eposter: Array<Epost> = _.get(replySed, `${personID}.epost`)
+      validateKontaktsinformasjonEposter(v, t, eposter, `familymanager-${personID}-kontaktinformasjon-epost`, personName)
+
+      const perioder: {[k in string]: Array<Periode | PensjonPeriode>} = {
+        perioderMedArbeid: _.get(replySed, `${personID}.perioderMedArbeid`),
+        perioderMedTrygd: _.get(replySed, `${personID}.perioderMedTrygd`),
+        perioderMedITrygdeordning: _.get(replySed, `${personID}.perioderMedITrygdeordning`),
+        perioderUtenforTrygdeordning: _.get(replySed, `${personID}.perioderUtenforTrygdeordning`),
+        perioderMedYtelser: _.get(replySed, `${personID}.perioderMedYtelser`),
+        perioderMedPensjon: _.get(replySed, `${personID}.perioderMedPensjon`)
+      }
+      validateTrygdeordninger(v, t, perioder, `familymanager-${personID}-trygdeordninger`, personName)
+
+      const familierelasjoner: Array<FamilieRelasjon> = _.get(replySed, `${personID}.familierelasjoner`)
+      validateFamilierelasjoner(v, t, familierelasjoner, `familymanager-${personID}-familierelasjon`, personName)
+    }
+  } else {
+    const barnetilhorighet : Array<Barnetilhoerighet> = _.get(replySed, `${personID}.barnetilhoerigheter`)
+    validateBarnetilhoerigheter(v, t, barnetilhorighet, `familymanager-${personID}-relasjon`, personName)
+
+    const flyttegrunn: Flyttegrunn = _.get(replySed, `${personID}.flyttegrunn`)
+    validateAllGrunnlagForBosetting(v, t, flyttegrunn, `familymanager-${personID}-grunnlagforbosetting`, personName)
+
+    const ytelse: Ytelse = _.get(replySed, `${personID}.flyttegrunn`)
+    validateBeløpNavnOgValuta(v, t, { ytelse, namespace: `familymanager-${personID}-beløpnavnogvaluta`, personName })
+  }
+}
+
+export const validateStep2 = (
+  v: Validation,
+  t: TFunction,
+  {
+    comment,
+    replySed
+  }: ValidationStep2Props
+): void => {
+  if (replySed.sedType.startsWith('F')) {
+    if (_.isEmpty((replySed as F002Sed).formaal)) {
+      v['step2-formaal'] = {
         feilmelding: t('message:validation-noFormaal'),
-        skjemaelementId: 'svarpased-formaal-text'
+        skjemaelementId: 'c-step2-formaal-text'
       } as FeiloppsummeringFeil
+    }
+
+    if ((replySed as F002Sed).ektefelle) {
+      performValidation(v, t, replySed, 'ektefelle')
+    }
+    if ((replySed as F002Sed).annenPerson) {
+      performValidation(v, t, replySed, 'annenPerson')
+    }
+    if ((replySed as F002Sed).barn) {
+      (replySed as F002Sed).barn.forEach((b: Person, i: number) =>
+        performValidation(v, t, replySed, `barn[${i}]`))
+    }
+    if ((replySed as F002Sed).familie) {
+      performValidation(v, t, replySed, 'familie')
+    }
   }
 
-  v.comment = options.comment
-    ? undefined
-    : {
+  if (_.isEmpty(comment)) {
+    v['step2-comment'] = {
       feilmelding: t('message:validation-noComment'),
-      skjemaelementId: 'c-svarpased-comment-text'
+      skjemaelementId: 'c-step2-comment-text'
     } as FeiloppsummeringFeil
+  }
 
-  performValidation(v, t, options, 'bruker')
-
-  if (options.replySed.ektefelle) {
-    performValidation(v, t, options, 'ektefelle')
-  }
-  if (options.replySed.annenPerson) {
-    performValidation(v, t, options, 'annenPerson')
-  }
-  if (options.replySed.barn) {
-    options.replySed.barn.forEach((b: Person, i: number) => performValidation(v, t, options, `barn[${i}]`))
-  }
-  return v
+  performValidation(v, t, replySed, 'bruker')
 }

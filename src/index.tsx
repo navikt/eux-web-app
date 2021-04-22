@@ -64,7 +64,7 @@ section {
   margin:1em 0;
 }
 .nolabel {
-  margin-top: 2rem;
+  margin-top: 1.8rem;
 }
 .slideInFromLeft {
   opacity: 0;

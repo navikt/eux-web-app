@@ -2,6 +2,7 @@ import { validatePeriod } from 'components/Period/validation'
 import { PensjonPeriode, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { TFunction } from 'react-i18next'
 
 export interface ValidationDekkedePeriodeProps {
   periode: Periode,
@@ -27,7 +28,7 @@ export interface ValidationFamilieytelsePeriodeProps {
 
 const validateGenericPeriode = (
   v: Validation,
-  t: any,
+  t: TFunction,
   {
     periode,
     index,
@@ -68,7 +69,7 @@ const validateGenericPeriode = (
 
 export const validateDekkedePeriode = (
   v: Validation,
-  t: any,
+  t: TFunction,
   {
     periode,
     index,
@@ -87,7 +88,7 @@ export const validateDekkedePeriode = (
 
 export const validateUdekkedePeriode = (
   v: Validation,
-  t: any,
+  t: TFunction,
   {
     periode,
     index,
@@ -106,7 +107,7 @@ export const validateUdekkedePeriode = (
 
 export const validateFamilieytelserPeriode = (
   v: Validation,
-  t: any,
+  t: TFunction,
   {
     periode,
     index,
@@ -157,7 +158,7 @@ export const validateFamilieytelserPeriode = (
 
 export const validatePerioder = (
   v: Validation,
-  t: any,
+  t: TFunction,
   sedCategory: string,
   pageCategory: string,
   perioder: Array<Periode | PensjonPeriode>,
@@ -175,7 +176,7 @@ export const validatePerioder = (
 
 export const validateTrygdeordninger = (
   v: Validation,
-  t: any,
+  t: TFunction,
   perioderMap: {[k in string]: Array<Periode | PensjonPeriode>},
   namespace: string,
   personName: string

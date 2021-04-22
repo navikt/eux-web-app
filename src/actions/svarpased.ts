@@ -1,7 +1,7 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { ReplySed } from 'declarations/sed'
-import { Arbeidsforholdet, OldFamilieRelasjon, Inntekter, ConnectedSed } from 'declarations/types'
+import { Arbeidsforholdet, OldFamilieRelasjon, Inntekter, ConnectedSed, Validation } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockArbeidsforholdList from 'mocks/arbeidsforholdList'
 import mockInntekt from 'mocks/inntekt'
@@ -155,6 +155,13 @@ export const resetPerson: ActionCreator<Action> = (): Action => ({
 
 export const resetPersonRelatert: ActionCreator<Action> = (): Action => ({
   type: types.SVARPASED_PERSON_RELATERT_RESET
+})
+
+export const setAllValidation: ActionCreator<ActionWithPayload<Validation>> = (
+  newValidation: Validation
+): ActionWithPayload<Validation> => ({
+  type: types.SVARPASED_VALIDATION_ALL_SET,
+  payload: newValidation
 })
 
 export const resetValidation: ActionCreator<ActionWithPayload> = (

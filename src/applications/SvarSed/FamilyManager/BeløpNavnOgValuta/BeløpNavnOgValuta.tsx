@@ -124,7 +124,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
             data-test-id={'c-' + namespace + '-barnetsNavn-text'}
             feil={validation[namespace + '-barnetsNavn']?.feilmelding}
             id={'c-' + namespace + '-barnetsNavn-text'}
-            label={t('label:barnets-navn')}
+            label={t('label:barnets-navn') + ' *'}
             onBlur={setBarnetsNavn}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setNewBarnetsNavn(e.target.value)}
             placeholder={t('el:placeholder-input-default')}
@@ -137,7 +137,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
             feil={validation[namespace + '-ytelseNavn']?.feilmelding}
             highContrast={highContrast}
             id={'c-' + namespace + '-ytelseNavn-text'}
-            label={t('label:betegnelse-på-ytelse')}
+            label={t('label:betegnelse-på-ytelse') + ' *'}
             menuPortalTarget={document.body}
             onChange={(e: any) => setYtelseNavn(e.value)}
             options={ytelseNavnOptions}
@@ -154,7 +154,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
             data-test-id={'c-' + namespace + '-beloep-text'}
             feil={validation[namespace + '-beloep']?.feilmelding}
             id={'c-' + namespace + '-beloep-text'}
-            label={t('label:beløp')}
+            label={t('label:beløp') + ' *'}
             onBlur={setBeløp}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setNewBeløp(e.target.value)}
             placeholder={t('el:placeholder-input-default')}
@@ -168,7 +168,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
             error={validation[namespace + '-valuta']?.feilmelding}
             highContrast={highContrast}
             id={'c-' + namespace + '-valuta-text'}
-            label={t('label:valuta')}
+            label={t('label:valuta') + ' *'}
             locale='nb'
             menuPortalTarget={document.body}
             onOptionSelected={setValuta}
@@ -201,7 +201,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
             data-test-id={'c-' + namespace + '-mottakersNavn-text'}
             feil={validation[namespace + '--mottakersNavn']?.feilmelding}
             id={'c-' + namespace + '-mottakersNavn-text'}
-            label={t('label:mottakers-navn')}
+            label={t('label:mottakers-navn') + ' *'}
             onBlur={setMottakersNavn}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setNewMottakersNavn(e.target.value)}
             value={_newMottakersNavn}
@@ -219,7 +219,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
             id={'c-' + namespace + '-utbetalingshyppighet-text'}
             feil={validation[namespace + '-utbetalingshyppighet']?.feilmelding}
             name={namespace + '-utbetalingshyppighet'}
-            legend={t('label:periode-avgrensing')}
+            legend={t('label:periode-avgrensing') + ' *'}
             radios={[
               { label: t('label:månedlig'), value: 'Månedlig' },
               { label: t('label:årlig'), value: 'Årlig' }

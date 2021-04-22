@@ -216,7 +216,7 @@ export interface F002Sed extends FSed {
   endredeForhold: Array<string>
   familie: {
     motregninger: Array<Motregning>
-    ytelser: Array<Ytelse>
+    ytelser?: Array<Ytelse>
   }
   krav: {
     infoPresisering: string

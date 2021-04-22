@@ -1,11 +1,14 @@
+import validator from '@navikt/fnrvalidator'
 import * as appActions from 'actions/app'
 import * as svarpasedActions from 'actions/svarpased'
-import FileIcon from 'assets/icons/FileIcon'
 import ReceivedIcon from 'assets/icons/Email'
+import FileIcon from 'assets/icons/FileIcon'
 import ExternalLink from 'assets/icons/Logout'
+import Search from 'assets/icons/Search'
 import SentIcon from 'assets/icons/Send'
 import classNames from 'classnames'
 import {
+  AlignStartRow,
   Etikett,
   FlexDiv,
   FlexStartDiv,
@@ -13,14 +16,14 @@ import {
   PileCenterDiv,
   PileDiv
 } from 'components/StyledComponents'
+import useValidation from 'components/Validation/useValidation'
 import { State } from 'declarations/reducers'
 import { ConnectedSed, Sed, Validation } from 'declarations/types'
+import { TFunction } from 'i18next'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Normaltekst, Systemtittel, Undertekst, Undertittel } from 'nav-frontend-typografi'
 import NavHighContrast, {
-  AlignCenterColumn,
-  AlignedRow,
   Column,
   HighContrastFlatknapp,
   HighContrastHovedknapp,
@@ -95,40 +98,42 @@ const Step1: React.FC<SvarPaSedProps> = ({
   }: any = useSelector<State, any>(mapState)
   const [_filter, _setFilter] = useState<string | undefined>(undefined)
   const [_saksnummerOrFnr, _setSaksnummerOrFnr] = useState<string | undefined>(rinasaksnummerOrFnrParam)
-  const [_validation, setValidation] = useState<Validation>({})
-
-  const onSaksnummerOrFnrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(appActions.cleanData())
-    _setSaksnummerOrFnr(e.target.value)
-    resetValidation('saksnummerOrFnr')
-  }
-
-  const onSaksnummerOrFnrClick = () => {
-    if (!_saksnummerOrFnr) {
-      setValidation({
-        ..._validation,
-        saksnummerOrFnr: {
+  const [_validMessage, _setValidMessage] = useState<string>('')
+  const [_validation, _resetValidation, performValidation] = useValidation({},
+    (v: Validation, t: TFunction, { saksnummerOrFnr }: any) => {
+      if (_.isEmpty(saksnummerOrFnr)) {
+        v['step1-saksnummerOrFnr'] = {
           feilmelding: t('message:validation-noSaksnummerOrFnr'),
           skjemaelementId: 'c-step1-saksnummerOrFnr-text'
         } as FeiloppsummeringFeil
-      })
+      }
+    })
+
+  const onSaksnummerOrFnrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value
+    dispatch(appActions.cleanData())
+    _resetValidation('step1-saksnummerOrFnr')
+    _setSaksnummerOrFnr(query)
+    const result = validator.idnr(query)
+    if (result.status !== 'valid') {
+      _setValidMessage(t('label:saksnummer'))
     } else {
-      dispatch(svarpasedActions.querySaksnummerOrFnr(_saksnummerOrFnr))
+      if (result.type === 'fnr') {
+        _setValidMessage(t('label:valid-fnr'))
+      }
+      if (result.type === 'dnr') {
+        _setValidMessage(t('label:valid-dnr'))
+      }
     }
   }
 
-  const resetValidation = (key?: Array<string> | string): void => {
-    const newValidation = _.cloneDeep(_validation)
-    if (!key) {
-      setValidation({})
+  const onSaksnummerOrFnrClick = () => {
+    const valid: boolean = performValidation({
+      saksnummerOrFnr: _saksnummerOrFnr
+    })
+    if (valid) {
+      dispatch(svarpasedActions.querySaksnummerOrFnr(_saksnummerOrFnr))
     }
-    if (_.isString(key)) {
-      newValidation[key] = undefined
-    }
-    if (_.isArray(key)) {
-      key.forEach((k) => (newValidation[k] = undefined))
-    }
-    setValidation(newValidation)
   }
 
   const onParentSedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -139,7 +144,6 @@ const Step1: React.FC<SvarPaSedProps> = ({
   }
 
   const onReplySedClick = (connectedSed: ConnectedSed, saksnummer: string) => {
-    resetValidation('replysed')
     dispatch(svarpasedActions.resetReplySed())
     dispatch(svarpasedActions.queryReplySed(_saksnummerOrFnr, connectedSed, saksnummer))
   }
@@ -157,41 +161,60 @@ const Step1: React.FC<SvarPaSedProps> = ({
           {t('el:title-svarsed')}
         </Systemtittel>
         <VerticalSeparatorDiv data-size='2' />
-        <AlignedRow
+        <AlignStartRow
           className={classNames('slideInFromLeft', { feil: _validation.saksnummerOrFnr })}
         >
           <HorizontalSeparatorDiv data-size='0.1' />
           <Column data-flex='2'>
-            <HighContrastInput
-              bredde='fullbredde'
-              data-test-id='c-step1-saksnummerOrFnr-text'
-              feil={_validation.saksnummerOrFnr?.feilmelding}
-              highContrast={highContrast}
-              id='c-step1-saksnummerOrFnr-text'
-              label={t('label:saksnummer-eller-fnr')}
-              onChange={onSaksnummerOrFnrChange}
-              placeholder={t('el:placeholder-input-default')}
-              value={_saksnummerOrFnr}
-            />
+            <PileDiv>
+              <FlexDiv>
+                <HighContrastInput
+                  bredde='xl'
+                  data-test-id='c-step1-saksnummerOrFnr-text'
+                  feil={_validation['step1-saksnummerOrFnr']?.feilmelding}
+                  highContrast={highContrast}
+                  id='c-step1-saksnummerOrFnr-text'
+                  label={t('label:saksnummer-eller-fnr')}
+                  onChange={onSaksnummerOrFnrChange}
+                  placeholder={t('el:placeholder-input-default')}
+                  value={_saksnummerOrFnr}
+                />
+                <HorizontalSeparatorDiv />
+                <div className='nolabel'>
+                  <HighContrastKnapp
+                    disabled={queryingSaksnummerOrFnr}
+                    spinner={queryingSaksnummerOrFnr}
+                    onClick={onSaksnummerOrFnrClick}
+                  >
+                    <Search />
+                    <HorizontalSeparatorDiv />
+                    {queryingSaksnummerOrFnr ? t('message:loading-searching') : t('el:button-search')}
+                  </HighContrastKnapp>
+                </div>
+              </FlexDiv>
+              <VerticalSeparatorDiv data-size='0.5' />
+              <Normaltekst>
+                {_validMessage}
+              </Normaltekst>
+            </PileDiv>
           </Column>
-          <HorizontalSeparatorDiv />
-          <AlignCenterColumn>
-            <HighContrastKnapp
-              disabled={queryingSaksnummerOrFnr}
-              spinner={queryingSaksnummerOrFnr}
-              onClick={onSaksnummerOrFnrClick}
-            >
-              {queryingSaksnummerOrFnr ? t('message:loading-searching') : t('el:button-search')}
-            </HighContrastKnapp>
-          </AlignCenterColumn>
-        </AlignedRow>
+        </AlignStartRow>
         <VerticalSeparatorDiv />
         {seds && (
           <HighContrastRadioGroup
-            legend={t('label:antall-treff-for', {
-              antall: seds.length,
-              saksnummerOrFnr: _saksnummerOrFnr
-            })}
+            legend={(
+              <>
+                <span>{
+                t('label:antall-treff-for', {
+                  saksnummerOrFnr: _saksnummerOrFnr
+                })
+              }
+                </span>
+                <span style={{ fontSize: '130%' }}>
+                  {seds.length}
+                </span>
+              </>
+            )}
           >
             <>
               <FilterDiv>

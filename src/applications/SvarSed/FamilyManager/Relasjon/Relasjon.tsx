@@ -5,7 +5,7 @@ import { Options } from 'declarations/app'
 import { Barnetilhoerighet, BarnRelasjon, BarnRelasjonType, JaNei, ReplySed } from 'declarations/sed'
 import { Kodeverk, Validation } from 'declarations/types'
 import _ from 'lodash'
-import { Normaltekst, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import { Column, HighContrastRadioPanelGroup, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -143,7 +143,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
       <Undertittel className='slideInFromLeft'>
         {t('el:title-relasjon-til-barn')}
       </Undertittel>
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv data-size='2' />
       <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column data-flex='2'>
           <HighContrastRadioPanelGroup
@@ -152,7 +152,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
             data-test-id={'c-' + namespace + '-relasjonTilPerson-text'}
             feil={validation[namespace + '-relasjonTilPerson']?.feilmelding}
             id={'c-' + namespace + '-relasjonTilPerson-text'}
-            legend={t('label:relasjon-med')}
+            legend={t('label:relasjon-med') + ' *'}
             name={'c-' + namespace + '-relasjonTilPerson-text'}
             radios={[
               { label: t('label:søker'), value: '01' },
@@ -185,7 +185,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
             feil={validation[namespace + '-relasjonType']?.feilmelding}
             highContrast={highContrast}
             id={'c-' + namespace + '-relasjonType-text'}
-            label={t('label:type')}
+            label={t('label:type') + ' *'}
             menuPortalTarget={document.body}
             onChange={(e) => setRelasjonType(e.value)}
             options={relasjonTypeOptions}
@@ -196,10 +196,10 @@ const Relasjon: React.FC<RelasjonProps> = ({
         </Column>
         <Column />
       </Row>
-      <VerticalSeparatorDiv />
-      <UndertekstBold className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
+      <VerticalSeparatorDiv data-size='2' />
+      <Undertittel className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
         {t('label:relasjonens-varighet')}
-      </UndertekstBold>
+      </Undertittel>
       <VerticalSeparatorDiv />
       <Row className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
         <Period
@@ -214,7 +214,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
         />
         <Column />
       </Row>
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv data-size='2' />
       <Row className='slideInFromLeft' style={{ animationDelay: '0.5s' }}>
         <Column>
           <HighContrastRadioPanelGroup
@@ -223,7 +223,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
             data-test-id={'c-' + namespace + '-erDeltForeldreansvar-text'}
             feil={validation[namespace + '-erDeltForeldreansvar']?.feilmelding}
             id={'c-' + namespace + '-erDeltForeldreansvar-text'}
-            legend={t('label:delt-foreldreansvar')}
+            legend={t('label:delt-foreldreansvar') + ' *'}
             name={'c-' + namespace + '-erDeltForeldreansvar-text'}
             radios={[
               { label: t('label:ja'), value: 'ja' },
@@ -235,13 +235,13 @@ const Relasjon: React.FC<RelasjonProps> = ({
         <Column />
       </Row>
       <VerticalSeparatorDiv />
-      <UndertekstBold className='slideInFromLeft' style={{ animationDelay: '0.6s' }}>
-        {t('label:barn-i-hustand')}
-      </UndertekstBold>
+      <Undertittel className='slideInFromLeft' style={{ animationDelay: '0.6s' }}>
+        {t('label:barn-i-hustand-spørsmål')}
+      </Undertittel>
       <AlignCenterRow className='slideInFromLeft' style={{ animationDelay: '0.7s' }}>
         <Column data-flex='2'>
           <Normaltekst>
-            {t('label:barn-i-hustand-spørsmål-1')}
+            {t('label:barn-i-hustand-spørsmål-1') + ' *'}
           </Normaltekst>
         </Column>
         <Column>
@@ -260,10 +260,11 @@ const Relasjon: React.FC<RelasjonProps> = ({
           />
         </Column>
       </AlignCenterRow>
+      <VerticalSeparatorDiv data-size='0.2' />
       <AlignCenterRow className='slideInFromLeft' style={{ animationDelay: '0.8s' }}>
         <Column data-flex='2'>
           <Normaltekst>
-            {t('label:barn-i-hustand-spørsmål-2')}
+            {t('label:barn-i-hustand-spørsmål-2') + ' *'}
           </Normaltekst>
         </Column>
         <Column>
@@ -282,10 +283,11 @@ const Relasjon: React.FC<RelasjonProps> = ({
           />
         </Column>
       </AlignCenterRow>
+      <VerticalSeparatorDiv data-size='0.2' />
       <AlignCenterRow className='slideInFromLeft' style={{ animationDelay: '0.9s' }}>
         <Column data-flex='2'>
           <Normaltekst>
-            {t('label:barn-i-hustand-spørsmål-3')}
+            {t('label:barn-i-hustand-spørsmål-3') + ' *'}
           </Normaltekst>
         </Column>
         <Column>
@@ -304,10 +306,11 @@ const Relasjon: React.FC<RelasjonProps> = ({
           />
         </Column>
       </AlignCenterRow>
+      <VerticalSeparatorDiv data-size='0.2' />
       <AlignCenterRow className='slideInFromLeft' style={{ animationDelay: '1.0s' }}>
         <Column data-flex='2'>
           <Normaltekst>
-            {t('label:barn-i-hustand-spørsmål-4')}
+            {t('label:barn-i-hustand-spørsmål-4') + ' *'}
           </Normaltekst>
         </Column>
         <Column>
