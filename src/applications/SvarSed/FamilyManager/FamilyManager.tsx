@@ -198,9 +198,9 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
     { label: t('el:option-familymanager-5'), value: 'trygdeordninger', normal: true, barn: false, family: false },
     { label: t('el:option-familymanager-6'), value: 'familierelasjon', normal: true, barn: false, family: false },
     { label: t('el:option-familymanager-7'), value: 'personensstatus', normal: true, barn: false, family: false },
-    { label: t('el:option-familymanager-8'), value: 'relasjoner', normal: false, barn: true, family: false },
-    { label: t('el:option-familymanager-9'), value: 'grunnlagForBosetting', normal: false, barn: true, family: false },
-    { label: t('el:option-familymanager-10'), value: 'beløpNavnOgValuta', normal: false, barn: true, family: false },
+    { label: t('el:option-familymanager-8'), value: 'relasjon', normal: false, barn: true, family: false },
+    { label: t('el:option-familymanager-9'), value: 'grunnlagforbosetting', normal: false, barn: true, family: false },
+    { label: t('el:option-familymanager-10'), value: 'beløpnavnogvaluta', normal: false, barn: true, family: false },
     { label: t('el:option-familymanager-11'), value: 'familieytelser', normal: false, barn: false, family: true }
   ]
 
@@ -500,7 +500,7 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
                       validation={validation}
                     />
                   )}
-                  {_menuOption === 'relasjoner' && (
+                  {_menuOption === 'relasjon' && (
                     <Relasjon
                       familierelasjonKodeverk={familierelasjonKodeverk}
                       highContrast={highContrast}
@@ -526,7 +526,7 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
                       validation={validation}
                     />
                   )}
-                  {_menuOption === 'grunnlagForBosetting' && (
+                  {_menuOption === 'grunnlagforbosetting' && (
                     <GrunnlagForBosetting
                       personID={_editCurrentPersonID}
                       replySed={replySed}
@@ -536,7 +536,7 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
                       validation={validation}
                     />
                   )}
-                  {_menuOption === 'beløpNavnOgValuta' && (
+                  {_menuOption === 'beløpnavnogvaluta' && (
                     <BeløpNavnOgValuta
                       highContrast={highContrast}
                       personID={_editCurrentPersonID}

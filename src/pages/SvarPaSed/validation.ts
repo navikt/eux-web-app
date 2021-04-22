@@ -39,15 +39,24 @@ export interface ValidationStep2Props {
 }
 
 export const performValidation = (v: Validation, t: TFunction, replySed: ReplySed, personID: string) => {
-  const personInfo: PersonInfo = _.get(replySed, `${personID}.personInfo`)
-  const personName = personInfo.fornavn + ' ' + personInfo.etternavn
-  validatePersonOpplysninger(v, t, { personInfo, namespace: `familymanager-${personID}-personopplysninger`, personName })
+  let personInfo: PersonInfo = _.get(replySed, `${personID}.personInfo`)
+  let personName: string = personID === 'familie'
+    ? t('label:familien').toLowerCase()
+    : personInfo.fornavn + ' ' + personInfo.etternavn
 
-  const statsborgerskaper: Array<Statsborgerskap> = _.get(replySed, `${personID}.statsborgerskap`)
-  validateNasjonaliteter(v, t, statsborgerskaper, `familymanager-${personID}-nasjonaliteter`, personName)
+  if (personID !== 'familie') {
+    validatePersonOpplysninger(v, t, {
+      personInfo,
+      namespace: `familymanager-${personID}-personopplysninger`,
+      personName
+    })
 
-  const adresser: Array<Adresse> = _.get(replySed, `${personID}.adresser`)
-  validateAdresser(v, t, adresser, `familymanager-${personID}-adresser`, personName)
+    const statsborgerskaper: Array<Statsborgerskap> = _.get(replySed, `${personID}.statsborgerskap`)
+    validateNasjonaliteter(v, t, statsborgerskaper, `familymanager-${personID}-nasjonaliteter`, personName)
+
+    const adresser: Array<Adresse> = _.get(replySed, `${personID}.adresser`)
+    validateAdresser(v, t, adresser, `familymanager-${personID}-adresser`, personName)
+  }
 
   if (!personID.startsWith('barn')) {
     if (personID === 'familie') {
@@ -80,7 +89,7 @@ export const performValidation = (v: Validation, t: TFunction, replySed: ReplySe
     const flyttegrunn: Flyttegrunn = _.get(replySed, `${personID}.flyttegrunn`)
     validateAllGrunnlagForBosetting(v, t, flyttegrunn, `familymanager-${personID}-grunnlagforbosetting`, personName)
 
-    const ytelse: Ytelse = _.get(replySed, `${personID}.flyttegrunn`)
+    const ytelse: Ytelse = _.get(replySed, `${personID}.ytelse`)
     validateBeløpNavnOgValuta(v, t, { ytelse, namespace: `familymanager-${personID}-beløpnavnogvaluta`, personName })
   }
 }
