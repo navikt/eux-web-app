@@ -7,7 +7,8 @@ import Add from 'assets/icons/Add'
 import Barn from 'assets/icons/Child'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import useAddRemove from 'components/AddRemovePanel/useAddRemove'
-import Select from 'components/Select/Select'
+import Input from 'components/Forms/Input'
+import Select from 'components/Forms/Select'
 import { AlignStartRow, FlexBaseDiv, FlexCenterDiv, FlexDiv, PaddedDiv } from 'components/StyledComponents'
 import useValidation from 'components/Validation/useValidation'
 import { Option } from 'declarations/app'
@@ -17,10 +18,11 @@ import { Hovedknapp, Knapp } from 'nav-frontend-knapper'
 import Lukknapp from 'nav-frontend-lukknapp'
 import NavModal from 'nav-frontend-modal'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
-import { Column, HighContrastInput, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { Column, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
+import { OptionTypeBase } from 'react-select'
 import styled from 'styled-components'
 
 const ModalDiv = styled(NavModal)`
@@ -122,19 +124,19 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
     _setReplySed(newReplySed)
   }
 
-  const onNewPersonFnrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onNewPersonFnrChange = (fnr: string) => {
     _resetValidation(namespace + '-fnr')
-    _setNewPersonFnr(e.target.value)
+    _setNewPersonFnr(fnr)
   }
 
-  const onNewPersonNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onNewPersonNameChange = (navn: string) => {
     _resetValidation(namespace + '-navn')
-    _setNewPersonName(e.target.value)
+    _setNewPersonName(navn)
   }
 
-  const onNewPersonRelationChange = (e: any) => {
+  const onNewPersonRelationChange = (o: OptionTypeBase) => {
     _resetValidation(namespace + '-relasjon')
-    _setNewPersonRelation(e.value)
+    _setNewPersonRelation(o.value)
   }
 
   const resetForm = () => {
@@ -304,25 +306,23 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
           <VerticalSeparatorDiv />
           <AlignStartRow className='slideInFromLeft'>
             <Column>
-              <HighContrastInput
-                data-test-id={'c-' + namespace + '-fnr-text'}
+              <Input
                 feil={_validation[namespace + '-fnr']?.feilmelding}
-                id={'c-' + namespace + '-fnr-text'}
+                namespace={namespace}
+                id='fnr-text'
                 label={t('label:fnr-dnr')}
-                onChange={onNewPersonFnrChange}
-                placeholder={t('el:placeholder-input-default')}
+                onChanged={onNewPersonFnrChange}
                 value={_newPersonFnr}
               />
               <HorizontalSeparatorDiv />
             </Column>
             <Column>
-              <HighContrastInput
-                data-test-id={'c-' + namespace + '-navn-text'}
+              <Input
                 feil={_validation[namespace + '-navn']?.feilmelding}
-                id={'c-' + namespace + '-navn-text'}
+                namespace={namespace}
+                id='navn-text'
                 label={t('label:navn')}
-                onChange={onNewPersonNameChange}
-                placeholder={t('el:placeholder-input-default')}
+                onChanged={onNewPersonNameChange}
                 value={_newPersonName}
               />
               <HorizontalSeparatorDiv />

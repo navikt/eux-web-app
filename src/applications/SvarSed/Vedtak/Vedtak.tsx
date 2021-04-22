@@ -1,7 +1,7 @@
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import Select from 'components/Select/Select'
+import Select from 'components/Forms/Select'
 import { AlignStartRow, FlexDiv, PileDiv, TextAreaDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { F002Sed, Periode, ReplySed } from 'declarations/sed'

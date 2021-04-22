@@ -1,6 +1,6 @@
 import Add from 'assets/icons/Add'
 import Search from 'assets/icons/Search'
-import DateInput from 'components/DateInput/DateInput'
+import DateInput from 'components/Forms/DateInput'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import { PersonInfo, Pin, ReplySed } from 'declarations/sed'
 import { Kodeverk, Person, Validation } from 'declarations/types'

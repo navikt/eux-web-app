@@ -1,15 +1,16 @@
+import Input from 'components/Forms/Input'
+import Select from 'components/Forms/Select'
 import Period from 'components/Period/Period'
-import Select from 'components/Select/Select'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
-import { ReplySed, Ytelse, Utbetalingshyppighet, YtelseNavn } from 'declarations/sed'
+import { ReplySed, Utbetalingshyppighet, Ytelse, YtelseNavn } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import CountryData, { Currency } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
-import { Column, HighContrastInput, HighContrastRadioPanelGroup, VerticalSeparatorDiv } from 'nav-hoykontrast'
-import React, { useState } from 'react'
+import { Column, HighContrastRadioPanelGroup, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 interface BeløpNavnOgValutaProps {
@@ -36,77 +37,63 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
 
   const _currencyData = CountryData.getCurrencyInstance('nb')
 
-  const [_newBarnetsNavn, _setNewBarnetsNavn] = useState<string>(ytelse?.barnetsNavn ?? '')
-  const [_newYtelseNavn, _setNewYtelseNavn] = useState<YtelseNavn | undefined>(ytelse?.ytelseNavn as YtelseNavn)
-  const [_newBeløp, _setNewBeløp] = useState<string>(ytelse?.beloep ?? '')
-  const [_newValuta, _setNewValuta] = useState<Currency | undefined>(_currencyData.findByValue(ytelse?.valuta ?? ''))
-  const [_newStartDato, _setNewStartDato] = useState<string>(ytelse?.startdato ?? '')
-  const [_newSluttDato, _setNewSluttDato] = useState<string>(ytelse?.sluttdato ?? '')
-  const [_newMottakersNavn, _setNewMottakersNavn] = useState<string>(ytelse?.mottakersNavn)
-  const [_newUtbetalingshyppighet, _setNewUtbetalingshyppighet] = useState<Utbetalingshyppighet | undefined>(ytelse?.utbetalingshyppighet as Utbetalingshyppighet)
-
   const ytelseNavnOptions: Options = [{
     label: t('el:option-familieytelser-barnetrygd'), value: 'Barnetrygd'
   }, {
     label: t('el:option-familieytelser-kontantstøtte'), value: 'Kontantstøtte'
   }]
 
-  const setBarnetsNavn = () => {
-    updateReplySed(`${target}.barnetsNavn`, _newBarnetsNavn)
+  const setBarnetsNavn = (newBarnetsNavn: string) => {
+    updateReplySed(`${target}.barnetsNavn`, newBarnetsNavn)
     if (validation[namespace + '-barnetsNavn']) {
       resetValidation(namespace + '-barnetsNavn')
     }
   }
 
-  const setYtelseNavn = (ytelseNavn: YtelseNavn) => {
-    _setNewYtelseNavn(ytelseNavn)
-    updateReplySed(`${target}.ytelseNavn`, ytelseNavn)
+  const setYtelseNavn = (newYtelseNavn: YtelseNavn) => {
+    updateReplySed(`${target}.ytelseNavn`, newYtelseNavn)
     if (validation[namespace + '-ytelseNavn']) {
       resetValidation(namespace + '-ytelseNavn')
     }
   }
 
-  const setBeløp = () => {
-    updateReplySed(`${target}.beloep`, _newBeløp)
+  const setBeløp = (newBeløp: string) => {
+    updateReplySed(`${target}.beloep`, newBeløp)
     if (validation[namespace + '-beloep']) {
       resetValidation(namespace + '-beloep')
     }
   }
 
-  const setValuta = (valuta: Currency) => {
-    _setNewValuta(valuta)
-    updateReplySed(`${target}.valuta`, _newValuta?.currencyValue)
+  const setValuta = (newValuta: Currency) => {
+    updateReplySed(`${target}.valuta`, newValuta?.currencyValue)
     if (validation[namespace + '-valuta']) {
       resetValidation(namespace + '-valuta')
     }
   }
 
-  const setStartDato = (dato: string) => {
-    _setNewStartDato(dato)
-    updateReplySed(`${target}.startdato`, dato)
+  const setStartDato = (newDato: string) => {
+    updateReplySed(`${target}.startdato`, newDato)
     if (validation[namespace + '-startdato']) {
       resetValidation(namespace + '-startdato')
     }
   }
 
-  const setSluttDato = (dato: string) => {
-    _setNewSluttDato(dato)
-    updateReplySed(`${target}.sluttdato`, dato)
+  const setSluttDato = (newDato: string) => {
+    updateReplySed(`${target}.sluttdato`, newDato)
     if (validation[namespace + '-sluttdato']) {
       resetValidation(namespace + '-sluttdato')
     }
   }
 
-  const setMottakersNavn = (mottakersNavn: string) => {
-    updateReplySed(`${target}.mottakersNavn`, mottakersNavn)
+  const setMottakersNavn = (newMottakersNavn: string) => {
+    updateReplySed(`${target}.mottakersNavn`, newMottakersNavn)
     if (validation[namespace + '-mottakersNavn']) {
       resetValidation(namespace + '-mottakersNavn')
     }
   }
 
-  const setUtbetalingshyppighet = (utbetalingshyppighet: Utbetalingshyppighet) => {
-    _setNewUtbetalingshyppighet(utbetalingshyppighet)
-    updateReplySed(`${target}.utbetalingshyppighet`, utbetalingshyppighet)
+  const setUtbetalingshyppighet = (newUtbetalingshyppighet: Utbetalingshyppighet) => {
+    updateReplySed(`${target}.utbetalingshyppighet`, newUtbetalingshyppighet)
     if (validation[namespace + '-utbetalingshyppighet']) {
       resetValidation(namespace + '-utbetalingshyppighet')
     }
@@ -120,15 +107,13 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft'>
         <Column>
-          <HighContrastInput
-            data-test-id={'c-' + namespace + '-barnetsNavn-text'}
+          <Input
             feil={validation[namespace + '-barnetsNavn']?.feilmelding}
-            id={'c-' + namespace + '-barnetsNavn-text'}
+            namespace={namespace}
+            id='barnetsNavn-text'
             label={t('label:barnets-navn') + ' *'}
-            onBlur={setBarnetsNavn}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setNewBarnetsNavn(e.target.value)}
-            placeholder={t('el:placeholder-input-default')}
-            value={_newBarnetsNavn}
+            onChanged={setBarnetsNavn}
+            value={ytelse?.barnetsNavn ?? ''}
           />
         </Column>
         <Column>
@@ -142,23 +127,21 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
             onChange={(e: any) => setYtelseNavn(e.value)}
             options={ytelseNavnOptions}
             placeholder={t('el:placeholder-select-default')}
-            selectedValue={_.find(ytelseNavnOptions, b => b.value === _newYtelseNavn)}
-            defaultValue={_.find(ytelseNavnOptions, b => b.value === _newYtelseNavn)}
+            selectedValue={_.find(ytelseNavnOptions, b => b.value === ytelse?.ytelseNavn as YtelseNavn)}
+            defaultValue={_.find(ytelseNavnOptions, b => b.value === ytelse?.ytelseNavn as YtelseNavn)}
           />
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column>
-          <HighContrastInput
-            data-test-id={'c-' + namespace + '-beloep-text'}
+          <Input
             feil={validation[namespace + '-beloep']?.feilmelding}
-            id={'c-' + namespace + '-beloep-text'}
+            namespace={namespace}
+            id='beloep-text'
             label={t('label:beløp') + ' *'}
-            onBlur={setBeløp}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setNewBeløp(e.target.value)}
-            placeholder={t('el:placeholder-input-default')}
-            value={_newBeløp}
+            onChanged={setBeløp}
+            value={ytelse?.beloep ?? ''}
           />
         </Column>
         <Column>
@@ -173,7 +156,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
             menuPortalTarget={document.body}
             onOptionSelected={setValuta}
             type='currency'
-            values={_newValuta}
+            values={_currencyData.findByValue(ytelse?.valuta ?? '')}
           />
         </Column>
       </AlignStartRow>
@@ -184,28 +167,26 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
         <Period
-          key={'' + _newStartDato + _newSluttDato}
+          key={'' + ytelse?.startdato + ytelse?.sluttdato}
           namespace={namespace}
           errorStartDato={validation[namespace + '-startdato']?.feilmelding}
           errorSluttDato={validation[namespace + '-sluttdato']?.feilmelding}
           setStartDato={setStartDato}
           setSluttDato={setSluttDato}
-          valueStartDato={_newStartDato}
-          valueSluttDato={_newSluttDato}
+          valueStartDato={ytelse?.startdato ?? ''}
+          valueSluttDato={ytelse?.sluttdato ?? ''}
         />
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
         <Column>
-          <HighContrastInput
-            data-test-id={'c-' + namespace + '-mottakersNavn-text'}
-            feil={validation[namespace + '--mottakersNavn']?.feilmelding}
-            id={'c-' + namespace + '-mottakersNavn-text'}
+          <Input
+            feil={validation[namespace + '-mottakersNavn']?.feilmelding}
+            namespace={namespace}
+            id='mottakersNavn-text'
             label={t('label:mottakers-navn') + ' *'}
-            onBlur={setMottakersNavn}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setNewMottakersNavn(e.target.value)}
-            value={_newMottakersNavn}
-            placeholder={t('el:placeholder-input-default')}
+            onChanged={setMottakersNavn}
+            value={ytelse?.mottakersNavn ?? ''}
           />
         </Column>
       </AlignStartRow>
@@ -213,7 +194,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.5s' }}>
         <Column>
           <HighContrastRadioPanelGroup
-            checked={_newUtbetalingshyppighet}
+            checked={ytelse?.utbetalingshyppighet}
             data-no-border
             data-test-id={'c-' + namespace + '-utbetalingshyppighet-text'}
             id={'c-' + namespace + '-utbetalingshyppighet-text'}
@@ -224,7 +205,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
               { label: t('label:månedlig'), value: 'Månedlig' },
               { label: t('label:årlig'), value: 'Årlig' }
             ]}
-            onChange={(e: any) => setUtbetalingshyppighet(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUtbetalingshyppighet(e.target.value as Utbetalingshyppighet)}
           />
         </Column>
       </AlignStartRow>

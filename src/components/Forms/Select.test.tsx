@@ -1,9 +1,9 @@
-import Select from 'components/Select/Select'
+import Select from 'components/Forms/Select'
 import { mount, ReactWrapper } from 'enzyme'
 import ReactSelect from 'react-select'
 import React from 'react'
 
-describe('components/Select/Select', () => {
+describe('components/Forms/Select', () => {
   let wrapper: ReactWrapper
   const initialMockProps = {
     highContrast: false,

@@ -39,8 +39,8 @@ export interface ValidationStep2Props {
 }
 
 export const performValidation = (v: Validation, t: TFunction, replySed: ReplySed, personID: string) => {
-  let personInfo: PersonInfo = _.get(replySed, `${personID}.personInfo`)
-  let personName: string = personID === 'familie'
+  const personInfo: PersonInfo = _.get(replySed, `${personID}.personInfo`)
+  const personName: string = personID === 'familie'
     ? t('label:familien').toLowerCase()
     : personInfo.fornavn + ' ' + personInfo.etternavn
 

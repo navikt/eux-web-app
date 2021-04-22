@@ -235,6 +235,23 @@ export interface F002Sed extends FSed {
       swift: string
     }
   }
+  formaalx?: {
+    motregning: {
+      anmodningEllerSvar: string
+      navnOgBetegnelse: Array<{
+        barnetsNavn: string
+        betegnelsePåYtelse: string
+      }>
+      beloep: string
+      valuta: string
+      startdato: string
+      sluttdato: string
+      avgrensing: string
+      mottakersNavn: string
+      grunnerTilAnmodning: string
+      ytterligereInfo: string
+    }
+  }
 }
 
 export interface U002Sed extends USed {

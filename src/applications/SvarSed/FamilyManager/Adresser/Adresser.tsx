@@ -2,6 +2,7 @@ import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import useAddRemove from 'components/AddRemovePanel/useAddRemove'
+import Input from 'components/Forms/Input'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import useValidation from 'components/Validation/useValidation'
 import { Adresse, AdresseType, ReplySed } from 'declarations/sed'
@@ -11,7 +12,6 @@ import _ from 'lodash'
 import {
   Column,
   HighContrastFlatknapp,
-  HighContrastInput,
   HighContrastRadioPanelGroup,
   HorizontalSeparatorDiv,
   Row,
@@ -238,7 +238,7 @@ const Adresser: React.FC<AdresseProps> = ({
                 { label: t('label:bostedsland'), value: 'bosted' },
                 { label: t('label:oppholdsland'), value: 'opphold' }
               ]}
-              onChange={(e: any) => setType((e.target.value as AdresseType), index)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setType((e.target.value as AdresseType), index)}
             />
             <VerticalSeparatorDiv data-size='0.15' />
             <HighContrastRadioPanelGroup
@@ -252,7 +252,7 @@ const Adresser: React.FC<AdresseProps> = ({
                 { label: t('label:kontaktadresse'), value: 'kontakt' },
                 { label: t('label:annet'), value: 'annet' }
               ]}
-              onChange={(e: any) => setType((e.target.value as AdresseType), index)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setType((e.target.value as AdresseType), index)}
             />
           </Column>
           <Column />
@@ -263,22 +263,22 @@ const Adresser: React.FC<AdresseProps> = ({
           style={{ animationDelay: '0.1s' }}
         >
           <Column data-flex='2'>
-            <HighContrastInput
-              data-test-id={'c-' + namespace + idx + '-gate-text'}
+            <Input
               feil={getErrorFor(index, 'gate')}
-              id={'c-' + namespace + idx + '-gate-text'}
+              namespace={namespace + idx}
+              id='gate-text'
               label={t('label:gateadresse') + ' *'}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGate(e.target.value, index)}
+              onChanged={(value: string) => setGate(value, index)}
               value={index < 0 ? _newGate : a?.gate}
             />
           </Column>
           <Column>
-            <HighContrastInput
-              data-test-id={'c-' + namespace + idx + '-bygning-text'}
+            <Input
               feil={getErrorFor(index, 'bygning')}
-              id={'c-' + namespace + idx + '-bygning-text'}
-              label={t('label:bygning')}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBygning(e.target.value, index)}
+              namespace={namespace + idx}
+              id='bygning-text'
+              label={t('label:bygning') + ' *'}
+              onChanged={(value: string) => setBygning(value, index)}
               value={index < 0 ? _newBygning : a?.bygning}
             />
           </Column>
@@ -290,22 +290,22 @@ const Adresser: React.FC<AdresseProps> = ({
           style={{ animationDelay: '0.2s' }}
         >
           <Column>
-            <HighContrastInput
-              data-test-id={'c-' + namespace + idx + '-postnummer-text'}
+            <Input
               feil={getErrorFor(index, 'postnummer')}
-              id={'c-' + namespace + idx + '-postnummer-text'}
+              namespace={namespace + idx}
+              id='postnummer-text'
               label={t('label:postnummer') + ' *'}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPostnummer(e.target.value, index)}
+              onChanged={(value: string) => setPostnummer(value, index)}
               value={index < 0 ? _newPostnummer : a?.postnummer}
             />
           </Column>
           <Column data-flex='2'>
-            <HighContrastInput
-              data-test-id={'c-' + namespace + idx + '-by-text'}
+            <Input
               feil={getErrorFor(index, 'by')}
-              id={'c-' + namespace + idx + '-by-text'}
+              namespace={namespace + idx}
+              id='by-text'
               label={t('label:by') + ' *'}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBy(e.target.value, index)}
+              onChanged={(value: string) => setBy(value, index)}
               value={index < 0 ? _newBy : a?.by}
             />
           </Column>
@@ -317,13 +317,13 @@ const Adresser: React.FC<AdresseProps> = ({
           style={{ animationDelay: '0.3s' }}
         >
           <Column data-flex='1.5'>
-            <HighContrastInput
-              data-test-id={'c-' + namespace + idx + '-region-text'}
+            <Input
               feil={getErrorFor(index, 'region')}
-              id={'c-' + namespace + idx + '-region-text'}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRegion(e.target.value, index)}
+              namespace={namespace + idx}
+              id='region-text'
+              label={t('label:region') + ' *'}
+              onChanged={(value: string) => setRegion(value, index)}
               value={index < 0 ? _newRegion : a?.region}
-              label={t('label:region')}
             />
           </Column>
           <Column data-flex='1.5'>

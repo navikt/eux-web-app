@@ -1,5 +1,5 @@
 import Period from 'components/Period/Period'
-import Select from 'components/Select/Select'
+import Select from 'components/Forms/Select'
 import { AlignCenterRow, PaddedDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { Barnetilhoerighet, BarnRelasjon, BarnRelasjonType, JaNei, ReplySed } from 'declarations/sed'

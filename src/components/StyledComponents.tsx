@@ -1,4 +1,4 @@
-import Select from 'components/Select/Select'
+import Select from 'components/Forms/Select'
 import styled from 'styled-components'
 import {
   themeKeys,

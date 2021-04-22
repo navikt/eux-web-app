@@ -1,0 +1,52 @@
+import { HighContrastInput } from 'nav-hoykontrast'
+import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+
+export interface InputProps {
+  feil: string | undefined
+  namespace: string
+  id: string
+  label: JSX.Element | string
+  onChanged: (e: string) => void
+  placeholder?: string
+  type?: string
+  value: string | undefined
+}
+const Input: React.FC<InputProps> = ({
+  feil,
+  namespace,
+  id,
+  label,
+  onChanged,
+  placeholder,
+  type = 'text',
+  value
+}: InputProps) => {
+  const [_value, _setValue] = useState<string>(value ?? '')
+  const [_dirty, _setDirty] = useState<boolean>(false)
+  const { t } = useTranslation()
+
+  return (
+    <HighContrastInput
+      data-test-id={'c-' + namespace + '-' + id}
+      feil={feil}
+      id={'c-' + namespace + '-' + id}
+      label={label}
+      onBlur={() => {
+        if (_dirty) {
+          onChanged(_value)
+          _setDirty(false)
+        }
+      }}
+      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+        _setValue(e.target.value)
+        _setDirty(true)
+      }}
+      placeholder={placeholder || t('el:placeholder-input-default')}
+      type={type}
+      value={_value}
+    />
+  )
+}
+
+export default Input

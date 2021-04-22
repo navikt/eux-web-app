@@ -2,9 +2,10 @@ import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import useAddRemove from 'components/AddRemovePanel/useAddRemove'
-import DateInput from 'components/DateInput/DateInput'
+import DateInput from 'components/Forms/DateInput'
+import Input from 'components/Forms/Input'
+import Select from 'components/Forms/Select'
 import Period from 'components/Period/Period'
-import Select from 'components/Select/Select'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import useValidation from 'components/Validation/useValidation'
 import { Options } from 'declarations/app'
@@ -15,7 +16,6 @@ import { Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
   HighContrastFlatknapp,
-  HighContrastInput,
   HighContrastRadioPanelGroup,
   HorizontalSeparatorDiv,
   Row,
@@ -300,14 +300,13 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
           <>
             <AlignStartRow className={classNames('slideInFromLeft')}>
               <Column data-flex='2'>
-                <HighContrastInput
-                  data-test-id={'c-' + namespace + idx + '-annenrelasjontype-text'}
+                <Input
                   feil={getErrorFor(index, 'annenrelasjontype')}
-                  id={'c-' + namespace + idx + '-annenrelasjontype-text'}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAnnenRelasjonType(e.target.value, index)}
-                  value={index < 0 ? _newAnnenRelasjonType : familierelasjon?.annenRelasjonType}
+                  namespace={namespace + idx}
+                  id='annenrelasjontype-text'
                   label={t('label:annen-relasjon') + ' *'}
-                  placeholder={t('el:placeholder-input-default')}
+                  onChanged={(value: string) => setAnnenRelasjonType(value, index)}
+                  value={index < 0 ? _newAnnenRelasjonType : familierelasjon?.annenRelasjonType}
                 />
               </Column>
               <Column data-flex='2' />
@@ -315,13 +314,12 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
             <VerticalSeparatorDiv />
             <AlignStartRow className={classNames('slideInFromLeft')} style={{ animationDelay: '0.1s' }}>
               <Column data-flex='2'>
-                <HighContrastInput
-                  data-test-id={'c-' + namespace + idx + '-annenrelasjonpersonnavn-text'}
+                <Input
                   feil={getErrorFor(index, 'annenrelasjonpersonnavn')}
-                  id={'c-' + namespace + idx + '-annenrelasjonpersonnavn-text'}
+                  namespace={namespace + idx}
+                  id='annenrelasjonpersonnavn-text'
                   label={t('label:person-navn') + ' *'}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAnnenRelasjonPersonNavn(e.target.value, index)}
-                  placeholder={t('el:placeholder-input-default')}
+                  onChanged={(value: string) => setAnnenRelasjonPersonNavn(value, index)}
                   value={index < 0 ? _newAnnenRelasjonPersonNavn : familierelasjon?.annenRelasjonPersonNavn}
                 />
               </Column>
@@ -353,7 +351,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                     { label: t('label:ja'), value: 'ja' },
                     { label: t('label:nei'), value: 'nei' }
                   ]}
-                  onChange={(e: any) => setBorSammen(e.target.value, index)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBorSammen(e.target.value as JaNei, index)}
                 />
               </Column>
               <Column data-flex='2' />
