@@ -1,6 +1,5 @@
 import { Validation } from 'declarations/types'
 import { TFunction } from 'i18next'
-import _ from 'lodash'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -10,7 +9,7 @@ const useValidation = <ValidationData extends any>(
     newValidation: Validation,
     t: TFunction,
     validationData: ValidationData
-  ) => void
+  ) => boolean
 ): [
     Validation,
     (key?: string | undefined) => void,
@@ -30,17 +29,15 @@ const useValidation = <ValidationData extends any>(
     })
   }
 
-  const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
-
   const performValidation = (validationData: ValidationData): boolean => {
     const newValidation: Validation = {}
-    validateFunction(
+    const hasErrors: boolean = validateFunction(
       newValidation,
       t,
       validationData
     )
     setValidation(newValidation)
-    return hasNoValidationErrors(newValidation)
+    return !hasErrors
   }
 
   return [

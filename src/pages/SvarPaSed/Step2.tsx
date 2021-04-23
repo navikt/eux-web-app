@@ -1,4 +1,4 @@
-import { createSed, sendSeletedInntekt, setAllValidation } from 'actions/svarpased'
+import { createSed, sendSeletedInntekt, setAllValidation, setReplySed } from 'actions/svarpased'
 import FamilyManager from 'applications/SvarSed/FamilyManager/FamilyManager'
 import Formaal from 'applications/SvarSed/Formaal/Formaal'
 import KravOmRefusjon from 'applications/SvarSed/KravOmRefusjon/KravOmRefusjon'
@@ -211,6 +211,12 @@ const Step2: React.FC<SvarPaSedProps> = ({
     }
   }
 
+  const updateReplySed = (needleString: string | Array<string>, value: any) => {
+    const newReplySed = _.cloneDeep(replySed)
+    _.set(newReplySed, needleString, value)
+    dispatch(setReplySed(newReplySed))
+  }
+
   useEffect(() => {
     if (!_previewFile && previewFile) {
       setPreviewFile(previewFile)
@@ -273,6 +279,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
           <FamilyManager
             replySed={replySed}
             resetValidation={_resetValidation}
+            updateReplySed={updateReplySed}
             validation={_validation}
           />
           <VerticalSeparatorDiv data-size='2' />
@@ -290,7 +297,13 @@ const Step2: React.FC<SvarPaSedProps> = ({
       )}
       {showMotregning() && (
         <>
-          <Motregning highContrast={highContrast} replySed={replySed} validation={_validation} />
+          <Motregning
+            highContrast={highContrast}
+            replySed={replySed}
+            resetValidation={_resetValidation}
+            updateReplySed={updateReplySed}
+            validation={_validation}
+          />
           <VerticalSeparatorDiv data-size='2' />
         </>
       )}

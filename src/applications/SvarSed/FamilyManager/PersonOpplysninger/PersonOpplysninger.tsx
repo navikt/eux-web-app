@@ -11,7 +11,6 @@ import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
   HighContrastFlatknapp,
-  HighContrastInput,
   HighContrastKnapp,
   HighContrastRadioPanelGroup,
   HorizontalSeparatorDiv,
@@ -88,7 +87,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
       pin[utendanskPinIndex].identifikator = newPin
     } else {
       pin.push({
-        identifikator: e.target.value
+        identifikator: newPin
       })
     }
     updateReplySed(`${target}.pin`, pin)

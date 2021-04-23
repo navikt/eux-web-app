@@ -29,34 +29,27 @@ export const validateKontaktsinformasjonTelefon = (
     namespace,
     personName
   }: ValidationKontaktsinformasjonTelefonProps
-): void => {
-  let value: FeiloppsummeringFeil | undefined
-  let generalFail: boolean = false
+): boolean => {
+  let hasErrors: boolean = false
   const idx = (index < 0 ? '' : '[' + index + ']')
 
-  value = (!_.isEmpty(telefon.type))
-    ? undefined
-    : {
+  if (_.isEmpty(telefon.type)) {
+    v[namespace + idx + '-type'] = {
       feilmelding: t('message:validation-noTelephoneTypeForPerson', { person: personName }),
       skjemaelementId: 'c-' + namespace + idx + '-type-text'
     } as FeiloppsummeringFeil
-  v[namespace + idx + '-type'] = value
-  if (value) {
-    generalFail = true
+    hasErrors = true
   }
 
-  value = (!_.isEmpty(telefon.nummer))
-    ? undefined
-    : {
+  if (_.isEmpty(telefon.nummer)) {
+    v[namespace + idx + '-nummer'] = {
       feilmelding: t('message:validation-noTelephoneNumberForPerson', { person: personName }),
       skjemaelementId: 'c-' + namespace + idx + '-nummer-text'
     } as FeiloppsummeringFeil
-  v[namespace + idx + '-nummer'] = value
-  if (value) {
-    generalFail = true
+    hasErrors = true
   }
 
-  if (generalFail) {
+  if (hasErrors) {
     const namespaceBits = namespace.split('-')
     namespaceBits[0] = 'person'
     const personNamespace = namespaceBits[0] + '-' + namespaceBits[1]
@@ -64,6 +57,7 @@ export const validateKontaktsinformasjonTelefon = (
     v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }
+  return hasErrors
 }
 
 export const validateKontaktsinformasjonEpost = (
@@ -75,29 +69,27 @@ export const validateKontaktsinformasjonEpost = (
     namespace,
     personName
   }: ValidationKontaktsinformasjonEpostProps
-): void => {
-  let generalFail: boolean = false
+): boolean => {
+  let hasErrors: boolean = false
   const idx = (index < 0 ? '' : '[' + index + ']')
 
-  const value: FeiloppsummeringFeil | undefined = !_.isEmpty(epost.adresse)
-    ? (epost.adresse.match(emailPattern)
-        ? undefined
-        : {
-          feilmelding: t('message:validation-invalidEpostForPerson', { person: personName }),
-          skjemaelementId: 'c-' + namespace + idx + '-adresse-text'
-        } as FeiloppsummeringFeil
-      )
-    : {
+  if (!_.isEmpty(epost.adresse)) {
+    if (!epost.adresse.match(emailPattern)) {
+      v[namespace + idx + '-adresse'] = {
+        feilmelding: t('message:validation-invalidEpostForPerson', { person: personName }),
+        skjemaelementId: 'c-' + namespace + idx + '-adresse-text'
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
+  } else {
+    v[namespace + idx + '-adresse'] = {
       feilmelding: t('message:validation-noEpostForPerson', { person: personName }),
       skjemaelementId: 'c-' + namespace + idx + '-adresse-text'
     } as FeiloppsummeringFeil
-
-  v[namespace + idx + '-adresse'] = value
-
-  if (value) {
-    generalFail = true
+    hasErrors = true
   }
-  if (generalFail) {
+
+  if (hasErrors) {
     const namespaceBits = namespace.split('-')
     namespaceBits[0] = 'person'
     const personNamespace = namespaceBits[0] + '-' + namespaceBits[1]
@@ -105,6 +97,7 @@ export const validateKontaktsinformasjonEpost = (
     v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }
+  return hasErrors
 }
 
 export const validateKontaktsinformasjonTelefoner = (
@@ -113,10 +106,12 @@ export const validateKontaktsinformasjonTelefoner = (
   telefoner: Array<Telefon>,
   namespace: string,
   personName: string
-): void => {
+): boolean => {
+  let hasErrors: boolean = false
   telefoner?.forEach((telefon: Telefon, index: number) => {
-    validateKontaktsinformasjonTelefon(validation, t, { telefon, index, namespace, personName })
+    hasErrors = hasErrors && validateKontaktsinformasjonTelefon(validation, t, { telefon, index, namespace, personName })
   })
+  return hasErrors
 }
 
 export const validateKontaktsinformasjonEposter = (
@@ -125,8 +120,10 @@ export const validateKontaktsinformasjonEposter = (
   eposter: Array<Epost>,
   namespace: string,
   personName: string
-): void => {
+): boolean => {
+  let hasErrors: boolean = false
   eposter?.forEach((epost: Epost, index: number) => {
-    validateKontaktsinformasjonEpost(validation, t, { epost, index, namespace, personName })
+    hasErrors = hasErrors && validateKontaktsinformasjonEpost(validation, t, { epost, index, namespace, personName })
   })
+  return hasErrors
 }

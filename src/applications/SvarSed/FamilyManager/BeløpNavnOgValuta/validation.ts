@@ -19,15 +19,15 @@ export const validateBeløpNavnOgValuta = (
     namespace,
     personName
   }: ValidationBeløpNavnOgValutaProps
-): void => {
-  let generalFail: boolean = false
+): boolean => {
+  let hasErrors: boolean = false
 
   if (_.isEmpty(ytelse.barnetsNavn)) {
     v[namespace + '-barnetsNavn'] = {
       skjemaelementId: 'c-' + namespace + '-barnetsNavn-text',
       feilmelding: t('message:validation-noNameToPerson', { person: personName })
     } as FeiloppsummeringFeil
-    generalFail = true
+    hasErrors = true
   }
 
   if (_.isEmpty(ytelse.ytelseNavn)) {
@@ -35,7 +35,7 @@ export const validateBeløpNavnOgValuta = (
       skjemaelementId: 'c-' + namespace + '-ytelseNavn-text',
       feilmelding: t('message:validation-noBetegnelsePåYtelseForPerson', { person: personName })
     } as FeiloppsummeringFeil
-    generalFail = true
+    hasErrors = true
   }
 
   if (_.isEmpty(ytelse.beloep)) {
@@ -43,7 +43,7 @@ export const validateBeløpNavnOgValuta = (
       skjemaelementId: 'c-' + namespace + '-beloep-text',
       feilmelding: t('message:validation-noBeløpForPerson', { person: personName })
     } as FeiloppsummeringFeil
-    generalFail = true
+    hasErrors = true
   }
 
   if (_.isEmpty(ytelse.valuta)) {
@@ -51,10 +51,10 @@ export const validateBeløpNavnOgValuta = (
       skjemaelementId: 'c-' + namespace + '-valuta-text',
       feilmelding: t('message:validation-noValutaForPerson', { person: personName })
     } as FeiloppsummeringFeil
-    generalFail = true
+    hasErrors = true
   }
 
-  validatePeriod(v, t, {
+  hasErrors = hasErrors && validatePeriod(v, t, {
     period: {
       startdato: ytelse.startdato,
       sluttdato: ytelse.sluttdato
@@ -63,16 +63,12 @@ export const validateBeløpNavnOgValuta = (
     namespace
   })
 
-  if (v[namespace + '-startdato'] || v[namespace + '-sluttdato']) {
-    generalFail = true
-  }
-
   if (_.isEmpty(ytelse.mottakersNavn)) {
     v[namespace + '-mottakersNavn'] = {
       skjemaelementId: 'c-' + namespace + '-mottakersNavn-text',
       feilmelding: t('message:validation-noNavnForPerson', { person: personName })
     } as FeiloppsummeringFeil
-    generalFail = true
+    hasErrors = true
   }
 
   if (_.isEmpty(ytelse.utbetalingshyppighet)) {
@@ -80,10 +76,10 @@ export const validateBeløpNavnOgValuta = (
       skjemaelementId: 'c-' + namespace + '-utbetalingshyppighet-text',
       feilmelding: t('message:validation-noUtbetalingshyppighetForPerson', { person: personName })
     } as FeiloppsummeringFeil
-    generalFail = true
+    hasErrors = true
   }
 
-  if (generalFail) {
+  if (hasErrors) {
     const namespaceBits = namespace.split('-')
     namespaceBits[0] = 'person'
     const personNamespace = namespaceBits[0] + '-' + namespaceBits[1]
@@ -91,4 +87,5 @@ export const validateBeløpNavnOgValuta = (
     v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }
+  return hasErrors
 }

@@ -18,29 +18,36 @@ export const validateAddPersonModal = (
     relasjon,
     namespace
   }: ValidationAddPersonModalProps
-): void => {
+): boolean => {
+  let hasErrors = false
+
   if (_.isEmpty(fnr)) {
     v[namespace + '-fnr'] = {
       feilmelding: t('message:validation-noFnr'),
       skjemaelementId: 'c-' + namespace + '-fnr-text'
     }
+    hasErrors = true
   }
   if (!_.isEmpty(fnr) && !fnr.match(/^\d{11}$/)) {
     v[namespace + '-fnr'] = {
       feilmelding: t('message:validation-invalidFnr'),
       skjemaelementId: 'c-' + namespace + '-fnr-text'
     }
+    hasErrors = true
   }
   if (_.isEmpty(navn)) {
     v[namespace + '-navn'] = {
       feilmelding: t('message:validation-noName'),
       skjemaelementId: 'c-' + namespace + '-navn-text'
     }
+    hasErrors = true
   }
   if (_.isEmpty(relasjon)) {
     v[namespace + '-relasjon'] = {
       feilmelding: t('message:validation-noRelation'),
       skjemaelementId: 'c-' + namespace + '-relasjon-text'
     }
+    hasErrors = true
   }
+  return hasErrors
 }

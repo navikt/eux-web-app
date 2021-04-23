@@ -147,19 +147,19 @@ c-step2-formaal-text - {GLOBAL} - formaal
 
 c-kravomrefusjon-krav-text - {GLOBAL}
 
-c-motregning-anmodning-text                              - {GLOBAL}
-c-motregning-navnogbetegnelse[i]-navn-text               - {GLOBAL}
-c-motregning-navnogbetegnelse[i]-betegnelsepåytelse-text - {GLOBAL}
-c-motregning-navnogbetegnelse-navn-text                  - {INTERNAL}
-c-motregning-navnogbetegnelse-betegnelsepåytelse-text    - {INTERNAL}
-c-motregning-amount-number                              - {GLOBAL}
-c-motregning-currency-text                              - {GLOBAL}
-c-motregning-startdato-date                             - {GLOBAL}
-c-motregning-sluttdato-date                             - {GLOBAL}
-c-motregning-frequency-text                             - {GLOBAL}
-c-motregning-receiver-text                              - {GLOBAL}
-c-motregning-grunner-text                               - {GLOBAL}
-c-motregning-ytterligereinformasjon-text                - {GLOBAL}
+c-motregning-anmodningEllerSvar-text                     - {CONNECTED} formaalx.morregning.anmodningEllerSvar
+c-motregning-navnogbetegnelse[i]-navn-text               - {CONNECTED} formaalx.morregning.navnogbetegnelse[].navn
+c-motregning-navnogbetegnelse[i]-betegnelsepåytelse-text - {CONNECTED} formaalx.morregning.navnogbetegnelse[].betegnelsepåytelse
+c-motregning-navnogbetegnelse-navn-text                  - {INTERNAL} formaalx.morregning.navnogbetegnelse.navn
+c-motregning-navnogbetegnelse-betegnelsepåytelse-text    - {INTERNAL} formaalx.morregning.navnogbetegnelse.betegnelsepåytelse
+c-motregning-beloep-number                               - {CONNECTED} formaalx.morregning.beloep
+c-motregning-valuta-text                                 - {CONNECTED} formaalx.morregning.valuta
+c-motregning-startdato-date                              - {CONNECTED} formaalx.morregning.startdato
+c-motregning-sluttdato-date                              - {CONNECTED} formaalx.morregning.sluttdato
+c-motregning-avgrensing-text                             - {CONNECTED} formaalx.morregning.avgrensing
+c-motregning-mottakersNavn-text                          - {CONNECTED} formaalx.morregning.mottakersNavn
+c-motregning-grunnerTilAnmodning-text                    - {CONNECTED} formaalx.morregning.grunnerTilAnmodning
+c-motregning-ytterligereInfo-text                        - {CONNECTED} formaalx.morregning.ytterligereInfo
 
 c-prosedyreveduenighet-prosedyre[i]-grunn-text  - {GLOBAL}
 c-prosedyreveduenighet-prosedyre[i]-person-list - {GLOBAL}

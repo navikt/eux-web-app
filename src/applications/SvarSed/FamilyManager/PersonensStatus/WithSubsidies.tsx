@@ -2,8 +2,8 @@ import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import useAddRemove from 'components/AddRemovePanel/useAddRemove'
-import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
+import Period from 'components/Period/Period'
 import { AlignStartRow } from 'components/StyledComponents'
 import useValidation from 'components/Validation/useValidation'
 import { Option, Options } from 'declarations/app'
@@ -12,14 +12,7 @@ import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
 import { Undertittel } from 'nav-frontend-typografi'
-import {
-  Column,
-  HighContrastFlatknapp,
-  HighContrastInput,
-  HorizontalSeparatorDiv,
-  Row,
-  VerticalSeparatorDiv
-} from 'nav-hoykontrast'
+import { Column, HighContrastFlatknapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ValueType } from 'react-select'
@@ -187,32 +180,21 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
     const key = p ? getKey(p) : 'new'
     const candidateForDeletion = i < 0 ? false : !!key && hasKey(key)
     const idx = (i >= 0 ? '[' + i + ']' : '')
+    const startdato = i < 0 ? _newStartDato : p?.periode.startdato
+    const sluttdato = i < 0 ? _newSluttDato : p?.periode.sluttdato
     return (
       <div className={classNames('slideInFromLeft')}>
         <AlignStartRow>
-          <Column>
-            <Input
-              feil={getErrorFor(i, 'startdato')}
-              namespace={namespace + idx}
-              id='startdato-date'
-              label={t('label:startdato')}
-              onChanged={(value: string) => setStartDato(value, i)}
-              placeholder={t('el:placeholder-date-default')}
-              value={i < 0 ? _newStartDato : p?.periode.startdato}
-            />
-          </Column>
-          <Column>
-            <Input
-              feil={getErrorFor(i, 'sluttdato')}
-              namespace={namespace + idx}
-              id='sluttdato-date'
-              label={t('label:sluttdato')}
-              onChanged={(value: string) => setSluttDato(value, i)}
-              placeholder={t('el:placeholder-date-default')}
-              value={i < 0 ? _newSluttDato : p?.periode.sluttdato}
-            />
-          </Column>
-          <Column />
+          <Period
+            key={'' + startdato + sluttdato}
+            namespace={namespace + idx}
+            errorStartDato={getErrorFor(i, 'startdato')}
+            errorSluttDato={getErrorFor(i, 'sluttdato')}
+            setStartDato={(dato: string) => setStartDato(dato, i)}
+            setSluttDato={(dato: string) => setSluttDato(dato, i)}
+            valueStartDato={startdato}
+            valueSluttDato={sluttdato}
+          />
         </AlignStartRow>
         <VerticalSeparatorDiv />
         <AlignStartRow>

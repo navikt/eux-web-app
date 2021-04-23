@@ -21,20 +21,21 @@ export const validateNotAnsatte = (
     index,
     namespace
   }: ValidationNotAnsattProps
-): void => {
+): boolean => {
   const idx = (index < 0 ? '' : '[' + index + ']')
 
-  validatePeriod(v, t, {
+  let hasErrors: boolean = validatePeriod(v, t, {
     period,
     index,
     namespace
   })
 
-  if (!v[namespace + '-startdato'] &&
-    _.find(otherPeriods, p => p.startdato === period.startdato)) {
+  if (_.find(otherPeriods, p => p.startdato === period.startdato) !== undefined) {
     v[namespace + '-startdato'] = {
       skjemaelementId: 'c-' + namespace + idx + '-startdato-date',
       feilmelding: t('message:validation-duplicateStartDate')
     } as FeiloppsummeringFeil
+    hasErrors = true
   }
+  return hasErrors
 }

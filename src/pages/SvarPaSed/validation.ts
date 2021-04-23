@@ -38,36 +38,37 @@ export interface ValidationStep2Props {
   replySed: ReplySed
 }
 
-export const performValidation = (v: Validation, t: TFunction, replySed: ReplySed, personID: string) => {
+export const performValidation = (v: Validation, t: TFunction, replySed: ReplySed, personID: string): boolean => {
+  let hasErrors: boolean = false
   const personInfo: PersonInfo = _.get(replySed, `${personID}.personInfo`)
   const personName: string = personID === 'familie'
     ? t('label:familien').toLowerCase()
     : personInfo.fornavn + ' ' + personInfo.etternavn
 
   if (personID !== 'familie') {
-    validatePersonOpplysninger(v, t, {
+    hasErrors = hasErrors && validatePersonOpplysninger(v, t, {
       personInfo,
       namespace: `familymanager-${personID}-personopplysninger`,
       personName
     })
 
     const statsborgerskaper: Array<Statsborgerskap> = _.get(replySed, `${personID}.statsborgerskap`)
-    validateNasjonaliteter(v, t, statsborgerskaper, `familymanager-${personID}-nasjonaliteter`, personName)
+    hasErrors = hasErrors && validateNasjonaliteter(v, t, statsborgerskaper, `familymanager-${personID}-nasjonaliteter`, personName)
 
     const adresser: Array<Adresse> = _.get(replySed, `${personID}.adresser`)
-    validateAdresser(v, t, adresser, `familymanager-${personID}-adresser`, personName)
+    hasErrors = hasErrors && validateAdresser(v, t, adresser, `familymanager-${personID}-adresser`, personName)
   }
 
   if (!personID.startsWith('barn')) {
     if (personID === 'familie') {
       const motregninger: Array<Motregning> = _.get(replySed, `${personID}.motregninger`)
-      validateFamilieytelser(v, t, motregninger, `familymanager-${personID}-familieytelser`, personName)
+      hasErrors = hasErrors && validateFamilieytelser(v, t, motregninger, `familymanager-${personID}-familieytelser`, personName)
     } else {
       const telefoner: Array<Telefon> = _.get(replySed, `${personID}.telefon`)
-      validateKontaktsinformasjonTelefoner(v, t, telefoner, `familymanager-${personID}-kontaktinformasjon-telefon`, personName)
+      hasErrors = hasErrors && validateKontaktsinformasjonTelefoner(v, t, telefoner, `familymanager-${personID}-kontaktinformasjon-telefon`, personName)
 
       const eposter: Array<Epost> = _.get(replySed, `${personID}.epost`)
-      validateKontaktsinformasjonEposter(v, t, eposter, `familymanager-${personID}-kontaktinformasjon-epost`, personName)
+      hasErrors = hasErrors && validateKontaktsinformasjonEposter(v, t, eposter, `familymanager-${personID}-kontaktinformasjon-epost`, personName)
 
       const perioder: {[k in string]: Array<Periode | PensjonPeriode>} = {
         perioderMedArbeid: _.get(replySed, `${personID}.perioderMedArbeid`),
@@ -77,21 +78,40 @@ export const performValidation = (v: Validation, t: TFunction, replySed: ReplySe
         perioderMedYtelser: _.get(replySed, `${personID}.perioderMedYtelser`),
         perioderMedPensjon: _.get(replySed, `${personID}.perioderMedPensjon`)
       }
-      validateTrygdeordninger(v, t, perioder, `familymanager-${personID}-trygdeordninger`, personName)
+      hasErrors = hasErrors && validateTrygdeordninger(v, t, perioder, `familymanager-${personID}-trygdeordninger`, personName)
 
       const familierelasjoner: Array<FamilieRelasjon> = _.get(replySed, `${personID}.familierelasjoner`)
-      validateFamilierelasjoner(v, t, familierelasjoner, `familymanager-${personID}-familierelasjon`, personName)
+      hasErrors = hasErrors && validateFamilierelasjoner(v, t, familierelasjoner, `familymanager-${personID}-familierelasjon`, personName)
     }
   } else {
     const barnetilhorighet : Array<Barnetilhoerighet> = _.get(replySed, `${personID}.barnetilhoerigheter`)
-    validateBarnetilhoerigheter(v, t, barnetilhorighet, `familymanager-${personID}-relasjon`, personName)
+    hasErrors = hasErrors && validateBarnetilhoerigheter(v, t, barnetilhorighet, `familymanager-${personID}-relasjon`, personName)
 
     const flyttegrunn: Flyttegrunn = _.get(replySed, `${personID}.flyttegrunn`)
-    validateAllGrunnlagForBosetting(v, t, flyttegrunn, `familymanager-${personID}-grunnlagforbosetting`, personName)
+    hasErrors = hasErrors && validateAllGrunnlagForBosetting(v, t, flyttegrunn, `familymanager-${personID}-grunnlagforbosetting`, personName)
 
     const ytelse: Ytelse = _.get(replySed, `${personID}.ytelse`)
-    validateBeløpNavnOgValuta(v, t, { ytelse, namespace: `familymanager-${personID}-beløpnavnogvaluta`, personName })
+    hasErrors = hasErrors && validateBeløpNavnOgValuta(v, t, { ytelse, namespace: `familymanager-${personID}-beløpnavnogvaluta`, personName })
   }
+  return hasErrors
+}
+
+export const validateStep1 = (
+  v: Validation,
+  t: TFunction,
+  {
+    saksnummerOrFnr
+  }: any
+): boolean => {
+  let hasErrors: boolean = false
+  if (_.isEmpty(saksnummerOrFnr)) {
+    v['step1-saksnummerOrFnr'] = {
+      feilmelding: t('message:validation-noSaksnummerOrFnr'),
+      skjemaelementId: 'c-step1-saksnummerOrFnr-text'
+    } as FeiloppsummeringFeil
+    hasErrors = true
+  }
+  return hasErrors
 }
 
 export const validateStep2 = (
@@ -101,27 +121,30 @@ export const validateStep2 = (
     comment,
     replySed
   }: ValidationStep2Props
-): void => {
+): boolean => {
+  let hasErrors: boolean = false
   if (replySed.sedType.startsWith('F')) {
     if (_.isEmpty((replySed as F002Sed).formaal)) {
       v['step2-formaal'] = {
         feilmelding: t('message:validation-noFormaal'),
         skjemaelementId: 'c-step2-formaal-text'
       } as FeiloppsummeringFeil
+      hasErrors = true
     }
 
     if ((replySed as F002Sed).ektefelle) {
-      performValidation(v, t, replySed, 'ektefelle')
+      hasErrors = hasErrors && performValidation(v, t, replySed, 'ektefelle')
     }
     if ((replySed as F002Sed).annenPerson) {
-      performValidation(v, t, replySed, 'annenPerson')
+      hasErrors = hasErrors && performValidation(v, t, replySed, 'annenPerson')
     }
     if ((replySed as F002Sed).barn) {
-      (replySed as F002Sed).barn.forEach((b: Person, i: number) =>
-        performValidation(v, t, replySed, `barn[${i}]`))
+      (replySed as F002Sed).barn.forEach((b: Person, i: number) => {
+        hasErrors = hasErrors && performValidation(v, t, replySed, `barn[${i}]`)
+      })
     }
     if ((replySed as F002Sed).familie) {
-      performValidation(v, t, replySed, 'familie')
+      hasErrors = hasErrors && performValidation(v, t, replySed, 'familie')
     }
   }
 
@@ -130,7 +153,9 @@ export const validateStep2 = (
       feilmelding: t('message:validation-noComment'),
       skjemaelementId: 'c-step2-comment-text'
     } as FeiloppsummeringFeil
+    hasErrors = true
   }
 
-  performValidation(v, t, replySed, 'bruker')
+  hasErrors = hasErrors && performValidation(v, t, replySed, 'bruker')
+  return hasErrors
 }

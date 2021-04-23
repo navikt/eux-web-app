@@ -18,10 +18,8 @@ import {
 } from 'components/StyledComponents'
 import useValidation from 'components/Validation/useValidation'
 import { State } from 'declarations/reducers'
-import { ConnectedSed, Sed, Validation } from 'declarations/types'
-import { TFunction } from 'i18next'
+import { ConnectedSed, Sed } from 'declarations/types'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Normaltekst, Systemtittel, Undertekst, Undertittel } from 'nav-frontend-typografi'
 import NavHighContrast, {
   Column,
@@ -37,6 +35,7 @@ import NavHighContrast, {
   themeKeys,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
+import { validateStep1 } from 'pages/SvarPaSed/validation'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -99,15 +98,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
   const [_filter, _setFilter] = useState<string | undefined>(undefined)
   const [_saksnummerOrFnr, _setSaksnummerOrFnr] = useState<string | undefined>(rinasaksnummerOrFnrParam)
   const [_validMessage, _setValidMessage] = useState<string>('')
-  const [_validation, _resetValidation, performValidation] = useValidation({},
-    (v: Validation, t: TFunction, { saksnummerOrFnr }: any) => {
-      if (_.isEmpty(saksnummerOrFnr)) {
-        v['step1-saksnummerOrFnr'] = {
-          feilmelding: t('message:validation-noSaksnummerOrFnr'),
-          skjemaelementId: 'c-step1-saksnummerOrFnr-text'
-        } as FeiloppsummeringFeil
-      }
-    })
+  const [_validation, _resetValidation, performValidation] = useValidation({}, validateStep1)
 
   const onSaksnummerOrFnrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value

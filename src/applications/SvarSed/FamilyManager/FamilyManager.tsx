@@ -1,4 +1,4 @@
-import { getArbeidsforholdList, searchPerson, setReplySed } from 'actions/svarpased'
+import { getArbeidsforholdList, searchPerson } from 'actions/svarpased'
 import AddPersonModal from 'applications/SvarSed/FamilyManager/AddPersonModal/AddPersonModal'
 import Add from 'assets/icons/Add'
 import FilledCheckCircle from 'assets/icons/CheckCircle'
@@ -126,6 +126,7 @@ const LandSpan = styled.span`
 export interface FamilyManagerProps {
   replySed: ReplySed
   resetValidation: (key?: string) => void
+  updateReplySed: (needle: string, value: any) => void
   validation: Validation
 }
 
@@ -144,6 +145,7 @@ const mapState = (state: State): any => ({
 const FamilyManager: React.FC<FamilyManagerProps> = ({
   replySed,
   resetValidation,
+  updateReplySed,
   validation
 }: FamilyManagerProps) => {
   const {
@@ -257,12 +259,6 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
     } else {
       setSelectedPersonIDs([])
     }
-  }
-
-  const updateReplySed = (needleString: string | Array<string>, value: any) => {
-    const newReplySed = _.cloneDeep(replySed)
-    _.set(newReplySed, needleString, value)
-    dispatch(setReplySed(newReplySed))
   }
 
   const onAddNewPerson = () => {

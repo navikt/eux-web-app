@@ -24,11 +24,11 @@ import { validateAdresse, ValidationAddressProps } from './validation'
 interface AdresseProps {
   highContrast: boolean
   landkoderList: Array<Kodeverk>
-  updateReplySed: (needle: string, value: any) => void
   personID: string
   personName: string
   replySed: ReplySed
   resetValidation: (key?: string) => void
+  updateReplySed: (needle: string, value: any) => void
   validation: Validation
 }
 
@@ -218,8 +218,8 @@ const Adresser: React.FC<AdresseProps> = ({
       : validation[namespace + '[' + index + ']-' + el]?.feilmelding
   }
 
-  const renderRow = (a: Adresse | null, index: number) => {
-    const key = a ? getKey(a) : 'new'
+  const renderRow = (address: Adresse | null, index: number) => {
+    const key = address ? getKey(address) : 'new'
     const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
     const idx = (index >= 0 ? '[' + index + ']' : '')
     return (
@@ -227,7 +227,7 @@ const Adresser: React.FC<AdresseProps> = ({
         <AlignStartRow className={classNames('slideInFromLeft')}>
           <Column data-flex='3'>
             <HighContrastRadioPanelGroup
-              checked={index < 0 ? _newType : a!.type}
+              checked={index < 0 ? _newType : address!.type}
               data-no-border
               data-test-id={'c-' + namespace + idx + '-type-text'}
               feil={getErrorFor(index, 'type')}
@@ -242,7 +242,7 @@ const Adresser: React.FC<AdresseProps> = ({
             />
             <VerticalSeparatorDiv data-size='0.15' />
             <HighContrastRadioPanelGroup
-              checked={index < 0 ? _newType : a!.type}
+              checked={index < 0 ? _newType : address!.type}
               data-no-border
               data-test-id={'c-' + namespace + idx + '-type-text'}
               feil={getErrorFor(index, 'type')}
@@ -269,7 +269,7 @@ const Adresser: React.FC<AdresseProps> = ({
               id='gate-text'
               label={t('label:gateadresse') + ' *'}
               onChanged={(value: string) => setGate(value, index)}
-              value={index < 0 ? _newGate : a?.gate}
+              value={index < 0 ? _newGate : address?.gate}
             />
           </Column>
           <Column>
@@ -279,7 +279,7 @@ const Adresser: React.FC<AdresseProps> = ({
               id='bygning-text'
               label={t('label:bygning') + ' *'}
               onChanged={(value: string) => setBygning(value, index)}
-              value={index < 0 ? _newBygning : a?.bygning}
+              value={index < 0 ? _newBygning : address?.bygning}
             />
           </Column>
           <Column />
@@ -296,7 +296,7 @@ const Adresser: React.FC<AdresseProps> = ({
               id='postnummer-text'
               label={t('label:postnummer') + ' *'}
               onChanged={(value: string) => setPostnummer(value, index)}
-              value={index < 0 ? _newPostnummer : a?.postnummer}
+              value={index < 0 ? _newPostnummer : address?.postnummer}
             />
           </Column>
           <Column data-flex='2'>
@@ -306,7 +306,7 @@ const Adresser: React.FC<AdresseProps> = ({
               id='by-text'
               label={t('label:by') + ' *'}
               onChanged={(value: string) => setBy(value, index)}
-              value={index < 0 ? _newBy : a?.by}
+              value={index < 0 ? _newBy : address?.by}
             />
           </Column>
           <Column />
@@ -323,7 +323,7 @@ const Adresser: React.FC<AdresseProps> = ({
               id='region-text'
               label={t('label:region') + ' *'}
               onChanged={(value: string) => setRegion(value, index)}
-              value={index < 0 ? _newRegion : a?.region}
+              value={index < 0 ? _newRegion : address?.region}
             />
           </Column>
           <Column data-flex='1.5'>
@@ -336,7 +336,7 @@ const Adresser: React.FC<AdresseProps> = ({
               includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
               onOptionSelected={(e: any) => setLand(e.value, index)}
               placeholder={t('el:placeholder-select-default')}
-              values={index < 0 ? _newLand : a?.land}
+              values={index < 0 ? _newLand : address?.land}
             />
           </Column>
           <Column>

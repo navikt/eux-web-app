@@ -1,5 +1,6 @@
 import { PersonInfo } from 'declarations/sed'
 import { Validation } from 'declarations/types'
+import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
 
@@ -19,101 +20,74 @@ export const validatePersonOpplysninger = (
     namespace,
     personName
   }: validatePersonOpplysningProps
-): void => {
-  let generalFail: boolean = false
-  let value: FeiloppsummeringFeil | undefined
+): boolean => {
+  let hasErrors: boolean = false
 
-  value = (personInfo.fornavn)
-    ? undefined
-    : {
+  if (_.isEmpty(personInfo.fornavn)) {
+    v[namespace + '-fornavn'] = {
       feilmelding: t('message:validation-noFornavnForPerson', { person: personName }),
       skjemaelementId: 'c-' + namespace + '-fornavn-text'
     } as FeiloppsummeringFeil
-  v[namespace + '-fornavn'] = value
-  if (value) {
-    generalFail = true
+    hasErrors = true
   }
 
-  value = (personInfo.etternavn)
-    ? undefined
-    : {
+  if (_.isEmpty(personInfo.etternavn)) {
+    v[namespace + '-etternavn'] = {
       feilmelding: t('message:validation-noEtternavnForPerson', { person: personName }),
       skjemaelementId: 'c-' + namespace + '-etternavn-text'
     } as FeiloppsummeringFeil
-  v[namespace + '-etternavn'] = value
-  if (value) {
-    generalFail = true
+    hasErrors = true
   }
 
-  value = (personInfo.foedselsdato)
-    ? undefined
-    : {
+  if (_.isEmpty(personInfo.foedselsdato)) {
+    v[namespace + '-foedselsdato'] = {
       feilmelding: t('message:validation-noFoedselsdatoForPerson', { person: personName }),
       skjemaelementId: 'c-' + namespace + '-foedselsdato-text'
     } as FeiloppsummeringFeil
-  v[namespace + '-foedselsdato'] = value
-  if (value) {
-    generalFail = true
+    hasErrors = true
   }
 
-  value = (personInfo.foedselsdato.match(datePattern))
-    ? undefined
-    : {
+  if (!personInfo.foedselsdato.match(datePattern)) {
+    v[namespace + '-foedselsdato'] = {
       feilmelding: t('message:validation-invalidFoedselsdatoForPerson', { person: personName }),
       skjemaelementId: 'c-' + namespace + '-foedselsdato-text'
     } as FeiloppsummeringFeil
-  if (!v[namespace + '-foedselsdato'] && value) {
-    v[namespace + '-foedselsdato'] = value
-    if (value) {
-      generalFail = true
-    }
+    hasErrors = true
   }
 
-  value = (personInfo.kjoenn)
-    ? undefined
-    : {
+  if (_.isEmpty(personInfo.kjoenn)) {
+    v[namespace + '-kjoenn'] = {
       feilmelding: t('message:validation-noKjoenn', { person: personName }),
       skjemaelementId: 'c-' + namespace + '-kjoenn-text'
     } as FeiloppsummeringFeil
-  v[namespace + '-kjoenn'] = value
-  if (value) {
-    generalFail = true
+    hasErrors = true
   }
 
-  value = (personInfo.pinMangler?.foedested.by)
-    ? undefined
-    : {
+  if (_.isEmpty(personInfo.pinMangler?.foedested.by)) {
+    v[namespace + '-foedested-by'] = {
       feilmelding: t('message:validation-noFoedestedByForPerson', { person: personName }),
       skjemaelementId: 'c-' + namespace + '-foedested-by-text'
     } as FeiloppsummeringFeil
-  v[namespace + '-foedested-by'] = value
-  if (value) {
-    generalFail = true
+    hasErrors = true
   }
 
-  value = (personInfo.pinMangler?.foedested.region)
-    ? undefined
-    : {
+  if (_.isEmpty(personInfo.pinMangler?.foedested.region)) {
+    v[namespace + '-foedested-region'] = {
       feilmelding: t('message:validation-noFoedestedRegionForPerson', { person: personName }),
       skjemaelementId: 'c-' + namespace + '-foedested-region-text'
     } as FeiloppsummeringFeil
-  v[namespace + '-foedested-region'] = value
-  if (value) {
-    generalFail = true
+    hasErrors = true
   }
 
-  value = (personInfo.pinMangler?.foedested.land)
-    ? undefined
-    : {
+  if (_.isEmpty(personInfo.pinMangler?.foedested.land)) {
+    v[namespace + '-foedested-land'] = {
       feilmelding: t('message:validation-noFoedestedLandForPerson', { person: personName }),
       skjemaelementId: 'c-' + namespace + '-foedested-land-text'
     } as FeiloppsummeringFeil
-  v[namespace + '-foedested-land'] = value
-  if (value) {
-    generalFail = true
+    hasErrors = true
   }
 
-  if (generalFail) {
+  if (hasErrors) {
     const namespaceBits = namespace.split('-')
     namespaceBits[0] = 'person'
     const personNamespace = namespaceBits[0] + '-' + namespaceBits[1]
@@ -121,4 +95,5 @@ export const validatePersonOpplysninger = (
     v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }
+  return hasErrors
 }

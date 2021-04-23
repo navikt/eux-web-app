@@ -1,136 +1,161 @@
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import useAddRemove from 'components/AddRemovePanel/useAddRemove'
+import Input from 'components/Forms/Input'
+import TextArea from 'components/Forms/TextArea'
+import Period from 'components/Period/Period'
 import { AlignStartRow, PileDiv, TextAreaDiv } from 'components/StyledComponents'
-import { ReplySed } from 'declarations/sed'
+import useValidation from 'components/Validation/useValidation'
+import { F002Sed, FormalMotregning, NavnOgBetegnelse, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { Country } from 'land-verktoy'
+import CountryData, { Currency } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
   HighContrastFlatknapp,
-  HighContrastInput,
   HighContrastPanel,
   HighContrastRadio,
   HighContrastRadioGroup,
-  HighContrastTextArea,
   HorizontalSeparatorDiv,
   Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { validateMotregning } from './validation'
+import { validateMotregningNavnOgBetegnelser, ValidationMotregningNavnOgBetegnelserProps } from './validation'
 
 export interface MotregningProps {
   highContrast: boolean
   replySed: ReplySed
+  resetValidation: (key?: string) => void
+  updateReplySed: (needle: string, value: any) => void
   validation: Validation
-}
-
-export interface NavnOgBetegnelse {
-  navn: string
-  betegnelsePåYtelse: string
 }
 
 const Motregning: React.FC<MotregningProps> = ({
   highContrast,
-  // replySed,
+  replySed,
+  resetValidation,
+  updateReplySed,
   validation
 }: MotregningProps): JSX.Element => {
   const { t } = useTranslation()
-  const [_confirmDelete, _setConfirmDelete] = useState<Array<string>>([])
-  const [_anmodning, _setAnmodning] = useState<string | undefined>(undefined)
-  const [_navnOgBetegnelser, _setNavnOgBetegnelser] = useState<Array<NavnOgBetegnelse>>([])
-  const [_amount, _setAmount] = useState<string>('')
-  const [_currency, _setCurrency] = useState<Country | undefined>(undefined)
-  const [_startDato, _setStartDato] = useState<string>('')
-  const [_sluttDato, _setSluttDato] = useState<string>('')
-  const [_frequency, _setFrequency] = useState<string | undefined>(undefined)
-  const [_receiver, _setReceiver] = useState<string | undefined>(undefined)
-  const [_grunner, _setGrunner] = useState<string>('')
-  const [_ytterligereInformasjon, _setYtterligereInformasjon] = useState<string>('')
+  const target = 'formaalx.motregning'
+  const motregning: FormalMotregning | undefined = (replySed as F002Sed).formaalx?.motregning
+  const namespace = 'motregning'
+  const _currencyData = CountryData.getCurrencyInstance('nb')
 
   const [_newNavn, _setNewNavn] = useState<string | undefined>(undefined)
   const [_newBetegnelse, _setNewBetegnelse] = useState<string | undefined>(undefined)
-  const [_validation, _setValidation] = useState<Validation>({})
+
+  const [addCandidateForDeletion, removeCandidateForDeletion, hasKey] = useAddRemove()
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
+  const [_validation, _resetValidation, performValidation] = useValidation<ValidationMotregningNavnOgBetegnelserProps>({}, validateMotregningNavnOgBetegnelser)
 
-  const namespace = 'motregning'
-
-  const resetValidation = (key: string): void => {
-    _setValidation({
-      ..._validation,
-      [key]: undefined
-    })
-  }
-
-  const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
-
-  const performValidation = (): boolean => {
-    const newValidation: Validation = {}
-    validateMotregning(
-      newValidation,
-      {
-        navn: _newNavn,
-        betegnelsePåYtelse: _newBetegnelse
-      } as NavnOgBetegnelse,
-      -1,
-      t,
-      namespace + '-navnogbetegnelse'
-    )
-    _setValidation(newValidation)
-    return hasNoValidationErrors(newValidation)
-  }
-
-  const onAddNewClicked = () => _setSeeNewForm(true)
-
-  const addCandidateForDeletion = (key: string) => {
-    _setConfirmDelete(_confirmDelete.concat(key))
-  }
-
-  const removeCandidateForDeletion = (key: string) => {
-    _setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
-  }
-
-  const setStartDato = (s: string) => {
-    _setStartDato(s)
-    resetValidation('motrening-startdato')
-  }
-
-  const setSluttDato = (s: string) => {
-    _setSluttDato(s)
-    resetValidation('motrening-sluttdato')
-  }
-
-  const setNavn = (s: string, i: number) => {
-    if (i < 0) {
-      _setNewNavn(s)
-      resetValidation('motrening-navn')
-    } else {
-      const newNavnOgBetegnelser = _.cloneDeep(_navnOgBetegnelser)
-      newNavnOgBetegnelser[i].navn = s
-      _setNavnOgBetegnelser(newNavnOgBetegnelser)
+  const setAnmodningEllerSvar = (newAnmodning: string) => {
+    updateReplySed(`${target}.anmodningEllerSvar`, newAnmodning)
+    if (validation[namespace + '-anmodningEllerSvar']) {
+      resetValidation(namespace + '-anmodningEllerSvar')
     }
   }
 
-  const setBetegnelse = (s: string, i: number) => {
-    if (i < 0) {
-      _setNewBetegnelse(s)
-      resetValidation('motrening-betegnelse')
+  const setNavn = (newNavn: string, index: number) => {
+    if (index < 0) {
+      _setNewNavn(newNavn)
+      _resetValidation(namespace + '-navnOgBetegnelser-navn')
     } else {
-      const newNavnOgBetegnelser = _.cloneDeep(_navnOgBetegnelser)
-      newNavnOgBetegnelser[i].betegnelsePåYtelse = s
-      _setNavnOgBetegnelser(newNavnOgBetegnelser)
+      let newNavnOgBetegnelser = _.cloneDeep(motregning?.navnOgBetegnelser)
+      if (!newNavnOgBetegnelser) {
+        newNavnOgBetegnelser = []
+      }
+      newNavnOgBetegnelser[index].navn = newNavn
+      updateReplySed(`${target}.navnOgBetegnelser`, newNavnOgBetegnelser)
+      if (validation[namespace + '-navnOgBetegnelser-navn']) {
+        resetValidation(namespace + '-navnOgBetegnelser-navn')
+      }
+    }
+  }
+
+  const setBetegnelse = (newBetegnelse: string, index: number) => {
+    if (index < 0) {
+      _setNewBetegnelse(newBetegnelse)
+      _resetValidation(namespace + '-navnOgBetegnelser-betegnelse')
+    } else {
+      let newNavnOgBetegnelser = _.cloneDeep(motregning?.navnOgBetegnelser)
+      if (!newNavnOgBetegnelser) {
+        newNavnOgBetegnelser = []
+      }
+      newNavnOgBetegnelser[index].betegnelsePåYtelse = newBetegnelse
+      updateReplySed(`${target}.navnOgBetegnelser`, newNavnOgBetegnelser)
+      if (validation[namespace + '-navnOgBetegnelser-betegnelse']) {
+        resetValidation(namespace + '-navnOgBetegnelser-betegnelse')
+      }
+    }
+  }
+
+  const setBeløp = (newDato: string) => {
+    updateReplySed(`${target}.beloep`, newDato)
+    if (validation[namespace + '-beloep']) {
+      resetValidation(namespace + '-beloep')
+    }
+  }
+
+  const setValuta = (newValuta: Currency) => {
+    updateReplySed(`${target}.valuta`, newValuta?.currencyValue)
+    if (validation[namespace + '-valuta']) {
+      resetValidation(namespace + '-valuta')
+    }
+  }
+
+  const setStartDato = (newDato: string) => {
+    updateReplySed(`${target}.startdato`, newDato)
+    if (validation[namespace + '-startdato']) {
+      resetValidation(namespace + '-startdato')
+    }
+  }
+
+  const setSluttDato = (newDato: string) => {
+    updateReplySed(`${target}.sluttdato`, newDato)
+    if (validation[namespace + '-sluttdato']) {
+      resetValidation(namespace + '-sluttdato')
+    }
+  }
+
+  const setAvgrensing = (newAvgrensing: string) => {
+    updateReplySed(`${target}.avgrensing`, newAvgrensing)
+    if (validation[namespace + '-avgrensing']) {
+      resetValidation(namespace + '-avgrensing')
+    }
+  }
+
+  const setMottakersNavn = (newMottakersNavn: string) => {
+    updateReplySed(`${target}.mottakersNavn`, newMottakersNavn)
+    if (validation[namespace + '-mottakersNavn']) {
+      resetValidation(namespace + '-mottakersNavn')
+    }
+  }
+
+  const setGrunnerTilAnmodning = (newGrunnerTilAnmodning: string) => {
+    updateReplySed(`${target}.grunnerTilAnmodning`, newGrunnerTilAnmodning)
+    if (validation[namespace + '-grunnerTilAnmodning']) {
+      resetValidation(namespace + '-grunnerTilAnmodning')
+    }
+  }
+
+  const setYtterligereInfo = (newYtterligereInfo: string) => {
+    updateReplySed(`${target}.ytterligereInfo`, newYtterligereInfo)
+    if (validation[namespace + '-ytterligereInfo']) {
+      resetValidation(namespace + '-ytterligereInfo')
     }
   }
 
   const resetForm = () => {
     _setNewNavn('')
     _setNewBetegnelse('')
-    _setValidation({})
+    _resetValidation()
   }
 
   const onCancel = () => {
@@ -143,59 +168,67 @@ const Motregning: React.FC<MotregningProps> = ({
   }
 
   const onRemove = (i: number) => {
-    const newNavnOgBetegnelser = _.cloneDeep(_navnOgBetegnelser)
+    const newNavnOgBetegnelser = _.cloneDeep(motregning!.navnOgBetegnelser)
     const deletedNavnOgBetegnelser: Array<NavnOgBetegnelse> = newNavnOgBetegnelser.splice(i, 1)
     if (deletedNavnOgBetegnelser && deletedNavnOgBetegnelser.length > 0) {
       removeCandidateForDeletion(getKey(deletedNavnOgBetegnelser[0]))
     }
-    _setNavnOgBetegnelser(newNavnOgBetegnelser)
+    updateReplySed(`${target}.navnOgBetegnelser`, newNavnOgBetegnelser)
   }
 
   const onAdd = () => {
-    if (performValidation()) {
-      let newNavnOgBetegnelser = _.cloneDeep(_navnOgBetegnelser)
+    const newNavOgBetegnelse: NavnOgBetegnelse |any = {
+      navn: _newNavn,
+      betegnelsePåYtelse: _newBetegnelse
+    }
+
+    const valid: boolean = performValidation({
+      navnOgBetegnelse: newNavOgBetegnelse,
+      index: -1,
+      namespace: namespace
+    })
+
+    if (valid) {
+      let newNavnOgBetegnelser: Array<NavnOgBetegnelse> | undefined = _.cloneDeep(motregning?.navnOgBetegnelser)
       if (_.isNil(newNavnOgBetegnelser)) {
         newNavnOgBetegnelser = []
       }
-      newNavnOgBetegnelser.push({
-        navn: _newNavn,
-        betegnelsePåYtelse: _newBetegnelse
-      }as NavnOgBetegnelse)
+      newNavnOgBetegnelser.push(newNavOgBetegnelse)
       resetForm()
-      _setNavnOgBetegnelser(newNavnOgBetegnelser)
+      updateReplySed(`${target}.navnOgBetegnelser`, newNavnOgBetegnelser)
     }
   }
 
   const getErrorFor = (index: number, el: string): string | undefined => {
-    return index < 0 ? _validation[namespace + '-navnogbetegnelse-' + el]?.feilmelding : validation[namespace + '-navnogbetegnelse[' + index + ']-' + el]?.feilmelding
+    return index < 0
+      ? _validation[namespace + '-navnogbetegnelse-' + el]?.feilmelding
+      : validation[namespace + '-navnogbetegnelse[' + index + ']-' + el]?.feilmelding
   }
 
-  const renderNavnOgBetegnelse = (nob: NavnOgBetegnelse | null, index: number) => {
+  const renderRowOfNavnOgBetegnelse = (nob: NavnOgBetegnelse | null, index: number) => {
     const key = nob ? getKey(nob) : 'new'
-    const candidateForDeletion = index < 0 ? false : !!key && _confirmDelete.indexOf(key) >= 0
-
+    const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
+    const idx = (index >= 0 ? '[' + index + ']' : '')
     return (
       <>
         <AlignStartRow className={classNames('slideInFromLeft')}>
           <Column>
-            <HighContrastInput
-              data-test-id={'c-' + namespace + '-navnogbetegnelse' + (index >= 0 ? '[' + index + ']' : '') + '-navn-text'}
+            <Input
               feil={getErrorFor(index, 'navn')}
-              id={'c-' + namespace + '-navnogbetegnelse' + (index >= 0 ? '[' + index + ']' : '') + '-navn-text'}
-              label={t('label:barnets-navn')}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNavn(e.target.value, index)}
-              placeholder={t('el:placeholder-input-default')}
+              namespace={namespace + '-navnogbetegnelse' + idx}
+              id='navn-text'
+              label={t('label:barnets-navn') + ' *'}
+              onChanged={(value: string) => setNavn(value, index)}
               value={index < 0 ? _newNavn : nob?.navn}
             />
           </Column>
           <Column>
-            <HighContrastInput
-              data-test-id={'c-' + namespace + '-navnogbetegnelse' + (index >= 0 ? '[' + index + ']' : '') + '-betegnelsepåytelse-text'}
+            <Input
               feil={getErrorFor(index, 'betegnelsepåytelse')}
-              id={'c-' + namespace + '-navnogbetegnelse' + (index >= 0 ? '[' + index + ']' : '') + '-betegnelsepåytelse-text'}
-              label={t('label:betegnelse-på-ytelse')}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBetegnelse(e.target.value, index)}
-              placeholder={t('el:placeholder-input-default')}
+              namespace={namespace + '-navnogbetegnelse' + idx}
+              id='betegnelse-text'
+              label={t('label:betegnelse-på-ytelse') + ' *'}
+              onChanged={(value: string) => setBetegnelse(value, index)}
               value={index < 0 ? _newBetegnelse : nob?.betegnelsePåYtelse}
             />
           </Column>
@@ -226,36 +259,38 @@ const Motregning: React.FC<MotregningProps> = ({
       <HighContrastPanel>
         <HighContrastRadioGroup
           className={classNames('slideInFromLeft')}
+          data-test-id={'c-' + namespace + '-anmodningEllerSvar-text'}
+          id={'c-' + namespace + '-anmodningEllerSvar-text'}
           legend={t('label:anmodning-om-motregning')}
-          feil={_validation[namespace + '-anmodning']?.feilmelding}
+          feil={validation[namespace + '-anmodningEllerSvar']?.feilmelding}
         >
           <HighContrastRadio
-            name={namespace + '-anmodning'}
-            checked={_anmodning === '1'}
+            name={'c-' + namespace + '-anmodningEllerSvar-text'}
+            checked={motregning?.anmodningEllerSvar === '1'}
             label={t('label:anmodning-om-motregning-barn')}
-            onClick={() => _setAnmodning('1')}
+            onClick={() => setAnmodningEllerSvar('1')}
           />
           <VerticalSeparatorDiv />
           <HighContrastRadio
-            name={namespace + '-anmodning'}
-            checked={_anmodning === '2'}
+            name={'c-' + namespace + '-anmodningEllerSvar-text'}
+            checked={motregning?.anmodningEllerSvar === '2'}
             label={t('label:anmodning-om-motregning-svar-barn')}
-            onClick={() => _setAnmodning('2')}
+            onClick={() => setAnmodningEllerSvar('2')}
           />
         </HighContrastRadioGroup>
         <VerticalSeparatorDiv />
-        {_navnOgBetegnelser.map(renderNavnOgBetegnelse)}
+        {motregning?.navnOgBetegnelser.map(renderRowOfNavnOgBetegnelse)}
         <hr />
         <VerticalSeparatorDiv />
         {_seeNewForm
-          ? renderNavnOgBetegnelse(null, -1)
+          ? renderRowOfNavnOgBetegnelse(null, -1)
           : (
             <Row className='slideInFromLeft'>
               <Column>
                 <HighContrastFlatknapp
                   mini
                   kompakt
-                  onClick={onAddNewClicked}
+                  onClick={() => _setSeeNewForm(true)}
                 >
                   <Add />
                   <HorizontalSeparatorDiv data-size='0.5' />
@@ -274,29 +309,28 @@ const Motregning: React.FC<MotregningProps> = ({
           style={{ animationDelay: '0.1s' }}
         >
           <Column>
-            <HighContrastInput
-              data-test-id={'c-' + namespace + '-amount-number'}
-              feil={_validation[+namespace + '-amount']?.feilmelding}
-              id={'c-' + namespace + '-amount-number'}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setAmount(e.target.value)}
-              value={_amount}
-              label={t('label:beløp')}
-              placeholder={t('el:placeholder-input-default')}
+            <Input
+              feil={validation[+namespace + '-beloep']?.feilmelding}
+              namespace={namespace}
+              id='beloep-number'
+              label={t('label:betegnelse-på-ytelse') + ' *'}
+              onChanged={setBeløp}
+              value={motregning?.beloep}
             />
           </Column>
           <Column>
             <CountrySelect
               ariaLabel={t('label:valuta')}
-              data-test-id={'c-' + namespace + '-currency-text'}
-              error={validation[namespace + '-currency']?.feilmelding}
+              data-test-id={'c-' + namespace + '-valuta-text'}
+              error={validation[namespace + '-valuta']?.feilmelding}
               highContrast={highContrast}
-              id={'c-' + namespace + '-currency-text'}
-              label={t('label:valuta')}
+              id={'c-' + namespace + '-valuta-text'}
+              label={t('label:valuta') + ' *'}
               locale='nb'
               menuPortalTarget={document.body}
-              onOptionSelected={(country: Country) => _setCurrency(country)}
+              onOptionSelected={setValuta}
               type='currency'
-              values={_currency}
+              values={_currencyData.findByValue(motregning?.valuta ?? '')}
             />
           </Column>
           <Column />
@@ -306,29 +340,18 @@ const Motregning: React.FC<MotregningProps> = ({
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: '0.2s' }}
         >
-          <Column>
-            <HighContrastInput
-              data-test-id={'c-' + namespace + '-startdato-date'}
-              id={'c-' + namespace + '-startdato-date'}
-              feil={_validation[namespace + '-startdato']?.feilmelding}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value)}
-              value={_startDato}
-              label={t('label:startdato') + ' (' + t('label:innvilgelse').toLowerCase() + ')'}
-              placeholder={t('el:placeholder-date-default')}
-            />
-          </Column>
-          <Column>
-            <HighContrastInput
-              data-test-id={'c-' + namespace + '-sluttdato-date'}
-              id={'c-' + namespace + '-sluttdato-date'}
-              feil={_validation[namespace + '-sluttdato']?.feilmelding}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value)}
-              value={_sluttDato}
-              label={t('label:sluttdato') + ' (' + t('label:innvilgelse').toLowerCase() + ')'}
-              placeholder={t('el:placeholder-date-default')}
-            />
-          </Column>
-          <Column />
+          <Period
+            key={'' + motregning?.startdato + motregning?.sluttdato}
+            namespace={namespace}
+            errorStartDato={validation[namespace + '-startdato']?.feilmelding}
+            errorSluttDato={validation[namespace + '-startdato']?.feilmelding}
+            labelStartDato={t('label:startdato') + ' (' + t('label:innvilgelse').toLowerCase() + ')'}
+            labelSluttDato={t('label:sluttdato') + ' (' + t('label:innvilgelse').toLowerCase() + ')'}
+            setStartDato={setStartDato}
+            setSluttDato={setSluttDato}
+            valueStartDato={motregning?.startdato}
+            valueSluttDato={motregning?.sluttdato}
+          />
         </AlignStartRow>
         <VerticalSeparatorDiv />
         <AlignStartRow
@@ -336,14 +359,13 @@ const Motregning: React.FC<MotregningProps> = ({
           style={{ animationDelay: '0.3s' }}
         >
           <Column data-flex='2'>
-            <HighContrastInput
-              data-test-id={'c-' + namespace + '-frequency-text'}
-              id={'c-' + namespace + '-frequency-text'}
-              feil={_validation[namespace + '-frequency']?.feilmelding}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setFrequency(e.target.value)}
-              value={_frequency}
-              label={t('label:periode-avgrensing')}
-              placeholder={t('el:placeholder-input-default')}
+            <Input
+              feil={validation[+namespace + '-avgrensing']?.feilmelding}
+              namespace={namespace}
+              id='avgrensing-text'
+              label={t('label:periode-avgrensing') + ' *'}
+              onChanged={setAvgrensing}
+              value={motregning?.avgrensing}
             />
           </Column>
           <Column />
@@ -354,14 +376,13 @@ const Motregning: React.FC<MotregningProps> = ({
           style={{ animationDelay: '0.4s' }}
         >
           <Column data-flex='2'>
-            <HighContrastInput
-              data-test-id={'c-' + namespace + '-receiver-text'}
-              id={'c-' + namespace + '-receiver-text'}
-              feil={_validation[namespace + '-receiver']?.feilmelding}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setReceiver(e.target.value)}
-              value={_receiver}
-              label={t('label:mottakers-navn')}
-              placeholder={t('el:placeholder-input-default')}
+            <Input
+              feil={validation[+namespace + '-mottakersNavn']?.feilmelding}
+              namespace={namespace}
+              id='mottakersNavn-text'
+              label={t('label:periode-mottakersNavn') + ' *'}
+              onChanged={setMottakersNavn}
+              value={motregning?.mottakersNavn}
             />
           </Column>
           <Column />
@@ -373,24 +394,21 @@ const Motregning: React.FC<MotregningProps> = ({
         >
           <Column data-flex='2'>
             <TextAreaDiv>
-              <HighContrastTextArea
+              <TextArea
                 className={classNames({
-                  'skjemaelement__input--harFeil': validation[namespace + '-grunner']?.feilmelding
+                  'skjemaelement__input--harFeil': validation[namespace + '-grunnerTilAnmodning']?.feilmelding
                 })}
-                data-test-id={'c-' + namespace + '-grunner-text'}
-                feil={validation[namespace + '-grunner']?.feilmelding}
-                id={'c-' + namespace + '-grunner-text'}
+                feil={validation[+namespace + '-grunnerTilAnmodning']?.feilmelding}
+                namespace={namespace}
+                id='grunnerTilAnmodning-text'
                 label={t('label:anmodning-grunner')}
-                maxLength={500}
-                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => _setGrunner(e.target.value)}
-                placeholder={t('el:placeholder-grunner-default')}
-                value={_grunner}
+                onChanged={setGrunnerTilAnmodning}
+                value={motregning?.grunnerTilAnmodning}
               />
             </TextAreaDiv>
           </Column>
           <Column />
         </AlignStartRow>
-
         <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
@@ -398,24 +416,21 @@ const Motregning: React.FC<MotregningProps> = ({
         >
           <Column data-flex='2'>
             <TextAreaDiv>
-              <HighContrastTextArea
+              <TextArea
                 className={classNames({
-                  'skjemaelement__input--harFeil': validation[namespace + '-ytterligereinformasjon']?.feilmelding
+                  'skjemaelement__input--harFeil': validation[namespace + '-ytterligereInfo']?.feilmelding
                 })}
-                data-test-id={'c-' + namespace + '-ytterligereinformasjon-text'}
-                feil={validation[namespace + '-ytterligereinformasjon']?.feilmelding}
-                id={'c-' + namespace + '-ytterligereinformasjon-text'}
+                feil={validation[+namespace + '-ytterligereInfo']?.feilmelding}
+                namespace={namespace}
+                id='ytterligereInfo-text'
                 label={t('label:ytterligere-informasjon')}
-                maxLength={500}
-                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => _setYtterligereInformasjon(e.target.value)}
-                placeholder={t('el:placeholder-input-default')}
-                value={_ytterligereInformasjon}
+                onChanged={setYtterligereInfo}
+                value={motregning?.ytterligereInfo}
               />
             </TextAreaDiv>
           </Column>
           <Column />
         </AlignStartRow>
-
       </HighContrastPanel>
     </PileDiv>
   )

@@ -11,14 +11,7 @@ import { Epost, ReplySed, Telefon, TelefonType } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { UndertekstBold } from 'nav-frontend-typografi'
-import {
-  Column,
-  HighContrastFlatknapp,
-  HighContrastInput,
-  HorizontalSeparatorDiv,
-  Row,
-  VerticalSeparatorDiv
-} from 'nav-hoykontrast'
+import { Column, HighContrastFlatknapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
@@ -237,7 +230,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
               feil={getErrorFor(index, 'telefon', 'nummer')}
               namespace={namespaceTelefon + idx}
               id='nummer-text'
-              label={''}
+              label=''
               onChanged={(value: string) => onNummerChanged(value, index)}
               value={index < 0 ? _newNummer : _t?.nummer}
             />
@@ -289,7 +282,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
               feil={getErrorFor(index, 'epost', 'adresse')}
               namespace={namespaceEpost + idx}
               id='adresse-text'
-              label={''}
+              label=''
               onChanged={(value: string) => onAdresseChanged(value, index)}
               value={index < 0 ? _newAdresse : e?.adresse}
             />

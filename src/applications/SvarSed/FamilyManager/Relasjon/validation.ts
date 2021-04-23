@@ -21,8 +21,8 @@ export const validateBarnetilhoerighet = (
     namespace,
     personName
   }: ValidationBarnetilhoerigheterProps
-): void => {
-  let generalFail: boolean = false
+): boolean => {
+  let hasErrors: boolean = false
   const idx = (!_.isNil(index) && index >= 0 ? '[' + index + ']' : '')
 
   if (!barnetilhorighet.relasjonTilPerson) {
@@ -30,7 +30,7 @@ export const validateBarnetilhoerighet = (
       feilmelding: t('message:validation-noRelationForPerson', { person: personName }),
       skjemaelementId: 'c-' + namespace + idx + '-relasjonTilPerson-text'
     } as FeiloppsummeringFeil
-    generalFail = true
+    hasErrors = true
   }
 
   if (!barnetilhorighet.relasjonType) {
@@ -38,26 +38,22 @@ export const validateBarnetilhoerighet = (
       feilmelding: t('message:validation-noRelationTypeForPerson', { person: personName }),
       skjemaelementId: 'c-' + namespace + idx + '-relasjonType-text'
     } as FeiloppsummeringFeil
-    generalFail = true
+    hasErrors = true
   }
 
-  validatePeriod(v, t, {
+  hasErrors = hasErrors && validatePeriod(v, t, {
     period: barnetilhorighet.periode,
     index: index,
     namespace,
     personName
   })
 
-  if (v[namespace + idx + '-startdato'] || v[namespace + idx + '-sluttdato']) {
-    generalFail = true
-  }
-
   if (['ja', 'nei'].indexOf(barnetilhorighet.erDeltForeldreansvar) < 0) {
     v[namespace + idx + '-erDeltForeldreansvar'] = {
       feilmelding: t('message:validation-noAnswerForPerson', { person: personName }),
       skjemaelementId: 'c-' + namespace + idx + '-erDeltForeldreansvar-text'
     } as FeiloppsummeringFeil
-    generalFail = true
+    hasErrors = true
   }
 
   if (['ja', 'nei'].indexOf(barnetilhorighet.borIBrukersHushold) < 0) {
@@ -65,7 +61,7 @@ export const validateBarnetilhoerighet = (
       feilmelding: t('message:validation-noAnswerForPerson', { person: personName }),
       skjemaelementId: 'c-' + namespace + idx + '-borIBrukersHushold-text'
     } as FeiloppsummeringFeil
-    generalFail = true
+    hasErrors = true
   }
 
   if (['ja', 'nei'].indexOf(barnetilhorighet.borIEktefellesHushold) < 0) {
@@ -73,7 +69,7 @@ export const validateBarnetilhoerighet = (
       feilmelding: t('message:validation-noAnswerForPerson', { person: personName }),
       skjemaelementId: 'c-' + namespace + idx + '-borIEktefellesHushold-text'
     } as FeiloppsummeringFeil
-    generalFail = true
+    hasErrors = true
   }
 
   if (['ja', 'nei'].indexOf(barnetilhorighet.borIAnnenPersonsHushold) < 0) {
@@ -81,7 +77,7 @@ export const validateBarnetilhoerighet = (
       feilmelding: t('message:validation-noAnswerForPerson', { person: personName }),
       skjemaelementId: 'c-' + namespace + idx + '-borIAnnenPersonsHushold-text'
     } as FeiloppsummeringFeil
-    generalFail = true
+    hasErrors = true
   }
 
   if (['ja', 'nei'].indexOf(barnetilhorighet.borPaaInstitusjon) < 0) {
@@ -89,10 +85,10 @@ export const validateBarnetilhoerighet = (
       feilmelding: t('message:validation-noAnswerForPerson', { person: personName }),
       skjemaelementId: 'c-' + namespace + idx + '-borPaaInstitusjon-text'
     } as FeiloppsummeringFeil
-    generalFail = true
+    hasErrors = true
   }
 
-  if (generalFail) {
+  if (hasErrors) {
     const namespaceBits = namespace.split('-')
     namespaceBits[0] = 'person'
     const personNamespace = namespaceBits[0] + '-' + namespaceBits[1]
@@ -100,6 +96,7 @@ export const validateBarnetilhoerighet = (
     v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }
+  return hasErrors
 }
 
 export const validateBarnetilhoerigheter = (
@@ -108,8 +105,10 @@ export const validateBarnetilhoerigheter = (
   barnetilhorigheter: Array<Barnetilhoerighet>,
   namespace: string,
   personName: string
-): void => {
+): boolean => {
+  let hasErrors: boolean = false
   barnetilhorigheter?.forEach((barnetilhorighet: Barnetilhoerighet, index: number) => {
-    validateBarnetilhoerighet(validation, t, { barnetilhorighet, index, namespace, personName })
+    hasErrors = hasErrors && validateBarnetilhoerighet(validation, t, { barnetilhorighet, index, namespace, personName })
   })
+  return hasErrors
 }

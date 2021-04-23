@@ -202,6 +202,24 @@ export interface Barnetilhoerighet {
   periode: Periode
 }
 
+export interface NavnOgBetegnelse {
+  navn: string
+  betegnelsePåYtelse: string
+}
+
+export interface FormalMotregning {
+  anmodningEllerSvar: string
+  navnOgBetegnelser: Array<NavnOgBetegnelse>
+  beloep: string
+  valuta: string
+  startdato: string
+  sluttdato: string
+  avgrensing: string
+  mottakersNavn: string
+  grunnerTilAnmodning: string
+  ytterligereInfo: string
+}
+
 export interface F002Sed extends FSed {
   annenPerson: Person
   barn: Array<{
@@ -236,21 +254,7 @@ export interface F002Sed extends FSed {
     }
   }
   formaalx?: {
-    motregning: {
-      anmodningEllerSvar: string
-      navnOgBetegnelse: Array<{
-        barnetsNavn: string
-        betegnelsePåYtelse: string
-      }>
-      beloep: string
-      valuta: string
-      startdato: string
-      sluttdato: string
-      avgrensing: string
-      mottakersNavn: string
-      grunnerTilAnmodning: string
-      ytterligereInfo: string
-    }
+    motregning: FormalMotregning
   }
 }
 

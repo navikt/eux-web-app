@@ -11,7 +11,6 @@ import { Systemtittel, Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
   HighContrastFlatknapp,
-  HighContrastInput,
   HighContrastKnapp,
   HorizontalSeparatorDiv,
   VerticalSeparatorDiv

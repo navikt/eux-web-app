@@ -23,7 +23,8 @@ export const validatePeriod = (
     namespace,
     personName
   }: ValidationPeriodProps
-): void => {
+): boolean => {
+  let hasErrors: boolean = false
   const idx = (!_.isNil(index) && index >= 0 ? '[' + index + ']' : '')
   if (_.isEmpty(period.startdato)) {
     v[namespace + idx + '-startdato'] = {
@@ -32,6 +33,7 @@ export const validatePeriod = (
         ? t('message:validation-noDateForPerson', { person: personName })
         : t('message:validation-noDate')
     } as FeiloppsummeringFeil
+    hasErrors = true
   }
 
   if (!_.isEmpty(period.startdato) && !period.startdato.match(datePattern)) {
@@ -41,6 +43,7 @@ export const validatePeriod = (
         ? t('message:validation-invalidDateForPerson', { person: personName })
         : t('message:validation-invalidDate')
     } as FeiloppsummeringFeil
+    hasErrors = true
   }
 
   if (!_.isEmpty(period.sluttdato) && !period.sluttdato!.match(datePattern)) {
@@ -50,6 +53,7 @@ export const validatePeriod = (
         ? t('message:validation-invalidDateForPerson', { person: personName })
         : t('message:validation-invalidDate')
     } as FeiloppsummeringFeil
+    hasErrors = true
   }
 
   if (!_.isEmpty(period.startdato) && !_.isEmpty(period.sluttdato) &&
@@ -59,5 +63,7 @@ export const validatePeriod = (
       skjemaelementId: 'c-' + namespace + idx + '-sluttdato-date',
       feilmelding: t('message:validation-endDateBeforeStartDate')
     } as FeiloppsummeringFeil
+    hasErrors = true
   }
+  return hasErrors
 }

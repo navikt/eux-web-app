@@ -1,6 +1,7 @@
 import { validatePeriod } from 'components/Period/validation'
 import { FamilieRelasjon } from 'declarations/sed'
 import { Validation } from 'declarations/types'
+import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
 
@@ -20,58 +21,44 @@ export const validateFamilierelasjon = (
     namespace,
     personName
   }: ValidationFamilierelasjonProps
-): void => {
-  let value: FeiloppsummeringFeil | undefined
-  let generalFail: boolean = false
+): boolean => {
+  let hasErrors: boolean = false
   const idx = (index < 0 ? '' : '[' + index + ']')
 
-  validatePeriod(v, t, {
+  hasErrors = hasErrors && validatePeriod(v, t, {
     period: familierelasjon.periode,
     index,
     namespace,
     personName
   })
 
-  if (v[namespace + idx + '-startdato']) {
-    generalFail = true
-  }
-
   if (familierelasjon.relasjonType === 'ANNEN') {
-    value = (familierelasjon.annenRelasjonPersonNavn)
-      ? undefined
-      : {
+    if (_.isEmpty(familierelasjon.annenRelasjonPersonNavn)) {
+      v[namespace + idx + '-annenrelasjonpersonnavn'] = {
         feilmelding: t('message:validation-noNameToPerson', { person: personName }),
         skjemaelementId: 'c-' + namespace + idx + '-annenrelasjonpersonnavn-text'
       } as FeiloppsummeringFeil
-    v[namespace + idx + '-annenrelasjonpersonnavn'] = value
-    if (value) {
-      generalFail = true
+      hasErrors = true
     }
 
-    value = (familierelasjon.annenRelasjonDato)
-      ? undefined
-      : {
+    if (_.isEmpty(familierelasjon.annenRelasjonDato)) {
+      v[namespace + idx + '-annenrelasjondato'] = {
         feilmelding: t('message:validation-noRelationDateForPerson', { person: personName }),
         skjemaelementId: 'c-' + namespace + idx + '-annenrelasjondato-date'
       } as FeiloppsummeringFeil
-    v[namespace + idx + '-annenrelasjondato'] = value
-    if (value) {
-      generalFail = true
+      hasErrors = true
     }
 
-    value = (familierelasjon.borSammen)
-      ? undefined
-      : {
+    if (_.isEmpty(familierelasjon.borSammen)) {
+      v[namespace + idx + '-borsammen'] = {
         feilmelding: t('message:validation-noBoSammen', { person: personName }),
         skjemaelementId: 'c-' + namespace + idx + '-borsammen-text'
       } as FeiloppsummeringFeil
-    v[namespace + idx + '-borsammen'] = value
-    if (value) {
-      generalFail = true
+      hasErrors = true
     }
   }
 
-  if (generalFail) {
+  if (hasErrors) {
     const namespaceBits = namespace.split('-')
     namespaceBits[0] = 'person'
     const personNamespace = namespaceBits[0] + '-' + namespaceBits[1]
@@ -79,6 +66,7 @@ export const validateFamilierelasjon = (
     v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }
+  return hasErrors
 }
 
 export const validateFamilierelasjoner = (
@@ -87,13 +75,15 @@ export const validateFamilierelasjoner = (
   familierelasjoner: Array<FamilieRelasjon>,
   namespace: string,
   personName: string
-): void => {
+): boolean => {
+  let hasErrors: boolean = false
   familierelasjoner?.forEach((familierelasjon: FamilieRelasjon, index: number) => {
-    validateFamilierelasjon(validation, t, {
+    hasErrors = hasErrors && validateFamilierelasjon(validation, t, {
       familierelasjon,
       index,
       namespace,
       personName
     })
   })
+  return hasErrors
 }

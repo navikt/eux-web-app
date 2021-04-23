@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next'
 import { validateGrunnlagForBosetting, ValidationGrunnlagForBosettingProps } from './validation'
 import {
   Column,
-  HighContrastFlatknapp, ,
+  HighContrastFlatknapp,
   HorizontalSeparatorDiv,
   Row,
   VerticalSeparatorDiv
