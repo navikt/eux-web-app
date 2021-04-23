@@ -153,10 +153,9 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
             <DateInput
               error={getErrorFor(i, 'fradato')}
               namespace={namespace + idx + '-fradato'}
-              index={i}
               key={i < 0 ? _newFradato : s!.fradato}
               label=''
-              setDato={onFradatoChanged}
+              setDato={(date: string) => onFradatoChanged(date, i)}
               value={i < 0 ? _newFradato : s!.fradato}
             />
           </Column>

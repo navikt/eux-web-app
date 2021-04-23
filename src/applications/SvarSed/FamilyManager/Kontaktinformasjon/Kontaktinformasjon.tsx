@@ -2,6 +2,7 @@ import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import useAddRemove from 'components/AddRemovePanel/useAddRemove'
+import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import useValidation from 'components/Validation/useValidation'
@@ -232,13 +233,13 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
         >
           <Column>
-            <HighContrastInput
-              data-test-id={'c-' + namespaceTelefon + idx + '-nummer-text'}
+            <Input
               feil={getErrorFor(index, 'telefon', 'nummer')}
-              id={'c-' + namespaceTelefon + idx + '-nummer-text'}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onNummerChanged(e.target.value, index)}
+              namespace={namespaceTelefon + idx}
+              id='nummer-text'
+              label={''}
+              onChanged={(value: string) => onNummerChanged(value, index)}
               value={index < 0 ? _newNummer : _t?.nummer}
-              placeholder={t('el:placeholder-input-default')}
             />
           </Column>
           <Column>
@@ -284,13 +285,13 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
         >
           <Column data-flex='2'>
-            <HighContrastInput
-              data-test-id={'c-' + namespaceTelefon + idx + '-adresse-text'}
+            <Input
               feil={getErrorFor(index, 'epost', 'adresse')}
-              id={'c-' + namespaceTelefon + idx + '-adresse-text'}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onAdresseChanged(e.target.value, index)}
+              namespace={namespaceEpost + idx}
+              id='adresse-text'
+              label={''}
+              onChanged={(value: string) => onAdresseChanged(value, index)}
               value={index < 0 ? _newAdresse : e?.adresse}
-              placeholder={t('el:placeholder-input-default')}
             />
           </Column>
           <Column>

@@ -1,5 +1,6 @@
 import Add from 'assets/icons/Add'
 import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
+import Input from 'components/Forms/Input'
 import Period, { toFinalDateFormat } from 'components/Period/Period'
 import { AlignStartRow } from 'components/StyledComponents'
 import useValidation from 'components/Validation/useValidation'
@@ -173,14 +174,14 @@ const Ansatt: React.FC<AnsattProps> = ({
     setNewSluttDato(dato)
   }
 
-  const onOrgnrChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onOrgnrChanged = (newOrg: string) => {
     resetValidation(namespace + '-orgnr')
-    setNewOrgnr(e.target.value)
+    setNewOrgnr(newOrg)
   }
 
-  const onNameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onNameChanged = (newName: string) => {
     resetValidation(namespace + '-navn')
-    setNewNavn(e.target.value)
+    setNewNavn(newName)
   }
 
   useEffect(() => {
@@ -269,24 +270,22 @@ const Ansatt: React.FC<AnsattProps> = ({
             <VerticalSeparatorDiv data-size='0.5' />
             <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
               <Column>
-                <HighContrastInput
-                  data-test-id={'c-' + namespace + '-orgnr-text'}
+                <Input
                   feil={_validation[namespace + '-orgnr']?.feilmelding}
-                  id={'c-' + namespace + '-orgnr-text'}
+                  namespace={namespace}
+                  id='orgnr-text'
                   label={t('label:orgnr')}
-                  onChange={onOrgnrChanged}
-                  placeholder={t('el:placeholder-input-default')}
+                  onChanged={onOrgnrChanged}
                   value={_newOrgnr}
                 />
               </Column>
               <Column>
-                <HighContrastInput
-                  data-test-id={'c-' + namespace + '-navn-text'}
+                <Input
                   feil={_validation[namespace + '-navn']?.feilmelding}
-                  id={'c-' + namespace + '-navn-text'}
+                  namespace={namespace}
+                  id='navn-text'
                   label={t('label:navn')}
-                  onChange={onNameChanged}
-                  placeholder={t('el:placeholder-input-default')}
+                  onChanged={onNameChanged}
                   value={_newNavn}
                 />
               </Column>

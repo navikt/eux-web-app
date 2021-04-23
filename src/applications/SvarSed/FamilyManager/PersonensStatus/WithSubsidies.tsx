@@ -2,6 +2,7 @@ import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import useAddRemove from 'components/AddRemovePanel/useAddRemove'
+import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { AlignStartRow } from 'components/StyledComponents'
 import useValidation from 'components/Validation/useValidation'
@@ -190,23 +191,23 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
       <div className={classNames('slideInFromLeft')}>
         <AlignStartRow>
           <Column>
-            <HighContrastInput
-              data-test-id={'c-' + namespace + idx + '-startdato-date'}
+            <Input
               feil={getErrorFor(i, 'startdato')}
-              id={'c-' + namespace + '[' + i + ']-startdato-date'}
+              namespace={namespace + idx}
+              id='startdato-date'
               label={t('label:startdato')}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value, i)}
+              onChanged={(value: string) => setStartDato(value, i)}
               placeholder={t('el:placeholder-date-default')}
               value={i < 0 ? _newStartDato : p?.periode.startdato}
             />
           </Column>
           <Column>
-            <HighContrastInput
-              data-test-id={'c-' + namespace + idx + '-sluttdato-date'}
+            <Input
               feil={getErrorFor(i, 'sluttdato')}
-              id={'c-' + namespace + idx + '-sluttdato-date'}
+              namespace={namespace + idx}
+              id='sluttdato-date'
               label={t('label:sluttdato')}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value, i)}
+              onChanged={(value: string) => setSluttDato(value, i)}
               placeholder={t('el:placeholder-date-default')}
               value={i < 0 ? _newSluttDato : p?.periode.sluttdato}
             />

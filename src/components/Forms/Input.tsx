@@ -1,8 +1,9 @@
-import { HighContrastInput } from 'nav-hoykontrast'
+import { HighContrastInput, HighContrastTextArea } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 export interface InputProps {
+  className ?: string
   feil: string | undefined
   namespace: string
   id: string
@@ -13,6 +14,7 @@ export interface InputProps {
   value: string | undefined
 }
 const Input: React.FC<InputProps> = ({
+  className,
   feil,
   namespace,
   id,
@@ -28,6 +30,7 @@ const Input: React.FC<InputProps> = ({
 
   return (
     <HighContrastInput
+      className={className}
       data-test-id={'c-' + namespace + '-' + id}
       feil={feil}
       id={'c-' + namespace + '-' + id}

@@ -81,7 +81,7 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
                 value: 'arbeidsforhold-5'
               }
             ]}
-            onChange={(e: any) => setArbeidsforhold(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setArbeidsforhold(e.target.value)}
           />
         </Column>
       </AlignStartRow>

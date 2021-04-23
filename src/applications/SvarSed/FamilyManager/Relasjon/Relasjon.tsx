@@ -33,17 +33,6 @@ const Relasjon: React.FC<RelasjonProps> = ({
   const barnetilhoerighet: Barnetilhoerighet | undefined = _.get(replySed, target)
   const namespace = `familymanager-${personID}-relasjon`
 
-  const [_newRelasjon, _setNewRelasjon] = useState<BarnRelasjon | undefined>(barnetilhoerighet?.relasjonTilPerson)
-  const [_newRelasjonType, _setNewRelasjonType] = useState<BarnRelasjonType | undefined>(barnetilhoerighet?.relasjonType)
-  const [_newSluttDato, _setNewSluttDato] = useState<string>(barnetilhoerighet?.periode.startdato ?? '')
-  const [_newStartDato, _setNewStartDato] = useState<string>(barnetilhoerighet?.periode.sluttdato ?? '')
-  const [_newErDeltForeldreansvar, _setNewErDeltForeldreansvar] = useState<JaNei | undefined>(barnetilhoerighet?.erDeltForeldreansvar)
-
-  const [_newQuestion1, _setNewQuestion1] = useState<JaNei | undefined>(barnetilhoerighet?.borIBrukersHushold)
-  const [_newQuestion2, _setNewQuestion2] = useState<JaNei | undefined>(barnetilhoerighet?.borIEktefellesHushold)
-  const [_newQuestion3, _setNewQuestion3] = useState<JaNei | undefined>(barnetilhoerighet?.borIAnnenPersonsHushold)
-  const [_newQuestion4, _setNewQuestion4] = useState<JaNei | undefined>(barnetilhoerighet?.borPaaInstitusjon)
-
   const relasjonTypeOptions: Options = [
     { label: t('el:option-relasjon-1'), value: '01' },
     { label: t('el:option-relasjon-2'), value: '02' },
@@ -56,7 +45,6 @@ const Relasjon: React.FC<RelasjonProps> = ({
   ]
 
   const setRelasjon = (barnRelasjon: BarnRelasjon) => {
-    _setNewRelasjon(barnRelasjon)
     updateReplySed(`${target}.relasjonTilPerson`, barnRelasjon)
     if (validation[namespace + '-relasjonTilPerson']) {
       resetValidation(namespace + '-relasjonTilPerson')
@@ -64,7 +52,6 @@ const Relasjon: React.FC<RelasjonProps> = ({
   }
 
   const setRelasjonType = (barnRelasjonType: BarnRelasjonType) => {
-    _setNewRelasjonType(barnRelasjonType)
     updateReplySed(`${target}.relasjonType`, barnRelasjonType)
     if (validation[namespace + '-relasjonType']) {
       resetValidation(namespace + '-relasjonType')
@@ -72,7 +59,6 @@ const Relasjon: React.FC<RelasjonProps> = ({
   }
 
   const setStartDato = (dato: string) => {
-    _setNewStartDato(dato)
     updateReplySed(`${target}.periode.startdato`, dato)
     if (validation[namespace + '-startdato']) {
       resetValidation(namespace + '-startdato')
@@ -80,7 +66,6 @@ const Relasjon: React.FC<RelasjonProps> = ({
   }
 
   const setSluttDato = (dato: string) => {
-    _setNewSluttDato(dato)
     let newPerioder: any = _.cloneDeep(barnetilhoerighet?.periode)
     if (!newPerioder) {
       newPerioder = {}
@@ -99,7 +84,6 @@ const Relasjon: React.FC<RelasjonProps> = ({
   }
 
   const setErDeltForeldreansvar = (erDeltForeldreansvar: JaNei) => {
-    _setNewErDeltForeldreansvar(erDeltForeldreansvar)
     updateReplySed(`${target}.erDeltForeldreansvar`, erDeltForeldreansvar)
     if (validation[namespace + '-erDeltForeldreansvar']) {
       resetValidation(namespace + '-erDeltForeldreansvar')
@@ -107,7 +91,6 @@ const Relasjon: React.FC<RelasjonProps> = ({
   }
 
   const setQuestion1 = (svar: JaNei) => {
-    _setNewQuestion1(svar)
     updateReplySed(`${target}.borIBrukersHushold`, svar)
     if (validation[namespace + '-borIBrukersHushold']) {
       resetValidation(namespace + '-borIBrukersHushold')
@@ -115,7 +98,6 @@ const Relasjon: React.FC<RelasjonProps> = ({
   }
 
   const setQuestion2 = (svar: JaNei) => {
-    _setNewQuestion2(svar)
     updateReplySed(`${target}.borIEktefellesHushold`, svar)
     if (validation[namespace + '-borIEktefellesHushold']) {
       resetValidation(namespace + '-borIEktefellesHushold')
@@ -123,7 +105,6 @@ const Relasjon: React.FC<RelasjonProps> = ({
   }
 
   const setQuestion3 = (svar: JaNei) => {
-    _setNewQuestion3(svar)
     updateReplySed(`${target}.borIAnnenPersonsHushold`, svar)
     if (validation[namespace + '-borIAnnenPersonsHushold']) {
       resetValidation(namespace + '-borIAnnenPersonsHushold')
@@ -131,7 +112,6 @@ const Relasjon: React.FC<RelasjonProps> = ({
   }
 
   const setQuestion4 = (svar: JaNei) => {
-    _setNewQuestion4(svar)
     updateReplySed(`${target}.borPaaInstitusjon`, svar)
     if (validation[namespace + '-borPaaInstitusjon']) {
       resetValidation(namespace + '-borPaaInstitusjon')
@@ -147,7 +127,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
       <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column data-flex='2'>
           <HighContrastRadioPanelGroup
-            checked={_newRelasjon}
+            checked={barnetilhoerighet?.relasjonTilPerson}
             data-no-border
             data-test-id={'c-' + namespace + '-relasjonTilPerson-text'}
             feil={validation[namespace + '-relasjonTilPerson']?.feilmelding}
@@ -158,11 +138,11 @@ const Relasjon: React.FC<RelasjonProps> = ({
               { label: t('label:søker'), value: '01' },
               { label: t('label:avdød'), value: '02' }
             ]}
-            onChange={(e: any) => setRelasjon(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRelasjon(e.target.value as BarnRelasjon)}
           />
           <VerticalSeparatorDiv data-size='0.25' />
           <HighContrastRadioPanelGroup
-            checked={_newRelasjon}
+            checked={barnetilhoerighet?.relasjonTilPerson}
             data-no-border
             data-test-id={'c-' + namespace + '-relasjonTilPerson-text'}
             feil={validation[namespace + '-relasjonTilPerson']?.feilmelding}
@@ -172,7 +152,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
               { label: t('label:partner'), value: '03' },
               { label: t('label:annen-person'), value: '04' }
             ]}
-            onChange={(e: any) => setRelasjon(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRelasjon(e.target.value as BarnRelasjon)}
           />
         </Column>
         <Column />
@@ -190,8 +170,8 @@ const Relasjon: React.FC<RelasjonProps> = ({
             onChange={(e) => setRelasjonType(e.value)}
             options={relasjonTypeOptions}
             placeholder={t('el:placeholder-select-default')}
-            selectedValue={_.find(relasjonTypeOptions, b => b.value === _newRelasjonType)}
-            defaultValue={_.find(relasjonTypeOptions, b => b.value === _newRelasjonType)}
+            selectedValue={_.find(relasjonTypeOptions, b => b.value === barnetilhoerighet?.relasjonType)}
+            defaultValue={_.find(relasjonTypeOptions, b => b.value === barnetilhoerighet?.relasjonType)}
           />
         </Column>
         <Column />
@@ -203,14 +183,14 @@ const Relasjon: React.FC<RelasjonProps> = ({
       <VerticalSeparatorDiv />
       <Row className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
         <Period
-          key={'' + _newStartDato + _newSluttDato}
+          key={'' + barnetilhoerighet?.periode.startdato + barnetilhoerighet?.periode.startdato}
           namespace={namespace}
           errorStartDato={validation[namespace + '-startdato']?.feilmelding}
           errorSluttDato={validation[namespace + '-sluttdato']?.feilmelding}
           setStartDato={setStartDato}
           setSluttDato={setSluttDato}
-          valueStartDato={_newStartDato}
-          valueSluttDato={_newSluttDato}
+          valueStartDato={barnetilhoerighet?.periode.startdato ?? ''}
+          valueSluttDato={barnetilhoerighet?.periode.startdato ?? ''}
         />
         <Column />
       </Row>
@@ -218,7 +198,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
       <Row className='slideInFromLeft' style={{ animationDelay: '0.5s' }}>
         <Column>
           <HighContrastRadioPanelGroup
-            checked={_newErDeltForeldreansvar}
+            checked={barnetilhoerighet?.erDeltForeldreansvar}
             data-no-border
             data-test-id={'c-' + namespace + '-erDeltForeldreansvar-text'}
             feil={validation[namespace + '-erDeltForeldreansvar']?.feilmelding}
@@ -229,7 +209,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
               { label: t('label:ja'), value: 'ja' },
               { label: t('label:nei'), value: 'nei' }
             ]}
-            onChange={(e: any) => setErDeltForeldreansvar(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setErDeltForeldreansvar(e.target.value as JaNei)}
           />
         </Column>
         <Column />
@@ -246,7 +226,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
         </Column>
         <Column>
           <HighContrastRadioPanelGroup
-            checked={_newQuestion1}
+            checked={barnetilhoerighet?.borIBrukersHushold}
             data-no-border
             data-test-id={'c-' + namespace + '-borIBrukersHushold-text'}
             feil={validation[namespace + '-borIBrukersHushold']?.feilmelding}
@@ -256,7 +236,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
               { label: t('label:ja'), value: 'ja' },
               { label: t('label:nei'), value: 'nei' }
             ]}
-            onChange={(e: any) => setQuestion1(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestion1(e.target.value as JaNei)}
           />
         </Column>
       </AlignCenterRow>
@@ -269,7 +249,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
         </Column>
         <Column>
           <HighContrastRadioPanelGroup
-            checked={_newQuestion2}
+            checked={barnetilhoerighet?.borIEktefellesHushold}
             data-no-border
             data-test-id={'c-' + namespace + '-borIEktefellesHushold-text'}
             feil={validation[namespace + '-borIEktefellesHushold']?.feilmelding}
@@ -279,7 +259,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
               { label: t('label:ja'), value: 'ja' },
               { label: t('label:nei'), value: 'nei' }
             ]}
-            onChange={(e: any) => setQuestion2(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestion2(e.target.value as JaNei)}
           />
         </Column>
       </AlignCenterRow>
@@ -292,7 +272,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
         </Column>
         <Column>
           <HighContrastRadioPanelGroup
-            checked={_newQuestion3}
+            checked={barnetilhoerighet?.borIAnnenPersonsHushold}
             data-no-border
             data-test-id={'c-' + namespace + '-borIAnnenPersonsHushold-text'}
             feil={validation[namespace + '-borIAnnenPersonsHushold']?.feilmelding}
@@ -302,7 +282,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
               { label: t('label:ja'), value: 'ja' },
               { label: t('label:nei'), value: 'nei' }
             ]}
-            onChange={(e: any) => setQuestion3(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestion3(e.target.value as JaNei)}
           />
         </Column>
       </AlignCenterRow>
@@ -315,7 +295,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
         </Column>
         <Column>
           <HighContrastRadioPanelGroup
-            checked={_newQuestion4}
+            checked={barnetilhoerighet?.borPaaInstitusjon}
             data-no-border
             data-test-id={'c-' + namespace + '-borPaaInstitusjon-text'}
             feil={validation[namespace + '-borPaaInstitusjon']?.feilmelding}
@@ -325,7 +305,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
               { label: t('label:ja'), value: 'ja' },
               { label: t('label:nei'), value: 'nei' }
             ]}
-            onChange={(e: any) => setQuestion4(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestion4(e.target.value as JaNei)}
           />
         </Column>
       </AlignCenterRow>

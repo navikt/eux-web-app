@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import useAddRemove from 'components/AddRemovePanel/useAddRemove'
 import DateInput from 'components/Forms/DateInput'
+import TextArea from 'components/Forms/TextArea'
 import Period from 'components/Period/Period'
 import { AlignStartRow, PaddedDiv, TextAreaDiv } from 'components/StyledComponents'
 import useValidation from 'components/Validation/useValidation'
@@ -11,17 +12,16 @@ import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
 import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
+import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { validateGrunnlagForBosetting, ValidationGrunnlagForBosettingProps } from './validation'
 import {
   Column,
-  HighContrastFlatknapp,
-  HighContrastTextArea,
+  HighContrastFlatknapp, ,
   HorizontalSeparatorDiv,
   Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
-import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { validateGrunnlagForBosetting, ValidationGrunnlagForBosettingProps } from './validation'
 
 interface GrunnlagForBosettingProps {
   updateReplySed: (needle: string, value: any) => void
@@ -242,7 +242,6 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
           <DateInput
             error={validation[namespace + '-avsenderdato']?.feilmelding}
             namespace={namespace + '-avsenderdato'}
-            index={-1}
             key={flyttegrunn.datoFlyttetTilAvsenderlandet}
             label={t('label:flyttedato-til-avsenderlandet')}
             setDato={setAvsenderDato}
@@ -253,7 +252,6 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
           <DateInput
             error={validation[namespace + '-mottakerdato']?.feilmelding}
             namespace={namespace + '-mottakerdato'}
-            index={-1}
             key={flyttegrunn.datoFlyttetTilMottakerlandet}
             label={t('label:flyttedato-til-mottakerslandet')}
             setDato={setMottakerDato}
@@ -266,15 +264,13 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
         <Column data-flex='2'>
           <TextAreaDiv>
-            <HighContrastTextArea
+            <TextArea
               className={classNames({ 'skjemaelement__input--harFeil': validation[+namespace + '-elementer'] })}
-              data-test-id={'c-' + namespace + '-elementer-text'}
-              feil={validation[namespace + '-elementer']}
-              id={'c-' + namespace + '-elementer-text'}
+              feil={validation[namespace + '-elementer']?.feilmelding}
+              namespace={namespace}
+              id='elementer-text'
               label={t('label:elementter-i-personlig-situasjon')}
-              maxLength={500}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setElementsOfPersonalSituation(e.target.value)}
-              placeholder={t('el:placeholder-input-default')}
+              onChanged={setElementsOfPersonalSituation}
               value={flyttegrunn.personligSituasjon}
             />
           </TextAreaDiv>

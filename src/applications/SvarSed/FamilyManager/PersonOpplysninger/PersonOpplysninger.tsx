@@ -1,6 +1,7 @@
 import Add from 'assets/icons/Add'
 import Search from 'assets/icons/Search'
 import DateInput from 'components/Forms/DateInput'
+import Input from 'components/Forms/Input'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import { PersonInfo, Pin, ReplySed } from 'declarations/sed'
 import { Kodeverk, Person, Validation } from 'declarations/types'
@@ -52,16 +53,15 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   const norwegianPin = _.find(personInfo.pin, p => p.land === 'NO')
   const utenlandskPin = _.find(personInfo.pin, p => p.land !== 'NO')
 
-  const onFornavnChange = _.throttle((e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('updated')
-    updateReplySed(`${target}.fornavn`, e.target.value)
+  const onFornavnChange = (newFornavn: string) => {
+    updateReplySed(`${target}.fornavn`, newFornavn)
     if (validation[namespace + '-fornavn']) {
       resetValidation(namespace + '-fornavn')
     }
-  }, 500)
+  }
 
-  const onEtternavnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    updateReplySed(`${target}.etternavn`, e.target.value)
+  const onEtternavnChange = (newEtternavn: string) => {
+    updateReplySed(`${target}.etternavn`, newEtternavn)
     if (validation[namespace + '-etternavn']) {
       resetValidation(namespace + '-etternavn')
     }
@@ -74,18 +74,18 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
     }
   }
 
-  const onKjoennChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    updateReplySed(`${target}.kjoenn`, e.target.value)
+  const onKjoennChange = (newKjoenn: string) => {
+    updateReplySed(`${target}.kjoenn`, newKjoenn)
     if (validation[namespace + '-kjoenn']) {
       resetValidation(namespace + '-kjoenn')
     }
   }
 
-  const onUtenlandskPinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onUtenlandskPinChange = (newPin: string) => {
     const pin: Array<Pin> = _.cloneDeep(personInfo.pin)
     const utendanskPinIndex = _.findIndex(pin, p => p.land !== 'NO')
     if (utendanskPinIndex >= 0) {
-      pin[utendanskPinIndex].identifikator = e.target.value
+      pin[utendanskPinIndex].identifikator = newPin
     } else {
       pin.push({
         identifikator: e.target.value
@@ -113,14 +113,14 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
     }
   }
 
-  const onNorwegianPinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onNorwegianPinChange = (newPin: string) => {
     const pin: Array<Pin> = _.cloneDeep(personInfo.pin)
     const norwegianPinIndex = _.findIndex(pin, p => p.land === 'NO')
     if (norwegianPinIndex >= 0) {
-      pin[norwegianPinIndex].identifikator = e.target.value
+      pin[norwegianPinIndex].identifikator = newPin
     } else {
       pin.push({
-        identifikator: e.target.value
+        identifikator: newPin
       })
     }
     updateReplySed(`${target}.pin`, pin)
@@ -129,22 +129,22 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
     }
   }
 
-  const onFoedestedByChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    updateReplySed(`${target}.pinMangler.foedested.by`, e.target.value)
+  const onFoedestedByChange = (newFodestedBy: string) => {
+    updateReplySed(`${target}.pinMangler.foedested.by`, newFodestedBy)
     if (validation[namespace + '-foedested-by']) {
       resetValidation(namespace + '-foedested-by')
     }
   }
 
-  const onFoedestedRegionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    updateReplySed(`${target}.pinMangler.foedested.region`, e.target.value)
+  const onFoedestedRegionChange = (newFodestedRegion: string) => {
+    updateReplySed(`${target}.pinMangler.foedested.region`, newFodestedRegion)
     if (validation[namespace + '-foedested-region']) {
       resetValidation(namespace + '-foedested-region')
     }
   }
 
-  const onFoedestedLandChange = (land: string) => {
-    updateReplySed(`${target}.pinMangler.foedested.land`, land)
+  const onFoedestedLandChange = (newLand: string) => {
+    updateReplySed(`${target}.pinMangler.foedested.land`, newLand)
     if (validation[namespace + '-foedested-land']) {
       resetValidation(namespace + '-foedested-land')
     }
@@ -160,22 +160,22 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
     <PaddedDiv key={personID}>
       <AlignStartRow className='slideInFromLeft'>
         <Column>
-          <HighContrastInput
-            data-test-id={'c-' + namespace + '-fornavn-text'}
+          <Input
             feil={validation[namespace + '-fornavn']?.feilmelding}
-            id={'c-' + namespace + '-fornavn-text'}
+            namespace={namespace}
+            id='fornavn-text'
             label={t('label:fornavn') + ' *'}
-            onChange={onFornavnChange}
+            onChanged={onFornavnChange}
             value={personInfo.fornavn}
           />
         </Column>
         <Column>
-          <HighContrastInput
-            data-test-id={'c-' + namespace + '-etternavn-text'}
+          <Input
             feil={validation[namespace + '-etternavn']?.feilmelding}
-            id={'c-' + namespace + '-etternavn-text'}
+            namespace={namespace}
+            id='etternavn-text'
             label={t('label:etternavn') + ' *'}
-            onChange={onEtternavnChange}
+            onChanged={onEtternavnChange}
             value={personInfo.etternavn}
           />
         </Column>
@@ -213,12 +213,12 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
         <Column>
-          <HighContrastInput
-            data-test-id={'c-' + namespace + '-utenlandskpin-nummer-text'}
+          <Input
             feil={validation[namespace + '-utenlandskpin-nummer']?.feilmelding}
-            id={'c-' + namespace + '-utenlandskpin-nummer-text'}
+            namespace={namespace}
+            id='utenlandskpin-nummer-text'
             label={t('label:utenlandsk-pin')}
-            onChange={onUtenlandskPinChange}
+            onChanged={onUtenlandskPinChange}
             value={utenlandskPin?.identifikator}
           />
         </Column>
@@ -241,12 +241,12 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
         <Column>
-          <HighContrastInput
-            data-test-id={'c-' + namespace + '-norskpin-nummer-text'}
+          <Input
             feil={validation[namespace + '-norskpin-nummer']?.feilmelding}
-            id={'c-' + namespace + '-norskpin-nummer-text'}
+            namespace={namespace}
+            id='norskpin-nummer-text'
             label={t('label:norsk-fnr')}
-            onChange={onNorwegianPinChange}
+            onChanged={onNorwegianPinChange}
             value={norwegianPin?.identifikator}
           />
         </Column>
@@ -273,8 +273,8 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             ? (
               <Normaltekst>
                 {_.get(replySed, `${personID}.personInfo.fornavn`) + ' ' +
-            _.get(replySed, `${personID}.personInfo.etternavn`) + ' (' +
-            _.get(replySed, `${personID}.personInfo.kjoenn`) + ')'}
+                 _.get(replySed, `${personID}.personInfo.etternavn`) + ' (' +
+                 _.get(replySed, `${personID}.personInfo.kjoenn`) + ')'}
               </Normaltekst>
               )
             : (
@@ -297,22 +297,22 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         ? (
           <AlignStartRow className='slideInFromLeft'>
             <Column>
-              <HighContrastInput
-                data-test-id={'c-' + namespace + '-foedested-by-text'}
+              <Input
                 feil={validation[namespace + '-foedested-by']?.feilmelding}
-                id={'c-' + namespace + '-foedestedby-text'}
+                namespace={namespace}
+                id='foedested-by-text'
                 label={t('label:by')}
-                onChange={onFoedestedByChange}
+                onChanged={onFoedestedByChange}
                 value={personInfo.pinMangler?.foedested.by}
               />
             </Column>
             <Column>
-              <HighContrastInput
-                data-test-id={'c-' + namespace + '-foedested-region-text'}
+              <Input
                 feil={validation[namespace + '-foedested-region']?.feilmelding}
-                id={'c-' + namespace + '-foedested-region-text'}
+                namespace={namespace}
+                id='foedested-region-text'
                 label={t('label:region')}
-                onChange={onFoedestedRegionChange}
+                onChanged={onFoedestedRegionChange}
                 value={personInfo.pinMangler?.foedested.region}
               />
             </Column>
