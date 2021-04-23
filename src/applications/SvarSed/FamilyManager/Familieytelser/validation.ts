@@ -57,7 +57,7 @@ export const validateFamilieytelse = (
     hasErrors = true
   }
 
-  hasErrors = hasErrors && validatePeriod(v, t, {
+  const periodErrors: boolean = validatePeriod(v, t, {
     period: {
       startdato: motregning.startdato,
       sluttdato: motregning.sluttdato
@@ -65,6 +65,7 @@ export const validateFamilieytelse = (
     index: -1,
     namespace: namespace + idx
   })
+  hasErrors = hasErrors || periodErrors
 
   if (_.isEmpty(motregning.mottakersNavn)) {
     v[namespace + idx + '-mottakersNavn'] = {
@@ -84,9 +85,8 @@ export const validateFamilieytelse = (
 
   if (hasErrors) {
     const namespaceBits = namespace.split('-')
-    namespaceBits[0] = 'person'
     const personNamespace = namespaceBits[0] + '-' + namespaceBits[1]
-    const categoryNamespace = namespaceBits.join('-')
+    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
     v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }
@@ -102,7 +102,8 @@ export const validateFamilieytelser = (
 ): boolean => {
   let hasErrors: boolean = false
   motregninger?.forEach((motregning: Motregning, index: number) => {
-    hasErrors = hasErrors && validateFamilieytelse(validation, t, { motregning, index, namespace, personName })
+    const _errors: boolean = validateFamilieytelse(validation, t, { motregning, index, namespace, personName })
+    hasErrors = hasErrors || _errors
   })
   return hasErrors
 }

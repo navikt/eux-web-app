@@ -12,7 +12,7 @@ import { F002Sed, PersonInfo, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import Chevron from 'nav-frontend-chevron'
-import { Checkbox } from 'nav-frontend-skjema'
+import { Checkbox, FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   HighContrastFlatknapp,
@@ -23,7 +23,7 @@ import {
   themeKeys,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
@@ -181,6 +181,11 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
   const changePersonOption = (personID: string | undefined, menuOption: string) => {
     if (personID) {
       setEditCurrentPersonID(personID)
+      const alreadyEditingPerson = _.find(_editPersonIDs, _id => _id === personID) !== undefined
+      if (!alreadyEditingPerson) {
+        const newEditPersons = _editPersonIDs.concat(personID)
+        setEditPersonIDs(newEditPersons)
+      }
       if (personID !== 'familie') {
         const p = _.get(replySed, personID)
         const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
@@ -289,7 +294,7 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
           >
             <Chevron type={editing ? 'ned' : 'høyre'} />
             <HorizontalSeparatorDiv data-size='0.5' />
-            {validation['person-' + personId] && (
+            {validation['familymanager-' + personId] && (
               <>
                 <FilledRemoveCircle color='red' />
                 <HorizontalSeparatorDiv data-size='0.5' />
@@ -367,8 +372,8 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
                 })}
                 onClick={() => changePersonOption(personId, o.value)}
               >
-                {Object.prototype.hasOwnProperty.call(validation, 'person-' + personId + '-' + o.value) &&
-              (validation['person-' + personId + '-' + o.value] === undefined
+                {Object.prototype.hasOwnProperty.call(validation, 'familymanager-' + personId + '-' + o.value) &&
+              (validation['familymanager-' + personId + '-' + o.value] === undefined
                 ? <FilledCheckCircle color='green' />
                 : <FilledRemoveCircle color='red' />
               )}
@@ -380,6 +385,30 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
       </PersonsDiv>
     )
   }
+
+  const handleEvent = (e: any) => {
+    const feil: FeiloppsummeringFeil = e.detail
+    const namespaceBits = feil.skjemaelementId.split('-')
+    if (namespaceBits[1] === 'familymanager') {
+      const who = namespaceBits[2]
+      const menu = namespaceBits[3]
+      changePersonOption(who, menu)
+      setTimeout(() => {
+        var element = document.getElementById(feil.skjemaelementId)
+        element?.scrollIntoView({
+          behavior: 'smooth'
+        })
+        element?.focus()
+      }, 200)
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('feillenke', handleEvent)
+    return () => {
+      document.removeEventListener('feillenke', handleEvent)
+    }
+  }, [])
 
   return (
     <PileDiv>

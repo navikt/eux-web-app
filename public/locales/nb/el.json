@@ -84,6 +84,7 @@
   "placeholder-date-default": "DD.MM.ÅÅÅÅ",
   "placeholder-grunner-default": "Skriv inn...",
   "placeholder-input-default": "Skriv inn...",
+  "placeholder-textarea-default": "Skriv inn...",
   "placeholder-select-default": "Velg...",
   "placeholder-sed": "Skriv inn tekst til SED",
   "placeholder-text-to-sed": "Skriv inn tekst til SED",

@@ -1,5 +1,6 @@
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
+import Lenke from 'nav-frontend-lenker'
 import { Feiloppsummering, FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
@@ -31,9 +32,25 @@ const ValidationBox: React.FC<ValidationBoxProps> = ({
               .filter(v => v !== undefined)
               .filter(v => v?.feilmelding !== 'notnull')
               .map(v => ({
-                feilmelding: t(v!.feilmelding),
+                feilmelding: v!.feilmelding,
                 skjemaelementId: v!.skjemaelementId
               })) as Array<FeiloppsummeringFeil>}
+            customFeilRender={(item: FeiloppsummeringFeil) => (
+              <Lenke href={`#${item.skjemaelementId}`} onClick={(e) => {
+                e.preventDefault()
+                let el = document.getElementById(item.skjemaelementId)
+                if (!el) {
+                  document.dispatchEvent(new CustomEvent('feillenke', { detail: item }))
+                } else {
+                  el?.scrollIntoView({
+                    behavior: 'smooth'
+                  })
+                  el?.focus()
+                }
+              }}>
+                {item.feilmelding}
+              </Lenke>
+            )}
           />
         </Column>
         <HorizontalSeparatorDiv data-size='2' />

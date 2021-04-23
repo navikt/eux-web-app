@@ -1,12 +1,12 @@
 import { createSed, sendSeletedInntekt, setAllValidation, setReplySed } from 'actions/svarpased'
 import FamilyManager from 'applications/SvarSed/FamilyManager/FamilyManager'
 import Formaal from 'applications/SvarSed/Formaal/Formaal'
-import KravOmRefusjon from 'applications/SvarSed/KravOmRefusjon/KravOmRefusjon'
-import Motregning from 'applications/SvarSed/Motregning/Motregning'
-import ProsedyreVedUenighet from 'applications/SvarSed/ProsedyreVedUenighet/ProsedyreVedUenighet'
+import KravOmRefusjon from 'applications/SvarSed/Formaal/KravOmRefusjon/KravOmRefusjon'
+import Motregning from 'applications/SvarSed/Formaal/Motregning/Motregning'
+import ProsedyreVedUenighet from 'applications/SvarSed/Formaal/ProsedyreVedUenighet/ProsedyreVedUenighet'
 import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
 import SendSEDModal from 'applications/SvarSed/SendSEDModal/SendSEDModal'
-import Vedtak from 'applications/SvarSed/Vedtak/Vedtak'
+import Vedtak from 'applications/SvarSed/Formaal/Vedtak/Vedtak'
 import Attachments from 'applications/Vedlegg/Attachments/Attachments'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
@@ -43,6 +43,7 @@ import { SvarpasedState } from 'reducers/svarpased'
 import styled from 'styled-components'
 import { Item } from 'tabell'
 import { validateStep2, ValidationStep2Props } from './validation'
+import Kontoopplysning from 'applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning'
 
 const Step2Div = styled.div`
   padding: 0.5rem;
@@ -113,6 +114,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
   const [_previewFile, setPreviewFile] = useState<any | undefined>(undefined)
   const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
   const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
+  const [_viewKontoopplysninger, setViewKontoopplysninger] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationStep2Props>(validation, validateStep2)
 
   const showFamily = (): boolean => replySed?.sedType?.startsWith('F') || false
@@ -121,6 +123,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
   const showProsedyreVedUenighet = (): boolean => (replySed?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0)
   const showKravOmRefusjon = (): boolean => (replySed?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0)
   const showInntekt = (): boolean => replySed?.sedType === 'U004'
+  const showKontoopplysninger = (): boolean => _viewKontoopplysninger === true
 
   const sendReplySed = (): void => {
     if (replySed) {
@@ -302,6 +305,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
             replySed={replySed}
             resetValidation={_resetValidation}
             updateReplySed={updateReplySed}
+            seeKontoopplysninger={() => setViewKontoopplysninger(true)}
             validation={_validation}
           />
           <VerticalSeparatorDiv data-size='2' />
@@ -329,6 +333,12 @@ const Step2: React.FC<SvarPaSedProps> = ({
             onSelectedInntekt={onSelectedInntekt}
           />
         </Ekspanderbartpanel>
+      )}
+      {showKontoopplysninger() && (
+        <>
+          <Kontoopplysning highContrast={highContrast} replySed={replySed} validation={_validation} />
+          <VerticalSeparatorDiv data-size='2' />
+        </>
       )}
       <VerticalSeparatorDiv />
       <TextAreaDiv>

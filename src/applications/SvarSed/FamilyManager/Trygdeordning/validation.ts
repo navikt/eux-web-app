@@ -42,7 +42,7 @@ const validateGenericPeriode = (
   let hasErrors: boolean = false
   const extraNamespace = namespace + '-' + (index < 0 ? pageCategory : sedCategory)
 
-  hasErrors = hasErrors && validatePeriod(
+  let periodError: boolean = validatePeriod(
     v,
     t,
     {
@@ -52,12 +52,12 @@ const validateGenericPeriode = (
       personName: personName
     }
   )
+  hasErrors = hasErrors || periodError
 
   if (hasErrors) {
     const namespaceBits = namespace.split('-')
-    namespaceBits[0] = 'person'
     const personNamespace = namespaceBits[0] + '-' + namespaceBits[1]
-    const categoryNamespace = namespaceBits.join('-')
+    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
     v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }
@@ -117,7 +117,7 @@ export const validateFamilieytelserPeriode = (
   const extraNamespace = namespace + '-' + (index < 0 ? 'familieYtelse' : sedCategory)
   const idx = (index < 0 ? '' : '[' + index + ']')
 
-  hasErrors = hasErrors && validatePeriod(
+  let periodError: boolean = validatePeriod(
     v,
     t,
     {
@@ -127,6 +127,7 @@ export const validateFamilieytelserPeriode = (
       personName: personName
     }
   )
+  hasErrors = hasErrors || periodError
 
   if (!_.isEmpty(periode.pensjonstype)) {
     v[namespace + extraNamespace + idx + '-pensjonstype'] = {
@@ -138,9 +139,8 @@ export const validateFamilieytelserPeriode = (
 
   if (hasErrors) {
     const namespaceBits = namespace.split('-')
-    namespaceBits[0] = 'person'
     const personNamespace = namespaceBits[0] + '-' + namespaceBits[1]
-    const categoryNamespace = namespaceBits.join('-')
+    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
     v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }
@@ -158,11 +158,13 @@ export const validatePerioder = (
 ): boolean => {
   let hasErrors: boolean = false
   perioder?.forEach((periode: Periode | PensjonPeriode, index: number) => {
+    let _error: boolean
     if (sedCategory === 'perioderMedPensjon') {
-      hasErrors = hasErrors && validateFamilieytelserPeriode(v, t, { periode: (periode as PensjonPeriode), index, namespace, sedCategory, personName })
+      _error = validateFamilieytelserPeriode(v, t, { periode: (periode as PensjonPeriode), index, namespace, sedCategory, personName })
     } else {
-      hasErrors = hasErrors && validateGenericPeriode(v, t, { periode: (periode as Periode), index, namespace, personName }, pageCategory, sedCategory)
+      _error = validateGenericPeriode(v, t, { periode: (periode as Periode), index, namespace, personName }, pageCategory, sedCategory)
     }
+    hasErrors = hasErrors || _error
   })
   return hasErrors
 }
@@ -175,11 +177,18 @@ export const validateTrygdeordninger = (
   personName: string
 ): boolean => {
   let hasErrors: boolean = false
-  hasErrors = hasErrors && validatePerioder(v, t, 'perioderMedITrygdeordning', 'dekkede', perioderMap.perioderMedITrygdeordning, namespace, personName)
-  hasErrors = hasErrors && validatePerioder(v, t, 'perioderUtenforTrygdeordning', 'udekkede', perioderMap.perioderUtenforTrygdeordning, namespace, personName)
-  hasErrors = hasErrors && validatePerioder(v, t, 'perioderMedArbeid', 'familieYtelse', perioderMap.perioderMedArbeid, namespace, personName)
-  hasErrors = hasErrors && validatePerioder(v, t, 'perioderMedTrygd', 'familieYtelse', perioderMap.perioderMedTrygd, namespace, personName)
-  hasErrors = hasErrors && validatePerioder(v, t, 'perioderMedYtelser', 'familieYtelse', perioderMap.perioderMedYtelser, namespace, personName)
-  hasErrors = hasErrors && validatePerioder(v, t, 'perioderMedPensjon', 'familieYtelse', perioderMap.perioderMedPensjon, namespace, personName)
+  let _error: boolean
+  _error = validatePerioder(v, t, 'perioderMedITrygdeordning', 'dekkede', perioderMap.perioderMedITrygdeordning, namespace, personName)
+  hasErrors = hasErrors || _error
+  _error = validatePerioder(v, t, 'perioderUtenforTrygdeordning', 'udekkede', perioderMap.perioderUtenforTrygdeordning, namespace, personName)
+  hasErrors = hasErrors || _error
+  _error = validatePerioder(v, t, 'perioderMedArbeid', 'familieYtelse', perioderMap.perioderMedArbeid, namespace, personName)
+  hasErrors = hasErrors || _error
+  _error = validatePerioder(v, t, 'perioderMedTrygd', 'familieYtelse', perioderMap.perioderMedTrygd, namespace, personName)
+  hasErrors = hasErrors || _error
+  _error = validatePerioder(v, t, 'perioderMedYtelser', 'familieYtelse', perioderMap.perioderMedYtelser, namespace, personName)
+  hasErrors = hasErrors || _error
+  _error = validatePerioder(v, t, 'perioderMedPensjon', 'familieYtelse', perioderMap.perioderMedPensjon, namespace, personName)
+  hasErrors = hasErrors || _error
   return hasErrors
 }

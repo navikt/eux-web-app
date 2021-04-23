@@ -51,9 +51,8 @@ export const validateKontaktsinformasjonTelefon = (
 
   if (hasErrors) {
     const namespaceBits = namespace.split('-')
-    namespaceBits[0] = 'person'
     const personNamespace = namespaceBits[0] + '-' + namespaceBits[1]
-    const categoryNamespace = namespaceBits.join('-')
+    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
     v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }
@@ -91,9 +90,8 @@ export const validateKontaktsinformasjonEpost = (
 
   if (hasErrors) {
     const namespaceBits = namespace.split('-')
-    namespaceBits[0] = 'person'
     const personNamespace = namespaceBits[0] + '-' + namespaceBits[1]
-    const categoryNamespace = namespaceBits.join('-')
+    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
     v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }
@@ -109,7 +107,8 @@ export const validateKontaktsinformasjonTelefoner = (
 ): boolean => {
   let hasErrors: boolean = false
   telefoner?.forEach((telefon: Telefon, index: number) => {
-    hasErrors = hasErrors && validateKontaktsinformasjonTelefon(validation, t, { telefon, index, namespace, personName })
+    let _error: boolean = validateKontaktsinformasjonTelefon(validation, t, { telefon, index, namespace, personName })
+    hasErrors = hasErrors || _error
   })
   return hasErrors
 }
@@ -123,7 +122,8 @@ export const validateKontaktsinformasjonEposter = (
 ): boolean => {
   let hasErrors: boolean = false
   eposter?.forEach((epost: Epost, index: number) => {
-    hasErrors = hasErrors && validateKontaktsinformasjonEpost(validation, t, { epost, index, namespace, personName })
+    let _error: boolean = validateKontaktsinformasjonEpost(validation, t, { epost, index, namespace, personName })
+    hasErrors = hasErrors || _error
   })
   return hasErrors
 }

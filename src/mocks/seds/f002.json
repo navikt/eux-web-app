@@ -343,125 +343,24 @@
     "personInfo": {
       "fornavn": "Grandpa",
       "etternavn": "Simpson",
-      "kjoenn": "U",
-      "foedselsdato": "2012-01-01",
-      "statsborgerskap": [
-        {
-          "land": "NO"
-        },
-        {
-          "land": "SE"
-        }
-      ],
-      "pin": [
-        {
-          "land": "NO",
-          "sektor": "yrkesskade_og_yrkessykdom",
-          "identifikator": "10000000003",
-          "institusjonsid": "F002 annenPerson institusjons ID 1",
-          "institusjonsnavn": "F002 annenPerson institusjons navn 1"
-        },
-        {
-          "land": "SE",
-          "sektor": "yrkesskade_og_yrkessykdom",
-          "identifikator": "20000000003",
-          "institusjonsid": "F002 annenPerson institusjons ID 2",
-          "institusjonsnavn": "F002 annenPerson institusjons navn 2"
-        }
-      ],
-      "pinMangler": {
-        "etternavnVedFoedsel": "F002 annenPerson etternavnVedFoedsel",
-        "fornavnVedFoedsel": "F002 annenPerson fornavnVedFoedsel",
-        "foedested": {
-          "by": "F002 annenPerson foedested by",
-          "region": "F002 annenPerson foedested region",
-          "land": "NO"
-        },
-        "far": {
-          "fornavn": "F002 annenPerson  far fornavn",
-          "etternavnVedFoedsel": "F002 annenPerson far etternavnVedFoedsel"
-        },
-        "mor": {
-          "fornavn": "F002 annenPerson  mor fornavn",
-          "etternavnVedFoedsel": "F002 annenPerson mor etternavnVedFoedsel"
-        }
-      }
+      "kjoenn": "",
+      "foedselsdato": "",
+      "statsborgerskap": [],
+      "pin": []
     },
-    "adresser": [
-      {
-        "type": "bosted",
-        "gate": "F002 annenPerson adresse1 gate",
-        "postnummer": "F002 annenPerson adresse1 postnummer",
-        "by": "F002 annenPerson adresse1 by",
-        "land": "NO",
-        "bygning": "F002 annenPerson adresse1 bygning",
-        "region": "F002 annenPerson adresse1 region"
-      },
-      {
-        "type": "opphold",
-        "gate": "F002 annenPerson adresse2 gate",
-        "postnummer": "F002 annenPerson adresse2 postnummer",
-        "by": "F002 annenPerson adresse2 by",
-        "land": "NO",
-        "bygning": "F002 annenPerson adresse2 bygning",
-        "region": "F002 annenPerson adresse2 region"
-      }
-    ],
-    "epost": [
-      {
-        "adresse": "F002-annenPerson-Epost-1@nav.no"
-      },
-      {
-        "adresse": "F002-annenPerson-Epost-2@nav.no"
-      }
-    ],
-    "telefon": [
-      {
-        "type": "hjem",
-        "nummer": "+4790000005"
-      },
-      {
-        "type": "mobil",
-        "nummer": "+4790000006"
-      }
-    ],
-    "perioderMedArbeid": [
-    ],
-    "perioderMedTrygd": [
-    ],
-    "perioderMedITrygdeordning": [
-    ],
-    "perioderUtenforTrygdeordning": [
-    ],
-    "perioderMedYtelser": [
-    ],
-    "ikkeRettTilYtelser": {
-      "typeGrunn": "krav_ikke_framsatt",
-      "typeGrunnAnnen": "F002 annenPerson typeGrunnAnnen"
-    },
-    "perioderMedPensjon": [
-    ],
-    "flyttegrunn": {
-      "personligSituasjon": "F002 annenPerson personligSituasjon",
-      "perioder": [],
-      "datoFlyttetTilMottakerlandet": "2033-01-01",
-      "datoFlyttetTilAvsenderlandet": "2034-01-01"
-    },
-    "familierelasjoner": [
-      {
-        "relasjonType": "gift",
-        "relasjonInfo": "F002 annenPerson relasjonInfo",
-        "periode": {
-          "startdato": "2035-01-01",
-          "aapenPeriodeType": "åpen_sluttdato"
-        },
-        "borSammen": "ja",
-        "annenRelasjonType": "F002 annenPerson annenRelasjonType",
-        "annenRelasjonPersonNavn": "F002 annenPerson annenRelasjonPersonNavn",
-        "annenRelasjonDato": "F002 annenPerson annenRelasjonDato"
-      }
-    ],
-    "ytterligereInfo": "F002 annenPerson ytterligereInfo"
+    "adresser": [],
+    "epost": [],
+    "telefon": [],
+    "perioderMedArbeid": [],
+    "perioderMedTrygd": [],
+    "perioderMedITrygdeordning": [],
+    "perioderUtenforTrygdeordning": [],
+    "perioderMedYtelser": [],
+    "perioderMedPensjon": [],
+    "perioderSomAnsatt": [],
+    "perioderSomSelvstendig": [],
+    "familierelasjoner": [],
+    "ytterligereInfo": ""
   },
   "barn": [
     {

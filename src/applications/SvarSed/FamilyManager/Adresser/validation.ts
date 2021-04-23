@@ -66,9 +66,8 @@ export const validateAdresse = (
 
   if (hasErrors) {
     const namespaceBits = namespace.split('-')
-    namespaceBits[0] = 'person'
     const personNamespace = namespaceBits[0] + '-' + namespaceBits[1]
-    const categoryNamespace = namespaceBits.join('-')
+    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
     v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }
@@ -81,13 +80,16 @@ export const validateAdresser = (
   adresser: Array<Adresse>,
   namespace: string,
   personName: string
-): void => {
+): boolean => {
+  let hasErrors: boolean = false
   adresser?.forEach((adresse: Adresse, index: number) => {
-    validateAdresse(validation, t, {
+    const _errors: boolean = validateAdresse(validation, t, {
       adresse,
       index,
       namespace,
       personName
     })
+    hasErrors = hasErrors || _errors
   })
+  return hasErrors
 }

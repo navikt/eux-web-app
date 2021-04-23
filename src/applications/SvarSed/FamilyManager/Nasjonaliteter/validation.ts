@@ -62,9 +62,8 @@ export const validateNasjonalitet = (
 
   if (hasErrors) {
     const namespaceBits = namespace.split('-')
-    namespaceBits[0] = 'person'
     const personNamespace = namespaceBits[0] + '-' + namespaceBits[1]
-    const categoryNamespace = namespaceBits.join('-')
+    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
     v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }
@@ -80,7 +79,8 @@ export const validateNasjonaliteter = (
 ): boolean => {
   let hasErrors: boolean = false
   statsborgerskaper?.forEach((statsborgerskap: Statsborgerskap, index: number) => {
-    hasErrors = hasErrors && validateNasjonalitet(validation, t, { statsborgerskap, statsborgerskaper, index, namespace, personName })
+    let _error: boolean = validateNasjonalitet(validation, t, { statsborgerskap, statsborgerskaper, index, namespace, personName })
+    hasErrors = hasErrors || _error
   })
   return hasErrors
 }

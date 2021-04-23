@@ -42,7 +42,7 @@ export const validatePersonOpplysninger = (
   if (_.isEmpty(personInfo.foedselsdato)) {
     v[namespace + '-foedselsdato'] = {
       feilmelding: t('message:validation-noFoedselsdatoForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + '-foedselsdato-text'
+      skjemaelementId: 'c-' + namespace + '-foedselsdato-date'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -50,7 +50,7 @@ export const validatePersonOpplysninger = (
   if (!personInfo.foedselsdato.match(datePattern)) {
     v[namespace + '-foedselsdato'] = {
       feilmelding: t('message:validation-invalidFoedselsdatoForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + '-foedselsdato-text'
+      skjemaelementId: 'c-' + namespace + '-foedselsdato-date'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -89,9 +89,8 @@ export const validatePersonOpplysninger = (
 
   if (hasErrors) {
     const namespaceBits = namespace.split('-')
-    namespaceBits[0] = 'person'
     const personNamespace = namespaceBits[0] + '-' + namespaceBits[1]
-    const categoryNamespace = namespaceBits.join('-')
+    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
     v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }

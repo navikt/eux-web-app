@@ -16,6 +16,7 @@ import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
   HighContrastFlatknapp,
+  HighContrastLink,
   HighContrastPanel,
   HighContrastRadio,
   HighContrastRadioGroup,
@@ -31,6 +32,7 @@ export interface MotregningProps {
   highContrast: boolean
   replySed: ReplySed
   resetValidation: (key?: string) => void
+  seeKontoopplysninger: () => void
   updateReplySed: (needle: string, value: any) => void
   validation: Validation
 }
@@ -39,6 +41,7 @@ const Motregning: React.FC<MotregningProps> = ({
   highContrast,
   replySed,
   resetValidation,
+  seeKontoopplysninger,
   updateReplySed,
   validation
 }: MotregningProps): JSX.Element => {
@@ -65,7 +68,7 @@ const Motregning: React.FC<MotregningProps> = ({
   const setNavn = (newNavn: string, index: number) => {
     if (index < 0) {
       _setNewNavn(newNavn)
-      _resetValidation(namespace + '-navnOgBetegnelser-navn')
+      _resetValidation(namespace + '-navogbe-navn')
     } else {
       let newNavnOgBetegnelser = _.cloneDeep(motregning?.navnOgBetegnelser)
       if (!newNavnOgBetegnelser) {
@@ -73,8 +76,8 @@ const Motregning: React.FC<MotregningProps> = ({
       }
       newNavnOgBetegnelser[index].navn = newNavn
       updateReplySed(`${target}.navnOgBetegnelser`, newNavnOgBetegnelser)
-      if (validation[namespace + '-navnOgBetegnelser-navn']) {
-        resetValidation(namespace + '-navnOgBetegnelser-navn')
+      if (validation[namespace + '-navnogbetegnelse-navn']) {
+        resetValidation(namespace + '-navnogbetegnelse-navn')
       }
     }
   }
@@ -90,8 +93,8 @@ const Motregning: React.FC<MotregningProps> = ({
       }
       newNavnOgBetegnelser[index].betegnelsePåYtelse = newBetegnelse
       updateReplySed(`${target}.navnOgBetegnelser`, newNavnOgBetegnelser)
-      if (validation[namespace + '-navnOgBetegnelser-betegnelse']) {
-        resetValidation(namespace + '-navnOgBetegnelser-betegnelse')
+      if (validation[namespace + '-navnogbetegnelse-betegnelse']) {
+        resetValidation(namespace + '-navnogbetegnelse-betegnelse')
       }
     }
   }
@@ -177,7 +180,7 @@ const Motregning: React.FC<MotregningProps> = ({
   }
 
   const onAdd = () => {
-    const newNavOgBetegnelse: NavnOgBetegnelse |any = {
+    const newNavOgBetegnelse: NavnOgBetegnelse | any = {
       navn: _newNavn,
       betegnelsePåYtelse: _newBetegnelse
     }
@@ -185,7 +188,7 @@ const Motregning: React.FC<MotregningProps> = ({
     const valid: boolean = performValidation({
       navnOgBetegnelse: newNavOgBetegnelse,
       index: -1,
-      namespace: namespace
+      namespace: namespace + '-navnogbetegnelse'
     })
 
     if (valid) {
@@ -352,6 +355,7 @@ const Motregning: React.FC<MotregningProps> = ({
             valueStartDato={motregning?.startdato}
             valueSluttDato={motregning?.sluttdato}
           />
+          <Column/>
         </AlignStartRow>
         <VerticalSeparatorDiv />
         <AlignStartRow
@@ -380,7 +384,7 @@ const Motregning: React.FC<MotregningProps> = ({
               feil={validation[+namespace + '-mottakersNavn']?.feilmelding}
               namespace={namespace}
               id='mottakersNavn-text'
-              label={t('label:periode-mottakersNavn') + ' *'}
+              label={t('label:mottakers-navn') + ' *'}
               onChanged={setMottakersNavn}
               value={motregning?.mottakersNavn}
             />
@@ -430,6 +434,24 @@ const Motregning: React.FC<MotregningProps> = ({
             </TextAreaDiv>
           </Column>
           <Column />
+        </AlignStartRow>
+        <VerticalSeparatorDiv />
+        <AlignStartRow>
+          <Column>
+            <HighContrastLink href='#' onClick={(e: any) => {
+              e.preventDefault()
+              seeKontoopplysninger()
+              // have to wait 0.1 seconds so it comes to DOM first
+              setTimeout(() => {
+                var element = document.getElementById("xxx")
+                element?.scrollIntoView({
+                  behavior: 'smooth'
+                })
+              }, 100)
+            }}>
+              {t('label:oppgi-kontoopplysninger')}
+            </HighContrastLink>
+          </Column>
         </AlignStartRow>
       </HighContrastPanel>
     </PileDiv>

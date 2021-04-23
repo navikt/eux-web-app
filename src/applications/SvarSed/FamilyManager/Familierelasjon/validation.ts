@@ -25,12 +25,13 @@ export const validateFamilierelasjon = (
   let hasErrors: boolean = false
   const idx = (index < 0 ? '' : '[' + index + ']')
 
-  hasErrors = hasErrors && validatePeriod(v, t, {
+  const periodErrors : boolean = validatePeriod(v, t, {
     period: familierelasjon.periode,
     index,
     namespace,
     personName
   })
+  hasErrors = hasErrors || periodErrors
 
   if (familierelasjon.relasjonType === 'ANNEN') {
     if (_.isEmpty(familierelasjon.annenRelasjonPersonNavn)) {
@@ -60,9 +61,8 @@ export const validateFamilierelasjon = (
 
   if (hasErrors) {
     const namespaceBits = namespace.split('-')
-    namespaceBits[0] = 'person'
     const personNamespace = namespaceBits[0] + '-' + namespaceBits[1]
-    const categoryNamespace = namespaceBits.join('-')
+    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
     v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }
@@ -78,12 +78,13 @@ export const validateFamilierelasjoner = (
 ): boolean => {
   let hasErrors: boolean = false
   familierelasjoner?.forEach((familierelasjon: FamilieRelasjon, index: number) => {
-    hasErrors = hasErrors && validateFamilierelasjon(validation, t, {
+    const _errors : boolean = validateFamilierelasjon(validation, t, {
       familierelasjon,
       index,
       namespace,
       personName
     })
+    hasErrors = hasErrors || _errors
   })
   return hasErrors
 }

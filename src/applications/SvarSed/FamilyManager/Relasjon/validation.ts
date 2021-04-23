@@ -41,12 +41,13 @@ export const validateBarnetilhoerighet = (
     hasErrors = true
   }
 
-  hasErrors = hasErrors && validatePeriod(v, t, {
+  const periodError: boolean = validatePeriod(v, t, {
     period: barnetilhorighet.periode,
     index: index,
     namespace,
     personName
   })
+  hasErrors = hasErrors || periodError
 
   if (['ja', 'nei'].indexOf(barnetilhorighet.erDeltForeldreansvar) < 0) {
     v[namespace + idx + '-erDeltForeldreansvar'] = {
@@ -90,9 +91,8 @@ export const validateBarnetilhoerighet = (
 
   if (hasErrors) {
     const namespaceBits = namespace.split('-')
-    namespaceBits[0] = 'person'
     const personNamespace = namespaceBits[0] + '-' + namespaceBits[1]
-    const categoryNamespace = namespaceBits.join('-')
+    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
     v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }
@@ -108,7 +108,8 @@ export const validateBarnetilhoerigheter = (
 ): boolean => {
   let hasErrors: boolean = false
   barnetilhorigheter?.forEach((barnetilhorighet: Barnetilhoerighet, index: number) => {
-    hasErrors = hasErrors && validateBarnetilhoerighet(validation, t, { barnetilhorighet, index, namespace, personName })
+    let _error: boolean = validateBarnetilhoerighet(validation, t, { barnetilhorighet, index, namespace, personName })
+    hasErrors = hasErrors || _error
   })
   return hasErrors
 }

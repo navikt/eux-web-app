@@ -54,7 +54,7 @@ export const validateBeløpNavnOgValuta = (
     hasErrors = true
   }
 
-  hasErrors = hasErrors && validatePeriod(v, t, {
+  const periodErrors: boolean = validatePeriod(v, t, {
     period: {
       startdato: ytelse.startdato,
       sluttdato: ytelse.sluttdato
@@ -62,6 +62,7 @@ export const validateBeløpNavnOgValuta = (
     index: -1,
     namespace
   })
+  hasErrors = hasErrors || periodErrors
 
   if (_.isEmpty(ytelse.mottakersNavn)) {
     v[namespace + '-mottakersNavn'] = {
@@ -81,9 +82,8 @@ export const validateBeløpNavnOgValuta = (
 
   if (hasErrors) {
     const namespaceBits = namespace.split('-')
-    namespaceBits[0] = 'person'
     const personNamespace = namespaceBits[0] + '-' + namespaceBits[1]
-    const categoryNamespace = namespaceBits.join('-')
+    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
     v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }

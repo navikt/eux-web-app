@@ -36,7 +36,7 @@ export const validateMotregningNavnOgBetegnelser = (
       feilmelding: t('message:validation-noBetegnelsePåYtelse'),
       skjemaelementId: 'c-' + namespace + idx + '-betegnelsepåytelse-text'
     } as FeiloppsummeringFeil
-    hasErrors = false
+    hasErrors = true
   }
   return hasErrors
 }
@@ -44,9 +44,10 @@ export const validateMotregningNavnOgBetegnelser = (
 export const validateMotregning = (
   v: Validation,
   t: TFunction,
-  motregning: FormalMotregning,
+  motregning: FormalMotregning = { } as any ,
   namespace: string
 ): boolean => {
+
   let hasErrors: boolean = false
 
   if (_.isEmpty(motregning.anmodningEllerSvar)) {
@@ -58,7 +59,8 @@ export const validateMotregning = (
   }
 
   motregning.navnOgBetegnelser?.forEach((navnOgBetegnelse: NavnOgBetegnelse, index: number) => {
-    hasErrors = hasErrors && validateMotregningNavnOgBetegnelser(v, t, { navnOgBetegnelse, index, namespace: namespace + '-navnOgBetegnelser' })
+    let _error: boolean = validateMotregningNavnOgBetegnelser(v, t, { navnOgBetegnelse, index, namespace: namespace + '-navnOgBetegnelser' })
+    hasErrors = hasErrors || _error
   })
 
   if (_.isEmpty(motregning.beloep)) {
@@ -77,7 +79,7 @@ export const validateMotregning = (
     hasErrors = true
   }
 
-  hasErrors = hasErrors && validatePeriod(v, t, {
+  let periodError: boolean = validatePeriod(v, t, {
     period: {
       startdato: motregning.startdato,
       sluttdato: motregning.sluttdato
@@ -85,6 +87,7 @@ export const validateMotregning = (
     index: -1,
     namespace
   })
+  hasErrors = hasErrors || periodError
 
   if (_.isEmpty(motregning.avgrensing)) {
     v[namespace + '-avgrensing'] = {

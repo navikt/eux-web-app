@@ -54,11 +54,12 @@ export const validateAllGrunnlagForBosetting = (
 
   flyttegrunn.perioder.forEach((periode: Periode, index: number) => {
     const idx = (index < 0 ? '' : '[' + index + ']')
-    hasErrors = hasErrors && validatePeriod(v, t, {
+    const periodErrors : boolean = validatePeriod(v, t, {
       period: periode,
       index,
       namespace: namespace + '-periode' + idx
     })
+    hasErrors = hasErrors || periodErrors
   })
 
   if (!_.isEmpty(flyttegrunn.datoFlyttetTilAvsenderlandet) && !flyttegrunn.datoFlyttetTilAvsenderlandet.match(datePattern)) {
@@ -87,9 +88,8 @@ export const validateAllGrunnlagForBosetting = (
 
   if (hasErrors) {
     const namespaceBits = namespace.split('-')
-    namespaceBits[0] = 'person'
     const personNamespace = namespaceBits[0] + '-' + namespaceBits[1]
-    const categoryNamespace = namespaceBits.join('-')
+    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
     v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }
