@@ -1,11 +1,11 @@
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import useAddRemove from 'components/AddRemovePanel/useAddRemove'
+import useAddRemove from 'hooks/useAddRemove'
 import Select from 'components/Forms/Select'
 import Period from 'components/Period/Period'
 import { AlignStartRow } from 'components/StyledComponents'
-import useValidation from 'components/Validation/useValidation'
+import useValidation from 'hooks/useValidation'
 import { Option, Options } from 'declarations/app'
 import { PensjonPeriode, Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -16,6 +16,7 @@ import { Column, HighContrastFlatknapp, HorizontalSeparatorDiv, Row, VerticalSep
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ValueType } from 'react-select'
+import { getIdx } from 'utils/namespace'
 import { validateWithSubsidies, ValidationWithSubsidiesProps } from './withSubsidiesValidation'
 
 interface WithSubsidiesProps {
@@ -62,8 +63,8 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
       const newPerioder: Array<PensjonPeriode> = _.cloneDeep(perioderMedPensjon)
       newPerioder[index].periode.startdato = dato
       updateReplySed(target, newPerioder)
-      if (validation[namespace + '-startdato']) {
-        resetValidation(namespace + '-startdato')
+      if (validation[namespace + getIdx(index) + '-startdato']) {
+        resetValidation(namespace + getIdx(index) + '-startdato')
       }
     }
   }
@@ -82,8 +83,8 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
         newPerioder[index].periode.sluttdato = dato
       }
       updateReplySed(target, newPerioder)
-      if (validation[namespace + '-sluttdato']) {
-        resetValidation(namespace + '-sluttdato')
+      if (validation[namespace + getIdx(index) + '-sluttdato']) {
+        resetValidation(namespace + getIdx(index) + '-sluttdato')
       }
     }
   }
@@ -97,8 +98,8 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
         const newPerioder: Array<PensjonPeriode> = _.cloneDeep(perioderMedPensjon)
         newPerioder[index].pensjonstype = type
         updateReplySed(target, newPerioder)
-        if (validation[namespace + '-pensjontype']) {
-          resetValidation(namespace + '-pensjontype')
+        if (validation[namespace + getIdx(index) + '-pensjontype']) {
+          resetValidation(namespace + getIdx(index) + '-pensjontype')
         }
       }
     }
@@ -176,22 +177,22 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
     return index < 0 ? _validation[namespace + '-' + el]?.feilmelding : validation[namespace + '[' + index + ']-' + el]?.feilmelding
   }
 
-  const renderRow = (p: PensjonPeriode | undefined, i: number) => {
+  const renderRow = (p: PensjonPeriode | undefined, index: number) => {
     const key = p ? getKey(p) : 'new'
-    const candidateForDeletion = i < 0 ? false : !!key && hasKey(key)
-    const idx = (i >= 0 ? '[' + i + ']' : '')
-    const startdato = i < 0 ? _newStartDato : p?.periode.startdato
-    const sluttdato = i < 0 ? _newSluttDato : p?.periode.sluttdato
+    const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
+    const idx = getIdx(index)
+    const startdato = index < 0 ? _newStartDato : p?.periode.startdato
+    const sluttdato = index < 0 ? _newSluttDato : p?.periode.sluttdato
     return (
       <div className={classNames('slideInFromLeft')}>
         <AlignStartRow>
           <Period
             key={'' + startdato + sluttdato}
             namespace={namespace + idx}
-            errorStartDato={getErrorFor(i, 'startdato')}
-            errorSluttDato={getErrorFor(i, 'sluttdato')}
-            setStartDato={(dato: string) => setStartDato(dato, i)}
-            setSluttDato={(dato: string) => setSluttDato(dato, i)}
+            errorStartDato={getErrorFor(index, 'startdato')}
+            errorSluttDato={getErrorFor(index, 'sluttdato')}
+            setStartDato={(dato: string) => setStartDato(dato, index)}
+            setSluttDato={(dato: string) => setSluttDato(dato, index)}
             valueStartDato={startdato}
             valueSluttDato={sluttdato}
           />
@@ -201,26 +202,26 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
           <Column>
             <Select
               data-test-id={'c-' + namespace + idx + '-pensjontype-text'}
-              feil={getErrorFor(i, 'pensjontype')}
+              feil={getErrorFor(index, 'pensjontype')}
               highContrast={highContrast}
               id={'c-' + namespace + idx + '-pensjontype-text'}
               label={t('label:type-pensjon')}
               menuPortalTarget={document.body}
-              onChange={(e: ValueType<Option, false>) => setPensjonType(e?.value, i)}
+              onChange={(e: ValueType<Option, false>) => setPensjonType(e?.value, index)}
               options={selectPensjonTypeOptions}
               placeholder={t('el:placeholder-select-default')}
-              selectedValue={getPensjonTypeOption(i < 0 ? _newPensjonType : (p as PensjonPeriode)?.pensjonstype)}
-              defaultValue={getPensjonTypeOption(i < 0 ? _newPensjonType : (p as PensjonPeriode)?.pensjonstype)}
+              selectedValue={getPensjonTypeOption(index < 0 ? _newPensjonType : (p as PensjonPeriode)?.pensjonstype)}
+              defaultValue={getPensjonTypeOption(index < 0 ? _newPensjonType : (p as PensjonPeriode)?.pensjonstype)}
             />
           </Column>
           <Column />
           <Column>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
-              existingItem={(i >= 0)}
+              existingItem={(index >= 0)}
               marginTop
               onBeginRemove={() => addCandidateForDeletion(key!)}
-              onConfirmRemove={() => onRemove(i)}
+              onConfirmRemove={() => onRemove(index)}
               onCancelRemove={() => removeCandidateForDeletion(key!)}
               onAddNew={onAdd}
               onCancelNew={onCancel}

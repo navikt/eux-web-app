@@ -16,7 +16,7 @@ import {
   PileCenterDiv,
   PileDiv
 } from 'components/StyledComponents'
-import useValidation from 'components/Validation/useValidation'
+import useValidation from 'hooks/useValidation'
 import { State } from 'declarations/reducers'
 import { ConnectedSed, Sed } from 'declarations/types'
 import _ from 'lodash'

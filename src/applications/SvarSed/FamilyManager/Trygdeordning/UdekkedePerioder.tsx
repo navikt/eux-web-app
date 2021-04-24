@@ -5,10 +5,10 @@ import {
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import useAddRemove from 'components/AddRemovePanel/useAddRemove'
+import useAddRemove from 'hooks/useAddRemove'
 import Period from 'components/Period/Period'
 import { AlignStartRow } from 'components/StyledComponents'
-import useValidation from 'components/Validation/useValidation'
+import useValidation from 'hooks/useValidation'
 import { Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -16,6 +16,7 @@ import { Ingress } from 'nav-frontend-typografi'
 import { Column, HighContrastFlatknapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { getIdx } from 'utils/namespace'
 
 interface UdekkedePerioderProps {
   highContrast: boolean
@@ -55,8 +56,8 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
       const newPerioder: Array<Periode> = _.cloneDeep(perioderUtenforTrygdeordning)
       newPerioder[index].startdato = dato
       updateReplySed(target, newPerioder)
-      if (validation[namespace + '-udekkede-startdato']) {
-        resetValidation(namespace + '-udekkede-startdato')
+      if (validation[namespace + '-perioderUtenforTrygdeordning' + getIdx(index) +'-startdato']) {
+        resetValidation(namespace +'-perioderUtenforTrygdeordning' + getIdx(index) +'-startdato')
       }
     }
   }
@@ -75,8 +76,8 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
         newPerioder[index].sluttdato = dato
       }
       updateReplySed(target, newPerioder)
-      if (validation[namespace + '-udekkede-sluttdato']) {
-        resetValidation(namespace + '-udekkede-sluttdato')
+      if (namespace + '-perioderUtenforTrygdeordning' + getIdx(index) +'-sluttdato') {
+        resetValidation(namespace + '-perioderUtenforTrygdeordning' + getIdx(index) +'-sluttdato')
       }
     }
   }

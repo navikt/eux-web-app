@@ -18,6 +18,7 @@
   "avhuk-de-barn-vedtaket": "Avhuk de barn vedtaket <strong><U>ikke</U></strong> gjelder",
   "avslutt-utfylling": "AVSLUTT UTFYLLING",
 
+  "bankinformasjon": "Bankinformasjon",
   "barn": "Barn",
   "barn-i-hustand-spørsmål": "Barn i husstanden",
   "barn-i-hustand-spørsmål-1": "Bor barnet i samme husstand som søkeren?",
@@ -25,6 +26,7 @@
   "barn-i-hustand-spørsmål-3": "Bor barnet i samme husstand som den aktuelle personen?",
   "barn-i-hustand-spørsmål-4": "Bor barnet i institusjon?",
   "barnets-navn": "Barnets navn",
+  "begrunnelse-for-myndighetens-krav": "Begrunnelse for myndighetens krav",
   "beløp": "Beløp",
   "besvar-med": "Besvar med {{sedtype}}",
   "betegnelse-på-ytelse": "Betegnelse på ytelse",
@@ -70,6 +72,7 @@
   "hele-familien" : "Hele familien",
   "høy-kontrast": "Høy kontrast",
 
+  "iban": "IBAN",
   "ikke-tilgjengelig": "Ikke tilgjengelig",
   "informasjon-om-familieytelser" : "Informasjon om familieytelser",
   "informasjon-om-søknaden": "Informasjon om søknaden",
@@ -77,6 +80,8 @@
   "ingen-lagrede-seds": "Ingen lagrede SED-er",
   "inntekt": "Inntekt",
   "innvilgelse" : "innvilgelse",
+  "institusjonens-id" : "Institusjonens ID",
+  "institusjonens-navn" : "Institusjonens navn",
 
   "ja": "Ja",
   "jente" : "Jente",
@@ -136,6 +141,8 @@
   "saksnummer-eller-fnr" : "RINA saksnummer eller f.nr./d.nr. (11 sifre)",
   "sed": "SED",
   "se-mindre": "Se mindre",
+  "sepa-konto-ja": "SEPA-konto",
+  "sepa-konto-nei": "Ikke SEPA-konto",
   "sektor" : "Sektor",
   "send-svarsed" : "Send svarSED",
   "send-vedlegg" : "Send vedlegg",
@@ -144,6 +151,7 @@
   "sluttdato": "Sluttdato",
   "startdato": "Startdato",
   "statsborgerskap" : "Statsborgerskap",
+  "swift": "SWIFT",
   "søker" : "Søker",
 
   "telefonnummer": "Telefonnummer",

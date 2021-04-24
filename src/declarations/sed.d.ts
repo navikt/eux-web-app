@@ -220,6 +220,35 @@ export interface FormalMotregning {
   ytterligereInfo: string
 }
 
+export interface KontoOrdinaer {
+  bankensNavn?: string
+  kontonummer?: string
+  adresse?: Adresse
+  swift: string
+  iban: string
+  sepaKonto?: JaNei
+}
+
+export interface UtbetalingTilInstitusjon {
+  begrunnelse: string
+  id: string
+  navn: string
+  kontoOrdinaer: KontoOrdinaer
+}
+
+export interface PeriodeMedVedtak {
+  periode: Periode
+  vedtak: string
+}
+
+export interface FormalVedtak {
+  barn: Array<string>
+  periode: Periode,
+  type: string
+  grunnen: string
+  vedtaksperioder: Array<PeriodeMedVedtak>
+}
+
 export interface F002Sed extends FSed {
   annenPerson: Person
   barn: Array<{
@@ -242,19 +271,10 @@ export interface F002Sed extends FSed {
     kravMottattDato: string
     kravType: string
   }
-  utbetalingTilInstitusjon: {
-    begrunnelse: string
-    id: string
-    navn: string
-    kontoOrdinaer: {
-      bankensNavn: string
-      kontonummer: string
-      adresse: Adresse
-      swift: string
-    }
-  }
+  utbetalingTilInstitusjon: UtbetalingTilInstitusjon
   formaalx?: {
     motregning: FormalMotregning
+    vedtak: FormalVedtak
   }
 }
 

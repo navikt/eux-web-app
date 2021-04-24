@@ -1,3 +1,4 @@
+import { getIdx } from 'utils/namespace'
 import {
   validateDekkedePeriode,
   ValidationDekkedePeriodeProps
@@ -5,10 +6,10 @@ import {
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import useAddRemove from 'components/AddRemovePanel/useAddRemove'
+import useAddRemove from 'hooks/useAddRemove'
 import Period from 'components/Period/Period'
 import { AlignStartRow } from 'components/StyledComponents'
-import useValidation from 'components/Validation/useValidation'
+import useValidation from 'hooks/useValidation'
 import { Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -55,8 +56,8 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
       const newPerioder: Array<Periode> = _.cloneDeep(perioderMedITrygdeordning)
       newPerioder[index].startdato = dato
       updateReplySed(target, newPerioder)
-      if (validation[namespace + '-dekkede-startdato']) {
-        resetValidation(namespace + '-dekkede-startdato')
+      if (validation[namespace + getIdx(index) + '-dekkede-startdato']) {
+        resetValidation(namespace + getIdx(index) + '-dekkede-startdato')
       }
     }
   }
@@ -75,8 +76,8 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
         newPerioder[index].sluttdato = dato
       }
       updateReplySed(target, newPerioder)
-      if (validation[namespace + '-dekkede-sluttdato']) {
-        resetValidation(namespace + '-dekkede-sluttdato')
+      if (validation[namespace + getIdx(index) + '-dekkede-sluttdato']) {
+        resetValidation(namespace + getIdx(index) + '-dekkede-sluttdato')
       }
     }
   }

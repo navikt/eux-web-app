@@ -4,6 +4,7 @@ import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
+import { getIdx } from 'utils/namespace'
 
 export interface ValidationFamilierelasjonProps {
   familierelasjon: FamilieRelasjon
@@ -23,7 +24,7 @@ export const validateFamilierelasjon = (
   }: ValidationFamilierelasjonProps
 ): boolean => {
   let hasErrors: boolean = false
-  const idx = (index < 0 ? '' : '[' + index + ']')
+  const idx = getIdx(index)
 
   const periodErrors : boolean = validatePeriod(v, t, {
     period: familierelasjon.periode,

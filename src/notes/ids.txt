@@ -5,6 +5,8 @@ c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-orgnr-text     - {INTERNAL} no
 c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-startdato-date - {GLOBAL...} selected: {person}.perioderSomAnsatt[].startdato
 c-arbeidsforhold-{personID}-arbeidsforholdet[{i}]-sluttdato-date - {GLOBAL...} selected: {person}.perioderSomAnsatt[].sluttdato
 
+c-comment-text - {?????}
+
 c-familymanager-addpersonmodal-fnr-text       - {INTERNAL} not used
 c-familymanager-addpersonmodal-navn-text      - {INTERNAL} not used
 c-familymanager-addpersonmodal-relasjon-text  - {INTERNAL} not used
@@ -125,10 +127,10 @@ c-familymanager-{personID}-trygdeordninger-dekkede-startdato-date               
 c-familymanager-{personID}-trygdeordninger-dekkede-sluttdato-date                         - {INTERNAL} not used
 c-familymanager-{personID}-trygdeordninger-udekkede-startdato-date                        - {INTERNAL} not used
 c-familymanager-{personID}-trygdeordninger-udekkede-sluttdato-date                        - {INTERNAL} not used
-c-familymanager-{personID}-trygdeordninger-familieYtelse-startdato-date                   - {INTERNAL} not used
-c-familymanager-{personID}-trygdeordninger-familieYtelse-sluttdato-date                   - {INTERNAL} not used
-c-familymanager-{personID}-trygdeordninger-familieYtelse-category-text                    - {INTERNAL} not used
-c-familymanager-{personID}-trygdeordninger-familieYtelse-pensjontype-text                 - {INTERNAL} not used
+c-familymanager-{personID}-trygdeordninger-familieytelse-startdato-date                   - {INTERNAL} not used
+c-familymanager-{personID}-trygdeordninger-familieytelse-sluttdato-date                   - {INTERNAL} not used
+c-familymanager-{personID}-trygdeordninger-familieytelse-category-text                    - {INTERNAL} not used
+c-familymanager-{personID}-trygdeordninger-familieytelse-pensjontype-text                 - {INTERNAL} not used
 c-familymanager-{personID}-trygdeordninger-perioderMedArbeid[i]-startdato-date            - {CONNECTED} {person}.perioderMedArbeid[].startdato
 c-familymanager-{personID}-trygdeordninger-perioderMedArbeid[i]-sluttdato-date            - {CONNECTED} {person}.perioderMedArbeid[].sluttdato
 c-familymanager-{personID}-trygdeordninger-perioderMedTrygd[i]-startdato-date             - {CONNECTED} {person}.perioderMedTrygd[].startdato
@@ -143,7 +145,14 @@ c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-startdato-date 
 c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-sluttdato-date           - {CONNECTED} {person}.perioderMedPensjon[].periode.sluttdato
 c-familymanager-{personID}-trygdeordninger-perioderMedPensjon[i]-pensjontype-text         - {CONNECTED} {person}.perioderMedPensjon[].pensjonstype
 
-c-step2-formaal-text - {GLOBAL} - formaal
+c-formaal-text - {CONNECTED} - formaal
+
+c-kontoopplysninger-begrunnelse-text              - {CONNECTED} utbetalingTilInstitusjon.begrunnelse
+c-kontoopplysninger-id-text                       - {CONNECTED} utbetalingTilInstitusjon.id
+c-kontoopplysninger-navn-text                     - {CONNECTED} utbetalingTilInstitusjon.navn
+c-kontoopplysninger-kontoordinaer-sepakonto-text  - {CONNECTED} utbetalingTilInstitusjon.kontoordinaer.sepakonto
+c-kontoopplysninger-kontoordinaer-iban-text       - {CONNECTED} utbetalingTilInstitusjon.kontoordinaer.iban
+c-kontoopplysninger-kontoordinaer-swift-text      - {CONNECTED} utbetalingTilInstitusjon.kontoordinaer.swift
 
 c-kravomrefusjon-krav-text - {GLOBAL}
 
@@ -181,18 +190,15 @@ c-seddetails-typeKrav-text                         - {GLOBAL}
 c-seddetails-informasjon-text                      - {GLOBAL}
 c-seddetails-opplysninger-text                     - {GLOBAL}
 
-c-step2-comment-text - {GLOBAL}
-
-c-vedtak-allkids-text                        - {GLOBAL}
-c-vedtak-whichkids-list                      - {GLOBAL}
-c-vedtak-periode-startdato-date              - {GLOBAL}
-c-vedtak-periode-sluttdato-date              - {GLOBAL}
-c-vedtak-type-text                           - {GLOBAL}
-c-vedtak-reason-text                         - {GLOBAL}
-c-vedtak-perioder-periode-startdato-date     - {INTERNAL}
-c-vedtak-perioder-periode-sluttdato-date     - {INTERNAL}
-c-vedtak-perioder-vedtak-text                - {INTERNAL}
-c-vedtak-perioder[i]-periode-startdato-date  - {GLOBAL}
-c-vedtak-perioder[i]-periode-sluttdato-date  - {GLOBAL}
-c-vedtak-perioder[i]-vedtak-text             - {GLOBAL}
+c-vedtak-barn-list                                  - {GLOBAL}
+c-vedtak-periode-startdato-date                     - {GLOBAL}
+c-vedtak-periode-sluttdato-date                     - {GLOBAL}
+c-vedtak-type-text                                  - {GLOBAL}
+c-vedtak-grunnen-text                               - {GLOBAL}
+c-vedtak-vedtaksperioder-periode-startdato-date     - {INTERNAL}
+c-vedtak-vedtaksperioder-periode-sluttdato-date     - {INTERNAL}
+c-vedtak-vedtaksperioder-vedtak-text                - {INTERNAL}
+c-vedtak-vedtaksperioder[i]-periode-startdato-date  - {GLOBAL}
+c-vedtak-vedtaksperioder[i]-periode-sluttdato-date  - {GLOBAL}
+c-vedtak-vedtaksperioder[i]-vedtak-text             - {GLOBAL}
 

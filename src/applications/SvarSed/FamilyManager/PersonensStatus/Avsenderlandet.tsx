@@ -1,10 +1,10 @@
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import useAddRemove from 'components/AddRemovePanel/useAddRemove'
+import useAddRemove from 'hooks/useAddRemove'
 import Period from 'components/Period/Period'
 import { AlignStartRow } from 'components/StyledComponents'
-import useValidation from 'components/Validation/useValidation'
+import useValidation from 'hooks/useValidation'
 import { Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -13,6 +13,7 @@ import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import { Column, HighContrastFlatknapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { getIdx } from 'utils/namespace'
 import { validateAvsenderlandet, ValidationAvsenderlandetProps } from './avsenderlandetValidation'
 
 export interface AvsenderlandetProps {
@@ -50,8 +51,8 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
       const newPerioder: Array<Periode> = _.cloneDeep(perioderMedTrygd)
       newPerioder[index].startdato = dato
       updateReplySed(target, newPerioder)
-      if (validation[namespace + '-startdato']) {
-        resetValidation(namespace + '-startdato')
+      if (validation[namespace + getIdx(index) + '-startdato']) {
+        resetValidation(namespace + getIdx(index) + '-startdato')
       }
     }
   }
@@ -70,8 +71,8 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
         newPerioder[index].sluttdato = dato
       }
       updateReplySed(target, newPerioder)
-      if (validation[namespace + '-sluttdato']) {
-        resetValidation(namespace + '-sluttdato')
+      if (validation[namespace + getIdx(index) + '-sluttdato']) {
+        resetValidation(namespace + getIdx(index) + '-sluttdato')
       }
     }
   }
@@ -135,7 +136,7 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
   const renderRow = (periode: Periode | undefined, index: number) => {
     const key = periode ? getKey(periode) : 'new'
     const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
-    const idx = (index >= 0 ? '[' + index + ']' : '')
+    const idx = getIdx(index)
     const startdato = index < 0 ? _newStartDato : periode?.startdato
     const sluttdato = index < 0 ? _newSluttDato : periode?.sluttdato
     return (

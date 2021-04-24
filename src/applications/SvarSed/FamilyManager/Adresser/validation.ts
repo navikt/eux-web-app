@@ -3,6 +3,7 @@ import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
+import { getIdx } from 'utils/namespace'
 
 export interface ValidationAddressProps {
   adresse: Adresse
@@ -22,7 +23,7 @@ export const validateAdresse = (
   }: ValidationAddressProps
 ): boolean => {
   let hasErrors: boolean = false
-  const idx = (index < 0 ? '' : '[' + index + ']')
+  const idx = getIdx(index)
 
   if (_.isEmpty(adresse.type)) {
     v[namespace + idx + '-type'] = {

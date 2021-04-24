@@ -1,13 +1,13 @@
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import useAddRemove from 'components/AddRemovePanel/useAddRemove'
+import useAddRemove from 'hooks/useAddRemove'
 import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import Period from 'components/Period/Period'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
-import useValidation from 'components/Validation/useValidation'
+import useValidation from 'hooks/useValidation'
 import { Options } from 'declarations/app'
 import { FamilieRelasjon, JaNei, Periode, RelasjonType, ReplySed } from 'declarations/sed'
 import { Kodeverk, Validation } from 'declarations/types'
@@ -23,6 +23,7 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { getIdx } from 'utils/namespace'
 import { validateFamilierelasjon, ValidationFamilierelasjonProps } from './validation'
 
 interface FamilierelasjonProps {
@@ -75,8 +76,8 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
       const newFamilieRelasjoner = _.cloneDeep(familierelasjoner)
       newFamilieRelasjoner[index].relasjonType = relasjonType
       updateReplySed(target, newFamilieRelasjoner)
-      if (validation[namespace + '-relasjontype']) {
-        resetValidation(namespace + '-relasjontype')
+      if (validation[namespace + getIdx(index) + '-relasjontype']) {
+        resetValidation(namespace + getIdx(index) + '-relasjontype')
       }
     }
   }
@@ -89,8 +90,8 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
       const newFamilieRelasjoner = _.cloneDeep(familierelasjoner)
       newFamilieRelasjoner[index].periode.startdato = dato
       updateReplySed(target, newFamilieRelasjoner)
-      if (validation[namespace + '-startdato']) {
-        resetValidation(namespace + '-startdato')
+      if (validation[namespace + getIdx(index) + '-startdato']) {
+        resetValidation(namespace + getIdx(index) + '-startdato')
       }
     }
   }
@@ -109,8 +110,8 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
         newFamilieRelasjoner[index].periode.sluttdato = dato
       }
       updateReplySed(target, newFamilieRelasjoner)
-      if (validation[namespace + '-sluttdato']) {
-        resetValidation(namespace + '-sluttdato')
+      if (validation[namespace + getIdx(index) + '-sluttdato']) {
+        resetValidation(namespace + getIdx(index) + '-sluttdato')
       }
     }
   }
@@ -123,8 +124,8 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
       const newFamilieRelasjoner = _.cloneDeep(familierelasjoner)
       newFamilieRelasjoner[index].annenRelasjonType = annenRelasjonType
       updateReplySed(target, newFamilieRelasjoner)
-      if (validation[namespace + '-annenrelasjontype']) {
-        resetValidation(namespace + '-annenrelasjontype')
+      if (validation[namespace + getIdx(index) + '-annenrelasjontype']) {
+        resetValidation(namespace + getIdx(index) + '-annenrelasjontype')
       }
     }
   }
@@ -137,8 +138,8 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
       const newFamilieRelasjoner = _.cloneDeep(familierelasjoner)
       newFamilieRelasjoner[index].annenRelasjonPersonNavn = navn
       updateReplySed(target, newFamilieRelasjoner)
-      if (validation[namespace + '-annenrelasjonpersonnavn']) {
-        resetValidation(namespace + '-annenrelasjonpersonnavn')
+      if (validation[namespace + getIdx(index) + '-annenrelasjonpersonnavn']) {
+        resetValidation(namespace + getIdx(index) + '-annenrelasjonpersonnavn')
       }
     }
   }
@@ -151,8 +152,8 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
       const newFamilieRelasjoner = _.cloneDeep(familierelasjoner)
       newFamilieRelasjoner[index].annenRelasjonDato = dato
       updateReplySed(target, newFamilieRelasjoner)
-      if (validation[namespace + '-annenrelasjondato']) {
-        resetValidation(namespace + '-annenrelasjondato')
+      if (validation[namespace + getIdx(index) + '-annenrelasjondato']) {
+        resetValidation(namespace + getIdx(index) + '-annenrelasjondato')
       }
     }
   }
@@ -165,8 +166,8 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
       const newFamilieRelasjoner = _.cloneDeep(familierelasjoner)
       newFamilieRelasjoner[index].borSammen = borSammen
       updateReplySed(target, newFamilieRelasjoner)
-      if (validation[namespace + '-borsammen']) {
-        resetValidation(namespace + '-borsammen')
+      if (validation[namespace + getIdx(index) + '-borsammen']) {
+        resetValidation(namespace + getIdx(index) + '-borsammen')
       }
     }
   }
@@ -251,7 +252,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
   const renderRow = (familierelasjon: FamilieRelasjon | null, index: number) => {
     const key = familierelasjon ? getKey(familierelasjon) : 'new'
     const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
-    const idx = (index >= 0 ? '[' + index + ']' : '')
+    const idx = getIdx(index)
     const startdato = index < 0 ? _newStartDato : familierelasjon?.periode.startdato
     const sluttdato = index < 0 ? _newSluttDato : familierelasjon?.periode.sluttdato
     return (

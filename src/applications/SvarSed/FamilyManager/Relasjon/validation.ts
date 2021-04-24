@@ -1,9 +1,9 @@
 import { validatePeriod } from 'components/Period/validation'
 import { Barnetilhoerighet } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
+import { getIdx } from 'utils/namespace'
 
 export interface ValidationBarnetilhoerigheterProps {
   barnetilhorighet: Barnetilhoerighet,
@@ -23,7 +23,7 @@ export const validateBarnetilhoerighet = (
   }: ValidationBarnetilhoerigheterProps
 ): boolean => {
   let hasErrors: boolean = false
-  const idx = (!_.isNil(index) && index >= 0 ? '[' + index + ']' : '')
+  const idx = getIdx(index)
 
   if (!barnetilhorighet.relasjonTilPerson) {
     v[namespace + idx + '-relasjonTilPerson'] = {

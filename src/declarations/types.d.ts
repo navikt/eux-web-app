@@ -178,19 +178,6 @@ export interface Tema {
 
 export type Validation = {[key: string]: FeiloppsummeringFeil | undefined}
 
-export interface PeriodeMedVedtak {
-  periode: Periode
-  vedtak: string
-}
-
-export interface Vedtak {
-  allkids: string
-  periode: Periode
-  type: string
-  grunnen: string
-  perioder: Array<PeriodeMedVedtak>
-}
-
 export interface VedleggPayload {
   journalpostID: string
   dokumentID: string

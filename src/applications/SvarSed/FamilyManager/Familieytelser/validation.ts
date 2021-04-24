@@ -4,6 +4,7 @@ import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
+import { getIdx } from 'utils/namespace'
 
 export interface ValidationFamilieytelserProps {
   motregning: Motregning
@@ -23,7 +24,7 @@ export const validateFamilieytelse = (
   }: ValidationFamilieytelserProps
 ): boolean => {
   let hasErrors: boolean = false
-  const idx = (index < 0 ? '' : '[' + index + ']')
+  const idx = getIdx(index)
   /*
   if (_.isEmpty(motregning.number)) {
     v[namespace + '-antallPersoner'] = {

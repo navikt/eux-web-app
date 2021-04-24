@@ -4,6 +4,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
+import { getIdx } from 'utils/namespace'
 
 export interface ValidationPeriodProps {
   period: Periode
@@ -25,8 +26,8 @@ export const validatePeriod = (
   }: ValidationPeriodProps
 ): boolean => {
   let hasErrors: boolean = false
-  const idx = (!_.isNil(index) && index >= 0 ? '[' + index + ']' : '')
-  if (_.isEmpty(period.startdato)) {
+  const idx = getIdx(index)
+  if (_.isEmpty(period?.startdato)) {
     v[namespace + idx + '-startdato'] = {
       skjemaelementId: 'c-' + namespace + idx + '-startdato-date',
       feilmelding: personName
@@ -36,7 +37,7 @@ export const validatePeriod = (
     hasErrors = true
   }
 
-  if (!_.isEmpty(period.startdato) && !period.startdato.match(datePattern)) {
+  if (!_.isEmpty(period?.startdato) && !period.startdato.match(datePattern)) {
     v[namespace + idx + '-startdato'] = {
       skjemaelementId: 'c-' + namespace + idx + '-startdato-date',
       feilmelding: personName
@@ -46,7 +47,7 @@ export const validatePeriod = (
     hasErrors = true
   }
 
-  if (!_.isEmpty(period.sluttdato) && !period.sluttdato!.match(datePattern)) {
+  if (!_.isEmpty(period?.sluttdato) && !period.sluttdato!.match(datePattern)) {
     v[namespace + idx + '-sluttdato'] = {
       skjemaelementId: 'c-' + namespace + idx + '-sluttdato-date',
       feilmelding: personName
@@ -56,7 +57,7 @@ export const validatePeriod = (
     hasErrors = true
   }
 
-  if (!_.isEmpty(period.startdato) && !_.isEmpty(period.sluttdato) &&
+  if (!_.isEmpty(period?.startdato) && !_.isEmpty(period?.sluttdato) &&
     moment(period.startdato, 'YYYY-MM-DD')
       .isAfter(moment(period.sluttdato, 'YYYY-MM-DD'))) {
     v[namespace + idx + '-sluttdato'] = {

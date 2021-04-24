@@ -1,141 +1,180 @@
+import { ValidationVedtakPeriodeProps } from 'applications/SvarSed/Formaal/Vedtak/validation'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Forms/Select'
+import TextArea from 'components/Forms/TextArea'
+import Period from 'components/Period/Period'
 import { AlignStartRow, FlexDiv, PileDiv, TextAreaDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
-import { F002Sed, Periode, ReplySed } from 'declarations/sed'
-import { PeriodeMedVedtak, Validation } from 'declarations/types'
+import { F002Sed, FormalVedtak, JaNei, PeriodeMedVedtak, ReplySed } from 'declarations/sed'
+import { Validation } from 'declarations/types'
+import useAddRemove from 'hooks/useAddRemove'
+import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { Checkbox } from 'nav-frontend-skjema'
 import { Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
   HighContrastFlatknapp,
-  HighContrastInput,
   HighContrastPanel,
   HighContrastRadio,
   HighContrastRadioGroup,
-  HighContrastTextArea,
   HorizontalSeparatorDiv,
   Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { OptionTypeBase } from 'react-select'
+import { getIdx } from 'utils/namespace'
 import { validateVedtakPeriode } from './validation'
 
 export interface VedtakProps {
   highContrast: boolean
   replySed: ReplySed
+  resetValidation: (key?: string) => void
+  updateReplySed: (needle: string, value: any) => void
   validation: Validation
 }
 
 const VedtakFC: React.FC<VedtakProps> = ({
   highContrast,
   replySed,
+  resetValidation,
+  updateReplySed,
   validation
 }: VedtakProps): JSX.Element => {
-  const [_confirmDelete, setConfirmDelete] = useState<Array<string>>([])
 
-  const [_allKids, _setAllKids] = useState<string | undefined>(undefined)
-  const [_whichKids, _setWhichKids] = useState<Array<string> | undefined>(undefined)
-  const [_startDato, _setStartDato] = useState<string>('')
-  const [_sluttDato, _setSluttDato] = useState<string>('')
-  const [_type, _setType] = useState<string | undefined>(undefined)
-  const [_grunnen, _setGrunnen] = useState<string>('')
-  const [_perioderMedVedtak, _setPerioderMedVedtak] = useState<Array<PeriodeMedVedtak>>([])
+  const {t} = useTranslation()
+  const target = 'formaalx.vedtak'
+  const vedtak: FormalVedtak | undefined = (replySed as F002Sed).formaalx?.vedtak
+  const namespace = 'vedtak'
 
+  const howManyBarn: number = (replySed as F002Sed).barn.length ?? 0
+  const initialBarnRadio: JaNei | undefined = !_.isNil(vedtak?.barn) ? (vedtak?.barn.length === howManyBarn ? 'ja' : 'nei') : undefined
+
+  const [_barnRadio, _setBarnRadio] = useState<JaNei | undefined>(initialBarnRadio)
   const [_newStartDato, _setNewStartDato] = useState<string>('')
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')
   const [_newVedtak, _setNewVedtak] = useState<string>('')
-  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _setValidation] = useState<Validation>({})
 
-  const { t } = useTranslation()
+  const [addCandidateForDeletion, removeCandidateForDeletion, hasKey] = useAddRemove()
+  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
+  const [_validation, _resetValidation, performValidation] = useValidation<ValidationVedtakPeriodeProps>({}, validateVedtakPeriode)
 
   const vedtakTypeOptions: Options = [
-    { label: t('el:option-vedtaktype-1'), value: '1' },
-    { label: t('el:option-vedtaktype-2'), value: '2' },
-    { label: t('el:option-vedtaktype-3'), value: '3' },
-    { label: t('el:option-vedtaktype-4'), value: '4' }
+    {label: t('el:option-vedtaktype-1'), value: '1'},
+    {label: t('el:option-vedtaktype-2'), value: '2'},
+    {label: t('el:option-vedtaktype-3'), value: '3'},
+    {label: t('el:option-vedtaktype-4'), value: '4'}
   ]
 
-  const resetValidation = (key: string): void => {
-    _setValidation({
-      ..._validation,
-      [key]: undefined
-    })
+  const setBarnAlleBarn = () => {
+    updateReplySed(`${target}.barn`, (replySed as F002Sed).barn.map(b => (b.personInfo.fornavn + ' ' + b.personInfo.etternavn)))
+    if (validation[namespace + '-barn']) {
+      resetValidation(namespace + '-barn')
+    }
+    _setBarnRadio('ja')
   }
 
-  const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
-
-  const performValidation = (): boolean => {
-    const newValidation: Validation = {}
-    validateVedtakPeriode(
-      newValidation,
-      {
-        periode: {
-          startdato: _newStartDato,
-          sluttdato: _newSluttDato
-        },
-        vedtak: _newVedtak
-      },
-      -1,
-      t
-    )
-    _setValidation(newValidation)
-    return hasNoValidationErrors(newValidation)
+  const setBarnNoeBarn = () => {
+    _setBarnRadio('nei')
   }
 
-  const onAddNewClicked = () => _setSeeNewForm(true)
-
-  const addCandidateForDeletion = (key: string) => {
-    setConfirmDelete(_confirmDelete.concat(key))
-  }
-
-  const removeCandidateForDeletion = (key: string) => {
-    setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
-  }
-
-  const setWhichKids = (name: string, checked: boolean) => {
-    _setWhichKids(
-      checked
-        ? _whichKids?.concat(name)
-        : _.filter(_whichKids, k => k !== name)
-    )
-  }
-
-  const setStartDato = (s: string, i: number) => {
-    if (i < 0) {
-      _setNewStartDato(s)
-      resetValidation('vedtak-perioder-periode-startdato')
+  const removeBarn = (barn: string, checked: boolean) => {
+    let newBarn: Array<String> = _.cloneDeep(vedtak?.barn)!
+    // checked means that we will rmove from list
+    if (checked) {
+      newBarn = _.filter(newBarn, _n => _n !== barn)
     } else {
-      const newPerioder = _.cloneDeep(_perioderMedVedtak)
-      newPerioder[i].periode.startdato = s
-      _setPerioderMedVedtak(newPerioder)
+      newBarn = newBarn.concat(barn)
+    }
+    updateReplySed(`${target}.barn`, newBarn)
+    if (validation[namespace + '-barn']) {
+      resetValidation(namespace + '-barn')
     }
   }
 
-  const setSluttDato = (s: string, i: number) => {
-    if (i < 0) {
-      _setNewSluttDato(s)
-      resetValidation('vedtak-perioder-periode-sluttdato')
-    } else {
-      const newPerioder = _.cloneDeep(_perioderMedVedtak)
-      newPerioder[i].periode.sluttdato = s
-      _setPerioderMedVedtak(newPerioder)
+  const setStartDato = (newDato: string) => {
+    updateReplySed(`${target}.periode.startdato`, newDato)
+    if (validation[namespace + '-periode-startdato']) {
+      resetValidation(namespace + '-periode-startdato')
     }
   }
 
-  const setVedtak = (s: string, i: number) => {
-    if (i < 0) {
-      _setNewVedtak(s)
-      resetValidation('vedtak-perioder-periode-sluttdato')
+  const setSluttDato = (newDato: string) => {
+    updateReplySed(`${target}.periode.sluttdato`, newDato)
+    if (validation[namespace + '-periode-sluttdato']) {
+      resetValidation(namespace + '-periode-sluttdato')
+    }
+  }
+
+  const setType = (newType: string) => {
+    updateReplySed(`${target}.type`, newType)
+    if (validation[namespace + '-type']) {
+      resetValidation(namespace + '-type')
+    }
+  }
+
+  const setGrunnen = (newType: string) => {
+    updateReplySed(`${target}.grunnen`, newType)
+    if (validation[namespace + '-grunnen']) {
+      resetValidation(namespace + '-grunnen')
+    }
+  }
+
+  const setVedtaksperioderStartDato = (dato: string, index: number) => {
+    if (index < 0) {
+      _setNewStartDato(dato)
+      _resetValidation(namespace + '-vedtaksperioder-periode-startdato')
     } else {
-      const newPerioder = _.cloneDeep(_perioderMedVedtak)
-      newPerioder[i].vedtak = s
-      _setPerioderMedVedtak(newPerioder)
+      let newPerioder: Array<PeriodeMedVedtak> | undefined = _.cloneDeep(vedtak?.vedtaksperioder)
+      if (!newPerioder) {
+        newPerioder = []
+      }
+      newPerioder[index].periode.startdato = dato
+      updateReplySed(`${target}.vedtaksperioder`, newPerioder)
+      if (validation[namespace + '-vedtaksperioder' + getIdx(index) + '-periode-startdato']) {
+        resetValidation(namespace + '-vedtaksperioder' + getIdx(index) + '-periode-startdato')
+      }
+    }
+  }
+
+  const setVedtaksperioderSluttDato = (dato: string, index: number) => {
+    if (index < 0) {
+      _setNewStartDato(dato)
+      _resetValidation(namespace + '-vedtaksperioder-periode-sluttdato')
+    } else {
+      let newPerioder: Array<PeriodeMedVedtak> | undefined = _.cloneDeep(vedtak?.vedtaksperioder)
+      if (!newPerioder) {
+        newPerioder = []
+      }
+      if (dato === '') {
+        delete newPerioder[index].periode.sluttdato
+        newPerioder[index].periode.aapenPeriodeType = 'åpen_sluttdato'
+      } else {
+        delete newPerioder[index].periode.aapenPeriodeType
+        newPerioder[index].periode.sluttdato = dato
+      }
+      updateReplySed(`${target}.vedtaksperioder`, newPerioder)
+      if (validation[namespace + '-vedtaksperioder' + getIdx(index) + '-periode-sluttdato']) {
+        resetValidation(namespace + '-vedtaksperioder' + getIdx(index) + '-periode-sluttdato')
+      }
+    }
+  }
+
+  const setVedtaksperioderVedtak = (newVedtak: string, index: number) => {
+    if (index < 0) {
+      _setNewVedtak(newVedtak)
+      _resetValidation(namespace + '-vedtaksperioder-vedtak')
+    } else {
+      let newPerioder: Array<PeriodeMedVedtak> = _.cloneDeep(vedtak?.vedtaksperioder) as Array<PeriodeMedVedtak>
+      newPerioder[index].vedtak = newVedtak
+      updateReplySed(`${target}.vedtaksperioder`, newPerioder)
+      if (validation[namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak']) {
+        resetValidation(namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak')
+      }
     }
   }
 
@@ -143,7 +182,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
     _setNewStartDato('')
     _setNewSluttDato('')
     _setNewVedtak('')
-    _setValidation({})
+    resetValidation()
   }
 
   const onCancel = () => {
@@ -155,94 +194,93 @@ const VedtakFC: React.FC<VedtakProps> = ({
     return p.periode.startdato
   }
 
-  const onRemove = (i: number) => {
-    const newPerioder = _.cloneDeep(_perioderMedVedtak)
-    const deletedPerioder: Array<PeriodeMedVedtak> = newPerioder.splice(i, 1)
+  const onRemove = (index: number) => {
+    const newPerioder = _.cloneDeep(vedtak?.vedtaksperioder) as Array<PeriodeMedVedtak>
+    const deletedPerioder: Array<PeriodeMedVedtak> = newPerioder.splice(index, 1)
     if (deletedPerioder && deletedPerioder.length > 0) {
       removeCandidateForDeletion(getKey(deletedPerioder[0]))
     }
-    _setPerioderMedVedtak(newPerioder)
+    updateReplySed(`${target}.vedtaksperioder`, newPerioder)
   }
 
   const onAdd = () => {
-    if (performValidation()) {
-      let newPerioder = _.cloneDeep(_perioderMedVedtak)
-      if (_.isNil(newPerioder)) {
+
+    const newPeriode: PeriodeMedVedtak = {
+      periode: {
+        startdato: _newStartDato
+      },
+      vedtak: _newVedtak,
+    }
+    if (_newSluttDato) {
+      newPeriode.periode.sluttdato = _newSluttDato
+    } else {
+      newPeriode.periode.aapenPeriodeType = 'åpen_sluttdato'
+    }
+
+    const valid = performValidation({
+      periode: newPeriode,
+      index: -1,
+      namespace
+    })
+
+    if (valid) {
+      let newPerioder: Array<PeriodeMedVedtak> = _.cloneDeep(vedtak?.vedtaksperioder) as Array<PeriodeMedVedtak>
+      if (!newPerioder) {
         newPerioder = []
       }
-      const periode: Periode = {
-        startdato: _newStartDato
-      }
-      if (_newSluttDato) {
-        periode.sluttdato = _newSluttDato
-      } else {
-        periode.aapenPeriodeType = 'åpen_sluttdato'
-      }
-      newPerioder.push({
-        periode: periode,
-        vedtak: _newVedtak
-      })
+      newPerioder = newPerioder.concat(newPeriode)
       resetForm()
-      _setPerioderMedVedtak(newPerioder)
+      updateReplySed(`${target}.vedtaksperioder`, newPerioder)
     }
   }
 
   const getErrorFor = (index: number, el: string): string | undefined => {
-    return index < 0 ? _validation['vedtak-perioder-' + el]?.feilmelding : validation['vedtak-perioder[' + index + ']-' + el]?.feilmelding
+    return index < 0 ?
+      _validation[namespace + '-vedtaksperioder-' + el]?.feilmelding :
+      validation[namespace + '-vedtaksperioder[' + index + ']-' + el]?.feilmelding
   }
 
-  const renderPeriodeAndVedtak = (p: PeriodeMedVedtak | null, i: number) => {
-    const key = p ? getKey(p) : 'new'
-    const candidateForDeletion = i < 0 ? false : !!key && _confirmDelete.indexOf(key) >= 0
-
+  const renderPeriodeAndVedtak = (periode: PeriodeMedVedtak | null, index: number) => {
+    const key = periode ? getKey(periode) : 'new'
+    const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
+    const startdato = index < 0 ? _newStartDato : periode?.periode.startdato
+    const sluttdato = index < 0 ? _newSluttDato : periode?.periode.sluttdato
     return (
       <>
         <AlignStartRow className={classNames('slideInFromLeft')}>
-          <Column>
-            <HighContrastInput
-              data-test-id={'c-vedtak-perioder' + (i >= 0 ? '[' + i + ']' : '') + '-periode-startdato-date'}
-              feil={getErrorFor(i, 'periode-startdato')}
-              id={'c-vedtak-perioder' + (i >= 0 ? '[' + i + ']' : '') + '-periode-startdato-date'}
-              label={t('label:startdato')}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDato(e.target.value, i)}
-              value={i < 0 ? _newStartDato : p?.periode.startdato}
-              placeholder={t('el:placeholder-date-default')}
-            />
-          </Column>
-          <Column>
-            <HighContrastInput
-              data-test-id={'c-vedtak-perioder' + (i >= 0 ? '[' + i + ']' : '') + '-periode-sluttdato-date'}
-              feil={getErrorFor(i, 'periode-sluttdato')}
-              id={'c-vedtak-perioder' + (i >= 0 ? '[' + i + ']' : '') + '-periode-sluttdato-date'}
-              label={t('label:sluttdato')}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSluttDato(e.target.value, i)}
-              value={i < 0 ? _newSluttDato : p?.periode.sluttdato}
-              placeholder={t('el:placeholder-date-default')}
-            />
-          </Column>
+          <Period
+            key={'' + startdato + sluttdato}
+            namespace={namespace + getIdx(index) + '-periode'}
+            errorStartDato={getErrorFor(index, 'periode-startdato')}
+            errorSluttDato={getErrorFor(index, 'periode-sluttdato')}
+            setStartDato={(dato: string) => setVedtaksperioderStartDato(dato, index)}
+            setSluttDato={(dato: string) => setVedtaksperioderSluttDato(dato, index)}
+            valueStartDato={startdato}
+            valueSluttDato={sluttdato}
+          />
           <Column>
             <Select
-              key={'vedtak-perioder' + (i >= 0 ? '[' + i + ']' : '') + '-vedtak'}
-              data-test-id={'c-vedtak-perioder' + (i >= 0 ? '[' + i + ']' : '') + '-vedtak-text'}
-              feil={getErrorFor(i, 'vedtak')}
+              key={namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak'}
+              data-test-id={'c-' + namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak-text'}
+              feil={getErrorFor(index, 'vedtak')}
               highContrast={highContrast}
-              id={'c-vedtak-perioder' + (i >= 0 ? '[' + i + ']' : '') + '-vedtak-text'}
+              id={'c-' + namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak-text'}
               label={t('label:vedtak-type')}
               menuPortalTarget={document.body}
-              onChange={(e: any) => setVedtak(e.value, i)}
+              onChange={(o: OptionTypeBase) => setVedtaksperioderVedtak(o.value, index)}
               options={vedtakTypeOptions}
               placeholder={t('el:placeholder-select-default')}
-              defaultValue={_.find(vedtakTypeOptions, v => v.value === (i < 0 ? _newVedtak : p?.vedtak))}
-              selectedValue={_.find(vedtakTypeOptions, v => v.value === (i < 0 ? _newVedtak : p?.vedtak))}
+              defaultValue={_.find(vedtakTypeOptions, v => v.value === (index < 0 ? _newVedtak : periode?.vedtak))}
+              selectedValue={_.find(vedtakTypeOptions, v => v.value === (index < 0 ? _newVedtak : periode?.vedtak))}
             />
           </Column>
           <Column>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
-              existingItem={(i >= 0)}
-              marginTop={false}
+              existingItem={(index >= 0)}
+              marginTop={true}
               onBeginRemove={() => addCandidateForDeletion(key!)}
-              onConfirmRemove={() => onRemove(i)}
+              onConfirmRemove={() => onRemove(index)}
               onCancelRemove={() => removeCandidateForDeletion(key!)}
               onAddNew={onAdd}
               onCancelNew={onCancel}
@@ -262,41 +300,43 @@ const VedtakFC: React.FC<VedtakProps> = ({
       <VerticalSeparatorDiv />
       <HighContrastPanel>
         <HighContrastRadioGroup
+          id={namespace + '-barn-list'}
           className={classNames('slideInFromLeft')}
-          legend={t('label:vedtak-angående-alle-barn')}
+          data-test-id={namespace + '-barn-list'}
+          legend={t('label:vedtak-angående-alle-barn') + ' *'}
           feil={_validation['vedtak-allkids']?.feilmelding}
         >
           <FlexDiv>
             <HighContrastRadio
-              name='vedtak-allkids'
-              checked={_allKids === 'ja'}
+              name={namespace + '-barn-list'}
+              checked={_barnRadio === 'ja'}
               label={t('label:ja')}
-              onClick={() => _setAllKids('ja')}
+              onClick={setBarnAlleBarn}
             />
             <HorizontalSeparatorDiv data-size='2' />
             <HighContrastRadio
-              name='vedtak-allkids'
-              checked={_allKids === 'nei'}
+              name={namespace + '-barn-list'}
+              checked={_barnRadio === 'nei'}
               label={t('label:nei')}
-              onClick={() => _setAllKids('nei')}
+              onClick={setBarnNoeBarn}
             />
           </FlexDiv>
         </HighContrastRadioGroup>
-        {_allKids === 'nei' && (
+        {_barnRadio === 'nei' && (
           <div className={classNames('slideInFromLeft')}>
             <div dangerouslySetInnerHTML={{ __html: t('label:avhuk-de-barn-vedtaket') + ':' }} />
             <VerticalSeparatorDiv />
-            {(replySed as F002Sed)?.barn?.map((b, i) => {
+            {(replySed as F002Sed)?.barn?.map((b, index) => {
               const name = b.personInfo.fornavn + ' ' + b.personInfo.etternavn
               return (
                 <div
                   key={name}
                   className={classNames('slideInFromLeft')}
-                  style={{ animationDelay: (i * 0.1) + 's' }}
+                  style={{ animationDelay: (index * 0.1) + 's' }}
                 >
                   <Checkbox
                     label={name}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setWhichKids(name, e.target.checked)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => removeBarn(name, e.target.checked)}
                   />
                   <VerticalSeparatorDiv data-size='0.5' />
                 </div>
@@ -309,28 +349,16 @@ const VedtakFC: React.FC<VedtakProps> = ({
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: '0.1s' }}
         >
-          <Column>
-            <HighContrastInput
-              data-test-id='c-vedtak-startdato-date'
-              id='c-vedtak-startdato-date'
-              feil={validation['vedtak-startdato']?.feilmelding}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setStartDato(e.target.value)}
-              value={_startDato}
-              label={t('label:startdato')}
-              placeholder={t('el:placeholder-date-default')}
-            />
-          </Column>
-          <Column>
-            <HighContrastInput
-              data-test-id='c-vedtak-sluttdato-date'
-              id='c-vedtak-sluttdato-date'
-              feil={validation['vedtak-sluttdato']?.feilmelding}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSluttDato(e.target.value)}
-              value={_sluttDato}
-              label={t('label:sluttdato')}
-              placeholder={t('el:placeholder-date-default')}
-            />
-          </Column>
+          <Period
+            key={'' + vedtak?.periode?.startdato + vedtak?.periode?.sluttdato}
+            namespace={namespace + '-periode'}
+            errorStartDato={validation[namespace + '-periode-startdato']?.feilmelding}
+            errorSluttDato={validation[namespace + '-periode-sluttdato']?.feilmelding}
+            setStartDato={setStartDato}
+            setSluttDato={setSluttDato}
+            valueStartDato={vedtak?.periode?.startdato ?? ''}
+            valueSluttDato={vedtak?.periode?.sluttdato ?? ''}
+          />
           <Column />
         </AlignStartRow>
         <VerticalSeparatorDiv />
@@ -338,19 +366,19 @@ const VedtakFC: React.FC<VedtakProps> = ({
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: '0.2s' }}
         >
-          <Column>
+          <Column data-flex='2'>
             <Select
-              data-test-id='c-vedtak-type-text'
-              feil={validation['vedtak-type']?.feilmelding}
+              data-test-id={'c-' + namespace + '-type-text'}
+              feil={validation[namespace + '-type']?.feilmelding}
               highContrast={highContrast}
-              id='c-vedtak-type-text'
-              label={t('label:vedtak-type')}
+              id={'c-' + namespace + '-type-text'}
+              label={t('label:vedtak-type') + ' *'}
               menuPortalTarget={document.body}
-              onChange={(e: any) => _setType(e.value)}
+              onChange={(e: any) => setType(e.value)}
               options={vedtakTypeOptions}
               placeholder={t('el:placeholder-select-default')}
-              defaultValue={_.find(vedtakTypeOptions, v => v.value === _type)}
-              selectedValue={_.find(vedtakTypeOptions, v => v.value === _type)}
+              defaultValue={_.find(vedtakTypeOptions, v => v.value === vedtak?.type)}
+              selectedValue={_.find(vedtakTypeOptions, v => v.value === vedtak?.type)}
             />
           </Column>
           <Column />
@@ -360,25 +388,22 @@ const VedtakFC: React.FC<VedtakProps> = ({
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: '0.3s' }}
         >
-          <Column>
+          <Column data-flex='2'>
             <TextAreaDiv>
-              <HighContrastTextArea
-                className={classNames({ 'skjemaelement__input--harFeil': validation['vedtak-grunnen'] })}
-                data-test-id='c-vedtak-grunnen-text'
-                feil={validation['vedtak-grunnen']?.feilmelding}
-                id='c-vedtak-grunnen-text'
+              <TextArea
+                feil={validation[namespace + '-grunnen']?.feilmelding}
+                namespace={namespace}
+                id='grunnen-text'
                 label={t('label:ytterligere-informasjon-til-sed')}
-                maxLength={500}
-                onChange={(e: any) => _setGrunnen(e.target.value)}
-                placeholder={t('el:placeholder-input-default')}
-                value={_grunnen}
+                onChanged={setGrunnen}
+                value={vedtak?.grunnen}
               />
             </TextAreaDiv>
           </Column>
           <Column />
         </AlignStartRow>
         <VerticalSeparatorDiv />
-        {_perioderMedVedtak.map(renderPeriodeAndVedtak)}
+        {vedtak?.vedtaksperioder?.map(renderPeriodeAndVedtak)}
         <hr />
         <VerticalSeparatorDiv />
         {_seeNewForm
@@ -389,7 +414,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
                 <HighContrastFlatknapp
                   mini
                   kompakt
-                  onClick={onAddNewClicked}
+                  onClick={() => _setSeeNewForm(true)}
                 >
                   <Add />
                   <HorizontalSeparatorDiv data-size='0.5' />

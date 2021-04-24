@@ -1,11 +1,11 @@
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import useAddRemove from 'components/AddRemovePanel/useAddRemove'
+import useAddRemove from 'hooks/useAddRemove'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
-import useValidation from 'components/Validation/useValidation'
+import useValidation from 'hooks/useValidation'
 import { Options } from 'declarations/app'
 import { Epost, ReplySed, Telefon, TelefonType } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -14,6 +14,7 @@ import { UndertekstBold } from 'nav-frontend-typografi'
 import { Column, HighContrastFlatknapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { getIdx } from 'utils/namespace'
 import {
   validateKontaktsinformasjonEpost,
   validateKontaktsinformasjonTelefon,
@@ -218,7 +219,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
   const renderTelefonRow = (_t: Telefon | null, index: number) => {
     const key = _t ? getKey(_t) : 'new'
     const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
-    const idx = (index >= 0 ? '[' + index + ']' : '')
+    const idx = getIdx(index)
     return (
       <>
         <AlignStartRow
@@ -270,7 +271,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
   const renderEpostRow = (e: Epost | null, index: number) => {
     const key = e ? getKey(e) : 'new'
     const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
-    const idx = (index >= 0 ? '[' + index + ']' : '')
+    const idx = getIdx(index)
     return (
       <>
         <AlignStartRow

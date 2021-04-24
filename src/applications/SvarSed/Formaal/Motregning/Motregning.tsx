@@ -1,12 +1,12 @@
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import useAddRemove from 'components/AddRemovePanel/useAddRemove'
+import useAddRemove from 'hooks/useAddRemove'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import Period from 'components/Period/Period'
 import { AlignStartRow, PileDiv, TextAreaDiv } from 'components/StyledComponents'
-import useValidation from 'components/Validation/useValidation'
+import useValidation from 'hooks/useValidation'
 import { F002Sed, FormalMotregning, NavnOgBetegnelse, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import CountryData, { Currency } from 'land-verktoy'
@@ -26,6 +26,7 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { getIdx } from 'utils/namespace'
 import { validateMotregningNavnOgBetegnelser, ValidationMotregningNavnOgBetegnelserProps } from './validation'
 
 export interface MotregningProps {
@@ -76,8 +77,8 @@ const Motregning: React.FC<MotregningProps> = ({
       }
       newNavnOgBetegnelser[index].navn = newNavn
       updateReplySed(`${target}.navnOgBetegnelser`, newNavnOgBetegnelser)
-      if (validation[namespace + '-navnogbetegnelse-navn']) {
-        resetValidation(namespace + '-navnogbetegnelse-navn')
+      if (validation[namespace + getIdx(index) + '-navnogbetegnelse-navn']) {
+        resetValidation(namespace + getIdx(index) + '-navnogbetegnelse-navn')
       }
     }
   }
@@ -93,8 +94,8 @@ const Motregning: React.FC<MotregningProps> = ({
       }
       newNavnOgBetegnelser[index].betegnelsePåYtelse = newBetegnelse
       updateReplySed(`${target}.navnOgBetegnelser`, newNavnOgBetegnelser)
-      if (validation[namespace + '-navnogbetegnelse-betegnelse']) {
-        resetValidation(namespace + '-navnogbetegnelse-betegnelse')
+      if (validation[namespace + getIdx(index) + '-navnogbetegnelse-betegnelse']) {
+        resetValidation(namespace + getIdx(index) + '-navnogbetegnelse-betegnelse')
       }
     }
   }
@@ -211,7 +212,7 @@ const Motregning: React.FC<MotregningProps> = ({
   const renderRowOfNavnOgBetegnelse = (nob: NavnOgBetegnelse | null, index: number) => {
     const key = nob ? getKey(nob) : 'new'
     const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
-    const idx = (index >= 0 ? '[' + index + ']' : '')
+    const idx = getIdx(index)
     return (
       <>
         <AlignStartRow className={classNames('slideInFromLeft')}>
@@ -399,9 +400,6 @@ const Motregning: React.FC<MotregningProps> = ({
           <Column data-flex='2'>
             <TextAreaDiv>
               <TextArea
-                className={classNames({
-                  'skjemaelement__input--harFeil': validation[namespace + '-grunnerTilAnmodning']?.feilmelding
-                })}
                 feil={validation[+namespace + '-grunnerTilAnmodning']?.feilmelding}
                 namespace={namespace}
                 id='grunnerTilAnmodning-text'
@@ -421,9 +419,6 @@ const Motregning: React.FC<MotregningProps> = ({
           <Column data-flex='2'>
             <TextAreaDiv>
               <TextArea
-                className={classNames({
-                  'skjemaelement__input--harFeil': validation[namespace + '-ytterligereInfo']?.feilmelding
-                })}
                 feil={validation[+namespace + '-ytterligereInfo']?.feilmelding}
                 namespace={namespace}
                 id='ytterligereInfo-text'
@@ -443,7 +438,7 @@ const Motregning: React.FC<MotregningProps> = ({
               seeKontoopplysninger()
               // have to wait 0.1 seconds so it comes to DOM first
               setTimeout(() => {
-                var element = document.getElementById("xxx")
+                var element = document.getElementById("kontoopplysning")
                 element?.scrollIntoView({
                   behavior: 'smooth'
                 })

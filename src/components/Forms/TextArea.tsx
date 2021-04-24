@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import { HighContrastTextArea } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -30,7 +31,7 @@ const TextArea: React.FC<TextAreaProps> = ({
 
   return (
     <HighContrastTextArea
-      className={className}
+      className={classNames(className, { 'skjemaelement__input--harFeil': feil })}
       data-test-id={'c-' + namespace + '-' + id}
       feil={feil}
       id={'c-' + namespace + '-' + id}

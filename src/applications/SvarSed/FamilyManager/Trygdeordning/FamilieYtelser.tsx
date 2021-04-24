@@ -1,11 +1,11 @@
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import useAddRemove from 'components/AddRemovePanel/useAddRemove'
+import useAddRemove from 'hooks/useAddRemove'
 import Period from 'components/Period/Period'
 import Select from 'components/Forms/Select'
 import { AlignStartRow } from 'components/StyledComponents'
-import useValidation from 'components/Validation/useValidation'
+import useValidation from 'hooks/useValidation'
 import { PensjonPeriode, PensjonsType, Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -15,6 +15,7 @@ import { Column, HighContrastFlatknapp, HorizontalSeparatorDiv, Row, VerticalSep
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { OptionsType } from 'react-select'
+import { getIdx } from 'utils/namespace'
 import { validateFamilieytelserPeriode, ValidationFamilieytelsePeriodeProps } from './validation'
 
 interface TrygdeordningProps {
@@ -91,8 +92,8 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
         (newPerioder[index] as Periode).startdato = dato
       }
       updateReplySed(`${personID}.${newSedCategory}`, newPerioder)
-      if (validation[namespace + '-familieYtelse-startdato']) {
-        resetValidation(namespace + '-familieYtelse-startdato')
+      if (validation[namespace + '-' + newSedCategory + getIdx(index) + '-startdato']) {
+        resetValidation(namespace + '-' + newSedCategory + getIdx(index) + '-startdato')
       }
     }
   }
@@ -100,7 +101,7 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
   const setSluttDato = (dato: string, index: number, newSedCategory: SedCategory |null) => {
     if (index < 0) {
       _setNewSluttDato(dato)
-      _resetValidation(namespace + '-familieYtelse-sluttdato')
+      _resetValidation(namespace + '-familieytelse-sluttdato')
     } else {
       if (newSedCategory === 'perioderMedPensjon') {
         const newPerioder: Array<PensjonPeriode> = _.cloneDeep(perioder[newSedCategory]) as Array<PensjonPeriode>
@@ -123,28 +124,28 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
         }
         updateReplySed(`${personID}.${newSedCategory}`, newPerioder)
       }
-      if (validation[namespace + '-familieYtelse-sluttdato']) {
-        resetValidation(namespace + '-familieYtelse-sluttdato')
+      if (validation[namespace + newSedCategory + getIdx(index) + '-sluttdato']) {
+        resetValidation(namespace + newSedCategory + getIdx(index) + '-sluttdato')
       }
     }
   }
 
   const setCategory = (newSedCategory: SedCategory) => {
     _setNewCategory(newSedCategory)
-    _resetValidation(namespace + '-familieYtelse-category')
+    _resetValidation(namespace + '-familieytelse-category')
   }
 
   const setPensjonType = (type: PensjonsType, index: number) => {
     if (index < 0) {
       _setNewPensjonsType(type)
-      _resetValidation(namespace + '-familieYtelse-pensjontype')
+      _resetValidation(namespace + '-familieytelse-pensjontype')
     } else {
       const newPerioder: Array<PensjonPeriode> = _.cloneDeep(perioder.perioderMedPensjon) as Array<PensjonPeriode>
       newPerioder[index].pensjonstype = type
 
       updateReplySed(`${personID}.perioderMedPensjon`, newPerioder)
-      if (validation[namespace + '-perioderMedPensjon[' + index + ']-startdato']) {
-        resetValidation(namespace + '-perioderMedPensjon[' + index + ']-startdato')
+      if (validation[namespace + '-perioderMedPensjon' + getIdx(index) + '-pensjontype']) {
+        resetValidation(namespace + '-perioderMedPensjon' + getIdx(index) + '-pensjontype')
       }
     }
   }

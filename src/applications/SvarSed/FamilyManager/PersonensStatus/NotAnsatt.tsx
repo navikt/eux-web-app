@@ -1,10 +1,10 @@
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import useAddRemove from 'components/AddRemovePanel/useAddRemove'
+import useAddRemove from 'hooks/useAddRemove'
 import Period from 'components/Period/Period'
 import { AlignStartRow } from 'components/StyledComponents'
-import useValidation from 'components/Validation/useValidation'
+import useValidation from 'hooks/useValidation'
 import { Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -13,6 +13,7 @@ import { Undertittel } from 'nav-frontend-typografi'
 import { Column, HighContrastFlatknapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { getIdx } from 'utils/namespace'
 import { validateNotAnsatte, ValidationNotAnsattProps } from './notAnsattValidation'
 
 export interface NotAnsattProps {
@@ -50,28 +51,28 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
       const newPerioder: Array<Periode> = _.cloneDeep(perioderSomSelvstendig)
       newPerioder[index].startdato = dato
       updateReplySed(target, newPerioder)
-      if (validation[namespace + '-startdato']) {
-        resetValidation(namespace + '-startdato')
+      if (validation[namespace + getIdx(index) + '-startdato']) {
+        resetValidation(namespace + getIdx(index) + '-startdato')
       }
     }
   }
 
-  const setSluttDato = (dato: string, indx: number) => {
-    if (indx < 0) {
+  const setSluttDato = (dato: string, index: number) => {
+    if (index < 0) {
       _setNewSluttDato(dato)
       _resetValidation(namespace + '-sluttdato')
     } else {
       const newPerioder: Array<Periode> = _.cloneDeep(perioderSomSelvstendig)
       if (dato === '') {
-        delete newPerioder[indx].sluttdato
-        newPerioder[indx].aapenPeriodeType = 'åpen_sluttdato'
+        delete newPerioder[index].sluttdato
+        newPerioder[index].aapenPeriodeType = 'åpen_sluttdato'
       } else {
-        delete newPerioder[indx].aapenPeriodeType
-        newPerioder[indx].sluttdato = dato
+        delete newPerioder[index].aapenPeriodeType
+        newPerioder[index].sluttdato = dato
       }
       updateReplySed(target, newPerioder)
-      if (validation[namespace + '-sluttdato']) {
-        resetValidation(namespace + '-sluttdato')
+      if (validation[namespace + getIdx(index) + '-sluttdato']) {
+        resetValidation(namespace + getIdx(index) + '-sluttdato')
       }
     }
   }
@@ -135,7 +136,7 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
   const renderRow = (p: Periode | undefined, index: number) => {
     const key = p ? getKey(p) : 'new'
     const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
-    const idx = (index >= 0 ? '[' + index + ']' : '')
+    const idx = getIdx(index)
     const startdato = index < 0 ? _newStartDato : p?.startdato
     const sluttdato = index < 0 ? _newSluttDato : p?.sluttdato
     return (

@@ -3,6 +3,7 @@ import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
+import { getIdx } from 'utils/namespace'
 
 export interface ValidationKontaktsinformasjonTelefonProps {
   telefon: Telefon | {type: any, nummer: any}
@@ -31,7 +32,7 @@ export const validateKontaktsinformasjonTelefon = (
   }: ValidationKontaktsinformasjonTelefonProps
 ): boolean => {
   let hasErrors: boolean = false
-  const idx = (index < 0 ? '' : '[' + index + ']')
+  const idx = getIdx(index)
 
   if (_.isEmpty(telefon.type)) {
     v[namespace + idx + '-type'] = {
@@ -70,7 +71,7 @@ export const validateKontaktsinformasjonEpost = (
   }: ValidationKontaktsinformasjonEpostProps
 ): boolean => {
   let hasErrors: boolean = false
-  const idx = (index < 0 ? '' : '[' + index + ']')
+  const idx = getIdx(index)
 
   if (!_.isEmpty(epost.adresse)) {
     if (!epost.adresse.match(emailPattern)) {

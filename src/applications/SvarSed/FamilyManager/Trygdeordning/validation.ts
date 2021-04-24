@@ -4,6 +4,7 @@ import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
+import { getIdx } from 'utils/namespace'
 
 export interface ValidationDekkedePeriodeProps {
   periode: Periode,
@@ -115,7 +116,7 @@ export const validateFamilieytelserPeriode = (
 ): boolean => {
   let hasErrors: boolean = false
   const extraNamespace = namespace + '-' + (index < 0 ? 'familieYtelse' : sedCategory)
-  const idx = (index < 0 ? '' : '[' + index + ']')
+  const idx = getIdx(index)
 
   let periodError: boolean = validatePeriod(
     v,

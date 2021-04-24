@@ -1,99 +1,97 @@
-import { PeriodeMedVedtak, Validation, Vedtak } from 'declarations/types'
+import { validatePeriod } from 'components/Period/validation'
+import { FormalVedtak, PeriodeMedVedtak } from 'declarations/sed'
+import { Validation } from 'declarations/types'
+import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
+import { getIdx } from 'utils/namespace'
+
+export interface ValidationVedtakPeriodeProps {
+  periode: PeriodeMedVedtak
+  index: number
+  namespace: string
+}
 
 export const validateVedtakPeriode = (
   v: Validation,
-  p: PeriodeMedVedtak,
-  index: number,
-  t: TFunction
-): void => {
-  v['vedtak-perioder' + (index < 0 ? '' : '[' + index + ']') + '-periode-startdato'] = p.periode.startdato
-    ? undefined
-    : {
-      feilmelding: t('message:validation-noDate'),
-      skjemaelementId: 'c-vedtak-perioder' + (index < 0 ? '' : '[' + index + ']') + '-periode-startdato-date'
+  t: TFunction,
+  {
+    periode,
+    index,
+    namespace
+  }:ValidationVedtakPeriodeProps
+): boolean => {
+  let hasErrors: boolean = false
+  const idx = getIdx(index)
+
+  let periodeError: boolean = validatePeriod(
+    v, t, {
+      period: periode?.periode,
+      index,
+      namespace: namespace + '-vedtaksperioder' + idx + '-periode'
+    }
+  )
+  hasErrors = hasErrors || periodeError
+
+  if (_.isEmpty(periode.vedtak)) {
+    v[namespace + '-vedtaksperioder' + idx + '-vedtak'] = {
+      feilmelding: t('message:validation-noVedtakType'),
+      skjemaelementId: 'c-' + namespace + idx + '-vedtak-text'
     } as FeiloppsummeringFeil
-
-  if (p.periode.startdato) {
-    v['vedtak-perioder' + (index < 0 ? '' : '[' + index + ']') + '-periode-startdato'] = p.periode.startdato.match(/\d{2}\.\d{2}\.\d{4}/)
-      ? undefined
-      : {
-        feilmelding: t('message:validation-invalidDate'),
-        skjemaelementId: 'c-vedtak-perioder' + (index < 0 ? '' : '[' + index + ']') + '-periode-startdato-date'
-      } as FeiloppsummeringFeil
+    hasErrors = true
   }
-
-  if (p.periode.sluttdato) {
-    v['vedtak-perioder' + (index < 0 ? '' : '[' + index + ']') + '-periode-sluttdato'] = p.periode.sluttdato.match(/\d{2}\.\d{2}\.\d{4}/)
-      ? undefined
-      : {
-        feilmelding: t('message:validation-invalidDate'),
-        skjemaelementId: 'c-vedtak-perioder' + (index < 0 ? '' : '[' + index + ']') + '-periode-sluttdato-date'
-      } as FeiloppsummeringFeil
-  }
-
-  v['vedtak-perioder' + (index < 0 ? '' : '[' + index + ']') + '-vedtak'] = p.vedtak
-    ? undefined
-    : {
-      feilmelding: t('message:validation-noVedtakChoice'),
-      skjemaelementId: 'c-vedtak-perioder' + (index < 0 ? '' : '[' + index + ']') + '-vedtak-text'
-    } as FeiloppsummeringFeil
+  return hasErrors
 }
+
 
 export const validateVedtakPerioder = (
   v: Validation,
+  t: TFunction,
   perioder: Array<PeriodeMedVedtak>,
-  t: TFunction
-): void => {
+  namespace: string
+): boolean => {
+  let hasErrors: boolean = false
   perioder?.forEach((periode: PeriodeMedVedtak, index: number) => {
-    validateVedtakPeriode(v, periode, index, t)
+    let _error: boolean = validateVedtakPeriode(v, t, {periode, index, namespace})
+    hasErrors = hasErrors || _error
   })
+  return hasErrors
 }
 
 export const validateVedtak = (
   v: Validation,
-  vedtak: Vedtak,
-  t: TFunction
-): void => {
-  v['vedtak-allkids'] = vedtak.allkids
-    ? undefined
-    : {
-      feilmelding: t('message:validation-noVedtakChoice'),
-      skjemaelementId: 'c-vedtak-allkids-text'
-    } as FeiloppsummeringFeil
+  t: TFunction,
+  vedtak: FormalVedtak,
+  namespace: string
+): boolean => {
+  let hasErrors: boolean = false
 
-  v['vedtak-periode-startdato'] = vedtak.periode.startdato
-    ? undefined
-    : {
-      feilmelding: t('message:validation-noDate'),
-      skjemaelementId: 'c-vedtak-periode-startdato-date'
+  if (_.isEmpty(vedtak.barn)) {
+    v[namespace + '-barn'] = {
+      feilmelding: t('message:validation-noBarnValgt'),
+      skjemaelementId: 'c-' + namespace + '-barn-list'
     } as FeiloppsummeringFeil
-
-  if (vedtak.periode.startdato) {
-    v['vedtak-periode-startdato'] = vedtak.periode.startdato.match(/\d{2}\.\d{2}\.\d{4}/)
-      ? undefined
-      : {
-        feilmelding: t('message:validation-invalidDate'),
-        skjemaelementId: 'c-vedtak-periode-startdato-date'
-      } as FeiloppsummeringFeil
+    hasErrors = true
   }
 
-  if (vedtak.periode.sluttdato) {
-    v['vedtak-periode-sluttdato'] = vedtak.periode.sluttdato.match(/\d{2}\.\d{2}\.\d{4}/)
-      ? undefined
-      : {
-        feilmelding: t('message:validation-invalidDate'),
-        skjemaelementId: 'c-vedtak-periode-sluttdato-date'
-      } as FeiloppsummeringFeil
-  }
+  let periodeError: boolean = validatePeriod(
+    v, t, {
+      period: vedtak.periode,
+      index: -1,
+      namespace
+    }
+  )
+  hasErrors = hasErrors || periodeError
 
-  v['vedtak-type'] = vedtak.type
-    ? undefined
-    : {
+  if (_.isEmpty(vedtak.type)) {
+    v[namespace + '-type'] = {
       feilmelding: t('message:validation-noVedtakType'),
       skjemaelementId: 'c-vedtak-type-text'
     } as FeiloppsummeringFeil
+    hasErrors = true
+  }
 
-  validateVedtakPerioder(v, vedtak.perioder, t)
+  let _error =  validateVedtakPerioder(v, t, vedtak.vedtaksperioder, namespace)
+  hasErrors = hasErrors || _error
+  return hasErrors
 }

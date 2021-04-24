@@ -1,11 +1,11 @@
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import useAddRemove from 'components/AddRemovePanel/useAddRemove'
+import useAddRemove from 'hooks/useAddRemove'
 import DateInput from 'components/Forms/DateInput'
 import { toFinalDateFormat } from 'components/Period/Period'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
-import useValidation from 'components/Validation/useValidation'
+import useValidation from 'hooks/useValidation'
 import { ReplySed, Statsborgerskap } from 'declarations/sed'
 import { Kodeverk, Validation } from 'declarations/types'
 import CountrySelect from 'landvelger'
@@ -14,6 +14,7 @@ import { UndertekstBold } from 'nav-frontend-typografi'
 import { Column, HighContrastFlatknapp, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { getIdx } from 'utils/namespace'
 import { validateNasjonalitet, ValidationNasjonalitetProps } from './validation'
 
 interface NasjonalitetProps {
@@ -56,8 +57,8 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
       const newStatsborgerskaper = _.cloneDeep(statsborgerskaper)
       newStatsborgerskaper[index].fradato = toFinalDateFormat(dato)
       updateReplySed(target, newStatsborgerskaper)
-      if (validation[namespace + '-fradato']) {
-        resetValidation(namespace + '-fradato')
+      if (validation[namespace + getIdx(index) + '-fradato']) {
+        resetValidation(namespace + getIdx(index) + '-fradato')
       }
     }
   }
@@ -70,8 +71,8 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
       const newStatsborgerskaper = _.cloneDeep(statsborgerskaper)
       statsborgerskaper[index].land = land
       updateReplySed(target, newStatsborgerskaper)
-      if (validation[namespace + '-land']) {
-        resetValidation(namespace + '-land')
+      if (validation[namespace + getIdx(index) + '-land']) {
+        resetValidation(namespace + getIdx(index) + '-land')
       }
     }
   }
@@ -129,43 +130,43 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
       : validation[namespace + '[' + index + ']-' + el]?.feilmelding
   }
 
-  const renderRow = (s: Statsborgerskap | null, i: number) => {
+  const renderRow = (s: Statsborgerskap | null, index: number) => {
     const key = s ? getKey(s) : 'new'
-    const candidateForDeletion = i < 0 ? false : !!key && hasKey(key)
-    const idx = (i >= 0 ? '[' + i + ']' : '')
+    const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
+    const idx = getIdx(index)
 
     return (
       <>
-        <AlignStartRow className={classNames('slideInFromLeft')} style={{ animationDelay: (i * 0.1) + 's' }}>
+        <AlignStartRow className={classNames('slideInFromLeft')} style={{ animationDelay: (index * 0.1) + 's' }}>
           <Column>
             <CountrySelect
               data-test-id={'c-' + namespace + idx + '-land-text'}
-              error={getErrorFor(i, 'land')}
+              error={getErrorFor(index, 'land')}
               id={'c-' + namespace + idx + '-land-text'}
               menuPortalTarget={document.body}
               includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
-              onOptionSelected={(e: any) => onLandSelected(e.value, i)}
+              onOptionSelected={(e: any) => onLandSelected(e.value, index)}
               placeholder={t('el:placeholder-select-default')}
-              values={i < 0 ? _newLand : s!.land}
+              values={index < 0 ? _newLand : s!.land}
             />
           </Column>
           <Column>
             <DateInput
-              error={getErrorFor(i, 'fradato')}
+              error={getErrorFor(index, 'fradato')}
               namespace={namespace + idx + '-fradato'}
-              key={i < 0 ? _newFradato : s!.fradato}
+              key={index < 0 ? _newFradato : s!.fradato}
               label=''
-              setDato={(date: string) => onFradatoChanged(date, i)}
-              value={i < 0 ? _newFradato : s!.fradato}
+              setDato={(date: string) => onFradatoChanged(date, index)}
+              value={index < 0 ? _newFradato : s!.fradato}
             />
           </Column>
           <Column>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
-              existingItem={(i >= 0)}
+              existingItem={(index >= 0)}
               marginTop={false}
               onBeginRemove={() => addCandidateForDeletion(key!)}
-              onConfirmRemove={() => onRemove(i)}
+              onConfirmRemove={() => onRemove(index)}
               onCancelRemove={() => removeCandidateForDeletion(key!)}
               onAddNew={onAdd}
               onCancelNew={onCancel}

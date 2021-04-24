@@ -1,6 +1,6 @@
 import * as types from 'constants/actionTypes'
-import mockJoarkRaw from 'mocks/joark/joark'
-import joarkReducer, { initialJoarkState } from './joark'
+import mockJoarkRaw from 'mocks/attachments/joark'
+import joarkReducer, { initialJoarkState } from './attachments'
 
 describe('reducers/joark', () => {
   it('JOARK_LIST_SUCCESS', () => {

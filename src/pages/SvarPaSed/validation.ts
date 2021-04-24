@@ -12,6 +12,7 @@ import { validatePersonOpplysninger } from 'applications/SvarSed/FamilyManager/P
 import { validateBarnetilhoerigheter } from 'applications/SvarSed/FamilyManager/Relasjon/validation'
 import { validateTrygdeordninger } from 'applications/SvarSed/FamilyManager/Trygdeordning/validation'
 import { validateMotregning } from 'applications/SvarSed/Formaal/Motregning/validation'
+import { validateVedtak } from 'applications/SvarSed/Formaal/Vedtak/validation'
 import {
   Adresse,
   Barnetilhoerighet,
@@ -134,9 +135,9 @@ export const validateStep2 = (
   let _error: boolean
   if (replySed.sedType.startsWith('F')) {
     if (_.isEmpty((replySed as F002Sed).formaal)) {
-      v['step2-formaal'] = {
+      v['formaal'] = {
         feilmelding: t('message:validation-noFormaal'),
-        skjemaelementId: 'c-step2-formaal-text'
+        skjemaelementId: 'c-formaal-text'
       } as FeiloppsummeringFeil
       hasErrors = true
     }
@@ -162,9 +163,9 @@ export const validateStep2 = (
   }
 
   if (_.isEmpty(comment)) {
-    v['step2-comment'] = {
+    v['comment'] = {
       feilmelding: t('message:validation-noComment'),
-      skjemaelementId: 'c-step2-comment-text'
+      skjemaelementId: 'c-comment-text'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -177,6 +178,11 @@ export const validateStep2 = (
       _error = validateMotregning(v, t, _.get(replySed, 'formaalx.motregning'), 'motregning')
       hasErrors = hasErrors || _error
     }
+    if ((replySed as F002Sed).formaal.indexOf('vedtak') >= 0) {
+      _error = validateVedtak(v, t, _.get(replySed, 'formaalx.vedtak'), 'vedtak')
+      hasErrors = hasErrors || _error
+    }
+
   }
   return hasErrors
 }

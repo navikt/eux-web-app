@@ -13,7 +13,7 @@ import classNames from 'classnames'
 import Inntekt from 'components/Inntekt/Inntekt'
 import Modal from 'components/Modal/Modal'
 import { FlexCenterDiv, TextAreaDiv } from 'components/StyledComponents'
-import useValidation from 'components/Validation/useValidation'
+import useValidation from 'hooks/useValidation'
 import { JoarkBrowserItems } from 'declarations/attachments'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
@@ -196,7 +196,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
   }
 
   const setComment = (comment: string) => {
-    _resetValidation('step2-comment')
+    _resetValidation('comment')
     _setComment(comment)
   }
 
@@ -269,7 +269,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
           </Systemtittel>
           <VerticalSeparatorDiv />
           <Formaal
-            feil={_validation['step2-formaal']}
+            feil={_validation['formaal']}
             replySed={replySed}
             highContrast={highContrast}
           />
@@ -293,6 +293,8 @@ const Step2: React.FC<SvarPaSedProps> = ({
           <Vedtak
             highContrast={highContrast}
             replySed={replySed}
+            resetValidation={_resetValidation}
+            updateReplySed={updateReplySed}
             validation={_validation}
           />
           <VerticalSeparatorDiv data-size='2' />
@@ -304,8 +306,8 @@ const Step2: React.FC<SvarPaSedProps> = ({
             highContrast={highContrast}
             replySed={replySed}
             resetValidation={_resetValidation}
-            updateReplySed={updateReplySed}
             seeKontoopplysninger={() => setViewKontoopplysninger(true)}
+            updateReplySed={updateReplySed}
             validation={_validation}
           />
           <VerticalSeparatorDiv data-size='2' />
@@ -336,17 +338,23 @@ const Step2: React.FC<SvarPaSedProps> = ({
       )}
       {showKontoopplysninger() && (
         <>
-          <Kontoopplysning highContrast={highContrast} replySed={replySed} validation={_validation} />
+          <Kontoopplysning
+            highContrast={highContrast}
+            replySed={replySed}
+            resetValidation={_resetValidation}
+            updateReplySed={updateReplySed}
+            validation={_validation}
+          />
           <VerticalSeparatorDiv data-size='2' />
         </>
       )}
       <VerticalSeparatorDiv />
       <TextAreaDiv>
         <HighContrastTextArea
-          className={classNames({ 'skjemaelement__input--harFeil': _validation['step2-comment'] })}
-          data-test-id='c-step2-comment-text'
-          feil={_validation['step2-comment']?.feilmelding}
-          id='c-step2-comment-text'
+          className={classNames({ 'skjemaelement__input--harFeil': _validation['comment'] })}
+          data-test-id='c-comment-text'
+          feil={_validation['comment']?.feilmelding}
+          id='c-comment-text'
           label={t('label:ytterligere-informasjon-til-sed')}
           maxLength={500}
           onChange={(e: any) => setComment(e.target.value)}

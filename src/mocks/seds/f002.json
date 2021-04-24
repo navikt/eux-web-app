@@ -667,6 +667,7 @@
       "bankensNavn": "bank",
       "kontonummer": "F002 kontoSepa iban",
       "swift": "F002 kontoSepa swift",
+      "iban": "",
       "adresse": {
         "gate": "F002 kontoOrdinaer gate",
         "postnummer": "F002 kontoOrdinaer postnummer",

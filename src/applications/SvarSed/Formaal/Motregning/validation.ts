@@ -4,6 +4,7 @@ import { TFunction } from 'react-i18next'
 import { Validation } from 'declarations/types'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import _ from 'lodash'
+import { getIdx } from 'utils/namespace'
 
 export interface ValidationMotregningNavnOgBetegnelserProps {
   navnOgBetegnelse: NavnOgBetegnelse
@@ -21,7 +22,7 @@ export const validateMotregningNavnOgBetegnelser = (
   }: ValidationMotregningNavnOgBetegnelserProps
 ): boolean => {
   let hasErrors: boolean = false
-  const idx = (index < 0 ? '' : '[' + index + ']')
+  const idx = getIdx(index)
 
   if (_.isEmpty(navnOgBetegnelse.navn)) {
     v[namespace + '-navn'] = {

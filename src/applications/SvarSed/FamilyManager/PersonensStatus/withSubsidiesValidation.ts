@@ -4,6 +4,7 @@ import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
+import { getIdx } from 'utils/namespace'
 
 export interface ValidationWithSubsidiesProps {
   pensjonPeriod: PensjonPeriode
@@ -22,7 +23,7 @@ export const validateWithSubsidies = (
     namespace
   }: ValidationWithSubsidiesProps
 ): boolean => {
-  const idx = (index < 0 ? '' : '[' + index + ']')
+  const idx = getIdx(index)
 
   let hasErrors: boolean = validatePeriod(v, t, {
     period: pensjonPeriod.periode,

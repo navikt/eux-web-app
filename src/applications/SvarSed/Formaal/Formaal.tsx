@@ -1,7 +1,7 @@
 import { setReplySed } from 'actions/svarpased'
 import Add from 'assets/icons/Add'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import useAddRemove from 'components/AddRemovePanel/useAddRemove'
+import useAddRemove from 'hooks/useAddRemove'
 import Select from 'components/Forms/Select'
 import { Etikett, FlexCenterDiv } from 'components/StyledComponents'
 import { Option, Options } from 'declarations/app'
@@ -120,8 +120,8 @@ const Formaal: React.FC<FormaalProps> = ({
           <FlexCenterDiv>
             <div style={{ flex: 2 }}>
               <Select
-                data-test-id='c-step2-formaal-text'
-                id='c-step2-formaal-text'
+                data-test-id='c-formaal-text'
+                id='c-formaal-text'
                 highContrast={highContrast}
                 value={_newFormaal}
                 menuPortalTarget={document.body}

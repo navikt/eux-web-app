@@ -1,12 +1,12 @@
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import useAddRemove from 'components/AddRemovePanel/useAddRemove'
+import useAddRemove from 'hooks/useAddRemove'
 import DateInput from 'components/Forms/DateInput'
 import TextArea from 'components/Forms/TextArea'
 import Period from 'components/Period/Period'
 import { AlignStartRow, PaddedDiv, TextAreaDiv } from 'components/StyledComponents'
-import useValidation from 'components/Validation/useValidation'
+import useValidation from 'hooks/useValidation'
 import { Flyttegrunn, Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -14,6 +14,7 @@ import moment from 'moment'
 import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { getIdx } from 'utils/namespace'
 import { validateGrunnlagForBosetting, ValidationGrunnlagForBosettingProps } from './validation'
 import {
   Column,
@@ -53,7 +54,6 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationGrunnlagForBosettingProps>({}, validateGrunnlagForBosetting)
 
   const setAvsenderDato = (dato: string) => {
-    _resetValidation(namespace + '-avsenderdato')
     updateReplySed(`${target}.datoFlyttetTilAvsenderlandet`, dato)
     if (validation[namespace + '-avsenderdato']) {
       resetValidation(namespace + '-avsenderdato')
@@ -61,7 +61,6 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
   }
 
   const setMottakerDato = (dato: string) => {
-    _resetValidation(namespace + '-mottakerdato')
     updateReplySed(`${target}.datoFlyttetTilMottakerlandet`, dato)
     if (validation[namespace + '-mottakerdato']) {
       resetValidation(namespace + '-mottakerdato')
@@ -76,8 +75,8 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
       const newPerioder: Array<Periode> = _.cloneDeep(flyttegrunn.perioder)
       newPerioder[index].startdato = dato
       updateReplySed(`${target}.perioder`, newPerioder)
-      if (validation[namespace + '-startdato']) {
-        resetValidation(namespace + '-startdato')
+      if (validation[namespace + getIdx(index) + '-startdato']) {
+        resetValidation(namespace + getIdx(index) + '-startdato')
       }
     }
   }
@@ -96,14 +95,13 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
         newPerioder[index].sluttdato = dato
       }
       updateReplySed(`${target}.perioder`, newPerioder)
-      if (validation[namespace + '-sluttdato']) {
-        resetValidation(namespace + '-sluttdato')
+      if (validation[namespace + getIdx(index) + '-sluttdato']) {
+        resetValidation(namespace + getIdx(index) + '-sluttdato')
       }
     }
   }
 
   const setElementsOfPersonalSituation = (element: string) => {
-    _resetValidation(namespace + '-elementer')
     updateReplySed(`${target}.personligSituasjon`, element)
     if (validation[namespace + '-elementer']) {
       resetValidation(namespace + '-elementer')
@@ -171,7 +169,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
   const renderRow = (periode: Periode | undefined, index: number) => {
     const key = periode ? getKey(periode) : 'new'
     const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
-    const idx = (index >= 0 ? '[' + index + ']' : '')
+    const idx = getIdx(index)
     const startdato = index < 0 ? _newStartDato : periode?.startdato
     const sluttdato = index < 0 ? _newSluttDato : periode?.sluttdato
 
@@ -265,7 +263,6 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
         <Column data-flex='2'>
           <TextAreaDiv>
             <TextArea
-              className={classNames({ 'skjemaelement__input--harFeil': validation[+namespace + '-elementer'] })}
               feil={validation[namespace + '-elementer']?.feilmelding}
               namespace={namespace}
               id='elementer-text'

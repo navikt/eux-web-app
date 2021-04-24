@@ -1,10 +1,10 @@
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import useAddRemove from 'components/AddRemovePanel/useAddRemove'
+import useAddRemove from 'hooks/useAddRemove'
 import Input from 'components/Forms/Input'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
-import useValidation from 'components/Validation/useValidation'
+import useValidation from 'hooks/useValidation'
 import { Adresse, AdresseType, ReplySed } from 'declarations/sed'
 import { Kodeverk, Validation } from 'declarations/types'
 import CountrySelect from 'landvelger'
@@ -19,6 +19,7 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { getIdx } from 'utils/namespace'
 import { validateAdresse, ValidationAddressProps } from './validation'
 
 interface AdresseProps {
@@ -66,8 +67,8 @@ const Adresser: React.FC<AdresseProps> = ({
       const newAdresses = _.cloneDeep(adresses)
       newAdresses[index].type = type
       updateReplySed(target, newAdresses)
-      if (validation[namespace + '-type']) {
-        resetValidation(namespace + '-type')
+      if (validation[namespace + getIdx(index) + '-type']) {
+        resetValidation(namespace + getIdx(index) + '-type')
       }
     }
   }
@@ -80,8 +81,8 @@ const Adresser: React.FC<AdresseProps> = ({
       const newAdresses = _.cloneDeep(adresses)
       newAdresses[index].gate = gate
       updateReplySed(target, newAdresses)
-      if (validation[namespace + '-gate']) {
-        resetValidation(namespace + '-gate')
+      if (validation[namespace + getIdx(index) + '-gate']) {
+        resetValidation(namespace + getIdx(index) + '-gate')
       }
     }
   }
@@ -94,8 +95,8 @@ const Adresser: React.FC<AdresseProps> = ({
       const newAdresses = _.cloneDeep(adresses)
       newAdresses[index].postnummer = postnummer
       updateReplySed(target, newAdresses)
-      if (validation[namespace + '-postnummer']) {
-        resetValidation(namespace + '-postnummer')
+      if (validation[namespace + getIdx(index) + '-postnummer']) {
+        resetValidation(namespace + getIdx(index) + '-postnummer')
       }
     }
   }
@@ -108,8 +109,8 @@ const Adresser: React.FC<AdresseProps> = ({
       const newAdresses = _.cloneDeep(adresses)
       newAdresses[index].by = by
       updateReplySed(target, newAdresses)
-      if (validation[namespace + '-by']) {
-        resetValidation(namespace + '-by')
+      if (validation[namespace + getIdx(index) + '-by']) {
+        resetValidation(namespace + getIdx(index) + '-by')
       }
     }
   }
@@ -122,8 +123,8 @@ const Adresser: React.FC<AdresseProps> = ({
       const newAdresses = _.cloneDeep(adresses)
       newAdresses[index].bygning = bygning
       updateReplySed(target, newAdresses)
-      if (validation[namespace + '-bygning']) {
-        resetValidation(namespace + '-bygning')
+      if (validation[namespace + getIdx(index) + '-bygning']) {
+        resetValidation(namespace + getIdx(index) + '-bygning')
       }
     }
   }
@@ -136,8 +137,8 @@ const Adresser: React.FC<AdresseProps> = ({
       const newAdresses = _.cloneDeep(adresses)
       newAdresses[index].region = region
       updateReplySed(target, newAdresses)
-      if (validation[namespace + '-region']) {
-        resetValidation(namespace + '-region')
+      if (validation[namespace + getIdx(index) + '-region']) {
+        resetValidation(namespace + getIdx(index) + '-region')
       }
     }
   }
@@ -150,8 +151,8 @@ const Adresser: React.FC<AdresseProps> = ({
       const newAdresses = _.cloneDeep(adresses)
       newAdresses[index].land = land
       updateReplySed(target, newAdresses)
-      if (validation[namespace + '-land']) {
-        resetValidation(namespace + '-land')
+      if (validation[namespace + getIdx(index) + '-land']) {
+        resetValidation(namespace + getIdx(index) + '-land')
       }
     }
   }
@@ -221,7 +222,7 @@ const Adresser: React.FC<AdresseProps> = ({
   const renderRow = (address: Adresse | null, index: number) => {
     const key = address ? getKey(address) : 'new'
     const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
-    const idx = (index >= 0 ? '[' + index + ']' : '')
+    const idx = getIdx(index)
     return (
       <>
         <AlignStartRow className={classNames('slideInFromLeft')}>
