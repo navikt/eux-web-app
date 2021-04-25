@@ -33,9 +33,9 @@ export const validateMotregningNavnOgBetegnelser = (
   }
 
   if (_.isEmpty(navnOgBetegnelse.betegnelsePåYtelse)) {
-    v[namespace + '-navnOgBetegnelser' +  + idx + '-betegnelse'] = {
+    v[namespace + '-navnOgBetegnelser' +  + idx + '-betegnelsePåYtelse'] = {
       feilmelding: t('message:validation-noBetegnelsePåYtelse'),
-      skjemaelementId: namespace + '-navnOgBetegnelser' + idx + '-betegnelse'
+      skjemaelementId: namespace + '-navnOgBetegnelser' + idx + '-betegnelsePåYtelse'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -113,5 +113,13 @@ export const validateMotregning = (
     } as FeiloppsummeringFeil
     hasErrors = true
   }
+
+  if (hasErrors) {
+    const namespaceBits = namespace.split('-')
+    const formaalNamespace = namespaceBits[0]
+    v[formaalNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+  }
   return hasErrors
+
+
 }

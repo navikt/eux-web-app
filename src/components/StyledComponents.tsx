@@ -6,7 +6,7 @@ import {
   animationOpen,
   fadeIn,
   fadeOut,
-  Row
+  Row, HighContrastPanel
 } from 'nav-hoykontrast'
 
 export const AlignedSelect = styled(Select)`
@@ -103,4 +103,10 @@ export const Etikett = styled.div`
   border: ${(props: any) => props['data-border'] === true ? '1px solid ' + props.theme[themeKeys.MAIN_BORDER_COLOR] : 'none'};
   border-radius: 5px;
   display: inline-block;
+`
+export const FormaalPanel = styled(HighContrastPanel)`
+  &.feil {
+    border-color: ${({ theme }) => theme[themeKeys.MAIN_ERROR_COLOR]};
+    border-width: 3px;
+  }
 `

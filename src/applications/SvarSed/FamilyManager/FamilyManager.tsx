@@ -5,7 +5,7 @@ import FilledCheckCircle from 'assets/icons/CheckCircle'
 import Barn from 'assets/icons/Child'
 import FilledRemoveCircle from 'assets/icons/RemoveCircle'
 import classNames from 'classnames'
-import { FlexCenterDiv, PileDiv } from 'components/StyledComponents'
+import { FlexCenterDiv, FormaalPanel, PileDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { F002Sed, PersonInfo, ReplySed } from 'declarations/sed'
@@ -16,7 +16,6 @@ import { Checkbox, FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   HighContrastFlatknapp,
-  HighContrastPanel,
   HorizontalSeparatorDiv,
   theme,
   themeHighContrast,
@@ -112,7 +111,7 @@ const RightDiv = styled.div`
 const RightFlexCenterDiv = styled.div`
   text-align: center;
 `
-const CustomHighContrastPanel = styled(HighContrastPanel)`
+const CustomHighContrastPanel = styled(FormaalPanel)`
   padding: 0rem;
 `
 const MarginDiv = styled.div`
@@ -177,6 +176,7 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
   const barnNr = annenPersonNr + ((replySed as F002Sed).barn ? 1 : 0)
   const familieNr = barnNr + 1
   const totalPeople = annenPersonNr + ((replySed as F002Sed).barn ? (replySed as F002Sed).barn.length : 0) + 1 // 1 = bruker
+  const namespace = 'familymanager'
 
   const changePersonOption = (personID: string | undefined, menuOption: string) => {
     if (personID) {
@@ -294,7 +294,7 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
           >
             <Chevron type={editing ? 'ned' : 'høyre'} />
             <HorizontalSeparatorDiv data-size='0.5' />
-            {validation['familymanager-' + personId] && (
+            {validation[namespace + '-' + personId] && (
               <>
                 <FilledRemoveCircle color='red' />
                 <HorizontalSeparatorDiv data-size='0.5' />
@@ -372,8 +372,8 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
                 })}
                 onClick={() => changePersonOption(personId, o.value)}
               >
-                {Object.prototype.hasOwnProperty.call(validation, 'familymanager-' + personId + '-' + o.value) &&
-              (validation['familymanager-' + personId + '-' + o.value] === undefined
+                {Object.prototype.hasOwnProperty.call(validation, namespace + '-' + personId + '-' + o.value) &&
+              (validation[namespace + '-' + personId + '-' + o.value] === undefined
                 ? <FilledCheckCircle color='green' />
                 : <FilledRemoveCircle color='red' />
               )}
@@ -389,7 +389,7 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
   const handleEvent = (e: any) => {
     const feil: FeiloppsummeringFeil = e.detail
     const namespaceBits = feil.skjemaelementId.split('-')
-    if (namespaceBits[0] === 'familymanager') {
+    if (namespaceBits[0] === namespace) {
       const who = namespaceBits[1]
       const menu = namespaceBits[2]
       changePersonOption(who, menu)
@@ -423,7 +423,7 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
         {t('el:title-familymanager')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      <CustomHighContrastPanel>
+      <CustomHighContrastPanel className={classNames({feil: validation[namespace]?.feilmelding})}>
         <FlexCenterDiv>
           <LeftDiv>
             {replySed.bruker && renderPerson(replySed, 'bruker', brukerNr)}

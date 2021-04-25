@@ -27,7 +27,7 @@ export const validateVedtakPeriode = (
   let periodeError: boolean = validatePeriod(
     v, t, {
       period: periode?.periode,
-      index,
+      index: -1,
       namespace: namespace + '-vedtaksperioder' + idx + '-periode'
     }
   )
@@ -66,7 +66,7 @@ export const validateVedtak = (
 ): boolean => {
   let hasErrors: boolean = false
 
-  if (_.isEmpty(vedtak.barn)) {
+  if (_.isEmpty(vedtak?.barn)) {
     v[namespace + '-barn'] = {
       feilmelding: t('message:validation-noBarnValgt'),
       skjemaelementId: namespace + '-barn'
@@ -76,14 +76,14 @@ export const validateVedtak = (
 
   let periodeError: boolean = validatePeriod(
     v, t, {
-      period: vedtak.periode,
+      period: vedtak?.periode,
       index: -1,
-      namespace
+      namespace: namespace + '-periode'
     }
   )
   hasErrors = hasErrors || periodeError
 
-  if (_.isEmpty(vedtak.type)) {
+  if (_.isEmpty(vedtak?.type)) {
     v[namespace + '-type'] = {
       feilmelding: t('message:validation-noVedtakType'),
       skjemaelementId: 'vedtak-type'
@@ -91,7 +91,12 @@ export const validateVedtak = (
     hasErrors = true
   }
 
-  let _error =  validateVedtakPerioder(v, t, vedtak.vedtaksperioder, namespace)
+  let _error =  validateVedtakPerioder(v, t, vedtak?.vedtaksperioder, namespace)
   hasErrors = hasErrors || _error
+  if (hasErrors) {
+    const namespaceBits = namespace.split('-')
+    const formaalNamespace = namespaceBits[0]
+    v[formaalNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+  }
   return hasErrors
 }

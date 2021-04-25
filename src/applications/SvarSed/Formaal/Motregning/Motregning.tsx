@@ -4,7 +4,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import Period from 'components/Period/Period'
-import { AlignStartRow, PileDiv, TextAreaDiv } from 'components/StyledComponents'
+import { AlignStartRow, FormaalPanel, PileDiv, TextAreaDiv } from 'components/StyledComponents'
 import { F002Sed, FormalMotregning, NavnOgBetegnelse, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
@@ -17,7 +17,6 @@ import {
   Column,
   HighContrastFlatknapp,
   HighContrastLink,
-  HighContrastPanel,
   HighContrastRadio,
   HighContrastRadioGroup,
   HorizontalSeparatorDiv,
@@ -214,9 +213,9 @@ const Motregning: React.FC<MotregningProps> = ({
           </Column>
           <Column>
             <Input
-              feil={getErrorFor(index, 'betegnelsepåytelse')}
+              feil={getErrorFor(index, 'betegnelsePåYtelse')}
               namespace={namespace + '-navnOgBetegnelser' + idx}
-              id='betegnelse'
+              id='betegnelsePåYtelse'
               label={t('label:betegnelse-på-ytelse') + ' *'}
               onChanged={(value: string) => setBetegnelse(value, index)}
               value={index < 0 ? _newBetegnelse : nob?.betegnelsePåYtelse}
@@ -246,7 +245,7 @@ const Motregning: React.FC<MotregningProps> = ({
         {t('el:title-motregning')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      <HighContrastPanel>
+      <FormaalPanel className={classNames({feil: validation[namespace]?.feilmelding})}>
         <HighContrastRadioGroup
           className={classNames('slideInFromLeft')}
           data-test-id={namespace + '-anmodningEllerSvar'}
@@ -300,10 +299,10 @@ const Motregning: React.FC<MotregningProps> = ({
         >
           <Column>
             <Input
-              feil={validation[+namespace + '-beloep']?.feilmelding}
+              feil={validation[namespace + '-beloep']?.feilmelding}
               namespace={namespace}
               id='beloep'
-              label={t('label:betegnelse-på-ytelse') + ' *'}
+              label={t('label:beløp') + ' *'}
               onChanged={setBeløp}
               value={motregning?.beloep}
             />
@@ -434,7 +433,7 @@ const Motregning: React.FC<MotregningProps> = ({
             </HighContrastLink>
           </Column>
         </AlignStartRow>
-      </HighContrastPanel>
+      </FormaalPanel>
     </PileDiv>
   )
 }

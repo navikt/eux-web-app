@@ -200,7 +200,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             id={namespace + '-kjoenn'}
             legend={t('label:kjønn') + ' *'}
             name={namespace + '-kjoenn'}
-            onChange={onKjoennChange}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => onKjoennChange(e.target.value)}
             radios={[
               { label: t(personID?.startsWith('barn') ? 'label:jente' : 'label:kvinne'), value: 'K' },
               { label: t(personID?.startsWith('barn') ? 'label:gutt' : 'label:mann'), value: 'M' },

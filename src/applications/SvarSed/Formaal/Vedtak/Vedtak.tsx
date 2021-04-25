@@ -5,7 +5,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
 import Period from 'components/Period/Period'
-import { AlignStartRow, FlexDiv, PileDiv, TextAreaDiv } from 'components/StyledComponents'
+import { AlignStartRow, FlexDiv, FormaalPanel, PileDiv, TextAreaDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { F002Sed, FormalVedtak, JaNei, PeriodeMedVedtak, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -17,7 +17,6 @@ import { Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
   HighContrastFlatknapp,
-  HighContrastPanel,
   HighContrastRadio,
   HighContrastRadioGroup,
   HorizontalSeparatorDiv,
@@ -289,7 +288,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
         {t('el:title-vedtak')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      <HighContrastPanel>
+      <FormaalPanel className={classNames({feil: validation[namespace]?.feilmelding})}>
         <HighContrastRadioGroup
           id={namespace + '-barn'}
           className={classNames('slideInFromLeft')}
@@ -414,7 +413,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
               </Column>
             </Row>
             )}
-      </HighContrastPanel>
+      </FormaalPanel>
     </PileDiv>
   )
 }
