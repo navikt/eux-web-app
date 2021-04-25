@@ -25,7 +25,7 @@ export const validateAdresse = (
   let hasErrors: boolean = false
   const idx = getIdx(index)
 
-  if (_.isEmpty(adresse.type)) {
+  if (_.isEmpty(adresse?.type?.trim())) {
     v[namespace + idx + '-type'] = {
       feilmelding: t('message:validation-noAddressTypeForPerson', { person: personName }),
       skjemaelementId: namespace + idx + '-type'
@@ -33,7 +33,7 @@ export const validateAdresse = (
     hasErrors = true
   }
 
-  if (_.isEmpty(adresse.land)) {
+  if (_.isEmpty(adresse?.land?.trim())) {
     v[namespace + idx + '-land'] = {
       feilmelding: t('message:validation-noAddressCountryForPerson', { person: personName }),
       skjemaelementId: namespace + idx + '-land'
@@ -41,7 +41,7 @@ export const validateAdresse = (
     hasErrors = true
   }
 
-  if (_.isEmpty(adresse.gate)) {
+  if (_.isEmpty(adresse?.gate?.trim())) {
     v[namespace + idx + '-gate'] = {
       feilmelding: t('message:validation-noAddressStreetForPerson', { person: personName }),
       skjemaelementId: namespace + idx + '-gate'
@@ -49,7 +49,7 @@ export const validateAdresse = (
     hasErrors = true
   }
 
-  if (_.isEmpty(adresse.postnummer)) {
+  if (_.isEmpty(adresse?.postnummer?.trim())) {
     v[namespace + idx + '-postnummer'] = {
       feilmelding: t('message:validation-noAddressPostnummerForPerson', { person: personName }),
       skjemaelementId: namespace + idx + '-postnummer'
@@ -57,7 +57,7 @@ export const validateAdresse = (
     hasErrors = true
   }
 
-  if (_.isEmpty(adresse.by)) {
+  if (_.isEmpty(adresse?.by?.trim())) {
     v[namespace + idx + '-by'] = {
       feilmelding: t('message:validation-noAddressCityForPerson', { person: personName }),
       skjemaelementId: namespace + idx + '-by'

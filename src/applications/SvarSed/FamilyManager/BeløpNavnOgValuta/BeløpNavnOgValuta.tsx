@@ -44,21 +44,21 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
   }]
 
   const setBarnetsNavn = (newBarnetsNavn: string) => {
-    updateReplySed(`${target}.barnetsNavn`, newBarnetsNavn)
+    updateReplySed(`${target}.barnetsNavn`, newBarnetsNavn.trim())
     if (validation[namespace + '-barnetsNavn']) {
       resetValidation(namespace + '-barnetsNavn')
     }
   }
 
   const setYtelseNavn = (newYtelseNavn: YtelseNavn) => {
-    updateReplySed(`${target}.ytelseNavn`, newYtelseNavn)
+    updateReplySed(`${target}.ytelseNavn`, newYtelseNavn.trim())
     if (validation[namespace + '-ytelseNavn']) {
       resetValidation(namespace + '-ytelseNavn')
     }
   }
 
   const setBeløp = (newBeløp: string) => {
-    updateReplySed(`${target}.beloep`, newBeløp)
+    updateReplySed(`${target}.beloep`, newBeløp.trim())
     if (validation[namespace + '-beloep']) {
       resetValidation(namespace + '-beloep')
     }
@@ -72,28 +72,28 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
   }
 
   const setStartDato = (newDato: string) => {
-    updateReplySed(`${target}.startdato`, newDato)
+    updateReplySed(`${target}.startdato`, newDato.trim())
     if (validation[namespace + '-startdato']) {
       resetValidation(namespace + '-startdato')
     }
   }
 
   const setSluttDato = (newDato: string) => {
-    updateReplySed(`${target}.sluttdato`, newDato)
+    updateReplySed(`${target}.sluttdato`, newDato.trim())
     if (validation[namespace + '-sluttdato']) {
       resetValidation(namespace + '-sluttdato')
     }
   }
 
   const setMottakersNavn = (newMottakersNavn: string) => {
-    updateReplySed(`${target}.mottakersNavn`, newMottakersNavn)
+    updateReplySed(`${target}.mottakersNavn`, newMottakersNavn.trim())
     if (validation[namespace + '-mottakersNavn']) {
       resetValidation(namespace + '-mottakersNavn')
     }
   }
 
   const setUtbetalingshyppighet = (newUtbetalingshyppighet: Utbetalingshyppighet) => {
-    updateReplySed(`${target}.utbetalingshyppighet`, newUtbetalingshyppighet)
+    updateReplySed(`${target}.utbetalingshyppighet`, newUtbetalingshyppighet.trim())
     if (validation[namespace + '-utbetalingshyppighet']) {
       resetValidation(namespace + '-utbetalingshyppighet')
     }

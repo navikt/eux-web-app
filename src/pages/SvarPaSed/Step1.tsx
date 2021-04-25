@@ -96,7 +96,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
     highContrast
   }: any = useSelector<State, any>(mapState)
   const [_filter, _setFilter] = useState<string | undefined>(undefined)
-  const [_saksnummerOrFnr, _setSaksnummerOrFnr] = useState<string | undefined>(rinasaksnummerOrFnrParam)
+  const [_saksnummerOrFnr, _setSaksnummerOrFnr] = useState<string>(rinasaksnummerOrFnrParam ?? '')
   const [_validMessage, _setValidMessage] = useState<string>('')
   const [_validation, _resetValidation, performValidation] = useValidation({}, validateStep1)
 

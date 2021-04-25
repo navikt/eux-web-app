@@ -128,17 +128,17 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
 
   const onNewPersonFnrChange = (fnr: string) => {
     _resetValidation(namespace + '-fnr')
-    _setNewPersonFnr(fnr)
+    _setNewPersonFnr(fnr.trim())
   }
 
   const onNewPersonNameChange = (navn: string) => {
     _resetValidation(namespace + '-navn')
-    _setNewPersonName(navn)
+    _setNewPersonName(navn.trim())
   }
 
   const onNewPersonRelationChange = (o: OptionTypeBase) => {
     _resetValidation(namespace + '-relasjon')
-    _setNewPersonRelation(o.value)
+    _setNewPersonRelation(o.value.trim())
   }
 
   const resetForm = () => {
@@ -158,13 +158,13 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
     if (valid) {
       const newReplySed = _.cloneDeep(_replySed)
       const personInfo: PersonInfo = {
-        fornavn: _newPersonName,
+        fornavn: _newPersonName.trim(),
         etternavn: '',
         foedselsdato: '',
         kjoenn: 'U',
         statsborgerskap: [],
         pin: [{
-          identifikator: _newPersonFnr
+          identifikator: _newPersonFnr.trim()
         }]
       }
       if (_newPersonRelation === 'barn') {

@@ -6,7 +6,7 @@ import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
 export interface ValidationKontaktsinformasjonTelefonProps {
-  telefon: Telefon | {type: any, nummer: any}
+  telefon: Telefon
   index: number
   namespace: string
   personName: string
@@ -34,7 +34,7 @@ export const validateKontaktsinformasjonTelefon = (
   let hasErrors: boolean = false
   const idx = getIdx(index)
 
-  if (_.isEmpty(telefon.type)) {
+  if (_.isEmpty(telefon?.type?.trim())) {
     v[namespace + idx + '-type'] = {
       feilmelding: t('message:validation-noTelephoneTypeForPerson', { person: personName }),
       skjemaelementId: namespace + idx + '-type'
@@ -42,7 +42,7 @@ export const validateKontaktsinformasjonTelefon = (
     hasErrors = true
   }
 
-  if (_.isEmpty(telefon.nummer)) {
+  if (_.isEmpty(telefon?.nummer?.trim())) {
     v[namespace + idx + '-nummer'] = {
       feilmelding: t('message:validation-noTelephoneNumberForPerson', { person: personName }),
       skjemaelementId: namespace + idx + '-nummer'
@@ -75,8 +75,8 @@ export const validateKontaktsinformasjonEpost = (
   let hasErrors: boolean = false
   const idx = getIdx(index)
 
-  if (!_.isEmpty(epost.adresse)) {
-    if (!epost.adresse.match(emailPattern)) {
+  if (!_.isEmpty(epost?.adresse?.trim())) {
+    if (!epost.adresse.trim().match(emailPattern)) {
       v[namespace + idx + '-adresse'] = {
         feilmelding: t('message:validation-invalidEpostForPerson', { person: personName }),
         skjemaelementId: namespace + idx + '-adresse'

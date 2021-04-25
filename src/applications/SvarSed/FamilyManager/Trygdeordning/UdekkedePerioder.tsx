@@ -52,10 +52,10 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
 
   const setStartDato = (startdato: string, index: number) => {
     if (index < 0) {
-      _setNewStartDato(startdato)
+      _setNewStartDato(startdato.trim())
       _resetValidation(namespace + '-udekkede-startdato')
     } else {
-      updateReplySed(`{target}[${index}].startdato`, startdato)
+      updateReplySed(`{target}[${index}].startdato`, startdato.trim())
       if (validation[namespace + '-perioderUtenforTrygdeordning' + getIdx(index) +'-startdato']) {
         resetValidation(namespace +'-perioderUtenforTrygdeordning' + getIdx(index) +'-startdato')
       }
@@ -64,7 +64,7 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
 
   const setSluttDato = (sluttdato: string, index: number) => {
     if (index < 0) {
-      _setNewSluttDato(sluttdato)
+      _setNewSluttDato(sluttdato.trim())
       _resetValidation(namespace + '-udekkede-sluttdato')
     } else {
       const newPerioder: Array<Periode> = _.cloneDeep(perioderUtenforTrygdeordning)
@@ -73,7 +73,7 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
         newPerioder[index].aapenPeriodeType = 'åpen_sluttdato'
       } else {
         delete newPerioder[index].aapenPeriodeType
-        newPerioder[index].sluttdato = sluttdato
+        newPerioder[index].sluttdato = sluttdato.trim()
       }
       updateReplySed(target, newPerioder)
       if (namespace + '-perioderUtenforTrygdeordning' + getIdx(index) +'-sluttdato') {
@@ -104,10 +104,10 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
 
   const onAdd = () => {
     const newPeriode: Periode = {
-      startdato: _newStartDato
+      startdato: _newStartDato.trim()
     }
     if (_newSluttDato) {
-      newPeriode.sluttdato = _newSluttDato
+      newPeriode.sluttdato = _newSluttDato.trim()
     } else {
       newPeriode.aapenPeriodeType = 'åpen_sluttdato'
     }
@@ -142,7 +142,10 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
     const sluttdato = index < 0 ? _newSluttDato : periode?.sluttdato
     return (
       <>
-        <AlignStartRow className={classNames('slideInFromLeft')}>
+        <AlignStartRow
+          className={classNames('slideInFromLeft')}
+          style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
+        >
           <Period
             key={'' + startdato + sluttdato}
             labels={false}

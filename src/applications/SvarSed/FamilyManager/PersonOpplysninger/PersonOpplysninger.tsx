@@ -53,28 +53,28 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   const utenlandskPin = _.find(personInfo.pin, p => p.land !== 'NO')
 
   const onFornavnChange = (newFornavn: string) => {
-    updateReplySed(`${target}.fornavn`, newFornavn)
+    updateReplySed(`${target}.fornavn`, newFornavn.trim())
     if (validation[namespace + '-fornavn']) {
       resetValidation(namespace + '-fornavn')
     }
   }
 
   const onEtternavnChange = (newEtternavn: string) => {
-    updateReplySed(`${target}.etternavn`, newEtternavn)
+    updateReplySed(`${target}.etternavn`, newEtternavn.trim())
     if (validation[namespace + '-etternavn']) {
       resetValidation(namespace + '-etternavn')
     }
   }
 
   const onFodselsdatoChange = (dato: string) => {
-    updateReplySed(`${target}.foedselsdato`, dato)
+    updateReplySed(`${target}.foedselsdato`, dato.trim())
     if (validation[namespace + '-foedselsdato']) {
       resetValidation(namespace + '-foedselsdato')
     }
   }
 
   const onKjoennChange = (newKjoenn: string) => {
-    updateReplySed(`${target}.kjoenn`, newKjoenn)
+    updateReplySed(`${target}.kjoenn`, newKjoenn.trim())
     if (validation[namespace + '-kjoenn']) {
       resetValidation(namespace + '-kjoenn')
     }
@@ -84,10 +84,10 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
     const pin: Array<Pin> = _.cloneDeep(personInfo.pin)
     const utendanskPinIndex = _.findIndex(pin, p => p.land !== 'NO')
     if (utendanskPinIndex >= 0) {
-      pin[utendanskPinIndex].identifikator = newPin
+      pin[utendanskPinIndex].identifikator = newPin.trim()
     } else {
       pin.push({
-        identifikator: newPin
+        identifikator: newPin.trim()
       })
     }
     updateReplySed(`${target}.pin`, pin)
@@ -100,10 +100,10 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
     const pin: Array<Pin> = _.cloneDeep(personInfo.pin)
     const utendanskPinIndex = _.findIndex(pin, p => p.land !== 'NO')
     if (utendanskPinIndex >= 0) {
-      pin[utendanskPinIndex].land = land
+      pin[utendanskPinIndex].land = land.trim()
     } else {
       pin.push({
-        land: land
+        land: land.trim()
       })
     }
     updateReplySed(`${target}.pin`, pin)
@@ -116,10 +116,10 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
     const pin: Array<Pin> = _.cloneDeep(personInfo.pin)
     const norwegianPinIndex = _.findIndex(pin, p => p.land === 'NO')
     if (norwegianPinIndex >= 0) {
-      pin[norwegianPinIndex].identifikator = newPin
+      pin[norwegianPinIndex].identifikator = newPin.trim()
     } else {
       pin.push({
-        identifikator: newPin
+        identifikator: newPin.trim()
       })
     }
     updateReplySed(`${target}.pin`, pin)
@@ -129,21 +129,21 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   }
 
   const onFoedestedByChange = (newFodestedBy: string) => {
-    updateReplySed(`${target}.pinMangler.foedested.by`, newFodestedBy)
+    updateReplySed(`${target}.pinMangler.foedested.by`, newFodestedBy.trim())
     if (validation[namespace + '-foedested-by']) {
       resetValidation(namespace + '-foedested-by')
     }
   }
 
   const onFoedestedRegionChange = (newFodestedRegion: string) => {
-    updateReplySed(`${target}.pinMangler.foedested.region`, newFodestedRegion)
+    updateReplySed(`${target}.pinMangler.foedested.region`, newFodestedRegion.trim())
     if (validation[namespace + '-foedested-region']) {
       resetValidation(namespace + '-foedested-region')
     }
   }
 
   const onFoedestedLandChange = (newLand: string) => {
-    updateReplySed(`${target}.pinMangler.foedested.land`, newLand)
+    updateReplySed(`${target}.pinMangler.foedested.land`, newLand.trim())
     if (validation[namespace + '-foedested-land']) {
       resetValidation(namespace + '-foedested-land')
     }

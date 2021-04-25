@@ -87,9 +87,9 @@ const VedtakFC: React.FC<VedtakProps> = ({
     let newBarn: Array<String> = _.cloneDeep(vedtak?.barn)!
     // checked means that we will remove from list
     if (checked) {
-      newBarn = _.filter(newBarn, _n => _n !== barn)
+      newBarn = _.filter(newBarn, _n => _n !== barn.trim())
     } else {
-      newBarn = newBarn.concat(barn)
+      newBarn = newBarn.concat(barn.trim())
     }
     updateReplySed(`${target}.barn`, newBarn)
     if (validation[namespace + '-barn']) {
@@ -98,28 +98,28 @@ const VedtakFC: React.FC<VedtakProps> = ({
   }
 
   const setStartDato = (newDato: string) => {
-    updateReplySed(`${target}.periode.startdato`, newDato)
+    updateReplySed(`${target}.periode.startdato`, newDato.trim())
     if (validation[namespace + '-periode-startdato']) {
       resetValidation(namespace + '-periode-startdato')
     }
   }
 
   const setSluttDato = (newDato: string) => {
-    updateReplySed(`${target}.periode.sluttdato`, newDato)
+    updateReplySed(`${target}.periode.sluttdato`, newDato.trim())
     if (validation[namespace + '-periode-sluttdato']) {
       resetValidation(namespace + '-periode-sluttdato')
     }
   }
 
   const setType = (newType: string) => {
-    updateReplySed(`${target}.type`, newType)
+    updateReplySed(`${target}.type`, newType.trim())
     if (validation[namespace + '-type']) {
       resetValidation(namespace + '-type')
     }
   }
 
   const setGrunnen = (newGrunnen: string) => {
-    updateReplySed(`${target}.grunnen`, newGrunnen)
+    updateReplySed(`${target}.grunnen`, newGrunnen.trim())
     if (validation[namespace + '-grunnen']) {
       resetValidation(namespace + '-grunnen')
     }
@@ -127,10 +127,10 @@ const VedtakFC: React.FC<VedtakProps> = ({
 
   const setVedtaksperioderStartDato = (dato: string, index: number) => {
     if (index < 0) {
-      _setNewStartDato(dato)
+      _setNewStartDato(dato.trim())
       _resetValidation(namespace + '-vedtaksperioder-periode-startdato')
     } else {
-      updateReplySed(`${target}.vedtaksperioder[${index}].periode.startdato`,dato)
+      updateReplySed(`${target}.vedtaksperioder[${index}].periode.startdato`,dato.trim())
       if (validation[namespace + '-vedtaksperioder' + getIdx(index) + '-periode-startdato']) {
         resetValidation(namespace + '-vedtaksperioder' + getIdx(index) + '-periode-startdato')
       }
@@ -139,7 +139,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
 
   const setVedtaksperioderSluttDato = (dato: string, index: number) => {
     if (index < 0) {
-      _setNewStartDato(dato)
+      _setNewStartDato(dato.trim())
       _resetValidation(namespace + '-vedtaksperioder-periode-sluttdato')
     } else {
       let newPerioder: Array<PeriodeMedVedtak> | undefined = _.cloneDeep(vedtak?.vedtaksperioder)
@@ -151,7 +151,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
         newPerioder[index].periode.aapenPeriodeType = 'åpen_sluttdato'
       } else {
         delete newPerioder[index].periode.aapenPeriodeType
-        newPerioder[index].periode.sluttdato = dato
+        newPerioder[index].periode.sluttdato = dato.trim()
       }
       updateReplySed(`${target}.vedtaksperioder`, newPerioder)
       if (validation[namespace + '-vedtaksperioder' + getIdx(index) + '-periode-sluttdato']) {
@@ -162,10 +162,10 @@ const VedtakFC: React.FC<VedtakProps> = ({
 
   const setVedtaksperioderVedtak = (newVedtak: string, index: number) => {
     if (index < 0) {
-      _setNewVedtak(newVedtak)
+      _setNewVedtak(newVedtak.trim())
       _resetValidation(namespace + '-vedtaksperioder-vedtak')
     } else {
-      updateReplySed(`${target}.vedtaksperioder[${index}].vedtak`,newVedtak)
+      updateReplySed(`${target}.vedtaksperioder[${index}].vedtak`,newVedtak.trim())
       if (validation[namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak']) {
         resetValidation(namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak')
       }
@@ -198,12 +198,12 @@ const VedtakFC: React.FC<VedtakProps> = ({
 
     const newPeriode: PeriodeMedVedtak = {
       periode: {
-        startdato: _newStartDato
+        startdato: _newStartDato.trim()
       },
-      vedtak: _newVedtak,
+      vedtak: _newVedtak.trim(),
     }
     if (_newSluttDato) {
-      newPeriode.periode.sluttdato = _newSluttDato
+      newPeriode.periode.sluttdato = _newSluttDato.trim()
     } else {
       newPeriode.periode.aapenPeriodeType = 'åpen_sluttdato'
     }

@@ -24,7 +24,7 @@ export const validateMotregningNavnOgBetegnelser = (
   let hasErrors: boolean = false
   const idx = getIdx(index)
 
-  if (_.isEmpty(navnOgBetegnelse.navn)) {
+  if (_.isEmpty(navnOgBetegnelse?.navn?.trim())) {
     v[namespace + '-navnOgBetegnelser' + idx + '-navn'] = {
       feilmelding: t('message:validation-noName'),
       skjemaelementId: namespace + '-navnOgBetegnelser' + idx + '-navn'
@@ -32,7 +32,7 @@ export const validateMotregningNavnOgBetegnelser = (
     hasErrors = true
   }
 
-  if (_.isEmpty(navnOgBetegnelse.betegnelsePåYtelse)) {
+  if (_.isEmpty(navnOgBetegnelse?.betegnelsePåYtelse?.trim())) {
     v[namespace + '-navnOgBetegnelser' +  + idx + '-betegnelsePåYtelse'] = {
       feilmelding: t('message:validation-noBetegnelsePåYtelse'),
       skjemaelementId: namespace + '-navnOgBetegnelser' + idx + '-betegnelsePåYtelse'
@@ -46,14 +46,15 @@ export const validateMotregning = (
   v: Validation,
   t: TFunction,
   motregning: FormalMotregning = { } as any ,
-  namespace: string
+  namespace: string,
+  formalName: string
 ): boolean => {
 
   let hasErrors: boolean = false
 
-  if (_.isEmpty(motregning.anmodningEllerSvar)) {
+  if (_.isEmpty(motregning?.anmodningEllerSvar?.trim())) {
     v[namespace + '-anmodningEllerSvar'] = {
-      feilmelding: t('message:validation-noAnswerForPerson'),
+      feilmelding: t('message:validation-noAnswerForPerson', {person: formalName}),
       skjemaelementId: namespace + '-anmodningEllerSvar'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -64,17 +65,17 @@ export const validateMotregning = (
     hasErrors = hasErrors || _error
   })
 
-  if (_.isEmpty(motregning.beloep)) {
+  if (_.isEmpty(motregning?.beloep?.trim())) {
     v[namespace + '-beloep'] = {
-      feilmelding: t('message:validation-noBeløp'),
+      feilmelding: t('message:validation-noBeløpForPerson', {person: formalName}),
       skjemaelementId: namespace + '-beloep'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
 
-  if (_.isEmpty(motregning.valuta)) {
+  if (_.isEmpty(motregning?.valuta?.trim())) {
     v[namespace + '-valuta'] = {
-      feilmelding: t('message:validation-noValuta'),
+      feilmelding: t('message:validation-noValutaForPerson', {person: formalName}),
       skjemaelementId: namespace + '-valuta'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -86,29 +87,30 @@ export const validateMotregning = (
       sluttdato: motregning.sluttdato
     },
     index: -1,
-    namespace: namespace
+    namespace: namespace,
+    personName: formalName
   })
   hasErrors = hasErrors || periodError
 
-  if (_.isEmpty(motregning.avgrensing)) {
+  if (_.isEmpty(motregning?.avgrensing?.trim())) {
     v[namespace + '-avgrensing'] = {
-      feilmelding: t('message:validation-noAvgrensing'),
+      feilmelding: t('message:validation-noAvgrensingForPerson', {person: formalName}),
       skjemaelementId: namespace + '-avgrensing'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
 
-  if (_.isEmpty(motregning.mottakersNavn)) {
+  if (_.isEmpty(motregning?.mottakersNavn?.trim())) {
     v[namespace + '-mottakersNavn'] = {
-      feilmelding: t('message:validation-noName'),
+      feilmelding: t('message:validation-noMottakersNavnForPerson', {person: formalName}),
       skjemaelementId: namespace + '-mottakersNavn'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
 
-  if (_.isEmpty(motregning.grunnerTilAnmodning)) {
+  if (_.isEmpty(motregning?.grunnerTilAnmodning?.trim())) {
     v[namespace + '-grunnerTilAnmodning'] = {
-      feilmelding: t('message:validation-noGrunn'),
+      feilmelding: t('message:validation-noGrunnForPerson', {person: formalName}),
       skjemaelementId: namespace + '-grunnerTilAnmodning'
     } as FeiloppsummeringFeil
     hasErrors = true

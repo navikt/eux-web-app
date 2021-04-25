@@ -10,6 +10,7 @@ export interface ValidationVedtakPeriodeProps {
   periode: PeriodeMedVedtak
   index: number
   namespace: string
+  personName?: string
 }
 
 export const validateVedtakPeriode = (
@@ -18,7 +19,8 @@ export const validateVedtakPeriode = (
   {
     periode,
     index,
-    namespace
+    namespace,
+    personName,
   }:ValidationVedtakPeriodeProps
 ): boolean => {
   let hasErrors: boolean = false
@@ -28,14 +30,17 @@ export const validateVedtakPeriode = (
     v, t, {
       period: periode?.periode,
       index: -1,
-      namespace: namespace + '-vedtaksperioder' + idx + '-periode'
+      namespace: namespace + '-vedtaksperioder' + idx + '-periode',
+      personName: personName
     }
   )
   hasErrors = hasErrors || periodeError
 
-  if (_.isEmpty(periode.vedtak)) {
+  if (_.isEmpty(periode?.vedtak?.trim())) {
     v[namespace + '-vedtaksperioder' + idx + '-vedtak'] = {
-      feilmelding: t('message:validation-noVedtakType'),
+      feilmelding: personName ?
+        t('message:validation-noVedtakTilPerson', {person: personName}):
+        t('message:validation-noVedtak'),
       skjemaelementId: namespace + '-vedtaksperioder' + idx + '-vedtak'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -48,11 +53,12 @@ export const validateVedtakPerioder = (
   v: Validation,
   t: TFunction,
   perioder: Array<PeriodeMedVedtak>,
-  namespace: string
+  namespace: string,
+  personName: string
 ): boolean => {
   let hasErrors: boolean = false
   perioder?.forEach((periode: PeriodeMedVedtak, index: number) => {
-    let _error: boolean = validateVedtakPeriode(v, t, {periode, index, namespace})
+    let _error: boolean = validateVedtakPeriode(v, t, {periode, index, namespace, personName})
     hasErrors = hasErrors || _error
   })
   return hasErrors
@@ -62,13 +68,14 @@ export const validateVedtak = (
   v: Validation,
   t: TFunction,
   vedtak: FormalVedtak,
-  namespace: string
+  namespace: string,
+  personName: string
 ): boolean => {
   let hasErrors: boolean = false
 
   if (_.isEmpty(vedtak?.barn)) {
     v[namespace + '-barn'] = {
-      feilmelding: t('message:validation-noBarnValgt'),
+      feilmelding: t('message:validation-noBarnValgtTilPerson', {person: personName}),
       skjemaelementId: namespace + '-barn'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -83,15 +90,15 @@ export const validateVedtak = (
   )
   hasErrors = hasErrors || periodeError
 
-  if (_.isEmpty(vedtak?.type)) {
+  if (_.isEmpty(vedtak?.type?.trim())) {
     v[namespace + '-type'] = {
-      feilmelding: t('message:validation-noVedtakType'),
+      feilmelding: t('message:validation-noVedtakTypeTilPerson', {person: personName}),
       skjemaelementId: 'vedtak-type'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
 
-  let _error =  validateVedtakPerioder(v, t, vedtak?.vedtaksperioder, namespace)
+  let _error =  validateVedtakPerioder(v, t, vedtak?.vedtaksperioder, namespace, personName)
   hasErrors = hasErrors || _error
   if (hasErrors) {
     const namespaceBits = namespace.split('-')

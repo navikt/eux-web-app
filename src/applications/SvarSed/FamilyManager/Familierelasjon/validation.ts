@@ -35,7 +35,7 @@ export const validateFamilierelasjon = (
   hasErrors = hasErrors || periodErrors
 
   if (familierelasjon.relasjonType === 'ANNEN') {
-    if (_.isEmpty(familierelasjon.annenRelasjonPersonNavn)) {
+    if (_.isEmpty(familierelasjon?.annenRelasjonPersonNavn?.trim())) {
       v[namespace + idx + '-annenRelasjonPersonNavn'] = {
         feilmelding: t('message:validation-noNameToPerson', { person: personName }),
         skjemaelementId: namespace + idx + '-annenRelasjonPersonNavn'
@@ -43,7 +43,7 @@ export const validateFamilierelasjon = (
       hasErrors = true
     }
 
-    if (_.isEmpty(familierelasjon.annenRelasjonDato)) {
+    if (_.isEmpty(familierelasjon?.annenRelasjonDato?.trim())) {
       v[namespace + idx + '-annenRelasjonDato'] = {
         feilmelding: t('message:validation-noRelationDateForPerson', { person: personName }),
         skjemaelementId: namespace + idx + '-annenRelasjonDato'
@@ -51,7 +51,7 @@ export const validateFamilierelasjon = (
       hasErrors = true
     }
 
-    if (_.isEmpty(familierelasjon.borSammen)) {
+    if (_.isEmpty(familierelasjon?.borSammen?.trim())) {
       v[namespace + idx + '-borSammen'] = {
         feilmelding: t('message:validation-noBoSammen', { person: personName }),
         skjemaelementId: namespace + idx + '-borSammen'

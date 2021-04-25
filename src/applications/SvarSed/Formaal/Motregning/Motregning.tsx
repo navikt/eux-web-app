@@ -61,7 +61,7 @@ const Motregning: React.FC<MotregningProps> = ({
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationMotregningNavnOgBetegnelserProps>({}, validateMotregningNavnOgBetegnelser)
 
   const setAnmodningEllerSvar = (newAnmodning: string) => {
-    updateReplySed(`${target}.anmodningEllerSvar`, newAnmodning)
+    updateReplySed(`${target}.anmodningEllerSvar`, newAnmodning.trim())
     if (validation[namespace + '-anmodningEllerSvar']) {
       resetValidation(namespace + '-anmodningEllerSvar')
     }
@@ -72,7 +72,7 @@ const Motregning: React.FC<MotregningProps> = ({
       _setNewNavn(newNavn)
       _resetValidation(namespace + '-navnOgBetegnelser-navn')
     } else {
-      updateReplySed(`${target}.navnOgBetegnelser[${index}].navn`, newNavn)
+      updateReplySed(`${target}.navnOgBetegnelser[${index}].navn`, newNavn.trim())
       if (validation[namespace + '-navnOgBetegnelser' + getIdx(index) + '-navn']) {
         resetValidation(namespace + '-navnOgBetegnelser' + getIdx(index) + '-navn')
       }
@@ -84,15 +84,15 @@ const Motregning: React.FC<MotregningProps> = ({
       _setNewBetegnelse(newBetegnelse)
       _resetValidation(namespace + '-navnOgBetegnelser-betegnelse')
     } else {
-      updateReplySed(`${target}.navnOgBetegnelser[${index}].betegnelse`, newBetegnelse)
+      updateReplySed(`${target}.navnOgBetegnelser[${index}].betegnelse`, newBetegnelse.trim())
       if (validation[namespace + '-navnOgBetegnelser' + getIdx(index) + 'betegnelse']) {
         resetValidation(namespace + '-navnOgBetegnelser' + getIdx(index) + 'betegnelse')
       }
     }
   }
 
-  const setBeløp = (newDato: string) => {
-    updateReplySed(`${target}.beloep`, newDato)
+  const setBeløp = (newBeløp: string) => {
+    updateReplySed(`${target}.beloep`, newBeløp.trim())
     if (validation[namespace + '-beloep']) {
       resetValidation(namespace + '-beloep')
     }
@@ -106,42 +106,42 @@ const Motregning: React.FC<MotregningProps> = ({
   }
 
   const setStartDato = (newDato: string) => {
-    updateReplySed(`${target}.startdato`, newDato)
+    updateReplySed(`${target}.startdato`, newDato.trim())
     if (validation[namespace + '-startdato']) {
       resetValidation(namespace + '-startdato')
     }
   }
 
   const setSluttDato = (newDato: string) => {
-    updateReplySed(`${target}.sluttdato`, newDato)
+    updateReplySed(`${target}.sluttdato`, newDato.trim())
     if (validation[namespace + '-sluttdato']) {
       resetValidation(namespace + '-sluttdato')
     }
   }
 
   const setAvgrensing = (newAvgrensing: string) => {
-    updateReplySed(`${target}.avgrensing`, newAvgrensing)
+    updateReplySed(`${target}.avgrensing`, newAvgrensing.trim())
     if (validation[namespace + '-avgrensing']) {
       resetValidation(namespace + '-avgrensing')
     }
   }
 
   const setMottakersNavn = (newMottakersNavn: string) => {
-    updateReplySed(`${target}.mottakersNavn`, newMottakersNavn)
+    updateReplySed(`${target}.mottakersNavn`, newMottakersNavn.trim())
     if (validation[namespace + '-mottakersNavn']) {
       resetValidation(namespace + '-mottakersNavn')
     }
   }
 
   const setGrunnerTilAnmodning = (newGrunnerTilAnmodning: string) => {
-    updateReplySed(`${target}.grunnerTilAnmodning`, newGrunnerTilAnmodning)
+    updateReplySed(`${target}.grunnerTilAnmodning`, newGrunnerTilAnmodning.trim())
     if (validation[namespace + '-grunnerTilAnmodning']) {
       resetValidation(namespace + '-grunnerTilAnmodning')
     }
   }
 
   const setYtterligereInfo = (newYtterligereInfo: string) => {
-    updateReplySed(`${target}.ytterligereInfo`, newYtterligereInfo)
+    updateReplySed(`${target}.ytterligereInfo`, newYtterligereInfo.trim())
     if (validation[namespace + '-ytterligereInfo']) {
       resetValidation(namespace + '-ytterligereInfo')
     }
@@ -169,8 +169,8 @@ const Motregning: React.FC<MotregningProps> = ({
 
   const onAdd = () => {
     const newNavOgBetegnelse: NavnOgBetegnelse | any = {
-      navn: _newNavn,
-      betegnelsePåYtelse: _newBetegnelse
+      navn: _newNavn?.trim(),
+      betegnelsePåYtelse: _newBetegnelse?.trim()
     }
 
     const valid: boolean = performValidation({
@@ -195,12 +195,15 @@ const Motregning: React.FC<MotregningProps> = ({
     const idx = getIdx(index)
     const getErrorFor = (index: number, el: string): string | undefined => (
       index < 0
-        ? _validation[namespace + '-navnOgBetegnelser-' + el]?.feilmelding
-        : validation[namespace + '-navnOgBetegnelser[' + index + ']-' + el]?.feilmelding
+        ? _validation[namespace + '-navnOgBetegnelser' + idx + '-' + el]?.feilmelding
+        : validation[namespace + '-navnOgBetegnelser' + idx + '-' + el]?.feilmelding
     )
     return (
       <>
-        <AlignStartRow className={classNames('slideInFromLeft')}>
+        <AlignStartRow
+          className={classNames('slideInFromLeft')}
+          style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
+        >
           <Column>
             <Input
               feil={getErrorFor(index, 'navn')}
@@ -268,7 +271,7 @@ const Motregning: React.FC<MotregningProps> = ({
           />
         </HighContrastRadioGroup>
         <VerticalSeparatorDiv />
-        {motregning?.navnOgBetegnelser.map(renderRowOfNavnOgBetegnelse)}
+        {motregning?.navnOgBetegnelser?.map(renderRowOfNavnOgBetegnelse)}
         <hr />
         <VerticalSeparatorDiv />
         {_seeNewForm

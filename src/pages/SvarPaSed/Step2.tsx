@@ -327,7 +327,14 @@ const Step2: React.FC<SvarPaSedProps> = ({
       )}
       {showKravOmRefusjon() && (
         <>
-          <KravOmRefusjon highContrast={highContrast} replySed={replySed} validation={_validation} />
+          <KravOmRefusjon
+            highContrast={highContrast}
+            replySed={replySed}
+            resetValidation={_resetValidation}
+            seeKontoopplysninger={() => setViewKontoopplysninger(true)}
+            updateReplySed={updateReplySed}
+            validation={_validation}
+          />
           <VerticalSeparatorDiv data-size='2' />
         </>
       )}
@@ -385,6 +392,8 @@ const Step2: React.FC<SvarPaSedProps> = ({
         {gettingPreviewFile ? t('label:laster-ned-filen') : t('label:forhåndsvis-sed')}
       </HighContrastFlatknapp>
       <VerticalSeparatorDiv data-size='2' />
+      <ValidationBox validation={_validation} />
+      <VerticalSeparatorDiv data-size='2' />
       <ButtonsDiv>
         <div>
           <HighContrastHovedknapp
@@ -434,7 +443,6 @@ const Step2: React.FC<SvarPaSedProps> = ({
           <VerticalSeparatorDiv data-size='0.5' />
         </div>
       </ButtonsDiv>
-      <ValidationBox validation={_validation} />
     </Step2Div>
   )
 }

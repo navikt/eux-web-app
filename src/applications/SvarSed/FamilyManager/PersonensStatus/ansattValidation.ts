@@ -19,35 +19,35 @@ export const validateArbeidsforhold = (
   }: ValidationArbeidsforholdProps
 ): boolean => {
   let hasErrors: boolean = false
-  if (_.isEmpty(arbeidsforhold.arbeidsgiverNavn)) {
+  if (_.isEmpty(arbeidsforhold?.arbeidsgiverNavn?.trim())) {
     v[namespace + '-navn'] = {
       skjemaelementId: namespace + '-navn',
       feilmelding: t('message:validation-noName')
     } as FeiloppsummeringFeil
     hasErrors = true
   }
-  if (_.isEmpty(arbeidsforhold.arbeidsgiverOrgnr)) {
+  if (_.isEmpty(arbeidsforhold?.arbeidsgiverOrgnr?.trim())) {
     v[namespace + '-orgnr'] = {
       skjemaelementId: namespace + '-orgnr',
       feilmelding: t('message:validation-noOrgnr')
     } as FeiloppsummeringFeil
     hasErrors = true
   }
-  if (_.isEmpty(arbeidsforhold.fraDato)) {
+  if (_.isEmpty(arbeidsforhold?.fraDato?.trim())) {
     v[namespace + '-startdato'] = {
       skjemaelementId: namespace + '-startdato',
       feilmelding: t('message:validation-noDate')
     } as FeiloppsummeringFeil
     hasErrors = true
   }
-  if (arbeidsforhold.fraDato && !arbeidsforhold.fraDato.match(datePattern)) {
+  if (!_.isEmpty(arbeidsforhold.fraDato) && !(arbeidsforhold.fraDato!.trim().match(datePattern))) {
     v[namespace + '-startdato'] = {
       skjemaelementId: namespace + '-startdato',
       feilmelding: t('message:validation-invalidDate')
     } as FeiloppsummeringFeil
     hasErrors = true
   }
-  if (arbeidsforhold.tilDato && !arbeidsforhold.tilDato.match(datePattern)) {
+  if (!_.isEmpty(arbeidsforhold.tilDato) && !(arbeidsforhold.tilDato!.trim().match(datePattern))) {
     v[namespace + '-sluttdato'] = {
       skjemaelementId: namespace + '-sluttdato',
       feilmelding: t('message:validation-invalidDate')

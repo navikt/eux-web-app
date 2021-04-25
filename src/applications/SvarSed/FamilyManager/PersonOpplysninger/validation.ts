@@ -23,7 +23,7 @@ export const validatePersonOpplysninger = (
 ): boolean => {
   let hasErrors: boolean = false
 
-  if (_.isEmpty(personInfo.fornavn)) {
+  if (_.isEmpty(personInfo?.fornavn?.trim())) {
     v[namespace + '-fornavn'] = {
       feilmelding: t('message:validation-noFornavnForPerson', { person: personName }),
       skjemaelementId: namespace + '-fornavn'
@@ -31,7 +31,7 @@ export const validatePersonOpplysninger = (
     hasErrors = true
   }
 
-  if (_.isEmpty(personInfo.etternavn)) {
+  if (_.isEmpty(personInfo?.etternavn?.trim())) {
     v[namespace + '-etternavn'] = {
       feilmelding: t('message:validation-noEtternavnForPerson', { person: personName }),
       skjemaelementId: namespace + '-etternavn'
@@ -39,7 +39,7 @@ export const validatePersonOpplysninger = (
     hasErrors = true
   }
 
-  if (_.isEmpty(personInfo.foedselsdato)) {
+  if (_.isEmpty(personInfo?.foedselsdato?.trim())) {
     v[namespace + '-foedselsdato'] = {
       feilmelding: t('message:validation-noFoedselsdatoForPerson', { person: personName }),
       skjemaelementId: namespace + '-foedselsdato'
@@ -47,7 +47,7 @@ export const validatePersonOpplysninger = (
     hasErrors = true
   }
 
-  if (!personInfo.foedselsdato.match(datePattern)) {
+  if (!personInfo?.foedselsdato?.trim().match(datePattern)) {
     v[namespace + '-foedselsdato'] = {
       feilmelding: t('message:validation-invalidFoedselsdatoForPerson', { person: personName }),
       skjemaelementId: namespace + '-foedselsdato'
@@ -55,16 +55,16 @@ export const validatePersonOpplysninger = (
     hasErrors = true
   }
 
-  if (_.isEmpty(personInfo.kjoenn)) {
+  if (_.isEmpty(personInfo?.kjoenn?.trim())) {
     v[namespace + '-kjoenn'] = {
-      feilmelding: t('message:validation-noKjoenn', { person: personName }),
+      feilmelding: t('message:validation-noKjoennForPerson', { person: personName }),
       skjemaelementId: namespace + '-kjoenn'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
 
   if (!_.isEmpty(personInfo.pinMangler)) {
-    if (_.isEmpty(personInfo.pinMangler?.foedested.by)) {
+    if (_.isEmpty(personInfo.pinMangler?.foedested?.by?.trim())) {
       v[namespace + '-foedested-by'] = {
         feilmelding: t('message:validation-noFoedestedByForPerson', {person: personName}),
         skjemaelementId: namespace + '-foedested-by'
@@ -72,7 +72,7 @@ export const validatePersonOpplysninger = (
       hasErrors = true
     }
 
-    if (_.isEmpty(personInfo.pinMangler?.foedested.region)) {
+    if (_.isEmpty(personInfo.pinMangler?.foedested?.region?.trim())) {
       v[namespace + '-foedested-region'] = {
         feilmelding: t('message:validation-noFoedestedRegionForPerson', {person: personName}),
         skjemaelementId: namespace + '-foedested-region'
@@ -80,7 +80,7 @@ export const validatePersonOpplysninger = (
       hasErrors = true
     }
 
-    if (_.isEmpty(personInfo.pinMangler?.foedested.land)) {
+    if (_.isEmpty(personInfo.pinMangler?.foedested?.land?.trim())) {
       v[namespace + '-foedested-land'] = {
         feilmelding: t('message:validation-noFoedestedLandForPerson', {person: personName}),
         skjemaelementId: namespace + '-foedested-land'

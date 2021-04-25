@@ -75,10 +75,10 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
 
   const onTypeChanged = (type: TelefonType, index: number) => {
     if (index < 0) {
-      _setNewType(type)
+      _setNewType(type.trim() as TelefonType)
       resetValidationTelefon(namespaceTelefon + '-type')
     } else {
-      updateReplySed(`${targetTelefon}[${index}].type`, type)
+      updateReplySed(`${targetTelefon}[${index}].type`, type.trim())
       if (validation[namespaceTelefon + getIdx(index) + '-type']) {
         resetValidation(namespaceTelefon + getIdx(index) + '-type')
       }
@@ -87,10 +87,10 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
 
   const onNummerChanged = (nummer: string, index: number) => {
     if (index < 0) {
-      _setNewNummer(nummer)
+      _setNewNummer(nummer.trim())
       resetValidationTelefon(namespaceTelefon + '-nummer')
     } else {
-      updateReplySed(`${targetTelefon}[${index}].nummer`, nummer)
+      updateReplySed(`${targetTelefon}[${index}].nummer`, nummer.trim())
       if (validation[namespaceTelefon + getIdx(index) + '-nummer']) {
         resetValidation(namespaceTelefon + getIdx(index) + '-nummer')
       }
@@ -99,10 +99,10 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
 
   const onAdresseChanged = (adresse: string, index: number) => {
     if (index < 0) {
-      _setNewAdresse(adresse)
+      _setNewAdresse(adresse.trim())
       resetValidationEpost(namespaceEpost + '-adresse')
     } else {
-      updateReplySed(`${targetEpost}[${index}].adresse`, adresse)
+      updateReplySed(`${targetEpost}[${index}].adresse`, adresse.trim())
       if (validation[namespaceEpost + getIdx(index) + '-adresse']) {
         resetValidation(namespaceEpost + getIdx(index) + '-adresse')
       }
@@ -147,9 +147,9 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
   }
 
   const onTelefonAdd = () => {
-    const newTelefon: Telefon | {type: any, nummer: any} = {
-      type: _newType,
-      nummer: _newNummer
+    const newTelefon: Telefon = {
+      type: _newType?.trim() as TelefonType,
+      nummer: _newNummer?.trim()
     }
 
     const valid: boolean = performValidationTelefon({
@@ -172,7 +172,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
 
   const onEpostAdd = () => {
     const newEpost: Epost = {
-      adresse: _newAdresse
+      adresse: _newAdresse?.trim()
     }
 
     const valid: boolean = performValidationEpost({

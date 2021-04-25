@@ -34,7 +34,7 @@ export const validateFamilieytelse = (
     hasErrors = true
   } */
 
-  if (_.isEmpty(motregning.ytelseNavn)) {
+  if (_.isEmpty(motregning?.ytelseNavn?.trim())) {
     v[namespace + idx + '-ytelseNavn'] = {
       skjemaelementId: namespace + idx + '-ytelseNavn',
       feilmelding: t('message:validation-noBetegnelsePåYtelseForPerson', { person: personName })
@@ -42,7 +42,7 @@ export const validateFamilieytelse = (
     hasErrors = true
   }
 
-  if (_.isEmpty(motregning.beloep)) {
+  if (_.isEmpty(motregning?.beloep?.trim())) {
     v[namespace + idx + '-beloep'] = {
       skjemaelementId: namespace + idx + '-beloep',
       feilmelding: t('message:validation-noBeløpForPerson', { person: personName })
@@ -50,7 +50,7 @@ export const validateFamilieytelse = (
     hasErrors = true
   }
 
-  if (_.isEmpty(motregning.valuta)) {
+  if (_.isEmpty(motregning?.valuta?.trim())) {
     v[namespace + idx + '-valuta'] = {
       skjemaelementId: namespace + idx + '-valuta',
       feilmelding: t('message:validation-noValutaForPerson', { person: personName })
@@ -68,7 +68,7 @@ export const validateFamilieytelse = (
   })
   hasErrors = hasErrors || periodErrors
 
-  if (_.isEmpty(motregning.mottakersNavn)) {
+  if (_.isEmpty(motregning?.mottakersNavn?.trim())) {
     v[namespace + idx + '-mottakersNavn'] = {
       skjemaelementId: namespace + idx + '-mottakersNavn',
       feilmelding: t('message:validation-noNavnForPerson', { person: personName })
@@ -76,7 +76,7 @@ export const validateFamilieytelse = (
     hasErrors = true
   }
 
-  if (_.isEmpty(motregning.utbetalingshyppighet)) {
+  if (_.isEmpty(motregning?.utbetalingshyppighet?.trim())) {
     v[namespace + '-utbetalingshyppighet'] = {
       skjemaelementId: namespace + idx + '-utbetalingshyppighet',
       feilmelding: t('message:validation-noUtbetalingshyppighetForPerson', { person: personName })

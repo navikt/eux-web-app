@@ -53,10 +53,10 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
 
   const onFradatoChanged = (fradato: string, index: number) => {
     if (index < 0) {
-      _setNewFradato(fradato)
+      _setNewFradato(fradato.trim())
       _resetValidation(namespace + '-fradato')
     } else {
-      updateReplySed(`${target}[${index}].fradato`, toFinalDateFormat(fradato))
+      updateReplySed(`${target}[${index}].fradato`, toFinalDateFormat(fradato.trim()))
       if (validation[namespace + getIdx(index) + '-fradato']) {
         resetValidation(namespace + getIdx(index) + '-fradato')
       }
@@ -65,10 +65,10 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
 
   const onLandSelected = (land: string, index: number) => {
     if (index < 0) {
-      _setNewLand(land)
+      _setNewLand(land.trim())
       _resetValidation(namespace + '-land')
     } else {
-      updateReplySed(`${target}[${index}].land`, land)
+      updateReplySed(`${target}[${index}].land`, land.trim())
       if (validation[namespace + getIdx(index) + '-land']) {
         resetValidation(namespace + getIdx(index) + '-land')
       }
@@ -85,7 +85,6 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
     _setSeeNewForm(false)
     resetForm()
   }
-
 
   const onRemove = (i: number) => {
     const newStatsborgerskaper = _.cloneDeep(statsborgerskaper)
@@ -130,7 +129,10 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
 
     return (
       <>
-        <AlignStartRow className={classNames('slideInFromLeft')} style={{ animationDelay: (index * 0.1) + 's' }}>
+        <AlignStartRow
+          className={classNames('slideInFromLeft')}
+          style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
+        >
           <Column>
             <CountrySelect
               data-test-id={namespace + idx + '-land'}

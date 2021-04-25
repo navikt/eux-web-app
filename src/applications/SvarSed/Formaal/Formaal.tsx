@@ -65,7 +65,7 @@ const Formaal: React.FC<FormaalProps> = ({
 
   const onAdd = () => {
     if (_newFormaal) {
-      const newFormaals = _formaals.concat(_newFormaal.value)
+      const newFormaals = _formaals.concat(_newFormaal.value.trim())
       setNewFormaalIndex(newFormaals.length - 1)
       saveChanges(newFormaals)
       setNewFormaal(undefined)

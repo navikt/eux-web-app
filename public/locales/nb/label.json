@@ -89,7 +89,9 @@
 
   "kjønn" : "Kjønn",
   "kontaktadresse": "Kontaktadresse",
+  "kontoopplysninger": "Kontoopplysninger",
   "krav-om-refusjon": "Krav om refusjon",
+  "krav-om-refusjon-under-artikkel": "Krav om refusjon under artikkel 58 i forordning (EF) nr. 987/2009",
   "kvinne": "Kvinne",
 
   "lagrede-seds": "Lagrede SED-er",
@@ -129,6 +131,7 @@
   "person-navn": "Navn på person",
   "postnummer": "Postnummer",
   "preview": "Forhåndsvis",
+  "prosedyre-ved-uenighet": "Prosedyre ved uenighet",
 
   "reason" : "Grunn",
   "region" : "Region",

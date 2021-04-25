@@ -47,10 +47,10 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
 
   const setStartDato = (newDato: string, index: number) => {
     if (index < 0) {
-      _setNewStartDato(newDato)
+      _setNewStartDato(newDato.trim())
       _resetValidation(namespace + '-startdato')
     } else {
-      updateReplySed(`${target}[${index}].startdato`, newDato)
+      updateReplySed(`${target}[${index}].startdato`, newDato.trim())
       if (validation[namespace + getIdx(index) + '-startdato']) {
         resetValidation(namespace + getIdx(index) + '-startdato')
       }
@@ -59,7 +59,7 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
 
   const setSluttDato = (sluttdato: string, index: number) => {
     if (index < 0) {
-      _setNewSluttDato(sluttdato)
+      _setNewSluttDato(sluttdato.trim())
       _resetValidation(namespace + '-sluttdato')
     } else {
       const newPerioder = _.cloneDeep(perioderMedTrygd)
@@ -68,7 +68,7 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
         newPerioder[index].aapenPeriodeType = 'åpen_sluttdato'
       } else {
         delete newPerioder[index].aapenPeriodeType
-        newPerioder[index].sluttdato = sluttdato
+        newPerioder[index].sluttdato = sluttdato.trim()
       }
       updateReplySed(target, newPerioder)
       if (validation[namespace + getIdx(index) + '-sluttdato']) {
@@ -99,10 +99,10 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
 
   const onAdd = () => {
     const newPeriode: Periode = {
-      startdato: _newStartDato
+      startdato: _newStartDato.trim()
     }
     if (_newSluttDato) {
-      newPeriode.sluttdato = _newSluttDato
+      newPeriode.sluttdato = _newSluttDato.trim()
     } else {
       newPeriode.aapenPeriodeType = 'åpen_sluttdato'
     }
@@ -140,6 +140,7 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
       <>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
+          style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
         >
           <Period
             key={'' + startdato + sluttdato}

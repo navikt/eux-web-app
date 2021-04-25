@@ -1,55 +1,81 @@
-import { Prosedyre } from 'declarations/sed'
+import { FormalProsedyreVedUenighet, Grunn } from 'declarations/sed'
 import { Validation } from 'declarations/types'
+import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
+import { getIdx } from 'utils/namespace'
 
-export const validateProsedyre = (
+export interface ValidationProsedyreVedUenighetGrunnProps {
+  grunn: Grunn
+  index: number
+  namespace: string
+  personName?: string
+}
+
+export const validateProsedyreVedUenighetGrunn = (
   v: Validation,
-  prosedyre: Prosedyre,
-  index: number,
   t: TFunction,
-  namespace: string
-): void => {
-  let generalFail: boolean = false
+  {
+    grunn,
+    index,
+    namespace,
+    personName
+  }: ValidationProsedyreVedUenighetGrunnProps
+): boolean => {
+  let hasErrors: boolean = false
+  const idx = getIdx(index)
 
-  let value = prosedyre.person && prosedyre.person.length > 0
-    ? undefined
-    : {
-      feilmelding: t('message:validation-noName'),
-      skjemaelementId: namespace + (index < 0 ? '' : '[' + index + ']') + '-person'
+  if (_.isEmpty(grunn?.person)) {
+     v[namespace + '-grunner' + idx + '-person'] = {
+      feilmelding: personName ?
+        t('message:validation-noPersonGivenForPerson', {person: personName}) :
+        t('message:validation-noPersonGiven'),
+      skjemaelementId: namespace + '-grunner' + idx + '-person'
     } as FeiloppsummeringFeil
-
-  v[namespace + '-person'] = value
-
-  if (value) {
-    generalFail = true
+    hasErrors = true
   }
 
-  value = prosedyre.grunn
-    ? undefined
-    : {
-      feilmelding: t('message:validation-noGrunn'),
-      skjemaelementId: namespace + (index < 0 ? '' : '[' + index + ']') + '-grunn'
+  if (_.isEmpty(grunn?.grunn?.trim())) {
+    v[namespace + '-grunner' + idx + '-grunn'] = {
+      feilmelding: personName ?
+        t('message:validation-noGrunnForPerson', {person: personName}):
+        t('message:validation-noGrunn'),
+      skjemaelementId: namespace + '-grunner' + idx + '-grunn'
     } as FeiloppsummeringFeil
-
-  v[namespace + '-grunn'] = value
-
-  if (generalFail) {
-    const namespaceBits = namespace.split('-')
-    const personNamespace = namespaceBits[0] + '-' + namespaceBits[1]
-    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
-    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    hasErrors = true
   }
+  return hasErrors
 }
 
-export const validateProsedyrer = (
-  validation: Validation,
-  prosedyrer :Array<Prosedyre>,
+export const validateProsedyreVedUenighet = (
+  v: Validation,
   t: TFunction,
-  namespace: string
-): void => {
-  prosedyrer?.forEach((p: Prosedyre, index: number) => {
-    validateProsedyre(validation, p, index, t, namespace)
+  prosedyreVedUenighet: FormalProsedyreVedUenighet,
+  namespace: string,
+  personName?: string
+): boolean => {
+  let hasErrors: boolean = false
+
+  if (_.isEmpty(prosedyreVedUenighet?.grunner)) {
+    v[namespace] = {
+      feilmelding: t('message:validation-noGrunnForPerson', {person: personName}),
+      skjemaelementId: namespace
+    } as FeiloppsummeringFeil
+    hasErrors = true
+  }
+
+  prosedyreVedUenighet?.grunner?.forEach((grunn: Grunn, index: number) => {
+    let _error = validateProsedyreVedUenighetGrunn(v, t, {grunn, index, namespace, personName})
+    hasErrors = hasErrors || _error
   })
+
+  if (hasErrors) {
+    const namespaceBits = namespace.split('-')
+    const formaalNamespace = namespaceBits[0]
+    if (!v[formaalNamespace]) {
+      v[formaalNamespace] = {feilmelding: 'notnull', skjemaelementId: ''} as FeiloppsummeringFeil
+    }
+  }
+  return hasErrors
 }
+

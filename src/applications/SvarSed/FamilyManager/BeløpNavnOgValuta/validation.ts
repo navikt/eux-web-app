@@ -22,7 +22,7 @@ export const validateBeløpNavnOgValuta = (
 ): boolean => {
   let hasErrors: boolean = false
 
-  if (_.isEmpty(ytelse.barnetsNavn)) {
+  if (_.isEmpty(ytelse?.barnetsNavn?.trim())) {
     v[namespace + '-barnetsNavn'] = {
       skjemaelementId: namespace + '-barnetsNavn',
       feilmelding: t('message:validation-noNameToPerson', { person: personName })
@@ -30,7 +30,7 @@ export const validateBeløpNavnOgValuta = (
     hasErrors = true
   }
 
-  if (_.isEmpty(ytelse.ytelseNavn)) {
+  if (_.isEmpty(ytelse?.ytelseNavn?.trim())) {
     v[namespace + '-ytelseNavn'] = {
       skjemaelementId: namespace + '-ytelseNavn',
       feilmelding: t('message:validation-noBetegnelsePåYtelseForPerson', { person: personName })
@@ -38,7 +38,7 @@ export const validateBeløpNavnOgValuta = (
     hasErrors = true
   }
 
-  if (_.isEmpty(ytelse.beloep)) {
+  if (_.isEmpty(ytelse?.beloep?.trim())) {
     v[namespace + '-beloep'] = {
       skjemaelementId: namespace + '-beloep',
       feilmelding: t('message:validation-noBeløpForPerson', { person: personName })
@@ -46,7 +46,7 @@ export const validateBeløpNavnOgValuta = (
     hasErrors = true
   }
 
-  if (_.isEmpty(ytelse.valuta)) {
+  if (_.isEmpty(ytelse?.valuta?.trim())) {
     v[namespace + '-valuta'] = {
       skjemaelementId: namespace + '-valuta',
       feilmelding: t('message:validation-noValutaForPerson', { person: personName })
@@ -64,7 +64,7 @@ export const validateBeløpNavnOgValuta = (
   })
   hasErrors = hasErrors || periodErrors
 
-  if (_.isEmpty(ytelse.mottakersNavn)) {
+  if (_.isEmpty(ytelse?.mottakersNavn?.trim())) {
     v[namespace + '-mottakersNavn'] = {
       skjemaelementId: namespace + '-mottakersNavn',
       feilmelding: t('message:validation-noNavnForPerson', { person: personName })
@@ -72,7 +72,7 @@ export const validateBeløpNavnOgValuta = (
     hasErrors = true
   }
 
-  if (_.isEmpty(ytelse.utbetalingshyppighet)) {
+  if (_.isEmpty(ytelse?.utbetalingshyppighet?.trim())) {
     v[namespace + '-utbetalingshyppighet'] = {
       skjemaelementId: namespace + '-utbetalingshyppighet',
       feilmelding: t('message:validation-noUtbetalingshyppighetForPerson', { person: personName })

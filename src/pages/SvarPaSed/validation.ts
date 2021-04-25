@@ -11,7 +11,10 @@ import { validateNasjonaliteter } from 'applications/SvarSed/FamilyManager/Nasjo
 import { validatePersonOpplysninger } from 'applications/SvarSed/FamilyManager/PersonOpplysninger/validation'
 import { validateBarnetilhoerigheter } from 'applications/SvarSed/FamilyManager/Relasjon/validation'
 import { validateTrygdeordninger } from 'applications/SvarSed/FamilyManager/Trygdeordning/validation'
+import { validateKontoopplysning } from 'applications/SvarSed/Formaal/Kontoopplysning/validation'
+import { validateKravOmRefusjon } from 'applications/SvarSed/Formaal/KravOmRefusjon/validation'
 import { validateMotregning } from 'applications/SvarSed/Formaal/Motregning/validation'
+import { validateProsedyreVedUenighet } from 'applications/SvarSed/Formaal/ProsedyreVedUenighet/validation'
 import { validateVedtak } from 'applications/SvarSed/Formaal/Vedtak/validation'
 import {
   Adresse,
@@ -110,10 +113,12 @@ export const validateStep1 = (
   t: TFunction,
   {
     saksnummerOrFnr
-  }: any
+  }: {
+    saksnummerOrFnr: string
+  }
 ): boolean => {
   let hasErrors: boolean = false
-  if (_.isEmpty(saksnummerOrFnr)) {
+  if (_.isEmpty(saksnummerOrFnr.trim())) {
     v['step1-saksnummerOrFnr'] = {
       feilmelding: t('message:validation-noSaksnummerOrFnr'),
       skjemaelementId: 'step1-saksnummerOrFnr'
@@ -162,7 +167,7 @@ export const validateStep2 = (
     }
   }
 
-  if (_.isEmpty(comment)) {
+  if (_.isEmpty(comment?.trim())) {
     v['comment'] = {
       feilmelding: t('message:validation-noComment'),
       skjemaelementId: 'comment'
@@ -175,14 +180,25 @@ export const validateStep2 = (
 
   if ((replySed as F002Sed).formaal) {
     if ((replySed as F002Sed).formaal.indexOf('motregning') >= 0) {
-      _error = validateMotregning(v, t, _.get(replySed, 'formaalx.motregning'), 'motregning')
+      _error = validateMotregning(v, t, _.get(replySed, 'formaalx.motregning'), 'motregning', t('label:motregning').toLowerCase())
       hasErrors = hasErrors || _error
     }
     if ((replySed as F002Sed).formaal.indexOf('vedtak') >= 0) {
-      _error = validateVedtak(v, t, _.get(replySed, 'formaalx.vedtak'), 'vedtak')
+      _error = validateVedtak(v, t, _.get(replySed, 'formaalx.vedtak'), 'vedtak', t('label:vedtak').toLowerCase())
       hasErrors = hasErrors || _error
     }
-
+    if ((replySed as F002Sed).formaal.indexOf('prosedyre_ved_uenighet') >= 0) {
+      _error = validateProsedyreVedUenighet(v, t, _.get(replySed, 'formaalx.prosedyreveduenighet'), 'prosedyreveduenighet', t('label:prosedyre-ved-uenighet').toLowerCase())
+      hasErrors = hasErrors || _error
+    }
+    if ((replySed as F002Sed).formaal.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0) {
+      _error = validateKravOmRefusjon(v, t, _.get(replySed, 'formaalx.kravomrefusjon'), 'kravomrefusjon', t('label:krav-om-refusjon').toLowerCase())
+      hasErrors = hasErrors || _error
+    }
+    if (!_.isNil((replySed as F002Sed).utbetalingTilInstitusjon)) {
+      _error = validateKontoopplysning(v, t, _.get(replySed, 'utbetalingTilInstitusjon'), 'kontoopplysninger', t('label:kontoopplysninger').toLowerCase())
+      hasErrors = hasErrors || _error
+    }
   }
   return hasErrors
 }

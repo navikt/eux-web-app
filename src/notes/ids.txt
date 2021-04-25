@@ -154,7 +154,7 @@ kontoopplysninger-kontoOrdinaer-sepaKonto  - {CONNECTED} utbetalingTilInstitusjo
 kontoopplysninger-kontoOrdinaer-iban       - {CONNECTED} utbetalingTilInstitusjon.kontoOrdinaer.iban
 kontoopplysninger-kontoOrdinaer-swift      - {CONNECTED} utbetalingTilInstitusjon.kontoOrdinaer.swift
 
-kravomrefusjon-krav - {GLOBAL}
+kravomrefusjon-krav - {CONNECTED} - formaalx.kravomrefusjon.krav
 
 motregning-anmodningEllerSvar                     - {CONNECTED} formaalx.morregning.anmodningEllerSvar
 motregning-navnOgBetegnelser[i]-navn               - {CONNECTED} formaalx.morregning.navnOgBetegnelser[].navn
@@ -170,11 +170,11 @@ motregning-mottakersNavn                          - {CONNECTED} formaalx.morregn
 motregning-grunnerTilAnmodning                    - {CONNECTED} formaalx.morregning.grunnerTilAnmodning
 motregning-ytterligereInfo                        - {CONNECTED} formaalx.morregning.ytterligereInfo
 
-prosedyreveduenighet-prosedyre[i]-grunn  - {GLOBAL}
-prosedyreveduenighet-prosedyre[i]-person - {GLOBAL}
-prosedyreveduenighet-prosedyre-grunn     - {INTERNAL}
-prosedyreveduenighet-prosedyre-person    - {INTERNAL}
-prosedyreveduenighet-ytterligere         - {GLOBAL}
+prosedyreveduenighet-grunner[i]-grunn  - {CONNECTED} formaalx.prosedyreveduenighet.grunner[i].grunn
+prosedyreveduenighet-grunner[i]-person - {CONNECTED} formaalx.prosedyreveduenighet.grunner[i].grunn
+prosedyreveduenighet-grunner-grunn     - {INTERNAL}  formaalx.prosedyreveduenighet.grunner.grunn
+prosedyreveduenighet-grunner-person    - {INTERNAL}  formaalx.prosedyreveduenighet.grunner.grunn
+prosedyreveduenighet-ytterligereInfo   - {CONNECTED} formaalx.prosedyreveduenighet.ytterligereInfogrunn
 
 seddetails-anmodningsperiode-startdato      - {INTERNAL}
 seddetails-anmodningsperiode-sluttdato      - {INTERNAL}

@@ -21,28 +21,28 @@ export const validateAddPersonModal = (
 ): boolean => {
   let hasErrors = false
 
-  if (_.isEmpty(fnr)) {
+  if (_.isEmpty(fnr?.trim())) {
     v[namespace + '-fnr'] = {
       feilmelding: t('message:validation-noFnr'),
       skjemaelementId: namespace + '-fnr'
     }
     hasErrors = true
   }
-  if (!_.isEmpty(fnr) && !fnr.match(/^\d{11}$/)) {
+  if (!_.isEmpty(fnr?.trim()) && !fnr.match(/^\d{11}$/)) {
     v[namespace + '-fnr'] = {
       feilmelding: t('message:validation-invalidFnr'),
       skjemaelementId: namespace + '-fnr'
     }
     hasErrors = true
   }
-  if (_.isEmpty(navn)) {
+  if (_.isEmpty(navn?.trim())) {
     v[namespace + '-navn'] = {
       feilmelding: t('message:validation-noName'),
       skjemaelementId: namespace + '-navn'
     }
     hasErrors = true
   }
-  if (_.isEmpty(relasjon)) {
+  if (_.isEmpty(relasjon?.trim())) {
     v[namespace + '-relasjon'] = {
       feilmelding: t('message:validation-noRelation'),
       skjemaelementId: namespace + '-relasjon'

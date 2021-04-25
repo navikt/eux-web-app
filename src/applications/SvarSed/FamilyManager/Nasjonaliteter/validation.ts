@@ -29,7 +29,7 @@ export const validateNasjonalitet = (
   let hasErrors: boolean = false
   const idx = getIdx(index)
 
-  if (_.isEmpty(statsborgerskap.land)) {
+  if (_.isEmpty(statsborgerskap?.land?.trim())) {
     v[namespace + idx + '-land'] = {
       feilmelding: t('message:validation-noBirthCountryForPerson', { person: personName }),
       skjemaelementId: namespace + idx + '-land'
@@ -45,7 +45,7 @@ export const validateNasjonalitet = (
     hasErrors = true
   }
 
-  if (_.isEmpty(statsborgerskap.fradato)) {
+  if (_.isEmpty(statsborgerskap?.fradato?.trim())) {
     v[namespace + idx + '-fradato'] = {
       feilmelding: t('message:validation-noDateForPerson', { person: personName }),
       skjemaelementId: namespace + idx + '-fradato'
@@ -53,7 +53,7 @@ export const validateNasjonalitet = (
     hasErrors = true
   }
 
-  if (!_.isEmpty(statsborgerskap.fradato) && !statsborgerskap.fradato!.match(datePattern)) {
+  if (!_.isEmpty(statsborgerskap?.fradato?.trim()) && !statsborgerskap.fradato!.match(datePattern)) {
     v[namespace + idx + '-fradato'] = {
       feilmelding: t('message:validation-invalidDateForPerson', { person: personName }),
       skjemaelementId: namespace + idx + '-fradato'

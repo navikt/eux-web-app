@@ -50,14 +50,14 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationGrunnlagForBosettingProps>({}, validateGrunnlagForBosetting)
 
   const setAvsenderDato = (dato: string) => {
-    updateReplySed(`${target}.datoFlyttetTilAvsenderlandet`, dato)
+    updateReplySed(`${target}.datoFlyttetTilAvsenderlandet`, dato.trim())
     if (validation[namespace + '-datoFlyttetTilAvsenderlandet']) {
       resetValidation(namespace + '-datoFlyttetTilAvsenderlandet')
     }
   }
 
   const setMottakerDato = (dato: string) => {
-    updateReplySed(`${target}.datoFlyttetTilMottakerlandet`, dato)
+    updateReplySed(`${target}.datoFlyttetTilMottakerlandet`, dato.trim())
     if (validation[namespace + '-datoFlyttetTilMottakerlandet']) {
       resetValidation(namespace + '-datoFlyttetTilMottakerlandet')
     }
@@ -65,10 +65,10 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
 
   const setStartDato = (startdato: string, index: number) => {
     if (index < 0) {
-      _setNewStartDato(startdato)
+      _setNewStartDato(startdato.trim())
       _resetValidation(namespace + '-perioder-startdato')
     } else {
-      updateReplySed(`${target}.perioder[${index}].startdato`, startdato)
+      updateReplySed(`${target}.perioder[${index}].startdato`, startdato.trim())
       if (validation[namespace + '-perioder' + getIdx(index) + '-startdato']) {
         resetValidation(namespace + '-perioder' + getIdx(index) + '-startdato')
       }
@@ -77,7 +77,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
 
   const setSluttDato = (sluttdato: string, index: number) => {
     if (index < 0) {
-      _setNewSluttDato(sluttdato)
+      _setNewSluttDato(sluttdato.trim())
       _resetValidation(namespace + '-perioder-sluttdato')
     } else {
       const newPerioder: Array<Periode> = _.cloneDeep(flyttegrunn.perioder)
@@ -86,7 +86,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
         newPerioder[index].aapenPeriodeType = 'åpen_sluttdato'
       } else {
         delete newPerioder[index].aapenPeriodeType
-        newPerioder[index].sluttdato = sluttdato
+        newPerioder[index].sluttdato = sluttdato.trim()
       }
       updateReplySed(`${target}.perioder`, newPerioder)
       if (validation[namespace + '-perioder' + getIdx(index) + '-sluttdato']) {
@@ -96,7 +96,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
   }
 
   const setPersonligSituasjon = (personligSituasjon: string) => {
-    updateReplySed(`${target}.personligSituasjon`, personligSituasjon)
+    updateReplySed(`${target}.personligSituasjon`, personligSituasjon.trim())
     if (validation[namespace + '-personligSituasjon']) {
       resetValidation(namespace + '-personligSituasjon')
     }
@@ -124,10 +124,10 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
 
   const onAdd = () => {
     const newPeriode: Periode = {
-      startdato: _newStartDato
+      startdato: _newStartDato.trim()
     }
     if (_newSluttDato) {
-      newPeriode.sluttdato = _newSluttDato
+      newPeriode.sluttdato = _newSluttDato.trim()
     } else {
       newPeriode.aapenPeriodeType = 'åpen_sluttdato'
     }
@@ -165,6 +165,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
       <>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
+          style={{ animationDelay: index < 0 ? '0s': (index * 0.1) + 's' }}
         >
           <Period
             key={'' + startdato + sluttdato}

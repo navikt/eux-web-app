@@ -249,9 +249,18 @@ export interface FormalVedtak {
   vedtaksperioder: Array<PeriodeMedVedtak>
 }
 
-export interface Prosedyre {
+export interface Grunn {
   grunn: string
   person: Array<string>
+}
+
+export interface FormalProsedyreVedUenighet {
+  grunner: Array<Grunn>
+  ytterligereInfo: string
+}
+
+export interface FormalKravOmRefusjon {
+  krav: string
 }
 
 export interface F002Sed extends FSed {
@@ -278,8 +287,10 @@ export interface F002Sed extends FSed {
   }
   utbetalingTilInstitusjon: UtbetalingTilInstitusjon
   formaalx?: {
-    motregning: FormalMotregning
-    vedtak: FormalVedtak
+    motregning?: FormalMotregning
+    vedtak?: FormalVedtak
+    prosedyreveduenighet?: FormalProsedyreVedUenighet
+    kravomrefusjon?: ForlmKravOmRefusjon
   }
 }
 

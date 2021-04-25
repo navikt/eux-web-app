@@ -59,10 +59,10 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
 
   const setStartDato = (newDato: string, index: number) => {
     if (index < 0) {
-      _setNewStartDato(newDato)
+      _setNewStartDato(newDato.trim())
       _resetValidation(namespace + '-startdato')
     } else {
-      updateReplySed(`${target}[${index}].startdato`, newDato)
+      updateReplySed(`${target}[${index}].startdato`, newDato.trim())
       if (validation[namespace + getIdx(index) + '-startdato']) {
         resetValidation(namespace + getIdx(index) + '-startdato')
       }
@@ -71,7 +71,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
 
   const setSluttDato = (sluttdato: string, index: number) => {
     if (index < 0) {
-      _setNewSluttDato(sluttdato)
+      _setNewSluttDato(sluttdato.trim())
       _resetValidation(namespace + '-sluttdato')
     } else {
       const newPerioder: Array<PensjonPeriode> = _.cloneDeep(perioderMedPensjon)
@@ -80,7 +80,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
         newPerioder[index].periode.aapenPeriodeType = 'åpen_sluttdato'
       } else {
         delete newPerioder[index].periode.aapenPeriodeType
-        newPerioder[index].periode.sluttdato = sluttdato
+        newPerioder[index].periode.sluttdato = sluttdato.trim()
       }
       updateReplySed(target, newPerioder)
       if (validation[namespace + getIdx(index) + '-sluttdato']) {
@@ -92,10 +92,10 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
   const setPensjonType = (pensjontype: string | undefined, index: number) => {
     if (pensjontype) {
       if (index < 0) {
-        _setNewPensjonType(pensjontype)
+        _setNewPensjonType(pensjontype.trim())
         _resetValidation(namespace + '-pensjontype')
       } else {
-        updateReplySed(`${target}[${index}].pensjonstype`, pensjontype)
+        updateReplySed(`${target}[${index}].pensjonstype`, pensjontype.trim())
         if (validation[namespace + getIdx(index) + '-pensjontype']) {
           resetValidation(namespace + getIdx(index) + '-pensjontype')
         }
@@ -126,13 +126,13 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
 
   const onAdd = () => {
     const newPensjonPeriode: PensjonPeriode = {
-      pensjonstype: _newPensjonType,
+      pensjonstype: _newPensjonType.trim(),
       periode: {
-        startdato: _newStartDato
+        startdato: _newStartDato.trim()
       }
     }
     if (_newSluttDato) {
-      newPensjonPeriode.periode.sluttdato = _newSluttDato
+      newPensjonPeriode.periode.sluttdato = _newSluttDato.trim()
     } else {
       newPensjonPeriode.periode.aapenPeriodeType = 'åpen_sluttdato'
     }
@@ -178,7 +178,10 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
     const startdato = index < 0 ? _newStartDato : pensjonPeriode?.periode.startdato
     const sluttdato = index < 0 ? _newSluttDato : pensjonPeriode?.periode.sluttdato
     return (
-      <div className={classNames('slideInFromLeft')}>
+      <div
+        className={classNames('slideInFromLeft')}
+        style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
+      >
         <AlignStartRow>
           <Period
             key={'' + startdato + sluttdato}

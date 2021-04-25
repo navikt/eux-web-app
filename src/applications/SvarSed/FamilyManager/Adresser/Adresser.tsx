@@ -63,10 +63,10 @@ const Adresser: React.FC<AdresseProps> = ({
 
   const setType = (type: AdresseType, index: number) => {
     if (index < 0) {
-      _setNewType(type)
+      _setNewType(type.trim() as AdresseType)
       _resetValidation(namespace + '-type')
     } else {
-      updateReplySed(`${target}[${index}].type`, type)
+      updateReplySed(`${target}[${index}].type`, type.trim())
       if (validation[namespace + getIdx(index) + '-type']) {
         resetValidation(namespace + getIdx(index) + '-type')
       }
@@ -75,10 +75,10 @@ const Adresser: React.FC<AdresseProps> = ({
 
   const setGate = (gate: string, index: number) => {
     if (index < 0) {
-      _setNewGate(gate)
+      _setNewGate(gate.trim())
       _resetValidation(namespace + '-gate')
     } else {
-      updateReplySed(`${target}[${index}].gate`, gate)
+      updateReplySed(`${target}[${index}].gate`, gate.trim())
       if (validation[namespace + getIdx(index) + '-gate']) {
         resetValidation(namespace + getIdx(index) + '-gate')
       }
@@ -87,10 +87,10 @@ const Adresser: React.FC<AdresseProps> = ({
 
   const setPostnummer = (postnummer: string, index: number) => {
     if (index < 0) {
-      _setNewPostnummer(postnummer)
+      _setNewPostnummer(postnummer.trim())
       _resetValidation(namespace + '-postnummer')
     } else {
-      updateReplySed(`${target}[${index}].postnummer`, postnummer)
+      updateReplySed(`${target}[${index}].postnummer`, postnummer.trim())
       if (validation[namespace + getIdx(index) + '-postnummer']) {
         resetValidation(namespace + getIdx(index) + '-postnummer')
       }
@@ -99,10 +99,10 @@ const Adresser: React.FC<AdresseProps> = ({
 
   const setBy = (by: string, index: number) => {
     if (index < 0) {
-      _setNewBy(by)
+      _setNewBy(by.trim())
       _resetValidation(namespace + '-by')
     } else {
-      updateReplySed(`${target}[${index}].by`, by)
+      updateReplySed(`${target}[${index}].by`, by.trim())
       if (validation[namespace + getIdx(index) + '-by']) {
         resetValidation(namespace + getIdx(index) + '-by')
       }
@@ -111,10 +111,10 @@ const Adresser: React.FC<AdresseProps> = ({
 
   const setBygning = (bygning: string, index: number) => {
     if (index < 0) {
-      _setNewBygning(bygning)
+      _setNewBygning(bygning.trim())
       _resetValidation(namespace + '-bygning')
     } else {
-      updateReplySed(`${target}[${index}].bygning`, bygning)
+      updateReplySed(`${target}[${index}].bygning`, bygning.trim())
       if (validation[namespace + getIdx(index) + '-bygning']) {
         resetValidation(namespace + getIdx(index) + '-bygning')
       }
@@ -123,10 +123,10 @@ const Adresser: React.FC<AdresseProps> = ({
 
   const setRegion = (region: string, index: number) => {
     if (index < 0) {
-      _setNewRegion(region)
+      _setNewRegion(region.trim())
       _resetValidation(namespace + '-region')
     } else {
-      updateReplySed(`${target}[${index}].region`, region)
+      updateReplySed(`${target}[${index}].region`, region.trim())
       if (validation[namespace + getIdx(index) + '-region']) {
         resetValidation(namespace + getIdx(index) + '-region')
       }
@@ -135,10 +135,10 @@ const Adresser: React.FC<AdresseProps> = ({
 
   const setLand = (land: string, index: number) => {
     if (index < 0) {
-      _setNewLand(land)
+      _setNewLand(land.trim())
       _resetValidation(namespace + '-land')
     } else {
-      updateReplySed(`${target}[${index}].land`, land)
+      updateReplySed(`${target}[${index}].land`, land.trim())
       if (validation[namespace + getIdx(index) + '-land']) {
         resetValidation(namespace + getIdx(index) + '-land')
       }
@@ -172,13 +172,13 @@ const Adresser: React.FC<AdresseProps> = ({
 
   const onAdd = () => {
     const newAdresse: Adresse = {
-      bygning: _newBygning,
-      region: _newRegion,
-      postnummer: _newPostnummer,
-      by: _newBy,
-      gate: _newGate,
-      land: _newLand,
-      type: _newType
+      bygning: _newBygning.trim(),
+      region: _newRegion.trim(),
+      postnummer: _newPostnummer.trim(),
+      by: _newBy.trim(),
+      gate: _newGate.trim(),
+      land: _newLand.trim(),
+      type: _newType?.trim() as AdresseType
     }
     const valid: boolean = performValidation({
       adresse: newAdresse,
@@ -207,7 +207,10 @@ const Adresser: React.FC<AdresseProps> = ({
     )
     return (
       <>
-        <AlignStartRow className={classNames('slideInFromLeft')}>
+        <AlignStartRow
+          className={classNames('slideInFromLeft')}
+          style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
+        >
           <Column data-flex='3'>
             <HighContrastRadioPanelGroup
               checked={index < 0 ? _newType : adresse!.type}
@@ -243,7 +246,7 @@ const Adresser: React.FC<AdresseProps> = ({
         <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{ animationDelay: '0.1s' }}
+          style={{ animationDelay: index < 0 ? '0.1s' : (index * 0.3 + 0.1) + 's'}}
         >
           <Column data-flex='2'>
             <Input
@@ -270,7 +273,7 @@ const Adresser: React.FC<AdresseProps> = ({
         <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{ animationDelay: '0.2s' }}
+          style={{ animationDelay: index < 0 ? '0.2s' : (index * 0.3 + 0.2) + 's'}}
         >
           <Column>
             <Input
@@ -297,7 +300,7 @@ const Adresser: React.FC<AdresseProps> = ({
         <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{ animationDelay: '0.3s' }}
+          style={{ animationDelay: index < 0 ? '0.2s' : (index * 0.3 + 0.2) + 's'}}
         >
           <Column data-flex='1.5'>
             <Input

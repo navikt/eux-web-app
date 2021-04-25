@@ -86,16 +86,16 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
 
   const setStartDato = (startdato: string, index: number, newSedCategory: SedCategory | null) => {
     if (index < 0) {
-      _setNewStartDato(startdato)
+      _setNewStartDato(startdato.trim())
       _resetValidation(namespace + '-familieYtelse-startdato')
     } else {
       const newPerioder: Array<Periode | PensjonPeriode> = _.cloneDeep(perioder[newSedCategory!])
       let suffixnamespace: string = ''
       if (newSedCategory === 'perioderMedPensjon') {
-        (newPerioder[index] as PensjonPeriode).periode.startdato = startdato
+        (newPerioder[index] as PensjonPeriode).periode.startdato = startdato.trim()
         suffixnamespace = '-periode'
       } else {
-        (newPerioder[index] as Periode).startdato = startdato
+        (newPerioder[index] as Periode).startdato = startdato.trim()
       }
       updateReplySed(`${personID}.${newSedCategory}`, newPerioder)
       if (validation[namespace + '-' + newSedCategory + getIdx(index) + suffixnamespace + '-startdato']) {
@@ -106,7 +106,7 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
 
   const setSluttDato = (sluttdato: string, index: number, newSedCategory: SedCategory |null) => {
     if (index < 0) {
-      _setNewSluttDato(sluttdato)
+      _setNewSluttDato(sluttdato.trim())
       _resetValidation(namespace + '-familieYtelse-sluttdato')
     } else {
       let suffixnamespace: string = ''
@@ -118,7 +118,7 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
           newPerioder[index].periode.aapenPeriodeType = 'åpen_sluttdato'
         } else {
           delete newPerioder[index].periode.aapenPeriodeType
-          newPerioder[index].periode.sluttdato = sluttdato
+          newPerioder[index].periode.sluttdato = sluttdato.trim()
         }
         updateReplySed(`${personID}.${newSedCategory}`, newPerioder)
       } else {
@@ -129,7 +129,7 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
           newPerioder[index].aapenPeriodeType = 'åpen_sluttdato'
         } else {
           delete newPerioder[index].aapenPeriodeType
-          newPerioder[index].sluttdato = sluttdato
+          newPerioder[index].sluttdato = sluttdato.trim()
         }
         updateReplySed(`${personID}.${newSedCategory}`, newPerioder)
       }
@@ -197,17 +197,17 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
     if (_newCategory === 'perioderMedPensjon') {
       (newPeriode as PensjonPeriode).pensjonstype = _newPensjonsType!;
       (newPeriode as PensjonPeriode).periode = {
-        startdato: _newStartDato
+        startdato: _newStartDato.trim()
       }
       if (_newSluttDato) {
-        (newPeriode as PensjonPeriode).periode.sluttdato = _newSluttDato
+        (newPeriode as PensjonPeriode).periode.sluttdato = _newSluttDato.trim()
       } else {
         (newPeriode as PensjonPeriode).periode.aapenPeriodeType = 'åpen_sluttdato'
       }
     } else {
-      (newPeriode as Periode).startdato = _newStartDato
+      (newPeriode as Periode).startdato = _newStartDato.trim()
       if (_newSluttDato) {
-        (newPeriode as Periode).sluttdato = _newSluttDato
+        (newPeriode as Periode).sluttdato = _newSluttDato.trim()
       } else {
         (newPeriode as Periode).aapenPeriodeType = 'åpen_sluttdato'
       }
@@ -256,8 +256,11 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
           : (periode as Periode)?.sluttdato)
 
     return (
-      <>
-        <AlignStartRow className={classNames('slideInFromLeft')}>
+      <div
+        className={classNames('slideInFromLeft')}
+        style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
+      >
+        <AlignStartRow>
           <Period
             key={'' + startdato + sluttdato}
             labels={false}
@@ -340,7 +343,7 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
           </>
         )}
         <VerticalSeparatorDiv />
-      </>
+      </div>
     )
   }
 
