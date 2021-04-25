@@ -18,7 +18,18 @@ export default [
         sistEndretDato: '2020-01-02',
         svarsedType: 'F002',
         svarsedDisplay: 'Description for F002'
-      },
+      }
+    ]
+  }, {
+    sakTittel: 'Dagpenger',
+    sakType: 'U_BUC_01',
+    sakId: '1166593',
+    sakUrl: 'http://foo.com',
+    sistEndretDato: '2020-01-01',
+    motpart: [
+      'Lodzkie Voivodeship Office in Lodz (Polen)'
+    ],
+    sedListe: [
       {
         sedTittel: 'Description for U001',
         status: 'sent',

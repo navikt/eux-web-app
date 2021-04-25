@@ -1,5 +1,5 @@
 import { createSed, sendSeletedInntekt, setAllValidation, setReplySed } from 'actions/svarpased'
-import FamilyManager from 'applications/SvarSed/FamilyManager/FamilyManager'
+import PersonManager from 'applications/SvarSed/PersonManager/PersonManager'
 import Formaal from 'applications/SvarSed/Formaal/Formaal'
 import KravOmRefusjon from 'applications/SvarSed/Formaal/KravOmRefusjon/KravOmRefusjon'
 import Motregning from 'applications/SvarSed/Formaal/Motregning/Motregning'
@@ -116,8 +116,9 @@ const Step2: React.FC<SvarPaSedProps> = ({
   const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
   const [_viewKontoopplysninger, setViewKontoopplysninger] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationStep2Props>(validation, validateStep2)
+  const [_viewValidation, _setViewValidation] = useState<boolean>(false)
 
-  const showFamily = (): boolean => replySed?.sedType?.startsWith('F') || false
+  const showPersonManager = (): boolean => replySed?.sedType?.startsWith('F') || replySed?.sedType?.startsWith('U') || false
   const showMotregning = (): boolean => (replySed?.formaal?.indexOf('motregning') >= 0)
   const showVedtak = (): boolean => (replySed?.formaal?.indexOf('vedtak') >= 0)
   const showProsedyreVedUenighet = (): boolean => (replySed?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0)
@@ -131,7 +132,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
         comment: _comment,
         replySed
       })
-
+      _setViewValidation(true)
       if (valid) {
         setViewSendSedModal(true)
         dispatch(createSed(
@@ -277,13 +278,14 @@ const Step2: React.FC<SvarPaSedProps> = ({
         <Column />
       </Row>
       <VerticalSeparatorDiv data-size='2' />
-      {showFamily() && (
+      {showPersonManager() && (
         <>
-          <FamilyManager
+          <PersonManager
             replySed={replySed}
             resetValidation={_resetValidation}
             updateReplySed={updateReplySed}
             validation={_validation}
+            viewValidation={_viewValidation}
           />
           <VerticalSeparatorDiv data-size='2' />
         </>

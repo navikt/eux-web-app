@@ -1,5 +1,6 @@
 {
   "sedVersjon": "4.2",
+  "sedType": "U017",
   "bruker": {
     "personInfo": {
       "fornavn": "æøå",
@@ -77,7 +78,6 @@
     "startdato": "2001-01-01",
     "aapenPeriodeType": "åpen_sluttdato"
   },
-  "sedType": "U017",
   "rettTilYtelse": {
     "bekreftelsesgrunn": "artikkel_64_i_forordning_EF_nr_883_2004",
     "periode": {

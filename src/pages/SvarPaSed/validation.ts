@@ -1,16 +1,16 @@
-import { validateAdresser } from 'applications/SvarSed/FamilyManager/Adresser/validation'
-import { validateBeløpNavnOgValuta } from 'applications/SvarSed/FamilyManager/BeløpNavnOgValuta/validation'
-import { validateFamilierelasjoner } from 'applications/SvarSed/FamilyManager/Familierelasjon/validation'
-import { validateFamilieytelser } from 'applications/SvarSed/FamilyManager/Familieytelser/validation'
-import { validateAllGrunnlagForBosetting } from 'applications/SvarSed/FamilyManager/GrunnlagForBosetting/validation'
+import { validateAdresser } from 'applications/SvarSed/PersonManager/Adresser/validation'
+import { validateBeløpNavnOgValuta } from 'applications/SvarSed/PersonManager/BeløpNavnOgValuta/validation'
+import { validateFamilierelasjoner } from 'applications/SvarSed/PersonManager/Familierelasjon/validation'
+import { validateFamilieytelser } from 'applications/SvarSed/PersonManager/Familieytelser/validation'
+import { validateAllGrunnlagForBosetting } from 'applications/SvarSed/PersonManager/GrunnlagForBosetting/validation'
 import {
   validateKontaktsinformasjonEposter,
   validateKontaktsinformasjonTelefoner
-} from 'applications/SvarSed/FamilyManager/Kontaktinformasjon/validation'
-import { validateNasjonaliteter } from 'applications/SvarSed/FamilyManager/Nasjonaliteter/validation'
-import { validatePersonOpplysninger } from 'applications/SvarSed/FamilyManager/PersonOpplysninger/validation'
-import { validateBarnetilhoerigheter } from 'applications/SvarSed/FamilyManager/Relasjon/validation'
-import { validateTrygdeordninger } from 'applications/SvarSed/FamilyManager/Trygdeordning/validation'
+} from 'applications/SvarSed/PersonManager/Kontaktinformasjon/validation'
+import { validateNasjonaliteter } from 'applications/SvarSed/PersonManager/Nasjonaliteter/validation'
+import { validatePersonOpplysninger } from 'applications/SvarSed/PersonManager/PersonOpplysninger/validation'
+import { validateBarnetilhoerigheter } from 'applications/SvarSed/PersonManager/Relasjon/validation'
+import { validateTrygdeordninger } from 'applications/SvarSed/PersonManager/Trygdeordning/validation'
 import { validateKontoopplysning } from 'applications/SvarSed/Formaal/Kontoopplysning/validation'
 import { validateKravOmRefusjon } from 'applications/SvarSed/Formaal/KravOmRefusjon/validation'
 import { validateMotregning } from 'applications/SvarSed/Formaal/Motregning/validation'
@@ -54,31 +54,31 @@ export const performValidation = (v: Validation, t: TFunction, replySed: ReplySe
   if (personID !== 'familie') {
     _error = validatePersonOpplysninger(v, t, {
       personInfo,
-      namespace: `familymanager-${personID}-personopplysninger`,
+      namespace: `personmanager-${personID}-personopplysninger`,
       personName
     })
     hasErrors = hasErrors || _error
 
     const statsborgerskaper: Array<Statsborgerskap> = _.get(replySed, `${personID}.statsborgerskap`)
-    _error = validateNasjonaliteter(v, t, statsborgerskaper, `familymanager-${personID}-nasjonaliteter`, personName)
+    _error = validateNasjonaliteter(v, t, statsborgerskaper, `personmanager-${personID}-nasjonaliteter`, personName)
     hasErrors = hasErrors || _error
 
     const adresser: Array<Adresse> = _.get(replySed, `${personID}.adresser`)
-    _error = validateAdresser(v, t, adresser, `familymanager-${personID}-adresser`, personName)
+    _error = validateAdresser(v, t, adresser, `personmanager-${personID}-adresser`, personName)
     hasErrors = hasErrors || _error
   }
 
   if (!personID.startsWith('barn')) {
     if (personID === 'familie') {
       const motregninger: Array<Motregning> = _.get(replySed, `${personID}.motregninger`)
-      _error = validateFamilieytelser(v, t, motregninger, `familymanager-${personID}-familieytelser`, personName)
+      _error = validateFamilieytelser(v, t, motregninger, `personmanager-${personID}-familieytelser`, personName)
       hasErrors = hasErrors || _error
     } else {
       const telefoner: Array<Telefon> = _.get(replySed, `${personID}.telefon`)
-      _error = validateKontaktsinformasjonTelefoner(v, t, telefoner, `familymanager-${personID}-kontaktinformasjon-telefon`, personName)
+      _error = validateKontaktsinformasjonTelefoner(v, t, telefoner, `personmanager-${personID}-kontaktinformasjon-telefon`, personName)
       hasErrors = hasErrors || _error
       const eposter: Array<Epost> = _.get(replySed, `${personID}.epost`)
-      _error = validateKontaktsinformasjonEposter(v, t, eposter, `familymanager-${personID}-kontaktinformasjon-epost`, personName)
+      _error = validateKontaktsinformasjonEposter(v, t, eposter, `personmanager-${personID}-kontaktinformasjon-epost`, personName)
       hasErrors = hasErrors || _error
       const perioder: {[k in string]: Array<Periode | PensjonPeriode>} = {
         perioderMedArbeid: _.get(replySed, `${personID}.perioderMedArbeid`),
@@ -88,21 +88,21 @@ export const performValidation = (v: Validation, t: TFunction, replySed: ReplySe
         perioderMedYtelser: _.get(replySed, `${personID}.perioderMedYtelser`),
         perioderMedPensjon: _.get(replySed, `${personID}.perioderMedPensjon`)
       }
-      _error =  validateTrygdeordninger(v, t, perioder, `familymanager-${personID}-trygdeordninger`, personName)
+      _error =  validateTrygdeordninger(v, t, perioder, `personmanager-${personID}-trygdeordninger`, personName)
       hasErrors = hasErrors || _error
       const familierelasjoner: Array<FamilieRelasjon> = _.get(replySed, `${personID}.familierelasjoner`)
-      _error = validateFamilierelasjoner(v, t, familierelasjoner, `familymanager-${personID}-familierelasjon`, personName)
+      _error = validateFamilierelasjoner(v, t, familierelasjoner, `personmanager-${personID}-familierelasjon`, personName)
       hasErrors = hasErrors || _error
     }
   } else {
     const barnetilhorighet : Array<Barnetilhoerighet> = _.get(replySed, `${personID}.barnetilhoerigheter`)
-    _error = validateBarnetilhoerigheter(v, t, barnetilhorighet, `familymanager-${personID}-relasjon`, personName)
+    _error = validateBarnetilhoerigheter(v, t, barnetilhorighet, `personmanager-${personID}-relasjon`, personName)
     hasErrors = hasErrors || _error
     const flyttegrunn: Flyttegrunn = _.get(replySed, `${personID}.flyttegrunn`)
-    _error = validateAllGrunnlagForBosetting(v, t, flyttegrunn, `familymanager-${personID}-grunnlagforbosetting`, personName)
+    _error = validateAllGrunnlagForBosetting(v, t, flyttegrunn, `personmanager-${personID}-grunnlagforbosetting`, personName)
     hasErrors = hasErrors || _error
     const ytelse: Ytelse = _.get(replySed, `${personID}.ytelse`)
-    _error = validateBeløpNavnOgValuta(v, t, { ytelse, namespace: `familymanager-${personID}-beløpnavnogvaluta`, personName })
+    _error = validateBeløpNavnOgValuta(v, t, { ytelse, namespace: `personmanager-${personID}-beløpnavnogvaluta`, personName })
     hasErrors = hasErrors || _error
   }
   return hasErrors

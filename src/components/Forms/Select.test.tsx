@@ -7,7 +7,9 @@ describe('components/Forms/Select', () => {
   let wrapper: ReactWrapper
   const initialMockProps = {
     highContrast: false,
-    feil: undefined
+    feil: undefined,
+    id: 'test',
+    onChange: () => {}
   }
 
   beforeEach(() => {

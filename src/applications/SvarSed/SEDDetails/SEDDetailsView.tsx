@@ -1,9 +1,10 @@
+import FilledCheckCircle from 'assets/icons/CheckCircle'
 import Warning from 'assets/icons/Warning'
 import { F002Sed, FSed, ReplySed, USed } from 'declarations/sed'
-import { FlagList } from 'flagg-ikoner'
+import Flag, { FlagList } from 'flagg-ikoner'
+import CountryData from 'land-verktoy'
 import { Normaltekst, UndertekstBold } from 'nav-frontend-typografi'
-import FilledCheckCircle from 'assets/icons/CheckCircle'
-import { themeKeys, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { HorizontalSeparatorDiv, themeKeys, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -51,6 +52,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
   replySed
 }: SEDDetailsViewProps): JSX.Element => {
   const { t } = useTranslation()
+  const countryData = CountryData.getCountryInstance('nb')
   return (
     <>
       <Dl>
@@ -86,42 +88,71 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
             />
           )}
         </Dd>
-        <Dt>{t('label:partner')}</Dt>
-        <Dd>
-          <span>
-            {(replySed as F002Sed).ektefelle
-              ? (replySed as F002Sed).ektefelle.personInfo.fornavn + ' ' +
-               (replySed as F002Sed).ektefelle.personInfo.etternavn +
-            ' (' + (replySed as F002Sed).ektefelle.personInfo.kjoenn + ')'
-              : '-'}
-          </span>
-          {(replySed as F002Sed).ektefelle.personInfo.statsborgerskap && (
-            <FlagList
-              size='S'
-              type='circle'
-              items={(replySed as F002Sed).ektefelle.personInfo.statsborgerskap.map((s: any) => ({ country: s.land }))}
-            />
-          )}
-        </Dd>
+        {replySed.sedType.startsWith('F') && (
+          <>
+            <Dt>{t('label:partner')}</Dt>
+            <Dd>
+              <span>
+                {(replySed as F002Sed).ektefelle
+                  ? (replySed as F002Sed).ektefelle.personInfo.fornavn + ' ' +
+                   (replySed as F002Sed).ektefelle.personInfo.etternavn +
+                ' (' + (replySed as F002Sed).ektefelle.personInfo.kjoenn + ')'
+                  : '-'}
+              </span>
+              {(replySed as F002Sed).ektefelle.personInfo.statsborgerskap && (
+                <FlagList
+                  size='S'
+                  type='circle'
+                  items={(replySed as F002Sed).ektefelle.personInfo.statsborgerskap.map((s: any) => ({ country: s.land }))}
+                />
+              )}
+            </Dd>
+          </>
+        )}
       </Dl>
       <VerticalSeparatorDiv />
-      <Dl>
-        <Dt>
-          {t('label:motpart-sakseier')}
-        </Dt>
-        <Dd>
-          ?
-        </Dd>
-      </Dl>
+      {replySed.sedType.startsWith('U') && (replySed as USed).lokaleSakIder.map(s => (
+        <>
+          <Dl>
+            <Dt>
+              {t('label:motpart-sakseier')}
+            </Dt>
+            <Dd>
+              <FlexDiv>
+                <Flag
+                  size='XS'
+                  type='circle'
+                  country={s.land}
+                  label={countryData.findByValue(s.land)?.label}
+                />
+                <HorizontalSeparatorDiv data-size='0.35'/>
+                 {countryData.findByValue(s.land)?.label}
+              </FlexDiv>
+            </Dd>
+          </Dl>
+          <Dl>
+            <Dt>
+              {t('label:avsenderinstitusjon')}
+            </Dt>
+            <Dd>
+              {s.institusjonsnavn}
+            </Dd>
+          </Dl>
+          </>
+      ))}
       <VerticalSeparatorDiv />
-      <Dl>
-        <Dt>
-          {t('label:type-krav')}
-        </Dt>
-        <Dd>
-          {t('app:kravType-' + (replySed as F002Sed).krav.kravType)}
-        </Dd>
-      </Dl>
+      {replySed.sedType.startsWith('F') && (
+        <>
+          <Dl>
+          <Dt>
+            {t('label:type-krav')}
+          </Dt>
+          <Dd>
+            {t('app:kravType-' + (replySed as F002Sed).krav.kravType)}
+          </Dd>
+        </Dl>
+        </>
+      )}
       <VerticalSeparatorDiv />
       <FlexDiv>
         <FilledCheckCircle color='green' width={18} height={18} />

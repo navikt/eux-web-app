@@ -145,6 +145,9 @@ const Step1: React.FC<SvarPaSedProps> = ({
     }
   }, [previousReplySed, replySed, mode])
 
+  const familieytelser: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('FB_'))?.length ?? 0
+  const dagpenger: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('U_'))?.length ?? 0
+
   return (
     <NavHighContrast highContrast={highContrast}>
       <ContainerDiv>
@@ -218,15 +221,32 @@ const Step1: React.FC<SvarPaSedProps> = ({
                   {t('label:alle') + ' (' + seds.length + ')'}
                 </HighContrastFlatknapp>
                 <HorizontalSeparatorDiv />
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
-                  className={classNames({ selected: _filter === 'FB_' })}
-                  onClick={() => _setFilter('FB_')}
-                >
-                  {t('label:familieytelser') + ' (' + _.filter(seds, (s: Sed) => s.sakType.startsWith('FB_')).length + ')'}
-                </HighContrastFlatknapp>
-                <HorizontalSeparatorDiv />
+                {familieytelser > 0 && (
+                  <>
+                    <HighContrastFlatknapp
+                      mini
+                      kompakt
+                      className={classNames({selected: _filter === 'FB_'})}
+                      onClick={() => _setFilter('FB_')}
+                    >
+                      {t('label:familieytelser') + ' (' + familieytelser + ')'}
+                    </HighContrastFlatknapp>
+                    <HorizontalSeparatorDiv/>
+                  </>
+                )}
+                {dagpenger > 0 && (
+                <>
+                  <HighContrastFlatknapp
+                    mini
+                    kompakt
+                    className={classNames({selected: _filter === 'U_'})}
+                    onClick={() => _setFilter('U_')}
+                  >
+                    {t('label:dagpenger') + ' (' + dagpenger + ')'}
+                  </HighContrastFlatknapp>
+                  <HorizontalSeparatorDiv/>
+                </>
+              )}
               </FilterDiv>
               <VerticalSeparatorDiv />
             </>

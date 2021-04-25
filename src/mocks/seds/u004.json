@@ -1,5 +1,6 @@
 {
   "sedVersjon": "4.2",
+  "sedType": "U004",
   "bruker": {
     "personInfo": {
       "fornavn": "æøå",
@@ -51,7 +52,6 @@
       "land": "NO"
     }
   ],
-  "sedType": "U004",
   "loennsopplysninger": [
     {
       "periode": {

@@ -11,8 +11,6 @@ Clean Attachments later
 
 7. Checkboxes for the persons in familymanager --> what to do with them?
 
-fazer outros forms: betaling
-
  grep -rho -e "'label:[^']*'" * | sort -u
 
 test:

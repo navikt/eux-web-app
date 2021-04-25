@@ -16,6 +16,7 @@
   "attachments": "Vedlegg",
   "avdød": "Avdød",
   "avhuk-de-barn-vedtaket": "Avhuk de barn vedtaket <strong><U>ikke</U></strong> gjelder",
+  "avsenderinstitusjon": "Avsenderinstitusjon",
   "avslutt-utfylling": "AVSLUTT UTFYLLING",
 
   "bankinformasjon": "Bankinformasjon",
@@ -36,6 +37,7 @@
   "by": "By",
   "bygning": "Bygning",
 
+  "dagpenger": "Dagpenger",
   "dato": "Dato",
   "dato-for-relasjon": "Dato for relasjon",
   "delt-foreldreansvar": "Delt foreldreansvar",
@@ -135,6 +137,7 @@
 
   "reason" : "Grunn",
   "region" : "Region",
+  "referanseperiode" : "Referanseperiode",
   "relasjon-med" : "Relasjon med",
   "relasjonens-varighet": "Relasjonens varighet",
   "rina-dokument-id": "Velg SED Type",
