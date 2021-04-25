@@ -29,7 +29,7 @@ export const validatePeriod = (
   const idx = getIdx(index)
   if (_.isEmpty(period?.startdato)) {
     v[namespace + idx + '-startdato'] = {
-      skjemaelementId: 'c-' + namespace + idx + '-startdato-date',
+      skjemaelementId: namespace + idx + '-startdato',
       feilmelding: personName
         ? t('message:validation-noDateForPerson', { person: personName })
         : t('message:validation-noDate')
@@ -39,7 +39,7 @@ export const validatePeriod = (
 
   if (!_.isEmpty(period?.startdato) && !period.startdato.match(datePattern)) {
     v[namespace + idx + '-startdato'] = {
-      skjemaelementId: 'c-' + namespace + idx + '-startdato-date',
+      skjemaelementId: namespace + idx + '-startdato',
       feilmelding: personName
         ? t('message:validation-invalidDateForPerson', { person: personName })
         : t('message:validation-invalidDate')
@@ -49,7 +49,7 @@ export const validatePeriod = (
 
   if (!_.isEmpty(period?.sluttdato) && !period.sluttdato!.match(datePattern)) {
     v[namespace + idx + '-sluttdato'] = {
-      skjemaelementId: 'c-' + namespace + idx + '-sluttdato-date',
+      skjemaelementId: namespace + idx + '-sluttdato',
       feilmelding: personName
         ? t('message:validation-invalidDateForPerson', { person: personName })
         : t('message:validation-invalidDate')
@@ -61,7 +61,7 @@ export const validatePeriod = (
     moment(period.startdato, 'YYYY-MM-DD')
       .isAfter(moment(period.sluttdato, 'YYYY-MM-DD'))) {
     v[namespace + idx + '-sluttdato'] = {
-      skjemaelementId: 'c-' + namespace + idx + '-sluttdato-date',
+      skjemaelementId: namespace + idx + '-sluttdato',
       feilmelding: t('message:validation-endDateBeforeStartDate')
     } as FeiloppsummeringFeil
     hasErrors = true

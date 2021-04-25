@@ -59,7 +59,9 @@ const VedtakFC: React.FC<VedtakProps> = ({
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')
   const [_newVedtak, _setNewVedtak] = useState<string>('')
 
-  const [addCandidateForDeletion, removeCandidateForDeletion, hasKey] = useAddRemove()
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PeriodeMedVedtak>((p: PeriodeMedVedtak): string => {
+    return p.periode.startdato
+  })
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationVedtakPeriodeProps>({}, validateVedtakPeriode)
 
@@ -84,7 +86,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
 
   const removeBarn = (barn: string, checked: boolean) => {
     let newBarn: Array<String> = _.cloneDeep(vedtak?.barn)!
-    // checked means that we will rmove from list
+    // checked means that we will remove from list
     if (checked) {
       newBarn = _.filter(newBarn, _n => _n !== barn)
     } else {
@@ -117,8 +119,8 @@ const VedtakFC: React.FC<VedtakProps> = ({
     }
   }
 
-  const setGrunnen = (newType: string) => {
-    updateReplySed(`${target}.grunnen`, newType)
+  const setGrunnen = (newGrunnen: string) => {
+    updateReplySed(`${target}.grunnen`, newGrunnen)
     if (validation[namespace + '-grunnen']) {
       resetValidation(namespace + '-grunnen')
     }
@@ -129,12 +131,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
       _setNewStartDato(dato)
       _resetValidation(namespace + '-vedtaksperioder-periode-startdato')
     } else {
-      let newPerioder: Array<PeriodeMedVedtak> | undefined = _.cloneDeep(vedtak?.vedtaksperioder)
-      if (!newPerioder) {
-        newPerioder = []
-      }
-      newPerioder[index].periode.startdato = dato
-      updateReplySed(`${target}.vedtaksperioder`, newPerioder)
+      updateReplySed(`${target}.vedtaksperioder[${index}].periode.startdato`,dato)
       if (validation[namespace + '-vedtaksperioder' + getIdx(index) + '-periode-startdato']) {
         resetValidation(namespace + '-vedtaksperioder' + getIdx(index) + '-periode-startdato')
       }
@@ -169,9 +166,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
       _setNewVedtak(newVedtak)
       _resetValidation(namespace + '-vedtaksperioder-vedtak')
     } else {
-      let newPerioder: Array<PeriodeMedVedtak> = _.cloneDeep(vedtak?.vedtaksperioder) as Array<PeriodeMedVedtak>
-      newPerioder[index].vedtak = newVedtak
-      updateReplySed(`${target}.vedtaksperioder`, newPerioder)
+      updateReplySed(`${target}.vedtaksperioder[${index}].vedtak`,newVedtak)
       if (validation[namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak']) {
         resetValidation(namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak')
       }
@@ -190,15 +185,12 @@ const VedtakFC: React.FC<VedtakProps> = ({
     resetForm()
   }
 
-  const getKey = (p: PeriodeMedVedtak): string => {
-    return p.periode.startdato
-  }
 
   const onRemove = (index: number) => {
     const newPerioder = _.cloneDeep(vedtak?.vedtaksperioder) as Array<PeriodeMedVedtak>
     const deletedPerioder: Array<PeriodeMedVedtak> = newPerioder.splice(index, 1)
     if (deletedPerioder && deletedPerioder.length > 0) {
-      removeCandidateForDeletion(getKey(deletedPerioder[0]))
+      removeFromDeletion(deletedPerioder[0])
     }
     updateReplySed(`${target}.vedtaksperioder`, newPerioder)
   }
@@ -229,20 +221,19 @@ const VedtakFC: React.FC<VedtakProps> = ({
         newPerioder = []
       }
       newPerioder = newPerioder.concat(newPeriode)
-      resetForm()
       updateReplySed(`${target}.vedtaksperioder`, newPerioder)
+      resetForm()
     }
   }
 
-  const getErrorFor = (index: number, el: string): string | undefined => {
-    return index < 0 ?
-      _validation[namespace + '-vedtaksperioder-' + el]?.feilmelding :
-      validation[namespace + '-vedtaksperioder[' + index + ']-' + el]?.feilmelding
-  }
-
   const renderPeriodeAndVedtak = (periode: PeriodeMedVedtak | null, index: number) => {
-    const key = periode ? getKey(periode) : 'new'
-    const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
+    const candidateForDeletion = index < 0 ? false : isInDeletion(periode)
+    const idx = (index >= 0 ? '[' + index + ']' : '')
+    const getErrorFor = (index: number, el: string): string | undefined => {
+      return index < 0 ?
+        _validation[namespace + '-vedtaksperioder' + idx + '-' + el]?.feilmelding :
+        validation[namespace + '-vedtaksperioder' + idx + '-' + el]?.feilmelding
+    }
     const startdato = index < 0 ? _newStartDato : periode?.periode.startdato
     const sluttdato = index < 0 ? _newSluttDato : periode?.periode.sluttdato
     return (
@@ -250,7 +241,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
         <AlignStartRow className={classNames('slideInFromLeft')}>
           <Period
             key={'' + startdato + sluttdato}
-            namespace={namespace + getIdx(index) + '-periode'}
+            namespace={namespace + '-vedtaksperioder' + getIdx(index) + '-periode'}
             errorStartDato={getErrorFor(index, 'periode-startdato')}
             errorSluttDato={getErrorFor(index, 'periode-sluttdato')}
             setStartDato={(dato: string) => setVedtaksperioderStartDato(dato, index)}
@@ -261,10 +252,10 @@ const VedtakFC: React.FC<VedtakProps> = ({
           <Column>
             <Select
               key={namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak'}
-              data-test-id={'c-' + namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak-text'}
+              data-test-id={namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak'}
               feil={getErrorFor(index, 'vedtak')}
               highContrast={highContrast}
-              id={'c-' + namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak-text'}
+              id={namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak'}
               label={t('label:vedtak-type')}
               menuPortalTarget={document.body}
               onChange={(o: OptionTypeBase) => setVedtaksperioderVedtak(o.value, index)}
@@ -279,9 +270,9 @@ const VedtakFC: React.FC<VedtakProps> = ({
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}
               marginTop={true}
-              onBeginRemove={() => addCandidateForDeletion(key!)}
+              onBeginRemove={() => addToDeletion(periode)}
               onConfirmRemove={() => onRemove(index)}
-              onCancelRemove={() => removeCandidateForDeletion(key!)}
+              onCancelRemove={() => removeFromDeletion(periode)}
               onAddNew={onAdd}
               onCancelNew={onCancel}
             />
@@ -300,22 +291,22 @@ const VedtakFC: React.FC<VedtakProps> = ({
       <VerticalSeparatorDiv />
       <HighContrastPanel>
         <HighContrastRadioGroup
-          id={namespace + '-barn-list'}
+          id={namespace + '-barn'}
           className={classNames('slideInFromLeft')}
-          data-test-id={namespace + '-barn-list'}
+          data-test-id={namespace + '-barn'}
           legend={t('label:vedtak-angående-alle-barn') + ' *'}
           feil={_validation['vedtak-allkids']?.feilmelding}
         >
           <FlexDiv>
             <HighContrastRadio
-              name={namespace + '-barn-list'}
+              name={namespace + '-barn'}
               checked={_barnRadio === 'ja'}
               label={t('label:ja')}
               onClick={setBarnAlleBarn}
             />
             <HorizontalSeparatorDiv data-size='2' />
             <HighContrastRadio
-              name={namespace + '-barn-list'}
+              name={namespace + '-barn'}
               checked={_barnRadio === 'nei'}
               label={t('label:nei')}
               onClick={setBarnNoeBarn}
@@ -368,10 +359,10 @@ const VedtakFC: React.FC<VedtakProps> = ({
         >
           <Column data-flex='2'>
             <Select
-              data-test-id={'c-' + namespace + '-type-text'}
+              data-test-id={namespace + '-type'}
               feil={validation[namespace + '-type']?.feilmelding}
               highContrast={highContrast}
-              id={'c-' + namespace + '-type-text'}
+              id={namespace + '-type'}
               label={t('label:vedtak-type') + ' *'}
               menuPortalTarget={document.body}
               onChange={(e: any) => setType(e.value)}
@@ -393,7 +384,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
               <TextArea
                 feil={validation[namespace + '-grunnen']?.feilmelding}
                 namespace={namespace}
-                id='grunnen-text'
+                id='grunnen'
                 label={t('label:ytterligere-informasjon-til-sed')}
                 onChanged={setGrunnen}
                 value={vedtak?.grunnen}

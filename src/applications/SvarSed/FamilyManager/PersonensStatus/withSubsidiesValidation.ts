@@ -28,12 +28,12 @@ export const validateWithSubsidies = (
   let hasErrors: boolean = validatePeriod(v, t, {
     period: pensjonPeriod.periode,
     index,
-    namespace
+    namespace: namespace + idx + '-periode'
   })
 
   if (_.find(otherPensjonPeriods, p => p.periode.startdato === pensjonPeriod.periode.startdato) !== undefined) {
-    v[namespace + '-startdato'] = {
-      skjemaelementId: 'c-' + namespace + idx + '-startdato-date',
+    v[namespace + idx + '-periode-startdato'] = {
+      skjemaelementId: namespace + idx + '-periode-startdato',
       feilmelding: t('message:validation-duplicateStartDate')
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -41,7 +41,7 @@ export const validateWithSubsidies = (
 
   if (!pensjonPeriod.pensjonstype) {
     v[namespace + '-pensjontype'] = {
-      skjemaelementId: 'c-' + namespace + '-pensjontype-text',
+      skjemaelementId: namespace + '-pensjontype',
       feilmelding: t('message:validation-noPensjonType')
     } as FeiloppsummeringFeil
     hasErrors = true

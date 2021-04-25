@@ -30,9 +30,9 @@ const DateInput = ({
 
   return (
     <HighContrastInput
-      data-test-id={'c-' + namespace + '-date'}
+      data-test-id={namespace + ''}
       feil={error}
-      id={'c-' + namespace + '-date'}
+      id={namespace + ''}
       label={label ?? t('label:dato')}
       onBlur={onDatoBlur}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setDato(e.target.value)}

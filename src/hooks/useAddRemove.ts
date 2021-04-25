@@ -1,29 +1,33 @@
 import _ from 'lodash'
 import { useState } from 'react'
 
-const useAddRemove = (
-  initialValue = []
+const useAddRemove = <Item extends any>(
+  getKeyFunction: (i: Item) => string
 ): [
-  (key: string) => void,
-  (key: string) => void,
-  (key: string) => boolean,
+  (item: Item | null) => void,
+  (item: Item | null) => void,
+  (item: Item | null) => boolean,
 ] => {
-  const [_confirmDelete, _setConfirmDelete] = useState<Array<string>>(initialValue)
+  const [_confirmDelete, _setConfirmDelete] = useState<Array<string>>([])
 
-  const addCandidateForDeletion = (key: string) => {
-    _setConfirmDelete(_confirmDelete.concat(key))
+  const addCandidateForDeletion = (item: Item | null) => {
+    if (item !== null) {
+      _setConfirmDelete(_confirmDelete.concat(getKeyFunction(item)))
+    }
   }
 
-  const removeCandidateForDeletion = (key: string) => {
-    _setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
+  const removeCandidateForDeletion = (item: Item | null) => {
+    if (item !== null) {
+      _setConfirmDelete(_.filter(_confirmDelete, it => it !== getKeyFunction(item)))
+    }
   }
 
-  const hasKey = (key: string): boolean => _confirmDelete.indexOf(key) >= 0
+  const isCandidateForDeletion =  (item: Item | null): boolean => !!item && _confirmDelete.indexOf(getKeyFunction(item)) >= 0
 
   return [
     addCandidateForDeletion,
     removeCandidateForDeletion,
-    hasKey
+    isCandidateForDeletion
   ]
 }
 

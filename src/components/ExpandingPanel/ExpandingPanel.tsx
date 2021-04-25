@@ -105,7 +105,7 @@ const ExpandingPanel: React.FC<ExpandingPanelProps> = ({
       >
         <div
           aria-expanded={_open}
-          data-test-id='c-expandingpanel__head-id'
+          data-test-id='expandingpanel__head-id'
           className='ekspanderbartPanel__hode'
           onClick={handleOnClick}
           onKeyDown={handleKeyboard}
@@ -115,14 +115,14 @@ const ExpandingPanel: React.FC<ExpandingPanelProps> = ({
         >
           <div
             className='ekspanderbartPanel__flex-wrapper'
-            data-test-id='c-expandingpanel__body-id'
+            data-test-id='expandingpanel__body-id'
           >
             {heading}
             <button
               aria-expanded={_open}
               aria-label={t('label:åpen')}
               className='ekspanderbartPanel__knapp'
-              data-test-id='c-expandingpanel__button-id'
+              data-test-id='expandingpanel__button-id'
               onKeyDown={tabHandler}
               onClick={handleOnClick}
               type='button'
@@ -140,7 +140,7 @@ const ExpandingPanel: React.FC<ExpandingPanelProps> = ({
           <article
             aria-label={ariaTittel}
             className='ekspanderbartPanel__innhold'
-            data-test-id='c-expandingpanel__content-id'
+            data-test-id='expandingpanel__content-id'
           >
             {children}
           </article>

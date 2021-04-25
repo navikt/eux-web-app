@@ -101,7 +101,7 @@ const Family: React.FC<FamilyProps> = ({
   )
 
   return (
-    <div data-test-id='c-family'>
+    <div data-test-id='family'>
       <HorizontalSeparatorDiv />
       <Undertittel>
         {t('el:title-family-description')}

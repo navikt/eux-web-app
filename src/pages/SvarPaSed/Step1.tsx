@@ -161,10 +161,10 @@ const Step1: React.FC<SvarPaSedProps> = ({
               <FlexDiv>
                 <HighContrastInput
                   bredde='xl'
-                  data-test-id='c-step1-saksnummerOrFnr-text'
+                  data-test-id='step1-saksnummerOrFnr'
                   feil={_validation['step1-saksnummerOrFnr']?.feilmelding}
                   highContrast={highContrast}
-                  id='c-step1-saksnummerOrFnr-text'
+                  id='step1-saksnummerOrFnr'
                   label={t('label:saksnummer-eller-fnr')}
                   onChange={onSaksnummerOrFnrChange}
                   placeholder={t('el:placeholder-input-default')}

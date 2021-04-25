@@ -117,10 +117,10 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
       <AlignStartRow className='slideInFromLeft'>
         <Column>
           <Select
-            data-test-id={'c-' + namespace + '-ytelseNavn-text'}
+            data-test-id={namespace + '-ytelseNavn'}
             feil={validation[namespace + '-ytelseNavn']?.feilmelding}
             highContrast={highContrast}
-            id={'c-' + namespace + '-ytelseNavn-text'}
+            id={namespace + '-ytelseNavn'}
             label={t('label:betegnelse-på-ytelse') + ' *'}
             menuPortalTarget={document.body}
             onChange={(e: any) => setYtelseNavn(e.value)}
@@ -135,7 +135,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             type='number'
             feil={validation[namespace + '-number']?.feilmelding}
             namespace={namespace}
-            id='number-text'
+            id='number'
             label={t('label:antall-innvilges') + ' *'}
             onChanged={setNumber}
             value={_newNumber}
@@ -149,7 +149,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             type='number'
             feil={validation[namespace + '-beloep']?.feilmelding}
             namespace={namespace}
-            id='beloep-text'
+            id='beloep'
             label={(
               <FlexCenterDiv>
                 <span>{t('label:beløp') + ' *'}</span>
@@ -166,10 +166,10 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
         <Column>
           <CountrySelect
             ariaLabel={t('label:valuta')}
-            data-test-id={'c-' + namespace + '-valuta-text'}
+            data-test-id={namespace + '-valuta'}
             error={validation[namespace + '-valuta']?.feilmelding}
             highContrast={highContrast}
-            id={'c-' + namespace + '-valuta-text'}
+            id={namespace + '-valuta'}
             label={t('label:valuta') + ' *'}
             locale='nb'
             menuPortalTarget={document.body}
@@ -200,9 +200,9 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
         <Column>
           <Input
-            feil={validation[namespace + '--mottakersNavn']?.feilmelding}
+            feil={validation[namespace + '-mottakersNavn']?.feilmelding}
             namespace={namespace}
-            id='mottakersNavn-text'
+            id='mottakersNavn'
             label={t('label:mottakers-navn') + ' *'}
             onChanged={setMottakersNavn}
             value={motregning?.mottakersNavn ?? ''}
@@ -215,8 +215,8 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
           <HighContrastRadioPanelGroup
             checked={motregning?.utbetalingshyppighet}
             data-no-border
-            data-test-id={'c-' + namespace + '-utbetalingshyppighet-text'}
-            id={'c-' + namespace + '-utbetalingshyppighet-text'}
+            data-test-id={namespace + '-utbetalingshyppighet'}
+            id={namespace + '-utbetalingshyppighet'}
             feil={validation[namespace + '-utbetalingshyppighet']?.feilmelding}
             name={namespace + '-utbetalingshyppighet'}
             legend={t('label:periode-avgrensing') + ' *'}

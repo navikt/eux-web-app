@@ -31,7 +31,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
   const { t } = useTranslation()
   const target: string = `${personID}.barnetilhoerigheter[0]`
   const barnetilhoerighet: Barnetilhoerighet | undefined = _.get(replySed, target)
-  const namespace = `familymanager-${personID}-relasjon`
+  const namespace = `familymanager-${personID}-relasjon[0]`
 
   const relasjonTypeOptions: Options = [
     { label: t('el:option-relasjon-1'), value: '01' },
@@ -60,8 +60,8 @@ const Relasjon: React.FC<RelasjonProps> = ({
 
   const setStartDato = (dato: string) => {
     updateReplySed(`${target}.periode.startdato`, dato)
-    if (validation[namespace + '-startdato']) {
-      resetValidation(namespace + '-startdato')
+    if (validation[namespace + '-periode-startdato']) {
+      resetValidation(namespace + '-periode-startdato')
     }
   }
 
@@ -78,8 +78,8 @@ const Relasjon: React.FC<RelasjonProps> = ({
       newPerioder.sluttdato = dato
     }
     updateReplySed(`${target}.periode`, newPerioder)
-    if (validation[namespace + '-sluttdato']) {
-      resetValidation(namespace + '-sluttdato')
+    if (validation[namespace + '-periode-sluttdato']) {
+      resetValidation(namespace + '-periode-sluttdato')
     }
   }
 
@@ -129,11 +129,11 @@ const Relasjon: React.FC<RelasjonProps> = ({
           <HighContrastRadioPanelGroup
             checked={barnetilhoerighet?.relasjonTilPerson}
             data-no-border
-            data-test-id={'c-' + namespace + '-relasjonTilPerson-text'}
+            data-test-id={namespace + '-relasjonTilPerson'}
             feil={validation[namespace + '-relasjonTilPerson']?.feilmelding}
-            id={'c-' + namespace + '-relasjonTilPerson-text'}
+            id={namespace + '-relasjonTilPerson'}
             legend={t('label:relasjon-med') + ' *'}
-            name={'c-' + namespace + '-relasjonTilPerson-text'}
+            name={namespace + '-relasjonTilPerson'}
             radios={[
               { label: t('label:søker'), value: '01' },
               { label: t('label:avdød'), value: '02' }
@@ -144,10 +144,10 @@ const Relasjon: React.FC<RelasjonProps> = ({
           <HighContrastRadioPanelGroup
             checked={barnetilhoerighet?.relasjonTilPerson}
             data-no-border
-            data-test-id={'c-' + namespace + '-relasjonTilPerson-text'}
+            data-test-id={namespace + '-relasjonTilPerson'}
             feil={validation[namespace + '-relasjonTilPerson']?.feilmelding}
-            id={'c-' + namespace + '-relasjonTilPerson-text'}
-            name={'c-' + namespace + '-relasjonTilPerson-text'}
+            id={namespace + '-relasjonTilPerson'}
+            name={namespace + '-relasjonTilPerson'}
             radios={[
               { label: t('label:partner'), value: '03' },
               { label: t('label:annen-person'), value: '04' }
@@ -161,10 +161,10 @@ const Relasjon: React.FC<RelasjonProps> = ({
       <Row style={{ animationDelay: '0.2s' }}>
         <Column>
           <Select
-            data-test-id={'c-' + namespace + '-relasjonType-text'}
+            data-test-id={namespace + '-relasjonType'}
             feil={validation[namespace + '-relasjonType']?.feilmelding}
             highContrast={highContrast}
-            id={'c-' + namespace + '-relasjonType-text'}
+            id={namespace + '-relasjonType'}
             label={t('label:type') + ' *'}
             menuPortalTarget={document.body}
             onChange={(e) => setRelasjonType(e.value)}
@@ -184,9 +184,9 @@ const Relasjon: React.FC<RelasjonProps> = ({
       <Row className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
         <Period
           key={'' + barnetilhoerighet?.periode.startdato + barnetilhoerighet?.periode.startdato}
-          namespace={namespace}
-          errorStartDato={validation[namespace + '-startdato']?.feilmelding}
-          errorSluttDato={validation[namespace + '-sluttdato']?.feilmelding}
+          namespace={namespace + '-periode'}
+          errorStartDato={validation[namespace + '-periode-startdato']?.feilmelding}
+          errorSluttDato={validation[namespace + '-periode-sluttdato']?.feilmelding}
           setStartDato={setStartDato}
           setSluttDato={setSluttDato}
           valueStartDato={barnetilhoerighet?.periode.startdato ?? ''}
@@ -200,11 +200,11 @@ const Relasjon: React.FC<RelasjonProps> = ({
           <HighContrastRadioPanelGroup
             checked={barnetilhoerighet?.erDeltForeldreansvar}
             data-no-border
-            data-test-id={'c-' + namespace + '-erDeltForeldreansvar-text'}
+            data-test-id={namespace + '-erDeltForeldreansvar'}
             feil={validation[namespace + '-erDeltForeldreansvar']?.feilmelding}
-            id={'c-' + namespace + '-erDeltForeldreansvar-text'}
+            id={namespace + '-erDeltForeldreansvar'}
             legend={t('label:delt-foreldreansvar') + ' *'}
-            name={'c-' + namespace + '-erDeltForeldreansvar-text'}
+            name={namespace + '-erDeltForeldreansvar'}
             radios={[
               { label: t('label:ja'), value: 'ja' },
               { label: t('label:nei'), value: 'nei' }
@@ -228,9 +228,9 @@ const Relasjon: React.FC<RelasjonProps> = ({
           <HighContrastRadioPanelGroup
             checked={barnetilhoerighet?.borIBrukersHushold}
             data-no-border
-            data-test-id={'c-' + namespace + '-borIBrukersHushold-text'}
+            data-test-id={namespace + '-borIBrukersHushold'}
             feil={validation[namespace + '-borIBrukersHushold']?.feilmelding}
-            id={'c-' + namespace + '-borIBrukersHushold-text'}
+            id={namespace + '-borIBrukersHushold'}
             name={namespace + '-borIBrukersHushold'}
             radios={[
               { label: t('label:ja'), value: 'ja' },
@@ -251,9 +251,9 @@ const Relasjon: React.FC<RelasjonProps> = ({
           <HighContrastRadioPanelGroup
             checked={barnetilhoerighet?.borIEktefellesHushold}
             data-no-border
-            data-test-id={'c-' + namespace + '-borIEktefellesHushold-text'}
+            data-test-id={namespace + '-borIEktefellesHushold'}
             feil={validation[namespace + '-borIEktefellesHushold']?.feilmelding}
-            id={'c-' + namespace + '-borIEktefellesHushold-text'}
+            id={namespace + '-borIEktefellesHushold'}
             name={namespace + '-borIEktefellesHushold'}
             radios={[
               { label: t('label:ja'), value: 'ja' },
@@ -274,9 +274,9 @@ const Relasjon: React.FC<RelasjonProps> = ({
           <HighContrastRadioPanelGroup
             checked={barnetilhoerighet?.borIAnnenPersonsHushold}
             data-no-border
-            data-test-id={'c-' + namespace + '-borIAnnenPersonsHushold-text'}
+            data-test-id={namespace + '-borIAnnenPersonsHushold'}
             feil={validation[namespace + '-borIAnnenPersonsHushold']?.feilmelding}
-            id={'c-' + namespace + '-borIAnnenPersonsHushold-text'}
+            id={namespace + '-borIAnnenPersonsHushold'}
             name={namespace + '-borIAnnenPersonsHushold'}
             radios={[
               { label: t('label:ja'), value: 'ja' },
@@ -297,9 +297,9 @@ const Relasjon: React.FC<RelasjonProps> = ({
           <HighContrastRadioPanelGroup
             checked={barnetilhoerighet?.borPaaInstitusjon}
             data-no-border
-            data-test-id={'c-' + namespace + '-borPaaInstitusjon-text'}
+            data-test-id={namespace + '-borPaaInstitusjon'}
             feil={validation[namespace + '-borPaaInstitusjon']?.feilmelding}
-            id={'c-' + namespace + '-borPaaInstitusjon-text'}
+            id={namespace + '-borPaaInstitusjon'}
             name={namespace + '-borPaaInstitusjon'}
             radios={[
               { label: t('label:ja'), value: 'ja' },

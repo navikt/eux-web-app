@@ -315,7 +315,13 @@ const Step2: React.FC<SvarPaSedProps> = ({
       )}
       {showProsedyreVedUenighet() && (
         <>
-          <ProsedyreVedUenighet highContrast={highContrast} replySed={replySed} validation={_validation} />
+          <ProsedyreVedUenighet
+            highContrast={highContrast}
+            replySed={replySed}
+            resetValidation={_resetValidation}
+            updateReplySed={updateReplySed}
+            validation={_validation}
+          />
           <VerticalSeparatorDiv data-size='2' />
         </>
       )}
@@ -352,9 +358,9 @@ const Step2: React.FC<SvarPaSedProps> = ({
       <TextAreaDiv>
         <HighContrastTextArea
           className={classNames({ 'skjemaelement__input--harFeil': _validation['comment'] })}
-          data-test-id='c-comment-text'
+          data-test-id='comment'
           feil={_validation['comment']?.feilmelding}
-          id='c-comment-text'
+          id='comment'
           label={t('label:ytterligere-informasjon-til-sed')}
           maxLength={500}
           onChange={(e: any) => setComment(e.target.value)}

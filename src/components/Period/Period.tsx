@@ -60,9 +60,9 @@ const Period = ({
     <>
       <Column>
         <HighContrastInput
-          data-test-id={'c-' + namespace + '-startdato-date'}
+          data-test-id={namespace + '-startdato'}
           feil={errorStartDato}
-          id={'c-' + namespace + '-startdato-date'}
+          id={namespace + '-startdato'}
           label={labels ? labelStartDato || t('label:startdato') + ' *' : ''}
           onBlur={onStartDatoBlur}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setStartDato(e.target.value)}
@@ -72,9 +72,9 @@ const Period = ({
       </Column>
       <Column>
         <HighContrastInput
-          data-test-id={'c-' + namespace + '-sluttdato-date'}
+          data-test-id={namespace + '-sluttdato'}
           feil={errorSluttDato}
-          id={'c-' + namespace + '-sluttdato-date'}
+          id={namespace + '-sluttdato'}
           label={labels ? labelSluttDato || t('label:sluttdato') : ''}
           onBlur={onEndDatoBlur}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSluttDato(e.target.value)}

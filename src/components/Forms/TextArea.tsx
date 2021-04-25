@@ -32,9 +32,9 @@ const TextArea: React.FC<TextAreaProps> = ({
   return (
     <HighContrastTextArea
       className={classNames(className, { 'skjemaelement__input--harFeil': feil })}
-      data-test-id={'c-' + namespace + '-' + id}
+      data-test-id={namespace + '-' + id}
       feil={feil}
-      id={'c-' + namespace + '-' + id}
+      id={namespace + '-' + id}
       label={label}
       maxLength={maxLength}
       onBlur={() => {

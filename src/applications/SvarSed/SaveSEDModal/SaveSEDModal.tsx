@@ -66,7 +66,7 @@ const SendSEDModal = <CustomLocalStorageContent extends any = any>({
     const validation: Validation = {}
     if (!_name) {
       validation['savesedmodal-name'] = {
-        skjemaelementId: 'c-savesedmodal-name-text',
+        skjemaelementId: 'savesedmodal-name',
         feilmelding: t('message:validation-noName')
       } as FeiloppsummeringFeil
     }
@@ -127,9 +127,9 @@ const SendSEDModal = <CustomLocalStorageContent extends any = any>({
                     <div>
                       <FlexCenterDiv>
                         <HighContrastInput
-                          data-test-id='c-savesedmodal-name-text'
+                          data-test-id='savesedmodal-name'
                           feil={_validation['savesedmodal-name']?.feilmelding}
-                          id='c-savesedmodal-name-text'
+                          id='savesedmodal-name'
                           label={t('label:navn')}
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                           placeholder={t('el:placeholder-input-default')}

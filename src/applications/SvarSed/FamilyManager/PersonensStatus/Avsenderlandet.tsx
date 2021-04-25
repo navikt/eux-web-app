@@ -1,12 +1,12 @@
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import useAddRemove from 'hooks/useAddRemove'
 import Period from 'components/Period/Period'
 import { AlignStartRow } from 'components/StyledComponents'
-import useValidation from 'hooks/useValidation'
 import { Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
+import useAddRemove from 'hooks/useAddRemove'
+import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import moment from 'moment'
 import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
@@ -39,36 +39,36 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
   const [_newStartDato, _setNewStartDato] = useState<string>('')
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')
 
-  const [addCandidateForDeletion, removeCandidateForDeletion, hasKey] = useAddRemove()
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => {
+    return p?.startdato // assume startdato is unique
+  })
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationAvsenderlandetProps>({}, validateAvsenderlandet)
 
-  const setStartDato = (dato: string, index: number) => {
+  const setStartDato = (newDato: string, index: number) => {
     if (index < 0) {
-      _setNewStartDato(dato)
+      _setNewStartDato(newDato)
       _resetValidation(namespace + '-startdato')
     } else {
-      const newPerioder: Array<Periode> = _.cloneDeep(perioderMedTrygd)
-      newPerioder[index].startdato = dato
-      updateReplySed(target, newPerioder)
+      updateReplySed(`${target}[${index}].startdato`, newDato)
       if (validation[namespace + getIdx(index) + '-startdato']) {
         resetValidation(namespace + getIdx(index) + '-startdato')
       }
     }
   }
 
-  const setSluttDato = (dato: string, index: number) => {
+  const setSluttDato = (sluttdato: string, index: number) => {
     if (index < 0) {
-      _setNewSluttDato(dato)
+      _setNewSluttDato(sluttdato)
       _resetValidation(namespace + '-sluttdato')
     } else {
       const newPerioder = _.cloneDeep(perioderMedTrygd)
-      if (dato === '') {
+      if (sluttdato === '') {
         delete newPerioder[index].sluttdato
         newPerioder[index].aapenPeriodeType = 'åpen_sluttdato'
       } else {
         delete newPerioder[index].aapenPeriodeType
-        newPerioder[index].sluttdato = dato
+        newPerioder[index].sluttdato = sluttdato
       }
       updateReplySed(target, newPerioder)
       if (validation[namespace + getIdx(index) + '-sluttdato']) {
@@ -88,15 +88,11 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
     resetForm()
   }
 
-  const getKey = (p: Periode): string => {
-    return p?.startdato // assume startdato is unique
-  }
-
   const onRemove = (index: number) => {
     const newPerioder: Array<Periode> = _.cloneDeep(perioderMedTrygd)
     const deletedPeriods: Array<Periode> = newPerioder.splice(index, 1)
     if (deletedPeriods && deletedPeriods.length > 0) {
-      removeCandidateForDeletion(getKey(deletedPeriods[0]))
+      removeFromDeletion(deletedPeriods[0])
     }
     updateReplySed(target, newPerioder)
   }
@@ -124,19 +120,20 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
         newPerioder = []
       }
       newPerioder = newPerioder.concat(newPeriode)
-      resetForm()
       updateReplySed(target, newPerioder)
+      resetForm()
     }
   }
 
-  const getErrorFor = (index: number, el: string): string | null | undefined => {
-    return index < 0 ? _validation[namespace + '-' + el]?.feilmelding : validation[namespace + '[' + index + ']-' + el]?.feilmelding
-  }
 
-  const renderRow = (periode: Periode | undefined, index: number) => {
-    const key = periode ? getKey(periode) : 'new'
-    const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
+  const renderRow = (periode: Periode | null, index: number) => {
+    const candidateForDeletion = index < 0 ? false : isInDeletion(periode)
     const idx = getIdx(index)
+    const getErrorFor = (index: number, el: string): string | null | undefined => {
+      return index < 0 ?
+        _validation[namespace + '-' + el]?.feilmelding :
+        validation[namespace + idx + '-' + el]?.feilmelding
+    }
     const startdato = index < 0 ? _newStartDato : periode?.startdato
     const sluttdato = index < 0 ? _newSluttDato : periode?.sluttdato
     return (
@@ -159,9 +156,9 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}
               marginTop
-              onBeginRemove={() => addCandidateForDeletion(key!)}
+              onBeginRemove={() => addToDeletion(periode)}
               onConfirmRemove={() => onRemove(index)}
-              onCancelRemove={() => removeCandidateForDeletion(key!)}
+              onCancelRemove={() => removeFromDeletion(periode)}
               onAddNew={onAdd}
               onCancelNew={onCancel}
             />
@@ -192,7 +189,7 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
       <hr />
       <VerticalSeparatorDiv />
       {_seeNewForm
-        ? renderRow(undefined, -1)
+        ? renderRow(null, -1)
         : (
           <Row>
             <Column>

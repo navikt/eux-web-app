@@ -32,8 +32,8 @@ export const validateAvsenderlandet = (
   })
 
   if (_.find(otherPeriods, p => p.startdato === period.startdato) !== undefined) {
-    v[namespace + '-startdato'] = {
-      skjemaelementId: 'c-' + namespace + idx + '-startdato-date',
+    v[namespace + idx + '-startdato'] = {
+      skjemaelementId: namespace + idx + '-startdato',
       feilmelding: t('message:validation-duplicateStartDate')
     } as FeiloppsummeringFeil
     hasErrors = true

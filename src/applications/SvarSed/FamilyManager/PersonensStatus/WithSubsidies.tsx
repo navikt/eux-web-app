@@ -45,7 +45,9 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')
   const [_newPensjonType, _setNewPensjonType] = useState<string>('')
 
-  const [addCandidateForDeletion, removeCandidateForDeletion, hasKey] = useAddRemove()
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PensjonPeriode>((p: PensjonPeriode): string => {
+    return p?.periode.startdato // assume startdato is unique
+  })
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationWithSubsidiesProps>({}, validateWithSubsidies)
 
@@ -55,32 +57,30 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
     label: t('el:option-trygdeordning-uførhet'), value: 'uførhet'
   }]
 
-  const setStartDato = (dato: string, index: number) => {
+  const setStartDato = (newDato: string, index: number) => {
     if (index < 0) {
-      _setNewStartDato(dato)
+      _setNewStartDato(newDato)
       _resetValidation(namespace + '-startdato')
     } else {
-      const newPerioder: Array<PensjonPeriode> = _.cloneDeep(perioderMedPensjon)
-      newPerioder[index].periode.startdato = dato
-      updateReplySed(target, newPerioder)
+      updateReplySed(`${target}[${index}].startdato`, newDato)
       if (validation[namespace + getIdx(index) + '-startdato']) {
         resetValidation(namespace + getIdx(index) + '-startdato')
       }
     }
   }
 
-  const setSluttDato = (dato: string, index: number) => {
+  const setSluttDato = (sluttdato: string, index: number) => {
     if (index < 0) {
-      _setNewSluttDato(dato)
+      _setNewSluttDato(sluttdato)
       _resetValidation(namespace + '-sluttdato')
     } else {
       const newPerioder: Array<PensjonPeriode> = _.cloneDeep(perioderMedPensjon)
-      if (dato === '') {
+      if (sluttdato === '') {
         delete newPerioder[index].periode.sluttdato
         newPerioder[index].periode.aapenPeriodeType = 'åpen_sluttdato'
       } else {
         delete newPerioder[index].periode.aapenPeriodeType
-        newPerioder[index].periode.sluttdato = dato
+        newPerioder[index].periode.sluttdato = sluttdato
       }
       updateReplySed(target, newPerioder)
       if (validation[namespace + getIdx(index) + '-sluttdato']) {
@@ -89,15 +89,13 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
     }
   }
 
-  const setPensjonType = (type: string | undefined, index: number) => {
-    if (type) {
+  const setPensjonType = (pensjontype: string | undefined, index: number) => {
+    if (pensjontype) {
       if (index < 0) {
-        _setNewPensjonType(type)
+        _setNewPensjonType(pensjontype)
         _resetValidation(namespace + '-pensjontype')
       } else {
-        const newPerioder: Array<PensjonPeriode> = _.cloneDeep(perioderMedPensjon)
-        newPerioder[index].pensjonstype = type
-        updateReplySed(target, newPerioder)
+        updateReplySed(`${target}[${index}].pensjonstype`, pensjontype)
         if (validation[namespace + getIdx(index) + '-pensjontype']) {
           resetValidation(namespace + getIdx(index) + '-pensjontype')
         }
@@ -117,15 +115,11 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
     resetForm()
   }
 
-  const getKey = (p: PensjonPeriode): string => {
-    return p?.periode.startdato // assume startdato is unique
-  }
-
   const onRemove = (index: number) => {
     const newPerioder: Array<PensjonPeriode> = _.cloneDeep(perioderMedPensjon)
     const deletedPeriods: Array<PensjonPeriode> = newPerioder.splice(index, 1)
     if (deletedPeriods && deletedPeriods.length > 0) {
-      removeCandidateForDeletion(getKey(deletedPeriods[0]))
+      removeFromDeletion(deletedPeriods[0])
     }
     updateReplySed(target, newPerioder)
   }
@@ -166,31 +160,31 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
         pensjonstype: _newPensjonType,
         periode: newPeriode
       })
-      resetForm()
       updateReplySed(target, newPensjonPerioder)
+      resetForm()
     }
   }
 
   const getPensjonTypeOption = (value: string | undefined | null) => _.find(selectPensjonTypeOptions, s => s.value === value)
 
-  const getErrorFor = (index: number, el: string): string | undefined => {
-    return index < 0 ? _validation[namespace + '-' + el]?.feilmelding : validation[namespace + '[' + index + ']-' + el]?.feilmelding
-  }
-
-  const renderRow = (p: PensjonPeriode | undefined, index: number) => {
-    const key = p ? getKey(p) : 'new'
-    const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
+  const renderRow = (pensjonPeriode: PensjonPeriode | null, index: number) => {
+    const candidateForDeletion = index < 0 ? false : isInDeletion(pensjonPeriode)
     const idx = getIdx(index)
-    const startdato = index < 0 ? _newStartDato : p?.periode.startdato
-    const sluttdato = index < 0 ? _newSluttDato : p?.periode.sluttdato
+    const getErrorFor = (index: number, el: string): string | undefined => (
+      index < 0 ?
+        _validation[namespace + '-' + el]?.feilmelding :
+        validation[namespace + idx + '-' + el]?.feilmelding
+    )
+    const startdato = index < 0 ? _newStartDato : pensjonPeriode?.periode.startdato
+    const sluttdato = index < 0 ? _newSluttDato : pensjonPeriode?.periode.sluttdato
     return (
       <div className={classNames('slideInFromLeft')}>
         <AlignStartRow>
           <Period
             key={'' + startdato + sluttdato}
-            namespace={namespace + idx}
-            errorStartDato={getErrorFor(index, 'startdato')}
-            errorSluttDato={getErrorFor(index, 'sluttdato')}
+            namespace={namespace + idx + '-periode'}
+            errorStartDato={getErrorFor(index, 'periode-startdato')}
+            errorSluttDato={getErrorFor(index, 'periode-sluttdato')}
             setStartDato={(dato: string) => setStartDato(dato, index)}
             setSluttDato={(dato: string) => setSluttDato(dato, index)}
             valueStartDato={startdato}
@@ -201,17 +195,17 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
         <AlignStartRow>
           <Column>
             <Select
-              data-test-id={'c-' + namespace + idx + '-pensjontype-text'}
+              data-test-id={namespace + idx + '-pensjontype'}
               feil={getErrorFor(index, 'pensjontype')}
               highContrast={highContrast}
-              id={'c-' + namespace + idx + '-pensjontype-text'}
+              id={namespace + idx + '-pensjontype'}
               label={t('label:type-pensjon')}
               menuPortalTarget={document.body}
               onChange={(e: ValueType<Option, false>) => setPensjonType(e?.value, index)}
               options={selectPensjonTypeOptions}
               placeholder={t('el:placeholder-select-default')}
-              selectedValue={getPensjonTypeOption(index < 0 ? _newPensjonType : (p as PensjonPeriode)?.pensjonstype)}
-              defaultValue={getPensjonTypeOption(index < 0 ? _newPensjonType : (p as PensjonPeriode)?.pensjonstype)}
+              selectedValue={getPensjonTypeOption(index < 0 ? _newPensjonType : (pensjonPeriode as PensjonPeriode)?.pensjonstype)}
+              defaultValue={getPensjonTypeOption(index < 0 ? _newPensjonType : (pensjonPeriode as PensjonPeriode)?.pensjonstype)}
             />
           </Column>
           <Column />
@@ -220,9 +214,9 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}
               marginTop
-              onBeginRemove={() => addCandidateForDeletion(key!)}
+              onBeginRemove={() => addToDeletion(pensjonPeriode)}
               onConfirmRemove={() => onRemove(index)}
-              onCancelRemove={() => removeCandidateForDeletion(key!)}
+              onCancelRemove={() => removeFromDeletion(pensjonPeriode)}
               onAddNew={onAdd}
               onCancelNew={onCancel}
             />
@@ -247,7 +241,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
       <hr />
       <VerticalSeparatorDiv />
       {_seeNewForm
-        ? renderRow(undefined, -1)
+        ? renderRow(null, -1)
         : (
           <Row>
             <Column>

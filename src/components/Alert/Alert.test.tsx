@@ -71,7 +71,7 @@ describe('components/Alert/Alert', () => {
   it('Handling: close button clears alert', () => {
     (initialMockProps.onClose as jest.Mock).mockReset()
     wrapper = mount(<Alert {...initialMockProps} type='client' status='ERROR' />)
-    wrapper.find('[data-test-id=\'c-alert__close-icon\']').hostNodes().simulate('click')
+    wrapper.find('[data-test-id=\'alert__close-icon\']').hostNodes().simulate('click')
     expect(initialMockProps.onClose).toHaveBeenCalled()
   })
 })

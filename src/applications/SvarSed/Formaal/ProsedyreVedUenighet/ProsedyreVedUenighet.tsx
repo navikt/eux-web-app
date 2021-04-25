@@ -4,7 +4,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Forms/Select'
 import { AlignStartRow, PileDiv, TextAreaDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
-import { ReplySed } from 'declarations/sed'
+import { Prosedyre, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { Checkbox, CheckboxGruppe } from 'nav-frontend-skjema'
@@ -25,13 +25,12 @@ import { validateProsedyre } from './validation'
 export interface ProsedyreVedUenighetProps {
   highContrast: boolean
   replySed: ReplySed
+  resetValidation: (key?: string) => void
+  updateReplySed: (needle: string, value: any) => void
   validation: Validation
 }
 
-export interface Prosedyre {
-  grunn: string
-  person: Array<string>
-}
+
 
 const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
   highContrast,
@@ -195,10 +194,10 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
         >
           <Column data-flex='2'>
             <Select
-              data-test-id={'c-' + namespace + '-prosedyre' + (index >= 0 ? '[' + index + ']' : '') + '-grunn-text'}
+              data-test-id={namespace + '-prosedyre' + (index >= 0 ? '[' + index + ']' : '') + '-grunn'}
               feil={getErrorFor(index, 'grunn')}
               highContrast={highContrast}
-              id={'c-' + namespace + '-prosedyre' + (index >= 0 ? '[' + index + ']' : '') + '-grunn-text'}
+              id={namespace + '-prosedyre' + (index >= 0 ? '[' + index + ']' : '') + '-grunn'}
               label={t('label:velg-grunn-til-uenighet')}
               menuPortalTarget={document.body}
               onChange={(e: any) => setGrunn(e.value, index)}
@@ -308,9 +307,9 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
                 className={classNames({
                   'skjemaelement__input--harFeil': validation[namespace + '-ytterligere']?.feilmelding
                 })}
-                data-test-id={'c-' + namespace + '-ytterligere-text'}
+                data-test-id={namespace + '-ytterligere'}
                 feil={validation[namespace + '-ytterligere']?.feilmelding}
-                id={'c-' + namespace + '-ytterligere-text'}
+                id={namespace + '-ytterligere'}
                 label={t('label:ytterligere-grunner-til-uenighet')}
                 maxLength={500}
                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => _setYtterligere(e.target.value)}

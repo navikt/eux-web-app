@@ -97,37 +97,37 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
     const validation: Validation = {}
     if (!_arbeidsgiverNavn) {
       validation[namespace + '-navn'] = {
-        skjemaelementId: 'c-' + namespace + '-navn-text',
+        skjemaelementId: namespace + '-navn',
         feilmelding: t('message:validation-noName')
       } as FeiloppsummeringFeil
     }
     if (!_arbeidsgiverOrgnr) {
       validation[namespace + '-orgnr'] = {
-        skjemaelementId: 'c-' + namespace + '-orgnr-text',
+        skjemaelementId: namespace + '-orgnr',
         feilmelding: t('message:validation-noOrgnr')
       } as FeiloppsummeringFeil
     }
     if (!_startDato) {
       validation[namespace + '-startdato'] = {
-        skjemaelementId: 'c-' + namespace + '-startdato-date',
+        skjemaelementId: namespace + '-startdato',
         feilmelding: t('message:validation-noDate')
       } as FeiloppsummeringFeil
     }
     if (_startDato && !_startDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
       validation[namespace + '-startdato'] = {
-        skjemaelementId: 'c-' + namespace + '-startdato-date',
+        skjemaelementId: namespace + '-startdato',
         feilmelding: t('message:validation-invalidDate')
       } as FeiloppsummeringFeil
     }
     if (!_sluttDato) {
       validation[namespace + '-sluttdato'] = {
-        skjemaelementId: 'c-' + namespace + '-sluttdato-date',
+        skjemaelementId: namespace + '-sluttdato',
         feilmelding: t('message:validation-noDate')
       } as FeiloppsummeringFeil
     }
     if (_sluttDato && !_sluttDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
       validation[namespace + '-sluttdato'] = {
-        skjemaelementId: 'c-' + namespace + '-sluttdato-date',
+        skjemaelementId: namespace + '-sluttdato',
         feilmelding: t('message:validation-invalidDate')
       } as FeiloppsummeringFeil
     }
@@ -209,9 +209,9 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                   <Row>
                     <Column>
                       <HighContrastInput
-                        data-test-id={'c-' + namespace + '-navn-text'}
+                        data-test-id={namespace + '-navn'}
                         feil={_validation[namespace + '-navn']?.feilmelding}
-                        id={'c-' + namespace + '-navn-text'}
+                        id={namespace + '-navn'}
                         label={t('label:navn')}
                         onChange={onNameChanged}
                         placeholder={t('el:placeholder-input-default')}
@@ -220,9 +220,9 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                     </Column>
                     <Column>
                       <HighContrastInput
-                        data-test-id={'c-' + namespace + '-orgnr-text'}
+                        data-test-id={namespace + '-orgnr'}
                         feil={_validation[namespace + '-orgnr']?.feilmelding}
-                        id={'c-' + namespace + '-orgnr-text'}
+                        id={namespace + '-orgnr'}
                         onChange={onOrgnrChanged}
                         value={_arbeidsgiverOrgnr}
                         label={t('label:orgnr')}
@@ -248,9 +248,9 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                     <Row>
                       <Column>
                         <HighContrastInput
-                          data-test-id={'c-' + namespace + '-startdato-date'}
+                          data-test-id={namespace + '-startdato'}
                           feil={_validation[namespace + '-startdato']?.feilmelding}
-                          id={'c-' + namespace + '-startdato-date'}
+                          id={namespace + '-startdato'}
                           label={t('label:startdato')}
                           onChange={onStartDatoChanged}
                           placeholder={t('el:placeholder-date-default')}
@@ -259,9 +259,9 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                       </Column>
                       <Column>
                         <HighContrastInput
-                          data-test-id={'c-' + namespace + '-sluttdato-date'}
+                          data-test-id={namespace + '-sluttdato'}
                           feil={_validation[namespace + '-sluttdato']?.feilmelding}
-                          id={'c-' + namespace + '-sluttdato-date'}
+                          id={namespace + '-sluttdato'}
                           label={t('label:sluttdato')}
                           onChange={onSluttDatoChanged}
                           placeholder={t('el:placeholder-date-default')}

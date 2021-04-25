@@ -6,13 +6,13 @@ import {
 import Add from 'assets/icons/Add'
 import Barn from 'assets/icons/Child'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import useAddRemove from 'hooks/useAddRemove'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { AlignStartRow, FlexBaseDiv, FlexCenterDiv, FlexDiv, PaddedDiv } from 'components/StyledComponents'
-import useValidation from 'hooks/useValidation'
 import { Option } from 'declarations/app'
 import { F002Sed, PersonInfo, ReplySed } from 'declarations/sed'
+import useAddRemove from 'hooks/useAddRemove'
+import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper'
 import Lukknapp from 'nav-frontend-lukknapp'
@@ -89,7 +89,9 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
   const [_newPersonName, _setNewPersonName] = useState<string>('')
   const [_newPersonRelation, _setNewPersonRelation] = useState<string | undefined>(undefined)
 
-  const [addCandidateForDeletion, removeCandidateForDeletion, hasKey] = useAddRemove()
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PersonInfo>((p: PersonInfo) => {
+    return p?.fornavn + ' ' + p?.etternavn
+  })
   const [_replySed, _setReplySed] = useState<ReplySed>(replySed)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationAddPersonModalProps>({}, validateAddPersonModal)
 
@@ -236,8 +238,8 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
   }
 
   const renderPerson = (personId: string, i: number) => {
-    const p = _.get(_replySed, `${personId}.personInfo`)
-    const candidateForDeletion = hasKey(personId)
+    const p: PersonInfo = _.get(_replySed, `${personId}.personInfo`)
+    const candidateForDeletion = isInDeletion(p)
 
     return (
       <FlexDiv className='slideInFromLeft' style={{ animationDelay: i * 0.1 + 's' }} key={personId}>
@@ -262,16 +264,14 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
           <AddRemovePanel
             existingItem
             candidateForDeletion={candidateForDeletion}
-            onBeginRemove={() => addCandidateForDeletion(personId)}
+            onBeginRemove={() => addToDeletion(p)}
             onConfirmRemove={() => onRemovePerson(personId)}
-            onCancelRemove={() => removeCandidateForDeletion(personId!)}
+            onCancelRemove={() => removeFromDeletion(p)}
           />
         </CheckboxDiv>
       </FlexDiv>
     )
   }
-
-  console.log('rendering')
 
   return (
     <ModalDiv
@@ -309,7 +309,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
               <Input
                 feil={_validation[namespace + '-fnr']?.feilmelding}
                 namespace={namespace}
-                id='fnr-text'
+                id='fnr'
                 label={t('label:fnr-dnr')}
                 onChanged={onNewPersonFnrChange}
                 value={_newPersonFnr}
@@ -320,7 +320,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
               <Input
                 feil={_validation[namespace + '-navn']?.feilmelding}
                 namespace={namespace}
-                id='navn-text'
+                id='navn'
                 label={t('label:navn')}
                 onChanged={onNewPersonNameChange}
                 value={_newPersonName}
@@ -329,9 +329,9 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
             </Column>
             <Column>
               <Select
-                data-test-id={'c-' + namespace + '-relasjon-text'}
+                data-test-id={namespace + '-relasjon'}
                 feil={_validation[namespace + '-relasjon']?.feilmelding}
-                id={'c-' + namespace + '-relasjon-text'}
+                id={namespace + '-relasjon'}
                 highContrast={highContrast}
                 label={t('label:familierelasjon')}
                 menuPortalTarget={document.body}
@@ -361,7 +361,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
         </>
         <ModalButtons>
           <MainButton
-            id='c-modal__main-button-id'
+            id='modal__main-button-id'
             onClick={() => {
               onSavePersons()
               closeModal()
@@ -371,7 +371,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
           </MainButton>
           <HorizontalSeparatorDiv />
           <OtherButton
-            id='c-modal__other-button-id'
+            id='modal__other-button-id'
             onClick={closeModal}
           >
             {t('el:button-cancel')}

@@ -64,24 +64,23 @@ const Kontoopplysning: React.FC<KontoopplysningProps> = ({
 
   const setSepaKonto = (newSepaKonto: JaNei) => {
     updateReplySed(`${target}.kontoOrdinaer.sepaKonto`, newSepaKonto)
-    if (validation[namespace + '-kontoordinaer-sepakonto']) {
-      resetValidation(namespace + '-kontoordinaer-sepakonto')
+    if (validation[namespace + '-kontoOrdinaer-sepaKonto']) {
+      resetValidation(namespace + '-kontoOrdinaer-sepaKonto')
     }
   }
   const setIban = (newIban: string) => {
     updateReplySed(`${target}.kontoOrdinaer.iban`, newIban)
-    if (validation[namespace + '-kontoordinaer-iban']) {
-      resetValidation(namespace + '-kontoordinaer-iban')
+    if (validation[namespace + '-kontoOrdinaer-iban']) {
+      resetValidation(namespace + '-kontoOrdinaer-iban')
     }
   }
 
   const setSwift = (newSwift: string) => {
     updateReplySed(`${target}.kontoOrdinaer.swift`, newSwift)
-    if (validation[namespace + '-kontoordinaer-swift']) {
-      resetValidation(namespace + '-kontoordinaer-swift')
+    if (validation[namespace + '-kontoOrdinaer-swift']) {
+      resetValidation(namespace + '-kontoOrdinaer-swift')
     }
   }
-
 
   return (
     <PileDiv id='kontoopplysning'>
@@ -99,7 +98,7 @@ const Kontoopplysning: React.FC<KontoopplysningProps> = ({
              <TextArea
                feil={validation[namespace + '-begrunnelse']?.feilmelding}
                namespace={namespace}
-               id='begrunnelse-text'
+               id='begrunnelse'
                label={t('label:begrunnelse-for-myndighetens-krav') + '*'}
                onChanged={setBegrunnelse}
                value={utbetalingTilInstitusjon.begrunnelse ?? ''}
@@ -117,7 +116,7 @@ const Kontoopplysning: React.FC<KontoopplysningProps> = ({
             <Input
               feil={validation[namespace + '-id']?.feilmelding}
               namespace={namespace}
-              id='id-text'
+              id='id'
               label={t('label:institusjonens-id') + ' *'}
               onChanged={setId}
               value={utbetalingTilInstitusjon.id ?? ''}
@@ -127,7 +126,7 @@ const Kontoopplysning: React.FC<KontoopplysningProps> = ({
             <Input
               feil={validation[namespace + '-navn']?.feilmelding}
               namespace={namespace}
-              id='navn-text'
+              id='navn'
               label={t('label:institusjonens-navn') + ' *'}
               onChanged={setNavn}
               value={utbetalingTilInstitusjon.navn ?? ''}
@@ -143,18 +142,20 @@ const Kontoopplysning: React.FC<KontoopplysningProps> = ({
           <Column>
             <HighContrastRadioGroup
               className={classNames('slideInFromLeft')}
+              data-test-id={namespace + '-kontoOrdinaer-sepaKonto'}
+              feil={validation[namespace + '-kontoOrdinaer-sepaKonto']?.feilmelding}
+              id={namespace + '-kontoOrdinaer-sepaKonto'}
               legend={t('label:bankinformasjon')}
-              feil={validation[namespace + '-kontoordinaer-sepakonto']?.feilmelding}
             >
               <div>
                 <HighContrastRadio
-                  name={namespace + '-kontoordinaer-sepakonto'}
+                  name={namespace + '-kontoOrdinaer-sepaKonto'}
                   checked={utbetalingTilInstitusjon.kontoOrdinaer.sepaKonto === 'ja'}
                   label={t('label:sepa-konto-ja')}
                   onClick={() => setSepaKonto('ja')}
                 />
                 <HighContrastRadio
-                  name={namespace + '-kontoordinaer-sepakonto'}
+                  name={namespace + '-kontoOrdinaer-sepaKonto'}
                   checked={utbetalingTilInstitusjon.kontoOrdinaer.sepaKonto === 'nei'}
                   label={t('label:sepa-konto-nei')}
                   onClick={() => setSepaKonto('nei')}
@@ -170,9 +171,9 @@ const Kontoopplysning: React.FC<KontoopplysningProps> = ({
         >
           <Column data-flex='2'>
             <Input
-              feil={validation[namespace + '-iban']?.feilmelding}
+              feil={validation[namespace + 'kontoOrdinaer-iban']?.feilmelding}
               namespace={namespace}
-              id='iban-text'
+              id='kontoOrdinaer-iban'
               label={t('label:iban') + ' *'}
               onChanged={setIban}
               value={utbetalingTilInstitusjon.kontoOrdinaer.iban ?? ''}
@@ -187,9 +188,9 @@ const Kontoopplysning: React.FC<KontoopplysningProps> = ({
         >
           <Column data-flex='2'>
             <Input
-              feil={validation[namespace + '-swift']?.feilmelding}
+              feil={validation[namespace + '-kontoOrdinaer-swift']?.feilmelding}
               namespace={namespace}
-              id='swift-text'
+              id='kontoOrdinaer-swift'
               label={t('label:swift') + ' *'}
               onChanged={setSwift}
               value={utbetalingTilInstitusjon.kontoOrdinaer.swift ?? ''}

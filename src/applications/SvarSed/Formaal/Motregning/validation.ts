@@ -25,17 +25,17 @@ export const validateMotregningNavnOgBetegnelser = (
   const idx = getIdx(index)
 
   if (_.isEmpty(navnOgBetegnelse.navn)) {
-    v[namespace + '-navn'] = {
+    v[namespace + '-navnOgBetegnelser' + idx + '-navn'] = {
       feilmelding: t('message:validation-noName'),
-      skjemaelementId: 'c-' + namespace + idx + '-navn-text'
+      skjemaelementId: namespace + '-navnOgBetegnelser' + idx + '-navn'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
 
   if (_.isEmpty(navnOgBetegnelse.betegnelsePåYtelse)) {
-    v[namespace + '-betegnelsepåytelse'] = {
+    v[namespace + '-navnOgBetegnelser' +  + idx + '-betegnelse'] = {
       feilmelding: t('message:validation-noBetegnelsePåYtelse'),
-      skjemaelementId: 'c-' + namespace + idx + '-betegnelsepåytelse-text'
+      skjemaelementId: namespace + '-navnOgBetegnelser' + idx + '-betegnelse'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -54,7 +54,7 @@ export const validateMotregning = (
   if (_.isEmpty(motregning.anmodningEllerSvar)) {
     v[namespace + '-anmodningEllerSvar'] = {
       feilmelding: t('message:validation-noAnswerForPerson'),
-      skjemaelementId: 'c-' + namespace + '-anmodningEllerSvar-text'
+      skjemaelementId: namespace + '-anmodningEllerSvar'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -67,7 +67,7 @@ export const validateMotregning = (
   if (_.isEmpty(motregning.beloep)) {
     v[namespace + '-beloep'] = {
       feilmelding: t('message:validation-noBeløp'),
-      skjemaelementId: 'c-' + namespace + '-beloep-number'
+      skjemaelementId: namespace + '-beloep'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -75,7 +75,7 @@ export const validateMotregning = (
   if (_.isEmpty(motregning.valuta)) {
     v[namespace + '-valuta'] = {
       feilmelding: t('message:validation-noValuta'),
-      skjemaelementId: 'c-' + namespace + '-valuta-text'
+      skjemaelementId: namespace + '-valuta'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -86,14 +86,14 @@ export const validateMotregning = (
       sluttdato: motregning.sluttdato
     },
     index: -1,
-    namespace
+    namespace: namespace
   })
   hasErrors = hasErrors || periodError
 
   if (_.isEmpty(motregning.avgrensing)) {
     v[namespace + '-avgrensing'] = {
       feilmelding: t('message:validation-noAvgrensing'),
-      skjemaelementId: 'c-' + namespace + '-avgrensing-text'
+      skjemaelementId: namespace + '-avgrensing'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -101,7 +101,7 @@ export const validateMotregning = (
   if (_.isEmpty(motregning.mottakersNavn)) {
     v[namespace + '-mottakersNavn'] = {
       feilmelding: t('message:validation-noName'),
-      skjemaelementId: 'c-' + namespace + '-mottakersNavn-text'
+      skjemaelementId: namespace + '-mottakersNavn'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -109,7 +109,7 @@ export const validateMotregning = (
   if (_.isEmpty(motregning.grunnerTilAnmodning)) {
     v[namespace + '-grunnerTilAnmodning'] = {
       feilmelding: t('message:validation-noGrunn'),
-      skjemaelementId: 'c-' + namespace + '-grunnerTilAnmodning-text'
+      skjemaelementId: namespace + '-grunnerTilAnmodning'
     } as FeiloppsummeringFeil
     hasErrors = true
   }

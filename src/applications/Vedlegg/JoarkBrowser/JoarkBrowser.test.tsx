@@ -58,7 +58,7 @@ describe('components/JoarkBrowser/JoarkBrowser', () => {
   })
 
   it('Render: has proper HTML structure', () => {
-    expect(wrapper.exists('[data-test-id=\'c-joarkBrowser\']')).toBeTruthy()
+    expect(wrapper.exists('[data-test-id=\'joarkBrowser\']')).toBeTruthy()
     expect(wrapper.exists(TableSorter)).toBeTruthy()
   })
 

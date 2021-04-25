@@ -116,7 +116,7 @@ export const validateStep1 = (
   if (_.isEmpty(saksnummerOrFnr)) {
     v['step1-saksnummerOrFnr'] = {
       feilmelding: t('message:validation-noSaksnummerOrFnr'),
-      skjemaelementId: 'c-step1-saksnummerOrFnr-text'
+      skjemaelementId: 'step1-saksnummerOrFnr'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -137,7 +137,7 @@ export const validateStep2 = (
     if (_.isEmpty((replySed as F002Sed).formaal)) {
       v['formaal'] = {
         feilmelding: t('message:validation-noFormaal'),
-        skjemaelementId: 'c-formaal-text'
+        skjemaelementId: 'formaal'
       } as FeiloppsummeringFeil
       hasErrors = true
     }
@@ -165,7 +165,7 @@ export const validateStep2 = (
   if (_.isEmpty(comment)) {
     v['comment'] = {
       feilmelding: t('message:validation-noComment'),
-      skjemaelementId: 'c-comment-text'
+      skjemaelementId: 'comment'
     } as FeiloppsummeringFeil
     hasErrors = true
   }

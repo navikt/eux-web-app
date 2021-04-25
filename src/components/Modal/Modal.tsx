@@ -145,19 +145,19 @@ const Modal: React.FC<ModalProps> = ({
             <ContentDiv className={classNames({ icon: !!icon })}>
               {closeButton && (
                 <CloseButton
-                  data-test-id='c-modal__close-button-id'
+                  data-test-id='modal__close-button-id'
                   onClick={onCloseButtonClicked}
                 >
                   {closeButtonLabel}
                 </CloseButton>
               )}
               {_modal.modalTitle && (
-                <Title data-test-id='c-modal__title-id'>
+                <Title data-test-id='modal__title-id'>
                   {_modal.modalTitle}
                 </Title>
               )}
               {_modal.modalContent || (
-                <ModalText data-test-id='c-modal__text-id'>
+                <ModalText data-test-id='modal__text-id'>
                   {_modal.modalText}
                 </ModalText>
               )}
@@ -183,10 +183,10 @@ const Modal: React.FC<ModalProps> = ({
                 return (
                   <ButtonMargin key={i}>
                     <Button
-                      data-test-id={'c-modal__button-id-' + i}
+                      data-test-id={'modal__button-id-' + i}
                       disabled={button.disabled || false}
                       key={button.text}
-                      id={'c-modal__button-id-' + i}
+                      id={'modal__button-id-' + i}
                       onClick={handleClick}
                     >
                       {button.text}

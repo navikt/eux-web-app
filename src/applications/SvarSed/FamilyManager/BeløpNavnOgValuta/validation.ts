@@ -24,7 +24,7 @@ export const validateBeløpNavnOgValuta = (
 
   if (_.isEmpty(ytelse.barnetsNavn)) {
     v[namespace + '-barnetsNavn'] = {
-      skjemaelementId: 'c-' + namespace + '-barnetsNavn-text',
+      skjemaelementId: namespace + '-barnetsNavn',
       feilmelding: t('message:validation-noNameToPerson', { person: personName })
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -32,7 +32,7 @@ export const validateBeløpNavnOgValuta = (
 
   if (_.isEmpty(ytelse.ytelseNavn)) {
     v[namespace + '-ytelseNavn'] = {
-      skjemaelementId: 'c-' + namespace + '-ytelseNavn-text',
+      skjemaelementId: namespace + '-ytelseNavn',
       feilmelding: t('message:validation-noBetegnelsePåYtelseForPerson', { person: personName })
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -40,7 +40,7 @@ export const validateBeløpNavnOgValuta = (
 
   if (_.isEmpty(ytelse.beloep)) {
     v[namespace + '-beloep'] = {
-      skjemaelementId: 'c-' + namespace + '-beloep-text',
+      skjemaelementId: namespace + '-beloep',
       feilmelding: t('message:validation-noBeløpForPerson', { person: personName })
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -48,7 +48,7 @@ export const validateBeløpNavnOgValuta = (
 
   if (_.isEmpty(ytelse.valuta)) {
     v[namespace + '-valuta'] = {
-      skjemaelementId: 'c-' + namespace + '-valuta-text',
+      skjemaelementId: namespace + '-valuta',
       feilmelding: t('message:validation-noValutaForPerson', { person: personName })
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -66,7 +66,7 @@ export const validateBeløpNavnOgValuta = (
 
   if (_.isEmpty(ytelse.mottakersNavn)) {
     v[namespace + '-mottakersNavn'] = {
-      skjemaelementId: 'c-' + namespace + '-mottakersNavn-text',
+      skjemaelementId: namespace + '-mottakersNavn',
       feilmelding: t('message:validation-noNavnForPerson', { person: personName })
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -74,7 +74,7 @@ export const validateBeløpNavnOgValuta = (
 
   if (_.isEmpty(ytelse.utbetalingshyppighet)) {
     v[namespace + '-utbetalingshyppighet'] = {
-      skjemaelementId: 'c-' + namespace + '-utbetalingshyppighet-text',
+      skjemaelementId: namespace + '-utbetalingshyppighet',
       feilmelding: t('message:validation-noUtbetalingshyppighetForPerson', { person: personName })
     } as FeiloppsummeringFeil
     hasErrors = true

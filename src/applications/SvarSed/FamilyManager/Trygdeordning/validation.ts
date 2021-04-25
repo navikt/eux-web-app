@@ -4,7 +4,6 @@ import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
-import { getIdx } from 'utils/namespace'
 
 export interface ValidationDekkedePeriodeProps {
   periode: Periode,
@@ -41,7 +40,7 @@ const validateGenericPeriode = (
   sedCategory: string
 ): boolean => {
   let hasErrors: boolean = false
-  const extraNamespace = namespace + '-' + (index < 0 ? pageCategory : sedCategory)
+  const extraNamespace = namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']')
 
   let periodError: boolean = validatePeriod(
     v,
@@ -115,8 +114,7 @@ export const validateFamilieytelserPeriode = (
   }: ValidationFamilieytelsePeriodeProps
 ): boolean => {
   let hasErrors: boolean = false
-  const extraNamespace = namespace + '-' + (index < 0 ? 'familieYtelse' : sedCategory)
-  const idx = getIdx(index)
+  const extraNamespace = namespace + '-' + (index < 0 ? 'familieYtelse' : sedCategory  + '[' + index + ']')
 
   let periodError: boolean = validatePeriod(
     v,
@@ -131,9 +129,9 @@ export const validateFamilieytelserPeriode = (
   hasErrors = hasErrors || periodError
 
   if (!_.isEmpty(periode.pensjonstype)) {
-    v[namespace + extraNamespace + idx + '-pensjonstype'] = {
+    v[extraNamespace + '-pensjonstype'] = {
       feilmelding: t('message:validation-noPensjonTypeTilPerson', { person: personName }),
-      skjemaelementId: 'c-' + extraNamespace + idx + '-pensjonstype-text'
+      skjemaelementId: extraNamespace + '-pensjonstype'
     } as FeiloppsummeringFeil
     hasErrors = true
   }

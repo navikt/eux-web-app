@@ -54,7 +54,12 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
   const [_newCategory, _setNewCategory] = useState<SedCategory | undefined>(undefined)
   const [_newPensjonsType, _setNewPensjonsType] = useState<PensjonsType | undefined>(undefined)
 
-  const [addCandidateForDeletion, removeCandidateForDeletion, hasKey] = useAddRemove()
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode | PensjonPeriode>((p: Periode | PensjonPeriode): string => {
+    if (_.isNil((p as Periode).startdato) && !_.isNil((p as PensjonPeriode).periode)) {
+      return (p as PensjonPeriode).periode.startdato
+    }
+    return (p as Periode).startdato
+  })
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation, _setValidation] =
     useValidation<ValidationFamilieytelsePeriodeProps>({}, validateFamilieytelserPeriode)
@@ -79,66 +84,70 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
 
   const getPensjonsTypeOption = (value: string | undefined | null) => _.find(selectPensjonsTypeOptions, s => s.value === value)
 
-  const setStartDato = (dato: string, index: number, newSedCategory: SedCategory | null) => {
+  const setStartDato = (startdato: string, index: number, newSedCategory: SedCategory | null) => {
     if (index < 0) {
-      _setNewStartDato(dato)
+      _setNewStartDato(startdato)
       _resetValidation(namespace + '-familieYtelse-startdato')
     } else {
       const newPerioder: Array<Periode | PensjonPeriode> = _.cloneDeep(perioder[newSedCategory!])
-
+      let suffixnamespace: string = ''
       if (newSedCategory === 'perioderMedPensjon') {
-        (newPerioder[index] as PensjonPeriode).periode.startdato = dato
+        (newPerioder[index] as PensjonPeriode).periode.startdato = startdato
+        suffixnamespace = '-periode'
       } else {
-        (newPerioder[index] as Periode).startdato = dato
+        (newPerioder[index] as Periode).startdato = startdato
       }
       updateReplySed(`${personID}.${newSedCategory}`, newPerioder)
-      if (validation[namespace + '-' + newSedCategory + getIdx(index) + '-startdato']) {
-        resetValidation(namespace + '-' + newSedCategory + getIdx(index) + '-startdato')
+      if (validation[namespace + '-' + newSedCategory + getIdx(index) + suffixnamespace + '-startdato']) {
+        resetValidation(namespace + '-' + newSedCategory + getIdx(index) + suffixnamespace + '-startdato')
       }
     }
   }
 
-  const setSluttDato = (dato: string, index: number, newSedCategory: SedCategory |null) => {
+  const setSluttDato = (sluttdato: string, index: number, newSedCategory: SedCategory |null) => {
     if (index < 0) {
-      _setNewSluttDato(dato)
-      _resetValidation(namespace + '-familieytelse-sluttdato')
+      _setNewSluttDato(sluttdato)
+      _resetValidation(namespace + '-familieYtelse-sluttdato')
     } else {
+      let suffixnamespace: string = ''
       if (newSedCategory === 'perioderMedPensjon') {
+        suffixnamespace = '-periode'
         const newPerioder: Array<PensjonPeriode> = _.cloneDeep(perioder[newSedCategory]) as Array<PensjonPeriode>
-        if (dato === '') {
+        if (sluttdato === '') {
           delete newPerioder[index].periode.sluttdato
           newPerioder[index].periode.aapenPeriodeType = 'åpen_sluttdato'
         } else {
           delete newPerioder[index].periode.aapenPeriodeType
-          newPerioder[index].periode.sluttdato = dato
+          newPerioder[index].periode.sluttdato = sluttdato
         }
         updateReplySed(`${personID}.${newSedCategory}`, newPerioder)
       } else {
         const newPerioder: Array<Periode> = _.cloneDeep(perioder[newSedCategory!]) as Array<Periode>
-        if (dato === '') {
+
+        if (sluttdato === '') {
           delete newPerioder[index].sluttdato
           newPerioder[index].aapenPeriodeType = 'åpen_sluttdato'
         } else {
           delete newPerioder[index].aapenPeriodeType
-          newPerioder[index].sluttdato = dato
+          newPerioder[index].sluttdato = sluttdato
         }
         updateReplySed(`${personID}.${newSedCategory}`, newPerioder)
       }
-      if (validation[namespace + newSedCategory + getIdx(index) + '-sluttdato']) {
-        resetValidation(namespace + newSedCategory + getIdx(index) + '-sluttdato')
+      if (validation[namespace + newSedCategory + getIdx(index) + suffixnamespace + '-sluttdato']) {
+        resetValidation(namespace + newSedCategory + getIdx(index) + suffixnamespace + '-sluttdato')
       }
     }
   }
 
   const setCategory = (newSedCategory: SedCategory) => {
     _setNewCategory(newSedCategory)
-    _resetValidation(namespace + '-familieytelse-category')
+    _resetValidation(namespace + '-familieYtelse-category')
   }
 
   const setPensjonType = (type: PensjonsType, index: number) => {
     if (index < 0) {
       _setNewPensjonsType(type)
-      _resetValidation(namespace + '-familieytelse-pensjontype')
+      _resetValidation(namespace + '-familieYtelse-pensjontype')
     } else {
       const newPerioder: Array<PensjonPeriode> = _.cloneDeep(perioder.perioderMedPensjon) as Array<PensjonPeriode>
       newPerioder[index].pensjonstype = type
@@ -163,18 +172,11 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
     resetForm()
   }
 
-  const getKey = (p: Periode | PensjonPeriode, sedCategory: SedCategory): string => {
-    if (sedCategory === 'perioderMedPensjon') {
-      return (p as PensjonPeriode).periode.startdato
-    }
-    return (p as Periode).startdato
-  }
-
   const onRemove = (i: number, newSedCategory: SedCategory) => {
     const newPerioder: Array<Periode | PensjonPeriode> = _.cloneDeep(perioder[newSedCategory])
     const deletedPerioder: Array<Periode | PensjonPeriode> = newPerioder.splice(i, 1)
     if (deletedPerioder && deletedPerioder.length > 0) {
-      removeCandidateForDeletion(getKey(deletedPerioder[0], newSedCategory))
+      removeFromDeletion(deletedPerioder[0])
     }
     updateReplySed(`${personID}.${newSedCategory}`, newPerioder)
   }
@@ -184,7 +186,7 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
       const newValidation: Validation = {}
       newValidation[namespace + '-familieYtelse-category'] = {
         feilmelding: t('message:validation-noPensjonTypeTilPerson', { person: personName }),
-        skjemaelementId: 'c-' + namespace + '-category-text'
+        skjemaelementId: namespace + '-category'
       } as FeiloppsummeringFeil
       _setValidation(newValidation)
       return false
@@ -230,21 +232,18 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
     }
   }
 
-  const getErrorFor = (sedCategory: SedCategory | null, index: number, el: string): string | undefined => {
-    return index < 0
-      ? _validation[namespace + '-familieYtelse-' + el]?.feilmelding
-      : validation[namespace + '-' + sedCategory! + '[' + index + ']-' + el]?.feilmelding
-  }
-
   const renderRow = (
     periode: Periode | PensjonPeriode | null,
     sedCategory: SedCategory | null,
     index: number
   ) => {
-    const key = periode && sedCategory ? getKey(periode, sedCategory) : 'new'
-    const candidateForDeletion: boolean = index < 0 ? false : hasKey(key)
+    const candidateForDeletion: boolean = index < 0 ? false : isInDeletion(periode)
     const idx = '-' + (index < 0 ? 'familieYtelse' : sedCategory + '[' + index + ']')
-
+    const getErrorFor = (sedCategory: SedCategory | null, index: number, el: string): string | undefined => (
+     index < 0
+        ? _validation[namespace + idx + '-' + el]?.feilmelding
+        : validation[namespace + idx + '-' + el]?.feilmelding
+    )
     const startdato = index < 0
       ? _newStartDato
       : (sedCategory === 'perioderMedPensjon'
@@ -276,9 +275,9 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
                 candidateForDeletion={candidateForDeletion}
                 existingItem={(index >= 0)}
                 marginTop={false}
-                onBeginRemove={() => addCandidateForDeletion(key!)}
+                onBeginRemove={() => addToDeletion(periode)}
                 onConfirmRemove={() => onRemove(index, sedCategory!)}
-                onCancelRemove={() => removeCandidateForDeletion(key!)}
+                onCancelRemove={() => removeFromDeletion(periode)}
                 onAddNew={() => onAdd()}
                 onCancelNew={() => onCancel()}
               />
@@ -292,10 +291,10 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
               <Column>
                 {index < 0 && (
                   <Select
-                    data-test-id={'c-' + namespace + '-familieYtelse-category-text'}
+                    data-test-id={namespace + idx + '-category'}
                     feil={getErrorFor(sedCategory, index, 'category')}
                     highContrast={highContrast}
-                    id={'c-' + namespace + '-familieYtelse-category-text'}
+                    id={namespace + idx + '-category'}
                     menuPortalTarget={document.body}
                     onChange={(e: any) => setCategory(e.value)}
                     options={selectCategoryOptions}
@@ -312,10 +311,10 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
                 ) &&
                 (
                   <Select
-                    data-test-id={'c-' + namespace + idx + '-pensjonstype-text'}
+                    data-test-id={namespace + idx + '-pensjonstype'}
                     feil={getErrorFor(sedCategory, index, 'pensjonstype')}
                     highContrast={highContrast}
-                    id={'c-' + namespace + idx + '-pensjonstype-text'}
+                    id={namespace + idx + '-pensjonstype'}
                     menuPortalTarget={document.body}
                     onChange={(e: any) => setPensjonType(e.value, index)}
                     options={selectPensjonsTypeOptions}
@@ -330,9 +329,9 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
                   candidateForDeletion={candidateForDeletion}
                   existingItem={(index >= 0)}
                   marginTop={false}
-                  onBeginRemove={() => addCandidateForDeletion(key!)}
+                  onBeginRemove={() => addToDeletion(periode)}
                   onConfirmRemove={() => onRemove(index, sedCategory!)}
-                  onCancelRemove={() => removeCandidateForDeletion(key!)}
+                  onCancelRemove={() => removeFromDeletion(periode)}
                   onAddNew={() => onAdd()}
                   onCancelNew={() => onCancel()}
                 />

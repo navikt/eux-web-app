@@ -28,7 +28,7 @@ export const validateAdresse = (
   if (_.isEmpty(adresse.type)) {
     v[namespace + idx + '-type'] = {
       feilmelding: t('message:validation-noAddressTypeForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + idx + '-type-text'
+      skjemaelementId: namespace + idx + '-type'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -36,7 +36,7 @@ export const validateAdresse = (
   if (_.isEmpty(adresse.land)) {
     v[namespace + idx + '-land'] = {
       feilmelding: t('message:validation-noAddressCountryForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + idx + '-land-text'
+      skjemaelementId: namespace + idx + '-land'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -44,7 +44,7 @@ export const validateAdresse = (
   if (_.isEmpty(adresse.gate)) {
     v[namespace + idx + '-gate'] = {
       feilmelding: t('message:validation-noAddressStreetForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + idx + '-gate-text'
+      skjemaelementId: namespace + idx + '-gate'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -52,7 +52,7 @@ export const validateAdresse = (
   if (_.isEmpty(adresse.postnummer)) {
     v[namespace + idx + '-postnummer'] = {
       feilmelding: t('message:validation-noAddressPostnummerForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + idx + '-postnummer-text'
+      skjemaelementId: namespace + idx + '-postnummer'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -60,7 +60,7 @@ export const validateAdresse = (
   if (_.isEmpty(adresse.by)) {
     v[namespace + idx + '-by'] = {
       feilmelding: t('message:validation-noAddressCityForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + idx + '-by-text'
+      skjemaelementId: namespace + idx + '-by'
     } as FeiloppsummeringFeil
     hasErrors = true
   }

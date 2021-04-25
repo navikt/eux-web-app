@@ -389,9 +389,9 @@ const FamilyManager: React.FC<FamilyManagerProps> = ({
   const handleEvent = (e: any) => {
     const feil: FeiloppsummeringFeil = e.detail
     const namespaceBits = feil.skjemaelementId.split('-')
-    if (namespaceBits[1] === 'familymanager') {
-      const who = namespaceBits[2]
-      const menu = namespaceBits[3]
+    if (namespaceBits[0] === 'familymanager') {
+      const who = namespaceBits[1]
+      const menu = namespaceBits[2]
       changePersonOption(who, menu)
       setTimeout(() => {
         var element = document.getElementById(feil.skjemaelementId)

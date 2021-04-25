@@ -32,7 +32,7 @@ export const validateNasjonalitet = (
   if (_.isEmpty(statsborgerskap.land)) {
     v[namespace + idx + '-land'] = {
       feilmelding: t('message:validation-noBirthCountryForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + idx + '-land-text'
+      skjemaelementId: namespace + idx + '-land'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -40,7 +40,7 @@ export const validateNasjonalitet = (
   if (_.find(statsborgerskaper, s => s.land === statsborgerskap.land) !== undefined) {
     v[namespace + idx + '-land'] = {
       feilmelding: t('message:validation-duplicateBirthCountry'),
-      skjemaelementId: 'c-' + namespace + idx + '-land-text'
+      skjemaelementId: namespace + idx + '-land'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -48,7 +48,7 @@ export const validateNasjonalitet = (
   if (_.isEmpty(statsborgerskap.fradato)) {
     v[namespace + idx + '-fradato'] = {
       feilmelding: t('message:validation-noDateForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + idx + '-fradato-date'
+      skjemaelementId: namespace + idx + '-fradato'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -56,7 +56,7 @@ export const validateNasjonalitet = (
   if (!_.isEmpty(statsborgerskap.fradato) && !statsborgerskap.fradato!.match(datePattern)) {
     v[namespace + idx + '-fradato'] = {
       feilmelding: t('message:validation-invalidDateForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + idx + '-fradato-date'
+      skjemaelementId: namespace + idx + '-fradato'
     } as FeiloppsummeringFeil
     hasErrors = true
   }

@@ -143,7 +143,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
       >
         <Column>
           <Input
-            data-test-id='c-TPSPersonForm__input-fnr-or-dnr-id'
+            data-test-id='TPSPersonForm__input-fnr-or-dnr-id'
             label={t('label:fnr-dnr')}
             placeholder={t('label:fnr-dnr')}
             value={_query}

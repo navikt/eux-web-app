@@ -39,36 +39,36 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
   const [_newStartDato, _setNewStartDato] = useState<string>('')
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')
 
-  const [addCandidateForDeletion, removeCandidateForDeletion, hasKey] = useAddRemove()
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => {
+    return p?.startdato // assume startdato is unique
+  })
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationNotAnsattProps>({}, validateNotAnsatte)
 
-  const setStartDato = (dato: string, index: number) => {
+  const setStartDato = (newDato: string, index: number) => {
     if (index < 0) {
-      _setNewStartDato(dato)
+      _setNewStartDato(newDato)
       _resetValidation(namespace + '-startdato')
     } else {
-      const newPerioder: Array<Periode> = _.cloneDeep(perioderSomSelvstendig)
-      newPerioder[index].startdato = dato
-      updateReplySed(target, newPerioder)
+      updateReplySed(`${target}[${index}].startdato`, newDato)
       if (validation[namespace + getIdx(index) + '-startdato']) {
         resetValidation(namespace + getIdx(index) + '-startdato')
       }
     }
   }
 
-  const setSluttDato = (dato: string, index: number) => {
+  const setSluttDato = (sluttdato: string, index: number) => {
     if (index < 0) {
-      _setNewSluttDato(dato)
+      _setNewSluttDato(sluttdato)
       _resetValidation(namespace + '-sluttdato')
     } else {
       const newPerioder: Array<Periode> = _.cloneDeep(perioderSomSelvstendig)
-      if (dato === '') {
+      if (sluttdato === '') {
         delete newPerioder[index].sluttdato
         newPerioder[index].aapenPeriodeType = 'åpen_sluttdato'
       } else {
         delete newPerioder[index].aapenPeriodeType
-        newPerioder[index].sluttdato = dato
+        newPerioder[index].sluttdato = sluttdato
       }
       updateReplySed(target, newPerioder)
       if (validation[namespace + getIdx(index) + '-sluttdato']) {
@@ -88,15 +88,11 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
     resetForm()
   }
 
-  const getKey = (p: Periode): string => {
-    return p?.startdato // assume startdato is unique
-  }
-
   const onRemove = (index: number) => {
     const newPerioder: Array<Periode> = _.cloneDeep(perioderSomSelvstendig)
     const deletedPeriods: Array<Periode> = newPerioder.splice(index, 1)
     if (deletedPeriods && deletedPeriods.length > 0) {
-      removeCandidateForDeletion(getKey(deletedPeriods[0]))
+      removeFromDeletion(deletedPeriods[0])
     }
     updateReplySed(target, newPerioder)
   }
@@ -124,21 +120,21 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
         newPerioder = []
       }
       newPerioder = newPerioder.concat(newPeriode)
-      resetForm()
       updateReplySed(target, newPerioder)
+      resetForm()
     }
   }
 
-  const getErrorFor = (index: number, el: string): string | null | undefined => {
-    return index < 0 ? _validation[namespace + '-' + el]?.feilmelding : validation[namespace + '[' + index + ']-' + el]?.feilmelding
-  }
-
-  const renderRow = (p: Periode | undefined, index: number) => {
-    const key = p ? getKey(p) : 'new'
-    const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
+  const renderRow = (periode: Periode | null, index: number) => {
+    const candidateForDeletion = index < 0 ? false : isInDeletion(periode)
     const idx = getIdx(index)
-    const startdato = index < 0 ? _newStartDato : p?.startdato
-    const sluttdato = index < 0 ? _newSluttDato : p?.sluttdato
+    const getErrorFor = (index: number, el: string): string | null | undefined => {
+      return index < 0 ?
+        _validation[namespace + '-' + el]?.feilmelding :
+        validation[namespace + idx + '-' + el]?.feilmelding
+    }
+    const startdato = index < 0 ? _newStartDato : periode?.startdato
+    const sluttdato = index < 0 ? _newSluttDato : periode?.sluttdato
     return (
       <>
         <AlignStartRow
@@ -159,9 +155,9 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}
               marginTop
-              onBeginRemove={() => addCandidateForDeletion(key!)}
+              onBeginRemove={() => addToDeletion(periode)}
               onConfirmRemove={() => onRemove(index)}
-              onCancelRemove={() => removeCandidateForDeletion(key!)}
+              onCancelRemove={() => removeFromDeletion(periode)}
               onAddNew={onAdd}
               onCancelNew={onCancel}
             />
@@ -189,7 +185,7 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
       <hr />
       <VerticalSeparatorDiv />
       {_seeNewForm
-        ? renderRow(undefined, -1)
+        ? renderRow(null, -1)
         : (
           <Row>
             <Column>

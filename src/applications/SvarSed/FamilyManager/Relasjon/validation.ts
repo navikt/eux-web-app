@@ -3,11 +3,9 @@ import { Barnetilhoerighet } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
-import { getIdx } from 'utils/namespace'
 
 export interface ValidationBarnetilhoerigheterProps {
   barnetilhorighet: Barnetilhoerighet,
-  index: number
   namespace: string,
   personName: string
 }
@@ -17,74 +15,72 @@ export const validateBarnetilhoerighet = (
   t: TFunction,
   {
     barnetilhorighet,
-    index,
     namespace,
     personName
   }: ValidationBarnetilhoerigheterProps
 ): boolean => {
   let hasErrors: boolean = false
-  const idx = getIdx(index)
 
   if (!barnetilhorighet.relasjonTilPerson) {
-    v[namespace + idx + '-relasjonTilPerson'] = {
+    v[namespace + '-relasjonTilPerson'] = {
       feilmelding: t('message:validation-noRelationForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + idx + '-relasjonTilPerson-text'
+      skjemaelementId: namespace + '-relasjonTilPerson'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
 
   if (!barnetilhorighet.relasjonType) {
-    v[namespace + idx + '-relasjonType'] = {
+    v[namespace + '-relasjonType'] = {
       feilmelding: t('message:validation-noRelationTypeForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + idx + '-relasjonType-text'
+      skjemaelementId: namespace + '-relasjonType'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
 
   const periodError: boolean = validatePeriod(v, t, {
     period: barnetilhorighet.periode,
-    index: index,
-    namespace,
+    index: -1,
+    namespace: namespace + '-periode',
     personName
   })
   hasErrors = hasErrors || periodError
 
   if (['ja', 'nei'].indexOf(barnetilhorighet.erDeltForeldreansvar) < 0) {
-    v[namespace + idx + '-erDeltForeldreansvar'] = {
+    v[namespace + '-erDeltForeldreansvar'] = {
       feilmelding: t('message:validation-noAnswerForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + idx + '-erDeltForeldreansvar-text'
+      skjemaelementId: namespace + '-erDeltForeldreansvar'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
 
   if (['ja', 'nei'].indexOf(barnetilhorighet.borIBrukersHushold) < 0) {
-    v[namespace + idx + '-borIBrukersHushold'] = {
+    v[namespace + '-borIBrukersHushold'] = {
       feilmelding: t('message:validation-noAnswerForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + idx + '-borIBrukersHushold-text'
+      skjemaelementId: namespace + '-borIBrukersHushold'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
 
   if (['ja', 'nei'].indexOf(barnetilhorighet.borIEktefellesHushold) < 0) {
-    v[namespace + idx + '-borIEktefellesHushold'] = {
+    v[namespace + '-borIEktefellesHushold'] = {
       feilmelding: t('message:validation-noAnswerForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + idx + '-borIEktefellesHushold-text'
+      skjemaelementId: namespace + '-borIEktefellesHushold'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
 
   if (['ja', 'nei'].indexOf(barnetilhorighet.borIAnnenPersonsHushold) < 0) {
-    v[namespace + idx + '-borIAnnenPersonsHushold'] = {
+    v[namespace + '-borIAnnenPersonsHushold'] = {
       feilmelding: t('message:validation-noAnswerForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + idx + '-borIAnnenPersonsHushold-text'
+      skjemaelementId: namespace + '-borIAnnenPersonsHushold'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
 
   if (['ja', 'nei'].indexOf(barnetilhorighet.borPaaInstitusjon) < 0) {
-    v[namespace + idx + '-borPaaInstitusjon'] = {
+    v[namespace + '-borPaaInstitusjon'] = {
       feilmelding: t('message:validation-noAnswerForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + idx + '-borPaaInstitusjon-text'
+      skjemaelementId: namespace + '-borPaaInstitusjon'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -107,8 +103,8 @@ export const validateBarnetilhoerigheter = (
   personName: string
 ): boolean => {
   let hasErrors: boolean = false
-  barnetilhorigheter?.forEach((barnetilhorighet: Barnetilhoerighet, index: number) => {
-    let _error: boolean = validateBarnetilhoerighet(validation, t, { barnetilhorighet, index, namespace, personName })
+  barnetilhorigheter?.forEach((barnetilhorighet: Barnetilhoerighet) => {
+    let _error: boolean = validateBarnetilhoerighet(validation, t, { barnetilhorighet, namespace, personName })
     hasErrors = hasErrors || _error
   })
   return hasErrors

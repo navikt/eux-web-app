@@ -36,7 +36,7 @@ export const validateVedtakPeriode = (
   if (_.isEmpty(periode.vedtak)) {
     v[namespace + '-vedtaksperioder' + idx + '-vedtak'] = {
       feilmelding: t('message:validation-noVedtakType'),
-      skjemaelementId: 'c-' + namespace + idx + '-vedtak-text'
+      skjemaelementId: namespace + '-vedtaksperioder' + idx + '-vedtak'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -69,7 +69,7 @@ export const validateVedtak = (
   if (_.isEmpty(vedtak.barn)) {
     v[namespace + '-barn'] = {
       feilmelding: t('message:validation-noBarnValgt'),
-      skjemaelementId: 'c-' + namespace + '-barn-list'
+      skjemaelementId: namespace + '-barn'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -86,7 +86,7 @@ export const validateVedtak = (
   if (_.isEmpty(vedtak.type)) {
     v[namespace + '-type'] = {
       feilmelding: t('message:validation-noVedtakType'),
-      skjemaelementId: 'c-vedtak-type-text'
+      skjemaelementId: 'vedtak-type'
     } as FeiloppsummeringFeil
     hasErrors = true
   }

@@ -162,7 +162,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
           <Input
             feil={validation[namespace + '-fornavn']?.feilmelding}
             namespace={namespace}
-            id='fornavn-text'
+            id='fornavn'
             label={t('label:fornavn') + ' *'}
             onChanged={onFornavnChange}
             value={personInfo.fornavn}
@@ -172,7 +172,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
           <Input
             feil={validation[namespace + '-etternavn']?.feilmelding}
             namespace={namespace}
-            id='etternavn-text'
+            id='etternavn'
             label={t('label:etternavn') + ' *'}
             onChanged={onEtternavnChange}
             value={personInfo.etternavn}
@@ -195,9 +195,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
           <HighContrastRadioPanelGroup
             checked={personInfo.kjoenn}
             data-no-border
-            data-test-id={'c-' + namespace + '-kjoenn-text'}
+            data-test-id={namespace + '-kjoenn'}
             feil={validation[namespace + '-kjoenn']?.feilmelding}
-            id={'c-' + namespace + '-kjoenn-text'}
+            id={namespace + '-kjoenn'}
             legend={t('label:kjønn') + ' *'}
             name={namespace + '-kjoenn'}
             onChange={onKjoennChange}
@@ -215,7 +215,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
           <Input
             feil={validation[namespace + '-utenlandskpin-nummer']?.feilmelding}
             namespace={namespace}
-            id='utenlandskpin-nummer-text'
+            id='utenlandskpin-nummer'
             label={t('label:utenlandsk-pin')}
             onChanged={onUtenlandskPinChange}
             value={utenlandskPin?.identifikator}
@@ -223,9 +223,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         </Column>
         <Column>
           <CountrySelect
-            data-test-id={'c-' + namespace + '-utenlandskpin-land-text'}
+            data-test-id={namespace + '-utenlandskpin-land'}
             error={validation[namespace + '-utenlandskpin-land']?.feilmelding}
-            id={'c-' + namespace + '-utenlandskpin-land-text'}
+            id={namespace + '-utenlandskpin-land'}
             includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
             label={t('label:land')}
             menuPortalTarget={document.body}
@@ -243,7 +243,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
           <Input
             feil={validation[namespace + '-norskpin-nummer']?.feilmelding}
             namespace={namespace}
-            id='norskpin-nummer-text'
+            id='norskpin-nummer'
             label={t('label:norsk-fnr')}
             onChanged={onNorwegianPinChange}
             value={norwegianPin?.identifikator}
@@ -299,7 +299,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
               <Input
                 feil={validation[namespace + '-foedested-by']?.feilmelding}
                 namespace={namespace}
-                id='foedested-by-text'
+                id='foedested-by'
                 label={t('label:by')}
                 onChanged={onFoedestedByChange}
                 value={personInfo.pinMangler?.foedested.by}
@@ -309,7 +309,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
               <Input
                 feil={validation[namespace + '-foedested-region']?.feilmelding}
                 namespace={namespace}
-                id='foedested-region-text'
+                id='foedested-region'
                 label={t('label:region')}
                 onChanged={onFoedestedRegionChange}
                 value={personInfo.pinMangler?.foedested.region}
@@ -317,9 +317,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             </Column>
             <Column>
               <CountrySelect
-                data-test-id={'c-' + namespace + '-foedested-land-text'}
+                data-test-id={namespace + '-foedested-land'}
                 error={validation[namespace + '-foedested-land']?.feilmelding}
-                id={'c-' + namespace + '-foedested-land-text'}
+                id={namespace + '-foedested-land'}
                 includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
                 label={t('label:land')}
                 menuPortalTarget={document.body}

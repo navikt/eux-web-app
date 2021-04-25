@@ -29,32 +29,32 @@ export const validateFamilierelasjon = (
   const periodErrors : boolean = validatePeriod(v, t, {
     period: familierelasjon.periode,
     index,
-    namespace,
+    namespace: namespace + idx + '-periode',
     personName
   })
   hasErrors = hasErrors || periodErrors
 
   if (familierelasjon.relasjonType === 'ANNEN') {
     if (_.isEmpty(familierelasjon.annenRelasjonPersonNavn)) {
-      v[namespace + idx + '-annenrelasjonpersonnavn'] = {
+      v[namespace + idx + '-annenRelasjonPersonNavn'] = {
         feilmelding: t('message:validation-noNameToPerson', { person: personName }),
-        skjemaelementId: 'c-' + namespace + idx + '-annenrelasjonpersonnavn-text'
+        skjemaelementId: namespace + idx + '-annenRelasjonPersonNavn'
       } as FeiloppsummeringFeil
       hasErrors = true
     }
 
     if (_.isEmpty(familierelasjon.annenRelasjonDato)) {
-      v[namespace + idx + '-annenrelasjondato'] = {
+      v[namespace + idx + '-annenRelasjonDato'] = {
         feilmelding: t('message:validation-noRelationDateForPerson', { person: personName }),
-        skjemaelementId: 'c-' + namespace + idx + '-annenrelasjondato-date'
+        skjemaelementId: namespace + idx + '-annenRelasjonDato'
       } as FeiloppsummeringFeil
       hasErrors = true
     }
 
     if (_.isEmpty(familierelasjon.borSammen)) {
-      v[namespace + idx + '-borsammen'] = {
+      v[namespace + idx + '-borSammen'] = {
         feilmelding: t('message:validation-noBoSammen', { person: personName }),
-        skjemaelementId: 'c-' + namespace + idx + '-borsammen-text'
+        skjemaelementId: namespace + idx + '-borSammen'
       } as FeiloppsummeringFeil
       hasErrors = true
     }

@@ -1,14 +1,14 @@
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import useAddRemove from 'hooks/useAddRemove'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import Period from 'components/Period/Period'
 import { AlignStartRow, PileDiv, TextAreaDiv } from 'components/StyledComponents'
-import useValidation from 'hooks/useValidation'
 import { F002Sed, FormalMotregning, NavnOgBetegnelse, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
+import useAddRemove from 'hooks/useAddRemove'
+import useValidation from 'hooks/useValidation'
 import CountryData, { Currency } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
@@ -55,7 +55,9 @@ const Motregning: React.FC<MotregningProps> = ({
   const [_newNavn, _setNewNavn] = useState<string | undefined>(undefined)
   const [_newBetegnelse, _setNewBetegnelse] = useState<string | undefined>(undefined)
 
-  const [addCandidateForDeletion, removeCandidateForDeletion, hasKey] = useAddRemove()
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<NavnOgBetegnelse>((nob: NavnOgBetegnelse): string => {
+    return nob.navn
+  })
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationMotregningNavnOgBetegnelserProps>({}, validateMotregningNavnOgBetegnelser)
 
@@ -69,16 +71,11 @@ const Motregning: React.FC<MotregningProps> = ({
   const setNavn = (newNavn: string, index: number) => {
     if (index < 0) {
       _setNewNavn(newNavn)
-      _resetValidation(namespace + '-navogbe-navn')
+      _resetValidation(namespace + '-navnOgBetegnelser-navn')
     } else {
-      let newNavnOgBetegnelser = _.cloneDeep(motregning?.navnOgBetegnelser)
-      if (!newNavnOgBetegnelser) {
-        newNavnOgBetegnelser = []
-      }
-      newNavnOgBetegnelser[index].navn = newNavn
-      updateReplySed(`${target}.navnOgBetegnelser`, newNavnOgBetegnelser)
-      if (validation[namespace + getIdx(index) + '-navnogbetegnelse-navn']) {
-        resetValidation(namespace + getIdx(index) + '-navnogbetegnelse-navn')
+      updateReplySed(`${target}.navnOgBetegnelser[${index}].navn`, newNavn)
+      if (validation[namespace + '-navnOgBetegnelser' + getIdx(index) + '-navn']) {
+        resetValidation(namespace + '-navnOgBetegnelser' + getIdx(index) + '-navn')
       }
     }
   }
@@ -88,14 +85,9 @@ const Motregning: React.FC<MotregningProps> = ({
       _setNewBetegnelse(newBetegnelse)
       _resetValidation(namespace + '-navnOgBetegnelser-betegnelse')
     } else {
-      let newNavnOgBetegnelser = _.cloneDeep(motregning?.navnOgBetegnelser)
-      if (!newNavnOgBetegnelser) {
-        newNavnOgBetegnelser = []
-      }
-      newNavnOgBetegnelser[index].betegnelsePåYtelse = newBetegnelse
-      updateReplySed(`${target}.navnOgBetegnelser`, newNavnOgBetegnelser)
-      if (validation[namespace + getIdx(index) + '-navnogbetegnelse-betegnelse']) {
-        resetValidation(namespace + getIdx(index) + '-navnogbetegnelse-betegnelse')
+      updateReplySed(`${target}.navnOgBetegnelser[${index}].betegnelse`, newBetegnelse)
+      if (validation[namespace + '-navnOgBetegnelser' + getIdx(index) + 'betegnelse']) {
+        resetValidation(namespace + '-navnOgBetegnelser' + getIdx(index) + 'betegnelse')
       }
     }
   }
@@ -167,15 +159,11 @@ const Motregning: React.FC<MotregningProps> = ({
     resetForm()
   }
 
-  const getKey = (nob: NavnOgBetegnelse): string => {
-    return nob.navn
-  }
-
   const onRemove = (i: number) => {
     const newNavnOgBetegnelser = _.cloneDeep(motregning!.navnOgBetegnelser)
     const deletedNavnOgBetegnelser: Array<NavnOgBetegnelse> = newNavnOgBetegnelser.splice(i, 1)
     if (deletedNavnOgBetegnelser && deletedNavnOgBetegnelser.length > 0) {
-      removeCandidateForDeletion(getKey(deletedNavnOgBetegnelser[0]))
+      removeFromDeletion(deletedNavnOgBetegnelser[0])
     }
     updateReplySed(`${target}.navnOgBetegnelser`, newNavnOgBetegnelser)
   }
@@ -189,7 +177,7 @@ const Motregning: React.FC<MotregningProps> = ({
     const valid: boolean = performValidation({
       navnOgBetegnelse: newNavOgBetegnelse,
       index: -1,
-      namespace: namespace + '-navnogbetegnelse'
+      namespace: namespace
     })
 
     if (valid) {
@@ -198,29 +186,27 @@ const Motregning: React.FC<MotregningProps> = ({
         newNavnOgBetegnelser = []
       }
       newNavnOgBetegnelser.push(newNavOgBetegnelse)
-      resetForm()
       updateReplySed(`${target}.navnOgBetegnelser`, newNavnOgBetegnelser)
+      resetForm()
     }
   }
 
-  const getErrorFor = (index: number, el: string): string | undefined => {
-    return index < 0
-      ? _validation[namespace + '-navnogbetegnelse-' + el]?.feilmelding
-      : validation[namespace + '-navnogbetegnelse[' + index + ']-' + el]?.feilmelding
-  }
-
   const renderRowOfNavnOgBetegnelse = (nob: NavnOgBetegnelse | null, index: number) => {
-    const key = nob ? getKey(nob) : 'new'
-    const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
+    const candidateForDeletion = index < 0 ? false : isInDeletion(nob)
     const idx = getIdx(index)
+    const getErrorFor = (index: number, el: string): string | undefined => (
+      index < 0
+        ? _validation[namespace + '-navnOgBetegnelser-' + el]?.feilmelding
+        : validation[namespace + '-navnOgBetegnelser[' + index + ']-' + el]?.feilmelding
+    )
     return (
       <>
         <AlignStartRow className={classNames('slideInFromLeft')}>
           <Column>
             <Input
               feil={getErrorFor(index, 'navn')}
-              namespace={namespace + '-navnogbetegnelse' + idx}
-              id='navn-text'
+              namespace={namespace + '-navnOgBetegnelser' + idx}
+              id='navn'
               label={t('label:barnets-navn') + ' *'}
               onChanged={(value: string) => setNavn(value, index)}
               value={index < 0 ? _newNavn : nob?.navn}
@@ -229,8 +215,8 @@ const Motregning: React.FC<MotregningProps> = ({
           <Column>
             <Input
               feil={getErrorFor(index, 'betegnelsepåytelse')}
-              namespace={namespace + '-navnogbetegnelse' + idx}
-              id='betegnelse-text'
+              namespace={namespace + '-navnOgBetegnelser' + idx}
+              id='betegnelse'
               label={t('label:betegnelse-på-ytelse') + ' *'}
               onChanged={(value: string) => setBetegnelse(value, index)}
               value={index < 0 ? _newBetegnelse : nob?.betegnelsePåYtelse}
@@ -241,9 +227,9 @@ const Motregning: React.FC<MotregningProps> = ({
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}
               marginTop
-              onBeginRemove={() => addCandidateForDeletion(key!)}
+              onBeginRemove={() => addToDeletion(nob)}
               onConfirmRemove={() => onRemove(index)}
-              onCancelRemove={() => removeCandidateForDeletion(key!)}
+              onCancelRemove={() => removeFromDeletion(nob)}
               onAddNew={onAdd}
               onCancelNew={onCancel}
             />
@@ -263,20 +249,20 @@ const Motregning: React.FC<MotregningProps> = ({
       <HighContrastPanel>
         <HighContrastRadioGroup
           className={classNames('slideInFromLeft')}
-          data-test-id={'c-' + namespace + '-anmodningEllerSvar-text'}
-          id={'c-' + namespace + '-anmodningEllerSvar-text'}
+          data-test-id={namespace + '-anmodningEllerSvar'}
+          id={namespace + '-anmodningEllerSvar'}
           legend={t('label:anmodning-om-motregning')}
           feil={validation[namespace + '-anmodningEllerSvar']?.feilmelding}
         >
           <HighContrastRadio
-            name={'c-' + namespace + '-anmodningEllerSvar-text'}
+            name={namespace + '-anmodningEllerSvar'}
             checked={motregning?.anmodningEllerSvar === '1'}
             label={t('label:anmodning-om-motregning-barn')}
             onClick={() => setAnmodningEllerSvar('1')}
           />
           <VerticalSeparatorDiv />
           <HighContrastRadio
-            name={'c-' + namespace + '-anmodningEllerSvar-text'}
+            name={namespace + '-anmodningEllerSvar'}
             checked={motregning?.anmodningEllerSvar === '2'}
             label={t('label:anmodning-om-motregning-svar-barn')}
             onClick={() => setAnmodningEllerSvar('2')}
@@ -316,7 +302,7 @@ const Motregning: React.FC<MotregningProps> = ({
             <Input
               feil={validation[+namespace + '-beloep']?.feilmelding}
               namespace={namespace}
-              id='beloep-number'
+              id='beloep'
               label={t('label:betegnelse-på-ytelse') + ' *'}
               onChanged={setBeløp}
               value={motregning?.beloep}
@@ -325,10 +311,10 @@ const Motregning: React.FC<MotregningProps> = ({
           <Column>
             <CountrySelect
               ariaLabel={t('label:valuta')}
-              data-test-id={'c-' + namespace + '-valuta-text'}
+              data-test-id={namespace + '-valuta'}
               error={validation[namespace + '-valuta']?.feilmelding}
               highContrast={highContrast}
-              id={'c-' + namespace + '-valuta-text'}
+              id={namespace + '-valuta'}
               label={t('label:valuta') + ' *'}
               locale='nb'
               menuPortalTarget={document.body}
@@ -367,7 +353,7 @@ const Motregning: React.FC<MotregningProps> = ({
             <Input
               feil={validation[+namespace + '-avgrensing']?.feilmelding}
               namespace={namespace}
-              id='avgrensing-text'
+              id='avgrensing'
               label={t('label:periode-avgrensing') + ' *'}
               onChanged={setAvgrensing}
               value={motregning?.avgrensing}
@@ -384,7 +370,7 @@ const Motregning: React.FC<MotregningProps> = ({
             <Input
               feil={validation[+namespace + '-mottakersNavn']?.feilmelding}
               namespace={namespace}
-              id='mottakersNavn-text'
+              id='mottakersNavn'
               label={t('label:mottakers-navn') + ' *'}
               onChanged={setMottakersNavn}
               value={motregning?.mottakersNavn}
@@ -402,7 +388,7 @@ const Motregning: React.FC<MotregningProps> = ({
               <TextArea
                 feil={validation[+namespace + '-grunnerTilAnmodning']?.feilmelding}
                 namespace={namespace}
-                id='grunnerTilAnmodning-text'
+                id='grunnerTilAnmodning'
                 label={t('label:anmodning-grunner')}
                 onChanged={setGrunnerTilAnmodning}
                 value={motregning?.grunnerTilAnmodning}
@@ -421,7 +407,7 @@ const Motregning: React.FC<MotregningProps> = ({
               <TextArea
                 feil={validation[+namespace + '-ytterligereInfo']?.feilmelding}
                 namespace={namespace}
-                id='ytterligereInfo-text'
+                id='ytterligereInfo'
                 label={t('label:ytterligere-informasjon')}
                 onChanged={setYtterligereInfo}
                 value={motregning?.ytterligereInfo}

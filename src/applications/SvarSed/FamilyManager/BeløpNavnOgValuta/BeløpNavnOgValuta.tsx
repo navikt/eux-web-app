@@ -110,7 +110,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
           <Input
             feil={validation[namespace + '-barnetsNavn']?.feilmelding}
             namespace={namespace}
-            id='barnetsNavn-text'
+            id='barnetsNavn'
             label={t('label:barnets-navn') + ' *'}
             onChanged={setBarnetsNavn}
             value={ytelse?.barnetsNavn ?? ''}
@@ -118,10 +118,10 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
         </Column>
         <Column>
           <Select
-            data-test-id={'c-' + namespace + '-ytelseNavn-text'}
+            data-test-id={namespace + '-ytelseNavn'}
             feil={validation[namespace + '-ytelseNavn']?.feilmelding}
             highContrast={highContrast}
-            id={'c-' + namespace + '-ytelseNavn-text'}
+            id={namespace + '-ytelseNavn'}
             label={t('label:betegnelse-på-ytelse') + ' *'}
             menuPortalTarget={document.body}
             onChange={(e: any) => setYtelseNavn(e.value)}
@@ -138,7 +138,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
           <Input
             feil={validation[namespace + '-beloep']?.feilmelding}
             namespace={namespace}
-            id='beloep-text'
+            id='beloep'
             label={t('label:beløp') + ' *'}
             onChanged={setBeløp}
             value={ytelse?.beloep ?? ''}
@@ -147,10 +147,10 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
         <Column>
           <CountrySelect
             ariaLabel={t('label:valuta')}
-            data-test-id={'c-' + namespace + '-valuta-text'}
+            data-test-id={namespace + '-valuta'}
             error={validation[namespace + '-valuta']?.feilmelding}
             highContrast={highContrast}
-            id={'c-' + namespace + '-valuta-text'}
+            id={namespace + '-valuta'}
             label={t('label:valuta') + ' *'}
             locale='nb'
             menuPortalTarget={document.body}
@@ -183,7 +183,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
           <Input
             feil={validation[namespace + '-mottakersNavn']?.feilmelding}
             namespace={namespace}
-            id='mottakersNavn-text'
+            id='mottakersNavn'
             label={t('label:mottakers-navn') + ' *'}
             onChanged={setMottakersNavn}
             value={ytelse?.mottakersNavn ?? ''}
@@ -196,8 +196,8 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
           <HighContrastRadioPanelGroup
             checked={ytelse?.utbetalingshyppighet}
             data-no-border
-            data-test-id={'c-' + namespace + '-utbetalingshyppighet-text'}
-            id={'c-' + namespace + '-utbetalingshyppighet-text'}
+            data-test-id={namespace + '-utbetalingshyppighet'}
+            id={namespace + '-utbetalingshyppighet'}
             feil={validation[namespace + '-utbetalingshyppighet']?.feilmelding}
             name={namespace + '-utbetalingshyppighet'}
             legend={t('label:periode-avgrensing') + ' *'}

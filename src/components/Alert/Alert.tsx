@@ -133,7 +133,7 @@ export const Alert: React.FC<AlertProps> = ({
       {_message}
       {onClose && (
         <CloseIcon
-          data-test-id='c-alert__close-icon'
+          data-test-id='alert__close-icon'
           onClick={onCloseIconClicked}
         />
       )}

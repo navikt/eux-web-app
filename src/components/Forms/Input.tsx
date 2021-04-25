@@ -31,9 +31,9 @@ const Input: React.FC<InputProps> = ({
   return (
     <HighContrastInput
       className={className}
-      data-test-id={'c-' + namespace + '-' + id}
+      data-test-id={namespace + '-' + id}
       feil={feil}
-      id={'c-' + namespace + '-' + id}
+      id={namespace + '-' + id}
       label={label}
       onBlur={() => {
         if (_dirty) {

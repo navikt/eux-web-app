@@ -3,9 +3,9 @@ import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
 import Input from 'components/Forms/Input'
 import Period, { toFinalDateFormat } from 'components/Period/Period'
 import { AlignStartRow } from 'components/StyledComponents'
-import useValidation from 'hooks/useValidation'
 import { Periode, ReplySed } from 'declarations/sed'
 import { Arbeidsforholdet, Arbeidsperioder } from 'declarations/types'
+import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { Systemtittel, Undertittel } from 'nav-frontend-typografi'
 import {
@@ -272,7 +272,7 @@ const Ansatt: React.FC<AnsattProps> = ({
                 <Input
                   feil={_validation[namespace + '-orgnr']?.feilmelding}
                   namespace={namespace}
-                  id='orgnr-text'
+                  id='orgnr'
                   label={t('label:orgnr')}
                   onChanged={onOrgnrChanged}
                   value={_newOrgnr}
@@ -282,7 +282,7 @@ const Ansatt: React.FC<AnsattProps> = ({
                 <Input
                   feil={_validation[namespace + '-navn']?.feilmelding}
                   namespace={namespace}
-                  id='navn-text'
+                  id='navn'
                   label={t('label:navn')}
                   onChanged={onNameChanged}
                   value={_newNavn}

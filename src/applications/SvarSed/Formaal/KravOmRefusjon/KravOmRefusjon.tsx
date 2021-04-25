@@ -41,9 +41,9 @@ const KravOmRefusjon: React.FC<KravOmRefusjonProps> = ({
                 className={classNames({
                   'skjemaelement__input--harFeil': validation[namespace + '-krav']?.feilmelding
                 })}
-                data-test-id={'c-' + namespace + '-krav-text'}
+                data-test-id={namespace + '-krav'}
                 feil={validation[namespace + '-krav']?.feilmelding}
-                id={'c-' + namespace + '-krav-text'}
+                id={namespace + '-krav'}
                 label={t('label:krav-om-refusjon')}
                 maxLength={500}
                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => _setYtterligere(e.target.value)}

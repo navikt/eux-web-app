@@ -28,7 +28,7 @@ export const validateFamilieytelse = (
   /*
   if (_.isEmpty(motregning.number)) {
     v[namespace + '-antallPersoner'] = {
-      skjemaelementId: 'c-' + namespace + '-antallPersoner-text',
+      skjemaelementId: namespace + '-antallPersoner',
       feilmelding: t('message:validation-noAntallToPerson', { person: personName })
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -36,7 +36,7 @@ export const validateFamilieytelse = (
 
   if (_.isEmpty(motregning.ytelseNavn)) {
     v[namespace + idx + '-ytelseNavn'] = {
-      skjemaelementId: 'c-' + namespace + idx + '-ytelseNavn-text',
+      skjemaelementId: namespace + idx + '-ytelseNavn',
       feilmelding: t('message:validation-noBetegnelsePåYtelseForPerson', { person: personName })
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -44,7 +44,7 @@ export const validateFamilieytelse = (
 
   if (_.isEmpty(motregning.beloep)) {
     v[namespace + idx + '-beloep'] = {
-      skjemaelementId: 'c-' + namespace + idx + '-beloep-text',
+      skjemaelementId: namespace + idx + '-beloep',
       feilmelding: t('message:validation-noBeløpForPerson', { person: personName })
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -52,7 +52,7 @@ export const validateFamilieytelse = (
 
   if (_.isEmpty(motregning.valuta)) {
     v[namespace + idx + '-valuta'] = {
-      skjemaelementId: 'c-' + namespace + idx + '-valuta-text',
+      skjemaelementId: namespace + idx + '-valuta',
       feilmelding: t('message:validation-noValutaForPerson', { person: personName })
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -70,7 +70,7 @@ export const validateFamilieytelse = (
 
   if (_.isEmpty(motregning.mottakersNavn)) {
     v[namespace + idx + '-mottakersNavn'] = {
-      skjemaelementId: 'c-' + namespace + idx + '-mottakersNavn-text',
+      skjemaelementId: namespace + idx + '-mottakersNavn',
       feilmelding: t('message:validation-noNavnForPerson', { person: personName })
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -78,7 +78,7 @@ export const validateFamilieytelse = (
 
   if (_.isEmpty(motregning.utbetalingshyppighet)) {
     v[namespace + '-utbetalingshyppighet'] = {
-      skjemaelementId: 'c-' + namespace + idx + '-utbetalingshyppighet-text',
+      skjemaelementId: namespace + idx + '-utbetalingshyppighet',
       feilmelding: t('message:validation-noUtbetalingshyppighetForPerson', { person: personName })
     } as FeiloppsummeringFeil
     hasErrors = true

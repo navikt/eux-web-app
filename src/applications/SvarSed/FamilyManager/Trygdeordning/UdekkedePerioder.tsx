@@ -5,12 +5,12 @@ import {
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import useAddRemove from 'hooks/useAddRemove'
 import Period from 'components/Period/Period'
 import { AlignStartRow } from 'components/StyledComponents'
-import useValidation from 'hooks/useValidation'
 import { Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
+import useAddRemove from 'hooks/useAddRemove'
+import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { Ingress } from 'nav-frontend-typografi'
 import { Column, HighContrastFlatknapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
@@ -44,36 +44,36 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')
   const [_newStartDato, _setNewStartDato] = useState<string>('')
 
-  const [addCandidateForDeletion, removeCandidateForDeletion, hasKey] = useAddRemove()
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => {
+    return p?.startdato // assume startdato is unique
+  })
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationUdekkedePeriodeProps>({}, validateUdekkedePeriode)
 
-  const setStartDato = (dato: string, index: number) => {
+  const setStartDato = (startdato: string, index: number) => {
     if (index < 0) {
-      _setNewStartDato(dato)
+      _setNewStartDato(startdato)
       _resetValidation(namespace + '-udekkede-startdato')
     } else {
-      const newPerioder: Array<Periode> = _.cloneDeep(perioderUtenforTrygdeordning)
-      newPerioder[index].startdato = dato
-      updateReplySed(target, newPerioder)
+      updateReplySed(`{target}[${index}].startdato`, startdato)
       if (validation[namespace + '-perioderUtenforTrygdeordning' + getIdx(index) +'-startdato']) {
         resetValidation(namespace +'-perioderUtenforTrygdeordning' + getIdx(index) +'-startdato')
       }
     }
   }
 
-  const setSluttDato = (dato: string, index: number) => {
+  const setSluttDato = (sluttdato: string, index: number) => {
     if (index < 0) {
-      _setNewSluttDato(dato)
+      _setNewSluttDato(sluttdato)
       _resetValidation(namespace + '-udekkede-sluttdato')
     } else {
       const newPerioder: Array<Periode> = _.cloneDeep(perioderUtenforTrygdeordning)
-      if (dato === '') {
+      if (sluttdato === '') {
         delete newPerioder[index].sluttdato
         newPerioder[index].aapenPeriodeType = 'åpen_sluttdato'
       } else {
         delete newPerioder[index].aapenPeriodeType
-        newPerioder[index].sluttdato = dato
+        newPerioder[index].sluttdato = sluttdato
       }
       updateReplySed(target, newPerioder)
       if (namespace + '-perioderUtenforTrygdeordning' + getIdx(index) +'-sluttdato') {
@@ -93,15 +93,11 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
     resetForm()
   }
 
-  const getKey = (p: Periode): string => {
-    return p.startdato
-  }
-
   const onRemove = (i: number) => {
     const newPerioder: Array<Periode> = _.cloneDeep(perioderUtenforTrygdeordning)
     const deletedPerioder: Array<Periode> = newPerioder.splice(i, 1)
     if (deletedPerioder && deletedPerioder.length > 0) {
-      removeCandidateForDeletion(getKey(deletedPerioder[0]))
+      removeFromDeletion(deletedPerioder[0])
     }
     updateReplySed(target, newPerioder)
   }
@@ -129,22 +125,19 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
         newPerioder = []
       }
       newPerioder = newPerioder.concat(newPeriode)
-      resetForm()
       updateReplySed(target, newPerioder)
+      resetForm()
     }
   }
 
-  const getErrorFor = (index: number, el: string): string | undefined => {
-    return index < 0
-      ? _validation[namespace + '-udekkede-' + el]?.feilmelding
-      : validation[namespace + '-udekkede[' + index + ']-' + el]?.feilmelding
-  }
-
-  const renderRow = (periode: Periode | undefined, index: number) => {
-    const key = periode ? getKey(periode) : 'new'
-    const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
+  const renderRow = (periode: Periode | null, index: number) => {
+    const candidateForDeletion = index < 0 ? false : isInDeletion(periode)
     const idx = (index >= 0 ? '-perioderUtenforTrygdeordning[' + index + ']' : '-udekkede')
-
+    const getErrorFor = (index: number, el: string): string | undefined => (
+      index < 0
+        ? _validation[namespace + idx + '-' + el]?.feilmelding
+        : validation[namespace + idx + '-' + el]?.feilmelding
+    )
     const startdato = index < 0 ? _newStartDato : periode?.startdato
     const sluttdato = index < 0 ? _newSluttDato : periode?.sluttdato
     return (
@@ -166,9 +159,9 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}
               marginTop={false}
-              onBeginRemove={() => addCandidateForDeletion(key!)}
+              onBeginRemove={() => addToDeletion(periode)}
               onConfirmRemove={() => onRemove(index)}
-              onCancelRemove={() => removeCandidateForDeletion(key!)}
+              onCancelRemove={() => removeFromDeletion(periode)}
               onAddNew={() => onAdd()}
               onCancelNew={() => onCancel()}
             />
@@ -205,7 +198,7 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
       <hr />
       <VerticalSeparatorDiv />
       {_seeNewForm
-        ? renderRow(undefined, -1)
+        ? renderRow(null, -1)
         : (
           <Row className='slideInFromLeft'>
             <Column>

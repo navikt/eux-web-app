@@ -1,7 +1,7 @@
-import { TFunction } from 'react-i18next'
-import { Prosedyre } from './ProsedyreVedUenighet'
+import { Prosedyre } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { TFunction } from 'react-i18next'
 
 export const validateProsedyre = (
   v: Validation,
@@ -16,7 +16,7 @@ export const validateProsedyre = (
     ? undefined
     : {
       feilmelding: t('message:validation-noName'),
-      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-person'
+      skjemaelementId: namespace + (index < 0 ? '' : '[' + index + ']') + '-person'
     } as FeiloppsummeringFeil
 
   v[namespace + '-person'] = value
@@ -29,7 +29,7 @@ export const validateProsedyre = (
     ? undefined
     : {
       feilmelding: t('message:validation-noGrunn'),
-      skjemaelementId: 'c-' + namespace + (index < 0 ? '' : '[' + index + ']') + '-grunn'
+      skjemaelementId: namespace + (index < 0 ? '' : '[' + index + ']') + '-grunn'
     } as FeiloppsummeringFeil
 
   v[namespace + '-grunn'] = value

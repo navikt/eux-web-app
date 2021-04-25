@@ -249,6 +249,11 @@ export interface FormalVedtak {
   vedtaksperioder: Array<PeriodeMedVedtak>
 }
 
+export interface Prosedyre {
+  grunn: string
+  person: Array<string>
+}
+
 export interface F002Sed extends FSed {
   annenPerson: Person
   barn: Array<{

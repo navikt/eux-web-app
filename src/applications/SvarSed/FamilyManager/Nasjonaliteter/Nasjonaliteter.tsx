@@ -1,13 +1,13 @@
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import useAddRemove from 'hooks/useAddRemove'
 import DateInput from 'components/Forms/DateInput'
 import { toFinalDateFormat } from 'components/Period/Period'
 import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
-import useValidation from 'hooks/useValidation'
 import { ReplySed, Statsborgerskap } from 'declarations/sed'
 import { Kodeverk, Validation } from 'declarations/types'
+import useAddRemove from 'hooks/useAddRemove'
+import useValidation from 'hooks/useValidation'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { UndertekstBold } from 'nav-frontend-typografi'
@@ -45,18 +45,18 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
   const [_newLand, _setNewLand] = useState<string | undefined>(undefined)
   const [_newFradato, _setNewFradato] = useState<string>('')
 
-  const [addCandidateForDeletion, removeCandidateForDeletion, hasKey] = useAddRemove()
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Statsborgerskap>((s: Statsborgerskap): string => {
+    return s.land
+  })
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationNasjonalitetProps>({}, validateNasjonalitet)
 
-  const onFradatoChanged = (dato: string, index: number) => {
+  const onFradatoChanged = (fradato: string, index: number) => {
     if (index < 0) {
-      _setNewFradato(dato)
+      _setNewFradato(fradato)
       _resetValidation(namespace + '-fradato')
     } else {
-      const newStatsborgerskaper = _.cloneDeep(statsborgerskaper)
-      newStatsborgerskaper[index].fradato = toFinalDateFormat(dato)
-      updateReplySed(target, newStatsborgerskaper)
+      updateReplySed(`${target}[${index}].fradato`, toFinalDateFormat(fradato))
       if (validation[namespace + getIdx(index) + '-fradato']) {
         resetValidation(namespace + getIdx(index) + '-fradato')
       }
@@ -68,9 +68,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
       _setNewLand(land)
       _resetValidation(namespace + '-land')
     } else {
-      const newStatsborgerskaper = _.cloneDeep(statsborgerskaper)
-      statsborgerskaper[index].land = land
-      updateReplySed(target, newStatsborgerskaper)
+      updateReplySed(`${target}[${index}].land`, land)
       if (validation[namespace + getIdx(index) + '-land']) {
         resetValidation(namespace + getIdx(index) + '-land')
       }
@@ -88,15 +86,12 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
     resetForm()
   }
 
-  const getKey = (s: Statsborgerskap): string => {
-    return s.land
-  }
 
   const onRemove = (i: number) => {
     const newStatsborgerskaper = _.cloneDeep(statsborgerskaper)
     const deletedStatsborgerskaper: Array<Statsborgerskap> = newStatsborgerskaper.splice(i, 1)
     if (deletedStatsborgerskaper && deletedStatsborgerskaper.length > 0) {
-      removeCandidateForDeletion(getKey(deletedStatsborgerskaper[0]))
+      removeFromDeletion(deletedStatsborgerskaper[0])
     }
     updateReplySed(target, newStatsborgerskaper)
   }
@@ -119,45 +114,43 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
         newStatsborgerskaper = []
       }
       newStatsborgerskaper.push(newStatsborgerskap)
-      resetForm()
       updateReplySed(target, newStatsborgerskaper)
+      resetForm()
     }
   }
 
-  const getErrorFor = (index: number, el: string): string | undefined => {
-    return index < 0
-      ? _validation[namespace + '-' + el]?.feilmelding
-      : validation[namespace + '[' + index + ']-' + el]?.feilmelding
-  }
-
-  const renderRow = (s: Statsborgerskap | null, index: number) => {
-    const key = s ? getKey(s) : 'new'
-    const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
+  const renderRow = (statsborgerskap: Statsborgerskap | null, index: number) => {
+    const candidateForDeletion = index < 0 ? false : isInDeletion(statsborgerskap)
     const idx = getIdx(index)
+    const getErrorFor = (index: number, el: string): string | undefined => (
+      index < 0
+        ? _validation[namespace + '-' + el]?.feilmelding
+        : validation[namespace + idx + '-' + el]?.feilmelding
+    )
 
     return (
       <>
         <AlignStartRow className={classNames('slideInFromLeft')} style={{ animationDelay: (index * 0.1) + 's' }}>
           <Column>
             <CountrySelect
-              data-test-id={'c-' + namespace + idx + '-land-text'}
+              data-test-id={namespace + idx + '-land'}
               error={getErrorFor(index, 'land')}
-              id={'c-' + namespace + idx + '-land-text'}
+              id={namespace + idx + '-land'}
               menuPortalTarget={document.body}
               includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
               onOptionSelected={(e: any) => onLandSelected(e.value, index)}
               placeholder={t('el:placeholder-select-default')}
-              values={index < 0 ? _newLand : s!.land}
+              values={index < 0 ? _newLand : statsborgerskap!.land}
             />
           </Column>
           <Column>
             <DateInput
               error={getErrorFor(index, 'fradato')}
               namespace={namespace + idx + '-fradato'}
-              key={index < 0 ? _newFradato : s!.fradato}
+              key={index < 0 ? _newFradato : statsborgerskap!.fradato}
               label=''
               setDato={(date: string) => onFradatoChanged(date, index)}
-              value={index < 0 ? _newFradato : s!.fradato}
+              value={index < 0 ? _newFradato : statsborgerskap!.fradato}
             />
           </Column>
           <Column>
@@ -165,9 +158,9 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}
               marginTop={false}
-              onBeginRemove={() => addCandidateForDeletion(key!)}
+              onBeginRemove={() => addToDeletion(statsborgerskap)}
               onConfirmRemove={() => onRemove(index)}
-              onCancelRemove={() => removeCandidateForDeletion(key!)}
+              onCancelRemove={() => removeFromDeletion(statsborgerskap)}
               onAddNew={onAdd}
               onCancelNew={onCancel}
             />

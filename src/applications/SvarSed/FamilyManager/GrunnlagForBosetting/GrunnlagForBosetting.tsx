@@ -1,28 +1,22 @@
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import useAddRemove from 'hooks/useAddRemove'
 import DateInput from 'components/Forms/DateInput'
 import TextArea from 'components/Forms/TextArea'
 import Period from 'components/Period/Period'
 import { AlignStartRow, PaddedDiv, TextAreaDiv } from 'components/StyledComponents'
-import useValidation from 'hooks/useValidation'
 import { Flyttegrunn, Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
+import useAddRemove from 'hooks/useAddRemove'
+import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import moment from 'moment'
 import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
+import { Column, HighContrastFlatknapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 import { validateGrunnlagForBosetting, ValidationGrunnlagForBosettingProps } from './validation'
-import {
-  Column,
-  HighContrastFlatknapp,
-  HorizontalSeparatorDiv,
-  Row,
-  VerticalSeparatorDiv
-} from 'nav-hoykontrast'
 
 interface GrunnlagForBosettingProps {
   updateReplySed: (needle: string, value: any) => void
@@ -49,62 +43,62 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')
   const [_newStartDato, _setNewStartDato] = useState<string>('')
 
-  const [addCandidateForDeletion, removeCandidateForDeletion, hasKey] = useAddRemove()
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => {
+    return p?.startdato // assume startdato is unique
+  })
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationGrunnlagForBosettingProps>({}, validateGrunnlagForBosetting)
 
   const setAvsenderDato = (dato: string) => {
     updateReplySed(`${target}.datoFlyttetTilAvsenderlandet`, dato)
-    if (validation[namespace + '-avsenderdato']) {
-      resetValidation(namespace + '-avsenderdato')
+    if (validation[namespace + '-datoFlyttetTilAvsenderlandet']) {
+      resetValidation(namespace + '-datoFlyttetTilAvsenderlandet')
     }
   }
 
   const setMottakerDato = (dato: string) => {
     updateReplySed(`${target}.datoFlyttetTilMottakerlandet`, dato)
-    if (validation[namespace + '-mottakerdato']) {
-      resetValidation(namespace + '-mottakerdato')
+    if (validation[namespace + '-datoFlyttetTilMottakerlandet']) {
+      resetValidation(namespace + '-datoFlyttetTilMottakerlandet')
     }
   }
 
-  const setStartDato = (dato: string, index: number) => {
+  const setStartDato = (startdato: string, index: number) => {
     if (index < 0) {
-      _setNewStartDato(dato)
-      _resetValidation(namespace + '-startdato')
+      _setNewStartDato(startdato)
+      _resetValidation(namespace + '-perioder-startdato')
     } else {
-      const newPerioder: Array<Periode> = _.cloneDeep(flyttegrunn.perioder)
-      newPerioder[index].startdato = dato
-      updateReplySed(`${target}.perioder`, newPerioder)
-      if (validation[namespace + getIdx(index) + '-startdato']) {
-        resetValidation(namespace + getIdx(index) + '-startdato')
+      updateReplySed(`${target}.perioder[${index}].startdato`, startdato)
+      if (validation[namespace + '-perioder' + getIdx(index) + '-startdato']) {
+        resetValidation(namespace + '-perioder' + getIdx(index) + '-startdato')
       }
     }
   }
 
-  const setSluttDato = (dato: string, index: number) => {
+  const setSluttDato = (sluttdato: string, index: number) => {
     if (index < 0) {
-      _setNewSluttDato(dato)
-      _resetValidation(namespace + '-sluttdato')
+      _setNewSluttDato(sluttdato)
+      _resetValidation(namespace + '-perioder-sluttdato')
     } else {
       const newPerioder: Array<Periode> = _.cloneDeep(flyttegrunn.perioder)
-      if (dato === '') {
+      if (sluttdato === '') {
         delete newPerioder[index].sluttdato
         newPerioder[index].aapenPeriodeType = 'åpen_sluttdato'
       } else {
         delete newPerioder[index].aapenPeriodeType
-        newPerioder[index].sluttdato = dato
+        newPerioder[index].sluttdato = sluttdato
       }
       updateReplySed(`${target}.perioder`, newPerioder)
-      if (validation[namespace + getIdx(index) + '-sluttdato']) {
-        resetValidation(namespace + getIdx(index) + '-sluttdato')
+      if (validation[namespace + '-perioder' + getIdx(index) + '-sluttdato']) {
+        resetValidation(namespace + '-perioder' + getIdx(index) + '-sluttdato')
       }
     }
   }
 
-  const setElementsOfPersonalSituation = (element: string) => {
-    updateReplySed(`${target}.personligSituasjon`, element)
-    if (validation[namespace + '-elementer']) {
-      resetValidation(namespace + '-elementer')
+  const setPersonligSituasjon = (personligSituasjon: string) => {
+    updateReplySed(`${target}.personligSituasjon`, personligSituasjon)
+    if (validation[namespace + '-personligSituasjon']) {
+      resetValidation(namespace + '-personligSituasjon')
     }
   }
 
@@ -119,15 +113,11 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
     resetForm()
   }
 
-  const getKey = (p: Periode): string => {
-    return p?.startdato // assume startdato is unique
-  }
-
   const onRemove = (index: number) => {
     const newPerioder: Array<Periode> = _.cloneDeep(flyttegrunn.perioder)
     const deletedPeriods: Array<Periode> = newPerioder.splice(index, 1)
     if (deletedPeriods && deletedPeriods.length > 0) {
-      removeCandidateForDeletion(getKey(deletedPeriods[0]))
+      removeFromDeletion(deletedPeriods[0])
     }
     updateReplySed(`${target}.perioder`, newPerioder)
   }
@@ -155,21 +145,19 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
         newPerioder = []
       }
       newPerioder = newPerioder.concat(newPeriode)
-      resetForm()
       updateReplySed(`${target}.perioder`, newPerioder)
+      resetForm()
     }
   }
 
-  const getErrorFor = (index: number, el: string): string | null | undefined => {
-    return index < 0
-      ? _validation[namespace + '-' + el]?.feilmelding
-      : validation[namespace + '[' + index + ']-' + el]?.feilmelding
-  }
-
-  const renderRow = (periode: Periode | undefined, index: number) => {
-    const key = periode ? getKey(periode) : 'new'
-    const candidateForDeletion = index < 0 ? false : !!key && hasKey(key)
+  const renderRow = (periode: Periode | null, index: number) => {
+    const candidateForDeletion = index < 0 ? false : isInDeletion(periode)
     const idx = getIdx(index)
+    const getErrorFor = (index: number, el: string): string | null | undefined => (
+      index < 0
+        ? _validation[namespace + '-' + el]?.feilmelding
+        : validation[namespace + idx + '-' + el]?.feilmelding
+    )
     const startdato = index < 0 ? _newStartDato : periode?.startdato
     const sluttdato = index < 0 ? _newSluttDato : periode?.sluttdato
 
@@ -180,7 +168,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
         >
           <Period
             key={'' + startdato + sluttdato}
-            namespace={namespace + idx}
+            namespace={namespace + '-perioder' + idx}
             errorStartDato={getErrorFor(index, 'startdato')}
             errorSluttDato={getErrorFor(index, 'sluttdato')}
             setStartDato={(dato: string) => setStartDato(dato, index)}
@@ -193,9 +181,9 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}
               marginTop
-              onBeginRemove={() => addCandidateForDeletion(key!)}
+              onBeginRemove={() => addToDeletion(periode)}
               onConfirmRemove={() => onRemove(index)}
-              onCancelRemove={() => removeCandidateForDeletion(key!)}
+              onCancelRemove={() => removeFromDeletion(periode)}
               onAddNew={onAdd}
               onCancelNew={onCancel}
             />
@@ -218,7 +206,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
         )
         .map(renderRow)}
       {_seeNewForm
-        ? renderRow(undefined, -1)
+        ? renderRow(null, -1)
         : (
           <Row>
             <Column>
@@ -238,8 +226,8 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column>
           <DateInput
-            error={validation[namespace + '-avsenderdato']?.feilmelding}
-            namespace={namespace + '-avsenderdato'}
+            error={validation[namespace + '-datoFlyttetTilAvsenderlandet']?.feilmelding}
+            namespace={namespace + '-datoFlyttetTilAvsenderlandet'}
             key={flyttegrunn.datoFlyttetTilAvsenderlandet}
             label={t('label:flyttedato-til-avsenderlandet')}
             setDato={setAvsenderDato}
@@ -248,8 +236,8 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
         </Column>
         <Column>
           <DateInput
-            error={validation[namespace + '-mottakerdato']?.feilmelding}
-            namespace={namespace + '-mottakerdato'}
+            error={validation[namespace + '-datoFlyttetTilMottakerlandet']?.feilmelding}
+            namespace={namespace + '-datoFlyttetTilMottakerlandet'}
             key={flyttegrunn.datoFlyttetTilMottakerlandet}
             label={t('label:flyttedato-til-mottakerslandet')}
             setDato={setMottakerDato}
@@ -263,11 +251,11 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
         <Column data-flex='2'>
           <TextAreaDiv>
             <TextArea
-              feil={validation[namespace + '-elementer']?.feilmelding}
+              feil={validation[namespace + '-personligSituasjon']?.feilmelding}
               namespace={namespace}
-              id='elementer-text'
+              id='personligSituasjon'
               label={t('label:elementter-i-personlig-situasjon')}
-              onChanged={setElementsOfPersonalSituation}
+              onChanged={setPersonligSituasjon}
               value={flyttegrunn.personligSituasjon}
             />
           </TextAreaDiv>

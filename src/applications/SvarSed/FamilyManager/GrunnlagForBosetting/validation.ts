@@ -30,13 +30,12 @@ export const validateGrunnlagForBosetting = (
   let hasErrors = validatePeriod(v, t, {
     period,
     index,
-    namespace
+    namespace: namespace + '-perioder' + idx
   })
-
-  if (!v[namespace + '-startdato'] &&
+  if (!v[namespace + '-perioder' + idx + '-startdato'] &&
     _.find(otherPeriods, p => p.startdato === period.startdato)) {
-    v[namespace + '-startdato'] = {
-      skjemaelementId: 'c-' + namespace + idx + '-startdato-date',
+    v[namespace + '-perioder' + idx + '-startdato'] = {
+      skjemaelementId: namespace + '-perioder' + idx + '-startdato',
       feilmelding: t('message:validation-duplicateStartDate')
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -54,26 +53,25 @@ export const validateAllGrunnlagForBosetting = (
   let hasErrors: boolean = false
 
   flyttegrunn.perioder.forEach((periode: Periode, index: number) => {
-    const idx = getIdx(index)
     const periodErrors : boolean = validatePeriod(v, t, {
       period: periode,
       index,
-      namespace: namespace + '-periode' + idx
+      namespace: namespace
     })
     hasErrors = hasErrors || periodErrors
   })
 
   if (!_.isEmpty(flyttegrunn.datoFlyttetTilAvsenderlandet) && !flyttegrunn.datoFlyttetTilAvsenderlandet.match(datePattern)) {
-    v[namespace + '-avsenderdato'] = {
-      skjemaelementId: 'c-' + namespace + '-avsenderdato-date',
+    v[namespace + '-datoFlyttetTilAvsenderlandet'] = {
+      skjemaelementId: namespace + '-datoFlyttetTilAvsenderlandet',
       feilmelding: t('message:validation-invalidDateForPerson', { person: personName })
     } as FeiloppsummeringFeil
     hasErrors = true
   }
 
   if (!_.isEmpty(flyttegrunn.datoFlyttetTilMottakerlandet) && !flyttegrunn.datoFlyttetTilMottakerlandet.match(datePattern)) {
-    v[namespace + '-mottakerdato'] = {
-      skjemaelementId: 'c-' + namespace + '-mottakerdato-date',
+    v[namespace + '-datoFlyttetTilMottakerlandet'] = {
+      skjemaelementId: namespace + '-datoFlyttetTilMottakerlandet',
       feilmelding: t('message:validation-invalidDateForPerson', { person: personName })
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -81,7 +79,7 @@ export const validateAllGrunnlagForBosetting = (
 
   if (!_.isEmpty(flyttegrunn.personligSituasjon) && flyttegrunn.personligSituasjon.length > 500) {
     v[namespace + '-personligSituasjon'] = {
-      skjemaelementId: 'c-' + namespace + '-personligSituasjon-text',
+      skjemaelementId: namespace + '-personligSituasjon',
       feilmelding: t('message:Det har for mye tekst', { person: personName })
     } as FeiloppsummeringFeil
     hasErrors = true

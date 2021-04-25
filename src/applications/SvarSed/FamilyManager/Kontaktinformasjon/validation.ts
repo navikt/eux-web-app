@@ -37,7 +37,7 @@ export const validateKontaktsinformasjonTelefon = (
   if (_.isEmpty(telefon.type)) {
     v[namespace + idx + '-type'] = {
       feilmelding: t('message:validation-noTelephoneTypeForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + idx + '-type-text'
+      skjemaelementId: namespace + idx + '-type'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -45,7 +45,7 @@ export const validateKontaktsinformasjonTelefon = (
   if (_.isEmpty(telefon.nummer)) {
     v[namespace + idx + '-nummer'] = {
       feilmelding: t('message:validation-noTelephoneNumberForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + idx + '-nummer-text'
+      skjemaelementId: namespace + idx + '-nummer'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -77,14 +77,14 @@ export const validateKontaktsinformasjonEpost = (
     if (!epost.adresse.match(emailPattern)) {
       v[namespace + idx + '-adresse'] = {
         feilmelding: t('message:validation-invalidEpostForPerson', { person: personName }),
-        skjemaelementId: 'c-' + namespace + idx + '-adresse-text'
+        skjemaelementId: namespace + idx + '-adresse'
       } as FeiloppsummeringFeil
       hasErrors = true
     }
   } else {
     v[namespace + idx + '-adresse'] = {
       feilmelding: t('message:validation-noEpostForPerson', { person: personName }),
-      skjemaelementId: 'c-' + namespace + idx + '-adresse-text'
+      skjemaelementId: namespace + idx + '-adresse'
     } as FeiloppsummeringFeil
     hasErrors = true
   }

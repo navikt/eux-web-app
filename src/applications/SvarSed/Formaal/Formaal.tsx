@@ -26,7 +26,7 @@ const Formaal: React.FC<FormaalProps> = ({
   replySed
 }: FormaalProps) => {
   const { t } = useTranslation()
-  const formaal = (replySed as FSed)?.formaal
+  const formaal: Array<string> = (replySed as FSed)?.formaal
   const dispatch = useDispatch()
   const formaalOptions: Options = [
     { label: t('el:option-formaal-1'), value: 'mottak_av_søknad_om_familieytelser' },
@@ -43,7 +43,7 @@ const Formaal: React.FC<FormaalProps> = ({
   const [_newFormaal, setNewFormaal] = useState<Option | undefined>(undefined)
   const [_newFormaalIndex, setNewFormaalIndex] = useState<number | undefined>(undefined)
 
-  const [addCandidateForDeletion, removeCandidateForDeletion, hasKey] = useAddRemove()
+  const [addCandidateForDeletion, removeCandidateForDeletion, hasKey] = useAddRemove<string>((_formaal: string) => { return _formaal})
   const [_formaalValues, setFormaalValues] = useState<Array<Option>>(
     _.filter(formaalOptions, p => _formaals.indexOf(p.value) < 0)
   )
@@ -120,8 +120,8 @@ const Formaal: React.FC<FormaalProps> = ({
           <FlexCenterDiv>
             <div style={{ flex: 2 }}>
               <Select
-                data-test-id='c-formaal-text'
-                id='c-formaal-text'
+                data-test-id='formaal'
+                id='formaal'
                 highContrast={highContrast}
                 value={_newFormaal}
                 menuPortalTarget={document.body}
