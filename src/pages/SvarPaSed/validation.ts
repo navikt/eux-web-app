@@ -88,7 +88,7 @@ export const performValidation = (v: Validation, t: TFunction, replySed: ReplySe
         perioderMedYtelser: _.get(replySed, `${personID}.perioderMedYtelser`),
         perioderMedPensjon: _.get(replySed, `${personID}.perioderMedPensjon`)
       }
-      _error =  validateTrygdeordninger(v, t, perioder, `personmanager-${personID}-trygdeordninger`, personName)
+      _error = validateTrygdeordninger(v, t, perioder, `personmanager-${personID}-trygdeordninger`, personName)
       hasErrors = hasErrors || _error
       const familierelasjoner: Array<FamilieRelasjon> = _.get(replySed, `${personID}.familierelasjoner`)
       _error = validateFamilierelasjoner(v, t, familierelasjoner, `personmanager-${personID}-familierelasjon`, personName)
@@ -140,7 +140,7 @@ export const validateStep2 = (
   let _error: boolean
   if (replySed.sedType.startsWith('F')) {
     if (_.isEmpty((replySed as F002Sed).formaal)) {
-      v['formaal'] = {
+      v.formaal = {
         feilmelding: t('message:validation-noFormaal'),
         skjemaelementId: 'formaal'
       } as FeiloppsummeringFeil
@@ -168,7 +168,7 @@ export const validateStep2 = (
   }
 
   if (_.isEmpty(comment?.trim())) {
-    v['comment'] = {
+    v.comment = {
       feilmelding: t('message:validation-noComment'),
       skjemaelementId: 'comment'
     } as FeiloppsummeringFeil

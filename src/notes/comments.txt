@@ -3,7 +3,6 @@ Clean ActionTypes later
 Clean Attachments later
 
 1. na familierelasjon, pode ser que envie borSammen, etc com REPA/EKTE/etc. Confirmar que backend limpa
-2. adicionar onBlur noutros locais onde não há arrays. Onde há arrays e há index >= 0, usar debounce
 3. Ligar arbeidsgiver => perioder
 4. familie.motregninger[0] sounds bad
 5. Antall det innvilges for?!
@@ -15,3 +14,4 @@ Clean Attachments later
 
 test:
 
+25086820857 -> Q1

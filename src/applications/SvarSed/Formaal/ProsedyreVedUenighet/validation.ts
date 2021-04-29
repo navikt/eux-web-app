@@ -26,10 +26,10 @@ export const validateProsedyreVedUenighetGrunn = (
   const idx = getIdx(index)
 
   if (_.isEmpty(grunn?.person)) {
-     v[namespace + '-grunner' + idx + '-person'] = {
-      feilmelding: personName ?
-        t('message:validation-noPersonGivenForPerson', {person: personName}) :
-        t('message:validation-noPersonGiven'),
+    v[namespace + '-grunner' + idx + '-person'] = {
+      feilmelding: personName
+        ? t('message:validation-noPersonGivenForPerson', { person: personName })
+        : t('message:validation-noPersonGiven'),
       skjemaelementId: namespace + '-grunner' + idx + '-person'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -37,9 +37,9 @@ export const validateProsedyreVedUenighetGrunn = (
 
   if (_.isEmpty(grunn?.grunn?.trim())) {
     v[namespace + '-grunner' + idx + '-grunn'] = {
-      feilmelding: personName ?
-        t('message:validation-noGrunnForPerson', {person: personName}):
-        t('message:validation-noGrunn'),
+      feilmelding: personName
+        ? t('message:validation-noGrunnForPerson', { person: personName })
+        : t('message:validation-noGrunn'),
       skjemaelementId: namespace + '-grunner' + idx + '-grunn'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -58,14 +58,14 @@ export const validateProsedyreVedUenighet = (
 
   if (_.isEmpty(prosedyreVedUenighet?.grunner)) {
     v[namespace] = {
-      feilmelding: t('message:validation-noGrunnForPerson', {person: personName}),
+      feilmelding: t('message:validation-noGrunnForPerson', { person: personName }),
       skjemaelementId: namespace
     } as FeiloppsummeringFeil
     hasErrors = true
   }
 
   prosedyreVedUenighet?.grunner?.forEach((grunn: Grunn, index: number) => {
-    let _error = validateProsedyreVedUenighetGrunn(v, t, {grunn, index, namespace, personName})
+    const _error = validateProsedyreVedUenighetGrunn(v, t, { grunn, index, namespace, personName })
     hasErrors = hasErrors || _error
   })
 
@@ -73,9 +73,8 @@ export const validateProsedyreVedUenighet = (
     const namespaceBits = namespace.split('-')
     const formaalNamespace = namespaceBits[0]
     if (!v[formaalNamespace]) {
-      v[formaalNamespace] = {feilmelding: 'notnull', skjemaelementId: ''} as FeiloppsummeringFeil
+      v[formaalNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     }
   }
   return hasErrors
 }
-

@@ -129,9 +129,9 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
     const candidateForDeletion = index < 0 ? false : isInDeletion(periode)
     const idx = getIdx(index)
     const getErrorFor = (index: number, el: string): string | null | undefined => {
-      return index < 0 ?
-        _validation[namespace + '-' + el]?.feilmelding :
-        validation[namespace + idx + '-' + el]?.feilmelding
+      return index < 0
+        ? _validation[namespace + '-' + el]?.feilmelding
+        : validation[namespace + idx + '-' + el]?.feilmelding
     }
     const startdato = index < 0 ? _newStartDato : periode?.startdato
     const sluttdato = index < 0 ? _newSluttDato : periode?.sluttdato

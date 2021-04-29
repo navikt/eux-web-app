@@ -1,6 +1,6 @@
 import React from 'react'
 
-const IkonArbeidsforhold = (props: any) => (
+const IkonArbeidsgiver = (props: any) => (
   <svg xmlns='http://www.w3.org/2000/svg' width={props.height | 34} height={props.height | 29} viewBox='0 0 34 29'>
     <g fill='none' fill-rule='evenodd' stroke='#000' stroke-linejoin='round'>
       <path stroke-linecap='round' d='M1 14.714h13.714M19.286 14.714H33' />
@@ -9,4 +9,4 @@ const IkonArbeidsforhold = (props: any) => (
     </g>
   </svg>
 )
-export default IkonArbeidsforhold
+export default IkonArbeidsgiver

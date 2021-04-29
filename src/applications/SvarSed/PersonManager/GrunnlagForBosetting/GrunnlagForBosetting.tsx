@@ -165,7 +165,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
       <>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{ animationDelay: index < 0 ? '0s': (index * 0.1) + 's' }}
+          style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
         >
           <Period
             key={'' + startdato + sluttdato}
@@ -218,7 +218,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
               >
                 <Add />
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {t('el:button-add-new-x', { x: t('label:period').toLowerCase() })}
+                {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
               </HighContrastFlatknapp>
             </Column>
           </Row>

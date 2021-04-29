@@ -226,27 +226,27 @@ const Step1: React.FC<SvarPaSedProps> = ({
                     <HighContrastFlatknapp
                       mini
                       kompakt
-                      className={classNames({selected: _filter === 'FB_'})}
+                      className={classNames({ selected: _filter === 'FB_' })}
                       onClick={() => _setFilter('FB_')}
                     >
                       {t('label:familieytelser') + ' (' + familieytelser + ')'}
                     </HighContrastFlatknapp>
-                    <HorizontalSeparatorDiv/>
+                    <HorizontalSeparatorDiv />
                   </>
                 )}
                 {dagpenger > 0 && (
-                <>
-                  <HighContrastFlatknapp
-                    mini
-                    kompakt
-                    className={classNames({selected: _filter === 'U_'})}
-                    onClick={() => _setFilter('U_')}
-                  >
-                    {t('label:dagpenger') + ' (' + dagpenger + ')'}
-                  </HighContrastFlatknapp>
-                  <HorizontalSeparatorDiv/>
-                </>
-              )}
+                  <>
+                    <HighContrastFlatknapp
+                      mini
+                      kompakt
+                      className={classNames({ selected: _filter === 'U_' })}
+                      onClick={() => _setFilter('U_')}
+                    >
+                      {t('label:dagpenger') + ' (' + dagpenger + ')'}
+                    </HighContrastFlatknapp>
+                    <HorizontalSeparatorDiv />
+                  </>
+                )}
               </FilterDiv>
               <VerticalSeparatorDiv />
             </>

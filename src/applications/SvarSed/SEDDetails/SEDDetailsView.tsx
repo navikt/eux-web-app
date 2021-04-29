@@ -112,7 +112,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
       </Dl>
       <VerticalSeparatorDiv />
       {replySed.sedType.startsWith('U') && (replySed as USed).lokaleSakIder.map(s => (
-        <>
+        <div key={s.institusjonsnavn}>
           <Dl>
             <Dt>
               {t('label:motpart-sakseier')}
@@ -125,8 +125,8 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
                   country={s.land}
                   label={countryData.findByValue(s.land)?.label}
                 />
-                <HorizontalSeparatorDiv data-size='0.35'/>
-                 {countryData.findByValue(s.land)?.label}
+                <HorizontalSeparatorDiv data-size='0.35' />
+                {countryData.findByValue(s.land)?.label}
               </FlexDiv>
             </Dd>
           </Dl>
@@ -138,19 +138,19 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
               {s.institusjonsnavn}
             </Dd>
           </Dl>
-          </>
+        </div>
       ))}
       <VerticalSeparatorDiv />
       {replySed.sedType.startsWith('F') && (
         <>
           <Dl>
-          <Dt>
-            {t('label:type-krav')}
-          </Dt>
-          <Dd>
-            {t('app:kravType-' + (replySed as F002Sed).krav.kravType)}
-          </Dd>
-        </Dl>
+            <Dt>
+              {t('label:type-krav')}
+            </Dt>
+            <Dd>
+              {t('app:kravType-' + (replySed as F002Sed).krav.kravType)}
+            </Dd>
+          </Dl>
         </>
       )}
       <VerticalSeparatorDiv />

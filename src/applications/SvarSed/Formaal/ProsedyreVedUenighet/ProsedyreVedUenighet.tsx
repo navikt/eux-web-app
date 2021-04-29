@@ -28,11 +28,11 @@ export interface ProsedyreVedUenighetProps {
 }
 
 const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
-   highContrast,
-   replySed,
-   resetValidation,
-   updateReplySed,
-   validation
+  highContrast,
+  replySed,
+  resetValidation,
+  updateReplySed,
+  validation
 }: ProsedyreVedUenighetProps): JSX.Element => {
   const { t } = useTranslation()
   const target = 'formaalx.prosedyreveduenighet'
@@ -212,8 +212,8 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
                     checked={isChecked('partner')}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPerson('partner', e.target.checked, index)}
                   />
-                <VerticalSeparatorDiv data-size='0.5' />
-              </>
+                  <VerticalSeparatorDiv data-size='0.5' />
+                </>
               )}
               {!_.isNil((replySed as F002Sed).ektefelle) && (
                 <>
@@ -227,11 +227,11 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
               )}
               <>
                 <Checkbox
-                label={t('label:avdød')}
-                checked={isChecked('avdød')}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPerson('avdød', e.target.checked, index)}
+                  label={t('label:avdød')}
+                  checked={isChecked('avdød')}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPerson('avdød', e.target.checked, index)}
                 />
-                  <VerticalSeparatorDiv data-size='0.5' />
+                <VerticalSeparatorDiv data-size='0.5' />
               </>
             </CheckboxGruppe>
             <VerticalSeparatorDiv />
@@ -262,7 +262,7 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
       <VerticalSeparatorDiv />
       <FormaalPanel
         id={namespace}
-        className={classNames({feil: validation[namespace]?.feilmelding})}
+        className={classNames({ feil: validation[namespace]?.feilmelding })}
       >
         <VerticalSeparatorDiv />
         {prosedyreveduenighet?.grunner?.map(renderRow)}
@@ -306,8 +306,8 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
         </AlignStartRow>
       </FormaalPanel>
       {validation[namespace]?.feilmelding && (
-        <div className="skjemaelement__feilmelding">
-          <p className="typo-feilmelding">
+        <div className='skjemaelement__feilmelding'>
+          <p className='typo-feilmelding'>
             {validation[namespace]?.feilmelding}
           </p>
         </div>

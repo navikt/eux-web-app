@@ -1,4 +1,4 @@
-import mockArbeidsforhold from 'mocks/arbeidsforhold'
+import mockArbeidsgiver from 'mocks/arbeidsgiver'
 import mockFamilierelasjon from 'mocks/familierelasjon'
 
 export default {
@@ -9,6 +9,6 @@ export default {
   saksID: '123',
   sedtype: 'SED_MOCK',
   sektor: 'SEKTOR_MOCK',
-  arbeidsforhold: [mockArbeidsforhold],
+  arbeidsforhold: [mockArbeidsgiver],
   familierelasjoner: [mockFamilierelasjon]
 }

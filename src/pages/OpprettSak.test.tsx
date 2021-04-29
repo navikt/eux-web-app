@@ -31,10 +31,10 @@ describe('pages/OpprettSak/OpprettSak', () => {
     sendingSak: false,
     gettingPerson: false,
 
-    arbeidsforholdList: undefined,
-    valgteArbeidsforhold: undefined,
+    arbeidsperioder: undefined,
+    valgteArbeidsgivere: [],
     valgtBucType: undefined,
-    valgteFamilieRelasjoner: undefined,
+    valgteFamilieRelasjoner: [],
     fagsaker: undefined,
     valgtFnr: undefined,
     valgtInstitusjon: undefined,

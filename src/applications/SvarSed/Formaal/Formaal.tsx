@@ -43,7 +43,7 @@ const Formaal: React.FC<FormaalProps> = ({
   const [_newFormaal, setNewFormaal] = useState<Option | undefined>(undefined)
   const [_newFormaalIndex, setNewFormaalIndex] = useState<number | undefined>(undefined)
 
-  const [addCandidateForDeletion, removeCandidateForDeletion, hasKey] = useAddRemove<string>((_formaal: string) => { return _formaal})
+  const [addCandidateForDeletion, removeCandidateForDeletion, hasKey] = useAddRemove<string>((_formaal: string) => { return _formaal })
   const [_formaalValues, setFormaalValues] = useState<Array<Option>>(
     _.filter(formaalOptions, p => _formaals.indexOf(p.value) < 0)
   )

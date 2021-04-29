@@ -240,7 +240,7 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
     const candidateForDeletion: boolean = index < 0 ? false : isInDeletion(periode)
     const idx = '-' + (index < 0 ? 'familieYtelse' : sedCategory + '[' + index + ']')
     const getErrorFor = (sedCategory: SedCategory | null, index: number, el: string): string | undefined => (
-     index < 0
+      index < 0
         ? _validation[namespace + idx + '-' + el]?.feilmelding
         : validation[namespace + idx + '-' + el]?.feilmelding
     )

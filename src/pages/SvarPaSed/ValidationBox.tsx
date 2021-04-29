@@ -36,18 +36,20 @@ const ValidationBox: React.FC<ValidationBoxProps> = ({
                 skjemaelementId: v!.skjemaelementId
               })) as Array<FeiloppsummeringFeil>}
             customFeilRender={(item: FeiloppsummeringFeil) => (
-              <Lenke href={`#${item.skjemaelementId}`} onClick={(e) => {
-                e.preventDefault()
-                let el = document.getElementById(item.skjemaelementId)
-                if (!el) {
-                  document.dispatchEvent(new CustomEvent('feillenke', { detail: item }))
-                } else {
-                  el?.scrollIntoView({
-                    behavior: 'smooth'
-                  })
-                  el?.focus()
-                }
-              }}>
+              <Lenke
+                href={`#${item.skjemaelementId}`} onClick={(e) => {
+                  e.preventDefault()
+                  const el = document.getElementById(item.skjemaelementId)
+                  if (!el) {
+                    document.dispatchEvent(new CustomEvent('feillenke', { detail: item }))
+                  } else {
+                    el?.scrollIntoView({
+                      behavior: 'smooth'
+                    })
+                    el?.focus()
+                  }
+                }}
+              >
                 {item.feilmelding}
               </Lenke>
             )}

@@ -106,7 +106,7 @@ export const validateBarnetilhoerigheter = (
 ): boolean => {
   let hasErrors: boolean = false
   barnetilhorigheter?.forEach((barnetilhorighet: Barnetilhoerighet) => {
-    let _error: boolean = validateBarnetilhoerighet(validation, t, { barnetilhorighet, namespace, personName })
+    const _error: boolean = validateBarnetilhoerighet(validation, t, { barnetilhorighet, namespace, personName })
     hasErrors = hasErrors || _error
   })
   return hasErrors

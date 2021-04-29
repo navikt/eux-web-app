@@ -42,7 +42,7 @@ const validateGenericPeriode = (
   let hasErrors: boolean = false
   const extraNamespace = namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']')
 
-  let periodError: boolean = validatePeriod(
+  const periodError: boolean = validatePeriod(
     v,
     t,
     {
@@ -116,9 +116,9 @@ export const validateFamilieytelserPeriode = (
   }: ValidationFamilieytelsePeriodeProps
 ): boolean => {
   let hasErrors: boolean = false
-  const extraNamespace = namespace + '-' + (index < 0 ? 'familieYtelse' : sedCategory  + '[' + index + ']')
+  const extraNamespace = namespace + '-' + (index < 0 ? 'familieYtelse' : sedCategory + '[' + index + ']')
 
-  let periodError: boolean = validatePeriod(
+  const periodError: boolean = validatePeriod(
     v,
     t,
     {

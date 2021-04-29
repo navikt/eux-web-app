@@ -22,7 +22,7 @@ const useAddRemove = <Item extends any>(
     }
   }
 
-  const isCandidateForDeletion =  (item: Item | null): boolean => !!item && _confirmDelete.indexOf(getKeyFunction(item)) >= 0
+  const isCandidateForDeletion = (item: Item | null): boolean => !!item && _confirmDelete.indexOf(getKeyFunction(item)) >= 0
 
   return [
     addCandidateForDeletion,

@@ -1,4 +1,3 @@
-import { Periode } from 'declarations/sed'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 
 export interface OldPeriod {
@@ -6,7 +5,7 @@ export interface OldPeriod {
   tom: string
 }
 
-export interface Arbeidsforholdet {
+export interface Arbeidsgiver {
   fraDato?: string
   tilDato?: string
   harRegistrertInntekt?: string
@@ -14,12 +13,10 @@ export interface Arbeidsforholdet {
   arbeidsgiverOrgnr: string
 }
 
-export type Arbeidsforhold = Array<Arbeidsforholdet>
-
 export interface Arbeidsperioder {
   uriArbeidsgiverRegister: string
   uriInntektRegister: string
-  arbeidsperioder: Arbeidsforhold
+  arbeidsperioder: Array<Arbeidsgiver>
 }
 
 export type StringMap = {[k: string]: string}

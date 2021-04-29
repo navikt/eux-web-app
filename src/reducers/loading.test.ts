@@ -36,16 +36,16 @@ describe('reducers/loading', () => {
     ).toEqual(initialLoadingState)
   })
 
-  it('SAK_ARBEIDSFORHOLDLIST_GET_REQUEST', () => {
-    simulateRequest(types.SAK_ARBEIDSFORHOLDLIST_GET_REQUEST, 'gettingArbeidsforhold')
+  it('SAK_ARBEIDSPERIODER_GET_REQUEST', () => {
+    simulateRequest(types.SAK_ARBEIDSPERIODER_GET_REQUEST, 'gettingArbeidsperioder')
   })
 
-  it('SAK_ARBEIDSFORHOLDLIST_GET_SUCCESS', () => {
-    simulateSuccess(types.SAK_ARBEIDSFORHOLDLIST_GET_SUCCESS, 'gettingArbeidsforhold')
+  it('SAK_ARBEIDSPERIODER_GET_SUCCESS', () => {
+    simulateSuccess(types.SAK_ARBEIDSPERIODER_GET_SUCCESS, 'gettingArbeidsperioder')
   })
 
-  it('SAK_ARBEIDSFORHOLDLIST_GET_FAILURE', () => {
-    simulateFailure(types.SAK_ARBEIDSFORHOLDLIST_GET_FAILURE, 'gettingArbeidsforhold')
+  it('SAK_ARBEIDSPERIODER_GET_FAILURE', () => {
+    simulateFailure(types.SAK_ARBEIDSPERIODER_GET_FAILURE, 'gettingArbeidsperioder')
   })
 
   it('VEDLEGG_DOKUMENT_GET_REQUEST', () => {

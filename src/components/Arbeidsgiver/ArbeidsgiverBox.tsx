@@ -2,7 +2,7 @@ import Add from 'assets/icons/Add'
 import Edit from 'assets/icons/Edit'
 import Trashcan from 'assets/icons/Trashcan'
 import { FlexCenterDiv, FlexDiv, PaddedFlexDiv, PileCenterDiv } from 'components/StyledComponents'
-import { Arbeidsforholdet, Validation } from 'declarations/types.d'
+import { Arbeidsgiver, Validation } from 'declarations/types.d'
 import _ from 'lodash'
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper'
 import { Checkbox, FeiloppsummeringFeil } from 'nav-frontend-skjema'
@@ -20,13 +20,17 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import IkonArbeidsforhold from 'resources/images/ikon-arbeidsforhold'
+import classNames from 'classnames'
+import IkonArbeidsgiver from 'resources/images/ikon-arbeidsgiver'
 import styled from 'styled-components'
 import { formatterDatoTilNorsk } from 'utils/dato'
 
-const ArbeidsforholdPanel = styled(HighContrastPanel)`
+const ArbeidsgiverPanel = styled(HighContrastPanel)`
   padding: 0rem !important;
   max-width: 800px;
+  &.new {
+    background-color: #FFFFCC;
+  }
 `
 const EditIcon = styled(Edit)`
   cursor: pointer;
@@ -42,39 +46,40 @@ const PaddedLink = styled(HighContrastLink)`
   padding: 0rem 0.35rem;
 `
 
-export interface ArbeidsforholdetProps {
-  arbeidsforholdet: Arbeidsforholdet
+export interface ArbeidsgiverProps {
+  arbeidsgiver: Arbeidsgiver
   editable?: boolean
-  index: number
-  onArbeidsforholdSelect: (a: Arbeidsforholdet, checked: boolean) => void
-  onArbeidsforholdEdit?: (a: Arbeidsforholdet, index: number) => void
-  onArbeidsforholdDelete?: (index: number) => void
-  personID: string
+  error?: boolean,
+  newArbeidsgiver?: boolean
+  onArbeidsgiverSelect: (a: Arbeidsgiver, checked: boolean) => void
+  onArbeidsgiverEdit?: (a: Arbeidsgiver) => void
+  onArbeidsgiverDelete?: (a: Arbeidsgiver) => void
+  namespace: string
   personFnr?: string
   selected?: boolean
 }
 
-const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
-  arbeidsforholdet,
+const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
+  arbeidsgiver,
   editable,
-  index,
+  error = false,
+  newArbeidsgiver = false,
   selected,
-  onArbeidsforholdSelect,
-  onArbeidsforholdDelete = () => {},
-  onArbeidsforholdEdit = () => {},
-  personID,
+  onArbeidsgiverSelect,
+  onArbeidsgiverDelete = () => {},
+  onArbeidsgiverEdit = () => {},
+  namespace,
   personFnr
-}: ArbeidsforholdetProps): JSX.Element => {
+}: ArbeidsgiverProps): JSX.Element => {
   const {
-    // harRegistrertInntekt,
+    harRegistrertInntekt,
     arbeidsgiverNavn,
     arbeidsgiverOrgnr,
     fraDato,
     tilDato
-  } = arbeidsforholdet
+  } = arbeidsgiver
   const { t } = useTranslation()
-  const hasError = true
-  const namespace = 'arbeidsforhold-' + personID + '-arbeidsforholdet[' + index + ']'
+  const _namespace = namespace + '-arbeidsgiver[' + arbeidsgiverOrgnr + ']'
 
   const [_isDeleting, setIsDeleting] = useState<boolean>(false)
   const [_isEditing, setIsEditing] = useState<boolean>(false)
@@ -96,38 +101,38 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
   const performValidation = (): boolean => {
     const validation: Validation = {}
     if (!_arbeidsgiverNavn) {
-      validation[namespace + '-navn'] = {
-        skjemaelementId: namespace + '-navn',
+      validation[_namespace + '-navn'] = {
+        skjemaelementId: _namespace + '-navn',
         feilmelding: t('message:validation-noName')
       } as FeiloppsummeringFeil
     }
     if (!_arbeidsgiverOrgnr) {
-      validation[namespace + '-orgnr'] = {
-        skjemaelementId: namespace + '-orgnr',
+      validation[_namespace + '-orgnr'] = {
+        skjemaelementId: _namespace + '-orgnr',
         feilmelding: t('message:validation-noOrgnr')
       } as FeiloppsummeringFeil
     }
     if (!_startDato) {
-      validation[namespace + '-startdato'] = {
-        skjemaelementId: namespace + '-startdato',
+      validation[_namespace + '-startdato'] = {
+        skjemaelementId: _namespace + '-startdato',
         feilmelding: t('message:validation-noDate')
       } as FeiloppsummeringFeil
     }
     if (_startDato && !_startDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
-      validation[namespace + '-startdato'] = {
-        skjemaelementId: namespace + '-startdato',
+      validation[_namespace + '-startdato'] = {
+        skjemaelementId: _namespace + '-startdato',
         feilmelding: t('message:validation-invalidDate')
       } as FeiloppsummeringFeil
     }
     if (!_sluttDato) {
-      validation[namespace + '-sluttdato'] = {
-        skjemaelementId: namespace + '-sluttdato',
+      validation[_namespace + '-sluttdato'] = {
+        skjemaelementId: _namespace + '-sluttdato',
         feilmelding: t('message:validation-noDate')
       } as FeiloppsummeringFeil
     }
     if (_sluttDato && !_sluttDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
-      validation[namespace + '-sluttdato'] = {
-        skjemaelementId: namespace + '-sluttdato',
+      validation[_namespace + '-sluttdato'] = {
+        skjemaelementId: _namespace + '-sluttdato',
         feilmelding: t('message:validation-invalidDate')
       } as FeiloppsummeringFeil
     }
@@ -136,34 +141,33 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
   }
 
   const onNameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    resetValidation(namespace + '-navn')
+    resetValidation(_namespace + '-navn')
     setArbeidsgiverNavn(e.target.value)
   }
 
   const onOrgnrChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    resetValidation(namespace + '-orgnr')
+    resetValidation(_namespace + '-orgnr')
     setArbeidsgiverOrgnr(e.target.value)
   }
 
   const onStartDatoChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    resetValidation(namespace + '-startdato')
+    resetValidation(_namespace + '-startdato')
     setStartDato(e.target.value)
   }
 
   const onSluttDatoChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    resetValidation(namespace + '-sluttdato')
+    resetValidation(_namespace + '-sluttdato')
     setSluttDato(e.target.value)
   }
 
   const onSaveButtonClicked = () => {
     if (performValidation()) {
-      onArbeidsforholdEdit({
+      onArbeidsgiverEdit({
         arbeidsgiverNavn: _arbeidsgiverNavn,
         arbeidsgiverOrgnr: _arbeidsgiverOrgnr,
         fraDato: _startDato,
         tilDato: _sluttDato
-      } as Arbeidsforholdet,
-      index)
+      } as Arbeidsgiver)
       setIsEditing(false)
     }
   }
@@ -185,7 +189,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
   }
 
   const onSelectCheckboxClicked = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onArbeidsforholdSelect(arbeidsforholdet, e.target.checked)
+    onArbeidsgiverSelect(arbeidsgiver, e.target.checked)
   }
 
   if (!_arbeidsgiverNavn || !_arbeidsgiverOrgnr) {
@@ -195,13 +199,12 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
     <div
       className='slideInFromLeft'
       key={_arbeidsgiverOrgnr}
-      style={{ animationDelay: (index * 0.1) + 's' }}
     >
       <VerticalSeparatorDiv data-size='0.5' />
-      <ArbeidsforholdPanel key={index} border>
+      <ArbeidsgiverPanel border className={classNames('', { new: newArbeidsgiver })}>
         <FlexCenterDiv>
           <PaddedFlexDiv className='slideInFromLeft'>
-            <IkonArbeidsforhold />
+            <IkonArbeidsgiver />
             <HorizontalSeparatorDiv />
             <div>
               {_isEditing
@@ -209,9 +212,9 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                   <Row>
                     <Column>
                       <HighContrastInput
-                        data-test-id={namespace + '-navn'}
-                        feil={_validation[namespace + '-navn']?.feilmelding}
-                        id={namespace + '-navn'}
+                        data-test-id={_namespace + '-navn'}
+                        feil={_validation[_namespace + '-navn']?.feilmelding}
+                        id={_namespace + '-navn'}
                         label={t('label:navn')}
                         onChange={onNameChanged}
                         placeholder={t('el:placeholder-input-default')}
@@ -220,9 +223,9 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                     </Column>
                     <Column>
                       <HighContrastInput
-                        data-test-id={namespace + '-orgnr'}
-                        feil={_validation[namespace + '-orgnr']?.feilmelding}
-                        id={namespace + '-orgnr'}
+                        data-test-id={_namespace + '-orgnr'}
+                        feil={_validation[_namespace + '-orgnr']?.feilmelding}
+                        id={_namespace + '-orgnr'}
                         onChange={onOrgnrChanged}
                         value={_arbeidsgiverOrgnr}
                         label={t('label:orgnr')}
@@ -248,9 +251,9 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                     <Row>
                       <Column>
                         <HighContrastInput
-                          data-test-id={namespace + '-startdato'}
-                          feil={_validation[namespace + '-startdato']?.feilmelding}
-                          id={namespace + '-startdato'}
+                          data-test-id={_namespace + '-startdato'}
+                          feil={_validation[_namespace + '-startdato']?.feilmelding}
+                          id={_namespace + '-startdato'}
                           label={t('label:startdato')}
                           onChange={onStartDatoChanged}
                           placeholder={t('el:placeholder-date-default')}
@@ -259,9 +262,9 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                       </Column>
                       <Column>
                         <HighContrastInput
-                          data-test-id={namespace + '-sluttdato'}
-                          feil={_validation[namespace + '-sluttdato']?.feilmelding}
-                          id={namespace + '-sluttdato'}
+                          data-test-id={_namespace + '-sluttdato'}
+                          feil={_validation[_namespace + '-sluttdato']?.feilmelding}
+                          id={_namespace + '-sluttdato'}
                           label={t('label:sluttdato')}
                           onChange={onSluttDatoChanged}
                           placeholder={t('el:placeholder-date-default')}
@@ -349,7 +352,7 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
                   mini
                   kompakt
                   onClick={() =>
-                    onArbeidsforholdDelete(index)}
+                    onArbeidsgiverDelete(arbeidsgiver)}
                 >
                   <Trashcan />
                   <HorizontalSeparatorDiv data-size='0.5' />
@@ -368,7 +371,12 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
             </PileCenterDiv>
           )}
         </FlexCenterDiv>
-        {hasError && (
+        {error && (
+          <Normaltekst>
+            duplicate warning
+          </Normaltekst>
+        )}
+        {!harRegistrertInntekt && (
           <div className='slideInFromBottom' style={{ animationDelay: '0.2s' }}>
             <AlertStripeAdvarsel>
               <FlexDivNoWrap>
@@ -388,10 +396,10 @@ const ArbeidsforholdetFC: React.FC<ArbeidsforholdetProps> = ({
             </AlertStripeAdvarsel>
           </div>
         )}
-      </ArbeidsforholdPanel>
+      </ArbeidsgiverPanel>
       <VerticalSeparatorDiv data-size='0.5' />
     </div>
   )
 }
 
-export default ArbeidsforholdetFC
+export default ArbeidsgiverBox

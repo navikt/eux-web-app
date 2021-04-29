@@ -13,9 +13,9 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 interface PersonensStatusProps {
-  arbeidsforholdList: any
-  getArbeidsforholdList: (fnr: string | undefined) => void,
-  gettingArbeidsforholdList: boolean
+  arbeidsperioder: any
+  getArbeidsperioder: (fnr: string | undefined) => void,
+  gettingArbeidsperioder: boolean
   highContrast: boolean
   personID: string
   replySed: ReplySed
@@ -25,9 +25,9 @@ interface PersonensStatusProps {
 }
 
 const PersonensStatus: React.FC<PersonensStatusProps> = ({
-  arbeidsforholdList,
-  getArbeidsforholdList,
-  gettingArbeidsforholdList,
+  arbeidsperioder,
+  getArbeidsperioder,
+  gettingArbeidsperioder,
   highContrast,
   personID,
   replySed,
@@ -92,9 +92,9 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
             {_arbeidsforhold === 'arbeidsforhold-1'
               ? (
                 <Ansatt
-                  arbeidsforholdList={arbeidsforholdList}
-                  getArbeidsforholdList={getArbeidsforholdList}
-                  gettingArbeidsforholdList={gettingArbeidsforholdList}
+                  arbeidsperioder={arbeidsperioder}
+                  getArbeidsperioder={getArbeidsperioder}
+                  gettingArbeidsperioder={gettingArbeidsperioder}
                   replySed={replySed}
                   personID={personID}
                   updateReplySed={updateReplySed}
@@ -114,7 +114,7 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
       )}
       {_arbeidsforhold && (_arbeidsforhold !== 'arbeidsforhold-1' && _arbeidsforhold !== 'arbeidsforhold-2') && (
         <>
-          <VerticalSeparatorDiv data-size='2' />
+          <VerticalSeparatorDiv data-size='3' />
           <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
             <Column>
               <WithSubsidies
@@ -132,7 +132,7 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
       )}
       {_arbeidsforhold && (
         <>
-          <VerticalSeparatorDiv data-size='2' />
+          <VerticalSeparatorDiv data-size='3' />
           <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
             <Column>
               <Avsenderlandet
@@ -144,7 +144,7 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
               />
             </Column>
           </AlignStartRow>
-          <VerticalSeparatorDiv data-size='2' />
+          <VerticalSeparatorDiv data-size='3' />
           <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
             <Column>
               <GrunnlagforBosetting

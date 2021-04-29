@@ -112,7 +112,7 @@ export const validateKontaktsinformasjonTelefoner = (
 ): boolean => {
   let hasErrors: boolean = false
   telefoner?.forEach((telefon: Telefon, index: number) => {
-    let _error: boolean = validateKontaktsinformasjonTelefon(validation, t, { telefon, index, namespace, personName })
+    const _error: boolean = validateKontaktsinformasjonTelefon(validation, t, { telefon, index, namespace, personName })
     hasErrors = hasErrors || _error
   })
   return hasErrors
@@ -127,7 +127,7 @@ export const validateKontaktsinformasjonEposter = (
 ): boolean => {
   let hasErrors: boolean = false
   eposter?.forEach((epost: Epost, index: number) => {
-    let _error: boolean = validateKontaktsinformasjonEpost(validation, t, { epost, index, namespace, personName })
+    const _error: boolean = validateKontaktsinformasjonEpost(validation, t, { epost, index, namespace, personName })
     hasErrors = hasErrors || _error
   })
   return hasErrors

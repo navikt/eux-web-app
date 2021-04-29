@@ -18,12 +18,12 @@ export interface KravOmRefusjonProps {
 }
 
 const KravOmRefusjon: React.FC<KravOmRefusjonProps> = ({
-   //highContrast,
-   replySed,
-   resetValidation,
-   seeKontoopplysninger,
-   updateReplySed,
-   validation
+  // highContrast,
+  replySed,
+  resetValidation,
+  seeKontoopplysninger,
+  updateReplySed,
+  validation
 }: KravOmRefusjonProps): JSX.Element => {
   const { t } = useTranslation()
   const target = 'formaalx.kravomrefusjon'
@@ -43,7 +43,7 @@ const KravOmRefusjon: React.FC<KravOmRefusjonProps> = ({
         {t('el:title-krav-om-refusjon')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      <FormaalPanel className={classNames({feil: validation[namespace]?.feilmelding})}>
+      <FormaalPanel className={classNames({ feil: validation[namespace]?.feilmelding })}>
         <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
@@ -61,19 +61,21 @@ const KravOmRefusjon: React.FC<KravOmRefusjonProps> = ({
             </TextAreaDiv>
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <AlignStartRow>
           <Column>
-            <HighContrastLink href='#' onClick={(e: any) => {
-              e.preventDefault()
-              seeKontoopplysninger()
-              // have to wait 0.1 seconds so it comes to DOM first
-              setTimeout(() => {
-                document.getElementById("kontoopplysning")?.scrollIntoView({
-                  behavior: 'smooth'
-                })
-              }, 100)
-            }}>
+            <HighContrastLink
+              href='#' onClick={(e: any) => {
+                e.preventDefault()
+                seeKontoopplysninger()
+                // have to wait 0.1 seconds so it comes to DOM first
+                setTimeout(() => {
+                  document.getElementById('kontoopplysning')?.scrollIntoView({
+                    behavior: 'smooth'
+                  })
+                }, 100)
+              }}
+            >
               {t('label:oppgi-kontoopplysninger')}
             </HighContrastLink>
           </Column>

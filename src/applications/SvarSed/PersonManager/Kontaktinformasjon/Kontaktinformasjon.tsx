@@ -127,7 +127,6 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
     resetForm(what)
   }
 
-
   const onTelefonRemoved = (index: number) => {
     const newTelefoner = _.cloneDeep(telefoner)
     const deletedTelefoner: Array<Telefon> = newTelefoner.splice(index, 1)

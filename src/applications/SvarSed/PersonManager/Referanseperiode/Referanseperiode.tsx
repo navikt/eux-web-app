@@ -17,11 +17,11 @@ interface ReferanseperiodeProps {
 }
 
 const Referanseperiode: React.FC<ReferanseperiodeProps> = ({
- personID,
- replySed,
- resetValidation,
- updateReplySed,
- validation
+  personID,
+  replySed,
+  resetValidation,
+  updateReplySed,
+  validation
 }:ReferanseperiodeProps): JSX.Element => {
   const { t } = useTranslation()
   const target = 'anmodningsperiode'
@@ -29,7 +29,7 @@ const Referanseperiode: React.FC<ReferanseperiodeProps> = ({
   const namespace = `personmanager-${personID}-referanseperiode`
 
   const setStartDato = (startdato: string) => {
-    updateReplySed(`{target}.startdato`, startdato.trim())
+    updateReplySed('{target}.startdato', startdato.trim())
     if (validation[namespace + '-startdato']) {
       resetValidation(namespace + '-startdato')
     }
@@ -59,8 +59,8 @@ const Referanseperiode: React.FC<ReferanseperiodeProps> = ({
           </Undertittel>
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv/>
-      <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.1s'}}>
+      <VerticalSeparatorDiv />
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Period
           key={'' + anmodningsperiode?.startdato + anmodningsperiode?.sluttdato}
           namespace={namespace}

@@ -248,7 +248,7 @@ const Motregning: React.FC<MotregningProps> = ({
         {t('el:title-motregning')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      <FormaalPanel className={classNames({feil: validation[namespace]?.feilmelding})}>
+      <FormaalPanel className={classNames({ feil: validation[namespace]?.feilmelding })}>
         <HighContrastRadioGroup
           className={classNames('slideInFromLeft')}
           data-test-id={namespace + '-anmodningEllerSvar'}
@@ -344,7 +344,7 @@ const Motregning: React.FC<MotregningProps> = ({
             valueStartDato={motregning?.startdato}
             valueSluttDato={motregning?.sluttdato}
           />
-          <Column/>
+          <Column />
         </AlignStartRow>
         <VerticalSeparatorDiv />
         <AlignStartRow
@@ -421,17 +421,19 @@ const Motregning: React.FC<MotregningProps> = ({
         <VerticalSeparatorDiv />
         <AlignStartRow>
           <Column>
-            <HighContrastLink href='#' onClick={(e: any) => {
-              e.preventDefault()
-              seeKontoopplysninger()
-              // have to wait 0.1 seconds so it comes to DOM first
-              setTimeout(() => {
-                var element = document.getElementById("kontoopplysning")
-                element?.scrollIntoView({
-                  behavior: 'smooth'
-                })
-              }, 100)
-            }}>
+            <HighContrastLink
+              href='#' onClick={(e: any) => {
+                e.preventDefault()
+                seeKontoopplysninger()
+                // have to wait 0.1 seconds so it comes to DOM first
+                setTimeout(() => {
+                  const element = document.getElementById('kontoopplysning')
+                  element?.scrollIntoView({
+                    behavior: 'smooth'
+                  })
+                }, 100)
+              }}
+            >
               {t('label:oppgi-kontoopplysninger')}
             </HighContrastLink>
           </Column>

@@ -5,14 +5,14 @@ export const PeriodePropType = PT.shape({
   tom: PT.string
 })
 
-export const ArbeidsforholdetPropType = PT.shape({
+export const ArbeidsgiverPropType = PT.shape({
   arbeidsgiverOrgnr: PT.string,
   arbeidsgiverNavn: PT.string,
   fraDato: PT.string,
   tilDato: PT.string
 })
 
-export const ArbeidsforholdPropType = PT.arrayOf(ArbeidsforholdetPropType)
+export const ArbeidsgiverePropType = PT.arrayOf(ArbeidsgiverPropType)
 
 export const KodeverkPropType = PT.shape({
   kode: PT.string.isRequired,

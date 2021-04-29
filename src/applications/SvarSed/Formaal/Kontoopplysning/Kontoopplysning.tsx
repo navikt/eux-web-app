@@ -30,11 +30,11 @@ export interface KontoopplysningProps {
 }
 
 const Kontoopplysning: React.FC<KontoopplysningProps> = ({
-   //highContrast,
-   replySed,
-   resetValidation,
-   updateReplySed,
-   validation
+  // highContrast,
+  replySed,
+  resetValidation,
+  updateReplySed,
+  validation
 }: KontoopplysningProps): JSX.Element => {
   const { t } = useTranslation()
   const target = 'utbetalingTilInstitusjon'
@@ -94,23 +94,23 @@ const Kontoopplysning: React.FC<KontoopplysningProps> = ({
           className={classNames('slideInFromLeft')}
         >
           <Column data-flex='2'>
-           <TextAreaDiv>
-             <TextArea
-               feil={validation[namespace + '-begrunnelse']?.feilmelding}
-               namespace={namespace}
-               id='begrunnelse'
-               label={t('label:begrunnelse-for-myndighetens-krav') + '*'}
-               onChanged={setBegrunnelse}
-               value={utbetalingTilInstitusjon.begrunnelse ?? ''}
-             />
-          </TextAreaDiv>
+            <TextAreaDiv>
+              <TextArea
+                feil={validation[namespace + '-begrunnelse']?.feilmelding}
+                namespace={namespace}
+                id='begrunnelse'
+                label={t('label:begrunnelse-for-myndighetens-krav') + '*'}
+                onChanged={setBegrunnelse}
+                value={utbetalingTilInstitusjon.begrunnelse ?? ''}
+              />
+            </TextAreaDiv>
           </Column>
-          <Column/>
+          <Column />
         </AlignStartRow>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{animationDelay: '0.1s'}}
+          style={{ animationDelay: '0.1s' }}
         >
           <Column>
             <Input
@@ -132,12 +132,12 @@ const Kontoopplysning: React.FC<KontoopplysningProps> = ({
               value={utbetalingTilInstitusjon.navn ?? ''}
             />
           </Column>
-          <Column/>
+          <Column />
         </AlignStartRow>
-        <VerticalSeparatorDiv data-size='2'/>
+        <VerticalSeparatorDiv data-size='2' />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{animationDelay: '0.2s'}}
+          style={{ animationDelay: '0.2s' }}
         >
           <Column>
             <HighContrastRadioGroup
@@ -164,10 +164,10 @@ const Kontoopplysning: React.FC<KontoopplysningProps> = ({
             </HighContrastRadioGroup>
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{animationDelay: '0.3s'}}
+          style={{ animationDelay: '0.3s' }}
         >
           <Column data-flex='2'>
             <Input
@@ -179,12 +179,12 @@ const Kontoopplysning: React.FC<KontoopplysningProps> = ({
               value={utbetalingTilInstitusjon.kontoOrdinaer.iban ?? ''}
             />
           </Column>
-          <Column/>
+          <Column />
         </AlignStartRow>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{animationDelay: '0.4s'}}
+          style={{ animationDelay: '0.4s' }}
         >
           <Column data-flex='2'>
             <Input
@@ -196,13 +196,11 @@ const Kontoopplysning: React.FC<KontoopplysningProps> = ({
               value={utbetalingTilInstitusjon.kontoOrdinaer.swift ?? ''}
             />
           </Column>
-          <Column/>
+          <Column />
         </AlignStartRow>
       </HighContrastPanel>
     </PileDiv>
   )
 }
-
-
 
 export default Kontoopplysning

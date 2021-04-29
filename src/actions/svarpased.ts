@@ -1,9 +1,9 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { ReplySed } from 'declarations/sed'
-import { Arbeidsforholdet, OldFamilieRelasjon, Inntekter, ConnectedSed, Validation } from 'declarations/types'
+import { Arbeidsgiver, OldFamilieRelasjon, Inntekter, ConnectedSed, Validation } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
-import mockArbeidsforholdList from 'mocks/arbeidsforholdList'
+import mockArbeidsperioder from 'mocks/arbeidsperioder'
 import mockInntekt from 'mocks/inntekt'
 import mockPerson from 'mocks/person'
 import mockReplySed from 'mocks/replySed'
@@ -192,32 +192,31 @@ export const createSed: ActionCreator<ThunkResult<
   })
 }
 
-export const getArbeidsforholdList: ActionCreator<ThunkResult<
+export const getArbeidsperioder: ActionCreator<ThunkResult<
   ActionWithPayload
 >> = (fnr: string): ThunkResult<ActionWithPayload> => {
-  console.log(mockArbeidsforholdList(fnr))
   return call({
-    url: sprintf(urls.API_SAK_ARBEIDSFORHOLD_URL, { fnr: fnr }),
-    expectedPayload: mockArbeidsforholdList(fnr),
+    url: sprintf(urls.API_SAK_ARBEIDSPERIODER_URL, { fnr: fnr }),
+    expectedPayload: mockArbeidsperioder(fnr),
     type: {
-      request: types.SVARPASED_ARBEIDSFORHOLDLIST_GET_REQUEST,
-      success: types.SVARPASED_ARBEIDSFORHOLDLIST_GET_SUCCESS,
-      failure: types.SVARPASED_ARBEIDSFORHOLDLIST_GET_FAILURE
+      request: types.SVARPASED_ARBEIDSPERIODER_GET_REQUEST,
+      success: types.SVARPASED_ARBEIDSPERIODER_GET_SUCCESS,
+      failure: types.SVARPASED_ARBEIDSPERIODER_GET_FAILURE
     }
   })
 }
 
-export const addArbeidsforhold: ActionCreator<ActionWithPayload> = (
-  payload: Arbeidsforholdet
+export const addArbeidsgiver: ActionCreator<ActionWithPayload> = (
+  payload: Arbeidsgiver
 ): ActionWithPayload => ({
-  type: types.SVARPASED_ARBEIDSFORHOLD_ADD,
+  type: types.SVARPASED_ARBEIDSGIVER_ADD,
   payload: payload
 })
 
-export const removeArbeidsforhold: ActionCreator<ActionWithPayload> = (
-  payload: Arbeidsforholdet
+export const removeArbeidsgiver: ActionCreator<ActionWithPayload> = (
+  payload: Arbeidsgiver
 ): ActionWithPayload => ({
-  type: types.SVARPASED_ARBEIDSFORHOLD_REMOVE,
+  type: types.SVARPASED_ARBEIDSGIVER_REMOVE,
   payload: payload
 })
 

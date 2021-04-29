@@ -323,7 +323,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
               <Column />
             </AlignStartRow>
             <VerticalSeparatorDiv />
-            <AlignStartRow className={classNames('slideInFromLeft')} style={{ animationDelay: index < 0 ? '0.2s': (index * 0.3 + 0.2) + 's' }}>
+            <AlignStartRow className={classNames('slideInFromLeft')} style={{ animationDelay: index < 0 ? '0.2s' : (index * 0.3 + 0.2) + 's' }}>
               <Column data-flex='2'>
                 <HighContrastRadioPanelGroup
                   checked={index < 0 ? _newBorSammen : familierelasjon?.borSammen}

@@ -17,7 +17,7 @@ export const API_SVARPASED_DNR_QUERY_URL = API_BASE_URL + '/person/%(fnr)s/rinas
 export const API_SVARPASED_SAKSNUMMER_QUERY_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/oversikt'
 
 // Registre
-export const API_SAK_ARBEIDSFORHOLD_URL = API_BASE_URL + '/arbeidsforhold/%(fnr)s'
+export const API_SAK_ARBEIDSPERIODER_URL = API_BASE_URL + '/arbeidsforhold/%(fnr)s'
 export const API_SAK_FAGSAKER_URL = API_BASE_URL + '/fagsaker/%(fnr)s/?sektor=%(sektor)s&tema=%(tema)s'
 export const API_SAK_INNTEKT_URL = API_BASE_URL + '/inntekt/%(fnr)s?fraDato=%(fraDato)s&tilDato=%(tilDato)s&tema=%(tema)s'
 export const API_SAK_PERSON_URL = API_BASE_URL + '/personer/?fnr=%(fnr)s'

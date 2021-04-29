@@ -290,7 +290,7 @@ export interface F002Sed extends FSed {
     motregning?: FormalMotregning
     vedtak?: FormalVedtak
     prosedyreveduenighet?: FormalProsedyreVedUenighet
-    kravomrefusjon?: ForlmKravOmRefusjon
+    kravomrefusjon?: FormalKravOmRefusjon
   }
 }
 

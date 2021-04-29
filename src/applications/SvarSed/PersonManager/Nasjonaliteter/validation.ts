@@ -82,7 +82,7 @@ export const validateNasjonaliteter = (
 ): boolean => {
   let hasErrors: boolean = false
   statsborgerskaper?.forEach((statsborgerskap: Statsborgerskap, index: number) => {
-    let _error: boolean = validateNasjonalitet(validation, t, { statsborgerskap, statsborgerskaper, index, namespace, personName })
+    const _error: boolean = validateNasjonalitet(validation, t, { statsborgerskap, statsborgerskaper, index, namespace, personName })
     hasErrors = hasErrors || _error
   })
   return hasErrors

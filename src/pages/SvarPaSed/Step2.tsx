@@ -72,7 +72,7 @@ const mapState = (state: State): any => ({
 })
 
 const mapStateTwo = (state: State): any => ({
-  arbeidsforhold: state.svarpased.valgteArbeidsforhold,
+  arbeidsgivere: state.svarpased.valgteArbeidsgivere,
   familieRelasjoner: state.svarpased.familierelasjoner,
   inntekter: state.svarpased.selectedInntekter,
   sed: state.svarpased.replySed
@@ -270,7 +270,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
           </Systemtittel>
           <VerticalSeparatorDiv />
           <Formaal
-            feil={_validation['formaal']}
+            feil={_validation.formaal}
             replySed={replySed}
             highContrast={highContrast}
           />
@@ -366,9 +366,9 @@ const Step2: React.FC<SvarPaSedProps> = ({
       <VerticalSeparatorDiv />
       <TextAreaDiv>
         <HighContrastTextArea
-          className={classNames({ 'skjemaelement__input--harFeil': _validation['comment'] })}
+          className={classNames({ 'skjemaelement__input--harFeil': _validation.comment })}
           data-test-id='comment'
-          feil={_validation['comment']?.feilmelding}
+          feil={_validation.comment?.feilmelding}
           id='comment'
           label={t('label:ytterligere-informasjon-til-sed')}
           maxLength={500}

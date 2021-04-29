@@ -66,7 +66,7 @@ export const validatePersonOpplysninger = (
   if (!_.isEmpty(personInfo.pinMangler)) {
     if (_.isEmpty(personInfo.pinMangler?.foedested?.by?.trim())) {
       v[namespace + '-foedested-by'] = {
-        feilmelding: t('message:validation-noFoedestedByForPerson', {person: personName}),
+        feilmelding: t('message:validation-noFoedestedByForPerson', { person: personName }),
         skjemaelementId: namespace + '-foedested-by'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -74,7 +74,7 @@ export const validatePersonOpplysninger = (
 
     if (_.isEmpty(personInfo.pinMangler?.foedested?.region?.trim())) {
       v[namespace + '-foedested-region'] = {
-        feilmelding: t('message:validation-noFoedestedRegionForPerson', {person: personName}),
+        feilmelding: t('message:validation-noFoedestedRegionForPerson', { person: personName }),
         skjemaelementId: namespace + '-foedested-region'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -82,7 +82,7 @@ export const validatePersonOpplysninger = (
 
     if (_.isEmpty(personInfo.pinMangler?.foedested?.land?.trim())) {
       v[namespace + '-foedested-land'] = {
-        feilmelding: t('message:validation-noFoedestedLandForPerson', {person: personName}),
+        feilmelding: t('message:validation-noFoedestedLandForPerson', { person: personName }),
         skjemaelementId: namespace + '-foedested-land'
       } as FeiloppsummeringFeil
       hasErrors = true

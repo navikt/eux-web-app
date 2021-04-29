@@ -1,12 +1,12 @@
 import * as types from 'constants/actionTypes'
-import { ReplySed } from 'declarations/sed.d'
-import { Arbeidsforhold, Inntekter, Person, Seds, Validation } from 'declarations/types.d'
+import { Arbeidsgiver, ReplySed } from 'declarations/sed.d'
+import { Arbeidsperioder, Inntekter, Person, Seds, Validation } from 'declarations/types.d'
 import { ActionWithPayload } from 'js-fetch-api'
 import _ from 'lodash'
 import { Action } from 'redux'
 
 export interface SvarpasedState {
-  arbeidsforholdList: Arbeidsforhold | undefined
+  arbeidsperioder: Arbeidsperioder | undefined
   familierelasjoner: Array<any>
   inntekter: Inntekter | undefined
   parentSed: string | undefined
@@ -20,12 +20,12 @@ export interface SvarpasedState {
   selectedInntekter: Inntekter | undefined
   seds: Seds | undefined
   sedCreatedResponse: any
-  valgteArbeidsforhold: Arbeidsforhold,
+  valgteArbeidsgivere: Array<Arbeidsgiver>,
   validation: Validation
 }
 
 export const initialSvarpasedState: SvarpasedState = {
-  arbeidsforholdList: undefined,
+  arbeidsperioder: undefined,
   familierelasjoner: [],
   inntekter: undefined,
   parentSed: undefined,
@@ -39,7 +39,7 @@ export const initialSvarpasedState: SvarpasedState = {
   saksnummerOrFnr: undefined,
   selectedInntekter: undefined,
   sedCreatedResponse: undefined,
-  valgteArbeidsforhold: [],
+  valgteArbeidsgivere: [],
   validation: {}
 }
 
@@ -48,25 +48,25 @@ const svarpasedReducer = (
   action: Action | ActionWithPayload = { type: '', payload: undefined }
 ) => {
   switch (action.type) {
-    case types.SVARPASED_ARBEIDSFORHOLDLIST_GET_SUCCESS:
+    case types.SVARPASED_ARBEIDSPERIODER_GET_SUCCESS:
       return {
         ...state,
-        arbeidsforholdList: (action as ActionWithPayload).payload
+        arbeidsperioder: (action as ActionWithPayload).payload
       }
 
-    case types.SVARPASED_ARBEIDSFORHOLD_ADD:
+    case types.SVARPASED_ARBEIDSGIVER_ADD:
       return {
         ...state,
-        valgteArbeidsforhold: state.valgteArbeidsforhold.concat(
+        valgteArbeidsgivere: state.valgteArbeidsgivere.concat(
           (action as ActionWithPayload).payload
         )
       }
 
-    case types.SVARPASED_ARBEIDSFORHOLD_REMOVE:
+    case types.SVARPASED_ARBEIDSGIVER_REMOVE:
       return {
         ...state,
-        valgteArbeidsforhold: _.filter(
-          state.valgteArbeidsforhold,
+        valgteArbeidsgivere: _.filter(
+          state.valgteArbeidsgivere,
           (i) => i !== (action as ActionWithPayload).payload
         )
       }

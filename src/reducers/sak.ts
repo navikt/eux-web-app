@@ -2,7 +2,7 @@ import { ActionWithPayload } from 'js-fetch-api'
 import _ from 'lodash'
 import * as types from 'constants/actionTypes'
 import {
-  Arbeidsforhold,
+  Arbeidsgiver,
   Arbeidsperioder,
   FagSaker,
   OldFamilieRelasjon,
@@ -12,8 +12,8 @@ import {
 } from 'declarations/types'
 
 export interface SakState {
-  arbeidsforholdList: Arbeidsperioder | undefined
-  arbeidsforhold: Arbeidsforhold
+  arbeidsperioder: Arbeidsperioder | undefined
+  arbeidsgivere: Array<Arbeidsgiver>
   buctype: any
   familierelasjoner: Array<OldFamilieRelasjon>
   fagsaker: FagSaker | undefined | null
@@ -32,8 +32,8 @@ export interface SakState {
 }
 
 export const initialSakState: SakState = {
-  arbeidsforholdList: undefined,
-  arbeidsforhold: [],
+  arbeidsperioder: undefined,
+  arbeidsgivere: [],
   buctype: undefined,
   fagsaker: undefined,
   familierelasjoner: [],
@@ -53,10 +53,10 @@ export const initialSakState: SakState = {
 
 const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload = { type: '', payload: undefined }) => {
   switch (action.type) {
-    case types.SAK_ARBEIDSFORHOLDLIST_GET_SUCCESS:
+    case types.SAK_ARBEIDSPERIODER_GET_SUCCESS:
       return {
         ...state,
-        arbeidsforholdList: action.payload
+        arbeidsperioder: action.payload
       }
 
     case types.SAK_FAGSAKER_GET_REQUEST:
@@ -136,7 +136,7 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
         ...state,
         opprettetSak: action.payload,
         // do an app reset
-        arbeidsforhold: [],
+        arbeidsgivere: [],
         buctype: undefined,
         fagsaker: undefined,
         familierelasjoner: [],
@@ -163,7 +163,7 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
       // reset all but stuff that comes from eessi-kodeverk
       return {
         ...state,
-        arbeidsforhold: [],
+        arbeidsgivere: [],
         buctype: undefined,
         fagsaker: undefined,
         familierelasjoner: [],
@@ -185,16 +185,16 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
         [(action as ActionWithPayload).payload.key]: (action as ActionWithPayload).payload.value
       }
 
-    case types.SAK_ARBEIDSFORHOLD_ADD:
+    case types.SAK_ARBEIDSGIVER_ADD:
       return {
         ...state,
-        arbeidsforhold: (state.arbeidsforhold || []).concat((action as ActionWithPayload).payload)
+        arbeidsgivere: (state.arbeidsgivere || []).concat((action as ActionWithPayload).payload)
       }
 
-    case types.SAK_ARBEIDSFORHOLD_REMOVE:
+    case types.SAK_ARBEIDSGIVER_REMOVE:
       return {
         ...state,
-        arbeidsforhold: _.filter(state.arbeidsforhold, i => i !== (action as ActionWithPayload).payload)
+        arbeidsgivere: _.filter(state.arbeidsgivere, i => i !== (action as ActionWithPayload).payload)
       }
 
     case types.SAK_FAMILIERELASJONER_ADD:

@@ -15,7 +15,7 @@ export const validateKravOmRefusjon = (
 
   if (_.isEmpty(kravOmRefusjon?.krav?.trim())) {
     v[namespace + '-krav'] = {
-      feilmelding: t('message:validation-noKravForPerson', {person: personName}),
+      feilmelding: t('message:validation-noKravForPerson', { person: personName }),
       skjemaelementId: namespace + '-krav'
     } as FeiloppsummeringFeil
     hasErrors = true

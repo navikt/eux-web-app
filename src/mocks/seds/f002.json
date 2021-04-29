@@ -152,12 +152,16 @@
     ],
     "perioderSomAnsatt": [
       {
-        "startdato": "1982-01-01",
-        "sluttdato": "1982-12-31"
+        "startdato": "1970-01-01",
+        "sluttdato": "1979-12-31"
       },
       {
-        "startdato": "1983-01-01",
-        "aapenPeriodeType": "åpen_sluttdato"
+        "startdato": "1980-01-01",
+        "sluttdato": "1989-12-31"
+      },
+      {
+        "startdato": "1990-01-01",
+        "sluttdato": "1999-12-31"
       }
     ],
     "perioderSomSelvstendig": [

@@ -56,8 +56,8 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
       _resetValidation(namespace + '-udekkede-startdato')
     } else {
       updateReplySed(`{target}[${index}].startdato`, startdato.trim())
-      if (validation[namespace + '-perioderUtenforTrygdeordning' + getIdx(index) +'-startdato']) {
-        resetValidation(namespace +'-perioderUtenforTrygdeordning' + getIdx(index) +'-startdato')
+      if (validation[namespace + '-perioderUtenforTrygdeordning' + getIdx(index) + '-startdato']) {
+        resetValidation(namespace + '-perioderUtenforTrygdeordning' + getIdx(index) + '-startdato')
       }
     }
   }
@@ -76,8 +76,8 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
         newPerioder[index].sluttdato = sluttdato.trim()
       }
       updateReplySed(target, newPerioder)
-      if (namespace + '-perioderUtenforTrygdeordning' + getIdx(index) +'-sluttdato') {
-        resetValidation(namespace + '-perioderUtenforTrygdeordning' + getIdx(index) +'-sluttdato')
+      if (namespace + '-perioderUtenforTrygdeordning' + getIdx(index) + '-sluttdato') {
+        resetValidation(namespace + '-perioderUtenforTrygdeordning' + getIdx(index) + '-sluttdato')
       }
     }
   }

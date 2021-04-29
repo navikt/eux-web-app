@@ -1,15 +1,14 @@
 import {
-  Arbeidsforhold,
-  Arbeidsforholdet,
+  Arbeidsgiver,
   FagSaker,
   OldFamilieRelasjon,
   Institusjoner,
   Kodeverk,
-  Person
+  Person, Arbeidsperioder
 } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockSendSak from 'mocks/sendSak'
-import mockArbeidsforholdList from 'mocks/arbeidsforholdList'
+import mockArbeidsperioder from 'mocks/arbeidsperioder'
 import mockFagsakerList from 'mocks/fagsakerList'
 import mockInstitutionList from 'mocks/institutionList'
 import mockLandkoderList from 'mocks/landkoderList'
@@ -25,10 +24,10 @@ export const sakCleanData: ActionCreator<Action> = (): Action => ({
   type: types.SAK_CLEAN_DATA
 })
 
-export const addArbeidsforhold: ActionCreator<ActionWithPayload<Arbeidsforholdet>> = (
-  payload: Arbeidsforholdet
-): ActionWithPayload<Arbeidsforholdet> => ({
-  type: types.SAK_ARBEIDSFORHOLD_ADD,
+export const addArbeidsgiver: ActionCreator<ActionWithPayload<Arbeidsgiver>> = (
+  payload: Arbeidsgiver
+): ActionWithPayload<Arbeidsgiver> => ({
+  type: types.SAK_ARBEIDSGIVER_ADD,
   payload: payload
 })
 
@@ -58,8 +57,8 @@ export const createSak: ActionCreator<ThunkResult<ActionWithPayload<any>>> = (
   if (data.enhet) {
     payload.enhet = data.enhet
   }
-  if (data.arbeidsforhold && data.arbeidsforhold.length > 0) {
-    payload.tilleggsopplysninger.arbeidsforhold = data.arbeidsforhold
+  if (data.arbeidsgivere && data.arbeidsgivere.length > 0) {
+    payload.tilleggsopplysninger.arbeidsforhold = data.arbeidsgivere
   }
   if (data.familierelasjoner && data.familierelasjoner.length > 0) {
     payload.tilleggsopplysninger.familierelasjoner = data.familierelasjoner.map((relasjon: any) => ({
@@ -83,16 +82,16 @@ export const createSak: ActionCreator<ThunkResult<ActionWithPayload<any>>> = (
   })
 }
 
-export const getArbeidsforholdList: ActionCreator<ThunkResult<ActionWithPayload<Arbeidsforhold>>> = (
+export const getArbeidsperioder: ActionCreator<ThunkResult<ActionWithPayload<Arbeidsperioder>>> = (
   fnr: string
-): ThunkResult<ActionWithPayload<Arbeidsforhold>> => {
+): ThunkResult<ActionWithPayload<Arbeidsperioder>> => {
   return call({
-    url: sprintf(urls.API_SAK_ARBEIDSFORHOLD_URL, { fnr: fnr }),
-    expectedPayload: mockArbeidsforholdList(fnr),
+    url: sprintf(urls.API_SAK_ARBEIDSPERIODER_URL, { fnr: fnr }),
+    expectedPayload: mockArbeidsperioder(fnr),
     type: {
-      request: types.SAK_ARBEIDSFORHOLDLIST_GET_REQUEST,
-      success: types.SAK_ARBEIDSFORHOLDLIST_GET_SUCCESS,
-      failure: types.SAK_ARBEIDSFORHOLDLIST_GET_FAILURE
+      request: types.SAK_ARBEIDSPERIODER_GET_REQUEST,
+      success: types.SAK_ARBEIDSPERIODER_GET_SUCCESS,
+      failure: types.SAK_ARBEIDSPERIODER_GET_FAILURE
     }
   })
 }
@@ -172,10 +171,10 @@ export const getPersonRelated: ActionCreator<ThunkResult<ActionWithPayload<Perso
   })
 }
 
-export const removeArbeidsforhold: ActionCreator<ActionWithPayload<Arbeidsforholdet>> = (
-  payload: Arbeidsforholdet
-): ActionWithPayload<Arbeidsforholdet> => ({
-  type: types.SAK_ARBEIDSFORHOLD_REMOVE,
+export const removeArbeidsgiver: ActionCreator<ActionWithPayload<Arbeidsgiver>> = (
+  payload: Arbeidsgiver
+): ActionWithPayload<Arbeidsgiver> => ({
+  type: types.SAK_ARBEIDSGIVER_REMOVE,
   payload: payload
 })
 

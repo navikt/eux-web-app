@@ -201,7 +201,7 @@ const Adresser: React.FC<AdresseProps> = ({
     const candidateForDeletion = index < 0 ? false : isInDeletion(adresse)
     const idx = getIdx(index)
     const getErrorFor = (index: number, el: string): string | undefined => (
-       index < 0
+      index < 0
         ? _validation[namespace + '-' + el]?.feilmelding
         : validation[namespace + idx + '-' + el]?.feilmelding
     )
@@ -246,7 +246,7 @@ const Adresser: React.FC<AdresseProps> = ({
         <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{ animationDelay: index < 0 ? '0.1s' : (index * 0.3 + 0.1) + 's'}}
+          style={{ animationDelay: index < 0 ? '0.1s' : (index * 0.3 + 0.1) + 's' }}
         >
           <Column data-flex='2'>
             <Input
@@ -273,7 +273,7 @@ const Adresser: React.FC<AdresseProps> = ({
         <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{ animationDelay: index < 0 ? '0.2s' : (index * 0.3 + 0.2) + 's'}}
+          style={{ animationDelay: index < 0 ? '0.2s' : (index * 0.3 + 0.2) + 's' }}
         >
           <Column>
             <Input
@@ -300,7 +300,7 @@ const Adresser: React.FC<AdresseProps> = ({
         <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{ animationDelay: index < 0 ? '0.2s' : (index * 0.3 + 0.2) + 's'}}
+          style={{ animationDelay: index < 0 ? '0.2s' : (index * 0.3 + 0.2) + 's' }}
         >
           <Column data-flex='1.5'>
             <Input

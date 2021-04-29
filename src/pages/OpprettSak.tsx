@@ -5,13 +5,13 @@ import Family from 'applications/OpprettSak/Family/Family'
 import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
 import classNames from 'classnames'
 import AbortModal from 'components/AbortModal/AbortModal'
-import Arbeidsforhold from 'components/Arbeidsforhold/Arbeidsforhold'
+import Arbeidsgivere from 'components/Arbeidsgiver/Arbeidsgivere'
 import TopContainer from 'components/TopContainer/TopContainer'
 import * as types from 'constants/actionTypes'
 import { AlertStatus } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import {
-  Arbeidsforholdet, Arbeidsperioder,
+  Arbeidsgiver,
   BucTyper,
   Enhet,
   Enheter,
@@ -25,7 +25,8 @@ import {
   Person,
   ServerInfo,
   Tema,
-  Validation
+  Validation,
+  Arbeidsperioder
 } from 'declarations/types'
 import * as EKV from 'eessi-kodeverk'
 import { History } from 'history'
@@ -74,7 +75,7 @@ export interface OpprettSakSelector {
   sendingSak: boolean
   gettingPerson: boolean
 
-  arbeidsforholdList: Arbeidsperioder | undefined
+  arbeidsperioder: Arbeidsperioder | undefined
   buctyper: BucTyper | undefined
   fagsaker: FagSaker | undefined | null
   familierelasjonKodeverk: Array<Kodeverk> | undefined
@@ -88,7 +89,7 @@ export interface OpprettSakSelector {
   sektor: Array<Kodeverk> | undefined
   tema: Tema | undefined
 
-  valgteArbeidsforhold: Array<Arbeidsforholdet>
+  valgteArbeidsgivere: Array<Arbeidsgiver>
   valgtBucType: string | undefined
   valgteFamilieRelasjoner: Array<OldFamilieRelasjon>
   valgtFnr: string | undefined
@@ -121,8 +122,8 @@ const mapState = (state: State): OpprettSakSelector => ({
   sendingSak: state.loading.sendingSak,
   gettingPerson: state.loading.gettingPerson,
 
-  arbeidsforholdList: state.sak.arbeidsforholdList,
-  valgteArbeidsforhold: state.sak.arbeidsforhold,
+  arbeidsperioder: state.sak.arbeidsperioder,
+  valgteArbeidsgivere: state.sak.arbeidsgivere,
   valgtBucType: state.sak.buctype,
   valgteFamilieRelasjoner: state.sak.familierelasjoner,
   fagsaker: state.sak.fagsaker,
@@ -153,7 +154,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
     enheter,
     serverInfo,
     sendingSak,
-    arbeidsforholdList,
+    arbeidsperioder,
     buctyper,
     fagsaker,
     familierelasjonKodeverk,
@@ -166,7 +167,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
     personRelatert,
     sektor,
     tema,
-    valgteArbeidsforhold,
+    valgteArbeidsgivere,
     valgtBucType,
     valgteFamilieRelasjoner,
     valgtFnr,
@@ -201,7 +202,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
 
   const isSomething = (value: any): boolean => !_.isNil(value) && !_.isEmpty(value)
   const visFagsakerListe: boolean = isSomething(valgtSektor) && isSomething(tema) && isSomething(fagsaker)
-  const visArbeidsforhold: boolean = EKV.Koder.sektor.FB === valgtSektor &&
+  const visArbeidsgivere: boolean = EKV.Koder.sektor.FB === valgtSektor &&
     EKV.Koder.buctyper.family.FB_BUC_01 === valgtBucType && isSomething(valgtSedType)
   const visEnheter: boolean = valgtSektor === 'HZ' || valgtSektor === 'SI'
 
@@ -303,7 +304,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
         sektor: valgtSektor,
         tema: valgtTema,
         familierelasjoner: valgteFamilieRelasjoner,
-        arbeidsforhold: valgteArbeidsforhold,
+        arbeidsgivere: valgteArbeidsgivere,
         enhet: valgtUnit
       }
       dispatch(sakActions.createSak(payload))
@@ -715,15 +716,16 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   <Column />
                 </Row>
               )}
-              {visArbeidsforhold && (
-                <Arbeidsforhold
-                  getArbeidsforholdList={() => dispatch(sakActions.getArbeidsforholdList(person?.fnr))}
-                  valgteArbeidsforhold={valgteArbeidsforhold}
-                  arbeidsforholdList={arbeidsforholdList}
-                  onArbeidsforholdSelect={(a: Arbeidsforholdet, checked: boolean) => dispatch(
+              {visArbeidsgivere && (
+                <Arbeidsgivere
+                  namespace='arbeidsgivere'
+                  getArbeidsperioder={() => dispatch(sakActions.getArbeidsperioder(person?.fnr))}
+                  valgteArbeidsgivere={valgteArbeidsgivere}
+                  arbeidsperioder={arbeidsperioder}
+                  onArbeidsgiverSelect={(a: Arbeidsgiver, checked: boolean) => dispatch(
                     checked
-                      ? sakActions.addArbeidsforhold(a)
-                      : sakActions.removeArbeidsforhold(a)
+                      ? sakActions.addArbeidsgiver(a)
+                      : sakActions.removeArbeidsgiver(a)
                   )}
                 />
               )}

@@ -171,9 +171,9 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
     const candidateForDeletion = index < 0 ? false : isInDeletion(pensjonPeriode)
     const idx = getIdx(index)
     const getErrorFor = (index: number, el: string): string | undefined => (
-      index < 0 ?
-        _validation[namespace + '-' + el]?.feilmelding :
-        validation[namespace + idx + '-' + el]?.feilmelding
+      index < 0
+        ? _validation[namespace + '-' + el]?.feilmelding
+        : validation[namespace + idx + '-' + el]?.feilmelding
     )
     const startdato = index < 0 ? _newStartDato : pensjonPeriode?.periode.startdato
     const sluttdato = index < 0 ? _newSluttDato : pensjonPeriode?.periode.sluttdato

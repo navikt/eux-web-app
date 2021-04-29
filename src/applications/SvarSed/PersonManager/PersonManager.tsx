@@ -1,4 +1,4 @@
-import { getArbeidsforholdList, searchPerson } from 'actions/svarpased'
+import { getArbeidsperioder, searchPerson } from 'actions/svarpased'
 import AddPersonModal from 'applications/SvarSed/PersonManager/AddPersonModal/AddPersonModal'
 import Add from 'assets/icons/Add'
 import FilledCheckCircle from 'assets/icons/CheckCircle'
@@ -132,15 +132,15 @@ export interface PersonManagerProps {
 }
 
 const mapState = (state: State): any => ({
-  arbeidsforholdList: state.svarpased.arbeidsforholdList,
+  arbeidsperioder: state.svarpased.arbeidsperioder,
   familierelasjonKodeverk: state.app.familierelasjoner,
   highContrast: state.ui.highContrast,
-  gettingArbeidsforholdList: state.loading.gettingArbeidsforholdList,
+  gettingArbeidsperioder: state.loading.gettingArbeidsperioder,
   gettingPerson: state.loading.gettingPerson,
   landkoderList: state.app.landkoder,
   searchingPerson: state.loading.searchingPerson,
   searchedPerson: state.svarpased.searchedPerson,
-  valgteArbeidsforhold: state.svarpased.valgteArbeidsforhold
+  valgteArbeidsgivere: state.svarpased.valgteArbeidsgivere
 })
 
 const PersonManager: React.FC<PersonManagerProps> = ({
@@ -151,9 +151,9 @@ const PersonManager: React.FC<PersonManagerProps> = ({
   viewValidation
 }: PersonManagerProps) => {
   const {
-    arbeidsforholdList,
+    arbeidsperioder,
     familierelasjonKodeverk,
-    gettingArbeidsforholdList,
+    gettingArbeidsperioder,
     gettingPerson,
     highContrast,
     landkoderList,
@@ -361,8 +361,8 @@ const PersonManager: React.FC<PersonManagerProps> = ({
                   e.stopPropagation()
                 }}
               />
-          </CheckboxDiv>
-         )}
+            </CheckboxDiv>
+          )}
         </PersonAndCheckboxDiv>
         {editing && options
           .filter(o => replySed.sedType.startsWith(o.type))
@@ -386,8 +386,8 @@ const PersonManager: React.FC<PersonManagerProps> = ({
               >
                 {viewValidation && (
                   validation[namespace + '-' + personId + '-' + o.value] === undefined
-                ? <FilledCheckCircle color='green' />
-                : <FilledRemoveCircle color='red' />
+                    ? <FilledCheckCircle color='green' />
+                    : <FilledRemoveCircle color='red' />
                 )}
                 <HorizontalSeparatorDiv data-size='0.5' />
                 {o.label}
@@ -406,7 +406,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
       const menu = namespaceBits[2]
       changePersonOption(who, menu)
       setTimeout(() => {
-        var element = document.getElementById(feil.skjemaelementId)
+        const element = document.getElementById(feil.skjemaelementId)
         element?.scrollIntoView({
           behavior: 'smooth'
         })
@@ -435,7 +435,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
         {t('el:title-personmanager')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      <CustomHighContrastPanel className={classNames({feil: validation[namespace]?.feilmelding})}>
+      <CustomHighContrastPanel className={classNames({ feil: validation[namespace]?.feilmelding })}>
         <FlexCenterDiv>
           <LeftDiv>
             {replySed.bruker && renderPerson(replySed, 'bruker', brukerNr)}
@@ -552,10 +552,10 @@ const PersonManager: React.FC<PersonManagerProps> = ({
                   )}
                   {_menuOption === 'personensstatus' && (
                     <PersonensStatus
-                      arbeidsforholdList={arbeidsforholdList}
-                      gettingArbeidsforholdList={gettingArbeidsforholdList}
-                      getArbeidsforholdList={(fnr: string | undefined) => {
-                        if (fnr) dispatch(getArbeidsforholdList(fnr))
+                      arbeidsperioder={arbeidsperioder}
+                      gettingArbeidsperioder={gettingArbeidsperioder}
+                      getArbeidsperioder={(fnr: string | undefined) => {
+                        if (fnr) dispatch(getArbeidsperioder(fnr))
                       }}
                       highContrast={highContrast}
                       personID={_editCurrentPersonID}

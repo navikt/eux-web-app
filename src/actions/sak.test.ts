@@ -3,7 +3,7 @@ import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { call as originalCall } from 'js-fetch-api'
 
-import mockArbeidsforhold from 'mocks/arbeidsforhold'
+import mockArbeidsgiver from 'mocks/arbeidsgiver'
 import mockFamilierelasjon from 'mocks/familierelasjon'
 import mockOpprettSak from 'mocks/opprettSak'
 
@@ -22,11 +22,11 @@ describe('actions/sak', () => {
     call.mockRestore()
   })
 
-  it('addArbeidsforhold()', () => {
-    const generatedResult = sakActions.addArbeidsforhold(mockArbeidsforhold)
+  it('addArbeidsgiver()', () => {
+    const generatedResult = sakActions.addArbeidsgiver(mockArbeidsgiver)
     expect(generatedResult).toMatchObject({
-      type: types.SAK_ARBEIDSFORHOLD_ADD,
-      payload: mockArbeidsforhold
+      type: types.SAK_ARBEIDSGIVER_ADD,
+      payload: mockArbeidsgiver
     })
   })
 
@@ -52,17 +52,17 @@ describe('actions/sak', () => {
       }))
   })
 
-  it('getArbeidsforholdList()', () => {
+  it('getArbeidsperidioder()', () => {
     const mockFnr = '12345678901'
-    sakActions.getArbeidsforholdList(mockFnr)
+    sakActions.getArbeidsperioder(mockFnr)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.SAK_ARBEIDSFORHOLDLIST_GET_REQUEST,
-          success: types.SAK_ARBEIDSFORHOLDLIST_GET_SUCCESS,
-          failure: types.SAK_ARBEIDSFORHOLDLIST_GET_FAILURE
+          request: types.SAK_ARBEIDSPERIODER_GET_REQUEST,
+          success: types.SAK_ARBEIDSPERIODER_GET_SUCCESS,
+          failure: types.SAK_ARBEIDSPERIODER_GET_FAILURE
         },
-        url: sprintf(urls.API_SAK_ARBEIDSFORHOLD_URL, { fnr: mockFnr })
+        url: sprintf(urls.API_SAK_ARBEIDSPERIODER_URL, { fnr: mockFnr })
       }))
   })
 
@@ -139,11 +139,11 @@ describe('actions/sak', () => {
       }))
   })
 
-  it('removeArbeidsforhold()', () => {
-    const generatedResult = sakActions.removeArbeidsforhold(mockArbeidsforhold)
+  it('removeArbeidsgiver()', () => {
+    const generatedResult = sakActions.removeArbeidsgiver(mockArbeidsgiver)
     expect(generatedResult).toMatchObject({
-      type: types.SAK_ARBEIDSFORHOLD_REMOVE,
-      payload: mockArbeidsforhold
+      type: types.SAK_ARBEIDSGIVER_REMOVE,
+      payload: mockArbeidsgiver
     })
   })
 
