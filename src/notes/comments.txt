@@ -15,3 +15,6 @@ Clean Attachments later
 test:
 
 25086820857 -> Q1
+
+01026423488 m/inntekt i Q1
+13077117754 m/inntekt og arbeidsperioder i Q1

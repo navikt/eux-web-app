@@ -1,4 +1,4 @@
-import { createSed, sendSeletedInntekt, setAllValidation, setReplySed } from 'actions/svarpased'
+import { createSed, setAllValidation, setReplySed } from 'actions/svarpased'
 import PersonManager from 'applications/SvarSed/PersonManager/PersonManager'
 import Formaal from 'applications/SvarSed/Formaal/Formaal'
 import KravOmRefusjon from 'applications/SvarSed/Formaal/KravOmRefusjon/KravOmRefusjon'
@@ -10,18 +10,15 @@ import Vedtak from 'applications/SvarSed/Formaal/Vedtak/Vedtak'
 import Attachments from 'applications/Vedlegg/Attachments/Attachments'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
-import Inntekt from 'components/Inntekt/Inntekt'
 import Modal from 'components/Modal/Modal'
 import { FlexCenterDiv, TextAreaDiv } from 'components/StyledComponents'
 import useValidation from 'hooks/useValidation'
 import { JoarkBrowserItems } from 'declarations/attachments'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
-import { Inntekt as IInntekt, Inntekter } from 'declarations/types'
 import FileFC, { File } from 'forhandsvisningsfil'
 import _ from 'lodash'
 import { VenstreChevron } from 'nav-frontend-chevron'
-import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel'
 import { Systemtittel } from 'nav-frontend-typografi'
 import {
   Column,
@@ -41,11 +38,10 @@ import ReactJson from 'react-json-view'
 import { useDispatch, useSelector } from 'react-redux'
 import { SvarpasedState } from 'reducers/svarpased'
 import styled from 'styled-components'
-import { Item } from 'tabell'
-import { validateStep2, ValidationStep2Props } from './validation'
+import { validateSEDEditor, ValidationSEDEditorProps } from './validation'
 import Kontoopplysning from 'applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning'
 
-const Step2Div = styled.div`
+const SEDEditorDiv = styled.div`
   padding: 0.5rem;
 `
 
@@ -83,7 +79,7 @@ export interface SvarPaSedProps {
   setMode: (mode: string, from: string, callback?: () => void) => void
 }
 
-const Step2: React.FC<SvarPaSedProps> = ({
+const SEDEditor: React.FC<SvarPaSedProps> = ({
   mode,
   setMode
 }: SvarPaSedProps): JSX.Element => {
@@ -98,14 +94,13 @@ const Step2: React.FC<SvarPaSedProps> = ({
     savingSed,
     creatingSvarPaSed,
 
-    inntekter,
     previewFile,
     replySed,
     validation,
 
     highContrast
   }: any = useSelector<State, any>(mapState)
-  const fnr = _.find(replySed?.bruker?.personInfo.pin, p => p.land === 'NO')?.fnr
+  const fnr = _.find(replySed?.bruker?.personInfo.pin, p => p.land === 'NO')?.identifikator
   const data: SvarpasedState = useSelector<State, SvarpasedState>(mapStateTwo)
 
   const [_comment, _setComment] = useState<string>('')
@@ -115,7 +110,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
   const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
   const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
   const [_viewKontoopplysninger, setViewKontoopplysninger] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useValidation<ValidationStep2Props>(validation, validateStep2)
+  const [_validation, _resetValidation, performValidation] = useValidation<ValidationSEDEditorProps>(validation, validateSEDEditor)
   const [_viewValidation, _setViewValidation] = useState<boolean>(false)
 
   const showPersonManager = (): boolean => replySed?.sedType?.startsWith('F') || replySed?.sedType?.startsWith('U') || false
@@ -123,7 +118,6 @@ const Step2: React.FC<SvarPaSedProps> = ({
   const showVedtak = (): boolean => (replySed?.formaal?.indexOf('vedtak') >= 0)
   const showProsedyreVedUenighet = (): boolean => (replySed?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0)
   const showKravOmRefusjon = (): boolean => (replySed?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0)
-  const showInntekt = (): boolean => replySed?.sedType === 'U004'
   const showKontoopplysninger = (): boolean => _viewKontoopplysninger === true
 
   const sendReplySed = (): void => {
@@ -201,20 +195,6 @@ const Step2: React.FC<SvarPaSedProps> = ({
     _setComment(comment)
   }
 
-  const onSelectedInntekt = (items: Array<Item>) => {
-    const inntekter: Inntekter = items.map(
-      (item) => ({
-        beloep: item.beloep,
-        fraDato: item.fraDato,
-        tilDato: item.tilDato,
-        type: item.type
-      } as IInntekt)
-    )
-    if (items) {
-      dispatch(sendSeletedInntekt(inntekter))
-    }
-  }
-
   const updateReplySed = (needleString: string | Array<string>, value: any) => {
     const newReplySed = _.cloneDeep(replySed)
     _.set(newReplySed, needleString, value)
@@ -229,7 +209,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
   }, [previewFile, _previewFile])
 
   return (
-    <Step2Div>
+    <SEDEditorDiv>
       {_modal && (
         <Modal
           highContrast={highContrast}
@@ -239,6 +219,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
       )}
       {_viewSendSedModal && (
         <SendSEDModal
+          fnr={fnr}
           highContrast={highContrast}
           attachments={_attachments}
           onModalClose={() => setViewSendSedModal(false)}
@@ -281,6 +262,7 @@ const Step2: React.FC<SvarPaSedProps> = ({
       {showPersonManager() && (
         <>
           <PersonManager
+            fnr={fnr}
             replySed={replySed}
             resetValidation={_resetValidation}
             updateReplySed={updateReplySed}
@@ -339,17 +321,6 @@ const Step2: React.FC<SvarPaSedProps> = ({
           />
           <VerticalSeparatorDiv data-size='2' />
         </>
-      )}
-
-      {showInntekt() && (
-        <Ekspanderbartpanel tittel={t('label:inntekt')}>
-          <Inntekt
-            fnr={fnr}
-            highContrast={highContrast}
-            inntekter={inntekter}
-            onSelectedInntekt={onSelectedInntekt}
-          />
-        </Ekspanderbartpanel>
       )}
       {showKontoopplysninger() && (
         <>
@@ -445,8 +416,8 @@ const Step2: React.FC<SvarPaSedProps> = ({
           <VerticalSeparatorDiv data-size='0.5' />
         </div>
       </ButtonsDiv>
-    </Step2Div>
+    </SEDEditorDiv>
   )
 }
 
-export default Step2
+export default SEDEditor

@@ -1,31 +1,29 @@
 import { setStatusParam } from 'actions/app'
-import { setReplySed } from 'actions/svarpased'
 import * as svarpasedActions from 'actions/svarpased'
-import classNames from 'classnames'
+import { setReplySed } from 'actions/svarpased'
 import SEDDetails from 'applications/SvarSed/SEDDetails/SEDDetails'
 import SEDLoadSave from 'applications/SvarSed/SEDLoadSave/SEDLoadSave'
+import classNames from 'classnames'
 import { FadingLineSeparator, SideBarDiv } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
-import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
 import { Container, Content, fadeIn, fadeOut, Margin } from 'nav-hoykontrast'
-import Step1 from 'pages/SvarPaSed/Step1'
-import Step2 from 'pages/SvarPaSed/Step2'
+import SEDEditor from 'pages/SvarPaSed/SEDEditor'
+import SEDSelection from 'pages/SvarPaSed/SEDSelection'
 import PT from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 
 const transition = 500
 const timeout = 501
-const zoomOutTransition = 100
 
 const AnimatableDiv = styled.div`
   flex: 1;
   background: inherit;
+    will-change: transform;
   &.animate {
-    will-change: transform, opacity;
     pointer-events: none;
     * {
       pointer-events: none;
@@ -65,17 +63,7 @@ export const ContainerDiv = styled.div`
   width: 100%;
   display: block;
   overflow: hidden;
-  will-change: transform;
-  &.shrink {
-    transform: scale(0.98);
-    transform-origin: center center;
-    transition: transform ${zoomOutTransition}ms ease-in;
-  }
-  &:not(.shrink) {
-    transform: scale(1);
-    transform-origin: center center;
-    transition: transform ${zoomOutTransition}ms ease-out;
-  }
+  perspective: 1000px;
 `
 export const ContentDiv = styled(Content)`
   flex: 1;
@@ -117,16 +105,11 @@ export enum Slide {
   B_GOING_TO_RIGHT
 }
 
-const mapState = (state: State): any => ({
-  highContrast: state.ui.highContrast
-})
-
 export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
   location,
   waitForMount = true
 }: SvarPaSedPageProps): JSX.Element => {
   const dispatch = useDispatch()
-  const { highContrast } = useSelector<State, any>(mapState)
   const [_mounted, setMounted] = useState<boolean>(!waitForMount)
   const [positionContentA, setPositionContentA] = useState<Slide>(Slide.LEFT)
   const [positionContentB, setPositionContentB] = useState<Slide>(Slide.RIGHT)
@@ -176,11 +159,10 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
           }
         }, timeout)
       }
-      setContentA(<Step1 mode={newMode} setMode={_setMode} />)
+      setContentA(<SEDSelection mode={newMode} setMode={_setMode} />)
       setSidebarB(
         <SideBarDiv>
           <SEDLoadSave
-            highContrast={highContrast}
             storageKey='replysed'
             onLoad={(replySed: ReplySed) => {
               dispatch(setReplySed(replySed))
@@ -218,10 +200,10 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
           }
         }, timeout)
       }
-      setContentB(<Step2 mode={newMode} setMode={_setMode} />)
+      setContentB(<SEDEditor mode={newMode} setMode={_setMode} />)
       setSidebarA(
         <SideBarDiv>
-          <SEDDetails highContrast={highContrast} />
+          <SEDDetails />
         </SideBarDiv>
       )
     }
@@ -238,11 +220,10 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
         dispatch(svarpasedActions.querySaksnummerOrFnr(rinasaksnummerParam || fnrParam || undefined))
       }
 
-      setContentA(<Step1 mode='1' setMode={_setMode} />)
+      setContentA(<SEDSelection mode='1' setMode={_setMode} />)
       setSidebarB(
         <SideBarDiv>
           <SEDLoadSave
-            highContrast={highContrast}
             storageKey='replysed'
             onLoad={(replySed: ReplySed) => {
               dispatch(setReplySed(replySed))
@@ -277,7 +258,7 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
       <Container>
         <Margin />
         <Content style={{ flex: 6 }}>
-          <ContainerDiv className={classNames({ shrink: animating })}>
+          <ContainerDiv>
             <WindowDiv>
               <AnimatableDiv
                 key='animatableDivA'
@@ -298,7 +279,7 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
           &nbsp;
         </FadingLineSeparator>
         <Content style={{ width: '23.5rem' }}>
-          <ContainerDiv className={classNames({ shrink: animating })}>
+          <ContainerDiv>
             <WindowDiv>
               <AnimatableDiv
                 key='animatableDivA'

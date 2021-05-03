@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 
 interface ReferanseperiodeProps {
   personID: string
+  parentNamespace: string,
   replySed: ReplySed
   resetValidation: (key?: string) => void
   updateReplySed: (needle: string, value: any) => void
@@ -18,6 +19,7 @@ interface ReferanseperiodeProps {
 
 const Referanseperiode: React.FC<ReferanseperiodeProps> = ({
   personID,
+  parentNamespace,
   replySed,
   resetValidation,
   updateReplySed,
@@ -26,7 +28,7 @@ const Referanseperiode: React.FC<ReferanseperiodeProps> = ({
   const { t } = useTranslation()
   const target = 'anmodningsperiode'
   const anmodningsperiode: Periode = _.get(replySed, target)
-  const namespace = `personmanager-${personID}-referanseperiode`
+  const namespace = `${parentNamespace}-${personID}-referanseperiode`
 
   const setStartDato = (startdato: string) => {
     updateReplySed('{target}.startdato', startdato.trim())

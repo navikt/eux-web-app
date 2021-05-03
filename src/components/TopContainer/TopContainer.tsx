@@ -27,6 +27,16 @@ const Main = styled.main`
   background-color: ${({ theme } : any) => theme.type === 'themeHighContrast' ? theme[themeKeys.MAIN_BACKGROUND_COLOR] : 'whitesmoke'};
 `
 
+const Debug = styled.div`
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  color: #3e3832;
+  overflow: hidden;
+  margin: 0.5rem;
+  padding: 0em 0.5em;
+  z-index: 99999;
+`
 export interface TopContainerProps {
   className?: string
   children?: JSX.Element | Array<JSX.Element | null>
@@ -107,10 +117,12 @@ export const TopContainer: React.FC<TopContainerProps> = ({
         >
           {children}
         </Main>
-        <SessionMonitor
-          expirationTime={expirationTime!}
-        />
-        <Version />
+        <Debug>
+          <SessionMonitor
+            expirationTime={expirationTime!}
+          />
+          <Version />
+        </Debug>
       </ErrorBoundary>
     </NavHighContrast>
   )

@@ -62,7 +62,7 @@ describe('actions/sak', () => {
           success: types.SAK_ARBEIDSPERIODER_GET_SUCCESS,
           failure: types.SAK_ARBEIDSPERIODER_GET_FAILURE
         },
-        url: sprintf(urls.API_SAK_ARBEIDSPERIODER_URL, { fnr: mockFnr })
+        url: sprintf(urls.API_ARBEIDSFORHOLD_QUERY_URL, { fnr: mockFnr })
       }))
   })
 
@@ -78,7 +78,7 @@ describe('actions/sak', () => {
           success: types.SAK_FAGSAKER_GET_SUCCESS,
           failure: types.SAK_FAGSAKER_GET_FAILURE
         },
-        url: sprintf(urls.API_SAK_FAGSAKER_URL, { fnr: mockFnr, sektor: mockSektor, tema: mockTema })
+        url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr: mockFnr, sektor: mockSektor, tema: mockTema })
       }))
   })
 
@@ -93,7 +93,7 @@ describe('actions/sak', () => {
           success: types.SAK_INSTITUSJONER_GET_SUCCESS,
           failure: types.SAK_INSTITUSJONER_GET_FAILURE
         },
-        url: sprintf(urls.API_SAK_INSTITUSJONER_URL, { buctype: mockBuctype, landkode: mockLandkode })
+        url: sprintf(urls.API_INSTITUSJONER_URL, { buctype: mockBuctype, landkode: mockLandkode })
       }))
   })
 
@@ -107,7 +107,7 @@ describe('actions/sak', () => {
           success: types.SAK_LANDKODER_GET_SUCCESS,
           failure: types.SAK_LANDKODER_GET_FAILURE
         },
-        url: sprintf(urls.API_SAK_LANDKODER_URL, { buctype: mockBuctype })
+        url: sprintf(urls.API_LANDKODER_URL, { buctype: mockBuctype })
       }))
   })
 
@@ -121,7 +121,7 @@ describe('actions/sak', () => {
           success: types.SAK_PERSON_GET_SUCCESS,
           failure: types.SAK_PERSON_GET_FAILURE
         },
-        url: sprintf(urls.API_SAK_PERSON_URL, { fnr: mockFnr })
+        url: sprintf(urls.API_PERSONER_URL, { fnr: mockFnr })
       }))
   })
 
@@ -135,7 +135,7 @@ describe('actions/sak', () => {
           success: types.SAK_PERSON_RELATERT_GET_SUCCESS,
           failure: types.SAK_PERSON_RELATERT_GET_FAILURE
         },
-        url: sprintf(urls.API_SAK_PERSON_URL, { fnr: mockFnr })
+        url: sprintf(urls.API_PERSONER_URL, { fnr: mockFnr })
       }))
   })
 

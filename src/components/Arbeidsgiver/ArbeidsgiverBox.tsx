@@ -1,10 +1,11 @@
 import Add from 'assets/icons/Add'
+import IkonArbeidsgiver from 'assets/icons/Arbeidsgiver'
 import Edit from 'assets/icons/Edit'
 import Trashcan from 'assets/icons/Trashcan'
+import classNames from 'classnames'
 import { FlexCenterDiv, FlexDiv, PaddedFlexDiv, PileCenterDiv } from 'components/StyledComponents'
 import { Arbeidsgiver, Validation } from 'declarations/types.d'
 import _ from 'lodash'
-import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper'
 import { Checkbox, FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Normaltekst, UndertekstBold } from 'nav-frontend-typografi'
 import {
@@ -12,7 +13,6 @@ import {
   HighContrastFlatknapp,
   HighContrastInput,
   HighContrastKnapp,
-  HighContrastLink,
   HighContrastPanel,
   HorizontalSeparatorDiv,
   Row,
@@ -20,8 +20,6 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import classNames from 'classnames'
-import IkonArbeidsgiver from 'resources/images/ikon-arbeidsgiver'
 import styled from 'styled-components'
 import { formatterDatoTilNorsk } from 'utils/dato'
 
@@ -39,12 +37,12 @@ const TrashcanIcon = styled(Trashcan)`
   width: 20px;
   cursor: pointer;
 `
-const FlexDivNoWrap = styled(FlexDiv)`
+/*const FlexDivNoWrap = styled(FlexDiv)`
   flex-wrap: wrap;
 `
 const PaddedLink = styled(HighContrastLink)`
   padding: 0rem 0.35rem;
-`
+`*/
 
 export interface ArbeidsgiverProps {
   arbeidsgiver: Arbeidsgiver
@@ -68,11 +66,12 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
   onArbeidsgiverSelect,
   onArbeidsgiverDelete = () => {},
   onArbeidsgiverEdit = () => {},
-  namespace,
-  personFnr
+  namespace
+//  personFnr
 }: ArbeidsgiverProps): JSX.Element => {
   const {
-    harRegistrertInntekt,
+    fraInntektsregistreret,
+    fraArbeidsgiverregisteret,
     arbeidsgiverNavn,
     arbeidsgiverOrgnr,
     fraDato,
@@ -376,7 +375,13 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
             duplicate warning
           </Normaltekst>
         )}
-        {!harRegistrertInntekt && (
+        {fraArbeidsgiverregisteret && (
+          <Normaltekst>{t('label:fra-arbeidsgiverregisteret')}</Normaltekst>
+        )}
+        {fraInntektsregistreret && (
+          <Normaltekst>{t('label:fra-inntektsregisteret')}</Normaltekst>
+        )}
+        {/*!harRegistrertInntekt && (
           <div className='slideInFromBottom' style={{ animationDelay: '0.2s' }}>
             <AlertStripeAdvarsel>
               <FlexDivNoWrap>
@@ -395,7 +400,7 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
               </FlexDivNoWrap>
             </AlertStripeAdvarsel>
           </div>
-        )}
+        )*/}
       </ArbeidsgiverPanel>
       <VerticalSeparatorDiv data-size='0.5' />
     </div>

@@ -5,7 +5,7 @@ import {
   resetSedResponse,
   sendAttachmentToSed
 } from 'actions/attachments'
-import CheckCircle from 'assets/icons/CheckCircle'
+import GreenCircle from 'assets/icons/GreenCircle'
 import Alert from 'components/Alert/Alert'
 import Modal from 'components/Modal/Modal'
 import SEDAttachmentSender from 'applications/Vedlegg/SEDAttachmentSender/SEDAttachmentSender'
@@ -62,6 +62,7 @@ const WrapperDiv = styled.div`
 `
 
 interface SendSEDModalProps {
+  fnr: string
   highContrast: boolean
   attachments?: JoarkBrowserItems
   initialSendingAttachments?: boolean
@@ -77,6 +78,7 @@ const mapState = (state: State): any => ({
   sedCreatedResponse: state.svarpased.sedCreatedResponse
 })
 const SendSEDModal: React.FC<SendSEDModalProps> = ({
+  fnr,
   highContrast,
   attachments = [],
   initialSendingAttachments = false,
@@ -97,8 +99,6 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
   const [_sedAttachments, setSedAttachments] = useState<JoarkBrowserItems>(attachments)
   const [_sedSent, setSedSent] = useState<boolean>(false)
   const [_finished, setFinished] = useState<boolean>(false)
-
-  const fnr = _.find(replySed?.bruker?.personInfo.pin, p => p.land === 'NO')?.fnr
 
   const sedAttachmentSorter = (a: JoarkBrowserItem, b: JoarkBrowserItem): number => {
     if (b.type === 'joark' && a.type === 'sed') return -1
@@ -192,7 +192,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                     )}
                     {!_.isNil(sedCreatedResponse) && (
                       <FlexCenterDiv>
-                        <CheckCircle color='green' />
+                        <GreenCircle />
                         <HorizontalSeparatorDiv data-size='0.5' />
                         <span>{t('message:loading-sedCreated')}</span>
                       </FlexCenterDiv>
@@ -202,7 +202,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                   <div>
                     {_finished && (
                       <FlexCenterDiv>
-                        <CheckCircle color='green' />
+                        <GreenCircle />
                         <HorizontalSeparatorDiv data-size='0.5' />
                         <span>{t('message:loading-sedFinished')}</span>
                       </FlexCenterDiv>

@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next'
 interface RelasjonProps {
   familierelasjonKodeverk: Array<Kodeverk>
   highContrast: boolean
+  parentNamespace: string
   personID: string
   replySed: ReplySed
   resetValidation: (key?: string) => void
@@ -22,6 +23,7 @@ interface RelasjonProps {
 
 const Relasjon: React.FC<RelasjonProps> = ({
   highContrast,
+  parentNamespace,
   personID,
   replySed,
   resetValidation,
@@ -31,7 +33,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
   const { t } = useTranslation()
   const target: string = `${personID}.barnetilhoerigheter[0]`
   const barnetilhoerighet: Barnetilhoerighet | undefined = _.get(replySed, target)
-  const namespace = `personmanager-${personID}-relasjon[0]`
+  const namespace = `${parentNamespace}-${personID}-relasjon[0]`
 
   const relasjonTypeOptions: Options = [
     { label: t('el:option-relasjon-1'), value: '01' },

@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next'
 
 interface BeløpNavnOgValutaProps {
   highContrast: boolean
+  parentNamespace: string,
   personID: string
   replySed: ReplySed
   resetValidation: (key?: string) => void
@@ -24,6 +25,7 @@ interface BeløpNavnOgValutaProps {
 
 const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
   highContrast,
+  parentNamespace,
   personID,
   replySed,
   resetValidation,
@@ -33,7 +35,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
   const { t } = useTranslation()
   const target: string = `${personID}.ytelse`
   const ytelse: Ytelse = _.get(replySed, target)
-  const namespace: string = `personmanager-${personID}-beløpnavnogvaluta`
+  const namespace: string = `${parentNamespace}-${personID}-beløpnavnogvaluta`
 
   const _currencyData = CountryData.getCurrencyInstance('nb')
 

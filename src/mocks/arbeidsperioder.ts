@@ -11,13 +11,15 @@ export default (fnr: any) => {
       arbeidsgiverOrgnr: '235835247',
       fraDato: '1960-01-01',
       tilDato: '1969-12-31',
-      harRegistrertInntekt: 'ja'
+      fraInntektsregisteret: 'nei',
+      fraArbeidsgiverregisteret: 'ja'
     }, {
       arbeidsgiverNavn: 'WELL DUH AS',
       arbeidsgiverOrgnr: '492502672',
       fraDato: '1970-01-01',
       tilDato: '1979-12-31',
-      harRegistrertInntekt: 'nei'
+      fraInntektsregisteret: 'ja',
+      fraArbeidsgiverregisteret: 'nei'
     }],
     uriArbeidsgiverRegister: 'https://nav.no',
     uriInntektRegister: 'https://nav.no'

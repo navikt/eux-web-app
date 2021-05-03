@@ -19,16 +19,18 @@ import { getIdx } from 'utils/namespace'
 import { validateGrunnlagForBosetting, ValidationGrunnlagForBosettingProps } from './validation'
 
 interface GrunnlagForBosettingProps {
-  updateReplySed: (needle: string, value: any) => void
+  parentNamespace: string,
   personID: string
   replySed: ReplySed
   resetValidation: (key?: string) => void
   standalone ?: boolean
+  updateReplySed: (needle: string, value: any) => void
   validation: Validation
 }
 
 const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
   updateReplySed,
+  parentNamespace,
   personID,
   replySed,
   resetValidation,
@@ -38,7 +40,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
   const { t } = useTranslation()
   const target = `${personID}.flyttegrunn`
   const flyttegrunn: Flyttegrunn = _.get(replySed, target)
-  const namespace = `personmanager-${personID}-grunnlagforbosetting`
+  const namespace = standalone ? `${parentNamespace}-${personID}-grunnlagforbosetting` : `${parentNamespace}-grunnlagforbosetting`
 
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')
   const [_newStartDato, _setNewStartDato] = useState<string>('')

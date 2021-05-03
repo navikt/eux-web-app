@@ -1,25 +1,10 @@
 import classNames from 'classnames'
-import NavHighContrast, { animationClose, animationOpen } from 'nav-hoykontrast'
 import { guid } from 'nav-frontend-js-utils'
-
 import PT from 'prop-types'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Collapse, UnmountClosed } from 'react-collapse'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
-
-export const ExpandingPanelDiv = styled.div`
-  &.ekspanderbartPanel--apen .ReactCollapse--collapse {
-    will-change: max-height, height;
-    max-height: 150em;
-    animation: ${animationOpen(150)} 250ms ease;
-  }
-  &.ekspanderbartPanel--lukket .ReactCollapse--collapse {
-    will-change: max-height, height;
-    max-height: 0;
-    animation: ${animationClose(150)} 250ms ease;
-  }
-`
+import NavHighContrast, { HighContrastExpandingPanel } from 'nav-hoykontrast'
 
 export interface ExpandingPanelProps {
   ariaTittel?: string
@@ -94,7 +79,7 @@ const ExpandingPanel: React.FC<ExpandingPanelProps> = ({
 
   return (
     <NavHighContrast highContrast={highContrast}>
-      <ExpandingPanelDiv
+      <HighContrastExpandingPanel
         id={id}
         style={style}
         className={classNames('ekspanderbartPanel', className, {
@@ -105,7 +90,7 @@ const ExpandingPanel: React.FC<ExpandingPanelProps> = ({
       >
         <div
           aria-expanded={_open}
-          data-test-id='expandingpanel__head-id'
+          data-test-id='c-expandingpanel__head-id'
           className='ekspanderbartPanel__hode'
           onClick={handleOnClick}
           onKeyDown={handleKeyboard}
@@ -115,14 +100,14 @@ const ExpandingPanel: React.FC<ExpandingPanelProps> = ({
         >
           <div
             className='ekspanderbartPanel__flex-wrapper'
-            data-test-id='expandingpanel__body-id'
+            data-test-id='c-expandingpanel__body-id'
           >
             {heading}
             <button
               aria-expanded={_open}
-              aria-label={t('label:åpen')}
+              aria-label={t('ui:open')}
               className='ekspanderbartPanel__knapp'
-              data-test-id='expandingpanel__button-id'
+              data-test-id='c-expandingpanel__button-id'
               onKeyDown={tabHandler}
               onClick={handleOnClick}
               type='button'
@@ -140,12 +125,12 @@ const ExpandingPanel: React.FC<ExpandingPanelProps> = ({
           <article
             aria-label={ariaTittel}
             className='ekspanderbartPanel__innhold'
-            data-test-id='expandingpanel__content-id'
+            data-test-id='c-expandingpanel__content-id'
           >
             {children}
           </article>
         </CollapseComponent>
-      </ExpandingPanelDiv>
+      </HighContrastExpandingPanel>
     </NavHighContrast>
   )
 }

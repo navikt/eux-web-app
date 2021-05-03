@@ -15,16 +15,6 @@ const mapState = (state: State): VersjonSelector => ({
 })
 
 const VersionDiv = styled.div`
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  color: #3e3832;
-  overflow: hidden;
-  max-height: 2.3em;
-  margin: 2px;
-  padding: 0em 0.5em;
-  z-index: 99999;
-
   dl {
     display: flex;
     flex-direction: row;
@@ -72,6 +62,9 @@ const ExpandButton = styled.button`
   background-color: transparent;
   outline: none;
   padding: 0;
+  font-size: 80%;
+  self-align: right;
+
 `
 
 const Version = () => {
@@ -104,9 +97,11 @@ const Version = () => {
       className={classnames({ 'App__versjonering--vis': visVersjonDetaljer })}
       onClick={toggleVersjon}
     >
-      <ExpandButton>
-        {versjon}
+      <div style={{textAlign: 'right'}}>
+        <ExpandButton>
+        Versjon {versjon}
       </ExpandButton>
+      </div>
       {visVersjonDetaljer && serverInfo && (
         <>
           <dl>

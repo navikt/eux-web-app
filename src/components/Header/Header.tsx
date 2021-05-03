@@ -9,7 +9,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import NEESSILogo from 'resources/images/nEESSI'
+import NEESSILogo from 'assets/logos/nEESSI'
 import styled from 'styled-components'
 
 const HeaderContent = styled.header`

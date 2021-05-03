@@ -57,15 +57,23 @@ export const AlignStartRow = styled(Row)`
   align-items: flex-start;
 `
 export const FadingLineSeparator = styled.div`
-   border-left: 1px solid ${({ theme }) => theme[themeKeys.MAIN_BORDER_COLOR]};
+   border-left-width: 1px;
+   border-left-style: solid;
+   border-image: linear-gradient(
+    to bottom,
+     ${({ theme }) => theme[themeKeys.MAIN_BACKGROUND_COLOR]} 0%,
+     ${({ theme }) => theme[themeKeys.MAIN_BORDER_COLOR]} 5%,
+     ${({ theme }) => theme[themeKeys.MAIN_BORDER_COLOR]} 95%,
+     ${({ theme }) => theme[themeKeys.MAIN_BACKGROUND_COLOR]} 100%
+    ) 1 100%;
    opacity: 0;
    &.fadeIn {
      opacity: 1;
-     animation: ${fadeIn} 0.5s forwards;
+     animation: ${fadeIn} 1s forwards;
    }
    &.fadeOut {
      opacity: 0;
-     animation: ${fadeOut} 0.5s forwards;
+     animation: ${fadeOut} 1s forwards;
    }
 `
 export const SideBarDiv = styled.div`
@@ -97,7 +105,8 @@ export const TextAreaDiv = styled.div`
   }
 `
 export const Etikett = styled.div`
-  padding: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  margin-left: -0.15rem;
   color:  ${({ theme }) => theme[themeKeys.MAIN_FONT_COLOR]} !important;
   background-color: ${({ theme }) => theme[themeKeys.MAIN_BACKGROUND_COLOR]};
   border: ${(props: any) => props['data-border'] === true ? '1px solid ' + props.theme[themeKeys.MAIN_BORDER_COLOR] : 'none'};

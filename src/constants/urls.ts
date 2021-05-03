@@ -7,21 +7,22 @@ export const API_BASE_URL = '/api'
 // See https://eux-helloeu-app-q2.nais.preprod.local/swagger-ui.html
 
 // RINA
-export const API_SAK_INSTITUSJONER_URL = API_BASE_URL + '/institusjoner/%(buctype)s/?landkode=%(landkode)s'
-export const API_SAK_LANDKODER_URL = API_BASE_URL + '/landkoder/%(buctype)s'
+export const API_INSTITUSJONER_URL = API_BASE_URL + '/institusjoner/%(buctype)s/?landkode=%(landkode)s'
+export const API_LANDKODER_URL = API_BASE_URL + '/landkoder/%(buctype)s'
+export const API_RINASAKER_OVERSIKT_FNR_QUERY_URL = API_BASE_URL + '/person/%(fnr)s/rinasaker/oversikt'
+export const API_RINASAKER_OVERSIKT_DNR_QUERY_URL = API_BASE_URL + '/person/%(fnr)s/rinasaker/oversikt'
 export const API_SAK_SEND_URL = API_BASE_URL + '/rina/sak'
-export const API_SVARPASED_SEND_POST_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed'
-export const API_SVARPASED_REPLYSED_QUERY_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/svarsed/%(sedType)s'
-export const API_SVARPASED_FNR_QUERY_URL = API_BASE_URL + '/person/%(fnr)s/rinasaker/oversikt'
-export const API_SVARPASED_DNR_QUERY_URL = API_BASE_URL + '/person/%(fnr)s/rinasaker/oversikt'
-export const API_SVARPASED_SAKSNUMMER_QUERY_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/oversikt'
+export const API_RINASAKER_OVERSIKT_SAKID_QUERY_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/oversikt'
+export const API_SED_CREATE_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed'
+export const API_RINASAK_SVARSED_QUERY_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/svarsed/%(sedType)s'
+
 
 // Registre
-export const API_SAK_ARBEIDSPERIODER_URL = API_BASE_URL + '/arbeidsforhold/%(fnr)s'
-export const API_SAK_FAGSAKER_URL = API_BASE_URL + '/fagsaker/%(fnr)s/?sektor=%(sektor)s&tema=%(tema)s'
-export const API_SAK_INNTEKT_URL = API_BASE_URL + '/inntekt/%(fnr)s?fraDato=%(fraDato)s&tilDato=%(tilDato)s&tema=%(tema)s'
-export const API_SAK_PERSON_URL = API_BASE_URL + '/personer/?fnr=%(fnr)s'
-export const API_SVARPASED_PERSON_URL = API_BASE_URL + '/personer/?fnr=%(fnr)s'
+export const API_ARBEIDSFORHOLD_QUERY_URL = API_BASE_URL + '/arbeidsforhold/%(fnr)s'
+export const API_FAGSAKER_QUERY_URL = API_BASE_URL + '/fagsaker/%(fnr)s/?sektor=%(sektor)s&tema=%(tema)s'
+export const API_INNTEKT_URL = API_BASE_URL + '/inntekt/%(fnr)s'
+export const API_ARBEIDSPERIODER_QUERY_URL =  API_BASE_URL + '/person/%(fnr)s/arbeidsperioder/medKildeindikator'
+export const API_PERSONER_URL = API_BASE_URL + '/personer/?fnr=%(fnr)s'
 
 // Saksbehandler
 export const API_SAKSBEHANDLER_URL = API_BASE_URL + '/saksbehandler'

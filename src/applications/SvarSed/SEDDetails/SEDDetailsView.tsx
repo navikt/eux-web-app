@@ -1,4 +1,4 @@
-import FilledCheckCircle from 'assets/icons/CheckCircle'
+import GreenCircle from 'assets/icons/GreenCircle'
 import Warning from 'assets/icons/Warning'
 import { F002Sed, FSed, ReplySed, USed } from 'declarations/sed'
 import Flag, { FlagList } from 'flagg-ikoner'
@@ -8,6 +8,7 @@ import { HorizontalSeparatorDiv, themeKeys, VerticalSeparatorDiv } from 'nav-hoy
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
+import { isDagpenger, isFamilieytelser } from 'utils/sed'
 
 const Dd = styled.dd`
   width: 60%;
@@ -88,7 +89,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
             />
           )}
         </Dd>
-        {replySed.sedType.startsWith('F') && (
+        {isFamilieytelser(replySed) && (
           <>
             <Dt>{t('label:partner')}</Dt>
             <Dd>
@@ -111,7 +112,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
         )}
       </Dl>
       <VerticalSeparatorDiv />
-      {replySed.sedType.startsWith('U') && (replySed as USed).lokaleSakIder.map(s => (
+      {isDagpenger(replySed) && (replySed as USed).lokaleSakIder.map(s => (
         <div key={s.institusjonsnavn}>
           <Dl>
             <Dt>
@@ -141,7 +142,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
         </div>
       ))}
       <VerticalSeparatorDiv />
-      {replySed.sedType.startsWith('F') && (
+      {isFamilieytelser(replySed) && (
         <>
           <Dl>
             <Dt>
@@ -155,7 +156,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
       )}
       <VerticalSeparatorDiv />
       <FlexDiv>
-        <FilledCheckCircle color='green' width={18} height={18} />
+        <GreenCircle width={18} height={18} />
         <HorizontalSeparatorDiv data-size='0.5' />
         <Normaltekst>
           {t('app:info-confirm-information')}

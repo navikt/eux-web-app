@@ -1,9 +1,10 @@
-import { getArbeidsperioder, searchPerson } from 'actions/svarpased'
+import { fetchInntekt, getArbeidsperioder, searchPerson } from 'actions/svarpased'
 import AddPersonModal from 'applications/SvarSed/PersonManager/AddPersonModal/AddPersonModal'
+import Arbeidsforhold from 'applications/SvarSed/PersonManager/Arbeidsforhold/Arbeidsforhold'
 import Add from 'assets/icons/Add'
-import FilledCheckCircle from 'assets/icons/CheckCircle'
+import GreenCircle from 'assets/icons/GreenCircle'
 import Barn from 'assets/icons/Child'
-import FilledRemoveCircle from 'assets/icons/RemoveCircle'
+import RemoveCircle from 'assets/icons/RemoveCircle'
 import classNames from 'classnames'
 import { FlexCenterDiv, FormaalPanel, PileDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
@@ -26,6 +27,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
+import { isFamilieytelser } from 'utils/sed'
 import Adresser from './Adresser/Adresser'
 import BeløpNavnOgValuta from './BeløpNavnOgValuta/BeløpNavnOgValuta'
 import Familierelasjon from './Familierelasjon/Familierelasjon'
@@ -38,6 +40,7 @@ import PersonOpplysninger from './PersonOpplysninger/PersonOpplysninger'
 import Referanseperiode from './Referanseperiode/Referanseperiode'
 import Relasjon from './Relasjon/Relasjon'
 import Trygdeordning from './Trygdeordning/Trygdeordning'
+import Forsikring from './Forsikring/Forsikring'
 
 const LeftDiv = styled.div`
   flex: 1;
@@ -45,8 +48,9 @@ const LeftDiv = styled.div`
   border-right: 1px solid ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
 `
 const OptionDiv = styled.div`
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   padding: 0.5rem;
+  white-space: nowrap;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -56,10 +60,11 @@ const OptionDiv = styled.div`
       : theme[themeKeys.ALTERNATIVE_HOVER_COLOR]};
   }
   &.selected {
+    font-weight: bold;
     background-color: ${(props: any) => props['data-highContrast']
       ? themeHighContrast[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]
       : theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
-     border-left: 5px solid ${(props: any) => props['data-highContrast']
+     border-left: 6px solid ${(props: any) => props['data-highContrast']
       ? themeHighContrast[themeKeys.MAIN_INTERACTIVE_COLOR]
       : theme[themeKeys.MAIN_INTERACTIVE_COLOR]};
   }
@@ -75,18 +80,13 @@ const PersonAndCheckboxDiv = styled.div`
 const PersonCheckbox = styled(Checkbox)`
   padding: 1rem 0.5rem;
 `
-const PersonsDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-`
 const PersonDiv = styled.div`
-  transition: all 0.3s ease-in-out;
   display: flex;
   align-items: center;
   cursor: pointer;
   padding: 1rem 0.5rem;
   flex: 1;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   &:hover {
    background-color: ${(props: any) => props['data-highContrast']
      ? themeHighContrast[themeKeys.ALTERNATIVE_HOVER_COLOR]
@@ -122,8 +122,12 @@ const LandSpan = styled.span`
   color: grey;
   white-space: nowrap;
 `
+const NormaltekstBold = styled(Normaltekst)`
+  font-weight: bold;
+`
 
 export interface PersonManagerProps {
+  fnr: string
   replySed: ReplySed
   resetValidation: (key?: string) => void
   updateReplySed: (needle: string, value: any) => void
@@ -136,7 +140,9 @@ const mapState = (state: State): any => ({
   familierelasjonKodeverk: state.app.familierelasjoner,
   highContrast: state.ui.highContrast,
   gettingArbeidsperioder: state.loading.gettingArbeidsperioder,
+  gettingInntekter: state.loading.gettingInntekter,
   gettingPerson: state.loading.gettingPerson,
+  inntekter: state.svarpased.inntekter,
   landkoderList: state.app.landkoder,
   searchingPerson: state.loading.searchingPerson,
   searchedPerson: state.svarpased.searchedPerson,
@@ -144,42 +150,60 @@ const mapState = (state: State): any => ({
 })
 
 const PersonManager: React.FC<PersonManagerProps> = ({
+  fnr,
   replySed,
   resetValidation,
   updateReplySed,
   validation,
   viewValidation
 }: PersonManagerProps) => {
+
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
+  const namespace = 'personmanager'
+
+  const brukerNr = 1
+  let initialSelectedPeople = ['bruker']
+  const ektefelleNr = brukerNr + ((replySed as F002Sed).ektefelle ? 1 : 0)
+  if (ektefelleNr > 0) initialSelectedPeople.push('ektefelle')
+  const annenPersonNr = ektefelleNr + ((replySed as F002Sed).annenPerson ? 1 : 0)
+  if (annenPersonNr > 0) initialSelectedPeople.push('annenPerson')
+  const barnNr = annenPersonNr + ((replySed as F002Sed).barn ? 1 : 0)
+  const totalPeopleNr = annenPersonNr + ((replySed as F002Sed).barn ? (replySed as F002Sed).barn.length : 0)
+  if ((replySed as F002Sed).barn) {
+    (replySed as F002Sed).barn.forEach((b, i) => initialSelectedPeople.push(`barn[${i}]`))
+  }
+  let familieNr: number | undefined = undefined
+  if ((replySed as F002Sed).sedType.startsWith('F')) {
+    familieNr = barnNr + 1
+    initialSelectedPeople.push('familie')
+  }
+
   const {
     arbeidsperioder,
     familierelasjonKodeverk,
     gettingArbeidsperioder,
+    gettingInntekter,
     gettingPerson,
     highContrast,
+    inntekter,
     landkoderList,
     searchingPerson,
     searchedPerson
   }: any = useSelector<State, any>(mapState)
-  // list of persons with open forms
-  const [_editPersonIDs, setEditPersonIDs] = useState<Array<string>>([])
+  // list of persons with open forms. If SED only has bruker, open it by default
+  const [_editPersonIDs, setEditPersonIDs] = useState<Array<string>>(totalPeopleNr === 1 ? ['bruker'] : [])
   // person with current form visible
-  const [_editCurrentPersonID, setEditCurrentPersonID] = useState<string | undefined>(undefined)
+  const [_editCurrentPersonID, setEditCurrentPersonID] = useState<string | undefined>(totalPeopleNr === 1 ? 'bruker': undefined)
   const [_editCurrentPersonName, setEditCurrentPersonName] = useState<string | undefined>(undefined)
   const [_modal, setModal] = useState<boolean>(false)
   // list of selected persons
-  const [_selectedPersonIDs, setSelectedPersonIDs] = useState<Array<string>>([])
+  const [_selectedPersonIDs, setSelectedPersonIDs] = useState<Array<string>>(initialSelectedPeople)
   // the name of person form currently selected
-  const [_menuOption, setMenuOption] = useState<string | undefined>(undefined)
-  const { t } = useTranslation()
-  const dispatch = useDispatch()
+  const [_menuOption, setMenuOption] = useState<string | undefined>(totalPeopleNr === 1 ? (
+    isFamilieytelser(replySed) ? 'personopplysninger' : 'person'
+  ) : undefined)
 
-  const brukerNr = 0
-  const ektefelleNr = brukerNr + ((replySed as F002Sed).ektefelle ? 1 : 0)
-  const annenPersonNr = ektefelleNr + ((replySed as F002Sed).annenPerson ? 1 : 0)
-  const barnNr = annenPersonNr + ((replySed as F002Sed).barn ? 1 : 0)
-  const familieNr = barnNr + 1
-  const totalPeople = annenPersonNr + ((replySed as F002Sed).barn ? (replySed as F002Sed).barn.length : 0) + 1 // 1 = bruker
-  const namespace = 'personmanager'
 
   const changePersonOption = (personID: string | undefined, menuOption: string) => {
     if (personID) {
@@ -215,9 +239,10 @@ const PersonManager: React.FC<PersonManagerProps> = ({
     { label: t('el:option-personmanager-12'), value: 'person', type: 'U', normal: true, barn: false, family: false },
     { label: t('el:option-personmanager-13'), value: 'referanseperiode', type: 'U', normal: true, barn: false, family: false },
     { label: t('el:option-personmanager-14'), value: 'arbeidsforhold/arbeidsgivere', type: 'U', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-15'), value: 'sisteansettelsesforhold', type: 'U', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-16'), value: 'grunntilopphør', type: 'U', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-17'), value: 'periodefordagpenger', type: 'U', normal: true, barn: false, family: false }
+    { label: t('el:option-personmanager-15'), value: 'forsikring', type: 'U', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-16'), value: 'sisteansettelsesforhold', type: 'U', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-17'), value: 'grunntilopphør', type: 'U', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-18'), value: 'periodefordagpenger', type: 'U', normal: true, barn: false, family: false }
   ]
 
   const onEditPerson = (id: string | undefined) => {
@@ -256,25 +281,6 @@ const PersonManager: React.FC<PersonManagerProps> = ({
     }
   }
 
-  const onSelectAllPersons = (checked: boolean) => {
-    if (checked) {
-      let allPersons = []
-      allPersons.push('bruker')
-      if ((replySed as F002Sed).ektefelle) {
-        allPersons.push('ektefelle')
-      }
-      if ((replySed as F002Sed).annenPerson) {
-        allPersons.push('annenPerson')
-      }
-      if ((replySed as F002Sed).barn) {
-        allPersons = allPersons.concat((replySed as F002Sed).barn.map((b: any, i: number) => `barn[${i}]`))
-      }
-      setSelectedPersonIDs(allPersons)
-    } else {
-      setSelectedPersonIDs([])
-    }
-  }
-
   const onAddNewPerson = () => {
     setModal(true)
   }
@@ -282,11 +288,9 @@ const PersonManager: React.FC<PersonManagerProps> = ({
   const renderPerson = (replySed: ReplySed, personId: string, totalIndex: number) => {
     const personInfo: PersonInfo | undefined = _.get(replySed, `${personId}.personInfo`) // undefined for family
     const editing: boolean = _.find(_editPersonIDs, _id => _id === personId) !== undefined
-    const selected: boolean = personId === 'familie'
-      ? _selectedPersonIDs.length === totalPeople
-      : _.find(_selectedPersonIDs, _id => _id === personId) !== undefined
+    const selected: boolean = _.find(_selectedPersonIDs, _id => _id === personId) !== undefined
     return (
-      <PersonsDiv>
+      <PileDiv>
         <PersonAndCheckboxDiv
           data-highContrast={highContrast}
         >
@@ -303,20 +307,28 @@ const PersonManager: React.FC<PersonManagerProps> = ({
           >
             <Chevron type={editing ? 'ned' : 'høyre'} />
             <HorizontalSeparatorDiv data-size='0.5' />
-            {validation[namespace + '-' + personId] && (
-              <>
-                <FilledRemoveCircle color='red' />
-                <HorizontalSeparatorDiv data-size='0.5' />
-              </>
+
+            {viewValidation && (
+              validation[namespace + '-' + personId] ? (
+                <>
+                  <RemoveCircle color='red' />
+                  <HorizontalSeparatorDiv data-size='0.5' />
+                </>
+                ) : (
+                <>
+                  <GreenCircle />
+                  <HorizontalSeparatorDiv data-size='0.5' />
+                </>
+              )
             )}
             {selected
               ? (
                 <>
-                  <Undertittel style={{ whiteSpace: 'nowrap' }}>
+                  <NormaltekstBold style={{ whiteSpace: 'nowrap' }}>
                     {personId === 'familie'
                       ? t('label:hele-familien')
                       : personInfo?.fornavn + ' ' + personInfo?.etternavn}
-                  </Undertittel>
+                  </NormaltekstBold>
                   <HorizontalSeparatorDiv data-size='0.5' />
                   {personInfo?.statsborgerskap && (
                     <LandSpan>
@@ -347,18 +359,14 @@ const PersonManager: React.FC<PersonManagerProps> = ({
               </>
             )}
           </PersonDiv>
-          {replySed.sedType.startsWith('F') && (
+          {isFamilieytelser(replySed)  && (
             <CheckboxDiv>
               <PersonCheckbox
                 label=''
                 checked={selected}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  if (personId === 'familie') {
-                    onSelectAllPersons(e.target.checked)
-                  } else {
-                    onSelectPerson(personId, e.target.checked)
-                  }
                   e.stopPropagation()
+                  onSelectPerson(personId, e.target.checked)
                 }}
               />
             </CheckboxDiv>
@@ -386,15 +394,15 @@ const PersonManager: React.FC<PersonManagerProps> = ({
               >
                 {viewValidation && (
                   validation[namespace + '-' + personId + '-' + o.value] === undefined
-                    ? <FilledCheckCircle color='green' />
-                    : <FilledRemoveCircle color='red' />
+                    ? <GreenCircle />
+                    : <RemoveCircle color='red' />
                 )}
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {o.label}
+                {`${i}. ${o.label}`}
               </OptionDiv>
             )
           })}
-      </PersonsDiv>
+      </PileDiv>
     )
   }
 
@@ -415,6 +423,14 @@ const PersonManager: React.FC<PersonManagerProps> = ({
     }
   }
 
+  const _getArbeidsperioder = () => {
+    if (fnr) dispatch(getArbeidsperioder(fnr))
+  }
+
+  const _getInntekter = () => {
+    if (fnr) dispatch(fetchInntekt(fnr))
+  }
+
   useEffect(() => {
     document.addEventListener('feillenke', handleEvent)
     return () => {
@@ -427,6 +443,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
       {_modal && (
         <AddPersonModal
           highContrast={highContrast}
+          parentNamespace={namespace}
           replySed={replySed}
           onModalClose={() => setModal(false)}
         />
@@ -442,8 +459,8 @@ const PersonManager: React.FC<PersonManagerProps> = ({
             {(replySed as F002Sed).ektefelle && renderPerson(replySed, 'ektefelle', ektefelleNr)}
             {(replySed as F002Sed).annenPerson && renderPerson(replySed, 'annenPerson', annenPersonNr)}
             {(replySed as F002Sed).barn && (replySed as F002Sed).barn.map((b: any, i: number) => renderPerson(replySed, `barn[${i}]`, barnNr + i))}
-            {(replySed.sedType.startsWith('F')) && renderPerson(replySed, 'familie', familieNr)}
-            {(replySed.sedType.startsWith('F')) && (
+            {isFamilieytelser(replySed) && renderPerson(replySed, 'familie', familieNr as number)}
+            {isFamilieytelser(replySed) && (
               <MarginDiv>
                 <HighContrastFlatknapp
                   mini
@@ -456,6 +473,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
                 </HighContrastFlatknapp>
               </MarginDiv>
             )}
+            <VerticalSeparatorDiv/>
           </LeftDiv>
           <RightDiv>
             {(gettingPerson || !_editCurrentPersonID)
@@ -471,6 +489,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
                     <PersonOpplysninger
                       highContrast={highContrast}
                       landkoderList={landkoderList}
+                      parentNamespace={namespace}
                       onSearchingPerson={(id: string) => dispatch(searchPerson(id))}
                       personID={_editCurrentPersonID}
                       resetValidation={resetValidation}
@@ -485,6 +504,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
                     <Nasjonaliteter
                       highContrast={highContrast}
                       landkoderList={landkoderList}
+                      parentNamespace={namespace}
                       personID={_editCurrentPersonID}
                       personName={_editCurrentPersonName!}
                       resetValidation={resetValidation}
@@ -497,6 +517,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
                     <Adresser
                       highContrast={highContrast}
                       landkoderList={landkoderList}
+                      parentNamespace={namespace}
                       personID={_editCurrentPersonID}
                       personName={_editCurrentPersonName!}
                       replySed={replySed}
@@ -508,6 +529,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
                   {_menuOption === 'kontaktinformasjon' && (
                     <Kontaktinformasjon
                       highContrast={highContrast}
+                      parentNamespace={namespace}
                       personID={_editCurrentPersonID}
                       personName={_editCurrentPersonName!}
                       replySed={replySed}
@@ -519,6 +541,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
                   {_menuOption === 'trygdeordninger' && (
                     <Trygdeordning
                       highContrast={highContrast}
+                      parentNamespace={namespace}
                       personID={_editCurrentPersonID}
                       personName={_editCurrentPersonName!}
                       replySed={replySed}
@@ -530,6 +553,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
                   {_menuOption === 'familierelasjon' && (
                     <Familierelasjon
                       familierelasjonKodeverk={familierelasjonKodeverk}
+                      parentNamespace={namespace}
                       highContrast={highContrast}
                       personID={_editCurrentPersonID}
                       personName={_editCurrentPersonName!}
@@ -543,6 +567,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
                     <Relasjon
                       familierelasjonKodeverk={familierelasjonKodeverk}
                       highContrast={highContrast}
+                      parentNamespace={namespace}
                       personID={_editCurrentPersonID}
                       replySed={replySed}
                       resetValidation={resetValidation}
@@ -554,10 +579,9 @@ const PersonManager: React.FC<PersonManagerProps> = ({
                     <PersonensStatus
                       arbeidsperioder={arbeidsperioder}
                       gettingArbeidsperioder={gettingArbeidsperioder}
-                      getArbeidsperioder={(fnr: string | undefined) => {
-                        if (fnr) dispatch(getArbeidsperioder(fnr))
-                      }}
+                      getArbeidsperioder={_getArbeidsperioder}
                       highContrast={highContrast}
+                      parentNamespace={namespace}
                       personID={_editCurrentPersonID}
                       replySed={replySed}
                       resetValidation={resetValidation}
@@ -567,6 +591,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
                   )}
                   {_menuOption === 'grunnlagforbosetting' && (
                     <GrunnlagForBosetting
+                      parentNamespace={namespace}
                       personID={_editCurrentPersonID}
                       replySed={replySed}
                       resetValidation={resetValidation}
@@ -577,6 +602,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
                   )}
                   {_menuOption === 'beløpnavnogvaluta' && (
                     <BeløpNavnOgValuta
+                      parentNamespace={namespace}
                       highContrast={highContrast}
                       personID={_editCurrentPersonID}
                       replySed={replySed}
@@ -588,6 +614,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
                   {_menuOption === 'familieytelser' && (
                     <Familieytelser
                       highContrast={highContrast}
+                      parentNamespace={namespace}
                       personID={_editCurrentPersonID}
                       replySed={replySed}
                       resetValidation={resetValidation}
@@ -597,6 +624,41 @@ const PersonManager: React.FC<PersonManagerProps> = ({
                   )}
                   {_menuOption === 'referanseperiode' && (
                     <Referanseperiode
+                      parentNamespace={namespace}
+                      personID={_editCurrentPersonID}
+                      replySed={replySed}
+                      resetValidation={resetValidation}
+                      updateReplySed={updateReplySed}
+                      validation={validation}
+                    />
+                  )}
+                  {_menuOption === 'arbeidsforhold/arbeidsgivere' && (
+                    <Arbeidsforhold
+                      arbeidsperioder={arbeidsperioder}
+                      gettingArbeidsperioder={gettingArbeidsperioder}
+                      getArbeidsperioder={_getArbeidsperioder}
+                      inntekter={inntekter}
+                      gettingInntekter={gettingInntekter}
+                      getInntekter={_getInntekter}
+                      highContrast={highContrast}
+                      parentNamespace={namespace}
+                      personID={_editCurrentPersonID}
+                      replySed={replySed}
+                      resetValidation={resetValidation}
+                      updateReplySed={updateReplySed}
+                      validation={validation}
+                    />
+                  )}
+                  {_menuOption === 'forsikring' && (
+                    <Forsikring
+                      arbeidsperioder={arbeidsperioder}
+                      gettingArbeidsperioder={gettingArbeidsperioder}
+                      getArbeidsperioder={_getArbeidsperioder}
+                      inntekter={inntekter}
+                      gettingInntekter={gettingInntekter}
+                      getInntekter={_getInntekter}
+                      highContrast={highContrast}
+                      parentNamespace={namespace}
                       personID={_editCurrentPersonID}
                       replySed={replySed}
                       resetValidation={resetValidation}

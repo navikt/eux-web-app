@@ -16,9 +16,9 @@ import {
   PileCenterDiv,
   PileDiv
 } from 'components/StyledComponents'
-import useValidation from 'hooks/useValidation'
 import { State } from 'declarations/reducers'
 import { ConnectedSed, Sed } from 'declarations/types'
+import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { Normaltekst, Systemtittel, Undertekst, Undertittel } from 'nav-frontend-typografi'
 import NavHighContrast, {
@@ -35,7 +35,7 @@ import NavHighContrast, {
   themeKeys,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
-import { validateStep1 } from 'pages/SvarPaSed/validation'
+import { validateSEDSelection } from 'pages/SvarPaSed/validation'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -49,11 +49,22 @@ const LeftDiv = styled.div`
   align-items: center;
 `
 const FilterDiv = styled(FlexDiv)`
+  transition: all 0.3s ease-in-out;
  .selected {
     text-decoration: underline;
     text-decoration: bold;
     color: ${({ theme }) => theme[themeKeys.MAIN_ACTIVE_COLOR]} !important;
  }
+`
+
+const SEDPanel = styled(HighContrastPanel)`
+  transition: all 0.15s ease-in-out;
+  margin-left: 3rem;
+  &:hover, .skjemaelement__input:hover {
+    color: ${({ theme }: any) => theme[themeKeys.MAIN_FONT_COLOR]} !important;
+    background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_HOVER_COLOR]} !important;
+    border-color: ${({ theme }: any) => theme[themeKeys.MAIN_HOVER_COLOR]} !important;
+  }
 `
 
 const mapState = (state: State): any => ({
@@ -76,7 +87,7 @@ export interface SvarPaSedProps {
   setMode: (mode: string, from: string, callback?: () => void) => void
 }
 
-const Step1: React.FC<SvarPaSedProps> = ({
+const SEDSelection: React.FC<SvarPaSedProps> = ({
   mode, setMode
 }: SvarPaSedProps): JSX.Element => {
   const { t } = useTranslation()
@@ -98,7 +109,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
   const [_filter, _setFilter] = useState<string | undefined>(undefined)
   const [_saksnummerOrFnr, _setSaksnummerOrFnr] = useState<string>(rinasaksnummerOrFnrParam ?? '')
   const [_validMessage, _setValidMessage] = useState<string>('')
-  const [_validation, _resetValidation, performValidation] = useValidation({}, validateStep1)
+  const [_validation, _resetValidation, performValidation] = useValidation({}, validateSEDSelection)
 
   const onSaksnummerOrFnrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value
@@ -158,7 +169,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
         <AlignStartRow
           className={classNames('slideInFromLeft', { feil: _validation.saksnummerOrFnr })}
         >
-          <HorizontalSeparatorDiv data-size='0.1' />
+          <HorizontalSeparatorDiv data-size='0.2' />
           <Column data-flex='2'>
             <PileDiv>
               <FlexDiv>
@@ -193,7 +204,9 @@ const Step1: React.FC<SvarPaSedProps> = ({
             </PileDiv>
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv />
+
+        <VerticalSeparatorDiv data-size='3'/>
+
         {seds && (
           <HighContrastRadioGroup
             legend={(
@@ -204,52 +217,52 @@ const Step1: React.FC<SvarPaSedProps> = ({
                 })
               }
                 </span>
+                <HorizontalSeparatorDiv data-size='0.3'/>
                 <span style={{ fontSize: '130%' }}>
                   {seds.length}
                 </span>
               </>
             )}
           >
-            <>
-              <FilterDiv>
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
-                  className={classNames({ selected: _filter === undefined })}
-                  onClick={() => _setFilter(undefined)}
-                >
-                  {t('label:alle') + ' (' + seds.length + ')'}
-                </HighContrastFlatknapp>
-                <HorizontalSeparatorDiv />
-                {familieytelser > 0 && (
-                  <>
-                    <HighContrastFlatknapp
-                      mini
-                      kompakt
-                      className={classNames({ selected: _filter === 'FB_' })}
-                      onClick={() => _setFilter('FB_')}
-                    >
-                      {t('label:familieytelser') + ' (' + familieytelser + ')'}
-                    </HighContrastFlatknapp>
-                    <HorizontalSeparatorDiv />
-                  </>
-                )}
-                {dagpenger > 0 && (
-                  <>
-                    <HighContrastFlatknapp
-                      mini
-                      kompakt
-                      className={classNames({ selected: _filter === 'U_' })}
-                      onClick={() => _setFilter('U_')}
-                    >
-                      {t('label:dagpenger') + ' (' + dagpenger + ')'}
-                    </HighContrastFlatknapp>
-                    <HorizontalSeparatorDiv />
-                  </>
-                )}
-              </FilterDiv>
-              <VerticalSeparatorDiv />
-            </>
+
+            <FilterDiv>
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                className={classNames({ selected: _filter === undefined })}
+                onClick={() => _setFilter(undefined)}
+              >
+                {t('label:alle') + ' (' + seds.length + ')'}
+              </HighContrastFlatknapp>
+              <HorizontalSeparatorDiv />
+              {familieytelser > 0 && (
+                <>
+                  <HighContrastFlatknapp
+                    mini
+                    kompakt
+                    className={classNames({ selected: _filter === 'FB_' })}
+                    onClick={() => _setFilter('FB_')}
+                  >
+                    {t('label:familieytelser') + ' (' + familieytelser + ')'}
+                  </HighContrastFlatknapp>
+                  <HorizontalSeparatorDiv />
+                </>
+              )}
+              {dagpenger > 0 && (
+                <>
+                  <HighContrastFlatknapp
+                    mini
+                    kompakt
+                    className={classNames({ selected: _filter === 'U_' })}
+                    onClick={() => _setFilter('U_')}
+                  >
+                    {t('label:dagpenger') + ' (' + dagpenger + ')'}
+                  </HighContrastFlatknapp>
+                  <HorizontalSeparatorDiv />
+                </>
+              )}
+            </FilterDiv>
+            <VerticalSeparatorDiv />
             {seds
               .filter((s: Sed) => _filter ? s.sakType.startsWith(_filter) : true)
               .map((sed: Sed) => (
@@ -268,7 +281,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                             {t('label:saksnummer') + ': ' + sed.sakId}
                           </span>
                           <HorizontalSeparatorDiv />
-                          <HighContrastLink href={sed.sakUrl}>
+                            <HighContrastLink href={sed.sakUrl}>
                             <span>
                               {t('label:gå-til-rina')}
                             </span>
@@ -303,7 +316,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                         closed: !((previousParentSed !== sed.sakType && parentSed === sed.sakType) || (previousParentSed === sed.sakType && parentSed !== sed.sakType))
                       })}
                     >
-                      <HighContrastPanel style={{ marginLeft: '3rem' }}>
+                      <SEDPanel>
                         <FlexDiv>
                           <PileCenterDiv>
                             {connectedSed.status === 'received' && <ReceivedIcon />}
@@ -337,13 +350,15 @@ const Step1: React.FC<SvarPaSedProps> = ({
                                   )
                                 : (<div />)}
                             </FlexStartDiv>
-                            <HighContrastLink href={connectedSed.sedUrl}>
-                              <span>
-                                {t('label:gå-til-sed-i-rina')}
-                              </span>
-                              <HorizontalSeparatorDiv data-size='0.35' />
-                              <ExternalLink />
-                            </HighContrastLink>
+                            <FlexDiv>
+                              <HighContrastLink href={connectedSed.sedUrl}>
+                                <span>
+                                  {t('label:gå-til-sed-i-rina')}
+                                </span>
+                                <HorizontalSeparatorDiv data-size='0.35' />
+                                <ExternalLink />
+                              </HighContrastLink>
+                            </FlexDiv>
                             <VerticalSeparatorDiv data-size='0.35' />
                             <div>
                               <Etikett>
@@ -352,7 +367,7 @@ const Step1: React.FC<SvarPaSedProps> = ({
                             </div>
                           </PileDiv>
                         </FlexDiv>
-                      </HighContrastPanel>
+                      </SEDPanel>
                       <VerticalSeparatorDiv />
                     </HiddenFormContainer>
                   ))}
@@ -365,4 +380,4 @@ const Step1: React.FC<SvarPaSedProps> = ({
   )
 }
 
-export default Step1
+export default SEDSelection

@@ -131,6 +131,12 @@ const svarpasedReducer = (
         previewFile: null
       }
 
+    case types.SVARPASED_SAKSNUMMERORFNR_QUERY_REQUEST:
+      return {
+        ...state,
+        seds: undefined
+    }
+
     case types.SVARPASED_SAKSNUMMERORFNR_QUERY_SUCCESS: {
       const seds = _.isArray((action as ActionWithPayload).payload)
         ? (action as ActionWithPayload).payload

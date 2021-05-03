@@ -1,4 +1,4 @@
-import * as svarpasedActions from 'actions/svarpased'
+//import * as svarpasedActions from 'actions/svarpased'
 import classNames from 'classnames'
 import {
   AlignedSelect
@@ -152,12 +152,13 @@ const Inntekt: React.FC<InntektProps> = ({
   const fetchInntekt = () => {
     if (performValidation()) {
       dispatch(
-        svarpasedActions.fetchInntekt({
+       /* svarpasedActions.fetchInntekt({
           fnr: fnr,
           fraDato: inntektSøk.fraDato,
           tilDato: inntektSøk.tilDato,
           tema: inntektSøk.tema
-        })
+        })*/
+        fnr
       )
     }
   }

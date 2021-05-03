@@ -71,6 +71,7 @@ interface AddPersonModalProps {
   highContrast: boolean
   onModalClose?: () => void
   closeButton?: boolean
+  parentNamespace: string
   replySed: ReplySed
 }
 
@@ -79,10 +80,11 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
   highContrast,
   closeButton,
   onModalClose,
+  parentNamespace,
   replySed
 }: AddPersonModalProps) => {
   const { t } = useTranslation()
-  const namespace = 'personmanager-addpersonmodal'
+  const namespace = `${parentNamespace}-addpersonmodal`
   const dispatch = useDispatch()
 
   const [_newPersonFnr, _setNewPersonFnr] = useState<string>('')

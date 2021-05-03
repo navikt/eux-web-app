@@ -1,6 +1,6 @@
 import { mount, ReactWrapper } from 'enzyme'
-import React from 'react'
-import ExpandingPanel, { ExpandingPanelDiv, ExpandingPanelProps } from './ExpandingPanel'
+import { HighContrastExpandingPanel } from 'nav-hoykontrast'
+import ExpandingPanel, { ExpandingPanelProps } from './ExpandingPanel'
 
 describe('components/ExpandingPanel/ExpandingPanel', () => {
   let wrapper: ReactWrapper
@@ -34,11 +34,11 @@ describe('components/ExpandingPanel/ExpandingPanel', () => {
   })
 
   it('Render: has proper HTML structure', () => {
-    expect(wrapper.find(ExpandingPanelDiv)).toBeTruthy()
-    expect(wrapper.find('[data-test-id=\'expandingpanel__head-id\']')).toBeTruthy()
-    expect(wrapper.find('[data-test-id=\'expandingpanel__body-id\']')).toBeTruthy()
-    expect(wrapper.find('[data-test-id=\'expandingpanel__button-id\']')).toBeTruthy()
-    expect(wrapper.find('[data-test-id=\'expandingpanel__content-id\']')).toBeTruthy()
+    expect(wrapper.find(HighContrastExpandingPanel)).toBeTruthy()
+    expect(wrapper.find('[data-test-id=\'c-expandingpanel__head-id\']')).toBeTruthy()
+    expect(wrapper.find('[data-test-id=\'c-expandingpanel__body-id\']')).toBeTruthy()
+    expect(wrapper.find('[data-test-id=\'c-expandingpanel__button-id\']')).toBeTruthy()
+    expect(wrapper.find('[data-test-id=\'c-expandingpanel__content-id\']')).toBeTruthy()
   })
 
   it('Handling: opens when clicked', () => {

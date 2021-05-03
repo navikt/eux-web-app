@@ -1,5 +1,5 @@
 import Edit from 'assets/icons/Edit'
-import FilledRemoveCircle from 'assets/icons/RemoveCircle'
+import RemoveCircle from 'assets/icons/RemoveCircle'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed.d'
 import { Undertittel } from 'nav-frontend-typografi'
@@ -16,12 +16,14 @@ const FlexDiv = styled.div`
   display: flex;
   justify-content: space-between;
 `
-interface SEDDetailsProps {
-  highContrast: boolean
-}
 
-const SEDDetails = ({ highContrast }: SEDDetailsProps) => {
+const mapState = (state: State): any => ({
+  highContrast: state.ui.highContrast
+})
+
+const SEDDetails = () => {
   const { t } = useTranslation()
+  const { highContrast } = useSelector<State, any>(mapState)
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const replySed: ReplySed | undefined = useSelector((state: State): ReplySed | undefined => (state.svarpased.replySed))
   const toggleEditing = () => setIsEditing(!isEditing)
@@ -43,7 +45,7 @@ const SEDDetails = ({ highContrast }: SEDDetailsProps) => {
               marginRight: '-0.5rem'
             }}
           >
-            {isEditing ? <FilledRemoveCircle onClick={toggleEditing} /> : <Edit onClick={toggleEditing} />}
+            {isEditing ? <RemoveCircle onClick={toggleEditing} /> : <Edit onClick={toggleEditing} />}
           </HighContrastFlatknapp>
         </FlexDiv>
         <VerticalSeparatorDiv />

@@ -1,18 +1,62 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`components/ExpandingPanel/ExpandingPanel Render: match snapshot 1`] = `
-.c0.ekspanderbartPanel--apen .ReactCollapse--collapse {
+.c1 {
+  border-radius: 4px;
+  background-color: #FFFFFF;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #78706a;
+}
+
+.c1.ekspanderbartPanel--apen .ReactCollapse--collapse {
   will-change: max-height,height;
   max-height: 150em;
   -webkit-animation: lejruX 250ms ease;
   animation: lejruX 250ms ease;
 }
 
-.c0.ekspanderbartPanel--lukket .ReactCollapse--collapse {
+.c1.ekspanderbartPanel--lukket .ReactCollapse--collapse {
   will-change: max-height,height;
   max-height: 0;
   -webkit-animation: fywWsj 250ms ease;
   animation: fywWsj 250ms ease;
+}
+
+.c1 .ekspanderbartPanel__knapp {
+  background: none;
+  border: none;
+}
+
+.c1.ekspanderbartPanel {
+  background-color: #FFFFFF;
+}
+
+.c1 .ekspanderbartPanel__hode:focus,
+.c1 .ekspanderbartPanel__hode--focus {
+  box-shadow: 0 0 0 3px #19548a !important;
+  outline: none;
+}
+
+.c1 .ekspanderbartPanel__hode {
+  background-color: #FFFFFF;
+}
+
+.c1 .ekspanderbartPanel__hode:hover {
+  background-color: #cce1f3 !important;
+}
+
+.c1 .ekspanderbartPanel__indikator {
+  color: #3e3832;
+}
+
+.c1 p {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+ui-fss.g8[id="c0"] {
+  content: "c1,";
 }
 
 <ExpandingPanel
@@ -206,7 +250,7 @@ exports[`components/ExpandingPanel/ExpandingPanel Render: match snapshot 1`] = `
         style={Object {}}
       >
         <div
-          className="c0 ekspanderbartPanel ekspanderbartPanel--lukket ekspanderbartPanel--border"
+          className="c0 c1 ekspanderbartPanel ekspanderbartPanel--lukket ekspanderbartPanel--border"
           style={Object {}}
         >
           <div
@@ -227,7 +271,7 @@ exports[`components/ExpandingPanel/ExpandingPanel Render: match snapshot 1`] = `
               </h2>
               <button
                 aria-expanded={false}
-                aria-label="label:open"
+                aria-label="ui:open"
                 className="ekspanderbartPanel__knapp"
                 data-test-id="c-expandingpanel__button-id"
                 onClick={[Function]}

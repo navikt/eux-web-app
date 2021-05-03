@@ -21,6 +21,7 @@ import { validateFamilieytelserPeriode, ValidationFamilieytelsePeriodeProps } fr
 interface TrygdeordningProps {
   highContrast: boolean
   updateReplySed: (needle: string, value: any) => void
+  parentNamespace: string,
   personID: string
   personName: string
   replySed: ReplySed
@@ -34,6 +35,7 @@ type SedCategory = 'perioderMedArbeid' | 'perioderMedTrygd' |
 const FamilieYtelser: React.FC<TrygdeordningProps> = ({
   highContrast,
   updateReplySed,
+  parentNamespace,
   personID,
   personName,
   replySed,
@@ -47,7 +49,7 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
     perioderMedYtelser: _.get(replySed, `${personID}.perioderMedYtelser`),
     perioderMedPensjon: _.get(replySed, `${personID}.perioderMedPensjon`)
   }
-  const namespace = `personmanager-${personID}-trygdeordninger`
+  const namespace = `${parentNamespace}-${personID}-trygdeordninger`
 
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')
   const [_newStartDato, _setNewStartDato] = useState<string>('')

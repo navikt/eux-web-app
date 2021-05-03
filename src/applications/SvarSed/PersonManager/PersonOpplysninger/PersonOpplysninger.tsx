@@ -22,6 +22,7 @@ import { useTranslation } from 'react-i18next'
 interface PersonOpplysningerProps {
   landkoderList: Array<Kodeverk>
   highContrast: boolean
+  parentNamespace: string
   onSearchingPerson: (query: string) => void
   updateReplySed: (needle: string, value: any) => void
   personID: string | undefined
@@ -35,18 +36,19 @@ interface PersonOpplysningerProps {
 const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   landkoderList,
   onSearchingPerson,
-  updateReplySed,
+  parentNamespace,
   personID,
   replySed,
   resetValidation,
   searchedPerson,
   searchingPerson,
+  updateReplySed,
   validation
 }:PersonOpplysningerProps): JSX.Element => {
   const { t } = useTranslation()
   const target = `${personID}.personInfo`
   const personInfo: PersonInfo = _.get(replySed, target)
-  const namespace = `personmanager-${personID}-personopplysninger`
+  const namespace = `${parentNamespace}-${personID}-personopplysninger`
 
   const [_seeNewForm, setSeeNewForm] = useState<boolean>(false)
   const norwegianPin = _.find(personInfo.pin, p => p.land === 'NO')
@@ -157,7 +159,11 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
 
   return (
     <PaddedDiv key={personID}>
-      <AlignStartRow className='slideInFromLeft'>
+      <Undertittel className='slideInFromLeft'>
+        {t('el:title-personopplysning')}
+      </Undertittel>
+      <VerticalSeparatorDiv data-size='2' />
+      <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.05s'}}>
         <Column>
           <Input
             feil={validation[namespace + '-fornavn']?.feilmelding}
@@ -189,7 +195,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
           />
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv data-size='2'/>
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column>
           <HighContrastRadioPanelGroup
@@ -210,7 +216,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.15s' }}>
         <Column>
           <Input
             feil={validation[namespace + '-utenlandskpin-nummer']?.feilmelding}
@@ -238,7 +244,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
         <Column>
           <Input
             feil={validation[namespace + '-norskpin-nummer']?.feilmelding}
@@ -266,7 +272,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv data-size='0.5' />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.25s' }}>
         <Column>
           {searchedPerson
             ? (
@@ -284,7 +290,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv data-size='2' />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.5s' }}>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
         <Column>
           <Undertittel>
             {t('label:fødested')}
@@ -331,7 +337,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
           </AlignStartRow>
           )
         : (
-          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.6s' }}>
+          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.35s' }}>
             <Column>
               <HighContrastFlatknapp
                 mini

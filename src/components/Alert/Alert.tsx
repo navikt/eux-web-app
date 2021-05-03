@@ -1,4 +1,4 @@
-import FilledRemoveCircle from 'assets/icons/RemoveCircle'
+import RemoveCircle from 'assets/icons/RemoveCircle'
 import classNames from 'classnames'
 import { AlertError, AlertStatus } from 'declarations/components'
 import { AlertErrorPropType } from 'declarations/components.pt'
@@ -49,7 +49,7 @@ const AlertDiv = styled(AlertStripe)`
   }
 `
 
-export const CloseIcon = styled(FilledRemoveCircle)`
+export const CloseIcon = styled(RemoveCircle)`
   position: absolute;
   top: 0.25rem;
   right: 0.25rem;

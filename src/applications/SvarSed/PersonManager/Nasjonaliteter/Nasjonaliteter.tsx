@@ -20,6 +20,7 @@ import { validateNasjonalitet, ValidationNasjonalitetProps } from './validation'
 interface NasjonalitetProps {
   highContrast: boolean
   landkoderList: Array<Kodeverk>
+  parentNamespace: string
   personID: string
   personName: string
   replySed: ReplySed
@@ -30,6 +31,7 @@ interface NasjonalitetProps {
 
 const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
   landkoderList,
+  parentNamespace,
   personID,
   personName,
   replySed,
@@ -40,7 +42,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
   const { t } = useTranslation()
   const target = `${personID}.personInfo.statsborgerskap`
   const statsborgerskaper: Array<Statsborgerskap> = _.get(replySed, target)
-  const namespace = `personmanager-${personID}-nasjonaliteter`
+  const namespace = `${parentNamespace}-${personID}-nasjonaliteter`
 
   const [_newLand, _setNewLand] = useState<string | undefined>(undefined)
   const [_newFradato, _setNewFradato] = useState<string>('')

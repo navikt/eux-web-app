@@ -17,6 +17,7 @@ import { getIdx } from 'utils/namespace'
 import { validateNotAnsatte, ValidationNotAnsattProps } from './notAnsattValidation'
 
 export interface NotAnsattProps {
+  parentNamespace: string
   personID: string
   replySed: ReplySed
   resetValidation: (key?: string) => void
@@ -25,6 +26,7 @@ export interface NotAnsattProps {
 }
 
 const NotAnsatt: React.FC<NotAnsattProps> = ({
+  parentNamespace,
   personID,
   replySed,
   resetValidation,
@@ -34,7 +36,7 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
   const { t } = useTranslation()
   const target: string = `${personID}.perioderSomSelvstendig`
   const perioderSomSelvstendig: Array<Periode> = _.get(replySed, target)
-  const namespace = `personmanager-${personID}-personensstatus-notansatt`
+  const namespace = `${parentNamespace}-notansatt`
 
   const [_newStartDato, _setNewStartDato] = useState<string>('')
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')

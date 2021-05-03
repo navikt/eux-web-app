@@ -29,28 +29,30 @@ import { validateFamilierelasjon, ValidationFamilierelasjonProps } from './valid
 interface FamilierelasjonProps {
   familierelasjonKodeverk: Array<Kodeverk>
   highContrast: boolean
-  updateReplySed: (needle: string, value: any) => void
+  parentNamespace: string
   personID: string
   personName: string
   replySed: ReplySed
   resetValidation: (key?: string) => void
+  updateReplySed: (needle: string, value: any) => void
   validation: Validation
 }
 
 const Familierelasjon: React.FC<FamilierelasjonProps> = ({
   familierelasjonKodeverk,
   highContrast,
-  updateReplySed,
+  parentNamespace,
   personID,
   personName,
   replySed,
   resetValidation,
+  updateReplySed,
   validation
 }:FamilierelasjonProps): JSX.Element => {
   const { t } = useTranslation()
   const target = `${personID}.familierelasjoner`
   const familierelasjoner: Array<FamilieRelasjon> = _.get(replySed, target)
-  const namespace = `personmanager-${personID}-familierelasjon`
+  const namespace = `${parentNamespace}-${personID}-familierelasjon`
 
   const [_newRelasjonType, _setNewRelasjonType] = useState<RelasjonType | undefined>(undefined)
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')

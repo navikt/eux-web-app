@@ -8,9 +8,10 @@ export interface OldPeriod {
 export interface Arbeidsgiver {
   fraDato?: string
   tilDato?: string
-  harRegistrertInntekt?: string
-  arbeidsgiverNavn: string
+  fraInntektsregistreret: string
+  fraArbeidsgiverregisteret: string
   arbeidsgiverOrgnr: string
+  arbeidsgiverNavn ?: string
 }
 
 export interface Arbeidsperioder {
@@ -100,11 +101,25 @@ export interface OldFamilieRelasjon extends Person {
   nasjonalitet?: string
 }
 
-export interface Inntekt {
+/*export interface Inntekt {
   fraDato: string
   tilDato: string
   beloep: number
   type: string
+}*/
+
+export interface Inntekt {
+  arbeidsgiver: {
+    navn: string
+    orgnr: string
+    prosent: string
+    sisteLønn: string
+  }
+  lønn: Array<{
+    fra: string
+    beloep: number
+  }>
+  gjennomsnitt: number
 }
 
 export type Inntekter = Array<Inntekt>

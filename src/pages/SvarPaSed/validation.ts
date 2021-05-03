@@ -37,8 +37,9 @@ import { Validation } from 'declarations/types.d'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
+import { isFamilieytelser } from 'utils/sed'
 
-export interface ValidationStep2Props {
+export interface ValidationSEDEditorProps {
   comment: string
   replySed: ReplySed
 }
@@ -108,7 +109,7 @@ export const performValidation = (v: Validation, t: TFunction, replySed: ReplySe
   return hasErrors
 }
 
-export const validateStep1 = (
+export const validateSEDSelection = (
   v: Validation,
   t: TFunction,
   {
@@ -128,17 +129,17 @@ export const validateStep1 = (
   return hasErrors
 }
 
-export const validateStep2 = (
+export const validateSEDEditor = (
   v: Validation,
   t: TFunction,
   {
     comment,
     replySed
-  }: ValidationStep2Props
+  }: ValidationSEDEditorProps
 ): boolean => {
   let hasErrors: boolean = false
   let _error: boolean
-  if (replySed.sedType.startsWith('F')) {
+  if (isFamilieytelser(replySed)) {
     if (_.isEmpty((replySed as F002Sed).formaal)) {
       v.formaal = {
         feilmelding: t('message:validation-noFormaal'),

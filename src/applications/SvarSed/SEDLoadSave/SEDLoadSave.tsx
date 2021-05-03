@@ -1,12 +1,14 @@
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import { Etikett, FlexCenterDiv, FlexDiv, FlexBaseDiv, PileDiv } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
+import { State } from 'declarations/reducers'
 import { LocalStorageEntry } from 'declarations/types'
 import _ from 'lodash'
 import { Normaltekst, UndertekstBold } from 'nav-frontend-typografi'
 import NavHighContrast, { HighContrastFlatknapp, HighContrastPanel, VerticalSeparatorDiv, HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 const LoadSaveDiv = styled(FlexDiv)`
@@ -16,16 +18,19 @@ const LoadSaveDiv = styled(FlexDiv)`
 `
 
 interface SEDLoadSaveProps {
-  highContrast: boolean
   onLoad: (content: any) => void
   storageKey: string
 }
 
+const mapState = (state: State): any => ({
+  highContrast: state.ui.highContrast
+})
+
 const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent extends any>({
-  highContrast,
   onLoad,
   storageKey
 }: SEDLoadSaveProps) => {
+  const { highContrast } = useSelector<State, any>(mapState)
   const [_savedEntries, setSavedEntries] = useState<Array<LocalStorageEntry<CustomLocalStorageContent>> | null | undefined>(undefined)
   const [_loadingSavedItems, setLoadingSavedItems] = useState<boolean>(false)
   const [_confirmDelete, setConfirmDelete] = useState<Array<string>>([])

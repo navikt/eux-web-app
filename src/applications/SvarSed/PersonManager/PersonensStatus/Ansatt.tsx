@@ -32,24 +32,25 @@ import {
 
 export interface AnsattProps {
   arbeidsperioder: Arbeidsperioder
-  getArbeidsperioder: (fnr: string | undefined) => void
+  getArbeidsperioder: () => void
   gettingArbeidsperioder: boolean
-  updateReplySed: (needle: string, value: any) => void
+  parentNamespace: string
   replySed: ReplySed
   personID: string
+  updateReplySed: (needle: string, value: any) => void
 }
 
 const Ansatt: React.FC<AnsattProps> = ({
   arbeidsperioder,
   getArbeidsperioder,
   gettingArbeidsperioder,
-  updateReplySed,
+  parentNamespace,
   personID,
-  replySed
+  replySed,
+  updateReplySed
 }: AnsattProps) => {
   const { t } = useTranslation()
-  const fnr: string | undefined = _.find(_.get(replySed, `${personID}.personInfo.pin`), p => p.land === 'NO')?.identifikator
-  const namespace = `personmanager-${personID}-personensstatus-ansatt`
+  const namespace = `${parentNamespace}-ansatt`
   const target = `${personID}.perioderSomAnsatt`
   const perioderSomAnsatt: Array<Periode> | undefined = _.get(replySed, target)
 
@@ -162,7 +163,9 @@ const Ansatt: React.FC<AnsattProps> = ({
       arbeidsgiverNavn: _newArbeidsgiverNavn,
       arbeidsgiverOrgnr: _newArbeidsgiverOrgnr,
       fraDato: toFinalDateFormat(_newArbeidsgiverStartDato),
-      tilDato: toFinalDateFormat(_newArbeidsgiverSluttDato)
+      tilDato: toFinalDateFormat(_newArbeidsgiverSluttDato),
+      fraInntektsregistreret: '-',
+      fraArbeidsgiverregisteret: '-'
     }
 
     const valid: boolean = performValidationArbeidsgiver({
@@ -362,7 +365,7 @@ const Ansatt: React.FC<AnsattProps> = ({
           <Column>
             <ArbeidsgiverSøk
               gettingArbeidsperioder={gettingArbeidsperioder}
-              getArbeidsperioder={() => getArbeidsperioder(fnr)}
+              getArbeidsperioder={getArbeidsperioder}
             />
           </Column>
         </Row>

@@ -18,6 +18,7 @@ import styled from 'styled-components'
 
 interface FamilieYtelserProps {
   highContrast: boolean
+  parentNamespace: string
   personID: string
   replySed: ReplySed
   resetValidation: (key?: string) => void
@@ -34,6 +35,7 @@ const HelpProperIcon = styled(HelpIcon)`
 
 const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
   highContrast,
+  parentNamespace,
   personID,
   replySed,
   resetValidation,
@@ -43,7 +45,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
   const { t } = useTranslation()
   const target: string = `${personID}.motregning[0]`
   const motregning: Motregning = _.get(replySed, target)
-  const namespace: string = `personmanager-${personID}-familieytelser`
+  const namespace: string = `${parentNamespace}-${personID}-familieytelser`
 
   const _currencyData = CountryData.getCurrencyInstance('nb')
 

@@ -25,6 +25,7 @@ import { validateAdresse, ValidationAddressProps } from './validation'
 interface AdresseProps {
   highContrast: boolean
   landkoderList: Array<Kodeverk>
+  parentNamespace: string
   personID: string
   personName: string
   replySed: ReplySed
@@ -35,6 +36,7 @@ interface AdresseProps {
 
 const Adresser: React.FC<AdresseProps> = ({
   landkoderList,
+  parentNamespace,
   personID,
   personName,
   replySed,
@@ -45,7 +47,7 @@ const Adresser: React.FC<AdresseProps> = ({
   const { t } = useTranslation()
   const target = `${personID}.adresser`
   const adresses: Array<Adresse> = _.get(replySed, target)
-  const namespace = `personmanager-${personID}-adresser`
+  const namespace = `${parentNamespace}-${personID}-adresser`
 
   const [_newType, _setNewType] = useState<AdresseType | undefined>(undefined)
   const [_newGate, _setNewGate] = useState<string>('')

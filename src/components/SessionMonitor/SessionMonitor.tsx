@@ -7,15 +7,7 @@ import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 
 const SessionMonitorDiv = styled.div`
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  color: #3e3832;
-  overflow: hidden;
-  max-height: 2.3em;
-  margin: 2px;
-  padding: 0em 0.5em;
-  z-index: 99999;
+font-size: 80%;
 `
 
 export interface SessionMonitorProps {
@@ -92,7 +84,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
 
   return (
     <SessionMonitorDiv>
-      {diffHtml}
+      Sesjon utløper om {diffHtml}
     </SessionMonitorDiv>
   )
 }

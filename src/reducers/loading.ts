@@ -12,6 +12,7 @@ export const initialLoadingState: LoadingState = {
   gettingArbeidsperioder: false,
   gettingDokument: false,
   gettingFagsaker: false,
+  gettingInntekter: false,
   gettingInstitusjoner: false,
   gettingLandkoder: false,
   gettingPerson: false,
@@ -90,6 +91,20 @@ const loadingReducer = (
         ...state,
         gettingInstitusjoner: false
       }
+
+    case types.SVARPASED_INNTEKT_GET_REQUEST:
+      return {
+        ...state,
+        gettingInntekter: true
+      }
+
+    case types.SVARPASED_INNTEKT_GET_SUCCESS:
+    case types.SVARPASED_INNTEKT_GET_FAILURE:
+      return {
+        ...state,
+        gettingInntekter: false
+      }
+
 
     case types.SAK_LANDKODER_GET_REQUEST:
       return {

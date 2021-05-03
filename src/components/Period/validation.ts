@@ -8,7 +8,7 @@ import { getIdx } from 'utils/namespace'
 
 export interface ValidationPeriodProps {
   period: Periode
-  index: number
+  index?: number | undefined
   namespace: string,
   personName?: string
 }
@@ -20,7 +20,7 @@ export const validatePeriod = (
   t: TFunction,
   {
     period,
-    index,
+    index = undefined,
     namespace,
     personName
   }: ValidationPeriodProps

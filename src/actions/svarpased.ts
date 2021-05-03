@@ -1,7 +1,7 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { ReplySed } from 'declarations/sed'
-import { Arbeidsgiver, OldFamilieRelasjon, Inntekter, ConnectedSed, Validation } from 'declarations/types'
+import { Arbeidsgiver, OldFamilieRelasjon, ConnectedSed, Validation } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockArbeidsperioder from 'mocks/arbeidsperioder'
 import mockInntekt from 'mocks/inntekt'
@@ -35,13 +35,13 @@ export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload>>
   if (result.status === 'valid') {
     type = result.type
     if (result.type === 'fnr') {
-      url = sprintf(urls.API_SVARPASED_FNR_QUERY_URL, { fnr: saksnummerOrFnr })
+      url = sprintf(urls.API_RINASAKER_OVERSIKT_FNR_QUERY_URL, { fnr: saksnummerOrFnr })
     } else {
-      url = sprintf(urls.API_SVARPASED_DNR_QUERY_URL, { fnr: saksnummerOrFnr })
+      url = sprintf(urls.API_RINASAKER_OVERSIKT_DNR_QUERY_URL, { fnr: saksnummerOrFnr })
     }
   } else {
     type = 'saksnummer'
-    url = sprintf(urls.API_SVARPASED_SAKSNUMMER_QUERY_URL, { rinaSakId: saksnummerOrFnr })
+    url = sprintf(urls.API_RINASAKER_OVERSIKT_SAKID_QUERY_URL, { rinaSakId: saksnummerOrFnr })
   }
 
   return call({
@@ -64,7 +64,7 @@ export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload>> = (
 ): ThunkResult<ActionWithPayload> => {
   const mockSed = mockReplySed(connectedSed.svarsedType)
   return call({
-    url: sprintf(urls.API_SVARPASED_REPLYSED_QUERY_URL, {
+    url: sprintf(urls.API_RINASAK_SVARSED_QUERY_URL, {
       rinaSakId: saksnummerOrFnr,
       sedId: connectedSed.sedId,
       sedType: connectedSed.svarsedType
@@ -106,7 +106,7 @@ export const searchPerson: ActionCreator<ThunkResult<ActionWithPayload>> = (
   fnr: string
 ): ThunkResult<ActionWithPayload> => {
   return call({
-    url: sprintf(urls.API_SVARPASED_PERSON_URL, { fnr: fnr }),
+    url: sprintf(urls.API_PERSONER_URL, { fnr: fnr }),
     expectedPayload: mockPerson({ fnr: fnr }),
     cascadeFailureError: true,
     type: {
@@ -121,7 +121,7 @@ export const getPersonRelated: ActionCreator<ThunkResult<ActionWithPayload>> = (
   fnr: string
 ): ThunkResult<ActionWithPayload> => {
   return call({
-    url: sprintf(urls.API_SVARPASED_PERSON_URL, { fnr: fnr }),
+    url: sprintf(urls.API_PERSONER_URL, { fnr: fnr }),
     expectedPayload: mockPerson({ fnr: fnr }),
     cascadeFailureError: true,
     context: {
@@ -179,7 +179,7 @@ export const createSed: ActionCreator<ThunkResult<
 >> = (rinaSakId: string, sedId: string, sedType: string, payload: SvarpasedState): ThunkResult<ActionWithPayload> => {
   return call({
     method: 'POST',
-    url: sprintf(urls.API_SVARPASED_SEND_POST_URL, { rinaSakId: rinaSakId }),
+    url: sprintf(urls.API_SED_CREATE_URL, { rinaSakId: rinaSakId }),
     expectedPayload: {
       sedId: '123'
     },
@@ -196,7 +196,7 @@ export const getArbeidsperioder: ActionCreator<ThunkResult<
   ActionWithPayload
 >> = (fnr: string): ThunkResult<ActionWithPayload> => {
   return call({
-    url: sprintf(urls.API_SAK_ARBEIDSPERIODER_URL, { fnr: fnr }),
+    url: sprintf(urls.API_ARBEIDSPERIODER_QUERY_URL, { fnr: fnr }),
     expectedPayload: mockArbeidsperioder(fnr),
     type: {
       request: types.SVARPASED_ARBEIDSPERIODER_GET_REQUEST,
@@ -221,15 +221,10 @@ export const removeArbeidsgiver: ActionCreator<ActionWithPayload> = (
 })
 
 export const fetchInntekt: ActionCreator<ThunkResult<ActionWithPayload>> = (
-  data: any
+  fnr: string
 ): ThunkResult<ActionWithPayload> => {
   return call({
-    url: sprintf(urls.API_SAK_INNTEKT_URL, {
-      fnr: data.fnr,
-      fraDato: data.fraDato,
-      tilDato: data.tilDato,
-      tema: data.tema
-    }),
+    url: sprintf(urls.API_INNTEKT_URL, {fnr: fnr}),
     method: 'GET',
     expectedPayload: mockInntekt,
     type: {
@@ -239,10 +234,3 @@ export const fetchInntekt: ActionCreator<ThunkResult<ActionWithPayload>> = (
     }
   })
 }
-
-export const sendSeletedInntekt: ActionCreator<ActionWithPayload> = (
-  payload: Inntekter
-): ActionWithPayload => ({
-  type: types.SVARPASED_SELECTED_INNTEKT_SUCCESS,
-  payload: payload
-})

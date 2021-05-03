@@ -22,6 +22,7 @@ import { validateWithSubsidies, ValidationWithSubsidiesProps } from './withSubsi
 interface WithSubsidiesProps {
   highContrast: boolean
   updateReplySed: (needle: string, value: any) => void
+  parentNamespace: string
   personID: string
   replySed: ReplySed
   resetValidation: (key?: string) => void
@@ -30,16 +31,17 @@ interface WithSubsidiesProps {
 
 const WithSubsidies: React.FC<WithSubsidiesProps> = ({
   highContrast,
-  updateReplySed,
+  parentNamespace,
   personID,
   replySed,
   resetValidation,
+  updateReplySed,
   validation
 }: WithSubsidiesProps): JSX.Element => {
   const { t } = useTranslation()
   const target: string = `${personID}.perioderMedPensjon`
   const perioderMedPensjon: Array<PensjonPeriode> = _.get(replySed, target)
-  const namespace = `personmanager-${personID}-personensstatus-withsubsidies`
+  const namespace = `${parentNamespace}-withsubsidies`
 
   const [_newStartDato, _setNewStartDato] = useState<string>('')
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')

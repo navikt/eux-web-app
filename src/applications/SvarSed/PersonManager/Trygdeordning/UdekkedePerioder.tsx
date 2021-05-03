@@ -21,6 +21,7 @@ import { getIdx } from 'utils/namespace'
 interface UdekkedePerioderProps {
   highContrast: boolean
   updateReplySed: (needle: string, value: any) => void
+  parentNamespace: string,
   personID: string
   personName: string
   replySed: ReplySed
@@ -30,6 +31,7 @@ interface UdekkedePerioderProps {
 
 const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
   updateReplySed,
+  parentNamespace,
   personID,
   personName,
   replySed,
@@ -39,7 +41,7 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
   const { t } = useTranslation()
   const target = `${personID}.perioderUtenforTrygdeordning`
   const perioderUtenforTrygdeordning: Array<Periode> = _.get(replySed, target)
-  const namespace = `personmanager-${personID}-trygdeordninger`
+  const namespace = `${parentNamespace}-${personID}-trygdeordninger`
 
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')
   const [_newStartDato, _setNewStartDato] = useState<string>('')

@@ -18,6 +18,7 @@ import { validateAvsenderlandet, ValidationAvsenderlandetProps } from './avsende
 
 export interface AvsenderlandetProps {
   updateReplySed: (needle: string, value: any) => void
+  parentNamespace: string
   personID: string
   resetValidation: (key?: string) => void
   replySed: ReplySed
@@ -25,16 +26,17 @@ export interface AvsenderlandetProps {
 }
 
 const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
-  updateReplySed,
+  parentNamespace,
   personID,
   resetValidation,
   replySed,
+  updateReplySed,
   validation
 }: AvsenderlandetProps) => {
   const { t } = useTranslation()
   const target: string = `${personID}.perioderMedTrygd`
   const perioderMedTrygd: Array<Periode> = _.get(replySed, target)
-  const namespace: string = `personmanager-${personID}-personensstatus-avsenderlandet`
+  const namespace = `${parentNamespace}-avsenderlandet`
 
   const [_newStartDato, _setNewStartDato] = useState<string>('')
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')

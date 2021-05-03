@@ -11,21 +11,23 @@ import { useTranslation } from 'react-i18next'
 
 interface TrygdeordningProps {
   highContrast: boolean
-  updateReplySed: (needle: string, value: any) => void
+  parentNamespace: string
   personID: string
   personName: string
   replySed: ReplySed
   resetValidation: (key?: string) => void
+  updateReplySed: (needle: string, value: any) => void
   validation: Validation
 }
 
 const Trygdeordning: React.FC<TrygdeordningProps> = ({
   highContrast,
-  updateReplySed,
+  parentNamespace,
   personID,
   personName,
   replySed,
   resetValidation,
+  updateReplySed,
   validation
 }: TrygdeordningProps): JSX.Element => {
   const { t } = useTranslation()
@@ -40,11 +42,12 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
 
         <DekkedePerioder
           highContrast={highContrast}
-          updateReplySed={updateReplySed}
+          parentNamespace={parentNamespace}
           personID={personID}
           personName={personName}
           replySed={replySed}
           resetValidation={resetValidation}
+          updateReplySed={updateReplySed}
           validation={validation}
         />
 
@@ -52,11 +55,12 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
 
         <UdekkedePerioder
           highContrast={highContrast}
-          updateReplySed={updateReplySed}
+          parentNamespace={parentNamespace}
           personID={personID}
           personName={personName}
           replySed={replySed}
           resetValidation={resetValidation}
+          updateReplySed={updateReplySed}
           validation={validation}
         />
 
@@ -64,11 +68,12 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
 
         <FamilieYtelser
           highContrast={highContrast}
-          updateReplySed={updateReplySed}
+          parentNamespace={parentNamespace}
           personID={personID}
           personName={personName}
           replySed={replySed}
           resetValidation={resetValidation}
+          updateReplySed={updateReplySed}
           validation={validation}
         />
       </>

@@ -25,6 +25,7 @@ import {
 interface KontaktinformasjonProps {
   highContrast: boolean
   updateReplySed: (needle: string, value: any) => void
+  parentNamespace: string
   personID: string
   personName: string
   replySed: ReplySed
@@ -35,6 +36,7 @@ interface KontaktinformasjonProps {
 const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
   highContrast,
   updateReplySed,
+  parentNamespace,
   personID,
   personName,
   replySed,
@@ -46,8 +48,8 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
   const targetEpost = `${personID}.epost`
   const telefoner: Array<Telefon> = _.get(replySed, targetTelefon)
   const eposter: Array<Epost> = _.get(replySed, targetEpost)
-  const namespaceTelefon = `personmanager-${personID}-kontaktinformasjon-telefon`
-  const namespaceEpost = `personmanager-${personID}-kontaktinformasjon-epost`
+  const namespaceTelefon = `${parentNamespace}-${personID}-kontaktinformasjon-telefon`
+  const namespaceEpost = `${parentNamespace}-${personID}-kontaktinformasjon-epost`
 
   const [_newNummer, _setNewNummer] = useState<string>('')
   const [_newType, _setNewType] = useState<TelefonType | undefined>(undefined)
