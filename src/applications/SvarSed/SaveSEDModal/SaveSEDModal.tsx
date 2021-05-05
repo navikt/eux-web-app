@@ -103,7 +103,7 @@ const SendSEDModal = <CustomLocalStorageContent extends any = any>({
         modalContent: (
           <MinimalModalDiv>
             <Undertittel>
-              {t('el:title-save-sed')}
+              {t('label:save-sed')}
             </Undertittel>
             <VerticalSeparatorDiv />
             {_message && (

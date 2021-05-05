@@ -174,7 +174,7 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
   return (
     <>
       <Undertittel>
-        {t('el:title-periods-in-sender-country')}
+        {t('label:periods-in-sender-country')}
       </Undertittel>
       <VerticalSeparatorDiv />
       <UndertekstBold>

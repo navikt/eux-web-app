@@ -10,6 +10,7 @@ import { FlexCenterDiv, FlexCenterSpacedDiv, WithErrorPanel, PileDiv } from 'com
 import { FSed, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
+import Chevron from 'nav-frontend-chevron'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Normaltekst } from 'nav-frontend-typografi'
 import { HorizontalSeparatorDiv, theme, themeHighContrast, themeKeys, VerticalSeparatorDiv } from 'nav-hoykontrast'
@@ -38,6 +39,15 @@ const MenuLabelDiv = styled(FlexCenterDiv)`
    background-color: ${(props: any) => props['data-highContrast']
      ? themeHighContrast[themeKeys.ALTERNATIVE_HOVER_COLOR]
      : theme[themeKeys.ALTERNATIVE_HOVER_COLOR]};
+  }
+   &.selected {
+    font-weight: bold;
+    background-color: ${(props: any) => props['data-highContrast']
+  ? themeHighContrast[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]
+  : theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
+     border-left: 6px solid ${(props: any) => props['data-highContrast']
+  ? themeHighContrast[themeKeys.MAIN_INTERACTIVE_COLOR]
+  : theme[themeKeys.MAIN_INTERACTIVE_COLOR]};
   }
 `
 const RightDiv = styled.div`
@@ -265,6 +275,8 @@ const FormålManager: React.FC<FormålManagerProps> = ({
                       selected: currentMenu === menu
                     })}
                   >
+                    <Chevron type='høyre' />
+                    <HorizontalSeparatorDiv data-size='0.5' />
                     {viewValidation && (
                       validation[namespace + '-' + menu]
                         ? (

@@ -361,7 +361,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
         items={_items}
         context={context}
         labels={{
-          type: t('label:attachments').toLowerCase()
+          type: t('label:vedlegg').toLowerCase()
         }}
         itemsPerPage={30}
         compact

@@ -104,7 +104,7 @@ const Family: React.FC<FamilyProps> = ({
     <div data-test-id='family'>
       <HorizontalSeparatorDiv />
       <Undertittel>
-        {t('el:title-family-description')}
+        {t('label:family-description')}
       </Undertittel>
       <VerticalSeparatorDiv />
       <FlexDiv>
@@ -166,7 +166,7 @@ const Family: React.FC<FamilyProps> = ({
         <div>
           <VerticalSeparatorDiv data-size='1.5' />
           <Ingress>
-            {t('el:title-family-utland')}
+            {t('label:family-utland')}
           </Ingress>
           {_viewAbroadPersonForm && (
             <>
@@ -197,7 +197,7 @@ const Family: React.FC<FamilyProps> = ({
         <div>
           <VerticalSeparatorDiv data-size='1.5' />
           <Ingress>
-            {t('el:title-family-tps')}
+            {t('label:family-tps')}
           </Ingress>
           {_viewTPSRelatedForm && person && (
             <>

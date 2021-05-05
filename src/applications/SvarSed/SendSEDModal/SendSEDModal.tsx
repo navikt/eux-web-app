@@ -162,7 +162,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
         modalContent: (
           <MinimalModalDiv>
             <Undertittel>
-              {t('el:title-creating-sed')}
+              {t('label:opprette-ny-sed')}
             </Undertittel>
             <VerticalSeparatorDiv />
             {alertMessage && alertType && [types.SVARPASED_SED_CREATE_FAILURE].indexOf(alertType) >= 0 && (

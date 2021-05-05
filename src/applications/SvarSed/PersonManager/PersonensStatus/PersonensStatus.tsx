@@ -47,7 +47,7 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
       <AlignStartRow className='slideInFromLeft'>
         <Column>
           <Undertittel>
-            {t('el:title-arbeidsforhold-type')}
+            {t('label:arbeidsforhold-type')}
           </Undertittel>
           <VerticalSeparatorDiv />
           <HighContrastRadioPanelGroup

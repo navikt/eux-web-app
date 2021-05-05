@@ -82,7 +82,7 @@ const InntektForm: React.FC<InntektFormProps> = ({
       <AlignStartRow className='slideInFromLeft'>
         <Column>
           <Undertittel>
-            {t('el:title-inntekt-fra-komponent')}
+            {t('label:inntekt-fra-komponent')}
           </Undertittel>
         </Column>
       </AlignStartRow>

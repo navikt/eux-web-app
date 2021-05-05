@@ -19,6 +19,6 @@ test:
 
 ui improvs:
 
-- mudar slideAnimate
+- remover slideAnimate
 - meter keys para melhor ver o que muda
 - rever títulos

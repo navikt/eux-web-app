@@ -353,11 +353,11 @@ const Ansatt: React.FC<AnsattProps> = ({
   return (
     <>
       <Systemtittel>
-        {t('el:title-aa-registeret')}
+        {t('label:aa-registeret')}
       </Systemtittel>
       <VerticalSeparatorDiv />
       <Undertittel>
-        {t('el:title-registered-arbeidsperiode')}
+        {t('label:registered-arbeidsperiode')}
       </Undertittel>
       <VerticalSeparatorDiv />
       {_.isNil(arbeidsperioder) && (
@@ -468,7 +468,7 @@ const Ansatt: React.FC<AnsattProps> = ({
         : (
           <>
             <Undertittel>
-              {t('el:title-add-arbeidsperiode')}
+              {t('label:legg-til-arbeidsperiode')}
             </Undertittel>
             <VerticalSeparatorDiv />
             <AlignStartRow className='slideInFromLeft'>

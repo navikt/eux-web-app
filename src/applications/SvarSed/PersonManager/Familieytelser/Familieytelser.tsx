@@ -113,7 +113,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
   return (
     <PaddedDiv>
       <Undertittel>
-        {t('el:title-amount-for-whole-familie')}
+        {t('label:beløp-for-hele-familien')}
       </Undertittel>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft'>
@@ -183,7 +183,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <Undertittel className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
-        {t('el:title-grant-date')}
+        {t('label:grant-date')}
       </Undertittel>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>

@@ -291,7 +291,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
           </CloseButton>
         )}
         <Title>
-          {t('el:title-add-remove-persons')}
+          {t('label:legg-til-fjern-personer')}
         </Title>
         <VerticalSeparatorDiv data-size='2' />
         <>

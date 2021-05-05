@@ -354,7 +354,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
   return (
     <PaddedDiv>
       <Undertittel>
-        {t('el:title-familierelasjon')}
+        {t('label:familierelasjon')}
       </Undertittel>
       <VerticalSeparatorDiv />
       {familierelasjoner?.map(renderRow)}

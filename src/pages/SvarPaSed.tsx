@@ -257,7 +257,7 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
     <TopContainer>
       <Container>
         <Margin />
-        <Content style={{ flex: 6 }}>
+        <Content style={{ flex: 3, maxWidth: '1100px' }}>
           <ContainerDiv>
             <WindowDiv>
               <AnimatableDiv

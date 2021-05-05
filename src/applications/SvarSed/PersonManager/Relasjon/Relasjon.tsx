@@ -123,7 +123,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
   return (
     <PaddedDiv>
       <Undertittel className='slideInFromLeft'>
-        {t('el:title-relasjon-til-barn')}
+        {t('label:relasjon-til-barn')}
       </Undertittel>
       <VerticalSeparatorDiv data-size='2' />
       <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>

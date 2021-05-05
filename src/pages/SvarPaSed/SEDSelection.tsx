@@ -164,7 +164,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
     <NavHighContrast highContrast={highContrast}>
       <ContainerDiv>
         <Systemtittel>
-          {t('el:title-svarsed')}
+          {t('label:svarsed')}
         </Systemtittel>
         <VerticalSeparatorDiv data-size='2' />
         <AlignStartRow

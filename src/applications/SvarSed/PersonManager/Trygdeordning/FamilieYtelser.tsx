@@ -369,7 +369,7 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
   return (
     <>
       <Ingress>
-        {t('el:title-trygdeordningen-familieYtelse')}
+        {t('label:trygdeordningen-familieYtelse')}
       </Ingress>
       <VerticalSeparatorDiv />
       {existsFamilieYtelser && (

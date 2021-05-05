@@ -244,7 +244,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
 
   return (
     <Container className={className}>
-      <Normaltekst>{t('el:title-family-utland-add-form')}</Normaltekst>
+      <Normaltekst>{t('label:family-utland-add-form')}</Normaltekst>
       <VerticalSeparatorDiv />
       <Panel data-test-id='familierelasjoner__utland__wrapper'>
         <Row>

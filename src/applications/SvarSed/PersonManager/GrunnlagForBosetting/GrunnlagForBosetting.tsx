@@ -200,7 +200,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
   const render = () => (
     <>
       <UndertekstBold>
-        {t('el:title-duration-stay')}
+        {t('label:oppholdets-varighet')}
       </UndertekstBold>
       <VerticalSeparatorDiv />
       {flyttegrunn.perioder
@@ -279,7 +279,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
       : (
         <>
           <Undertittel>
-            {t('el:title-grunnlag-for-bosetting')}
+            {t('label:grunnlag-for-bosetting')}
           </Undertittel>
           <VerticalSeparatorDiv />
           {render()}

@@ -96,7 +96,7 @@ const SvarPåForespørsel: React.FC<SvarPåForespørselProps> = ({
       <AlignStartRow className='slideInFromLeft'>
         <Column>
           <Undertittel>
-            {t('el:title-siste-ansettelsesforhold')}
+            {t('label:siste-ansettelsesforhold')}
           </Undertittel>
         </Column>
       </AlignStartRow>

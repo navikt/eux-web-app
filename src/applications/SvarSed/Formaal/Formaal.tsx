@@ -48,7 +48,7 @@ const Formaal: React.FC<FormaalProps> = ({
       namespace='formål'
       options={formaalOptions}
       onChange={saveChanges}
-      title={t('el:title-choose-formaal')}
+      title={t('label:velg-formaal')}
     />
   )
 }

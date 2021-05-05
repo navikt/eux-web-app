@@ -35,7 +35,7 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
   return (
     <PaddedDiv>
       <Undertittel className='slideInFromLeft'>
-        {t('el:title-dekning-trygdeordningen')}
+        {t('label:dekning-trygdeordningen')}
       </Undertittel>
       <>
         <VerticalSeparatorDiv data-size={3} />

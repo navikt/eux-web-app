@@ -164,7 +164,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
       <AlignStartRow className='slideInFromLeft'>
         <Column>
           <Undertittel>
-            {t('el:title-arbeidsforhold/arbeidsgivere')}
+            {t('label:arbeidsforhold/arbeidsgivere')}
           </Undertittel>
         </Column>
       </AlignStartRow>
@@ -190,11 +190,11 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
       </AlignStartRow>
       <VerticalSeparatorDiv data-size='2' />
       <Systemtittel>
-        {t('el:title-aa-registeret')}
+        {t('label:aa-registeret')}
       </Systemtittel>
       <VerticalSeparatorDiv />
       <Undertittel>
-        {t('el:title-registered-arbeidsperiode')}
+        {t('label:registered-arbeidsperiode')}
       </Undertittel>
       <VerticalSeparatorDiv />
       {arbeidsperioder?.arbeidsperioder.map(arbeidsgiver => (
@@ -244,7 +244,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
         : (
           <>
             <Undertittel>
-              {t('el:title-add-arbeidsperiode')}
+              {t('label:legg-til-arbeidsperiode')}
             </Undertittel>
             <VerticalSeparatorDiv />
             <AlignStartRow className='slideInFromLeft'>
@@ -312,7 +312,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
       <AlignStartRow className='slideInFromLeft'>
         <Column>
           <Undertittel>
-            {t('el:title-kontoller-inntekt')}
+            {t('label:kontoller-inntekt')}
           </Undertittel>
         </Column>
       </AlignStartRow>

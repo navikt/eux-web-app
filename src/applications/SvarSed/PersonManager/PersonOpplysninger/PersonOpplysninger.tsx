@@ -159,17 +159,17 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
 
   return (
     <PaddedDiv key={personID}>
-      <Undertittel className='slideInFromLeft'>
-        {t('el:title-personopplysning')}
+      <Undertittel>
+        {t('label:personopplysning')}
       </Undertittel>
       <VerticalSeparatorDiv data-size='2' />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
+      <AlignStartRow>
         <Column>
           <Input
             feil={validation[namespace + '-fornavn']?.feilmelding}
-            namespace={namespace}
             id='fornavn'
             label={t('label:fornavn') + ' *'}
+            namespace={namespace}
             onChanged={onFornavnChange}
             value={personInfo.fornavn}
           />
@@ -196,7 +196,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv data-size='2' />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+      <AlignStartRow>
         <Column>
           <HighContrastRadioPanelGroup
             checked={personInfo.kjoenn}

@@ -235,7 +235,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
   return (
     <>
       <Undertittel>
-        {t('el:title-periode-pensjon-avsenderlandet')}
+        {t('label:periode-pensjon-avsenderlandet')}
       </Undertittel>
       <VerticalSeparatorDiv />
       {perioderMedPensjon

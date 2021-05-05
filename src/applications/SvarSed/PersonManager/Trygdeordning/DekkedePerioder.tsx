@@ -180,7 +180,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
   return (
     <>
       <Ingress>
-        {t('el:title-trygdeordningen-dekkede')}
+        {t('label:trygdeordningen-dekkede')}
       </Ingress>
       <VerticalSeparatorDiv />
       {perioderMedITrygdeordning?.length > 0 && (

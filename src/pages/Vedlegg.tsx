@@ -143,7 +143,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
         <Content>
           <VerticalSeparatorDiv />
           <Systemtittel>
-            {t('el:title-vedlegg')}
+            {t('label:vedlegg')}
           </Systemtittel>
           <VerticalSeparatorDiv />
           <div className='noslideInFromLeft'>

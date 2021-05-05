@@ -8,7 +8,7 @@ import GreenCircle from 'assets/icons/GreenCircle'
 import ChildIcon from 'assets/icons/Child'
 import RemoveCircle from 'assets/icons/RemoveCircle'
 import classNames from 'classnames'
-import { FlexCenterDiv, FlexCenterSpacedDiv, WithErrorPanel, PileDiv } from 'components/StyledComponents'
+import { FlexCenterDiv, FlexCenterSpacedDiv, WithErrorPanel, PileDiv, PileCenterDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { F002Sed, PersonInfo, ReplySed } from 'declarations/sed'
@@ -48,9 +48,12 @@ import InntektForm from './InntektForm/InntektForm'
 import RettTilYtelser from './RettTilYtelser/RettTilYtelser'
 import SvarPåForespørsel from './SvarPåForespørsel/SvarPåForespørsel'
 
+const transitionTime = 1
+
 const LeftDiv = styled.div`
   flex: 1;
   align-self: stretch;
+  min-width: 300px;
   border-right: 1px solid ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
 `
 const OptionDiv = styled.div`
@@ -111,10 +114,10 @@ const RightDiv = styled.div`
   border-left: 1px solid ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
   margin-left: -1px;
   align-self: stretch;
-  min-width: 200px;
   position: relative;
   background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
   overflow: hidden;
+  border-radius: 5px;
 `
 const RightFlexCenterSpacedDiv = styled.div`
   text-align: center;
@@ -131,7 +134,7 @@ const MenuLabelText = styled(Normaltekst)`
     font-weight: bold;
   }
 `
-/*
+
 const slideIn = keyframes`
   0% {
     opacity: 0;
@@ -142,7 +145,7 @@ const slideIn = keyframes`
     transform: translateX(0);
   }
 `
-*/
+
 const slideOut = keyframes`
   100% {
     opacity: 0;
@@ -156,17 +159,15 @@ const slideOut = keyframes`
   }
 `
 
-const ActiveFormDiv = styled.div``
-/*
 const ActiveFormDiv = styled.div`
-  &:not(.animating) {
+  &.animating {
     position: relative;
     transform: translateX(-50px);
     opacity: 0;
-    animation: ${slideIn} 1s forwards;
+    animation: ${slideIn} ${transitionTime}s forwards;
     border-radius: 5px;
   }
-` */
+`
 
 const PreviousFormDiv = styled.div`
   &.animating {
@@ -175,7 +176,7 @@ const PreviousFormDiv = styled.div`
     opacity: 1;
     left: 0px;
     right: 0px;
-    animation: ${slideOut} 1s forwards;
+    animation: ${slideOut} ${transitionTime}s forwards;
   }
   &:not(.animating) {
     display: none;
@@ -583,7 +584,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
       setTimeout(() => {
         setPreviousMenuOption(menuOption)
         setAnimatingMenus(false)
-      }, 1000)
+      },  transitionTime * 1000)
       if (menuOption) {
         setCurrentMenuOption(menuOption)
       } else {
@@ -620,7 +621,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
               changeMenu(personId)
               return false
             }}
-            style={{ animationDelay: totalIndex * 0.1 + 's' }}
+            style={{ animationDelay: totalIndex * 0.03 + 's' }}
             className={classNames({
               slideInFromLeft: true,
               selected: focusedMenu === personId
@@ -689,7 +690,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
               <OptionDiv
                 data-highContrast={highContrast}
                 key={o.value}
-                style={{ animationDelay: i * 0.1 + 's' }}
+                style={{ animationDelay: i * 0.03 + 's' }}
                 className={classNames({
                   slideInFromLeft: true,
                   selected: currentMenu === personId && currentMenuOption === o.value
@@ -753,7 +754,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
         />
       )}
       <Undertittel>
-        {t('el:title-personmanager')}
+        {t('label:personmanager')}
       </Undertittel>
       <VerticalSeparatorDiv />
       <WithErrorPanel className={classNames({ feil: validation[namespace]?.feilmelding })}>
@@ -786,9 +787,11 @@ const PersonManager: React.FC<PersonManagerProps> = ({
               </RightFlexCenterSpacedDiv>
             )}
             {!currentMenu && (
-              <RightFlexCenterSpacedDiv>
-                {t('label:velg-personer')}
-              </RightFlexCenterSpacedDiv>
+              <PileCenterDiv style={{height: '100%'}}>
+                <FlexCenterDiv style={{flex: '1'}}>
+                  {t('label:velg-personer')}
+                </FlexCenterDiv>
+              </PileCenterDiv>
             )}
             {previousMenuOption && (
               <PreviousFormDiv

@@ -174,7 +174,7 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
   return (
     <>
       <Undertittel>
-        {t('el:title-ansettelsesperioder')}
+        {t('label:ansettelsesperioder')}
       </Undertittel>
       <VerticalSeparatorDiv />
       {perioderSomSelvstendig
