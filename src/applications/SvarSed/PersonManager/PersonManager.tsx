@@ -46,6 +46,7 @@ import Forsikring from './Forsikring/Forsikring'
 import PeriodeForDagpenger from './PeriodeForDagpenger/PeriodeForDagpenger'
 import InntektForm from './InntektForm/InntektForm'
 import RettTilYtelser from './RettTilYtelser/RettTilYtelser'
+import SvarPåForespørsel from './SvarPåForespørsel/SvarPåForespørsel'
 
 const LeftDiv = styled.div`
   flex: 1;
@@ -249,7 +250,10 @@ const PersonManager: React.FC<PersonManagerProps> = ({
     { label: t('el:option-personmanager-17'), value: 'forsikring', type: 'U', normal: true, barn: false, family: false },
     { label: t('el:option-personmanager-18'), value: 'sisteansettelsesforhold', type: 'U', normal: true, barn: false, family: false },
     { label: t('el:option-personmanager-19'), value: 'grunntilopphør', type: 'U', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-20'), value: 'periodefordagpenger', type: 'U', normal: true, barn: false, family: false }
+    { label: t('el:option-personmanager-20'), value: 'periodefordagpenger', type: 'U', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-12'), value: 'person', type: 'H', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-3'), value: 'adresser', type: 'H', normal: true, barn: true, family: false },
+    { label: t('el:option-personmanager-21'), value: 'svarpåforespørsel', type: 'H', normal: true, barn: true, family: false }
   ]
 
   const onEditPerson = (id: string | undefined) => {
@@ -722,6 +726,17 @@ const PersonManager: React.FC<PersonManagerProps> = ({
                   )}
                   {_menuOption === 'retttilytelser' && (
                     <RettTilYtelser
+                      parentNamespace={namespace}
+                      personID={_editCurrentPersonID}
+                      replySed={replySed}
+                      resetValidation={resetValidation}
+                      updateReplySed={updateReplySed}
+                      validation={validation}
+                    />
+                  )}
+                  {_menuOption === 'svarpåforespørsel' && (
+                    <SvarPåForespørsel
+                      highContrast={highContrast}
                       parentNamespace={namespace}
                       personID={_editCurrentPersonID}
                       replySed={replySed}

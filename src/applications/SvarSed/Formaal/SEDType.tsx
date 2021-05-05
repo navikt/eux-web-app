@@ -64,6 +64,7 @@ const SEDType: React.FC<SEDTypeProps> = ({
           defaultValue={_.find(sedTypeOptions, s => s.value === sedType)}
           selectedValue={_.find(sedTypeOptions, s => s.value === sedType)}
         />
+        <HorizontalSeparatorDiv data-size='0.5'/>
         <HighContrastFlatknapp
           mini
           kompakt

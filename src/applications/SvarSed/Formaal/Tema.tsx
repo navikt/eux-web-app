@@ -31,25 +31,25 @@ const SEDType: React.FC<SEDTypeProps> = ({
   const dispatch = useDispatch()
 
   const temaOptions: Options = [
-    {label: 'tema:GEN', value: 'GEN'},
-    {label: 'tema:AAP', value: 'AAP'},
-    {label: 'tema:BAR', value: 'BAR'},
-    {label: 'tema:DAG', value: 'DAG'},
-    {label: 'tema:FEI', value: 'FEI'},
-    {label: 'tema:FOR', value: 'FOR'},
-    {label: 'tema:GRA', value: 'GRA'},
-    {label: 'tema:KON', value: 'KON'},
-    {label: 'tema:MED', value: 'MED'},
-    {label: 'tema:OMS', value: 'OMS'},
-    {label: 'tema:PEN', value: 'PEN'},
-    {label: 'tema:SYK', value: 'SYK'},
-    {label: 'tema:YRK', value: 'YRK'},
-    {label: 'tema:UFO', value: 'UFO'},
-    {label: 'tema:GRU', value: 'GRU'},
-    {label: 'tema:KTR', value: 'KTR'},
-    {label: 'tema:TRY', value: 'TRY'},
-    {label: 'tema:SUP', value: 'SUP'},
-    {label: 'tema:UFM', value: 'UFM'}
+    {label: t('tema:GEN'), value: 'GEN'},
+    {label: t('tema:AAP'), value: 'AAP'},
+    {label: t('tema:BAR'), value: 'BAR'},
+    {label: t('tema:DAG'), value: 'DAG'},
+    {label: t('tema:FEI'), value: 'FEI'},
+    {label: t('tema:FOR'), value: 'FOR'},
+    {label: t('tema:GRA'), value: 'GRA'},
+    {label: t('tema:KON'), value: 'KON'},
+    {label: t('tema:MED'), value: 'MED'},
+    {label: t('tema:OMS'), value: 'OMS'},
+    {label: t('tema:PEN'), value: 'PEN'},
+    {label: t('tema:SYK'), value: 'SYK'},
+    {label: t('tema:YRK'), value: 'YRK'},
+    {label: t('tema:UFO'), value: 'UFO'},
+    {label: t('tema:GRU'), value: 'GRU'},
+    {label: t('tema:KTR'), value: 'KTR'},
+    {label: t('tema:TRY'), value: 'TRY'},
+    {label: t('tema:SUP'), value: 'SUP'},
+    {label: t('tema:UFM'), value: 'UFM'}
   ]
 
 
@@ -71,7 +71,7 @@ const SEDType: React.FC<SEDTypeProps> = ({
         <FlexCenterDiv>
           <label className='skjemaelement__label' style={{margin: '0px'}}>{t('label:svar-sed-type')}: </label>
           <HorizontalSeparatorDiv data-size='0.35'/>
-          {!editMode && (<>{t('buc:' + replySed.sedType)}</>)}
+          {!editMode && (<>{t('tema:' + (replySed as HSed).tema)}</>)}
           {editMode && (<>
             <Select
               id='sedtype'
@@ -82,6 +82,7 @@ const SEDType: React.FC<SEDTypeProps> = ({
               defaultValue={_.find(temaOptions, s => s.value === tema)}
               selectedValue={_.find(temaOptions, s => s.value === tema)}
             />
+            <HorizontalSeparatorDiv data-size='0.5'/>
             <HighContrastFlatknapp
               mini
               kompakt

@@ -38,10 +38,11 @@ import ReactJson from 'react-json-view'
 import { useDispatch, useSelector } from 'react-redux'
 import { SvarpasedState } from 'reducers/svarpased'
 import styled from 'styled-components'
-import { isFSed, isUSed } from 'utils/sed'
+import { isFSed, isHSed, isSed, isUSed } from 'utils/sed'
 import { validateSEDEditor, ValidationSEDEditorProps } from './validation'
 import Kontoopplysning from 'applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning'
 import SEDType from 'applications/SvarSed/Formaal/SEDType'
+import Tema from 'applications/SvarSed/Formaal/Tema'
 
 const SEDEditorDiv = styled.div`
   padding: 0.5rem;
@@ -115,7 +116,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationSEDEditorProps>(validation, validateSEDEditor)
   const [_viewValidation, _setViewValidation] = useState<boolean>(false)
 
-  const showPersonManager = (): boolean => replySed?.sedType?.startsWith('F') || replySed?.sedType?.startsWith('U') || false
+  const showPersonManager = (): boolean => isSed(replySed)
   const showMotregning = (): boolean => (replySed?.formaal?.indexOf('motregning') >= 0)
   const showVedtak = (): boolean => (replySed?.formaal?.indexOf('vedtak') >= 0)
   const showProsedyreVedUenighet = (): boolean => (replySed?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0)
@@ -249,7 +250,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
       <Row>
         <Column data-flex='2'>
           <Systemtittel>
-            {replySed?.sedType}
+            {replySed?.sedType} - {t('buc:' + replySed?.sedType )}
           </Systemtittel>
           <VerticalSeparatorDiv />
           {isFSed(replySed) && (
@@ -261,6 +262,13 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
           )}
           {isUSed(replySed) && (
             <SEDType
+              feil={_validation.sedtype}
+              replySed={replySed}
+              highContrast={highContrast}
+            />
+          )}
+          {isHSed(replySed) && (
+            <Tema
               feil={_validation.sedtype}
               replySed={replySed}
               highContrast={highContrast}

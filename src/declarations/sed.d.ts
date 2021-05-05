@@ -12,6 +12,8 @@ export type TelefonType = 'arbeid' | 'hjemme' | 'mobil'
 
 export type ReplySed = F002Sed | U002Sed | U004Sed | U017Sed | H002Sed
 
+export type SedTypes = 'F002' | 'U002' | 'U004' | 'U017' | 'H002'
+
 export type JaNei = 'ja' | 'nei'
 
 export type PensjonsType = 'alderspensjon' | 'uførhet'

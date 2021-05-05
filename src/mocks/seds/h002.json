@@ -1,0 +1,44 @@
+{
+  "sedVersjon": "4.2",
+  "sedType": "H002",
+  "bruker": {
+    "personInfo": {
+      "fornavn": "æøå",
+      "etternavn": "æøå",
+      "kjoenn": "M",
+      "foedselsdato": "2001-01-01",
+      "statsborgerskap": [
+        {
+          "land": "NO"
+        }
+      ],
+      "pinMangler": {
+        "etternavnVedFoedsel": "æøå",
+        "fornavnVedFoedsel": "æøå",
+        "foedested": {
+          "by": "æøå",
+          "region": "æøå",
+          "land": "NO"
+        },
+        "far": {
+          "fornavn": "æøå",
+          "etternavnVedFoedsel": "æøå"
+        },
+        "mor": {
+          "fornavn": "æøå",
+          "etternavnVedFoedsel": "æøå"
+        }
+      },
+      "pin": [
+        {
+          "land": "NO",
+          "sektor": "yrkesskade_og_yrkessykdom",
+          "identifikator": "æøå",
+          "institusjonsid": "ES:3100",
+          "institusjonsnavn": "æøå"
+        }
+      ]
+    }
+  },
+  "tema": "GEN"
+}

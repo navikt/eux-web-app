@@ -1,8 +1,12 @@
 import { ReplySed } from 'declarations/sed'
 
+export const isSed = (replySed: ReplySed) => !!replySed.sedType
+
 export const isFSed = (replySed: ReplySed) => replySed.sedType.startsWith('F')
 
 export const isUSed = (replySed: ReplySed) => replySed.sedType.startsWith('U')
+
+export const isHSed = (replySed: ReplySed) => replySed.sedType.startsWith('H')
 
 export const isU002Sed = (replySed: ReplySed) => replySed.sedType === 'U002'
 

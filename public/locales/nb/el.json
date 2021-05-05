@@ -52,6 +52,7 @@
   "option-personmanager-18": "Siste ansettelsesforhold",
   "option-personmanager-19": "Grunn til opphør",
   "option-personmanager-20": "Periode for dagpenger",
+  "option-personmanager-21": "Svar på forespørsel",
 
   "option-formaal-1": "Mottak av søknad om familieytelser",
   "option-formaal-2": "Informasjon om endrede forhold",
@@ -80,7 +81,6 @@
 
   "option-inntektsfilter-01": "Dagpenger grunnlag",
 
-
   "option-personensstatus-1": "Ansatt",
   "option-personensstatus-2": "Selvstendig næringsdrivende",
   "option-personensstatus-3": "Mottar lønn eller ytelser, unntatt pensjon",
@@ -97,6 +97,9 @@
   "option-relasjon-6": "Barn av ektefelle i husstanden",
   "option-relasjon-7": "Barnebarn, bror eller søster, nevø eller niese som den aktuelle personen har i sin busstand",
   "option-relasjon-8": "Fosterbarn",
+
+  "option-svar-1": "Positivit svar på etterspurt informasjon",
+  "option-svar-2": "Negativit svar på etterspurt informasjon",
 
   "option-telefon-type-work": "Arbeid",
   "option-telefon-type-home": "Hjem",
