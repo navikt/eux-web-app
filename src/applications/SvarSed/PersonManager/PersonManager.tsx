@@ -28,7 +28,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { isFSed } from 'utils/sed'
 import Adresser from './Adresser/Adresser'
 import BeløpNavnOgValuta from './BeløpNavnOgValuta/BeløpNavnOgValuta'
@@ -50,7 +50,7 @@ import SvarPåForespørsel from './SvarPåForespørsel/SvarPåForespørsel'
 
 const LeftDiv = styled.div`
   flex: 1;
-  align-self: flex-start;
+  align-self: stretch;
   border-right: 1px solid ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
 `
 const OptionDiv = styled.div`
@@ -110,9 +110,11 @@ const RightDiv = styled.div`
   padding: 0.5rem;
   border-left: 1px solid ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
   margin-left: -1px;
-  align-self: flex-start;
+  align-self: stretch;
   min-width: 200px;
   position: relative;
+  background-color: ${({theme}: any) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
+  overflow: hidden;
 `
 const RightFlexCenterSpacedDiv = styled.div`
   text-align: center;
@@ -133,15 +135,56 @@ const MenuLabelText = styled(Normaltekst)`
   }
 `
 
-const PreviousFormDiv = styled.div`
-    position: absolute;
-    background-color: red;
-    top: 0px;
+const slideIn = keyframes`
+  0% {
+    opacity: 0;
     left: -50px;
     right: 50px;
+  }
+  100% {
+    opacity: 1;
+    left: 0px;
+    right: 0px;
+  }
 `
 
-const ActiveFormDiv = styled.div``
+const slideOut = keyframes`
+  100% {
+    opacity: 0;
+    left: -50px;
+    right: 50px;
+  }
+  0% {
+    opacity: 1;
+    left: 0px;
+    right: 0px;
+  }
+`
+
+const ActiveFormDiv = styled.div`
+  position: absolute;
+  top: 0px;
+  opacity: 0;
+  left: -50px;
+  right: 50px;
+  animation: ${slideIn} 1s forwards;
+  border-radius: 5px;
+`
+
+const PreviousFormDiv = styled.div`
+  &.animating {
+    position: absolute;
+    top: 0px;
+    opacity: 1;
+    left: 0px;
+    right: 0px;
+    animation: ${slideOut} 1s forwards;
+  }
+  &:not(.animating) {
+    display: none;
+  }
+  border-radius: 5px;
+`
 
 export interface PersonManagerProps {
   fnr: string
@@ -213,9 +256,12 @@ const PersonManager: React.FC<PersonManagerProps> = ({
   const [openMenus, setOpenMenus] = useState<Array<string>>(totalPeopleNr === 1 ? ['bruker'] : [])
 
   const [_seeNewPersonModal, setSeeNewPersonModal] = useState<boolean>(false)
+  const [animatingMenus, setAnimatingMenus] = useState<boolean>(false)
+
   // list of selected menus (with checkbox)
   const [selectedMenus, setSelectedMenus] = useState<Array<string>>(initialSelectedMenus)
 
+  const [previousMenu, setPreviousMenu] = useState<string | undefined>(undefined)
   const [currentMenu, setCurrentMenu] = useState<string | undefined>(totalPeopleNr === 1 ? 'bruker': undefined)
   const [focusedMenu, setFocusedMenu] = useState<string | undefined>(totalPeopleNr === 1 ? 'bruker': undefined)
   const [currentMenuLabel, setCurrentMenuLabel] = useState<string | undefined>(undefined)
@@ -517,6 +563,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
     if (changedMenu) {
       setFocusedMenu(menu)
       if (changedMenuOption) {
+        setPreviousMenu(currentMenu)
         setCurrentMenu(menu)
       }
     }
@@ -537,8 +584,10 @@ const PersonManager: React.FC<PersonManagerProps> = ({
       }
 
       setPreviousMenuOption(currentMenuOption)
+      setAnimatingMenus(true)
       setTimeout(() => {
-        setPreviousMenuOption(undefined)
+        setPreviousMenuOption(previousMenuOption)
+        setAnimatingMenus(false)
       }, 1000)
       if (menuOption) {
         setCurrentMenuOption(menuOption)
@@ -745,12 +794,14 @@ const PersonManager: React.FC<PersonManagerProps> = ({
                 </RightFlexCenterSpacedDiv>
             )}
             {previousMenuOption && (
-              <PreviousFormDiv>
+              <PreviousFormDiv
+                className={classNames({animating: animatingMenus})}
+                key={previousMenu + '-' + previousMenuOption}>
                 {getForm(previousMenuOption)}
               </PreviousFormDiv>
             )}
             {currentMenuOption && (
-              <ActiveFormDiv>
+              <ActiveFormDiv key={currentMenu + '-' + currentMenuOption}>
                 {getForm(currentMenuOption)}
               </ActiveFormDiv>
             )}
