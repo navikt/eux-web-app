@@ -98,37 +98,37 @@ const SisteAnsettelsesForhold: React.FC<SisteAnsettelsesForholdProps> = ({
           </Undertittel>
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2'/>
+      <VerticalSeparatorDiv data-size='2' />
       <AlignStartRow className='slideInFromLeft'>
         <Column>
-        <label className='skjemaelement__label'>
-          {t('label:type-beløp')}
-        </label>
-        <HighContrastRadioPanelGroup
-          checked={_typeBeløp}
-          data-multiple-line
-          data-no-border
-          data-test-id={namespace + '-typebeloep'}
-          feil={validation[namespace + '-typebeloep']?.feilmelding}
-          id={namespace + '-typebeloep'}
-          name={namespace + '-typebeloep'}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTypeBeløp(e.target.value)}
-          radios={[
-            { label: t('el:option-typebeløp-1'), value: 'typebeløp-1' },
-            { label: t('el:option-typebeløp-2'), value: 'typebeløp-2' },
-            { label: t('el:option-typebeløp-3'), value: 'typebeløp-3' }
-          ]}
+          <label className='skjemaelement__label'>
+            {t('label:type-beløp')}
+          </label>
+          <HighContrastRadioPanelGroup
+            checked={_typeBeløp}
+            data-multiple-line
+            data-no-border
+            data-test-id={namespace + '-typebeloep'}
+            feil={validation[namespace + '-typebeloep']?.feilmelding}
+            id={namespace + '-typebeloep'}
+            name={namespace + '-typebeloep'}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTypeBeløp(e.target.value)}
+            radios={[
+              { label: t('el:option-typebeløp-1'), value: 'typebeløp-1' },
+              { label: t('el:option-typebeløp-2'), value: 'typebeløp-2' },
+              { label: t('el:option-typebeløp-3'), value: 'typebeløp-3' }
+            ]}
           />
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2'/>
+      <VerticalSeparatorDiv data-size='2' />
 
-      {!_.isNil(_typeBeløp)  && (
+      {!_.isNil(_typeBeløp) && (
         <>
           <Undertittel>
             {t('label:utbetaling')}
           </Undertittel>
-          <VerticalSeparatorDiv/>
+          <VerticalSeparatorDiv />
           <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
             <Column>
               <Input
@@ -157,40 +157,40 @@ const SisteAnsettelsesForhold: React.FC<SisteAnsettelsesForholdProps> = ({
               />
             </Column>
           </AlignStartRow>
-          <VerticalSeparatorDiv/>
+          <VerticalSeparatorDiv />
           {_typeBeløp !== 'typebeløp-3' && (
             <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-            <Column>
-              {_typeBeløp === 'typebeløp-1' && (
-                <DateInput
-                  error={validation[namespace + '-mottattdato']?.feilmelding}
-                  namespace={namespace + '-mottattdato'}
-                  key={xxx?.mottattDato}
-                  label={t('label:mottatt-dato')}
-                  setDato={setMottakerDato}
-                  value={xxx?.mottattDato}
-                />
-              )}
-              {_typeBeløp === 'typebeløp-2' && (
-                <Input
-                  type='number'
-                  feil={validation[namespace + '-antalldager']?.feilmelding}
-                  namespace={namespace}
-                  id='antalldager'
-                  label={t('label:antall-dager') + ' *'}
-                  onChanged={setAntallDager}
-                  value={xxx?.antallDager ?? ''}
-                />
-              )}
-            </Column>
-            <Column/>
-          </AlignStartRow>
+              <Column>
+                {_typeBeløp === 'typebeløp-1' && (
+                  <DateInput
+                    error={validation[namespace + '-mottattdato']?.feilmelding}
+                    namespace={namespace + '-mottattdato'}
+                    key={xxx?.mottattDato}
+                    label={t('label:mottatt-dato')}
+                    setDato={setMottakerDato}
+                    value={xxx?.mottattDato}
+                  />
+                )}
+                {_typeBeløp === 'typebeløp-2' && (
+                  <Input
+                    type='number'
+                    feil={validation[namespace + '-antalldager']?.feilmelding}
+                    namespace={namespace}
+                    id='antalldager'
+                    label={t('label:antall-dager') + ' *'}
+                    onChanged={setAntallDager}
+                    value={xxx?.antallDager ?? ''}
+                  />
+                )}
+              </Column>
+              <Column />
+            </AlignStartRow>
           )}
-          <VerticalSeparatorDiv data-size='2'/>
+          <VerticalSeparatorDiv data-size='2' />
           <Undertittel>
             {t('label:avkall-på-rettigheter')}
           </Undertittel>
-          <VerticalSeparatorDiv/>
+          <VerticalSeparatorDiv />
           <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
             <Column>
               <TextAreaDiv>
@@ -205,7 +205,7 @@ const SisteAnsettelsesForhold: React.FC<SisteAnsettelsesForholdProps> = ({
               </TextAreaDiv>
             </Column>
           </AlignStartRow>
-          <VerticalSeparatorDiv/>
+          <VerticalSeparatorDiv />
           <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
             <Column>
               <TextAreaDiv>
@@ -220,7 +220,7 @@ const SisteAnsettelsesForhold: React.FC<SisteAnsettelsesForholdProps> = ({
               </TextAreaDiv>
             </Column>
           </AlignStartRow>
-          <VerticalSeparatorDiv/>
+          <VerticalSeparatorDiv />
           <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
             <Column>
               <TextAreaDiv>

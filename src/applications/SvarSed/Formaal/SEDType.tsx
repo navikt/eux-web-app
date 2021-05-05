@@ -19,9 +19,9 @@ interface SEDTypeProps {
 }
 
 const SEDType: React.FC<SEDTypeProps> = ({
-   highContrast,
-   replySed
- }: SEDTypeProps) => {
+  highContrast,
+  replySed
+}: SEDTypeProps) => {
   const { t } = useTranslation()
 
   const [sedType, setSedType] = useState<string>(() => replySed.sedType)
@@ -50,50 +50,52 @@ const SEDType: React.FC<SEDTypeProps> = ({
   return (
     <Row>
       <Column>
-    <FlexCenterDiv>
-      <label className='skjemaelement__label' style={{margin: '0px'}}>{t('label:svar-sed-type')}: </label>
-      <HorizontalSeparatorDiv data-size='0.35'/>
-      {!editMode && (<>{t('buc:' + replySed.sedType)}</>)}
-      {editMode && (<>
-        <Select
-          id='sedtype'
-          style={{minWidth: '300px'}}
-          onChange={(o: OptionTypeBase) => setSedType(o.value)}
-          highContrast={highContrast}
-          options={sedTypeOptions}
-          defaultValue={_.find(sedTypeOptions, s => s.value === sedType)}
-          selectedValue={_.find(sedTypeOptions, s => s.value === sedType)}
-        />
-        <HorizontalSeparatorDiv data-size='0.5'/>
-        <HighContrastFlatknapp
-          mini
-          kompakt
-          onClick={saveChanges}
-        >
-          {t('el:button-save')}
-        </HighContrastFlatknapp>
-        <HorizontalSeparatorDiv data-size='0.5'/>
-        <HighContrastFlatknapp
-          mini
-          kompakt
-          onClick={cancelChanges}
-        >
-          {t('el:button-cancel')}
-        </HighContrastFlatknapp>
-      </>)}
-      <HorizontalSeparatorDiv />
-      { !editMode && (
-        <HighContrastFlatknapp
-          mini
-          kompakt
-          onClick={() => setEditMode(true)}
-        >
-          <Edit />
-          <HorizontalSeparatorDiv data-size='0.5' />
-          {t('el:button-edit')}
-        </HighContrastFlatknapp>
-        )}
-    </FlexCenterDiv>
+        <FlexCenterDiv>
+          <label className='skjemaelement__label' style={{ margin: '0px' }}>{t('label:svar-sed-type')}: </label>
+          <HorizontalSeparatorDiv data-size='0.35' />
+          {!editMode && (<>{t('buc:' + replySed.sedType)}</>)}
+          {editMode && (
+            <>
+              <Select
+                id='sedtype'
+                style={{ minWidth: '300px' }}
+                onChange={(o: OptionTypeBase) => setSedType(o.value)}
+                highContrast={highContrast}
+                options={sedTypeOptions}
+                defaultValue={_.find(sedTypeOptions, s => s.value === sedType)}
+                selectedValue={_.find(sedTypeOptions, s => s.value === sedType)}
+              />
+              <HorizontalSeparatorDiv data-size='0.5' />
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                onClick={saveChanges}
+              >
+                {t('el:button-save')}
+              </HighContrastFlatknapp>
+              <HorizontalSeparatorDiv data-size='0.5' />
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                onClick={cancelChanges}
+              >
+                {t('el:button-cancel')}
+              </HighContrastFlatknapp>
+            </>
+          )}
+          <HorizontalSeparatorDiv />
+          {!editMode && (
+            <HighContrastFlatknapp
+              mini
+              kompakt
+              onClick={() => setEditMode(true)}
+            >
+              <Edit />
+              <HorizontalSeparatorDiv data-size='0.5' />
+              {t('el:button-edit')}
+            </HighContrastFlatknapp>
+          )}
+        </FlexCenterDiv>
       </Column>
     </Row>
   )

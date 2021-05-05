@@ -42,19 +42,19 @@ interface ArbeidsforholdProps {
 }
 
 const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
-   arbeidsperioder,
-   getArbeidsperioder,
-   gettingArbeidsperioder,
-   inntekter,
-   getInntekter,
-   gettingInntekter,
-   highContrast,
-   parentNamespace,
-   personID,
-   replySed,
-   resetValidation,
-   updateReplySed,
-   validation
+  arbeidsperioder,
+  getArbeidsperioder,
+  gettingArbeidsperioder,
+  inntekter,
+  getInntekter,
+  gettingInntekter,
+  highContrast,
+  parentNamespace,
+  personID,
+  replySed,
+  resetValidation,
+  updateReplySed,
+  validation
 }:ArbeidsforholdProps): JSX.Element => {
   const { t } = useTranslation()
   const target = 'anmodningsperiode'
@@ -181,14 +181,14 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
           valueSluttDato={anmodningsperiode?.sluttdato ?? ''}
         />
         <Column>
-          <VerticalSeparatorDiv data-size='1.8'/>
+          <VerticalSeparatorDiv data-size='1.8' />
           <ArbeidsgiverSøk
             gettingArbeidsperioder={gettingArbeidsperioder}
             getArbeidsperioder={getArbeidsperioder}
           />
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2'/>
+      <VerticalSeparatorDiv data-size='2' />
       <Systemtittel>
         {t('el:title-aa-registeret')}
       </Systemtittel>
@@ -198,7 +198,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
       </Undertittel>
       <VerticalSeparatorDiv />
       {arbeidsperioder?.arbeidsperioder.map(arbeidsgiver => (
-        <AlignStartRow className='slideInFromLeft'>
+        <AlignStartRow key={arbeidsgiver.arbeidsgiverOrgnr} className='slideInFromLeft'>
           <Column>
             <ArbeidsgiverBox
               arbeidsgiver={arbeidsgiver}
@@ -213,12 +213,12 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
       ))}
 
       {_addedArbeidsperioder?.arbeidsperioder.map(arbeidsgiver => (
-        <AlignStartRow className='slideInFromLeft'>
+        <AlignStartRow key={arbeidsgiver.arbeidsgiverOrgnr} className='slideInFromLeft'>
           <Column>
             <ArbeidsgiverBox
               arbeidsgiver={arbeidsgiver}
               editable={false}
-              newArbeidsgiver={true}
+              newArbeidsgiver
               key={arbeidsgiver.arbeidsgiverOrgnr}
               onArbeidsgiverSelect={() => {}}
               namespace={namespace}
@@ -229,18 +229,18 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
 
       {!_seeNewArbeidsgiver
         ? (
-        <HighContrastFlatknapp
-          mini
-          kompakt
-          onClick={() => _setSeeNewArbeidsgiver(true)}
-        >
-          <Add />
-          <HorizontalSeparatorDiv data-size='0.5' />
-          {t('el:button-add-new-x', {
-            x: t('label:arbeidsgiver').toLowerCase()
-          })}
-        </HighContrastFlatknapp>
-      )
+          <HighContrastFlatknapp
+            mini
+            kompakt
+            onClick={() => _setSeeNewArbeidsgiver(true)}
+          >
+            <Add />
+            <HorizontalSeparatorDiv data-size='0.5' />
+            {t('el:button-add-new-x', {
+              x: t('label:arbeidsgiver').toLowerCase()
+            })}
+          </HighContrastFlatknapp>
+          )
         : (
           <>
             <Undertittel>
@@ -307,8 +307,8 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
               </Column>
             </AlignStartRow>
           </>
-        )}
-      <VerticalSeparatorDiv data-size='3'/>
+          )}
+      <VerticalSeparatorDiv data-size='3' />
       <AlignStartRow className='slideInFromLeft'>
         <Column>
           <Undertittel>
@@ -317,7 +317,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      {gettingInntekter && <WaitingPanel/>}
+      {gettingInntekter && <WaitingPanel />}
       {inntekter && (
         <Inntekt
           highContrast={highContrast}

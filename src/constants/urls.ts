@@ -16,12 +16,11 @@ export const API_RINASAKER_OVERSIKT_SAKID_QUERY_URL = API_BASE_URL + '/rina/sak/
 export const API_SED_CREATE_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed'
 export const API_RINASAK_SVARSED_QUERY_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/svarsed/%(sedType)s'
 
-
 // Registre
 export const API_ARBEIDSFORHOLD_QUERY_URL = API_BASE_URL + '/arbeidsforhold/%(fnr)s'
 export const API_FAGSAKER_QUERY_URL = API_BASE_URL + '/fagsaker/%(fnr)s/?sektor=%(sektor)s&tema=%(tema)s'
 export const API_INNTEKT_URL = API_BASE_URL + '/inntekt/%(fnr)s'
-export const API_ARBEIDSPERIODER_QUERY_URL =  API_BASE_URL + '/person/%(fnr)s/arbeidsperioder/medKildeindikator'
+export const API_ARBEIDSPERIODER_QUERY_URL = API_BASE_URL + '/person/%(fnr)s/arbeidsperioder/medKildeindikator'
 export const API_PERSONER_URL = API_BASE_URL + '/personer/?fnr=%(fnr)s'
 
 // Saksbehandler

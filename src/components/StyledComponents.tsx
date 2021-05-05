@@ -119,7 +119,8 @@ export const Etikett = styled.div`
   border-radius: 5px;
   display: inline-block;
 `
-export const FormaalPanel = styled(HighContrastPanel)`
+export const WithErrorPanel = styled(HighContrastPanel)`
+  padding: 0rem;
   &.feil {
     border-color: ${({ theme }) => theme[themeKeys.MAIN_ERROR_COLOR]};
     border-width: 3px;

@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
-import { AlignStartRow, FormaalPanel, PileDiv, TextAreaDiv } from 'components/StyledComponents'
+import { AlignStartRow, PaddedDiv, TextAreaDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { F002Sed, FormalProsedyreVedUenighet, Grunn, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -11,7 +11,6 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { Checkbox, CheckboxGruppe } from 'nav-frontend-skjema'
-import { Undertittel } from 'nav-frontend-typografi'
 import { Column, HighContrastFlatknapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -255,56 +254,46 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
   }
 
   return (
-    <PileDiv>
-      <Undertittel>
-        {t('el:title-prosedyre-ved-uenighet')}
-      </Undertittel>
+    <PaddedDiv>
       <VerticalSeparatorDiv />
-      <FormaalPanel
-        id={namespace}
-        className={classNames({ feil: validation[namespace]?.feilmelding })}
+      {prosedyreveduenighet?.grunner?.map(renderRow)}
+      <hr />
+      <VerticalSeparatorDiv />
+      {_seeNewForm
+        ? renderRow(null, -1)
+        : (
+          <Row className='slideInFromLeft'>
+            <Column>
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                onClick={() => _setSeeNewForm(true)}
+              >
+                <Add />
+                <HorizontalSeparatorDiv data-size='0.5' />
+                {t('el:button-add-new-x', { x: t('label:reason').toLowerCase() })}
+              </HighContrastFlatknapp>
+            </Column>
+          </Row>
+          )}
+      <VerticalSeparatorDiv />
+      <AlignStartRow
+        className={classNames('slideInFromLeft')}
+        style={{ animationDelay: '0.2s' }}
       >
-        <VerticalSeparatorDiv />
-        {prosedyreveduenighet?.grunner?.map(renderRow)}
-        <hr />
-        <VerticalSeparatorDiv />
-        {_seeNewForm
-          ? renderRow(null, -1)
-          : (
-            <Row className='slideInFromLeft'>
-              <Column>
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
-                  onClick={() => _setSeeNewForm(true)}
-                >
-                  <Add />
-                  <HorizontalSeparatorDiv data-size='0.5' />
-                  {t('el:button-add-new-x', { x: t('label:reason').toLowerCase() })}
-                </HighContrastFlatknapp>
-              </Column>
-            </Row>
-            )}
-
-        <VerticalSeparatorDiv />
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: '0.2s' }}
-        >
-          <Column>
-            <TextAreaDiv>
-              <TextArea
-                feil={validation[namespace + '-ytterligereInfo']?.feilmelding}
-                namespace={namespace}
-                id='ytterligereInfo'
-                label={t('label:ytterligere-grunner-til-uenighet')}
-                onChanged={setYtterligereInfo}
-                value={prosedyreveduenighet?.ytterligereInfo}
-              />
-            </TextAreaDiv>
-          </Column>
-        </AlignStartRow>
-      </FormaalPanel>
+        <Column>
+          <TextAreaDiv>
+            <TextArea
+              feil={validation[namespace + '-ytterligereInfo']?.feilmelding}
+              namespace={namespace}
+              id='ytterligereInfo'
+              label={t('label:ytterligere-grunner-til-uenighet')}
+              onChanged={setYtterligereInfo}
+              value={prosedyreveduenighet?.ytterligereInfo}
+            />
+          </TextAreaDiv>
+        </Column>
+      </AlignStartRow>
       {validation[namespace]?.feilmelding && (
         <div className='skjemaelement__feilmelding'>
           <p className='typo-feilmelding'>
@@ -312,7 +301,7 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
           </p>
         </div>
       )}
-    </PileDiv>
+    </PaddedDiv>
   )
 }
 

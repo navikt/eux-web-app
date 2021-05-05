@@ -69,10 +69,10 @@ const Stack: React.FC<StackProps> = ({
       {title && (
         <>
           <Undertittel>
-        {title}
-      </Undertittel>
+            {title}
+          </Undertittel>
           <VerticalSeparatorDiv />
-          </>
+        </>
       )}
       {_items && _items
         .sort((a, b) => a.localeCompare(b))
@@ -94,7 +94,7 @@ const Stack: React.FC<StackProps> = ({
             />
           </FlexCenterSpacedDiv>
         )
-      )}
+        )}
       <VerticalSeparatorDiv />
       {!_addItem
         ? (
@@ -118,7 +118,7 @@ const Stack: React.FC<StackProps> = ({
                   <label className='skjemaelement-label'>
                     {selectLabel}
                   </label>
-                  <VerticalSeparatorDiv data-size='0.5'/>
+                  <VerticalSeparatorDiv data-size='0.5' />
                 </>
               )}
               <Select
@@ -133,7 +133,7 @@ const Stack: React.FC<StackProps> = ({
             </div>
             <HorizontalSeparatorDiv data-size='0.5' />
             <PileDiv>
-              {selectLabel && <VerticalSeparatorDiv data-size='1.3'/>}
+              {selectLabel && <VerticalSeparatorDiv data-size='1.3' />}
               <FlexCenterSpacedDiv>
                 <HighContrastKnapp
                   mini
@@ -155,7 +155,7 @@ const Stack: React.FC<StackProps> = ({
               </FlexCenterSpacedDiv>
             </PileDiv>
           </FlexCenterSpacedDiv>
-        )}
+          )}
       {feil && (
         <div role='alert' aria-live='assertive' className='feilmelding skjemaelement__feilmelding'>
           <Feilmelding>

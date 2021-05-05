@@ -97,10 +97,10 @@ const Version = () => {
       className={classnames({ 'App__versjonering--vis': visVersjonDetaljer })}
       onClick={toggleVersjon}
     >
-      <div style={{textAlign: 'right'}}>
+      <div style={{ textAlign: 'right' }}>
         <ExpandButton>
-        Versjon {versjon}
-      </ExpandButton>
+          Versjon {versjon}
+        </ExpandButton>
       </div>
       {visVersjonDetaljer && serverInfo && (
         <>

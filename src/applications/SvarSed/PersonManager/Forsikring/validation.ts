@@ -16,7 +16,7 @@ export const validateReferanseperiode = (
     namespace
   }: ValidationReferanseperiodeProps
 ): boolean => {
-  let hasErrors = validatePeriod(v, t, {
+  const hasErrors = validatePeriod(v, t, {
     period,
     namespace
   })

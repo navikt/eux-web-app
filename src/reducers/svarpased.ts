@@ -77,7 +77,7 @@ const svarpasedReducer = (
         previousReplySed: state.replySed,
         replySed: {
           ...(action as ActionWithPayload).payload,
-          saksnummer: (action as ActionWithPayload).context.saksnummer,
+          saksnummer: (action as ActionWithPayload).context.saksnummer
         }
       }
 
@@ -134,7 +134,7 @@ const svarpasedReducer = (
       return {
         ...state,
         seds: undefined
-    }
+      }
 
     case types.SVARPASED_SAKSNUMMERORFNR_QUERY_SUCCESS: {
       const seds = _.isArray((action as ActionWithPayload).payload)

@@ -105,7 +105,6 @@ const loadingReducer = (
         gettingInntekter: false
       }
 
-
     case types.SAK_LANDKODER_GET_REQUEST:
       return {
         ...state,

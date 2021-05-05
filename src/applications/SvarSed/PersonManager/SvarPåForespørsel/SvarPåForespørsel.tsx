@@ -89,7 +89,7 @@ const SvarPåForespørsel: React.FC<SvarPåForespørselProps> = ({
       if (validation[namespace + '-annenytelser']) {
         resetValidation(namespace + '-annenytelser')
       }
-    }*/
+    } */
 
   return (
     <PaddedDiv>
@@ -100,95 +100,101 @@ const SvarPåForespørsel: React.FC<SvarPåForespørselProps> = ({
           </Undertittel>
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2'/>
+      <VerticalSeparatorDiv data-size='2' />
       <AlignStartRow className='slideInFromLeft'>
         <Column>
-        <label className='skjemaelement__label'>
-          {t('label:type-beløp')}
-        </label>
-        <HighContrastRadioPanelGroup
-          checked={xxx?.svar}
-          data-multiple-line
-          data-no-border
-          data-test-id={namespace + '-svar'}
-          feil={validation[namespace + '-svar']?.feilmelding}
-          id={namespace + '-svar'}
-          name={namespace + '-svar'}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvar(e.target.value)}
-          radios={[
-            { label: (
-              <FlexCenterDiv>
-               <span>{t('el:option-svar-1')}</span>
-                <HorizontalSeparatorDiv data-size='0.5'/>
-                <Tooltip placement='top' trigger={['hover']} overlay={<span>{t('message:help-jeg-kan-sende')}</span>}>
-                  <HelpProperIcon className='hjelpetekst__ikon' />
-                </Tooltip>
-              </FlexCenterDiv>
-              ), value: 'svar-1' },
-            { label: (
-                <FlexCenterDiv>
-                  <span>{t('el:option-svar-2')}</span>
-                  <HorizontalSeparatorDiv data-size='0.5'/>
-                  <Tooltip placement='top' trigger={['hover']} overlay={<span>{t('message:help-jeg-kan-ikke-sende')}</span>}>
-                    <HelpProperIcon className='hjelpetekst__ikon' />
-                  </Tooltip>
-                </FlexCenterDiv>
-              ), value: 'svar-2' }
-          ]}
+          <label className='skjemaelement__label'>
+            {t('label:type-beløp')}
+          </label>
+          <HighContrastRadioPanelGroup
+            checked={xxx?.svar}
+            data-multiple-line
+            data-no-border
+            data-test-id={namespace + '-svar'}
+            feil={validation[namespace + '-svar']?.feilmelding}
+            id={namespace + '-svar'}
+            name={namespace + '-svar'}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvar(e.target.value)}
+            radios={[
+              {
+                label: (
+                  <FlexCenterDiv>
+                    <span>{t('el:option-svar-1')}</span>
+                    <HorizontalSeparatorDiv data-size='0.5' />
+                    <Tooltip placement='top' trigger={['hover']} overlay={<span>{t('message:help-jeg-kan-sende')}</span>}>
+                      <HelpProperIcon className='hjelpetekst__ikon' />
+                    </Tooltip>
+                  </FlexCenterDiv>
+                ),
+                value: 'svar-1'
+              },
+              {
+                label: (
+                  <FlexCenterDiv>
+                    <span>{t('el:option-svar-2')}</span>
+                    <HorizontalSeparatorDiv data-size='0.5' />
+                    <Tooltip placement='top' trigger={['hover']} overlay={<span>{t('message:help-jeg-kan-ikke-sende')}</span>}>
+                      <HelpProperIcon className='hjelpetekst__ikon' />
+                    </Tooltip>
+                  </FlexCenterDiv>
+                ),
+                value: 'svar-2'
+              }
+            ]}
           />
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2'/>
-     {!_.isNil(xxx?.svar) && (
-      <>
+      <VerticalSeparatorDiv data-size='2' />
+      {!_.isNil(xxx?.svar) && (
+        <>
+          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+            <Column>
+              <TextAreaDiv>
+                <TextArea
+                  feil={validation[namespace + '-vedlegg']?.feilmelding}
+                  namespace={namespace}
+                  id='vedlegg'
+                  label={t('label:vi-vedlegger')}
+                  onChanged={setVedlegg}
+                  value={xxx?.vedlegg}
+                />
+              </TextAreaDiv>
+            </Column>
+          </AlignStartRow>
+          <VerticalSeparatorDiv />
+          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+            <Column>
+              <TextAreaDiv>
+                <TextArea
+                  feil={validation[namespace + '-sender']?.feilmelding}
+                  namespace={namespace}
+                  id='sender'
+                  label={t('label:vi-sender')}
+                  onChanged={setSender}
+                  value={xxx?.sender}
+                />
+              </TextAreaDiv>
+            </Column>
+          </AlignStartRow>
+          <VerticalSeparatorDiv />
+        </>
+      )}
+      {xxx?.svar === 'svar-2' && (
         <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
           <Column>
             <TextAreaDiv>
               <TextArea
-                feil={validation[namespace + '-vedlegg']?.feilmelding}
+                feil={validation[namespace + '-grunner']?.feilmelding}
                 namespace={namespace}
-                id='vedlegg'
-                label={t('label:vi-vedlegger')}
-                onChanged={setVedlegg}
-                value={xxx?.vedlegg}
+                id='grunner'
+                label={t('label:grunner')}
+                onChanged={setGrunner}
+                value={xxx?.grunner}
               />
             </TextAreaDiv>
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv/>
-        <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-          <Column>
-            <TextAreaDiv>
-              <TextArea
-                feil={validation[namespace + '-sender']?.feilmelding}
-                namespace={namespace}
-                id='sender'
-                label={t('label:vi-sender')}
-                onChanged={setSender}
-                value={xxx?.sender}
-              />
-            </TextAreaDiv>
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv/>
-      </>
-    )}
-    {xxx?.svar === 'svar-2' && (
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-        <Column>
-          <TextAreaDiv>
-            <TextArea
-              feil={validation[namespace + '-grunner']?.feilmelding}
-              namespace={namespace}
-              id='grunner'
-              label={t('label:grunner')}
-              onChanged={setGrunner}
-              value={xxx?.grunner}
-            />
-          </TextAreaDiv>
-        </Column>
-      </AlignStartRow>
-    )}
+      )}
     </PaddedDiv>
   )
 }

@@ -101,12 +101,12 @@ export interface OldFamilieRelasjon extends Person {
   nasjonalitet?: string
 }
 
-/*export interface Inntekt {
+/* export interface Inntekt {
   fraDato: string
   tilDato: string
   beloep: number
   type: string
-}*/
+} */
 
 export interface IInntekt {
   arbeidsgiver: {

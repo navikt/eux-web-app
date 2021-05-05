@@ -163,7 +163,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         {t('el:title-personopplysning')}
       </Undertittel>
       <VerticalSeparatorDiv data-size='2' />
-      <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.05s'}}>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
         <Column>
           <Input
             feil={validation[namespace + '-fornavn']?.feilmelding}
@@ -195,7 +195,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
           />
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2'/>
+      <VerticalSeparatorDiv data-size='2' />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column>
           <HighContrastRadioPanelGroup

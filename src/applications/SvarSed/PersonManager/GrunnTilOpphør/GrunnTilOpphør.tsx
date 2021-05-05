@@ -7,8 +7,8 @@ import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
 import { Column, VerticalSeparatorDiv } from 'nav-hoykontrast'
-import React from 'react'
-import { useState } from 'react'
+import React, { useState } from 'react'
+
 import { useTranslation } from 'react-i18next'
 import { OptionTypeBase } from 'react-select'
 
@@ -23,14 +23,14 @@ interface GrunnTilOpphørProps {
 }
 
 const GrunnTilOpphør: React.FC<GrunnTilOpphørProps> = ({
-   highContrast,
-   parentNamespace,
-   personID,
-   replySed,
-   resetValidation,
-   updateReplySed,
-   validation
- }: GrunnTilOpphørProps): JSX.Element => {
+  highContrast,
+  parentNamespace,
+  personID,
+  replySed,
+  resetValidation,
+  updateReplySed,
+  validation
+}: GrunnTilOpphørProps): JSX.Element => {
   const { t } = useTranslation()
   // TODO add target
   const target = 'xxx-grunntilopphør'
@@ -40,14 +40,14 @@ const GrunnTilOpphør: React.FC<GrunnTilOpphørProps> = ({
   const [_årsak, _setÅrsak] = useState<string | undefined>(undefined)
 
   const årsakOptions: Options = [
-    {label: t('el:option-grunntilopphør-01'), value: 'grunntilopphør-01'},
-    {label: t('el:option-grunntilopphør-02'), value: 'grunntilopphør-02'},
-    {label: t('el:option-grunntilopphør-03'), value: 'grunntilopphør-03'},
-    {label: t('el:option-grunntilopphør-04'), value: 'grunntilopphør-04'},
-    {label: t('el:option-grunntilopphør-05'), value: 'grunntilopphør-05'},
-    {label: t('el:option-grunntilopphør-06'), value: 'grunntilopphør-06'},
-    {label: t('el:option-grunntilopphør-07'), value: 'grunntilopphør-07'},
-    {label: t('el:option-grunntilopphør-08'), value: 'grunntilopphør-08-annet'}
+    { label: t('el:option-grunntilopphør-01'), value: 'grunntilopphør-01' },
+    { label: t('el:option-grunntilopphør-02'), value: 'grunntilopphør-02' },
+    { label: t('el:option-grunntilopphør-03'), value: 'grunntilopphør-03' },
+    { label: t('el:option-grunntilopphør-04'), value: 'grunntilopphør-04' },
+    { label: t('el:option-grunntilopphør-05'), value: 'grunntilopphør-05' },
+    { label: t('el:option-grunntilopphør-06'), value: 'grunntilopphør-06' },
+    { label: t('el:option-grunntilopphør-07'), value: 'grunntilopphør-07' },
+    { label: t('el:option-grunntilopphør-08'), value: 'grunntilopphør-08-annet' }
   ]
 
   const setÅrsak = (årsak: string) => {
@@ -95,38 +95,38 @@ const GrunnTilOpphør: React.FC<GrunnTilOpphørProps> = ({
             options={årsakOptions}
             placeholder={t('el:placeholder-select-default')}
             selectedValue={_.find(årsakOptions, b => b.value === xxx?.årsak)}
-            defaultValue={_.find(årsakOptions, b => b.value ===  xxx?.årsak)}
-            />
+            defaultValue={_.find(årsakOptions, b => b.value === xxx?.årsak)}
+          />
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2'/>
+      <VerticalSeparatorDiv data-size='2' />
       {_årsak === 'grunntilopphør-08-annet' && (
         <>
-        <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-          <Column>
-            <Input
-              feil={validation[namespace + '-annet']?.feilmelding}
-              namespace={namespace}
-              id='annet'
-              label={t('label:annet-opphør') + ' *'}
-              onChanged={setAnnet}
-              value={xxx?.annet ?? ''}
-            />
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-          <Column>
-            <Input
-            feil={validation[namespace + '-årsakselvstendig']?.feilmelding}
-            namespace={namespace}
-            id='årsakselvstendig'
-            label={t('label:årsak-til-avslutning-av-selvstendig-næringsvirksomhet') + ' *'}
-            onChanged={setÅrsakSelvstendig}
-            value={xxx?.årsakselvstendig ?? ''}
-            />
-          </Column>
-        </AlignStartRow>
+          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+            <Column>
+              <Input
+                feil={validation[namespace + '-annet']?.feilmelding}
+                namespace={namespace}
+                id='annet'
+                label={t('label:annet-opphør') + ' *'}
+                onChanged={setAnnet}
+                value={xxx?.annet ?? ''}
+              />
+            </Column>
+          </AlignStartRow>
+          <VerticalSeparatorDiv />
+          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+            <Column>
+              <Input
+                feil={validation[namespace + '-årsakselvstendig']?.feilmelding}
+                namespace={namespace}
+                id='årsakselvstendig'
+                label={t('label:årsak-til-avslutning-av-selvstendig-næringsvirksomhet') + ' *'}
+                onChanged={setÅrsakSelvstendig}
+                value={xxx?.årsakselvstendig ?? ''}
+              />
+            </Column>
+          </AlignStartRow>
         </>
       )}
     </PaddedDiv>

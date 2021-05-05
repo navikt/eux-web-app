@@ -8,7 +8,7 @@ import GreenCircle from 'assets/icons/GreenCircle'
 import ChildIcon from 'assets/icons/Child'
 import RemoveCircle from 'assets/icons/RemoveCircle'
 import classNames from 'classnames'
-import { FlexCenterDiv, FlexCenterSpacedDiv, FormaalPanel, PileDiv } from 'components/StyledComponents'
+import { FlexCenterDiv, FlexCenterSpacedDiv, WithErrorPanel, PileDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { F002Sed, PersonInfo, ReplySed } from 'declarations/sed'
@@ -113,14 +113,11 @@ const RightDiv = styled.div`
   align-self: stretch;
   min-width: 200px;
   position: relative;
-  background-color: ${({theme}: any) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
+  background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
   overflow: hidden;
 `
 const RightFlexCenterSpacedDiv = styled.div`
   text-align: center;
-`
-const CustomHighContrastPanel = styled(FormaalPanel)`
-  padding: 0rem;
 `
 const MarginDiv = styled.div`
   padding: 1rem 0.5rem;
@@ -134,20 +131,18 @@ const MenuLabelText = styled(Normaltekst)`
     font-weight: bold;
   }
 `
-
+/*
 const slideIn = keyframes`
   0% {
     opacity: 0;
-    left: -50px;
-    right: 50px;
+    transform: translateX(-50px);
   }
   100% {
     opacity: 1;
-    left: 0px;
-    right: 0px;
+    transform: translateX(0);
   }
 `
-
+*/
 const slideOut = keyframes`
   100% {
     opacity: 0;
@@ -161,15 +156,17 @@ const slideOut = keyframes`
   }
 `
 
+const ActiveFormDiv = styled.div``
+/*
 const ActiveFormDiv = styled.div`
-  position: absolute;
-  top: 0px;
-  opacity: 0;
-  left: -50px;
-  right: 50px;
-  animation: ${slideIn} 1s forwards;
-  border-radius: 5px;
-`
+  &:not(.animating) {
+    position: relative;
+    transform: translateX(-50px);
+    opacity: 0;
+    animation: ${slideIn} 1s forwards;
+    border-radius: 5px;
+  }
+` */
 
 const PreviousFormDiv = styled.div`
   &.animating {
@@ -217,13 +214,12 @@ const PersonManager: React.FC<PersonManagerProps> = ({
   validation,
   viewValidation
 }: PersonManagerProps) => {
-
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const namespace = 'personmanager'
 
   const brukerNr = 1
-  let initialSelectedMenus = ['bruker']
+  const initialSelectedMenus = ['bruker']
   const ektefelleNr = brukerNr + ((replySed as F002Sed).ektefelle ? 1 : 0)
   if (ektefelleNr > 0) initialSelectedMenus.push('ektefelle')
   const annenPersonNr = ektefelleNr + ((replySed as F002Sed).annenPerson ? 1 : 0)
@@ -233,7 +229,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
   if ((replySed as F002Sed).barn) {
     (replySed as F002Sed).barn.forEach((b, i) => initialSelectedMenus.push(`barn[${i}]`))
   }
-  let familieNr: number | undefined = undefined
+  let familieNr: number | undefined
   if ((replySed as F002Sed).sedType.startsWith('F')) {
     familieNr = barnNr + 1
     initialSelectedMenus.push('familie')
@@ -262,16 +258,15 @@ const PersonManager: React.FC<PersonManagerProps> = ({
   const [selectedMenus, setSelectedMenus] = useState<Array<string>>(initialSelectedMenus)
 
   const [previousMenu, setPreviousMenu] = useState<string | undefined>(undefined)
-  const [currentMenu, setCurrentMenu] = useState<string | undefined>(totalPeopleNr === 1 ? 'bruker': undefined)
-  const [focusedMenu, setFocusedMenu] = useState<string | undefined>(totalPeopleNr === 1 ? 'bruker': undefined)
+  const [currentMenu, setCurrentMenu] = useState<string | undefined>(totalPeopleNr === 1 ? 'bruker' : undefined)
+  const [focusedMenu, setFocusedMenu] = useState<string | undefined>(totalPeopleNr === 1 ? 'bruker' : undefined)
   const [currentMenuLabel, setCurrentMenuLabel] = useState<string | undefined>(undefined)
   const [previousMenuOption, setPreviousMenuOption] = useState<string | undefined>(undefined)
-  const [currentMenuOption, setCurrentMenuOption] = useState<string | undefined>(totalPeopleNr === 1 ? (
-    isFSed(replySed) ? 'personopplysninger' : 'person'
-  ) : undefined)
+  const [currentMenuOption, setCurrentMenuOption] = useState<string | undefined>(totalPeopleNr === 1
+    ? (isFSed(replySed) ? 'personopplysninger' : 'person')
+    : undefined)
 
   const alreadyOpenMenu = (menu: string) => _.find(openMenus, _id => _id === menu) !== undefined
-
 
   const options: Options = [
     { label: t('el:option-personmanager-1'), value: 'personopplysninger', type: 'F', normal: true, barn: true, family: false },
@@ -302,260 +297,260 @@ const PersonManager: React.FC<PersonManagerProps> = ({
   const getForm = (option: string): JSX.Element => (
     <>
       {(option === 'personopplysninger' || option === 'person') && (
-      <PersonOpplysninger
-        highContrast={highContrast}
-        landkoderList={landkoderList}
-        parentNamespace={namespace}
-        onSearchingPerson={(id: string) => dispatch(searchPerson(id))}
-        personID={currentMenu!}
-        resetValidation={resetValidation}
-        replySed={replySed}
-        searchingPerson={searchingPerson}
-        searchedPerson={searchedPerson}
-        updateReplySed={updateReplySed}
-        validation={validation}
-      />
-    )}
-    {option === 'nasjonaliteter' && (
-      <Nasjonaliteter
-        highContrast={highContrast}
-        landkoderList={landkoderList}
-        parentNamespace={namespace}
-        personID={currentMenu!}
-        personName={currentMenuLabel!}
-        resetValidation={resetValidation}
-        replySed={replySed}
-        updateReplySed={updateReplySed}
-        validation={validation}
-      />
-    )}
-    {option === 'adresser' && (
-      <Adresser
-        highContrast={highContrast}
-        landkoderList={landkoderList}
-        parentNamespace={namespace}
-        personID={currentMenu!}
-        personName={currentMenuLabel!}
-        replySed={replySed}
-        resetValidation={resetValidation}
-        updateReplySed={updateReplySed}
-        validation={validation}
-      />
-    )}
-    {option === 'kontaktinformasjon' && (
-      <Kontaktinformasjon
-        highContrast={highContrast}
-        parentNamespace={namespace}
-        personID={currentMenu!}
-        personName={currentMenuLabel!}
-        replySed={replySed}
-        resetValidation={resetValidation}
-        updateReplySed={updateReplySed}
-        validation={validation}
-      />
-    )}
-    {option === 'trygdeordninger' && (
-      <Trygdeordning
-        highContrast={highContrast}
-        parentNamespace={namespace}
-        personID={currentMenu!}
-        personName={currentMenuLabel!}
-        replySed={replySed}
-        resetValidation={resetValidation}
-        updateReplySed={updateReplySed}
-        validation={validation}
-      />
-    )}
-    {option === 'familierelasjon' && (
-      <Familierelasjon
-        familierelasjonKodeverk={familierelasjonKodeverk}
-        parentNamespace={namespace}
-        highContrast={highContrast}
-        personID={currentMenu!}
-        personName={currentMenuLabel!}
-        replySed={replySed}
-        resetValidation={resetValidation}
-        updateReplySed={updateReplySed}
-        validation={validation}
-      />
-    )}
-    {option === 'relasjon' && (
-      <Relasjon
-        familierelasjonKodeverk={familierelasjonKodeverk}
-        highContrast={highContrast}
-        parentNamespace={namespace}
-        personID={currentMenu!}
-        replySed={replySed}
-        resetValidation={resetValidation}
-        updateReplySed={updateReplySed}
-        validation={validation}
-      />
-    )}
-    {option === 'personensstatus' && (
-      <PersonensStatus
-        arbeidsperioder={arbeidsperioder}
-        gettingArbeidsperioder={gettingArbeidsperioder}
-        getArbeidsperioder={_getArbeidsperioder}
-        highContrast={highContrast}
-        parentNamespace={namespace}
-        personID={currentMenu!}
-        replySed={replySed}
-        resetValidation={resetValidation}
-        updateReplySed={updateReplySed}
-        validation={validation}
-      />
-    )}
-    {option === 'grunnlagforbosetting' && (
-      <GrunnlagForBosetting
-        parentNamespace={namespace}
-        personID={currentMenu!}
-        replySed={replySed}
-        resetValidation={resetValidation}
-        standalone
-        updateReplySed={updateReplySed}
-        validation={validation}
-      />
-    )}
-    {option === 'beløpnavnogvaluta' && (
-      <BeløpNavnOgValuta
-        parentNamespace={namespace}
-        highContrast={highContrast}
-        personID={currentMenu!}
-        replySed={replySed}
-        resetValidation={resetValidation}
-        updateReplySed={updateReplySed}
-        validation={validation}
-      />
-    )}
-    {option === 'familieytelser' && (
-      <Familieytelser
-        highContrast={highContrast}
-        parentNamespace={namespace}
-        personID={currentMenu!}
-        replySed={replySed}
-        resetValidation={resetValidation}
-        updateReplySed={updateReplySed}
-        validation={validation}
-      />
-    )}
-    {option === 'referanseperiode' && (
-      <Referanseperiode
-        parentNamespace={namespace}
-        personID={currentMenu!}
-        replySed={replySed}
-        resetValidation={resetValidation}
-        updateReplySed={updateReplySed}
-        validation={validation}
-      />
-    )}
-    {option === 'arbeidsforhold/arbeidsgivere' && (
-      <Arbeidsforhold
-        arbeidsperioder={arbeidsperioder}
-        gettingArbeidsperioder={gettingArbeidsperioder}
-        getArbeidsperioder={_getArbeidsperioder}
-        inntekter={inntekter}
-        gettingInntekter={gettingInntekter}
-        getInntekter={_getInntekter}
-        highContrast={highContrast}
-        parentNamespace={namespace}
-        personID={currentMenu!}
-        replySed={replySed}
-        resetValidation={resetValidation}
-        updateReplySed={updateReplySed}
-        validation={validation}
-      />
-    )}
-    {option === 'forsikring' && (
-      <Forsikring
-        arbeidsperioder={arbeidsperioder}
-        gettingArbeidsperioder={gettingArbeidsperioder}
-        getArbeidsperioder={_getArbeidsperioder}
-        inntekter={inntekter}
-        gettingInntekter={gettingInntekter}
-        getInntekter={_getInntekter}
-        highContrast={highContrast}
-        parentNamespace={namespace}
-        personID={currentMenu!}
-        replySed={replySed}
-        resetValidation={resetValidation}
-        updateReplySed={updateReplySed}
-        validation={validation}
-      />
-    )}
-    {option === 'sisteansettelsesforhold' && (
-      <SisteAnsettelsesForhold
-        highContrast={highContrast}
-        parentNamespace={namespace}
-        personID={currentMenu!}
-        replySed={replySed}
-        resetValidation={resetValidation}
-        updateReplySed={updateReplySed}
-        validation={validation}
-      />
-    )}
-    {option === 'grunntilopphør' && (
-      <GrunnTilOpphør
-        highContrast={highContrast}
-        parentNamespace={namespace}
-        personID={currentMenu!}
-        replySed={replySed}
-        resetValidation={resetValidation}
-        updateReplySed={updateReplySed}
-        validation={validation}
-      />
-    )}
-    {option === 'periodefordagpenger' && (
-      <PeriodeForDagpenger
-        landkoderList={landkoderList}
-        parentNamespace={namespace}
-        personID={currentMenu!}
-        replySed={replySed}
-        resetValidation={resetValidation}
-        updateReplySed={updateReplySed}
-        validation={validation}
-      />
-    )}
-    {option === 'inntekt' && (
-      <InntektForm
-        highContrast={highContrast}
-        inntekter={inntekter}
-        gettingInntekter={gettingInntekter}
-        getInntekter={_getInntekter}
-        parentNamespace={namespace}
-        personID={currentMenu!}
-        replySed={replySed}
-        resetValidation={resetValidation}
-        updateReplySed={updateReplySed}
-        validation={validation}
-      />
-    )}
-    {option === 'retttilytelser' && (
-      <RettTilYtelser
-        parentNamespace={namespace}
-        personID={currentMenu!}
-        replySed={replySed}
-        resetValidation={resetValidation}
-        updateReplySed={updateReplySed}
-        validation={validation}
-      />
-    )}
-    {option === 'svarpåforespørsel' && (
-      <SvarPåForespørsel
-        highContrast={highContrast}
-        parentNamespace={namespace}
-        personID={currentMenu!}
-        replySed={replySed}
-        resetValidation={resetValidation}
-        updateReplySed={updateReplySed}
-        validation={validation}
-      />
-    )}
+        <PersonOpplysninger
+          highContrast={highContrast}
+          landkoderList={landkoderList}
+          parentNamespace={namespace}
+          onSearchingPerson={(id: string) => dispatch(searchPerson(id))}
+          personID={currentMenu!}
+          resetValidation={resetValidation}
+          replySed={replySed}
+          searchingPerson={searchingPerson}
+          searchedPerson={searchedPerson}
+          updateReplySed={updateReplySed}
+          validation={validation}
+        />
+      )}
+      {option === 'nasjonaliteter' && (
+        <Nasjonaliteter
+          highContrast={highContrast}
+          landkoderList={landkoderList}
+          parentNamespace={namespace}
+          personID={currentMenu!}
+          personName={currentMenuLabel!}
+          resetValidation={resetValidation}
+          replySed={replySed}
+          updateReplySed={updateReplySed}
+          validation={validation}
+        />
+      )}
+      {option === 'adresser' && (
+        <Adresser
+          highContrast={highContrast}
+          landkoderList={landkoderList}
+          parentNamespace={namespace}
+          personID={currentMenu!}
+          personName={currentMenuLabel!}
+          replySed={replySed}
+          resetValidation={resetValidation}
+          updateReplySed={updateReplySed}
+          validation={validation}
+        />
+      )}
+      {option === 'kontaktinformasjon' && (
+        <Kontaktinformasjon
+          highContrast={highContrast}
+          parentNamespace={namespace}
+          personID={currentMenu!}
+          personName={currentMenuLabel!}
+          replySed={replySed}
+          resetValidation={resetValidation}
+          updateReplySed={updateReplySed}
+          validation={validation}
+        />
+      )}
+      {option === 'trygdeordninger' && (
+        <Trygdeordning
+          highContrast={highContrast}
+          parentNamespace={namespace}
+          personID={currentMenu!}
+          personName={currentMenuLabel!}
+          replySed={replySed}
+          resetValidation={resetValidation}
+          updateReplySed={updateReplySed}
+          validation={validation}
+        />
+      )}
+      {option === 'familierelasjon' && (
+        <Familierelasjon
+          familierelasjonKodeverk={familierelasjonKodeverk}
+          parentNamespace={namespace}
+          highContrast={highContrast}
+          personID={currentMenu!}
+          personName={currentMenuLabel!}
+          replySed={replySed}
+          resetValidation={resetValidation}
+          updateReplySed={updateReplySed}
+          validation={validation}
+        />
+      )}
+      {option === 'relasjon' && (
+        <Relasjon
+          familierelasjonKodeverk={familierelasjonKodeverk}
+          highContrast={highContrast}
+          parentNamespace={namespace}
+          personID={currentMenu!}
+          replySed={replySed}
+          resetValidation={resetValidation}
+          updateReplySed={updateReplySed}
+          validation={validation}
+        />
+      )}
+      {option === 'personensstatus' && (
+        <PersonensStatus
+          arbeidsperioder={arbeidsperioder}
+          gettingArbeidsperioder={gettingArbeidsperioder}
+          getArbeidsperioder={_getArbeidsperioder}
+          highContrast={highContrast}
+          parentNamespace={namespace}
+          personID={currentMenu!}
+          replySed={replySed}
+          resetValidation={resetValidation}
+          updateReplySed={updateReplySed}
+          validation={validation}
+        />
+      )}
+      {option === 'grunnlagforbosetting' && (
+        <GrunnlagForBosetting
+          parentNamespace={namespace}
+          personID={currentMenu!}
+          replySed={replySed}
+          resetValidation={resetValidation}
+          standalone
+          updateReplySed={updateReplySed}
+          validation={validation}
+        />
+      )}
+      {option === 'beløpnavnogvaluta' && (
+        <BeløpNavnOgValuta
+          parentNamespace={namespace}
+          highContrast={highContrast}
+          personID={currentMenu!}
+          replySed={replySed}
+          resetValidation={resetValidation}
+          updateReplySed={updateReplySed}
+          validation={validation}
+        />
+      )}
+      {option === 'familieytelser' && (
+        <Familieytelser
+          highContrast={highContrast}
+          parentNamespace={namespace}
+          personID={currentMenu!}
+          replySed={replySed}
+          resetValidation={resetValidation}
+          updateReplySed={updateReplySed}
+          validation={validation}
+        />
+      )}
+      {option === 'referanseperiode' && (
+        <Referanseperiode
+          parentNamespace={namespace}
+          personID={currentMenu!}
+          replySed={replySed}
+          resetValidation={resetValidation}
+          updateReplySed={updateReplySed}
+          validation={validation}
+        />
+      )}
+      {option === 'arbeidsforhold/arbeidsgivere' && (
+        <Arbeidsforhold
+          arbeidsperioder={arbeidsperioder}
+          gettingArbeidsperioder={gettingArbeidsperioder}
+          getArbeidsperioder={_getArbeidsperioder}
+          inntekter={inntekter}
+          gettingInntekter={gettingInntekter}
+          getInntekter={_getInntekter}
+          highContrast={highContrast}
+          parentNamespace={namespace}
+          personID={currentMenu!}
+          replySed={replySed}
+          resetValidation={resetValidation}
+          updateReplySed={updateReplySed}
+          validation={validation}
+        />
+      )}
+      {option === 'forsikring' && (
+        <Forsikring
+          arbeidsperioder={arbeidsperioder}
+          gettingArbeidsperioder={gettingArbeidsperioder}
+          getArbeidsperioder={_getArbeidsperioder}
+          inntekter={inntekter}
+          gettingInntekter={gettingInntekter}
+          getInntekter={_getInntekter}
+          highContrast={highContrast}
+          parentNamespace={namespace}
+          personID={currentMenu!}
+          replySed={replySed}
+          resetValidation={resetValidation}
+          updateReplySed={updateReplySed}
+          validation={validation}
+        />
+      )}
+      {option === 'sisteansettelsesforhold' && (
+        <SisteAnsettelsesForhold
+          highContrast={highContrast}
+          parentNamespace={namespace}
+          personID={currentMenu!}
+          replySed={replySed}
+          resetValidation={resetValidation}
+          updateReplySed={updateReplySed}
+          validation={validation}
+        />
+      )}
+      {option === 'grunntilopphør' && (
+        <GrunnTilOpphør
+          highContrast={highContrast}
+          parentNamespace={namespace}
+          personID={currentMenu!}
+          replySed={replySed}
+          resetValidation={resetValidation}
+          updateReplySed={updateReplySed}
+          validation={validation}
+        />
+      )}
+      {option === 'periodefordagpenger' && (
+        <PeriodeForDagpenger
+          landkoderList={landkoderList}
+          parentNamespace={namespace}
+          personID={currentMenu!}
+          replySed={replySed}
+          resetValidation={resetValidation}
+          updateReplySed={updateReplySed}
+          validation={validation}
+        />
+      )}
+      {option === 'inntekt' && (
+        <InntektForm
+          highContrast={highContrast}
+          inntekter={inntekter}
+          gettingInntekter={gettingInntekter}
+          getInntekter={_getInntekter}
+          parentNamespace={namespace}
+          personID={currentMenu!}
+          replySed={replySed}
+          resetValidation={resetValidation}
+          updateReplySed={updateReplySed}
+          validation={validation}
+        />
+      )}
+      {option === 'retttilytelser' && (
+        <RettTilYtelser
+          parentNamespace={namespace}
+          personID={currentMenu!}
+          replySed={replySed}
+          resetValidation={resetValidation}
+          updateReplySed={updateReplySed}
+          validation={validation}
+        />
+      )}
+      {option === 'svarpåforespørsel' && (
+        <SvarPåForespørsel
+          highContrast={highContrast}
+          parentNamespace={namespace}
+          personID={currentMenu!}
+          replySed={replySed}
+          resetValidation={resetValidation}
+          updateReplySed={updateReplySed}
+          validation={validation}
+        />
+      )}
     </>
   )
 
   const changeMenu = (menu: string, menuOption?: string) => {
-    let changedMenu: boolean = currentMenu !== menu
-    let changedMenuOption: boolean =
+    const changedMenu: boolean = currentMenu !== menu
+    const changedMenuOption: boolean =
       !_.isNil(menuOption)
         ? ((menuOption !== currentMenuOption) || (menuOption === currentMenuOption && changedMenu))
         : false
@@ -586,7 +581,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
       setPreviousMenuOption(currentMenuOption)
       setAnimatingMenus(true)
       setTimeout(() => {
-        setPreviousMenuOption(previousMenuOption)
+        setPreviousMenuOption(menuOption)
         setAnimatingMenus(false)
       }, 1000)
       if (menuOption) {
@@ -634,20 +629,22 @@ const PersonManager: React.FC<PersonManagerProps> = ({
             <Chevron type={open ? 'ned' : 'høyre'} />
             <HorizontalSeparatorDiv data-size='0.5' />
             {viewValidation && (
-              validation[namespace + '-' + personId] ? (
-                <>
-                  <RemoveCircle color='red' />
-                  <HorizontalSeparatorDiv data-size='0.5' />
-                </>
-                ) : (
-                <>
-                  <GreenCircle />
-                  <HorizontalSeparatorDiv data-size='0.5' />
-                </>
-              )
+              validation[namespace + '-' + personId]
+                ? (
+                  <>
+                    <RemoveCircle color='red' />
+                    <HorizontalSeparatorDiv data-size='0.5' />
+                  </>
+                  )
+                : (
+                  <>
+                    <GreenCircle />
+                    <HorizontalSeparatorDiv data-size='0.5' />
+                  </>
+                  )
             )}
             <>
-              <MenuLabelText className={classNames({selected: selected})}>
+              <MenuLabelText className={classNames({ selected: selected })}>
                 {personId === 'familie'
                   ? t('label:hele-familien')
                   : personInfo?.fornavn + ' ' + personInfo?.etternavn}
@@ -759,7 +756,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
         {t('el:title-personmanager')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      <CustomHighContrastPanel className={classNames({ feil: validation[namespace]?.feilmelding })}>
+      <WithErrorPanel className={classNames({ feil: validation[namespace]?.feilmelding })}>
         <FlexCenterSpacedDiv>
           <LeftDiv>
             {replySed.bruker && renderMenu(replySed, 'bruker', brukerNr)}
@@ -780,7 +777,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
                 </HighContrastFlatknapp>
               </MarginDiv>
             )}
-            <VerticalSeparatorDiv/>
+            <VerticalSeparatorDiv />
           </LeftDiv>
           <RightDiv>
             {gettingPerson && (
@@ -789,25 +786,29 @@ const PersonManager: React.FC<PersonManagerProps> = ({
               </RightFlexCenterSpacedDiv>
             )}
             {!currentMenu && (
-                <RightFlexCenterSpacedDiv>
-                  {t('label:velg-personer')}
-                </RightFlexCenterSpacedDiv>
+              <RightFlexCenterSpacedDiv>
+                {t('label:velg-personer')}
+              </RightFlexCenterSpacedDiv>
             )}
             {previousMenuOption && (
               <PreviousFormDiv
-                className={classNames({animating: animatingMenus})}
-                key={previousMenu + '-' + previousMenuOption}>
+                className={classNames({ animating: animatingMenus })}
+                key={previousMenu + '-' + previousMenuOption}
+              >
                 {getForm(previousMenuOption)}
               </PreviousFormDiv>
             )}
             {currentMenuOption && (
-              <ActiveFormDiv key={currentMenu + '-' + currentMenuOption}>
+              <ActiveFormDiv
+                className={classNames({ animating: animatingMenus })}
+                key={currentMenu + '-' + currentMenuOption}
+              >
                 {getForm(currentMenuOption)}
               </ActiveFormDiv>
             )}
           </RightDiv>
         </FlexCenterSpacedDiv>
-      </CustomHighContrastPanel>
+      </WithErrorPanel>
     </PileDiv>
   )
 }

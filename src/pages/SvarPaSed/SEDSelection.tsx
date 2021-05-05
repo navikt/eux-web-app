@@ -206,7 +206,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
           </Column>
         </AlignStartRow>
 
-        <VerticalSeparatorDiv data-size='3'/>
+        <VerticalSeparatorDiv data-size='3' />
 
         {seds && (
           <HighContrastRadioGroup
@@ -218,7 +218,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                 })
               }
                 </span>
-                <HorizontalSeparatorDiv data-size='0.3'/>
+                <HorizontalSeparatorDiv data-size='0.3' />
                 <span style={{ fontSize: '130%' }}>
                   {seds.length}
                 </span>
@@ -295,7 +295,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                             {t('label:saksnummer') + ': ' + sed.sakId}
                           </span>
                           <HorizontalSeparatorDiv />
-                            <HighContrastLink href={sed.sakUrl}>
+                          <HighContrastLink href={sed.sakUrl}>
                             <span>
                               {t('label:gå-til-rina')}
                             </span>

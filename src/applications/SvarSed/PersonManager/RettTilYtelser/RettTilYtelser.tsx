@@ -91,9 +91,9 @@ const RettTilYtelser: React.FC<RettTilYtelserProps> = ({
             legend={t('label:rett-til-stønad') + ' *'}
             feil={validation[namespace + '-retttilstønad']?.feilmelding}
           >
-            <VerticalSeparatorDiv data-size='0.5'/>
+            <VerticalSeparatorDiv data-size='0.5' />
             <PileDiv>
-              <HorizontalSeparatorDiv data-size='0.2'/>
+              <HorizontalSeparatorDiv data-size='0.2' />
               <HighContrastRadio
                 name={namespace + '-retttilstønad'}
                 checked={xxx?.rettTilStonad === 'ja'}
@@ -111,7 +111,7 @@ const RettTilYtelser: React.FC<RettTilYtelserProps> = ({
           </HighContrastRadioGroup>
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2'/>
+      <VerticalSeparatorDiv data-size='2' />
       {xxx?.rettTilStonad === 'ja' && (
         <AlignStartRow>
           <Column>
@@ -122,9 +122,9 @@ const RettTilYtelser: React.FC<RettTilYtelserProps> = ({
               legend={t('label:artikkelnummer') + ' *'}
               feil={validation[namespace + '-artikkelnummer']?.feilmelding}
             >
-              <VerticalSeparatorDiv data-size='0.5'/>
+              <VerticalSeparatorDiv data-size='0.5' />
               <PileDiv>
-                <HorizontalSeparatorDiv data-size='0.2'/>
+                <HorizontalSeparatorDiv data-size='0.2' />
                 <HighContrastRadio
                   name={namespace + '-artikkelnummer'}
                   checked={xxx?.artikkelnummer === 'ja'}
@@ -153,9 +153,9 @@ const RettTilYtelser: React.FC<RettTilYtelserProps> = ({
               legend={t('label:grunn') + ' *'}
               feil={validation[namespace + '-grunn']?.feilmelding}
             >
-              <VerticalSeparatorDiv data-size='0.5'/>
+              <VerticalSeparatorDiv data-size='0.5' />
               <PileDiv>
-                <HorizontalSeparatorDiv data-size='0.2'/>
+                <HorizontalSeparatorDiv data-size='0.2' />
                 <HighContrastRadio
                   name={namespace + '-grunn'}
                   checked={xxx?.grunn === 'grunn-1'}
@@ -186,9 +186,9 @@ const RettTilYtelser: React.FC<RettTilYtelserProps> = ({
           valueStartDato={xxx?.startdato ?? ''}
           valueSluttDato={xxx?.sluttdato ?? ''}
         />
-        <Column/>
+        <Column />
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2'/>
+      <VerticalSeparatorDiv data-size='2' />
     </PaddedDiv>
   )
 }

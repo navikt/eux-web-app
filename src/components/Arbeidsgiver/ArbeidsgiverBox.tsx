@@ -37,12 +37,12 @@ const TrashcanIcon = styled(Trashcan)`
   width: 20px;
   cursor: pointer;
 `
-/*const FlexDivNoWrap = styled(FlexDiv)`
+/* const FlexDivNoWrap = styled(FlexDiv)`
   flex-wrap: wrap;
 `
 const PaddedLink = styled(HighContrastLink)`
   padding: 0rem 0.35rem;
-`*/
+` */
 
 export interface ArbeidsgiverProps {
   arbeidsgiver: Arbeidsgiver
@@ -296,7 +296,7 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
             {fraInntektsregistreret && (
               <Normaltekst>{t('label:fra-inntektsregisteret')}</Normaltekst>
             )}
-            {/*!harRegistrertInntekt && (
+            {/*! harRegistrertInntekt && (
           <div className='slideInFromBottom' style={{ animationDelay: '0.2s' }}>
             <AlertStripeAdvarsel>
               <FlexDivNoWrap>
@@ -315,8 +315,7 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
               </FlexDivNoWrap>
             </AlertStripeAdvarsel>
           </div>
-        )*/}
-
+        ) */}
 
           </PaddedFlexDiv>
           <PaddedFlexDiv className='slideInFromRight' style={{ animationDelay: '0.3s' }}>

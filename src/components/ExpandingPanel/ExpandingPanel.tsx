@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { guid } from 'nav-frontend-js-utils'
 import PT from 'prop-types'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Collapse, UnmountClosed } from 'react-collapse'
 import { useTranslation } from 'react-i18next'
 import NavHighContrast, { HighContrastExpandingPanel } from 'nav-hoykontrast'

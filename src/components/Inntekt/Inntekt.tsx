@@ -31,26 +31,24 @@ const Inntekt: React.FC<InntektProps> = ({
   inntekter,
   personID
 }:InntektProps) => {
-
   const { t } = useTranslation()
 
   return (
     <>
-      {inntekter?.map((inntekt: IInntekt) => {
-
-        let _items: Array<Item> = [
-          {key: '1', col0: ' ', col1: ' ', col2: ' ', col3: ' ', col4: ' ', avg: formatterPenger(inntekt.gjennomsnitt)}
+      {inntekter?.map((inntekt: IInntekt, index) => {
+        const _items: Array<Item> = [
+          { key: '1', col0: ' ', col1: ' ', col2: ' ', col3: ' ', col4: ' ', avg: formatterPenger(inntekt.gjennomsnitt) }
         ]
-        let _columns: Array<TableColumn> = [
-          {id: 'col0', label: ' ', type: 'string'},
-          {id: 'col1', label: ' ', type: 'string'},
-          {id: 'col2', label: ' ', type: 'string'},
-          {id: 'col3', label: ' ', type: 'string'},
-          {id: 'col4', label: ' ', type: 'string'},
-          {id: 'avg', label: t('label:gjennomsnitt'), type: 'string'}
+        const _columns: Array<TableColumn> = [
+          { id: 'col0', label: ' ', type: 'string' },
+          { id: 'col1', label: ' ', type: 'string' },
+          { id: 'col2', label: ' ', type: 'string' },
+          { id: 'col3', label: ' ', type: 'string' },
+          { id: 'col4', label: ' ', type: 'string' },
+          { id: 'avg', label: t('label:gjennomsnitt'), type: 'string' }
         ]
 
-        inntekt.lønn.forEach((lønn, i)  => {
+        inntekt.lønn.forEach((lønn, i) => {
           const matchingColumn = 'col' + (5 - inntekt.lønn.length + i)
           const targetColumn = _.find(_columns, (c: TableColumn) => c.id === matchingColumn)
           if (targetColumn) {
@@ -60,7 +58,7 @@ const Inntekt: React.FC<InntektProps> = ({
         })
 
         return (
-          <>
+          <div key={index}>
             <AlignStartRow>
               <Column>
                 <ArbeidsgiverDiv>
@@ -95,7 +93,7 @@ const Inntekt: React.FC<InntektProps> = ({
                 />
               </Column>
             </AlignStartRow>
-            <VerticalSeparatorDiv data-size='0.5'/>
+            <VerticalSeparatorDiv data-size='0.5' />
             <AlignStartRow>
               <Column>
                 <HighContrastLink href='#'>
@@ -103,12 +101,12 @@ const Inntekt: React.FC<InntektProps> = ({
                 </HighContrastLink>
               </Column>
             </AlignStartRow>
-            <VerticalSeparatorDiv data-size='2'/>
-          </>
+            <VerticalSeparatorDiv data-size='2' />
+          </div>
         )
       }
-    )}
-  </>
+      )}
+    </>
   )
 }
 

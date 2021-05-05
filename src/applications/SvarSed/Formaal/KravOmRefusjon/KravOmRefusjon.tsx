@@ -1,9 +1,8 @@
 import classNames from 'classnames'
 import TextArea from 'components/Forms/TextArea'
-import { AlignStartRow, FormaalPanel, PileDiv, TextAreaDiv } from 'components/StyledComponents'
+import { AlignStartRow, PaddedDiv, TextAreaDiv } from 'components/StyledComponents'
 import { F002Sed, FormalKravOmRefusjon, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { Undertittel } from 'nav-frontend-typografi'
 import { Column, HighContrastLink, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -38,50 +37,44 @@ const KravOmRefusjon: React.FC<KravOmRefusjonProps> = ({
   }
 
   return (
-    <PileDiv>
-      <Undertittel>
-        {t('el:title-krav-om-refusjon')}
-      </Undertittel>
+    <PaddedDiv>
       <VerticalSeparatorDiv />
-      <FormaalPanel className={classNames({ feil: validation[namespace]?.feilmelding })}>
-        <VerticalSeparatorDiv />
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-        >
-          <Column>
-            <TextAreaDiv>
-              <TextArea
-                feil={validation[namespace + '-krav']?.feilmelding}
-                namespace={namespace}
-                id='krav'
-                label={t('label:krav-om-refusjon-under-artikkel') + ' *'}
-                onChanged={setKrav}
-                value={kravomrefusjon?.krav}
-              />
-            </TextAreaDiv>
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column>
-            <HighContrastLink
-              href='#' onClick={(e: any) => {
-                e.preventDefault()
-                seeKontoopplysninger()
-                // have to wait 0.1 seconds so it comes to DOM first
-                setTimeout(() => {
-                  document.getElementById('kontoopplysning')?.scrollIntoView({
-                    behavior: 'smooth'
-                  })
-                }, 100)
-              }}
-            >
-              {t('label:oppgi-kontoopplysninger')}
-            </HighContrastLink>
-          </Column>
-        </AlignStartRow>
-      </FormaalPanel>
-    </PileDiv>
+      <AlignStartRow
+        className={classNames('slideInFromLeft')}
+      >
+        <Column>
+          <TextAreaDiv>
+            <TextArea
+              feil={validation[namespace + '-krav']?.feilmelding}
+              namespace={namespace}
+              id='krav'
+              label={t('label:krav-om-refusjon-under-artikkel') + ' *'}
+              onChanged={setKrav}
+              value={kravomrefusjon?.krav}
+            />
+          </TextAreaDiv>
+        </Column>
+      </AlignStartRow>
+      <VerticalSeparatorDiv />
+      <AlignStartRow>
+        <Column>
+          <HighContrastLink
+            href='#' onClick={(e: any) => {
+              e.preventDefault()
+              seeKontoopplysninger()
+              // have to wait 0.1 seconds so it comes to DOM first
+              setTimeout(() => {
+                document.getElementById('kontoopplysning')?.scrollIntoView({
+                  behavior: 'smooth'
+                })
+              }, 100)
+            }}
+          >
+            {t('label:oppgi-kontoopplysninger')}
+          </HighContrastLink>
+        </Column>
+      </AlignStartRow>
+    </PaddedDiv>
   )
 }
 

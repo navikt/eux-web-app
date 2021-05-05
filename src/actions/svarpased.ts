@@ -224,7 +224,7 @@ export const fetchInntekt: ActionCreator<ThunkResult<ActionWithPayload>> = (
   fnr: string
 ): ThunkResult<ActionWithPayload> => {
   return call({
-    url: sprintf(urls.API_INNTEKT_URL, {fnr: fnr}),
+    url: sprintf(urls.API_INNTEKT_URL, { fnr: fnr }),
     method: 'GET',
     expectedPayload: mockInntekt,
     type: {

@@ -28,16 +28,16 @@ interface InntektFormProps {
 }
 
 const InntektForm: React.FC<InntektFormProps> = ({
-   inntekter,
-   getInntekter,
-   gettingInntekter,
-   highContrast,
-   parentNamespace,
-   personID,
-   replySed,
-   resetValidation,
-   updateReplySed,
-   validation
+  inntekter,
+  getInntekter,
+  gettingInntekter,
+  highContrast,
+  parentNamespace,
+  personID,
+  replySed,
+  resetValidation,
+  updateReplySed,
+  validation
 }:InntektFormProps): JSX.Element => {
   const { t } = useTranslation()
   const target = 'xxx-inntekt'
@@ -47,7 +47,7 @@ const InntektForm: React.FC<InntektFormProps> = ({
   const [_filter, _setFilter] = useState<string | undefined>(undefined)
 
   const filterOptions : Options = [
-    {label: t('el:option-inntektsfilter-01'), value: 'inntektsfilter-01'}
+    { label: t('el:option-inntektsfilter-01'), value: 'inntektsfilter-01' }
   ]
 
   const setStartDato = (startdato: string) => {
@@ -110,11 +110,11 @@ const InntektForm: React.FC<InntektFormProps> = ({
             options={filterOptions}
             placeholder={t('el:placeholder-select-default')}
             selectedValue={_.find(filterOptions, b => b.value === _filter)}
-            defaultValue={_.find(filterOptions, b => b.value ===  _filter)}
+            defaultValue={_.find(filterOptions, b => b.value === _filter)}
           />
         </Column>
         <Column>
-          <VerticalSeparatorDiv data-size='1.8'/>
+          <VerticalSeparatorDiv data-size='1.8' />
           <HighContrastFlatknapp
             disabled={gettingInntekter}
             spinner={gettingInntekter}
@@ -126,8 +126,8 @@ const InntektForm: React.FC<InntektFormProps> = ({
           </HighContrastFlatknapp>
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2'/>
-      {gettingInntekter && <WaitingPanel/>}
+      <VerticalSeparatorDiv data-size='2' />
+      {gettingInntekter && <WaitingPanel />}
       {inntekter && (
         <Inntekt
           highContrast={highContrast}

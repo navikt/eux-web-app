@@ -31,27 +31,26 @@ const SEDType: React.FC<SEDTypeProps> = ({
   const dispatch = useDispatch()
 
   const temaOptions: Options = [
-    {label: t('tema:GEN'), value: 'GEN'},
-    {label: t('tema:AAP'), value: 'AAP'},
-    {label: t('tema:BAR'), value: 'BAR'},
-    {label: t('tema:DAG'), value: 'DAG'},
-    {label: t('tema:FEI'), value: 'FEI'},
-    {label: t('tema:FOR'), value: 'FOR'},
-    {label: t('tema:GRA'), value: 'GRA'},
-    {label: t('tema:KON'), value: 'KON'},
-    {label: t('tema:MED'), value: 'MED'},
-    {label: t('tema:OMS'), value: 'OMS'},
-    {label: t('tema:PEN'), value: 'PEN'},
-    {label: t('tema:SYK'), value: 'SYK'},
-    {label: t('tema:YRK'), value: 'YRK'},
-    {label: t('tema:UFO'), value: 'UFO'},
-    {label: t('tema:GRU'), value: 'GRU'},
-    {label: t('tema:KTR'), value: 'KTR'},
-    {label: t('tema:TRY'), value: 'TRY'},
-    {label: t('tema:SUP'), value: 'SUP'},
-    {label: t('tema:UFM'), value: 'UFM'}
+    { label: t('tema:GEN'), value: 'GEN' },
+    { label: t('tema:AAP'), value: 'AAP' },
+    { label: t('tema:BAR'), value: 'BAR' },
+    { label: t('tema:DAG'), value: 'DAG' },
+    { label: t('tema:FEI'), value: 'FEI' },
+    { label: t('tema:FOR'), value: 'FOR' },
+    { label: t('tema:GRA'), value: 'GRA' },
+    { label: t('tema:KON'), value: 'KON' },
+    { label: t('tema:MED'), value: 'MED' },
+    { label: t('tema:OMS'), value: 'OMS' },
+    { label: t('tema:PEN'), value: 'PEN' },
+    { label: t('tema:SYK'), value: 'SYK' },
+    { label: t('tema:YRK'), value: 'YRK' },
+    { label: t('tema:UFO'), value: 'UFO' },
+    { label: t('tema:GRU'), value: 'GRU' },
+    { label: t('tema:KTR'), value: 'KTR' },
+    { label: t('tema:TRY'), value: 'TRY' },
+    { label: t('tema:SUP'), value: 'SUP' },
+    { label: t('tema:UFM'), value: 'UFM' }
   ]
-
 
   const saveChanges = () => {
     if (tema) {
@@ -69,38 +68,40 @@ const SEDType: React.FC<SEDTypeProps> = ({
     <Row>
       <Column>
         <FlexCenterDiv>
-          <label className='skjemaelement__label' style={{margin: '0px'}}>{t('label:svar-sed-type')}: </label>
-          <HorizontalSeparatorDiv data-size='0.35'/>
+          <label className='skjemaelement__label' style={{ margin: '0px' }}>{t('label:svar-sed-type')}: </label>
+          <HorizontalSeparatorDiv data-size='0.35' />
           {!editMode && (<>{t('tema:' + (replySed as HSed).tema)}</>)}
-          {editMode && (<>
-            <Select
-              id='sedtype'
-              style={{minWidth: '300px'}}
-              onChange={(o: OptionTypeBase) => setTema(o.value)}
-              highContrast={highContrast}
-              options={temaOptions}
-              defaultValue={_.find(temaOptions, s => s.value === tema)}
-              selectedValue={_.find(temaOptions, s => s.value === tema)}
-            />
-            <HorizontalSeparatorDiv data-size='0.5'/>
-            <HighContrastFlatknapp
-              mini
-              kompakt
-              onClick={saveChanges}
-            >
-              {t('el:button-save')}
-            </HighContrastFlatknapp>
-            <HorizontalSeparatorDiv data-size='0.5'/>
-            <HighContrastFlatknapp
-              mini
-              kompakt
-              onClick={cancelChanges}
-            >
-              {t('el:button-cancel')}
-            </HighContrastFlatknapp>
-          </>)}
+          {editMode && (
+            <>
+              <Select
+                id='sedtype'
+                style={{ minWidth: '300px' }}
+                onChange={(o: OptionTypeBase) => setTema(o.value)}
+                highContrast={highContrast}
+                options={temaOptions}
+                defaultValue={_.find(temaOptions, s => s.value === tema)}
+                selectedValue={_.find(temaOptions, s => s.value === tema)}
+              />
+              <HorizontalSeparatorDiv data-size='0.5' />
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                onClick={saveChanges}
+              >
+                {t('el:button-save')}
+              </HighContrastFlatknapp>
+              <HorizontalSeparatorDiv data-size='0.5' />
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                onClick={cancelChanges}
+              >
+                {t('el:button-cancel')}
+              </HighContrastFlatknapp>
+            </>
+          )}
           <HorizontalSeparatorDiv />
-          { !editMode && (
+          {!editMode && (
             <HighContrastFlatknapp
               mini
               kompakt
@@ -118,4 +119,3 @@ const SEDType: React.FC<SEDTypeProps> = ({
 }
 
 export default SEDType
-

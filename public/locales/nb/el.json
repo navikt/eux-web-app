@@ -154,13 +154,9 @@
   "title-personopplysning": "Personopplysning",
   "title-grant-date": "Innvilgelsdato for ytelser",
   "title-grunnlag-for-bosetting": "Grunnlag for bosetting",
-  "title-kontoopplysning": "Kontoopplysninger",
-  "title-krav-om-refusjon": "Krav om refusjon",
-  "title-motregning": "Motregning",
   "title-newcase": "Opprett Sak",
   "title-periode-pensjon-avsenderlandet": "Periode med mottatt pensjon i avsenderlandet",
   "title-periods-in-sender-country": "Trygdeperiode i avsenderlandet",
-  "title-prosedyre-ved-uenighet": "Prosedyre ved uenighet",
   "title-registered-arbeidsperiode" : "Registeret arbeidsperiode",
   "title-relasjon-til-barn" : "Relasjon til det enkelte barn",
   "title-save-sed" : "Lagring SED",
@@ -169,6 +165,5 @@
   "title-trygdeordningen-dekkede": "Dekkede perioder",
   "title-trygdeordningen-familieYtelse": "Periode for rett til familieytelser",
   "title-trygdeordningen-udekkede": "Udekkede perioder",
-  "title-vedlegg": "Vedleggsinformasjon",
-  "title-vedtak": "Vedtak"
+  "title-vedlegg": "Vedleggsinformasjon"
 }

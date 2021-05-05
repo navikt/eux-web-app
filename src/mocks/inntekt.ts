@@ -7,19 +7,19 @@ export default [{
   },
   lønn: [{
     fra: '2017-12',
-    beloep: 36253.45,
+    beloep: 36253.45
   }, {
     fra: '2018-01',
-    beloep: 36253.45,
+    beloep: 36253.45
   }, {
     fra: '2018-02',
-    beloep: 36253.45,
+    beloep: 36253.45
   }, {
     fra: '2018-03',
-    beloep: 36253.45,
+    beloep: 36253.45
   }, {
     fra: '2018-04',
-    beloep: 36253.45,
+    beloep: 36253.45
   }],
   gjennomsnitt: 36253.45
 }, {
@@ -31,10 +31,10 @@ export default [{
   },
   lønn: [{
     fra: '2019-03',
-    beloep: 38253.45,
+    beloep: 38253.45
   }, {
     fra: '2019-04',
-    beloep: 42253.45,
+    beloep: 42253.45
   }],
   gjennomsnitt: 40000.45
 }]

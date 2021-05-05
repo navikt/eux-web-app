@@ -88,13 +88,13 @@ const PeriodeForDagpenger: React.FC<PeriodeForDagpengerProps> = ({
   const setGate = (gate: string) => {
     updateReplySed(`${target}.gate`, gate.trim())
     if (validation[namespace + '-gate']) {
-      resetValidation(namespace + + '-gate')
+      resetValidation(namespace + +'-gate')
     }
   }
 
   const setPostnummer = (postnummer: string) => {
     updateReplySed(`${target}.postnummer`, postnummer.trim())
-    if (validation[namespace  + '-postnummer']) {
+    if (validation[namespace + '-postnummer']) {
       resetValidation(namespace + '-postnummer')
     }
   }
@@ -141,55 +141,55 @@ const PeriodeForDagpenger: React.FC<PeriodeForDagpengerProps> = ({
           valueStartDato={xxx?.startdato ?? ''}
           valueSluttDato={xxx?.sluttdato ?? ''}
         />
-        <Column/>
+        <Column />
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2'/>
+      <VerticalSeparatorDiv data-size='2' />
       <AlignStartRow>
         <Column>
-        <HighContrastRadioGroup
-          id={namespace + '-kjentinstitusjon'}
-          className={classNames('slideInFromLeft')}
-          data-test-id={namespace + '-kjentinstitusjon'}
-          legend={t('label:vedtak-angående-alle-barn') + ' *'}
-          feil={validation[namespace + '-kjentinstitusjon']?.feilmelding}
-        >
-          <VerticalSeparatorDiv data-size='0.5'/>
-          <FlexDiv>
-            <HorizontalSeparatorDiv data-size='0.2'/>
-            <HighContrastRadio
-              name={namespace + '-barn'}
-              checked={xxx?.kjentInstitusjon === 'ja'}
-              label={t('label:ja')}
-              onClick={() => setKjentInstitusjon('ja')}
-            />
-            <HorizontalSeparatorDiv data-size='2' />
-            <HighContrastRadio
-              name={namespace + '-barn'}
-              checked={xxx?.kjentInstitusjon === 'nei'}
-              label={t('label:nei')}
-              onClick={() => setKjentInstitusjon('nei')}
-            />
-          </FlexDiv>
-        </HighContrastRadioGroup>
+          <HighContrastRadioGroup
+            id={namespace + '-kjentinstitusjon'}
+            className={classNames('slideInFromLeft')}
+            data-test-id={namespace + '-kjentinstitusjon'}
+            legend={t('label:vedtak-angående-alle-barn') + ' *'}
+            feil={validation[namespace + '-kjentinstitusjon']?.feilmelding}
+          >
+            <VerticalSeparatorDiv data-size='0.5' />
+            <FlexDiv>
+              <HorizontalSeparatorDiv data-size='0.2' />
+              <HighContrastRadio
+                name={namespace + '-barn'}
+                checked={xxx?.kjentInstitusjon === 'ja'}
+                label={t('label:ja')}
+                onClick={() => setKjentInstitusjon('ja')}
+              />
+              <HorizontalSeparatorDiv data-size='2' />
+              <HighContrastRadio
+                name={namespace + '-barn'}
+                checked={xxx?.kjentInstitusjon === 'nei'}
+                label={t('label:nei')}
+                onClick={() => setKjentInstitusjon('nei')}
+              />
+            </FlexDiv>
+          </HighContrastRadioGroup>
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       {!_.isNil(xxx?.kjentInstitusjon) && (
         <>
           <AlignStartRow>
-          <Column data-flex='2'>
-            <Input
-              feil={validation[namespace + '-institusjonensNavn']?.feilmelding}
-              namespace={namespace}
-              id='institusjonensNavn'
-              label={t('label:institusjonens-navn') + ' *'}
-              onChanged={setInstitusjonensNavn}
-              value={xxx?.institusjonensNavn ?? ''}
-            />
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv/>
-      </>
+            <Column data-flex='2'>
+              <Input
+                feil={validation[namespace + '-institusjonensNavn']?.feilmelding}
+                namespace={namespace}
+                id='institusjonensNavn'
+                label={t('label:institusjonens-navn') + ' *'}
+                onChanged={setInstitusjonensNavn}
+                value={xxx?.institusjonensNavn ?? ''}
+              />
+            </Column>
+          </AlignStartRow>
+          <VerticalSeparatorDiv />
+        </>
       )}
       {xxx?.kjentInstitusjon === 'ja' && (
         <AlignStartRow>
@@ -210,7 +210,7 @@ const PeriodeForDagpenger: React.FC<PeriodeForDagpengerProps> = ({
           <Undertittel>
             {t('label:institusjonens-adresse')}
           </Undertittel>
-          <VerticalSeparatorDiv/>
+          <VerticalSeparatorDiv />
           <AlignStartRow
             className={classNames('slideInFromLeft')}
           >
@@ -243,7 +243,7 @@ const PeriodeForDagpenger: React.FC<PeriodeForDagpengerProps> = ({
             <Column data-flex='2'>
               <Input
                 feil={validation[namespace + '-by']?.feilmelding}
-                namespace={namespace }
+                namespace={namespace}
                 id='by'
                 label={t('label:by') + ' *'}
                 onChanged={setBy}

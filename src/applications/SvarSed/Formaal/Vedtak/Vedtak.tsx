@@ -5,7 +5,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
 import Period from 'components/Period/Period'
-import { AlignStartRow, FlexDiv, FormaalPanel, PileDiv, TextAreaDiv } from 'components/StyledComponents'
+import { AlignStartRow, FlexDiv, PaddedDiv, TextAreaDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { F002Sed, FormalVedtak, JaNei, PeriodeMedVedtak, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -13,7 +13,6 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { Checkbox } from 'nav-frontend-skjema'
-import { Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
   HighContrastFlatknapp,
@@ -280,138 +279,132 @@ const VedtakFC: React.FC<VedtakProps> = ({
   }
 
   return (
-    <PileDiv>
-      <Undertittel>
-        {t('el:title-vedtak')}
-      </Undertittel>
-      <VerticalSeparatorDiv />
-      <FormaalPanel className={classNames({ feil: validation[namespace]?.feilmelding })}>
-        <HighContrastRadioGroup
-          id={namespace + '-barn'}
-          className={classNames('slideInFromLeft')}
-          data-test-id={namespace + '-barn'}
-          legend={t('label:vedtak-angående-alle-barn') + ' *'}
-          feil={_validation['vedtak-allkids']?.feilmelding}
-        >
-          <FlexDiv>
-            <HighContrastRadio
-              name={namespace + '-barn'}
-              checked={_barnRadio === 'ja'}
-              label={t('label:ja')}
-              onClick={setBarnAlleBarn}
-            />
-            <HorizontalSeparatorDiv data-size='2' />
-            <HighContrastRadio
-              name={namespace + '-barn'}
-              checked={_barnRadio === 'nei'}
-              label={t('label:nei')}
-              onClick={setBarnNoeBarn}
-            />
-          </FlexDiv>
-        </HighContrastRadioGroup>
-        {_barnRadio === 'nei' && (
-          <div className={classNames('slideInFromLeft')}>
-            <div dangerouslySetInnerHTML={{ __html: t('label:avhuk-de-barn-vedtaket') + ':' }} />
-            <VerticalSeparatorDiv />
-            {(replySed as F002Sed)?.barn?.map((b, index) => {
-              const name = b.personInfo.fornavn + ' ' + b.personInfo.etternavn
-              return (
-                <div
-                  key={name}
-                  className={classNames('slideInFromLeft')}
-                  style={{ animationDelay: (index * 0.1) + 's' }}
-                >
-                  <Checkbox
-                    label={name}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => removeBarn(name, e.target.checked)}
-                  />
-                  <VerticalSeparatorDiv data-size='0.5' />
-                </div>
-              )
-            })}
-          </div>
-        )}
-        <VerticalSeparatorDiv />
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: '0.1s' }}
-        >
-          <Period
-            key={'' + vedtak?.periode?.startdato + vedtak?.periode?.sluttdato}
-            namespace={namespace + '-periode'}
-            errorStartDato={validation[namespace + '-periode-startdato']?.feilmelding}
-            errorSluttDato={validation[namespace + '-periode-sluttdato']?.feilmelding}
-            setStartDato={setStartDato}
-            setSluttDato={setSluttDato}
-            valueStartDato={vedtak?.periode?.startdato ?? ''}
-            valueSluttDato={vedtak?.periode?.sluttdato ?? ''}
+    <PaddedDiv>
+      <HighContrastRadioGroup
+        id={namespace + '-barn'}
+        className={classNames('slideInFromLeft')}
+        data-test-id={namespace + '-barn'}
+        legend={t('label:vedtak-angående-alle-barn') + ' *'}
+        feil={_validation['vedtak-allkids']?.feilmelding}
+      >
+        <FlexDiv>
+          <HighContrastRadio
+            name={namespace + '-barn'}
+            checked={_barnRadio === 'ja'}
+            label={t('label:ja')}
+            onClick={setBarnAlleBarn}
           />
-          <Column />
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: '0.2s' }}
-        >
-          <Column data-flex='2'>
-            <Select
-              data-test-id={namespace + '-type'}
-              feil={validation[namespace + '-type']?.feilmelding}
-              highContrast={highContrast}
-              id={namespace + '-type'}
-              label={t('label:vedtak-type') + ' *'}
-              menuPortalTarget={document.body}
-              onChange={(e: any) => setType(e.value)}
-              options={vedtakTypeOptions}
-              placeholder={t('el:placeholder-select-default')}
-              defaultValue={_.find(vedtakTypeOptions, v => v.value === vedtak?.type)}
-              selectedValue={_.find(vedtakTypeOptions, v => v.value === vedtak?.type)}
+          <HorizontalSeparatorDiv data-size='2' />
+          <HighContrastRadio
+            name={namespace + '-barn'}
+            checked={_barnRadio === 'nei'}
+            label={t('label:nei')}
+            onClick={setBarnNoeBarn}
+          />
+        </FlexDiv>
+      </HighContrastRadioGroup>
+      {_barnRadio === 'nei' && (
+        <div className={classNames('slideInFromLeft')}>
+          <div dangerouslySetInnerHTML={{ __html: t('label:avhuk-de-barn-vedtaket') + ':' }} />
+          <VerticalSeparatorDiv />
+          {(replySed as F002Sed)?.barn?.map((b, index) => {
+            const name = b.personInfo.fornavn + ' ' + b.personInfo.etternavn
+            return (
+              <div
+                key={name}
+                className={classNames('slideInFromLeft')}
+                style={{ animationDelay: (index * 0.1) + 's' }}
+              >
+                <Checkbox
+                  label={name}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => removeBarn(name, e.target.checked)}
+                />
+                <VerticalSeparatorDiv data-size='0.5' />
+              </div>
+            )
+          })}
+        </div>
+      )}
+      <VerticalSeparatorDiv />
+      <AlignStartRow
+        className={classNames('slideInFromLeft')}
+        style={{ animationDelay: '0.1s' }}
+      >
+        <Period
+          key={'' + vedtak?.periode?.startdato + vedtak?.periode?.sluttdato}
+          namespace={namespace + '-periode'}
+          errorStartDato={validation[namespace + '-periode-startdato']?.feilmelding}
+          errorSluttDato={validation[namespace + '-periode-sluttdato']?.feilmelding}
+          setStartDato={setStartDato}
+          setSluttDato={setSluttDato}
+          valueStartDato={vedtak?.periode?.startdato ?? ''}
+          valueSluttDato={vedtak?.periode?.sluttdato ?? ''}
+        />
+        <Column />
+      </AlignStartRow>
+      <VerticalSeparatorDiv />
+      <AlignStartRow
+        className={classNames('slideInFromLeft')}
+        style={{ animationDelay: '0.2s' }}
+      >
+        <Column data-flex='2'>
+          <Select
+            data-test-id={namespace + '-type'}
+            feil={validation[namespace + '-type']?.feilmelding}
+            highContrast={highContrast}
+            id={namespace + '-type'}
+            label={t('label:vedtak-type') + ' *'}
+            menuPortalTarget={document.body}
+            onChange={(e: any) => setType(e.value)}
+            options={vedtakTypeOptions}
+            placeholder={t('el:placeholder-select-default')}
+            defaultValue={_.find(vedtakTypeOptions, v => v.value === vedtak?.type)}
+            selectedValue={_.find(vedtakTypeOptions, v => v.value === vedtak?.type)}
+          />
+        </Column>
+        <Column />
+      </AlignStartRow>
+      <VerticalSeparatorDiv />
+      <AlignStartRow
+        className={classNames('slideInFromLeft')}
+        style={{ animationDelay: '0.3s' }}
+      >
+        <Column data-flex='2'>
+          <TextAreaDiv>
+            <TextArea
+              feil={validation[namespace + '-grunnen']?.feilmelding}
+              namespace={namespace}
+              id='grunnen'
+              label={t('label:ytterligere-informasjon-til-sed')}
+              onChanged={setGrunnen}
+              value={vedtak?.grunnen}
             />
-          </Column>
-          <Column />
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: '0.3s' }}
-        >
-          <Column data-flex='2'>
-            <TextAreaDiv>
-              <TextArea
-                feil={validation[namespace + '-grunnen']?.feilmelding}
-                namespace={namespace}
-                id='grunnen'
-                label={t('label:ytterligere-informasjon-til-sed')}
-                onChanged={setGrunnen}
-                value={vedtak?.grunnen}
-              />
-            </TextAreaDiv>
-          </Column>
-          <Column />
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        {vedtak?.vedtaksperioder?.map(renderPeriodeAndVedtak)}
-        <hr />
-        <VerticalSeparatorDiv />
-        {_seeNewForm
-          ? renderPeriodeAndVedtak(null, -1)
-          : (
-            <Row className='slideInFromLeft'>
-              <Column>
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
-                  onClick={() => _setSeeNewForm(true)}
-                >
-                  <Add />
-                  <HorizontalSeparatorDiv data-size='0.5' />
-                  {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-                </HighContrastFlatknapp>
-              </Column>
-            </Row>
-            )}
-      </FormaalPanel>
-    </PileDiv>
+          </TextAreaDiv>
+        </Column>
+        <Column />
+      </AlignStartRow>
+      <VerticalSeparatorDiv />
+      {vedtak?.vedtaksperioder?.map(renderPeriodeAndVedtak)}
+      <hr />
+      <VerticalSeparatorDiv />
+      {_seeNewForm
+        ? renderPeriodeAndVedtak(null, -1)
+        : (
+          <Row className='slideInFromLeft'>
+            <Column>
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                onClick={() => _setSeeNewForm(true)}
+              >
+                <Add />
+                <HorizontalSeparatorDiv data-size='0.5' />
+                {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+              </HighContrastFlatknapp>
+            </Column>
+          </Row>
+          )}
+    </PaddedDiv>
   )
 }
 

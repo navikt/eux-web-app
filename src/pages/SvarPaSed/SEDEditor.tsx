@@ -1,22 +1,21 @@
 import { createSed, setAllValidation, setReplySed } from 'actions/svarpased'
-import PersonManager from 'applications/SvarSed/PersonManager/PersonManager'
 import Formaal from 'applications/SvarSed/Formaal/Formaal'
-import KravOmRefusjon from 'applications/SvarSed/Formaal/KravOmRefusjon/KravOmRefusjon'
-import Motregning from 'applications/SvarSed/Formaal/Motregning/Motregning'
-import ProsedyreVedUenighet from 'applications/SvarSed/Formaal/ProsedyreVedUenighet/ProsedyreVedUenighet'
+import SEDType from 'applications/SvarSed/Formaal/SEDType'
+import Tema from 'applications/SvarSed/Formaal/Tema'
+import FormålManager from 'applications/SvarSed/Formaal/FormålManager'
+import PersonManager from 'applications/SvarSed/PersonManager/PersonManager'
 import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
 import SendSEDModal from 'applications/SvarSed/SendSEDModal/SendSEDModal'
-import Vedtak from 'applications/SvarSed/Formaal/Vedtak/Vedtak'
 import Attachments from 'applications/Vedlegg/Attachments/Attachments'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import Modal from 'components/Modal/Modal'
 import { FlexCenterSpacedDiv, TextAreaDiv } from 'components/StyledComponents'
-import useValidation from 'hooks/useValidation'
 import { JoarkBrowserItems } from 'declarations/attachments'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import FileFC, { File } from 'forhandsvisningsfil'
+import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { VenstreChevron } from 'nav-frontend-chevron'
 import { Systemtittel } from 'nav-frontend-typografi'
@@ -40,9 +39,6 @@ import { SvarpasedState } from 'reducers/svarpased'
 import styled from 'styled-components'
 import { isFSed, isHSed, isSed, isUSed } from 'utils/sed'
 import { validateSEDEditor, ValidationSEDEditorProps } from './validation'
-import Kontoopplysning from 'applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning'
-import SEDType from 'applications/SvarSed/Formaal/SEDType'
-import Tema from 'applications/SvarSed/Formaal/Tema'
 
 const SEDEditorDiv = styled.div`
   padding: 0.5rem;
@@ -112,16 +108,15 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   const [_previewFile, setPreviewFile] = useState<any | undefined>(undefined)
   const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
   const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
-  const [_viewKontoopplysninger, setViewKontoopplysninger] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationSEDEditorProps>(validation, validateSEDEditor)
   const [_viewValidation, _setViewValidation] = useState<boolean>(false)
 
   const showPersonManager = (): boolean => isSed(replySed)
-  const showMotregning = (): boolean => (replySed?.formaal?.indexOf('motregning') >= 0)
-  const showVedtak = (): boolean => (replySed?.formaal?.indexOf('vedtak') >= 0)
-  const showProsedyreVedUenighet = (): boolean => (replySed?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0)
-  const showKravOmRefusjon = (): boolean => (replySed?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0)
-  const showKontoopplysninger = (): boolean => _viewKontoopplysninger === true
+  const showFormålManager = (): boolean =>
+    replySed?.formaal?.indexOf('motregning') >= 0 ||
+    replySed?.formaal?.indexOf('vedtak') >= 0 ||
+    replySed?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0 ||
+    replySed?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0
 
   const sendReplySed = (): void => {
     if (replySed) {
@@ -250,7 +245,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
       <Row>
         <Column data-flex='2'>
           <Systemtittel>
-            {replySed?.sedType} - {t('buc:' + replySed?.sedType )}
+            {replySed?.sedType} - {t('buc:' + replySed?.sedType)}
           </Systemtittel>
           <VerticalSeparatorDiv />
           {isFSed(replySed) && (
@@ -291,64 +286,17 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
           <VerticalSeparatorDiv data-size='2' />
         </>
       )}
-      {showVedtak() && (
+
+      {isFSed(replySed) && showFormålManager() && (
         <>
-          <Vedtak
+          <FormålManager
+            fnr={fnr}
             highContrast={highContrast}
             replySed={replySed}
             resetValidation={_resetValidation}
             updateReplySed={updateReplySed}
             validation={_validation}
-          />
-          <VerticalSeparatorDiv data-size='2' />
-        </>
-      )}
-      {showMotregning() && (
-        <>
-          <Motregning
-            highContrast={highContrast}
-            replySed={replySed}
-            resetValidation={_resetValidation}
-            seeKontoopplysninger={() => setViewKontoopplysninger(true)}
-            updateReplySed={updateReplySed}
-            validation={_validation}
-          />
-          <VerticalSeparatorDiv data-size='2' />
-        </>
-      )}
-      {showProsedyreVedUenighet() && (
-        <>
-          <ProsedyreVedUenighet
-            highContrast={highContrast}
-            replySed={replySed}
-            resetValidation={_resetValidation}
-            updateReplySed={updateReplySed}
-            validation={_validation}
-          />
-          <VerticalSeparatorDiv data-size='2' />
-        </>
-      )}
-      {showKravOmRefusjon() && (
-        <>
-          <KravOmRefusjon
-            highContrast={highContrast}
-            replySed={replySed}
-            resetValidation={_resetValidation}
-            seeKontoopplysninger={() => setViewKontoopplysninger(true)}
-            updateReplySed={updateReplySed}
-            validation={_validation}
-          />
-          <VerticalSeparatorDiv data-size='2' />
-        </>
-      )}
-      {showKontoopplysninger() && (
-        <>
-          <Kontoopplysning
-            highContrast={highContrast}
-            replySed={replySed}
-            resetValidation={_resetValidation}
-            updateReplySed={updateReplySed}
-            validation={_validation}
+            viewValidation={_viewValidation}
           />
           <VerticalSeparatorDiv data-size='2' />
         </>

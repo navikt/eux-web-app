@@ -4,7 +4,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import Period from 'components/Period/Period'
-import { AlignStartRow, FormaalPanel, PileDiv, TextAreaDiv } from 'components/StyledComponents'
+import { AlignStartRow, PaddedDiv, TextAreaDiv } from 'components/StyledComponents'
 import { F002Sed, FormalMotregning, NavnOgBetegnelse, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
@@ -12,7 +12,7 @@ import useValidation from 'hooks/useValidation'
 import CountryData, { Currency } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
-import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
+import { UndertekstBold } from 'nav-frontend-typografi'
 import {
   Column,
   HighContrastFlatknapp,
@@ -243,203 +243,197 @@ const Motregning: React.FC<MotregningProps> = ({
   }
 
   return (
-    <PileDiv>
-      <Undertittel>
-        {t('el:title-motregning')}
-      </Undertittel>
+    <PaddedDiv>
+      <HighContrastRadioGroup
+        className={classNames('slideInFromLeft')}
+        data-test-id={namespace + '-anmodningEllerSvar'}
+        id={namespace + '-anmodningEllerSvar'}
+        legend={t('label:anmodning-om-motregning')}
+        feil={validation[namespace + '-anmodningEllerSvar']?.feilmelding}
+      >
+        <HighContrastRadio
+          name={namespace + '-anmodningEllerSvar'}
+          checked={motregning?.anmodningEllerSvar === '1'}
+          label={t('label:anmodning-om-motregning-barn')}
+          onClick={() => setAnmodningEllerSvar('1')}
+        />
+        <VerticalSeparatorDiv />
+        <HighContrastRadio
+          name={namespace + '-anmodningEllerSvar'}
+          checked={motregning?.anmodningEllerSvar === '2'}
+          label={t('label:anmodning-om-motregning-svar-barn')}
+          onClick={() => setAnmodningEllerSvar('2')}
+        />
+      </HighContrastRadioGroup>
       <VerticalSeparatorDiv />
-      <FormaalPanel className={classNames({ feil: validation[namespace]?.feilmelding })}>
-        <HighContrastRadioGroup
-          className={classNames('slideInFromLeft')}
-          data-test-id={namespace + '-anmodningEllerSvar'}
-          id={namespace + '-anmodningEllerSvar'}
-          legend={t('label:anmodning-om-motregning')}
-          feil={validation[namespace + '-anmodningEllerSvar']?.feilmelding}
-        >
-          <HighContrastRadio
-            name={namespace + '-anmodningEllerSvar'}
-            checked={motregning?.anmodningEllerSvar === '1'}
-            label={t('label:anmodning-om-motregning-barn')}
-            onClick={() => setAnmodningEllerSvar('1')}
-          />
-          <VerticalSeparatorDiv />
-          <HighContrastRadio
-            name={namespace + '-anmodningEllerSvar'}
-            checked={motregning?.anmodningEllerSvar === '2'}
-            label={t('label:anmodning-om-motregning-svar-barn')}
-            onClick={() => setAnmodningEllerSvar('2')}
-          />
-        </HighContrastRadioGroup>
-        <VerticalSeparatorDiv />
-        {motregning?.navnOgBetegnelser?.map(renderRowOfNavnOgBetegnelse)}
-        <hr />
-        <VerticalSeparatorDiv />
-        {_seeNewForm
-          ? renderRowOfNavnOgBetegnelse(null, -1)
-          : (
-            <Row className='slideInFromLeft'>
-              <Column>
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
-                  onClick={() => _setSeeNewForm(true)}
-                >
-                  <Add />
-                  <HorizontalSeparatorDiv data-size='0.5' />
-                  {t('el:button-add-new-x', { x: t('label:barn').toLowerCase() })}
-                </HighContrastFlatknapp>
-              </Column>
-            </Row>
-            )}
-        <VerticalSeparatorDiv data-size='2' />
-        <UndertekstBold>
-          {t('label:informasjon-om-familieytelser')}
-        </UndertekstBold>
-        <VerticalSeparatorDiv />
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: '0.1s' }}
-        >
-          <Column>
-            <Input
-              feil={validation[namespace + '-beloep']?.feilmelding}
-              namespace={namespace}
-              id='beloep'
-              label={t('label:beløp') + ' *'}
-              onChanged={setBeløp}
-              value={motregning?.beloep}
-            />
-          </Column>
-          <Column>
-            <CountrySelect
-              ariaLabel={t('label:valuta')}
-              data-test-id={namespace + '-valuta'}
-              error={validation[namespace + '-valuta']?.feilmelding}
-              highContrast={highContrast}
-              id={namespace + '-valuta'}
-              label={t('label:valuta') + ' *'}
-              locale='nb'
-              menuPortalTarget={document.body}
-              onOptionSelected={setValuta}
-              type='currency'
-              values={_currencyData.findByValue(motregning?.valuta ?? '')}
-            />
-          </Column>
-          <Column />
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: '0.2s' }}
-        >
-          <Period
-            key={'' + motregning?.startdato + motregning?.sluttdato}
+      {motregning?.navnOgBetegnelser?.map(renderRowOfNavnOgBetegnelse)}
+      <hr />
+      <VerticalSeparatorDiv />
+      {_seeNewForm
+        ? renderRowOfNavnOgBetegnelse(null, -1)
+        : (
+          <Row className='slideInFromLeft'>
+            <Column>
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                onClick={() => _setSeeNewForm(true)}
+              >
+                <Add />
+                <HorizontalSeparatorDiv data-size='0.5' />
+                {t('el:button-add-new-x', { x: t('label:barn').toLowerCase() })}
+              </HighContrastFlatknapp>
+            </Column>
+          </Row>
+          )}
+      <VerticalSeparatorDiv data-size='2' />
+      <UndertekstBold>
+        {t('label:informasjon-om-familieytelser')}
+      </UndertekstBold>
+      <VerticalSeparatorDiv />
+      <AlignStartRow
+        className={classNames('slideInFromLeft')}
+        style={{ animationDelay: '0.1s' }}
+      >
+        <Column>
+          <Input
+            feil={validation[namespace + '-beloep']?.feilmelding}
             namespace={namespace}
-            errorStartDato={validation[namespace + '-startdato']?.feilmelding}
-            errorSluttDato={validation[namespace + '-startdato']?.feilmelding}
-            labelStartDato={t('label:startdato') + ' (' + t('label:innvilgelse').toLowerCase() + ')'}
-            labelSluttDato={t('label:sluttdato') + ' (' + t('label:innvilgelse').toLowerCase() + ')'}
-            setStartDato={setStartDato}
-            setSluttDato={setSluttDato}
-            valueStartDato={motregning?.startdato}
-            valueSluttDato={motregning?.sluttdato}
+            id='beloep'
+            label={t('label:beløp') + ' *'}
+            onChanged={setBeløp}
+            value={motregning?.beloep}
           />
-          <Column />
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: '0.3s' }}
-        >
-          <Column data-flex='2'>
-            <Input
-              feil={validation[namespace + '-avgrensing']?.feilmelding}
+        </Column>
+        <Column>
+          <CountrySelect
+            ariaLabel={t('label:valuta')}
+            data-test-id={namespace + '-valuta'}
+            error={validation[namespace + '-valuta']?.feilmelding}
+            highContrast={highContrast}
+            id={namespace + '-valuta'}
+            label={t('label:valuta') + ' *'}
+            locale='nb'
+            menuPortalTarget={document.body}
+            onOptionSelected={setValuta}
+            type='currency'
+            values={_currencyData.findByValue(motregning?.valuta ?? '')}
+          />
+        </Column>
+        <Column />
+      </AlignStartRow>
+      <VerticalSeparatorDiv />
+      <AlignStartRow
+        className={classNames('slideInFromLeft')}
+        style={{ animationDelay: '0.2s' }}
+      >
+        <Period
+          key={'' + motregning?.startdato + motregning?.sluttdato}
+          namespace={namespace}
+          errorStartDato={validation[namespace + '-startdato']?.feilmelding}
+          errorSluttDato={validation[namespace + '-startdato']?.feilmelding}
+          labelStartDato={t('label:startdato') + ' (' + t('label:innvilgelse').toLowerCase() + ')'}
+          labelSluttDato={t('label:sluttdato') + ' (' + t('label:innvilgelse').toLowerCase() + ')'}
+          setStartDato={setStartDato}
+          setSluttDato={setSluttDato}
+          valueStartDato={motregning?.startdato}
+          valueSluttDato={motregning?.sluttdato}
+        />
+        <Column />
+      </AlignStartRow>
+      <VerticalSeparatorDiv />
+      <AlignStartRow
+        className={classNames('slideInFromLeft')}
+        style={{ animationDelay: '0.3s' }}
+      >
+        <Column data-flex='2'>
+          <Input
+            feil={validation[namespace + '-avgrensing']?.feilmelding}
+            namespace={namespace}
+            id='avgrensing'
+            label={t('label:periode-avgrensing') + ' *'}
+            onChanged={setAvgrensing}
+            value={motregning?.avgrensing}
+          />
+        </Column>
+        <Column />
+      </AlignStartRow>
+      <VerticalSeparatorDiv />
+      <AlignStartRow
+        className={classNames('slideInFromLeft')}
+        style={{ animationDelay: '0.4s' }}
+      >
+        <Column data-flex='2'>
+          <Input
+            feil={validation[namespace + '-mottakersNavn']?.feilmelding}
+            namespace={namespace}
+            id='mottakersNavn'
+            label={t('label:mottakers-navn') + ' *'}
+            onChanged={setMottakersNavn}
+            value={motregning?.mottakersNavn}
+          />
+        </Column>
+        <Column />
+      </AlignStartRow>
+      <VerticalSeparatorDiv />
+      <AlignStartRow
+        className={classNames('slideInFromLeft')}
+        style={{ animationDelay: '0.5s' }}
+      >
+        <Column data-flex='2'>
+          <TextAreaDiv>
+            <TextArea
+              feil={validation[namespace + '-grunnerTilAnmodning']?.feilmelding}
               namespace={namespace}
-              id='avgrensing'
-              label={t('label:periode-avgrensing') + ' *'}
-              onChanged={setAvgrensing}
-              value={motregning?.avgrensing}
+              id='grunnerTilAnmodning'
+              label={t('label:anmodning-grunner')}
+              onChanged={setGrunnerTilAnmodning}
+              value={motregning?.grunnerTilAnmodning}
             />
-          </Column>
-          <Column />
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: '0.4s' }}
-        >
-          <Column data-flex='2'>
-            <Input
-              feil={validation[namespace + '-mottakersNavn']?.feilmelding}
+          </TextAreaDiv>
+        </Column>
+        <Column />
+      </AlignStartRow>
+      <VerticalSeparatorDiv />
+      <AlignStartRow
+        className={classNames('slideInFromLeft')}
+        style={{ animationDelay: '0.5s' }}
+      >
+        <Column data-flex='2'>
+          <TextAreaDiv>
+            <TextArea
+              feil={validation[namespace + '-ytterligereInfo']?.feilmelding}
               namespace={namespace}
-              id='mottakersNavn'
-              label={t('label:mottakers-navn') + ' *'}
-              onChanged={setMottakersNavn}
-              value={motregning?.mottakersNavn}
+              id='ytterligereInfo'
+              label={t('label:ytterligere-informasjon')}
+              onChanged={setYtterligereInfo}
+              value={motregning?.ytterligereInfo}
             />
-          </Column>
-          <Column />
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: '0.5s' }}
-        >
-          <Column data-flex='2'>
-            <TextAreaDiv>
-              <TextArea
-                feil={validation[namespace + '-grunnerTilAnmodning']?.feilmelding}
-                namespace={namespace}
-                id='grunnerTilAnmodning'
-                label={t('label:anmodning-grunner')}
-                onChanged={setGrunnerTilAnmodning}
-                value={motregning?.grunnerTilAnmodning}
-              />
-            </TextAreaDiv>
-          </Column>
-          <Column />
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: '0.5s' }}
-        >
-          <Column data-flex='2'>
-            <TextAreaDiv>
-              <TextArea
-                feil={validation[namespace + '-ytterligereInfo']?.feilmelding}
-                namespace={namespace}
-                id='ytterligereInfo'
-                label={t('label:ytterligere-informasjon')}
-                onChanged={setYtterligereInfo}
-                value={motregning?.ytterligereInfo}
-              />
-            </TextAreaDiv>
-          </Column>
-          <Column />
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column>
-            <HighContrastLink
-              href='#' onClick={(e: any) => {
-                e.preventDefault()
-                seeKontoopplysninger()
-                // have to wait 0.1 seconds so it comes to DOM first
-                setTimeout(() => {
-                  const element = document.getElementById('kontoopplysning')
-                  element?.scrollIntoView({
-                    behavior: 'smooth'
-                  })
-                }, 100)
-              }}
-            >
-              {t('label:oppgi-kontoopplysninger')}
-            </HighContrastLink>
-          </Column>
-        </AlignStartRow>
-      </FormaalPanel>
-    </PileDiv>
+          </TextAreaDiv>
+        </Column>
+        <Column />
+      </AlignStartRow>
+      <VerticalSeparatorDiv />
+      <AlignStartRow>
+        <Column>
+          <HighContrastLink
+            href='#' onClick={(e: any) => {
+              e.preventDefault()
+              seeKontoopplysninger()
+              // have to wait 0.1 seconds so it comes to DOM first
+              setTimeout(() => {
+                const element = document.getElementById('kontoopplysning')
+                element?.scrollIntoView({
+                  behavior: 'smooth'
+                })
+              }, 100)
+            }}
+          >
+            {t('label:oppgi-kontoopplysninger')}
+          </HighContrastLink>
+        </Column>
+      </AlignStartRow>
+    </PaddedDiv>
   )
 }
 
