@@ -1,12 +1,14 @@
 import { fetchInntekt, getArbeidsperioder, searchPerson } from 'actions/svarpased'
 import AddPersonModal from 'applications/SvarSed/PersonManager/AddPersonModal/AddPersonModal'
 import Arbeidsforhold from 'applications/SvarSed/PersonManager/Arbeidsforhold/Arbeidsforhold'
+import GrunnTilOpphør from 'applications/SvarSed/PersonManager/GrunnTilOpphør/GrunnTilOpphør'
+import SisteAnsettelsesForhold from 'applications/SvarSed/PersonManager/SisteAnsettelsesForhold/SisteAnsettelsesForhold'
 import Add from 'assets/icons/Add'
 import GreenCircle from 'assets/icons/GreenCircle'
 import Barn from 'assets/icons/Child'
 import RemoveCircle from 'assets/icons/RemoveCircle'
 import classNames from 'classnames'
-import { FlexCenterDiv, FormaalPanel, PileDiv } from 'components/StyledComponents'
+import { FlexCenterSpacedDiv, FormaalPanel, PileDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { F002Sed, PersonInfo, ReplySed } from 'declarations/sed'
@@ -27,7 +29,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { isFamilieytelser } from 'utils/sed'
+import { isFSed } from 'utils/sed'
 import Adresser from './Adresser/Adresser'
 import BeløpNavnOgValuta from './BeløpNavnOgValuta/BeløpNavnOgValuta'
 import Familierelasjon from './Familierelasjon/Familierelasjon'
@@ -41,6 +43,9 @@ import Referanseperiode from './Referanseperiode/Referanseperiode'
 import Relasjon from './Relasjon/Relasjon'
 import Trygdeordning from './Trygdeordning/Trygdeordning'
 import Forsikring from './Forsikring/Forsikring'
+import PeriodeForDagpenger from './PeriodeForDagpenger/PeriodeForDagpenger'
+import InntektForm from './InntektForm/InntektForm'
+import RettTilYtelser from './RettTilYtelser/RettTilYtelser'
 
 const LeftDiv = styled.div`
   flex: 1;
@@ -109,7 +114,7 @@ const RightDiv = styled.div`
   align-self: flex-start;
   min-width: 200px;
 `
-const RightFlexCenterDiv = styled.div`
+const RightFlexCenterSpacedDiv = styled.div`
   text-align: center;
 `
 const CustomHighContrastPanel = styled(FormaalPanel)`
@@ -201,7 +206,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
   const [_selectedPersonIDs, setSelectedPersonIDs] = useState<Array<string>>(initialSelectedPeople)
   // the name of person form currently selected
   const [_menuOption, setMenuOption] = useState<string | undefined>(totalPeopleNr === 1 ? (
-    isFamilieytelser(replySed) ? 'personopplysninger' : 'person'
+    isFSed(replySed) ? 'personopplysninger' : 'person'
   ) : undefined)
 
 
@@ -238,11 +243,13 @@ const PersonManager: React.FC<PersonManagerProps> = ({
     { label: t('el:option-personmanager-11'), value: 'familieytelser', type: 'F', normal: false, barn: false, family: true },
     { label: t('el:option-personmanager-12'), value: 'person', type: 'U', normal: true, barn: false, family: false },
     { label: t('el:option-personmanager-13'), value: 'referanseperiode', type: 'U', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-14'), value: 'arbeidsforhold/arbeidsgivere', type: 'U', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-15'), value: 'forsikring', type: 'U', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-16'), value: 'sisteansettelsesforhold', type: 'U', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-17'), value: 'grunntilopphør', type: 'U', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-18'), value: 'periodefordagpenger', type: 'U', normal: true, barn: false, family: false }
+    { label: t('el:option-personmanager-14'), value: 'arbeidsforhold/arbeidsgivere', type: 'U002', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-15'), value: 'inntekt', type: 'U004', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-16'), value: 'retttilytelser', type: 'U017', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-17'), value: 'forsikring', type: 'U', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-18'), value: 'sisteansettelsesforhold', type: 'U', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-19'), value: 'grunntilopphør', type: 'U', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-20'), value: 'periodefordagpenger', type: 'U', normal: true, barn: false, family: false }
   ]
 
   const onEditPerson = (id: string | undefined) => {
@@ -359,7 +366,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
               </>
             )}
           </PersonDiv>
-          {isFamilieytelser(replySed)  && (
+          {isFSed(replySed)  && (
             <CheckboxDiv>
               <PersonCheckbox
                 label=''
@@ -398,7 +405,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
                     : <RemoveCircle color='red' />
                 )}
                 <HorizontalSeparatorDiv data-size='0.5' />
-                {`${i}. ${o.label}`}
+                {`${i + 1}. ${o.label}`}
               </OptionDiv>
             )
           })}
@@ -453,14 +460,14 @@ const PersonManager: React.FC<PersonManagerProps> = ({
       </Undertittel>
       <VerticalSeparatorDiv />
       <CustomHighContrastPanel className={classNames({ feil: validation[namespace]?.feilmelding })}>
-        <FlexCenterDiv>
+        <FlexCenterSpacedDiv>
           <LeftDiv>
             {replySed.bruker && renderPerson(replySed, 'bruker', brukerNr)}
             {(replySed as F002Sed).ektefelle && renderPerson(replySed, 'ektefelle', ektefelleNr)}
             {(replySed as F002Sed).annenPerson && renderPerson(replySed, 'annenPerson', annenPersonNr)}
             {(replySed as F002Sed).barn && (replySed as F002Sed).barn.map((b: any, i: number) => renderPerson(replySed, `barn[${i}]`, barnNr + i))}
-            {isFamilieytelser(replySed) && renderPerson(replySed, 'familie', familieNr as number)}
-            {isFamilieytelser(replySed) && (
+            {isFSed(replySed) && renderPerson(replySed, 'familie', familieNr as number)}
+            {isFSed(replySed) && (
               <MarginDiv>
                 <HighContrastFlatknapp
                   mini
@@ -478,10 +485,10 @@ const PersonManager: React.FC<PersonManagerProps> = ({
           <RightDiv>
             {(gettingPerson || !_editCurrentPersonID)
               ? (
-                <RightFlexCenterDiv>
+                <RightFlexCenterSpacedDiv>
                   {gettingPerson ? t('message:loading-getting-person') : undefined}
                   {!_editCurrentPersonID ? t('label:velg-personer') : undefined}
-                </RightFlexCenterDiv>
+                </RightFlexCenterSpacedDiv>
                 )
               : (
                 <>
@@ -666,10 +673,67 @@ const PersonManager: React.FC<PersonManagerProps> = ({
                       validation={validation}
                     />
                   )}
+                  {_menuOption === 'sisteansettelsesforhold' && (
+                    <SisteAnsettelsesForhold
+                      highContrast={highContrast}
+                      parentNamespace={namespace}
+                      personID={_editCurrentPersonID}
+                      replySed={replySed}
+                      resetValidation={resetValidation}
+                      updateReplySed={updateReplySed}
+                      validation={validation}
+                    />
+                  )}
+                  {_menuOption === 'grunntilopphør' && (
+                    <GrunnTilOpphør
+                      highContrast={highContrast}
+                      parentNamespace={namespace}
+                      personID={_editCurrentPersonID}
+                      replySed={replySed}
+                      resetValidation={resetValidation}
+                      updateReplySed={updateReplySed}
+                      validation={validation}
+                    />
+                  )}
+                  {_menuOption === 'periodefordagpenger' && (
+                    <PeriodeForDagpenger
+                      landkoderList={landkoderList}
+                      parentNamespace={namespace}
+                      personID={_editCurrentPersonID}
+                      replySed={replySed}
+                      resetValidation={resetValidation}
+                      updateReplySed={updateReplySed}
+                      validation={validation}
+                    />
+                  )}
+                  {_menuOption === 'inntekt' && (
+                    <InntektForm
+                      highContrast={highContrast}
+                      inntekter={inntekter}
+                      gettingInntekter={gettingInntekter}
+                      getInntekter={_getInntekter}
+                      parentNamespace={namespace}
+                      personID={_editCurrentPersonID}
+                      replySed={replySed}
+                      resetValidation={resetValidation}
+                      updateReplySed={updateReplySed}
+                      validation={validation}
+                    />
+                  )}
+                  {_menuOption === 'retttilytelser' && (
+                    <RettTilYtelser
+                      parentNamespace={namespace}
+                      personID={_editCurrentPersonID}
+                      replySed={replySed}
+                      resetValidation={resetValidation}
+                      updateReplySed={updateReplySed}
+                      validation={validation}
+                    />
+                  )}
                 </>
                 )}
           </RightDiv>
-        </FlexCenterDiv>
+        </FlexCenterSpacedDiv>
       </CustomHighContrastPanel>
     </PileDiv>
   )

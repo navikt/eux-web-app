@@ -3,7 +3,7 @@ import IkonArbeidsgiver from 'assets/icons/Arbeidsgiver'
 import Edit from 'assets/icons/Edit'
 import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
-import { FlexCenterDiv, FlexDiv, PaddedFlexDiv, PileCenterDiv } from 'components/StyledComponents'
+import { FlexCenterSpacedDiv, FlexDiv, PaddedFlexDiv, PileCenterDiv } from 'components/StyledComponents'
 import { Arbeidsgiver, Validation } from 'declarations/types.d'
 import _ from 'lodash'
 import { Checkbox, FeiloppsummeringFeil } from 'nav-frontend-skjema'
@@ -201,7 +201,7 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
     >
       <VerticalSeparatorDiv data-size='0.5' />
       <ArbeidsgiverPanel border className={classNames('', { new: newArbeidsgiver })}>
-        <FlexCenterDiv>
+        <FlexCenterSpacedDiv>
           <PaddedFlexDiv className='slideInFromLeft'>
             <IkonArbeidsgiver />
             <HorizontalSeparatorDiv />
@@ -284,6 +284,40 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
                   </div>
                   )}
             </div>
+
+            {error && (
+              <Normaltekst>
+                duplicate warning
+              </Normaltekst>
+            )}
+            {fraArbeidsgiverregisteret && (
+              <Normaltekst>{t('label:fra-arbeidsgiverregisteret')}</Normaltekst>
+            )}
+            {fraInntektsregistreret && (
+              <Normaltekst>{t('label:fra-inntektsregisteret')}</Normaltekst>
+            )}
+            {/*!harRegistrertInntekt && (
+          <div className='slideInFromBottom' style={{ animationDelay: '0.2s' }}>
+            <AlertStripeAdvarsel>
+              <FlexDivNoWrap>
+                {t('message:warning-conflict-aa-1')}
+                <PaddedLink
+                  href={`https://modapp.adeo.no/aareg-web/?1&rolle=arbeidstaker&ident=${personFnr}#!arbeidsforhold`}
+                >
+                  {t('message:warning-conflict-aa-link-1')}
+                </PaddedLink>
+                {t('message:warning-conflict-aa-2')}
+                <PaddedLink
+                  href={`https://modapp.adeo.no/a-inntekt/person/${personFnr}?2#!PersonInntektLamell`}
+                >
+                  {t('message:warning-conflict-aa-link-2')}
+                </PaddedLink>
+              </FlexDivNoWrap>
+            </AlertStripeAdvarsel>
+          </div>
+        )*/}
+
+
           </PaddedFlexDiv>
           <PaddedFlexDiv className='slideInFromRight' style={{ animationDelay: '0.3s' }}>
             {editable && !_isEditing && !_isDeleting && (
@@ -369,38 +403,7 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
               </FlexDiv>
             </PileCenterDiv>
           )}
-        </FlexCenterDiv>
-        {error && (
-          <Normaltekst>
-            duplicate warning
-          </Normaltekst>
-        )}
-        {fraArbeidsgiverregisteret && (
-          <Normaltekst>{t('label:fra-arbeidsgiverregisteret')}</Normaltekst>
-        )}
-        {fraInntektsregistreret && (
-          <Normaltekst>{t('label:fra-inntektsregisteret')}</Normaltekst>
-        )}
-        {/*!harRegistrertInntekt && (
-          <div className='slideInFromBottom' style={{ animationDelay: '0.2s' }}>
-            <AlertStripeAdvarsel>
-              <FlexDivNoWrap>
-                {t('message:warning-conflict-aa-1')}
-                <PaddedLink
-                  href={`https://modapp.adeo.no/aareg-web/?1&rolle=arbeidstaker&ident=${personFnr}#!arbeidsforhold`}
-                >
-                  {t('message:warning-conflict-aa-link-1')}
-                </PaddedLink>
-                {t('message:warning-conflict-aa-2')}
-                <PaddedLink
-                  href={`https://modapp.adeo.no/a-inntekt/person/${personFnr}?2#!PersonInntektLamell`}
-                >
-                  {t('message:warning-conflict-aa-link-2')}
-                </PaddedLink>
-              </FlexDivNoWrap>
-            </AlertStripeAdvarsel>
-          </div>
-        )*/}
+        </FlexCenterSpacedDiv>
       </ArbeidsgiverPanel>
       <VerticalSeparatorDiv data-size='0.5' />
     </div>

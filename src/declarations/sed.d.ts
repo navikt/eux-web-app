@@ -10,7 +10,7 @@ export type Kjoenn = 'K' | 'M' | 'U'
 
 export type TelefonType = 'arbeid' | 'hjemme' | 'mobil'
 
-export type ReplySed = F002Sed | U002Sed | U004Sed | U017Sed
+export type ReplySed = F002Sed | U002Sed | U004Sed | U017Sed | H002Sed
 
 export type JaNei = 'ja' | 'nei'
 
@@ -191,6 +191,10 @@ export interface FSed extends BaseReplySed {
   formaal: Array<string>
 }
 
+export interface HSed extends BaseReplySed {
+  tema: string
+}
+
 export interface Barnetilhoerighet {
   borIBrukersHushold: JaNei
   borIEktefellesHushold: JaNei
@@ -335,3 +339,5 @@ export interface U017Sed extends USed {
     avvisningsgrunn: string
   }
 }
+
+export interface H002Sed extends HSed {}

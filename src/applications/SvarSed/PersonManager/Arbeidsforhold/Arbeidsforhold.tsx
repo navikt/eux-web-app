@@ -6,33 +6,30 @@ import Add from 'assets/icons/Add'
 import ArbeidsgiverBox from 'components/Arbeidsgiver/ArbeidsgiverBox'
 import ArbeidsgiverSøk from 'components/Arbeidsgiver/ArbeidsgiverSøk'
 import Input from 'components/Forms/Input'
+import Inntekt from 'components/Inntekt/Inntekt'
 import Period, { toFinalDateFormat } from 'components/Period/Period'
-import { AlignStartRow, FlexDiv, PaddedDiv, PileDiv } from 'components/StyledComponents'
+import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { Periode, ReplySed } from 'declarations/sed'
-import { Arbeidsgiver, Arbeidsperioder, Inntekt, Validation } from 'declarations/types'
+import { Arbeidsgiver, Arbeidsperioder, IInntekter, Validation } from 'declarations/types'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { Normaltekst, Systemtittel, Undertittel } from 'nav-frontend-typografi'
+import { Systemtittel, Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
   HighContrastFlatknapp,
   HighContrastKnapp,
-  HighContrastLink,
   HorizontalSeparatorDiv,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
-import TableSorter, { Item, Column as TableColumn } from 'tabell'
-import { formatterPenger } from 'utils/PengeUtils'
 
 interface ArbeidsforholdProps {
   arbeidsperioder: Arbeidsperioder
   getArbeidsperioder: () => void
   gettingArbeidsperioder: boolean
-  inntekter: any
+  inntekter: IInntekter | undefined
   getInntekter: () => void
   highContrast: boolean
   gettingInntekter: boolean
@@ -44,17 +41,6 @@ interface ArbeidsforholdProps {
   validation: Validation
 }
 
-const CustomTableSorter = styled(TableSorter)`
-  table-layout: fixed;
-  th, tr {
-    width: 16.666%;
-  }
-`
-const ArbeidsgiverDiv = styled(FlexDiv)`
- background-color: whitesmoke;
- justify-content: space-between;
- padding: 1rem;
-`
 const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
    arbeidsperioder,
    getArbeidsperioder,
@@ -90,7 +76,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
   }))
 
   const setStartDato = (startdato: string) => {
-    updateReplySed('{target}.startdato', startdato.trim())
+    updateReplySed(`${target}.startdato`, startdato.trim())
     if (validation[namespace + '-startdato']) {
       resetValidation(namespace + '-startdato')
     }
@@ -332,76 +318,14 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
       </AlignStartRow>
       <VerticalSeparatorDiv />
       {gettingInntekter && <WaitingPanel/>}
-      {inntekter?.map((inntekt: Inntekt) => {
+      {inntekter && (
+        <Inntekt
+          highContrast={highContrast}
+          inntekter={inntekter}
+          personID={personID}
+        />
+      )}
 
-        let _items: Array<Item> = [
-          {key: '1', col0: ' ', col1: ' ', col2: ' ', col3: ' ', col4: ' ', avg: formatterPenger(inntekt.gjennomsnitt)}
-        ]
-        let _columns: Array<TableColumn> = [
-          {id: 'col0', label: ' ', type: 'string'},
-          {id: 'col1', label: ' ', type: 'string'},
-          {id: 'col2', label: ' ', type: 'string'},
-          {id: 'col3', label: ' ', type: 'string'},
-          {id: 'col4', label: ' ', type: 'string'},
-          {id: 'avg', label: t('label:gjennomsnitt'), type: 'string'}
-        ]
-
-        inntekt.lønn.forEach((lønn, i)  => {
-          const matchingColumn = 'col' + (5 - inntekt.lønn.length + i)
-          const targetColumn = _.find(_columns, (c: TableColumn) => c.id === matchingColumn)
-          if (targetColumn) {
-            targetColumn.label = lønn.fra
-          }
-          _items[0][matchingColumn] = formatterPenger(lønn.beloep)
-        })
-
-        return (
-          <>
-            <AlignStartRow>
-              <Column>
-                <ArbeidsgiverDiv>
-                  <PileDiv>
-                    <Undertittel>
-                      {inntekt.arbeidsgiver.navn}
-                    </Undertittel>
-                  </PileDiv>
-                  <PileDiv>
-                    <span><Normaltekst>{t('label:orgnr')}</Normaltekst></span>
-                    <span><Normaltekst>{inntekt.arbeidsgiver.orgnr}</Normaltekst></span>
-                  </PileDiv>
-                  <PileDiv>
-                    <span><Normaltekst>{t('label:stillingprosent')}</Normaltekst></span>
-                    <span><Normaltekst>{inntekt.arbeidsgiver.prosent}</Normaltekst></span>
-                  </PileDiv>
-                  <PileDiv>
-                    <span><Normaltekst>{t('label:siste-lønnsendring')}</Normaltekst></span>
-                    <span><Normaltekst>{inntekt.arbeidsgiver.sisteLønn}</Normaltekst></span>
-                  </PileDiv>
-                </ArbeidsgiverDiv>
-                <CustomTableSorter
-                  key={personID}
-                  highContrast={highContrast}
-                  context={{ items: _items }}
-                  items={_items}
-                  compact
-                  searchable={false}
-                  sortable={false}
-                  striped={false}
-                  columns={_columns}
-                />
-              </Column>
-            </AlignStartRow>
-            <VerticalSeparatorDiv data-size='0.5'/>
-            <AlignStartRow>
-              <Column>
-                <HighContrastLink href='#'>
-                  {t('label:gå-til-A-inntekt')}
-                </HighContrastLink>
-              </Column>
-            </AlignStartRow>
-            <VerticalSeparatorDiv data-size='2'/>
-          </>
-      )})}
     </PaddedDiv>
   )
 }

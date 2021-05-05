@@ -1,7 +1,7 @@
 import { clientClear } from 'actions/alert'
 import Alert from 'components/Alert/Alert'
 import Modal from 'components/Modal/Modal'
-import { FlexCenterDiv, PileDiv } from 'components/StyledComponents'
+import { FlexCenterSpacedDiv, PileDiv } from 'components/StyledComponents'
 import { AlertStatus } from 'declarations/components'
 import { LocalStorageEntry, Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -125,7 +125,7 @@ const SendSEDModal = <CustomLocalStorageContent extends any = any>({
                 <SectionDiv>
                   <PileDiv style={{ alignItems: 'flex-start' }}>
                     <div>
-                      <FlexCenterDiv>
+                      <FlexCenterSpacedDiv>
                         <HighContrastInput
                           data-test-id='savesedmodal-name'
                           feil={_validation['savesedmodal-name']?.feilmelding}
@@ -135,7 +135,7 @@ const SendSEDModal = <CustomLocalStorageContent extends any = any>({
                           placeholder={t('el:placeholder-input-default')}
                           value={_name}
                         />
-                      </FlexCenterDiv>
+                      </FlexCenterSpacedDiv>
                     </div>
                     <VerticalSeparatorDiv data-size='0.5' />
                   </PileDiv>

@@ -8,15 +8,22 @@
   "anmodning-grunner" : "Grunner til anmodning om motregning ved for mye utbetalt",
   "annen-person": "Annet person",
   "annen-relasjon": "Annen relasjon",
+  "annen-ytelser": "Annen/andre ytels(er)",
   "annet": "Annet",
+  "annet-opphør": "Annet opphør",
+  "antall-dager" : "Antall dager",
   "antall-innvilges" : "Antall det innvilges for",
   "antall-treff-for" : "Antall treff for {{saksnummerOrFnr}}: ",
   "arbeidsgiver": "Arbeidsgiver",
   "arbeidsforhold_arbeidsgivere": "Arbeidsforhold/Arbeidsgivere",
   "arbeidsperiode": "Arbeidsperiode",
+  "artikkelnummer": "Artikkelnummer",
+  "artikkel-64": "Artikkel 64 i forordningen (EF nr. 883/2004)",
+  "artikkel-65": "Artikkel 65(1) i forordningen (EF nr. 883/2004)",
   "attachments": "Vedlegg",
   "avdød": "Avdød",
   "avhuk-de-barn-vedtaket": "Avhuk de barn vedtaket <strong><U>ikke</U></strong> gjelder",
+  "avkall-på-rettigheter" : "Avkall på rettigheter",
   "avsenderinstitusjon": "Avsenderinstitusjon",
   "avslutt-utfylling": "AVSLUTT UTFYLLING",
 
@@ -71,12 +78,16 @@
 
   "gateadresse": "Gateadresse",
   "gjennomsnitt": "Gj.snitt/mnd",
+  "grunn": "Grunn",
+  "grunn-ingen-rett": "Ingen rett til stønad i henhold til lovgivningen til institusjonen som utsteder denne meldingen",
+  "grunn-personen": "Personen søkte ikke om eksport av stønad på riktig måte",
   "gutt" : "Gutt",
   "gå-til-rina" : "Gå direkte til Rina",
   "gå-til-sed-i-rina" : "Gå til SED i Rina",
   "gå-til-A-inntekt" : "Gå til A-inntekt",
 
   "hele-familien" : "Hele familien",
+  "horisontal": "Horisontal",
   "høy-kontrast": "Høy kontrast",
 
   "iban": "IBAN",
@@ -86,7 +97,9 @@
   "ingen-familie-i-tps": "Ingen familierelasjoner funnet i TPS",
   "ingen-lagrede-seds": "Ingen lagrede SED-er",
   "inntekt": "Inntekt",
+  "inntektsfilter": "Inntektsfilter",
   "innvilgelse" : "innvilgelse",
+  "institusjonens-adresse" : "Institusjonens adresse",
   "institusjonens-id" : "Institusjonens ID",
   "institusjonens-navn" : "Institusjonens navn",
 
@@ -114,6 +127,7 @@
   "medlemsperiode": "Medlemsperiode",
   "motpart": "Motpart",
   "motpart-sakseier": "Motpart/Sakseier",
+  "mottatt-dato": "Mottatt for periode fram til",
   "mottaker-institusjon": "Mottaker institusjon",
   "mottakers-navn": "Mottakers navn",
 
@@ -133,6 +147,7 @@
   "partner": "Ektefelle/partner",
   "periode": "Periode",
   "periode-avgrensing": "Avgrensning av periode",
+  "periode-med-dagpenger": "Periode med dagpenger",
   "person": "Person",
   "personen-det-gjelder": "Personen det gjelder",
   "person-navn": "Navn på person",
@@ -145,6 +160,7 @@
   "referanseperiode" : "Referanseperiode",
   "relasjon-med" : "Relasjon med",
   "relasjonens-varighet": "Relasjonens varighet",
+  "rett-til-stønad": "Rett til stønad?",
   "rina-dokument-id": "Velg SED Type",
   "rina-saksnummer": "RINA saksnummer",
 
@@ -164,6 +180,7 @@
   "startdato": "Startdato",
   "statsborgerskap" : "Statsborgerskap",
   "stillingprosent" : "Stillingprosent",
+  "svar-sed-type": "SvarSED type",
   "swift": "SWIFT",
   "søker" : "Søker",
 
@@ -174,6 +191,7 @@
   "tittel" : "Tittel",
   "trygdeperiode-i-avsenderlandet": "Trygdeperiode i avsenderlandet",
   "type": "Type",
+  "type-beløp": "Type beløp",
   "type-krav": "Type krav",
   "type-pensjon": "Type pensjon",
   "type-periode": "Type periode",
@@ -181,6 +199,7 @@
   "ukjent": "Ukjent",
   "ukjent-rolle": "(ukjent rolle)",
   "utenlandsk-id": "Utenlandsk ID",
+  "utbetaling": "Utbetaling",
   "utenlandsk-pin" : "Utenlandsk PIN",
 
   "valgt-familie": "Valgte familierelasjoner",
@@ -208,5 +227,7 @@
   "ytterligere-grunner-til-uenighet":  "Ytterligere grunner til uenighet",
 
   "åpen": "Åpen",
-  "årlig": "Årlig"
+  "årlig": "Årlig",
+  "årsak-til-avslutning-av-arbeidsforhold" : "Årsak til avslutning av arbeidsforhold",
+  "årsak-til-avslutning-av-selvstendig-næringsvirksomhet" : "Årsak til avslutning av selvstendig næringsvirksomhet"
 }

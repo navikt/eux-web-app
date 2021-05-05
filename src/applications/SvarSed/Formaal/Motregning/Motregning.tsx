@@ -353,7 +353,7 @@ const Motregning: React.FC<MotregningProps> = ({
         >
           <Column data-flex='2'>
             <Input
-              feil={validation[+namespace + '-avgrensing']?.feilmelding}
+              feil={validation[namespace + '-avgrensing']?.feilmelding}
               namespace={namespace}
               id='avgrensing'
               label={t('label:periode-avgrensing') + ' *'}
@@ -370,7 +370,7 @@ const Motregning: React.FC<MotregningProps> = ({
         >
           <Column data-flex='2'>
             <Input
-              feil={validation[+namespace + '-mottakersNavn']?.feilmelding}
+              feil={validation[namespace + '-mottakersNavn']?.feilmelding}
               namespace={namespace}
               id='mottakersNavn'
               label={t('label:mottakers-navn') + ' *'}
@@ -388,7 +388,7 @@ const Motregning: React.FC<MotregningProps> = ({
           <Column data-flex='2'>
             <TextAreaDiv>
               <TextArea
-                feil={validation[+namespace + '-grunnerTilAnmodning']?.feilmelding}
+                feil={validation[namespace + '-grunnerTilAnmodning']?.feilmelding}
                 namespace={namespace}
                 id='grunnerTilAnmodning'
                 label={t('label:anmodning-grunner')}
@@ -407,7 +407,7 @@ const Motregning: React.FC<MotregningProps> = ({
           <Column data-flex='2'>
             <TextAreaDiv>
               <TextArea
-                feil={validation[+namespace + '-ytterligereInfo']?.feilmelding}
+                feil={validation[namespace + '-ytterligereInfo']?.feilmelding}
                 namespace={namespace}
                 id='ytterligereInfo'
                 label={t('label:ytterligere-informasjon')}

@@ -108,7 +108,7 @@ export interface OldFamilieRelasjon extends Person {
   type: string
 }*/
 
-export interface Inntekt {
+export interface IInntekt {
   arbeidsgiver: {
     navn: string
     orgnr: string
@@ -122,7 +122,7 @@ export interface Inntekt {
   gjennomsnitt: number
 }
 
-export type Inntekter = Array<Inntekt>
+export type IInntekter = Array<IInntekt>
 
 export interface Institusjon {
   institusjonsID: string

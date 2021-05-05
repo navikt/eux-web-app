@@ -11,7 +11,7 @@ import Attachments from 'applications/Vedlegg/Attachments/Attachments'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import Modal from 'components/Modal/Modal'
-import { FlexCenterDiv, TextAreaDiv } from 'components/StyledComponents'
+import { FlexCenterSpacedDiv, TextAreaDiv } from 'components/StyledComponents'
 import useValidation from 'hooks/useValidation'
 import { JoarkBrowserItems } from 'declarations/attachments'
 import { ModalContent } from 'declarations/components'
@@ -38,8 +38,10 @@ import ReactJson from 'react-json-view'
 import { useDispatch, useSelector } from 'react-redux'
 import { SvarpasedState } from 'reducers/svarpased'
 import styled from 'styled-components'
+import { isFSed, isUSed } from 'utils/sed'
 import { validateSEDEditor, ValidationSEDEditorProps } from './validation'
 import Kontoopplysning from 'applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning'
+import SEDType from 'applications/SvarSed/Formaal/SEDType'
 
 const SEDEditorDiv = styled.div`
   padding: 0.5rem;
@@ -233,7 +235,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
           onModalClose={() => setViewSaveSedModal(false)}
         />
       )}
-      <FlexCenterDiv>
+      <FlexCenterSpacedDiv>
         <HighContrastLink
           href='#'
           onClick={onGoBackClick}
@@ -242,7 +244,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
           <HorizontalSeparatorDiv data-size='0.5' />
           {t('label:tilbake')}
         </HighContrastLink>
-      </FlexCenterDiv>
+      </FlexCenterSpacedDiv>
       <VerticalSeparatorDiv />
       <Row>
         <Column data-flex='2'>
@@ -250,11 +252,20 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
             {replySed?.sedType}
           </Systemtittel>
           <VerticalSeparatorDiv />
-          <Formaal
-            feil={_validation.formaal}
-            replySed={replySed}
-            highContrast={highContrast}
-          />
+          {isFSed(replySed) && (
+            <Formaal
+              feil={_validation.formaal}
+              replySed={replySed}
+              highContrast={highContrast}
+            />
+          )}
+          {isUSed(replySed) && (
+            <SEDType
+              feil={_validation.sedtype}
+              replySed={replySed}
+              highContrast={highContrast}
+            />
+          )}
         </Column>
         <Column />
       </Row>

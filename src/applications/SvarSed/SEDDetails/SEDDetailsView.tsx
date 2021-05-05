@@ -8,7 +8,7 @@ import { HorizontalSeparatorDiv, themeKeys, VerticalSeparatorDiv } from 'nav-hoy
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { isDagpenger, isFamilieytelser } from 'utils/sed'
+import { isUSed, isFSed } from 'utils/sed'
 
 const Dd = styled.dd`
   width: 60%;
@@ -89,7 +89,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
             />
           )}
         </Dd>
-        {isFamilieytelser(replySed) && (
+        {isFSed(replySed) && (
           <>
             <Dt>{t('label:partner')}</Dt>
             <Dd>
@@ -112,7 +112,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
         )}
       </Dl>
       <VerticalSeparatorDiv />
-      {isDagpenger(replySed) && (replySed as USed).lokaleSakIder.map(s => (
+      {isUSed(replySed) && (replySed as USed).lokaleSakIder.map(s => (
         <div key={s.institusjonsnavn}>
           <Dl>
             <Dt>
@@ -142,7 +142,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
         </div>
       ))}
       <VerticalSeparatorDiv />
-      {isFamilieytelser(replySed) && (
+      {isFSed(replySed) && (
         <>
           <Dl>
             <Dt>

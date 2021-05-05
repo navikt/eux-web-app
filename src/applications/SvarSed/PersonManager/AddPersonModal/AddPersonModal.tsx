@@ -8,7 +8,7 @@ import Barn from 'assets/icons/Child'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
-import { AlignStartRow, FlexBaseDiv, FlexCenterDiv, FlexDiv, PaddedDiv } from 'components/StyledComponents'
+import { AlignStartRow, FlexBaseSpacedDiv, FlexCenterSpacedDiv, FlexDiv, PaddedDiv } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
 import { F002Sed, PersonInfo, ReplySed } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
@@ -246,8 +246,8 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
     return (
       <FlexDiv className='slideInFromLeft' style={{ animationDelay: i * 0.1 + 's' }} key={personId}>
         <CheckboxDiv>
-          <FlexCenterDiv>
-            <FlexBaseDiv>
+          <FlexCenterSpacedDiv>
+            <FlexBaseSpacedDiv>
               <Normaltekst>
                 {p?.fornavn + ' ' + p?.etternavn}
               </Normaltekst>
@@ -255,14 +255,14 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
               <GreySpan>
                 {'(' + getPersonLabel(personId) + ')'}
               </GreySpan>
-            </FlexBaseDiv>
+            </FlexBaseSpacedDiv>
             {personId.startsWith('barn[') && (
               <>
                 <HorizontalSeparatorDiv data-size='0.5' />
                 <Barn />
               </>
             )}
-          </FlexCenterDiv>
+          </FlexCenterSpacedDiv>
           <AddRemovePanel
             existingItem
             candidateForDeletion={candidateForDeletion}

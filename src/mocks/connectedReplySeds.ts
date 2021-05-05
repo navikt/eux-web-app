@@ -49,6 +49,37 @@ export default [
         sistEndretDato: '2020-01-04',
         svarsedType: 'U004',
         svarsedDisplay: 'Description for U004'
+      }, {
+        sedTittel: 'Description for U00X',
+        status: 'new',
+        sedType: 'U00X',
+        sedId: '603e18ebd5b549b1b5c0f53c58558118',
+        sedUrl: 'http://...',
+        sistEndretDato: '2020-01-04',
+        svarsedType: 'U017',
+        svarsedDisplay: 'Description for U017'
+      }
+    ]
+  },
+  {
+    sakTittel: 'Horisontal',
+    sakType: 'H_BUC_01',
+    sakId: '398793',
+    sakUrl: 'https://rina-ss3-q.adeo.no/portal/#/caseManagement/398793?rightView=filtering',
+    sistEndretDato: '2021-04-07',
+    motpart: [
+      'NAV ACCEPTANCE TEST 07 (Norge)'
+    ],
+    sedListe: [
+      {
+        sedTittel: 'Horizontal',
+        sedType: 'H001',
+        sedId: '8edd012b62d84a768cbd4a734929076f',
+        sedUrl: 'https://rina-ss3-q.adeo.no/portal/#/caseManagement/398792?rightView=filtering&openMode=Read&docId=8edd012b62d84a768cbd4a734929076d',
+        status: 'received',
+        sistEndretDato: '2021-02-18',
+        svarsedType: 'H002',
+        svarsedDisplay: 'Create H002'
       }
     ]
   },

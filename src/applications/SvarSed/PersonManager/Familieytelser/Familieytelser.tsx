@@ -2,7 +2,7 @@ import HelpIcon from 'assets/icons/HelpIcon'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import Period from 'components/Period/Period'
-import { AlignStartRow, FlexCenterDiv, PaddedDiv } from 'components/StyledComponents'
+import { AlignStartRow, FlexCenterSpacedDiv, PaddedDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { Motregning, ReplySed, Utbetalingshyppighet, YtelseNavn } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -153,13 +153,13 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             namespace={namespace}
             id='beloep'
             label={(
-              <FlexCenterDiv>
+              <FlexCenterSpacedDiv>
                 <span>{t('label:beløp') + ' *'}</span>
                 <HorizontalSeparatorDiv data-size='0.5' />
                 <Tooltip placement='top' trigger={['hover']} overlay={<span>{t('message:help-familieytelser-beløp')}</span>}>
                   <HelpProperIcon className='hjelpetekst__ikon' />
                 </Tooltip>
-              </FlexCenterDiv>
+              </FlexCenterSpacedDiv>
             )}
             onChanged={setBeløp}
             value={motregning?.beloep ?? ''}

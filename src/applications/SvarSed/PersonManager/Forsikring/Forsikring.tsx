@@ -45,8 +45,8 @@ const Forsikring: React.FC<ForsikringProps> = ({
 }:ForsikringProps): JSX.Element => {
   const { t } = useTranslation()
   // TODO add target
-  //const target = 'xxx'
-  //const anmodningsperiode: Periode = _.get(replySed, target)
+  //const target = 'xxx-forsikring'
+  //const xxx: any = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-forsikring`
 
   const [_periodeType, setPeriodeType] = useState<Array<string>>([])
@@ -61,8 +61,7 @@ const Forsikring: React.FC<ForsikringProps> = ({
     {label: t('el:option-forsikring-7'), value: 'forsikring-7'},
     {label: t('el:option-forsikring-8'), value: 'forsikring-8'},
     {label: t('el:option-forsikring-9'), value: 'forsikring-9'},
-    {label: t('el:option-forsikring-10'), value: 'forsikring-10'},
-    {label: t('el:option-forsikring-11'), value: 'forsikring-11'},
+    {label: t('el:option-forsikring-10'), value: 'forsikring-10'}
   ]
   return (
     <PaddedDiv>

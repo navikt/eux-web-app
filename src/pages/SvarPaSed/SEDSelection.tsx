@@ -11,7 +11,7 @@ import {
   AlignStartRow,
   Etikett,
   FlexDiv,
-  FlexStartDiv,
+  FlexStartSpacedDiv,
   HiddenFormContainer,
   PileCenterDiv,
   PileDiv
@@ -158,6 +158,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
 
   const familieytelser: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('FB_'))?.length ?? 0
   const dagpenger: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('U_'))?.length ?? 0
+  const horisontal: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('H_'))?.length ?? 0
 
   return (
     <NavHighContrast highContrast={highContrast}>
@@ -261,6 +262,19 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                   <HorizontalSeparatorDiv />
                 </>
               )}
+              {horisontal > 0 && (
+                <>
+                  <HighContrastFlatknapp
+                    mini
+                    kompakt
+                    className={classNames({ selected: _filter === 'H_' })}
+                    onClick={() => _setFilter('H_')}
+                  >
+                    {t('label:horisontal') + ' (' + horisontal + ')'}
+                  </HighContrastFlatknapp>
+                  <HorizontalSeparatorDiv />
+                </>
+              )}
             </FilterDiv>
             <VerticalSeparatorDiv />
             {seds
@@ -329,7 +343,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                           </PileCenterDiv>
                           <HorizontalSeparatorDiv />
                           <PileDiv style={{ flex: 2 }}>
-                            <FlexStartDiv>
+                            <FlexStartSpacedDiv>
                               <Undertittel>
                                 {connectedSed.sedType} - {connectedSed.sedTittel}
                               </Undertittel>
@@ -349,7 +363,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                                   </HighContrastHovedknapp>
                                   )
                                 : (<div />)}
-                            </FlexStartDiv>
+                            </FlexStartSpacedDiv>
                             <FlexDiv>
                               <HighContrastLink href={connectedSed.sedUrl}>
                                 <span>

@@ -37,7 +37,7 @@ import { Validation } from 'declarations/types.d'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
-import { isFamilieytelser } from 'utils/sed'
+import { isFSed } from 'utils/sed'
 
 export interface ValidationSEDEditorProps {
   comment: string
@@ -139,7 +139,7 @@ export const validateSEDEditor = (
 ): boolean => {
   let hasErrors: boolean = false
   let _error: boolean
-  if (isFamilieytelser(replySed)) {
+  if (isFSed(replySed)) {
     if (_.isEmpty((replySed as F002Sed).formaal)) {
       v.formaal = {
         feilmelding: t('message:validation-noFormaal'),

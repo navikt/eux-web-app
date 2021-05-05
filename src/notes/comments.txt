@@ -8,8 +8,6 @@ Clean Attachments later
 5. Antall det innvilges for?!
 6. Where are the mandatory / optional fields?
 
-7. Checkboxes for the persons in familymanager --> what to do with them?
-
  grep -rho -e "'label:[^']*'" * | sort -u
 
 test:
@@ -18,3 +16,9 @@ test:
 
 01026423488 m/inntekt i Q1
 13077117754 m/inntekt og arbeidsperioder i Q1
+
+ui improvs:
+
+- mudar slideAnimate
+- meter keys para melhor ver o que muda
+- rever títulos

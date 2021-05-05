@@ -9,7 +9,7 @@ import GreenCircle from 'assets/icons/GreenCircle'
 import Alert from 'components/Alert/Alert'
 import Modal from 'components/Modal/Modal'
 import SEDAttachmentSender from 'applications/Vedlegg/SEDAttachmentSender/SEDAttachmentSender'
-import { FlexCenterDiv, PileDiv } from 'components/StyledComponents'
+import { FlexCenterSpacedDiv, PileDiv } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
 import { IS_TEST } from 'constants/environment'
 import {
@@ -184,35 +184,35 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                 <PileDiv style={{ alignItems: 'flex-start' }}>
                   <div>
                     {creatingSvarPaSed && (
-                      <FlexCenterDiv>
+                      <FlexCenterSpacedDiv>
                         <NavFrontendSpinner type='XS' />
                         <HorizontalSeparatorDiv data-size='0.5' />
                         <span>{t('message:loading-creatingReplySed')}</span>
-                      </FlexCenterDiv>
+                      </FlexCenterSpacedDiv>
                     )}
                     {!_.isNil(sedCreatedResponse) && (
-                      <FlexCenterDiv>
+                      <FlexCenterSpacedDiv>
                         <GreenCircle />
                         <HorizontalSeparatorDiv data-size='0.5' />
                         <span>{t('message:loading-sedCreated')}</span>
-                      </FlexCenterDiv>
+                      </FlexCenterSpacedDiv>
                     )}
                   </div>
                   <VerticalSeparatorDiv data-size='0.5' />
                   <div>
                     {_finished && (
-                      <FlexCenterDiv>
+                      <FlexCenterSpacedDiv>
                         <GreenCircle />
                         <HorizontalSeparatorDiv data-size='0.5' />
                         <span>{t('message:loading-sedFinished')}</span>
-                      </FlexCenterDiv>
+                      </FlexCenterSpacedDiv>
                     )}
                     {_sendingAttachments && (
-                      <FlexCenterDiv>
+                      <FlexCenterSpacedDiv>
                         <NavFrontendSpinner type='XS' />
                         <HorizontalSeparatorDiv data-size='0.5' />
                         <span>{t('message:loading-sendingVedlegg')}</span>
-                      </FlexCenterDiv>
+                      </FlexCenterSpacedDiv>
                     )}
                   </div>
                 </PileDiv>

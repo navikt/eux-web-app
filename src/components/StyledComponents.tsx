@@ -31,14 +31,20 @@ export const PileCenterDiv = styled(PileDiv)`
 `
 export const FlexBaseDiv = styled(FlexDiv)`
   align-items: baseline;
+`
+export const FlexBaseSpacedDiv = styled(FlexBaseDiv)`
   justify-content: space-between;
 `
 export const FlexCenterDiv = styled(FlexDiv)`
   align-items: center;
+`
+export const FlexCenterSpacedDiv = styled(FlexCenterDiv)`
   justify-content: space-between;
 `
 export const FlexStartDiv = styled(FlexDiv)`
   align-items: flex-start;
+`
+export const FlexStartSpacedDiv = styled(FlexStartDiv)`
   justify-content: space-between;
 `
 export const PaddedDiv = styled.div`

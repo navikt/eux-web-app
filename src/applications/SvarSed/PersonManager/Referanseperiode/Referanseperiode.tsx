@@ -31,7 +31,7 @@ const Referanseperiode: React.FC<ReferanseperiodeProps> = ({
   const namespace = `${parentNamespace}-${personID}-referanseperiode`
 
   const setStartDato = (startdato: string) => {
-    updateReplySed('{target}.startdato', startdato.trim())
+    updateReplySed(`${target}.startdato`, startdato.trim())
     if (validation[namespace + '-startdato']) {
       resetValidation(namespace + '-startdato')
     }

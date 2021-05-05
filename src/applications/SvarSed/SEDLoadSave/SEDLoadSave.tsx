@@ -1,5 +1,5 @@
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import { Etikett, FlexCenterDiv, FlexDiv, FlexBaseDiv, PileDiv } from 'components/StyledComponents'
+import { Etikett, FlexCenterSpacedDiv, FlexDiv, FlexBaseSpacedDiv, PileDiv } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { State } from 'declarations/reducers'
 import { LocalStorageEntry } from 'declarations/types'
@@ -109,8 +109,8 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
               <div key={savedEntry.name}>
                 <Etikett style={{ padding: '0.5rem' }}>
                   <PileDiv>
-                    <FlexCenterDiv>
-                      <FlexBaseDiv>
+                    <FlexCenterSpacedDiv>
+                      <FlexBaseSpacedDiv>
                         <UndertekstBold>
                           {t('label:navn') + ': '}
                         </UndertekstBold>
@@ -118,9 +118,9 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
                         <Normaltekst>
                           {savedEntry.name}
                         </Normaltekst>
-                      </FlexBaseDiv>
+                      </FlexBaseSpacedDiv>
                       <HorizontalSeparatorDiv />
-                      <FlexBaseDiv>
+                      <FlexBaseSpacedDiv>
                         <UndertekstBold>
                           {t('label:dato') + ': '}
                         </UndertekstBold>
@@ -128,10 +128,10 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
                         <Normaltekst>
                           {savedEntry.date}
                         </Normaltekst>
-                      </FlexBaseDiv>
-                    </FlexCenterDiv>
-                    <FlexCenterDiv>
-                      <FlexBaseDiv>
+                      </FlexBaseSpacedDiv>
+                    </FlexCenterSpacedDiv>
+                    <FlexCenterSpacedDiv>
+                      <FlexBaseSpacedDiv>
                         <UndertekstBold>
                           {t('label:saksnummer') + ': '}
                         </UndertekstBold>
@@ -139,9 +139,9 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
                         <Normaltekst>
                           {(savedEntry.content as any).saksnummer}
                         </Normaltekst>
-                      </FlexBaseDiv>
+                      </FlexBaseSpacedDiv>
                       <HorizontalSeparatorDiv />
-                      <FlexBaseDiv>
+                      <FlexBaseSpacedDiv>
                         <UndertekstBold>
                           {t('label:type') + ': '}
                         </UndertekstBold>
@@ -149,10 +149,10 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
                         <Normaltekst>
                           {(savedEntry.content as any).sedType}
                         </Normaltekst>
-                      </FlexBaseDiv>
-                    </FlexCenterDiv>
+                      </FlexBaseSpacedDiv>
+                    </FlexCenterSpacedDiv>
                     <VerticalSeparatorDiv data-size='0.5' />
-                    <FlexBaseDiv>
+                    <FlexBaseSpacedDiv>
                       <HighContrastFlatknapp
                         mini
                         kompakt
@@ -174,7 +174,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
                         onConfirmRemove={() => onRemove(i)}
                         onCancelRemove={() => removeCandidateForDeletion(savedEntry.name!)}
                       />
-                    </FlexBaseDiv>
+                    </FlexBaseSpacedDiv>
                   </PileDiv>
                 </Etikett>
                 <VerticalSeparatorDiv />

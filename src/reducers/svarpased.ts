@@ -1,6 +1,6 @@
 import * as types from 'constants/actionTypes'
 import { Arbeidsgiver, ReplySed } from 'declarations/sed.d'
-import { Arbeidsperioder, Inntekter, Person, Seds, Validation } from 'declarations/types.d'
+import { Arbeidsperioder, IInntekter, Person, Seds, Validation } from 'declarations/types.d'
 import { ActionWithPayload } from 'js-fetch-api'
 import _ from 'lodash'
 import { Action } from 'redux'
@@ -8,7 +8,7 @@ import { Action } from 'redux'
 export interface SvarpasedState {
   arbeidsperioder: Arbeidsperioder | undefined
   familierelasjoner: Array<any>
-  inntekter: Inntekter | undefined
+  inntekter: IInntekter | undefined
   parentSed: string | undefined
   personRelatert: any
   previewFile: any
@@ -17,7 +17,7 @@ export interface SvarpasedState {
   replySed: ReplySed | undefined
   saksnummerOrFnr: string | undefined
   searchedPerson: Person | undefined
-  selectedInntekter: Inntekter | undefined
+  selectedInntekter: IInntekter | undefined
   seds: Seds | undefined
   sedCreatedResponse: any
   valgteArbeidsgivere: Array<Arbeidsgiver>,
@@ -78,7 +78,6 @@ const svarpasedReducer = (
         replySed: {
           ...(action as ActionWithPayload).payload,
           saksnummer: (action as ActionWithPayload).context.saksnummer,
-          toDelete: {}
         }
       }
 

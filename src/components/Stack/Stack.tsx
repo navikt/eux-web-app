@@ -1,7 +1,7 @@
 import Add from 'assets/icons/Add'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Forms/Select'
-import { Etikett, FlexCenterDiv, PileDiv } from 'components/StyledComponents'
+import { Etikett, FlexCenterSpacedDiv, PileDiv } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
 import useAddRemove from 'hooks/useAddRemove'
 import _ from 'lodash'
@@ -77,7 +77,7 @@ const Stack: React.FC<StackProps> = ({
       {_items && _items
         .sort((a, b) => a.localeCompare(b))
         .map((item: string, i: number) => (
-          <FlexCenterDiv
+          <FlexCenterSpacedDiv
             className='slideInFromLeft'
             style={{ animationDelay: i === _newItemIndex ? '0s' : (i * 0.1) + 's' }}
             key={item}
@@ -92,7 +92,7 @@ const Stack: React.FC<StackProps> = ({
               onConfirmRemove={() => onRemove(item)}
               onCancelRemove={() => removeFromDeletion(item)}
             />
-          </FlexCenterDiv>
+          </FlexCenterSpacedDiv>
         )
       )}
       <VerticalSeparatorDiv />
@@ -111,7 +111,7 @@ const Stack: React.FC<StackProps> = ({
           </div>
           )
         : (
-          <FlexCenterDiv>
+          <FlexCenterSpacedDiv>
             <div style={{ flex: 2 }}>
               {selectLabel && (
                 <>
@@ -134,7 +134,7 @@ const Stack: React.FC<StackProps> = ({
             <HorizontalSeparatorDiv data-size='0.5' />
             <PileDiv>
               {selectLabel && <VerticalSeparatorDiv data-size='1.3'/>}
-              <FlexCenterDiv>
+              <FlexCenterSpacedDiv>
                 <HighContrastKnapp
                   mini
                   kompakt
@@ -152,9 +152,9 @@ const Stack: React.FC<StackProps> = ({
                 >
                   {t('el:button-cancel')}
                 </HighContrastFlatknapp>
-              </FlexCenterDiv>
+              </FlexCenterSpacedDiv>
             </PileDiv>
-          </FlexCenterDiv>
+          </FlexCenterSpacedDiv>
         )}
       {feil && (
         <div role='alert' aria-live='assertive' className='feilmelding skjemaelement__feilmelding'>

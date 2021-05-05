@@ -1,7 +1,7 @@
 import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
-import { FlexCenterDiv } from 'components/StyledComponents'
+import { FlexCenterSpacedDiv } from 'components/StyledComponents'
 import { Normaltekst } from 'nav-frontend-typografi'
 import { HighContrastFlatknapp, HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
@@ -32,7 +32,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
 
   return candidateForDeletion
     ? (
-      <FlexCenterDiv className={classNames('slideInFromRight', { nolabel: marginTop })}>
+      <FlexCenterSpacedDiv className={classNames('slideInFromRight', { nolabel: marginTop })}>
         <Normaltekst>
           {t('label:er-du-sikker')}
         </Normaltekst>
@@ -52,7 +52,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
         >
           {t('label:nei')}
         </HighContrastFlatknapp>
-      </FlexCenterDiv>
+      </FlexCenterSpacedDiv>
       )
     : (
       <div className={classNames({ nolabel: marginTop })}>
