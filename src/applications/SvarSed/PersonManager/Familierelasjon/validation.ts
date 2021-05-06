@@ -8,7 +8,7 @@ import { getIdx } from 'utils/namespace'
 
 export interface ValidationFamilierelasjonProps {
   familierelasjon: FamilieRelasjon
-  index: number
+  index?: number
   namespace: string
   personName: string
 }
@@ -26,6 +26,14 @@ export const validateFamilierelasjon = (
   let hasErrors: boolean = false
   const idx = getIdx(index)
 
+  if (_.isEmpty(familierelasjon.relasjonType?.trim())) {
+    v[namespace + idx + '-relasjonType'] = {
+      feilmelding: t('message:validation-noRelationForPerson', { person: personName }),
+      skjemaelementId: namespace + idx + '-relasjonType'
+    } as FeiloppsummeringFeil
+    hasErrors = true
+  }
+
   const periodErrors : boolean = validatePeriod(v, t, {
     period: familierelasjon.periode,
     index,
@@ -33,6 +41,7 @@ export const validateFamilierelasjon = (
     personName
   })
   hasErrors = hasErrors || periodErrors
+
 
   if (familierelasjon.relasjonType === 'ANNEN') {
     if (_.isEmpty(familierelasjon?.annenRelasjonPersonNavn?.trim())) {

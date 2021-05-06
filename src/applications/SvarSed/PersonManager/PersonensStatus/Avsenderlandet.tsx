@@ -7,6 +7,7 @@ import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
 import moment from 'moment'
 import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import { AlignStartRow, Column, HighContrastFlatknapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
@@ -111,7 +112,6 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
     const valid: boolean = performValidation({
       period: newPeriode,
       otherPeriods: perioderMedTrygd,
-      index: -1,
       namespace
     })
 
@@ -175,11 +175,11 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
       <Undertittel>
         {t('label:periods-in-sender-country')}
       </Undertittel>
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv size={2}/>
       <UndertekstBold>
         {t('label:medlemsperiode')}
       </UndertekstBold>
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv/>
       {perioderMedTrygd
         ?.sort((a, b) =>
           moment(a.startdato, 'YYYY-MM-DD').isSameOrBefore(moment(b.startdato, 'YYYY-MM-DD'))
@@ -187,7 +187,8 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
             : 1
         )
         ?.map(renderRow)}
-      <hr />
+      <VerticalSeparatorDiv size={2}/>
+      <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm
         ? renderRow(null, -1)

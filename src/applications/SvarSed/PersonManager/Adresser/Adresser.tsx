@@ -9,6 +9,7 @@ import useValidation from 'hooks/useValidation'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
 import {
   AlignStartRow,
   Column,
@@ -23,6 +24,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 import { validateAdresse, ValidationAddressProps } from './validation'
+
 
 interface AdresseProps {
   highContrast: boolean
@@ -353,7 +355,7 @@ const Adresser: React.FC<AdresseProps> = ({
       </Undertittel>
       <VerticalSeparatorDiv size='2' />
       {adresses?.map(renderRow)}
-      <hr />
+      <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm
         ? renderRow(null, -1)

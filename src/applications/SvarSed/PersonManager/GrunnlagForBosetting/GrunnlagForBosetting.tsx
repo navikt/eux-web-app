@@ -4,7 +4,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
 import TextArea from 'components/Forms/TextArea'
 import Period from 'components/Period/Period'
-import { TextAreaDiv } from 'components/StyledComponents'
+import { HorizontalLineSeparator, TextAreaDiv } from 'components/StyledComponents'
 import { Flyttegrunn, Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
@@ -137,7 +137,6 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
     const valid: boolean = performValidation({
       period: newPeriode,
       otherPeriods: flyttegrunn.perioder,
-      index: -1,
       namespace
     })
 
@@ -208,6 +207,9 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
           moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1
         )
         .map(renderRow)}
+      <VerticalSeparatorDiv size={2}/>
+      <HorizontalLineSeparator/>
+      <VerticalSeparatorDiv/>
       {_seeNewForm
         ? renderRow(null, -1)
         : (
@@ -272,7 +274,10 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
     standalone
       ? (
         <PaddedDiv>
-          <VerticalSeparatorDiv />
+          <Undertittel>
+            {t('label:grunnlag-for-bosetting')}
+          </Undertittel>
+          <VerticalSeparatorDiv size={2}/>
           {render()}
         </PaddedDiv>
         )

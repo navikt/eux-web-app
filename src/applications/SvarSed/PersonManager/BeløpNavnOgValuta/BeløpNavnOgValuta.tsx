@@ -105,7 +105,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
       <Undertittel>
         {t('label:beløp-navn-valuta-barn')}
       </Undertittel>
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv size={2}/>
       <AlignStartRow className='slideInFromLeft'>
         <Column>
           <Input
@@ -165,7 +165,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
       <Undertittel className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
         {t('label:grant-date')}
       </Undertittel>
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv size={2}/>
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
         <Period
           key={'' + ytelse?.startdato + ytelse?.sluttdato}

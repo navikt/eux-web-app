@@ -86,7 +86,7 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
           />
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv size='2' />
       {_arbeidsforhold && (
         <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
           <Column>
@@ -136,7 +136,7 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
       )}
       {_arbeidsforhold && (
         <>
-          <VerticalSeparatorDiv size='3' />
+          <VerticalSeparatorDiv size='2' />
           <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
             <Column>
               <Avsenderlandet
@@ -149,7 +149,7 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
               />
             </Column>
           </AlignStartRow>
-          <VerticalSeparatorDiv size='3' />
+          <VerticalSeparatorDiv size='2' />
           <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
             <Column>
               <GrunnlagforBosetting

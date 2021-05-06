@@ -7,21 +7,21 @@ import { TFunction } from 'react-i18next'
 
 export interface ValidationDekkedePeriodeProps {
   periode: Periode,
-  index: number,
+  index?: number,
   namespace: string,
   personName: string
 }
 
 export interface ValidationUdekkedePeriodeProps {
   periode: Periode,
-  index: number,
+  index?: number,
   namespace: string,
   personName: string
 }
 
 export interface ValidationFamilieytelsePeriodeProps {
   periode: PensjonPeriode,
-  index: number,
+  index?: number,
   namespace: string,
   sedCategory: string,
   personName: string
@@ -40,7 +40,7 @@ const validateGenericPeriode = (
   sedCategory: string
 ): boolean => {
   let hasErrors: boolean = false
-  const extraNamespace = namespace + '-' + (index < 0 ? pageCategory : sedCategory + '[' + index + ']')
+  const extraNamespace = namespace + '-' + (!_.isNil(index) && index >= 0 ? sedCategory + '[' + index + ']' : pageCategory)
 
   const periodError: boolean = validatePeriod(
     v,
@@ -116,7 +116,7 @@ export const validateFamilieytelserPeriode = (
   }: ValidationFamilieytelsePeriodeProps
 ): boolean => {
   let hasErrors: boolean = false
-  const extraNamespace = namespace + '-' + (index < 0 ? 'familieYtelse' : sedCategory + '[' + index + ']')
+  const extraNamespace = namespace + '-' + (!_.isNil(index) && index >= 0 ? sedCategory + '[' + index + ']' : 'familieYtelse')
 
   const periodError: boolean = validatePeriod(
     v,

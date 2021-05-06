@@ -4,7 +4,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import Period from 'components/Period/Period'
-import { TextAreaDiv } from 'components/StyledComponents'
+import { HorizontalLineSeparator, TextAreaDiv } from 'components/StyledComponents'
 import { F002Sed, FormalMotregning, NavnOgBetegnelse, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
@@ -12,7 +12,7 @@ import useValidation from 'hooks/useValidation'
 import CountryData, { Currency } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
-import { UndertekstBold } from 'nav-frontend-typografi'
+import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
@@ -177,7 +177,6 @@ const Motregning: React.FC<MotregningProps> = ({
 
     const valid: boolean = performValidation({
       navnOgBetegnelse: newNavOgBetegnelse,
-      index: -1,
       namespace: namespace
     })
 
@@ -246,6 +245,10 @@ const Motregning: React.FC<MotregningProps> = ({
 
   return (
     <PaddedDiv>
+      <Undertittel>
+        {t('label:motregning')}
+      </Undertittel>
+      <VerticalSeparatorDiv size='2' />
       <HighContrastRadioGroup
         className={classNames('slideInFromLeft')}
         data-test-id={namespace + '-anmodningEllerSvar'}
@@ -269,7 +272,7 @@ const Motregning: React.FC<MotregningProps> = ({
       </HighContrastRadioGroup>
       <VerticalSeparatorDiv />
       {motregning?.navnOgBetegnelser?.map(renderRowOfNavnOgBetegnelse)}
-      <hr />
+      <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm
         ? renderRowOfNavnOgBetegnelse(null, -1)

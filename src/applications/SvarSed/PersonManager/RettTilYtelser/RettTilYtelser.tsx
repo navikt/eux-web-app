@@ -3,6 +3,7 @@ import Period from 'components/Period/Period'
 import { Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
+import { Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow, PaddedDiv, PileDiv,
   Column,
@@ -82,6 +83,10 @@ const RettTilYtelser: React.FC<RettTilYtelserProps> = ({
 
   return (
     <PaddedDiv>
+      <Undertittel>
+        {t('label:rett-til-ytelser')}
+      </Undertittel>
+      <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>
           <HighContrastRadioGroup

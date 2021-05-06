@@ -1,6 +1,7 @@
 import { validatePeriod } from 'components/Period/validation'
 import { Barnetilhoerighet } from 'declarations/sed'
 import { Validation } from 'declarations/types'
+import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
 
@@ -21,7 +22,7 @@ export const validateBarnetilhoerighet = (
 ): boolean => {
   let hasErrors: boolean = false
 
-  if (!barnetilhorighet.relasjonTilPerson) {
+  if (_.isEmpty(barnetilhorighet.relasjonTilPerson)) {
     v[namespace + '-relasjonTilPerson'] = {
       feilmelding: t('message:validation-noRelationForPerson', { person: personName }),
       skjemaelementId: namespace + '-relasjonTilPerson'
@@ -29,7 +30,7 @@ export const validateBarnetilhoerighet = (
     hasErrors = true
   }
 
-  if (!barnetilhorighet.relasjonType) {
+  if (_.isEmpty(barnetilhorighet.relasjonType)) {
     v[namespace + '-relasjonType'] = {
       feilmelding: t('message:validation-noRelationTypeForPerson', { person: personName }),
       skjemaelementId: namespace + '-relasjonType'
@@ -39,7 +40,6 @@ export const validateBarnetilhoerighet = (
 
   const periodError: boolean = validatePeriod(v, t, {
     period: barnetilhorighet.periode,
-    index: -1,
     namespace: namespace + '-periode',
     personName
   })

@@ -9,7 +9,7 @@ import { getIdx } from 'utils/namespace'
 export interface ValidationGrunnlagForBosettingProps {
   period: Periode
   otherPeriods: Array<Periode>
-  index: number
+  index?: number
   namespace: string
 }
 

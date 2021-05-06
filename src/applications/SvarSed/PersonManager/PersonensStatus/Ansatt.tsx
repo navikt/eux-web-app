@@ -4,6 +4,7 @@ import ArbeidsgiverBox from 'components/Arbeidsgiver/ArbeidsgiverBox'
 import ArbeidsgiverSøk from 'components/Arbeidsgiver/ArbeidsgiverSøk'
 import Input from 'components/Forms/Input'
 import Period, { toFinalDateFormat } from 'components/Period/Period'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Periode, ReplySed } from 'declarations/sed'
 import { Arbeidsgiver, Arbeidsperioder } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
@@ -12,8 +13,9 @@ import _ from 'lodash'
 import moment from 'moment'
 import { Systemtittel, Undertittel } from 'nav-frontend-typografi'
 import {
-  Column,
   AlignStartRow,
+  Column,
+  FlexBaseDiv,
   HighContrastFlatknapp,
   HighContrastKnapp,
   HorizontalSeparatorDiv,
@@ -355,7 +357,7 @@ const Ansatt: React.FC<AnsattProps> = ({
       <Systemtittel>
         {t('label:aa-registeret')}
       </Systemtittel>
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv size='2'/>
       <Undertittel>
         {t('label:registered-arbeidsperiode')}
       </Undertittel>
@@ -370,7 +372,7 @@ const Ansatt: React.FC<AnsattProps> = ({
           </Column>
         </Row>
       )}
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv size='2'/>
       {plan?.map((item, i) => {
         let element: JSX.Element | null = null
         if (item.type === 'periode') {
@@ -449,23 +451,9 @@ const Ansatt: React.FC<AnsattProps> = ({
         )
       })}
       <VerticalSeparatorDiv />
-      <hr />
+      <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
-      {!_seeNewArbeidsgiver
-        ? !_seeNewPeriode && (
-          <HighContrastFlatknapp
-            mini
-            kompakt
-            onClick={() => _setSeeNewArbeidsgiver(true)}
-          >
-            <Add />
-            <HorizontalSeparatorDiv size='0.5' />
-            {t('el:button-add-new-x', {
-              x: t('label:arbeidsgiver').toLowerCase()
-            })}
-          </HighContrastFlatknapp>
-          )
-        : (
+      {_seeNewArbeidsgiver && (
           <>
             <Undertittel>
               {t('label:legg-til-arbeidsperiode')}
@@ -531,23 +519,8 @@ const Ansatt: React.FC<AnsattProps> = ({
               </Column>
             </AlignStartRow>
           </>
-          )}
-      <VerticalSeparatorDiv />
-      {!_seeNewPeriode
-        ? !_seeNewArbeidsgiver && (
-          <HighContrastFlatknapp
-            mini
-            kompakt
-            onClick={() => _setSeeNewPeriode(true)}
-          >
-            <Add />
-            <HorizontalSeparatorDiv size='0.5' />
-            {t('el:button-add-new-x', {
-              x: t('label:periode').toLowerCase()
-            })}
-          </HighContrastFlatknapp>
-          )
-        : (
+       )}
+      {_seeNewPeriode && (
           <>
             <VerticalSeparatorDiv />
             <AlignStartRow className='slideInFromLeft'>
@@ -587,6 +560,35 @@ const Ansatt: React.FC<AnsattProps> = ({
             </AlignStartRow>
           </>
           )}
+
+      {!_seeNewPeriode && !_seeNewArbeidsgiver && (
+        <FlexBaseDiv>
+          <span>{t('label:du-kan')}</span>
+          <HighContrastFlatknapp
+            mini
+            kompakt
+            onClick={() => _setSeeNewArbeidsgiver(true)}
+            >
+            <Add />
+            <HorizontalSeparatorDiv size='0.5' />
+            {t('el:button-add-new-x', {
+              x: t('label:arbeidsgiver').toLowerCase()
+            })}
+            </HighContrastFlatknapp>
+            <span>&nbsp;{t('label:eller')}&nbsp;</span>
+            <HighContrastFlatknapp
+            mini
+            kompakt
+            onClick={() => _setSeeNewPeriode(true)}
+            >
+            <Add />
+            <HorizontalSeparatorDiv size='0.5' />
+            {t('el:button-add-new-x', {
+              x: t('label:periode').toLowerCase()
+            })}
+            </HighContrastFlatknapp>
+        </FlexBaseDiv>
+       )}
     </>
   )
 }

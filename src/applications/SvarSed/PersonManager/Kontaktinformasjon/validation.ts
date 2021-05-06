@@ -7,14 +7,14 @@ import { getIdx } from 'utils/namespace'
 
 export interface ValidationKontaktsinformasjonTelefonProps {
   telefon: Telefon
-  index: number
+  index?: number
   namespace: string
   personName: string
 }
 
 export interface ValidationKontaktsinformasjonEpostProps {
   epost: Epost,
-  index: number
+  index?: number
   namespace: string
   personName: string
 }

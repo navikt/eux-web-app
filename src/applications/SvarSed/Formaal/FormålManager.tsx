@@ -279,7 +279,7 @@ const FormålManager: React.FC<FormålManagerProps> = ({
                       changeMenu(menu)
                       return false
                     }}
-                    style={{ animationDelay: index * 0.1 + 's' }}
+                    style={{ animationDelay: menu === 'kontoopplysninger' ? '0s' : index * 0.1 + 's' }}
                     className={classNames({
                       slideInFromLeft: true,
                       selected: currentMenu === menu

@@ -37,7 +37,7 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
         {t('label:dekning-trygdeordningen')}
       </Undertittel>
       <>
-        <VerticalSeparatorDiv size={3} />
+        <VerticalSeparatorDiv size={2} />
 
         <DekkedePerioder
           highContrast={highContrast}
@@ -50,7 +50,7 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
           validation={validation}
         />
 
-        <VerticalSeparatorDiv size={3} />
+        <VerticalSeparatorDiv size={2} />
 
         <UdekkedePerioder
           highContrast={highContrast}
@@ -63,7 +63,7 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
           validation={validation}
         />
 
-        <VerticalSeparatorDiv size={3} />
+        <VerticalSeparatorDiv size={2} />
 
         <FamilieYtelser
           highContrast={highContrast}

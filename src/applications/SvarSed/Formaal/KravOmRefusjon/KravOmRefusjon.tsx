@@ -3,6 +3,7 @@ import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { F002Sed, FormalKravOmRefusjon, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
+import { Undertittel } from 'nav-frontend-typografi'
 import { AlignStartRow, Column, HighContrastLink, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -38,7 +39,10 @@ const KravOmRefusjon: React.FC<KravOmRefusjonProps> = ({
 
   return (
     <PaddedDiv>
-      <VerticalSeparatorDiv />
+      <Undertittel>
+        {t('label:krav-om-refusjon')}
+      </Undertittel>
+      <VerticalSeparatorDiv size='2' />
       <AlignStartRow
         className={classNames('slideInFromLeft')}
       >

@@ -74,7 +74,6 @@ export const validateArbeidsperiode = (
 ): boolean => {
   const hasErrors: boolean = validatePeriod(v, t, {
     period: periode,
-    index: -1,
     namespace: namespace + '-periode'
   })
   return hasErrors

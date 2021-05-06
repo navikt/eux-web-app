@@ -8,6 +8,7 @@ import { Kodeverk, Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import CountrySelect from 'landvelger'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
 import _ from 'lodash'
 import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import { Column, AlignStartRow, PaddedDiv, HighContrastFlatknapp, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
@@ -133,7 +134,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
         >
           <Column>
             <CountrySelect
-              key={namespace + idx + '-land' + statsborgerskap!.land}
+              key={namespace + idx + '-land' + statsborgerskap?.land}
               data-test-id={namespace + idx + '-land'}
               error={getErrorFor(index, 'land')}
               id={namespace + idx + '-land'}
@@ -141,17 +142,17 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
               menuPortalTarget={document.body}
               onOptionSelected={(e: any) => onLandSelected(e.value, index)}
               placeholder={t('el:placeholder-select-default')}
-              values={index < 0 ? _newLand : statsborgerskap!.land}
+              values={index < 0 ? _newLand : statsborgerskap?.land}
             />
           </Column>
           <Column>
             <DateInput
               error={getErrorFor(index, 'fradato')}
               namespace={namespace + idx + '-fradato'}
-              key={index < 0 ? _newFradato : statsborgerskap!.fradato}
+              key={index < 0 ? _newFradato : statsborgerskap?.fradato}
               label=''
               setDato={(date: string) => onFradatoChanged(date, index)}
-              value={index < 0 ? _newFradato : statsborgerskap!.fradato}
+              value={index < 0 ? _newFradato : statsborgerskap?.fradato}
             />
           </Column>
           <Column>
@@ -193,7 +194,8 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
       </AlignStartRow>
       <VerticalSeparatorDiv />
       {statsborgerskaper?.map(renderRow)}
-      <hr />
+      <VerticalSeparatorDiv size='2'/>
+      <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm
         ? renderRow(null, -1)

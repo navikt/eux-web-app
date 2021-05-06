@@ -8,7 +8,7 @@ import { getIdx } from 'utils/namespace'
 
 export interface ValidationMotregningNavnOgBetegnelserProps {
   navnOgBetegnelse: NavnOgBetegnelse
-  index: number
+  index?: number
   namespace: string
 }
 
@@ -85,7 +85,6 @@ export const validateMotregning = (
       startdato: motregning.startdato,
       sluttdato: motregning.sluttdato
     },
-    index: -1,
     namespace: namespace,
     personName: formalName
   })

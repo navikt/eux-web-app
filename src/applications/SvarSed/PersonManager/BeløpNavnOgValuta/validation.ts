@@ -59,7 +59,6 @@ export const validateBeløpNavnOgValuta = (
       startdato: ytelse.startdato,
       sluttdato: ytelse.sluttdato
     },
-    index: -1,
     namespace
   })
   hasErrors = hasErrors || periodErrors

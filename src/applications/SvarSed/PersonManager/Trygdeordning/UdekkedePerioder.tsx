@@ -10,6 +10,7 @@ import { Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
 import _ from 'lodash'
 import { Ingress } from 'nav-frontend-typografi'
 import { Column, AlignStartRow, HighContrastFlatknapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
@@ -115,7 +116,6 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
 
     const valid: boolean = performValidation({
       periode: newPeriode,
-      index: -1,
       namespace,
       personName
     })
@@ -181,7 +181,7 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
       <Ingress>
         {t('label:trygdeordningen-udekkede')}
       </Ingress>
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv size={2}/>
       {perioderUtenforTrygdeordning?.length > 0 && (
         <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
           <Column>
@@ -199,7 +199,7 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
       )}
       <VerticalSeparatorDiv />
       {perioderUtenforTrygdeordning?.map(renderRow)}
-      <hr />
+      <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm
         ? renderRow(null, -1)
@@ -213,7 +213,7 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
-                {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+                {t('el:button-add-new-x', { x: t('label:udekkede-periode').toLowerCase() })}
               </HighContrastFlatknapp>
             </Column>
           </Row>

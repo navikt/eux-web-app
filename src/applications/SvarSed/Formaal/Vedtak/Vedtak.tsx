@@ -5,7 +5,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
 import Period from 'components/Period/Period'
-import { TextAreaDiv } from 'components/StyledComponents'
+import { HorizontalLineSeparator, TextAreaDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { F002Sed, FormalVedtak, JaNei, PeriodeMedVedtak, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -13,6 +13,7 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { Checkbox } from 'nav-frontend-skjema'
+import { Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
@@ -209,7 +210,6 @@ const VedtakFC: React.FC<VedtakProps> = ({
 
     const valid = performValidation({
       periode: newPeriode,
-      index: -1,
       namespace
     })
 
@@ -283,6 +283,10 @@ const VedtakFC: React.FC<VedtakProps> = ({
 
   return (
     <PaddedDiv>
+      <Undertittel>
+        {t('label:vedtak')}
+      </Undertittel>
+      <VerticalSeparatorDiv size='2' />
       <HighContrastRadioGroup
         id={namespace + '-barn'}
         className={classNames('slideInFromLeft')}
@@ -388,7 +392,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
       </AlignStartRow>
       <VerticalSeparatorDiv />
       {vedtak?.vedtaksperioder?.map(renderPeriodeAndVedtak)}
-      <hr />
+      <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm
         ? renderPeriodeAndVedtak(null, -1)

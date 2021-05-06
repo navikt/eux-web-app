@@ -17,6 +17,7 @@ import { Hovedknapp, Knapp } from 'nav-frontend-knapper'
 import Lukknapp from 'nav-frontend-lukknapp'
 import NavModal from 'nav-frontend-modal'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
 import {
   AlignStartRow,
   Column,
@@ -308,7 +309,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
           {(_replySed as F002Sed).annenPerson && renderPerson('annenPerson', annenPersonNr)}
           {(_replySed as F002Sed).barn && (_replySed as F002Sed).barn.map((b: any, i: number) => renderPerson(`barn[${i}]`, barnNr + i))}
           <VerticalSeparatorDiv />
-          <hr />
+          <HorizontalLineSeparator />
           <VerticalSeparatorDiv size='2' />
           <Undertittel>
             {t('el:button-add-new-x', { x: t('label:person').toLowerCase() })}

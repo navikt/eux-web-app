@@ -167,7 +167,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
       </Row>
       <VerticalSeparatorDiv />
       <Row style={{ animationDelay: '0.2s' }}>
-        <Column>
+        <Column flex={2}>
           <Select
             data-test-id={namespace + '-relasjonType'}
             feil={validation[namespace + '-relasjonType']?.feilmelding}
@@ -204,7 +204,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
       </Row>
       <VerticalSeparatorDiv size='2' />
       <Row className='slideInFromLeft' style={{ animationDelay: '0.5s' }}>
-        <Column>
+        <Column flex={2}>
           <HighContrastRadioPanelGroup
             checked={barnetilhoerighet?.erDeltForeldreansvar}
             data-no-border

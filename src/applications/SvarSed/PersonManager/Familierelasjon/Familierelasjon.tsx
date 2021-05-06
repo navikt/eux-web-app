@@ -9,6 +9,7 @@ import { Options } from 'declarations/app'
 import { FamilieRelasjon, JaNei, Periode, RelasjonType, ReplySed } from 'declarations/sed'
 import { Kodeverk, Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
@@ -214,7 +215,6 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
 
     const valid: boolean = performValidation({
       familierelasjon: newFamilierelasjon,
-      index: -1,
       namespace,
       personName: personName
     })
@@ -358,7 +358,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
       </Undertittel>
       <VerticalSeparatorDiv />
       {familierelasjoner?.map(renderRow)}
-      <hr />
+      <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm
         ? renderRow(null, -1)

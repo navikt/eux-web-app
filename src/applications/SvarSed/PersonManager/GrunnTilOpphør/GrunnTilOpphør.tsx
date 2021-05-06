@@ -76,7 +76,7 @@ const GrunnTilOpphør: React.FC<GrunnTilOpphørProps> = ({
       <AlignStartRow className='slideInFromLeft'>
         <Column>
           <Undertittel>
-            {t('label:forsikring')}
+            {t('label:grunn-til-opphør')}
           </Undertittel>
         </Column>
       </AlignStartRow>

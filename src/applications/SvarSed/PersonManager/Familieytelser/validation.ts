@@ -8,7 +8,7 @@ import { getIdx } from 'utils/namespace'
 
 export interface ValidationFamilieytelserProps {
   motregning: Motregning
-  index: number
+  index?: number
   namespace: string,
   personName: string
 }
@@ -63,7 +63,6 @@ export const validateFamilieytelse = (
       startdato: motregning.startdato,
       sluttdato: motregning.sluttdato
     },
-    index: -1,
     namespace: namespace + idx
   })
   hasErrors = hasErrors || periodErrors

@@ -5,6 +5,7 @@ import useAddRemove from 'hooks/useAddRemove'
 import Period from 'components/Period/Period'
 import Select from 'components/Forms/Select'
 import useValidation from 'hooks/useValidation'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { PensjonPeriode, PensjonsType, Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -216,7 +217,6 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
 
     const valid: boolean = performValidation({
       periode: newPeriode,
-      index: -1,
       namespace,
       sedCategory: _newCategory,
       personName
@@ -370,7 +370,7 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
       <Ingress>
         {t('label:trygdeordningen-familieYtelse')}
       </Ingress>
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv size={2}/>
       {existsFamilieYtelser && (
         <Row className='slideInFromLeft'>
           <Column>
@@ -395,7 +395,7 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
       {perioder.perioderMedYtelser.map((p, i) => renderRow(p, 'perioderMedYtelser', i))}
       {titleFor('perioderMedPensjon')}
       {perioder.perioderMedPensjon.map((p, i) => renderRow(p, 'perioderMedPensjon', i))}
-      <hr />
+      <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm
         ? renderRow(null, null, -1)

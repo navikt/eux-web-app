@@ -8,6 +8,7 @@ import { Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Undertittel } from 'nav-frontend-typografi'
 import { AlignStartRow, Column, HighContrastFlatknapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
@@ -111,7 +112,6 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
     const valid: boolean = performValidation({
       period: newPeriode,
       otherPeriods: perioderSomSelvstendig,
-      index: -1,
       namespace
     })
 
@@ -175,7 +175,7 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
       <Undertittel>
         {t('label:ansettelsesperioder')}
       </Undertittel>
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv size={2}/>
       {perioderSomSelvstendig
         ?.sort((a, b) =>
           moment(a.startdato, 'YYYY-MM-DD')
@@ -184,7 +184,8 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
             : 1
         )
         ?.map(renderRow)}
-      <hr />
+      <VerticalSeparatorDiv size={2}/>
+      <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm
         ? renderRow(null, -1)

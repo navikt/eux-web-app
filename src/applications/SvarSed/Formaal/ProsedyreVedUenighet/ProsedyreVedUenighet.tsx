@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
-import { TextAreaDiv } from 'components/StyledComponents'
+import { HorizontalLineSeparator, TextAreaDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { F002Sed, FormalProsedyreVedUenighet, Grunn, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -11,6 +11,7 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { Checkbox, CheckboxGruppe } from 'nav-frontend-skjema'
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
@@ -135,7 +136,6 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
 
     const valid: boolean = performValidation({
       grunn: newGrunn,
-      index: -1,
       namespace: namespace
     })
 
@@ -263,9 +263,18 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
 
   return (
     <PaddedDiv>
+      <Undertittel>
+        {t('label:prosedyre-ved-uenighet')}
+      </Undertittel>
+      <VerticalSeparatorDiv size='2' />
       <VerticalSeparatorDiv />
-      {prosedyreveduenighet?.grunner?.map(renderRow)}
-      <hr />
+      {_.isEmpty(prosedyreveduenighet?.grunner) ? (
+        <Normaltekst>
+          {t('label:no-grunn')}
+        </Normaltekst>
+      ): prosedyreveduenighet?.grunner?.map(renderRow)}
+      <VerticalSeparatorDiv size={2}/>
+      <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm
         ? renderRow(null, -1)

@@ -8,7 +8,7 @@ import { getIdx } from 'utils/namespace'
 
 export interface ValidationVedtakPeriodeProps {
   periode: PeriodeMedVedtak
-  index: number
+  index?: number
   namespace: string
   personName?: string
 }
@@ -29,7 +29,6 @@ export const validateVedtakPeriode = (
   const periodeError: boolean = validatePeriod(
     v, t, {
       period: periode?.periode,
-      index: -1,
       namespace: namespace + '-vedtaksperioder' + idx + '-periode',
       personName: personName
     }
@@ -83,7 +82,6 @@ export const validateVedtak = (
   const periodeError: boolean = validatePeriod(
     v, t, {
       period: vedtak?.periode,
-      index: -1,
       namespace: namespace + '-periode'
     }
   )

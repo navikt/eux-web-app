@@ -9,7 +9,7 @@ import { getIdx } from 'utils/namespace'
 export interface ValidationWithSubsidiesProps {
   pensjonPeriod: PensjonPeriode
   otherPensjonPeriods: Array<PensjonPeriode>
-  index: number
+  index?: number
   namespace: string
 }
 

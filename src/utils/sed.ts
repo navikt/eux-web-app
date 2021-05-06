@@ -1,6 +1,6 @@
 import { ReplySed } from 'declarations/sed'
 
-export const isSed = (replySed: ReplySed): boolean => !!replySed.sedType
+export const isSed = (replySed: ReplySed): boolean => !!replySed?.sedType
 
 export const isFSed = (replySed: ReplySed): boolean => replySed?.sedType.startsWith('F')
 

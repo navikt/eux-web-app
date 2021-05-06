@@ -8,8 +8,9 @@ import { Epost, ReplySed, Telefon, TelefonType } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
 import _ from 'lodash'
-import { UndertekstBold } from 'nav-frontend-typografi'
+import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import { Column, HighContrastFlatknapp, AlignStartRow, PaddedDiv, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -154,7 +155,6 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
 
     const valid: boolean = performValidationTelefon({
       telefon: newTelefon,
-      index: -1,
       namespace: namespaceTelefon,
       personName: personName
     })
@@ -177,7 +177,6 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
 
     const valid: boolean = performValidationEpost({
       epost: newEpost,
-      index: -1,
       namespace: namespaceEpost,
       personName: personName
     })
@@ -292,6 +291,10 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
 
   return (
     <PaddedDiv>
+      <Undertittel>
+        {t('label:kontaktinformasjon')}
+      </Undertittel>
+      <VerticalSeparatorDiv size='2' />
       <Row className='slideInFromLeft'>
         <Column>
           <UndertekstBold>
@@ -307,7 +310,8 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
       </Row>
       <VerticalSeparatorDiv />
       {telefoner?.map(renderTelefonRow)}
-      <hr />
+      <VerticalSeparatorDiv size='2'/>
+      <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewTelefonForm
         ? renderTelefonRow(null, -1)
@@ -337,7 +341,9 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
       </Row>
       <VerticalSeparatorDiv />
       {eposter?.map(renderEpostRow)}
-      <hr />
+      <VerticalSeparatorDiv size='2'/>
+      <HorizontalLineSeparator/>
+      <VerticalSeparatorDiv/>
       {_seeNewEpostForm
         ? renderEpostRow(null, -1)
         : (

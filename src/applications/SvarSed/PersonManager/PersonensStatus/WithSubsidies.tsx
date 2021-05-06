@@ -10,6 +10,7 @@ import { PensjonPeriode, Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Undertittel } from 'nav-frontend-typografi'
 import { AlignStartRow, Column, HighContrastFlatknapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
@@ -140,7 +141,6 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
     const valid: boolean = performValidation({
       pensjonPeriod: newPensjonPeriode,
       otherPensjonPeriods: perioderMedPensjon,
-      index: -1,
       namespace
     })
 
@@ -236,13 +236,13 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
       <Undertittel>
         {t('label:periode-pensjon-avsenderlandet')}
       </Undertittel>
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv size={2}/>
       {perioderMedPensjon
         ?.sort((a, b) =>
           moment(a.periode.startdato).isSameOrBefore(moment(b.periode.startdato)) ? -1 : 1
         )
         ?.map(renderRow)}
-      <hr />
+      <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm
         ? renderRow(null, -1)

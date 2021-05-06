@@ -7,7 +7,7 @@ import { getIdx } from 'utils/namespace'
 
 export interface ValidationProsedyreVedUenighetGrunnProps {
   grunn: Grunn
-  index: number
+  index?: number
   namespace: string
   personName?: string
 }

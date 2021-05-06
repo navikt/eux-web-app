@@ -53,10 +53,13 @@
   "dato": "Dato",
   "dato-for-relasjon": "Dato for relasjon",
   "delt-foreldreansvar": "Delt foreldreansvar",
+  "dekkede-periode": "Dekkede periode",
   "dekning-trygdeordningen" : "Dekning av trygdeordningen",
   "dokument-id": "Dokument ID",
+  "du-kan": "Du kan",
 
   "elementter-i-personlig-situasjon": "Elementer i personlig situasjon",
+  "eller": "eller",
   "epost": "E-postadresse",
   "enhet": "Enhet",
   "er-du-sikker": "Er du sikker?",
@@ -94,6 +97,8 @@
   "grunn": "Grunn",
   "grunn-ingen-rett": "Ingen rett til stønad i henhold til lovgivningen til institusjonen som utsteder denne meldingen",
   "grunn-personen": "Personen søkte ikke om eksport av stønad på riktig måte",
+  "grunn-til-opphør": "Grunn til opphør",
+  "grunner": "Grunner",
   "gutt" : "Gutt",
   "gå-til-rina" : "Gå direkte til Rina",
   "gå-til-sed-i-rina" : "Gå til SED i Rina",
@@ -123,6 +128,7 @@
 
   "kjønn" : "Kjønn",
   "kontaktadresse": "Kontaktadresse",
+  "kontaktinformasjon": "Kontaktinformasjon",
   "kontoopplysninger": "Kontoopplysninger",
   "kontoller-inntekt": "Kontroler inntekt",
   "krav-om-refusjon": "Krav om refusjon",
@@ -152,6 +158,7 @@
   "nasjonalitet": "Nasjonalitet",
   "navn": "Navn",
   "nei" : "Nei",
+  "no-grunn": "Ingen grunn",
   "norsk-fnr" : "Norsk personnummer",
   "norsk-fnr-beskrivelse": "Finn bruker på norsk personnummer og hent opplysninger fra TPS",
 
@@ -189,6 +196,7 @@
   "registered-arbeidsperiode" : "Registeret arbeidsperiode",
   "relasjon-til-barn" : "Relasjon til det enkelte barn",
   "rett-til-stønad": "Rett til stønad?",
+  "rett-til-ytelser" : "Rett til ytelser",
   "rina-dokument-id": "Velg SED Type",
   "rina-saksnummer": "RINA saksnummer",
 
@@ -230,6 +238,7 @@
   "type-pensjon": "Type pensjon",
   "type-periode": "Type periode",
 
+  "udekkede-periode": "Udekkede periode",
   "ukjent": "Ukjent",
   "ukjent-rolle": "(ukjent rolle)",
   "utenlandsk-id": "Utenlandsk ID",

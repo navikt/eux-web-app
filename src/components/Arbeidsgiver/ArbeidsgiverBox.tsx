@@ -6,15 +6,19 @@ import classNames from 'classnames'
 import { Arbeidsgiver, Validation } from 'declarations/types.d'
 import _ from 'lodash'
 import { Checkbox, FeiloppsummeringFeil } from 'nav-frontend-skjema'
-import { Normaltekst, UndertekstBold } from 'nav-frontend-typografi'
+import { Normaltekst, Undertekst, UndertekstBold } from 'nav-frontend-typografi'
 import {
   Column,
-  FlexCenterSpacedDiv, FlexDiv, PaddedFlexDiv, PileCenterDiv,
+  FlexCenterSpacedDiv,
+  FlexDiv,
   HighContrastFlatknapp,
   HighContrastInput,
   HighContrastKnapp,
   HighContrastPanel,
   HorizontalSeparatorDiv,
+  PaddedFlexDiv,
+  PileCenterDiv,
+  PileDiv,
   Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
@@ -291,10 +295,20 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
               </Normaltekst>
             )}
             {fraArbeidsgiverregisteret && (
-              <Normaltekst>{t('label:fra-arbeidsgiverregisteret')}</Normaltekst>
+              <>
+              <HorizontalSeparatorDiv/>
+              <PileDiv style={{flexDirection: 'column-reverse'}}>
+                <Undertekst>{t('label:fra-arbeidsgiverregisteret')}</Undertekst>
+              </PileDiv>
+              </>
             )}
             {fraInntektsregistreret && (
-              <Normaltekst>{t('label:fra-inntektsregisteret')}</Normaltekst>
+              <>
+              <HorizontalSeparatorDiv/>
+              <PileDiv style={{flexDirection: 'column-reverse'}}>
+                <Undertekst>{t('label:fra-inntektsregisteret')}</Undertekst>
+              </PileDiv>
+              </>
             )}
             {/*! harRegistrertInntekt && (
           <div className='slideInFromBottom' style={{ animationDelay: '0.2s' }}>

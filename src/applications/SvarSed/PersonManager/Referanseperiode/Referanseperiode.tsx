@@ -72,6 +72,7 @@ const Referanseperiode: React.FC<ReferanseperiodeProps> = ({
           valueStartDato={anmodningsperiode?.startdato ?? ''}
           valueSluttDato={anmodningsperiode?.sluttdato ?? ''}
         />
+        <Column/>
       </AlignStartRow>
     </PaddedDiv>
   )

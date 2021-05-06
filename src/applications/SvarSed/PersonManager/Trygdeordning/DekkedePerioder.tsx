@@ -12,6 +12,7 @@ import useValidation from 'hooks/useValidation'
 import { Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Ingress } from 'nav-frontend-typografi'
 import { Column, AlignStartRow, HighContrastFlatknapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
@@ -115,7 +116,6 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
 
     const valid: boolean = performValidation({
       periode: newPeriode,
-      index: -1,
       namespace,
       personName
     })
@@ -181,7 +181,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
       <Ingress>
         {t('label:trygdeordningen-dekkede')}
       </Ingress>
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv size='2'/>
       {perioderMedITrygdeordning?.length > 0 && (
         <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
           <Column>
@@ -199,7 +199,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
       )}
       <VerticalSeparatorDiv />
       {perioderMedITrygdeordning?.map(renderRow)}
-      <hr />
+      <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm
         ? renderRow(null, -1)
@@ -213,7 +213,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
-                {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+                {t('el:button-add-new-x', { x: t('label:dekkede-periode').toLowerCase() })}
               </HighContrastFlatknapp>
             </Column>
           </Row>

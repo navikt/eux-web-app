@@ -35,6 +35,16 @@ export const FadingLineSeparator = styled.div`
      animation: ${fadeOut} 1s forwards;
    }
 `
+export const HorizontalLineSeparator = styled.div`
+  height: 1px;
+  background: linear-gradient(90deg,
+    ${({ theme }) => theme[themeKeys.MAIN_BACKGROUND_COLOR]} 0%,
+    ${({ theme }) => theme[themeKeys.MAIN_BORDER_COLOR]} 5%,
+    ${({ theme }) => theme[themeKeys.MAIN_BORDER_COLOR]} 95%,
+    ${({ theme }) => theme[themeKeys.MAIN_BACKGROUND_COLOR]} 100%
+  );
+  width: 100%;
+`
 export const SideBarDiv = styled.div`
   display: flex;
   flex: 0 0 21.5rem;
