@@ -1,7 +1,6 @@
-import { FlexDiv } from 'components/StyledComponents'
 import Modal from 'nav-frontend-modal'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
-import NavHighContrast, { HighContrastHovedknapp, HighContrastKnapp } from 'nav-hoykontrast'
+import NavHighContrast, { FlexDiv, HighContrastHovedknapp, HighContrastKnapp } from 'nav-hoykontrast'
 import PT from 'prop-types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'

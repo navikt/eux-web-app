@@ -5,7 +5,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
 import Period from 'components/Period/Period'
-import { AlignStartRow, FlexDiv, PaddedDiv, TextAreaDiv } from 'components/StyledComponents'
+import { TextAreaDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { F002Sed, FormalVedtak, JaNei, PeriodeMedVedtak, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -14,11 +14,14 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { Checkbox } from 'nav-frontend-skjema'
 import {
+  AlignStartRow,
   Column,
+  FlexDiv,
   HighContrastFlatknapp,
   HighContrastRadio,
   HighContrastRadioGroup,
   HorizontalSeparatorDiv,
+  PaddedDiv,
   Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'

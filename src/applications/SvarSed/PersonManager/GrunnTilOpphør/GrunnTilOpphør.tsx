@@ -1,12 +1,11 @@
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
-import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
-import { Column, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 
 import { useTranslation } from 'react-i18next'

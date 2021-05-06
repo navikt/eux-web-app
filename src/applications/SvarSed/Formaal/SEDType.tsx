@@ -1,7 +1,6 @@
 import { setReplySed } from 'actions/svarpased'
 import Edit from 'assets/icons/Edit'
 import Select from 'components/Forms/Select'
-import { FlexCenterDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { ReplySed } from 'declarations/sed'
 import _ from 'lodash'
@@ -9,7 +8,7 @@ import { FeiloppsummeringFeil } from 'nav-frontend-skjema/lib/feiloppsummering'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { Column, HighContrastFlatknapp, HorizontalSeparatorDiv, Row } from 'nav-hoykontrast'
+import { Column, FlexCenterDiv, HighContrastFlatknapp, HorizontalSeparatorDiv, Row } from 'nav-hoykontrast'
 import { OptionTypeBase } from 'react-select'
 
 interface SEDTypeProps {

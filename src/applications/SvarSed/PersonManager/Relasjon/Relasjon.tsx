@@ -1,12 +1,18 @@
 import Select from 'components/Forms/Select'
 import Period from 'components/Period/Period'
-import { AlignCenterRow, PaddedDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { Barnetilhoerighet, BarnRelasjon, BarnRelasjonType, JaNei, ReplySed } from 'declarations/sed'
 import { Kodeverk, Validation } from 'declarations/types'
 import _ from 'lodash'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
-import { Column, HighContrastRadioPanelGroup, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import {
+  AlignCenterRow,
+  Column,
+  HighContrastRadioPanelGroup,
+  PaddedDiv,
+  Row,
+  VerticalSeparatorDiv
+} from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 

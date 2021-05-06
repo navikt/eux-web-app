@@ -2,18 +2,20 @@ import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
-import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import { Adresse, AdresseType, ReplySed } from 'declarations/sed'
 import { Kodeverk, Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
+import { Undertittel } from 'nav-frontend-typografi'
 import {
+  AlignStartRow,
   Column,
   HighContrastFlatknapp,
   HighContrastRadioPanelGroup,
   HorizontalSeparatorDiv,
+  PaddedDiv,
   Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
@@ -164,7 +166,7 @@ const Adresser: React.FC<AdresseProps> = ({
   }
 
   const onRemove = (index: number) => {
-    const newAdresses = _.cloneDeep(adresses)
+    const newAdresses: Array<Adresse> = _.cloneDeep(adresses)
     const deletedAddresses: Array<Adresse> = newAdresses.splice(index, 1)
     if (deletedAddresses && deletedAddresses.length > 0) {
       removeFromDeletion(deletedAddresses[0])
@@ -184,7 +186,6 @@ const Adresser: React.FC<AdresseProps> = ({
     }
     const valid: boolean = performValidation({
       adresse: newAdresse,
-      index: -1,
       namespace: namespace,
       personName: personName
     })
@@ -213,12 +214,12 @@ const Adresser: React.FC<AdresseProps> = ({
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
         >
-          <Column flex='3'>
+          <Column flex='4'>
             <HighContrastRadioPanelGroup
               checked={index < 0 ? _newType : adresse!.type}
               data-no-border
               data-test-id={namespace + idx + '-type'}
-              feil={getErrorFor(index, 'type')}
+              feil={getErrorFor(index, 'type') ? ' ' : undefined}
               id={namespace + idx + '-type'}
               legend={t('label:adresse') + ' *'}
               name={namespace + idx + '-type'}
@@ -250,7 +251,7 @@ const Adresser: React.FC<AdresseProps> = ({
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0.1s' : (index * 0.3 + 0.1) + 's' }}
         >
-          <Column flex='2'>
+          <Column flex='3'>
             <Input
               feil={getErrorFor(index, 'gate')}
               namespace={namespace + idx}
@@ -287,7 +288,7 @@ const Adresser: React.FC<AdresseProps> = ({
               value={index < 0 ? _newPostnummer : adresse?.postnummer}
             />
           </Column>
-          <Column flex='2'>
+          <Column flex='3'>
             <Input
               feil={getErrorFor(index, 'by')}
               namespace={namespace + idx}
@@ -327,7 +328,7 @@ const Adresser: React.FC<AdresseProps> = ({
               values={index < 0 ? _newLand : adresse?.land}
             />
           </Column>
-          <Column>
+          <Column flex='2'>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}
@@ -346,7 +347,11 @@ const Adresser: React.FC<AdresseProps> = ({
   }
 
   return (
-    <PaddedDiv>
+    <PaddedDiv key={namespace + '-div'}>
+      <Undertittel>
+        {t('label:adresser')}
+      </Undertittel>
+      <VerticalSeparatorDiv size='2' />
       {adresses?.map(renderRow)}
       <hr />
       <VerticalSeparatorDiv />

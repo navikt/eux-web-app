@@ -1,10 +1,10 @@
 import classNames from 'classnames'
 import Period from 'components/Period/Period'
-import { AlignStartRow, PaddedDiv, PileDiv } from 'components/StyledComponents'
 import { Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import {
+  AlignStartRow, PaddedDiv, PileDiv,
   Column,
   HighContrastRadio,
   HighContrastRadioGroup,

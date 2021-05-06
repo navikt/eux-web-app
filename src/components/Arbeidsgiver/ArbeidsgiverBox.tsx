@@ -3,13 +3,13 @@ import IkonArbeidsgiver from 'assets/icons/Arbeidsgiver'
 import Edit from 'assets/icons/Edit'
 import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
-import { FlexCenterSpacedDiv, FlexDiv, PaddedFlexDiv, PileCenterDiv } from 'components/StyledComponents'
 import { Arbeidsgiver, Validation } from 'declarations/types.d'
 import _ from 'lodash'
 import { Checkbox, FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Normaltekst, UndertekstBold } from 'nav-frontend-typografi'
 import {
   Column,
+  FlexCenterSpacedDiv, FlexDiv, PaddedFlexDiv, PileCenterDiv,
   HighContrastFlatknapp,
   HighContrastInput,
   HighContrastKnapp,

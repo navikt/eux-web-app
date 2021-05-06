@@ -7,22 +7,17 @@ import ExternalLink from 'assets/icons/Logout'
 import Search from 'assets/icons/Search'
 import SentIcon from 'assets/icons/Send'
 import classNames from 'classnames'
-import {
-  AlignStartRow,
-  Etikett,
-  FlexDiv,
-  FlexStartSpacedDiv,
-  HiddenFormContainer,
-  PileCenterDiv,
-  PileDiv
-} from 'components/StyledComponents'
+import { Etikett, HiddenFormContainer } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { ConnectedSed, Sed } from 'declarations/types'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { Normaltekst, Systemtittel, Undertekst, Undertittel } from 'nav-frontend-typografi'
 import NavHighContrast, {
+  AlignStartRow,
   Column,
+  FlexDiv,
+  FlexStartSpacedDiv,
   HighContrastFlatknapp,
   HighContrastHovedknapp,
   HighContrastInput,
@@ -31,6 +26,8 @@ import NavHighContrast, {
   HighContrastPanel,
   HighContrastRadioGroup,
   HorizontalSeparatorDiv,
+  PileCenterDiv,
+  PileDiv,
   RadioElementBorder,
   themeKeys,
   VerticalSeparatorDiv
@@ -210,7 +207,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
 
         {seds && (
           <HighContrastRadioGroup
-            style={{marginLeft: '0.1rem', marginRight: '0.1rem'}}
+            style={{ marginLeft: '0.1rem', marginRight: '0.1rem' }}
             legend={(
               <>
                 <span>{

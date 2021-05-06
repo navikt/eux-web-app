@@ -4,7 +4,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import Period from 'components/Period/Period'
-import { AlignStartRow, PaddedDiv, TextAreaDiv } from 'components/StyledComponents'
+import { TextAreaDiv } from 'components/StyledComponents'
 import { F002Sed, FormalMotregning, NavnOgBetegnelse, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
@@ -14,12 +14,14 @@ import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { UndertekstBold } from 'nav-frontend-typografi'
 import {
+  AlignStartRow,
   Column,
   HighContrastFlatknapp,
   HighContrastLink,
   HighContrastRadio,
   HighContrastRadioGroup,
   HorizontalSeparatorDiv,
+  PaddedDiv,
   Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'

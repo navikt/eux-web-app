@@ -8,7 +8,7 @@ import { getIdx } from 'utils/namespace'
 export interface ValidationNasjonalitetProps {
   statsborgerskap: Statsborgerskap
   statsborgerskaper: Array<Statsborgerskap>
-  index: number
+  index?: number
   namespace: string
   personName: string
 }

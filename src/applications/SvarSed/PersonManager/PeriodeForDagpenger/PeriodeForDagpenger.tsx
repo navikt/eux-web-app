@@ -1,7 +1,6 @@
 import classNames from 'classnames'
 import Input from 'components/Forms/Input'
 import Period from 'components/Period/Period'
-import { AlignStartRow, FlexDiv, PaddedDiv } from 'components/StyledComponents'
 import { Periode, ReplySed } from 'declarations/sed'
 import { Kodeverk, Validation } from 'declarations/types'
 import CountrySelect from 'landvelger'
@@ -9,6 +8,7 @@ import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
+  AlignStartRow, FlexDiv, PaddedDiv,
   HighContrastRadio,
   HighContrastRadioGroup,
   HorizontalSeparatorDiv,

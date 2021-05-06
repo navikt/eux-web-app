@@ -1,9 +1,9 @@
 import classNames from 'classnames'
 import TextArea from 'components/Forms/TextArea'
-import { AlignStartRow, PaddedDiv, TextAreaDiv } from 'components/StyledComponents'
+import { TextAreaDiv } from 'components/StyledComponents'
 import { F002Sed, FormalKravOmRefusjon, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { Column, HighContrastLink, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { AlignStartRow, Column, HighContrastLink, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 

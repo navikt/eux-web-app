@@ -1,7 +1,6 @@
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import Period from 'components/Period/Period'
-import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { ReplySed, Utbetalingshyppighet, Ytelse, YtelseNavn } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -9,9 +8,9 @@ import CountryData, { Currency } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
-import { Column, HighContrastRadioPanelGroup, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { Column, AlignStartRow, PaddedDiv, HighContrastRadioPanelGroup, VerticalSeparatorDiv } from 'nav-hoykontrast'
 
 interface BeløpNavnOgValutaProps {
   highContrast: boolean

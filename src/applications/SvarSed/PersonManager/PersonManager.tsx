@@ -8,7 +8,7 @@ import GreenCircle from 'assets/icons/GreenCircle'
 import ChildIcon from 'assets/icons/Child'
 import RemoveCircle from 'assets/icons/RemoveCircle'
 import classNames from 'classnames'
-import { FlexCenterDiv, FlexCenterSpacedDiv, WithErrorPanel, PileDiv, PileCenterDiv } from 'components/StyledComponents'
+import { WithErrorPanel } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { F002Sed, PersonInfo, ReplySed } from 'declarations/sed'
@@ -18,6 +18,7 @@ import Chevron from 'nav-frontend-chevron'
 import { Checkbox, FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
+  FlexCenterDiv, FlexCenterSpacedDiv, PileDiv, PileCenterDiv,
   HighContrastFlatknapp,
   HorizontalSeparatorDiv,
   theme,
@@ -590,7 +591,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
       setTimeout(() => {
         setPreviousMenuOption(menuOption)
         setAnimatingMenus(false)
-      },  transitionTime * 1000)
+      }, transitionTime * 1000)
       if (menuOption) {
         setCurrentMenuOption(menuOption)
       } else {
@@ -793,8 +794,8 @@ const PersonManager: React.FC<PersonManagerProps> = ({
               </RightFlexCenterSpacedDiv>
             )}
             {!currentMenu && (
-              <PileCenterDiv style={{height: '100%'}}>
-                <FlexCenterDiv style={{flex: '1'}}>
+              <PileCenterDiv style={{ height: '100%' }}>
+                <FlexCenterDiv style={{ flex: '1', alignSelf: 'center' }}>
                   {t('label:velg-personer')}
                 </FlexCenterDiv>
               </PileCenterDiv>

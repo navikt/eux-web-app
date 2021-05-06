@@ -2,7 +2,6 @@ import Add from 'assets/icons/Add'
 import Search from 'assets/icons/Search'
 import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
-import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import { PersonInfo, Pin, ReplySed } from 'declarations/sed'
 import { Kodeverk, Person, Validation } from 'declarations/types'
 import CountrySelect from 'landvelger'
@@ -10,6 +9,7 @@ import _ from 'lodash'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
+  AlignStartRow, PaddedDiv,
   HighContrastFlatknapp,
   HighContrastKnapp,
   HighContrastRadioPanelGroup,
@@ -158,7 +158,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   }
 
   return (
-    <PaddedDiv key={personID}>
+    <PaddedDiv key={namespace + '-div'}>
       <Undertittel>
         {t('label:personopplysning')}
       </Undertittel>

@@ -8,7 +8,6 @@ import ArbeidsgiverSøk from 'components/Arbeidsgiver/ArbeidsgiverSøk'
 import Input from 'components/Forms/Input'
 import Inntekt from 'components/Inntekt/Inntekt'
 import Period, { toFinalDateFormat } from 'components/Period/Period'
-import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { Periode, ReplySed } from 'declarations/sed'
 import { Arbeidsgiver, Arbeidsperioder, IInntekter, Validation } from 'declarations/types'
@@ -16,10 +15,12 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { Systemtittel, Undertittel } from 'nav-frontend-typografi'
 import {
+  AlignStartRow,
   Column,
   HighContrastFlatknapp,
   HighContrastKnapp,
   HorizontalSeparatorDiv,
+  PaddedDiv,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'

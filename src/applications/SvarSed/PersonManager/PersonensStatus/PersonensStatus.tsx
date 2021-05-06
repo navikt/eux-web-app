@@ -4,11 +4,10 @@ import Avsenderlandet from 'applications/SvarSed/PersonManager/PersonensStatus/A
 import NotAnsatt from 'applications/SvarSed/PersonManager/PersonensStatus/NotAnsatt'
 import WithSubsidies from 'applications/SvarSed/PersonManager/PersonensStatus/WithSubsidies'
 import LesMer from 'components/LesMer/LesMer'
-import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import { ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { Undertittel } from 'nav-frontend-typografi'
-import { Column, HighContrastRadioPanelGroup, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { Column, AlignStartRow, PaddedDiv, HighContrastRadioPanelGroup, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 

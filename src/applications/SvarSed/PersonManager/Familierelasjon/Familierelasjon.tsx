@@ -5,7 +5,6 @@ import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import Period from 'components/Period/Period'
-import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { FamilieRelasjon, JaNei, Periode, RelasjonType, ReplySed } from 'declarations/sed'
 import { Kodeverk, Validation } from 'declarations/types'
@@ -15,6 +14,7 @@ import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
+  AlignStartRow, PaddedDiv,
   HighContrastFlatknapp,
   HighContrastRadioPanelGroup,
   HorizontalSeparatorDiv,

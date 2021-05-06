@@ -1,10 +1,9 @@
 import Period from 'components/Period/Period'
-import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import { Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
-import { Column, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { Column, AlignStartRow, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 

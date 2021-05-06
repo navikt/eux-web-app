@@ -6,7 +6,7 @@ import {
   animationOpen,
   fadeIn,
   fadeOut,
-  Row, HighContrastPanel
+  HighContrastPanel
 } from 'nav-hoykontrast'
 
 export const AlignedSelect = styled(Select)`
@@ -14,53 +14,6 @@ export const AlignedSelect = styled(Select)`
   &.feil {
     margin-bottom: 0rem !important;
   }
-`
-export const FlexDiv = styled.div`
-  display: flex;
-  flex-direction: row;
-`
-export const PileDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-`
-export const FullWidthDiv = styled.div`
-  width: 100%;
-`
-export const PileCenterDiv = styled(PileDiv)`
-  align-items: center;
-`
-export const FlexBaseDiv = styled(FlexDiv)`
-  align-items: baseline;
-`
-export const FlexBaseSpacedDiv = styled(FlexBaseDiv)`
-  justify-content: space-between;
-`
-export const FlexCenterDiv = styled(FlexDiv)`
-  align-items: center;
-`
-export const FlexCenterSpacedDiv = styled(FlexCenterDiv)`
-  justify-content: space-between;
-`
-export const FlexStartDiv = styled(FlexDiv)`
-  align-items: flex-start;
-`
-export const FlexStartSpacedDiv = styled(FlexStartDiv)`
-  justify-content: space-between;
-`
-export const PaddedDiv = styled.div`
-  padding: 1rem;
-`
-export const PaddedFlexDiv = styled(FlexDiv)`
-  padding: 1rem;
-`
-export const AlignEndRow = styled(Row)`
-  align-items: flex-end;
-`
-export const AlignCenterRow = styled(Row)`
-  align-items: center;
-`
-export const AlignStartRow = styled(Row)`
-  align-items: flex-start;
 `
 export const FadingLineSeparator = styled.div`
    border-left-width: 1px;

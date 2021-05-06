@@ -7,7 +7,7 @@ import { getIdx } from 'utils/namespace'
 
 export interface ValidationAddressProps {
   adresse: Adresse
-  index: number
+  index?: number
   namespace: string
   personName: string
 }

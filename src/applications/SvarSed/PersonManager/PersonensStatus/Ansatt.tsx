@@ -4,7 +4,6 @@ import ArbeidsgiverBox from 'components/Arbeidsgiver/ArbeidsgiverBox'
 import ArbeidsgiverSøk from 'components/Arbeidsgiver/ArbeidsgiverSøk'
 import Input from 'components/Forms/Input'
 import Period, { toFinalDateFormat } from 'components/Period/Period'
-import { AlignStartRow } from 'components/StyledComponents'
 import { Periode, ReplySed } from 'declarations/sed'
 import { Arbeidsgiver, Arbeidsperioder } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
@@ -14,6 +13,7 @@ import moment from 'moment'
 import { Systemtittel, Undertittel } from 'nav-frontend-typografi'
 import {
   Column,
+  AlignStartRow,
   HighContrastFlatknapp,
   HighContrastKnapp,
   HorizontalSeparatorDiv,

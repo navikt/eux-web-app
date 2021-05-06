@@ -1,9 +1,8 @@
 import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
-import { FlexCenterSpacedDiv } from 'components/StyledComponents'
 import { Normaltekst } from 'nav-frontend-typografi'
-import { HighContrastFlatknapp, HorizontalSeparatorDiv } from 'nav-hoykontrast'
+import { HighContrastFlatknapp, FlexCenterSpacedDiv, HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 

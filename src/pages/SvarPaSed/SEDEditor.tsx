@@ -10,7 +10,7 @@ import Attachments from 'applications/Vedlegg/Attachments/Attachments'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import Modal from 'components/Modal/Modal'
-import { FlexCenterSpacedDiv, TextAreaDiv } from 'components/StyledComponents'
+import { TextAreaDiv } from 'components/StyledComponents'
 import { JoarkBrowserItems } from 'declarations/attachments'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
@@ -21,6 +21,7 @@ import { VenstreChevron } from 'nav-frontend-chevron'
 import { Systemtittel } from 'nav-frontend-typografi'
 import {
   Column,
+  FlexCenterSpacedDiv,
   HighContrastFlatknapp,
   HighContrastHovedknapp,
   HighContrastKnapp,

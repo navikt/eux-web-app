@@ -3,7 +3,6 @@ import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
 import { toFinalDateFormat } from 'components/Period/Period'
-import { AlignStartRow, PaddedDiv } from 'components/StyledComponents'
 import { ReplySed, Statsborgerskap } from 'declarations/sed'
 import { Kodeverk, Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
@@ -11,7 +10,7 @@ import useValidation from 'hooks/useValidation'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
-import { Column, HighContrastFlatknapp, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { Column, AlignStartRow, PaddedDiv, HighContrastFlatknapp, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
@@ -103,7 +102,6 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
     const valid = performValidation({
       statsborgerskap: newStatsborgerskap,
       statsborgerskaper: statsborgerskaper,
-      index: -1,
       namespace: namespace,
       personName: personName
     })
@@ -175,7 +173,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
   }
 
   return (
-    <PaddedDiv>
+    <PaddedDiv key={namespace + '-div'}>
       <Undertittel>
         {t('label:nasjonalitet')}
       </Undertittel>

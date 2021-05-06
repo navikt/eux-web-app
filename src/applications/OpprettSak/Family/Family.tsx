@@ -1,4 +1,3 @@
-import { FlexDiv, PileCenterDiv } from 'components/StyledComponents'
 import { OldFamilieRelasjon, Kodeverk, Person } from 'declarations/types'
 import _ from 'lodash'
 import { Knapp } from 'nav-frontend-knapper'
@@ -7,7 +6,7 @@ import PersonCard from 'applications/OpprettSak/PersonCard/PersonCard'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { FlexDiv, PileCenterDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import AbroadPersonForm from './AbroadPersonForm'
 import TPSPersonForm from './TPSPersonForm'
 

@@ -1,10 +1,17 @@
 import classNames from 'classnames'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
-import { AlignStartRow, PaddedDiv, TextAreaDiv } from 'components/StyledComponents'
+import { TextAreaDiv } from 'components/StyledComponents'
 import { F002Sed, JaNei, ReplySed, UtbetalingTilInstitusjon } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { Column, HighContrastRadio, HighContrastRadioGroup, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import {
+  AlignStartRow,
+  Column,
+  HighContrastRadio,
+  HighContrastRadioGroup,
+  PaddedDiv,
+  VerticalSeparatorDiv
+} from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
