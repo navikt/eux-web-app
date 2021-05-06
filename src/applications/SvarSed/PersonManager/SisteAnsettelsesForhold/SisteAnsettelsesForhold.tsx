@@ -98,7 +98,7 @@ const SisteAnsettelsesForhold: React.FC<SisteAnsettelsesForholdProps> = ({
           </Undertittel>
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv size='2' />
       <AlignStartRow className='slideInFromLeft'>
         <Column>
           <label className='skjemaelement__label'>
@@ -121,7 +121,7 @@ const SisteAnsettelsesForhold: React.FC<SisteAnsettelsesForholdProps> = ({
           />
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv size='2' />
 
       {!_.isNil(_typeBeløp) && (
         <>
@@ -186,7 +186,7 @@ const SisteAnsettelsesForhold: React.FC<SisteAnsettelsesForholdProps> = ({
               <Column />
             </AlignStartRow>
           )}
-          <VerticalSeparatorDiv data-size='2' />
+          <VerticalSeparatorDiv size='2' />
           <Undertittel>
             {t('label:avkall-på-rettigheter')}
           </Undertittel>

@@ -42,7 +42,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
 
   return (
     <>
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv size='2' />
       <label className='skjemaelement__label'>
         {t('label:vedlegg')}
       </label>

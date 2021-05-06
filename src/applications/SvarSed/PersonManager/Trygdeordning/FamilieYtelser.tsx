@@ -291,7 +291,7 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
         </AlignStartRow>
         {(index < 0 || sedCategory === 'perioderMedPensjon') && (
           <>
-            <VerticalSeparatorDiv data-size='0.5' />
+            <VerticalSeparatorDiv size='0.5' />
             <AlignStartRow className={classNames('slideInFromLeft')}>
               <Column>
                 {index < 0 && (
@@ -409,7 +409,7 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
-                <HorizontalSeparatorDiv data-size='0.5' />
+                <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
               </HighContrastFlatknapp>
             </Column>

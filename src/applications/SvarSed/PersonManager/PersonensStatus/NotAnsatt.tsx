@@ -198,7 +198,7 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
-                <HorizontalSeparatorDiv data-size='0.5' />
+                <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
               </HighContrastFlatknapp>
             </Column>

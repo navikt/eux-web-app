@@ -114,7 +114,7 @@ const InntektForm: React.FC<InntektFormProps> = ({
           />
         </Column>
         <Column>
-          <VerticalSeparatorDiv data-size='1.8' />
+          <VerticalSeparatorDiv size='1.8' />
           <HighContrastFlatknapp
             disabled={gettingInntekter}
             spinner={gettingInntekter}
@@ -126,7 +126,7 @@ const InntektForm: React.FC<InntektFormProps> = ({
           </HighContrastFlatknapp>
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv size='2' />
       {gettingInntekter && <WaitingPanel />}
       {inntekter && (
         <Inntekt

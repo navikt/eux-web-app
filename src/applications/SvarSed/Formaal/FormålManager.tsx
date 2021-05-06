@@ -156,7 +156,7 @@ const FormålManager: React.FC<FormålManagerProps> = ({
             updateReplySed={updateReplySed}
             validation={validation}
           />
-          <VerticalSeparatorDiv data-size='2' />
+          <VerticalSeparatorDiv size='2' />
         </>
       )}
       {menu === 'motregning' && (
@@ -169,7 +169,7 @@ const FormålManager: React.FC<FormålManagerProps> = ({
             updateReplySed={updateReplySed}
             validation={validation}
           />
-          <VerticalSeparatorDiv data-size='2' />
+          <VerticalSeparatorDiv size='2' />
         </>
       )}
       {menu === 'prosedyre_ved_uenighet' && (
@@ -181,7 +181,7 @@ const FormålManager: React.FC<FormålManagerProps> = ({
             updateReplySed={updateReplySed}
             validation={validation}
           />
-          <VerticalSeparatorDiv data-size='2' />
+          <VerticalSeparatorDiv size='2' />
         </>
       )}
       {menu === 'refusjon_i_henhold_til_artikkel_58_i_forordningen' && (
@@ -194,7 +194,7 @@ const FormålManager: React.FC<FormålManagerProps> = ({
             updateReplySed={updateReplySed}
             validation={validation}
           />
-          <VerticalSeparatorDiv data-size='2' />
+          <VerticalSeparatorDiv size='2' />
         </>
       )}
 
@@ -207,7 +207,7 @@ const FormålManager: React.FC<FormålManagerProps> = ({
             updateReplySed={updateReplySed}
             validation={validation}
           />
-          <VerticalSeparatorDiv data-size='2' />
+          <VerticalSeparatorDiv size='2' />
         </>
       )}
     </>
@@ -276,19 +276,19 @@ const FormålManager: React.FC<FormålManagerProps> = ({
                     })}
                   >
                     <Chevron type='høyre' />
-                    <HorizontalSeparatorDiv data-size='0.5' />
+                    <HorizontalSeparatorDiv size='0.5' />
                     {viewValidation && (
                       validation[namespace + '-' + menu]
                         ? (
                           <>
                             <RemoveCircle color='red' />
-                            <HorizontalSeparatorDiv data-size='0.5' />
+                            <HorizontalSeparatorDiv size='0.5' />
                           </>
                           )
                         : (
                           <>
                             <GreenCircle />
-                            <HorizontalSeparatorDiv data-size='0.5' />
+                            <HorizontalSeparatorDiv size='0.5' />
                           </>
                           )
                     )}

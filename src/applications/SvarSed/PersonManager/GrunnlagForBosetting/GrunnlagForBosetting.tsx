@@ -219,7 +219,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
-                <HorizontalSeparatorDiv data-size='0.5' />
+                <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
               </HighContrastFlatknapp>
             </Column>
@@ -251,7 +251,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
-        <Column data-flex='2'>
+        <Column flex='2'>
           <TextAreaDiv>
             <TextArea
               feil={validation[namespace + '-personligSituasjon']?.feilmelding}

@@ -181,14 +181,14 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
           valueSluttDato={anmodningsperiode?.sluttdato ?? ''}
         />
         <Column>
-          <VerticalSeparatorDiv data-size='1.8' />
+          <VerticalSeparatorDiv size='1.8' />
           <ArbeidsgiverSøk
             gettingArbeidsperioder={gettingArbeidsperioder}
             getArbeidsperioder={getArbeidsperioder}
           />
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv size='2' />
       <Systemtittel>
         {t('label:aa-registeret')}
       </Systemtittel>
@@ -235,7 +235,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
             onClick={() => _setSeeNewArbeidsgiver(true)}
           >
             <Add />
-            <HorizontalSeparatorDiv data-size='0.5' />
+            <HorizontalSeparatorDiv size='0.5' />
             {t('el:button-add-new-x', {
               x: t('label:arbeidsgiver').toLowerCase()
             })}
@@ -260,7 +260,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
               />
               <Column />
             </AlignStartRow>
-            <VerticalSeparatorDiv data-size='0.5' />
+            <VerticalSeparatorDiv size='0.5' />
             <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
               <Column>
                 <Input
@@ -293,10 +293,10 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
                   onClick={onArbeidsgiverAdd}
                 >
                   <Add />
-                  <HorizontalSeparatorDiv data-size='0.5' />
+                  <HorizontalSeparatorDiv size='0.5' />
                   {t('el:button-add')}
                 </HighContrastKnapp>
-                <HorizontalSeparatorDiv data-size='0.5' />
+                <HorizontalSeparatorDiv size='0.5' />
                 <HighContrastFlatknapp
                   mini
                   kompakt
@@ -308,7 +308,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
             </AlignStartRow>
           </>
           )}
-      <VerticalSeparatorDiv data-size='3' />
+      <VerticalSeparatorDiv size='3' />
       <AlignStartRow className='slideInFromLeft'>
         <Column>
           <Undertittel>

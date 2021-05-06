@@ -48,13 +48,19 @@ import InntektForm from './InntektForm/InntektForm'
 import RettTilYtelser from './RettTilYtelser/RettTilYtelser'
 import SvarPåForespørsel from './SvarPåForespørsel/SvarPåForespørsel'
 
-const transitionTime = 1
+const transitionTime = 0.3
 
 const LeftDiv = styled.div`
   flex: 1;
   align-self: stretch;
   min-width: 300px;
   border-right: 1px solid ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
+  border-width: ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_WIDTH]};
+  border-style: solid;
+  border-color: ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
+  background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
+  border-top-left-radius: ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_RADIUS]};
+  border-bottom-left-radius: ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_RADIUS]};
 `
 const OptionDiv = styled.div`
   transition: all 0.2s ease-in-out;
@@ -110,15 +116,65 @@ const CheckboxDiv = styled.div`
 `
 const RightDiv = styled.div`
   flex: 3;
-  padding: 0.5rem;
   border-left: 1px solid ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
   margin-left: -1px;
   align-self: stretch;
   position: relative;
-  background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
   overflow: hidden;
-  border-radius: 5px;
 `
+const RightActiveDiv = styled.div`
+  border-width: ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_WIDTH]};
+  border-style: solid;
+  border-left-width: 0;
+  border-color: ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
+  background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
+  border-top-right-radius: ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_RADIUS]};
+  border-bottom-right-radius: ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_RADIUS]};
+  background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
+  height: 100%;
+`
+const slideIn = keyframes`
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+`
+
+const slideOut = keyframes`
+  100% {
+    left: -100%;
+    right: 100%;
+  }
+  0% {
+    left: 0%;
+    right: 0%;
+  }
+`
+const ActiveFormDiv = styled(RightActiveDiv)`
+  &.animating {
+    will-change: transform;
+    position: relative;
+    transform: translateX(-100%);
+    animation: ${slideIn} ${transitionTime}s forwards;
+  }
+`
+
+const PreviousFormDiv = styled(RightActiveDiv)`
+  &.animating {
+    will-change: left, right;
+    position: absolute;
+    top: 0px;
+    left: 0%;
+    right: 0%;
+    animation: ${slideOut} ${transitionTime}s forwards;
+  }
+  &:not(.animating) {
+    display: none;
+  }
+`
+
 const RightFlexCenterSpacedDiv = styled.div`
   text-align: center;
 `
@@ -134,56 +190,6 @@ const MenuLabelText = styled(Normaltekst)`
     font-weight: bold;
   }
 `
-
-const slideIn = keyframes`
-  0% {
-    opacity: 0;
-    transform: translateX(-50px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-`
-
-const slideOut = keyframes`
-  100% {
-    opacity: 0;
-    left: -50px;
-    right: 50px;
-  }
-  0% {
-    opacity: 1;
-    left: 0px;
-    right: 0px;
-  }
-`
-
-const ActiveFormDiv = styled.div`
-  &.animating {
-    position: relative;
-    transform: translateX(-50px);
-    opacity: 0;
-    animation: ${slideIn} ${transitionTime}s forwards;
-    border-radius: 5px;
-  }
-`
-
-const PreviousFormDiv = styled.div`
-  &.animating {
-    position: absolute;
-    top: 0px;
-    opacity: 1;
-    left: 0px;
-    right: 0px;
-    animation: ${slideOut} ${transitionTime}s forwards;
-  }
-  &:not(.animating) {
-    display: none;
-  }
-  border-radius: 5px;
-`
-
 export interface PersonManagerProps {
   fnr: string
   replySed: ReplySed
@@ -628,19 +634,19 @@ const PersonManager: React.FC<PersonManagerProps> = ({
             })}
           >
             <Chevron type={open ? 'ned' : 'høyre'} />
-            <HorizontalSeparatorDiv data-size='0.5' />
+            <HorizontalSeparatorDiv size='0.5' />
             {viewValidation && (
               validation[namespace + '-' + personId]
                 ? (
                   <>
                     <RemoveCircle color='red' />
-                    <HorizontalSeparatorDiv data-size='0.5' />
+                    <HorizontalSeparatorDiv size='0.5' />
                   </>
                   )
                 : (
                   <>
                     <GreenCircle />
-                    <HorizontalSeparatorDiv data-size='0.5' />
+                    <HorizontalSeparatorDiv size='0.5' />
                   </>
                   )
             )}
@@ -650,7 +656,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
                   ? t('label:hele-familien')
                   : personInfo?.fornavn + ' ' + personInfo?.etternavn}
               </MenuLabelText>
-              <HorizontalSeparatorDiv data-size='0.5' />
+              <HorizontalSeparatorDiv size='0.5' />
               {personInfo?.statsborgerskap && (
                 <LandSpan>
                   {' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')'}
@@ -659,7 +665,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
             </>
             {personId.startsWith('barn[') && (
               <>
-                <HorizontalSeparatorDiv data-size='0.5' />
+                <HorizontalSeparatorDiv size='0.5' />
                 <ChildIcon />
               </>
             )}
@@ -702,7 +708,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
                     ? <GreenCircle />
                     : <RemoveCircle color='red' />
                 )}
-                <HorizontalSeparatorDiv data-size='0.5' />
+                <HorizontalSeparatorDiv size='0.5' />
                 {`${i + 1}. ${o.label}`}
               </OptionDiv>
             )
@@ -773,7 +779,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
                   onClick={onAddNewPerson}
                 >
                   <Add />
-                  <HorizontalSeparatorDiv data-size='0.5' />
+                  <HorizontalSeparatorDiv size='0.5' />
                   {t('el:button-add-new-x', { x: t('label:person') })}
                 </HighContrastFlatknapp>
               </MarginDiv>

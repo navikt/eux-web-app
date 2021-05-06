@@ -273,7 +273,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
             />
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv data-size='0.5' />
+        <VerticalSeparatorDiv size='0.5' />
       </>
     )
   }
@@ -294,7 +294,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
             label={t('label:ja')}
             onClick={setBarnAlleBarn}
           />
-          <HorizontalSeparatorDiv data-size='2' />
+          <HorizontalSeparatorDiv size='2' />
           <HighContrastRadio
             name={namespace + '-barn'}
             checked={_barnRadio === 'nei'}
@@ -319,7 +319,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
                   label={name}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => removeBarn(name, e.target.checked)}
                 />
-                <VerticalSeparatorDiv data-size='0.5' />
+                <VerticalSeparatorDiv size='0.5' />
               </div>
             )
           })}
@@ -347,7 +347,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
         className={classNames('slideInFromLeft')}
         style={{ animationDelay: '0.2s' }}
       >
-        <Column data-flex='2'>
+        <Column flex='2'>
           <Select
             data-test-id={namespace + '-type'}
             feil={validation[namespace + '-type']?.feilmelding}
@@ -369,7 +369,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
         className={classNames('slideInFromLeft')}
         style={{ animationDelay: '0.3s' }}
       >
-        <Column data-flex='2'>
+        <Column flex='2'>
           <TextAreaDiv>
             <TextArea
               feil={validation[namespace + '-grunnen']?.feilmelding}
@@ -398,7 +398,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
-                <HorizontalSeparatorDiv data-size='0.5' />
+                <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
               </HighContrastFlatknapp>
             </Column>

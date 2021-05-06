@@ -263,7 +263,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
         >
-          <Column data-flex='2'>
+          <Column flex='2'>
             <Input
               feil={getErrorFor(index, 'epost', 'adresse')}
               namespace={namespaceEpost + idx}
@@ -321,13 +321,13 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
                 onClick={() => _setSeeNewTelefonForm(true)}
               >
                 <Add />
-                <HorizontalSeparatorDiv data-size='0.5' />
+                <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:telefonnummer').toLowerCase() })}
               </HighContrastFlatknapp>
             </Column>
           </Row>
           )}
-      <VerticalSeparatorDiv data-size='3' />
+      <VerticalSeparatorDiv size='3' />
       <Row className='slideInFromLeft'>
         <Column>
           <UndertekstBold>
@@ -350,7 +350,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
                 onClick={() => _setSeeNewEpostForm(true)}
               >
                 <Add />
-                <HorizontalSeparatorDiv data-size='0.5' />
+                <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:epost').toLowerCase() })}
               </HighContrastFlatknapp>
             </Column>

@@ -75,7 +75,7 @@ export const Error = ({ error }: ErrorProps) => {
         {footer && (
           <>
             <Line />
-            <VerticalSeparatorDiv data-size='0.5' />
+            <VerticalSeparatorDiv size='0.5' />
             <Normaltekst>
               {footer}
             </Normaltekst>

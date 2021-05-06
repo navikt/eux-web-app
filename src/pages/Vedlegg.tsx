@@ -153,7 +153,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
               label={(
                 <FlexDiv>
                   {t('label:journalpost-id')}
-                  <HorizontalSeparatorDiv data-size='0.35' />
+                  <HorizontalSeparatorDiv size='0.35' />
                   <Hjelpetekst id='journalPostID'>
                     {t('message:help-journalpostID')}
                   </Hjelpetekst>
@@ -171,7 +171,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
               label={(
                 <FlexDiv>
                   {t('label:dokument-id')}
-                  <HorizontalSeparatorDiv data-size='0.35' />
+                  <HorizontalSeparatorDiv size='0.35' />
                   <Hjelpetekst id='dokumentID'>
                     {t('message:help-dokumentID')}
                   </Hjelpetekst>

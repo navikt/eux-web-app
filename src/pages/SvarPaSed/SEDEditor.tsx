@@ -237,13 +237,13 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
           onClick={onGoBackClick}
         >
           <VenstreChevron />
-          <HorizontalSeparatorDiv data-size='0.5' />
+          <HorizontalSeparatorDiv size='0.5' />
           {t('label:tilbake')}
         </HighContrastLink>
       </FlexCenterSpacedDiv>
       <VerticalSeparatorDiv />
       <Row>
-        <Column data-flex='2'>
+        <Column flex='2'>
           <Systemtittel>
             {replySed?.sedType} - {t('buc:' + replySed?.sedType)}
           </Systemtittel>
@@ -272,7 +272,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
         </Column>
         <Column />
       </Row>
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv size='2' />
       {showPersonManager() && (
         <>
           <PersonManager
@@ -283,7 +283,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
             validation={_validation}
             viewValidation={_viewValidation}
           />
-          <VerticalSeparatorDiv data-size='2' />
+          <VerticalSeparatorDiv size='2' />
         </>
       )}
 
@@ -298,7 +298,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
             validation={_validation}
             viewValidation={_viewValidation}
           />
-          <VerticalSeparatorDiv data-size='2' />
+          <VerticalSeparatorDiv size='2' />
         </>
       )}
       <VerticalSeparatorDiv />
@@ -315,7 +315,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
           value={_comment}
         />
       </TextAreaDiv>
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv size='2' />
       <Attachments
         highContrast={highContrast}
         onAttachmentsChanged={(attachments) => setAttachments(attachments)}
@@ -328,12 +328,12 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
         onClick={onPreviewSed}
       >
         <Add />
-        <HorizontalSeparatorDiv data-size='0.5' />
+        <HorizontalSeparatorDiv size='0.5' />
         {gettingPreviewFile ? t('label:laster-ned-filen') : t('label:forhåndsvis-sed')}
       </HighContrastFlatknapp>
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv size='2' />
       <ValidationBox validation={_validation} />
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv size='2' />
       <ButtonsDiv>
         <div>
           <HighContrastHovedknapp
@@ -344,7 +344,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
           >
             {creatingSvarPaSed ? t('message:loading-sendingReplySed') : t('label:send-svarsed')}
           </HighContrastHovedknapp>
-          <VerticalSeparatorDiv data-size='0.5' />
+          <VerticalSeparatorDiv size='0.5' />
         </div>
         <HorizontalSeparatorDiv />
         <div>
@@ -356,7 +356,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
           >
             {t('el:button-add-attachments')}
           </HighContrastKnapp>
-          <VerticalSeparatorDiv data-size='0.5' />
+          <VerticalSeparatorDiv size='0.5' />
         </div>
         <HorizontalSeparatorDiv />
         <div>
@@ -368,7 +368,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
           >
             {t('label:opprett-sed-rediger-i-rina')}
           </HighContrastKnapp>
-          <VerticalSeparatorDiv data-size='0.5' />
+          <VerticalSeparatorDiv size='0.5' />
         </div>
         <HorizontalSeparatorDiv />
         <div>
@@ -380,7 +380,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
           >
             {t('el:button-save')}
           </HighContrastKnapp>
-          <VerticalSeparatorDiv data-size='0.5' />
+          <VerticalSeparatorDiv size='0.5' />
         </div>
       </ButtonsDiv>
     </SEDEditorDiv>

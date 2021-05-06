@@ -186,31 +186,31 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                     {creatingSvarPaSed && (
                       <FlexCenterSpacedDiv>
                         <NavFrontendSpinner type='XS' />
-                        <HorizontalSeparatorDiv data-size='0.5' />
+                        <HorizontalSeparatorDiv size='0.5' />
                         <span>{t('message:loading-creatingReplySed')}</span>
                       </FlexCenterSpacedDiv>
                     )}
                     {!_.isNil(sedCreatedResponse) && (
                       <FlexCenterSpacedDiv>
                         <GreenCircle />
-                        <HorizontalSeparatorDiv data-size='0.5' />
+                        <HorizontalSeparatorDiv size='0.5' />
                         <span>{t('message:loading-sedCreated')}</span>
                       </FlexCenterSpacedDiv>
                     )}
                   </div>
-                  <VerticalSeparatorDiv data-size='0.5' />
+                  <VerticalSeparatorDiv size='0.5' />
                   <div>
                     {_finished && (
                       <FlexCenterSpacedDiv>
                         <GreenCircle />
-                        <HorizontalSeparatorDiv data-size='0.5' />
+                        <HorizontalSeparatorDiv size='0.5' />
                         <span>{t('message:loading-sedFinished')}</span>
                       </FlexCenterSpacedDiv>
                     )}
                     {_sendingAttachments && (
                       <FlexCenterSpacedDiv>
                         <NavFrontendSpinner type='XS' />
-                        <HorizontalSeparatorDiv data-size='0.5' />
+                        <HorizontalSeparatorDiv size='0.5' />
                         <span>{t('message:loading-sendingVedlegg')}</span>
                       </FlexCenterSpacedDiv>
                     )}

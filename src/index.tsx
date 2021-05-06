@@ -16,7 +16,7 @@ import * as appActions from './actions/app'
 import { unregister } from './registerServiceWorker'
 import * as Utils from './utils/utils'
 import * as Sentry from './metrics/sentry'
-import { slideInFromLeft, slideInFromRight, slideInFromTop, slideInFromBottom } from 'nav-hoykontrast'
+import { slideInFromLeft, slideInFromRight, slideInFromTop, slideInFromBottom, fadeIn } from 'nav-hoykontrast'
 
 import 'nav-frontend-alertstriper-style/dist/main.css'
 import 'nav-frontend-core/dist/main.css'
@@ -65,6 +65,10 @@ section {
 }
 .nolabel {
   margin-top: 1.8rem;
+}
+.fadeIn {
+  opacity: 0;
+  animation: ${fadeIn} 0.25s forwards;
 }
 .slideInFromLeft {
   opacity: 0;

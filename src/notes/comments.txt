@@ -21,4 +21,5 @@ ui improvs:
 
 - remover slideAnimate
 - meter keys para melhor ver o que muda
-- rever títulos
+- rever høykontrast
+- unit tests

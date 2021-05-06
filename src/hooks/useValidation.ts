@@ -22,11 +22,12 @@ const useValidation = <ValidationData extends any>(
   const resetValidation = (key: string | undefined = undefined): void => {
     if (!key) {
       setValidation({})
+    } else {
+      setValidation({
+        ..._validation,
+        [key!]: undefined
+      })
     }
-    setValidation({
-      ..._validation,
-      [key!]: undefined
-    })
   }
 
   const performValidation = (validationData: ValidationData): boolean => {

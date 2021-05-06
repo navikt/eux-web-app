@@ -126,7 +126,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
                   country={s.land}
                   label={countryData.findByValue(s.land)?.label}
                 />
-                <HorizontalSeparatorDiv data-size='0.35' />
+                <HorizontalSeparatorDiv size='0.35' />
                 {countryData.findByValue(s.land)?.label}
               </FlexDiv>
             </Dd>
@@ -157,7 +157,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
       <VerticalSeparatorDiv />
       <FlexDiv>
         <GreenCircle width={18} height={18} />
-        <HorizontalSeparatorDiv data-size='0.5' />
+        <HorizontalSeparatorDiv size='0.5' />
         <Normaltekst>
           {t('app:info-confirm-information')}
         </Normaltekst>
@@ -165,7 +165,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
       <VerticalSeparatorDiv />
       <FlexDiv>
         <Warning width={18} height={18} />
-        <HorizontalSeparatorDiv data-size='0.5' />
+        <HorizontalSeparatorDiv size='0.5' />
         <Normaltekst>
           {t('app:info-point-information')}
         </Normaltekst>

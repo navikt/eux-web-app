@@ -100,7 +100,7 @@ const SvarPåForespørsel: React.FC<SvarPåForespørselProps> = ({
           </Undertittel>
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv size='2' />
       <AlignStartRow className='slideInFromLeft'>
         <Column>
           <label className='skjemaelement__label'>
@@ -120,7 +120,7 @@ const SvarPåForespørsel: React.FC<SvarPåForespørselProps> = ({
                 label: (
                   <FlexCenterDiv>
                     <span>{t('el:option-svar-1')}</span>
-                    <HorizontalSeparatorDiv data-size='0.5' />
+                    <HorizontalSeparatorDiv size='0.5' />
                     <Tooltip placement='top' trigger={['hover']} overlay={<span>{t('message:help-jeg-kan-sende')}</span>}>
                       <HelpProperIcon className='hjelpetekst__ikon' />
                     </Tooltip>
@@ -132,7 +132,7 @@ const SvarPåForespørsel: React.FC<SvarPåForespørselProps> = ({
                 label: (
                   <FlexCenterDiv>
                     <span>{t('el:option-svar-2')}</span>
-                    <HorizontalSeparatorDiv data-size='0.5' />
+                    <HorizontalSeparatorDiv size='0.5' />
                     <Tooltip placement='top' trigger={['hover']} overlay={<span>{t('message:help-jeg-kan-ikke-sende')}</span>}>
                       <HelpProperIcon className='hjelpetekst__ikon' />
                     </Tooltip>
@@ -144,7 +144,7 @@ const SvarPåForespørsel: React.FC<SvarPåForespørselProps> = ({
           />
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv size='2' />
       {!_.isNil(xxx?.svar) && (
         <>
           <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>

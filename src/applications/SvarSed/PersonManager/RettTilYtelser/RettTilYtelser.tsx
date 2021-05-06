@@ -91,16 +91,16 @@ const RettTilYtelser: React.FC<RettTilYtelserProps> = ({
             legend={t('label:rett-til-stønad') + ' *'}
             feil={validation[namespace + '-retttilstønad']?.feilmelding}
           >
-            <VerticalSeparatorDiv data-size='0.5' />
+            <VerticalSeparatorDiv size='0.5' />
             <PileDiv>
-              <HorizontalSeparatorDiv data-size='0.2' />
+              <HorizontalSeparatorDiv size='0.2' />
               <HighContrastRadio
                 name={namespace + '-retttilstønad'}
                 checked={xxx?.rettTilStonad === 'ja'}
                 label={t('label:ja')}
                 onClick={() => setRettTilStonad('ja')}
               />
-              <HorizontalSeparatorDiv data-size='2' />
+              <HorizontalSeparatorDiv size='2' />
               <HighContrastRadio
                 name={namespace + '-retttilstønad'}
                 checked={xxx?.rettTilStonad === 'nei'}
@@ -111,7 +111,7 @@ const RettTilYtelser: React.FC<RettTilYtelserProps> = ({
           </HighContrastRadioGroup>
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv size='2' />
       {xxx?.rettTilStonad === 'ja' && (
         <AlignStartRow>
           <Column>
@@ -122,16 +122,16 @@ const RettTilYtelser: React.FC<RettTilYtelserProps> = ({
               legend={t('label:artikkelnummer') + ' *'}
               feil={validation[namespace + '-artikkelnummer']?.feilmelding}
             >
-              <VerticalSeparatorDiv data-size='0.5' />
+              <VerticalSeparatorDiv size='0.5' />
               <PileDiv>
-                <HorizontalSeparatorDiv data-size='0.2' />
+                <HorizontalSeparatorDiv size='0.2' />
                 <HighContrastRadio
                   name={namespace + '-artikkelnummer'}
                   checked={xxx?.artikkelnummer === 'ja'}
                   label={t('label:artikkel-64')}
                   onClick={() => setArtikkelNummer('ja')}
                 />
-                <HorizontalSeparatorDiv data-size='2' />
+                <HorizontalSeparatorDiv size='2' />
                 <HighContrastRadio
                   name={namespace + '-artikkelnummer'}
                   checked={xxx?.artikkelnummer === 'nei'}
@@ -153,16 +153,16 @@ const RettTilYtelser: React.FC<RettTilYtelserProps> = ({
               legend={t('label:grunn') + ' *'}
               feil={validation[namespace + '-grunn']?.feilmelding}
             >
-              <VerticalSeparatorDiv data-size='0.5' />
+              <VerticalSeparatorDiv size='0.5' />
               <PileDiv>
-                <HorizontalSeparatorDiv data-size='0.2' />
+                <HorizontalSeparatorDiv size='0.2' />
                 <HighContrastRadio
                   name={namespace + '-grunn'}
                   checked={xxx?.grunn === 'grunn-1'}
                   label={t('label:grunn-ingen-rett')}
                   onClick={() => setGrunn('grunn-1')}
                 />
-                <HorizontalSeparatorDiv data-size='2' />
+                <HorizontalSeparatorDiv size='2' />
                 <HighContrastRadio
                   name={namespace + '-artikkelnummer'}
                   checked={xxx?.grunn === 'grunn-2'}
@@ -188,7 +188,7 @@ const RettTilYtelser: React.FC<RettTilYtelserProps> = ({
         />
         <Column />
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv size='2' />
     </PaddedDiv>
   )
 }

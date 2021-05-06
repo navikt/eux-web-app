@@ -162,7 +162,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
       <Undertittel>
         {t('label:personopplysning')}
       </Undertittel>
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>
           <Input
@@ -177,9 +177,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         <Column>
           <Input
             feil={validation[namespace + '-etternavn']?.feilmelding}
-            namespace={namespace}
             id='etternavn'
             label={t('label:etternavn') + ' *'}
+            namespace={namespace}
             onChanged={onEtternavnChange}
             value={personInfo.etternavn}
           />
@@ -187,15 +187,15 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         <Column>
           <DateInput
             error={validation[namespace + '-foedselsdato']?.feilmelding}
-            namespace={namespace + '-foedselsdato'}
             key={personInfo.foedselsdato}
             label={t('label:fødselsdato') + ' *'}
+            namespace={namespace + '-foedselsdato'}
             setDato={onFodselsdatoChange}
             value={personInfo.foedselsdato}
           />
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>
           <HighContrastRadioPanelGroup
@@ -216,13 +216,13 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.15s' }}>
+      <AlignStartRow>
         <Column>
           <Input
             feil={validation[namespace + '-utenlandskpin-nummer']?.feilmelding}
-            namespace={namespace}
             id='utenlandskpin-nummer'
             label={t('label:utenlandsk-pin')}
+            namespace={namespace}
             onChanged={onUtenlandskPinChange}
             value={utenlandskPin?.identifikator}
           />
@@ -232,7 +232,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             data-test-id={namespace + '-utenlandskpin-land'}
             error={validation[namespace + '-utenlandskpin-land']?.feilmelding}
             id={namespace + '-utenlandskpin-land'}
-            includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
+            includeList={landkoderList?.map((l: Kodeverk) => l.kode) ?? []}
             label={t('label:land')}
             menuPortalTarget={document.body}
             onChange={onUtenlandskLandChange}
@@ -244,13 +244,13 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
+      <AlignStartRow className='slideInFromLeft'>
         <Column>
           <Input
             feil={validation[namespace + '-norskpin-nummer']?.feilmelding}
-            namespace={namespace}
             id='norskpin-nummer'
             label={t('label:norsk-fnr')}
+            namespace={namespace}
             onChanged={onNorwegianPinChange}
             value={norwegianPin?.identifikator}
           />
@@ -271,8 +271,8 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         </Column>
         <Column />
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='0.5' />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.25s' }}>
+      <VerticalSeparatorDiv size='0.5' />
+      <AlignStartRow>
         <Column>
           {searchedPerson
             ? (
@@ -289,24 +289,24 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
               )}
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2' />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
+      <VerticalSeparatorDiv size='2' />
+      <AlignStartRow>
         <Column>
           <Undertittel>
             {t('label:fødested')}
           </Undertittel>
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='0.5' />
+      <VerticalSeparatorDiv size='0.5' />
       {_seeNewForm
         ? (
-          <AlignStartRow className='slideInFromLeft'>
+          <AlignStartRow key='showNewForm' className='slideInFromLeft'>
             <Column>
               <Input
                 feil={validation[namespace + '-foedested-by']?.feilmelding}
-                namespace={namespace}
                 id='foedested-by'
                 label={t('label:by')}
+                namespace={namespace}
                 onChanged={onFoedestedByChange}
                 value={personInfo.pinMangler?.foedested.by}
               />
@@ -314,9 +314,9 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             <Column>
               <Input
                 feil={validation[namespace + '-foedested-region']?.feilmelding}
-                namespace={namespace}
                 id='foedested-region'
                 label={t('label:region')}
+                namespace={namespace}
                 onChanged={onFoedestedRegionChange}
                 value={personInfo.pinMangler?.foedested.region}
               />
@@ -337,7 +337,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
           </AlignStartRow>
           )
         : (
-          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.35s' }}>
+          <AlignStartRow key='seeNewForm'>
             <Column>
               <HighContrastFlatknapp
                 mini
@@ -345,7 +345,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
                 onClick={() => setSeeNewForm(true)}
               >
                 <Add />
-                <HorizontalSeparatorDiv data-size='0.5' />
+                <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:fødested') })}
               </HighContrastFlatknapp>
             </Column>

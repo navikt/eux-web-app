@@ -36,7 +36,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
         <Normaltekst>
           {t('label:er-du-sikker')}
         </Normaltekst>
-        <HorizontalSeparatorDiv data-size='0.5' />
+        <HorizontalSeparatorDiv size='0.5' />
         <HighContrastFlatknapp
           mini
           kompakt
@@ -44,7 +44,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
         >
           {t('label:ja')}
         </HighContrastFlatknapp>
-        <HorizontalSeparatorDiv data-size='0.5' />
+        <HorizontalSeparatorDiv size='0.5' />
         <HighContrastFlatknapp
           mini
           kompakt
@@ -62,7 +62,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
           onClick={existingItem ? onBeginRemove : onAddNew}
         >
           {!existingItem ? <Add /> : <Trashcan />}
-          <HorizontalSeparatorDiv data-size='0.5' />
+          <HorizontalSeparatorDiv size='0.5' />
           {!existingItem ? t('el:button-add') : t('el:button-remove')}
         </HighContrastFlatknapp>
         {!existingItem && (

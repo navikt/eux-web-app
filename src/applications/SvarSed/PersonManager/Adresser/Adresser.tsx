@@ -213,7 +213,7 @@ const Adresser: React.FC<AdresseProps> = ({
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
         >
-          <Column data-flex='3'>
+          <Column flex='3'>
             <HighContrastRadioPanelGroup
               checked={index < 0 ? _newType : adresse!.type}
               data-no-border
@@ -228,7 +228,7 @@ const Adresser: React.FC<AdresseProps> = ({
               ]}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setType((e.target.value as AdresseType), index)}
             />
-            <VerticalSeparatorDiv data-size='0.15' />
+            <VerticalSeparatorDiv size='0.15' />
             <HighContrastRadioPanelGroup
               checked={index < 0 ? _newType : adresse!.type}
               data-no-border
@@ -250,7 +250,7 @@ const Adresser: React.FC<AdresseProps> = ({
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0.1s' : (index * 0.3 + 0.1) + 's' }}
         >
-          <Column data-flex='2'>
+          <Column flex='2'>
             <Input
               feil={getErrorFor(index, 'gate')}
               namespace={namespace + idx}
@@ -287,7 +287,7 @@ const Adresser: React.FC<AdresseProps> = ({
               value={index < 0 ? _newPostnummer : adresse?.postnummer}
             />
           </Column>
-          <Column data-flex='2'>
+          <Column flex='2'>
             <Input
               feil={getErrorFor(index, 'by')}
               namespace={namespace + idx}
@@ -304,7 +304,7 @@ const Adresser: React.FC<AdresseProps> = ({
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0.2s' : (index * 0.3 + 0.2) + 's' }}
         >
-          <Column data-flex='1.5'>
+          <Column flex='1.5'>
             <Input
               feil={getErrorFor(index, 'region')}
               namespace={namespace + idx}
@@ -314,7 +314,7 @@ const Adresser: React.FC<AdresseProps> = ({
               value={index < 0 ? _newRegion : adresse?.region}
             />
           </Column>
-          <Column data-flex='1.5'>
+          <Column flex='1.5'>
             <CountrySelect
               data-test-id={namespace + idx + '-land'}
               error={getErrorFor(index, 'land')}
@@ -340,7 +340,7 @@ const Adresser: React.FC<AdresseProps> = ({
             />
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv data-size='2' />
+        <VerticalSeparatorDiv size='2' />
       </>
     )
   }
@@ -361,7 +361,7 @@ const Adresser: React.FC<AdresseProps> = ({
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
-                <HorizontalSeparatorDiv data-size='0.5' />
+                <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:adresse').toLowerCase() })}
               </HighContrastFlatknapp>
             </Column>

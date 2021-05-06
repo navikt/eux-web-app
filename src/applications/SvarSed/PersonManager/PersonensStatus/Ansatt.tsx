@@ -459,7 +459,7 @@ const Ansatt: React.FC<AnsattProps> = ({
             onClick={() => _setSeeNewArbeidsgiver(true)}
           >
             <Add />
-            <HorizontalSeparatorDiv data-size='0.5' />
+            <HorizontalSeparatorDiv size='0.5' />
             {t('el:button-add-new-x', {
               x: t('label:arbeidsgiver').toLowerCase()
             })}
@@ -484,7 +484,7 @@ const Ansatt: React.FC<AnsattProps> = ({
               />
               <Column />
             </AlignStartRow>
-            <VerticalSeparatorDiv data-size='0.5' />
+            <VerticalSeparatorDiv size='0.5' />
             <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
               <Column>
                 <Input
@@ -517,10 +517,10 @@ const Ansatt: React.FC<AnsattProps> = ({
                   onClick={onArbeidsgiverAdd}
                 >
                   <Add />
-                  <HorizontalSeparatorDiv data-size='0.5' />
+                  <HorizontalSeparatorDiv size='0.5' />
                   {t('el:button-add')}
                 </HighContrastKnapp>
-                <HorizontalSeparatorDiv data-size='0.5' />
+                <HorizontalSeparatorDiv size='0.5' />
                 <HighContrastFlatknapp
                   mini
                   kompakt
@@ -541,7 +541,7 @@ const Ansatt: React.FC<AnsattProps> = ({
             onClick={() => _setSeeNewPeriode(true)}
           >
             <Add />
-            <HorizontalSeparatorDiv data-size='0.5' />
+            <HorizontalSeparatorDiv size='0.5' />
             {t('el:button-add-new-x', {
               x: t('label:periode').toLowerCase()
             })}
@@ -572,10 +572,10 @@ const Ansatt: React.FC<AnsattProps> = ({
                   onClick={onPeriodeAdd}
                 >
                   <Add />
-                  <HorizontalSeparatorDiv data-size='0.5' />
+                  <HorizontalSeparatorDiv size='0.5' />
                   {t('el:button-add')}
                 </HighContrastKnapp>
-                <HorizontalSeparatorDiv data-size='0.5' />
+                <HorizontalSeparatorDiv size='0.5' />
                 <HighContrastFlatknapp
                   mini
                   kompakt

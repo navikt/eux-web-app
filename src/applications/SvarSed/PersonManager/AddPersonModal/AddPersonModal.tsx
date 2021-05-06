@@ -251,14 +251,14 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
               <Normaltekst>
                 {p?.fornavn + ' ' + p?.etternavn}
               </Normaltekst>
-              <HorizontalSeparatorDiv data-size='0.5' />
+              <HorizontalSeparatorDiv size='0.5' />
               <GreySpan>
                 {'(' + getPersonLabel(personId) + ')'}
               </GreySpan>
             </FlexBaseSpacedDiv>
             {personId.startsWith('barn[') && (
               <>
-                <HorizontalSeparatorDiv data-size='0.5' />
+                <HorizontalSeparatorDiv size='0.5' />
                 <Barn />
               </>
             )}
@@ -293,7 +293,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
         <Title>
           {t('label:legg-til-fjern-personer')}
         </Title>
-        <VerticalSeparatorDiv data-size='2' />
+        <VerticalSeparatorDiv size='2' />
         <>
           {_replySed.bruker && renderPerson('bruker', brukerNr)}
           {(_replySed as F002Sed).ektefelle && renderPerson('ektefelle', ektefelleNr)}
@@ -301,7 +301,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
           {(_replySed as F002Sed).barn && (_replySed as F002Sed).barn.map((b: any, i: number) => renderPerson(`barn[${i}]`, barnNr + i))}
           <VerticalSeparatorDiv />
           <hr />
-          <VerticalSeparatorDiv data-size='2' />
+          <VerticalSeparatorDiv size='2' />
           <Undertittel>
             {t('el:button-add-new-x', { x: t('label:person').toLowerCase() })}
           </Undertittel>

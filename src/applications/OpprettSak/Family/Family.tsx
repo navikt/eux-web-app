@@ -126,8 +126,8 @@ const Family: React.FC<FamilyProps> = ({
           ))}
           {!_.isEmpty(person!.relasjoner) && _.isEmpty(remainingRelationsFromTPS) && (
             <>
-              <HorizontalSeparatorDiv data-size='0.5' />
-              <VerticalSeparatorDiv data-size='1.5' />
+              <HorizontalSeparatorDiv size='0.5' />
+              <VerticalSeparatorDiv size='1.5' />
               <UndertekstBold>
                 ({t('label:familie-alle-lagt-inn')})
               </UndertekstBold>
@@ -135,8 +135,8 @@ const Family: React.FC<FamilyProps> = ({
           )}
           {_.isEmpty(person!.relasjoner) && (
             <>
-              <HorizontalSeparatorDiv data-size='0.5' />
-              <VerticalSeparatorDiv data-size='1.5' />
+              <HorizontalSeparatorDiv size='0.5' />
+              <VerticalSeparatorDiv size='1.5' />
               <UndertekstBold>
                 ({t('label:ingen-familie-i-tps')})
               </UndertekstBold>
@@ -164,7 +164,7 @@ const Family: React.FC<FamilyProps> = ({
       </FlexDiv>
       <PileCenterDiv>
         <div>
-          <VerticalSeparatorDiv data-size='1.5' />
+          <VerticalSeparatorDiv size='1.5' />
           <Ingress>
             {t('label:family-utland')}
           </Ingress>
@@ -195,7 +195,7 @@ const Family: React.FC<FamilyProps> = ({
           </Knapp>
         </div>
         <div>
-          <VerticalSeparatorDiv data-size='1.5' />
+          <VerticalSeparatorDiv size='1.5' />
           <Ingress>
             {t('label:family-tps')}
           </Ingress>

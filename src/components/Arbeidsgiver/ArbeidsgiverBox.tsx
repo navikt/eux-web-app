@@ -199,7 +199,7 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
       className='slideInFromLeft'
       key={_arbeidsgiverOrgnr}
     >
-      <VerticalSeparatorDiv data-size='0.5' />
+      <VerticalSeparatorDiv size='0.5' />
       <ArbeidsgiverPanel border className={classNames('', { new: newArbeidsgiver })}>
         <FlexCenterSpacedDiv>
           <PaddedFlexDiv className='slideInFromLeft'>
@@ -246,7 +246,7 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
               {_isEditing
                 ? (
                   <>
-                    <VerticalSeparatorDiv data-size='0.5' />
+                    <VerticalSeparatorDiv size='0.5' />
                     <Row>
                       <Column>
                         <HighContrastInput
@@ -330,7 +330,7 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
                 >
                   <TrashcanIcon />
                 </HighContrastFlatknapp>
-                <HorizontalSeparatorDiv data-size='0.5' />
+                <HorizontalSeparatorDiv size='0.5' />
                 <HighContrastFlatknapp
                   kompakt style={{
                     marginTop: '-0.5rem',
@@ -359,10 +359,10 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
                   onClick={onSaveButtonClicked}
                 >
                   <Add />
-                  <HorizontalSeparatorDiv data-size='0.5' />
+                  <HorizontalSeparatorDiv size='0.5' />
                   {t('el:button-add')}
                 </HighContrastKnapp>
-                <HorizontalSeparatorDiv data-size='0.5' />
+                <HorizontalSeparatorDiv size='0.5' />
                 <HighContrastFlatknapp
                   mini
                   kompakt
@@ -387,10 +387,10 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
                     onArbeidsgiverDelete(arbeidsgiver)}
                 >
                   <Trashcan />
-                  <HorizontalSeparatorDiv data-size='0.5' />
+                  <HorizontalSeparatorDiv size='0.5' />
                   {t('el:button-remove')}
                 </HighContrastKnapp>
-                <HorizontalSeparatorDiv data-size='0.5' />
+                <HorizontalSeparatorDiv size='0.5' />
                 <HighContrastFlatknapp
                   mini
                   kompakt
@@ -404,7 +404,7 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
           )}
         </FlexCenterSpacedDiv>
       </ArbeidsgiverPanel>
-      <VerticalSeparatorDiv data-size='0.5' />
+      <VerticalSeparatorDiv size='0.5' />
     </div>
   )
 }

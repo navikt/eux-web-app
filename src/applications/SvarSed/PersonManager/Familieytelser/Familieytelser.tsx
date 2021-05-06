@@ -155,7 +155,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             label={(
               <FlexCenterSpacedDiv>
                 <span>{t('label:beløp') + ' *'}</span>
-                <HorizontalSeparatorDiv data-size='0.5' />
+                <HorizontalSeparatorDiv size='0.5' />
                 <Tooltip placement='top' trigger={['hover']} overlay={<span>{t('message:help-familieytelser-beløp')}</span>}>
                   <HelpProperIcon className='hjelpetekst__ikon' />
                 </Tooltip>

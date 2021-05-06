@@ -16,7 +16,7 @@ const ArbeidsgiverSøk = ({
       onClick={getArbeidsperioder}
     >
       <Search />
-      <HorizontalSeparatorDiv data-size='0.5' />
+      <HorizontalSeparatorDiv size='0.5' />
       {gettingArbeidsperioder
         ? t('message:loading-searching')
         : t('el:button-search-for-x', { x: t('label:arbeidsgiver').toLowerCase() })}

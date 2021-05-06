@@ -246,7 +246,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
         >
-          <Column data-flex='2'>
+          <Column flex='2'>
             <Select
               data-test-id={namespace + idx + '-relasjonType'}
               feil={getErrorFor(index, 'relasjonType')}
@@ -288,7 +288,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
         {(index < 0 ? _newRelasjonType === 'ANNEN' : familierelasjon?.relasjonType === 'ANNEN') && (
           <>
             <AlignStartRow className={classNames('slideInFromLeft')} style={{ animationDelay: index < 0 ? '0.1s' : (index * 0.3 + 0.1) + 's' }}>
-              <Column data-flex='2'>
+              <Column flex='2'>
                 <Input
                   feil={getErrorFor(index, 'annenRelasjonType')}
                   namespace={namespace + idx}
@@ -298,11 +298,11 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                   value={index < 0 ? _newAnnenRelasjonType : familierelasjon?.annenRelasjonType}
                 />
               </Column>
-              <Column data-flex='2' />
+              <Column flex='2' />
             </AlignStartRow>
             <VerticalSeparatorDiv />
             <AlignStartRow className={classNames('slideInFromLeft')} style={{ animationDelay: index < 0 ? '0.1s' : (index * 0.3 + 0.1) + 's' }}>
-              <Column data-flex='2'>
+              <Column flex='2'>
                 <Input
                   feil={getErrorFor(index, 'annenRelasjonPersonNavn')}
                   namespace={namespace + idx}
@@ -326,7 +326,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
             </AlignStartRow>
             <VerticalSeparatorDiv />
             <AlignStartRow className={classNames('slideInFromLeft')} style={{ animationDelay: index < 0 ? '0.2s' : (index * 0.3 + 0.2) + 's' }}>
-              <Column data-flex='2'>
+              <Column flex='2'>
                 <HighContrastRadioPanelGroup
                   checked={index < 0 ? _newBorSammen : familierelasjon?.borSammen}
                   data-test-id={namespace + idx + '-borSammen'}
@@ -342,7 +342,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBorSammen(e.target.value as JaNei, index)}
                 />
               </Column>
-              <Column data-flex='2' />
+              <Column flex='2' />
             </AlignStartRow>
           </>
         )}
@@ -371,7 +371,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
-                <HorizontalSeparatorDiv data-size='0.5' />
+                <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:familierelasjon').toLowerCase() })}
               </HighContrastFlatknapp>
             </Column>

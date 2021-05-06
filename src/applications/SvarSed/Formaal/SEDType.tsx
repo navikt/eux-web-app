@@ -52,7 +52,7 @@ const SEDType: React.FC<SEDTypeProps> = ({
       <Column>
         <FlexCenterDiv>
           <label className='skjemaelement__label' style={{ margin: '0px' }}>{t('label:svar-sed-type')}: </label>
-          <HorizontalSeparatorDiv data-size='0.35' />
+          <HorizontalSeparatorDiv size='0.35' />
           {!editMode && (<>{t('buc:' + replySed.sedType)}</>)}
           {editMode && (
             <>
@@ -65,7 +65,7 @@ const SEDType: React.FC<SEDTypeProps> = ({
                 defaultValue={_.find(sedTypeOptions, s => s.value === sedType)}
                 selectedValue={_.find(sedTypeOptions, s => s.value === sedType)}
               />
-              <HorizontalSeparatorDiv data-size='0.5' />
+              <HorizontalSeparatorDiv size='0.5' />
               <HighContrastFlatknapp
                 mini
                 kompakt
@@ -73,7 +73,7 @@ const SEDType: React.FC<SEDTypeProps> = ({
               >
                 {t('el:button-save')}
               </HighContrastFlatknapp>
-              <HorizontalSeparatorDiv data-size='0.5' />
+              <HorizontalSeparatorDiv size='0.5' />
               <HighContrastFlatknapp
                 mini
                 kompakt
@@ -91,7 +91,7 @@ const SEDType: React.FC<SEDTypeProps> = ({
               onClick={() => setEditMode(true)}
             >
               <Edit />
-              <HorizontalSeparatorDiv data-size='0.5' />
+              <HorizontalSeparatorDiv size='0.5' />
               {t('el:button-edit')}
             </HighContrastFlatknapp>
           )}

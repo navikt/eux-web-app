@@ -81,7 +81,7 @@ const Kontoopplysning: React.FC<KontoopplysningProps> = ({
       <AlignStartRow
         className={classNames('slideInFromLeft')}
       >
-        <Column data-flex='2'>
+        <Column flex='2'>
           <TextAreaDiv>
             <TextArea
               feil={validation[namespace + '-begrunnelse']?.feilmelding}
@@ -122,7 +122,7 @@ const Kontoopplysning: React.FC<KontoopplysningProps> = ({
         </Column>
         <Column />
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv size='2' />
       <AlignStartRow
         className={classNames('slideInFromLeft')}
         style={{ animationDelay: '0.2s' }}
@@ -157,7 +157,7 @@ const Kontoopplysning: React.FC<KontoopplysningProps> = ({
         className={classNames('slideInFromLeft')}
         style={{ animationDelay: '0.3s' }}
       >
-        <Column data-flex='2'>
+        <Column flex='2'>
           <Input
             feil={validation[namespace + '-kontoOrdinaer-iban']?.feilmelding}
             namespace={namespace}
@@ -174,7 +174,7 @@ const Kontoopplysning: React.FC<KontoopplysningProps> = ({
         className={classNames('slideInFromLeft')}
         style={{ animationDelay: '0.4s' }}
       >
-        <Column data-flex='2'>
+        <Column flex='2'>
           <Input
             feil={validation[namespace + '-kontoOrdinaer-swift']?.feilmelding}
             namespace={namespace}

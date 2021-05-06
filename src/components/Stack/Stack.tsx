@@ -105,7 +105,7 @@ const Stack: React.FC<StackProps> = ({
               onClick={() => setAddItem(!_addItem)}
             >
               <Add />
-              <HorizontalSeparatorDiv data-size='0.5' />
+              <HorizontalSeparatorDiv size='0.5' />
               {t('el:button-add-new-x', { x: itemLabel.toLowerCase() })}
             </HighContrastFlatknapp>
           </div>
@@ -118,7 +118,7 @@ const Stack: React.FC<StackProps> = ({
                   <label className='skjemaelement-label'>
                     {selectLabel}
                   </label>
-                  <VerticalSeparatorDiv data-size='0.5' />
+                  <VerticalSeparatorDiv size='0.5' />
                 </>
               )}
               <Select
@@ -131,9 +131,9 @@ const Stack: React.FC<StackProps> = ({
                 options={_itemValues}
               />
             </div>
-            <HorizontalSeparatorDiv data-size='0.5' />
+            <HorizontalSeparatorDiv size='0.5' />
             <PileDiv>
-              {selectLabel && <VerticalSeparatorDiv data-size='1.3' />}
+              {selectLabel && <VerticalSeparatorDiv size='1.3' />}
               <FlexCenterSpacedDiv>
                 <HighContrastKnapp
                   mini
@@ -141,10 +141,10 @@ const Stack: React.FC<StackProps> = ({
                   onClick={onAdd}
                 >
                   <Add />
-                  <HorizontalSeparatorDiv data-size='0.5' />
+                  <HorizontalSeparatorDiv size='0.5' />
                   {t('el:button-add')}
                 </HighContrastKnapp>
-                <HorizontalSeparatorDiv data-size='0.5' />
+                <HorizontalSeparatorDiv size='0.5' />
                 <HighContrastFlatknapp
                   mini
                   kompakt

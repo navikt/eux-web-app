@@ -99,7 +99,7 @@ const GrunnTilOpphør: React.FC<GrunnTilOpphørProps> = ({
           />
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv size='2' />
       {_årsak === 'grunntilopphør-08-annet' && (
         <>
           <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>

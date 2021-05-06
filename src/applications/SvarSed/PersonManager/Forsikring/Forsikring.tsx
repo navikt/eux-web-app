@@ -87,7 +87,7 @@ const Forsikring: React.FC<ForsikringProps> = ({
           />
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv size='2' />
       {_periodeType.map(type => (
         <div key={type}>
           <ExpandingPanel
@@ -116,7 +116,7 @@ const Forsikring: React.FC<ForsikringProps> = ({
               validation={validation}
             />
           </ExpandingPanel>
-          <VerticalSeparatorDiv data-size='2' />
+          <VerticalSeparatorDiv size='2' />
         </div>
       ))}
     </PaddedDiv>

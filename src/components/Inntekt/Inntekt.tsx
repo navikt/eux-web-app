@@ -93,7 +93,7 @@ const Inntekt: React.FC<InntektProps> = ({
                 />
               </Column>
             </AlignStartRow>
-            <VerticalSeparatorDiv data-size='0.5' />
+            <VerticalSeparatorDiv size='0.5' />
             <AlignStartRow>
               <Column>
                 <HighContrastLink href='#'>
@@ -101,7 +101,7 @@ const Inntekt: React.FC<InntektProps> = ({
                 </HighContrastLink>
               </Column>
             </AlignStartRow>
-            <VerticalSeparatorDiv data-size='2' />
+            <VerticalSeparatorDiv size='2' />
           </div>
         )
       }

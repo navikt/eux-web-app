@@ -143,7 +143,7 @@ const PeriodeForDagpenger: React.FC<PeriodeForDagpengerProps> = ({
         />
         <Column />
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>
           <HighContrastRadioGroup
@@ -153,16 +153,16 @@ const PeriodeForDagpenger: React.FC<PeriodeForDagpengerProps> = ({
             legend={t('label:vedtak-angående-alle-barn') + ' *'}
             feil={validation[namespace + '-kjentinstitusjon']?.feilmelding}
           >
-            <VerticalSeparatorDiv data-size='0.5' />
+            <VerticalSeparatorDiv size='0.5' />
             <FlexDiv>
-              <HorizontalSeparatorDiv data-size='0.2' />
+              <HorizontalSeparatorDiv size='0.2' />
               <HighContrastRadio
                 name={namespace + '-barn'}
                 checked={xxx?.kjentInstitusjon === 'ja'}
                 label={t('label:ja')}
                 onClick={() => setKjentInstitusjon('ja')}
               />
-              <HorizontalSeparatorDiv data-size='2' />
+              <HorizontalSeparatorDiv size='2' />
               <HighContrastRadio
                 name={namespace + '-barn'}
                 checked={xxx?.kjentInstitusjon === 'nei'}
@@ -177,7 +177,7 @@ const PeriodeForDagpenger: React.FC<PeriodeForDagpengerProps> = ({
       {!_.isNil(xxx?.kjentInstitusjon) && (
         <>
           <AlignStartRow>
-            <Column data-flex='2'>
+            <Column flex='2'>
               <Input
                 feil={validation[namespace + '-institusjonensNavn']?.feilmelding}
                 namespace={namespace}
@@ -193,7 +193,7 @@ const PeriodeForDagpenger: React.FC<PeriodeForDagpengerProps> = ({
       )}
       {xxx?.kjentInstitusjon === 'ja' && (
         <AlignStartRow>
-          <Column data-flex='2'>
+          <Column flex='2'>
             <Input
               feil={validation[namespace + '-institusjonensId']?.feilmelding}
               namespace={namespace}
@@ -214,7 +214,7 @@ const PeriodeForDagpenger: React.FC<PeriodeForDagpengerProps> = ({
           <AlignStartRow
             className={classNames('slideInFromLeft')}
           >
-            <Column data-flex='2'>
+            <Column flex='2'>
               <Input
                 feil={validation[namespace + '-gate']?.feilmelding}
                 namespace={namespace}
@@ -240,7 +240,7 @@ const PeriodeForDagpenger: React.FC<PeriodeForDagpengerProps> = ({
                 value={xxx?.postnummer}
               />
             </Column>
-            <Column data-flex='2'>
+            <Column flex='2'>
               <Input
                 feil={validation[namespace + '-by']?.feilmelding}
                 namespace={namespace}
@@ -256,7 +256,7 @@ const PeriodeForDagpenger: React.FC<PeriodeForDagpengerProps> = ({
           <AlignStartRow
             className={classNames('slideInFromLeft')}
           >
-            <Column data-flex='1.5'>
+            <Column flex='1.5'>
               <Input
                 feil={validation[namespace + '-region']?.feilmelding}
                 namespace={namespace}
@@ -266,7 +266,7 @@ const PeriodeForDagpenger: React.FC<PeriodeForDagpengerProps> = ({
                 value={xxx?.region}
               />
             </Column>
-            <Column data-flex='1.5'>
+            <Column flex='1.5'>
               <CountrySelect
                 data-test-id={namespace + '-land'}
                 error={validation[namespace + '-land']?.feilmelding}
@@ -280,7 +280,7 @@ const PeriodeForDagpenger: React.FC<PeriodeForDagpengerProps> = ({
               />
             </Column>
           </AlignStartRow>
-          <VerticalSeparatorDiv data-size='2' />
+          <VerticalSeparatorDiv size='2' />
         </>
       )}
 

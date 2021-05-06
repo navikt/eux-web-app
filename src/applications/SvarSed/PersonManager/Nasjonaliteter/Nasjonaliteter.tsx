@@ -10,7 +10,7 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
-import { UndertekstBold } from 'nav-frontend-typografi'
+import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import { Column, HighContrastFlatknapp, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -47,9 +47,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
   const [_newLand, _setNewLand] = useState<string | undefined>(undefined)
   const [_newFradato, _setNewFradato] = useState<string>('')
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Statsborgerskap>((s: Statsborgerskap): string => {
-    return s.land
-  })
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Statsborgerskap>((s: Statsborgerskap): string => s.land)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationNasjonalitetProps>({}, validateNasjonalitet)
 
@@ -133,15 +131,16 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
       <>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
+          style={{ animationDelay: index < 0 ? '0s' : (index * 0.05) + 's' }}
         >
           <Column>
             <CountrySelect
+              key={namespace + idx + '-land' + statsborgerskap!.land}
               data-test-id={namespace + idx + '-land'}
               error={getErrorFor(index, 'land')}
               id={namespace + idx + '-land'}
-              menuPortalTarget={document.body}
               includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
+              menuPortalTarget={document.body}
               onOptionSelected={(e: any) => onLandSelected(e.value, index)}
               placeholder={t('el:placeholder-select-default')}
               values={index < 0 ? _newLand : statsborgerskap!.land}
@@ -177,7 +176,11 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
 
   return (
     <PaddedDiv>
-      <AlignStartRow className='slideInFromLeft'>
+      <Undertittel>
+        {t('label:nasjonalitet')}
+      </Undertittel>
+      <VerticalSeparatorDiv size='2' />
+      <AlignStartRow>
         <Column>
           <UndertekstBold>
             {t('label:nasjonalitet') + ' *'}
@@ -197,7 +200,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
       {_seeNewForm
         ? renderRow(null, -1)
         : (
-          <AlignStartRow className='slideInFromLeft'>
+          <AlignStartRow>
             <Column>
               <HighContrastFlatknapp
                 mini
@@ -205,7 +208,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
-                <HorizontalSeparatorDiv data-size='0.5' />
+                <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:nasjonalitet').toLowerCase() })}
               </HighContrastFlatknapp>
 

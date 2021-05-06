@@ -137,7 +137,7 @@ const SendSEDModal = <CustomLocalStorageContent extends any = any>({
                         />
                       </FlexCenterSpacedDiv>
                     </div>
-                    <VerticalSeparatorDiv data-size='0.5' />
+                    <VerticalSeparatorDiv size='0.5' />
                   </PileDiv>
                 </SectionDiv>
               )}

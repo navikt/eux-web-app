@@ -237,7 +237,7 @@ const Motregning: React.FC<MotregningProps> = ({
             />
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv data-size='0.5' />
+        <VerticalSeparatorDiv size='0.5' />
       </>
     )
   }
@@ -280,13 +280,13 @@ const Motregning: React.FC<MotregningProps> = ({
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
-                <HorizontalSeparatorDiv data-size='0.5' />
+                <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:barn').toLowerCase() })}
               </HighContrastFlatknapp>
             </Column>
           </Row>
           )}
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv size='2' />
       <UndertekstBold>
         {t('label:informasjon-om-familieytelser')}
       </UndertekstBold>
@@ -346,7 +346,7 @@ const Motregning: React.FC<MotregningProps> = ({
         className={classNames('slideInFromLeft')}
         style={{ animationDelay: '0.3s' }}
       >
-        <Column data-flex='2'>
+        <Column flex='2'>
           <Input
             feil={validation[namespace + '-avgrensing']?.feilmelding}
             namespace={namespace}
@@ -363,7 +363,7 @@ const Motregning: React.FC<MotregningProps> = ({
         className={classNames('slideInFromLeft')}
         style={{ animationDelay: '0.4s' }}
       >
-        <Column data-flex='2'>
+        <Column flex='2'>
           <Input
             feil={validation[namespace + '-mottakersNavn']?.feilmelding}
             namespace={namespace}
@@ -380,7 +380,7 @@ const Motregning: React.FC<MotregningProps> = ({
         className={classNames('slideInFromLeft')}
         style={{ animationDelay: '0.5s' }}
       >
-        <Column data-flex='2'>
+        <Column flex='2'>
           <TextAreaDiv>
             <TextArea
               feil={validation[namespace + '-grunnerTilAnmodning']?.feilmelding}
@@ -399,7 +399,7 @@ const Motregning: React.FC<MotregningProps> = ({
         className={classNames('slideInFromLeft')}
         style={{ animationDelay: '0.5s' }}
       >
-        <Column data-flex='2'>
+        <Column flex='2'>
           <TextAreaDiv>
             <TextArea
               feil={validation[namespace + '-ytterligereInfo']?.feilmelding}

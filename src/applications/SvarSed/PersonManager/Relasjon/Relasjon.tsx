@@ -125,9 +125,9 @@ const Relasjon: React.FC<RelasjonProps> = ({
       <Undertittel className='slideInFromLeft'>
         {t('label:relasjon-til-barn')}
       </Undertittel>
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv size='2' />
       <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-        <Column data-flex='2'>
+        <Column flex='2'>
           <HighContrastRadioPanelGroup
             checked={barnetilhoerighet?.relasjonTilPerson}
             data-no-border
@@ -142,7 +142,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
             ]}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRelasjon(e.target.value as BarnRelasjon)}
           />
-          <VerticalSeparatorDiv data-size='0.25' />
+          <VerticalSeparatorDiv size='0.25' />
           <HighContrastRadioPanelGroup
             checked={barnetilhoerighet?.relasjonTilPerson}
             data-no-border
@@ -178,7 +178,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
         </Column>
         <Column />
       </Row>
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv size='2' />
       <Undertittel className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
         {t('label:relasjonens-varighet')}
       </Undertittel>
@@ -196,7 +196,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
         />
         <Column />
       </Row>
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv size='2' />
       <Row className='slideInFromLeft' style={{ animationDelay: '0.5s' }}>
         <Column>
           <HighContrastRadioPanelGroup
@@ -221,7 +221,7 @@ const Relasjon: React.FC<RelasjonProps> = ({
         {t('label:barn-i-hustand-spørsmål')}
       </Undertittel>
       <AlignCenterRow className='slideInFromLeft' style={{ animationDelay: '0.7s' }}>
-        <Column data-flex='2'>
+        <Column flex='2'>
           <Normaltekst>
             {t('label:barn-i-hustand-spørsmål-1') + ' *'}
           </Normaltekst>
@@ -242,9 +242,9 @@ const Relasjon: React.FC<RelasjonProps> = ({
           />
         </Column>
       </AlignCenterRow>
-      <VerticalSeparatorDiv data-size='0.2' />
+      <VerticalSeparatorDiv size='0.2' />
       <AlignCenterRow className='slideInFromLeft' style={{ animationDelay: '0.8s' }}>
-        <Column data-flex='2'>
+        <Column flex='2'>
           <Normaltekst>
             {t('label:barn-i-hustand-spørsmål-2') + ' *'}
           </Normaltekst>
@@ -265,9 +265,9 @@ const Relasjon: React.FC<RelasjonProps> = ({
           />
         </Column>
       </AlignCenterRow>
-      <VerticalSeparatorDiv data-size='0.2' />
+      <VerticalSeparatorDiv size='0.2' />
       <AlignCenterRow className='slideInFromLeft' style={{ animationDelay: '0.9s' }}>
-        <Column data-flex='2'>
+        <Column flex='2'>
           <Normaltekst>
             {t('label:barn-i-hustand-spørsmål-3') + ' *'}
           </Normaltekst>
@@ -288,9 +288,9 @@ const Relasjon: React.FC<RelasjonProps> = ({
           />
         </Column>
       </AlignCenterRow>
-      <VerticalSeparatorDiv data-size='0.2' />
+      <VerticalSeparatorDiv size='0.2' />
       <AlignCenterRow className='slideInFromLeft' style={{ animationDelay: '1.0s' }}>
-        <Column data-flex='2'>
+        <Column flex='2'>
           <Normaltekst>
             {t('label:barn-i-hustand-spørsmål-4') + ' *'}
           </Normaltekst>

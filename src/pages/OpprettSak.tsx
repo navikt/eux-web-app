@@ -751,7 +751,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
               </Row>
               {!isValid(_validation) && (
                 <>
-                  <VerticalSeparatorDiv data-size='2' />
+                  <VerticalSeparatorDiv size='2' />
                   <Row>
                     <Column>
                       <Feiloppsummering
@@ -760,7 +760,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                         feil={Object.values(_validation).filter(v => v !== undefined) as Array<FeiloppsummeringFeil>}
                       />
                     </Column>
-                    <HorizontalSeparatorDiv data-size='2' />
+                    <HorizontalSeparatorDiv size='2' />
                     <Column />
                   </Row>
                 </>
@@ -776,11 +776,11 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     <span>
                       {t('label:saksnummer') + ': ' + opprettetSak.rinasaksnummer}
                     </span>
-                    <HorizontalSeparatorDiv data-size='0.25' />
+                    <HorizontalSeparatorDiv size='0.25' />
                     <span>
                       {t('label:er-opprettet')}.
                     </span>
-                    <HorizontalSeparatorDiv data-size='0.25' />
+                    <HorizontalSeparatorDiv size='0.25' />
                     {opprettetSak.url && (
                       <Lenke
                         className='vedlegg__lenke'

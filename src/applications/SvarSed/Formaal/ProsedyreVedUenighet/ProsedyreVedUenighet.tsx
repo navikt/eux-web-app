@@ -164,7 +164,7 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: (index * 0.1) + 's' }}
         >
-          <Column data-flex='2'>
+          <Column flex='2'>
             <Select
               data-test-id={namespace + '-grunner' + idx + '-grunn'}
               feil={getErrorFor(index, 'grunn')}
@@ -186,7 +186,7 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: '0.1s' }}
         >
-          <Column data-flex='2'>
+          <Column flex='2'>
             <VerticalSeparatorDiv />
             <CheckboxGruppe
               data-test-id={namespace + '-grunner' + idx + '-person'}
@@ -201,7 +201,7 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
                     checked={isChecked('søker')}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPerson('søker', e.target.checked, index)}
                   />
-                  <VerticalSeparatorDiv data-size='0.5' />
+                  <VerticalSeparatorDiv size='0.5' />
                 </>
               )}
               {!_.isNil((replySed as F002Sed).ektefelle) && (
@@ -211,7 +211,7 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
                     checked={isChecked('partner')}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPerson('partner', e.target.checked, index)}
                   />
-                  <VerticalSeparatorDiv data-size='0.5' />
+                  <VerticalSeparatorDiv size='0.5' />
                 </>
               )}
               {!_.isNil((replySed as F002Sed).ektefelle) && (
@@ -221,7 +221,7 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
                     checked={isChecked('annen-person')}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPerson('annen-person', e.target.checked, index)}
                   />
-                  <VerticalSeparatorDiv data-size='0.5' />
+                  <VerticalSeparatorDiv size='0.5' />
                 </>
               )}
               <>
@@ -230,7 +230,7 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
                   checked={isChecked('avdød')}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPerson('avdød', e.target.checked, index)}
                 />
-                <VerticalSeparatorDiv data-size='0.5' />
+                <VerticalSeparatorDiv size='0.5' />
               </>
             </CheckboxGruppe>
             <VerticalSeparatorDiv />
@@ -270,7 +270,7 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
-                <HorizontalSeparatorDiv data-size='0.5' />
+                <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:reason').toLowerCase() })}
               </HighContrastFlatknapp>
             </Column>

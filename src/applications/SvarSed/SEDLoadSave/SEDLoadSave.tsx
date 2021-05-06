@@ -114,7 +114,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
                         <UndertekstBold>
                           {t('label:navn') + ': '}
                         </UndertekstBold>
-                        <HorizontalSeparatorDiv data-size='0.5' />
+                        <HorizontalSeparatorDiv size='0.5' />
                         <Normaltekst>
                           {savedEntry.name}
                         </Normaltekst>
@@ -124,7 +124,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
                         <UndertekstBold>
                           {t('label:dato') + ': '}
                         </UndertekstBold>
-                        <HorizontalSeparatorDiv data-size='0.5' />
+                        <HorizontalSeparatorDiv size='0.5' />
                         <Normaltekst>
                           {savedEntry.date}
                         </Normaltekst>
@@ -135,7 +135,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
                         <UndertekstBold>
                           {t('label:saksnummer') + ': '}
                         </UndertekstBold>
-                        <HorizontalSeparatorDiv data-size='0.5' />
+                        <HorizontalSeparatorDiv size='0.5' />
                         <Normaltekst>
                           {(savedEntry.content as any).saksnummer}
                         </Normaltekst>
@@ -145,13 +145,13 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
                         <UndertekstBold>
                           {t('label:type') + ': '}
                         </UndertekstBold>
-                        <HorizontalSeparatorDiv data-size='0.5' />
+                        <HorizontalSeparatorDiv size='0.5' />
                         <Normaltekst>
                           {(savedEntry.content as any).sedType}
                         </Normaltekst>
                       </FlexBaseSpacedDiv>
                     </FlexCenterSpacedDiv>
-                    <VerticalSeparatorDiv data-size='0.5' />
+                    <VerticalSeparatorDiv size='0.5' />
                     <FlexBaseSpacedDiv>
                       <HighContrastFlatknapp
                         mini

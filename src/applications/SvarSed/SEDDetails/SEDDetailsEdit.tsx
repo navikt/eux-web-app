@@ -88,7 +88,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       <UndertekstBold>
         {t('label:periode')}
       </UndertekstBold>
-      <VerticalSeparatorDiv data-size='0.5' />
+      <VerticalSeparatorDiv size='0.5' />
       {_anmodningsperiode && (
         <>
           <FlexDiv className='slideInFromLeft'>
@@ -102,7 +102,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               value={_anmodningsperiode.startdato}
               placeholder={t('el:placeholder-date-default')}
             />
-            <HorizontalSeparatorDiv data-size='0.35' />
+            <HorizontalSeparatorDiv size='0.35' />
             <HighContrastInput
               data-test-id='seddetails-anmodningsperiode-sluttdato'
               feil={validation['seddetails-anmodningsperiode-sluttdato']
@@ -114,7 +114,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               placeholder={t('el:placeholder-date-default')}
             />
           </FlexDiv>
-          <VerticalSeparatorDiv data-size='0.5' />
+          <VerticalSeparatorDiv size='0.5' />
         </>
       )}
       {_anmodningsperioder && _anmodningsperioder.map((p, i) => (
@@ -130,7 +130,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               value={_anmodningsperioder[i].startdato}
               placeholder={t('el:placeholder-date-default')}
             />
-            <HorizontalSeparatorDiv data-size='0.35' />
+            <HorizontalSeparatorDiv size='0.35' />
             <HighContrastInput
               data-test-id={'seddetails-anmodningsperioder[' + i + ']-sluttdato'}
               feil={validation['seddetails-anmodningsperioder[' + i + ']-sluttdato']
@@ -142,14 +142,14 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               placeholder={t('el:placeholder-date-default')}
             />
           </FlexDiv>
-          <VerticalSeparatorDiv data-size='0.5' />
+          <VerticalSeparatorDiv size='0.5' />
         </div>
       ))}
       <VerticalSeparatorDiv />
       <UndertekstBold>
         {t('label:søker')}
       </UndertekstBold>
-      <VerticalSeparatorDiv data-size='0.5' />
+      <VerticalSeparatorDiv size='0.5' />
       <FlexDiv className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
         <HighContrastInput
           data-test-id='seddetails-søker-fornavn'
@@ -161,7 +161,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           value={_brukerFornavn}
           placeholder={t('label:fornavn')}
         />
-        <HorizontalSeparatorDiv data-size='0.35' />
+        <HorizontalSeparatorDiv size='0.35' />
         <HighContrastInput
           data-test-id='seddetails-søker-etternavn'
           feil={validation['seddetails-søker-etternavn']
@@ -177,7 +177,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       <UndertekstBold>
         {t('label:partner')}
       </UndertekstBold>
-      <VerticalSeparatorDiv data-size='0.5' />
+      <VerticalSeparatorDiv size='0.5' />
       <FlexDiv className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
         <HighContrastInput
           data-test-id='seddetails-ektefelle-fornavn'
@@ -189,7 +189,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           value={_ektefelleFornavn}
           placeholder={t('label:fornavn')}
         />
-        <HorizontalSeparatorDiv data-size='0.35' />
+        <HorizontalSeparatorDiv size='0.35' />
         <HighContrastInput
           data-test-id='seddetails-ektefelle-etternavn'
           feil={validation['seddetails-ektefelle-etternavn']
@@ -215,7 +215,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           placeholder={t('el:placeholder-input-default')}
         />
       </div>
-      <VerticalSeparatorDiv data-size='0.5' />
+      <VerticalSeparatorDiv size='0.5' />
       <div className='slideInFromLeft' style={{ animationDelay: '0.6s' }}>
         <HighContrastRadioGroup
           legend={t('label:type-krav')}
@@ -291,7 +291,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
         >
           {t('el:button-save')}
         </HighContrastHovedknapp>
-        <HorizontalSeparatorDiv data-size='0.5' />
+        <HorizontalSeparatorDiv size='0.5' />
         <HighContrastKnapp
           kompakt mini
           onClick={onCancel}

@@ -166,12 +166,12 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
         <Systemtittel>
           {t('label:svarsed')}
         </Systemtittel>
-        <VerticalSeparatorDiv data-size='2' />
+        <VerticalSeparatorDiv size='2' />
         <AlignStartRow
           className={classNames('slideInFromLeft', { feil: _validation.saksnummerOrFnr })}
         >
-          <HorizontalSeparatorDiv data-size='0.2' />
-          <Column data-flex='2'>
+          <HorizontalSeparatorDiv size='0.2' />
+          <Column flex='2'>
             <PileDiv>
               <FlexDiv>
                 <HighContrastInput
@@ -198,7 +198,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                   </HighContrastKnapp>
                 </div>
               </FlexDiv>
-              <VerticalSeparatorDiv data-size='0.5' />
+              <VerticalSeparatorDiv size='0.5' />
               <Normaltekst>
                 {_validMessage}
               </Normaltekst>
@@ -206,10 +206,11 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
           </Column>
         </AlignStartRow>
 
-        <VerticalSeparatorDiv data-size='3' />
+        <VerticalSeparatorDiv size='3' />
 
         {seds && (
           <HighContrastRadioGroup
+            style={{marginLeft: '0.1rem', marginRight: '0.1rem'}}
             legend={(
               <>
                 <span>{
@@ -218,7 +219,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                 })
               }
                 </span>
-                <HorizontalSeparatorDiv data-size='0.3' />
+                <HorizontalSeparatorDiv size='0.3' />
                 <span style={{ fontSize: '130%' }}>
                   {seds.length}
                 </span>
@@ -299,7 +300,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                             <span>
                               {t('label:gå-til-rina')}
                             </span>
-                            <HorizontalSeparatorDiv data-size='0.35' />
+                            <HorizontalSeparatorDiv size='0.35' />
                             <ExternalLink />
                           </HighContrastLink>
                         </LeftDiv>
@@ -307,12 +308,12 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                           <Normaltekst>
                             {t('label:motpart')}:
                           </Normaltekst>
-                          <HorizontalSeparatorDiv data-size='0.35' />
+                          <HorizontalSeparatorDiv size='0.35' />
                           <Normaltekst>
                             {sed.motpart.join(', ')}
                           </Normaltekst>
                         </FlexDiv>
-                        <VerticalSeparatorDiv data-size='0.3' />
+                        <VerticalSeparatorDiv size='0.3' />
                         <Etikett>
                           {t('label:siste-oppdatert') + ': ' + sed.sistEndretDato}
                         </Etikett>
@@ -336,7 +337,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                             {connectedSed.status === 'received' && <ReceivedIcon />}
                             {connectedSed.status === 'sent' && <SentIcon />}
                             {connectedSed.status === 'new' && <FileIcon />}
-                            <VerticalSeparatorDiv data-size='0.35' />
+                            <VerticalSeparatorDiv size='0.35' />
                             <Undertekst>
                               {t('app:status-received-' + connectedSed.status)}
                             </Undertekst>
@@ -369,11 +370,11 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                                 <span>
                                   {t('label:gå-til-sed-i-rina')}
                                 </span>
-                                <HorizontalSeparatorDiv data-size='0.35' />
+                                <HorizontalSeparatorDiv size='0.35' />
                                 <ExternalLink />
                               </HighContrastLink>
                             </FlexDiv>
-                            <VerticalSeparatorDiv data-size='0.35' />
+                            <VerticalSeparatorDiv size='0.35' />
                             <div>
                               <Etikett>
                                 {t('label:siste-oppdatert') + ': ' + connectedSed.sistEndretDato}

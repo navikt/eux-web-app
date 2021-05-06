@@ -162,7 +162,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
           />
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv size='2' />
       <Undertittel className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
         {t('label:grant-date')}
       </Undertittel>

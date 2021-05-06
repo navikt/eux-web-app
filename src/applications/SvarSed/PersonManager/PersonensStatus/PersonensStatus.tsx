@@ -118,7 +118,7 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
       )}
       {_arbeidsforhold && (_arbeidsforhold !== 'arbeidsforhold-1' && _arbeidsforhold !== 'arbeidsforhold-2') && (
         <>
-          <VerticalSeparatorDiv data-size='3' />
+          <VerticalSeparatorDiv size='3' />
           <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
             <Column>
               <WithSubsidies
@@ -137,7 +137,7 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
       )}
       {_arbeidsforhold && (
         <>
-          <VerticalSeparatorDiv data-size='3' />
+          <VerticalSeparatorDiv size='3' />
           <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
             <Column>
               <Avsenderlandet
@@ -150,7 +150,7 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
               />
             </Column>
           </AlignStartRow>
-          <VerticalSeparatorDiv data-size='3' />
+          <VerticalSeparatorDiv size='3' />
           <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
             <Column>
               <GrunnlagforBosetting

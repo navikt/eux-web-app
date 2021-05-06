@@ -22,7 +22,7 @@ const ValidationBox: React.FC<ValidationBoxProps> = ({
   }
   return (
     <div>
-      <VerticalSeparatorDiv data-size='2' />
+      <VerticalSeparatorDiv size='2' />
       <Row>
         <Column>
           <Feiloppsummering
@@ -55,7 +55,7 @@ const ValidationBox: React.FC<ValidationBoxProps> = ({
             )}
           />
         </Column>
-        <HorizontalSeparatorDiv data-size='2' />
+        <HorizontalSeparatorDiv size='2' />
         <Column />
       </Row>
     </div>
