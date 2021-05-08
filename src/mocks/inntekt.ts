@@ -1,40 +1,65 @@
-export default [{
-  arbeidsgiver: {
-    navn: 'Bø Lensmannskontor',
-    orgnr: '309867902',
-    prosent: '80%',
-    sisteLønn: '2018-04-18'
-  },
-  lønn: [{
-    fra: '2017-12',
+export default {
+  uriInntektRegister: 'http://www.nav.no',
+  inntektsmaaneder: [
+    {
+      aarMaaned: '2017-09',
+      orgNr: '309867902',
+      arbeidsgiverNavn: 'Bø Lensmannskontor',
+      inntektType: 'lønn',
+      beloep: 36253.45
+    }, {
+      aarMaaned: '2017-10',
+      orgNr: '309867902',
+      arbeidsgiverNavn: 'Bø Lensmannskontor',
+      inntektType: 'lønn',
+      beloep: 36253.45
+    }, {
+      aarMaaned: '2017-11',
+      orgNr: '309867902',
+      arbeidsgiverNavn: 'Bø Lensmannskontor',
+      inntektType: 'lønn',
+      beloep: 36253.45
+    },{
+    aarMaaned: '2017-12',
+    orgNr: '309867902',
+    arbeidsgiverNavn: 'Bø Lensmannskontor',
+    inntektType: 'lønn',
     beloep: 36253.45
   }, {
-    fra: '2018-01',
+    aarMaaned: '2018-01',
+    orgNr: '309867902',
+    arbeidsgiverNavn: 'Bø Lensmannskontor',
+    inntektType: 'lønn',
     beloep: 36253.45
   }, {
-    fra: '2018-02',
+    aarMaaned: '2018-02',
+    orgNr: '309867902',
+    arbeidsgiverNavn: 'Bø Lensmannskontor',
+    inntektType: 'lønn',
     beloep: 36253.45
   }, {
-    fra: '2018-03',
+    aarMaaned: '2018-03',
+    orgNr: '309867902',
+    arbeidsgiverNavn: 'Bø Lensmannskontor',
+    inntektType: 'lønn',
     beloep: 36253.45
   }, {
-    fra: '2018-04',
+    aarMaaned: '2018-04',
+    orgNr: '309867902',
+    arbeidsgiverNavn: 'Bø Lensmannskontor',
+    inntektType: 'lønn',
     beloep: 36253.45
-  }],
-  gjennomsnitt: 36253.45
-}, {
-  arbeidsgiver: {
-    navn: 'Eiken og Torsken',
-    orgnr: '434634563',
-    prosent: '80%',
-    sisteLønn: '2019-04-18'
-  },
-  lønn: [{
-    fra: '2019-03',
-    beloep: 38253.45
+  },  {
+    aarMaaned: '2019-03',
+    orgNr: '434634563',
+    arbeidsgiverNavn: 'Eiken og Torsken',
+    inntektType: 'lønn',
+    beloep: 36253.45
   }, {
-    fra: '2019-04',
-    beloep: 42253.45
-  }],
-  gjennomsnitt: 40000.45
-}]
+    aarMaaned: '2019-04',
+    orgNr: '434634563',
+    arbeidsgiverNavn: 'Eiken og Torsken',
+    inntektType: 'lønn',
+    beloep: 36253.45
+  }]
+}

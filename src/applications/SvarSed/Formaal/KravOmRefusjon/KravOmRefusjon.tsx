@@ -66,12 +66,6 @@ const KravOmRefusjon: React.FC<KravOmRefusjonProps> = ({
             href='#' onClick={(e: any) => {
               e.preventDefault()
               seeKontoopplysninger()
-              // have to wait 0.1 seconds so it comes to DOM first
-              setTimeout(() => {
-                document.getElementById('kontoopplysning')?.scrollIntoView({
-                  behavior: 'smooth'
-                })
-              }, 100)
             }}
           >
             {t('label:oppgi-kontoopplysninger')}

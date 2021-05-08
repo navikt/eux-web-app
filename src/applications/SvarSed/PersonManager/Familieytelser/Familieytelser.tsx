@@ -166,6 +166,8 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
         </Column>
         <Column>
           <CountrySelect
+            key={motregning?.valuta ? _currencyData.findByValue(motregning?.valuta) : ''}
+            closeMenuOnSelect={true}
             ariaLabel={t('label:valuta')}
             data-test-id={namespace + '-valuta'}
             error={validation[namespace + '-valuta']?.feilmelding}

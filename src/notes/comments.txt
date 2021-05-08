@@ -3,7 +3,6 @@ Clean ActionTypes later
 Clean Attachments later
 
 1. na familierelasjon, pode ser que envie borSammen, etc com REPA/EKTE/etc. Confirmar que backend limpa
-3. Ligar arbeidsgiver => perioder
 4. familie.motregninger[0] sounds bad
 5. Antall det innvilges for?!
 6. Where are the mandatory / optional fields?
@@ -18,8 +17,24 @@ test:
 13077117754 m/inntekt og arbeidsperioder i Q1
 
 ui improvs:
-
-- remover slideAnimate
+- onXXXchange
+- rever slideAnimate 0.05
 - meter keys para melhor ver o que muda
+- accessibility
+     - desligar css
+     - div onclick /role=buttton
+     - <div id="saveChanges" tabindex="0" role="button" aria-pressed="false">Save</div>
+     -  label for?
+     - usar listas
+     - role=alert
+       aria-checked="false"
+        aria-label/ aria-labelledby
+       aria-describedby attr
+       required / aria-required.
+       aria-invalid
+       react-axe
+
 - rever høykontrast
 - unit tests
+
+refactor: replace errrorboundary

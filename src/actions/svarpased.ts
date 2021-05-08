@@ -221,10 +221,10 @@ export const removeArbeidsgiver: ActionCreator<ActionWithPayload> = (
 })
 
 export const fetchInntekt: ActionCreator<ThunkResult<ActionWithPayload>> = (
-  fnr: string
+  fnr: string, fom?: string, tom?: string
 ): ThunkResult<ActionWithPayload> => {
   return call({
-    url: sprintf(urls.API_INNTEKT_URL, { fnr: fnr }),
+    url: fom ? sprintf(urls.API_INNTEKT_FOM_TOM_URL, { fnr, fom, tom }) : sprintf(urls.API_INNTEKT_URL, { fnr }),
     method: 'GET',
     expectedPayload: mockInntekt,
     type: {

@@ -319,6 +319,8 @@ const Adresser: React.FC<AdresseProps> = ({
           </Column>
           <Column flex='1.5'>
             <CountrySelect
+              closeMenuOnSelect={true}
+              key={index < 0 ? _newLand : adresse?.land}
               data-test-id={namespace + idx + '-land'}
               error={getErrorFor(index, 'land')}
               id={namespace + idx + '-land'}

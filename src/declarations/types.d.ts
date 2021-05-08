@@ -101,28 +101,19 @@ export interface OldFamilieRelasjon extends Person {
   nasjonalitet?: string
 }
 
-/* export interface Inntekt {
-  fraDato: string
-  tilDato: string
-  beloep: number
-  type: string
-} */
-
 export interface IInntekt {
-  arbeidsgiver: {
-    navn: string
-    orgnr: string
-    prosent: string
-    sisteLønn: string
-  }
-  lønn: Array<{
-    fra: string
-    beloep: number
-  }>
-  gjennomsnitt: number
+  aarMaaned: string
+  orgNr: string
+  arbeidsgiverNavn: string
+  inntektType: string
+  beloep: number
+  inntektBeskrivelse: string
 }
 
-export type IInntekter = Array<IInntekt>
+export interface IInntekter {
+  uriInntektRegister: string
+  inntektsmaaneder: Array<IInntekt>
+}
 
 export interface Institusjon {
   institusjonsID: string

@@ -268,6 +268,8 @@ const PeriodeForDagpenger: React.FC<PeriodeForDagpengerProps> = ({
             </Column>
             <Column flex='1.5'>
               <CountrySelect
+                key={xxx?.land}
+                closeMenuOnSelect={true}
                 data-test-id={namespace + '-land'}
                 error={validation[namespace + '-land']?.feilmelding}
                 id={namespace + '-land'}

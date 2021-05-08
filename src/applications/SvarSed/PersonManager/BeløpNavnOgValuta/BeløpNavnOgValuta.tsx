@@ -147,6 +147,8 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
         </Column>
         <Column>
           <CountrySelect
+            key={_currencyData.findByValue(ytelse?.valuta ?? '')}
+            closeMenuOnSelect={true}
             ariaLabel={t('label:valuta')}
             data-test-id={namespace + '-valuta'}
             error={validation[namespace + '-valuta']?.feilmelding}

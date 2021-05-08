@@ -37,9 +37,9 @@ const SvarPåForespørsel: React.FC<SvarPåForespørselProps> = ({
 }:SvarPåForespørselProps): JSX.Element => {
   const { t } = useTranslation()
   // TODO this
-  const target = 'xxx-sisteansettelsesforhold'
+  const target = 'xxx-svarpaforespørsel'
   const xxx: any = _.get(replySed, target)
-  const namespace = `${parentNamespace}-${personID}-sisteansettelsesforhold`
+  const namespace = `${parentNamespace}-${personID}-svarpaforespørsel`
 
   const setSvar = (newSvar: string) => {
     updateReplySed(`${target}.svar`, newSvar.trim())
@@ -96,7 +96,7 @@ const SvarPåForespørsel: React.FC<SvarPåForespørselProps> = ({
       <AlignStartRow className='slideInFromLeft'>
         <Column>
           <Undertittel>
-            {t('label:siste-ansettelsesforhold')}
+            {t('label:svar-på-forespørsel')}
           </Undertittel>
         </Column>
       </AlignStartRow>

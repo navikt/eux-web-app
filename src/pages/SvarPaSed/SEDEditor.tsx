@@ -70,7 +70,6 @@ const mapState = (state: State): any => ({
 const mapStateTwo = (state: State): any => ({
   arbeidsgivere: state.svarpased.valgteArbeidsgivere,
   familieRelasjoner: state.svarpased.familierelasjoner,
-  inntekter: state.svarpased.selectedInntekter,
   sed: state.svarpased.replySed
 })
 

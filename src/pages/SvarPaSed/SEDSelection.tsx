@@ -65,18 +65,15 @@ const SEDPanel = styled(HighContrastPanel)`
 `
 
 const mapState = (state: State): any => ({
-  rinasaksnummerOrFnrParam: state.app.params.rinasaksnummerOrFnr,
-
+  highContrast: state.ui.highContrast,
   queryingSaksnummerOrFnr: state.loading.queryingSaksnummerOrFnr,
   queryingReplySed: state.loading.queryingReplySed,
-
+  parentSed: state.svarpased.parentSed,
   previousParentSed: state.svarpased.previousParentSed,
   previousReplySed: state.svarpased.previousReplySed,
-  parentSed: state.svarpased.parentSed,
-  seds: state.svarpased.seds,
   replySed: state.svarpased.replySed,
-
-  highContrast: state.ui.highContrast
+  rinasaksnummerOrFnrParam: state.app.params.rinasaksnummerOrFnr,
+  seds: state.svarpased.seds
 })
 
 export interface SvarPaSedProps {
@@ -90,18 +87,15 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const {
-    rinasaksnummerOrFnrParam,
-
-    queryingSaksnummerOrFnr,
-    queryingReplySed,
-
+    highContrast,
+    parentSed,
     previousParentSed,
     previousReplySed,
-    parentSed,
+    queryingSaksnummerOrFnr,
+    queryingReplySed,
     replySed,
-    seds,
-
-    highContrast
+    rinasaksnummerOrFnrParam,
+    seds
   }: any = useSelector<State, any>(mapState)
   const [_filter, _setFilter] = useState<string | undefined>(undefined)
   const [_saksnummerOrFnr, _setSaksnummerOrFnr] = useState<string>(rinasaksnummerOrFnrParam ?? '')
@@ -111,7 +105,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
   const onSaksnummerOrFnrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value
     dispatch(appActions.cleanData())
-    _resetValidation('step1-saksnummerOrFnr')
+    _resetValidation('sedselection-saksnummerOrFnr')
     _setSaksnummerOrFnr(query)
     const result = validator.idnr(query)
     if (result.status !== 'valid') {
@@ -136,10 +130,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
   }
 
   const onParentSedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedSed: string | undefined = e.target.value
-    if (selectedSed) {
-      dispatch(svarpasedActions.setParentSed(selectedSed))
-    }
+    dispatch(svarpasedActions.setParentSed(e.target.value))
   }
 
   const onReplySedClick = (connectedSed: ConnectedSed, saksnummer: string) => {
@@ -172,26 +163,32 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
             <PileDiv>
               <FlexDiv>
                 <HighContrastInput
+                  ariaLabel={t('label:saksnummer-eller-fnr')}
+                  ariaInvalid={_validation['sedselection-saksnummerOrFnr']?.feilmelding}
                   bredde='xl'
-                  data-test-id='step1-saksnummerOrFnr'
-                  feil={_validation['step1-saksnummerOrFnr']?.feilmelding}
+                  data-test-id='sedselection-saksnummerOrFnr'
+                  feil={_validation['sedselection-saksnummerOrFnr']?.feilmelding}
                   highContrast={highContrast}
-                  id='step1-saksnummerOrFnr'
+                  id='sedselection-saksnummerOrFnr'
                   label={t('label:saksnummer-eller-fnr')}
                   onChange={onSaksnummerOrFnrChange}
                   placeholder={t('el:placeholder-input-default')}
+                  required
                   value={_saksnummerOrFnr}
                 />
                 <HorizontalSeparatorDiv />
                 <div className='nolabel'>
                   <HighContrastKnapp
+                    ariaLabel={t('el:button-search')}
                     disabled={queryingSaksnummerOrFnr}
                     spinner={queryingSaksnummerOrFnr}
                     onClick={onSaksnummerOrFnrClick}
                   >
                     <Search />
                     <HorizontalSeparatorDiv />
-                    {queryingSaksnummerOrFnr ? t('message:loading-searching') : t('el:button-search')}
+                    {queryingSaksnummerOrFnr
+                      ? t('message:loading-searching')
+                      : t('el:button-search')}
                   </HighContrastKnapp>
                 </div>
               </FlexDiv>
@@ -202,9 +199,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
             </PileDiv>
           </Column>
         </AlignStartRow>
-
         <VerticalSeparatorDiv size='3' />
-
         {seds && (
           <HighContrastRadioGroup
             style={{ marginLeft: '0.1rem', marginRight: '0.1rem' }}
@@ -223,7 +218,6 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
               </>
             )}
           >
-
             <FilterDiv>
               <HighContrastFlatknapp
                 mini
@@ -280,9 +274,10 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
               .map((sed: Sed) => (
                 <div key={sed.sakType}>
                   <RadioElementBorder
-                    name='svarpased__saksnummerOrFnr-results'
-                    value={sed.sakType}
+                    ariaLabel={sed.sakType + ' - ' + sed.sakTittel}
+                    ariaChecked={parentSed === sed.sakType}
                     checked={parentSed === sed.sakType}
+                    className='slideInFromLeft'
                     label={(
                       <>
                         <Undertittel>
@@ -316,17 +311,19 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                         </Etikett>
                       </>
                   )}
-                    className='slideInFromLeft'
+                    name='sedselection-saksnummerOrFnr-results'
                     onChange={onParentSedChange}
+                    value={sed.sakType}
                   />
                   {sed.sedListe.map((connectedSed: ConnectedSed) => (
                     <HiddenFormContainer
-                      key={sed + '-' + connectedSed.sedId}
+                      aria-hidden={!(previousParentSed !== sed.sakType && parentSed === sed.sakType)}
                       className={classNames({
                         slideOpen: previousParentSed !== sed.sakType && parentSed === sed.sakType,
                         slideClose: previousParentSed === sed.sakType && parentSed !== sed.sakType,
                         closed: !((previousParentSed !== sed.sakType && parentSed === sed.sakType) || (previousParentSed === sed.sakType && parentSed !== sed.sakType))
                       })}
+                      key={sed + '-' + connectedSed.sedId}
                     >
                       <SEDPanel>
                         <FlexDiv>

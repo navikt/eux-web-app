@@ -37,7 +37,7 @@ export const validateNasjonalitet = (
     hasErrors = true
   }
 
-  if (_.find(statsborgerskaper, s => s.land === statsborgerskap.land) !== undefined) {
+  if ((_.isNil(index) || index < 0) &&_.find(statsborgerskaper, s => s.land === statsborgerskap.land) !== undefined) {
     v[namespace + idx + '-land'] = {
       feilmelding: t('message:validation-duplicateBirthCountry'),
       skjemaelementId: namespace + idx + '-land'

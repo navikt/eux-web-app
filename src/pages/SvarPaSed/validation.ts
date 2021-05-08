@@ -60,7 +60,7 @@ export const performValidation = (v: Validation, t: TFunction, replySed: ReplySe
     })
     hasErrors = hasErrors || _error
 
-    const statsborgerskaper: Array<Statsborgerskap> = _.get(replySed, `${personID}.statsborgerskap`)
+    const statsborgerskaper: Array<Statsborgerskap> = _.get(replySed, `${personID}.personInfo.statsborgerskap`)
     _error = validateNasjonaliteter(v, t, statsborgerskaper, `personmanager-${personID}-nasjonaliteter`, personName)
     hasErrors = hasErrors || _error
 
@@ -120,9 +120,9 @@ export const validateSEDSelection = (
 ): boolean => {
   let hasErrors: boolean = false
   if (_.isEmpty(saksnummerOrFnr.trim())) {
-    v['step1-saksnummerOrFnr'] = {
+    v['sedselection-saksnummerOrFnr'] = {
       feilmelding: t('message:validation-noSaksnummerOrFnr'),
-      skjemaelementId: 'step1-saksnummerOrFnr'
+      skjemaelementId: 'sedselection-saksnummerOrFnr'
     } as FeiloppsummeringFeil
     hasErrors = true
   }

@@ -39,15 +39,7 @@ const ValidationBox: React.FC<ValidationBoxProps> = ({
               <Lenke
                 href={`#${item.skjemaelementId}`} onClick={(e) => {
                   e.preventDefault()
-                  const el = document.getElementById(item.skjemaelementId)
-                  if (!el) {
-                    document.dispatchEvent(new CustomEvent('feillenke', { detail: item }))
-                  } else {
-                    el?.scrollIntoView({
-                      behavior: 'smooth'
-                    })
-                    el?.focus()
-                  }
+                  document.dispatchEvent(new CustomEvent('feillenke', {detail: item}))
                 }}
               >
                 {item.feilmelding}

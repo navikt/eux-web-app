@@ -312,6 +312,8 @@ const Motregning: React.FC<MotregningProps> = ({
         </Column>
         <Column>
           <CountrySelect
+            key={_currencyData.findByValue(motregning?.valuta ?? '')}
+            closeMenuOnSelect={true}
             ariaLabel={t('label:valuta')}
             data-test-id={namespace + '-valuta'}
             error={validation[namespace + '-valuta']?.feilmelding}
@@ -425,13 +427,6 @@ const Motregning: React.FC<MotregningProps> = ({
             href='#' onClick={(e: any) => {
               e.preventDefault()
               seeKontoopplysninger()
-              // have to wait 0.1 seconds so it comes to DOM first
-              setTimeout(() => {
-                const element = document.getElementById('kontoopplysning')
-                element?.scrollIntoView({
-                  behavior: 'smooth'
-                })
-              }, 100)
             }}
           >
             {t('label:oppgi-kontoopplysninger')}

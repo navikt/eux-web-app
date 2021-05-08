@@ -26,7 +26,7 @@ import {
   themeKeys,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled, { keyframes } from 'styled-components'
@@ -273,8 +273,9 @@ const PersonManager: React.FC<PersonManagerProps> = ({
   const [currentMenuOption, setCurrentMenuOption] = useState<string | undefined>(totalPeopleNr === 1
     ? (isFSed(replySed) ? 'personopplysninger' : 'person')
     : undefined)
-
   const alreadyOpenMenu = (menu: string) => _.find(openMenus, _id => _id === menu) !== undefined
+
+  const menuRef = useRef(currentMenu + '|' + currentMenuOption)
 
   const options: Options = [
     { label: t('el:option-personmanager-1'), value: 'personopplysninger', type: 'F', normal: true, barn: true, family: false },
@@ -556,7 +557,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
     </>
   )
 
-  const changeMenu = (menu: string, menuOption?: string) => {
+  const changeMenu = (menu: string, menuOption: string | undefined, from: 'event' | 'click') => {
     const changedMenu: boolean = currentMenu !== menu
     const changedMenuOption: boolean =
       !_.isNil(menuOption)
@@ -578,6 +579,13 @@ const PersonManager: React.FC<PersonManagerProps> = ({
         setOpenMenus(_.filter(openMenus, _id => _id !== menu))
       }
     } else {
+
+      if (from === 'event') {
+        if (!alreadyOpenMenu(menu)) {
+          setOpenMenus(openMenus.concat(menu))
+        }
+      }
+
       if (menu !== 'familie') {
         const p = _.get(replySed, menu)
         const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
@@ -601,6 +609,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
         )
       }
     }
+    menuRef.current = menu + '|' + menuOption
   }
 
   const onSelectMenu = (menu: string, checked: boolean) => {
@@ -625,7 +634,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
         >
           <MenuLabelDiv
             onClick={() => {
-              changeMenu(personId)
+              changeMenu(personId, undefined, 'click')
               return false
             }}
             style={{ animationDelay: totalIndex * 0.03 + 's' }}
@@ -702,7 +711,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
                   slideInFromLeft: true,
                   selected: currentMenu === personId && currentMenuOption === o.value
                 })}
-                onClick={() => changeMenu(personId, o.value)}
+                onClick={() => changeMenu(personId, o.value, 'click')}
               >
                 {viewValidation && (
                   validation[namespace + '-' + personId + '-' + o.value] === undefined
@@ -722,15 +731,18 @@ const PersonManager: React.FC<PersonManagerProps> = ({
     const feil: FeiloppsummeringFeil = e.detail
     const namespaceBits = feil.skjemaelementId.split('-')
     if (namespaceBits[0] === namespace) {
-      const who = namespaceBits[1]
-      const menu = namespaceBits[2]
-      changeMenu(who, menu)
+      const newMenu = namespaceBits[1]
+      const newOption = namespaceBits[2].split('[')[0]
+      const [currentMenu, currentMenuOption] = menuRef.current.split('|')
+      if (!(newMenu === currentMenu && newOption === currentMenuOption)) {
+        changeMenu(newMenu, newOption, 'event')
+      }
       setTimeout(() => {
         const element = document.getElementById(feil.skjemaelementId)
-        element?.scrollIntoView({
+        element?.focus()
+        element?.closest('.mainright')?.scrollIntoView({
           behavior: 'smooth'
         })
-        element?.focus()
       }, 200)
     }
   }
@@ -764,9 +776,10 @@ const PersonManager: React.FC<PersonManagerProps> = ({
         {t('label:personmanager')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      <WithErrorPanel className={classNames({ feil: validation[namespace]?.feilmelding })}>
+      <WithErrorPanel
+        className={classNames({ feil: validation[namespace]?.feilmelding })}>
         <FlexCenterSpacedDiv>
-          <LeftDiv>
+          <LeftDiv className='left'>
             {replySed.bruker && renderMenu(replySed, 'bruker', brukerNr)}
             {(replySed as F002Sed).ektefelle && renderMenu(replySed, 'ektefelle', ektefelleNr)}
             {(replySed as F002Sed).annenPerson && renderMenu(replySed, 'annenPerson', annenPersonNr)}
@@ -787,7 +800,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
             )}
             <VerticalSeparatorDiv />
           </LeftDiv>
-          <RightDiv>
+          <RightDiv className='mainright'>
             {gettingPerson && (
               <RightFlexCenterSpacedDiv>
                 {t('message:loading-getting-person')}
@@ -802,7 +815,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
             )}
             {previousMenuOption && (
               <PreviousFormDiv
-                className={classNames({ animating: animatingMenus })}
+                className={classNames('right', { animating: animatingMenus })}
                 key={previousMenu + '-' + previousMenuOption}
               >
                 {getForm(previousMenuOption)}
@@ -810,7 +823,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
             )}
             {currentMenuOption && (
               <ActiveFormDiv
-                className={classNames({ animating: animatingMenus })}
+                className={classNames('right', { animating: animatingMenus })}
                 key={currentMenu + '-' + currentMenuOption}
               >
                 {getForm(currentMenuOption)}

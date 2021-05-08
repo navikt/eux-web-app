@@ -88,6 +88,9 @@ export const WithErrorPanel = styled(HighContrastPanel)`
   &.feil {
     border-color: ${({ theme }) => theme[themeKeys.MAIN_ERROR_COLOR]};
     border-width: 3px;
+    .left, .right {
+       border: none;
+    }
   }
   &:not(.feil) {
     border: none;

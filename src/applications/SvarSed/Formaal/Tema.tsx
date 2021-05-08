@@ -67,7 +67,7 @@ const SEDType: React.FC<SEDTypeProps> = ({
     <Row>
       <Column>
         <FlexCenterDiv>
-          <label className='skjemaelement__label' style={{ margin: '0px' }}>{t('label:svar-sed-type')}: </label>
+          <label className='skjemaelement__label' style={{ margin: '0px' }}>{t('label:tema')}: </label>
           <HorizontalSeparatorDiv size='0.35' />
           {!editMode && (<>{t('tema:' + (replySed as HSed).tema)}</>)}
           {editMode && (

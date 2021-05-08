@@ -17,7 +17,6 @@ export interface SvarpasedState {
   replySed: ReplySed | undefined
   saksnummerOrFnr: string | undefined
   searchedPerson: Person | undefined
-  selectedInntekter: IInntekter | undefined
   seds: Seds | undefined
   sedCreatedResponse: any
   valgteArbeidsgivere: Array<Arbeidsgiver>,
@@ -37,7 +36,6 @@ export const initialSvarpasedState: SvarpasedState = {
   searchedPerson: undefined,
   seds: undefined,
   saksnummerOrFnr: undefined,
-  selectedInntekter: undefined,
   sedCreatedResponse: undefined,
   valgteArbeidsgivere: [],
   validation: {}
@@ -203,16 +201,22 @@ const svarpasedReducer = (
         )
       }
 
+    case types.SVARPASED_INNTEKT_GET_REQUEST:
+      return {
+        ...state,
+        inntekter: undefined
+      }
+
     case types.SVARPASED_INNTEKT_GET_SUCCESS:
       return {
         ...state,
         inntekter: (action as ActionWithPayload).payload
       }
 
-    case types.SVARPASED_SELECTED_INNTEKT_SUCCESS:
+    case types.SVARPASED_INNTEKT_GET_FAILURE:
       return {
         ...state,
-        selectedInntekter: (action as ActionWithPayload).payload
+        inntekter: null
       }
 
     case types.APP_CLEAN_DATA:

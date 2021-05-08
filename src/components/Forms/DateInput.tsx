@@ -21,6 +21,7 @@ const DateInput = ({
   value
 }: DateInputProps) => {
   const [_dato, _setDato] = useState<string>(() => toUIDateFormat(value) ?? '')
+  const [_dirty, _setDirty] = useState<boolean>(false)
   const { t } = useTranslation()
 
   const onDatoBlur = () => {
@@ -34,8 +35,16 @@ const DateInput = ({
       feil={error}
       id={namespace + ''}
       label={label ?? t('label:dato')}
-      onBlur={onDatoBlur}
-      onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setDato(e.target.value)}
+      onBlur={() => {
+        if (_dirty) {
+          onDatoBlur()
+          _setDirty(false)
+        }   
+      }}
+      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+        _setDato(e.target.value)
+        _setDirty(true)
+      }}
       placeholder={t('el:placeholder-date-default')}
       value={_dato}
     />

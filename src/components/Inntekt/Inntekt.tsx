@@ -1,11 +1,21 @@
 import { IInntekt, IInntekter } from 'declarations/types'
-import _ from 'lodash'
+import moment from 'moment'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
-import { AlignStartRow, FlexDiv, PileDiv, Column, HighContrastLink, VerticalSeparatorDiv } from 'nav-hoykontrast'
-import React from 'react'
+import {
+  AlignEndRow,
+  AlignStartRow,
+  Column,
+  FlexDiv,
+  HighContrastLink,
+  HorizontalSeparatorDiv,
+  PaddedDiv,
+  PileDiv, themeKeys,
+  VerticalSeparatorDiv
+} from 'nav-hoykontrast'
+import Pagination from 'paginering'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import TableSorter, { Column as TableColumn, Item } from 'tabell'
 import { formatterPenger } from 'utils/PengeUtils'
 
 export interface InntektProps {
@@ -19,87 +29,134 @@ const ArbeidsgiverDiv = styled(FlexDiv)`
  justify-content: space-between;
  padding: 1rem;
 `
-const CustomTableSorter = styled(TableSorter)`
-  table-layout: fixed;
-  th, tr {
-    width: 16.666%;
-  }
+const LeftBorderFlexDiv = styled(FlexDiv)`
+  border-left: 1px solid ${({theme}) => theme[themeKeys.MAIN_BORDER_COOLOR]};
 `
+
 const Inntekt: React.FC<InntektProps> = ({
-  highContrast,
-  inntekter,
-  personID
+  //highContrast,
+  inntekter
+  //personID
 }:InntektProps) => {
   const { t } = useTranslation()
 
+  let data: {[k in string]: Array<IInntekt>} = {}
+  const [_currentPage, setCurrentPage] = useState<{[k in string]: number}>({})
+
+  inntekter?.inntektsmaaneder?.forEach((inntekt: IInntekt) => {
+    if (Object.prototype.hasOwnProperty.call(data, inntekt.orgNr)) {
+      data[inntekt.orgNr] = data[inntekt.orgNr].concat(inntekt).sort((a: IInntekt, b: IInntekt) => (
+        moment(a.aarMaaned, 'YYYY-MM').isBefore(moment(b.aarMaaned, 'YYYY-MM')) ? -1 : 1))
+    } else {
+      data[inntekt.orgNr] = [inntekt]
+    }
+  })
+
   return (
     <>
-      {inntekter?.map((inntekt: IInntekt, index) => {
-        const _items: Array<Item> = [
-          { key: '1', col0: ' ', col1: ' ', col2: ' ', col3: ' ', col4: ' ', avg: formatterPenger(inntekt.gjennomsnitt) }
-        ]
-        const _columns: Array<TableColumn> = [
-          { id: 'col0', label: ' ', type: 'string' },
-          { id: 'col1', label: ' ', type: 'string' },
-          { id: 'col2', label: ' ', type: 'string' },
-          { id: 'col3', label: ' ', type: 'string' },
-          { id: 'col4', label: ' ', type: 'string' },
-          { id: 'avg', label: t('label:gjennomsnitt'), type: 'string' }
-        ]
+      {Object.keys(data).map((orgnr: string) => {
 
-        inntekt.lønn.forEach((lønn, i) => {
-          const matchingColumn = 'col' + (5 - inntekt.lønn.length + i)
-          const targetColumn = _.find(_columns, (c: TableColumn) => c.id === matchingColumn)
-          if (targetColumn) {
-            targetColumn.label = lønn.fra
+        if (!Object.prototype.hasOwnProperty.call(_currentPage, orgnr)) {
+          setCurrentPage({
+            ..._currentPage,
+            [orgnr]: 1
+          })
+        }
+        let average = 0
+        let total = 0
+        let number = data[orgnr].length
+        let lastMonth = ''
+        let itemsPerPage = 5
+        let firstIndex = (_currentPage[orgnr] - 1) * itemsPerPage
+        let lastIndex = (_currentPage[orgnr] - 1) * itemsPerPage + itemsPerPage
+
+        let elements: any = []
+        data[orgnr].forEach((inntekt: IInntekt, index: number) => {
+          total += inntekt.beloep
+          if (index >= firstIndex && index < lastIndex) {
+            elements.push({
+              header: inntekt.aarMaaned,
+              value: formatterPenger(inntekt.beloep)
+            })
           }
-          _items[0][matchingColumn] = formatterPenger(lønn.beloep)
         })
-
+        average = total / number
+        lastMonth = data[orgnr][number - 1].aarMaaned
         return (
-          <div key={index}>
+          <div key={data[orgnr][0].arbeidsgiverNavn}>
             <AlignStartRow>
               <Column>
                 <ArbeidsgiverDiv>
                   <PileDiv>
                     <Undertittel>
-                      {inntekt.arbeidsgiver.navn}
+                      {data[orgnr][0].arbeidsgiverNavn}
                     </Undertittel>
                   </PileDiv>
                   <PileDiv>
                     <span><Normaltekst>{t('label:orgnr')}</Normaltekst></span>
-                    <span><Normaltekst>{inntekt.arbeidsgiver.orgnr}</Normaltekst></span>
+                    <span><Normaltekst>{orgnr}</Normaltekst></span>
                   </PileDiv>
                   <PileDiv>
                     <span><Normaltekst>{t('label:stillingprosent')}</Normaltekst></span>
-                    <span><Normaltekst>{inntekt.arbeidsgiver.prosent}</Normaltekst></span>
+                    <span><Normaltekst>{'-'}</Normaltekst></span>
                   </PileDiv>
                   <PileDiv>
                     <span><Normaltekst>{t('label:siste-lønnsendring')}</Normaltekst></span>
-                    <span><Normaltekst>{inntekt.arbeidsgiver.sisteLønn}</Normaltekst></span>
+                    <span><Normaltekst>{lastMonth}</Normaltekst></span>
                   </PileDiv>
                 </ArbeidsgiverDiv>
-                <CustomTableSorter
-                  key={personID}
-                  highContrast={highContrast}
-                  context={{ items: _items }}
-                  items={_items}
-                  compact
-                  searchable={false}
-                  sortable={false}
-                  striped={false}
-                  columns={_columns}
-                />
+                <VerticalSeparatorDiv size='0.5'/>
+                <FlexDiv>
+                  <HorizontalSeparatorDiv/>
+                  <FlexDiv style={{flex: '5', justifyContent: 'flex-end', maxWidth: '600px'}}>
+                    {elements.map((x: any) => (
+                      <PileDiv key={x.header} style={{width: '120px'}}>
+                        <PaddedDiv size='0.3'>
+                          {x.header}
+                        </PaddedDiv>
+                        <PaddedDiv size='0.3'>
+                          {x.value}
+                        </PaddedDiv>
+                      </PileDiv>
+                    ))}
+                  </FlexDiv>
+                  <LeftBorderFlexDiv>
+                  <HorizontalSeparatorDiv/>
+                    <PileDiv>
+                      <PaddedDiv size='0.3'>
+                        {t('label:gjennomsnitt')}
+                      </PaddedDiv>
+                      <PaddedDiv size='0.3'>
+                        {formatterPenger( average)}
+                      </PaddedDiv>
+                    </PileDiv>
+                  </LeftBorderFlexDiv>
+                  <HorizontalSeparatorDiv/>
+
+                </FlexDiv>
               </Column>
             </AlignStartRow>
             <VerticalSeparatorDiv size='0.5' />
-            <AlignStartRow>
+            <AlignEndRow>
               <Column>
-                <HighContrastLink href='#'>
+                <HighContrastLink href={inntekter.uriInntektRegister}>
                   {t('label:gå-til-A-inntekt')}
                 </HighContrastLink>
               </Column>
-            </AlignStartRow>
+              <Column>
+                <FlexDiv style={{flexDirection: 'row-reverse'}}>
+                  <Pagination
+                    currentPage={_currentPage[orgnr]}
+                    itemsPerPage={itemsPerPage}
+                    numberOfItems={number}
+                    onChange={(page: number) => setCurrentPage({
+                      ..._currentPage,
+                      [orgnr]: page
+                    })}
+                  />
+                </FlexDiv>
+              </Column>
+            </AlignEndRow>
             <VerticalSeparatorDiv size='2' />
           </div>
         )

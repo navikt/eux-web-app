@@ -134,9 +134,11 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
         >
           <Column>
             <CountrySelect
-              key={namespace + idx + '-land' + statsborgerskap?.land}
+              closeMenuOnSelect
+              key={namespace + idx + '-land' + (index < 0 ? _newLand : statsborgerskap?.land)}
               data-test-id={namespace + idx + '-land'}
               error={getErrorFor(index, 'land')}
+              flagWave
               id={namespace + idx + '-land'}
               includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
               menuPortalTarget={document.body}

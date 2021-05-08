@@ -143,6 +143,8 @@ const SisteAnsettelsesForhold: React.FC<SisteAnsettelsesForholdProps> = ({
             </Column>
             <Column>
               <CountrySelect
+                key={xxx?.valuta ? _currencyData.findByValue(xxx?.valuta) : ''}
+                closeMenuOnSelect={true}
                 ariaLabel={t('label:valuta')}
                 data-test-id={namespace + '-valuta'}
                 error={validation[namespace + '-valuta']?.feilmelding}

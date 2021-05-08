@@ -168,6 +168,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
           <Input
             feil={validation[namespace + '-fornavn']?.feilmelding}
             id='fornavn'
+            key={namespace + '-fornavn-' + personInfo.fornavn}
             label={t('label:fornavn') + ' *'}
             namespace={namespace}
             onChanged={onFornavnChange}
@@ -178,6 +179,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
           <Input
             feil={validation[namespace + '-etternavn']?.feilmelding}
             id='etternavn'
+            key={namespace + '-fornavn-' + personInfo.etternavn}
             label={t('label:etternavn') + ' *'}
             namespace={namespace}
             onChanged={onEtternavnChange}
@@ -187,7 +189,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         <Column>
           <DateInput
             error={validation[namespace + '-foedselsdato']?.feilmelding}
-            key={personInfo.foedselsdato}
+            key={namespace + '-foedselsdato-' + personInfo.foedselsdato}
             label={t('label:fødselsdato') + ' *'}
             namespace={namespace + '-foedselsdato'}
             setDato={onFodselsdatoChange}
@@ -204,6 +206,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             data-test-id={namespace + '-kjoenn'}
             feil={validation[namespace + '-kjoenn']?.feilmelding}
             id={namespace + '-kjoenn'}
+            key={namespace + '-kjoenn-' + personInfo.kjoenn}
             legend={t('label:kjønn') + ' *'}
             name={namespace + '-kjoenn'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => onKjoennChange(e.target.value)}
@@ -229,8 +232,10 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         </Column>
         <Column>
           <CountrySelect
+            closeMenuOnSelect
             data-test-id={namespace + '-utenlandskpin-land'}
             error={validation[namespace + '-utenlandskpin-land']?.feilmelding}
+            flagWave
             id={namespace + '-utenlandskpin-land'}
             includeList={landkoderList?.map((l: Kodeverk) => l.kode) ?? []}
             label={t('label:land')}

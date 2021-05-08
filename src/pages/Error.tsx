@@ -46,6 +46,7 @@ const mapState = (state: State): ErrorPageSelector => ({
 
 export interface ErrorProps {
   error?: any;
+  resetErrorBoundary ?: any
 }
 
 export const Error = ({ error }: ErrorProps) => {
