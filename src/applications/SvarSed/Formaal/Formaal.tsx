@@ -1,26 +1,36 @@
-import { setReplySed } from 'actions/svarpased'
+import { updateReplySed } from 'actions/svarpased'
 import { Options } from 'declarations/app'
+import { State } from 'declarations/reducers'
 import { FSed, ReplySed } from 'declarations/sed'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema/lib/feiloppsummering'
+import { Validation } from 'declarations/types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Stack from 'components/Stack/Stack'
 
-interface FormaalProps {
-  feil: FeiloppsummeringFeil | undefined
+interface FormaalSelector {
   highContrast: boolean
-  replySed: ReplySed
+  replySed: ReplySed | undefined
+  validation: Validation
 }
 
-const Formaal: React.FC<FormaalProps> = ({
-  feil,
-  highContrast,
-  replySed
-}: FormaalProps) => {
+const mapState = (state: State): FormaalSelector => ({
+  highContrast: state.ui.highContrast,
+  replySed: state.svarpased.replySed,
+  validation: state.validation.status
+})
+
+const Formaal: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
-  const formaal: Array<string> = (replySed as FSed)?.formaal
+  const {
+    highContrast,
+    replySed,
+    validation
+  }: any = useSelector<State, FormaalSelector>(mapState)
   const dispatch = useDispatch()
+  const formaal: Array<string> = (replySed as FSed)?.formaal
+  const namespace: string = 'formål'
+
   const formaalOptions: Options = [
     { label: t('el:option-formaal-1'), value: 'mottak_av_søknad_om_familieytelser' },
     { label: t('el:option-formaal-2'), value: 'informasjon_om_endrede_forhold' },
@@ -32,22 +42,20 @@ const Formaal: React.FC<FormaalProps> = ({
     { label: t('el:option-formaal-8'), value: 'refusjon_i_henhold_til_artikkel_58_i_forordningen' }
   ]
 
-  const saveChanges = (newFormaals: Array<string>) => {
-    dispatch(setReplySed({
-      ...replySed,
-      formaal: newFormaals
-    }))
+  const onItemsChanged = (newFormaals: Array<string>) => {
+    dispatch(updateReplySed('formaal', newFormaals))
   }
 
   return (
     <Stack
-      feil={feil}
+      key={namespace}
+      feil={validation[namespace]?.feilmelding}
       highContrast={highContrast}
       initialValues={formaal}
       itemLabel={t('label:formål')}
-      namespace='formål'
+      namespace={namespace}
       options={formaalOptions}
-      onChange={saveChanges}
+      onChange={onItemsChanged}
       title={t('label:velg-formaal')}
     />
   )

@@ -13,7 +13,7 @@ import _ from 'lodash'
 import Chevron from 'nav-frontend-chevron'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Normaltekst } from 'nav-frontend-typografi'
-import { HorizontalSeparatorDiv, FlexCenterDiv, FlexCenterSpacedDiv, PileCenterDiv, PileDiv, theme, themeHighContrast, themeKeys, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { HorizontalSeparatorDiv, FlexCenterDiv, FlexCenterSpacedDiv, PileCenterDiv, PileDiv, themeKeys, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { keyframes } from 'styled-components'
@@ -45,18 +45,12 @@ const MenuLabelDiv = styled(FlexCenterDiv)`
   flex: 1;
   transition: all 0.2s ease-in-out;
   &:hover {
-   background-color: ${(props: any) => props['data-highContrast']
-     ? themeHighContrast[themeKeys.ALTERNATIVE_HOVER_COLOR]
-     : theme[themeKeys.ALTERNATIVE_HOVER_COLOR]};
+   background-color: ${({theme}: any) => theme[themeKeys.ALTERNATIVE_HOVER_COLOR]};
   }
    &.selected {
     font-weight: bold;
-    background-color: ${(props: any) => props['data-highContrast']
-  ? themeHighContrast[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]
-  : theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
-     border-left: 6px solid ${(props: any) => props['data-highContrast']
-  ? themeHighContrast[themeKeys.MAIN_INTERACTIVE_COLOR]
-  : theme[themeKeys.MAIN_INTERACTIVE_COLOR]};
+    background-color: ${({theme}: any) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
+     border-left: 6px solid ${({theme}: any) => theme[themeKeys.MAIN_INTERACTIVE_COLOR]};
   }
 `
 const RightDiv = styled.div`
@@ -271,9 +265,7 @@ const FormålManager: React.FC<FormålManagerProps> = ({
           <LeftDiv>
             {menus.map((menu, index) => (
               <PileDiv key={menu}>
-                <MenuDiv
-                  data-highContrast={highContrast}
-                >
+                <MenuDiv>
                   <MenuLabelDiv
                     onClick={() => {
                       changeMenu(menu)

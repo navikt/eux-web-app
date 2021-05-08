@@ -1,8 +1,9 @@
-import { createSed, setAllValidation, setReplySed } from 'actions/svarpased'
+import { createSed } from 'actions/svarpased'
+import { setAllValidation, setResetValidationFunction, viewValidation } from 'actions/validation'
 import Formaal from 'applications/SvarSed/Formaal/Formaal'
+import FormålManager from 'applications/SvarSed/Formaal/FormålManager'
 import SEDType from 'applications/SvarSed/Formaal/SEDType'
 import Tema from 'applications/SvarSed/Formaal/Tema'
-import FormålManager from 'applications/SvarSed/Formaal/FormålManager'
 import PersonManager from 'applications/SvarSed/PersonManager/PersonManager'
 import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
 import SendSEDModal from 'applications/SvarSed/SendSEDModal/SendSEDModal'
@@ -22,12 +23,14 @@ import { Systemtittel } from 'nav-frontend-typografi'
 import {
   Column,
   FlexCenterSpacedDiv,
+  FlexDiv,
   HighContrastFlatknapp,
   HighContrastHovedknapp,
   HighContrastKnapp,
   HighContrastLink,
   HighContrastTextArea,
   HorizontalSeparatorDiv,
+  PaddedDiv,
   Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
@@ -36,41 +39,20 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ReactJson from 'react-json-view'
 import { useDispatch, useSelector } from 'react-redux'
-import { SvarpasedState } from 'reducers/svarpased'
-import styled from 'styled-components'
 import { isFSed, isHSed, isSed, isUSed } from 'utils/sed'
 import { validateSEDEditor, ValidationSEDEditorProps } from './validation'
 
-const SEDEditorDiv = styled.div`
-  padding: 0.5rem;
-`
-
-const ButtonsDiv = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-`
-
 const mapState = (state: State): any => ({
-  rinasaksnummerOrFnr: state.app.params.rinasaksnummerOrFnr,
-
   creatingSedWithAttachments: state.loading.creatingSedWithAttachments,
   creatingSedEditInRINA: state.loading.creatingSedEditInRINA,
-  gettingPreviewFile: state.loading.gettingPreviewFile,
-  savingSed: state.loading.savingSed,
   creatingSvarPaSed: state.loading.creatingSvarPaSed,
-
-  inntekter: state.svarpased.inntekter,
+  gettingPreviewFile: state.loading.gettingPreviewFile,
+  highContrast: state.ui.highContrast,
   previewFile: state.svarpased.previewFile,
   replySed: state.svarpased.replySed,
-  validation: state.svarpased.validation,
-
-  highContrast: state.ui.highContrast
-})
-
-const mapStateTwo = (state: State): any => ({
-  arbeidsgivere: state.svarpased.valgteArbeidsgivere,
-  familieRelasjoner: state.svarpased.familierelasjoner,
-  sed: state.svarpased.replySed
+  rinasaksnummerOrFnr: state.app.params.rinasaksnummerOrFnr,
+  savingSed: state.loading.savingSed,
+  validation: state.validation.status
 })
 
 export interface SvarPaSedProps {
@@ -85,22 +67,18 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const {
-    rinasaksnummerOrFnr,
-
     creatingSedWithAttachments,
     creatingSedEditInRINA,
-    gettingPreviewFile,
-    savingSed,
     creatingSvarPaSed,
-
+    gettingPreviewFile,
+    highContrast,
     previewFile,
     replySed,
-    validation,
-
-    highContrast
+    rinasaksnummerOrFnr,
+    savingSed,
+    validation
   }: any = useSelector<State, any>(mapState)
   const fnr = _.find(replySed?.bruker?.personInfo.pin, p => p.land === 'NO')?.identifikator
-  const data: SvarpasedState = useSelector<State, SvarpasedState>(mapStateTwo)
 
   const [_comment, _setComment] = useState<string>('')
   const [_attachments, setAttachments] = useState<JoarkBrowserItems | undefined>(undefined)
@@ -108,9 +86,9 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   const [_previewFile, setPreviewFile] = useState<any | undefined>(undefined)
   const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
   const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useValidation<ValidationSEDEditorProps>(validation, validateSEDEditor)
-  const [_viewValidation, _setViewValidation] = useState<boolean>(false)
+  const [_validation, resetValidation, performValidation] = useValidation<ValidationSEDEditorProps>(validation, validateSEDEditor)
 
+  const storageKey = 'replySed'
   const showPersonManager = (): boolean => isSed(replySed)
   const showFormålManager = (): boolean =>
     replySed?.formaal?.indexOf('motregning') >= 0 ||
@@ -124,19 +102,19 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
         comment: _comment,
         replySed
       })
-      _setViewValidation(true)
+      dispatch(viewValidation())
       if (valid) {
         setViewSendSedModal(true)
         dispatch(createSed(
           rinasaksnummerOrFnr,
-          replySed!.sedId,
-          replySed!.svarsedType,
-          data
+          replySed
         ))
-        _resetValidation()
+        resetValidation()
       } else {
         // dispatch validation results to all components
         dispatch(setAllValidation(_validation))
+        // tell components how to reset some of the fixed validations
+        dispatch(setResetValidationFunction(resetValidation))
       }
     }
   }
@@ -189,14 +167,8 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   }
 
   const setComment = (comment: string) => {
-    _resetValidation('comment')
+    resetValidation('comment')
     _setComment(comment)
-  }
-
-  const updateReplySed = (needleString: string | Array<string>, value: any) => {
-    const newReplySed = _.cloneDeep(replySed)
-    _.set(newReplySed, needleString, value)
-    dispatch(setReplySed(newReplySed))
   }
 
   useEffect(() => {
@@ -207,7 +179,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   }, [previewFile, _previewFile])
 
   return (
-    <SEDEditorDiv>
+    <PaddedDiv size='0.5'>
       {_modal && (
         <Modal
           highContrast={highContrast}
@@ -227,7 +199,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
         <SaveSEDModal
           highContrast={highContrast}
           localStorageContent={replySed}
-          storageKey='replysed'
+          storageKey={storageKey}
           onModalClose={() => setViewSaveSedModal(false)}
         />
       )}
@@ -248,45 +220,19 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
             {replySed?.sedType} - {t('buc:' + replySed?.sedType)}
           </Systemtittel>
           <VerticalSeparatorDiv />
-          {isFSed(replySed) && (
-            <Formaal
-              feil={_validation.formaal}
-              replySed={replySed}
-              highContrast={highContrast}
-            />
-          )}
-          {isUSed(replySed) && (
-            <SEDType
-              feil={_validation.sedtype}
-              replySed={replySed}
-              highContrast={highContrast}
-            />
-          )}
-          {isHSed(replySed) && (
-            <Tema
-              feil={_validation.sedtype}
-              replySed={replySed}
-              highContrast={highContrast}
-            />
-          )}
+          {isFSed(replySed) && <Formaal/>}
+          {isUSed(replySed) && <SEDType/>}
+          {isHSed(replySed) && <Tema/>}
         </Column>
         <Column />
       </Row>
       <VerticalSeparatorDiv size='2' />
       {showPersonManager() && (
         <>
-          <PersonManager
-            fnr={fnr}
-            replySed={replySed}
-            resetValidation={_resetValidation}
-            updateReplySed={updateReplySed}
-            validation={_validation}
-            viewValidation={_viewValidation}
-          />
+          <PersonManager fnr={fnr}/>
           <VerticalSeparatorDiv size='2' />
         </>
       )}
-
       {isFSed(replySed) && showFormålManager() && (
         <>
           <FormålManager
@@ -334,7 +280,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
       <VerticalSeparatorDiv size='2' />
       <ValidationBox validation={_validation} />
       <VerticalSeparatorDiv size='2' />
-      <ButtonsDiv>
+      <FlexDiv>
         <div>
           <HighContrastHovedknapp
             mini
@@ -382,8 +328,8 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
           </HighContrastKnapp>
           <VerticalSeparatorDiv size='0.5' />
         </div>
-      </ButtonsDiv>
-    </SEDEditorDiv>
+      </FlexDiv>
+    </PaddedDiv>
   )
 }
 

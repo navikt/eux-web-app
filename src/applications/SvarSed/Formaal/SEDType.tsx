@@ -1,32 +1,43 @@
-import { setReplySed } from 'actions/svarpased'
+import { updateReplySed } from 'actions/svarpased'
 import Edit from 'assets/icons/Edit'
 import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
+import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
+import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema/lib/feiloppsummering'
+import { Column, FlexCenterDiv, HighContrastFlatknapp, HorizontalSeparatorDiv, Row } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
-import { Column, FlexCenterDiv, HighContrastFlatknapp, HorizontalSeparatorDiv, Row } from 'nav-hoykontrast'
+import { useDispatch, useSelector } from 'react-redux'
 import { OptionTypeBase } from 'react-select'
 
-interface SEDTypeProps {
-  feil: FeiloppsummeringFeil | undefined
+interface SEDTypeSelector {
   highContrast: boolean
-  replySed: ReplySed
+  replySed: ReplySed | undefined
+  resetValidation: ((key?: string | undefined) => void)
+  validation: Validation
 }
 
-const SEDType: React.FC<SEDTypeProps> = ({
-  highContrast,
-  replySed
-}: SEDTypeProps) => {
+const mapState = (state: State): SEDTypeSelector => ({
+  highContrast: state.ui.highContrast,
+  replySed: state.svarpased.replySed,
+  resetValidation: state.validation.resetValidation,
+  validation: state.validation.status
+})
+
+const SEDType: React.FC = () => {
   const { t } = useTranslation()
-
-  const [sedType, setSedType] = useState<string>(() => replySed.sedType)
-  const [editMode, setEditMode] = useState<boolean>(false)
-
+  const {
+    highContrast,
+    replySed,
+    validation,
+    resetValidation
+  }: any = useSelector<State, SEDTypeSelector>(mapState)
   const dispatch = useDispatch()
+  const namespace: string = 'sedtype'
+  const [sedType, setSedType] = useState<string>(() => replySed.sedType)
+  const [editMode, setEditMode] = useState<boolean>(() => false)
 
   const sedTypeOptions: Options = [
     { label: t('buc:U002'), value: 'U002' },
@@ -34,41 +45,53 @@ const SEDType: React.FC<SEDTypeProps> = ({
     { label: t('buc:U017'), value: 'U017' }
   ]
 
-  const saveChanges = () => {
-    if (sedType) {
-      dispatch(setReplySed({
-        ...replySed,
-        sedType: sedType
-      }))
-    }
+  const onSaveChangesClicked = () => {
+    dispatch(updateReplySed('sedType', sedType))
     setEditMode(false)
   }
 
-  const cancelChanges = () => setEditMode(false)
+  const onSedTypeChanged = (o: OptionTypeBase) => {
+    if (validation[namespace]) {
+      resetValidation(namespace)
+    }
+    setSedType(o.value)
+  }
+
+  const onCancelChangesClicked = () => setEditMode(false)
+
+  const onEditModeClicked = () => setEditMode(true)
 
   return (
     <Row>
       <Column>
         <FlexCenterDiv>
-          <label className='skjemaelement__label' style={{ margin: '0px' }}>{t('label:svar-sed-type')}: </label>
+          <label
+            htmlFor={namespace}
+            className='skjemaelement__label'
+            style={{ margin: '0px' }}
+          >
+            {t('label:svar-sed-type')}:
+          </label>
           <HorizontalSeparatorDiv size='0.35' />
           {!editMode && (<>{t('buc:' + replySed.sedType)}</>)}
           {editMode && (
             <>
               <Select
-                id='sedtype'
-                style={{ minWidth: '300px' }}
-                onChange={(o: OptionTypeBase) => setSedType(o.value)}
-                highContrast={highContrast}
-                options={sedTypeOptions}
                 defaultValue={_.find(sedTypeOptions, s => s.value === sedType)}
+                feil={validation[namespace]?.feilmelding}
+                highContrast={highContrast}
+                key={namespace + '-' + sedType}
+                id={namespace}
+                onChange={onSedTypeChanged}
+                options={sedTypeOptions}
                 selectedValue={_.find(sedTypeOptions, s => s.value === sedType)}
+                style={{ minWidth: '300px' }}
               />
               <HorizontalSeparatorDiv size='0.5' />
               <HighContrastFlatknapp
                 mini
                 kompakt
-                onClick={saveChanges}
+                onClick={onSaveChangesClicked}
               >
                 {t('el:button-save')}
               </HighContrastFlatknapp>
@@ -76,7 +99,7 @@ const SEDType: React.FC<SEDTypeProps> = ({
               <HighContrastFlatknapp
                 mini
                 kompakt
-                onClick={cancelChanges}
+                onClick={onCancelChangesClicked}
               >
                 {t('el:button-cancel')}
               </HighContrastFlatknapp>
@@ -87,7 +110,7 @@ const SEDType: React.FC<SEDTypeProps> = ({
             <HighContrastFlatknapp
               mini
               kompakt
-              onClick={() => setEditMode(true)}
+              onClick={onEditModeClicked}
             >
               <Edit />
               <HorizontalSeparatorDiv size='0.5' />

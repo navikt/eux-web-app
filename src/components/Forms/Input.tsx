@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 export interface InputProps {
+  ariaLabel ?: string
   className ?: string
   feil: string | undefined
   namespace: string
@@ -10,10 +11,12 @@ export interface InputProps {
   label: JSX.Element | string
   onChanged: (e: string) => void
   placeholder?: string
+  required ?: boolean
   type?: string
   value: string | undefined
 }
 const Input: React.FC<InputProps> = ({
+  ariaLabel,
   className,
   feil,
   namespace,
@@ -21,6 +24,7 @@ const Input: React.FC<InputProps> = ({
   label,
   onChanged,
   placeholder,
+  required = false,
   type = 'text',
   value
 }: InputProps) => {
@@ -33,7 +37,9 @@ const Input: React.FC<InputProps> = ({
       className={className}
       data-test-id={namespace + '-' + id}
       feil={feil}
+      aria-invalid={!!feil}
       id={namespace + '-' + id}
+      ariaLabel={ariaLabel ?? label}
       label={label}
       onBlur={() => {
         if (_dirty) {
@@ -46,6 +52,7 @@ const Input: React.FC<InputProps> = ({
         _setDirty(true)
       }}
       placeholder={placeholder || t('el:placeholder-input-default')}
+      required={required}
       type={type}
       value={_value}
     />

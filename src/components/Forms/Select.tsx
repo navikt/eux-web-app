@@ -19,7 +19,7 @@ const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
   const _theme = props.highContrast ? themeHighContrast : theme
   return (
     <div className={props.className} style={props.style}>
-      {props.label && <label className='skjemaelement__label'>{props.label}</label>}
+      {props.label && <label htmlFor={props.id} className='skjemaelement__label'>{props.label}</label>}
       <ReactSelect
         inputId={props.id}
         isOptionDisabled={(option: any) => option.isDisabled}

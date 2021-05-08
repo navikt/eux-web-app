@@ -168,7 +168,6 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                   bredde='xl'
                   data-test-id='sedselection-saksnummerOrFnr'
                   feil={_validation['sedselection-saksnummerOrFnr']?.feilmelding}
-                  highContrast={highContrast}
                   id='sedselection-saksnummerOrFnr'
                   label={t('label:saksnummer-eller-fnr')}
                   onChange={onSaksnummerOrFnrChange}
@@ -337,8 +336,8 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                             </Undertekst>
                           </PileCenterDiv>
                           <HorizontalSeparatorDiv />
-                          <PileDiv style={{ flex: 2 }}>
-                            <FlexStartSpacedDiv>
+                          <PileDiv flex={2}>
+                            <FlexStartSpacedDiv flex={1}>
                               <Undertittel>
                                 {connectedSed.sedType} - {connectedSed.sedTittel}
                               </Undertittel>

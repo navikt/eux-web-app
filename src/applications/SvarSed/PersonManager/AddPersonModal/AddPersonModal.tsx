@@ -8,29 +8,31 @@ import Barn from 'assets/icons/Child'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
+import { State } from 'declarations/reducers'
 import { F002Sed, PersonInfo, ReplySed } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper'
 import Lukknapp from 'nav-frontend-lukknapp'
 import NavModal from 'nav-frontend-modal'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
 import {
   AlignStartRow,
   Column,
   FlexBaseSpacedDiv,
   FlexCenterSpacedDiv,
   FlexDiv,
+  HighContrastHovedknapp,
+  HighContrastKnapp,
   HorizontalSeparatorDiv,
   PaddedDiv,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { OptionTypeBase } from 'react-select'
 import styled from 'styled-components'
 
@@ -50,11 +52,11 @@ const Title = styled(Undertittel)`
 const ModalButtons = styled.div`
   text-align: center;
 `
-const MainButton = styled(Hovedknapp)`
+const MainButton = styled(HighContrastHovedknapp)`
   margin-right: 1rem;
   margin-bottom: 1rem;
 `
-const OtherButton = styled(Knapp)`
+const OtherButton = styled(HighContrastKnapp)`
   margin-right: 1rem;
   margin-bottom: 1rem;
 `
@@ -77,32 +79,39 @@ interface MyOption extends Option {
 
 interface AddPersonModalProps {
   appElement?: any
-  highContrast: boolean
   onModalClose?: () => void
   closeButton?: boolean
   parentNamespace: string
-  replySed: ReplySed
 }
+
+interface AddPersonModalSelector {
+  highContrast: boolean
+  replySed: ReplySed | undefined
+}
+
+const mapState = (state: State): AddPersonModalSelector => ({
+  highContrast: state.ui.highContrast,
+  replySed: state.svarpased.replySed,
+})
 
 const AddPersonModal: React.FC<AddPersonModalProps> = ({
   appElement = document.body,
-  highContrast,
   closeButton,
-  onModalClose,
+  onModalClose = () => {},
   parentNamespace,
-  replySed
 }: AddPersonModalProps) => {
   const { t } = useTranslation()
   const namespace = `${parentNamespace}-addpersonmodal`
   const dispatch = useDispatch()
+  const {
+    highContrast,
+    replySed
+  }: any = useSelector<State, AddPersonModalSelector>(mapState)
 
   const [_newPersonFnr, _setNewPersonFnr] = useState<string>('')
   const [_newPersonName, _setNewPersonName] = useState<string>('')
   const [_newPersonRelation, _setNewPersonRelation] = useState<string | undefined>(undefined)
-
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PersonInfo>((p: PersonInfo) => {
-    return p?.fornavn + ' ' + p?.etternavn
-  })
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PersonInfo>((p: PersonInfo) => p?.fornavn + ' ' + p?.etternavn)
   const [_replySed, _setReplySed] = useState<ReplySed>(replySed)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationAddPersonModalProps>({}, validateAddPersonModal)
 
@@ -111,18 +120,10 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
   const annenPersonNr = ektefelleNr + ((_replySed as F002Sed).annenPerson ? 1 : 0)
   const barnNr = annenPersonNr + ((_replySed as F002Sed).barn ? 1 : 0)
 
-  const closeModal = (): void => {
-    if (_.isFunction(onModalClose)) {
-      onModalClose()
-    }
-  }
-
   const onCloseButtonClicked = (e: React.MouseEvent): void => {
     e.preventDefault()
     e.stopPropagation()
-    if (_.isFunction(onModalClose)) {
-      onModalClose()
-    }
+    onModalClose()
   }
 
   NavModal.setAppElement(appElement)
@@ -209,26 +210,30 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
     }
   }
 
-  const onSavePersons = () => {
-    dispatch(setReplySed(_replySed))
-  }
+  const onSavePersons = () => dispatch(setReplySed(_replySed))
 
   const getRelationOptions = (): Array<MyOption> => {
     const relationOptions: Array<MyOption> = []
     relationOptions.push({
-      label: t('el:option-familierelasjon-bruker') + (_replySed.bruker ? '(' + t('label:ikke-tilgjengelig') + ')' : ''),
+      label: t('el:option-familierelasjon-bruker') + (_replySed.bruker
+        ? '(' + t('label:ikke-tilgjengelig') + ')'
+        : ''),
       value: 'bruker',
       isDisabled: !!_replySed.bruker
     })
 
     relationOptions.push({
-      label: t('el:option-familierelasjon-ektefelle') + ((_replySed as F002Sed).ektefelle ? '(' + t('label:ikke-tilgjengelig') + ')' : ''),
+      label: t('el:option-familierelasjon-ektefelle') + ((_replySed as F002Sed).ektefelle
+        ? '(' + t('label:ikke-tilgjengelig') + ')'
+        : ''),
       value: 'ektefelle',
       isDisabled: !!(_replySed as F002Sed).ektefelle
     })
 
     relationOptions.push({
-      label: t('el:option-familierelasjon-annenPerson') + ((_replySed as F002Sed).annenPerson ? '(' + t('label:ikke-tilgjengelig') + ')' : ''),
+      label: t('el:option-familierelasjon-annenPerson') + ((_replySed as F002Sed).annenPerson
+        ? '(' + t('label:ikke-tilgjengelig') + ')'
+        : ''),
       value: 'annenPerson',
       isDisabled: !!(_replySed as F002Sed).annenPerson
     })
@@ -253,7 +258,11 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
     const candidateForDeletion = isInDeletion(p)
 
     return (
-      <FlexDiv className='slideInFromLeft' style={{ animationDelay: i * 0.1 + 's' }} key={personId}>
+      <FlexDiv
+        className='slideInFromLeft'
+        style={{ animationDelay: i * 0.05 + 's' }}
+        key={personId}
+      >
         <CheckboxDiv>
           <FlexCenterSpacedDiv>
             <FlexBaseSpacedDiv>
@@ -287,15 +296,13 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
   return (
     <ModalDiv
       isOpen
-      onRequestClose={closeModal}
+      onRequestClose={onModalClose}
       closeButton
       contentLabel='contentLabel'
     >
       <PaddedDiv id='add-person-modal-id'>
         {closeButton && (
-          <CloseButton
-            onClick={onCloseButtonClicked}
-          >
+          <CloseButton onClick={onCloseButtonClicked}>
             {t('el:button-close')}
           </CloseButton>
         )}
@@ -319,10 +326,11 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
             <Column>
               <Input
                 feil={_validation[namespace + '-fnr']?.feilmelding}
-                namespace={namespace}
                 id='fnr'
                 label={t('label:fnr-dnr')}
+                namespace={namespace}
                 onChanged={onNewPersonFnrChange}
+                required
                 value={_newPersonFnr}
               />
               <HorizontalSeparatorDiv />
@@ -330,16 +338,19 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
             <Column>
               <Input
                 feil={_validation[namespace + '-navn']?.feilmelding}
-                namespace={namespace}
                 id='navn'
+                namespace={namespace}
                 label={t('label:navn')}
                 onChanged={onNewPersonNameChange}
+                required
                 value={_newPersonName}
               />
               <HorizontalSeparatorDiv />
             </Column>
             <Column>
               <Select
+                aria-label={t('label:familierelasjon')}
+                key={namespace + '-relasjon-' + _newPersonRelation}
                 data-test-id={namespace + '-relasjon'}
                 feil={_validation[namespace + '-relasjon']?.feilmelding}
                 id={namespace + '-relasjon'}
@@ -356,7 +367,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
             </Column>
             <Column>
               <div className='nolabel'>
-                <Knapp
+                <HighContrastKnapp
                   mini
                   kompakt
                   onClick={onAdd}
@@ -364,7 +375,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
                   <Add width={20} />
                   <HorizontalSeparatorDiv />
                   {t('el:button-add')}
-                </Knapp>
+                </HighContrastKnapp>
               </div>
             </Column>
           </AlignStartRow>
@@ -372,19 +383,15 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
         </>
         <ModalButtons>
           <MainButton
-            id='modal__main-button-id'
             onClick={() => {
               onSavePersons()
-              closeModal()
+              onModalClose()
             }}
           >
             {t('el:button-save')}
           </MainButton>
           <HorizontalSeparatorDiv />
-          <OtherButton
-            id='modal__other-button-id'
-            onClick={closeModal}
-          >
+          <OtherButton onClick={onModalClose}>
             {t('el:button-cancel')}
           </OtherButton>
         </ModalButtons>

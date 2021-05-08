@@ -1,33 +1,43 @@
-
-import { setReplySed } from 'actions/svarpased'
+import { updateReplySed } from 'actions/svarpased'
 import Edit from 'assets/icons/Edit'
 import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
+import { State } from 'declarations/reducers'
 import { HSed, ReplySed } from 'declarations/sed'
+import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema/lib/feiloppsummering'
+import { Column, FlexCenterDiv, HighContrastFlatknapp, HorizontalSeparatorDiv, Row } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
-import { Column, FlexCenterDiv, HighContrastFlatknapp, HorizontalSeparatorDiv, Row } from 'nav-hoykontrast'
+import { useDispatch, useSelector } from 'react-redux'
 import { OptionTypeBase } from 'react-select'
 
-interface SEDTypeProps {
-  feil: FeiloppsummeringFeil | undefined
+interface TemaSelector {
   highContrast: boolean
-  replySed: ReplySed
+  replySed: ReplySed | undefined
+  resetValidation: ((key?: string | undefined) => void)
+  validation: Validation
 }
 
-const SEDType: React.FC<SEDTypeProps> = ({
-  highContrast,
-  replySed
-}: SEDTypeProps) => {
-  const { t } = useTranslation()
+const mapState = (state: State): TemaSelector => ({
+  highContrast: state.ui.highContrast,
+  replySed: state.svarpased.replySed,
+  resetValidation: state.validation.resetValidation,
+  validation: state.validation.status
+})
 
+const Tema: React.FC = () => {
+  const { t } = useTranslation()
+  const {
+    highContrast,
+    replySed,
+    validation,
+    resetValidation
+  }: any = useSelector<State, TemaSelector>(mapState)
+  const dispatch = useDispatch()
+  const namespace: string = 'tema'
   const [tema, setTema] = useState<string>(() => (replySed as HSed).tema)
   const [editMode, setEditMode] = useState<boolean>(false)
-
-  const dispatch = useDispatch()
 
   const temaOptions: Options = [
     { label: t('tema:GEN'), value: 'GEN' },
@@ -51,41 +61,53 @@ const SEDType: React.FC<SEDTypeProps> = ({
     { label: t('tema:UFM'), value: 'UFM' }
   ]
 
-  const saveChanges = () => {
-    if (tema) {
-      dispatch(setReplySed({
-        ...replySed,
-        tema: tema
-      }))
-    }
+  const onSaveChangesClicked = () => {
+    dispatch(updateReplySed('tema', tema))
     setEditMode(false)
   }
 
-  const cancelChanges = () => setEditMode(false)
+  const onTemaChanged = (o: OptionTypeBase) => {
+    if (validation[namespace]) {
+      resetValidation(namespace)
+    }
+    setTema(o.value)
+  }
+
+  const onCancelChangesClicked = () => setEditMode(false)
+
+  const onEditModeClicked = () => setEditMode(true)
 
   return (
     <Row>
       <Column>
         <FlexCenterDiv>
-          <label className='skjemaelement__label' style={{ margin: '0px' }}>{t('label:tema')}: </label>
+          <label
+            htmlFor={namespace}
+            className='skjemaelement__label'
+            style={{ margin: '0px' }}
+          >
+            {t('label:tema')}:
+          </label>
           <HorizontalSeparatorDiv size='0.35' />
           {!editMode && (<>{t('tema:' + (replySed as HSed).tema)}</>)}
           {editMode && (
             <>
               <Select
-                id='sedtype'
-                style={{ minWidth: '300px' }}
-                onChange={(o: OptionTypeBase) => setTema(o.value)}
-                highContrast={highContrast}
-                options={temaOptions}
                 defaultValue={_.find(temaOptions, s => s.value === tema)}
+                feil={validation[namespace]?.feilmelding}
+                highContrast={highContrast}
+                key={namespace + '-' + tema}
+                id={namespace}
+                onChange={onTemaChanged}
+                options={temaOptions}
                 selectedValue={_.find(temaOptions, s => s.value === tema)}
+                style={{ minWidth: '300px' }}
               />
               <HorizontalSeparatorDiv size='0.5' />
               <HighContrastFlatknapp
                 mini
                 kompakt
-                onClick={saveChanges}
+                onClick={onSaveChangesClicked}
               >
                 {t('el:button-save')}
               </HighContrastFlatknapp>
@@ -93,7 +115,7 @@ const SEDType: React.FC<SEDTypeProps> = ({
               <HighContrastFlatknapp
                 mini
                 kompakt
-                onClick={cancelChanges}
+                onClick={onCancelChangesClicked}
               >
                 {t('el:button-cancel')}
               </HighContrastFlatknapp>
@@ -104,7 +126,7 @@ const SEDType: React.FC<SEDTypeProps> = ({
             <HighContrastFlatknapp
               mini
               kompakt
-              onClick={() => setEditMode(true)}
+              onClick={onEditModeClicked}
             >
               <Edit />
               <HorizontalSeparatorDiv size='0.5' />
@@ -117,4 +139,4 @@ const SEDType: React.FC<SEDTypeProps> = ({
   )
 }
 
-export default SEDType
+export default Tema

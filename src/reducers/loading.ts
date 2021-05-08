@@ -38,16 +38,16 @@ const loadingReducer = (
   switch (action.type) {
     // SAK
     case types.SAK_ARBEIDSPERIODER_GET_REQUEST:
-    case types.SVARPASED_ARBEIDSPERIODER_GET_REQUEST:
+    case types.ARBEIDSPERIODER_GET_REQUEST:
       return {
         ...state,
         gettingArbeidsperioder: true
       }
 
     case types.SAK_ARBEIDSPERIODER_GET_SUCCESS:
-    case types.SVARPASED_ARBEIDSPERIODER_GET_SUCCESS:
+    case types.ARBEIDSPERIODER_GET_SUCCESS:
     case types.SAK_ARBEIDSPERIODER_GET_FAILURE:
-    case types.SVARPASED_ARBEIDSPERIODER_GET_FAILURE:
+    case types.ARBEIDSPERIODER_GET_FAILURE:
       return {
         ...state,
         gettingArbeidsperioder: false
@@ -92,14 +92,14 @@ const loadingReducer = (
         gettingInstitusjoner: false
       }
 
-    case types.SVARPASED_INNTEKT_GET_REQUEST:
+    case types.INNTEKT_GET_REQUEST:
       return {
         ...state,
         gettingInntekter: true
       }
 
-    case types.SVARPASED_INNTEKT_GET_SUCCESS:
-    case types.SVARPASED_INNTEKT_GET_FAILURE:
+    case types.INNTEKT_GET_SUCCESS:
+    case types.INNTEKT_GET_FAILURE:
       return {
         ...state,
         gettingInntekter: false
@@ -144,14 +144,14 @@ const loadingReducer = (
         gettingPreviewFile: false
       }
 
-    case types.SVARPASED_PERSON_SEARCH_REQUEST:
+    case types.PERSON_SEARCH_REQUEST:
       return {
         ...state,
         searchingPerson: true
       }
 
-    case types.SVARPASED_PERSON_SEARCH_SUCCESS:
-    case types.SVARPASED_PERSON_SEARCH_FAILURE:
+    case types.PERSON_SEARCH_SUCCESS:
+    case types.PERSON_SEARCH_FAILURE:
       return {
         ...state,
         searchingPerson: false

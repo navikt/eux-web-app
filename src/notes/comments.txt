@@ -18,6 +18,7 @@ test:
 
 ui improvs:
 - onXXXchange
+- useState lazy init
 - rever slideAnimate 0.05
 - meter keys para melhor ver o que muda
 - accessibility
@@ -34,7 +35,40 @@ ui improvs:
        aria-invalid
        react-axe
 
-- rever høykontrast
+- rever høykontrast (checkbox is still blue)
+- can I have a NavHighContrast for all?
 - unit tests
 
-refactor: replace errrorboundary
+
+
+   /*resetValidation: (key?: string) => void
+   updateReplySed: (needle: string, value: any) => void
+   */
+ }
+
+ /* gettingArbeidsperioder: state.loading.gettingArbeidsperioder,
+   gettingInntekter: state.loading.gettingInntekter,
+   gettingPerson: state.loading.gettingPerson,
+   inntekter: state.svarpased.inntekter,
+   landkoderList: state.app.landkoder,
+   searchingPerson: state.loading.searchingPerson,
+   person: state.person.person
+   arbeidsperioder: state.svarpased.arbeidsperioder,
+   familierelasjonKodeverk: state.app.familierelasjoner,
+
+  */
+
+ const {
+   arbeidsperioder,
+   familierelasjonKodeverk,
+   gettingArbeidsperioder,
+   gettingInntekter,
+   gettingPerson,
+   highContrast,
+   inntekter,
+   landkoderList,
+   searchingPerson,
+   searchedPerson
+ }: any = useSelector<State, any>(mapState)
+
+
