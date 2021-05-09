@@ -1,39 +1,48 @@
+import { updateReplySed } from 'actions/svarpased'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import useAddRemove from 'hooks/useAddRemove'
 import Period from 'components/Period/Period'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
+import { State } from 'declarations/reducers'
+import { Periode } from 'declarations/sed'
+import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
-import { Periode, ReplySed } from 'declarations/sed'
-import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Undertittel } from 'nav-frontend-typografi'
-import { AlignStartRow, Column, HighContrastFlatknapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import {
+  AlignStartRow,
+  Column,
+  HighContrastFlatknapp,
+  HorizontalSeparatorDiv,
+  Row,
+  VerticalSeparatorDiv
+} from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import { validateNotAnsatte, ValidationNotAnsattProps } from './notAnsattValidation'
 
-export interface NotAnsattProps {
-  parentNamespace: string
-  personID: string
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  updateReplySed: (needle: string, value: any) => void
-  validation: Validation
-}
+const mapState = (state: State): PersonManagerFormSelector => ({
+  replySed: state.svarpased.replySed,
+  resetValidation: state.validation.resetValidation,
+  validation: state.validation.status
+})
 
-const NotAnsatt: React.FC<NotAnsattProps> = ({
+const NotAnsatt: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
-  personID,
-  replySed,
-  resetValidation,
-  updateReplySed,
-  validation
-}: NotAnsattProps): JSX.Element => {
+  personID
+}:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    replySed,
+    resetValidation,
+    validation
+  } = useSelector<State, PersonManagerFormSelector>(mapState)
+  const dispatch = useDispatch()
   const target: string = `${personID}.perioderSomSelvstendig`
   const perioderSomSelvstendig: Array<Periode> = _.get(replySed, target)
   const namespace = `${parentNamespace}-notansatt`
@@ -52,7 +61,7 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
       _setNewStartDato(newDato.trim())
       _resetValidation(namespace + '-startdato')
     } else {
-      updateReplySed(`${target}[${index}].startdato`, newDato.trim())
+      dispatch(updateReplySed(`${target}[${index}].startdato`, newDato.trim()))
       if (validation[namespace + getIdx(index) + '-startdato']) {
         resetValidation(namespace + getIdx(index) + '-startdato')
       }
@@ -72,7 +81,7 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
         delete newPerioder[index].aapenPeriodeType
         newPerioder[index].sluttdato = sluttdato.trim()
       }
-      updateReplySed(target, newPerioder)
+      dispatch(updateReplySed(target, newPerioder))
       if (validation[namespace + getIdx(index) + '-sluttdato']) {
         resetValidation(namespace + getIdx(index) + '-sluttdato')
       }
@@ -96,7 +105,7 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
     if (deletedPeriods && deletedPeriods.length > 0) {
       removeFromDeletion(deletedPeriods[0])
     }
-    updateReplySed(target, newPerioder)
+    dispatch(updateReplySed(target, newPerioder))
   }
 
   const onAdd = () => {
@@ -121,7 +130,7 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
         newPerioder = []
       }
       newPerioder = newPerioder.concat(newPeriode)
-      updateReplySed(target, newPerioder)
+      dispatch(updateReplySed(target, newPerioder))
       resetForm()
     }
   }

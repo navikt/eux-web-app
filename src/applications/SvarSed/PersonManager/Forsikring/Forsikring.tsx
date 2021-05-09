@@ -1,48 +1,36 @@
 import Arbeidsforhold from 'applications/SvarSed/PersonManager/Arbeidsforhold/Arbeidsforhold'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import ExpandingPanel from 'components/ExpandingPanel/ExpandingPanel'
 import Stack from 'components/Stack/Stack'
 import { Options } from 'declarations/app'
-import { ReplySed } from 'declarations/sed'
-import { Arbeidsperioder, Validation } from 'declarations/types'
+import { State } from 'declarations/reducers'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
-import { Column, AlignStartRow, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
-
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 
-interface ForsikringProps {
-  arbeidsperioder: Arbeidsperioder
-  getArbeidsperioder: () => void
-  gettingArbeidsperioder: boolean
-  inntekter: any
-  getInntekter: () => void
+interface ForsikringSelector extends PersonManagerFormSelector {
   highContrast: boolean
-  gettingInntekter: boolean
-  parentNamespace: string
-  personID: string
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  updateReplySed: (needle: string, value: any) => void
-  validation: Validation
 }
 
-const Forsikring: React.FC<ForsikringProps> = ({
-  arbeidsperioder,
-  getArbeidsperioder,
-  gettingArbeidsperioder,
-  inntekter,
-  getInntekter,
-  gettingInntekter,
-  highContrast,
+const mapState = (state: State): ForsikringSelector => ({
+  highContrast: state.ui.highContrast,
+  replySed: state.svarpased.replySed,
+  resetValidation: state.validation.resetValidation,
+  validation: state.validation.status
+})
+
+const Forsikring: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
-  replySed,
-  resetValidation,
-  updateReplySed,
-  validation
-}:ForsikringProps): JSX.Element => {
+  personName
+}:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    highContrast
+  } = useSelector<State, ForsikringSelector>(mapState)
   // TODO add target
   // const target = 'xxx-forsikring'
   // const xxx: any = _.get(replySed, target)
@@ -100,19 +88,9 @@ const Forsikring: React.FC<ForsikringProps> = ({
           )}
           >
             <Arbeidsforhold
-              arbeidsperioder={arbeidsperioder}
-              gettingArbeidsperioder={gettingArbeidsperioder}
-              getArbeidsperioder={getArbeidsperioder}
-              inntekter={inntekter}
-              gettingInntekter={gettingInntekter}
-              getInntekter={getInntekter}
-              highContrast={highContrast}
               parentNamespace={namespace}
               personID={personID}
-              replySed={replySed}
-              resetValidation={resetValidation}
-              updateReplySed={updateReplySed}
-              validation={validation}
+              personName={personName}
             />
           </ExpandingPanel>
           <VerticalSeparatorDiv size='2' />

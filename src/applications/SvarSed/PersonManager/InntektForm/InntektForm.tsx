@@ -1,44 +1,59 @@
+import { fetchInntekt } from 'actions/inntekt'
+import { updateReplySed } from 'actions/svarpased'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Search from 'assets/icons/Search'
 import Select from 'components/Forms/Select'
 import Inntekt from 'components/Inntekt/Inntekt'
 import Period from 'components/Period/Period'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { Options } from 'declarations/app'
-import { Periode, ReplySed } from 'declarations/sed'
-import { IInntekter, Validation } from 'declarations/types'
+import { State } from 'declarations/reducers'
+import { Periode } from 'declarations/sed'
+import { IInntekter } from 'declarations/types'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
-import { Column, HighContrastFlatknapp, AlignStartRow, PaddedDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import {
+  AlignStartRow,
+  Column,
+  HighContrastFlatknapp,
+  HorizontalSeparatorDiv,
+  PaddedDiv,
+  VerticalSeparatorDiv
+} from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 import { OptionTypeBase } from 'react-select'
 
-interface InntektFormProps {
-  inntekter: IInntekter | undefined
-  getInntekter: () => void
-  highContrast: boolean
+interface InntektFormSelector extends PersonManagerFormSelector {
   gettingInntekter: boolean
-  parentNamespace: string
-  personID: string
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  updateReplySed: (needle: string, value: any) => void
-  validation: Validation
+  highContrast: boolean
+  inntekter: IInntekter | undefined
 }
 
-const InntektForm: React.FC<InntektFormProps> = ({
-  inntekter,
-  getInntekter,
-  gettingInntekter,
-  highContrast,
+const mapState = (state: State): InntektFormSelector => ({
+  gettingInntekter: state.loading.gettingInntekter,
+  highContrast: state.ui.highContrast,
+  inntekter: state.inntekt.inntekter,
+  replySed: state.svarpased.replySed,
+  resetValidation: state.validation.resetValidation,
+  validation: state.validation.status
+})
+
+const InntektForm: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
-  personID,
-  replySed,
-  resetValidation,
-  updateReplySed,
-  validation
-}:InntektFormProps): JSX.Element => {
+  personID
+}:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    gettingInntekter,
+    highContrast,
+    inntekter,
+    replySed,
+    resetValidation,
+    validation
+  } = useSelector<State, InntektFormSelector>(mapState)
+  const dispatch = useDispatch()
   const target = 'xxx-inntekt'
   const xxx: any = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-inntekt`
@@ -50,7 +65,7 @@ const InntektForm: React.FC<InntektFormProps> = ({
   ]
 
   const setStartDato = (startdato: string) => {
-    updateReplySed(`${target}.startdato`, startdato.trim())
+    dispatch(updateReplySed(`${target}.startdato`, startdato.trim()))
     if (validation[namespace + '-startdato']) {
       resetValidation(namespace + '-startdato')
     }
@@ -65,7 +80,7 @@ const InntektForm: React.FC<InntektFormProps> = ({
       delete newAnmodningsperiode.aapenPeriodeType
       newAnmodningsperiode.sluttdato = sluttdato.trim()
     }
-    updateReplySed(target, newAnmodningsperiode)
+    dispatch(updateReplySed(target, newAnmodningsperiode))
     if (validation[namespace + '-sluttdato']) {
       resetValidation(namespace + '-sluttdato')
     }
@@ -74,7 +89,9 @@ const InntektForm: React.FC<InntektFormProps> = ({
     _setFilter(filter)
   }
 
-  const onInntektClick = () => getInntekter()
+  const fnr = _.find(replySed?.bruker?.personInfo.pin, p => p.land === 'NO')?.identifikator
+
+  const onInntektClick = () => dispatch(fetchInntekt(fnr))
 
   return (
     <PaddedDiv>
@@ -128,11 +145,7 @@ const InntektForm: React.FC<InntektFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       {gettingInntekter && <WaitingPanel />}
       {inntekter && (
-        <Inntekt
-          highContrast={highContrast}
-          inntekter={inntekter}
-          personID={personID}
-        />
+        <Inntekt inntekter={inntekter} />
       )}
 
     </PaddedDiv>

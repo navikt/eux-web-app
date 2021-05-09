@@ -1,3 +1,5 @@
+import { updateReplySed } from 'actions/svarpased'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
@@ -5,39 +7,46 @@ import DateInput from 'components/Forms/DateInput'
 import TextArea from 'components/Forms/TextArea'
 import Period from 'components/Period/Period'
 import { HorizontalLineSeparator, TextAreaDiv } from 'components/StyledComponents'
-import { Flyttegrunn, Periode, ReplySed } from 'declarations/sed'
-import { Validation } from 'declarations/types'
+import { State } from 'declarations/reducers'
+import { Flyttegrunn, Periode } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import moment from 'moment'
 import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
-import { Column, AlignStartRow, PaddedDiv, HighContrastFlatknapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import {
+  AlignStartRow,
+  Column,
+  HighContrastFlatknapp,
+  HorizontalSeparatorDiv,
+  PaddedDiv,
+  Row,
+  VerticalSeparatorDiv
+} from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import { validateGrunnlagForBosetting, ValidationGrunnlagForBosettingProps } from './validation'
 
-interface GrunnlagForBosettingProps {
-  parentNamespace: string,
-  personID: string
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  standalone ?: boolean
-  updateReplySed: (needle: string, value: any) => void
-  validation: Validation
-}
+const mapState = (state: State): PersonManagerFormSelector => ({
+  replySed: state.svarpased.replySed,
+  resetValidation: state.validation.resetValidation,
+  validation: state.validation.status
+})
 
-const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
-  updateReplySed,
+const GrunnlagforBosetting: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
-  replySed,
-  resetValidation,
-  standalone = false,
-  validation
-}:GrunnlagForBosettingProps): JSX.Element => {
+  standalone
+}:PersonManagerFormProps & {standalone?: boolean}): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    replySed,
+    resetValidation,
+    validation
+  } = useSelector<State, PersonManagerFormSelector>(mapState)
+  const dispatch = useDispatch()
   const target = `${personID}.flyttegrunn`
   const flyttegrunn: Flyttegrunn = _.get(replySed, target)
   const namespace = standalone ? `${parentNamespace}-${personID}-grunnlagforbosetting` : `${parentNamespace}-grunnlagforbosetting`
@@ -52,14 +61,14 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationGrunnlagForBosettingProps>({}, validateGrunnlagForBosetting)
 
   const setAvsenderDato = (dato: string) => {
-    updateReplySed(`${target}.datoFlyttetTilAvsenderlandet`, dato.trim())
+    dispatch(updateReplySed(`${target}.datoFlyttetTilAvsenderlandet`, dato.trim()))
     if (validation[namespace + '-datoFlyttetTilAvsenderlandet']) {
       resetValidation(namespace + '-datoFlyttetTilAvsenderlandet')
     }
   }
 
   const setMottakerDato = (dato: string) => {
-    updateReplySed(`${target}.datoFlyttetTilMottakerlandet`, dato.trim())
+    dispatch(updateReplySed(`${target}.datoFlyttetTilMottakerlandet`, dato.trim()))
     if (validation[namespace + '-datoFlyttetTilMottakerlandet']) {
       resetValidation(namespace + '-datoFlyttetTilMottakerlandet')
     }
@@ -70,7 +79,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
       _setNewStartDato(startdato.trim())
       _resetValidation(namespace + '-perioder-startdato')
     } else {
-      updateReplySed(`${target}.perioder[${index}].startdato`, startdato.trim())
+      dispatch(updateReplySed(`${target}.perioder[${index}].startdato`, startdato.trim()))
       if (validation[namespace + '-perioder' + getIdx(index) + '-startdato']) {
         resetValidation(namespace + '-perioder' + getIdx(index) + '-startdato')
       }
@@ -90,7 +99,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
         delete newPerioder[index].aapenPeriodeType
         newPerioder[index].sluttdato = sluttdato.trim()
       }
-      updateReplySed(`${target}.perioder`, newPerioder)
+      dispatch(updateReplySed(`${target}.perioder`, newPerioder))
       if (validation[namespace + '-perioder' + getIdx(index) + '-sluttdato']) {
         resetValidation(namespace + '-perioder' + getIdx(index) + '-sluttdato')
       }
@@ -98,7 +107,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
   }
 
   const setPersonligSituasjon = (personligSituasjon: string) => {
-    updateReplySed(`${target}.personligSituasjon`, personligSituasjon.trim())
+    dispatch(updateReplySed(`${target}.personligSituasjon`, personligSituasjon.trim()))
     if (validation[namespace + '-personligSituasjon']) {
       resetValidation(namespace + '-personligSituasjon')
     }
@@ -121,7 +130,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
     if (deletedPeriods && deletedPeriods.length > 0) {
       removeFromDeletion(deletedPeriods[0])
     }
-    updateReplySed(`${target}.perioder`, newPerioder)
+    dispatch(updateReplySed(`${target}.perioder`, newPerioder))
   }
 
   const onAdd = () => {
@@ -146,7 +155,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
         newPerioder = []
       }
       newPerioder = newPerioder.concat(newPeriode)
-      updateReplySed(`${target}.perioder`, newPerioder)
+      dispatch(updateReplySed(`${target}.perioder`, newPerioder))
       resetForm()
     }
   }

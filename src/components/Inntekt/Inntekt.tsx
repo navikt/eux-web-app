@@ -1,3 +1,4 @@
+import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { IInntekt, IInntekter } from 'declarations/types'
 import moment from 'moment'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
@@ -19,9 +20,7 @@ import styled from 'styled-components'
 import { formatterPenger } from 'utils/PengeUtils'
 
 export interface InntektProps {
-  highContrast: boolean
   inntekter: IInntekter
-  personID: string
 }
 
 const ArbeidsgiverDiv = styled(FlexDiv)`
@@ -33,15 +32,15 @@ const LeftBorderFlexDiv = styled(FlexDiv)`
   border-left: 1px solid ${({ theme }) => theme[themeKeys.MAIN_BORDER_COOLOR]};
 `
 
-const Inntekt: React.FC<InntektProps> = ({
-  // highContrast,
-  inntekter
-  // personID
-}:InntektProps) => {
+const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
   const { t } = useTranslation()
 
   const data: {[k in string]: Array<IInntekt>} = {}
   const [_currentPage, setCurrentPage] = useState<{[k in string]: number}>({})
+
+  if (!inntekter) {
+    return <WaitingPanel />
+  }
 
   inntekter?.inntektsmaaneder?.forEach((inntekt: IInntekt) => {
     if (Object.prototype.hasOwnProperty.call(data, inntekt.orgNr)) {

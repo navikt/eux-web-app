@@ -1,48 +1,61 @@
+import { updateReplySed } from 'actions/svarpased'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import useAddRemove from 'hooks/useAddRemove'
-import Period from 'components/Period/Period'
 import Select from 'components/Forms/Select'
-import useValidation from 'hooks/useValidation'
+import Period from 'components/Period/Period'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
-import { PensjonPeriode, PensjonsType, Periode, ReplySed } from 'declarations/sed'
+import { State } from 'declarations/reducers'
+import { PensjonPeriode, PensjonsType, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
+import useAddRemove from 'hooks/useAddRemove'
+import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Ingress, UndertekstBold } from 'nav-frontend-typografi'
-import { Column, AlignStartRow, HighContrastFlatknapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import {
+  AlignStartRow,
+  Column,
+  HighContrastFlatknapp,
+  HorizontalSeparatorDiv,
+  Row,
+  VerticalSeparatorDiv
+} from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 import { OptionsType } from 'react-select'
 import { getIdx } from 'utils/namespace'
 import { validateFamilieytelserPeriode, ValidationFamilieytelsePeriodeProps } from './validation'
 
-interface TrygdeordningProps {
+interface FamilieYtelserSelector extends PersonManagerFormSelector {
   highContrast: boolean
-  updateReplySed: (needle: string, value: any) => void
-  parentNamespace: string,
-  personID: string
-  personName: string
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  validation: Validation
 }
+
+const mapState = (state: State): FamilieYtelserSelector => ({
+  highContrast: state.ui.highContrast,
+  replySed: state.svarpased.replySed,
+  resetValidation: state.validation.resetValidation,
+  validation: state.validation.status
+})
 
 type SedCategory = 'perioderMedArbeid' | 'perioderMedTrygd' |
   'perioderMedYtelser' | 'perioderMedPensjon'
 
-const FamilieYtelser: React.FC<TrygdeordningProps> = ({
-  highContrast,
-  updateReplySed,
+const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
-  personName,
-  replySed,
-  resetValidation,
-  validation
-}: TrygdeordningProps): JSX.Element => {
+  personName
+}:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    highContrast,
+    replySed,
+    resetValidation,
+    validation
+  } = useSelector<State, FamilieYtelserSelector>(mapState)
+  const dispatch = useDispatch()
   const perioder: {[k in SedCategory]: Array<Periode | PensjonPeriode>} = {
     perioderMedArbeid: _.get(replySed, `${personID}.perioderMedArbeid`),
     perioderMedTrygd: _.get(replySed, `${personID}.perioderMedTrygd`),
@@ -99,7 +112,7 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
       } else {
         (newPerioder[index] as Periode).startdato = startdato.trim()
       }
-      updateReplySed(`${personID}.${newSedCategory}`, newPerioder)
+      dispatch(updateReplySed(`${personID}.${newSedCategory}`, newPerioder))
       if (validation[namespace + '-' + newSedCategory + getIdx(index) + suffixnamespace + '-startdato']) {
         resetValidation(namespace + '-' + newSedCategory + getIdx(index) + suffixnamespace + '-startdato')
       }
@@ -122,7 +135,7 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
           delete newPerioder[index].periode.aapenPeriodeType
           newPerioder[index].periode.sluttdato = sluttdato.trim()
         }
-        updateReplySed(`${personID}.${newSedCategory}`, newPerioder)
+        dispatch(updateReplySed(`${personID}.${newSedCategory}`, newPerioder))
       } else {
         const newPerioder: Array<Periode> = _.cloneDeep(perioder[newSedCategory!]) as Array<Periode>
 
@@ -133,7 +146,7 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
           delete newPerioder[index].aapenPeriodeType
           newPerioder[index].sluttdato = sluttdato.trim()
         }
-        updateReplySed(`${personID}.${newSedCategory}`, newPerioder)
+        dispatch(updateReplySed(`${personID}.${newSedCategory}`, newPerioder))
       }
       if (validation[namespace + newSedCategory + getIdx(index) + suffixnamespace + '-sluttdato']) {
         resetValidation(namespace + newSedCategory + getIdx(index) + suffixnamespace + '-sluttdato')
@@ -154,7 +167,7 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
       const newPerioder: Array<PensjonPeriode> = _.cloneDeep(perioder.perioderMedPensjon) as Array<PensjonPeriode>
       newPerioder[index].pensjonstype = type
 
-      updateReplySed(`${personID}.perioderMedPensjon`, newPerioder)
+      dispatch(updateReplySed(`${personID}.perioderMedPensjon`, newPerioder))
       if (validation[namespace + '-perioderMedPensjon' + getIdx(index) + '-pensjontype']) {
         resetValidation(namespace + '-perioderMedPensjon' + getIdx(index) + '-pensjontype')
       }
@@ -180,7 +193,7 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
     if (deletedPerioder && deletedPerioder.length > 0) {
       removeFromDeletion(deletedPerioder[0])
     }
-    updateReplySed(`${personID}.${newSedCategory}`, newPerioder)
+    dispatch(updateReplySed(`${personID}.${newSedCategory}`, newPerioder))
   }
 
   const onAdd = () => {
@@ -229,7 +242,7 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
       }
       newPerioder = newPerioder.concat(newPeriode)
       resetForm()
-      updateReplySed(`${personID}.${_newCategory}`, newPerioder)
+      dispatch(updateReplySed(`${personID}.${_newCategory}`, newPerioder))
     }
   }
 

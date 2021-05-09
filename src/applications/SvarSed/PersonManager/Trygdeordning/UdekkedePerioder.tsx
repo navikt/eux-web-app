@@ -1,3 +1,5 @@
+import { updateReplySed } from 'actions/svarpased'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import {
   validateUdekkedePeriode,
   ValidationUdekkedePeriodeProps
@@ -6,39 +8,44 @@ import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Period from 'components/Period/Period'
-import { Periode, ReplySed } from 'declarations/sed'
-import { Validation } from 'declarations/types'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
+import { State } from 'declarations/reducers'
+import { Periode } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
 import _ from 'lodash'
 import { Ingress } from 'nav-frontend-typografi'
-import { Column, AlignStartRow, HighContrastFlatknapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import {
+  AlignStartRow,
+  Column,
+  HighContrastFlatknapp,
+  HorizontalSeparatorDiv,
+  Row,
+  VerticalSeparatorDiv
+} from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 
-interface UdekkedePerioderProps {
-  highContrast: boolean
-  updateReplySed: (needle: string, value: any) => void
-  parentNamespace: string,
-  personID: string
-  personName: string
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  validation: Validation
-}
+const mapState = (state: State): PersonManagerFormSelector => ({
+  replySed: state.svarpased.replySed,
+  resetValidation: state.validation.resetValidation,
+  validation: state.validation.status
+})
 
-const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
-  updateReplySed,
+const UdekkedePerioder: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
-  personName,
-  replySed,
-  resetValidation,
-  validation
-}: UdekkedePerioderProps): JSX.Element => {
+  personName
+}:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    replySed,
+    resetValidation,
+    validation
+  } = useSelector<State, PersonManagerFormSelector>(mapState)
+  const dispatch = useDispatch()
   const target = `${personID}.perioderUtenforTrygdeordning`
   const perioderUtenforTrygdeordning: Array<Periode> = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-trygdeordninger`
@@ -57,7 +64,7 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
       _setNewStartDato(startdato.trim())
       _resetValidation(namespace + '-udekkede-startdato')
     } else {
-      updateReplySed(`{target}[${index}].startdato`, startdato.trim())
+      dispatch(updateReplySed(`{target}[${index}].startdato`, startdato.trim()))
       if (validation[namespace + '-perioderUtenforTrygdeordning' + getIdx(index) + '-startdato']) {
         resetValidation(namespace + '-perioderUtenforTrygdeordning' + getIdx(index) + '-startdato')
       }
@@ -77,7 +84,7 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
         delete newPerioder[index].aapenPeriodeType
         newPerioder[index].sluttdato = sluttdato.trim()
       }
-      updateReplySed(target, newPerioder)
+      dispatch(updateReplySed(target, newPerioder))
       if (namespace + '-perioderUtenforTrygdeordning' + getIdx(index) + '-sluttdato') {
         resetValidation(namespace + '-perioderUtenforTrygdeordning' + getIdx(index) + '-sluttdato')
       }
@@ -101,7 +108,7 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
     if (deletedPerioder && deletedPerioder.length > 0) {
       removeFromDeletion(deletedPerioder[0])
     }
-    updateReplySed(target, newPerioder)
+    dispatch(updateReplySed(target, newPerioder))
   }
 
   const onAdd = () => {
@@ -126,7 +133,7 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
         newPerioder = []
       }
       newPerioder = newPerioder.concat(newPeriode)
-      updateReplySed(target, newPerioder)
+      dispatch(updateReplySed(target, newPerioder))
       resetForm()
     }
   }

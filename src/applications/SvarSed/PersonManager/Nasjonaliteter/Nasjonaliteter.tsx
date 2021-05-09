@@ -1,45 +1,57 @@
+import { updateReplySed } from 'actions/svarpased'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
 import { toFinalDateFormat } from 'components/Period/Period'
-import { ReplySed, Statsborgerskap } from 'declarations/sed'
-import { Kodeverk, Validation } from 'declarations/types'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
+import { State } from 'declarations/reducers'
+import { Statsborgerskap } from 'declarations/sed'
+import { Kodeverk } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import CountrySelect from 'landvelger'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
 import _ from 'lodash'
 import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
-import { Column, AlignStartRow, PaddedDiv, HighContrastFlatknapp, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import {
+  AlignStartRow,
+  Column,
+  HighContrastFlatknapp,
+  HorizontalSeparatorDiv,
+  PaddedDiv,
+  VerticalSeparatorDiv
+} from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import { validateNasjonalitet, ValidationNasjonalitetProps } from './validation'
 
-interface NasjonalitetProps {
-  highContrast: boolean
-  landkoderList: Array<Kodeverk>
-  parentNamespace: string
-  personID: string
-  personName: string
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  updateReplySed: (needle: string, value: any) => void
-  validation: Validation
+interface NasjonaliteterSelector extends PersonManagerFormSelector {
+  landkoderList: Array<Kodeverk> | undefined
 }
 
-const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
-  landkoderList,
+const mapState = (state: State): NasjonaliteterSelector => ({
+  landkoderList: state.app.landkoder,
+  replySed: state.svarpased.replySed,
+  resetValidation: state.validation.resetValidation,
+  validation: state.validation.status
+})
+
+const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
-  personName,
-  replySed,
-  resetValidation,
-  updateReplySed,
-  validation
-}:NasjonalitetProps): JSX.Element => {
+  personName
+}:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    landkoderList,
+    replySed,
+    resetValidation,
+    validation
+  } = useSelector<State, NasjonaliteterSelector>(mapState)
+  const dispatch = useDispatch()
   const target = `${personID}.personInfo.statsborgerskap`
   const statsborgerskaper: Array<Statsborgerskap> = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-nasjonaliteter`
@@ -56,7 +68,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
       _setNewFradato(fradato.trim())
       _resetValidation(namespace + '-fradato')
     } else {
-      updateReplySed(`${target}[${index}].fradato`, toFinalDateFormat(fradato.trim()))
+      dispatch(updateReplySed(`${target}[${index}].fradato`, toFinalDateFormat(fradato.trim())))
       if (validation[namespace + getIdx(index) + '-fradato']) {
         resetValidation(namespace + getIdx(index) + '-fradato')
       }
@@ -68,7 +80,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
       _setNewLand(land.trim())
       _resetValidation(namespace + '-land')
     } else {
-      updateReplySed(`${target}[${index}].land`, land.trim())
+      dispatch(updateReplySed(`${target}[${index}].land`, land.trim()))
       if (validation[namespace + getIdx(index) + '-land']) {
         resetValidation(namespace + getIdx(index) + '-land')
       }
@@ -92,7 +104,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
     if (deletedStatsborgerskaper && deletedStatsborgerskaper.length > 0) {
       removeFromDeletion(deletedStatsborgerskaper[0])
     }
-    updateReplySed(target, newStatsborgerskaper)
+    dispatch(updateReplySed(target, newStatsborgerskaper))
   }
 
   const onAdd = () => {
@@ -112,7 +124,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
         newStatsborgerskaper = []
       }
       newStatsborgerskaper.push(newStatsborgerskap)
-      updateReplySed(target, newStatsborgerskaper)
+      dispatch(updateReplySed(target, newStatsborgerskaper))
       resetForm()
     }
   }

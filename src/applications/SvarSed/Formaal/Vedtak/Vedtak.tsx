@@ -1,3 +1,5 @@
+import { updateReplySed } from 'actions/svarpased'
+import { FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
 import { ValidationVedtakPeriodeProps } from 'applications/SvarSed/Formaal/Vedtak/validation'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
@@ -7,8 +9,8 @@ import TextArea from 'components/Forms/TextArea'
 import Period from 'components/Period/Period'
 import { HorizontalLineSeparator, TextAreaDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
-import { F002Sed, FormalVedtak, JaNei, PeriodeMedVedtak, ReplySed } from 'declarations/sed'
-import { Validation } from 'declarations/types'
+import { State } from 'declarations/reducers'
+import { F002Sed, FormalVedtak, JaNei, PeriodeMedVedtak } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -28,26 +30,31 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 import { OptionTypeBase } from 'react-select'
 import { getIdx } from 'utils/namespace'
 import { validateVedtakPeriode } from './validation'
 
-export interface VedtakProps {
+export interface MotregningSelector extends FormålManagerFormSelector {
   highContrast: boolean
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  updateReplySed: (needle: string, value: any) => void
-  validation: Validation
 }
 
-const VedtakFC: React.FC<VedtakProps> = ({
-  highContrast,
-  replySed,
-  resetValidation,
-  updateReplySed,
-  validation
-}: VedtakProps): JSX.Element => {
+const mapState = (state: State): MotregningSelector => ({
+  highContrast: state.ui.highContrast,
+  replySed: state.svarpased.replySed,
+  validation: state.validation.status,
+  viewValidation: state.validation.view
+})
+
+const VedtakFC: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    highContrast,
+    replySed,
+    resetValidation,
+    validation
+  }: any = useSelector<State, MotregningSelector>(mapState)
+  const dispatch = useDispatch()
   const target = 'formaalx.vedtak'
   const vedtak: FormalVedtak | undefined = (replySed as F002Sed).formaalx?.vedtak
   const namespace = 'vedtak'
@@ -74,7 +81,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
   ]
 
   const setBarnAlleBarn = () => {
-    updateReplySed(`${target}.barn`, (replySed as F002Sed).barn.map(b => (b.personInfo.fornavn + ' ' + b.personInfo.etternavn)))
+    dispatch(updateReplySed(`${target}.barn`, (replySed as F002Sed).barn.map(b => (b.personInfo.fornavn + ' ' + b.personInfo.etternavn))))
     if (validation[namespace + '-barn']) {
       resetValidation(namespace + '-barn')
     }
@@ -93,35 +100,35 @@ const VedtakFC: React.FC<VedtakProps> = ({
     } else {
       newBarn = newBarn.concat(barn.trim())
     }
-    updateReplySed(`${target}.barn`, newBarn)
+    dispatch(updateReplySed(`${target}.barn`, newBarn))
     if (validation[namespace + '-barn']) {
       resetValidation(namespace + '-barn')
     }
   }
 
   const setStartDato = (newDato: string) => {
-    updateReplySed(`${target}.periode.startdato`, newDato.trim())
+    dispatch(updateReplySed(`${target}.periode.startdato`, newDato.trim()))
     if (validation[namespace + '-periode-startdato']) {
       resetValidation(namespace + '-periode-startdato')
     }
   }
 
   const setSluttDato = (newDato: string) => {
-    updateReplySed(`${target}.periode.sluttdato`, newDato.trim())
+    dispatch(updateReplySed(`${target}.periode.sluttdato`, newDato.trim()))
     if (validation[namespace + '-periode-sluttdato']) {
       resetValidation(namespace + '-periode-sluttdato')
     }
   }
 
   const setType = (newType: string) => {
-    updateReplySed(`${target}.type`, newType.trim())
+    dispatch(updateReplySed(`${target}.type`, newType.trim()))
     if (validation[namespace + '-type']) {
       resetValidation(namespace + '-type')
     }
   }
 
   const setGrunnen = (newGrunnen: string) => {
-    updateReplySed(`${target}.grunnen`, newGrunnen.trim())
+    dispatch(updateReplySed(`${target}.grunnen`, newGrunnen.trim()))
     if (validation[namespace + '-grunnen']) {
       resetValidation(namespace + '-grunnen')
     }
@@ -132,7 +139,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
       _setNewStartDato(dato.trim())
       _resetValidation(namespace + '-vedtaksperioder-periode-startdato')
     } else {
-      updateReplySed(`${target}.vedtaksperioder[${index}].periode.startdato`, dato.trim())
+      dispatch(updateReplySed(`${target}.vedtaksperioder[${index}].periode.startdato`, dato.trim()))
       if (validation[namespace + '-vedtaksperioder' + getIdx(index) + '-periode-startdato']) {
         resetValidation(namespace + '-vedtaksperioder' + getIdx(index) + '-periode-startdato')
       }
@@ -155,7 +162,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
         delete newPerioder[index].periode.aapenPeriodeType
         newPerioder[index].periode.sluttdato = dato.trim()
       }
-      updateReplySed(`${target}.vedtaksperioder`, newPerioder)
+      dispatch(updateReplySed(`${target}.vedtaksperioder`, newPerioder))
       if (validation[namespace + '-vedtaksperioder' + getIdx(index) + '-periode-sluttdato']) {
         resetValidation(namespace + '-vedtaksperioder' + getIdx(index) + '-periode-sluttdato')
       }
@@ -167,7 +174,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
       _setNewVedtak(newVedtak.trim())
       _resetValidation(namespace + '-vedtaksperioder-vedtak')
     } else {
-      updateReplySed(`${target}.vedtaksperioder[${index}].vedtak`, newVedtak.trim())
+      dispatch(updateReplySed(`${target}.vedtaksperioder[${index}].vedtak`, newVedtak.trim()))
       if (validation[namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak']) {
         resetValidation(namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak')
       }
@@ -192,7 +199,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
     if (deletedPerioder && deletedPerioder.length > 0) {
       removeFromDeletion(deletedPerioder[0])
     }
-    updateReplySed(`${target}.vedtaksperioder`, newPerioder)
+    dispatch(updateReplySed(`${target}.vedtaksperioder`, newPerioder))
   }
 
   const onAdd = () => {
@@ -219,7 +226,7 @@ const VedtakFC: React.FC<VedtakProps> = ({
         newPerioder = []
       }
       newPerioder = newPerioder.concat(newPeriode)
-      updateReplySed(`${target}.vedtaksperioder`, newPerioder)
+      dispatch(updateReplySed(`${target}.vedtaksperioder`, newPerioder))
       resetForm()
     }
   }

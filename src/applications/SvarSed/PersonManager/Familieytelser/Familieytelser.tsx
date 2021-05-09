@@ -1,29 +1,30 @@
+import { updateReplySed } from 'actions/svarpased'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import HelpIcon from 'assets/icons/HelpIcon'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import Period from 'components/Period/Period'
 import { Options } from 'declarations/app'
-import { Motregning, ReplySed, Utbetalingshyppighet, YtelseNavn } from 'declarations/sed'
-import { Validation } from 'declarations/types'
+import { State } from 'declarations/reducers'
+import { Motregning, Utbetalingshyppighet, YtelseNavn } from 'declarations/sed'
 import CountryData, { Currency } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
-import { Column, AlignStartRow, FlexCenterSpacedDiv, PaddedDiv, HighContrastRadioPanelGroup, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import {
+  AlignStartRow,
+  Column,
+  FlexCenterSpacedDiv,
+  HighContrastRadioPanelGroup,
+  HorizontalSeparatorDiv,
+  PaddedDiv,
+  VerticalSeparatorDiv
+} from 'nav-hoykontrast'
 import Tooltip from 'rc-tooltip'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-
-interface FamilieYtelserProps {
-  highContrast: boolean
-  parentNamespace: string
-  personID: string
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  updateReplySed: (needle: string, value: any) => void
-  validation: Validation
-}
 
 const HelpProperIcon = styled(HelpIcon)`
   &.hjelpetekst__ikon {
@@ -32,16 +33,29 @@ const HelpProperIcon = styled(HelpIcon)`
   }
 `
 
-const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
-  highContrast,
+interface FamilieYtelserSelector extends PersonManagerFormSelector {
+  highContrast: boolean
+}
+
+const mapState = (state: State): FamilieYtelserSelector => ({
+  highContrast: state.ui.highContrast,
+  replySed: state.svarpased.replySed,
+  resetValidation: state.validation.resetValidation,
+  validation: state.validation.status
+})
+
+const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
-  personID,
-  replySed,
-  resetValidation,
-  updateReplySed,
-  validation
-}: FamilieYtelserProps): JSX.Element => {
+  personID
+}:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    highContrast,
+    replySed,
+    resetValidation,
+    validation
+  } = useSelector<State, FamilieYtelserSelector>(mapState)
+  const dispatch = useDispatch()
   const target: string = `${personID}.motregning[0]`
   const motregning: Motregning = _.get(replySed, target)
   const namespace: string = `${parentNamespace}-${personID}-familieytelser`
@@ -61,49 +75,49 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
   }
 
   const setYtelseNavn = (ytelseNavn: YtelseNavn) => {
-    updateReplySed(`${target}.ytelseNavn`, ytelseNavn)
+    dispatch(updateReplySed(`${target}.ytelseNavn`, ytelseNavn))
     if (validation[namespace + '-ytelseNavn']) {
       resetValidation(namespace + '-ytelseNavn')
     }
   }
 
   const setBeløp = (newBeløp: string) => {
-    updateReplySed(`${target}.beloep`, newBeløp)
+    dispatch(updateReplySed(`${target}.beloep`, newBeløp))
     if (validation[namespace + '-beloep']) {
       resetValidation(namespace + '-beloep')
     }
   }
 
   const setValuta = (newValuta: Currency) => {
-    updateReplySed(`${target}.valuta`, newValuta?.currencyValue)
+    dispatch(updateReplySed(`${target}.valuta`, newValuta?.currencyValue))
     if (validation[namespace + '-valuta']) {
       resetValidation(namespace + '-valuta')
     }
   }
 
   const setStartDato = (newDato: string) => {
-    updateReplySed(`${target}.startdato`, newDato)
+    dispatch(updateReplySed(`${target}.startdato`, newDato))
     if (validation[namespace + '-startdato']) {
       resetValidation(namespace + '-startdato')
     }
   }
 
   const setSluttDato = (newDato: string) => {
-    updateReplySed(`${target}.sluttdato`, newDato)
+    dispatch(updateReplySed(`${target}.sluttdato`, newDato))
     if (validation[namespace + '-sluttdato']) {
       resetValidation(namespace + '-sluttdato')
     }
   }
 
   const setMottakersNavn = (newMottakersNavn: string) => {
-    updateReplySed(`${target}.mottakersNavn`, newMottakersNavn)
+    dispatch(updateReplySed(`${target}.mottakersNavn`, newMottakersNavn))
     if (validation[namespace + '-mottakersNavn']) {
       resetValidation(namespace + '-mottakersNavn')
     }
   }
 
   const setUtbetalingshyppighet = (newUtbetalingshyppighet: Utbetalingshyppighet) => {
-    updateReplySed(`${target}.utbetalingshyppighet`, newUtbetalingshyppighet)
+    dispatch(updateReplySed(`${target}.utbetalingshyppighet`, newUtbetalingshyppighet))
     if (validation[namespace + '-utbetalingshyppighet']) {
       resetValidation(namespace + '-utbetalingshyppighet')
     }

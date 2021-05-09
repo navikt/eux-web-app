@@ -1,3 +1,5 @@
+import { updateReplySed } from 'actions/svarpased'
+import { FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
@@ -5,8 +7,8 @@ import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
 import { HorizontalLineSeparator, TextAreaDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
-import { F002Sed, FormalProsedyreVedUenighet, Grunn, ReplySed } from 'declarations/sed'
-import { Validation } from 'declarations/types'
+import { State } from 'declarations/reducers'
+import { F002Sed, FormalProsedyreVedUenighet, Grunn } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -23,26 +25,31 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 import { OptionTypeBase } from 'react-select'
 import { getIdx } from 'utils/namespace'
 import { validateProsedyreVedUenighetGrunn, ValidationProsedyreVedUenighetGrunnProps } from './validation'
 
-export interface ProsedyreVedUenighetProps {
+export interface ProsedyreVedUenighetSelector extends FormålManagerFormSelector {
   highContrast: boolean
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  updateReplySed: (needle: string, value: any) => void
-  validation: Validation
 }
 
-const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
-  highContrast,
-  replySed,
-  resetValidation,
-  updateReplySed,
-  validation
-}: ProsedyreVedUenighetProps): JSX.Element => {
+const mapState = (state: State): ProsedyreVedUenighetSelector => ({
+  highContrast: state.ui.highContrast,
+  replySed: state.svarpased.replySed,
+  validation: state.validation.status,
+  viewValidation: state.validation.view
+})
+
+const ProsedyreVedUenighet: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    highContrast,
+    replySed,
+    resetValidation,
+    validation
+  }: any = useSelector<State, ProsedyreVedUenighetSelector>(mapState)
+  const dispatch = useDispatch()
   const target = 'formaalx.prosedyreveduenighet'
   const prosedyreveduenighet: FormalProsedyreVedUenighet | undefined = (replySed as F002Sed).formaalx?.prosedyreveduenighet
   const namespace = 'prosedyreveduenighet'
@@ -70,7 +77,7 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
       _setNewGrunn(newGrunn.trim())
       resetValidation(namespace + '-grunner-grunn')
     } else {
-      updateReplySed(`${target}.grunner[${index}].grunn`, newGrunn.trim())
+      dispatch(updateReplySed(`${target}.grunner[${index}].grunn`, newGrunn.trim()))
       if (validation[namespace + '-grunner' + getIdx(index) + '-grunn']) {
         resetValidation(namespace + '-grunner' + getIdx(index) + '-grunn')
       }
@@ -94,7 +101,7 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
       } else {
         newPerson = _.filter(newPerson, p => p !== person.trim())
       }
-      updateReplySed(`${target}.grunner[${index}].person`, newPerson)
+      dispatch(updateReplySed(`${target}.grunner[${index}].person`, newPerson))
       if (validation[namespace + '-grunner' + getIdx(index) + '-person']) {
         resetValidation(namespace + '-grunner' + getIdx(index) + '-person')
       }
@@ -102,7 +109,7 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
   }
 
   const setYtterligereInfo = (newYtterligereInfo: string) => {
-    updateReplySed(`${target}.ytterligereInfo`, newYtterligereInfo.trim())
+    dispatch(updateReplySed(`${target}.ytterligereInfo`, newYtterligereInfo.trim()))
     if (validation[namespace + '-ytterligereInfo']) {
       resetValidation(namespace + '-ytterligereInfo')
     }
@@ -125,7 +132,7 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
     if (deletedGrunner && deletedGrunner.length > 0) {
       removeFromDeletion(deletedGrunner[0])
     }
-    updateReplySed(`${target}.grunner`, newGrunner)
+    dispatch(updateReplySed(`${target}.grunner`, newGrunner))
   }
 
   const onAdd = () => {
@@ -145,7 +152,7 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
         newGrunner = []
       }
       newGrunner.push(newGrunn)
-      updateReplySed(`${target}.grunner`, newGrunner)
+      dispatch(updateReplySed(`${target}.grunner`, newGrunner))
       resetForm()
     }
   }

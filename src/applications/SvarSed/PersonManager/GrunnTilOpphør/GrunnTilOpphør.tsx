@@ -1,36 +1,40 @@
+import { updateReplySed } from 'actions/svarpased'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
-import { ReplySed } from 'declarations/sed'
-import { Validation } from 'declarations/types'
+import { State } from 'declarations/reducers'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
 import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
-
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 import { OptionTypeBase } from 'react-select'
 
-interface GrunnTilOpphørProps {
+interface GrunnTilOpphørSelector extends PersonManagerFormSelector {
   highContrast: boolean
-  parentNamespace: string
-  personID: string
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  updateReplySed: (needle: string, value: any) => void
-  validation: Validation
 }
 
-const GrunnTilOpphør: React.FC<GrunnTilOpphørProps> = ({
-  highContrast,
+const mapState = (state: State): GrunnTilOpphørSelector => ({
+  highContrast: state.ui.highContrast,
+  replySed: state.svarpased.replySed,
+  resetValidation: state.validation.resetValidation,
+  validation: state.validation.status
+})
+
+const GrunnTilOpphør: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
-  personID,
-  replySed,
-  resetValidation,
-  updateReplySed,
-  validation
-}: GrunnTilOpphørProps): JSX.Element => {
+  personID
+}:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    highContrast,
+    replySed,
+    resetValidation,
+    validation
+  } = useSelector<State, GrunnTilOpphørSelector>(mapState)
+  const dispatch = useDispatch()
   // TODO add target
   const target = 'xxx-grunntilopphør'
   const xxx: any = _.get(replySed, target)
@@ -51,21 +55,21 @@ const GrunnTilOpphør: React.FC<GrunnTilOpphørProps> = ({
 
   const setÅrsak = (årsak: string) => {
     _setÅrsak(årsak)
-    updateReplySed(`${target}.årsak`, årsak)
+    dispatch(updateReplySed(`${target}.årsak`, årsak))
     if (validation[namespace + '-årsak']) {
       resetValidation(namespace + '-årsak')
     }
   }
 
   const setAnnet = (annet: string) => {
-    updateReplySed(`${target}.annet`, annet)
+    dispatch(updateReplySed(`${target}.annet`, annet))
     if (validation[namespace + '-annet']) {
       resetValidation(namespace + '-annet')
     }
   }
 
   const setÅrsakSelvstendig = (årsakselvstendig: string) => {
-    updateReplySed(`${target}.årsakselvstendig`, årsakselvstendig)
+    dispatch(updateReplySed(`${target}.årsakselvstendig`, årsakselvstendig))
     if (validation[namespace + '-årsakselvstendig']) {
       resetValidation(namespace + '-årsakselvstendig')
     }

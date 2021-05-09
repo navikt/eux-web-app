@@ -1,39 +1,48 @@
+import { updateReplySed } from 'actions/svarpased'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Period from 'components/Period/Period'
-import { Periode, ReplySed } from 'declarations/sed'
-import { Validation } from 'declarations/types'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
+import { State } from 'declarations/reducers'
+import { Periode } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
 import moment from 'moment'
 import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
-import { AlignStartRow, Column, HighContrastFlatknapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import {
+  AlignStartRow,
+  Column,
+  HighContrastFlatknapp,
+  HorizontalSeparatorDiv,
+  Row,
+  VerticalSeparatorDiv
+} from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import { validateAvsenderlandet, ValidationAvsenderlandetProps } from './avsenderlandetValidation'
 
-export interface AvsenderlandetProps {
-  updateReplySed: (needle: string, value: any) => void
-  parentNamespace: string
-  personID: string
-  resetValidation: (key?: string) => void
-  replySed: ReplySed
-  validation: Validation
-}
+const mapState = (state: State): PersonManagerFormSelector => ({
+  replySed: state.svarpased.replySed,
+  resetValidation: state.validation.resetValidation,
+  validation: state.validation.status
+})
 
-const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
+const Avsenderlandet: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
-  personID,
-  resetValidation,
-  replySed,
-  updateReplySed,
-  validation
-}: AvsenderlandetProps) => {
+  personID
+}:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    replySed,
+    resetValidation,
+    validation
+  } = useSelector<State, PersonManagerFormSelector>(mapState)
+  const dispatch = useDispatch()
   const target: string = `${personID}.perioderMedTrygd`
   const perioderMedTrygd: Array<Periode> = _.get(replySed, target)
   const namespace = `${parentNamespace}-avsenderlandet`
@@ -52,7 +61,7 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
       _setNewStartDato(newDato.trim())
       _resetValidation(namespace + '-startdato')
     } else {
-      updateReplySed(`${target}[${index}].startdato`, newDato.trim())
+      dispatch(updateReplySed(`${target}[${index}].startdato`, newDato.trim()))
       if (validation[namespace + getIdx(index) + '-startdato']) {
         resetValidation(namespace + getIdx(index) + '-startdato')
       }
@@ -72,7 +81,7 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
         delete newPerioder[index].aapenPeriodeType
         newPerioder[index].sluttdato = sluttdato.trim()
       }
-      updateReplySed(target, newPerioder)
+      dispatch(updateReplySed(target, newPerioder))
       if (validation[namespace + getIdx(index) + '-sluttdato']) {
         resetValidation(namespace + getIdx(index) + '-sluttdato')
       }
@@ -96,7 +105,7 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
     if (deletedPeriods && deletedPeriods.length > 0) {
       removeFromDeletion(deletedPeriods[0])
     }
-    updateReplySed(target, newPerioder)
+    dispatch(updateReplySed(target, newPerioder))
   }
 
   const onAdd = () => {
@@ -121,7 +130,7 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
         newPerioder = []
       }
       newPerioder = newPerioder.concat(newPeriode)
-      updateReplySed(target, newPerioder)
+      dispatch(updateReplySed(target, newPerioder))
       resetForm()
     }
   }

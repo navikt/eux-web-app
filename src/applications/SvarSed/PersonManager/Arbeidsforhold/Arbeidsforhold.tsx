@@ -1,16 +1,19 @@
+import { getArbeidsperioder } from 'actions/arbeidsgiver'
+import { updateReplySed } from 'actions/svarpased'
 import {
   validateArbeidsgiver,
   ValidationArbeidsgiverProps
 } from 'applications/SvarSed/PersonManager/PersonensStatus/ansattValidation'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import ArbeidsgiverBox from 'components/Arbeidsgiver/ArbeidsgiverBox'
 import ArbeidsgiverSøk from 'components/Arbeidsgiver/ArbeidsgiverSøk'
 import Input from 'components/Forms/Input'
 import Inntekt from 'components/Inntekt/Inntekt'
 import Period, { toFinalDateFormat } from 'components/Period/Period'
-import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
-import { Periode, ReplySed } from 'declarations/sed'
-import { Arbeidsgiver, Arbeidsperioder, IInntekter, Validation } from 'declarations/types'
+import { State } from 'declarations/reducers'
+import { Periode } from 'declarations/sed'
+import { Arbeidsgiver, Arbeidsperioder, IInntekter } from 'declarations/types'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { Systemtittel, Undertittel } from 'nav-frontend-typografi'
@@ -23,44 +26,43 @@ import {
   PaddedDiv,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 
-interface ArbeidsforholdProps {
-  arbeidsperioder: Arbeidsperioder
-  getArbeidsperioder: () => void
+interface ArbeidsforholdSelector extends PersonManagerFormSelector {
+  arbeidsperioder: Arbeidsperioder | undefined
   gettingArbeidsperioder: boolean
   inntekter: IInntekter | undefined
-  getInntekter: () => void
-  highContrast: boolean
-  gettingInntekter: boolean
-  parentNamespace: string
-  personID: string
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  updateReplySed: (needle: string, value: any) => void
-  validation: Validation
 }
 
-const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
-  arbeidsperioder,
-  getArbeidsperioder,
-  gettingArbeidsperioder,
-  inntekter,
-  getInntekter,
-  gettingInntekter,
-  highContrast,
+const mapState = (state: State): ArbeidsforholdSelector => ({
+  arbeidsperioder: state.arbeidsgiver.arbeidsperioder,
+  gettingArbeidsperioder: state.loading.gettingArbeidsperioder,
+  inntekter: state.inntekt.inntekter,
+  replySed: state.svarpased.replySed,
+  resetValidation: state.validation.resetValidation,
+  validation: state.validation.status
+})
+
+const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
-  personID,
-  replySed,
-  resetValidation,
-  updateReplySed,
-  validation
-}:ArbeidsforholdProps): JSX.Element => {
+  personID
+}:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    arbeidsperioder,
+    gettingArbeidsperioder,
+    inntekter,
+    replySed,
+    resetValidation,
+    validation
+  } = useSelector<State, ArbeidsforholdSelector>(mapState)
+  const dispatch = useDispatch()
   const target = 'anmodningsperiode'
   const anmodningsperiode: Periode = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-arbeidsforhold`
+  const fnr = _.find(replySed?.bruker?.personInfo.pin, p => p.land === 'NO')?.identifikator
 
   const [_newArbeidsgiverStartDato, _setNewArbeidsgiverStartDato] = useState<string>('')
   const [_newArbeidsgiverSluttDato, _setNewArbeidsgiverSluttDato] = useState<string>('')
@@ -77,7 +79,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
   }))
 
   const setStartDato = (startdato: string) => {
-    updateReplySed(`${target}.startdato`, startdato.trim())
+    dispatch(updateReplySed(`${target}.startdato`, startdato.trim()))
     if (validation[namespace + '-startdato']) {
       resetValidation(namespace + '-startdato')
     }
@@ -92,7 +94,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
       delete newAnmodningsperiode.aapenPeriodeType
       newAnmodningsperiode.sluttdato = sluttdato.trim()
     }
-    updateReplySed(target, newAnmodningsperiode)
+    dispatch(updateReplySed(target, newAnmodningsperiode))
     if (validation[namespace + '-sluttdato']) {
       resetValidation(namespace + '-sluttdato')
     }
@@ -154,12 +156,6 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
     }
   }
 
-  useEffect(() => {
-    if (!inntekter && !gettingInntekter) {
-      getInntekter()
-    }
-  }, [])
-
   return (
     <PaddedDiv>
       <AlignStartRow className='slideInFromLeft'>
@@ -185,7 +181,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
           <VerticalSeparatorDiv size='1.8' />
           <ArbeidsgiverSøk
             gettingArbeidsperioder={gettingArbeidsperioder}
-            getArbeidsperioder={getArbeidsperioder}
+            getArbeidsperioder={() => dispatch(getArbeidsperioder(fnr))}
           />
         </Column>
       </AlignStartRow>
@@ -318,14 +314,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      {gettingInntekter && <WaitingPanel />}
-      {inntekter && (
-        <Inntekt
-          highContrast={highContrast}
-          inntekter={inntekter}
-          personID={personID}
-        />
-      )}
+      {inntekter && <Inntekt inntekter={inntekter} />}
 
     </PaddedDiv>
   )

@@ -3,39 +3,18 @@ import Ansatt from 'applications/SvarSed/PersonManager/PersonensStatus/Ansatt'
 import Avsenderlandet from 'applications/SvarSed/PersonManager/PersonensStatus/Avsenderlandet'
 import NotAnsatt from 'applications/SvarSed/PersonManager/PersonensStatus/NotAnsatt'
 import WithSubsidies from 'applications/SvarSed/PersonManager/PersonensStatus/WithSubsidies'
+import { PersonManagerFormProps } from 'applications/SvarSed/PersonManager/PersonManager'
 import LesMer from 'components/LesMer/LesMer'
-import { ReplySed } from 'declarations/sed'
-import { Validation } from 'declarations/types'
 import { Undertittel } from 'nav-frontend-typografi'
-import { Column, AlignStartRow, PaddedDiv, HighContrastRadioPanelGroup, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { AlignStartRow, Column, HighContrastRadioPanelGroup, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-interface PersonensStatusProps {
-  arbeidsperioder: any
-  getArbeidsperioder: () => void,
-  gettingArbeidsperioder: boolean
-  highContrast: boolean
-  parentNamespace: string,
-  personID: string
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  updateReplySed: (needle: string, value: any) => void
-  validation: Validation
-}
-
-const PersonensStatus: React.FC<PersonensStatusProps> = ({
-  arbeidsperioder,
-  getArbeidsperioder,
-  gettingArbeidsperioder,
-  highContrast,
+const PersonensStatus: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
-  replySed,
-  resetValidation,
-  updateReplySed,
-  validation
-}:PersonensStatusProps): JSX.Element => {
+  personName
+}:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const namespace = `${parentNamespace}-${personID}-personensstatus`
 
@@ -54,7 +33,6 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
             data-multiple-line
             data-no-border
             data-test-id={namespace + '-type'}
-            feil={validation[namespace + '-type']?.feilmelding}
             id={namespace + '-type'}
             name={namespace + '-type'}
             radios={[
@@ -93,23 +71,16 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
             {_arbeidsforhold === 'arbeidsforhold-1'
               ? (
                 <Ansatt
-                  arbeidsperioder={arbeidsperioder}
-                  getArbeidsperioder={getArbeidsperioder}
-                  gettingArbeidsperioder={gettingArbeidsperioder}
                   parentNamespace={namespace}
-                  replySed={replySed}
                   personID={personID}
-                  updateReplySed={updateReplySed}
+                  personName={personName}
                 />
                 )
               : (
                 <NotAnsatt
-                  personID={personID}
-                  replySed={replySed}
                   parentNamespace={namespace}
-                  resetValidation={resetValidation}
-                  updateReplySed={updateReplySed}
-                  validation={validation}
+                  personID={personID}
+                  personName={personName}
                 />
                 )}
           </Column>
@@ -121,13 +92,9 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
           <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
             <Column>
               <WithSubsidies
-                highContrast={highContrast}
                 parentNamespace={namespace}
                 personID={personID}
-                replySed={replySed}
-                resetValidation={resetValidation}
-                updateReplySed={updateReplySed}
-                validation={validation}
+                personName={personName}
               />
             </Column>
           </AlignStartRow>
@@ -142,10 +109,7 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
               <Avsenderlandet
                 parentNamespace={namespace}
                 personID={personID}
-                replySed={replySed}
-                resetValidation={resetValidation}
-                updateReplySed={updateReplySed}
-                validation={validation}
+                personName={personName}
               />
             </Column>
           </AlignStartRow>
@@ -155,10 +119,7 @@ const PersonensStatus: React.FC<PersonensStatusProps> = ({
               <GrunnlagforBosetting
                 parentNamespace={namespace}
                 personID={personID}
-                replySed={replySed}
-                resetValidation={resetValidation}
-                updateReplySed={updateReplySed}
-                validation={validation}
+                personName={personName}
               />
             </Column>
           </AlignStartRow>

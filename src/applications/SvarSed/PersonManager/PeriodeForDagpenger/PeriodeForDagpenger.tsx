@@ -1,49 +1,58 @@
+import { updateReplySed } from 'actions/svarpased'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import classNames from 'classnames'
 import Input from 'components/Forms/Input'
 import Period from 'components/Period/Period'
-import { Periode, ReplySed } from 'declarations/sed'
-import { Kodeverk, Validation } from 'declarations/types'
+import { State } from 'declarations/reducers'
+import { Periode } from 'declarations/sed'
+import { Kodeverk } from 'declarations/types'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
 import {
+  AlignStartRow,
   Column,
-  AlignStartRow, FlexDiv, PaddedDiv,
+  FlexDiv,
   HighContrastRadio,
   HighContrastRadioGroup,
   HorizontalSeparatorDiv,
+  PaddedDiv,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 
-interface PeriodeForDagpengerProps {
-  landkoderList: Array<Kodeverk>
-  personID: string
-  parentNamespace: string,
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  updateReplySed: (needle: string, value: any) => void
-  validation: Validation
+interface PeriodeForDagpengerSelector extends PersonManagerFormSelector {
+  landkoderList: Array<Kodeverk> | undefined
 }
 
-const PeriodeForDagpenger: React.FC<PeriodeForDagpengerProps> = ({
-  landkoderList,
-  personID,
+const mapState = (state: State): PeriodeForDagpengerSelector => ({
+  landkoderList: state.app.landkoder,
+  replySed: state.svarpased.replySed,
+  resetValidation: state.validation.resetValidation,
+  validation: state.validation.status
+})
+
+const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
-  replySed,
-  resetValidation,
-  updateReplySed,
-  validation
-}:PeriodeForDagpengerProps): JSX.Element => {
+  personID
+}:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    landkoderList,
+    replySed,
+    resetValidation,
+    validation
+  } = useSelector<State, PeriodeForDagpengerSelector>(mapState)
+  const dispatch = useDispatch()
   // TODO this
   const target = 'xxx-periodefordagpenger'
   const xxx: any = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-periodefordagpenger`
 
   const setStartDato = (startdato: string) => {
-    updateReplySed(`${target}.startdato`, startdato.trim())
+    dispatch(updateReplySed(`${target}.startdato`, startdato.trim()))
     if (validation[namespace + '-startdato']) {
       resetValidation(namespace + '-startdato')
     }
@@ -58,63 +67,63 @@ const PeriodeForDagpenger: React.FC<PeriodeForDagpengerProps> = ({
       delete newAnmodningsperiode.aapenPeriodeType
       newAnmodningsperiode.sluttdato = sluttdato.trim()
     }
-    updateReplySed(target, newAnmodningsperiode)
+    dispatch(updateReplySed(target, newAnmodningsperiode))
     if (validation[namespace + '-sluttdato']) {
       resetValidation(namespace + '-sluttdato')
     }
   }
 
   const setKjentInstitusjon = (kjentInstitusjon: string) => {
-    updateReplySed(`${target}.kjentInstitusjon`, kjentInstitusjon.trim())
+    dispatch(updateReplySed(`${target}.kjentInstitusjon`, kjentInstitusjon.trim()))
     if (validation[namespace + '-kjentinstitusjon']) {
       resetValidation(namespace + '-kjentinstitusjon')
     }
   }
 
   const setInstitusjonensNavn = (institusjonensNavn: string) => {
-    updateReplySed(`${target}.institusjonensNavn`, institusjonensNavn.trim())
+    dispatch(updateReplySed(`${target}.institusjonensNavn`, institusjonensNavn.trim()))
     if (validation[namespace + '-institusjonensnavn']) {
       resetValidation(namespace + '-institusjonensnavn')
     }
   }
 
   const setInstitusjonensId = (institusjonensId: string) => {
-    updateReplySed(`${target}.institusjonensId`, institusjonensId.trim())
+    dispatch(updateReplySed(`${target}.institusjonensId`, institusjonensId.trim()))
     if (validation[namespace + '-institusjonensid']) {
       resetValidation(namespace + '-institusjonensid')
     }
   }
 
   const setGate = (gate: string) => {
-    updateReplySed(`${target}.gate`, gate.trim())
+    dispatch(updateReplySed(`${target}.gate`, gate.trim()))
     if (validation[namespace + '-gate']) {
       resetValidation(namespace + +'-gate')
     }
   }
 
   const setPostnummer = (postnummer: string) => {
-    updateReplySed(`${target}.postnummer`, postnummer.trim())
+    dispatch(updateReplySed(`${target}.postnummer`, postnummer.trim()))
     if (validation[namespace + '-postnummer']) {
       resetValidation(namespace + '-postnummer')
     }
   }
 
   const setBy = (by: string) => {
-    updateReplySed(`${target}.by`, by.trim())
+    dispatch(updateReplySed(`${target}.by`, by.trim()))
     if (validation[namespace + '-by']) {
       resetValidation(namespace + '-by')
     }
   }
 
   const setRegion = (region: string) => {
-    updateReplySed(`${target}.region`, region.trim())
+    dispatch(updateReplySed(`${target}.region`, region.trim()))
     if (validation[namespace + '-region']) {
       resetValidation(namespace + '-region')
     }
   }
 
   const setLand = (land: string) => {
-    updateReplySed(`${target}.land`, land.trim())
+    dispatch(updateReplySed(`${target}.land`, land.trim()))
     if (validation[namespace + '-land']) {
       resetValidation(namespace + '-land')
     }

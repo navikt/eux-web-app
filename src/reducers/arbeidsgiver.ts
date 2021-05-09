@@ -1,9 +1,9 @@
 import * as types from 'constants/actionTypes'
-import { Arbeidsgiver } from 'declarations/types.d'
+import { Arbeidsperioder } from 'declarations/types.d'
 import { ActionWithPayload } from 'js-fetch-api'
 
 export interface ArbeidsgiverState {
-  arbeidsperioder: Arbeidsgiver | undefined
+  arbeidsperioder: Arbeidsperioder | undefined
 }
 
 export const initialArbeidsgiverState: ArbeidsgiverState = {

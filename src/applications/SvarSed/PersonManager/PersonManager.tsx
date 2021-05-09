@@ -180,24 +180,29 @@ const MenuLabelText = styled(Normaltekst)`
   }
 `
 
-export interface PersonManagerSelector {
-  gettingPerson: boolean
+export interface PersonManagerFormSelector {
   replySed: ReplySed | undefined
   validation: Validation
+  resetValidation: (key?: string) => void
+}
+
+export interface PersonManagerSelector extends PersonManagerFormSelector {
+  gettingPerson: boolean
   viewValidation: boolean
 }
 
 export interface PersonManagerFormProps {
   parentNamespace: string
   personID: string | undefined
-  personNamer: string | undefined
+  personName: string
 }
 
 const mapState = (state: State): PersonManagerSelector => ({
   gettingPerson: state.loading.gettingPerson,
   replySed: state.svarpased.replySed,
   validation: state.validation.status,
-  viewValidation: state.validation.view
+  viewValidation: state.validation.view,
+  resetValidation: state.validation.resetValidation
 })
 
 const PersonManager: React.FC = () => {

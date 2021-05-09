@@ -1,9 +1,11 @@
+import { updateReplySed } from 'actions/svarpased'
+import { FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
 import classNames from 'classnames'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
-import { F002Sed, JaNei, ReplySed, UtbetalingTilInstitusjon } from 'declarations/sed'
-import { Validation } from 'declarations/types'
+import { State } from 'declarations/reducers'
+import { F002Sed, JaNei, UtbetalingTilInstitusjon } from 'declarations/sed'
 import {
   AlignStartRow,
   Column,
@@ -14,69 +16,67 @@ import {
 } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 
-export interface KravOmRefusjonProps {
+export interface KravOmRefusjonProps extends FormålManagerFormSelector {
   highContrast: boolean
-  replySed: ReplySed
-  validation: Validation
 }
 
-export interface KontoopplysningProps {
-  highContrast: boolean
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  updateReplySed: (needle: string, value: any) => void
-  validation: Validation
-}
+const mapState = (state: State): KravOmRefusjonProps => ({
+  highContrast: state.ui.highContrast,
+  replySed: state.svarpased.replySed,
+  validation: state.validation.status,
+  viewValidation: state.validation.view
+})
 
-const Kontoopplysning: React.FC<KontoopplysningProps> = ({
-  // highContrast,
-  replySed,
-  resetValidation,
-  updateReplySed,
-  validation
-}: KontoopplysningProps): JSX.Element => {
+const Kontoopplysning: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    replySed,
+    resetValidation,
+    validation
+  }: any = useSelector<State, FormålManagerFormSelector>(mapState)
+  const dispatch = useDispatch()
   const target = 'utbetalingTilInstitusjon'
   const utbetalingTilInstitusjon: UtbetalingTilInstitusjon | undefined = (replySed as F002Sed).utbetalingTilInstitusjon
   const namespace = 'kontoopplysninger'
 
   const setBegrunnelse = (newBegrunnelse: string) => {
-    updateReplySed(`${target}.begrunnelse`, newBegrunnelse.trim())
+    dispatch(updateReplySed(`${target}.begrunnelse`, newBegrunnelse.trim()))
     if (validation[namespace + '-begrunnelse']) {
       resetValidation(namespace + '-begrunnelse')
     }
   }
 
   const setId = (newId: string) => {
-    updateReplySed(`${target}.id`, newId.trim())
+    dispatch(updateReplySed(`${target}.id`, newId.trim()))
     if (validation[namespace + '-id']) {
       resetValidation(namespace + '-id')
     }
   }
 
   const setNavn = (newNavn: string) => {
-    updateReplySed(`${target}.navn`, newNavn.trim())
+    dispatch(updateReplySed(`${target}.navn`, newNavn.trim()))
     if (validation[namespace + '-navn']) {
       resetValidation(namespace + '-navn')
     }
   }
 
   const setSepaKonto = (newSepaKonto: JaNei) => {
-    updateReplySed(`${target}.kontoOrdinaer.sepaKonto`, newSepaKonto.trim())
+    dispatch(updateReplySed(`${target}.kontoOrdinaer.sepaKonto`, newSepaKonto.trim()))
     if (validation[namespace + '-kontoOrdinaer-sepaKonto']) {
       resetValidation(namespace + '-kontoOrdinaer-sepaKonto')
     }
   }
   const setIban = (newIban: string) => {
-    updateReplySed(`${target}.kontoOrdinaer.iban`, newIban.trim())
+    dispatch(updateReplySed(`${target}.kontoOrdinaer.iban`, newIban.trim()))
     if (validation[namespace + '-kontoOrdinaer-iban']) {
       resetValidation(namespace + '-kontoOrdinaer-iban')
     }
   }
 
   const setSwift = (newSwift: string) => {
-    updateReplySed(`${target}.kontoOrdinaer.swift`, newSwift.trim())
+    dispatch(updateReplySed(`${target}.kontoOrdinaer.swift`, newSwift.trim()))
     if (validation[namespace + '-kontoOrdinaer-swift']) {
       resetValidation(namespace + '-kontoOrdinaer-swift')
     }

@@ -1,3 +1,6 @@
+import { getArbeidsperioder } from 'actions/arbeidsgiver'
+import { updateReplySed } from 'actions/svarpased'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import ArbeidsgiverBox from 'components/Arbeidsgiver/ArbeidsgiverBox'
@@ -5,7 +8,8 @@ import ArbeidsgiverSøk from 'components/Arbeidsgiver/ArbeidsgiverSøk'
 import Input from 'components/Forms/Input'
 import Period, { toFinalDateFormat } from 'components/Period/Period'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
-import { Periode, ReplySed } from 'declarations/sed'
+import { State } from 'declarations/reducers'
+import { Periode } from 'declarations/sed'
 import { Arbeidsgiver, Arbeidsperioder } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
@@ -24,6 +28,7 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import {
   validateArbeidsgiver,
@@ -32,26 +37,30 @@ import {
   ValidationArbeidsperiodeProps
 } from './ansattValidation'
 
-export interface AnsattProps {
-  arbeidsperioder: Arbeidsperioder
-  getArbeidsperioder: () => void
+interface AnsattSelector extends PersonManagerFormSelector {
+  arbeidsperioder: Arbeidsperioder | undefined
   gettingArbeidsperioder: boolean
-  parentNamespace: string
-  replySed: ReplySed
-  personID: string
-  updateReplySed: (needle: string, value: any) => void
 }
 
-const Ansatt: React.FC<AnsattProps> = ({
-  arbeidsperioder,
-  getArbeidsperioder,
-  gettingArbeidsperioder,
+const mapState = (state: State): AnsattSelector => ({
+  arbeidsperioder: state.arbeidsgiver.arbeidsperioder,
+  gettingArbeidsperioder: state.loading.gettingArbeidsperioder,
+  replySed: state.svarpased.replySed,
+  resetValidation: state.validation.resetValidation,
+  validation: state.validation.status
+})
+
+const Ansatt: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
-  personID,
-  replySed,
-  updateReplySed
-}: AnsattProps) => {
+  personID
+}:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    arbeidsperioder,
+    gettingArbeidsperioder,
+    replySed
+  } = useSelector<State, AnsattSelector>(mapState)
+  const dispatch = useDispatch()
   const namespace = `${parentNamespace}-ansatt`
   const target = `${personID}.perioderSomAnsatt`
   const perioderSomAnsatt: Array<Periode> | undefined = _.get(replySed, target)
@@ -87,7 +96,7 @@ const Ansatt: React.FC<AnsattProps> = ({
     newPerioder = newPerioder.concat(newPeriode).sort((a, b) =>
       moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1
     )
-    updateReplySed(target, newPerioder)
+    dispatch(updateReplySed(target, newPerioder))
   }
 
   const addPeriodeFromArbeidsgiver = (selectedArbeidsgiver: Arbeidsgiver) => {
@@ -108,7 +117,7 @@ const Ansatt: React.FC<AnsattProps> = ({
       newPerioder = []
     }
     newPerioder = _.filter(newPerioder, p => p.startdato !== deletedPeriode.startdato)
-    updateReplySed(target, newPerioder)
+    dispatch(updateReplySed(target, newPerioder))
   }
 
   const removePeriodeFromArbeidsgiver = (deletedArbeidsgiver: Arbeidsgiver) => {
@@ -117,7 +126,7 @@ const Ansatt: React.FC<AnsattProps> = ({
       newPerioder = []
     }
     newPerioder = _.filter(newPerioder, p => p.startdato !== deletedArbeidsgiver.fraDato)
-    updateReplySed(target, newPerioder)
+    dispatch(updateReplySed(target, newPerioder))
   }
 
   const onArbeidsgiverSelect = (arbeidsgiver: Arbeidsgiver, checked: boolean) => {
@@ -238,7 +247,7 @@ const Ansatt: React.FC<AnsattProps> = ({
       _setNewPeriodeStartDato(startdato.trim())
       _resetValidationPeriode(namespace + '-periode-startdato')
     } else {
-      updateReplySed(`${target}[${index}].startdato`, startdato.trim())
+      dispatch(updateReplySed(`${target}[${index}].startdato`, startdato.trim()))
       if (_validationPeriode[namespace + getIdx(index) + '-periode-startdato']) {
         _resetValidationPeriode(namespace + getIdx(index) + '-periode-startdato')
       }
@@ -261,7 +270,7 @@ const Ansatt: React.FC<AnsattProps> = ({
         delete newPeriode[index].aapenPeriodeType
         newPeriode[index].sluttdato = sluttdato.trim()
       }
-      updateReplySed(target, newPeriode)
+      dispatch(updateReplySed(target, newPeriode))
       if (_validationPeriode[namespace + getIdx(index) + '-periode-sluttdato']) {
         _resetValidationPeriode(namespace + getIdx(index) + '-periode-sluttdato')
       }
@@ -352,6 +361,8 @@ const Ansatt: React.FC<AnsattProps> = ({
 
   const plan = makeRenderPlan()
 
+  const fnr = _.find(replySed?.bruker?.personInfo.pin, p => p.land === 'NO')?.identifikator
+
   return (
     <>
       <Systemtittel>
@@ -367,7 +378,7 @@ const Ansatt: React.FC<AnsattProps> = ({
           <Column>
             <ArbeidsgiverSøk
               gettingArbeidsperioder={gettingArbeidsperioder}
-              getArbeidsperioder={getArbeidsperioder}
+              getArbeidsperioder={() => dispatch(getArbeidsperioder(fnr))}
             />
           </Column>
         </Row>

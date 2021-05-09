@@ -1,13 +1,13 @@
-import { updateReplySed } from 'actions/svarpased'
 import { searchPerson } from 'actions/person'
-import { PersonManagerFormProps } from 'applications/SvarSed/PersonManager/PersonManager'
+import { updateReplySed } from 'actions/svarpased'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import Search from 'assets/icons/Search'
 import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import { State } from 'declarations/reducers'
-import { PersonInfo, Pin, ReplySed } from 'declarations/sed'
-import { Kodeverk, Person, Validation } from 'declarations/types'
+import { PersonInfo, Pin } from 'declarations/sed'
+import { Kodeverk, Person } from 'declarations/types'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
@@ -25,13 +25,10 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
-interface PersonOpplysningerSelector {
+interface PersonOpplysningerSelector extends PersonManagerFormSelector {
   landkoderList: Array<Kodeverk> | undefined
-  replySed: ReplySed | undefined
-  resetValidation: (key?: string) => void
   searchingPerson: boolean
   searchedPerson: Person | undefined
-  validation: Validation
 }
 
 const mapState = (state: State): PersonOpplysningerSelector => ({

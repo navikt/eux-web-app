@@ -1,37 +1,38 @@
+import { updateReplySed } from 'actions/svarpased'
 import classNames from 'classnames'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
-import { F002Sed, FormalKravOmRefusjon, ReplySed } from 'declarations/sed'
-import { Validation } from 'declarations/types'
+import { State } from 'declarations/reducers'
+import { F002Sed, FormalKravOmRefusjon } from 'declarations/sed'
 import { Undertittel } from 'nav-frontend-typografi'
 import { AlignStartRow, Column, HighContrastLink, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
+import { FormålManagerFormProps, FormålManagerFormSelector } from '../FormålManager'
 
-export interface KravOmRefusjonProps {
-  highContrast: boolean
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  seeKontoopplysninger: () => void
-  updateReplySed: (needle: string, value: any) => void
-  validation: Validation
-}
+const mapState = (state: State): FormålManagerFormSelector => ({
+  replySed: state.svarpased.replySed,
+  validation: state.validation.status,
+  viewValidation: state.validation.view
+})
 
-const KravOmRefusjon: React.FC<KravOmRefusjonProps> = ({
-  // highContrast,
-  replySed,
-  resetValidation,
-  seeKontoopplysninger,
-  updateReplySed,
-  validation
-}: KravOmRefusjonProps): JSX.Element => {
+const KravOmRefusjon: React.FC<FormålManagerFormProps> = ({
+  seeKontoopplysninger
+}: FormålManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    replySed,
+    resetValidation,
+    validation
+  }: any = useSelector<State, FormålManagerFormSelector>(mapState)
+  const dispatch = useDispatch()
   const target = 'formaalx.kravomrefusjon'
   const kravomrefusjon: FormalKravOmRefusjon | undefined = (replySed as F002Sed).formaalx?.kravomrefusjon
   const namespace = 'kravomrefusjon'
 
   const setKrav = (newKrav: string) => {
-    updateReplySed(`${target}.krav`, newKrav.trim())
+    dispatch(updateReplySed(`${target}.krav`, newKrav.trim()))
     if (validation[namespace + '-krav']) {
       resetValidation(namespace + '-krav')
     }

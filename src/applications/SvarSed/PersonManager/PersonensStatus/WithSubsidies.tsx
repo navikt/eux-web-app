@@ -1,44 +1,57 @@
+import { updateReplySed } from 'actions/svarpased'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import useAddRemove from 'hooks/useAddRemove'
 import Select from 'components/Forms/Select'
 import Period from 'components/Period/Period'
-import useValidation from 'hooks/useValidation'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Option, Options } from 'declarations/app'
-import { PensjonPeriode, Periode, ReplySed } from 'declarations/sed'
-import { Validation } from 'declarations/types'
+import { State } from 'declarations/reducers'
+import { PensjonPeriode, Periode } from 'declarations/sed'
+import useAddRemove from 'hooks/useAddRemove'
+import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import moment from 'moment'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Undertittel } from 'nav-frontend-typografi'
-import { AlignStartRow, Column, HighContrastFlatknapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import {
+  AlignStartRow,
+  Column,
+  HighContrastFlatknapp,
+  HorizontalSeparatorDiv,
+  Row,
+  VerticalSeparatorDiv
+} from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 import { ValueType } from 'react-select'
 import { getIdx } from 'utils/namespace'
 import { validateWithSubsidies, ValidationWithSubsidiesProps } from './withSubsidiesValidation'
 
-interface WithSubsidiesProps {
+interface WithSubsidiesSelector extends PersonManagerFormSelector {
   highContrast: boolean
-  updateReplySed: (needle: string, value: any) => void
-  parentNamespace: string
-  personID: string
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  validation: Validation
 }
 
-const WithSubsidies: React.FC<WithSubsidiesProps> = ({
-  highContrast,
+const mapState = (state: State): WithSubsidiesSelector => ({
+  highContrast: state.ui.highContrast,
+  replySed: state.svarpased.replySed,
+  resetValidation: state.validation.resetValidation,
+  validation: state.validation.status
+})
+
+const WithSubsidies: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
-  personID,
-  replySed,
-  resetValidation,
-  updateReplySed,
-  validation
-}: WithSubsidiesProps): JSX.Element => {
+  personID
+}:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    highContrast,
+    replySed,
+    resetValidation,
+    validation
+  } = useSelector<State, WithSubsidiesSelector>(mapState)
+  const dispatch = useDispatch()
   const target: string = `${personID}.perioderMedPensjon`
   const perioderMedPensjon: Array<PensjonPeriode> = _.get(replySed, target)
   const namespace = `${parentNamespace}-withsubsidies`
@@ -64,7 +77,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
       _setNewStartDato(newDato.trim())
       _resetValidation(namespace + '-startdato')
     } else {
-      updateReplySed(`${target}[${index}].startdato`, newDato.trim())
+      dispatch(updateReplySed(`${target}[${index}].startdato`, newDato.trim()))
       if (validation[namespace + getIdx(index) + '-startdato']) {
         resetValidation(namespace + getIdx(index) + '-startdato')
       }
@@ -84,7 +97,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
         delete newPerioder[index].periode.aapenPeriodeType
         newPerioder[index].periode.sluttdato = sluttdato.trim()
       }
-      updateReplySed(target, newPerioder)
+      dispatch(updateReplySed(target, newPerioder))
       if (validation[namespace + getIdx(index) + '-sluttdato']) {
         resetValidation(namespace + getIdx(index) + '-sluttdato')
       }
@@ -97,7 +110,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
         _setNewPensjonType(pensjontype.trim())
         _resetValidation(namespace + '-pensjontype')
       } else {
-        updateReplySed(`${target}[${index}].pensjonstype`, pensjontype.trim())
+        dispatch(updateReplySed(`${target}[${index}].pensjonstype`, pensjontype.trim()))
         if (validation[namespace + getIdx(index) + '-pensjontype']) {
           resetValidation(namespace + getIdx(index) + '-pensjontype')
         }
@@ -123,7 +136,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
     if (deletedPeriods && deletedPeriods.length > 0) {
       removeFromDeletion(deletedPeriods[0])
     }
-    updateReplySed(target, newPerioder)
+    dispatch(updateReplySed(target, newPerioder))
   }
 
   const onAdd = () => {
@@ -161,7 +174,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
         pensjonstype: _newPensjonType,
         periode: newPeriode
       })
-      updateReplySed(target, newPensjonPerioder)
+      dispatch(updateReplySed(target, newPensjonPerioder))
       resetForm()
     }
   }

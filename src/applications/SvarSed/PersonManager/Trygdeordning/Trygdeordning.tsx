@@ -1,34 +1,17 @@
+import { PersonManagerFormProps } from 'applications/SvarSed/PersonManager/PersonManager'
 import DekkedePerioder from 'applications/SvarSed/PersonManager/Trygdeordning/DekkedePerioder'
 import FamilieYtelser from 'applications/SvarSed/PersonManager/Trygdeordning/FamilieYtelser'
 import UdekkedePerioder from 'applications/SvarSed/PersonManager/Trygdeordning/UdekkedePerioder'
-import { ReplySed } from 'declarations/sed'
-import { Validation } from 'declarations/types'
 import { Undertittel } from 'nav-frontend-typografi'
 import { PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-interface TrygdeordningProps {
-  highContrast: boolean
-  parentNamespace: string
-  personID: string
-  personName: string
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  updateReplySed: (needle: string, value: any) => void
-  validation: Validation
-}
-
-const Trygdeordning: React.FC<TrygdeordningProps> = ({
-  highContrast,
+const Trygdeordning: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
-  personName,
-  replySed,
-  resetValidation,
-  updateReplySed,
-  validation
-}: TrygdeordningProps): JSX.Element => {
+  personName
+}: PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
 
   return (
@@ -40,40 +23,25 @@ const Trygdeordning: React.FC<TrygdeordningProps> = ({
         <VerticalSeparatorDiv size={2} />
 
         <DekkedePerioder
-          highContrast={highContrast}
           parentNamespace={parentNamespace}
           personID={personID}
           personName={personName}
-          replySed={replySed}
-          resetValidation={resetValidation}
-          updateReplySed={updateReplySed}
-          validation={validation}
         />
 
         <VerticalSeparatorDiv size={2} />
 
         <UdekkedePerioder
-          highContrast={highContrast}
           parentNamespace={parentNamespace}
           personID={personID}
           personName={personName}
-          replySed={replySed}
-          resetValidation={resetValidation}
-          updateReplySed={updateReplySed}
-          validation={validation}
         />
 
         <VerticalSeparatorDiv size={2} />
 
         <FamilieYtelser
-          highContrast={highContrast}
           parentNamespace={parentNamespace}
           personID={personID}
           personName={personName}
-          replySed={replySed}
-          resetValidation={resetValidation}
-          updateReplySed={updateReplySed}
-          validation={validation}
         />
       </>
     </PaddedDiv>

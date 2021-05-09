@@ -1,15 +1,18 @@
+import { updateReplySed } from 'actions/svarpased'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
-import { Adresse, AdresseType, ReplySed } from 'declarations/sed'
-import { Kodeverk, Validation } from 'declarations/types'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
+import { State } from 'declarations/reducers'
+import { Adresse, AdresseType } from 'declarations/sed'
+import { Kodeverk } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
 import {
   AlignStartRow,
   Column,
@@ -22,32 +25,34 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import { validateAdresse, ValidationAddressProps } from './validation'
 
-interface AdresseProps {
-  highContrast: boolean
-  landkoderList: Array<Kodeverk>
-  parentNamespace: string
-  personID: string
-  personName: string
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  updateReplySed: (needle: string, value: any) => void
-  validation: Validation
+interface AdresserSelector extends PersonManagerFormSelector {
+  landkoderList: Array<Kodeverk> | undefined
 }
 
-const Adresser: React.FC<AdresseProps> = ({
-  landkoderList,
+const mapState = (state: State): AdresserSelector => ({
+  landkoderList: state.app.landkoder,
+  replySed: state.svarpased.replySed,
+  resetValidation: state.validation.resetValidation,
+  validation: state.validation.status
+})
+
+const Adresser: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
-  personName,
-  replySed,
-  resetValidation,
-  updateReplySed,
-  validation
-}:AdresseProps): JSX.Element => {
+  personName
+}:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    landkoderList,
+    replySed,
+    resetValidation,
+    validation
+  } = useSelector<State, AdresserSelector>(mapState)
+  const dispatch = useDispatch()
   const target = `${personID}.adresser`
   const adresses: Array<Adresse> = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-adresser`
@@ -71,7 +76,7 @@ const Adresser: React.FC<AdresseProps> = ({
       _setNewType(type.trim() as AdresseType)
       _resetValidation(namespace + '-type')
     } else {
-      updateReplySed(`${target}[${index}].type`, type.trim())
+      dispatch(updateReplySed(`${target}[${index}].type`, type.trim()))
       if (validation[namespace + getIdx(index) + '-type']) {
         resetValidation(namespace + getIdx(index) + '-type')
       }
@@ -83,7 +88,7 @@ const Adresser: React.FC<AdresseProps> = ({
       _setNewGate(gate.trim())
       _resetValidation(namespace + '-gate')
     } else {
-      updateReplySed(`${target}[${index}].gate`, gate.trim())
+      dispatch(updateReplySed(`${target}[${index}].gate`, gate.trim()))
       if (validation[namespace + getIdx(index) + '-gate']) {
         resetValidation(namespace + getIdx(index) + '-gate')
       }
@@ -95,7 +100,7 @@ const Adresser: React.FC<AdresseProps> = ({
       _setNewPostnummer(postnummer.trim())
       _resetValidation(namespace + '-postnummer')
     } else {
-      updateReplySed(`${target}[${index}].postnummer`, postnummer.trim())
+      dispatch(updateReplySed(`${target}[${index}].postnummer`, postnummer.trim()))
       if (validation[namespace + getIdx(index) + '-postnummer']) {
         resetValidation(namespace + getIdx(index) + '-postnummer')
       }
@@ -107,7 +112,7 @@ const Adresser: React.FC<AdresseProps> = ({
       _setNewBy(by.trim())
       _resetValidation(namespace + '-by')
     } else {
-      updateReplySed(`${target}[${index}].by`, by.trim())
+      dispatch(updateReplySed(`${target}[${index}].by`, by.trim()))
       if (validation[namespace + getIdx(index) + '-by']) {
         resetValidation(namespace + getIdx(index) + '-by')
       }
@@ -119,7 +124,7 @@ const Adresser: React.FC<AdresseProps> = ({
       _setNewBygning(bygning.trim())
       _resetValidation(namespace + '-bygning')
     } else {
-      updateReplySed(`${target}[${index}].bygning`, bygning.trim())
+      dispatch(updateReplySed(`${target}[${index}].bygning`, bygning.trim()))
       if (validation[namespace + getIdx(index) + '-bygning']) {
         resetValidation(namespace + getIdx(index) + '-bygning')
       }
@@ -131,7 +136,7 @@ const Adresser: React.FC<AdresseProps> = ({
       _setNewRegion(region.trim())
       _resetValidation(namespace + '-region')
     } else {
-      updateReplySed(`${target}[${index}].region`, region.trim())
+      dispatch(updateReplySed(`${target}[${index}].region`, region.trim()))
       if (validation[namespace + getIdx(index) + '-region']) {
         resetValidation(namespace + getIdx(index) + '-region')
       }
@@ -143,7 +148,7 @@ const Adresser: React.FC<AdresseProps> = ({
       _setNewLand(land.trim())
       _resetValidation(namespace + '-land')
     } else {
-      updateReplySed(`${target}[${index}].land`, land.trim())
+      dispatch(updateReplySed(`${target}[${index}].land`, land.trim()))
       if (validation[namespace + getIdx(index) + '-land']) {
         resetValidation(namespace + getIdx(index) + '-land')
       }
@@ -172,7 +177,7 @@ const Adresser: React.FC<AdresseProps> = ({
     if (deletedAddresses && deletedAddresses.length > 0) {
       removeFromDeletion(deletedAddresses[0])
     }
-    updateReplySed(target, newAdresses)
+    dispatch(updateReplySed(target, newAdresses))
   }
 
   const onAdd = () => {
@@ -196,7 +201,7 @@ const Adresser: React.FC<AdresseProps> = ({
         newAdresses = []
       }
       newAdresses = newAdresses.concat(newAdresse)
-      updateReplySed(target, newAdresses)
+      dispatch(updateReplySed(target, newAdresses))
       resetForm()
     }
   }

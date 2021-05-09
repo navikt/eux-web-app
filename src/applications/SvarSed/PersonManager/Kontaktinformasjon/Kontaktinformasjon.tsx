@@ -1,19 +1,30 @@
+import { updateReplySed } from 'actions/svarpased'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
-import { Epost, ReplySed, Telefon, TelefonType } from 'declarations/sed'
-import { Validation } from 'declarations/types'
+import { State } from 'declarations/reducers'
+import { Epost, Telefon, TelefonType } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
 import _ from 'lodash'
 import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
-import { Column, HighContrastFlatknapp, AlignStartRow, PaddedDiv, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import {
+  AlignStartRow,
+  Column,
+  HighContrastFlatknapp,
+  HorizontalSeparatorDiv,
+  PaddedDiv,
+  Row,
+  VerticalSeparatorDiv
+} from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import {
   validateKontaktsinformasjonEpost,
@@ -22,28 +33,30 @@ import {
   ValidationKontaktsinformasjonTelefonProps
 } from './validation'
 
-interface KontaktinformasjonProps {
+interface KontaktinformasjonSelector extends PersonManagerFormSelector {
   highContrast: boolean
-  updateReplySed: (needle: string, value: any) => void
-  parentNamespace: string
-  personID: string
-  personName: string
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  validation: Validation
 }
 
-const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
-  highContrast,
-  updateReplySed,
+const mapState = (state: State): KontaktinformasjonSelector => ({
+  highContrast: state.ui.highContrast,
+  replySed: state.svarpased.replySed,
+  resetValidation: state.validation.resetValidation,
+  validation: state.validation.status
+})
+
+const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
-  personName,
-  replySed,
-  resetValidation,
-  validation
-}:KontaktinformasjonProps): JSX.Element => {
+  personName
+}:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    highContrast,
+    replySed,
+    resetValidation,
+    validation
+  } = useSelector<State, KontaktinformasjonSelector>(mapState)
+  const dispatch = useDispatch()
   const targetTelefon = `${personID}.telefon`
   const targetEpost = `${personID}.epost`
   const telefoner: Array<Telefon> = _.get(replySed, targetTelefon)
@@ -80,7 +93,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
       _setNewType(type.trim() as TelefonType)
       resetValidationTelefon(namespaceTelefon + '-type')
     } else {
-      updateReplySed(`${targetTelefon}[${index}].type`, type.trim())
+      dispatch(updateReplySed(`${targetTelefon}[${index}].type`, type.trim()))
       if (validation[namespaceTelefon + getIdx(index) + '-type']) {
         resetValidation(namespaceTelefon + getIdx(index) + '-type')
       }
@@ -92,7 +105,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
       _setNewNummer(nummer.trim())
       resetValidationTelefon(namespaceTelefon + '-nummer')
     } else {
-      updateReplySed(`${targetTelefon}[${index}].nummer`, nummer.trim())
+      dispatch(updateReplySed(`${targetTelefon}[${index}].nummer`, nummer.trim()))
       if (validation[namespaceTelefon + getIdx(index) + '-nummer']) {
         resetValidation(namespaceTelefon + getIdx(index) + '-nummer')
       }
@@ -104,7 +117,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
       _setNewAdresse(adresse.trim())
       resetValidationEpost(namespaceEpost + '-adresse')
     } else {
-      updateReplySed(`${targetEpost}[${index}].adresse`, adresse.trim())
+      dispatch(updateReplySed(`${targetEpost}[${index}].adresse`, adresse.trim()))
       if (validation[namespaceEpost + getIdx(index) + '-adresse']) {
         resetValidation(namespaceEpost + getIdx(index) + '-adresse')
       }
@@ -135,7 +148,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
     if (deletedTelefoner && deletedTelefoner.length > 0) {
       removeFromDeletion(deletedTelefoner[0])
     }
-    updateReplySed(targetTelefon, newTelefoner)
+    dispatch(updateReplySed(targetTelefon, newTelefoner))
   }
 
   const onEpostRemoved = (i: number) => {
@@ -144,7 +157,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
     if (deletedEposter && deletedEposter.length > 0) {
       removeFromDeletion(deletedEposter[0])
     }
-    updateReplySed(targetEpost, newEposter)
+    dispatch(updateReplySed(targetEpost, newEposter))
   }
 
   const onTelefonAdd = () => {
@@ -165,7 +178,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
         newTelefoner = []
       }
       newTelefoner.push(newTelefon)
-      updateReplySed(targetTelefon, newTelefoner)
+      dispatch(updateReplySed(targetTelefon, newTelefoner))
       resetForm('telefon')
     }
   }

@@ -1,3 +1,5 @@
+import { updateReplySed } from 'actions/svarpased'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
@@ -5,52 +7,58 @@ import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import Period from 'components/Period/Period'
-import { Options } from 'declarations/app'
-import { FamilieRelasjon, JaNei, Periode, RelasjonType, ReplySed } from 'declarations/sed'
-import { Kodeverk, Validation } from 'declarations/types'
-import useAddRemove from 'hooks/useAddRemove'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
+import { Options } from 'declarations/app'
+import { State } from 'declarations/reducers'
+import { FamilieRelasjon, JaNei, Periode, RelasjonType } from 'declarations/sed'
+import { Kodeverk } from 'declarations/types'
+import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
 import {
+  AlignStartRow,
   Column,
-  AlignStartRow, PaddedDiv,
   HighContrastFlatknapp,
   HighContrastRadioPanelGroup,
   HorizontalSeparatorDiv,
+  PaddedDiv,
   Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import { validateFamilierelasjon, ValidationFamilierelasjonProps } from './validation'
 
-interface FamilierelasjonProps {
-  familierelasjonKodeverk: Array<Kodeverk>
+interface FamilierelasjonSelector extends PersonManagerFormSelector {
+  familierelasjonKodeverk: Array<Kodeverk> | undefined
   highContrast: boolean
-  parentNamespace: string
-  personID: string
-  personName: string
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  updateReplySed: (needle: string, value: any) => void
-  validation: Validation
 }
 
-const Familierelasjon: React.FC<FamilierelasjonProps> = ({
-  familierelasjonKodeverk,
-  highContrast,
+const mapState = (state: State): FamilierelasjonSelector => ({
+  familierelasjonKodeverk: state.app.familierelasjoner,
+  highContrast: state.ui.highContrast,
+  replySed: state.svarpased.replySed,
+  resetValidation: state.validation.resetValidation,
+  validation: state.validation.status
+})
+
+const Familierelasjon: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
-  personName,
-  replySed,
-  resetValidation,
-  updateReplySed,
-  validation
-}:FamilierelasjonProps): JSX.Element => {
+  personName
+}:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    familierelasjonKodeverk,
+    highContrast,
+    replySed,
+    resetValidation,
+    validation
+  } = useSelector<State, FamilierelasjonSelector>(mapState)
+  const dispatch = useDispatch()
   const target = `${personID}.familierelasjoner`
   const familierelasjoner: Array<FamilieRelasjon> = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-familierelasjon`
@@ -69,16 +77,16 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationFamilierelasjonProps>({}, validateFamilierelasjon)
 
-  const relasjonTypeOptions: Options = familierelasjonKodeverk.map((f: Kodeverk) => ({
+  const relasjonTypeOptions: Options = familierelasjonKodeverk?.map((f: Kodeverk) => ({
     label: f.term, value: f.kode
-  }))
+  })) ?? []
 
   const setRelasjonType = (relasjonType: RelasjonType, index: number) => {
     if (index < 0) {
       _setNewRelasjonType(relasjonType.trim() as RelasjonType)
       _resetValidation(namespace + '-RelasjonType')
     } else {
-      updateReplySed(`${target}[${index}].relasjonType`, relasjonType.trim())
+      dispatch(updateReplySed(`${target}[${index}].relasjonType`, relasjonType.trim()))
       if (validation[namespace + getIdx(index) + '-RelasjonType']) {
         resetValidation(namespace + getIdx(index) + '-RelasjonType')
       }
@@ -90,7 +98,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
       _setNewStartDato(startdato.trim())
       _resetValidation(namespace + '-periode-startdato')
     } else {
-      updateReplySed(`${target}[${index}].periode.startdato`, startdato.trim())
+      dispatch(updateReplySed(`${target}[${index}].periode.startdato`, startdato.trim()))
       if (validation[namespace + getIdx(index) + '-periode-startdato']) {
         resetValidation(namespace + getIdx(index) + '-periode-startdato')
       }
@@ -110,7 +118,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
         delete newFamilieRelasjoner[index].periode.aapenPeriodeType
         newFamilieRelasjoner[index].periode.sluttdato = sluttdato.trim()
       }
-      updateReplySed(target, newFamilieRelasjoner)
+      dispatch(updateReplySed(target, newFamilieRelasjoner))
       if (validation[namespace + getIdx(index) + '-periode-sluttdato']) {
         resetValidation(namespace + getIdx(index) + '-periode-sluttdato')
       }
@@ -122,7 +130,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
       _setNewAnnenRelasjonType(annenRelasjonType.trim())
       _resetValidation(namespace + '-annenRelasjonType')
     } else {
-      updateReplySed(`${target}[${index}].annenRelasjonType`, annenRelasjonType.trim())
+      dispatch(updateReplySed(`${target}[${index}].annenRelasjonType`, annenRelasjonType.trim()))
       if (validation[namespace + getIdx(index) + '-annenRelasjonType']) {
         resetValidation(namespace + getIdx(index) + '-annenRelasjonType')
       }
@@ -134,7 +142,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
       _setNewAnnenRelasjonPersonNavn(annenRelasjonPersonNavn.trim())
       _resetValidation(namespace + '-annenRelasjonPersonNavn')
     } else {
-      updateReplySed(`${target}[${index}].annenRelasjonPersonNavn`, annenRelasjonPersonNavn.trim())
+      dispatch(updateReplySed(`${target}[${index}].annenRelasjonPersonNavn`, annenRelasjonPersonNavn.trim()))
       if (validation[namespace + getIdx(index) + '-annenRelasjonPersonNavn']) {
         resetValidation(namespace + getIdx(index) + '-annenRelasjonPersonNavn')
       }
@@ -146,7 +154,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
       _setNewAnnenRelasjonDato(annenRelasjonDato.trim())
       _resetValidation(namespace + '-annenRelasjonDato')
     } else {
-      updateReplySed(`${target}[${index}].annenRelasjonDato`, annenRelasjonDato.trim())
+      dispatch(updateReplySed(`${target}[${index}].annenRelasjonDato`, annenRelasjonDato.trim()))
       if (validation[namespace + getIdx(index) + '-annenRelasjonDato']) {
         resetValidation(namespace + getIdx(index) + '-annenRelasjonDato')
       }
@@ -158,7 +166,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
       _setNewBorSammen(borSammen.trim() as JaNei)
       _resetValidation(namespace + '-borSammen')
     } else {
-      updateReplySed(`${target}[${index}].borSammen`, borSammen.trim())
+      dispatch(updateReplySed(`${target}[${index}].borSammen`, borSammen.trim()))
       if (validation[namespace + getIdx(index) + '-borSammen']) {
         resetValidation(namespace + getIdx(index) + '-borSammen')
       }
@@ -187,7 +195,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
     if (deletedFamilierelasjoner && deletedFamilierelasjoner.length > 0) {
       removeFromDeletion(deletedFamilierelasjoner[0])
     }
-    updateReplySed(target, newFamilieRelasjoner)
+    dispatch(updateReplySed(target, newFamilieRelasjoner))
   }
 
   const onAdd = () => {
@@ -225,7 +233,7 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
         newFamilieRelasjoner = []
       }
       newFamilieRelasjoner.push(newFamilierelasjon)
-      updateReplySed(target, newFamilieRelasjoner)
+      dispatch(updateReplySed(target, newFamilieRelasjoner))
       resetForm()
     }
   }

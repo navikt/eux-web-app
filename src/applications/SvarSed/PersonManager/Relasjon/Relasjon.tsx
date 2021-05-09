@@ -1,8 +1,10 @@
+import { updateReplySed } from 'actions/svarpased'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Select from 'components/Forms/Select'
 import Period from 'components/Period/Period'
 import { Options } from 'declarations/app'
-import { Barnetilhoerighet, BarnRelasjon, BarnRelasjonType, JaNei, ReplySed } from 'declarations/sed'
-import { Kodeverk, Validation } from 'declarations/types'
+import { State } from 'declarations/reducers'
+import { Barnetilhoerighet, BarnRelasjon, BarnRelasjonType, JaNei } from 'declarations/sed'
 import _ from 'lodash'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
@@ -15,28 +17,31 @@ import {
 } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 
-interface RelasjonProps {
-  familierelasjonKodeverk: Array<Kodeverk>
+interface RelasjonSelector extends PersonManagerFormSelector {
   highContrast: boolean
-  parentNamespace: string
-  personID: string
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  updateReplySed: (needle: string, value: any) => void
-  validation: Validation
 }
 
-const Relasjon: React.FC<RelasjonProps> = ({
-  highContrast,
+const mapState = (state: State): RelasjonSelector => ({
+  highContrast: state.ui.highContrast,
+  replySed: state.svarpased.replySed,
+  resetValidation: state.validation.resetValidation,
+  validation: state.validation.status
+})
+
+const Relasjon: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
-  personID,
-  replySed,
-  resetValidation,
-  updateReplySed,
-  validation
-}:RelasjonProps): JSX.Element => {
+  personID
+}:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    highContrast,
+    replySed,
+    resetValidation,
+    validation
+  } = useSelector<State, RelasjonSelector>(mapState)
+  const dispatch = useDispatch()
   const target: string = `${personID}.barnetilhoerigheter[0]`
   const barnetilhoerighet: Barnetilhoerighet | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-relasjon[0]`
@@ -53,21 +58,21 @@ const Relasjon: React.FC<RelasjonProps> = ({
   ]
 
   const setRelasjon = (barnRelasjon: BarnRelasjon) => {
-    updateReplySed(`${target}.relasjonTilPerson`, barnRelasjon)
+    dispatch(updateReplySed(`${target}.relasjonTilPerson`, barnRelasjon))
     if (validation[namespace + '-relasjonTilPerson']) {
       resetValidation(namespace + '-relasjonTilPerson')
     }
   }
 
   const setRelasjonType = (barnRelasjonType: BarnRelasjonType) => {
-    updateReplySed(`${target}.relasjonType`, barnRelasjonType)
+    dispatch(updateReplySed(`${target}.relasjonType`, barnRelasjonType))
     if (validation[namespace + '-relasjonType']) {
       resetValidation(namespace + '-relasjonType')
     }
   }
 
   const setStartDato = (dato: string) => {
-    updateReplySed(`${target}.periode.startdato`, dato)
+    dispatch(updateReplySed(`${target}.periode.startdato`, dato))
     if (validation[namespace + '-periode-startdato']) {
       resetValidation(namespace + '-periode-startdato')
     }
@@ -85,42 +90,42 @@ const Relasjon: React.FC<RelasjonProps> = ({
       delete newPerioder.aapenPeriodeType
       newPerioder.sluttdato = dato
     }
-    updateReplySed(`${target}.periode`, newPerioder)
+    dispatch(updateReplySed(`${target}.periode`, newPerioder))
     if (validation[namespace + '-periode-sluttdato']) {
       resetValidation(namespace + '-periode-sluttdato')
     }
   }
 
   const setErDeltForeldreansvar = (erDeltForeldreansvar: JaNei) => {
-    updateReplySed(`${target}.erDeltForeldreansvar`, erDeltForeldreansvar)
+    dispatch(updateReplySed(`${target}.erDeltForeldreansvar`, erDeltForeldreansvar))
     if (validation[namespace + '-erDeltForeldreansvar']) {
       resetValidation(namespace + '-erDeltForeldreansvar')
     }
   }
 
   const setQuestion1 = (svar: JaNei) => {
-    updateReplySed(`${target}.borIBrukersHushold`, svar)
+    dispatch(updateReplySed(`${target}.borIBrukersHushold`, svar))
     if (validation[namespace + '-borIBrukersHushold']) {
       resetValidation(namespace + '-borIBrukersHushold')
     }
   }
 
   const setQuestion2 = (svar: JaNei) => {
-    updateReplySed(`${target}.borIEktefellesHushold`, svar)
+    dispatch(updateReplySed(`${target}.borIEktefellesHushold`, svar))
     if (validation[namespace + '-borIEktefellesHushold']) {
       resetValidation(namespace + '-borIEktefellesHushold')
     }
   }
 
   const setQuestion3 = (svar: JaNei) => {
-    updateReplySed(`${target}.borIAnnenPersonsHushold`, svar)
+    dispatch(updateReplySed(`${target}.borIAnnenPersonsHushold`, svar))
     if (validation[namespace + '-borIAnnenPersonsHushold']) {
       resetValidation(namespace + '-borIAnnenPersonsHushold')
     }
   }
 
   const setQuestion4 = (svar: JaNei) => {
-    updateReplySed(`${target}.borPaaInstitusjon`, svar)
+    dispatch(updateReplySed(`${target}.borPaaInstitusjon`, svar))
     if (validation[namespace + '-borPaaInstitusjon']) {
       resetValidation(namespace + '-borPaaInstitusjon')
     }

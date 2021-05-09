@@ -1,36 +1,38 @@
+import { updateReplySed } from 'actions/svarpased'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Period from 'components/Period/Period'
-import { Periode, ReplySed } from 'declarations/sed'
-import { Validation } from 'declarations/types'
+import { State } from 'declarations/reducers'
+import { Periode } from 'declarations/sed'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
-import { Column, AlignStartRow, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 
-interface ReferanseperiodeProps {
-  personID: string
-  parentNamespace: string,
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  updateReplySed: (needle: string, value: any) => void
-  validation: Validation
-}
+const mapState = (state: State): PersonManagerFormSelector => ({
+  replySed: state.svarpased.replySed,
+  resetValidation: state.validation.resetValidation,
+  validation: state.validation.status
+})
 
-const Referanseperiode: React.FC<ReferanseperiodeProps> = ({
-  personID,
+const Referanseperiode: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
-  replySed,
-  resetValidation,
-  updateReplySed,
-  validation
-}:ReferanseperiodeProps): JSX.Element => {
+  personID
+}:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    replySed,
+    resetValidation,
+    validation
+  } = useSelector<State, PersonManagerFormSelector>(mapState)
+  const dispatch = useDispatch()
   const target = 'anmodningsperiode'
   const anmodningsperiode: Periode = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-referanseperiode`
 
   const setStartDato = (startdato: string) => {
-    updateReplySed(`${target}.startdato`, startdato.trim())
+    dispatch(updateReplySed(`${target}.startdato`, startdato.trim()))
     if (validation[namespace + '-startdato']) {
       resetValidation(namespace + '-startdato')
     }
@@ -45,7 +47,7 @@ const Referanseperiode: React.FC<ReferanseperiodeProps> = ({
       delete newAnmodningsperiode.aapenPeriodeType
       newAnmodningsperiode.sluttdato = sluttdato.trim()
     }
-    updateReplySed(target, newAnmodningsperiode)
+    dispatch(updateReplySed(target, newAnmodningsperiode))
     if (validation[namespace + '-sluttdato']) {
       resetValidation(namespace + '-sluttdato')
     }

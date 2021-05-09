@@ -1,9 +1,10 @@
+import { updateReplySed } from 'actions/svarpased'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
-import { ReplySed } from 'declarations/sed'
-import { Validation } from 'declarations/types'
+import { State } from 'declarations/reducers'
 import CountryData, { Currency } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
@@ -11,27 +12,31 @@ import { Undertittel } from 'nav-frontend-typografi'
 import { AlignStartRow, Column, HighContrastRadioPanelGroup, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 
-interface SisteAnsettelsesForholdProps {
-  highContrast: boolean,
-  personID: string
-  parentNamespace: string,
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  updateReplySed: (needle: string, value: any) => void
-  validation: Validation
+interface SisteAnsettelsesForholdSelector extends PersonManagerFormSelector {
+  highContrast: boolean
 }
 
-const SisteAnsettelsesForhold: React.FC<SisteAnsettelsesForholdProps> = ({
-  highContrast,
-  personID,
+const mapState = (state: State): SisteAnsettelsesForholdSelector => ({
+  highContrast: state.ui.highContrast,
+  replySed: state.svarpased.replySed,
+  resetValidation: state.validation.resetValidation,
+  validation: state.validation.status
+})
+
+const SisteAnsettelsesForhold: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
-  replySed,
-  resetValidation,
-  updateReplySed,
-  validation
-}:SisteAnsettelsesForholdProps): JSX.Element => {
+  personID
+}:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    highContrast,
+    replySed,
+    resetValidation,
+    validation
+  } = useSelector<State, SisteAnsettelsesForholdSelector>(mapState)
+  const dispatch = useDispatch()
   // TODO this
   const target = 'xxx-sisteansettelsesforhold'
   const xxx: any = _.get(replySed, target)
@@ -41,49 +46,49 @@ const SisteAnsettelsesForhold: React.FC<SisteAnsettelsesForholdProps> = ({
   const _currencyData = CountryData.getCurrencyInstance('nb')
 
   const setBeløp = (newBeløp: string) => {
-    updateReplySed(`${target}.beloep`, newBeløp)
+    dispatch(updateReplySed(`${target}.beloep`, newBeløp))
     if (validation[namespace + '-beloep']) {
       resetValidation(namespace + '-beloep')
     }
   }
 
   const setValuta = (newValuta: Currency) => {
-    updateReplySed(`${target}.valuta`, newValuta?.currencyValue)
+    dispatch(updateReplySed(`${target}.valuta`, newValuta?.currencyValue))
     if (validation[namespace + '-valuta']) {
       resetValidation(namespace + '-valuta')
     }
   }
 
   const setMottakerDato = (dato: string) => {
-    updateReplySed(`${target}.mottattdato`, dato.trim())
+    dispatch(updateReplySed(`${target}.mottattdato`, dato.trim()))
     if (validation[namespace + '-mottattdato']) {
       resetValidation(namespace + '-mottattdato')
     }
   }
 
   const setAntallDager = (antallDager: string) => {
-    updateReplySed(`${target}.antallDager`, antallDager.trim())
+    dispatch(updateReplySed(`${target}.antallDager`, antallDager.trim()))
     if (validation[namespace + '-antalldager']) {
       resetValidation(namespace + '-antalldager')
     }
   }
 
   const setAvkall = (avkall: string) => {
-    updateReplySed(`${target}.avkall`, avkall.trim())
+    dispatch(updateReplySed(`${target}.avkall`, avkall.trim()))
     if (validation[namespace + '-avkall']) {
       resetValidation(namespace + '-avkall')
     }
   }
 
   const setGrunn = (grunn: string) => {
-    updateReplySed(`${target}.grunn`, grunn.trim())
+    dispatch(updateReplySed(`${target}.grunn`, grunn.trim()))
     if (validation[namespace + '-grunn']) {
       resetValidation(namespace + '-grunn')
     }
   }
 
   const setAnnenYtelser = (annenYtelser: string) => {
-    updateReplySed(`${target}.annenYtelser`, annenYtelser.trim())
+    dispatch(updateReplySed(`${target}.annenYtelser`, annenYtelser.trim()))
     if (validation[namespace + '-annenytelser']) {
       resetValidation(namespace + '-annenytelser')
     }

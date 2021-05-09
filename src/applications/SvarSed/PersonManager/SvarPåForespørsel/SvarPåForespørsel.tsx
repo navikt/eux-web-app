@@ -1,25 +1,25 @@
+import { updateReplySed } from 'actions/svarpased'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import HelpIcon from 'assets/icons/HelpIcon'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
-import { ReplySed } from 'declarations/sed'
-import { Validation } from 'declarations/types'
+import { State } from 'declarations/reducers'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
-import { AlignStartRow, FlexCenterDiv, PaddedDiv, Column, HighContrastRadioPanelGroup, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import {
+  AlignStartRow,
+  Column,
+  FlexCenterDiv,
+  HighContrastRadioPanelGroup,
+  HorizontalSeparatorDiv,
+  PaddedDiv,
+  VerticalSeparatorDiv
+} from 'nav-hoykontrast'
 import Tooltip from 'rc-tooltip'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-
-interface SvarPåForespørselProps {
-  highContrast: boolean,
-  personID: string
-  parentNamespace: string,
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  updateReplySed: (needle: string, value: any) => void
-  validation: Validation
-}
 
 const HelpProperIcon = styled(HelpIcon)`
   &.hjelpetekst__ikon {
@@ -27,43 +27,52 @@ const HelpProperIcon = styled(HelpIcon)`
     height: 22px;
   }
 `
-const SvarPåForespørsel: React.FC<SvarPåForespørselProps> = ({
-  personID,
+
+const mapState = (state: State): PersonManagerFormSelector => ({
+  replySed: state.svarpased.replySed,
+  resetValidation: state.validation.resetValidation,
+  validation: state.validation.status
+})
+
+const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
-  replySed,
-  resetValidation,
-  updateReplySed,
-  validation
-}:SvarPåForespørselProps): JSX.Element => {
+  personID
+}:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    replySed,
+    resetValidation,
+    validation
+  } = useSelector<State, PersonManagerFormSelector>(mapState)
+  const dispatch = useDispatch()
   // TODO this
   const target = 'xxx-svarpaforespørsel'
   const xxx: any = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-svarpaforespørsel`
 
   const setSvar = (newSvar: string) => {
-    updateReplySed(`${target}.svar`, newSvar.trim())
+    dispatch(updateReplySed(`${target}.svar`, newSvar.trim()))
     if (validation[namespace + '-svar']) {
       resetValidation(namespace + '-svar')
     }
   }
 
   const setVedlegg = (newVedlegg: string) => {
-    updateReplySed(`${target}.vedlegg`, newVedlegg.trim())
+    dispatch(updateReplySed(`${target}.vedlegg`, newVedlegg.trim()))
     if (validation[namespace + '-vedlegg']) {
       resetValidation(namespace + '-vedlegg')
     }
   }
 
   const setSender = (sender: string) => {
-    updateReplySed(`${target}.sender`, sender.trim())
+    dispatch(updateReplySed(`${target}.sender`, sender.trim()))
     if (validation[namespace + '-sender']) {
       resetValidation(namespace + '-sender')
     }
   }
 
   const setGrunner = (grunner: string) => {
-    updateReplySed(`${target}.grunner`, grunner.trim())
+    dispatch(updateReplySed(`${target}.grunner`, grunner.trim()))
     if (validation[namespace + '-grunner']) {
       resetValidation(namespace + '-grunner')
     }
