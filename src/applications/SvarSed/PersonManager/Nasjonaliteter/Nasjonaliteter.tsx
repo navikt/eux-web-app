@@ -149,11 +149,12 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
           </Column>
           <Column>
             <DateInput
-              error={getErrorFor(index, 'fradato')}
-              namespace={namespace + idx + '-fradato'}
+              feil={getErrorFor(index, 'fradato')}
+              namespace={namespace + idx}
+              id='fradato'
               key={index < 0 ? _newFradato : statsborgerskap?.fradato}
               label=''
-              setDato={(date: string) => onFradatoChanged(date, index)}
+              onChanged={(date: string) => onFradatoChanged(date, index)}
               value={index < 0 ? _newFradato : statsborgerskap?.fradato}
             />
           </Column>
@@ -196,7 +197,7 @@ const Nasjonaliteter: React.FC<NasjonalitetProps> = ({
       </AlignStartRow>
       <VerticalSeparatorDiv />
       {statsborgerskaper?.map(renderRow)}
-      <VerticalSeparatorDiv size='2'/>
+      <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm

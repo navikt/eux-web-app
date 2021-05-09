@@ -91,14 +91,14 @@ interface AddPersonModalSelector {
 
 const mapState = (state: State): AddPersonModalSelector => ({
   highContrast: state.ui.highContrast,
-  replySed: state.svarpased.replySed,
+  replySed: state.svarpased.replySed
 })
 
 const AddPersonModal: React.FC<AddPersonModalProps> = ({
   appElement = document.body,
   closeButton,
   onModalClose = () => {},
-  parentNamespace,
+  parentNamespace
 }: AddPersonModalProps) => {
   const { t } = useTranslation()
   const namespace = `${parentNamespace}-addpersonmodal`

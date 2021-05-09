@@ -313,7 +313,7 @@ const Motregning: React.FC<MotregningProps> = ({
         <Column>
           <CountrySelect
             key={_currencyData.findByValue(motregning?.valuta ?? '')}
-            closeMenuOnSelect={true}
+            closeMenuOnSelect
             ariaLabel={t('label:valuta')}
             data-test-id={namespace + '-valuta'}
             error={validation[namespace + '-valuta']?.feilmelding}

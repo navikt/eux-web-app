@@ -14,7 +14,6 @@ export const initialPersonState: PersonState = {
 
 const personReducer = (state: PersonState = initialPersonState, action: ActionWithPayload = { type: '', payload: undefined }) => {
   switch (action.type) {
-
     case types.APP_CLEAN_DATA:
       return initialPersonState
 
@@ -49,7 +48,6 @@ const personReducer = (state: PersonState = initialPersonState, action: ActionWi
       }
     default:
       return state
-
   }
 }
 export default personReducer

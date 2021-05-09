@@ -175,7 +175,7 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
       <Undertittel>
         {t('label:ansettelsesperioder')}
       </Undertittel>
-      <VerticalSeparatorDiv size={2}/>
+      <VerticalSeparatorDiv size={2} />
       {perioderSomSelvstendig
         ?.sort((a, b) =>
           moment(a.startdato, 'YYYY-MM-DD')
@@ -184,7 +184,7 @@ const NotAnsatt: React.FC<NotAnsattProps> = ({
             : 1
         )
         ?.map(renderRow)}
-      <VerticalSeparatorDiv size={2}/>
+      <VerticalSeparatorDiv size={2} />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm

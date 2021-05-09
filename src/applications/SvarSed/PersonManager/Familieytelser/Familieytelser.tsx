@@ -114,7 +114,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
       <Undertittel>
         {t('label:beløp-for-hele-familien')}
       </Undertittel>
-      <VerticalSeparatorDiv size={2}/>
+      <VerticalSeparatorDiv size={2} />
       <AlignStartRow className='slideInFromLeft'>
         <Column>
           <Select
@@ -143,7 +143,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
           />
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column>
           <Input
@@ -167,7 +167,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
         <Column>
           <CountrySelect
             key={motregning?.valuta ? _currencyData.findByValue(motregning?.valuta) : ''}
-            closeMenuOnSelect={true}
+            closeMenuOnSelect
             ariaLabel={t('label:valuta')}
             data-test-id={namespace + '-valuta'}
             error={validation[namespace + '-valuta']?.feilmelding}
@@ -182,11 +182,11 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
           />
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv size={3}/>
+      <VerticalSeparatorDiv size={3} />
       <Undertittel className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
         {t('label:grant-date')}
       </Undertittel>
-      <VerticalSeparatorDiv size={2}/>
+      <VerticalSeparatorDiv size={2} />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
         <Period
           key={'' + motregning?.startdato + motregning?.sluttdato}

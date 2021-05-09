@@ -1,33 +1,29 @@
 import * as types from 'constants/actionTypes'
+import { SvarPaSedMode } from 'declarations/app'
 import { ReplySed } from 'declarations/sed.d'
-import { Arbeidsperioder, IInntekter, Seds, Validation } from 'declarations/types.d'
+import { Seds } from 'declarations/types.d'
 import { ActionWithPayload } from 'js-fetch-api'
 import _ from 'lodash'
 import { Action } from 'redux'
 
 export interface SvarpasedState {
-  arbeidsperioder: Arbeidsperioder | undefined
-  familierelasjoner: Array<any>
-  inntekter: IInntekter | undefined
+  mode: SvarPaSedMode
   parentSed: string | undefined
   personRelatert: any
   previewFile: any
   previousParentSed: string | undefined
-  previousReplySed: ReplySed | undefined
   replySed: ReplySed | undefined
   saksnummerOrFnr: string | undefined
   seds: Seds | undefined
   sedCreatedResponse: any
-
-  validation: Validation
 }
 
 export const initialSvarpasedState: SvarpasedState = {
+  mode: 'selection' as SvarPaSedMode,
   parentSed: undefined,
   personRelatert: undefined,
   previewFile: undefined,
   previousParentSed: undefined,
-  previousReplySed: undefined,
   replySed: undefined,
   seds: undefined,
   saksnummerOrFnr: undefined,
@@ -39,12 +35,15 @@ const svarpasedReducer = (
   action: Action | ActionWithPayload = { type: '', payload: undefined }
 ) => {
   switch (action.type) {
-
+    case types.SVARPASED_MODE_SET:
+      return {
+        ...state,
+        mode: (action as ActionWithPayload).payload
+      }
 
     case types.SVARPASED_REPLYSED_QUERY_SUCCESS:
       return {
         ...state,
-        previousReplySed: state.replySed,
         replySed: {
           ...(action as ActionWithPayload).payload,
           saksnummer: (action as ActionWithPayload).context.saksnummer
@@ -54,7 +53,6 @@ const svarpasedReducer = (
     case types.SVARPASED_REPLYSED_QUERY_FAILURE:
       return {
         ...state,
-        previousReplySed: state.replySed,
         replySed: null
       }
 
@@ -115,20 +113,16 @@ const svarpasedReducer = (
     case types.SVARPASED_REPLYSED_SET:
       return {
         ...state,
-        previousReplySed: state.replySed,
         replySed: (action as ActionWithPayload).payload
       }
 
     case types.SVARPASED_REPLYSED_RESET:
       return {
         ...state,
-        previousReplySed: state.replySed,
         replySed: undefined
       }
 
-
     case types.SVARPASED_REPLYSED_UPDATE: {
-
       let newReplySed: ReplySed | undefined = _.cloneDeep(state.replySed)
       if (!newReplySed) {
         newReplySed = {} as ReplySed
@@ -152,7 +146,6 @@ const svarpasedReducer = (
         seds: state.seds,
         previousParentSed: state.previousParentSed,
         parentSed: state.parentSed,
-        previousReplySed: state.previousReplySed,
         replySed: state.replySed
       }
 

@@ -357,7 +357,7 @@ const Ansatt: React.FC<AnsattProps> = ({
       <Systemtittel>
         {t('label:aa-registeret')}
       </Systemtittel>
-      <VerticalSeparatorDiv size='2'/>
+      <VerticalSeparatorDiv size='2' />
       <Undertittel>
         {t('label:registered-arbeidsperiode')}
       </Undertittel>
@@ -372,7 +372,7 @@ const Ansatt: React.FC<AnsattProps> = ({
           </Column>
         </Row>
       )}
-      <VerticalSeparatorDiv size='2'/>
+      <VerticalSeparatorDiv size='2' />
       {plan?.map((item, i) => {
         let element: JSX.Element | null = null
         if (item.type === 'periode') {
@@ -454,112 +454,112 @@ const Ansatt: React.FC<AnsattProps> = ({
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewArbeidsgiver && (
-          <>
-            <Undertittel>
-              {t('label:legg-til-arbeidsperiode')}
-            </Undertittel>
-            <VerticalSeparatorDiv />
-            <AlignStartRow className='slideInFromLeft'>
-              <Period
-                key={'' + _newArbeidsgiverStartDato + _newArbeidsgiverSluttDato}
-                namespace={namespace}
-                errorStartDato={_validationArbeidsgiver[namespace + '-arbeidsgiver-startdato']?.feilmelding}
-                errorSluttDato={_validationArbeidsgiver[namespace + '-arbeidsgiver-sluttdato']?.feilmelding}
-                setStartDato={onArbeidsgiverStartDatoChanged}
-                setSluttDato={onArbeidsgiverSluttDatoChanged}
-                valueStartDato={_newArbeidsgiverStartDato}
-                valueSluttDato={_newArbeidsgiverSluttDato}
+        <>
+          <Undertittel>
+            {t('label:legg-til-arbeidsperiode')}
+          </Undertittel>
+          <VerticalSeparatorDiv />
+          <AlignStartRow className='slideInFromLeft'>
+            <Period
+              key={'' + _newArbeidsgiverStartDato + _newArbeidsgiverSluttDato}
+              namespace={namespace}
+              errorStartDato={_validationArbeidsgiver[namespace + '-arbeidsgiver-startdato']?.feilmelding}
+              errorSluttDato={_validationArbeidsgiver[namespace + '-arbeidsgiver-sluttdato']?.feilmelding}
+              setStartDato={onArbeidsgiverStartDatoChanged}
+              setSluttDato={onArbeidsgiverSluttDatoChanged}
+              valueStartDato={_newArbeidsgiverStartDato}
+              valueSluttDato={_newArbeidsgiverSluttDato}
+            />
+            <Column />
+          </AlignStartRow>
+          <VerticalSeparatorDiv size='0.5' />
+          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+            <Column>
+              <Input
+                feil={_validationArbeidsgiver[namespace + '-arbeidsgiver-orgnr']?.feilmelding}
+                namespace={namespace + '-arbeidsgiver'}
+                id='orgnr'
+                label={t('label:orgnr')}
+                onChanged={onArbeidsgiverOrgnrChanged}
+                value={_newArbeidsgiverOrgnr}
               />
-              <Column />
-            </AlignStartRow>
-            <VerticalSeparatorDiv size='0.5' />
-            <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-              <Column>
-                <Input
-                  feil={_validationArbeidsgiver[namespace + '-arbeidsgiver-orgnr']?.feilmelding}
-                  namespace={namespace + '-arbeidsgiver'}
-                  id='orgnr'
-                  label={t('label:orgnr')}
-                  onChanged={onArbeidsgiverOrgnrChanged}
-                  value={_newArbeidsgiverOrgnr}
-                />
-              </Column>
-              <Column>
-                <Input
-                  feil={_validationArbeidsgiver[namespace + '-arbeidsgiver-navn']?.feilmelding}
-                  namespace={namespace + '-arbeidsgiver'}
-                  id='navn'
-                  label={t('label:navn')}
-                  onChanged={onArbeidsgiverNameChanged}
-                  value={_newArbeidsgiverNavn}
-                />
-              </Column>
-              <Column />
-            </AlignStartRow>
-            <VerticalSeparatorDiv />
-            <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
-              <Column>
-                <HighContrastKnapp
-                  mini
-                  kompakt
-                  onClick={onArbeidsgiverAdd}
-                >
-                  <Add />
-                  <HorizontalSeparatorDiv size='0.5' />
-                  {t('el:button-add')}
-                </HighContrastKnapp>
+            </Column>
+            <Column>
+              <Input
+                feil={_validationArbeidsgiver[namespace + '-arbeidsgiver-navn']?.feilmelding}
+                namespace={namespace + '-arbeidsgiver'}
+                id='navn'
+                label={t('label:navn')}
+                onChanged={onArbeidsgiverNameChanged}
+                value={_newArbeidsgiverNavn}
+              />
+            </Column>
+            <Column />
+          </AlignStartRow>
+          <VerticalSeparatorDiv />
+          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
+            <Column>
+              <HighContrastKnapp
+                mini
+                kompakt
+                onClick={onArbeidsgiverAdd}
+              >
+                <Add />
                 <HorizontalSeparatorDiv size='0.5' />
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
-                  onClick={onCancelArbeidsgiverClicked}
-                >
-                  {t('el:button-cancel')}
-                </HighContrastFlatknapp>
-              </Column>
-            </AlignStartRow>
-          </>
-       )}
+                {t('el:button-add')}
+              </HighContrastKnapp>
+              <HorizontalSeparatorDiv size='0.5' />
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                onClick={onCancelArbeidsgiverClicked}
+              >
+                {t('el:button-cancel')}
+              </HighContrastFlatknapp>
+            </Column>
+          </AlignStartRow>
+        </>
+      )}
       {_seeNewPeriode && (
-          <>
-            <VerticalSeparatorDiv />
-            <AlignStartRow className='slideInFromLeft'>
-              <Period
-                key={'' + _newPeriodeStartDato + _newPeriodeSluttDato}
-                namespace={namespace}
-                errorStartDato={_validationPeriode[namespace + '-periode-startdato']?.feilmelding}
-                errorSluttDato={_validationPeriode[namespace + '-periode-sluttdato']?.feilmelding}
-                setStartDato={(dato: string) => setPeriodeStartDato(dato, -1)}
-                setSluttDato={(dato: string) => setPeriodeSluttDato(dato, -1)}
-                valueStartDato={_newPeriodeStartDato}
-                valueSluttDato={_newPeriodeSluttDato}
-              />
-              <Column />
-            </AlignStartRow>
-            <VerticalSeparatorDiv />
-            <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
-              <Column>
-                <HighContrastKnapp
-                  mini
-                  kompakt
-                  onClick={onPeriodeAdd}
-                >
-                  <Add />
-                  <HorizontalSeparatorDiv size='0.5' />
-                  {t('el:button-add')}
-                </HighContrastKnapp>
+        <>
+          <VerticalSeparatorDiv />
+          <AlignStartRow className='slideInFromLeft'>
+            <Period
+              key={'' + _newPeriodeStartDato + _newPeriodeSluttDato}
+              namespace={namespace}
+              errorStartDato={_validationPeriode[namespace + '-periode-startdato']?.feilmelding}
+              errorSluttDato={_validationPeriode[namespace + '-periode-sluttdato']?.feilmelding}
+              setStartDato={(dato: string) => setPeriodeStartDato(dato, -1)}
+              setSluttDato={(dato: string) => setPeriodeSluttDato(dato, -1)}
+              valueStartDato={_newPeriodeStartDato}
+              valueSluttDato={_newPeriodeSluttDato}
+            />
+            <Column />
+          </AlignStartRow>
+          <VerticalSeparatorDiv />
+          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
+            <Column>
+              <HighContrastKnapp
+                mini
+                kompakt
+                onClick={onPeriodeAdd}
+              >
+                <Add />
                 <HorizontalSeparatorDiv size='0.5' />
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
-                  onClick={onCancelPeriodeClicked}
-                >
-                  {t('el:button-cancel')}
-                </HighContrastFlatknapp>
-              </Column>
-            </AlignStartRow>
-          </>
-          )}
+                {t('el:button-add')}
+              </HighContrastKnapp>
+              <HorizontalSeparatorDiv size='0.5' />
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                onClick={onCancelPeriodeClicked}
+              >
+                {t('el:button-cancel')}
+              </HighContrastFlatknapp>
+            </Column>
+          </AlignStartRow>
+        </>
+      )}
 
       {!_seeNewPeriode && !_seeNewArbeidsgiver && (
         <FlexBaseDiv>
@@ -568,27 +568,27 @@ const Ansatt: React.FC<AnsattProps> = ({
             mini
             kompakt
             onClick={() => _setSeeNewArbeidsgiver(true)}
-            >
+          >
             <Add />
             <HorizontalSeparatorDiv size='0.5' />
             {t('el:button-add-new-x', {
               x: t('label:arbeidsgiver').toLowerCase()
             })}
-            </HighContrastFlatknapp>
-            <span>&nbsp;{t('label:eller')}&nbsp;</span>
-            <HighContrastFlatknapp
+          </HighContrastFlatknapp>
+          <span>&nbsp;{t('label:eller')}&nbsp;</span>
+          <HighContrastFlatknapp
             mini
             kompakt
             onClick={() => _setSeeNewPeriode(true)}
-            >
+          >
             <Add />
             <HorizontalSeparatorDiv size='0.5' />
             {t('el:button-add-new-x', {
               x: t('label:periode').toLowerCase()
             })}
-            </HighContrastFlatknapp>
+          </HighContrastFlatknapp>
         </FlexBaseDiv>
-       )}
+      )}
     </>
   )
 }

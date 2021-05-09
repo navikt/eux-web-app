@@ -236,7 +236,7 @@ const WithSubsidies: React.FC<WithSubsidiesProps> = ({
       <Undertittel>
         {t('label:periode-pensjon-avsenderlandet')}
       </Undertittel>
-      <VerticalSeparatorDiv size={2}/>
+      <VerticalSeparatorDiv size={2} />
       {perioderMedPensjon
         ?.sort((a, b) =>
           moment(a.periode.startdato).isSameOrBefore(moment(b.periode.startdato)) ? -1 : 1

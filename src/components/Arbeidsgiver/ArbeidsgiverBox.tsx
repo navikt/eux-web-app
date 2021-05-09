@@ -296,18 +296,18 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
             )}
             {fraArbeidsgiverregisteret && (
               <>
-              <HorizontalSeparatorDiv/>
-              <PileDiv style={{flexDirection: 'column-reverse'}}>
-                <Undertekst>{t('label:fra-arbeidsgiverregisteret')}</Undertekst>
-              </PileDiv>
+                <HorizontalSeparatorDiv />
+                <PileDiv style={{ flexDirection: 'column-reverse' }}>
+                  <Undertekst>{t('label:fra-arbeidsgiverregisteret')}</Undertekst>
+                </PileDiv>
               </>
             )}
             {fraInntektsregistreret && (
               <>
-              <HorizontalSeparatorDiv/>
-              <PileDiv style={{flexDirection: 'column-reverse'}}>
-                <Undertekst>{t('label:fra-inntektsregisteret')}</Undertekst>
-              </PileDiv>
+                <HorizontalSeparatorDiv />
+                <PileDiv style={{ flexDirection: 'column-reverse' }}>
+                  <Undertekst>{t('label:fra-inntektsregisteret')}</Undertekst>
+                </PileDiv>
               </>
             )}
             {/*! harRegistrertInntekt && (

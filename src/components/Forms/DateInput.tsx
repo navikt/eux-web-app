@@ -4,20 +4,29 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 export interface DateInputProps {
-  error: string | null | undefined
+  ariaLabel ?: string
+  className ?: string
+  feil: string | null | undefined
+  id: string
   index?: number
   label: string
   namespace: string
-  setDato: (dato: string, index: number) => void
+  onChanged: (dato: string) => void
+  placeholder?: string
+  required ?: boolean
   value: string | undefined
 }
 
 const DateInput = ({
-  error,
-  index = -1,
+  ariaLabel,
+  className,
+  feil,
+  id,
   label,
   namespace,
-  setDato,
+  onChanged,
+  placeholder,
+  required = false,
   value
 }: DateInputProps) => {
   const [_dato, _setDato] = useState<string>(() => toUIDateFormat(value) ?? '')
@@ -26,26 +35,30 @@ const DateInput = ({
 
   const onDatoBlur = () => {
     const date = toFinalDateFormat(_dato)
-    setDato(date, index)
+    onChanged(date)
   }
 
   return (
     <HighContrastInput
+      aria-invalid={!!feil}
+      aria-label={ariaLabel ?? label}
+      className={className}
       data-test-id={namespace + ''}
-      feil={error}
-      id={namespace + ''}
+      feil={feil}
+      id={namespace + '-' + id}
       label={label ?? t('label:dato')}
       onBlur={() => {
         if (_dirty) {
           onDatoBlur()
           _setDirty(false)
-        }   
+        }
       }}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
         _setDato(e.target.value)
         _setDirty(true)
       }}
-      placeholder={t('el:placeholder-date-default')}
+      placeholder={placeholder || t('el:placeholder-date-default')}
+      required={required}
       value={_dato}
     />
   )

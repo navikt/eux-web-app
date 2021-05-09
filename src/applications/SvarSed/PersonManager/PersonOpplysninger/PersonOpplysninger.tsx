@@ -1,51 +1,62 @@
+import { updateReplySed } from 'actions/svarpased'
+import { searchPerson } from 'actions/person'
+import { PersonManagerFormProps } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import Search from 'assets/icons/Search'
 import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
+import { State } from 'declarations/reducers'
 import { PersonInfo, Pin, ReplySed } from 'declarations/sed'
 import { Kodeverk, Person, Validation } from 'declarations/types'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
+  AlignStartRow,
   Column,
-  AlignStartRow, PaddedDiv,
   HighContrastFlatknapp,
   HighContrastKnapp,
   HighContrastRadioPanelGroup,
   HorizontalSeparatorDiv,
+  PaddedDiv,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 
-interface PersonOpplysningerProps {
-  landkoderList: Array<Kodeverk>
-  highContrast: boolean
-  parentNamespace: string
-  onSearchingPerson: (query: string) => void
-  updateReplySed: (needle: string, value: any) => void
-  personID: string | undefined
-  replySed: ReplySed
+interface PersonOpplysningerSelector {
+  landkoderList: Array<Kodeverk> | undefined
+  replySed: ReplySed | undefined
   resetValidation: (key?: string) => void
   searchingPerson: boolean
   searchedPerson: Person | undefined
   validation: Validation
 }
 
-const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
-  landkoderList,
-  onSearchingPerson,
+const mapState = (state: State): PersonOpplysningerSelector => ({
+  landkoderList: state.app.landkoder,
+  replySed: state.svarpased.replySed,
+  resetValidation: state.validation.resetValidation,
+  searchedPerson: state.person.person,
+  searchingPerson: state.loading.searchingPerson,
+  validation: state.validation.status
+})
+
+const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
-  personID,
-  replySed,
-  resetValidation,
-  searchedPerson,
-  searchingPerson,
-  updateReplySed,
-  validation
-}:PersonOpplysningerProps): JSX.Element => {
+  personID
+}:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    landkoderList,
+    replySed,
+    resetValidation,
+    searchedPerson,
+    searchingPerson,
+    validation
+  } = useSelector<State, PersonOpplysningerSelector>(mapState)
+  const dispatch = useDispatch()
   const target = `${personID}.personInfo`
   const personInfo: PersonInfo = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-personopplysninger`
@@ -55,28 +66,28 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
   const utenlandskPin = _.find(personInfo.pin, p => p.land !== 'NO')
 
   const onFornavnChange = (newFornavn: string) => {
-    updateReplySed(`${target}.fornavn`, newFornavn.trim())
+    dispatch(updateReplySed(`${target}.fornavn`, newFornavn.trim()))
     if (validation[namespace + '-fornavn']) {
       resetValidation(namespace + '-fornavn')
     }
   }
 
   const onEtternavnChange = (newEtternavn: string) => {
-    updateReplySed(`${target}.etternavn`, newEtternavn.trim())
+    dispatch(updateReplySed(`${target}.etternavn`, newEtternavn.trim()))
     if (validation[namespace + '-etternavn']) {
       resetValidation(namespace + '-etternavn')
     }
   }
 
   const onFodselsdatoChange = (dato: string) => {
-    updateReplySed(`${target}.foedselsdato`, dato.trim())
+    dispatch(updateReplySed(`${target}.foedselsdato`, dato.trim()))
     if (validation[namespace + '-foedselsdato']) {
       resetValidation(namespace + '-foedselsdato')
     }
   }
 
   const onKjoennChange = (newKjoenn: string) => {
-    updateReplySed(`${target}.kjoenn`, newKjoenn.trim())
+    dispatch(updateReplySed(`${target}.kjoenn`, newKjoenn.trim()))
     if (validation[namespace + '-kjoenn']) {
       resetValidation(namespace + '-kjoenn')
     }
@@ -92,7 +103,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         identifikator: newPin.trim()
       })
     }
-    updateReplySed(`${target}.pin`, pin)
+    dispatch(updateReplySed(`${target}.pin`, pin))
     if (validation[namespace + '-utenlandskpin-nummer']) {
       resetValidation(namespace + '-utenlandskpin-nummer')
     }
@@ -108,7 +119,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         land: land.trim()
       })
     }
-    updateReplySed(`${target}.pin`, pin)
+    dispatch(updateReplySed(`${target}.pin`, pin))
     if (validation[namespace + '-utenlandskpin-land']) {
       resetValidation(namespace + '-utenlandskpin-land')
     }
@@ -124,28 +135,28 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
         identifikator: newPin.trim()
       })
     }
-    updateReplySed(`${target}.pin`, pin)
+    dispatch(updateReplySed(`${target}.pin`, pin))
     if (validation[namespace + '-norskpin-nummer']) {
       resetValidation(namespace + '-norskpin-nummer')
     }
   }
 
   const onFoedestedByChange = (newFodestedBy: string) => {
-    updateReplySed(`${target}.pinMangler.foedested.by`, newFodestedBy.trim())
+    dispatch(updateReplySed(`${target}.pinMangler.foedested.by`, newFodestedBy.trim()))
     if (validation[namespace + '-foedested-by']) {
       resetValidation(namespace + '-foedested-by')
     }
   }
 
   const onFoedestedRegionChange = (newFodestedRegion: string) => {
-    updateReplySed(`${target}.pinMangler.foedested.region`, newFodestedRegion.trim())
+    dispatch(updateReplySed(`${target}.pinMangler.foedested.region`, newFodestedRegion.trim()))
     if (validation[namespace + '-foedested-region']) {
       resetValidation(namespace + '-foedested-region')
     }
   }
 
   const onFoedestedLandChange = (newLand: string) => {
-    updateReplySed(`${target}.pinMangler.foedested.land`, newLand.trim())
+    dispatch(updateReplySed(`${target}.pinMangler.foedested.land`, newLand.trim()))
     if (validation[namespace + '-foedested-land']) {
       resetValidation(namespace + '-foedested-land')
     }
@@ -153,7 +164,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
 
   const onSearchUser = () => {
     if (norwegianPin && norwegianPin.identifikator) {
-      onSearchingPerson(norwegianPin.identifikator)
+      dispatch(searchPerson(norwegianPin.identifikator))
     }
   }
 
@@ -172,6 +183,7 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             label={t('label:fornavn') + ' *'}
             namespace={namespace}
             onChanged={onFornavnChange}
+            required
             value={personInfo.fornavn}
           />
         </Column>
@@ -183,16 +195,18 @@ const PersonOpplysninger: React.FC<PersonOpplysningerProps> = ({
             label={t('label:etternavn') + ' *'}
             namespace={namespace}
             onChanged={onEtternavnChange}
+            required
             value={personInfo.etternavn}
           />
         </Column>
         <Column>
           <DateInput
-            error={validation[namespace + '-foedselsdato']?.feilmelding}
+            feil={validation[namespace + '-foedselsdato']?.feilmelding}
+            id='foedselsdato'
             key={namespace + '-foedselsdato-' + personInfo.foedselsdato}
             label={t('label:fødselsdato') + ' *'}
-            namespace={namespace + '-foedselsdato'}
-            setDato={onFodselsdatoChange}
+            namespace={namespace}
+            onChanged={onFodselsdatoChange}
             value={personInfo.foedselsdato}
           />
         </Column>

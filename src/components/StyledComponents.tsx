@@ -27,11 +27,11 @@ export const FadingLineSeparator = styled.div`
     ) 1 100%;
    opacity: 0;
    &.fadeIn {
-     opacity: 1;
+     opacity: 0;
      animation: ${fadeIn} 1s forwards;
    }
    &.fadeOut {
-     opacity: 0;
+     opacity: 1;
      animation: ${fadeOut} 1s forwards;
    }
 `

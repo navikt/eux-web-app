@@ -7,15 +7,25 @@ import GreenCircle from 'assets/icons/GreenCircle'
 import RemoveCircle from 'assets/icons/RemoveCircle'
 import classNames from 'classnames'
 import { WithErrorPanel } from 'components/StyledComponents'
+import { State } from 'declarations/reducers'
 import { FSed, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import Chevron from 'nav-frontend-chevron'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Normaltekst } from 'nav-frontend-typografi'
-import { HorizontalSeparatorDiv, FlexCenterDiv, FlexCenterSpacedDiv, PileCenterDiv, PileDiv, themeKeys, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import {
+  FlexCenterDiv,
+  FlexCenterSpacedDiv,
+  HorizontalSeparatorDiv,
+  PileCenterDiv,
+  PileDiv,
+  themeKeys,
+  VerticalSeparatorDiv
+} from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 import styled, { keyframes } from 'styled-components'
 
 const transitionTime = 0.3
@@ -45,12 +55,12 @@ const MenuLabelDiv = styled(FlexCenterDiv)`
   flex: 1;
   transition: all 0.2s ease-in-out;
   &:hover {
-   background-color: ${({theme}: any) => theme[themeKeys.ALTERNATIVE_HOVER_COLOR]};
+   background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_HOVER_COLOR]};
   }
    &.selected {
     font-weight: bold;
-    background-color: ${({theme}: any) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
-     border-left: 6px solid ${({theme}: any) => theme[themeKeys.MAIN_INTERACTIVE_COLOR]};
+    background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
+     border-left: 6px solid ${({ theme }: any) => theme[themeKeys.MAIN_INTERACTIVE_COLOR]};
   }
 `
 const RightDiv = styled.div`
@@ -119,103 +129,58 @@ const MenuLabelText = styled(Normaltekst)`
   }
 `
 
-export interface FormålManagerProps {
-  fnr: string
-  highContrast: boolean
-  replySed: ReplySed
-  resetValidation: (key?: string) => void
-  updateReplySed: (needle: string, value: any) => void
-  validation: Validation,
+export interface FormålManagerSelector {
+  replySed: ReplySed | undefined
+  validation: Validation
   viewValidation: boolean
 }
 
-const FormålManager: React.FC<FormålManagerProps> = ({
-  highContrast,
-  replySed,
-  resetValidation,
-  updateReplySed,
-  validation,
-  viewValidation
-}: FormålManagerProps) => {
-  const { t } = useTranslation()
-  const namespace = 'formålmanager'
+export interface FormålManagerFormProps {
+  parentNamespace: string
+  personID: string | undefined
+  personNamer: string | undefined
+}
 
-  const initialSelectedMenus: Array<string> = _.get(replySed, 'formaal')
+const mapState = (state: State): FormålManagerSelector => ({
+  replySed: state.svarpased.replySed,
+  validation: state.validation.status,
+  viewValidation: state.validation.view
+})
+
+const FormålManager: React.FC = () => {
+  const { t } = useTranslation()
+  const {
+    replySed,
+    validation,
+    viewValidation
+  }: any = useSelector<State, FormålManagerSelector>(mapState)
+  const namespace = 'formålmanager'
+  const target = 'formaal'
+  const initialSelectedMenus: Array<string> = _.get(replySed, target)
 
   const [animatingMenus, setAnimatingMenus] = useState<boolean>(false)
-
-  const [previousMenu, setPreviousMenu] = useState<string | undefined>(undefined)
   const [currentMenu, setCurrentMenu] = useState<string | undefined>(initialSelectedMenus.length === 1 ? initialSelectedMenus[0] : undefined)
-
+  const [previousMenu, setPreviousMenu] = useState<string | undefined>(undefined)
   const [_viewKontoopplysninger, setViewKontoopplysninger] = useState<boolean>(false)
 
-  const getForm = (menu: string): JSX.Element => (
-    <>
-      {menu === 'vedtak' && (
-        <>
-          <Vedtak
-            highContrast={highContrast}
-            replySed={replySed}
-            resetValidation={resetValidation}
-            updateReplySed={updateReplySed}
-            validation={validation}
-          />
-          <VerticalSeparatorDiv size='2' />
-        </>
-      )}
-      {menu === 'motregning' && (
-        <>
-          <Motregning
-            highContrast={highContrast}
-            replySed={replySed}
-            resetValidation={resetValidation}
-            seeKontoopplysninger={() => setViewKontoopplysninger(true)}
-            updateReplySed={updateReplySed}
-            validation={validation}
-          />
-          <VerticalSeparatorDiv size='2' />
-        </>
-      )}
-      {menu === 'prosedyre_ved_uenighet' && (
-        <>
-          <ProsedyreVedUenighet
-            highContrast={highContrast}
-            replySed={replySed}
-            resetValidation={resetValidation}
-            updateReplySed={updateReplySed}
-            validation={validation}
-          />
-          <VerticalSeparatorDiv size='2' />
-        </>
-      )}
-      {menu === 'refusjon_i_henhold_til_artikkel_58_i_forordningen' && (
-        <>
-          <KravOmRefusjon
-            highContrast={highContrast}
-            replySed={replySed}
-            resetValidation={resetValidation}
-            seeKontoopplysninger={() => setViewKontoopplysninger(true)}
-            updateReplySed={updateReplySed}
-            validation={validation}
-          />
-          <VerticalSeparatorDiv size='2' />
-        </>
-      )}
+  const options: any = {
+    vedtak: Vedtak,
+    motregning: Motregning,
+    prosedyre_ved_uenighet: ProsedyreVedUenighet,
+    refusjon_i_henhold_til_artikkel_58_i_forordningen: KravOmRefusjon,
+    kontoopplysninger: Kontoopplysning
+  }
 
-      {menu === 'kontoopplysninger' && (
-        <>
-          <Kontoopplysning
-            highContrast={highContrast}
-            replySed={replySed}
-            resetValidation={resetValidation}
-            updateReplySed={updateReplySed}
-            validation={validation}
-          />
-          <VerticalSeparatorDiv size='2' />
-        </>
-      )}
-    </>
-  )
+  const getForm = (value: string): JSX.Element | null => {
+    const Component = options[value]
+    return (
+      <Component
+        parentNamespace={namespace}
+        personID={currentMenu!}
+        seeKontoopplysninger={() => setViewKontoopplysninger(true)}
+      />
+    )
+  }
 
   const changeMenu = (menu: string) => {
     if (currentMenu !== menu) {

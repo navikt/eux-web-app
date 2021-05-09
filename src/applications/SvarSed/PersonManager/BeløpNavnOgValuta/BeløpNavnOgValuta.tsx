@@ -105,7 +105,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
       <Undertittel>
         {t('label:beløp-navn-valuta-barn')}
       </Undertittel>
-      <VerticalSeparatorDiv size={2}/>
+      <VerticalSeparatorDiv size={2} />
       <AlignStartRow className='slideInFromLeft'>
         <Column>
           <Input
@@ -148,7 +148,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
         <Column>
           <CountrySelect
             key={_currencyData.findByValue(ytelse?.valuta ?? '')}
-            closeMenuOnSelect={true}
+            closeMenuOnSelect
             ariaLabel={t('label:valuta')}
             data-test-id={namespace + '-valuta'}
             error={validation[namespace + '-valuta']?.feilmelding}
@@ -167,7 +167,7 @@ const BeløpNavnOgValuta: React.FC<BeløpNavnOgValutaProps> = ({
       <Undertittel className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
         {t('label:grant-date')}
       </Undertittel>
-      <VerticalSeparatorDiv size={2}/>
+      <VerticalSeparatorDiv size={2} />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
         <Period
           key={'' + ytelse?.startdato + ytelse?.sluttdato}

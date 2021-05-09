@@ -1,5 +1,6 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
+import { SvarPaSedMode } from 'declarations/app'
 import { ReplySed } from 'declarations/sed'
 import { ConnectedSed } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
@@ -84,6 +85,13 @@ export const resetReplySed: ActionCreator<Action> = (): Action => ({
   type: types.SVARPASED_REPLYSED_RESET
 })
 
+export const setMode: ActionCreator<ActionWithPayload> = (
+  mode: SvarPaSedMode
+): ActionWithPayload => ({
+  type: types.SVARPASED_MODE_SET,
+  payload: mode
+})
+
 export const setReplySed: ActionCreator<ActionWithPayload> = (
   replySed: ReplySed
 ): ActionWithPayload => ({
@@ -91,7 +99,7 @@ export const setReplySed: ActionCreator<ActionWithPayload> = (
   payload: replySed
 })
 
-export const updateReplySed:  ActionCreator<ActionWithPayload> = (
+export const updateReplySed: ActionCreator<ActionWithPayload> = (
   needleString: string | Array<string>, value: any
 ): ActionWithPayload => ({
   type: types.SVARPASED_REPLYSED_UPDATE,

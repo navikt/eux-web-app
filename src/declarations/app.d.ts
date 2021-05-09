@@ -13,3 +13,5 @@ export interface ParamPayload {
   key: string,
   value?: any
 }
+
+export type SvarPaSedMode = 'selection'| 'editor'

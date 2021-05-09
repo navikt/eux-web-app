@@ -25,7 +25,7 @@ export const viewValidation: ActionCreator<Action> = (): Action => ({
 })
 
 export const setResetValidationFunction: ActionCreator<ActionWithPayload> = (
-resetValidation: (key?: string | undefined) => void
+  resetValidation: (key?: string | undefined) => void
 ): ActionWithPayload => ({
   type: types.VALIDATION_RESETFUNCTION_SET,
   payload: resetValidation

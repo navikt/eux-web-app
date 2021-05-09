@@ -314,11 +314,12 @@ const Familierelasjon: React.FC<FamilierelasjonProps> = ({
               </Column>
               <Column>
                 <DateInput
-                  error={getErrorFor(index, 'annenRelasjonDato')}
-                  namespace={namespace + idx + '-annenRelasjonDato'}
+                  feil={getErrorFor(index, 'annenRelasjonDato')}
+                  namespace={namespace + idx}
+                  id='annenRelasjonDato'
                   key={index < 0 ? _newAnnenRelasjonDato : familierelasjon?.annenRelasjonDato}
                   label={t('label:dato-for-relasjon') + ' *'}
-                  setDato={(dato: string) => setAnnenRelasjonDato(dato, index)}
+                  onChanged={(dato: string) => setAnnenRelasjonDato(dato, index)}
                   value={index < 0 ? _newAnnenRelasjonDato : familierelasjon?.annenRelasjonDato}
                 />
               </Column>

@@ -144,7 +144,7 @@ const SisteAnsettelsesForhold: React.FC<SisteAnsettelsesForholdProps> = ({
             <Column>
               <CountrySelect
                 key={xxx?.valuta ? _currencyData.findByValue(xxx?.valuta) : ''}
-                closeMenuOnSelect={true}
+                closeMenuOnSelect
                 ariaLabel={t('label:valuta')}
                 data-test-id={namespace + '-valuta'}
                 error={validation[namespace + '-valuta']?.feilmelding}
@@ -165,11 +165,12 @@ const SisteAnsettelsesForhold: React.FC<SisteAnsettelsesForholdProps> = ({
               <Column>
                 {_typeBeløp === 'typebeløp-1' && (
                   <DateInput
-                    error={validation[namespace + '-mottattdato']?.feilmelding}
-                    namespace={namespace + '-mottattdato'}
+                    feil={validation[namespace + '-mottattdato']?.feilmelding}
+                    namespace={namespace}
                     key={xxx?.mottattDato}
+                    id='mottattdato'
                     label={t('label:mottatt-dato')}
-                    setDato={setMottakerDato}
+                    onChanged={setMottakerDato}
                     value={xxx?.mottattDato}
                   />
                 )}

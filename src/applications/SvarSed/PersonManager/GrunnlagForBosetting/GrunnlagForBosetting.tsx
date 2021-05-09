@@ -207,9 +207,9 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
           moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1
         )
         .map(renderRow)}
-      <VerticalSeparatorDiv size={2}/>
-      <HorizontalLineSeparator/>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv size={2} />
+      <HorizontalLineSeparator />
+      <VerticalSeparatorDiv />
       {_seeNewForm
         ? renderRow(null, -1)
         : (
@@ -231,21 +231,23 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column>
           <DateInput
-            error={validation[namespace + '-datoFlyttetTilAvsenderlandet']?.feilmelding}
-            namespace={namespace + '-datoFlyttetTilAvsenderlandet'}
+            feil={validation[namespace + '-datoFlyttetTilAvsenderlandet']?.feilmelding}
+            namespace={namespace}
+            id='datoFlyttetTilAvsenderlandet'
             key={flyttegrunn.datoFlyttetTilAvsenderlandet}
             label={t('label:flyttedato-til-avsenderlandet')}
-            setDato={setAvsenderDato}
+            onChanged={setAvsenderDato}
             value={flyttegrunn.datoFlyttetTilAvsenderlandet}
           />
         </Column>
         <Column>
           <DateInput
-            error={validation[namespace + '-datoFlyttetTilMottakerlandet']?.feilmelding}
-            namespace={namespace + '-datoFlyttetTilMottakerlandet'}
+            feil={validation[namespace + '-datoFlyttetTilMottakerlandet']?.feilmelding}
+            namespace={namespace}
+            id='datoFlyttetTilMottakerlandet'
             key={flyttegrunn.datoFlyttetTilMottakerlandet}
             label={t('label:flyttedato-til-mottakerslandet')}
-            setDato={setMottakerDato}
+            onChanged={setMottakerDato}
             value={flyttegrunn.datoFlyttetTilMottakerlandet}
           />
         </Column>
@@ -277,7 +279,7 @@ const GrunnlagforBosetting: React.FC<GrunnlagForBosettingProps> = ({
           <Undertittel>
             {t('label:grunnlag-for-bosetting')}
           </Undertittel>
-          <VerticalSeparatorDiv size={2}/>
+          <VerticalSeparatorDiv size={2} />
           {render()}
         </PaddedDiv>
         )

@@ -48,20 +48,18 @@ const mapState = (state: State): any => ({
   creatingSvarPaSed: state.loading.creatingSvarPaSed,
   gettingPreviewFile: state.loading.gettingPreviewFile,
   highContrast: state.ui.highContrast,
+  mode: state.svarpased.mode,
   previewFile: state.svarpased.previewFile,
   replySed: state.svarpased.replySed,
   rinasaksnummerOrFnr: state.app.params.rinasaksnummerOrFnr,
-  savingSed: state.loading.savingSed,
-  validation: state.validation.status
+  savingSed: state.loading.savingSed
 })
 
 export interface SvarPaSedProps {
-  mode: string | undefined
   setMode: (mode: string, from: string, callback?: () => void) => void
 }
 
 const SEDEditor: React.FC<SvarPaSedProps> = ({
-  mode,
   setMode
 }: SvarPaSedProps): JSX.Element => {
   const { t } = useTranslation()
@@ -72,11 +70,11 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
     creatingSvarPaSed,
     gettingPreviewFile,
     highContrast,
+    mode,
     previewFile,
     replySed,
     rinasaksnummerOrFnr,
-    savingSed,
-    validation
+    savingSed
   }: any = useSelector<State, any>(mapState)
   const fnr = _.find(replySed?.bruker?.personInfo.pin, p => p.land === 'NO')?.identifikator
 
@@ -86,7 +84,10 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   const [_previewFile, setPreviewFile] = useState<any | undefined>(undefined)
   const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
   const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
-  const [_validation, resetValidation, performValidation] = useValidation<ValidationSEDEditorProps>(validation, validateSEDEditor)
+  const [_validation, resetValidation, performValidation] =
+    useValidation<ValidationSEDEditorProps>({}, validateSEDEditor, (v) => {
+      dispatch(setAllValidation(v))
+    })
 
   const storageKey = 'replySed'
   const showPersonManager = (): boolean => isSed(replySed)
@@ -111,8 +112,6 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
         ))
         resetValidation()
       } else {
-        // dispatch validation results to all components
-        dispatch(setAllValidation(_validation))
         // tell components how to reset some of the fixed validations
         dispatch(setResetValidationFunction(resetValidation))
       }
@@ -161,8 +160,8 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   }
 
   const onGoBackClick = () => {
-    if (mode === '2') {
-      setMode('1', 'back')
+    if (mode === 'editor') {
+      setMode('selection', 'back')
     }
   }
 
@@ -220,30 +219,22 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
             {replySed?.sedType} - {t('buc:' + replySed?.sedType)}
           </Systemtittel>
           <VerticalSeparatorDiv />
-          {isFSed(replySed) && <Formaal/>}
-          {isUSed(replySed) && <SEDType/>}
-          {isHSed(replySed) && <Tema/>}
+          {isFSed(replySed) && <Formaal />}
+          {isUSed(replySed) && <SEDType />}
+          {isHSed(replySed) && <Tema />}
         </Column>
         <Column />
       </Row>
       <VerticalSeparatorDiv size='2' />
       {showPersonManager() && (
         <>
-          <PersonManager fnr={fnr}/>
+          <PersonManager />
           <VerticalSeparatorDiv size='2' />
         </>
       )}
       {isFSed(replySed) && showFormålManager() && (
         <>
-          <FormålManager
-            fnr={fnr}
-            highContrast={highContrast}
-            replySed={replySed}
-            resetValidation={_resetValidation}
-            updateReplySed={updateReplySed}
-            validation={_validation}
-            viewValidation={_viewValidation}
-          />
+          <FormålManager />
           <VerticalSeparatorDiv size='2' />
         </>
       )}
@@ -278,7 +269,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
         {gettingPreviewFile ? t('label:laster-ned-filen') : t('label:forhåndsvis-sed')}
       </HighContrastFlatknapp>
       <VerticalSeparatorDiv size='2' />
-      <ValidationBox validation={_validation} />
+      <ValidationBox />
       <VerticalSeparatorDiv size='2' />
       <FlexDiv>
         <div>

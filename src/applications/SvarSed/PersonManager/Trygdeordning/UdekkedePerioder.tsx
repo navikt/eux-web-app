@@ -181,7 +181,7 @@ const UdekkedePerioder: React.FC<UdekkedePerioderProps> = ({
       <Ingress>
         {t('label:trygdeordningen-udekkede')}
       </Ingress>
-      <VerticalSeparatorDiv size={2}/>
+      <VerticalSeparatorDiv size={2} />
       {perioderUtenforTrygdeordning?.length > 0 && (
         <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
           <Column>

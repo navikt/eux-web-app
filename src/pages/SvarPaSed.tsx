@@ -1,6 +1,6 @@
 import { setStatusParam } from 'actions/app'
 import * as svarpasedActions from 'actions/svarpased'
-import { setReplySed } from 'actions/svarpased'
+import { setMode, setReplySed } from 'actions/svarpased'
 import SEDDetails from 'applications/SvarSed/SEDDetails/SEDDetails'
 import SEDLoadSave from 'applications/SvarSed/SEDLoadSave/SEDLoadSave'
 import classNames from 'classnames'
@@ -65,10 +65,6 @@ export const ContainerDiv = styled.div`
   overflow: hidden;
   perspective: 1000px;
 `
-export const ContentDiv = styled(Content)`
-  flex: 1;
-  max-width: 60vw;
-`
 const WaitingPanelDiv = styled.div`
   flex: 1;
   display: flex;
@@ -92,8 +88,6 @@ export interface SvarPaSedPageProps {
   setMode: (mode: string, from: string, callback?: () => void) => void
 }
 
-export type Mode = '1'| '2'
-
 export enum Slide {
   LEFT,
   RIGHT,
@@ -110,6 +104,7 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
   waitForMount = true
 }: SvarPaSedPageProps): JSX.Element => {
   const dispatch = useDispatch()
+
   const [_mounted, setMounted] = useState<boolean>(!waitForMount)
   const [positionContentA, setPositionContentA] = useState<Slide>(Slide.LEFT)
   const [positionContentB, setPositionContentB] = useState<Slide>(Slide.RIGHT)
@@ -127,11 +122,12 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
     </WaitingPanelDiv>
   )
 
-  const _setMode = useCallback((newMode: string, from: string, callback?: () => void) => {
+  const changeMode = useCallback((newMode: string, from: string, callback?: () => void) => {
+    dispatch(setMode(newMode))
     if (animating) {
       return
     }
-    if (newMode === '1') {
+    if (newMode === 'selection') {
       if (!from || from === 'none') {
         setPositionContentA(Slide.LEFT)
         setPositionContentB(Slide.RIGHT)
@@ -159,20 +155,20 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
           }
         }, timeout)
       }
-      setContentA(<SEDSelection mode={newMode} setMode={_setMode} />)
+      setContentA(<SEDSelection setMode={changeMode} />)
       setSidebarB(
         <SideBarDiv>
           <SEDLoadSave
             storageKey='replysed'
             onLoad={(replySed: ReplySed) => {
               dispatch(setReplySed(replySed))
-              _setMode('2', 'forward')
+              changeMode('editor', 'forward')
             }}
           />
         </SideBarDiv>
       )
     }
-    if (newMode === '2') {
+    if (newMode === 'editor') {
       if (!from || from === 'none') {
         setPositionContentA(Slide.ALT_LEFT)
         setPositionContentB(Slide.ALT_RIGHT)
@@ -200,7 +196,7 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
           }
         }, timeout)
       }
-      setContentB(<SEDEditor mode={newMode} setMode={_setMode} />)
+      setContentB(<SEDEditor setMode={changeMode} />)
       setSidebarA(
         <SideBarDiv>
           <SEDDetails />
@@ -220,22 +216,22 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
         dispatch(svarpasedActions.querySaksnummerOrFnr(rinasaksnummerParam || fnrParam || undefined))
       }
 
-      setContentA(<SEDSelection mode='1' setMode={_setMode} />)
+      setContentA(<SEDSelection setMode={changeMode} />)
       setSidebarB(
         <SideBarDiv>
           <SEDLoadSave
             storageKey='replysed'
             onLoad={(replySed: ReplySed) => {
               dispatch(setReplySed(replySed))
-              _setMode('2', 'forward')
+              changeMode('editor', 'forward')
             }}
           />
         </SideBarDiv>
       )
-      _setMode('1', 'none')
+      changeMode('selection', 'none')
       setMounted(true)
     }
-  }, [dispatch, _mounted, _setMode, WaitingDiv, location.search])
+  }, [dispatch, _mounted, changeMode, WaitingDiv, location.search])
 
   if (!_mounted) {
     return WaitingDiv

@@ -30,17 +30,17 @@ const ArbeidsgiverDiv = styled(FlexDiv)`
  padding: 1rem;
 `
 const LeftBorderFlexDiv = styled(FlexDiv)`
-  border-left: 1px solid ${({theme}) => theme[themeKeys.MAIN_BORDER_COOLOR]};
+  border-left: 1px solid ${({ theme }) => theme[themeKeys.MAIN_BORDER_COOLOR]};
 `
 
 const Inntekt: React.FC<InntektProps> = ({
-  //highContrast,
+  // highContrast,
   inntekter
-  //personID
+  // personID
 }:InntektProps) => {
   const { t } = useTranslation()
 
-  let data: {[k in string]: Array<IInntekt>} = {}
+  const data: {[k in string]: Array<IInntekt>} = {}
   const [_currentPage, setCurrentPage] = useState<{[k in string]: number}>({})
 
   inntekter?.inntektsmaaneder?.forEach((inntekt: IInntekt) => {
@@ -55,7 +55,6 @@ const Inntekt: React.FC<InntektProps> = ({
   return (
     <>
       {Object.keys(data).map((orgnr: string) => {
-
         if (!Object.prototype.hasOwnProperty.call(_currentPage, orgnr)) {
           setCurrentPage({
             ..._currentPage,
@@ -64,13 +63,13 @@ const Inntekt: React.FC<InntektProps> = ({
         }
         let average = 0
         let total = 0
-        let number = data[orgnr].length
+        const number = data[orgnr].length
         let lastMonth = ''
-        let itemsPerPage = 5
-        let firstIndex = (_currentPage[orgnr] - 1) * itemsPerPage
-        let lastIndex = (_currentPage[orgnr] - 1) * itemsPerPage + itemsPerPage
+        const itemsPerPage = 5
+        const firstIndex = (_currentPage[orgnr] - 1) * itemsPerPage
+        const lastIndex = (_currentPage[orgnr] - 1) * itemsPerPage + itemsPerPage
 
-        let elements: any = []
+        const elements: any = []
         data[orgnr].forEach((inntekt: IInntekt, index: number) => {
           total += inntekt.beloep
           if (index >= firstIndex && index < lastIndex) {
@@ -98,19 +97,19 @@ const Inntekt: React.FC<InntektProps> = ({
                   </PileDiv>
                   <PileDiv>
                     <span><Normaltekst>{t('label:stillingprosent')}</Normaltekst></span>
-                    <span><Normaltekst>{'-'}</Normaltekst></span>
+                    <span><Normaltekst>-</Normaltekst></span>
                   </PileDiv>
                   <PileDiv>
                     <span><Normaltekst>{t('label:siste-lønnsendring')}</Normaltekst></span>
                     <span><Normaltekst>{lastMonth}</Normaltekst></span>
                   </PileDiv>
                 </ArbeidsgiverDiv>
-                <VerticalSeparatorDiv size='0.5'/>
+                <VerticalSeparatorDiv size='0.5' />
                 <FlexDiv>
-                  <HorizontalSeparatorDiv/>
-                  <FlexDiv style={{flex: '5', justifyContent: 'flex-end', maxWidth: '600px'}}>
+                  <HorizontalSeparatorDiv />
+                  <FlexDiv style={{ flex: '5', justifyContent: 'flex-end', maxWidth: '600px' }}>
                     {elements.map((x: any) => (
-                      <PileDiv key={x.header} style={{width: '120px'}}>
+                      <PileDiv key={x.header} style={{ width: '120px' }}>
                         <PaddedDiv size='0.3'>
                           {x.header}
                         </PaddedDiv>
@@ -121,17 +120,17 @@ const Inntekt: React.FC<InntektProps> = ({
                     ))}
                   </FlexDiv>
                   <LeftBorderFlexDiv>
-                  <HorizontalSeparatorDiv/>
+                    <HorizontalSeparatorDiv />
                     <PileDiv>
                       <PaddedDiv size='0.3'>
                         {t('label:gjennomsnitt')}
                       </PaddedDiv>
                       <PaddedDiv size='0.3'>
-                        {formatterPenger( average)}
+                        {formatterPenger(average)}
                       </PaddedDiv>
                     </PileDiv>
                   </LeftBorderFlexDiv>
-                  <HorizontalSeparatorDiv/>
+                  <HorizontalSeparatorDiv />
 
                 </FlexDiv>
               </Column>
@@ -144,7 +143,7 @@ const Inntekt: React.FC<InntektProps> = ({
                 </HighContrastLink>
               </Column>
               <Column>
-                <FlexDiv style={{flexDirection: 'row-reverse'}}>
+                <FlexDiv style={{ flexDirection: 'row-reverse' }}>
                   <Pagination
                     currentPage={_currentPage[orgnr]}
                     itemsPerPage={itemsPerPage}

@@ -181,7 +181,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
       <Ingress>
         {t('label:trygdeordningen-dekkede')}
       </Ingress>
-      <VerticalSeparatorDiv size='2'/>
+      <VerticalSeparatorDiv size='2' />
       {perioderMedITrygdeordning?.length > 0 && (
         <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
           <Column>

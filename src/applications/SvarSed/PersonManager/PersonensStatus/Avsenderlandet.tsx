@@ -175,11 +175,11 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
       <Undertittel>
         {t('label:periods-in-sender-country')}
       </Undertittel>
-      <VerticalSeparatorDiv size={2}/>
+      <VerticalSeparatorDiv size={2} />
       <UndertekstBold>
         {t('label:medlemsperiode')}
       </UndertekstBold>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       {perioderMedTrygd
         ?.sort((a, b) =>
           moment(a.startdato, 'YYYY-MM-DD').isSameOrBefore(moment(b.startdato, 'YYYY-MM-DD'))
@@ -187,7 +187,7 @@ const Avsenderlandet: React.FC<AvsenderlandetProps> = ({
             : 1
         )
         ?.map(renderRow)}
-      <VerticalSeparatorDiv size={2}/>
+      <VerticalSeparatorDiv size={2} />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm

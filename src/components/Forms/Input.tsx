@@ -19,9 +19,9 @@ const Input: React.FC<InputProps> = ({
   ariaLabel,
   className,
   feil,
-  namespace,
   id,
   label,
+  namespace,
   onChanged,
   placeholder,
   required = false,
@@ -34,12 +34,12 @@ const Input: React.FC<InputProps> = ({
 
   return (
     <HighContrastInput
+      aria-invalid={!!feil}
+      aria-label={ariaLabel ?? label}
       className={className}
       data-test-id={namespace + '-' + id}
       feil={feil}
-      aria-invalid={!!feil}
       id={namespace + '-' + id}
-      ariaLabel={ariaLabel ?? label}
       label={label}
       onBlur={() => {
         if (_dirty) {

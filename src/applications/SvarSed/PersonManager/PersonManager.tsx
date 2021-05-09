@@ -8,7 +8,7 @@ import GreenCircle from 'assets/icons/GreenCircle'
 import RemoveCircle from 'assets/icons/RemoveCircle'
 import classNames from 'classnames'
 import { WithErrorPanel } from 'components/StyledComponents'
-import { Options } from 'declarations/app'
+import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { F002Sed, PersonInfo, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -71,12 +71,12 @@ const OptionDiv = styled.div`
   align-items: center;
   cursor: pointer;
   &:hover {
-    background-color: ${({theme}: any) => theme[themeKeys.ALTERNATIVE_HOVER_COLOR]};
+    background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_HOVER_COLOR]};
   }
   &.selected {
     font-weight: bold;
-    background-color: ${({theme}: any) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
-    border-left: 6px solid ${({theme}: any) => theme[themeKeys.MAIN_INTERACTIVE_COLOR]};
+    background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
+    border-left: 6px solid ${({ theme }: any) => theme[themeKeys.MAIN_INTERACTIVE_COLOR]};
   }
 `
 
@@ -96,18 +96,18 @@ const MenuLabelDiv = styled(FlexCenterDiv)`
   flex: 1;
   transition: all 0.2s ease-in-out;
   &:hover {
-   background-color: ${({theme}: any) => theme[themeKeys.ALTERNATIVE_HOVER_COLOR]};
+   background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_HOVER_COLOR]};
   }
 `
 const CheckboxDiv = styled.div`
   transition: all 0.3s ease-in-out;
   &:hover {
-   background-color: ${({theme}: any) => theme[themeKeys.ALTERNATIVE_HOVER_COLOR]};
+   background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_HOVER_COLOR]};
   }
 `
 const RightDiv = styled.div`
   flex: 3;
-  border-left: 1px solid ${({theme}: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
+  border-left: 1px solid ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
   margin-left: -1px;
   align-self: stretch;
   position: relative;
@@ -187,6 +187,12 @@ export interface PersonManagerSelector {
   viewValidation: boolean
 }
 
+export interface PersonManagerFormProps {
+  parentNamespace: string
+  personID: string | undefined
+  personNamer: string | undefined
+}
+
 const mapState = (state: State): PersonManagerSelector => ({
   gettingPerson: state.loading.gettingPerson,
   replySed: state.svarpased.replySed,
@@ -243,175 +249,45 @@ const PersonManager: React.FC = () => {
   const menuRef = useRef(currentMenu + '|' + currentMenuOption)
 
   const options: Options = [
-    { label: t('el:option-personmanager-1'), value: 'personopplysninger', type: 'F', normal: true, barn: true, family: false },
-    { label: t('el:option-personmanager-2'), value: 'nasjonaliteter', type: 'F', normal: true, barn: true, family: false },
-    { label: t('el:option-personmanager-3'), value: 'adresser', type: 'F', normal: true, barn: true, family: false },
-    { label: t('el:option-personmanager-4'), value: 'kontaktinformasjon', type: 'F', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-5'), value: 'trygdeordninger', type: 'F', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-6'), value: 'familierelasjon', type: 'F', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-7'), value: 'personensstatus', type: 'F', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-8'), value: 'relasjon', type: 'F', normal: false, barn: true, family: false },
-    { label: t('el:option-personmanager-9'), value: 'grunnlagforbosetting', type: 'F', normal: false, barn: true, family: false },
-    { label: t('el:option-personmanager-10'), value: 'beløpnavnogvaluta', type: 'F', normal: false, barn: true, family: false },
-    { label: t('el:option-personmanager-11'), value: 'familieytelser', type: 'F', normal: false, barn: false, family: true },
-    { label: t('el:option-personmanager-12'), value: 'person', type: 'U', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-13'), value: 'referanseperiode', type: 'U', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-14'), value: 'arbeidsforhold/arbeidsgivere', type: 'U002', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-15'), value: 'inntekt', type: 'U004', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-16'), value: 'retttilytelser', type: 'U017', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-17'), value: 'forsikring', type: 'U', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-18'), value: 'sisteansettelsesforhold', type: 'U', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-19'), value: 'grunntilopphør', type: 'U', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-20'), value: 'periodefordagpenger', type: 'U', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-12'), value: 'person', type: 'H', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-3'), value: 'adresser', type: 'H', normal: true, barn: true, family: false },
-    { label: t('el:option-personmanager-21'), value: 'svarpåforespørsel', type: 'H', normal: true, barn: true, family: false }
+    { label: t('el:option-personmanager-1'), value: 'personopplysninger', component: PersonOpplysninger, type: 'F', normal: true, barn: true, family: false },
+    { label: t('el:option-personmanager-2'), value: 'nasjonaliteter', component: Nasjonaliteter, type: 'F', normal: true, barn: true, family: false },
+    { label: t('el:option-personmanager-3'), value: 'adresser', component: Adresser, type: 'F', normal: true, barn: true, family: false },
+    { label: t('el:option-personmanager-4'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: 'F', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-5'), value: 'trygdeordninger', component: Trygdeordning, type: 'F', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-6'), value: 'familierelasjon', component: Familierelasjon, type: 'F', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-7'), value: 'personensstatus', component: PersonensStatus, type: 'F', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-8'), value: 'relasjon', component: Relasjon, type: 'F', normal: false, barn: true, family: false },
+    { label: t('el:option-personmanager-9'), value: 'grunnlagforbosetting', component: GrunnlagForBosetting, type: 'F', normal: false, barn: true, family: false },
+    { label: t('el:option-personmanager-10'), value: 'beløpnavnogvaluta', component: BeløpNavnOgValuta, type: 'F', normal: false, barn: true, family: false },
+    { label: t('el:option-personmanager-11'), value: 'familieytelser', component: Familieytelser, type: 'F', normal: false, barn: false, family: true },
+    { label: t('el:option-personmanager-12'), value: 'person', component: PersonOpplysninger, type: 'U', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-13'), value: 'referanseperiode', component: Referanseperiode, type: 'U', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-14'), value: 'arbeidsforhold/arbeidsgivere', component: Arbeidsforhold, type: 'U002', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-15'), value: 'inntekt', component: InntektForm, type: 'U004', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-16'), value: 'retttilytelser', component: RettTilYtelser, type: 'U017', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-17'), value: 'forsikring', component: Forsikring, type: 'U', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-18'), value: 'sisteansettelsesforhold', component: SisteAnsettelsesForhold, type: 'U', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-19'), value: 'grunntilopphør', component: GrunnTilOpphør, type: 'U', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-20'), value: 'periodefordagpenger', component: PeriodeForDagpenger, type: 'U', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-12'), value: 'person', component: PersonOpplysninger, type: 'H', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-3'), value: 'adresser', component: Adresser, type: 'H', normal: true, barn: true, family: false },
+    { label: t('el:option-personmanager-21'), value: 'svarpåforespørsel', component: SvarPåForespørsel, type: 'H', normal: true, barn: true, family: false }
   ]
 
-  const getForm = (option: string): JSX.Element => (
-    <>
-      {(option === 'personopplysninger' || option === 'person') && (
-        <PersonOpplysninger
+  const getForm = (value: string): JSX.Element | null => {
+    const option: Option | undefined = _.find(options, o => o.value === value)
+    if (option) {
+      const Component = option.component
+      return (
+        <Component
           parentNamespace={namespace}
           personID={currentMenu!}
           personName={currentMenuLabel!}
         />
-      )}
-      {option === 'nasjonaliteter' && (
-        <Nasjonaliteter
-          parentNamespace={namespace}
-          personID={currentMenu!}
-          personName={currentMenuLabel!}
-        />
-      )}
-      {option === 'adresser' && (
-        <Adresser
-          parentNamespace={namespace}
-          personID={currentMenu!}
-          personName={currentMenuLabel!}
-        />
-      )}
-      {option === 'kontaktinformasjon' && (
-        <Kontaktinformasjon
-          parentNamespace={namespace}
-          personID={currentMenu!}
-          personName={currentMenuLabel!}
-        />
-      )}
-      {option === 'trygdeordninger' && (
-        <Trygdeordning
-          parentNamespace={namespace}
-          personID={currentMenu!}
-          personName={currentMenuLabel!}
-        />
-      )}
-      {option === 'familierelasjon' && (
-        <Familierelasjon
-          parentNamespace={namespace}
-          personID={currentMenu!}
-          personName={currentMenuLabel!}
-        />
-      )}
-      {option === 'relasjon' && (
-        <Relasjon
-          parentNamespace={namespace}
-          personID={currentMenu!}
-          personName={currentMenuLabel!}
-        />
-      )}
-      {option === 'personensstatus' && (
-        <PersonensStatus
-          parentNamespace={namespace}
-          personID={currentMenu!}
-          personName={currentMenuLabel!}
-        />
-      )}
-      {option === 'grunnlagforbosetting' && (
-        <GrunnlagForBosetting
-          parentNamespace={namespace}
-          personID={currentMenu!}
-          personName={currentMenuLabel!}
-        />
-      )}
-      {option === 'beløpnavnogvaluta' && (
-        <BeløpNavnOgValuta
-          parentNamespace={namespace}
-          personID={currentMenu!}
-          personName={currentMenuLabel!}
-        />
-      )}
-      {option === 'familieytelser' && (
-        <Familieytelser
-          parentNamespace={namespace}
-          personID={currentMenu!}
-          personName={currentMenuLabel!}
-        />
-      )}
-      {option === 'referanseperiode' && (
-        <Referanseperiode
-          parentNamespace={namespace}
-          personID={currentMenu!}
-          personName={currentMenuLabel!}
-        />
-      )}
-      {option === 'arbeidsforhold/arbeidsgivere' && (
-        <Arbeidsforhold
-          parentNamespace={namespace}
-          personID={currentMenu!}
-          personName={currentMenuLabel!}
-        />
-      )}
-      {option === 'forsikring' && (
-        <Forsikring
-          parentNamespace={namespace}
-          personID={currentMenu!}
-          personName={currentMenuLabel!}
-        />
-      )}
-      {option === 'sisteansettelsesforhold' && (
-        <SisteAnsettelsesForhold
-          parentNamespace={namespace}
-          personID={currentMenu!}
-          personName={currentMenuLabel!}
-        />
-      )}
-      {option === 'grunntilopphør' && (
-        <GrunnTilOpphør
-          parentNamespace={namespace}
-          personID={currentMenu!}
-          personName={currentMenuLabel!}
-        />
-      )}
-      {option === 'periodefordagpenger' && (
-        <PeriodeForDagpenger
-          parentNamespace={namespace}
-          personID={currentMenu!}
-          personName={currentMenuLabel!}
-        />
-      )}
-      {option === 'inntekt' && (
-        <InntektForm
-          parentNamespace={namespace}
-          personID={currentMenu!}
-          personName={currentMenuLabel!}
-        />
-      )}
-      {option === 'retttilytelser' && (
-        <RettTilYtelser
-          parentNamespace={namespace}
-          personID={currentMenu!}
-          personName={currentMenuLabel!}
-        />
-      )}
-      {option === 'svarpåforespørsel' && (
-        <SvarPåForespørsel
-          parentNamespace={namespace}
-          personID={currentMenu!}
-          personName={currentMenuLabel!}
-        />
-      )}
-    </>
-  )
+      )
+    }
+    return null
+  }
 
   const changeMenu = (menu: string, menuOption: string | undefined, from: 'event' | 'click') => {
     const changedMenu: boolean = currentMenu !== menu
@@ -435,7 +311,6 @@ const PersonManager: React.FC = () => {
         setOpenMenus(_.filter(openMenus, _id => _id !== menu))
       }
     } else {
-
       if (from === 'event') {
         if (!alreadyOpenMenu(menu)) {
           setOpenMenus(openMenus.concat(menu))
@@ -537,7 +412,7 @@ const PersonManager: React.FC = () => {
           {isFSed(replySed) && (
             <CheckboxDiv>
               <MenuCheckbox
-                aria-label={t('label:velg-person', {person: personInfo?.fornavn + ' ' + personInfo?.etternavn})}
+                aria-label={t('label:velg-person', { person: personInfo?.fornavn + ' ' + personInfo?.etternavn })}
                 aria-checked={selected}
                 checked={selected}
                 label=''
@@ -623,7 +498,8 @@ const PersonManager: React.FC = () => {
       </Undertittel>
       <VerticalSeparatorDiv />
       <WithErrorPanel
-        className={classNames({ feil: validation[namespace]?.feilmelding })}>
+        className={classNames({ feil: validation[namespace]?.feilmelding })}
+      >
         <FlexCenterSpacedDiv>
           <LeftDiv className='left'>
             {replySed.bruker && renderMenu(replySed, 'bruker', brukerNr)}

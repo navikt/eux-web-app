@@ -1,3 +1,4 @@
+import { State } from 'declarations/reducers'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import Lenke from 'nav-frontend-lenker'
@@ -5,15 +6,12 @@ import { Feiloppsummering, FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 
-interface ValidationBoxProps {
-  validation: Validation
-}
-
-const ValidationBox: React.FC<ValidationBoxProps> = ({
-  validation
-}: ValidationBoxProps): JSX.Element => {
+const ValidationBox = (): JSX.Element => {
   const { t } = useTranslation()
+
+  const validation: Validation = useSelector<State, any>(state => state.validation.status)
 
   const isValid = _.find(_.values(validation), (e) => e !== undefined) === undefined
 
@@ -39,7 +37,7 @@ const ValidationBox: React.FC<ValidationBoxProps> = ({
               <Lenke
                 href={`#${item.skjemaelementId}`} onClick={(e) => {
                   e.preventDefault()
-                  document.dispatchEvent(new CustomEvent('feillenke', {detail: item}))
+                  document.dispatchEvent(new CustomEvent('feillenke', { detail: item }))
                 }}
               >
                 {item.feilmelding}

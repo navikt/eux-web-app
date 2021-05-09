@@ -268,12 +268,14 @@ const ProsedyreVedUenighet: React.FC<ProsedyreVedUenighetProps> = ({
       </Undertittel>
       <VerticalSeparatorDiv size='2' />
       <VerticalSeparatorDiv />
-      {_.isEmpty(prosedyreveduenighet?.grunner) ? (
-        <Normaltekst>
-          {t('label:no-grunn')}
-        </Normaltekst>
-      ): prosedyreveduenighet?.grunner?.map(renderRow)}
-      <VerticalSeparatorDiv size={2}/>
+      {_.isEmpty(prosedyreveduenighet?.grunner)
+        ? (
+          <Normaltekst>
+            {t('label:no-grunn')}
+          </Normaltekst>
+          )
+        : prosedyreveduenighet?.grunner?.map(renderRow)}
+      <VerticalSeparatorDiv size={2} />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm

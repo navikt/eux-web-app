@@ -132,13 +132,13 @@ export const TopContainer: React.FC<TopContainerProps> = ({
     dispatch(closeModal())
   }
 
-  const ErrorFallback = ({error, resetErrorBoundary}: any)  => (
-    <Error error={error} resetErrorBoundary={resetErrorBoundary}/>
+  const ErrorFallback = ({ error, resetErrorBoundary }: any) => (
+    <Error error={error} resetErrorBoundary={resetErrorBoundary} />
   )
 
   return (
     <NavHighContrast highContrast={highContrast}>
-      <GlobalStyle/>
+      <GlobalStyle />
       <ErrorBoundary
         FallbackComponent={ErrorFallback}
         onReset={() => {

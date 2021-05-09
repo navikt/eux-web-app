@@ -42,7 +42,6 @@ export const validateFamilierelasjon = (
   })
   hasErrors = hasErrors || periodErrors
 
-
   if (familierelasjon.relasjonType === 'ANNEN') {
     if (_.isEmpty(familierelasjon?.annenRelasjonPersonNavn?.trim())) {
       v[namespace + idx + '-annenRelasjonPersonNavn'] = {

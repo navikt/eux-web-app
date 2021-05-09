@@ -7,15 +7,13 @@ export interface InntektState {
 }
 
 export const initialInntektState: InntektState = {
-  inntekter: undefined,
+  inntekter: undefined
 }
 
 const inntektReducer = (state: InntektState = initialInntektState, action: ActionWithPayload = { type: '', payload: undefined }) => {
   switch (action.type) {
-
     case types.APP_CLEAN_DATA:
       return initialInntektState
-
 
     case types.INNTEKT_GET_REQUEST:
       return {
@@ -37,7 +35,6 @@ const inntektReducer = (state: InntektState = initialInntektState, action: Actio
 
     default:
       return state
-
   }
 }
 export default inntektReducer

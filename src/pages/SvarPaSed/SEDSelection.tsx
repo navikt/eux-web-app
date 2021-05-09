@@ -66,31 +66,30 @@ const SEDPanel = styled(HighContrastPanel)`
 
 const mapState = (state: State): any => ({
   highContrast: state.ui.highContrast,
+  mode: state.svarpased.mode,
   queryingSaksnummerOrFnr: state.loading.queryingSaksnummerOrFnr,
   queryingReplySed: state.loading.queryingReplySed,
   parentSed: state.svarpased.parentSed,
   previousParentSed: state.svarpased.previousParentSed,
-  previousReplySed: state.svarpased.previousReplySed,
   replySed: state.svarpased.replySed,
   rinasaksnummerOrFnrParam: state.app.params.rinasaksnummerOrFnr,
   seds: state.svarpased.seds
 })
 
 export interface SvarPaSedProps {
-  mode: string | undefined
   setMode: (mode: string, from: string, callback?: () => void) => void
 }
 
 const SEDSelection: React.FC<SvarPaSedProps> = ({
-  mode, setMode
+  setMode
 }: SvarPaSedProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const {
     highContrast,
+    mode,
     parentSed,
     previousParentSed,
-    previousReplySed,
     queryingSaksnummerOrFnr,
     queryingReplySed,
     replySed,
@@ -101,6 +100,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
   const [_saksnummerOrFnr, _setSaksnummerOrFnr] = useState<string>(rinasaksnummerOrFnrParam ?? '')
   const [_validMessage, _setValidMessage] = useState<string>('')
   const [_validation, _resetValidation, performValidation] = useValidation({}, validateSEDSelection)
+  const [_replySedRequested, setReplySedRequested] = useState<boolean>(false)
 
   const onSaksnummerOrFnrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value
@@ -134,15 +134,16 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
   }
 
   const onReplySedClick = (connectedSed: ConnectedSed, saksnummer: string) => {
-    dispatch(svarpasedActions.resetReplySed())
+    setReplySedRequested(true)
     dispatch(svarpasedActions.queryReplySed(_saksnummerOrFnr, connectedSed, saksnummer))
   }
 
   useEffect(() => {
-    if (replySed && !previousReplySed && mode === '1') {
-      setMode('2', 'forward')
+    if (replySed && _replySedRequested && mode === 'selection') {
+      setReplySedRequested(false)
+      setMode('editor', 'forward')
     }
-  }, [previousReplySed, replySed, mode])
+  }, [replySed, mode])
 
   const familieytelser: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('FB_'))?.length ?? 0
   const dagpenger: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('U_'))?.length ?? 0

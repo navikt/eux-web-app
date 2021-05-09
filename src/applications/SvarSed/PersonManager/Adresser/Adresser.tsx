@@ -25,7 +25,6 @@ import { useTranslation } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 import { validateAdresse, ValidationAddressProps } from './validation'
 
-
 interface AdresseProps {
   highContrast: boolean
   landkoderList: Array<Kodeverk>
@@ -319,7 +318,7 @@ const Adresser: React.FC<AdresseProps> = ({
           </Column>
           <Column flex='1.5'>
             <CountrySelect
-              closeMenuOnSelect={true}
+              closeMenuOnSelect
               key={index < 0 ? _newLand : adresse?.land}
               data-test-id={namespace + idx + '-land'}
               error={getErrorFor(index, 'land')}

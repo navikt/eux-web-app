@@ -16,6 +16,7 @@ export interface State {
   app: AppState,
   arbeidsgiver: ArbeidsgiverState,
   attachments: AttachmentsState,
+  inntekt: InntektState,
   loading: LoadingState,
   person: PersonState,
   sak: SakState,

@@ -9,7 +9,8 @@ const useValidation = <ValidationData extends any>(
     newValidation: Validation,
     t: TFunction,
     validationData: ValidationData
-  ) => boolean
+  ) => boolean,
+  callbackFunction?: (validation: Validation) => void
 ): [
     Validation,
     (key?: string | undefined) => void,
@@ -22,11 +23,18 @@ const useValidation = <ValidationData extends any>(
   const resetValidation = (key: string | undefined = undefined): void => {
     if (!key) {
       setValidation({})
+      if (callbackFunction) {
+        callbackFunction({})
+      }
     } else {
-      setValidation({
+      const newValidation = {
         ..._validation,
         [key!]: undefined
-      })
+      }
+      setValidation(newValidation)
+      if (callbackFunction) {
+        callbackFunction(newValidation)
+      }
     }
   }
 
@@ -38,6 +46,9 @@ const useValidation = <ValidationData extends any>(
       validationData
     )
     setValidation(newValidation)
+    if (callbackFunction) {
+      callbackFunction(newValidation)
+    }
     return !hasErrors
   }
 

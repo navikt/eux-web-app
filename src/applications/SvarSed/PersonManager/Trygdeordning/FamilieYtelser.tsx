@@ -370,7 +370,7 @@ const FamilieYtelser: React.FC<TrygdeordningProps> = ({
       <Ingress>
         {t('label:trygdeordningen-familieYtelse')}
       </Ingress>
-      <VerticalSeparatorDiv size={2}/>
+      <VerticalSeparatorDiv size={2} />
       {existsFamilieYtelser && (
         <Row className='slideInFromLeft'>
           <Column>

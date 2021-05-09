@@ -310,7 +310,7 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
       </Row>
       <VerticalSeparatorDiv />
       {telefoner?.map(renderTelefonRow)}
-      <VerticalSeparatorDiv size='2'/>
+      <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewTelefonForm
@@ -341,9 +341,9 @@ const Kontaktinformasjon: React.FC<KontaktinformasjonProps> = ({
       </Row>
       <VerticalSeparatorDiv />
       {eposter?.map(renderEpostRow)}
-      <VerticalSeparatorDiv size='2'/>
-      <HorizontalLineSeparator/>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv size='2' />
+      <HorizontalLineSeparator />
+      <VerticalSeparatorDiv />
       {_seeNewEpostForm
         ? renderEpostRow(null, -1)
         : (
