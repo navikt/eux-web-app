@@ -28,4 +28,3 @@ export const resetValidation: ActionCreator<ActionWithPayload> = (
 export const viewValidation: ActionCreator<Action> = (): Action => ({
   type: types.VALIDATION_VIEW
 })
-

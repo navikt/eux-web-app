@@ -102,17 +102,17 @@ export interface OldFamilieRelasjon extends Person {
 }
 
 export interface IInntekt {
-  aarMaaned: string
   orgNr: string
   arbeidsgiverNavn: string
-  inntektType: string
-  beloep: number
-  inntektBeskrivelse: string
+  sisteLoennsendring: string
+  stillingsprosent: number
+  maanedsinntektSnitt: number
+  maanedsinntekt: {[k in string]: number}
 }
 
 export interface IInntekter {
   uriInntektRegister: string
-  inntektsmaaneder: Array<IInntekt>
+  inntektsperioder: Array<IInntekt>
 }
 
 export interface Institusjon {

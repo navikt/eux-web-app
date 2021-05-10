@@ -11,7 +11,6 @@ const useGlobalValidation = <ValidationData extends any>(
     validationData: ValidationData
   ) => boolean
 ): (validationData: ValidationData) => boolean => {
-
   const { t } = useTranslation()
   const dispatch = useDispatch()
 

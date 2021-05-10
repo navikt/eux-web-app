@@ -1,6 +1,5 @@
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { IInntekt, IInntekter } from 'declarations/types'
-import moment from 'moment'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignEndRow,
@@ -10,7 +9,8 @@ import {
   HighContrastLink,
   HorizontalSeparatorDiv,
   PaddedDiv,
-  PileDiv, themeKeys,
+  PileDiv,
+  themeKeys,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import Pagination from 'paginering'
@@ -35,88 +35,66 @@ const LeftBorderFlexDiv = styled(FlexDiv)`
 const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
   const { t } = useTranslation()
 
-  const data: {[k in string]: Array<IInntekt>} = {}
   const [_currentPage, setCurrentPage] = useState<{[k in string]: number}>({})
 
   if (!inntekter) {
     return <WaitingPanel />
   }
 
-  inntekter?.inntektsmaaneder?.forEach((inntekt: IInntekt) => {
-    if (Object.prototype.hasOwnProperty.call(data, inntekt.orgNr)) {
-      data[inntekt.orgNr] = data[inntekt.orgNr].concat(inntekt).sort((a: IInntekt, b: IInntekt) => (
-        moment(a.aarMaaned, 'YYYY-MM').isBefore(moment(b.aarMaaned, 'YYYY-MM')) ? -1 : 1))
-    } else {
-      data[inntekt.orgNr] = [inntekt]
-    }
-  })
-
   return (
     <>
-      {Object.keys(data).map((orgnr: string) => {
-        if (!Object.prototype.hasOwnProperty.call(_currentPage, orgnr)) {
+      {inntekter?.inntektsperioder?.map((inntekt: IInntekt) => {
+        if (!Object.prototype.hasOwnProperty.call(_currentPage, inntekt.orgNr)) {
           setCurrentPage({
             ..._currentPage,
-            [orgnr]: 1
+            [inntekt.orgNr]: 1
           })
         }
-        let average = 0
-        let total = 0
-        const number = data[orgnr].length
-        let lastMonth = ''
         const itemsPerPage = 5
-        const firstIndex = (_currentPage[orgnr] - 1) * itemsPerPage
-        const lastIndex = (_currentPage[orgnr] - 1) * itemsPerPage + itemsPerPage
+        const firstIndex = (_currentPage[inntekt.orgNr] - 1) * itemsPerPage
+        const lastIndex = (_currentPage[inntekt.orgNr] - 1) * itemsPerPage + itemsPerPage
 
-        const elements: any = []
-        data[orgnr].forEach((inntekt: IInntekt, index: number) => {
-          total += inntekt.beloep
-          if (index >= firstIndex && index < lastIndex) {
-            elements.push({
-              header: inntekt.aarMaaned,
-              value: formatterPenger(inntekt.beloep)
-            })
-          }
-        })
-        average = total / number
-        lastMonth = data[orgnr][number - 1].aarMaaned
         return (
-          <div key={data[orgnr][0].arbeidsgiverNavn}>
+          <div key={inntekt.orgNr}>
             <AlignStartRow>
               <Column>
                 <ArbeidsgiverDiv>
                   <PileDiv>
                     <Undertittel>
-                      {data[orgnr][0].arbeidsgiverNavn}
+                      {inntekt.arbeidsgiverNavn}
                     </Undertittel>
                   </PileDiv>
                   <PileDiv>
                     <span><Normaltekst>{t('label:orgnr')}</Normaltekst></span>
-                    <span><Normaltekst>{orgnr}</Normaltekst></span>
+                    <span><Normaltekst>{inntekt.orgNr}</Normaltekst></span>
                   </PileDiv>
                   <PileDiv>
                     <span><Normaltekst>{t('label:stillingprosent')}</Normaltekst></span>
-                    <span><Normaltekst>-</Normaltekst></span>
+                    <span><Normaltekst>{inntekt.stillingsprosent} %</Normaltekst></span>
                   </PileDiv>
                   <PileDiv>
                     <span><Normaltekst>{t('label:siste-lønnsendring')}</Normaltekst></span>
-                    <span><Normaltekst>{lastMonth}</Normaltekst></span>
+                    <span><Normaltekst>{inntekt.sisteLoennsendring}</Normaltekst></span>
                   </PileDiv>
                 </ArbeidsgiverDiv>
                 <VerticalSeparatorDiv size='0.5' />
                 <FlexDiv>
                   <HorizontalSeparatorDiv />
                   <FlexDiv style={{ flex: '5', justifyContent: 'flex-end', maxWidth: '600px' }}>
-                    {elements.map((x: any) => (
-                      <PileDiv key={x.header} style={{ width: '120px' }}>
-                        <PaddedDiv size='0.3'>
-                          {x.header}
-                        </PaddedDiv>
-                        <PaddedDiv size='0.3'>
-                          {x.value}
-                        </PaddedDiv>
-                      </PileDiv>
-                    ))}
+                    {Object.keys(inntekt.maanedsinntekt).map((måned: string, index: number) => {
+                      return index >= firstIndex && index < lastIndex
+                        ? (
+                          <PileDiv key={måned} style={{ width: '120px' }}>
+                            <PaddedDiv size='0.3'>
+                              {måned}
+                            </PaddedDiv>
+                            <PaddedDiv size='0.3'>
+                              {formatterPenger(inntekt.maanedsinntekt[måned])}
+                            </PaddedDiv>
+                          </PileDiv>
+                          )
+                        : null
+                    })}
                   </FlexDiv>
                   <LeftBorderFlexDiv>
                     <HorizontalSeparatorDiv />
@@ -125,7 +103,7 @@ const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
                         {t('label:gjennomsnitt')}
                       </PaddedDiv>
                       <PaddedDiv size='0.3'>
-                        {formatterPenger(average)}
+                        {formatterPenger(inntekt.maanedsinntektSnitt)}
                       </PaddedDiv>
                     </PileDiv>
                   </LeftBorderFlexDiv>
@@ -144,12 +122,12 @@ const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
               <Column>
                 <FlexDiv style={{ flexDirection: 'row-reverse' }}>
                   <Pagination
-                    currentPage={_currentPage[orgnr]}
+                    currentPage={_currentPage[inntekt.orgNr]}
                     itemsPerPage={itemsPerPage}
-                    numberOfItems={number}
+                    numberOfItems={Object.keys(inntekt.maanedsinntekt).length}
                     onChange={(page: number) => setCurrentPage({
                       ..._currentPage,
-                      [orgnr]: page
+                      [inntekt.orgNr]: page
                     })}
                   />
                 </FlexDiv>
