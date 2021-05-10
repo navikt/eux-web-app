@@ -1,4 +1,5 @@
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
@@ -36,7 +37,6 @@ interface FamilieYtelserSelector extends PersonManagerFormSelector {
 const mapState = (state: State): FamilieYtelserSelector => ({
   highContrast: state.ui.highContrast,
   replySed: state.svarpased.replySed,
-  resetValidation: state.validation.resetValidation,
   validation: state.validation.status
 })
 
@@ -52,7 +52,6 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
   const {
     highContrast,
     replySed,
-    resetValidation,
     validation
   } = useSelector<State, FamilieYtelserSelector>(mapState)
   const dispatch = useDispatch()
@@ -114,7 +113,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
       }
       dispatch(updateReplySed(`${personID}.${newSedCategory}`, newPerioder))
       if (validation[namespace + '-' + newSedCategory + getIdx(index) + suffixnamespace + '-startdato']) {
-        resetValidation(namespace + '-' + newSedCategory + getIdx(index) + suffixnamespace + '-startdato')
+        dispatch(resetValidation(namespace + '-' + newSedCategory + getIdx(index) + suffixnamespace + '-startdato'))
       }
     }
   }
@@ -149,7 +148,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
         dispatch(updateReplySed(`${personID}.${newSedCategory}`, newPerioder))
       }
       if (validation[namespace + newSedCategory + getIdx(index) + suffixnamespace + '-sluttdato']) {
-        resetValidation(namespace + newSedCategory + getIdx(index) + suffixnamespace + '-sluttdato')
+        dispatch(resetValidation(namespace + newSedCategory + getIdx(index) + suffixnamespace + '-sluttdato'))
       }
     }
   }
@@ -169,7 +168,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
 
       dispatch(updateReplySed(`${personID}.perioderMedPensjon`, newPerioder))
       if (validation[namespace + '-perioderMedPensjon' + getIdx(index) + '-pensjontype']) {
-        resetValidation(namespace + '-perioderMedPensjon' + getIdx(index) + '-pensjontype')
+        dispatch(resetValidation(namespace + '-perioderMedPensjon' + getIdx(index) + '-pensjontype'))
       }
     }
   }
@@ -179,7 +178,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
     _setNewSluttDato('')
     _setNewCategory(undefined)
     _setNewPensjonsType(undefined)
-    resetValidation()
+    _resetValidation()
   }
 
   const onCancel = () => {

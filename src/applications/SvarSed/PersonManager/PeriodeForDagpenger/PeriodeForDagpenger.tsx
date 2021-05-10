@@ -1,4 +1,5 @@
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import classNames from 'classnames'
 import Input from 'components/Forms/Input'
@@ -30,7 +31,6 @@ interface PeriodeForDagpengerSelector extends PersonManagerFormSelector {
 const mapState = (state: State): PeriodeForDagpengerSelector => ({
   landkoderList: state.app.landkoder,
   replySed: state.svarpased.replySed,
-  resetValidation: state.validation.resetValidation,
   validation: state.validation.status
 })
 
@@ -42,7 +42,6 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
   const {
     landkoderList,
     replySed,
-    resetValidation,
     validation
   } = useSelector<State, PeriodeForDagpengerSelector>(mapState)
   const dispatch = useDispatch()
@@ -54,7 +53,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
   const setStartDato = (startdato: string) => {
     dispatch(updateReplySed(`${target}.startdato`, startdato.trim()))
     if (validation[namespace + '-startdato']) {
-      resetValidation(namespace + '-startdato')
+      dispatch(resetValidation(namespace + '-startdato'))
     }
   }
 
@@ -69,63 +68,63 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
     }
     dispatch(updateReplySed(target, newAnmodningsperiode))
     if (validation[namespace + '-sluttdato']) {
-      resetValidation(namespace + '-sluttdato')
+      dispatch(resetValidation(namespace + '-sluttdato'))
     }
   }
 
   const setKjentInstitusjon = (kjentInstitusjon: string) => {
     dispatch(updateReplySed(`${target}.kjentInstitusjon`, kjentInstitusjon.trim()))
     if (validation[namespace + '-kjentinstitusjon']) {
-      resetValidation(namespace + '-kjentinstitusjon')
+      dispatch(resetValidation(namespace + '-kjentinstitusjon'))
     }
   }
 
   const setInstitusjonensNavn = (institusjonensNavn: string) => {
     dispatch(updateReplySed(`${target}.institusjonensNavn`, institusjonensNavn.trim()))
     if (validation[namespace + '-institusjonensnavn']) {
-      resetValidation(namespace + '-institusjonensnavn')
+      dispatch(resetValidation(namespace + '-institusjonensnavn'))
     }
   }
 
   const setInstitusjonensId = (institusjonensId: string) => {
     dispatch(updateReplySed(`${target}.institusjonensId`, institusjonensId.trim()))
     if (validation[namespace + '-institusjonensid']) {
-      resetValidation(namespace + '-institusjonensid')
+      dispatch(resetValidation(namespace + '-institusjonensid'))
     }
   }
 
   const setGate = (gate: string) => {
     dispatch(updateReplySed(`${target}.gate`, gate.trim()))
     if (validation[namespace + '-gate']) {
-      resetValidation(namespace + +'-gate')
+      dispatch(resetValidation(namespace + +'-gate'))
     }
   }
 
   const setPostnummer = (postnummer: string) => {
     dispatch(updateReplySed(`${target}.postnummer`, postnummer.trim()))
     if (validation[namespace + '-postnummer']) {
-      resetValidation(namespace + '-postnummer')
+      dispatch(resetValidation(namespace + '-postnummer'))
     }
   }
 
   const setBy = (by: string) => {
     dispatch(updateReplySed(`${target}.by`, by.trim()))
     if (validation[namespace + '-by']) {
-      resetValidation(namespace + '-by')
+      dispatch(resetValidation(namespace + '-by'))
     }
   }
 
   const setRegion = (region: string) => {
     dispatch(updateReplySed(`${target}.region`, region.trim()))
     if (validation[namespace + '-region']) {
-      resetValidation(namespace + '-region')
+      dispatch(resetValidation(namespace + '-region'))
     }
   }
 
   const setLand = (land: string) => {
     dispatch(updateReplySed(`${target}.land`, land.trim()))
     if (validation[namespace + '-land']) {
-      resetValidation(namespace + '-land')
+      dispatch(resetValidation(namespace + '-land'))
     }
   }
 

@@ -1,4 +1,5 @@
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import { FormålManagerFormProps, FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
@@ -51,7 +52,6 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
   const {
     highContrast,
     replySed,
-    resetValidation,
     validation
   }: any = useSelector<State, MotregningSelector>(mapState)
   const dispatch = useDispatch()
@@ -72,7 +72,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
   const setAnmodningEllerSvar = (newAnmodning: string) => {
     dispatch(updateReplySed(`${target}.anmodningEllerSvar`, newAnmodning.trim()))
     if (validation[namespace + '-anmodningEllerSvar']) {
-      resetValidation(namespace + '-anmodningEllerSvar')
+      dispatch(resetValidation(namespace + '-anmodningEllerSvar'))
     }
   }
 
@@ -83,7 +83,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
     } else {
       dispatch(updateReplySed(`${target}.navnOgBetegnelser[${index}].navn`, newNavn.trim()))
       if (validation[namespace + '-navnOgBetegnelser' + getIdx(index) + '-navn']) {
-        resetValidation(namespace + '-navnOgBetegnelser' + getIdx(index) + '-navn')
+        dispatch(resetValidation(namespace + '-navnOgBetegnelser' + getIdx(index) + '-navn'))
       }
     }
   }
@@ -95,7 +95,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
     } else {
       dispatch(updateReplySed(`${target}.navnOgBetegnelser[${index}].betegnelse`, newBetegnelse.trim()))
       if (validation[namespace + '-navnOgBetegnelser' + getIdx(index) + 'betegnelse']) {
-        resetValidation(namespace + '-navnOgBetegnelser' + getIdx(index) + 'betegnelse')
+        dispatch(resetValidation(namespace + '-navnOgBetegnelser' + getIdx(index) + 'betegnelse'))
       }
     }
   }
@@ -103,56 +103,56 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
   const setBeløp = (newBeløp: string) => {
     dispatch(updateReplySed(`${target}.beloep`, newBeløp.trim()))
     if (validation[namespace + '-beloep']) {
-      resetValidation(namespace + '-beloep')
+      dispatch(resetValidation(namespace + '-beloep'))
     }
   }
 
   const setValuta = (newValuta: Currency) => {
     dispatch(updateReplySed(`${target}.valuta`, newValuta?.currencyValue))
     if (validation[namespace + '-valuta']) {
-      resetValidation(namespace + '-valuta')
+      dispatch(resetValidation(namespace + '-valuta'))
     }
   }
 
   const setStartDato = (newDato: string) => {
     dispatch(updateReplySed(`${target}.startdato`, newDato.trim()))
     if (validation[namespace + '-startdato']) {
-      resetValidation(namespace + '-startdato')
+      dispatch(resetValidation(namespace + '-startdato'))
     }
   }
 
   const setSluttDato = (newDato: string) => {
     dispatch(updateReplySed(`${target}.sluttdato`, newDato.trim()))
     if (validation[namespace + '-sluttdato']) {
-      resetValidation(namespace + '-sluttdato')
+      dispatch(resetValidation(namespace + '-sluttdato'))
     }
   }
 
   const setAvgrensing = (newAvgrensing: string) => {
     dispatch(updateReplySed(`${target}.avgrensing`, newAvgrensing.trim()))
     if (validation[namespace + '-avgrensing']) {
-      resetValidation(namespace + '-avgrensing')
+      dispatch(resetValidation(namespace + '-avgrensing'))
     }
   }
 
   const setMottakersNavn = (newMottakersNavn: string) => {
     dispatch(updateReplySed(`${target}.mottakersNavn`, newMottakersNavn.trim()))
     if (validation[namespace + '-mottakersNavn']) {
-      resetValidation(namespace + '-mottakersNavn')
+      dispatch(resetValidation(namespace + '-mottakersNavn'))
     }
   }
 
   const setGrunnerTilAnmodning = (newGrunnerTilAnmodning: string) => {
     dispatch(updateReplySed(`${target}.grunnerTilAnmodning`, newGrunnerTilAnmodning.trim()))
     if (validation[namespace + '-grunnerTilAnmodning']) {
-      resetValidation(namespace + '-grunnerTilAnmodning')
+      dispatch(resetValidation(namespace + '-grunnerTilAnmodning'))
     }
   }
 
   const setYtterligereInfo = (newYtterligereInfo: string) => {
     dispatch(updateReplySed(`${target}.ytterligereInfo`, newYtterligereInfo.trim()))
     if (validation[namespace + '-ytterligereInfo']) {
-      resetValidation(namespace + '-ytterligereInfo')
+      dispatch(resetValidation(namespace + '-ytterligereInfo'))
     }
   }
 

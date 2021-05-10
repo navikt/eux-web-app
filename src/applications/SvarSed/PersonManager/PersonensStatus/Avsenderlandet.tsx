@@ -1,4 +1,5 @@
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
@@ -28,7 +29,6 @@ import { validateAvsenderlandet, ValidationAvsenderlandetProps } from './avsende
 
 const mapState = (state: State): PersonManagerFormSelector => ({
   replySed: state.svarpased.replySed,
-  resetValidation: state.validation.resetValidation,
   validation: state.validation.status
 })
 
@@ -39,7 +39,6 @@ const Avsenderlandet: React.FC<PersonManagerFormProps> = ({
   const { t } = useTranslation()
   const {
     replySed,
-    resetValidation,
     validation
   } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
@@ -63,7 +62,7 @@ const Avsenderlandet: React.FC<PersonManagerFormProps> = ({
     } else {
       dispatch(updateReplySed(`${target}[${index}].startdato`, newDato.trim()))
       if (validation[namespace + getIdx(index) + '-startdato']) {
-        resetValidation(namespace + getIdx(index) + '-startdato')
+        dispatch(resetValidation(namespace + getIdx(index) + '-startdato'))
       }
     }
   }
@@ -83,7 +82,7 @@ const Avsenderlandet: React.FC<PersonManagerFormProps> = ({
       }
       dispatch(updateReplySed(target, newPerioder))
       if (validation[namespace + getIdx(index) + '-sluttdato']) {
-        resetValidation(namespace + getIdx(index) + '-sluttdato')
+        dispatch(resetValidation(namespace + getIdx(index) + '-sluttdato'))
       }
     }
   }

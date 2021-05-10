@@ -1,4 +1,5 @@
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
@@ -41,7 +42,6 @@ const mapState = (state: State): FamilierelasjonSelector => ({
   familierelasjonKodeverk: state.app.familierelasjoner,
   highContrast: state.ui.highContrast,
   replySed: state.svarpased.replySed,
-  resetValidation: state.validation.resetValidation,
   validation: state.validation.status
 })
 
@@ -55,7 +55,6 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
     familierelasjonKodeverk,
     highContrast,
     replySed,
-    resetValidation,
     validation
   } = useSelector<State, FamilierelasjonSelector>(mapState)
   const dispatch = useDispatch()
@@ -88,7 +87,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
     } else {
       dispatch(updateReplySed(`${target}[${index}].relasjonType`, relasjonType.trim()))
       if (validation[namespace + getIdx(index) + '-RelasjonType']) {
-        resetValidation(namespace + getIdx(index) + '-RelasjonType')
+        dispatch(resetValidation(namespace + getIdx(index) + '-RelasjonType'))
       }
     }
   }
@@ -100,7 +99,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
     } else {
       dispatch(updateReplySed(`${target}[${index}].periode.startdato`, startdato.trim()))
       if (validation[namespace + getIdx(index) + '-periode-startdato']) {
-        resetValidation(namespace + getIdx(index) + '-periode-startdato')
+        dispatch(resetValidation(namespace + getIdx(index) + '-periode-startdato'))
       }
     }
   }
@@ -120,7 +119,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
       }
       dispatch(updateReplySed(target, newFamilieRelasjoner))
       if (validation[namespace + getIdx(index) + '-periode-sluttdato']) {
-        resetValidation(namespace + getIdx(index) + '-periode-sluttdato')
+        dispatch(resetValidation(namespace + getIdx(index) + '-periode-sluttdato'))
       }
     }
   }
@@ -132,7 +131,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
     } else {
       dispatch(updateReplySed(`${target}[${index}].annenRelasjonType`, annenRelasjonType.trim()))
       if (validation[namespace + getIdx(index) + '-annenRelasjonType']) {
-        resetValidation(namespace + getIdx(index) + '-annenRelasjonType')
+        dispatch(resetValidation(namespace + getIdx(index) + '-annenRelasjonType'))
       }
     }
   }
@@ -144,7 +143,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
     } else {
       dispatch(updateReplySed(`${target}[${index}].annenRelasjonPersonNavn`, annenRelasjonPersonNavn.trim()))
       if (validation[namespace + getIdx(index) + '-annenRelasjonPersonNavn']) {
-        resetValidation(namespace + getIdx(index) + '-annenRelasjonPersonNavn')
+        dispatch(resetValidation(namespace + getIdx(index) + '-annenRelasjonPersonNavn'))
       }
     }
   }
@@ -156,7 +155,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
     } else {
       dispatch(updateReplySed(`${target}[${index}].annenRelasjonDato`, annenRelasjonDato.trim()))
       if (validation[namespace + getIdx(index) + '-annenRelasjonDato']) {
-        resetValidation(namespace + getIdx(index) + '-annenRelasjonDato')
+        dispatch(resetValidation(namespace + getIdx(index) + '-annenRelasjonDato'))
       }
     }
   }
@@ -168,7 +167,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
     } else {
       dispatch(updateReplySed(`${target}[${index}].borSammen`, borSammen.trim()))
       if (validation[namespace + getIdx(index) + '-borSammen']) {
-        resetValidation(namespace + getIdx(index) + '-borSammen')
+        dispatch(resetValidation(namespace + getIdx(index) + '-borSammen'))
       }
     }
   }

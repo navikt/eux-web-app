@@ -15,14 +15,12 @@ import { OptionTypeBase } from 'react-select'
 interface SEDTypeSelector {
   highContrast: boolean
   replySed: ReplySed | undefined
-  resetValidation: ((key?: string | undefined) => void)
   validation: Validation
 }
 
 const mapState = (state: State): SEDTypeSelector => ({
   highContrast: state.ui.highContrast,
   replySed: state.svarpased.replySed,
-  resetValidation: state.validation.resetValidation,
   validation: state.validation.status
 })
 

@@ -1,4 +1,5 @@
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
@@ -19,7 +20,6 @@ interface GrunnTilOpphørSelector extends PersonManagerFormSelector {
 const mapState = (state: State): GrunnTilOpphørSelector => ({
   highContrast: state.ui.highContrast,
   replySed: state.svarpased.replySed,
-  resetValidation: state.validation.resetValidation,
   validation: state.validation.status
 })
 
@@ -31,7 +31,6 @@ const GrunnTilOpphør: React.FC<PersonManagerFormProps> = ({
   const {
     highContrast,
     replySed,
-    resetValidation,
     validation
   } = useSelector<State, GrunnTilOpphørSelector>(mapState)
   const dispatch = useDispatch()
@@ -57,21 +56,21 @@ const GrunnTilOpphør: React.FC<PersonManagerFormProps> = ({
     _setÅrsak(årsak)
     dispatch(updateReplySed(`${target}.årsak`, årsak))
     if (validation[namespace + '-årsak']) {
-      resetValidation(namespace + '-årsak')
+      dispatch(resetValidation(namespace + '-årsak'))
     }
   }
 
   const setAnnet = (annet: string) => {
     dispatch(updateReplySed(`${target}.annet`, annet))
     if (validation[namespace + '-annet']) {
-      resetValidation(namespace + '-annet')
+      dispatch(resetValidation(namespace + '-annet'))
     }
   }
 
   const setÅrsakSelvstendig = (årsakselvstendig: string) => {
     dispatch(updateReplySed(`${target}.årsakselvstendig`, årsakselvstendig))
     if (validation[namespace + '-årsakselvstendig']) {
-      resetValidation(namespace + '-årsakselvstendig')
+      dispatch(resetValidation(namespace + '-årsakselvstendig'))
     }
   }
 

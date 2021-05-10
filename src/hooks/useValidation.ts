@@ -4,13 +4,12 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 const useValidation = <ValidationData extends any>(
-  initialValue: Validation = {},
+  initialValue: any,
   validateFunction: (
     newValidation: Validation,
     t: TFunction,
     validationData: ValidationData
-  ) => boolean,
-  callbackFunction?: (validation: Validation) => void
+  ) => boolean
 ): [
     Validation,
     (key?: string | undefined) => void,
@@ -23,18 +22,13 @@ const useValidation = <ValidationData extends any>(
   const resetValidation = (key: string | undefined = undefined): void => {
     if (!key) {
       setValidation({})
-      if (callbackFunction) {
-        callbackFunction({})
-      }
     } else {
       const newValidation = {
         ..._validation,
         [key!]: undefined
       }
+
       setValidation(newValidation)
-      if (callbackFunction) {
-        callbackFunction(newValidation)
-      }
     }
   }
 
@@ -46,9 +40,6 @@ const useValidation = <ValidationData extends any>(
       validationData
     )
     setValidation(newValidation)
-    if (callbackFunction) {
-      callbackFunction(newValidation)
-    }
     return !hasErrors
   }
 

@@ -183,7 +183,6 @@ const MenuLabelText = styled(Normaltekst)`
 export interface PersonManagerFormSelector {
   replySed: ReplySed | undefined
   validation: Validation
-  resetValidation: (key?: string) => void
 }
 
 export interface PersonManagerSelector extends PersonManagerFormSelector {
@@ -201,8 +200,7 @@ const mapState = (state: State): PersonManagerSelector => ({
   gettingPerson: state.loading.gettingPerson,
   replySed: state.svarpased.replySed,
   validation: state.validation.status,
-  viewValidation: state.validation.view,
-  resetValidation: state.validation.resetValidation
+  viewValidation: state.validation.view
 })
 
 const PersonManager: React.FC = () => {
@@ -383,13 +381,13 @@ const PersonManager: React.FC = () => {
               validation[namespace + '-' + personId]
                 ? (
                   <>
-                    <RemoveCircle color='red' />
+                    <RemoveCircle height={20} color='red' />
                     <HorizontalSeparatorDiv size='0.5' />
                   </>
                   )
                 : (
                   <>
-                    <GreenCircle />
+                    <GreenCircle height={20} />
                     <HorizontalSeparatorDiv size='0.5' />
                   </>
                   )
@@ -451,8 +449,8 @@ const PersonManager: React.FC = () => {
               >
                 {viewValidation && (
                   validation[namespace + '-' + personId + '-' + o.value] === undefined
-                    ? <GreenCircle />
-                    : <RemoveCircle color='red' />
+                    ? <GreenCircle height={20} />
+                    : <RemoveCircle height={20} color='red' />
                 )}
                 <HorizontalSeparatorDiv size='0.5' />
                 {`${i + 1}. ${o.label}`}

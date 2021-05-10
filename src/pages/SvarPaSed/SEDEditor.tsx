@@ -1,5 +1,5 @@
 import { createSed } from 'actions/svarpased'
-import { setAllValidation, setResetValidationFunction, viewValidation } from 'actions/validation'
+import { resetAllValidation, resetValidation, viewValidation } from 'actions/validation'
 import Formaal from 'applications/SvarSed/Formaal/Formaal'
 import FormålManager from 'applications/SvarSed/Formaal/FormålManager'
 import SEDType from 'applications/SvarSed/Formaal/SEDType'
@@ -16,7 +16,7 @@ import { JoarkBrowserItems } from 'declarations/attachments'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import FileFC, { File } from 'forhandsvisningsfil'
-import useValidation from 'hooks/useValidation'
+import useGlobalValidation from 'hooks/useGlobalValidation'
 import _ from 'lodash'
 import { VenstreChevron } from 'nav-frontend-chevron'
 import { Systemtittel } from 'nav-frontend-typografi'
@@ -52,7 +52,8 @@ const mapState = (state: State): any => ({
   previewFile: state.svarpased.previewFile,
   replySed: state.svarpased.replySed,
   rinasaksnummerOrFnr: state.app.params.rinasaksnummerOrFnr,
-  savingSed: state.loading.savingSed
+  savingSed: state.loading.savingSed,
+  validation: state.validation.status
 })
 
 export interface SvarPaSedProps {
@@ -74,8 +75,10 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
     previewFile,
     replySed,
     rinasaksnummerOrFnr,
-    savingSed
+    savingSed,
+    validation
   }: any = useSelector<State, any>(mapState)
+  console.log('render SEDEditor')
   const fnr = _.find(replySed?.bruker?.personInfo.pin, p => p.land === 'NO')?.identifikator
 
   const [_comment, _setComment] = useState<string>('')
@@ -84,10 +87,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   const [_previewFile, setPreviewFile] = useState<any | undefined>(undefined)
   const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
   const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
-  const [_validation, resetValidation, performValidation] =
-    useValidation<ValidationSEDEditorProps>({}, validateSEDEditor, (v) => {
-      dispatch(setAllValidation(v))
-    })
+  const performValidation = useGlobalValidation<ValidationSEDEditorProps>(validateSEDEditor)
 
   const storageKey = 'replySed'
   const showPersonManager = (): boolean => isSed(replySed)
@@ -110,10 +110,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
           rinasaksnummerOrFnr,
           replySed
         ))
-        resetValidation()
-      } else {
-        // tell components how to reset some of the fixed validations
-        dispatch(setResetValidationFunction(resetValidation))
+        dispatch(resetAllValidation())
       }
     }
   }
@@ -241,9 +238,9 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
       <VerticalSeparatorDiv />
       <TextAreaDiv>
         <HighContrastTextArea
-          className={classNames({ 'skjemaelement__input--harFeil': _validation.comment })}
+          className={classNames({ 'skjemaelement__input--harFeil': validation.comment })}
           data-test-id='comment'
-          feil={_validation.comment?.feilmelding}
+          feil={validation.comment?.feilmelding}
           id='comment'
           label={t('label:ytterligere-informasjon-til-sed')}
           maxLength={500}

@@ -1,4 +1,5 @@
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import classNames from 'classnames'
 import Period from 'components/Period/Period'
@@ -22,7 +23,6 @@ import { useDispatch, useSelector } from 'react-redux'
 
 const mapState = (state: State): PersonManagerFormSelector => ({
   replySed: state.svarpased.replySed,
-  resetValidation: state.validation.resetValidation,
   validation: state.validation.status
 })
 
@@ -33,7 +33,6 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
   const { t } = useTranslation()
   const {
     replySed,
-    resetValidation,
     validation
   } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
@@ -45,7 +44,7 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
   const setStartDato = (startdato: string) => {
     dispatch(updateReplySed(`${target}.startdato`, startdato.trim()))
     if (validation[namespace + '-startdato']) {
-      resetValidation(namespace + '-startdato')
+      dispatch(resetValidation(namespace + '-startdato'))
     }
   }
 
@@ -60,28 +59,28 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
     }
     dispatch(updateReplySed(target, newAnmodningsperiode))
     if (validation[namespace + '-sluttdato']) {
-      resetValidation(namespace + '-sluttdato')
+      dispatch(resetValidation(namespace + '-sluttdato'))
     }
   }
 
   const setRettTilStonad = (rettTilStand: string) => {
     dispatch(updateReplySed(`${target}.rettTilStonad`, rettTilStand.trim()))
     if (validation[namespace + '-retttilstonad']) {
-      resetValidation(namespace + '-retttilstonad')
+      dispatch(resetValidation(namespace + '-retttilstonad'))
     }
   }
 
   const setArtikkelNummer = (artikkelNummer: string) => {
     dispatch(updateReplySed(`${target}.artikkelNummer`, artikkelNummer.trim()))
     if (validation[namespace + '-artikkelnummer']) {
-      resetValidation(namespace + '-artikkelnummer')
+      dispatch(resetValidation(namespace + '-artikkelnummer'))
     }
   }
 
   const setGrunn = (grunn: string) => {
     dispatch(updateReplySed(`${target}.grunn`, grunn.trim()))
     if (validation[namespace + '-grunn']) {
-      resetValidation(namespace + '-grunn')
+      dispatch(resetValidation(namespace + '-grunn'))
     }
   }
 

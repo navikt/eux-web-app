@@ -1,4 +1,5 @@
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
@@ -36,7 +37,6 @@ interface AdresserSelector extends PersonManagerFormSelector {
 const mapState = (state: State): AdresserSelector => ({
   landkoderList: state.app.landkoder,
   replySed: state.svarpased.replySed,
-  resetValidation: state.validation.resetValidation,
   validation: state.validation.status
 })
 
@@ -49,7 +49,6 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
   const {
     landkoderList,
     replySed,
-    resetValidation,
     validation
   } = useSelector<State, AdresserSelector>(mapState)
   const dispatch = useDispatch()
@@ -78,7 +77,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
     } else {
       dispatch(updateReplySed(`${target}[${index}].type`, type.trim()))
       if (validation[namespace + getIdx(index) + '-type']) {
-        resetValidation(namespace + getIdx(index) + '-type')
+        dispatch(resetValidation(namespace + getIdx(index) + '-type'))
       }
     }
   }
@@ -90,7 +89,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
     } else {
       dispatch(updateReplySed(`${target}[${index}].gate`, gate.trim()))
       if (validation[namespace + getIdx(index) + '-gate']) {
-        resetValidation(namespace + getIdx(index) + '-gate')
+        dispatch(resetValidation(namespace + getIdx(index) + '-gate'))
       }
     }
   }
@@ -102,7 +101,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
     } else {
       dispatch(updateReplySed(`${target}[${index}].postnummer`, postnummer.trim()))
       if (validation[namespace + getIdx(index) + '-postnummer']) {
-        resetValidation(namespace + getIdx(index) + '-postnummer')
+        dispatch(resetValidation(namespace + getIdx(index) + '-postnummer'))
       }
     }
   }
@@ -114,7 +113,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
     } else {
       dispatch(updateReplySed(`${target}[${index}].by`, by.trim()))
       if (validation[namespace + getIdx(index) + '-by']) {
-        resetValidation(namespace + getIdx(index) + '-by')
+        dispatch(resetValidation(namespace + getIdx(index) + '-by'))
       }
     }
   }
@@ -126,7 +125,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
     } else {
       dispatch(updateReplySed(`${target}[${index}].bygning`, bygning.trim()))
       if (validation[namespace + getIdx(index) + '-bygning']) {
-        resetValidation(namespace + getIdx(index) + '-bygning')
+        dispatch(resetValidation(namespace + getIdx(index) + '-bygning'))
       }
     }
   }
@@ -138,7 +137,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
     } else {
       dispatch(updateReplySed(`${target}[${index}].region`, region.trim()))
       if (validation[namespace + getIdx(index) + '-region']) {
-        resetValidation(namespace + getIdx(index) + '-region')
+        dispatch(resetValidation(namespace + getIdx(index) + '-region'))
       }
     }
   }
@@ -150,7 +149,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
     } else {
       dispatch(updateReplySed(`${target}[${index}].land`, land.trim()))
       if (validation[namespace + getIdx(index) + '-land']) {
-        resetValidation(namespace + getIdx(index) + '-land')
+        dispatch(resetValidation(namespace + getIdx(index) + '-land'))
       }
     }
   }

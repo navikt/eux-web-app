@@ -1,4 +1,5 @@
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import HelpIcon from 'assets/icons/HelpIcon'
 import Input from 'components/Forms/Input'
@@ -40,7 +41,6 @@ interface FamilieYtelserSelector extends PersonManagerFormSelector {
 const mapState = (state: State): FamilieYtelserSelector => ({
   highContrast: state.ui.highContrast,
   replySed: state.svarpased.replySed,
-  resetValidation: state.validation.resetValidation,
   validation: state.validation.status
 })
 
@@ -52,7 +52,6 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
   const {
     highContrast,
     replySed,
-    resetValidation,
     validation
   } = useSelector<State, FamilieYtelserSelector>(mapState)
   const dispatch = useDispatch()
@@ -77,49 +76,49 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
   const setYtelseNavn = (ytelseNavn: YtelseNavn) => {
     dispatch(updateReplySed(`${target}.ytelseNavn`, ytelseNavn))
     if (validation[namespace + '-ytelseNavn']) {
-      resetValidation(namespace + '-ytelseNavn')
+      dispatch(resetValidation(namespace + '-ytelseNavn'))
     }
   }
 
   const setBeløp = (newBeløp: string) => {
     dispatch(updateReplySed(`${target}.beloep`, newBeløp))
     if (validation[namespace + '-beloep']) {
-      resetValidation(namespace + '-beloep')
+      dispatch(resetValidation(namespace + '-beloep'))
     }
   }
 
   const setValuta = (newValuta: Currency) => {
     dispatch(updateReplySed(`${target}.valuta`, newValuta?.currencyValue))
     if (validation[namespace + '-valuta']) {
-      resetValidation(namespace + '-valuta')
+      dispatch(resetValidation(namespace + '-valuta'))
     }
   }
 
   const setStartDato = (newDato: string) => {
     dispatch(updateReplySed(`${target}.startdato`, newDato))
     if (validation[namespace + '-startdato']) {
-      resetValidation(namespace + '-startdato')
+      dispatch(resetValidation(namespace + '-startdato'))
     }
   }
 
   const setSluttDato = (newDato: string) => {
     dispatch(updateReplySed(`${target}.sluttdato`, newDato))
     if (validation[namespace + '-sluttdato']) {
-      resetValidation(namespace + '-sluttdato')
+      dispatch(resetValidation(namespace + '-sluttdato'))
     }
   }
 
   const setMottakersNavn = (newMottakersNavn: string) => {
     dispatch(updateReplySed(`${target}.mottakersNavn`, newMottakersNavn))
     if (validation[namespace + '-mottakersNavn']) {
-      resetValidation(namespace + '-mottakersNavn')
+      dispatch(resetValidation(namespace + '-mottakersNavn'))
     }
   }
 
   const setUtbetalingshyppighet = (newUtbetalingshyppighet: Utbetalingshyppighet) => {
     dispatch(updateReplySed(`${target}.utbetalingshyppighet`, newUtbetalingshyppighet))
     if (validation[namespace + '-utbetalingshyppighet']) {
-      resetValidation(namespace + '-utbetalingshyppighet')
+      dispatch(resetValidation(namespace + '-utbetalingshyppighet'))
     }
   }
 

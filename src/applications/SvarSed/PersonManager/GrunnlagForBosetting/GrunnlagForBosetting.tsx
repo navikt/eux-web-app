@@ -1,4 +1,5 @@
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
@@ -31,7 +32,6 @@ import { validateGrunnlagForBosetting, ValidationGrunnlagForBosettingProps } fro
 
 const mapState = (state: State): PersonManagerFormSelector => ({
   replySed: state.svarpased.replySed,
-  resetValidation: state.validation.resetValidation,
   validation: state.validation.status
 })
 
@@ -43,7 +43,6 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps> = ({
   const { t } = useTranslation()
   const {
     replySed,
-    resetValidation,
     validation
   } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
@@ -63,14 +62,14 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps> = ({
   const setAvsenderDato = (dato: string) => {
     dispatch(updateReplySed(`${target}.datoFlyttetTilAvsenderlandet`, dato.trim()))
     if (validation[namespace + '-datoFlyttetTilAvsenderlandet']) {
-      resetValidation(namespace + '-datoFlyttetTilAvsenderlandet')
+      dispatch(resetValidation(namespace + '-datoFlyttetTilAvsenderlandet'))
     }
   }
 
   const setMottakerDato = (dato: string) => {
     dispatch(updateReplySed(`${target}.datoFlyttetTilMottakerlandet`, dato.trim()))
     if (validation[namespace + '-datoFlyttetTilMottakerlandet']) {
-      resetValidation(namespace + '-datoFlyttetTilMottakerlandet')
+      dispatch(resetValidation(namespace + '-datoFlyttetTilMottakerlandet'))
     }
   }
 
@@ -81,7 +80,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps> = ({
     } else {
       dispatch(updateReplySed(`${target}.perioder[${index}].startdato`, startdato.trim()))
       if (validation[namespace + '-perioder' + getIdx(index) + '-startdato']) {
-        resetValidation(namespace + '-perioder' + getIdx(index) + '-startdato')
+        dispatch(resetValidation(namespace + '-perioder' + getIdx(index) + '-startdato'))
       }
     }
   }
@@ -101,7 +100,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps> = ({
       }
       dispatch(updateReplySed(`${target}.perioder`, newPerioder))
       if (validation[namespace + '-perioder' + getIdx(index) + '-sluttdato']) {
-        resetValidation(namespace + '-perioder' + getIdx(index) + '-sluttdato')
+        dispatch(resetValidation(namespace + '-perioder' + getIdx(index) + '-sluttdato'))
       }
     }
   }
@@ -109,7 +108,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps> = ({
   const setPersonligSituasjon = (personligSituasjon: string) => {
     dispatch(updateReplySed(`${target}.personligSituasjon`, personligSituasjon.trim()))
     if (validation[namespace + '-personligSituasjon']) {
-      resetValidation(namespace + '-personligSituasjon')
+      dispatch(resetValidation(namespace + '-personligSituasjon'))
     }
   }
 

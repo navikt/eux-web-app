@@ -1,4 +1,5 @@
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
@@ -21,7 +22,6 @@ interface SisteAnsettelsesForholdSelector extends PersonManagerFormSelector {
 const mapState = (state: State): SisteAnsettelsesForholdSelector => ({
   highContrast: state.ui.highContrast,
   replySed: state.svarpased.replySed,
-  resetValidation: state.validation.resetValidation,
   validation: state.validation.status
 })
 
@@ -33,7 +33,6 @@ const SisteAnsettelsesForhold: React.FC<PersonManagerFormProps> = ({
   const {
     highContrast,
     replySed,
-    resetValidation,
     validation
   } = useSelector<State, SisteAnsettelsesForholdSelector>(mapState)
   const dispatch = useDispatch()
@@ -48,49 +47,49 @@ const SisteAnsettelsesForhold: React.FC<PersonManagerFormProps> = ({
   const setBeløp = (newBeløp: string) => {
     dispatch(updateReplySed(`${target}.beloep`, newBeløp))
     if (validation[namespace + '-beloep']) {
-      resetValidation(namespace + '-beloep')
+      dispatch(resetValidation(namespace + '-beloep'))
     }
   }
 
   const setValuta = (newValuta: Currency) => {
     dispatch(updateReplySed(`${target}.valuta`, newValuta?.currencyValue))
     if (validation[namespace + '-valuta']) {
-      resetValidation(namespace + '-valuta')
+      dispatch(resetValidation(namespace + '-valuta'))
     }
   }
 
   const setMottakerDato = (dato: string) => {
     dispatch(updateReplySed(`${target}.mottattdato`, dato.trim()))
     if (validation[namespace + '-mottattdato']) {
-      resetValidation(namespace + '-mottattdato')
+      dispatch(resetValidation(namespace + '-mottattdato'))
     }
   }
 
   const setAntallDager = (antallDager: string) => {
     dispatch(updateReplySed(`${target}.antallDager`, antallDager.trim()))
     if (validation[namespace + '-antalldager']) {
-      resetValidation(namespace + '-antalldager')
+      dispatch(resetValidation(namespace + '-antalldager'))
     }
   }
 
   const setAvkall = (avkall: string) => {
     dispatch(updateReplySed(`${target}.avkall`, avkall.trim()))
     if (validation[namespace + '-avkall']) {
-      resetValidation(namespace + '-avkall')
+      dispatch(resetValidation(namespace + '-avkall'))
     }
   }
 
   const setGrunn = (grunn: string) => {
     dispatch(updateReplySed(`${target}.grunn`, grunn.trim()))
     if (validation[namespace + '-grunn']) {
-      resetValidation(namespace + '-grunn')
+      dispatch(resetValidation(namespace + '-grunn'))
     }
   }
 
   const setAnnenYtelser = (annenYtelser: string) => {
     dispatch(updateReplySed(`${target}.annenYtelser`, annenYtelser.trim()))
     if (validation[namespace + '-annenytelser']) {
-      resetValidation(namespace + '-annenytelser')
+      dispatch(resetValidation(namespace + '-annenytelser'))
     }
   }
 

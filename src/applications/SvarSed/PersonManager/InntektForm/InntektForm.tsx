@@ -1,5 +1,6 @@
 import { fetchInntekt } from 'actions/inntekt'
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Search from 'assets/icons/Search'
 import Select from 'components/Forms/Select'
@@ -36,7 +37,6 @@ const mapState = (state: State): InntektFormSelector => ({
   highContrast: state.ui.highContrast,
   inntekter: state.inntekt.inntekter,
   replySed: state.svarpased.replySed,
-  resetValidation: state.validation.resetValidation,
   validation: state.validation.status
 })
 
@@ -50,7 +50,6 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
     highContrast,
     inntekter,
     replySed,
-    resetValidation,
     validation
   } = useSelector<State, InntektFormSelector>(mapState)
   const dispatch = useDispatch()
@@ -67,7 +66,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
   const setStartDato = (startdato: string) => {
     dispatch(updateReplySed(`${target}.startdato`, startdato.trim()))
     if (validation[namespace + '-startdato']) {
-      resetValidation(namespace + '-startdato')
+      dispatch(resetValidation(namespace + '-startdato'))
     }
   }
 
@@ -82,7 +81,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
     }
     dispatch(updateReplySed(target, newAnmodningsperiode))
     if (validation[namespace + '-sluttdato']) {
-      resetValidation(namespace + '-sluttdato')
+      dispatch(resetValidation(namespace + '-sluttdato'))
     }
   }
   const setFilter = (filter: string) => {

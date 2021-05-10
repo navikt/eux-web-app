@@ -1,4 +1,5 @@
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import classNames from 'classnames'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
@@ -23,7 +24,6 @@ const KravOmRefusjon: React.FC<FormålManagerFormProps> = ({
   const { t } = useTranslation()
   const {
     replySed,
-    resetValidation,
     validation
   }: any = useSelector<State, FormålManagerFormSelector>(mapState)
   const dispatch = useDispatch()
@@ -34,7 +34,7 @@ const KravOmRefusjon: React.FC<FormålManagerFormProps> = ({
   const setKrav = (newKrav: string) => {
     dispatch(updateReplySed(`${target}.krav`, newKrav.trim()))
     if (validation[namespace + '-krav']) {
-      resetValidation(namespace + '-krav')
+      dispatch(resetValidation(namespace + '-krav'))
     }
   }
 

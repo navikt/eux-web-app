@@ -1,5 +1,6 @@
 import { getArbeidsperioder } from 'actions/arbeidsgiver'
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import {
   validateArbeidsgiver,
   ValidationArbeidsgiverProps
@@ -41,7 +42,6 @@ const mapState = (state: State): ArbeidsforholdSelector => ({
   gettingArbeidsperioder: state.loading.gettingArbeidsperioder,
   inntekter: state.inntekt.inntekter,
   replySed: state.svarpased.replySed,
-  resetValidation: state.validation.resetValidation,
   validation: state.validation.status
 })
 
@@ -55,7 +55,6 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
     gettingArbeidsperioder,
     inntekter,
     replySed,
-    resetValidation,
     validation
   } = useSelector<State, ArbeidsforholdSelector>(mapState)
   const dispatch = useDispatch()
@@ -81,7 +80,7 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
   const setStartDato = (startdato: string) => {
     dispatch(updateReplySed(`${target}.startdato`, startdato.trim()))
     if (validation[namespace + '-startdato']) {
-      resetValidation(namespace + '-startdato')
+      dispatch(resetValidation(namespace + '-startdato'))
     }
   }
 
@@ -96,7 +95,7 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
     }
     dispatch(updateReplySed(target, newAnmodningsperiode))
     if (validation[namespace + '-sluttdato']) {
-      resetValidation(namespace + '-sluttdato')
+      dispatch(resetValidation(namespace + '-sluttdato'))
     }
   }
 

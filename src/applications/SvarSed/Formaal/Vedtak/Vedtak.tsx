@@ -1,4 +1,5 @@
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import { FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
 import { ValidationVedtakPeriodeProps } from 'applications/SvarSed/Formaal/Vedtak/validation'
 import Add from 'assets/icons/Add'
@@ -51,7 +52,6 @@ const VedtakFC: React.FC = (): JSX.Element => {
   const {
     highContrast,
     replySed,
-    resetValidation,
     validation
   }: any = useSelector<State, MotregningSelector>(mapState)
   const dispatch = useDispatch()
@@ -83,7 +83,7 @@ const VedtakFC: React.FC = (): JSX.Element => {
   const setBarnAlleBarn = () => {
     dispatch(updateReplySed(`${target}.barn`, (replySed as F002Sed).barn.map(b => (b.personInfo.fornavn + ' ' + b.personInfo.etternavn))))
     if (validation[namespace + '-barn']) {
-      resetValidation(namespace + '-barn')
+      dispatch(resetValidation(namespace + '-barn'))
     }
     _setBarnRadio('ja')
   }
@@ -102,35 +102,35 @@ const VedtakFC: React.FC = (): JSX.Element => {
     }
     dispatch(updateReplySed(`${target}.barn`, newBarn))
     if (validation[namespace + '-barn']) {
-      resetValidation(namespace + '-barn')
+      dispatch(resetValidation(namespace + '-barn'))
     }
   }
 
   const setStartDato = (newDato: string) => {
     dispatch(updateReplySed(`${target}.periode.startdato`, newDato.trim()))
     if (validation[namespace + '-periode-startdato']) {
-      resetValidation(namespace + '-periode-startdato')
+      dispatch(resetValidation(namespace + '-periode-startdato'))
     }
   }
 
   const setSluttDato = (newDato: string) => {
     dispatch(updateReplySed(`${target}.periode.sluttdato`, newDato.trim()))
     if (validation[namespace + '-periode-sluttdato']) {
-      resetValidation(namespace + '-periode-sluttdato')
+      dispatch(resetValidation(namespace + '-periode-sluttdato'))
     }
   }
 
   const setType = (newType: string) => {
     dispatch(updateReplySed(`${target}.type`, newType.trim()))
     if (validation[namespace + '-type']) {
-      resetValidation(namespace + '-type')
+      dispatch(resetValidation(namespace + '-type'))
     }
   }
 
   const setGrunnen = (newGrunnen: string) => {
     dispatch(updateReplySed(`${target}.grunnen`, newGrunnen.trim()))
     if (validation[namespace + '-grunnen']) {
-      resetValidation(namespace + '-grunnen')
+      dispatch(resetValidation(namespace + '-grunnen'))
     }
   }
 
@@ -141,7 +141,7 @@ const VedtakFC: React.FC = (): JSX.Element => {
     } else {
       dispatch(updateReplySed(`${target}.vedtaksperioder[${index}].periode.startdato`, dato.trim()))
       if (validation[namespace + '-vedtaksperioder' + getIdx(index) + '-periode-startdato']) {
-        resetValidation(namespace + '-vedtaksperioder' + getIdx(index) + '-periode-startdato')
+        dispatch(resetValidation(namespace + '-vedtaksperioder' + getIdx(index) + '-periode-startdato'))
       }
     }
   }
@@ -164,7 +164,7 @@ const VedtakFC: React.FC = (): JSX.Element => {
       }
       dispatch(updateReplySed(`${target}.vedtaksperioder`, newPerioder))
       if (validation[namespace + '-vedtaksperioder' + getIdx(index) + '-periode-sluttdato']) {
-        resetValidation(namespace + '-vedtaksperioder' + getIdx(index) + '-periode-sluttdato')
+        dispatch(resetValidation(namespace + '-vedtaksperioder' + getIdx(index) + '-periode-sluttdato'))
       }
     }
   }
@@ -176,7 +176,7 @@ const VedtakFC: React.FC = (): JSX.Element => {
     } else {
       dispatch(updateReplySed(`${target}.vedtaksperioder[${index}].vedtak`, newVedtak.trim()))
       if (validation[namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak']) {
-        resetValidation(namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak')
+        dispatch(resetValidation(namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak'))
       }
     }
   }
@@ -185,7 +185,7 @@ const VedtakFC: React.FC = (): JSX.Element => {
     _setNewStartDato('')
     _setNewSluttDato('')
     _setNewVedtak('')
-    resetValidation()
+    _resetValidation()
   }
 
   const onCancel = () => {

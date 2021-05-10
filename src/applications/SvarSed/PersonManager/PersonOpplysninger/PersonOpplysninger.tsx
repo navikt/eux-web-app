@@ -1,5 +1,6 @@
 import { searchPerson } from 'actions/person'
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import Search from 'assets/icons/Search'
@@ -34,7 +35,6 @@ interface PersonOpplysningerSelector extends PersonManagerFormSelector {
 const mapState = (state: State): PersonOpplysningerSelector => ({
   landkoderList: state.app.landkoder,
   replySed: state.svarpased.replySed,
-  resetValidation: state.validation.resetValidation,
   searchedPerson: state.person.person,
   searchingPerson: state.loading.searchingPerson,
   validation: state.validation.status
@@ -48,7 +48,6 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
   const {
     landkoderList,
     replySed,
-    resetValidation,
     searchedPerson,
     searchingPerson,
     validation
@@ -65,28 +64,28 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
   const onFornavnChange = (newFornavn: string) => {
     dispatch(updateReplySed(`${target}.fornavn`, newFornavn.trim()))
     if (validation[namespace + '-fornavn']) {
-      resetValidation(namespace + '-fornavn')
+      dispatch(resetValidation(namespace + '-fornavn'))
     }
   }
 
   const onEtternavnChange = (newEtternavn: string) => {
     dispatch(updateReplySed(`${target}.etternavn`, newEtternavn.trim()))
     if (validation[namespace + '-etternavn']) {
-      resetValidation(namespace + '-etternavn')
+      dispatch(resetValidation(namespace + '-etternavn'))
     }
   }
 
   const onFodselsdatoChange = (dato: string) => {
     dispatch(updateReplySed(`${target}.foedselsdato`, dato.trim()))
     if (validation[namespace + '-foedselsdato']) {
-      resetValidation(namespace + '-foedselsdato')
+      dispatch(resetValidation(namespace + '-foedselsdato'))
     }
   }
 
   const onKjoennChange = (newKjoenn: string) => {
     dispatch(updateReplySed(`${target}.kjoenn`, newKjoenn.trim()))
     if (validation[namespace + '-kjoenn']) {
-      resetValidation(namespace + '-kjoenn')
+      dispatch(resetValidation(namespace + '-kjoenn'))
     }
   }
 
@@ -102,7 +101,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
     }
     dispatch(updateReplySed(`${target}.pin`, pin))
     if (validation[namespace + '-utenlandskpin-nummer']) {
-      resetValidation(namespace + '-utenlandskpin-nummer')
+      dispatch(resetValidation(namespace + '-utenlandskpin-nummer'))
     }
   }
 
@@ -118,7 +117,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
     }
     dispatch(updateReplySed(`${target}.pin`, pin))
     if (validation[namespace + '-utenlandskpin-land']) {
-      resetValidation(namespace + '-utenlandskpin-land')
+      dispatch(resetValidation(namespace + '-utenlandskpin-land'))
     }
   }
 
@@ -134,28 +133,28 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
     }
     dispatch(updateReplySed(`${target}.pin`, pin))
     if (validation[namespace + '-norskpin-nummer']) {
-      resetValidation(namespace + '-norskpin-nummer')
+      dispatch(resetValidation(namespace + '-norskpin-nummer'))
     }
   }
 
   const onFoedestedByChange = (newFodestedBy: string) => {
     dispatch(updateReplySed(`${target}.pinMangler.foedested.by`, newFodestedBy.trim()))
     if (validation[namespace + '-foedested-by']) {
-      resetValidation(namespace + '-foedested-by')
+      dispatch(resetValidation(namespace + '-foedested-by'))
     }
   }
 
   const onFoedestedRegionChange = (newFodestedRegion: string) => {
     dispatch(updateReplySed(`${target}.pinMangler.foedested.region`, newFodestedRegion.trim()))
     if (validation[namespace + '-foedested-region']) {
-      resetValidation(namespace + '-foedested-region')
+      dispatch(resetValidation(namespace + '-foedested-region'))
     }
   }
 
   const onFoedestedLandChange = (newLand: string) => {
     dispatch(updateReplySed(`${target}.pinMangler.foedested.land`, newLand.trim()))
     if (validation[namespace + '-foedested-land']) {
-      resetValidation(namespace + '-foedested-land')
+      dispatch(resetValidation(namespace + '-foedested-land'))
     }
   }
 

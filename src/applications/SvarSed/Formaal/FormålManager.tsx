@@ -247,13 +247,13 @@ const FormålManager: React.FC = () => {
                       validation[namespace + '-' + menu]
                         ? (
                           <>
-                            <RemoveCircle color='red' />
+                            <RemoveCircle height={20} color='red' />
                             <HorizontalSeparatorDiv size='0.5' />
                           </>
                           )
                         : (
                           <>
-                            <GreenCircle />
+                            <GreenCircle height={20} />
                             <HorizontalSeparatorDiv size='0.5' />
                           </>
                           )

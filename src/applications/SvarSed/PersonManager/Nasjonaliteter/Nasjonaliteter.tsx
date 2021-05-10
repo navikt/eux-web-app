@@ -1,4 +1,5 @@
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
@@ -35,7 +36,6 @@ interface NasjonaliteterSelector extends PersonManagerFormSelector {
 const mapState = (state: State): NasjonaliteterSelector => ({
   landkoderList: state.app.landkoder,
   replySed: state.svarpased.replySed,
-  resetValidation: state.validation.resetValidation,
   validation: state.validation.status
 })
 
@@ -48,7 +48,6 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
   const {
     landkoderList,
     replySed,
-    resetValidation,
     validation
   } = useSelector<State, NasjonaliteterSelector>(mapState)
   const dispatch = useDispatch()
@@ -70,7 +69,7 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
     } else {
       dispatch(updateReplySed(`${target}[${index}].fradato`, toFinalDateFormat(fradato.trim())))
       if (validation[namespace + getIdx(index) + '-fradato']) {
-        resetValidation(namespace + getIdx(index) + '-fradato')
+        dispatch(resetValidation(namespace + getIdx(index) + '-fradato'))
       }
     }
   }
@@ -82,7 +81,7 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
     } else {
       dispatch(updateReplySed(`${target}[${index}].land`, land.trim()))
       if (validation[namespace + getIdx(index) + '-land']) {
-        resetValidation(namespace + getIdx(index) + '-land')
+        dispatch(resetValidation(namespace + getIdx(index) + '-land'))
       }
     }
   }

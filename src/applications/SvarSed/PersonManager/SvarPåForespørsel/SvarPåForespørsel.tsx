@@ -1,4 +1,5 @@
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import HelpIcon from 'assets/icons/HelpIcon'
 import TextArea from 'components/Forms/TextArea'
@@ -30,7 +31,6 @@ const HelpProperIcon = styled(HelpIcon)`
 
 const mapState = (state: State): PersonManagerFormSelector => ({
   replySed: state.svarpased.replySed,
-  resetValidation: state.validation.resetValidation,
   validation: state.validation.status
 })
 
@@ -41,7 +41,6 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
   const { t } = useTranslation()
   const {
     replySed,
-    resetValidation,
     validation
   } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
@@ -53,28 +52,28 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
   const setSvar = (newSvar: string) => {
     dispatch(updateReplySed(`${target}.svar`, newSvar.trim()))
     if (validation[namespace + '-svar']) {
-      resetValidation(namespace + '-svar')
+      dispatch(resetValidation(namespace + '-svar'))
     }
   }
 
   const setVedlegg = (newVedlegg: string) => {
     dispatch(updateReplySed(`${target}.vedlegg`, newVedlegg.trim()))
     if (validation[namespace + '-vedlegg']) {
-      resetValidation(namespace + '-vedlegg')
+      dispatch(resetValidation(namespace + '-vedlegg'))
     }
   }
 
   const setSender = (sender: string) => {
     dispatch(updateReplySed(`${target}.sender`, sender.trim()))
     if (validation[namespace + '-sender']) {
-      resetValidation(namespace + '-sender')
+      dispatch(resetValidation(namespace + '-sender'))
     }
   }
 
   const setGrunner = (grunner: string) => {
     dispatch(updateReplySed(`${target}.grunner`, grunner.trim()))
     if (validation[namespace + '-grunner']) {
-      resetValidation(namespace + '-grunner')
+      dispatch(resetValidation(namespace + '-grunner'))
     }
   }
 

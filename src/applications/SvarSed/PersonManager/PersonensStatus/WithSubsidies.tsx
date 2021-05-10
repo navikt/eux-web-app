@@ -1,4 +1,5 @@
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
@@ -36,7 +37,6 @@ interface WithSubsidiesSelector extends PersonManagerFormSelector {
 const mapState = (state: State): WithSubsidiesSelector => ({
   highContrast: state.ui.highContrast,
   replySed: state.svarpased.replySed,
-  resetValidation: state.validation.resetValidation,
   validation: state.validation.status
 })
 
@@ -48,7 +48,6 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
   const {
     highContrast,
     replySed,
-    resetValidation,
     validation
   } = useSelector<State, WithSubsidiesSelector>(mapState)
   const dispatch = useDispatch()
@@ -79,7 +78,7 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
     } else {
       dispatch(updateReplySed(`${target}[${index}].startdato`, newDato.trim()))
       if (validation[namespace + getIdx(index) + '-startdato']) {
-        resetValidation(namespace + getIdx(index) + '-startdato')
+        dispatch(resetValidation(namespace + getIdx(index) + '-startdato'))
       }
     }
   }
@@ -99,7 +98,7 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
       }
       dispatch(updateReplySed(target, newPerioder))
       if (validation[namespace + getIdx(index) + '-sluttdato']) {
-        resetValidation(namespace + getIdx(index) + '-sluttdato')
+        dispatch(resetValidation(namespace + getIdx(index) + '-sluttdato'))
       }
     }
   }
@@ -112,7 +111,7 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
       } else {
         dispatch(updateReplySed(`${target}[${index}].pensjonstype`, pensjontype.trim()))
         if (validation[namespace + getIdx(index) + '-pensjontype']) {
-          resetValidation(namespace + getIdx(index) + '-pensjontype')
+          dispatch(resetValidation(namespace + getIdx(index) + '-pensjontype'))
         }
       }
     }

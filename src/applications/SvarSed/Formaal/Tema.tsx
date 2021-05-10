@@ -15,14 +15,12 @@ import { OptionTypeBase } from 'react-select'
 interface TemaSelector {
   highContrast: boolean
   replySed: ReplySed | undefined
-  resetValidation: ((key?: string | undefined) => void)
   validation: Validation
 }
 
 const mapState = (state: State): TemaSelector => ({
   highContrast: state.ui.highContrast,
   replySed: state.svarpased.replySed,
-  resetValidation: state.validation.resetValidation,
   validation: state.validation.status
 })
 

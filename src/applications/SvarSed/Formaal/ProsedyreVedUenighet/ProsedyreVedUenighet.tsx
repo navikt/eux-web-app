@@ -1,4 +1,5 @@
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import { FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
@@ -46,7 +47,6 @@ const ProsedyreVedUenighet: React.FC = (): JSX.Element => {
   const {
     highContrast,
     replySed,
-    resetValidation,
     validation
   }: any = useSelector<State, ProsedyreVedUenighetSelector>(mapState)
   const dispatch = useDispatch()
@@ -75,11 +75,11 @@ const ProsedyreVedUenighet: React.FC = (): JSX.Element => {
   const setGrunn = (newGrunn: string, index: number) => {
     if (index < 0) {
       _setNewGrunn(newGrunn.trim())
-      resetValidation(namespace + '-grunner-grunn')
+      _resetValidation(namespace + '-grunner-grunn')
     } else {
       dispatch(updateReplySed(`${target}.grunner[${index}].grunn`, newGrunn.trim()))
       if (validation[namespace + '-grunner' + getIdx(index) + '-grunn']) {
-        resetValidation(namespace + '-grunner' + getIdx(index) + '-grunn')
+        dispatch(resetValidation(namespace + '-grunner' + getIdx(index) + '-grunn'))
       }
     }
   }
@@ -103,7 +103,7 @@ const ProsedyreVedUenighet: React.FC = (): JSX.Element => {
       }
       dispatch(updateReplySed(`${target}.grunner[${index}].person`, newPerson))
       if (validation[namespace + '-grunner' + getIdx(index) + '-person']) {
-        resetValidation(namespace + '-grunner' + getIdx(index) + '-person')
+        dispatch(resetValidation(namespace + '-grunner' + getIdx(index) + '-person'))
       }
     }
   }
@@ -111,7 +111,7 @@ const ProsedyreVedUenighet: React.FC = (): JSX.Element => {
   const setYtterligereInfo = (newYtterligereInfo: string) => {
     dispatch(updateReplySed(`${target}.ytterligereInfo`, newYtterligereInfo.trim()))
     if (validation[namespace + '-ytterligereInfo']) {
-      resetValidation(namespace + '-ytterligereInfo')
+      dispatch(resetValidation(namespace + '-ytterligereInfo'))
     }
   }
 

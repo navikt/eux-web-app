@@ -1,4 +1,5 @@
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import { FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
 import classNames from 'classnames'
 import Input from 'components/Forms/Input'
@@ -33,7 +34,6 @@ const Kontoopplysning: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
   const {
     replySed,
-    resetValidation,
     validation
   }: any = useSelector<State, FormålManagerFormSelector>(mapState)
   const dispatch = useDispatch()
@@ -44,41 +44,41 @@ const Kontoopplysning: React.FC = (): JSX.Element => {
   const setBegrunnelse = (newBegrunnelse: string) => {
     dispatch(updateReplySed(`${target}.begrunnelse`, newBegrunnelse.trim()))
     if (validation[namespace + '-begrunnelse']) {
-      resetValidation(namespace + '-begrunnelse')
+      dispatch(resetValidation(namespace + '-begrunnelse'))
     }
   }
 
   const setId = (newId: string) => {
     dispatch(updateReplySed(`${target}.id`, newId.trim()))
     if (validation[namespace + '-id']) {
-      resetValidation(namespace + '-id')
+      dispatch(resetValidation(namespace + '-id'))
     }
   }
 
   const setNavn = (newNavn: string) => {
     dispatch(updateReplySed(`${target}.navn`, newNavn.trim()))
     if (validation[namespace + '-navn']) {
-      resetValidation(namespace + '-navn')
+      dispatch(resetValidation(namespace + '-navn'))
     }
   }
 
   const setSepaKonto = (newSepaKonto: JaNei) => {
     dispatch(updateReplySed(`${target}.kontoOrdinaer.sepaKonto`, newSepaKonto.trim()))
     if (validation[namespace + '-kontoOrdinaer-sepaKonto']) {
-      resetValidation(namespace + '-kontoOrdinaer-sepaKonto')
+      dispatch(resetValidation(namespace + '-kontoOrdinaer-sepaKonto'))
     }
   }
   const setIban = (newIban: string) => {
     dispatch(updateReplySed(`${target}.kontoOrdinaer.iban`, newIban.trim()))
     if (validation[namespace + '-kontoOrdinaer-iban']) {
-      resetValidation(namespace + '-kontoOrdinaer-iban')
+      dispatch(resetValidation(namespace + '-kontoOrdinaer-iban'))
     }
   }
 
   const setSwift = (newSwift: string) => {
     dispatch(updateReplySed(`${target}.kontoOrdinaer.swift`, newSwift.trim()))
     if (validation[namespace + '-kontoOrdinaer-swift']) {
-      resetValidation(namespace + '-kontoOrdinaer-swift')
+      dispatch(resetValidation(namespace + '-kontoOrdinaer-swift'))
     }
   }
 

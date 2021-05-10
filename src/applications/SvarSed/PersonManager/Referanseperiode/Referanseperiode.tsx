@@ -1,4 +1,5 @@
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Period from 'components/Period/Period'
 import { State } from 'declarations/reducers'
@@ -12,7 +13,6 @@ import { useDispatch, useSelector } from 'react-redux'
 
 const mapState = (state: State): PersonManagerFormSelector => ({
   replySed: state.svarpased.replySed,
-  resetValidation: state.validation.resetValidation,
   validation: state.validation.status
 })
 
@@ -23,7 +23,6 @@ const Referanseperiode: React.FC<PersonManagerFormProps> = ({
   const { t } = useTranslation()
   const {
     replySed,
-    resetValidation,
     validation
   } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
@@ -34,7 +33,7 @@ const Referanseperiode: React.FC<PersonManagerFormProps> = ({
   const setStartDato = (startdato: string) => {
     dispatch(updateReplySed(`${target}.startdato`, startdato.trim()))
     if (validation[namespace + '-startdato']) {
-      resetValidation(namespace + '-startdato')
+      dispatch(resetValidation(namespace + '-startdato'))
     }
   }
 
@@ -49,7 +48,7 @@ const Referanseperiode: React.FC<PersonManagerFormProps> = ({
     }
     dispatch(updateReplySed(target, newAnmodningsperiode))
     if (validation[namespace + '-sluttdato']) {
-      resetValidation(namespace + '-sluttdato')
+      dispatch(resetValidation(namespace + '-sluttdato'))
     }
   }
 

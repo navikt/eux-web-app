@@ -1,4 +1,5 @@
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import {
   validateUdekkedePeriode,
@@ -30,7 +31,6 @@ import { getIdx } from 'utils/namespace'
 
 const mapState = (state: State): PersonManagerFormSelector => ({
   replySed: state.svarpased.replySed,
-  resetValidation: state.validation.resetValidation,
   validation: state.validation.status
 })
 
@@ -42,7 +42,6 @@ const UdekkedePerioder: React.FC<PersonManagerFormProps> = ({
   const { t } = useTranslation()
   const {
     replySed,
-    resetValidation,
     validation
   } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
@@ -66,7 +65,7 @@ const UdekkedePerioder: React.FC<PersonManagerFormProps> = ({
     } else {
       dispatch(updateReplySed(`{target}[${index}].startdato`, startdato.trim()))
       if (validation[namespace + '-perioderUtenforTrygdeordning' + getIdx(index) + '-startdato']) {
-        resetValidation(namespace + '-perioderUtenforTrygdeordning' + getIdx(index) + '-startdato')
+        dispatch(resetValidation(namespace + '-perioderUtenforTrygdeordning' + getIdx(index) + '-startdato'))
       }
     }
   }
@@ -86,7 +85,7 @@ const UdekkedePerioder: React.FC<PersonManagerFormProps> = ({
       }
       dispatch(updateReplySed(target, newPerioder))
       if (namespace + '-perioderUtenforTrygdeordning' + getIdx(index) + '-sluttdato') {
-        resetValidation(namespace + '-perioderUtenforTrygdeordning' + getIdx(index) + '-sluttdato')
+        dispatch(resetValidation(namespace + '-perioderUtenforTrygdeordning' + getIdx(index) + '-sluttdato'))
       }
     }
   }
@@ -94,7 +93,7 @@ const UdekkedePerioder: React.FC<PersonManagerFormProps> = ({
   const resetForm = () => {
     _setNewStartDato('')
     _setNewSluttDato('')
-    resetValidation()
+    _resetValidation()
   }
 
   const onCancel = () => {

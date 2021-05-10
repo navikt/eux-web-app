@@ -46,7 +46,6 @@ const mapState = (state: State): AnsattSelector => ({
   arbeidsperioder: state.arbeidsgiver.arbeidsperioder,
   gettingArbeidsperioder: state.loading.gettingArbeidsperioder,
   replySed: state.svarpased.replySed,
-  resetValidation: state.validation.resetValidation,
   validation: state.validation.status
 })
 

@@ -18,7 +18,6 @@ interface ForsikringSelector extends PersonManagerFormSelector {
 const mapState = (state: State): ForsikringSelector => ({
   highContrast: state.ui.highContrast,
   replySed: state.svarpased.replySed,
-  resetValidation: state.validation.resetValidation,
   validation: state.validation.status
 })
 

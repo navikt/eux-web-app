@@ -1,4 +1,5 @@
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
@@ -40,7 +41,6 @@ interface KontaktinformasjonSelector extends PersonManagerFormSelector {
 const mapState = (state: State): KontaktinformasjonSelector => ({
   highContrast: state.ui.highContrast,
   replySed: state.svarpased.replySed,
-  resetValidation: state.validation.resetValidation,
   validation: state.validation.status
 })
 
@@ -53,7 +53,6 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
   const {
     highContrast,
     replySed,
-    resetValidation,
     validation
   } = useSelector<State, KontaktinformasjonSelector>(mapState)
   const dispatch = useDispatch()
@@ -95,7 +94,7 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
     } else {
       dispatch(updateReplySed(`${targetTelefon}[${index}].type`, type.trim()))
       if (validation[namespaceTelefon + getIdx(index) + '-type']) {
-        resetValidation(namespaceTelefon + getIdx(index) + '-type')
+        dispatch(resetValidation(namespaceTelefon + getIdx(index) + '-type'))
       }
     }
   }
@@ -107,7 +106,7 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
     } else {
       dispatch(updateReplySed(`${targetTelefon}[${index}].nummer`, nummer.trim()))
       if (validation[namespaceTelefon + getIdx(index) + '-nummer']) {
-        resetValidation(namespaceTelefon + getIdx(index) + '-nummer')
+        dispatch(resetValidation(namespaceTelefon + getIdx(index) + '-nummer'))
       }
     }
   }
@@ -119,7 +118,7 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
     } else {
       dispatch(updateReplySed(`${targetEpost}[${index}].adresse`, adresse.trim()))
       if (validation[namespaceEpost + getIdx(index) + '-adresse']) {
-        resetValidation(namespaceEpost + getIdx(index) + '-adresse')
+        dispatch(resetValidation(namespaceEpost + getIdx(index) + '-adresse'))
       }
     }
   }

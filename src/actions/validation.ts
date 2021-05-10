@@ -10,6 +10,11 @@ export const setAllValidation: ActionCreator<ActionWithPayload<Validation>> = (
   payload: newValidation
 })
 
+export const resetAllValidation: ActionCreator<ActionWithPayload> = (): ActionWithPayload => ({
+  type: types.VALIDATION_SET,
+  payload: {}
+})
+
 export const resetValidation: ActionCreator<ActionWithPayload> = (
   key?: string
 ): ActionWithPayload => ({
@@ -24,9 +29,3 @@ export const viewValidation: ActionCreator<Action> = (): Action => ({
   type: types.VALIDATION_VIEW
 })
 
-export const setResetValidationFunction: ActionCreator<ActionWithPayload> = (
-  resetValidation: (key?: string | undefined) => void
-): ActionWithPayload => ({
-  type: types.VALIDATION_RESETFUNCTION_SET,
-  payload: resetValidation
-})
