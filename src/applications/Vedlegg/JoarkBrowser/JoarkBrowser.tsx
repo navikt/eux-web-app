@@ -14,7 +14,7 @@ import {
 } from 'declarations/attachments'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
-import File from 'forhandsvisningsfil'
+import FileFC from 'forhandsvisningsfil'
 import _ from 'lodash'
 import { Element } from 'nav-frontend-typografi'
 import { HighContrastKnapp } from 'nav-hoykontrast'
@@ -314,6 +314,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
     setMounted(true)
   }, [aktoerId, dispatch, list, loadingJoarkList, _mounted])
 
+
   useEffect(() => {
     if (!equalFiles(previewFile, _previewFile)) {
       setPreviewFile(previewFile)
@@ -326,11 +327,13 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
           <div
             style={{ cursor: 'pointer' }}
           >
-            <File
+
+            <FileFC
               file={previewFile}
               width={600}
               height={800}
               tema='simple'
+              initialPage={1}
               viewOnePage={false}
               onContentClick={handleModalClose}
             />

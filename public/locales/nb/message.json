@@ -27,6 +27,7 @@
   "loading-replying": "Besvaring...",
   "loading-searching" : "Søker...",
   "loading-creatingReplySed" : "Sender svarSED...",
+  "loading-saker" : "Hent saker...",
   "loading-sedCreated" : "SvarSED opprettet",
   "loading-sedFinished" : "Ferdig med svarSED",
   "loading-sendingVedlegg" : "Sender vedlegg...",

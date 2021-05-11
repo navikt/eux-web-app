@@ -12,53 +12,50 @@ import { AlertStatus } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import {
   Arbeidsgiver,
+  Arbeidsperioder,
   BucTyper,
   Enhet,
   Enheter,
   FagSak,
   FagSaker,
-  OldFamilieRelasjon,
   Institusjon,
   Kodemaps,
   Kodeverk,
+  OldFamilieRelasjon,
   OpprettetSak,
   Person,
   ServerInfo,
-  Tema,
-  Validation,
-  Arbeidsperioder
+  Tema
 } from 'declarations/types'
 import * as EKV from 'eessi-kodeverk'
 import { History } from 'history'
+import useValidation from 'hooks/useValidation'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import AlertStripe from 'nav-frontend-alertstriper'
 import { Flatknapp, Hovedknapp, Knapp } from 'nav-frontend-knapper'
 import Lenke from 'nav-frontend-lenker'
-import Panel from 'nav-frontend-paneler'
 import { Feiloppsummering, FeiloppsummeringFeil, Select } from 'nav-frontend-skjema'
 import { Systemtittel } from 'nav-frontend-typografi'
-import { Column, Container, Content, HorizontalSeparatorDiv, Margin, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import {
+  AlignStartRow,
+  Column,
+  Container,
+  Content,
+  FlexDiv,
+  HighContrastPanel,
+  HorizontalSeparatorDiv,
+  Margin,
+  PileDiv,
+  Row,
+  VerticalSeparatorDiv
+} from 'nav-hoykontrast'
 import PT from 'prop-types'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import styled from 'styled-components'
-
-const AlignCenterColumn = styled(Column)`
-  display: flex;
-  align-items: center;
-`
-const FamilyPanel = styled(Panel)`
-  border: 1px solid lightgray;
-  border-radius: 5px;
-  background-color: white;
-  padding: 1rem;
-`
-const FlexDiv = styled.div`
-  display: flex;
-`
+import { validateOpprettSak, ValidationOpprettSakProps } from './validationOpprettSak'
 
 export interface OpprettSakProps {
   history: History
@@ -73,6 +70,7 @@ export interface OpprettSakSelector {
   serverInfo: ServerInfo | undefined
 
   sendingSak: boolean
+  gettingFagsaker: boolean
   gettingPerson: boolean
 
   arbeidsperioder: Arbeidsperioder | undefined
@@ -120,6 +118,7 @@ const mapState = (state: State): OpprettSakSelector => ({
   tema: state.app.tema,
 
   sendingSak: state.loading.sendingSak,
+  gettingFagsaker: state.loading.gettingFagsaker,
   gettingPerson: state.loading.gettingPerson,
 
   arbeidsperioder: state.sak.arbeidsperioder,
@@ -150,6 +149,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
     alertStatus,
     alertMessage,
     alertType,
+    gettingFagsaker,
     gettingPerson,
     enheter,
     serverInfo,
@@ -183,9 +183,10 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
   const dispatch = useDispatch()
   const { t } = useTranslation()
 
+  const namespace = 'opprettsak'
   const [_visModal, setVisModal] = useState<boolean>(false)
-  const [_validation, setValidation] = useState<Validation>({})
   const [_isFnrValid, setIsFnrValid] = useState<boolean>(false)
+  const [_validation, _resetValidation, performValidation] = useValidation<ValidationOpprettSakProps>({}, validateOpprettSak)
 
   const temaer: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : !tema ? [] : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor] as keyof Tema]
   const _buctyper: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : !buctyper ? [] : buctyper[kodemaps.SEKTOR2FAGSAK[valgtSektor] as keyof BucTyper]
@@ -206,95 +207,25 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
     EKV.Koder.buctyper.family.FB_BUC_01 === valgtBucType && isSomething(valgtSedType)
   const visEnheter: boolean = valgtSektor === 'HZ' || valgtSektor === 'SI'
 
-  const validate = (): Validation => {
-    const validation: Validation = {
-      fnr: !valgtFnr
-        ? {
-          feilmelding: t('message:validation-noFnr'),
-          skjemaelementId: 'opprettsak__fnr'
-        } as FeiloppsummeringFeil
-        : !_isFnrValid
-            ? {
-              feilmelding: t('message:validation-uncheckedFnr'),
-              skjemaelementId: 'opprettsak__fnr'
-            } as FeiloppsummeringFeil
-            : undefined,
-      sektor: !valgtSektor
-        ? {
-          feilmelding: t('message:validation-noSektor'),
-          skjemaelementId: 'opprettsak__sektor'
-        } as FeiloppsummeringFeil
-        : undefined,
-      buctype: !valgtBucType
-        ? {
-          feilmelding: t('message:validation-noBuctype'),
-          skjemaelementId: 'opprettsak__buctype'
-        } as FeiloppsummeringFeil
-        : undefined,
-      sedtype: !valgtSedType
-        ? {
-          feilmelding: t('message:validation-noSedtype'),
-          skjemaelementId: 'opprettsak__sedtype'
-        } as FeiloppsummeringFeil
-        : undefined,
-      landkode: !valgtLandkode
-        ? {
-          feilmelding: t('message:validation-noLand'),
-          skjemaelementId: 'opprettsak__landkode'
-        } as FeiloppsummeringFeil
-        : undefined,
-      institusjon: !valgtInstitusjon
-        ? {
-          feilmelding: t('message:validation-noInstitusjonsID'),
-          skjemaelementId: 'opprettsak__institusjon'
-        } as FeiloppsummeringFeil
-        : undefined,
-      tema: !valgtTema
-        ? {
-          feilmelding: t('message:validation-noTema'),
-          skjemaelementId: 'opprettsak__tema'
-        } as FeiloppsummeringFeil
-        : undefined,
-      saksId: !valgtSaksId
-        ? {
-          feilmelding: t('message:validation-noSaksId'),
-          skjemaelementId: 'opprettsak__saksId'
-        } as FeiloppsummeringFeil
-        : undefined,
-      unit: visEnheter && !valgtUnit
-        ? {
-          feilmelding: t('message:validation-noUnit'),
-          skjemaelementId: 'opprettsak__unit'
-        } as FeiloppsummeringFeil
-        : undefined
-    }
-    setValidation(validation)
-    return validation
-  }
-
-  const resetValidation = (key?: Array<string> | string): void => {
-    const newValidation = _.cloneDeep(_validation)
-    if (!key) {
-      setValidation({})
-    }
-    if (_.isString(key)) {
-      newValidation[key] = undefined
-    }
-    if (_.isArray(key)) {
-      key.forEach((k) => {
-        newValidation[k] = undefined
-      })
-    }
-    setValidation(newValidation)
-  }
-
-  const isValid = (_validation: Validation): boolean => {
-    return _.find(_.values(_validation), (e) => e !== undefined) === undefined
-  }
 
   const skjemaSubmit = (): void => {
-    if (isValid(validate())) {
-      const payload = {
+    const valid: boolean = performValidation({
+      fnr: valgtFnr,
+      isFnrValid: _isFnrValid,
+      sektor: valgtSektor,
+      buctype: valgtBucType,
+      sedtype: valgtSedType,
+      landkode: valgtLandkode,
+      institusjon: valgtInstitusjon,
+      namespace: namespace,
+      tema: valgtTema,
+      saksId: valgtSaksId,
+      visEnheter: visEnheter,
+      unit: valgtUnit
+    } as ValidationOpprettSakProps)
+
+    if (valid) {
+      dispatch(sakActions.createSak({
         buctype: valgtBucType,
         fnr: valgtFnr,
         landKode: valgtLandkode,
@@ -306,8 +237,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
         familierelasjoner: valgteFamilieRelasjoner,
         arbeidsgivere: valgteArbeidsgivere,
         enhet: valgtUnit
-      }
-      dispatch(sakActions.createSak(payload))
+      }))
     }
   }
 
@@ -326,19 +256,20 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
   }
 
   const onUnitChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    resetValidation('unit')
+    _resetValidation(namespace + '-unit')
     dispatch(sakActions.setProperty('unit', e.target.value))
   }
 
   const onSektorChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    resetValidation('sektor')
+    _resetValidation(namespace + '-sektor')
     dispatch(sakActions.setProperty('unit', undefined))
     dispatch(sakActions.setProperty('sektor', e.target.value))
   }
 
   const onBuctypeChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     const buctype = event.target.value
-    resetValidation(['buctype', 'landkode'])
+    _resetValidation(namespace + '-buctype')
+    _resetValidation( namespace + '-landkode')
     dispatch(sakActions.setProperty('landkode', undefined))
     dispatch(sakActions.setProperty('sedtype', undefined))
     dispatch(sakActions.setProperty('institution', undefined))
@@ -347,7 +278,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
   }
 
   const onSedtypeSet = (e: string): void => {
-    resetValidation('sedtype')
+    _resetValidation(namespace + '-sedtype')
     dispatch(sakActions.setProperty('sedtype', e))
   }
 
@@ -356,19 +287,21 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
   }
 
   const onLandkodeChange = (country: any): void => {
-    resetValidation(['landkode', 'institusjon'])
+    _resetValidation(namespace + '-landkode')
+    _resetValidation( namespace + '-institusjon')
     const landKode = country.value
     dispatch(sakActions.setProperty('landkode', landKode))
     dispatch(sakActions.getInstitusjoner(valgtBucType, landKode))
   }
 
   const onInstitusjonChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-    resetValidation('institusjon')
+    _resetValidation(namespace + '-institusjon')
     dispatch(sakActions.setProperty('institusjon', event.target.value))
   }
 
   const onTemaChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-    resetValidation(['tema', 'saksId'])
+    _resetValidation(namespace + '-tema')
+    _resetValidation(namespace + '-saksId')
     dispatch(sakActions.setProperty('tema', event.target.value))
     dispatch(sakActions.resetFagsaker())
     dispatch(sakActions.setProperty('saksId', ''))
@@ -379,9 +312,11 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
   }
 
   const onSakIDChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-    resetValidation('saksId')
+    _resetValidation(namespace + '-saksId')
     dispatch(sakActions.setProperty('saksId', event.target.value))
   }
+
+  const isValid: boolean = _.find(_.values(_validation), (e) => e !== undefined) === undefined
 
   return (
     <TopContainer>
@@ -389,7 +324,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
         <Margin />
         <Content>
           <Systemtittel>
-            {t('label:newcase')}
+            {t('label:opprett-sak')}
           </Systemtittel>
           <VerticalSeparatorDiv />
           <PersonSearch
@@ -398,9 +333,10 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
             alertType={alertType}
             alertTypesWatched={[types.SAK_PERSON_GET_FAILURE]}
             className='slideInFromLeft'
-            data-test-id='opprettsak__fnr'
+            data-test-id={namespace + '-fnr'}
+            feil={_validation[namespace + '-fnr']?.feilmelding}
             gettingPerson={gettingPerson}
-            id='opprettsak__fnr'
+            id={namespace + '-fnr'}
             initialFnr=''
             onFnrChange={() => {
               setIsFnrValid(false)
@@ -416,8 +352,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
             onPersonRemoved={() => dispatch(sakActions.resetPerson())}
             onAlertClose={() => dispatch(clientClear())}
             person={person}
-            resetAllValidation={() => resetValidation()}
-            validation={_validation.fnr}
+            resetAllValidation={() => _resetValidation()}
           />
           {isSomething(person) && (
             <>
@@ -427,9 +362,9 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   style={{ animationDelay: '0s' }}
                 >
                   <Select
-                    data-test-id='opprettsak__sektor'
-                    feil={_validation.sektor ? _validation.sektor.feilmelding : undefined}
-                    id='opprettsak__sektor'
+                    data-test-id={namespace + '-sektor'}
+                    feil={_validation[namespace + '-sektor']?.feilmelding }
+                    id={namespace + '-sektor'}
                     label={t('label:sektor')}
                     onChange={onSektorChange}
                     value={valgtSektor}
@@ -453,9 +388,9 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                 >
                   {visEnheter && (
                     <Select
-                      data-test-id='oprettsak__unit'
-                      feil={_validation.unit ? _validation.unit.feilmelding : undefined}
-                      id='oprettsak__unit'
+                      data-test-id={namespace + '-unit'}
+                      feil={_validation[namespace + '-unit']?.feilmelding}
+                      id={namespace + '-unit'}
                       label={t('label:enhet')}
                       onChange={onUnitChange}
                       value={valgtUnit}
@@ -480,10 +415,10 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   style={{ animationDelay: '0.3s' }}
                 >
                   <Select
-                    data-test-id='opprettsak__buctype'
+                    data-test-id={namespace + '-buctype'}
                     disabled={!isSomething(valgtSektor)}
-                    feil={_validation.buctype ? _validation.buctype.feilmelding : undefined}
-                    id='opprettsak__buctype'
+                    feil={_validation[namespace + '-buctype']?.feilmelding}
+                    id={namespace + '-buctype'}
                     label={t('label:buc')}
                     onChange={onBuctypeChange}
                     value={valgtBucType}
@@ -506,10 +441,10 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   style={{ animationDelay: '0.45s' }}
                 >
                   <Select
-                    data-test-id='opprettsak__sedtype'
+                    data-test-id={namespace + '-sedtype'}
                     disabled={!isSomething(valgtBucType) || !isSomething(valgtSektor)}
-                    feil={_validation.sedtype ? _validation.sedtype?.feilmelding : undefined}
-                    id='opprettsak__sedtype'
+                    feil={_validation[namespace + '-sedtype']?.feilmelding}
+                    id={namespace + '-sedtype'}
                     label={t('label:sed')}
                     onChange={onSedtypeChange}
                     value={valgtSedType}
@@ -538,15 +473,18 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   style={{ animationDelay: '0.6s' }}
                 >
                   <CountrySelect
-                    data-test-id='opprettsak__landkode'
-                    error={_validation.landkode ? _validation.landkode.feilmelding : undefined}
-                    id='opprettsak__landkode'
+                    closeMenuOnSelect={true}
+                    data-test-id={namespace + '-landkode'}
+                    error={_validation[namespace + '-landkode']?.feilmelding}
+                    id={namespace + '-landkode'}
                     includeList={landkoder ? _.orderBy(landkoder, 'term').map((k: Kodeverk) => k.kode) : []}
                     label={t('label:land')}
                     lang='nb'
+                    disabled={_.isEmpty(valgtBucType)}
                     menuPortalTarget={document.body}
                     onOptionSelected={onLandkodeChange}
                     placeholder={t('label:velg')}
+                    flagWave
                     value={valgtLandkode}
                   />
                   <VerticalSeparatorDiv />
@@ -557,10 +495,11 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   style={{ animationDelay: '0.75s' }}
                 >
                   <Select
-                    data-test-id='opprettsak__institusjon'
+                    data-test-id={namespace + '-institusjon'}
+                    key={namespace + '-institusjon-' +  valgtInstitusjon}
                     disabled={!isSomething(valgtLandkode)}
-                    feil={_validation.institusjon ? _validation.institusjon.feilmelding : undefined}
-                    id='opprettsak__institusjon'
+                    feil={_validation[namespace + '-institusjon']?.feilmelding}
+                    id={namespace + '-institusjon'}
                     label={t('label:mottaker-institusjon')}
                     onChange={onInstitusjonChange}
                     value={valgtInstitusjon}
@@ -588,7 +527,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                       {t('label:familierelasjon')}
                     </Systemtittel>
                     <VerticalSeparatorDiv />
-                    <FamilyPanel>
+                    <HighContrastPanel>
                       <Family
                         alertStatus={alertStatus}
                         alertMessage={alertMessage}
@@ -631,20 +570,20 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                           dispatch(sakActions.getPersonRelated(fnrQuery))
                         }}
                       />
-                    </FamilyPanel>
+                    </HighContrastPanel>
                     <VerticalSeparatorDiv />
                   </Column>
                 )}
               </Row>
               {valgtSektor && (
-                <Row>
+                <AlignStartRow>
                   <Column
                     className={classNames('slideInFromLeft', { feil: !!_validation.tema })}
                   >
                     <Select
-                      data-test-id='opprettsak__tema'
-                      feil={_validation.tema ? _validation.tema.feilmelding : undefined}
-                      id='opprettsak__tema'
+                      data-test-id={namespace + '-tema'}
+                      feil={_validation[namespace + '-tema']?.feilmelding}
+                      id={namespace + '-tema'}
                       label={t('label:velg-tema')}
                       onChange={onTemaChange}
                       value={valgtTema}
@@ -660,17 +599,21 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     </Select>
                     <VerticalSeparatorDiv />
                   </Column>
-                  <HorizontalSeparatorDiv />
-                  <AlignCenterColumn>
-                    <Knapp
-                      onClick={onViewFagsakerClick}
-                      disabled={!isSomething(valgtTema)}
-                    >
-                      {t('label:vis-saker')}
+                  <Column>
+                    <PileDiv>
+                      <VerticalSeparatorDiv size='2'/>
+                      <FlexDiv>
+                        <Knapp
+                        onClick={onViewFagsakerClick}
+                        spinner={gettingFagsaker}
+                        disabled={gettingFagsaker || !isSomething(valgtTema)}
+                      >
+                        {gettingFagsaker ? t('message:loading-saker') : t('label:vis-saker')}
                     </Knapp>
-                    <VerticalSeparatorDiv />
-                  </AlignCenterColumn>
-                </Row>
+                      </FlexDiv>
+                  </PileDiv>
+                  </Column>
+                </AlignStartRow>
               )}
               {(fagsaker === null || (fagsaker !== undefined && _.isEmpty(fagsaker))) && (
                 <Row>
@@ -694,9 +637,9 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                 <Row>
                   <Column>
                     <Select
-                      data-test-id='opprettsak__fagsaker'
-                      feil={_validation.saksId ? _validation.saksId.feilmelding : undefined}
-                      id='opprettsak__fagsaker'
+                      data-test-id={namespace + '-saksId'}
+                      feil={_validation[namespace + '-saksId']?.feilmelding }
+                      id={namespace + '-saksId'}
                       label={t('label:velg-fagsak')}
                       onChange={onSakIDChange}
                       value={valgtSaksId}
@@ -719,6 +662,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
               {visArbeidsgivere && (
                 <Arbeidsgivere
                   namespace='arbeidsgivere'
+                  searchable
                   getArbeidsperioder={() => dispatch(sakActions.getArbeidsperioder(person?.fnr))}
                   valgteArbeidsgivere={valgteArbeidsgivere}
                   arbeidsperioder={arbeidsperioder}
@@ -749,7 +693,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   {t('label:avslutt-utfylling')}
                 </Flatknapp>
               </Row>
-              {!isValid(_validation) && (
+              {!isValid && (
                 <>
                   <VerticalSeparatorDiv size='2' />
                   <Row>

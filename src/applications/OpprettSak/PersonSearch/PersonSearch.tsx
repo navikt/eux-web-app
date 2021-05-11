@@ -5,7 +5,7 @@ import { AlertStatus } from 'declarations/components'
 import { Person } from 'declarations/types'
 import _ from 'lodash'
 import { Knapp } from 'nav-frontend-knapper'
-import { FeiloppsummeringFeil, Input } from 'nav-frontend-skjema'
+import { Input } from 'nav-frontend-skjema'
 import PT from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -41,6 +41,7 @@ export interface PersonSearchProps {
   alertType: string | undefined
   alertTypesWatched: Array<string> | undefined
   className?: string
+  feil: string | undefined
   id: string
   initialFnr: any
   gettingPerson: boolean
@@ -51,7 +52,6 @@ export interface PersonSearchProps {
   onPersonRemoved: () => void
   person?: Person | null | undefined
   resetAllValidation: () => void
-  validation: FeiloppsummeringFeil | undefined
 }
 
 const PersonSearch: React.FC<PersonSearchProps> = ({
@@ -59,6 +59,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   alertMessage,
   alertType,
   alertTypesWatched = [],
+  feil,
   id,
   initialFnr,
   gettingPerson,
@@ -69,7 +70,6 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   onSearchPerformed,
   person,
   resetAllValidation,
-  validation
 }: PersonSearchProps): JSX.Element => {
   const { t } = useTranslation()
   const [_fnr, setFnr] = useState<string | undefined>(undefined)
@@ -144,7 +144,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
           label={t('label:søker')}
           value={_fnr || ''}
           onChange={onChange}
-          feil={validation ? validation.feilmelding : localValidation}
+          feil={feil ?? localValidation}
         />
         <Button onClick={sokEtterPerson} disabled={gettingPerson}>
           {gettingPerson
