@@ -1,16 +1,17 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
+import { IInntekter } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockInntekt from 'mocks/inntekt'
 import { ActionCreator } from 'redux'
+
 const sprintf = require('sprintf-js').sprintf
 
-export const fetchInntekt: ActionCreator<ThunkResult<ActionWithPayload>> = (
+export const fetchInntekt: ActionCreator<ThunkResult<ActionWithPayload<IInntekter>>> = (
   fnr: string, fom?: string, tom?: string
-): ThunkResult<ActionWithPayload> => {
+): ThunkResult<ActionWithPayload<IInntekter>> => {
   return call({
     url: fom ? sprintf(urls.API_INNTEKT_FOM_TOM_URL, { fnr, fom, tom }) : sprintf(urls.API_INNTEKT_URL, { fnr }),
-    method: 'GET',
     expectedPayload: mockInntekt,
     type: {
       request: types.INNTEKT_GET_REQUEST,

@@ -167,6 +167,7 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
 
     const valid: boolean = performValidationTelefon({
       telefon: newTelefon,
+      telefoner: telefoner,
       namespace: namespaceTelefon,
       personName: personName
     })
@@ -189,6 +190,7 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
 
     const valid: boolean = performValidationEpost({
       epost: newEpost,
+      eposter: eposter,
       namespace: namespaceEpost,
       personName: personName
     })
@@ -200,7 +202,7 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
         newEposter = []
       }
       newEposter.push(newEpost)
-      updateReplySed(targetEpost, newEposter)
+      dispatch(updateReplySed(targetEpost, newEposter))
       resetForm('epost')
     }
   }
@@ -208,7 +210,9 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
   const getErrorFor = (index: number, what: string, el: string): string | undefined => {
     const namespace = what === 'telefon' ? namespaceTelefon : namespaceEpost
     const _validation = what === 'telefon' ? _validationTelefon : _validationEpost
-    return index < 0 ? _validation[namespace + '-' + el]?.feilmelding : validation[namespace + '[' + index + ']-' + el]?.feilmelding
+    return index < 0
+      ? _validation[namespace + '-' + el]?.feilmelding
+      : validation[namespace + '[' + index + ']-' + el]?.feilmelding
   }
 
   const getTypeOption = (value: string | undefined | null) => _.find(telefonTypeOptions, s => s.value === value)
@@ -224,11 +228,14 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
         >
           <Column>
             <Input
+              ariaLabel={t('label:telefonnummer')}
               feil={getErrorFor(index, 'telefon', 'nummer')}
-              namespace={namespaceTelefon + idx}
+              key={namespaceTelefon + idx + '-nummer-' + (index < 0 ? _newNummer : telefon?.nummer)}
               id='nummer'
               label=''
+              namespace={namespaceTelefon + idx}
               onChanged={(value: string) => onNummerChanged(value, index)}
+              required
               value={index < 0 ? _newNummer : telefon?.nummer}
             />
           </Column>
@@ -238,10 +245,12 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
               feil={getErrorFor(index, 'telefon', 'type')}
               highContrast={highContrast}
               id={namespaceTelefon + idx + '-type'}
+              key={namespaceTelefon + idx + '-type-' + (index < 0 ? _newType : telefon?.type)}
               menuPortalTarget={document.body}
               onChange={(e) => onTypeChanged(e.value as TelefonType, index)}
               options={telefonTypeOptions}
               placeholder={t('el:placeholder-select-default')}
+              required
               selectedValue={getTypeOption(index < 0 ? _newType : telefon?.type)}
               defaultValue={getTypeOption(index < 0 ? _newType : telefon?.type)}
             />
@@ -275,11 +284,14 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
         >
           <Column flex='2'>
             <Input
+              ariaLabel={t('label:epost')}
               feil={getErrorFor(index, 'epost', 'adresse')}
               namespace={namespaceEpost + idx}
+              key={namespaceEpost + idx + '-adresse-' + (index < 0 ? _newAdresse : epost?.adresse)}
               id='adresse'
               label=''
               onChanged={(value: string) => onAdresseChanged(value, index)}
+              required
               value={index < 0 ? _newAdresse : epost?.adresse}
             />
           </Column>

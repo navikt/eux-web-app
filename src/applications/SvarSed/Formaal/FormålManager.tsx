@@ -216,7 +216,13 @@ const FormålManager: React.FC = () => {
     }
   }, [])
 
-  const menus: Array<string> = _.cloneDeep((replySed as FSed)?.formaal) || []
+  const menus: Array<string> = [];
+  ((replySed as FSed)?.formaal).forEach(f => {
+    if (Object.keys(options).indexOf(f) >= 0) {
+      menus.push(f)
+    }
+  })
+
   if (_viewKontoopplysninger) {
     menus.push('kontoopplysninger')
   }

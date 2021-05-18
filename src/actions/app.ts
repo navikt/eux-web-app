@@ -1,16 +1,16 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
+import { ParamPayload } from 'declarations/app'
 import { Enheter, LogMeAgainPayload, Saksbehandler, ServerInfo, UtgaarDatoPayload } from 'declarations/types'
 import EKV from 'eessi-kodeverk'
+import mockSaksbehandler from 'eux-schema/mock_data/saksbehandler.json'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import _ from 'lodash'
-import { Action, ActionCreator } from 'redux'
 import mockEnhet from 'mocks/enhet'
-import mockSaksbehandler from 'eux-schema/mock_data/saksbehandler.json'
+import mockReautorisering from 'mocks/reautorisering'
 import mockServerInfo from 'mocks/serverinfo'
 import mockUtgaarDato from 'mocks/utgaarDato'
-import mockReautorisering from 'mocks/reautorisering'
-import { ParamPayload } from 'declarations/app'
+import { Action, ActionCreator } from 'redux'
 
 export const cleanData: ActionCreator<Action> = (): Action => ({
   type: types.APP_CLEAN_DATA
@@ -92,7 +92,8 @@ KTObjects: {
   tema: tema
 };
 */
-export const preload = () => ({
+export const preload: ActionCreator<ActionWithPayload<any>> = (
+): ActionWithPayload<any> => ({
   type: types.APP_PRELOAD,
   payload: {
     ...EKV.KTObjects,

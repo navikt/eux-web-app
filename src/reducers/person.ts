@@ -29,23 +29,30 @@ const personReducer = (state: PersonState = initialPersonState, action: ActionWi
         person: (action as ActionWithPayload).payload
       }
 
-    case types.PERSON_RELATERT_GET_FAILURE:
-      return {
-        ...state,
-        personRelatert: null
-      }
-
-    case types.PERSON_RELATERT_GET_SUCCESS:
-      return {
-        ...state,
-        personRelatert: (action as ActionWithPayload).payload
-      }
-
     case types.PERSON_SEARCH_FAILURE:
       return {
         ...state,
         person: null
       }
+
+    case types.PERSON_RELATERT_SEARCH_REQUEST:
+      return {
+        ...state,
+        personRelatert: undefined
+      }
+
+    case types.PERSON_RELATERT_SEARCH_FAILURE:
+      return {
+        ...state,
+        personRelatert: null
+      }
+
+    case types.PERSON_RELATERT_SEARCH_SUCCESS:
+      return {
+        ...state,
+        personRelatert: (action as ActionWithPayload).payload
+      }
+
     default:
       return state
   }

@@ -1,6 +1,7 @@
+import Input from 'components/Forms/Input'
 import moment from 'moment'
-import { Column, HighContrastInput } from 'nav-hoykontrast'
-import React, { useState } from 'react'
+import { Column } from 'nav-hoykontrast'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 export interface PeriodProps {
@@ -42,44 +43,45 @@ const Period = ({
   valueStartDato,
   valueSluttDato
 }: PeriodProps) => {
-  const [_startDato, _setStartDato] = useState<string>(() => toUIDateFormat(valueStartDato) ?? '')
-  const [_sluttDato, _setSluttDato] = useState<string>(() => toUIDateFormat(valueSluttDato) ?? '')
   const { t } = useTranslation()
 
-  const onStartDatoBlur = () => {
-    const date = toFinalDateFormat(_startDato)
+  const onStartDatoChanged = (startDato: string) => {
+    const date = toFinalDateFormat(startDato)
     setStartDato(date)
   }
 
-  const onEndDatoBlur = () => {
-    const date = toFinalDateFormat(_sluttDato)
+  const onEndDatoChanged = (sluttDato: string) => {
+    const date = toFinalDateFormat(sluttDato)
     setSluttDato(date)
   }
 
   return (
     <>
       <Column>
-        <HighContrastInput
-          data-test-id={namespace + '-startdato'}
+        <Input
+          ariaLabel={labelStartDato || t('label:startdato')}
           feil={errorStartDato}
-          id={namespace + '-startdato'}
+          id='startdato'
+          key={namespace + '-startdato-' + valueStartDato}
           label={labels ? labelStartDato || t('label:startdato') + ' *' : ''}
-          onBlur={onStartDatoBlur}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setStartDato(e.target.value)}
+          namespace={namespace}
+          onChanged={onStartDatoChanged}
           placeholder={t('el:placeholder-date-default')}
-          value={_startDato}
+          required
+          value={toUIDateFormat(valueStartDato) ?? ''}
         />
       </Column>
       <Column>
-        <HighContrastInput
-          data-test-id={namespace + '-sluttdato'}
+        <Input
+          ariaLabel={labelSluttDato || t('label:sluttdato')}
           feil={errorSluttDato}
-          id={namespace + '-sluttdato'}
+          id='sluttdato'
+          key={namespace + '-sluttdato-' + valueSluttDato}
           label={labels ? labelSluttDato || t('label:sluttdato') : ''}
-          onBlur={onEndDatoBlur}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSluttDato(e.target.value)}
+          namespace={namespace}
+          onChanged={onEndDatoChanged}
           placeholder={t('el:placeholder-date-default')}
-          value={_sluttDato}
+          value={toUIDateFormat(valueSluttDato) ?? ''}
         />
       </Column>
     </>

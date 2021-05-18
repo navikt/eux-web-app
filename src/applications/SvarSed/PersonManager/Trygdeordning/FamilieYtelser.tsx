@@ -8,7 +8,7 @@ import Select from 'components/Forms/Select'
 import Period from 'components/Period/Period'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { PensjonPeriode, PensjonsType, Periode } from 'declarations/sed'
+import { PensjonPeriode, PensjonsType, Periode, SedCategory } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
@@ -39,9 +39,6 @@ const mapState = (state: State): FamilieYtelserSelector => ({
   replySed: state.svarpased.replySed,
   validation: state.validation.status
 })
-
-type SedCategory = 'perioderMedArbeid' | 'perioderMedTrygd' |
-  'perioderMedYtelser' | 'perioderMedPensjon'
 
 const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
@@ -99,15 +96,17 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
   const getPensjonsTypeOption = (value: string | undefined | null) => _.find(selectPensjonsTypeOptions, s => s.value === value)
 
   const setStartDato = (startdato: string, index: number, newSedCategory: SedCategory | null) => {
+    let suffixnamespace: string = ''
+    if (newSedCategory === 'perioderMedPensjon') {
+      suffixnamespace = '-periode'
+    }
     if (index < 0) {
       _setNewStartDato(startdato.trim())
       _resetValidation(namespace + '-familieYtelse-startdato')
     } else {
       const newPerioder: Array<Periode | PensjonPeriode> = _.cloneDeep(perioder[newSedCategory!])
-      let suffixnamespace: string = ''
       if (newSedCategory === 'perioderMedPensjon') {
         (newPerioder[index] as PensjonPeriode).periode.startdato = startdato.trim()
-        suffixnamespace = '-periode'
       } else {
         (newPerioder[index] as Periode).startdato = startdato.trim()
       }
@@ -119,13 +118,15 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
   }
 
   const setSluttDato = (sluttdato: string, index: number, newSedCategory: SedCategory |null) => {
+    let suffixnamespace: string = ''
+    if (newSedCategory === 'perioderMedPensjon') {
+      suffixnamespace = '-periode'
+    }
     if (index < 0) {
       _setNewSluttDato(sluttdato.trim())
       _resetValidation(namespace + '-familieYtelse-sluttdato')
     } else {
-      let suffixnamespace: string = ''
       if (newSedCategory === 'perioderMedPensjon') {
-        suffixnamespace = '-periode'
         const newPerioder: Array<PensjonPeriode> = _.cloneDeep(perioder[newSedCategory]) as Array<PensjonPeriode>
         if (sluttdato === '') {
           delete newPerioder[index].periode.sluttdato
@@ -137,7 +138,6 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
         dispatch(updateReplySed(`${personID}.${newSedCategory}`, newPerioder))
       } else {
         const newPerioder: Array<Periode> = _.cloneDeep(perioder[newSedCategory!]) as Array<Periode>
-
         if (sluttdato === '') {
           delete newPerioder[index].sluttdato
           newPerioder[index].aapenPeriodeType = 'åpen_sluttdato'
@@ -161,14 +161,14 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
   const setPensjonType = (type: PensjonsType, index: number) => {
     if (index < 0) {
       _setNewPensjonsType(type)
-      _resetValidation(namespace + '-familieYtelse-pensjontype')
+      _resetValidation(namespace + '-familieYtelse-pensjonstype')
     } else {
       const newPerioder: Array<PensjonPeriode> = _.cloneDeep(perioder.perioderMedPensjon) as Array<PensjonPeriode>
       newPerioder[index].pensjonstype = type
 
       dispatch(updateReplySed(`${personID}.perioderMedPensjon`, newPerioder))
-      if (validation[namespace + '-perioderMedPensjon' + getIdx(index) + '-pensjontype']) {
-        dispatch(resetValidation(namespace + '-perioderMedPensjon' + getIdx(index) + '-pensjontype'))
+      if (validation[namespace + '-perioderMedPensjon' + getIdx(index) + '-pensjonstype']) {
+        dispatch(resetValidation(namespace + '-perioderMedPensjon' + getIdx(index) + '-pensjonstype'))
       }
     }
   }
@@ -229,6 +229,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
 
     const valid: boolean = performValidation({
       periode: newPeriode,
+      perioder: perioder[_newCategory],
       namespace,
       sedCategory: _newCategory,
       personName
@@ -252,11 +253,12 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
   ) => {
     const candidateForDeletion: boolean = index < 0 ? false : isInDeletion(periode)
     const idx = '-' + (index < 0 ? 'familieYtelse' : sedCategory + '[' + index + ']')
-    const getErrorFor = (sedCategory: SedCategory | null, index: number, el: string): string | undefined => (
+    const getErrorFor = (index: number, el: string): string | undefined => (
       index < 0
         ? _validation[namespace + idx + '-' + el]?.feilmelding
         : validation[namespace + idx + '-' + el]?.feilmelding
     )
+
     const startdato = index < 0
       ? _newStartDato
       : (sedCategory === 'perioderMedPensjon'
@@ -278,8 +280,8 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
             key={'' + startdato + sluttdato}
             labels={false}
             namespace={namespace + idx}
-            errorStartDato={getErrorFor(sedCategory, index, 'startdato')}
-            errorSluttDato={getErrorFor(sedCategory, index, 'sluttdato')}
+            errorStartDato={getErrorFor(index, 'startdato')}
+            errorSluttDato={getErrorFor(index, 'sluttdato')}
             setStartDato={(dato: string) => setStartDato(dato, index, sedCategory)}
             setSluttDato={(dato: string) => setSluttDato(dato, index, sedCategory)}
             valueStartDato={startdato}
@@ -308,9 +310,10 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
                 {index < 0 && (
                   <Select
                     data-test-id={namespace + idx + '-category'}
-                    feil={getErrorFor(sedCategory, index, 'category')}
+                    feil={getErrorFor(index, 'category')}
                     highContrast={highContrast}
                     id={namespace + idx + '-category'}
+                    key={namespace + idx + '-category-' + _newCategory}
                     menuPortalTarget={document.body}
                     onChange={(e: any) => setCategory(e.value)}
                     options={selectCategoryOptions}
@@ -328,9 +331,10 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
                 (
                   <Select
                     data-test-id={namespace + idx + '-pensjonstype'}
-                    feil={getErrorFor(sedCategory, index, 'pensjonstype')}
+                    feil={getErrorFor(index, 'pensjonstype')}
                     highContrast={highContrast}
                     id={namespace + idx + '-pensjonstype'}
+                    key={namespace + idx + '-pensjonstype-' + (index < 0 ? _newPensjonsType : (periode as PensjonPeriode)?.pensjonstype)}
                     menuPortalTarget={document.body}
                     onChange={(e: any) => setPensjonType(e.value, index)}
                     options={selectPensjonsTypeOptions}

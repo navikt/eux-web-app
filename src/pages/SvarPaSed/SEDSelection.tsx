@@ -47,11 +47,11 @@ const LeftDiv = styled.div`
 `
 const FilterDiv = styled(FlexDiv)`
   transition: all 0.3s ease-in-out;
- .selected {
+  .selected {
     text-decoration: underline;
     text-decoration: bold;
     color: ${({ theme }) => theme[themeKeys.MAIN_ACTIVE_COLOR]} !important;
- }
+  }
 `
 
 const SEDPanel = styled(HighContrastPanel)`

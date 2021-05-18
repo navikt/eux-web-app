@@ -314,7 +314,6 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
     setMounted(true)
   }, [aktoerId, dispatch, list, loadingJoarkList, _mounted])
 
-
   useEffect(() => {
     if (!equalFiles(previewFile, _previewFile)) {
       setPreviewFile(previewFile)

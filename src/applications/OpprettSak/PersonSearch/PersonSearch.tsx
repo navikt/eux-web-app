@@ -69,7 +69,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   onPersonRemoved,
   onSearchPerformed,
   person,
-  resetAllValidation,
+  resetAllValidation
 }: PersonSearchProps): JSX.Element => {
   const { t } = useTranslation()
   const [_fnr, setFnr] = useState<string | undefined>(undefined)

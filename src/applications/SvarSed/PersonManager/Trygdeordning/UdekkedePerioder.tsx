@@ -63,7 +63,7 @@ const UdekkedePerioder: React.FC<PersonManagerFormProps> = ({
       _setNewStartDato(startdato.trim())
       _resetValidation(namespace + '-udekkede-startdato')
     } else {
-      dispatch(updateReplySed(`{target}[${index}].startdato`, startdato.trim()))
+      dispatch(updateReplySed(`${target}[${index}].startdato`, startdato.trim()))
       if (validation[namespace + '-perioderUtenforTrygdeordning' + getIdx(index) + '-startdato']) {
         dispatch(resetValidation(namespace + '-perioderUtenforTrygdeordning' + getIdx(index) + '-startdato'))
       }
@@ -122,6 +122,7 @@ const UdekkedePerioder: React.FC<PersonManagerFormProps> = ({
 
     const valid: boolean = performValidation({
       periode: newPeriode,
+      perioder: perioderUtenforTrygdeordning,
       namespace,
       personName
     })

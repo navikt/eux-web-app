@@ -1,4 +1,5 @@
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { FSed, ReplySed } from 'declarations/sed'
@@ -44,20 +45,23 @@ const Formaal: React.FC = (): JSX.Element => {
 
   const onItemsChanged = (newFormaals: Array<string>) => {
     dispatch(updateReplySed('formaal', newFormaals))
+    dispatch(resetValidation(namespace))
   }
 
   return (
-    <Stack
-      key={namespace}
-      feil={validation[namespace]?.feilmelding}
-      highContrast={highContrast}
-      initialValues={formaal}
-      itemLabel={t('label:formål')}
-      namespace={namespace}
-      options={formaalOptions}
-      onChange={onItemsChanged}
-      title={t('label:velg-formaal')}
-    />
+    <div id={namespace}>
+      <Stack
+        key={namespace}
+        feil={validation[namespace]?.feilmelding}
+        highContrast={highContrast}
+        initialValues={formaal}
+        itemLabel={t('label:formål')}
+        namespace={namespace}
+        options={formaalOptions}
+        onChange={onItemsChanged}
+        title={t('label:velg-formaal')}
+      />
+    </div>
   )
 }
 

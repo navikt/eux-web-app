@@ -4,10 +4,14 @@ import { ActionWithPayload } from 'js-fetch-api'
 
 export interface InntektState {
   inntekter: IInntekter | undefined
+  fra: string | undefined
+  til: string | undefined
 }
 
 export const initialInntektState: InntektState = {
-  inntekter: undefined
+  inntekter: undefined,
+  fra: undefined,
+  til: undefined
 }
 
 const inntektReducer = (state: InntektState = initialInntektState, action: ActionWithPayload = { type: '', payload: undefined }) => {

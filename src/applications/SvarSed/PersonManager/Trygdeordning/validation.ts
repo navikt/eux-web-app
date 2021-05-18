@@ -4,9 +4,11 @@ import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
+import { getIdx } from 'utils/namespace'
 
 export interface ValidationDekkedePeriodeProps {
   periode: Periode,
+  perioder: Array<Periode>,
   index?: number,
   namespace: string,
   personName: string
@@ -14,13 +16,15 @@ export interface ValidationDekkedePeriodeProps {
 
 export interface ValidationUdekkedePeriodeProps {
   periode: Periode,
+  perioder: Array<Periode>,
   index?: number,
   namespace: string,
   personName: string
 }
 
 export interface ValidationFamilieytelsePeriodeProps {
-  periode: PensjonPeriode,
+  periode: Periode | PensjonPeriode,
+  perioder: Array<Periode | PensjonPeriode>
   index?: number,
   namespace: string,
   sedCategory: string,
@@ -32,6 +36,7 @@ const validateGenericPeriode = (
   t: TFunction,
   {
     periode,
+    perioder,
     index,
     namespace,
     personName
@@ -40,7 +45,7 @@ const validateGenericPeriode = (
   sedCategory: string
 ): boolean => {
   let hasErrors: boolean = false
-  const extraNamespace = namespace + '-' + (!_.isNil(index) && index >= 0 ? sedCategory + '[' + index + ']' : pageCategory)
+  const extraNamespace = namespace + '-' + (!_.isNil(index) && index >= 0 ? sedCategory : pageCategory)
 
   const periodError: boolean = validatePeriod(
     v,
@@ -53,6 +58,24 @@ const validateGenericPeriode = (
     }
   )
   hasErrors = hasErrors || periodError
+  const idx = getIdx(index)
+
+  if (!_.isEmpty(periode?.startdato)) {
+    let duplicate: boolean
+    if (_.isNil(index)) {
+      duplicate = _.find(perioder, p => p.startdato === periode?.startdato) !== undefined
+    } else {
+      const otherPerioder: Array<Periode> = _.filter(perioder, (p, i) => i !== index)
+      duplicate = _.find(otherPerioder, e => e.startdato === periode?.startdato) !== undefined
+    }
+    if (duplicate) {
+      v[extraNamespace + idx + '-startdato'] = {
+        feilmelding: t('message:validation-duplicateStartdatoForPerson', { person: personName }),
+        skjemaelementId: namespace + idx + '-startdato'
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
+  }
 
   if (hasErrors) {
     const namespaceBits = namespace.split('-')
@@ -71,6 +94,7 @@ export const validateDekkedePeriode = (
   t: TFunction,
   {
     periode,
+    perioder,
     index,
     namespace,
     personName
@@ -78,6 +102,7 @@ export const validateDekkedePeriode = (
 ): boolean => {
   return validateGenericPeriode(v, t, {
     periode,
+    perioder,
     index,
     namespace,
     personName
@@ -90,6 +115,7 @@ export const validateUdekkedePeriode = (
   t: TFunction,
   {
     periode,
+    perioder,
     index,
     namespace,
     personName
@@ -97,6 +123,7 @@ export const validateUdekkedePeriode = (
 ): boolean => {
   return validateGenericPeriode(v, t, {
     periode,
+    perioder,
     index,
     namespace,
     personName
@@ -109,6 +136,7 @@ export const validateFamilieytelserPeriode = (
   t: TFunction,
   {
     periode,
+    perioder,
     index,
     namespace,
     sedCategory,
@@ -116,26 +144,65 @@ export const validateFamilieytelserPeriode = (
   }: ValidationFamilieytelsePeriodeProps
 ): boolean => {
   let hasErrors: boolean = false
-  const extraNamespace = namespace + '-' + (!_.isNil(index) && index >= 0 ? sedCategory + '[' + index + ']' : 'familieYtelse')
+  const idx = getIdx(index)
+  const extraNamespace = namespace + '-' + (!_.isNil(index) && index >= 0 ? sedCategory : 'familieYtelse') + idx
+  const extraperiodeNamespace = extraNamespace
+  if (sedCategory === 'perioderMedPensjon' && !_.isNil(index) && index >= 0) {
+    extraperiodeNamespace + '-periode'
+  }
+  const period = sedCategory === 'perioderMedPensjon' ? (periode as PensjonPeriode).periode : (periode as Periode)
 
   const periodError: boolean = validatePeriod(
     v,
     t,
     {
-      period: periode.periode,
-      index: index,
-      namespace: extraNamespace,
+      period: period,
+      namespace: extraperiodeNamespace,
       personName: personName
     }
   )
   hasErrors = hasErrors || periodError
 
-  if (!_.isEmpty(periode.pensjonstype)) {
-    v[extraNamespace + '-pensjontype'] = {
-      feilmelding: t('message:validation-noPensjonTypeTilPerson', { person: personName }),
-      skjemaelementId: extraNamespace + '-pensjontype'
+  let duplicate: boolean
+  if (_.isNil(index)) {
+    if (sedCategory === 'perioderMedPensjon') {
+      duplicate = _.find(perioder, (p: PensjonPeriode) => p.periode.startdato === period.startdato) !== undefined
+    } else {
+      duplicate = _.find(perioder, (p: Periode) => p.startdato === period.startdato) !== undefined
+    }
+  } else {
+    if (sedCategory === 'perioderMedPensjon') {
+      if (_.isNil(index)) {
+        duplicate = _.find(perioder, (p: PensjonPeriode) => p.periode.startdato === period?.startdato) !== undefined
+      } else {
+        const otherPensjonPerioder: Array<PensjonPeriode> = _.filter(perioder, (p, i: number) => i !== index) as Array<PensjonPeriode>
+        duplicate = _.find(otherPensjonPerioder, p => p.periode.startdato === period.startdato) !== undefined
+      }
+    } else {
+      if (_.isNil(index)) {
+        duplicate = _.find(perioder, (p: Periode) => p.startdato === period?.startdato) !== undefined
+      } else {
+        const otherPensjonPerioder: Array<Periode> = _.filter(perioder, (p, i: number) => i !== index) as Array<Periode>
+        duplicate = _.find(otherPensjonPerioder, e => e.startdato === period.startdato) !== undefined
+      }
+    }
+  }
+  if (duplicate) {
+    v[extraperiodeNamespace + '-startdato'] = {
+      feilmelding: t('message:validation-duplicateStartdatoForPerson', { person: personName }),
+      skjemaelementId: extraperiodeNamespace + '-startdato'
     } as FeiloppsummeringFeil
     hasErrors = true
+  }
+
+  if (sedCategory === 'perioderMedPensjon') {
+    if (_.isEmpty((periode as PensjonPeriode).pensjonstype)) {
+      v[extraNamespace + '-pensjonstype'] = {
+        feilmelding: t('message:validation-noPensjonTypeTilPerson', { person: personName }),
+        skjemaelementId: extraNamespace + '-pensjonstype'
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
   }
 
   if (hasErrors) {
@@ -163,9 +230,9 @@ export const validatePerioder = (
   perioder?.forEach((periode: Periode | PensjonPeriode, index: number) => {
     let _error: boolean
     if (sedCategory === 'perioderMedPensjon') {
-      _error = validateFamilieytelserPeriode(v, t, { periode: (periode as PensjonPeriode), index, namespace, sedCategory, personName })
+      _error = validateFamilieytelserPeriode(v, t, { periode: (periode as PensjonPeriode), perioder: (perioder as Array<PensjonPeriode>), index, namespace, sedCategory, personName })
     } else {
-      _error = validateGenericPeriode(v, t, { periode: (periode as Periode), index, namespace, personName }, pageCategory, sedCategory)
+      _error = validateGenericPeriode(v, t, { periode: (periode as Periode), perioder: (perioder as Array<Periode>), index, namespace, personName }, pageCategory, sedCategory)
     }
     hasErrors = hasErrors || _error
   })

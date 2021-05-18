@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 export interface InputProps {
   ariaLabel ?: string
   className ?: string
-  feil: string | undefined
+  feil: string | null | undefined
   namespace: string
   id: string
   label: JSX.Element | string

@@ -164,9 +164,9 @@ export const getPersonRelated: ActionCreator<ThunkResult<ActionWithPayload<Perso
       fnr: fnr
     },
     type: {
-      request: types.SAK_PERSON_RELATERT_GET_REQUEST,
-      success: types.SAK_PERSON_RELATERT_GET_SUCCESS,
-      failure: types.SAK_PERSON_RELATERT_GET_FAILURE
+      request: types.SAK_PERSON_RELATERT_SEARCH_REQUEST,
+      success: types.SAK_PERSON_RELATERT_SEARCH_SUCCESS,
+      failure: types.SAK_PERSON_RELATERT_SEARCH_FAILURE
     }
   })
 }

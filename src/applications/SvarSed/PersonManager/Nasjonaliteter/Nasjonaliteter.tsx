@@ -26,6 +26,7 @@ import {
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import { OptionTypeBase } from 'react-select'
 import { getIdx } from 'utils/namespace'
 import { validateNasjonalitet, ValidationNasjonalitetProps } from './validation'
 
@@ -145,27 +146,31 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
         >
           <Column>
             <CountrySelect
+              ariaLabel={t('label:nasjonalitet')}
               closeMenuOnSelect
-              key={namespace + idx + '-land' + (index < 0 ? _newLand : statsborgerskap?.land)}
               data-test-id={namespace + idx + '-land'}
               error={getErrorFor(index, 'land')}
               flagWave
+              key={namespace + idx + '-land' + (index < 0 ? _newLand : statsborgerskap?.land)}
               id={namespace + idx + '-land'}
-              includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
+              includeList={landkoderList?.map((l: Kodeverk) => l.kode) || []}
               menuPortalTarget={document.body}
-              onOptionSelected={(e: any) => onLandSelected(e.value, index)}
+              onOptionSelected={(e: OptionTypeBase) => onLandSelected(e.value, index)}
               placeholder={t('el:placeholder-select-default')}
+              required
               values={index < 0 ? _newLand : statsborgerskap?.land}
             />
           </Column>
           <Column>
             <DateInput
+              ariaLabel={t('label:fra-dato')}
               feil={getErrorFor(index, 'fradato')}
-              namespace={namespace + idx}
               id='fradato'
               key={index < 0 ? _newFradato : statsborgerskap?.fradato}
               label=''
+              namespace={namespace + idx}
               onChanged={(date: string) => onFradatoChanged(date, index)}
+              required
               value={index < 0 ? _newFradato : statsborgerskap?.fradato}
             />
           </Column>

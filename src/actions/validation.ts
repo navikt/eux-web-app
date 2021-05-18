@@ -10,7 +10,8 @@ export const setAllValidation: ActionCreator<ActionWithPayload<Validation>> = (
   payload: newValidation
 })
 
-export const resetAllValidation: ActionCreator<ActionWithPayload> = (): ActionWithPayload => ({
+export const resetAllValidation: ActionCreator<ActionWithPayload<{}>> = (
+): ActionWithPayload<{}> => ({
   type: types.VALIDATION_SET,
   payload: {}
 })

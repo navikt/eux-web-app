@@ -2,9 +2,9 @@ import { clientClear } from 'actions/alert'
 import {
   createSavingAttachmentJob,
   resetSedAttachments,
-  resetSedResponse,
   sendAttachmentToSed
 } from 'actions/attachments'
+import { resetSedResponse } from 'actions/svarpased'
 import GreenCircle from 'assets/icons/GreenCircle'
 import Alert from 'components/Alert/Alert'
 import Modal from 'components/Modal/Modal'

@@ -159,7 +159,7 @@ const Stack: React.FC<StackProps> = ({
       {feil && (
         <div role='alert' aria-live='assertive' className='feilmelding skjemaelement__feilmelding'>
           <Feilmelding>
-            {feil.feilmelding}
+            {feil}
           </Feilmelding>
         </div>
       )}

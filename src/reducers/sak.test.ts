@@ -122,13 +122,13 @@ describe('reducers/sak', () => {
     })
   })
 
-  it('SAK_PERSON_RELATERT_GET_FAILURE', () => {
+  it('SAK_PERSON_RELATERT_SEARCH_FAILURE', () => {
     expect(
       sakReducer({
         ...initialSakState,
         personRelatert: []
       }, {
-        type: types.SAK_PERSON_RELATERT_GET_FAILURE,
+        type: types.SAK_PERSON_RELATERT_SEARCH_FAILURE,
         payload: {}
       })
     ).toEqual({
@@ -137,13 +137,13 @@ describe('reducers/sak', () => {
     })
   })
 
-  it('SAK_PERSON_RELATERT_GET_SUCCESS', () => {
+  it('SAK_PERSON_RELATERT_SEARCH_SUCCESS', () => {
     const payload = 'mockPayload'
     expect(
       sakReducer({
         ...initialSakState
       }, {
-        type: types.SAK_PERSON_RELATERT_GET_SUCCESS,
+        type: types.SAK_PERSON_RELATERT_SEARCH_SUCCESS,
         payload: payload
       })
     ).toEqual({

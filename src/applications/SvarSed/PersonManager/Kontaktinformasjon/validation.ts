@@ -7,6 +7,7 @@ import { getIdx } from 'utils/namespace'
 
 export interface ValidationKontaktsinformasjonTelefonProps {
   telefon: Telefon
+  telefoner: Array<Telefon>
   index?: number
   namespace: string
   personName: string
@@ -14,6 +15,7 @@ export interface ValidationKontaktsinformasjonTelefonProps {
 
 export interface ValidationKontaktsinformasjonEpostProps {
   epost: Epost,
+  eposter: Array<Epost>,
   index?: number
   namespace: string
   personName: string
@@ -26,6 +28,7 @@ export const validateKontaktsinformasjonTelefon = (
   t: TFunction,
   {
     telefon,
+    telefoner,
     index,
     namespace,
     personName
@@ -49,6 +52,20 @@ export const validateKontaktsinformasjonTelefon = (
     } as FeiloppsummeringFeil
     hasErrors = true
   }
+  let duplicate: boolean
+  if (_.isNil(index)) {
+    duplicate = _.find(telefoner, t => t.nummer === telefon.nummer) !== undefined
+  } else {
+    const otherTelefoner: Array<Telefon> = _.filter(telefoner, (t, i) => i !== index)
+    duplicate = _.find(otherTelefoner, t => t.nummer === telefon.nummer) !== undefined
+  }
+  if (duplicate) {
+    v[namespace + idx + '-nummer'] = {
+      feilmelding: t('message:validation-duplicateTelephoneNumberForPerson', { person: personName }),
+      skjemaelementId: namespace + idx + '-nummer'
+    } as FeiloppsummeringFeil
+    hasErrors = true
+  }
 
   if (hasErrors) {
     const namespaceBits = namespace.split('-')
@@ -67,6 +84,7 @@ export const validateKontaktsinformasjonEpost = (
   t: TFunction,
   {
     epost,
+    eposter,
     index,
     namespace,
     personName
@@ -86,6 +104,21 @@ export const validateKontaktsinformasjonEpost = (
   } else {
     v[namespace + idx + '-adresse'] = {
       feilmelding: t('message:validation-noEpostForPerson', { person: personName }),
+      skjemaelementId: namespace + idx + '-adresse'
+    } as FeiloppsummeringFeil
+    hasErrors = true
+  }
+
+  let duplicate: boolean
+  if (_.isNil(index)) {
+    duplicate = _.find(eposter, e => e.adresse === epost?.adresse) !== undefined
+  } else {
+    const otherEposter: Array<Epost> = _.filter(eposter, (e, i) => i !== index)
+    duplicate = _.find(otherEposter, e => e.adresse === epost?.adresse) !== undefined
+  }
+  if (duplicate) {
+    v[namespace + idx + '-adresse'] = {
+      feilmelding: t('message:validation-duplicateTelephoneNumberForPerson', { person: personName }),
       skjemaelementId: namespace + idx + '-adresse'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -112,7 +145,7 @@ export const validateKontaktsinformasjonTelefoner = (
 ): boolean => {
   let hasErrors: boolean = false
   telefoner?.forEach((telefon: Telefon, index: number) => {
-    const _error: boolean = validateKontaktsinformasjonTelefon(validation, t, { telefon, index, namespace, personName })
+    const _error: boolean = validateKontaktsinformasjonTelefon(validation, t, { telefon, telefoner, index, namespace, personName })
     hasErrors = hasErrors || _error
   })
   return hasErrors
@@ -127,7 +160,7 @@ export const validateKontaktsinformasjonEposter = (
 ): boolean => {
   let hasErrors: boolean = false
   eposter?.forEach((epost: Epost, index: number) => {
-    const _error: boolean = validateKontaktsinformasjonEpost(validation, t, { epost, index, namespace, personName })
+    const _error: boolean = validateKontaktsinformasjonEpost(validation, t, { epost, eposter, index, namespace, personName })
     hasErrors = hasErrors || _error
   })
   return hasErrors

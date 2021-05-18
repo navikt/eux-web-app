@@ -200,3 +200,8 @@ export interface UtgaarDatoPayload {
   naa?: string
   utgaarDato: string
 }
+
+export interface UpdateReplySedPayload {
+  needle: string
+  value: any
+}

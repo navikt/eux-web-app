@@ -128,7 +128,7 @@ const svarpasedReducer = (
         newReplySed = {} as ReplySed
       }
       _.set(newReplySed,
-        (action as ActionWithPayload).payload.needleString,
+        (action as ActionWithPayload).payload.needle,
         (action as ActionWithPayload).payload.value
       )
 
@@ -147,12 +147,6 @@ const svarpasedReducer = (
         previousParentSed: state.previousParentSed,
         parentSed: state.parentSed,
         replySed: state.replySed
-      }
-
-    case types.PERSON_RELATERT_RESET:
-      return {
-        ...state,
-        personRelatert: undefined
       }
 
     default:

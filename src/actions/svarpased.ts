@@ -2,7 +2,7 @@ import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { SvarPaSedMode } from 'declarations/app'
 import { ReplySed } from 'declarations/sed'
-import { ConnectedSed } from 'declarations/types'
+import { ConnectedSed, UpdateReplySedPayload } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockReplySed from 'mocks/replySed'
 import mockConnectedReplySeds from 'mocks/connectedReplySeds'
@@ -10,6 +10,24 @@ import { Action, ActionCreator } from 'redux'
 import validator from '@navikt/fnrvalidator'
 import mockPreview from 'mocks/previewFile'
 const sprintf = require('sprintf-js').sprintf
+
+export const createSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
+  rinaSakId: string, replySed: ReplySed
+): ThunkResult<ActionWithPayload> => {
+  return call({
+    method: 'POST',
+    url: sprintf(urls.API_SED_CREATE_URL, { rinaSakId: rinaSakId }),
+    expectedPayload: {
+      sedId: '123'
+    },
+    type: {
+      request: types.SVARPASED_SED_CREATE_REQUEST,
+      success: types.SVARPASED_SED_CREATE_SUCCESS,
+      failure: types.SVARPASED_SED_CREATE_FAILURE
+    },
+    body: replySed
+  })
+}
 
 export const getPreviewFile = () => {
   return call({
@@ -23,9 +41,13 @@ export const getPreviewFile = () => {
   })
 }
 
-export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload>> = (
+export const resetSedResponse: ActionCreator<Action> = (): Action => ({
+  type: types.SVARPASED_SED_RESPONSE_RESET
+})
+
+export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload<ConnectedSed>>> = (
   saksnummerOrFnr: string
-): ThunkResult<ActionWithPayload> => {
+): ThunkResult<ActionWithPayload<ConnectedSed>> => {
   let url, type
   const result = validator.idnr(saksnummerOrFnr)
 
@@ -56,9 +78,9 @@ export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload>>
   })
 }
 
-export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload>> = (
+export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed>>> = (
   saksnummerOrFnr: string, connectedSed: ConnectedSed, saksnummer: string
-): ThunkResult<ActionWithPayload> => {
+): ThunkResult<ActionWithPayload<ReplySed>> => {
   const mockSed = mockReplySed(connectedSed.svarsedType)
   return call({
     url: sprintf(urls.API_RINASAK_SVARSED_QUERY_URL, {
@@ -85,28 +107,11 @@ export const resetReplySed: ActionCreator<Action> = (): Action => ({
   type: types.SVARPASED_REPLYSED_RESET
 })
 
-export const setMode: ActionCreator<ActionWithPayload> = (
+export const setMode: ActionCreator<ActionWithPayload<SvarPaSedMode>> = (
   mode: SvarPaSedMode
-): ActionWithPayload => ({
+): ActionWithPayload<SvarPaSedMode> => ({
   type: types.SVARPASED_MODE_SET,
   payload: mode
-})
-
-export const setReplySed: ActionCreator<ActionWithPayload> = (
-  replySed: ReplySed
-): ActionWithPayload => ({
-  type: types.SVARPASED_REPLYSED_SET,
-  payload: replySed
-})
-
-export const updateReplySed: ActionCreator<ActionWithPayload> = (
-  needleString: string | Array<string>, value: any
-): ActionWithPayload => ({
-  type: types.SVARPASED_REPLYSED_UPDATE,
-  payload: {
-    needleString,
-    value
-  }
 })
 
 export const setParentSed: ActionCreator<ActionWithPayload> = (
@@ -116,20 +121,19 @@ export const setParentSed: ActionCreator<ActionWithPayload> = (
   payload: payload
 })
 
-export const createSed: ActionCreator<ThunkResult<
-  ActionWithPayload
->> = (rinaSakId: string, replySed: ReplySed): ThunkResult<ActionWithPayload> => {
-  return call({
-    method: 'POST',
-    url: sprintf(urls.API_SED_CREATE_URL, { rinaSakId: rinaSakId }),
-    expectedPayload: {
-      sedId: '123'
-    },
-    type: {
-      request: types.SVARPASED_SED_CREATE_REQUEST,
-      success: types.SVARPASED_SED_CREATE_SUCCESS,
-      failure: types.SVARPASED_SED_CREATE_FAILURE
-    },
-    body: replySed
-  })
-}
+export const setReplySed: ActionCreator<ActionWithPayload<ReplySed>> = (
+  replySed: ReplySed
+): ActionWithPayload<ReplySed> => ({
+  type: types.SVARPASED_REPLYSED_SET,
+  payload: replySed
+})
+
+export const updateReplySed: ActionCreator<ActionWithPayload<UpdateReplySedPayload>> = (
+  needle: string, value: any
+): ActionWithPayload<UpdateReplySedPayload> => ({
+  type: types.SVARPASED_REPLYSED_UPDATE,
+  payload: {
+    needle,
+    value
+  }
+})

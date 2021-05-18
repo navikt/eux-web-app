@@ -203,6 +203,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
             label={t('label:fødselsdato') + ' *'}
             namespace={namespace}
             onChanged={onFodselsdatoChange}
+            required
             value={personInfo.foedselsdato}
           />
         </Column>
@@ -234,6 +235,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
           <Input
             feil={validation[namespace + '-utenlandskpin-nummer']?.feilmelding}
             id='utenlandskpin-nummer'
+            key={namespace + '-utenlandskpin-nummer-' + utenlandskPin?.identifikator}
             label={t('label:utenlandsk-pin')}
             namespace={namespace}
             onChanged={onUtenlandskPinChange}

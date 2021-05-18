@@ -36,8 +36,7 @@ export const validateOpprettSak = (
     unit
   }: ValidationOpprettSakProps
 ): boolean => {
-
-   let hasErrors: boolean = false
+  let hasErrors: boolean = false
 
   if (_.isEmpty(fnr)) {
     v[namespace + '-fnr'] = {

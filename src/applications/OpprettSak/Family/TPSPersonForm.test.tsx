@@ -10,7 +10,7 @@ describe('components/Family/TPSPersonForm', () => {
   const initialMockProps: TPSPersonFormProps = {
     alertStatus: 'OK',
     alertMessage: 'Message',
-    alertType: types.SAK_PERSON_RELATERT_GET_FAILURE,
+    alertType: types.SAK_PERSON_RELATERT_SEARCH_FAILURE,
     alertTypesWatched: [],
     existingFamilyRelationships: [],
     onAlertClose: jest.fn(),

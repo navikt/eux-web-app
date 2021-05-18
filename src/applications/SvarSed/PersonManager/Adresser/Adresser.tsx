@@ -64,9 +64,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
   const [_newRegion, _setNewRegion] = useState<string>('')
   const [_newLand, _setNewLand] = useState<string>('')
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Adresse>((a: Adresse): string => {
-    return a.type + '-' + a.postnummer
-  })
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Adresse>((a: Adresse): string => a.type + '-' + a.postnummer)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationAddressProps>({}, validateAdresse)
 
@@ -232,6 +230,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
                 { label: t('label:bostedsland'), value: 'bosted' },
                 { label: t('label:oppholdsland'), value: 'opphold' }
               ]}
+              required
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setType((e.target.value as AdresseType), index)}
             />
             <VerticalSeparatorDiv size='0.15' />
@@ -263,6 +262,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
               id='gate'
               label={t('label:gateadresse') + ' *'}
               onChanged={(value: string) => setGate(value, index)}
+              required
               value={index < 0 ? _newGate : adresse?.gate}
             />
           </Column>
@@ -271,7 +271,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
               feil={getErrorFor(index, 'bygning')}
               namespace={namespace + idx}
               id='bygning'
-              label={t('label:bygning') + ' *'}
+              label={t('label:bygning')}
               onChanged={(value: string) => setBygning(value, index)}
               value={index < 0 ? _newBygning : adresse?.bygning}
             />
@@ -290,6 +290,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
               id='postnummer'
               label={t('label:postnummer') + ' *'}
               onChanged={(value: string) => setPostnummer(value, index)}
+              required
               value={index < 0 ? _newPostnummer : adresse?.postnummer}
             />
           </Column>
@@ -300,6 +301,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
               id='by'
               label={t('label:by') + ' *'}
               onChanged={(value: string) => setBy(value, index)}
+              required
               value={index < 0 ? _newBy : adresse?.by}
             />
           </Column>
@@ -315,7 +317,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
               feil={getErrorFor(index, 'region')}
               namespace={namespace + idx}
               id='region'
-              label={t('label:region') + ' *'}
+              label={t('label:region')}
               onChanged={(value: string) => setRegion(value, index)}
               value={index < 0 ? _newRegion : adresse?.region}
             />
@@ -326,6 +328,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
               key={index < 0 ? _newLand : adresse?.land}
               data-test-id={namespace + idx + '-land'}
               error={getErrorFor(index, 'land')}
+              flagWave
               id={namespace + idx + '-land'}
               label={t('label:land') + ' *'}
               menuPortalTarget={document.body}

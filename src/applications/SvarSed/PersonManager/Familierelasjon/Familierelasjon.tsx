@@ -70,9 +70,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
   const [_newAnnenRelasjonDato, _setNewAnnenRelasjonDato] = useState<string>('')
   const [_newBorSammen, _setNewBorSammen] = useState<JaNei | undefined>(undefined)
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<FamilieRelasjon>((f: FamilieRelasjon): string => {
-    return f.relasjonType + '-' + f.periode.startdato
-  })
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<FamilieRelasjon>((f: FamilieRelasjon): string => f.relasjonType + '-' + f.periode.startdato)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationFamilierelasjonProps>({}, validateFamilierelasjon)
 
@@ -258,12 +256,14 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
               data-test-id={namespace + idx + '-relasjonType'}
               feil={getErrorFor(index, 'relasjonType')}
               highContrast={highContrast}
+              key={namespace + idx + '-relasjonType-' + (index < 0 ? _newRelasjonType : familierelasjon!.relasjonType)}
               id={namespace + idx + '-relasjonType'}
               label={t('label:type') + ' *'}
               menuPortalTarget={document.body}
               onChange={(e) => setRelasjonType(e.value as RelasjonType, index)}
               options={relasjonTypeOptions}
               placeholder={t('el:placeholder-select-default')}
+              required
               defaultValue={_.find(relasjonTypeOptions, r => r.value === (index < 0 ? _newRelasjonType : familierelasjon!.relasjonType))}
               selectedValue={_.find(relasjonTypeOptions, r => r.value === (index < 0 ? _newRelasjonType : familierelasjon!.relasjonType))}
             />
@@ -299,9 +299,11 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
                 <Input
                   feil={getErrorFor(index, 'annenRelasjonType')}
                   namespace={namespace + idx}
+                  key={namespace + idx + '-annenRelasjonType-' + (index < 0 ? _newAnnenRelasjonType : familierelasjon?.annenRelasjonType)}
                   id='annenRelasjonType'
                   label={t('label:annen-relasjon') + ' *'}
                   onChanged={(value: string) => setAnnenRelasjonType(value, index)}
+                  required
                   value={index < 0 ? _newAnnenRelasjonType : familierelasjon?.annenRelasjonType}
                 />
               </Column>
@@ -313,9 +315,11 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
                 <Input
                   feil={getErrorFor(index, 'annenRelasjonPersonNavn')}
                   namespace={namespace + idx}
+                  key={namespace + idx + '-annenRelasjonPersonNavn-' + (index < 0 ? _newAnnenRelasjonPersonNavn : familierelasjon?.annenRelasjonPersonNavn)}
                   id='annenRelasjonPersonNavn'
                   label={t('label:person-navn') + ' *'}
                   onChanged={(value: string) => setAnnenRelasjonPersonNavn(value, index)}
+                  required
                   value={index < 0 ? _newAnnenRelasjonPersonNavn : familierelasjon?.annenRelasjonPersonNavn}
                 />
               </Column>
@@ -324,9 +328,10 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
                   feil={getErrorFor(index, 'annenRelasjonDato')}
                   namespace={namespace + idx}
                   id='annenRelasjonDato'
-                  key={index < 0 ? _newAnnenRelasjonDato : familierelasjon?.annenRelasjonDato}
+                  key={namespace + idx + '-annenRelasjonDato-' + (index < 0 ? _newAnnenRelasjonDato : familierelasjon?.annenRelasjonDato)}
                   label={t('label:dato-for-relasjon') + ' *'}
                   onChanged={(dato: string) => setAnnenRelasjonDato(dato, index)}
+                  required
                   value={index < 0 ? _newAnnenRelasjonDato : familierelasjon?.annenRelasjonDato}
                 />
               </Column>

@@ -29,7 +29,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
     action.type === types.APP_CLEAN_DATA ||
     action.type === types.SAK_PERSON_RELATERT_RESET ||
     action.type === types.SAK_PERSON_GET_REQUEST ||
-    action.type === types.SAK_PERSON_RELATERT_GET_REQUEST ||
+    action.type === types.SAK_PERSON_RELATERT_SEARCH_REQUEST ||
     action.type === types.SAK_ABROADPERSON_ADD_SUCCESS ||
     action.type === types.SAK_TPSPERSON_ADD_SUCCESS) {
     return initialAlertState
@@ -67,7 +67,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         clientErrorMessage = 'message:error-person-notFound'
         break
 
-      case types.SAK_PERSON_RELATERT_GET_FAILURE:
+      case types.SAK_PERSON_RELATERT_SEARCH_FAILURE:
         clientErrorMessage = 'message:error-personRelated-notFound'
         break
 

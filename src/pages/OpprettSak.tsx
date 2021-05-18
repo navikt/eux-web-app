@@ -207,7 +207,6 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
     EKV.Koder.buctyper.family.FB_BUC_01 === valgtBucType && isSomething(valgtSedType)
   const visEnheter: boolean = valgtSektor === 'HZ' || valgtSektor === 'SI'
 
-
   const skjemaSubmit = (): void => {
     const valid: boolean = performValidation({
       fnr: valgtFnr,
@@ -269,7 +268,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
   const onBuctypeChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     const buctype = event.target.value
     _resetValidation(namespace + '-buctype')
-    _resetValidation( namespace + '-landkode')
+    _resetValidation(namespace + '-landkode')
     dispatch(sakActions.setProperty('landkode', undefined))
     dispatch(sakActions.setProperty('sedtype', undefined))
     dispatch(sakActions.setProperty('institution', undefined))
@@ -288,7 +287,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
 
   const onLandkodeChange = (country: any): void => {
     _resetValidation(namespace + '-landkode')
-    _resetValidation( namespace + '-institusjon')
+    _resetValidation(namespace + '-institusjon')
     const landKode = country.value
     dispatch(sakActions.setProperty('landkode', landKode))
     dispatch(sakActions.getInstitusjoner(valgtBucType, landKode))
@@ -363,7 +362,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                 >
                   <Select
                     data-test-id={namespace + '-sektor'}
-                    feil={_validation[namespace + '-sektor']?.feilmelding }
+                    feil={_validation[namespace + '-sektor']?.feilmelding}
                     id={namespace + '-sektor'}
                     label={t('label:sektor')}
                     onChange={onSektorChange}
@@ -473,7 +472,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   style={{ animationDelay: '0.6s' }}
                 >
                   <CountrySelect
-                    closeMenuOnSelect={true}
+                    closeMenuOnSelect
                     data-test-id={namespace + '-landkode'}
                     error={_validation[namespace + '-landkode']?.feilmelding}
                     id={namespace + '-landkode'}
@@ -496,7 +495,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                 >
                   <Select
                     data-test-id={namespace + '-institusjon'}
-                    key={namespace + '-institusjon-' +  valgtInstitusjon}
+                    key={namespace + '-institusjon-' + valgtInstitusjon}
                     disabled={!isSomething(valgtLandkode)}
                     feil={_validation[namespace + '-institusjon']?.feilmelding}
                     id={namespace + '-institusjon'}
@@ -536,7 +535,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                           types.SAK_ABROADPERSON_ADD_FAILURE
                         ]}
                         TPSPersonFormAlertTypesWatched={[
-                          types.SAK_PERSON_RELATERT_GET_FAILURE,
+                          types.SAK_PERSON_RELATERT_SEARCH_FAILURE,
                           types.SAK_TPSPERSON_ADD_FAILURE
                         ]}
                         familierelasjonKodeverk={familierelasjonKodeverk}
@@ -601,17 +600,17 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   </Column>
                   <Column>
                     <PileDiv>
-                      <VerticalSeparatorDiv size='2'/>
+                      <VerticalSeparatorDiv size='2' />
                       <FlexDiv>
                         <Knapp
-                        onClick={onViewFagsakerClick}
-                        spinner={gettingFagsaker}
-                        disabled={gettingFagsaker || !isSomething(valgtTema)}
-                      >
-                        {gettingFagsaker ? t('message:loading-saker') : t('label:vis-saker')}
-                    </Knapp>
+                          onClick={onViewFagsakerClick}
+                          spinner={gettingFagsaker}
+                          disabled={gettingFagsaker || !isSomething(valgtTema)}
+                        >
+                          {gettingFagsaker ? t('message:loading-saker') : t('label:vis-saker')}
+                        </Knapp>
                       </FlexDiv>
-                  </PileDiv>
+                    </PileDiv>
                   </Column>
                 </AlignStartRow>
               )}
@@ -638,7 +637,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   <Column>
                     <Select
                       data-test-id={namespace + '-saksId'}
-                      feil={_validation[namespace + '-saksId']?.feilmelding }
+                      feil={_validation[namespace + '-saksId']?.feilmelding}
                       id={namespace + '-saksId'}
                       label={t('label:velg-fagsak')}
                       onChange={onSakIDChange}

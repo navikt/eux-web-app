@@ -36,13 +36,20 @@ export const validateFamilierelasjon = (
 
   const periodErrors : boolean = validatePeriod(v, t, {
     period: familierelasjon.periode,
-    index,
     namespace: namespace + idx + '-periode',
     personName
   })
   hasErrors = hasErrors || periodErrors
 
   if (familierelasjon.relasjonType === 'ANNEN') {
+    if (_.isEmpty(familierelasjon?.annenRelasjonType?.trim())) {
+      v[namespace + idx + '-annenRelasjonType'] = {
+        feilmelding: t('message:validation-noRelationTypeForPerson', { person: personName }),
+        skjemaelementId: namespace + idx + '-annenRelasjonType'
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
+
     if (_.isEmpty(familierelasjon?.annenRelasjonPersonNavn?.trim())) {
       v[namespace + idx + '-annenRelasjonPersonNavn'] = {
         feilmelding: t('message:validation-noNameToPerson', { person: personName }),

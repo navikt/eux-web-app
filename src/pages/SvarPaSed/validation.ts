@@ -141,9 +141,9 @@ export const validateSEDEditor = (
   let _error: boolean
   if (isFSed(replySed)) {
     if (_.isEmpty((replySed as F002Sed).formaal)) {
-      v.formaal = {
+      v['formål'] = {
         feilmelding: t('message:validation-noFormaal'),
-        skjemaelementId: 'formaal'
+        skjemaelementId: 'formål'
       } as FeiloppsummeringFeil
       hasErrors = true
     }

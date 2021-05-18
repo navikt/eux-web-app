@@ -49,9 +49,7 @@ const DekkedePerioder: React.FC<PersonManagerFormProps> = ({
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')
   const [_newStartDato, _setNewStartDato] = useState<string>('')
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => {
-    return p?.startdato // assume startdato is unique
-  })
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => p?.startdato)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationDekkedePeriodeProps>({}, validateDekkedePeriode)
 
@@ -60,7 +58,7 @@ const DekkedePerioder: React.FC<PersonManagerFormProps> = ({
       _setNewStartDato(startdato.trim())
       _resetValidation(namespace + '-dekkede-startdato')
     } else {
-      dispatch(updateReplySed(`{target}[${index}].startdato`, startdato.trim()))
+      dispatch(updateReplySed(`${target}[${index}].startdato`, startdato.trim()))
       if (validation[namespace + '-perioderMedITrygdeordning' + getIdx(index) + '-startdato']) {
         dispatch(resetValidation(namespace + '-perioderMedITrygdeordning' + getIdx(index) + '-startdato'))
       }
@@ -119,6 +117,7 @@ const DekkedePerioder: React.FC<PersonManagerFormProps> = ({
 
     const valid: boolean = performValidation({
       periode: newPeriode,
+      perioder: perioderMedITrygdeordning,
       namespace,
       personName
     })

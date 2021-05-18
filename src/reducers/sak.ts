@@ -107,13 +107,13 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
         person: action.payload
       }
 
-    case types.SAK_PERSON_RELATERT_GET_FAILURE:
+    case types.SAK_PERSON_RELATERT_SEARCH_FAILURE:
       return {
         ...state,
         personRelatert: null
       }
 
-    case types.SAK_PERSON_RELATERT_GET_SUCCESS:
+    case types.SAK_PERSON_RELATERT_SEARCH_SUCCESS:
       return {
         ...state,
         personRelatert: action.payload
