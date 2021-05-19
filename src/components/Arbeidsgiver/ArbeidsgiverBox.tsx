@@ -294,7 +294,7 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
                 duplicate warning
               </Normaltekst>
             )}
-            {fraArbeidsgiverregisteret && (
+            {fraArbeidsgiverregisteret === 'ja' && (
               <>
                 <HorizontalSeparatorDiv />
                 <PileDiv style={{ flexDirection: 'column-reverse' }}>
@@ -302,7 +302,7 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
                 </PileDiv>
               </>
             )}
-            {fraInntektsregistreret && (
+            {fraInntektsregistreret === 'ja' && (
               <>
                 <HorizontalSeparatorDiv />
                 <PileDiv style={{ flexDirection: 'column-reverse' }}>

@@ -32,7 +32,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import {
   validateArbeidsgiver,
-  validateArbeidsperiode,
+  validateAnsattPeriode,
   ValidationArbeidsgiverProps,
   ValidationArbeidsperiodeProps
 } from './ansattValidation'
@@ -51,13 +51,15 @@ const mapState = (state: State): AnsattSelector => ({
 
 const Ansatt: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
-  personID
+  personID,
+  personName
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
     arbeidsperioder,
     gettingArbeidsperioder,
-    replySed
+    replySed,
+    validation
   } = useSelector<State, AnsattSelector>(mapState)
   const dispatch = useDispatch()
   const namespace = `${parentNamespace}-ansatt`
@@ -85,7 +87,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
   const [_seeNewPeriode, _setSeeNewPeriode] = useState<boolean>(false)
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((periode: Periode) => periode.startdato)
   const [_validationPeriode, _resetValidationPeriode, performValidationPeriode] =
-    useValidation<ValidationArbeidsperiodeProps>({}, validateArbeidsperiode)
+    useValidation<ValidationArbeidsperiodeProps>({}, validateAnsattPeriode)
 
   const addPeriode = (newPeriode: Periode) => {
     let newPerioder: Array<Periode> | undefined = _.cloneDeep(perioderSomAnsatt)
@@ -174,8 +176,8 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
       arbeidsgiverOrgnr: _newArbeidsgiverOrgnr,
       fraDato: toFinalDateFormat(_newArbeidsgiverStartDato),
       tilDato: toFinalDateFormat(_newArbeidsgiverSluttDato),
-      fraInntektsregistreret: '-',
-      fraArbeidsgiverregisteret: '-'
+      fraInntektsregistreret: 'nei',
+      fraArbeidsgiverregisteret: 'nei'
     }
 
     const valid: boolean = performValidationArbeidsgiver({
@@ -203,7 +205,9 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
 
     const valid: boolean = performValidationPeriode({
       periode: newPeriode,
-      namespace: namespace
+      perioder: perioderSomAnsatt,
+      namespace: namespace,
+      personName: personName
     })
     if (valid) {
       addPeriode(newPeriode)
@@ -388,13 +392,19 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
         if (item.type === 'periode') {
           const idx = getIdx(item.index)
           const candidateForDeletion = !_.isNil(item.index) && item.index >= 0 ? isInDeletion(item.item as Periode) : false
+          const getErrorFor = (el: string): string | undefined => (
+            !_.isNil(item.index) && item.index >= 0
+              ? validation[namespace + '-periode' + idx + '-' + el]?.feilmelding
+              : _validationPeriode[namespace + '-periode-' + el]?.feilmelding
+          )
+
           element = (
             <AlignStartRow className='slideInFromLeft'>
               <Period
                 key={'' + (item.item as Periode).startdato + (item.item as Periode).sluttdato}
-                namespace={namespace + idx + '-periode'}
-                errorStartDato={_validationPeriode[namespace + idx + '-periode-startdato']?.feilmelding}
-                errorSluttDato={_validationPeriode[namespace + idx + '-periode-sluttdato']?.feilmelding}
+                namespace={namespace + '-periode' + idx}
+                errorStartDato={getErrorFor('startdato')}
+                errorSluttDato={getErrorFor('sluttdato')}
                 setStartDato={(dato: string) => setPeriodeStartDato(dato, item.index!)}
                 setSluttDato={(dato: string) => setPeriodeSluttDato(dato, item.index!)}
                 valueStartDato={(item.item as Periode).startdato}
@@ -489,6 +499,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
                 feil={_validationArbeidsgiver[namespace + '-arbeidsgiver-orgnr']?.feilmelding}
                 namespace={namespace + '-arbeidsgiver'}
                 id='orgnr'
+                key={namespace + '-arbeidsgiver-orgnr-' + _newArbeidsgiverOrgnr}
                 label={t('label:orgnr')}
                 onChanged={onArbeidsgiverOrgnrChanged}
                 value={_newArbeidsgiverOrgnr}
@@ -498,6 +509,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
               <Input
                 feil={_validationArbeidsgiver[namespace + '-arbeidsgiver-navn']?.feilmelding}
                 namespace={namespace + '-arbeidsgiver'}
+                key={namespace + '-arbeidsgiver-navn-' + _newArbeidsgiverNavn}
                 id='navn'
                 label={t('label:navn')}
                 onChanged={onArbeidsgiverNameChanged}

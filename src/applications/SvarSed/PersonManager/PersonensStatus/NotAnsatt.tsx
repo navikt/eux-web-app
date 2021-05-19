@@ -25,7 +25,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
-import { validateNotAnsatte, ValidationNotAnsattProps } from './notAnsattValidation'
+import { validateNotAnsattPeriode, ValidationNotAnsattProps } from './notAnsattValidation'
 
 const mapState = (state: State): PersonManagerFormSelector => ({
   replySed: state.svarpased.replySed,
@@ -34,7 +34,8 @@ const mapState = (state: State): PersonManagerFormSelector => ({
 
 const NotAnsatt: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
-  personID
+  personID,
+  personName
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
@@ -53,7 +54,7 @@ const NotAnsatt: React.FC<PersonManagerFormProps> = ({
     return p?.startdato // assume startdato is unique
   })
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useValidation<ValidationNotAnsattProps>({}, validateNotAnsatte)
+  const [_validation, _resetValidation, performValidation] = useValidation<ValidationNotAnsattProps>({}, validateNotAnsattPeriode)
 
   const setStartDato = (newDato: string, index: number) => {
     if (index < 0) {
@@ -118,9 +119,10 @@ const NotAnsatt: React.FC<PersonManagerFormProps> = ({
     }
 
     const valid: boolean = performValidation({
-      period: newPeriode,
-      otherPeriods: perioderSomSelvstendig,
-      namespace
+      periode: newPeriode,
+      perioder: perioderSomSelvstendig,
+      namespace,
+      personName: personName
     })
 
     if (valid) {

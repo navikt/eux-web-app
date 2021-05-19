@@ -1,3 +1,8 @@
+import { validateKontoopplysning } from 'applications/SvarSed/Formaal/Kontoopplysning/validation'
+import { validateKravOmRefusjon } from 'applications/SvarSed/Formaal/KravOmRefusjon/validation'
+import { validateMotregning } from 'applications/SvarSed/Formaal/Motregning/validation'
+import { validateProsedyreVedUenighet } from 'applications/SvarSed/Formaal/ProsedyreVedUenighet/validation'
+import { validateVedtak } from 'applications/SvarSed/Formaal/Vedtak/validation'
 import { validateAdresser } from 'applications/SvarSed/PersonManager/Adresser/validation'
 import { validateBeløpNavnOgValuta } from 'applications/SvarSed/PersonManager/BeløpNavnOgValuta/validation'
 import { validateFamilierelasjoner } from 'applications/SvarSed/PersonManager/Familierelasjon/validation'
@@ -8,14 +13,13 @@ import {
   validateKontaktsinformasjonTelefoner
 } from 'applications/SvarSed/PersonManager/Kontaktinformasjon/validation'
 import { validateNasjonaliteter } from 'applications/SvarSed/PersonManager/Nasjonaliteter/validation'
+import { validateAnsattPerioder } from 'applications/SvarSed/PersonManager/PersonensStatus/ansattValidation'
+import { validateAvsenderlandetPerioder } from 'applications/SvarSed/PersonManager/PersonensStatus/avsenderlandetValidation'
+import { validateNotAnsattPerioder } from 'applications/SvarSed/PersonManager/PersonensStatus/notAnsattValidation'
+import { validateWithSubsidiesPerioder } from 'applications/SvarSed/PersonManager/PersonensStatus/withSubsidiesValidation'
 import { validatePersonOpplysninger } from 'applications/SvarSed/PersonManager/PersonOpplysninger/validation'
 import { validateBarnetilhoerigheter } from 'applications/SvarSed/PersonManager/Relasjon/validation'
 import { validateTrygdeordninger } from 'applications/SvarSed/PersonManager/Trygdeordning/validation'
-import { validateKontoopplysning } from 'applications/SvarSed/Formaal/Kontoopplysning/validation'
-import { validateKravOmRefusjon } from 'applications/SvarSed/Formaal/KravOmRefusjon/validation'
-import { validateMotregning } from 'applications/SvarSed/Formaal/Motregning/validation'
-import { validateProsedyreVedUenighet } from 'applications/SvarSed/Formaal/ProsedyreVedUenighet/validation'
-import { validateVedtak } from 'applications/SvarSed/Formaal/Vedtak/validation'
 import {
   Adresse,
   Barnetilhoerighet,
@@ -94,7 +98,25 @@ export const performValidation = (v: Validation, t: TFunction, replySed: ReplySe
       const familierelasjoner: Array<FamilieRelasjon> = _.get(replySed, `${personID}.familierelasjoner`)
       _error = validateFamilierelasjoner(v, t, familierelasjoner, `personmanager-${personID}-familierelasjon`, personName)
       hasErrors = hasErrors || _error
+
+      const perioderSomAnsatt: Array<Periode> = _.get(replySed, `${personID}.perioderSomAnsatt`)
+      _error = validateAnsattPerioder(v, t, perioderSomAnsatt, `personmanager-${personID}-personensstatus-ansatt`, personName)
+      hasErrors = hasErrors || _error
+
+      const perioderSomSelvstendig: Array<Periode> = _.get(replySed, `${personID}.perioderSomSelvstendig`)
+      _error = validateNotAnsattPerioder(v, t, perioderSomSelvstendig, `personmanager-${personID}-personensstatus-notansatt`, personName)
+      hasErrors = hasErrors || _error
+
+      const perioderMedTrygd: Array<Periode> = _.get(replySed, `${personID}.perioderMedTrygd`)
+      _error = validateAvsenderlandetPerioder(v, t, perioderMedTrygd, `personmanager-${personID}-personensstatus-avsenderlandet`, personName)
+      hasErrors = hasErrors || _error
+
+      const perioderMedPensjon: Array<PensjonPeriode> = _.get(replySed, `${personID}.perioderMedPensjon`)
+      _error = validateWithSubsidiesPerioder(v, t, perioderMedPensjon, `personmanager-${personID}-personensstatus-withsubsidies`, personName)
+      hasErrors = hasErrors || _error
     }
+
+
   } else {
     const barnetilhorighet : Array<Barnetilhoerighet> = _.get(replySed, `${personID}.barnetilhoerigheter`)
     _error = validateBarnetilhoerigheter(v, t, barnetilhorighet, `personmanager-${personID}-relasjon`, personName)
@@ -203,3 +225,5 @@ export const validateSEDEditor = (
   }
   return hasErrors
 }
+
+

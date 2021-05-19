@@ -92,7 +92,10 @@ personmanager-{personID}-personensstatus-ansatt-arbeidsgiver-orgnr            - 
 personmanager-{personID}-personensstatus-ansatt-arbeidsgiver-startdato        - {INTERNAL}  not used
 personmanager-{personID}-personensstatus-ansatt-arbeidsgiver-sluttdato        - {INTERNAL}  not used
 personmanager-{personID}-personensstatus-ansatt-arbeidsgiver[orgnr]-startdato - {CONNECTED} {person}.perioderSomAnsatt[].startdato
-personmanager-{personID}-personensstatus-ansatt-arbeidsgiver[orgnr]-sluttdato - {CONNECTED} {person}.perioderSomAnsatt[].sluttdato
+personmanager-{personID}-personensstatus-ansatt-arbeidsgiver[orgnr]-startdato - {CONNECTED} {person}.perioderSomAnsatt[].startdato
+personmanager-{personID}-personensstatus-ansatt-periode[{i}]-startdato        - {CONNECTED} {person}.perioderSomAnsatt[].startdato
+personmanager-{personID}-personensstatus-ansatt-periode[{i}]-sluttdato        - {CONNECTED} {person}.perioderSomAnsatt[].sluttdato
+
 personmanager-{personID}-personensstatus-avsenderlandet[{i}]-startdato        - {CONNECTED} {person}.perioderMedTrygd[].startdato
 personmanager-{personID}-personensstatus-avsenderlandet[{i}]-sluttdato        - {CONNECTED} {person}.perioderMedTrygd[].sluttdato
 personmanager-{personID}-personensstatus-notansatt-startdato                  - {INTERNAL}  not used

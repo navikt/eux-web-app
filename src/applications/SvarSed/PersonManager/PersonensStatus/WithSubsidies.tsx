@@ -28,7 +28,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { ValueType } from 'react-select'
 import { getIdx } from 'utils/namespace'
-import { validateWithSubsidies, ValidationWithSubsidiesProps } from './withSubsidiesValidation'
+import { validateWithSubsidiesPeriode, ValidationWithSubsidiesProps } from './withSubsidiesValidation'
 
 interface WithSubsidiesSelector extends PersonManagerFormSelector {
   highContrast: boolean
@@ -42,7 +42,8 @@ const mapState = (state: State): WithSubsidiesSelector => ({
 
 const WithSubsidies: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
-  personID
+  personID,
+  personName
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
@@ -63,7 +64,7 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
     return p?.periode.startdato // assume startdato is unique
   })
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useValidation<ValidationWithSubsidiesProps>({}, validateWithSubsidies)
+  const [_validation, _resetValidation, performValidation] = useValidation<ValidationWithSubsidiesProps>({}, validateWithSubsidiesPeriode)
 
   const selectPensjonTypeOptions: Options = [{
     label: t('el:option-trygdeordning-alderspensjon'), value: 'alderspensjon'
@@ -151,9 +152,10 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
       newPensjonPeriode.periode.aapenPeriodeType = 'åpen_sluttdato'
     }
     const valid: boolean = performValidation({
-      pensjonPeriod: newPensjonPeriode,
-      otherPensjonPeriods: perioderMedPensjon,
-      namespace
+      pensjonPeriode: newPensjonPeriode,
+      perioder: perioderMedPensjon,
+      namespace,
+      personName
     })
 
     if (valid) {
@@ -206,15 +208,18 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
             valueStartDato={startdato}
             valueSluttDato={sluttdato}
           />
+          <Column/>
         </AlignStartRow>
         <VerticalSeparatorDiv />
         <AlignStartRow>
           <Column>
             <Select
+              closeMenuOnSelect={true}
               data-test-id={namespace + idx + '-pensjontype'}
               feil={getErrorFor(index, 'pensjontype')}
               highContrast={highContrast}
               id={namespace + idx + '-pensjontype'}
+              key={namespace + idx + '-pensjontype-' + (index < 0 ? _newPensjonType : (pensjonPeriode as PensjonPeriode)?.pensjonstype)}
               label={t('label:type-pensjon')}
               menuPortalTarget={document.body}
               onChange={(e: ValueType<Option, false>) => setPensjonType(e?.value, index)}

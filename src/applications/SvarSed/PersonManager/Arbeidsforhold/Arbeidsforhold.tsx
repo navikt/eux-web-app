@@ -138,8 +138,8 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
       arbeidsgiverOrgnr: _newArbeidsgiverOrgnr,
       fraDato: toFinalDateFormat(_newArbeidsgiverStartDato),
       tilDato: toFinalDateFormat(_newArbeidsgiverSluttDato),
-      fraInntektsregistreret: '-',
-      fraArbeidsgiverregisteret: '-'
+      fraInntektsregistreret: 'nei',
+      fraArbeidsgiverregisteret: 'nei'
     }
 
     const valid: boolean = performValidationArbeidsgiver({

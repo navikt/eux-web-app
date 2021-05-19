@@ -22,12 +22,12 @@ const PersonensStatus: React.FC<PersonManagerFormProps> = ({
 
   return (
     <PaddedDiv>
+      <Undertittel>
+        {t('label:arbeidsforhold-type')}
+      </Undertittel>
+      <VerticalSeparatorDiv size='2'/>
       <AlignStartRow className='slideInFromLeft'>
         <Column>
-          <Undertittel>
-            {t('label:arbeidsforhold-type')}
-          </Undertittel>
-          <VerticalSeparatorDiv />
           <HighContrastRadioPanelGroup
             checked={_arbeidsforhold}
             data-multiple-line

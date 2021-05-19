@@ -7,31 +7,33 @@ import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
 export interface ValidationWithSubsidiesProps {
-  pensjonPeriod: PensjonPeriode
-  otherPensjonPeriods: Array<PensjonPeriode>
+  pensjonPeriode: PensjonPeriode
+  perioder: Array<PensjonPeriode>
   index?: number
   namespace: string
+  personName: string
 }
 
-export const validateWithSubsidies = (
+export const validateWithSubsidiesPeriode = (
   v: Validation,
   t: TFunction,
   {
-    pensjonPeriod,
-    otherPensjonPeriods,
+    pensjonPeriode,
+    perioder,
     index,
-    namespace
+    namespace,
+    personName
   }: ValidationWithSubsidiesProps
 ): boolean => {
   const idx = getIdx(index)
 
   let hasErrors: boolean = validatePeriod(v, t, {
-    period: pensjonPeriod.periode,
-    index,
-    namespace: namespace + idx + '-periode'
+    period: pensjonPeriode.periode,
+    namespace: namespace + '-periode' + idx,
+    personName: personName
   })
 
-  if (_.find(otherPensjonPeriods, p => p.periode.startdato === pensjonPeriod.periode.startdato) !== undefined) {
+  if (_.find(perioder, p => p.periode.startdato === pensjonPeriode.periode.startdato) !== undefined) {
     v[namespace + idx + '-periode-startdato'] = {
       skjemaelementId: namespace + idx + '-periode-startdato',
       feilmelding: t('message:validation-duplicateStartDate')
@@ -39,12 +41,37 @@ export const validateWithSubsidies = (
     hasErrors = true
   }
 
-  if (!pensjonPeriod.pensjonstype) {
-    v[namespace + '-pensjontype'] = {
-      skjemaelementId: namespace + '-pensjontype',
+  if (_.isEmpty(pensjonPeriode.pensjonstype)) {
+    v[namespace +  idx + '-pensjontype'] = {
+      skjemaelementId: namespace +  idx + '-pensjontype',
       feilmelding: t('message:validation-noPensjonType')
     } as FeiloppsummeringFeil
     hasErrors = true
+  }
+  return hasErrors
+}
+
+export const validateWithSubsidiesPerioder = (
+  v: Validation,
+  t: TFunction,
+  perioder: Array<PensjonPeriode>,
+  namespace: string,
+  personName: string
+): boolean => {
+  let hasErrors: boolean = false
+  perioder?.forEach((pensjonPeriode: PensjonPeriode, index: number) => {
+    let _error = validateWithSubsidiesPeriode(v, t, { pensjonPeriode, perioder, index, namespace, personName })
+    hasErrors = hasErrors || _error
+  })
+
+  if (hasErrors) {
+    const namespaceBits = namespace.split('-')
+    const mainNamespace = namespaceBits[0]
+    const personNamespace = mainNamespace + '-' + namespaceBits[1]
+    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
+    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }
   return hasErrors
 }
