@@ -10,7 +10,7 @@ export const searchPerson: ActionCreator<ThunkResult<ActionWithPayload>> = (
 ): ThunkResult<ActionWithPayload> => {
   return call({
     url: sprintf(urls.API_PERSONER_URL, { fnr: fnr }),
-    expectedPayload: mockPerson({ fnr: fnr }),
+    expectedPayload: mockPerson,
     cascadeFailureError: true,
     type: {
       request: types.PERSON_SEARCH_REQUEST,
@@ -25,7 +25,7 @@ export const searchPersonRelated: ActionCreator<ThunkResult<ActionWithPayload>> 
 ): ThunkResult<ActionWithPayload> => {
   return call({
     url: sprintf(urls.API_PERSONER_URL, { fnr: fnr }),
-    expectedPayload: mockPerson({ fnr: fnr }),
+    expectedPayload: mockPerson,
     cascadeFailureError: true,
     context: {
       fnr: fnr
