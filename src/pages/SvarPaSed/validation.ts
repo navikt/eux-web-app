@@ -115,8 +115,6 @@ export const performValidation = (v: Validation, t: TFunction, replySed: ReplySe
       _error = validateWithSubsidiesPerioder(v, t, perioderMedPensjon, `personmanager-${personID}-personensstatus-withsubsidies`, personName)
       hasErrors = hasErrors || _error
     }
-
-
   } else {
     const barnetilhorighet : Array<Barnetilhoerighet> = _.get(replySed, `${personID}.barnetilhoerigheter`)
     _error = validateBarnetilhoerigheter(v, t, barnetilhorighet, `personmanager-${personID}-relasjon`, personName)
@@ -225,5 +223,3 @@ export const validateSEDEditor = (
   }
   return hasErrors
 }
-
-

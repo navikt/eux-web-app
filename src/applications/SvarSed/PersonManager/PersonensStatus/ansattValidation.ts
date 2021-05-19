@@ -95,7 +95,7 @@ export const validateAnsattPeriode = (
       duplicate = _.find(otherPerioder, e => e.startdato === periode?.startdato) !== undefined
     }
     if (duplicate) {
-      v[namespace  + '-periode' + idx + '-startdato'] = {
+      v[namespace + '-periode' + idx + '-startdato'] = {
         feilmelding: t('message:validation-duplicateStartdatoForPerson', { person: personName }),
         skjemaelementId: namespace + '-periode' + idx + '-startdato'
       } as FeiloppsummeringFeil
@@ -115,7 +115,7 @@ export const validateAnsattPerioder = (
 ): boolean => {
   let hasErrors: boolean = false
   perioder?.forEach((periode: Periode | PensjonPeriode, index: number) => {
-    let _error = validateAnsattPeriode(v, t, { periode: (periode as Periode), perioder, index, namespace, personName })
+    const _error = validateAnsattPeriode(v, t, { periode: (periode as Periode), perioder, index, namespace, personName })
     hasErrors = hasErrors || _error
   })
 
@@ -130,4 +130,3 @@ export const validateAnsattPerioder = (
   }
   return hasErrors
 }
-

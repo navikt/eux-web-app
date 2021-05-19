@@ -42,8 +42,8 @@ export const validateWithSubsidiesPeriode = (
   }
 
   if (_.isEmpty(pensjonPeriode.pensjonstype)) {
-    v[namespace +  idx + '-pensjontype'] = {
-      skjemaelementId: namespace +  idx + '-pensjontype',
+    v[namespace + idx + '-pensjontype'] = {
+      skjemaelementId: namespace + idx + '-pensjontype',
       feilmelding: t('message:validation-noPensjonType')
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -60,7 +60,7 @@ export const validateWithSubsidiesPerioder = (
 ): boolean => {
   let hasErrors: boolean = false
   perioder?.forEach((pensjonPeriode: PensjonPeriode, index: number) => {
-    let _error = validateWithSubsidiesPeriode(v, t, { pensjonPeriode, perioder, index, namespace, personName })
+    const _error = validateWithSubsidiesPeriode(v, t, { pensjonPeriode, perioder, index, namespace, personName })
     hasErrors = hasErrors || _error
   })
 

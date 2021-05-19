@@ -43,7 +43,7 @@ export const validateNotAnsattPeriode = (
     }
     if (duplicate) {
       v[namespace + idx + '-startdato'] = {
-        feilmelding: t('message:validation-duplicateStartdatoForPerson', {person: personName}),
+        feilmelding: t('message:validation-duplicateStartdatoForPerson', { person: personName }),
         skjemaelementId: namespace + idx + '-startdato'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -61,7 +61,7 @@ export const validateNotAnsattPerioder = (
 ): boolean => {
   let hasErrors: boolean = false
   perioder?.forEach((periode: Periode, index: number) => {
-    let _error = validateNotAnsattPeriode(v, t, { periode, perioder, index, namespace, personName })
+    const _error = validateNotAnsattPeriode(v, t, { periode, perioder, index, namespace, personName })
     hasErrors = hasErrors || _error
   })
 
@@ -76,4 +76,3 @@ export const validateNotAnsattPerioder = (
   }
   return hasErrors
 }
-

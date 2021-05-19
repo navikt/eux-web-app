@@ -208,13 +208,13 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
             valueStartDato={startdato}
             valueSluttDato={sluttdato}
           />
-          <Column/>
+          <Column />
         </AlignStartRow>
         <VerticalSeparatorDiv />
         <AlignStartRow>
           <Column>
             <Select
-              closeMenuOnSelect={true}
+              closeMenuOnSelect
               data-test-id={namespace + idx + '-pensjontype'}
               feil={getErrorFor(index, 'pensjontype')}
               highContrast={highContrast}

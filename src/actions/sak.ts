@@ -10,8 +10,7 @@ import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockSendSak from 'mocks/sendSak'
 import mockArbeidsperioder from 'mocks/arbeidsperioder'
 import mockFagsakerList from 'mocks/fagsakerList'
-import mockInstitutionList from 'mocks/institutionList'
-import mockLandkoderList from 'mocks/landkoderList'
+import { mockInstitusjon, mockLandkode } from 'mocks/institutionList'
 import mockPerson from 'mocks/person'
 import moment from 'moment'
 import { Action, ActionCreator } from 'redux'
@@ -115,7 +114,7 @@ export const getInstitusjoner: ActionCreator<ThunkResult<ActionWithPayload<Insti
 ): ThunkResult<ActionWithPayload<Institusjoner>> => {
   return call({
     url: sprintf(urls.API_INSTITUSJONER_URL, { buctype: buctype, landkode: landkode }),
-    expectedPayload: mockInstitutionList({ buctype: buctype, landkode: landkode }),
+    expectedPayload: mockInstitusjon({ landkode: landkode }),
     type: {
       request: types.SAK_INSTITUSJONER_GET_REQUEST,
       success: types.SAK_INSTITUSJONER_GET_SUCCESS,
@@ -129,7 +128,7 @@ export const getLandkoder: ActionCreator<ThunkResult<ActionWithPayload<Array<Kod
 ): ThunkResult<ActionWithPayload<Array<Kodeverk>>> => {
   return call({
     url: sprintf(urls.API_LANDKODER_URL, { buctype: buctype }),
-    expectedPayload: mockLandkoderList({ buctype: buctype }),
+    expectedPayload: mockLandkode(),
     type: {
       request: types.SAK_LANDKODER_GET_REQUEST,
       success: types.SAK_LANDKODER_GET_SUCCESS,

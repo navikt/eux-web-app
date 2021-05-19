@@ -25,7 +25,7 @@ const PersonensStatus: React.FC<PersonManagerFormProps> = ({
       <Undertittel>
         {t('label:arbeidsforhold-type')}
       </Undertittel>
-      <VerticalSeparatorDiv size='2'/>
+      <VerticalSeparatorDiv size='2' />
       <AlignStartRow className='slideInFromLeft'>
         <Column>
           <HighContrastRadioPanelGroup
