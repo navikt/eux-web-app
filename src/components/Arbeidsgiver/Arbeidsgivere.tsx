@@ -1,7 +1,10 @@
 import ArbeidsgiverSøk from 'components/Arbeidsgiver/ArbeidsgiverSøk'
 import { Arbeidsgiver, Arbeidsperioder } from 'declarations/types.d'
+import _ from 'lodash'
+import { Normaltekst } from 'nav-frontend-typografi'
 import { Column, Row } from 'nav-hoykontrast'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import ArbeidsgiverBox from './ArbeidsgiverBox'
 
 export interface ArbeidsgiverProps {
@@ -31,6 +34,7 @@ const Arbeidsgivere: React.FC<ArbeidsgiverProps> = ({
   searchable = false,
   valgteArbeidsgivere
 }: ArbeidsgiverProps): JSX.Element => {
+  const { t } = useTranslation()
   return (
     <Row>
       <Column className='arbeidsgiver'>
@@ -47,14 +51,14 @@ const Arbeidsgivere: React.FC<ArbeidsgiverProps> = ({
         {arbeidsperioder && arbeidsperioder.arbeidsperioder?.map(
           (arbeidsgiver: Arbeidsgiver) => {
             const selected: boolean = valgteArbeidsgivere
-              ? valgteArbeidsgivere.find((item: Arbeidsgiver) => item.arbeidsgiverOrgnr === arbeidsgiver.arbeidsgiverOrgnr) !== undefined
+              ? valgteArbeidsgivere.find((item: Arbeidsgiver) => item.arbeidsgiversOrgnr === arbeidsgiver.arbeidsgiversOrgnr) !== undefined
               : false
             return (
               <ArbeidsgiverBox
                 arbeidsgiver={arbeidsgiver}
                 editable={editable}
                 selected={selected}
-                key={arbeidsgiver.arbeidsgiverOrgnr}
+                key={arbeidsgiver.arbeidsgiversOrgnr}
                 onArbeidsgiverSelect={onArbeidsgiverSelect}
                 onArbeidsgiverDelete={onArbeidsgiverDelete}
                 onArbeidsgiverEdit={onArbeidsgiverEdit}
@@ -65,6 +69,12 @@ const Arbeidsgivere: React.FC<ArbeidsgiverProps> = ({
           }
 
         ).filter(e => e !== undefined)}
+        {arbeidsperioder && _.isEmpty(arbeidsperioder) && (
+          <Normaltekst>
+            {t('message:warning-no-arbeidsgiver-found')}
+          </Normaltekst>
+        )}
+
       </Column>
     </Row>
   )

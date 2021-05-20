@@ -15,6 +15,7 @@ test:
 
 01026423488 m/inntekt i Q1
 13077117754 m/inntekt og arbeidsperioder i Q1
+04118107352 m/arbeidsperioder i Q1
 
 ui improvs:
 - onXXXchange
@@ -40,35 +41,7 @@ ui improvs:
 - unit tests
 
 
+Opprettsak:
 
-   /*resetValidation: (key?: string) => void
-   updateReplySed: (needle: string, value: any) => void
-   */
- }
-
- /* gettingArbeidsperioder: state.loading.gettingArbeidsperioder,
-   gettingInntekter: state.loading.gettingInntekter,
-   gettingPerson: state.loading.gettingPerson,
-   inntekter: state.svarpased.inntekter,
-   landkoderList: state.app.landkoder,
-   searchingPerson: state.loading.searchingPerson,
-   person: state.person.person
-   arbeidsperioder: state.svarpased.arbeidsperioder,
-   familierelasjonKodeverk: state.app.familierelasjoner,
-
-  */
-
- const {
-   arbeidsperioder,
-   familierelasjonKodeverk,
-   gettingArbeidsperioder,
-   gettingInntekter,
-   gettingPerson,
-   highContrast,
-   inntekter,
-   landkoderList,
-   searchingPerson,
-   searchedPerson
- }: any = useSelector<State, any>(mapState)
-
-
+--> key in select
+--> when arbeidsgivere list is []

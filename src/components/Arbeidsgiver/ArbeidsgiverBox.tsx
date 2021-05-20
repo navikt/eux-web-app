@@ -74,20 +74,20 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
 //  personFnr
 }: ArbeidsgiverProps): JSX.Element => {
   const {
-    fraInntektsregistreret,
+    fraInntektsregisteret,
     fraArbeidsgiverregisteret,
-    arbeidsgiverNavn,
-    arbeidsgiverOrgnr,
+    arbeidsgiversNavn,
+    arbeidsgiversOrgnr,
     fraDato,
     tilDato
   } = arbeidsgiver
   const { t } = useTranslation()
-  const _namespace = namespace + '-arbeidsgiver[' + arbeidsgiverOrgnr + ']'
+  const _namespace = namespace + '-arbeidsgiver[' + arbeidsgiversOrgnr + ']'
 
   const [_isDeleting, setIsDeleting] = useState<boolean>(false)
   const [_isEditing, setIsEditing] = useState<boolean>(false)
-  const [_arbeidsgiverNavn, setArbeidsgiverNavn] = useState<string>(arbeidsgiverNavn || '')
-  const [_arbeidsgiverOrgnr, setArbeidsgiverOrgnr] = useState<string>(arbeidsgiverOrgnr || '')
+  const [_arbeidsgiversNavn, setArbeidsgiversNavn] = useState<string>(arbeidsgiversNavn || '')
+  const [_arbeidsgiversOrgnr, setArbeidsgiversOrgnr] = useState<string>(arbeidsgiversOrgnr || '')
   const [_startDato, setStartDato] = useState<string>(fraDato || '')
   const [_sluttDato, setSluttDato] = useState<string>(tilDato || '')
   const [_validation, setValidation] = useState<Validation>({})
@@ -103,13 +103,13 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
 
   const performValidation = (): boolean => {
     const validation: Validation = {}
-    if (!_arbeidsgiverNavn) {
+    if (!_arbeidsgiversNavn) {
       validation[_namespace + '-navn'] = {
         skjemaelementId: _namespace + '-navn',
         feilmelding: t('message:validation-noName')
       } as FeiloppsummeringFeil
     }
-    if (!_arbeidsgiverOrgnr) {
+    if (!_arbeidsgiversOrgnr) {
       validation[_namespace + '-orgnr'] = {
         skjemaelementId: _namespace + '-orgnr',
         feilmelding: t('message:validation-noOrgnr')
@@ -145,12 +145,12 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
 
   const onNameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     resetValidation(_namespace + '-navn')
-    setArbeidsgiverNavn(e.target.value)
+    setArbeidsgiversNavn(e.target.value)
   }
 
   const onOrgnrChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     resetValidation(_namespace + '-orgnr')
-    setArbeidsgiverOrgnr(e.target.value)
+    setArbeidsgiversOrgnr(e.target.value)
   }
 
   const onStartDatoChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -166,8 +166,8 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
   const onSaveButtonClicked = () => {
     if (performValidation()) {
       onArbeidsgiverEdit({
-        arbeidsgiverNavn: _arbeidsgiverNavn,
-        arbeidsgiverOrgnr: _arbeidsgiverOrgnr,
+        arbeidsgiversNavn: _arbeidsgiversNavn,
+        arbeidsgiversOrgnr: _arbeidsgiversOrgnr,
         fraDato: _startDato,
         tilDato: _sluttDato
       } as Arbeidsgiver)
@@ -177,16 +177,16 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
 
   const onEditButtonClicked = () => {
     setIsEditing(true)
-    setArbeidsgiverOrgnr(_arbeidsgiverOrgnr || '')
-    setArbeidsgiverNavn(_arbeidsgiverNavn || '')
+    setArbeidsgiversOrgnr(_arbeidsgiversOrgnr || '')
+    setArbeidsgiversNavn(_arbeidsgiversNavn || '')
     setStartDato(_startDato)
     setSluttDato(_sluttDato)
   }
 
   const onCancelButtonClicked = () => {
     setIsEditing(false)
-    setArbeidsgiverOrgnr('')
-    setArbeidsgiverNavn('')
+    setArbeidsgiversOrgnr('')
+    setArbeidsgiversNavn('')
     setStartDato('')
     setSluttDato('')
   }
@@ -195,13 +195,13 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
     onArbeidsgiverSelect(arbeidsgiver, e.target.checked)
   }
 
-  if (!_arbeidsgiverNavn || !_arbeidsgiverOrgnr) {
+  if (!_arbeidsgiversNavn || !_arbeidsgiversOrgnr) {
     return <div />
   }
   return (
     <div
       className='slideInFromLeft'
-      key={_arbeidsgiverOrgnr}
+      key={_arbeidsgiversOrgnr}
     >
       <VerticalSeparatorDiv size='0.5' />
       <ArbeidsgiverPanel border className={classNames('', { new: newArbeidsgiver })}>
@@ -221,7 +221,7 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
                         label={t('label:navn')}
                         onChange={onNameChanged}
                         placeholder={t('el:placeholder-input-default')}
-                        value={_arbeidsgiverNavn}
+                        value={_arbeidsgiversNavn}
                       />
                     </Column>
                     <Column>
@@ -230,7 +230,7 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
                         feil={_validation[_namespace + '-orgnr']?.feilmelding}
                         id={_namespace + '-orgnr'}
                         onChange={onOrgnrChanged}
-                        value={_arbeidsgiverOrgnr}
+                        value={_arbeidsgiversOrgnr}
                         label={t('label:orgnr')}
                         placeholder={t('el:placeholder-input-default')}
                       />
@@ -240,10 +240,10 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
                 : (
                   <div>
                     <UndertekstBold>
-                      {_arbeidsgiverNavn}
+                      {_arbeidsgiversNavn}
                     </UndertekstBold>
                     <Normaltekst>
-                      {t('label:orgnr')}:&nbsp;{_arbeidsgiverOrgnr}
+                      {t('label:orgnr')}:&nbsp;{_arbeidsgiversOrgnr}
                     </Normaltekst>
                   </div>
                   )}
@@ -302,7 +302,7 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
                 </PileDiv>
               </>
             )}
-            {fraInntektsregistreret === 'ja' && (
+            {fraInntektsregisteret === 'ja' && (
               <>
                 <HorizontalSeparatorDiv />
                 <PileDiv style={{ flexDirection: 'column-reverse' }}>

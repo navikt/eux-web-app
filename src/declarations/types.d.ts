@@ -8,10 +8,10 @@ export interface OldPeriod {
 export interface Arbeidsgiver {
   fraDato?: string
   tilDato?: string
-  fraInntektsregistreret: string
+  fraInntektsregisteret: string
   fraArbeidsgiverregisteret: string
-  arbeidsgiverOrgnr: string
-  arbeidsgiverNavn ?: string
+  arbeidsgiversOrgnr: string
+  arbeidsgiversNavn ?: string
 }
 
 export interface Arbeidsperioder {

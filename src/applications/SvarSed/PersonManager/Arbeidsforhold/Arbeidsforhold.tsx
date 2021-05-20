@@ -65,8 +65,8 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
 
   const [_newArbeidsgiverStartDato, _setNewArbeidsgiverStartDato] = useState<string>('')
   const [_newArbeidsgiverSluttDato, _setNewArbeidsgiverSluttDato] = useState<string>('')
-  const [_newArbeidsgiverOrgnr, _setNewArbeidsgiverOrgnr] = useState<string>('')
-  const [_newArbeidsgiverNavn, _setNewArbeidsgiverNavn] = useState<string>('')
+  const [_newArbeidsgiversOrgnr, _setNewArbeidsgiversOrgnr] = useState<string>('')
+  const [_newArbeidsgiversNavn, _setNewArbeidsgiversNavn] = useState<string>('')
   const [_seeNewArbeidsgiver, _setSeeNewArbeidsgiver] = useState<boolean>(false)
   const [_validationArbeidsgiver, _resetValidationArbeidsgiver, performValidationArbeidsgiver] =
     useValidation<ValidationArbeidsgiverProps>({}, validateArbeidsgiver)
@@ -100,8 +100,8 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
   }
 
   const resetArbeidsgiverForm = () => {
-    _setNewArbeidsgiverNavn('')
-    _setNewArbeidsgiverOrgnr('')
+    _setNewArbeidsgiversNavn('')
+    _setNewArbeidsgiversOrgnr('')
     _setNewArbeidsgiverSluttDato('')
     _setNewArbeidsgiverStartDato('')
     _resetValidationArbeidsgiver()
@@ -122,23 +122,23 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
     _setNewArbeidsgiverSluttDato(dato)
   }
 
-  const onArbeidsgiverOrgnrChanged = (newOrg: string) => {
+  const onArbeidsgiversOrgnrChanged = (newOrg: string) => {
     _resetValidationArbeidsgiver(namespace + '-arbeidsgiver-orgnr')
-    _setNewArbeidsgiverOrgnr(newOrg)
+    _setNewArbeidsgiversOrgnr(newOrg)
   }
 
-  const onArbeidsgiverNameChanged = (newName: string) => {
+  const onArbeidsgiversNavnChanged = (newName: string) => {
     _resetValidationArbeidsgiver(namespace + '-arbeidsgiver-navn')
-    _setNewArbeidsgiverNavn(newName)
+    _setNewArbeidsgiversNavn(newName)
   }
 
   const onArbeidsgiverAdd = () => {
     const newArbeidsgiver: Arbeidsgiver = {
-      arbeidsgiverNavn: _newArbeidsgiverNavn,
-      arbeidsgiverOrgnr: _newArbeidsgiverOrgnr,
+      arbeidsgiversNavn: _newArbeidsgiversNavn,
+      arbeidsgiversOrgnr: _newArbeidsgiversOrgnr,
       fraDato: toFinalDateFormat(_newArbeidsgiverStartDato),
       tilDato: toFinalDateFormat(_newArbeidsgiverSluttDato),
-      fraInntektsregistreret: 'nei',
+      fraInntektsregisteret: 'nei',
       fraArbeidsgiverregisteret: 'nei'
     }
 
@@ -194,13 +194,13 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
       </Undertittel>
       <VerticalSeparatorDiv />
       {arbeidsperioder?.arbeidsperioder.map(arbeidsgiver => (
-        <AlignStartRow key={arbeidsgiver.arbeidsgiverOrgnr} className='slideInFromLeft'>
+        <AlignStartRow key={arbeidsgiver.arbeidsgiversOrgnr} className='slideInFromLeft'>
           <Column>
             <ArbeidsgiverBox
               arbeidsgiver={arbeidsgiver}
               editable={false}
               newArbeidsgiver={false}
-              key={arbeidsgiver.arbeidsgiverOrgnr}
+              key={arbeidsgiver.arbeidsgiversOrgnr}
               onArbeidsgiverSelect={() => {}}
               namespace={namespace}
             />
@@ -209,13 +209,13 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
       ))}
 
       {_addedArbeidsperioder?.arbeidsperioder.map(arbeidsgiver => (
-        <AlignStartRow key={arbeidsgiver.arbeidsgiverOrgnr} className='slideInFromLeft'>
+        <AlignStartRow key={arbeidsgiver.arbeidsgiversOrgnr} className='slideInFromLeft'>
           <Column>
             <ArbeidsgiverBox
               arbeidsgiver={arbeidsgiver}
               editable={false}
               newArbeidsgiver
-              key={arbeidsgiver.arbeidsgiverOrgnr}
+              key={arbeidsgiver.arbeidsgiversOrgnr}
               onArbeidsgiverSelect={() => {}}
               namespace={namespace}
             />
@@ -264,8 +264,8 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
                   namespace={namespace + '-arbeidsgiver'}
                   id='orgnr'
                   label={t('label:orgnr')}
-                  onChanged={onArbeidsgiverOrgnrChanged}
-                  value={_newArbeidsgiverOrgnr}
+                  onChanged={onArbeidsgiversOrgnrChanged}
+                  value={_newArbeidsgiversOrgnr}
                 />
               </Column>
               <Column>
@@ -274,8 +274,8 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
                   namespace={namespace + '-arbeidsgiver'}
                   id='navn'
                   label={t('label:navn')}
-                  onChanged={onArbeidsgiverNameChanged}
-                  value={_newArbeidsgiverNavn}
+                  onChanged={onArbeidsgiversNavnChanged}
+                  value={_newArbeidsgiversNavn}
                 />
               </Column>
               <Column />

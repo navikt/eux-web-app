@@ -6,8 +6,8 @@ export const PeriodePropType = PT.shape({
 })
 
 export const ArbeidsgiverPropType = PT.shape({
-  arbeidsgiverOrgnr: PT.string,
-  arbeidsgiverNavn: PT.string,
+  arbeidsgiversOrgnr: PT.string,
+  arbeidsgiversNavn: PT.string,
   fraDato: PT.string,
   tilDato: PT.string
 })

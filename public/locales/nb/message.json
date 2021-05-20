@@ -138,5 +138,6 @@
   "warning-conflict-aa-1": "Mulig avvik mellom ",
   "warning-conflict-aa-link-1": "AA Registeret",
   "warning-conflict-aa-2": " og ",
-  "warning-conflict-aa-link-2": "A-Inntekt"
+  "warning-conflict-aa-link-2": "A-Inntekt",
+  "warning-no-arbeidsgiver-found": "Ingen arbeidsperioder funnet"
 }

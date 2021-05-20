@@ -86,7 +86,7 @@ export const getArbeidsperioder: ActionCreator<ThunkResult<ActionWithPayload<Arb
 ): ThunkResult<ActionWithPayload<Arbeidsperioder>> => {
   return call({
     url: sprintf(urls.API_ARBEIDSPERIODER_QUERY_URL, { fnr: fnr }),
-    expectedPayload: mockArbeidsperioder(fnr),
+    expectedPayload: mockArbeidsperioder,
     type: {
       request: types.SAK_ARBEIDSPERIODER_GET_REQUEST,
       success: types.SAK_ARBEIDSPERIODER_GET_SUCCESS,

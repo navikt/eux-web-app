@@ -30,14 +30,14 @@ export const validateArbeidsgiver = (
   }: ValidationArbeidsgiverProps
 ): boolean => {
   let hasErrors: boolean = false
-  if (_.isEmpty(arbeidsgiver?.arbeidsgiverNavn?.trim())) {
+  if (_.isEmpty(arbeidsgiver?.arbeidsgiversNavn?.trim())) {
     v[namespace + '-arbeidsgiver-navn'] = {
       skjemaelementId: namespace + '-arbeidsgiver-navn',
       feilmelding: t('message:validation-noName')
     } as FeiloppsummeringFeil
     hasErrors = true
   }
-  if (_.isEmpty(arbeidsgiver?.arbeidsgiverOrgnr?.trim())) {
+  if (_.isEmpty(arbeidsgiver?.arbeidsgiversOrgnr?.trim())) {
     v[namespace + '-arbeidsgiver-orgnr'] = {
       skjemaelementId: namespace + '-arbeidsgiver-orgnr',
       feilmelding: t('message:validation-noOrgnr')

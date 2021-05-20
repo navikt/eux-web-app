@@ -146,9 +146,9 @@ export const validateFamilieytelserPeriode = (
   let hasErrors: boolean = false
   const idx = getIdx(index)
   const extraNamespace = namespace + '-' + (!_.isNil(index) && index >= 0 ? sedCategory : 'familieYtelse') + idx
-  const extraperiodeNamespace = extraNamespace
+  let extraperiodeNamespace = extraNamespace
   if (sedCategory === 'perioderMedPensjon' && !_.isNil(index) && index >= 0) {
-    extraperiodeNamespace + '-periode'
+    extraperiodeNamespace += '-periode'
   }
   const period = sedCategory === 'perioderMedPensjon' ? (periode as PensjonPeriode).periode : (periode as Periode)
 

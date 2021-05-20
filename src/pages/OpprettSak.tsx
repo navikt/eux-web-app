@@ -72,6 +72,7 @@ export interface OpprettSakSelector {
   sendingSak: boolean
   gettingFagsaker: boolean
   gettingPerson: boolean
+  gettingArbeidsperioder: boolean
 
   arbeidsperioder: Arbeidsperioder | undefined
   buctyper: BucTyper | undefined
@@ -120,6 +121,7 @@ const mapState = (state: State): OpprettSakSelector => ({
   sendingSak: state.loading.sendingSak,
   gettingFagsaker: state.loading.gettingFagsaker,
   gettingPerson: state.loading.gettingPerson,
+  gettingArbeidsperioder: state.loading.gettingArbeidsperioder,
 
   arbeidsperioder: state.sak.arbeidsperioder,
   valgteArbeidsgivere: state.sak.arbeidsgivere,
@@ -149,6 +151,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
     alertStatus,
     alertMessage,
     alertType,
+    gettingArbeidsperioder,
     gettingFagsaker,
     gettingPerson,
     enheter,
@@ -663,6 +666,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   namespace='arbeidsgivere'
                   searchable
                   getArbeidsperioder={() => dispatch(sakActions.getArbeidsperioder(person?.fnr))}
+                  gettingArbeidsperioder={gettingArbeidsperioder}
                   valgteArbeidsgivere={valgteArbeidsgivere}
                   arbeidsperioder={arbeidsperioder}
                   onArbeidsgiverSelect={(a: Arbeidsgiver, checked: boolean) => dispatch(

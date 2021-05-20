@@ -75,8 +75,8 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
   // arbeidsgivere
   const [_newArbeidsgiverStartDato, _setNewArbeidsgiverStartDato] = useState<string>('')
   const [_newArbeidsgiverSluttDato, _setNewArbeidsgiverSluttDato] = useState<string>('')
-  const [_newArbeidsgiverOrgnr, _setNewArbeidsgiverOrgnr] = useState<string>('')
-  const [_newArbeidsgiverNavn, _setNewArbeidsgiverNavn] = useState<string>('')
+  const [_newArbeidsgiversOrgnr, _setNewArbeidsgiversOrgnr] = useState<string>('')
+  const [_newArbeidsgiversNavn, _setNewArbeidsgiversNavn] = useState<string>('')
   const [_seeNewArbeidsgiver, _setSeeNewArbeidsgiver] = useState<boolean>(false)
   const [_validationArbeidsgiver, _resetValidationArbeidsgiver, performValidationArbeidsgiver] =
     useValidation<ValidationArbeidsgiverProps>({}, validateArbeidsgiver)
@@ -141,7 +141,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
   const onArbeidsgiverEdit = (arbeidsgiver: Arbeidsgiver) => {
     const newAddedArbeidsperioder: Arbeidsperioder = _.cloneDeep(_addedArbeidsperioder)
     if (newAddedArbeidsperioder) {
-      const index = _.findIndex(newAddedArbeidsperioder.arbeidsperioder, a => a.arbeidsgiverOrgnr === arbeidsgiver.arbeidsgiverOrgnr)
+      const index = _.findIndex(newAddedArbeidsperioder.arbeidsperioder, a => a.arbeidsgiversOrgnr === arbeidsgiver.arbeidsgiversOrgnr)
       if (index >= 0) {
         newAddedArbeidsperioder.arbeidsperioder[index] = arbeidsgiver
         setAddedArbeidsperioder(newAddedArbeidsperioder)
@@ -152,13 +152,13 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
   const onArbeidsgiverDelete = (deletedArbeidsgiver: Arbeidsgiver) => {
     const newAddedArbeidsperioder: Arbeidsperioder = _.cloneDeep(_addedArbeidsperioder) as Arbeidsperioder
     newAddedArbeidsperioder.arbeidsperioder = _.filter(newAddedArbeidsperioder?.arbeidsperioder,
-      (a: Arbeidsgiver) => a.arbeidsgiverOrgnr !== deletedArbeidsgiver.arbeidsgiverOrgnr)
+      (a: Arbeidsgiver) => a.arbeidsgiversOrgnr !== deletedArbeidsgiver.arbeidsgiversOrgnr)
     setAddedArbeidsperioder(newAddedArbeidsperioder)
   }
 
   const resetArbeidsgiverForm = () => {
-    _setNewArbeidsgiverNavn('')
-    _setNewArbeidsgiverOrgnr('')
+    _setNewArbeidsgiversNavn('')
+    _setNewArbeidsgiversOrgnr('')
     _setNewArbeidsgiverSluttDato('')
     _setNewArbeidsgiverStartDato('')
     _resetValidationArbeidsgiver()
@@ -172,11 +172,11 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
 
   const onArbeidsgiverAdd = () => {
     const newArbeidsgiver: Arbeidsgiver = {
-      arbeidsgiverNavn: _newArbeidsgiverNavn,
-      arbeidsgiverOrgnr: _newArbeidsgiverOrgnr,
+      arbeidsgiversNavn: _newArbeidsgiversNavn,
+      arbeidsgiversOrgnr: _newArbeidsgiversOrgnr,
       fraDato: toFinalDateFormat(_newArbeidsgiverStartDato),
       tilDato: toFinalDateFormat(_newArbeidsgiverSluttDato),
-      fraInntektsregistreret: 'nei',
+      fraInntektsregisteret: 'nei',
       fraArbeidsgiverregisteret: 'nei'
     }
 
@@ -235,14 +235,14 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
     _setNewArbeidsgiverSluttDato(dato)
   }
 
-  const onArbeidsgiverOrgnrChanged = (newOrg: string) => {
+  const onArbeidsgiversOrgnrChanged = (newOrg: string) => {
     _resetValidationArbeidsgiver(namespace + '-arbeidsgiver-orgnr')
-    _setNewArbeidsgiverOrgnr(newOrg)
+    _setNewArbeidsgiversOrgnr(newOrg)
   }
 
-  const onArbeidsgiverNameChanged = (newName: string) => {
+  const onArbeidsgiversNavnChanged = (newName: string) => {
     _resetValidationArbeidsgiver(namespace + '-arbeidsgiver-navn')
-    _setNewArbeidsgiverNavn(newName)
+    _setNewArbeidsgiversNavn(newName)
   }
 
   const setPeriodeStartDato = (startdato: string, index: number) => {
@@ -433,7 +433,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
                   editable={false}
                   newArbeidsgiver={false}
                   selected={!_.isNil(item.index) && item.index >= 0}
-                  key={(item.item as Arbeidsgiver).arbeidsgiverOrgnr}
+                  key={(item.item as Arbeidsgiver).arbeidsgiversOrgnr}
                   onArbeidsgiverSelect={onArbeidsgiverSelect}
                   namespace={namespace}
                 />
@@ -452,7 +452,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
                   error={item.duplicate}
                   newArbeidsgiver
                   selected={!_.isNil(item.index) && item.index >= 0}
-                  key={(item.item as Arbeidsgiver).arbeidsgiverOrgnr}
+                  key={(item.item as Arbeidsgiver).arbeidsgiversOrgnr}
                   onArbeidsgiverSelect={onArbeidsgiverSelect}
                   onArbeidsgiverDelete={onArbeidsgiverDelete}
                   onArbeidsgiverEdit={onArbeidsgiverEdit}
@@ -499,21 +499,21 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
                 feil={_validationArbeidsgiver[namespace + '-arbeidsgiver-orgnr']?.feilmelding}
                 namespace={namespace + '-arbeidsgiver'}
                 id='orgnr'
-                key={namespace + '-arbeidsgiver-orgnr-' + _newArbeidsgiverOrgnr}
+                key={namespace + '-arbeidsgiver-orgnr-' + _newArbeidsgiversOrgnr}
                 label={t('label:orgnr')}
-                onChanged={onArbeidsgiverOrgnrChanged}
-                value={_newArbeidsgiverOrgnr}
+                onChanged={onArbeidsgiversOrgnrChanged}
+                value={_newArbeidsgiversOrgnr}
               />
             </Column>
             <Column>
               <Input
                 feil={_validationArbeidsgiver[namespace + '-arbeidsgiver-navn']?.feilmelding}
                 namespace={namespace + '-arbeidsgiver'}
-                key={namespace + '-arbeidsgiver-navn-' + _newArbeidsgiverNavn}
+                key={namespace + '-arbeidsgiver-navn-' + _newArbeidsgiversNavn}
                 id='navn'
                 label={t('label:navn')}
-                onChanged={onArbeidsgiverNameChanged}
-                value={_newArbeidsgiverNavn}
+                onChanged={onArbeidsgiversNavnChanged}
+                value={_newArbeidsgiversNavn}
               />
             </Column>
             <Column />
