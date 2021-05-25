@@ -48,8 +48,8 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
   const [_ektefelleEtternavn, setEktefelleEtternavn] = useState<string>((replySed as F002Sed).ektefelle?.personInfo.etternavn)
 
   const [_sakseier, setSakseier] = useState<string>('')
-  const [_typeKrav, setTypeKrav] = useState<string>((replySed as F002Sed).krav.kravType)
-  const [_informasjon, setInformasjon] = useState<string>((replySed as F002Sed).krav.kravType)
+  const [_typeKrav, setTypeKrav] = useState<string | undefined>((replySed as F002Sed).krav?.kravType)
+  const [_informasjon, setInformasjon] = useState<string | undefined>((replySed as F002Sed).krav?.infoType)
   const [_opplysninger, setOpplysninger] = useState<string>('')
 
   const setAnmodningsperiodeStartDato = (e: string) => {

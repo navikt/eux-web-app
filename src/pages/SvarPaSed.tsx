@@ -106,6 +106,7 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
   const dispatch = useDispatch()
 
   const [_mounted, setMounted] = useState<boolean>(!waitForMount)
+
   const [positionContentA, setPositionContentA] = useState<Slide>(Slide.LEFT)
   const [positionContentB, setPositionContentB] = useState<Slide>(Slide.RIGHT)
   const [positionSidebarA, setPositionSidebarA] = useState<Slide>(Slide.RIGHT)
@@ -203,7 +204,7 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
         </SideBarDiv>
       )
     }
-  }, [animating, dispatch])//, allowFullScreen, onFullFocus, onRestoreFocus])
+  }, [animating, dispatch])
 
   useEffect(() => {
     if (!_mounted) {

@@ -142,7 +142,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
         </div>
       ))}
       <VerticalSeparatorDiv />
-      {isFSed(replySed) && (
+      {isFSed(replySed) && (replySed as F002Sed).krav?.kravType && (
         <>
           <Dl>
             <Dt>
