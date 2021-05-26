@@ -378,8 +378,12 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
       </>
     )
   }
-  const existsFamilieYtelser = (perioder.perioderMedArbeid.length + perioder.perioderMedTrygd.length +
-    perioder.perioderMedYtelser.length + perioder.perioderMedPensjon.length) > 0
+  const existsFamilieYtelser = (
+    (perioder?.perioderMedArbeid?.length ?? 0) +
+    (perioder?.perioderMedTrygd?.length ?? 0) +
+    (perioder?.perioderMedYtelser?.length ?? 0) +
+    (perioder?.perioderMedPensjon?.length ?? 0)
+  ) > 0
 
   return (
     <>
