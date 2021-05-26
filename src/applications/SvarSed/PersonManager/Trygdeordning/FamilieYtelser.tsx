@@ -408,13 +408,13 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
       )}
       <VerticalSeparatorDiv />
       {titleFor('perioderMedArbeid')}
-      {perioder.perioderMedArbeid.map((p, i) => renderRow(p, 'perioderMedArbeid', i))}
+      {perioder?.perioderMedArbeid?.map((p, i) => renderRow(p, 'perioderMedArbeid', i))}
       {titleFor('perioderMedTrygd')}
-      {perioder.perioderMedTrygd.map((p, i) => renderRow(p, 'perioderMedTrygd', i))}
+      {perioder?.perioderMedTrygd?.map((p, i) => renderRow(p, 'perioderMedTrygd', i))}
       {titleFor('perioderMedYtelser')}
-      {perioder.perioderMedYtelser.map((p, i) => renderRow(p, 'perioderMedYtelser', i))}
+      {perioder?.perioderMedYtelser?.map((p, i) => renderRow(p, 'perioderMedYtelser', i))}
       {titleFor('perioderMedPensjon')}
-      {perioder.perioderMedPensjon.map((p, i) => renderRow(p, 'perioderMedPensjon', i))}
+      {perioder?.perioderMedPensjon?.map((p, i) => renderRow(p, 'perioderMedPensjon', i))}
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm
