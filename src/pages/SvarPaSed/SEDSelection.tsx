@@ -135,7 +135,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
 
   const onReplySedClick = (connectedSed: ConnectedSed, saksnummer: string) => {
     setReplySedRequested(true)
-    dispatch(svarpasedActions.queryReplySed(_saksnummerOrFnr, connectedSed, saksnummer))
+    dispatch(svarpasedActions.queryReplySed(connectedSed, saksnummer))
   }
 
   useEffect(() => {
@@ -148,7 +148,10 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
   const familieytelser: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('FB_'))?.length ?? 0
   const dagpenger: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('U_'))?.length ?? 0
   const horisontal: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('H_'))?.length ?? 0
+  const ssed: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('S_'))?.length ?? 0
 
+  const filteredSeds = _.filter(seds,(s: Sed) => _filter ? s.sakType.startsWith(_filter) : true)
+  console.log(filteredSeds)
   return (
     <NavHighContrast highContrast={highContrast}>
       <ContainerDiv>
@@ -267,16 +270,29 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                   <HorizontalSeparatorDiv />
                 </>
               )}
+              {ssed > 0 && (
+                <>
+                  <HighContrastFlatknapp
+                    mini
+                    kompakt
+                    className={classNames({ selected: _filter === 'S_' })}
+                    onClick={() => _setFilter('S_')}
+                  >
+                    {t('label:S') + ' (' + ssed + ')'}
+                  </HighContrastFlatknapp>
+                  <HorizontalSeparatorDiv />
+                </>
+              )}
             </FilterDiv>
             <VerticalSeparatorDiv />
-            {seds
-              .filter((s: Sed) => _filter ? s.sakType.startsWith(_filter) : true)
-              .map((sed: Sed) => (
-                <div key={sed.sakType}>
+            {filteredSeds.map((sed: Sed) => {
+              const sedId = sed.sakId + '-' + sed.sakType
+              return (
+                <div key={sedId}>
                   <RadioElementBorder
                     ariaLabel={sed.sakType + ' - ' + sed.sakTittel}
-                    ariaChecked={parentSed === sed.sakType}
-                    checked={parentSed === sed.sakType}
+                    ariaChecked={parentSed === sedId}
+                    checked={parentSed === sedId}
                     className='slideInFromLeft'
                     label={(
                       <>
@@ -313,15 +329,15 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                   )}
                     name='sedselection-saksnummerOrFnr-results'
                     onChange={onParentSedChange}
-                    value={sed.sakType}
+                    value={sedId}
                   />
                   {sed.sedListe.map((connectedSed: ConnectedSed) => (
                     <HiddenFormContainer
-                      aria-hidden={!(previousParentSed !== sed.sakType && parentSed === sed.sakType)}
+                      aria-hidden={!(previousParentSed !== sedId && parentSed === sedId)}
                       className={classNames({
-                        slideOpen: previousParentSed !== sed.sakType && parentSed === sed.sakType,
-                        slideClose: previousParentSed === sed.sakType && parentSed !== sed.sakType,
-                        closed: !((previousParentSed !== sed.sakType && parentSed === sed.sakType) || (previousParentSed === sed.sakType && parentSed !== sed.sakType))
+                        slideOpen: previousParentSed !== sedId && parentSed === sedId,
+                        slideClose: previousParentSed === sedId && parentSed !== sedId,
+                        closed: !((previousParentSed !== sedId && parentSed === sedId) || (previousParentSed === sedId && parentSed !== sedId))
                       })}
                       key={sed + '-' + connectedSed.sedId}
                     >
@@ -381,7 +397,9 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                     </HiddenFormContainer>
                   ))}
                 </div>
-              ))}
+              )
+            })}
+
           </HighContrastRadioGroup>
         )}
       </ContainerDiv>

@@ -79,12 +79,12 @@ export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload<C
 }
 
 export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed>>> = (
-  saksnummerOrFnr: string, connectedSed: ConnectedSed, saksnummer: string
+ connectedSed: ConnectedSed, saksnummer: string
 ): ThunkResult<ActionWithPayload<ReplySed>> => {
   const mockSed = mockReplySed(connectedSed.svarsedType)
   return call({
     url: sprintf(urls.API_RINASAK_SVARSED_QUERY_URL, {
-      rinaSakId: saksnummerOrFnr,
+      rinaSakId: saksnummer,
       sedId: connectedSed.sedId,
       sedType: connectedSed.svarsedType
     }),
