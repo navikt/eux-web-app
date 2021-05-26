@@ -100,7 +100,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
                 ' (' + (replySed as F002Sed).ektefelle.personInfo.kjoenn + ')'
                   : '-'}
               </span>
-              {(replySed as F002Sed).ektefelle.personInfo.statsborgerskap && (
+              {(replySed as F002Sed)?.ektefelle?.personInfo?.statsborgerskap && (
                 <FlagList
                   size='S'
                   type='circle'

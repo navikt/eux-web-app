@@ -52,7 +52,7 @@ export const validateAllGrunnlagForBosetting = (
 ): boolean => {
   let hasErrors: boolean = false
 
-  flyttegrunn.perioder.forEach((periode: Periode, index: number) => {
+  flyttegrunn?.perioder?.forEach((periode: Periode, index: number) => {
     const periodErrors : boolean = validatePeriod(v, t, {
       period: periode,
       index,

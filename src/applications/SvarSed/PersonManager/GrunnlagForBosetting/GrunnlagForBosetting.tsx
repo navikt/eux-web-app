@@ -144,12 +144,12 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps> = ({
 
     const valid: boolean = performValidation({
       period: newPeriode,
-      otherPeriods: flyttegrunn.perioder,
+      otherPeriods: flyttegrunn?.perioder,
       namespace
     })
 
     if (valid) {
-      let newPerioder: Array<Periode> = _.cloneDeep(flyttegrunn.perioder)
+      let newPerioder: Array<Periode> | undefined = _.cloneDeep(flyttegrunn?.perioder)
       if (_.isNil(newPerioder)) {
         newPerioder = []
       }
@@ -210,7 +210,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps> = ({
         {t('label:oppholdets-varighet')}
       </UndertekstBold>
       <VerticalSeparatorDiv />
-      {flyttegrunn.perioder
+      {flyttegrunn?.perioder
         .sort((a, b) =>
           moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1
         )
