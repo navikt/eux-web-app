@@ -45,3 +45,9 @@ Opprettsak:
 
 --> key in select
 --> when arbeidsgivere list is []
+
+
+deploy:
+1- check <version> in DEploy Maven artifact in NAV IKT's Github package
+4.4-877935531
+2 - https://github.com/navikt/eux-neessi/blob/feature/inntektsperioder/pom.xml

@@ -8,7 +8,7 @@ import { getIdx } from 'utils/namespace'
 
 export interface ValidationGrunnlagForBosettingProps {
   period: Periode
-  otherPeriods: Array<Periode>
+  otherPeriods: Array<Periode> | undefined
   index?: number
   namespace: string
 }
@@ -61,7 +61,7 @@ export const validateAllGrunnlagForBosetting = (
     hasErrors = hasErrors || periodErrors
   })
 
-  if (!_.isEmpty(flyttegrunn.datoFlyttetTilAvsenderlandet) && !flyttegrunn.datoFlyttetTilAvsenderlandet.match(datePattern)) {
+  if (!_.isEmpty(flyttegrunn?.datoFlyttetTilAvsenderlandet) && !flyttegrunn?.datoFlyttetTilAvsenderlandet.match(datePattern)) {
     v[namespace + '-datoFlyttetTilAvsenderlandet'] = {
       skjemaelementId: namespace + '-datoFlyttetTilAvsenderlandet',
       feilmelding: t('message:validation-invalidDateForPerson', { person: personName })
@@ -69,7 +69,7 @@ export const validateAllGrunnlagForBosetting = (
     hasErrors = true
   }
 
-  if (!_.isEmpty(flyttegrunn.datoFlyttetTilMottakerlandet) && !flyttegrunn.datoFlyttetTilMottakerlandet.match(datePattern)) {
+  if (!_.isEmpty(flyttegrunn?.datoFlyttetTilMottakerlandet) && !flyttegrunn?.datoFlyttetTilMottakerlandet.match(datePattern)) {
     v[namespace + '-datoFlyttetTilMottakerlandet'] = {
       skjemaelementId: namespace + '-datoFlyttetTilMottakerlandet',
       feilmelding: t('message:validation-invalidDateForPerson', { person: personName })
@@ -77,7 +77,7 @@ export const validateAllGrunnlagForBosetting = (
     hasErrors = true
   }
 
-  if (!_.isEmpty(flyttegrunn.personligSituasjon) && flyttegrunn.personligSituasjon.length > 500) {
+  if (!_.isEmpty(flyttegrunn?.personligSituasjon) && flyttegrunn?.personligSituasjon.length > 500) {
     v[namespace + '-personligSituasjon'] = {
       skjemaelementId: namespace + '-personligSituasjon',
       feilmelding: t('message:Det har for mye tekst', { person: personName })

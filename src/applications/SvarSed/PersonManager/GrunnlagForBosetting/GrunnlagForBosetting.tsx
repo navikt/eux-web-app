@@ -47,7 +47,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps> = ({
   } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const target = `${personID}.flyttegrunn`
-  const flyttegrunn: Flyttegrunn = _.get(replySed, target)
+  const flyttegrunn: Flyttegrunn | undefined = _.get(replySed, target)
   const namespace = standalone ? `${parentNamespace}-${personID}-grunnlagforbosetting` : `${parentNamespace}-grunnlagforbosetting`
 
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')
@@ -90,7 +90,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps> = ({
       _setNewSluttDato(sluttdato.trim())
       _resetValidation(namespace + '-perioder-sluttdato')
     } else {
-      const newPerioder: Array<Periode> = _.cloneDeep(flyttegrunn.perioder)
+      const newPerioder: Array<Periode> | undefined = _.cloneDeep(flyttegrunn!.perioder)
       if (sluttdato === '') {
         delete newPerioder[index].sluttdato
         newPerioder[index].aapenPeriodeType = 'åpen_sluttdato'
@@ -124,7 +124,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps> = ({
   }
 
   const onRemove = (index: number) => {
-    const newPerioder: Array<Periode> = _.cloneDeep(flyttegrunn.perioder)
+    const newPerioder: Array<Periode> = _.cloneDeep(flyttegrunn!.perioder)
     const deletedPeriods: Array<Periode> = newPerioder.splice(index, 1)
     if (deletedPeriods && deletedPeriods.length > 0) {
       removeFromDeletion(deletedPeriods[0])
@@ -242,10 +242,10 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps> = ({
             feil={validation[namespace + '-datoFlyttetTilAvsenderlandet']?.feilmelding}
             namespace={namespace}
             id='datoFlyttetTilAvsenderlandet'
-            key={flyttegrunn.datoFlyttetTilAvsenderlandet}
+            key={'' + flyttegrunn?.datoFlyttetTilAvsenderlandet}
             label={t('label:flyttedato-til-avsenderlandet')}
             onChanged={setAvsenderDato}
-            value={flyttegrunn.datoFlyttetTilAvsenderlandet}
+            value={flyttegrunn?.datoFlyttetTilAvsenderlandet}
           />
         </Column>
         <Column>
@@ -253,10 +253,10 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps> = ({
             feil={validation[namespace + '-datoFlyttetTilMottakerlandet']?.feilmelding}
             namespace={namespace}
             id='datoFlyttetTilMottakerlandet'
-            key={flyttegrunn.datoFlyttetTilMottakerlandet}
+            key={'' + flyttegrunn?.datoFlyttetTilMottakerlandet}
             label={t('label:flyttedato-til-mottakerslandet')}
             onChanged={setMottakerDato}
-            value={flyttegrunn.datoFlyttetTilMottakerlandet}
+            value={flyttegrunn?.datoFlyttetTilMottakerlandet}
           />
         </Column>
         <Column />
@@ -271,7 +271,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps> = ({
               id='personligSituasjon'
               label={t('label:elementter-i-personlig-situasjon')}
               onChanged={setPersonligSituasjon}
-              value={flyttegrunn.personligSituasjon}
+              value={flyttegrunn?.personligSituasjon ?? ''}
             />
           </TextAreaDiv>
         </Column>
