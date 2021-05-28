@@ -1,13 +1,12 @@
 import classNames from 'classnames'
 import Alert from 'components/Alert/Alert'
 import PersonCard from 'applications/OpprettSak/PersonCard/PersonCard'
-import { Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { Column, HighContrastKnapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import { AlertStatus } from 'declarations/components'
 import { OldFamilieRelasjon, Kodeverk, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
 import _ from 'lodash'
 import AlertStripe from 'nav-frontend-alertstriper'
-import { Knapp } from 'nav-frontend-knapper'
 import { Input } from 'nav-frontend-skjema'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
@@ -153,12 +152,12 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
         </Column>
         <HorizontalSeparatorDiv />
         <AlignCenterColumn>
-          <Knapp
+          <HighContrastKnapp
             disabled={person.fnr === _query}
             onClick={sokEtterFnr}
           >
             {t('el:button-search')}
-          </Knapp>
+          </HighContrastKnapp>
         </AlignCenterColumn>
       </Row>
       <VerticalSeparatorDiv />

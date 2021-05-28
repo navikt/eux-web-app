@@ -1,20 +1,18 @@
-import { OldFamilieRelasjon, Kodeverk, Person } from 'declarations/types'
-import _ from 'lodash'
-import { Knapp } from 'nav-frontend-knapper'
-import { Ingress, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import PersonCard from 'applications/OpprettSak/PersonCard/PersonCard'
+import { Kodeverk, OldFamilieRelasjon, Person } from 'declarations/types'
+import _ from 'lodash'
+import { Ingress, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
+import { FlexDiv, HighContrastKnapp, HorizontalSeparatorDiv, PileCenterDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { FlexDiv, PileCenterDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import AbroadPersonForm from './AbroadPersonForm'
 import TPSPersonForm from './TPSPersonForm'
 
 const FamilySubArea = styled.div`
-  flex: 10;
+  width: 500px;
 `
 const FamilySeparator = styled.div`
-  flex: 1;
   border-left: 1px solid lightgrey;
 `
 const MarginDiv = styled.div`
@@ -142,7 +140,9 @@ const Family: React.FC<FamilyProps> = ({
             </>
           )}
         </FamilySubArea>
+        <HorizontalSeparatorDiv size='0.5'/>
         <FamilySeparator />
+        <HorizontalSeparatorDiv size='0.5'/>
         <FamilySubArea>
           <HorizontalSeparatorDiv />
           <Ingress>
@@ -185,13 +185,13 @@ const Family: React.FC<FamilyProps> = ({
             </>
           )}
           <VerticalSeparatorDiv />
-          <Knapp
+          <HighContrastKnapp
             onClick={toggleViewAbroadPersonForm}
           >
             {_viewAbroadPersonForm
               ? t('label:skjul-skjema')
               : t('label:vis-skjema')}
-          </Knapp>
+          </HighContrastKnapp>
         </div>
         <div>
           <VerticalSeparatorDiv size='1.5' />
@@ -219,11 +219,11 @@ const Family: React.FC<FamilyProps> = ({
             </>
           )}
           <VerticalSeparatorDiv />
-          <Knapp onClick={toggleViewTPSRelatedForm}>
+          <HighContrastKnapp onClick={toggleViewTPSRelatedForm}>
             {_viewTPSRelatedForm
               ? t('label:skjul-skjema')
               : t('label:vis-skjema')}
-          </Knapp>
+          </HighContrastKnapp>
         </div>
       </PileCenterDiv>
     </div>

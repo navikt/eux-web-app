@@ -33,7 +33,6 @@ import useValidation from 'hooks/useValidation'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import AlertStripe from 'nav-frontend-alertstriper'
-import { Flatknapp, Hovedknapp, Knapp } from 'nav-frontend-knapper'
 import Lenke from 'nav-frontend-lenker'
 import { Feiloppsummering, FeiloppsummeringFeil, Select } from 'nav-frontend-skjema'
 import { Systemtittel } from 'nav-frontend-typografi'
@@ -43,6 +42,9 @@ import {
   Container,
   Content,
   FlexDiv,
+  HighContrastFlatknapp,
+  HighContrastHovedknapp,
+  HighContrastKnapp,
   HighContrastPanel,
   HorizontalSeparatorDiv,
   Margin,
@@ -605,13 +607,13 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     <PileDiv>
                       <VerticalSeparatorDiv size='2' />
                       <FlexDiv>
-                        <Knapp
+                        <HighContrastKnapp
                           onClick={onViewFagsakerClick}
                           spinner={gettingFagsaker}
                           disabled={gettingFagsaker || !isSomething(valgtTema)}
                         >
                           {gettingFagsaker ? t('message:loading-saker') : t('label:vis-saker')}
-                        </Knapp>
+                        </HighContrastKnapp>
                       </FlexDiv>
                     </PileDiv>
                   </Column>
@@ -681,20 +683,20 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                 className='slideInFromLeft'
                 style={{ animationDelay: '0.9s' }}
               >
-                <Hovedknapp
+                <HighContrastHovedknapp
                   disabled={sendingSak}
                   onClick={skjemaSubmit}
                   spinner={sendingSak}
                 >
                   {t('label:opprett-sak-i-rina')}
-                </Hovedknapp>
+                </HighContrastHovedknapp>
                 <HorizontalSeparatorDiv />
-                <Flatknapp
+                <HighContrastFlatknapp
                   aria-label='Navigasjonslink tilbake til forsiden'
                   onClick={openModal}
                 >
                   {t('label:avslutt-utfylling')}
-                </Flatknapp>
+                </HighContrastFlatknapp>
               </Row>
               {!isValid && (
                 <>

@@ -1,11 +1,12 @@
 
-Clean ActionTypes later
-Clean Attachments later
-
 1. na familierelasjon, pode ser que envie borSammen, etc com REPA/EKTE/etc. Confirmar que backend limpa
 4. familie.motregninger[0] sounds bad
 5. Antall det innvilges for?!
 6. Where are the mandatory / optional fields?
+
+--> Lagre não funciona
+--> preview pdf
+--> svarsed n~~o aparece
 
  grep -rho -e "'label:[^']*'" * | sort -u
 
@@ -18,7 +19,6 @@ test:
 04118107352 m/arbeidsperioder i Q1
 
 ui improvs:
-- onXXXchange
 - useState lazy init
 - rever slideAnimate 0.05
 - meter keys para melhor ver o que muda
@@ -36,10 +36,7 @@ ui improvs:
        aria-invalid
        react-axe
 
-- rever høykontrast (checkbox is still blue)
-- can I have a NavHighContrast for all?
 - unit tests
-
 
 Opprettsak:
 

@@ -1,13 +1,12 @@
 import * as vedleggActions from 'actions/vedlegg'
 import DocumentSearch from 'applications/Vedlegg/DocumentSearch/DocumentSearch'
-import { Container, Content, HorizontalSeparatorDiv, Margin, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { Container, Content, HighContrastHovedknapp, HorizontalSeparatorDiv, Margin, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { State } from 'declarations/reducers'
 import { Validation, VedleggSendResponse } from 'declarations/types'
 import _ from 'lodash'
 import AlertStripe from 'nav-frontend-alertstriper'
 import Hjelpetekst from 'nav-frontend-hjelpetekst'
-import { Hovedknapp } from 'nav-frontend-knapper'
 import Lenke from 'nav-frontend-lenker'
 import { FeiloppsummeringFeil, Input } from 'nav-frontend-skjema'
 import { Systemtittel } from 'nav-frontend-typografi'
@@ -192,13 +191,13 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
             <VerticalSeparatorDiv />
           </div>
           <div className='slideInFromLeft' style={{ animationDelay: '0.45s' }}>
-            <Hovedknapp
+            <HighContrastHovedknapp
               onClick={sendSkjema}
               disabled={sendingVedlegg}
               spinner={sendingVedlegg}
             >
               {sendingVedlegg ? t('message:loading-sendingVedlegg') : t('label:send-vedlegg')}
-            </Hovedknapp>
+            </HighContrastHovedknapp>
             {vedlegg && (
               <>
                 <VerticalSeparatorDiv />

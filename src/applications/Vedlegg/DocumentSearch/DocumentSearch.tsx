@@ -1,11 +1,10 @@
 import * as vedleggActions from 'actions/vedlegg'
 import classNames from 'classnames'
-import { VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { HighContrastKnapp, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import { State } from 'declarations/reducers'
 import { Dokument, Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
-import { Knapp } from 'nav-frontend-knapper'
 import { Input, Select } from 'nav-frontend-skjema'
 import { Normaltekst } from 'nav-frontend-typografi'
 import PT from 'prop-types'
@@ -99,12 +98,12 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
           onChange={onRinaSaksnummerChange}
           value={rinasaksnummer}
         />
-        <Knapp
+        <HighContrastKnapp
           onClick={sokEtterDokument}
           spinner={gettingDokument}
         >
           {t('el:button-search')}
-        </Knapp>
+        </HighContrastKnapp>
       </Form>
       <VerticalSeparatorDiv />
       <div data-test-id='dokumentsok__card slideInFromLeft'>

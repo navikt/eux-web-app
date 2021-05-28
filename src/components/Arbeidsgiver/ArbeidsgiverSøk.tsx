@@ -1,6 +1,5 @@
 import Search from 'assets/icons/Search'
-import { Knapp } from 'nav-frontend-knapper'
-import { HorizontalSeparatorDiv } from 'nav-hoykontrast'
+import { HighContrastKnapp, HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -10,7 +9,7 @@ const ArbeidsgiverSøk = ({
 }): JSX.Element => {
   const { t } = useTranslation()
   return (
-    <Knapp
+    <HighContrastKnapp
       disabled={gettingArbeidsperioder}
       spinner={gettingArbeidsperioder}
       onClick={getArbeidsperioder}
@@ -20,7 +19,7 @@ const ArbeidsgiverSøk = ({
       {gettingArbeidsperioder
         ? t('message:loading-searching')
         : t('el:button-search-for-x', { x: t('label:arbeidsgiver').toLowerCase() })}
-    </Knapp>
+    </HighContrastKnapp>
   )
 }
 

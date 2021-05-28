@@ -7,7 +7,7 @@ import Period from 'components/Period/Period'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { Utbetalingshyppighet, Ytelse, YtelseNavn } from 'declarations/sed'
-import CountryData, { Currency } from 'land-verktoy'
+import CountryData from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
@@ -70,8 +70,8 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const setValuta = (newValuta: Currency) => {
-    dispatch(updateReplySed(`${target}.valuta`, newValuta?.currencyValue))
+  const setValuta = (newValuta: any) => {
+    dispatch(updateReplySed(`${target}.valuta`, newValuta?.currencies[0].currencyValue))
     if (validation[namespace + '-valuta']) {
       dispatch(resetValidation(namespace + '-valuta'))
     }

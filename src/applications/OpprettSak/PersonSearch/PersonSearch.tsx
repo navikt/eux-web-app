@@ -4,12 +4,12 @@ import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { AlertStatus } from 'declarations/components'
 import { Person } from 'declarations/types'
 import _ from 'lodash'
-import { Knapp } from 'nav-frontend-knapper'
 import { Input } from 'nav-frontend-skjema'
 import PT from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
+import { HighContrastKnapp } from 'nav-hoykontrast'
 
 const AlertstripeDiv = styled.div`
   margin: 0.5rem;
@@ -27,7 +27,7 @@ const PersonSearchPanel = styled.div`
 const PersonSearchInput = styled(Input)`
   min-width: 24.5em;
 `
-const Button = styled(Knapp)`
+const Button = styled(HighContrastKnapp)`
   display: flex;
   flex: 0;
   height: 2.4em;

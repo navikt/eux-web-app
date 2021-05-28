@@ -3,11 +3,10 @@ import mann from 'assets/icons/Man.png'
 import ukjent from 'assets/icons/Unknown.png'
 import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
-import { HorizontalSeparatorDiv } from 'nav-hoykontrast'
+import { HighContrastKnapp, HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import { OldFamilieRelasjon, Kodeverk, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
 import _ from 'lodash'
-import { Knapp } from 'nav-frontend-knapper'
 import Panel from 'nav-frontend-paneler'
 import { Select } from 'nav-frontend-skjema'
 import { Undertittel } from 'nav-frontend-typografi'
@@ -49,7 +48,7 @@ const Undertitle = styled.div`
   display: flex;
   flex-direction: column;
 `
-const RemoveButton = styled(Knapp)`
+const RemoveButton = styled(HighContrastKnapp)`
   display: flex;
   align-self: center;
   justify-self: flex-end;
@@ -168,7 +167,10 @@ const PersonCard: React.FC<PersonCardProps> = ({
           </Select>
         )}
         {_.isFunction(onRemoveClick) && (
+          <>
+          <HorizontalSeparatorDiv size='0.5'/>
           <RemoveButton
+            kompakt
             onClick={() => _onRemoveClick(person)}
           >
             <Trashcan color='#0067C5' width='20' height='20' />
@@ -177,9 +179,13 @@ const PersonCard: React.FC<PersonCardProps> = ({
               {t('el:button-remove')}
             </ButtonLabel>
           </RemoveButton>
+          </>
         )}
         {_.isFunction(onAddClick) && (
-          <Knapp
+          <>
+            <HorizontalSeparatorDiv size='0.5'/>
+          <HighContrastKnapp
+            kompakt
             data-test-id='familierelasjoner__knapp--legg-til'
             disabled={rolleList !== undefined && !rolle}
             onClick={() => _onAddClick(person)}
@@ -189,7 +195,8 @@ const PersonCard: React.FC<PersonCardProps> = ({
             <ButtonLabel>
               {t('label:legg-til')}
             </ButtonLabel>
-          </Knapp>
+          </HighContrastKnapp>
+          </>
         )}
       </PersonCardDiv>
     </PersonCardPanel>

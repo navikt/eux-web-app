@@ -1,6 +1,6 @@
 import Add from 'assets/icons/Add'
 import Alert from 'components/Alert/Alert'
-import { Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { Column, HighContrastKnapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import { AlertStatus } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import { OldFamilieRelasjon, Kodeverk, Person, Validation } from 'declarations/types'
@@ -8,7 +8,6 @@ import { KodeverkPropType } from 'declarations/types.pt'
 import { CountryFilter } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
-import { Knapp } from 'nav-frontend-knapper'
 import Panel from 'nav-frontend-paneler'
 import { FeiloppsummeringFeil, Input, Select } from 'nav-frontend-skjema'
 import { Normaltekst } from 'nav-frontend-typografi'
@@ -397,7 +396,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             className='slideInFromLeft'
             style={{ animationDelay: '0.8s' }}
           >
-            <Knapp
+            <HighContrastKnapp
               onClick={addRelation}
               className='relasjon familierelasjoner__knapp'
             >
@@ -410,7 +409,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               <span>
                 {t('el:button-add')}
               </span>
-            </Knapp>
+            </HighContrastKnapp>
           </AlignCenterColumn>
           {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (
             <AlertstripeDiv>
