@@ -14,9 +14,11 @@ const sprintf = require('sprintf-js').sprintf
 export const createSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
   replySed: ReplySed
 ): ThunkResult<ActionWithPayload> => {
+  const rinaSakId =  replySed.saksnummer
+  delete replySed.saksnummer
   return call({
     method: 'POST',
-    url: sprintf(urls.API_SED_CREATE_URL, { rinaSakId: replySed.saksnummer }),
+    url: sprintf(urls.API_SED_CREATE_URL, { rinaSakId: rinaSakId }),
     cascadeFailureError: true,
     expectedPayload: {
       sedId: '123'

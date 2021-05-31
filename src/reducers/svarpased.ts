@@ -13,7 +13,6 @@ export interface SvarpasedState {
   previewFile: any
   previousParentSed: string | undefined
   replySed: ReplySed | undefined
-  saksnummerOrFnr: string | undefined
   seds: Seds | undefined
   sedCreatedResponse: any
 }
@@ -26,7 +25,6 @@ export const initialSvarpasedState: SvarpasedState = {
   previousParentSed: undefined,
   replySed: undefined,
   seds: undefined,
-  saksnummerOrFnr: undefined,
   sedCreatedResponse: undefined
 }
 
@@ -80,8 +78,7 @@ const svarpasedReducer = (
         : [(action as ActionWithPayload).payload]
       return {
         ...state,
-        seds: seds,
-        saksnummerOrFnr: (action as ActionWithPayload).context.saksnummerOrFnr
+        seds: seds
       }
     }
 
