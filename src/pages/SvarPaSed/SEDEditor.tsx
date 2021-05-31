@@ -51,7 +51,6 @@ const mapState = (state: State): any => ({
   mode: state.svarpased.mode,
   previewFile: state.svarpased.previewFile,
   replySed: state.svarpased.replySed,
-  rinasaksnummerOrFnr: state.app.params.rinasaksnummerOrFnr,
   savingSed: state.loading.savingSed,
   validation: state.validation.status
 })
@@ -74,7 +73,6 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
     mode,
     previewFile,
     replySed,
-    rinasaksnummerOrFnr,
     savingSed,
     validation
   }: any = useSelector<State, any>(mapState)
