@@ -6,7 +6,7 @@ import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import CountryData from 'land-verktoy'
+import CountryData, { Currency } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
@@ -51,8 +51,8 @@ const SisteAnsettelsesForhold: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const setValuta = (newValuta: any) => {
-    dispatch(updateReplySed(`${target}.valuta`, newValuta?.currencies[0].currencyValue))
+  const setValuta = (newValuta: Currency) => {
+    dispatch(updateReplySed(`${target}.valuta`, newValuta?.currencyValue))
     if (validation[namespace + '-valuta']) {
       dispatch(resetValidation(namespace + '-valuta'))
     }

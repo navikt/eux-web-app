@@ -12,7 +12,7 @@ import { State } from 'declarations/reducers'
 import { F002Sed, FormalMotregning, NavnOgBetegnelse } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
-import CountryData from 'land-verktoy'
+import CountryData, { Currency } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
@@ -107,8 +107,8 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
     }
   }
 
-  const setValuta = (newValuta: any) => {
-    dispatch(updateReplySed(`${target}.valuta`, newValuta?.currencies[0].currencyValue))
+  const setValuta = (newValuta: Currency) => {
+    dispatch(updateReplySed(`${target}.valuta`, newValuta?.currencyValue))
     if (validation[namespace + '-valuta']) {
       dispatch(resetValidation(namespace + '-valuta'))
     }
