@@ -107,6 +107,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
       if (valid) {
         setViewSendSedModal(true)
         dispatch(createSed(
+          replySed.saksnummer,
           rinasaksnummerOrFnr,
           replySed
         ))
