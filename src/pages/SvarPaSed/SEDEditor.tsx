@@ -76,7 +76,6 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
     savingSed,
     validation
   }: any = useSelector<State, any>(mapState)
-  console.log('render SEDEditor')
   const fnr = _.find(replySed?.bruker?.personInfo.pin, p => p.land === 'NO')?.identifikator
 
   const [_comment, _setComment] = useState<string>('')

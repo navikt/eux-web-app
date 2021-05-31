@@ -45,18 +45,18 @@ export const validateNasjonalitet = (
     hasErrors = true
   }
 
-  if (_.isEmpty(statsborgerskap?.fradato?.trim())) {
-    v[namespace + idx + '-fradato'] = {
+  if (_.isEmpty(statsborgerskap?.fraDato?.trim())) {
+    v[namespace + idx + '-fraDato'] = {
       feilmelding: t('message:validation-noDateForPerson', { person: personName }),
-      skjemaelementId: namespace + idx + '-fradato'
+      skjemaelementId: namespace + idx + '-fraDato'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
 
-  if (!_.isEmpty(statsborgerskap?.fradato?.trim()) && !statsborgerskap.fradato!.match(datePattern)) {
-    v[namespace + idx + '-fradato'] = {
+  if (!_.isEmpty(statsborgerskap?.fraDato?.trim()) && !statsborgerskap.fraDato!.match(datePattern)) {
+    v[namespace + idx + '-fraDato'] = {
       feilmelding: t('message:validation-invalidDateForPerson', { person: personName }),
-      skjemaelementId: namespace + idx + '-fradato'
+      skjemaelementId: namespace + idx + '-fraDato'
     } as FeiloppsummeringFeil
     hasErrors = true
   }

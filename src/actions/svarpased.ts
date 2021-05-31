@@ -17,6 +17,7 @@ export const createSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
   return call({
     method: 'POST',
     url: sprintf(urls.API_SED_CREATE_URL, { rinaSakId: replySed.saksnummer }),
+    cascadeFailureError: true,
     expectedPayload: {
       sedId: '123'
     },

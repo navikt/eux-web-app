@@ -63,14 +63,14 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationNasjonalitetProps>({}, validateNasjonalitet)
 
-  const onFradatoChanged = (fradato: string, index: number) => {
+  const onFradatoChanged = (fraDato: string, index: number) => {
     if (index < 0) {
-      _setNewFradato(fradato.trim())
-      _resetValidation(namespace + '-fradato')
+      _setNewFradato(fraDato.trim())
+      _resetValidation(namespace + '-fraDato')
     } else {
-      dispatch(updateReplySed(`${target}[${index}].fradato`, toFinalDateFormat(fradato.trim())))
-      if (validation[namespace + getIdx(index) + '-fradato']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-fradato'))
+      dispatch(updateReplySed(`${target}[${index}].fraDato`, toFinalDateFormat(fraDato.trim())))
+      if (validation[namespace + getIdx(index) + '-fraDato']) {
+        dispatch(resetValidation(namespace + getIdx(index) + '-fraDato'))
       }
     }
   }
@@ -110,7 +110,7 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
   const onAdd = () => {
     const newStatsborgerskap: Statsborgerskap = {
       land: _newLand || '',
-      fradato: toFinalDateFormat(_newFradato)
+      fraDato: toFinalDateFormat(_newFradato)
     }
     const valid = performValidation({
       statsborgerskap: newStatsborgerskap,
@@ -164,14 +164,14 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
           <Column>
             <DateInput
               ariaLabel={t('label:fra-dato')}
-              feil={getErrorFor(index, 'fradato')}
-              id='fradato'
-              key={index < 0 ? _newFradato : statsborgerskap?.fradato}
+              feil={getErrorFor(index, 'fraDato')}
+              id='fraDato'
+              key={index < 0 ? _newFradato : statsborgerskap?.fraDato}
               label=''
               namespace={namespace + idx}
               onChanged={(date: string) => onFradatoChanged(date, index)}
               required
-              value={index < 0 ? _newFradato : statsborgerskap?.fradato}
+              value={index < 0 ? _newFradato : statsborgerskap?.fraDato}
             />
           </Column>
           <Column>

@@ -93,7 +93,7 @@ export interface Pin {
 
 export interface Statsborgerskap {
   land: string,
-  fradato?: string
+  fraDato?: string
 }
 
 export interface PersonInfo {
