@@ -12,11 +12,11 @@ import mockPreview from 'mocks/previewFile'
 const sprintf = require('sprintf-js').sprintf
 
 export const createSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
-  rinaSakId: string, replySed: ReplySed
+  replySed: ReplySed
 ): ThunkResult<ActionWithPayload> => {
   return call({
     method: 'POST',
-    url: sprintf(urls.API_SED_CREATE_URL, { rinaSakId: rinaSakId }),
+    url: sprintf(urls.API_SED_CREATE_URL, { rinaSakId: replySed.saksnummer }),
     expectedPayload: {
       sedId: '123'
     },
