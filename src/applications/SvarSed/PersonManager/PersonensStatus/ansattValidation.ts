@@ -33,7 +33,7 @@ export const validateArbeidsgiver = (
   if (_.isEmpty(arbeidsgiver?.arbeidsgiversNavn?.trim())) {
     v[namespace + '-arbeidsgiver-navn'] = {
       skjemaelementId: namespace + '-arbeidsgiver-navn',
-      feilmelding: t('message:validation-noName')
+      feilmelding: t('message:validation-noNavn')
     } as FeiloppsummeringFeil
     hasErrors = true
   }

@@ -10,6 +10,8 @@
 
  grep -rho -e "'label:[^']*'" * | sort -u
 
+sed U: dato valgtfri?
+
 test:
 
 25086820857 -> Q1

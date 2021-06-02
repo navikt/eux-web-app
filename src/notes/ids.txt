@@ -108,6 +108,13 @@ personmanager-{personID}-personensstatus-withsubsidies-pensjonytpe            - 
 personmanager-{personID}-personensstatus-withsubsidies[{i}]-startdato         - {CONNECTED} {person}.perioderMedPensjon[].periode.startdato
 personmanager-{personID}-personensstatus-withsubsidies[{i}]-sluttdato         - {CONNECTED} {person}.perioderMedPensjon[].periode.sluttdato
 personmanager-{personID}-personensstatus-withsubsidies[{i}]-pensjonytpe       - {CONNECTED} {person}.perioderMedPensjon[].pensjonytpe
+personmanager-{personID}-personensstatus-grunnlagforbosetting-perioder-startdato           - {INTERNAL}  not used
+personmanager-{personID}-personensstatus-grunnlagforbosetting-perioder-sluttdato           - {INTERNAL}  not used
+personmanager-{personID}-personensstatus-grunnlagforbosetting-perioder[{i}]-startdato      - {CONNECTED} {person}.flyttegrunn.perioder[].startdato
+personmanager-{personID}-personensstatus-grunnlagforbosetting-perioder[{i}]-sluttdato      - {CONNECTED} {person}.flyttegrunn.perioder[].sluttdato
+personmanager-{personID}-personensstatus-grunnlagforbosetting-personligSituasjon           - {CONNECTED} {person}.flyttegrunn.personligSituasjon
+personmanager-{personID}-personensstatus-grunnlagforbosetting-datoFlyttetTilAvsenderlandet - {CONNECTED} {person}.flyttegrunn.datoFlyttetTilAvsenderlandet
+personmanager-{personID}-personensstatus-grunnlagforbosetting-datoFlyttetTilMottakerlandet - {CONNECTED} {person}.flyttegrunn.datoFlyttetTilMottakerlandet
 
 personmanager-{personID}-referanseperiode-startdato - {CONNECTED} {person}.anmodningsperiode.startdato
 personmanager-{personID}-referanseperiode-sluttdato - {CONNECTED} {person}.anmodningsperiode.sluttdato

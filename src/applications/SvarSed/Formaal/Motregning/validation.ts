@@ -26,7 +26,7 @@ export const validateMotregningNavnOgBetegnelser = (
 
   if (_.isEmpty(navnOgBetegnelse?.navn?.trim())) {
     v[namespace + '-navnOgBetegnelser' + idx + '-navn'] = {
-      feilmelding: t('message:validation-noName'),
+      feilmelding: t('message:validation-noNavn'),
       skjemaelementId: namespace + '-navnOgBetegnelser' + idx + '-navn'
     } as FeiloppsummeringFeil
     hasErrors = true

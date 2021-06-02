@@ -35,10 +35,11 @@ const mapState = (state: State): PersonManagerFormSelector => ({
   validation: state.validation.status
 })
 
-const GrunnlagforBosetting: React.FC<PersonManagerFormProps> = ({
+const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: boolean}> = ({
   parentNamespace,
   personID,
-  standalone
+  personName,
+  standalone = true
 }:PersonManagerFormProps & {standalone?: boolean}): JSX.Element => {
   const { t } = useTranslation()
   const {
@@ -48,7 +49,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps> = ({
   const dispatch = useDispatch()
   const target = `${personID}.flyttegrunn`
   const flyttegrunn: Flyttegrunn | undefined = _.get(replySed, target)
-  const namespace = standalone ? `${parentNamespace}-${personID}-grunnlagforbosetting` : `${parentNamespace}-grunnlagforbosetting`
+  const namespace =`${parentNamespace}-grunnlagforbosetting`
 
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')
   const [_newStartDato, _setNewStartDato] = useState<string>('')
@@ -90,7 +91,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps> = ({
       _setNewSluttDato(sluttdato.trim())
       _resetValidation(namespace + '-perioder-sluttdato')
     } else {
-      const newPerioder: Array<Periode> | undefined = _.cloneDeep(flyttegrunn!.perioder)
+      let newPerioder: Array<Periode> = _.cloneDeep(flyttegrunn!.perioder)
       if (sluttdato === '') {
         delete newPerioder[index].sluttdato
         newPerioder[index].aapenPeriodeType = 'åpen_sluttdato'
@@ -144,8 +145,9 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps> = ({
 
     const valid: boolean = performValidation({
       period: newPeriode,
-      otherPeriods: flyttegrunn?.perioder,
-      namespace
+      perioder: flyttegrunn?.perioder,
+      namespace: namespace + '-perioder',
+      personName
     })
 
     if (valid) {
@@ -164,8 +166,8 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps> = ({
     const idx = getIdx(index)
     const getErrorFor = (index: number, el: string): string | null | undefined => (
       index < 0
-        ? _validation[namespace + '-' + el]?.feilmelding
-        : validation[namespace + idx + '-' + el]?.feilmelding
+        ? _validation[namespace + '-perioder-' + el]?.feilmelding
+        : validation[namespace + '-perioder' + idx + '-' + el]?.feilmelding
     )
     const startdato = index < 0 ? _newStartDato : periode?.startdato
     const sluttdato = index < 0 ? _newSluttDato : periode?.sluttdato

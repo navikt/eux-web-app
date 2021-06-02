@@ -106,6 +106,7 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
   const dispatch = useDispatch()
 
   const [_mounted, setMounted] = useState<boolean>(!waitForMount)
+  const storageKey = 'replySed'
 
   const [positionContentA, setPositionContentA] = useState<Slide>(Slide.LEFT)
   const [positionContentB, setPositionContentB] = useState<Slide>(Slide.RIGHT)
@@ -160,7 +161,7 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
       setSidebarB(
         <SideBarDiv>
           <SEDLoadSave
-            storageKey='replysed'
+            storageKey={storageKey}
             onLoad={(replySed: ReplySed) => {
               dispatch(setReplySed(replySed))
               changeMode('editor', 'forward')
@@ -221,7 +222,7 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
       setSidebarB(
         <SideBarDiv>
           <SEDLoadSave
-            storageKey='replysed'
+            storageKey={storageKey}
             onLoad={(replySed: ReplySed) => {
               dispatch(setReplySed(replySed))
               changeMode('editor', 'forward')

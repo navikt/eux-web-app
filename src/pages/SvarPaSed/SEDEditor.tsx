@@ -104,6 +104,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
       if (valid) {
         setViewSendSedModal(true)
 
+        delete replySed.formaalx
         dispatch(createSed(replySed))
         dispatch(resetAllValidation())
       }

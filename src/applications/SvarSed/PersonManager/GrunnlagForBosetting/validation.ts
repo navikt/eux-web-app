@@ -4,13 +4,13 @@ import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
-import { getIdx } from 'utils/namespace'
 
 export interface ValidationGrunnlagForBosettingProps {
   period: Periode
-  otherPeriods: Array<Periode> | undefined
+  perioder: Array<Periode> | undefined
   index?: number
   namespace: string
+  personName: string
 }
 
 const datePattern = /^\d{4}-\d{2}-\d{2}$/
@@ -20,25 +20,27 @@ export const validateGrunnlagForBosetting = (
   t: TFunction,
   {
     period,
-    otherPeriods,
-    index,
-    namespace
+    perioder,
+    namespace,
+    personName
   }: ValidationGrunnlagForBosettingProps
 ): boolean => {
-  const idx = getIdx(index)
 
   let hasErrors = validatePeriod(v, t, {
     period,
-    index,
-    namespace: namespace + '-perioder' + idx
+    namespace: namespace,
+    personName
   })
-  if (!v[namespace + '-perioder' + idx + '-startdato'] &&
-    _.find(otherPeriods, p => p.startdato === period.startdato)) {
-    v[namespace + '-perioder' + idx + '-startdato'] = {
-      skjemaelementId: namespace + '-perioder' + idx + '-startdato',
-      feilmelding: t('message:validation-duplicateStartDate')
-    } as FeiloppsummeringFeil
-    hasErrors = true
+  if (!_.isEmpty(period?.startdato)) {
+    let duplicate: boolean
+    duplicate = _.find(perioder, p => p.startdato === period?.startdato) !== undefined
+    if (duplicate) {
+      v[namespace + '-perioder-startdato'] = {
+        feilmelding: t('message:validation-duplicateStartdatoForPerson', { person: personName }),
+        skjemaelementId: namespace + 'perioder-startdato'
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
   }
   return hasErrors
 }
@@ -56,10 +58,19 @@ export const validateAllGrunnlagForBosetting = (
     const periodErrors : boolean = validatePeriod(v, t, {
       period: periode,
       index,
-      namespace: namespace
+      namespace: namespace + '-perioder',
+      personName
     })
     hasErrors = hasErrors || periodErrors
   })
+
+  if (_.isEmpty(flyttegrunn?.datoFlyttetTilAvsenderlandet)) {
+    v[namespace + '-datoFlyttetTilAvsenderlandet'] = {
+      skjemaelementId: namespace + '-datoFlyttetTilAvsenderlandet',
+      feilmelding: t('message:validation-noDateForPerson', { person: personName })
+    } as FeiloppsummeringFeil
+    hasErrors = true
+  }
 
   if (!_.isEmpty(flyttegrunn?.datoFlyttetTilAvsenderlandet) && !flyttegrunn?.datoFlyttetTilAvsenderlandet.match(datePattern)) {
     v[namespace + '-datoFlyttetTilAvsenderlandet'] = {

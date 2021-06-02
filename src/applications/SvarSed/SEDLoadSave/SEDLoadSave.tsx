@@ -57,20 +57,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
       await window.localStorage.setItem(storageKey, JSON.stringify(newSavedEntries))
     }
   }
-
-  const onDownload = async (entry: LocalStorageEntry<CustomLocalStorageContent>) => {
-    const fileName = entry!.name + '.json'
-    const json = JSON.stringify(entry.content)
-    const blob = new Blob([json], { type: 'application/json' })
-    const href = await URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = href
-    link.download = fileName
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-  }
-
+  
   const addCandidateForDeletion = (key: string) => {
     setConfirmDelete(_confirmDelete.concat(key))
   }
@@ -159,13 +146,6 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
                         onClick={() => onLoad(savedEntry.content)}
                       >
                         {t('el:button-load')}
-                      </HighContrastFlatknapp>
-                      <HighContrastFlatknapp
-                        mini
-                        kompakt
-                        onClick={() => onDownload(savedEntry)}
-                      >
-                        {t('el:button-download')}
                       </HighContrastFlatknapp>
                       <AddRemovePanel
                         existingItem

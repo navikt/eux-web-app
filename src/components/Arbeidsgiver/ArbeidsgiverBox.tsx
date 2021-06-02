@@ -106,7 +106,7 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
     if (!_arbeidsgiversNavn) {
       validation[_namespace + '-navn'] = {
         skjemaelementId: _namespace + '-navn',
-        feilmelding: t('message:validation-noName')
+        feilmelding: t('message:validation-noNavn')
       } as FeiloppsummeringFeil
     }
     if (!_arbeidsgiversOrgnr) {

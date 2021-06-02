@@ -52,7 +52,7 @@ export const validateFamilierelasjon = (
 
     if (_.isEmpty(familierelasjon?.annenRelasjonPersonNavn?.trim())) {
       v[namespace + idx + '-annenRelasjonPersonNavn'] = {
-        feilmelding: t('message:validation-noNameToPerson', { person: personName }),
+        feilmelding: t('message:validation-noNavnTilPerson', { person: personName }),
         skjemaelementId: namespace + idx + '-annenRelasjonPersonNavn'
       } as FeiloppsummeringFeil
       hasErrors = true

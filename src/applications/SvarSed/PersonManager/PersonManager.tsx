@@ -399,7 +399,7 @@ const PersonManager: React.FC = () => {
                   : personInfo?.fornavn + ' ' + personInfo?.etternavn}
               </MenuLabelText>
               <HorizontalSeparatorDiv size='0.5' />
-              {personInfo?.statsborgerskap && (
+              {personInfo?.statsborgerskap && !_.isEmpty(personInfo?.statsborgerskap) && (
                 <LandSpan>
                   {' (' + personInfo?.statsborgerskap.map(s => s.land).join(', ') + ')'}
                 </LandSpan>

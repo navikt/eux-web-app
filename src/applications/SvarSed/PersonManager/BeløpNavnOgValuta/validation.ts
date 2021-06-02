@@ -25,7 +25,7 @@ export const validateBeløpNavnOgValuta = (
   if (_.isEmpty(ytelse?.barnetsNavn?.trim())) {
     v[namespace + '-barnetsNavn'] = {
       skjemaelementId: namespace + '-barnetsNavn',
-      feilmelding: t('message:validation-noNameToPerson', { person: personName })
+      feilmelding: t('message:validation-noNavnTilPerson', { person: personName })
     } as FeiloppsummeringFeil
     hasErrors = true
   }

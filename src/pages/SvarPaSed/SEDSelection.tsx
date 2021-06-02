@@ -287,12 +287,13 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
             <VerticalSeparatorDiv />
             {filteredSeds.map((sed: Sed) => {
               const sedId = sed.sakId + '-' + sed.sakType
+              const alone = filteredSeds?.length === 1
               return (
                 <div key={sedId}>
                   <RadioElementBorder
                     ariaLabel={sed.sakType + ' - ' + sed.sakTittel}
                     ariaChecked={parentSed === sedId}
-                    checked={parentSed === sedId}
+                    checked={alone || parentSed === sedId}
                     className='slideInFromLeft'
                     label={(
                       <>
@@ -335,9 +336,9 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                     <HiddenFormContainer
                       aria-hidden={!(previousParentSed !== sedId && parentSed === sedId)}
                       className={classNames({
-                        slideOpen: previousParentSed !== sedId && parentSed === sedId,
+                        slideOpen: alone || previousParentSed !== sedId && parentSed === sedId,
                         slideClose: previousParentSed === sedId && parentSed !== sedId,
-                        closed: !((previousParentSed !== sedId && parentSed === sedId) || (previousParentSed === sedId && parentSed !== sedId))
+                        closed: !alone && !((previousParentSed !== sedId && parentSed === sedId) || (previousParentSed === sedId && parentSed !== sedId))
                       })}
                       key={sed + '-' + connectedSed.sedId}
                     >

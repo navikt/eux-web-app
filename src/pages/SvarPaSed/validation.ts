@@ -111,6 +111,10 @@ export const performValidation = (v: Validation, t: TFunction, replySed: ReplySe
       _error = validateAvsenderlandetPerioder(v, t, perioderMedTrygd, `personmanager-${personID}-personensstatus-avsenderlandet`, personName)
       hasErrors = hasErrors || _error
 
+      const flyttegrunn: Flyttegrunn = _.get(replySed, `${personID}.flyttegrunn`)
+      _error = validateAllGrunnlagForBosetting(v, t, flyttegrunn, `personmanager-${personID}-personensstatus-grunnlagforbosetting`, personName)
+      hasErrors = hasErrors || _error
+
       const perioderMedPensjon: Array<PensjonPeriode> = _.get(replySed, `${personID}.perioderMedPensjon`)
       _error = validateWithSubsidiesPerioder(v, t, perioderMedPensjon, `personmanager-${personID}-personensstatus-withsubsidies`, personName)
       hasErrors = hasErrors || _error

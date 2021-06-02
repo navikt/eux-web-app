@@ -66,7 +66,7 @@ const SendSEDModal = <CustomLocalStorageContent extends any = any>({
     if (!_name) {
       validation['savesedmodal-name'] = {
         skjemaelementId: 'savesedmodal-name',
-        feilmelding: t('message:validation-noName')
+        feilmelding: t('message:validation-noNavn')
       } as FeiloppsummeringFeil
     }
     setValidation(validation)

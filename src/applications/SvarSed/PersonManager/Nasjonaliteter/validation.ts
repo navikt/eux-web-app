@@ -45,14 +45,6 @@ export const validateNasjonalitet = (
     hasErrors = true
   }
 
-  if (_.isEmpty(statsborgerskap?.fraDato?.trim())) {
-    v[namespace + idx + '-fraDato'] = {
-      feilmelding: t('message:validation-noDateForPerson', { person: personName }),
-      skjemaelementId: namespace + idx + '-fraDato'
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-
   if (!_.isEmpty(statsborgerskap?.fraDato?.trim()) && !statsborgerskap.fraDato!.match(datePattern)) {
     v[namespace + idx + '-fraDato'] = {
       feilmelding: t('message:validation-invalidDateForPerson', { person: personName }),

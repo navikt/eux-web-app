@@ -37,7 +37,7 @@ export const validateAddPersonModal = (
   }
   if (_.isEmpty(navn?.trim())) {
     v[namespace + '-navn'] = {
-      feilmelding: t('message:validation-noName'),
+      feilmelding: t('message:validation-noNavn'),
       skjemaelementId: namespace + '-navn'
     }
     hasErrors = true

@@ -28,6 +28,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { OptionTypeBase } from 'react-select'
 import { getIdx } from 'utils/namespace'
+import { isUSed } from 'utils/sed'
 import { validateNasjonalitet, ValidationNasjonalitetProps } from './validation'
 
 interface NasjonaliteterSelector extends PersonManagerFormSelector {
@@ -161,7 +162,8 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
               values={index < 0 ? _newLand : statsborgerskap?.land}
             />
           </Column>
-          <Column>
+          {isUSed(replySed!) ? (
+            <Column>
             <DateInput
               ariaLabel={t('label:fra-dato')}
               feil={getErrorFor(index, 'fraDato')}
@@ -174,6 +176,8 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
               value={index < 0 ? _newFradato : statsborgerskap?.fraDato}
             />
           </Column>
+            )
+            : <Column/>}
           <Column>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
@@ -204,11 +208,13 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
             {t('label:nasjonalitet') + ' *'}
           </UndertekstBold>
         </Column>
-        <Column>
+        {isUSed(replySed!) ? (
+          <Column>
           <UndertekstBold>
-            {t('label:fra-dato') + ' *'}
+            {t('label:fra-dato')}
           </UndertekstBold>
         </Column>
+          ) : <Column/>}
         <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />

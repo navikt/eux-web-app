@@ -120,6 +120,7 @@ const PersonensStatus: React.FC<PersonManagerFormProps> = ({
                 parentNamespace={namespace}
                 personID={personID}
                 personName={personName}
+                standalone={false}
               />
             </Column>
           </AlignStartRow>
