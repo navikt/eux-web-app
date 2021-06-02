@@ -355,7 +355,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
 
     plan = plan.concat(unmatchedAddedArbeidsgiver)
 
-    return plan.sort((a: Item, b: Item) => {
+    return plan?.sort((a: Item, b: Item) => {
       const startDatoA = a.type === 'periode' ? (a.item as Periode).startdato : (a.item as Arbeidsgiver).fraDato
       const startDatoB = b.type === 'periode' ? (b.item as Periode).startdato : (b.item as Arbeidsgiver).fraDato
       return moment(startDatoA, 'YYYY-MM-DD').isSameOrBefore(moment(startDatoB, 'YYYY-MM-DD')) ? -1 : 1

@@ -74,9 +74,9 @@ const Stack: React.FC<StackProps> = ({
           <VerticalSeparatorDiv />
         </>
       )}
-      {_items && _items
-        .sort((a, b) => a.localeCompare(b))
-        .map((item: string, i: number) => (
+      {_items
+        ?.sort((a, b) => a.localeCompare(b))
+        ?.map((item: string, i: number) => (
           <FlexCenterSpacedDiv
             className='slideInFromLeft'
             style={{ animationDelay: i === _newItemIndex ? '0s' : (i * 0.1) + 's' }}

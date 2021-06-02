@@ -213,10 +213,10 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
       </UndertekstBold>
       <VerticalSeparatorDiv />
       {flyttegrunn?.perioder
-        .sort((a, b) =>
+        ?.sort((a, b) =>
           moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1
         )
-        .map(renderRow)}
+        ?.map(renderRow)}
       <VerticalSeparatorDiv size={2} />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
