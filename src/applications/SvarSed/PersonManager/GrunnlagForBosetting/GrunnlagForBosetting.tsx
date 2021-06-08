@@ -49,7 +49,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
   const dispatch = useDispatch()
   const target = `${personID}.flyttegrunn`
   const flyttegrunn: Flyttegrunn | undefined = _.get(replySed, target)
-  const namespace =`${parentNamespace}-grunnlagforbosetting`
+  const namespace = standalone ? `${parentNamespace}-${personID}-grunnlagforbosetting` : `${parentNamespace}-grunnlagforbosetting`
 
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')
   const [_newStartDato, _setNewStartDato] = useState<string>('')
@@ -261,7 +261,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
             value={flyttegrunn?.datoFlyttetTilMottakerlandet}
           />
         </Column>
-        <Column />
+        <Column/>
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
@@ -277,7 +277,6 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
             />
           </TextAreaDiv>
         </Column>
-        <Column />
       </AlignStartRow>
     </>
   )

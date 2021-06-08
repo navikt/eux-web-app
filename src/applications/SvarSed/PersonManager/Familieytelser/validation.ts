@@ -25,14 +25,6 @@ export const validateFamilieytelse = (
 ): boolean => {
   let hasErrors: boolean = false
   const idx = getIdx(index)
-  /*
-  if (_.isEmpty(motregning.number)) {
-    v[namespace + '-antallPersoner'] = {
-      skjemaelementId: namespace + '-antallPersoner',
-      feilmelding: t('message:validation-noAntallToPerson', { person: personName })
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  } */
 
   if (_.isEmpty(motregning?.ytelseNavn?.trim())) {
     v[namespace + idx + '-ytelseNavn'] = {
@@ -70,7 +62,7 @@ export const validateFamilieytelse = (
   if (_.isEmpty(motregning?.mottakersNavn?.trim())) {
     v[namespace + idx + '-mottakersNavn'] = {
       skjemaelementId: namespace + idx + '-mottakersNavn',
-      feilmelding: t('message:validation-noNavnForPerson', { person: personName })
+      feilmelding: t('message:validation-noNavnTilPerson', { person: personName })
     } as FeiloppsummeringFeil
     hasErrors = true
   }

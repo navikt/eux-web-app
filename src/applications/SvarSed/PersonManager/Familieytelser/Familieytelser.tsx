@@ -88,7 +88,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
   }
 
   const setValuta = (newValuta: Currency) => {
-    dispatch(updateReplySed(`${target}.valuta`, newValuta?.currencyValue))
+    dispatch(updateReplySed(`${target}.valuta`, newValuta?.value))
     if (validation[namespace + '-valuta']) {
       dispatch(resetValidation(namespace + '-valuta'))
     }
@@ -211,6 +211,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
           valueStartDato={motregning?.startdato ?? ''}
           valueSluttDato={motregning?.sluttdato ?? ''}
         />
+        <Column/>
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>

@@ -162,22 +162,21 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
               values={index < 0 ? _newLand : statsborgerskap?.land}
             />
           </Column>
-          {isUSed(replySed!) ? (
+          {isUSed(replySed!) && (
             <Column>
-            <DateInput
-              ariaLabel={t('label:fra-dato')}
-              feil={getErrorFor(index, 'fraDato')}
-              id='fraDato'
-              key={index < 0 ? _newFradato : statsborgerskap?.fraDato}
-              label=''
-              namespace={namespace + idx}
-              onChanged={(date: string) => onFradatoChanged(date, index)}
-              required
-              value={index < 0 ? _newFradato : statsborgerskap?.fraDato}
-            />
-          </Column>
-            )
-            : <Column/>}
+              <DateInput
+                ariaLabel={t('label:fra-dato')}
+                feil={getErrorFor(index, 'fraDato')}
+                id='fraDato'
+                key={index < 0 ? _newFradato : statsborgerskap?.fraDato}
+                label=''
+                namespace={namespace + idx}
+                onChanged={(date: string) => onFradatoChanged(date, index)}
+                required
+                value={index < 0 ? _newFradato : statsborgerskap?.fraDato}
+              />
+            </Column>
+          )}
           <Column>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}

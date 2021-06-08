@@ -248,7 +248,6 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setType((e.target.value as AdresseType), index)}
             />
           </Column>
-          <Column />
         </AlignStartRow>
         <VerticalSeparatorDiv />
         <AlignStartRow
@@ -276,7 +275,6 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
               value={index < 0 ? _newBygning : adresse?.bygning}
             />
           </Column>
-          <Column />
         </AlignStartRow>
         <VerticalSeparatorDiv />
         <AlignStartRow
@@ -305,14 +303,13 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
               value={index < 0 ? _newBy : adresse?.by}
             />
           </Column>
-          <Column />
         </AlignStartRow>
         <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0.2s' : (index * 0.3 + 0.2) + 's' }}
         >
-          <Column flex='1.5'>
+          <Column flex='1.3'>
             <Input
               feil={getErrorFor(index, 'region')}
               namespace={namespace + idx}
@@ -322,7 +319,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
               value={index < 0 ? _newRegion : adresse?.region}
             />
           </Column>
-          <Column flex='1.5'>
+          <Column flex='1.3'>
             <CountrySelect
               closeMenuOnSelect
               key={index < 0 ? _newLand : adresse?.land}
@@ -338,7 +335,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
               values={index < 0 ? _newLand : adresse?.land}
             />
           </Column>
-          <Column flex='2'>
+          <Column flex='1.3'>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}

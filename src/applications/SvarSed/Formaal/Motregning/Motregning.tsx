@@ -108,7 +108,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
   }
 
   const setValuta = (newValuta: Currency) => {
-    dispatch(updateReplySed(`${target}.valuta`, newValuta?.currencyValue))
+    dispatch(updateReplySed(`${target}.valuta`, newValuta?.value))
     if (validation[namespace + '-valuta']) {
       dispatch(resetValidation(namespace + '-valuta'))
     }

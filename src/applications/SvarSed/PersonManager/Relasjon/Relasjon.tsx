@@ -137,7 +137,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
       </Undertittel>
       <VerticalSeparatorDiv size='2' />
       <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-        <Column flex='2'>
+        <Column flex='3'>
           <HighContrastRadioPanelGroup
             checked={barnetilhoerighet?.relasjonTilPerson}
             data-no-border
@@ -167,11 +167,10 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRelasjon(e.target.value as BarnRelasjon)}
           />
         </Column>
-        <Column />
       </Row>
       <VerticalSeparatorDiv />
       <Row style={{ animationDelay: '0.2s' }}>
-        <Column flex={2}>
+        <Column flex={3}>
           <Select
             data-test-id={namespace + '-relasjonType'}
             feil={validation[namespace + '-relasjonType']?.feilmelding}
@@ -186,7 +185,6 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
             defaultValue={_.find(relasjonTypeOptions, b => b.value === barnetilhoerighet?.relasjonType)}
           />
         </Column>
-        <Column />
       </Row>
       <VerticalSeparatorDiv size='2' />
       <Undertittel className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
@@ -204,11 +202,11 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
           valueStartDato={barnetilhoerighet?.periode.startdato ?? ''}
           valueSluttDato={barnetilhoerighet?.periode.startdato ?? ''}
         />
-        <Column />
+        <Column/>
       </Row>
       <VerticalSeparatorDiv size='2' />
       <Row className='slideInFromLeft' style={{ animationDelay: '0.5s' }}>
-        <Column flex={2}>
+        <Column flex={3}>
           <HighContrastRadioPanelGroup
             checked={barnetilhoerighet?.erDeltForeldreansvar}
             data-no-border
@@ -224,7 +222,6 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setErDeltForeldreansvar(e.target.value as JaNei)}
           />
         </Column>
-        <Column />
       </Row>
       <VerticalSeparatorDiv />
       <Undertittel className='slideInFromLeft' style={{ animationDelay: '0.6s' }}>

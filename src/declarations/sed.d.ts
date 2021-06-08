@@ -70,7 +70,7 @@ export interface Flyttegrunn {
   datoFlyttetTilAvsenderlandet: string
   datoFlyttetTilMottakerlandet: string
   perioder: Array<Periode>
-  personligSituasjon: string
+  personligSituasjon?: string
 }
 
 export interface FamilieRelasjon {

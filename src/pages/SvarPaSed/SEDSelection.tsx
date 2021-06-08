@@ -59,8 +59,7 @@ const SEDPanel = styled(HighContrastPanel)`
   margin-left: 3rem;
   &:hover, .skjemaelement__input:hover {
     color: ${({ theme }: any) => theme[themeKeys.MAIN_FONT_COLOR]} !important;
-    background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_HOVER_COLOR]} !important;
-    border-color: ${({ theme }: any) => theme[themeKeys.MAIN_HOVER_COLOR]} !important;
+    background-color: ${({ theme }: any) => theme[themeKeys.MAIN_HOVER_COLOR]} !important;
   }
 `
 

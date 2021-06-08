@@ -7,7 +7,7 @@ import Period from 'components/Period/Period'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { Utbetalingshyppighet, Ytelse, YtelseNavn } from 'declarations/sed'
-import CountryData, { Currency } from 'land-verktoy'
+import { Currency } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
@@ -41,8 +41,6 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
   const ytelse: Ytelse = _.get(replySed, target)
   const namespace: string = `${parentNamespace}-${personID}-beløpnavnogvaluta`
 
-  const _currencyData = CountryData.getCurrencyInstance('nb')
-
   const ytelseNavnOptions: Options = [{
     label: t('el:option-familieytelser-barnetrygd'), value: 'Barnetrygd'
   }, {
@@ -71,7 +69,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
   }
 
   const setValuta = (newValuta: Currency) => {
-    dispatch(updateReplySed(`${target}.valuta`, newValuta?.currencyValue))
+    dispatch(updateReplySed(`${target}.valuta`, newValuta?.value))
     if (validation[namespace + '-valuta']) {
       dispatch(resetValidation(namespace + '-valuta'))
     }
@@ -124,10 +122,12 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
         </Column>
         <Column>
           <Select
+            closeMenuOnSelect
             data-test-id={namespace + '-ytelseNavn'}
             feil={validation[namespace + '-ytelseNavn']?.feilmelding}
             highContrast={highContrast}
             id={namespace + '-ytelseNavn'}
+            key={namespace + '-ytelseNavn-' + ytelse?.ytelseNavn}
             label={t('label:betegnelse-på-ytelse') + ' *'}
             menuPortalTarget={document.body}
             onChange={(e: any) => setYtelseNavn(e.value)}
@@ -152,7 +152,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
         </Column>
         <Column>
           <CountrySelect
-            key={_currencyData.findByValue(ytelse?.valuta ?? '')}
+            key={namespace + '-valuta-' + ytelse?.valuta ?? ''}
             closeMenuOnSelect
             ariaLabel={t('label:valuta')}
             data-test-id={namespace + '-valuta'}
@@ -164,7 +164,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
             menuPortalTarget={document.body}
             onOptionSelected={setValuta}
             type='currency'
-            values={_currencyData.findByValue(ytelse?.valuta ?? '')}
+            values={ytelse?.valuta ?? ''}
           />
         </Column>
       </AlignStartRow>
@@ -184,6 +184,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
           valueStartDato={ytelse?.startdato ?? ''}
           valueSluttDato={ytelse?.sluttdato ?? ''}
         />
+        <Column/>
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>

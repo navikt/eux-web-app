@@ -4,13 +4,11 @@
 5. Antall det innvilges for?!
 6. Where are the mandatory / optional fields?
 
---> Lagre não funciona
 --> preview pdf
---> svarsed n~~o aparece
+--> validation: false duplicates in period
+
 
  grep -rho -e "'label:[^']*'" * | sort -u
-
-sed U: dato valgtfri?
 
 test:
 
@@ -48,5 +46,4 @@ Opprettsak:
 
 deploy:
 1- check <version> in DEploy Maven artifact in NAV IKT's Github package
-4.4-877935531
 2 - https://github.com/navikt/eux-neessi/blob/feature/inntektsperioder/pom.xml

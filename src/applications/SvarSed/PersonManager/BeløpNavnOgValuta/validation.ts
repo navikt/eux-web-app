@@ -46,6 +46,14 @@ export const validateBeløpNavnOgValuta = (
     hasErrors = true
   }
 
+  if (!_.isEmpty(ytelse?.beloep?.trim()) && !ytelse?.beloep?.trim().match(/^\d+$/)) {
+    v[namespace + '-beloep'] = {
+      skjemaelementId: namespace + '-beloep',
+      feilmelding: t('message:validation-invalidBeløpForPerson', { person: personName })
+    } as FeiloppsummeringFeil
+    hasErrors = true
+  }
+
   if (_.isEmpty(ytelse?.valuta?.trim())) {
     v[namespace + '-valuta'] = {
       skjemaelementId: namespace + '-valuta',
@@ -67,7 +75,7 @@ export const validateBeløpNavnOgValuta = (
   if (_.isEmpty(ytelse?.mottakersNavn?.trim())) {
     v[namespace + '-mottakersNavn'] = {
       skjemaelementId: namespace + '-mottakersNavn',
-      feilmelding: t('message:validation-noNavnForPerson', { person: personName })
+      feilmelding: t('message:validation-noNavnTilPerson', { person: personName })
     } as FeiloppsummeringFeil
     hasErrors = true
   }
