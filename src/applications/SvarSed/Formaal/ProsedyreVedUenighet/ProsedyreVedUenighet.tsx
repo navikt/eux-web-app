@@ -1,6 +1,6 @@
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
-import { FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
+import { FormålManagerFormProps, FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
@@ -42,7 +42,9 @@ const mapState = (state: State): ProsedyreVedUenighetSelector => ({
   viewValidation: state.validation.view
 })
 
-const ProsedyreVedUenighet: React.FC = (): JSX.Element => {
+const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
+ parentNamespace,
+}: FormålManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
     highContrast,
@@ -52,7 +54,7 @@ const ProsedyreVedUenighet: React.FC = (): JSX.Element => {
   const dispatch = useDispatch()
   const target = 'formaalx.prosedyreveduenighet'
   const prosedyreveduenighet: FormalProsedyreVedUenighet | undefined = (replySed as F002Sed).formaalx?.prosedyreveduenighet
-  const namespace = 'prosedyreveduenighet'
+  const namespace = `${parentNamespace}-prosedyreveduenighet`
 
   const [_newGrunn, _setNewGrunn] = useState<string>('')
   const [_newPerson, _setNewPerson] = useState<Array<string>>([])
@@ -143,6 +145,7 @@ const ProsedyreVedUenighet: React.FC = (): JSX.Element => {
 
     const valid: boolean = performValidation({
       grunn: newGrunn,
+      grunner: prosedyreveduenighet?.grunner ?? [],
       namespace: namespace
     })
 
@@ -181,10 +184,12 @@ const ProsedyreVedUenighet: React.FC = (): JSX.Element => {
         >
           <Column flex='2'>
             <Select
+              closeMenuOnSelect
               data-test-id={namespace + '-grunner' + idx + '-grunn'}
               feil={getErrorFor(index, 'grunn')}
               highContrast={highContrast}
               id={namespace + '-grunner' + idx + '-grunn'}
+              key={namespace + '-grunner' + idx + '-grunn-' + (index < 0 ? _newGrunn : grunn?.grunn)}
               label={t('label:velg-grunn-til-uenighet')}
               menuPortalTarget={document.body}
               onChange={(o: OptionTypeBase) => setGrunn(o.value, index)}
@@ -277,10 +282,23 @@ const ProsedyreVedUenighet: React.FC = (): JSX.Element => {
       <VerticalSeparatorDiv />
       {_.isEmpty(prosedyreveduenighet?.grunner)
         ? (
-          <Normaltekst>
-            {t('label:no-grunn')}
-          </Normaltekst>
-          )
+          <div id={namespace + '-grunner'}>
+            {validation[namespace + '-grunner']?.feilmelding
+              ? (
+                <div className='skjemaelement__feilmelding'>
+                    <p className='typo-feilmelding'>
+                      {validation[namespace + '-grunner']?.feilmelding}
+                    </p>
+                  </div>
+              )
+              : (
+                <Normaltekst>
+                  {t('label:no-grunn')}
+                </Normaltekst>
+              )
+            }
+          </div>
+        )
         : prosedyreveduenighet?.grunner?.map(renderRow)}
       <VerticalSeparatorDiv size={2} />
       <HorizontalLineSeparator />
@@ -320,13 +338,6 @@ const ProsedyreVedUenighet: React.FC = (): JSX.Element => {
           </TextAreaDiv>
         </Column>
       </AlignStartRow>
-      {validation[namespace]?.feilmelding && (
-        <div className='skjemaelement__feilmelding'>
-          <p className='typo-feilmelding'>
-            {validation[namespace]?.feilmelding}
-          </p>
-        </div>
-      )}
     </PaddedDiv>
   )
 }

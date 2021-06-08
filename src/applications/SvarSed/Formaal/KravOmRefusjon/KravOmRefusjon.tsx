@@ -19,6 +19,7 @@ const mapState = (state: State): FormålManagerFormSelector => ({
 })
 
 const KravOmRefusjon: React.FC<FormålManagerFormProps> = ({
+  parentNamespace,
   seeKontoopplysninger
 }: FormålManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
@@ -29,7 +30,7 @@ const KravOmRefusjon: React.FC<FormålManagerFormProps> = ({
   const dispatch = useDispatch()
   const target = 'formaalx.kravomrefusjon'
   const kravomrefusjon: FormalKravOmRefusjon | undefined = (replySed as F002Sed).formaalx?.kravomrefusjon
-  const namespace = 'kravomrefusjon'
+  const namespace = `${parentNamespace}-refusjonihenholdtilartikkel58iforordningen`
 
   const setKrav = (newKrav: string) => {
     dispatch(updateReplySed(`${target}.krav`, newKrav.trim()))

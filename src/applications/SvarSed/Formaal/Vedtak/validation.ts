@@ -8,6 +8,7 @@ import { getIdx } from 'utils/namespace'
 
 export interface ValidationVedtakPeriodeProps {
   periode: PeriodeMedVedtak
+  perioder: Array<PeriodeMedVedtak>
   index?: number
   namespace: string
   personName?: string
@@ -18,6 +19,7 @@ export const validateVedtakPeriode = (
   t: TFunction,
   {
     periode,
+    perioder,
     index,
     namespace,
     personName
@@ -34,6 +36,18 @@ export const validateVedtakPeriode = (
     }
   )
   hasErrors = hasErrors || periodeError
+
+  if (!_.isEmpty(periode?.periode.startdato)) {
+    let duplicate: boolean
+    duplicate = _.find(perioder, p => p.periode.startdato === periode?.periode.startdato) !== undefined
+    if (duplicate) {
+      v[namespace + '-vedtaksperioder' + idx + '-periode-startdato'] = {
+        feilmelding: t('message:validation-duplicateStartdatoForPerson', { person: personName }),
+        skjemaelementId: namespace + '-vedtaksperioder' + idx + '-periode-startdato'
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
+  }
 
   if (_.isEmpty(periode?.vedtak?.trim())) {
     v[namespace + '-vedtaksperioder' + idx + '-vedtak'] = {
@@ -56,9 +70,10 @@ export const validateVedtakPerioder = (
 ): boolean => {
   let hasErrors: boolean = false
   perioder?.forEach((periode: PeriodeMedVedtak, index: number) => {
-    const _error: boolean = validateVedtakPeriode(v, t, { periode, index, namespace, personName })
+    const _error: boolean = validateVedtakPeriode(v, t, { periode, perioder, index, namespace, personName })
     hasErrors = hasErrors || _error
   })
+
   return hasErrors
 }
 
@@ -82,7 +97,8 @@ export const validateVedtak = (
   const periodeError: boolean = validatePeriod(
     v, t, {
       period: vedtak?.periode,
-      namespace: namespace + '-periode'
+      namespace: namespace + '-periode',
+      personName: personName
     }
   )
   hasErrors = hasErrors || periodeError
@@ -90,7 +106,7 @@ export const validateVedtak = (
   if (_.isEmpty(vedtak?.type?.trim())) {
     v[namespace + '-type'] = {
       feilmelding: t('message:validation-noVedtakTypeTilPerson', { person: personName }),
-      skjemaelementId: 'vedtak-type'
+      skjemaelementId: namespace + '-type'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -99,7 +115,9 @@ export const validateVedtak = (
   hasErrors = hasErrors || _error
   if (hasErrors) {
     const namespaceBits = namespace.split('-')
-    const formaalNamespace = namespaceBits[0]
+    const mainNamespace = namespaceBits[0]
+    const formaalNamespace = mainNamespace + '-' + namespaceBits[1]
+    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     v[formaalNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }
   return hasErrors

@@ -150,7 +150,6 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
   const ssed: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('S_'))?.length ?? 0
 
   const filteredSeds = _.filter(seds,(s: Sed) => _filter ? s.sakType.startsWith(_filter) : true)
-  console.log(filteredSeds)
   return (
     <NavHighContrast highContrast={highContrast}>
       <ContainerDiv>

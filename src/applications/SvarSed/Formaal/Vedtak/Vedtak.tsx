@@ -1,6 +1,6 @@
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
-import { FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
+import { FormålManagerFormProps, FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
 import { ValidationVedtakPeriodeProps } from 'applications/SvarSed/Formaal/Vedtak/validation'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
@@ -20,10 +20,8 @@ import { Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
-  FlexDiv,
   HighContrastFlatknapp,
-  HighContrastRadio,
-  HighContrastRadioGroup,
+  HighContrastRadioPanelGroup,
   HorizontalSeparatorDiv,
   PaddedDiv,
   Row,
@@ -47,7 +45,9 @@ const mapState = (state: State): MotregningSelector => ({
   viewValidation: state.validation.view
 })
 
-const VedtakFC: React.FC = (): JSX.Element => {
+const VedtakFC: React.FC<FormålManagerFormProps> = ({
+  parentNamespace
+}: FormålManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
     highContrast,
@@ -57,7 +57,7 @@ const VedtakFC: React.FC = (): JSX.Element => {
   const dispatch = useDispatch()
   const target = 'formaalx.vedtak'
   const vedtak: FormalVedtak | undefined = (replySed as F002Sed).formaalx?.vedtak
-  const namespace = 'vedtak'
+  const namespace = `${parentNamespace}-vedtak`
 
   const howManyBarn: number = (replySed as F002Sed).barn.length ?? 0
   const initialBarnRadio: JaNei | undefined = !_.isNil(vedtak?.barn) ? (vedtak?.barn.length === howManyBarn ? 'ja' : 'nei') : undefined
@@ -217,6 +217,7 @@ const VedtakFC: React.FC = (): JSX.Element => {
 
     const valid = performValidation({
       periode: newPeriode,
+      perioder: vedtak?.vedtaksperioder ?? [],
       namespace
     })
 
@@ -256,7 +257,8 @@ const VedtakFC: React.FC = (): JSX.Element => {
           />
           <Column>
             <Select
-              key={namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak'}
+              closeMenuOnSelect
+              key={namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak' + (index < 0 ? _newVedtak : periode?.vedtak)}
               data-test-id={namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak'}
               feil={getErrorFor(index, 'vedtak')}
               highContrast={highContrast}
@@ -294,29 +296,21 @@ const VedtakFC: React.FC = (): JSX.Element => {
         {t('label:vedtak')}
       </Undertittel>
       <VerticalSeparatorDiv size='2' />
-      <HighContrastRadioGroup
-        id={namespace + '-barn'}
-        className={classNames('slideInFromLeft')}
+      <HighContrastRadioPanelGroup
+        checked={_barnRadio}
+        data-no-border
         data-test-id={namespace + '-barn'}
+        feil={validation[namespace + '-barn']?.feilmelding}
+        id={namespace + '-barn'}
         legend={t('label:vedtak-angående-alle-barn') + ' *'}
-        feil={_validation['vedtak-allkids']?.feilmelding}
-      >
-        <FlexDiv>
-          <HighContrastRadio
-            name={namespace + '-barn'}
-            checked={_barnRadio === 'ja'}
-            label={t('label:ja')}
-            onClick={setBarnAlleBarn}
-          />
-          <HorizontalSeparatorDiv size='2' />
-          <HighContrastRadio
-            name={namespace + '-barn'}
-            checked={_barnRadio === 'nei'}
-            label={t('label:nei')}
-            onClick={setBarnNoeBarn}
-          />
-        </FlexDiv>
-      </HighContrastRadioGroup>
+        name={namespace + '-barn'}
+        radios={[
+          { label: t('label:ja'), value: 'ja' },
+          { label: t('label:nei'), value: 'nei' }
+        ]}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => e.target.value === 'ja' ? setBarnAlleBarn() : setBarnNoeBarn()}
+      />
+      <VerticalSeparatorDiv/>
       {_barnRadio === 'nei' && (
         <div className={classNames('slideInFromLeft')}>
           <div dangerouslySetInnerHTML={{ __html: t('label:avhuk-de-barn-vedtaket') + ':' }} />
@@ -376,7 +370,6 @@ const VedtakFC: React.FC = (): JSX.Element => {
             selectedValue={_.find(vedtakTypeOptions, v => v.value === vedtak?.type)}
           />
         </Column>
-        <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow
@@ -395,7 +388,6 @@ const VedtakFC: React.FC = (): JSX.Element => {
             />
           </TextAreaDiv>
         </Column>
-        <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
       {vedtak?.vedtaksperioder?.map(renderPeriodeAndVedtak)}

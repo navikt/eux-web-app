@@ -21,8 +21,7 @@ import {
   Column,
   HighContrastFlatknapp,
   HighContrastLink,
-  HighContrastRadio,
-  HighContrastRadioGroup,
+  HighContrastRadioPanelGroup,
   HorizontalSeparatorDiv,
   PaddedDiv,
   Row,
@@ -46,6 +45,7 @@ const mapState = (state: State): MotregningSelector => ({
 })
 
 const Motregning: React.FC<FormålManagerFormProps> = ({
+  parentNamespace,
   seeKontoopplysninger
 }: FormålManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
@@ -57,7 +57,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
   const dispatch = useDispatch()
   const target = 'formaalx.motregning'
   const motregning: FormalMotregning | undefined = (replySed as F002Sed).formaalx?.motregning
-  const namespace = 'motregning'
+  const namespace = `${parentNamespace}-motregning`
   const _currencyData = CountryData.getCurrencyInstance('nb')
 
   const [_newNavn, _setNewNavn] = useState<string | undefined>(undefined)
@@ -256,27 +256,21 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
         {t('label:motregning')}
       </Undertittel>
       <VerticalSeparatorDiv size='2' />
-      <HighContrastRadioGroup
-        className={classNames('slideInFromLeft')}
+      <HighContrastRadioPanelGroup
+        checked={motregning?.anmodningEllerSvar}
+        data-multiple-line
+        data-no-border
         data-test-id={namespace + '-anmodningEllerSvar'}
+        feil={validation[namespace + '-anmodningEllerSvar']?.feilmelding}
         id={namespace + '-anmodningEllerSvar'}
         legend={t('label:anmodning-om-motregning')}
-        feil={validation[namespace + '-anmodningEllerSvar']?.feilmelding}
-      >
-        <HighContrastRadio
-          name={namespace + '-anmodningEllerSvar'}
-          checked={motregning?.anmodningEllerSvar === '1'}
-          label={t('label:anmodning-om-motregning-barn')}
-          onClick={() => setAnmodningEllerSvar('1')}
-        />
-        <VerticalSeparatorDiv />
-        <HighContrastRadio
-          name={namespace + '-anmodningEllerSvar'}
-          checked={motregning?.anmodningEllerSvar === '2'}
-          label={t('label:anmodning-om-motregning-svar-barn')}
-          onClick={() => setAnmodningEllerSvar('2')}
-        />
-      </HighContrastRadioGroup>
+        name={namespace + '-anmodningEllerSvar'}
+        radios={[
+          { label: t('label:anmodning-om-motregning-barn'), value: '1' },
+          { label: t('label:anmodning-om-motregning-svar-barn'), value: '2' }
+        ]}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAnmodningEllerSvar(e.target.value)}
+      />
       <VerticalSeparatorDiv />
       {motregning?.navnOgBetegnelser?.map(renderRowOfNavnOgBetegnelse)}
       <HorizontalLineSeparator />
@@ -334,7 +328,6 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
             values={_currencyData.findByValue(motregning?.valuta ?? '')}
           />
         </Column>
-        <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow
@@ -353,7 +346,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
           valueStartDato={motregning?.startdato}
           valueSluttDato={motregning?.sluttdato}
         />
-        <Column />
+        <Column/>
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow
@@ -370,7 +363,6 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
             value={motregning?.avgrensing}
           />
         </Column>
-        <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow
@@ -387,7 +379,6 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
             value={motregning?.mottakersNavn}
           />
         </Column>
-        <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow
@@ -406,7 +397,6 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
             />
           </TextAreaDiv>
         </Column>
-        <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow
@@ -425,7 +415,6 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
             />
           </TextAreaDiv>
         </Column>
-        <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow>

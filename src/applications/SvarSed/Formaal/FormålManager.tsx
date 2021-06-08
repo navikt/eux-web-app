@@ -23,7 +23,7 @@ import {
   themeKeys,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import styled, { keyframes } from 'styled-components'
@@ -162,6 +162,8 @@ const FormålManager: React.FC = () => {
   const [previousMenu, setPreviousMenu] = useState<string | undefined>(undefined)
   const [_viewKontoopplysninger, setViewKontoopplysninger] = useState<boolean>(false)
 
+  const menuRef = useRef(currentMenu)
+
   const options: any = {
     vedtak: Vedtak,
     motregning: Motregning,
@@ -175,7 +177,6 @@ const FormålManager: React.FC = () => {
     return (
       <Component
         parentNamespace={namespace}
-        personID={currentMenu!}
         seeKontoopplysninger={() => setViewKontoopplysninger(true)}
       />
     )
@@ -191,17 +192,25 @@ const FormålManager: React.FC = () => {
         setAnimatingMenus(false)
       }, 1000)
     }
+    menuRef.current = menu
   }
 
   const handleEvent = (e: any) => {
     const feil: FeiloppsummeringFeil = e.detail
     const namespaceBits = feil.skjemaelementId.split('-')
     if (namespaceBits[0] === namespace) {
-      const who = namespaceBits[1]
-      changeMenu(who)
+      const newMenu = namespaceBits[1]
+      const currentMenu = menuRef.current
+      if (newMenu === 'kontoopplysninger') {
+        setViewKontoopplysninger(true)
+      }
+      if (newMenu !== currentMenu) {
+        changeMenu(newMenu)
+      }
       setTimeout(() => {
         const element = document.getElementById(feil.skjemaelementId)
-        element?.scrollIntoView({
+        element?.focus()
+        element?.closest('.mainright')?.scrollIntoView({
           behavior: 'smooth'
         })
         element?.focus()
@@ -250,7 +259,7 @@ const FormålManager: React.FC = () => {
                     <Chevron type='høyre' />
                     <HorizontalSeparatorDiv size='0.5' />
                     {viewValidation && (
-                      validation[namespace + '-' + menu]
+                      validation[namespace + '-' + menu.replaceAll('_', '')]
                         ? (
                           <>
                             <RemoveCircle height={20} color='red' />
@@ -275,7 +284,7 @@ const FormålManager: React.FC = () => {
             ))}
             <VerticalSeparatorDiv />
           </LeftDiv>
-          <RightDiv>
+          <RightDiv className='mainright'>
             {!currentMenu && (
               <PileCenterDiv style={{ height: '100%' }}>
                 <FlexCenterDiv style={{ flex: '1', alignSelf: 'center' }}>

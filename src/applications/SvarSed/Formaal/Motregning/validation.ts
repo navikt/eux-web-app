@@ -33,7 +33,7 @@ export const validateMotregningNavnOgBetegnelser = (
   }
 
   if (_.isEmpty(navnOgBetegnelse?.betegnelsePåYtelse?.trim())) {
-    v[namespace + '-navnOgBetegnelser' + +idx + '-betegnelsePåYtelse'] = {
+    v[namespace + '-navnOgBetegnelser' + idx + '-betegnelsePåYtelse'] = {
       feilmelding: t('message:validation-noBetegnelsePåYtelse'),
       skjemaelementId: namespace + '-navnOgBetegnelser' + idx + '-betegnelsePåYtelse'
     } as FeiloppsummeringFeil
@@ -70,6 +70,14 @@ export const validateMotregning = (
       skjemaelementId: namespace + '-beloep'
     } as FeiloppsummeringFeil
     hasErrors = true
+  } else {
+    if (!motregning?.beloep?.trim().match(/^\d+$/)) {
+      v[namespace + '-beloep'] = {
+        skjemaelementId: namespace + '-beloep',
+        feilmelding: t('message:validation-invalidBeløpForPerson', {person: formalName})
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
   }
 
   if (_.isEmpty(motregning?.valuta?.trim())) {
@@ -116,7 +124,9 @@ export const validateMotregning = (
 
   if (hasErrors) {
     const namespaceBits = namespace.split('-')
-    const formaalNamespace = namespaceBits[0]
+    const mainNamespace = namespaceBits[0]
+    const formaalNamespace = mainNamespace + '-' + namespaceBits[1]
+    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     v[formaalNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }
   return hasErrors

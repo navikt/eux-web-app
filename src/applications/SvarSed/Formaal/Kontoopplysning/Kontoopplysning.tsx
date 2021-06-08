@@ -1,20 +1,13 @@
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
-import { FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
+import { FormålManagerFormProps, FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
 import classNames from 'classnames'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { F002Sed, JaNei, UtbetalingTilInstitusjon } from 'declarations/sed'
-import {
-  AlignStartRow,
-  Column,
-  HighContrastRadio,
-  HighContrastRadioGroup,
-  PaddedDiv,
-  VerticalSeparatorDiv
-} from 'nav-hoykontrast'
+import { AlignStartRow, Column, HighContrastRadioPanelGroup, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -30,7 +23,9 @@ const mapState = (state: State): KravOmRefusjonProps => ({
   viewValidation: state.validation.view
 })
 
-const Kontoopplysning: React.FC = (): JSX.Element => {
+const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
+  parentNamespace
+}: FormålManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
     replySed,
@@ -39,7 +34,7 @@ const Kontoopplysning: React.FC = (): JSX.Element => {
   const dispatch = useDispatch()
   const target = 'utbetalingTilInstitusjon'
   const utbetalingTilInstitusjon: UtbetalingTilInstitusjon | undefined = (replySed as F002Sed).utbetalingTilInstitusjon
-  const namespace = 'kontoopplysninger'
+  const namespace = `${parentNamespace}-kontoopplysninger`
 
   const setBegrunnelse = (newBegrunnelse: string) => {
     dispatch(updateReplySed(`${target}.begrunnelse`, newBegrunnelse.trim()))
@@ -135,28 +130,20 @@ const Kontoopplysning: React.FC = (): JSX.Element => {
         style={{ animationDelay: '0.2s' }}
       >
         <Column>
-          <HighContrastRadioGroup
-            className={classNames('slideInFromLeft')}
+          <HighContrastRadioPanelGroup
+            checked={utbetalingTilInstitusjon.kontoOrdinaer.sepaKonto}
+            data-no-border
             data-test-id={namespace + '-kontoOrdinaer-sepaKonto'}
             feil={validation[namespace + '-kontoOrdinaer-sepaKonto']?.feilmelding}
             id={namespace + '-kontoOrdinaer-sepaKonto'}
-            legend={t('label:bankinformasjon')}
-          >
-            <div>
-              <HighContrastRadio
-                name={namespace + '-kontoOrdinaer-sepaKonto'}
-                checked={utbetalingTilInstitusjon.kontoOrdinaer.sepaKonto === 'ja'}
-                label={t('label:sepa-konto-ja')}
-                onClick={() => setSepaKonto('ja')}
-              />
-              <HighContrastRadio
-                name={namespace + '-kontoOrdinaer-sepaKonto'}
-                checked={utbetalingTilInstitusjon.kontoOrdinaer.sepaKonto === 'nei'}
-                label={t('label:sepa-konto-nei')}
-                onClick={() => setSepaKonto('nei')}
-              />
-            </div>
-          </HighContrastRadioGroup>
+            legend={t('label:bankinformasjon') + ' *'}
+            name={namespace + '-bankinformasjon'}
+            radios={[
+              { label: t('label:sepa-konto-ja'), value: 'ja' },
+              { label: t('label:sepa-konto-nei'), value: 'nei' }
+            ]}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSepaKonto(e.target.value as JaNei)}
+          />
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />

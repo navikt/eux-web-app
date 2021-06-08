@@ -23,7 +23,9 @@ export const validateKravOmRefusjon = (
 
   if (hasErrors) {
     const namespaceBits = namespace.split('-')
-    const formaalNamespace = namespaceBits[0]
+    const mainNamespace = namespaceBits[0]
+    const formaalNamespace = mainNamespace + '-' + namespaceBits[1]
+    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     v[formaalNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }
   return hasErrors
