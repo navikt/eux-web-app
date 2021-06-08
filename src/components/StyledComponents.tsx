@@ -82,6 +82,11 @@ export const Etikett = styled.div`
   border-radius: 5px;
   display: inline-block;
 `
+export const FlexEtikett = styled(Etikett)`
+  padding: 0.5rem;
+  display: flex;
+`
+
 export const WithErrorPanel = styled(HighContrastPanel)`
   padding: 0rem;
   background-color: transparent;

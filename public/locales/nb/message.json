@@ -37,6 +37,7 @@
   "validation-duplicateBirthCountry": "Statsborgerskapen eksisterer allerede",
   "validation-duplicateEpostAdresseForPerson": "e-post adresse eksisterer allerede til {{person}}",
   "validation-duplicateStartdatoForPerson": "Startdato eksisterer allerede til {{person}}",
+  "validation-duplicateRelationForPerson": "Relasjon eksisterer allerede til {{person}}",
   "validation-duplicateTelephoneNumberForPerson": "Telefon eksisterer allerede til {{person}}",
   "validation-endDateBeforeStartDate": "Sluttdato er tidligere enn startdato",
   "validation-feiloppsummering" : "For å gå videre må du rette opp følgende:",

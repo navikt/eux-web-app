@@ -1,5 +1,5 @@
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import { Etikett } from 'components/StyledComponents'
+import { FlexEtikett } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { State } from 'declarations/reducers'
 import { LocalStorageEntry } from 'declarations/types'
@@ -57,7 +57,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
       await window.localStorage.setItem(storageKey, JSON.stringify(newSavedEntries))
     }
   }
-  
+
   const addCandidateForDeletion = (key: string) => {
     setConfirmDelete(_confirmDelete.concat(key))
   }
@@ -94,8 +94,8 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
             const candidateForDeletion = _confirmDelete.indexOf(savedEntry.name) >= 0
             return (
               <div key={savedEntry.name}>
-                <Etikett style={{ padding: '0.5rem' }}>
-                  <PileDiv>
+                <FlexEtikett>
+                  <PileDiv flex='1'>
                     <FlexCenterSpacedDiv>
                       <FlexBaseSpacedDiv>
                         <UndertekstBold>
@@ -156,7 +156,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
                       />
                     </FlexBaseSpacedDiv>
                   </PileDiv>
-                </Etikett>
+                </FlexEtikett>
                 <VerticalSeparatorDiv />
               </div>
             )
