@@ -19,6 +19,14 @@ export const validateKontoopplysning = (
       skjemaelementId: namespace + '-begrunnelse'
     } as FeiloppsummeringFeil
     hasErrors = true
+  } else {
+    if (uti.begrunnelse.length > 500) {
+      v[namespace + '-begrunnelse'] = {
+        feilmelding: t('message:validation-textOver500TilPerson', { person: personName }),
+        skjemaelementId: namespace + '-begrunnelse'
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
   }
 
   if (_.isEmpty(uti?.id?.trim())) {

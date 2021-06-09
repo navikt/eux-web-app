@@ -91,7 +91,7 @@ export const validateAllGrunnlagForBosetting = (
   if (!_.isEmpty(flyttegrunn?.personligSituasjon) && flyttegrunn?.personligSituasjon!.length > 500) {
     v[namespace + '-personligSituasjon'] = {
       skjemaelementId: namespace + '-personligSituasjon',
-      feilmelding: t('message:Det har for mye tekst', { person: personName })
+      feilmelding: t('message:validation-textOver500TilPerson', { person: personName })
     } as FeiloppsummeringFeil
     hasErrors = true
   }

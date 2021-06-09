@@ -113,6 +113,16 @@ export const validateVedtak = (
 
   const _error = validateVedtakPerioder(v, t, vedtak?.vedtaksperioder, namespace, personName)
   hasErrors = hasErrors || _error
+
+  if (vedtak?.grunnen?.trim()?.length > 500) {
+    v[namespace + '-grunnen'] = {
+      feilmelding: t('message:validation-textOver500TilPerson', { person: personName }),
+      skjemaelementId: namespace + '-grunnen'
+    } as FeiloppsummeringFeil
+    hasErrors = true
+  }
+
+
   if (hasErrors) {
     const namespaceBits = namespace.split('-')
     const mainNamespace = namespaceBits[0]

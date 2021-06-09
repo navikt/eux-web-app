@@ -120,6 +120,22 @@ export const validateMotregning = (
       skjemaelementId: namespace + '-grunnerTilAnmodning'
     } as FeiloppsummeringFeil
     hasErrors = true
+  } else {
+    if (motregning.grunnerTilAnmodning.trim().length > 500) {
+      v[namespace + '-grunnerTilAnmodning'] = {
+        feilmelding: t('message:validation-textOver500TilPerson', { person: formalName }),
+        skjemaelementId: namespace + '-grunnerTilAnmodning'
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
+  }
+
+  if (motregning?.ytterligereInfo?.trim()?.length > 500) {
+    v[namespace + '-ytterligereInfo'] = {
+      feilmelding: t('message:validation-textOver500TilPerson', { person: formalName }),
+      skjemaelementId: namespace + '-ytterligereInfo'
+    } as FeiloppsummeringFeil
+    hasErrors = true
   }
 
   if (hasErrors) {

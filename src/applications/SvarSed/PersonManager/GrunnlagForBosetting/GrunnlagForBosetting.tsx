@@ -294,7 +294,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
         )
       : (
         <>
-          <Undertittel>
+          <Undertittel>F
             {t('label:grunnlag-for-bosetting')}
           </Undertittel>
           <VerticalSeparatorDiv />

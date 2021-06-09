@@ -1,28 +1,23 @@
-// import { setReplySed } from 'actions/svarpased'
 import { setReplySed } from 'actions/svarpased'
-import classNames from 'classnames'
+import TextArea from 'components/Forms/TextArea'
+import { TextAreaDiv } from 'components/StyledComponents'
 import { F002Sed, FSed, Periode, ReplySed, USed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { UndertekstBold } from 'nav-frontend-typografi'
 import {
+  FlexDiv,
   HighContrastHovedknapp,
   HighContrastInput,
   HighContrastKnapp,
   HighContrastRadio,
   HighContrastRadioGroup,
-  HighContrastTextArea,
   HorizontalSeparatorDiv,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import styled from 'styled-components'
-
-const FlexDiv = styled.div`
-  display: flex;
-`
 
 export interface SEDDetailsEditProps {
   replySed: ReplySed
@@ -264,21 +259,17 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           {_informasjon === 'gi_oss_punktvise_opplysninger' && (
             <div className='slideInFromLeft'>
               <VerticalSeparatorDiv />
-              <HighContrastTextArea
-                className={classNames({
-                  'skjemaelement__input--harFeil':
-                    validation['seddetails-opplysninger']
-                })}
-                data-test-id='seddetails-opplysninger'
-                feil={validation['seddetails-opplysninger']?.feilmelding}
-                id='seddetails-opplysninger'
-                label={t('label:opplysninger')}
-                maxLength={500}
-                placeholder={t('el:placeholder-input-default')}
-                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setOpplysninger(e.target.value)}
-                style={{ width: '100%', minHeight: '6rem' }}
-                value={_opplysninger}
-              />
+              <TextAreaDiv>
+                <TextArea
+                  feil={validation['seddetails-opplysninger']?.feilmelding}
+                  id='opplysninger'
+                  namespace='seddetails'
+                  label={t('label:opplysninger')}
+                  maxLength={500}
+                  onChanged={setOpplysninger}
+                  value={_opplysninger}
+                />
+              </TextAreaDiv>
             </div>
           )}
         </HighContrastRadioGroup>

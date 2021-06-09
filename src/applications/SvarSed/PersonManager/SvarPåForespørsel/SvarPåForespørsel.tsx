@@ -61,7 +61,6 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
     let svarChanged: boolean = needle === 'svar'
     let thisSvar = svarChanged ? value : _svar
     if (thisSvar === 'positivt') {
-      console.log('unmounting svarPaForespørsel as positive')
       let newPositivtSvar = {
         informasjon: svarChanged ? (replySed as HSed).negativeSvar[0].informasjon :  (replySed as HSed).positivtSvar.informasjon,
         dokument: svarChanged ? (replySed as HSed).negativeSvar[0].dokument :  (replySed as HSed).positivtSvar.dokument,
@@ -77,8 +76,6 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
         negativeSvar: []
       }))
     } else {
-      console.log('unmounting svarPaForespørsel as negative')
-
       let newNegativtSvar = {
         informasjon: svarChanged ? (replySed as HSed).positivtSvar.informasjon :  (replySed as HSed).negativeSvar[0].informasjon,
         dokument: svarChanged ? (replySed as HSed).positivtSvar.dokument :  (replySed as HSed).negativeSvar[0].dokument,
@@ -97,7 +94,7 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const namespace = `${parentNamespace}-${personID}-svarpaforespørsel`
+  const namespace = `${parentNamespace}-${personID}-svarpåforespørsel`
 
   const setSvar = (newSvar: HSvarType) => {
     _setSvar(newSvar)
@@ -152,6 +149,7 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
           <label className='skjemaelement__label'>
             {t('label:choose')}
           </label>
+
           <HighContrastRadioPanelGroup
             checked={_svar}
             data-multiple-line

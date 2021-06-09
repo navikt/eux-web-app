@@ -19,6 +19,14 @@ export const validateKravOmRefusjon = (
       skjemaelementId: namespace + '-krav'
     } as FeiloppsummeringFeil
     hasErrors = true
+  } else {
+    if (kravOmRefusjon.krav.length > 500) {
+      v[namespace + '-krav'] = {
+        feilmelding: t('message:validation-textOver500TilPerson', { person: personName }),
+        skjemaelementId: namespace + '-krav'
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
   }
 
   if (hasErrors) {

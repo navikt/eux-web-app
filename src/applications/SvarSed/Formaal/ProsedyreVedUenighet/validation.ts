@@ -86,6 +86,14 @@ export const validateProsedyreVedUenighet = (
     hasErrors = hasErrors || _error
   })
 
+  if (prosedyreVedUenighet?.ytterligereInfo?.trim()?.length > 500) {
+    v[namespace + '-ytterligereInfo'] = {
+      feilmelding: t('message:validation-textOver500TilPerson', { person: personName }),
+      skjemaelementId: namespace + '-ytterligereInfo'
+    } as FeiloppsummeringFeil
+    hasErrors = true
+  }
+
   if (hasErrors) {
     const namespaceBits = namespace.split('-')
     const mainNamespace = namespaceBits[0]

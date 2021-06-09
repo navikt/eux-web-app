@@ -238,7 +238,6 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
           feil={validation[namespace + '-ytterligereInfo']?.feilmelding}
           id='ytterligereInfo'
           label={t('label:ytterligere-informasjon-til-sed')}
-          maxLength={500}
           onChanged={setComment}
           placeholder={t('el:placeholder-sed')}
           value={replySed?.ytterligereInfo}
