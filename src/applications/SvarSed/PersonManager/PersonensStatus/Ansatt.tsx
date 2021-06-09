@@ -29,6 +29,7 @@ import {
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import { getFnr } from 'utils/fnr'
 import { getIdx } from 'utils/namespace'
 import {
   validateArbeidsgiver,
@@ -364,7 +365,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
 
   const plan = makeRenderPlan()
 
-  const fnr = _.find(replySed?.bruker?.personInfo.pin, p => p.land === 'NO')?.identifikator
+  const fnr = getFnr(replySed)
 
   return (
     <>

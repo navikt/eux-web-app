@@ -14,6 +14,8 @@ export const initialLoadingState: LoadingState = {
   gettingFagsaker: false,
   gettingInntekter: false,
   gettingInstitusjoner: false,
+  gettingJoarkList: false,
+  gettingJoarkFile: false,
   gettingLandkoder: false,
   gettingPerson: false,
   gettingPreviewFile: false,
@@ -250,6 +252,33 @@ const loadingReducer = (
 
     case types.APP_CLEAN_DATA:
       return initialLoadingState
+
+    case types.JOARK_LIST_REQUEST:
+      return {
+        ...state,
+        gettingJoarkList: true
+      }
+
+    case types.JOARK_LIST_SUCCESS:
+    case types.JOARK_LIST_FAILURE:
+      return {
+        ...state,
+        gettingJoarkList: false
+      }
+
+    case types.JOARK_PREVIEW_REQUEST:
+      return {
+        ...state,
+        gettingJoarkFile: true
+      }
+
+    case types.JOARK_PREVIEW_SUCCESS:
+    case types.JOARK_PREVIEW_FAILURE:
+      return {
+        ...state,
+        gettingJoarkFile: false
+      }
+
 
     default:
       return state

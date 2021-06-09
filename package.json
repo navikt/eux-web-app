@@ -101,12 +101,14 @@
     "tabell": "^1.5.4"
   },
   "devDependencies": {
+    "@babel/core": "^7.14.3",
     "@navikt/fnrvalidator": "^1.1.4",
     "@types/classnames": "^2.3.0",
     "@types/enzyme": "^3.10.8",
     "@types/history": "^4.7.8",
     "@types/jest": "^26.0.23",
     "@types/lodash": "^4.14.170",
+    "@types/md5": "^2.3.0",
     "@types/node": "^15.12.2",
     "@types/react": "^17.0.10",
     "@types/react-collapse": "^5.0.0",

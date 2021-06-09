@@ -16,7 +16,6 @@ import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import FileFC, { File } from 'forhandsvisningsfil'
 import useGlobalValidation from 'hooks/useGlobalValidation'
-import _ from 'lodash'
 import { VenstreChevron } from 'nav-frontend-chevron'
 import { Systemtittel } from 'nav-frontend-typografi'
 import {
@@ -37,6 +36,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ReactJson from 'react-json-view'
 import { useDispatch, useSelector } from 'react-redux'
+import { getFnr } from 'utils/fnr'
 import { isFSed, isHSed, isSed, isUSed } from 'utils/sed'
 import { validateSEDEditor, ValidationSEDEditorProps } from './validation'
 import { updateReplySed } from 'actions/svarpased'
@@ -76,7 +76,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
     savingSed,
     validation
   }: any = useSelector<State, any>(mapState)
-  const fnr = _.find(replySed?.bruker?.personInfo.pin, p => p.land === 'NO')?.identifikator
+  const fnr = getFnr(replySed)
   const namespace = 'editor'
 
   const [_attachments, setAttachments] = useState<JoarkBrowserItems | undefined>(undefined)
@@ -181,7 +181,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
       )}
       {_viewSendSedModal && (
         <SendSEDModal
-          fnr={fnr}
+          fnr={fnr!}
           highContrast={highContrast}
           attachments={_attachments}
           onModalClose={() => setViewSendSedModal(false)}
@@ -246,6 +246,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
       </TextAreaDiv>
       <VerticalSeparatorDiv size='2' />
       <Attachments
+        fnr={fnr!}
         highContrast={highContrast}
         onAttachmentsChanged={(attachments) => setAttachments(attachments)}
       />

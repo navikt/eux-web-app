@@ -68,7 +68,7 @@ export interface JoarkBrowserItemWithContent extends JoarkBrowserItem {
 
 export interface JoarkBrowserContext extends Context {
   existingItems: JoarkBrowserItems
-  loadingJoarkPreviewFile: boolean
+  gettingJoarkFile: boolean
   previewFile: JoarkBrowserItemWithContent | undefined
   clickedPreviewItem: JoarkBrowserItem | undefined,
   mode: JoarkBrowserMode
@@ -89,9 +89,10 @@ export interface SEDAttachmentPayload {
 }
 
 export interface SEDAttachmentPayloadWithFile extends SEDAttachmentPayload {
-  journalpostId?: string
-  dokumentInfoId?: string
-  variantformat?: string
+  journalpostId: string
+  dokumentInfoId: string
+  variantformat: string
+  filnavn: string
 }
 
 export interface SavingAttachmentsJob {

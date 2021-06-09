@@ -23,7 +23,8 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import TableSorter from 'tabell'
+import Table from 'tabell'
+import md5 from 'md5'
 
 const ButtonsDiv = styled.div`
   display: flex;
@@ -35,10 +36,9 @@ const ButtonsDiv = styled.div`
 `
 
 export interface JoarkBrowserSelector {
-  aktoerId: string
   list: Array<JoarkPoster> | undefined
-  loadingJoarkList: boolean
-  loadingJoarkPreviewFile: boolean
+  gettingJoarkList: boolean
+  gettingJoarkFile: boolean
   previewFile: JoarkBrowserItemWithContent | undefined
 }
 
@@ -49,15 +49,15 @@ export type JoarkBrowserMode = 'select' | 'view'
 export type JoarkBrowserType = SedType | SedNewType | JoarkType
 
 const mapState = /* istanbul ignore next */ (state: State): JoarkBrowserSelector => ({
-  aktoerId: state.app.params.aktoerId,
   list: state.attachments.list,
-  loadingJoarkList: state.loading.loadingJoarkList,
-  loadingJoarkPreviewFile: state.loading.loadingJoarkPreviewFile,
+  gettingJoarkList: state.loading.gettingJoarkList,
+  gettingJoarkFile: state.loading.gettingJoarkFile,
   previewFile: state.attachments.previewFile
 })
 
 export interface JoarkBrowserProps {
   existingItems: JoarkBrowserItems
+  fnr: string
   highContrast?: boolean
   onRowSelectChange?: (f: JoarkBrowserItems) => void
   onPreviewFile?: (f: JoarkBrowserItemWithContent) => void
@@ -68,6 +68,7 @@ export interface JoarkBrowserProps {
 
 export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   existingItems = [],
+  fnr,
   highContrast = false,
   mode,
   onRowSelectChange = () => {},
@@ -76,7 +77,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   tableId
 }: JoarkBrowserProps): JSX.Element => {
   const {
-    aktoerId, list, loadingJoarkList, loadingJoarkPreviewFile, previewFile
+    list, gettingJoarkList, gettingJoarkFile, previewFile
   }: JoarkBrowserSelector = useSelector<State, JoarkBrowserSelector>(mapState)
   const dispatch = useDispatch()
   const { t } = useTranslation()
@@ -89,7 +90,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
 
   const context: JoarkBrowserContext = {
     existingItems: existingItems,
-    loadingJoarkPreviewFile: loadingJoarkPreviewFile,
+    gettingJoarkFile: gettingJoarkFile,
     previewFile: _previewFile,
     clickedPreviewItem: _clickedPreviewItem,
     mode: mode
@@ -132,7 +133,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
     if (item.hasSubrows) {
       return <div />
     }
-    const previewing = context?.loadingJoarkPreviewFile
+    const previewing = context?.gettingJoarkFile
     const spinner = previewing && _.isEqual(item as JoarkBrowserItem, context?.clickedPreviewItem)
     return (
       <ButtonsDiv>
@@ -308,11 +309,11 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   }, [existingItems, list, mode])
 
   useEffect(() => {
-    if (!_mounted && list === undefined && !loadingJoarkList) {
-      dispatch(listJoarkItems(aktoerId))
+    if (!_mounted && list === undefined && !gettingJoarkList) {
+      dispatch(listJoarkItems(fnr))
     }
     setMounted(true)
-  }, [aktoerId, dispatch, list, loadingJoarkList, _mounted])
+  }, [fnr, dispatch, list, gettingJoarkList, _mounted])
 
   useEffect(() => {
     if (!equalFiles(previewFile, _previewFile)) {
@@ -356,22 +357,24 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
         modal={_modal}
         onModalClose={handleModalClose}
       />
-      <TableSorter
+      <Table
         <JoarkBrowserItem, JoarkBrowserContext>
         id={'joarkbrowser-' + tableId}
+        key={md5(JSON.stringify(_items))}
         highContrast={highContrast}
         items={_items}
         context={context}
         labels={{
           type: t('label:vedlegg').toLowerCase()
         }}
+        animatable={false}
         itemsPerPage={30}
         compact
         searchable={mode === 'select'}
         selectable={mode === 'select'}
         sortable={mode === 'select'}
         summary
-        loading={loadingJoarkList}
+        loading={gettingJoarkList}
         columns={[
           {
             id: 'tema',
@@ -411,3 +414,4 @@ JoarkBrowser.propTypes = {
 }
 
 export default JoarkBrowser
+

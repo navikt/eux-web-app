@@ -8,6 +8,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 export interface SEDAttachmentModalProps {
+  fnr: string
   highContrast: boolean
   onFinishedSelection: (jbi: JoarkBrowserItems) => void
   onModalClose: () => void
@@ -16,7 +17,7 @@ export interface SEDAttachmentModalProps {
 }
 
 const SEDAttachmentModal: React.FC<SEDAttachmentModalProps> = ({
-  highContrast, onFinishedSelection, onModalClose, sedAttachments, tableId
+  fnr, highContrast, onFinishedSelection, onModalClose, sedAttachments, tableId
 }: SEDAttachmentModalProps): JSX.Element => {
   const { t } = useTranslation()
   const [_items, setItems] = useState<JoarkBrowserItems>(sedAttachments)
@@ -46,6 +47,7 @@ const SEDAttachmentModal: React.FC<SEDAttachmentModalProps> = ({
               <JoarkBrowser
                 data-test-id='a-buc-c-sedattachmentmodal__joarkbrowser-id'
                 existingItems={sedAttachments}
+                fnr={fnr}
                 mode='select'
                 onRowSelectChange={onRowSelectChange}
                 tableId={tableId}

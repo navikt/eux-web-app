@@ -10,11 +10,13 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 export interface AttachmentsProps {
+  fnr: string
   highContrast: boolean
   onAttachmentsChanged: (items: JoarkBrowserItems) => void
 }
 
 const Attachments: React.FC<AttachmentsProps> = ({
+  fnr,
   highContrast,
   onAttachmentsChanged
 }: AttachmentsProps): JSX.Element => {
@@ -55,6 +57,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
       <VerticalSeparatorDiv />
       {_attachmentsTableVisible && (
         <SEDAttachmentModal
+          fnr={fnr}
           highContrast={highContrast}
           onModalClose={() => setAttachmentsTableVisible(false)}
           onFinishedSelection={onJoarkAttachmentsChanged}
@@ -62,14 +65,14 @@ const Attachments: React.FC<AttachmentsProps> = ({
           tableId='newsed-modal'
         />
       )}
-
       {!_.isEmpty(_items) && (
         <>
           <VerticalSeparatorDiv />
           <JoarkBrowser
-            mode='view'
             existingItems={_items}
+            fnr={fnr}
             highContrast={highContrast}
+            mode='view'
             onRowViewDelete={onRowViewDelete}
             tableId='newsed-view'
           />

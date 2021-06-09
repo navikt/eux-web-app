@@ -17,7 +17,7 @@ jest.mock('actions/joark', () => ({
 const files: Array<JoarkPoster> = _.cloneDeep(mockJoark.data.dokumentoversiktBruker.journalposter)
 
 const defaultSelector: JoarkBrowserSelector = {
-  aktoerId: '123',
+  fnr: '123',
   list: files,
   loadingJoarkList: false,
   loadingJoarkPreviewFile: false,
@@ -65,7 +65,7 @@ describe('components/JoarkBrowser/JoarkBrowser', () => {
   it('UseEffect: list Joark files', () => {
     stageSelector(defaultSelector, { list: undefined })
     wrapper = mount(<JoarkBrowser {...initialMockProps} />)
-    expect(listJoarkItems).toHaveBeenCalledWith(defaultSelector.aktoerId)
+    expect(listJoarkItems).toHaveBeenCalledWith(defaultSelector.fnr)
   })
 
   it('UseEffect: when new preview file is available, trigger it', () => {

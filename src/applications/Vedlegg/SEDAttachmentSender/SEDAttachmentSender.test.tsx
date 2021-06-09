@@ -25,7 +25,6 @@ describe('applications/BUC/components/SEDAttachmentSender/SEDAttachmentSender', 
     onFinished: jest.fn(),
     onSaved: jest.fn(),
     payload: {
-      aktoerId: '123',
       rinaId: '456',
       rinaDokumentId: '789'
     },

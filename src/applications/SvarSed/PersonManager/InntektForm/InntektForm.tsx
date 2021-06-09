@@ -25,6 +25,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { OptionTypeBase } from 'react-select'
+import { getFnr } from 'utils/fnr'
 
 interface InntektFormSelector extends PersonManagerFormSelector {
   gettingInntekter: boolean
@@ -88,7 +89,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
     _setFilter(filter)
   }
 
-  const fnr = _.find(replySed?.bruker?.personInfo.pin, p => p.land === 'NO')?.identifikator
+  const fnr = getFnr(replySed)
 
   const onInntektClick = () => dispatch(fetchInntekt(fnr))
 

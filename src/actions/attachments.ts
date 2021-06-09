@@ -42,10 +42,10 @@ export const getJoarkItemPreview: ActionCreator<ThunkResult<ActionWithPayload<Jo
 }
 
 export const listJoarkItems: ActionCreator<ThunkResult<ActionWithPayload<JoarkList>>> = (
-  userId: string
+  fnr: string
 ): ThunkResult<ActionWithPayload<JoarkList>> => {
   return call({
-    url: sprintf(urls.API_JOARK_LIST_URL, { userId: userId }),
+    url: sprintf(urls.API_JOARK_LIST_URL, { fnr: fnr }),
     expectedPayload: mockJoark,
     type: {
       request: types.JOARK_LIST_REQUEST,

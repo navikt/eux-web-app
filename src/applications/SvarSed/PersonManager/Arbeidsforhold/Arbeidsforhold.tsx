@@ -30,6 +30,7 @@ import {
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import { getFnr } from 'utils/fnr'
 
 interface ArbeidsforholdSelector extends PersonManagerFormSelector {
   arbeidsperioder: Arbeidsperioder | undefined
@@ -61,7 +62,7 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
   const target = 'anmodningsperiode'
   const anmodningsperiode: Periode = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-arbeidsforhold`
-  const fnr = _.find(replySed?.bruker?.personInfo.pin, p => p.land === 'NO')?.identifikator
+  const fnr = getFnr(replySed)
 
   const [_newArbeidsgiverStartDato, _setNewArbeidsgiverStartDato] = useState<string>('')
   const [_newArbeidsgiverSluttDato, _setNewArbeidsgiverSluttDato] = useState<string>('')
