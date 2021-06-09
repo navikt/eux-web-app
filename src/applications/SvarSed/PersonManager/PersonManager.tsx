@@ -263,7 +263,7 @@ const PersonManager: React.FC = () => {
     { label: t('el:option-personmanager-9'), value: 'grunnlagforbosetting', component: GrunnlagForBosetting, type: 'F', normal: false, barn: true, family: false },
     { label: t('el:option-personmanager-10'), value: 'beløpnavnogvaluta', component: BeløpNavnOgValuta, type: 'F', normal: false, barn: true, family: false },
     { label: t('el:option-personmanager-11'), value: 'familieytelser', component: Familieytelser, type: 'F', normal: false, barn: false, family: true },
-    { label: t('el:option-personmanager-12'), value: 'person', component: PersonOpplysninger, type: 'U', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-12'), value: 'personopplysninger', component: PersonOpplysninger, type: 'U', normal: true, barn: false, family: false },
     { label: t('el:option-personmanager-13'), value: 'referanseperiode', component: Referanseperiode, type: 'U', normal: true, barn: false, family: false },
     { label: t('el:option-personmanager-14'), value: 'arbeidsforhold/arbeidsgivere', component: Arbeidsforhold, type: 'U002', normal: true, barn: false, family: false },
     { label: t('el:option-personmanager-15'), value: 'inntekt', component: InntektForm, type: 'U004', normal: true, barn: false, family: false },
@@ -272,7 +272,7 @@ const PersonManager: React.FC = () => {
     { label: t('el:option-personmanager-18'), value: 'sisteansettelsesforhold', component: SisteAnsettelsesForhold, type: 'U', normal: true, barn: false, family: false },
     { label: t('el:option-personmanager-19'), value: 'grunntilopphør', component: GrunnTilOpphør, type: 'U', normal: true, barn: false, family: false },
     { label: t('el:option-personmanager-20'), value: 'periodefordagpenger', component: PeriodeForDagpenger, type: 'U', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-12'), value: 'person', component: PersonOpplysninger, type: 'H', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-12'), value: 'personopplysninger', component: PersonOpplysninger, type: 'H', normal: true, barn: false, family: false },
     { label: t('el:option-personmanager-3'), value: 'adresser', component: Adresser, type: 'H', normal: true, barn: true, family: false },
     { label: t('el:option-personmanager-21'), value: 'svarpåforespørsel', component: SvarPåForespørsel, type: 'H', normal: true, barn: true, family: false }
   ]

@@ -9,7 +9,6 @@ import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
 import SendSEDModal from 'applications/SvarSed/SendSEDModal/SendSEDModal'
 import Attachments from 'applications/Vedlegg/Attachments/Attachments'
 import Add from 'assets/icons/Add'
-import classNames from 'classnames'
 import Modal from 'components/Modal/Modal'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { JoarkBrowserItems } from 'declarations/attachments'
@@ -28,7 +27,6 @@ import {
   HighContrastHovedknapp,
   HighContrastKnapp,
   HighContrastLink,
-  HighContrastTextArea,
   HorizontalSeparatorDiv,
   PaddedDiv,
   Row,
@@ -41,6 +39,8 @@ import ReactJson from 'react-json-view'
 import { useDispatch, useSelector } from 'react-redux'
 import { isFSed, isHSed, isSed, isUSed } from 'utils/sed'
 import { validateSEDEditor, ValidationSEDEditorProps } from './validation'
+import { updateReplySed } from 'actions/svarpased'
+import TextArea from 'components/Forms/TextArea'
 
 const mapState = (state: State): any => ({
   creatingSedWithAttachments: state.loading.creatingSedWithAttachments,
@@ -77,8 +77,8 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
     validation
   }: any = useSelector<State, any>(mapState)
   const fnr = _.find(replySed?.bruker?.personInfo.pin, p => p.land === 'NO')?.identifikator
+  const namespace = 'editor'
 
-  const [_comment, _setComment] = useState<string>('')
   const [_attachments, setAttachments] = useState<JoarkBrowserItems | undefined>(undefined)
   const [_modal, setModal] = useState<ModalContent | undefined>(undefined)
   const [_previewFile, setPreviewFile] = useState<any | undefined>(undefined)
@@ -97,7 +97,6 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   const sendReplySed = (): void => {
     if (replySed) {
       const valid = performValidation({
-        comment: _comment,
         replySed
       })
       dispatch(viewValidation())
@@ -158,8 +157,10 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   }
 
   const setComment = (comment: string) => {
-    resetValidation('comment')
-    _setComment(comment)
+    dispatch(updateReplySed(`ytterligereInfo`, comment))
+    if (validation[namespace + '-ytterligereInfo']) {
+      dispatch(resetValidation(namespace + '-ytterligereInfo'))
+    }
   }
 
   useEffect(() => {
@@ -211,7 +212,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
             {replySed?.sedType} - {t('buc:' + replySed?.sedType)}
           </Systemtittel>
           <VerticalSeparatorDiv />
-          {isFSed(replySed) && <Formaal />}
+          {isFSed(replySed) && <Formaal parentNamespace={namespace} />}
           {isUSed(replySed) && <SEDType />}
           {isHSed(replySed) && <Tema />}
         </Column>
@@ -232,16 +233,15 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
       )}
       <VerticalSeparatorDiv />
       <TextAreaDiv>
-        <HighContrastTextArea
-          className={classNames({ 'skjemaelement__input--harFeil': validation.comment })}
-          data-test-id='comment'
-          feil={validation.comment?.feilmelding}
-          id='comment'
+        <TextArea
+          namespace={namespace}
+          feil={validation[namespace + '-ytterligereInfo']?.feilmelding}
+          id='ytterligereInfo'
           label={t('label:ytterligere-informasjon-til-sed')}
           maxLength={500}
-          onChange={(e: any) => setComment(e.target.value)}
+          onChanged={setComment}
           placeholder={t('el:placeholder-sed')}
-          value={_comment}
+          value={replySed?.ytterligereInfo}
         />
       </TextAreaDiv>
       <VerticalSeparatorDiv size='2' />

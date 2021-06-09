@@ -49,6 +49,8 @@
   "by": "By",
   "bygning": "Bygning",
 
+  "choose": "Velg",
+
   "dagpenger": "Dagpenger",
   "dato": "Dato",
   "dato-for-relasjon": "Dato for relasjon",
@@ -266,8 +268,8 @@
   "velg-person" : "Velg {{person}}",
   "velg-personer" : "Velg personer for å se og fylle inn opplysninger.",
   "velg-tema" : "Velg tema",
-  "vi-sender": "Vi sender følgende informasjon",
-  "vi-vedlegger": "Vi vedlegger følgende dokument(er)",
+  "vi-sender-informasjon": "Vi sender følgende informasjon",
+  "vi-vedlegger-dokumenter": "Vi vedlegger følgende dokument(er)",
   "vis-mer": "Ler mer",
   "vis-saker": "Vis saker",
   "vis-skjema": "Vis skjema",

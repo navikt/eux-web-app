@@ -1,15 +1,24 @@
 {
-  "sedVersjon": "4.2",
   "sedType": "H002",
+  "sedVersjon": "4.2",
   "bruker": {
     "personInfo": {
       "fornavn": "æøå",
       "etternavn": "æøå",
       "kjoenn": "M",
-      "foedselsdato": "2001-01-01",
+      "foedselsdato": "æøå",
       "statsborgerskap": [
         {
           "land": "NO"
+        }
+      ],
+      "pin": [
+        {
+          "land": "NO",
+          "sektor": "yrkesskade_og_yrkessykdom",
+          "identifikator": "æøå",
+          "institusjonsid": "æøå",
+          "institusjonsnavn": "æøå"
         }
       ],
       "pinMangler": {
@@ -28,17 +37,35 @@
           "fornavn": "æøå",
           "etternavnVedFoedsel": "æøå"
         }
-      },
-      "pin": [
-        {
-          "land": "NO",
-          "sektor": "yrkesskade_og_yrkessykdom",
-          "identifikator": "æøå",
-          "institusjonsid": "ES:3100",
-          "institusjonsnavn": "æøå"
-        }
-      ]
-    }
+      }
+    },
+    "adresser": [
+      {
+        "type": "bosted",
+        "gate": "æøå",
+        "postnummer": "æøå",
+        "by": "æøå",
+        "land": "NO",
+        "bygning": "æøå",
+        "region": "æøå"
+      }
+    ]
   },
+  "vedlagteDokumenttyper": {
+    "dokumenttyper": [
+      "søknad"
+    ],
+    "andreDokumenttyper": [
+      "æøå"
+    ]
+  },
+  "positivtSvar": {
+    "informasjon": "æøå",
+    "dokument": "æøå",
+    "sed": "æøå"
+  },
+  "negativeSvar": [
+  ],
+  "ytterligereInfo": "æøå",
   "tema": "GEN"
 }

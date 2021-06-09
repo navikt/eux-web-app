@@ -44,7 +44,6 @@ import { TFunction } from 'react-i18next'
 import { isFSed } from 'utils/sed'
 
 export interface ValidationSEDEditorProps {
-  comment: string
   replySed: ReplySed
 }
 
@@ -157,7 +156,6 @@ export const validateSEDEditor = (
   v: Validation,
   t: TFunction,
   {
-    comment,
     replySed
   }: ValidationSEDEditorProps
 ): boolean => {
@@ -165,9 +163,9 @@ export const validateSEDEditor = (
   let _error: boolean
   if (isFSed(replySed)) {
     if (_.isEmpty((replySed as F002Sed).formaal)) {
-      v['formål'] = {
+      v['editor-formål'] = {
         feilmelding: t('message:validation-noFormaal'),
-        skjemaelementId: 'formål'
+        skjemaelementId: 'editor-formål'
       } as FeiloppsummeringFeil
       hasErrors = true
     }
@@ -192,10 +190,11 @@ export const validateSEDEditor = (
     }
   }
 
-  if (_.isEmpty(comment?.trim())) {
-    v.comment = {
+  // @ts-ignore
+  if (_.isEmpty(replySed?.ytterligereInfo?.trim())) {
+    v['editor-ytterligereInfo'] = {
       feilmelding: t('message:validation-noComment'),
-      skjemaelementId: 'comment'
+      skjemaelementId: 'editor-ytterligereInfo'
     } as FeiloppsummeringFeil
     hasErrors = true
   }

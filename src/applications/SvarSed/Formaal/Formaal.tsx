@@ -9,6 +9,10 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import Stack from 'components/Stack/Stack'
 
+interface FormaalProps {
+  parentNamespace: string
+}
+
 interface FormaalSelector {
   highContrast: boolean
   replySed: ReplySed | undefined
@@ -21,7 +25,9 @@ const mapState = (state: State): FormaalSelector => ({
   validation: state.validation.status
 })
 
-const Formaal: React.FC = (): JSX.Element => {
+const Formaal: React.FC<FormaalProps> = ({
+   parentNamespace
+}: FormaalProps): JSX.Element => {
   const { t } = useTranslation()
   const {
     highContrast,
@@ -30,7 +36,7 @@ const Formaal: React.FC = (): JSX.Element => {
   }: any = useSelector<State, FormaalSelector>(mapState)
   const dispatch = useDispatch()
   const formaal: Array<string> = (replySed as FSed)?.formaal
-  const namespace: string = 'formål'
+  const namespace: string = `${parentNamespace}-formål`
 
   const formaalOptions: Options = [
     { label: t('el:option-formaal-1'), value: 'mottak_av_søknad_om_familieytelser' },

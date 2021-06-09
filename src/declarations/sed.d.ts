@@ -25,6 +25,8 @@ export type YtelseNavn = 'Barnetrygd' | 'Kontantstøtte'
 
 export type Utbetalingshyppighet = 'Månedlig'| 'Årlig'
 
+export type HSvarType = 'positivt' | 'negative'
+
 export interface Adresse {
   by?: string
   bygning?: string
@@ -196,7 +198,22 @@ export interface FSed extends BaseReplySed {
   formaal: Array<string>
 }
 
+export interface HSvar {
+  informasjon: string
+  dokument:string
+  sed: string
+  grunn?: string
+}
+
 export interface HSed extends BaseReplySed {
+  tema: string
+  vedlagteDokumenttyper: {
+    dokumenttyper: Array<string>
+    andreDokumenttyper: Array<string>
+  }
+  positivtSvar: HSvar,
+  negativeSvar: Array<HSvar>
+  ytterligereInfo: string
   tema: string
 }
 

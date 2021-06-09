@@ -1,10 +1,11 @@
-import { updateReplySed } from 'actions/svarpased'
+import { setReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import HelpIcon from 'assets/icons/HelpIcon'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
+import { HSed, HSvarType } from 'declarations/sed'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
 import {
@@ -17,7 +18,7 @@ import {
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import Tooltip from 'rc-tooltip'
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
@@ -44,60 +45,97 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
     validation
   } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
-  // TODO this
-  const target = 'xxx-svarpaforespørsel'
-  const xxx: any = _.get(replySed, target)
+
+  const doWeHavePositive: boolean = !!(replySed as HSed)?.positivtSvar?.informasjon ||
+    !!(replySed as HSed)?.positivtSvar?.dokument ||
+    !!(replySed as HSed)?.positivtSvar?.sed
+
+  const doWeHaveNegative: boolean = (replySed as HSed)?.negativeSvar?.length > 0
+
+  const [_svar, _setSvar] = useState<HSvarType | undefined>(() =>
+    doWeHavePositive ? 'positivt' :
+      doWeHaveNegative ? 'negative' : undefined
+  )
+
+  const syncWithReplySed = (needle: string, value: any) => {
+    let svarChanged: boolean = needle === 'svar'
+    let thisSvar = svarChanged ? value : _svar
+    if (thisSvar === 'positivt') {
+      console.log('unmounting svarPaForespørsel as positive')
+      let newPositivtSvar = {
+        informasjon: svarChanged ? (replySed as HSed).negativeSvar[0].informasjon :  (replySed as HSed).positivtSvar.informasjon,
+        dokument: svarChanged ? (replySed as HSed).negativeSvar[0].dokument :  (replySed as HSed).positivtSvar.dokument,
+        sed: svarChanged ? (replySed as HSed).negativeSvar[0].sed :  (replySed as HSed).positivtSvar.sed
+      }
+      if (!svarChanged) {
+        // @ts-ignore
+        newPositivtSvar[needle] = value
+      }
+      dispatch(setReplySed({
+        ...replySed,
+        positivtSvar: newPositivtSvar,
+        negativeSvar: []
+      }))
+    } else {
+      console.log('unmounting svarPaForespørsel as negative')
+
+      let newNegativtSvar = {
+        informasjon: svarChanged ? (replySed as HSed).positivtSvar.informasjon :  (replySed as HSed).negativeSvar[0].informasjon,
+        dokument: svarChanged ? (replySed as HSed).positivtSvar.dokument :  (replySed as HSed).negativeSvar[0].dokument,
+        sed: svarChanged ? (replySed as HSed).positivtSvar.sed :  (replySed as HSed).negativeSvar[0].sed
+      }
+      if (!svarChanged) {
+        // @ts-ignore
+        newNegativtSvar[needle] = value
+      }
+
+      dispatch(setReplySed({
+        ...replySed,
+        positivtSvar: {},
+        negativeSvar: [newNegativtSvar]
+      }))
+    }
+  }
+
   const namespace = `${parentNamespace}-${personID}-svarpaforespørsel`
 
-  const setSvar = (newSvar: string) => {
-    dispatch(updateReplySed(`${target}.svar`, newSvar.trim()))
+  const setSvar = (newSvar: HSvarType) => {
+    _setSvar(newSvar)
+    syncWithReplySed('svar', newSvar)
     if (validation[namespace + '-svar']) {
       dispatch(resetValidation(namespace + '-svar'))
     }
   }
 
-  const setVedlegg = (newVedlegg: string) => {
-    dispatch(updateReplySed(`${target}.vedlegg`, newVedlegg.trim()))
-    if (validation[namespace + '-vedlegg']) {
-      dispatch(resetValidation(namespace + '-vedlegg'))
+  const setDokument = (newDokument: string) => {
+    syncWithReplySed('dokument', newDokument)
+    if (validation[namespace + '-dokument']) {
+      dispatch(resetValidation(namespace + '-dokument'))
     }
   }
 
-  const setSender = (sender: string) => {
-    dispatch(updateReplySed(`${target}.sender`, sender.trim()))
-    if (validation[namespace + '-sender']) {
-      dispatch(resetValidation(namespace + '-sender'))
+  const setInformasjon = (newInformasjon: string) => {
+    syncWithReplySed('informasjon', newInformasjon)
+    if (validation[namespace + '-informasjon']) {
+      dispatch(resetValidation(namespace + '-informasjon'))
     }
   }
 
-  const setGrunner = (grunner: string) => {
-    dispatch(updateReplySed(`${target}.grunner`, grunner.trim()))
-    if (validation[namespace + '-grunner']) {
-      dispatch(resetValidation(namespace + '-grunner'))
+  const setSed = (newSed: string) => {
+    syncWithReplySed('sed', newSed)
+    if (validation[namespace + '-sed']) {
+      dispatch(resetValidation(namespace + '-sed'))
     }
   }
 
-  /*
-    const setAvkall = (avkall: string) => {
-      updateReplySed(`${target}.avkall`, avkall.trim())
-      if (validation[namespace + '-avkall']) {
-        resetValidation(namespace + '-avkall')
-      }
+  const setGrunn = (newGrunn: string) => {
+    syncWithReplySed('grunn', newGrunn)
+    if (validation[namespace + '-grunn']) {
+      dispatch(resetValidation(namespace + '-grunn'))
     }
+  }
 
-    const setGrunn = (grunn: string) => {
-      updateReplySed(`${target}.grunn`, grunn.trim())
-      if (validation[namespace + '-grunn']) {
-        resetValidation(namespace + '-grunn')
-      }
-    }
-
-    const setAnnenYtelser = (annenYtelser: string) => {
-      updateReplySed(`${target}.annenYtelser`, annenYtelser.trim())
-      if (validation[namespace + '-annenytelser']) {
-        resetValidation(namespace + '-annenytelser')
-      }
-    } */
+  const data = _svar === 'positivt' ? (replySed as HSed).positivtSvar : (replySed as HSed).negativeSvar[0]
 
   return (
     <PaddedDiv>
@@ -112,17 +150,21 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
       <AlignStartRow className='slideInFromLeft'>
         <Column>
           <label className='skjemaelement__label'>
-            {t('label:type-beløp')}
+            {t('label:choose')}
           </label>
           <HighContrastRadioPanelGroup
-            checked={xxx?.svar}
+            checked={_svar}
             data-multiple-line
             data-no-border
             data-test-id={namespace + '-svar'}
             feil={validation[namespace + '-svar']?.feilmelding}
             id={namespace + '-svar'}
             name={namespace + '-svar'}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvar(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              if (e.target.value !== _svar) {
+                setSvar(e.target.value as HSvarType)
+              }
+            }}
             radios={[
               {
                 label: (
@@ -134,7 +176,7 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
                     </Tooltip>
                   </FlexCenterDiv>
                 ),
-                value: 'svar-1'
+                value: 'positivt' as HSvarType
               },
               {
                 label: (
@@ -146,25 +188,25 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
                     </Tooltip>
                   </FlexCenterDiv>
                 ),
-                value: 'svar-2'
+                value: 'negative' as HSvarType
               }
             ]}
           />
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />
-      {!_.isNil(xxx?.svar) && (
+      {!_.isNil(_svar) && (
         <>
-          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
             <Column>
               <TextAreaDiv>
                 <TextArea
-                  feil={validation[namespace + '-vedlegg']?.feilmelding}
+                  feil={validation[namespace + '-dokument']?.feilmelding}
                   namespace={namespace}
-                  id='vedlegg'
-                  label={t('label:vi-vedlegger')}
-                  onChanged={setVedlegg}
-                  value={xxx?.vedlegg}
+                  id='dokument'
+                  label={t('label:vi-vedlegger-dokumenter')}
+                  onChanged={setDokument}
+                  value={data?.dokument ?? ''}
                 />
               </TextAreaDiv>
             </Column>
@@ -174,12 +216,27 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
             <Column>
               <TextAreaDiv>
                 <TextArea
-                  feil={validation[namespace + '-sender']?.feilmelding}
+                  feil={validation[namespace + '-informasjon']?.feilmelding}
                   namespace={namespace}
-                  id='sender'
-                  label={t('label:vi-sender')}
-                  onChanged={setSender}
-                  value={xxx?.sender}
+                  id='informasjon'
+                  label={t('label:vi-sender-informasjon')}
+                  onChanged={setInformasjon}
+                  value={data?.informasjon ?? ''}
+                />
+              </TextAreaDiv>
+            </Column>
+          </AlignStartRow>
+          <VerticalSeparatorDiv />
+          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.15s' }}>
+            <Column>
+              <TextAreaDiv>
+                <TextArea
+                  feil={validation[namespace + '-sed']?.feilmelding}
+                  namespace={namespace}
+                  id='sed'
+                  label={t('label:sed')}
+                  onChanged={setSed}
+                  value={data?.sed ?? ''}
                 />
               </TextAreaDiv>
             </Column>
@@ -187,17 +244,17 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
           <VerticalSeparatorDiv />
         </>
       )}
-      {xxx?.svar === 'svar-2' && (
-        <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+      {_svar === 'negative' && (
+        <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
           <Column>
             <TextAreaDiv>
               <TextArea
-                feil={validation[namespace + '-grunner']?.feilmelding}
+                feil={validation[namespace + '-grunn']?.feilmelding}
                 namespace={namespace}
-                id='grunner'
-                label={t('label:grunner')}
-                onChanged={setGrunner}
-                value={xxx?.grunner}
+                id='grunn'
+                label={t('label:grunn')}
+                onChanged={setGrunn}
+                value={data?.grunn ?? ''}
               />
             </TextAreaDiv>
           </Column>
