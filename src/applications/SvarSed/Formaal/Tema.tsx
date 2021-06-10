@@ -34,7 +34,7 @@ const Tema: React.FC = () => {
   }: any = useSelector<State, TemaSelector>(mapState)
   const dispatch = useDispatch()
   const namespace: string = 'editor-tema'
-  const [tema, setTema] = useState<string>(() => (replySed as HSed).tema)
+  const [_tema, setTema] = useState<string | undefined>(() => (replySed as HSed).tema)
   const [editMode, setEditMode] = useState<boolean>(false)
 
   const temaOptions: Options = [
@@ -60,7 +60,7 @@ const Tema: React.FC = () => {
   ]
 
   const onSaveChangesClicked = () => {
-    dispatch(updateReplySed('tema', tema))
+    dispatch(updateReplySed('tema', _tema))
     setEditMode(false)
   }
 
@@ -87,21 +87,22 @@ const Tema: React.FC = () => {
             {t('label:tema')}:
           </label>
           <HorizontalSeparatorDiv size='0.35' />
+          <FlexCenterDiv className={namespace}>
           {!editMode
-            ? tema
+            ? _tema
                 ? t('tema:' + (replySed as HSed).tema)
                 : t('label:unknown')
             : (
               <>
                 <Select
-                  defaultValue={_.find(temaOptions, s => s.value === tema)}
+                  defaultValue={_.find(temaOptions, {value: _tema})}
                   feil={validation[namespace]?.feilmelding}
                   highContrast={highContrast}
-                  key={namespace + '-' + tema}
-                  id={namespace}
+                  key={namespace + '-' + _tema + '-select'}
+                  id={namespace + '-select'}
                   onChange={onTemaChanged}
                   options={temaOptions}
-                  selectedValue={_.find(temaOptions, s => s.value === tema)}
+                  selectedValue={_.find(temaOptions, {value: _tema})}
                   style={{ minWidth: '300px' }}
                 />
                 <HorizontalSeparatorDiv size='0.5' />
@@ -122,6 +123,14 @@ const Tema: React.FC = () => {
                 </HighContrastFlatknapp>
               </>
               )}
+            {!editMode && validation[namespace]?.feilmelding && (
+              <div className='skjemaelement__feilmelding'>
+                <p className='typo-feilmelding'>
+                  {validation[namespace].feilmelding}
+                </p>
+              </div>
+              )}
+          </FlexCenterDiv>
           <HorizontalSeparatorDiv />
           {!editMode && (
             <HighContrastFlatknapp

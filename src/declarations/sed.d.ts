@@ -206,7 +206,6 @@ export interface HSvar {
 }
 
 export interface HSed extends BaseReplySed {
-  tema: string
   vedlagteDokumenttyper: {
     dokumenttyper: Array<string>
     andreDokumenttyper: Array<string>
@@ -214,7 +213,7 @@ export interface HSed extends BaseReplySed {
   positivtSvar: HSvar,
   negativeSvar: Array<HSvar>
   ytterligereInfo: string
-  tema: string
+  tema?: string
 }
 
 export interface Barnetilhoerighet {
