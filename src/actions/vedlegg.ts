@@ -10,7 +10,7 @@ const sprintf = require('sprintf-js').sprintf
 export const getDokument: ActionCreator<ThunkResult<ActionWithPayload>> = (rinasaksnummer: string): ThunkResult<ActionWithPayload> => {
   return call({
     url: sprintf(urls.API_VEDLEGG_DOKUMENT_URL, { rinasaksnummer: rinasaksnummer }),
-    expectedPayload: mockRinaDokumenter({ rinasaksnummer: rinasaksnummer }),
+    expectedPayload: mockRinaDokumenter,
     type: {
       request: types.VEDLEGG_DOKUMENT_GET_REQUEST,
       success: types.VEDLEGG_DOKUMENT_GET_SUCCESS,

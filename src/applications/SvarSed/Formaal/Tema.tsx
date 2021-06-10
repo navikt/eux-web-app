@@ -88,48 +88,48 @@ const Tema: React.FC = () => {
           </label>
           <HorizontalSeparatorDiv size='0.35' />
           <FlexCenterDiv className={namespace}>
-          {!editMode
-            ? _tema
-                ? t('tema:' + (replySed as HSed).tema)
-                : t('label:unknown')
-            : (
-              <>
-                <Select
-                  defaultValue={_.find(temaOptions, {value: _tema})}
-                  feil={validation[namespace]?.feilmelding}
-                  highContrast={highContrast}
-                  key={namespace + '-' + _tema + '-select'}
-                  id={namespace + '-select'}
-                  onChange={onTemaChanged}
-                  options={temaOptions}
-                  selectedValue={_.find(temaOptions, {value: _tema})}
-                  style={{ minWidth: '300px' }}
-                />
-                <HorizontalSeparatorDiv size='0.5' />
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
-                  onClick={onSaveChangesClicked}
-                >
-                  {t('el:button-save')}
-                </HighContrastFlatknapp>
-                <HorizontalSeparatorDiv size='0.5' />
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
-                  onClick={onCancelChangesClicked}
-                >
-                  {t('el:button-cancel')}
-                </HighContrastFlatknapp>
-              </>
-              )}
+            {!editMode
+              ? _tema
+                  ? t('tema:' + (replySed as HSed).tema)
+                  : t('label:unknown')
+              : (
+                <>
+                  <Select
+                    defaultValue={_.find(temaOptions, { value: _tema })}
+                    feil={validation[namespace]?.feilmelding}
+                    highContrast={highContrast}
+                    key={namespace + '-' + _tema + '-select'}
+                    id={namespace + '-select'}
+                    onChange={onTemaChanged}
+                    options={temaOptions}
+                    selectedValue={_.find(temaOptions, { value: _tema })}
+                    style={{ minWidth: '300px' }}
+                  />
+                  <HorizontalSeparatorDiv size='0.5' />
+                  <HighContrastFlatknapp
+                    mini
+                    kompakt
+                    onClick={onSaveChangesClicked}
+                  >
+                    {t('el:button-save')}
+                  </HighContrastFlatknapp>
+                  <HorizontalSeparatorDiv size='0.5' />
+                  <HighContrastFlatknapp
+                    mini
+                    kompakt
+                    onClick={onCancelChangesClicked}
+                  >
+                    {t('el:button-cancel')}
+                  </HighContrastFlatknapp>
+                </>
+                )}
             {!editMode && validation[namespace]?.feilmelding && (
               <div className='skjemaelement__feilmelding'>
                 <p className='typo-feilmelding'>
                   {validation[namespace].feilmelding}
                 </p>
               </div>
-              )}
+            )}
           </FlexCenterDiv>
           <HorizontalSeparatorDiv />
           {!editMode && (
