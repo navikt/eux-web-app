@@ -121,10 +121,10 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
 
   const onSaksnummerOrFnrClick = () => {
     const valid: boolean = performValidation({
-      saksnummerOrFnr: _saksnummerOrFnr
+      saksnummerOrFnr: _saksnummerOrFnr.trim()
     })
     if (valid) {
-      dispatch(svarpasedActions.querySaksnummerOrFnr(_saksnummerOrFnr))
+      dispatch(svarpasedActions.querySaksnummerOrFnr(_saksnummerOrFnr.trim()))
     }
   }
 

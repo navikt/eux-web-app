@@ -271,7 +271,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
             disabled={creatingSvarPaSed}
             spinner={creatingSvarPaSed}
           >
-            {creatingSvarPaSed ? t('message:loading-sendingReplySed') : t('label:send-svarsed')}
+            {creatingSvarPaSed ? t('message:loading-sending-svarsed') : t('label:send-svarsed')}
           </HighContrastHovedknapp>
           <VerticalSeparatorDiv size='0.5' />
         </div>

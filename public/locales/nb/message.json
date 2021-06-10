@@ -16,6 +16,8 @@
   "error-page-description" : "Vennligst rapporter feilen i Porten slik at vi kan rette den. Kopier innholdet i detaljert feilmelding under og lim det inn i saken i Porten.",
   "error-page-footer" : "",
   "error-sending-attachments" : "Feil å sende vedlegg",
+  "error-serverInternalError": "Serverens interne feil",
+  "error-serverAuthenticationError": "Serverautentiseringsfeil",
 
   "help-dokumentID": "DokumnetID finner du ved å åpne «Dokumentinformasjon» i journalposten i Gosys",
   "help-journalpostID": "Journalpost ID finner du ved å åpne journalposten i Gosys",
@@ -30,7 +32,8 @@
   "loading-saker" : "Hent saker...",
   "loading-sedCreated" : "SvarSED opprettet",
   "loading-sedFinished" : "Ferdig med svarSED",
-  "loading-sendingVedlegg" : "Sender vedlegg...",
+  "loading-sending-vedlegg" : "Sender vedlegg...",
+  "loading-sending-svarsed" : "Sender svarSED...",
   "loading-sendingXofY" : "Sender {{current}} av {{total}}",
 
   "validation-duplicateStartDate": "Datoen eksisterer allerede",

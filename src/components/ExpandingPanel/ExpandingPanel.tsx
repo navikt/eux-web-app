@@ -105,7 +105,7 @@ const ExpandingPanel: React.FC<ExpandingPanelProps> = ({
             {heading}
             <button
               aria-expanded={_open}
-              aria-label={t('ui:open')}
+              aria-label={t('label:open')}
               className='ekspanderbartPanel__knapp'
               data-test-id='c-expandingpanel__button-id'
               onKeyDown={tabHandler}

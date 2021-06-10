@@ -196,7 +196,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
               disabled={sendingVedlegg}
               spinner={sendingVedlegg}
             >
-              {sendingVedlegg ? t('message:loading-sendingVedlegg') : t('label:send-vedlegg')}
+              {sendingVedlegg ? t('message:loading-sending-vedlegg') : t('label:send-vedlegg')}
             </HighContrastHovedknapp>
             {vedlegg && (
               <>

@@ -38,11 +38,11 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
   if (_.endsWith(action.type, '/ERROR')) {
     switch (action.type) {
       case types.SERVER_INTERNAL_ERROR:
-        serverErrorMessage = 'ui:serverInternalError'
+        serverErrorMessage = 'message:error-serverInternalError'
         break
 
       case types.SERVER_UNAUTHORIZED_ERROR:
-        serverErrorMessage = 'ui:serverAuthenticationError'
+        serverErrorMessage = 'message:error-serverAuthenticationError'
         break
 
       default:

@@ -210,7 +210,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                       <FlexCenterSpacedDiv>
                         <NavFrontendSpinner type='XS' />
                         <HorizontalSeparatorDiv size='0.5' />
-                        <span>{t('message:loading-sendingVedlegg')}</span>
+                        <span>{t('message:loading-sending-vedlegg')}</span>
                       </FlexCenterSpacedDiv>
                     )}
                   </div>
