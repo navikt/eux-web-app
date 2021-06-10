@@ -38,8 +38,7 @@ export const validateVedtakPeriode = (
   hasErrors = hasErrors || periodeError
 
   if (!_.isEmpty(periode?.periode.startdato)) {
-    let duplicate: boolean
-    duplicate = _.find(perioder, p => p.periode.startdato === periode?.periode.startdato) !== undefined
+    const duplicate: boolean = _.find(perioder, p => p.periode.startdato === periode?.periode.startdato) !== undefined
     if (duplicate) {
       v[namespace + '-vedtaksperioder' + idx + '-periode-startdato'] = {
         feilmelding: t('message:validation-duplicateStartdatoForPerson', { person: personName }),
@@ -121,7 +120,6 @@ export const validateVedtak = (
     } as FeiloppsummeringFeil
     hasErrors = true
   }
-
 
   if (hasErrors) {
     const namespaceBits = namespace.split('-')

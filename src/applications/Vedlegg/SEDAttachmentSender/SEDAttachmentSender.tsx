@@ -11,6 +11,7 @@ import {
 import { State } from 'declarations/reducers'
 import ProgressBar, { ProgressBarStatus } from 'fremdriftslinje'
 import _ from 'lodash'
+import md5 from 'md5'
 import { HighContrastKnapp, HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
@@ -88,7 +89,7 @@ const SEDAttachmentSender: React.FC<SEDAttachmentSenderProps> = ({
           journalpostId: unsentAttachment.journalpostId,
           dokumentInfoId: unsentAttachment.dokumentInfoId!,
           variantformat: unsentAttachment.variant!.variantformat!,
-          filnavn: unsentAttachment.title ?? 'fil-' + unsentAttachment.date.getTime()
+          filnavn: unsentAttachment.title.replaceAll(' ', '_') ?? 'fil-' + md5('' + new Date().getTime())
         }
         sendAttachmentToSed(params, unsentAttachment)
       } else {

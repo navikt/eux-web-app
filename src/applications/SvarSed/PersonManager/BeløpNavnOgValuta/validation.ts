@@ -62,7 +62,6 @@ export const validateBeløpNavnOgValuta = (
     hasErrors = true
   }
 
-
   const periodErrors: boolean = validatePeriod(v, t, {
     period: {
       startdato: ytelse?.startdato,

@@ -33,7 +33,7 @@ const Tema: React.FC = () => {
     resetValidation
   }: any = useSelector<State, TemaSelector>(mapState)
   const dispatch = useDispatch()
-  const namespace: string = 'tema'
+  const namespace: string = 'editor-tema'
   const [tema, setTema] = useState<string>(() => (replySed as HSed).tema)
   const [editMode, setEditMode] = useState<boolean>(false)
 
@@ -87,38 +87,41 @@ const Tema: React.FC = () => {
             {t('label:tema')}:
           </label>
           <HorizontalSeparatorDiv size='0.35' />
-          {!editMode && (<>{t('tema:' + (replySed as HSed).tema)}</>)}
-          {editMode && (
-            <>
-              <Select
-                defaultValue={_.find(temaOptions, s => s.value === tema)}
-                feil={validation[namespace]?.feilmelding}
-                highContrast={highContrast}
-                key={namespace + '-' + tema}
-                id={namespace}
-                onChange={onTemaChanged}
-                options={temaOptions}
-                selectedValue={_.find(temaOptions, s => s.value === tema)}
-                style={{ minWidth: '300px' }}
-              />
-              <HorizontalSeparatorDiv size='0.5' />
-              <HighContrastFlatknapp
-                mini
-                kompakt
-                onClick={onSaveChangesClicked}
-              >
-                {t('el:button-save')}
-              </HighContrastFlatknapp>
-              <HorizontalSeparatorDiv size='0.5' />
-              <HighContrastFlatknapp
-                mini
-                kompakt
-                onClick={onCancelChangesClicked}
-              >
-                {t('el:button-cancel')}
-              </HighContrastFlatknapp>
-            </>
-          )}
+          {!editMode
+            ? tema
+                ? t('tema:' + (replySed as HSed).tema)
+                : t('label:unknown')
+            : (
+              <>
+                <Select
+                  defaultValue={_.find(temaOptions, s => s.value === tema)}
+                  feil={validation[namespace]?.feilmelding}
+                  highContrast={highContrast}
+                  key={namespace + '-' + tema}
+                  id={namespace}
+                  onChange={onTemaChanged}
+                  options={temaOptions}
+                  selectedValue={_.find(temaOptions, s => s.value === tema)}
+                  style={{ minWidth: '300px' }}
+                />
+                <HorizontalSeparatorDiv size='0.5' />
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  onClick={onSaveChangesClicked}
+                >
+                  {t('el:button-save')}
+                </HighContrastFlatknapp>
+                <HorizontalSeparatorDiv size='0.5' />
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  onClick={onCancelChangesClicked}
+                >
+                  {t('el:button-cancel')}
+                </HighContrastFlatknapp>
+              </>
+              )}
           <HorizontalSeparatorDiv />
           {!editMode && (
             <HighContrastFlatknapp

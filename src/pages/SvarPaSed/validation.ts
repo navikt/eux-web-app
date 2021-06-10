@@ -28,6 +28,7 @@ import {
   F002Sed,
   FamilieRelasjon,
   Flyttegrunn,
+  HSed,
   Motregning,
   PensjonPeriode,
   Periode,
@@ -85,10 +86,9 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
     ? t('label:familien').toLowerCase()
     : personInfo.fornavn + ' ' + personInfo.etternavn
 
-
   if (isFSed(replySed)) {
     if (personID !== 'familie') {
-      _error = validatePersonOpplysninger(v, t, {personInfo, namespace: `personmanager-${personID}-personopplysninger`, personName})
+      _error = validatePersonOpplysninger(v, t, { personInfo, namespace: `personmanager-${personID}-personopplysninger`, personName })
       hasErrors = hasErrors || _error
 
       const statsborgerskaper: Array<Statsborgerskap> = _.get(replySed, `${personID}.personInfo.statsborgerskap`)
@@ -160,13 +160,13 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
   }
 
   if (isHSed(replySed)) {
-    _error = validatePersonOpplysninger(v, t, {personInfo, namespace: `personmanager-${personID}-personopplysninger`, personName})
+    _error = validatePersonOpplysninger(v, t, { personInfo, namespace: `personmanager-${personID}-personopplysninger`, personName })
     hasErrors = hasErrors || _error
 
     _error = validateAdresser(v, t, _.get(replySed, `${personID}.adresser`), `personmanager-${personID}-adresser`, personName)
     hasErrors = hasErrors || _error
 
-    _error = validateSvarPåForespørsel(v, t, { replySed, namespace: `personmanager-${personID}-svarpåforespørsel`, personName: t('label:svar-på-forespørsel').toLowerCase()})
+    _error = validateSvarPåForespørsel(v, t, { replySed, namespace: `personmanager-${personID}-svarpåforespørsel`, personName: t('label:svar-på-forespørsel').toLowerCase() })
     hasErrors = hasErrors || _error
   }
 
@@ -236,13 +236,23 @@ export const validateSEDEditor = (
     }
   }
 
+  if (isHSed(replySed)) {
+    if (_.isEmpty((replySed as HSed).tema)) {
+      v['editor-tema'] = {
+        feilmelding: t('message:validation-noTema'),
+        skjemaelementId: 'editor-tema'
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
+  }
+
   // @ts-ignore
   if (!_.isEmpty(replySed?.ytterligereInfo?.trim()) && replySed?.ytterligereInfo?.trim().length > 500) {
     v['editor-ytterligereInfo'] = {
-      feilmelding: t('message:validation-textOver500TilPerson', {person: 'SED'}),
+      feilmelding: t('message:validation-textOver500TilPerson', { person: 'SED' }),
       skjemaelementId: 'editor-ytterligereInfo'
     } as FeiloppsummeringFeil
-    hasErrors =  true
+    hasErrors = true
   }
 
   _error = validateFormålManager(v, t, replySed)

@@ -140,9 +140,9 @@ const Family: React.FC<FamilyProps> = ({
             </>
           )}
         </FamilySubArea>
-        <HorizontalSeparatorDiv size='0.5'/>
+        <HorizontalSeparatorDiv size='0.5' />
         <FamilySeparator />
-        <HorizontalSeparatorDiv size='0.5'/>
+        <HorizontalSeparatorDiv size='0.5' />
         <FamilySubArea>
           <HorizontalSeparatorDiv />
           <Ingress>

@@ -237,11 +237,11 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
     const newBarnetilhoerighet: Barnetilhoerighet = {
       // @ts-ignore
       borIBrukersHushold: _newQuestion1, // @ts-ignore
-      borIEktefellesHushold: _newQuestion2,// @ts-ignore
-      borIAnnenPersonsHushold: _newQuestion3,// @ts-ignore
-      borPaaInstitusjon: _newQuestion4,// @ts-ignore
-      erDeltForeldreansvar: _newErDeltForeldreansvar,// @ts-ignore
-      relasjonTilPerson: _newRelasjon,// @ts-ignore
+      borIEktefellesHushold: _newQuestion2, // @ts-ignore
+      borIAnnenPersonsHushold: _newQuestion3, // @ts-ignore
+      borPaaInstitusjon: _newQuestion4, // @ts-ignore
+      erDeltForeldreansvar: _newErDeltForeldreansvar, // @ts-ignore
+      relasjonTilPerson: _newRelasjon, // @ts-ignore
       relasjonType: _newRelasjonType,
       periode: newPeriode
     }
@@ -263,7 +263,6 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
       resetForm()
     }
   }
-
 
   const renderRow = (barnetilhoerighet: Barnetilhoerighet | null, index: number) => {
     const candidateForDeletion = index < 0 ? false : isInDeletion(barnetilhoerighet)
@@ -289,12 +288,12 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
               legend={t('label:relasjon-med') + ' *'}
               name={namespace + idx + '-relasjonTilPerson'}
               radios={[
-                {label: t('label:søker'), value: '01'},
-                {label: t('label:avdød'), value: '02'}
+                { label: t('label:søker'), value: '01' },
+                { label: t('label:avdød'), value: '02' }
               ]}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRelasjon(e.target.value as BarnRelasjon, index)}
             />
-            <VerticalSeparatorDiv size='0.15'/>
+            <VerticalSeparatorDiv size='0.15' />
             <HighContrastRadioPanelGroup
               checked={index < 0 ? _newRelasjon : barnetilhoerighet?.relasjonTilPerson}
               data-no-border
@@ -303,14 +302,14 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
               id={namespace + idx + '-relasjonTilPerson'}
               name={namespace + idx + '-relasjonTilPerson'}
               radios={[
-                {label: t('label:partner'), value: '03'},
-                {label: t('label:annen-person'), value: '04'}
+                { label: t('label:partner'), value: '03' },
+                { label: t('label:annen-person'), value: '04' }
               ]}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRelasjon(e.target.value as BarnRelasjon, index)}
             />
           </Column>
         </Row>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <Row>
           <Column flex='3'>
             <Select
@@ -330,11 +329,11 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
             />
           </Column>
         </Row>
-        <VerticalSeparatorDiv size='2'/>
+        <VerticalSeparatorDiv size='2' />
         <Undertittel className='slideInFromLeft'>
           {t('label:relasjonens-varighet')}
         </Undertittel>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <Row>
           <Period
             key={'' + startdato + sluttdato}
@@ -346,9 +345,9 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
             valueStartDato={startdato}
             valueSluttDato={sluttdato}
           />
-          <Column/>
+          <Column />
         </Row>
-        <VerticalSeparatorDiv size='2'/>
+        <VerticalSeparatorDiv size='2' />
         <Row>
           <Column flex={3}>
             <HighContrastRadioPanelGroup
@@ -360,14 +359,14 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
               legend={t('label:delt-foreldreansvar') + ' *'}
               name={namespace + '-erDeltForeldreansvar'}
               radios={[
-                {label: t('label:ja'), value: 'ja'},
-                {label: t('label:nei'), value: 'nei'}
+                { label: t('label:ja'), value: 'ja' },
+                { label: t('label:nei'), value: 'nei' }
               ]}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setErDeltForeldreansvar(e.target.value as JaNei, index)}
             />
           </Column>
         </Row>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <Undertittel>
           {t('label:barn-i-hustand-spørsmål')}
         </Undertittel>
@@ -386,14 +385,14 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
               id={namespace + idx + '-borIBrukersHushold'}
               name={namespace + idx + '-borIBrukersHushold'}
               radios={[
-                {label: t('label:ja'), value: 'ja'},
-                {label: t('label:nei'), value: 'nei'}
+                { label: t('label:ja'), value: 'ja' },
+                { label: t('label:nei'), value: 'nei' }
               ]}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestion1(e.target.value as JaNei, index)}
             />
           </Column>
         </AlignCenterRow>
-        <VerticalSeparatorDiv size='0.2'/>
+        <VerticalSeparatorDiv size='0.2' />
         <AlignCenterRow>
           <Column flex='2'>
             <Normaltekst>
@@ -409,14 +408,14 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
               id={namespace + idx + '-borIEktefellesHushold'}
               name={namespace + idx + '-borIEktefellesHushold'}
               radios={[
-                {label: t('label:ja'), value: 'ja'},
-                {label: t('label:nei'), value: 'nei'}
+                { label: t('label:ja'), value: 'ja' },
+                { label: t('label:nei'), value: 'nei' }
               ]}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestion2(e.target.value as JaNei, index)}
             />
           </Column>
         </AlignCenterRow>
-        <VerticalSeparatorDiv size='0.2'/>
+        <VerticalSeparatorDiv size='0.2' />
         <AlignCenterRow>
           <Column flex='2'>
             <Normaltekst>
@@ -432,14 +431,14 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
               id={namespace + idx + '-borIAnnenPersonsHushold'}
               name={namespace + idx + '-borIAnnenPersonsHushold'}
               radios={[
-                {label: t('label:ja'), value: 'ja'},
-                {label: t('label:nei'), value: 'nei'}
+                { label: t('label:ja'), value: 'ja' },
+                { label: t('label:nei'), value: 'nei' }
               ]}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestion3(e.target.value as JaNei, index)}
             />
           </Column>
         </AlignCenterRow>
-        <VerticalSeparatorDiv size='0.2'/>
+        <VerticalSeparatorDiv size='0.2' />
         <AlignCenterRow>
           <Column flex='2'>
             <Normaltekst>
@@ -455,16 +454,16 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
               id={namespace + idx + '-borPaaInstitusjon'}
               name={namespace + idx + '-borPaaInstitusjon'}
               radios={[
-                {label: t('label:ja'), value: 'ja'},
-                {label: t('label:nei'), value: 'nei'}
+                { label: t('label:ja'), value: 'ja' },
+                { label: t('label:nei'), value: 'nei' }
               ]}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestion4(e.target.value as JaNei, index)}
             />
           </Column>
         </AlignCenterRow>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <AlignCenterRow>
-          <Column flex='2'/>
+          <Column flex='2' />
           <Column>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
@@ -478,7 +477,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
             />
           </Column>
         </AlignCenterRow>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
       </>
     )
   }
@@ -509,7 +508,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
               </HighContrastFlatknapp>
             </Column>
           </Row>
-        )}
+          )}
     </PaddedDiv>
   )
 }

@@ -207,13 +207,15 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
             {t('label:nasjonalitet') + ' *'}
           </UndertekstBold>
         </Column>
-        {isUSed(replySed!) ? (
-          <Column>
-          <UndertekstBold>
-            {t('label:fra-dato')}
-          </UndertekstBold>
-        </Column>
-          ) : <Column/>}
+        {isUSed(replySed!)
+          ? (
+            <Column>
+              <UndertekstBold>
+                {t('label:fra-dato')}
+              </UndertekstBold>
+            </Column>
+            )
+          : <Column />}
         <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />

@@ -37,14 +37,14 @@ export const validateBarnetilhoerighet = (
   } else {
     let duplicate: boolean
     if (_.isNil(index)) {
-      duplicate = _.find(barnetilhorigheter, {relasjonTilPerson: barnetilhorighet.relasjonTilPerson}) !== undefined
+      duplicate = _.find(barnetilhorigheter, { relasjonTilPerson: barnetilhorighet.relasjonTilPerson }) !== undefined
     } else {
       const otherBarnetilhoerigheter: Array<Barnetilhoerighet> = _.filter(barnetilhorigheter, (t, i) => i !== index)
-      duplicate = _.find(otherBarnetilhoerigheter, {relasjonTilPerson: barnetilhorighet.relasjonTilPerson}) !== undefined
+      duplicate = _.find(otherBarnetilhoerigheter, { relasjonTilPerson: barnetilhorighet.relasjonTilPerson }) !== undefined
     }
     if (duplicate) {
       v[namespace + idx + '-relasjonTilPerson'] = {
-        feilmelding: t('message:validation-duplicateRelationForPerson', {person: personName}),
+        feilmelding: t('message:validation-duplicateRelationForPerson', { person: personName }),
         skjemaelementId: namespace + idx + '-relasjonTilPerson'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -69,7 +69,7 @@ export const validateBarnetilhoerighet = (
   if (['ja', 'nei'].indexOf(barnetilhorighet.erDeltForeldreansvar) < 0) {
     v[namespace + idx + '-erDeltForeldreansvar'] = {
       feilmelding: t('message:validation-noAnswerForPerson', { person: personName }),
-      skjemaelementId: namespace + idx +  '-erDeltForeldreansvar'
+      skjemaelementId: namespace + idx + '-erDeltForeldreansvar'
     } as FeiloppsummeringFeil
     hasErrors = true
   }

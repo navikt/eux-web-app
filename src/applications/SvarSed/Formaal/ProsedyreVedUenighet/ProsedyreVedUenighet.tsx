@@ -43,7 +43,7 @@ const mapState = (state: State): ProsedyreVedUenighetSelector => ({
 })
 
 const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
- parentNamespace,
+  parentNamespace
 }: FormålManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
@@ -286,19 +286,18 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
             {validation[namespace + '-grunner']?.feilmelding
               ? (
                 <div className='skjemaelement__feilmelding'>
-                    <p className='typo-feilmelding'>
-                      {validation[namespace + '-grunner']?.feilmelding}
-                    </p>
-                  </div>
-              )
+                  <p className='typo-feilmelding'>
+                    {validation[namespace + '-grunner']?.feilmelding}
+                  </p>
+                </div>
+                )
               : (
                 <Normaltekst>
                   {t('label:no-grunn')}
                 </Normaltekst>
-              )
-            }
+                )}
           </div>
-        )
+          )
         : prosedyreveduenighet?.grunner?.map(renderRow)}
       <VerticalSeparatorDiv size={2} />
       <HorizontalLineSeparator />

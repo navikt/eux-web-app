@@ -74,7 +74,7 @@ export const validateMotregning = (
     if (!motregning?.beloep?.trim().match(/^\d+$/)) {
       v[namespace + '-beloep'] = {
         skjemaelementId: namespace + '-beloep',
-        feilmelding: t('message:validation-invalidBeløpForPerson', {person: formalName})
+        feilmelding: t('message:validation-invalidBeløpForPerson', { person: formalName })
       } as FeiloppsummeringFeil
       hasErrors = true
     }

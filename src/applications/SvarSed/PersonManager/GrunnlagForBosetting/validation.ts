@@ -25,15 +25,13 @@ export const validateGrunnlagForBosetting = (
     personName
   }: ValidationGrunnlagForBosettingProps
 ): boolean => {
-
   let hasErrors = validatePeriod(v, t, {
     period,
     namespace: namespace,
     personName
   })
   if (!_.isEmpty(period?.startdato)) {
-    let duplicate: boolean
-    duplicate = _.find(perioder, p => p.startdato === period?.startdato) !== undefined
+    const duplicate: boolean = _.find(perioder, p => p.startdato === period?.startdato) !== undefined
     if (duplicate) {
       v[namespace + '-perioder-startdato'] = {
         feilmelding: t('message:validation-duplicateStartdatoForPerson', { person: personName }),

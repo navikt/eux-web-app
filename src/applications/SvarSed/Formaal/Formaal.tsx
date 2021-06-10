@@ -26,7 +26,7 @@ const mapState = (state: State): FormaalSelector => ({
 })
 
 const Formaal: React.FC<FormaalProps> = ({
-   parentNamespace
+  parentNamespace
 }: FormaalProps): JSX.Element => {
   const { t } = useTranslation()
   const {

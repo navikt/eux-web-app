@@ -34,7 +34,7 @@
   "loading-sedFinished" : "Ferdig med svarSED",
   "loading-sending-vedlegg" : "Sender vedlegg...",
   "loading-sending-svarsed" : "Sender svarSED...",
-  "loading-sendingXofY" : "Sender {{current}} av {{total}}",
+  "loading-sending-XofY" : "Sender {{current}} av {{total}}",
 
   "validation-duplicateStartDate": "Datoen eksisterer allerede",
   "validation-duplicateBirthCountry": "Statsborgerskapen eksisterer allerede",
@@ -120,7 +120,7 @@
   "validation-noSedtype": "Du må velge sedtype",
   "validation-noSepaKontoForPerson": "Du må velg SEPA-konto til {{person}}",
   "validation-noSektor": "Du må velge sektor",
-  "validation-noSvarTypeTilPerson": "Ingen svar type valg til {{person}}",
+  "validation-noSvarTypeTilPerson": "Ingen svar type eller tomme felt til {{person}}",
   "validation-noSwiftForPerson": "Du må skrive SWIFT til {{person}}",
   "validation-noTema": "Du må velge et tema",
   "validation-noTelephoneNumberForPerson": "Du må taste inn en telefonnummer til {{person}}",

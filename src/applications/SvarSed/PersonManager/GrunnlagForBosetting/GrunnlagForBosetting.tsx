@@ -91,7 +91,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
       _setNewSluttDato(sluttdato.trim())
       _resetValidation(namespace + '-perioder-sluttdato')
     } else {
-      let newPerioder: Array<Periode> = _.cloneDeep(flyttegrunn!.perioder)
+      const newPerioder: Array<Periode> = _.cloneDeep(flyttegrunn!.perioder)
       if (sluttdato === '') {
         delete newPerioder[index].sluttdato
         newPerioder[index].aapenPeriodeType = 'åpen_sluttdato'
@@ -261,7 +261,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
             value={flyttegrunn?.datoFlyttetTilMottakerlandet}
           />
         </Column>
-        <Column/>
+        <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>

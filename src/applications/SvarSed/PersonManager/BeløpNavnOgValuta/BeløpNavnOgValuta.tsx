@@ -184,7 +184,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
           valueStartDato={ytelse?.startdato ?? ''}
           valueSluttDato={ytelse?.sluttdato ?? ''}
         />
-        <Column/>
+        <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>

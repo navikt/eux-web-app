@@ -1,7 +1,6 @@
 import { validatePeriod } from 'components/Period/validation'
 import { Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
 
 export interface ValidationReferanseperiodeProps {

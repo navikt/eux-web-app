@@ -9,13 +9,15 @@ import mockConnectedReplySeds from 'mocks/connectedReplySeds'
 import { Action, ActionCreator } from 'redux'
 import validator from '@navikt/fnrvalidator'
 import mockPreview from 'mocks/previewFile'
+import _ from 'lodash'
 const sprintf = require('sprintf-js').sprintf
 
 export const createSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
   replySed: ReplySed
 ): ThunkResult<ActionWithPayload> => {
-  const rinaSakId =  replySed.saksnummer
-  delete replySed.saksnummer
+  const rinaSakId = replySed.saksnummer
+  const copyReplySed = _.cloneDeep(replySed)
+  delete copyReplySed.saksnummer
   return call({
     method: 'POST',
     url: sprintf(urls.API_SED_CREATE_URL, { rinaSakId: rinaSakId }),
@@ -28,7 +30,7 @@ export const createSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
       success: types.SVARPASED_SED_CREATE_SUCCESS,
       failure: types.SVARPASED_SED_CREATE_FAILURE
     },
-    body: replySed
+    body: copyReplySed
   })
 }
 
@@ -82,7 +84,7 @@ export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload<C
 }
 
 export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed>>> = (
- connectedSed: ConnectedSed, saksnummer: string
+  connectedSed: ConnectedSed, saksnummer: string
 ): ThunkResult<ActionWithPayload<ReplySed>> => {
   const mockSed = mockReplySed(connectedSed.svarsedType)
   return call({

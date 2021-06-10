@@ -43,4 +43,3 @@ export const API_PREVIEW_URL = ''
 export const API_JOARK_LIST_URL = '/api/vedlegg/dokumentoversikt/%(fnr)s'
 export const API_JOARK_GET_URL = '/api/vedlegg/dokument/%(journalpostId)s/%(dokumentInfoId)s/%(variantformat)s'
 export const API_JOARK_ATTACHMENT_URL = '/api/vedlegg/dokument/%(journalpostId)s/%(dokumentInfoId)s/%(variantformat)s/rina/%(rinaId)s/%(rinaDokumentId)s/%(filnavn)s'
-

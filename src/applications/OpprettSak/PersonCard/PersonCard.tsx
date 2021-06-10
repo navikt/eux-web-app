@@ -168,34 +168,34 @@ const PersonCard: React.FC<PersonCardProps> = ({
         )}
         {_.isFunction(onRemoveClick) && (
           <>
-          <HorizontalSeparatorDiv size='0.5'/>
-          <RemoveButton
-            kompakt
-            onClick={() => _onRemoveClick(person)}
-          >
-            <Trashcan color='#0067C5' width='20' height='20' />
-            <HorizontalSeparatorDiv />
-            <ButtonLabel>
-              {t('el:button-remove')}
-            </ButtonLabel>
-          </RemoveButton>
+            <HorizontalSeparatorDiv size='0.5' />
+            <RemoveButton
+              kompakt
+              onClick={() => _onRemoveClick(person)}
+            >
+              <Trashcan color='#0067C5' width='20' height='20' />
+              <HorizontalSeparatorDiv />
+              <ButtonLabel>
+                {t('el:button-remove')}
+              </ButtonLabel>
+            </RemoveButton>
           </>
         )}
         {_.isFunction(onAddClick) && (
           <>
-            <HorizontalSeparatorDiv size='0.5'/>
-          <HighContrastKnapp
-            kompakt
-            data-test-id='familierelasjoner__knapp--legg-til'
-            disabled={rolleList !== undefined && !rolle}
-            onClick={() => _onAddClick(person)}
-          >
-            <Add width={20} />
-            <HorizontalSeparatorDiv />
-            <ButtonLabel>
-              {t('label:legg-til')}
-            </ButtonLabel>
-          </HighContrastKnapp>
+            <HorizontalSeparatorDiv size='0.5' />
+            <HighContrastKnapp
+              kompakt
+              data-test-id='familierelasjoner__knapp--legg-til'
+              disabled={rolleList !== undefined && !rolle}
+              onClick={() => _onAddClick(person)}
+            >
+              <Add width={20} />
+              <HorizontalSeparatorDiv />
+              <ButtonLabel>
+                {t('label:legg-til')}
+              </ButtonLabel>
+            </HighContrastKnapp>
           </>
         )}
       </PersonCardDiv>

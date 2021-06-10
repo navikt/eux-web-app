@@ -1,4 +1,4 @@
-import { createSed } from 'actions/svarpased'
+import { createSed, updateReplySed } from 'actions/svarpased'
 import { resetAllValidation, resetValidation, viewValidation } from 'actions/validation'
 import Formaal from 'applications/SvarSed/Formaal/Formaal'
 import FormålManager from 'applications/SvarSed/Formaal/FormålManager'
@@ -39,7 +39,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getFnr } from 'utils/fnr'
 import { isFSed, isHSed, isSed, isUSed } from 'utils/sed'
 import { validateSEDEditor, ValidationSEDEditorProps } from './validation'
-import { updateReplySed } from 'actions/svarpased'
+
 import TextArea from 'components/Forms/TextArea'
 
 const mapState = (state: State): any => ({
@@ -157,7 +157,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   }
 
   const setComment = (comment: string) => {
-    dispatch(updateReplySed(`ytterligereInfo`, comment))
+    dispatch(updateReplySed('ytterligereInfo', comment))
     if (validation[namespace + '-ytterligereInfo']) {
       dispatch(resetValidation(namespace + '-ytterligereInfo'))
     }

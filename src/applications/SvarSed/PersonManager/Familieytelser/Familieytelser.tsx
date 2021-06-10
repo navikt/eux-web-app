@@ -211,7 +211,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
           valueStartDato={motregning?.startdato ?? ''}
           valueSluttDato={motregning?.sluttdato ?? ''}
         />
-        <Column/>
+        <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>

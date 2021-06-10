@@ -279,7 +279,6 @@ const loadingReducer = (
         gettingJoarkFile: false
       }
 
-
     default:
       return state
   }

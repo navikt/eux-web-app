@@ -19,7 +19,6 @@ export const validateSvarPåForespørsel = (
     personName
   }: ValidationSvarPåForespørselProps
 ): boolean => {
-
   let hasErrors: boolean = false
   const doWeHavePositive: boolean = !!(replySed as HSed)?.positivtSvar?.informasjon ||
     !!(replySed as HSed)?.positivtSvar?.dokument ||
@@ -92,7 +91,6 @@ export const validateSvarPåForespørsel = (
       hasErrors = true
     }
   }
-
 
   if (hasErrors) {
     const namespaceBits = namespace.split('-')

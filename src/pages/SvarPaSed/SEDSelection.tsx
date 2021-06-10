@@ -149,7 +149,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
   const horisontal: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('H_'))?.length ?? 0
   const ssed: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('S_'))?.length ?? 0
 
-  const filteredSeds = _.filter(seds,(s: Sed) => _filter ? s.sakType.startsWith(_filter) : true)
+  const filteredSeds = _.filter(seds, (s: Sed) => _filter ? s.sakType.startsWith(_filter) : true)
   return (
     <NavHighContrast highContrast={highContrast}>
       <ContainerDiv>
@@ -334,7 +334,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                     <HiddenFormContainer
                       aria-hidden={!(previousParentSed !== sedId && parentSed === sedId)}
                       className={classNames({
-                        slideOpen: alone || previousParentSed !== sedId && parentSed === sedId,
+                        slideOpen: alone || (previousParentSed !== sedId && parentSed === sedId),
                         slideClose: previousParentSed === sedId && parentSed !== sedId,
                         closed: !alone && !((previousParentSed !== sedId && parentSed === sedId) || (previousParentSed === sedId && parentSed !== sedId))
                       })}

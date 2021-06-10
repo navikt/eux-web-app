@@ -346,7 +346,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
           valueStartDato={motregning?.startdato}
           valueSluttDato={motregning?.sluttdato}
         />
-        <Column/>
+        <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow

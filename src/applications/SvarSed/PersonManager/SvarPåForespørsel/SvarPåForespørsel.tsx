@@ -53,18 +53,21 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
   const doWeHaveNegative: boolean = (replySed as HSed)?.negativeSvar?.length > 0
 
   const [_svar, _setSvar] = useState<HSvarType | undefined>(() =>
-    doWeHavePositive ? 'positivt' :
-      doWeHaveNegative ? 'negative' : undefined
+    doWeHavePositive
+      ? 'positivt'
+      : doWeHaveNegative
+        ? 'negative'
+        : undefined
   )
 
   const syncWithReplySed = (needle: string, value: any) => {
-    let svarChanged: boolean = needle === 'svar'
-    let thisSvar = svarChanged ? value : _svar
+    const svarChanged: boolean = needle === 'svar'
+    const thisSvar = svarChanged ? value : _svar
     if (thisSvar === 'positivt') {
-      let newPositivtSvar = {
+      const newPositivtSvar = {
         informasjon: svarChanged ? (replySed as HSed)?.negativeSvar?.[0]?.informasjon : (replySed as HSed)?.positivtSvar?.informasjon,
-        dokument: svarChanged ? (replySed as HSed)?.negativeSvar?.[0]?.dokument :  (replySed as HSed)?.positivtSvar?.dokument,
-        sed: svarChanged ? (replySed as HSed)?.negativeSvar?.[0]?.sed :  (replySed as HSed)?.positivtSvar?.sed
+        dokument: svarChanged ? (replySed as HSed)?.negativeSvar?.[0]?.dokument : (replySed as HSed)?.positivtSvar?.dokument,
+        sed: svarChanged ? (replySed as HSed)?.negativeSvar?.[0]?.sed : (replySed as HSed)?.positivtSvar?.sed
       }
       if (!svarChanged) {
         // @ts-ignore
@@ -76,10 +79,10 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
         negativeSvar: []
       }))
     } else {
-      let newNegativtSvar = {
-        informasjon: svarChanged ? (replySed as HSed)?.positivtSvar?.informasjon :  (replySed as HSed)?.negativeSvar?.[0]?.informasjon,
-        dokument: svarChanged ? (replySed as HSed)?.positivtSvar?.dokument :  (replySed as HSed)?.negativeSvar?.[0]?.dokument,
-        sed: svarChanged ? (replySed as HSed)?.positivtSvar?.sed :  (replySed as HSed)?.negativeSvar?.[0]?.sed
+      const newNegativtSvar = {
+        informasjon: svarChanged ? (replySed as HSed)?.positivtSvar?.informasjon : (replySed as HSed)?.negativeSvar?.[0]?.informasjon,
+        dokument: svarChanged ? (replySed as HSed)?.positivtSvar?.dokument : (replySed as HSed)?.negativeSvar?.[0]?.dokument,
+        sed: svarChanged ? (replySed as HSed)?.positivtSvar?.sed : (replySed as HSed)?.negativeSvar?.[0]?.sed
       }
       if (!svarChanged) {
         // @ts-ignore

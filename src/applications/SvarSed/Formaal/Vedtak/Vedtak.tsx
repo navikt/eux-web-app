@@ -310,7 +310,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
         ]}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => e.target.value === 'ja' ? setBarnAlleBarn() : setBarnNoeBarn()}
       />
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       {_barnRadio === 'nei' && (
         <div className={classNames('slideInFromLeft')}>
           <div dangerouslySetInnerHTML={{ __html: t('label:avhuk-de-barn-vedtaket') + ':' }} />

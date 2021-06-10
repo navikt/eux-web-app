@@ -49,10 +49,10 @@ export const validateProsedyreVedUenighetGrunn = (
 
   let duplicate: boolean = false
   if (_.isNil(index)) {
-    duplicate = _.find(grunner, {grunn: grunn.grunn}) !== undefined
+    duplicate = _.find(grunner, { grunn: grunn.grunn }) !== undefined
   } else {
     const otherGrunns: Array<Grunn> = _.filter(grunner, (t, i) => i !== index)
-    duplicate = _.find(otherGrunns, {grunn: grunn.grunn}) !== undefined
+    duplicate = _.find(otherGrunns, { grunn: grunn.grunn }) !== undefined
   }
   if (duplicate) {
     v[namespace + '-grunner' + idx + '-grunn'] = {
