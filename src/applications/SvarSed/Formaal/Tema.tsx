@@ -1,4 +1,5 @@
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import Edit from 'assets/icons/Edit'
 import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
@@ -29,8 +30,7 @@ const Tema: React.FC = () => {
   const {
     highContrast,
     replySed,
-    validation,
-    resetValidation
+    validation
   }: any = useSelector<State, TemaSelector>(mapState)
   const dispatch = useDispatch()
   const namespace: string = 'editor-tema'
@@ -66,7 +66,7 @@ const Tema: React.FC = () => {
 
   const onTemaChanged = (o: OptionTypeBase) => {
     if (validation[namespace]) {
-      resetValidation(namespace)
+      dispatch(resetValidation(namespace))
     }
     setTema(o.value)
   }
@@ -124,11 +124,14 @@ const Tema: React.FC = () => {
                 </>
                 )}
             {!editMode && validation[namespace]?.feilmelding && (
-              <div className='skjemaelement__feilmelding'>
-                <p className='typo-feilmelding'>
-                  {validation[namespace].feilmelding}
-                </p>
-              </div>
+              <>
+                <HorizontalSeparatorDiv/>
+                <div className='skjemaelement__feilmelding' style={{marginTop: '0px'}}>
+                  <p className='typo-feilmelding'>
+                    {validation[namespace].feilmelding}
+                  </p>
+                </div>
+              </>
             )}
           </FlexCenterDiv>
           <HorizontalSeparatorDiv />

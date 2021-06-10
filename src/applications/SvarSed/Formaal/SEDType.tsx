@@ -1,9 +1,10 @@
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import Edit from 'assets/icons/Edit'
 import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import { ReplySed } from 'declarations/sed'
+import { ReplySed, USed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { Column, FlexCenterDiv, HighContrastFlatknapp, HorizontalSeparatorDiv, Row } from 'nav-hoykontrast'
@@ -29,12 +30,11 @@ const SEDType: React.FC = () => {
   const {
     highContrast,
     replySed,
-    validation,
-    resetValidation
+    validation
   }: any = useSelector<State, SEDTypeSelector>(mapState)
   const dispatch = useDispatch()
-  const namespace: string = 'sedtype'
-  const [sedType, setSedType] = useState<string>(() => replySed.sedType)
+  const namespace: string = 'editor-sedtype'
+  const [_sedType, setSedType] = useState<string>(() => (replySed as USed).sedType)
   const [editMode, setEditMode] = useState<boolean>(() => false)
 
   const sedTypeOptions: Options = [
@@ -44,13 +44,13 @@ const SEDType: React.FC = () => {
   ]
 
   const onSaveChangesClicked = () => {
-    dispatch(updateReplySed('sedType', sedType))
+    dispatch(updateReplySed('sedType', _sedType))
     setEditMode(false)
   }
 
   const onSedTypeChanged = (o: OptionTypeBase) => {
     if (validation[namespace]) {
-      resetValidation(namespace)
+      dispatch(resetValidation(namespace))
     }
     setSedType(o.value)
   }
@@ -71,38 +71,53 @@ const SEDType: React.FC = () => {
             {t('label:svar-sed-type')}:
           </label>
           <HorizontalSeparatorDiv size='0.35' />
-          {!editMode && (<>{t('buc:' + replySed.sedType)}</>)}
-          {editMode && (
-            <>
-              <Select
-                defaultValue={_.find(sedTypeOptions, s => s.value === sedType)}
-                feil={validation[namespace]?.feilmelding}
-                highContrast={highContrast}
-                key={namespace + '-' + sedType}
-                id={namespace}
-                onChange={onSedTypeChanged}
-                options={sedTypeOptions}
-                selectedValue={_.find(sedTypeOptions, s => s.value === sedType)}
-                style={{ minWidth: '300px' }}
-              />
-              <HorizontalSeparatorDiv size='0.5' />
-              <HighContrastFlatknapp
-                mini
-                kompakt
-                onClick={onSaveChangesClicked}
-              >
-                {t('el:button-save')}
-              </HighContrastFlatknapp>
-              <HorizontalSeparatorDiv size='0.5' />
-              <HighContrastFlatknapp
-                mini
-                kompakt
-                onClick={onCancelChangesClicked}
-              >
-                {t('el:button-cancel')}
-              </HighContrastFlatknapp>
-            </>
-          )}
+          <FlexCenterDiv className={namespace}>
+            {!editMode
+              ? _sedType
+                ? t('buc:' + replySed.sedType)
+                : t('label:unknown')
+              : (
+                <>
+                  <Select
+                    defaultValue={_.find(sedTypeOptions, s => s.value === _sedType)}
+                    feil={validation[namespace]?.feilmelding}
+                    highContrast={highContrast}
+                    key={namespace + '-' + _sedType + '-select'}
+                    id={namespace + '-select'}
+                    onChange={onSedTypeChanged}
+                    options={sedTypeOptions}
+                    selectedValue={_.find(sedTypeOptions, s => s.value === _sedType)}
+                    style={{ minWidth: '300px' }}
+                  />
+                  <HorizontalSeparatorDiv size='0.5' />
+                  <HighContrastFlatknapp
+                    mini
+                    kompakt
+                    onClick={onSaveChangesClicked}
+                  >
+                    {t('el:button-save')}
+                  </HighContrastFlatknapp>
+                  <HorizontalSeparatorDiv size='0.5' />
+                  <HighContrastFlatknapp
+                    mini
+                    kompakt
+                    onClick={onCancelChangesClicked}
+                  >
+                    {t('el:button-cancel')}
+                  </HighContrastFlatknapp>
+                </>
+              )}
+              {!editMode && validation[namespace]?.feilmelding && (
+                <>
+                  <HorizontalSeparatorDiv/>
+                  <div className='skjemaelement__feilmelding' style={{marginTop: '0px'}}>
+                    <p className='typo-feilmelding'>
+                      {validation[namespace].feilmelding}
+                    </p>
+                  </div>
+                </>
+            )}
+          </FlexCenterDiv>
           <HorizontalSeparatorDiv />
           {!editMode && (
             <HighContrastFlatknapp
