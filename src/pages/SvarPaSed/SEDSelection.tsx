@@ -327,7 +327,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                             {t('label:saksnummer') + ': ' + sed.sakId}
                           </span>
                           <HorizontalSeparatorDiv />
-                          <HighContrastLink href={sed.sakUrl}>
+                          <HighContrastLink target='_blank' href={sed.sakUrl}>
                             <span>
                               {t('label:gå-til-rina')}
                             </span>
@@ -366,7 +366,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                     >
                       <SEDPanel>
                         <FlexDiv>
-                          <PileCenterDiv>
+                          <PileCenterDiv style={{alignItems: 'center'}}>
                             {connectedSed.status === 'received' && <ReceivedIcon />}
                             {connectedSed.status === 'sent' && <SentIcon />}
                             {connectedSed.status === 'new' && <FileIcon />}
@@ -399,7 +399,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                                 : (<div />)}
                             </FlexStartSpacedDiv>
                             <FlexDiv>
-                              <HighContrastLink href={connectedSed.sedUrl}>
+                              <HighContrastLink target='_blank' href={connectedSed.sedUrl}>
                                 <span>
                                   {t('label:gå-til-sed-i-rina')}
                                 </span>
