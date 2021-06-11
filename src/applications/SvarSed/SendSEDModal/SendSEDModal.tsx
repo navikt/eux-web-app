@@ -28,11 +28,9 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
+import { AlertstripeDiv } from 'components/StyledComponents'
 
-const AlertstripeDiv = styled.div`
-  margin: 0.5rem;
-  width: 100%;
-`
+
 const MinimalModalDiv = styled.div`
   min-height: 200px;
   min-width: 600px;

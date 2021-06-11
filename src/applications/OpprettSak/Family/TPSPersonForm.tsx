@@ -12,6 +12,7 @@ import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
+import { AlertstripeDiv } from 'components/StyledComponents'
 
 const Container = styled.div`
   margin-top: 1.5rem;
@@ -19,12 +20,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 `
-const AlertstripeDiv = styled.div`
-  margin: 0.5rem;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  width: 50%;
-`
+
 const MarginDiv = styled.div`
   margin: 0.5rem;
 `

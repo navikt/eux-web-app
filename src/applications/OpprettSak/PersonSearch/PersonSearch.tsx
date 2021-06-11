@@ -1,5 +1,6 @@
 import Alert from 'components/Alert/Alert'
 import PersonCard from 'applications/OpprettSak/PersonCard/PersonCard'
+import { AlertstripeDiv } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { AlertStatus } from 'declarations/components'
 import { Person } from 'declarations/types'
@@ -11,12 +12,6 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { HighContrastKnapp } from 'nav-hoykontrast'
 
-const AlertstripeDiv = styled.div`
-  margin: 0.5rem;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  width: 50%;
-`
 const PersonSearchDiv = styled.div`
   margin-bottom: 2em;
 `

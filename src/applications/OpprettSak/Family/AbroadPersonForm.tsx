@@ -17,15 +17,10 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { vaskInputDato } from 'utils/dato'
+import { AlertstripeDiv } from 'components/StyledComponents'
 
 const Container = styled.div`
   margin-top: 1, 5rem;
-`
-const AlertstripeDiv = styled.div`
-  margin: 0.5rem;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  width: 50%;
 `
 const AlignCenterColumn = styled(Column)`
   display: flex;

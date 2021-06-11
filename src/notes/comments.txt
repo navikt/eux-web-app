@@ -6,7 +6,7 @@
 
 --> preview pdf
 --> validation: false duplicates in period
-
+--> 400 login for Z992366
 
 
 i18next.js:22 i18next::translator: missingKey nb message  error-header

@@ -101,3 +101,7 @@ export const WithErrorPanel = styled(HighContrastPanel)`
     border: none;
   }
 `
+export const AlertstripeDiv = styled.div`
+  margin: 0.5rem;
+  min-width: 50%;
+`

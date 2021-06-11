@@ -1,6 +1,7 @@
 import { clientClear } from 'actions/alert'
 import Alert from 'components/Alert/Alert'
 import Modal from 'components/Modal/Modal'
+import { AlertstripeDiv } from 'components/StyledComponents'
 import { AlertStatus } from 'declarations/components'
 import { LocalStorageEntry, Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -12,10 +13,6 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 
-const AlertstripeDiv = styled.div`
-  padding: 0.5rem;
-  width: 100%;
-`
 const MinimalModalDiv = styled.div`
   min-height: 200px;
   min-width: 600px;

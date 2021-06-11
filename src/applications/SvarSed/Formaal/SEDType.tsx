@@ -75,7 +75,7 @@ const SEDType: React.FC = () => {
             {!editMode
               ? _sedType
                 ? t('buc:' + replySed.sedType)
-                : t('label:unknown')
+                : t('label:ukjent')
               : (
                 <>
                   <Select

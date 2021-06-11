@@ -91,7 +91,7 @@ const Tema: React.FC = () => {
             {!editMode
               ? _tema
                   ? t('tema:' + (replySed as HSed).tema)
-                  : t('label:unknown')
+                  : t('label:ukjent')
               : (
                 <>
                   <Select
