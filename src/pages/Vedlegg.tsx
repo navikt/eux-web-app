@@ -1,5 +1,9 @@
+import { clientClear } from 'actions/alert'
 import * as vedleggActions from 'actions/vedlegg'
 import DocumentSearch from 'applications/Vedlegg/DocumentSearch/DocumentSearch'
+import Alert from 'components/Alert/Alert'
+import * as types from 'constants/actionTypes'
+import { AlertStatus } from 'declarations/components'
 import { Container, Content, HighContrastHovedknapp, HorizontalSeparatorDiv, Margin, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { State } from 'declarations/reducers'
@@ -24,6 +28,9 @@ const FlexDiv = styled.div`
 `
 
 export interface VedleggSelector {
+  alertStatus: string | undefined
+  alertMessage: string | undefined
+  alertType: string | undefined
   vedlegg: VedleggSendResponse | undefined
   rinasaksnummer: string | undefined
   journalpostID: string | undefined
@@ -37,6 +44,9 @@ export interface VedleggProps {
 }
 
 const mapState = (state: State): VedleggSelector => ({
+  alertStatus: state.alert.clientErrorStatus,
+  alertMessage: state.alert.clientErrorMessage,
+  alertType: state.alert.type,
   vedlegg: state.vedlegg.vedlegg,
   rinasaksnummer: state.vedlegg.rinasaksnummer,
   journalpostID: state.vedlegg.journalpostID,
@@ -49,7 +59,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
   const [mounted, setMounted] = useState(false)
   const dispatch = useDispatch()
   const { t } = useTranslation()
-  const { journalpostID, dokumentID, rinasaksnummer, rinadokumentID, sendingVedlegg, vedlegg }: VedleggSelector = useSelector<State, VedleggSelector>(mapState)
+  const { alertStatus, alertMessage, alertType, journalpostID, dokumentID, rinasaksnummer, rinadokumentID, sendingVedlegg, vedlegg }: VedleggSelector = useSelector<State, VedleggSelector>(mapState)
   const [_isRinaNumberValid, setIsRinaNumberValid] = useState<boolean>(false)
   const [_validation, setValidation] = useState<Validation>({})
 
@@ -198,6 +208,19 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
             >
               {sendingVedlegg ? t('message:loading-sending-vedlegg') : t('label:send-vedlegg')}
             </HighContrastHovedknapp>
+            {alertMessage && alertType && [types.VEDLEGG_POST_FAILURE].indexOf(alertType) >= 0 && (
+              <>
+                <VerticalSeparatorDiv/>
+                  <Alert
+                    type='client'
+                    fixed={false}
+                    message={t(alertMessage)}
+                    status={alertStatus as AlertStatus}
+                    onClose={() => dispatch(clientClear())}
+                  />
+                <VerticalSeparatorDiv />
+              </>
+            )}
             {vedlegg && (
               <>
                 <VerticalSeparatorDiv />
