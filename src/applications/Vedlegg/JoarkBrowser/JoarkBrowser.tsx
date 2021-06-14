@@ -87,6 +87,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   const [_mounted, setMounted] = useState<boolean>(false)
   const [_modal, setModal] = useState<ModalContent | undefined>(undefined)
   const [_previewFile, setPreviewFile] = useState<JoarkBrowserItemWithContent | undefined>(undefined)
+  const [_tableKey, setTableKey] = useState<string>('')
 
   const context: JoarkBrowserContext = {
     existingItems: existingItems,
@@ -306,6 +307,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
       items = getItemsForViewMode(list, existingItems)
     }
     setItems(items)
+    setTableKey(md5(JSON.stringify(list) + JSON.stringify(existingItems)))
   }, [existingItems, list, mode])
 
   useEffect(() => {
@@ -360,7 +362,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
       <Table
         <JoarkBrowserItem, JoarkBrowserContext>
         id={'joarkbrowser-' + tableId}
-        key={md5(JSON.stringify(_items))}
+        key={_tableKey}
         highContrast={highContrast}
         items={_items}
         context={context}
