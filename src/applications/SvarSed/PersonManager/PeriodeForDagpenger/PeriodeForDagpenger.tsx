@@ -7,6 +7,7 @@ import Period from 'components/Period/Period'
 import { State } from 'declarations/reducers'
 import { Periode } from 'declarations/sed'
 import { Kodeverk } from 'declarations/types'
+import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
@@ -284,7 +285,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
                 label={t('label:land') + ' *'}
                 menuPortalTarget={document.body}
                 includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
-                onOptionSelected={(e: any) => setLand(e.value)}
+                onOptionSelected={(e: Country) => setLand(e.value)}
                 placeholder={t('el:placeholder-select-default')}
                 values={xxx?.land}
               />

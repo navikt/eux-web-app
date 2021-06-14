@@ -12,6 +12,7 @@ import { Statsborgerskap } from 'declarations/sed'
 import { Kodeverk } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
+import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
@@ -26,7 +27,6 @@ import {
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { OptionTypeBase } from 'react-select'
 import { getIdx } from 'utils/namespace'
 import { isUSed } from 'utils/sed'
 import { validateNasjonalitet, ValidationNasjonalitetProps } from './validation'
@@ -156,7 +156,7 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
               id={namespace + idx + '-land'}
               includeList={landkoderList?.map((l: Kodeverk) => l.kode) || []}
               menuPortalTarget={document.body}
-              onOptionSelected={(e: OptionTypeBase) => onLandSelected(e.value, index)}
+              onOptionSelected={(e: Country) => onLandSelected(e.value, index)}
               placeholder={t('el:placeholder-select-default')}
               required
               values={index < 0 ? _newLand : statsborgerskap?.land}

@@ -1,14 +1,9 @@
-import { clientClear } from 'actions/alert'
-import {
-  createSavingAttachmentJob,
-  resetSedAttachments,
-  sendAttachmentToSed
-} from 'actions/attachments'
+import { createSavingAttachmentJob, resetSedAttachments, sendAttachmentToSed } from 'actions/attachments'
 import { resetSedResponse } from 'actions/svarpased'
-import GreenCircle from 'assets/icons/GreenCircle'
-import Alert from 'components/Alert/Alert'
-import Modal from 'components/Modal/Modal'
 import SEDAttachmentSender from 'applications/Vedlegg/SEDAttachmentSender/SEDAttachmentSender'
+import GreenCircle from 'assets/icons/GreenCircle'
+import Modal from 'components/Modal/Modal'
+import { AlertstripeDiv } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
 import { IS_TEST } from 'constants/environment'
 import {
@@ -18,18 +13,22 @@ import {
   SEDAttachmentPayload,
   SEDAttachmentPayloadWithFile
 } from 'declarations/attachments'
-import { AlertStatus } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
+import AlertStripe from 'nav-frontend-alertstriper'
 import NavFrontendSpinner from 'nav-frontend-spinner'
 import { Undertittel } from 'nav-frontend-typografi'
-import { FlexCenterSpacedDiv, PileDiv, HighContrastHovedknapp, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import {
+  FlexCenterSpacedDiv,
+  HighContrastHovedknapp,
+  HorizontalSeparatorDiv,
+  PileDiv,
+  VerticalSeparatorDiv
+} from 'nav-hoykontrast'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { AlertstripeDiv } from 'components/StyledComponents'
-
 
 const MinimalModalDiv = styled.div`
   min-height: 200px;
@@ -60,6 +59,7 @@ const WrapperDiv = styled.div`
 
 interface SendSEDModalProps {
   fnr: string
+  goToRinaUrl: string
   highContrast: boolean
   attachments?: JoarkBrowserItems
   initialSendingAttachments?: boolean
@@ -67,7 +67,6 @@ interface SendSEDModalProps {
 }
 
 const mapState = (state: State): any => ({
-  alertStatus: state.alert.clientErrorStatus,
   alertMessage: state.alert.clientErrorMessage,
   alertType: state.alert.type,
   creatingSvarPaSed: state.loading.creatingSvarPaSed,
@@ -76,13 +75,13 @@ const mapState = (state: State): any => ({
 })
 const SendSEDModal: React.FC<SendSEDModalProps> = ({
   fnr,
+  goToRinaUrl,
   highContrast,
   attachments = [],
   initialSendingAttachments = false,
   onModalClose
 }: SendSEDModalProps): JSX.Element => {
   const {
-    alertStatus,
     alertMessage,
     alertType,
     creatingSvarPaSed,
@@ -165,13 +164,9 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
             {alertMessage && alertType && [types.SVARPASED_SED_CREATE_FAILURE].indexOf(alertType) >= 0 && (
               <>
                 <AlertstripeDiv>
-                  <Alert
-                    type='client'
-                    fixed={false}
-                    message={t(alertMessage)}
-                    status={alertStatus as AlertStatus}
-                    onClose={() => dispatch(clientClear())}
-                  />
+                  <AlertStripe type='advarsel'>
+                    {t(alertMessage)}
+                  </AlertStripe>
                 </AlertstripeDiv>
                 <VerticalSeparatorDiv />
               </>
@@ -236,6 +231,9 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                   </MinimalModalDiv>
                 )}
                 {_finished && (
+                  goToRinaUrl
+                    ?  window.open(goToRinaUrl, 'rina')
+                    : (
                   <div>
                     <HighContrastHovedknapp
                       mini
@@ -247,7 +245,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                       {t('el:button-close')}
                     </HighContrastHovedknapp>
                   </div>
-                )}
+                ))}
               </SectionDiv>
             </MinimalContentDiv>
           </MinimalModalDiv>

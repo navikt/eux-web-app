@@ -178,9 +178,11 @@ export interface Motregning {
 
 export interface BaseReplySed {
   bruker: Person
-  saksnummer ?: string
   sedType: string
   sedVersjon: string
+  // added
+  saksnummer ?: string
+  sedUrl ?: string
 }
 
 export interface USed extends BaseReplySed {

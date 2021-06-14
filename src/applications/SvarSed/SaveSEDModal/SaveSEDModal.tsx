@@ -1,16 +1,21 @@
-import { clientClear } from 'actions/alert'
-import Alert from 'components/Alert/Alert'
 import Modal from 'components/Modal/Modal'
 import { AlertstripeDiv } from 'components/StyledComponents'
-import { AlertStatus } from 'declarations/components'
 import { LocalStorageEntry, Validation } from 'declarations/types'
 import _ from 'lodash'
+import AlertStripe from 'nav-frontend-alertstriper'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Undertittel } from 'nav-frontend-typografi'
-import { FlexCenterSpacedDiv, PileDiv, HighContrastHovedknapp, HighContrastInput, VerticalSeparatorDiv, HorizontalSeparatorDiv, HighContrastFlatknapp } from 'nav-hoykontrast'
+import {
+  FlexCenterSpacedDiv,
+  HighContrastFlatknapp,
+  HighContrastHovedknapp,
+  HighContrastInput,
+  HorizontalSeparatorDiv,
+  PileDiv,
+  VerticalSeparatorDiv
+} from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 
 const MinimalModalDiv = styled.div`
@@ -49,7 +54,6 @@ const SendSEDModal = <CustomLocalStorageContent extends any = any>({
   localStorageContent,
   storageKey
 }: SaveSEDModalProps<CustomLocalStorageContent>): JSX.Element => {
-  const dispatch = useDispatch()
   const { t } = useTranslation()
   const [_name, setName] = useState<string>('')
   const [_message, setMessage] = useState<string>('')
@@ -105,13 +109,9 @@ const SendSEDModal = <CustomLocalStorageContent extends any = any>({
             {_message && (
               <>
                 <AlertstripeDiv>
-                  <Alert
-                    type='client'
-                    fixed={false}
-                    message={t(_message)}
-                    status={'OK' as AlertStatus}
-                    onClose={() => dispatch(clientClear())}
-                  />
+                  <AlertStripe type='suksess'>
+                    {t(_message)}
+                  </AlertStripe>
                 </AlertstripeDiv>
                 <VerticalSeparatorDiv />
               </>

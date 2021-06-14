@@ -25,7 +25,6 @@ import {
   HighContrastFlatknapp,
   HighContrastHovedknapp,
   HighContrastKnapp,
-  HighContrastLink,
   HorizontalSeparatorDiv,
   PaddedDiv,
   Row,
@@ -43,7 +42,6 @@ import { validateSEDEditor, ValidationSEDEditorProps } from './validation'
 import TextArea from 'components/Forms/TextArea'
 
 const mapState = (state: State): any => ({
-  creatingSedWithAttachments: state.loading.creatingSedWithAttachments,
   creatingSedEditInRINA: state.loading.creatingSedEditInRINA,
   creatingSvarPaSed: state.loading.creatingSvarPaSed,
   gettingPreviewFile: state.loading.gettingPreviewFile,
@@ -65,7 +63,6 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const {
-    creatingSedWithAttachments,
     creatingSedEditInRINA,
     creatingSvarPaSed,
     gettingPreviewFile,
@@ -82,7 +79,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   const [_attachments, setAttachments] = useState<JoarkBrowserItems | undefined>(undefined)
   const [_modal, setModal] = useState<ModalContent | undefined>(undefined)
   const [_previewFile, setPreviewFile] = useState<any | undefined>(undefined)
-  const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
+  const [_viewSendSedModal, setViewSendSedModal] = useState<{[k in string]: boolean}>({view: false})
   const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
   const performValidation = useGlobalValidation<ValidationSEDEditorProps>(validateSEDEditor)
 
@@ -101,7 +98,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
       })
       dispatch(viewValidation())
       if (valid) {
-        setViewSendSedModal(true)
+        setViewSendSedModal({view:true, gotorina: false})
         delete replySed.formaalx
         dispatch(createSed(replySed))
         dispatch(resetAllValidation())
@@ -110,10 +107,20 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   }
 
   // TODO
-  const createSedWithAttachments = () => {}
-
-  // TODO
-  const createSedEditInRINA = () => {}
+  const createSedEditInRINA = () => {
+    if (replySed) {
+      const valid = performValidation({
+        replySed
+      })
+      dispatch(viewValidation())
+      if (valid) {
+        setViewSendSedModal({view:true, gotorina: true})
+        delete replySed.formaalx
+        dispatch(createSed(replySed))
+        dispatch(resetAllValidation())
+      }
+    }
+  }
 
   const onSaveSedClick = () => {
     setViewSaveSedModal(true)
@@ -179,12 +186,13 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
           onModalClose={() => setModal(undefined)}
         />
       )}
-      {_viewSendSedModal && (
+      {_viewSendSedModal.view && (
         <SendSEDModal
           fnr={fnr!}
+          goToRinaUrl={_viewSendSedModal.gotorina ? replySed.sedUrl : undefined}
           highContrast={highContrast}
           attachments={_attachments}
-          onModalClose={() => setViewSendSedModal(false)}
+          onModalClose={() => setViewSendSedModal({view: false})}
         />
       )}
       {_viewSaveSedModal && (
@@ -196,14 +204,13 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
         />
       )}
       <FlexCenterSpacedDiv>
-        <HighContrastLink
-          href='#'
+        <HighContrastFlatknapp
           onClick={onGoBackClick}
         >
           <VenstreChevron />
           <HorizontalSeparatorDiv size='0.5' />
           {t('label:tilbake')}
-        </HighContrastLink>
+        </HighContrastFlatknapp>
       </FlexCenterSpacedDiv>
       <VerticalSeparatorDiv />
       <Row>
@@ -273,18 +280,6 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
           >
             {creatingSvarPaSed ? t('message:loading-sending-svarsed') : t('label:send-svarsed')}
           </HighContrastHovedknapp>
-          <VerticalSeparatorDiv size='0.5' />
-        </div>
-        <HorizontalSeparatorDiv />
-        <div>
-          <HighContrastKnapp
-            mini
-            onClick={createSedWithAttachments}
-            disabled={creatingSedWithAttachments}
-            spinner={creatingSedWithAttachments}
-          >
-            {t('el:button-add-attachments')}
-          </HighContrastKnapp>
           <VerticalSeparatorDiv size='0.5' />
         </div>
         <HorizontalSeparatorDiv />

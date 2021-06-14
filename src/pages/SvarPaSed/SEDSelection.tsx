@@ -1,5 +1,4 @@
 import validator from '@navikt/fnrvalidator'
-import { clientClear } from 'actions/alert'
 import * as appActions from 'actions/app'
 import * as svarpasedActions from 'actions/svarpased'
 import ReceivedIcon from 'assets/icons/Email'
@@ -8,14 +7,13 @@ import ExternalLink from 'assets/icons/Logout'
 import Search from 'assets/icons/Search'
 import SentIcon from 'assets/icons/Send'
 import classNames from 'classnames'
-import Alert from 'components/Alert/Alert'
 import { AlertstripeDiv, Etikett, HiddenFormContainer } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
-import { AlertStatus } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import { ConnectedSed, Sed } from 'declarations/types'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
+import AlertStripe from 'nav-frontend-alertstriper'
 import { Normaltekst, Systemtittel, Undertekst, Undertittel } from 'nav-frontend-typografi'
 import NavHighContrast, {
   AlignStartRow,
@@ -68,7 +66,6 @@ const SEDPanel = styled(HighContrastPanel)`
 `
 
 const mapState = (state: State): any => ({
-  alertStatus: state.alert.clientErrorStatus,
   alertMessage: state.alert.clientErrorMessage,
   alertType: state.alert.type,
   highContrast: state.ui.highContrast,
@@ -92,7 +89,6 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const {
-    alertStatus,
     alertMessage,
     alertType,
     highContrast,
@@ -214,13 +210,9 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
         {alertMessage && alertType && [types.SVARPASED_SAKSNUMMERORFNR_QUERY_FAILURE].indexOf(alertType) >= 0 && (
           <>
             <AlertstripeDiv>
-              <Alert
-                type='client'
-                fixed={false}
-                message={t(alertMessage)}
-                status={alertStatus as AlertStatus}
-                onClose={() => dispatch(clientClear())}
-              />
+              <AlertStripe type='advarsel'>
+                {t(alertMessage)}
+              </AlertStripe>
             </AlertstripeDiv>
             <VerticalSeparatorDiv />
           </>

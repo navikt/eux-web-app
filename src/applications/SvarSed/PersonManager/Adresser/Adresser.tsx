@@ -11,6 +11,7 @@ import { Adresse, AdresseType } from 'declarations/sed'
 import { Kodeverk } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
+import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
@@ -330,7 +331,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
               label={t('label:land') + ' *'}
               menuPortalTarget={document.body}
               includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
-              onOptionSelected={(e: any) => setLand(e.value, index)}
+              onOptionSelected={(e: Country) => setLand(e.value, index)}
               placeholder={t('el:placeholder-select-default')}
               values={index < 0 ? _newLand : adresse?.land}
             />

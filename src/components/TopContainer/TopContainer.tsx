@@ -149,7 +149,6 @@ export const TopContainer: React.FC<TopContainerProps> = ({
           highContrast={highContrast}
         />
         <Alert
-          type='server'
           message={getServerErrorMessage()}
           error={error}
           onClose={onClear}

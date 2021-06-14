@@ -27,7 +27,6 @@ export interface FamilyProps {
   familierelasjonKodeverk: Array<Kodeverk> | undefined
   onAbroadPersonAddedFailure: () => void
   onAbroadPersonAddedSuccess: (r: OldFamilieRelasjon) => void
-  onAlertClose: () => void
   onRelationAdded: (p: Person | OldFamilieRelasjon) => void
   onRelationRemoved: (p: Person | OldFamilieRelasjon) => void
   onRelationReset: () => void
@@ -42,13 +41,11 @@ export interface FamilyProps {
 
 const Family: React.FC<FamilyProps> = ({
   abroadPersonFormAlertTypesWatched,
-  alertStatus,
   alertMessage,
   alertType,
   familierelasjonKodeverk,
   onAbroadPersonAddedFailure,
   onAbroadPersonAddedSuccess,
-  onAlertClose,
   onRelationAdded,
   onRelationRemoved,
   onRelationReset,
@@ -171,14 +168,12 @@ const Family: React.FC<FamilyProps> = ({
             <>
               <VerticalSeparatorDiv />
               <AbroadPersonForm
-                alertStatus={alertStatus}
                 alertMessage={alertMessage}
                 alertType={alertType}
                 alertTypesWatched={abroadPersonFormAlertTypesWatched}
                 existingFamilyRelationships={(valgteFamilieRelasjoner || []).concat(remainingRelationsFromTPS || [])}
                 onAbroadPersonAddedFailure={onAbroadPersonAddedFailure}
                 onAbroadPersonAddedSuccess={onAbroadPersonAddedSuccess}
-                onAlertClose={onAlertClose}
                 person={person}
                 rolleList={rolleList}
               />
@@ -202,12 +197,10 @@ const Family: React.FC<FamilyProps> = ({
             <>
               <VerticalSeparatorDiv />
               <TPSPersonForm
-                alertStatus={alertStatus}
                 alertMessage={alertMessage}
                 alertType={alertType}
                 alertTypesWatched={TPSPersonFormAlertTypesWatched}
                 existingFamilyRelationships={(valgteFamilieRelasjoner || []).concat(remainingRelationsFromTPS || [])}
-                onAlertClose={onAlertClose}
                 onSearchFnr={onSearchFnr}
                 onRelationReset={onRelationReset}
                 onTPSPersonAddedFailure={onTPSPersonAddedFailure}

@@ -44,7 +44,8 @@ const svarpasedReducer = (
         ...state,
         replySed: {
           ...(action as ActionWithPayload).payload,
-          saksnummer: (action as ActionWithPayload).context.saksnummer
+          saksnummer: (action as ActionWithPayload).context.saksnummer,
+          sedUrl: (action as ActionWithPayload).context.sedUrl
         }
       }
 

@@ -1,16 +1,15 @@
-import Alert from 'components/Alert/Alert'
 import PersonCard from 'applications/OpprettSak/PersonCard/PersonCard'
 import { AlertstripeDiv } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
-import { AlertStatus } from 'declarations/components'
 import { Person } from 'declarations/types'
 import _ from 'lodash'
+import AlertStripe from 'nav-frontend-alertstriper'
 import { Input } from 'nav-frontend-skjema'
+import { HighContrastKnapp } from 'nav-hoykontrast'
 import PT from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { HighContrastKnapp } from 'nav-hoykontrast'
 
 const PersonSearchDiv = styled.div`
   margin-bottom: 2em;
@@ -31,7 +30,6 @@ const Button = styled(HighContrastKnapp)`
 `
 
 export interface PersonSearchProps {
-  alertStatus: string | undefined
   alertMessage: string | undefined
   alertType: string | undefined
   alertTypesWatched: Array<string> | undefined
@@ -40,7 +38,6 @@ export interface PersonSearchProps {
   id: string
   initialFnr: any
   gettingPerson: boolean
-  onAlertClose: () => void
   onFnrChange?: (newFnr: string) => void
   onPersonFound?: (person: Person) => void
   onSearchPerformed: (fnr: any) => void
@@ -50,7 +47,6 @@ export interface PersonSearchProps {
 }
 
 const PersonSearch: React.FC<PersonSearchProps> = ({
-  alertStatus,
   alertMessage,
   alertType,
   alertTypesWatched = [],
@@ -58,7 +54,6 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   id,
   initialFnr,
   gettingPerson,
-  onAlertClose,
   onFnrChange,
   onPersonFound,
   onPersonRemoved,
@@ -149,13 +144,9 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
       </PersonSearchPanel>
       {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (
         <AlertstripeDiv>
-          <Alert
-            type='client'
-            fixed={false}
-            message={t(alertMessage)}
-            status={alertStatus as AlertStatus}
-            onClose={onAlertClose}
-          />
+          <AlertStripe type='advarsel'>
+            {t(alertMessage)}
+          </AlertStripe>
         </AlertstripeDiv>
       )}
       {person && isPersonValid(person) && (

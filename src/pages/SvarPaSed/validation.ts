@@ -43,7 +43,7 @@ import { Validation } from 'declarations/types.d'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
-import { isFSed, isHSed } from 'utils/sed'
+import { isFSed, isHSed, isUSed } from 'utils/sed'
 
 export interface ValidationSEDEditorProps {
   replySed: ReplySed
@@ -159,6 +159,11 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
     }
   }
 
+  if (isUSed(replySed)) {
+    _error = validatePersonOpplysninger(v, t, { personInfo, namespace: `personmanager-${personID}-personopplysninger`, personName })
+    hasErrors = hasErrors || _error
+  }
+
   if (isHSed(replySed)) {
     _error = validatePersonOpplysninger(v, t, { personInfo, namespace: `personmanager-${personID}-personopplysninger`, personName })
     hasErrors = hasErrors || _error
@@ -203,7 +208,7 @@ export const validateSEDEditor = (
   let hasErrors: boolean = false
   let _error: boolean
 
-  // that is common to all seds
+  // this is common to all seds
   _error = validatePersonManager(v, t, replySed, 'bruker')
   hasErrors = hasErrors || _error
 
@@ -234,6 +239,9 @@ export const validateSEDEditor = (
       _error = validatePersonManager(v, t, replySed, 'familie')
       hasErrors = hasErrors || _error
     }
+
+    _error = validateFormålManager(v, t, replySed)
+    hasErrors = hasErrors || _error
   }
 
   if (isHSed(replySed)) {
@@ -254,9 +262,6 @@ export const validateSEDEditor = (
     } as FeiloppsummeringFeil
     hasErrors = true
   }
-
-  _error = validateFormålManager(v, t, replySed)
-  hasErrors = hasErrors || _error
 
   return hasErrors
 }

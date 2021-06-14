@@ -20,7 +20,6 @@ import {
   AlignStartRow,
   Column,
   HighContrastFlatknapp,
-  HighContrastLink,
   HighContrastRadioPanelGroup,
   HorizontalSeparatorDiv,
   PaddedDiv,
@@ -419,14 +418,12 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
       <VerticalSeparatorDiv />
       <AlignStartRow>
         <Column>
-          <HighContrastLink
-            href='#' onClick={(e: any) => {
-              e.preventDefault()
-              seeKontoopplysninger()
-            }}
+          <HighContrastFlatknapp
+            mini kompakt
+            onClick={() => seeKontoopplysninger()}
           >
             {t('label:oppgi-kontoopplysninger')}
-          </HighContrastLink>
+          </HighContrastFlatknapp>
         </Column>
       </AlignStartRow>
     </PaddedDiv>

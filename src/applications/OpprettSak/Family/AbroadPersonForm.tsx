@@ -1,23 +1,22 @@
 import Add from 'assets/icons/Add'
-import Alert from 'components/Alert/Alert'
-import { Column, HighContrastKnapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
-import { AlertStatus } from 'declarations/components'
+import { AlertstripeDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { OldFamilieRelasjon, Kodeverk, Person, Validation } from 'declarations/types'
+import { Kodeverk, OldFamilieRelasjon, Person, Validation } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
-import { CountryFilter } from 'land-verktoy'
+import { Country, CountryFilter } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
+import AlertStripe from 'nav-frontend-alertstriper'
 import Panel from 'nav-frontend-paneler'
 import { FeiloppsummeringFeil, Input, Select } from 'nav-frontend-skjema'
 import { Normaltekst } from 'nav-frontend-typografi'
+import { Column, HighContrastKnapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { vaskInputDato } from 'utils/dato'
-import { AlertstripeDiv } from 'components/StyledComponents'
 
 const Container = styled.div`
   margin-top: 1, 5rem;
@@ -33,14 +32,12 @@ export interface AbroadPersonFormSelector {
 }
 
 export interface AbroadPersonFormProps {
-  alertStatus: string | undefined
   alertMessage: string | undefined
   alertType: string | undefined
   alertTypesWatched: Array<string> | undefined
   className?: string
   rolleList: Array<Kodeverk>
   existingFamilyRelationships: Array<OldFamilieRelasjon>
-  onAlertClose: () => void
   onAbroadPersonAddedFailure: () => void
   onAbroadPersonAddedSuccess: (r: OldFamilieRelasjon) => void
   person: Person | undefined
@@ -63,14 +60,12 @@ const emptyFamilieRelasjon: OldFamilieRelasjon = {
 }
 
 const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
-  alertStatus,
   alertMessage,
   alertType,
   alertTypesWatched = [],
   className,
   rolleList,
   existingFamilyRelationships,
-  onAlertClose,
   onAbroadPersonAddedFailure,
   onAbroadPersonAddedSuccess,
   person
@@ -264,7 +259,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               key={'familierelasjoner__input-land-' + _relation.land}
               menuPortalTarget={document.body}
               includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
-              onOptionSelected={(e: any) => {
+              onOptionSelected={(e: Country) => {
                 updateCountry('land', e.value)
                 resetValidation('land')
               }}
@@ -283,7 +278,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               key={'familierelasjoner__input-statsborgerskap' + _relation.statsborgerskap}
               menuPortalTarget={document.body}
               placeholder={t('el:placeholder-select-default')}
-              onOptionSelected={(e: any) => {
+              onOptionSelected={(e: Country) => {
                 updateCountry('statsborgerskap', e.value)
                 resetValidation('statsborgerskap')
               }}
@@ -408,13 +403,9 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
           </AlignCenterColumn>
           {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (
             <AlertstripeDiv>
-              <Alert
-                type='client'
-                fixed={false}
-                message={t(alertMessage)}
-                status={alertStatus as AlertStatus}
-                onClose={onAlertClose}
-              />
+              <AlertStripe type='advarsel'>
+                {t(alertMessage)}
+              </AlertStripe>
             </AlertstripeDiv>
           )}
         </Row>

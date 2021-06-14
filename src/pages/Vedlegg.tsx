@@ -1,11 +1,7 @@
-import { clientClear } from 'actions/alert'
 import * as vedleggActions from 'actions/vedlegg'
 import DocumentSearch from 'applications/Vedlegg/DocumentSearch/DocumentSearch'
-import Alert from 'components/Alert/Alert'
-import * as types from 'constants/actionTypes'
-import { AlertStatus } from 'declarations/components'
-import { Container, Content, HighContrastHovedknapp, HorizontalSeparatorDiv, Margin, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import TopContainer from 'components/TopContainer/TopContainer'
+import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import { Validation, VedleggSendResponse } from 'declarations/types'
 import _ from 'lodash'
@@ -14,6 +10,14 @@ import Hjelpetekst from 'nav-frontend-hjelpetekst'
 import Lenke from 'nav-frontend-lenker'
 import { FeiloppsummeringFeil, Input } from 'nav-frontend-skjema'
 import { Systemtittel } from 'nav-frontend-typografi'
+import {
+  Container,
+  Content,
+  HighContrastHovedknapp,
+  HorizontalSeparatorDiv,
+  Margin,
+  VerticalSeparatorDiv
+} from 'nav-hoykontrast'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -28,7 +32,6 @@ const FlexDiv = styled.div`
 `
 
 export interface VedleggSelector {
-  alertStatus: string | undefined
   alertMessage: string | undefined
   alertType: string | undefined
   vedlegg: VedleggSendResponse | undefined
@@ -44,7 +47,6 @@ export interface VedleggProps {
 }
 
 const mapState = (state: State): VedleggSelector => ({
-  alertStatus: state.alert.clientErrorStatus,
   alertMessage: state.alert.clientErrorMessage,
   alertType: state.alert.type,
   vedlegg: state.vedlegg.vedlegg,
@@ -59,7 +61,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
   const [mounted, setMounted] = useState(false)
   const dispatch = useDispatch()
   const { t } = useTranslation()
-  const { alertStatus, alertMessage, alertType, journalpostID, dokumentID, rinasaksnummer, rinadokumentID, sendingVedlegg, vedlegg }: VedleggSelector = useSelector<State, VedleggSelector>(mapState)
+  const { alertMessage, alertType, journalpostID, dokumentID, rinasaksnummer, rinadokumentID, sendingVedlegg, vedlegg }: VedleggSelector = useSelector<State, VedleggSelector>(mapState)
   const [_isRinaNumberValid, setIsRinaNumberValid] = useState<boolean>(false)
   const [_validation, setValidation] = useState<Validation>({})
 
@@ -211,13 +213,9 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
             {alertMessage && alertType && [types.VEDLEGG_POST_FAILURE].indexOf(alertType) >= 0 && (
               <>
                 <VerticalSeparatorDiv/>
-                  <Alert
-                    type='client'
-                    fixed={false}
-                    message={t(alertMessage)}
-                    status={alertStatus as AlertStatus}
-                    onClose={() => dispatch(clientClear())}
-                  />
+                  <AlertStripe type='advarsel'>
+                    {t(alertMessage)}
+                  </AlertStripe>
                 <VerticalSeparatorDiv />
               </>
             )}

@@ -1,4 +1,3 @@
-import { clientClear } from 'actions/alert'
 import * as appActions from 'actions/app'
 import * as sakActions from 'actions/sak'
 import Family from 'applications/OpprettSak/Family/Family'
@@ -30,6 +29,7 @@ import {
 import * as EKV from 'eessi-kodeverk'
 import { History } from 'history'
 import useValidation from 'hooks/useValidation'
+import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import AlertStripe from 'nav-frontend-alertstriper'
@@ -290,7 +290,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
     onSedtypeSet(e.target.value)
   }
 
-  const onLandkodeChange = (country: any): void => {
+  const onLandkodeChange = (country: Country): void => {
     _resetValidation(namespace + '-landkode')
     _resetValidation(namespace + '-institusjon')
     const landKode = country.value
@@ -332,7 +332,6 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
           </Systemtittel>
           <VerticalSeparatorDiv />
           <PersonSearch
-            alertStatus={alertStatus}
             alertMessage={alertMessage}
             alertType={alertType}
             alertTypesWatched={[types.SAK_PERSON_GET_FAILURE]}
@@ -354,7 +353,6 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
               dispatch(sakActions.getPerson(fnr))
             }}
             onPersonRemoved={() => dispatch(sakActions.resetPerson())}
-            onAlertClose={() => dispatch(clientClear())}
             person={person}
             resetAllValidation={() => _resetValidation()}
           />
@@ -568,7 +566,6 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                           dispatch(sakActions.addFamilierelasjoner(relation))
                           dispatch({ type: types.SAK_TPSPERSON_ADD_SUCCESS })
                         }}
-                        onAlertClose={() => dispatch(clientClear())}
                         onSearchFnr={(fnrQuery: string) => {
                           dispatch(sakActions.resetPersonRelatert())
                           dispatch(sakActions.getPersonRelated(fnrQuery))

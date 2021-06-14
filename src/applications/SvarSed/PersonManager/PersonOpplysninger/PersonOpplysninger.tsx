@@ -9,6 +9,7 @@ import Input from 'components/Forms/Input'
 import { State } from 'declarations/reducers'
 import { PersonInfo, Pin } from 'declarations/sed'
 import { Kodeverk, Person } from 'declarations/types'
+import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
@@ -252,8 +253,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
             includeList={landkoderList?.map((l: Kodeverk) => l.kode) ?? []}
             label={t('label:land')}
             menuPortalTarget={document.body}
-            onChange={onUtenlandskLandChange}
-            onOptionSelected={(e: any) => onUtenlandskLandChange(e.value)}
+            onOptionSelected={(e: Country) => onUtenlandskLandChange(e.value)}
             placeholder={t('el:placeholder-select-default')}
             values={utenlandskPin?.land}
           />
@@ -346,7 +346,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                 includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
                 label={t('label:land')}
                 menuPortalTarget={document.body}
-                onOptionSelected={onFoedestedLandChange}
+                onOptionSelected={(e: Country) => onFoedestedLandChange(e.value)}
                 placeholder={t('el:placeholder-select-default')}
                 values={personInfo.pinMangler?.foedested.land}
               />

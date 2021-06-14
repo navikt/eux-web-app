@@ -1,18 +1,16 @@
-import classNames from 'classnames'
-import Alert from 'components/Alert/Alert'
 import PersonCard from 'applications/OpprettSak/PersonCard/PersonCard'
-import { Column, HighContrastKnapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
-import { AlertStatus } from 'declarations/components'
-import { OldFamilieRelasjon, Kodeverk, Person } from 'declarations/types'
+import classNames from 'classnames'
+import { AlertstripeDiv } from 'components/StyledComponents'
+import { Kodeverk, OldFamilieRelasjon, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
 import _ from 'lodash'
 import AlertStripe from 'nav-frontend-alertstriper'
 import { Input } from 'nav-frontend-skjema'
+import { Column, HighContrastKnapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { AlertstripeDiv } from 'components/StyledComponents'
 
 const Container = styled.div`
   margin-top: 1.5rem;
@@ -30,13 +28,11 @@ const AlignCenterColumn = styled(Column)`
 `
 
 export interface TPSPersonFormProps {
-  alertStatus: string | undefined
   alertMessage: string | undefined
   alertType: string | undefined
   alertTypesWatched: Array<string> | undefined
   className?: string
   existingFamilyRelationships: Array<OldFamilieRelasjon>
-  onAlertClose: () => void
   onRelationReset: () => void
   onSearchFnr: (sok: any) => void
   onTPSPersonAddedFailure: () => void
@@ -47,13 +43,11 @@ export interface TPSPersonFormProps {
 }
 
 const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
-  alertStatus,
   alertMessage,
   alertType,
   alertTypesWatched = [],
   className,
   existingFamilyRelationships,
-  onAlertClose,
   onRelationReset,
   onSearchFnr,
   onTPSPersonAddedFailure,
@@ -168,20 +162,16 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
           )}
           {_tpsperson && (
             <AlertstripeDiv>
-              <AlertStripe className='mt-4 mb-4' type='advarsel'>
+              <AlertStripe type='advarsel'>
                 {t('message:error-relation-already-in-tps')}
               </AlertStripe>
             </AlertstripeDiv>
           )}
           {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (
             <AlertstripeDiv>
-              <Alert
-                type='client'
-                fixed={false}
-                message={t(alertMessage)}
-                status={alertStatus as AlertStatus}
-                onClose={onAlertClose}
-              />
+              <AlertStripe type='advarsel'>
+                t(alertMessage)
+              </AlertStripe>
             </AlertstripeDiv>
           )}
           {_personRelatert && (

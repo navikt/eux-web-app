@@ -6,7 +6,7 @@ import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { F002Sed, FormalKravOmRefusjon } from 'declarations/sed'
 import { Undertittel } from 'nav-frontend-typografi'
-import { AlignStartRow, Column, HighContrastLink, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { AlignStartRow, Column, HighContrastFlatknapp, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -64,14 +64,12 @@ const KravOmRefusjon: React.FC<FormålManagerFormProps> = ({
       <VerticalSeparatorDiv />
       <AlignStartRow>
         <Column>
-          <HighContrastLink
-            href='#' onClick={(e: any) => {
-              e.preventDefault()
-              seeKontoopplysninger()
-            }}
+          <HighContrastFlatknapp
+            mini kompakt
+           onClick={() => seeKontoopplysninger()}
           >
             {t('label:oppgi-kontoopplysninger')}
-          </HighContrastLink>
+          </HighContrastFlatknapp>
         </Column>
       </AlignStartRow>
     </PaddedDiv>
