@@ -231,9 +231,6 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                   </MinimalModalDiv>
                 )}
                 {_finished && (
-                  goToRinaUrl
-                    ?  window.open(goToRinaUrl, 'rina')
-                    : (
                   <div>
                     <HighContrastHovedknapp
                       mini
@@ -244,8 +241,15 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                     >
                       {t('el:button-close')}
                     </HighContrastHovedknapp>
+                    <HorizontalSeparatorDiv/>
+                    <HighContrastHovedknapp
+                      mini
+                      onClick={() => window.open(goToRinaUrl, 'rina')}
+                    >
+                      {t('label:gå-til-sed-i-rina')}
+                    </HighContrastHovedknapp>
                   </div>
-                ))}
+                )}
               </SectionDiv>
             </MinimalContentDiv>
           </MinimalModalDiv>

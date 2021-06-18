@@ -42,7 +42,6 @@ import { validateSEDEditor, ValidationSEDEditorProps } from './validation'
 import TextArea from 'components/Forms/TextArea'
 
 const mapState = (state: State): any => ({
-  creatingSedEditInRINA: state.loading.creatingSedEditInRINA,
   creatingSvarPaSed: state.loading.creatingSvarPaSed,
   gettingPreviewFile: state.loading.gettingPreviewFile,
   highContrast: state.ui.highContrast,
@@ -63,7 +62,6 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const {
-    creatingSedEditInRINA,
     creatingSvarPaSed,
     gettingPreviewFile,
     highContrast,
@@ -79,7 +77,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   const [_attachments, setAttachments] = useState<JoarkBrowserItems | undefined>(undefined)
   const [_modal, setModal] = useState<ModalContent | undefined>(undefined)
   const [_previewFile, setPreviewFile] = useState<any | undefined>(undefined)
-  const [_viewSendSedModal, setViewSendSedModal] = useState<{[k in string]: boolean}>({view: false})
+  const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
   const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
   const performValidation = useGlobalValidation<ValidationSEDEditorProps>(validateSEDEditor)
 
@@ -98,23 +96,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
       })
       dispatch(viewValidation())
       if (valid) {
-        setViewSendSedModal({view:true, gotorina: false})
-        delete replySed.formaalx
-        dispatch(createSed(replySed))
-        dispatch(resetAllValidation())
-      }
-    }
-  }
-
-  // TODO
-  const createSedEditInRINA = () => {
-    if (replySed) {
-      const valid = performValidation({
-        replySed
-      })
-      dispatch(viewValidation())
-      if (valid) {
-        setViewSendSedModal({view:true, gotorina: true})
+        setViewSendSedModal(true)
         delete replySed.formaalx
         dispatch(createSed(replySed))
         dispatch(resetAllValidation())
@@ -186,13 +168,13 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
           onModalClose={() => setModal(undefined)}
         />
       )}
-      {_viewSendSedModal.view && (
+      {_viewSendSedModal && (
         <SendSEDModal
           fnr={fnr!}
-          goToRinaUrl={_viewSendSedModal.gotorina ? replySed.sedUrl : undefined}
+          goToRinaUrl={replySed.sedUrl}
           highContrast={highContrast}
           attachments={_attachments}
-          onModalClose={() => setViewSendSedModal({view: false})}
+          onModalClose={() => setViewSendSedModal(false)}
         />
       )}
       {_viewSaveSedModal && (
@@ -280,18 +262,6 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
           >
             {creatingSvarPaSed ? t('message:loading-sending-svarsed') : t('label:send-svarsed')}
           </HighContrastHovedknapp>
-          <VerticalSeparatorDiv size='0.5' />
-        </div>
-        <HorizontalSeparatorDiv />
-        <div>
-          <HighContrastKnapp
-            mini
-            onClick={createSedEditInRINA}
-            disabled={creatingSedEditInRINA}
-            spinner={creatingSedEditInRINA}
-          >
-            {t('label:opprett-sed-rediger-i-rina')}
-          </HighContrastKnapp>
           <VerticalSeparatorDiv size='0.5' />
         </div>
         <HorizontalSeparatorDiv />
