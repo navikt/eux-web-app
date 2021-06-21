@@ -2,25 +2,27 @@ import { validatePeriod } from 'components/Period/validation'
 import { Validation } from 'declarations/types'
 import { TFunction } from 'react-i18next'
 
-export interface ValidationSisteAnsettelsesforholdProps {
-  sisteansettelsesforhold: any
+export interface ValidationDatoProps {
+  startdato: string
+  sluttdato: string
   namespace: string
-  personName: string
 }
 
-export const validateSisteansettelsesforhold = (
+export const validateDato = (
   v: Validation,
   t: TFunction,
   {
-    sisteansettelsesforhold,
-    namespace,
-    personName
-  }: ValidationSisteAnsettelsesforholdProps
+    startdato,
+    sluttdato,
+    namespace
+  }: ValidationDatoProps
 ): boolean => {
   const hasErrors = validatePeriod(v, t, {
-    period,
+    period: {
+      startdato: startdato,
+      sluttdato: sluttdato
+    },
     namespace
   })
-
   return hasErrors
 }

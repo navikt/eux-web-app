@@ -74,7 +74,9 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />
-      {_periodeType.map(type => (
+      {_periodeType.sort((a, b) => {
+        return t('el:option-' + a).localeCompare(t('el:option-' + b))
+      }).map(type => (
         <div key={type}>
           <ExpandingPanel
             open

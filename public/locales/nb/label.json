@@ -78,6 +78,7 @@
   "family-tps": "Person uten registrert relasjon i TPS",
   "family-utland": "Person uten fødsels- eller d-nummer",
   "family-utland-add-form": "Du kan også legge til familierelasjoner fra utlandet som ikke er oppført i TPS",
+  "fetch-inntekt": "Hent inntekt",
   "flyttedato-til-avsenderlandet": "Flyttedato til avsenderlandet",
   "flyttedato-til-mottakerslandet": "Flyttedato til mottakerslandet",
   "fnr" : "Fødselsnummer",

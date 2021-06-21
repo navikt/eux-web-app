@@ -18,7 +18,9 @@ import { validateAvsenderlandetPerioder } from 'applications/SvarSed/PersonManag
 import { validateNotAnsattPerioder } from 'applications/SvarSed/PersonManager/PersonensStatus/notAnsattValidation'
 import { validateWithSubsidiesPerioder } from 'applications/SvarSed/PersonManager/PersonensStatus/withSubsidiesValidation'
 import { validatePersonOpplysninger } from 'applications/SvarSed/PersonManager/PersonOpplysninger/validation'
+import { validateReferanseperiode } from 'applications/SvarSed/PersonManager/Referanseperiode/validation'
 import { validateBarnetilhoerigheter } from 'applications/SvarSed/PersonManager/Relasjon/validation'
+import { validateSisteansettelsesforhold } from 'applications/SvarSed/PersonManager/SisteAnsettelsesForhold/validation'
 import { validateSvarPåForespørsel } from 'applications/SvarSed/PersonManager/SvarPåForespørsel/validation'
 import { validateTrygdeordninger } from 'applications/SvarSed/PersonManager/Trygdeordning/validation'
 import {
@@ -162,6 +164,15 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
   if (isUSed(replySed)) {
     _error = validatePersonOpplysninger(v, t, { personInfo, namespace: `personmanager-${personID}-personopplysninger`, personName })
     hasErrors = hasErrors || _error
+
+    const anmodningsperiode: Periode = _.get(replySed, `${personID}.anmodningsperiode`)
+    _error = validateReferanseperiode(v, t, { anmodningsperiode, namespace: `personmanager-${personID}-referanseperiode`, personName })
+    hasErrors = hasErrors || _error
+
+    const sisteansettelsesforhold: any = _.get(replySed, `${personID}.xxx-sisteansettelsesforhold`)
+    _error = validateSisteansettelsesforhold(v, t, { sisteansettelsesforhold, namespace: `personmanager-${personID}-sisteansettelsesforhold`, personName })
+    hasErrors = hasErrors || _error
+
   }
 
   if (isHSed(replySed)) {

@@ -4,21 +4,24 @@ import { Validation } from 'declarations/types'
 import { TFunction } from 'react-i18next'
 
 export interface ValidationReferanseperiodeProps {
-  period: Periode
+  anmodningsperiode: Periode
   namespace: string
+  personName: string
 }
 
 export const validateReferanseperiode = (
   v: Validation,
   t: TFunction,
   {
-    period,
-    namespace
+    anmodningsperiode,
+    namespace,
+    personName
   }: ValidationReferanseperiodeProps
 ): boolean => {
   const hasErrors = validatePeriod(v, t, {
-    period,
-    namespace
+    period: anmodningsperiode,
+    namespace,
+    personName
   })
   return hasErrors
 }

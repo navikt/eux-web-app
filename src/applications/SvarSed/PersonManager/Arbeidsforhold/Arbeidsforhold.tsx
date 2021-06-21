@@ -1,10 +1,13 @@
 import { getArbeidsperioder } from 'actions/arbeidsgiver'
-import { updateReplySed } from 'actions/svarpased'
-import { resetValidation } from 'actions/validation'
+import { fetchInntekt } from 'actions/inntekt'
 import {
   validateArbeidsgiver,
   ValidationArbeidsgiverProps
 } from 'applications/SvarSed/PersonManager/PersonensStatus/ansattValidation'
+import {
+  validateDato,
+  ValidationDatoProps
+} from './validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import ArbeidsgiverBox from 'components/Arbeidsgiver/ArbeidsgiverBox'
@@ -13,14 +16,15 @@ import Input from 'components/Forms/Input'
 import Inntekt from 'components/Inntekt/Inntekt'
 import Period, { toFinalDateFormat } from 'components/Period/Period'
 import { State } from 'declarations/reducers'
-import { Periode } from 'declarations/sed'
-import { Arbeidsgiver, Arbeidsperioder, IInntekter } from 'declarations/types'
+import { ReplySed } from 'declarations/sed'
+import { Arbeidsgiver, Arbeidsperioder, IInntekter, Validation } from 'declarations/types'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { Systemtittel, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
+  FlexBaseDiv,
   HighContrastFlatknapp,
   HighContrastKnapp,
   HorizontalSeparatorDiv,
@@ -36,12 +40,16 @@ interface ArbeidsforholdSelector extends PersonManagerFormSelector {
   arbeidsperioder: Arbeidsperioder | undefined
   gettingArbeidsperioder: boolean
   inntekter: IInntekter | undefined
+  gettingInntekter: boolean
+  replySed: ReplySed | undefined
+  validation: Validation
 }
 
 const mapState = (state: State): ArbeidsforholdSelector => ({
   arbeidsperioder: state.arbeidsgiver.arbeidsperioder,
   gettingArbeidsperioder: state.loading.gettingArbeidsperioder,
   inntekter: state.inntekt.inntekter,
+  gettingInntekter: state.loading.gettingInntekter,
   replySed: state.svarpased.replySed,
   validation: state.validation.status
 })
@@ -55,14 +63,18 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
     arbeidsperioder,
     gettingArbeidsperioder,
     inntekter,
-    replySed,
-    validation
+    gettingInntekter,
+    replySed
   } = useSelector<State, ArbeidsforholdSelector>(mapState)
   const dispatch = useDispatch()
-  const target = 'anmodningsperiode'
-  const anmodningsperiode: Periode = _.get(replySed, target)
+  // TODO add target
+  // const target = 'xxx-arbeidsforhold'
+  //const anmodningsperiode: Periode = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-arbeidsforhold`
   const fnr = getFnr(replySed)
+
+  const [_arbeidssøkStartDato, _setArbeidssøkStartDato] = useState<string>('')
+  const [_arbeidssøkSluttDato, _setArbeidssøkSluttDato] = useState<string>('')
 
   const [_newArbeidsgiverStartDato, _setNewArbeidsgiverStartDato] = useState<string>('')
   const [_newArbeidsgiverSluttDato, _setNewArbeidsgiverSluttDato] = useState<string>('')
@@ -71,6 +83,8 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
   const [_seeNewArbeidsgiver, _setSeeNewArbeidsgiver] = useState<boolean>(false)
   const [_validationArbeidsgiver, _resetValidationArbeidsgiver, performValidationArbeidsgiver] =
     useValidation<ValidationArbeidsgiverProps>({}, validateArbeidsgiver)
+  const [_validationDato, _resetValidationDato, performValidationDato] =
+    useValidation<ValidationDatoProps>({}, validateDato)
 
   const [_addedArbeidsperioder, setAddedArbeidsperioder] = useState<Arbeidsperioder>(() => ({
     arbeidsperioder: [],
@@ -78,26 +92,29 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
     uriInntektRegister: ''
   }))
 
-  const setStartDato = (startdato: string) => {
-    dispatch(updateReplySed(`${target}.startdato`, startdato.trim()))
-    if (validation[namespace + '-startdato']) {
-      dispatch(resetValidation(namespace + '-startdato'))
+  const setArbeidssøkStartDato = (value: string) => {
+    _resetValidationDato('startdato')
+    _setArbeidssøkStartDato(value)
+  }
+
+  const setArbeidssøkSluttDato = (value: string) => {
+    _resetValidationDato('sluttdato')
+    _setArbeidssøkSluttDato(value)
+  }
+
+  const onArbeidsperioderClicked = () => {
+    const valid = performValidationDato({
+      startdato: _arbeidssøkStartDato,
+      sluttdato: _arbeidssøkSluttDato,
+      namespace: 'arbeidssok'
+    })
+    if (valid) {
+      dispatch(getArbeidsperioder(fnr))
     }
   }
 
-  const setSluttDato = (sluttdato: string) => {
-    const newAnmodningsperiode: Periode = _.cloneDeep(anmodningsperiode)
-    if (sluttdato === '') {
-      delete newAnmodningsperiode.sluttdato
-      newAnmodningsperiode.aapenPeriodeType = 'åpen_sluttdato'
-    } else {
-      delete newAnmodningsperiode.aapenPeriodeType
-      newAnmodningsperiode.sluttdato = sluttdato.trim()
-    }
-    dispatch(updateReplySed(target, newAnmodningsperiode))
-    if (validation[namespace + '-sluttdato']) {
-      dispatch(resetValidation(namespace + '-sluttdato'))
-    }
+  const onInntektClicked = () => {
+    dispatch(fetchInntekt(fnr))
   }
 
   const resetArbeidsgiverForm = () => {
@@ -168,20 +185,20 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Period
-          key={'' + anmodningsperiode?.startdato + anmodningsperiode?.sluttdato}
-          namespace={namespace}
-          errorStartDato={validation[namespace + '-startdato']?.feilmelding}
-          errorSluttDato={validation[namespace + '-sluttdato']?.feilmelding}
-          setStartDato={setStartDato}
-          setSluttDato={setSluttDato}
-          valueStartDato={anmodningsperiode?.startdato ?? ''}
-          valueSluttDato={anmodningsperiode?.sluttdato ?? ''}
+          key={_arbeidssøkStartDato + _arbeidssøkSluttDato}
+          namespace='arbeidssok'
+          errorStartDato={_validationDato['arbeidssok-startdato']?.feilmelding}
+          errorSluttDato={_validationDato['arbeidssok-sluttdato']?.feilmelding}
+          setStartDato={setArbeidssøkStartDato}
+          setSluttDato={setArbeidssøkSluttDato}
+          valueStartDato={_arbeidssøkStartDato}
+          valueSluttDato={_arbeidssøkSluttDato}
         />
         <Column>
           <VerticalSeparatorDiv size='1.8' />
           <ArbeidsgiverSøk
             gettingArbeidsperioder={gettingArbeidsperioder}
-            getArbeidsperioder={() => dispatch(getArbeidsperioder(fnr))}
+            getArbeidsperioder={onArbeidsperioderClicked}
           />
         </Column>
       </AlignStartRow>
@@ -223,7 +240,6 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
           </Column>
         </AlignStartRow>
       ))}
-
       {!_seeNewArbeidsgiver
         ? (
           <HighContrastFlatknapp
@@ -308,9 +324,21 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv size='3' />
       <AlignStartRow className='slideInFromLeft'>
         <Column>
-          <Undertittel>
+          <FlexBaseDiv>
+            <Undertittel>
             {t('label:kontoller-inntekt')}
           </Undertittel>
+          <HorizontalSeparatorDiv/>
+          <HighContrastFlatknapp
+            mini
+            kompakt
+            spinner={gettingInntekter}
+            disabled={gettingInntekter}
+            onClick={onInntektClicked}
+            >
+            {t('label:fetch-inntekt')}
+          </HighContrastFlatknapp>
+          </FlexBaseDiv>
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />

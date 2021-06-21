@@ -290,16 +290,33 @@ export interface FormalKravOmRefusjon {
   krav: string
 }
 
+export interface SisteAnsettelse {
+  annenGrunnOpphoerAnsatt: string
+  grunnOpphoerSelvstendig: string
+  opphoerRettighet: string
+  opphoerYtelse: string
+  typeGrunnOpphoerAnsatt: string
+  utbetalinger: Array<{
+    beloep: string
+    feriedagerTilGode: string
+    loennTilDato: string
+    utbetalingType: string
+    valuta: string
+  }>
+}
+
+export interface Barn {
+  adresser?: Array<Adresse>
+  barnetilhoerigheter?: Array<Barnetilhoerighet>
+  flyttegrunn?: Flyttegrunn
+  personInfo: PersonInfo
+  motregning?: Motregning
+  ytelse?: Ytelse
+}
+
 export interface F002Sed extends FSed {
   annenPerson: Person
-  barn: Array<{
-    adresser?: Array<Adresse>
-    barnetilhoerigheter?: Array<Barnetilhoerighet>
-    flyttegrunn?: Flyttegrunn
-    personInfo: PersonInfo
-    motregning?: Motregning
-    ytelse?: Ytelse
-  }>
+  barn: Array<Barn>
   ektefelle: Person
   endredeForhold: Array<string>
   familie: {
@@ -323,20 +340,7 @@ export interface F002Sed extends FSed {
 
 export interface U002Sed extends USed {
   perioderAnsattMedForsikring: Array<Arbeidsgiver>
-  sisteAnsettelseInfo: {
-    annenGrunnOpphoerAnsatt: string
-    grunnOpphoerSelvstendig: string
-    opphoerRettighet: string
-    opphoerYtelse: string
-    typeGrunnOpphoerAnsatt: string
-    utbetalinger: Array<{
-      beloep: string
-      feriedagerTilGode: string
-      loennTilDato: string
-      utbetalingType: string
-      valuta: string
-    }>
-  }
+  sisteAnsettelseInfo: SisteAnsettelse
 }
 
 export interface U004Sed extends USed {

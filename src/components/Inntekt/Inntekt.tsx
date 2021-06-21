@@ -1,3 +1,4 @@
+import ExternalLink from 'assets/icons/Logout'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { IInntekt, IInntekter } from 'declarations/types'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
@@ -84,7 +85,7 @@ const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
                     {Object.keys(inntekt.maanedsinntekt).map((måned: string, index: number) => {
                       return index >= firstIndex && index < lastIndex
                         ? (
-                          <PileDiv key={måned} style={{ width: '120px' }}>
+                          <PileDiv key={måned} style={{ width: '100px' }}>
                             <PaddedDiv size='0.3'>
                               {måned}
                             </PaddedDiv>
@@ -115,8 +116,10 @@ const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
             <VerticalSeparatorDiv size='0.5' />
             <AlignEndRow>
               <Column>
-                <HighContrastLink href={inntekter.uriInntektRegister}>
+                <HighContrastLink target='_blank' href={inntekter.uriInntektRegister}>
                   {t('label:gå-til-A-inntekt')}
+                  <HorizontalSeparatorDiv size='0.35' />
+                  <ExternalLink />
                 </HighContrastLink>
               </Column>
               <Column>

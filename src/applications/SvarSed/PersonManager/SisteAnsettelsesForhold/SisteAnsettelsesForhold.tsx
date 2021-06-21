@@ -6,6 +6,7 @@ import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
+import { SisteAnsettelse } from 'declarations/sed'
 import CountryData, { Currency } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
@@ -36,9 +37,8 @@ const SisteAnsettelsesForhold: React.FC<PersonManagerFormProps> = ({
     validation
   } = useSelector<State, SisteAnsettelsesForholdSelector>(mapState)
   const dispatch = useDispatch()
-  // TODO this
-  const target = 'xxx-sisteansettelsesforhold'
-  const xxx: any = _.get(replySed, target)
+  const target = 'sisteAnsettelseInfo'
+  const sisteAnsettelseInfo: SisteAnsettelse = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-sisteansettelsesforhold`
 
   const [_typeBeløp, setTypeBeløp] = useState<string | undefined>(undefined)

@@ -75,7 +75,11 @@ const Stack: React.FC<StackProps> = ({
         </>
       )}
       {_items
-        ?.sort((a, b) => a.localeCompare(b))
+        ?.sort((a, b) => {
+          const _a =_.find(options, _f => _f.value === a)?.label
+          const _b =_.find(options, _f => _f.value === b)?.label
+          return _a.localeCompare(_b)
+        })
         ?.map((item: string, i: number) => (
           <FlexCenterSpacedDiv
             className='slideInFromLeft'
