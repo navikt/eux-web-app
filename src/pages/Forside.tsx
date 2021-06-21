@@ -12,38 +12,35 @@ const Forside: React.FC = (): JSX.Element => {
     <TopContainer>
       <Container>
         <Margin />
-        <Content>
-          <div style={{ minWidth: '800px' }}>
-            <Lenkepanel
-              className='slideInFromLeft'
-              href='#'
-              linkCreator={(props: any) => (<Link to='/opprett' {...props} />)}
-              tittelProps='undertittel'
-            >
-              {t('app:indexpage-createCase')}
-            </Lenkepanel>
-            <VerticalSeparatorDiv />
-            <Lenkepanel
-              className='slideInFromLeft'
-              href='#'
-              linkCreator={(props: any) => (<Link to='/vedlegg' {...props} />)}
-              style={{ animationDelay: '0.15s' }}
-              tittelProps='undertittel'
-            >
-              {t('app:indexpage-addAttachment')}
-            </Lenkepanel>
-            <VerticalSeparatorDiv />
-            <Lenkepanel
-              className='slideInFromLeft'
-              href='#'
-              linkCreator={(props: any) => (<Link to='/svarpased' {...props} />)}
-              style={{ animationDelay: '0.3s' }}
-              tittelProps='undertittel'
-            >
-              {t('app:indexpage-svarSed')}
-            </Lenkepanel>
-
-          </div>
+        <Content style={{ minWidth: '800px' }}>
+          <Lenkepanel
+            className='slideInFromLeft'
+            href='#'
+            linkCreator={(props: any) => (<Link to='/opprett' {...props} />)}
+            tittelProps='undertittel'
+          >
+            {t('app:indexpage-createCase')}
+          </Lenkepanel>
+          <VerticalSeparatorDiv />
+          <Lenkepanel
+            className='slideInFromLeft'
+            href='#'
+            linkCreator={(props: any) => (<Link to='/vedlegg' {...props} />)}
+            style={{ animationDelay: '0.15s' }}
+            tittelProps='undertittel'
+          >
+            {t('app:indexpage-addAttachment')}
+          </Lenkepanel>
+          <VerticalSeparatorDiv />
+          <Lenkepanel
+            className='slideInFromLeft'
+            href='#'
+            linkCreator={(props: any) => (<Link to='/svarpased' {...props} />)}
+            style={{ animationDelay: '0.3s' }}
+            tittelProps='undertittel'
+          >
+            {t('app:indexpage-svarSed')}
+          </Lenkepanel>
         </Content>
         <Margin />
       </Container>

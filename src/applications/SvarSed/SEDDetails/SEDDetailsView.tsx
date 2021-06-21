@@ -112,7 +112,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
         )}
       </Dl>
       <VerticalSeparatorDiv />
-      {isUSed(replySed) && (replySed as USed).lokaleSakIder.map(s => (
+      {isUSed(replySed) && (replySed as USed).lokaleSakIder?.map(s => (
         <div key={s.institusjonsnavn}>
           <Dl>
             <Dt>
