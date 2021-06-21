@@ -52,7 +52,8 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
 
   const doWeHaveNegative: boolean = !!(replySed as HSed)?.negativeSvar?.informasjon ||
     !!(replySed as HSed)?.negativeSvar?.dokument ||
-    !!(replySed as HSed)?.negativeSvar?.sed
+    !!(replySed as HSed)?.negativeSvar?.sed ||
+    !!(replySed as HSed)?.negativeSvar?.grunn
 
   const [_svar, _setSvar] = useState<HSvarType | undefined>(() =>
     doWeHavePositive
