@@ -50,7 +50,9 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
     !!(replySed as HSed)?.positivtSvar?.dokument ||
     !!(replySed as HSed)?.positivtSvar?.sed
 
-  const doWeHaveNegative: boolean = (replySed as HSed)?.negativeSvar?.length > 0
+  const doWeHaveNegative: boolean = !!(replySed as HSed)?.negativeSvar?.informasjon ||
+    !!(replySed as HSed)?.negativeSvar?.dokument ||
+    !!(replySed as HSed)?.negativeSvar?.sed
 
   const [_svar, _setSvar] = useState<HSvarType | undefined>(() =>
     doWeHavePositive
@@ -65,9 +67,9 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
     const thisSvar = svarChanged ? value : _svar
     if (thisSvar === 'positivt') {
       const newPositivtSvar = {
-        informasjon: svarChanged ? (replySed as HSed)?.negativeSvar?.[0]?.informasjon : (replySed as HSed)?.positivtSvar?.informasjon,
-        dokument: svarChanged ? (replySed as HSed)?.negativeSvar?.[0]?.dokument : (replySed as HSed)?.positivtSvar?.dokument,
-        sed: svarChanged ? (replySed as HSed)?.negativeSvar?.[0]?.sed : (replySed as HSed)?.positivtSvar?.sed
+        informasjon: svarChanged ? (replySed as HSed)?.negativeSvar?.informasjon : (replySed as HSed)?.positivtSvar?.informasjon,
+        dokument: svarChanged ? (replySed as HSed)?.negativeSvar?.dokument : (replySed as HSed)?.positivtSvar?.dokument,
+        sed: svarChanged ? (replySed as HSed)?.negativeSvar?.sed : (replySed as HSed)?.positivtSvar?.sed
       }
       if (!svarChanged) {
         // @ts-ignore
@@ -76,13 +78,13 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
       dispatch(setReplySed({
         ...replySed,
         positivtSvar: newPositivtSvar,
-        negativeSvar: []
+        negativeSvar: {}
       }))
     } else {
       const newNegativtSvar = {
-        informasjon: svarChanged ? (replySed as HSed)?.positivtSvar?.informasjon : (replySed as HSed)?.negativeSvar?.[0]?.informasjon,
-        dokument: svarChanged ? (replySed as HSed)?.positivtSvar?.dokument : (replySed as HSed)?.negativeSvar?.[0]?.dokument,
-        sed: svarChanged ? (replySed as HSed)?.positivtSvar?.sed : (replySed as HSed)?.negativeSvar?.[0]?.sed
+        informasjon: svarChanged ? (replySed as HSed)?.positivtSvar?.informasjon : (replySed as HSed)?.negativeSvar?.informasjon,
+        dokument: svarChanged ? (replySed as HSed)?.positivtSvar?.dokument : (replySed as HSed)?.negativeSvar?.dokument,
+        sed: svarChanged ? (replySed as HSed)?.positivtSvar?.sed : (replySed as HSed)?.negativeSvar?.sed
       }
       if (!svarChanged) {
         // @ts-ignore
@@ -92,7 +94,7 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
       dispatch(setReplySed({
         ...replySed,
         positivtSvar: {},
-        negativeSvar: [newNegativtSvar]
+        negativeSvar: newNegativtSvar
       }))
     }
   }
@@ -135,7 +137,7 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const data = _svar === 'positivt' ? (replySed as HSed)?.positivtSvar : (replySed as HSed)?.negativeSvar?.[0]
+  const data = _svar === 'positivt' ? (replySed as HSed)?.positivtSvar : (replySed as HSed)?.negativeSvar
 
   return (
     <PaddedDiv>
