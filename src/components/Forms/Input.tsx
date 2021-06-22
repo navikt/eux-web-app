@@ -9,6 +9,7 @@ export interface InputProps {
   namespace: string
   id: string
   label: JSX.Element | string
+  min ?: string
   onChanged: (e: string) => void
   placeholder?: string
   required ?: boolean
@@ -21,6 +22,7 @@ const Input: React.FC<InputProps> = ({
   feil,
   id,
   label,
+  min,
   namespace,
   onChanged,
   placeholder,
@@ -55,6 +57,7 @@ const Input: React.FC<InputProps> = ({
       required={required}
       type={type}
       value={_value}
+      min={min}
     />
   )
 }

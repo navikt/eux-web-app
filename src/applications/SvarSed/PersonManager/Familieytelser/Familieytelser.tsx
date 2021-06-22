@@ -55,7 +55,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
     validation
   } = useSelector<State, FamilieYtelserSelector>(mapState)
   const dispatch = useDispatch()
-  const target: string = `${personID}.motregning[0]`
+  const target: string = `${personID}.motregninger[0]`
   const motregning: Motregning = _.get(replySed, target)
   const namespace: string = `${parentNamespace}-${personID}-familieytelser`
 
@@ -147,6 +147,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
         <Column>
           <Input
             type='number'
+            min='0'
             feil={validation[namespace + '-number']?.feilmelding}
             namespace={namespace}
             id='number'
@@ -161,6 +162,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
         <Column>
           <Input
             type='number'
+            min='0'
             feil={validation[namespace + '-beloep']?.feilmelding}
             namespace={namespace}
             id='beloep'

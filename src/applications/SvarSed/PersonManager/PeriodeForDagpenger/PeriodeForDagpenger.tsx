@@ -159,7 +159,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
             id={namespace + '-kjentinstitusjon'}
             className={classNames('slideInFromLeft')}
             data-test-id={namespace + '-kjentinstitusjon'}
-            legend={t('label:vedtak-angående-alle-barn') + ' *'}
+            legend={t('label:institusjonens-id-er-kjent') + ' *'}
             feil={validation[namespace + '-kjentinstitusjon']?.feilmelding}
           >
             <VerticalSeparatorDiv size='0.5' />

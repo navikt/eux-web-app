@@ -472,7 +472,7 @@
         "utbetalingshyppighet": "F002 barn2 ytelse utbetalingshyppighet",
         "ytelseNavn": "F002 barn2 ytelse ytelse",
         "mottakersNavn": "F002 barn2 ytelse mottakersNavn",
-        "barnetsNavn": "F002 barn2 ytelse barnetsNavn"
+        "barnetsNavn": ""
       },
       "motregning": {
         "startdato": "2045-01-01",
@@ -482,7 +482,7 @@
         "utbetalingshyppighet": "F002 barn2 motregning utbetalingshyppighet",
         "ytelseNavn": "F002 barn2 motregning ytelse",
         "mottakersNavn": "F002 barn2 motregning mottakersNavn",
-        "barnetsNavn": "F002 barn2 motregning barnetsNavn",
+        "barnetsNavn": "",
         "vedtaksdato": "2047-01-01",
         "begrunnelse": "F002 barn2 motregning begrunnelse",
         "ytterligereInfo": "F002 barn2 motregning ytterligereInfo"

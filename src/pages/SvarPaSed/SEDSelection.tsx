@@ -34,7 +34,7 @@ import NavHighContrast, {
   themeKeys,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
-import { validateSEDSelection } from 'pages/SvarPaSed/validation'
+import { validateSEDSelection } from 'pages/SvarPaSed/mainValidation'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'

@@ -37,7 +37,7 @@ import ReactJson from 'react-json-view'
 import { useDispatch, useSelector } from 'react-redux'
 import { getFnr } from 'utils/fnr'
 import { isFSed, isHSed, isSed, isUSed } from 'utils/sed'
-import { validateSEDEditor, ValidationSEDEditorProps } from './validation'
+import { validateSEDEditor, ValidationSEDEditorProps } from './mainValidation'
 
 import TextArea from 'components/Forms/TextArea'
 
@@ -98,6 +98,11 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
       if (valid) {
         setViewSendSedModal(true)
         delete replySed.xxxformaal
+        delete replySed.xxxsisteAnsettelsesForhold
+        delete replySed.xxxretttilytelser
+        delete replySed.xxxgrunntilopphør
+        delete replySed.xxxinntekt
+        delete replySed.xxxperiodefordagpenger
         dispatch(createSed(replySed))
         dispatch(resetAllValidation())
       }

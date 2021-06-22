@@ -62,14 +62,6 @@ export const validateAllGrunnlagForBosetting = (
     hasErrors = hasErrors || periodErrors
   })
 
-  if (_.isEmpty(flyttegrunn?.datoFlyttetTilAvsenderlandet)) {
-    v[namespace + '-datoFlyttetTilAvsenderlandet'] = {
-      skjemaelementId: namespace + '-datoFlyttetTilAvsenderlandet',
-      feilmelding: t('message:validation-noDateForPerson', { person: personName })
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-
   if (!_.isEmpty(flyttegrunn?.datoFlyttetTilAvsenderlandet) && !flyttegrunn?.datoFlyttetTilAvsenderlandet.match(datePattern)) {
     v[namespace + '-datoFlyttetTilAvsenderlandet'] = {
       skjemaelementId: namespace + '-datoFlyttetTilAvsenderlandet',
