@@ -31,7 +31,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
     highContrast
   } = useSelector<State, ForsikringSelector>(mapState)
   // TODO add target
-  // const target = 'xxx-forsikring'
+  // const target = 'xxxforsikring'
   // const xxx: any = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-forsikring`
 

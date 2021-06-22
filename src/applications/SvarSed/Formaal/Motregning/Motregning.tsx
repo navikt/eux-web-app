@@ -9,7 +9,7 @@ import TextArea from 'components/Forms/TextArea'
 import Period from 'components/Period/Period'
 import { HorizontalLineSeparator, TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { F002Sed, FormalMotregning, NavnOgBetegnelse } from 'declarations/sed'
+import { F002Sed, XXXFormalMotregning, NavnOgBetegnelse } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import CountryData, { Currency } from 'land-verktoy'
@@ -54,8 +54,8 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
     validation
   }: any = useSelector<State, MotregningSelector>(mapState)
   const dispatch = useDispatch()
-  const target = 'formaalx.motregning'
-  const motregning: FormalMotregning | undefined = (replySed as F002Sed).formaalx?.motregning
+  const target = 'xxxformaal.motregning'
+  const motregning: XXXFormalMotregning | undefined = (replySed as F002Sed).xxxformaal?.motregning
   const namespace = `${parentNamespace}-motregning`
   const _currencyData = CountryData.getCurrencyInstance('nb')
 

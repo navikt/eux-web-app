@@ -1,9 +1,9 @@
-import { validatePeriod } from 'components/Period/validation'
+import { XXXSisteAnsettelsesForhold } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { TFunction } from 'react-i18next'
 
 export interface ValidationSisteAnsettelsesforholdProps {
-  sisteansettelsesforhold: any
+  sisteansettelsesforhold: XXXSisteAnsettelsesForhold
   namespace: string
   personName: string
 }
@@ -17,10 +17,7 @@ export const validateSisteansettelsesforhold = (
     personName
   }: ValidationSisteAnsettelsesforholdProps
 ): boolean => {
-  const hasErrors = validatePeriod(v, t, {
-    period,
-    namespace
-  })
-
+  const hasErrors = true
+ console.log(v, t, sisteansettelsesforhold, namespace, personName)
   return hasErrors
 }

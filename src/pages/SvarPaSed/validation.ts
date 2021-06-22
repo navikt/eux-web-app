@@ -57,19 +57,19 @@ export const validateFormålManager = (v: Validation, t: TFunction, replySed: Re
 
   if ((replySed as F002Sed).formaal) {
     if ((replySed as F002Sed).formaal.indexOf('motregning') >= 0) {
-      _error = validateMotregning(v, t, _.get(replySed, 'formaalx.motregning'), 'formålmanager-motregning', t('label:motregning').toLowerCase())
+      _error = validateMotregning(v, t, _.get(replySed, 'xxxformaal.motregning'), 'formålmanager-motregning', t('label:motregning').toLowerCase())
       hasErrors = hasErrors || _error
     }
     if ((replySed as F002Sed).formaal.indexOf('vedtak') >= 0) {
-      _error = validateVedtak(v, t, _.get(replySed, 'formaalx.vedtak'), 'formålmanager-vedtak', t('label:vedtak').toLowerCase())
+      _error = validateVedtak(v, t, _.get(replySed, 'xxxformaal.vedtak'), 'formålmanager-vedtak', t('label:vedtak').toLowerCase())
       hasErrors = hasErrors || _error
     }
     if ((replySed as F002Sed).formaal.indexOf('prosedyre_ved_uenighet') >= 0) {
-      _error = validateProsedyreVedUenighet(v, t, _.get(replySed, 'formaalx.prosedyreveduenighet'), 'formålmanager-prosedyreveduenighet', t('label:prosedyre-ved-uenighet').toLowerCase())
+      _error = validateProsedyreVedUenighet(v, t, _.get(replySed, 'xxxformaal.prosedyreveduenighet'), 'formålmanager-prosedyreveduenighet', t('label:prosedyre-ved-uenighet').toLowerCase())
       hasErrors = hasErrors || _error
     }
     if ((replySed as F002Sed).formaal.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0) {
-      _error = validateKravOmRefusjon(v, t, _.get(replySed, 'formaalx.kravomrefusjon'), 'formålmanager-refusjonihenholdtilartikkel58iforordningen', t('label:krav-om-refusjon').toLowerCase())
+      _error = validateKravOmRefusjon(v, t, _.get(replySed, 'xxxformaal.kravomrefusjon'), 'formålmanager-refusjonihenholdtilartikkel58iforordningen', t('label:krav-om-refusjon').toLowerCase())
       hasErrors = hasErrors || _error
     }
     if (!_.isNil((replySed as F002Sed).utbetalingTilInstitusjon)) {
@@ -169,10 +169,9 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
     _error = validateReferanseperiode(v, t, { anmodningsperiode, namespace: `personmanager-${personID}-referanseperiode`, personName })
     hasErrors = hasErrors || _error
 
-    const sisteansettelsesforhold: any = _.get(replySed, `${personID}.xxx-sisteansettelsesforhold`)
+    const sisteansettelsesforhold: any = _.get(replySed, `${personID}.xxxsisteansettelsesforhold`)
     _error = validateSisteansettelsesforhold(v, t, { sisteansettelsesforhold, namespace: `personmanager-${personID}-sisteansettelsesforhold`, personName })
     hasErrors = hasErrors || _error
-
   }
 
   if (isHSed(replySed)) {

@@ -1,5 +1,5 @@
 import { validatePeriod } from 'components/Period/validation'
-import { FormalVedtak, PeriodeMedVedtak } from 'declarations/sed'
+import { XXXFormalVedtak, PeriodeMedVedtak } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
@@ -79,7 +79,7 @@ export const validateVedtakPerioder = (
 export const validateVedtak = (
   v: Validation,
   t: TFunction,
-  vedtak: FormalVedtak,
+  vedtak: XXXFormalVedtak,
   namespace: string,
   personName: string
 ): boolean => {

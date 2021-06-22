@@ -234,19 +234,6 @@ export interface NavnOgBetegnelse {
   betegnelsePåYtelse: string
 }
 
-export interface FormalMotregning {
-  anmodningEllerSvar: string
-  navnOgBetegnelser: Array<NavnOgBetegnelse>
-  beloep: string
-  valuta: string
-  startdato: string
-  sluttdato: string
-  avgrensing: string
-  mottakersNavn: string
-  grunnerTilAnmodning: string
-  ytterligereInfo: string
-}
-
 export interface KontoOrdinaer {
   bankensNavn?: string
   kontonummer?: string
@@ -268,7 +255,25 @@ export interface PeriodeMedVedtak {
   vedtak: string
 }
 
-export interface FormalVedtak {
+export interface Grunn {
+  grunn: string
+  person: Array<string>
+}
+
+export interface XXXFormalMotregning {
+  anmodningEllerSvar: string
+  navnOgBetegnelser: Array<NavnOgBetegnelse>
+  beloep: string
+  valuta: string
+  startdato: string
+  sluttdato: string
+  avgrensing: string
+  mottakersNavn: string
+  grunnerTilAnmodning: string
+  ytterligereInfo: string
+}
+
+export interface XXXFormalVedtak {
   barn: Array<string>
   periode: Periode,
   type: string
@@ -276,33 +281,24 @@ export interface FormalVedtak {
   vedtaksperioder: Array<PeriodeMedVedtak>
 }
 
-export interface Grunn {
-  grunn: string
-  person: Array<string>
-}
 
-export interface FormalProsedyreVedUenighet {
+export interface XXXFormalProsedyreVedUenighet {
   grunner: Array<Grunn>
   ytterligereInfo: string
 }
 
-export interface FormalKravOmRefusjon {
+export interface XXXFormalKravOmRefusjon {
   krav: string
 }
 
-export interface SisteAnsettelse {
-  annenGrunnOpphoerAnsatt: string
-  grunnOpphoerSelvstendig: string
-  opphoerRettighet: string
-  opphoerYtelse: string
-  typeGrunnOpphoerAnsatt: string
-  utbetalinger: Array<{
-    beloep: string
-    feriedagerTilGode: string
-    loennTilDato: string
-    utbetalingType: string
-    valuta: string
-  }>
+export interface XXXSisteAnsettelsesForhold {
+  beloep: string
+  valuta: string
+  mottattDato: string
+  antallDager: string
+  avkall: string
+  grunn: string
+  annenYtelser: string
 }
 
 export interface Barn {
@@ -330,17 +326,17 @@ export interface F002Sed extends FSed {
     kravType: string
   }
   utbetalingTilInstitusjon: UtbetalingTilInstitusjon
-  formaalx?: {
-    motregning?: FormalMotregning
-    vedtak?: FormalVedtak
-    prosedyreveduenighet?: FormalProsedyreVedUenighet
-    kravomrefusjon?: FormalKravOmRefusjon
+  xxxformaal?: {
+    motregning?: XXXFormalMotregning
+    vedtak?: XXXFormalVedtak
+    prosedyreveduenighet?: XXXFormalProsedyreVedUenighet
+    kravomrefusjon?: XXXFormalKravOmRefusjon
   }
 }
 
 export interface U002Sed extends USed {
   perioderAnsattMedForsikring: Array<Arbeidsgiver>
-  sisteAnsettelseInfo: SisteAnsettelse
+  xxxsisteAnsettelsesForhold: XXXSisteAnsettelsesForhold
 }
 
 export interface U004Sed extends USed {

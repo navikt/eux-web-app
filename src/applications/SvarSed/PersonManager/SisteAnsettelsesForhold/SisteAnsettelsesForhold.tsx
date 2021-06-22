@@ -6,7 +6,7 @@ import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { SisteAnsettelse } from 'declarations/sed'
+import { XXXSisteAnsettelsesForhold } from 'declarations/sed'
 import CountryData, { Currency } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
@@ -37,8 +37,8 @@ const SisteAnsettelsesForhold: React.FC<PersonManagerFormProps> = ({
     validation
   } = useSelector<State, SisteAnsettelsesForholdSelector>(mapState)
   const dispatch = useDispatch()
-  const target = 'sisteAnsettelseInfo'
-  const sisteAnsettelseInfo: SisteAnsettelse = _.get(replySed, target)
+  const target = 'xxxsisteAnsettelsesForhold'
+  const sisteAnsettelseInfo: XXXSisteAnsettelsesForhold = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-sisteansettelsesforhold`
 
   const [_typeBeløp, setTypeBeløp] = useState<string | undefined>(undefined)
@@ -142,12 +142,12 @@ const SisteAnsettelsesForhold: React.FC<PersonManagerFormProps> = ({
                 id='beloep'
                 label={t('label:beløp') + ' *'}
                 onChanged={setBeløp}
-                value={xxx?.beloep ?? ''}
+                value={sisteAnsettelseInfo?.beloep ?? ''}
               />
             </Column>
             <Column>
               <CountrySelect
-                key={xxx?.valuta ? _currencyData.findByValue(xxx?.valuta) : ''}
+                key={sisteAnsettelseInfo?.valuta ? _currencyData.findByValue(sisteAnsettelseInfo?.valuta) : ''}
                 closeMenuOnSelect
                 ariaLabel={t('label:valuta')}
                 data-test-id={namespace + '-valuta'}
@@ -159,7 +159,7 @@ const SisteAnsettelsesForhold: React.FC<PersonManagerFormProps> = ({
                 menuPortalTarget={document.body}
                 onOptionSelected={setValuta}
                 type='currency'
-                values={xxx?.valuta ? _currencyData.findByValue(xxx?.valuta) : ''}
+                values={sisteAnsettelseInfo?.valuta ? _currencyData.findByValue(sisteAnsettelseInfo?.valuta) : ''}
               />
             </Column>
           </AlignStartRow>
@@ -171,11 +171,11 @@ const SisteAnsettelsesForhold: React.FC<PersonManagerFormProps> = ({
                   <DateInput
                     feil={validation[namespace + '-mottattdato']?.feilmelding}
                     namespace={namespace}
-                    key={xxx?.mottattDato}
+                    key={sisteAnsettelseInfo?.mottattDato}
                     id='mottattdato'
                     label={t('label:mottatt-dato')}
                     onChanged={setMottakerDato}
-                    value={xxx?.mottattDato}
+                    value={sisteAnsettelseInfo?.mottattDato}
                   />
                 )}
                 {_typeBeløp === 'typebeløp-2' && (
@@ -186,7 +186,7 @@ const SisteAnsettelsesForhold: React.FC<PersonManagerFormProps> = ({
                     id='antalldager'
                     label={t('label:antall-dager') + ' *'}
                     onChanged={setAntallDager}
-                    value={xxx?.antallDager ?? ''}
+                    value={sisteAnsettelseInfo?.antallDager ?? ''}
                   />
                 )}
               </Column>
@@ -207,7 +207,7 @@ const SisteAnsettelsesForhold: React.FC<PersonManagerFormProps> = ({
                   id='avkall'
                   label={t('label:avkall-på-rettigheter')}
                   onChanged={setAvkall}
-                  value={xxx?.avkall}
+                  value={sisteAnsettelseInfo?.avkall}
                 />
               </TextAreaDiv>
             </Column>
@@ -222,7 +222,7 @@ const SisteAnsettelsesForhold: React.FC<PersonManagerFormProps> = ({
                   id='grunn'
                   label={t('label:grunn')}
                   onChanged={setGrunn}
-                  value={xxx?.grunn}
+                  value={sisteAnsettelseInfo?.grunn}
                 />
               </TextAreaDiv>
             </Column>
@@ -237,7 +237,7 @@ const SisteAnsettelsesForhold: React.FC<PersonManagerFormProps> = ({
                   id='annenytelser'
                   label={t('label:annen-ytelser')}
                   onChanged={setAnnenYtelser}
-                  value={xxx?.annenYtelser}
+                  value={sisteAnsettelseInfo?.annenYtelser}
                 />
               </TextAreaDiv>
             </Column>

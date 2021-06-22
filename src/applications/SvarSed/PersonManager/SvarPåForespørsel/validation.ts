@@ -20,14 +20,14 @@ export const validateSvarPåForespørsel = (
   }: ValidationSvarPåForespørselProps
 ): boolean => {
   let hasErrors: boolean = false
-  const doWeHavePositive: boolean = !!(replySed as HSed)?.positivtSvar?.informasjon ||
-    !!(replySed as HSed)?.positivtSvar?.dokument ||
-    !!(replySed as HSed)?.positivtSvar?.sed
+  const doWeHavePositive: boolean = !_.isEmpty((replySed as HSed)?.positivtSvar?.informasjon) ||
+    !_.isEmpty((replySed as HSed)?.positivtSvar?.dokument) ||
+      !_.isEmpty((replySed as HSed)?.positivtSvar?.sed)
 
-  const doWeHaveNegative: boolean = !!(replySed as HSed)?.negativeSvar?.informasjon ||
-    !!(replySed as HSed)?.positivtSvar?.dokument ||
-    !!(replySed as HSed)?.positivtSvar?.sed ||
-    !!(replySed as HSed)?.positivtSvar?.grunn
+  const doWeHaveNegative: boolean = !!((replySed as HSed)?.negativeSvar?.informasjon) ||
+    !_.isEmpty((replySed as HSed)?.negativeSvar?.dokument) ||
+      !_.isEmpty((replySed as HSed)?.negativeSvar?.sed) ||
+        !_.isEmpty((replySed as HSed)?.negativeSvar?.grunn)
 
   if (!doWeHavePositive && !doWeHaveNegative) {
     v[namespace + '-svar'] = {

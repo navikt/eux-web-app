@@ -11,7 +11,7 @@ import Period from 'components/Period/Period'
 import { HorizontalLineSeparator, TextAreaDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import { F002Sed, FormalVedtak, JaNei, PeriodeMedVedtak } from 'declarations/sed'
+import { F002Sed, XXXFormalVedtak, JaNei, PeriodeMedVedtak } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -55,8 +55,8 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
     validation
   }: any = useSelector<State, MotregningSelector>(mapState)
   const dispatch = useDispatch()
-  const target = 'formaalx.vedtak'
-  const vedtak: FormalVedtak | undefined = (replySed as F002Sed).formaalx?.vedtak
+  const target = 'xxxformaal.vedtak'
+  const vedtak: XXXFormalVedtak | undefined = (replySed as F002Sed).xxxformaal?.vedtak
   const namespace = `${parentNamespace}-vedtak`
 
   const howManyBarn: number = (replySed as F002Sed).barn.length ?? 0

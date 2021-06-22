@@ -47,7 +47,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
   } = useSelector<State, PeriodeForDagpengerSelector>(mapState)
   const dispatch = useDispatch()
   // TODO this
-  const target = 'xxx-periodefordagpenger'
+  const target = 'xxxperiodefordagpenger'
   const xxx: any = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-periodefordagpenger`
 

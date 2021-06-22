@@ -68,7 +68,7 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
   } = useSelector<State, ArbeidsforholdSelector>(mapState)
   const dispatch = useDispatch()
   // TODO add target
-  // const target = 'xxx-arbeidsforhold'
+  // const target = 'xxxarbeidsforhold'
   //const anmodningsperiode: Periode = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-arbeidsforhold`
   const fnr = getFnr(replySed)

@@ -46,14 +46,14 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
   } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
 
-  const doWeHavePositive: boolean = !!(replySed as HSed)?.positivtSvar?.informasjon ||
-    !!(replySed as HSed)?.positivtSvar?.dokument ||
-    !!(replySed as HSed)?.positivtSvar?.sed
+  const doWeHavePositive: boolean = !_.isEmpty((replySed as HSed)?.positivtSvar?.informasjon) ||
+    !_.isEmpty((replySed as HSed)?.positivtSvar?.dokument) ||
+    !_.isEmpty((replySed as HSed)?.positivtSvar?.sed)
 
-  const doWeHaveNegative: boolean = !!(replySed as HSed)?.negativeSvar?.informasjon ||
-    !!(replySed as HSed)?.negativeSvar?.dokument ||
-    !!(replySed as HSed)?.negativeSvar?.sed ||
-    !!(replySed as HSed)?.negativeSvar?.grunn
+  const doWeHaveNegative: boolean = !_.isEmpty((replySed as HSed)?.negativeSvar?.informasjon) ||
+    !_.isEmpty((replySed as HSed)?.negativeSvar?.dokument) ||
+    !_.isEmpty((replySed as HSed)?.negativeSvar?.sed) ||
+    !_.isEmpty((replySed as HSed)?.negativeSvar?.grunn)
 
   const [_svar, _setSvar] = useState<HSvarType | undefined>(() =>
     doWeHavePositive

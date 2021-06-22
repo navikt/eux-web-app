@@ -54,8 +54,8 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
     validation
   } = useSelector<State, InntektFormSelector>(mapState)
   const dispatch = useDispatch()
-  const target = 'xxx-inntekt'
-  const xxx: any = _.get(replySed, target)
+  const target = 'xxxinntekt'
+  const inntekt: any = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-inntekt`
 
   const [_filter, _setFilter] = useState<string | undefined>(undefined)
@@ -72,7 +72,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
   }
 
   const setSluttDato = (sluttdato: string) => {
-    const newAnmodningsperiode: Periode = _.cloneDeep(xxx)
+    const newAnmodningsperiode: Periode = _.cloneDeep(inntekt)
     if (sluttdato === '') {
       delete newAnmodningsperiode.sluttdato
       newAnmodningsperiode.aapenPeriodeType = 'åpen_sluttdato'
@@ -105,14 +105,14 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Period
-          key={'' + xxx?.startdato + xxx?.sluttdato}
+          key={'' + inntekt?.startdato + inntekt?.sluttdato}
           namespace={namespace}
           errorStartDato={validation[namespace + '-startdato']?.feilmelding}
           errorSluttDato={validation[namespace + '-sluttdato']?.feilmelding}
           setStartDato={setStartDato}
           setSluttDato={setSluttDato}
-          valueStartDato={xxx?.startdato ?? ''}
-          valueSluttDato={xxx?.sluttdato ?? ''}
+          valueStartDato={inntekt?.startdato ?? ''}
+          valueSluttDato={inntekt?.sluttdato ?? ''}
         />
         <Column>
           <Select

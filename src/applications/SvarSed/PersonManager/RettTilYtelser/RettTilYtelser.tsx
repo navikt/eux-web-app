@@ -37,7 +37,7 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
   } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   // TODO this
-  const target = 'xxx-retttilytelser'
+  const target = 'xxxretttilytelser'
   const xxx: any = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-retttilytelser`
 

@@ -1,4 +1,4 @@
-import { FormalKravOmRefusjon } from 'declarations/sed'
+import { XXXFormalKravOmRefusjon } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
@@ -7,7 +7,7 @@ import { TFunction } from 'react-i18next'
 export const validateKravOmRefusjon = (
   v: Validation,
   t: TFunction,
-  kravOmRefusjon: FormalKravOmRefusjon,
+  kravOmRefusjon: XXXFormalKravOmRefusjon,
   namespace: string,
   personName: string
 ): boolean => {

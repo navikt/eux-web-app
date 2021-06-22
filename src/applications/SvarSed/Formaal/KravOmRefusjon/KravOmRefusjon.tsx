@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { F002Sed, FormalKravOmRefusjon } from 'declarations/sed'
+import { F002Sed, XXXFormalKravOmRefusjon } from 'declarations/sed'
 import { Undertittel } from 'nav-frontend-typografi'
 import { AlignStartRow, Column, HighContrastFlatknapp, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
@@ -28,8 +28,8 @@ const KravOmRefusjon: React.FC<FormålManagerFormProps> = ({
     validation
   }: any = useSelector<State, FormålManagerFormSelector>(mapState)
   const dispatch = useDispatch()
-  const target = 'formaalx.kravomrefusjon'
-  const kravomrefusjon: FormalKravOmRefusjon | undefined = (replySed as F002Sed).formaalx?.kravomrefusjon
+  const target = 'xxxformaal.kravomrefusjon'
+  const kravomrefusjon: XXXFormalKravOmRefusjon | undefined = (replySed as F002Sed).xxxformaal?.kravomrefusjon
   const namespace = `${parentNamespace}-refusjonihenholdtilartikkel58iforordningen`
 
   const setKrav = (newKrav: string) => {

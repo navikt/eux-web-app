@@ -1,5 +1,5 @@
 import { validatePeriod } from 'components/Period/validation'
-import { FormalMotregning, NavnOgBetegnelse } from 'declarations/sed'
+import { XXXFormalMotregning, NavnOgBetegnelse } from 'declarations/sed'
 import { TFunction } from 'react-i18next'
 import { Validation } from 'declarations/types'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
@@ -45,7 +45,7 @@ export const validateMotregningNavnOgBetegnelser = (
 export const validateMotregning = (
   v: Validation,
   t: TFunction,
-  motregning: FormalMotregning = { } as any,
+  motregning: XXXFormalMotregning = { } as any,
   namespace: string,
   formalName: string
 ): boolean => {

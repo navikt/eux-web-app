@@ -1,4 +1,4 @@
-import { FormalProsedyreVedUenighet, Grunn } from 'declarations/sed'
+import { XXXFormalProsedyreVedUenighet, Grunn } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
@@ -67,7 +67,7 @@ export const validateProsedyreVedUenighetGrunn = (
 export const validateProsedyreVedUenighet = (
   v: Validation,
   t: TFunction,
-  prosedyreVedUenighet: FormalProsedyreVedUenighet,
+  prosedyreVedUenighet: XXXFormalProsedyreVedUenighet,
   namespace: string,
   personName?: string
 ): boolean => {

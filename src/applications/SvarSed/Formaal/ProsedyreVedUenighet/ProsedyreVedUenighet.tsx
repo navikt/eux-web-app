@@ -9,7 +9,7 @@ import TextArea from 'components/Forms/TextArea'
 import { HorizontalLineSeparator, TextAreaDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import { F002Sed, FormalProsedyreVedUenighet, Grunn } from 'declarations/sed'
+import { F002Sed, XXXFormalProsedyreVedUenighet, Grunn } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -52,8 +52,8 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
     validation
   }: any = useSelector<State, ProsedyreVedUenighetSelector>(mapState)
   const dispatch = useDispatch()
-  const target = 'formaalx.prosedyreveduenighet'
-  const prosedyreveduenighet: FormalProsedyreVedUenighet | undefined = (replySed as F002Sed).formaalx?.prosedyreveduenighet
+  const target = 'xxxformaal.prosedyreveduenighet'
+  const prosedyreveduenighet: XXXFormalProsedyreVedUenighet | undefined = (replySed as F002Sed).xxxformaal?.prosedyreveduenighet
   const namespace = `${parentNamespace}-prosedyreveduenighet`
 
   const [_newGrunn, _setNewGrunn] = useState<string>('')
