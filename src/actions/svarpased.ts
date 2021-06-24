@@ -39,6 +39,7 @@ export const getPreviewFile = (rinaSakId: string) => {
   return call({
     url: sprintf(urls.API_PREVIEW_URL, {rinaSakId: rinaSakId}),
     expectedPayload: mockPreview,
+    responseType: 'blob',
     type: {
       request: types.SVARPASED_PREVIEW_REQUEST,
       success: types.SVARPASED_PREVIEW_SUCCESS,
