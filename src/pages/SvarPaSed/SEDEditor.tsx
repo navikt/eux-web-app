@@ -39,6 +39,7 @@ import { isFSed, isHSed, isSed, isUSed } from 'utils/sed'
 import { validateSEDEditor, ValidationSEDEditorProps } from './mainValidation'
 
 import TextArea from 'components/Forms/TextArea'
+import _ from 'lodash'
 
 const mapState = (state: State): any => ({
   creatingSvarPaSed: state.loading.creatingSvarPaSed,
@@ -88,6 +89,15 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
     replySed?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0 ||
     replySed?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0
 
+  const cleanReplySed = (replySed: any) => {
+    delete replySed.xxxformaal
+    delete replySed.xxxsisteAnsettelsesForhold
+    delete replySed.xxxretttilytelser
+    delete replySed.xxxgrunntilopphør
+    delete replySed.xxxinntekt
+    delete replySed.xxxperiodefordagpenger
+  }
+
   const sendReplySed = (): void => {
     if (replySed) {
       const valid = performValidation({
@@ -96,12 +106,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
       dispatch(viewValidation())
       if (valid) {
         setViewSendSedModal(true)
-        delete replySed.xxxformaal
-        delete replySed.xxxsisteAnsettelsesForhold
-        delete replySed.xxxretttilytelser
-        delete replySed.xxxgrunntilopphør
-        delete replySed.xxxinntekt
-        delete replySed.xxxperiodefordagpenger
+        cleanReplySed(replySed)
         dispatch(createSed(replySed))
         dispatch(resetAllValidation())
       }
@@ -133,7 +138,12 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   }
 
   const onPreviewSed = () => {
-    dispatch(getPreviewFile(replySed.saksnummer))
+    const newReplySed = _.cloneDeep(replySed)
+    cleanReplySed(newReplySed)
+    const rinaSakId = newReplySed.saksnummer
+    delete newReplySed.saksnummer
+    delete newReplySed.sedUrl
+    dispatch(getPreviewFile(rinaSakId, newReplySed))
   }
 
   const onGoBackClick = () => {
