@@ -183,7 +183,9 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   }
 
   useEffect(() => {
-     showPreviewModal(previewFile)
+    if (!_.isNil(previewFile)) {
+      showPreviewModal(previewFile)
+    }
   }, [previewFile])
 
   return (
