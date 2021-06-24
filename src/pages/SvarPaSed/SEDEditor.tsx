@@ -1,4 +1,4 @@
-import { createSed, updateReplySed } from 'actions/svarpased'
+import { createSed, getPreviewFile, updateReplySed } from 'actions/svarpased'
 import { resetAllValidation, resetValidation, viewValidation } from 'actions/validation'
 import Formaal from 'applications/SvarSed/Formaal/Formaal'
 import FormålManager from 'applications/SvarSed/Formaal/FormålManager'
@@ -33,7 +33,6 @@ import {
 import ValidationBox from 'pages/SvarPaSed/ValidationBox'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import ReactJson from 'react-json-view'
 import { useDispatch, useSelector } from 'react-redux'
 import { getFnr } from 'utils/fnr'
 import { isFSed, isHSed, isSed, isUSed } from 'utils/sed'
@@ -134,14 +133,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   }
 
   const onPreviewSed = () => {
-    setModal({
-      closeButton: true,
-      modalContent: (
-        <div>
-          <ReactJson src={replySed} />
-        </div>
-      )
-    })
+    dispatch(getPreviewFile(replySed.saksnummer))
   }
 
   const onGoBackClick = () => {
