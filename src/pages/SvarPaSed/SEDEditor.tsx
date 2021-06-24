@@ -76,7 +76,6 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
 
   const [_attachments, setAttachments] = useState<JoarkBrowserItems | undefined>(undefined)
   const [_modal, setModal] = useState<ModalContent | undefined>(undefined)
-  const [_previewFile, setPreviewFile] = useState<any | undefined>(undefined)
   const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
   const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
   const performValidation = useGlobalValidation<ValidationSEDEditorProps>(validateSEDEditor)
@@ -117,23 +116,47 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
     setViewSaveSedModal(true)
   }
 
-  const showPreviewModal = (previewFile: File) => {
-    setModal({
-      closeButton: true,
-      modalContent: (
-        <div
-          style={{ cursor: 'pointer' }}
-        >
-          <FileFC
-            file={previewFile}
-            width={600}
-            height={800}
-            tema='simple'
-            viewOnePage={false}
-            onContentClick={() => setModal(undefined)}
-          />
-        </div>
-      )
+  const blobToBase64 = (blob: Blob) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(blob)
+    return new Promise(resolve => {
+      reader.onloadend = () => {
+        resolve(reader.result)
+      }
+    })
+  }
+
+  const showPreviewModal = (previewFile: Blob) => {
+
+    blobToBase64(previewFile).then((base64: any) => {
+
+      let file: File = {
+        id: '' + new Date().getTime(),
+        size: previewFile.size,
+        name: '',
+        mimetype: previewFile.type,
+        content: {
+          base64: base64
+        }
+      }
+
+      setModal({
+        closeButton: true,
+        modalContent: (
+          <div
+            style={{ cursor: 'pointer' }}
+          >
+            <FileFC
+              file={file}
+              width={600}
+              height={800}
+              tema='simple'
+              viewOnePage={false}
+              onContentClick={() => setModal(undefined)}
+            />
+          </div>
+        )
+      })
     })
   }
 
@@ -160,11 +183,8 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   }
 
   useEffect(() => {
-    if (!_previewFile && previewFile) {
-      setPreviewFile(previewFile)
-      showPreviewModal(previewFile)
-    }
-  }, [previewFile, _previewFile])
+     showPreviewModal(previewFile)
+  }, [previewFile])
 
   return (
     <PaddedDiv size='0.5'>

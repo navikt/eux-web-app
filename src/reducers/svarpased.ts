@@ -28,7 +28,7 @@ export const initialSvarpasedState: SvarpasedState = {
   sedCreatedResponse: undefined
 }
 
-const svarpasedReducer = async (
+const svarpasedReducer = (
   state: SvarpasedState = initialSvarpasedState,
   action: Action | ActionWithPayload = { type: '', payload: undefined }
 ) => {
@@ -55,32 +55,11 @@ const svarpasedReducer = async (
         replySed: null
       }
 
-    case types.SVARPASED_PREVIEW_SUCCESS: {
-
-      const blobToBase64 = (blob: Blob) => {
-        const reader = new FileReader()
-        reader.readAsDataURL(blob)
-        return new Promise(resolve => {
-          reader.onloadend = () => {
-            resolve(reader.result)
-          }
-        })
-      }
-
-      let base64 = await blobToBase64((action as ActionWithPayload).payload)
+    case types.SVARPASED_PREVIEW_SUCCESS:
       return {
         ...state,
-        previewFile: {
-          id: new Date().getTime(),
-          size: (action as ActionWithPayload).payload.size,
-          name: '',
-          mimetype: (action as ActionWithPayload).payload.type,
-          content: {
-            base64: base64
-          }
-        }
+        previewFile: (action as ActionWithPayload).payload
       }
-    }
 
     case types.SVARPASED_PREVIEW_FAILURE:
       return {
