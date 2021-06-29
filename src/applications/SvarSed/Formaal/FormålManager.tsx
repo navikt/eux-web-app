@@ -239,7 +239,7 @@ const FormålManager: React.FC = () => {
   return (
     <PileDiv>
       <VerticalSeparatorDiv />
-      <WithErrorPanel className={classNames({ feil: validation[namespace]?.feilmelding })}>
+      <WithErrorPanel border className={classNames({ feil: validation[namespace]?.feilmelding })}>
         <FlexCenterSpacedDiv>
           <LeftDiv>
             {menus.map((menu, index) => (

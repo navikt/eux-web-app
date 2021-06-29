@@ -356,7 +356,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                       })}
                       key={sed + '-' + connectedSed.sedId}
                     >
-                      <SEDPanel>
+                      <SEDPanel border>
                         <FlexDiv>
                           <PileCenterDiv style={{alignItems: 'center'}}>
                             {connectedSed.status === 'received' && <ReceivedIcon />}

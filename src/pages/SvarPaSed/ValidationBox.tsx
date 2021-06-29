@@ -37,7 +37,15 @@ const ValidationBox = (): JSX.Element => {
               <Lenke
                 href={`#${item.skjemaelementId}`} onClick={(e) => {
                   e.preventDefault()
-                  document.dispatchEvent(new CustomEvent('feillenke', { detail: item }))
+                  const element = document.getElementById(item.skjemaelementId)
+                  if (element) {
+                    element?.focus()
+                    element?.scrollIntoView({
+                      behavior: 'smooth'
+                    })
+                  } else {
+                    document.dispatchEvent(new CustomEvent('feillenke', {detail: item}))
+                  }
                 }}
               >
                 {item.feilmelding}

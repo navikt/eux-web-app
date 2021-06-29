@@ -33,7 +33,7 @@ const SEDDetails = () => {
 
   return (
     <NavHighContrast highContrast={highContrast}>
-      <HighContrastPanel>
+      <HighContrastPanel border>
         <FlexDiv>
           <Undertittel>
             {t('label:rina-saksnummer') + ': ' + replySed.saksnummer}

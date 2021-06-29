@@ -54,6 +54,7 @@
   "validation-invalidDateForPerson": "Ugyldig dato til {{person}}",
   "validation-invalidEpostForPerson": "Ugyldig epost adresse til {{person}}",
   "validation-invalidFoedselsdatoForPerson": "Ugyldig fødselsdato til {{person}}",
+  "validation-invalidTema": "Tema kan ikke være 'Generell'",
   "validation-noBoSammen": "Du må velge hvis de bor sammen til {{person}}",
   "validation-noBuctype": "Du må velge buctype",
   "validation-noComment": "Ingen ytterlige forespørsler eller informasjon til SED",

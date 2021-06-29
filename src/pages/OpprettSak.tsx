@@ -529,7 +529,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                       {t('label:familierelasjon')}
                     </Systemtittel>
                     <VerticalSeparatorDiv />
-                    <HighContrastPanel>
+                    <HighContrastPanel border>
                       <Family
                         alertStatus={alertStatus}
                         alertMessage={alertMessage}

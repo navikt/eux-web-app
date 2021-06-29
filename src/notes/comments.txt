@@ -4,12 +4,13 @@
 5. Antall det innvilges for?!
 6. Where are the mandatory / optional fields?
 
---> preview pdf
---> validation: false duplicates in period
 --> 400 login for Z992366
 
-
 i18next.js:22 i18next::translator: missingKey nb message  error-header
+
+- save arbeidsforhold
+- side menu
+- save
 
 
  grep -rho -e "'label:[^']*'" * | sort -u
@@ -17,7 +18,6 @@ i18next.js:22 i18next::translator: missingKey nb message  error-header
 test:
 
 25086820857 -> Q1
-
 01026423488 m/inntekt i Q1
 13077117754 m/inntekt og arbeidsperioder i Q1
 04118107352 m/arbeidsperioder i Q1
@@ -46,8 +46,3 @@ Opprettsak:
 
 --> key in select
 --> when arbeidsgivere list is []
-
-
-deploy:
-1- check <version> in DEploy Maven artifact in NAV IKT's Github package
-2 - https://github.com/navikt/eux-neessi/blob/feature/inntektsperioder/pom.xml

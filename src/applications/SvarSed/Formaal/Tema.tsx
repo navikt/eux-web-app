@@ -7,7 +7,7 @@ import { State } from 'declarations/reducers'
 import { HSed, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { Column, FlexCenterDiv, HighContrastFlatknapp, HorizontalSeparatorDiv, Row } from 'nav-hoykontrast'
+import { Column, FlexBaseDiv, HighContrastFlatknapp, HorizontalSeparatorDiv, Row } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -78,7 +78,7 @@ const Tema: React.FC = () => {
   return (
     <Row>
       <Column>
-        <FlexCenterDiv>
+        <FlexBaseDiv id='editor-tema' className={namespace}>
           <label
             htmlFor={namespace}
             className='skjemaelement__label'
@@ -87,42 +87,42 @@ const Tema: React.FC = () => {
             {t('label:tema')}:
           </label>
           <HorizontalSeparatorDiv size='0.35' />
-          <FlexCenterDiv className={namespace}>
-            {!editMode
-              ? _tema
-                  ? t('tema:' + (replySed as HSed).tema)
-                  : t('label:ukjent')
-              : (
-                <>
-                  <Select
-                    defaultValue={_.find(temaOptions, { value: _tema })}
-                    feil={validation[namespace]?.feilmelding}
-                    highContrast={highContrast}
-                    key={namespace + '-' + _tema + '-select'}
-                    id={namespace + '-select'}
-                    onChange={onTemaChanged}
-                    options={temaOptions}
-                    selectedValue={_.find(temaOptions, { value: _tema })}
-                    style={{ minWidth: '300px' }}
-                  />
-                  <HorizontalSeparatorDiv size='0.5' />
-                  <HighContrastFlatknapp
-                    mini
-                    kompakt
-                    onClick={onSaveChangesClicked}
-                  >
-                    {t('el:button-save')}
-                  </HighContrastFlatknapp>
-                  <HorizontalSeparatorDiv size='0.5' />
-                  <HighContrastFlatknapp
-                    mini
-                    kompakt
-                    onClick={onCancelChangesClicked}
-                  >
-                    {t('el:button-cancel')}
-                  </HighContrastFlatknapp>
-                </>
-                )}
+
+          {!editMode
+            ? _tema
+                ? t('tema:' + (replySed as HSed).tema)
+                : t('label:ukjent')
+            : (
+              <>
+                <Select
+                  defaultValue={_.find(temaOptions, { value: _tema })}
+                  feil={validation[namespace]?.feilmelding}
+                  highContrast={highContrast}
+                  key={namespace + '-' + _tema + '-select'}
+                  id={namespace + '-select'}
+                  onChange={onTemaChanged}
+                  options={temaOptions}
+                  selectedValue={_.find(temaOptions, { value: _tema })}
+                  style={{ minWidth: '300px' }}
+                />
+                <HorizontalSeparatorDiv size='0.5' />
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  onClick={onSaveChangesClicked}
+                >
+                  {t('el:button-save')}
+                </HighContrastFlatknapp>
+                <HorizontalSeparatorDiv size='0.5' />
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  onClick={onCancelChangesClicked}
+                >
+                  {t('el:button-cancel')}
+                </HighContrastFlatknapp>
+              </>
+            )}
             {!editMode && validation[namespace]?.feilmelding && (
               <>
                 <HorizontalSeparatorDiv/>
@@ -133,7 +133,6 @@ const Tema: React.FC = () => {
                 </div>
               </>
             )}
-          </FlexCenterDiv>
           <HorizontalSeparatorDiv />
           {!editMode && (
             <HighContrastFlatknapp
@@ -146,7 +145,7 @@ const Tema: React.FC = () => {
               {t('el:button-edit')}
             </HighContrastFlatknapp>
           )}
-        </FlexCenterDiv>
+        </FlexBaseDiv>
       </Column>
     </Row>
   )

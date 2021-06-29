@@ -500,7 +500,7 @@ const PersonManager: React.FC = () => {
         {t('label:personmanager')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      <WithErrorPanel
+      <WithErrorPanel border
         className={classNames({ feil: validation[namespace]?.feilmelding })}
       >
         <FlexCenterSpacedDiv>

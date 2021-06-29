@@ -261,6 +261,14 @@ export const validateSEDEditor = (
         skjemaelementId: 'editor-tema'
       } as FeiloppsummeringFeil
       hasErrors = true
+    } else {
+      if ((replySed as HSed).tema === 'GEN') {
+        v['editor-tema'] = {
+          feilmelding: t('message:validation-invalidTema'),
+          skjemaelementId: 'editor-tema'
+        } as FeiloppsummeringFeil
+        hasErrors = true
+      }
     }
   }
 

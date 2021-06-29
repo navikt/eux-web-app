@@ -75,7 +75,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
 
   return (
     <NavHighContrast highContrast={highContrast}>
-      <HighContrastPanel>
+      <HighContrastPanel border>
         <LoadSaveDiv>
           {_loadingSavedItems && (<WaitingPanel />)}
           {_savedEntries === null || _.isEmpty(_savedEntries)
