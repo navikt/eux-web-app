@@ -81,7 +81,6 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
           <ExpandingPanel
             open
             renderContentWhenClosed
-            highContrast={highContrast}
             heading={(
               <Undertittel>
                 {_.find(periodeOptions, p => p.value === type)?.label}

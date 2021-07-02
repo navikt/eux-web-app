@@ -1,14 +1,12 @@
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import { FlexEtikett } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
-import { State } from 'declarations/reducers'
 import { LocalStorageEntry } from 'declarations/types'
 import _ from 'lodash'
 import { Normaltekst, UndertekstBold } from 'nav-frontend-typografi'
-import NavHighContrast, { FlexCenterSpacedDiv, FlexDiv, FlexBaseSpacedDiv, PileDiv, HighContrastFlatknapp, HighContrastPanel, VerticalSeparatorDiv, HorizontalSeparatorDiv } from 'nav-hoykontrast'
+import { FlexCenterSpacedDiv, FlexDiv, FlexBaseSpacedDiv, PileDiv, HighContrastFlatknapp, HighContrastPanel, VerticalSeparatorDiv, HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 const LoadSaveDiv = styled(FlexDiv)`
@@ -22,15 +20,10 @@ interface SEDLoadSaveProps {
   storageKey: string
 }
 
-const mapState = (state: State): any => ({
-  highContrast: state.ui.highContrast
-})
-
 const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent extends any>({
   onLoad,
   storageKey
 }: SEDLoadSaveProps) => {
-  const { highContrast } = useSelector<State, any>(mapState)
   const [_savedEntries, setSavedEntries] = useState<Array<LocalStorageEntry<CustomLocalStorageContent>> | null | undefined>(undefined)
   const [_loadingSavedItems, setLoadingSavedItems] = useState<boolean>(false)
   const [_confirmDelete, setConfirmDelete] = useState<Array<string>>([])
@@ -74,7 +67,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
   }, [_savedEntries, _loadingSavedItems])
 
   return (
-    <NavHighContrast highContrast={highContrast}>
+
       <HighContrastPanel border>
         <LoadSaveDiv>
           {_loadingSavedItems && (<WaitingPanel />)}
@@ -163,7 +156,6 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
           })}
         </LoadSaveDiv>
       </HighContrastPanel>
-    </NavHighContrast>
   )
 }
 

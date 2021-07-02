@@ -2,7 +2,6 @@ import JoarkBrowser from 'applications/Vedlegg/JoarkBrowser/JoarkBrowser'
 import Document from 'assets/icons/Document'
 import Modal from 'components/Modal/Modal'
 import { JoarkBrowserItems } from 'declarations/attachments'
-import NavHighContrast from 'nav-hoykontrast'
 import PT from 'prop-types'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -36,7 +35,7 @@ const SEDAttachmentModal: React.FC<SEDAttachmentModalProps> = ({
   }
 
   return (
-    <NavHighContrast highContrast={highContrast}>
+
       <Modal
         highContrast={highContrast}
         icon={<Document />}
@@ -65,7 +64,7 @@ const SEDAttachmentModal: React.FC<SEDAttachmentModalProps> = ({
         }}
         onModalClose={onModalClose}
       />
-    </NavHighContrast>
+
   )
 }
 

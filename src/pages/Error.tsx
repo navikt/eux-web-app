@@ -2,12 +2,10 @@ import classNames from 'classnames'
 import ExpandingPanel from 'components/ExpandingPanel/ExpandingPanel'
 import { VerticalSeparatorDiv } from 'nav-hoykontrast'
 import TopContainer from 'components/TopContainer/TopContainer'
-import { State } from 'declarations/reducers'
 import PT from 'prop-types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
-import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 const Content = styled.div`
@@ -40,10 +38,6 @@ export interface ErrorPageSelector {
   highContrast: boolean
 }
 
-const mapState = (state: State): ErrorPageSelector => ({
-  highContrast: state.ui.highContrast
-})
-
 export interface ErrorProps {
   error?: any;
   resetErrorBoundary ?: any
@@ -54,7 +48,6 @@ export const Error = ({ error }: ErrorProps) => {
   const title = t('message:error-page-title')
   const description = t('message:error-page-description')
   const footer = t('message:error-page-footer')
-  const { highContrast } = useSelector<State, ErrorPageSelector>(mapState)
 
   return (
     <TopContainer className={classNames('p-error')}>
@@ -65,7 +58,6 @@ export const Error = ({ error }: ErrorProps) => {
         <Description dangerouslySetInnerHTML={{ __html: description }} />
         {error && (
           <Panel
-            highContrast={highContrast}
             data-test-id='p-error__content-error-id'
             className={classNames('p-error__content-error', 's-border')}
             heading={t('message:error-header')}

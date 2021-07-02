@@ -15,7 +15,7 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import AlertStripe from 'nav-frontend-alertstriper'
 import { Normaltekst, Systemtittel, Undertekst, Undertittel } from 'nav-frontend-typografi'
-import NavHighContrast, {
+import {
   AlignStartRow,
   Column,
   FlexDiv,
@@ -91,7 +91,6 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
   const {
     alertMessage,
     alertType,
-    highContrast,
     mode,
     parentSed,
     previousParentSed,
@@ -157,7 +156,6 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
 
   const filteredSeds = _.filter(seds, (s: Sed) => _filter ? s.sakType.startsWith(_filter) : true)
   return (
-    <NavHighContrast highContrast={highContrast}>
       <ContainerDiv>
         <Systemtittel>
           {t('label:svarsed')}
@@ -418,7 +416,6 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
           </HighContrastRadioGroup>
         )}
       </ContainerDiv>
-    </NavHighContrast>
   )
 }
 

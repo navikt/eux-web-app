@@ -99,7 +99,7 @@
     "redux": "^4.1.0",
     "redux-thunk": "^2.3.0",
     "styled-components": "^5.3.0",
-    "tabell": "^1.5.6"
+    "tabell": "^1.5.7"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",

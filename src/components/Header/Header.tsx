@@ -1,10 +1,9 @@
 import { toggleHighContrast } from 'actions/ui'
-import NavHighContrast, { themeKeys, HighContrastLink, HorizontalSeparatorDiv } from 'nav-hoykontrast'
+import { themeKeys, HighContrastLink, HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import { Saksbehandler } from 'declarations/types'
 import { Undertittel } from 'nav-frontend-typografi'
-import PT from 'prop-types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -59,15 +58,11 @@ export interface HeaderSelector {
   saksbehandler: Saksbehandler | undefined
 }
 
-export interface HeaderProps {
-  highContrast: boolean
-}
-
 export const mapState = (state: State): HeaderSelector => ({
   saksbehandler: state.app.saksbehandler
 })
 
-const Header: React.FC<HeaderProps> = ({ highContrast }: HeaderProps): JSX.Element => {
+const Header: React.FC = (): JSX.Element => {
   const { saksbehandler }: HeaderSelector = useSelector<State, HeaderSelector>(mapState)
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -79,7 +74,6 @@ const Header: React.FC<HeaderProps> = ({ highContrast }: HeaderProps): JSX.Eleme
   const cleanData = () => dispatch({ type: types.APP_CLEAN_DATA })
 
   return (
-    <NavHighContrast highContrast={highContrast}>
       <HeaderContent>
         <Brand>
           <Link to='/' onClick={cleanData}>
@@ -113,12 +107,9 @@ const Header: React.FC<HeaderProps> = ({ highContrast }: HeaderProps): JSX.Eleme
           )}
         </SaksbehandlerDiv>
       </HeaderContent>
-    </NavHighContrast>
   )
 }
 
-Header.propTypes = {
-  highContrast: PT.bool.isRequired
-}
+Header.propTypes = {}
 
 export default Header

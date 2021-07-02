@@ -1,6 +1,6 @@
 import Modal from 'nav-frontend-modal'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
-import NavHighContrast, { FlexDiv, HighContrastHovedknapp, HighContrastKnapp } from 'nav-hoykontrast'
+import { FlexDiv, HighContrastHovedknapp, HighContrastKnapp } from 'nav-hoykontrast'
 import PT from 'prop-types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -21,13 +21,12 @@ const Text = styled(Normaltekst)`
 `
 export interface AbortModalProps {
   closeModal: () => void
-  highContrast: boolean
   isOpen?: boolean
   onAbort: () => void
 }
 
 const AbortModal: React.FC<AbortModalProps> = ({
-  closeModal, highContrast, isOpen = false, onAbort
+  closeModal, isOpen = false, onAbort
 }: AbortModalProps): JSX.Element => {
   const { t } = useTranslation()
   return (
@@ -37,7 +36,7 @@ const AbortModal: React.FC<AbortModalProps> = ({
       closeButton={false}
       contentLabel={t('app:modal-abort-contentLabel')}
     >
-      <NavHighContrast highContrast={highContrast}>
+
         <Content>
           <Undertittel>
             {t('app:modal-abort-title')}
@@ -54,14 +53,12 @@ const AbortModal: React.FC<AbortModalProps> = ({
             </HighContrastKnapp>
           </FlexDiv>
         </Content>
-      </NavHighContrast>
     </Modal>
   )
 }
 
 AbortModal.propTypes = {
   closeModal: PT.func.isRequired,
-  highContrast: PT.bool.isRequired,
   isOpen: PT.bool,
   onAbort: PT.func.isRequired
 }

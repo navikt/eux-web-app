@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import NavHighContrast, { themeKeys, HighContrastFlatknapp, HighContrastHovedknapp, HighContrastKnapp } from 'nav-hoykontrast'
+import { themeKeys, HighContrastFlatknapp, HighContrastHovedknapp, HighContrastKnapp } from 'nav-hoykontrast'
 import { ModalContent } from 'declarations/components'
 import { ModalContentPropType } from 'declarations/components.pt'
 import _ from 'lodash'
@@ -12,7 +12,8 @@ import React, { useEffect, useState } from 'react'
 import styled, { createGlobalStyle } from 'styled-components'
 
 const ModalDiv = styled(ReactModal)`
-  display: block;
+  display: flex;
+  flex-direction: column;
   padding: 1rem 1rem 1rem 1rem;
   border-radius: 4px;
   position: relative;
@@ -94,7 +95,6 @@ export interface ModalProps {
 const Modal: React.FC<ModalProps> = ({
   className,
   icon = undefined,
-  highContrast,
   onModalClose,
   closeButton = true,
   closeButtonLabel = '',
@@ -129,7 +129,7 @@ const Modal: React.FC<ModalProps> = ({
   // ReactModal.setAppElement(appElement)
 
   return (
-    <NavHighContrast highContrast={highContrast}>
+   <>
       <OverlayStyle />
       <ModalDiv
         className={className}
@@ -198,7 +198,7 @@ const Modal: React.FC<ModalProps> = ({
           )}
         </>
       </ModalDiv>
-    </NavHighContrast>
+     </>
   )
 }
 

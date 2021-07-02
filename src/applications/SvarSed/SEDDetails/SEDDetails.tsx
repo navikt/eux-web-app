@@ -3,7 +3,7 @@ import RemoveCircle from 'assets/icons/RemoveCircle'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed.d'
 import { Undertittel } from 'nav-frontend-typografi'
-import NavHighContrast, { HighContrastPanel, HighContrastFlatknapp, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { HighContrastPanel, HighContrastFlatknapp, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -17,13 +17,8 @@ const FlexDiv = styled.div`
   justify-content: space-between;
 `
 
-const mapState = (state: State): any => ({
-  highContrast: state.ui.highContrast
-})
-
 const SEDDetails = () => {
   const { t } = useTranslation()
-  const { highContrast } = useSelector<State, any>(mapState)
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const replySed: ReplySed | undefined = useSelector((state: State): ReplySed | undefined => (state.svarpased.replySed))
   const toggleEditing = () => setIsEditing(!isEditing)
@@ -32,7 +27,7 @@ const SEDDetails = () => {
   }
 
   return (
-    <NavHighContrast highContrast={highContrast}>
+
       <HighContrastPanel border>
         <FlexDiv>
           <Undertittel>
@@ -53,7 +48,6 @@ const SEDDetails = () => {
           ? <SEDDetailsEdit replySed={replySed} onSave={toggleEditing} onCancel={toggleEditing} />
           : <SEDDetailsView replySed={replySed} />}
       </HighContrastPanel>
-    </NavHighContrast>
 
   )
 }
