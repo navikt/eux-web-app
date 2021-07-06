@@ -127,9 +127,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   }
 
   const showPreviewModal = (previewFile: Blob) => {
-
     blobToBase64(previewFile).then((base64: any) => {
-
       let file: File = {
         id: '' + new Date().getTime(),
         size: previewFile.size,

@@ -152,24 +152,54 @@
     "perioderSomAnsatt": [
       {
         "startdato": "1970-01-01",
-        "sluttdato": "1979-12-31"
+        "sluttdato": "1970-12-31"
       },
       {
-        "startdato": "1980-01-01",
-        "sluttdato": "1989-12-31"
+        "startdato": "1971-01-01",
+        "sluttdato": "1971-12-31"
       },
       {
-        "startdato": "1990-01-01",
-        "sluttdato": "1999-12-31"
+        "startdato": "1972-01-01",
+        "sluttdato": "1972-12-31"
       }
     ],
     "perioderSomSelvstendig": [
       {
-        "startdato": "1982-01-02",
-        "sluttdato": "1982-12-30"
+        "startdato": "1973-01-01",
+        "sluttdato": "1973-12-30"
       },
       {
-        "startdato": "1983-01-02",
+        "startdato": "1974-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    ],
+    "perioderSomSykMedLoenn": [
+      {
+        "startdato": "1975-01-01",
+        "sluttdato": "1975-12-30"
+      },
+      {
+        "startdato": "1976-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    ],
+    "perioderSomPermittertMedLoenn": [
+      {
+        "startdato": "1977-01-01",
+        "sluttdato": "1977-12-30"
+      },
+      {
+        "startdato": "1978-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    ],
+    "perioderSomPermittertUtenLoenn": [
+      {
+        "startdato": "1979-01-01",
+        "sluttdato": "1979-12-30"
+      },
+      {
+        "startdato": "1980-01-01",
         "aapenPeriodeType": "åpen_sluttdato"
       }
     ],
@@ -612,8 +642,7 @@
     }
   ],
   "familie": {
-    "motregninger": [
-      {
+    "motregning": {
         "antallPersoner": "3",
         "startdato": "2052-01-01",
         "sluttdato": "2053-01-01",
@@ -625,21 +654,7 @@
         "vedtaksdato": "2054-01-01",
         "begrunnelse": "F002 barn2 familie motregninger begrunnelse 1",
         "ytterligereInfo": "ytterligere"
-      },
-      {
-        "antallPersoner": "3",
-        "startdato": "2055-01-01",
-        "sluttdato": "2056-01-01",
-        "beloep": "600",
-        "valuta": "NOK",
-        "utbetalingshyppighet": "år",
-        "ytelseNavn": "ytelse navn",
-        "mottakersNavn": "F002 barn2 familie motregninger mottakersNavn 2",
-        "vedtaksdato": "2057-01-01",
-        "begrunnelse": "F002 barn2 familie motregninger begrunnelse 2",
-        "ytterligereInfo": "ytterligere"
-      }
-    ]
+    }
   },
   "anmodningsperioder": [
     {

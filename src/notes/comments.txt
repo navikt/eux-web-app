@@ -1,8 +1,117 @@
+Todo:
 
 1. na familierelasjon, pode ser que envie borSammen, etc com REPA/EKTE/etc. Confirmar que backend limpa
-4. familie.motregninger[0] sounds bad
-5. Antall det innvilges for?!
-6. Where are the mandatory / optional fields?
+
+2. Side menu
+3.Personensstatus:
+
+ "perioderSomSykMedLoenn":
+    "perioderSomPermittertMedLoenn":
+    "perioderSomPermittertUtenLoenn":
+
+
+4. 'refusjon_ihht_artikkel_58_i_forordning' : string
+5 .uenighet:
+
+Kan det tenkes at dropdown-en som heter 'Velg grunn til uenighet' har disse valgene:
+  "bosted"
+  "medlemsperiode"
+  "personligSituasjon"
+  "pensjon"
+  "oppholdetsVarighet"
+  "ansettelse"
+..og at 'Personen det gjelder' egentlig er ei radiobutton-liste der man gjør ett valg, og infoen settes sammen slik(?):
+"uenighet": {
+  "bosted": "søker",
+  "medlemsperiode": "søker",
+  "personligSituasjon": "søker",
+  "pensjon": "søker",
+  "oppholdetsVarighet": "søker",
+  "ansettelse": "søker",
+  "ytterligereGrunner": "æøå"
+},
+"uenighetKonklusjon": [
+  {
+    "vedtakFraDato": "2001-01-01",
+    "kommentarTilVedtak": "æøå",
+    "tasTilAdministrativKommisjon": "ja",
+    "grunnTilUenighet": "æøå"
+  }
+],
+
+
+6. 'refusjonskrav' - ja - string
+7. Vedtak:
+
+"vedtak": {
+  "innhold": "æøå",
+  "ytterligereInfo": "æøå",
+  "vedtakstype": "midlertidig_vedtak",
+  "vedtaksdato": "2001-01-01",
+  "begrunnelse": "æøå",
+  "primaerkompetanseArt58": [
+    {
+      "periode": {
+        "startdato": "2001-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    }
+  ],
+  "sekundaerkompetanseArt58": [
+    {
+      "periode": {
+        "startdato": "2001-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    }
+  ],
+  "primaerkompetanseArt68": [
+    {
+      "periode": {
+        "startdato": "2001-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      },
+      "skalYtelseUtbetales": "ja"
+    }
+  ],
+  "sekundaerkompetanseArt68": [
+    {
+      "periode": {
+        "startdato": "2001-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      },
+      "skalYtelseUtbetales": "ja"
+    }
+  ],
+  "vedtaksperioder": [
+    {
+      "startdato": "2001-01-01",
+      "aapenPeriodeType": "åpen_sluttdato"
+    }
+  ],
+  "barnVedtaketOmfatter": [
+    {
+      "fornavn": "æøå",
+      "etternavn": "æøå",
+      "foedselsdato": "2001-01-01"
+    }
+  ],
+  "gjelderAlleBarn": "ja"
+}
+
+"familie": {
+  "ytelser": [
+    {
+      "antallPersoner": "æøå",
+      "startdato": "2001-01-01",
+      "sluttdato": "2001-01-01",
+      "beloep": "æøå",
+      "valuta": "NOK",
+      "utbetalingshyppighet": "æøå",
+      "ytelseNavn": "æøå",
+      "mottakersNavn": "æøå"
+    }
+  ],
 
 --> 400 login for Z992366
 
@@ -11,7 +120,6 @@ i18next.js:22 i18next::translator: missingKey nb message  error-header
 - save arbeidsforhold
 - side menu
 - save
-
 
  grep -rho -e "'label:[^']*'" * | sort -u
 

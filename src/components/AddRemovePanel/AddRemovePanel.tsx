@@ -1,6 +1,7 @@
 import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
+import { Labels } from 'declarations/app'
 import { Normaltekst } from 'nav-frontend-typografi'
 import { HighContrastFlatknapp, FlexCenterSpacedDiv, HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
@@ -9,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 export interface AddRemovePanelProps {
   candidateForDeletion: boolean
   existingItem: boolean
+  labels?: Labels
   marginTop?: boolean,
   onAddNew?: () => void
   onCancelNew?: () => void
@@ -18,6 +20,7 @@ export interface AddRemovePanelProps {
 }
 
 const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
+  labels = {},
   candidateForDeletion,
   existingItem,
   marginTop = undefined,
@@ -33,7 +36,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
     ? (
       <FlexCenterSpacedDiv className={classNames('slideInFromRight', { nolabel: marginTop })}>
         <Normaltekst>
-          {t('label:er-du-sikker')}
+          {labels?.areYouSure ?? t('label:er-du-sikker')}
         </Normaltekst>
         <HorizontalSeparatorDiv size='0.5' />
         <HighContrastFlatknapp
@@ -41,7 +44,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
           kompakt
           onClick={onConfirmRemove}
         >
-          {t('label:ja')}
+          {labels?.yes ?? t('label:ja')}
         </HighContrastFlatknapp>
         <HorizontalSeparatorDiv size='0.5' />
         <HighContrastFlatknapp
@@ -49,7 +52,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
           kompakt
           onClick={onCancelRemove}
         >
-          {t('label:nei')}
+          {labels?.no ?? t('label:nei')}
         </HighContrastFlatknapp>
       </FlexCenterSpacedDiv>
       )
@@ -62,7 +65,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
         >
           {!existingItem ? <Add /> : <Trashcan />}
           <HorizontalSeparatorDiv size='0.5' />
-          {!existingItem ? t('el:button-add') : t('el:button-remove')}
+          {!existingItem ? labels?.add ?? t('el:button-add') : labels?.remove ?? t('el:button-remove')}
         </HighContrastFlatknapp>
         {!existingItem && (
           <>
@@ -72,7 +75,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
               kompakt
               onClick={onCancelNew}
             >
-              {t('el:button-cancel')}
+              {labels?.cancel ?? t('el:button-cancel')}
             </HighContrastFlatknapp>
           </>
         )}

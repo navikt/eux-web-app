@@ -57,7 +57,7 @@ export const validateFormålManager = (v: Validation, t: TFunction, replySed: Re
 
   if ((replySed as F002Sed).formaal) {
     if ((replySed as F002Sed).formaal.indexOf('motregning') >= 0) {
-      _error = validateMotregning(v, t, _.get(replySed, 'xxxformaal.motregning'), 'formålmanager-motregning', t('label:motregning').toLowerCase())
+      _error = validateMotregning(v, t, replySed, 'formålmanager-motregning', t('label:motregning').toLowerCase())
       hasErrors = hasErrors || _error
     }
     if ((replySed as F002Sed).formaal.indexOf('vedtak') >= 0) {
@@ -133,9 +133,15 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
         hasErrors = hasErrors || _error
 
         const perioderSomSelvstendig: Array<Periode> = _.get(replySed, `${personID}.perioderSomSelvstendig`)
-        _error = validateNotAnsattPerioder(v, t, perioderSomSelvstendig, `personmanager-${personID}-personensstatus-notansatt`, personName)
+        const perioderSomSykMedLoenn: Array<Periode> = _.get(replySed, `${personID}.perioderSomSykMedLoenn`)
+        const perioderSomPermittertMedLoenn: Array<Periode> = _.get(replySed, `${personID}.perioderSomPermittertMedLoenn`)
+        const perioderSomPermittertUtenLoenn: Array<Periode> = _.get(replySed, `${personID}.perioderSomPermittertUtenLoenn`)
+        _error = validateNotAnsattPerioder(v, t, perioderSomSelvstendig, `personmanager-${personID}-personensstatus-notansatt-perioderSomSelvstendig`, personName)
+        _error = validateNotAnsattPerioder(v, t, perioderSomSykMedLoenn, `personmanager-${personID}-personensstatus-notansatt-perioderSomSykMedLoenn`, personName)
+        _error = validateNotAnsattPerioder(v, t, perioderSomPermittertMedLoenn, `personmanager-${personID}-personensstatus-notansatt-perioderSomPermittertMedLoenn`, personName)
+        _error = validateNotAnsattPerioder(v, t, perioderSomPermittertUtenLoenn, `personmanager-${personID}-personensstatus-notansatt-perioderSomPermittertUtenLoenn`, personName)
         hasErrors = hasErrors || _error
-
+      
         const perioderMedTrygd: Array<Periode> = _.get(replySed, `${personID}.perioderMedTrygd`)
         _error = validateAvsenderlandetPerioder(v, t, perioderMedTrygd, `personmanager-${personID}-personensstatus-avsenderlandet`, personName)
         hasErrors = hasErrors || _error

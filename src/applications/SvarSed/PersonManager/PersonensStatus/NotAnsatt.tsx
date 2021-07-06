@@ -32,20 +32,31 @@ const mapState = (state: State): PersonManagerFormSelector => ({
   validation: state.validation.status
 })
 
-const NotAnsatt: React.FC<PersonManagerFormProps> = ({
+const type: any = {
+  'arbeidsforhold-2': 'perioderSomSelvstendig',
+  'arbeidsforhold-3': 'perioderSomSykMedLoenn',
+  'arbeidsforhold-4': 'perioderSomPermittertMedLoenn',
+  'arbeidsforhold-5': 'perioderSomPermittertUtenLoenn'
+}
+
+const NotAnsatt: React.FC<PersonManagerFormProps & {arbeidsforhold: string}> = ({
+  arbeidsforhold,
   parentNamespace,
   personID,
-  personName
-}:PersonManagerFormProps): JSX.Element => {
+  personName,
+
+}:PersonManagerFormProps & {arbeidsforhold: string}): JSX.Element => {
   const { t } = useTranslation()
   const {
     replySed,
     validation
   } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
-  const target: string = `${personID}.perioderSomSelvstendig`
-  const perioderSomSelvstendig: Array<Periode> = _.get(replySed, target)
-  const namespace = `${parentNamespace}-notansatt`
+
+  const periodeType: string = type[arbeidsforhold]
+  const target: string = `${personID}.${periodeType}`
+  const replySedPerioder: Array<Periode> = _.get(replySed, target)
+  const namespace = `${parentNamespace}-notansatt-${periodeType}`
 
   const [_newStartDato, _setNewStartDato] = useState<string>('')
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')
@@ -73,7 +84,7 @@ const NotAnsatt: React.FC<PersonManagerFormProps> = ({
       _setNewSluttDato(sluttdato.trim())
       _resetValidation(namespace + '-sluttdato')
     } else {
-      const newPerioder: Array<Periode> = _.cloneDeep(perioderSomSelvstendig)
+      const newPerioder: Array<Periode> = _.cloneDeep(replySedPerioder)
       if (sluttdato === '') {
         delete newPerioder[index].sluttdato
         newPerioder[index].aapenPeriodeType = 'åpen_sluttdato'
@@ -100,7 +111,7 @@ const NotAnsatt: React.FC<PersonManagerFormProps> = ({
   }
 
   const onRemove = (index: number) => {
-    const newPerioder: Array<Periode> = _.cloneDeep(perioderSomSelvstendig)
+    const newPerioder: Array<Periode> = _.cloneDeep(replySedPerioder)
     const deletedPeriods: Array<Periode> = newPerioder.splice(index, 1)
     if (deletedPeriods && deletedPeriods.length > 0) {
       removeFromDeletion(deletedPeriods[0])
@@ -120,13 +131,13 @@ const NotAnsatt: React.FC<PersonManagerFormProps> = ({
 
     const valid: boolean = performValidation({
       periode: newPeriode,
-      perioder: perioderSomSelvstendig,
-      namespace,
+      perioder: replySedPerioder,
+      namespace: namespace,
       personName: personName
     })
 
     if (valid) {
-      let newPerioder: Array<Periode> = _.cloneDeep(perioderSomSelvstendig)
+      let newPerioder: Array<Periode> = _.cloneDeep(replySedPerioder)
       if (_.isNil(newPerioder)) {
         newPerioder = []
       }
@@ -153,7 +164,7 @@ const NotAnsatt: React.FC<PersonManagerFormProps> = ({
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
         >
           <Period
-            key={'' + startdato + sluttdato}
+            key={'' + periodeType + startdato + sluttdato}
             namespace={namespace + idx}
             errorStartDato={getErrorFor(index, 'startdato')}
             errorSluttDato={getErrorFor(index, 'sluttdato')}
@@ -186,7 +197,7 @@ const NotAnsatt: React.FC<PersonManagerFormProps> = ({
         {t('label:ansettelsesperioder')}
       </Undertittel>
       <VerticalSeparatorDiv size={2} />
-      {perioderSomSelvstendig
+      {replySedPerioder
         ?.sort((a, b) =>
           moment(a.startdato, 'YYYY-MM-DD')
             .isSameOrBefore(moment(b.startdato, 'YYYY-MM-DD'))

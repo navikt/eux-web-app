@@ -33,7 +33,14 @@ export const validateWithSubsidiesPeriode = (
     personName: personName
   })
 
-  if (_.find(perioder, p => p.periode.startdato === pensjonPeriode.periode.startdato) !== undefined) {
+  let duplicate: boolean
+  if (_.isNil(index)) {
+    duplicate = _.find(perioder, p => p.periode.startdato === pensjonPeriode.periode?.startdato) !== undefined
+  } else {
+    const otherPerioder: Array<PensjonPeriode> = _.filter(perioder, (p, i) => i !== index)
+    duplicate = _.find(otherPerioder, e => e.periode.startdato === pensjonPeriode.periode?.startdato) !== undefined
+  }
+  if (duplicate) {
     v[namespace + idx + '-periode-startdato'] = {
       skjemaelementId: namespace + idx + '-periode-startdato',
       feilmelding: t('message:validation-duplicateStartDate')

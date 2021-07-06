@@ -27,6 +27,10 @@ export type Utbetalingshyppighet = 'Månedlig'| 'Årlig'
 
 export type HSvarType = 'positivt' | 'negative'
 
+export type BarnaEllerFamilie = 'barna' | 'familie'
+
+export type AnmodningSvarType  = 'anmodning_om_motregning_per_barn' | 'svar_om_anmodning_om_motregning_per_barn'
+
 export interface Adresse {
   by?: string
   bygning?: string
@@ -141,6 +145,9 @@ export interface Person {
   perioderUtenforTrygdeordning ?: Array<Periode>
   perioderSomAnsatt?: Array<Periode>
   perioderSomSelvstendig?: Array<Periode>
+  perioderSomSykMedLoenn?: Array<Periode>
+  perioderSomPermittertMedLoenn?: Array<Periode>
+  perioderSomPermittertUtenLoenn?: Array<Periode>
   personInfo: PersonInfo
   telefon ?: Array<Telefon>
   ytterligereInfo ?: string
@@ -167,12 +174,13 @@ export interface Motregning {
   begrunnelse: string
   beloep: string
   mottakersNavn: string
+  svarType?: AnmodningSvarType
   sluttdato: string
   startdato: string
   utbetalingshyppighet: Utbetalingshyppighet
   valuta: string
   vedtaksdato: string
-  ytelseNavn: string
+  ytelseNavn?: string
   ytterligereInfo: string
 }
 
@@ -260,19 +268,6 @@ export interface Grunn {
   person: Array<string>
 }
 
-export interface XXXFormalMotregning {
-  anmodningEllerSvar: string
-  navnOgBetegnelser: Array<NavnOgBetegnelse>
-  beloep: string
-  valuta: string
-  startdato: string
-  sluttdato: string
-  avgrensing: string
-  mottakersNavn: string
-  grunnerTilAnmodning: string
-  ytterligereInfo: string
-}
-
 export interface XXXFormalVedtak {
   barn: Array<string>
   periode: Periode,
@@ -316,8 +311,8 @@ export interface F002Sed extends FSed {
   ektefelle: Person
   endredeForhold: Array<string>
   familie: {
-    motregninger: Array<Motregning>
-    ytelser?: Array<Ytelse>
+    motregning?: Motregning
+    ytelse?: Ytelse
   }
   krav: {
     infoPresisering: string
@@ -327,7 +322,6 @@ export interface F002Sed extends FSed {
   }
   utbetalingTilInstitusjon: UtbetalingTilInstitusjon
   xxxformaal?: {
-    motregning?: XXXFormalMotregning
     vedtak?: XXXFormalVedtak
     prosedyreveduenighet?: XXXFormalProsedyreVedUenighet
     kravomrefusjon?: XXXFormalKravOmRefusjon

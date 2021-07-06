@@ -14,4 +14,5 @@ export interface ParamPayload {
   value?: any
 }
 
+export type Labels = {[k in string]: string}
 export type SvarPaSedMode = 'selection'| 'editor'

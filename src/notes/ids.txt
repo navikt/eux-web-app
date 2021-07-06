@@ -1,9 +1,14 @@
-comment - {?????}
+
+editor-tema            - {CONNECTED} tema
+editor-ytterligereInfo - {CONNECTED} ytterligereInfo
+editor-sedtype         - {CONNECTED} sedType
+editor-formål          - {CONNECTED} formaal
 
 personmanager-addpersonmodal-fnr       - {INTERNAL} not used
 personmanager-addpersonmodal-navn      - {INTERNAL} not used
 personmanager-addpersonmodal-relasjon  - {INTERNAL} not used
 
+F-Sed, H-Sed
 personmanager-{personID}-adresser-type            - {INTERNAL}  not used
 personmanager-{personID}-adresser-gate            - {INTERNAL}  not used
 personmanager-{personID}-adresser-postnummer      - {INTERNAL}  not used
@@ -19,7 +24,7 @@ personmanager-{personID}-adresser[{i}]-land       - {CONNECTED} {person}.adresse
 personmanager-{personID}-adresser[{i}]-bygning    - {CONNECTED} {person}.adresser[].bygning
 personmanager-{personID}-adresser[{i}]-region     - {CONNECTED} {person}.adresser[].region
 
-barn:
+F-Sed, barn:
 personmanager-{personID}-beløpnavnogvaluta-barnetsNavn          - {CONNECTED} barn[].ytelse.barnetsNavn
 personmanager-{personID}-beløpnavnogvaluta-ytelseNavn           - {CONNECTED} barn[].ytelse.ytelseNavn
 personmanager-{personID}-beløpnavnogvaluta-beloep               - {CONNECTED} barn[].ytelse.beloep
@@ -28,6 +33,7 @@ personmanager-{personID}-beløpnavnogvaluta-startdato            - {CONNECTED} b
 personmanager-{personID}-beløpnavnogvaluta-sluttdato            - {CONNECTED} barn[].ytelse.sluttdato
 personmanager-{personID}-beløpnavnogvaluta-mottakersNavn        - {CONNECTED} barn[].ytelse.mottakersNavn
 personmanager-{personID}-beløpnavnogvaluta-utbetalingshyppighet - {CONNECTED} barn[].ytelse.utbetalingshyppighet
+
 
 personmanager-{personID}-familierelasjon-relasjonType                 - {INTERNAL}  not used
 personmanager-{personID}-familierelasjon-periode-startdato            - {INTERNAL}  not used
@@ -45,14 +51,15 @@ personmanager-{personID}-familierelasjon[{i}]-annenRelasjonDato       - {CONNECT
 personmanager-{personID}-familierelasjon[{i}]-borSammen               - {CONNECTED} {person}.familierelasjoner[].borSammen
 
 hele familien
-personmanager-{personID}-familieytelser-number               - {??????} familie.motregninger[].antallPersoner
-personmanager-{personID}-familieytelser-ytelseNavn           - {CONNECTED} familie.motregninger[0].ytelseNavn
-personmanager-{personID}-familieytelser-beloep               - {CONNECTED} familie.motregninger[0].beloep
-personmanager-{personID}-familieytelser-valuta               - {CONNECTED} familie.motregninger[0].valuta
-personmanager-{personID}-familieytelser-startdato            - {CONNECTED} familie.motregninger[0].startdato
-personmanager-{personID}-familieytelser-sluttdato            - {CONNECTED} familie.motregninger[0].sluttdato
-personmanager-{personID}-familieytelser-mottakersNavn        - {CONNECTED} familie.motregninger[0].mottakersNavn
-personmanager-{personID}-familieytelser-utbetalingshyppighet - {CONNECTED} familie.motregninger[0].utbetalingshyppighet
+TODO
+    personmanager-{personID}-familieytelser-number               - {??????} familie.motregninger[].antallPersoner
+    personmanager-{personID}-familieytelser-ytelseNavn           - {CONNECTED} familie.motregninger[0].ytelseNavn
+    personmanager-{personID}-familieytelser-beloep               - {CONNECTED} familie.motregninger[0].beloep
+    personmanager-{personID}-familieytelser-valuta               - {CONNECTED} familie.motregninger[0].valuta
+    personmanager-{personID}-familieytelser-startdato            - {CONNECTED} familie.motregninger[0].startdato
+    personmanager-{personID}-familieytelser-sluttdato            - {CONNECTED} familie.motregninger[0].sluttdato
+    personmanager-{personID}-familieytelser-mottakersNavn        - {CONNECTED} familie.motregninger[0].mottakersNavn
+    personmanager-{personID}-familieytelser-utbetalingshyppighet - {CONNECTED} familie.motregninger[0].utbetalingshyppighet
 
 personmanager-{personID}-grunnlagforbosetting-perioder-startdato           - {INTERNAL}  not used
 personmanager-{personID}-grunnlagforbosetting-perioder-sluttdato           - {INTERNAL}  not used
@@ -96,12 +103,13 @@ personmanager-{personID}-personensstatus-ansatt-arbeidsgiver[orgnr]-startdato - 
 personmanager-{personID}-personensstatus-ansatt-periode[{i}]-startdato        - {CONNECTED} {person}.perioderSomAnsatt[].startdato
 personmanager-{personID}-personensstatus-ansatt-periode[{i}]-sluttdato        - {CONNECTED} {person}.perioderSomAnsatt[].sluttdato
 
-personmanager-{personID}-personensstatus-avsenderlandet[{i}]-startdato        - {CONNECTED} {person}.perioderMedTrygd[].startdato
-personmanager-{personID}-personensstatus-avsenderlandet[{i}]-sluttdato        - {CONNECTED} {person}.perioderMedTrygd[].sluttdato
-personmanager-{personID}-personensstatus-notansatt-startdato                  - {INTERNAL}  not used
-personmanager-{personID}-personensstatus-notansatt-sluttdato                  - {INTERNAL}  not used
-personmanager-{personID}-personensstatus-notansatt[{i}]-startdato             - {CONNECTED} {person}.perioderSomSelvstendig[].startdato
-personmanager-{personID}-personensstatus-notansatt[{i}]-sluttdato             - {CONNECTED} {person}.perioderSomSelvstendig[].sluttdato
+personmanager-{personID}-personensstatus-avsenderlandet[{i}]-startdato               - {CONNECTED} {person}.perioderMedTrygd[].startdato
+personmanager-{personID}-personensstatus-avsenderlandet[{i}]-sluttdato               - {CONNECTED} {person}.perioderMedTrygd[].sluttdato
+personmanager-{personID}-personensstatus-notansatt-{PSS/PSS/PSP/PSP}-startdato       - {INTERNAL}  not used
+personmanager-{personID}-personensstatus-notansatt-{PSS/PSS/PSP/PSP}-sluttdato       - {INTERNAL}  not used
+personmanager-{personID}-personensstatus-notansatt-{PSS/PSS/PSP/PSP}[{i}]-startdato - {CONNECTED} {person}.{PSS/PSS/PSP/PSP}[].startdato
+personmanager-{personID}-personensstatus-notansatt-{PSS/PSS/PSP/PSP}[{i}]-sluttdato - {CONNECTED} {person}.{PSS/PSS/PSP/PSP}[].sluttdato
+
 personmanager-{personID}-personensstatus-withsubsidies-startdato              - {INTERNAL}  not used
 personmanager-{personID}-personensstatus-withsubsidies-sluttdato              - {INTERNAL}  not used
 personmanager-{personID}-personensstatus-withsubsidies-pensjonytpe            - {INTERNAL}  not used
@@ -151,8 +159,6 @@ personmanager-{personID}-trygdeordninger-perioderMedPensjon[i]-periode-startdato
 personmanager-{personID}-trygdeordninger-perioderMedPensjon[i]-periode-sluttdato   - {CONNECTED} {person}.perioderMedPensjon[].periode.sluttdato
 personmanager-{personID}-trygdeordninger-perioderMedPensjon[i]-pensjontype         - {CONNECTED} {person}.perioderMedPensjon[].pensjonstype
 
-formaal - {CONNECTED} - formaal
-
 kontoopplysninger-begrunnelse              - {CONNECTED} utbetalingTilInstitusjon.begrunnelse
 kontoopplysninger-id                       - {CONNECTED} utbetalingTilInstitusjon.id
 kontoopplysninger-navn                     - {CONNECTED} utbetalingTilInstitusjon.navn
@@ -160,27 +166,31 @@ kontoopplysninger-kontoOrdinaer-sepaKonto  - {CONNECTED} utbetalingTilInstitusjo
 kontoopplysninger-kontoOrdinaer-iban       - {CONNECTED} utbetalingTilInstitusjon.kontoOrdinaer.iban
 kontoopplysninger-kontoOrdinaer-swift      - {CONNECTED} utbetalingTilInstitusjon.kontoOrdinaer.swift
 
-kravomrefusjon-krav - {CONNECTED} - formaalx.kravomrefusjon.krav
+TODO
+    kravomrefusjon-krav - {CONNECTED} - formaalx.kravomrefusjon.krav
 
-motregning-anmodningEllerSvar                      - {CONNECTED} formaalx.morregning.anmodningEllerSvar
-motregning-navnOgBetegnelser[i]-navn               - {CONNECTED} formaalx.morregning.navnOgBetegnelser[].navn
-motregning-navnOgBetegnelser[i]-betegnelsepåytelse - {CONNECTED} formaalx.morregning.navnOgBetegnelser[].betegnelsepåytelse
-motregning-navnOgBetegnelser-navn                  - {INTERNAL}  formaalx.morregning.navnOgBetegnelser.navn
-motregning-navnOgBetegnelser-betegnelsepåytelse    - {INTERNAL}  formaalx.morregning.navnOgBetegnelser.betegnelsepåytelse
-motregning-beloep                                  - {CONNECTED} formaalx.morregning.beloep
-motregning-valuta                                  - {CONNECTED} formaalx.morregning.valuta
-motregning-startdato                               - {CONNECTED} formaalx.morregning.startdato
-motregning-sluttdato                               - {CONNECTED} formaalx.morregning.sluttdato
-motregning-avgrensing                              - {CONNECTED} formaalx.morregning.avgrensing
-motregning-mottakersNavn                           - {CONNECTED} formaalx.morregning.mottakersNavn
-motregning-grunnerTilAnmodning                     - {CONNECTED} formaalx.morregning.grunnerTilAnmodning
-motregning-ytterligereInfo                         - {CONNECTED} formaalx.morregning.ytterligereInfo
+    motregning-anmodningEllerSvar                      - {CONNECTED} {barna[i]|familie}.motregning.svarType
+    motregning-navnOgBetegnelser-navn                  - {INTERNAL} not used
+    motregning-navnOgBetegnelser-betegnelsepåytelse    - {INTERNAL} not used
+    motregning-navnOgBetegnelser[i]-navn               - {CONNECTED} {barna[i]}.motregning.barnetsNavn + sets {barna[i]} for motregning
+    motregning-navnOgBetegnelser[i]-betegnelsepåytelse - {CONNECTED} {barna[i]}.motregning.ytelseNavn
+    motregning-beloep                                  - {CONNECTED} {barna[i]|familie}.motregning.beloep
+    motregning-valuta                                  - {CONNECTED} {barna[i]|familie}.motregning.valuta
+    motregning-startdato                               - {CONNECTED} {barna[i]|familie}.motregnin..startdato
+    motregning-sluttdato                               - {CONNECTED} {barna[i]|familie}.motregning.sluttdato
+    motregning-utbetalingshyppighet                    - {CONNECTED} {barna[i]|familie}.motregning.utbetalingshyppighet
+    motregning-vedtaksdato                             - {CONNECTED} {barna[i]|familie}.motregning.vedtaksdato
+    motregning-mottakersNavn                           - {CONNECTED} {barna[i]|familie}.motregning.mottakersNavn
+    motregning-begrunnelse                             - {CONNECTED} {barna[i]|familie}.motregning.begrunnelse
+    motregning-ytterligereInfo                         - {CONNECTED} {barna[i]|familie}.motregning.ytterligereInfo
 
-prosedyreveduenighet-grunner[i]-grunn  - {CONNECTED} formaalx.prosedyreveduenighet.grunner[i].grunn
-prosedyreveduenighet-grunner[i]-person - {CONNECTED} formaalx.prosedyreveduenighet.grunner[i].grunn
-prosedyreveduenighet-grunner-grunn     - {INTERNAL}  formaalx.prosedyreveduenighet.grunner.grunn
-prosedyreveduenighet-grunner-person    - {INTERNAL}  formaalx.prosedyreveduenighet.grunner.grunn
-prosedyreveduenighet-ytterligereInfo   - {CONNECTED} formaalx.prosedyreveduenighet.ytterligereInfogrunn
+
+TODO
+    prosedyreveduenighet-grunner[i]-grunn  - {CONNECTED} formaalx.prosedyreveduenighet.grunner[i].grunn
+    prosedyreveduenighet-grunner[i]-person - {CONNECTED} formaalx.prosedyreveduenighet.grunner[i].grunn
+    prosedyreveduenighet-grunner-grunn     - {INTERNAL}  formaalx.prosedyreveduenighet.grunner.grunn
+    prosedyreveduenighet-grunner-person    - {INTERNAL}  formaalx.prosedyreveduenighet.grunner.grunn
+    prosedyreveduenighet-ytterligereInfo   - {CONNECTED} formaalx.prosedyreveduenighet.ytterligereInfogrunn
 
 seddetails-anmodningsperiode-startdato      - {INTERNAL}
 seddetails-anmodningsperiode-sluttdato      - {INTERNAL}
@@ -196,15 +206,16 @@ seddetails-typeKrav                         - {GLOBAL}
 seddetails-informasjon                      - {GLOBAL}
 seddetails-opplysninger                     - {GLOBAL}
 
-vedtak-barn                                  - {CONNECTED}
-vedtak-periode-startdato                     - {CONNECTED}
-vedtak-periode-sluttdato                     - {CONNECTED}
-vedtak-type                                  - {CONNECTED}
-vedtak-grunnen                               - {CONNECTED}
-vedtak-vedtaksperioder-periode-startdato     - {INTERNAL}
-vedtak-vedtaksperioder-periode-sluttdato     - {INTERNAL}
-vedtak-vedtaksperioder-vedtak                - {INTERNAL}
-vedtak-vedtaksperioder[i]-periode-startdato  - {CONNECTED}
-vedtak-vedtaksperioder[i]-periode-sluttdato  - {CONNECTED}
-vedtak-vedtaksperioder[i]-vedtak             - {CONNECTED}
+TODO
+    vedtak-barn                                  - {CONNECTED}
+    vedtak-periode-startdato                     - {CONNECTED}
+    vedtak-periode-sluttdato                     - {CONNECTED}
+    vedtak-type                                  - {CONNECTED}
+    vedtak-grunnen                               - {CONNECTED}
+    vedtak-vedtaksperioder-periode-startdato     - {INTERNAL}
+    vedtak-vedtaksperioder-periode-sluttdato     - {INTERNAL}
+    vedtak-vedtaksperioder-vedtak                - {INTERNAL}
+    vedtak-vedtaksperioder[i]-periode-startdato  - {CONNECTED}
+    vedtak-vedtaksperioder[i]-periode-sluttdato  - {CONNECTED}
+    vedtak-vedtaksperioder[i]-vedtak             - {CONNECTED}
 

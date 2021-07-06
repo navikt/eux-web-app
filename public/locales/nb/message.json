@@ -136,6 +136,7 @@
   "validation-noVedtak": "Ingen vedtak",
   "validation-noVedtakTilPerson": "Ingen vedtak til {{person}}",
   "validation-noVedtakTypeTilPerson": "Ingen vedtak type til {{person}}",
+  "validation-noYtelseTilPerson": "Ingen ytelse til {{person}}",
   "validation-textOver500TilPerson": "tekststørrelse over 500 tegn i {{person}}",
   "validation-tilDato2015" : "Datoen må være over 2015",
   "validation-tooMuchTextForPerson" : "Det har for mye tekst til {{person}}",

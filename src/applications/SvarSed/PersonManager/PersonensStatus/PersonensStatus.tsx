@@ -78,6 +78,7 @@ const PersonensStatus: React.FC<PersonManagerFormProps> = ({
                 )
               : (
                 <NotAnsatt
+                  arbeidsforhold={_arbeidsforhold}
                   parentNamespace={namespace}
                   personID={personID}
                   personName={personName}
