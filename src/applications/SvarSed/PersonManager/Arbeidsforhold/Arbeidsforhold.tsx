@@ -69,7 +69,7 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
   const dispatch = useDispatch()
   // TODO add target
   // const target = 'xxxarbeidsforhold'
-  //const anmodningsperiode: Periode = _.get(replySed, target)
+  // const anmodningsperiode: Periode = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-arbeidsforhold`
   const fnr = getFnr(replySed)
 
@@ -326,18 +326,18 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
         <Column>
           <FlexBaseDiv>
             <Undertittel>
-            {t('label:kontoller-inntekt')}
-          </Undertittel>
-          <HorizontalSeparatorDiv/>
-          <HighContrastFlatknapp
-            mini
-            kompakt
-            spinner={gettingInntekter}
-            disabled={gettingInntekter}
-            onClick={onInntektClicked}
+              {t('label:kontoller-inntekt')}
+            </Undertittel>
+            <HorizontalSeparatorDiv />
+            <HighContrastFlatknapp
+              mini
+              kompakt
+              spinner={gettingInntekter}
+              disabled={gettingInntekter}
+              onClick={onInntektClicked}
             >
-            {t('label:fetch-inntekt')}
-          </HighContrastFlatknapp>
+              {t('label:fetch-inntekt')}
+            </HighContrastFlatknapp>
           </FlexBaseDiv>
         </Column>
       </AlignStartRow>

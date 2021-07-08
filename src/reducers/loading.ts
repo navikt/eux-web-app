@@ -27,7 +27,6 @@ export const initialLoadingState: LoadingState = {
   queryingSaksnummerOrFnr: false
 }
 
-
 const loadingReducer = (
   state: LoadingState = initialLoadingState,
   action: Action = { type: '' }

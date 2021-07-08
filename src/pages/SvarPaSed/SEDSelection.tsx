@@ -156,266 +156,266 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
 
   const filteredSeds = _.filter(seds, (s: Sed) => _filter ? s.sakType.startsWith(_filter) : true)
   return (
-      <ContainerDiv>
-        <Systemtittel>
-          {t('label:svarsed')}
-        </Systemtittel>
-        <VerticalSeparatorDiv size='2' />
-        <AlignStartRow
-          className={classNames('slideInFromLeft', { feil: _validation.saksnummerOrFnr })}
-        >
-          <HorizontalSeparatorDiv size='0.2' />
-          <Column flex='2'>
-            <PileDiv>
-              <FlexDiv>
-                <HighContrastInput
-                  ariaLabel={t('label:saksnummer-eller-fnr')}
-                  ariaInvalid={_validation['sedselection-saksnummerOrFnr']?.feilmelding}
-                  bredde='xl'
-                  data-test-id='sedselection-saksnummerOrFnr'
-                  feil={_validation['sedselection-saksnummerOrFnr']?.feilmelding}
-                  id='sedselection-saksnummerOrFnr'
-                  label={t('label:saksnummer-eller-fnr')}
-                  onChange={onSaksnummerOrFnrChange}
-                  placeholder={t('el:placeholder-input-default')}
-                  required
-                  value={_saksnummerOrFnr}
-                />
-                <HorizontalSeparatorDiv />
-                <div className='nolabel'>
-                  <HighContrastKnapp
-                    ariaLabel={t('el:button-search')}
-                    disabled={queryingSaksnummerOrFnr}
-                    spinner={queryingSaksnummerOrFnr}
-                    onClick={onSaksnummerOrFnrClick}
-                  >
-                    <Search />
-                    <HorizontalSeparatorDiv />
-                    {queryingSaksnummerOrFnr
-                      ? t('message:loading-searching')
-                      : t('el:button-search')}
-                  </HighContrastKnapp>
-                </div>
-              </FlexDiv>
-              <VerticalSeparatorDiv size='0.5' />
-              <Normaltekst>
-                {_validMessage}
-              </Normaltekst>
-            </PileDiv>
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv size='3' />
-        {alertMessage && alertType && [types.SVARPASED_SAKSNUMMERORFNR_QUERY_FAILURE].indexOf(alertType) >= 0 && (
-          <>
-            <AlertstripeDiv>
-              <AlertStripe type='advarsel'>
-                {t(alertMessage)}
-              </AlertStripe>
-            </AlertstripeDiv>
-            <VerticalSeparatorDiv />
-          </>
-        )}
-        {seds && (
-          <HighContrastRadioGroup
-            style={{ marginLeft: '0.1rem', marginRight: '0.1rem' }}
-            legend={(
-              <>
-                <span>{
+    <ContainerDiv>
+      <Systemtittel>
+        {t('label:svarsed')}
+      </Systemtittel>
+      <VerticalSeparatorDiv size='2' />
+      <AlignStartRow
+        className={classNames('slideInFromLeft', { feil: _validation.saksnummerOrFnr })}
+      >
+        <HorizontalSeparatorDiv size='0.2' />
+        <Column flex='2'>
+          <PileDiv>
+            <FlexDiv>
+              <HighContrastInput
+                ariaLabel={t('label:saksnummer-eller-fnr')}
+                ariaInvalid={_validation['sedselection-saksnummerOrFnr']?.feilmelding}
+                bredde='xl'
+                data-test-id='sedselection-saksnummerOrFnr'
+                feil={_validation['sedselection-saksnummerOrFnr']?.feilmelding}
+                id='sedselection-saksnummerOrFnr'
+                label={t('label:saksnummer-eller-fnr')}
+                onChange={onSaksnummerOrFnrChange}
+                placeholder={t('el:placeholder-input-default')}
+                required
+                value={_saksnummerOrFnr}
+              />
+              <HorizontalSeparatorDiv />
+              <div className='nolabel'>
+                <HighContrastKnapp
+                  ariaLabel={t('el:button-search')}
+                  disabled={queryingSaksnummerOrFnr}
+                  spinner={queryingSaksnummerOrFnr}
+                  onClick={onSaksnummerOrFnrClick}
+                >
+                  <Search />
+                  <HorizontalSeparatorDiv />
+                  {queryingSaksnummerOrFnr
+                    ? t('message:loading-searching')
+                    : t('el:button-search')}
+                </HighContrastKnapp>
+              </div>
+            </FlexDiv>
+            <VerticalSeparatorDiv size='0.5' />
+            <Normaltekst>
+              {_validMessage}
+            </Normaltekst>
+          </PileDiv>
+        </Column>
+      </AlignStartRow>
+      <VerticalSeparatorDiv size='3' />
+      {alertMessage && alertType && [types.SVARPASED_SAKSNUMMERORFNR_QUERY_FAILURE].indexOf(alertType) >= 0 && (
+        <>
+          <AlertstripeDiv>
+            <AlertStripe type='advarsel'>
+              {t(alertMessage)}
+            </AlertStripe>
+          </AlertstripeDiv>
+          <VerticalSeparatorDiv />
+        </>
+      )}
+      {seds && (
+        <HighContrastRadioGroup
+          style={{ marginLeft: '0.1rem', marginRight: '0.1rem' }}
+          legend={(
+            <>
+              <span>{
                 t('label:antall-treff-for', {
                   saksnummerOrFnr: _saksnummerOrFnr
                 })
               }
-                </span>
-                <HorizontalSeparatorDiv size='0.3' />
-                <span style={{ fontSize: '130%' }}>
-                  {seds.length}
-                </span>
+              </span>
+              <HorizontalSeparatorDiv size='0.3' />
+              <span style={{ fontSize: '130%' }}>
+                {seds.length}
+              </span>
+            </>
+            )}
+        >
+          <FilterDiv>
+            <HighContrastFlatknapp
+              mini
+              kompakt
+              className={classNames({ selected: _filter === undefined })}
+              onClick={() => _setFilter(undefined)}
+            >
+              {t('label:alle') + ' (' + seds.length + ')'}
+            </HighContrastFlatknapp>
+            <HorizontalSeparatorDiv />
+            {familieytelser > 0 && (
+              <>
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  className={classNames({ selected: _filter === 'FB_' })}
+                  onClick={() => _setFilter('FB_')}
+                >
+                  {t('label:familieytelser') + ' (' + familieytelser + ')'}
+                </HighContrastFlatknapp>
+                <HorizontalSeparatorDiv />
               </>
             )}
-          >
-            <FilterDiv>
-              <HighContrastFlatknapp
-                mini
-                kompakt
-                className={classNames({ selected: _filter === undefined })}
-                onClick={() => _setFilter(undefined)}
-              >
-                {t('label:alle') + ' (' + seds.length + ')'}
-              </HighContrastFlatknapp>
-              <HorizontalSeparatorDiv />
-              {familieytelser > 0 && (
-                <>
-                  <HighContrastFlatknapp
-                    mini
-                    kompakt
-                    className={classNames({ selected: _filter === 'FB_' })}
-                    onClick={() => _setFilter('FB_')}
-                  >
-                    {t('label:familieytelser') + ' (' + familieytelser + ')'}
-                  </HighContrastFlatknapp>
-                  <HorizontalSeparatorDiv />
-                </>
-              )}
-              {dagpenger > 0 && (
-                <>
-                  <HighContrastFlatknapp
-                    mini
-                    kompakt
-                    className={classNames({ selected: _filter === 'U_' })}
-                    onClick={() => _setFilter('U_')}
-                  >
-                    {t('label:dagpenger') + ' (' + dagpenger + ')'}
-                  </HighContrastFlatknapp>
-                  <HorizontalSeparatorDiv />
-                </>
-              )}
-              {horisontal > 0 && (
-                <>
-                  <HighContrastFlatknapp
-                    mini
-                    kompakt
-                    className={classNames({ selected: _filter === 'H_' })}
-                    onClick={() => _setFilter('H_')}
-                  >
-                    {t('label:horisontal') + ' (' + horisontal + ')'}
-                  </HighContrastFlatknapp>
-                  <HorizontalSeparatorDiv />
-                </>
-              )}
-              {ssed > 0 && (
-                <>
-                  <HighContrastFlatknapp
-                    mini
-                    kompakt
-                    className={classNames({ selected: _filter === 'S_' })}
-                    onClick={() => _setFilter('S_')}
-                  >
-                    {t('label:S') + ' (' + ssed + ')'}
-                  </HighContrastFlatknapp>
-                  <HorizontalSeparatorDiv />
-                </>
-              )}
-            </FilterDiv>
-            <VerticalSeparatorDiv />
-            {filteredSeds.map((sed: Sed) => {
-              const sedId = sed.sakId + '-' + sed.sakType
-              const alone = filteredSeds?.length === 1
-              return (
-                <div key={sedId}>
-                  <RadioElementBorder
-                    ariaLabel={sed.sakType + ' - ' + sed.sakTittel}
-                    ariaChecked={parentSed === sedId}
-                    checked={alone || parentSed === sedId}
-                    className='slideInFromLeft'
-                    label={(
-                      <>
-                        <Undertittel>
-                          {sed.sakType + ' - ' + sed.sakTittel}
-                        </Undertittel>
-                        <LeftDiv>
+            {dagpenger > 0 && (
+              <>
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  className={classNames({ selected: _filter === 'U_' })}
+                  onClick={() => _setFilter('U_')}
+                >
+                  {t('label:dagpenger') + ' (' + dagpenger + ')'}
+                </HighContrastFlatknapp>
+                <HorizontalSeparatorDiv />
+              </>
+            )}
+            {horisontal > 0 && (
+              <>
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  className={classNames({ selected: _filter === 'H_' })}
+                  onClick={() => _setFilter('H_')}
+                >
+                  {t('label:horisontal') + ' (' + horisontal + ')'}
+                </HighContrastFlatknapp>
+                <HorizontalSeparatorDiv />
+              </>
+            )}
+            {ssed > 0 && (
+              <>
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  className={classNames({ selected: _filter === 'S_' })}
+                  onClick={() => _setFilter('S_')}
+                >
+                  {t('label:S') + ' (' + ssed + ')'}
+                </HighContrastFlatknapp>
+                <HorizontalSeparatorDiv />
+              </>
+            )}
+          </FilterDiv>
+          <VerticalSeparatorDiv />
+          {filteredSeds.map((sed: Sed) => {
+            const sedId = sed.sakId + '-' + sed.sakType
+            const alone = filteredSeds?.length === 1
+            return (
+              <div key={sedId}>
+                <RadioElementBorder
+                  ariaLabel={sed.sakType + ' - ' + sed.sakTittel}
+                  ariaChecked={parentSed === sedId}
+                  checked={alone || parentSed === sedId}
+                  className='slideInFromLeft'
+                  label={(
+                    <>
+                      <Undertittel>
+                        {sed.sakType + ' - ' + sed.sakTittel}
+                      </Undertittel>
+                      <LeftDiv>
+                        <span>
+                          {t('label:saksnummer') + ': ' + sed.sakId}
+                        </span>
+                        <HorizontalSeparatorDiv />
+                        <HighContrastLink target='_blank' href={sed.sakUrl}>
                           <span>
-                            {t('label:saksnummer') + ': ' + sed.sakId}
+                            {t('label:gå-til-rina')}
                           </span>
-                          <HorizontalSeparatorDiv />
-                          <HighContrastLink target='_blank' href={sed.sakUrl}>
-                            <span>
-                              {t('label:gå-til-rina')}
-                            </span>
-                            <HorizontalSeparatorDiv size='0.35' />
-                            <ExternalLink />
-                          </HighContrastLink>
-                        </LeftDiv>
-                        <FlexDiv>
-                          <Normaltekst>
-                            {t('label:motpart')}:
-                          </Normaltekst>
                           <HorizontalSeparatorDiv size='0.35' />
-                          <Normaltekst>
-                            {sed.motpart.join(', ')}
-                          </Normaltekst>
-                        </FlexDiv>
-                        <VerticalSeparatorDiv size='0.3' />
-                        <Etikett>
-                          {t('label:siste-oppdatert') + ': ' + sed.sistEndretDato}
-                        </Etikett>
-                      </>
+                          <ExternalLink />
+                        </HighContrastLink>
+                      </LeftDiv>
+                      <FlexDiv>
+                        <Normaltekst>
+                          {t('label:motpart')}:
+                        </Normaltekst>
+                        <HorizontalSeparatorDiv size='0.35' />
+                        <Normaltekst>
+                          {sed.motpart.join(', ')}
+                        </Normaltekst>
+                      </FlexDiv>
+                      <VerticalSeparatorDiv size='0.3' />
+                      <Etikett>
+                        {t('label:siste-oppdatert') + ': ' + sed.sistEndretDato}
+                      </Etikett>
+                    </>
                   )}
-                    name='sedselection-saksnummerOrFnr-results'
-                    onChange={onParentSedChange}
-                    value={sedId}
-                  />
-                  {sed.sedListe.map((connectedSed: ConnectedSed) => (
-                    <HiddenFormContainer
-                      aria-hidden={!(previousParentSed !== sedId && parentSed === sedId)}
-                      className={classNames({
-                        slideOpen: alone || (previousParentSed !== sedId && parentSed === sedId),
-                        slideClose: previousParentSed === sedId && parentSed !== sedId,
-                        closed: !alone && !((previousParentSed !== sedId && parentSed === sedId) || (previousParentSed === sedId && parentSed !== sedId))
-                      })}
-                      key={sed + '-' + connectedSed.sedId}
-                    >
-                      <SEDPanel border>
-                        <FlexDiv>
-                          <PileCenterDiv style={{alignItems: 'center'}}>
-                            {connectedSed.status === 'received' && <ReceivedIcon />}
-                            {connectedSed.status === 'sent' && <SentIcon />}
-                            {connectedSed.status === 'new' && <FileIcon />}
-                            <VerticalSeparatorDiv size='0.35' />
-                            <Undertekst>
-                              {t('app:status-received-' + connectedSed.status)}
-                            </Undertekst>
-                          </PileCenterDiv>
-                          <HorizontalSeparatorDiv />
-                          <PileDiv flex={2}>
-                            <FlexStartSpacedDiv flex={1}>
-                              <Undertittel>
-                                {connectedSed.sedType} - {connectedSed.sedTittel}
-                              </Undertittel>
-                              {connectedSed.svarsedType
-                                ? (
-                                  <HighContrastHovedknapp
-                                    disabled={queryingReplySed}
-                                    spinner={queryingReplySed}
-                                    mini
-                                    onClick={() => onReplySedClick(connectedSed, sed.sakId)}
-                                  >
-                                    {queryingReplySed
-                                      ? t('message:loading-replying')
-                                      : t('label:besvar-med', {
-                                        sedtype: connectedSed.svarsedType
-                                      })}
-                                  </HighContrastHovedknapp>
-                                  )
-                                : (<div />)}
-                            </FlexStartSpacedDiv>
-                            <FlexDiv>
-                              <HighContrastLink target='_blank' href={connectedSed.sedUrl}>
-                                <span>
-                                  {t('label:gå-til-sed-i-rina')}
-                                </span>
-                                <HorizontalSeparatorDiv size='0.35' />
-                                <ExternalLink />
-                              </HighContrastLink>
-                            </FlexDiv>
-                            <VerticalSeparatorDiv size='0.35' />
-                            <div>
-                              <Etikett>
-                                {t('label:siste-oppdatert') + ': ' + connectedSed.sistEndretDato}
-                              </Etikett>
-                            </div>
-                          </PileDiv>
-                        </FlexDiv>
-                      </SEDPanel>
-                      <VerticalSeparatorDiv />
-                    </HiddenFormContainer>
-                  ))}
-                </div>
-              )
-            })}
+                  name='sedselection-saksnummerOrFnr-results'
+                  onChange={onParentSedChange}
+                  value={sedId}
+                />
+                {sed.sedListe.map((connectedSed: ConnectedSed) => (
+                  <HiddenFormContainer
+                    aria-hidden={!(previousParentSed !== sedId && parentSed === sedId)}
+                    className={classNames({
+                      slideOpen: alone || (previousParentSed !== sedId && parentSed === sedId),
+                      slideClose: previousParentSed === sedId && parentSed !== sedId,
+                      closed: !alone && !((previousParentSed !== sedId && parentSed === sedId) || (previousParentSed === sedId && parentSed !== sedId))
+                    })}
+                    key={sed + '-' + connectedSed.sedId}
+                  >
+                    <SEDPanel border>
+                      <FlexDiv>
+                        <PileCenterDiv style={{ alignItems: 'center' }}>
+                          {connectedSed.status === 'received' && <ReceivedIcon />}
+                          {connectedSed.status === 'sent' && <SentIcon />}
+                          {connectedSed.status === 'new' && <FileIcon />}
+                          <VerticalSeparatorDiv size='0.35' />
+                          <Undertekst>
+                            {t('app:status-received-' + connectedSed.status)}
+                          </Undertekst>
+                        </PileCenterDiv>
+                        <HorizontalSeparatorDiv />
+                        <PileDiv flex={2}>
+                          <FlexStartSpacedDiv flex={1}>
+                            <Undertittel>
+                              {connectedSed.sedType} - {connectedSed.sedTittel}
+                            </Undertittel>
+                            {connectedSed.svarsedType
+                              ? (
+                                <HighContrastHovedknapp
+                                  disabled={queryingReplySed}
+                                  spinner={queryingReplySed}
+                                  mini
+                                  onClick={() => onReplySedClick(connectedSed, sed.sakId)}
+                                >
+                                  {queryingReplySed
+                                    ? t('message:loading-replying')
+                                    : t('label:besvar-med', {
+                                      sedtype: connectedSed.svarsedType
+                                    })}
+                                </HighContrastHovedknapp>
+                                )
+                              : (<div />)}
+                          </FlexStartSpacedDiv>
+                          <FlexDiv>
+                            <HighContrastLink target='_blank' href={connectedSed.sedUrl}>
+                              <span>
+                                {t('label:gå-til-sed-i-rina')}
+                              </span>
+                              <HorizontalSeparatorDiv size='0.35' />
+                              <ExternalLink />
+                            </HighContrastLink>
+                          </FlexDiv>
+                          <VerticalSeparatorDiv size='0.35' />
+                          <div>
+                            <Etikett>
+                              {t('label:siste-oppdatert') + ': ' + connectedSed.sistEndretDato}
+                            </Etikett>
+                          </div>
+                        </PileDiv>
+                      </FlexDiv>
+                    </SEDPanel>
+                    <VerticalSeparatorDiv />
+                  </HiddenFormContainer>
+                ))}
+              </div>
+            )
+          })}
 
-          </HighContrastRadioGroup>
-        )}
-      </ContainerDiv>
+        </HighContrastRadioGroup>
+      )}
+    </ContainerDiv>
   )
 }
 

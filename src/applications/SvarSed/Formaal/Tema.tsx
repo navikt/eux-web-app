@@ -122,17 +122,17 @@ const Tema: React.FC = () => {
                   {t('el:button-cancel')}
                 </HighContrastFlatknapp>
               </>
-            )}
-            {!editMode && validation[namespace]?.feilmelding && (
-              <>
-                <HorizontalSeparatorDiv/>
-                <div className='skjemaelement__feilmelding' style={{marginTop: '0px'}}>
-                  <p className='typo-feilmelding'>
-                    {validation[namespace].feilmelding}
-                  </p>
-                </div>
-              </>
-            )}
+              )}
+          {!editMode && validation[namespace]?.feilmelding && (
+            <>
+              <HorizontalSeparatorDiv />
+              <div className='skjemaelement__feilmelding' style={{ marginTop: '0px' }}>
+                <p className='typo-feilmelding'>
+                  {validation[namespace].feilmelding}
+                </p>
+              </div>
+            </>
+          )}
           <HorizontalSeparatorDiv />
           {!editMode && (
             <HighContrastFlatknapp

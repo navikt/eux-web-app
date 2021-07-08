@@ -29,7 +29,7 @@ export type HSvarType = 'positivt' | 'negative'
 
 export type BarnaEllerFamilie = 'barna' | 'familie'
 
-export type AnmodningSvarType  = 'anmodning_om_motregning_per_barn' | 'svar_om_anmodning_om_motregning_per_barn'
+export type AnmodningSvarType = 'anmodning_om_motregning_per_barn' | 'svar_om_anmodning_om_motregning_per_barn'
 
 export interface Adresse {
   by?: string
@@ -275,7 +275,6 @@ export interface XXXFormalVedtak {
   grunnen: string
   vedtaksperioder: Array<PeriodeMedVedtak>
 }
-
 
 export interface XXXFormalProsedyreVedUenighet {
   grunner: Array<Grunn>

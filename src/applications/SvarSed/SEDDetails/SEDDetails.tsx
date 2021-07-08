@@ -28,26 +28,26 @@ const SEDDetails = () => {
 
   return (
 
-      <HighContrastPanel border>
-        <FlexDiv>
-          <Undertittel>
-            {t('label:rina-saksnummer') + ': ' + replySed.saksnummer}
-          </Undertittel>
-          <HighContrastFlatknapp
-            kompakt
-            style={{
-              marginTop: '-0.5rem',
-              marginRight: '-0.5rem'
-            }}
-          >
-            {isEditing ? <RemoveCircle onClick={toggleEditing} /> : <Edit onClick={toggleEditing} />}
-          </HighContrastFlatknapp>
-        </FlexDiv>
-        <VerticalSeparatorDiv />
-        {isEditing
-          ? <SEDDetailsEdit replySed={replySed} onSave={toggleEditing} onCancel={toggleEditing} />
-          : <SEDDetailsView replySed={replySed} />}
-      </HighContrastPanel>
+    <HighContrastPanel border>
+      <FlexDiv>
+        <Undertittel>
+          {t('label:rina-saksnummer') + ': ' + replySed.saksnummer}
+        </Undertittel>
+        <HighContrastFlatknapp
+          kompakt
+          style={{
+            marginTop: '-0.5rem',
+            marginRight: '-0.5rem'
+          }}
+        >
+          {isEditing ? <RemoveCircle onClick={toggleEditing} /> : <Edit onClick={toggleEditing} />}
+        </HighContrastFlatknapp>
+      </FlexDiv>
+      <VerticalSeparatorDiv />
+      {isEditing
+        ? <SEDDetailsEdit replySed={replySed} onSave={toggleEditing} onCancel={toggleEditing} />
+        : <SEDDetailsView replySed={replySed} />}
+    </HighContrastPanel>
 
   )
 }

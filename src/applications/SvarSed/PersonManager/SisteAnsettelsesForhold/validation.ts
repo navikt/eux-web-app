@@ -18,6 +18,6 @@ export const validateSisteansettelsesforhold = (
   }: ValidationSisteAnsettelsesforholdProps
 ): boolean => {
   const hasErrors = true
- console.log(v, t, sisteansettelsesforhold, namespace, personName)
+  console.log(v, t, sisteansettelsesforhold, namespace, personName)
   return hasErrors
 }

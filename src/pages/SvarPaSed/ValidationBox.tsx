@@ -44,7 +44,7 @@ const ValidationBox = (): JSX.Element => {
                       behavior: 'smooth'
                     })
                   } else {
-                    document.dispatchEvent(new CustomEvent('feillenke', {detail: item}))
+                    document.dispatchEvent(new CustomEvent('feillenke', { detail: item }))
                   }
                 }}
               >

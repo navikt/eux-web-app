@@ -141,7 +141,7 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
         _error = validateNotAnsattPerioder(v, t, perioderSomPermittertMedLoenn, `personmanager-${personID}-personensstatus-notansatt-perioderSomPermittertMedLoenn`, personName)
         _error = validateNotAnsattPerioder(v, t, perioderSomPermittertUtenLoenn, `personmanager-${personID}-personensstatus-notansatt-perioderSomPermittertUtenLoenn`, personName)
         hasErrors = hasErrors || _error
-      
+
         const perioderMedTrygd: Array<Periode> = _.get(replySed, `${personID}.perioderMedTrygd`)
         _error = validateAvsenderlandetPerioder(v, t, perioderMedTrygd, `personmanager-${personID}-personensstatus-avsenderlandet`, personName)
         hasErrors = hasErrors || _error

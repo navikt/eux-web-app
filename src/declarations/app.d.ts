@@ -4,6 +4,7 @@ export interface Option extends OptionTypeBase {
   label: string
   navn?: string
   value: string
+  isDisabled?: boolean
 }
 
 export type Options = Array<Option>

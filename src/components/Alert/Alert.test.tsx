@@ -13,7 +13,7 @@ describe('components/Alert/Alert', () => {
   }
 
   it('Render: match snapshot', () => {
-    wrapper = mount(<Alert {...initialMockProps}/>)
+    wrapper = mount(<Alert {...initialMockProps} />)
     expect(wrapper.isEmptyRender()).toBeFalsy()
     expect(wrapper).toMatchSnapshot()
   })

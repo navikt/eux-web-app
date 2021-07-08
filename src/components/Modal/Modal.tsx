@@ -129,7 +129,7 @@ const Modal: React.FC<ModalProps> = ({
   // ReactModal.setAppElement(appElement)
 
   return (
-   <>
+    <>
       <OverlayStyle />
       <ModalDiv
         className={className}
@@ -198,7 +198,7 @@ const Modal: React.FC<ModalProps> = ({
           )}
         </>
       </ModalDiv>
-     </>
+    </>
   )
 }
 

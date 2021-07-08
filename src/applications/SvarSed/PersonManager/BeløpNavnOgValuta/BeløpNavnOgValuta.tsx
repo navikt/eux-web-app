@@ -40,7 +40,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
   const target: string = `${personID}.ytelse`
   const ytelse: Ytelse = _.get(replySed, target)
   const namespace: string = `${parentNamespace}-${personID}-beløpnavnogvaluta`
-  const [ mounted, setMounted ] = useState<boolean>(false)
+  const [mounted, setMounted] = useState<boolean>(false)
 
   const ytelseNavnOptions: Options = [{
     label: t('el:option-familieytelser-barnetrygd'), value: 'Barnetrygd'
@@ -107,7 +107,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
   useEffect(() => {
     if (!mounted) {
       if (!_.isNil(ytelse) && _.isEmpty(ytelse.barnetsNavn)) {
-        let newBarnetsNavn: string = _.get(replySed, `${personID}.personInfo.fornavn`) + ' ' + _.get(replySed, `${personID}.personInfo.etternavn`)
+        const newBarnetsNavn: string = _.get(replySed, `${personID}.personInfo.fornavn`) + ' ' + _.get(replySed, `${personID}.personInfo.etternavn`)
         dispatch(updateReplySed(`${target}.barnetsNavn`, newBarnetsNavn.trim()))
       }
       setMounted(true)

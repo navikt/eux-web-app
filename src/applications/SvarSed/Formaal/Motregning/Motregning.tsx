@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
+import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
 import Period from 'components/Period/Period'
 import { HorizontalLineSeparator, TextAreaDiv } from 'components/StyledComponents'
@@ -37,6 +38,7 @@ import {
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import { OptionTypeBase } from 'react-select'
 import { getIdx } from 'utils/namespace'
 import { validateMotregningNavnOgBetegnelser, ValidationMotregningNavnOgBetegnelserProps } from './validation'
 
@@ -65,39 +67,50 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
   const namespace = `${parentNamespace}-motregning`
   const _currencyData = CountryData.getCurrencyInstance('nb')
 
-  let barnaList: {[k in string]: NavnOgBetegnelse} = {};
+  const barnaList: {[k in string]: NavnOgBetegnelse} = {}
+  const barnaNameKeys: {[k in string]: any} = {};
 
   // map of barna ID => { navn: barna name, betegnelse: ytelse }
   (replySed as F002Sed).barn.forEach((b: Barn, i: number) => {
+    const name = b.personInfo.fornavn + ' ' + b.personInfo.etternavn
+    barnaNameKeys[name] = {
+      key: 'barn[' + i + ']',
+      id: i
+    }
+
     if (b.motregning && b.motregning.barnetsNavn) {
-      barnaList['barn['  + i +  ']'] = {
-        navn: b.motregning.barnetsNavn,
+      barnaList[name] = {
+        navn: name, // b.motregning.barnetsNavn may be wrong
         betegnelsePåYtelse: b.motregning.ytelseNavn
       } as NavnOgBetegnelse
     }
   })
 
-  const getBarnIdFromNavn = (barnaNavn: string): string | undefined => {
-    return Object.keys(barnaList).find(b => barnaList[b].navn === barnaNavn)
-  }
-
   const _navnOgBetegnelse = Object.values(barnaList).sort((a, b) => a.navn.localeCompare(b.navn))
 
   // toggle between motregning for barna, and motregning for familie
-  const [_barnaEllerFamilie, _setBarnaEllerFamilie] = useState<BarnaEllerFamilie>('barna')
+  const [_barnaEllerFamilie, _setBarnaEllerFamilie] = useState<BarnaEllerFamilie>(() => {
+    if (Object.keys(barnaList).length > 0) {
+      return 'barna'
+    }
+    if (!_.isEmpty(replySed?.familie?.motregning)) {
+      return 'familie'
+    }
+    return 'barna'
+  })
 
   const currentMotregning = () => {
     if (_barnaEllerFamilie === 'barna') {
-      let isThereBarna = Object.keys(barnaList).length > 0
+      const isThereBarna = Object.keys(barnaList).length > 0
       let motregningTemplate: IMotregning = {} as any
       if (isThereBarna) {
-        let firstBarnaKey = Object.keys(barnaList)[0]
-        motregningTemplate = _.get(replySed, `${firstBarnaKey}.motregning`)
+        const firstBarnaName = Object.keys(barnaList)[0]
+        motregningTemplate = _.get(replySed, `${barnaNameKeys[firstBarnaName].key}.motregning`)
       }
       return motregningTemplate
     }
     if (_barnaEllerFamilie === 'familie') {
-      return _.get(replySed, `familie.motregning`) ?? {}
+      return _.get(replySed, 'familie.motregning') ?? {}
     }
   }
 
@@ -110,15 +123,15 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationMotregningNavnOgBetegnelserProps>({}, validateMotregningNavnOgBetegnelser)
 
-  const setSvarTyoe = (newSvarType: AnmodningSvarType) => {
-    let newReplySed = _.cloneDeep(replySed)
+  const setSvarType = (newSvarType: AnmodningSvarType) => {
+    const newReplySed = _.cloneDeep(replySed)
     if (_barnaEllerFamilie === 'barna' as BarnaEllerFamilie) {
-      Object.keys(barnaList).forEach(barnKey => {
-        _.set(newReplySed, `${barnKey}.motregning.svarType`, newSvarType)
+      Object.keys(barnaList).forEach(barnName => {
+        _.set(newReplySed, `${barnaNameKeys[barnName].key}.motregning.svarType`, newSvarType)
       })
     }
     if (_barnaEllerFamilie === 'famile' as BarnaEllerFamilie) {
-      _.set(newReplySed, `familie.motregning.svarType`, newSvarType)
+      _.set(newReplySed, 'familie.motregning.svarType', newSvarType)
     }
 
     dispatch(setReplySed(newReplySed))
@@ -128,14 +141,14 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
   }
 
   const setBarnaEllerFamilie = (newBarnaEllerFamilie: BarnaEllerFamilie) => {
-
-    let newReplySed = _.cloneDeep(replySed)
-    let _motregning = currentMotregning()
+    const newReplySed = _.cloneDeep(replySed)
+    const _motregning = currentMotregning()
 
     if (newBarnaEllerFamilie === 'barna' as BarnaEllerFamilie) {
       newReplySed.barn.forEach((i: number) => {
         newReplySed.barn[i].motregning = _.cloneDeep(_motregning)
       })
+      delete newReplySed.familie.motregning
     }
     if (newBarnaEllerFamilie === 'famile' as BarnaEllerFamilie) {
       delete _motregning.barnetsNavn
@@ -144,6 +157,9 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
         newReplySed.familie = {}
       }
       newReplySed.familie.motregning = _motregning
+      newReplySed.barn.forEach((i: number) => {
+        delete newReplySed.barn[i].motregning
+      })
     }
     dispatch(setReplySed(newReplySed))
     _setBarnaEllerFamilie(newBarnaEllerFamilie)
@@ -154,14 +170,13 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
       _setNewNavn(newNavn)
       _resetValidation(namespace + '-navnOgBetegnelser-navn')
     } else {
-      let newReplySed: ReplySed = _.cloneDeep(replySed)
-      const oldBarnId: string | undefined = getBarnIdFromNavn(oldNavn!)
-      const newBarnId: string | undefined = getBarnIdFromNavn(newNavn!)
-      let motRegningToMove: IMotregning = _.get(newReplySed, `${oldBarnId}.motregning`)
+      const newReplySed: ReplySed = _.cloneDeep(replySed)
+
+      const motRegningToMove: IMotregning = _.get(newReplySed, `${barnaNameKeys[oldNavn!].key}.motregning`)
       motRegningToMove.barnetsNavn = newNavn
-      _.set(newReplySed, `${newBarnId}.motregning`, motRegningToMove)
+      _.set(newReplySed, `${barnaNameKeys[newNavn!].key}.motregning`, motRegningToMove)
       // @ts-ignore
-      delete newReplySed[oldBarnId!].motregning
+      delete newReplySed.barn[barnaNameKeys[oldNavn!].id].motregning
 
       dispatch(setReplySed(newReplySed))
       if (validation[namespace + '-navnOgBetegnelser' + getIdx(index) + '-navn']) {
@@ -176,8 +191,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
       _resetValidation(namespace + '-navnOgBetegnelser-betegnelse')
     } else {
       const navn = _navnOgBetegnelse[index].navn
-      const barnId: string | undefined = getBarnIdFromNavn(navn!)
-      dispatch(updateReplySed(`${barnId}.motregning.ytelseNavn`, newBetegnelse.trim()))
+      dispatch(updateReplySed(`${barnaNameKeys[navn!].key}.motregning.ytelseNavn`, newBetegnelse.trim()))
       if (validation[namespace + '-navnOgBetegnelser' + getIdx(index) + 'betegnelse']) {
         dispatch(resetValidation(namespace + '-navnOgBetegnelser' + getIdx(index) + 'betegnelse'))
       }
@@ -185,15 +199,15 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
   }
 
   const setBeløp = (newBeløp: string) => {
-    let newReplySed = _.cloneDeep(replySed)
+    const newReplySed = _.cloneDeep(replySed)
     if (_barnaEllerFamilie === 'barna' as BarnaEllerFamilie) {
-      Object.keys(barnaList).forEach(barnaKey => {
-         _.set(newReplySed, `${barnaKey}.motregning.beloep`, newBeløp.trim())
+      Object.keys(barnaList).forEach(barnaName => {
+        _.set(newReplySed, `${barnaNameKeys[barnaName].key}.motregning.beloep`, newBeløp.trim())
         dispatch(setReplySed(newReplySed))
       })
     }
     if (_barnaEllerFamilie === 'familie' as BarnaEllerFamilie) {
-      dispatch(updateReplySed( `familie.motregning.beloep`, newBeløp.trim()))
+      dispatch(updateReplySed('familie.motregning.beloep', newBeløp.trim()))
     }
     if (validation[namespace + '-beloep']) {
       dispatch(resetValidation(namespace + '-beloep'))
@@ -201,15 +215,15 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
   }
 
   const setValuta = (newValuta: Currency) => {
-    let newReplySed = _.cloneDeep(replySed)
+    const newReplySed = _.cloneDeep(replySed)
     if (_barnaEllerFamilie === 'barna' as BarnaEllerFamilie) {
-      Object.keys(barnaList).forEach(barnaKey => {
-        _.set(newReplySed, `${barnaKey}.motregning.valuta`, newValuta?.value)
+      Object.keys(barnaList).forEach(barnaName => {
+        _.set(newReplySed, `${barnaNameKeys[barnaName].key}.motregning.valuta`, newValuta?.value)
         dispatch(setReplySed(newReplySed))
       })
     }
     if (_barnaEllerFamilie === 'familie' as BarnaEllerFamilie) {
-      dispatch(updateReplySed( `familie.motregning.valuta`,newValuta?.value))
+      dispatch(updateReplySed('familie.motregning.valuta', newValuta?.value))
     }
     if (validation[namespace + '-valuta']) {
       dispatch(resetValidation(namespace + '-valuta'))
@@ -217,15 +231,15 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
   }
 
   const setStartDato = (newDato: string) => {
-    let newReplySed = _.cloneDeep(replySed)
+    const newReplySed = _.cloneDeep(replySed)
     if (_barnaEllerFamilie === 'barna' as BarnaEllerFamilie) {
-      Object.keys(barnaList).forEach(barnaKey => {
-        _.set(newReplySed, `${barnaKey}.motregning.startdato`, newDato.trim())
+      Object.keys(barnaList).forEach(barnaName => {
+        _.set(newReplySed, `${barnaNameKeys[barnaName].key}.motregning.startdato`, newDato.trim())
         dispatch(setReplySed(newReplySed))
       })
     }
     if (_barnaEllerFamilie === 'familie' as BarnaEllerFamilie) {
-      dispatch(updateReplySed( `familie.motregning.startdato`, newDato.trim()))
+      dispatch(updateReplySed('familie.motregning.startdato', newDato.trim()))
     }
     if (validation[namespace + '-startdato']) {
       dispatch(resetValidation(namespace + '-startdato'))
@@ -233,15 +247,15 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
   }
 
   const setSluttDato = (newDato: string) => {
-    let newReplySed = _.cloneDeep(replySed)
+    const newReplySed = _.cloneDeep(replySed)
     if (_barnaEllerFamilie === 'barna' as BarnaEllerFamilie) {
-      Object.keys(barnaList).forEach(barnaKey => {
-        _.set(newReplySed, `${barnaKey}.motregning.sluttdato`, newDato.trim())
+      Object.keys(barnaList).forEach(barnaName => {
+        _.set(newReplySed, `${barnaNameKeys[barnaName].key}.motregning.sluttdato`, newDato.trim())
         dispatch(setReplySed(newReplySed))
       })
     }
     if (_barnaEllerFamilie === 'familie' as BarnaEllerFamilie) {
-      dispatch(updateReplySed( `familie.motregning.sluttdato`, newDato.trim()))
+      dispatch(updateReplySed('familie.motregning.sluttdato', newDato.trim()))
     }
     if (validation[namespace + '-sluttdato']) {
       dispatch(resetValidation(namespace + '-sluttdato'))
@@ -249,15 +263,15 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
   }
 
   const setVedtaksDato = (newDato: string) => {
-    let newReplySed = _.cloneDeep(replySed)
+    const newReplySed = _.cloneDeep(replySed)
     if (_barnaEllerFamilie === 'barna' as BarnaEllerFamilie) {
-      Object.keys(barnaList).forEach(barnaKey => {
-        _.set(newReplySed, `${barnaKey}.motregning.vedtaksdato`, newDato.trim())
+      Object.keys(barnaList).forEach(barnaName => {
+        _.set(newReplySed, `${barnaNameKeys[barnaName].key}.motregning.vedtaksdato`, newDato.trim())
         dispatch(setReplySed(newReplySed))
       })
     }
     if (_barnaEllerFamilie === 'familie' as BarnaEllerFamilie) {
-      dispatch(updateReplySed( `familie.motregning.vedtaksdato`, newDato.trim()))
+      dispatch(updateReplySed('familie.motregning.vedtaksdato', newDato.trim()))
     }
     if (validation[namespace + '-vedtaksdato']) {
       dispatch(resetValidation(namespace + '-vedtaksdato'))
@@ -265,15 +279,15 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
   }
 
   const setUtbetalingshyppighet = (newUtbetalingshyppighet: string) => {
-    let newReplySed = _.cloneDeep(replySed)
+    const newReplySed = _.cloneDeep(replySed)
     if (_barnaEllerFamilie === 'barna' as BarnaEllerFamilie) {
-      Object.keys(barnaList).forEach(barnaKey => {
-        _.set(newReplySed, `${barnaKey}.motregning.utbetalingshyppighet`, newUtbetalingshyppighet.trim())
+      Object.keys(barnaList).forEach(barnaName => {
+        _.set(newReplySed, `${barnaNameKeys[barnaName].key}.motregning.utbetalingshyppighet`, newUtbetalingshyppighet.trim())
         dispatch(setReplySed(newReplySed))
       })
     }
     if (_barnaEllerFamilie === 'familie' as BarnaEllerFamilie) {
-      dispatch(updateReplySed( `familie.motregning.utbetalingshyppighet`, newUtbetalingshyppighet.trim()))
+      dispatch(updateReplySed('familie.motregning.utbetalingshyppighet', newUtbetalingshyppighet.trim()))
     }
     if (validation[namespace + '-utbetalingshyppighet']) {
       dispatch(resetValidation(namespace + '-utbetalingshyppighet'))
@@ -281,15 +295,15 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
   }
 
   const setMottakersNavn = (mottakersNavn: string) => {
-    let newReplySed = _.cloneDeep(replySed)
+    const newReplySed = _.cloneDeep(replySed)
     if (_barnaEllerFamilie === 'barna' as BarnaEllerFamilie) {
-      Object.keys(barnaList).forEach(barnaKey => {
-        _.set(newReplySed, `${barnaKey}.motregning.mottakersNavn`, mottakersNavn.trim())
+      Object.keys(barnaList).forEach(barnaName => {
+        _.set(newReplySed, `${barnaNameKeys[barnaName].key}.motregning.mottakersNavn`, mottakersNavn.trim())
         dispatch(setReplySed(newReplySed))
       })
     }
     if (_barnaEllerFamilie === 'familie' as BarnaEllerFamilie) {
-      dispatch(updateReplySed( `familie.motregning.mottakersNavn`, mottakersNavn.trim()))
+      dispatch(updateReplySed('familie.motregning.mottakersNavn', mottakersNavn.trim()))
     }
     if (validation[namespace + '-mottakersNavn']) {
       dispatch(resetValidation(namespace + '-mottakersNavn'))
@@ -297,15 +311,15 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
   }
 
   const setBegrunnelse = (newBegrunnelse: string) => {
-    let newReplySed = _.cloneDeep(replySed)
+    const newReplySed = _.cloneDeep(replySed)
     if (_barnaEllerFamilie === 'barna' as BarnaEllerFamilie) {
-      Object.keys(barnaList).forEach(barnaKey => {
-        _.set(newReplySed, `${barnaKey}.motregning.begrunnelse`, newBegrunnelse.trim())
+      Object.keys(barnaList).forEach(barnaName => {
+        _.set(newReplySed, `${barnaNameKeys[barnaName].key}.motregning.begrunnelse`, newBegrunnelse.trim())
         dispatch(setReplySed(newReplySed))
       })
     }
     if (_barnaEllerFamilie === 'familie' as BarnaEllerFamilie) {
-      dispatch(updateReplySed( `familie.motregning.begrunnelse`, newBegrunnelse.trim()))
+      dispatch(updateReplySed('familie.motregning.begrunnelse', newBegrunnelse.trim()))
     }
     if (validation[namespace + '-begrunnelse']) {
       dispatch(resetValidation(namespace + '-begrunnelse'))
@@ -313,15 +327,15 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
   }
 
   const setYtterligereInfo = (newYtterligereInfo: string) => {
-    let newReplySed = _.cloneDeep(replySed)
+    const newReplySed = _.cloneDeep(replySed)
     if (_barnaEllerFamilie === 'barna' as BarnaEllerFamilie) {
-      Object.keys(barnaList).forEach(barnaKey => {
-        _.set(newReplySed, `${barnaKey}.motregning.ytterligereInfo`, newYtterligereInfo.trim())
+      Object.keys(barnaList).forEach(barnaName => {
+        _.set(newReplySed, `${barnaNameKeys[barnaName].key}.motregning.ytterligereInfo`, newYtterligereInfo.trim())
         dispatch(setReplySed(newReplySed))
       })
     }
     if (_barnaEllerFamilie === 'familie' as BarnaEllerFamilie) {
-      dispatch(updateReplySed( `familie.motregning.ytterligereInfo`, newYtterligereInfo.trim()))
+      dispatch(updateReplySed('familie.motregning.ytterligereInfo', newYtterligereInfo.trim()))
     }
     if (validation[namespace + '-ytterligereInfo']) {
       dispatch(resetValidation(namespace + '-ytterligereInfo'))
@@ -339,19 +353,16 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
     resetForm()
   }
 
-
-
   const onRemove = (index: number) => {
-    let newReplySed: ReplySed = _.cloneDeep(replySed)
-    const barnId: string | undefined = getBarnIdFromNavn(_navnOgBetegnelse[index].navn)
+    const newReplySed: ReplySed = _.cloneDeep(replySed)
+    const navn = _navnOgBetegnelse[index].navn
     removeFromDeletion(_navnOgBetegnelse[index])
     // @ts-ignore
-    delete newReplySed[barnId!].motregning
+    delete newReplySed.barn[barnaNameKeys[navn].id].motregning
     dispatch(setReplySed(newReplySed))
   }
 
   const onAdd = () => {
-
     const newNavOgBetegnelse: NavnOgBetegnelse | any = {
       navn: _newNavn?.trim(),
       betegnelsePåYtelse: _newBetegnelse?.trim()
@@ -363,19 +374,17 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
     })
 
     if (valid) {
-
       // get a motregning template from either barn or familie
-      let newMotregning: IMotregning | undefined = undefined
-      let barnId: string = getBarnIdFromNavn(_newNavn!) as string
+      let newMotregning: IMotregning | undefined
 
-      Object.keys(barnaList).forEach(barnKey => {
-        let m: IMotregning = _.get(replySed, `${barnKey}.motregning`)
+      Object.keys(barnaList).forEach(barnName => {
+        const m: IMotregning = _.get(replySed, `${barnaNameKeys[barnName].key}.motregning`)
         if (!_.isEmpty(m)) {
           newMotregning = m
         }
       })
       if (_.isNil(newMotregning)) {
-        newMotregning = _.get(replySed, `familie.motregning`)
+        newMotregning = _.get(replySed, 'familie.motregning')
       }
       if (_.isNil(newMotregning)) {
         newMotregning = {} as any
@@ -384,7 +393,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
       newMotregning!.barnetsNavn = newNavOgBetegnelse.navn
       newMotregning!.ytelseNavn = newNavOgBetegnelse.betegnelsePåYtelse
 
-      dispatch(updateReplySed(`${barnId}.motregning`, newMotregning))
+      dispatch(updateReplySed(`${barnaNameKeys[_newNavn!].key}.motregning`, newMotregning))
       resetForm()
     }
   }
@@ -397,6 +406,15 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
         ? _validation[namespace + '-navnOgBetegnelser' + idx + '-' + el]?.feilmelding
         : validation[namespace + '-navnOgBetegnelser' + idx + '-' + el]?.feilmelding
     )
+
+    const allNames: Array<string> = replySed.barn?.map((b: Barn) => b.personInfo.fornavn + ' ' + b.personInfo.etternavn) ?? []
+    const selectedNames: Array<string> = _navnOgBetegnelse.map(n => n.navn)
+    const allNameOptions = allNames.map(n => ({
+      label: n,
+      value: n,
+      isDisabled: selectedNames.indexOf(n) >= 0
+    }))
+
     return (
       <>
         <AlignStartRow
@@ -404,13 +422,20 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
         >
           <Column>
-            <Input
+            <Select
+              closeMenuOnSelect
+              data-test-id={namespace + '-navn'}
               feil={getErrorFor(index, 'navn')}
-              namespace={namespace + '-navnOgBetegnelser' + idx}
-              id='navn'
+              highContrast={highContrast}
+              id={namespace + '-navn'}
+              key={namespace + '-navn-' + (index < 0 ? _newNavn : nob?.navn)}
               label={t('label:barnets-navn') + ' *'}
-              onChanged={(value: string) => setNavn(value, index, nob?.navn)}
-              value={index < 0 ? _newNavn : nob?.navn}
+              menuPortalTarget={document.body}
+              onChange={(e: OptionTypeBase) => setNavn(e.value, index, nob?.navn)}
+              options={allNameOptions}
+              placeholder={t('el:placeholder-select-default')}
+              selectedValue={_.find(allNameOptions, b => b.value === (index < 0 ? _newNavn : nob?.navn))}
+              defaultValue={_.find(allNameOptions, b => b.value === (index < 0 ? _newNavn : nob?.navn))}
             />
           </Column>
           <Column>
@@ -477,32 +502,31 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
           { label: t('label:anmodning-om-motregning-barn'), value: 'anmodning_om_motregning_per_barn' },
           { label: t('label:anmodning-om-motregning-svar-barn'), value: 'svar_på_anmodning_om_motregning_per_barn' }
         ]}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarTyoe(e.target.value as AnmodningSvarType)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarType(e.target.value as AnmodningSvarType)}
       />
       <VerticalSeparatorDiv />
       {_barnaEllerFamilie === 'barna' && (
         <>
-        {_navnOgBetegnelse?.map(renderRowOfNavnOgBetegnelse)}
-        <HorizontalLineSeparator />
-        <VerticalSeparatorDiv />
-        {_seeNewForm
-          ? renderRowOfNavnOgBetegnelse(null, -1)
-          : (
-            <Row className='slideInFromLeft'>
-              <Column>
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
-                  onClick={() => _setSeeNewForm(true)}
-                >
-                  <Add />
-                  <HorizontalSeparatorDiv size='0.5' />
-                  {t('el:button-add-new-x', { x: t('label:barn').toLowerCase() })}
-                </HighContrastFlatknapp>
-              </Column>
-            </Row>
-            )
-        }
+          {_navnOgBetegnelse?.map(renderRowOfNavnOgBetegnelse)}
+          <HorizontalLineSeparator />
+          <VerticalSeparatorDiv />
+          {_seeNewForm
+            ? renderRowOfNavnOgBetegnelse(null, -1)
+            : (
+              <Row className='slideInFromLeft'>
+                <Column>
+                  <HighContrastFlatknapp
+                    mini
+                    kompakt
+                    onClick={() => _setSeeNewForm(true)}
+                  >
+                    <Add />
+                    <HorizontalSeparatorDiv size='0.5' />
+                    {t('el:button-add-new-x', { x: t('label:barn').toLowerCase() })}
+                  </HighContrastFlatknapp>
+                </Column>
+              </Row>
+              )}
         </>
       )}
       <VerticalSeparatorDiv size='2' />
@@ -526,11 +550,13 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
             value={currentMotregning().vedtaksdato}
           />
         </Column>
+        <Column flex='2' />
       </AlignStartRow>
+      <VerticalSeparatorDiv />
       <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: '0.1s' }}
-        >
+        className={classNames('slideInFromLeft')}
+        style={{ animationDelay: '0.1s' }}
+      >
         <Column>
           <Input
             feil={validation[namespace + '-beloep']?.feilmelding}

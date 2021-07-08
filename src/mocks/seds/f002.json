@@ -512,7 +512,7 @@
         "utbetalingshyppighet": "F002 barn2 motregning utbetalingshyppighet",
         "ytelseNavn": "F002 barn2 motregning ytelse",
         "mottakersNavn": "F002 barn2 motregning mottakersNavn",
-        "barnetsNavn": "",
+        "barnetsNavn": "Bart Simpson",
         "vedtaksdato": "2047-01-01",
         "begrunnelse": "F002 barn2 motregning begrunnelse",
         "ytterligereInfo": "F002 barn2 motregning ytterligereInfo"
@@ -625,37 +625,10 @@
         "ytelseNavn": "F002 barn2 ytelse ytelse",
         "mottakersNavn": "F002 barn2 ytelse mottakersNavn",
         "barnetsNavn": "F002 barn2 ytelse barnetsNavn"
-      },
-      "motregning": {
-        "startdato": "2045-01-01",
-        "sluttdato": "2046-01-01",
-        "beloep": "200",
-        "valuta": "NOK",
-        "utbetalingshyppighet": "F002 barn2 motregning utbetalingshyppighet",
-        "ytelse": "F002 barn2 motregning ytelse",
-        "mottakersNavn": "F002 barn2 motregning mottakersNavn",
-        "barnetsNavn": "F002 barn2 motregning barnetsNavn",
-        "vedtaksdato": "2047-01-01",
-        "begrunnelse": "F002 barn2 motregning begrunnelse",
-        "ytterligereInfo": "F002 barn2 motregning ytterligereInfo"
       }
     }
   ],
-  "familie": {
-    "motregning": {
-        "antallPersoner": "3",
-        "startdato": "2052-01-01",
-        "sluttdato": "2053-01-01",
-        "beloep": "500",
-        "valuta": "NOK",
-        "utbetalingshyppighet": "år",
-        "ytelseNavn": "ytelse navn",
-        "mottakersNavn": "F002 barn2 familie motregninger mottakersNavn 1",
-        "vedtaksdato": "2054-01-01",
-        "begrunnelse": "F002 barn2 familie motregninger begrunnelse 1",
-        "ytterligereInfo": "ytterligere"
-    }
-  },
+  "familie": {},
   "anmodningsperioder": [
     {
       "startdato": "2057-01-01",

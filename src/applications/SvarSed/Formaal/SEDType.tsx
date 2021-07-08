@@ -74,8 +74,8 @@ const SEDType: React.FC = () => {
           <FlexCenterDiv className={namespace}>
             {!editMode
               ? _sedType
-                ? t('buc:' + replySed.sedType)
-                : t('label:ukjent')
+                  ? t('buc:' + replySed.sedType)
+                  : t('label:ukjent')
               : (
                 <>
                   <Select
@@ -106,16 +106,16 @@ const SEDType: React.FC = () => {
                     {t('el:button-cancel')}
                   </HighContrastFlatknapp>
                 </>
-              )}
-              {!editMode && validation[namespace]?.feilmelding && (
-                <>
-                  <HorizontalSeparatorDiv/>
-                  <div className='skjemaelement__feilmelding' style={{marginTop: '0px'}}>
-                    <p className='typo-feilmelding'>
-                      {validation[namespace].feilmelding}
-                    </p>
-                  </div>
-                </>
+                )}
+            {!editMode && validation[namespace]?.feilmelding && (
+              <>
+                <HorizontalSeparatorDiv />
+                <div className='skjemaelement__feilmelding' style={{ marginTop: '0px' }}>
+                  <p className='typo-feilmelding'>
+                    {validation[namespace].feilmelding}
+                  </p>
+                </div>
+              </>
             )}
           </FlexCenterDiv>
           <HorizontalSeparatorDiv />

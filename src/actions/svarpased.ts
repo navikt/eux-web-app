@@ -38,7 +38,7 @@ export const createSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
 export const getPreviewFile = (rinaSakId: string, replySed: ReplySed) => {
   return call({
     method: 'POST',
-    url: sprintf(urls.API_PREVIEW_URL, {rinaSakId: rinaSakId}),
+    url: sprintf(urls.API_PREVIEW_URL, { rinaSakId: rinaSakId }),
     expectedPayload: mockPreview,
     responseType: 'blob',
     type: {

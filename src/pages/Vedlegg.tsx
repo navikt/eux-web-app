@@ -212,10 +212,10 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
             </HighContrastHovedknapp>
             {alertMessage && alertType && [types.VEDLEGG_POST_FAILURE].indexOf(alertType) >= 0 && (
               <>
-                <VerticalSeparatorDiv/>
-                  <AlertStripe type='advarsel'>
-                    {t(alertMessage)}
-                  </AlertStripe>
+                <VerticalSeparatorDiv />
+                <AlertStripe type='advarsel'>
+                  {t(alertMessage)}
+                </AlertStripe>
                 <VerticalSeparatorDiv />
               </>
             )}

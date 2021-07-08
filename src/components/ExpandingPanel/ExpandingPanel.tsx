@@ -78,58 +78,58 @@ const ExpandingPanel: React.FC<ExpandingPanelProps> = ({
 
   return (
 
-      <HighContrastExpandingPanel
-        id={id}
-        style={style}
-        className={classNames('ekspanderbartPanel', className, {
-          'ekspanderbartPanel--lukket': !_open,
-          'ekspanderbartPanel--apen': _open,
-          'ekspanderbartPanel--border': border
-        })}
+    <HighContrastExpandingPanel
+      id={id}
+      style={style}
+      className={classNames('ekspanderbartPanel', className, {
+        'ekspanderbartPanel--lukket': !_open,
+        'ekspanderbartPanel--apen': _open,
+        'ekspanderbartPanel--border': border
+      })}
+    >
+      <div
+        aria-expanded={_open}
+        data-test-id='c-expandingpanel__head-id'
+        className='ekspanderbartPanel__hode'
+        onClick={handleOnClick}
+        onKeyDown={handleKeyboard}
+        role='button'
+        tabIndex={0}
+        {...ariaControls}
       >
         <div
-          aria-expanded={_open}
-          data-test-id='c-expandingpanel__head-id'
-          className='ekspanderbartPanel__hode'
-          onClick={handleOnClick}
-          onKeyDown={handleKeyboard}
-          role='button'
-          tabIndex={0}
-          {...ariaControls}
+          className='ekspanderbartPanel__flex-wrapper'
+          data-test-id='c-expandingpanel__body-id'
         >
-          <div
-            className='ekspanderbartPanel__flex-wrapper'
-            data-test-id='c-expandingpanel__body-id'
+          {heading}
+          <button
+            aria-expanded={_open}
+            aria-label={t('label:open')}
+            className='ekspanderbartPanel__knapp'
+            data-test-id='c-expandingpanel__button-id'
+            onKeyDown={tabHandler}
+            onClick={handleOnClick}
+            type='button'
           >
-            {heading}
-            <button
-              aria-expanded={_open}
-              aria-label={t('label:open')}
-              className='ekspanderbartPanel__knapp'
-              data-test-id='c-expandingpanel__button-id'
-              onKeyDown={tabHandler}
-              onClick={handleOnClick}
-              type='button'
-            >
-              <span className='ekspanderbartPanel__indikator' />
-            </button>
-          </div>
+            <span className='ekspanderbartPanel__indikator' />
+          </button>
         </div>
-        <CollapseComponent
-          id={contentId}
-          isOpened={_open}
-          onRest={onRestProxy}
-          {...collapseProps}
+      </div>
+      <CollapseComponent
+        id={contentId}
+        isOpened={_open}
+        onRest={onRestProxy}
+        {...collapseProps}
+      >
+        <article
+          aria-label={ariaTittel}
+          className='ekspanderbartPanel__innhold'
+          data-test-id='c-expandingpanel__content-id'
         >
-          <article
-            aria-label={ariaTittel}
-            className='ekspanderbartPanel__innhold'
-            data-test-id='c-expandingpanel__content-id'
-          >
-            {children}
-          </article>
-        </CollapseComponent>
-      </HighContrastExpandingPanel>
+          {children}
+        </article>
+      </CollapseComponent>
+    </HighContrastExpandingPanel>
   )
 }
 

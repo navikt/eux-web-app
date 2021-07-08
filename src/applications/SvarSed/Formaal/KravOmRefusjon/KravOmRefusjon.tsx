@@ -66,7 +66,7 @@ const KravOmRefusjon: React.FC<FormålManagerFormProps> = ({
         <Column>
           <HighContrastFlatknapp
             mini kompakt
-           onClick={() => seeKontoopplysninger()}
+            onClick={() => seeKontoopplysninger()}
           >
             {t('label:oppgi-kontoopplysninger')}
           </HighContrastFlatknapp>

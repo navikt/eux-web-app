@@ -43,7 +43,7 @@ const NotAnsatt: React.FC<PersonManagerFormProps & {arbeidsforhold: string}> = (
   arbeidsforhold,
   parentNamespace,
   personID,
-  personName,
+  personName
 
 }:PersonManagerFormProps & {arbeidsforhold: string}): JSX.Element => {
   const { t } = useTranslation()

@@ -73,10 +73,6 @@ const GreySpan = styled.span`
   white-space: nowrap;
 `
 
-interface MyOption extends Option {
-  isDisabled: boolean
-}
-
 interface AddPersonModalProps {
   appElement?: any
   onModalClose?: () => void
@@ -212,8 +208,8 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
 
   const onSavePersons = () => dispatch(setReplySed(_replySed))
 
-  const getRelationOptions = (): Array<MyOption> => {
-    const relationOptions: Array<MyOption> = []
+  const getRelationOptions = (): Array<Option> => {
+    const relationOptions: Array<Option> = []
     relationOptions.push({
       label: t('el:option-familierelasjon-bruker') + (_replySed.bruker
         ? '(' + t('label:ikke-tilgjengelig') + ')'

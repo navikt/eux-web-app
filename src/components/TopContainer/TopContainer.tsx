@@ -145,7 +145,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
           // reset the state of your app so the error doesn't happen again
         }}
       >
-        <Header/>
+        <Header />
         <Alert
           message={getServerErrorMessage()}
           error={error}

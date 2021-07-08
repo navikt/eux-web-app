@@ -74,39 +74,39 @@ const Header: React.FC = (): JSX.Element => {
   const cleanData = () => dispatch({ type: types.APP_CLEAN_DATA })
 
   return (
-      <HeaderContent>
-        <Brand>
-          <Link to='/' onClick={cleanData}>
-            <NEESSILogo />
-          </Link>
-          <Skillelinje />
-          <Title>
-            {t('app:name')}
-          </Title>
-        </Brand>
-        <Undertittel>
-          {t('app:title')}
-        </Undertittel>
-        <SaksbehandlerDiv>
-          <HighContrastLink
-            data-test-id='header__highcontrast-link'
-            href='#highContrast'
-            onClick={(e: React.MouseEvent) => {
-              e.preventDefault()
-              e.stopPropagation()
-              handleHighContrastToggle()
-            }}
-          >
-            {t('label:høy-kontrast')}
-          </HighContrastLink>
-          <HorizontalSeparatorDiv />
-          {saksbehandler && saksbehandler.navn && (
-            <Name>
-              {saksbehandler.navn}
-            </Name>
-          )}
-        </SaksbehandlerDiv>
-      </HeaderContent>
+    <HeaderContent>
+      <Brand>
+        <Link to='/' onClick={cleanData}>
+          <NEESSILogo />
+        </Link>
+        <Skillelinje />
+        <Title>
+          {t('app:name')}
+        </Title>
+      </Brand>
+      <Undertittel>
+        {t('app:title')}
+      </Undertittel>
+      <SaksbehandlerDiv>
+        <HighContrastLink
+          data-test-id='header__highcontrast-link'
+          href='#highContrast'
+          onClick={(e: React.MouseEvent) => {
+            e.preventDefault()
+            e.stopPropagation()
+            handleHighContrastToggle()
+          }}
+        >
+          {t('label:høy-kontrast')}
+        </HighContrastLink>
+        <HorizontalSeparatorDiv />
+        {saksbehandler && saksbehandler.navn && (
+          <Name>
+            {saksbehandler.navn}
+          </Name>
+        )}
+      </SaksbehandlerDiv>
+    </HeaderContent>
   )
 }
 

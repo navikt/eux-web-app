@@ -37,22 +37,22 @@ const AbortModal: React.FC<AbortModalProps> = ({
       contentLabel={t('app:modal-abort-contentLabel')}
     >
 
-        <Content>
-          <Undertittel>
-            {t('app:modal-abort-title')}
-          </Undertittel>
-          <Text>
-            {t('app:modal-abort-description')}
-          </Text>
-          <FlexDiv>
-            <HighContrastHovedknapp onClick={onAbort}>
-              {t('app:modal-abort-yes-cancel')}
-            </HighContrastHovedknapp>
-            <HighContrastKnapp onClick={closeModal}>
-              {t('app:modal-abort-no-continue')}
-            </HighContrastKnapp>
-          </FlexDiv>
-        </Content>
+      <Content>
+        <Undertittel>
+          {t('app:modal-abort-title')}
+        </Undertittel>
+        <Text>
+          {t('app:modal-abort-description')}
+        </Text>
+        <FlexDiv>
+          <HighContrastHovedknapp onClick={onAbort}>
+            {t('app:modal-abort-yes-cancel')}
+          </HighContrastHovedknapp>
+          <HighContrastKnapp onClick={closeModal}>
+            {t('app:modal-abort-no-continue')}
+          </HighContrastKnapp>
+        </FlexDiv>
+      </Content>
     </Modal>
   )
 }

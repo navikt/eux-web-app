@@ -36,34 +36,34 @@ const SEDAttachmentModal: React.FC<SEDAttachmentModalProps> = ({
 
   return (
 
-      <Modal
-        highContrast={highContrast}
-        icon={<Document />}
-        modal={{
-          closeButton: true,
-          modalContent: (
-            <>
-              <JoarkBrowser
-                data-test-id='a-buc-c-sedattachmentmodal__joarkbrowser-id'
-                existingItems={sedAttachments}
-                fnr={fnr}
-                mode='select'
-                onRowSelectChange={onRowSelectChange}
-                tableId={tableId}
-              />
-            </>
-          ),
-          modalButtons: [{
-            main: true,
-            text: t('el:button-add-selected-attachments'),
-            onClick: onAddAttachmentsButtonClick
-          }, {
-            text: t('el:button-cancel'),
-            onClick: onCancelButtonClick
-          }]
-        }}
-        onModalClose={onModalClose}
-      />
+    <Modal
+      highContrast={highContrast}
+      icon={<Document />}
+      modal={{
+        closeButton: true,
+        modalContent: (
+          <>
+            <JoarkBrowser
+              data-test-id='a-buc-c-sedattachmentmodal__joarkbrowser-id'
+              existingItems={sedAttachments}
+              fnr={fnr}
+              mode='select'
+              onRowSelectChange={onRowSelectChange}
+              tableId={tableId}
+            />
+          </>
+        ),
+        modalButtons: [{
+          main: true,
+          text: t('el:button-add-selected-attachments'),
+          onClick: onAddAttachmentsButtonClick
+        }, {
+          text: t('el:button-cancel'),
+          onClick: onCancelButtonClick
+        }]
+      }}
+      onModalClose={onModalClose}
+    />
 
   )
 }

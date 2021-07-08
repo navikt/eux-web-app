@@ -241,7 +241,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                     >
                       {t('el:button-close')}
                     </HighContrastHovedknapp>
-                    <HorizontalSeparatorDiv/>
+                    <HorizontalSeparatorDiv />
                     <HighContrastHovedknapp
                       mini
                       onClick={() => window.open(goToRinaUrl, 'rina')}
