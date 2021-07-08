@@ -9,11 +9,10 @@ import TextArea from 'components/Forms/TextArea'
 import { HorizontalLineSeparator, TextAreaDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import { F002Sed, XXXFormalProsedyreVedUenighet, Grunn } from 'declarations/sed'
+import { F002Sed, ProsedyreVedUenighet as IProsedyreVedUenighet, Grunn } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { Checkbox, CheckboxGruppe } from 'nav-frontend-skjema'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
@@ -24,11 +23,10 @@ import {
   Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { OptionTypeBase } from 'react-select'
-import { getIdx } from 'utils/namespace'
 import { validateProsedyreVedUenighetGrunn, ValidationProsedyreVedUenighetGrunnProps } from './validation'
 
 export interface ProsedyreVedUenighetSelector extends FormålManagerFormSelector {
@@ -52,12 +50,13 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
     validation
   }: any = useSelector<State, ProsedyreVedUenighetSelector>(mapState)
   const dispatch = useDispatch()
-  const target = 'xxxformaal.prosedyreveduenighet'
-  const prosedyreveduenighet: XXXFormalProsedyreVedUenighet | undefined = (replySed as F002Sed).xxxformaal?.prosedyreveduenighet
+  const target = 'uenighet'
+  const prosedyreveduenighet: IProsedyreVedUenighet | undefined = (replySed as F002Sed).uenighet
   const namespace = `${parentNamespace}-prosedyreveduenighet`
 
   const [_newGrunn, _setNewGrunn] = useState<string>('')
-  const [_newPerson, _setNewPerson] = useState<Array<string>>([])
+  const [_newPerson, _setNewPerson] = useState<string>('')
+  const [_grunns, _setGrunns] = useState<Array<Grunn>>([])
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Grunn>((grunn: Grunn): string => {
     return grunn.grunn
@@ -65,60 +64,77 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationProsedyreVedUenighetGrunnProps>({}, validateProsedyreVedUenighetGrunn)
 
+  const availableGrunns: Array<string> = ['ansettelse', 'pensjon', 'medlemsperiode', 'oppholdetsVarighet', 'bosted', 'personligSituasjon']
+
   const grunnOptions: Options = [
-    { label: t('el:option-grunn-01'), value: '01' },
-    { label: t('el:option-grunn-02'), value: '02' },
-    { label: t('el:option-grunn-03'), value: '03' },
-    { label: t('el:option-grunn-04'), value: '04' },
-    { label: t('el:option-grunn-05'), value: '05' },
-    { label: t('el:option-grunn-06'), value: '06' }
+    { label: t('el:option-grunn-ansettelse'), value: 'ansettelse' },
+    { label: t('el:option-grunn-pensjon'), value: 'pensjon' },
+    { label: t('el:option-grunn-medlemsperiode'), value: 'medlemsperiode' },
+    { label: t('el:option-grunn-oppholdetsVarighet'), value: 'oppholdetsVarighet' },
+    { label: t('el:option-grunn-bosted'), value: 'bosted' },
+    { label: t('el:option-grunn-personligSituasjon'), value: 'personligSituasjon' }
   ]
 
-  const setGrunn = (newGrunn: string, index: number) => {
+  const personOptions: Options = [
+    { label: t('el:option-person-søker'), value: 'søker' },
+    { label: t('el:option-person-ektefelle_partner'), value: 'ektefelle_partner' },
+    { label: t('el:option-person-avdød'), value: 'avdød' },
+    { label: t('el:option-person-annen-person'), value: 'annen-person' }
+  ]
+
+  useEffect(() => {
+    if (!_.isNil((replySed as F002Sed)?.uenighet)) {
+      const newGrunns: Array<Grunn> = []
+      Object.keys((replySed as F002Sed).uenighet!).forEach(key => {
+        if (availableGrunns.indexOf(key) >= 0) {
+          newGrunns.push({
+            grunn: key,
+            person: _.get((replySed as F002Sed).uenighet, key)
+          })
+        }
+      })
+      _setGrunns(newGrunns.sort((a: Grunn, b: Grunn) => a.grunn.localeCompare(b.grunn)))
+    }
+  }, [replySed])
+
+  const setGrunn = (newGrunn: string, index: number, oldGrunn : string | undefined) => {
     if (index < 0) {
       _setNewGrunn(newGrunn.trim())
-      _resetValidation(namespace + '-grunner-grunn')
+      _resetValidation(namespace + '-grunn')
     } else {
-      dispatch(updateReplySed(`${target}.grunner[${index}].grunn`, newGrunn.trim()))
-      if (validation[namespace + '-grunner' + getIdx(index) + '-grunn']) {
-        dispatch(resetValidation(namespace + '-grunner' + getIdx(index) + '-grunn'))
+      const newProsedyreveduenighet = _.cloneDeep(prosedyreveduenighet)
+      // @ts-ignore
+      newProsedyreveduenighet[newGrunn] = newProsedyreveduenighet[oldGrunn]
+      // @ts-ignore
+      delete newProsedyreveduenighet[oldGrunn]
+      dispatch(updateReplySed(target, newProsedyreveduenighet))
+      if (validation[namespace + '-[' + oldGrunn + ']-grunn']) {
+        dispatch(resetValidation(namespace + '-[' + oldGrunn + ']-grunn'))
       }
     }
   }
 
-  const setPerson = (person: string, checked: boolean, index: number) => {
+  const setPerson = (newPerson: string, index: number, grunn: string | undefined) => {
     if (index < 0) {
-      let newPerson = _.cloneDeep(_newPerson)
-      if (checked) {
-        newPerson = newPerson.concat(person.trim())
-      } else {
-        newPerson = _.filter(newPerson, p => p !== person.trim())
-      }
-      _setNewPerson(newPerson)
-      _resetValidation(namespace + '-grunner-person')
+      _setNewPerson(newPerson.trim())
+      _resetValidation(namespace + '-person')
     } else {
-      let newPerson: Array<string> = _.cloneDeep(prosedyreveduenighet?.grunner[index].person) as Array<string>
-      if (checked) {
-        newPerson = newPerson.concat(person.trim())
-      } else {
-        newPerson = _.filter(newPerson, p => p !== person.trim())
-      }
-      dispatch(updateReplySed(`${target}.grunner[${index}].person`, newPerson))
-      if (validation[namespace + '-grunner' + getIdx(index) + '-person']) {
-        dispatch(resetValidation(namespace + '-grunner' + getIdx(index) + '-person'))
+      dispatch(updateReplySed(`${target}.${grunn}`, newPerson.trim()))
+      if (validation[namespace + '-[' + grunn + ']-person']) {
+        dispatch(resetValidation(namespace + '-[' + grunn + ']-person'))
       }
     }
   }
 
-  const setYtterligereInfo = (newYtterligereInfo: string) => {
-    dispatch(updateReplySed(`${target}.ytterligereInfo`, newYtterligereInfo.trim()))
-    if (validation[namespace + '-ytterligereInfo']) {
-      dispatch(resetValidation(namespace + '-ytterligereInfo'))
+  const setYtterligereGrunner = (newYtterligereInfo: string) => {
+    dispatch(updateReplySed(`${target}.ytterligereGrunner`, newYtterligereInfo.trim()))
+    if (validation[namespace + '-ytterligereGrunner']) {
+      dispatch(resetValidation(namespace + '-ytterligereGrunner'))
     }
   }
 
   const resetForm = () => {
-    _setNewPerson([])
+    _setNewPerson('')
     _setNewGrunn('')
     resetValidation()
   }
@@ -128,53 +144,54 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
     resetForm()
   }
 
-  const onRemove = (index: number) => {
-    const newGrunner: Array<Grunn> = _.cloneDeep(prosedyreveduenighet?.grunner) as Array<Grunn>
-    const deletedGrunner: Array<Grunn> = newGrunner.splice(index, 1)
-    if (deletedGrunner && deletedGrunner.length > 0) {
-      removeFromDeletion(deletedGrunner[0])
+  const onRemove = (grunn: Grunn) => {
+    const newProsedyreveduenighet: IProsedyreVedUenighet | undefined = _.cloneDeep(prosedyreveduenighet)
+    if (!_.isEmpty(newProsedyreveduenighet)) {
+      // @ts-ignore
+      delete newProsedyreveduenighet[grunn.grunn]
+      removeFromDeletion(grunn)
+      dispatch(updateReplySed(target, newProsedyreveduenighet))
     }
-    dispatch(updateReplySed(`${target}.grunner`, newGrunner))
   }
 
   const onAdd = () => {
-    const newGrunn: Grunn | any = {
+    const newGrunn: Grunn = {
       grunn: _newGrunn.trim(),
-      person: _newPerson
+      person: _newPerson.trim()
     }
 
     const valid: boolean = performValidation({
       grunn: newGrunn,
-      grunner: prosedyreveduenighet?.grunner ?? [],
+      prosedyreveduenighet: prosedyreveduenighet,
       namespace: namespace
     })
 
     if (valid) {
-      let newGrunner: Array<Grunn> = _.cloneDeep(prosedyreveduenighet?.grunner) as Array<Grunn>
-      if (_.isNil(newGrunner)) {
-        newGrunner = []
+      let newProsedyreveduenighet = _.cloneDeep(prosedyreveduenighet)
+      if (_.isNil(newProsedyreveduenighet)) {
+        newProsedyreveduenighet = {}
       }
-      newGrunner.push(newGrunn)
-      dispatch(updateReplySed(`${target}.grunner`, newGrunner))
+      // @ts-ignore
+      newProsedyreveduenighet[_newGrunn.trim()] = _newPerson.trim()
+      dispatch(updateReplySed(target, newProsedyreveduenighet))
       resetForm()
     }
   }
 
-  const renderRow = (grunn: Grunn | null, index: number) => {
-    const candidateForDeletion = index < 0 ? false : isInDeletion(grunn)
-    const idx = getIdx(index)
-    const getErrorFor = (index: number, el: string): string | undefined => (
-      index < 0
-        ? _validation[namespace + '-grunner' + idx + '-' + el]?.feilmelding
-        : validation[namespace + '-grunner' + idx + '-' + el]?.feilmelding
+  const renderRow = (grunn: Grunn | null, grunns: Array<Grunn>, index: number) => {
+    const candidateForDeletion = grunn === null ? false : isInDeletion(grunn)
+    const idx = grunn === null ? '' : '[' + grunn + ']'
+    // disable the options for this select box, that already exist in prosedyreveduenighet
+    const thisGrunnOptions = _.map(grunnOptions, o => ({
+      ...o,
+      isDisabled: _grunns.map(g => g.grunn).indexOf(o.value) >= 0
+    }))
+
+    const getErrorFor = (el: string): string | undefined => (
+      grunn !== null
+        ? validation[namespace + idx + '-' + el]?.feilmelding
+        : _validation[namespace + '-' + el]?.feilmelding
     )
-    const isChecked = (person: string) => {
-      if (index < 0) {
-        return _newPerson.indexOf(person) >= 0
-      } else {
-        return !!grunn && grunn?.person?.indexOf(person) >= 0
-      }
-    }
 
     return (
       <>
@@ -182,86 +199,47 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: (index * 0.1) + 's' }}
         >
-          <Column flex='2'>
+          <Column>
             <Select
               closeMenuOnSelect
-              data-test-id={namespace + '-grunner' + idx + '-grunn'}
-              feil={getErrorFor(index, 'grunn')}
+              data-test-id={namespace + idx + '-grunn'}
+              feil={getErrorFor('grunn')}
               highContrast={highContrast}
-              id={namespace + '-grunner' + idx + '-grunn'}
-              key={namespace + '-grunner' + idx + '-grunn-' + (index < 0 ? _newGrunn : grunn?.grunn)}
+              id={namespace + idx + '-grunn'}
+              key={namespace + idx + '-grunn-' + (grunn === null ? _newGrunn : grunn?.grunn)}
               label={t('label:velg-grunn-til-uenighet')}
               menuPortalTarget={document.body}
-              onChange={(o: OptionTypeBase) => setGrunn(o.value, index)}
-              options={grunnOptions}
+              onChange={(o: OptionTypeBase) => setGrunn(o.value, index, (grunn === null ? _newGrunn : grunn?.grunn))}
+              options={thisGrunnOptions}
               placeholder={t('el:placeholder-select-default')}
-              selectedValue={_.find(grunnOptions, b => b.value === (index < 0 ? _newGrunn : grunn?.grunn))}
-              defaultValue={_.find(grunnOptions, b => b.value === (index < 0 ? _newGrunn : grunn?.grunn))}
+              selectedValue={_.find(grunnOptions, b => b.value === (grunn === null ? _newGrunn : grunn?.grunn))}
+              defaultValue={_.find(grunnOptions, b => b.value === (grunn === null ? _newGrunn : grunn?.grunn))}
             />
           </Column>
-          <Column />
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: '0.1s' }}
-        >
-          <Column flex='2'>
-            <VerticalSeparatorDiv />
-            <CheckboxGruppe
-              data-test-id={namespace + '-grunner' + idx + '-person'}
-              id={namespace + '-grunner' + idx + '-person'}
-              legend={t('label:personen-det-gjelder') + ':'}
-              feil={getErrorFor(index, 'person')}
-            >
-              {!_.isNil(replySed.bruker) && (
-                <>
-                  <Checkbox
-                    label={t('label:søker')}
-                    checked={isChecked('søker')}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPerson('søker', e.target.checked, index)}
-                  />
-                  <VerticalSeparatorDiv size='0.5' />
-                </>
-              )}
-              {!_.isNil((replySed as F002Sed).ektefelle) && (
-                <>
-                  <Checkbox
-                    label={t('label:partner')}
-                    checked={isChecked('partner')}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPerson('partner', e.target.checked, index)}
-                  />
-                  <VerticalSeparatorDiv size='0.5' />
-                </>
-              )}
-              {!_.isNil((replySed as F002Sed).ektefelle) && (
-                <>
-                  <Checkbox
-                    label={t('label:annen-person')}
-                    checked={isChecked('annen-person')}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPerson('annen-person', e.target.checked, index)}
-                  />
-                  <VerticalSeparatorDiv size='0.5' />
-                </>
-              )}
-              <>
-                <Checkbox
-                  label={t('label:avdød')}
-                  checked={isChecked('avdød')}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPerson('avdød', e.target.checked, index)}
-                />
-                <VerticalSeparatorDiv size='0.5' />
-              </>
-            </CheckboxGruppe>
-            <VerticalSeparatorDiv />
+          <Column>
+            <Select
+              closeMenuOnSelect
+              data-test-id={namespace + idx + '-person'}
+              feil={getErrorFor('person')}
+              highContrast={highContrast}
+              id={namespace + idx + '-person'}
+              key={namespace + idx + '-person-' + (grunn === null ? _newPerson : grunn?.person)}
+              label={t('label:personen-det-gjelder') + ' *'}
+              menuPortalTarget={document.body}
+              onChange={(o: OptionTypeBase) => setPerson(o.value, index, (grunn === null ? _newGrunn : grunn?.grunn))}
+              options={personOptions}
+              placeholder={t('el:placeholder-select-default')}
+              selectedValue={_.find(personOptions, b => b.value === (grunn === null ? _newPerson : grunn?.person))}
+              defaultValue={_.find(personOptions, b => b.value === (grunn === null ? _newPerson : grunn?.person))}
+            />
           </Column>
           <Column>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
-              existingItem={(index >= 0)}
+              existingItem={grunn !== null}
               marginTop
               onBeginRemove={() => addToDeletion(grunn)}
-              onConfirmRemove={() => onRemove(index)}
+              onConfirmRemove={() => onRemove(grunn!)}
               onCancelRemove={() => removeFromDeletion(grunn)}
               onAddNew={onAdd}
               onCancelNew={onCancel}
@@ -280,7 +258,7 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
       </Undertittel>
       <VerticalSeparatorDiv size='2' />
       <VerticalSeparatorDiv />
-      {_.isEmpty(prosedyreveduenighet?.grunner)
+      {_.isEmpty(_grunns)
         ? (
           <div id={namespace + '-grunner'}>
             {validation[namespace + '-grunner']?.feilmelding
@@ -298,12 +276,12 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
                 )}
           </div>
           )
-        : prosedyreveduenighet?.grunner?.map(renderRow)}
+        : _grunns?.map((g, i) => renderRow(g, _grunns, i))}
       <VerticalSeparatorDiv size={2} />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm
-        ? renderRow(null, -1)
+        ? renderRow(null, _grunns, -1)
         : (
           <Row className='slideInFromLeft'>
             <Column>
@@ -327,12 +305,12 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
         <Column>
           <TextAreaDiv>
             <TextArea
-              feil={validation[namespace + '-ytterligereInfo']?.feilmelding}
+              feil={validation[namespace + '-ytterligereGrunner']?.feilmelding}
               namespace={namespace}
-              id='ytterligereInfo'
+              id='ytterligereGrunner'
               label={t('label:ytterligere-grunner-til-uenighet')}
-              onChanged={setYtterligereInfo}
-              value={prosedyreveduenighet?.ytterligereInfo}
+              onChanged={setYtterligereGrunner}
+              value={prosedyreveduenighet?.ytterligereGrunner}
             />
           </TextAreaDiv>
         </Column>

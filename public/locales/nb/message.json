@@ -63,6 +63,7 @@
   "validation-noAddressPostnummerForPerson": "Ingen adresses postnummer til {{person}}",
   "validation-noAddressStreetForPerson": "Ingen adresses gate til {{person}}",
   "validation-noAddressTypeForPerson": "Ingen adresse type til {{person}}",
+  "validation-noAntallPersonerForPerson": "Ingen antall personer i {{person}}",
   "validation-noAnswerForPerson": "Ingen svar i {{person}}",
   "validation-noAvgrensingForPerson": "Ingen avgrensning av periode i {{person}}",
   "validation-noBarnValgtTilPerson": "Ingen barn valgt til {{person}}",

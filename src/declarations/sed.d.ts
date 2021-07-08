@@ -31,6 +31,8 @@ export type BarnaEllerFamilie = 'barna' | 'familie'
 
 export type AnmodningSvarType = 'anmodning_om_motregning_per_barn' | 'svar_om_anmodning_om_motregning_per_barn'
 
+export type GrunnUenighet = 'bosted' | 'medlemsperiode' | 'personligSituasjon'| 'pensjon' | 'oppholdetsVarighet' | 'ansettelse'
+
 export interface Adresse {
   by?: string
   bygning?: string
@@ -159,6 +161,7 @@ export interface Telefon {
 }
 
 export interface Ytelse {
+  antallPersoner?: string
   beloep: string
   mottakersNavn: string
   sluttdato: string
@@ -265,7 +268,7 @@ export interface PeriodeMedVedtak {
 
 export interface Grunn {
   grunn: string
-  person: Array<string>
+  person: string
 }
 
 export interface XXXFormalVedtak {
@@ -276,13 +279,14 @@ export interface XXXFormalVedtak {
   vedtaksperioder: Array<PeriodeMedVedtak>
 }
 
-export interface XXXFormalProsedyreVedUenighet {
-  grunner: Array<Grunn>
-  ytterligereInfo: string
-}
-
-export interface XXXFormalKravOmRefusjon {
-  krav: string
+export interface ProsedyreVedUenighet {
+  bosted?: string
+  medlemsperiode?: string
+  personligSituasjon?: string
+  pensjon?: string
+  oppholdetsVarighet?: string
+  ansettelse?: string
+  ytterligereGrunner?: string
 }
 
 export interface XXXSisteAnsettelsesForhold {
@@ -320,10 +324,10 @@ export interface F002Sed extends FSed {
     kravType: string
   }
   utbetalingTilInstitusjon: UtbetalingTilInstitusjon
+  'refusjon_ihht_artikkel_58_i_forordning' ?: string
+  uenighet?: ProsedyreVedUenighet
   xxxformaal?: {
     vedtak?: XXXFormalVedtak
-    prosedyreveduenighet?: XXXFormalProsedyreVedUenighet
-    kravomrefusjon?: XXXFormalKravOmRefusjon
   }
 }
 

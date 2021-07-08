@@ -1,13 +1,12 @@
-import { XXXFormalProsedyreVedUenighet, Grunn } from 'declarations/sed'
+import { ProsedyreVedUenighet as IProsedyreVedUenighet, Grunn } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
-import { getIdx } from 'utils/namespace'
 
 export interface ValidationProsedyreVedUenighetGrunnProps {
   grunn: Grunn
-  grunner: Array<Grunn>,
+  prosedyreveduenighet: IProsedyreVedUenighet | undefined,
   index?: number
   namespace: string
   personName?: string
@@ -18,46 +17,38 @@ export const validateProsedyreVedUenighetGrunn = (
   t: TFunction,
   {
     grunn,
-    grunner,
-    index,
+    prosedyreveduenighet = {} as any,
     namespace,
     personName
   }: ValidationProsedyreVedUenighetGrunnProps
 ): boolean => {
   let hasErrors: boolean = false
-  const idx = getIdx(index)
 
   if (_.isEmpty(grunn?.person)) {
-    v[namespace + '-grunner' + idx + '-person'] = {
+    v[namespace + '-person'] = {
       feilmelding: personName
         ? t('message:validation-noPersonGivenForPerson', { person: personName })
         : t('message:validation-noPersonGiven'),
-      skjemaelementId: namespace + '-grunner' + idx + '-person'
+      skjemaelementId: namespace + '-person'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
 
   if (_.isEmpty(grunn?.grunn?.trim())) {
-    v[namespace + '-grunner' + idx + '-grunn'] = {
+    v[namespace + '-grunn'] = {
       feilmelding: personName
         ? t('message:validation-noGrunnForPerson', { person: personName })
         : t('message:validation-noGrunn'),
-      skjemaelementId: namespace + '-grunner' + idx + '-grunn'
+      skjemaelementId: namespace + '-grunn'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
 
-  let duplicate: boolean = false
-  if (_.isNil(index)) {
-    duplicate = _.find(grunner, { grunn: grunn.grunn }) !== undefined
-  } else {
-    const otherGrunns: Array<Grunn> = _.filter(grunner, (t, i) => i !== index)
-    duplicate = _.find(otherGrunns, { grunn: grunn.grunn }) !== undefined
-  }
+  const duplicate: boolean = Object.prototype.hasOwnProperty.call(prosedyreveduenighet, grunn.grunn)
   if (duplicate) {
-    v[namespace + '-grunner' + idx + '-grunn'] = {
+    v[namespace + '-grunn'] = {
       feilmelding: t('message:validation-duplicateGrunnForPerson', { person: personName }),
-      skjemaelementId: namespace + '-grunner' + idx + '-grunn'
+      skjemaelementId: namespace + '-grunn'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -67,13 +58,15 @@ export const validateProsedyreVedUenighetGrunn = (
 export const validateProsedyreVedUenighet = (
   v: Validation,
   t: TFunction,
-  prosedyreVedUenighet: XXXFormalProsedyreVedUenighet,
+  prosedyreVedUenighet: IProsedyreVedUenighet = {},
   namespace: string,
   personName?: string
 ): boolean => {
   let hasErrors: boolean = false
 
-  if (_.isEmpty(prosedyreVedUenighet?.grunner)) {
+  if (!prosedyreVedUenighet.bosted && !prosedyreVedUenighet.medlemsperiode && !prosedyreVedUenighet.personligSituasjon &&
+    !prosedyreVedUenighet.pensjon && !prosedyreVedUenighet.oppholdetsVarighet && !prosedyreVedUenighet.ansettelse
+  ) {
     v[namespace + '-grunner'] = {
       feilmelding: t('message:validation-noGrunnForPerson', { person: personName }),
       skjemaelementId: namespace + '-grunner'
@@ -81,15 +74,10 @@ export const validateProsedyreVedUenighet = (
     hasErrors = true
   }
 
-  prosedyreVedUenighet?.grunner?.forEach((grunn: Grunn, index: number) => {
-    const _error = validateProsedyreVedUenighetGrunn(v, t, { grunn, grunner: prosedyreVedUenighet?.grunner, index, namespace, personName })
-    hasErrors = hasErrors || _error
-  })
-
-  if (prosedyreVedUenighet?.ytterligereInfo?.trim()?.length > 500) {
-    v[namespace + '-ytterligereInfo'] = {
+  if (prosedyreVedUenighet && prosedyreVedUenighet?.ytterligereGrunner && prosedyreVedUenighet?.ytterligereGrunner?.trim()?.length > 500) {
+    v[namespace + '-ytterligereGrunner'] = {
       feilmelding: t('message:validation-textOver500TilPerson', { person: personName }),
-      skjemaelementId: namespace + '-ytterligereInfo'
+      skjemaelementId: namespace + '-ytterligereGrunner'
     } as FeiloppsummeringFeil
     hasErrors = true
   }

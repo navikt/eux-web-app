@@ -51,15 +51,14 @@ personmanager-{personID}-familierelasjon[{i}]-annenRelasjonDato       - {CONNECT
 personmanager-{personID}-familierelasjon[{i}]-borSammen               - {CONNECTED} {person}.familierelasjoner[].borSammen
 
 hele familien
-TODO
-    personmanager-{personID}-familieytelser-number               - {??????} familie.motregninger[].antallPersoner
-    personmanager-{personID}-familieytelser-ytelseNavn           - {CONNECTED} familie.motregninger[0].ytelseNavn
-    personmanager-{personID}-familieytelser-beloep               - {CONNECTED} familie.motregninger[0].beloep
-    personmanager-{personID}-familieytelser-valuta               - {CONNECTED} familie.motregninger[0].valuta
-    personmanager-{personID}-familieytelser-startdato            - {CONNECTED} familie.motregninger[0].startdato
-    personmanager-{personID}-familieytelser-sluttdato            - {CONNECTED} familie.motregninger[0].sluttdato
-    personmanager-{personID}-familieytelser-mottakersNavn        - {CONNECTED} familie.motregninger[0].mottakersNavn
-    personmanager-{personID}-familieytelser-utbetalingshyppighet - {CONNECTED} familie.motregninger[0].utbetalingshyppighet
+personmanager-{personID=familie}-familieytelser-number               - {CONNECTED} familie.ytelse.antallPersoner
+personmanager-{personID=familie}-familieytelser-ytelseNavn           - {CONNECTED} familie.ytelse.ytelseNavn
+personmanager-{personID=familie}-familieytelser-beloep               - {CONNECTED} familie.ytelse.beloep
+personmanager-{personID=familie}-familieytelser-valuta               - {CONNECTED} familie.ytelse.valuta
+personmanager-{personID=familie}-familieytelser-startdato            - {CONNECTED} familie.ytelse.startdato
+personmanager-{personID=familie}-familieytelser-sluttdato            - {CONNECTED} familie.ytelse.sluttdato
+personmanager-{personID=familie}-familieytelser-mottakersNavn        - {CONNECTED} familie.ytelse.mottakersNavn
+personmanager-{personID=familie}-familieytelser-utbetalingshyppighet - {CONNECTED} familie.ytelse.utbetalingshyppighet
 
 personmanager-{personID}-grunnlagforbosetting-perioder-startdato           - {INTERNAL}  not used
 personmanager-{personID}-grunnlagforbosetting-perioder-sluttdato           - {INTERNAL}  not used
@@ -166,31 +165,28 @@ kontoopplysninger-kontoOrdinaer-sepaKonto  - {CONNECTED} utbetalingTilInstitusjo
 kontoopplysninger-kontoOrdinaer-iban       - {CONNECTED} utbetalingTilInstitusjon.kontoOrdinaer.iban
 kontoopplysninger-kontoOrdinaer-swift      - {CONNECTED} utbetalingTilInstitusjon.kontoOrdinaer.swift
 
-TODO
-    kravomrefusjon-krav - {CONNECTED} - formaalx.kravomrefusjon.krav
+formålmanager-kravomrefusjon-krav - {CONNECTED} - refusjon_ihht_artikkel_58_i_forordning
 
-    motregning-anmodningEllerSvar                      - {CONNECTED} {barna[i]|familie}.motregning.svarType
-    motregning-navnOgBetegnelser-navn                  - {INTERNAL} not used
-    motregning-navnOgBetegnelser-betegnelsepåytelse    - {INTERNAL} not used
-    motregning-navnOgBetegnelser[i]-navn               - {CONNECTED} {barna[i]}.motregning.barnetsNavn + sets {barna[i]} for motregning
-    motregning-navnOgBetegnelser[i]-betegnelsepåytelse - {CONNECTED} {barna[i]}.motregning.ytelseNavn
-    motregning-beloep                                  - {CONNECTED} {barna[i]|familie}.motregning.beloep
-    motregning-valuta                                  - {CONNECTED} {barna[i]|familie}.motregning.valuta
-    motregning-startdato                               - {CONNECTED} {barna[i]|familie}.motregnin..startdato
-    motregning-sluttdato                               - {CONNECTED} {barna[i]|familie}.motregning.sluttdato
-    motregning-utbetalingshyppighet                    - {CONNECTED} {barna[i]|familie}.motregning.utbetalingshyppighet
-    motregning-vedtaksdato                             - {CONNECTED} {barna[i]|familie}.motregning.vedtaksdato
-    motregning-mottakersNavn                           - {CONNECTED} {barna[i]|familie}.motregning.mottakersNavn
-    motregning-begrunnelse                             - {CONNECTED} {barna[i]|familie}.motregning.begrunnelse
-    motregning-ytterligereInfo                         - {CONNECTED} {barna[i]|familie}.motregning.ytterligereInfo
+formålmanager-motregning-anmodningEllerSvar                      - {CONNECTED} {barna[i]|familie}.motregning.svarType
+formålmanager-motregning-navnOgBetegnelser-navn                  - {INTERNAL} not used
+formålmanager-motregning-navnOgBetegnelser-betegnelsepåytelse    - {INTERNAL} not used
+formålmanager-motregning-navnOgBetegnelser[i]-navn               - {CONNECTED} {barna[i]}.motregning.barnetsNavn + sets {barna[i]} for motregning
+formålmanager-motregning-navnOgBetegnelser[i]-betegnelsepåytelse - {CONNECTED} {barna[i]}.motregning.ytelseNavn
+formålmanager-motregning-beloep                                  - {CONNECTED} {barna[i]|familie}.motregning.beloep
+formålmanager-motregning-valuta                                  - {CONNECTED} {barna[i]|familie}.motregning.valuta
+formålmanager-motregning-startdato                               - {CONNECTED} {barna[i]|familie}.motregning.startdato
+formålmanager-motregning-sluttdato                               - {CONNECTED} {barna[i]|familie}.motregning.sluttdato
+formålmanager-motregning-utbetalingshyppighet                    - {CONNECTED} {barna[i]|familie}.motregning.utbetalingshyppighet
+formålmanager-motregning-vedtaksdato                             - {CONNECTED} {barna[i]|familie}.motregning.vedtaksdato
+formålmanager-motregning-mottakersNavn                           - {CONNECTED} {barna[i]|familie}.motregning.mottakersNavn
+formålmanager-motregning-begrunnelse                             - {CONNECTED} {barna[i]|familie}.motregning.begrunnelse
+formålmanager-motregning-ytterligereInfo                         - {CONNECTED} {barna[i]|familie}.motregning.ytterligereInfo
 
-
-TODO
-    prosedyreveduenighet-grunner[i]-grunn  - {CONNECTED} formaalx.prosedyreveduenighet.grunner[i].grunn
-    prosedyreveduenighet-grunner[i]-person - {CONNECTED} formaalx.prosedyreveduenighet.grunner[i].grunn
-    prosedyreveduenighet-grunner-grunn     - {INTERNAL}  formaalx.prosedyreveduenighet.grunner.grunn
-    prosedyreveduenighet-grunner-person    - {INTERNAL}  formaalx.prosedyreveduenighet.grunner.grunn
-    prosedyreveduenighet-ytterligereInfo   - {CONNECTED} formaalx.prosedyreveduenighet.ytterligereInfogrunn
+formålmanager-prosedyreveduenighet-grunn                - {INTERNAL}  not used
+formålmanager-prosedyreveduenighet-person               - {INTERNAL}  not used
+formålmanager-prosedyreveduenighet-[{grunn}]-grunn      - {CONNECTED} uenighet[key]
+formålmanager-prosedyreveduenighet-[{grunn}]-person     - {CONNECTED} uenighet[key].value
+formålmanager-prosedyreveduenighet-ytterligereGrunner   - {CONNECTED} uenighet.ytterligereGrunner
 
 seddetails-anmodningsperiode-startdato      - {INTERNAL}
 seddetails-anmodningsperiode-sluttdato      - {INTERNAL}

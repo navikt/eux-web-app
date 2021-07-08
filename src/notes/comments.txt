@@ -3,24 +3,8 @@ Todo:
 1. na familierelasjon, pode ser que envie borSammen, etc com REPA/EKTE/etc. Confirmar que backend limpa
 
 2. Side menu
-3.Personensstatus:
 
- "perioderSomSykMedLoenn":
-    "perioderSomPermittertMedLoenn":
-    "perioderSomPermittertUtenLoenn":
-
-
-4. 'refusjon_ihht_artikkel_58_i_forordning' : string
 5 .uenighet:
-
-Kan det tenkes at dropdown-en som heter 'Velg grunn til uenighet' har disse valgene:
-  "bosted"
-  "medlemsperiode"
-  "personligSituasjon"
-  "pensjon"
-  "oppholdetsVarighet"
-  "ansettelse"
-..og at 'Personen det gjelder' egentlig er ei radiobutton-liste der man gjør ett valg, og infoen settes sammen slik(?):
 "uenighet": {
   "bosted": "søker",
   "medlemsperiode": "søker",
@@ -30,6 +14,8 @@ Kan det tenkes at dropdown-en som heter 'Velg grunn til uenighet' har disse valg
   "ansettelse": "søker",
   "ytterligereGrunner": "æøå"
 },
+
+/*
 "uenighetKonklusjon": [
   {
     "vedtakFraDato": "2001-01-01",
@@ -38,9 +24,8 @@ Kan det tenkes at dropdown-en som heter 'Velg grunn til uenighet' har disse valg
     "grunnTilUenighet": "æøå"
   }
 ],
+*/
 
-
-6. 'refusjonskrav' - ja - string
 7. Vedtak:
 
 "vedtak": {
@@ -99,19 +84,7 @@ Kan det tenkes at dropdown-en som heter 'Velg grunn til uenighet' har disse valg
   "gjelderAlleBarn": "ja"
 }
 
-"familie": {
-  "ytelser": [
-    {
-      "antallPersoner": "æøå",
-      "startdato": "2001-01-01",
-      "sluttdato": "2001-01-01",
-      "beloep": "æøå",
-      "valuta": "NOK",
-      "utbetalingshyppighet": "æøå",
-      "ytelseNavn": "æøå",
-      "mottakersNavn": "æøå"
-    }
-  ],
+
 
 --> 400 login for Z992366
 

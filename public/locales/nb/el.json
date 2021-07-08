@@ -63,12 +63,12 @@
   "option-formaal-7": "Prosedyre ved uenighet",
   "option-formaal-8": "Refusjon i henhold til artikkel 58 i forordningen",
 
-  "option-grunn-01": "Periode/status for ansettelsesforhpld eller selvstendig næringsvirksomhet",
-  "option-grunn-02": "Mottaksperiode for pensjon",
-  "option-grunn-03": "Medlemsperiode",
-  "option-grunn-04": "Oppholdets varighet",
-  "option-grunn-05": "Barnets/barnas bosted",
-  "option-grunn-06": "Elementer i personlig situasjon (artikkel 11 i forordning (EF) nr. 987/2009)",
+  "option-grunn-ansettelse": "Periode/status for ansettelsesforhpld eller selvstendig næringsvirksomhet",
+  "option-grunn-pensjon": "Mottaksperiode for pensjon",
+  "option-grunn-medlemsperiode": "Medlemsperiode",
+  "option-grunn-oppholdetsVarighet": "Oppholdets varighet",
+  "option-grunn-bosted": "Barnets/barnas bosted",
+  "option-grunn-personligSituasjon": "Elementer i personlig situasjon (artikkel 11 i forordning (EF) nr. 987/2009)",
 
   "option-grunntilopphør-01": "Oppsakt av arbeidsgiver",
   "option-grunntilopphør-02": "Arbeidstaker har sagt opp selv",
@@ -80,6 +80,11 @@
   "option-grunntilopphør-08": "Annet",
 
   "option-inntektsfilter-01": "Dagpenger grunnlag",
+
+  "option-person-søker" : "Søker",
+  "option-person-ektefelle_partner" : "Ektefelle/partner",
+  "option-person-avdød" : "Avdød",
+  "option-person-annen-person" : "Annen person",
 
   "option-personensstatus-1": "Ansatt",
   "option-personensstatus-2": "Selvstendig næringsdrivende",

@@ -89,8 +89,8 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
 
   useEffect(() => {
     // map of barna ID => { navn: barna name, betegnelse: ytelse }
-    let newBarnaList: {[k in string]: NavnOgBetegnelse} = {}
-    let newBarnaNameKeys: {[k in string]: any} = {}
+    const newBarnaList: {[k in string]: NavnOgBetegnelse} = {}
+    const newBarnaNameKeys: {[k in string]: any} = {}
     let newNavnOgBetegnelse = [];
 
     (replySed as F002Sed).barn.forEach((b: Barn, i: number) => {
@@ -113,7 +113,6 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
     _setBarnaNameKeys(newBarnaNameKeys)
     _setNavnOgBetegnelse(newNavnOgBetegnelse)
   }, [replySed])
-
 
   const currentMotregning = () => {
     if (_barnaEllerFamilie === 'barna') {

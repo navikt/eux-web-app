@@ -7,7 +7,7 @@ import Select from 'components/Forms/Select'
 import Period from 'components/Period/Period'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import { Motregning, Utbetalingshyppighet, YtelseNavn } from 'declarations/sed'
+import { Utbetalingshyppighet, Ytelse, YtelseNavn } from 'declarations/sed'
 import CountryData, { Currency } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
@@ -22,7 +22,7 @@ import {
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import Tooltip from 'rc-tooltip'
-import React, { useState } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
@@ -55,13 +55,10 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
     validation
   } = useSelector<State, FamilieYtelserSelector>(mapState)
   const dispatch = useDispatch()
-  const target: string = `${personID}.motregninger[0]`
-  const motregning: Motregning = _.get(replySed, target)
+  const target: string = `${personID}.ytelse`
+  const ytelse: Ytelse = _.get(replySed, target)
   const namespace: string = `${parentNamespace}-${personID}-familieytelser`
-
   const _currencyData = CountryData.getCurrencyInstance('nb')
-
-  const [_newNumber, setNewNumber] = useState<string>('')
 
   const ytelseNavnOptions: Options = [{
     label: t('el:option-familieytelser-barnetrygd'), value: 'Barnetrygd'
@@ -69,8 +66,11 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
     label: t('el:option-familieytelser-kontantstøtte'), value: 'Kontantstøtte'
   }]
 
-  const setNumber = (e: string) => {
-    setNewNumber(e)
+  const setAntallPersoner = (newAntallPersoner: string) => {
+    dispatch(updateReplySed(`${target}.antallPersoner`, newAntallPersoner.trim()))
+    if (validation[namespace + '-antallPersoner']) {
+      dispatch(resetValidation(namespace + '-antallPersoner'))
+    }
   }
 
   const setYtelseNavn = (ytelseNavn: YtelseNavn) => {
@@ -140,20 +140,21 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
             onChange={(e: any) => setYtelseNavn(e.value)}
             options={ytelseNavnOptions}
             placeholder={t('el:placeholder-select-default')}
-            selectedValue={_.find(ytelseNavnOptions, b => b.value === motregning?.ytelseNavn as YtelseNavn)}
-            defaultValue={_.find(ytelseNavnOptions, b => b.value === motregning?.ytelseNavn as YtelseNavn)}
+            selectedValue={_.find(ytelseNavnOptions, b => b.value === ytelse?.ytelseNavn as YtelseNavn)}
+            defaultValue={_.find(ytelseNavnOptions, b => b.value === ytelse?.ytelseNavn as YtelseNavn)}
           />
         </Column>
         <Column>
           <Input
             type='number'
             min='0'
-            feil={validation[namespace + '-number']?.feilmelding}
+            feil={validation[namespace + '-antallPersoner']?.feilmelding}
+            key={'antall-innvilges' + ytelse?.antallPersoner}
             namespace={namespace}
-            id='number'
+            id='antallPersoner'
             label={t('label:antall-innvilges') + ' *'}
-            onChanged={setNumber}
-            value={_newNumber}
+            onChanged={setAntallPersoner}
+            value={ytelse?.antallPersoner ?? ''}
           />
         </Column>
       </AlignStartRow>
@@ -176,12 +177,12 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
               </FlexCenterSpacedDiv>
             )}
             onChanged={setBeløp}
-            value={motregning?.beloep ?? ''}
+            value={ytelse?.beloep ?? ''}
           />
         </Column>
         <Column>
           <CountrySelect
-            key={motregning?.valuta ? _currencyData.findByValue(motregning?.valuta) : ''}
+            key={ytelse?.valuta ? _currencyData.findByValue(ytelse?.valuta) : ''}
             closeMenuOnSelect
             ariaLabel={t('label:valuta')}
             data-test-id={namespace + '-valuta'}
@@ -193,7 +194,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
             menuPortalTarget={document.body}
             onOptionSelected={setValuta}
             type='currency'
-            values={motregning?.valuta ? _currencyData.findByValue(motregning?.valuta) : ''}
+            values={ytelse?.valuta ? _currencyData.findByValue(ytelse?.valuta) : ''}
           />
         </Column>
       </AlignStartRow>
@@ -204,14 +205,14 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv size={2} />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
         <Period
-          key={'' + motregning?.startdato + motregning?.sluttdato}
+          key={'' + ytelse?.startdato + ytelse?.sluttdato}
           namespace={namespace}
           errorStartDato={validation[namespace + '-startdato']?.feilmelding}
           errorSluttDato={validation[namespace + '-sluttdato']?.feilmelding}
           setStartDato={setStartDato}
           setSluttDato={setSluttDato}
-          valueStartDato={motregning?.startdato ?? ''}
-          valueSluttDato={motregning?.sluttdato ?? ''}
+          valueStartDato={ytelse?.startdato ?? ''}
+          valueSluttDato={ytelse?.sluttdato ?? ''}
         />
         <Column />
       </AlignStartRow>
@@ -224,7 +225,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
             id='mottakersNavn'
             label={t('label:mottakers-navn') + ' *'}
             onChanged={setMottakersNavn}
-            value={motregning?.mottakersNavn ?? ''}
+            value={ytelse?.mottakersNavn ?? ''}
           />
         </Column>
       </AlignStartRow>
@@ -232,7 +233,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.5s' }}>
         <Column>
           <HighContrastRadioPanelGroup
-            checked={motregning?.utbetalingshyppighet}
+            checked={ytelse?.utbetalingshyppighet}
             data-no-border
             data-test-id={namespace + '-utbetalingshyppighet'}
             id={namespace + '-utbetalingshyppighet'}

@@ -1,12 +1,12 @@
 import { validateKontoopplysning } from 'applications/SvarSed/Formaal/Kontoopplysning/validation'
 import { validateKravOmRefusjon } from 'applications/SvarSed/Formaal/KravOmRefusjon/validation'
-import { validateMotregning } from 'applications/SvarSed/Formaal/Motregning/validation'
+import { validateMotregninger } from 'applications/SvarSed/Formaal/Motregning/validation'
 import { validateProsedyreVedUenighet } from 'applications/SvarSed/Formaal/ProsedyreVedUenighet/validation'
 import { validateVedtak } from 'applications/SvarSed/Formaal/Vedtak/validation'
 import { validateAdresser } from 'applications/SvarSed/PersonManager/Adresser/validation'
 import { validateBeløpNavnOgValuta } from 'applications/SvarSed/PersonManager/BeløpNavnOgValuta/validation'
 import { validateFamilierelasjoner } from 'applications/SvarSed/PersonManager/Familierelasjon/validation'
-import { validateFamilieytelser } from 'applications/SvarSed/PersonManager/Familieytelser/validation'
+import { validateFamilieytelse } from 'applications/SvarSed/PersonManager/Familieytelser/validation'
 import { validateAllGrunnlagForBosetting } from 'applications/SvarSed/PersonManager/GrunnlagForBosetting/validation'
 import {
   validateKontaktsinformasjonEposter,
@@ -31,7 +31,6 @@ import {
   FamilieRelasjon,
   Flyttegrunn,
   HSed,
-  Motregning,
   PensjonPeriode,
   Periode,
   Person,
@@ -57,7 +56,7 @@ export const validateFormålManager = (v: Validation, t: TFunction, replySed: Re
 
   if ((replySed as F002Sed).formaal) {
     if ((replySed as F002Sed).formaal.indexOf('motregning') >= 0) {
-      _error = validateMotregning(v, t, replySed, 'formålmanager-motregning', t('label:motregning').toLowerCase())
+      _error = validateMotregninger(v, t, replySed, 'formålmanager-motregning', t('label:motregning').toLowerCase())
       hasErrors = hasErrors || _error
     }
     if ((replySed as F002Sed).formaal.indexOf('vedtak') >= 0) {
@@ -65,11 +64,11 @@ export const validateFormålManager = (v: Validation, t: TFunction, replySed: Re
       hasErrors = hasErrors || _error
     }
     if ((replySed as F002Sed).formaal.indexOf('prosedyre_ved_uenighet') >= 0) {
-      _error = validateProsedyreVedUenighet(v, t, _.get(replySed, 'xxxformaal.prosedyreveduenighet'), 'formålmanager-prosedyreveduenighet', t('label:prosedyre-ved-uenighet').toLowerCase())
+      _error = validateProsedyreVedUenighet(v, t, _.get(replySed, 'uenighet'), 'formålmanager-prosedyreveduenighet', t('label:prosedyre-ved-uenighet').toLowerCase())
       hasErrors = hasErrors || _error
     }
     if ((replySed as F002Sed).formaal.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0) {
-      _error = validateKravOmRefusjon(v, t, _.get(replySed, 'xxxformaal.kravomrefusjon'), 'formålmanager-refusjonihenholdtilartikkel58iforordningen', t('label:krav-om-refusjon').toLowerCase())
+      _error = validateKravOmRefusjon(v, t, (replySed as F002Sed)?.refusjon_ihht_artikkel_58_i_forordning, 'formålmanager-kravomrefusjon', t('label:krav-om-refusjon').toLowerCase())
       hasErrors = hasErrors || _error
     }
     if (!_.isNil((replySed as F002Sed).utbetalingTilInstitusjon)) {
@@ -104,8 +103,8 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
 
     if (!personID.startsWith('barn')) {
       if (personID === 'familie') {
-        const motregninger: Array<Motregning> = _.get(replySed, `${personID}.motregninger`)
-        _error = validateFamilieytelser(v, t, motregninger, `personmanager-${personID}-familieytelser`, personName)
+        const ytelse: Ytelse = _.get(replySed, `${personID}.ytelse`)
+        _error = validateFamilieytelse(v, t, { ytelse: ytelse, namespace: `personmanager-${personID}-familieytelser`, personName })
         hasErrors = hasErrors || _error
       } else {
         const telefoner: Array<Telefon> = _.get(replySed, `${personID}.telefon`)

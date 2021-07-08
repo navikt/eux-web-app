@@ -1,5 +1,5 @@
 import { validatePeriod } from 'components/Period/validation'
-import { Motregning } from 'declarations/sed'
+import { Ytelse } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
@@ -7,7 +7,7 @@ import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
 export interface ValidationFamilieytelserProps {
-  motregning: Motregning
+  ytelse: Ytelse
   index?: number
   namespace: string,
   personName: string
@@ -17,7 +17,7 @@ export const validateFamilieytelse = (
   v: Validation,
   t: TFunction,
   {
-    motregning,
+    ytelse = {} as any,
     index,
     namespace,
     personName
@@ -26,7 +26,15 @@ export const validateFamilieytelse = (
   let hasErrors: boolean = false
   const idx = getIdx(index)
 
-  if (_.isEmpty(motregning?.ytelseNavn?.trim())) {
+  if (_.isEmpty(ytelse?.antallPersoner?.trim())) {
+    v[namespace + idx + '-antallPersoner'] = {
+      skjemaelementId: namespace + idx + '-antallPersoner',
+      feilmelding: t('message:validation-noAntallPersonerForPerson', { person: personName })
+    } as FeiloppsummeringFeil
+    hasErrors = true
+  }
+
+  if (_.isEmpty(ytelse?.ytelseNavn?.trim())) {
     v[namespace + idx + '-ytelseNavn'] = {
       skjemaelementId: namespace + idx + '-ytelseNavn',
       feilmelding: t('message:validation-noBetegnelsePåYtelseForPerson', { person: personName })
@@ -34,7 +42,7 @@ export const validateFamilieytelse = (
     hasErrors = true
   }
 
-  if (_.isEmpty(motregning?.beloep?.trim())) {
+  if (_.isEmpty(ytelse?.beloep?.trim())) {
     v[namespace + idx + '-beloep'] = {
       skjemaelementId: namespace + idx + '-beloep',
       feilmelding: t('message:validation-noBeløpForPerson', { person: personName })
@@ -42,7 +50,7 @@ export const validateFamilieytelse = (
     hasErrors = true
   }
 
-  if (_.isEmpty(motregning?.valuta?.trim())) {
+  if (_.isEmpty(ytelse?.valuta?.trim())) {
     v[namespace + idx + '-valuta'] = {
       skjemaelementId: namespace + idx + '-valuta',
       feilmelding: t('message:validation-noValutaForPerson', { person: personName })
@@ -52,14 +60,14 @@ export const validateFamilieytelse = (
 
   const periodErrors: boolean = validatePeriod(v, t, {
     period: {
-      startdato: motregning.startdato,
-      sluttdato: motregning.sluttdato
+      startdato: ytelse.startdato,
+      sluttdato: ytelse.sluttdato
     },
     namespace: namespace + idx
   })
   hasErrors = hasErrors || periodErrors
 
-  if (_.isEmpty(motregning?.mottakersNavn?.trim())) {
+  if (_.isEmpty(ytelse?.mottakersNavn?.trim())) {
     v[namespace + idx + '-mottakersNavn'] = {
       skjemaelementId: namespace + idx + '-mottakersNavn',
       feilmelding: t('message:validation-noNavnTilPerson', { person: personName })
@@ -67,7 +75,7 @@ export const validateFamilieytelse = (
     hasErrors = true
   }
 
-  if (_.isEmpty(motregning?.utbetalingshyppighet?.trim())) {
+  if (_.isEmpty(ytelse?.utbetalingshyppighet?.trim())) {
     v[namespace + '-utbetalingshyppighet'] = {
       skjemaelementId: namespace + idx + '-utbetalingshyppighet',
       feilmelding: t('message:validation-noUtbetalingshyppighetForPerson', { person: personName })
@@ -84,20 +92,5 @@ export const validateFamilieytelse = (
     v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }
-  return hasErrors
-}
-
-export const validateFamilieytelser = (
-  validation: Validation,
-  t: TFunction,
-  motregninger: Array<Motregning>,
-  namespace: string,
-  personName: string
-): boolean => {
-  let hasErrors: boolean = false
-  motregninger?.forEach((motregning: Motregning, index: number) => {
-    const _errors: boolean = validateFamilieytelse(validation, t, { motregning, index, namespace, personName })
-    hasErrors = hasErrors || _errors
-  })
   return hasErrors
 }

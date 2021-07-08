@@ -42,7 +42,7 @@ export const validateMotregningNavnOgBetegnelser = (
   return hasErrors
 }
 
-export const validateM = (
+export const validateMotregning = (
   v: Validation,
   t: TFunction,
   motregning: IMotregning,
@@ -151,7 +151,7 @@ export const validateM = (
   return hasErrors
 }
 
-export const validateMotregning = (
+export const validateMotregninger = (
   v: Validation,
   t: TFunction,
   replySed: ReplySed,
@@ -162,13 +162,13 @@ export const validateMotregning = (
 
   (replySed as F002Sed).barn?.forEach((b: Barn) => {
     if (!_.isNil(b.motregning)) {
-      const answer = validateM(v, t, b.motregning, 'barna', namespace, formalName)
+      const answer = validateMotregning(v, t, b.motregning, 'barna', namespace, formalName)
       hasErrors = hasErrors && answer
     }
   })
 
   if (!_.isNil((replySed as F002Sed).familie?.motregning)) {
-    const answer = validateM(v, t, (replySed as F002Sed).familie?.motregning!, 'familie', namespace, formalName)
+    const answer = validateMotregning(v, t, (replySed as F002Sed).familie?.motregning!, 'familie', namespace, formalName)
     hasErrors = hasErrors && answer
   }
 
