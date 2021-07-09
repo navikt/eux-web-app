@@ -29,8 +29,8 @@ const KravOmRefusjon: React.FC<FormålManagerFormProps> = ({
   }: any = useSelector<State, FormålManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const target = 'refusjon_ihht_artikkel_58_i_forordning'
-  const kravomrefusjon: string | undefined = (replySed as F002Sed).refusjon_ihht_artikkel_58_i_forordning
-  const namespace = `${parentNamespace}-kravomrefusjon`
+  const refusjon_i_henhold_til_artikkel_58_i_forordningen: string | undefined = (replySed as F002Sed).refusjon_ihht_artikkel_58_i_forordning
+  const namespace = `${parentNamespace}-refusjon_i_henhold_til_artikkel_58_i_forordningen`
 
   const setKrav = (newKrav: string) => {
     dispatch(updateReplySed(`${target}`, newKrav.trim()))
@@ -56,7 +56,7 @@ const KravOmRefusjon: React.FC<FormålManagerFormProps> = ({
               id='krav'
               label={t('label:krav-om-refusjon-under-artikkel') + ' *'}
               onChanged={setKrav}
-              value={kravomrefusjon ?? ''}
+              value={refusjon_i_henhold_til_artikkel_58_i_forordningen ?? ''}
             />
           </TextAreaDiv>
         </Column>

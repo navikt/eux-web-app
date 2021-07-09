@@ -259,7 +259,7 @@ const FormålManager: React.FC = () => {
                     <Chevron type='høyre' />
                     <HorizontalSeparatorDiv size='0.5' />
                     {viewValidation && (
-                      validation[namespace + '-' + menu.replaceAll('_', '')]
+                      validation[namespace + '-' + menu]
                         ? (
                           <>
                             <RemoveCircle height={20} color='red' />

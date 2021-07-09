@@ -122,6 +122,7 @@
   "validation-noSedtype": "Du må velge sedtype",
   "validation-noSepaKontoForPerson": "Du må velg SEPA-konto til {{person}}",
   "validation-noSektor": "Du må velge sektor",
+  "validation-noSkalYtelseUtbetalesTilPerson": "Inken svar om ytelse utbetales til {{person}}",
   "validation-noSvarTypeTilPerson": "Ingen svar type eller tomme felt til {{person}}",
   "validation-noSwiftForPerson": "Du må skrive SWIFT til {{person}}",
   "validation-noTema": "Du må velge et tema",

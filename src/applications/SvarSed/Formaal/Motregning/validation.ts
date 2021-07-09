@@ -163,13 +163,13 @@ export const validateMotregninger = (
   (replySed as F002Sed).barn?.forEach((b: Barn) => {
     if (!_.isNil(b.motregning)) {
       const answer = validateMotregning(v, t, b.motregning, 'barna', namespace, formalName)
-      hasErrors = hasErrors && answer
+      hasErrors = hasErrors || answer
     }
   })
 
   if (!_.isNil((replySed as F002Sed).familie?.motregning)) {
     const answer = validateMotregning(v, t, (replySed as F002Sed).familie?.motregning!, 'familie', namespace, formalName)
-    hasErrors = hasErrors && answer
+    hasErrors = hasErrors || answer
   }
 
   if (hasErrors) {

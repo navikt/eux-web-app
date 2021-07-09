@@ -165,7 +165,7 @@ kontoopplysninger-kontoOrdinaer-sepaKonto  - {CONNECTED} utbetalingTilInstitusjo
 kontoopplysninger-kontoOrdinaer-iban       - {CONNECTED} utbetalingTilInstitusjon.kontoOrdinaer.iban
 kontoopplysninger-kontoOrdinaer-swift      - {CONNECTED} utbetalingTilInstitusjon.kontoOrdinaer.swift
 
-formålmanager-kravomrefusjon-krav - {CONNECTED} - refusjon_ihht_artikkel_58_i_forordning
+formålmanager-refusjon_i_henhold_til_artikkel_58_i_forordningen-krav - {CONNECTED} - refusjon_ihht_artikkel_58_i_forordning
 
 formålmanager-motregning-anmodningEllerSvar                      - {CONNECTED} {barna[i]|familie}.motregning.svarType
 formålmanager-motregning-navnOgBetegnelser-navn                  - {INTERNAL} not used
@@ -182,11 +182,35 @@ formålmanager-motregning-mottakersNavn                           - {CONNECTED} 
 formålmanager-motregning-begrunnelse                             - {CONNECTED} {barna[i]|familie}.motregning.begrunnelse
 formålmanager-motregning-ytterligereInfo                         - {CONNECTED} {barna[i]|familie}.motregning.ytterligereInfo
 
-formålmanager-prosedyreveduenighet-grunn                - {INTERNAL}  not used
-formålmanager-prosedyreveduenighet-person               - {INTERNAL}  not used
-formålmanager-prosedyreveduenighet-[{grunn}]-grunn      - {CONNECTED} uenighet[key]
-formålmanager-prosedyreveduenighet-[{grunn}]-person     - {CONNECTED} uenighet[key].value
-formålmanager-prosedyreveduenighet-ytterligereGrunner   - {CONNECTED} uenighet.ytterligereGrunner
+formålmanager-prosedyre_ved_uenighet-grunn                - {INTERNAL}  not used
+formålmanager-prosedyre_ved_uenighet-person               - {INTERNAL}  not used
+formålmanager-prosedyre_ved_uenighet-[{grunn}]-grunn      - {CONNECTED} uenighet[key]
+formålmanager-prosedyre_ved_uenighet-[{grunn}]-person     - {CONNECTED} uenighet[key].value
+formålmanager-prosedyre_ved_uenighet-ytterligereGrunner   - {CONNECTED} uenighet.ytterligereGrunner
+
+formålmanager-vedtak-gjelderAlleBarn                                     - {CONNECTED} vedtak.gjelderAlleBarn
+formålmanager-vedtak-barn[]                                              - {CONNECTED} vedtak.barnVedtaketOmfatter
+formålmanager-vedtak-perioder-startdato                                  - {INTERNAL} not used
+formålmanager-vedtak-perioder-sluttdato                                  - {INTERNAL} not used
+formålmanager-vedtak-perioder[i]-startdato                               - {CONNECTED} vedtak.vedtaksperioder[i].startdato
+formålmanager-vedtak-perioder[i]-sluttdato                               - {CONNECTED} vedtak.vedtaksperioder[i].sluttdato
+formålmanager-vedtak-vedtakstype                                         - {CONNECTED} vedtak.vedtakstype
+formålmanager-vedtak-vedtaksdato                                         - {CONNECTED} vedtak.vedtaksdato
+formålmanager-vedtak-begrunnelse                                         - {CONNECTED} vedtak.begrunnelse
+formålmanager-vedtak-ytterligereInfo                                     - {CONNECTED} vedtak.ytterligereInfo
+formålmanager-vedtak-vedtaksperioder-periode-startdato                   - {INTERNAL} not used
+formålmanager-vedtak-vedtaksperioder-periode-sluttdato                   - {INTERNAL} not used
+formålmanager-vedtak-vedtaksperioder-skalYtelseUtbetales                 - {INTERNAL} not used
+formålmanager-vedtak-vedtaksperioder-vedtak                              - {INTERNAL} not used
+formålmanager-vedtak-vedtaksperioder-{$vedtak}[{i}]-periode-startdato    - {CONNECTED} vedtak.{$vedtak}[i].periode.startdato
+formålmanager-vedtak-vedtaksperioder-{$vedtak}[{i}]-periode-sluttdato    - {CONNECTED} vedtak.{$vedtak}[i].periode.sluttdato
+formålmanager-vedtak-vedtaksperioder-{$vedtak}[{i}]-skalYtelseUtbetales  - {CONNECTED} vedtak.{$vedtak}[i].skalYtelseUtbetales
+
+($vedtak = primaerkompetanseArt58, sekundaerkompetanseArt58, primaerkompetanseArt68, sekundaerkompetanseArt68)
+
+export interface Vedtak {
+  innhold?????????: string
+}
 
 seddetails-anmodningsperiode-startdato      - {INTERNAL}
 seddetails-anmodningsperiode-sluttdato      - {INTERNAL}
@@ -201,17 +225,3 @@ seddetails-avsenderinstitusjon              - {GLOBAL}
 seddetails-typeKrav                         - {GLOBAL}
 seddetails-informasjon                      - {GLOBAL}
 seddetails-opplysninger                     - {GLOBAL}
-
-TODO
-    vedtak-barn                                  - {CONNECTED}
-    vedtak-periode-startdato                     - {CONNECTED}
-    vedtak-periode-sluttdato                     - {CONNECTED}
-    vedtak-type                                  - {CONNECTED}
-    vedtak-grunnen                               - {CONNECTED}
-    vedtak-vedtaksperioder-periode-startdato     - {INTERNAL}
-    vedtak-vedtaksperioder-periode-sluttdato     - {INTERNAL}
-    vedtak-vedtaksperioder-vedtak                - {INTERNAL}
-    vedtak-vedtaksperioder[i]-periode-startdato  - {CONNECTED}
-    vedtak-vedtaksperioder[i]-periode-sluttdato  - {CONNECTED}
-    vedtak-vedtaksperioder[i]-vedtak             - {CONNECTED}
-

@@ -121,10 +121,10 @@
   "option-typebeløp-2" : "Vederlag for ferie som ikke er tatt ut (årlig ferie)",
   "option-typebeløp-3" : "Annet vederlag eller tilsvarende utbetalinger",
 
-  "option-vedtaktype-1": "Vedtak om primærkompetanse under artikkel 68 i forordning (EF) nr. 883/2004",
-  "option-vedtaktype-2": "Vedtak om sekundærkompetanse etter artikkel 68 i forordning (EF) nr. 883/2004020",
-  "option-vedtaktype-3": "Vedtak om primærkompetanse etter artikkel 58 i forordning (EF) nr. 987/2009",
-  "option-vedtaktype-4": "Vedtak om sekundærkompetanse etter artikkel 58 i forordning (EF) nr. 987/2009",
+  "option-vedtaktype-primaerkompetanseArt58": "Vedtak om primærkompetanse etter artikkel 58 i forordning (EF) nr. 987/2009",
+  "option-vedtaktype-sekundaerkompetanseArt58": "Vedtak om sekundærkompetanse etter artikkel 58 i forordning (EF) nr. 987/2009",
+  "option-vedtaktype-primaerkompetanseArt68": "Vedtak om primærkompetanse under artikkel 68 i forordning (EF) nr. 883/2004",
+  "option-vedtaktype-sekundaerkompetanseArt68": "Vedtak om sekundærkompetanse etter artikkel 68 i forordning (EF) nr. 883/2004020",
 
   "placeholder-date-default": "DD.MM.ÅÅÅÅ",
   "placeholder-grunner-default": "Skriv inn...",

@@ -261,22 +261,36 @@ export interface UtbetalingTilInstitusjon {
   kontoOrdinaer: KontoOrdinaer
 }
 
-export interface PeriodeMedVedtak {
-  periode: Periode
-  vedtak: string
-}
-
 export interface Grunn {
   grunn: string
   person: string
 }
 
-export interface XXXFormalVedtak {
-  barn: Array<string>
-  periode: Periode,
-  type: string
-  grunnen: string
-  vedtaksperioder: Array<PeriodeMedVedtak>
+export interface VedtakPeriode {
+  periode: Periode
+  skalYtelseUtbetales?: JaNei
+}
+
+export interface VedtakBarn {
+  fornavn: string
+  etternavn: string
+  foedselsdato: string
+
+}
+
+export interface Vedtak {
+  innhold: string
+  ytterligereInfo: string
+  vedtakstype: string
+  vedtaksdato: string
+  begrunnelse: string
+  primaerkompetanseArt58: Array<VedtakPeriode>
+  sekundaerkompetanseArt58: Array<VedtakPeriode>,
+  primaerkompetanseArt68: Array<VedtakPeriode>,
+  sekundaerkompetanseArt68: Array<VedtakPeriode>,
+  vedtaksperioder: Array<Periode>,
+  barnVedtaketOmfatter: Array<VedtakBarn>
+  gjelderAlleBarn: JaNei
 }
 
 export interface ProsedyreVedUenighet {
@@ -326,9 +340,7 @@ export interface F002Sed extends FSed {
   utbetalingTilInstitusjon: UtbetalingTilInstitusjon
   'refusjon_ihht_artikkel_58_i_forordning' ?: string
   uenighet?: ProsedyreVedUenighet
-  xxxformaal?: {
-    vedtak?: XXXFormalVedtak
-  }
+  vedtak?: Vedtak
 }
 
 export interface U002Sed extends USed {

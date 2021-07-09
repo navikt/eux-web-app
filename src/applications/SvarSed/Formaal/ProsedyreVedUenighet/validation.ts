@@ -6,7 +6,7 @@ import { TFunction } from 'react-i18next'
 
 export interface ValidationProsedyreVedUenighetGrunnProps {
   grunn: Grunn
-  prosedyreveduenighet: IProsedyreVedUenighet | undefined,
+  prosedyre_ved_uenighet: IProsedyreVedUenighet | undefined,
   index?: number
   namespace: string
   personName?: string
@@ -17,7 +17,7 @@ export const validateProsedyreVedUenighetGrunn = (
   t: TFunction,
   {
     grunn,
-    prosedyreveduenighet = {} as any,
+    prosedyre_ved_uenighet = {} as any,
     namespace,
     personName
   }: ValidationProsedyreVedUenighetGrunnProps
@@ -44,7 +44,7 @@ export const validateProsedyreVedUenighetGrunn = (
     hasErrors = true
   }
 
-  const duplicate: boolean = Object.prototype.hasOwnProperty.call(prosedyreveduenighet, grunn.grunn)
+  const duplicate: boolean = Object.prototype.hasOwnProperty.call(prosedyre_ved_uenighet, grunn.grunn)
   if (duplicate) {
     v[namespace + '-grunn'] = {
       feilmelding: t('message:validation-duplicateGrunnForPerson', { person: personName }),

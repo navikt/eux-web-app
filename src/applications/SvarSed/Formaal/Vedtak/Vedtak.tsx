@@ -1,22 +1,29 @@
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
 import { FormålManagerFormProps, FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
-import { ValidationVedtakPeriodeProps } from 'applications/SvarSed/Formaal/Vedtak/validation'
+import {
+  validateVedtakVedtaksperiode,
+  ValidationVedtakPeriodeProps,
+  ValidationVedtakVedtaksperiodeProps
+} from 'applications/SvarSed/Formaal/Vedtak/validation'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import DateInput from 'components/Forms/DateInput'
 import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
 import Period from 'components/Period/Period'
 import { HorizontalLineSeparator, TextAreaDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import { F002Sed, XXXFormalVedtak, JaNei, PeriodeMedVedtak } from 'declarations/sed'
+import { F002Sed, JaNei, Periode, Vedtak, VedtakBarn, VedtakPeriode } from 'declarations/sed'
+import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { Checkbox } from 'nav-frontend-skjema'
-import { Undertittel } from 'nav-frontend-typografi'
+import moment from 'moment'
+import { Checkbox, FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { Ingress, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
@@ -55,193 +62,347 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
     validation
   }: any = useSelector<State, MotregningSelector>(mapState)
   const dispatch = useDispatch()
-  const target = 'xxxformaal.vedtak'
-  const vedtak: XXXFormalVedtak | undefined = (replySed as F002Sed).xxxformaal?.vedtak
+  const target = 'vedtak'
+  const vedtak: Vedtak | undefined = (replySed as F002Sed).vedtak
   const namespace = `${parentNamespace}-vedtak`
 
-  const howManyBarn: number = (replySed as F002Sed).barn.length ?? 0
-  const initialBarnRadio: JaNei | undefined = !_.isNil(vedtak?.barn) ? (vedtak?.barn.length === howManyBarn ? 'ja' : 'nei') : undefined
+  const [_newPerioderStartDato, _setNewPerioderStartDato] = useState<string>('')
+  const [_newPerioderSluttDato, _setNewPerioderSluttDato] = useState<string>('')
+  const [_newVedtaksperioderStartDato, _setNewVedtaksperioderStartDato] = useState<string>('')
+  const [_newVedtaksperioderSluttDato, _setNewVedtaksperioderSluttDato] = useState<string>('')
+  const [_newVedtaksperioderVedtak, _setNewVedtaksperioderVedtak] = useState<string>('')
+  const [_newVedtaksperioderSkalYtelseUtbetales, _setNewVedtaksperioderSkalYtelseUtbetales] = useState<JaNei | undefined>(undefined)
 
-  const [_barnRadio, _setBarnRadio] = useState<JaNei | undefined>(initialBarnRadio)
-  const [_newStartDato, _setNewStartDato] = useState<string>('')
-  const [_newSluttDato, _setNewSluttDato] = useState<string>('')
-  const [_newVedtak, _setNewVedtak] = useState<string>('')
+  const [perioderAddToDeletion, perioderRemoveFromDeletion, perioderIsInDeletion] = useAddRemove<Periode>((p: Periode): string => p.startdato)
+  const [vedtaksperioder1AddToDeletion, vedtaksperioder1RemoveFromDeletion, vedtaksperioder1IsInDeletion] = useAddRemove<VedtakPeriode>((p: VedtakPeriode): string => '1_58_' + p.periode.startdato)
+  const [vedtaksperioder2AddToDeletion, vedtaksperioder2RemoveFromDeletion, vedtaksperioder2IsInDeletion] = useAddRemove<VedtakPeriode>((p: VedtakPeriode): string => '2_58_' + p.periode.startdato)
+  const [vedtaksperioder3AddToDeletion, vedtaksperioder3RemoveFromDeletion, vedtaksperioder3IsInDeletion] = useAddRemove<VedtakPeriode>((p: VedtakPeriode): string => '1_68_' + p.periode.startdato)
+  const [vedtaksperioder4AddToDeletion, vedtaksperioder4RemoveFromDeletion, vedtaksperioder4IsInDeletion] = useAddRemove<VedtakPeriode>((p: VedtakPeriode): string => '1_68_' + p.periode.startdato)
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PeriodeMedVedtak>((p: PeriodeMedVedtak): string => {
-    return p.periode.startdato
-  })
-  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useValidation<ValidationVedtakPeriodeProps>({}, validateVedtakPeriode)
+  const deletionHash: any = {
+    primaerkompetanseArt58: { addto: vedtaksperioder1AddToDeletion, removefrom: vedtaksperioder1RemoveFromDeletion, isin: vedtaksperioder1IsInDeletion },
+    sekundaerkompetanseArt58: { addto: vedtaksperioder2AddToDeletion, removefrom: vedtaksperioder2RemoveFromDeletion, isin: vedtaksperioder2IsInDeletion },
+    primaerkompetanseArt68: { addto: vedtaksperioder3AddToDeletion, removefrom: vedtaksperioder3RemoveFromDeletion, isin: vedtaksperioder3IsInDeletion },
+    sekundaerkompetanseArt68: { addto: vedtaksperioder4AddToDeletion, removefrom: vedtaksperioder4RemoveFromDeletion, isin: vedtaksperioder4IsInDeletion }
+  }
+
+  const [_seeNewPerioderForm, _setSeeNewPerioderForm] = useState<boolean>(false)
+  const [_seeNewVedtaksperioderForm, _setSeeNewVedtaksperioderForm] = useState<boolean>(false)
+
+  const [_perioderValidation, _perioderResetValidation, perioderPerformValidation] = useValidation<ValidationVedtakPeriodeProps>({}, validateVedtakPeriode)
+  const [_vedtaksperioderValidation, _vedtaksperioderResetValidation, vedtaksperioderPerformValidation, _setVedtaksperioderValidation] = useValidation<ValidationVedtakVedtaksperiodeProps>({}, validateVedtakVedtaksperiode)
 
   const vedtakTypeOptions: Options = [
-    { label: t('el:option-vedtaktype-1'), value: '1' },
-    { label: t('el:option-vedtaktype-2'), value: '2' },
-    { label: t('el:option-vedtaktype-3'), value: '3' },
-    { label: t('el:option-vedtaktype-4'), value: '4' }
+    { label: t('el:option-vedtaktype-primaerkompetanseArt58'), value: 'primaerkompetanseArt58' },
+    { label: t('el:option-vedtaktype-sekundaerkompetanseArt58'), value: 'sekundaerkompetanseArt58' },
+    { label: t('el:option-vedtaktype-primaerkompetanseArt68'), value: 'primaerkompetanseArt68' },
+    { label: t('el:option-vedtaktype-sekundaerkompetanseArt68'), value: 'sekundaerkompetanseArt68' }
   ]
 
-  const setBarnAlleBarn = () => {
-    dispatch(updateReplySed(`${target}.barn`, (replySed as F002Sed).barn.map(b => (b.personInfo.fornavn + ' ' + b.personInfo.etternavn))))
-    if (validation[namespace + '-barn']) {
-      dispatch(resetValidation(namespace + '-barn'))
+  const setGjelderAlleBarn = (newGjelderAlleBarn: JaNei) => {
+    dispatch(updateReplySed(`${target}.gjelderAlleBarn`, newGjelderAlleBarn.trim()))
+    if (validation[namespace + '-gjelderAlleBarn']) {
+      dispatch(resetValidation(namespace + '-gjelderAlleBarn'))
     }
-    _setBarnRadio('ja')
   }
 
-  const setBarnNoeBarn = () => {
-    _setBarnRadio('nei')
-  }
-
-  const removeBarn = (barn: string, checked: boolean) => {
-    let newBarn: Array<String> = _.cloneDeep(vedtak?.barn)!
-    // checked means that we will remove from list
+  const onChangedBarnaCheckbox = (vedtakBarn: VedtakBarn, checked: boolean) => {
+    let newBarnVedtaketOmfatter: Array<VedtakBarn> | undefined = _.cloneDeep(vedtak?.barnVedtaketOmfatter)
+    if (_.isNil(newBarnVedtaketOmfatter)) {
+      newBarnVedtaketOmfatter = []
+    }
     if (checked) {
-      newBarn = _.filter(newBarn, _n => _n !== barn.trim())
+      newBarnVedtaketOmfatter.push(vedtakBarn)
+      newBarnVedtaketOmfatter = newBarnVedtaketOmfatter.sort((a: VedtakBarn, b: VedtakBarn) =>
+        moment(a.foedselsdato).isSameOrBefore(moment(b.foedselsdato)) ? -1 : 1
+      )
     } else {
-      newBarn = newBarn.concat(barn.trim())
+      newBarnVedtaketOmfatter = _.filter(newBarnVedtaketOmfatter, vb =>
+        `${vb.fornavn}-${vb.etternavn}-${vb.foedselsdato}` !== `${vedtakBarn.fornavn}-${vedtakBarn.etternavn}-${vedtakBarn.foedselsdato}`
+      )
     }
-    dispatch(updateReplySed(`${target}.barn`, newBarn))
-    if (validation[namespace + '-barn']) {
-      dispatch(resetValidation(namespace + '-barn'))
-    }
-  }
-
-  const setStartDato = (newDato: string) => {
-    dispatch(updateReplySed(`${target}.periode.startdato`, newDato.trim()))
-    if (validation[namespace + '-periode-startdato']) {
-      dispatch(resetValidation(namespace + '-periode-startdato'))
+    dispatch(updateReplySed(`${target}.barnVedtaketOmfatter`, newBarnVedtaketOmfatter))
+    if (validation[namespace + '-newBarnVedtaketOmfatter']) {
+      dispatch(resetValidation(namespace + '-newBarnVedtaketOmfatter'))
     }
   }
 
-  const setSluttDato = (newDato: string) => {
-    dispatch(updateReplySed(`${target}.periode.sluttdato`, newDato.trim()))
-    if (validation[namespace + '-periode-sluttdato']) {
-      dispatch(resetValidation(namespace + '-periode-sluttdato'))
-    }
-  }
-
-  const setType = (newType: string) => {
-    dispatch(updateReplySed(`${target}.type`, newType.trim()))
-    if (validation[namespace + '-type']) {
-      dispatch(resetValidation(namespace + '-type'))
-    }
-  }
-
-  const setGrunnen = (newGrunnen: string) => {
-    dispatch(updateReplySed(`${target}.grunnen`, newGrunnen.trim()))
-    if (validation[namespace + '-grunnen']) {
-      dispatch(resetValidation(namespace + '-grunnen'))
-    }
-  }
-
-  const setVedtaksperioderStartDato = (dato: string, index: number) => {
+  const setPerioderStartDato = (newDato: string, index: number) => {
     if (index < 0) {
-      _setNewStartDato(dato.trim())
-      _resetValidation(namespace + '-vedtaksperioder-periode-startdato')
+      _setNewPerioderStartDato(newDato.trim())
+      _perioderResetValidation(namespace + '-perioder-startdato')
     } else {
-      dispatch(updateReplySed(`${target}.vedtaksperioder[${index}].periode.startdato`, dato.trim()))
-      if (validation[namespace + '-vedtaksperioder' + getIdx(index) + '-periode-startdato']) {
-        dispatch(resetValidation(namespace + '-vedtaksperioder' + getIdx(index) + '-periode-startdato'))
+      dispatch(updateReplySed(`${target}.vedtaksperioder[${index}].startdato`, newDato.trim()))
+      if (validation[namespace + '-perioder' + getIdx(index) + '-startdato']) {
+        dispatch(resetValidation(namespace + '-perioder' + getIdx(index) + '-startdato'))
       }
     }
   }
 
-  const setVedtaksperioderSluttDato = (dato: string, index: number) => {
+  const setPerioderSluttDato = (sluttdato: string, index: number) => {
     if (index < 0) {
-      _setNewStartDato(dato.trim())
-      _resetValidation(namespace + '-vedtaksperioder-periode-sluttdato')
+      _setNewPerioderSluttDato(sluttdato.trim())
+      _perioderResetValidation(namespace + '-perioder-sluttdato')
     } else {
-      let newPerioder: Array<PeriodeMedVedtak> | undefined = _.cloneDeep(vedtak?.vedtaksperioder)
-      if (!newPerioder) {
-        newPerioder = []
-      }
-      if (dato === '') {
-        delete newPerioder[index].periode.sluttdato
-        newPerioder[index].periode.aapenPeriodeType = 'åpen_sluttdato'
+      const newPerioder: Array<Periode> = _.cloneDeep(vedtak?.vedtaksperioder) as Array<Periode>
+      if (sluttdato === '') {
+        delete newPerioder[index].sluttdato
+        newPerioder[index].aapenPeriodeType = 'åpen_sluttdato'
       } else {
-        delete newPerioder[index].periode.aapenPeriodeType
-        newPerioder[index].periode.sluttdato = dato.trim()
+        delete newPerioder[index].aapenPeriodeType
+        newPerioder[index].sluttdato = sluttdato.trim()
       }
       dispatch(updateReplySed(`${target}.vedtaksperioder`, newPerioder))
-      if (validation[namespace + '-vedtaksperioder' + getIdx(index) + '-periode-sluttdato']) {
-        dispatch(resetValidation(namespace + '-vedtaksperioder' + getIdx(index) + '-periode-sluttdato'))
+      if (validation[namespace + '-perioder' + getIdx(index) + '-sluttdato']) {
+        dispatch(resetValidation(namespace + '-perioder' + getIdx(index) + '-sluttdato'))
+      }
+    }
+  }
+
+  const setVedtakstype = (newType: string) => {
+    dispatch(updateReplySed(`${target}.vedtakstype`, newType.trim()))
+    if (validation[namespace + '-vedtakstype']) {
+      dispatch(resetValidation(namespace + '-vedtakstype'))
+    }
+  }
+
+  const setVedtaksdato = (newDato: string) => {
+    dispatch(updateReplySed(`${target}.vedtaksdato`, newDato.trim()))
+    if (validation[namespace + '-vedtaksdato']) {
+      dispatch(resetValidation(namespace + '-vedtaksdato'))
+    }
+  }
+
+  const setBegrunnelse = (newBegrunnelse: string) => {
+    dispatch(updateReplySed(`${target}.begrunnelse`, newBegrunnelse.trim()))
+    if (validation[namespace + '-begrunnelse']) {
+      dispatch(resetValidation(namespace + '-begrunnelse'))
+    }
+  }
+
+  const setYtterligeInfo = (newInfo: string) => {
+    dispatch(updateReplySed(`${target}.ytterligereInfo`, newInfo.trim()))
+    if (validation[namespace + '-ytterligereInfo']) {
+      dispatch(resetValidation(namespace + '-ytterligereInfo'))
+    }
+  }
+
+  const setVedtaksperioderStartDato = (newDato: string, index: number, vedtaktype: string) => {
+    if (index < 0) {
+      _setNewVedtaksperioderStartDato(newDato.trim())
+      _vedtaksperioderResetValidation(namespace + '-vedtaksperioder-periode-startdato')
+    } else {
+      dispatch(updateReplySed(`${target}.${vedtaktype}[${index}].periode.startdato`, newDato.trim()))
+      if (validation[namespace + '-vedtaksperioder-' + vedtaktype + getIdx(index) + '-periode-startdato']) {
+        dispatch(resetValidation(namespace + '-vedtaksperioder-' + vedtaktype + getIdx(index) + '-periode-startdato'))
+      }
+    }
+  }
+
+  const setVedtaksperioderSluttDato = (newDato: string, index: number, vedtaktype: string) => {
+    if (index < 0) {
+      _setNewPerioderSluttDato(newDato.trim())
+      _vedtaksperioderResetValidation(namespace + '-vedtaksperioder-perioder-sluttdato')
+    } else {
+      const newVedtaksperioder: Array<VedtakPeriode> = _.get(vedtak, vedtaktype) as Array<VedtakPeriode>
+      if (newDato === '') {
+        delete newVedtaksperioder[index].periode.sluttdato
+        newVedtaksperioder[index].periode.aapenPeriodeType = 'åpen_sluttdato'
+      } else {
+        delete newVedtaksperioder[index].periode.aapenPeriodeType
+        newVedtaksperioder[index].periode.sluttdato = newDato.trim()
+      }
+      dispatch(updateReplySed(`${target}.${vedtaktype}`, newVedtaksperioder))
+      if (validation[namespace + '-vedtaksperioder-' + vedtaktype + getIdx(index) + '-periode-sluttdato']) {
+        dispatch(resetValidation(namespace + '-vedtaksperioder-' + vedtaktype + getIdx(index) + '-periode-sluttdato'))
+      }
+    }
+  }
+
+  const setVedtaksperioderSkalYtelseUtbetales = (newSkalYtelseUtbetales: JaNei, index: number, vedtaktype: string) => {
+    if (index < 0) {
+      _setNewVedtaksperioderSkalYtelseUtbetales(newSkalYtelseUtbetales)
+      _vedtaksperioderResetValidation(namespace + '-vedtaksperioder-skalYtelseUtbetales')
+    } else {
+      dispatch(updateReplySed(`${target}.${vedtaktype}[${index}].skalYtelseUtbetales`, newSkalYtelseUtbetales))
+      if (validation[namespace + '-vedtaksperioder-' + vedtaktype + getIdx(index) + '-skalYtelseUtbetales']) {
+        dispatch(resetValidation(namespace + '-vedtaksperioder-' + vedtaktype + getIdx(index) + '-skalYtelseUtbetales'))
       }
     }
   }
 
   const setVedtaksperioderVedtak = (newVedtak: string, index: number) => {
     if (index < 0) {
-      _setNewVedtak(newVedtak.trim())
-      _resetValidation(namespace + '-vedtaksperioder-vedtak')
-    } else {
-      dispatch(updateReplySed(`${target}.vedtaksperioder[${index}].vedtak`, newVedtak.trim()))
-      if (validation[namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak']) {
-        dispatch(resetValidation(namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak'))
-      }
+      _setNewVedtaksperioderVedtak(newVedtak.trim())
+      _vedtaksperioderResetValidation(namespace + '-vedtaksperioder-vedtak')
     }
+    // too much hassle to move around with new vedtaktype.
   }
 
-  const resetForm = () => {
-    _setNewStartDato('')
-    _setNewSluttDato('')
-    _setNewVedtak('')
-    _resetValidation()
+  const perioderResetForm = () => {
+    _setNewPerioderStartDato('')
+    _setNewPerioderSluttDato('')
+    _perioderResetValidation()
   }
 
-  const onCancel = () => {
-    _setSeeNewForm(false)
-    resetForm()
+  const vedtaksperioderResetForm = () => {
+    _setNewVedtaksperioderStartDato('')
+    _setNewVedtaksperioderSluttDato('')
+    _setNewVedtaksperioderVedtak('')
+    _setNewVedtaksperioderSkalYtelseUtbetales(undefined)
+    _vedtaksperioderResetValidation()
   }
 
-  const onRemove = (index: number) => {
-    const newPerioder = _.cloneDeep(vedtak?.vedtaksperioder) as Array<PeriodeMedVedtak>
-    const deletedPerioder: Array<PeriodeMedVedtak> = newPerioder.splice(index, 1)
+  const onPeriodeCancel = () => {
+    _setSeeNewPerioderForm(false)
+    perioderResetForm()
+  }
+
+  const onVedtaksperiodeCancel = () => {
+    _setSeeNewVedtaksperioderForm(false)
+    vedtaksperioderResetForm()
+  }
+
+  const onPeriodeRemove = (index: number) => {
+    const newPerioder = _.cloneDeep(vedtak?.vedtaksperioder) as Array<Periode>
+    const deletedPerioder: Array<Periode> = newPerioder.splice(index, 1)
     if (deletedPerioder && deletedPerioder.length > 0) {
-      removeFromDeletion(deletedPerioder[0])
+      perioderRemoveFromDeletion(deletedPerioder[0])
     }
     dispatch(updateReplySed(`${target}.vedtaksperioder`, newPerioder))
   }
 
-  const onAdd = () => {
-    const newPeriode: PeriodeMedVedtak = {
-      periode: {
-        startdato: _newStartDato.trim()
-      },
-      vedtak: _newVedtak.trim()
+  const onVedtaksperioderRemove = (index: number, vedtaktype: string) => {
+    const newPerioder = _.get(vedtak, vedtaktype) as Array<VedtakPeriode>
+    const deletedPerioder: Array<VedtakPeriode> = newPerioder.splice(index, 1)
+    if (deletedPerioder && deletedPerioder.length > 0) {
+      // @ts-ignore
+      deletionHash[vedtaktype].removefrom(deletedPerioder[0])
     }
-    if (_newSluttDato) {
-      newPeriode.periode.sluttdato = _newSluttDato.trim()
+    dispatch(updateReplySed(`${target}.${vedtaktype}`, newPerioder))
+  }
+
+  const onPeriodeAdd = () => {
+    const newPeriode: Periode = {
+      startdato: _newPerioderStartDato
+    }
+    if (_newPerioderSluttDato) {
+      newPeriode.sluttdato = _newPerioderSluttDato.trim()
     } else {
-      newPeriode.periode.aapenPeriodeType = 'åpen_sluttdato'
+      newPeriode.aapenPeriodeType = 'åpen_sluttdato'
     }
 
-    const valid = performValidation({
+    const valid = perioderPerformValidation({
       periode: newPeriode,
       perioder: vedtak?.vedtaksperioder ?? [],
       namespace
     })
 
     if (valid) {
-      let newPerioder: Array<PeriodeMedVedtak> = _.cloneDeep(vedtak?.vedtaksperioder) as Array<PeriodeMedVedtak>
+      let newPerioder: Array<Periode> = _.cloneDeep(vedtak?.vedtaksperioder) as Array<Periode>
       if (!newPerioder) {
         newPerioder = []
       }
       newPerioder = newPerioder.concat(newPeriode)
       dispatch(updateReplySed(`${target}.vedtaksperioder`, newPerioder))
-      resetForm()
+      perioderResetForm()
     }
   }
 
-  const renderPeriodeAndVedtak = (periode: PeriodeMedVedtak | null, index: number) => {
-    const candidateForDeletion = index < 0 ? false : isInDeletion(periode)
+  const onVedtaksperiodeAdd = () => {
+    const newVedtaksperiode: VedtakPeriode = {
+      periode: {
+        startdato: _newVedtaksperioderStartDato.trim()
+      },
+      skalYtelseUtbetales: _newVedtaksperioderSkalYtelseUtbetales?.trim() as JaNei ?? ''
+    }
+    if (_newVedtaksperioderSluttDato) {
+      newVedtaksperiode.periode.sluttdato = _newVedtaksperioderSluttDato.trim()
+    } else {
+      newVedtaksperiode.periode.aapenPeriodeType = 'åpen_sluttdato'
+    }
+
+    if (_.isEmpty(_newVedtaksperioderVedtak)) {
+      const newValidation: Validation = {}
+      newValidation[namespace + '-vedtaksperioder-vedtak'] = {
+        feilmelding: t('message:validation-noVedtakTypeTilPerson', { person: t('label:vedtak') }),
+        skjemaelementId: namespace + '-vedtaksperioder-vedtak'
+      } as FeiloppsummeringFeil
+      _setVedtaksperioderValidation(newValidation)
+      return false
+    }
+
+    const valid: boolean = vedtaksperioderPerformValidation({
+      vedtaksperiode: newVedtaksperiode,
+      vedtaksperioder: _.get(vedtak, _newVedtaksperioderVedtak) ?? [],
+      vedtaktype: _newVedtaksperioderVedtak,
+      namespace
+    })
+
+    if (valid) {
+      let newVedtaksperioder: Array<VedtakPeriode> = _.get(vedtak, _newVedtaksperioderVedtak) as Array<VedtakPeriode>
+      if (!newVedtaksperioder) {
+        newVedtaksperioder = []
+      }
+      newVedtaksperioder = newVedtaksperioder.concat(newVedtaksperiode)
+      dispatch(updateReplySed(`${target}.${_newVedtaksperioderVedtak}`, newVedtaksperioder))
+      vedtaksperioderResetForm()
+    }
+  }
+
+  const renderPeriode = (periode: Periode | null, index: number) => {
+    const candidateForDeletion = index < 0 ? false : perioderIsInDeletion(periode)
     const idx = (index >= 0 ? '[' + index + ']' : '')
     const getErrorFor = (index: number, el: string): string | undefined => {
       return index < 0
-        ? _validation[namespace + '-vedtaksperioder' + idx + '-' + el]?.feilmelding
+        ? _perioderValidation[namespace + '-perioder' + idx + '-' + el]?.feilmelding
         : validation[namespace + '-vedtaksperioder' + idx + '-' + el]?.feilmelding
     }
-    const startdato = index < 0 ? _newStartDato : periode?.periode.startdato
-    const sluttdato = index < 0 ? _newSluttDato : periode?.periode.sluttdato
+    const startdato = index < 0 ? _newPerioderStartDato : periode?.startdato
+    const sluttdato = index < 0 ? _newPerioderSluttDato : periode?.sluttdato
+    return (
+      <>
+        <AlignStartRow className={classNames('slideInFromLeft')}>
+          <Period
+            key={'' + startdato + sluttdato}
+            namespace={namespace + '-perioder' + getIdx(index)}
+            errorStartDato={getErrorFor(index, 'startdato')}
+            errorSluttDato={getErrorFor(index, 'sluttdato')}
+            setStartDato={(dato: string) => setPerioderStartDato(dato, index)}
+            setSluttDato={(dato: string) => setPerioderSluttDato(dato, index)}
+            valueStartDato={startdato}
+            valueSluttDato={sluttdato}
+          />
+          <Column>
+            <AddRemovePanel
+              candidateForDeletion={candidateForDeletion}
+              existingItem={(index >= 0)}
+              marginTop
+              onBeginRemove={() => perioderAddToDeletion(periode)}
+              onConfirmRemove={() => onPeriodeRemove(index)}
+              onCancelRemove={() => perioderRemoveFromDeletion(periode)}
+              onAddNew={onPeriodeAdd}
+              onCancelNew={onPeriodeCancel}
+            />
+          </Column>
+        </AlignStartRow>
+        <VerticalSeparatorDiv size='0.5' />
+      </>
+    )
+  }
+
+  const renderVedtakPeriode = (vedtaksperiode: VedtakPeriode | null, index: number, vedtaktype: string) => {
+    // @ts-ignore
+    const candidateForDeletion = index < 0 ? false : deletionHash[vedtaktype].isin(vedtaksperiode)
+    const idx = (index >= 0 ? '-' + vedtaktype + '[' + index + ']' : '')
+    const getErrorFor = (index: number, el: string): string | undefined => {
+      return index < 0
+        ? _vedtaksperioderValidation[namespace + '-vedtaksperioder' + idx + '-' + el]?.feilmelding
+        : validation[namespace + '-vedtaksperioder' + idx + '-' + el]?.feilmelding
+    }
+    const startdato = index < 0 ? _newVedtaksperioderStartDato : vedtaksperiode?.periode.startdato
+    const sluttdato = index < 0 ? _newVedtaksperioderSluttDato : vedtaksperiode?.periode.sluttdato
+    // @ts-ignore
     return (
       <>
         <AlignStartRow className={classNames('slideInFromLeft')}>
@@ -250,26 +411,52 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
             namespace={namespace + '-vedtaksperioder' + getIdx(index) + '-periode'}
             errorStartDato={getErrorFor(index, 'periode-startdato')}
             errorSluttDato={getErrorFor(index, 'periode-sluttdato')}
-            setStartDato={(dato: string) => setVedtaksperioderStartDato(dato, index)}
-            setSluttDato={(dato: string) => setVedtaksperioderSluttDato(dato, index)}
+            setStartDato={(dato: string) => setVedtaksperioderStartDato(dato, index, vedtaktype)}
+            setSluttDato={(dato: string) => setVedtaksperioderSluttDato(dato, index, vedtaktype)}
             valueStartDato={startdato}
             valueSluttDato={sluttdato}
           />
+        </AlignStartRow>
+        <VerticalSeparatorDiv />
+        {index < 0 && (
+          <>
+            <AlignStartRow>
+              <Column>
+                <Select
+                  closeMenuOnSelect
+                  key={namespace + '-vedtaksperioder-vedtak-' + _newVedtaksperioderVedtak}
+                  data-test-id={namespace + '-vedtaksperioder-vedtak'}
+                  feil={getErrorFor(index, 'vedtak')}
+                  highContrast={highContrast}
+                  id={namespace + '-vedtaksperioder-vedtak'}
+                  label={t('label:vedtak-type')}
+                  menuPortalTarget={document.body}
+                  onChange={(o: OptionTypeBase) => setVedtaksperioderVedtak(o.value, index)}
+                  options={vedtakTypeOptions}
+                  placeholder={t('el:placeholder-select-default')}
+                  defaultValue={_.find(vedtakTypeOptions, v => v.value === _newVedtaksperioderVedtak)}
+                  selectedValue={_.find(vedtakTypeOptions, v => v.value === _newVedtaksperioderVedtak)}
+                />
+              </Column>
+            </AlignStartRow>
+            <VerticalSeparatorDiv />
+          </>
+        )}
+        <AlignStartRow>
           <Column>
-            <Select
-              closeMenuOnSelect
-              key={namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak' + (index < 0 ? _newVedtak : periode?.vedtak)}
-              data-test-id={namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak'}
-              feil={getErrorFor(index, 'vedtak')}
-              highContrast={highContrast}
-              id={namespace + '-vedtaksperioder' + getIdx(index) + '-vedtak'}
-              label={t('label:vedtak-type')}
-              menuPortalTarget={document.body}
-              onChange={(o: OptionTypeBase) => setVedtaksperioderVedtak(o.value, index)}
-              options={vedtakTypeOptions}
-              placeholder={t('el:placeholder-select-default')}
-              defaultValue={_.find(vedtakTypeOptions, v => v.value === (index < 0 ? _newVedtak : periode?.vedtak))}
-              selectedValue={_.find(vedtakTypeOptions, v => v.value === (index < 0 ? _newVedtak : periode?.vedtak))}
+            <HighContrastRadioPanelGroup
+              checked={index < 0 ? _newVedtaksperioderSkalYtelseUtbetales : vedtaksperiode?.skalYtelseUtbetales}
+              data-test-id={namespace + '-vedtaksperioder' + getIdx(index) + '-skalYtelseUtbetales'}
+              data-no-border
+              feil={getErrorFor(index, 'skalYtelseUtbetales')}
+              id={namespace + '-vedtaksperioder' + getIdx(index) + '-skalYtelseUtbetales'}
+              legend={t('label:skal-ytelse-utbetales') + ' *'}
+              name={namespace + idx + '-borSammen'}
+              radios={[
+                { label: t('label:ja'), value: 'ja' },
+                { label: t('label:nei'), value: 'nei' }
+              ]}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setVedtaksperioderSkalYtelseUtbetales(e.target.value as JaNei, index, vedtaktype)}
             />
           </Column>
           <Column>
@@ -277,11 +464,11 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}
               marginTop
-              onBeginRemove={() => addToDeletion(periode)}
-              onConfirmRemove={() => onRemove(index)}
-              onCancelRemove={() => removeFromDeletion(periode)}
-              onAddNew={onAdd}
-              onCancelNew={onCancel}
+              onBeginRemove={() => deletionHash[vedtaktype].addto(vedtaksperiode)}
+              onConfirmRemove={() => onVedtaksperioderRemove(index, vedtaktype)}
+              onCancelRemove={() => deletionHash[vedtaktype].removefrom(vedtaksperiode)}
+              onAddNew={onVedtaksperiodeAdd}
+              onCancelNew={onVedtaksperiodeCancel}
             />
           </Column>
         </AlignStartRow>
@@ -297,35 +484,44 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
       </Undertittel>
       <VerticalSeparatorDiv size='2' />
       <HighContrastRadioPanelGroup
-        checked={_barnRadio}
+        checked={vedtak?.gjelderAlleBarn}
         data-no-border
-        data-test-id={namespace + '-barn'}
-        feil={validation[namespace + '-barn']?.feilmelding}
-        id={namespace + '-barn'}
+        data-test-id={namespace + '-gjelderAlleBarn'}
+        feil={validation[namespace + '-gjelderAlleBarn']?.feilmelding}
+        id={namespace + '-gjelderAlleBarn'}
         legend={t('label:vedtak-angående-alle-barn') + ' *'}
-        name={namespace + '-barn'}
+        name={namespace + '-gjelderAlleBarn'}
         radios={[
           { label: t('label:ja'), value: 'ja' },
           { label: t('label:nei'), value: 'nei' }
         ]}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => e.target.value === 'ja' ? setBarnAlleBarn() : setBarnNoeBarn()}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGjelderAlleBarn(e.target.value as JaNei)}
       />
       <VerticalSeparatorDiv />
-      {_barnRadio === 'nei' && (
+      {vedtak?.gjelderAlleBarn === 'nei' && (
         <div className={classNames('slideInFromLeft')}>
           <div dangerouslySetInnerHTML={{ __html: t('label:avhuk-de-barn-vedtaket') + ':' }} />
           <VerticalSeparatorDiv />
           {(replySed as F002Sed)?.barn?.map((b, index) => {
-            const name = b.personInfo.fornavn + ' ' + b.personInfo.etternavn
+            const vedtakBarn: VedtakBarn = {
+              fornavn: b.personInfo.fornavn,
+              etternavn: b.personInfo.etternavn,
+              foedselsdato: b.personInfo.foedselsdato
+            }
+
+            const checked: boolean = _.find(vedtak?.barnVedtaketOmfatter, vb =>
+              `${vb.fornavn}-${vb.etternavn}-${vb.foedselsdato}` === `${vedtakBarn.fornavn}-${vedtakBarn.etternavn}-${vedtakBarn.foedselsdato}`
+            ) !== undefined
             return (
               <div
-                key={name}
+                key={`${vedtakBarn.fornavn}-${vedtakBarn.etternavn}-${vedtakBarn.foedselsdato}`}
                 className={classNames('slideInFromLeft')}
                 style={{ animationDelay: (index * 0.1) + 's' }}
               >
                 <Checkbox
-                  label={name}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => removeBarn(name, e.target.checked)}
+                  checked={checked}
+                  label={vedtakBarn.fornavn + ' ' + vedtakBarn.etternavn + ' (' + vedtakBarn.foedselsdato + ')'}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangedBarnaCheckbox(vedtakBarn, e.target.checked)}
                 />
                 <VerticalSeparatorDiv size='0.5' />
               </div>
@@ -333,22 +529,83 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
           })}
         </div>
       )}
+      <VerticalSeparatorDiv size='2' />
+      <Undertittel>
+        {t('label:periode')}
+      </Undertittel>
+      <VerticalSeparatorDiv />
+      {vedtak?.vedtaksperioder?.map(renderPeriode)}
+      <VerticalSeparatorDiv />
+      <HorizontalLineSeparator />
+      <VerticalSeparatorDiv />
+      {_seeNewPerioderForm
+        ? renderPeriode(null, -1)
+        : (
+          <Row className='slideInFromLeft'>
+            <Column>
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                onClick={() => _setSeeNewPerioderForm(true)}
+              >
+                <Add />
+                <HorizontalSeparatorDiv size='0.5' />
+                {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+              </HighContrastFlatknapp>
+            </Column>
+          </Row>
+          )}
       <VerticalSeparatorDiv />
       <AlignStartRow
         className={classNames('slideInFromLeft')}
         style={{ animationDelay: '0.1s' }}
       >
-        <Period
-          key={'' + vedtak?.periode?.startdato + vedtak?.periode?.sluttdato}
-          namespace={namespace + '-periode'}
-          errorStartDato={validation[namespace + '-periode-startdato']?.feilmelding}
-          errorSluttDato={validation[namespace + '-periode-sluttdato']?.feilmelding}
-          setStartDato={setStartDato}
-          setSluttDato={setSluttDato}
-          valueStartDato={vedtak?.periode?.startdato ?? ''}
-          valueSluttDato={vedtak?.periode?.sluttdato ?? ''}
-        />
-        <Column />
+        <Column flex='2'>
+          <Select
+            data-test-id={namespace + '-vedtakstype'}
+            feil={validation[namespace + '-vedtakstype']?.feilmelding}
+            highContrast={highContrast}
+            key={namespace + '-vedtakstype-' + vedtak?.vedtakstype}
+            id={namespace + '-vedtakstype'}
+            label={t('label:vedtak-type') + ' *'}
+            menuPortalTarget={document.body}
+            onChange={(e: OptionTypeBase) => setVedtakstype(e.value)}
+            options={vedtakTypeOptions}
+            placeholder={t('el:placeholder-select-default')}
+            defaultValue={_.find(vedtakTypeOptions, v => v.value === vedtak?.vedtakstype)}
+            selectedValue={_.find(vedtakTypeOptions, v => v.value === vedtak?.vedtakstype)}
+          />
+        </Column>
+        <Column>
+          <DateInput
+            feil={validation[namespace + '-vedtaksdato']?.feilmelding}
+            namespace={namespace}
+            id='vedtaksdato'
+            key={namespace + '-vedtaksdato-' + vedtak?.vedtaksdato}
+            label={t('label:vedtaksdato') + ' *'}
+            onChanged={setVedtaksdato}
+            required
+            value={vedtak?.vedtaksdato}
+          />
+        </Column>
+      </AlignStartRow>
+      <VerticalSeparatorDiv />
+      <AlignStartRow
+        className={classNames('slideInFromLeft')}
+        style={{ animationDelay: '0.15s' }}
+      >
+        <Column flex='2'>
+          <TextAreaDiv>
+            <TextArea
+              feil={validation[namespace + '-begrunnelse']?.feilmelding}
+              namespace={namespace}
+              id='grunnen'
+              label={t('label:begrunnelse')}
+              onChanged={setBegrunnelse}
+              value={vedtak?.begrunnelse}
+            />
+          </TextAreaDiv>
+        </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow
@@ -356,52 +613,51 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
         style={{ animationDelay: '0.2s' }}
       >
         <Column flex='2'>
-          <Select
-            data-test-id={namespace + '-type'}
-            feil={validation[namespace + '-type']?.feilmelding}
-            highContrast={highContrast}
-            id={namespace + '-type'}
-            label={t('label:vedtak-type') + ' *'}
-            menuPortalTarget={document.body}
-            onChange={(e: any) => setType(e.value)}
-            options={vedtakTypeOptions}
-            placeholder={t('el:placeholder-select-default')}
-            defaultValue={_.find(vedtakTypeOptions, v => v.value === vedtak?.type)}
-            selectedValue={_.find(vedtakTypeOptions, v => v.value === vedtak?.type)}
-          />
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-      <AlignStartRow
-        className={classNames('slideInFromLeft')}
-        style={{ animationDelay: '0.3s' }}
-      >
-        <Column flex='2'>
           <TextAreaDiv>
             <TextArea
-              feil={validation[namespace + '-grunnen']?.feilmelding}
+              feil={validation[namespace + '-ytterligereInfo']?.feilmelding}
               namespace={namespace}
-              id='grunnen'
+              id='ytterligereInfo'
               label={t('label:ytterligere-informasjon-til-sed')}
-              onChanged={setGrunnen}
-              value={vedtak?.grunnen}
+              onChanged={setYtterligeInfo}
+              value={vedtak?.ytterligereInfo}
             />
           </TextAreaDiv>
         </Column>
       </AlignStartRow>
+      <VerticalSeparatorDiv size='2' />
+      <Undertittel>
+        {t('label:perioder')}
+      </Undertittel>
       <VerticalSeparatorDiv />
-      {vedtak?.vedtaksperioder?.map(renderPeriodeAndVedtak)}
+      {['primaerkompetanseArt58', 'sekundaerkompetanseArt58', 'primaerkompetanseArt68', 'sekundaerkompetanseArt68'].map(vedtaktype => {
+        const perioder: Array<VedtakPeriode> | undefined | null = _.get(vedtak, vedtaktype)
+        if (!_.isEmpty(perioder)) {
+          return (
+            <>
+              <Ingress>
+                {t('el:option-vedtaktype-' + vedtaktype)}
+              </Ingress>
+              <VerticalSeparatorDiv />
+              {perioder!.map((vp, i) => renderVedtakPeriode(vp, i, vedtaktype))}
+              <VerticalSeparatorDiv size='2' />
+            </>
+          )
+        }
+        return null
+      })}
+      <VerticalSeparatorDiv />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
-      {_seeNewForm
-        ? renderPeriodeAndVedtak(null, -1)
+      {_seeNewVedtaksperioderForm
+        ? renderVedtakPeriode(null, -1, '')
         : (
           <Row className='slideInFromLeft'>
             <Column>
               <HighContrastFlatknapp
                 mini
                 kompakt
-                onClick={() => _setSeeNewForm(true)}
+                onClick={() => _setSeeNewVedtaksperioderForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />

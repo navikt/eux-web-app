@@ -60,15 +60,15 @@ export const validateFormålManager = (v: Validation, t: TFunction, replySed: Re
       hasErrors = hasErrors || _error
     }
     if ((replySed as F002Sed).formaal.indexOf('vedtak') >= 0) {
-      _error = validateVedtak(v, t, _.get(replySed, 'xxxformaal.vedtak'), 'formålmanager-vedtak', t('label:vedtak').toLowerCase())
+      _error = validateVedtak(v, t, _.get(replySed, 'vedtak'), 'formålmanager-vedtak', t('label:vedtak').toLowerCase())
       hasErrors = hasErrors || _error
     }
     if ((replySed as F002Sed).formaal.indexOf('prosedyre_ved_uenighet') >= 0) {
-      _error = validateProsedyreVedUenighet(v, t, _.get(replySed, 'uenighet'), 'formålmanager-prosedyreveduenighet', t('label:prosedyre-ved-uenighet').toLowerCase())
+      _error = validateProsedyreVedUenighet(v, t, _.get(replySed, 'uenighet'), 'formålmanager-prosedyre_ved_uenighet', t('label:prosedyre-ved-uenighet').toLowerCase())
       hasErrors = hasErrors || _error
     }
     if ((replySed as F002Sed).formaal.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0) {
-      _error = validateKravOmRefusjon(v, t, (replySed as F002Sed)?.refusjon_ihht_artikkel_58_i_forordning, 'formålmanager-kravomrefusjon', t('label:krav-om-refusjon').toLowerCase())
+      _error = validateKravOmRefusjon(v, t, (replySed as F002Sed)?.refusjon_ihht_artikkel_58_i_forordning, 'formålmanager-refusjon_i_henhold_til_artikkel_58_i_forordningen', t('label:krav-om-refusjon').toLowerCase())
       hasErrors = hasErrors || _error
     }
     if (!_.isNil((replySed as F002Sed).utbetalingTilInstitusjon)) {

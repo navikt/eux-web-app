@@ -4,17 +4,6 @@ Todo:
 
 2. Side menu
 
-5 .uenighet:
-"uenighet": {
-  "bosted": "søker",
-  "medlemsperiode": "søker",
-  "personligSituasjon": "søker",
-  "pensjon": "søker",
-  "oppholdetsVarighet": "søker",
-  "ansettelse": "søker",
-  "ytterligereGrunner": "æøå"
-},
-
 /*
 "uenighetKonklusjon": [
   {
@@ -25,66 +14,6 @@ Todo:
   }
 ],
 */
-
-7. Vedtak:
-
-"vedtak": {
-  "innhold": "æøå",
-  "ytterligereInfo": "æøå",
-  "vedtakstype": "midlertidig_vedtak",
-  "vedtaksdato": "2001-01-01",
-  "begrunnelse": "æøå",
-  "primaerkompetanseArt58": [
-    {
-      "periode": {
-        "startdato": "2001-01-01",
-        "aapenPeriodeType": "åpen_sluttdato"
-      }
-    }
-  ],
-  "sekundaerkompetanseArt58": [
-    {
-      "periode": {
-        "startdato": "2001-01-01",
-        "aapenPeriodeType": "åpen_sluttdato"
-      }
-    }
-  ],
-  "primaerkompetanseArt68": [
-    {
-      "periode": {
-        "startdato": "2001-01-01",
-        "aapenPeriodeType": "åpen_sluttdato"
-      },
-      "skalYtelseUtbetales": "ja"
-    }
-  ],
-  "sekundaerkompetanseArt68": [
-    {
-      "periode": {
-        "startdato": "2001-01-01",
-        "aapenPeriodeType": "åpen_sluttdato"
-      },
-      "skalYtelseUtbetales": "ja"
-    }
-  ],
-  "vedtaksperioder": [
-    {
-      "startdato": "2001-01-01",
-      "aapenPeriodeType": "åpen_sluttdato"
-    }
-  ],
-  "barnVedtaketOmfatter": [
-    {
-      "fornavn": "æøå",
-      "etternavn": "æøå",
-      "foedselsdato": "2001-01-01"
-    }
-  ],
-  "gjelderAlleBarn": "ja"
-}
-
-
 
 --> 400 login for Z992366
 
