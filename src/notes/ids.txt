@@ -25,14 +25,13 @@ personmanager-{personID}-adresser[{i}]-bygning    - {CONNECTED} {person}.adresse
 personmanager-{personID}-adresser[{i}]-region     - {CONNECTED} {person}.adresser[].region
 
 U-Sed
-personmanager-{personID}-arbeidsforhold-arbeidssok-startdato       - {INTERNAL}  not used
-personmanager-{personID}-arbeidsforhold-arbeidssok-sluttdato       - {INTERNAL}  not used
-personmanager-{personID}-arbeidsforhold-arbeidsgiver-startdato - {INTERNAL}  not used
-personmanager-{personID}-arbeidsforhold-arbeidsgiver-sluttdato - {INTERNAL}  not used
-personmanager-{personID}-arbeidsforhold-arbeidsgiver-orgnr     - {INTERNAL}  not used
-personmanager-{personID}-arbeidsforhold-arbeidsgiver-navn      - {INTERNAL}  not used
-personmanager-{personID}-arbeidsforhold-arbeidsgiver[] - {CONNECTED} ansattMedForsikring[]
-
+personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-arbeidssok-startdato       - {INTERNAL}  not used
+personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-arbeidssok-sluttdato       - {INTERNAL}  not used
+personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-arbeidsgiver-startdato     - {INTERNAL}  not used
+personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-arbeidsgiver-sluttdato     - {INTERNAL}  not used
+personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-arbeidsgiver-orgnr         - {INTERNAL}  not used
+personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-arbeidsgiver-navn          - {INTERNAL}  not used
+personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-arbeidsgiver[] - {CONNECTED} perioderAnsattMedForsikring[]
 
 F-Sed, barn:
 personmanager-{personID}-beløpnavnogvaluta-barnetsNavn          - {CONNECTED} barn[].ytelse.barnetsNavn
@@ -44,7 +43,7 @@ personmanager-{personID}-beløpnavnogvaluta-sluttdato            - {CONNECTED} b
 personmanager-{personID}-beløpnavnogvaluta-mottakersNavn        - {CONNECTED} barn[].ytelse.mottakersNavn
 personmanager-{personID}-beløpnavnogvaluta-utbetalingshyppighet - {CONNECTED} barn[].ytelse.utbetalingshyppighet
 
-
+F-Sed:
 personmanager-{personID}-familierelasjon-relasjonType                 - {INTERNAL}  not used
 personmanager-{personID}-familierelasjon-periode-startdato            - {INTERNAL}  not used
 personmanager-{personID}-familierelasjon-periode-sluttdato            - {INTERNAL}  not used
@@ -60,7 +59,7 @@ personmanager-{personID}-familierelasjon[{i}]-annenRelasjonPersonNavn - {CONNECT
 personmanager-{personID}-familierelasjon[{i}]-annenRelasjonDato       - {CONNECTED} {person}.familierelasjoner[].annenRelasjonDato
 personmanager-{personID}-familierelasjon[{i}]-borSammen               - {CONNECTED} {person}.familierelasjoner[].borSammen
 
-hele familien
+F-Sed, hele familien
 personmanager-{personID=familie}-familieytelser-number               - {CONNECTED} familie.ytelse.antallPersoner
 personmanager-{personID=familie}-familieytelser-ytelseNavn           - {CONNECTED} familie.ytelse.ytelseNavn
 personmanager-{personID=familie}-familieytelser-beloep               - {CONNECTED} familie.ytelse.beloep
@@ -70,6 +69,20 @@ personmanager-{personID=familie}-familieytelser-sluttdato            - {CONNECTE
 personmanager-{personID=familie}-familieytelser-mottakersNavn        - {CONNECTED} familie.ytelse.mottakersNavn
 personmanager-{personID=familie}-familieytelser-utbetalingshyppighet - {CONNECTED} familie.ytelse.utbetalingshyppighet
 
+U-Sed:
+personmanager-{personID}-forsikring-${target}-arbeidssok-startdato       - {INTERNAL}  not used
+personmanager-{personID}-forsikring-${target}-arbeidssok-sluttdato       - {INTERNAL}  not used
+personmanager-{personID}-forsikring-${target}-arbeidsgiver-startdato     - {INTERNAL}  not used
+personmanager-{personID}-forsikring-${target}-arbeidsgiver-sluttdato     - {INTERNAL}  not used
+personmanager-{personID}-forsikring-${target}-arbeidsgiver-orgnr         - {INTERNAL}  not used
+personmanager-{personID}-forsikring-${target}-arbeidsgiver-navn          - {INTERNAL}  not used
+personmanager-{personID}-forsikring-${target}-arbeidsgiver[] - {CONNECTED} ${target}[]
+
+(target = perioderAnsattMedForsikring, perioderAnsattUtenForsikring, perioderSelvstendigMedForsikring,
+  perioderSelvstendigUtenForsikring, perioderFrihetsberoevet, perioderSyk, perioderSvangerskapBarn,
+  perioderUtdanning, perioderMilitaertjeneste, perioderAnnenForsikring)
+
+F-Sed:
 personmanager-{personID}-grunnlagforbosetting-perioder-startdato           - {INTERNAL}  not used
 personmanager-{personID}-grunnlagforbosetting-perioder-sluttdato           - {INTERNAL}  not used
 personmanager-{personID}-grunnlagforbosetting-perioder[{i}]-startdato      - {CONNECTED} {person}.flyttegrunn.perioder[].startdato
@@ -78,6 +91,7 @@ personmanager-{personID}-grunnlagforbosetting-personligSituasjon           - {CO
 personmanager-{personID}-grunnlagforbosetting-datoFlyttetTilAvsenderlandet - {CONNECTED} {person}.flyttegrunn.datoFlyttetTilAvsenderlandet
 personmanager-{personID}-grunnlagforbosetting-datoFlyttetTilMottakerlandet - {CONNECTED} {person}.flyttegrunn.datoFlyttetTilMottakerlandet
 
+F-Sed:
 personmanager-{personID}-kontaktinformasjon-telefon-nummer      - {INTERNAL}  not used
 personmanager-{personID}-kontaktinformasjon-telefon-type        - {INTERNAL}  not used
 personmanager-{personID}-kontaktinformasjon-epost-adresse       - {INTERNAL}  not used
@@ -85,11 +99,13 @@ personmanager-{personID}-kontaktinformasjon[{i}]-telefon-nummer - {CONNECTED} {p
 personmanager-{personID}-kontaktinformasjon[{i}]-telefon-type   - {CONNECTED} {person}.telefon[].type
 personmanager-{personID}-kontaktinformasjon[{i}]-epost-adresse  - {CONNECTED} {person}.epost[].adresse
 
+F-Sed:
 personmanager-{personID}-nasjonaliteter-land         - {INTERNAL}  not used
 personmanager-{personID}-nasjonaliteter-fradato      - {INTERNAL}  not used
 personmanager-{personID}-nasjonaliteter[{i}]-land    - {CONNECTED} {person}.personinfo.statsborgerskap[].land
 personmanager-{personID}-nasjonaliteter[{i}]-fradato - {CONNECTED} {person}.personinfo.statsborgerskap[].fradato
 
+F-Sed:
 personmanager-{personID}-personopplysninger-fornavn              - {CONNECTED} {person}.personInfo.fornavn
 personmanager-{personID}-personopplysninger-etternavn            - {CONNECTED} {person}.personInfo.etternavn
 personmanager-{personID}-personopplysninger-foedselsdato         - {CONNECTED} {person}.personInfo.foedselsdato
@@ -101,6 +117,7 @@ personmanager-{personID}-personopplysninger-fodested-by          - {CONNECTED} {
 personmanager-{personID}-personopplysninger-fodested-region      - {CONNECTED} {person}.personInfo.pinMangler.fodested.region
 personmanager-{personID}-personopplysninger-fodested-land        - {CONNECTED} {person}.personInfo.pinMangler.fodested.land
 
+F-Sed:
 personmanager-{personID}-personensstatus-ansatt-periode-startdato             - {INTERNAL}  not used
 personmanager-{personID}-personensstatus-ansatt-periode-sluttdato             - {INTERNAL}  not used
 personmanager-{personID}-personensstatus-ansatt-arbeidsgiver-navn             - {INTERNAL}  not used
@@ -112,6 +129,7 @@ personmanager-{personID}-personensstatus-ansatt-arbeidsgiver[orgnr]-startdato - 
 personmanager-{personID}-personensstatus-ansatt-periode[{i}]-startdato        - {CONNECTED} {person}.perioderSomAnsatt[].startdato
 personmanager-{personID}-personensstatus-ansatt-periode[{i}]-sluttdato        - {CONNECTED} {person}.perioderSomAnsatt[].sluttdato
 
+F-Sed:
 personmanager-{personID}-personensstatus-avsenderlandet[{i}]-startdato               - {CONNECTED} {person}.perioderMedTrygd[].startdato
 personmanager-{personID}-personensstatus-avsenderlandet[{i}]-sluttdato               - {CONNECTED} {person}.perioderMedTrygd[].sluttdato
 personmanager-{personID}-personensstatus-notansatt-{PSS/PSS/PSP/PSP}-startdato       - {INTERNAL}  not used
@@ -119,6 +137,7 @@ personmanager-{personID}-personensstatus-notansatt-{PSS/PSS/PSP/PSP}-sluttdato  
 personmanager-{personID}-personensstatus-notansatt-{PSS/PSS/PSP/PSP}[{i}]-startdato - {CONNECTED} {person}.{PSS/PSS/PSP/PSP}[].startdato
 personmanager-{personID}-personensstatus-notansatt-{PSS/PSS/PSP/PSP}[{i}]-sluttdato - {CONNECTED} {person}.{PSS/PSS/PSP/PSP}[].sluttdato
 
+F-Sed:
 personmanager-{personID}-personensstatus-withsubsidies-startdato              - {INTERNAL}  not used
 personmanager-{personID}-personensstatus-withsubsidies-sluttdato              - {INTERNAL}  not used
 personmanager-{personID}-personensstatus-withsubsidies-pensjonytpe            - {INTERNAL}  not used
@@ -133,9 +152,11 @@ personmanager-{personID}-personensstatus-grunnlagforbosetting-personligSituasjon
 personmanager-{personID}-personensstatus-grunnlagforbosetting-datoFlyttetTilAvsenderlandet - {CONNECTED} {person}.flyttegrunn.datoFlyttetTilAvsenderlandet
 personmanager-{personID}-personensstatus-grunnlagforbosetting-datoFlyttetTilMottakerlandet - {CONNECTED} {person}.flyttegrunn.datoFlyttetTilMottakerlandet
 
+U-Sed:
 personmanager-{personID}-referanseperiode-startdato - {CONNECTED} {person}.anmodningsperiode.startdato
 personmanager-{personID}-referanseperiode-sluttdato - {CONNECTED} {person}.anmodningsperiode.sluttdato
 
+F-Sed:
 personmanager-{personID}-relasjon[0]-relasjonTilPerson       - {CONNECTED} barn[].barnetilhoerigheter[0].relasjonTilPerson
 personmanager-{personID}-relasjon[0]-relasjonType            - {CONNECTED} barn[].barnetilhoerigheter[0].relasjonType
 personmanager-{personID}-relasjon[0]-periode-startdato       - {CONNECTED} barn[].barnetilhoerigheter[0].periode.startdato
@@ -146,6 +167,7 @@ personmanager-{personID}-relasjon[0]-borIEktefellesHushold   - {CONNECTED} barn[
 personmanager-{personID}-relasjon[0]-borIAnnenPersonsHushold - {CONNECTED} barn[].barnetilhoerigheter[0].borIAnnenPersonsHushold
 personmanager-{personID}-relasjon[0]-borPaaInstitusjon       - {CONNECTED} barn[].barnetilhoerigheter[0].borPaaInstitusjon
 
+F-Sed:
 personmanager-{personID}-trygdeordninger-dekkede-startdato                         - {INTERNAL}  not used
 personmanager-{personID}-trygdeordninger-dekkede-sluttdato                         - {INTERNAL}  not used
 personmanager-{personID}-trygdeordninger-udekkede-startdato                        - {INTERNAL}  not used
@@ -168,15 +190,18 @@ personmanager-{personID}-trygdeordninger-perioderMedPensjon[i]-periode-startdato
 personmanager-{personID}-trygdeordninger-perioderMedPensjon[i]-periode-sluttdato   - {CONNECTED} {person}.perioderMedPensjon[].periode.sluttdato
 personmanager-{personID}-trygdeordninger-perioderMedPensjon[i]-pensjontype         - {CONNECTED} {person}.perioderMedPensjon[].pensjonstype
 
-kontoopplysninger-begrunnelse              - {CONNECTED} utbetalingTilInstitusjon.begrunnelse
-kontoopplysninger-id                       - {CONNECTED} utbetalingTilInstitusjon.id
-kontoopplysninger-navn                     - {CONNECTED} utbetalingTilInstitusjon.navn
-kontoopplysninger-kontoOrdinaer-sepaKonto  - {CONNECTED} utbetalingTilInstitusjon.kontoOrdinaer.sepaKonto
-kontoopplysninger-kontoOrdinaer-iban       - {CONNECTED} utbetalingTilInstitusjon.kontoOrdinaer.iban
-kontoopplysninger-kontoOrdinaer-swift      - {CONNECTED} utbetalingTilInstitusjon.kontoOrdinaer.swift
+F-Sed formål:
+formålmanager-kontoopplysninger-begrunnelse              - {CONNECTED} utbetalingTilInstitusjon.begrunnelse
+formålmanager-kontoopplysninger-id                       - {CONNECTED} utbetalingTilInstitusjon.id
+formålmanager-kontoopplysninger-navn                     - {CONNECTED} utbetalingTilInstitusjon.navn
+formålmanager-kontoopplysninger-kontoOrdinaer-sepaKonto  - {CONNECTED} utbetalingTilInstitusjon.kontoOrdinaer.sepaKonto
+formålmanager-kontoopplysninger-kontoOrdinaer-iban       - {CONNECTED} utbetalingTilInstitusjon.kontoOrdinaer.iban
+formålmanager-kontoopplysninger-kontoOrdinaer-swift      - {CONNECTED} utbetalingTilInstitusjon.kontoOrdinaer.swift
 
+F-Sed formål:
 formålmanager-refusjon_i_henhold_til_artikkel_58_i_forordningen-krav - {CONNECTED} - refusjon_ihht_artikkel_58_i_forordning
 
+F-Sed formål:
 formålmanager-motregning-anmodningEllerSvar                      - {CONNECTED} {barna[i]|familie}.motregning.svarType
 formålmanager-motregning-navnOgBetegnelser-navn                  - {INTERNAL} not used
 formålmanager-motregning-navnOgBetegnelser-betegnelsepåytelse    - {INTERNAL} not used
@@ -192,12 +217,14 @@ formålmanager-motregning-mottakersNavn                           - {CONNECTED} 
 formålmanager-motregning-begrunnelse                             - {CONNECTED} {barna[i]|familie}.motregning.begrunnelse
 formålmanager-motregning-ytterligereInfo                         - {CONNECTED} {barna[i]|familie}.motregning.ytterligereInfo
 
+F-Sed formål:
 formålmanager-prosedyre_ved_uenighet-grunn                - {INTERNAL}  not used
 formålmanager-prosedyre_ved_uenighet-person               - {INTERNAL}  not used
 formålmanager-prosedyre_ved_uenighet-[{grunn}]-grunn      - {CONNECTED} uenighet[key]
 formålmanager-prosedyre_ved_uenighet-[{grunn}]-person     - {CONNECTED} uenighet[key].value
 formålmanager-prosedyre_ved_uenighet-ytterligereGrunner   - {CONNECTED} uenighet.ytterligereGrunner
 
+F-Sed formål:
 formålmanager-vedtak-gjelderAlleBarn                                     - {CONNECTED} vedtak.gjelderAlleBarn
 formålmanager-vedtak-barn[]                                              - {CONNECTED} vedtak.barnVedtaketOmfatter
 formålmanager-vedtak-perioder-startdato                                  - {INTERNAL} not used

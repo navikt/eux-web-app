@@ -1,7 +1,7 @@
-import Arbeidsforhold from 'applications/SvarSed/PersonManager/Arbeidsforhold/Arbeidsforhold'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import ExpandingPanel from 'components/ExpandingPanel/ExpandingPanel'
 import Stack from 'components/Stack/Stack'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
@@ -10,6 +10,9 @@ import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoyk
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
+import ArbeidsforholdMedForsikring from '../Arbeidsforhold/ArbeidsforholdMedForsikring'
+import ArbeidsforholdOther from '../Arbeidsforhold/ArbeidsforholdOther'
+import ArbeidsforholdUtenForsikring from '../Arbeidsforhold/ArbeidsforholdUtenForsikring'
 
 interface ForsikringSelector extends PersonManagerFormSelector {
   highContrast: boolean
@@ -23,55 +26,60 @@ const mapState = (state: State): ForsikringSelector => ({
 
 const Forsikring: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
-  personID,
-  personName
+  personID
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
-    highContrast
+    highContrast,
+    replySed
   } = useSelector<State, ForsikringSelector>(mapState)
-  // TODO add target
-  // const target = 'xxxforsikring'
-  // const xxx: any = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-forsikring`
 
-  const [_periodeType, setPeriodeType] = useState<Array<string>>([])
+  const periodeTypeHash: {[k in string]: string} = {
+    perioderAnsattMedForsikring: 'ansettelsesforhold_som_utgjør_forsikringsperiode',
+    perioderAnsattUtenForsikring: 'ansettelsesforhold_som_ikke_utgjør_forsikringsperiode',
+    perioderSelvstendigMedForsikring: 'selvstendig_næringsvirksomhet_som_utgjør_forsikringsperiode',
+    perioderSelvstendigUtenForsikring: 'selvstendig_næringsvirksomhet_som_ikke_utgjør_forsikringsperiode',
+    perioderFrihetsberoevet: 'frihetsberøvelse_som_utgjør_eller_behandles_som_forsikringsperiode',
+    perioderSyk: 'sykdomsperiode_som_utgjør_eller_behandles_som_forsikringsperiode',
+    perioderSvangerskapBarn: 'svangerskapsperiode_eller_omsorg_for_barn_som_utgjør_forsikringsperiode_eller_behandles_som_forsikringsperiode',
+    perioderUtdanning: 'utdanningsperiode_som_utgjør_eller_behandles_som_forsikringsperiode',
+    perioderMilitaertjeneste: 'militærtjeneste_eller_alternativ_tjeneste_som_utgjør_forsikringsperiode_eller_behandles_som_forsikringsperiode',
+    perioderAnnenForsikring: 'annen_periode_som_utgjør_eller_behandles_som_forsikringsperiode'
+  }
 
-  const periodeOptions: Options = [
-    { label: t('el:option-forsikring-1'), value: 'forsikring-1' },
-    { label: t('el:option-forsikring-2'), value: 'forsikring-2' },
-    { label: t('el:option-forsikring-3'), value: 'forsikring-3' },
-    { label: t('el:option-forsikring-4'), value: 'forsikring-4' },
-    { label: t('el:option-forsikring-5'), value: 'forsikring-5' },
-    { label: t('el:option-forsikring-6'), value: 'forsikring-6' },
-    { label: t('el:option-forsikring-7'), value: 'forsikring-7' },
-    { label: t('el:option-forsikring-8'), value: 'forsikring-8' },
-    { label: t('el:option-forsikring-9'), value: 'forsikring-9' },
-    { label: t('el:option-forsikring-10'), value: 'forsikring-10' }
+  let initialPeriodeType: Array<string> = []
+  let periodeTypes = ['perioderAnsattMedForsikring','perioderAnsattUtenForsikring','perioderSelvstendigMedForsikring',
+    'perioderSelvstendigUtenForsikring','perioderFrihetsberoevet','perioderSyk','perioderSvangerskapBarn',
+    'perioderUtdanning','perioderMilitaertjeneste','perioderAnnenForsikring']
+
+  let periodeTypeMedForsikring = [periodeTypeHash['perioderAnsattMedForsikring'], periodeTypeHash['perioderSelvstendigMedForsikring']]
+  let periodeTypeUtenForsikring = [periodeTypeHash['perioderAnsattUtenForsikring'], periodeTypeHash['perioderSelvstendigUtenForsikring']]
+  let periodeTypeOther = [
+    periodeTypeHash['perioderFrihetsberoevet'], periodeTypeHash['perioderSyk'], periodeTypeHash['perioderSvangerskapBarn'],
+    periodeTypeHash['perioderUtdanning'], periodeTypeHash['perioderMilitaertjeneste'], periodeTypeHash['perioderAnnenForsikring']
   ]
 
-  /* "option-forsikring-1" : "Ansettelsesforhold som utgjør forsikringsperiode",
-  "option-forsikring-2" : "Selvstendig næringsvirksomhet som utgjør forsikringsperiode",
-  "option-forsikring-3" : "Ansettelsesforhold som ikke utgjør forsikringsperiode",
-  "option-forsikring-4" : "Selvstendig næringsvirksomhet som ikke utgjør forsikringsperiode",
-  "option-forsikring-5" : "Sykdomsperiode som utgjør eller behandøes som forsikringsperiode",
-  "option-forsikring-6" : "Svangerskapsperiode eller omsorg for barn som utgjør forsikringsperiode eller behandles som forsikringsperiode",
-  "option-forsikring-7" : "Frihetsberøvelse som utgjør eller behandles som forsikringsperiode",
-  "option-forsikring-8" : "Utdanningsperiode som utgjør eller behandles som forsikringsperiode",
-  "option-forsikring-9" : "Militærtjeneste eller alternativ tjeneste som utgjør forsikringsperiode eller behandles som forsikringsperiode",
-  "option-forsikring-10" : "Annen periode som utgjør eller behandles som forsikringsperiode",
+  periodeTypes.forEach((type: string) => {
+    if (!_.isEmpty(_.get(replySed, type))) {
+      initialPeriodeType.push(periodeTypeHash[type])
+    }
+  })
 
-  protected static final String ANSATTPERIODE_FORSIKRET = "ansettelsesforhold_som_utgjør_forsikringsperiode";
-  protected static final String SELVSTENDIG_FORSIKRET = "selvstendig_næringsvirksomhet_som_utgjør_forsikringsperiode";
-  protected static final String ANSATTPERIODE_UFORSIKRET = "ansettelsesforhold_som_ikke_utgjør_forsikringsperiode";
-  protected static final String SELVSTENDIG_UFORSIKRET = "selvstendig_næringsvirksomhet_som_ikke_utgjør_forsikringsperiode";
-  protected static final String SYKDOMSPERIODE = "sykdomsperiode_som_utgjør_eller_behandles_som_forsikringsperiode";
-  protected static final String SVANGERSKAP_OMSORGSPERIODE = "svangerskapsperiode_eller_omsorg_for_barn_som_utgjør_forsikringsperiode_eller_behandles_som_forsikringsperiode";
-  protected static final String FRIHETSBEROEVETPERIODE = "frihetsberøvelse_som_utgjør_eller_behandles_som_forsikringsperiode";
-  protected static final String UTDANNINGSPERIODE = "utdanningsperiode_som_utgjør_eller_behandles_som_forsikringsperiode";
-  protected static final String MILITAERTJENESTE = "militærtjeneste_eller_alternativ_tjeneste_som_utgjør_forsikringsperiode_eller_behandles_som_forsikringsperiode";
-  protected static final String ANNENPERIODE = "annen_periode_som_utgjør_eller_behandles_som_forsikringsperiode";
-  */
+  const [_periodeType, setPeriodeType] = useState<Array<string>>(initialPeriodeType)
+
+  const periodeOptions: Options = [
+    { label: t('el:option-forsikring-ANSATTPERIODE_FORSIKRET'), value: 'ansettelsesforhold_som_utgjør_forsikringsperiode' },
+    { label: t('el:option-forsikring-SELVSTENDIG_FORSIKRET'), value: 'selvstendig_næringsvirksomhet_som_utgjør_forsikringsperiode' },
+    { label: t('el:option-forsikring-ANSATTPERIODE_UFORSIKRET'), value: 'ansettelsesforhold_som_ikke_utgjør_forsikringsperiode' },
+    { label: t('el:option-forsikring-SELVSTENDIG_UFORSIKRET'), value: 'selvstendig_næringsvirksomhet_som_ikke_utgjør_forsikringsperiode' },
+    { label: t('el:option-forsikring-SYKDOMSPERIODE'), value: 'sykdomsperiode_som_utgjør_eller_behandles_som_forsikringsperiode' },
+    { label: t('el:option-forsikring-SVANGERSKAP_OMSORGSPERIODE'), value: 'svangerskapsperiode_eller_omsorg_for_barn_som_utgjør_forsikringsperiode_eller_behandles_som_forsikringsperiode' },
+    { label: t('el:option-forsikring-FRIHETSBEROEVETPERIODE'), value: 'frihetsberøvelse_som_utgjør_eller_behandles_som_forsikringsperiode' },
+    { label: t('el:option-forsikring-UTDANNINGSPERIODE'), value: 'utdanningsperiode_som_utgjør_eller_behandles_som_forsikringsperiode' },
+    { label: t('el:option-forsikring-MILITAERTJENESTE'), value: 'militærtjeneste_eller_alternativ_tjeneste_som_utgjør_forsikringsperiode_eller_behandles_som_forsikringsperiode' },
+    { label: t('el:option-forsikring-ANNENPERIODE'), value: 'annen_periode_som_utgjør_eller_behandles_som_forsikringsperiode' }
+  ]
 
   return (
     <PaddedDiv>
@@ -98,6 +106,8 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />
+      <HorizontalLineSeparator/>
+      <VerticalSeparatorDiv size='2' />
       {_periodeType.sort((a, b) => {
         return t('el:option-' + a).localeCompare(t('el:option-' + b))
       }).map(type => (
@@ -111,11 +121,26 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
               </Undertittel>
           )}
           >
-            <Arbeidsforhold
-              parentNamespace={namespace}
-              personID={personID}
-              personName={personName}
-            />
+            <>
+            {periodeTypeMedForsikring.indexOf(type) >= 0 && (
+              <ArbeidsforholdMedForsikring
+                parentNamespace={namespace}
+                target={type}
+              />
+            )}
+            {periodeTypeUtenForsikring.indexOf(type) >= 0 && (
+              <ArbeidsforholdUtenForsikring
+                parentNamespace={namespace}
+                target={type}
+              />
+            )}
+              {periodeTypeOther.indexOf(type) >= 0 && (
+                <ArbeidsforholdOther
+                  parentNamespace={namespace}
+                  target={type}
+                />
+              )}
+            </>
           </ExpandingPanel>
           <VerticalSeparatorDiv size='2' />
         </div>

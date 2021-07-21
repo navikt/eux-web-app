@@ -298,12 +298,6 @@ export interface PeriodePlusInstitusjon {
   institusjon: Institusjon
 }
 
-export interface PeriodePlusArbeidsgiver {
-  arbeidsgiver: Arbeidsgiver
-  periode: Periode
-  typeTrygdeforhold: string
-}
-
 export interface Inntekt {
   type: string
   typeAnnen?: string
@@ -334,6 +328,46 @@ export interface LokaleSakId {
   institusjonsid: string
   land: string
 }
+export interface PeriodeMedForsikring {
+  arbeidsgiver: Arbeidsgiver
+  periode: Periode
+  typeTrygdeforhold: string
+}
+
+export interface PeriodeUtenForsikring extends PeriodeMedForsikring {
+  kreverinformasjonomtypearberidsforhold: string
+  kreverinformasjonomantallarbeidstimer: string
+  kreverinformasjonominntekt: string
+}
+
+export interface PeriodeAnnenForsikring {
+  institusjonsid: string
+  institusjonsnavn: string
+  institusjonstype: string
+  virksomhetensart: string
+  navn: string
+  adresse: Adresse
+  periode: Periode
+  typeTrygdeforhold: string
+}
+
+export interface PerioderMilitaertjeneste {
+  periode: Periode
+  typeTrygdeforhold: string
+}
+
+export interface PerioderFrihetsberoevet extends PeriodeMedForsikring {}
+export interface PerioderUtdanning extends PerioderMilitaertjeneste {}
+
+export interface PerioderSykSvangerskapOmsorg {
+  institusjonsnavn: string
+  institusjonsid: string
+  erinstitusjonsidkjent: boolean
+  navn: string
+  adresse: Adresse
+  periode: Periode
+  typeTrygdeforhold: string
+}
 
 export interface FSed extends BaseReplySed {
   anmodningsperioder: Array<Periode>
@@ -362,15 +396,23 @@ export interface F002Sed extends FSed {
 }
 
 export interface USed extends BaseReplySed {
-  perioderAnsattMedForsikring: Array<PeriodePlusArbeidsgiver>
-  perioderDagpenger:Array<PeriodePlusInstitusjon>
-  perioderAnsattUtenForsikring?: Array<PeriodePlusArbeidsgiver>
   anmodningsperiode: Periode
   lokaleSakIder: Array<LokaleSakId>
-
 }
 
 export interface U002Sed extends USed {
+  perioderAnsattMedForsikring?: Array<PeriodeMedForsikringr>
+  perioderAnsattUtenForsikring?: Array<PeriodeUtenForsikring>
+  perioderSelvstendigMedForsikring?: Array<PerioderMedForsikring>
+  perioderSelvstendigUtenForsikring?: Array<PerioderUtenForsikring>
+  perioderFrihetsberoevet?: Array<PerioderFrihetsberoevet>
+  perioderSyk?: Array<PerioderSykSvangerskapOmsorg>
+  perioderSvangerskapBarn?: Array<PerioderSykSvangerskapOmsorg>
+  perioderUtdanning?: Array<PerioderUtdanning>
+  perioderMilitaertjeneste?: Array<PerioderMilitaertjeneste>
+  perioderAnnenForsikring?: Array<PeriodeAnnenForsikring>
+  perioderDagpenger:Array<PeriodePlusInstitusjon>
+
   xxxgrunntilopphor?: any
   xxxsisteAnsettelsesForhold?: XXXSisteAnsettelsesForhold
 }
@@ -379,7 +421,7 @@ export interface U004Sed extends USed {
   loennsopplysninger?: Array<Loennsopplysning>
 }
 
-export interface U017Sed extends USed {
+export interface U017Sed extends U002Sed {
   rettTilYtelse?: {
     bekreftelsesgrunn: string
     periode: Periode
@@ -392,7 +434,7 @@ export interface HSed extends BaseReplySed {
     dokumenttyper: Array<string>
     andreDokumenttyper: Array<string>
   }
-  positivtSvar: HSvar,
+  positivtSvar: HSvar
   negativeSvar: HSvar
   ytterligereInfo: string
   tema?: string
