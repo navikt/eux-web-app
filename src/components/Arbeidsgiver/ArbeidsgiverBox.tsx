@@ -397,8 +397,7 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
                 <HighContrastKnapp
                   mini
                   kompakt
-                  onClick={() =>
-                    onArbeidsgiverDelete(arbeidsgiver)}
+                  onClick={() => onArbeidsgiverDelete(arbeidsgiver)}
                 >
                   <Trashcan />
                   <HorizontalSeparatorDiv size='0.5' />

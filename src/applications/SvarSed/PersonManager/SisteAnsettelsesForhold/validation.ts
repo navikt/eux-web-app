@@ -17,7 +17,7 @@ export const validateSisteansettelsesforhold = (
     personName
   }: ValidationSisteAnsettelsesforholdProps
 ): boolean => {
-  const hasErrors = true
+  const hasErrors = false
   console.log(v, t, sisteansettelsesforhold, namespace, personName)
   return hasErrors
 }

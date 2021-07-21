@@ -81,7 +81,7 @@ const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
                 <VerticalSeparatorDiv size='0.5' />
                 <FlexDiv>
                   <HorizontalSeparatorDiv />
-                  <FlexDiv style={{ flex: '5', justifyContent: 'flex-end', maxWidth: '600px' }}>
+                  <FlexDiv style={{ flex: '5', justifyContent: 'space-evenly', maxWidth: '600px' }}>
                     {Object.keys(inntekt.maanedsinntekt).map((måned: string, index: number) => {
                       return index >= firstIndex && index < lastIndex
                         ? (

@@ -5,6 +5,7 @@ import Add from 'assets/icons/Add'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import ArbeidsgiverBox from 'components/Arbeidsgiver/ArbeidsgiverBox'
 import ArbeidsgiverSøk from 'components/Arbeidsgiver/ArbeidsgiverSøk'
+import { validateArbeidsgiver, ValidationArbeidsgiverProps } from 'components/Arbeidsgiver/validation'
 import Input from 'components/Forms/Input'
 import Period, { toFinalDateFormat } from 'components/Period/Period'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
@@ -31,12 +32,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getFnr } from 'utils/fnr'
 import { getIdx } from 'utils/namespace'
-import {
-  validateArbeidsgiver,
-  validateAnsattPeriode,
-  ValidationArbeidsgiverProps,
-  ValidationArbeidsperiodeProps
-} from './ansattValidation'
+import { validateAnsattPeriode, ValidationArbeidsperiodeProps } from './ansattValidation'
 
 interface AnsattSelector extends PersonManagerFormSelector {
   arbeidsperioder: Arbeidsperioder | undefined

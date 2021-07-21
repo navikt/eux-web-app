@@ -1,6 +1,7 @@
 import validator from '@navikt/fnrvalidator'
 import * as appActions from 'actions/app'
 import * as svarpasedActions from 'actions/svarpased'
+import { resetAllValidation } from 'actions/validation'
 import ReceivedIcon from 'assets/icons/Email'
 import FileIcon from 'assets/icons/FileIcon'
 import ExternalLink from 'assets/icons/Logout'
@@ -145,6 +146,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
   useEffect(() => {
     if (replySed && _replySedRequested && mode === 'selection') {
       setReplySedRequested(false)
+      dispatch(resetAllValidation())
       setMode('editor', 'forward')
     }
   }, [replySed, mode])

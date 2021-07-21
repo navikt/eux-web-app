@@ -37,7 +37,7 @@ import {
   PersonInfo,
   ReplySed,
   Statsborgerskap,
-  Telefon,
+  Telefon, USed,
   Ytelse
 } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
@@ -170,8 +170,7 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
     _error = validatePersonOpplysninger(v, t, { personInfo, namespace: `personmanager-${personID}-personopplysninger`, personName })
     hasErrors = hasErrors || _error
 
-    const anmodningsperiode: Periode = _.get(replySed, `${personID}.anmodningsperiode`)
-    _error = validateReferanseperiode(v, t, { anmodningsperiode, namespace: `personmanager-${personID}-referanseperiode`, personName })
+    _error = validateReferanseperiode(v, t, { anmodningsperiode: (replySed as USed)?.anmodningsperiode, namespace: `personmanager-${personID}-referanseperiode`, personName })
     hasErrors = hasErrors || _error
 
     const sisteansettelsesforhold: any = _.get(replySed, `${personID}.xxxsisteansettelsesforhold`)

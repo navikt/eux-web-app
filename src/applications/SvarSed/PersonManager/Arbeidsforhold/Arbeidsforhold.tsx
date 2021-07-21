@@ -1,11 +1,13 @@
 import { getArbeidsperioder } from 'actions/arbeidsgiver'
 import { fetchInntekt } from 'actions/inntekt'
+import { updateReplySed } from 'actions/svarpased'
 import {
   validateArbeidsgiver,
   ValidationArbeidsgiverProps
-} from 'applications/SvarSed/PersonManager/PersonensStatus/ansattValidation'
+} from 'components/Arbeidsgiver/validation'
+import moment from 'moment'
 import {
-  validateDato,
+  performValidationArbeidsperioderSearch,
   ValidationDatoProps
 } from './validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
@@ -16,7 +18,7 @@ import Input from 'components/Forms/Input'
 import Inntekt from 'components/Inntekt/Inntekt'
 import Period, { toFinalDateFormat } from 'components/Period/Period'
 import { State } from 'declarations/reducers'
-import { ReplySed } from 'declarations/sed'
+import { Periode, PeriodePlusArbeidsgiver, ReplySed } from 'declarations/sed'
 import { Arbeidsgiver, Arbeidsperioder, IInntekter, Validation } from 'declarations/types'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -67,9 +69,9 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
     replySed
   } = useSelector<State, ArbeidsforholdSelector>(mapState)
   const dispatch = useDispatch()
-  // TODO add target
-  // const target = 'xxxarbeidsforhold'
-  // const anmodningsperiode: Periode = _.get(replySed, target)
+
+  const target = 'perioderAnsattMedForsikring'
+  const perioderAnsattMedForsikring: Array<PeriodePlusArbeidsgiver> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-arbeidsforhold`
   const fnr = getFnr(replySed)
 
@@ -83,8 +85,8 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
   const [_seeNewArbeidsgiver, _setSeeNewArbeidsgiver] = useState<boolean>(false)
   const [_validationArbeidsgiver, _resetValidationArbeidsgiver, performValidationArbeidsgiver] =
     useValidation<ValidationArbeidsgiverProps>({}, validateArbeidsgiver)
-  const [_validationDato, _resetValidationDato, performValidationDato] =
-    useValidation<ValidationDatoProps>({}, validateDato)
+  const [_validationSearch, _resetValidationSearch, performValidationSearch] =
+    useValidation<ValidationDatoProps>({}, performValidationArbeidsperioderSearch)
 
   const [_addedArbeidsperioder, setAddedArbeidsperioder] = useState<Arbeidsperioder>(() => ({
     arbeidsperioder: [],
@@ -93,20 +95,20 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
   }))
 
   const setArbeidssøkStartDato = (value: string) => {
-    _resetValidationDato('startdato')
+    _resetValidationSearch('arbeidssok-startdato')
     _setArbeidssøkStartDato(value)
   }
 
   const setArbeidssøkSluttDato = (value: string) => {
-    _resetValidationDato('sluttdato')
+    _resetValidationSearch('arbeidssok-sluttdato')
     _setArbeidssøkSluttDato(value)
   }
 
-  const onArbeidsperioderClicked = () => {
-    const valid = performValidationDato({
+  const onArbeidsperioderSearchClicked = () => {
+    const valid = performValidationSearch({
       startdato: _arbeidssøkStartDato,
       sluttdato: _arbeidssøkSluttDato,
-      namespace: 'arbeidssok'
+      namespace: namespace + '-arbeidssok'
     })
     if (valid) {
       dispatch(getArbeidsperioder(fnr))
@@ -115,6 +117,71 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
 
   const onInntektClicked = () => {
     dispatch(fetchInntekt(fnr))
+  }
+
+  const addPeriodeFromArbeidsgiver = (selectedArbeidsgiver: Arbeidsgiver) => {
+    const newPeriode: Periode = {
+      startdato: toFinalDateFormat(selectedArbeidsgiver.fraDato)
+    }
+    if (selectedArbeidsgiver.tilDato) {
+      newPeriode.sluttdato = toFinalDateFormat(selectedArbeidsgiver.tilDato)
+    } else {
+      newPeriode.aapenPeriodeType = 'åpen_sluttdato'
+    }
+    const newPeriodePlusArbeidsgiver: PeriodePlusArbeidsgiver = {
+      periode: newPeriode,
+      arbeidsgiver: {
+        navn: selectedArbeidsgiver.arbeidsgiversNavn ?? '',
+        identifikator: [{
+          type: 'registrering',
+          id: selectedArbeidsgiver.arbeidsgiversOrgnr
+        }]
+      },
+      typeTrygdeforhold: 'ansettelsesforhold_som_utgjør_forsikringsperiode'
+    }
+    let newPerioderAnsattMedForsikring: Array<PeriodePlusArbeidsgiver> | undefined = _.cloneDeep(perioderAnsattMedForsikring)
+    if (!newPerioderAnsattMedForsikring) {
+      newPerioderAnsattMedForsikring = []
+    }
+    newPerioderAnsattMedForsikring = newPerioderAnsattMedForsikring.concat(newPeriodePlusArbeidsgiver).sort((a, b) =>
+      moment(a.periode.startdato).isSameOrBefore(moment(b.periode.startdato)) ? -1 : 1
+    )
+    dispatch(updateReplySed(target, newPerioderAnsattMedForsikring))
+  }
+
+  const removePeriodeFromArbeidsgiver = (deletedArbeidsgiver: Arbeidsgiver) => {
+    let newPerioderAnsattMedForsikring: Array<PeriodePlusArbeidsgiver> | undefined = _.cloneDeep(perioderAnsattMedForsikring)
+    if (!newPerioderAnsattMedForsikring) {
+      newPerioderAnsattMedForsikring = []
+    }
+    newPerioderAnsattMedForsikring = _.filter(newPerioderAnsattMedForsikring, p => p.periode.startdato !== deletedArbeidsgiver.fraDato)
+    dispatch(updateReplySed(target, newPerioderAnsattMedForsikring))
+  }
+
+  const onArbeidsgiverSelect = (arbeidsgiver: Arbeidsgiver, checked: boolean) => {
+    if (checked) {
+      addPeriodeFromArbeidsgiver(arbeidsgiver)
+    } else {
+      removePeriodeFromArbeidsgiver(arbeidsgiver)
+    }
+  }
+
+  const onArbeidsgiverEdit = (arbeidsgiver: Arbeidsgiver) => {
+    const newAddedArbeidsperioder: Arbeidsperioder = _.cloneDeep(_addedArbeidsperioder)
+    if (newAddedArbeidsperioder) {
+      const index = _.findIndex(newAddedArbeidsperioder.arbeidsperioder, a => a.arbeidsgiversOrgnr === arbeidsgiver.arbeidsgiversOrgnr)
+      if (index >= 0) {
+        newAddedArbeidsperioder.arbeidsperioder[index] = arbeidsgiver
+        setAddedArbeidsperioder(newAddedArbeidsperioder)
+      }
+    }
+  }
+
+  const onArbeidsgiverDelete = (deletedArbeidsgiver: Arbeidsgiver) => {
+    const newAddedArbeidsperioder: Arbeidsperioder = _.cloneDeep(_addedArbeidsperioder) as Arbeidsperioder
+    newAddedArbeidsperioder.arbeidsperioder = _.filter(newAddedArbeidsperioder?.arbeidsperioder,
+      (a: Arbeidsgiver) => a.arbeidsgiversOrgnr !== deletedArbeidsgiver.arbeidsgiversOrgnr)
+    setAddedArbeidsperioder(newAddedArbeidsperioder)
   }
 
   const resetArbeidsgiverForm = () => {
@@ -186,9 +253,9 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Period
           key={_arbeidssøkStartDato + _arbeidssøkSluttDato}
-          namespace='arbeidssok'
-          errorStartDato={_validationDato['arbeidssok-startdato']?.feilmelding}
-          errorSluttDato={_validationDato['arbeidssok-sluttdato']?.feilmelding}
+          namespace={namespace + '-arbeidssok'}
+          errorStartDato={_validationSearch[namespace + '-arbeidssok-startdato']?.feilmelding}
+          errorSluttDato={_validationSearch[namespace + '-arbeidssok-sluttdato']?.feilmelding}
           setStartDato={setArbeidssøkStartDato}
           setSluttDato={setArbeidssøkSluttDato}
           valueStartDato={_arbeidssøkStartDato}
@@ -198,7 +265,7 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
           <VerticalSeparatorDiv size='1.8' />
           <ArbeidsgiverSøk
             gettingArbeidsperioder={gettingArbeidsperioder}
-            getArbeidsperioder={onArbeidsperioderClicked}
+            getArbeidsperioder={onArbeidsperioderSearchClicked}
           />
         </Column>
       </AlignStartRow>
@@ -211,6 +278,7 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
         {t('label:registered-arbeidsperiode')}
       </Undertittel>
       <VerticalSeparatorDiv />
+
       {arbeidsperioder?.arbeidsperioder.map(arbeidsgiver => (
         <AlignStartRow key={arbeidsgiver.arbeidsgiversOrgnr} className='slideInFromLeft'>
           <Column>
@@ -218,8 +286,12 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
               arbeidsgiver={arbeidsgiver}
               editable={false}
               newArbeidsgiver={false}
+              selected={_.find(perioderAnsattMedForsikring, (p: PeriodePlusArbeidsgiver) =>
+                p.periode.startdato === toFinalDateFormat(arbeidsgiver.fraDato) &&
+                _.find(p.arbeidsgiver.identifikator, id => id.id === arbeidsgiver.arbeidsgiversOrgnr && id.type === 'registrering') !== undefined
+              ) !== undefined}
               key={arbeidsgiver.arbeidsgiversOrgnr}
-              onArbeidsgiverSelect={() => {}}
+              onArbeidsgiverSelect={onArbeidsgiverSelect}
               namespace={namespace}
             />
           </Column>
@@ -233,13 +305,21 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
               arbeidsgiver={arbeidsgiver}
               editable={false}
               newArbeidsgiver
+              selected={_.find(perioderAnsattMedForsikring, (p: PeriodePlusArbeidsgiver) =>
+                p.periode.startdato === toFinalDateFormat(arbeidsgiver.fraDato) &&
+                _.find(p.arbeidsgiver.identifikator, id => id.id === arbeidsgiver.arbeidsgiversOrgnr && id.type === 'registrering') !== undefined
+              ) !== undefined}
               key={arbeidsgiver.arbeidsgiversOrgnr}
-              onArbeidsgiverSelect={() => {}}
+              onArbeidsgiverSelect={onArbeidsgiverSelect}
+              onArbeidsgiverDelete={onArbeidsgiverDelete}
+              onArbeidsgiverEdit={onArbeidsgiverEdit}
               namespace={namespace}
             />
           </Column>
         </AlignStartRow>
       ))}
+
+      <VerticalSeparatorDiv size='2' />
       {!_seeNewArbeidsgiver
         ? (
           <HighContrastFlatknapp

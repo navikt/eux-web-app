@@ -33,6 +33,8 @@ export type AnmodningSvarType = 'anmodning_om_motregning_per_barn' | 'svar_om_an
 
 export type GrunnUenighet = 'bosted' | 'medlemsperiode' | 'personligSituasjon'| 'pensjon' | 'oppholdetsVarighet' | 'ansettelse'
 
+export type ArbeidsgiverIdentifikatorType = 'registrering' | 'trygd' | 'skatt' | 'ukjent'
+
 export interface Adresse {
   by?: string
   bygning?: string
@@ -54,20 +56,15 @@ export interface PensjonPeriode {
   periode: Periode
 }
 
+export interface ArbeidsgiverIdentifikator {
+  type: ArbeidsgiverIdentifikatorType
+  id: string
+}
+
 export interface Arbeidsgiver {
-  arbeidsgiver: {
-    navn: string
-    adresse?: Adresse
-    identifikator: Array<{
-      type: string
-      id: string
-    }>
-    periode: Periode
-    typeTrygdeforhold: string
-  }
-  kreverinformasjonomtypearberidsforhold?: string
-  kreverinformasjonomantallarbeidstimer?: string
-  kreverinformasjonominntekt?:string
+  navn: string
+  adresse?: Adresse
+  identifikator: Array<ArbeidsgiverIdentifikator>
 }
 
 export interface Epost {
@@ -187,46 +184,11 @@ export interface Motregning {
   ytterligereInfo: string
 }
 
-export interface BaseReplySed {
-  bruker: Person
-  sedType: string
-  sedVersjon: string
-  // added
-  saksnummer ?: string
-  sedUrl ?: string
-}
-
-export interface USed extends BaseReplySed {
-  anmodningsperiode: Periode
-  lokaleSakIder: Array<{
-    saksnummer: string
-    institusjonsnavn: string
-    institusjonsid: string
-    land: string
-  }>
-}
-
-export interface FSed extends BaseReplySed {
-  anmodningsperioder: Array<Periode>
-  formaal: Array<string>
-}
-
 export interface HSvar {
   informasjon: string
   dokument:string
   sed: string
   grunn?: string
-}
-
-export interface HSed extends BaseReplySed {
-  vedlagteDokumenttyper: {
-    dokumenttyper: Array<string>
-    andreDokumenttyper: Array<string>
-  }
-  positivtSvar: HSvar,
-  negativeSvar: HSvar
-  ytterligereInfo: string
-  tema?: string
 }
 
 export interface Barnetilhoerighet {
@@ -322,6 +284,62 @@ export interface Barn {
   ytelse?: Ytelse
 }
 
+export interface Institusjon {
+  navn: string
+  id: string
+  idmangler?: {
+    navn: string
+    adresse: Adresse
+  }
+}
+
+export interface PeriodePlusInstitusjon {
+  periode: Periode,
+  institusjon: Institusjon
+}
+
+export interface PeriodePlusArbeidsgiver {
+  arbeidsgiver: Arbeidsgiver
+  periode: Periode
+  typeTrygdeforhold: string
+}
+
+export interface Inntekt {
+  type: string
+  typeAnnen?: string
+  beloep: string
+  valuta: string
+}
+
+export interface Loennsopplysning {
+  periode: Periode
+  ansettelsestype?: string
+  inntekter: Array<Inntekt>
+  arbeidsdager?: string
+  arbeidstimer?: string
+}
+
+export interface BaseReplySed {
+  bruker: Person
+  sedType: string
+  sedVersjon: string
+  // added
+  saksnummer ?: string
+  sedUrl ?: string
+}
+
+export interface LokaleSakId {
+  saksnummer: string
+  institusjonsnavn: string
+  institusjonsid: string
+  land: string
+}
+
+export interface FSed extends BaseReplySed {
+  anmodningsperioder: Array<Periode>
+  formaal: Array<string>
+}
+
 export interface F002Sed extends FSed {
   annenPerson: Person
   barn: Array<Barn>
@@ -343,33 +361,41 @@ export interface F002Sed extends FSed {
   vedtak?: Vedtak
 }
 
+export interface USed extends BaseReplySed {
+  perioderAnsattMedForsikring: Array<PeriodePlusArbeidsgiver>
+  perioderDagpenger:Array<PeriodePlusInstitusjon>
+  perioderAnsattUtenForsikring?: Array<PeriodePlusArbeidsgiver>
+  anmodningsperiode: Periode
+  lokaleSakIder: Array<LokaleSakId>
+
+}
+
 export interface U002Sed extends USed {
-  perioderAnsattMedForsikring: Array<Arbeidsgiver>
-  xxxsisteAnsettelsesForhold: XXXSisteAnsettelsesForhold
+  xxxgrunntilopphor?: any
+  xxxsisteAnsettelsesForhold?: XXXSisteAnsettelsesForhold
 }
 
 export interface U004Sed extends USed {
-  loennsopplysninger?: Array<{
-    periode: Periode
-    ansettelsestype?: string
-    inntekter: Array<{
-      type: string
-      typeAnnen?: string
-      beloep: string
-      valuta: string
-    }>
-    arbeidsdager?: string
-    arbeidstimer?: string
-  }>
+  loennsopplysninger?: Array<Loennsopplysning>
 }
 
 export interface U017Sed extends USed {
-  perioderAnsattMedForsikring?: Array<Arbeidsgiver>
   rettTilYtelse?: {
     bekreftelsesgrunn: string
     periode: Periode
     avvisningsgrunn: string
   }
+}
+
+export interface HSed extends BaseReplySed {
+  vedlagteDokumenttyper: {
+    dokumenttyper: Array<string>
+    andreDokumenttyper: Array<string>
+  }
+  positivtSvar: HSvar,
+  negativeSvar: HSvar
+  ytterligereInfo: string
+  tema?: string
 }
 
 export interface H002Sed extends HSed {}

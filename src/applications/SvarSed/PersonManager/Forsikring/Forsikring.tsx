@@ -49,6 +49,30 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
     { label: t('el:option-forsikring-9'), value: 'forsikring-9' },
     { label: t('el:option-forsikring-10'), value: 'forsikring-10' }
   ]
+
+  /* "option-forsikring-1" : "Ansettelsesforhold som utgjør forsikringsperiode",
+  "option-forsikring-2" : "Selvstendig næringsvirksomhet som utgjør forsikringsperiode",
+  "option-forsikring-3" : "Ansettelsesforhold som ikke utgjør forsikringsperiode",
+  "option-forsikring-4" : "Selvstendig næringsvirksomhet som ikke utgjør forsikringsperiode",
+  "option-forsikring-5" : "Sykdomsperiode som utgjør eller behandøes som forsikringsperiode",
+  "option-forsikring-6" : "Svangerskapsperiode eller omsorg for barn som utgjør forsikringsperiode eller behandles som forsikringsperiode",
+  "option-forsikring-7" : "Frihetsberøvelse som utgjør eller behandles som forsikringsperiode",
+  "option-forsikring-8" : "Utdanningsperiode som utgjør eller behandles som forsikringsperiode",
+  "option-forsikring-9" : "Militærtjeneste eller alternativ tjeneste som utgjør forsikringsperiode eller behandles som forsikringsperiode",
+  "option-forsikring-10" : "Annen periode som utgjør eller behandles som forsikringsperiode",
+
+  protected static final String ANSATTPERIODE_FORSIKRET = "ansettelsesforhold_som_utgjør_forsikringsperiode";
+  protected static final String SELVSTENDIG_FORSIKRET = "selvstendig_næringsvirksomhet_som_utgjør_forsikringsperiode";
+  protected static final String ANSATTPERIODE_UFORSIKRET = "ansettelsesforhold_som_ikke_utgjør_forsikringsperiode";
+  protected static final String SELVSTENDIG_UFORSIKRET = "selvstendig_næringsvirksomhet_som_ikke_utgjør_forsikringsperiode";
+  protected static final String SYKDOMSPERIODE = "sykdomsperiode_som_utgjør_eller_behandles_som_forsikringsperiode";
+  protected static final String SVANGERSKAP_OMSORGSPERIODE = "svangerskapsperiode_eller_omsorg_for_barn_som_utgjør_forsikringsperiode_eller_behandles_som_forsikringsperiode";
+  protected static final String FRIHETSBEROEVETPERIODE = "frihetsberøvelse_som_utgjør_eller_behandles_som_forsikringsperiode";
+  protected static final String UTDANNINGSPERIODE = "utdanningsperiode_som_utgjør_eller_behandles_som_forsikringsperiode";
+  protected static final String MILITAERTJENESTE = "militærtjeneste_eller_alternativ_tjeneste_som_utgjør_forsikringsperiode_eller_behandles_som_forsikringsperiode";
+  protected static final String ANNENPERIODE = "annen_periode_som_utgjør_eller_behandles_som_forsikringsperiode";
+  */
+
   return (
     <PaddedDiv>
       <AlignStartRow className='slideInFromLeft'>

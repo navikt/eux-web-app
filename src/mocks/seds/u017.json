@@ -1,6 +1,5 @@
 {
   "sedVersjon": "4.2",
-  "sedType": "U017",
   "bruker": {
     "personInfo": {
       "fornavn": "æøå",
@@ -12,23 +11,6 @@
           "land": "NO"
         }
       ],
-      "pinMangler": {
-        "etternavnVedFoedsel": "æøå",
-        "fornavnVedFoedsel": "æøå",
-        "foedested": {
-          "by": "æøå",
-          "region": "æøå",
-          "land": "NO"
-        },
-        "far": {
-          "fornavn": "æøå",
-          "etternavnVedFoedsel": "æøå"
-        },
-        "mor": {
-          "fornavn": "æøå",
-          "etternavnVedFoedsel": "æøå"
-        }
-      },
       "pin": [
         {
           "land": "NO",
@@ -37,35 +19,30 @@
           "institusjonsid": "ES:3100",
           "institusjonsnavn": "æøå"
         }
-      ]
-    }
-  },
-  "perioderAnsattMedForsikring": [
-    {
-      "arbeidsgiver": {
-        "navn": "æøå",
-        "identifikator": [
-          {
-            "id": "ES:3100",
-            "type": "organisasjonsnummer"
-          }
-        ],
-        "adresse": {
-          "gate": "æøå",
-          "postnummer": "æøå",
+      ],
+      "pinmangler": {
+        "foedested": {
           "by": "æøå",
-          "land": "NO",
-          "bygning": "æøå",
-          "region": "æøå"
+          "region": "æøå",
+          "land": "NO"
         },
-        "periode": {
-          "sluttdato": "2002-02-02",
-          "startdato": "2001-01-01"
+        "far": {
+          "fornavn": "æøå",
+          "etternavnvedfoedsel": "æøå"
         },
-        "typeTrygdeforhold": "ansettelsesforhold_som_utgjør_forsikringsperiode"
+        "mor": {
+          "fornavn": "æøå",
+          "etternavnvedfoedsel": "æøå"
+        },
+        "etternavnvedfoedsel": "æøå",
+        "fornavnvedfoedsel": "æøå"
       }
     }
-  ],
+  },
+  "anmodningsperiode": {
+    "startdato": "2001-01-01",
+    "aapenPeriodeType": "åpen_sluttdato"
+  },
   "lokaleSakIder": [
     {
       "saksnummer": "æøå",
@@ -74,15 +51,77 @@
       "land": "NO"
     }
   ],
-  "anmodningsperiode": {
-    "startdato": "2001-01-01",
-    "aapenPeriodeType": "åpen_sluttdato"
-  },
+  "sedType": "U017",
+  "perioderAnsattMedForsikring": [
+    {
+      "arbeidsgiver": {
+        "navn": "æøå",
+        "adresse": {
+          "gate": "æøå",
+          "postnummer": "æøå",
+          "by": "æøå",
+          "land": "NO",
+          "bygning": "æøå",
+          "region": "æøå"
+        },
+        "identifikator": [
+          {
+            "type": "registrering",
+            "id": "ES:3100"
+          }
+        ]
+      },
+      "periode": {
+        "sluttdato": "2002-02-02",
+        "startdato": "2001-01-01"
+      },
+      "typeTrygdeforhold": "ansettelsesforhold_som_utgjør_forsikringsperiode"
+    }
+  ],
+  "perioderAnsattUtenForsikring": [
+    {
+      "arbeidsgiver": {
+        "navn": "æøå",
+        "adresse": {
+          "gate": "æøå",
+          "postnummer": "æøå",
+          "by": "æøå",
+          "land": "NO",
+          "bygning": "æøå",
+          "region": "æøå"
+        },
+        "identifikator": [
+          {
+            "type": "registrering",
+            "id": "ES:3100"
+          }
+        ]
+      },
+      "periode": {
+        "sluttdato": "2002-02-02",
+        "startdato": "2001-01-01"
+      },
+      "typeTrygdeforhold": "ansettelsesforhold_som_utgjør_forsikringsperiode"
+    }
+  ],
+  "perioderDagpenger": [
+    {
+      "periode": {
+        "startdato":"2001-01-01",
+        "aapenPeriodeType":"åpen_sluttdato"
+      },
+      "institusjon": {
+        "navn": "æøå",
+        "id": "ES:3100"
+      }
+    }
+  ],
   "rettTilYtelse": {
     "bekreftelsesgrunn": "artikkel_64_i_forordning_EF_nr_883_2004",
     "periode": {
       "startdato": "2001-01-01",
       "aapenPeriodeType": "åpen_sluttdato"
-    }
+    },
+    "avvisningsgrunn": "ingen_rett_til_stønad_i_henhold_til_lovgivningen_til_institusjonen_som_utsteder_denne_meldingen"
   }
 }

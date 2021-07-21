@@ -1,26 +1,104 @@
 {
   "sedVersjon": "4.2",
-  "sedType": "U002",
   "bruker": {
     "personInfo": {
-      "fornavn": "LUR",
-      "etternavn": "SvarSed002",
-      "kjoenn": "U",
-      "foedselsdato": "2001-01-01",
-      "pin": [{
-        "land": "NO",
-        "identifikator": "11026018732"
-      }]
+      "fornavn": "æøå",
+      "etternavn": "æøå",
+      "kjoenn": "M",
+      "foedselsdato": "2000-02-02",
+      "statsborgerskap": [
+        {
+          "land": "NO"
+        }
+      ],
+      "pin": [
+        {
+          "land": "NO",
+          "sektor": "yrkesskade_og_yrkessykdom",
+          "identifikator": "æøå",
+          "institusjonsid": "ES:3100",
+          "institusjonsnavn": "æøå"
+        }
+      ],
+      "pinmangler": {
+        "foedested": {
+          "by": "æøå",
+          "region": "æøå",
+          "land": "NO"
+        },
+        "far": {
+          "fornavn": "æøå",
+          "etternavnvedfoedsel": "æøå"
+        },
+        "mor": {
+          "fornavn": "æøå",
+          "etternavnvedfoedsel": "æøå"
+        },
+        "etternavnvedfoedsel": "æøå",
+        "fornavnvedfoedsel": "æøå"
+      }
     }
   },
   "anmodningsperiode": {
-    "startdato": "2001-01-01",
-    "sluttdato": "2002-02-02"
+    "startdato": "2002-02-02",
+    "aapenPeriodeType": "åpen_sluttdato"
   },
-  "lokaleSakIder": [{
-    "saksnummer": "2",
-    "institusjonsnavn": "ACC_NATIONAL INSTITUTE OF SOCIAL SECURITY. PROVINCIAL HEAD OFFICE OF NAVARRA",
-    "institusjonsid": "ES:3100",
-    "land": "AT"
-  }]
+  "lokaleSakIder": [
+    {
+      "saksnummer": "æøå",
+      "institusjonsnavn": "æøå",
+      "institusjonsid": "ES:3100",
+      "land": "NO"
+    }
+  ],
+  "sedType": "U002",
+  "perioderAnsattMedForsikring": [
+    {
+      "arbeidsgiver": {
+        "navn": "Duh AS",
+        "adresse": {
+          "gate": "æøå",
+          "postnummer": "æøå",
+          "by": "æøå",
+          "land": "NO",
+          "bygning": "æøå",
+          "region": "æøå"
+        },
+        "identifikator": [
+          {
+            "type": "registrering",
+            "id": "235835247"
+          }
+        ]
+      },
+      "periode": {
+        "startdato": "1960-01-01",
+        "sluttdato": "1969-12-31"
+      },
+      "typeTrygdeforhold": "ansettelsesforhold_som_utgjør_forsikringsperiode"
+    }
+  ],
+  "perioderDagpenger": [
+    {
+      "periode": {
+        "startdato": "2020-02-02",
+        "sluttdato": "2020-03-03"
+      },
+      "institusjon": {
+        "navn": "æøå",
+        "id": "ES:3100",
+        "idmangler": {
+          "navn": "æøå",
+          "adresse": {
+            "gate": "æøå",
+            "postnummer": "æøå",
+            "by": "æøå",
+            "land": "NO",
+            "bygning": "æøå",
+            "region": "æøå"
+          }
+        }
+      }
+    }
+  ]
 }

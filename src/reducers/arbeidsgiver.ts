@@ -15,6 +15,18 @@ const arbeidsgiverReducer = (state: ArbeidsgiverState = initialArbeidsgiverState
     case types.APP_CLEAN_DATA:
       return initialArbeidsgiverState
 
+    case types.ARBEIDSPERIODER_GET_REQUEST:
+      return {
+        ...state,
+        arbeidsperioder: undefined
+      }
+
+    case types.ARBEIDSPERIODER_GET_FAILURE:
+      return {
+        ...state,
+        arbeidsperioder: null
+      }
+
     case types.ARBEIDSPERIODER_GET_SUCCESS:
       return {
         ...state,

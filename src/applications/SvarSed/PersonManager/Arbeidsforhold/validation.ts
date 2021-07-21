@@ -8,7 +8,7 @@ export interface ValidationDatoProps {
   namespace: string
 }
 
-export const validateDato = (
+export const performValidationArbeidsperioderSearch = (
   v: Validation,
   t: TFunction,
   {

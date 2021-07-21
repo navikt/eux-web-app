@@ -24,6 +24,16 @@ personmanager-{personID}-adresser[{i}]-land       - {CONNECTED} {person}.adresse
 personmanager-{personID}-adresser[{i}]-bygning    - {CONNECTED} {person}.adresser[].bygning
 personmanager-{personID}-adresser[{i}]-region     - {CONNECTED} {person}.adresser[].region
 
+U-Sed
+personmanager-{personID}-arbeidsforhold-arbeidssok-startdato       - {INTERNAL}  not used
+personmanager-{personID}-arbeidsforhold-arbeidssok-sluttdato       - {INTERNAL}  not used
+personmanager-{personID}-arbeidsforhold-arbeidsgiver-startdato - {INTERNAL}  not used
+personmanager-{personID}-arbeidsforhold-arbeidsgiver-sluttdato - {INTERNAL}  not used
+personmanager-{personID}-arbeidsforhold-arbeidsgiver-orgnr     - {INTERNAL}  not used
+personmanager-{personID}-arbeidsforhold-arbeidsgiver-navn      - {INTERNAL}  not used
+personmanager-{personID}-arbeidsforhold-arbeidsgiver[] - {CONNECTED} ansattMedForsikring[]
+
+
 F-Sed, barn:
 personmanager-{personID}-beløpnavnogvaluta-barnetsNavn          - {CONNECTED} barn[].ytelse.barnetsNavn
 personmanager-{personID}-beløpnavnogvaluta-ytelseNavn           - {CONNECTED} barn[].ytelse.ytelseNavn
