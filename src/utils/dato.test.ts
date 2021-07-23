@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { vaskInputDato, formatterDatoTilNorsk } from './dato';
+import { vaskInputDato } from './dato';
 
 import MockDate from 'mockdate';
 import moment from 'moment/moment'
@@ -78,41 +78,5 @@ describe('dato.ts:', () => {
         expect(vasketDato).toEqual(datoTest.forvent);
       });
     });
-  });
-
-
-  describe('formatterDatoTilNorsk', () => {
-    test('formatterer datoen riktig til norsk format DD.MM.YYYY uten klokkeslett', () => {
-      const tillatteDatoer = [
-        {test: '2016-01-12', 'forvent': '12.01.2016'},
-        {test: '2017-12-01T20:58:01Z', 'forvent': '01.12.2017'},
-        {test: '01.02.1979', 'forvent': '01.02.1979'},
-        {test: '01.02.1979', 'forvent': '01.02.1979'},
-      ];
-
-      tillatteDatoer.forEach(datoTest => {
-        const formattertDato = formatterDatoTilNorsk(datoTest.test);
-        expect(formattertDato).toEqual(datoTest.forvent);
-      });
-    });
-
-    test('returnerer tom streng dersom datoen er ugyldig.', () => {
-      const feilDato = '2018-april-31';
-      const formattertDato = formatterDatoTilNorsk(feilDato);
-      expect(formattertDato).toEqual('');
-    });
-
-    test('formatterer datoen riktig til norsk format DD.MM.YYYY HH:mm:ss med klokkeslett', () => {
-      const tillatteDatoer = [
-        {test: '2017-12-01T20:58:01Z', 'forvent': '01.12.2017'},
-        {test: '2017-12-01T01:08:01Z', 'forvent': '01.12.2017'},
-        {test: '12.02.2000 20:00:1Z', 'forvent': '12.02.2000'},
-      ];
-
-      tillatteDatoer.forEach(datoTest => {
-        const formattertDato = formatterDatoTilNorsk(datoTest.test);
-        expect(formattertDato).toEqual(datoTest.forvent);
-      });
-    })
   });
 });

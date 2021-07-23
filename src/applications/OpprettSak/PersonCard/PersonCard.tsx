@@ -3,6 +3,7 @@ import mann from 'assets/icons/Man.png'
 import ukjent from 'assets/icons/Unknown.png'
 import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
+import { toUIDateFormat } from 'components/Period/Period'
 import { HighContrastKnapp, HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import { OldFamilieRelasjon, Kodeverk, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
@@ -14,7 +15,6 @@ import PT from 'prop-types'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { formatterDatoTilNorsk } from 'utils/dato'
 
 const PersonCardDiv = styled.div`
   display: flex;
@@ -149,7 +149,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
             </Undertittel>
             <Undertitle>
               <div>{t('label:fnr') + ' : ' + fnr}</div>
-              <div>{t('label:fødselsdato') + ': ' + formatterDatoTilNorsk(fdato)}</div>
+              <div>{t('label:fødselsdato') + ': ' + toUIDateFormat(fdato)}</div>
             </Undertitle>
           </div>
         </Description>

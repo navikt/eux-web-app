@@ -105,3 +105,29 @@ export const AlertstripeDiv = styled.div`
   margin: 0.5rem;
   min-width: 50%;
 `
+
+export const Dd = styled.dd`
+  width: 60%;
+  padding-bottom: 0.25rem;
+  padding-top: 0.25rem;
+  margin-bottom: 0;
+  margin-inline-start: 0;
+`
+export const Dt = styled.dt`
+  width: 40%;
+  padding-bottom: 0.25rem;
+  padding-top: 0.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  .typo-element {
+    margin-left: 0.5rem;
+  }
+`
+export const Dl = styled.dl`
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  .odd {
+    background-color: ${({ theme }) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
+  }
+`

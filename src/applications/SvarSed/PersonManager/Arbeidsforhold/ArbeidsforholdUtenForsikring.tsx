@@ -16,9 +16,9 @@ import ArbeidsgiverBox from 'components/Arbeidsgiver/ArbeidsgiverBox'
 import ArbeidsgiverSøk from 'components/Arbeidsgiver/ArbeidsgiverSøk'
 import Input from 'components/Forms/Input'
 import Inntekt from 'components/Inntekt/Inntekt'
-import Period, { toFinalDateFormat } from 'components/Period/Period'
+import Period from 'components/Period/Period'
 import { State } from 'declarations/reducers'
-import { Periode, PeriodePlusArbeidsgiver, ReplySed } from 'declarations/sed'
+import { Periode, PeriodeUtenForsikring, ReplySed } from 'declarations/sed'
 import { Arbeidsgiver, Arbeidsperioder, IInntekter, Validation } from 'declarations/types'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -50,6 +50,7 @@ export interface ArbeidsforholdUtenForsikringSelector extends PersonManagerFormS
 export interface ArbeidsforholdUtenForsikringProps {
   parentNamespace: string
   target: string
+  typeTrygdeforhold: string
 }
 
 const mapState = (state: State): ArbeidsforholdUtenForsikringSelector => ({
@@ -63,7 +64,8 @@ const mapState = (state: State): ArbeidsforholdUtenForsikringSelector => ({
 
 const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> = ({
   parentNamespace,
-  target
+  target,
+  typeTrygdeforhold
 }:ArbeidsforholdUtenForsikringProps): JSX.Element => {
   const { t } = useTranslation()
   const {
@@ -75,7 +77,7 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
   } = useSelector<State, ArbeidsforholdUtenForsikringSelector>(mapState)
   const dispatch = useDispatch()
 
-  const perioder: Array<PeriodePlusArbeidsgiver> | undefined = _.get(replySed, target)
+  const perioder: Array<PeriodeUtenForsikring> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${target}`
   const fnr = getFnr(replySed)
 
@@ -125,15 +127,18 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
 
   const addPeriodeFromArbeidsgiver = (selectedArbeidsgiver: Arbeidsgiver) => {
     const newPeriode: Periode = {
-      startdato: toFinalDateFormat(selectedArbeidsgiver.fraDato)
+      startdato: selectedArbeidsgiver.fraDato!
     }
     if (selectedArbeidsgiver.tilDato) {
-      newPeriode.sluttdato = toFinalDateFormat(selectedArbeidsgiver.tilDato)
+      newPeriode.sluttdato = selectedArbeidsgiver.tilDato
     } else {
       newPeriode.aapenPeriodeType = 'åpen_sluttdato'
     }
-    const newPeriodePlusArbeidsgiver: PeriodePlusArbeidsgiver = {
+    const newPeriodeUtenForsikring: PeriodeUtenForsikring = {
       periode: newPeriode,
+      kreverinformasjonomtypearberidsforhold: '',
+      kreverinformasjonomantallarbeidstimer: '',
+      kreverinformasjonominntekt: '',
       arbeidsgiver: {
         navn: selectedArbeidsgiver.arbeidsgiversNavn ?? '',
         identifikator: [{
@@ -141,20 +146,20 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
           id: selectedArbeidsgiver.arbeidsgiversOrgnr
         }]
       },
-      typeTrygdeforhold: 'ansettelsesforhold_som_utgjør_forsikringsperiode'
+      typeTrygdeforhold: typeTrygdeforhold
     }
-    let newPerioderAnsattMedForsikring: Array<PeriodePlusArbeidsgiver> | undefined = _.cloneDeep(perioder)
+    let newPerioderAnsattMedForsikring: Array<PeriodeUtenForsikring> | undefined = _.cloneDeep(perioder)
     if (!newPerioderAnsattMedForsikring) {
       newPerioderAnsattMedForsikring = []
     }
-    newPerioderAnsattMedForsikring = newPerioderAnsattMedForsikring.concat(newPeriodePlusArbeidsgiver).sort((a, b) =>
+    newPerioderAnsattMedForsikring = newPerioderAnsattMedForsikring.concat(newPeriodeUtenForsikring).sort((a, b) =>
       moment(a.periode.startdato).isSameOrBefore(moment(b.periode.startdato)) ? -1 : 1
     )
     dispatch(updateReplySed(target, newPerioderAnsattMedForsikring))
   }
 
   const removePeriodeFromArbeidsgiver = (deletedArbeidsgiver: Arbeidsgiver) => {
-    let newPerioderAnsattMedForsikring: Array<PeriodePlusArbeidsgiver> | undefined = _.cloneDeep(perioder)
+    let newPerioderAnsattMedForsikring: Array<PeriodeUtenForsikring> | undefined = _.cloneDeep(perioder)
     if (!newPerioderAnsattMedForsikring) {
       newPerioderAnsattMedForsikring = []
     }
@@ -225,8 +230,8 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
     const newArbeidsgiver: Arbeidsgiver = {
       arbeidsgiversNavn: _newArbeidsgiversNavn,
       arbeidsgiversOrgnr: _newArbeidsgiversOrgnr,
-      fraDato: toFinalDateFormat(_newArbeidsgiverStartDato),
-      tilDato: toFinalDateFormat(_newArbeidsgiverSluttDato),
+      fraDato: _newArbeidsgiverStartDato,
+      tilDato: _newArbeidsgiverSluttDato,
       fraInntektsregisteret: 'nei',
       fraArbeidsgiverregisteret: 'nei'
     }
@@ -290,10 +295,10 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
               arbeidsgiver={arbeidsgiver}
               editable={false}
               newArbeidsgiver={false}
-              selected={_.find(perioder, (p: PeriodePlusArbeidsgiver) =>
-                p.periode.startdato === toFinalDateFormat(arbeidsgiver.fraDato) &&
+              /* selected={_.find(perioder, (p: PeriodeUtenForsikring) =>
+                p.periode.startdato === arbeidsgiver.fraDato &&
                 _.find(p.arbeidsgiver.identifikator, id => id.id === arbeidsgiver.arbeidsgiversOrgnr && id.type === 'registrering') !== undefined
-              ) !== undefined}
+              ) !== undefined} */
               key={arbeidsgiver.arbeidsgiversOrgnr}
               onArbeidsgiverSelect={onArbeidsgiverSelect}
               namespace={namespace}
@@ -309,10 +314,10 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
               arbeidsgiver={arbeidsgiver}
               editable={false}
               newArbeidsgiver
-              selected={_.find(perioder, (p: PeriodePlusArbeidsgiver) =>
-                p.periode.startdato === toFinalDateFormat(arbeidsgiver.fraDato) &&
+              /* selected={_.find(perioder, (p: PeriodeUtenForsikring) =>
+                p.periode.startdato === arbeidsgiver.fraDato &&
                 _.find(p.arbeidsgiver.identifikator, id => id.id === arbeidsgiver.arbeidsgiversOrgnr && id.type === 'registrering') !== undefined
-              ) !== undefined}
+              ) !== undefined} */
               key={arbeidsgiver.arbeidsgiversOrgnr}
               onArbeidsgiverSelect={onArbeidsgiverSelect}
               onArbeidsgiverDelete={onArbeidsgiverDelete}

@@ -80,6 +80,9 @@
   ],
   "perioderAnsattUtenForsikring": [
     {
+      "kreverinformasjonomtypearberidsforhold": "",
+      "kreverinformasjonomantallarbeidstimer": "",
+      "kreverinformasjonominntekt": "",
       "arbeidsgiver": {
         "navn": "æøå",
         "adresse": {

@@ -5,7 +5,6 @@ import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
-import { toFinalDateFormat } from 'components/Period/Period'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Statsborgerskap } from 'declarations/sed'
@@ -69,7 +68,7 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
       _setNewFradato(fraDato.trim())
       _resetValidation(namespace + '-fraDato')
     } else {
-      dispatch(updateReplySed(`${target}[${index}].fraDato`, toFinalDateFormat(fraDato.trim())))
+      dispatch(updateReplySed(`${target}[${index}].fraDato`, fraDato.trim()))
       if (validation[namespace + getIdx(index) + '-fraDato']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-fraDato'))
       }
@@ -111,7 +110,7 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
   const onAdd = () => {
     const newStatsborgerskap: Statsborgerskap = {
       land: _newLand || '',
-      fraDato: toFinalDateFormat(_newFradato)
+      fraDato: _newFradato
     }
     const valid = performValidation({
       statsborgerskap: newStatsborgerskap,

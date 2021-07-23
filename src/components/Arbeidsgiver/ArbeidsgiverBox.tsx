@@ -3,16 +3,20 @@ import IkonArbeidsgiver from 'assets/icons/Arbeidsgiver'
 import Edit from 'assets/icons/Edit'
 import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
-import { Arbeidsgiver, Validation } from 'declarations/types.d'
-import _ from 'lodash'
-import { Checkbox, FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import Input from 'components/Forms/Input'
+import Period, { toUIDateFormat } from 'components/Period/Period'
+import { Periode, PeriodeMedForsikring } from 'declarations/sed.d'
+import useValidation from 'hooks/useValidation'
+import { Country } from 'land-verktoy'
+import CountrySelect from 'landvelger'
+import { Checkbox } from 'nav-frontend-skjema'
 import { Normaltekst, Undertekst, UndertekstBold } from 'nav-frontend-typografi'
 import {
+  AlignStartRow,
   Column,
   FlexCenterSpacedDiv,
   FlexDiv,
   HighContrastFlatknapp,
-  HighContrastInput,
   HighContrastKnapp,
   HighContrastPanel,
   HorizontalSeparatorDiv,
@@ -25,7 +29,8 @@ import {
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { formatterDatoTilNorsk } from 'utils/dato'
+import { getOrgnr } from 'utils/arbeidsgiver'
+import { validateArbeidsgiver, ValidationArbeidsgiverProps } from './validation'
 
 const ArbeidsgiverPanel = styled(HighContrastPanel)`
   padding: 0rem !important;
@@ -41,31 +46,29 @@ const TrashcanIcon = styled(Trashcan)`
   width: 20px;
   cursor: pointer;
 `
-/* const FlexDivNoWrap = styled(FlexDiv)`
-  flex-wrap: wrap;
-`
-const PaddedLink = styled(HighContrastLink)`
-  padding: 0rem 0.35rem;
-` */
 
 export interface ArbeidsgiverProps {
-  arbeidsgiver: Arbeidsgiver
+  arbeidsgiver: PeriodeMedForsikring
   editable?: boolean
   error?: boolean,
+  includeAddress ?: boolean
   newArbeidsgiver?: boolean
-  onArbeidsgiverSelect: (a: Arbeidsgiver, checked: boolean) => void
-  onArbeidsgiverEdit?: (a: Arbeidsgiver) => void
-  onArbeidsgiverDelete?: (a: Arbeidsgiver) => void
+  typeTrygdeforhold ?: string
+  onArbeidsgiverSelect: (a: PeriodeMedForsikring, checked: boolean) => void
+  onArbeidsgiverEdit?: (a: PeriodeMedForsikring) => void
+  onArbeidsgiverDelete?: (a: PeriodeMedForsikring) => void
   namespace: string
   personFnr?: string
   selected?: boolean
 }
 
-const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
+const ArbeidsgiverBox = ({
   arbeidsgiver,
-  editable,
+  editable = false,
   error = false,
+  includeAddress = false,
   newArbeidsgiver = false,
+  typeTrygdeforhold,
   selected,
   onArbeidsgiverSelect,
   onArbeidsgiverDelete = () => {},
@@ -73,104 +76,117 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
   namespace
 //  personFnr
 }: ArbeidsgiverProps): JSX.Element => {
-  const {
-    fraInntektsregisteret,
-    fraArbeidsgiverregisteret,
-    arbeidsgiversNavn,
-    arbeidsgiversOrgnr,
-    fraDato,
-    tilDato
-  } = arbeidsgiver
   const { t } = useTranslation()
-  const _namespace = namespace + '-arbeidsgiver[' + arbeidsgiversOrgnr + ']'
+  const _namespace = namespace + '-arbeidsgiver[' + getOrgnr(arbeidsgiver) ?? '-' + ']'
 
   const [_isDeleting, setIsDeleting] = useState<boolean>(false)
   const [_isEditing, setIsEditing] = useState<boolean>(false)
-  const [_arbeidsgiversNavn, setArbeidsgiversNavn] = useState<string>(arbeidsgiversNavn || '')
-  const [_arbeidsgiversOrgnr, setArbeidsgiversOrgnr] = useState<string>(arbeidsgiversOrgnr || '')
-  const [_startDato, setStartDato] = useState<string>(fraDato || '')
-  const [_sluttDato, setSluttDato] = useState<string>(tilDato || '')
-  const [_validation, setValidation] = useState<Validation>({})
 
-  const resetValidation = (key: string): void => {
-    setValidation({
-      ..._validation,
-      [key]: undefined
-    })
-  }
+  const [_arbeidsgiversNavn, setArbeidsgiversNavn] = useState<string>(arbeidsgiver.arbeidsgiver.navn ?? '')
+  const [_arbeidsgiversOrgnr, setArbeidsgiversOrgnr] = useState<string>(getOrgnr(arbeidsgiver) ?? '')
+  const [_startDato, setStartDato] = useState<string>(arbeidsgiver.periode.startdato ?? '')
+  const [_sluttDato, setSluttDato] = useState<string>(arbeidsgiver.periode.sluttdato ?? '')
 
-  const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
+  // for includeAddress
+  const [_gateadresse, setGateadresse] = useState<string>(arbeidsgiver.arbeidsgiver?.adresse?.gate ?? '')
+  const [_postnummer, setPostnummer] = useState<string>(arbeidsgiver.arbeidsgiver?.adresse?.postnummer ?? '')
+  const [_by, setBy] = useState<string>(arbeidsgiver.arbeidsgiver?.adresse?.by ?? '')
+  const [_bygning, setBygning] = useState<string>(arbeidsgiver.arbeidsgiver?.adresse?.bygning ?? '')
+  const [_region, setRegion] = useState<string>(arbeidsgiver.arbeidsgiver?.adresse?.region ?? '')
+  const [_land, setLand] = useState<string>(arbeidsgiver.arbeidsgiver?.adresse?.land ?? '')
 
-  const performValidation = (): boolean => {
-    const validation: Validation = {}
-    if (!_arbeidsgiversNavn) {
-      validation[_namespace + '-navn'] = {
-        skjemaelementId: _namespace + '-navn',
-        feilmelding: t('message:validation-noNavn')
-      } as FeiloppsummeringFeil
-    }
-    if (!_arbeidsgiversOrgnr) {
-      validation[_namespace + '-orgnr'] = {
-        skjemaelementId: _namespace + '-orgnr',
-        feilmelding: t('message:validation-noOrgnr')
-      } as FeiloppsummeringFeil
-    }
-    if (!_startDato) {
-      validation[_namespace + '-startdato'] = {
-        skjemaelementId: _namespace + '-startdato',
-        feilmelding: t('message:validation-noDate')
-      } as FeiloppsummeringFeil
-    }
-    if (_startDato && !_startDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
-      validation[_namespace + '-startdato'] = {
-        skjemaelementId: _namespace + '-startdato',
-        feilmelding: t('message:validation-invalidDate')
-      } as FeiloppsummeringFeil
-    }
-    if (!_sluttDato) {
-      validation[_namespace + '-sluttdato'] = {
-        skjemaelementId: _namespace + '-sluttdato',
-        feilmelding: t('message:validation-noDate')
-      } as FeiloppsummeringFeil
-    }
-    if (_sluttDato && !_sluttDato.match(/\d{2}\.\d{2}\.\d{4}/)) {
-      validation[_namespace + '-sluttdato'] = {
-        skjemaelementId: _namespace + '-sluttdato',
-        feilmelding: t('message:validation-invalidDate')
-      } as FeiloppsummeringFeil
-    }
-    setValidation(validation)
-    return hasNoValidationErrors(validation)
-  }
+  const [_validation, resetValidation, performValidation] = useValidation<ValidationArbeidsgiverProps>({}, validateArbeidsgiver)
 
-  const onNameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onNameChanged = (newName: string) => {
     resetValidation(_namespace + '-navn')
-    setArbeidsgiversNavn(e.target.value)
+    setArbeidsgiversNavn(newName)
   }
 
-  const onOrgnrChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onOrgnrChanged = (newOrgnr: string) => {
     resetValidation(_namespace + '-orgnr')
-    setArbeidsgiversOrgnr(e.target.value)
+    setArbeidsgiversOrgnr(newOrgnr)
   }
 
-  const onStartDatoChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onStartDatoChanged = (newDato: string) => {
     resetValidation(_namespace + '-startdato')
-    setStartDato(e.target.value)
+    setStartDato(newDato)
   }
 
-  const onSluttDatoChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onSluttDatoChanged = (newDato: string) => {
     resetValidation(_namespace + '-sluttdato')
-    setSluttDato(e.target.value)
+    setSluttDato(newDato)
+  }
+
+  const onGateadresseChanged = (newGateadresse: string) => {
+    resetValidation(_namespace + '-gateadresse')
+    setGateadresse(newGateadresse)
+  }
+
+  const onPostnummerChanged = (newPostnummer: string) => {
+    resetValidation(_namespace + '-postnummer')
+    setPostnummer(newPostnummer)
+  }
+
+  const onByChanged = (newBy: string) => {
+    resetValidation(_namespace + '-by')
+    setBy(newBy)
+  }
+
+  const onBygningChanged = (newBygning: string) => {
+    resetValidation(_namespace + '-bygning')
+    setBygning(newBygning)
+  }
+
+  const onRegionChanged = (newRegion: string) => {
+    resetValidation(_namespace + '-region')
+    setRegion(newRegion)
+  }
+
+  const onLandChanged = (newLand: string) => {
+    resetValidation(_namespace + '-land')
+    setLand(newLand)
   }
 
   const onSaveButtonClicked = () => {
-    if (performValidation()) {
-      onArbeidsgiverEdit({
-        arbeidsgiversNavn: _arbeidsgiversNavn,
-        arbeidsgiversOrgnr: _arbeidsgiversOrgnr,
-        fraDato: _startDato,
-        tilDato: _sluttDato
-      } as Arbeidsgiver)
+    const newPeriode: Periode = {
+      startdato: _startDato
+    }
+    if (_sluttDato === '') {
+      newPeriode.aapenPeriodeType = 'åpen_sluttdato'
+    } else {
+      newPeriode.sluttdato = _sluttDato
+    }
+
+    const newArbeidsgiver: PeriodeMedForsikring = {
+      arbeidsgiver: {
+        identifikator: [{
+          type: 'registrering',
+          id: _arbeidsgiversOrgnr
+        }],
+        navn: _arbeidsgiversNavn
+      },
+      periode: newPeriode,
+      typeTrygdeforhold: typeTrygdeforhold
+    } as PeriodeMedForsikring
+
+    if (includeAddress) {
+      newArbeidsgiver.arbeidsgiver.adresse = {
+        gate: _gateadresse,
+        postnummer: _postnummer,
+        by: _by,
+        bygning: _bygning,
+        region: _region,
+        land: _land
+      }
+    }
+
+    const valid: boolean = performValidation({
+      arbeidsgiver: newArbeidsgiver,
+      includeAddress: includeAddress,
+      namespace: namespace
+    })
+    if (valid) {
+      onArbeidsgiverEdit(newArbeidsgiver)
       setIsEditing(false)
     }
   }
@@ -181,6 +197,14 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
     setArbeidsgiversNavn(_arbeidsgiversNavn || '')
     setStartDato(_startDato)
     setSluttDato(_sluttDato)
+    if (includeAddress) {
+      setGateadresse(_gateadresse)
+      setPostnummer(_postnummer)
+      setBygning(_bygning)
+      setBy(_by)
+      setRegion(_region)
+      setLand(_land)
+    }
   }
 
   const onCancelButtonClicked = () => {
@@ -189,6 +213,14 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
     setArbeidsgiversNavn('')
     setStartDato('')
     setSluttDato('')
+    if (includeAddress) {
+      setGateadresse('')
+      setPostnummer('')
+      setBygning('')
+      setBy('')
+      setRegion('')
+      setLand('')
+    }
   }
 
   const onSelectCheckboxClicked = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -204,7 +236,10 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
       key={_arbeidsgiversOrgnr}
     >
       <VerticalSeparatorDiv size='0.5' />
-      <ArbeidsgiverPanel border className={classNames('', { new: newArbeidsgiver })}>
+      <ArbeidsgiverPanel
+        border
+        className={classNames({ new: newArbeidsgiver })}
+      >
         <FlexCenterSpacedDiv>
           <PaddedFlexDiv className='slideInFromLeft'>
             <IkonArbeidsgiver />
@@ -214,25 +249,23 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
                 ? (
                   <Row>
                     <Column>
-                      <HighContrastInput
-                        data-test-id={_namespace + '-navn'}
+                      <Input
+                        namespace={_namespace}
                         feil={_validation[_namespace + '-navn']?.feilmelding}
-                        id={_namespace + '-navn'}
+                        id='navn'
                         label={t('label:navn')}
-                        onChange={onNameChanged}
-                        placeholder={t('el:placeholder-input-default')}
+                        onChanged={onNameChanged}
                         value={_arbeidsgiversNavn}
                       />
                     </Column>
                     <Column>
-                      <HighContrastInput
-                        data-test-id={_namespace + '-orgnr'}
+                      <Input
+                        namespace={_namespace}
                         feil={_validation[_namespace + '-orgnr']?.feilmelding}
-                        id={_namespace + '-orgnr'}
-                        onChange={onOrgnrChanged}
-                        value={_arbeidsgiversOrgnr}
+                        id='orgnr'
                         label={t('label:orgnr')}
-                        placeholder={t('el:placeholder-input-default')}
+                        onChanged={onOrgnrChanged}
+                        value={_arbeidsgiversOrgnr}
                       />
                     </Column>
                   </Row>
@@ -252,85 +285,156 @@ const ArbeidsgiverBox: React.FC<ArbeidsgiverProps> = ({
                   <>
                     <VerticalSeparatorDiv size='0.5' />
                     <Row>
-                      <Column>
-                        <HighContrastInput
-                          data-test-id={_namespace + '-startdato'}
-                          feil={_validation[_namespace + '-startdato']?.feilmelding}
-                          id={_namespace + '-startdato'}
-                          label={t('label:startdato')}
-                          onChange={onStartDatoChanged}
-                          placeholder={t('el:placeholder-date-default')}
-                          value={_startDato}
-                        />
-                      </Column>
-                      <Column>
-                        <HighContrastInput
-                          data-test-id={_namespace + '-sluttdato'}
-                          feil={_validation[_namespace + '-sluttdato']?.feilmelding}
-                          id={_namespace + '-sluttdato'}
-                          label={t('label:sluttdato')}
-                          onChange={onSluttDatoChanged}
-                          placeholder={t('el:placeholder-date-default')}
-                          value={_sluttDato}
-                        />
-                      </Column>
+                      <Period
+                        key={'' + _startDato + _sluttDato}
+                        namespace={_namespace}
+                        errorStartDato={_validation[_namespace + '-startdato']?.feilmelding}
+                        errorSluttDato={_validation[_namespace + '-sluttdato']?.feilmelding}
+                        setStartDato={onStartDatoChanged}
+                        setSluttDato={onSluttDatoChanged}
+                        valueStartDato={_startDato}
+                        valueSluttDato={_sluttDato}
+                      />
                     </Row>
                   </>
                   )
                 : (
                   <div>
                     <Normaltekst>
-                      {t('label:startdato')}:&nbsp;{formatterDatoTilNorsk(_startDato)}
+                      {t('label:startdato')}:&nbsp;{toUIDateFormat(_startDato)}
                     </Normaltekst>
                     <Normaltekst>
-                      {t('label:sluttdato')}:&nbsp;{formatterDatoTilNorsk(_sluttDato)}
+                      {t('label:sluttdato')}:&nbsp;{toUIDateFormat(_sluttDato)}
                     </Normaltekst>
                   </div>
                   )}
+              {includeAddress && (
+                <>
+                  {_isEditing
+                    ? (
+                      <>
+                        <VerticalSeparatorDiv size='0.5' />
+                        <AlignStartRow>
+                          <Column flex='3'>
+                            <Input
+                              namespace={_namespace}
+                              feil={_validation[_namespace + '-gateadresse']?.feilmelding}
+                              id='gateadresse'
+                              label={t('label:gateadresse')}
+                              onChanged={onGateadresseChanged}
+                              value={_gateadresse}
+                            />
+                          </Column>
+                          <Column>
+                            <Input
+                              namespace={_namespace}
+                              feil={_validation[_namespace + '-bygning']?.feilmelding}
+                              id='bygning'
+                              label={t('label:bygning')}
+                              onChanged={onBygningChanged}
+                              value={_bygning}
+                            />
+                          </Column>
+                        </AlignStartRow>
+                        <VerticalSeparatorDiv />
+                        <AlignStartRow>
+                          <Column>
+                            <Input
+                              namespace={_namespace}
+                              feil={_validation[_namespace + '-postnummer']?.feilmelding}
+                              id='postnummer'
+                              label={t('label:postnummer')}
+                              onChanged={onPostnummerChanged}
+                              value={_postnummer}
+                            />
+                          </Column>
+                          <Column flex='3'>
+                            <Input
+                              namespace={_namespace}
+                              feil={_validation[_namespace + '-by']?.feilmelding}
+                              id='by'
+                              label={t('label:by')}
+                              onChanged={onByChanged}
+                              value={_by}
+                            />
+                          </Column>
+                        </AlignStartRow>
+                        <VerticalSeparatorDiv />
+                        <AlignStartRow>
+                          <Column flex='2'>
+                            <Input
+                              namespace={_namespace}
+                              feil={_validation[_namespace + '-region']?.feilmelding}
+                              id='region'
+                              label={t('label:region')}
+                              onChanged={onRegionChanged}
+                              value={_region}
+                            />
+                          </Column>
+                          <Column flex='2'>
+                            <CountrySelect
+                              closeMenuOnSelect
+                              key={_land}
+                              data-test-id={namespace + '-land'}
+                              error={_validation[_namespace + '-land']?.feilmelding}
+                              flagWave
+                              id={namespace + '-land'}
+                              label={t('label:land') + ' *'}
+                              menuPortalTarget={document.body}
+                              onOptionSelected={(e: Country) => onLandChanged(e.value)}
+                              placeholder={t('el:placeholder-select-default')}
+                              values={_land}
+                            />
+                          </Column>
+                        </AlignStartRow>
+                      </>
+                      )
+                    : (
+                      <div>
+                        <Normaltekst>
+                          {t('label:gateadresse')}:&nbsp;{_gateadresse ?? '-'}
+                        </Normaltekst>
+                        <Normaltekst>
+                          {t('label:postnummer')}:&nbsp;{_postnummer ?? '-'}
+                        </Normaltekst>
+                        <Normaltekst>
+                          {t('label:bygning')}:&nbsp;{_bygning ?? ''}
+                        </Normaltekst>
+                        <Normaltekst>
+                          {t('label:by')}:&nbsp;{_by ?? '-'}
+                        </Normaltekst>
+                        <Normaltekst>
+                          {t('label:region')}:&nbsp;{_region ?? ''}
+                        </Normaltekst>
+                        <Normaltekst>
+                          {t('label:land')}:&nbsp;{_land ?? '-'}
+                        </Normaltekst>
+                      </div>
+                      )}
+                </>
+              )}
             </div>
-
             {error && (
               <Normaltekst>
                 duplicate warning
               </Normaltekst>
             )}
-            {fraArbeidsgiverregisteret === 'ja' && (
+            {arbeidsgiver?.extra?.fraArbeidsgiverregisteret && (
               <>
                 <HorizontalSeparatorDiv />
                 <PileDiv style={{ flexDirection: 'column-reverse' }}>
-                  <Undertekst>{t('label:fra-arbeidsgiverregisteret')}</Undertekst>
+                  <Undertekst>{t('label:fra-arbeidsgiverregisteret')}: {arbeidsgiver?.extra?.fraArbeidsgiverregisteret}</Undertekst>
                 </PileDiv>
               </>
             )}
-            {fraInntektsregisteret === 'ja' && (
+            {arbeidsgiver?.extra?.fraInntektsregisteret && (
               <>
                 <HorizontalSeparatorDiv />
                 <PileDiv style={{ flexDirection: 'column-reverse' }}>
-                  <Undertekst>{t('label:fra-inntektsregisteret')}</Undertekst>
+                  <Undertekst>{t('label:fra-inntektsregisteret')}: {arbeidsgiver?.extra?.fraInntektsregisteret}</Undertekst>
                 </PileDiv>
               </>
             )}
-            {/*! harRegistrertInntekt && (
-          <div className='slideInFromBottom' style={{ animationDelay: '0.2s' }}>
-            <AlertStripeAdvarsel>
-              <FlexDivNoWrap>
-                {t('message:warning-conflict-aa-1')}
-                <PaddedLink
-                  href={`https://modapp.adeo.no/aareg-web/?1&rolle=arbeidstaker&ident=${personFnr}#!arbeidsforhold`}
-                >
-                  {t('message:warning-conflict-aa-link-1')}
-                </PaddedLink>
-                {t('message:warning-conflict-aa-2')}
-                <PaddedLink
-                  href={`https://modapp.adeo.no/a-inntekt/person/${personFnr}?2#!PersonInntektLamell`}
-                >
-                  {t('message:warning-conflict-aa-link-2')}
-                </PaddedLink>
-              </FlexDivNoWrap>
-            </AlertStripeAdvarsel>
-          </div>
-        ) */}
-
           </PaddedFlexDiv>
           <PaddedFlexDiv className='slideInFromRight' style={{ animationDelay: '0.3s' }}>
             {editable && !_isEditing && !_isDeleting && (

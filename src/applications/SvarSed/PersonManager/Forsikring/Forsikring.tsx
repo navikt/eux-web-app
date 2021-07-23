@@ -48,16 +48,16 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
     perioderAnnenForsikring: 'annen_periode_som_utgjør_eller_behandles_som_forsikringsperiode'
   }
 
-  let initialPeriodeType: Array<string> = []
-  let periodeTypes = ['perioderAnsattMedForsikring','perioderAnsattUtenForsikring','perioderSelvstendigMedForsikring',
-    'perioderSelvstendigUtenForsikring','perioderFrihetsberoevet','perioderSyk','perioderSvangerskapBarn',
-    'perioderUtdanning','perioderMilitaertjeneste','perioderAnnenForsikring']
+  const initialPeriodeType: Array<string> = []
+  const periodeTypes = ['perioderAnsattMedForsikring', 'perioderAnsattUtenForsikring', 'perioderSelvstendigMedForsikring',
+    'perioderSelvstendigUtenForsikring', 'perioderFrihetsberoevet', 'perioderSyk', 'perioderSvangerskapBarn',
+    'perioderUtdanning', 'perioderMilitaertjeneste', 'perioderAnnenForsikring']
 
-  let periodeTypeMedForsikring = [periodeTypeHash['perioderAnsattMedForsikring'], periodeTypeHash['perioderSelvstendigMedForsikring']]
-  let periodeTypeUtenForsikring = [periodeTypeHash['perioderAnsattUtenForsikring'], periodeTypeHash['perioderSelvstendigUtenForsikring']]
-  let periodeTypeOther = [
-    periodeTypeHash['perioderFrihetsberoevet'], periodeTypeHash['perioderSyk'], periodeTypeHash['perioderSvangerskapBarn'],
-    periodeTypeHash['perioderUtdanning'], periodeTypeHash['perioderMilitaertjeneste'], periodeTypeHash['perioderAnnenForsikring']
+  const periodeTypeMedForsikring = [periodeTypeHash.perioderAnsattMedForsikring, periodeTypeHash.perioderSelvstendigMedForsikring]
+  const periodeTypeUtenForsikring = [periodeTypeHash.perioderAnsattUtenForsikring, periodeTypeHash.perioderSelvstendigUtenForsikring]
+  const periodeTypeOther = [
+    periodeTypeHash.perioderFrihetsberoevet, periodeTypeHash.perioderSyk, periodeTypeHash.perioderSvangerskapBarn,
+    periodeTypeHash.perioderUtdanning, periodeTypeHash.perioderMilitaertjeneste, periodeTypeHash.perioderAnnenForsikring
   ]
 
   periodeTypes.forEach((type: string) => {
@@ -106,7 +106,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />
-      <HorizontalLineSeparator/>
+      <HorizontalLineSeparator />
       <VerticalSeparatorDiv size='2' />
       {_periodeType.sort((a, b) => {
         return t('el:option-' + a).localeCompare(t('el:option-' + b))
@@ -122,22 +122,25 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
           )}
           >
             <>
-            {periodeTypeMedForsikring.indexOf(type) >= 0 && (
-              <ArbeidsforholdMedForsikring
-                parentNamespace={namespace}
-                target={type}
-              />
-            )}
-            {periodeTypeUtenForsikring.indexOf(type) >= 0 && (
-              <ArbeidsforholdUtenForsikring
-                parentNamespace={namespace}
-                target={type}
-              />
-            )}
+              {periodeTypeMedForsikring.indexOf(type) >= 0 && (
+                <ArbeidsforholdMedForsikring
+                  parentNamespace={namespace}
+                  target={type}
+                  typeTrygdeforhold={periodeTypeHash[type]}
+                />
+              )}
+              {periodeTypeUtenForsikring.indexOf(type) >= 0 && (
+                <ArbeidsforholdUtenForsikring
+                  parentNamespace={namespace}
+                  target={type}
+                  typeTrygdeforhold={periodeTypeHash[type]}
+                />
+              )}
               {periodeTypeOther.indexOf(type) >= 0 && (
                 <ArbeidsforholdOther
                   parentNamespace={namespace}
                   target={type}
+                  typeTrygdeforhold={periodeTypeHash[type]}
                 />
               )}
             </>

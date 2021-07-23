@@ -8,8 +8,8 @@ export interface OldPeriod {
 export interface Arbeidsgiver {
   fraDato?: string
   tilDato?: string
-  fraInntektsregisteret: string
-  fraArbeidsgiverregisteret: string
+  fraInntektsregisteret?: string
+  fraArbeidsgiverregisteret?: string
   arbeidsgiversOrgnr: string
   arbeidsgiversNavn ?: string
 }
@@ -164,7 +164,6 @@ export interface ServerInfo {
   longVersionHash: string
   gosysURL: string
   veraUrl: string
-  gosysURL: string
 }
 
 export interface Tema {

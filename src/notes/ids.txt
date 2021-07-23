@@ -25,13 +25,19 @@ personmanager-{personID}-adresser[{i}]-bygning    - {CONNECTED} {person}.adresse
 personmanager-{personID}-adresser[{i}]-region     - {CONNECTED} {person}.adresser[].region
 
 U-Sed
-personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-arbeidssok-startdato       - {INTERNAL}  not used
-personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-arbeidssok-sluttdato       - {INTERNAL}  not used
-personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-arbeidsgiver-startdato     - {INTERNAL}  not used
-personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-arbeidsgiver-sluttdato     - {INTERNAL}  not used
-personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-arbeidsgiver-orgnr         - {INTERNAL}  not used
-personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-arbeidsgiver-navn          - {INTERNAL}  not used
-personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-arbeidsgiver[] - {CONNECTED} perioderAnsattMedForsikring[]
+personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-arbeidssok-startdato - {INTERNAL}  not used
+personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-arbeidssok-sluttdato - {INTERNAL}  not used
+personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-startdato            - {INTERNAL}  not used
+personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-sluttdato            - {INTERNAL}  not used
+personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-orgnr                - {INTERNAL}  not used
+personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-navn                 - {INTERNAL}  not used
+personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-gate                 - {INTERNAL}  not used
+personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-postnummer           - {INTERNAL}  not used
+personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-by                   - {INTERNAL}  not used
+personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-land                 - {INTERNAL}  not used
+personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-bygning              - {INTERNAL}  not used
+personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-region               - {INTERNAL}  not used
+personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring[]                    - {CONNECTED} perioderAnsattMedForsikring[]
 
 F-Sed, barn:
 personmanager-{personID}-beløpnavnogvaluta-barnetsNavn          - {CONNECTED} barn[].ytelse.barnetsNavn

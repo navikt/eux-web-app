@@ -1,43 +1,16 @@
 import GreenCircle from 'assets/icons/GreenCircle'
 import Warning from 'assets/icons/Warning'
+import { Dd, Dl, Dt } from 'components/StyledComponents'
 import { F002Sed, FSed, ReplySed, USed } from 'declarations/sed'
 import Flag, { FlagList } from 'flagg-ikoner'
 import CountryData from 'land-verktoy'
 import { Normaltekst, UndertekstBold } from 'nav-frontend-typografi'
-import { HorizontalSeparatorDiv, themeKeys, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { FlexDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { isUSed, isFSed } from 'utils/sed'
 
-const Dd = styled.dd`
-  width: 60%;
-  padding-bottom: 0.25rem;
-  padding-top: 0.25rem;
-  margin-bottom: 0;
-  margin-inline-start: 0;
-`
-const Dt = styled.dt`
-  width: 40%;
-  padding-bottom: 0.25rem;
-  padding-top: 0.25rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  .typo-element {
-    margin-left: 0.5rem;
-  }
-`
-const Dl = styled.dl`
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  .odd {
-    background-color: ${({ theme }) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
-  }
-`
-const FlexDiv = styled.div`
-  display: flex;
-`
 const Blockquote = styled.blockquote`
   border-left: 2px solid gray;
   padding-left: 1rem;

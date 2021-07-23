@@ -16,9 +16,9 @@ import ArbeidsgiverBox from 'components/Arbeidsgiver/ArbeidsgiverBox'
 import ArbeidsgiverSøk from 'components/Arbeidsgiver/ArbeidsgiverSøk'
 import Input from 'components/Forms/Input'
 import Inntekt from 'components/Inntekt/Inntekt'
-import Period, { toFinalDateFormat } from 'components/Period/Period'
+import Period from 'components/Period/Period'
 import { State } from 'declarations/reducers'
-import { Periode, PeriodePlusArbeidsgiver, ReplySed } from 'declarations/sed'
+import { Periode, PeriodeAnnen, ReplySed } from 'declarations/sed'
 import { Arbeidsgiver, Arbeidsperioder, IInntekter, Validation } from 'declarations/types'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -50,6 +50,7 @@ export interface ArbeidsforholdOtherSelector extends PersonManagerFormSelector {
 export interface ArbeidsforholdOtherProps {
   parentNamespace: string
   target: string
+  typeTrygdeforhold: string
 }
 
 const mapState = (state: State): ArbeidsforholdOtherSelector => ({
@@ -63,7 +64,8 @@ const mapState = (state: State): ArbeidsforholdOtherSelector => ({
 
 const ArbeidsforholdOther: React.FC<ArbeidsforholdOtherProps> = ({
   parentNamespace,
-  target
+  target,
+  typeTrygdeforhold
 }:ArbeidsforholdOtherProps): JSX.Element => {
   const { t } = useTranslation()
   const {
@@ -75,7 +77,7 @@ const ArbeidsforholdOther: React.FC<ArbeidsforholdOtherProps> = ({
   } = useSelector<State, ArbeidsforholdOtherSelector>(mapState)
   const dispatch = useDispatch()
 
-  const perioder: Array<PeriodePlusArbeidsgiver> | undefined = _.get(replySed, target)
+  const perioder: Array<PeriodeAnnen> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${target}`
   const fnr = getFnr(replySed)
 
@@ -125,14 +127,14 @@ const ArbeidsforholdOther: React.FC<ArbeidsforholdOtherProps> = ({
 
   const addPeriodeFromArbeidsgiver = (selectedArbeidsgiver: Arbeidsgiver) => {
     const newPeriode: Periode = {
-      startdato: toFinalDateFormat(selectedArbeidsgiver.fraDato)
+      startdato: selectedArbeidsgiver.fraDato!
     }
     if (selectedArbeidsgiver.tilDato) {
-      newPeriode.sluttdato = toFinalDateFormat(selectedArbeidsgiver.tilDato)
+      newPeriode.sluttdato = selectedArbeidsgiver.tilDato
     } else {
       newPeriode.aapenPeriodeType = 'åpen_sluttdato'
     }
-    const newPeriodePlusArbeidsgiver: PeriodePlusArbeidsgiver = {
+    const newPeriodePlusArbeidsgiver: PeriodeAnnen = {
       periode: newPeriode,
       arbeidsgiver: {
         navn: selectedArbeidsgiver.arbeidsgiversNavn ?? '',
@@ -141,9 +143,9 @@ const ArbeidsforholdOther: React.FC<ArbeidsforholdOtherProps> = ({
           id: selectedArbeidsgiver.arbeidsgiversOrgnr
         }]
       },
-      typeTrygdeforhold: 'ansettelsesforhold_som_utgjør_forsikringsperiode'
+      typeTrygdeforhold: typeTrygdeforhold
     }
-    let newPerioderAnsattMedForsikring: Array<PeriodePlusArbeidsgiver> | undefined = _.cloneDeep(perioder)
+    let newPerioderAnsattMedForsikring: Array<PeriodeAnnen> | undefined = _.cloneDeep(perioder)
     if (!newPerioderAnsattMedForsikring) {
       newPerioderAnsattMedForsikring = []
     }
@@ -154,7 +156,7 @@ const ArbeidsforholdOther: React.FC<ArbeidsforholdOtherProps> = ({
   }
 
   const removePeriodeFromArbeidsgiver = (deletedArbeidsgiver: Arbeidsgiver) => {
-    let newPerioderAnsattMedForsikring: Array<PeriodePlusArbeidsgiver> | undefined = _.cloneDeep(perioder)
+    let newPerioderAnsattMedForsikring: Array<PeriodeAnnen> | undefined = _.cloneDeep(perioder)
     if (!newPerioderAnsattMedForsikring) {
       newPerioderAnsattMedForsikring = []
     }
@@ -225,8 +227,8 @@ const ArbeidsforholdOther: React.FC<ArbeidsforholdOtherProps> = ({
     const newArbeidsgiver: Arbeidsgiver = {
       arbeidsgiversNavn: _newArbeidsgiversNavn,
       arbeidsgiversOrgnr: _newArbeidsgiversOrgnr,
-      fraDato: toFinalDateFormat(_newArbeidsgiverStartDato),
-      tilDato: toFinalDateFormat(_newArbeidsgiverSluttDato),
+      fraDato: _newArbeidsgiverStartDato,
+      tilDato: _newArbeidsgiverSluttDato,
       fraInntektsregisteret: 'nei',
       fraArbeidsgiverregisteret: 'nei'
     }
@@ -290,10 +292,10 @@ const ArbeidsforholdOther: React.FC<ArbeidsforholdOtherProps> = ({
               arbeidsgiver={arbeidsgiver}
               editable={false}
               newArbeidsgiver={false}
-              selected={_.find(perioder, (p: PeriodePlusArbeidsgiver) =>
+             /* selected={_.find(perioder, (p: PeriodeAnnen) =>
                 p.periode.startdato === toFinalDateFormat(arbeidsgiver.fraDato) &&
                 _.find(p.arbeidsgiver.identifikator, id => id.id === arbeidsgiver.arbeidsgiversOrgnr && id.type === 'registrering') !== undefined
-              ) !== undefined}
+              ) !== undefined} */
               key={arbeidsgiver.arbeidsgiversOrgnr}
               onArbeidsgiverSelect={onArbeidsgiverSelect}
               namespace={namespace}
@@ -309,10 +311,10 @@ const ArbeidsforholdOther: React.FC<ArbeidsforholdOtherProps> = ({
               arbeidsgiver={arbeidsgiver}
               editable={false}
               newArbeidsgiver
-              selected={_.find(perioder, (p: PeriodePlusArbeidsgiver) =>
+              /* selected={_.find(perioder, (p: PeriodeAnnen) =>
                 p.periode.startdato === toFinalDateFormat(arbeidsgiver.fraDato) &&
                 _.find(p.arbeidsgiver.identifikator, id => id.id === arbeidsgiver.arbeidsgiversOrgnr && id.type === 'registrering') !== undefined
-              ) !== undefined}
+              ) !== undefined} */
               key={arbeidsgiver.arbeidsgiversOrgnr}
               onArbeidsgiverSelect={onArbeidsgiverSelect}
               onArbeidsgiverDelete={onArbeidsgiverDelete}

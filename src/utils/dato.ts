@@ -53,9 +53,3 @@ export const vaskInputDato = (dato: any) => {
 
   return returnDate
 }
-
-export const formatterDatoTilNorsk = (dato: any) => {
-  const inputFormat = ['YYYY-MM-DD', 'YYYY-MM-DDTHH:mm:ss', 'DD-MM-YYYY', 'DD-MM-YYYY HH:mm']
-  const momentDato = moment.utc(dato, inputFormat)
-  return momentDato.isValid() ? momentDato.local().format('DD.MM.YYYY') : ''
-}
