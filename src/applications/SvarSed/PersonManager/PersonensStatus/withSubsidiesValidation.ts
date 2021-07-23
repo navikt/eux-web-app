@@ -43,7 +43,7 @@ export const validateWithSubsidiesPeriode = (
   if (duplicate) {
     v[namespace + idx + '-periode-startdato'] = {
       skjemaelementId: namespace + idx + '-periode-startdato',
-      feilmelding: t('message:validation-duplicateStartDate')
+      feilmelding: t('message:validation-duplicateStartdato')
     } as FeiloppsummeringFeil
     hasErrors = true
   }

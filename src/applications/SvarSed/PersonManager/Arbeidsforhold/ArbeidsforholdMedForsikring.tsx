@@ -37,7 +37,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { getOrgnr, hasOrgnr } from 'utils/arbeidsgiver'
+import { getOrgnr, hasOrgnr, sanitizePeriodeMedForsikring } from 'utils/arbeidsgiver'
 import { getFnr } from 'utils/fnr'
 import makeRenderPlan, { PlanItem } from 'utils/renderPlan'
 import { performValidationArbeidsperioderSearch, ValidationDatoProps } from './validation'
@@ -97,7 +97,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProos> = 
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')
   const [_newOrgnr, _setNewOrgnr] = useState<string>('')
   const [_newNavn, _setNewNavn] = useState<string>('')
-  const [_newGateadresse, _setNewGateadresse] = useState<string>('')
+  const [_newGate, _setNewGate] = useState<string>('')
   const [_newPostnummer, _setNewPostnummer] = useState<string>('')
   const [_newBy, _setNewBy] = useState<string>('')
   const [_newBygning, _setNewBygning] = useState<string>('')
@@ -164,7 +164,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProos> = 
 
   const onPeriodeMedForsikringSelect = (periodeMedForsikring: PeriodeMedForsikring, checked: boolean) => {
     if (checked) {
-      addPeriodeMedForsikring(periodeMedForsikring)
+      addPeriodeMedForsikring(sanitizePeriodeMedForsikring(periodeMedForsikring))
     } else {
       removePeriodeMedForsikring(periodeMedForsikring)
     }
@@ -198,6 +198,12 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProos> = 
     _setNewOrgnr('')
     _setNewSluttDato('')
     _setNewStartDato('')
+    _setNewBy('')
+    _setNewGate('')
+    _setNewPostnummer('')
+    _setNewBygning('')
+    _setNewRegion('')
+    _setNewLand('')
     _resetValidationPeriodeMedForsikring()
   }
 
@@ -226,9 +232,9 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProos> = 
     _setNewNavn(newName)
   }
 
-  const onGateadresseChanged = (newGateadresse: string) => {
-    _resetValidationPeriodeMedForsikring(namespace + '-gateadresse')
-    _setNewGateadresse(newGateadresse)
+  const onGateChanged = (newGate: string) => {
+    _resetValidationPeriodeMedForsikring(namespace + '-gate')
+    _setNewGate(newGate)
   }
 
   const onPostnummerChanged = (newPostnummer: string) => {
@@ -274,7 +280,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProos> = 
         navn: _newNavn,
         adresse: {
           postnummer: _newPostnummer,
-          gate: _newGateadresse,
+          gate: _newGate,
           bygning: _newBygning,
           land: _newLand,
           by: _newBy,
@@ -369,6 +375,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProos> = 
             feil={_validationPeriodeMedForsikring[namespace + '-orgnr']?.feilmelding}
             namespace={namespace}
             id='orgnr'
+            key={'orgnr-' + _newOrgnr}
             label={t('label:orgnr')}
             onChanged={onArbeidsgiversOrgnrChanged}
             value={_newOrgnr}
@@ -379,6 +386,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProos> = 
             feil={_validationPeriodeMedForsikring[namespace + '-navn']?.feilmelding}
             namespace={namespace}
             id='navn'
+            key={'navn-' + _newNavn}
             label={t('label:navn')}
             onChanged={onArbeidsgiversNavnChanged}
             value={_newNavn}
@@ -392,11 +400,12 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProos> = 
         <Column flex='3'>
           <Input
             namespace={namespace}
-            feil={_validationPeriodeMedForsikring[namespace + '-gateadresse']?.feilmelding}
-            id='gateadresse'
+            feil={_validationPeriodeMedForsikring[namespace + '-gate']?.feilmelding}
+            id='gate'
+            key={'gate-' + _newGate}
             label={t('label:gateadresse')}
-            onChanged={onGateadresseChanged}
-            value={_newGateadresse}
+            onChanged={onGateChanged}
+            value={_newGate}
           />
         </Column>
         <Column>
@@ -404,6 +413,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProos> = 
             namespace={namespace}
             feil={_validationPeriodeMedForsikring[namespace + '-bygning']?.feilmelding}
             id='bygning'
+            key={'bygning-' + _newBygning}
             label={t('label:bygning')}
             onChanged={onBygningChanged}
             value={_newBygning}
@@ -417,6 +427,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProos> = 
             namespace={namespace}
             feil={_validationPeriodeMedForsikring[namespace + '-postnummer']?.feilmelding}
             id='postnummer'
+            key={'postnummer-' + _newPostnummer}
             label={t('label:postnummer')}
             onChanged={onPostnummerChanged}
             value={_newPostnummer}
@@ -427,6 +438,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProos> = 
             namespace={namespace}
             feil={_validationPeriodeMedForsikring[namespace + '-by']?.feilmelding}
             id='by'
+            key={'by-' + _newBy}
             label={t('label:by')}
             onChanged={onByChanged}
             value={_newBy}
@@ -440,6 +452,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProos> = 
             namespace={namespace}
             feil={_validationPeriodeMedForsikring[namespace + '-region']?.feilmelding}
             id='region'
+            key={'region-' + _newRegion}
             label={t('label:region')}
             onChanged={onRegionChanged}
             value={_newRegion}
@@ -448,7 +461,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProos> = 
         <Column flex='2'>
           <CountrySelect
             closeMenuOnSelect
-            key={_newLand}
+            key={'land-' + _newLand}
             data-test-id={namespace + '-land'}
             error={_validationPeriodeMedForsikring[namespace + '-land']?.feilmelding}
             flagWave
@@ -604,7 +617,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProos> = 
       </Undertittel>
       <VerticalSeparatorDiv size='2' />
       {renderPlan()}
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv size='2' />
       {_seeNewPeriodeMedForsikring
@@ -622,7 +635,9 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProos> = 
             })}
           </HighContrastFlatknapp>
           )}
-      <VerticalSeparatorDiv size='3' />
+      <VerticalSeparatorDiv size='2' />
+      <HorizontalLineSeparator />
+      <VerticalSeparatorDiv size='2' />
       <AlignStartRow className='slideInFromLeft'>
         <Column>
           <FlexBaseDiv>

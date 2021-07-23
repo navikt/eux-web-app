@@ -36,10 +36,10 @@
   "loading-sending-svarsed" : "Sender svarSED...",
   "loading-sending-XofY" : "Sender {{current}} av {{total}}",
 
-  "validation-duplicateStartDate": "Datoen eksisterer allerede",
   "validation-duplicateBirthCountry": "Statsborgerskapen eksisterer allerede",
   "validation-duplicateEpostAdresseForPerson": "e-post adresse eksisterer allerede til {{person}}",
   "validation-duplicateGrunnForPerson": "Grunn eksisterer allerede til {{person}}",
+  "validation-duplicateStartdato": "Startdato eksisterer allerede",
   "validation-duplicateStartdatoForPerson": "Startdato eksisterer allerede til {{person}}",
   "validation-duplicateRelationForPerson": "Relasjon eksisterer allerede til {{person}}",
   "validation-duplicateTelephoneNumberForPerson": "Telefon eksisterer allerede til {{person}}",

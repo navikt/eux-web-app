@@ -7,8 +7,9 @@ import Input from 'components/Forms/Input'
 import Period, { toUIDateFormat } from 'components/Period/Period'
 import { Periode, PeriodeMedForsikring } from 'declarations/sed.d'
 import useValidation from 'hooks/useValidation'
-import { Country } from 'land-verktoy'
+import CountryData, { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
+import _ from 'lodash'
 import { Checkbox } from 'nav-frontend-skjema'
 import { Normaltekst, Undertekst, UndertekstBold } from 'nav-frontend-typografi'
 import {
@@ -55,8 +56,8 @@ export interface ArbeidsgiverProps {
   newArbeidsgiver?: boolean
   typeTrygdeforhold ?: string
   onArbeidsgiverSelect: (a: PeriodeMedForsikring, checked: boolean) => void
-  onArbeidsgiverEdit?: (a: PeriodeMedForsikring) => void
-  onArbeidsgiverDelete?: (a: PeriodeMedForsikring) => void
+  onArbeidsgiverEdit?: (a: PeriodeMedForsikring, checked: boolean) => void
+  onArbeidsgiverDelete?: (a: PeriodeMedForsikring, checked: boolean) => void
   namespace: string
   personFnr?: string
   selected?: boolean
@@ -69,15 +70,16 @@ const ArbeidsgiverBox = ({
   includeAddress = false,
   newArbeidsgiver = false,
   typeTrygdeforhold,
-  selected,
+  selected = false,
   onArbeidsgiverSelect,
-  onArbeidsgiverDelete = () => {},
-  onArbeidsgiverEdit = () => {},
+  onArbeidsgiverDelete,
+  onArbeidsgiverEdit,
   namespace
 //  personFnr
 }: ArbeidsgiverProps): JSX.Element => {
   const { t } = useTranslation()
   const _namespace = namespace + '-arbeidsgiver[' + getOrgnr(arbeidsgiver) ?? '-' + ']'
+  const countryData = CountryData.getCountryInstance('nb')
 
   const [_isDeleting, setIsDeleting] = useState<boolean>(false)
   const [_isEditing, setIsEditing] = useState<boolean>(false)
@@ -88,7 +90,7 @@ const ArbeidsgiverBox = ({
   const [_sluttDato, setSluttDato] = useState<string>(arbeidsgiver.periode.sluttdato ?? '')
 
   // for includeAddress
-  const [_gateadresse, setGateadresse] = useState<string>(arbeidsgiver.arbeidsgiver?.adresse?.gate ?? '')
+  const [_gate, setGate] = useState<string>(arbeidsgiver.arbeidsgiver?.adresse?.gate ?? '')
   const [_postnummer, setPostnummer] = useState<string>(arbeidsgiver.arbeidsgiver?.adresse?.postnummer ?? '')
   const [_by, setBy] = useState<string>(arbeidsgiver.arbeidsgiver?.adresse?.by ?? '')
   const [_bygning, setBygning] = useState<string>(arbeidsgiver.arbeidsgiver?.adresse?.bygning ?? '')
@@ -117,9 +119,9 @@ const ArbeidsgiverBox = ({
     setSluttDato(newDato)
   }
 
-  const onGateadresseChanged = (newGateadresse: string) => {
-    resetValidation(_namespace + '-gateadresse')
-    setGateadresse(newGateadresse)
+  const onGateChanged = (newGate: string) => {
+    resetValidation(_namespace + '-gate')
+    setGate(newGate)
   }
 
   const onPostnummerChanged = (newPostnummer: string) => {
@@ -171,7 +173,7 @@ const ArbeidsgiverBox = ({
 
     if (includeAddress) {
       newArbeidsgiver.arbeidsgiver.adresse = {
-        gate: _gateadresse,
+        gate: _gate,
         postnummer: _postnummer,
         by: _by,
         bygning: _bygning,
@@ -186,7 +188,9 @@ const ArbeidsgiverBox = ({
       namespace: namespace
     })
     if (valid) {
-      onArbeidsgiverEdit(newArbeidsgiver)
+      if (_.isFunction(onArbeidsgiverEdit)) {
+        onArbeidsgiverEdit(newArbeidsgiver, selected)
+      }
       setIsEditing(false)
     }
   }
@@ -198,7 +202,7 @@ const ArbeidsgiverBox = ({
     setStartDato(_startDato)
     setSluttDato(_sluttDato)
     if (includeAddress) {
-      setGateadresse(_gateadresse)
+      setGate(_gate)
       setPostnummer(_postnummer)
       setBygning(_bygning)
       setBy(_by)
@@ -214,7 +218,7 @@ const ArbeidsgiverBox = ({
     setStartDato('')
     setSluttDato('')
     if (includeAddress) {
-      setGateadresse('')
+      setGate('')
       setPostnummer('')
       setBygning('')
       setBy('')
@@ -308,8 +312,11 @@ const ArbeidsgiverBox = ({
                     </Normaltekst>
                   </div>
                   )}
-              {includeAddress && (
-                <>
+            </div>
+            {includeAddress && (
+              <>
+                <HorizontalSeparatorDiv />
+                <div>
                   {_isEditing
                     ? (
                       <>
@@ -318,11 +325,11 @@ const ArbeidsgiverBox = ({
                           <Column flex='3'>
                             <Input
                               namespace={_namespace}
-                              feil={_validation[_namespace + '-gateadresse']?.feilmelding}
-                              id='gateadresse'
+                              feil={_validation[_namespace + '-gate']?.feilmelding}
+                              id='gate'
                               label={t('label:gateadresse')}
-                              onChanged={onGateadresseChanged}
-                              value={_gateadresse}
+                              onChanged={onGateChanged}
+                              value={_gate}
                             />
                           </Column>
                           <Column>
@@ -392,49 +399,44 @@ const ArbeidsgiverBox = ({
                     : (
                       <div>
                         <Normaltekst>
-                          {t('label:gateadresse')}:&nbsp;{_gateadresse ?? '-'}
+                          {(!!_gate || !!_bygning || !!_postnummer || !!_by || !!_region || !!_land) && (
+                            <>{t('label:adresse')}: </>
+                          )}
                         </Normaltekst>
                         <Normaltekst>
-                          {t('label:postnummer')}:&nbsp;{_postnummer ?? '-'}
+                          {_gate ?? '-'}
+                          {_bygning ? ', ' + t('label:bygning').toLowerCase() + ' ' + _bygning : ''}
                         </Normaltekst>
                         <Normaltekst>
-                          {t('label:bygning')}:&nbsp;{_bygning ?? ''}
+                          {_postnummer + ' ' + _by}
                         </Normaltekst>
                         <Normaltekst>
-                          {t('label:by')}:&nbsp;{_by ?? '-'}
-                        </Normaltekst>
-                        <Normaltekst>
-                          {t('label:region')}:&nbsp;{_region ?? ''}
-                        </Normaltekst>
-                        <Normaltekst>
-                          {t('label:land')}:&nbsp;{_land ?? '-'}
+                          {_region ? _region + ', ' : ''}
+                          {countryData.findByValue(_land)?.label ?? _land}
                         </Normaltekst>
                       </div>
                       )}
-                </>
+                </div>
+              </>
+            )}
+            <>
+              <HorizontalSeparatorDiv />
+              {error && (
+                <Normaltekst>
+                  duplicate warning
+                </Normaltekst>
               )}
-            </div>
-            {error && (
-              <Normaltekst>
-                duplicate warning
-              </Normaltekst>
-            )}
-            {arbeidsgiver?.extra?.fraArbeidsgiverregisteret && (
-              <>
-                <HorizontalSeparatorDiv />
+              {arbeidsgiver?.extra?.fraArbeidsgiverregisteret === 'ja' && (
                 <PileDiv style={{ flexDirection: 'column-reverse' }}>
-                  <Undertekst>{t('label:fra-arbeidsgiverregisteret')}: {arbeidsgiver?.extra?.fraArbeidsgiverregisteret}</Undertekst>
+                  <Undertekst>{t('label:fra-arbeidsgiverregisteret')}</Undertekst>
                 </PileDiv>
-              </>
-            )}
-            {arbeidsgiver?.extra?.fraInntektsregisteret && (
-              <>
-                <HorizontalSeparatorDiv />
+              )}
+              {arbeidsgiver?.extra?.fraInntektsregisteret === 'ja' && (
                 <PileDiv style={{ flexDirection: 'column-reverse' }}>
-                  <Undertekst>{t('label:fra-inntektsregisteret')}: {arbeidsgiver?.extra?.fraInntektsregisteret}</Undertekst>
+                  <Undertekst>{t('label:fra-inntektsregisteret')}</Undertekst>
                 </PileDiv>
-              </>
-            )}
+              )}
+            </>
           </PaddedFlexDiv>
           <PaddedFlexDiv className='slideInFromRight' style={{ animationDelay: '0.3s' }}>
             {editable && !_isEditing && !_isDeleting && (
@@ -501,7 +503,11 @@ const ArbeidsgiverBox = ({
                 <HighContrastKnapp
                   mini
                   kompakt
-                  onClick={() => onArbeidsgiverDelete(arbeidsgiver)}
+                  onClick={() => {
+                    if (_.isFunction(onArbeidsgiverDelete)) {
+                      onArbeidsgiverDelete(arbeidsgiver, selected)
+                    }
+                  }}
                 >
                   <Trashcan />
                   <HorizontalSeparatorDiv size='0.5' />

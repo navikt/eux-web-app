@@ -57,12 +57,12 @@
       "arbeidsgiver": {
         "navn": "Duh AS",
         "adresse": {
-          "gate": "æøå",
-          "postnummer": "æøå",
-          "by": "æøå",
+          "gate": "Storgata 1",
+          "postnummer": "0155",
+          "by": "Oslo",
           "land": "NO",
-          "bygning": "æøå",
-          "region": "æøå"
+          "bygning": "A",
+          "region": "Akershus"
         },
         "identifikator": [
           {

@@ -61,7 +61,7 @@ export interface ArbeidsgiverIdentifikator {
   id: string
 }
 
-export interface ArbeidsgiverWithAdress {
+export interface ArbeidsgiverWithAdresse {
   navn: string
   adresse?: Adresse
   identifikator: Array<ArbeidsgiverIdentifikator>
@@ -329,7 +329,7 @@ export interface LokaleSakId {
   land: string
 }
 export interface PeriodeMedForsikring {
-  arbeidsgiver: ArbeidsgiverWithAdress
+  arbeidsgiver: ArbeidsgiverWithAdresse
   periode: Periode
   typeTrygdeforhold: string
   // this is just to accommodate Arbeidsgiver conversion as PeriodeMedForsikring, just for internal use while showing ArbeidsgiverBox
@@ -340,9 +340,9 @@ export interface PeriodeMedForsikring {
 }
 
 export interface PeriodeUtenForsikring extends PeriodeMedForsikring {
-  kreverinformasjonomtypearberidsforhold: string
-  kreverinformasjonomantallarbeidstimer: string
-  kreverinformasjonominntekt: string
+  kreverinformasjonomtypearberidsforhold: JaNei
+  kreverinformasjonomantallarbeidstimer: JaNei
+  kreverinformasjonominntekt: JaNei
 }
 
 export interface PeriodeAnnenForsikring {

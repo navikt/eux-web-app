@@ -9,6 +9,7 @@ import TopContainer from 'components/TopContainer/TopContainer'
 import * as types from 'constants/actionTypes'
 import { AlertStatus } from 'declarations/components'
 import { State } from 'declarations/reducers'
+import { PeriodeMedForsikring } from 'declarations/sed'
 import {
   Arbeidsgiver,
   Arbeidsperioder,
@@ -57,6 +58,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { periodeMedForsikringToArbeidsgiver } from 'utils/arbeidsgiver'
 import { validateOpprettSak, ValidationOpprettSakProps } from './validationOpprettSak'
 
 export interface OpprettSakProps {
@@ -663,10 +665,10 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   gettingArbeidsperioder={gettingArbeidsperioder}
                   valgteArbeidsgivere={valgteArbeidsgivere}
                   arbeidsperioder={arbeidsperioder}
-                  onArbeidsgiverSelect={(a: Arbeidsgiver, checked: boolean) => dispatch(
+                  onArbeidsgiverSelect={(a: PeriodeMedForsikring, checked: boolean) => dispatch(
                     checked
-                      ? sakActions.addArbeidsgiver(a)
-                      : sakActions.removeArbeidsgiver(a)
+                      ? sakActions.addArbeidsgiver(periodeMedForsikringToArbeidsgiver(a))
+                      : sakActions.removeArbeidsgiver(periodeMedForsikringToArbeidsgiver(a))
                   )}
                 />
               )}

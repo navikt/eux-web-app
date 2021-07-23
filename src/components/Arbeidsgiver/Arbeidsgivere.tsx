@@ -1,27 +1,29 @@
 import ArbeidsgiverSøk from 'components/Arbeidsgiver/ArbeidsgiverSøk'
+import { PeriodeMedForsikring } from 'declarations/sed'
 import { Arbeidsgiver, Arbeidsperioder } from 'declarations/types.d'
 import _ from 'lodash'
 import { Normaltekst } from 'nav-frontend-typografi'
 import { Column, Row } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { arbeidsgiverToPeriodeMedForsikring } from 'utils/arbeidsgiver'
 import ArbeidsgiverBox from './ArbeidsgiverBox'
 
-export interface ArbeidsgiverProps {
+export interface ArbeidsgivereProps {
   arbeidsperioder: Arbeidsperioder | undefined
   editable?: boolean
   getArbeidsperioder?: () => void
   gettingArbeidsperioder?: boolean
   namespace: string
   personFnr?: string
-  onArbeidsgiverSelect: (a: Arbeidsgiver, checked: boolean) => void
-  onArbeidsgiverEdit?: (a: Arbeidsgiver) => void
-  onArbeidsgiverDelete?: (a: Arbeidsgiver) => void
+  onArbeidsgiverSelect: (a: PeriodeMedForsikring, checked: boolean) => void
+  onArbeidsgiverEdit?: (a: PeriodeMedForsikring) => void
+  onArbeidsgiverDelete?: (a: PeriodeMedForsikring) => void
   searchable?: boolean
   valgteArbeidsgivere: Array<Arbeidsgiver>
 }
 
-const Arbeidsgivere: React.FC<ArbeidsgiverProps> = ({
+const Arbeidsgivere: React.FC<ArbeidsgivereProps> = ({
   arbeidsperioder,
   editable = false,
   gettingArbeidsperioder = false,
@@ -33,7 +35,7 @@ const Arbeidsgivere: React.FC<ArbeidsgiverProps> = ({
   onArbeidsgiverDelete = () => {},
   searchable = false,
   valgteArbeidsgivere
-}: ArbeidsgiverProps): JSX.Element => {
+}: ArbeidsgivereProps): JSX.Element => {
   const { t } = useTranslation()
   return (
     <Row>
@@ -53,9 +55,10 @@ const Arbeidsgivere: React.FC<ArbeidsgiverProps> = ({
             const selected: boolean = valgteArbeidsgivere
               ? valgteArbeidsgivere.find((item: Arbeidsgiver) => item.arbeidsgiversOrgnr === arbeidsgiver.arbeidsgiversOrgnr) !== undefined
               : false
+            const arbeidsgiverAsPeriodeMedForsikring = arbeidsgiverToPeriodeMedForsikring(arbeidsgiver)
             return (
               <ArbeidsgiverBox
-                arbeidsgiver={arbeidsgiver}
+                arbeidsgiver={arbeidsgiverAsPeriodeMedForsikring}
                 editable={editable}
                 selected={selected}
                 key={arbeidsgiver.arbeidsgiversOrgnr}

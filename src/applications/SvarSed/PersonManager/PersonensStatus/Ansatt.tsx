@@ -145,7 +145,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
     let newAddedArbeidsperioder: Array<PeriodeMedForsikring> = _.cloneDeep(_addedArbeidsperioder)
     const needleId : string | undefined = getOrgnr(deletedArbeidsgiver)
     if (newAddedArbeidsperioder && needleId) {
-      newAddedArbeidsperioder = _.filter(newAddedArbeidsperioder, (p: PeriodeMedForsikring) => hasOrgnr(p, needleId))
+      newAddedArbeidsperioder = _.filter(newAddedArbeidsperioder, (p: PeriodeMedForsikring) => !hasOrgnr(p, needleId))
       setAddedArbeidsperioder(newAddedArbeidsperioder)
     }
   }

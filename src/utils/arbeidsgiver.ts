@@ -19,13 +19,30 @@ export const arbeidsgiverToPeriodeMedForsikring = (a: Arbeidsgiver): PeriodeMedF
         type: 'registrering',
         id: a.arbeidsgiversOrgnr
       }],
-      navn: a.arbeidsgiversOrgnr
+      navn: a.arbeidsgiversNavn ?? ''
     },
     extra: {
       fraArbeidsgiverregisteret: a.fraArbeidsgiverregisteret,
       fraInntektsregisteret: a.fraInntektsregisteret
     },
     typeTrygdeforhold: ''
+  }
+}
+
+export const sanitizePeriodeMedForsikring = (a: PeriodeMedForsikring): PeriodeMedForsikring => {
+  const _a = _.cloneDeep(a)
+  delete _a.extra
+  return _a
+}
+
+export const periodeMedForsikringToArbeidsgiver = (a: PeriodeMedForsikring): Arbeidsgiver => {
+  return {
+    fraInntektsregisteret: a.extra?.fraInntektsregisteret ?? '',
+    fraArbeidsgiverregisteret: a.extra?.fraArbeidsgiverregisteret ?? '',
+    arbeidsgiversOrgnr: getOrgnr(a) ?? '',
+    fraDato: a.periode.startdato,
+    tilDato: a.periode.sluttdato,
+    arbeidsgiversNavn: a.arbeidsgiver.navn
   }
 }
 

@@ -1,14 +1,14 @@
 import { PeriodeMedForsikring } from 'declarations/sed'
-import { Arbeidsgiver, Validation } from 'declarations/types'
+import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
-import { getNavn, getOrgnr, getSluttDato, getStartDato } from 'utils/arbeidsgiver'
+import { getOrgnr } from 'utils/arbeidsgiver'
 
 const datePattern = /^\d{4}-\d{2}-\d{2}$/
 
 export interface ValidationArbeidsgiverProps {
-  arbeidsgiver: Arbeidsgiver | PeriodeMedForsikring
+  arbeidsgiver: PeriodeMedForsikring
   namespace: string
   includeAddress: boolean
 }
@@ -24,40 +24,36 @@ export const validateArbeidsgiver = (
 ): boolean => {
   let hasErrors: boolean = false
 
-  const navn: string | undefined = getNavn(arbeidsgiver, includeAddress)
-  const orgnr: string | undefined = getOrgnr(arbeidsgiver, includeAddress)
-  const startDato: string | undefined = getStartDato(arbeidsgiver, includeAddress)
-  const sluttDato: string | undefined = getSluttDato(arbeidsgiver, includeAddress)
-
-  if (_.isEmpty(navn?.trim())) {
+  if (_.isEmpty(arbeidsgiver.arbeidsgiver?.navn?.trim())) {
     v[namespace + '-navn'] = {
       skjemaelementId: namespace + '-navn',
       feilmelding: t('message:validation-noNavn')
     } as FeiloppsummeringFeil
     hasErrors = true
   }
-  if (_.isEmpty(orgnr?.trim())) {
+  if (_.isEmpty(getOrgnr(arbeidsgiver))) {
     v[namespace + '-orgnr'] = {
       skjemaelementId: namespace + '-orgnr',
       feilmelding: t('message:validation-noOrgnr')
     } as FeiloppsummeringFeil
     hasErrors = true
   }
-  if (_.isEmpty(startDato?.trim())) {
+  if (_.isEmpty(arbeidsgiver.periode?.startdato)) {
     v[namespace + '-startdato'] = {
       skjemaelementId: namespace + '-startdato',
       feilmelding: t('message:validation-noDate')
     } as FeiloppsummeringFeil
     hasErrors = true
+  } else {
+    if (!(arbeidsgiver.periode?.startdato!.trim().match(datePattern))) {
+      v[namespace + '-startdato'] = {
+        skjemaelementId: namespace + '-startdato',
+        feilmelding: t('message:validation-invalidDate')
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
   }
-  if (!_.isEmpty(startDato) && !(startDato!.trim().match(datePattern))) {
-    v[namespace + '-startdato'] = {
-      skjemaelementId: namespace + '-startdato',
-      feilmelding: t('message:validation-invalidDate')
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-  if (!_.isEmpty(sluttDato) && !(sluttDato!.trim().match(datePattern))) {
+  if (!_.isEmpty(arbeidsgiver.periode?.sluttdato) && !(arbeidsgiver.periode?.sluttdato!.trim().match(datePattern))) {
     v[namespace + '-sluttdato'] = {
       skjemaelementId: namespace + '-sluttdato',
       feilmelding: t('message:validation-invalidDate')
@@ -65,10 +61,15 @@ export const validateArbeidsgiver = (
     hasErrors = true
   }
 
-  if (includeAddress) {
+  if (includeAddress && (
+    !_.isEmpty((arbeidsgiver as PeriodeMedForsikring).arbeidsgiver.adresse?.gate) ||
+    !_.isEmpty((arbeidsgiver as PeriodeMedForsikring).arbeidsgiver.adresse?.postnummer) ||
+    !_.isEmpty((arbeidsgiver as PeriodeMedForsikring).arbeidsgiver.adresse?.by) ||
+    !_.isEmpty((arbeidsgiver as PeriodeMedForsikring).arbeidsgiver.adresse?.land)
+  )) {
     if (_.isEmpty((arbeidsgiver as PeriodeMedForsikring).arbeidsgiver.adresse?.gate)) {
-      v[namespace + '-gateadresse'] = {
-        skjemaelementId: namespace + '-gateadresse',
+      v[namespace + '-gate'] = {
+        skjemaelementId: namespace + '-gate',
         feilmelding: t('message:validation-noAddressStreet')
       } as FeiloppsummeringFeil
       hasErrors = true
