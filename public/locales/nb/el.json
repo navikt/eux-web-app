@@ -48,14 +48,14 @@
   "option-grunn-bosted": "Barnets/barnas bosted",
   "option-grunn-personligSituasjon": "Elementer i personlig situasjon (artikkel 11 i forordning (EF) nr. 987/2009)",
 
-  "option-grunntilopphør-01": "Oppsakt av arbeidsgiver",
-  "option-grunntilopphør-02": "Arbeidstaker har sagt opp selv",
-  "option-grunntilopphør-03": "Kontrakt utløpt",
-  "option-grunntilopphør-04": "Avsluttet etter felles overenskomst",
-  "option-grunntilopphør-05": "Avskjediget av disiplinære grunner",
-  "option-grunntilopphør-06": "Overtallighet",
-  "option-grunntilopphør-07": "Ukjent",
-  "option-grunntilopphør-08": "Annet",
+  "option-grunntilopphør-oppsagt_av_arbeidsgiver": "Oppsakt av arbeidsgiver",
+  "option-grunntilopphør-arbeidstaker_har_sagt_opp_selv": "Arbeidstaker har sagt opp selv",
+  "option-grunntilopphør-kontrakten_utløpt": "Kontrakt utløpt",
+  "option-grunntilopphør-avsluttet_etter_felles_overenskomst": "Avsluttet etter felles overenskomst",
+  "option-grunntilopphør-avskjediget_av_disiplinære_grunner": "Avskjediget av disiplinære grunner",
+  "option-grunntilopphør-overtallighet": "Overtallighet",
+  "option-grunntilopphør-ukjent": "Ukjent",
+  "option-grunntilopphør-annet": "Annet",
 
   "option-inntektsfilter-01": "Dagpenger grunnlag",
 

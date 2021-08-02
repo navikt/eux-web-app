@@ -34,42 +34,42 @@ const GrunnTilOpphør: React.FC<PersonManagerFormProps> = ({
     validation
   } = useSelector<State, GrunnTilOpphørSelector>(mapState)
   const dispatch = useDispatch()
-  const target = 'xxxgrunntilopphor'
-  const xxx: any = _.get(replySed, target)
+  const target = 'grunntilopphor'
+  const grunntilopphor: any = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-grunntilopphør`
 
-  const [_årsak, _setÅrsak] = useState<string | undefined>(undefined)
+  const [_typeGrunnOpphoerAnsatt, _setTypeGrunnOpphoerAnsatt] = useState<string | undefined>(undefined)
 
   const årsakOptions: Options = [
-    { label: t('el:option-grunntilopphør-01'), value: 'grunntilopphør-01' },
-    { label: t('el:option-grunntilopphør-02'), value: 'grunntilopphør-02' },
-    { label: t('el:option-grunntilopphør-03'), value: 'grunntilopphør-03' },
-    { label: t('el:option-grunntilopphør-04'), value: 'grunntilopphør-04' },
-    { label: t('el:option-grunntilopphør-05'), value: 'grunntilopphør-05' },
-    { label: t('el:option-grunntilopphør-06'), value: 'grunntilopphør-06' },
-    { label: t('el:option-grunntilopphør-07'), value: 'grunntilopphør-07' },
-    { label: t('el:option-grunntilopphør-08'), value: 'grunntilopphør-08-annet' }
+    { label: t('el:option-grunntilopphør-oppsagt_av_arbeidsgiver'), value: '01' },
+    { label: t('el:option-grunntilopphør-arbeidstaker_har_sagt_opp_selv'), value: '02' },
+    { label: t('el:option-grunntilopphør-kontrakten_utløpt'), value: '03' },
+    { label: t('el:option-grunntilopphør-avsluttet_etter_felles_overenskomst'), value: '04' },
+    { label: t('el:option-grunntilopphør-avskjediget_av_disiplinære_grunner'), value: '05' },
+    { label: t('el:option-grunntilopphør-overtallighet'), value: '06' },
+    { label: t('el:option-grunntilopphør-ukjent'), value: '98' },
+    { label: t('el:option-grunntilopphør-annet'), value: '99' }
   ]
 
-  const setÅrsak = (årsak: string) => {
-    _setÅrsak(årsak)
-    dispatch(updateReplySed(`${target}.årsak`, årsak))
-    if (validation[namespace + '-årsak']) {
-      dispatch(resetValidation(namespace + '-årsak'))
+  const setTypeGrunnOpphoerAnsatt = (typeGrunnOpphoerAnsatt: string) => {
+    _setTypeGrunnOpphoerAnsatt(typeGrunnOpphoerAnsatt)
+    dispatch(updateReplySed(`${target}.typeGrunnOpphoerAnsatt`, typeGrunnOpphoerAnsatt))
+    if (validation[namespace + '-typeGrunnOpphoerAnsatt']) {
+      dispatch(resetValidation(namespace + '-typeGrunnOpphoerAnsatt'))
     }
   }
 
-  const setAnnet = (annet: string) => {
-    dispatch(updateReplySed(`${target}.annet`, annet))
-    if (validation[namespace + '-annet']) {
-      dispatch(resetValidation(namespace + '-annet'))
+  const setAnnenGrunnOpphoerAnsatt = (annenGrunnOpphoerAnsatt: string) => {
+    dispatch(updateReplySed(`${target}.annenGrunnOpphoerAnsatt`, annenGrunnOpphoerAnsatt))
+    if (validation[namespace + '-annenGrunnOpphoerAnsatt']) {
+      dispatch(resetValidation(namespace + '-annenGrunnOpphoerAnsatt'))
     }
   }
 
-  const setÅrsakSelvstendig = (årsakselvstendig: string) => {
-    dispatch(updateReplySed(`${target}.årsakselvstendig`, årsakselvstendig))
-    if (validation[namespace + '-årsakselvstendig']) {
-      dispatch(resetValidation(namespace + '-årsakselvstendig'))
+  const setGrunnOpphoerSelvstendig = (grunnOpphoerSelvstendig: string) => {
+    dispatch(updateReplySed(`${target}.grunnOpphoerSelvstendig`, grunnOpphoerSelvstendig))
+    if (validation[namespace + '-grunnOpphoerSelvstendig']) {
+      dispatch(resetValidation(namespace + '-grunnOpphoerSelvstendig'))
     }
   }
 
@@ -86,32 +86,32 @@ const GrunnTilOpphør: React.FC<PersonManagerFormProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column>
           <Select
-            data-test-id={namespace + '-årsak'}
-            feil={validation[namespace + '-årsak']?.feilmelding}
+            data-test-id={namespace + '-typeGrunnOpphoerAnsatt'}
+            feil={validation[namespace + '-typeGrunnOpphoerAnsatt']?.feilmelding}
             highContrast={highContrast}
-            id={namespace + '-årsak'}
+            id={namespace + '-typeGrunnOpphoerAnsatt'}
             label={t('label:årsak-til-avslutning-av-arbeidsforhold')}
             menuPortalTarget={document.body}
-            onChange={(o: OptionTypeBase) => setÅrsak(o.value)}
+            onChange={(o: OptionTypeBase) => setTypeGrunnOpphoerAnsatt(o.value)}
             options={årsakOptions}
             placeholder={t('el:placeholder-select-default')}
-            selectedValue={_.find(årsakOptions, b => b.value === xxx?.årsak)}
-            defaultValue={_.find(årsakOptions, b => b.value === xxx?.årsak)}
+            selectedValue={_.find(årsakOptions, b => b.value === grunntilopphor?.typeGrunnOpphoerAnsatt)}
+            defaultValue={_.find(årsakOptions, b => b.value === grunntilopphor?.typeGrunnOpphoerAnsatt)}
           />
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />
-      {_årsak === 'grunntilopphør-08-annet' && (
+      {_typeGrunnOpphoerAnsatt === '99' && (
         <>
           <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
             <Column>
               <Input
-                feil={validation[namespace + '-annet']?.feilmelding}
+                feil={validation[namespace + '-annenGrunnOpphoerAnsatt']?.feilmelding}
                 namespace={namespace}
-                id='annet'
+                id='annenGrunnOpphoerAnsatt'
                 label={t('label:annet-opphør') + ' *'}
-                onChanged={setAnnet}
-                value={xxx?.annet ?? ''}
+                onChanged={setAnnenGrunnOpphoerAnsatt}
+                value={grunntilopphor?.annenGrunnOpphoerAnsatt ?? ''}
               />
             </Column>
           </AlignStartRow>
@@ -121,10 +121,10 @@ const GrunnTilOpphør: React.FC<PersonManagerFormProps> = ({
               <Input
                 feil={validation[namespace + '-årsakselvstendig']?.feilmelding}
                 namespace={namespace}
-                id='årsakselvstendig'
+                id='grunnOpphoerSelvstendig'
                 label={t('label:årsak-til-avslutning-av-selvstendig-næringsvirksomhet') + ' *'}
-                onChanged={setÅrsakSelvstendig}
-                value={xxx?.årsakselvstendig ?? ''}
+                onChanged={setGrunnOpphoerSelvstendig}
+                value={grunntilopphor?.grunnOpphoerSelvstendig ?? ''}
               />
             </Column>
           </AlignStartRow>

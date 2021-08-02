@@ -173,8 +173,8 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
     _error = validateReferanseperiode(v, t, { anmodningsperiode: (replySed as USed)?.anmodningsperiode, namespace: `personmanager-${personID}-referanseperiode`, personName })
     hasErrors = hasErrors || _error
 
-    const sisteansettelsesforhold: any = _.get(replySed, `${personID}.xxxsisteansettelsesforhold`)
-    _error = validateSisteansettelsesforhold(v, t, { sisteansettelsesforhold, namespace: `personmanager-${personID}-sisteansettelsesforhold`, personName })
+    const sisteansettelsesforhold: any = _.get(replySed, `${personID}.sisteansettelsesforhold`)
+    _error = validateSisteansettelsesforhold(v, t, sisteansettelsesforhold, `personmanager-${personID}-sisteansettelsesforhold`)
     hasErrors = hasErrors || _error
   }
 

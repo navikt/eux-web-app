@@ -1,20 +1,34 @@
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
+import Add from 'assets/icons/Add'
+import classNames from 'classnames'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import { validateUtbetaling, ValidationUtbetalingProps } from './validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
-import { TextAreaDiv } from 'components/StyledComponents'
+import { HorizontalLineSeparator, TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { XXXSisteAnsettelsesForhold } from 'declarations/sed'
+import { SisteAnsettelsesForhold, Utbetaling } from 'declarations/sed'
+import useAddRemove from 'hooks/useAddRemove'
+import useValidation from 'hooks/useValidation'
 import CountryData, { Currency } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
-import { AlignStartRow, Column, HighContrastRadioPanelGroup, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import {
+  AlignStartRow,
+  Column, HighContrastFlatknapp,
+  HighContrastRadioPanelGroup, HorizontalSeparatorDiv,
+  PaddedDiv,
+  Row,
+  VerticalSeparatorDiv
+} from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import { getIdx } from 'utils/namespace'
 
 interface SisteAnsettelsesForholdSelector extends PersonManagerFormSelector {
   highContrast: boolean
@@ -26,7 +40,7 @@ const mapState = (state: State): SisteAnsettelsesForholdSelector => ({
   validation: state.validation.status
 })
 
-const SisteAnsettelsesForhold: React.FC<PersonManagerFormProps> = ({
+const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID
 }:PersonManagerFormProps): JSX.Element => {
@@ -37,60 +51,273 @@ const SisteAnsettelsesForhold: React.FC<PersonManagerFormProps> = ({
     validation
   } = useSelector<State, SisteAnsettelsesForholdSelector>(mapState)
   const dispatch = useDispatch()
-  const target = 'xxxsisteAnsettelsesForhold'
-  const sisteAnsettelseInfo: XXXSisteAnsettelsesForhold = _.get(replySed, target)
+  const target = 'sisteAnsettelsesForhold'
+  const sisteAnsettelsesForhold: SisteAnsettelsesForhold = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-sisteansettelsesforhold`
 
-  const [_typeBeløp, setTypeBeløp] = useState<string | undefined>(undefined)
+  const [_newUtbetalingType, _setNewUtbetalingType] = useState<string | undefined>(undefined)
+  const [_newLoennTilDato, _setNewLoennTilDato] = useState<string | undefined>(undefined)
+  const [_newFeriedagerTilGode, _setNewFeriedagerTilGode] = useState<string | undefined>(undefined)
+  const [_newValuta, _setNewValuta] = useState<string | undefined>(undefined)
+  const [_newBeloep, _setNewBeloep] = useState<string | undefined>(undefined)
+
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Utbetaling>((a: Utbetaling): string => a.utbetalingType + '-' + a.loennTilDato)
+  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
+  const [_validation, _resetValidation, performValidation] = useValidation<ValidationUtbetalingProps>({}, validateUtbetaling)
+
   const _currencyData = CountryData.getCurrencyInstance('nb')
 
-  const setBeløp = (newBeløp: string) => {
-    dispatch(updateReplySed(`${target}.beloep`, newBeløp))
-    if (validation[namespace + '-beloep']) {
-      dispatch(resetValidation(namespace + '-beloep'))
+  const setBeløp = (newBeløp: string, index: number) => {
+    if (index < 0) {
+      _setNewBeloep(newBeløp.trim())
+      _resetValidation(namespace + '-beloep')
+    } else {
+      dispatch(updateReplySed(`${target}[${index}].beloep`, newBeløp.trim()))
+      if (validation[namespace + getIdx(index) + '-beloep']) {
+        dispatch(resetValidation(namespace + getIdx(index) + '-beloep'))
+      }
     }
   }
 
-  const setValuta = (newValuta: Currency) => {
-    dispatch(updateReplySed(`${target}.valuta`, newValuta?.value))
-    if (validation[namespace + '-valuta']) {
-      dispatch(resetValidation(namespace + '-valuta'))
+  const setValuta = (newValuta: Currency, index: number) => {
+    if (index < 0) {
+      _setNewValuta(newValuta.value)
+      _resetValidation(namespace + '-valuta')
+    } else {
+      dispatch(updateReplySed(`${target}[${index}].valuta`, newValuta?.value))
+      if (validation[namespace + getIdx(index) + '-valuta']) {
+        dispatch(resetValidation(namespace + getIdx(index) + '-valuta'))
+      }
     }
   }
 
-  const setMottakerDato = (dato: string) => {
-    dispatch(updateReplySed(`${target}.mottattdato`, dato.trim()))
-    if (validation[namespace + '-mottattdato']) {
-      dispatch(resetValidation(namespace + '-mottattdato'))
+  const setLoennTilDato = (newLoennTilDato: string, index: number) => {
+    if (index < 0) {
+      _setNewLoennTilDato(newLoennTilDato.trim())
+      _resetValidation(namespace + '-loennTilDato')
+    } else {
+      dispatch(updateReplySed(`${target}[${index}].loennTilDato`, newLoennTilDato.trim()))
+      if (validation[namespace + getIdx(index) + '-loennTilDato']) {
+        dispatch(resetValidation(namespace + getIdx(index) + '-loennTilDato'))
+      }
     }
   }
 
-  const setAntallDager = (antallDager: string) => {
-    dispatch(updateReplySed(`${target}.antallDager`, antallDager.trim()))
-    if (validation[namespace + '-antalldager']) {
-      dispatch(resetValidation(namespace + '-antalldager'))
+  const setUtbetalingType = (newUtbetalingType: string, index: number) => {
+    if (index < 0) {
+      _setNewUtbetalingType(newUtbetalingType.trim())
+      _resetValidation(namespace + '-utbetalingType')
+    } else {
+      dispatch(updateReplySed(`${target}[${index}].utbetalingType`, newUtbetalingType.trim()))
+      if (validation[namespace + getIdx(index) + '-utbetalingType']) {
+        dispatch(resetValidation(namespace + getIdx(index) + '-utbetalingType'))
+      }
     }
   }
 
-  const setAvkall = (avkall: string) => {
-    dispatch(updateReplySed(`${target}.avkall`, avkall.trim()))
-    if (validation[namespace + '-avkall']) {
-      dispatch(resetValidation(namespace + '-avkall'))
+  const setFeriedagerTilGode = (newFeriedagerTilGode: string, index: number) => {
+    if (index < 0) {
+      _setNewFeriedagerTilGode(newFeriedagerTilGode.trim())
+      _resetValidation(namespace + '-feriedagerTilGode')
+    } else {
+      dispatch(updateReplySed(`${target}[${index}].feriedagerTilGode`, newFeriedagerTilGode.trim()))
+      if (validation[namespace + getIdx(index) + '-feriedagerTilGode']) {
+        dispatch(resetValidation(namespace + getIdx(index) + '-feriedagerTilGode'))
+      }
     }
   }
 
-  const setGrunn = (grunn: string) => {
-    dispatch(updateReplySed(`${target}.grunn`, grunn.trim()))
-    if (validation[namespace + '-grunn']) {
-      dispatch(resetValidation(namespace + '-grunn'))
+  const setOpphoerRettighet = (opphoerRettighet: string) => {
+    dispatch(updateReplySed(`${target}.opphoerRettighet`, opphoerRettighet.trim()))
+    if (validation[namespace + '-opphoerRettighet']) {
+      dispatch(resetValidation(namespace + '-opphoerRettighet'))
     }
   }
 
-  const setAnnenYtelser = (annenYtelser: string) => {
-    dispatch(updateReplySed(`${target}.annenYtelser`, annenYtelser.trim()))
-    if (validation[namespace + '-annenytelser']) {
-      dispatch(resetValidation(namespace + '-annenytelser'))
+  const setOpphoerRettighetGrunn = (opphoerRettighetGrunn: string) => {
+    dispatch(updateReplySed(`${target}.opphoerRettighetGrunn`, opphoerRettighetGrunn.trim()))
+    if (validation[namespace + '-opphoerRettighetGrunn']) {
+      dispatch(resetValidation(namespace + '-opphoerRettighetGrunn'))
     }
+  }
+
+  const setOpphoerYtelse = (opphoerYtelse: string) => {
+    dispatch(updateReplySed(`${target}.opphoerYtelse`, opphoerYtelse.trim()))
+    if (validation[namespace + '-opphoerYtelse']) {
+      dispatch(resetValidation(namespace + '-opphoerYtelse'))
+    }
+  }
+
+  const resetForm = () => {
+    _setNewUtbetalingType('')
+    _setNewLoennTilDato('')
+    _setNewFeriedagerTilGode('')
+    _setNewValuta('')
+    _setNewBeloep('')
+    _resetValidation()
+  }
+
+  const onCancel = () => {
+    _setSeeNewForm(false)
+    resetForm()
+  }
+
+  const onRemove = (index: number) => {
+    const newUtbetalinger: Array<Utbetaling> = _.cloneDeep(sisteAnsettelsesForhold.utbetalinger)
+    const deletedUtbetalinger: Array<Utbetaling> = newUtbetalinger.splice(index, 1)
+    if (deletedUtbetalinger && deletedUtbetalinger.length > 0) {
+      removeFromDeletion(deletedUtbetalinger[0])
+    }
+    dispatch(updateReplySed(`${target}.utbetalinger`, newUtbetalinger))
+  }
+
+  const onAdd = () => {
+    const newUtbetaling: Utbetaling = {
+      utbetalingType: _newUtbetalingType as string,
+      loennTilDato: _newLoennTilDato as string,
+      feriedagerTilGode: _newFeriedagerTilGode as string,
+      valuta: _newValuta as string,
+      beloep: _newBeloep as string
+    }
+
+    const valid: boolean = performValidation({
+      utbetaling: newUtbetaling,
+      namespace: namespace
+    })
+    if (valid) {
+      let newUtbetalinger: Array<Utbetaling> = _.cloneDeep(sisteAnsettelsesForhold.utbetalinger)
+      if (_.isNil(newUtbetalinger)) {
+        newUtbetalinger = []
+      }
+      newUtbetalinger = newUtbetalinger.concat(newUtbetaling)
+      dispatch(updateReplySed(`${target}.utbetalinger`, newUtbetalinger))
+      resetForm()
+    }
+  }
+
+  const renderRow = (utbetaling: Utbetaling | null, index: number) => {
+    const candidateForDeletion = index < 0 ? false : isInDeletion(utbetaling)
+    const idx = getIdx(index)
+    const getErrorFor = (index: number, el: string): string | undefined => (
+      index < 0
+        ? _validation[namespace + '-' + el]?.feilmelding
+        : validation[namespace + idx + '-' + el]?.feilmelding
+    )
+    return (
+      <>
+        <AlignStartRow
+          className={classNames('slideInFromLeft')}
+          style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
+        >
+          <Column>
+            <label className='skjemaelement__label'>
+              {t('label:utbetaling-type')}
+            </label>
+            <HighContrastRadioPanelGroup
+              checked={index < 0 ? _newUtbetalingType : utbetaling?.utbetalingType ?? ''}
+              data-multiple-line
+              data-no-border
+              data-test-id={namespace + '-utbetalingType'}
+              feil={getErrorFor(index, 'utbetalingType')}
+              id={namespace + '-utbetalingType'}
+              name={namespace + '-utbetalingType'}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUtbetalingType(e.target.value, index)}
+              radios={[
+                {
+                  label: t('el:option-typebeløp-1'),
+                  value: 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet'
+                },
+                {
+                  label: t('el:option-typebeløp-2'),
+                  value: 'vederlag_for_ferie_som_ikke_er_tatt_ut_(årlig_ferie)'
+                },
+                {
+                  label: t('el:option-typebeløp-3'),
+                  value: 'annet_vederlag_eller_tilsvarende_utbetalinger'
+                }
+              ]}
+            />
+          </Column>
+        </AlignStartRow>
+        <VerticalSeparatorDiv />
+        <Undertittel>
+          {t('label:utbetaling')}
+        </Undertittel>
+        <VerticalSeparatorDiv />
+        <AlignStartRow>
+          <Column>
+            <Input
+              type='number'
+              feil={getErrorFor(index, 'beløp')}
+              namespace={namespace}
+              id='beloep'
+              key={'beloep-' + (index < 0 ? _newBeloep : utbetaling?.beloep ?? '')}
+              label={t('label:beløp') + ' *'}
+              onChanged={(newBeløp: string) => setBeløp(newBeløp, index)}
+              value={index < 0 ? _newBeloep : utbetaling?.beloep ?? ''}
+            />
+          </Column>
+          <Column>
+            <CountrySelect
+              key={'valuta-' + _currencyData.findByValue(index < 0 ? _newValuta : utbetaling?.valuta)}
+              closeMenuOnSelect
+              ariaLabel={t('label:valuta')}
+              data-test-id={namespace + '-valuta'}
+              error={getErrorFor(index, 'valuta')}
+              highContrast={highContrast}
+              id={namespace + '-valuta'}
+              label={t('label:valuta') + ' *'}
+              locale='nb'
+              menuPortalTarget={document.body}
+              onOptionSelected={(c: Currency) => setValuta(c, index)}
+              type='currency'
+              values={_currencyData.findByValue(index < 0 ? _newValuta : utbetaling?.valuta)}
+            />
+          </Column>
+        </AlignStartRow>
+        <VerticalSeparatorDiv />
+        {(index < 0 ? _newUtbetalingType : utbetaling?.utbetalingType) !== 'annet_vederlag_eller_tilsvarende_utbetalinger' && (
+          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+            <Column>
+              {(index < 0 ? _newUtbetalingType : utbetaling?.utbetalingType) === 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet' && (
+                <DateInput
+                  feil={getErrorFor(index, 'loennTilDato')}
+                  namespace={namespace}
+                  key={utbetaling?.loennTilDato}
+                  id='loennTilDato'
+                  label={t('label:loenn-til-dato')}
+                  onChanged={(date: string) => setLoennTilDato(date, index)}
+                  value={utbetaling?.loennTilDato}
+                />
+              )}
+              {(index < 0 ? _newUtbetalingType : utbetaling?.utbetalingType) === 'vederlag_for_ferie_som_ikke_er_tatt_ut_(årlig_ferie)' && (
+                <Input
+                  type='number'
+                  feil={getErrorFor(index, 'feriedagerTilGode')}
+                  namespace={namespace}
+                  id='feriedagerTilGode'
+                  label={t('label:feriedager-til-gode') + ' *'}
+                  onChanged={(value) => setFeriedagerTilGode(value, index)}
+                  value={utbetaling?.feriedagerTilGode ?? ''}
+                />
+              )}
+            </Column>
+            <Column>
+              <AddRemovePanel
+                candidateForDeletion={candidateForDeletion}
+                existingItem={(index >= 0)}
+                marginTop
+                onBeginRemove={() => addToDeletion(utbetaling)}
+                onConfirmRemove={() => onRemove(index)}
+                onCancelRemove={() => removeFromDeletion(utbetaling)}
+                onAddNew={onAdd}
+                onCancelNew={onCancel}
+              />
+            </Column>
+          </AlignStartRow>
+        )}
+      </>
+    )
   }
 
   return (
@@ -103,149 +330,77 @@ const SisteAnsettelsesForhold: React.FC<PersonManagerFormProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />
-      <AlignStartRow className='slideInFromLeft'>
+      {sisteAnsettelsesForhold?.utbetalinger?.map(renderRow)}
+      <HorizontalLineSeparator />
+      <VerticalSeparatorDiv />
+      {_seeNewForm
+        ? renderRow(null, -1)
+        : (
+          <Row>
+            <Column>
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                onClick={() => _setSeeNewForm(true)}
+              >
+                <Add />
+                <HorizontalSeparatorDiv size='0.5' />
+                {t('el:button-add-new-x', { x: t('label:utbetaling').toLowerCase() })}
+              </HighContrastFlatknapp>
+            </Column>
+          </Row>
+          )}
+      <VerticalSeparatorDiv size='2' />
+      <Undertittel>
+        {t('label:opphoer')}
+      </Undertittel>
+      <VerticalSeparatorDiv />
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column>
-          <label className='skjemaelement__label'>
-            {t('label:type-beløp')}
-          </label>
-          <HighContrastRadioPanelGroup
-            checked={_typeBeløp}
-            data-multiple-line
-            data-no-border
-            data-test-id={namespace + '-typebeloep'}
-            feil={validation[namespace + '-typebeloep']?.feilmelding}
-            id={namespace + '-typebeloep'}
-            name={namespace + '-typebeloep'}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTypeBeløp(e.target.value)}
-            radios={[
-              { label: t('el:option-typebeløp-1'), value: 'typebeløp-1' },
-              { label: t('el:option-typebeløp-2'), value: 'typebeløp-2' },
-              { label: t('el:option-typebeløp-3'), value: 'typebeløp-3' }
-            ]}
-          />
+          <TextAreaDiv>
+            <TextArea
+              feil={validation[namespace + '-opphoerRettighet']?.feilmelding}
+              namespace={namespace}
+              id='avkall'
+              label={t('label:opphoer-rettighet')}
+              onChanged={setOpphoerRettighet}
+              value={sisteAnsettelsesForhold?.opphoerRettighet}
+            />
+          </TextAreaDiv>
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv size='2' />
-
-      {!_.isNil(_typeBeløp) && (
-        <>
-          <Undertittel>
-            {t('label:utbetaling')}
-          </Undertittel>
-          <VerticalSeparatorDiv />
-          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-            <Column>
-              <Input
-                type='number'
-                feil={validation[namespace + '-beloep']?.feilmelding}
-                namespace={namespace}
-                id='beloep'
-                label={t('label:beløp') + ' *'}
-                onChanged={setBeløp}
-                value={sisteAnsettelseInfo?.beloep ?? ''}
-              />
-            </Column>
-            <Column>
-              <CountrySelect
-                key={sisteAnsettelseInfo?.valuta ? _currencyData.findByValue(sisteAnsettelseInfo?.valuta) : ''}
-                closeMenuOnSelect
-                ariaLabel={t('label:valuta')}
-                data-test-id={namespace + '-valuta'}
-                error={validation[namespace + '-valuta']?.feilmelding}
-                highContrast={highContrast}
-                id={namespace + '-valuta'}
-                label={t('label:valuta') + ' *'}
-                locale='nb'
-                menuPortalTarget={document.body}
-                onOptionSelected={setValuta}
-                type='currency'
-                values={sisteAnsettelseInfo?.valuta ? _currencyData.findByValue(sisteAnsettelseInfo?.valuta) : ''}
-              />
-            </Column>
-          </AlignStartRow>
-          <VerticalSeparatorDiv />
-          {_typeBeløp !== 'typebeløp-3' && (
-            <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-              <Column>
-                {_typeBeløp === 'typebeløp-1' && (
-                  <DateInput
-                    feil={validation[namespace + '-mottattdato']?.feilmelding}
-                    namespace={namespace}
-                    key={sisteAnsettelseInfo?.mottattDato}
-                    id='mottattdato'
-                    label={t('label:mottatt-dato')}
-                    onChanged={setMottakerDato}
-                    value={sisteAnsettelseInfo?.mottattDato}
-                  />
-                )}
-                {_typeBeløp === 'typebeløp-2' && (
-                  <Input
-                    type='number'
-                    feil={validation[namespace + '-antalldager']?.feilmelding}
-                    namespace={namespace}
-                    id='antalldager'
-                    label={t('label:antall-dager') + ' *'}
-                    onChanged={setAntallDager}
-                    value={sisteAnsettelseInfo?.antallDager ?? ''}
-                  />
-                )}
-              </Column>
-              <Column />
-            </AlignStartRow>
-          )}
-          <VerticalSeparatorDiv size='2' />
-          <Undertittel>
-            {t('label:avkall-på-rettigheter')}
-          </Undertittel>
-          <VerticalSeparatorDiv />
-          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-            <Column>
-              <TextAreaDiv>
-                <TextArea
-                  feil={validation[namespace + '-avkall']?.feilmelding}
-                  namespace={namespace}
-                  id='avkall'
-                  label={t('label:avkall-på-rettigheter')}
-                  onChanged={setAvkall}
-                  value={sisteAnsettelseInfo?.avkall}
-                />
-              </TextAreaDiv>
-            </Column>
-          </AlignStartRow>
-          <VerticalSeparatorDiv />
-          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-            <Column>
-              <TextAreaDiv>
-                <TextArea
-                  feil={validation[namespace + '-grunn']?.feilmelding}
-                  namespace={namespace}
-                  id='grunn'
-                  label={t('label:grunn')}
-                  onChanged={setGrunn}
-                  value={sisteAnsettelseInfo?.grunn}
-                />
-              </TextAreaDiv>
-            </Column>
-          </AlignStartRow>
-          <VerticalSeparatorDiv />
-          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-            <Column>
-              <TextAreaDiv>
-                <TextArea
-                  feil={validation[namespace + '-annenytelser']?.feilmelding}
-                  namespace={namespace}
-                  id='annenytelser'
-                  label={t('label:annen-ytelser')}
-                  onChanged={setAnnenYtelser}
-                  value={sisteAnsettelseInfo?.annenYtelser}
-                />
-              </TextAreaDiv>
-            </Column>
-          </AlignStartRow>
-        </>
-      )}
+      <VerticalSeparatorDiv />
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+        <Column>
+          <TextAreaDiv>
+            <TextArea
+              feil={validation[namespace + '-opphoerRettighetGrunn']?.feilmelding}
+              namespace={namespace}
+              id='opphoerRettighetGrunn'
+              label={t('label:opphoer-rettighet-grunn')}
+              onChanged={setOpphoerRettighetGrunn}
+              value={sisteAnsettelsesForhold?.opphoerRettighetGrunn}
+            />
+          </TextAreaDiv>
+        </Column>
+      </AlignStartRow>
+      <VerticalSeparatorDiv />
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+        <Column>
+          <TextAreaDiv>
+            <TextArea
+              feil={validation[namespace + '-opphoerYtelse']?.feilmelding}
+              namespace={namespace}
+              id='opphoerYtelse'
+              label={t('label:opphoer-ytelser')}
+              onChanged={setOpphoerYtelse}
+              value={sisteAnsettelsesForhold?.opphoerYtelse}
+            />
+          </TextAreaDiv>
+        </Column>
+      </AlignStartRow>
     </PaddedDiv>
   )
 }
 
-export default SisteAnsettelsesForhold
+export default SisteAnsettelsesForholdFC

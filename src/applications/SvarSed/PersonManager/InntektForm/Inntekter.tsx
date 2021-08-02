@@ -31,7 +31,7 @@ const Inntekter: React.FC<any> = ({
   onInntekterChanged,
   parentNamespace,
   validation
- }:any): JSX.Element => {
+}:any): JSX.Element => {
   const { t } = useTranslation()
 
   const dispatch = useDispatch()
@@ -52,7 +52,7 @@ const Inntekter: React.FC<any> = ({
       _setNewType(type.trim() as TelefonType)
       resetValidation(namespace + '-type')
     } else {
-      let newInntekter: Array<Inntekt> = _.cloneDeep(inntekter)
+      const newInntekter: Array<Inntekt> = _.cloneDeep(inntekter)
       newInntekter[index].type = type.trim()
       onInntekterChanged(newInntekter)
       if (validation[namespace + getIdx(index) + '-type']) {
@@ -66,7 +66,7 @@ const Inntekter: React.FC<any> = ({
       _setNewTypeAnnen(newTypeAnnen.trim())
       resetValidation(namespace + '-typeAnnen')
     } else {
-      let newInntekter: Array<Inntekt> = _.cloneDeep(inntekter)
+      const newInntekter: Array<Inntekt> = _.cloneDeep(inntekter)
       newInntekter[index].typeAnnen = newTypeAnnen.trim()
       onInntekterChanged(newInntekter)
       if (validation[namespace + getIdx(index) + '-typeAnnen']) {
@@ -80,7 +80,7 @@ const Inntekter: React.FC<any> = ({
       _setNewBeløp(newBeløp.trim())
       resetValidation(namespace + '-beloep')
     } else {
-      let newInntekter: Array<Inntekt> = _.cloneDeep(inntekter)
+      const newInntekter: Array<Inntekt> = _.cloneDeep(inntekter)
       newInntekter[index].beloep = newBeløp.trim()
       onInntekterChanged(newInntekter)
       if (validation[namespace + '-beloep']) {
@@ -94,8 +94,8 @@ const Inntekter: React.FC<any> = ({
       _setNewValuta(newValuta.value)
       resetValidation(namespace + '-valuta')
     } else {
-      let newInntekter: Array<Inntekt> = _.cloneDeep(inntekter)
-      newInntekter[index].valuta =  newValuta?.value
+      const newInntekter: Array<Inntekt> = _.cloneDeep(inntekter)
+      newInntekter[index].valuta = newValuta?.value
       onInntekterChanged(newInntekter)
       if (validation[namespace + '-valuta']) {
         dispatch(resetValidation(namespace + '-valuta'))
@@ -104,11 +104,11 @@ const Inntekter: React.FC<any> = ({
   }
 
   const resetForm = () => {
-     _setNewType(undefined)
-     _setNewTypeAnnen(undefined)
-     _setNewBeløp(undefined)
-     _setNewValuta('NOK')
-     resetValidation()
+    _setNewType(undefined)
+    _setNewTypeAnnen(undefined)
+    _setNewBeløp(undefined)
+    _setNewValuta('NOK')
+    resetValidation()
   }
 
   const onCancel = () => {
@@ -174,7 +174,7 @@ const Inntekter: React.FC<any> = ({
               namespace={namespace + idx}
               onChanged={(type: string) => onTypeChanged(type, index)}
               required
-              value={index < 0 ? _newType :  inntekt?.type ?? ''}
+              value={index < 0 ? _newType : inntekt?.type ?? ''}
             />
           </Column>
           <Column>
@@ -191,7 +191,7 @@ const Inntekter: React.FC<any> = ({
             />
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <AlignStartRow>
           <Column>
             <Input
@@ -225,7 +225,7 @@ const Inntekter: React.FC<any> = ({
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}
-              marginTop={true}
+              marginTop
               onBeginRemove={() => addToDeletion(inntekt)}
               onConfirmRemove={() => onRemoved(index)}
               onCancelRemove={() => removeFromDeletion(inntekt)}
@@ -266,7 +266,7 @@ const Inntekter: React.FC<any> = ({
               </HighContrastFlatknapp>
             </Column>
           </Row>
-        )}
+          )}
       <VerticalSeparatorDiv />
     </PaddedDiv>
   )

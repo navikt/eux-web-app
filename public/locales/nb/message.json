@@ -109,6 +109,7 @@
   "validation-noLand": "Du må velge land",
   "validation-noLandForPerson": "Du må velge land til {{person}}",
   "validation-noLastName": "Du må taste inn etternavn",
+  "validation-noLoennTilDato": "Du må taste inn lønn til dato",
   "validation-noMottakersNavnForPerson": "Ingen mottakers navn til {{person}}",
   "validation-noNationality": "Du har ikke valg statsborgerskap",
   "validation-noNavn": "Ingen navn",

@@ -265,20 +265,25 @@ export interface ProsedyreVedUenighet {
   ytterligereGrunner?: string
 }
 
-export interface XXXSisteAnsettelsesForhold {
-  beloep: string
+export interface Utbetaling {
+  utbetalingType: string// typebeløp
+  loennTilDato: string // mottattdato
+  feriedagerTilGode: string // antallDager
   valuta: string
-  mottattDato: string
-  antallDager: string
-  avkall: string
-  grunn: string
-  annenYtelser: string
+  beloep: string
 }
 
-export interface XXXGrunnTilOpphør {
-  årsak: string
-  annet?: string
-  årsakselvstendig?: sting
+export interface SisteAnsettelsesForhold {
+  opphoerRettighet: string // Avkall
+  opphoerRettighetGrunn: string // grunn
+  opphoerYtelse: string // annenYtelser
+  utbetalinger: Array<Utbetaling>
+}
+
+export interface GrunnTilOpphør {
+  typeGrunnOpphoerAnsatt: string
+  annenGrunnOpphoerAnsatt: string
+  grunnOpphoerSelvstendig: string
 }
 
 export interface Barn {
@@ -427,7 +432,7 @@ export interface U002Sed extends USed {
   perioderAnnenForsikring?: Array<PeriodeAnnenForsikring>
   perioderDagpenger:Array<PeriodeDagpenger>
 
-  xxxgrunntilopphor?: XXXGrunnTilOpphør
+  grunntilopphor?: GrunnTilOpphør
   xxxsisteAnsettelsesForhold?: XXXSisteAnsettelsesForhold
 }
 

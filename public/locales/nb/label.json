@@ -84,6 +84,7 @@
   "family-utland": "Person uten fødsels- eller d-nummer",
   "family-utland-add-form": "Du kan også legge til familierelasjoner fra utlandet som ikke er oppført i TPS",
   "fetch-inntekt": "Hent inntekt",
+  "feriedager-til-gode": "Feriedager til gode",
   "flyttedato-til-avsenderlandet": "Flyttedato til avsenderlandet",
   "flyttedato-til-mottakerslandet": "Flyttedato til mottakerslandet",
   "fnr" : "Fødselsnummer",
@@ -158,6 +159,7 @@
   "legg-til-fjern-personer": "Legg til/fjern person(er)",
   "legg-til-vedlegg-til-sed" : "Legge til vedlegg til SED",
   "lenke-til-gosys" : "Lenke til Gosys",
+  "loenn-til-dato": "Lønn til dato",
 
   "månedlig": "Månedlig",
   "mann" : "Mann",
@@ -180,6 +182,9 @@
   "opplysninger": "Hvilke opplysninger...?",
   "oppgi-kontoopplysninger" : "Oppgi kontoopplysninger",
   "oppholdets-varighet": "Oppholdets varighet",
+  "opphoer-rettighet": "Opphør rettighet",
+  "opphoer-rettighetGrunn": "Opphør rettighet grunn",
+  "opphoer-ytelse": "Opphør ytelse",
   "opprette-ny-sed" : "Opprette ny SED",
   "opprett-sak": "Opprett Sak",
   "opprett-sak-i-rina" : "Opprett sak i RINA",
@@ -261,6 +266,7 @@
   "ukjent-rolle": "(ukjent rolle)",
   "utenlandsk-id": "Utenlandsk ID",
   "utbetaling": "Utbetaling",
+  "utbetaling-type": "Utbetaling type",
   "utenlandsk-pin" : "Utenlandsk PIN",
 
   "valgt-familie": "Valgte familierelasjoner",

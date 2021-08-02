@@ -99,8 +99,8 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
   }
 
   const setSearchSluttDato = (sluttdato: string) => {
-  _setSearchSluttDato(sluttdato.trim())
-  _resetValidation(namespace + '-sluttdato')
+    _setSearchSluttDato(sluttdato.trim())
+    _resetValidation(namespace + '-sluttdato')
   }
 
   const setFilter = (filter: string) => {
@@ -259,7 +259,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
       <>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{animationDelay: index < 0 ? '0s' : (index * 0.3) + 's'}}
+          style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
         >
           <Period
             key={'' + startdato + sluttdato}
@@ -271,26 +271,26 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
             valueStartDato={startdato}
             valueSluttDato={sluttdato}
           />
-          <Column/>
+          <Column />
         </AlignStartRow>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
-          style={{animationDelay: index < 0 ? '0s' : (index * 0.3) + 's'}}
+          style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
         >
           <Column>
             <Inntekter
-            key={JSON.stringify(index < 0 ? _newInntekter : loennsopplysning?.inntekter ?? [])}
-            highContrast={highContrast}
-            inntekter={index < 0 ? _newInntekter : loennsopplysning?.inntekter ?? []}
-            onInntekterChanged={(inntekter: Array<Inntekt>) => setInntekter(inntekter, index)}
-            parentNamespace={namespace + '-inntekter'}
-            validation={validation}
-          />
+              key={JSON.stringify(index < 0 ? _newInntekter : loennsopplysning?.inntekter ?? [])}
+              highContrast={highContrast}
+              inntekter={index < 0 ? _newInntekter : loennsopplysning?.inntekter ?? []}
+              onInntekterChanged={(inntekter: Array<Inntekt>) => setInntekter(inntekter, index)}
+              parentNamespace={namespace + '-inntekter'}
+              validation={validation}
+            />
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv/>
-        <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.1s'}}>
+        <VerticalSeparatorDiv />
+        <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
           <Column>
             <Input
               feil={getErrorFor(index, 'ansettelsestype')}
@@ -337,7 +337,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
             />
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
       </>
     )
   }
@@ -368,10 +368,10 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
               </HighContrastFlatknapp>
             </Column>
           </Row>
-        )}
-      <VerticalSeparatorDiv size='2'/>
-      <HorizontalLineSeparator/>
-      <VerticalSeparatorDiv size='2'/>
+          )}
+      <VerticalSeparatorDiv size='2' />
+      <HorizontalLineSeparator />
+      <VerticalSeparatorDiv size='2' />
       <AlignStartRow className='slideInFromLeft'>
         <Column>
           <Undertittel>
