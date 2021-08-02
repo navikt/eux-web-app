@@ -12,6 +12,8 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import ArbeidsforholdMedForsikring from '../Arbeidsforhold/ArbeidsforholdMedForsikring'
 import ArbeidsforholdOther from '../Arbeidsforhold/ArbeidsforholdOther'
+import ArbeidsforholdSvangerskap from '../Arbeidsforhold/ArbeidsforholdSvangerskap'
+import ArbeidsforholdUtdanning from '../Arbeidsforhold/ArbeidsforholdUtdanning'
 import ArbeidsforholdUtenForsikring from '../Arbeidsforhold/ArbeidsforholdUtenForsikring'
 
 interface ForsikringSelector extends PersonManagerFormSelector {
@@ -52,13 +54,6 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
   const periodeTypes = ['perioderAnsattMedForsikring', 'perioderAnsattUtenForsikring', 'perioderSelvstendigMedForsikring',
     'perioderSelvstendigUtenForsikring', 'perioderFrihetsberoevet', 'perioderSyk', 'perioderSvangerskapBarn',
     'perioderUtdanning', 'perioderMilitaertjeneste', 'perioderAnnenForsikring']
-
-  const periodeTypeMedForsikring = [periodeTypeHash.perioderAnsattMedForsikring, periodeTypeHash.perioderSelvstendigMedForsikring]
-  const periodeTypeUtenForsikring = [periodeTypeHash.perioderAnsattUtenForsikring, periodeTypeHash.perioderSelvstendigUtenForsikring]
-  const periodeTypeOther = [
-    periodeTypeHash.perioderFrihetsberoevet, periodeTypeHash.perioderSyk, periodeTypeHash.perioderSvangerskapBarn,
-    periodeTypeHash.perioderUtdanning, periodeTypeHash.perioderMilitaertjeneste, periodeTypeHash.perioderAnnenForsikring
-  ]
 
   periodeTypes.forEach((type: string) => {
     if (!_.isEmpty(_.get(replySed, type))) {
@@ -110,44 +105,69 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       {_periodeType.sort((a, b) => {
         return t('el:option-' + a).localeCompare(t('el:option-' + b))
-      }).map(type => (
-        <div key={type}>
-          <ExpandingPanel
-            open
-            renderContentWhenClosed
-            heading={(
-              <Undertittel>
-                {_.find(periodeOptions, p => p.value === type)?.label}
-              </Undertittel>
-          )}
-          >
-            <>
-              {periodeTypeMedForsikring.indexOf(type) >= 0 && (
-                <ArbeidsforholdMedForsikring
-                  parentNamespace={namespace}
-                  target={type}
-                  typeTrygdeforhold={periodeTypeHash[type]}
-                />
-              )}
-              {periodeTypeUtenForsikring.indexOf(type) >= 0 && (
-                <ArbeidsforholdUtenForsikring
-                  parentNamespace={namespace}
-                  target={type}
-                  typeTrygdeforhold={periodeTypeHash[type]}
-                />
-              )}
-              {periodeTypeOther.indexOf(type) >= 0 && (
-                <ArbeidsforholdOther
-                  parentNamespace={namespace}
-                  target={type}
-                  typeTrygdeforhold={periodeTypeHash[type]}
-                />
-              )}
-            </>
-          </ExpandingPanel>
-          <VerticalSeparatorDiv size='2' />
-        </div>
-      ))}
+      }).map(type => {
+        const target = Object.keys(periodeTypeHash).find(k => periodeTypeHash[k] === type)!
+        return (
+          <div key={type}>
+            <ExpandingPanel
+              open
+              renderContentWhenClosed
+              heading={(
+                <Undertittel>
+                  {_.find(periodeOptions, p => p.value === type)?.label}
+                </Undertittel>
+            )}
+            >
+              <>
+                {(type === periodeTypeHash.perioderAnsattMedForsikring || type === periodeTypeHash.perioderSelvstendigMedForsikring) && (
+                  <ArbeidsforholdMedForsikring
+                    parentNamespace={namespace}
+                    target={target}
+                    typeTrygdeforhold={periodeTypeHash[type]}
+                  />
+                )}
+                {(type === periodeTypeHash.perioderAnsattUtenForsikring || type === periodeTypeHash.perioderSelvstendigUtenForsikring) && (
+                  <ArbeidsforholdUtenForsikring
+                    parentNamespace={namespace}
+                    target={target}
+                    typeTrygdeforhold={periodeTypeHash[type]}
+                  />
+                )}
+                {type === periodeTypeHash.perioderFrihetsberoevet && (
+                  <ArbeidsforholdMedForsikring
+                    parentNamespace={namespace}
+                    target={target}
+                    typeTrygdeforhold={periodeTypeHash[type]}
+                  />
+                )}
+                {(type === periodeTypeHash.perioderSyk || type === periodeTypeHash.perioderSvangerskapBarn) && (
+                  <ArbeidsforholdSvangerskap
+                    parentNamespace={namespace}
+                    target={target}
+                    typeTrygdeforhold={periodeTypeHash[type]}
+                  />
+                )}
+                {(type === periodeTypeHash.perioderUtdanning || type === periodeTypeHash.perioderMilitaertjeneste) && (
+                  <ArbeidsforholdUtdanning
+                    parentNamespace={namespace}
+                    target={target}
+                    typeTrygdeforhold={periodeTypeHash[type]}
+                  />
+                )}
+                {type === periodeTypeHash.perioderAnnenForsikring && (
+                  <ArbeidsforholdOther
+                    parentNamespace={namespace}
+                    target={target}
+                    typeTrygdeforhold={periodeTypeHash[type]}
+                  />
+                )}
+              </>
+            </ExpandingPanel>
+            <VerticalSeparatorDiv size='2' />
+          </div>
+        )
+      }
+      )}
     </PaddedDiv>
   )
 }

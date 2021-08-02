@@ -37,7 +37,7 @@ export interface ArbeidsforholdUtenForsikringSelector extends PersonManagerFormS
   validation: Validation
 }
 
-export interface ArbeidsforholdUtenForsikringProos {
+export interface ArbeidsforholdUtenForsikringProps {
   parentNamespace: string
   target: string
   typeTrygdeforhold: string
@@ -48,11 +48,11 @@ const mapState = (state: State): ArbeidsforholdUtenForsikringSelector => ({
   validation: state.validation.status
 })
 
-const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProos> = ({
+const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> = ({
   parentNamespace,
   target,
   typeTrygdeforhold
-}: ArbeidsforholdUtenForsikringProos): JSX.Element => {
+}: ArbeidsforholdUtenForsikringProps): JSX.Element => {
   const { t } = useTranslation()
   const {
     replySed,

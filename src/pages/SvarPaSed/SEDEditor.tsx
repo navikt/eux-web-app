@@ -89,12 +89,10 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
     replySed?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0
 
   const cleanReplySed = (replySed: any) => {
-    delete replySed.xxxformaal
     delete replySed.xxxsisteAnsettelsesForhold
     delete replySed.xxxretttilytelser
     delete replySed.xxxgrunntilopphør
     delete replySed.xxxinntekt
-    delete replySed.xxxperiodefordagpenger
   }
 
   const sendReplySed = (): void => {

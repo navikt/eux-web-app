@@ -275,6 +275,12 @@ export interface XXXSisteAnsettelsesForhold {
   annenYtelser: string
 }
 
+export interface XXXGrunnTilOpphør {
+  årsak: string
+  annet?: string
+  årsakselvstendig?: sting
+}
+
 export interface Barn {
   adresser?: Array<Adresse>
   barnetilhoerigheter?: Array<Barnetilhoerighet>
@@ -293,7 +299,7 @@ export interface Institusjon {
   }
 }
 
-export interface PeriodePlusInstitusjon {
+export interface PeriodeDagpenger {
   periode: Periode,
   institusjon: Institusjon
 }
@@ -367,7 +373,7 @@ export interface PeriodeUtdanning extends PeriodeMilitaertjeneste {}
 export interface PeriodeSykSvangerskapOmsorg {
   institusjonsnavn: string
   institusjonsid: string
-  erinstitusjonsidkjent: boolean
+  erinstitusjonsidkjent: JaNei
   navn: string
   adresse: Adresse
   periode: Periode
@@ -419,9 +425,9 @@ export interface U002Sed extends USed {
   perioderUtdanning?: Array<PeriodeUtdanning>
   perioderMilitaertjeneste?: Array<PeriodeMilitaertjeneste>
   perioderAnnenForsikring?: Array<PeriodeAnnenForsikring>
-  perioderDagpenger:Array<PeriodePlusInstitusjon>
+  perioderDagpenger:Array<PeriodeDagpenger>
 
-  xxxgrunntilopphor?: any
+  xxxgrunntilopphor?: XXXGrunnTilOpphør
   xxxsisteAnsettelsesForhold?: XXXSisteAnsettelsesForhold
 }
 

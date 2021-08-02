@@ -34,8 +34,7 @@ const GrunnTilOpphør: React.FC<PersonManagerFormProps> = ({
     validation
   } = useSelector<State, GrunnTilOpphørSelector>(mapState)
   const dispatch = useDispatch()
-  // TODO add target
-  const target = 'xxxgrunntilopphør'
+  const target = 'xxxgrunntilopphor'
   const xxx: any = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-grunntilopphør`
 

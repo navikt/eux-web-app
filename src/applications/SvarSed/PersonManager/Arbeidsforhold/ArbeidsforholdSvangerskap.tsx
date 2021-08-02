@@ -8,7 +8,7 @@ import Input from 'components/Forms/Input'
 import Period from 'components/Period/Period'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { Periode, PeriodeAnnen, PeriodeAnnenForsikring, ReplySed } from 'declarations/sed'
+import { JaNei, Periode, PeriodeSykSvangerskapOmsorg, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
@@ -16,7 +16,6 @@ import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import {
-  AlignEndRow,
   AlignStartRow,
   Column,
   HighContrastFlatknapp,
@@ -30,36 +29,36 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
-import { validatePeriodeAnnen, ValidationPeriodeAnnenProps } from './validationPeriodeAnnen'
+import { validatePeriodeSvangerskap, ValidationPeriodeSvangerskapProps } from './validationPeriodeSvangerskap'
 
-export interface ArbeidsforholdAnnenSelector extends PersonManagerFormSelector {
+export interface ArbeidsforholdSvangerskapSelector extends PersonManagerFormSelector {
   replySed: ReplySed | undefined
   validation: Validation
 }
 
-export interface ArbeidsforholdAnnenProps {
+export interface ArbeidsforholdSvangerskapProps {
   parentNamespace: string
   target: string
   typeTrygdeforhold: string
 }
 
-const mapState = (state: State): ArbeidsforholdAnnenSelector => ({
+const mapState = (state: State): ArbeidsforholdSvangerskapSelector => ({
   replySed: state.svarpased.replySed,
   validation: state.validation.status
 })
 
-const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
+const ArbeidsforholdSvangerskap: React.FC<ArbeidsforholdSvangerskapProps> = ({
   parentNamespace,
   target,
   typeTrygdeforhold
-}: ArbeidsforholdAnnenProps): JSX.Element => {
+}: ArbeidsforholdSvangerskapProps): JSX.Element => {
   const { t } = useTranslation()
   const {
     replySed,
     validation
-  } = useSelector<State, ArbeidsforholdAnnenSelector>(mapState)
+  } = useSelector<State, ArbeidsforholdSvangerskapSelector>(mapState)
   const dispatch = useDispatch()
-  const perioder: Array<PeriodeAnnenForsikring> | undefined = _.get(replySed, target)
+  const perioder: Array<PeriodeSykSvangerskapOmsorg> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${target}`
 
   const [_newStartDato, _setNewStartDato] = useState<string>('')
@@ -67,8 +66,7 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
 
   const [_newInstitutionsId, _setNewInstitutionsId] = useState<string>('')
   const [_newInstitutionsNavn, _setNewInstitutionsNavn] = useState<string>('')
-  const [_newInstitutionsType, _setNewInstitutionsType] = useState<string>('')
-  const [_newVirksomhetensart, _setNewVirksomhetensart] = useState<string>('')
+  const [_newErInstitusjonsIdKjent, _setNewErInstitusjonsIdKjent] = useState<JaNei | undefined>(undefined)
   const [_newNavn, _setNewNavn] = useState<string>('')
   const [_newGate, _setNewGate] = useState<string>('')
   const [_newPostnummer, _setNewPostnummer] = useState<string>('')
@@ -77,10 +75,10 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
   const [_newRegion, _setNewRegion] = useState<string>('')
   const [_newLand, _setNewLand] = useState<string>('')
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PeriodeAnnenForsikring>((periode: PeriodeAnnenForsikring) => periode.periode.startdato)
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PeriodeSykSvangerskapOmsorg>((periode: PeriodeSykSvangerskapOmsorg) => periode.periode.startdato)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] =
-    useValidation<ValidationPeriodeAnnenProps>({}, validatePeriodeAnnen)
+    useValidation<ValidationPeriodeSvangerskapProps>({}, validatePeriodeSvangerskap)
 
   const setInstitutionsId = (newInstitutionsId: string, index: number) => {
     if (index < 0) {
@@ -105,26 +103,14 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
     }
   }
 
-  const setInstitutionsType = (newInstitutionsType: string, index: number) => {
+  const setErInstitusjonsIdKjent = (newErInstitusjonsIdKjent: JaNei, index: number) => {
     if (index < 0) {
-      _setNewInstitutionsNavn(newInstitutionsType.trim())
-      _resetValidation(namespace + '-institusjonstype')
+      _setNewErInstitusjonsIdKjent(newErInstitusjonsIdKjent)
+      _resetValidation(namespace + '-erinstitusjonsidkjent')
     } else {
-      dispatch(updateReplySed(`${target}[${index}].institusjonstype`, newInstitutionsType.trim()))
-      if (validation[namespace + getIdx(index) + '-institusjonstype']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-institusjonstype'))
-      }
-    }
-  }
-
-  const setVirksomhetensart = (newVirksomhetsart: string, index: number) => {
-    if (index < 0) {
-      _setNewVirksomhetensart(newVirksomhetsart.trim())
-      _resetValidation(namespace + '-virksomhetensart')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].virksomhetensart`, newVirksomhetsart.trim()))
-      if (validation[namespace + getIdx(index) + '-virksomhetensart']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-virksomhetensart'))
+      dispatch(updateReplySed(`${target}[${index}].erinstitusjonsidkjent`, newErInstitusjonsIdKjent))
+      if (validation[namespace + getIdx(index) + '-erinstitusjonsidkjent']) {
+        dispatch(resetValidation(namespace + getIdx(index) + '-erinstitusjonsidkjent'))
       }
     }
   }
@@ -158,7 +144,7 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
       _setNewSluttDato(sluttdato.trim())
       _resetValidation(namespace + '-sluttdato')
     } else {
-      const newPerioder: Array<PeriodeAnnen> = _.cloneDeep(perioder) as Array<PeriodeAnnen>
+      const newPerioder: Array<PeriodeSykSvangerskapOmsorg> = _.cloneDeep(perioder) as Array<PeriodeSykSvangerskapOmsorg>
       if (sluttdato === '') {
         delete newPerioder[index].periode.sluttdato
         newPerioder[index].periode.aapenPeriodeType = 'åpen_sluttdato'
@@ -248,8 +234,7 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
   const resetForm = () => {
     _setNewInstitutionsNavn('')
     _setNewInstitutionsId('')
-    _setNewInstitutionsType('')
-    _setNewVirksomhetensart('')
+    _setNewErInstitusjonsIdKjent(undefined)
     _setNewNavn('')
     _setNewSluttDato('')
     _setNewStartDato('')
@@ -268,8 +253,8 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
   }
 
   const onRemove = (index: number) => {
-    const newPerioder: Array<PeriodeAnnenForsikring> = _.cloneDeep(perioder) as Array<PeriodeAnnenForsikring>
-    const deletedPerioder: Array<PeriodeAnnenForsikring> = newPerioder.splice(index, 1)
+    const newPerioder: Array<PeriodeSykSvangerskapOmsorg> = _.cloneDeep(perioder) as Array<PeriodeSykSvangerskapOmsorg>
+    const deletedPerioder: Array<PeriodeSykSvangerskapOmsorg> = newPerioder.splice(index, 1)
     if (deletedPerioder && deletedPerioder.length > 0) {
       removeFromDeletion(deletedPerioder[0])
     }
@@ -286,14 +271,13 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
       newPeriode.aapenPeriodeType = 'åpen_sluttdato'
     }
 
-    const newPeriodeAnnen: PeriodeAnnen = {
+    const newPeriodeSvangerskap: PeriodeSykSvangerskapOmsorg = {
       periode: newPeriode,
       typeTrygdeforhold: typeTrygdeforhold,
       institusjonsnavn: _newInstitutionsNavn.trim(),
       navn: _newNavn.trim(),
       institusjonsid: _newInstitutionsId.trim(),
-      institusjonstype: _newInstitutionsType.trim(),
-      virksomhetensart: _newVirksomhetensart.trim(),
+      erinstitusjonsidkjent: _newErInstitusjonsIdKjent as JaNei,
       adresse: {
         gate: _newGate.trim(),
         postnummer: _newPostnummer.trim(),
@@ -305,31 +289,31 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
     }
 
     const valid: boolean = performValidation({
-      periodeAnnen: newPeriodeAnnen,
-      perioderAnnen: perioder ?? [],
+      periodeSvangerskap: newPeriodeSvangerskap,
+      perioderSvangerskap: perioder ?? [],
       namespace: namespace
     })
     if (valid) {
-      let newPerioderAnnen: Array<PeriodeAnnen> | undefined = _.cloneDeep(perioder)
-      if (_.isNil(newPerioderAnnen)) {
-        newPerioderAnnen = []
+      let newPerioderSvangerskap: Array<PeriodeSykSvangerskapOmsorg> | undefined = _.cloneDeep(perioder)
+      if (_.isNil(newPerioderSvangerskap)) {
+        newPerioderSvangerskap = []
       }
-      newPerioderAnnen = newPerioderAnnen.concat(newPeriodeAnnen)
-      dispatch(updateReplySed(target, newPerioderAnnen))
+      newPerioderSvangerskap = newPerioderSvangerskap.concat(newPeriodeSvangerskap)
+      dispatch(updateReplySed(target, newPerioderSvangerskap))
       resetForm()
     }
   }
 
-  const renderRow = (periodeAnnen: PeriodeAnnenForsikring | null, index: number) => {
-    const candidateForDeletion = index < 0 ? false : isInDeletion(periodeAnnen)
+  const renderRow = (periodeSvangerskap: PeriodeSykSvangerskapOmsorg | null, index: number) => {
+    const candidateForDeletion = index < 0 ? false : isInDeletion(periodeSvangerskap)
     const idx = getIdx(index)
     const getErrorFor = (index: number, el: string): string | undefined => (
       index < 0
         ? _validation[namespace + '-' + el]?.feilmelding
         : validation[namespace + idx + '-' + el]?.feilmelding
     )
-    const startdato = index < 0 ? _newStartDato : periodeAnnen?.periode?.startdato
-    const sluttdato = index < 0 ? _newSluttDato : periodeAnnen?.periode?.sluttdato
+    const startdato = index < 0 ? _newStartDato : periodeSvangerskap?.periode?.startdato
+    const sluttdato = index < 0 ? _newSluttDato : periodeSvangerskap?.periode?.sluttdato
 
     return (
       <>
@@ -356,10 +340,10 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
               feil={getErrorFor(index, 'institusjonsid')}
               namespace={namespace}
               id='institusjonsid'
-              key={'institusjonsid-' + (index < 0 ? _newInstitutionsId : periodeAnnen?.institusjonsid ?? '')}
+              key={'institusjonsid-' + (index < 0 ? _newInstitutionsId : periodeSvangerskap?.institusjonsid ?? '')}
               label={t('label:institusjonens-id')}
               onChanged={(institusjonsid: string) => setInstitutionsId(institusjonsid, index)}
-              value={index < 0 ? _newInstitutionsId : periodeAnnen?.institusjonsid ?? ''}
+              value={index < 0 ? _newInstitutionsId : periodeSvangerskap?.institusjonsid ?? ''}
             />
           </Column>
           <Column>
@@ -367,10 +351,10 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
               feil={getErrorFor(index, 'institusjonsnavn')}
               namespace={namespace}
               id='institusjonsnavn'
-              key={'institusjonsnavn-' + (index < 0 ? _newInstitutionsNavn : periodeAnnen?.institusjonsnavn ?? '')}
+              key={'institusjonsnavn-' + (index < 0 ? _newInstitutionsNavn : periodeSvangerskap?.institusjonsnavn ?? '')}
               label={t('label:institusjonens-navn')}
               onChanged={(institusjonsnavn: string) => setInstitutionsNavn(institusjonsnavn, index)}
-              value={index < 0 ? _newInstitutionsNavn : periodeAnnen?.institusjonsnavn ?? ''}
+              value={index < 0 ? _newInstitutionsNavn : periodeSvangerskap?.institusjonsnavn ?? ''}
             />
           </Column>
           <Column />
@@ -382,21 +366,26 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
               feil={getErrorFor(index, 'navn')}
               namespace={namespace}
               id='navn'
-              key={'navn-' + (index < 0 ? _newNavn : periodeAnnen?.navn ?? '')}
+              key={'navn-' + (index < 0 ? _newNavn : periodeSvangerskap?.navn ?? '')}
               label={t('label:navn')}
               onChanged={(navn: string) => setNavn(navn, index)}
-              value={index < 0 ? _newNavn : periodeAnnen?.navn ?? ''}
+              value={index < 0 ? _newNavn : periodeSvangerskap?.navn ?? ''}
             />
           </Column>
           <Column>
-            <Input
-              feil={getErrorFor(index, 'virksomhetensart')}
-              namespace={namespace}
-              id='virksomhetensart'
-              key={'virksomhetensart-' + (index < 0 ? _newInstitutionsType : periodeAnnen?.virksomhetensart ?? '')}
-              label={t('label:virksomhetens-art')}
-              onChanged={(virksomhetensart: string) => setVirksomhetensart(virksomhetensart, index)}
-              value={index < 0 ? _newVirksomhetensart : periodeAnnen?.virksomhetensart ?? ''}
+            <HighContrastRadioPanelGroup
+              checked={index < 0 ? _newErInstitusjonsIdKjent : periodeSvangerskap?.erinstitusjonsidkjent ?? ''}
+              data-test-id={namespace + idx + '-erinstitusjonsidkjent'}
+              data-no-border
+              id={namespace + idx + '-erinstitusjonsidkjent'}
+              feil={getErrorFor(index, 'erinstitusjonsidkjent')}
+              legend={t('label:institusjonens-id-er-kjent') + ' *'}
+              name={namespace + idx + '-erinstitusjonsidkjent'}
+              radios={[
+                { label: t('label:ja'), value: 'ja' },
+                { label: t('label:nei'), value: 'nei' }
+              ]}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setErInstitusjonsIdKjent(e.target.value as JaNei, index)}
             />
           </Column>
         </AlignStartRow>
@@ -407,10 +396,10 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
               namespace={namespace}
               feil={getErrorFor(index, 'gate')}
               id='gate'
-              key={'gate-' + (index < 0 ? _newGate : periodeAnnen?.adresse?.gate)}
+              key={'gate-' + (index < 0 ? _newGate : periodeSvangerskap?.adresse?.gate)}
               label={t('label:gateadresse')}
               onChanged={(gate: string) => setGate(gate, index)}
-              value={index < 0 ? _newGate : periodeAnnen?.adresse?.gate}
+              value={index < 0 ? _newGate : periodeSvangerskap?.adresse?.gate}
             />
           </Column>
           <Column>
@@ -418,10 +407,10 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
               namespace={namespace}
               feil={getErrorFor(index, 'bygning')}
               id='bygning'
-              key={'bygning-' + (index < 0 ? _newBygning : periodeAnnen?.adresse?.bygning ?? '')}
+              key={'bygning-' + (index < 0 ? _newBygning : periodeSvangerskap?.adresse?.bygning ?? '')}
               label={t('label:bygning')}
               onChanged={(newBygning: string) => setBygning(newBygning, index)}
-              value={index < 0 ? _newBygning : periodeAnnen?.adresse?.bygning ?? ''}
+              value={index < 0 ? _newBygning : periodeSvangerskap?.adresse?.bygning ?? ''}
             />
           </Column>
         </AlignStartRow>
@@ -432,10 +421,10 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
               namespace={namespace}
               feil={getErrorFor(index, 'postnummer')}
               id='postnummer'
-              key={'postnummer-' + (index < 0 ? _newPostnummer : periodeAnnen?.adresse?.postnummer ?? '')}
+              key={'postnummer-' + (index < 0 ? _newPostnummer : periodeSvangerskap?.adresse?.postnummer ?? '')}
               label={t('label:postnummer')}
               onChanged={(newPostnummer: string) => setPostnummer(newPostnummer, index)}
-              value={index < 0 ? _newPostnummer : periodeAnnen?.adresse?.postnummer ?? ''}
+              value={index < 0 ? _newPostnummer : periodeSvangerskap?.adresse?.postnummer ?? ''}
             />
           </Column>
           <Column flex='3'>
@@ -443,10 +432,10 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
               namespace={namespace}
               feil={getErrorFor(index, 'by')}
               id='by'
-              key={'by-' + (index < 0 ? _newBy : periodeAnnen?.adresse?.by ?? '')}
+              key={'by-' + (index < 0 ? _newBy : periodeSvangerskap?.adresse?.by ?? '')}
               label={t('label:by')}
               onChanged={(newBy: string) => setBy(newBy, index)}
-              value={index < 0 ? _newBy : periodeAnnen?.adresse?.by ?? ''}
+              value={index < 0 ? _newBy : periodeSvangerskap?.adresse?.by ?? ''}
             />
           </Column>
         </AlignStartRow>
@@ -457,16 +446,16 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
               namespace={namespace}
               feil={getErrorFor(index, 'region')}
               id='region'
-              key={'region-' + (index < 0 ? _newRegion : periodeAnnen?.adresse?.region ?? '')}
+              key={'region-' + (index < 0 ? _newRegion : periodeSvangerskap?.adresse?.region ?? '')}
               label={t('label:region')}
               onChanged={(newRegion: string) => setRegion(newRegion, index)}
-              value={index < 0 ? _newRegion : periodeAnnen?.adresse?.region ?? ''}
+              value={index < 0 ? _newRegion : periodeSvangerskap?.adresse?.region ?? ''}
             />
           </Column>
           <Column flex='2'>
             <CountrySelect
               closeMenuOnSelect
-              key={'land-' + (index < 0 ? _newLand : periodeAnnen?.adresse?.land ?? '')}
+              key={'land-' + (index < 0 ? _newLand : periodeSvangerskap?.adresse?.land ?? '')}
               data-test-id={namespace + '-land'}
               error={getErrorFor(index, 'land')}
               flagWave
@@ -475,42 +464,26 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
               menuPortalTarget={document.body}
               onOptionSelected={(e: Country) => setLand(e.value, index)}
               placeholder={t('el:placeholder-select-default')}
-              values={index < 0 ? _newLand : periodeAnnen?.adresse?.land ?? ''}
+              values={index < 0 ? _newLand : periodeSvangerskap?.adresse?.land ?? ''}
             />
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />
-        <AlignEndRow>
-          <Column flex='2'>
-            <HighContrastRadioPanelGroup
-              checked={_newInstitutionsType}
-              data-multiple-line
-              data-no-border
-              data-test-id={namespace + '-institusjonstype'}
-              id={namespace + '-institusjonstype'}
-              name={namespace + '-institusjonstype'}
-              legend={t('label:velg-type') + ' *'}
-              radios={[
-                { label: t('el:option-institusjonstype-01'), value: 'periode_med_frivillig_uavbrutt_forsikring' },
-                { label: t('el:option-institusjonstype-02'), value: 'vederlag_for_ferie_som_ikke_er_tatt_ut' },
-                { label: t('el:option-institusjonstype-03'), value: 'annen_periode_behandlet_som_forsikringsperiode' }
-              ]}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInstitutionsType(e.target.value, index)}
-            />
-          </Column>
+        <AlignStartRow>
+          <Column flex='2' />
           <Column>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}
               marginTop
-              onBeginRemove={() => addToDeletion(periodeAnnen)}
+              onBeginRemove={() => addToDeletion(periodeSvangerskap)}
               onConfirmRemove={() => onRemove(index)}
-              onCancelRemove={() => removeFromDeletion(periodeAnnen)}
+              onCancelRemove={() => removeFromDeletion(periodeSvangerskap)}
               onAddNew={onAdd}
               onCancelNew={onCancel}
             />
           </Column>
-        </AlignEndRow>
+        </AlignStartRow>
         <VerticalSeparatorDiv />
       </>
     )
@@ -543,4 +516,4 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
   )
 }
 
-export default ArbeidsforholdAnnen
+export default ArbeidsforholdSvangerskap
