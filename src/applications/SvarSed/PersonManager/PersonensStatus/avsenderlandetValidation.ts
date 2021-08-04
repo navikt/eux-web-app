@@ -54,12 +54,20 @@ export const validateAvsenderlandetPeriode = (
   return hasErrors
 }
 
+interface ValidateAvsenderlandetPerioderProps {
+  perioder: Array<Periode>
+  namespace: string
+  personName: string
+}
+
 export const validateAvsenderlandetPerioder = (
   v: Validation,
   t: TFunction,
-  perioder: Array<Periode>,
-  namespace: string,
-  personName: string
+  {
+    perioder,
+    namespace,
+    personName
+  }: ValidateAvsenderlandetPerioderProps
 ): boolean => {
   let hasErrors: boolean = false
   perioder?.forEach((periode: Periode | PensjonPeriode, index: number) => {

@@ -133,11 +133,18 @@ export const validatePeriodeAnnen = (
   return hasErrors
 }
 
-export const validatePerioderSvangerskap = (
+interface ValidadePerioderAnnenProps {
+  perioderAnnen: Array<PeriodeAnnenForsikring> | undefined
+  namespace: string
+}
+
+export const validatePerioderAnnen = (
   validation: Validation,
   t: TFunction,
-  perioderAnnen: Array<PeriodeAnnenForsikring>,
-  namespace: string
+  {
+    perioderAnnen,
+    namespace
+  }: ValidadePerioderAnnenProps
 ): boolean => {
   let hasErrors: boolean = false
   perioderAnnen?.forEach((periodeAnnen: PeriodeAnnenForsikring, index: number) => {

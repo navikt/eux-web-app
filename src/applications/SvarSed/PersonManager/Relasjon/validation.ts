@@ -118,12 +118,20 @@ export const validateBarnetilhoerighet = (
   return hasErrors
 }
 
+interface ValidadeBarnetilhoerigheterProps {
+  barnetilhorigheter: Array<Barnetilhoerighet>
+  namespace: string
+  personName: string
+}
+
 export const validateBarnetilhoerigheter = (
   validation: Validation,
   t: TFunction,
-  barnetilhorigheter: Array<Barnetilhoerighet>,
-  namespace: string,
-  personName: string
+  {
+    barnetilhorigheter,
+    namespace,
+    personName
+  }: ValidadeBarnetilhoerigheterProps
 ): boolean => {
   let hasErrors: boolean = false
   barnetilhorigheter?.forEach((barnetilhorighet: Barnetilhoerighet, index) => {

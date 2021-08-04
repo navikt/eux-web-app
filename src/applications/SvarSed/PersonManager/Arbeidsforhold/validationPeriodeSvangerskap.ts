@@ -125,11 +125,18 @@ export const validatePeriodeSvangerskap = (
   return hasErrors
 }
 
-export const validatePerioderSvangerskap = (
+interface ValidatePerioderSvangerskapOgSykProps {
+  perioderSvangerskap: Array<PeriodeSykSvangerskapOmsorg> | undefined
+  namespace: string
+}
+
+export const validatePerioderSvangerskapOgSyk = (
   validation: Validation,
   t: TFunction,
-  perioderSvangerskap: Array<PeriodeSykSvangerskapOmsorg>,
-  namespace: string
+  {
+    perioderSvangerskap,
+    namespace
+  }: ValidatePerioderSvangerskapOgSykProps
 ): boolean => {
   let hasErrors: boolean = false
   perioderSvangerskap?.forEach((periodeSvangerskap: PeriodeSykSvangerskapOmsorg, index: number) => {

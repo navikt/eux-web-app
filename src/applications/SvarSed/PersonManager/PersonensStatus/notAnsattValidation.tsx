@@ -52,12 +52,20 @@ export const validateNotAnsattPeriode = (
   return hasErrors
 }
 
+interface ValidateNotAnsattPerioderProps {
+  perioder: Array<Periode>
+  namespace: string
+  personName: string
+}
+
 export const validateNotAnsattPerioder = (
   v: Validation,
   t: TFunction,
-  perioder: Array<Periode>,
-  namespace: string,
-  personName: string
+  {
+    perioder,
+    namespace,
+    personName
+  }: ValidateNotAnsattPerioderProps
 ): boolean => {
   let hasErrors: boolean = false
   perioder?.forEach((periode: Periode, index: number) => {

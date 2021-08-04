@@ -6,7 +6,6 @@ import Add from 'assets/icons/Add'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import ArbeidsgiverBox from 'components/Arbeidsgiver/ArbeidsgiverBox'
 import ArbeidsgiverSøk from 'components/Arbeidsgiver/ArbeidsgiverSøk'
-import { validateArbeidsgiver, ValidationArbeidsgiverProps } from 'components/Arbeidsgiver/validation'
 import Input from 'components/Forms/Input'
 import Inntekt from 'components/Inntekt/Inntekt'
 import Period from 'components/Period/Period'
@@ -41,6 +40,7 @@ import { getOrgnr, hasOrgnr, sanitizePeriodeMedForsikring } from 'utils/arbeidsg
 import { getFnr } from 'utils/fnr'
 import makeRenderPlan, { PlanItem } from 'utils/renderPlan'
 import { performValidationArbeidsperioderSearch, ValidationDatoProps } from './validation'
+import { validatePeriodeMedForsikring, ValidationPeriodeMedForsikringProps } from './validationPeriodeMedForsikring'
 
 const OrphanArbeidsgiver = styled(HighContrastPanel)`
    background-color: ${({ theme }: any) => theme[themeKeys.MAIN_BACKGROUND_COLOR]} !important;
@@ -109,7 +109,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PeriodeMedForsikring>((periode: PeriodeMedForsikring) => periode.periode.startdato)
 
   const [_validationPeriodeMedForsikring, _resetValidationPeriodeMedForsikring, performValidationPeriodeMedForsikring] =
-    useValidation<ValidationArbeidsgiverProps>({}, validateArbeidsgiver)
+    useValidation<ValidationPeriodeMedForsikringProps>({}, validatePeriodeMedForsikring)
   const [_validationSearch, _resetValidationSearch, performValidationSearch] =
     useValidation<ValidationDatoProps>({}, performValidationArbeidsperioderSearch)
 
@@ -292,7 +292,8 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
     }
 
     const valid: boolean = performValidationPeriodeMedForsikring({
-      arbeidsgiver: newPeriodeMedForsikring,
+      periodeMedForsikring: newPeriodeMedForsikring,
+      perioderMedForsikring: _addedPeriodeMedForsikring,
       namespace: namespace,
       includeAddress: true
     })

@@ -166,7 +166,6 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
     if (mode === 'editor') {
       setMode('selection', 'back')
       document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
-
     }
   }
 

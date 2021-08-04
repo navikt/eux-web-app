@@ -94,7 +94,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
   const onFillOutPerson = (searchedPerson: Person) => {
     const newPersonInfo = _.cloneDeep(personInfo)
     if (searchedPerson.fnr) {
-      let index = _.findIndex(newPersonInfo.pin, p => p.land === 'NO')
+      const index = _.findIndex(newPersonInfo.pin, p => p.land === 'NO')
       if (index >= 0) {
         newPersonInfo.pin[index].identifikator = searchedPerson.fnr
       }
@@ -328,22 +328,22 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
         </Column>
         <Column />
       </AlignStartRow>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <AlignStartRow>
         <Column>
           {searchedPerson
             ? (
               <FlexCenterDiv>
-              <Normaltekst>
-                {searchedPerson.fornavn + ' ' + searchedPerson.etternavn + ' (' + searchedPerson.kjoenn + ')'}
-              </Normaltekst>
-              <HorizontalSeparatorDiv/>
-              <HighContrastKnapp
-                mini kompakt
-                onClick={() => onFillOutPerson(searchedPerson)}
+                <Normaltekst>
+                  {searchedPerson.fornavn + ' ' + searchedPerson.etternavn + ' (' + searchedPerson.kjoenn + ')'}
+                </Normaltekst>
+                <HorizontalSeparatorDiv />
+                <HighContrastKnapp
+                  mini kompakt
+                  onClick={() => onFillOutPerson(searchedPerson)}
                 >
-                {t('label:fill-in-person-data')}
-              </HighContrastKnapp>
+                  {t('label:fill-in-person-data')}
+                </HighContrastKnapp>
               </FlexCenterDiv>
               )
             : (

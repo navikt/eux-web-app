@@ -239,26 +239,34 @@ export const validatePerioder = (
   return hasErrors
 }
 
+interface ValidateTrygdeordningerProps {
+  perioder: {[k in string]: Array<Periode | PensjonPeriode>}
+  namespace: string
+  personName: string
+}
+
 export const validateTrygdeordninger = (
   v: Validation,
   t: TFunction,
-  perioderMap: {[k in string]: Array<Periode | PensjonPeriode>},
-  namespace: string,
-  personName: string
+  {
+    perioder,
+    namespace,
+    personName
+  } : ValidateTrygdeordningerProps
 ): boolean => {
   let hasErrors: boolean = false
   let _error: boolean
-  _error = validatePerioder(v, t, 'perioderMedITrygdeordning', 'dekkede', perioderMap.perioderMedITrygdeordning, namespace, personName)
+  _error = validatePerioder(v, t, 'perioderMedITrygdeordning', 'dekkede', perioder.perioderMedITrygdeordning, namespace, personName)
   hasErrors = hasErrors || _error
-  _error = validatePerioder(v, t, 'perioderUtenforTrygdeordning', 'udekkede', perioderMap.perioderUtenforTrygdeordning, namespace, personName)
+  _error = validatePerioder(v, t, 'perioderUtenforTrygdeordning', 'udekkede', perioder.perioderUtenforTrygdeordning, namespace, personName)
   hasErrors = hasErrors || _error
-  _error = validatePerioder(v, t, 'perioderMedArbeid', 'familieYtelse', perioderMap.perioderMedArbeid, namespace, personName)
+  _error = validatePerioder(v, t, 'perioderMedArbeid', 'familieYtelse', perioder.perioderMedArbeid, namespace, personName)
   hasErrors = hasErrors || _error
-  _error = validatePerioder(v, t, 'perioderMedTrygd', 'familieYtelse', perioderMap.perioderMedTrygd, namespace, personName)
+  _error = validatePerioder(v, t, 'perioderMedTrygd', 'familieYtelse', perioder.perioderMedTrygd, namespace, personName)
   hasErrors = hasErrors || _error
-  _error = validatePerioder(v, t, 'perioderMedYtelser', 'familieYtelse', perioderMap.perioderMedYtelser, namespace, personName)
+  _error = validatePerioder(v, t, 'perioderMedYtelser', 'familieYtelse', perioder.perioderMedYtelser, namespace, personName)
   hasErrors = hasErrors || _error
-  _error = validatePerioder(v, t, 'perioderMedPensjon', 'familieYtelse', perioderMap.perioderMedPensjon, namespace, personName)
+  _error = validatePerioder(v, t, 'perioderMedPensjon', 'familieYtelse', perioder.perioderMedPensjon, namespace, personName)
   hasErrors = hasErrors || _error
   return hasErrors
 }

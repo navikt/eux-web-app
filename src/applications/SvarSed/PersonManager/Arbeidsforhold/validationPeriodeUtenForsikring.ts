@@ -109,11 +109,18 @@ export const validatePeriodeUtenForsikring = (
   return hasErrors
 }
 
+interface ValidatePerioderUtenForsikringProps {
+  perioderUtenForsikring: Array<PeriodeUtenForsikring> | undefined
+  namespace: string
+}
+
 export const validatePerioderUtenForsikring = (
   validation: Validation,
   t: TFunction,
-  perioderUtenForsikring: Array<PeriodeUtenForsikring>,
-  namespace: string
+  {
+    perioderUtenForsikring,
+    namespace
+  }: ValidatePerioderUtenForsikringProps
 ): boolean => {
   let hasErrors: boolean = false
   perioderUtenForsikring?.forEach((periodeUtenForsikring: PeriodeUtenForsikring, index: number) => {

@@ -77,12 +77,20 @@ export const validateAdresse = (
   return hasErrors
 }
 
+interface ValidateVedtakProps {
+  adresser: Array<Adresse>
+  namespace: string
+  personName: string
+}
+
 export const validateAdresser = (
   validation: Validation,
   t: TFunction,
-  adresser: Array<Adresse>,
-  namespace: string,
-  personName: string
+  {
+    adresser,
+    namespace,
+    personName
+  }: ValidateVedtakProps
 ): boolean => {
   let hasErrors: boolean = false
   adresser?.forEach((adresse: Adresse, index: number) => {

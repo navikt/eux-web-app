@@ -65,12 +65,20 @@ export const validateNasjonalitet = (
   return hasErrors
 }
 
+interface ValidateNasjonaliteterProps {
+  statsborgerskaper: Array<Statsborgerskap>
+  namespace: string
+  personName: string
+}
+
 export const validateNasjonaliteter = (
   validation: Validation,
   t: TFunction,
-  statsborgerskaper: Array<Statsborgerskap>,
-  namespace: string,
-  personName: string
+  {
+    statsborgerskaper,
+    namespace,
+    personName
+  }: ValidateNasjonaliteterProps
 ): boolean => {
   let hasErrors: boolean = false
   statsborgerskaper?.forEach((statsborgerskap: Statsborgerskap, index: number) => {

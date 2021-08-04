@@ -87,12 +87,20 @@ export const validateFamilierelasjon = (
   return hasErrors
 }
 
+interface ValidateFamilierelasjonerProps {
+  familierelasjoner: Array<FamilieRelasjon>
+  namespace: string
+  personName: string
+}
+
 export const validateFamilierelasjoner = (
   validation: Validation,
   t: TFunction,
-  familierelasjoner: Array<FamilieRelasjon>,
-  namespace: string,
-  personName: string
+  {
+    familierelasjoner,
+    namespace,
+    personName
+  }: ValidateFamilierelasjonerProps
 ): boolean => {
   let hasErrors: boolean = false
   familierelasjoner?.forEach((familierelasjon: FamilieRelasjon, index: number) => {

@@ -1,30 +1,31 @@
-import { validatePeriod } from 'components/Period/validation'
-import { RettTilYtelse } from 'declarations/sed'
+
+import { GrunnTilOpphør } from 'declarations/sed'
 import { Validation } from 'declarations/types'
+import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
 
-export interface ValidationvalidateRettTilYtelseProps {
-  rettTilTytelse: RettTilYtelse | undefined
+interface ValidateGrunnTilOpphørProps {
+  grunntilopphor: GrunnTilOpphør | undefined
   namespace: string
 }
 
-export const validateRettTilYtelse = (
+export const validateGrunnTilOpphor = (
   v: Validation,
   t: TFunction,
   {
-    rettTilTytelse,
+    grunntilopphor,
     namespace
-  }: ValidationvalidateRettTilYtelseProps
+  }: ValidateGrunnTilOpphørProps
 ): boolean => {
-  let hasErrors = false
+  let hasErrors: boolean = false
 
-  if (rettTilTytelse?.periode) {
-    const _error = validatePeriod(v, t, {
-      period: rettTilTytelse.periode,
-      namespace: namespace + '-periode'
-    })
-    hasErrors = hasErrors || _error
+  if (!_.isEmpty(grunntilopphor?.typeGrunnOpphoerAnsatt)) {
+    v[namespace + '-typeGrunnOpphoerAnsatt'] = {
+      skjemaelementId: namespace + '-typeGrunnOpphoerAnsatt',
+      feilmelding: t('message:validation-noType')
+    } as FeiloppsummeringFeil
+    hasErrors = true
   }
 
   if (hasErrors) {
@@ -36,6 +37,5 @@ export const validateRettTilYtelse = (
     v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
   }
-
   return hasErrors
 }

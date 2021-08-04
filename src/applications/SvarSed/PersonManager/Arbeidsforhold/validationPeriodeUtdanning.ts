@@ -61,11 +61,18 @@ export const validatePeriodeUtdanning = (
   return hasErrors
 }
 
-export const validatePerioderUtdanning = (
+interface ValidatePerioderUtdanningOgMilitaertProps {
+  perioderUtdanning: Array<PeriodeUtdanning> | undefined
+  namespace: string
+}
+
+export const validatePerioderUtdanningOgMilitaert = (
   validation: Validation,
   t: TFunction,
-  perioderUtdanning: Array<PeriodeUtdanning>,
-  namespace: string
+  {
+    perioderUtdanning,
+    namespace
+  }: ValidatePerioderUtdanningOgMilitaertProps
 ): boolean => {
   let hasErrors: boolean = false
   perioderUtdanning?.forEach((periodeUtdanning: PeriodeUtdanning, index: number) => {

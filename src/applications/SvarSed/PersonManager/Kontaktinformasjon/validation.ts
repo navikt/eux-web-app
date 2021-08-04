@@ -136,12 +136,20 @@ export const validateKontaktsinformasjonEpost = (
   return hasErrors
 }
 
-export const validateKontaktsinformasjonTelefoner = (
-  validation: Validation,
-  t: TFunction,
+interface ValidateTelefonerProps {
   telefoner: Array<Telefon>,
   namespace: string,
   personName: string
+}
+
+export const validateKontaktsinformasjonTelefoner = (
+  validation: Validation,
+  t: TFunction,
+  {
+    telefoner,
+    namespace,
+    personName
+  }: ValidateTelefonerProps
 ): boolean => {
   let hasErrors: boolean = false
   telefoner?.forEach((telefon: Telefon, index: number) => {
@@ -151,12 +159,20 @@ export const validateKontaktsinformasjonTelefoner = (
   return hasErrors
 }
 
-export const validateKontaktsinformasjonEposter = (
-  validation: Validation,
-  t: TFunction,
+interface ValidateEposterProps {
   eposter: Array<Epost>,
   namespace: string,
   personName: string
+}
+
+export const validateKontaktsinformasjonEposter = (
+  validation: Validation,
+  t: TFunction,
+  {
+    eposter,
+    namespace,
+    personName
+  }: ValidateEposterProps
 ): boolean => {
   let hasErrors: boolean = false
   eposter?.forEach((epost: Epost, index: number) => {

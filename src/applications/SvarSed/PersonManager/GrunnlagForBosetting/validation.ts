@@ -43,12 +43,20 @@ export const validateGrunnlagForBosetting = (
   return hasErrors
 }
 
+interface ValidateAllGrunnlagForBosettingProps {
+  flyttegrunn: Flyttegrunn
+  namespace: string
+  personName: string
+}
+
 export const validateAllGrunnlagForBosetting = (
   v: Validation,
   t: TFunction,
-  flyttegrunn: Flyttegrunn,
-  namespace: string,
-  personName: string
+  {
+    flyttegrunn,
+    namespace,
+    personName
+  }: ValidateAllGrunnlagForBosettingProps
 ): boolean => {
   let hasErrors: boolean = false
 

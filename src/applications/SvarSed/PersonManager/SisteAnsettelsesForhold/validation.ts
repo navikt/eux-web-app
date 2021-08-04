@@ -30,9 +30,8 @@ export const validateUtbetaling = (
     } as FeiloppsummeringFeil
     hasErrors = true
   } else {
-
-    if (utbetaling?.utbetalingType?.trim() === 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet'
-      && _.isEmpty(utbetaling?.loennTilDato?.trim())) {
+    if (utbetaling?.utbetalingType?.trim() === 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet' &&
+      _.isEmpty(utbetaling?.loennTilDato?.trim())) {
       v[namespace + idx + '-loennTilDato'] = {
         feilmelding: t('message:validation-noLoennTilDato'),
         skjemaelementId: namespace + idx + '-loennTilDato'
@@ -40,8 +39,8 @@ export const validateUtbetaling = (
       hasErrors = true
     }
 
-    if (utbetaling?.utbetalingType?.trim() === 'vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie'
-      && _.isEmpty(utbetaling?.feriedagerTilGode?.trim())) {
+    if (utbetaling?.utbetalingType?.trim() === 'vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie' &&
+      _.isEmpty(utbetaling?.feriedagerTilGode?.trim())) {
       v[namespace + idx + '-feriedagerTilGode'] = {
         feilmelding: t('message:validation-noFeriedagerTilGode'),
         skjemaelementId: namespace + idx + '-feriedagerTilGode'
@@ -80,7 +79,7 @@ export const validateUtbetaling = (
 export const validateUtbetalinger = (
   validation: Validation,
   t: TFunction,
-  utbetalinger: Array<Utbetaling>,
+  utbetalinger: Array<Utbetaling> | undefined,
   namespace: string
 ): boolean => {
   let hasErrors: boolean = false
@@ -95,11 +94,18 @@ export const validateUtbetalinger = (
   return hasErrors
 }
 
+interface ValidateSisteansettelsesforholdProps {
+  sisteansettelsesforhold: SisteAnsettelsesForhold |undefined
+  namespace: string
+}
+
 export const validateSisteansettelsesforhold = (
   v: Validation,
   t: TFunction,
-  sisteansettelsesforhold: SisteAnsettelsesForhold,
-  namespace: string
+  {
+    sisteansettelsesforhold,
+    namespace
+  }: ValidateSisteansettelsesforholdProps
 ) => {
   let hasErrors: boolean = false
   const _errors = validateUtbetalinger(v, t, sisteansettelsesforhold?.utbetalinger, namespace)

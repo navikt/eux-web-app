@@ -114,7 +114,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
       }
       _resetValidation(namespace + '-utbetalingType')
     } else {
-      let newUtbetaling = _.get(sisteAnsettelsesForhold, `utbetalinger[${index}]`)
+      const newUtbetaling = _.get(sisteAnsettelsesForhold, `utbetalinger[${index}]`)
       newUtbetaling.utbetalingType = newUtbetalingType
       if (newUtbetalingType !== 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet') {
         delete newUtbetaling.loennTilDato
@@ -317,12 +317,12 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
                 />
               )}
             </Column>
-            <Column/>
+            <Column />
           </AlignStartRow>
         )}
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <AlignStartRow>
-          <Column/>
+          <Column />
           <Column>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
@@ -336,7 +336,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
             />
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
       </>
     )
   }

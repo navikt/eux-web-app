@@ -9,7 +9,7 @@ export interface ValidationProsedyreVedUenighetGrunnProps {
   prosedyre_ved_uenighet: IProsedyreVedUenighet | undefined,
   index?: number
   namespace: string
-  personName?: string
+  formalName?: string
 }
 
 export const validateProsedyreVedUenighetGrunn = (
@@ -19,15 +19,15 @@ export const validateProsedyreVedUenighetGrunn = (
     grunn,
     prosedyre_ved_uenighet = {} as any,
     namespace,
-    personName
+    formalName
   }: ValidationProsedyreVedUenighetGrunnProps
 ): boolean => {
   let hasErrors: boolean = false
 
   if (_.isEmpty(grunn?.person)) {
     v[namespace + '-person'] = {
-      feilmelding: personName
-        ? t('message:validation-noPersonGivenForPerson', { person: personName })
+      feilmelding: formalName
+        ? t('message:validation-noPersonGivenForPerson', { person: formalName })
         : t('message:validation-noPersonGiven'),
       skjemaelementId: namespace + '-person'
     } as FeiloppsummeringFeil
@@ -36,8 +36,8 @@ export const validateProsedyreVedUenighetGrunn = (
 
   if (_.isEmpty(grunn?.grunn?.trim())) {
     v[namespace + '-grunn'] = {
-      feilmelding: personName
-        ? t('message:validation-noGrunnForPerson', { person: personName })
+      feilmelding: formalName
+        ? t('message:validation-noGrunnForPerson', { person: formalName })
         : t('message:validation-noGrunn'),
       skjemaelementId: namespace + '-grunn'
     } as FeiloppsummeringFeil
@@ -47,7 +47,7 @@ export const validateProsedyreVedUenighetGrunn = (
   const duplicate: boolean = Object.prototype.hasOwnProperty.call(prosedyre_ved_uenighet, grunn.grunn)
   if (duplicate) {
     v[namespace + '-grunn'] = {
-      feilmelding: t('message:validation-duplicateGrunnForPerson', { person: personName }),
+      feilmelding: t('message:validation-duplicateGrunnForPerson', { person: formalName }),
       skjemaelementId: namespace + '-grunn'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -55,12 +55,19 @@ export const validateProsedyreVedUenighetGrunn = (
   return hasErrors
 }
 
+interface ValidateProsedyreVedUenighetProps {
+  prosedyreVedUenighet: IProsedyreVedUenighet
+  namespace: string
+  formalName: string
+}
+
 export const validateProsedyreVedUenighet = (
   v: Validation,
-  t: TFunction,
-  prosedyreVedUenighet: IProsedyreVedUenighet = {},
-  namespace: string,
-  personName?: string
+  t: TFunction, {
+    prosedyreVedUenighet = {},
+    namespace,
+    formalName
+  }: ValidateProsedyreVedUenighetProps
 ): boolean => {
   let hasErrors: boolean = false
 
@@ -68,7 +75,7 @@ export const validateProsedyreVedUenighet = (
     !prosedyreVedUenighet.pensjon && !prosedyreVedUenighet.oppholdetsVarighet && !prosedyreVedUenighet.ansettelse
   ) {
     v[namespace + '-grunner'] = {
-      feilmelding: t('message:validation-noGrunnForPerson', { person: personName }),
+      feilmelding: t('message:validation-noGrunnForPerson', { person: formalName }),
       skjemaelementId: namespace + '-grunner'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -76,7 +83,7 @@ export const validateProsedyreVedUenighet = (
 
   if (prosedyreVedUenighet && prosedyreVedUenighet?.ytterligereGrunner && prosedyreVedUenighet?.ytterligereGrunner?.trim()?.length > 500) {
     v[namespace + '-ytterligereGrunner'] = {
-      feilmelding: t('message:validation-textOver500TilPerson', { person: personName }),
+      feilmelding: t('message:validation-textOver500TilPerson', { person: formalName }),
       skjemaelementId: namespace + '-ytterligereGrunner'
     } as FeiloppsummeringFeil
     hasErrors = true

@@ -83,7 +83,7 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
   }
 
   const setBekreftelsesgrunn = (bekreftelsesgrunn: string) => {
-    let newRettTilYtelse: RettTilYtelse = _.cloneDeep(rettTilYtelse) as RettTilYtelse
+    const newRettTilYtelse: RettTilYtelse = _.cloneDeep(rettTilYtelse) as RettTilYtelse
     newRettTilYtelse.bekreftelsesgrunn = bekreftelsesgrunn.trim()
     delete newRettTilYtelse.avvisningsgrunn
     dispatch(updateReplySed(target, newRettTilYtelse))
@@ -93,7 +93,7 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
   }
 
   const setAvvisningsGrunn = (avvisningsgrunn: string) => {
-    let newRettTilYtelse: RettTilYtelse = _.cloneDeep(rettTilYtelse) as RettTilYtelse
+    const newRettTilYtelse: RettTilYtelse = _.cloneDeep(rettTilYtelse) as RettTilYtelse
     newRettTilYtelse.avvisningsgrunn = avvisningsgrunn.trim()
     delete newRettTilYtelse.bekreftelsesgrunn
     dispatch(updateReplySed(target, newRettTilYtelse))

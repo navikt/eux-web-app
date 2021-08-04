@@ -3,25 +3,33 @@ import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
 
+interface ValidateKravOmRefusjonProps {
+  kravOmRefusjon: string | undefined,
+  namespace: string
+  formalName: string
+}
+
 export const validateKravOmRefusjon = (
   v: Validation,
   t: TFunction,
-  kravOmRefusjon: string | undefined,
-  namespace: string,
-  personName: string
+  {
+    kravOmRefusjon,
+    namespace,
+    formalName
+  }: ValidateKravOmRefusjonProps
 ): boolean => {
   let hasErrors: boolean = false
 
   if (_.isEmpty(kravOmRefusjon?.trim())) {
     v[namespace + '-krav'] = {
-      feilmelding: t('message:validation-noKravForPerson', { person: personName }),
+      feilmelding: t('message:validation-noKravForPerson', { person: formalName }),
       skjemaelementId: namespace + '-krav'
     } as FeiloppsummeringFeil
     hasErrors = true
   } else {
     if (kravOmRefusjon && kravOmRefusjon.length > 500) {
       v[namespace + '-krav'] = {
-        feilmelding: t('message:validation-textOver500TilPerson', { person: personName }),
+        feilmelding: t('message:validation-textOver500TilPerson', { person: formalName }),
         skjemaelementId: namespace + '-krav'
       } as FeiloppsummeringFeil
       hasErrors = true

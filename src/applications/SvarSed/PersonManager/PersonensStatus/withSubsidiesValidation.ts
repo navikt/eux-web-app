@@ -58,12 +58,20 @@ export const validateWithSubsidiesPeriode = (
   return hasErrors
 }
 
+interface ValidateWithSubsidiesPerioderProps {
+  perioder: Array<PensjonPeriode>
+  namespace: string
+  personName: string
+}
+
 export const validateWithSubsidiesPerioder = (
   v: Validation,
   t: TFunction,
-  perioder: Array<PensjonPeriode>,
-  namespace: string,
-  personName: string
+  {
+    perioder,
+    namespace,
+    personName
+  }: ValidateWithSubsidiesPerioderProps
 ): boolean => {
   let hasErrors: boolean = false
   perioder?.forEach((pensjonPeriode: PensjonPeriode, index: number) => {

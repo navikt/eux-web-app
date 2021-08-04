@@ -151,12 +151,20 @@ export const validateMotregning = (
   return hasErrors
 }
 
+interface ValidateMotregningerProps {
+  replySed: ReplySed
+  namespace: string
+  formalName: string
+}
+
 export const validateMotregninger = (
   v: Validation,
   t: TFunction,
-  replySed: ReplySed,
-  namespace: string,
-  formalName: string
+  {
+    replySed,
+    namespace,
+    formalName
+  }: ValidateMotregningerProps
 ): boolean => {
   let hasErrors: boolean = false;
 

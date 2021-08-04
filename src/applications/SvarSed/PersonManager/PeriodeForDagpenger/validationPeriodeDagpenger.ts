@@ -119,11 +119,18 @@ export const validatePeriodeDagpenger = (
   return hasErrors
 }
 
+interface ValidatePerioderDagpengerProps {
+  perioderDagpenger: Array<PeriodeDagpenger>
+  namespace: string
+}
+
 export const validatePerioderDagpenger = (
   validation: Validation,
   t: TFunction,
-  perioderDagpenger: Array<PeriodeDagpenger>,
-  namespace: string
+  {
+    perioderDagpenger,
+    namespace
+  }: ValidatePerioderDagpengerProps
 ): boolean => {
   let hasErrors: boolean = false
   perioderDagpenger?.forEach((periodeDagpenger: PeriodeDagpenger, index: number) => {
