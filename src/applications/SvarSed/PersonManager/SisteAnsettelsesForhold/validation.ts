@@ -29,22 +29,25 @@ export const validateUtbetaling = (
       skjemaelementId: namespace + idx + '-utbetalingType'
     } as FeiloppsummeringFeil
     hasErrors = true
-  }
+  } else {
 
-  if (_.isEmpty(utbetaling?.loennTilDato?.trim())) {
-    v[namespace + idx + '-loennTilDato'] = {
-      feilmelding: t('message:validation-noLoennTilDato'),
-      skjemaelementId: namespace + idx + '-loennTilDato'
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
+    if (utbetaling?.utbetalingType?.trim() === 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet'
+      && _.isEmpty(utbetaling?.loennTilDato?.trim())) {
+      v[namespace + idx + '-loennTilDato'] = {
+        feilmelding: t('message:validation-noLoennTilDato'),
+        skjemaelementId: namespace + idx + '-loennTilDato'
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
 
-  if (_.isEmpty(utbetaling?.feriedagerTilGode?.trim())) {
-    v[namespace + idx + '-feriedagerTilGode'] = {
-      feilmelding: t('message:validation-noFeriedagerTilGode'),
-      skjemaelementId: namespace + idx + '-feriedagerTilGode'
-    } as FeiloppsummeringFeil
-    hasErrors = true
+    if (utbetaling?.utbetalingType?.trim() === 'vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie'
+      && _.isEmpty(utbetaling?.feriedagerTilGode?.trim())) {
+      v[namespace + idx + '-feriedagerTilGode'] = {
+        feilmelding: t('message:validation-noFeriedagerTilGode'),
+        skjemaelementId: namespace + idx + '-feriedagerTilGode'
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
   }
 
   if (_.isEmpty(utbetaling?.beloep?.trim())) {

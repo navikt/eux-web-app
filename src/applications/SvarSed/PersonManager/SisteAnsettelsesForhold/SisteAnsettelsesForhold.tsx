@@ -72,7 +72,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
       _setNewBeloep(newBeløp.trim())
       _resetValidation(namespace + '-beloep')
     } else {
-      dispatch(updateReplySed(`${target}[${index}].beloep`, newBeløp.trim()))
+      dispatch(updateReplySed(`${target}.utbetalinger[${index}].beloep`, newBeløp.trim()))
       if (validation[namespace + getIdx(index) + '-beloep']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-beloep'))
       }
@@ -84,7 +84,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
       _setNewValuta(newValuta.value)
       _resetValidation(namespace + '-valuta')
     } else {
-      dispatch(updateReplySed(`${target}[${index}].valuta`, newValuta?.value))
+      dispatch(updateReplySed(`${target}.utbetalinger[${index}].valuta`, newValuta?.value))
       if (validation[namespace + getIdx(index) + '-valuta']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-valuta'))
       }
@@ -96,7 +96,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
       _setNewLoennTilDato(newLoennTilDato.trim())
       _resetValidation(namespace + '-loennTilDato')
     } else {
-      dispatch(updateReplySed(`${target}[${index}].loennTilDato`, newLoennTilDato.trim()))
+      dispatch(updateReplySed(`${target}.utbetalinger[${index}].loennTilDato`, newLoennTilDato.trim()))
       if (validation[namespace + getIdx(index) + '-loennTilDato']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-loennTilDato'))
       }
@@ -106,9 +106,23 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
   const setUtbetalingType = (newUtbetalingType: string, index: number) => {
     if (index < 0) {
       _setNewUtbetalingType(newUtbetalingType.trim())
+      if (newUtbetalingType !== 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet') {
+        _setNewLoennTilDato('')
+      }
+      if (newUtbetalingType !== 'vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie') {
+        _setNewFeriedagerTilGode('')
+      }
       _resetValidation(namespace + '-utbetalingType')
     } else {
-      dispatch(updateReplySed(`${target}[${index}].utbetalingType`, newUtbetalingType.trim()))
+      let newUtbetaling = _.get(sisteAnsettelsesForhold, `utbetalinger[${index}]`)
+      newUtbetaling.utbetalingType = newUtbetalingType
+      if (newUtbetalingType !== 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet') {
+        delete newUtbetaling.loennTilDato
+      }
+      if (newUtbetalingType !== 'vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie') {
+        delete newUtbetaling.feriedagerTilGode
+      }
+      dispatch(updateReplySed(`${target}.utbetalinger[${index}]`, newUtbetaling))
       if (validation[namespace + getIdx(index) + '-utbetalingType']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-utbetalingType'))
       }
@@ -120,7 +134,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
       _setNewFeriedagerTilGode(newFeriedagerTilGode.trim())
       _resetValidation(namespace + '-feriedagerTilGode')
     } else {
-      dispatch(updateReplySed(`${target}[${index}].feriedagerTilGode`, newFeriedagerTilGode.trim()))
+      dispatch(updateReplySed(`${target}.utbetalinger[${index}].feriedagerTilGode`, newFeriedagerTilGode.trim()))
       if (validation[namespace + getIdx(index) + '-feriedagerTilGode']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-feriedagerTilGode'))
       }
@@ -163,7 +177,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
   }
 
   const onRemove = (index: number) => {
-    const newUtbetalinger: Array<Utbetaling> = _.cloneDeep(sisteAnsettelsesForhold.utbetalinger)
+    const newUtbetalinger: Array<Utbetaling> = _.cloneDeep(sisteAnsettelsesForhold?.utbetalinger)
     const deletedUtbetalinger: Array<Utbetaling> = newUtbetalinger.splice(index, 1)
     if (deletedUtbetalinger && deletedUtbetalinger.length > 0) {
       removeFromDeletion(deletedUtbetalinger[0])
@@ -185,7 +199,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
       namespace: namespace
     })
     if (valid) {
-      let newUtbetalinger: Array<Utbetaling> = _.cloneDeep(sisteAnsettelsesForhold.utbetalinger)
+      let newUtbetalinger: Array<Utbetaling> = _.cloneDeep(sisteAnsettelsesForhold?.utbetalinger)
       if (_.isNil(newUtbetalinger)) {
         newUtbetalinger = []
       }
@@ -219,6 +233,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
               data-no-border
               data-test-id={namespace + '-utbetalingType'}
               feil={getErrorFor(index, 'utbetalingType')}
+              key={namespace + '-utbetalingType-' + (index < 0 ? _newUtbetalingType : utbetaling?.utbetalingType ?? '')}
               id={namespace + '-utbetalingType'}
               name={namespace + '-utbetalingType'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUtbetalingType(e.target.value, index)}
@@ -229,7 +244,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
                 },
                 {
                   label: t('el:option-typebeløp-2'),
-                  value: 'vederlag_for_ferie_som_ikke_er_tatt_ut_(årlig_ferie)'
+                  value: 'vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie'
                 },
                 {
                   label: t('el:option-typebeløp-3'),
@@ -248,7 +263,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
           <Column>
             <Input
               type='number'
-              feil={getErrorFor(index, 'beløp')}
+              feil={getErrorFor(index, 'beloep')}
               namespace={namespace}
               id='beloep'
               key={'beloep-' + (index < 0 ? _newBeloep : utbetaling?.beloep ?? '')}
@@ -290,7 +305,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
                   value={utbetaling?.loennTilDato}
                 />
               )}
-              {(index < 0 ? _newUtbetalingType : utbetaling?.utbetalingType) === 'vederlag_for_ferie_som_ikke_er_tatt_ut_(årlig_ferie)' && (
+              {(index < 0 ? _newUtbetalingType : utbetaling?.utbetalingType) === 'vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie' && (
                 <Input
                   type='number'
                   feil={getErrorFor(index, 'feriedagerTilGode')}
@@ -302,20 +317,26 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
                 />
               )}
             </Column>
-            <Column>
-              <AddRemovePanel
-                candidateForDeletion={candidateForDeletion}
-                existingItem={(index >= 0)}
-                marginTop
-                onBeginRemove={() => addToDeletion(utbetaling)}
-                onConfirmRemove={() => onRemove(index)}
-                onCancelRemove={() => removeFromDeletion(utbetaling)}
-                onAddNew={onAdd}
-                onCancelNew={onCancel}
-              />
-            </Column>
+            <Column/>
           </AlignStartRow>
         )}
+        <VerticalSeparatorDiv/>
+        <AlignStartRow>
+          <Column/>
+          <Column>
+            <AddRemovePanel
+              candidateForDeletion={candidateForDeletion}
+              existingItem={(index >= 0)}
+              marginTop
+              onBeginRemove={() => addToDeletion(utbetaling)}
+              onConfirmRemove={() => onRemove(index)}
+              onCancelRemove={() => removeFromDeletion(utbetaling)}
+              onAddNew={onAdd}
+              onCancelNew={onCancel}
+            />
+          </Column>
+        </AlignStartRow>
+        <VerticalSeparatorDiv/>
       </>
     )
   }
@@ -392,7 +413,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
               feil={validation[namespace + '-opphoerYtelse']?.feilmelding}
               namespace={namespace}
               id='opphoerYtelse'
-              label={t('label:opphoer-ytelser')}
+              label={t('label:opphoer-ytelse')}
               onChanged={setOpphoerYtelse}
               value={sisteAnsettelsesForhold?.opphoerYtelse}
             />

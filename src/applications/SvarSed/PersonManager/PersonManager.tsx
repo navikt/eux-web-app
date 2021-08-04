@@ -461,7 +461,7 @@ const PersonManager: React.FC = () => {
     )
   }
 
-  const handleEvent = (e: any) => {
+  const handleFeilLenke = (e: any) => {
     const feil: FeiloppsummeringFeil = e.detail
     const namespaceBits = feil.skjemaelementId.split('-')
     if (namespaceBits[0] === namespace) {
@@ -481,15 +481,26 @@ const PersonManager: React.FC = () => {
     }
   }
 
+  const handleTilbake = () => {
+    setPreviousMenu(undefined)
+    setCurrentMenu(totalPeopleNr === 1 ? 'bruker' : undefined)
+    setFocusedMenu(totalPeopleNr === 1 ? 'bruker' : undefined)
+    setCurrentMenuLabel(undefined)
+    setPreviousMenuOption(undefined)
+    setCurrentMenuOption(totalPeopleNr === 1 ? (isFSed(replySed) ? 'personopplysninger' : 'person') : undefined)
+  }
+
   useEffect(() => {
-    document.addEventListener('feillenke', handleEvent)
+    document.addEventListener('feillenke', handleFeilLenke)
+    document.addEventListener('tilbake', handleTilbake)
     return () => {
-      document.removeEventListener('feillenke', handleEvent)
+      document.removeEventListener('feillenke', handleFeilLenke)
+      document.removeEventListener('tilbake', handleTilbake)
     }
   }, [])
 
   return (
-    <PileDiv>
+    <PileDiv key={replySed.sedType}>
       {_seeNewPersonModal && (
         <AddPersonModal
           parentNamespace={namespace}

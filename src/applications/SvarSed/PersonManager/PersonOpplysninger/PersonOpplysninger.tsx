@@ -7,7 +7,7 @@ import Search from 'assets/icons/Search'
 import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import { State } from 'declarations/reducers'
-import { PersonInfo, Pin } from 'declarations/sed'
+import { Kjoenn, PersonInfo, Pin } from 'declarations/sed'
 import { Kodeverk, Person } from 'declarations/types'
 import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
@@ -16,6 +16,7 @@ import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
+  FlexCenterDiv,
   HighContrastFlatknapp,
   HighContrastKnapp,
   HighContrastRadioPanelGroup,
@@ -87,6 +88,44 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
     dispatch(updateReplySed(`${target}.kjoenn`, newKjoenn.trim()))
     if (validation[namespace + '-kjoenn']) {
       dispatch(resetValidation(namespace + '-kjoenn'))
+    }
+  }
+
+  const onFillOutPerson = (searchedPerson: Person) => {
+    const newPersonInfo = _.cloneDeep(personInfo)
+    if (searchedPerson.fnr) {
+      let index = _.findIndex(newPersonInfo.pin, p => p.land === 'NO')
+      if (index >= 0) {
+        newPersonInfo.pin[index].identifikator = searchedPerson.fnr
+      }
+    }
+    if (searchedPerson.fdato) {
+      newPersonInfo.foedselsdato = searchedPerson.fdato
+    }
+    if (searchedPerson.fornavn) {
+      newPersonInfo.fornavn = searchedPerson.fornavn
+    }
+    if (searchedPerson.etternavn) {
+      newPersonInfo.etternavn = searchedPerson.etternavn
+    }
+    if (searchedPerson.kjoenn) {
+      newPersonInfo.kjoenn = searchedPerson.kjoenn as Kjoenn
+    }
+    dispatch(updateReplySed(target, newPersonInfo))
+    if (validation[namespace + '-fornavn']) {
+      dispatch(resetValidation(namespace + '-fornavn'))
+    }
+    if (validation[namespace + '-etternavn']) {
+      dispatch(resetValidation(namespace + '-etternavn'))
+    }
+    if (validation[namespace + '-kjoenn']) {
+      dispatch(resetValidation(namespace + '-kjoenn'))
+    }
+    if (validation[namespace + '-foedselsdato']) {
+      dispatch(resetValidation(namespace + '-foedselsdato'))
+    }
+    if (validation[namespace + '-norskpin-nummer']) {
+      dispatch(resetValidation(namespace + '-norskpin-nummer'))
     }
   }
 
@@ -266,6 +305,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
           <Input
             feil={validation[namespace + '-norskpin-nummer']?.feilmelding}
             id='norskpin-nummer'
+            key={namespace + '-norskpin-nummer-' + norwegianPin?.identifikator}
             label={t('label:norsk-fnr')}
             namespace={namespace}
             onChanged={onNorwegianPinChange}
@@ -288,16 +328,23 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
         </Column>
         <Column />
       </AlignStartRow>
-      <VerticalSeparatorDiv size='0.5' />
+      <VerticalSeparatorDiv/>
       <AlignStartRow>
         <Column>
           {searchedPerson
             ? (
+              <FlexCenterDiv>
               <Normaltekst>
-                {_.get(replySed, `${personID}.personInfo.fornavn`) + ' ' +
-                 _.get(replySed, `${personID}.personInfo.etternavn`) + ' (' +
-                 _.get(replySed, `${personID}.personInfo.kjoenn`) + ')'}
+                {searchedPerson.fornavn + ' ' + searchedPerson.etternavn + ' (' + searchedPerson.kjoenn + ')'}
               </Normaltekst>
+              <HorizontalSeparatorDiv/>
+              <HighContrastKnapp
+                mini kompakt
+                onClick={() => onFillOutPerson(searchedPerson)}
+                >
+                {t('label:fill-in-person-data')}
+              </HighContrastKnapp>
+              </FlexCenterDiv>
               )
             : (
               <Normaltekst>

@@ -165,6 +165,8 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   const onGoBackClick = () => {
     if (mode === 'editor') {
       setMode('selection', 'back')
+      document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
+
     }
   }
 
