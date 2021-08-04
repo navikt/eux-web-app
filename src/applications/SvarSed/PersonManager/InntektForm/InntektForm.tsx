@@ -68,7 +68,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
     validation
   } = useSelector<State, InntektFormSelector>(mapState)
   const dispatch = useDispatch()
-  const target = 'xxxinntekt'
+  const target = 'loennsopplysninger'
   const loennsopplysninger: Array<Loennsopplysning> = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-inntekt`
 

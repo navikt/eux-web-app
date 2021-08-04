@@ -4,7 +4,7 @@ import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/
 import classNames from 'classnames'
 import Period from 'components/Period/Period'
 import { State } from 'declarations/reducers'
-import { Periode } from 'declarations/sed'
+import { JaNei, Periode, RettTilYtelse } from 'declarations/sed'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
 import {
@@ -17,7 +17,7 @@ import {
   PileDiv,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -36,51 +36,69 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
     validation
   } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
-  // TODO this
-  const target = 'xxxretttilytelser'
-  const xxx: any = _.get(replySed, target)
+  const target = 'rettTilYtelse'
+  const rettTilYtelse: RettTilYtelse | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-retttilytelser`
 
+  const [_rettTilStonad, _setRettTilStonad] = useState<JaNei | undefined>(() => {
+    if (!_.isEmpty(rettTilYtelse?.bekreftelsesgrunn)) {
+      return 'ja'
+    }
+    if (!_.isEmpty(rettTilYtelse?.avvisningsgrunn)) {
+      return 'nei'
+    }
+    return undefined
+  })
+
   const setStartDato = (startdato: string) => {
-    dispatch(updateReplySed(`${target}.startdato`, startdato.trim()))
-    if (validation[namespace + '-startdato']) {
-      dispatch(resetValidation(namespace + '-startdato'))
+    dispatch(updateReplySed(`${target}.periode.startdato`, startdato.trim()))
+    if (validation[namespace + '-periode-startdato']) {
+      dispatch(resetValidation(namespace + '-periode-startdato'))
     }
   }
 
   const setSluttDato = (sluttdato: string) => {
-    const newAnmodningsperiode: Periode = _.cloneDeep(xxx)
-    if (sluttdato === '') {
-      delete newAnmodningsperiode.sluttdato
-      newAnmodningsperiode.aapenPeriodeType = 'åpen_sluttdato'
-    } else {
-      delete newAnmodningsperiode.aapenPeriodeType
-      newAnmodningsperiode.sluttdato = sluttdato.trim()
+    let newRettTilYtelse: Periode | undefined = _.cloneDeep(rettTilYtelse?.periode)
+    if (!newRettTilYtelse) {
+      newRettTilYtelse = {} as Periode
     }
-    dispatch(updateReplySed(target, newAnmodningsperiode))
-    if (validation[namespace + '-sluttdato']) {
-      dispatch(resetValidation(namespace + '-sluttdato'))
+    if (sluttdato === '') {
+      delete newRettTilYtelse.sluttdato
+      newRettTilYtelse.aapenPeriodeType = 'åpen_sluttdato'
+    } else {
+      delete newRettTilYtelse.aapenPeriodeType
+      newRettTilYtelse.sluttdato = sluttdato.trim()
+    }
+    dispatch(updateReplySed(`${target}.periode`, newRettTilYtelse))
+    if (validation[namespace + '-periode-sluttdato']) {
+      dispatch(resetValidation(namespace + '-periode-sluttdato'))
     }
   }
 
-  const setRettTilStonad = (rettTilStand: string) => {
-    dispatch(updateReplySed(`${target}.rettTilStonad`, rettTilStand.trim()))
+  const setRettTilStonad = (rettTilStonad: JaNei) => {
+    _setRettTilStonad(rettTilStonad)
     if (validation[namespace + '-retttilstonad']) {
       dispatch(resetValidation(namespace + '-retttilstonad'))
     }
   }
 
-  const setArtikkelNummer = (artikkelNummer: string) => {
-    dispatch(updateReplySed(`${target}.artikkelNummer`, artikkelNummer.trim()))
-    if (validation[namespace + '-artikkelnummer']) {
-      dispatch(resetValidation(namespace + '-artikkelnummer'))
+  const setBekreftelsesgrunn = (bekreftelsesgrunn: string) => {
+    let newRettTilYtelse: RettTilYtelse = _.cloneDeep(rettTilYtelse) as RettTilYtelse
+    newRettTilYtelse.bekreftelsesgrunn = bekreftelsesgrunn.trim()
+    delete newRettTilYtelse.avvisningsgrunn
+    dispatch(updateReplySed(target, newRettTilYtelse))
+    if (validation[namespace + '-bekreftelsesgrunn']) {
+      dispatch(resetValidation(namespace + '-bekreftelsesgrunn'))
     }
   }
 
-  const setGrunn = (grunn: string) => {
-    dispatch(updateReplySed(`${target}.grunn`, grunn.trim()))
-    if (validation[namespace + '-grunn']) {
-      dispatch(resetValidation(namespace + '-grunn'))
+  const setAvvisningsGrunn = (avvisningsgrunn: string) => {
+    let newRettTilYtelse: RettTilYtelse = _.cloneDeep(rettTilYtelse) as RettTilYtelse
+    newRettTilYtelse.avvisningsgrunn = avvisningsgrunn.trim()
+    delete newRettTilYtelse.bekreftelsesgrunn
+    dispatch(updateReplySed(target, newRettTilYtelse))
+    if (validation[namespace + '-avvisningsgrunn']) {
+      dispatch(resetValidation(namespace + '-avvisningsgrunn'))
     }
   }
 
@@ -97,6 +115,7 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
             className={classNames('slideInFromLeft')}
             data-test-id={namespace + '-retttilstønad'}
             legend={t('label:rett-til-stønad') + ' *'}
+            key={'rett-til-stonad-' + _rettTilStonad}
             feil={validation[namespace + '-retttilstønad']?.feilmelding}
           >
             <VerticalSeparatorDiv size='0.5' />
@@ -104,14 +123,14 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
               <HorizontalSeparatorDiv size='0.2' />
               <HighContrastRadio
                 name={namespace + '-retttilstønad'}
-                checked={xxx?.rettTilStonad === 'ja'}
+                checked={_rettTilStonad === 'ja'}
                 label={t('label:ja')}
                 onClick={() => setRettTilStonad('ja')}
               />
               <HorizontalSeparatorDiv size='2' />
               <HighContrastRadio
                 name={namespace + '-retttilstønad'}
-                checked={xxx?.rettTilStonad === 'nei'}
+                checked={_rettTilStonad === 'nei'}
                 label={t('label:nei')}
                 onClick={() => setRettTilStonad('nei')}
               />
@@ -120,62 +139,64 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />
-      {xxx?.rettTilStonad === 'ja' && (
+      {_rettTilStonad === 'ja' && (
         <AlignStartRow>
           <Column>
             <HighContrastRadioGroup
-              id={namespace + '-artikkelNummer'}
+              id={namespace + '-bekreftelsesgrunn'}
               className={classNames('slideInFromLeft')}
-              data-test-id={namespace + '-artikkelnummer'}
+              data-test-id={namespace + '-bekreftelsesgrunn'}
               legend={t('label:artikkelnummer') + ' *'}
-              feil={validation[namespace + '-artikkelnummer']?.feilmelding}
+              key={'bekreftelsesgrunn-' + rettTilYtelse?.bekreftelsesgrunn}
+              feil={validation[namespace + '-bekreftelsesgrunn']?.feilmelding}
             >
               <VerticalSeparatorDiv size='0.5' />
               <PileDiv>
                 <HorizontalSeparatorDiv size='0.2' />
                 <HighContrastRadio
-                  name={namespace + '-artikkelnummer'}
-                  checked={xxx?.artikkelnummer === 'ja'}
+                  name={namespace + '-bekreftelsesgrunn'}
+                  checked={rettTilYtelse?.bekreftelsesgrunn === 'artikkel_64_i_forordningen_EF_nr._883/2004'}
                   label={t('label:artikkel-64')}
-                  onClick={() => setArtikkelNummer('ja')}
+                  onClick={() => setBekreftelsesgrunn('artikkel_64_i_forordningen_EF_nr._883/2004')}
                 />
                 <HorizontalSeparatorDiv size='2' />
                 <HighContrastRadio
-                  name={namespace + '-artikkelnummer'}
-                  checked={xxx?.artikkelnummer === 'nei'}
+                  name={namespace + '-bekreftelsesgrunn'}
+                  checked={rettTilYtelse?.bekreftelsesgrunn === 'artikkel_65_1_i_forordningen_EF_nr._883/2004'}
                   label={t('label:artikkel-65')}
-                  onClick={() => setArtikkelNummer('nei')}
+                  onClick={() => setBekreftelsesgrunn('artikkel_65_1_i_forordningen_EF_nr._883/2004')}
                 />
               </PileDiv>
             </HighContrastRadioGroup>
           </Column>
         </AlignStartRow>
       )}
-      {xxx?.rettTilStonad === 'nei' && (
+      {_rettTilStonad === 'nei' && (
         <AlignStartRow>
           <Column>
             <HighContrastRadioGroup
-              id={namespace + '-grunn'}
+              id={namespace + '-avvisningsgrunn'}
               className={classNames('slideInFromLeft')}
-              data-test-id={namespace + '-grunn'}
+              data-test-id={namespace + '-avvisningsgrunn'}
               legend={t('label:grunn') + ' *'}
-              feil={validation[namespace + '-grunn']?.feilmelding}
+              key={'avvisningsgrunn-' + rettTilYtelse?.avvisningsgrunn}
+              feil={validation[namespace + '-avvisningsgrunn']?.feilmelding}
             >
               <VerticalSeparatorDiv size='0.5' />
               <PileDiv>
                 <HorizontalSeparatorDiv size='0.2' />
                 <HighContrastRadio
-                  name={namespace + '-grunn'}
-                  checked={xxx?.grunn === 'grunn-1'}
+                  name={namespace + '-avvisningsgrunn'}
+                  checked={rettTilYtelse?.avvisningsgrunn === 'ingen_rett_til_stønad_i_henhold_til_lovgivningen_til_institusjonen_som_utsteder_denne_meldingen'}
                   label={t('label:grunn-ingen-rett')}
-                  onClick={() => setGrunn('grunn-1')}
+                  onClick={() => setAvvisningsGrunn('ingen_rett_til_stønad_i_henhold_til_lovgivningen_til_institusjonen_som_utsteder_denne_meldingen')}
                 />
                 <HorizontalSeparatorDiv size='2' />
                 <HighContrastRadio
-                  name={namespace + '-artikkelnummer'}
-                  checked={xxx?.grunn === 'grunn-2'}
+                  name={namespace + '-avvisningsgrunn'}
+                  checked={rettTilYtelse?.avvisningsgrunn === 'personen_søkte_ikke_om_eksport_av_stønad_på_riktig_måte'}
                   label={t('label:grunn-personen')}
-                  onClick={() => setGrunn('grunn-2')}
+                  onClick={() => setAvvisningsGrunn('personen_søkte_ikke_om_eksport_av_stønad_på_riktig_måte')}
                 />
               </PileDiv>
             </HighContrastRadioGroup>
@@ -185,14 +206,14 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Period
-          key={'' + xxx?.startdato + xxx?.sluttdato}
+          key={'' + rettTilYtelse?.periode?.startdato + rettTilYtelse?.periode?.sluttdato}
           namespace={namespace}
-          errorStartDato={validation[namespace + '-startdato']?.feilmelding}
-          errorSluttDato={validation[namespace + '-sluttdato']?.feilmelding}
+          errorStartDato={validation[namespace + '-periode-startdato']?.feilmelding}
+          errorSluttDato={validation[namespace + '-periode-sluttdato']?.feilmelding}
           setStartDato={setStartDato}
           setSluttDato={setSluttDato}
-          valueStartDato={xxx?.startdato ?? ''}
-          valueSluttDato={xxx?.sluttdato ?? ''}
+          valueStartDato={rettTilYtelse?.periode?.startdato ?? ''}
+          valueSluttDato={rettTilYtelse?.periode?.sluttdato ?? ''}
         />
         <Column />
       </AlignStartRow>

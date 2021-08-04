@@ -90,7 +90,6 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
 
   const cleanReplySed = (replySed: any) => {
     delete replySed.xxxretttilytelser
-    delete replySed.xxxinntekt
   }
 
   const sendReplySed = (): void => {

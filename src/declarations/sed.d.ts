@@ -324,6 +324,12 @@ export interface Loennsopplysning {
   arbeidstimer?: string
 }
 
+export interface RettTilYtelse {
+  bekreftelsesgrunn?: string
+  periode: Periode
+  avvisningsgrunn?: string
+}
+
 export interface BaseReplySed {
   bruker: Person
   sedType: string
@@ -431,9 +437,8 @@ export interface U002Sed extends USed {
   perioderMilitaertjeneste?: Array<PeriodeMilitaertjeneste>
   perioderAnnenForsikring?: Array<PeriodeAnnenForsikring>
   perioderDagpenger:Array<PeriodeDagpenger>
-
   grunntilopphor?: GrunnTilOpphør
-  xxxsisteAnsettelsesForhold?: XXXSisteAnsettelsesForhold
+  sisteAnsettelsesForhold?: SisteAnsettelsesForhold
 }
 
 export interface U004Sed extends USed {
@@ -441,11 +446,7 @@ export interface U004Sed extends USed {
 }
 
 export interface U017Sed extends U002Sed {
-  rettTilYtelse?: {
-    bekreftelsesgrunn: string
-    periode: Periode
-    avvisningsgrunn: string
-  }
+  rettTilYtelse?: RettTilYtelse
 }
 
 export interface HSed extends BaseReplySed {
