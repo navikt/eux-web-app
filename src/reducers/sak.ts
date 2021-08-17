@@ -59,6 +59,7 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
         arbeidsperioder: action.payload
       }
 
+    case types.SAK_FAGSAKER_RESET:
     case types.SAK_FAGSAKER_GET_REQUEST:
       return {
         ...state,
@@ -75,12 +76,6 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
       return {
         ...state,
         fagsaker: null
-      }
-
-    case types.SAK_FAGSAKER_RESET:
-      return {
-        ...state,
-        fagsaker: undefined
       }
 
     case types.SAK_INSTITUSJONER_GET_SUCCESS:

@@ -458,6 +458,7 @@ export interface HSed extends BaseReplySed {
   negativeSvar: HSvar
   ytterligereInfo: string
   tema?: string
+  fagsakId?: string
 }
 
 export interface H002Sed extends HSed {}

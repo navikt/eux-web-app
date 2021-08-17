@@ -2,8 +2,9 @@ import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { SvarPaSedMode } from 'declarations/app'
 import { ReplySed } from 'declarations/sed'
-import { ConnectedSed, UpdateReplySedPayload } from 'declarations/types'
+import { ConnectedSed, FagSaker, UpdateReplySedPayload } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
+import mockFagsakerList from 'mocks/fagsakerList'
 import mockReplySed from 'mocks/replySed'
 import mockConnectedReplySeds from 'mocks/connectedReplySeds'
 import { Action, ActionCreator } from 'redux'
@@ -34,6 +35,21 @@ export const createSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
     body: copyReplySed
   })
 }
+
+export const getFagsaker: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>> = (
+  fnr: string, sektor: string, tema: string
+): ThunkResult<ActionWithPayload<FagSaker>> => {
+  return call({
+    url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr: fnr, sektor: sektor, tema: tema }),
+    expectedPayload: mockFagsakerList({ fnr: fnr, sektor: sektor, tema: tema }),
+    type: {
+      request: types.SVARPASED_FAGSAKER_GET_REQUEST,
+      success: types.SVARPASED_FAGSAKER_GET_SUCCESS,
+      failure: types.SVARPASED_FAGSAKER_GET_FAILURE
+    }
+  })
+}
+
 
 export const getPreviewFile = (rinaSakId: string, replySed: ReplySed) => {
   return call({

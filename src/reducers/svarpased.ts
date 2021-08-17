@@ -1,12 +1,13 @@
 import * as types from 'constants/actionTypes'
 import { SvarPaSedMode } from 'declarations/app'
 import { ReplySed } from 'declarations/sed.d'
-import { Seds } from 'declarations/types.d'
+import { FagSaker, Seds } from 'declarations/types.d'
 import { ActionWithPayload } from 'js-fetch-api'
 import _ from 'lodash'
 import { Action } from 'redux'
 
 export interface SvarpasedState {
+  fagsaker: FagSaker | null | undefined
   mode: SvarPaSedMode
   parentSed: string | undefined
   personRelatert: any
@@ -18,6 +19,7 @@ export interface SvarpasedState {
 }
 
 export const initialSvarpasedState: SvarpasedState = {
+  fagsaker: undefined,
   mode: 'selection' as SvarPaSedMode,
   parentSed: undefined,
   personRelatert: undefined,
@@ -33,6 +35,26 @@ const svarpasedReducer = (
   action: Action | ActionWithPayload = { type: '', payload: undefined }
 ) => {
   switch (action.type) {
+
+    case types.SVARPASED_FAGSAKER_RESET:
+    case types.SVARPASED_FAGSAKER_GET_REQUEST:
+      return {
+        ...state,
+        fagsaker: undefined
+      }
+
+    case types.SVARPASED_FAGSAKER_GET_SUCCESS:
+      return {
+        ...state,
+        fagsaker: (action as ActionWithPayload).payload
+      }
+
+    case types.SVARPASED_FAGSAKER_GET_FAILURE:
+      return {
+        ...state,
+        fagsaker: null
+      }
+
     case types.SVARPASED_MODE_SET:
       return {
         ...state,

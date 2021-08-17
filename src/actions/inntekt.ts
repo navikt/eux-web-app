@@ -8,10 +8,10 @@ import { ActionCreator } from 'redux'
 const sprintf = require('sprintf-js').sprintf
 
 export const fetchInntekt: ActionCreator<ThunkResult<ActionWithPayload<IInntekter>>> = (
-  fnr: string, fom?: string, tom?: string
+  fnr: string, fom?: string, tom?: string, inntektsliste?: string
 ): ThunkResult<ActionWithPayload<IInntekter>> => {
   return call({
-    url: fom ? sprintf(urls.API_INNTEKT_FOM_TOM_URL, { fnr, fom, tom }) : sprintf(urls.API_INNTEKT_URL, { fnr }),
+    url: sprintf(urls.API_INNTEKT_FOM_TOM_URL, { fnr, fom: fom ?? '', tom: tom ?? '', inntektsliste: inntektsliste ?? '' }),
     expectedPayload: mockInntekt,
     type: {
       request: types.INNTEKT_GET_REQUEST,

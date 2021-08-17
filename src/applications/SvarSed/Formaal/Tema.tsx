@@ -1,28 +1,34 @@
-import { updateReplySed } from 'actions/svarpased'
+import { getFagsaker, updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
 import Edit from 'assets/icons/Edit'
 import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { HSed, ReplySed } from 'declarations/sed'
-import { Validation } from 'declarations/types'
+import { FagSak, FagSaker, Validation } from 'declarations/types'
 import _ from 'lodash'
+import NavFrontendSpinner from 'nav-frontend-spinner'
 import { Column, FlexBaseDiv, HighContrastFlatknapp, HorizontalSeparatorDiv, Row } from 'nav-hoykontrast'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { OptionTypeBase } from 'react-select'
+import { getFnr } from 'utils/fnr'
 
 interface TemaSelector {
   highContrast: boolean
   replySed: ReplySed | undefined
   validation: Validation
+  gettingFagsaker: boolean
+  fagsaker: FagSaker | null | undefined
 }
 
 const mapState = (state: State): TemaSelector => ({
   highContrast: state.ui.highContrast,
   replySed: state.svarpased.replySed,
-  validation: state.validation.status
+  validation: state.validation.status,
+  gettingFagsaker: state.loading.gettingFagsaker,
+  fagsaker: state.svarpased.fagsaker
 })
 
 const Tema: React.FC = () => {
@@ -30,12 +36,16 @@ const Tema: React.FC = () => {
   const {
     highContrast,
     replySed,
-    validation
+    validation,
+    gettingFagsaker,
+    fagsaker
   }: any = useSelector<State, TemaSelector>(mapState)
   const dispatch = useDispatch()
   const namespace: string = 'editor-tema'
   const [_tema, setTema] = useState<string | undefined>(() => (replySed as HSed).tema)
+  const [_fagsak, setFagsak] = useState<string | undefined>(() => (replySed as HSed).fagsakId)
   const [editMode, setEditMode] = useState<boolean>(false)
+  const fnr = getFnr(replySed)
 
   const temaOptions: Options = [
     { label: t('tema:GEN'), value: 'GEN' },
@@ -61,6 +71,7 @@ const Tema: React.FC = () => {
 
   const onSaveChangesClicked = () => {
     dispatch(updateReplySed('tema', _tema))
+    dispatch(updateReplySed('fagsakId', _fagsak))
     setEditMode(false)
   }
 
@@ -69,14 +80,34 @@ const Tema: React.FC = () => {
       dispatch(resetValidation(namespace))
     }
     setTema(o.value)
+    dispatch(getFagsaker(  fnr, 'HZ', o.value))
+  }
+
+  const onSakIDChange = (o: OptionTypeBase): void => {
+    if (validation[namespace + '-fagsak']) {
+      dispatch(resetValidation(namespace + '-fagsak'))
+    }
+    setFagsak(o.value)
   }
 
   const onCancelChangesClicked = () => setEditMode(false)
 
   const onEditModeClicked = () => setEditMode(true)
 
+  const fagsakIdOptions: Options = fagsaker?.map((f: FagSak) => ({
+    value: f.saksID,
+      label: f.sakstype
+  })) ?? []
+
+  useEffect(() => {
+    if (fagsaker === undefined && !gettingFagsaker && !_.isEmpty(_tema)) {
+      dispatch(getFagsaker(  fnr, 'HZ', _tema))
+    }
+  }, [fagsaker, gettingFagsaker, _tema])
+
   return (
-    <Row>
+
+      <Row>
       <Column>
         <FlexBaseDiv id='editor-tema' className={namespace}>
           <label
@@ -87,13 +118,11 @@ const Tema: React.FC = () => {
             {t('label:tema')}:
           </label>
           <HorizontalSeparatorDiv size='0.35' />
-
           {!editMode
             ? _tema
                 ? t('tema:' + (replySed as HSed).tema)
                 : t('label:ukjent')
             : (
-              <>
                 <Select
                   defaultValue={_.find(temaOptions, { value: _tema })}
                   feil={validation[namespace]?.feilmelding}
@@ -105,24 +134,58 @@ const Tema: React.FC = () => {
                   selectedValue={_.find(temaOptions, { value: _tema })}
                   style={{ minWidth: '300px' }}
                 />
-                <HorizontalSeparatorDiv size='0.5' />
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
-                  onClick={onSaveChangesClicked}
-                >
-                  {t('el:button-save')}
-                </HighContrastFlatknapp>
-                <HorizontalSeparatorDiv size='0.5' />
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
-                  onClick={onCancelChangesClicked}
-                >
-                  {t('el:button-cancel')}
-                </HighContrastFlatknapp>
-              </>
-              )}
+              )
+            }
+            <HorizontalSeparatorDiv size='0.5' />
+            <label
+              htmlFor={namespace}
+              className='skjemaelement__label'
+              style={{ margin: '0px' }}
+            >
+              {t('label:fagsak')}:
+            </label>
+          <HorizontalSeparatorDiv size='0.35' />
+          {!editMode
+            ? _fagsak
+              ? _.find(fagsakIdOptions, { value: _fagsak })?.label ?? _fagsak
+              : t('label:ukjent')
+            : (
+              <>
+                {gettingFagsaker ? <NavFrontendSpinner/> : (
+                  <Select
+                    defaultValue={_.find(fagsakIdOptions, { value: _fagsak })}
+                    feil={validation[namespace + '-fagsak']?.feilmelding}
+                    highContrast={highContrast}
+                    key={namespace + '-' + _fagsak + '-select'}
+                    id={namespace + '-fagsak-select'}
+                    onChange={onSakIDChange}
+                    options={fagsakIdOptions}
+                    selectedValue={_.find(fagsakIdOptions, { value: _fagsak })}
+                    style={{ minWidth: '300px' }}
+                  />
+                )}
+                </>
+            )}
+          {editMode && (
+            <>
+            <HorizontalSeparatorDiv size='0.5' />
+            <HighContrastFlatknapp
+              mini
+              kompakt
+              onClick={onSaveChangesClicked}
+            >
+              {t('el:button-save')}
+            </HighContrastFlatknapp>
+            <HorizontalSeparatorDiv size='0.5' />
+            <HighContrastFlatknapp
+              mini
+              kompakt
+              onClick={onCancelChangesClicked}
+            >
+              {t('el:button-cancel')}
+            </HighContrastFlatknapp>
+            </>
+          )}
           {!editMode && validation[namespace]?.feilmelding && (
             <>
               <HorizontalSeparatorDiv />
@@ -148,6 +211,7 @@ const Tema: React.FC = () => {
         </FlexBaseDiv>
       </Column>
     </Row>
+
   )
 }
 

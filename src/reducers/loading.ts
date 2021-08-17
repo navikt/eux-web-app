@@ -66,12 +66,15 @@ const loadingReducer = (
         gettingDokument: false
       }
 
+    case types.SVARPASED_FAGSAKER_GET_REQUEST:
     case types.SAK_FAGSAKER_GET_REQUEST:
       return {
         ...state,
         gettingFagsaker: true
       }
 
+    case types.SVARPASED_FAGSAKER_GET_SUCCESS:
+    case types.SVARPASED_FAGSAKER_GET_FAILURE:
     case types.SAK_FAGSAKER_GET_SUCCESS:
     case types.SAK_FAGSAKER_GET_FAILURE:
       return {

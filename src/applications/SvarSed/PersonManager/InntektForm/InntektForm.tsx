@@ -90,7 +90,9 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
     useValidation<ValidationLoennsopplysningProps>({}, validateLoennsopplysning)
 
   const filterOptions : Options = [
-    { label: t('el:option-inntektsfilter-01'), value: 'inntektsfilter-01' }
+    { label: t('el:option-inntektsfilter-BARNETRYGD'), value: 'BARNETRYGD' },
+    { label: t('el:option-inntektsfilter-KONTANTSTOETTE'), value: 'KONTANTSTOETTE' },
+    { label: t('el:option-inntektsfilter-DAGPENGER'), value: 'DAGPENGER' }
   ]
 
   const setSearchStartDato = (startdato: string) => {
@@ -344,7 +346,9 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
 
   const fnr = getFnr(replySed)
 
-  const onInntektClick = () => dispatch(fetchInntekt(fnr))
+  const onInntektClick = () => {
+    dispatch(fetchInntekt(fnr, _searchStartDato, _searchSluttDato, _filter))
+  }
 
   return (
     <PaddedDiv>
