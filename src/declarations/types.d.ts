@@ -58,6 +58,7 @@ export interface ConnectedSed {
   sistEndretDato: string
   svarsedType: string
   svarsedDisplay: string
+  lenkeHvisForrigeSedMaaJournalfoeres?: string
 }
 
 export interface Dokument {

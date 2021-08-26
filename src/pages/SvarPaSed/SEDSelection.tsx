@@ -373,6 +373,22 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                             <Undertittel>
                               {connectedSed.sedType} - {connectedSed.sedTittel}
                             </Undertittel>
+                            <PileDiv>
+                              {connectedSed.lenkeHvisForrigeSedMaaJournalfoeres &&
+                                 (
+                                  <>
+                                  <HighContrastKnapp
+                                    mini
+                                    onClick={() => window.open(connectedSed.lenkeHvisForrigeSedMaaJournalfoeres, 'rina')}
+                                  >
+                                    {t('label:journalforing', {
+                                      sedtype: connectedSed.sedType
+                                    })}
+                                  </HighContrastKnapp>
+                                  <VerticalSeparatorDiv size='0.5'/>
+                                  </>
+                                )}
+
                             {connectedSed.svarsedType
                               ? (
                                 <HighContrastHovedknapp
@@ -389,6 +405,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                                 </HighContrastHovedknapp>
                                 )
                               : (<div />)}
+                            </PileDiv>
                           </FlexStartSpacedDiv>
                           <FlexDiv>
                             <HighContrastLink target='_blank' href={connectedSed.sedUrl}>
