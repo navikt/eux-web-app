@@ -2,6 +2,8 @@
   "button-add": "Legg til",
   "button-add-attachments" : "Legg til vedlegg",
   "button-add-new-x": "Legg til ny {{x}}",
+  "button-add-new-xs": "Legg til nye {{x}}",
+  "button-add-x": "Legg til {{x}}",
   "button-add-selected-attachments": "Legg til markerte vedlegg",
   "button-cancel": "Avbryt",
   "button-close": "Lukk",

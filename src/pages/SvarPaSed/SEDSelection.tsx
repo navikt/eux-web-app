@@ -20,7 +20,6 @@ import {
   AlignStartRow,
   Column,
   FlexDiv,
-  FlexStartSpacedDiv,
   HighContrastFlatknapp,
   HighContrastHovedknapp,
   HighContrastInput,
@@ -369,44 +368,10 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                         </PileCenterDiv>
                         <HorizontalSeparatorDiv />
                         <PileDiv flex={2}>
-                          <FlexStartSpacedDiv flex={1}>
-                            <Undertittel>
-                              {connectedSed.sedType} - {connectedSed.sedTittel}
-                            </Undertittel>
-                            <PileDiv>
-                              {connectedSed.lenkeHvisForrigeSedMaaJournalfoeres &&
-                                 (
-                                  <>
-                                  <HighContrastKnapp
-                                    mini
-                                    onClick={() => window.open(connectedSed.lenkeHvisForrigeSedMaaJournalfoeres, 'rina')}
-                                  >
-                                    {t('label:journalforing', {
-                                      sedtype: connectedSed.sedType
-                                    })}
-                                  </HighContrastKnapp>
-                                  <VerticalSeparatorDiv size='0.5'/>
-                                  </>
-                                )}
-
-                            {connectedSed.svarsedType
-                              ? (
-                                <HighContrastHovedknapp
-                                  disabled={queryingReplySed}
-                                  spinner={queryingReplySed}
-                                  mini
-                                  onClick={() => onReplySedClick(connectedSed, sed.sakId)}
-                                >
-                                  {queryingReplySed
-                                    ? t('message:loading-replying')
-                                    : t('label:besvar-med', {
-                                      sedtype: connectedSed.svarsedType
-                                    })}
-                                </HighContrastHovedknapp>
-                                )
-                              : (<div />)}
-                            </PileDiv>
-                          </FlexStartSpacedDiv>
+                          <Undertittel>
+                            {connectedSed.sedType} - {connectedSed.sedTittel}
+                          </Undertittel>
+                          <VerticalSeparatorDiv size='0.5'/>
                           <FlexDiv>
                             <HighContrastLink target='_blank' href={connectedSed.sedUrl}>
                               <span>
@@ -423,7 +388,39 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                             </Etikett>
                           </div>
                         </PileDiv>
+                        <PileDiv>
+                          {connectedSed.lenkeHvisForrigeSedMaaJournalfoeres && (
+                            <>
+                              <HighContrastKnapp
+                                mini
+                                onClick={() => window.open(connectedSed.lenkeHvisForrigeSedMaaJournalfoeres, 'rina')}
+                              >
+                                {t('label:journalforing', {
+                                  sedtype: connectedSed.sedType
+                                })}
+                              </HighContrastKnapp>
+                              <VerticalSeparatorDiv size='0.5'/>
+                            </>
+                          )}
+                          {connectedSed.svarsedType
+                            ? (
+                              <HighContrastHovedknapp
+                                disabled={queryingReplySed}
+                                spinner={queryingReplySed}
+                                mini
+                                onClick={() => onReplySedClick(connectedSed, sed.sakId)}
+                              >
+                                {queryingReplySed
+                                  ? t('message:loading-replying')
+                                  : t('label:besvar-med', {
+                                    sedtype: connectedSed.svarsedType
+                                  })}
+                              </HighContrastHovedknapp>
+                            )
+                            : (<div />)}
+                        </PileDiv>
                       </FlexDiv>
+
                     </SEDPanel>
                     <VerticalSeparatorDiv />
                   </HiddenFormContainer>

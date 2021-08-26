@@ -160,6 +160,7 @@
   "validation-unverifiedSaksnummer": "Uverifisert RINA saksnummer",
   "validation-uncheckedFnr": "Uverifisert fødselsnummer",
 
+  "warning-no-inntekt-found": "Ingen inntekt funnet",
   "warning-conflict-aa-1": "Mulig avvik mellom ",
   "warning-conflict-aa-link-1": "AA Registeret",
   "warning-conflict-aa-2": " og ",

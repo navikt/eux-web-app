@@ -42,6 +42,10 @@ const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
     return <WaitingPanel />
   }
 
+  if (inntekter?.inntektsperioder?.length === 0) {
+    return <Normaltekst>{t('message:warning-no-inntekt-found')}</Normaltekst>
+  }
+
   return (
     <>
       {inntekter?.inntektsperioder?.map((inntekt: IInntekt) => {

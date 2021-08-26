@@ -184,12 +184,15 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
     }
   }
 
-  const onPeriodeMedForsikringDelete = (deletedPeriodeMedForsikring: PeriodeMedForsikring) => {
+  const onPeriodeMedForsikringDelete = (deletedPeriodeMedForsikring: PeriodeMedForsikring, selected: boolean) => {
     let newAddedPeriodeMedForsikring: Array<PeriodeMedForsikring> = _.cloneDeep(_addedPeriodeMedForsikring)
     const needleId : string | undefined = getOrgnr(deletedPeriodeMedForsikring)
     if (needleId) {
-      newAddedPeriodeMedForsikring = _.filter(newAddedPeriodeMedForsikring, (p: PeriodeMedForsikring) => hasOrgnr(p, needleId))
+      newAddedPeriodeMedForsikring = _.filter(newAddedPeriodeMedForsikring, (p: PeriodeMedForsikring) => !hasOrgnr(p, needleId))
       setAddedPeriodeMedForsikring(newAddedPeriodeMedForsikring)
+    }
+    if (selected) {
+      removePeriodeMedForsikring(deletedPeriodeMedForsikring)
     }
   }
 

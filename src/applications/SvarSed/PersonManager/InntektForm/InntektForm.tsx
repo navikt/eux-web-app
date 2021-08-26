@@ -368,7 +368,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
-                {t('el:button-add-new-x', { x: t('label:loennsopplysning').toLowerCase() })}
+                {t('el:button-add-new-xs', { x: t('label:loennsopplysninger').toLowerCase() })}
               </HighContrastFlatknapp>
             </Column>
           </Row>

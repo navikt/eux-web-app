@@ -65,8 +65,8 @@ export const validatePeriodeDagpenger = (
     hasErrors = true
   }
 
-  if (!_.isEmpty(periodeDagpenger?.institusjon.idmangler)) {
-    if (_.isEmpty(periodeDagpenger?.institusjon.idmangler?.navn?.trim())) {
+  if (!_.isEmpty(periodeDagpenger?.institusjon.idmangler?.navn?.trim())) {
+    if (periodeDagpenger?.institusjon.idmangler?.navn?.trim() === '-') {
       v[namespace + idx + '-institusjon-idmangler-navn'] = {
         feilmelding: t('message:validation-noName'),
         skjemaelementId: namespace + idx + '-institusjon-idmangler-navn'

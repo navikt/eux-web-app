@@ -207,7 +207,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
   return (
     <PaddedDiv key={namespace + '-div'}>
       <Undertittel>
-        {t('label:personopplysning')}
+        {t('label:personopplysninger')}
       </Undertittel>
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
@@ -410,7 +410,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
-                {t('el:button-add-new-x', { x: t('label:fødested') })}
+                {t('el:button-add-x', { x: t('label:fødested') })}
               </HighContrastFlatknapp>
             </Column>
           </AlignStartRow>
