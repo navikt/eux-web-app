@@ -35,6 +35,7 @@ import {
   F002Sed,
   FamilieRelasjon,
   Flyttegrunn,
+  FSed,
   HSed,
   PensjonPeriode,
   Periode,
@@ -230,10 +231,12 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
       })
       hasErrors = hasErrors || _error
       const ytelse: Ytelse = _.get(replySed, `${personID}.ytelse`)
-      _error = validateBeløpNavnOgValuta(v, t, {
-        ytelse, namespace: `personmanager-${personID}-beløpnavnogvaluta`, personName
-      })
-      hasErrors = hasErrors || _error
+      if ((replySed as FSed).formaal.indexOf('vedtak') >= 0) {
+        _error = validateBeløpNavnOgValuta(v, t, {
+          ytelse, namespace: `personmanager-${personID}-beløpnavnogvaluta`, personName
+        })
+        hasErrors = hasErrors || _error
+      }
     }
   }
 

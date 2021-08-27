@@ -40,6 +40,7 @@ import { validateSEDEditor, ValidationSEDEditorProps } from './mainValidation'
 
 import TextArea from 'components/Forms/TextArea'
 import _ from 'lodash'
+import { Barn, F002Sed, FSed, ReplySed } from 'declarations/sed'
 
 const mapState = (state: State): any => ({
   creatingSvarPaSed: state.loading.creatingSvarPaSed,
@@ -88,20 +89,31 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
     replySed?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0 ||
     replySed?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0
 
-  const cleanReplySed = (replySed: any) => {
-    delete replySed.xxxretttilytelser
+  const cleanReplySed = (replySed: ReplySed): ReplySed => {
+    let newReplySed = _.cloneDeep(replySed)
+    // if we do not have vedtak, do not have ytelse in barna
+    if (Object.prototype.hasOwnProperty.call(replySed, 'formaal') && (replySed as FSed)?.formaal.indexOf('vedtak') < 0) {
+      (newReplySed as F002Sed).barn?.forEach((b: Barn, i: number) => {
+        if (Object.prototype.hasOwnProperty.call((newReplySed as F002Sed).barn[i], 'ytelse')) {
+          delete (newReplySed as F002Sed).barn[i].ytelse
+        }
+      })
+    }
+    return newReplySed
   }
 
   const sendReplySed = (): void => {
+
     if (replySed) {
+      const newReplySed: ReplySed = cleanReplySed(replySed)
       const valid = performValidation({
-        replySed
+        replySed: newReplySed
       })
       dispatch(viewValidation())
       if (valid) {
         setViewSendSedModal(true)
-        cleanReplySed(replySed)
-        dispatch(createSed(replySed))
+        cleanReplySed(newReplySed)
+        dispatch(createSed(newReplySed))
         dispatch(resetAllValidation())
       }
     }
