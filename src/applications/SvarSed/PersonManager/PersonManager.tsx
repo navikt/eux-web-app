@@ -504,7 +504,7 @@ const PersonManager: React.FC = () => {
   }, [])
 
   return (
-    <PileDiv key={replySed.sedType + '-' + (replySed as FSed)?.formaal.join(',') ?? ''}>
+    <PileDiv key={replySed.sedType + '-' + (replySed as FSed)?.formaal?.join(',') ?? ''}>
       {_seeNewPersonModal && (
         <AddPersonModal
           parentNamespace={namespace}
