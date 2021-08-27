@@ -2,26 +2,20 @@ import { fetchInntekt } from 'actions/inntekt'
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
 import Inntekter from 'applications/SvarSed/PersonManager/InntektForm/Inntekter'
+import InntektSearch from 'applications/SvarSed/PersonManager/InntektSearch/InntektSearch'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
-import {
-  validateLoennsopplysning,
-  ValidationLoennsopplysningProps
-} from './validationInntektForm'
-import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
-import Search from 'assets/icons/Search'
-import Select from 'components/Forms/Select'
 import InntektFC from 'components/Inntekt/Inntekt'
 import Period from 'components/Period/Period'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
-import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { Loennsopplysning, Periode } from 'declarations/sed'
-import { IInntekter } from 'declarations/types'
 import { Inntekt } from 'declarations/sed.d'
+import { IInntekter } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -31,15 +25,16 @@ import {
   Column,
   HighContrastFlatknapp,
   HorizontalSeparatorDiv,
-  PaddedDiv, Row,
+  PaddedDiv,
+  Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { OptionTypeBase } from 'react-select'
 import { getFnr } from 'utils/fnr'
 import { getIdx } from 'utils/namespace'
+import { validateLoennsopplysning, ValidationLoennsopplysningProps } from './validationInntektForm'
 
 interface InntektFormSelector extends PersonManagerFormSelector {
   gettingInntekter: boolean
@@ -72,11 +67,6 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
   const loennsopplysninger: Array<Loennsopplysning> = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-inntekt`
 
-  const [_filter, _setFilter] = useState<string | undefined>(undefined)
-
-  const [_searchStartDato, _setSearchStartDato] = useState<string>('')
-  const [_searchSluttDato, _setSearchSluttDato] = useState<string>('')
-
   const [_newStartDato, _setNewStartDato] = useState<string>('')
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')
   const [_newAnsettelsesType, _setNewAnsettelsesType] = useState<string>('')
@@ -88,26 +78,6 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] =
     useValidation<ValidationLoennsopplysningProps>({}, validateLoennsopplysning)
-
-  const filterOptions : Options = [
-    { label: t('el:option-inntektsfilter-BARNETRYGD'), value: 'BARNETRYGD' },
-    { label: t('el:option-inntektsfilter-KONTANTSTOETTE'), value: 'KONTANTSTOETTE' },
-    { label: t('el:option-inntektsfilter-DAGPENGER'), value: 'DAGPENGER' }
-  ]
-
-  const setSearchStartDato = (startdato: string) => {
-    _setSearchStartDato(startdato.trim())
-    _resetValidation(namespace + '-startdato')
-  }
-
-  const setSearchSluttDato = (sluttdato: string) => {
-    _setSearchSluttDato(sluttdato.trim())
-    _resetValidation(namespace + '-sluttdato')
-  }
-
-  const setFilter = (filter: string) => {
-    _setFilter(filter)
-  }
 
   const setStartDato = (startdato: string, index: number) => {
     if (index < 0) {
@@ -344,11 +314,11 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
     )
   }
 
-  const fnr = getFnr(replySed)
-
-  const onInntektClick = () => {
-    dispatch(fetchInntekt(fnr, _searchStartDato, _searchSluttDato, _filter))
+  const onInntektSearch = (fnr: string, fom: string, tom: string, inntektsliste: string) => {
+    dispatch(fetchInntekt(fnr, fom, tom, inntektsliste))
   }
+
+  const fnr = getFnr(replySed)
 
   return (
     <PaddedDiv>
@@ -384,45 +354,12 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-        <Period
-          key={'' + _searchStartDato + _searchSluttDato}
-          namespace={namespace}
-          errorStartDato={validation[namespace + '-startdato']?.feilmelding}
-          errorSluttDato={validation[namespace + '-sluttdato']?.feilmelding}
-          setStartDato={setSearchStartDato}
-          setSluttDato={setSearchSluttDato}
-          valueStartDato={_searchStartDato ?? ''}
-          valueSluttDato={_searchSluttDato ?? ''}
-        />
-        <Column>
-          <Select
-            data-test-id={namespace + '-filter'}
-            feil={validation[namespace + '-filter']?.feilmelding}
-            highContrast={highContrast}
-            id={namespace + '-filter'}
-            label={t('label:inntektsfilter')}
-            menuPortalTarget={document.body}
-            onChange={(o: OptionTypeBase) => setFilter(o.value)}
-            options={filterOptions}
-            placeholder={t('el:placeholder-select-default')}
-            selectedValue={_.find(filterOptions, b => b.value === _filter)}
-            defaultValue={_.find(filterOptions, b => b.value === _filter)}
-          />
-        </Column>
-        <Column>
-          <VerticalSeparatorDiv size='1.8' />
-          <HighContrastFlatknapp
-            disabled={gettingInntekter}
-            spinner={gettingInntekter}
-            onClick={onInntektClick}
-          >
-            <Search />
-            <HorizontalSeparatorDiv />
-            {gettingInntekter ? t('message:loading-searching') : t('el:button-search')}
-          </HighContrastFlatknapp>
-        </Column>
-      </AlignStartRow>
+      <InntektSearch
+        fnr={fnr!}
+        highContrast={highContrast}
+        onInntektSearch={onInntektSearch}
+        gettingInntekter={gettingInntekter}
+      />
       <VerticalSeparatorDiv size='2' />
       {gettingInntekter && <WaitingPanel />}
       {inntekter && (

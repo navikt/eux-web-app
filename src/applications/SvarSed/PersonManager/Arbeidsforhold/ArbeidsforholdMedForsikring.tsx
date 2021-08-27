@@ -1,6 +1,7 @@
 import { getArbeidsperioder } from 'actions/arbeidsgiver'
 import { fetchInntekt } from 'actions/inntekt'
 import { updateReplySed } from 'actions/svarpased'
+import InntektSearch from 'applications/SvarSed/PersonManager/InntektSearch/InntektSearch'
 import { PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
@@ -53,6 +54,7 @@ export interface ArbeidsforholdMedForsikringSelector extends PersonManagerFormSe
   gettingInntekter: boolean
   replySed: ReplySed | undefined
   validation: Validation
+  highContrast: boolean
 }
 
 export interface ArbeidsforholdMedForsikringProps {
@@ -67,7 +69,8 @@ const mapState = (state: State): ArbeidsforholdMedForsikringSelector => ({
   inntekter: state.inntekt.inntekter,
   gettingInntekter: state.loading.gettingInntekter,
   replySed: state.svarpased.replySed,
-  validation: state.validation.status
+  validation: state.validation.status,
+  highContrast: state.ui.highContrast
 })
 
 const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = ({
@@ -81,7 +84,8 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
     gettingArbeidsperioder,
     inntekter,
     gettingInntekter,
-    replySed
+    replySed,
+    highContrast
   } = useSelector<State, ArbeidsforholdMedForsikringSelector>(mapState)
   const dispatch = useDispatch()
 
@@ -136,8 +140,8 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
     }
   }
 
-  const onInntektClicked = () => {
-    dispatch(fetchInntekt(fnr))
+  const onInntektSearch = (fnr: string, fom: string, tom: string, inntektsliste: string) => {
+    dispatch(fetchInntekt(fnr, fom, tom, inntektsliste))
   }
 
   const addPeriodeMedForsikring = (newPeriodeMedForsikring: PeriodeMedForsikring) => {
@@ -642,25 +646,16 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
       <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv size='2' />
-      <AlignStartRow className='slideInFromLeft'>
-        <Column>
-          <FlexBaseDiv>
-            <Undertittel>
-              {t('label:kontoller-inntekt')}
-            </Undertittel>
-            <HorizontalSeparatorDiv />
-            <HighContrastFlatknapp
-              mini
-              kompakt
-              spinner={gettingInntekter}
-              disabled={gettingInntekter}
-              onClick={onInntektClicked}
-            >
-              {t('label:fetch-inntekt')}
-            </HighContrastFlatknapp>
-          </FlexBaseDiv>
-        </Column>
-      </AlignStartRow>
+      <Undertittel>
+        {t('label:kontoller-inntekt')}
+      </Undertittel>
+      <VerticalSeparatorDiv />
+      <InntektSearch
+        fnr={fnr!}
+        highContrast={highContrast}
+        onInntektSearch={onInntektSearch}
+        gettingInntekter={gettingInntekter}
+      />
       <VerticalSeparatorDiv />
       {inntekter && <Inntekt inntekter={inntekter} />}
     </PaddedDiv>
