@@ -10,7 +10,7 @@ import classNames from 'classnames'
 import { WithErrorPanel } from 'components/StyledComponents'
 import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import { F002Sed, PersonInfo, ReplySed } from 'declarations/sed'
+import { F002Sed, FSed, PersonInfo, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import Chevron from 'nav-frontend-chevron'
@@ -261,7 +261,10 @@ const PersonManager: React.FC = () => {
     { label: t('el:option-personmanager-7'), value: 'personensstatus', component: PersonensStatus, type: 'F', normal: true, barn: false, family: false },
     { label: t('el:option-personmanager-8'), value: 'relasjon', component: Relasjon, type: 'F', normal: false, barn: true, family: false },
     { label: t('el:option-personmanager-9'), value: 'grunnlagforbosetting', component: GrunnlagForBosetting, type: 'F', normal: false, barn: true, family: false },
-    { label: t('el:option-personmanager-10'), value: 'beløpnavnogvaluta', component: BeløpNavnOgValuta, type: 'F', normal: false, barn: true, family: false },
+    { label: t('el:option-personmanager-10'), value: 'beløpnavnogvaluta', component: BeløpNavnOgValuta, type: 'F', normal: false, barn: true, family: false, condition: () => {
+      console.log((replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 ?? false)
+        return (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 ?? false
+      } },
     { label: t('el:option-personmanager-11'), value: 'familieytelser', component: Familieytelser, type: 'F', normal: false, barn: false, family: true },
     { label: t('el:option-personmanager-12'), value: 'personopplysninger', component: PersonOpplysninger, type: 'U', normal: true, barn: false, family: false },
     { label: t('el:option-personmanager-13'), value: 'referanseperiode', component: Referanseperiode, type: 'U', normal: true, barn: false, family: false },
@@ -435,6 +438,7 @@ const PersonManager: React.FC = () => {
               ? o.family
               : o.normal
           )
+          .filter(o => _.isFunction(o.condition) ? o.condition() : true )
           .map((o, i) => {
             return (
               <OptionDiv
@@ -500,7 +504,7 @@ const PersonManager: React.FC = () => {
   }, [])
 
   return (
-    <PileDiv key={replySed.sedType}>
+    <PileDiv key={replySed.sedType + '-' + (replySed as FSed)?.formaal.join(',') ?? ''}>
       {_seeNewPersonModal && (
         <AddPersonModal
           parentNamespace={namespace}
