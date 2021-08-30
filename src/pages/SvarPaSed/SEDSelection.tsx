@@ -332,7 +332,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                         </Normaltekst>
                         <HorizontalSeparatorDiv size='0.35' />
                         <Normaltekst>
-                          {sed.motpart.join(', ')}
+                          {sed?.motpart?.join(', ') ?? '-'}
                         </Normaltekst>
                       </FlexDiv>
                       <VerticalSeparatorDiv size='0.3' />

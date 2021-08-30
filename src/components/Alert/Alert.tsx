@@ -72,7 +72,7 @@ export const Alert: React.FC<AlertProps> = ({
     if (error.uuid) {
       errorMessage.push(error.uuid)
     }
-    return errorMessage.join(' - ')
+    return errorMessage?.join(' - ') ?? '-'
   }
 
   if (!_message) {
