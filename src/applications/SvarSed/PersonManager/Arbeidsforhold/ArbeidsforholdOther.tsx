@@ -107,7 +107,7 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
 
   const setInstitutionsType = (newInstitutionsType: string, index: number) => {
     if (index < 0) {
-      _setNewInstitutionsNavn(newInstitutionsType.trim())
+      _setNewInstitutionsType(newInstitutionsType.trim())
       _resetValidation(namespace + '-institusjonstype')
     } else {
       dispatch(updateReplySed(`${target}[${index}].institusjonstype`, newInstitutionsType.trim()))
