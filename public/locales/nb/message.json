@@ -115,6 +115,7 @@
   "validation-noLoennTilDato": "Du må taste inn lønn til dato",
   "validation-noMottakersNavnForPerson": "Ingen mottakers navn til {{person}}",
   "validation-noNationality": "Du har ikke valg statsborgerskap",
+  "validation-noName": "Ingen navn",
   "validation-noNavn": "Ingen navn",
   "validation-noOrgnr": "Ingen orgnr",
   "validation-noNavnTilPerson": "Ingen navn på person til {{person}}",

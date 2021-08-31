@@ -27,7 +27,7 @@
   "option-forsikring-SELVSTENDIG_FORSIKRET" : "Selvstendig næringsvirksomhet som utgjør forsikringsperiode",
   "option-forsikring-ANSATTPERIODE_UFORSIKRET" : "Ansettelsesforhold som ikke utgjør forsikringsperiode",
   "option-forsikring-SELVSTENDIG_UFORSIKRET" : "Selvstendig næringsvirksomhet som ikke utgjør forsikringsperiode",
-  "option-forsikring-SYKDOMSPERIODE" : "Sykdomsperiode som utgjør eller behandøes som forsikringsperiode",
+  "option-forsikring-SYKDOMSPERIODE" : "Sykdomsperiode som utgjør eller behandles som forsikringsperiode",
   "option-forsikring-SVANGERSKAP_OMSORGSPERIODE" : "Svangerskapsperiode eller omsorg for barn som utgjør forsikringsperiode eller behandles som forsikringsperiode",
   "option-forsikring-FRIHETSBEROEVETPERIODE" : "Frihetsberøvelse som utgjør eller behandles som forsikringsperiode",
   "option-forsikring-UTDANNINGSPERIODE" : "Utdanningsperiode som utgjør eller behandles som forsikringsperiode",

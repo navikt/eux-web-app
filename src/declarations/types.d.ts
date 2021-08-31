@@ -112,7 +112,7 @@ export interface IInntekt {
   sisteLoennsendring: string
   stillingsprosent: number
   maanedsinntektSnitt: number
-  maanedsinntekt: {[k in string]: number}
+  maanedsinntekter: {[k in string]: number}
 }
 
 export interface IInntekter {

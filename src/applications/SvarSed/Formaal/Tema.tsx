@@ -153,18 +153,18 @@ const Tema: React.FC = () => {
                 {gettingFagsaker
                   ? <NavFrontendSpinner />
                   : (
-                  <Select
-                    defaultValue={_.find(fagsakIdOptions, { value: _fagsak })}
-                    feil={validation[namespace + '-fagsak']?.feilmelding}
-                    highContrast={highContrast}
-                    key={namespace + '-' + _fagsak + '-select'}
-                    id={namespace + '-fagsak-select'}
-                    onChange={onSakIDChange}
-                    options={fagsakIdOptions}
-                    selectedValue={_.find(fagsakIdOptions, { value: _fagsak })}
-                    style={{ minWidth: '300px' }}
-                  />
-                )}
+                    <Select
+                      defaultValue={_.find(fagsakIdOptions, { value: _fagsak })}
+                      feil={validation[namespace + '-fagsak']?.feilmelding}
+                      highContrast={highContrast}
+                      key={namespace + '-' + _fagsak + '-select'}
+                      id={namespace + '-fagsak-select'}
+                      onChange={onSakIDChange}
+                      options={fagsakIdOptions}
+                      selectedValue={_.find(fagsakIdOptions, { value: _fagsak })}
+                      style={{ minWidth: '300px' }}
+                    />
+                    )}
               </>
               )}
           {editMode && (
