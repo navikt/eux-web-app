@@ -90,7 +90,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
     replySed?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0
 
   const cleanReplySed = (replySed: ReplySed): ReplySed => {
-    let newReplySed = _.cloneDeep(replySed)
+    const newReplySed = _.cloneDeep(replySed)
     // if we do not have vedtak, do not have ytelse in barna
     if (Object.prototype.hasOwnProperty.call(replySed, 'formaal') && (replySed as FSed)?.formaal.indexOf('vedtak') < 0) {
       (newReplySed as F002Sed).barn?.forEach((b: Barn, i: number) => {
@@ -103,7 +103,6 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   }
 
   const sendReplySed = (): void => {
-
     if (replySed) {
       const newReplySed: ReplySed = cleanReplySed(replySed)
       const valid = performValidation({

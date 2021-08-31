@@ -186,7 +186,7 @@ export interface Motregning {
 
 export interface HSvar {
   informasjon: string
-  dokument:string
+  dokument: string
   sed: string
   grunn?: string
 }
@@ -454,8 +454,8 @@ export interface HSed extends BaseReplySed {
     dokumenttyper: Array<string>
     andreDokumenttyper: Array<string>
   }
-  positivtSvar: HSvar
-  negativeSvar: HSvar
+  positivtSvar?: HSvar
+  negativeSvar?: HSvar
   ytterligereInfo: string
   tema?: string
   fagsakId?: string

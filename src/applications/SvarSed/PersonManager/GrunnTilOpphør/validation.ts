@@ -20,7 +20,7 @@ export const validateGrunnTilOpphor = (
 ): boolean => {
   let hasErrors: boolean = false
 
-  if (!_.isEmpty(grunntilopphor?.typeGrunnOpphoerAnsatt)) {
+  if (_.isEmpty(grunntilopphor?.typeGrunnOpphoerAnsatt)) {
     v[namespace + '-typeGrunnOpphoerAnsatt'] = {
       skjemaelementId: namespace + '-typeGrunnOpphoerAnsatt',
       feilmelding: t('message:validation-noType')

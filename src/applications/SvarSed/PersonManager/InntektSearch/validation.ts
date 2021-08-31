@@ -27,7 +27,6 @@ export const validateInntektSearch = (
   let hasErrors: boolean = false
 
   if (!_.isEmpty(fom.trim())) {
-
     if (!fom?.trim().match(datePattern)) {
       v[namespace + '-startdato'] = {
         feilmelding: t('message:validation-invalidDate'),
@@ -35,7 +34,7 @@ export const validateInntektSearch = (
       } as FeiloppsummeringFeil
       hasErrors = true
     } else {
-      let fomDate = moment(fom, 'YYYY-MM-DD')
+      const fomDate = moment(fom, 'YYYY-MM-DD')
       if (fomDate.isBefore(new Date(2015, 0, 1))) {
         v[namespace + '-startdato'] = {
           feilmelding: t('message:validation-invalidDate2015'),
@@ -46,13 +45,13 @@ export const validateInntektSearch = (
     }
   }
 
-   if (!_.isEmpty(tom?.trim()) && !tom?.trim().match(datePattern)) {
-     v[namespace + '-sluttdato'] = {
-       feilmelding: t('message:validation-invalidDate'),
-       skjemaelementId: namespace + '-sluttdato'
-     } as FeiloppsummeringFeil
-     hasErrors = true
-   }
+  if (!_.isEmpty(tom?.trim()) && !tom?.trim().match(datePattern)) {
+    v[namespace + '-sluttdato'] = {
+      feilmelding: t('message:validation-invalidDate'),
+      skjemaelementId: namespace + '-sluttdato'
+    } as FeiloppsummeringFeil
+    hasErrors = true
+  }
 
   if (_.isEmpty(inntektsliste?.trim())) {
     v[namespace + '-inntektsliste'] = {

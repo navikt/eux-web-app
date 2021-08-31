@@ -85,12 +85,16 @@ export interface Person {
 
 export interface FagSak {
   saksID: string
-  sakstype: string
   temakode: string
   fagsystem: string
-  opprettet: string
-  status: string
+  aktoerId?: string
+  orgnr?: string
   fagsakNr?: string
+  sakstype?: string
+  opprettet?: string
+  opprettetAv?: string
+  opprettetTidspunkt?: string
+  status?: string
 }
 
 export type FagSaker = Array<FagSak>

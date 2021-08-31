@@ -18,7 +18,7 @@ export default [
         sistEndretDato: '2020-01-02',
         svarsedType: 'F002',
         svarsedDisplay: 'Description for F002',
-        lenkeHvisForrigeSedMaaJournalfoeres: 'http://www.nav.no',
+        lenkeHvisForrigeSedMaaJournalfoeres: 'http://www.nav.no'
       }
     ]
   }, {

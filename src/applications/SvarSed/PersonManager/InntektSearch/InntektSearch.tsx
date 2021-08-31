@@ -19,7 +19,6 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { OptionTypeBase } from 'react-select'
 
-
 interface InntektSearchProps {
   fnr: string
   highContrast: boolean
@@ -28,12 +27,11 @@ interface InntektSearchProps {
 }
 
 const InntektSearch = ({
-   fnr,
-   highContrast,
-   onInntektSearch,
-   gettingInntekter
+  fnr,
+  highContrast,
+  onInntektSearch,
+  gettingInntekter
 }: InntektSearchProps) => {
-
   const { t } = useTranslation()
 
   const [_searchStartDato, _setSearchStartDato] = useState<string>('')
@@ -56,7 +54,7 @@ const InntektSearch = ({
 
   const setSearchSluttDato = (sluttdato: string) => {
     _setSearchSluttDato(sluttdato.trim())
-    _resetValidation( namespace + '-sluttdato')
+    _resetValidation(namespace + '-sluttdato')
   }
 
   const setFilter = (filter: string) => {
@@ -64,7 +62,6 @@ const InntektSearch = ({
   }
 
   const onInntektSearchClicked = () => {
-
     const valid = performValidation({
       fom: _searchStartDato,
       tom: _searchSluttDato,
@@ -76,46 +73,47 @@ const InntektSearch = ({
     }
   }
 
-  return (<AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-    <Period
-      key={'' + _searchStartDato + _searchSluttDato}
-      namespace={namespace}
-      errorStartDato={_validation[namespace + '-startdato']?.feilmelding}
-      errorSluttDato={_validation[namespace + '-sluttdato']?.feilmelding}
-      setStartDato={setSearchStartDato}
-      setSluttDato={setSearchSluttDato}
-      valueStartDato={_searchStartDato ?? ''}
-      valueSluttDato={_searchSluttDato ?? ''}
-    />
-    <Column>
-      <Select
-        data-test-id={namespace + '-inntektsliste'}
-        feil={_validation[namespace + '-inntektsliste']?.feilmelding}
-        highContrast={highContrast}
-        id={namespace + '-inntektsliste'}
-        label={t('label:inntektsfilter')}
-        menuPortalTarget={document.body}
-        onChange={(o: OptionTypeBase) => setFilter(o.value)}
-        options={filterOptions}
-        placeholder={t('el:placeholder-select-default')}
-        selectedValue={_.find(filterOptions, b => b.value === _filter)}
-        defaultValue={_.find(filterOptions, b => b.value === _filter)}
+  return (
+    <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+      <Period
+        key={'' + _searchStartDato + _searchSluttDato}
+        namespace={namespace}
+        errorStartDato={_validation[namespace + '-startdato']?.feilmelding}
+        errorSluttDato={_validation[namespace + '-sluttdato']?.feilmelding}
+        setStartDato={setSearchStartDato}
+        setSluttDato={setSearchSluttDato}
+        valueStartDato={_searchStartDato ?? ''}
+        valueSluttDato={_searchSluttDato ?? ''}
       />
-    </Column>
-    <Column>
-      <VerticalSeparatorDiv size='1.8' />
-      <HighContrastFlatknapp
-        disabled={gettingInntekter}
-        spinner={gettingInntekter}
-        onClick={onInntektSearchClicked}
-      >
-        <Search />
-        <HorizontalSeparatorDiv />
-        {gettingInntekter ? t('message:loading-searching') : t('el:button-search')}
-      </HighContrastFlatknapp>
-    </Column>
-  </AlignStartRow>)
-
+      <Column>
+        <Select
+          data-test-id={namespace + '-inntektsliste'}
+          feil={_validation[namespace + '-inntektsliste']?.feilmelding}
+          highContrast={highContrast}
+          id={namespace + '-inntektsliste'}
+          label={t('label:inntektsfilter')}
+          menuPortalTarget={document.body}
+          onChange={(o: OptionTypeBase) => setFilter(o.value)}
+          options={filterOptions}
+          placeholder={t('el:placeholder-select-default')}
+          selectedValue={_.find(filterOptions, b => b.value === _filter)}
+          defaultValue={_.find(filterOptions, b => b.value === _filter)}
+        />
+      </Column>
+      <Column>
+        <VerticalSeparatorDiv size='1.8' />
+        <HighContrastFlatknapp
+          disabled={gettingInntekter}
+          spinner={gettingInntekter}
+          onClick={onInntektSearchClicked}
+        >
+          <Search />
+          <HorizontalSeparatorDiv />
+          {gettingInntekter ? t('message:loading-searching') : t('el:button-search')}
+        </HighContrastFlatknapp>
+      </Column>
+    </AlignStartRow>
+  )
 }
 
 export default InntektSearch

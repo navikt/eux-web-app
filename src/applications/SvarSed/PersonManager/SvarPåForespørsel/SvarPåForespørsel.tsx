@@ -5,7 +5,7 @@ import HelpIcon from 'assets/icons/HelpIcon'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { HSed, HSvarType } from 'declarations/sed'
+import { HSed, HSvar, HSvarType } from 'declarations/sed'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
 import {
@@ -67,20 +67,23 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
     const svarChanged: boolean = needle === 'svar'
     const thisSvar = svarChanged ? value : _svar
     if (thisSvar === 'positivt') {
-      const newPositivtSvar = {
-        informasjon: svarChanged ? (replySed as HSed)?.negativeSvar?.informasjon : (replySed as HSed)?.positivtSvar?.informasjon,
-        dokument: svarChanged ? (replySed as HSed)?.negativeSvar?.dokument : (replySed as HSed)?.positivtSvar?.dokument,
-        sed: svarChanged ? (replySed as HSed)?.negativeSvar?.sed : (replySed as HSed)?.positivtSvar?.sed
+      const newPositivtSvar: HSvar = {
+        informasjon: (svarChanged ? (replySed as HSed)?.negativeSvar?.informasjon : (replySed as HSed)?.positivtSvar?.informasjon) ?? '',
+        dokument: (svarChanged ? (replySed as HSed)?.negativeSvar?.dokument : (replySed as HSed)?.positivtSvar?.dokument) ?? '',
+        sed: (svarChanged ? (replySed as HSed)?.negativeSvar?.sed : (replySed as HSed)?.positivtSvar?.sed) ?? ''
       }
       if (!svarChanged) {
         // @ts-ignore
         newPositivtSvar[needle] = value
       }
-      dispatch(setReplySed({
+
+      const newReplySed = {
         ...replySed,
-        positivtSvar: newPositivtSvar,
-        negativeSvar: {}
-      }))
+        positivtSvar: newPositivtSvar
+      }
+
+      delete (newReplySed as HSed).negativeSvar
+      dispatch(setReplySed(newReplySed))
     } else {
       const newNegativtSvar = {
         informasjon: svarChanged ? (replySed as HSed)?.positivtSvar?.informasjon : (replySed as HSed)?.negativeSvar?.informasjon,
@@ -92,11 +95,12 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
         newNegativtSvar[needle] = value
       }
 
-      dispatch(setReplySed({
+      const newReplySed = {
         ...replySed,
-        positivtSvar: {},
         negativeSvar: newNegativtSvar
-      }))
+      }
+      delete (newReplySed as HSed).positivtSvar
+      dispatch(setReplySed(newReplySed))
     }
   }
 

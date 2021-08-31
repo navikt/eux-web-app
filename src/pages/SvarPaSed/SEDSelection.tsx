@@ -371,7 +371,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                           <Undertittel>
                             {connectedSed.sedType} - {connectedSed.sedTittel}
                           </Undertittel>
-                          <VerticalSeparatorDiv size='0.5'/>
+                          <VerticalSeparatorDiv size='0.5' />
                           <FlexDiv>
                             <HighContrastLink target='_blank' href={connectedSed.sedUrl}>
                               <span>
@@ -399,7 +399,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                                   sedtype: connectedSed.sedType
                                 })}
                               </HighContrastKnapp>
-                              <VerticalSeparatorDiv size='0.5'/>
+                              <VerticalSeparatorDiv size='0.5' />
                             </>
                           )}
                           {connectedSed.svarsedType
@@ -416,7 +416,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                                     sedtype: connectedSed.svarsedType
                                   })}
                               </HighContrastHovedknapp>
-                            )
+                              )
                             : (<div />)}
                         </PileDiv>
                       </FlexDiv>

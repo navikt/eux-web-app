@@ -35,7 +35,6 @@ const svarpasedReducer = (
   action: Action | ActionWithPayload = { type: '', payload: undefined }
 ) => {
   switch (action.type) {
-
     case types.SVARPASED_FAGSAKER_RESET:
     case types.SVARPASED_FAGSAKER_GET_REQUEST:
       return {
