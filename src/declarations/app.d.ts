@@ -14,6 +14,6 @@ export interface ParamPayload {
   key: string,
   value?: any
 }
-
+export type FeatureToggles = {[key in Feature]: boolean | number}
 export type Labels = {[k in string]: string}
 export type SvarPaSedMode = 'selection'| 'editor'

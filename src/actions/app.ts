@@ -1,12 +1,13 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { ParamPayload } from 'declarations/app'
+import { FeatureToggles, ParamPayload } from 'declarations/app'
 import { Enheter, LogMeAgainPayload, Saksbehandler, ServerInfo, UtgaarDatoPayload } from 'declarations/types'
 import EKV from 'eessi-kodeverk'
 import mockSaksbehandler from 'eux-schema/mock_data/saksbehandler.json'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import _ from 'lodash'
 import mockEnhet from 'mocks/enhet'
+import mockFeatures from 'mocks/features'
 import mockReautorisering from 'mocks/reautorisering'
 import mockServerInfo from 'mocks/serverinfo'
 import mockUtgaarDato from 'mocks/utgaarDato'
@@ -28,6 +29,20 @@ export const getEnheter: ActionCreator<ThunkResult<ActionWithPayload<Enheter>>> 
     }
   })
 }
+
+export const getFeatures: ActionCreator<ThunkResult<ActionWithPayload<FeatureToggles>>> = (
+): ThunkResult<ActionWithPayload<FeatureToggles>> => {
+  return call({
+    url: urls.API_FEATURES_URL,
+    expectedPayload: mockFeatures,
+    type: {
+      request: types.APP_FEATURES_GET_REQUEST,
+      success: types.APP_FEATURES_GET_SUCCESS,
+      failure: types.APP_FEATURES_GET_FAILURE
+    }
+  })
+}
+
 
 export const getSaksbehandler: ActionCreator<ThunkResult<ActionWithPayload<Saksbehandler>>> = (
 ): ThunkResult<ActionWithPayload<Saksbehandler>> => {

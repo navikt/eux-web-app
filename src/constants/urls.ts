@@ -25,6 +25,7 @@ export const API_PERSONER_URL = API_BASE_URL + '/personer/?fnr=%(fnr)s'
 // Saksbehandler
 export const API_SAKSBEHANDLER_URL = API_BASE_URL + '/saksbehandler'
 export const API_ENHETER_URL = API_BASE_URL + '/saksbehandler/enheter'
+export const API_FEATURES_URL = API_BASE_URL + '/saksbehandler/features'
 export const API_REAUTENTISERING_URL = API_BASE_URL + '/saksbehandler/reautentisering'
 // export const API_DELETE_TOKEN_URL = API_BASE_URL + '/saksbehandler/token'
 export const API_UTGAARDATO_URL = API_BASE_URL + '/saksbehandler/utgaarDato'
