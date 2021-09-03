@@ -1,5 +1,5 @@
 import * as types from 'constants/actionTypes'
-import { Params } from 'declarations/app'
+import { FeatureToggles, Params } from 'declarations/app'
 import { BucTyper, Enheter, Kodemaps, Kodeverk, Saksbehandler, ServerInfo, Tema } from 'declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
 import _ from 'lodash'
@@ -21,6 +21,7 @@ export interface AppState {
   kodemaps: Kodemaps | undefined
 
   params: Params
+  featureToggles: FeatureToggles | null | undefined
 }
 
 export const initialAppState: AppState = {
@@ -39,7 +40,10 @@ export const initialAppState: AppState = {
   tema: undefined,
   kodemaps: undefined,
 
-  params: {}
+  params: {},
+  featureToggles: {
+    SVARSED_APP: false
+  }
 }
 
 const appReducer = (state: AppState = initialAppState, action: ActionWithPayload = { type: '', payload: undefined }) => {
@@ -75,6 +79,12 @@ const appReducer = (state: AppState = initialAppState, action: ActionWithPayload
       return {
         ...state,
         serverinfo: action.payload
+      }
+
+    case types.APP_FEATURES_GET_SUCCESS:
+      return {
+        ...state,
+        featureToggles: action.payload
       }
 
     case types.APP_ENHETER_GET_SUCCESS:

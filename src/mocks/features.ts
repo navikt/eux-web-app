@@ -1,4 +1,2 @@
-export default [
-  { FEATURE_1: true },
-  { FEATURE_2: false }
-]
+export default { SVARSED_APP: true }
+
