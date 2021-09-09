@@ -49,8 +49,6 @@ store.dispatch(appActions.getSaksbehandler())
 // @ts-ignore
 store.dispatch(appActions.getEnheter())
 // @ts-ignore
-store.dispatch(appActions.getFeatures())
-// @ts-ignore
 store.dispatch(appActions.getServerinfo())
 // @ts-ignore
 store.dispatch(appActions.getUtgaarDato())

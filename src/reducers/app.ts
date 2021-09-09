@@ -21,7 +21,7 @@ export interface AppState {
   kodemaps: Kodemaps | undefined
 
   params: Params
-  featureToggles: FeatureToggles | null | undefined
+  featureToggles: FeatureToggles
 }
 
 export const initialAppState: AppState = {
@@ -41,9 +41,7 @@ export const initialAppState: AppState = {
   kodemaps: undefined,
 
   params: {},
-  featureToggles: {
-    SVARSED_APP: false
-  }
+  featureToggles: {}
 }
 
 const appReducer = (state: AppState = initialAppState, action: ActionWithPayload = { type: '', payload: undefined }) => {
@@ -67,24 +65,23 @@ const appReducer = (state: AppState = initialAppState, action: ActionWithPayload
       }
 
     case types.APP_SAKSBEHANDLER_GET_SUCCESS:
-      try {
-        (window as any).frontendlogger.info(action.payload)
-      } catch (e) {}
+      let payload = _.cloneDeep(action.payload)
+      let brukernavn = payload.brukernavn
+      let navn = payload.navn
+      delete payload.brukernavn
+      delete payload.navn
+
       return {
         ...state,
-        saksbehandler: action.payload
+        brukernavn: brukernavn,
+        navn: navn,
+        featureToggles: payload
       }
 
     case types.APP_SERVERINFO_GET_SUCCESS:
       return {
         ...state,
         serverinfo: action.payload
-      }
-
-    case types.APP_FEATURES_GET_SUCCESS:
-      return {
-        ...state,
-        featureToggles: action.payload
       }
 
     case types.APP_ENHETER_GET_SUCCESS:

@@ -1,3 +1,4 @@
+import { FeatureToggles } from 'declarations/app'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 
 export interface OldPeriod {
@@ -147,6 +148,7 @@ export interface OpprettetSak {
 export interface Saksbehandler {
   brukernavn?: string
   navn?: string
+  featureToggles: FeatureToggles
 }
 
 export interface Sed {
