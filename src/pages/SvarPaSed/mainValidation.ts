@@ -7,7 +7,7 @@ import { validateAdresser } from 'applications/SvarSed/PersonManager/Adresser/va
 import { validatePerioderAnnen } from 'applications/SvarSed/PersonManager/Arbeidsforhold/validationPeriodeAnnen'
 import { validatePerioderMedForsikring } from 'applications/SvarSed/PersonManager/Arbeidsforhold/validationPeriodeMedForsikring'
 import { validatePerioderSvangerskapOgSyk } from 'applications/SvarSed/PersonManager/Arbeidsforhold/validationPeriodeSvangerskap'
-import { validatePerioderUtdanningOgMilitaert } from 'applications/SvarSed/PersonManager/Arbeidsforhold/validationPeriodeUtdanning'
+import { validatePerioderSimple } from 'applications/SvarSed/PersonManager/Arbeidsforhold/validationPeriodeSimple'
 import { validatePerioderUtenForsikring } from 'applications/SvarSed/PersonManager/Arbeidsforhold/validationPeriodeUtenForsikring'
 import { validateBeløpNavnOgValuta } from 'applications/SvarSed/PersonManager/BeløpNavnOgValuta/validation'
 import { validateFamilierelasjoner } from 'applications/SvarSed/PersonManager/Familierelasjon/validation'
@@ -259,10 +259,9 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
       })
       hasErrors = hasErrors || _error
 
-      _error = validatePerioderMedForsikring(v, t, {
-        perioderMedForsikring: (replySed as U002Sed)?.perioderSelvstendigMedForsikring,
-        namespace: `personmanager-${personID}-forsikring-perioderSelvstendigMedForsikring`,
-        includeAddress: true
+      _error = validatePerioderSimple(v, t, {
+        perioder: (replySed as U002Sed)?.perioderSelvstendigMedForsikring,
+        namespace: `personmanager-${personID}-forsikring-perioderSelvstendigMedForsikring`
       })
       hasErrors = hasErrors || _error
 
@@ -278,10 +277,9 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
       })
       hasErrors = hasErrors || _error
 
-      _error = validatePerioderMedForsikring(v, t, {
-        perioderMedForsikring: (replySed as U002Sed)?.perioderFrihetsberoevet,
-        namespace: `personmanager-${personID}-forsikring-perioderFrihetsberoevet`,
-        includeAddress: false
+      _error = validatePerioderSimple(v, t, {
+        perioder: (replySed as U002Sed)?.perioderFrihetsberoevet,
+        namespace: `personmanager-${personID}-forsikring-perioderFrihetsberoevet`
       })
       hasErrors = hasErrors || _error
 
@@ -297,14 +295,14 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
       })
       hasErrors = hasErrors || _error
 
-      _error = validatePerioderUtdanningOgMilitaert(v, t, {
-        perioderUtdanning: (replySed as U002Sed)?.perioderUtdanning,
+      _error = validatePerioderSimple(v, t, {
+        perioder: (replySed as U002Sed)?.perioderUtdanning,
         namespace: `personmanager-${personID}-forsikring-perioderUtdanning`
       })
       hasErrors = hasErrors || _error
 
-      _error = validatePerioderUtdanningOgMilitaert(v, t, {
-        perioderUtdanning: (replySed as U002Sed)?.perioderMilitaertjeneste,
+      _error = validatePerioderSimple(v, t, {
+        perioder: (replySed as U002Sed)?.perioderMilitaertjeneste,
         namespace: `personmanager-${personID}-forsikring-perioderMilitaertjeneste`
       })
       hasErrors = hasErrors || _error

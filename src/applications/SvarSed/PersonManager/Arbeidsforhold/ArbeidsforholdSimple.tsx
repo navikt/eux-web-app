@@ -7,7 +7,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Period from 'components/Period/Period'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { Periode, PeriodeUtdanning, ReplySed } from 'declarations/sed'
+import { Periode, PeriodeForsikring, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
@@ -25,45 +25,45 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
-import { validatePeriodeUtdanning, ValidationPeriodeUtdanningProps } from './validationPeriodeUtdanning'
+import { validatePeriodeSimple, ValidationPeriodeSimpleProps } from './validationPeriodeSimple'
 
-export interface ArbeidsforholdUtdanningSelector extends PersonManagerFormSelector {
+export interface ArbeidsforholdSimpleSelector extends PersonManagerFormSelector {
   replySed: ReplySed | undefined
   validation: Validation
 }
 
-export interface ArbeidsforholdUtdanningProps {
+export interface ArbeidsforholdSimpleProps {
   parentNamespace: string
   target: string
   typeTrygdeforhold: string
 }
 
-const mapState = (state: State): ArbeidsforholdUtdanningSelector => ({
+const mapState = (state: State): ArbeidsforholdSimpleSelector => ({
   replySed: state.svarpased.replySed,
   validation: state.validation.status
 })
 
-const ArbeidsforholdUtdanning: React.FC<ArbeidsforholdUtdanningProps> = ({
+const ArbeidsforholdSimple: React.FC<ArbeidsforholdSimpleProps> = ({
   parentNamespace,
   target,
   typeTrygdeforhold
-}: ArbeidsforholdUtdanningProps): JSX.Element => {
+}: ArbeidsforholdSimpleProps): JSX.Element => {
   const { t } = useTranslation()
   const {
     replySed,
     validation
-  } = useSelector<State, ArbeidsforholdUtdanningSelector>(mapState)
+  } = useSelector<State, ArbeidsforholdSimpleSelector>(mapState)
   const dispatch = useDispatch()
-  const perioder: Array<PeriodeUtdanning> | undefined = _.get(replySed, target)
+  const perioder: Array<PeriodeForsikring> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${target}`
 
   const [_newStartDato, _setNewStartDato] = useState<string>('')
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PeriodeUtdanning>((periode: PeriodeUtdanning) => periode.periode.startdato)
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PeriodeForsikring>((periode: PeriodeForsikring) => periode.periode.startdato)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] =
-    useValidation<ValidationPeriodeUtdanningProps>({}, validatePeriodeUtdanning)
+    useValidation<ValidationPeriodeSimpleProps>({}, validatePeriodeSimple)
 
   const setStartDato = (startdato: string, index: number) => {
     if (index < 0) {
@@ -82,7 +82,7 @@ const ArbeidsforholdUtdanning: React.FC<ArbeidsforholdUtdanningProps> = ({
       _setNewSluttDato(sluttdato.trim())
       _resetValidation(namespace + '-sluttdato')
     } else {
-      const newPerioder: Array<PeriodeUtdanning> = _.cloneDeep(perioder) as Array<PeriodeUtdanning>
+      const newPerioder: Array<PeriodeForsikring> = _.cloneDeep(perioder) as Array<PeriodeForsikring>
       if (sluttdato === '') {
         delete newPerioder[index].periode.sluttdato
         newPerioder[index].periode.aapenPeriodeType = 'åpen_sluttdato'
@@ -109,8 +109,8 @@ const ArbeidsforholdUtdanning: React.FC<ArbeidsforholdUtdanningProps> = ({
   }
 
   const onRemove = (index: number) => {
-    const newPerioder: Array<PeriodeUtdanning> = _.cloneDeep(perioder) as Array<PeriodeUtdanning>
-    const deletedPerioder: Array<PeriodeUtdanning> = newPerioder.splice(index, 1)
+    const newPerioder: Array<PeriodeForsikring> = _.cloneDeep(perioder) as Array<PeriodeForsikring>
+    const deletedPerioder: Array<PeriodeForsikring> = newPerioder.splice(index, 1)
     if (deletedPerioder && deletedPerioder.length > 0) {
       removeFromDeletion(deletedPerioder[0])
     }
@@ -127,37 +127,37 @@ const ArbeidsforholdUtdanning: React.FC<ArbeidsforholdUtdanningProps> = ({
       newPeriode.aapenPeriodeType = 'åpen_sluttdato'
     }
 
-    const newPeriodeUtdanning: PeriodeUtdanning = {
+    const newPeriodeSimple: PeriodeForsikring = {
       periode: newPeriode,
       typeTrygdeforhold: typeTrygdeforhold
     }
 
     const valid: boolean = performValidation({
-      periodeUtdanning: newPeriodeUtdanning,
-      perioderUtdanning: perioder ?? [],
+      periode: newPeriodeSimple,
+      perioder: perioder ?? [],
       namespace: namespace
     })
     if (valid) {
-      let newPerioderUtdanning: Array<PeriodeUtdanning> | undefined = _.cloneDeep(perioder)
-      if (_.isNil(newPerioderUtdanning)) {
-        newPerioderUtdanning = []
+      let newPerioderSimple: Array<PeriodeForsikring> | undefined = _.cloneDeep(perioder)
+      if (_.isNil(newPerioderSimple)) {
+        newPerioderSimple = []
       }
-      newPerioderUtdanning = newPerioderUtdanning.concat(newPeriodeUtdanning)
-      dispatch(updateReplySed(target, newPerioderUtdanning))
+      newPerioderSimple = newPerioderSimple.concat(newPeriodeSimple)
+      dispatch(updateReplySed(target, newPerioderSimple))
       resetForm()
     }
   }
 
-  const renderRow = (periodeUtdanning: PeriodeUtdanning | null, index: number) => {
-    const candidateForDeletion = index < 0 ? false : isInDeletion(periodeUtdanning)
+  const renderRow = (periode: PeriodeForsikring | null, index: number) => {
+    const candidateForDeletion = index < 0 ? false : isInDeletion(periode)
     const idx = getIdx(index)
     const getErrorFor = (index: number, el: string): string | undefined => (
       index < 0
         ? _validation[namespace + '-' + el]?.feilmelding
         : validation[namespace + idx + '-' + el]?.feilmelding
     )
-    const startdato = index < 0 ? _newStartDato : periodeUtdanning?.periode?.startdato
-    const sluttdato = index < 0 ? _newSluttDato : periodeUtdanning?.periode?.sluttdato
+    const startdato = index < 0 ? _newStartDato : periode?.periode?.startdato
+    const sluttdato = index < 0 ? _newSluttDato : periode?.periode?.sluttdato
 
     return (
       <>
@@ -180,9 +180,9 @@ const ArbeidsforholdUtdanning: React.FC<ArbeidsforholdUtdanningProps> = ({
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}
               marginTop
-              onBeginRemove={() => addToDeletion(periodeUtdanning)}
+              onBeginRemove={() => addToDeletion(periode)}
               onConfirmRemove={() => onRemove(index)}
-              onCancelRemove={() => removeFromDeletion(periodeUtdanning)}
+              onCancelRemove={() => removeFromDeletion(periode)}
               onAddNew={onAdd}
               onCancelNew={onCancel}
             />
@@ -220,4 +220,4 @@ const ArbeidsforholdUtdanning: React.FC<ArbeidsforholdUtdanningProps> = ({
   )
 }
 
-export default ArbeidsforholdUtdanning
+export default ArbeidsforholdSimple

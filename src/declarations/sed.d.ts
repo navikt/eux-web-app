@@ -345,10 +345,14 @@ export interface LokaleSakId {
   institusjonsid: string
   land: string
 }
-export interface PeriodeMedForsikring {
-  arbeidsgiver: ArbeidsgiverWithAdresse
+
+export interface PeriodeForsikring {
   periode: Periode
   typeTrygdeforhold: string
+}
+
+export interface PeriodeMedForsikring extends  PeriodeForsikring {
+  arbeidsgiver: ArbeidsgiverWithAdresse
   // this is just to accommodate Arbeidsgiver conversion as PeriodeMedForsikring, just for internal use while showing ArbeidsgiverBox
   extra ?: {
     fraInntektsregisteret?: string
@@ -362,37 +366,22 @@ export interface PeriodeUtenForsikring extends PeriodeMedForsikring {
   kreverinformasjonominntekt: JaNei
 }
 
-export interface PeriodeAnnenForsikring {
+export interface PeriodeAnnenForsikring extends PeriodeForsikring {
   institusjonsid: string
   institusjonsnavn: string
   institusjonstype: string
   virksomhetensart: string
   navn: string
   adresse: Adresse
-  periode: Periode
-  typeTrygdeforhold: string
 }
 
-export interface PeriodeMilitaertjeneste {
-  periode: Periode
-  typeTrygdeforhold: string
-}
-
-export interface PeriodeFrihetsberoevet extends PeriodeMedForsikring {}
-export interface PeriodeUtdanning extends PeriodeMilitaertjeneste {}
-
-export interface PeriodeSykSvangerskapOmsorg {
+export interface PeriodeSykSvangerskapOmsorg extends PeriodeForsikring {
   institusjonsnavn: string
   institusjonsid: string
   erinstitusjonsidkjent: JaNei
   navn: string
   adresse: Adresse
-  periode: Periode
-  typeTrygdeforhold: string
 }
-
-export type PeriodeAnnen = PeriodeAnnenForsikring | PeriodeMilitaertjeneste | PeriodeFrihetsberoevet
-| PeriodeUtdanning | PeriodeSykSvangerskapOmsorg
 
 export interface FSed extends BaseReplySed {
   anmodningsperioder: Array<Periode>
@@ -428,13 +417,13 @@ export interface USed extends BaseReplySed {
 export interface U002Sed extends USed {
   perioderAnsattMedForsikring?: Array<PeriodeMedForsikring>
   perioderAnsattUtenForsikring?: Array<PeriodeUtenForsikring>
-  perioderSelvstendigMedForsikring?: Array<PeriodeMedForsikring>
+  perioderSelvstendigMedForsikring?: Array<PeriodeForsikring>
   perioderSelvstendigUtenForsikring?: Array<PeriodeUtenForsikring>
-  perioderFrihetsberoevet?: Array<PeriodeFrihetsberoevet>
+  perioderFrihetsberoevet?: Array<PeriodeForsikring>
   perioderSyk?: Array<PeriodeSykSvangerskapOmsorg>
   perioderSvangerskapBarn?: Array<PeriodeSykSvangerskapOmsorg>
-  perioderUtdanning?: Array<PeriodeUtdanning>
-  perioderMilitaertjeneste?: Array<PeriodeMilitaertjeneste>
+  perioderUtdanning?: Array<PeriodeForsikring>
+  perioderMilitaertjeneste?: Array<PeriodeForsikring>
   perioderAnnenForsikring?: Array<PeriodeAnnenForsikring>
   perioderDagpenger:Array<PeriodeDagpenger>
   grunntilopphor?: GrunnTilOpphør

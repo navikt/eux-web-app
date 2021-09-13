@@ -4,12 +4,9 @@ import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
-import { getIdx } from 'utils/namespace'
 
 export interface ValidationPeriodeMedForsikringProps {
   periodeMedForsikring: PeriodeMedForsikring,
-  perioderMedForsikring: Array<PeriodeMedForsikring>,
-  index?: number
   namespace: string
   includeAddress ?: boolean
 }
@@ -19,14 +16,11 @@ export const validatePeriodeMedForsikring = (
   t: TFunction,
   {
     periodeMedForsikring,
-    perioderMedForsikring,
-    index,
     namespace,
     includeAddress
   }: ValidationPeriodeMedForsikringProps
 ): boolean => {
   let hasErrors: boolean = false
-  const idx = getIdx(index)
 
   if (_.isEmpty(periodeMedForsikring.arbeidsgiver?.navn?.trim())) {
     v[namespace + '-navn'] = {
@@ -35,7 +29,7 @@ export const validatePeriodeMedForsikring = (
     } as FeiloppsummeringFeil
     hasErrors = true
   }
-  if (_.isEmpty(periodeMedForsikring.arbeidsgiver.identifikator)) {
+  if (_.isEmpty(periodeMedForsikring.arbeidsgiver?.identifikator[0]?.id)) {
     v[namespace + '-orgnr'] = {
       skjemaelementId: namespace + '-orgnr',
       feilmelding: t('message:validation-noOrgnr')
@@ -49,22 +43,7 @@ export const validatePeriodeMedForsikring = (
   })
   hasErrors = hasErrors || periodeError
 
-  if (!_.isEmpty(periodeMedForsikring?.periode?.startdato)) {
-    let duplicate: boolean
-    if (_.isNil(index)) {
-      duplicate = _.find(perioderMedForsikring, p => p.periode.startdato === periodeMedForsikring?.periode.startdato) !== undefined
-    } else {
-      const otherPerioder: Array<PeriodeMedForsikring> = _.filter(perioderMedForsikring, (p, i) => i !== index)
-      duplicate = _.find(otherPerioder, e => e.periode.startdato === periodeMedForsikring?.periode?.startdato) !== undefined
-    }
-    if (duplicate) {
-      v[namespace + idx + '-startdato'] = {
-        feilmelding: t('message:validation-duplicateStartdato'),
-        skjemaelementId: namespace + idx + '-startdato'
-      } as FeiloppsummeringFeil
-      hasErrors = true
-    }
-  }
+  // allow duplicates
 
   if (includeAddress && (
     !_.isEmpty(periodeMedForsikring.arbeidsgiver.adresse?.gate) ||
@@ -130,11 +109,9 @@ export const validatePerioderMedForsikring = (
   }: ValidatePerioderMedForsikringProps
 ): boolean => {
   let hasErrors: boolean = false
-  perioderMedForsikring?.forEach((periodeMedForsikring: PeriodeMedForsikring, index: number) => {
+  perioderMedForsikring?.forEach((periodeMedForsikring: PeriodeMedForsikring) => {
     const _errors: boolean = validatePeriodeMedForsikring(validation, t, {
       periodeMedForsikring,
-      perioderMedForsikring,
-      index,
       namespace,
       includeAddress
     })

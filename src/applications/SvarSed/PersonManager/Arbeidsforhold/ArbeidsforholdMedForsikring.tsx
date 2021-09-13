@@ -321,7 +321,6 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
 
     const valid: boolean = performValidationPeriodeMedForsikring({
       periodeMedForsikring: newPeriodeMedForsikring,
-      perioderMedForsikring: _addedPeriodeMedForsikring,
       namespace: namespace,
       includeAddress: true
     })
@@ -381,7 +380,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
   const renderNewArbeidsgiver = () => (
     <>
       <Undertittel>
-        {t('label:legg-til-arbeidsperiode')}
+        {t('label:legg-til-arbeidsgiver')}
       </Undertittel>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft'>

@@ -13,7 +13,7 @@ import { useSelector } from 'react-redux'
 import ArbeidsforholdMedForsikring from '../Arbeidsforhold/ArbeidsforholdMedForsikring'
 import ArbeidsforholdOther from '../Arbeidsforhold/ArbeidsforholdOther'
 import ArbeidsforholdSvangerskap from '../Arbeidsforhold/ArbeidsforholdSvangerskap'
-import ArbeidsforholdUtdanning from '../Arbeidsforhold/ArbeidsforholdUtdanning'
+import ArbeidsforholdSimple from '../Arbeidsforhold/ArbeidsforholdSimple'
 import ArbeidsforholdUtenForsikring from '../Arbeidsforhold/ArbeidsforholdUtenForsikring'
 
 interface ForsikringSelector extends PersonManagerFormSelector {
@@ -119,7 +119,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
             )}
             >
               <>
-                {(type === periodeTypeHash.perioderAnsattMedForsikring || type === periodeTypeHash.perioderSelvstendigMedForsikring) && (
+                {(type === periodeTypeHash.perioderAnsattMedForsikring) && (
                   <ArbeidsforholdMedForsikring
                     parentNamespace={namespace}
                     target={target}
@@ -133,13 +133,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                     typeTrygdeforhold={periodeTypeHash[type]}
                   />
                 )}
-                {type === periodeTypeHash.perioderFrihetsberoevet && (
-                  <ArbeidsforholdMedForsikring
-                    parentNamespace={namespace}
-                    target={target}
-                    typeTrygdeforhold={periodeTypeHash[type]}
-                  />
-                )}
+
                 {(type === periodeTypeHash.perioderSyk || type === periodeTypeHash.perioderSvangerskapBarn) && (
                   <ArbeidsforholdSvangerskap
                     parentNamespace={namespace}
@@ -147,8 +141,13 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                     typeTrygdeforhold={periodeTypeHash[type]}
                   />
                 )}
-                {(type === periodeTypeHash.perioderUtdanning || type === periodeTypeHash.perioderMilitaertjeneste) && (
-                  <ArbeidsforholdUtdanning
+                {(
+                  type === periodeTypeHash.perioderSelvstendigMedForsikring ||
+                  type === periodeTypeHash.perioderFrihetsberoevet ||
+                  type === periodeTypeHash.perioderUtdanning ||
+                  type === periodeTypeHash.perioderMilitaertjeneste
+                ) && (
+                  <ArbeidsforholdSimple
                     parentNamespace={namespace}
                     target={target}
                     typeTrygdeforhold={periodeTypeHash[type]}

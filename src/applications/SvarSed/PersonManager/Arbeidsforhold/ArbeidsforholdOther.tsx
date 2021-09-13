@@ -8,7 +8,7 @@ import Input from 'components/Forms/Input'
 import Period from 'components/Period/Period'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { Periode, PeriodeAnnen, PeriodeAnnenForsikring, ReplySed } from 'declarations/sed'
+import { Periode, PeriodeAnnenForsikring, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
@@ -158,7 +158,7 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
       _setNewSluttDato(sluttdato.trim())
       _resetValidation(namespace + '-sluttdato')
     } else {
-      const newPerioder: Array<PeriodeAnnen> = _.cloneDeep(perioder) as Array<PeriodeAnnen>
+      const newPerioder: Array<PeriodeAnnenForsikring> = _.cloneDeep(perioder) as Array<PeriodeAnnenForsikring>
       if (sluttdato === '') {
         delete newPerioder[index].periode.sluttdato
         newPerioder[index].periode.aapenPeriodeType = 'åpen_sluttdato'
@@ -286,7 +286,7 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
       newPeriode.aapenPeriodeType = 'åpen_sluttdato'
     }
 
-    const newPeriodeAnnen: PeriodeAnnen = {
+    const newPeriodeAnnen: PeriodeAnnenForsikring = {
       periode: newPeriode,
       typeTrygdeforhold: typeTrygdeforhold,
       institusjonsnavn: _newInstitutionsNavn.trim(),
@@ -310,7 +310,7 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
       namespace: namespace
     })
     if (valid) {
-      let newPerioderAnnen: Array<PeriodeAnnen> | undefined = _.cloneDeep(perioder)
+      let newPerioderAnnen: Array<PeriodeAnnenForsikring> | undefined = _.cloneDeep(perioder)
       if (_.isNil(newPerioderAnnen)) {
         newPerioderAnnen = []
       }
