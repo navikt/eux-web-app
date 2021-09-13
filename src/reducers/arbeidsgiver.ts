@@ -33,6 +33,15 @@ const arbeidsgiverReducer = (state: ArbeidsgiverState = initialArbeidsgiverState
         arbeidsperioder: (action as ActionWithPayload).payload
       }
 
+    case types.ARBEIDSPERIODER_UPDATE:
+      return {
+        ...state,
+        arbeidsperioder: {
+          ...state.arbeidsperioder,
+          arbeidsperioder: (action as ActionWithPayload).payload
+        }
+      }
+
     default:
       return state
   }

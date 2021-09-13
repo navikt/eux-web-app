@@ -1,6 +1,6 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { Arbeidsperioder } from 'declarations/types'
+import { Arbeidsgiver, Arbeidsperioder } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockArbeidsperioder from 'mocks/arbeidsperioder'
 import { ActionCreator } from 'redux'
@@ -20,3 +20,10 @@ export const getArbeidsperioder: ActionCreator<ThunkResult<ActionWithPayload<Arb
     }
   })
 }
+
+export const updateArbeidsgivere: ActionCreator<ActionWithPayload<Array<Arbeidsgiver>>> = (
+  arbeidsgivere: Array<Arbeidsgiver>
+): ActionWithPayload<Array<Arbeidsgiver>> => ({
+  type: types.ARBEIDSPERIODER_UPDATE,
+  payload: arbeidsgivere
+})

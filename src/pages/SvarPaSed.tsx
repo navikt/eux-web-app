@@ -7,13 +7,15 @@ import classNames from 'classnames'
 import { FadingLineSeparator, SideBarDiv } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
+import { FeatureToggles } from 'declarations/app'
+import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
 import { Container, Content, fadeIn, fadeOut, Margin } from 'nav-hoykontrast'
 import SEDEditor from 'pages/SvarPaSed/SEDEditor'
 import SEDSelection from 'pages/SvarPaSed/SEDSelection'
 import PT from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 const transition = 500
@@ -99,6 +101,14 @@ export enum Slide {
   B_GOING_TO_RIGHT
 }
 
+interface SvarPaSedPageSelector {
+  featureToggles: FeatureToggles | null | undefined
+}
+
+const mapState = (state: State): SvarPaSedPageSelector => ({
+  featureToggles: state.app.featureToggles
+})
+
 export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
   location,
   waitForMount = true
@@ -107,6 +117,7 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
 
   const [_mounted, setMounted] = useState<boolean>(!waitForMount)
   const storageKey = 'replySed'
+  const { featureToggles }: SvarPaSedPageSelector = useSelector<State, SvarPaSedPageSelector>(mapState)
 
   const [positionContentA, setPositionContentA] = useState<Slide>(Slide.LEFT)
   const [positionContentB, setPositionContentB] = useState<Slide>(Slide.RIGHT)
@@ -250,6 +261,10 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
     right: Slide.RIGHT === position,
     left: Slide.LEFT === position
   })
+
+  if (!featureToggles?.featureSvarsed) {
+    return <div/>
+  }
 
   return (
     <TopContainer>

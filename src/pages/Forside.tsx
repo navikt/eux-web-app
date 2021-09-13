@@ -19,8 +19,6 @@ const mapState = (state: State): ForsideSelector => ({
 const Forside: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
   const { featureToggles }: ForsideSelector = useSelector<State, ForsideSelector>(mapState)
-  console.log('featureToggles')
-  console.log(featureToggles)
   return (
     <TopContainer>
       <Container>

@@ -1,4 +1,4 @@
-import { getArbeidsperioder } from 'actions/arbeidsgiver'
+import { getArbeidsperioder, updateArbeidsgivere } from 'actions/arbeidsgiver'
 import { fetchInntekt } from 'actions/inntekt'
 import { updateReplySed } from 'actions/svarpased'
 import InntektSearch from 'applications/SvarSed/PersonManager/InntektSearch/InntektSearch'
@@ -13,7 +13,7 @@ import Period from 'components/Period/Period'
 import { Dd, Dl, Dt, HorizontalLineSeparator } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Periode, PeriodeMedForsikring, ReplySed } from 'declarations/sed'
-import { Arbeidsperioder, IInntekter, Validation } from 'declarations/types'
+import { Arbeidsgiver, Arbeidsperioder, IInntekter, Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import { Country } from 'land-verktoy'
@@ -174,7 +174,28 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
     }
   }
 
-  const onPeriodeMedForsikringEdit = (periodeMedForsikring: PeriodeMedForsikring) => {
+  const onPeriodeMedForsikringEdit = (periodeMedForsikring: PeriodeMedForsikring, selected: boolean) => {
+    if (selected) {
+      const newPerioderMedForsikring: Array<PeriodeMedForsikring> = _.cloneDeep(perioder) as Array<PeriodeMedForsikring>
+      const newArbeidsgivere: Array<Arbeidsgiver> = _.cloneDeep(arbeidsperioder?.arbeidsperioder) as Array<Arbeidsgiver>
+      const needleId: string | undefined = getOrgnr(periodeMedForsikring)
+      if (needleId) {
+        const indexArbeidsgiver = _.findIndex(newArbeidsgivere, (p: Arbeidsgiver) => p.arbeidsgiversOrgnr === needleId)
+        if (indexArbeidsgiver >= 0) {
+          newArbeidsgivere[indexArbeidsgiver].fraDato = periodeMedForsikring.periode.startdato
+          newArbeidsgivere[indexArbeidsgiver].tilDato = periodeMedForsikring.periode.sluttdato
+          dispatch(updateArbeidsgivere(newArbeidsgivere))
+        }
+        const indexPerioder = _.findIndex(newPerioderMedForsikring, (p: PeriodeMedForsikring) => hasOrgnr(p, needleId))
+        if (indexPerioder >= 0) {
+          newPerioderMedForsikring[indexPerioder] = periodeMedForsikring
+          dispatch(updateReplySed(target, newPerioderMedForsikring))
+        }
+      }
+    }
+  }
+
+  const onAddedPeriodeMedForsikringEdit = (periodeMedForsikring: PeriodeMedForsikring) => {
     const newAddedPeriodeMedForsikring: Array<PeriodeMedForsikring> = _.cloneDeep(_addedPeriodeMedForsikring)
     if (newAddedPeriodeMedForsikring) {
       const needleId : string | undefined = getOrgnr(periodeMedForsikring)
@@ -541,13 +562,14 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
             <Column>
               <ArbeidsgiverBox
                 arbeidsgiver={item.item}
-                editable={false}
+                editable='only_period'
                 includeAddress={includeAddress}
                 typeTrygdeforhold={typeTrygdeforhold}
                 newArbeidsgiver={false}
                 selected={!_.isNil(item.index) && item.index >= 0}
                 key={getOrgnr(item.item)}
                 onArbeidsgiverSelect={onPeriodeMedForsikringSelect}
+                onArbeidsgiverEdit={onPeriodeMedForsikringEdit}
                 namespace={namespace}
               />
             </Column>
@@ -560,7 +582,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
             <Column>
               <ArbeidsgiverBox
                 arbeidsgiver={item.item}
-                editable
+                editable='full'
                 includeAddress={includeAddress}
                 error={item.duplicate}
                 newArbeidsgiver
@@ -569,7 +591,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
                 key={getOrgnr(item.item)}
                 onArbeidsgiverSelect={onPeriodeMedForsikringSelect}
                 onArbeidsgiverDelete={onPeriodeMedForsikringDelete}
-                onArbeidsgiverEdit={onPeriodeMedForsikringEdit}
+                onArbeidsgiverEdit={onAddedPeriodeMedForsikringEdit}
                 namespace={namespace}
               />
             </Column>

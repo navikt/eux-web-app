@@ -47,10 +47,11 @@ const TrashcanIcon = styled(Trashcan)`
   width: 20px;
   cursor: pointer;
 `
+export type Editable = 'no' | 'only_period' | 'full'
 
 export interface ArbeidsgiverProps {
   arbeidsgiver: PeriodeMedForsikring
-  editable?: boolean
+  editable?: Editable
   error?: boolean,
   includeAddress ?: boolean
   newArbeidsgiver?: boolean
@@ -65,7 +66,7 @@ export interface ArbeidsgiverProps {
 
 const ArbeidsgiverBox = ({
   arbeidsgiver,
-  editable = false,
+  editable = 'no',
   error = false,
   includeAddress = false,
   newArbeidsgiver = false,
@@ -149,7 +150,7 @@ const ArbeidsgiverBox = ({
     setLand(newLand)
   }
 
-  const onSaveButtonClicked = () => {
+  const onSaveEditButtonClicked = () => {
     const newPeriode: Periode = {
       startdato: _startDato
     }
@@ -249,7 +250,7 @@ const ArbeidsgiverBox = ({
             <IkonArbeidsgiver />
             <HorizontalSeparatorDiv />
             <div>
-              {_isEditing
+              {_isEditing && editable === 'full'
                 ? (
                   <Row>
                     <Column>
@@ -317,7 +318,7 @@ const ArbeidsgiverBox = ({
               <>
                 <HorizontalSeparatorDiv />
                 <div>
-                  {_isEditing
+                  {_isEditing && editable === 'full'
                     ? (
                       <>
                         <VerticalSeparatorDiv size='0.5' />
@@ -439,7 +440,7 @@ const ArbeidsgiverBox = ({
             </>
           </PaddedFlexDiv>
           <PaddedFlexDiv className='slideInFromRight' style={{ animationDelay: '0.3s' }}>
-            {editable && !_isEditing && !_isDeleting && (
+            {editable === 'full' && !_isEditing && !_isDeleting && (
               <>
                 <HighContrastFlatknapp
                   kompakt style={{
@@ -451,6 +452,10 @@ const ArbeidsgiverBox = ({
                   <TrashcanIcon />
                 </HighContrastFlatknapp>
                 <HorizontalSeparatorDiv size='0.5' />
+                </>
+            )}
+            {editable !== 'no' && !_isEditing && !_isDeleting && (
+              <>
                 <HighContrastFlatknapp
                   kompakt style={{
                     marginTop: '-0.5rem',
@@ -476,11 +481,11 @@ const ArbeidsgiverBox = ({
                 <HighContrastKnapp
                   mini
                   kompakt
-                  onClick={onSaveButtonClicked}
+                  onClick={onSaveEditButtonClicked}
                 >
                   <Add />
                   <HorizontalSeparatorDiv size='0.5' />
-                  {t('el:button-add')}
+                  {t('el:button-save')}
                 </HighContrastKnapp>
                 <HorizontalSeparatorDiv size='0.5' />
                 <HighContrastFlatknapp

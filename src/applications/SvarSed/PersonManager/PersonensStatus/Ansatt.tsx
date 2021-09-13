@@ -449,7 +449,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
             <Column>
               <ArbeidsgiverBox
                 arbeidsgiver={item.item as unknown as PeriodeMedForsikring}
-                editable={false}
+                editable='no'
                 newArbeidsgiver={false}
                 includeAddress={includeAddress}
                 selected={!_.isNil(item.index) && item.index >= 0}
@@ -468,7 +468,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
             <Column>
               <ArbeidsgiverBox
                 arbeidsgiver={item.item as unknown as PeriodeMedForsikring}
-                editable
+                editable='full'
                 error={item.duplicate}
                 newArbeidsgiver
                 includeAddress={includeAddress}

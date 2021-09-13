@@ -7,11 +7,11 @@ import { Column, Row } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { arbeidsgiverToPeriodeMedForsikring } from 'utils/arbeidsgiver'
-import ArbeidsgiverBox from './ArbeidsgiverBox'
+import ArbeidsgiverBox, { Editable } from './ArbeidsgiverBox'
 
 export interface ArbeidsgivereProps {
   arbeidsperioder: Arbeidsperioder | undefined
-  editable?: boolean
+  editable?: Editable
   getArbeidsperioder?: () => void
   gettingArbeidsperioder?: boolean
   namespace: string
@@ -25,7 +25,7 @@ export interface ArbeidsgivereProps {
 
 const Arbeidsgivere: React.FC<ArbeidsgivereProps> = ({
   arbeidsperioder,
-  editable = false,
+  editable = 'no',
   gettingArbeidsperioder = false,
   getArbeidsperioder = () => {},
   namespace,
