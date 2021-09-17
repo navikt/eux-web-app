@@ -351,7 +351,7 @@ export interface PeriodeForsikring {
   typeTrygdeforhold: string
 }
 
-export interface PeriodeMedForsikring extends  PeriodeForsikring {
+export interface PeriodeMedForsikring extends PeriodeForsikring {
   arbeidsgiver: ArbeidsgiverWithAdresse
   // this is just to accommodate Arbeidsgiver conversion as PeriodeMedForsikring, just for internal use while showing ArbeidsgiverBox
   extra ?: {

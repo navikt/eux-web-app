@@ -34,7 +34,7 @@ describe('actions/svarpased', () => {
           failure: types.SVARPASED_SED_CREATE_FAILURE
         },
         method: 'POST',
-        url: sprintf(urls.API_SED_CREATE_URL, { rinaSakId: replySed.saksnummer }),
+        url: sprintf(urls.API_SED_CREATE_URL, { rinaSakId: replySed.saksnummer })
       }))
   })
 
@@ -50,9 +50,8 @@ describe('actions/svarpased', () => {
           success: types.SVARPASED_FAGSAKER_GET_SUCCESS,
           failure: types.SVARPASED_FAGSAKER_GET_FAILURE
         },
-        url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr: fnr, sektor: sektor, tema: tema }),
+        url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr: fnr, sektor: sektor, tema: tema })
       }))
-
   })
 
   it('getPreviewFile()', () => {
@@ -154,10 +153,7 @@ describe('actions/svarpased', () => {
           rinaSakId: saksnummer,
           sedId: connectedSed.sedId,
           sedType: connectedSed.svarsedType
-        }),
+        })
       }))
   })
-
-
-
 })

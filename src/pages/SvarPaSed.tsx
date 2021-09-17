@@ -263,7 +263,7 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
   })
 
   if (!featureToggles?.featureSvarsed) {
-    return <div/>
+    return <div />
   }
 
   return (

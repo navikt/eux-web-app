@@ -43,8 +43,8 @@ const Forside: React.FC = (): JSX.Element => {
             {t('app:indexpage-addAttachment')}
           </Lenkepanel>
           {featureToggles?.featureSvarsed && (
-             <>
-               <VerticalSeparatorDiv />
+            <>
+              <VerticalSeparatorDiv />
               <Lenkepanel
                 className='slideInFromLeft'
                 href='#'

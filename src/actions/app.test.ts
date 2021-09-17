@@ -1,10 +1,9 @@
 import * as appActions from 'actions/app'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { ParamPayload } from 'declarations/app'
 import EKV from 'eessi-kodeverk'
-import { ActionWithPayload, call as originalCall } from 'js-fetch-api'
-import { Action, ActionCreator } from 'redux'
+import { call as originalCall } from 'js-fetch-api'
+import { Action } from 'redux'
 
 jest.mock('js-fetch-api', () => ({
   call: jest.fn()

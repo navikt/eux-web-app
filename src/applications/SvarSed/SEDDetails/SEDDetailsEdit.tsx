@@ -1,81 +1,224 @@
-import { setReplySed } from 'actions/svarpased'
+import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
+import { validateSEDDetail, ValidationSEDDetailsProps } from 'applications/SvarSed/SEDDetails/validation'
+import Add from 'assets/icons/Add'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
-import { TextAreaDiv } from 'components/StyledComponents'
+import Period from 'components/Period/Period'
+import { HorizontalLineSeparator, TextAreaDiv } from 'components/StyledComponents'
 import { F002Sed, FSed, Periode, ReplySed, USed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
+import useAddRemove from 'hooks/useAddRemove'
+import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { UndertekstBold } from 'nav-frontend-typografi'
 import {
-  FlexDiv,
-  HighContrastHovedknapp,
+  AlignStartRow,
+  Column,
+  HighContrastFlatknapp,
   HighContrastInput,
-  HighContrastKnapp,
   HighContrastRadio,
   HighContrastRadioGroup,
   HorizontalSeparatorDiv,
+  Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
+import { getIdx } from 'utils/namespace'
 
 export interface SEDDetailsEditProps {
   replySed: ReplySed
-  onCancel: () => void
-  onSave: () => void
 }
 
 const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
-  replySed,
-  onCancel,
-  onSave = () => {}
+  replySed
 }: SEDDetailsEditProps): JSX.Element => {
   const { t } = useTranslation()
   const validation: Validation = {}
   const dispatch = useDispatch()
 
-  const [_anmodningsperiode, setAnmodningsperiode] = useState<Periode>((replySed as USed).anmodningsperiode)
-  const [_anmodningsperioder, setAnmodningsperioder] = useState<Array<Periode>>((replySed as FSed).anmodningsperioder)
-
-  const [_brukerFornavn, setBrukerFornavn] = useState<string>(replySed.bruker.personInfo.fornavn)
-  const [_brukerEtternavn, setBrukerEtternavn] = useState<string>(replySed.bruker.personInfo.etternavn)
-  const [_ektefelleFornavn, setEktefelleFornavn] = useState<string>((replySed as F002Sed).ektefelle?.personInfo.fornavn)
-  const [_ektefelleEtternavn, setEktefelleEtternavn] = useState<string>((replySed as F002Sed).ektefelle?.personInfo.etternavn)
+  const [_newAnmodningsperioderStartDato, setNewAnmodningsperioderStartDato] = useState<string>('')
+  const [_newAnmodningsperioderSluttDato, setNewAnmodningsperioderSluttDato] = useState<string>('')
 
   const [_sakseier, setSakseier] = useState<string>('')
   const [_typeKrav, setTypeKrav] = useState<string | undefined>((replySed as F002Sed).krav?.kravType)
   const [_informasjon, setInformasjon] = useState<string | undefined>((replySed as F002Sed).krav?.infoType)
   const [_opplysninger, setOpplysninger] = useState<string>('')
 
-  const setAnmodningsperiodeStartDato = (e: string) => {
-    setAnmodningsperiode({
-      ..._anmodningsperiode,
-      startdato: e
-    })
-  }
-  const setAnmodningsperiodeSluttDato = (e: string) => {
-    setAnmodningsperiode({
-      ..._anmodningsperiode,
-      sluttdato: e
-    })
-  }
-  const setAnmodningsperioderStartDato = (e: string, i: number) => {
-    const newAnmodningsperioder = _.cloneDeep(_anmodningsperioder)
-    newAnmodningsperioder[i].startdato = e
-    setAnmodningsperioder(newAnmodningsperioder)
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => p.startdato)
+  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
+  const [_validation, _resetValidation, performValidation] = useValidation<ValidationSEDDetailsProps>({}, validateSEDDetail)
+  const namespace = 'seddetails'
+
+  const setBrukerFornavn = (fornavn: string) => {
+    dispatch(updateReplySed('bruker.personInfo.fornavn', fornavn.trim()))
+    if (validation[namespace + '-søker-fornavn']) {
+      dispatch(resetValidation(namespace + '-søker-fornavn'))
+    }
   }
 
-  const setAnmodningsperioderSluttDato = (e: string, i: number) => {
-    const newAnmodningsperioder = _.cloneDeep(_anmodningsperioder)
-    newAnmodningsperioder[i].sluttdato = e
-    setAnmodningsperioder(newAnmodningsperioder)
+  const setBrukerEtternavn = (etternavn: string) => {
+    dispatch(updateReplySed('bruker.personInfo.etternavn', etternavn.trim()))
+    if (validation[namespace + '-søker-etternavn']) {
+      dispatch(resetValidation(namespace + '-søker-etternavn'))
+    }
   }
 
-  const saveChanges = () => {
-    const newReplySed = _.cloneDeep(replySed)
-    newReplySed.bruker.personInfo.fornavn = _brukerFornavn
-    dispatch(setReplySed(newReplySed))
-    onSave()
+  const setEktefelleFornavn = (fornavn: string) => {
+    dispatch(updateReplySed('ektefelle.personInfo.fornavn', fornavn.trim()))
+    if (validation[namespace + '-ektefelle-fornavn']) {
+      dispatch(resetValidation(namespace + '-ektefelle-fornavn'))
+    }
+  }
+
+  const setEktefelleEtternavn = (etternavn: string) => {
+    dispatch(updateReplySed('ektefelle.personInfo.etternavn', etternavn.trim()))
+    if (validation[namespace + '-ektefelle-etternavn']) {
+      dispatch(resetValidation(namespace + '-ektefelle-etternavn'))
+    }
+  }
+
+  const setAnmodningsperiodeStartDato = (newDate: string) => {
+    dispatch(updateReplySed('anmodningsperiode', newDate))
+    if (validation[namespace + '-anmodningsperiode-stardato']) {
+      dispatch(resetValidation(namespace + '-anmodningsperiode-stardato'))
+    }
+  }
+
+  const setAnmodningsperiodeSluttDato = (newDate: string) => {
+    const newAnmodningsperiode = _.cloneDeep((replySed as USed).anmodningsperiode)
+    if (newDate === '') {
+      delete newAnmodningsperiode.sluttdato
+      newAnmodningsperiode.aapenPeriodeType = 'åpen_sluttdato'
+    } else {
+      delete newAnmodningsperiode.aapenPeriodeType
+      newAnmodningsperiode.sluttdato = newDate.trim()
+    }
+    dispatch(updateReplySed('anmodningsperiode', newAnmodningsperiode))
+    if (validation[namespace + '-anmodningsperiode-sluttdato']) {
+      dispatch(resetValidation(namespace + '-anmodningsperiode-sluttdato'))
+    }
+  }
+
+  const setAnmodningsperioderStartDato = (newDate: string, index: number) => {
+    if (index < 0) {
+      setNewAnmodningsperioderStartDato(newDate.trim())
+      _resetValidation(namespace + '-anmodningsperioder-stardato')
+    } else {
+      dispatch(updateReplySed(`anmodningsperioder[${index}]`, newDate))
+      if (validation[namespace + '-anmodningsperioder' + getIdx(index) + '-stardato']) {
+        dispatch(resetValidation(namespace + '-anmodningsperiode' + getIdx(index) + '-stardato'))
+      }
+    }
+  }
+
+  const setAnmodningsperioderSluttDato = (newDate: string, index: number) => {
+    if (index < 0) {
+      setNewAnmodningsperioderSluttDato(newDate.trim())
+      _resetValidation(namespace + '-anmodningsperioder-sluttdato')
+    } else {
+      const newAnmodningsperioder = _.cloneDeep((replySed as FSed).anmodningsperioder)
+      if (newDate === '') {
+        delete newAnmodningsperioder[index].sluttdato
+        newAnmodningsperioder[index].aapenPeriodeType = 'åpen_sluttdato'
+      } else {
+        delete newAnmodningsperioder[index].aapenPeriodeType
+        newAnmodningsperioder[index].sluttdato = newDate.trim()
+      }
+      dispatch(updateReplySed('anmodningsperioder', newAnmodningsperioder))
+      if (validation[namespace + '-anmodningsperioder' + getIdx(index) + '-sluttdato']) {
+        dispatch(resetValidation(namespace + '-anmodningsperioder' + getIdx(index) + '-sluttdato'))
+      }
+    }
+  }
+
+  const resetForm = () => {
+    setNewAnmodningsperioderStartDato('')
+    setNewAnmodningsperioderSluttDato('')
+    _resetValidation()
+  }
+
+  const onCancel = () => {
+    _setSeeNewForm(false)
+    resetForm()
+  }
+
+  const onRemove = (index: number) => {
+    const newAnmodningsperioder: Array<Periode> = _.cloneDeep((replySed as FSed).anmodningsperioder)
+    const deletedAnmodningsperioder: Array<Periode> = newAnmodningsperioder.splice(index, 1)
+    if (deletedAnmodningsperioder && deletedAnmodningsperioder.length > 0) {
+      removeFromDeletion(deletedAnmodningsperioder[0])
+    }
+    dispatch(updateReplySed('anmodningsperioder', newAnmodningsperioder))
+  }
+
+  const onAdd = () => {
+    const newPeriode: Periode = {
+      startdato: _newAnmodningsperioderStartDato.trim()
+    }
+    if (_newAnmodningsperioderSluttDato) {
+      newPeriode.sluttdato = _newAnmodningsperioderSluttDato.trim()
+    } else {
+      newPeriode.aapenPeriodeType = 'åpen_sluttdato'
+    }
+
+    const valid: boolean = performValidation({
+      anmodningsperiode: newPeriode,
+      namespace: namespace
+    })
+    if (valid) {
+      let newPerioder: Array<Periode> = _.cloneDeep((replySed as FSed).anmodningsperioder)
+      if (_.isNil(newPerioder)) {
+        newPerioder = []
+      }
+      newPerioder = newPerioder.concat(newPeriode)
+      dispatch(updateReplySed('anmodningsperioder', newPerioder))
+      resetForm()
+    }
+  }
+
+  const renderPeriode = (periode: Periode | null, index: number) => {
+    const candidateForDeletion = index < 0 ? false : isInDeletion(periode)
+    const idx = (index >= 0 ? '[' + index + ']' : '')
+    const getErrorFor = (index: number, el: string): string | undefined => {
+      return index < 0
+        ? _validation[namespace + '-anmodningsperioder' + idx + '-' + el]?.feilmelding
+        : validation[namespace + '-anmodningsperioder' + idx + '-' + el]?.feilmelding
+    }
+    const startdato = index < 0 ? _newAnmodningsperioderStartDato : periode?.startdato
+    const sluttdato = index < 0 ? _newAnmodningsperioderSluttDato : periode?.sluttdato
+    return (
+      <>
+        <AlignStartRow>
+          <Period
+            key={'' + startdato + sluttdato}
+            namespace={namespace + '-perioder' + getIdx(index)}
+            errorStartDato={getErrorFor(index, 'startdato')}
+            errorSluttDato={getErrorFor(index, 'sluttdato')}
+            setStartDato={(dato: string) => setAnmodningsperioderStartDato(dato, index)}
+            setSluttDato={(dato: string) => setAnmodningsperioderSluttDato(dato, index)}
+            valueStartDato={startdato}
+            valueSluttDato={sluttdato}
+          />
+          <Column>
+            <AddRemovePanel
+              candidateForDeletion={candidateForDeletion}
+              existingItem={(index >= 0)}
+              marginTop
+              onBeginRemove={() => addToDeletion(periode)}
+              onConfirmRemove={() => onRemove(index)}
+              onCancelRemove={() => removeFromDeletion(periode)}
+              onAddNew={onAdd}
+              onCancelNew={onCancel}
+            />
+          </Column>
+        </AlignStartRow>
+        <VerticalSeparatorDiv size='0.5' />
+      </>
+    )
   }
 
   return (
@@ -84,120 +227,112 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
         {t('label:periode')}
       </UndertekstBold>
       <VerticalSeparatorDiv size='0.5' />
-      {_anmodningsperiode && (
+      {!_.isNil((replySed as USed).anmodningsperiode) && (
         <>
-          <FlexDiv className='slideInFromLeft'>
-            <HighContrastInput
-              data-test-id='seddetails-anmodningsperiode-startdato'
-              feil={validation['seddetails-anmodningsperiode-startdato']
-                ? validation['seddetails-anmodningsperiode-startdato']!.feilmelding
-                : undefined}
-              id='seddetails-anmodningsperiode-startdato'
-              onChange={(e: any) => setAnmodningsperiodeStartDato(e.target.value)}
-              value={_anmodningsperiode.startdato}
-              placeholder={t('el:placeholder-date-default')}
+          <AlignStartRow>
+            <Period
+              key={'' + (replySed as USed).anmodningsperiode.startdato + (replySed as USed).anmodningsperiode.sluttdato}
+              namespace={namespace + '-anmodningsperiode'}
+              errorStartDato={validation[namespace + '-anmodningsperiode-startdato']?.feilmelding}
+              errorSluttDato={validation[namespace + '-anmodningsperiode-sluttdato']?.feilmelding}
+              setStartDato={setAnmodningsperiodeStartDato}
+              setSluttDato={setAnmodningsperiodeSluttDato}
+              valueStartDato={(replySed as USed).anmodningsperiode.startdato ?? ''}
+              valueSluttDato={(replySed as USed).anmodningsperiode.sluttdato ?? ''}
             />
-            <HorizontalSeparatorDiv size='0.35' />
-            <HighContrastInput
-              data-test-id='seddetails-anmodningsperiode-sluttdato'
-              feil={validation['seddetails-anmodningsperiode-sluttdato']
-                ? validation['seddetails-anmodningsperiode-sluttdato']!.feilmelding
-                : undefined}
-              id='seddetails-anmodningsperiode-sluttdato'
-              onChange={(e: any) => setAnmodningsperiodeSluttDato(e.target.value)}
-              value={_anmodningsperiode.sluttdato}
-              placeholder={t('el:placeholder-date-default')}
-            />
-          </FlexDiv>
+          </AlignStartRow>
           <VerticalSeparatorDiv size='0.5' />
         </>
       )}
-      {_anmodningsperioder && _anmodningsperioder.map((p, i) => (
-        <div key={i}>
-          <FlexDiv className='slideInFromLeft' style={{ animationDelay: i * 0.1 + 's' }}>
-            <HighContrastInput
-              data-test-id={'seddetails-anmodningsperioder[' + i + ']-startdato'}
-              feil={validation['seddetails--anmodningsperioder[' + i + ']-startdato']
-                ? validation['seddetails--anmodningsperioder[' + i + ']-startdato']!.feilmelding
-                : undefined}
-              id={'seddetails-anmodningsperioder[' + i + ']-startdato'}
-              onChange={(e: any) => setAnmodningsperioderStartDato(e.target.value, i)}
-              value={_anmodningsperioder[i].startdato}
-              placeholder={t('el:placeholder-date-default')}
-            />
-            <HorizontalSeparatorDiv size='0.35' />
-            <HighContrastInput
-              data-test-id={'seddetails-anmodningsperioder[' + i + ']-sluttdato'}
-              feil={validation['seddetails-anmodningsperioder[' + i + ']-sluttdato']
-                ? validation['seddetails-anmodningsperioder[' + i + ']-sluttdato']!.feilmelding
-                : undefined}
-              id={'seddetails-anmodningsperioder[' + i + ']-sluttdato'}
-              onChange={(e: any) => setAnmodningsperioderSluttDato(e.target.value, i)}
-              value={_anmodningsperioder[i].sluttdato}
-              placeholder={t('el:placeholder-date-default')}
-            />
-          </FlexDiv>
-          <VerticalSeparatorDiv size='0.5' />
-        </div>
-      ))}
+      {!_.isNil((replySed as FSed).anmodningsperioder) && (
+        <>
+          {(replySed as FSed)?.anmodningsperioder?.map(renderPeriode)}
+          <VerticalSeparatorDiv />
+          <HorizontalLineSeparator />
+          <VerticalSeparatorDiv />
+          {_seeNewForm
+            ? renderPeriode(null, -1)
+            : (
+              <Row>
+                <Column>
+                  <HighContrastFlatknapp
+                    mini
+                    kompakt
+                    onClick={() => _setSeeNewForm(true)}
+                  >
+                    <Add />
+                    <HorizontalSeparatorDiv size='0.5' />
+                    {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+                  </HighContrastFlatknapp>
+                </Column>
+              </Row>
+              )}
+          <VerticalSeparatorDiv />
+        </>
+      )}
       <VerticalSeparatorDiv />
       <UndertekstBold>
         {t('label:søker')}
       </UndertekstBold>
       <VerticalSeparatorDiv size='0.5' />
-      <FlexDiv className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
-        <HighContrastInput
-          data-test-id='seddetails-søker-fornavn'
-          feil={validation['seddetails-søker-fornavn']
-            ? validation['seddetails-søker-fornavn']!.feilmelding
-            : undefined}
-          id='seddetails-søker-fornavn'
-          onChange={(e: any) => setBrukerFornavn(e.target.value)}
-          value={_brukerFornavn}
-          placeholder={t('label:fornavn')}
-        />
+      <AlignStartRow>
+        <Column>
+          <Input
+            feil={validation[namespace + '-søker-fornavn']?.feilmelding}
+            namespace={namespace}
+            key={namespace + '-søker-fornavn' + replySed.bruker.personInfo.fornavn}
+            id='-søker-fornavn'
+            label={t('label:fornavn') + ' *'}
+            onChanged={setBrukerFornavn}
+            value={replySed.bruker.personInfo.fornavn ?? ''}
+          />
+        </Column>
         <HorizontalSeparatorDiv size='0.35' />
-        <HighContrastInput
-          data-test-id='seddetails-søker-etternavn'
-          feil={validation['seddetails-søker-etternavn']
-            ? validation['seddetails-søker-etternavn']!.feilmelding
-            : undefined}
-          id='seddetails-søker-etternavn'
-          onChange={(e: any) => setBrukerEtternavn(e.target.value)}
-          value={_brukerEtternavn}
-          placeholder={t('label:etternavn')}
-        />
-      </FlexDiv>
+        <Column>
+          <Input
+            feil={validation[namespace + '-søker-etternavn']?.feilmelding}
+            namespace={namespace}
+            key={namespace + '-søker-etternavn' + replySed.bruker.personInfo.etternavn}
+            id='-søker-etternavn'
+            label={t('label:etternavn') + ' *'}
+            onChanged={setBrukerEtternavn}
+            value={replySed.bruker.personInfo.etternavn ?? ''}
+          />
+        </Column>
+      </AlignStartRow>
       <VerticalSeparatorDiv />
       <UndertekstBold>
         {t('label:partner')}
       </UndertekstBold>
       <VerticalSeparatorDiv size='0.5' />
-      <FlexDiv className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
-        <HighContrastInput
-          data-test-id='seddetails-ektefelle-fornavn'
-          feil={validation['seddetails-ektefelle-fornavn']
-            ? validation['seddetails-ektefelle-fornavn']!.feilmelding
-            : undefined}
-          id='seddetails-ektefelle-fornavn'
-          onChange={(e: any) => setEktefelleFornavn(e.target.value)}
-          value={_ektefelleFornavn}
-          placeholder={t('label:fornavn')}
-        />
+      <AlignStartRow>
+        <Column>
+          <Input
+            feil={validation[namespace + '-ektefelle-fornavn']?.feilmelding}
+            namespace={namespace}
+            key={namespace + '-ektefelle-fornavn' + (replySed as F002Sed).ektefelle.personInfo.fornavn}
+            id='-ektefelle-fornavn'
+            label={t('label:fornavn') + ' *'}
+            onChanged={setEktefelleFornavn}
+            value={(replySed as F002Sed).ektefelle.personInfo.fornavn ?? ''}
+          />
+        </Column>
         <HorizontalSeparatorDiv size='0.35' />
-        <HighContrastInput
-          data-test-id='seddetails-ektefelle-etternavn'
-          feil={validation['seddetails-ektefelle-etternavn']
-            ? validation['seddetails-ektefelle-etternavn']!.feilmelding
-            : undefined}
-          id='seddetails-ektefelle-etternavn'
-          onChange={(e: any) => setEktefelleEtternavn(e.target.value)}
-          value={_ektefelleEtternavn}
-          placeholder={t('label:etternavn')}
-        />
-      </FlexDiv>
+        <Column>
+          <Input
+            feil={validation[namespace + '-ektefelle-etternavn']?.feilmelding}
+            namespace={namespace}
+            key={namespace + '-ektefelle-etternavn' + (replySed as F002Sed).ektefelle.personInfo.etternavn}
+            id='-ektefelle-etternavn'
+            label={t('label:etternavn') + ' *'}
+            onChanged={setEktefelleEtternavn}
+            value={(replySed as F002Sed).ektefelle.personInfo.etternavn ?? ''}
+          />
+        </Column>
+      </AlignStartRow>
+
       <VerticalSeparatorDiv />
-      <div className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
+      <div>
         <HighContrastInput
           data-test-id='seddetails-sakseier'
           feil={validation['seddetails-sakseier']
@@ -211,7 +346,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
         />
       </div>
       <VerticalSeparatorDiv size='0.5' />
-      <div className='slideInFromLeft' style={{ animationDelay: '0.6s' }}>
+      <div>
         <HighContrastRadioGroup
           legend={t('label:type-krav')}
           data-test-id='seddetails-typeKrav'
@@ -235,7 +370,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
         </HighContrastRadioGroup>
       </div>
       <VerticalSeparatorDiv />
-      <div className='slideInFromLeft' style={{ animationDelay: '0.7s' }}>
+      <div>
         <HighContrastRadioGroup
           legend={t('label:informasjon-om-søknaden')}
           data-test-id='seddetails-informasjon'
@@ -273,23 +408,6 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
             </div>
           )}
         </HighContrastRadioGroup>
-      </div>
-      <VerticalSeparatorDiv />
-      <div className='slideInFromLeft' style={{ animationDelay: '0.8s' }}>
-        <HighContrastHovedknapp
-          kompakt mini
-          onClick={saveChanges}
-        >
-          {t('el:button-save')}
-        </HighContrastHovedknapp>
-        <HorizontalSeparatorDiv size='0.5' />
-        <HighContrastKnapp
-          kompakt mini
-          onClick={onCancel}
-        >
-          {t('el:button-cancel')}
-        </HighContrastKnapp>
-
       </div>
     </>
   )

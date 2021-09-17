@@ -108,7 +108,7 @@ describe('actions/attachments', () => {
   it('resetSedAttachments()', () => {
     const generatedResult = attachmentsActions.resetSedAttachments()
     expect(generatedResult).toMatchObject({
-      type:types.ATTACHMENT_RESET
+      type: types.ATTACHMENT_RESET
     })
   })
 })

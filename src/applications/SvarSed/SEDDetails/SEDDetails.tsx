@@ -3,33 +3,27 @@ import RemoveCircle from 'assets/icons/RemoveCircle'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed.d'
 import { Undertittel } from 'nav-frontend-typografi'
-import { HighContrastPanel, HighContrastFlatknapp, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { HighContrastPanel, HighContrastFlatknapp, VerticalSeparatorDiv, FlexCenterSpacedDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import styled from 'styled-components'
 
 import SEDDetailsEdit from './SEDDetailsEdit'
 import SEDDetailsView from './SEDDetailsView'
-
-const FlexDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
 
 const SEDDetails = () => {
   const { t } = useTranslation()
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const replySed: ReplySed | undefined = useSelector((state: State): ReplySed | undefined => (state.svarpased.replySed))
   const toggleEditing = () => setIsEditing(!isEditing)
+
   if (!replySed) {
     return <div />
   }
 
   return (
-
     <HighContrastPanel border>
-      <FlexDiv>
+      <FlexCenterSpacedDiv>
         <Undertittel>
           {t('label:rina-saksnummer') + ': ' + replySed.saksnummer}
         </Undertittel>
@@ -39,14 +33,13 @@ const SEDDetails = () => {
             marginTop: '-0.5rem',
             marginRight: '-0.5rem'
           }}
+          onClick={toggleEditing}
         >
-          {isEditing ? <RemoveCircle onClick={toggleEditing} /> : <Edit onClick={toggleEditing} />}
+          {isEditing ? <RemoveCircle /> : <Edit />}
         </HighContrastFlatknapp>
-      </FlexDiv>
+      </FlexCenterSpacedDiv>
       <VerticalSeparatorDiv />
-      {isEditing
-        ? <SEDDetailsEdit replySed={replySed} onSave={toggleEditing} onCancel={toggleEditing} />
-        : <SEDDetailsView replySed={replySed} />}
+      {isEditing ? <SEDDetailsEdit replySed={replySed} /> : <SEDDetailsView replySed={replySed} />}
     </HighContrastPanel>
 
   )

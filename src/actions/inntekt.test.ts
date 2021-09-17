@@ -33,6 +33,5 @@ describe('actions/attachments', () => {
         },
         url: sprintf(urls.API_INNTEKT_FOM_TOM_URL, { fnr, fom: fom ?? '', tom: tom ?? '', inntektsliste: inntektsliste ?? '' })
       }))
-
   })
 })

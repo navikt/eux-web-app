@@ -28,7 +28,7 @@ describe('actions/persons', () => {
           success: types.PERSON_SEARCH_SUCCESS,
           failure: types.PERSON_SEARCH_FAILURE
         },
-        url:  sprintf(urls.API_PERSONER_URL, { fnr: fnr })
+        url: sprintf(urls.API_PERSONER_URL, { fnr: fnr })
       }))
   })
 
@@ -42,7 +42,7 @@ describe('actions/persons', () => {
           success: types.PERSON_RELATERT_SEARCH_SUCCESS,
           failure: types.PERSON_RELATERT_SEARCH_FAILURE
         },
-        url:  sprintf(urls.API_PERSONER_URL, { fnr: fnr })
+        url: sprintf(urls.API_PERSONER_URL, { fnr: fnr })
       }))
   })
 })

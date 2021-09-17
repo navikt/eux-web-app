@@ -64,10 +64,10 @@ const appReducer = (state: AppState = initialAppState, action: ActionWithPayload
         params: newParams
       }
 
-    case types.APP_SAKSBEHANDLER_GET_SUCCESS:
-      let payload = _.cloneDeep(action.payload)
-      let brukernavn = payload.brukernavn
-      let navn = payload.navn
+    case types.APP_SAKSBEHANDLER_GET_SUCCESS: {
+      const payload = _.cloneDeep(action.payload)
+      const brukernavn = payload.brukernavn
+      const navn = payload.navn
       delete payload.brukernavn
       delete payload.navn
 
@@ -77,6 +77,7 @@ const appReducer = (state: AppState = initialAppState, action: ActionWithPayload
         navn: navn,
         featureToggles: payload
       }
+    }
 
     case types.APP_SERVERINFO_GET_SUCCESS:
       return {

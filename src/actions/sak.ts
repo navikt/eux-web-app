@@ -196,7 +196,6 @@ export const resetPersonRelatert: ActionCreator<Action> = (): Action => ({
   type: types.SAK_PERSON_RELATERT_RESET
 })
 
-
 export const setProperty = (key: string, value: string | undefined) => ({
   type: types.SAK_PROPERTY_SET,
   payload: {

@@ -452,7 +452,7 @@ const ArbeidsgiverBox = ({
                   <TrashcanIcon />
                 </HighContrastFlatknapp>
                 <HorizontalSeparatorDiv size='0.5' />
-                </>
+              </>
             )}
             {editable !== 'no' && !_isEditing && !_isDeleting && (
               <>
