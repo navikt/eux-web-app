@@ -1,14 +1,18 @@
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
-import { validateSEDDetail, ValidationSEDDetailsProps } from 'applications/SvarSed/SEDDetails/validation'
+import { State } from 'declarations/reducers'
+import { Country } from 'land-verktoy'
+import CountrySelect from 'landvelger'
+import { validateSakseier, validateSEDDetail, ValidationSakseierProps, ValidationSEDDetailsProps } from './validation'
 import Add from 'assets/icons/Add'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import Period from 'components/Period/Period'
 import { HorizontalLineSeparator, TextAreaDiv } from 'components/StyledComponents'
-import { F002Sed, FSed, Periode, ReplySed, USed } from 'declarations/sed'
-import { Validation } from 'declarations/types'
+import { F002Sed, FSed, LokaleSakId, Periode, ReplySed, USed } from 'declarations/sed'
+import { Kodeverk, Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -17,7 +21,6 @@ import {
   AlignStartRow,
   Column,
   HighContrastFlatknapp,
-  HighContrastInput,
   HighContrastRadio,
   HighContrastRadioGroup,
   HorizontalSeparatorDiv,
@@ -26,8 +29,9 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
+import { isF002Sed, isFSed, isUSed } from 'utils/sed'
 
 export interface SEDDetailsEditProps {
   replySed: ReplySed
@@ -40,18 +44,100 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
   const validation: Validation = {}
   const dispatch = useDispatch()
 
+  const landkoderList: Array<Kodeverk> | undefined = useSelector((state: State): Array<Kodeverk> | undefined => (state.app.landkoder))
+
   const [_newAnmodningsperioderStartDato, setNewAnmodningsperioderStartDato] = useState<string>('')
   const [_newAnmodningsperioderSluttDato, setNewAnmodningsperioderSluttDato] = useState<string>('')
-
-  const [_sakseier, setSakseier] = useState<string>('')
-  const [_typeKrav, setTypeKrav] = useState<string | undefined>((replySed as F002Sed).krav?.kravType)
-  const [_informasjon, setInformasjon] = useState<string | undefined>((replySed as F002Sed).krav?.infoType)
-  const [_opplysninger, setOpplysninger] = useState<string>('')
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => p.startdato)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationSEDDetailsProps>({}, validateSEDDetail)
+
+  const [_newSakseierSaksnummer, _setNewSakseierSaksnummer] = useState<string>('')
+  const [_newSakseierInstitusjonsnavn, _setNewSakseierInstitusjonsnavn] = useState<string>('')
+  const [_newSakseierInstitusjonsid, _setNewSakseierInstitusjonsid] = useState<string>('')
+  const [_newSakseierLand, _setNewSakseierLand] = useState<string>('')
+
+  const [sakseierAddToDeletion, sakseierRemoveFromDeletion, sakseierIsInDeletion] = useAddRemove<LokaleSakId>((id: LokaleSakId): string => id.institusjonsid)
+  const [_sakseierSeeNewForm, _setSakseierSeeNewForm] = useState<boolean>(false)
+  const [_sakseierValidation, _sakseierResetValidation, sakseierPerformValidation] = useValidation<ValidationSakseierProps>({}, validateSakseier)
+
   const namespace = 'seddetails'
+
+  const setSakseierLand = (land: string, index: number) => {
+    if (index < 0) {
+      _setNewSakseierLand(land.trim())
+      _resetValidation(namespace + '-lokaleSakIder-land')
+    } else {
+      dispatch(updateReplySed(`lokaleSakIder[${index}].land`, land.trim()))
+      if (validation[namespace + '-lokaleSakIder' + getIdx(index) + '-land']) {
+        dispatch(resetValidation(namespace + '-lokaleSakIder' + getIdx(index) + '-land'))
+      }
+    }
+  }
+
+  const setSakseierInstitusjonsid = (institusjonsid: string, index: number) => {
+    if (index < 0) {
+      _setNewSakseierInstitusjonsid(institusjonsid.trim())
+      _resetValidation(namespace + '-lokaleSakIder-institusjonsid')
+    } else {
+      dispatch(updateReplySed(`lokaleSakIder[${index}].institusjonsid`, institusjonsid.trim()))
+      if (validation[namespace + '-lokaleSakIder' + getIdx(index) + '-institusjonsid']) {
+        dispatch(resetValidation(namespace + '-lokaleSakIder' + getIdx(index) + '-institusjonsid'))
+      }
+    }
+  }
+
+  const setSakseierInstitusjonsnavn = (institusjonsnavn: string, index: number) => {
+    if (index < 0) {
+      _setNewSakseierInstitusjonsnavn(institusjonsnavn.trim())
+      _resetValidation(namespace + '-lokaleSakIder-institusjonsnavn')
+    } else {
+      dispatch(updateReplySed(`lokaleSakIder[${index}].institusjonsnavn`, institusjonsnavn.trim()))
+      if (validation[namespace + '-lokaleSakIder' + getIdx(index) + '-institusjonsnavn']) {
+        dispatch(resetValidation(namespace + '-lokaleSakIder' + getIdx(index) + '-institusjonsnavn'))
+      }
+    }
+  }
+
+  const setSakseierSaksnummer = (saksnummer: string, index: number) => {
+    if (index < 0) {
+      _setNewSakseierSaksnummer(saksnummer.trim())
+      _resetValidation(namespace + '-lokaleSakIder-saksnummer')
+    } else {
+      dispatch(updateReplySed(`lokaleSakIder[${index}].saksnummer`, saksnummer.trim()))
+      if (validation[namespace + '-lokaleSakIder' + getIdx(index) + '-saksnummer']) {
+        dispatch(resetValidation(namespace + '-lokaleSakIder' + getIdx(index) + '-saksnummer'))
+      }
+    }
+  }
+
+  const setInfoPresisering = (infoPresisering: string) => {
+    dispatch(updateReplySed('krav.infoPresisering', infoPresisering.trim()))
+    if (validation[namespace + '-infoPresisering']) {
+      dispatch(resetValidation(namespace + '-infoPresisering'))
+    }
+  }
+
+  const setKravMottattDato = (kravDato: string) => {
+    dispatch(updateReplySed('krav.kravMottattDato', kravDato.trim()))
+    if (validation[namespace + '-kravMottattDato']) {
+      dispatch(resetValidation(namespace + '-kravMottattDato'))
+    }
+  }
+  const setKravType = (krav: string) => {
+    dispatch(updateReplySed('krav.kravType', krav.trim()))
+    if (validation[namespace + '-kravType']) {
+      dispatch(resetValidation(namespace + '-kravType'))
+    }
+  }
+
+  const setInfoType = (info: string) => {
+    dispatch(updateReplySed('krav.infoType', info.trim()))
+    if (validation[namespace + '-infoType']) {
+      dispatch(resetValidation(namespace + '-infoType'))
+    }
+  }
 
   const setBrukerFornavn = (fornavn: string) => {
     dispatch(updateReplySed('bruker.personInfo.fornavn', fornavn.trim()))
@@ -141,9 +227,22 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
     _resetValidation()
   }
 
+  const sakseierResetForm = () => {
+    _setNewSakseierInstitusjonsid('')
+    _setNewSakseierInstitusjonsnavn('')
+    _setNewSakseierLand('')
+    _setNewSakseierSaksnummer('')
+    _sakseierResetValidation()
+  }
+
   const onCancel = () => {
     _setSeeNewForm(false)
     resetForm()
+  }
+
+  const onSakeierCancel = () => {
+    _setSakseierSeeNewForm(false)
+    sakseierResetForm()
   }
 
   const onRemove = (index: number) => {
@@ -153,6 +252,15 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       removeFromDeletion(deletedAnmodningsperioder[0])
     }
     dispatch(updateReplySed('anmodningsperioder', newAnmodningsperioder))
+  }
+
+  const onSakeierRemove = (index: number) => {
+    const newLokaleSaksIds: Array<LokaleSakId> = _.cloneDeep((replySed as USed).lokaleSakIder)
+    const deletedLokaleSaksIds: Array<LokaleSakId> = newLokaleSaksIds.splice(index, 1)
+    if (deletedLokaleSaksIds && deletedLokaleSaksIds.length > 0) {
+      sakseierRemoveFromDeletion(deletedLokaleSaksIds[0])
+    }
+    dispatch(updateReplySed('lokaleSakIder', newLokaleSaksIds))
   }
 
   const onAdd = () => {
@@ -177,6 +285,29 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       newPerioder = newPerioder.concat(newPeriode)
       dispatch(updateReplySed('anmodningsperioder', newPerioder))
       resetForm()
+    }
+  }
+
+  const onSakseierAdd = () => {
+    const newLokaleSaksId: LokaleSakId = {
+      saksnummer: _newSakseierSaksnummer.trim(),
+      institusjonsid: _newSakseierInstitusjonsid.trim(),
+      institusjonsnavn: _newSakseierInstitusjonsnavn.trim(),
+      land: _newSakseierLand
+    }
+
+    const valid: boolean = sakseierPerformValidation({
+      lokaleSakId: newLokaleSaksId,
+      namespace: namespace
+    })
+    if (valid) {
+      let newLokaleSaksIder: Array<LokaleSakId> = _.cloneDeep((replySed as USed).lokaleSakIder)
+      if (_.isNil(newLokaleSaksIder)) {
+        newLokaleSaksIder = []
+      }
+      newLokaleSaksIder = newLokaleSaksIder.concat(newLokaleSaksId)
+      dispatch(updateReplySed('lokaleSakIder', newLokaleSaksIder))
+      sakseierResetForm()
     }
   }
 
@@ -221,13 +352,100 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
     )
   }
 
+  const renderLokaleSakId = (lokaleSakId: LokaleSakId | null, index: number) => {
+    const candidateForDeletion = index < 0 ? false : sakseierIsInDeletion(lokaleSakId)
+    const idx = (index >= 0 ? '[' + index + ']' : '')
+    const getErrorFor = (index: number, el: string): string | undefined => {
+      return index < 0
+        ? _sakseierValidation[namespace + '-lokaleSakIder' + idx + '-' + el]?.feilmelding
+        : validation[namespace + '-lokaleSakIder' + idx + '-' + el]?.feilmelding
+    }
+
+    return (
+      <>
+        <AlignStartRow>
+          <Column>
+            <Input
+              feil={getErrorFor(index, 'saksnummer')}
+              namespace={namespace}
+              key={namespace + '-lokaleSakIder-saksnummer' + (index < 0 ? _newSakseierSaksnummer : lokaleSakId?.saksnummer)}
+              id='-saksnummer'
+              label={t('label:saksnummer') + ' *'}
+              onChanged={(saksnummer: string) => setSakseierSaksnummer(saksnummer, index)}
+              value={(index < 0 ? _newSakseierSaksnummer : lokaleSakId?.saksnummer) ?? ''}
+            />
+          </Column>
+          <Column>
+            <CountrySelect
+              ariaLabel={t('label:land')}
+              closeMenuOnSelect
+              data-test-id={namespace + '-lokaleSakIder' + idx + '-land'}
+              error={getErrorFor(index, 'land')}
+              flagWave
+              key={namespace + '-lokaleSakIder' + idx + '-land' + (index < 0 ? _newSakseierLand : lokaleSakId?.land)}
+              id={namespace + '-lokaleSakIder' + idx + '-land'}
+              label={t('label:land')}
+              includeList={landkoderList?.map((l: Kodeverk) => l.kode) || []}
+              menuPortalTarget={document.body}
+              onOptionSelected={(e: Country) => setSakseierLand(e.value, index)}
+              required
+              values={(index < 0 ? _newSakseierLand : lokaleSakId?.land)}
+            />
+          </Column>
+        </AlignStartRow>
+        <VerticalSeparatorDiv />
+        <AlignStartRow>
+          <Column>
+            <Input
+              feil={getErrorFor(index, 'institusjonsid')}
+              namespace={namespace}
+              key={namespace + '-lokaleSakIder-institusjonsid' + lokaleSakId?.institusjonsid}
+              id='-institusjonsid'
+              label={t('label:institusjonens-id') + ' *'}
+              onChanged={(institusjonsid: string) => setSakseierInstitusjonsid(institusjonsid, index)}
+              value={lokaleSakId?.institusjonsid ?? ''}
+            />
+          </Column>
+          <Column>
+            <Input
+              feil={getErrorFor(index, 'institusjonsnavn')}
+              namespace={namespace}
+              key={namespace + '-lokaleSakIder-institusjonsnavn' + lokaleSakId?.institusjonsnavn}
+              id='-institusjonsnavn'
+              label={t('label:institusjonens-navn') + ' *'}
+              onChanged={(institusjonsnavn: string) => setSakseierInstitusjonsnavn(institusjonsnavn, index)}
+              value={lokaleSakId?.institusjonsnavn ?? ''}
+            />
+          </Column>
+        </AlignStartRow>
+        <VerticalSeparatorDiv />
+        <AlignStartRow>
+          <Column />
+          <Column>
+            <AddRemovePanel
+              candidateForDeletion={candidateForDeletion}
+              existingItem={(index >= 0)}
+              marginTop
+              onBeginRemove={() => sakseierAddToDeletion(lokaleSakId)}
+              onConfirmRemove={() => onSakeierRemove(index)}
+              onCancelRemove={() => sakseierRemoveFromDeletion(lokaleSakId)}
+              onAddNew={onSakseierAdd}
+              onCancelNew={onSakeierCancel}
+            />
+          </Column>
+        </AlignStartRow>
+        <VerticalSeparatorDiv size='0.5' />
+      </>
+    )
+  }
+
   return (
     <>
       <UndertekstBold>
         {t('label:periode')}
       </UndertekstBold>
       <VerticalSeparatorDiv size='0.5' />
-      {!_.isNil((replySed as USed).anmodningsperiode) && (
+      {isUSed(replySed) && (
         <>
           <AlignStartRow>
             <Period
@@ -244,7 +462,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           <VerticalSeparatorDiv size='0.5' />
         </>
       )}
-      {!_.isNil((replySed as FSed).anmodningsperioder) && (
+      {isFSed(replySed) && (
         <>
           {(replySed as FSed)?.anmodningsperioder?.map(renderPeriode)}
           <VerticalSeparatorDiv />
@@ -301,114 +519,141 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <UndertekstBold>
-        {t('label:partner')}
-      </UndertekstBold>
-      <VerticalSeparatorDiv size='0.5' />
-      <AlignStartRow>
-        <Column>
-          <Input
-            feil={validation[namespace + '-ektefelle-fornavn']?.feilmelding}
+      {isUSed(replySed) && (
+        <>
+          <UndertekstBold>
+            {t('label:motpart-sakseier')}
+          </UndertekstBold>
+          <VerticalSeparatorDiv size='0.5' />
+          {(replySed as USed)?.lokaleSakIder?.map(renderLokaleSakId)}
+          <VerticalSeparatorDiv />
+          <HorizontalLineSeparator />
+          <VerticalSeparatorDiv />
+          {_sakseierSeeNewForm
+            ? renderLokaleSakId(null, -1)
+            : (
+              <Row>
+                <Column>
+                  <HighContrastFlatknapp
+                    mini
+                    kompakt
+                    onClick={() => _setSakseierSeeNewForm(true)}
+                  >
+                    <Add />
+                    <HorizontalSeparatorDiv size='0.5' />
+                    {t('el:button-add-new-x', { x: t('label:motpart-sakseier').toLowerCase() })}
+                  </HighContrastFlatknapp>
+                </Column>
+              </Row>
+              )}
+          <VerticalSeparatorDiv />
+        </>
+      )}
+      {isF002Sed(replySed) && (
+        <>
+          <UndertekstBold>
+            {t('label:partner')}
+          </UndertekstBold>
+          <VerticalSeparatorDiv size='0.5' />
+          <AlignStartRow>
+            <Column>
+              <Input
+                feil={validation[namespace + '-ektefelle-fornavn']?.feilmelding}
+                namespace={namespace}
+                key={namespace + '-ektefelle-fornavn' + (replySed as F002Sed).ektefelle.personInfo.fornavn}
+                id='-ektefelle-fornavn'
+                label={t('label:fornavn') + ' *'}
+                onChanged={setEktefelleFornavn}
+                value={(replySed as F002Sed).ektefelle.personInfo.fornavn ?? ''}
+              />
+            </Column>
+            <HorizontalSeparatorDiv size='0.35' />
+            <Column>
+              <Input
+                feil={validation[namespace + '-ektefelle-etternavn']?.feilmelding}
+                namespace={namespace}
+                key={namespace + '-ektefelle-etternavn' + (replySed as F002Sed).ektefelle.personInfo.etternavn}
+                id='-ektefelle-etternavn'
+                label={t('label:etternavn') + ' *'}
+                onChanged={setEktefelleEtternavn}
+                value={(replySed as F002Sed).ektefelle.personInfo.etternavn ?? ''}
+              />
+            </Column>
+          </AlignStartRow>
+          <VerticalSeparatorDiv />
+          <div>
+            <HighContrastRadioGroup
+              legend={t('label:type-krav')}
+              data-test-id='seddetails-typeKrav'
+              feil={validation['seddetails-typeKrav']?.feilmelding}
+              id='seddetails-kravType'
+            >
+              <HighContrastRadio
+                name='seddetails-typeKrav'
+                checked={(replySed as F002Sed).krav.kravType === 'nytt_krav'}
+                label={t('app:kravType-nytt_krav')}
+                onClick={() => setKravType('nytt_krav')}
+              />
+              <HighContrastRadio
+                checked={(replySed as F002Sed).krav.kravType === 'endrede_omstendigheter'}
+                name='seddetails-typeKrav'
+                label={t('app:kravType-endrede_omstendigheter')}
+                onClick={() => setKravType('endrede_omstendigheter')}
+              />
+            </HighContrastRadioGroup>
+          </div>
+          <VerticalSeparatorDiv />
+          <DateInput
+            feil={validation[namespace + '-kravMottattDato']?.feilmelding}
             namespace={namespace}
-            key={namespace + '-ektefelle-fornavn' + (replySed as F002Sed).ektefelle.personInfo.fornavn}
-            id='-ektefelle-fornavn'
-            label={t('label:fornavn') + ' *'}
-            onChanged={setEktefelleFornavn}
-            value={(replySed as F002Sed).ektefelle.personInfo.fornavn ?? ''}
+            key={(replySed as F002Sed).krav.kravMottattDato ?? ''}
+            id='kravMottattDato'
+            label={t('label:krav-mottatt-dato')}
+            onChanged={setKravMottattDato}
+            value={(replySed as F002Sed).krav.kravMottattDato}
           />
-        </Column>
-        <HorizontalSeparatorDiv size='0.35' />
-        <Column>
-          <Input
-            feil={validation[namespace + '-ektefelle-etternavn']?.feilmelding}
-            namespace={namespace}
-            key={namespace + '-ektefelle-etternavn' + (replySed as F002Sed).ektefelle.personInfo.etternavn}
-            id='-ektefelle-etternavn'
-            label={t('label:etternavn') + ' *'}
-            onChanged={setEktefelleEtternavn}
-            value={(replySed as F002Sed).ektefelle.personInfo.etternavn ?? ''}
-          />
-        </Column>
-      </AlignStartRow>
-
-      <VerticalSeparatorDiv />
-      <div>
-        <HighContrastInput
-          data-test-id='seddetails-sakseier'
-          feil={validation['seddetails-sakseier']
-            ? validation['seddetails-sakseier']!.feilmelding
-            : undefined}
-          id='seddetails-sakseier'
-          onChange={(e: any) => setSakseier(e.target.value)}
-          value={_sakseier}
-          label={t('label:motpart-sakseier')}
-          placeholder={t('el:placeholder-input-default')}
-        />
-      </div>
-      <VerticalSeparatorDiv size='0.5' />
-      <div>
-        <HighContrastRadioGroup
-          legend={t('label:type-krav')}
-          data-test-id='seddetails-typeKrav'
-          feil={validation['seddetails-typeKrav']
-            ? validation['seddetails-typeKrav']!.feilmelding
-            : undefined}
-          id='seddetails-typeKrav'
-        >
-          <HighContrastRadio
-            name='seddetails-typeKrav'
-            checked={_typeKrav === 'nytt_krav'}
-            label={t('app:kravType-nytt_krav')}
-            onClick={() => setTypeKrav('nytt_krav')}
-          />
-          <HighContrastRadio
-            checked={_typeKrav === 'endrede_omstendigheter'}
-            name='seddetails-typeKrav'
-            label={t('app:kravType-endrede_omstendigheter')}
-            onClick={() => setTypeKrav('endrede_omstendigheter')}
-          />
-        </HighContrastRadioGroup>
-      </div>
-      <VerticalSeparatorDiv />
-      <div>
-        <HighContrastRadioGroup
-          legend={t('label:informasjon-om-søknaden')}
-          data-test-id='seddetails-informasjon'
-          feil={validation['seddetails-informasjon']
-            ? validation['seddetails-informasjon']!.feilmelding
-            : undefined}
-          id='seddetails-informasjon'
-        >
-          <HighContrastRadio
-            name='seddetails-informasjon'
-            checked={_informasjon === 'vi_bekrefter_leverte_opplysninger'}
-            label={t('app:info-confirm-information')}
-            onClick={() => setInformasjon('vi_bekrefter_leverte_opplysninger')}
-          />
-          <HighContrastRadio
-            checked={_informasjon === 'gi_oss_punktvise_opplysninger'}
-            name='seddetails-informasjon'
-            label={t('app:info-point-information')}
-            onClick={() => setInformasjon('gi_oss_punktvise_opplysninger')}
-          />
-          {_informasjon === 'gi_oss_punktvise_opplysninger' && (
-            <div className='slideInFromLeft'>
-              <VerticalSeparatorDiv />
-              <TextAreaDiv>
-                <TextArea
-                  feil={validation['seddetails-opplysninger']?.feilmelding}
-                  id='opplysninger'
-                  namespace='seddetails'
-                  label={t('label:opplysninger')}
-                  maxLength={500}
-                  onChanged={setOpplysninger}
-                  value={_opplysninger}
-                />
-              </TextAreaDiv>
-            </div>
-          )}
-        </HighContrastRadioGroup>
-      </div>
+          <VerticalSeparatorDiv />
+          <div>
+            <HighContrastRadioGroup
+              legend={t('label:informasjon-om-søknaden')}
+              data-test-id='seddetails-informasjon'
+              feil={validation['seddetails-informasjon']
+                ? validation['seddetails-informasjon']!.feilmelding
+                : undefined}
+              id='seddetails-informasjon'
+            >
+              <HighContrastRadio
+                name='seddetails-informasjon'
+                checked={(replySed as F002Sed).krav?.infoType === 'vi_bekrefter_leverte_opplysninger'}
+                label={t('app:info-confirm-information')}
+                onClick={() => setInfoType('vi_bekrefter_leverte_opplysninger')}
+              />
+              <HighContrastRadio
+                checked={(replySed as F002Sed).krav?.infoType === 'gi_oss_punktvise_opplysninger'}
+                name='seddetails-informasjon'
+                label={t('app:info-point-information')}
+                onClick={() => setInfoType('gi_oss_punktvise_opplysninger')}
+              />
+              {(replySed as F002Sed).krav?.infoType === 'gi_oss_punktvise_opplysninger' && (
+                <div className='slideInFromLeft'>
+                  <VerticalSeparatorDiv />
+                  <TextAreaDiv>
+                    <TextArea
+                      feil={validation['seddetails-opplysninger']?.feilmelding}
+                      id='opplysninger'
+                      namespace='seddetails'
+                      label={t('label:opplysninger')}
+                      maxLength={500}
+                      onChanged={setInfoPresisering}
+                      value={(replySed as F002Sed).krav?.infoPresisering ?? ''}
+                    />
+                  </TextAreaDiv>
+                </div>
+              )}
+            </HighContrastRadioGroup>
+          </div>
+        </>
+      )}
     </>
   )
 }

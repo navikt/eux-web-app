@@ -5,11 +5,11 @@ import { F002Sed, FSed, ReplySed, USed } from 'declarations/sed'
 import Flag, { FlagList } from 'flagg-ikoner'
 import CountryData from 'land-verktoy'
 import { Normaltekst, UndertekstBold } from 'nav-frontend-typografi'
-import { FlexDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { FlexCenterDiv, FlexDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { isUSed, isFSed } from 'utils/sed'
+import { isF002Sed, isFSed, isUSed } from 'utils/sed'
 
 const Blockquote = styled.blockquote`
   border-left: 2px solid gray;
@@ -51,35 +51,41 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
       <Dl>
         <Dt>{t('label:søker')}</Dt>
         <Dd>
-          <span>
-            {replySed.bruker.personInfo.fornavn} {replySed.bruker.personInfo.etternavn} ({replySed.bruker.personInfo.kjoenn})
-          </span>
-          {replySed.bruker.personInfo.statsborgerskap && (
-            <FlagList
-              size='S'
-              type='circle'
-              items={replySed.bruker.personInfo.statsborgerskap.map((s: any) => ({ country: s.land }))}
-            />
-          )}
+          <FlexDiv>
+            {replySed.bruker.personInfo.statsborgerskap && (
+              <FlagList
+                size='XS'
+                type='circle'
+                items={replySed.bruker.personInfo.statsborgerskap.map((s: any) => ({ country: s.land }))}
+              />
+            )}
+            <HorizontalSeparatorDiv size='0.35' />
+            <span>
+              {replySed.bruker.personInfo.fornavn} {replySed.bruker.personInfo.etternavn} ({replySed.bruker.personInfo.kjoenn})
+            </span>
+          </FlexDiv>
         </Dd>
-        {isFSed(replySed) && (
+        {isF002Sed(replySed) && (
           <>
             <Dt>{t('label:partner')}</Dt>
             <Dd>
-              <span>
-                {(replySed as F002Sed).ektefelle
-                  ? (replySed as F002Sed).ektefelle.personInfo.fornavn + ' ' +
+              <FlexDiv>
+                {(replySed as F002Sed)?.ektefelle?.personInfo?.statsborgerskap && (
+                  <FlagList
+                    size='XS'
+                    type='circle'
+                    items={(replySed as F002Sed).ektefelle.personInfo.statsborgerskap.map((s: any) => ({ country: s.land }))}
+                  />
+                )}
+                <HorizontalSeparatorDiv size='0.35' />
+                <span>
+                  {(replySed as F002Sed).ektefelle
+                    ? (replySed as F002Sed).ektefelle.personInfo.fornavn + ' ' +
                    (replySed as F002Sed).ektefelle.personInfo.etternavn +
                 ' (' + (replySed as F002Sed).ektefelle.personInfo.kjoenn + ')'
-                  : '-'}
-              </span>
-              {(replySed as F002Sed)?.ektefelle?.personInfo?.statsborgerskap && (
-                <FlagList
-                  size='S'
-                  type='circle'
-                  items={(replySed as F002Sed).ektefelle.personInfo.statsborgerskap.map((s: any) => ({ country: s.land }))}
-                />
-              )}
+                    : '-'}
+                </span>
+              </FlexDiv>
             </Dd>
           </>
         )}
@@ -92,7 +98,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
               {t('label:motpart-sakseier')}
             </Dt>
             <Dd>
-              <FlexDiv>
+              <FlexCenterDiv>
                 <Flag
                   size='XS'
                   type='circle'
@@ -100,21 +106,14 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
                   label={countryData.findByValue(s.land)?.label}
                 />
                 <HorizontalSeparatorDiv size='0.35' />
-                {countryData.findByValue(s.land)?.label}
-              </FlexDiv>
+                {s.institusjonsnavn}
+              </FlexCenterDiv>
             </Dd>
           </Dl>
-          <Dl>
-            <Dt>
-              {t('label:avsenderinstitusjon')}
-            </Dt>
-            <Dd>
-              {s.institusjonsnavn}
-            </Dd>
-          </Dl>
+          <VerticalSeparatorDiv />
         </div>
       ))}
-      <VerticalSeparatorDiv />
+
       {isFSed(replySed) && (replySed as F002Sed).krav?.kravType && (
         <>
           <Dl>
@@ -125,32 +124,43 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
               {t('app:kravType-' + (replySed as F002Sed).krav.kravType)}
             </Dd>
           </Dl>
+          <Dl>
+            <Dt>
+              {t('label:krav-mottatt-dato')}
+            </Dt>
+            <Dd>
+              {(replySed as F002Sed).krav.kravMottattDato}
+            </Dd>
+          </Dl>
+          <VerticalSeparatorDiv />
+          {(replySed as F002Sed).krav?.infoType === 'vi_bekrefter_leverte_opplysninger' && (
+            <FlexDiv>
+              <GreenCircle width={18} height={18} />
+              <HorizontalSeparatorDiv size='0.5' />
+              <Normaltekst>
+                {t('app:info-confirm-information')}
+              </Normaltekst>
+            </FlexDiv>
+          )}
+          {(replySed as F002Sed).krav?.infoType === 'gi_oss_punktvise_opplysninger' && (
+            <>
+              <FlexDiv>
+                <Warning width={18} height={18} />
+                <HorizontalSeparatorDiv size='0.5' />
+                <Normaltekst>
+                  {t('app:info-point-information')}
+                </Normaltekst>
+              </FlexDiv>
+              <VerticalSeparatorDiv />
+              <FlexDiv>
+                <Blockquote>
+                  {(replySed as F002Sed).krav?.infoPresisering}
+                </Blockquote>
+              </FlexDiv>
+            </>
+          )}
         </>
       )}
-      <VerticalSeparatorDiv />
-      <FlexDiv>
-        <GreenCircle width={18} height={18} />
-        <HorizontalSeparatorDiv size='0.5' />
-        <Normaltekst>
-          {t('app:info-confirm-information')}
-        </Normaltekst>
-      </FlexDiv>
-      <VerticalSeparatorDiv />
-      <FlexDiv>
-        <Warning width={18} height={18} />
-        <HorizontalSeparatorDiv size='0.5' />
-        <Normaltekst>
-          {t('app:info-point-information')}
-        </Normaltekst>
-      </FlexDiv>
-      <FlexDiv>
-        <Blockquote>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          Sed ac quam quis libero sagittis faucibus. Duis posuere neque sem,
-          sed efficitur libero ultrices a. Curabitur ut nisl ultricies, gravida
-          diam et, faucibus metus. Donec fringilla tristique est.
-        </Blockquote>
-      </FlexDiv>
     </>
   )
 }

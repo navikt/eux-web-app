@@ -8,6 +8,8 @@ export const isUSed = (replySed: ReplySed): boolean => replySed?.sedType.startsW
 
 export const isHSed = (replySed: ReplySed): boolean => replySed?.sedType.startsWith('H')
 
+export const isF002Sed = (replySed: ReplySed): boolean => replySed?.sedType === 'F002'
+
 export const isU002Sed = (replySed: ReplySed): boolean => replySed?.sedType === 'U002'
 
 export const isU004Sed = (replySed: ReplySed): boolean => replySed?.sedType === 'U004'
