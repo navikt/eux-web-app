@@ -1,9 +1,10 @@
 import * as attachmentsActions from 'actions/attachments'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
+import { JoarkBrowserItem, SEDAttachmentPayloadWithFile } from 'declarations/attachments'
 import { call as originalCall } from 'js-fetch-api'
-import mockPreview from 'mocks/attachments/preview'
 import mockItems from 'mocks/attachments/items'
+import { Action } from 'redux'
 
 const sprintf = require('sprintf-js').sprintf
 jest.mock('js-fetch-api', () => ({
@@ -20,17 +21,14 @@ describe('actions/attachments', () => {
     call.mockRestore()
   })
 
-  it('listJoarkItems()', () => {
-    const mockUserId = '123'
-    attachmentsActions.listJoarkItems(mockUserId)
-    expect(call).toBeCalledWith(expect.objectContaining({
-      type: {
-        request: types.JOARK_LIST_REQUEST,
-        success: types.JOARK_LIST_SUCCESS,
-        failure: types.JOARK_LIST_FAILURE
-      },
-      url: sprintf(urls.API_JOARK_LIST_URL, { userId: mockUserId })
-    }))
+  it('createSavingAttachmentJob()', () => {
+    const joarkBrowserItems: Array<JoarkBrowserItem> = []
+    const generatedResult: Action = attachmentsActions.createSavingAttachmentJob(joarkBrowserItems)
+    expect(generatedResult)
+      .toMatchObject({
+        type: types.ATTACHMENT_SAVINGATTACHMENTJOB_SET,
+        payload: joarkBrowserItems
+      })
   })
 
   it('getJoarkItemPreview()', () => {
@@ -50,6 +48,55 @@ describe('actions/attachments', () => {
     }))
   })
 
+  it('listJoarkItems()', () => {
+    const mockFnr = '123'
+    attachmentsActions.listJoarkItems(mockFnr)
+    expect(call).toBeCalledWith(expect.objectContaining({
+      type: {
+        request: types.JOARK_LIST_REQUEST,
+        success: types.JOARK_LIST_SUCCESS,
+        failure: types.JOARK_LIST_FAILURE
+      },
+      url: sprintf(urls.API_JOARK_LIST_URL, { fnr: mockFnr })
+    }))
+  })
+
+  it('sendAttachmentToSed()', () => {
+    const params: SEDAttachmentPayloadWithFile = {
+      fnr: 'fnr',
+      journalpostId: '1',
+      dokumentInfoId: '2',
+      variantformat: 'variant',
+      filnavn: 'filnavn',
+      rinaId: '123',
+      rinaDokumentId: '456'
+    }
+    const joarkBrowserItem = {
+      hasSubrows: false,
+      type: 'joark',
+      journalpostId: '1',
+      dokumentInfoId: '2',
+      variant: 'variant',
+      title: 'title',
+      tema: 'tema',
+      date: new Date(1970, 1, 1)
+    }
+    attachmentsActions.sendAttachmentToSed(params, joarkBrowserItem)
+    expect(call).toBeCalledWith(expect.objectContaining({
+      method: 'PUT',
+      type: {
+        request: types.ATTACHMENT_SEND_REQUEST,
+        success: types.ATTACHMENT_SEND_SUCCESS,
+        failure: types.ATTACHMENT_SEND_FAILURE
+      },
+      context: {
+        params: params,
+        joarkBrowserItem: joarkBrowserItem
+      },
+      url: sprintf(urls.API_JOARK_ATTACHMENT_URL, params)
+    }))
+  })
+
   it('setJoarkItemPreview()', () => {
     const generatedResult = attachmentsActions.setJoarkItemPreview(mockItems[0])
     expect(generatedResult).toMatchObject({
@@ -58,20 +105,10 @@ describe('actions/attachments', () => {
     })
   })
 
-  it('getMockedPayload() in localhost, test environment will not used mocked values', () => {
-    const generatedResult = mockPreview()
-    expect(generatedResult).toEqual(undefined)
-  })
-
-  it('getMockedPayload() in localhost, non-test environment will use mocked values for local development', () => {
-    jest.resetModules()
-    jest.mock('constants/environment', () => {
-      return { IS_TEST: false }
+  it('resetSedAttachments()', () => {
+    const generatedResult = attachmentsActions.resetSedAttachments()
+    expect(generatedResult).toMatchObject({
+      type:types.ATTACHMENT_RESET
     })
-    const newMockPreviewfile = require('mocks/joark/preview').default
-    const generatedResult = newMockPreviewfile()
-    expect(generatedResult).toHaveProperty('fileName')
-    expect(generatedResult).toHaveProperty('contentType', 'application/pdf')
-    expect(generatedResult).toHaveProperty('filInnhold')
   })
 })

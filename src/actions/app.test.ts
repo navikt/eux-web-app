@@ -1,9 +1,10 @@
 import * as appActions from 'actions/app'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
+import { ParamPayload } from 'declarations/app'
 import EKV from 'eessi-kodeverk'
-import { call as originalCall } from 'js-fetch-api'
-import { Action } from 'redux'
+import { ActionWithPayload, call as originalCall } from 'js-fetch-api'
+import { Action, ActionCreator } from 'redux'
 
 jest.mock('js-fetch-api', () => ({
   call: jest.fn()
@@ -53,6 +54,19 @@ describe('actions/app', () => {
       }))
   })
 
+  it('getServerinfo()', () => {
+    appActions.getServerinfo()
+    expect(call)
+      .toBeCalledWith(expect.objectContaining({
+        type: {
+          request: types.APP_SERVERINFO_GET_REQUEST,
+          success: types.APP_SERVERINFO_GET_SUCCESS,
+          failure: types.APP_SERVERINFO_GET_FAILURE
+        },
+        url: urls.API_SERVERINFO_URL
+      }))
+  })
+
   it('getUtgaarDato()', () => {
     appActions.getUtgaarDato()
     expect(call)
@@ -89,6 +103,20 @@ describe('actions/app', () => {
           kodemaps: {
             ...EKV.Kodemaps
           }
+        }
+      })
+  })
+
+  it('setStatusParam()', () => {
+    const key = 'mockKey'
+    const value = 'mockValue'
+    const generatedResult: Action = appActions.setStatusParam(key, value)
+    expect(generatedResult)
+      .toMatchObject({
+        type: types.APP_PARAM_SET,
+        payload: {
+          key: key,
+          value: value
         }
       })
   })

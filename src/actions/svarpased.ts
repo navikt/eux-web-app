@@ -65,10 +65,6 @@ export const getPreviewFile = (rinaSakId: string, replySed: ReplySed) => {
   })
 }
 
-export const resetSedResponse: ActionCreator<Action> = (): Action => ({
-  type: types.SVARPASED_SED_RESPONSE_RESET
-})
-
 export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload<ConnectedSed>>> = (
   saksnummerOrFnr: string
 ): ThunkResult<ActionWithPayload<ConnectedSed>> => {
@@ -130,6 +126,10 @@ export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed
 
 export const resetReplySed: ActionCreator<Action> = (): Action => ({
   type: types.SVARPASED_REPLYSED_RESET
+})
+
+export const resetSedResponse: ActionCreator<Action> = (): Action => ({
+  type: types.SVARPASED_SED_RESPONSE_RESET
 })
 
 export const setMode: ActionCreator<ActionWithPayload<SvarPaSedMode>> = (

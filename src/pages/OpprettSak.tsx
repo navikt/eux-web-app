@@ -251,7 +251,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
   }
 
   const onAbort = (): void => {
-    dispatch(sakActions.sakCleanData())
+    dispatch(sakActions.cleanData())
     dispatch(appActions.cleanData())
     history.push('/')
   }
@@ -340,13 +340,13 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
             initialFnr=''
             onFnrChange={() => {
               setIsFnrValid(false)
-              dispatch(sakActions.sakCleanData())
+              dispatch(sakActions.cleanData())
               dispatch(appActions.cleanData())
             }}
             onPersonFound={() => setIsFnrValid(true)}
             onSearchPerformed={(fnr: string) => {
               dispatch(sakActions.setProperty('fnr', fnr))
-              dispatch(sakActions.sakCleanData())
+              dispatch(sakActions.cleanData())
               dispatch(sakActions.getPerson(fnr))
             }}
             onPersonRemoved={() => dispatch(sakActions.resetPerson())}

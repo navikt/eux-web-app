@@ -113,12 +113,3 @@ export const setStatusParam: ActionCreator<ActionWithPayload<ParamPayload>> = (
     value: value
   } as ParamPayload
 })
-
-export const unsetStatusParam: ActionCreator<ActionWithPayload<ParamPayload>> = (
-  key: string
-): ActionWithPayload<ParamPayload> => ({
-  type: types.APP_PARAM_UNSET,
-  payload: {
-    key: key
-  } as ParamPayload
-})

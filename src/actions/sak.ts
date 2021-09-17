@@ -19,10 +19,6 @@ import * as urls from 'constants/urls'
 
 const sprintf = require('sprintf-js').sprintf
 
-export const sakCleanData: ActionCreator<Action> = (): Action => ({
-  type: types.SAK_CLEAN_DATA
-})
-
 export const addArbeidsgiver: ActionCreator<ActionWithPayload<Arbeidsgiver>> = (
   payload: Arbeidsgiver
 ): ActionWithPayload<Arbeidsgiver> => ({
@@ -35,6 +31,10 @@ export const addFamilierelasjoner: ActionCreator<ActionWithPayload<OldFamilieRel
 ): ActionWithPayload<OldFamilieRelasjon> => ({
   type: types.SAK_FAMILIERELASJONER_ADD,
   payload: payload
+})
+
+export const cleanData: ActionCreator<Action> = (): Action => ({
+  type: types.SAK_CLEAN_DATA
 })
 
 export const createSak: ActionCreator<ThunkResult<ActionWithPayload<any>>> = (
@@ -184,17 +184,18 @@ export const removeFamilierelasjoner: ActionCreator<ActionWithPayload<OldFamilie
   payload: payload
 })
 
-export const resetPerson: ActionCreator<Action> = (): Action => ({
-  type: types.SAK_PERSON_RESET
-})
-
 export const resetFagsaker: ActionCreator<Action> = (): Action => ({
   type: types.SAK_FAGSAKER_RESET
+})
+
+export const resetPerson: ActionCreator<Action> = (): Action => ({
+  type: types.SAK_PERSON_RESET
 })
 
 export const resetPersonRelatert: ActionCreator<Action> = (): Action => ({
   type: types.SAK_PERSON_RELATERT_RESET
 })
+
 
 export const setProperty = (key: string, value: string | undefined) => ({
   type: types.SAK_PROPERTY_SET,

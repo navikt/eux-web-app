@@ -2,7 +2,6 @@ import * as sakActions from 'actions/sak'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { call as originalCall } from 'js-fetch-api'
-
 import mockArbeidsgiver from 'mocks/arbeidsgiver'
 import mockFamilierelasjon from 'mocks/familierelasjon'
 import mockOpprettSak from 'mocks/opprettSak'
@@ -38,6 +37,13 @@ describe('actions/sak', () => {
     })
   })
 
+  it('cleanData()', () => {
+    const generatedResult = sakActions.cleanData()
+    expect(generatedResult).toMatchObject({
+      type: types.SAK_CLEAN_DATA
+    })
+  })
+
   it('createSak()', () => {
     sakActions.createSak(mockOpprettSak)
     expect(call)
@@ -62,7 +68,7 @@ describe('actions/sak', () => {
           success: types.SAK_ARBEIDSPERIODER_GET_SUCCESS,
           failure: types.SAK_ARBEIDSPERIODER_GET_FAILURE
         },
-        url: sprintf(urls.API_ARBEIDSFORHOLD_QUERY_URL, { fnr: mockFnr })
+        url: sprintf(urls.API_ARBEIDSPERIODER_QUERY_URL, { fnr: mockFnr })
       }))
   })
 
@@ -153,6 +159,14 @@ describe('actions/sak', () => {
       type: types.SAK_FAMILIERELASJONER_REMOVE,
       payload: mockFamilierelasjon
     })
+  })
+
+  it('resetFagsaker()', () => {
+    const generatedResult = sakActions.resetFagsaker()
+    expect(generatedResult)
+      .toMatchObject({
+        type: types.SAK_FAGSAKER_RESET
+      })
   })
 
   it('resetPerson()', () => {
