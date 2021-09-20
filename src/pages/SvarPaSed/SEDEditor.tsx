@@ -214,7 +214,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
       {_viewSaveSedModal && (
         <SaveSEDModal
           highContrast={highContrast}
-          localStorageContent={replySed}
+          replySed={replySed}
           storageKey={storageKey}
           onModalClose={() => setViewSaveSedModal(false)}
         />

@@ -1,5 +1,7 @@
 import Modal from 'components/Modal/Modal'
 import { AlertstripeDiv } from 'components/StyledComponents'
+import { State } from 'declarations/reducers'
+import { ReplySed } from 'declarations/sed'
 import { LocalStorageEntry, Validation } from 'declarations/types'
 import _ from 'lodash'
 import AlertStripe from 'nav-frontend-alertstriper'
@@ -16,7 +18,9 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
+import * as localStorageActions from 'actions/localStorage'
 
 const MinimalModalDiv = styled.div`
   min-height: 200px;
@@ -41,25 +45,35 @@ const SectionDiv = styled.div`
   justify-content: center;
 `
 
-interface SaveSEDModalProps<CustomLocalStorageContent extends any = any> {
+interface SaveSEDModalProps {
   highContrast: boolean
   onModalClose: () => void
-  localStorageContent: CustomLocalStorageContent
+  replySed: ReplySed
   storageKey: string
 }
 
-const SendSEDModal = <CustomLocalStorageContent extends any = any>({
+interface SaveSEDModalSelector {
+  savedEntries: Array<LocalStorageEntry<ReplySed>> | null | undefined
+}
+
+const mapState = (state: State): SaveSEDModalSelector => ({
+  savedEntries: state.localStorage.savedEntries
+})
+
+const SendSEDModal = ({
   highContrast,
   onModalClose,
-  localStorageContent,
+  replySed,
   storageKey
-}: SaveSEDModalProps<CustomLocalStorageContent>): JSX.Element => {
+}: SaveSEDModalProps): JSX.Element => {
   const { t } = useTranslation()
   const [_name, setName] = useState<string>('')
   const [_message, setMessage] = useState<string>('')
   const [_validation, setValidation] = useState<Validation>({})
   const [_saved, setSaved] = useState<boolean>(false)
 
+  const dispatch = useDispatch()
+  const { savedEntries } : SaveSEDModalSelector = useSelector<State, SaveSEDModalSelector>(mapState)
   const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
 
   const performValidation = (): boolean => {
@@ -76,20 +90,25 @@ const SendSEDModal = <CustomLocalStorageContent extends any = any>({
 
   const onSave = async () => {
     if (performValidation()) {
-      const items: string | null = await window.localStorage.getItem(storageKey)
-      let savedEntries: Array<LocalStorageEntry<CustomLocalStorageContent>> | null | undefined
-      if (_.isString(items)) {
-        savedEntries = JSON.parse(items)
-      } else {
-        savedEntries = []
+
+      let newSavedEntries: Array<LocalStorageEntry<ReplySed>> | null | undefined = _.cloneDeep(savedEntries)
+      if (_.isNil(newSavedEntries)) {
+        newSavedEntries = []
       }
       const dateString = new Date().toDateString()
-      const newReplySeds = savedEntries!.concat({
+      const newItem: LocalStorageEntry<ReplySed> = {
         name: _name,
         date: dateString,
-        content: localStorageContent
-      } as LocalStorageEntry<CustomLocalStorageContent>)
-      await window.localStorage.setItem(storageKey, JSON.stringify(newReplySeds, null, 2))
+        content: replySed
+      } as LocalStorageEntry
+
+      let existsIndex: number = _.findIndex(savedEntries, entry => entry.name === _name)
+      if (existsIndex >= 0) {
+        newSavedEntries[existsIndex] = newItem
+      } else {
+        newSavedEntries = newSavedEntries.concat(newItem)
+      }
+      dispatch(localStorageActions.saveEntries(storageKey, newSavedEntries))
       setSaved(true)
       setMessage(t('label:lagret-sed-utkast', { name: _name, date: dateString }))
     }

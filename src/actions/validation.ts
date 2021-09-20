@@ -3,13 +3,6 @@ import { Validation } from 'declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
 import { Action, ActionCreator } from 'redux'
 
-export const setAllValidation: ActionCreator<ActionWithPayload<Validation>> = (
-  newValidation: Validation
-): ActionWithPayload<Validation> => ({
-  type: types.VALIDATION_ALL_SET,
-  payload: newValidation
-})
-
 export const resetAllValidation: ActionCreator<ActionWithPayload<{}>> = (
 ): ActionWithPayload<{}> => ({
   type: types.VALIDATION_SET,
@@ -24,6 +17,13 @@ export const resetValidation: ActionCreator<ActionWithPayload> = (
     key: key,
     value: undefined
   }
+})
+
+export const setAllValidation: ActionCreator<ActionWithPayload<Validation>> = (
+  newValidation: Validation
+): ActionWithPayload<Validation> => ({
+  type: types.VALIDATION_ALL_SET,
+  payload: newValidation
 })
 
 export const viewValidation: ActionCreator<Action> = (): Action => ({

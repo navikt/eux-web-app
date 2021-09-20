@@ -70,7 +70,6 @@ export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload<C
 ): ThunkResult<ActionWithPayload<ConnectedSed>> => {
   let url, type
   const result = validator.idnr(saksnummerOrFnr)
-
   if (result.status === 'valid') {
     type = result.type
     if (result.type === 'fnr') {

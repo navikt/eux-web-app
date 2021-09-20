@@ -1,6 +1,8 @@
+import * as sakActions from 'actions/sak'
 import * as svarpasedActions from 'actions/svarpased'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
+import { SvarPaSedMode } from 'declarations/app'
 import { ReplySed } from 'declarations/sed'
 import { ConnectedSed } from 'declarations/types'
 import { call as originalCall } from 'js-fetch-api'
@@ -111,7 +113,7 @@ describe('actions/svarpased', () => {
   })
 
   it('querySaksnummerOrFnr() - valid dnr', () => {
-    const saksnummerOrFnr = '64053626692'
+    const saksnummerOrFnr = '43099015781'
 
     svarpasedActions.querySaksnummerOrFnr(saksnummerOrFnr)
     expect(call)
@@ -122,7 +124,7 @@ describe('actions/svarpased', () => {
           failure: types.SVARPASED_SAKSNUMMERORFNR_QUERY_FAILURE
         },
         context: {
-          type: 'fnr',
+          type: 'dnr',
           saksnummerOrFnr: saksnummerOrFnr
         },
         url: sprintf(urls.API_RINASAKER_OVERSIKT_DNR_QUERY_URL, { fnr: saksnummerOrFnr })
@@ -155,5 +157,56 @@ describe('actions/svarpased', () => {
           sedType: connectedSed.svarsedType
         })
       }))
+  })
+
+
+  it('resetReplySed()', () => {
+    const generatedResult = svarpasedActions.resetReplySed()
+    expect(generatedResult)
+      .toMatchObject({
+        type: types.SVARPASED_REPLYSED_RESET
+      })
+  })
+
+  it('resetSedResponse()', () => {
+    const generatedResult = svarpasedActions.resetSedResponse()
+    expect(generatedResult)
+      .toMatchObject({
+        type: types.SVARPASED_SED_RESPONSE_RESET
+      })
+  })
+
+  it('setMode()', () => {
+    const mode = 'mockMode' as SvarPaSedMode
+    const generatedResult = svarpasedActions.setMode(mode)
+    expect(generatedResult)
+      .toMatchObject({
+        type: types.SVARPASED_MODE_SET,
+        payload: mode
+      })
+  })
+
+  it('setParentSed()', () => {
+    const payload = 'payload'
+    const generatedResult = svarpasedActions.setParentSed(payload)
+    expect(generatedResult)
+      .toMatchObject({
+        type: types.SVARPASED_PARENTSED_SET,
+        payload: payload
+      })
+  })
+
+  it('updateReplySed()', () => {
+    const needle = 'needle'
+    const value = 'value'
+    const generatedResult = svarpasedActions.setReplySed(needle, value)
+    expect(generatedResult)
+      .toMatchObject({
+        type: types.SVARPASED_REPLYSED_UPDATE,
+        payload: {
+          needle: needle,
+          value: value
+        }
+      })
   })
 })

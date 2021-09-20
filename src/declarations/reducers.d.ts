@@ -4,6 +4,7 @@ import { ArbeidsgiverState } from 'reducers/arbeidsgiver'
 import { AttachmentsState } from 'reducers/attachments'
 import { InntektState } from 'reducers/inttekt'
 import { LoadingState } from 'reducers/loading'
+import { LocalStorageState } from 'reducers/localStorage'
 import { PersonState } from 'reducers/person'
 import { SakState } from 'reducers/sak'
 import { SvarpasedState } from 'reducers/svarpased'
@@ -18,6 +19,7 @@ export interface State {
   attachments: AttachmentsState,
   inntekt: InntektState,
   loading: LoadingState,
+  localStorage: LocalStorageState,
   person: PersonState,
   sak: SakState,
   svarpased: SvarpasedState,

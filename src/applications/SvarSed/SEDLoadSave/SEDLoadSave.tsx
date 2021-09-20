@@ -1,13 +1,17 @@
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import { FlexEtikett } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
+import { State } from 'declarations/reducers'
 import { LocalStorageEntry } from 'declarations/types'
 import _ from 'lodash'
 import { Normaltekst, UndertekstBold } from 'nav-frontend-typografi'
 import { FlexCenterSpacedDiv, FlexDiv, FlexBaseSpacedDiv, PileDiv, HighContrastFlatknapp, HighContrastPanel, VerticalSeparatorDiv, HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
+import * as localStorageActions from 'actions/localStorage'
+import { ReplySed } from 'declarations/sed'
 
 const LoadSaveDiv = styled(FlexDiv)`
   width: 100%;
@@ -20,34 +24,30 @@ interface SEDLoadSaveProps {
   storageKey: string
 }
 
-const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent extends any>({
+interface SEDLoadSaveSelector {
+  savedEntries: Array<LocalStorageEntry<ReplySed>> | null | undefined
+}
+
+const mapState = (state: State): SEDLoadSaveSelector => ({
+  savedEntries: state.localStorage.savedEntries
+})
+
+const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
   onLoad,
   storageKey
 }: SEDLoadSaveProps) => {
-  const [_savedEntries, setSavedEntries] = useState<Array<LocalStorageEntry<CustomLocalStorageContent>> | null | undefined>(undefined)
-  const [_loadingSavedItems, setLoadingSavedItems] = useState<boolean>(false)
+
+  const dispatch = useDispatch()
+  const {savedEntries}: SEDLoadSaveSelector = useSelector<State,SEDLoadSaveSelector>(mapState)
+  const [loadingSavedItems, setLoadingSavedItems] = useState<boolean>(false)
   const [_confirmDelete, setConfirmDelete] = useState<Array<string>>([])
   const { t } = useTranslation()
 
-  const loadReplySeds = async () => {
-    setLoadingSavedItems(true)
-    const items: string | null = await window.localStorage.getItem(storageKey)
-    let savedEntries: Array<LocalStorageEntry<CustomLocalStorageContent>> | null | undefined
-    if (_.isString(items)) {
-      savedEntries = JSON.parse(items)
-    } else {
-      savedEntries = null
-    }
-    setSavedEntries(savedEntries)
-    setLoadingSavedItems(false)
-  }
-
   const onRemove = async (i: number) => {
-    const newSavedEntries = _.cloneDeep(_savedEntries)
+    let newSavedEntries = _.cloneDeep(savedEntries) as Array<LocalStorageEntry<ReplySed>>
     if (!_.isNil(newSavedEntries)) {
       newSavedEntries.splice(i, 1)
-      setSavedEntries(newSavedEntries)
-      await window.localStorage.setItem(storageKey, JSON.stringify(newSavedEntries))
+      dispatch(localStorageActions.saveEntries(storageKey, newSavedEntries))
     }
   }
 
@@ -60,18 +60,24 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
   }
 
   useEffect(() => {
-    if (_savedEntries === undefined && !_loadingSavedItems) {
-      loadReplySeds()
+    if (!loadingSavedItems && savedEntries === undefined) {
       setLoadingSavedItems(true)
+      dispatch(localStorageActions.loadEntries(storageKey))
     }
-  }, [_savedEntries, _loadingSavedItems])
+  }, [savedEntries, loadingSavedItems])
+
+  useEffect(() => {
+    if (loadingSavedItems && savedEntries !== undefined) {
+      setLoadingSavedItems(false)
+    }
+  }, [savedEntries, loadingSavedItems])
 
   return (
 
     <HighContrastPanel border>
       <LoadSaveDiv>
-        {_loadingSavedItems && (<WaitingPanel />)}
-        {_savedEntries === null || _.isEmpty(_savedEntries)
+        {loadingSavedItems && (<WaitingPanel />)}
+        {savedEntries === null || _.isEmpty(savedEntries)
           ? (
             <Normaltekst>
               {t('label:ingen-lagrede-seds')}
@@ -83,7 +89,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = <CustomLocalStorageContent exten
             </Normaltekst>
             )}
         <VerticalSeparatorDiv />
-        {_savedEntries && _savedEntries.map((savedEntry: LocalStorageEntry<CustomLocalStorageContent>, i: number) => {
+        {savedEntries?.map((savedEntry: LocalStorageEntry<ReplySed>, i: number) => {
           const candidateForDeletion = _confirmDelete.indexOf(savedEntry.name) >= 0
           return (
             <div key={savedEntry.name}>

@@ -18,6 +18,7 @@ export const initialLoadingState: LoadingState = {
   gettingPerson: false,
   gettingPreviewFile: false,
   gettingSaksbehandler: false,
+  gettingSavedItems: false,
   gettingServerinfo: false,
   searchingPerson: false,
   sendingVedlegg: false,
