@@ -14,7 +14,7 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import moment from 'moment'
-import { Undertittel } from 'nav-frontend-typografi'
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
@@ -254,11 +254,18 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
         {t('label:periode-pensjon-avsenderlandet')}
       </Undertittel>
       <VerticalSeparatorDiv size={2} />
-      {perioderMedPensjon
-        ?.sort((a, b) =>
-          moment(a.periode.startdato).isSameOrBefore(moment(b.periode.startdato)) ? -1 : 1
-        )
-        ?.map(renderRow)}
+      {_.isEmpty(perioderMedPensjon)
+        ? (
+          <Normaltekst>
+            {t('message:warning-no-periods')}
+          </Normaltekst>
+          )
+        : perioderMedPensjon
+          ?.sort((a, b) =>
+            moment(a.periode.startdato).isSameOrBefore(moment(b.periode.startdato)) ? -1 : 1
+          )
+          ?.map(renderRow)}
+      <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm

@@ -48,6 +48,7 @@ export const HorizontalLineSeparator = styled.div`
 export const SideBarDiv = styled.div`
   display: flex;
   flex: 0 0 21.5rem;
+  padding-top: 4rem;
 `
 export const HiddenFormContainer = styled.div`
   overflow: hidden;
@@ -77,7 +78,7 @@ export const Etikett = styled.div`
   padding: 0.25rem 0.5rem;
   margin-left: -0.15rem;
   color:  ${({ theme }) => theme[themeKeys.MAIN_FONT_COLOR]} !important;
-  background-color: ${({ theme }) => theme[themeKeys.MAIN_BACKGROUND_COLOR]};
+  background-color: ${({ theme }) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
   border: ${(props: any) => props['data-border'] === true ? '1px solid ' + props.theme[themeKeys.MAIN_BORDER_COLOR] : 'none'};
   border-radius: 5px;
   display: inline-block;

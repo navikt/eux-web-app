@@ -113,9 +113,8 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
           <VerticalSeparatorDiv />
         </div>
       ))}
-
       {isFSed(replySed) && (replySed as F002Sed).krav?.kravType && (
-        <>
+        <div>
           <Dl>
             <Dt>
               {t('label:type-krav')}
@@ -132,7 +131,6 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
               {(replySed as F002Sed).krav.kravMottattDato}
             </Dd>
           </Dl>
-          <VerticalSeparatorDiv />
           {(replySed as F002Sed).krav?.infoType === 'vi_bekrefter_leverte_opplysninger' && (
             <FlexDiv>
               <GreenCircle width={18} height={18} />
@@ -159,7 +157,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
               </FlexDiv>
             </>
           )}
-        </>
+        </div>
       )}
     </>
   )

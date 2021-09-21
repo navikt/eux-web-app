@@ -70,7 +70,8 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
   const [_newRegion, _setNewRegion] = useState<string>('')
   const [_newLand, _setNewLand] = useState<string>('')
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PeriodeDagpenger>((periode: PeriodeDagpenger) => periode.periode.startdato)
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PeriodeDagpenger>(
+    (p: PeriodeDagpenger) => p.periode.startdato + '-' + (p.periode.sluttdato ?? p.periode.aapenPeriodeType))
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] =
     useValidation<ValidationPeriodeDagpengerProps>({}, validatePeriodeDagpenger)

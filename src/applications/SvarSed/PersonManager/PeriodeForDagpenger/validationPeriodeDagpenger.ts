@@ -35,10 +35,10 @@ export const validatePeriodeDagpenger = (
   if (!_.isEmpty(periodeDagpenger?.periode?.startdato)) {
     let duplicate: boolean
     if (_.isNil(index)) {
-      duplicate = _.find(perioderDagpenger, p => p.periode.startdato === periodeDagpenger?.periode.startdato) !== undefined
+      duplicate = _.find(perioderDagpenger, p => p.periode.startdato === periodeDagpenger?.periode.startdato && p.periode.sluttdato === periodeDagpenger.periode?.sluttdato) !== undefined
     } else {
       const otherPerioder: Array<PeriodeDagpenger> = _.filter(perioderDagpenger, (p, i) => i !== index)
-      duplicate = _.find(otherPerioder, e => e.periode.startdato === periodeDagpenger?.periode?.startdato) !== undefined
+      duplicate = _.find(otherPerioder, p => p.periode.startdato === periodeDagpenger?.periode?.startdato && p.periode.sluttdato === periodeDagpenger.periode?.sluttdato) !== undefined
     }
     if (duplicate) {
       v[namespace + idx + '-periode-startdato'] = {

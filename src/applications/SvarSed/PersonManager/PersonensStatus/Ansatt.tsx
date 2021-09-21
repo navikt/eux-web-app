@@ -1,4 +1,4 @@
-import { getArbeidsperioder } from 'actions/arbeidsgiver'
+import { getArbeidsperioder, updateArbeidsgivere } from 'actions/arbeidsgiver'
 import { updateReplySed } from 'actions/svarpased'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
@@ -11,16 +11,16 @@ import Period from 'components/Period/Period'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Periode, PeriodeMedForsikring } from 'declarations/sed'
-import { Arbeidsperioder } from 'declarations/types'
+import { Arbeidsgiver, Arbeidsperioder } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import moment from 'moment'
-import { Systemtittel, Undertittel } from 'nav-frontend-typografi'
+import { Normaltekst, Systemtittel, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
-  FlexBaseDiv,
+  FlexCenterDiv,
   HighContrastFlatknapp,
   HighContrastKnapp,
   HorizontalSeparatorDiv,
@@ -81,8 +81,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
   const [_newPeriodeStartDato, _setNewPeriodeStartDato] = useState<string>('')
   const [_newPeriodeSluttDato, _setNewPeriodeSluttDato] = useState<string>('')
   const [_seeNewPeriode, _setSeeNewPeriode] = useState<boolean>(false)
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>(
-    (periode: Periode) => periode.startdato)
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode) => p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType))
   const [_validationPeriode, _resetValidationPeriode, performValidationPeriode] =
     useValidation<ValidationArbeidsperiodeProps>({}, validateAnsattPeriode)
 
@@ -129,14 +128,75 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const onArbeidsgiverEdit = (arbeidsgiver: PeriodeMedForsikring) => {
+  const onRegisteredArbeidsgiverEdit = (newArbeidsgiver: PeriodeMedForsikring, oldArbeidsgiver: PeriodeMedForsikring, selected: boolean) => {
+    let newPerioder: Array<Periode> | undefined = _.cloneDeep(perioderSomAnsatt)
+    if (!newPerioder) {
+      newPerioder = []
+    }
+    const newArbeidsgivere: Array<Arbeidsgiver> | undefined = _.cloneDeep(arbeidsperioder?.arbeidsperioder) as Array<Arbeidsgiver>
+    const needleId: string | undefined = getOrgnr(newArbeidsgiver)
+
+    if (needleId) {
+      const indexArbeidsgiver = _.findIndex(newArbeidsgivere, (p: Arbeidsgiver) => p.arbeidsgiversOrgnr === needleId)
+      if (indexArbeidsgiver >= 0) {
+        newArbeidsgivere[indexArbeidsgiver].fraDato = newArbeidsgiver.periode.startdato
+        newArbeidsgivere[indexArbeidsgiver].tilDato = newArbeidsgiver.periode.sluttdato
+        dispatch(updateArbeidsgivere(newArbeidsgivere))
+      }
+
+      if (selected) {
+        const indexPerioder = _.findIndex(newPerioder, (p: Periode) => {
+          return oldArbeidsgiver.periode.startdato === p.startdato && oldArbeidsgiver.periode.sluttdato === p.sluttdato
+        })
+        if (indexPerioder >= 0) {
+          const newPeriode: Periode = {
+            startdato: newArbeidsgiver.periode.startdato
+          }
+          if (newArbeidsgiver.periode.sluttdato) {
+            newPeriode.sluttdato = newArbeidsgiver.periode.sluttdato.trim()
+          } else {
+            newPeriode.aapenPeriodeType = 'åpen_sluttdato'
+          }
+
+          newPerioder[indexPerioder] = newPeriode
+          dispatch(updateReplySed(target, newPerioder))
+        }
+      }
+    }
+  }
+
+  const onArbeidsgiverEdit = (newArbeidsgiver: PeriodeMedForsikring, oldArbeidsgiver: PeriodeMedForsikring, selected: boolean) => {
+    let newPerioder: Array<Periode> | undefined = _.cloneDeep(perioderSomAnsatt)
+    if (!newPerioder) {
+      newPerioder = []
+    }
     const newAddedArbeidsperioder: Array<PeriodeMedForsikring> = _.cloneDeep(_addedArbeidsperioder)
-    const needleId : string | undefined = getOrgnr(arbeidsgiver)
+    const needleId : string | undefined = getOrgnr(newArbeidsgiver)
+
     if (newAddedArbeidsperioder && needleId) {
       const index = _.findIndex(newAddedArbeidsperioder, (p: PeriodeMedForsikring) => hasOrgnr(p, needleId))
       if (index >= 0) {
-        newAddedArbeidsperioder[index] = arbeidsgiver
+        newAddedArbeidsperioder[index] = newArbeidsgiver
         setAddedArbeidsperioder(newAddedArbeidsperioder)
+      }
+
+      if (selected) {
+        const indexPerioder = _.findIndex(newPerioder, (p: Periode) => {
+          return oldArbeidsgiver.periode.startdato === p.startdato && oldArbeidsgiver.periode.sluttdato === p.sluttdato
+        })
+        if (indexPerioder >= 0) {
+          const newPeriode: Periode = {
+            startdato: newArbeidsgiver.periode.startdato
+          }
+          if (newArbeidsgiver.periode.sluttdato) {
+            newPeriode.sluttdato = newArbeidsgiver.periode.sluttdato.trim()
+          } else {
+            newPeriode.aapenPeriodeType = 'åpen_sluttdato'
+          }
+
+          newPerioder[indexPerioder] = newPeriode
+          dispatch(updateReplySed(target, newPerioder))
+        }
       }
     }
   }
@@ -449,12 +509,13 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
             <Column>
               <ArbeidsgiverBox
                 arbeidsgiver={item.item as unknown as PeriodeMedForsikring}
-                editable='no'
+                editable='only_period'
                 newArbeidsgiver={false}
                 includeAddress={includeAddress}
                 selected={!_.isNil(item.index) && item.index >= 0}
                 key={getOrgnr(item.item as unknown as PeriodeMedForsikring)}
                 onArbeidsgiverSelect={onArbeidsgiverSelect}
+                onArbeidsgiverEdit={onRegisteredArbeidsgiverEdit}
                 namespace={namespace}
               />
             </Column>
@@ -514,14 +575,22 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
         </Row>
       )}
       <VerticalSeparatorDiv size='2' />
+      {_.isEmpty(perioderSomAnsatt) && (
+        <>
+          <Normaltekst>
+            {t('message:warning-no-periods')}
+          </Normaltekst>
+          <VerticalSeparatorDiv />
+        </>
+      )}
       {renderPlan()}
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv size='2' />
       {_seeNewArbeidsgiver && renderNewArbeidsgiver()}
       {_seeNewPeriode && renderNewPeriode()}
       {!_seeNewPeriode && !_seeNewArbeidsgiver && (
-        <FlexBaseDiv>
+        <FlexCenterDiv>
           <span>{t('label:du-kan')}</span>
           <HighContrastFlatknapp
             mini
@@ -546,7 +615,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
               x: t('label:periode').toLowerCase()
             })}
           </HighContrastFlatknapp>
-        </FlexBaseDiv>
+        </FlexCenterDiv>
       )}
     </>
   )

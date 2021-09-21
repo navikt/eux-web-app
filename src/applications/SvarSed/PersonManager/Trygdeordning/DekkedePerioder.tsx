@@ -11,7 +11,7 @@ import { Periode } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { Ingress } from 'nav-frontend-typografi'
+import { Ingress, Normaltekst } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
@@ -49,7 +49,7 @@ const DekkedePerioder: React.FC<PersonManagerFormProps> = ({
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')
   const [_newStartDato, _setNewStartDato] = useState<string>('')
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => p?.startdato)
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType))
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationDekkedePeriodeProps>({}, validateDekkedePeriode)
 
@@ -184,21 +184,27 @@ const DekkedePerioder: React.FC<PersonManagerFormProps> = ({
         {t('label:trygdeordningen-dekkede')}
       </Ingress>
       <VerticalSeparatorDiv size='2' />
-      {perioderMedITrygdeordning?.length > 0 && (
-        <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-          <Column>
-            <label className='skjemaelement__label'>
-              {t('label:startdato') + ' *'}
-            </label>
-          </Column>
-          <Column>
-            <label className='skjemaelement__label'>
-              {t('label:sluttdato')}
-            </label>
-          </Column>
-          <Column />
-        </Row>
-      )}
+      {_.isEmpty(perioderMedITrygdeordning)
+        ? (
+          <Normaltekst>
+            {t('message:warning-no-periods')}
+          </Normaltekst>
+          )
+        : (
+          <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+            <Column>
+              <label className='skjemaelement__label'>
+                {t('label:startdato') + ' *'}
+              </label>
+            </Column>
+            <Column>
+              <label className='skjemaelement__label'>
+                {t('label:sluttdato')}
+              </label>
+            </Column>
+            <Column />
+          </Row>
+          )}
       <VerticalSeparatorDiv />
       {perioderMedITrygdeordning?.map(renderRow)}
       <HorizontalLineSeparator />

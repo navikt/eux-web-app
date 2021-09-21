@@ -37,12 +37,21 @@ export const validateNasjonalitet = (
     hasErrors = true
   }
 
-  if ((_.isNil(index) || index < 0) && _.find(statsborgerskaper, s => s.land === statsborgerskap.land) !== undefined) {
-    v[namespace + idx + '-land'] = {
-      feilmelding: t('message:validation-duplicateBirthCountry'),
-      skjemaelementId: namespace + idx + '-land'
-    } as FeiloppsummeringFeil
-    hasErrors = true
+  if (!_.isEmpty(statsborgerskaper)) {
+    let duplicate: boolean
+    if (_.isNil(index)) {
+      duplicate = _.find(statsborgerskaper, s => s.land === statsborgerskap.land) !== undefined
+    } else {
+      const otherLands: Array<Statsborgerskap> = _.filter(statsborgerskaper, (p, i) => i !== index)
+      duplicate = _.find(otherLands, s => s.land === statsborgerskap.land) !== undefined
+    }
+    if (duplicate) {
+      v[namespace + idx + '-land'] = {
+        feilmelding: t('message:validation-duplicateBirthCountry'),
+        skjemaelementId: namespace + idx + '-land'
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
   }
 
   if (!_.isEmpty(statsborgerskap?.fraDato?.trim()) && !statsborgerskap.fraDato!.match(datePattern)) {

@@ -168,5 +168,11 @@
   "warning-conflict-aa-link-1": "AA Registeret",
   "warning-conflict-aa-2": " og ",
   "warning-conflict-aa-link-2": "A-Inntekt",
-  "warning-no-arbeidsgiver-found": "Ingen arbeidsperioder funnet"
+  "warning-no-address": "Ingen adresser",
+  "warning-no-arbeidsgiver-found": "Ingen arbeidsperioder funnet",
+  "warning-no-email": "Ingen e-post adresser",
+  "warning-no-familierelasjon": "Ingen familierelasjoner",
+  "warning-no-periods": "Ingen perioder",
+  "warning-no-satsborgerskap": "Ingen statsborgerskap",
+  "warning-no-telephone": "Ingen telefonnummer"
 }

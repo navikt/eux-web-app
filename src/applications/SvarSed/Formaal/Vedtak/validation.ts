@@ -50,10 +50,10 @@ export const validateVedtakPeriode = (
   if (!_.isEmpty(periode?.startdato)) {
     let duplicate: boolean
     if (_.isNil(index)) {
-      duplicate = _.find(perioder, p => p.startdato === periode?.startdato) !== undefined
+      duplicate = _.find(perioder, p => p.startdato === periode?.startdato && p.sluttdato === periode?.sluttdato) !== undefined
     } else {
       const otherPerioder: Array<Periode> = _.filter(perioder, (p, i) => i !== index)
-      duplicate = _.find(otherPerioder, e => e.startdato === periode?.startdato) !== undefined
+      duplicate = _.find(otherPerioder, p => p.startdato === periode?.startdato && p.sluttdato === periode?.sluttdato) !== undefined
     }
     if (duplicate) {
       v[namespace + '-perioder' + idx + '-startdato'] = {
@@ -95,10 +95,10 @@ export const validateVedtakVedtaksperiode = (
   if (!_.isEmpty(vedtaksperiode?.periode.startdato)) {
     let duplicate: boolean
     if (_.isNil(index)) {
-      duplicate = _.find(vedtaksperioder, p => p.periode.startdato === vedtaksperiode?.periode.startdato) !== undefined
+      duplicate = _.find(vedtaksperioder, p => p.periode.startdato === vedtaksperiode?.periode.startdato && p.periode.sluttdato === vedtaksperiode?.periode.sluttdato) !== undefined
     } else {
       const otherPerioder: Array<VedtakPeriode> = _.filter(vedtaksperioder, (p, i) => i !== index)
-      duplicate = _.find(otherPerioder, p => p.periode.startdato === vedtaksperiode?.periode.startdato) !== undefined
+      duplicate = _.find(otherPerioder, p => p.periode.startdato === vedtaksperiode?.periode.startdato && p.periode.sluttdato === vedtaksperiode?.periode.sluttdato) !== undefined
     }
     if (duplicate) {
       v[namespace + '-vedtaksperioder' + idx + '-periode-startdato'] = {

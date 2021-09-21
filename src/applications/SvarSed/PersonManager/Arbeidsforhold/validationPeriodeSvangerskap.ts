@@ -67,10 +67,10 @@ export const validatePeriodeSvangerskap = (
   if (!_.isEmpty(periodeSvangerskap?.periode?.startdato)) {
     let duplicate: boolean
     if (_.isNil(index)) {
-      duplicate = _.find(perioderSvangerskap, p => p.periode.startdato === periodeSvangerskap?.periode.startdato) !== undefined
+      duplicate = _.find(perioderSvangerskap, p => p.periode.startdato === periodeSvangerskap?.periode.startdato && p.periode.sluttdato === periodeSvangerskap.periode?.sluttdato) !== undefined
     } else {
       const otherPerioder: Array<PeriodeSykSvangerskapOmsorg> = _.filter(perioderSvangerskap, (p, i) => i !== index)
-      duplicate = _.find(otherPerioder, e => e.periode.startdato === periodeSvangerskap?.periode?.startdato) !== undefined
+      duplicate = _.find(otherPerioder, p => p.periode.startdato === periodeSvangerskap?.periode?.startdato && p.periode.sluttdato === periodeSvangerskap.periode?.sluttdato) !== undefined
     }
     if (duplicate) {
       v[namespace + idx + '-startdato'] = {

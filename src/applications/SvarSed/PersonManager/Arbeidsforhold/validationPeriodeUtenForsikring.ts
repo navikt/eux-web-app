@@ -51,10 +51,10 @@ export const validatePeriodeUtenForsikring = (
   if (!_.isEmpty(periodeUtenForsikring?.periode?.startdato)) {
     let duplicate: boolean
     if (_.isNil(index)) {
-      duplicate = _.find(perioderUtenForsikring, p => p.periode.startdato === periodeUtenForsikring?.periode.startdato) !== undefined
+      duplicate = _.find(perioderUtenForsikring, p => p.periode.startdato === periodeUtenForsikring?.periode.startdato && p.periode.sluttdato === periodeUtenForsikring.periode?.sluttdato) !== undefined
     } else {
       const otherPerioder: Array<PeriodeUtenForsikring> = _.filter(perioderUtenForsikring, (p, i) => i !== index)
-      duplicate = _.find(otherPerioder, e => e.periode.startdato === periodeUtenForsikring?.periode?.startdato) !== undefined
+      duplicate = _.find(otherPerioder, p => p.periode.startdato === periodeUtenForsikring?.periode?.startdato && p.periode.sluttdato === periodeUtenForsikring.periode?.sluttdato) !== undefined
     }
     if (duplicate) {
       v[namespace + idx + '-startdato'] = {

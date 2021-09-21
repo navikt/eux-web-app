@@ -73,7 +73,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
   const [_newVedtaksperioderVedtak, _setNewVedtaksperioderVedtak] = useState<string>('')
   const [_newVedtaksperioderSkalYtelseUtbetales, _setNewVedtaksperioderSkalYtelseUtbetales] = useState<JaNei | undefined>(undefined)
 
-  const [perioderAddToDeletion, perioderRemoveFromDeletion, perioderIsInDeletion] = useAddRemove<Periode>((p: Periode): string => p.startdato)
+  const [perioderAddToDeletion, perioderRemoveFromDeletion, perioderIsInDeletion] = useAddRemove<Periode>((p: Periode): string => p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType))
   const [vedtaksperioder1AddToDeletion, vedtaksperioder1RemoveFromDeletion, vedtaksperioder1IsInDeletion] = useAddRemove<VedtakPeriode>((p: VedtakPeriode): string => '1_58_' + p.periode.startdato)
   const [vedtaksperioder2AddToDeletion, vedtaksperioder2RemoveFromDeletion, vedtaksperioder2IsInDeletion] = useAddRemove<VedtakPeriode>((p: VedtakPeriode): string => '2_58_' + p.periode.startdato)
   const [vedtaksperioder3AddToDeletion, vedtaksperioder3RemoveFromDeletion, vedtaksperioder3IsInDeletion] = useAddRemove<VedtakPeriode>((p: VedtakPeriode): string => '1_68_' + p.periode.startdato)

@@ -35,10 +35,10 @@ export const validateWithSubsidiesPeriode = (
 
   let duplicate: boolean
   if (_.isNil(index)) {
-    duplicate = _.find(perioder, p => p.periode.startdato === pensjonPeriode.periode?.startdato) !== undefined
+    duplicate = _.find(perioder, p => p.periode.startdato === pensjonPeriode.periode?.startdato && p.periode.sluttdato === pensjonPeriode.periode?.sluttdato) !== undefined
   } else {
     const otherPerioder: Array<PensjonPeriode> = _.filter(perioder, (p, i) => i !== index)
-    duplicate = _.find(otherPerioder, e => e.periode.startdato === pensjonPeriode.periode?.startdato) !== undefined
+    duplicate = _.find(otherPerioder, p => p.periode.startdato === pensjonPeriode.periode?.startdato && p.periode.sluttdato === pensjonPeriode.periode?.sluttdato) !== undefined
   }
   if (duplicate) {
     v[namespace + idx + '-periode-startdato'] = {

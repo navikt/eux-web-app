@@ -60,7 +60,8 @@ const ArbeidsforholdSimple: React.FC<ArbeidsforholdSimpleProps> = ({
   const [_newStartDato, _setNewStartDato] = useState<string>('')
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PeriodeForsikring>((periode: PeriodeForsikring) => periode.periode.startdato)
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PeriodeForsikring>(
+    (p: PeriodeForsikring) => p.periode.startdato + '-' + (p.periode.sluttdato ?? p.periode.aapenPeriodeType))
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] =
     useValidation<ValidationPeriodeSimpleProps>({}, validatePeriodeSimple)

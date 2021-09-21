@@ -14,7 +14,7 @@ import useValidation from 'hooks/useValidation'
 import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
-import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
+import { Normaltekst, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
@@ -202,9 +202,17 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>
-          <UndertekstBold>
-            {t('label:nasjonalitet') + ' *'}
-          </UndertekstBold>
+          {!_.isEmpty(statsborgerskaper)
+            ? (
+              <UndertekstBold>
+                {t('label:nasjonalitet') + ' *'}
+              </UndertekstBold>
+              )
+            : (
+              <Normaltekst>
+                {t('message:warning-no-satsborgerskap')}
+              </Normaltekst>
+              )}
         </Column>
         {isUSed(replySed!)
           ? (

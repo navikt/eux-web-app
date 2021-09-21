@@ -3,9 +3,10 @@ import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
 import { Labels } from 'declarations/app'
 import { Normaltekst } from 'nav-frontend-typografi'
-import { HighContrastFlatknapp, FlexCenterSpacedDiv, HorizontalSeparatorDiv } from 'nav-hoykontrast'
+import { HighContrastFlatknapp, HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
 
 export interface AddRemovePanelProps {
   candidateForDeletion: boolean
@@ -18,6 +19,11 @@ export interface AddRemovePanelProps {
   onCancelRemove: () => void
   onConfirmRemove: () => void
 }
+
+const InlineFlexDiv = styled.div`
+  display: inline-flex;
+  align-items: center;
+`
 
 const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
   labels = {},
@@ -34,7 +40,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
 
   return candidateForDeletion
     ? (
-      <FlexCenterSpacedDiv className={classNames('slideInFromRight', { nolabel: marginTop })}>
+      <InlineFlexDiv className={classNames('slideInFromRight', { nolabel: marginTop })}>
         <Normaltekst>
           {labels?.areYouSure ?? t('label:er-du-sikker')}
         </Normaltekst>
@@ -54,10 +60,10 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
         >
           {labels?.no ?? t('label:nei')}
         </HighContrastFlatknapp>
-      </FlexCenterSpacedDiv>
+      </InlineFlexDiv>
       )
     : (
-      <div className={classNames({ nolabel: marginTop })}>
+      <InlineFlexDiv className={classNames({ nolabel: marginTop })}>
         <HighContrastFlatknapp
           mini
           kompakt
@@ -79,7 +85,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
             </HighContrastFlatknapp>
           </>
         )}
-      </div>
+      </InlineFlexDiv>
       )
 }
 

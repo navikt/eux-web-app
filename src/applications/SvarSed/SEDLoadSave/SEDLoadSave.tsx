@@ -36,15 +36,14 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
   onLoad,
   storageKey
 }: SEDLoadSaveProps) => {
-
   const dispatch = useDispatch()
-  const {savedEntries}: SEDLoadSaveSelector = useSelector<State,SEDLoadSaveSelector>(mapState)
+  const { savedEntries }: SEDLoadSaveSelector = useSelector<State, SEDLoadSaveSelector>(mapState)
   const [loadingSavedItems, setLoadingSavedItems] = useState<boolean>(false)
   const [_confirmDelete, setConfirmDelete] = useState<Array<string>>([])
   const { t } = useTranslation()
 
   const onRemove = async (i: number) => {
-    let newSavedEntries = _.cloneDeep(savedEntries) as Array<LocalStorageEntry<ReplySed>>
+    const newSavedEntries = _.cloneDeep(savedEntries) as Array<LocalStorageEntry<ReplySed>>
     if (!_.isNil(newSavedEntries)) {
       newSavedEntries.splice(i, 1)
       dispatch(localStorageActions.saveEntries(storageKey, newSavedEntries))
@@ -73,8 +72,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
   }, [savedEntries, loadingSavedItems])
 
   return (
-
-    <HighContrastPanel border>
+    <HighContrastPanel border style={{ margin: '0.1rem' }}>
       <LoadSaveDiv>
         {loadingSavedItems && (<WaitingPanel />)}
         {savedEntries === null || _.isEmpty(savedEntries)

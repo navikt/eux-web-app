@@ -16,7 +16,7 @@ import { Kodeverk } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { Undertittel } from 'nav-frontend-typografi'
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
@@ -293,7 +293,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
         </AlignStartRow>
         <VerticalSeparatorDiv />
         {(index < 0 ? _newRelasjonType === 'ANNEN' : familierelasjon?.relasjonType === 'ANNEN') && (
-          <>
+          <div style={{ marginLeft: '1.5rem' }}>
             <AlignStartRow className={classNames('slideInFromLeft')} style={{ animationDelay: index < 0 ? '0.1s' : (index * 0.3 + 0.1) + 's' }}>
               <Column flex='2'>
                 <Input
@@ -339,7 +339,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
             </AlignStartRow>
             <VerticalSeparatorDiv />
             <AlignStartRow className={classNames('slideInFromLeft')} style={{ animationDelay: index < 0 ? '0.2s' : (index * 0.3 + 0.2) + 's' }}>
-              <Column flex='2'>
+              <Column flex='3'>
                 <HighContrastRadioPanelGroup
                   checked={index < 0 ? _newBorSammen : familierelasjon?.borSammen}
                   data-test-id={namespace + idx + '-borSammen'}
@@ -355,11 +355,11 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBorSammen(e.target.value as JaNei, index)}
                 />
               </Column>
-              <Column flex='2' />
+              <Column />
             </AlignStartRow>
-          </>
+          </div>
         )}
-        <VerticalSeparatorDiv />
+        <VerticalSeparatorDiv size='2' />
       </>
     )
   }
@@ -370,7 +370,14 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
         {t('label:familierelasjon')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      {familierelasjoner?.map(renderRow)}
+      {_.isEmpty(familierelasjoner)
+        ? (
+          <Normaltekst>
+            {t('message:warning-no-familierelasjon')}
+          </Normaltekst>
+          )
+        : familierelasjoner?.map(renderRow)}
+      <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm

@@ -76,7 +76,8 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
   const [_newKreverinformasjonomantallarbeidstimer, _setNewKreverinformasjonomantallarbeidstimer] = useState<string>('')
   const [_newKreverinformasjonominntekt, _setNewKreverinformasjonominntekt] = useState<string>('')
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PeriodeUtenForsikring>((periode: PeriodeUtenForsikring) => periode.periode.startdato)
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PeriodeUtenForsikring>(
+    (p: PeriodeUtenForsikring) => p.periode.startdato + '-' + (p.periode.sluttdato ?? p.periode.aapenPeriodeType))
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] =
     useValidation<ValidationPeriodeUtenForsikringProps>({}, validatePeriodeUtenForsikring)

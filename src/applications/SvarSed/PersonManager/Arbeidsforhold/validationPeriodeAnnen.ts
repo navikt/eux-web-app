@@ -75,10 +75,10 @@ export const validatePeriodeAnnen = (
   if (!_.isEmpty(periodeAnnen?.periode?.startdato)) {
     let duplicate: boolean
     if (_.isNil(index)) {
-      duplicate = _.find(perioderAnnen, p => p.periode.startdato === periodeAnnen?.periode.startdato) !== undefined
+      duplicate = _.find(perioderAnnen, p => p.periode.startdato === periodeAnnen?.periode.startdato && p.periode.sluttdato === periodeAnnen.periode.sluttdato) !== undefined
     } else {
       const otherPerioder: Array<PeriodeAnnenForsikring> = _.filter(perioderAnnen, (p, i) => i !== index)
-      duplicate = _.find(otherPerioder, e => e.periode.startdato === periodeAnnen?.periode?.startdato) !== undefined
+      duplicate = _.find(otherPerioder, p => p.periode.startdato === periodeAnnen?.periode?.startdato && p.periode.sluttdato === periodeAnnen.periode?.sluttdato) !== undefined
     }
     if (duplicate) {
       v[namespace + idx + '-startdato'] = {

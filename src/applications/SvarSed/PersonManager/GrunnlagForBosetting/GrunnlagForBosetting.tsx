@@ -14,7 +14,7 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import moment from 'moment'
-import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
+import { Normaltekst, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
@@ -55,7 +55,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
   const [_newStartDato, _setNewStartDato] = useState<string>('')
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => {
-    return p?.startdato // assume startdato is unique
+    return p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType)
   })
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationGrunnlagForBosettingProps>({}, validateGrunnlagForBosetting)
@@ -212,11 +212,16 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
         {t('label:oppholdets-varighet')}
       </UndertekstBold>
       <VerticalSeparatorDiv />
-      {flyttegrunn?.perioder
-        ?.sort((a, b) =>
+      {_.isEmpty(flyttegrunn?.perioder)
+        ? (
+          <Normaltekst>
+            {t('message:warning-no-periods')}
+          </Normaltekst>
+          )
+        : flyttegrunn?.perioder.sort((a, b) =>
           moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1
         )
-        ?.map(renderRow)}
+          ?.map(renderRow)}
       <VerticalSeparatorDiv size={2} />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
@@ -237,7 +242,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
             </Column>
           </Row>
           )}
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv size='2' />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column>
           <DateInput
@@ -263,7 +268,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
         </Column>
         <Column />
       </AlignStartRow>
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv size='2' />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
         <Column flex='2'>
           <TextAreaDiv>
@@ -277,6 +282,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
             />
           </TextAreaDiv>
         </Column>
+        <Column />
       </AlignStartRow>
     </>
   )

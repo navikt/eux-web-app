@@ -20,6 +20,7 @@ import {
   AlignStartRow,
   Column,
   FlexDiv,
+  FlexEndDiv,
   HighContrastFlatknapp,
   HighContrastHovedknapp,
   HighContrastInput,
@@ -168,7 +169,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
         <HorizontalSeparatorDiv size='0.2' />
         <Column flex='2'>
           <PileDiv>
-            <FlexDiv>
+            <FlexEndDiv>
               <HighContrastInput
                 ariaLabel={t('label:saksnummer-eller-fnr')}
                 ariaInvalid={_validation['sedselection-saksnummerOrFnr']?.feilmelding}
@@ -197,7 +198,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                     : t('el:button-search')}
                 </HighContrastKnapp>
               </div>
-            </FlexDiv>
+            </FlexEndDiv>
             <VerticalSeparatorDiv size='0.5' />
             <Normaltekst>
               {_validMessage}

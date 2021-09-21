@@ -1,4 +1,3 @@
-import * as sakActions from 'actions/sak'
 import * as svarpasedActions from 'actions/svarpased'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
@@ -158,7 +157,6 @@ describe('actions/svarpased', () => {
         })
       }))
   })
-
 
   it('resetReplySed()', () => {
     const generatedResult = svarpasedActions.resetReplySed()

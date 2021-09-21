@@ -75,7 +75,8 @@ const ArbeidsforholdSvangerskap: React.FC<ArbeidsforholdSvangerskapProps> = ({
   const [_newRegion, _setNewRegion] = useState<string>('')
   const [_newLand, _setNewLand] = useState<string>('')
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PeriodeSykSvangerskapOmsorg>((periode: PeriodeSykSvangerskapOmsorg) => periode.periode.startdato)
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PeriodeSykSvangerskapOmsorg>(
+    (p: PeriodeSykSvangerskapOmsorg) => p.periode.startdato + '-' + (p.periode.sluttdato ?? p.periode.aapenPeriodeType))
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] =
     useValidation<ValidationPeriodeSvangerskapProps>({}, validatePeriodeSvangerskap)

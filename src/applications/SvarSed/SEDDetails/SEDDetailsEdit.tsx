@@ -49,7 +49,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
   const [_newAnmodningsperioderStartDato, setNewAnmodningsperioderStartDato] = useState<string>('')
   const [_newAnmodningsperioderSluttDato, setNewAnmodningsperioderSluttDato] = useState<string>('')
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => p.startdato)
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType))
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationSEDDetailsProps>({}, validateSEDDetail)
 

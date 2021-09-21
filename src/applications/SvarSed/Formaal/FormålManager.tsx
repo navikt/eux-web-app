@@ -13,7 +13,7 @@ import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import Chevron from 'nav-frontend-chevron'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
-import { Normaltekst } from 'nav-frontend-typografi'
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   FlexCenterDiv,
   FlexCenterSpacedDiv,
@@ -238,6 +238,9 @@ const FormålManager: React.FC = () => {
 
   return (
     <PileDiv>
+      <Undertittel>
+        {t('label:formålmanager')}
+      </Undertittel>
       <VerticalSeparatorDiv />
       <WithErrorPanel border className={classNames({ feil: validation[namespace]?.feilmelding })}>
         <FlexCenterSpacedDiv>

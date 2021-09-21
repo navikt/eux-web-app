@@ -57,7 +57,7 @@ export interface ArbeidsgiverProps {
   newArbeidsgiver?: boolean
   typeTrygdeforhold ?: string
   onArbeidsgiverSelect: (a: PeriodeMedForsikring, checked: boolean) => void
-  onArbeidsgiverEdit?: (a: PeriodeMedForsikring, checked: boolean) => void
+  onArbeidsgiverEdit?: (a: PeriodeMedForsikring, old: PeriodeMedForsikring, checked: boolean) => void
   onArbeidsgiverDelete?: (a: PeriodeMedForsikring, checked: boolean) => void
   namespace: string
   personFnr?: string
@@ -84,6 +84,7 @@ const ArbeidsgiverBox = ({
 
   const [_isDeleting, setIsDeleting] = useState<boolean>(false)
   const [_isEditing, setIsEditing] = useState<boolean>(false)
+  const [_beforeEditingVersion, setBeforeEditingVersion] = useState< PeriodeMedForsikring | undefined>(undefined)
 
   const [_arbeidsgiversNavn, setArbeidsgiversNavn] = useState<string>(arbeidsgiver.arbeidsgiver.navn ?? '')
   const [_arbeidsgiversOrgnr, setArbeidsgiversOrgnr] = useState<string>(getOrgnr(arbeidsgiver) ?? '')
@@ -190,14 +191,16 @@ const ArbeidsgiverBox = ({
     })
     if (valid) {
       if (_.isFunction(onArbeidsgiverEdit)) {
-        onArbeidsgiverEdit(newArbeidsgiver, selected)
+        onArbeidsgiverEdit(newArbeidsgiver, _beforeEditingVersion!, selected)
       }
       setIsEditing(false)
+      setBeforeEditingVersion(undefined)
     }
   }
 
   const onEditButtonClicked = () => {
     setIsEditing(true)
+    setBeforeEditingVersion(_.cloneDeep(arbeidsgiver))
     setArbeidsgiversOrgnr(_arbeidsgiversOrgnr || '')
     setArbeidsgiversNavn(_arbeidsgiversNavn || '')
     setStartDato(_startDato)
@@ -209,22 +212,6 @@ const ArbeidsgiverBox = ({
       setBy(_by)
       setRegion(_region)
       setLand(_land)
-    }
-  }
-
-  const onCancelButtonClicked = () => {
-    setIsEditing(false)
-    setArbeidsgiversOrgnr('')
-    setArbeidsgiversNavn('')
-    setStartDato('')
-    setSluttDato('')
-    if (includeAddress) {
-      setGate('')
-      setPostnummer('')
-      setBygning('')
-      setBy('')
-      setRegion('')
-      setLand('')
     }
   }
 
@@ -487,14 +474,6 @@ const ArbeidsgiverBox = ({
                   <HorizontalSeparatorDiv size='0.5' />
                   {t('el:button-save')}
                 </HighContrastKnapp>
-                <HorizontalSeparatorDiv size='0.5' />
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
-                  onClick={onCancelButtonClicked}
-                >
-                  {t('el:button-cancel')}
-                </HighContrastFlatknapp>
               </div>
             )}
           </PaddedFlexDiv>

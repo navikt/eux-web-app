@@ -35,10 +35,10 @@ export const validateLoennsopplysning = (
   if (!_.isEmpty(loennsopplysning?.periode?.startdato)) {
     let duplicate: boolean
     if (_.isNil(index)) {
-      duplicate = _.find(loennsopplysninger, p => p.periode.startdato === loennsopplysning?.periode.startdato) !== undefined
+      duplicate = _.find(loennsopplysninger, p => p.periode.startdato === loennsopplysning?.periode.startdato && p.periode.sluttdato === loennsopplysning.periode?.sluttdato) !== undefined
     } else {
       const otherPerioder: Array<Loennsopplysning> = _.filter(loennsopplysninger, (p, i) => i !== index)
-      duplicate = _.find(otherPerioder, e => e.periode.startdato === loennsopplysning?.periode?.startdato) !== undefined
+      duplicate = _.find(otherPerioder, p => p.periode.startdato === loennsopplysning?.periode?.startdato && p.periode.sluttdato === loennsopplysning.periode?.sluttdato) !== undefined
     }
     if (duplicate) {
       v[namespace + idx + '-startdato'] = {

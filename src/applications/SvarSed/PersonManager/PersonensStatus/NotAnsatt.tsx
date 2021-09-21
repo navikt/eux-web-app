@@ -12,7 +12,7 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import moment from 'moment'
-import { Undertittel } from 'nav-frontend-typografi'
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
@@ -62,7 +62,7 @@ const NotAnsatt: React.FC<PersonManagerFormProps & {arbeidsforhold: string}> = (
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => {
-    return p?.startdato // assume startdato is unique
+    return p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType)
   })
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationNotAnsattProps>({}, validateNotAnsattPeriode)
@@ -197,14 +197,20 @@ const NotAnsatt: React.FC<PersonManagerFormProps & {arbeidsforhold: string}> = (
         {t('label:ansettelsesperioder')}
       </Undertittel>
       <VerticalSeparatorDiv size={2} />
-      {replySedPerioder
-        ?.sort((a, b) =>
-          moment(a.startdato, 'YYYY-MM-DD')
-            .isSameOrBefore(moment(b.startdato, 'YYYY-MM-DD'))
-            ? -1
-            : 1
-        )
-        ?.map(renderRow)}
+      {_.isEmpty(replySedPerioder)
+        ? (
+          <Normaltekst>
+            {t('message:warning-no-periods')}
+          </Normaltekst>
+          )
+        : replySedPerioder
+          ?.sort((a, b) =>
+            moment(a.startdato, 'YYYY-MM-DD')
+              .isSameOrBefore(moment(b.startdato, 'YYYY-MM-DD'))
+              ? -1
+              : 1
+          )
+          ?.map(renderRow)}
       <VerticalSeparatorDiv size={2} />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />

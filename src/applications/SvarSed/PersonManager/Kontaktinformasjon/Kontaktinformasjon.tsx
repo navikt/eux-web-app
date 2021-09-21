@@ -13,7 +13,7 @@ import { Epost, Telefon, TelefonType } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
+import { Normaltekst, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
@@ -321,14 +321,24 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       <Row className='slideInFromLeft'>
         <Column>
-          <UndertekstBold>
-            {t('label:telefonnummer') + ' *'}
-          </UndertekstBold>
+          {!_.isEmpty(telefoner)
+            ? (
+              <UndertekstBold>
+                {t('label:telefonnummer') + ' *'}
+              </UndertekstBold>
+              )
+            : (
+              <Normaltekst>
+                {t('message:warning-no-telephone')}
+              </Normaltekst>
+              )}
         </Column>
         <Column>
-          <UndertekstBold>
-            {t('label:type') + ' *'}
-          </UndertekstBold>
+          {!_.isEmpty(telefoner) && (
+            <UndertekstBold>
+              {t('label:type') + ' *'}
+            </UndertekstBold>
+          )}
         </Column>
         <Column />
       </Row>
@@ -357,9 +367,17 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv size='3' />
       <Row className='slideInFromLeft'>
         <Column>
-          <UndertekstBold>
-            {t('label:epost') + ' *'}
-          </UndertekstBold>
+          {!_.isEmpty(eposter)
+            ? (
+              <UndertekstBold>
+                {t('label:epost') + ' *'}
+              </UndertekstBold>
+              )
+            : (
+              <Normaltekst>
+                {t('message:warning-no-email')}
+              </Normaltekst>
+              )}
         </Column>
         <Column />
       </Row>

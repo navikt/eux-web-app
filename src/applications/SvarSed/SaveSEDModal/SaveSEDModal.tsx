@@ -90,7 +90,6 @@ const SendSEDModal = ({
 
   const onSave = async () => {
     if (performValidation()) {
-
       let newSavedEntries: Array<LocalStorageEntry<ReplySed>> | null | undefined = _.cloneDeep(savedEntries)
       if (_.isNil(newSavedEntries)) {
         newSavedEntries = []
@@ -102,7 +101,7 @@ const SendSEDModal = ({
         content: replySed
       } as LocalStorageEntry
 
-      let existsIndex: number = _.findIndex(savedEntries, entry => entry.name === _name)
+      const existsIndex: number = _.findIndex(savedEntries, entry => entry.name === _name)
       if (existsIndex >= 0) {
         newSavedEntries[existsIndex] = newItem
       } else {

@@ -17,7 +17,7 @@ export interface ArbeidsgivereProps {
   namespace: string
   personFnr?: string
   onArbeidsgiverSelect: (a: PeriodeMedForsikring, checked: boolean) => void
-  onArbeidsgiverEdit?: (a: PeriodeMedForsikring) => void
+  onArbeidsgiverEdit?: (a: PeriodeMedForsikring, old: PeriodeMedForsikring, checked: boolean) => void
   onArbeidsgiverDelete?: (a: PeriodeMedForsikring) => void
   searchable?: boolean
   valgteArbeidsgivere: Array<Arbeidsgiver>

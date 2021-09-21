@@ -118,7 +118,7 @@ export const validateKontaktsinformasjonEpost = (
   }
   if (duplicate) {
     v[namespace + idx + '-adresse'] = {
-      feilmelding: t('message:validation-duplicateTelephoneNumberForPerson', { person: personName }),
+      feilmelding: t('message:validation-duplicateEpostAdresseForPerson', { person: personName }),
       skjemaelementId: namespace + idx + '-adresse'
     } as FeiloppsummeringFeil
     hasErrors = true

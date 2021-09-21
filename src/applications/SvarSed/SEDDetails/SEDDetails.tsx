@@ -22,7 +22,7 @@ const SEDDetails = () => {
   }
 
   return (
-    <HighContrastPanel border>
+    <HighContrastPanel border style={{ margin: '0.1rem' }}>
       <FlexCenterSpacedDiv>
         <Undertittel>
           {t('label:rina-saksnummer') + ': ' + replySed.saksnummer}

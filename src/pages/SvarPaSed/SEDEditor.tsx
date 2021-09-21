@@ -220,15 +220,16 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
         />
       )}
       <FlexCenterSpacedDiv>
-        <HighContrastFlatknapp
+        <HighContrastKnapp
+          kompakt
           onClick={onGoBackClick}
         >
           <VenstreChevron />
           <HorizontalSeparatorDiv size='0.5' />
           {t('label:tilbake')}
-        </HighContrastFlatknapp>
+        </HighContrastKnapp>
       </FlexCenterSpacedDiv>
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv size='2' />
       <Row>
         <Column flex='2'>
           <Systemtittel>
@@ -241,7 +242,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
         </Column>
         <Column />
       </Row>
-      <VerticalSeparatorDiv size='2' />
+      <VerticalSeparatorDiv size='3' />
       {showPersonManager() && (
         <>
           <PersonManager />
@@ -255,17 +256,22 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
         </>
       )}
       <VerticalSeparatorDiv />
-      <TextAreaDiv>
-        <TextArea
-          namespace={namespace}
-          feil={validation[namespace + '-ytterligereInfo']?.feilmelding}
-          id='ytterligereInfo'
-          label={t('label:ytterligere-informasjon-til-sed')}
-          onChanged={setComment}
-          placeholder={t('el:placeholder-sed')}
-          value={replySed?.ytterligereInfo}
-        />
-      </TextAreaDiv>
+      <Row>
+        <Column flex='2'>
+          <TextAreaDiv>
+            <TextArea
+              namespace={namespace}
+              feil={validation[namespace + '-ytterligereInfo']?.feilmelding}
+              id='ytterligereInfo'
+              label={t('label:ytterligere-informasjon-til-sed')}
+              onChanged={setComment}
+              placeholder={t('el:placeholder-sed')}
+              value={replySed?.ytterligereInfo}
+            />
+          </TextAreaDiv>
+        </Column>
+        <Column />
+      </Row>
       <VerticalSeparatorDiv size='2' />
       <Attachments
         fnr={fnr!}

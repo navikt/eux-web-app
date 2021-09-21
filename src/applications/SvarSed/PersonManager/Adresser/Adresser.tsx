@@ -14,7 +14,7 @@ import useValidation from 'hooks/useValidation'
 import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
-import { Undertittel } from 'nav-frontend-typografi'
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
@@ -360,7 +360,14 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
         {t('label:adresser')}
       </Undertittel>
       <VerticalSeparatorDiv size='2' />
-      {adresses?.map(renderRow)}
+      {_.isEmpty(adresses)
+        ? (
+          <Normaltekst>
+            {t('message:warning-no-address')}
+          </Normaltekst>
+          )
+        : adresses?.map(renderRow)}
+      <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm

@@ -14,7 +14,7 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
-import { Ingress, UndertekstBold } from 'nav-frontend-typografi'
+import { Ingress, Normaltekst, UndertekstBold } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
@@ -67,9 +67,9 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode | PensjonPeriode>((p: Periode | PensjonPeriode): string => {
     if (_.isNil((p as Periode).startdato) && !_.isNil((p as PensjonPeriode).periode)) {
-      return (p as PensjonPeriode).periode.startdato
+      return (p as PensjonPeriode).periode.startdato + '-' + ((p as PensjonPeriode).periode.sluttdato ?? (p as PensjonPeriode).periode.aapenPeriodeType)
     }
-    return (p as Periode).startdato
+    return (p as Periode).startdato + '-' + ((p as Periode).sluttdato ?? (p as Periode).aapenPeriodeType)
   })
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation, _setValidation] =
@@ -391,21 +391,27 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
         {t('label:trygdeordningen-familieYtelse')}
       </Ingress>
       <VerticalSeparatorDiv size={2} />
-      {existsFamilieYtelser && (
-        <Row className='slideInFromLeft'>
-          <Column>
-            <label className='skjemaelement__label'>
-              {t('label:startdato') + ' *'}
-            </label>
-          </Column>
-          <Column>
-            <label className='skjemaelement__label'>
-              {t('label:sluttdato')}
-            </label>
-          </Column>
-          <Column />
-        </Row>
-      )}
+      {existsFamilieYtelser
+        ? (
+          <Row className='slideInFromLeft'>
+            <Column>
+              <label className='skjemaelement__label'>
+                {t('label:startdato') + ' *'}
+              </label>
+            </Column>
+            <Column>
+              <label className='skjemaelement__label'>
+                {t('label:sluttdato')}
+              </label>
+            </Column>
+            <Column />
+          </Row>
+          )
+        : (
+          <Normaltekst>
+            {t('message:warning-no-periods')}
+          </Normaltekst>
+          )}
       <VerticalSeparatorDiv />
       {titleFor('perioderMedArbeid')}
       {perioder?.perioderMedArbeid?.map((p, i) => renderRow(p, 'perioderMedArbeid', i))}

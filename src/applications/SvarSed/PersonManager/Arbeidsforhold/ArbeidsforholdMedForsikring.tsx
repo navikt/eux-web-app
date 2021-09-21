@@ -110,7 +110,8 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
 
   const [_seeNewPeriodeMedForsikring, _setSeeNewPeriodeMedForsikring] = useState<boolean>(false)
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PeriodeMedForsikring>((periode: PeriodeMedForsikring) => periode.periode.startdato)
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PeriodeMedForsikring>(
+    (p: PeriodeMedForsikring) => p.periode.startdato + '-' + (p.periode.sluttdato ?? p.periode.aapenPeriodeType))
 
   const [_validationPeriodeMedForsikring, _resetValidationPeriodeMedForsikring, performValidationPeriodeMedForsikring] =
     useValidation<ValidationPeriodeMedForsikringProps>({}, validatePeriodeMedForsikring)
@@ -174,36 +175,44 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
     }
   }
 
-  const onPeriodeMedForsikringEdit = (periodeMedForsikring: PeriodeMedForsikring, selected: boolean) => {
-    if (selected) {
-      const newPerioderMedForsikring: Array<PeriodeMedForsikring> = _.cloneDeep(perioder) as Array<PeriodeMedForsikring>
-      const newArbeidsgivere: Array<Arbeidsgiver> = _.cloneDeep(arbeidsperioder?.arbeidsperioder) as Array<Arbeidsgiver>
-      const needleId: string | undefined = getOrgnr(periodeMedForsikring)
-      if (needleId) {
-        const indexArbeidsgiver = _.findIndex(newArbeidsgivere, (p: Arbeidsgiver) => p.arbeidsgiversOrgnr === needleId)
-        if (indexArbeidsgiver >= 0) {
-          newArbeidsgivere[indexArbeidsgiver].fraDato = periodeMedForsikring.periode.startdato
-          newArbeidsgivere[indexArbeidsgiver].tilDato = periodeMedForsikring.periode.sluttdato
-          dispatch(updateArbeidsgivere(newArbeidsgivere))
-        }
+  const onPeriodeMedForsikringEdit = (newPeriodeMedForsikring: PeriodeMedForsikring, oldPeriodeMedForsikring: PeriodeMedForsikring, selected: boolean) => {
+    const newPerioderMedForsikring: Array<PeriodeMedForsikring> = _.cloneDeep(perioder) as Array<PeriodeMedForsikring>
+    const newArbeidsgivere: Array<Arbeidsgiver> = _.cloneDeep(arbeidsperioder?.arbeidsperioder) as Array<Arbeidsgiver>
+    const needleId: string | undefined = getOrgnr(newPeriodeMedForsikring)
+    if (needleId) {
+      const indexArbeidsgiver = _.findIndex(newArbeidsgivere, (p: Arbeidsgiver) => p.arbeidsgiversOrgnr === needleId)
+      if (indexArbeidsgiver >= 0) {
+        newArbeidsgivere[indexArbeidsgiver].fraDato = newPeriodeMedForsikring.periode.startdato
+        newArbeidsgivere[indexArbeidsgiver].tilDato = newPeriodeMedForsikring.periode.sluttdato
+        dispatch(updateArbeidsgivere(newArbeidsgivere))
+      }
+      if (selected) {
         const indexPerioder = _.findIndex(newPerioderMedForsikring, (p: PeriodeMedForsikring) => hasOrgnr(p, needleId))
         if (indexPerioder >= 0) {
-          newPerioderMedForsikring[indexPerioder] = periodeMedForsikring
+          newPerioderMedForsikring[indexPerioder] = newPeriodeMedForsikring
           dispatch(updateReplySed(target, newPerioderMedForsikring))
         }
       }
     }
   }
 
-  const onAddedPeriodeMedForsikringEdit = (periodeMedForsikring: PeriodeMedForsikring) => {
+  const onAddedPeriodeMedForsikringEdit = (newPeriodeMedForsikring: PeriodeMedForsikring, oldPeriodeMedForsikring: PeriodeMedForsikring, selected: boolean) => {
+    const newPerioderMedForsikring: Array<PeriodeMedForsikring> = _.cloneDeep(perioder) as Array<PeriodeMedForsikring>
     const newAddedPeriodeMedForsikring: Array<PeriodeMedForsikring> = _.cloneDeep(_addedPeriodeMedForsikring)
     if (newAddedPeriodeMedForsikring) {
-      const needleId : string | undefined = getOrgnr(periodeMedForsikring)
+      const needleId : string | undefined = getOrgnr(newPeriodeMedForsikring)
       if (needleId) {
         const index = _.findIndex(newAddedPeriodeMedForsikring, (p: PeriodeMedForsikring) => hasOrgnr(p, needleId))
         if (index >= 0) {
-          newAddedPeriodeMedForsikring[index] = periodeMedForsikring
+          newAddedPeriodeMedForsikring[index] = newPeriodeMedForsikring
           setAddedPeriodeMedForsikring(newAddedPeriodeMedForsikring)
+        }
+        if (selected) {
+          const indexPerioder = _.findIndex(newPerioderMedForsikring, (p: PeriodeMedForsikring) => hasOrgnr(p, needleId))
+          if (indexPerioder >= 0) {
+            newPerioderMedForsikring[indexPerioder] = newPeriodeMedForsikring
+            dispatch(updateReplySed(target, newPerioderMedForsikring))
+          }
         }
       }
     }

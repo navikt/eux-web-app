@@ -17,11 +17,8 @@ const localStorageReducer = (
   state: LocalStorageState = initialLocalStorageState,
   action: Action = { type: '' }
 ) => {
-
   switch (action.type) {
-
     case types.LOCALSTORAGE_SAVEDENTRIES_LOAD: {
-
       const items: string | null = window.localStorage.getItem((action as ActionWithPayload).payload.key)
       let savedEntries: Array<LocalStorageEntry<any>> | null | undefined
       if (_.isString(items)) {
@@ -36,7 +33,6 @@ const localStorageReducer = (
     }
 
     case types.LOCALSTORAGE_SAVEDENTRIES_SAVE: {
-
       window.localStorage.setItem(
         (action as ActionWithPayload).payload.key,
         JSON.stringify((action as ActionWithPayload).payload.value, null, 2))
@@ -49,7 +45,7 @@ const localStorageReducer = (
 
     default:
       return state
-    }
+  }
 }
 
 export default localStorageReducer
