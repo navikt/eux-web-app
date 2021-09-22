@@ -24,7 +24,7 @@ import useValidation from 'hooks/useValidation'
 import CountryData, { Currency } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
-import { UndertekstBold, Undertittel } from 'nav-frontend-typografi'
+import { Normaltekst, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
@@ -516,7 +516,14 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
       <VerticalSeparatorDiv />
       {_barnaEllerFamilie === 'barna' && (
         <>
-          {_navnOgBetegnelse?.map(renderRowOfNavnOgBetegnelse)}
+          {_.isEmpty(_navnOgBetegnelse)
+            ? (
+              <Normaltekst>
+                {t('message:warning-no-barn')}
+              </Normaltekst>
+              )
+              : _navnOgBetegnelse?.map(renderRowOfNavnOgBetegnelse)}
+          <VerticalSeparatorDiv size='2'/>
           <HorizontalLineSeparator />
           <VerticalSeparatorDiv />
           {_seeNewForm

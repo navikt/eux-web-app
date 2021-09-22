@@ -7,6 +7,7 @@ import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { F002Sed, JaNei, UtbetalingTilInstitusjon } from 'declarations/sed'
+import { Undertittel } from 'nav-frontend-typografi'
 import { AlignStartRow, Column, HighContrastRadioPanelGroup, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -79,7 +80,10 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
 
   return (
     <PaddedDiv>
-      <VerticalSeparatorDiv />
+      <Undertittel>
+        {t('label:kontoopplysninger')}
+      </Undertittel>
+      <VerticalSeparatorDiv size='2'/>
       <AlignStartRow
         className={classNames('slideInFromLeft')}
       >
@@ -180,6 +184,7 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
         </Column>
         <Column />
       </AlignStartRow>
+      <VerticalSeparatorDiv/>
     </PaddedDiv>
   )
 }

@@ -231,7 +231,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.5s' }}>
-        <Column>
+        <Column flex='2'>
           <HighContrastRadioPanelGroup
             checked={ytelse?.utbetalingshyppighet}
             data-no-border
@@ -247,6 +247,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUtbetalingshyppighet(e.target.value as Utbetalingshyppighet)}
           />
         </Column>
+        <Column/>
       </AlignStartRow>
     </PaddedDiv>
   )

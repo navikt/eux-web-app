@@ -39,6 +39,9 @@ const ArbeidsgiverPanel = styled(HighContrastPanel)`
   &.new {
     background-color: #FFFFCC;
   }
+  &.new {
+    background-color: light-gray;
+  }
 `
 const EditIcon = styled(Edit)`
   cursor: pointer;
@@ -55,13 +58,15 @@ export interface ArbeidsgiverProps {
   error?: boolean,
   includeAddress ?: boolean
   newArbeidsgiver?: boolean
+  orphanArbeidsgiver ?: boolean
   typeTrygdeforhold ?: string
-  onArbeidsgiverSelect: (a: PeriodeMedForsikring, checked: boolean) => void
+  onArbeidsgiverSelect?: (a: PeriodeMedForsikring, checked: boolean) => void
   onArbeidsgiverEdit?: (a: PeriodeMedForsikring, old: PeriodeMedForsikring, checked: boolean) => void
   onArbeidsgiverDelete?: (a: PeriodeMedForsikring, checked: boolean) => void
   namespace: string
   personFnr?: string
   selected?: boolean
+  selectable?: boolean
 }
 
 const ArbeidsgiverBox = ({
@@ -70,8 +75,10 @@ const ArbeidsgiverBox = ({
   error = false,
   includeAddress = false,
   newArbeidsgiver = false,
+  orphanArbeidsgiver = false,
   typeTrygdeforhold,
   selected = false,
+  selectable = true,
   onArbeidsgiverSelect,
   onArbeidsgiverDelete,
   onArbeidsgiverEdit,
@@ -79,7 +86,7 @@ const ArbeidsgiverBox = ({
 //  personFnr
 }: ArbeidsgiverProps): JSX.Element => {
   const { t } = useTranslation()
-  const _namespace = namespace + '-arbeidsgiver[' + getOrgnr(arbeidsgiver) ?? '-' + ']'
+  const _namespace = namespace + '-arbeidsgiver[' + (getOrgnr(arbeidsgiver) ?? '-')+ ']'
   const countryData = CountryData.getCountryInstance('nb')
 
   const [_isDeleting, setIsDeleting] = useState<boolean>(false)
@@ -187,7 +194,7 @@ const ArbeidsgiverBox = ({
     const valid: boolean = performValidation({
       arbeidsgiver: newArbeidsgiver,
       includeAddress: includeAddress,
-      namespace: namespace
+      namespace: _namespace
     })
     if (valid) {
       if (_.isFunction(onArbeidsgiverEdit)) {
@@ -216,7 +223,9 @@ const ArbeidsgiverBox = ({
   }
 
   const onSelectCheckboxClicked = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onArbeidsgiverSelect(arbeidsgiver, e.target.checked)
+    if (_.isFunction(onArbeidsgiverSelect)) {
+      onArbeidsgiverSelect(arbeidsgiver, e.target.checked)
+    }
   }
 
   if (!_arbeidsgiversNavn || !_arbeidsgiversOrgnr) {
@@ -230,7 +239,7 @@ const ArbeidsgiverBox = ({
       <VerticalSeparatorDiv size='0.5' />
       <ArbeidsgiverPanel
         border
-        className={classNames({ new: newArbeidsgiver })}
+        className={classNames({ new: newArbeidsgiver, orphan: orphanArbeidsgiver })}
       >
         <FlexCenterSpacedDiv>
           <PaddedFlexDiv className='slideInFromLeft'>
@@ -455,7 +464,7 @@ const ArbeidsgiverBox = ({
                 <HorizontalSeparatorDiv />
               </>
             )}
-            {!_isEditing && !_isDeleting && (
+            {!_isEditing && !_isDeleting && selectable && (
               <Checkbox
                 checked={selected}
                 onChange={onSelectCheckboxClicked}

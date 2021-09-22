@@ -177,7 +177,10 @@ const FormålManager: React.FC = () => {
     return (
       <Component
         parentNamespace={namespace}
-        seeKontoopplysninger={() => setViewKontoopplysninger(true)}
+        seeKontoopplysninger={() => {
+          setViewKontoopplysninger(true)
+          document.dispatchEvent(new CustomEvent('switch', { detail: namespace + '-kontoopplysninger' }))
+        }}
       />
     )
   }
@@ -195,7 +198,7 @@ const FormålManager: React.FC = () => {
     menuRef.current = menu
   }
 
-  const handleEvent = (e: any) => {
+  const handleFeilLenkeEvent = (e: any) => {
     const feil: FeiloppsummeringFeil = e.detail
     const namespaceBits = feil.skjemaelementId.split('-')
     if (namespaceBits[0] === namespace) {
@@ -218,10 +221,26 @@ const FormålManager: React.FC = () => {
     }
   }
 
+  const handleSwitchEvent = (e: any) => {
+    const namespaceBits = e.detail.split('-')
+    if (namespaceBits[0] === namespace) {
+      const newMenu = namespaceBits[1]
+      const currentMenu = menuRef.current
+      if (newMenu === 'kontoopplysninger') {
+        setViewKontoopplysninger(true)
+      }
+      if (newMenu !== currentMenu) {
+        changeMenu(newMenu)
+      }
+    }
+  }
+
   useEffect(() => {
-    document.addEventListener('feillenke', handleEvent)
+    document.addEventListener('feillenke', handleFeilLenkeEvent)
+    document.addEventListener('switch', handleSwitchEvent)
     return () => {
-      document.removeEventListener('feillenke', handleEvent)
+      document.removeEventListener('feillenke', handleFeilLenkeEvent)
+      document.removeEventListener('switch', handleSwitchEvent)
     }
   }, [])
 

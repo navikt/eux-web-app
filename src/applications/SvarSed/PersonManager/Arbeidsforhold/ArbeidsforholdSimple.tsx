@@ -12,6 +12,7 @@ import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
+import { Normaltekst } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
@@ -196,7 +197,13 @@ const ArbeidsforholdSimple: React.FC<ArbeidsforholdSimpleProps> = ({
 
   return (
     <PaddedDiv>
-      {perioder?.map(renderRow)}
+      {_.isEmpty(perioder)
+        ? (
+          <Normaltekst>
+            {t('message:warning-no-periods')}
+          </Normaltekst>
+        )
+        : perioder?.map(renderRow)}
       <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv size='2' />

@@ -10,7 +10,7 @@ import ArbeidsgiverSøk from 'components/Arbeidsgiver/ArbeidsgiverSøk'
 import Input from 'components/Forms/Input'
 import Inntekt from 'components/Inntekt/Inntekt'
 import Period from 'components/Period/Period'
-import { Dd, Dl, Dt, HorizontalLineSeparator } from 'components/StyledComponents'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Periode, PeriodeMedForsikring, ReplySed } from 'declarations/sed'
 import { Arbeidsgiver, Arbeidsperioder, IInntekter, Validation } from 'declarations/types'
@@ -24,28 +24,20 @@ import { Systemtittel, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
-  FlexBaseDiv,
   HighContrastFlatknapp,
   HighContrastKnapp,
-  HighContrastPanel,
   HorizontalSeparatorDiv,
   PaddedDiv,
-  themeKeys,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import styled from 'styled-components'
 import { getOrgnr, hasOrgnr, sanitizePeriodeMedForsikring } from 'utils/arbeidsgiver'
 import { getFnr } from 'utils/fnr'
 import makeRenderPlan, { PlanItem } from 'utils/renderPlan'
-import { performValidationArbeidsperioderSearch, ValidationDatoProps } from './validation'
+//import { performValidationArbeidsperioderSearch, ValidationDatoProps } from './validation'
 import { validatePeriodeMedForsikring, ValidationPeriodeMedForsikringProps } from './validationPeriodeMedForsikring'
-
-const OrphanArbeidsgiver = styled(HighContrastPanel)`
-   background-color: ${({ theme }: any) => theme[themeKeys.MAIN_BACKGROUND_COLOR]} !important;
-`
 
 export interface ArbeidsforholdMedForsikringSelector extends PersonManagerFormSelector {
   arbeidsperioder: Arbeidsperioder | undefined
@@ -93,10 +85,10 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
   const perioder: Array<PeriodeMedForsikring> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${target}`
   const fnr = getFnr(replySed)
-
+/*
   const [_arbeidssøkStartDato, _setArbeidssøkStartDato] = useState<string>('')
   const [_arbeidssøkSluttDato, _setArbeidssøkSluttDato] = useState<string>('')
-
+*/
   const [_newStartDato, _setNewStartDato] = useState<string>('')
   const [_newSluttDato, _setNewSluttDato] = useState<string>('')
   const [_newOrgnr, _setNewOrgnr] = useState<string>('')
@@ -115,11 +107,11 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
 
   const [_validationPeriodeMedForsikring, _resetValidationPeriodeMedForsikring, performValidationPeriodeMedForsikring] =
     useValidation<ValidationPeriodeMedForsikringProps>({}, validatePeriodeMedForsikring)
-  const [_validationSearch, _resetValidationSearch, performValidationSearch] =
-    useValidation<ValidationDatoProps>({}, performValidationArbeidsperioderSearch)
+  //const [_validationSearch, _resetValidationSearch, performValidationSearch] = useValidation<ValidationDatoProps>({}, performValidationArbeidsperioderSearch)
 
   const [_addedPeriodeMedForsikring, setAddedPeriodeMedForsikring] = useState<Array<PeriodeMedForsikring>>([])
 
+  /*
   const setArbeidssøkStartDato = (value: string) => {
     _resetValidationSearch('arbeidssok-startdato')
     _setArbeidssøkStartDato(value)
@@ -128,17 +120,17 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
   const setArbeidssøkSluttDato = (value: string) => {
     _resetValidationSearch('arbeidssok-sluttdato')
     _setArbeidssøkSluttDato(value)
-  }
+  }*/
 
   const onArbeidsperioderSearchClicked = () => {
-    const valid = performValidationSearch({
+    /*const valid = performValidationSearch({
       startdato: _arbeidssøkStartDato,
       sluttdato: _arbeidssøkSluttDato,
       namespace: namespace + '-arbeidssok'
     })
-    if (valid) {
+    if (valid) {*/
       dispatch(getArbeidsperioder(fnr))
-    }
+  //  }
   }
 
   const onInntektSearch = (fnr: string, fom: string, tom: string, inntektsliste: string) => {
@@ -342,50 +334,6 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
     }
   }
 
-  const renderOrphanArbeidsgiver = (item: PeriodeMedForsikring) => (
-    <OrphanArbeidsgiver>
-      <FlexBaseDiv>
-        <Dl>
-          {item.arbeidsgiver.navn && (
-            <><Dt>{t('label:navn')}:</Dt><Dd>{item.arbeidsgiver.navn}</Dd></>
-          )}
-          {item.arbeidsgiver.identifikator && (
-            <>
-              <Dt>{t('label:identifikator')}:</Dt>
-              <Dd>
-                {item.arbeidsgiver.identifikator.map(id => (
-                  <FlexBaseDiv key={id.type}>{id.type}: {id.id}</FlexBaseDiv>
-                ))}
-
-              </Dd>
-            </>
-          )}
-          {item.periode && (
-            <>
-              <Dt>{t('label:periode')}:</Dt>
-              <Dd>
-                {item.periode.startdato + '  -  ' + item.periode.sluttdato ?? ''}
-              </Dd>
-            </>
-          )}
-        </Dl>
-        {item.arbeidsgiver.adresse && (
-          <Dl>
-            <Dt>{t('label:adresse')}:</Dt>
-            <Dd>
-              <FlexBaseDiv>{t('label:gateadresse')}: {item.arbeidsgiver.adresse.gate}</FlexBaseDiv>
-              <FlexBaseDiv>{t('label:postnummer')}: {item.arbeidsgiver.adresse.postnummer}</FlexBaseDiv>
-              <FlexBaseDiv>{t('label:by')}: {item.arbeidsgiver.adresse.by}</FlexBaseDiv>
-              <FlexBaseDiv>{t('label:bygning')}: {item.arbeidsgiver.adresse.bygning}</FlexBaseDiv>
-              <FlexBaseDiv>{t('label:region')}: {item.arbeidsgiver.adresse.region}</FlexBaseDiv>
-              <FlexBaseDiv>{t('label:land')}: {item.arbeidsgiver.adresse.land}</FlexBaseDiv>
-            </Dd>
-          </Dl>
-        )}
-      </FlexBaseDiv>
-    </OrphanArbeidsgiver>
-  )
-
   const renderNewArbeidsgiver = () => (
     <>
       <Undertittel>
@@ -406,7 +354,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
         <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv size='0.5' />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
         <Column>
           <Input
             feil={_validationPeriodeMedForsikring[namespace + '-orgnr']?.feilmelding}
@@ -433,7 +381,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
       </AlignStartRow>
       <VerticalSeparatorDiv />
 
-      <AlignStartRow>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column flex='3'>
           <Input
             namespace={namespace}
@@ -458,7 +406,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.15s' }}>
         <Column>
           <Input
             namespace={namespace}
@@ -483,7 +431,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
         <Column flex='2'>
           <Input
             namespace={namespace}
@@ -512,7 +460,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.25s' }}>
         <Column>
           <HighContrastKnapp
             mini
@@ -549,7 +497,15 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
         element = (
           <AlignStartRow className='slideInFromLeft'>
             <Column flex='2'>
-              {renderOrphanArbeidsgiver(item.item as PeriodeMedForsikring)}
+              <ArbeidsgiverBox
+                arbeidsgiver={item.item}
+                editable='no'
+                includeAddress={includeAddress}
+                orphanArbeidsgiver={true}
+                key={getOrgnr(item.item)}
+                namespace={namespace}
+                selectable={false}
+              />
             </Column>
             <Column>
               <AddRemovePanel
@@ -627,7 +583,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-        <Period
+        {/*        <Period
           key={_arbeidssøkStartDato + _arbeidssøkSluttDato}
           namespace={namespace + '-arbeidssok'}
           errorStartDato={_validationSearch[namespace + '-arbeidssok-startdato']?.feilmelding}
@@ -636,7 +592,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
           setSluttDato={setArbeidssøkSluttDato}
           valueStartDato={_arbeidssøkStartDato}
           valueSluttDato={_arbeidssøkSluttDato}
-        />
+        />*/}
         <Column>
           <VerticalSeparatorDiv size='1.8' />
           <ArbeidsgiverSøk

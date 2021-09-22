@@ -349,7 +349,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
         </Row>
         <VerticalSeparatorDiv size='2' />
         <Row>
-          <Column flex={3}>
+          <Column flex={2}>
             <HighContrastRadioPanelGroup
               checked={index < 0 ? _newErDeltForeldreansvar : barnetilhoerighet?.erDeltForeldreansvar}
               data-no-border
@@ -365,6 +365,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setErDeltForeldreansvar(e.target.value as JaNei, index)}
             />
           </Column>
+          <Column/>
         </Row>
         <VerticalSeparatorDiv />
         <Undertittel>
@@ -488,7 +489,14 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
         {t('label:relasjon-til-barn')}
       </Undertittel>
       <VerticalSeparatorDiv size='2' />
-      {barnetilhoerigheter?.map(renderRow)}
+      {_.isEmpty(barnetilhoerigheter)
+        ? (
+          <Normaltekst>
+            {t('message:warning-no-relasjon')}
+          </Normaltekst>
+        )
+        : barnetilhoerigheter?.map(renderRow)}
+      <VerticalSeparatorDiv size='2'/>
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm

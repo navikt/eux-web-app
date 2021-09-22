@@ -15,6 +15,7 @@ import useValidation from 'hooks/useValidation'
 import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
+import { Normaltekst } from 'nav-frontend-typografi'
 import {
   AlignEndRow,
   AlignStartRow,
@@ -132,7 +133,7 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
 
   const setNavn = (newNavn: string, index: number) => {
     if (index < 0) {
-      _setNewInstitutionsNavn(newNavn.trim())
+      _setNewNavn(newNavn.trim())
       _resetValidation(namespace + '-navn')
     } else {
       dispatch(updateReplySed(`${target}[${index}].navn`, newNavn.trim()))
@@ -520,7 +521,13 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
 
   return (
     <PaddedDiv>
-      {perioder?.map(renderRow)}
+      {_.isEmpty(perioder)
+        ? (
+          <Normaltekst>
+            {t('message:warning-no-periods')}
+          </Normaltekst>
+        )
+        : perioder?.map(renderRow)}
       <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv size='2' />

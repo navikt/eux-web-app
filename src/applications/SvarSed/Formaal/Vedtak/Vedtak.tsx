@@ -23,7 +23,7 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import moment from 'moment'
 import { Checkbox, FeiloppsummeringFeil } from 'nav-frontend-skjema'
-import { Ingress, Undertittel } from 'nav-frontend-typografi'
+import { Ingress, Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
@@ -483,20 +483,25 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
         {t('label:vedtak')}
       </Undertittel>
       <VerticalSeparatorDiv size='2' />
-      <HighContrastRadioPanelGroup
-        checked={vedtak?.gjelderAlleBarn}
-        data-no-border
-        data-test-id={namespace + '-gjelderAlleBarn'}
-        feil={validation[namespace + '-gjelderAlleBarn']?.feilmelding}
-        id={namespace + '-gjelderAlleBarn'}
-        legend={t('label:vedtak-angående-alle-barn') + ' *'}
-        name={namespace + '-gjelderAlleBarn'}
-        radios={[
-          { label: t('label:ja'), value: 'ja' },
-          { label: t('label:nei'), value: 'nei' }
-        ]}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGjelderAlleBarn(e.target.value as JaNei)}
-      />
+      <Row>
+        <Column flex='2'>
+          <HighContrastRadioPanelGroup
+            checked={vedtak?.gjelderAlleBarn}
+            data-no-border
+            data-test-id={namespace + '-gjelderAlleBarn'}
+            feil={validation[namespace + '-gjelderAlleBarn']?.feilmelding}
+            id={namespace + '-gjelderAlleBarn'}
+            legend={t('label:vedtak-angående-alle-barn') + ' *'}
+            name={namespace + '-gjelderAlleBarn'}
+            radios={[
+              { label: t('label:ja'), value: 'ja' },
+              { label: t('label:nei'), value: 'nei' }
+            ]}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGjelderAlleBarn(e.target.value as JaNei)}
+          />
+        </Column>
+        <Column/>
+      </Row>
       <VerticalSeparatorDiv />
       {vedtak?.gjelderAlleBarn === 'nei' && (
         <div className={classNames('slideInFromLeft')}>
@@ -534,8 +539,14 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
         {t('label:periode')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      {vedtak?.vedtaksperioder?.map(renderPeriode)}
-      <VerticalSeparatorDiv />
+      {_.isEmpty(vedtak?.vedtaksperioder)
+        ? (
+          <Normaltekst>
+            {t('message:warning-no-periods')}
+          </Normaltekst>
+        )
+        : vedtak?.vedtaksperioder?.map(renderPeriode)}
+      <VerticalSeparatorDiv size='2'/>
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewPerioderForm
@@ -630,6 +641,12 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
         {t('label:perioder')}
       </Undertittel>
       <VerticalSeparatorDiv />
+      {(_.isEmpty(vedtak?.primaerkompetanseArt58) && _.isEmpty(vedtak?.sekundaerkompetanseArt58) &&
+      _.isEmpty(vedtak?.primaerkompetanseArt68) && _.isEmpty(vedtak?.sekundaerkompetanseArt68)) && (
+        <Normaltekst>
+        {t('message:warning-no-periods')}
+        </Normaltekst>
+        )}
       {['primaerkompetanseArt58', 'sekundaerkompetanseArt58', 'primaerkompetanseArt68', 'sekundaerkompetanseArt68'].map(vedtaktype => {
         const perioder: Array<VedtakPeriode> | undefined | null = _.get(vedtak, vedtaktype)
         if (!_.isEmpty(perioder)) {
@@ -643,10 +660,11 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
               <VerticalSeparatorDiv size='2' />
             </>
           )
+        } else {
+          return null
         }
-        return null
       })}
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewVedtaksperioderForm

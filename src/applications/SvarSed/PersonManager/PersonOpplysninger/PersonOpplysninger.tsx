@@ -56,12 +56,12 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
   } = useSelector<State, PersonOpplysningerSelector>(mapState)
   const dispatch = useDispatch()
   const target = `${personID}.personInfo`
-  const personInfo: PersonInfo = _.get(replySed, target)
+  const personInfo: PersonInfo | undefined = _.get(replySed, target) // undefined for a brief time when switching to 'familie'
   const namespace = `${parentNamespace}-${personID}-personopplysninger`
 
   const [_seeNewForm, setSeeNewForm] = useState<boolean>(false)
-  const norwegianPin = _.find(personInfo.pin, p => p.land === 'NO')
-  const utenlandskPin = _.find(personInfo.pin, p => p.land !== 'NO')
+  const norwegianPin = _.find(personInfo?.pin, p => p.land === 'NO')
+  const utenlandskPin = _.find(personInfo?.pin, p => p.land !== 'NO')
 
   const onFornavnChange = (newFornavn: string) => {
     dispatch(updateReplySed(`${target}.fornavn`, newFornavn.trim()))
@@ -92,24 +92,25 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
   }
 
   const onFillOutPerson = (searchedPerson: Person) => {
-    const newPersonInfo = _.cloneDeep(personInfo)
+    let newPersonInfo = _.cloneDeep(personInfo)
+
     if (searchedPerson.fnr) {
-      const index = _.findIndex(newPersonInfo.pin, p => p.land === 'NO')
+      const index = _.findIndex(newPersonInfo?.pin, p => p.land === 'NO')
       if (index >= 0) {
-        newPersonInfo.pin[index].identifikator = searchedPerson.fnr
+        newPersonInfo!.pin[index].identifikator = searchedPerson.fnr
       }
     }
     if (searchedPerson.fdato) {
-      newPersonInfo.foedselsdato = searchedPerson.fdato
+      newPersonInfo!.foedselsdato = searchedPerson.fdato
     }
     if (searchedPerson.fornavn) {
-      newPersonInfo.fornavn = searchedPerson.fornavn
+      newPersonInfo!.fornavn = searchedPerson.fornavn
     }
     if (searchedPerson.etternavn) {
-      newPersonInfo.etternavn = searchedPerson.etternavn
+      newPersonInfo!.etternavn = searchedPerson.etternavn
     }
     if (searchedPerson.kjoenn) {
-      newPersonInfo.kjoenn = searchedPerson.kjoenn as Kjoenn
+      newPersonInfo!.kjoenn = searchedPerson.kjoenn as Kjoenn
     }
     dispatch(updateReplySed(target, newPersonInfo))
     if (validation[namespace + '-fornavn']) {
@@ -130,7 +131,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
   }
 
   const onUtenlandskPinChange = (newPin: string) => {
-    const pin: Array<Pin> = _.cloneDeep(personInfo.pin)
+    const pin: Array<Pin> = _.cloneDeep(personInfo!.pin)
     const utendanskPinIndex = _.findIndex(pin, p => p.land !== 'NO')
     if (utendanskPinIndex >= 0) {
       pin[utendanskPinIndex].identifikator = newPin.trim()
@@ -146,7 +147,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
   }
 
   const onUtenlandskLandChange = (land: string) => {
-    const pin: Array<Pin> = _.cloneDeep(personInfo.pin)
+    const pin: Array<Pin> = _.cloneDeep(personInfo!.pin)
     const utendanskPinIndex = _.findIndex(pin, p => p.land !== 'NO')
     if (utendanskPinIndex >= 0) {
       pin[utendanskPinIndex].land = land.trim()
@@ -162,7 +163,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
   }
 
   const onNorwegianPinChange = (newPin: string) => {
-    const pin: Array<Pin> = _.cloneDeep(personInfo.pin)
+    const pin: Array<Pin> = _.cloneDeep(personInfo!.pin)
     const norwegianPinIndex = _.findIndex(pin, p => p.land === 'NO')
     if (norwegianPinIndex >= 0) {
       pin[norwegianPinIndex].identifikator = newPin.trim()
@@ -215,36 +216,36 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
           <Input
             feil={validation[namespace + '-fornavn']?.feilmelding}
             id='fornavn'
-            key={namespace + '-fornavn-' + personInfo.fornavn}
+            key={namespace + '-fornavn-' + (personInfo?.fornavn ?? '')}
             label={t('label:fornavn') + ' *'}
             namespace={namespace}
             onChanged={onFornavnChange}
             required
-            value={personInfo.fornavn}
+            value={personInfo?.fornavn ?? ''}
           />
         </Column>
         <Column>
           <Input
             feil={validation[namespace + '-etternavn']?.feilmelding}
             id='etternavn'
-            key={namespace + '-fornavn-' + personInfo.etternavn}
+            key={namespace + '-fornavn-' + (personInfo?.etternavn ?? '')}
             label={t('label:etternavn') + ' *'}
             namespace={namespace}
             onChanged={onEtternavnChange}
             required
-            value={personInfo.etternavn}
+            value={personInfo?.etternavn ?? ''}
           />
         </Column>
         <Column>
           <DateInput
             feil={validation[namespace + '-foedselsdato']?.feilmelding}
             id='foedselsdato'
-            key={namespace + '-foedselsdato-' + personInfo.foedselsdato}
+            key={namespace + '-foedselsdato-' + (personInfo?.foedselsdato ?? '')}
             label={t('label:fødselsdato') + ' *'}
             namespace={namespace}
             onChanged={onFodselsdatoChange}
             required
-            value={personInfo.foedselsdato}
+            value={personInfo?.foedselsdato ?? ''}
           />
         </Column>
       </AlignStartRow>
@@ -252,12 +253,12 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
       <AlignStartRow>
         <Column>
           <HighContrastRadioPanelGroup
-            checked={personInfo.kjoenn}
+            checked={personInfo?.kjoenn}
             data-no-border
             data-test-id={namespace + '-kjoenn'}
             feil={validation[namespace + '-kjoenn']?.feilmelding}
             id={namespace + '-kjoenn'}
-            key={namespace + '-kjoenn-' + personInfo.kjoenn}
+            key={namespace + '-kjoenn-' + (personInfo?.kjoenn ?? '')}
             legend={t('label:kjønn') + ' *'}
             name={namespace + '-kjoenn'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => onKjoennChange(e.target.value)}
@@ -372,7 +373,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                 label={t('label:by')}
                 namespace={namespace}
                 onChanged={onFoedestedByChange}
-                value={personInfo.pinMangler?.foedested.by}
+                value={personInfo!.pinMangler?.foedested.by}
               />
             </Column>
             <Column>
@@ -382,7 +383,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                 label={t('label:region')}
                 namespace={namespace}
                 onChanged={onFoedestedRegionChange}
-                value={personInfo.pinMangler?.foedested.region}
+                value={personInfo!.pinMangler?.foedested.region}
               />
             </Column>
             <Column>
@@ -395,7 +396,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                 menuPortalTarget={document.body}
                 onOptionSelected={(e: Country) => onFoedestedLandChange(e.value)}
                 placeholder={t('el:placeholder-select-default')}
-                values={personInfo.pinMangler?.foedested.land}
+                values={personInfo!.pinMangler?.foedested.land}
               />
             </Column>
           </AlignStartRow>
