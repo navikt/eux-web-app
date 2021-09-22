@@ -83,7 +83,7 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
       <Undertittel>
         {t('label:kontoopplysninger')}
       </Undertittel>
-      <VerticalSeparatorDiv size='2'/>
+      <VerticalSeparatorDiv size='2' />
       <AlignStartRow
         className={classNames('slideInFromLeft')}
       >
@@ -184,7 +184,7 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
         </Column>
         <Column />
       </AlignStartRow>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
     </PaddedDiv>
   )
 }

@@ -97,6 +97,30 @@ export const validatePeriodeUtenForsikring = (
     hasErrors = true
   }
 
+  if (_.isEmpty(periodeUtenForsikring?.kreverinformasjonomtypearberidsforhold)) {
+    v[namespace + idx + '-kreverinformasjonomtypearberidsforhold'] = {
+      feilmelding: t('message:validation-noAnswer'),
+      skjemaelementId: namespace + idx + '-kreverinformasjonomtypearberidsforhold'
+    } as FeiloppsummeringFeil
+    hasErrors = true
+  }
+
+  if (_.isEmpty(periodeUtenForsikring?.kreverinformasjonominntekt)) {
+    v[namespace + idx + '-kreverinformasjonominntekt'] = {
+      feilmelding: t('message:validation-noAnswer'),
+      skjemaelementId: namespace + idx + '-kreverinformasjonominntekt'
+    } as FeiloppsummeringFeil
+    hasErrors = true
+  }
+
+  if (_.isEmpty(periodeUtenForsikring?.kreverinformasjonomantallarbeidstimer)) {
+    v[namespace + idx + '-kreverinformasjonomantallarbeidstimer'] = {
+      feilmelding: t('message:validation-noAnswer'),
+      skjemaelementId: namespace + idx + '-kreverinformasjonomantallarbeidstimer'
+    } as FeiloppsummeringFeil
+    hasErrors = true
+  }
+
   if (hasErrors) {
     const namespaceBits = namespace.split('-')
     const mainNamespace = namespaceBits[0]

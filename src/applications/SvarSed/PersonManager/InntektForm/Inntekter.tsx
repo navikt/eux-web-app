@@ -190,9 +190,6 @@ const Inntekter: React.FC<any> = ({
               value={index < 0 ? _newTypeAnnen : inntekt?.typeAnnen ?? ''}
             />
           </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
           <Column>
             <Input
               feil={getErrorFor(index, 'beloep')}

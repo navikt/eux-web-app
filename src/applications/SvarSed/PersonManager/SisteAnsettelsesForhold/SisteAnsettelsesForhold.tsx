@@ -16,7 +16,7 @@ import useValidation from 'hooks/useValidation'
 import CountryData, { Currency } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
-import { Undertittel } from 'nav-frontend-typografi'
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column, HighContrastFlatknapp,
@@ -291,38 +291,31 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />
-        {(index < 0 ? _newUtbetalingType : utbetaling?.utbetalingType) !== 'annet_vederlag_eller_tilsvarende_utbetalinger' && (
-          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-            <Column>
-              {(index < 0 ? _newUtbetalingType : utbetaling?.utbetalingType) === 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet' && (
-                <DateInput
-                  feil={getErrorFor(index, 'loennTilDato')}
-                  namespace={namespace}
-                  key={utbetaling?.loennTilDato}
-                  id='loennTilDato'
-                  label={t('label:loenn-til-dato')}
-                  onChanged={(date: string) => setLoennTilDato(date, index)}
-                  value={utbetaling?.loennTilDato}
-                />
-              )}
-              {(index < 0 ? _newUtbetalingType : utbetaling?.utbetalingType) === 'vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie' && (
-                <Input
-                  type='number'
-                  feil={getErrorFor(index, 'feriedagerTilGode')}
-                  namespace={namespace}
-                  id='feriedagerTilGode'
-                  label={t('label:feriedager-til-gode') + ' *'}
-                  onChanged={(value) => setFeriedagerTilGode(value, index)}
-                  value={utbetaling?.feriedagerTilGode ?? ''}
-                />
-              )}
-            </Column>
-            <Column />
-          </AlignStartRow>
-        )}
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column />
+        <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+          <Column>
+            {(index < 0 ? _newUtbetalingType : utbetaling?.utbetalingType) === 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet' && (
+              <DateInput
+                feil={getErrorFor(index, 'loennTilDato')}
+                namespace={namespace}
+                key={utbetaling?.loennTilDato}
+                id='loennTilDato'
+                label={t('label:loenn-til-dato')}
+                onChanged={(date: string) => setLoennTilDato(date, index)}
+                value={utbetaling?.loennTilDato}
+              />
+            )}
+            {(index < 0 ? _newUtbetalingType : utbetaling?.utbetalingType) === 'vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie' && (
+              <Input
+                type='number'
+                feil={getErrorFor(index, 'feriedagerTilGode')}
+                namespace={namespace}
+                id='feriedagerTilGode'
+                label={t('label:feriedager-til-gode') + ' *'}
+                onChanged={(value) => setFeriedagerTilGode(value, index)}
+                value={utbetaling?.feriedagerTilGode ?? ''}
+              />
+            )}
+          </Column>
           <Column>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
@@ -351,7 +344,14 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />
-      {sisteAnsettelsesForhold?.utbetalinger?.map(renderRow)}
+      {_.isEmpty(sisteAnsettelsesForhold?.utbetalinger)
+        ? (
+          <Normaltekst>
+            {t('message:warning-no-utbetaling')}
+          </Normaltekst>
+          )
+        : sisteAnsettelsesForhold?.utbetalinger?.map(renderRow)}
+      <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm

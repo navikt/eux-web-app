@@ -202,7 +202,7 @@ const ArbeidsforholdSimple: React.FC<ArbeidsforholdSimpleProps> = ({
           <Normaltekst>
             {t('message:warning-no-periods')}
           </Normaltekst>
-        )
+          )
         : perioder?.map(renderRow)}
       <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />

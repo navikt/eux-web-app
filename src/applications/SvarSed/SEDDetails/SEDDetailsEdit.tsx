@@ -31,7 +31,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
-import { isF002Sed, isFSed, isUSed } from 'utils/sed'
+import { isF002Sed, isFSed, isHSed, isUSed } from 'utils/sed'
 
 export interface SEDDetailsEditProps {
   replySed: ReplySed
@@ -441,54 +441,58 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
 
   return (
     <>
-      <UndertekstBold>
-        {t('label:periode')}
-      </UndertekstBold>
-      <VerticalSeparatorDiv size='0.5' />
-      {isUSed(replySed) && (
+      {!isHSed(replySed) && (
         <>
-          <AlignStartRow>
-            <Period
-              key={'' + (replySed as USed).anmodningsperiode.startdato + (replySed as USed).anmodningsperiode.sluttdato}
-              namespace={namespace + '-anmodningsperiode'}
-              errorStartDato={validation[namespace + '-anmodningsperiode-startdato']?.feilmelding}
-              errorSluttDato={validation[namespace + '-anmodningsperiode-sluttdato']?.feilmelding}
-              setStartDato={setAnmodningsperiodeStartDato}
-              setSluttDato={setAnmodningsperiodeSluttDato}
-              valueStartDato={(replySed as USed).anmodningsperiode.startdato ?? ''}
-              valueSluttDato={(replySed as USed).anmodningsperiode.sluttdato ?? ''}
-            />
-          </AlignStartRow>
+          <UndertekstBold>
+            {t('label:periode')}
+          </UndertekstBold>
           <VerticalSeparatorDiv size='0.5' />
+          {isUSed(replySed) && (
+            <>
+              <AlignStartRow>
+                <Period
+                  key={'' + (replySed as USed).anmodningsperiode.startdato + (replySed as USed).anmodningsperiode.sluttdato}
+                  namespace={namespace + '-anmodningsperiode'}
+                  errorStartDato={validation[namespace + '-anmodningsperiode-startdato']?.feilmelding}
+                  errorSluttDato={validation[namespace + '-anmodningsperiode-sluttdato']?.feilmelding}
+                  setStartDato={setAnmodningsperiodeStartDato}
+                  setSluttDato={setAnmodningsperiodeSluttDato}
+                  valueStartDato={(replySed as USed).anmodningsperiode.startdato ?? ''}
+                  valueSluttDato={(replySed as USed).anmodningsperiode.sluttdato ?? ''}
+                />
+              </AlignStartRow>
+              <VerticalSeparatorDiv size='0.5' />
+            </>
+          )}
+          {isFSed(replySed) && (
+            <>
+              {(replySed as FSed)?.anmodningsperioder?.map(renderPeriode)}
+              <VerticalSeparatorDiv />
+              <HorizontalLineSeparator />
+              <VerticalSeparatorDiv />
+              {_seeNewForm
+                ? renderPeriode(null, -1)
+                : (
+                  <Row>
+                    <Column>
+                      <HighContrastFlatknapp
+                        mini
+                        kompakt
+                        onClick={() => _setSeeNewForm(true)}
+                      >
+                        <Add />
+                        <HorizontalSeparatorDiv size='0.5' />
+                        {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+                      </HighContrastFlatknapp>
+                    </Column>
+                  </Row>
+                  )}
+              <VerticalSeparatorDiv />
+            </>
+          )}
+          <VerticalSeparatorDiv />
         </>
       )}
-      {isFSed(replySed) && (
-        <>
-          {(replySed as FSed)?.anmodningsperioder?.map(renderPeriode)}
-          <VerticalSeparatorDiv />
-          <HorizontalLineSeparator />
-          <VerticalSeparatorDiv />
-          {_seeNewForm
-            ? renderPeriode(null, -1)
-            : (
-              <Row>
-                <Column>
-                  <HighContrastFlatknapp
-                    mini
-                    kompakt
-                    onClick={() => _setSeeNewForm(true)}
-                  >
-                    <Add />
-                    <HorizontalSeparatorDiv size='0.5' />
-                    {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-                  </HighContrastFlatknapp>
-                </Column>
-              </Row>
-              )}
-          <VerticalSeparatorDiv />
-        </>
-      )}
-      <VerticalSeparatorDiv />
       <UndertekstBold>
         {t('label:søker')}
       </UndertekstBold>

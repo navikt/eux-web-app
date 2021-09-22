@@ -3,13 +3,12 @@ import * as urls from 'constants/urls'
 import { ParamPayload } from 'declarations/app'
 import { Enheter, LogMeAgainPayload, Saksbehandler, ServerInfo, UtgaarDatoPayload } from 'declarations/types'
 import EKV from 'eessi-kodeverk'
-import mockSaksbehandler from 'eux-schema/mock_data/saksbehandler.json'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
-import _ from 'lodash'
 import mockEnhet from 'mocks/enhet'
 import mockReautorisering from 'mocks/reautorisering'
 import mockServerInfo from 'mocks/serverinfo'
 import mockUtgaarDato from 'mocks/utgaarDato'
+import mockSaksbehandler from 'mocks/saksbehandler'
 import { Action, ActionCreator } from 'redux'
 
 export const cleanData: ActionCreator<Action> = (): Action => ({
@@ -33,7 +32,7 @@ export const getSaksbehandler: ActionCreator<ThunkResult<ActionWithPayload<Saksb
 ): ThunkResult<ActionWithPayload<Saksbehandler>> => {
   return call({
     url: urls.API_SAKSBEHANDLER_URL,
-    expectedPayload: _.sample(mockSaksbehandler),
+    expectedPayload: mockSaksbehandler(),
     type: {
       request: types.APP_SAKSBEHANDLER_GET_REQUEST,
       success: types.APP_SAKSBEHANDLER_GET_SUCCESS,

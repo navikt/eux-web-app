@@ -70,6 +70,7 @@
   "validation-noAddressStreetForPerson": "Ingen adresses gate til {{person}}",
   "validation-noAddressTypeForPerson": "Ingen adresse type til {{person}}",
   "validation-noAntallPersonerForPerson": "Ingen antall personer i {{person}}",
+  "validation-noAnswer": "Ingen svar til spørsmål",
   "validation-noAnswerForPerson": "Ingen svar i {{person}}",
   "validation-noAvgrensingForPerson": "Ingen avgrensning av periode i {{person}}",
   "validation-noBarnValgtTilPerson": "Ingen barn valgt til {{person}}",
@@ -173,8 +174,10 @@
   "warning-no-barn": "Ingen barn",
   "warning-no-email": "Ingen e-post adresser",
   "warning-no-familierelasjon": "Ingen familierelasjoner",
+  "warning-no-inntekt": "Ingen inntekter",
   "warning-no-relasjon": "Ingen relasjoner",
   "warning-no-periods": "Ingen perioder",
   "warning-no-satsborgerskap": "Ingen statsborgerskap",
-  "warning-no-telephone": "Ingen telefonnummer"
+  "warning-no-telephone": "Ingen telefonnummer",
+  "warning-no-utbetaling": "Ingen utbetalinger"
 }

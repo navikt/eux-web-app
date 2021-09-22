@@ -1,5 +1,6 @@
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   validatePeriodeDagpenger,
   ValidationPeriodeDagpengerProps
@@ -571,7 +572,17 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
 
   return (
     <PaddedDiv>
-      {perioder?.map(renderRow)}
+      <Undertittel>
+        {t('label:periode-for-dagpenger')}
+      </Undertittel>
+      <VerticalSeparatorDiv size='2' />
+      {_.isEmpty(perioder)
+        ? (
+          <Normaltekst>
+            {t('message:warning-no-periods')}
+          </Normaltekst>
+          )
+        : perioder?.map(renderRow)}
       <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv size='2' />

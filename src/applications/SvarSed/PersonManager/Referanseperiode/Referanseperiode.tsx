@@ -54,14 +54,10 @@ const Referanseperiode: React.FC<PersonManagerFormProps> = ({
 
   return (
     <PaddedDiv>
-      <AlignStartRow className='slideInFromLeft'>
-        <Column>
-          <Undertittel>
-            {t('label:referanseperiode')}
-          </Undertittel>
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
+      <Undertittel>
+        {t('label:referanseperiode')}
+      </Undertittel>
+      <VerticalSeparatorDiv size='2' />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Period
           key={'' + anmodningsperiode?.startdato + anmodningsperiode?.sluttdato}

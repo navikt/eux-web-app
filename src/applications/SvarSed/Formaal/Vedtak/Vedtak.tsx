@@ -500,7 +500,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGjelderAlleBarn(e.target.value as JaNei)}
           />
         </Column>
-        <Column/>
+        <Column />
       </Row>
       <VerticalSeparatorDiv />
       {vedtak?.gjelderAlleBarn === 'nei' && (
@@ -544,9 +544,9 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
           <Normaltekst>
             {t('message:warning-no-periods')}
           </Normaltekst>
-        )
+          )
         : vedtak?.vedtaksperioder?.map(renderPeriode)}
-      <VerticalSeparatorDiv size='2'/>
+      <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewPerioderForm
@@ -644,9 +644,9 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
       {(_.isEmpty(vedtak?.primaerkompetanseArt58) && _.isEmpty(vedtak?.sekundaerkompetanseArt58) &&
       _.isEmpty(vedtak?.primaerkompetanseArt68) && _.isEmpty(vedtak?.sekundaerkompetanseArt68)) && (
         <Normaltekst>
-        {t('message:warning-no-periods')}
+          {t('message:warning-no-periods')}
         </Normaltekst>
-        )}
+      )}
       {['primaerkompetanseArt58', 'sekundaerkompetanseArt58', 'primaerkompetanseArt68', 'sekundaerkompetanseArt68'].map(vedtaktype => {
         const perioder: Array<VedtakPeriode> | undefined | null = _.get(vedtak, vedtaktype)
         if (!_.isEmpty(perioder)) {

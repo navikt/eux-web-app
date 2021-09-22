@@ -522,8 +522,8 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
                 {t('message:warning-no-barn')}
               </Normaltekst>
               )
-              : _navnOgBetegnelse?.map(renderRowOfNavnOgBetegnelse)}
-          <VerticalSeparatorDiv size='2'/>
+            : _navnOgBetegnelse?.map(renderRowOfNavnOgBetegnelse)}
+          <VerticalSeparatorDiv size='2' />
           <HorizontalLineSeparator />
           <VerticalSeparatorDiv />
           {_seeNewForm

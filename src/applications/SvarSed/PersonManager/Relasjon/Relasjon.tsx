@@ -365,7 +365,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setErDeltForeldreansvar(e.target.value as JaNei, index)}
             />
           </Column>
-          <Column/>
+          <Column />
         </Row>
         <VerticalSeparatorDiv />
         <Undertittel>
@@ -494,9 +494,9 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
           <Normaltekst>
             {t('message:warning-no-relasjon')}
           </Normaltekst>
-        )
+          )
         : barnetilhoerigheter?.map(renderRow)}
-      <VerticalSeparatorDiv size='2'/>
+      <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm

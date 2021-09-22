@@ -50,10 +50,10 @@ export const validatePeriodeSvangerskap = (
     hasErrors = true
   }
 
-  if (!_.isEmpty(periodeSvangerskap?.erinstitusjonsidkjent)) {
-    v[namespace + idx + 'erinstitusjonsidkjent'] = {
+  if (_.isEmpty(periodeSvangerskap?.erinstitusjonsidkjent)) {
+    v[namespace + idx + '-erinstitusjonsidkjent'] = {
       feilmelding: t('message:validation-noInstitusjonensKnown'),
-      skjemaelementId: namespace + idx + 'erinstitusjonsidkjent'
+      skjemaelementId: namespace + idx + '-erinstitusjonsidkjent'
     } as FeiloppsummeringFeil
     hasErrors = true
   }

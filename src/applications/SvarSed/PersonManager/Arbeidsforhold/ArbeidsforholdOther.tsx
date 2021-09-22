@@ -488,7 +488,8 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
               checked={_newInstitutionsType}
               data-multiple-line
               data-no-border
-              key={namespace + 'institusjonstype' + _newInstitutionsType}
+              feil={getErrorFor(index, 'institusjonstype')}
+              key={namespace + '-institusjonstype-' + _newInstitutionsType}
               data-test-id={namespace + '-institusjonstype'}
               id={namespace + '-institusjonstype'}
               name={namespace + '-institusjonstype'}
@@ -526,7 +527,7 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
           <Normaltekst>
             {t('message:warning-no-periods')}
           </Normaltekst>
-        )
+          )
         : perioder?.map(renderRow)}
       <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />

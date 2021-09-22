@@ -109,15 +109,15 @@ export const AlertstripeDiv = styled.div`
 
 export const Dd = styled.dd`
   width: 60%;
-  padding-bottom: 0.25rem;
-  padding-top: 0.25rem;
+  padding-bottom: 0.35rem;
+  padding-top: 0.35rem;
   margin-bottom: 0;
   margin-inline-start: 0;
 `
 export const Dt = styled.dt`
   width: 40%;
-  padding-bottom: 0.25rem;
-  padding-top: 0.25rem;
+  padding-bottom: 0.35rem;
+  padding-top: 0.35rem;
   overflow: hidden;
   text-overflow: ellipsis;
   .typo-element {

@@ -119,7 +119,7 @@ const ArbeidsforholdSvangerskap: React.FC<ArbeidsforholdSvangerskapProps> = ({
 
   const setNavn = (newNavn: string, index: number) => {
     if (index < 0) {
-      _setNewInstitutionsNavn(newNavn.trim())
+      _setNewNavn(newNavn.trim())
       _resetValidation(namespace + '-navn')
     } else {
       dispatch(updateReplySed(`${target}[${index}].navn`, newNavn.trim()))
@@ -498,7 +498,7 @@ const ArbeidsforholdSvangerskap: React.FC<ArbeidsforholdSvangerskapProps> = ({
           <Normaltekst>
             {t('message:warning-no-periods')}
           </Normaltekst>
-        )
+          )
         : perioder?.map(renderRow)}
       <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />

@@ -36,7 +36,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getOrgnr, hasOrgnr, sanitizePeriodeMedForsikring } from 'utils/arbeidsgiver'
 import { getFnr } from 'utils/fnr'
 import makeRenderPlan, { PlanItem } from 'utils/renderPlan'
-//import { performValidationArbeidsperioderSearch, ValidationDatoProps } from './validation'
+// import { performValidationArbeidsperioderSearch, ValidationDatoProps } from './validation'
 import { validatePeriodeMedForsikring, ValidationPeriodeMedForsikringProps } from './validationPeriodeMedForsikring'
 
 export interface ArbeidsforholdMedForsikringSelector extends PersonManagerFormSelector {
@@ -85,7 +85,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
   const perioder: Array<PeriodeMedForsikring> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${target}`
   const fnr = getFnr(replySed)
-/*
+  /*
   const [_arbeidssøkStartDato, _setArbeidssøkStartDato] = useState<string>('')
   const [_arbeidssøkSluttDato, _setArbeidssøkSluttDato] = useState<string>('')
 */
@@ -107,7 +107,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
 
   const [_validationPeriodeMedForsikring, _resetValidationPeriodeMedForsikring, performValidationPeriodeMedForsikring] =
     useValidation<ValidationPeriodeMedForsikringProps>({}, validatePeriodeMedForsikring)
-  //const [_validationSearch, _resetValidationSearch, performValidationSearch] = useValidation<ValidationDatoProps>({}, performValidationArbeidsperioderSearch)
+  // const [_validationSearch, _resetValidationSearch, performValidationSearch] = useValidation<ValidationDatoProps>({}, performValidationArbeidsperioderSearch)
 
   const [_addedPeriodeMedForsikring, setAddedPeriodeMedForsikring] = useState<Array<PeriodeMedForsikring>>([])
 
@@ -120,16 +120,16 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
   const setArbeidssøkSluttDato = (value: string) => {
     _resetValidationSearch('arbeidssok-sluttdato')
     _setArbeidssøkSluttDato(value)
-  }*/
+  } */
 
   const onArbeidsperioderSearchClicked = () => {
-    /*const valid = performValidationSearch({
+    /* const valid = performValidationSearch({
       startdato: _arbeidssøkStartDato,
       sluttdato: _arbeidssøkSluttDato,
       namespace: namespace + '-arbeidssok'
     })
-    if (valid) {*/
-      dispatch(getArbeidsperioder(fnr))
+    if (valid) { */
+    dispatch(getArbeidsperioder(fnr))
   //  }
   }
 
@@ -501,7 +501,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
                 arbeidsgiver={item.item}
                 editable='no'
                 includeAddress={includeAddress}
-                orphanArbeidsgiver={true}
+                orphanArbeidsgiver
                 key={getOrgnr(item.item)}
                 namespace={namespace}
                 selectable={false}
@@ -592,7 +592,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
           setSluttDato={setArbeidssøkSluttDato}
           valueStartDato={_arbeidssøkStartDato}
           valueSluttDato={_arbeidssøkSluttDato}
-        />*/}
+        /> */}
         <Column>
           <VerticalSeparatorDiv size='1.8' />
           <ArbeidsgiverSøk

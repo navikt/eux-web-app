@@ -92,7 +92,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
   }
 
   const onFillOutPerson = (searchedPerson: Person) => {
-    let newPersonInfo = _.cloneDeep(personInfo)
+    const newPersonInfo = _.cloneDeep(personInfo)
 
     if (searchedPerson.fnr) {
       const index = _.findIndex(newPersonInfo?.pin, p => p.land === 'NO')

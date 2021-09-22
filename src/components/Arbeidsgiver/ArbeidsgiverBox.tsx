@@ -86,7 +86,7 @@ const ArbeidsgiverBox = ({
 //  personFnr
 }: ArbeidsgiverProps): JSX.Element => {
   const { t } = useTranslation()
-  const _namespace = namespace + '-arbeidsgiver[' + (getOrgnr(arbeidsgiver) ?? '-')+ ']'
+  const _namespace = namespace + '-arbeidsgiver[' + (getOrgnr(arbeidsgiver) ?? '-') + ']'
   const countryData = CountryData.getCountryInstance('nb')
 
   const [_isDeleting, setIsDeleting] = useState<boolean>(false)

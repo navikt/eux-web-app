@@ -229,7 +229,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUtbetalingshyppighet(e.target.value as Utbetalingshyppighet)}
           />
         </Column>
-        <Column/>
+        <Column />
       </AlignStartRow>
     </PaddedDiv>
   )

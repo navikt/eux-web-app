@@ -19,7 +19,7 @@ import { IInntekter } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { Undertittel } from 'nav-frontend-typografi'
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
@@ -322,8 +322,18 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
 
   return (
     <PaddedDiv>
+      <Undertittel>
+        {t('label:inntekt')}
+      </Undertittel>
       <VerticalSeparatorDiv size='2' />
-      {loennsopplysninger?.map(renderRow)}
+      {_.isEmpty(loennsopplysninger)
+        ? (
+          <Normaltekst>
+            {t('message:warning-no-inntekt')}
+          </Normaltekst>
+          )
+        : loennsopplysninger?.map(renderRow)}
+      <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm

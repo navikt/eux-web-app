@@ -1,7 +1,6 @@
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
-import classNames from 'classnames'
 import Period from 'components/Period/Period'
 import { State } from 'declarations/reducers'
 import { JaNei, Periode, RettTilYtelse } from 'declarations/sed'
@@ -83,7 +82,10 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
   }
 
   const setBekreftelsesgrunn = (bekreftelsesgrunn: string) => {
-    const newRettTilYtelse: RettTilYtelse = _.cloneDeep(rettTilYtelse) as RettTilYtelse
+    let newRettTilYtelse: RettTilYtelse = _.cloneDeep(rettTilYtelse) as RettTilYtelse
+    if (!newRettTilYtelse) {
+      newRettTilYtelse = {} as RettTilYtelse
+    }
     newRettTilYtelse.bekreftelsesgrunn = bekreftelsesgrunn.trim()
     delete newRettTilYtelse.avvisningsgrunn
     dispatch(updateReplySed(target, newRettTilYtelse))
@@ -93,7 +95,10 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
   }
 
   const setAvvisningsGrunn = (avvisningsgrunn: string) => {
-    const newRettTilYtelse: RettTilYtelse = _.cloneDeep(rettTilYtelse) as RettTilYtelse
+    let newRettTilYtelse: RettTilYtelse = _.cloneDeep(rettTilYtelse) as RettTilYtelse
+    if (!newRettTilYtelse) {
+      newRettTilYtelse = {} as RettTilYtelse
+    }
     newRettTilYtelse.avvisningsgrunn = avvisningsgrunn.trim()
     delete newRettTilYtelse.bekreftelsesgrunn
     dispatch(updateReplySed(target, newRettTilYtelse))
@@ -112,7 +117,6 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
         <Column>
           <HighContrastRadioGroup
             id={namespace + '-retttilstønad'}
-            className={classNames('slideInFromLeft')}
             data-test-id={namespace + '-retttilstønad'}
             legend={t('label:rett-til-stønad') + ' *'}
             key={'rett-til-stonad-' + _rettTilStonad}
@@ -144,7 +148,6 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
           <Column>
             <HighContrastRadioGroup
               id={namespace + '-bekreftelsesgrunn'}
-              className={classNames('slideInFromLeft')}
               data-test-id={namespace + '-bekreftelsesgrunn'}
               legend={t('label:artikkelnummer') + ' *'}
               key={'bekreftelsesgrunn-' + rettTilYtelse?.bekreftelsesgrunn}
@@ -176,7 +179,6 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
           <Column>
             <HighContrastRadioGroup
               id={namespace + '-avvisningsgrunn'}
-              className={classNames('slideInFromLeft')}
               data-test-id={namespace + '-avvisningsgrunn'}
               legend={t('label:grunn') + ' *'}
               key={'avvisningsgrunn-' + rettTilYtelse?.avvisningsgrunn}

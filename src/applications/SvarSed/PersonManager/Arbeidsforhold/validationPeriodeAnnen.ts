@@ -121,6 +121,14 @@ export const validatePeriodeAnnen = (
     hasErrors = true
   }
 
+  if (_.isEmpty(periodeAnnen?.institusjonstype?.trim())) {
+    v[namespace + idx + '-institusjonstype'] = {
+      feilmelding: t('message:validation-noType'),
+      skjemaelementId: namespace + idx + '-institusjonstype'
+    } as FeiloppsummeringFeil
+    hasErrors = true
+  }
+
   if (hasErrors) {
     const namespaceBits = namespace.split('-')
     const mainNamespace = namespaceBits[0]
