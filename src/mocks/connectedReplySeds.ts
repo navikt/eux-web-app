@@ -86,6 +86,15 @@ export default [
         svarsedType: 'H002',
         svarsedDisplay: 'Create H002',
         lenkeHvisForrigeSedMaaJournalfoeres: 'http://www.nav.no'
+      }, {
+        sedTittel: 'Horizontal',
+        sedType: 'H001',
+        sedId: '8edd012b62d84a768cbd4a734929076d',
+        sedUrl: 'https://rina-ss3-q.adeo.no/portal/#/caseManagement/398792?rightView=filtering&openMode=Read&docId=8edd012b62d84a768cbd4a734929076d',
+        status: 'received',
+        sistEndretDato: '2021-02-19',
+        svarsedType: 'H002',
+        svarsedDisplay: 'Create H002'
       }
     ]
   },

@@ -17,7 +17,7 @@ import { State } from 'declarations/reducers'
 import FileFC, { File } from 'forhandsvisningsfil'
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import { VenstreChevron } from 'nav-frontend-chevron'
-import { Systemtittel } from 'nav-frontend-typografi'
+import { Normaltekst, Systemtittel } from 'nav-frontend-typografi'
 import {
   Column,
   FlexCenterSpacedDiv,
@@ -170,6 +170,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
     const rinaSakId = newReplySed.saksnummer
     delete newReplySed.saksnummer
     delete newReplySed.sedUrl
+    delete newReplySed.spørreSedJournalført
     dispatch(getPreviewFile(rinaSakId, newReplySed))
   }
 
@@ -297,7 +298,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
           <HighContrastHovedknapp
             mini
             onClick={sendReplySed}
-            disabled={creatingSvarPaSed}
+            disabled={creatingSvarPaSed || (isHSed(replySed) && !replySed.spørreSedJournalført)}
             spinner={creatingSvarPaSed}
           >
             {creatingSvarPaSed ? t('message:loading-sending-svarsed') : t('label:send-svarsed')}
@@ -317,6 +318,12 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
           <VerticalSeparatorDiv size='0.5' />
         </div>
       </FlexDiv>
+      <VerticalSeparatorDiv/>
+      {isHSed(replySed) && !replySed.spørreSedJournalført && (
+        <Normaltekst>
+          {t('message:warning-spørre-sed-not-journalført')}
+        </Normaltekst>
+      )}
     </PaddedDiv>
   )
 }

@@ -31,6 +31,7 @@ export const getJoarkItemPreview: ActionCreator<ThunkResult<ActionWithPayload<Jo
       journalpostId: item.journalpostId,
       variantformat: item.variant?.variantformat
     }),
+    responseType: 'blob',
     expectedPayload: mockPreview(),
     context: item,
     type: {

@@ -179,5 +179,6 @@
   "warning-no-periods": "Ingen perioder",
   "warning-no-satsborgerskap": "Ingen statsborgerskap",
   "warning-no-telephone": "Ingen telefonnummer",
-  "warning-no-utbetaling": "Ingen utbetalinger"
+  "warning-no-utbetaling": "Ingen utbetalinger",
+  "warning-spørre-sed-not-journalført": "Du kan ikke opprette SED fordi spørre SED er ikke journalført"
 }
