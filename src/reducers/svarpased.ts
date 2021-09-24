@@ -89,6 +89,13 @@ const svarpasedReducer = (
         previewFile: null
       }
 
+    case types.SVARPASED_PREVIEW_REQUEST:
+    case types.SVARPASED_PREVIEW_RESET:
+      return {
+        ...state,
+        previewFile: undefined
+      }
+
     case types.SVARPASED_SAKSNUMMERORFNR_QUERY_REQUEST:
       return {
         ...state,

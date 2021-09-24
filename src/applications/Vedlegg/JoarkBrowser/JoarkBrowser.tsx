@@ -7,14 +7,13 @@ import {
   JoarkBrowserContext,
   JoarkBrowserItem,
   JoarkBrowserItems,
-  JoarkBrowserItemWithContent,
   JoarkDoc,
   JoarkFileVariant,
   JoarkPoster
 } from 'declarations/attachments'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
-import FileFC from 'forhandsvisningsfil'
+import FileFC, { File } from 'forhandsvisningsfil'
 import _ from 'lodash'
 import { Element } from 'nav-frontend-typografi'
 import { HighContrastKnapp } from 'nav-hoykontrast'
@@ -25,6 +24,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import Table from 'tabell'
 import md5 from 'md5'
+import { blobToBase64 } from 'utils/blob'
 
 const ButtonsDiv = styled.div`
   display: flex;
@@ -39,7 +39,7 @@ export interface JoarkBrowserSelector {
   list: Array<JoarkPoster> | undefined
   gettingJoarkList: boolean
   gettingJoarkFile: boolean
-  previewFile: JoarkBrowserItemWithContent | undefined
+  previewFileRaw: Blob | null | undefined
 }
 
 export type SedType = 'sed'
@@ -52,7 +52,7 @@ const mapState = /* istanbul ignore next */ (state: State): JoarkBrowserSelector
   list: state.attachments.list,
   gettingJoarkList: state.loading.gettingJoarkList,
   gettingJoarkFile: state.loading.gettingJoarkFile,
-  previewFile: state.attachments.previewFile
+  previewFileRaw: state.attachments.previewFileRaw
 })
 
 export interface JoarkBrowserProps {
@@ -60,7 +60,7 @@ export interface JoarkBrowserProps {
   fnr: string
   highContrast?: boolean
   onRowSelectChange?: (f: JoarkBrowserItems) => void
-  onPreviewFile?: (f: JoarkBrowserItemWithContent) => void
+  onPreviewFile?: (f: File) => void
   onRowViewDelete?: (f: JoarkBrowserItems) => void
   mode: JoarkBrowserMode
   tableId: string
@@ -77,7 +77,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   tableId
 }: JoarkBrowserProps): JSX.Element => {
   const {
-    list, gettingJoarkList, gettingJoarkFile, previewFile
+    list, gettingJoarkList, gettingJoarkFile, previewFileRaw
   }: JoarkBrowserSelector = useSelector<State, JoarkBrowserSelector>(mapState)
   const dispatch = useDispatch()
   const { t } = useTranslation()
@@ -86,36 +86,25 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   const [_items, setItems] = useState<JoarkBrowserItems | undefined>(undefined)
   const [_mounted, setMounted] = useState<boolean>(false)
   const [_modal, setModal] = useState<ModalContent | undefined>(undefined)
-  const [_previewFile, setPreviewFile] = useState<JoarkBrowserItemWithContent | undefined>(undefined)
+  const [_previewFile, setPreviewFile] = useState<File | undefined>(undefined)
+  const [_convertingRawToFile, setConvertingRawToFile] = useState<boolean>(false)
   const [_tableKey, setTableKey] = useState<string>('')
 
   const context: JoarkBrowserContext = {
     existingItems: existingItems,
     gettingJoarkFile: gettingJoarkFile,
-    previewFile: _previewFile,
     clickedPreviewItem: _clickedPreviewItem,
     mode: mode
   }
 
-  const equalFiles = (a: JoarkBrowserItem | undefined, b: JoarkBrowserItem | undefined): boolean => {
-    if (!a && !b) { return true }
-    if ((!a && b) || (a && !b)) { return false }
-
-    if (
-      (!(a as any).journalpostId && (b as any).journalpostId) ||
-      ((a as any).journalpostId && !(b as any).journalpostId)) {
-      return false
-    }
-    return a!.journalpostId === b!.journalpostId &&
-      a!.dokumentInfoId === b!.dokumentInfoId &&
-      _.isEqual(a!.variant, b!.variant)
-  }
-
   const handleModalClose = useCallback(() => {
+    setPreviewFile(undefined)
+    setModal(undefined)
     dispatch(setJoarkItemPreview(undefined))
   }, [dispatch])
 
   const onPreviewItem = (clickedItem: JoarkBrowserItem): void => {
+    setPreviewFile(undefined)
     setClickedPreviewItem(clickedItem)
     dispatch(getJoarkItemPreview(clickedItem))
   }
@@ -318,24 +307,41 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   }, [fnr, dispatch, list, gettingJoarkList, _mounted])
 
   useEffect(() => {
-    if (!equalFiles(previewFile, _previewFile)) {
-      setPreviewFile(previewFile)
-      if (!previewFile) {
-        return setModal(undefined)
+    if (_.isUndefined(_previewFile) && !_.isUndefined(previewFileRaw) && !_convertingRawToFile) {
+
+      if (!_.isNull(previewFileRaw)) {
+        setConvertingRawToFile(true)
+
+        blobToBase64(previewFileRaw).then((base64: any) => {
+          const file: File = {
+            id: '' + new Date().getTime(),
+            size: previewFileRaw.size,
+            name: '',
+            mimetype: previewFileRaw.type,
+            content: {
+              base64: base64
+            }
+          }
+          setPreviewFile(file)
+          setConvertingRawToFile(false)
+        })
       }
+    }
+  }, [_previewFile, previewFileRaw, _convertingRawToFile])
+
+  useEffect(() => {
+    if (!_modal && !_convertingRawToFile && !_.isNil(_previewFile)) {
       setModal({
         closeButton: true,
         modalContent: (
           <div
             style={{ cursor: 'pointer' }}
           >
-
             <FileFC
-              file={previewFile}
+              file={_previewFile}
               width={600}
               height={800}
               tema='simple'
-              initialPage={1}
               viewOnePage={false}
               onContentClick={handleModalClose}
             />
@@ -343,10 +349,10 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
         )
       })
       if (_.isFunction(onPreviewFile)) {
-        onPreviewFile(previewFile)
+        onPreviewFile(_previewFile)
       }
     }
-  }, [handleModalClose, onPreviewFile, previewFile, _previewFile])
+  }, [_modal, _convertingRawToFile, _previewFile])
 
   if (!_mounted) {
     return <div />

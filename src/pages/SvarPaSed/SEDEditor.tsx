@@ -1,4 +1,4 @@
-import { createSed, getPreviewFile, updateReplySed } from 'actions/svarpased'
+import { createSed, getPreviewFile, resetPreviewFile, updateReplySed } from 'actions/svarpased'
 import { resetAllValidation, resetValidation, viewValidation } from 'actions/validation'
 import Formaal from 'applications/SvarSed/Formaal/Formaal'
 import FormålManager from 'applications/SvarSed/Formaal/FormålManager'
@@ -41,6 +41,7 @@ import { validateSEDEditor, ValidationSEDEditorProps } from './mainValidation'
 import TextArea from 'components/Forms/TextArea'
 import _ from 'lodash'
 import { Barn, F002Sed, FSed, ReplySed } from 'declarations/sed'
+import { blobToBase64 } from 'utils/blob'
 
 const mapState = (state: State): any => ({
   creatingSvarPaSed: state.loading.creatingSvarPaSed,
@@ -122,14 +123,9 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
     setViewSaveSedModal(true)
   }
 
-  const blobToBase64 = (blob: Blob) => {
-    const reader = new FileReader()
-    reader.readAsDataURL(blob)
-    return new Promise(resolve => {
-      reader.onloadend = () => {
-        resolve(reader.result)
-      }
-    })
+  const resetPreview = ()  => {
+    dispatch(resetPreviewFile())
+    setModal(undefined)
   }
 
   const showPreviewModal = (previewFile: Blob) => {
@@ -156,7 +152,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
               height={800}
               tema='simple'
               viewOnePage={false}
-              onContentClick={() => setModal(undefined)}
+              onContentClick={resetPreview}
             />
           </div>
         )
@@ -189,7 +185,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   }
 
   useEffect(() => {
-    if (!_.isNil(previewFile)) {
+    if (!_modal && !_.isNil(previewFile)) {
       showPreviewModal(previewFile)
     }
   }, [previewFile])
@@ -200,7 +196,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
         <Modal
           highContrast={highContrast}
           modal={_modal}
-          onModalClose={() => setModal(undefined)}
+          onModalClose={resetPreview}
         />
       )}
       {_viewSendSedModal && (

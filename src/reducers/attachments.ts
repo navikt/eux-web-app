@@ -1,7 +1,6 @@
 import * as types from 'constants/actionTypes'
 import {
   SavingAttachmentsJob,
-  JoarkBrowserItemWithContent,
   JoarkPoster,
   JoarkBrowserItem
 } from 'declarations/attachments'
@@ -10,13 +9,13 @@ import _ from 'lodash'
 
 export interface JoarkState {
   list: Array<JoarkPoster> | undefined
-  previewFile: JoarkBrowserItemWithContent | undefined
+  previewFileRaw: Blob | null | undefined
   savingAttachmentsJob: SavingAttachmentsJob | undefined
 }
 
 export const initialJoarkState: JoarkState = {
   list: undefined,
-  previewFile: undefined,
+  previewFileRaw: undefined,
   savingAttachmentsJob: undefined
 }
 
@@ -31,21 +30,25 @@ const joarkReducer = (state: JoarkState = initialJoarkState, action: ActionWithP
     case types.JOARK_PREVIEW_SET:
       return {
         ...state,
-        previewFile: action.payload
+        previewFileRaw: action.payload
       }
 
-    case types.JOARK_PREVIEW_SUCCESS:
+    case types.JOARK_PREVIEW_REQUEST:
       return {
         ...state,
-        previewFile: {
-          ...action.context,
-          name: action.payload.fileName,
-          size: action.payload.filInnhold.length,
-          mimetype: action.payload.contentType,
-          content: {
-            base64: action.payload.filInnhold
-          }
-        } as JoarkBrowserItemWithContent
+        previewFileRaw: undefined
+      }
+
+    case types.JOARK_PREVIEW_FAILURE:
+      return {
+        ...state,
+        previewFileRaw: null
+      }
+
+      case types.JOARK_PREVIEW_SUCCESS:
+      return {
+        ...state,
+        previewFileRaw: action.payload
       }
 
     case types.ATTACHMENT_SEND_SUCCESS: {

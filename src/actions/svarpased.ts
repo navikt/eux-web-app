@@ -51,6 +51,10 @@ export const getFagsaker: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>
   })
 }
 
+export const resetPreviewFile = () => ({
+  type: types.SVARPASED_PREVIEW_RESET
+})
+
 export const getPreviewFile = (rinaSakId: string, replySed: ReplySed) => {
   return call({
     method: 'POST',
