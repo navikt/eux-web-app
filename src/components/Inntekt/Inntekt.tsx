@@ -86,7 +86,7 @@ const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
                 <FlexDiv>
                   <HorizontalSeparatorDiv />
                   <FlexDiv style={{ flex: '5', justifyContent: 'space-evenly', maxWidth: '600px' }}>
-                    {Object.keys(inntekt.maanedsinntekt)?.map((måned: string, index: number) => {
+                    {Object.keys(inntekt.maanedsinntekter)?.map((måned: string, index: number) => {
                       return index >= firstIndex && index < lastIndex
                         ? (
                           <PileDiv key={måned} style={{ width: '100px' }}>
@@ -94,7 +94,7 @@ const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
                               {måned}
                             </PaddedDiv>
                             <PaddedDiv size='0.3'>
-                              {formatterPenger(inntekt.maanedsinntekt[måned])}
+                              {formatterPenger(inntekt.maanedsinntekter[måned])}
                             </PaddedDiv>
                           </PileDiv>
                           )
@@ -131,7 +131,7 @@ const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
                   <Pagination
                     currentPage={_currentPage[inntekt.orgNr]}
                     itemsPerPage={itemsPerPage}
-                    numberOfItems={Object.keys(inntekt.maanedsinntekt).length}
+                    numberOfItems={Object.keys(inntekt.maanedsinntekter).length}
                     onChange={(page: number) => setCurrentPage({
                       ..._currentPage,
                       [inntekt.orgNr]: page

@@ -6,7 +6,7 @@ export default {
     sisteLoennsendring: '2020-03-02',
     stillingsprosent: 20,
     maanedsinntektSnitt: 25000.01,
-    maanedsinntekt: {
+    maanedsinntekter: {
       '2020-03': 23000,
       '2020-02': 24000,
       '2020-01': 25000,
@@ -23,7 +23,7 @@ export default {
     sisteLoennsendring: '2020-03-02',
     stillingsprosent: 80,
     maanedsinntektSnitt: 35000.01,
-    maanedsinntekt: {
+    maanedsinntekter: {
       '2020-03': 33000,
       '2020-02': 34000,
       '2020-01': 35000
