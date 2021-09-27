@@ -45,7 +45,7 @@ const joarkReducer = (state: JoarkState = initialJoarkState, action: ActionWithP
         previewFileRaw: null
       }
 
-      case types.JOARK_PREVIEW_SUCCESS:
+    case types.JOARK_PREVIEW_SUCCESS:
       return {
         ...state,
         previewFileRaw: action.payload

@@ -123,7 +123,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
     setViewSaveSedModal(true)
   }
 
-  const resetPreview = ()  => {
+  const resetPreview = () => {
     dispatch(resetPreviewFile())
     setModal(undefined)
   }
@@ -147,7 +147,10 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
             style={{ cursor: 'pointer' }}
           >
             <FileFC
-              file={file}
+              file={{
+                ...file,
+                mimetype: 'application/pdf'
+              }}
               width={600}
               height={800}
               tema='simple'
@@ -314,7 +317,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
           <VerticalSeparatorDiv size='0.5' />
         </div>
       </FlexDiv>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       {isHSed(replySed) && !replySed.spørreSedJournalført && (
         <Normaltekst>
           {t('message:warning-spørre-sed-not-journalført')}

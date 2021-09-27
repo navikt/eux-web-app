@@ -308,7 +308,6 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
 
   useEffect(() => {
     if (_.isUndefined(_previewFile) && !_.isUndefined(previewFileRaw) && !_convertingRawToFile) {
-
       if (!_.isNull(previewFileRaw)) {
         setConvertingRawToFile(true)
 
@@ -338,7 +337,10 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
             style={{ cursor: 'pointer' }}
           >
             <FileFC
-              file={_previewFile}
+              file={{
+                ..._previewFile,
+                mimetype: 'application/pdf'
+              }}
               width={600}
               height={800}
               tema='simple'
