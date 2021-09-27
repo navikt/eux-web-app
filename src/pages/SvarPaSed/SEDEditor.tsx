@@ -9,15 +9,19 @@ import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
 import SendSEDModal from 'applications/SvarSed/SendSEDModal/SendSEDModal'
 import Attachments from 'applications/Vedlegg/Attachments/Attachments'
 import Add from 'assets/icons/Add'
+
+import TextArea from 'components/Forms/TextArea'
 import Modal from 'components/Modal/Modal'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { JoarkBrowserItems } from 'declarations/attachments'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
+import { Barn, F002Sed, FSed, ReplySed } from 'declarations/sed'
 import FileFC, { File } from 'forhandsvisningsfil'
 import useGlobalValidation from 'hooks/useGlobalValidation'
+import _ from 'lodash'
 import { VenstreChevron } from 'nav-frontend-chevron'
-import { Normaltekst, Systemtittel } from 'nav-frontend-typografi'
+import { Systemtittel } from 'nav-frontend-typografi'
 import {
   Column,
   FlexCenterSpacedDiv,
@@ -34,14 +38,10 @@ import ValidationBox from 'pages/SvarPaSed/ValidationBox'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import { blobToBase64 } from 'utils/blob'
 import { getFnr } from 'utils/fnr'
 import { isFSed, isHSed, isSed, isUSed } from 'utils/sed'
 import { validateSEDEditor, ValidationSEDEditorProps } from './mainValidation'
-
-import TextArea from 'components/Forms/TextArea'
-import _ from 'lodash'
-import { Barn, F002Sed, FSed, ReplySed } from 'declarations/sed'
-import { blobToBase64 } from 'utils/blob'
 
 const mapState = (state: State): any => ({
   creatingSvarPaSed: state.loading.creatingSvarPaSed,
@@ -169,7 +169,6 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
     const rinaSakId = newReplySed.saksnummer
     delete newReplySed.saksnummer
     delete newReplySed.sedUrl
-    delete newReplySed.spørreSedJournalført
     dispatch(getPreviewFile(rinaSakId, newReplySed))
   }
 
@@ -297,7 +296,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
           <HighContrastHovedknapp
             mini
             onClick={sendReplySed}
-            disabled={creatingSvarPaSed || (isHSed(replySed) && !replySed.spørreSedJournalført)}
+            disabled={creatingSvarPaSed}
             spinner={creatingSvarPaSed}
           >
             {creatingSvarPaSed ? t('message:loading-sending-svarsed') : t('label:send-svarsed')}
@@ -318,11 +317,6 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
         </div>
       </FlexDiv>
       <VerticalSeparatorDiv />
-      {isHSed(replySed) && !replySed.spørreSedJournalført && (
-        <Normaltekst>
-          {t('message:warning-spørre-sed-not-journalført')}
-        </Normaltekst>
-      )}
     </PaddedDiv>
   )
 }

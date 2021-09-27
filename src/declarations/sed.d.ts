@@ -337,7 +337,6 @@ export interface BaseReplySed {
   // added
   saksnummer ?: string
   sedUrl ?: string
-  spørreSedJournalført ?: boolean
 }
 
 export interface LokaleSakId {

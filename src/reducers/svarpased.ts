@@ -66,8 +66,7 @@ const svarpasedReducer = (
         replySed: {
           ...(action as ActionWithPayload).payload,
           saksnummer: (action as ActionWithPayload).context.saksnummer,
-          sedUrl: (action as ActionWithPayload).context.sedUrl,
-          spørreSedJournalført: (action as ActionWithPayload).context.spørreSedJournalført
+          sedUrl: (action as ActionWithPayload).context.sedUrl
         }
       }
 

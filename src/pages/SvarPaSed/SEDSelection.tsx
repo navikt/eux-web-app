@@ -406,9 +406,10 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                           {connectedSed.svarsedType
                             ? (
                               <HighContrastHovedknapp
-                                disabled={queryingReplySed}
+                                disabled={queryingReplySed || connectedSed.lenkeHvisForrigeSedMaaJournalfoeres}
                                 spinner={queryingReplySed}
                                 mini
+                                title={ connectedSed.lenkeHvisForrigeSedMaaJournalfoeres ? t('message:warning-spørre-sed-not-journalført') : ''}
                                 onClick={() => onReplySedClick(connectedSed, sed.sakId)}
                               >
                                 {queryingReplySed
