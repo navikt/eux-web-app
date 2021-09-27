@@ -160,9 +160,9 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
         id: '' + new Date().getTime(),
         size: previewFile.size,
         name: '',
-        mimetype: previewFile.type,
+        mimetype: 'application/pdf',
         content: {
-          base64: base64
+          base64: base64.replaceAll('octet-stream', 'pdf')
         }
       }
 

@@ -316,9 +316,9 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
             id: '' + new Date().getTime(),
             size: previewFileRaw.size,
             name: '',
-            mimetype: previewFileRaw.type,
+            mimetype: 'application/pdf',
             content: {
-              base64: base64
+              base64: base64.replaceAll('octet-stream', 'pdf')
             }
           }
           setPreviewFile(file)
@@ -337,10 +337,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
             style={{ cursor: 'pointer' }}
           >
             <FileFC
-              file={{
-                ..._previewFile,
-                mimetype: 'application/pdf'
-              }}
+              file={_previewFile}
               width={600}
               height={800}
               tema='simple'
