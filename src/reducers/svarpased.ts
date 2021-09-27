@@ -1,7 +1,7 @@
 import * as types from 'constants/actionTypes'
 import { SvarPaSedMode } from 'declarations/app'
 import { ReplySed } from 'declarations/sed.d'
-import { FagSaker, Seds } from 'declarations/types.d'
+import { CreateSedResponse, FagSaker, Seds } from 'declarations/types.d'
 import { ActionWithPayload } from 'js-fetch-api'
 import _ from 'lodash'
 import { Action } from 'redux'
@@ -15,7 +15,8 @@ export interface SvarpasedState {
   previousParentSed: string | undefined
   replySed: ReplySed | undefined
   seds: Seds | undefined
-  sedCreatedResponse: any
+  sedCreatedResponse: CreateSedResponse | null | undefined
+  sedSendResponse: any | null | undefined
 }
 
 export const initialSvarpasedState: SvarpasedState = {
@@ -27,7 +28,8 @@ export const initialSvarpasedState: SvarpasedState = {
   previousParentSed: undefined,
   replySed: undefined,
   seds: undefined,
-  sedCreatedResponse: undefined
+  sedCreatedResponse: undefined,
+  sedSendResponse: undefined
 }
 
 const svarpasedReducer = (
@@ -58,6 +60,13 @@ const svarpasedReducer = (
       return {
         ...state,
         mode: (action as ActionWithPayload).payload
+      }
+
+    case types.SVARPASED_REPLYSED_QUERY_REQUEST:
+      return {
+        ...state,
+        sedCreatedResponse: undefined,
+        sedSendResponse: undefined
       }
 
     case types.SVARPASED_REPLYSED_QUERY_SUCCESS:
@@ -123,10 +132,28 @@ const svarpasedReducer = (
         sedCreatedResponse: null
       }
 
-    case types.SVARPASED_SED_RESPONSE_RESET:
+    case types.SVARPASED_SED_CREATE_REQUEST:
       return {
         ...state,
         sedCreatedResponse: undefined
+      }
+
+    case types.SVARPASED_SED_SEND_SUCCESS:
+      return {
+        ...state,
+        sedSendResponse: { success: true }
+      }
+
+    case types.SVARPASED_SED_SEND_FAILURE:
+      return {
+        ...state,
+        sedSendResponse: null
+      }
+
+    case types.SVARPASED_SED_SEND_REQUEST:
+      return {
+        ...state,
+        sedSendResponse: undefined
       }
 
     case types.SVARPASED_PARENTSED_SET:

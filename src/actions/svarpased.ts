@@ -2,7 +2,7 @@ import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { SvarPaSedMode } from 'declarations/app'
 import { ReplySed } from 'declarations/sed'
-import { ConnectedSed, FagSaker, UpdateReplySedPayload } from 'declarations/types'
+import { ConnectedSed, CreateSedResponse, FagSaker, UpdateReplySedPayload } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockFagsakerList from 'mocks/fagsakerList'
 import mockReplySed from 'mocks/replySed'
@@ -26,7 +26,7 @@ export const createSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
     cascadeFailureError: true,
     expectedPayload: {
       sedId: '123'
-    },
+    } as CreateSedResponse,
     type: {
       request: types.SVARPASED_SED_CREATE_REQUEST,
       success: types.SVARPASED_SED_CREATE_SUCCESS,
@@ -49,10 +49,6 @@ export const getFagsaker: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>
     }
   })
 }
-
-export const resetPreviewFile = () => ({
-  type: types.SVARPASED_PREVIEW_RESET
-})
 
 export const getPreviewFile = (rinaSakId: string, replySed: ReplySed) => {
   return call({
@@ -127,13 +123,29 @@ export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed
   })
 }
 
+export const resetPreviewFile = () => ({
+  type: types.SVARPASED_PREVIEW_RESET
+})
+
 export const resetReplySed: ActionCreator<Action> = (): Action => ({
   type: types.SVARPASED_REPLYSED_RESET
 })
 
-export const resetSedResponse: ActionCreator<Action> = (): Action => ({
-  type: types.SVARPASED_SED_RESPONSE_RESET
-})
+export const sendSedInRina: ActionCreator<ThunkResult<ActionWithPayload<any>>> = (
+  rinaSakId: string, sedId: string
+): ThunkResult<ActionWithPayload<any>> => {
+  return call({
+    url: sprintf(urls.API_SED_SEND_URL, { rinaSakId: rinaSakId, sedId: sedId }),
+    expectedPayload: {
+      foo: 'bar'
+    },
+    type: {
+      request: types.SVARPASED_SED_SEND_REQUEST,
+      success: types.SVARPASED_SED_SEND_SUCCESS,
+      failure: types.SVARPASED_SED_SEND_FAILURE
+    }
+  })
+}
 
 export const setMode: ActionCreator<ActionWithPayload<SvarPaSedMode>> = (
   mode: SvarPaSedMode

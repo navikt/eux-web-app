@@ -23,6 +23,7 @@ export const initialLoadingState: LoadingState = {
   searchingPerson: false,
   sendingVedlegg: false,
   sendingSak: false,
+  sendingSed: false,
   creatingSvarPaSed: false,
   queryingReplySed: false,
   queryingSaksnummerOrFnr: false
@@ -185,6 +186,19 @@ const loadingReducer = (
       return {
         ...state,
         sendingSak: false
+      }
+
+    case types.SVARPASED_SED_SEND_REQUEST:
+      return {
+        ...state,
+        sendingSed: true
+      }
+
+    case types.SVARPASED_SED_SEND_SUCCESS:
+    case types.SVARPASED_SED_SEND_FAILURE:
+      return {
+        ...state,
+        sendingSed: false
       }
 
     case types.SVARPASED_REPLYSED_QUERY_REQUEST:

@@ -24,6 +24,7 @@
   "help-familieytelser-beløp":"Beløp for hele familie. Beløp per barn legges under barn i sidemenyen",
   "help-jeg-kan-sende": "Jeg kan sende",
   "help-jeg-kan-ikke-sende": "Jeg kan ikke sende",
+  "help-send-sed": "Sender avgårde en Sed som allerede fins i Rina.",
 
   "loading-getting-person" : "Hent personinfo...",
   "loading-replying": "Besvaring...",
@@ -32,8 +33,10 @@
   "loading-saker" : "Hent saker...",
   "loading-sedCreated" : "SvarSED opprettet",
   "loading-sedFinished" : "Ferdig med svarSED",
+  "loading-sedSent" : "SED sendt i Rina",
   "loading-sending-vedlegg" : "Sender vedlegg...",
   "loading-sending-svarsed" : "Sender svarSED...",
+  "loading-sending-sed" : "Sender SED i RINA...",
   "loading-sending-XofY" : "Sender {{current}} av {{total}}",
 
   "validation-duplicateBirthCountry": "Statsborgerskapen eksisterer allerede",

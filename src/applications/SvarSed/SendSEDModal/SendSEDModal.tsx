@@ -1,5 +1,5 @@
 import { createSavingAttachmentJob, resetSedAttachments, sendAttachmentToSed } from 'actions/attachments'
-import { resetSedResponse } from 'actions/svarpased'
+import { sendSedInRina } from 'actions/svarpased'
 import SEDAttachmentSender from 'applications/Vedlegg/SEDAttachmentSender/SEDAttachmentSender'
 import GreenCircle from 'assets/icons/GreenCircle'
 import Modal from 'components/Modal/Modal'
@@ -14,6 +14,8 @@ import {
   SEDAttachmentPayloadWithFile
 } from 'declarations/attachments'
 import { State } from 'declarations/reducers'
+import { ReplySed } from 'declarations/sed'
+import { CreateSedResponse } from 'declarations/types'
 import _ from 'lodash'
 import AlertStripe from 'nav-frontend-alertstriper'
 import NavFrontendSpinner from 'nav-frontend-spinner'
@@ -21,6 +23,7 @@ import { Undertittel } from 'nav-frontend-typografi'
 import {
   FlexCenterSpacedDiv,
   HighContrastHovedknapp,
+  HighContrastKnapp,
   HorizontalSeparatorDiv,
   PileDiv,
   VerticalSeparatorDiv
@@ -57,22 +60,35 @@ const WrapperDiv = styled.div`
   background-color: whitesmoke;
 `
 
+interface SendSEDSelector {
+  alertMessage: string | undefined
+  alertType: string | undefined
+  creatingSvarPaSed: boolean
+  replySed: ReplySed | undefined
+  sedCreatedResponse: CreateSedResponse | null | undefined
+  sedSendResponse: any | null | undefined
+  sendingSed: boolean
+}
+
 interface SendSEDModalProps {
   fnr: string
-  goToRinaUrl: string
+  goToRinaUrl: string | undefined
   highContrast: boolean
   attachments?: JoarkBrowserItems
   initialSendingAttachments?: boolean
   onModalClose: () => void
 }
 
-const mapState = (state: State): any => ({
+const mapState = (state: State): SendSEDSelector => ({
   alertMessage: state.alert.clientErrorMessage,
   alertType: state.alert.type,
   creatingSvarPaSed: state.loading.creatingSvarPaSed,
   replySed: state.svarpased.replySed,
-  sedCreatedResponse: state.svarpased.sedCreatedResponse
+  sedCreatedResponse: state.svarpased.sedCreatedResponse,
+  sedSendResponse: state.svarpased.sedSendResponse,
+  sendingSed: state.loading.sendingSed
 })
+
 const SendSEDModal: React.FC<SendSEDModalProps> = ({
   fnr,
   goToRinaUrl,
@@ -85,9 +101,11 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
     alertMessage,
     alertType,
     creatingSvarPaSed,
+    sendingSed,
     replySed,
-    sedCreatedResponse
-  }: any = useSelector<State, any>(mapState)
+    sedCreatedResponse,
+    sedSendResponse
+  }: SendSEDSelector = useSelector<State, SendSEDSelector>(mapState)
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const [_attachmentsSent, setAttachmentsSent] = useState<boolean>(false)
@@ -117,6 +135,10 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
       .concat(savingAttachmentsJob.remaining)
       .sort(sedAttachmentSorter)
     setSedAttachments(newAttachments)
+  }
+
+  const onSendSedClick = () => {
+    dispatch(sendSedInRina(replySed?.saksnummer, sedCreatedResponse?.sedId))
   }
 
   const _onFinished = useCallback((): void => {
@@ -207,6 +229,23 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                       </FlexCenterSpacedDiv>
                     )}
                   </div>
+                  <VerticalSeparatorDiv size='0.5' />
+                  <div>
+                    {!_.isNil(sedSendResponse) && (
+                      <FlexCenterSpacedDiv>
+                        <GreenCircle />
+                        <HorizontalSeparatorDiv size='0.5' />
+                        <span>{t('message:loading-sedSent')}</span>
+                      </FlexCenterSpacedDiv>
+                    )}
+                    {sendingSed && (
+                      <FlexCenterSpacedDiv>
+                        <NavFrontendSpinner type='XS' />
+                        <HorizontalSeparatorDiv size='0.5' />
+                        <span>{t('message:loading-sending-sed')}</span>
+                      </FlexCenterSpacedDiv>
+                    )}
+                  </div>
                 </PileDiv>
               </SectionDiv>
               <SectionDiv>
@@ -218,8 +257,8 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                         attachmentsError={undefined}
                         payload={{
                           fnr: fnr,
-                          rinaId: replySed.saksnummer,
-                          rinaDokumentId: sedCreatedResponse.sedId
+                          rinaId: replySed!.saksnummer,
+                          rinaDokumentId: sedCreatedResponse?.sedId
                         } as SEDAttachmentPayload}
                         onSaved={_onSaved}
                         onFinished={_onFinished}
@@ -231,24 +270,37 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                   </MinimalModalDiv>
                 )}
                 {_finished && (
-                  <div>
-                    <HighContrastHovedknapp
+                  <FlexCenterSpacedDiv>
+                    <HighContrastKnapp
                       mini
-                      onClick={() => {
-                        dispatch(resetSedResponse())
-                        onModalClose()
-                      }}
+                      onClick={onModalClose}
                     >
                       {t('el:button-close')}
-                    </HighContrastHovedknapp>
+                    </HighContrastKnapp>
+
+                    {!_.isEmpty(sedCreatedResponse) && (
+                      <>
+                        <HorizontalSeparatorDiv />
+                        <HighContrastHovedknapp
+                          mini
+                          title={t('message:help-send-sed')}
+                          disabled={sendingSed || !_.isNil(sedSendResponse)}
+                          onClick={onSendSedClick}
+                        >
+                          {sendingSed ? t('message:loading-sending-sed') : t('el:button-send-sed')}
+                        </HighContrastHovedknapp>
+                      </>
+                    )}
                     <HorizontalSeparatorDiv />
-                    <HighContrastHovedknapp
-                      mini
-                      onClick={() => window.open(goToRinaUrl, 'rina')}
-                    >
-                      {t('label:gå-til-sed-i-rina')}
-                    </HighContrastHovedknapp>
-                  </div>
+                    {goToRinaUrl && (
+                      <HighContrastHovedknapp
+                        mini
+                        onClick={() => window.open(goToRinaUrl, 'rina')}
+                      >
+                        {t('label:gå-til-sed-i-rina')}
+                      </HighContrastHovedknapp>
+                    )}
+                  </FlexCenterSpacedDiv>
                 )}
               </SectionDiv>
             </MinimalContentDiv>

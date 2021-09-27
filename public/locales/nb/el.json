@@ -12,6 +12,7 @@
   "button-load": "Last inn",
   "button-remove" : "Fjern",
   "button-save" : "Lagre",
+  "button-send-sed" : "Send SED i RINA",
   "button-search" : "Søk",
   "button-search-for-x" : "Søk {{x}}",
 

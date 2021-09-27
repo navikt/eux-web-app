@@ -211,3 +211,7 @@ export interface UpdateReplySedPayload {
   needle: string
   value: any
 }
+
+export interface CreateSedResponse {
+ sedId: string
+}

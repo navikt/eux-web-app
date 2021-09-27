@@ -17,8 +17,7 @@ export default [
         sedUrl: 'http://...',
         sistEndretDato: '2020-01-02',
         svarsedType: 'F002',
-        svarsedDisplay: 'Description for F002',
-        lenkeHvisForrigeSedMaaJournalfoeres: 'http://www.nav.no'
+        svarsedDisplay: 'Description for F002'
       }
     ]
   }, {
@@ -39,8 +38,7 @@ export default [
         sedUrl: 'http://...',
         sistEndretDato: '2020-01-03',
         svarsedType: 'U002',
-        svarsedDisplay: 'Description for U002',
-        lenkeHvisForrigeSedMaaJournalfoeres: 'http://www.nav.no'
+        svarsedDisplay: 'Description for U002'
       },
       {
         sedTittel: 'Description for U003',
@@ -50,8 +48,7 @@ export default [
         sedUrl: 'http://...',
         sistEndretDato: '2020-01-04',
         svarsedType: 'U004',
-        svarsedDisplay: 'Description for U004',
-        lenkeHvisForrigeSedMaaJournalfoeres: 'http://www.nav.no'
+        svarsedDisplay: 'Description for U004'
       }, {
         sedTittel: 'Description for U00X',
         status: 'new',
@@ -60,8 +57,7 @@ export default [
         sedUrl: 'http://...',
         sistEndretDato: '2020-01-04',
         svarsedType: 'U017',
-        svarsedDisplay: 'Description for U017',
-        lenkeHvisForrigeSedMaaJournalfoeres: 'http://www.nav.no'
+        svarsedDisplay: 'Description for U017'
       }
     ]
   },
@@ -107,7 +103,6 @@ export default [
     motpart: [
       'NAV ACCEPTANCE TEST 07 (Norge)'
     ],
-    lenkeHvisForrigeSedMaaJournalfoeres: 'http://www.nav.no',
     sedListe: [
       {
         sedTittel: 'Anmodning om trygdehistorikk',
@@ -117,8 +112,7 @@ export default [
         status: 'received',
         sistEndretDato: '2021-02-18',
         svarsedType: 'U002',
-        svarsedDisplay: 'Create U002 Reply',
-        lenkeHvisForrigeSedMaaJournalfoeres: 'http://www.nav.no'
+        svarsedDisplay: 'Create U002 Reply'
       }
     ]
   }

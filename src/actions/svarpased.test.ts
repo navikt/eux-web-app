@@ -166,14 +166,6 @@ describe('actions/svarpased', () => {
       })
   })
 
-  it('resetSedResponse()', () => {
-    const generatedResult = svarpasedActions.resetSedResponse()
-    expect(generatedResult)
-      .toMatchObject({
-        type: types.SVARPASED_SED_RESPONSE_RESET
-      })
-  })
-
   it('setMode()', () => {
     const mode = 'mockMode' as SvarPaSedMode
     const generatedResult = svarpasedActions.setMode(mode)

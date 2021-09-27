@@ -1,4 +1,4 @@
-import { createSed, getPreviewFile, resetPreviewFile, updateReplySed } from 'actions/svarpased'
+import { createSed, getPreviewFile, resetPreviewFile, sendSedInRina, updateReplySed } from 'actions/svarpased'
 import { resetAllValidation, resetValidation, viewValidation } from 'actions/validation'
 import Formaal from 'applications/SvarSed/Formaal/Formaal'
 import FormålManager from 'applications/SvarSed/Formaal/FormålManager'
@@ -13,10 +13,12 @@ import Add from 'assets/icons/Add'
 import TextArea from 'components/Forms/TextArea'
 import Modal from 'components/Modal/Modal'
 import { TextAreaDiv } from 'components/StyledComponents'
+import { SvarPaSedMode } from 'declarations/app'
 import { JoarkBrowserItems } from 'declarations/attachments'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import { Barn, F002Sed, FSed, ReplySed } from 'declarations/sed'
+import { CreateSedResponse, Validation } from 'declarations/types'
 import FileFC, { File } from 'forhandsvisningsfil'
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import _ from 'lodash'
@@ -43,6 +45,24 @@ import { getFnr } from 'utils/fnr'
 import { isFSed, isHSed, isSed, isUSed } from 'utils/sed'
 import { validateSEDEditor, ValidationSEDEditorProps } from './mainValidation'
 
+export interface SEDEditorSelector {
+  creatingSvarPaSed: boolean
+  gettingPreviewFile: boolean
+  highContrast: boolean
+  mode: SvarPaSedMode,
+  previewFile: any,
+  replySed: ReplySed | undefined
+  savingSed: boolean
+  sendingSed: boolean
+  sedCreatedResponse: CreateSedResponse
+  sedSendResponse: any
+  validation: Validation
+}
+
+export interface SEDEditorProps {
+  setMode: (mode: string, from: string, callback?: () => void) => void
+}
+
 const mapState = (state: State): any => ({
   creatingSvarPaSed: state.loading.creatingSvarPaSed,
   gettingPreviewFile: state.loading.gettingPreviewFile,
@@ -51,16 +71,15 @@ const mapState = (state: State): any => ({
   previewFile: state.svarpased.previewFile,
   replySed: state.svarpased.replySed,
   savingSed: state.loading.savingSed,
+  sendingSed: state.loading.sendingSed,
+  sedCreatedResponse: state.svarpased.sedCreatedResponse,
+  sedSendResponse: state.svarpased.sedSendResponse,
   validation: state.validation.status
 })
 
-export interface SvarPaSedProps {
-  setMode: (mode: string, from: string, callback?: () => void) => void
-}
-
-const SEDEditor: React.FC<SvarPaSedProps> = ({
+const SEDEditor: React.FC<SEDEditorProps> = ({
   setMode
-}: SvarPaSedProps): JSX.Element => {
+}: SEDEditorProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const {
@@ -71,8 +90,11 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
     previewFile,
     replySed,
     savingSed,
+    sendingSed,
+    sedCreatedResponse,
+    sedSendResponse,
     validation
-  }: any = useSelector<State, any>(mapState)
+  }: SEDEditorSelector = useSelector<State, SEDEditorSelector>(mapState)
   const fnr = getFnr(replySed)
   const namespace = 'editor'
 
@@ -85,10 +107,10 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   const storageKey = 'replySed'
   const showPersonManager = (): boolean => isSed(replySed)
   const showFormålManager = (): boolean =>
-    replySed?.formaal?.indexOf('motregning') >= 0 ||
-    replySed?.formaal?.indexOf('vedtak') >= 0 ||
-    replySed?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0 ||
-    replySed?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0
+    (replySed as F002Sed)?.formaal?.indexOf('motregning') >= 0 ||
+    (replySed as F002Sed)?.formaal?.indexOf('vedtak') >= 0 ||
+    (replySed as F002Sed)?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0 ||
+    (replySed as F002Sed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0
 
   const cleanReplySed = (replySed: ReplySed): ReplySed => {
     const newReplySed = _.cloneDeep(replySed)
@@ -128,6 +150,10 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
     setModal(undefined)
   }
 
+  const onSendSedClick = () => {
+    dispatch(sendSedInRina(replySed?.saksnummer, sedCreatedResponse?.sedId))
+  }
+
   const showPreviewModal = (previewFile: Blob) => {
     blobToBase64(previewFile).then((base64: any) => {
       const file: File = {
@@ -164,12 +190,14 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   }
 
   const onPreviewSed = () => {
-    const newReplySed = _.cloneDeep(replySed)
-    cleanReplySed(newReplySed)
-    const rinaSakId = newReplySed.saksnummer
-    delete newReplySed.saksnummer
-    delete newReplySed.sedUrl
-    dispatch(getPreviewFile(rinaSakId, newReplySed))
+    if (replySed) {
+      const newReplySed = _.cloneDeep(replySed)
+      cleanReplySed(newReplySed)
+      const rinaSakId = newReplySed.saksnummer
+      delete newReplySed.saksnummer
+      delete newReplySed.sedUrl
+      dispatch(getPreviewFile(rinaSakId!, newReplySed))
+    }
   }
 
   const onGoBackClick = () => {
@@ -180,7 +208,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
   }
 
   const setComment = (comment: string) => {
-    dispatch(updateReplySed('ytterligereInfo', comment))
+    dispatch(updateReplySed('bruker.ytterligereInfo', comment))
     if (validation[namespace + '-ytterligereInfo']) {
       dispatch(resetValidation(namespace + '-ytterligereInfo'))
     }
@@ -204,7 +232,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
       {_viewSendSedModal && (
         <SendSEDModal
           fnr={fnr!}
-          goToRinaUrl={replySed.sedUrl}
+          goToRinaUrl={replySed?.sedUrl}
           highContrast={highContrast}
           attachments={_attachments}
           onModalClose={() => setViewSendSedModal(false)}
@@ -213,7 +241,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
       {_viewSaveSedModal && (
         <SaveSEDModal
           highContrast={highContrast}
-          replySed={replySed}
+          replySed={replySed!}
           storageKey={storageKey}
           onModalClose={() => setViewSaveSedModal(false)}
         />
@@ -265,7 +293,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
               label={t('label:ytterligere-informasjon-til-sed')}
               onChanged={setComment}
               placeholder={t('el:placeholder-sed')}
-              value={replySed?.ytterligereInfo}
+              value={replySed?.bruker?.ytterligereInfo}
             />
           </TextAreaDiv>
         </Column>
@@ -296,7 +324,7 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
           <HighContrastHovedknapp
             mini
             onClick={sendReplySed}
-            disabled={creatingSvarPaSed}
+            disabled={creatingSvarPaSed || !_.isEmpty(sedCreatedResponse)}
             spinner={creatingSvarPaSed}
           >
             {creatingSvarPaSed ? t('message:loading-sending-svarsed') : t('label:send-svarsed')}
@@ -304,6 +332,21 @@ const SEDEditor: React.FC<SvarPaSedProps> = ({
           <VerticalSeparatorDiv size='0.5' />
         </div>
         <HorizontalSeparatorDiv />
+        {!_.isEmpty(sedCreatedResponse) && (
+          <>
+            <div>
+              <HighContrastHovedknapp
+                mini
+                title={t('message:help-send-sed')}
+                disabled={sendingSed || !_.isNil(sedSendResponse)}
+                onClick={onSendSedClick}
+              >
+                {sendingSed ? t('message:loading-sending-sed') : t('el:button-send-sed')}
+              </HighContrastHovedknapp>
+            </div>
+            <HorizontalSeparatorDiv />
+          </>
+        )}
         <div>
           <HighContrastKnapp
             mini
