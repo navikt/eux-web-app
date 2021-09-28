@@ -2,13 +2,14 @@ import { getArbeidsperioder, updateArbeidsgivere } from 'actions/arbeidsgiver'
 import { updateReplySed } from 'actions/svarpased'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
+import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import ArbeidsgiverBox from 'components/Arbeidsgiver/ArbeidsgiverBox'
 import ArbeidsgiverSøk from 'components/Arbeidsgiver/ArbeidsgiverSøk'
 import { validateArbeidsgiver, ValidationArbeidsgiverProps } from 'components/Arbeidsgiver/validation'
 import Input from 'components/Forms/Input'
 import Period from 'components/Period/Period'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
+import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Periode, PeriodeMedForsikring } from 'declarations/sed'
 import { Arbeidsgiver, Arbeidsperioder } from 'declarations/types'
@@ -349,7 +350,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
   }
 
   const renderNewArbeidsgiver = () => (
-    <>
+    <RepeatableRow className='new'>
       <Undertittel>
         {t('label:legg-til-arbeidsperiode')}
       </Undertittel>
@@ -415,11 +416,11 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
           </HighContrastFlatknapp>
         </Column>
       </AlignStartRow>
-    </>
+    </RepeatableRow>
   )
 
   const renderNewPeriode = () => (
-    <>
+    <RepeatableRow className='new'>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft'>
         <Period
@@ -456,7 +457,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
           </HighContrastFlatknapp>
         </Column>
       </AlignStartRow>
-    </>
+    </RepeatableRow>
   )
 
   const renderPlan = () => {

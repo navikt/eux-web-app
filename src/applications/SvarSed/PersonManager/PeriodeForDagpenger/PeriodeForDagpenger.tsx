@@ -11,7 +11,7 @@ import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
 import Period from 'components/Period/Period'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
+import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Periode, PeriodeDagpenger } from 'declarations/sed'
 import { Kodeverk } from 'declarations/types'
@@ -387,7 +387,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
 
     const institusjonKjent = !idmangler
     return (
-      <>
+      <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
@@ -566,7 +566,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />
-      </>
+      </RepeatableRow>
     )
   }
 

@@ -5,7 +5,7 @@ import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Period from 'components/Period/Period'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
+import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Periode } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
@@ -158,7 +158,7 @@ const NotAnsatt: React.FC<PersonManagerFormProps & {arbeidsforhold: string}> = (
     const startdato = index < 0 ? _newStartDato : periode?.startdato
     const sluttdato = index < 0 ? _newSluttDato : periode?.sluttdato
     return (
-      <>
+      <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
@@ -187,7 +187,7 @@ const NotAnsatt: React.FC<PersonManagerFormProps & {arbeidsforhold: string}> = (
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />
-      </>
+      </RepeatableRow>
     )
   }
 

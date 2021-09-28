@@ -5,7 +5,7 @@ import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
+import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Statsborgerskap } from 'declarations/sed'
 import { Kodeverk } from 'declarations/types'
@@ -139,7 +139,7 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
     )
 
     return (
-      <>
+      <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.05) + 's' }}
@@ -190,7 +190,7 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />
-      </>
+      </RepeatableRow>
     )
   }
 

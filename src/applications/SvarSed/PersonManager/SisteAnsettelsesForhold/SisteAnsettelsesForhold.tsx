@@ -8,7 +8,7 @@ import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/
 import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
-import { HorizontalLineSeparator, TextAreaDiv } from 'components/StyledComponents'
+import { HorizontalLineSeparator, RepeatableRow, TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { SisteAnsettelsesForhold, Utbetaling } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
@@ -218,7 +218,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
         : validation[namespace + idx + '-' + el]?.feilmelding
     )
     return (
-      <>
+      <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
@@ -330,7 +330,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />
-      </>
+      </RepeatableRow>
     )
   }
 

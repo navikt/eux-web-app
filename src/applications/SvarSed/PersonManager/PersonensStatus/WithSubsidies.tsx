@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Forms/Select'
 import Period from 'components/Period/Period'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
+import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { PensjonPeriode, Periode } from 'declarations/sed'
@@ -193,8 +193,8 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
     const startdato = index < 0 ? _newStartDato : pensjonPeriode?.periode.startdato
     const sluttdato = index < 0 ? _newSluttDato : pensjonPeriode?.periode.sluttdato
     return (
-      <div
-        className={classNames('slideInFromLeft')}
+      <RepeatableRow
+        className={classNames('slideInFromLeft', { new: index < 0 })}
         style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
       >
         <AlignStartRow>
@@ -244,7 +244,7 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />
-      </div>
+      </RepeatableRow>
     )
   }
 

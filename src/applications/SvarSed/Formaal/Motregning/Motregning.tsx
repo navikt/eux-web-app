@@ -9,7 +9,7 @@ import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
 import Period from 'components/Period/Period'
-import { HorizontalLineSeparator, TextAreaDiv } from 'components/StyledComponents'
+import { HorizontalLineSeparator, RepeatableRow, TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import {
   AnmodningSvarType,
@@ -425,7 +425,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
     }))
 
     return (
-      <>
+      <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
@@ -471,7 +471,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv size='0.5' />
-      </>
+      </RepeatableRow>
     )
   }
 

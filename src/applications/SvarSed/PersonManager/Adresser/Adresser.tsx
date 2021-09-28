@@ -5,7 +5,7 @@ import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
+import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Adresse, AdresseType } from 'declarations/sed'
 import { Kodeverk } from 'declarations/types'
@@ -213,7 +213,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
         : validation[namespace + idx + '-' + el]?.feilmelding
     )
     return (
-      <>
+      <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
@@ -350,7 +350,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv size='2' />
-      </>
+      </RepeatableRow>
     )
   }
 

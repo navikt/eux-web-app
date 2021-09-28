@@ -8,7 +8,7 @@ import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import Period from 'components/Period/Period'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
+import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { FamilieRelasjon, JaNei, Periode, RelasjonType } from 'declarations/sed'
@@ -246,7 +246,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
     const startdato = index < 0 ? _newStartDato : familierelasjon?.periode.startdato
     const sluttdato = index < 0 ? _newSluttDato : familierelasjon?.periode.sluttdato
     return (
-      <>
+      <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
@@ -360,7 +360,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
           </div>
         )}
         <VerticalSeparatorDiv size='2' />
-      </>
+      </RepeatableRow>
     )
   }
 

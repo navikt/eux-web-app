@@ -13,7 +13,7 @@ import DateInput from 'components/Forms/DateInput'
 import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
 import Period from 'components/Period/Period'
-import { HorizontalLineSeparator, TextAreaDiv } from 'components/StyledComponents'
+import { HorizontalLineSeparator, RepeatableRow, TextAreaDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { F002Sed, JaNei, Periode, Vedtak, VedtakBarn, VedtakPeriode } from 'declarations/sed'
@@ -361,7 +361,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
     const startdato = index < 0 ? _newPerioderStartDato : periode?.startdato
     const sluttdato = index < 0 ? _newPerioderSluttDato : periode?.sluttdato
     return (
-      <>
+      <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow className={classNames('slideInFromLeft')}>
           <Period
             key={'' + startdato + sluttdato}
@@ -387,7 +387,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv size='0.5' />
-      </>
+      </RepeatableRow>
     )
   }
 
@@ -404,7 +404,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
     const sluttdato = index < 0 ? _newVedtaksperioderSluttDato : vedtaksperiode?.periode.sluttdato
     // @ts-ignore
     return (
-      <>
+      <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow className={classNames('slideInFromLeft')}>
           <Period
             key={'' + startdato + sluttdato}
@@ -473,7 +473,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv size='0.5' />
-      </>
+      </RepeatableRow>
     )
   }
 

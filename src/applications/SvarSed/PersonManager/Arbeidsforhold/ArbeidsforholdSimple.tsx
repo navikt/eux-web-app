@@ -5,7 +5,7 @@ import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Period from 'components/Period/Period'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
+import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Periode, PeriodeForsikring, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -162,7 +162,7 @@ const ArbeidsforholdSimple: React.FC<ArbeidsforholdSimpleProps> = ({
     const sluttdato = index < 0 ? _newSluttDato : periode?.periode?.sluttdato
 
     return (
-      <>
+      <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
@@ -191,7 +191,7 @@ const ArbeidsforholdSimple: React.FC<ArbeidsforholdSimpleProps> = ({
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />
-      </>
+      </RepeatableRow>
     )
   }
 

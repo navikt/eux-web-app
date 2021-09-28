@@ -7,7 +7,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
 import TextArea from 'components/Forms/TextArea'
 import Period from 'components/Period/Period'
-import { HorizontalLineSeparator, TextAreaDiv } from 'components/StyledComponents'
+import { HorizontalLineSeparator, RepeatableRow, TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Flyttegrunn, Periode } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
@@ -173,7 +173,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
     const sluttdato = index < 0 ? _newSluttDato : periode?.sluttdato
 
     return (
-      <>
+      <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
@@ -202,7 +202,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />
-      </>
+      </RepeatableRow>
     )
   }
 

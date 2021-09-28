@@ -2,10 +2,11 @@ import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
+import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Forms/Select'
 import Period from 'components/Period/Period'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
+import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { Barnetilhoerighet, BarnRelasjon, BarnRelasjonType, JaNei, Periode } from 'declarations/sed'
@@ -276,7 +277,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
     const sluttdato = index < 0 ? _newSluttDato : barnetilhoerighet?.periode.sluttdato
 
     return (
-      <>
+      <RepeatableRow className={classNames({ new: index < 0 })}>
         <Row>
           <Column flex='3'>
             <HighContrastRadioPanelGroup
@@ -479,7 +480,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
           </Column>
         </AlignCenterRow>
         <VerticalSeparatorDiv />
-      </>
+      </RepeatableRow>
     )
   }
 

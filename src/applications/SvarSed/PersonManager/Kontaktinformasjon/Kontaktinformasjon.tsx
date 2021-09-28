@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
+import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { Epost, Telefon, TelefonType } from 'declarations/sed'
@@ -221,7 +221,7 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
     const candidateForDeletion = index < 0 ? false : isInDeletion(telefon)
     const idx = getIdx(index)
     return (
-      <>
+      <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
@@ -269,7 +269,7 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />
-      </>
+      </RepeatableRow>
     )
   }
 
@@ -277,7 +277,7 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
     const candidateForDeletion = index < 0 ? false : isInDeletion(epost)
     const idx = getIdx(index)
     return (
-      <>
+      <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
@@ -309,7 +309,7 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />
-      </>
+      </RepeatableRow>
     )
   }
 
