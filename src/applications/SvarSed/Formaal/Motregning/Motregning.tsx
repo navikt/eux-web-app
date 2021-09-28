@@ -212,11 +212,18 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
     if (_barnaEllerFamilie === 'barna' as BarnaEllerFamilie) {
       Object.keys(_barnaList).forEach(barnaName => {
         _.set(newReplySed, `${_barnaNameKeys[barnaName].key}.motregning.beloep`, newBeløp.trim())
+        let valuta = _.get(newReplySed, `${_barnaNameKeys[barnaName].key}.motregning.valuta`)
+        if (_.isNil(valuta)) {
+          _.set(newReplySed, `${_barnaNameKeys[barnaName].key}.motregning.valuta`, 'NOK')
+        }
         dispatch(setReplySed(newReplySed))
       })
     }
     if (_barnaEllerFamilie === 'familie' as BarnaEllerFamilie) {
       dispatch(updateReplySed('familie.motregning.beloep', newBeløp.trim()))
+      if (_.isNil(replySed.familie.motregning.valuta)) {
+        setValuta({value: 'NOK'} as Currency)
+      }
     }
     if (validation[namespace + '-beloep']) {
       dispatch(resetValidation(namespace + '-beloep'))

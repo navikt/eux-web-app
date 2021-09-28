@@ -67,7 +67,7 @@ const SendSEDModal = ({
   storageKey
 }: SaveSEDModalProps): JSX.Element => {
   const { t } = useTranslation()
-  const [_name, setName] = useState<string>('')
+  const [_name, setName] = useState<string>(replySed.saksnummer + '-' + replySed.sedType)
   const [_message, setMessage] = useState<string>('')
   const [_validation, setValidation] = useState<Validation>({})
   const [_saved, setSaved] = useState<boolean>(false)

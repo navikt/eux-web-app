@@ -85,6 +85,9 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
     if (validation[namespace + '-beloep']) {
       dispatch(resetValidation(namespace + '-beloep'))
     }
+    if (_.isNil(ytelse?.valuta)) {
+      setValuta({value: 'NOK'} as Currency)
+    }
   }
 
   const setValuta = (newValuta: Currency) => {

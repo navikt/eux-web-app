@@ -83,12 +83,18 @@ const Inntekter: React.FC<any> = ({
     if (index < 0) {
       _setNewBeløp(newBeløp.trim())
       resetValidation(namespace + '-beloep')
+      if (_.isNil(_newValuta)) {
+        setValuta({value: 'NOK'} as Currency, index)
+      }
     } else {
       const newInntekter: Array<Inntekt> = _.cloneDeep(inntekter)
       newInntekter[index].beloep = newBeløp.trim()
       onInntekterChanged(newInntekter)
       if (validation[namespace + '-beloep']) {
         dispatch(resetValidation(namespace + '-beloep'))
+      }
+      if (_.isNil(newInntekter[index]?.valuta)) {
+        setValuta({value: 'NOK'} as Currency, index)
       }
     }
   }
