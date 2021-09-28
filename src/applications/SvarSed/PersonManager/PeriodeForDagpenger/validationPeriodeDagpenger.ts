@@ -120,7 +120,7 @@ export const validatePeriodeDagpenger = (
 }
 
 interface ValidatePerioderDagpengerProps {
-  perioderDagpenger: Array<PeriodeDagpenger>
+  perioderDagpenger: Array<PeriodeDagpenger> | undefined
   namespace: string
 }
 

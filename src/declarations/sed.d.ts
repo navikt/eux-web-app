@@ -425,7 +425,7 @@ export interface U002Sed extends USed {
   perioderUtdanning?: Array<PeriodeForsikring>
   perioderMilitaertjeneste?: Array<PeriodeForsikring>
   perioderAnnenForsikring?: Array<PeriodeAnnenForsikring>
-  perioderDagpenger:Array<PeriodeDagpenger>
+  perioderDagpenger?:Array<PeriodeDagpenger>
   grunntilopphor?: GrunnTilOpphør
   sisteAnsettelsesForhold?: SisteAnsettelsesForhold
 }

@@ -280,10 +280,10 @@ const PersonManager: React.FC = () => {
     { label: t('el:option-personmanager-14'), value: 'arbeidsforhold/arbeidsgivere', component: Arbeidsforhold, type: 'U002', normal: true, barn: false, family: false },
     { label: t('el:option-personmanager-15'), value: 'inntekt', component: InntektForm, type: 'U004', normal: true, barn: false, family: false },
     { label: t('el:option-personmanager-16'), value: 'retttilytelser', component: RettTilYtelser, type: 'U017', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-17'), value: 'forsikring', component: Forsikring, type: 'U', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-18'), value: 'sisteansettelsesforhold', component: SisteAnsettelsesForhold, type: 'U', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-19'), value: 'grunntilopphør', component: GrunnTilOpphør, type: 'U', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-20'), value: 'periodefordagpenger', component: PeriodeForDagpenger, type: 'U', normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-17'), value: 'forsikring', component: Forsikring, type: ['U002', 'U017'], normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-18'), value: 'sisteansettelsesforhold', component: SisteAnsettelsesForhold, type: ['U002', 'U017'], normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-19'), value: 'grunntilopphør', component: GrunnTilOpphør, type: ['U002', 'U017'], normal: true, barn: false, family: false },
+    { label: t('el:option-personmanager-20'), value: 'periodefordagpenger', component: PeriodeForDagpenger, type: ['U002', 'U017'], normal: true, barn: false, family: false },
     { label: t('el:option-personmanager-12'), value: 'personopplysninger', component: PersonOpplysninger, type: 'H', normal: true, barn: false, family: false },
     { label: t('el:option-personmanager-3'), value: 'adresser', component: Adresser, type: 'H', normal: true, barn: true, family: false },
     { label: t('el:option-personmanager-21'), value: 'svarpåforespørsel', component: SvarPåForespørsel, type: 'H', normal: true, barn: true, family: false }
@@ -440,7 +440,11 @@ const PersonManager: React.FC = () => {
           )}
         </MenuDiv>
         {open && options
-          .filter(o => replySed.sedType.startsWith(o.type))
+          .filter(o => {
+            return _.isString(o.type)
+            ? replySed.sedType.startsWith(o.type)
+            : o.type.indexOf(replySed.sedType) >= 0
+          })
           .filter(o => personId.startsWith('barn')
             ? o.barn
             : personId === 'familie'
