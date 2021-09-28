@@ -4,11 +4,16 @@ import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import Search from 'assets/icons/Search'
+import classNames from 'classnames'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
+import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Kjoenn, PersonInfo, Pin } from 'declarations/sed'
 import { Kodeverk, Person } from 'declarations/types'
+import useAddRemove from 'hooks/useAddRemove'
+import useValidation from 'hooks/useValidation'
 import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
@@ -21,12 +26,14 @@ import {
   HighContrastKnapp,
   HighContrastRadioPanelGroup,
   HorizontalSeparatorDiv,
-  PaddedDiv,
+  PaddedDiv, Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import { getIdx } from 'utils/namespace'
+import { validatePin, ValidationPinProps } from './validation'
 
 interface PersonOpplysningerSelector extends PersonManagerFormSelector {
   landkoderList: Array<Kodeverk> | undefined
@@ -44,7 +51,8 @@ const mapState = (state: State): PersonOpplysningerSelector => ({
 
 const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
-  personID
+  personID,
+  personName
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
@@ -55,13 +63,23 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
     validation
   } = useSelector<State, PersonOpplysningerSelector>(mapState)
   const dispatch = useDispatch()
-  const target = `${personID}.personInfo`
+  const target: string = `${personID}.personInfo`
   const personInfo: PersonInfo | undefined = _.get(replySed, target) // undefined for a brief time when switching to 'familie'
-  const namespace = `${parentNamespace}-${personID}-personopplysninger`
+  const namespace: string = `${parentNamespace}-${personID}-personopplysninger`
 
-  const [_seeNewForm, setSeeNewForm] = useState<boolean>(false)
-  const norwegianPin = _.find(personInfo?.pin, p => p.land === 'NO')
-  const utenlandskPin = _.find(personInfo?.pin, p => p.land !== 'NO')
+  const [_seeNewFoedstedForm, setSeeNewFoedstedForm] = useState<boolean>(false)
+  const norwegianPin: Pin | undefined = _.find(personInfo?.pin, p => p.land === 'NO')
+
+  const landkoderListUtenNorge = useMemo(() => {
+    return landkoderList?.map((l: Kodeverk) => l.kode).filter((it: string) => it !== 'NO') ?? []
+  }, [landkoderList])
+
+  const [_newIdentifikator, _setNewIdentifikator] = useState<string>('')
+  const [_newLand, _setNewLand] = useState<string>('')
+
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Pin>((p: Pin): string => p.land + '-' + p.identifikator)
+  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
+  const [_validation, _resetValidation, performValidation] = useValidation<ValidationPinProps>({}, validatePin)
 
   const onFornavnChange = (newFornavn: string) => {
     dispatch(updateReplySed(`${target}.fornavn`, newFornavn.trim()))
@@ -130,49 +148,42 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const onUtenlandskPinChange = (newPin: string) => {
-    const pin: Array<Pin> = _.cloneDeep(personInfo!.pin)
-    const utendanskPinIndex = _.findIndex(pin, p => p.land !== 'NO')
-    if (utendanskPinIndex >= 0) {
-      pin[utendanskPinIndex].identifikator = newPin.trim()
+  const onUtenlandskIdentifikatorChange = (newIdentifikator: string, index: number) => {
+    if (index < 0) {
+      _setNewIdentifikator(newIdentifikator.trim())
+      _resetValidation(namespace + '-pin-identifikator')
     } else {
-      pin.push({
-        identifikator: newPin.trim()
-      })
-    }
-    dispatch(updateReplySed(`${target}.pin`, pin))
-    if (validation[namespace + '-utenlandskpin-nummer']) {
-      dispatch(resetValidation(namespace + '-utenlandskpin-nummer'))
+      dispatch(updateReplySed(`${target}.pin[${index}].identifikator`, newIdentifikator.trim()))
+      if (validation[namespace + '-pin' + getIdx(index) + '-identifikator']) {
+        dispatch(resetValidation('-pin' + getIdx(index) + '-identifikator'))
+      }
     }
   }
 
-  const onUtenlandskLandChange = (land: string) => {
-    const pin: Array<Pin> = _.cloneDeep(personInfo!.pin)
-    const utendanskPinIndex = _.findIndex(pin, p => p.land !== 'NO')
-    if (utendanskPinIndex >= 0) {
-      pin[utendanskPinIndex].land = land.trim()
+  const onUtenlandskLandChange = (newLand: string, index: number) => {
+    if (index < 0) {
+      _setNewLand(newLand.trim())
+      _resetValidation(namespace + '-pin-land')
     } else {
-      pin.push({
-        land: land.trim()
-      })
-    }
-    dispatch(updateReplySed(`${target}.pin`, pin))
-    if (validation[namespace + '-utenlandskpin-land']) {
-      dispatch(resetValidation(namespace + '-utenlandskpin-land'))
+      dispatch(updateReplySed(`${target}.pin[${index}].land`, newLand))
+      if (validation[namespace + '-pin' + getIdx(index) + '-land']) {
+        dispatch(resetValidation(namespace + '-pin' + getIdx(index) + '-land'))
+      }
     }
   }
 
   const onNorwegianPinChange = (newPin: string) => {
-    const pin: Array<Pin> = _.cloneDeep(personInfo!.pin)
-    const norwegianPinIndex = _.findIndex(pin, p => p.land === 'NO')
+    const pins: Array<Pin> = _.cloneDeep(personInfo!.pin)
+    const norwegianPinIndex = _.findIndex(pins, p => p.land === 'NO')
     if (norwegianPinIndex >= 0) {
-      pin[norwegianPinIndex].identifikator = newPin.trim()
+      pins[norwegianPinIndex].identifikator = newPin.trim()
     } else {
-      pin.push({
-        identifikator: newPin.trim()
+      pins.push({
+        identifikator: newPin.trim(),
+        land: 'NO'
       })
     }
-    dispatch(updateReplySed(`${target}.pin`, pin))
+    dispatch(updateReplySed(`${target}.pin`, pins))
     if (validation[namespace + '-norskpin-nummer']) {
       dispatch(resetValidation(namespace + '-norskpin-nummer'))
     }
@@ -203,6 +214,113 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
     if (norwegianPin && norwegianPin.identifikator) {
       dispatch(searchPerson(norwegianPin.identifikator))
     }
+  }
+
+  const resetForm = () => {
+    _setNewIdentifikator('')
+    _setNewLand('')
+    _resetValidation()
+  }
+
+  const onCancel = () => {
+    _setSeeNewForm(false)
+    resetForm()
+  }
+
+  const onRemove = (index: number) => {
+    const newPin: Array<Pin> = _.cloneDeep(personInfo?.pin) as Array<Pin>
+    const deletedPin: Array<Pin> = newPin.splice(index, 1)
+    if (deletedPin && deletedPin.length > 0) {
+      removeFromDeletion(deletedPin[0])
+    }
+    dispatch(updateReplySed(target, deletedPin))
+  }
+
+  const onAdd = () => {
+    const newPin: Pin = {
+      identifikator: _newIdentifikator,
+      land: _newLand
+    }
+
+    const valid: boolean = performValidation({
+      pin: newPin,
+      pins: personInfo?.pin ?? [],
+      namespace: namespace + '-pin',
+      personName: personName
+    })
+    if (valid) {
+      let newPins: Array<Pin> | undefined = _.cloneDeep(personInfo?.pin)
+      if (_.isNil(newPins)) {
+        newPins = []
+      }
+      newPins = newPins.concat(newPin)
+      dispatch(updateReplySed(`${target}.pin`, newPins))
+      resetForm()
+    }
+  }
+
+  const renderRow = (pin: Pin | null, index: number) => {
+    const candidateForDeletion = index < 0 ? false : isInDeletion(pin)
+    const idx = getIdx(index)
+    const getErrorFor = (index: number, el: string): string | undefined => (
+      index < 0
+        ? _validation[namespace + '-pin-' + el]?.feilmelding
+        : validation[namespace + '-pin' + idx + '-' + el]?.feilmelding
+    )
+    // hide the Norwegian pins. We are doing this to preserve index numbers,
+    // so when we are deleting / changing elements, pin array keeps the order
+    if (pin?.land === 'NO') {
+      return <div />
+    }
+    return (
+      <RepeatableRow className={classNames({ new: index < 0 })}>
+        <AlignStartRow
+          className={classNames('slideInFromLeft')}
+          style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
+        >
+          <Column>
+            <Input
+              feil={getErrorFor(index, 'identifikator')}
+              id='identifikator'
+              key={namespace + '-pin' + idx + '-identifikator-' + (index < 0 ? _newIdentifikator : pin?.identifikator)}
+              label={t('label:utenlandsk-pin')}
+              namespace={namespace + '-pin'}
+              onChanged={(id: string) => onUtenlandskIdentifikatorChange(id, index)}
+              value={index < 0 ? _newIdentifikator : pin?.identifikator}
+            />
+          </Column>
+          <Column>
+            <CountrySelect
+              closeMenuOnSelect
+              data-test-id={namespace + '-pin-land'}
+              error={getErrorFor(index, 'land')}
+              flagWave
+              id={namespace + '-pin-land'}
+              includeList={landkoderListUtenNorge}
+              key={namespace + '-pin' + idx + '-land-' + (index < 0 ? _newLand : pin?.land)}
+              label={t('label:land')}
+              menuPortalTarget={document.body}
+              onOptionSelected={(e: Country) => onUtenlandskLandChange(e.value, index)}
+              placeholder={t('el:placeholder-select-default')}
+              values={index < 0 ? _newLand : pin?.land}
+            />
+          </Column>
+          <Column>
+            <AddRemovePanel
+              candidateForDeletion={candidateForDeletion}
+              existingItem={(index >= 0)}
+              marginTop
+              onBeginRemove={() => addToDeletion(pin)}
+              onConfirmRemove={() => onRemove(index)}
+              onCancelRemove={() => removeFromDeletion(pin)}
+              onAddNew={onAdd}
+              onCancelNew={onCancel}
+            />
+          </Column>
+        </AlignStartRow>
+        <VerticalSeparatorDiv />
+      </RepeatableRow>
+    )
   }
 
   return (
@@ -271,35 +389,27 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow>
-        <Column>
-          <Input
-            feil={validation[namespace + '-utenlandskpin-nummer']?.feilmelding}
-            id='utenlandskpin-nummer'
-            key={namespace + '-utenlandskpin-nummer-' + utenlandskPin?.identifikator}
-            label={t('label:utenlandsk-pin')}
-            namespace={namespace}
-            onChanged={onUtenlandskPinChange}
-            value={utenlandskPin?.identifikator}
-          />
-        </Column>
-        <Column>
-          <CountrySelect
-            closeMenuOnSelect
-            data-test-id={namespace + '-utenlandskpin-land'}
-            error={validation[namespace + '-utenlandskpin-land']?.feilmelding}
-            flagWave
-            id={namespace + '-utenlandskpin-land'}
-            includeList={landkoderList?.map((l: Kodeverk) => l.kode) ?? []}
-            label={t('label:land')}
-            menuPortalTarget={document.body}
-            onOptionSelected={(e: Country) => onUtenlandskLandChange(e.value)}
-            placeholder={t('el:placeholder-select-default')}
-            values={utenlandskPin?.land}
-          />
-        </Column>
-        <Column />
-      </AlignStartRow>
+      {personInfo?.pin?.map(renderRow)}
+      <VerticalSeparatorDiv />
+      <HorizontalLineSeparator />
+      <VerticalSeparatorDiv />
+      {_seeNewForm
+        ? renderRow(null, -1)
+        : (
+          <Row>
+            <Column>
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                onClick={() => _setSeeNewForm(true)}
+              >
+                <Add />
+                <HorizontalSeparatorDiv size='0.5' />
+                {t('el:button-add-new-x', { x: t('label:utenlandsk-pin').toLowerCase() })}
+              </HighContrastFlatknapp>
+            </Column>
+          </Row>
+          )}
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft'>
         <Column>
@@ -363,7 +473,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='0.5' />
-      {_seeNewForm
+      {_seeNewFoedstedForm
         ? (
           <AlignStartRow key='showNewForm' className='slideInFromLeft'>
             <Column>
@@ -407,7 +517,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
               <HighContrastFlatknapp
                 mini
                 kompakt
-                onClick={() => setSeeNewForm(true)}
+                onClick={() => setSeeNewFoedstedForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />

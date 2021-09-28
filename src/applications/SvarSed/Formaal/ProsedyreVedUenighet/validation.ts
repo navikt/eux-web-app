@@ -1,3 +1,4 @@
+
 import { ProsedyreVedUenighet as IProsedyreVedUenighet, Grunn } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -6,7 +7,7 @@ import { TFunction } from 'react-i18next'
 
 export interface ValidationProsedyreVedUenighetGrunnProps {
   grunn: Grunn
-  prosedyre_ved_uenighet: IProsedyreVedUenighet | undefined,
+  prosedyreVedUenighet: IProsedyreVedUenighet | undefined
   index?: number
   namespace: string
   formalName?: string
@@ -17,7 +18,7 @@ export const validateProsedyreVedUenighetGrunn = (
   t: TFunction,
   {
     grunn,
-    prosedyre_ved_uenighet = {} as any,
+    prosedyreVedUenighet = {} as any,
     namespace,
     formalName
   }: ValidationProsedyreVedUenighetGrunnProps
@@ -44,7 +45,7 @@ export const validateProsedyreVedUenighetGrunn = (
     hasErrors = true
   }
 
-  const duplicate: boolean = Object.prototype.hasOwnProperty.call(prosedyre_ved_uenighet, grunn.grunn)
+  const duplicate: boolean = Object.prototype.hasOwnProperty.call(prosedyreVedUenighet, grunn.grunn)
   if (duplicate) {
     v[namespace + '-grunn'] = {
       feilmelding: t('message:validation-duplicateGrunnForPerson', { person: formalName }),

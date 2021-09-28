@@ -51,7 +51,7 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
   }: any = useSelector<State, ProsedyreVedUenighetSelector>(mapState)
   const dispatch = useDispatch()
   const target = 'uenighet'
-  const prosedyre_ved_uenighet: IProsedyreVedUenighet | undefined = (replySed as F002Sed).uenighet
+  const prosedyreVedUenighet: IProsedyreVedUenighet | undefined = (replySed as F002Sed).uenighet
   const namespace = `${parentNamespace}-prosedyre_ved_uenighet`
 
   const [_newGrunn, _setNewGrunn] = useState<string>('')
@@ -102,7 +102,7 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
       _setNewGrunn(newGrunn.trim())
       _resetValidation(namespace + '-grunn')
     } else {
-      const newProsedyreveduenighet = _.cloneDeep(prosedyre_ved_uenighet)
+      const newProsedyreveduenighet = _.cloneDeep(prosedyreVedUenighet)
       // @ts-ignore
       newProsedyreveduenighet[newGrunn] = newProsedyreveduenighet[oldGrunn]
       // @ts-ignore
@@ -145,7 +145,7 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
   }
 
   const onRemove = (grunn: Grunn) => {
-    const newProsedyreveduenighet: IProsedyreVedUenighet | undefined = _.cloneDeep(prosedyre_ved_uenighet)
+    const newProsedyreveduenighet: IProsedyreVedUenighet | undefined = _.cloneDeep(prosedyreVedUenighet)
     if (!_.isEmpty(newProsedyreveduenighet)) {
       // @ts-ignore
       delete newProsedyreveduenighet[grunn.grunn]
@@ -162,12 +162,12 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
 
     const valid: boolean = performValidation({
       grunn: newGrunn,
-      prosedyre_ved_uenighet: prosedyre_ved_uenighet,
+      prosedyreVedUenighet: prosedyreVedUenighet,
       namespace: namespace
     })
 
     if (valid) {
-      let newProsedyreveduenighet = _.cloneDeep(prosedyre_ved_uenighet)
+      let newProsedyreveduenighet = _.cloneDeep(prosedyreVedUenighet)
       if (_.isNil(newProsedyreveduenighet)) {
         newProsedyreveduenighet = {}
       }
@@ -310,7 +310,7 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
               id='ytterligereGrunner'
               label={t('label:ytterligere-grunner-til-uenighet')}
               onChanged={setYtterligereGrunner}
-              value={prosedyre_ved_uenighet?.ytterligereGrunner}
+              value={prosedyreVedUenighet?.ytterligereGrunner}
             />
           </TextAreaDiv>
         </Column>

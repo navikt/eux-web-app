@@ -135,6 +135,6 @@ export const Dl = styled.dl`
 export const RepeatableRow = styled.div`
   &.new {
     padding: 0.5rem;
-    background-color: ${({theme}: any) => theme[themeKeys.NAVLIMEGRONNLIGHTEN80]};
+    background-color: ${({ theme }: any) => theme[themeKeys.NAVLIMEGRONNLIGHTEN80]};
   }
 `

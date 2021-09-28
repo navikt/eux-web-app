@@ -163,7 +163,7 @@ const Inntekter: React.FC<any> = ({
     const candidateForDeletion = index < 0 ? false : isInDeletion(inntekt)
     const idx = getIdx(index)
     return (
-      <RepeatableRow className={classNames({new: index < 0})}>
+      <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
@@ -235,7 +235,7 @@ const Inntekter: React.FC<any> = ({
             />
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv size='0.5'/>
+        <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>
     )
   }
@@ -245,9 +245,9 @@ const Inntekter: React.FC<any> = ({
       <Undertittel>
         {t('label:inntekter')}
       </Undertittel>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       {inntekter?.map(renderRow)}
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm

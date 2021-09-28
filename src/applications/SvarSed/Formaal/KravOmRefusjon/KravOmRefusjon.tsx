@@ -29,7 +29,7 @@ const KravOmRefusjon: React.FC<FormålManagerFormProps> = ({
   }: any = useSelector<State, FormålManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const target = 'refusjon_ihht_artikkel_58_i_forordning'
-  const refusjon_i_henhold_til_artikkel_58_i_forordningen: string | undefined = (replySed as F002Sed).refusjon_ihht_artikkel_58_i_forordning
+  const refusjonIHenholdTilArtikkel58IForordningen: string | undefined = (replySed as F002Sed).refusjon_ihht_artikkel_58_i_forordning
   const namespace = `${parentNamespace}-refusjon_i_henhold_til_artikkel_58_i_forordningen`
 
   const setKrav = (newKrav: string) => {
@@ -56,7 +56,7 @@ const KravOmRefusjon: React.FC<FormålManagerFormProps> = ({
               id='krav'
               label={t('label:krav-om-refusjon-under-artikkel') + ' *'}
               onChanged={setKrav}
-              value={refusjon_i_henhold_til_artikkel_58_i_forordningen ?? ''}
+              value={refusjonIHenholdTilArtikkel58IForordningen ?? ''}
             />
           </TextAreaDiv>
         </Column>
