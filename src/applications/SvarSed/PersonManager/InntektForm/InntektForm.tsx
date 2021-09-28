@@ -19,10 +19,12 @@ import { IInntekter } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
+import Chevron from 'nav-frontend-chevron'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
+  FlexCenterDiv,
   HighContrastFlatknapp,
   HorizontalSeparatorDiv,
   PaddedDiv,
@@ -74,10 +76,19 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
   const [_newArbeidsdager, _setNewArbeidsdager] = useState<string>('')
   const [_newArbeidstimer, _setNewArbeidstimer] = useState<string>('')
 
+  const [_visible, _setVisible] = useState<Array<number>>([])
+
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Loennsopplysning>((l: Loennsopplysning) => l.periode.startdato)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] =
     useValidation<ValidationLoennsopplysningProps>({}, validateLoennsopplysning)
+
+  const isVisible = (index: number): boolean => _visible.indexOf(index) >= 0
+
+  const toggleVisibility = (index: number) => {
+    const visible: boolean = isVisible(index)
+    _setVisible(visible ? _.filter(_visible, (it) => it !== index) : _visible.concat(index))
+  }
 
   const setStartDato = (startdato: string, index: number) => {
     if (index < 0) {
@@ -226,6 +237,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
     )
     const startdato = index < 0 ? _newStartDato : loennsopplysning?.periode?.startdato
     const sluttdato = index < 0 ? _newSluttDato : loennsopplysning?.periode?.sluttdato
+    const visible =  index >= 0 ?  isVisible(index) : true
 
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
@@ -243,72 +255,95 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
             valueStartDato={startdato}
             valueSluttDato={sluttdato}
           />
-          <Column />
+          <Column>
+            {index >= 0 && (
+              <div className='nolabel'>
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  onClick={() => toggleVisibility(index)}>
+                  <FlexCenterDiv>
+                    <Chevron type={visible ? 'opp' : 'ned'} />
+                    <HorizontalSeparatorDiv size='0.35'/>
+                    {visible ? t('label:show-less') : t('label:show-more')}
+                  </FlexCenterDiv>
+
+                </HighContrastFlatknapp>
+              </div>
+              )}
+          </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
-        >
-          <Column>
-            <Inntekter
-              key={JSON.stringify(index < 0 ? _newInntekter : loennsopplysning?.inntekter ?? [])}
-              highContrast={highContrast}
-              inntekter={index < 0 ? _newInntekter : loennsopplysning?.inntekter ?? []}
-              onInntekterChanged={(inntekter: Array<Inntekt>) => setInntekter(inntekter, index)}
-              parentNamespace={namespace + '-inntekter'}
-              validation={validation}
-            />
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-          <Column>
-            <Input
-              feil={getErrorFor(index, 'ansettelsestype')}
-              namespace={namespace}
-              id='ansettelsestype'
-              key={'ansettelsestype-' + (index < 0 ? _newAnsettelsesType : loennsopplysning?.ansettelsestype ?? '')}
-              label={t('label:ansettelses-type')}
-              onChanged={(ansettelsestype: string) => setAnsettelsesType(ansettelsestype, index)}
-              value={index < 0 ? _newAnsettelsesType : loennsopplysning?.ansettelsestype ?? ''}
-            />
-          </Column>
-          <Column>
-            <Input
-              feil={getErrorFor(index, 'arbeidsdager')}
-              namespace={namespace}
-              id='arbeidsdager'
-              key={'arbeidsdager' + (index < 0 ? _newArbeidsdager : loennsopplysning?.arbeidsdager ?? '')}
-              label={t('label:arbeidsdager')}
-              onChanged={(arbeidsdager: string) => setArbeidsDager(arbeidsdager, index)}
-              value={index < 0 ? _newArbeidsdager : loennsopplysning?.arbeidsdager ?? ''}
-            />
-          </Column>
-          <Column>
-            <Input
-              feil={getErrorFor(index, 'arbeidstimer')}
-              namespace={namespace}
-              id='arbeidstimer'
-              key={'arbeidstimer' + (index < 0 ? _newArbeidstimer : loennsopplysning?.arbeidstimer ?? '')}
-              label={t('label:arbeidstimer')}
-              onChanged={(arbeidstimer: string) => setArbeidsTimer(arbeidstimer, index)}
-              value={index < 0 ? _newArbeidstimer : loennsopplysning?.arbeidstimer ?? ''}
-            />
-          </Column>
-          <Column flex='1.3'>
-            <AddRemovePanel
-              candidateForDeletion={candidateForDeletion}
-              existingItem={(index >= 0)}
-              marginTop
-              onBeginRemove={() => addToDeletion(loennsopplysning)}
-              onConfirmRemove={() => onRemove(index)}
-              onCancelRemove={() => removeFromDeletion(loennsopplysning)}
-              onAddNew={onAdd}
-              onCancelNew={onCancel}
-            />
-          </Column>
-        </AlignStartRow>
+        {visible
+          ? (
+            <>
+              <AlignStartRow
+                className={classNames('slideInFromLeft')}
+                style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
+              >
+                <Column>
+                  <Inntekter
+                    key={JSON.stringify(index < 0 ? _newInntekter : loennsopplysning?.inntekter ?? [])}
+                    highContrast={highContrast}
+                    inntekter={index < 0 ? _newInntekter : loennsopplysning?.inntekter ?? []}
+                    onInntekterChanged={(inntekter: Array<Inntekt>) => setInntekter(inntekter, index)}
+                    parentNamespace={namespace + '-inntekter'}
+                    validation={validation}
+                  />
+                </Column>
+              </AlignStartRow>
+              <VerticalSeparatorDiv size='0.5' />
+              <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+                <Column>
+                  <Input
+                    feil={getErrorFor(index, 'ansettelsestype')}
+                    namespace={namespace}
+                    id='ansettelsestype'
+                    key={'ansettelsestype-' + (index < 0 ? _newAnsettelsesType : loennsopplysning?.ansettelsestype ?? '')}
+                    label={t('label:ansettelses-type')}
+                    onChanged={(ansettelsestype: string) => setAnsettelsesType(ansettelsestype, index)}
+                    value={index < 0 ? _newAnsettelsesType : loennsopplysning?.ansettelsestype ?? ''}
+                  />
+                </Column>
+                <Column>
+                  <Input
+                    feil={getErrorFor(index, 'arbeidsdager')}
+                    namespace={namespace}
+                    id='arbeidsdager'
+                    key={'arbeidsdager' + (index < 0 ? _newArbeidsdager : loennsopplysning?.arbeidsdager ?? '')}
+                    label={t('label:arbeidsdager')}
+                    onChanged={(arbeidsdager: string) => setArbeidsDager(arbeidsdager, index)}
+                    value={index < 0 ? _newArbeidsdager : loennsopplysning?.arbeidsdager ?? ''}
+                  />
+                </Column>
+                <Column>
+                  <Input
+                    feil={getErrorFor(index, 'arbeidstimer')}
+                    namespace={namespace}
+                    id='arbeidstimer'
+                    key={'arbeidstimer' + (index < 0 ? _newArbeidstimer : loennsopplysning?.arbeidstimer ?? '')}
+                    label={t('label:arbeidstimer')}
+                    onChanged={(arbeidstimer: string) => setArbeidsTimer(arbeidstimer, index)}
+                    value={index < 0 ? _newArbeidstimer : loennsopplysning?.arbeidstimer ?? ''}
+                  />
+                </Column>
+                <Column flex='1.3'>
+                  <AddRemovePanel
+                    candidateForDeletion={candidateForDeletion}
+                    existingItem={(index >= 0)}
+                    marginTop
+                    onBeginRemove={() => addToDeletion(loennsopplysning)}
+                    onConfirmRemove={() => onRemove(index)}
+                    onCancelRemove={() => removeFromDeletion(loennsopplysning)}
+                    onAddNew={onAdd}
+                    onCancelNew={onCancel}
+                  />
+                </Column>
+              </AlignStartRow>
+            </>
+          )
+          : <div/>
+          }
         <VerticalSeparatorDiv size={index < 0 ? '0.5' : '3'} />
       </RepeatableRow>
     )
