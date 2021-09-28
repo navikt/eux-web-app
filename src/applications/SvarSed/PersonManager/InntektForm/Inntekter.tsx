@@ -2,7 +2,7 @@ import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
+import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { Inntekt, TelefonType } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
@@ -15,7 +15,6 @@ import {
   Column,
   HighContrastFlatknapp,
   HorizontalSeparatorDiv,
-  PaddedDiv,
   Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
@@ -24,6 +23,11 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import { validateInntekt, ValidationInntekterProps } from './validationInntekter'
+import styled from 'styled-components'
+
+const MyPaddedDiv = styled.div`
+  padding: 0.5rem 0.5rem 0.5rem 2rem;
+`
 
 const Inntekter: React.FC<any> = ({
   highContrast,
@@ -159,7 +163,7 @@ const Inntekter: React.FC<any> = ({
     const candidateForDeletion = index < 0 ? false : isInDeletion(inntekt)
     const idx = getIdx(index)
     return (
-      <>
+      <RepeatableRow className={classNames({new: index < 0})}>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
@@ -231,20 +235,19 @@ const Inntekter: React.FC<any> = ({
             />
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv />
-      </>
+        <VerticalSeparatorDiv size='0.5'/>
+      </RepeatableRow>
     )
   }
 
   return (
-    <PaddedDiv>
+    <MyPaddedDiv>
       <Undertittel>
         {t('label:inntekter')}
       </Undertittel>
-      <VerticalSeparatorDiv size='2' />
-
+      <VerticalSeparatorDiv/>
       {inntekter?.map(renderRow)}
-      <VerticalSeparatorDiv size='2' />
+      <VerticalSeparatorDiv/>
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm
@@ -264,8 +267,7 @@ const Inntekter: React.FC<any> = ({
             </Column>
           </Row>
           )}
-      <VerticalSeparatorDiv />
-    </PaddedDiv>
+    </MyPaddedDiv>
   )
 }
 

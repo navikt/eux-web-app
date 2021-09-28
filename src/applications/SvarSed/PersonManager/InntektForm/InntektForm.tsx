@@ -10,7 +10,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
 import InntektFC from 'components/Inntekt/Inntekt'
 import Period from 'components/Period/Period'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
+import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { State } from 'declarations/reducers'
 import { Loennsopplysning, Periode } from 'declarations/sed'
@@ -228,7 +228,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
     const sluttdato = index < 0 ? _newSluttDato : loennsopplysning?.periode?.sluttdato
 
     return (
-      <>
+      <RepeatableRow className={classNames({new: index < 0})}>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
@@ -261,7 +261,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
             />
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv />
+        <VerticalSeparatorDiv size='0.5'/>
         <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
           <Column>
             <Input
@@ -309,8 +309,8 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
             />
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv />
-      </>
+        <VerticalSeparatorDiv size={index < 0 ? '0.5' : '3'}/>
+      </RepeatableRow>
     )
   }
 
