@@ -7,7 +7,7 @@ import ArbeidsgiverBox from 'components/Arbeidsgiver/ArbeidsgiverBox'
 import ArbeidsgiverSøk from 'components/Arbeidsgiver/ArbeidsgiverSøk'
 import { validateArbeidsgiver, ValidationArbeidsgiverProps } from 'components/Arbeidsgiver/validation'
 import Input from 'components/Forms/Input'
-import Period from 'components/Period/Period'
+import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Periode, PeriodeMedForsikring } from 'declarations/sed'
@@ -355,7 +355,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
       </Undertittel>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft'>
-        <Period
+        <PeriodeInput
           key={'' + _newArbeidsgiverStartDato + _newArbeidsgiverSluttDato}
           namespace={namespace}
           errorStartDato={_validationArbeidsgiver[namespace + '-arbeidsgiver-startdato']?.feilmelding}
@@ -422,7 +422,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
     <RepeatableRow className='new'>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft'>
-        <Period
+        <PeriodeInput
           key={'' + _newPeriodeStartDato + _newPeriodeSluttDato}
           namespace={namespace}
           errorStartDato={_validationPeriode[namespace + '-periode-startdato']?.feilmelding}
@@ -479,7 +479,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
 
         element = (
           <AlignStartRow className='slideInFromLeft'>
-            <Period
+            <PeriodeInput
               key={'' + (item.item as Periode).startdato + (item.item as Periode).sluttdato}
               namespace={namespace + '-periode' + idx}
               errorStartDato={getErrorFor('startdato')}

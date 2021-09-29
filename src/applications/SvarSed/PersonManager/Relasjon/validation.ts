@@ -1,4 +1,4 @@
-import { validatePeriod } from 'components/Period/validation'
+import { validatePeriode } from 'components/Forms/validation'
 import { Barnetilhoerighet } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -59,8 +59,8 @@ export const validateBarnetilhoerighet = (
     hasErrors = true
   }
 
-  const periodError: boolean = validatePeriod(v, t, {
-    period: barnetilhorighet.periode,
+  const periodError: boolean = validatePeriode(v, t, {
+    periode: barnetilhorighet.periode,
     namespace: namespace + idx + '-periode',
     personName
   })

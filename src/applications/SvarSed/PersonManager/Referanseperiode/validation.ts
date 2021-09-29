@@ -1,4 +1,4 @@
-import { validatePeriod } from 'components/Period/validation'
+import { validatePeriode } from 'components/Forms/validation'
 import { Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { TFunction } from 'react-i18next'
@@ -18,8 +18,8 @@ export const validateReferanseperiode = (
     personName
   }: ValidationReferanseperiodeProps
 ): boolean => {
-  const hasErrors = validatePeriod(v, t, {
-    period: anmodningsperiode,
+  const hasErrors = validatePeriode(v, t, {
+    periode: anmodningsperiode,
     namespace,
     personName
   })

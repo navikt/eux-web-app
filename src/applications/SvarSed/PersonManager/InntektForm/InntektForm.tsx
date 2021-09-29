@@ -9,7 +9,7 @@ import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
 import InntektFC from 'components/Inntekt/Inntekt'
-import Period from 'components/Period/Period'
+import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { State } from 'declarations/reducers'
@@ -245,7 +245,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
         >
-          <Period
+          <PeriodeInput
             key={'' + startdato + sluttdato}
             namespace={namespace}
             errorStartDato={getErrorFor(index, 'periode-startdato')}

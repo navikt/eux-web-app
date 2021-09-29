@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
 import TextArea from 'components/Forms/TextArea'
-import Period from 'components/Period/Period'
+import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow, TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Flyttegrunn, Periode } from 'declarations/sed'
@@ -144,7 +144,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
     }
 
     const valid: boolean = performValidation({
-      period: newPeriode,
+      periode: newPeriode,
       perioder: flyttegrunn?.perioder,
       namespace: namespace + '-perioder',
       personName
@@ -178,7 +178,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
         >
-          <Period
+          <PeriodeInput
             key={'' + startdato + sluttdato}
             namespace={namespace + '-perioder' + idx}
             errorStartDato={getErrorFor(index, 'startdato')}

@@ -1,4 +1,4 @@
-import { validatePeriod } from 'components/Period/validation'
+import { validatePeriode } from 'components/Forms/validation'
 import { RettTilYtelse } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
@@ -20,8 +20,8 @@ export const validateRettTilYtelse = (
   let hasErrors = false
 
   if (rettTilTytelse?.periode) {
-    const _error = validatePeriod(v, t, {
-      period: rettTilTytelse.periode,
+    const _error = validatePeriode(v, t, {
+      periode: rettTilTytelse.periode,
       namespace: namespace + '-periode'
     })
     hasErrors = hasErrors || _error

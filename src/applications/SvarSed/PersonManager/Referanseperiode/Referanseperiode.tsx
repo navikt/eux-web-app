@@ -1,7 +1,7 @@
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
-import Period from 'components/Period/Period'
+import PeriodeInput from 'components/Forms/PeriodeInput'
 import { State } from 'declarations/reducers'
 import { Periode } from 'declarations/sed'
 import _ from 'lodash'
@@ -59,7 +59,7 @@ const Referanseperiode: React.FC<PersonManagerFormProps> = ({
       </Undertittel>
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-        <Period
+        <PeriodeInput
           key={'' + anmodningsperiode?.startdato + anmodningsperiode?.sluttdato}
           namespace={namespace}
           errorStartDato={validation[namespace + '-startdato']?.feilmelding}

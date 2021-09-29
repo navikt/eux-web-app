@@ -7,7 +7,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
-import Period from 'components/Period/Period'
+import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
@@ -268,7 +268,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
               selectedValue={_.find(relasjonTypeOptions, r => r.value === (index < 0 ? _newRelasjonType : familierelasjon!.relasjonType))}
             />
           </Column>
-          <Period
+          <PeriodeInput
             key={'' + startdato + sluttdato}
             namespace={namespace + idx + '-periode'}
             errorStartDato={getErrorFor(index, 'periode-startdato')}

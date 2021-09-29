@@ -1,4 +1,4 @@
-import { validatePeriod } from 'components/Period/validation'
+import { validatePeriode } from 'components/Forms/validation'
 import { Ytelse } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -62,8 +62,8 @@ export const validateBeløpNavnOgValuta = (
     hasErrors = true
   }
 
-  const periodErrors: boolean = validatePeriod(v, t, {
-    period: {
+  const periodErrors: boolean = validatePeriode(v, t, {
+    periode: {
       startdato: ytelse?.startdato,
       sluttdato: ytelse?.sluttdato
     },

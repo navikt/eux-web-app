@@ -4,7 +4,7 @@ import {
 } from './validation'
 import Search from 'assets/icons/Search'
 import Select from 'components/Forms/Select'
-import Period from 'components/Period/Period'
+import PeriodeInput from 'components/Forms/PeriodeInput'
 import { Options } from 'declarations/app'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -75,7 +75,7 @@ const InntektSearch = ({
 
   return (
     <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-      <Period
+      <PeriodeInput
         key={'' + _searchStartDato + _searchSluttDato}
         namespace={namespace}
         errorStartDato={_validation[namespace + '-startdato']?.feilmelding}

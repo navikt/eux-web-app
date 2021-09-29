@@ -4,7 +4,7 @@ import { PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/Pe
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import Period from 'components/Period/Period'
+import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Periode, PeriodeForsikring, ReplySed } from 'declarations/sed'
@@ -167,7 +167,7 @@ const ArbeidsforholdSimple: React.FC<ArbeidsforholdSimpleProps> = ({
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
         >
-          <Period
+          <PeriodeInput
             key={'' + startdato + sluttdato}
             namespace={namespace}
             errorStartDato={getErrorFor(index, 'startdato')}

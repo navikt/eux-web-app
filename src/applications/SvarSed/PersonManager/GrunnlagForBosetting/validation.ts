@@ -1,4 +1,4 @@
-import { validatePeriod } from 'components/Period/validation'
+import { validatePeriode } from 'components/Forms/validation'
 import { Flyttegrunn, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -6,7 +6,7 @@ import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
 
 export interface ValidationGrunnlagForBosettingProps {
-  period: Periode
+  periode: Periode
   perioder: Array<Periode> | undefined
   index?: number
   namespace: string
@@ -19,19 +19,19 @@ export const validateGrunnlagForBosetting = (
   v: Validation,
   t: TFunction,
   {
-    period,
+    periode,
     perioder,
     namespace,
     personName
   }: ValidationGrunnlagForBosettingProps
 ): boolean => {
-  let hasErrors = validatePeriod(v, t, {
-    period,
+  let hasErrors = validatePeriode(v, t, {
+    periode,
     namespace: namespace,
     personName
   })
-  if (!_.isEmpty(period?.startdato)) {
-    const duplicate: boolean = _.find(perioder, p => p.startdato === period?.startdato) !== undefined
+  if (!_.isEmpty(periode?.startdato)) {
+    const duplicate: boolean = _.find(perioder, p => p.startdato === periode?.startdato) !== undefined
     if (duplicate) {
       v[namespace + '-perioder-startdato'] = {
         feilmelding: t('message:validation-duplicateStartdatoForPerson', { person: personName }),
@@ -61,8 +61,8 @@ export const validateAllGrunnlagForBosetting = (
   let hasErrors: boolean = false
 
   flyttegrunn?.perioder?.forEach((periode: Periode, index: number) => {
-    const periodErrors : boolean = validatePeriod(v, t, {
-      period: periode,
+    const periodErrors : boolean = validatePeriode(v, t, {
+      periode,
       index,
       namespace: namespace + '-perioder',
       personName

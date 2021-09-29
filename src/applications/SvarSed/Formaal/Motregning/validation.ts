@@ -1,4 +1,4 @@
-import { validatePeriod } from 'components/Period/validation'
+import { validatePeriode } from 'components/Forms/validation'
 import { NavnOgBetegnelse, Motregning as IMotregning, ReplySed, Barn, F002Sed } from 'declarations/sed'
 import { TFunction } from 'react-i18next'
 import { Validation } from 'declarations/types'
@@ -99,8 +99,8 @@ export const validateMotregning = (
     hasErrors = true
   }
 
-  const periodError: boolean = validatePeriod(v, t, {
-    period: {
+  const periodError: boolean = validatePeriode(v, t, {
+    periode: {
       startdato: motregning.startdato,
       sluttdato: motregning.sluttdato
     },

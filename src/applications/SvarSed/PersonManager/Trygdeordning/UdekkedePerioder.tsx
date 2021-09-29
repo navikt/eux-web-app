@@ -8,7 +8,7 @@ import {
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import Period from 'components/Period/Period'
+import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Periode } from 'declarations/sed'
@@ -154,7 +154,7 @@ const UdekkedePerioder: React.FC<PersonManagerFormProps> = ({
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
         >
-          <Period
+          <PeriodeInput
             key={'' + startdato + sluttdato}
             labels={false}
             namespace={namespace + idx}

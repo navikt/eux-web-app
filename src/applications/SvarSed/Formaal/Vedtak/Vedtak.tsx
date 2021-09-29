@@ -12,7 +12,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
 import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
-import Period from 'components/Period/Period'
+import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow, TextAreaDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
@@ -363,7 +363,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow className={classNames('slideInFromLeft')}>
-          <Period
+          <PeriodeInput
             key={'' + startdato + sluttdato}
             namespace={namespace + '-perioder' + getIdx(index)}
             errorStartDato={getErrorFor(index, 'startdato')}
@@ -406,7 +406,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow className={classNames('slideInFromLeft')}>
-          <Period
+          <PeriodeInput
             key={'' + startdato + sluttdato}
             namespace={namespace + '-vedtaksperioder' + getIdx(index) + '-periode'}
             errorStartDato={getErrorFor(index, 'periode-startdato')}

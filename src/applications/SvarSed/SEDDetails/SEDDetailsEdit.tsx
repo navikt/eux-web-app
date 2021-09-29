@@ -9,7 +9,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
-import Period from 'components/Period/Period'
+import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, TextAreaDiv } from 'components/StyledComponents'
 import { F002Sed, FSed, LokaleSakId, Periode, ReplySed, USed } from 'declarations/sed'
 import { Kodeverk, Validation } from 'declarations/types'
@@ -324,7 +324,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
     return (
       <>
         <AlignStartRow>
-          <Period
+          <PeriodeInput
             key={'' + startdato + sluttdato}
             namespace={namespace + '-perioder' + getIdx(index)}
             errorStartDato={getErrorFor(index, 'startdato')}
@@ -450,7 +450,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           {isUSed(replySed) && (
             <>
               <AlignStartRow>
-                <Period
+                <PeriodeInput
                   key={'' + (replySed as USed).anmodningsperiode.startdato + (replySed as USed).anmodningsperiode.sluttdato}
                   namespace={namespace + '-anmodningsperiode'}
                   errorStartDato={validation[namespace + '-anmodningsperiode-startdato']?.feilmelding}

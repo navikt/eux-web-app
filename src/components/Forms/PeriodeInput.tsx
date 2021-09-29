@@ -31,7 +31,7 @@ export const toUIDateFormat = (date: string | undefined): string | undefined => 
   return newDate.isValid() ? newDate.format('DD.MM.YYYY') : date
 }
 
-const Period = ({
+const PeriodeInput = ({
   errorStartDato,
   errorSluttDato,
   labels = true,
@@ -88,4 +88,4 @@ const Period = ({
   )
 }
 
-export default Period
+export default PeriodeInput

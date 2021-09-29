@@ -4,7 +4,7 @@ import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import Period from 'components/Period/Period'
+import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Periode } from 'declarations/sed'
@@ -163,7 +163,7 @@ const NotAnsatt: React.FC<PersonManagerFormProps & {arbeidsforhold: string}> = (
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
         >
-          <Period
+          <PeriodeInput
             key={'' + periodeType + startdato + sluttdato}
             namespace={namespace + idx}
             errorStartDato={getErrorFor(index, 'startdato')}

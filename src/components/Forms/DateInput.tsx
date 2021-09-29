@@ -1,4 +1,4 @@
-import { toFinalDateFormat, toUIDateFormat } from 'components/Period/Period'
+import { toFinalDateFormat, toUIDateFormat } from 'components/Forms/PeriodeInput'
 import { HighContrastInput } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'

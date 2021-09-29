@@ -6,8 +6,8 @@ import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
-export interface ValidationPeriodProps {
-  period: Periode
+export interface ValidationPeriodeProps {
+  periode: Periode
   index?: number | undefined
   namespace: string,
   personName?: string
@@ -15,19 +15,19 @@ export interface ValidationPeriodProps {
 
 const datePattern = /^\d{4}-\d{2}-\d{2}$/
 
-export const validatePeriod = (
+export const validatePeriode = (
   v: Validation,
   t: TFunction,
   {
-    period,
+    periode,
     index = undefined,
     namespace,
     personName
-  }: ValidationPeriodProps
+  }: ValidationPeriodeProps
 ): boolean => {
   let hasErrors: boolean = false
   const idx = getIdx(index)
-  if (_.isEmpty(period?.startdato?.trim())) {
+  if (_.isEmpty(periode?.startdato?.trim())) {
     v[namespace + idx + '-startdato'] = {
       skjemaelementId: namespace + idx + '-startdato',
       feilmelding: personName
@@ -37,7 +37,7 @@ export const validatePeriod = (
     hasErrors = true
   }
 
-  if (!_.isEmpty(period?.startdato?.trim()) && !(period.startdato!.trim().match(datePattern))) {
+  if (!_.isEmpty(periode?.startdato?.trim()) && !(periode.startdato!.trim().match(datePattern))) {
     v[namespace + idx + '-startdato'] = {
       skjemaelementId: namespace + idx + '-startdato',
       feilmelding: personName
@@ -47,7 +47,7 @@ export const validatePeriod = (
     hasErrors = true
   }
 
-  if (!_.isEmpty(period?.sluttdato?.trim()) && !(period.sluttdato!.trim().match(datePattern))) {
+  if (!_.isEmpty(periode?.sluttdato?.trim()) && !(periode.sluttdato!.trim().match(datePattern))) {
     v[namespace + idx + '-sluttdato'] = {
       skjemaelementId: namespace + idx + '-sluttdato',
       feilmelding: personName
@@ -57,9 +57,9 @@ export const validatePeriod = (
     hasErrors = true
   }
 
-  if (!_.isEmpty(period?.startdato?.trim()) && !_.isEmpty(period?.sluttdato?.trim()) &&
-    moment(period.startdato.trim(), 'YYYY-MM-DD')
-      .isAfter(moment(period.sluttdato?.trim(), 'YYYY-MM-DD'))) {
+  if (!_.isEmpty(periode?.startdato?.trim()) && !_.isEmpty(periode?.sluttdato?.trim()) &&
+    moment(periode.startdato.trim(), 'YYYY-MM-DD')
+      .isAfter(moment(periode.sluttdato?.trim(), 'YYYY-MM-DD'))) {
     v[namespace + idx + '-sluttdato'] = {
       skjemaelementId: namespace + idx + '-sluttdato',
       feilmelding: t('message:validation-endDateBeforeStartDate')

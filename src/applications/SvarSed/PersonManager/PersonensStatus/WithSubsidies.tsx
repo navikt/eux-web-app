@@ -5,11 +5,11 @@ import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Forms/Select'
-import Period from 'components/Period/Period'
+import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import { PensjonPeriode, Periode } from 'declarations/sed'
+import { PensjonPeriode, Periode} from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -198,7 +198,7 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
         style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
       >
         <AlignStartRow>
-          <Period
+          <PeriodeInput
             key={'' + startdato + sluttdato}
             namespace={namespace + idx + '-periode'}
             errorStartDato={getErrorFor(index, 'periode-startdato')}

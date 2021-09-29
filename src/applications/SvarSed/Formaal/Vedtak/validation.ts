@@ -1,4 +1,4 @@
-import { validatePeriod } from 'components/Period/validation'
+import { validatePeriode } from 'components/Forms/validation'
 import { Vedtak, VedtakPeriode, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -38,9 +38,9 @@ export const validateVedtakPeriode = (
 ): boolean => {
   let hasErrors: boolean = false
   const idx = getIdx(index)
-  const periodeError: boolean = validatePeriod(
+  const periodeError: boolean = validatePeriode(
     v, t, {
-      period: periode,
+      periode: periode,
       namespace: namespace + '-perioder' + idx,
       personName: formalName
     }
@@ -83,9 +83,9 @@ export const validateVedtakVedtaksperiode = (
   if (!_.isEmpty(idx)) {
     idx = '-' + vedtaktype + idx
   }
-  const periodeError: boolean = validatePeriod(
+  const periodeError: boolean = validatePeriode(
     v, t, {
-      period: vedtaksperiode?.periode,
+      periode: vedtaksperiode?.periode,
       namespace: namespace + '-vedtaksperioder' + idx + '-periode',
       personName: formalName
     }

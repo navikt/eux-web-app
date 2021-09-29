@@ -9,7 +9,7 @@ import ArbeidsgiverBox from 'components/Arbeidsgiver/ArbeidsgiverBox'
 import ArbeidsgiverSøk from 'components/Arbeidsgiver/ArbeidsgiverSøk'
 import Input from 'components/Forms/Input'
 import Inntekt from 'components/Inntekt/Inntekt'
-import Period from 'components/Period/Period'
+import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Periode, PeriodeMedForsikring, ReplySed } from 'declarations/sed'
@@ -341,7 +341,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
       </Undertittel>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft'>
-        <Period
+        <PeriodeInput
           key={'' + _newStartDato + _newSluttDato}
           namespace={namespace}
           errorStartDato={_validationPeriodeMedForsikring[namespace + '-startdato']?.feilmelding}
@@ -583,7 +583,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-        {/*        <Period
+        {/*        <PeriodeInput
           key={_arbeidssøkStartDato + _arbeidssøkSluttDato}
           namespace={namespace + '-arbeidssok'}
           errorStartDato={_validationSearch[namespace + '-arbeidssok-startdato']?.feilmelding}

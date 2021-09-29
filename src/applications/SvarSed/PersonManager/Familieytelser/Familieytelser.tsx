@@ -4,7 +4,7 @@ import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/
 import HelpIcon from 'assets/icons/HelpIcon'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
-import Period from 'components/Period/Period'
+import PeriodeInput from 'components/Forms/PeriodeInput'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { Utbetalingshyppighet, Ytelse, YtelseNavn } from 'declarations/sed'
@@ -207,7 +207,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
       </Undertittel>
       <VerticalSeparatorDiv size={2} />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
-        <Period
+        <PeriodeInput
           key={'' + ytelse?.startdato + ytelse?.sluttdato}
           namespace={namespace}
           errorStartDato={validation[namespace + '-startdato']?.feilmelding}

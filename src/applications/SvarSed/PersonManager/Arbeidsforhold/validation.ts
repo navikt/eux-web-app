@@ -1,4 +1,4 @@
-import { validatePeriod } from 'components/Period/validation'
+import { validatePeriode } from 'components/Forms/validation'
 import { Validation } from 'declarations/types'
 import { TFunction } from 'react-i18next'
 
@@ -17,8 +17,8 @@ export const performValidationArbeidsperioderSearch = (
     namespace
   }: ValidationDatoProps
 ): boolean => {
-  const hasErrors = validatePeriod(v, t, {
-    period: {
+  const hasErrors = validatePeriode(v, t, {
+    periode: {
       startdato: startdato,
       sluttdato: sluttdato
     },

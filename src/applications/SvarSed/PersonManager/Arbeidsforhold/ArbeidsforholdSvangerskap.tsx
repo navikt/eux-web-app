@@ -5,7 +5,7 @@ import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
-import Period from 'components/Period/Period'
+import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { JaNei, Periode, PeriodeSykSvangerskapOmsorg, ReplySed } from 'declarations/sed'
@@ -323,7 +323,7 @@ const ArbeidsforholdSvangerskap: React.FC<ArbeidsforholdSvangerskapProps> = ({
           className={classNames('slideInFromLeft')}
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
         >
-          <Period
+          <PeriodeInput
             key={'' + startdato + sluttdato}
             namespace={namespace}
             errorStartDato={getErrorFor(index, 'startdato')}

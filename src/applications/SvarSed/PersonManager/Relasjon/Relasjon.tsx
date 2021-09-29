@@ -5,7 +5,7 @@ import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Forms/Select'
-import Period from 'components/Period/Period'
+import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
@@ -336,7 +336,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
         </Undertittel>
         <VerticalSeparatorDiv />
         <Row>
-          <Period
+          <PeriodeInput
             key={'' + startdato + sluttdato}
             namespace={namespace + idx + '-periode'}
             errorStartDato={getErrorFor(index, 'periode-startdato')}

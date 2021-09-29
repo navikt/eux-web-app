@@ -8,7 +8,7 @@ import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
-import Period from 'components/Period/Period'
+import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow, TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import {
@@ -614,7 +614,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
         className={classNames('slideInFromLeft')}
         style={{ animationDelay: '0.2s' }}
       >
-        <Period
+        <PeriodeInput
           key={'' + currentMotregning()?.startdato + currentMotregning()?.sluttdato}
           namespace={namespace}
           errorStartDato={validation[namespace + '-startdato']?.feilmelding}

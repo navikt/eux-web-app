@@ -1,4 +1,4 @@
-import { validatePeriod } from 'components/Period/validation'
+import { validatePeriode } from 'components/Forms/validation'
 import { PensjonPeriode, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -47,14 +47,14 @@ const validateGenericPeriode = (
   let hasErrors: boolean = false
   const extraNamespace = namespace + '-' + (!_.isNil(index) && index >= 0 ? sedCategory : pageCategory)
 
-  const periodError: boolean = validatePeriod(
+  const periodError: boolean = validatePeriode(
     v,
     t,
     {
-      period: periode,
-      index: index,
+      periode,
+      index,
       namespace: extraNamespace,
-      personName: personName
+      personName
     }
   )
   hasErrors = hasErrors || periodError
@@ -150,13 +150,13 @@ export const validateFamilieytelserPeriode = (
   if (sedCategory === 'perioderMedPensjon' && !_.isNil(index) && index >= 0) {
     extraperiodeNamespace += '-periode'
   }
-  const period = sedCategory === 'perioderMedPensjon' ? (periode as PensjonPeriode).periode : (periode as Periode)
+  const _periode = sedCategory === 'perioderMedPensjon' ? (periode as PensjonPeriode).periode : (periode as Periode)
 
-  const periodError: boolean = validatePeriod(
+  const periodError: boolean = validatePeriode(
     v,
     t,
     {
-      period: period,
+      periode: _periode,
       namespace: extraperiodeNamespace,
       personName: personName
     }
@@ -166,24 +166,24 @@ export const validateFamilieytelserPeriode = (
   let duplicate: boolean
   if (_.isNil(index)) {
     if (sedCategory === 'perioderMedPensjon') {
-      duplicate = _.find(perioder, (p: PensjonPeriode) => p.periode.startdato === period.startdato && p.periode.sluttdato === period.sluttdato) !== undefined
+      duplicate = _.find(perioder, (p: PensjonPeriode) => p.periode.startdato === _periode.startdato && p.periode.sluttdato === _periode.sluttdato) !== undefined
     } else {
-      duplicate = _.find(perioder, (p: Periode) => p.startdato === period.startdato && p.sluttdato === period.sluttdato) !== undefined
+      duplicate = _.find(perioder, (p: Periode) => p.startdato === _periode.startdato && p.sluttdato === _periode.sluttdato) !== undefined
     }
   } else {
     if (sedCategory === 'perioderMedPensjon') {
       if (_.isNil(index)) {
-        duplicate = _.find(perioder, (p: PensjonPeriode) => p.periode.startdato === period?.startdato && p.periode.sluttdato === period.sluttdato) !== undefined
+        duplicate = _.find(perioder, (p: PensjonPeriode) => p.periode.startdato === _periode?.startdato && p.periode.sluttdato === _periode.sluttdato) !== undefined
       } else {
         const otherPensjonPerioder: Array<PensjonPeriode> = _.filter(perioder, (p, i: number) => i !== index) as Array<PensjonPeriode>
-        duplicate = _.find(otherPensjonPerioder, p => p.periode.startdato === period.startdato && p.periode.sluttdato === period.sluttdato) !== undefined
+        duplicate = _.find(otherPensjonPerioder, p => p.periode.startdato === _periode.startdato && p.periode.sluttdato === _periode.sluttdato) !== undefined
       }
     } else {
       if (_.isNil(index)) {
-        duplicate = _.find(perioder, (p: Periode) => p.startdato === period?.startdato && p.sluttdato === period?.sluttdato) !== undefined
+        duplicate = _.find(perioder, (p: Periode) => p.startdato === _periode?.startdato && p.sluttdato === _periode?.sluttdato) !== undefined
       } else {
         const otherPensjonPerioder: Array<Periode> = _.filter(perioder, (p, i: number) => i !== index) as Array<Periode>
-        duplicate = _.find(otherPensjonPerioder, p => p.startdato === period.startdato && p.sluttdato === period.sluttdato) !== undefined
+        duplicate = _.find(otherPensjonPerioder, p => p.startdato === _periode.startdato && p.sluttdato === _periode.sluttdato) !== undefined
       }
     }
   }

@@ -1,4 +1,4 @@
-import { validatePeriod } from 'components/Period/validation'
+import { validatePeriode } from 'components/Forms/validation'
 import { Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -27,11 +27,11 @@ export const validateNotAnsattPeriode = (
 ): boolean => {
   const idx = getIdx(index)
 
-  let hasErrors: boolean = validatePeriod(v, t, {
-    period: periode,
-    namespace: namespace,
-    index: index,
-    personName: personName
+  let hasErrors: boolean = validatePeriode(v, t, {
+    periode,
+    namespace,
+    index,
+    personName
   })
   if (!_.isEmpty(periode?.startdato)) {
     let duplicate: boolean

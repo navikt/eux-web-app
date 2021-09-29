@@ -5,7 +5,7 @@ import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Forms/Select'
-import Period from 'components/Period/Period'
+import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { PensjonPeriode, PensjonsType, Periode, SedCategory } from 'declarations/sed'
@@ -276,7 +276,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
         style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
       >
         <AlignStartRow>
-          <Period
+          <PeriodeInput
             key={'' + startdato + sluttdato}
             labels={false}
             namespace={namespace + idx}

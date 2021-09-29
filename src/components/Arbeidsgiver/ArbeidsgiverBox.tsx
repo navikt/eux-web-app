@@ -4,7 +4,7 @@ import Edit from 'assets/icons/Edit'
 import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
 import Input from 'components/Forms/Input'
-import Period, { toUIDateFormat } from 'components/Period/Period'
+import PeriodeInput, { toUIDateFormat } from 'components/Forms/PeriodeInput'
 import { Periode, PeriodeMedForsikring } from 'declarations/sed.d'
 import useValidation from 'hooks/useValidation'
 import CountryData, { Country } from 'land-verktoy'
@@ -286,7 +286,7 @@ const ArbeidsgiverBox = ({
                   <>
                     <VerticalSeparatorDiv size='0.5' />
                     <Row>
-                      <Period
+                      <PeriodeInput
                         key={'' + _startDato + _sluttDato}
                         namespace={_namespace}
                         errorStartDato={_validation[_namespace + '-startdato']?.feilmelding}

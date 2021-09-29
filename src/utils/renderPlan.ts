@@ -9,7 +9,7 @@ export type PlanItemType = 'orphan' | 'arbeidsgiver' | 'addedArbeidsgiver'
 export interface PlanItem<T> {
   type: PlanItemType
   item: T,
-  index: number | undefined // for period index, also tells when we macth arbeidsgiver with period
+  index: number | undefined // for periode index, also tells when we macth arbeidsgiver with periode
   duplicate: boolean | undefined // so I can complain when addedArbeidsgiver conflict with existing ones
 
 }
