@@ -59,8 +59,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
   const perioder: Array<PeriodeDagpenger> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-periodefordagpenger`
 
-  const [_newStartDato, _setNewStartDato] = useState<string>('')
-  const [_newSluttDato, _setNewSluttDato] = useState<string>('')
+  const [_newPeriode, _setNewPeriode] = useState<Periode>({ startdato: '' })
   const [_newInstitutionsId, _setNewInstitutionsId] = useState<string>('')
   const [_newInstitutionsNavn, _setNewInstitutionsNavn] = useState<string>('')
   const [_newNavn, _setNewNavn] = useState<string>('')
@@ -191,32 +190,16 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const setStartDato = (startdato: string, index: number) => {
+  const setPeriode = (periode: Periode, index: number) => {
     if (index < 0) {
-      _setNewStartDato(startdato.trim())
+      _setNewPeriode(periode)
       _resetValidation(namespace + '-periode-startdato')
+      _resetValidation(namespace + '-periode-sluttdato')
     } else {
-      dispatch(updateReplySed(`${target}[${index}].periode.startdato`, startdato.trim()))
+      dispatch(updateReplySed(`${target}[${index}].periode`, periode))
       if (validation[namespace + getIdx(index) + '-periode-startdato']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-periode-startdato'))
       }
-    }
-  }
-
-  const setSluttDato = (sluttdato: string, index: number) => {
-    if (index < 0) {
-      _setNewSluttDato(sluttdato.trim())
-      _resetValidation(namespace + '-periode-sluttdato')
-    } else {
-      const newPerioder: Array<PeriodeDagpenger> = _.cloneDeep(perioder) as Array<PeriodeDagpenger>
-      if (sluttdato === '') {
-        delete newPerioder[index].periode.sluttdato
-        newPerioder[index].periode.aapenPeriodeType = 'åpen_sluttdato'
-      } else {
-        delete newPerioder[index].periode.aapenPeriodeType
-        newPerioder[index].periode.sluttdato = sluttdato.trim()
-      }
-      dispatch(updateReplySed(target, newPerioder))
       if (validation[namespace + getIdx(index) + '-periode-sluttdato']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-periode-sluttdato'))
       }
@@ -299,8 +282,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
     _setNewInstitutionsNavn('')
     _setNewInstitutionsId('')
     _setNewNavn('')
-    _setNewSluttDato('')
-    _setNewStartDato('')
+    _setNewPeriode({ startdato: '' })
     _setNewGate('')
     _setNewPostnummer('')
     _setNewRegion('')
@@ -325,17 +307,8 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
   }
 
   const onAdd = () => {
-    const newPeriode: Periode = {
-      startdato: _newStartDato
-    }
-    if (_newSluttDato) {
-      newPeriode.sluttdato = _newSluttDato
-    } else {
-      newPeriode.aapenPeriodeType = 'åpen_sluttdato'
-    }
-
     const newPeriodeDagpenger: PeriodeDagpenger = {
-      periode: newPeriode,
+      periode: _newPeriode,
       institusjon: {
         navn: _newInstitutionsNavn.trim(),
         id: _newInstitutionsId.trim(),
@@ -377,8 +350,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
         ? _validation[namespace + '-' + el]?.feilmelding
         : validation[namespace + idx + '-' + el]?.feilmelding
     )
-    const startdato = index < 0 ? _newStartDato : periodeDagpenger?.periode?.startdato
-    const sluttdato = index < 0 ? _newSluttDato : periodeDagpenger?.periode?.sluttdato
+    const _periode = index < 0 ? _newPeriode : periodeDagpenger?.periode
 
     const idmangler = index < 0
       ? !_.isEmpty(_newNavn.trim()) || !_.isEmpty(_newGate.trim()) || !_.isEmpty(_newPostnummer.trim()) ||
@@ -393,14 +365,14 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
         >
           <PeriodeInput
-            key={'' + startdato + sluttdato}
+            key={'' + _periode?.startdato + _periode?.sluttdato}
             namespace={namespace}
-            errorStartDato={getErrorFor(index, 'periode-startdato')}
-            errorSluttDato={getErrorFor(index, 'periode-sluttdato')}
-            setStartDato={(dato: string) => setStartDato(dato, index)}
-            setSluttDato={(dato: string) => setSluttDato(dato, index)}
-            valueStartDato={startdato}
-            valueSluttDato={sluttdato}
+            error={{
+              startdato: getErrorFor(index, 'periode-startdato'),
+              sluttdato: getErrorFor(index, 'periode-sluttdato')
+            }}
+            setPeriode={(p: Periode) => setPeriode(p, index)}
+            value={_periode}
           />
           <Column />
         </AlignStartRow>

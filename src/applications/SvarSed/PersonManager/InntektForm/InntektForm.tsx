@@ -69,8 +69,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
   const loennsopplysninger: Array<Loennsopplysning> = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-inntekt`
 
-  const [_newStartDato, _setNewStartDato] = useState<string>('')
-  const [_newSluttDato, _setNewSluttDato] = useState<string>('')
+  const [_newPeriode, _setNewPeriode] = useState<Periode>({ startdato: '' })
   const [_newAnsettelsesType, _setNewAnsettelsesType] = useState<string>('')
   const [_newInntekter, _setNewInntekter] = useState<Array<Inntekt>>([])
   const [_newArbeidsdager, _setNewArbeidsdager] = useState<string>('')
@@ -90,32 +89,16 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
     _setVisible(visible ? _.filter(_visible, (it) => it !== index) : _visible.concat(index))
   }
 
-  const setStartDato = (startdato: string, index: number) => {
+  const setPeriode = (periode: Periode, index: number) => {
     if (index < 0) {
-      _setNewStartDato(startdato.trim())
+      _setNewPeriode(periode)
       _resetValidation(namespace + '-periode-startdato')
+      _resetValidation(namespace + '-periode-sluttdato')
     } else {
-      dispatch(updateReplySed(`${target}[${index}].periode.startdato`, startdato.trim()))
+      dispatch(updateReplySed(`${target}[${index}].periode`, periode))
       if (validation[namespace + getIdx(index) + '-periode-startdato']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-periode-startdato'))
       }
-    }
-  }
-
-  const setSluttDato = (sluttdato: string, index: number) => {
-    if (index < 0) {
-      _setNewSluttDato(sluttdato.trim())
-      _resetValidation(namespace + '-periode-sluttdato')
-    } else {
-      const newPerioder: Array<Loennsopplysning> = _.cloneDeep(loennsopplysninger) as Array<Loennsopplysning>
-      if (sluttdato === '') {
-        delete newPerioder[index].periode.sluttdato
-        newPerioder[index].periode.aapenPeriodeType = 'åpen_sluttdato'
-      } else {
-        delete newPerioder[index].periode.aapenPeriodeType
-        newPerioder[index].periode.sluttdato = sluttdato.trim()
-      }
-      dispatch(updateReplySed(target, newPerioder))
       if (validation[namespace + getIdx(index) + '-periode-sluttdato']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-periode-sluttdato'))
       }
@@ -173,8 +156,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
     _setNewAnsettelsesType('')
     _setNewArbeidsdager('')
     _setNewArbeidstimer('')
-    _setNewSluttDato('')
-    _setNewStartDato('')
+    _setNewPeriode({ startdato: '' })
     _setNewInntekter([])
     _resetValidation()
   }
@@ -194,17 +176,8 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
   }
 
   const onAdd = () => {
-    const newPeriode: Periode = {
-      startdato: _newStartDato
-    }
-    if (_newSluttDato) {
-      newPeriode.sluttdato = _newSluttDato
-    } else {
-      newPeriode.aapenPeriodeType = 'åpen_sluttdato'
-    }
-
     const newLoennsopplysning: Loennsopplysning = {
-      periode: newPeriode,
+      periode: _newPeriode,
       ansettelsestype: _newAnsettelsesType,
       inntekter: _newInntekter,
       arbeidsdager: _newArbeidsdager,
@@ -235,9 +208,8 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
         ? _validation[namespace + '-' + el]?.feilmelding
         : validation[namespace + idx + '-' + el]?.feilmelding
     )
-    const startdato = index < 0 ? _newStartDato : loennsopplysning?.periode?.startdato
-    const sluttdato = index < 0 ? _newSluttDato : loennsopplysning?.periode?.sluttdato
-    const visible =  index >= 0 ?  isVisible(index) : true
+    const _periode = index < 0 ? _newPeriode : loennsopplysning?.periode
+    const visible = index >= 0 ? isVisible(index) : true
 
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
@@ -246,14 +218,14 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
         >
           <PeriodeInput
-            key={'' + startdato + sluttdato}
+            key={'' + _periode?.startdato + _periode?.sluttdato}
             namespace={namespace}
-            errorStartDato={getErrorFor(index, 'periode-startdato')}
-            errorSluttDato={getErrorFor(index, 'periode-sluttdato')}
-            setStartDato={(dato: string) => setStartDato(dato, index)}
-            setSluttDato={(dato: string) => setSluttDato(dato, index)}
-            valueStartDato={startdato}
-            valueSluttDato={sluttdato}
+            error={{
+              startdato: getErrorFor(index, 'periode-startdato'),
+              sluttdato: getErrorFor(index, 'periode-sluttdato')
+            }}
+            setPeriode={(p: Periode) => setPeriode(p, index)}
+            value={_periode}
           />
           <Column>
             {index >= 0 && (
@@ -261,16 +233,17 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
                 <HighContrastFlatknapp
                   mini
                   kompakt
-                  onClick={() => toggleVisibility(index)}>
+                  onClick={() => toggleVisibility(index)}
+                >
                   <FlexCenterDiv>
                     <Chevron type={visible ? 'opp' : 'ned'} />
-                    <HorizontalSeparatorDiv size='0.35'/>
+                    <HorizontalSeparatorDiv size='0.35' />
                     {visible ? t('label:show-less') : t('label:show-more')}
                   </FlexCenterDiv>
 
                 </HighContrastFlatknapp>
               </div>
-              )}
+            )}
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />
@@ -341,9 +314,8 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
                 </Column>
               </AlignStartRow>
             </>
-          )
-          : <div/>
-          }
+            )
+          : <div />}
         <VerticalSeparatorDiv size={index < 0 ? '0.5' : '3'} />
       </RepeatableRow>
     )

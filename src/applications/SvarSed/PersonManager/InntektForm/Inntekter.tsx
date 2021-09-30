@@ -84,7 +84,7 @@ const Inntekter: React.FC<any> = ({
       _setNewBeløp(newBeløp.trim())
       resetValidation(namespace + '-beloep')
       if (_.isNil(_newValuta)) {
-        setValuta({value: 'NOK'} as Currency, index)
+        setValuta({ value: 'NOK' } as Currency, index)
       }
     } else {
       const newInntekter: Array<Inntekt> = _.cloneDeep(inntekter)
@@ -94,7 +94,7 @@ const Inntekter: React.FC<any> = ({
         dispatch(resetValidation(namespace + '-beloep'))
       }
       if (_.isNil(newInntekter[index]?.valuta)) {
-        setValuta({value: 'NOK'} as Currency, index)
+        setValuta({ value: 'NOK' } as Currency, index)
       }
     }
   }

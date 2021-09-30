@@ -35,6 +35,8 @@ export type GrunnUenighet = 'bosted' | 'medlemsperiode' | 'personligSituasjon'| 
 
 export type ArbeidsgiverIdentifikatorType = 'registrering' | 'trygd' | 'skatt' | 'ukjent'
 
+export type PeriodeType = 'simple' | 'withcheckbox'
+
 export interface Adresse {
   by?: string
   bygning?: string

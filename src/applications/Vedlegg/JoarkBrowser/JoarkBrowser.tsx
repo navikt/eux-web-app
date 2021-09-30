@@ -57,7 +57,7 @@ const mapState = /* istanbul ignore next */ (state: State): JoarkBrowserSelector
 
 export interface JoarkBrowserProps {
   existingItems: JoarkBrowserItems
-  fnr: string
+  fnr: string | undefined
   highContrast?: boolean
   onRowSelectChange?: (f: JoarkBrowserItems) => void
   onPreviewFile?: (f: File) => void
@@ -300,7 +300,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   }, [existingItems, list, mode])
 
   useEffect(() => {
-    if (!_mounted && list === undefined && !gettingJoarkList) {
+    if (!_mounted && !_.isNil(fnr) && list === undefined && !gettingJoarkList) {
       dispatch(listJoarkItems(fnr))
     }
     setMounted(true)

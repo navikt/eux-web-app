@@ -49,8 +49,7 @@ const UdekkedePerioder: React.FC<PersonManagerFormProps> = ({
   const perioderUtenforTrygdeordning: Array<Periode> = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-trygdeordninger`
 
-  const [_newSluttDato, _setNewSluttDato] = useState<string>('')
-  const [_newStartDato, _setNewStartDato] = useState<string>('')
+  const [_newPeriode, _setNewPeriode] = useState<Periode>({ startdato: '' })
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => {
     return p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType)
@@ -58,41 +57,24 @@ const UdekkedePerioder: React.FC<PersonManagerFormProps> = ({
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationUdekkedePeriodeProps>({}, validateUdekkedePeriode)
 
-  const setStartDato = (startdato: string, index: number) => {
+  const setPeriode = (periode: Periode, index: number) => {
     if (index < 0) {
-      _setNewStartDato(startdato.trim())
+      _setNewPeriode(periode)
       _resetValidation(namespace + '-udekkede-startdato')
+      _resetValidation(namespace + '-udekkede-sluttdato')
     } else {
-      dispatch(updateReplySed(`${target}[${index}].startdato`, startdato.trim()))
+      dispatch(updateReplySed(`${target}[${index}]`, periode))
       if (validation[namespace + '-perioderUtenforTrygdeordning' + getIdx(index) + '-startdato']) {
         dispatch(resetValidation(namespace + '-perioderUtenforTrygdeordning' + getIdx(index) + '-startdato'))
       }
-    }
-  }
-
-  const setSluttDato = (sluttdato: string, index: number) => {
-    if (index < 0) {
-      _setNewSluttDato(sluttdato.trim())
-      _resetValidation(namespace + '-udekkede-sluttdato')
-    } else {
-      const newPerioder: Array<Periode> = _.cloneDeep(perioderUtenforTrygdeordning)
-      if (sluttdato === '') {
-        delete newPerioder[index].sluttdato
-        newPerioder[index].aapenPeriodeType = 'åpen_sluttdato'
-      } else {
-        delete newPerioder[index].aapenPeriodeType
-        newPerioder[index].sluttdato = sluttdato.trim()
-      }
-      dispatch(updateReplySed(target, newPerioder))
-      if (namespace + '-perioderUtenforTrygdeordning' + getIdx(index) + '-sluttdato') {
+      if (validation[namespace + '-perioderUtenforTrygdeordning' + getIdx(index) + '-sluttdato']) {
         dispatch(resetValidation(namespace + '-perioderUtenforTrygdeordning' + getIdx(index) + '-sluttdato'))
       }
     }
   }
 
   const resetForm = () => {
-    _setNewStartDato('')
-    _setNewSluttDato('')
+    _setNewPeriode({ startdato: '' })
     _resetValidation()
   }
 
@@ -111,17 +93,8 @@ const UdekkedePerioder: React.FC<PersonManagerFormProps> = ({
   }
 
   const onAdd = () => {
-    const newPeriode: Periode = {
-      startdato: _newStartDato.trim()
-    }
-    if (_newSluttDato) {
-      newPeriode.sluttdato = _newSluttDato.trim()
-    } else {
-      newPeriode.aapenPeriodeType = 'åpen_sluttdato'
-    }
-
     const valid: boolean = performValidation({
-      periode: newPeriode,
+      periode: _newPeriode,
       perioder: perioderUtenforTrygdeordning,
       namespace,
       personName
@@ -132,7 +105,7 @@ const UdekkedePerioder: React.FC<PersonManagerFormProps> = ({
       if (_.isNil(newPerioder)) {
         newPerioder = []
       }
-      newPerioder = newPerioder.concat(newPeriode)
+      newPerioder = newPerioder.concat(_newPeriode)
       dispatch(updateReplySed(target, newPerioder))
       resetForm()
     }
@@ -146,8 +119,8 @@ const UdekkedePerioder: React.FC<PersonManagerFormProps> = ({
         ? _validation[namespace + idx + '-' + el]?.feilmelding
         : validation[namespace + idx + '-' + el]?.feilmelding
     )
-    const startdato = index < 0 ? _newStartDato : periode?.startdato
-    const sluttdato = index < 0 ? _newSluttDato : periode?.sluttdato
+
+    const _periode = index < 0 ? _newPeriode : periode
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow
@@ -155,15 +128,15 @@ const UdekkedePerioder: React.FC<PersonManagerFormProps> = ({
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
         >
           <PeriodeInput
-            key={'' + startdato + sluttdato}
-            labels={false}
+            key={'' + _periode?.startdato + _periode?.sluttdato}
             namespace={namespace + idx}
-            errorStartDato={getErrorFor(index, 'startdato')}
-            errorSluttDato={getErrorFor(index, 'sluttdato')}
-            setStartDato={(dato: string) => setStartDato(dato, index)}
-            setSluttDato={(dato: string) => setSluttDato(dato, index)}
-            valueStartDato={startdato}
-            valueSluttDato={sluttdato}
+            showLabel={false}
+            error={{
+              startdato: getErrorFor(index, 'startdato'),
+              sluttdato: getErrorFor(index, 'sluttdato')
+            }}
+            setPeriode={(p: Periode) => setPeriode(p, index)}
+            value={_periode}
           />
           <Column>
             <AddRemovePanel

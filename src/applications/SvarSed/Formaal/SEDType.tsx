@@ -50,7 +50,6 @@ const SEDType: React.FC = () => {
   ]
 
   const onSaveChangesClicked = () => {
-
     const oldSedType = (replySed as USed).sedType
     const newSedType = _sedType
 
@@ -59,7 +58,7 @@ const SEDType: React.FC = () => {
     // leaving U004 to U002 or U017 makes it lose inntekt
     // leaving U017 to U004 makes it lose rettTilYtelse, forsikring, siste ansettelsesforhold, ghrunntilopphor, periodedagpenger
     // leaving U017 to U002 makes it lose rettTilYtelse
-    let x = []
+    const x = []
     if (newSedType === 'U004' && oldSedType !== 'U004') {
       x.push(t('label:forsikringsperiode').toLowerCase())
       x.push(t('label:siste-ansettelsesforhold').toLowerCase())
@@ -73,15 +72,15 @@ const SEDType: React.FC = () => {
       x.push(t('label:inntekt').toLowerCase())
     }
 
-    let message = t('label:all-data-regarding-x-will-be-lost', {x: x.join(', ')})
+    const message = t('label:all-data-regarding-x-will-be-lost', { x: x.join(', ') })
 
     if (_.isEmpty(x)) {
-      let newReplySed: ReplySed = _.cloneDeep(replySed)
+      const newReplySed: ReplySed = _.cloneDeep(replySed)
       newReplySed.sedType = newSedType
       dispatch(setReplySed(newReplySed))
     } else {
       if (window.confirm(message)) {
-        let newReplySed: ReplySed = _.cloneDeep(replySed)
+        const newReplySed: ReplySed = _.cloneDeep(replySed)
         newReplySed.sedType = newSedType
 
         if (newSedType === 'U004' && oldSedType !== 'U004') {

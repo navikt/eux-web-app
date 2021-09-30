@@ -9,7 +9,7 @@ import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import { PensjonPeriode, Periode} from 'declarations/sed'
+import { PensjonPeriode, Periode } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -56,8 +56,7 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
   const perioderMedPensjon: Array<PensjonPeriode> = _.get(replySed, target)
   const namespace = `${parentNamespace}-withsubsidies`
 
-  const [_newStartDato, _setNewStartDato] = useState<string>('')
-  const [_newSluttDato, _setNewSluttDato] = useState<string>('')
+  const [_newPeriode, _setNewPeriode] = useState<Periode>({ startdato: '' })
   const [_newPensjonType, _setNewPensjonType] = useState<string>('')
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PensjonPeriode>((p: PensjonPeriode): string => {
@@ -72,32 +71,16 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
     label: t('el:option-trygdeordning-uførhet'), value: 'uførhet'
   }]
 
-  const setStartDato = (newDato: string, index: number) => {
+  const setPeriode = (periode: Periode, index: number) => {
     if (index < 0) {
-      _setNewStartDato(newDato.trim())
+      _setNewPeriode(periode)
       _resetValidation(namespace + '-startdato')
+      _resetValidation(namespace + '-sluttdato')
     } else {
-      dispatch(updateReplySed(`${target}[${index}].startdato`, newDato.trim()))
+      dispatch(updateReplySed(`${target}[${index}]`, periode))
       if (validation[namespace + getIdx(index) + '-startdato']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-startdato'))
       }
-    }
-  }
-
-  const setSluttDato = (sluttdato: string, index: number) => {
-    if (index < 0) {
-      _setNewSluttDato(sluttdato.trim())
-      _resetValidation(namespace + '-sluttdato')
-    } else {
-      const newPerioder: Array<PensjonPeriode> = _.cloneDeep(perioderMedPensjon)
-      if (sluttdato === '') {
-        delete newPerioder[index].periode.sluttdato
-        newPerioder[index].periode.aapenPeriodeType = 'åpen_sluttdato'
-      } else {
-        delete newPerioder[index].periode.aapenPeriodeType
-        newPerioder[index].periode.sluttdato = sluttdato.trim()
-      }
-      dispatch(updateReplySed(target, newPerioder))
       if (validation[namespace + getIdx(index) + '-sluttdato']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-sluttdato'))
       }
@@ -119,8 +102,7 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
   }
 
   const resetForm = () => {
-    _setNewStartDato('')
-    _setNewSluttDato('')
+    _setNewPeriode({ startdato: '' })
     _setNewPensjonType('')
     _resetValidation()
   }
@@ -142,15 +124,9 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
   const onAdd = () => {
     const newPensjonPeriode: PensjonPeriode = {
       pensjonstype: _newPensjonType.trim(),
-      periode: {
-        startdato: _newStartDato.trim()
-      }
+      periode: _newPeriode
     }
-    if (_newSluttDato) {
-      newPensjonPeriode.periode.sluttdato = _newSluttDato.trim()
-    } else {
-      newPensjonPeriode.periode.aapenPeriodeType = 'åpen_sluttdato'
-    }
+
     const valid: boolean = performValidation({
       pensjonPeriode: newPensjonPeriode,
       perioder: perioderMedPensjon,
@@ -163,18 +139,7 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
       if (_.isNil(newPensjonPerioder)) {
         newPensjonPerioder = []
       }
-      const newPeriode: Periode = {
-        startdato: _newStartDato
-      } as Periode
-      if (_newSluttDato) {
-        newPeriode.sluttdato = _newSluttDato
-      } else {
-        newPeriode.aapenPeriodeType = 'åpen_sluttdato'
-      }
-      newPensjonPerioder = newPensjonPerioder.concat({
-        pensjonstype: _newPensjonType,
-        periode: newPeriode
-      })
+      newPensjonPerioder = newPensjonPerioder.concat(newPensjonPeriode)
       dispatch(updateReplySed(target, newPensjonPerioder))
       resetForm()
     }
@@ -190,8 +155,7 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
         ? _validation[namespace + '-' + el]?.feilmelding
         : validation[namespace + idx + '-' + el]?.feilmelding
     )
-    const startdato = index < 0 ? _newStartDato : pensjonPeriode?.periode.startdato
-    const sluttdato = index < 0 ? _newSluttDato : pensjonPeriode?.periode.sluttdato
+    const _periode = index < 0 ? _newPeriode : pensjonPeriode?.periode
     return (
       <RepeatableRow
         className={classNames('slideInFromLeft', { new: index < 0 })}
@@ -199,14 +163,14 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
       >
         <AlignStartRow>
           <PeriodeInput
-            key={'' + startdato + sluttdato}
+            key={'' + _periode?.startdato + _periode?.sluttdato}
             namespace={namespace + idx + '-periode'}
-            errorStartDato={getErrorFor(index, 'periode-startdato')}
-            errorSluttDato={getErrorFor(index, 'periode-sluttdato')}
-            setStartDato={(dato: string) => setStartDato(dato, index)}
-            setSluttDato={(dato: string) => setSluttDato(dato, index)}
-            valueStartDato={startdato}
-            valueSluttDato={sluttdato}
+            error={{
+              startdato: getErrorFor(index, 'periode-startdato'),
+              sluttdato: getErrorFor(index, 'periode-sluttdato')
+            }}
+            setPeriode={(p: Periode) => setPeriode(p, index)}
+            value={_periode}
           />
           <Column />
         </AlignStartRow>

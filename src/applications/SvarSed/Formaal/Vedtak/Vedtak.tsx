@@ -66,10 +66,8 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
   const vedtak: Vedtak | undefined = (replySed as F002Sed).vedtak
   const namespace = `${parentNamespace}-vedtak`
 
-  const [_newPerioderStartDato, _setNewPerioderStartDato] = useState<string>('')
-  const [_newPerioderSluttDato, _setNewPerioderSluttDato] = useState<string>('')
-  const [_newVedtaksperioderStartDato, _setNewVedtaksperioderStartDato] = useState<string>('')
-  const [_newVedtaksperioderSluttDato, _setNewVedtaksperioderSluttDato] = useState<string>('')
+  const [_newPeriode, _setNewPeriode] = useState<Periode>({ startdato: '', sluttdato: '' })
+  const [_newVedtaksperioder, _setNewVedtaksperioder] = useState<Periode>({ startdato: '', sluttdato: '' })
   const [_newVedtaksperioderVedtak, _setNewVedtaksperioderVedtak] = useState<string>('')
   const [_newVedtaksperioderSkalYtelseUtbetales, _setNewVedtaksperioderSkalYtelseUtbetales] = useState<JaNei | undefined>(undefined)
 
@@ -127,32 +125,16 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
     }
   }
 
-  const setPerioderStartDato = (newDato: string, index: number) => {
+  const setPeriode = (p: Periode, index: number) => {
     if (index < 0) {
-      _setNewPerioderStartDato(newDato.trim())
+      _setNewPeriode(p)
       _perioderResetValidation(namespace + '-perioder-startdato')
+      _perioderResetValidation(namespace + '-perioder-sluttdato')
     } else {
-      dispatch(updateReplySed(`${target}.vedtaksperioder[${index}].startdato`, newDato.trim()))
+      dispatch(updateReplySed(`${target}.vedtaksperioder[${index}]`, p))
       if (validation[namespace + '-perioder' + getIdx(index) + '-startdato']) {
         dispatch(resetValidation(namespace + '-perioder' + getIdx(index) + '-startdato'))
       }
-    }
-  }
-
-  const setPerioderSluttDato = (sluttdato: string, index: number) => {
-    if (index < 0) {
-      _setNewPerioderSluttDato(sluttdato.trim())
-      _perioderResetValidation(namespace + '-perioder-sluttdato')
-    } else {
-      const newPerioder: Array<Periode> = _.cloneDeep(vedtak?.vedtaksperioder) as Array<Periode>
-      if (sluttdato === '') {
-        delete newPerioder[index].sluttdato
-        newPerioder[index].aapenPeriodeType = 'åpen_sluttdato'
-      } else {
-        delete newPerioder[index].aapenPeriodeType
-        newPerioder[index].sluttdato = sluttdato.trim()
-      }
-      dispatch(updateReplySed(`${target}.vedtaksperioder`, newPerioder))
       if (validation[namespace + '-perioder' + getIdx(index) + '-sluttdato']) {
         dispatch(resetValidation(namespace + '-perioder' + getIdx(index) + '-sluttdato'))
       }
@@ -187,32 +169,16 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
     }
   }
 
-  const setVedtaksperioderStartDato = (newDato: string, index: number, vedtaktype: string) => {
+  const setVedtaksperioder = (newPeriode: Periode, index: number, vedtaktype: string) => {
     if (index < 0) {
-      _setNewVedtaksperioderStartDato(newDato.trim())
+      _setNewVedtaksperioder(newPeriode)
       _vedtaksperioderResetValidation(namespace + '-vedtaksperioder-periode-startdato')
+      _vedtaksperioderResetValidation(namespace + '-vedtaksperioder-periode-sluttdato')
     } else {
-      dispatch(updateReplySed(`${target}.${vedtaktype}[${index}].periode.startdato`, newDato.trim()))
+      dispatch(updateReplySed(`${target}.${vedtaktype}[${index}].periode`, newPeriode))
       if (validation[namespace + '-vedtaksperioder-' + vedtaktype + getIdx(index) + '-periode-startdato']) {
         dispatch(resetValidation(namespace + '-vedtaksperioder-' + vedtaktype + getIdx(index) + '-periode-startdato'))
       }
-    }
-  }
-
-  const setVedtaksperioderSluttDato = (newDato: string, index: number, vedtaktype: string) => {
-    if (index < 0) {
-      _setNewPerioderSluttDato(newDato.trim())
-      _vedtaksperioderResetValidation(namespace + '-vedtaksperioder-perioder-sluttdato')
-    } else {
-      const newVedtaksperioder: Array<VedtakPeriode> = _.get(vedtak, vedtaktype) as Array<VedtakPeriode>
-      if (newDato === '') {
-        delete newVedtaksperioder[index].periode.sluttdato
-        newVedtaksperioder[index].periode.aapenPeriodeType = 'åpen_sluttdato'
-      } else {
-        delete newVedtaksperioder[index].periode.aapenPeriodeType
-        newVedtaksperioder[index].periode.sluttdato = newDato.trim()
-      }
-      dispatch(updateReplySed(`${target}.${vedtaktype}`, newVedtaksperioder))
       if (validation[namespace + '-vedtaksperioder-' + vedtaktype + getIdx(index) + '-periode-sluttdato']) {
         dispatch(resetValidation(namespace + '-vedtaksperioder-' + vedtaktype + getIdx(index) + '-periode-sluttdato'))
       }
@@ -240,14 +206,12 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
   }
 
   const perioderResetForm = () => {
-    _setNewPerioderStartDato('')
-    _setNewPerioderSluttDato('')
+    _setNewPeriode({ startdato: '', sluttdato: '' })
     _perioderResetValidation()
   }
 
   const vedtaksperioderResetForm = () => {
-    _setNewVedtaksperioderStartDato('')
-    _setNewVedtaksperioderSluttDato('')
+    _setNewVedtaksperioder({ startdato: '', sluttdato: '' })
     _setNewVedtaksperioderVedtak('')
     _setNewVedtaksperioderSkalYtelseUtbetales(undefined)
     _vedtaksperioderResetValidation()
@@ -283,17 +247,8 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
   }
 
   const onPeriodeAdd = () => {
-    const newPeriode: Periode = {
-      startdato: _newPerioderStartDato
-    }
-    if (_newPerioderSluttDato) {
-      newPeriode.sluttdato = _newPerioderSluttDato.trim()
-    } else {
-      newPeriode.aapenPeriodeType = 'åpen_sluttdato'
-    }
-
     const valid = perioderPerformValidation({
-      periode: newPeriode,
+      periode: _newPeriode,
       perioder: vedtak?.vedtaksperioder ?? [],
       namespace
     })
@@ -303,7 +258,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
       if (!newPerioder) {
         newPerioder = []
       }
-      newPerioder = newPerioder.concat(newPeriode)
+      newPerioder = newPerioder.concat(_newPeriode)
       dispatch(updateReplySed(`${target}.vedtaksperioder`, newPerioder))
       perioderResetForm()
     }
@@ -311,15 +266,8 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
 
   const onVedtaksperiodeAdd = () => {
     const newVedtaksperiode: VedtakPeriode = {
-      periode: {
-        startdato: _newVedtaksperioderStartDato.trim()
-      },
+      periode: _newVedtaksperioder,
       skalYtelseUtbetales: _newVedtaksperioderSkalYtelseUtbetales?.trim() as JaNei ?? ''
-    }
-    if (_newVedtaksperioderSluttDato) {
-      newVedtaksperiode.periode.sluttdato = _newVedtaksperioderSluttDato.trim()
-    } else {
-      newVedtaksperiode.periode.aapenPeriodeType = 'åpen_sluttdato'
     }
 
     if (_.isEmpty(_newVedtaksperioderVedtak)) {
@@ -358,20 +306,20 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
         ? _perioderValidation[namespace + '-perioder' + idx + '-' + el]?.feilmelding
         : validation[namespace + '-vedtaksperioder' + idx + '-' + el]?.feilmelding
     }
-    const startdato = index < 0 ? _newPerioderStartDato : periode?.startdato
-    const sluttdato = index < 0 ? _newPerioderSluttDato : periode?.sluttdato
+    const _periode = index < 0 ? _newPeriode : periode
+
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow className={classNames('slideInFromLeft')}>
           <PeriodeInput
-            key={'' + startdato + sluttdato}
+            key={'' + _periode?.startdato + _periode?.sluttdato}
             namespace={namespace + '-perioder' + getIdx(index)}
-            errorStartDato={getErrorFor(index, 'startdato')}
-            errorSluttDato={getErrorFor(index, 'sluttdato')}
-            setStartDato={(dato: string) => setPerioderStartDato(dato, index)}
-            setSluttDato={(dato: string) => setPerioderSluttDato(dato, index)}
-            valueStartDato={startdato}
-            valueSluttDato={sluttdato}
+            error={{
+              startdato: getErrorFor(index, 'startdato'),
+              sluttdato: getErrorFor(index, 'sluttdato')
+            }}
+            setPeriode={(p: Periode) => setPeriode(p, index)}
+            value={_periode}
           />
           <Column>
             <AddRemovePanel
@@ -400,21 +348,20 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
         ? _vedtaksperioderValidation[namespace + '-vedtaksperioder' + idx + '-' + el]?.feilmelding
         : validation[namespace + '-vedtaksperioder' + idx + '-' + el]?.feilmelding
     }
-    const startdato = index < 0 ? _newVedtaksperioderStartDato : vedtaksperiode?.periode.startdato
-    const sluttdato = index < 0 ? _newVedtaksperioderSluttDato : vedtaksperiode?.periode.sluttdato
+    const periode: Periode | undefined = index < 0 ? _newVedtaksperioder : vedtaksperiode?.periode
     // @ts-ignore
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow className={classNames('slideInFromLeft')}>
           <PeriodeInput
-            key={'' + startdato + sluttdato}
+            key={'' + periode?.startdato + '-' + periode?.sluttdato}
             namespace={namespace + '-vedtaksperioder' + getIdx(index) + '-periode'}
-            errorStartDato={getErrorFor(index, 'periode-startdato')}
-            errorSluttDato={getErrorFor(index, 'periode-sluttdato')}
-            setStartDato={(dato: string) => setVedtaksperioderStartDato(dato, index, vedtaktype)}
-            setSluttDato={(dato: string) => setVedtaksperioderSluttDato(dato, index, vedtaktype)}
-            valueStartDato={startdato}
-            valueSluttDato={sluttdato}
+            error={{
+              startdato: getErrorFor(index, 'periode-startdato'),
+              sluttdato: getErrorFor(index, 'periode-sluttdato')
+            }}
+            setPeriode={(p: Periode) => setVedtaksperioder(p, index, vedtaktype)}
+            value={periode}
           />
         </AlignStartRow>
         <VerticalSeparatorDiv />

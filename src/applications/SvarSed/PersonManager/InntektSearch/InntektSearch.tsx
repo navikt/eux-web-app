@@ -1,3 +1,4 @@
+import { Periode } from 'declarations/sed'
 import {
   validateInntektSearch,
   ValidationInntektSearchProps
@@ -34,8 +35,7 @@ const InntektSearch = ({
 }: InntektSearchProps) => {
   const { t } = useTranslation()
 
-  const [_searchStartDato, _setSearchStartDato] = useState<string>('')
-  const [_searchSluttDato, _setSearchSluttDato] = useState<string>('')
+  const [_searchPeriode, _setSearchPeriode] = useState<Periode>({ startdato: '' })
   const [_filter, _setFilter] = useState<string | undefined>(undefined)
   const [_validation, _resetValidation, performValidation] =
     useValidation<ValidationInntektSearchProps>({}, validateInntektSearch)
@@ -47,13 +47,9 @@ const InntektSearch = ({
     { label: t('el:option-inntektsfilter-DAGPENGER'), value: 'DAGPENGER' }
   ]
 
-  const setSearchStartDato = (startdato: string) => {
-    _setSearchStartDato(startdato.trim())
+  const setSearchPeriode = (p: Periode) => {
+    _setSearchPeriode(p)
     _resetValidation(namespace + '-startdato')
-  }
-
-  const setSearchSluttDato = (sluttdato: string) => {
-    _setSearchSluttDato(sluttdato.trim())
     _resetValidation(namespace + '-sluttdato')
   }
 
@@ -63,27 +59,27 @@ const InntektSearch = ({
 
   const onInntektSearchClicked = () => {
     const valid = performValidation({
-      fom: _searchStartDato,
-      tom: _searchSluttDato,
+      fom: _searchPeriode?.startdato,
+      tom: _searchPeriode?.sluttdato ?? '',
       inntektsliste: _filter,
       namespace: namespace
     })
     if (valid) {
-      onInntektSearch(fnr, _searchStartDato ?? '2015-01', _searchSluttDato, _filter ?? '')
+      onInntektSearch(fnr, _searchPeriode?.startdato ?? '2015-01', _searchPeriode?.sluttdato ?? '', _filter ?? '')
     }
   }
 
   return (
     <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
       <PeriodeInput
-        key={'' + _searchStartDato + _searchSluttDato}
+        key={'' + _searchPeriode?.startdato + _searchPeriode?.sluttdato}
         namespace={namespace}
-        errorStartDato={_validation[namespace + '-startdato']?.feilmelding}
-        errorSluttDato={_validation[namespace + '-sluttdato']?.feilmelding}
-        setStartDato={setSearchStartDato}
-        setSluttDato={setSearchSluttDato}
-        valueStartDato={_searchStartDato ?? ''}
-        valueSluttDato={_searchSluttDato ?? ''}
+        error={{
+          startdato: _validation[namespace + '-startdato']?.feilmelding,
+          sluttdato: _validation[namespace + '-sluttdato']?.feilmelding
+        }}
+        setPeriode={setSearchPeriode}
+        value={_searchPeriode}
       />
       <Column>
         <Select

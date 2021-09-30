@@ -301,7 +301,7 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
       </Row>
       <VerticalSeparatorDiv size='2' />
       <Attachments
-        fnr={fnr!}
+        fnr={fnr}
         highContrast={highContrast}
         onAttachmentsChanged={(attachments) => setAttachments(attachments)}
       />

@@ -63,8 +63,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-familierelasjon`
 
   const [_newRelasjonType, _setNewRelasjonType] = useState<RelasjonType | undefined>(undefined)
-  const [_newSluttDato, _setNewSluttDato] = useState<string>('')
-  const [_newStartDato, _setNewStartDato] = useState<string>('')
+  const [_newPeriode, _setNewPeriode] = useState<Periode>({ startdato: '' })
   const [_newAnnenRelasjonType, _setNewAnnenRelasjonType] = useState<string>('')
   const [_newAnnenRelasjonPersonNavn, _setNewAnnenRelasjonPersonNavn] = useState<string>('')
   const [_newAnnenRelasjonDato, _setNewAnnenRelasjonDato] = useState<string>('')
@@ -90,32 +89,16 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const setStartDato = (startdato: string, index: number) => {
+  const setPeriode = (periode: Periode, index: number) => {
     if (index < 0) {
-      _setNewStartDato(startdato.trim())
+      _setNewPeriode(periode)
       _resetValidation(namespace + '-periode-startdato')
+      _resetValidation(namespace + '-periode-sluttdato')
     } else {
-      dispatch(updateReplySed(`${target}[${index}].periode.startdato`, startdato.trim()))
+      dispatch(updateReplySed(`${target}[${index}].periode`, periode))
       if (validation[namespace + getIdx(index) + '-periode-startdato']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-periode-startdato'))
       }
-    }
-  }
-
-  const setSluttDato = (sluttdato: string, index: number) => {
-    if (index < 0) {
-      _setNewSluttDato(sluttdato.trim())
-      _resetValidation(namespace + '-periode-sluttdato')
-    } else {
-      const newFamilieRelasjoner = _.cloneDeep(familierelasjoner)
-      if (sluttdato === '') {
-        delete newFamilieRelasjoner[index].periode.sluttdato
-        newFamilieRelasjoner[index].periode.aapenPeriodeType = 'åpen_sluttdato'
-      } else {
-        delete newFamilieRelasjoner[index].periode.aapenPeriodeType
-        newFamilieRelasjoner[index].periode.sluttdato = sluttdato.trim()
-      }
-      dispatch(updateReplySed(target, newFamilieRelasjoner))
       if (validation[namespace + getIdx(index) + '-periode-sluttdato']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-periode-sluttdato'))
       }
@@ -172,8 +155,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
 
   const resetForm = () => {
     _setNewRelasjonType(undefined)
-    _setNewSluttDato('')
-    _setNewStartDato('')
+    _setNewPeriode({ startdato: '' })
     _setNewAnnenRelasjonType('')
     _setNewAnnenRelasjonPersonNavn('')
     _setNewAnnenRelasjonDato('')
@@ -196,19 +178,10 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
   }
 
   const onAdd = () => {
-    const newPeriode: Periode = {
-      startdato: _newStartDato.trim()
-    }
-    if (_newSluttDato) {
-      newPeriode.sluttdato = _newSluttDato.trim()
-    } else {
-      newPeriode.aapenPeriodeType = 'åpen_sluttdato'
-    }
-
     const newFamilierelasjon: FamilieRelasjon = {
       relasjonType: _newRelasjonType?.trim() as RelasjonType,
       relasjonInfo: '',
-      periode: newPeriode
+      periode: _newPeriode
     }
 
     if (_newRelasjonType === 'ANNEN' as RelasjonType) {
@@ -243,8 +216,8 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
         ? _validation[namespace + '-' + el]?.feilmelding
         : validation[namespace + idx + '-' + el]?.feilmelding
     )
-    const startdato = index < 0 ? _newStartDato : familierelasjon?.periode.startdato
-    const sluttdato = index < 0 ? _newSluttDato : familierelasjon?.periode.sluttdato
+    const _periode = index < 0 ? _newPeriode : familierelasjon?.periode
+
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow
@@ -269,14 +242,14 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
             />
           </Column>
           <PeriodeInput
-            key={'' + startdato + sluttdato}
+            key={'' + _periode?.startdato + _periode?.sluttdato}
             namespace={namespace + idx + '-periode'}
-            errorStartDato={getErrorFor(index, 'periode-startdato')}
-            errorSluttDato={getErrorFor(index, 'periode-sluttdato')}
-            setStartDato={(dato: string) => setStartDato(dato, index)}
-            setSluttDato={(dato: string) => setSluttDato(dato, index)}
-            valueStartDato={startdato}
-            valueSluttDato={sluttdato}
+            error={{
+              startdato: getErrorFor(index, 'periode-startdato'),
+              sluttdato: getErrorFor(index, 'periode-sluttdato')
+            }}
+            setPeriode={(p: Periode) => setPeriode(p, index)}
+            value={_periode}
           />
           <Column>
             <AddRemovePanel

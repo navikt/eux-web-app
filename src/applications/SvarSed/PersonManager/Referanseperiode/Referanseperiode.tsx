@@ -30,23 +30,11 @@ const Referanseperiode: React.FC<PersonManagerFormProps> = ({
   const anmodningsperiode: Periode = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-referanseperiode`
 
-  const setStartDato = (startdato: string) => {
-    dispatch(updateReplySed(`${target}.startdato`, startdato.trim()))
+  const setPeriode = (periode: Periode) => {
+    dispatch(updateReplySed(`${target}`, periode))
     if (validation[namespace + '-startdato']) {
       dispatch(resetValidation(namespace + '-startdato'))
     }
-  }
-
-  const setSluttDato = (sluttdato: string) => {
-    const newAnmodningsperiode: Periode = _.cloneDeep(anmodningsperiode)
-    if (sluttdato === '') {
-      delete newAnmodningsperiode.sluttdato
-      newAnmodningsperiode.aapenPeriodeType = 'åpen_sluttdato'
-    } else {
-      delete newAnmodningsperiode.aapenPeriodeType
-      newAnmodningsperiode.sluttdato = sluttdato.trim()
-    }
-    dispatch(updateReplySed(target, newAnmodningsperiode))
     if (validation[namespace + '-sluttdato']) {
       dispatch(resetValidation(namespace + '-sluttdato'))
     }
@@ -62,12 +50,12 @@ const Referanseperiode: React.FC<PersonManagerFormProps> = ({
         <PeriodeInput
           key={'' + anmodningsperiode?.startdato + anmodningsperiode?.sluttdato}
           namespace={namespace}
-          errorStartDato={validation[namespace + '-startdato']?.feilmelding}
-          errorSluttDato={validation[namespace + '-sluttdato']?.feilmelding}
-          setStartDato={setStartDato}
-          setSluttDato={setSluttDato}
-          valueStartDato={anmodningsperiode?.startdato ?? ''}
-          valueSluttDato={anmodningsperiode?.sluttdato ?? ''}
+          error={{
+            startdato: validation[namespace + '-startdato']?.feilmelding,
+            sluttdato: validation[namespace + '-sluttdato']?.feilmelding
+          }}
+          setPeriode={setPeriode}
+          value={anmodningsperiode}
         />
         <Column />
       </AlignStartRow>

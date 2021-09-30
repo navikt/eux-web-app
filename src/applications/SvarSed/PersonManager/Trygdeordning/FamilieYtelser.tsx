@@ -60,8 +60,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
   }
   const namespace = `${parentNamespace}-${personID}-trygdeordninger`
 
-  const [_newSluttDato, _setNewSluttDato] = useState<string>('')
-  const [_newStartDato, _setNewStartDato] = useState<string>('')
+  const [_newPeriode, _setNewPeriode] = useState<Periode>({ startdato: '' })
   const [_newCategory, _setNewCategory] = useState<SedCategory | undefined>(undefined)
   const [_newPensjonsType, _setNewPensjonsType] = useState<PensjonsType | undefined>(undefined)
 
@@ -95,57 +94,24 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
 
   const getPensjonsTypeOption = (value: string | undefined | null) => _.find(selectPensjonsTypeOptions, s => s.value === value)
 
-  const setStartDato = (startdato: string, index: number, newSedCategory: SedCategory | null) => {
+  const setPeriode = (periode: Periode, index: number, newSedCategory: SedCategory | null) => {
     let suffixnamespace: string = ''
     if (newSedCategory === 'perioderMedPensjon') {
       suffixnamespace = '-periode'
     }
     if (index < 0) {
-      _setNewStartDato(startdato.trim())
+      _setNewPeriode(periode)
       _resetValidation(namespace + '-familieYtelse-startdato')
-    } else {
-      const newPerioder: Array<Periode | PensjonPeriode> = _.cloneDeep(perioder[newSedCategory!])
-      if (newSedCategory === 'perioderMedPensjon') {
-        (newPerioder[index] as PensjonPeriode).periode.startdato = startdato.trim()
-      } else {
-        (newPerioder[index] as Periode).startdato = startdato.trim()
-      }
-      dispatch(updateReplySed(`${personID}.${newSedCategory}`, newPerioder))
-      if (validation[namespace + '-' + newSedCategory + getIdx(index) + suffixnamespace + '-startdato']) {
-        dispatch(resetValidation(namespace + '-' + newSedCategory + getIdx(index) + suffixnamespace + '-startdato'))
-      }
-    }
-  }
-
-  const setSluttDato = (sluttdato: string, index: number, newSedCategory: SedCategory |null) => {
-    let suffixnamespace: string = ''
-    if (newSedCategory === 'perioderMedPensjon') {
-      suffixnamespace = '-periode'
-    }
-    if (index < 0) {
-      _setNewSluttDato(sluttdato.trim())
       _resetValidation(namespace + '-familieYtelse-sluttdato')
     } else {
+      // const newPerioder: Array<Periode | PensjonPeriode> = _.cloneDeep(perioder[newSedCategory!])
       if (newSedCategory === 'perioderMedPensjon') {
-        const newPerioder: Array<PensjonPeriode> = _.cloneDeep(perioder[newSedCategory]) as Array<PensjonPeriode>
-        if (sluttdato === '') {
-          delete newPerioder[index].periode.sluttdato
-          newPerioder[index].periode.aapenPeriodeType = 'åpen_sluttdato'
-        } else {
-          delete newPerioder[index].periode.aapenPeriodeType
-          newPerioder[index].periode.sluttdato = sluttdato.trim()
-        }
-        dispatch(updateReplySed(`${personID}.${newSedCategory}`, newPerioder))
+        dispatch(updateReplySed(`${personID}.${newSedCategory}.periode`, periode))
       } else {
-        const newPerioder: Array<Periode> = _.cloneDeep(perioder[newSedCategory!]) as Array<Periode>
-        if (sluttdato === '') {
-          delete newPerioder[index].sluttdato
-          newPerioder[index].aapenPeriodeType = 'åpen_sluttdato'
-        } else {
-          delete newPerioder[index].aapenPeriodeType
-          newPerioder[index].sluttdato = sluttdato.trim()
-        }
-        dispatch(updateReplySed(`${personID}.${newSedCategory}`, newPerioder))
+        dispatch(updateReplySed(`${personID}.${newSedCategory}`, periode))
+      }
+      if (validation[namespace + '-' + newSedCategory + getIdx(index) + suffixnamespace + '-startdato']) {
+        dispatch(resetValidation(namespace + '-' + newSedCategory + getIdx(index) + suffixnamespace + '-startdato'))
       }
       if (validation[namespace + newSedCategory + getIdx(index) + suffixnamespace + '-sluttdato']) {
         dispatch(resetValidation(namespace + newSedCategory + getIdx(index) + suffixnamespace + '-sluttdato'))
@@ -174,8 +140,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
   }
 
   const resetForm = () => {
-    _setNewStartDato('')
-    _setNewSluttDato('')
+    _setNewPeriode({ startdato: '' })
     _setNewCategory(undefined)
     _setNewPensjonsType(undefined)
     _resetValidation()
@@ -210,21 +175,9 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
 
     if (_newCategory === 'perioderMedPensjon') {
       (newPeriode as PensjonPeriode).pensjonstype = _newPensjonsType!;
-      (newPeriode as PensjonPeriode).periode = {
-        startdato: _newStartDato.trim()
-      }
-      if (_newSluttDato) {
-        (newPeriode as PensjonPeriode).periode.sluttdato = _newSluttDato.trim()
-      } else {
-        (newPeriode as PensjonPeriode).periode.aapenPeriodeType = 'åpen_sluttdato'
-      }
+      (newPeriode as PensjonPeriode).periode = _newPeriode
     } else {
-      (newPeriode as Periode).startdato = _newStartDato.trim()
-      if (_newSluttDato) {
-        (newPeriode as Periode).sluttdato = _newSluttDato.trim()
-      } else {
-        (newPeriode as Periode).aapenPeriodeType = 'åpen_sluttdato'
-      }
+      (newPeriode as Periode) = _newPeriode
     }
 
     const valid: boolean = performValidation({
@@ -259,16 +212,11 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
         : validation[namespace + idx + '-' + el]?.feilmelding
     )
 
-    const startdato = index < 0
-      ? _newStartDato
-      : (sedCategory === 'perioderMedPensjon'
-          ? (periode as PensjonPeriode)?.periode.startdato
-          : (periode as Periode)?.startdato)
-    const sluttdato = index < 0
-      ? _newSluttDato
-      : (sedCategory === 'perioderMedPensjon'
-          ? (periode as PensjonPeriode)?.periode.sluttdato
-          : (periode as Periode)?.sluttdato)
+    const _periode = index < 0
+      ? _newPeriode
+      : sedCategory === 'perioderMedPensjon'
+        ? (periode as PensjonPeriode)?.periode
+        : (periode as Periode)
 
     return (
       <RepeatableRow
@@ -277,15 +225,15 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
       >
         <AlignStartRow>
           <PeriodeInput
-            key={'' + startdato + sluttdato}
-            labels={false}
+            key={'' + _periode.startdato + _periode.sluttdato}
+            showLabel={false}
             namespace={namespace + idx}
-            errorStartDato={getErrorFor(index, 'startdato')}
-            errorSluttDato={getErrorFor(index, 'sluttdato')}
-            setStartDato={(dato: string) => setStartDato(dato, index, sedCategory)}
-            setSluttDato={(dato: string) => setSluttDato(dato, index, sedCategory)}
-            valueStartDato={startdato}
-            valueSluttDato={sluttdato}
+            error={{
+              startdato: getErrorFor(index, 'startdato'),
+              sluttdato: getErrorFor(index, 'sluttdato')
+            }}
+            setPeriode={(p: Periode) => setPeriode(p, index, sedCategory)}
+            value={_periode}
           />
           <Column>
             {sedCategory !== 'perioderMedPensjon' && index >= 0 && (

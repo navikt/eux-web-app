@@ -442,8 +442,8 @@ const PersonManager: React.FC = () => {
         {open && options
           .filter(o => {
             return _.isString(o.type)
-            ? replySed.sedType.startsWith(o.type)
-            : o.type.indexOf(replySed.sedType) >= 0
+              ? replySed.sedType.startsWith(o.type)
+              : o.type.indexOf(replySed.sedType) >= 0
           })
           .filter(o => personId.startsWith('barn')
             ? o.barn

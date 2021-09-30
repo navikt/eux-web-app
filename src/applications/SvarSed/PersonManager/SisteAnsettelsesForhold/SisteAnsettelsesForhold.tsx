@@ -72,7 +72,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
       _setNewBeloep(newBeløp.trim())
       _resetValidation(namespace + '-beloep')
       if (_.isNil(_newValuta)) {
-        setValuta({value: 'NOK'} as Currency, index)
+        setValuta({ value: 'NOK' } as Currency, index)
       }
     } else {
       dispatch(updateReplySed(`${target}.utbetalinger[${index}].beloep`, newBeløp.trim()))
@@ -81,7 +81,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
       }
 
       if (_.isNil(sisteAnsettelsesForhold.utbetalinger[index]?.valuta)) {
-        setValuta({value: 'NOK'} as Currency, index)
+        setValuta({ value: 'NOK' } as Currency, index)
       }
     }
   }

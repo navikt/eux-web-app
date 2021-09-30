@@ -1,21 +1,37 @@
+import classNames from 'classnames'
 import Input from 'components/Forms/Input'
+import { Periode, PeriodeType } from 'declarations/sed'
+import _ from 'lodash'
 import moment from 'moment'
+import { Checkbox } from 'nav-frontend-skjema'
 import { Column } from 'nav-hoykontrast'
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
+
+const WrapperDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  height: 2.3rem;
+  min-width: 5rem;
+  align-items: center;
+`
 
 export interface PeriodProps {
-  errorStartDato: string | null | undefined
-  errorSluttDato: string | null | undefined
+  error: {
+    startdato: string | null | undefined
+    sluttdato: string | null | undefined
+  }
   index?: number
-  labels?: boolean
-  labelStartDato ?: string
-  labelSluttDato ?: string
+  label?: {
+    startdato?: string
+    sluttdato?: string
+  }
+  periodeType?: PeriodeType
   namespace: string
-  setStartDato: (dato: string) => void
-  setSluttDato: (dato: string) => void
-  valueStartDato: string | undefined
-  valueSluttDato: string | undefined
+  setPeriode: (periode: Periode) => void
+  showLabel?: boolean
+  value: Periode | null | undefined
 }
 
 export const toFinalDateFormat = (date: string | undefined): string => {
@@ -32,58 +48,82 @@ export const toUIDateFormat = (date: string | undefined): string | undefined => 
 }
 
 const PeriodeInput = ({
-  errorStartDato,
-  errorSluttDato,
-  labels = true,
-  labelStartDato,
-  labelSluttDato,
+  error,
+  label = {},
   namespace,
-  setStartDato,
-  setSluttDato,
-  valueStartDato,
-  valueSluttDato
+  periodeType = 'withcheckbox',
+  setPeriode,
+  showLabel = true,
+  value
 }: PeriodProps) => {
   const { t } = useTranslation()
 
+  const [_periode, _setPeriode] = useState<Periode | null | undefined>(value)
+
   const onStartDatoChanged = (startDato: string) => {
-    const date = toFinalDateFormat(startDato)
-    setStartDato(date)
+    const newPeriode: Periode = _.cloneDeep(_periode) ?? {} as Periode
+    newPeriode.startdato = toFinalDateFormat(startDato)
+    _setPeriode(newPeriode)
+    setPeriode(newPeriode)
   }
 
   const onEndDatoChanged = (sluttDato: string) => {
-    const date = toFinalDateFormat(sluttDato)
-    setSluttDato(date)
+    const newPeriode: Periode = _.cloneDeep(_periode) ?? {} as Periode
+    newPeriode.sluttdato = toFinalDateFormat(sluttDato)
+    if (_.isEmpty(newPeriode.sluttdato)) {
+      newPeriode.aapenPeriodeType = 'åpen_sluttdato'
+    } else {
+      delete newPeriode.aapenPeriodeType
+    }
+    _setPeriode(newPeriode)
+    setPeriode(newPeriode)
+  }
+
+  const onCheckboxChanged = (checked: boolean) => {
+    const newPeriode: Periode = _.cloneDeep(_periode) ?? {} as Periode
+    newPeriode.aapenPeriodeType = checked ? 'ukjent_sluttdato' : 'åpen_sluttdato'
+    _setPeriode(newPeriode)
+    setPeriode(newPeriode)
   }
 
   return (
     <>
       <Column>
         <Input
-          ariaLabel={labelStartDato || t('label:startdato')}
-          feil={errorStartDato}
+          ariaLabel={label?.startdato ?? t('label:startdato')}
+          feil={error.startdato}
           id='startdato'
-          key={namespace + '-startdato-' + valueStartDato}
-          label={labels ? labelStartDato || t('label:startdato') + ' *' : ''}
+          key={namespace + '-startdato-' + _periode?.startdato}
+          label={showLabel ? label?.startdato ?? t('label:startdato') + ' *' : ''}
           namespace={namespace}
           onChanged={onStartDatoChanged}
           placeholder={t('el:placeholder-date-default')}
           required
-          value={toUIDateFormat(valueStartDato) ?? ''}
+          value={toUIDateFormat(_periode?.startdato) ?? ''}
         />
       </Column>
       <Column>
         <Input
-          ariaLabel={labelSluttDato || t('label:sluttdato')}
-          feil={errorSluttDato}
+          ariaLabel={label?.sluttdato || t('label:sluttdato')}
+          feil={error.sluttdato}
           id='sluttdato'
-          key={namespace + '-sluttdato-' + valueSluttDato}
-          label={labels ? labelSluttDato || t('label:sluttdato') : ''}
+          key={namespace + '-sluttdato-' + _periode?.sluttdato}
+          label={showLabel ? label?.startdato ?? t('label:sluttdato') : ''}
           namespace={namespace}
           onChanged={onEndDatoChanged}
           placeholder={t('el:placeholder-date-default')}
-          value={toUIDateFormat(valueSluttDato) ?? ''}
+          value={toUIDateFormat(_periode?.sluttdato) ?? ''}
         />
       </Column>
+      <WrapperDiv className={classNames('slideInFromLeft', { nolabel: showLabel })}>
+        {periodeType === 'withcheckbox' && _.isEmpty(_periode?.sluttdato) && (
+          <Checkbox
+            checked={_periode?.aapenPeriodeType === 'ukjent_sluttdato'}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => onCheckboxChanged(e.target.checked)}
+            label={t('label:ukjent')}
+          />
+        )}
+      </WrapperDiv>
     </>
   )
 }

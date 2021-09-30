@@ -46,8 +46,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
 
   const landkoderList: Array<Kodeverk> | undefined = useSelector((state: State): Array<Kodeverk> | undefined => (state.app.landkoder))
 
-  const [_newAnmodningsperioderStartDato, setNewAnmodningsperioderStartDato] = useState<string>('')
-  const [_newAnmodningsperioderSluttDato, setNewAnmodningsperioderSluttDato] = useState<string>('')
+  const [_newAnmodningsperioder, _setNewAnmodningsperioder] = useState<Periode>({ startdato: '' })
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType))
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
@@ -167,54 +166,26 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
     }
   }
 
-  const setAnmodningsperiodeStartDato = (newDate: string) => {
-    dispatch(updateReplySed('anmodningsperiode', newDate))
+  const setAnmodningsperiode = (periode: Periode) => {
+    dispatch(updateReplySed('anmodningsperiode', periode))
     if (validation[namespace + '-anmodningsperiode-stardato']) {
       dispatch(resetValidation(namespace + '-anmodningsperiode-stardato'))
     }
-  }
-
-  const setAnmodningsperiodeSluttDato = (newDate: string) => {
-    const newAnmodningsperiode = _.cloneDeep((replySed as USed).anmodningsperiode)
-    if (newDate === '') {
-      delete newAnmodningsperiode.sluttdato
-      newAnmodningsperiode.aapenPeriodeType = 'åpen_sluttdato'
-    } else {
-      delete newAnmodningsperiode.aapenPeriodeType
-      newAnmodningsperiode.sluttdato = newDate.trim()
-    }
-    dispatch(updateReplySed('anmodningsperiode', newAnmodningsperiode))
     if (validation[namespace + '-anmodningsperiode-sluttdato']) {
       dispatch(resetValidation(namespace + '-anmodningsperiode-sluttdato'))
     }
   }
 
-  const setAnmodningsperioderStartDato = (newDate: string, index: number) => {
+  const setAnmodningsperioder = (newPeriode: Periode, index: number) => {
     if (index < 0) {
-      setNewAnmodningsperioderStartDato(newDate.trim())
+      _setNewAnmodningsperioder(newPeriode)
       _resetValidation(namespace + '-anmodningsperioder-stardato')
+      _resetValidation(namespace + '-anmodningsperioder-sluttdato')
     } else {
-      dispatch(updateReplySed(`anmodningsperioder[${index}]`, newDate))
+      dispatch(updateReplySed(`anmodningsperioder[${index}]`, newPeriode))
       if (validation[namespace + '-anmodningsperioder' + getIdx(index) + '-stardato']) {
         dispatch(resetValidation(namespace + '-anmodningsperiode' + getIdx(index) + '-stardato'))
       }
-    }
-  }
-
-  const setAnmodningsperioderSluttDato = (newDate: string, index: number) => {
-    if (index < 0) {
-      setNewAnmodningsperioderSluttDato(newDate.trim())
-      _resetValidation(namespace + '-anmodningsperioder-sluttdato')
-    } else {
-      const newAnmodningsperioder = _.cloneDeep((replySed as FSed).anmodningsperioder)
-      if (newDate === '') {
-        delete newAnmodningsperioder[index].sluttdato
-        newAnmodningsperioder[index].aapenPeriodeType = 'åpen_sluttdato'
-      } else {
-        delete newAnmodningsperioder[index].aapenPeriodeType
-        newAnmodningsperioder[index].sluttdato = newDate.trim()
-      }
-      dispatch(updateReplySed('anmodningsperioder', newAnmodningsperioder))
       if (validation[namespace + '-anmodningsperioder' + getIdx(index) + '-sluttdato']) {
         dispatch(resetValidation(namespace + '-anmodningsperioder' + getIdx(index) + '-sluttdato'))
       }
@@ -222,8 +193,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
   }
 
   const resetForm = () => {
-    setNewAnmodningsperioderStartDato('')
-    setNewAnmodningsperioderSluttDato('')
+    _setNewAnmodningsperioder({ startdato: '' })
     _resetValidation()
   }
 
@@ -264,17 +234,8 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
   }
 
   const onAdd = () => {
-    const newPeriode: Periode = {
-      startdato: _newAnmodningsperioderStartDato.trim()
-    }
-    if (_newAnmodningsperioderSluttDato) {
-      newPeriode.sluttdato = _newAnmodningsperioderSluttDato.trim()
-    } else {
-      newPeriode.aapenPeriodeType = 'åpen_sluttdato'
-    }
-
     const valid: boolean = performValidation({
-      anmodningsperiode: newPeriode,
+      anmodningsperiode: _newAnmodningsperioder,
       namespace: namespace
     })
     if (valid) {
@@ -282,7 +243,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       if (_.isNil(newPerioder)) {
         newPerioder = []
       }
-      newPerioder = newPerioder.concat(newPeriode)
+      newPerioder = newPerioder.concat(_newAnmodningsperioder)
       dispatch(updateReplySed('anmodningsperioder', newPerioder))
       resetForm()
     }
@@ -319,20 +280,19 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
         ? _validation[namespace + '-anmodningsperioder' + idx + '-' + el]?.feilmelding
         : validation[namespace + '-anmodningsperioder' + idx + '-' + el]?.feilmelding
     }
-    const startdato = index < 0 ? _newAnmodningsperioderStartDato : periode?.startdato
-    const sluttdato = index < 0 ? _newAnmodningsperioderSluttDato : periode?.sluttdato
+    const _periode = index < 0 ? _newAnmodningsperioder : periode
     return (
       <>
         <AlignStartRow>
           <PeriodeInput
-            key={'' + startdato + sluttdato}
+            key={'' + _periode?.startdato + _periode?.sluttdato}
             namespace={namespace + '-perioder' + getIdx(index)}
-            errorStartDato={getErrorFor(index, 'startdato')}
-            errorSluttDato={getErrorFor(index, 'sluttdato')}
-            setStartDato={(dato: string) => setAnmodningsperioderStartDato(dato, index)}
-            setSluttDato={(dato: string) => setAnmodningsperioderSluttDato(dato, index)}
-            valueStartDato={startdato}
-            valueSluttDato={sluttdato}
+            error={{
+              startdato: getErrorFor(index, 'startdato'),
+              sluttdato: getErrorFor(index, 'sluttdato')
+            }}
+            setPeriode={(p: Periode) => setAnmodningsperioder(p, index)}
+            value={_periode}
           />
           <Column>
             <AddRemovePanel
@@ -453,12 +413,12 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
                 <PeriodeInput
                   key={'' + (replySed as USed).anmodningsperiode.startdato + (replySed as USed).anmodningsperiode.sluttdato}
                   namespace={namespace + '-anmodningsperiode'}
-                  errorStartDato={validation[namespace + '-anmodningsperiode-startdato']?.feilmelding}
-                  errorSluttDato={validation[namespace + '-anmodningsperiode-sluttdato']?.feilmelding}
-                  setStartDato={setAnmodningsperiodeStartDato}
-                  setSluttDato={setAnmodningsperiodeSluttDato}
-                  valueStartDato={(replySed as USed).anmodningsperiode.startdato ?? ''}
-                  valueSluttDato={(replySed as USed).anmodningsperiode.sluttdato ?? ''}
+                  error={{
+                    startdato: validation[namespace + '-anmodningsperiode-startdato']?.feilmelding,
+                    sluttdato: validation[namespace + '-anmodningsperiode-sluttdato']?.feilmelding
+                  }}
+                  setPeriode={setAnmodningsperiode}
+                  value={(replySed as USed).anmodningsperiode}
                 />
               </AlignStartRow>
               <VerticalSeparatorDiv size='0.5' />

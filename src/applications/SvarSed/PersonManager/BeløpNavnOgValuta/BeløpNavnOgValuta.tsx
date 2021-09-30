@@ -6,7 +6,7 @@ import Select from 'components/Forms/Select'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import { Utbetalingshyppighet, Ytelse, YtelseNavn } from 'declarations/sed'
+import { Periode, Utbetalingshyppighet, Ytelse, YtelseNavn } from 'declarations/sed'
 import { Currency } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
@@ -68,7 +68,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
       dispatch(resetValidation(namespace + '-beloep'))
     }
     if (_.isNil(ytelse?.valuta)) {
-      setValuta({value: 'NOK'} as Currency)
+      setValuta({ value: 'NOK' } as Currency)
     }
   }
 
@@ -79,17 +79,18 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const setStartDato = (newDato: string) => {
-    dispatch(updateReplySed(`${target}.startdato`, newDato.trim()))
-    if (validation[namespace + '-startdato']) {
-      dispatch(resetValidation(namespace + '-startdato'))
+  const setPeriode = (p: Periode) => {
+    if (ytelse.startdato !== p.startdato) {
+      dispatch(updateReplySed(`${target}.startdato`, p.startdato))
+      if (validation[namespace + '-startdato']) {
+        dispatch(resetValidation(namespace + '-startdato'))
+      }
     }
-  }
-
-  const setSluttDato = (newDato: string) => {
-    dispatch(updateReplySed(`${target}.sluttdato`, newDato.trim()))
-    if (validation[namespace + '-sluttdato']) {
-      dispatch(resetValidation(namespace + '-sluttdato'))
+    if (ytelse.sluttdato !== p.sluttdato) {
+      dispatch(updateReplySed(`${target}.sluttdato`, p.sluttdato))
+      if (validation[namespace + '-sluttdato']) {
+        dispatch(resetValidation(namespace + '-sluttdato'))
+      }
     }
   }
 
@@ -192,12 +193,15 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
         <PeriodeInput
           key={'' + ytelse?.startdato + ytelse?.sluttdato}
           namespace={namespace}
-          errorStartDato={validation[namespace + '-startdato']?.feilmelding}
-          errorSluttDato={validation[namespace + '-sluttdato']?.feilmelding}
-          setStartDato={setStartDato}
-          setSluttDato={setSluttDato}
-          valueStartDato={ytelse?.startdato ?? ''}
-          valueSluttDato={ytelse?.sluttdato ?? ''}
+          error={{
+            startdato: validation[namespace + '-startdato']?.feilmelding,
+            sluttdato: validation[namespace + '-sluttdato']?.feilmelding
+          }}
+          setPeriode={setPeriode}
+          value={{
+            startdato: ytelse.startdato,
+            sluttdato: ytelse.sluttdato
+          }}
         />
         <Column />
       </AlignStartRow>

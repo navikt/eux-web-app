@@ -63,8 +63,7 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
   const perioder: Array<PeriodeUtenForsikring> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${target}`
 
-  const [_newStartDato, _setNewStartDato] = useState<string>('')
-  const [_newSluttDato, _setNewSluttDato] = useState<string>('')
+  const [_newPeriode, _setNewPeriode] = useState<Periode>({ startdato: '' })
   const [_newOrgnr, _setNewOrgnr] = useState<string>('')
   const [_newNavn, _setNewNavn] = useState<string>('')
   const [_newGate, _setNewGate] = useState<string>('')
@@ -109,32 +108,16 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
     }
   }
 
-  const setStartDato = (startdato: string, index: number) => {
+  const setPeriode = (periode: Periode, index: number) => {
     if (index < 0) {
-      _setNewStartDato(startdato.trim())
+      _setNewPeriode(periode)
       _resetValidation(namespace + '-startdato')
+      _resetValidation(namespace + '-sluttdato')
     } else {
-      dispatch(updateReplySed(`${target}[${index}].periode.startdato`, startdato.trim()))
+      dispatch(updateReplySed(`${target}[${index}].periode`, periode))
       if (validation[namespace + getIdx(index) + '-startdato']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-startdato'))
       }
-    }
-  }
-
-  const setSluttDato = (sluttdato: string, index: number) => {
-    if (index < 0) {
-      _setNewSluttDato(sluttdato.trim())
-      _resetValidation(namespace + '-sluttdato')
-    } else {
-      const newPerioder: Array<PeriodeUtenForsikring> = _.cloneDeep(perioder) as Array<PeriodeUtenForsikring>
-      if (sluttdato === '') {
-        delete newPerioder[index].periode.sluttdato
-        newPerioder[index].periode.aapenPeriodeType = 'åpen_sluttdato'
-      } else {
-        delete newPerioder[index].periode.aapenPeriodeType
-        newPerioder[index].periode.sluttdato = sluttdato.trim()
-      }
-      dispatch(updateReplySed(target, newPerioder))
       if (validation[namespace + getIdx(index) + '-sluttdato']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-sluttdato'))
       }
@@ -252,8 +235,7 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
   const resetForm = () => {
     _setNewNavn('')
     _setNewOrgnr('')
-    _setNewSluttDato('')
-    _setNewStartDato('')
+    _setNewPeriode({ startdato: '' })
     _setNewRegion('')
     _setNewBygning('')
     _setNewPostnummer('')
@@ -281,17 +263,8 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
   }
 
   const onAdd = () => {
-    const newPeriode: Periode = {
-      startdato: _newStartDato
-    }
-    if (_newSluttDato) {
-      newPeriode.sluttdato = _newSluttDato
-    } else {
-      newPeriode.aapenPeriodeType = 'åpen_sluttdato'
-    }
-
     const newPeriodeUtenForsikring: PeriodeUtenForsikring = {
-      periode: newPeriode,
+      periode: _newPeriode,
       typeTrygdeforhold: typeTrygdeforhold,
       arbeidsgiver: {
         navn: _newNavn.trim(),
@@ -334,8 +307,7 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
         ? _validation[namespace + '-' + el]?.feilmelding
         : validation[namespace + idx + '-' + el]?.feilmelding
     )
-    const startdato = index < 0 ? _newStartDato : periodeUtenForsikring?.periode?.startdato
-    const sluttdato = index < 0 ? _newSluttDato : periodeUtenForsikring?.periode?.sluttdato
+    const _periode = index < 0 ? _newPeriode : periodeUtenForsikring?.periode
 
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
@@ -344,14 +316,14 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
         >
           <PeriodeInput
-            key={'' + startdato + sluttdato}
+            key={'' + _periode?.startdato + _periode?.sluttdato}
             namespace={namespace}
-            errorStartDato={getErrorFor(index, 'startdato')}
-            errorSluttDato={getErrorFor(index, 'sluttdato')}
-            setStartDato={(dato: string) => setStartDato(dato, index)}
-            setSluttDato={(dato: string) => setSluttDato(dato, index)}
-            valueStartDato={startdato}
-            valueSluttDato={sluttdato}
+            error={{
+              startdato: getErrorFor(index, 'startdato'),
+              sluttdato: getErrorFor(index, 'sluttdato')
+            }}
+            setPeriode={(p: Periode) => setPeriode(p, index)}
+            value={_periode}
           />
           <Column />
         </AlignStartRow>

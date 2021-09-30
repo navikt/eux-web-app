@@ -89,8 +89,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
   const [_arbeidssøkStartDato, _setArbeidssøkStartDato] = useState<string>('')
   const [_arbeidssøkSluttDato, _setArbeidssøkSluttDato] = useState<string>('')
 */
-  const [_newStartDato, _setNewStartDato] = useState<string>('')
-  const [_newSluttDato, _setNewSluttDato] = useState<string>('')
+  const [_newPeriode, _setNewPeriode] = useState<Periode>({ startdato: '' })
   const [_newOrgnr, _setNewOrgnr] = useState<string>('')
   const [_newNavn, _setNewNavn] = useState<string>('')
   const [_newGate, _setNewGate] = useState<string>('')
@@ -225,8 +224,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
   const resetArbeidsgiverForm = () => {
     _setNewNavn('')
     _setNewOrgnr('')
-    _setNewSluttDato('')
-    _setNewStartDato('')
+    _setNewPeriode({ startdato: '' })
     _setNewBy('')
     _setNewGate('')
     _setNewPostnummer('')
@@ -241,14 +239,10 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
     _setSeeNewPeriodeMedForsikring(!_seeNewPeriodeMedForsikring)
   }
 
-  const onArbeidsgiverStartDatoChanged = (dato: string) => {
+  const onArbeidsgiverPeriodeChanged = (p: Periode) => {
     _resetValidationPeriodeMedForsikring(namespace + '-startdato')
-    _setNewStartDato(dato)
-  }
-
-  const onArbeidsgiverSluttDatoChanged = (dato: string) => {
     _resetValidationPeriodeMedForsikring(namespace + '-sluttdato')
-    _setNewSluttDato(dato)
+    _setNewPeriode(p)
   }
 
   const onArbeidsgiversOrgnrChanged = (newOrg: string) => {
@@ -292,14 +286,6 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
   }
 
   const onPeriodeMedForsikringAdd = () => {
-    const newPeriode: Periode = {
-      startdato: _newStartDato
-    }
-    if (_newSluttDato) {
-      newPeriode.sluttdato = _newSluttDato
-    } else {
-      newPeriode.aapenPeriodeType = 'åpen_sluttdato'
-    }
     const newPeriodeMedForsikring: PeriodeMedForsikring = {
       arbeidsgiver: {
         identifikator: [{
@@ -316,7 +302,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
           region: _newRegion
         }
       },
-      periode: newPeriode,
+      periode: _newPeriode,
       typeTrygdeforhold: typeTrygdeforhold
     }
 
@@ -342,14 +328,14 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft'>
         <PeriodeInput
-          key={'' + _newStartDato + _newSluttDato}
+          key={'' + _newPeriode.startdato + _newPeriode.sluttdato}
           namespace={namespace}
-          errorStartDato={_validationPeriodeMedForsikring[namespace + '-startdato']?.feilmelding}
-          errorSluttDato={_validationPeriodeMedForsikring[namespace + '-sluttdato']?.feilmelding}
-          setStartDato={onArbeidsgiverStartDatoChanged}
-          setSluttDato={onArbeidsgiverSluttDatoChanged}
-          valueStartDato={_newStartDato}
-          valueSluttDato={_newSluttDato}
+          error={{
+            startdato: _validationPeriodeMedForsikring[namespace + '-startdato']?.feilmelding,
+            sluttdato: _validationPeriodeMedForsikring[namespace + '-sluttdato']?.feilmelding
+          }}
+          setPeriode={onArbeidsgiverPeriodeChanged}
+          value={_newPeriode}
         />
         <Column />
       </AlignStartRow>

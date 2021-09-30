@@ -1,5 +1,6 @@
 import { getArbeidsperioder, updateArbeidsgivere } from 'actions/arbeidsgiver'
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
@@ -69,8 +70,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
   const [_addedArbeidsperioder, setAddedArbeidsperioder] = useState<Array<PeriodeMedForsikring>>([])
 
   // arbeidsgivere
-  const [_newArbeidsgiverStartDato, _setNewArbeidsgiverStartDato] = useState<string>('')
-  const [_newArbeidsgiverSluttDato, _setNewArbeidsgiverSluttDato] = useState<string>('')
+  const [_newArbeidsgiverPeriode, _setNewArbeidsgiverPeriode] = useState<Periode>({ startdato: '' })
   const [_newArbeidsgiversOrgnr, _setNewArbeidsgiversOrgnr] = useState<string>('')
   const [_newArbeidsgiversNavn, _setNewArbeidsgiversNavn] = useState<string>('')
   const [_seeNewArbeidsgiver, _setSeeNewArbeidsgiver] = useState<boolean>(false)
@@ -78,8 +78,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
     useValidation<ValidationArbeidsgiverProps>({}, validateArbeidsgiver)
 
   // periode
-  const [_newPeriodeStartDato, _setNewPeriodeStartDato] = useState<string>('')
-  const [_newPeriodeSluttDato, _setNewPeriodeSluttDato] = useState<string>('')
+  const [_newPeriode, _setNewPeriode] = useState<Periode>({ startdato: '' })
   const [_seeNewPeriode, _setSeeNewPeriode] = useState<boolean>(false)
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode) => p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType))
   const [_validationPeriode, _resetValidationPeriode, performValidationPeriode] =
@@ -213,28 +212,16 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
   const resetArbeidsgiverForm = () => {
     _setNewArbeidsgiversNavn('')
     _setNewArbeidsgiversOrgnr('')
-    _setNewArbeidsgiverSluttDato('')
-    _setNewArbeidsgiverStartDato('')
+    _setNewArbeidsgiverPeriode({ startdato: '' })
     _resetValidationArbeidsgiver()
   }
 
   const resetPeriodeForm = () => {
-    _setNewPeriodeSluttDato('')
-    _setNewPeriodeStartDato('')
+    _setNewPeriode({ startdato: '' })
     _resetValidationPeriode()
   }
 
   const onArbeidsgiverAdd = () => {
-    const newPeriode: Periode = {
-      startdato: _newArbeidsgiverStartDato
-    }
-
-    if (_newArbeidsgiverSluttDato === '') {
-      newPeriode.aapenPeriodeType = 'åpen_sluttdato'
-    } else {
-      newPeriode.sluttdato = _newArbeidsgiverSluttDato
-    }
-
     const newArbeidsgiver: PeriodeMedForsikring = {
       arbeidsgiver: {
         navn: _newArbeidsgiversNavn,
@@ -243,7 +230,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
           id: _newArbeidsgiversOrgnr
         }]
       },
-      periode: newPeriode,
+      periode: _newArbeidsgiverPeriode,
       typeTrygdeforhold: ''
     }
 
@@ -262,23 +249,14 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
   }
 
   const onPeriodeAdd = () => {
-    const newPeriode: Periode = {
-      startdato: _newPeriodeStartDato.trim()
-    }
-    if (_newPeriodeSluttDato) {
-      newPeriode.sluttdato = _newPeriodeSluttDato.trim()
-    } else {
-      newPeriode.aapenPeriodeType = 'åpen_sluttdato'
-    }
-
     const valid: boolean = performValidationPeriode({
-      periode: newPeriode,
+      periode: _newPeriode,
       perioder: perioderSomAnsatt,
       namespace: namespace,
       personName: personName
     })
     if (valid) {
-      addPeriode(newPeriode)
+      addPeriode(_newPeriode)
       resetPeriodeForm()
     }
   }
@@ -293,14 +271,10 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
     _setSeeNewPeriode(!_seeNewPeriode)
   }
 
-  const onArbeidsgiverStartDatoChanged = (dato: string) => {
+  const onArbeidsgiverPeriodeChanged = (periode: Periode) => {
     _resetValidationArbeidsgiver(namespace + '-arbeidsgiver-startdato')
-    _setNewArbeidsgiverStartDato(dato)
-  }
-
-  const onArbeidsgiverSluttDatoChanged = (dato: string) => {
     _resetValidationArbeidsgiver(namespace + '-arbeidsgiver-sluttdato')
-    _setNewArbeidsgiverSluttDato(dato)
+    _setNewArbeidsgiverPeriode(periode)
   }
 
   const onArbeidsgiversOrgnrChanged = (newOrg: string) => {
@@ -313,37 +287,18 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
     _setNewArbeidsgiversNavn(newName)
   }
 
-  const setPeriodeStartDato = (startdato: string, index: number) => {
+  const setPeriode = (periode: Periode, index: number) => {
     if (index < 0) {
-      _setNewPeriodeStartDato(startdato.trim())
+      _setNewPeriode(periode)
       _resetValidationPeriode(namespace + '-periode-startdato')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].startdato`, startdato.trim()))
-      if (_validationPeriode[namespace + getIdx(index) + '-periode-startdato']) {
-        _resetValidationPeriode(namespace + getIdx(index) + '-periode-startdato')
-      }
-    }
-  }
-
-  const setPeriodeSluttDato = (sluttdato: string, index: number) => {
-    if (index < 0) {
-      _setNewPeriodeSluttDato(sluttdato.trim())
       _resetValidationPeriode(namespace + '-periode-sluttdato')
     } else {
-      let newPeriode: Array<Periode> | undefined = _.cloneDeep(perioderSomAnsatt)
-      if (!newPeriode) {
-        newPeriode = []
+      dispatch(updateReplySed(`${target}[${index}]`, periode))
+      if (validation[namespace + getIdx(index) + '-periode-startdato']) {
+        dispatch(resetValidation(namespace + getIdx(index) + '-periode-startdato'))
       }
-      if (sluttdato === '') {
-        delete newPeriode[index].sluttdato
-        newPeriode[index].aapenPeriodeType = 'åpen_sluttdato'
-      } else {
-        delete newPeriode[index].aapenPeriodeType
-        newPeriode[index].sluttdato = sluttdato.trim()
-      }
-      dispatch(updateReplySed(target, newPeriode))
-      if (_validationPeriode[namespace + getIdx(index) + '-periode-sluttdato']) {
-        _resetValidationPeriode(namespace + getIdx(index) + '-periode-sluttdato')
+      if (validation[namespace + getIdx(index) + '-periode-luttdato']) {
+        dispatch(resetValidation(namespace + getIdx(index) + '-periode-sluttdato'))
       }
     }
   }
@@ -356,14 +311,14 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft'>
         <PeriodeInput
-          key={'' + _newArbeidsgiverStartDato + _newArbeidsgiverSluttDato}
+          key={'' + _newArbeidsgiverPeriode.startdato + _newArbeidsgiverPeriode.sluttdato}
           namespace={namespace}
-          errorStartDato={_validationArbeidsgiver[namespace + '-arbeidsgiver-startdato']?.feilmelding}
-          errorSluttDato={_validationArbeidsgiver[namespace + '-arbeidsgiver-sluttdato']?.feilmelding}
-          setStartDato={onArbeidsgiverStartDatoChanged}
-          setSluttDato={onArbeidsgiverSluttDatoChanged}
-          valueStartDato={_newArbeidsgiverStartDato}
-          valueSluttDato={_newArbeidsgiverSluttDato}
+          error={{
+            startdato: _validationArbeidsgiver[namespace + '-arbeidsgiver-startdato']?.feilmelding,
+            sluttdato: _validationArbeidsgiver[namespace + '-arbeidsgiver-sluttdato']?.feilmelding
+          }}
+          setPeriode={onArbeidsgiverPeriodeChanged}
+          value={_newArbeidsgiverPeriode}
         />
         <Column />
       </AlignStartRow>
@@ -423,14 +378,14 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft'>
         <PeriodeInput
-          key={'' + _newPeriodeStartDato + _newPeriodeSluttDato}
+          key={'' + _newPeriode.startdato + _newPeriode.sluttdato}
           namespace={namespace}
-          errorStartDato={_validationPeriode[namespace + '-periode-startdato']?.feilmelding}
-          errorSluttDato={_validationPeriode[namespace + '-periode-sluttdato']?.feilmelding}
-          setStartDato={(dato: string) => setPeriodeStartDato(dato, -1)}
-          setSluttDato={(dato: string) => setPeriodeSluttDato(dato, -1)}
-          valueStartDato={_newPeriodeStartDato}
-          valueSluttDato={_newPeriodeSluttDato}
+          error={{
+            startdato: _validationPeriode[namespace + '-periode-startdato']?.feilmelding,
+            sluttdato: _validationPeriode[namespace + '-periode-sluttdato']?.feilmelding
+          }}
+          setPeriode={(p: Periode) => setPeriode(p, -1)}
+          value={_newPeriode}
         />
         <Column />
       </AlignStartRow>
@@ -482,12 +437,12 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
             <PeriodeInput
               key={'' + (item.item as Periode).startdato + (item.item as Periode).sluttdato}
               namespace={namespace + '-periode' + idx}
-              errorStartDato={getErrorFor('startdato')}
-              errorSluttDato={getErrorFor('sluttdato')}
-              setStartDato={(dato: string) => setPeriodeStartDato(dato, item.index!)}
-              setSluttDato={(dato: string) => setPeriodeSluttDato(dato, item.index!)}
-              valueStartDato={(item.item as Periode).startdato}
-              valueSluttDato={(item.item as Periode).sluttdato}
+              error={{
+                startdato: getErrorFor('startdato'),
+                sluttdato: getErrorFor('sluttdato')
+              }}
+              setPeriode={(p: Periode) => setPeriode(p, item.index!)}
+              value={(item.item as Periode)}
             />
             <Column>
               <AddRemovePanel

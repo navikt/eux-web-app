@@ -95,8 +95,10 @@ const ArbeidsgiverBox = ({
 
   const [_arbeidsgiversNavn, setArbeidsgiversNavn] = useState<string>(arbeidsgiver.arbeidsgiver.navn ?? '')
   const [_arbeidsgiversOrgnr, setArbeidsgiversOrgnr] = useState<string>(getOrgnr(arbeidsgiver) ?? '')
-  const [_startDato, setStartDato] = useState<string>(arbeidsgiver.periode.startdato ?? '')
-  const [_sluttDato, setSluttDato] = useState<string>(arbeidsgiver.periode.sluttdato ?? '')
+  const [_arbeidsgiverPeriode, setArbeidsgiversPeriode] = useState<Periode>({
+    startdato: arbeidsgiver.periode.startdato ?? '',
+    sluttdato: arbeidsgiver.periode.sluttdato ?? ''
+  })
 
   // for includeAddress
   const [_gate, setGate] = useState<string>(arbeidsgiver.arbeidsgiver?.adresse?.gate ?? '')
@@ -118,14 +120,14 @@ const ArbeidsgiverBox = ({
     setArbeidsgiversOrgnr(newOrgnr)
   }
 
-  const onStartDatoChanged = (newDato: string) => {
-    resetValidation(_namespace + '-startdato')
-    setStartDato(newDato)
-  }
-
-  const onSluttDatoChanged = (newDato: string) => {
-    resetValidation(_namespace + '-sluttdato')
-    setSluttDato(newDato)
+  const onPeriodeChanged = (newPeriode: Periode) => {
+    if (_arbeidsgiverPeriode.startdato !== newPeriode.startdato) {
+      resetValidation(_namespace + '-startdato')
+    }
+    if (_arbeidsgiverPeriode.sluttdato !== newPeriode.sluttdato) {
+      resetValidation(_namespace + '-sluttdato')
+    }
+    setArbeidsgiversPeriode(newPeriode)
   }
 
   const onGateChanged = (newGate: string) => {
@@ -159,15 +161,6 @@ const ArbeidsgiverBox = ({
   }
 
   const onSaveEditButtonClicked = () => {
-    const newPeriode: Periode = {
-      startdato: _startDato
-    }
-    if (_sluttDato === '') {
-      newPeriode.aapenPeriodeType = 'åpen_sluttdato'
-    } else {
-      newPeriode.sluttdato = _sluttDato
-    }
-
     const newArbeidsgiver: PeriodeMedForsikring = {
       arbeidsgiver: {
         identifikator: [{
@@ -176,7 +169,7 @@ const ArbeidsgiverBox = ({
         }],
         navn: _arbeidsgiversNavn
       },
-      periode: newPeriode,
+      periode: _arbeidsgiverPeriode,
       typeTrygdeforhold: typeTrygdeforhold
     } as PeriodeMedForsikring
 
@@ -210,8 +203,7 @@ const ArbeidsgiverBox = ({
     setBeforeEditingVersion(_.cloneDeep(arbeidsgiver))
     setArbeidsgiversOrgnr(_arbeidsgiversOrgnr || '')
     setArbeidsgiversNavn(_arbeidsgiversNavn || '')
-    setStartDato(_startDato)
-    setSluttDato(_sluttDato)
+    setArbeidsgiversPeriode(_arbeidsgiverPeriode)
     if (includeAddress) {
       setGate(_gate)
       setPostnummer(_postnummer)
@@ -287,14 +279,15 @@ const ArbeidsgiverBox = ({
                     <VerticalSeparatorDiv size='0.5' />
                     <Row>
                       <PeriodeInput
-                        key={'' + _startDato + _sluttDato}
+                        key={'' + _arbeidsgiverPeriode.startdato + _arbeidsgiverPeriode.sluttdato}
                         namespace={_namespace}
-                        errorStartDato={_validation[_namespace + '-startdato']?.feilmelding}
-                        errorSluttDato={_validation[_namespace + '-sluttdato']?.feilmelding}
-                        setStartDato={onStartDatoChanged}
-                        setSluttDato={onSluttDatoChanged}
-                        valueStartDato={_startDato}
-                        valueSluttDato={_sluttDato}
+                        error={{
+                          startdato: _validation[_namespace + '-startdato']?.feilmelding,
+                          sluttdato: _validation[_namespace + '-sluttdato']?.feilmelding
+                        }}
+                        setPeriode={onPeriodeChanged}
+                        value={_arbeidsgiverPeriode}
+                        periodeType='simple'
                       />
                     </Row>
                   </>
@@ -302,10 +295,10 @@ const ArbeidsgiverBox = ({
                 : (
                   <div>
                     <Normaltekst>
-                      {t('label:startdato')}:&nbsp;{toUIDateFormat(_startDato)}
+                      {t('label:startdato')}:&nbsp;{toUIDateFormat(_arbeidsgiverPeriode.startdato)}
                     </Normaltekst>
                     <Normaltekst>
-                      {t('label:sluttdato')}:&nbsp;{toUIDateFormat(_sluttDato)}
+                      {t('label:sluttdato')}:&nbsp;{toUIDateFormat(_arbeidsgiverPeriode.sluttdato)}
                     </Normaltekst>
                   </div>
                   )}

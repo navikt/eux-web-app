@@ -58,8 +58,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
 
   const [_newRelasjon, _setNewRelasjon] = useState<BarnRelasjon | undefined>(undefined)
   const [_newRelasjonType, _setNewRelasjonType] = useState<BarnRelasjonType | undefined>(undefined)
-  const [_newStartDato, _setNewStartDato] = useState<string | undefined>(undefined)
-  const [_newSluttDato, _setNewSluttDato] = useState<string | undefined>(undefined)
+  const [_newPeriode, _setNewPeriode] = useState<Periode>({ startdato: '' })
   const [_newErDeltForeldreansvar, _setNewErDeltForeldreansvar] = useState<JaNei | undefined>(undefined)
   const [_newQuestion1, _setNewQuestion1] = useState<JaNei | undefined>(undefined)
   const [_newQuestion2, _setNewQuestion2] = useState<JaNei | undefined>(undefined)
@@ -105,32 +104,16 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const setStartDato = (startdato: string, index: number) => {
+  const setPeriode = (periode: Periode, index: number) => {
     if (index < 0) {
-      _setNewStartDato(startdato.trim())
+      _setNewPeriode(periode)
       _resetValidation(namespace + '-periode-startdato')
+      _resetValidation(namespace + '-periode-sluttdato')
     } else {
-      dispatch(updateReplySed(`${target}[${index}].periode.startdato`, startdato.trim()))
+      dispatch(updateReplySed(`${target}[${index}].periode`, periode))
       if (validation[namespace + getIdx(index) + '-periode-startdato']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-periode-startdato'))
       }
-    }
-  }
-
-  const setSluttDato = (sluttdato: string, index: number) => {
-    if (index < 0) {
-      _setNewSluttDato(sluttdato.trim())
-      _resetValidation(namespace + '-periode-sluttdato')
-    } else {
-      const newBarnetilhoerighet = _.cloneDeep(barnetilhoerigheter) as Array<Barnetilhoerighet>
-      if (sluttdato === '') {
-        delete newBarnetilhoerighet[index].periode.sluttdato
-        newBarnetilhoerighet[index].periode.aapenPeriodeType = 'åpen_sluttdato'
-      } else {
-        delete newBarnetilhoerighet[index].periode.aapenPeriodeType
-        newBarnetilhoerighet[index].periode.sluttdato = sluttdato.trim()
-      }
-      dispatch(updateReplySed(target, newBarnetilhoerighet))
       if (validation[namespace + getIdx(index) + '-periode-sluttdato']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-periode-sluttdato'))
       }
@@ -200,8 +183,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
   const resetForm = () => {
     _setNewRelasjon(undefined)
     _setNewRelasjonType(undefined)
-    _setNewStartDato('')
-    _setNewSluttDato('')
+    _setNewPeriode({ startdato: '' })
     _setNewErDeltForeldreansvar(undefined)
     _setNewQuestion1(undefined)
     _setNewQuestion2(undefined)
@@ -225,16 +207,6 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
   }
 
   const onAdd = () => {
-    const newPeriode: Periode = {
-      // @ts-ignore
-      startdato: _newStartDato?.trim()
-    }
-    if (_newSluttDato) {
-      newPeriode.sluttdato = _newSluttDato.trim()
-    } else {
-      newPeriode.aapenPeriodeType = 'åpen_sluttdato'
-    }
-
     const newBarnetilhoerighet: Barnetilhoerighet = {
       // @ts-ignore
       borIBrukersHushold: _newQuestion1, // @ts-ignore
@@ -244,7 +216,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
       erDeltForeldreansvar: _newErDeltForeldreansvar, // @ts-ignore
       relasjonTilPerson: _newRelasjon, // @ts-ignore
       relasjonType: _newRelasjonType,
-      periode: newPeriode
+      periode: _newPeriode
     }
 
     const valid: boolean = performValidation({
@@ -273,8 +245,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
         ? _validation[namespace + '-' + el]?.feilmelding
         : validation[namespace + idx + '-' + el]?.feilmelding
     )
-    const startdato = index < 0 ? _newStartDato : barnetilhoerighet?.periode.startdato
-    const sluttdato = index < 0 ? _newSluttDato : barnetilhoerighet?.periode.sluttdato
+    const _periode = index < 0 ? _newPeriode : barnetilhoerighet?.periode
 
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
@@ -337,14 +308,14 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
         <VerticalSeparatorDiv />
         <Row>
           <PeriodeInput
-            key={'' + startdato + sluttdato}
+            key={'' + _periode?.startdato + _periode?.sluttdato}
             namespace={namespace + idx + '-periode'}
-            errorStartDato={getErrorFor(index, 'periode-startdato')}
-            errorSluttDato={getErrorFor(index, 'periode-sluttdato')}
-            setStartDato={(dato: string) => setStartDato(dato, index)}
-            setSluttDato={(dato: string) => setSluttDato(dato, index)}
-            valueStartDato={startdato}
-            valueSluttDato={sluttdato}
+            error={{
+              startdato: getErrorFor(index, 'periode-startdato'),
+              sluttdato: getErrorFor(index, 'periode-sluttdato')
+            }}
+            setPeriode={(p: Periode) => setPeriode(p, index)}
+            value={_periode}
           />
           <Column />
         </Row>

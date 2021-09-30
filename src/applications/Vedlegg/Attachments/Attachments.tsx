@@ -10,7 +10,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 export interface AttachmentsProps {
-  fnr: string
+  fnr: string | undefined
   highContrast: boolean
   onAttachmentsChanged: (items: JoarkBrowserItems) => void
 }
@@ -50,6 +50,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
       </label>
       <VerticalSeparatorDiv />
       <HighContrastKnapp
+        disabled={_.isNil(fnr)}
         onClick={() => setAttachmentsTableVisible(!_attachmentsTableVisible)}
       >
         {t('label:vis-vedlegg-tabell')}
@@ -57,7 +58,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
       <VerticalSeparatorDiv />
       {_attachmentsTableVisible && (
         <SEDAttachmentModal
-          fnr={fnr}
+          fnr={fnr!}
           highContrast={highContrast}
           onModalClose={() => setAttachmentsTableVisible(false)}
           onFinishedSelection={onJoarkAttachmentsChanged}

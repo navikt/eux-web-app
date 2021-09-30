@@ -100,10 +100,10 @@ const Tema: React.FC = () => {
   })) ?? []
 
   useEffect(() => {
-    if (fagsaker === undefined && !gettingFagsaker && !_.isEmpty(_tema)) {
+    if (fagsaker === undefined && !_.isNil(fnr) && !gettingFagsaker && !_.isEmpty(_tema)) {
       dispatch(getFagsaker(fnr, 'HZ', _tema))
     }
-  }, [fagsaker, gettingFagsaker, _tema])
+  }, [fagsaker, gettingFagsaker, fnr, _tema])
 
   return (
 

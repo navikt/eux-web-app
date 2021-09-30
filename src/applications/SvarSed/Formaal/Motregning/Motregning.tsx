@@ -17,7 +17,7 @@ import {
   BarnaEllerFamilie,
   F002Sed,
   Motregning as IMotregning,
-  NavnOgBetegnelse, ReplySed, Utbetalingshyppighet
+  NavnOgBetegnelse, Periode, ReplySed, Utbetalingshyppighet
 } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
@@ -212,7 +212,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
     if (_barnaEllerFamilie === 'barna' as BarnaEllerFamilie) {
       Object.keys(_barnaList).forEach(barnaName => {
         _.set(newReplySed, `${_barnaNameKeys[barnaName].key}.motregning.beloep`, newBeløp.trim())
-        let valuta = _.get(newReplySed, `${_barnaNameKeys[barnaName].key}.motregning.valuta`)
+        const valuta = _.get(newReplySed, `${_barnaNameKeys[barnaName].key}.motregning.valuta`)
         if (_.isNil(valuta)) {
           _.set(newReplySed, `${_barnaNameKeys[barnaName].key}.motregning.valuta`, 'NOK')
         }
@@ -222,7 +222,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
     if (_barnaEllerFamilie === 'familie' as BarnaEllerFamilie) {
       dispatch(updateReplySed('familie.motregning.beloep', newBeløp.trim()))
       if (_.isNil(replySed.familie.motregning.valuta)) {
-        setValuta({value: 'NOK'} as Currency)
+        setValuta({ value: 'NOK' } as Currency)
       }
     }
     if (validation[namespace + '-beloep']) {
@@ -246,32 +246,22 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
     }
   }
 
-  const setStartDato = (newDato: string) => {
+  const setPeriode = (periode: Periode) => {
     const newReplySed = _.cloneDeep(replySed)
     if (_barnaEllerFamilie === 'barna' as BarnaEllerFamilie) {
       Object.keys(_barnaList).forEach(barnaName => {
-        _.set(newReplySed, `${_barnaNameKeys[barnaName].key}.motregning.startdato`, newDato.trim())
+        _.set(newReplySed, `${_barnaNameKeys[barnaName].key}.motregning.startdato`, periode.startdato)
+        _.set(newReplySed, `${_barnaNameKeys[barnaName].key}.motregning.sluttdato`, periode.sluttdato)
         dispatch(setReplySed(newReplySed))
       })
     }
     if (_barnaEllerFamilie === 'familie' as BarnaEllerFamilie) {
-      dispatch(updateReplySed('familie.motregning.startdato', newDato.trim()))
+      _.set(newReplySed, 'familie.motregning.startdato', periode.startdato)
+      _.set(newReplySed, 'familie.motregning.sluttdato', periode.sluttdato)
+      dispatch(setReplySed(newReplySed))
     }
     if (validation[namespace + '-startdato']) {
       dispatch(resetValidation(namespace + '-startdato'))
-    }
-  }
-
-  const setSluttDato = (newDato: string) => {
-    const newReplySed = _.cloneDeep(replySed)
-    if (_barnaEllerFamilie === 'barna' as BarnaEllerFamilie) {
-      Object.keys(_barnaList).forEach(barnaName => {
-        _.set(newReplySed, `${_barnaNameKeys[barnaName].key}.motregning.sluttdato`, newDato.trim())
-        dispatch(setReplySed(newReplySed))
-      })
-    }
-    if (_barnaEllerFamilie === 'familie' as BarnaEllerFamilie) {
-      dispatch(updateReplySed('familie.motregning.sluttdato', newDato.trim()))
     }
     if (validation[namespace + '-sluttdato']) {
       dispatch(resetValidation(namespace + '-sluttdato'))
@@ -617,14 +607,17 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
         <PeriodeInput
           key={'' + currentMotregning()?.startdato + currentMotregning()?.sluttdato}
           namespace={namespace}
-          errorStartDato={validation[namespace + '-startdato']?.feilmelding}
-          errorSluttDato={validation[namespace + '-startdato']?.feilmelding}
-          labelStartDato={t('label:startdato') + ' (' + t('label:innvilgelse').toLowerCase() + ')'}
-          labelSluttDato={t('label:sluttdato') + ' (' + t('label:innvilgelse').toLowerCase() + ')'}
-          setStartDato={setStartDato}
-          setSluttDato={setSluttDato}
-          valueStartDato={currentMotregning()?.startdato}
-          valueSluttDato={currentMotregning()?.sluttdato}
+          error={{
+            startdato: validation[namespace + '-startdato']?.feilmelding,
+            sluttdato: validation[namespace + '-startdato']?.feilmelding
+          }}
+          label={{
+            startdato: t('label:startdato') + ' (' + t('label:innvilgelse').toLowerCase() + ')',
+            sluttdato: t('label:sluttdato') + ' (' + t('label:innvilgelse').toLowerCase() + ')'
+          }}
+          periodeType='simple'
+          setPeriode={setPeriode}
+          value={currentMotregning()}
         />
         <Column />
       </AlignStartRow>

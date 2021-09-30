@@ -49,29 +49,16 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
     return undefined
   })
 
-  const setStartDato = (startdato: string) => {
-    dispatch(updateReplySed(`${target}.periode.startdato`, startdato.trim()))
-    if (validation[namespace + '-periode-startdato']) {
+  const setPeriode = (periode: Periode) => {
+    if (rettTilYtelse?.periode.startdato !== periode.startdato &&
+      validation[namespace + '-periode-startdato']) {
       dispatch(resetValidation(namespace + '-periode-startdato'))
     }
-  }
-
-  const setSluttDato = (sluttdato: string) => {
-    let newRettTilYtelse: Periode | undefined = _.cloneDeep(rettTilYtelse?.periode)
-    if (!newRettTilYtelse) {
-      newRettTilYtelse = {} as Periode
-    }
-    if (sluttdato === '') {
-      delete newRettTilYtelse.sluttdato
-      newRettTilYtelse.aapenPeriodeType = 'åpen_sluttdato'
-    } else {
-      delete newRettTilYtelse.aapenPeriodeType
-      newRettTilYtelse.sluttdato = sluttdato.trim()
-    }
-    dispatch(updateReplySed(`${target}.periode`, newRettTilYtelse))
-    if (validation[namespace + '-periode-sluttdato']) {
+    if (rettTilYtelse?.periode.sluttdato !== periode.sluttdato &&
+      validation[namespace + '-periode-sluttdato']) {
       dispatch(resetValidation(namespace + '-periode-sluttdato'))
     }
+    dispatch(updateReplySed(`${target}.periode`, periode))
   }
 
   const setRettTilStonad = (rettTilStonad: JaNei) => {
@@ -131,7 +118,7 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
                 label={t('label:ja')}
                 onClick={() => setRettTilStonad('ja')}
               />
-              <HorizontalSeparatorDiv size='2' />
+              ,              <HorizontalSeparatorDiv size='2' />
               <HighContrastRadio
                 name={namespace + '-retttilstønad'}
                 checked={_rettTilStonad === 'nei'}
@@ -210,12 +197,12 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
         <PeriodeInput
           key={'' + rettTilYtelse?.periode?.startdato + rettTilYtelse?.periode?.sluttdato}
           namespace={namespace}
-          errorStartDato={validation[namespace + '-periode-startdato']?.feilmelding}
-          errorSluttDato={validation[namespace + '-periode-sluttdato']?.feilmelding}
-          setStartDato={setStartDato}
-          setSluttDato={setSluttDato}
-          valueStartDato={rettTilYtelse?.periode?.startdato ?? ''}
-          valueSluttDato={rettTilYtelse?.periode?.sluttdato ?? ''}
+          error={{
+            startdato: validation[namespace + '-periode-startdato']?.feilmelding,
+            sluttdato: validation[namespace + '-periode-sluttdato']?.feilmelding
+          }}
+          setPeriode={setPeriode}
+          value={rettTilYtelse?.periode}
         />
         <Column />
       </AlignStartRow>
