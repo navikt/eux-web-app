@@ -22,35 +22,37 @@ const ArbeidsgiverSøk: React.FC<ArbeidsgiverSøkProps> = ({
   const { t } = useTranslation()
   return (
     <FlexEndDiv>
-    <HighContrastKnapp
-      disabled={gettingArbeidsperioder || _.isNil(fnr)}
-      spinner={gettingArbeidsperioder}
-      onClick={getArbeidsperioder}
-    >
-      <Search />
-      <HorizontalSeparatorDiv size='0.5' />
-      {gettingArbeidsperioder
-        ? t('message:loading-searching')
-        : t('el:button-search-for-x', { x: t('label:arbeidsgiver').toLowerCase() })}
-    </HighContrastKnapp>
+      <HighContrastKnapp
+        disabled={gettingArbeidsperioder || _.isNil(fnr)}
+        spinner={gettingArbeidsperioder}
+        onClick={getArbeidsperioder}
+      >
+        <Search />
+        <HorizontalSeparatorDiv size='0.5' />
+        {gettingArbeidsperioder
+          ? t('message:loading-searching')
+          : t('el:button-search-for-x', { x: t('label:arbeidsgiver').toLowerCase() })}
+      </HighContrastKnapp>
 
-    {_.isNil(fnr) && _.isFunction(fillOutFnr) && (
-      <>
-        <HorizontalSeparatorDiv size='0.35'/>
-      <Normaltekst>
-        {t('message:error-no-fnr')}
-      </Normaltekst>
-      <HorizontalSeparatorDiv size='0.35'/>
-      <Link to='#' onClick={() => {
-        if (_.isFunction(fillOutFnr())) {
-          fillOutFnr()
-        }
-      }}>
-        {t('label:fill-fnr')}
-      </Link>
-      </>
-    )}
-  </FlexEndDiv>
+      {_.isNil(fnr) && _.isFunction(fillOutFnr) && (
+        <>
+          <HorizontalSeparatorDiv size='0.35' />
+          <Normaltekst>
+            {t('message:error-no-fnr')}
+          </Normaltekst>
+          <HorizontalSeparatorDiv size='0.35' />
+          <Link
+            to='#' onClick={() => {
+              if (_.isFunction(fillOutFnr())) {
+                fillOutFnr()
+              }
+            }}
+          >
+            {t('label:fill-fnr')}
+          </Link>
+        </>
+      )}
+    </FlexEndDiv>
   )
 }
 

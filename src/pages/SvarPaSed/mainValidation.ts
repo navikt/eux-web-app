@@ -6,15 +6,19 @@ import { validateVedtak } from 'applications/SvarSed/Formaal/Vedtak/validation'
 import { validateAdresser } from 'applications/SvarSed/PersonManager/Adresser/validation'
 import { validatePerioderAnnen } from 'applications/SvarSed/PersonManager/Arbeidsforhold/validationPeriodeAnnen'
 import { validatePerioderMedForsikring } from 'applications/SvarSed/PersonManager/Arbeidsforhold/validationPeriodeMedForsikring'
-import { validatePerioderSvangerskapOgSyk } from 'applications/SvarSed/PersonManager/Arbeidsforhold/validationPeriodeSvangerskap'
 import { validatePerioderSimple } from 'applications/SvarSed/PersonManager/Arbeidsforhold/validationPeriodeSimple'
+import { validatePerioderSvangerskapOgSyk } from 'applications/SvarSed/PersonManager/Arbeidsforhold/validationPeriodeSvangerskap'
 import { validatePerioderUtenForsikring } from 'applications/SvarSed/PersonManager/Arbeidsforhold/validationPeriodeUtenForsikring'
 import { validateBeløpNavnOgValuta } from 'applications/SvarSed/PersonManager/BeløpNavnOgValuta/validation'
 import { validateFamilierelasjoner } from 'applications/SvarSed/PersonManager/Familierelasjon/validation'
 import { validateFamilieytelse } from 'applications/SvarSed/PersonManager/Familieytelser/validation'
 import { validateAllGrunnlagForBosetting } from 'applications/SvarSed/PersonManager/GrunnlagForBosetting/validation'
 import { validateGrunnTilOpphor } from 'applications/SvarSed/PersonManager/GrunnTilOpphør/validation'
-import { validateKontaktsinformasjonEposter, validateKontaktsinformasjonTelefoner } from 'applications/SvarSed/PersonManager/Kontaktinformasjon/validation'
+import { validateLoennsopplysninger } from 'applications/SvarSed/PersonManager/InntektForm/validationInntektForm'
+import {
+  validateKontaktsinformasjonEposter,
+  validateKontaktsinformasjonTelefoner
+} from 'applications/SvarSed/PersonManager/Kontaktinformasjon/validation'
 import { validateNasjonaliteter } from 'applications/SvarSed/PersonManager/Nasjonaliteter/validation'
 import { validatePerioderDagpenger } from 'applications/SvarSed/PersonManager/PeriodeForDagpenger/validationPeriodeDagpenger'
 import { validateAnsattPerioder } from 'applications/SvarSed/PersonManager/PersonensStatus/ansattValidation'
@@ -45,6 +49,7 @@ import {
   Statsborgerskap,
   Telefon,
   U002Sed,
+  U004Sed,
   U017Sed,
   USed,
   Ytelse
@@ -63,7 +68,7 @@ export const validateFormålManager = (v: Validation, t: TFunction, replySed: Re
   let hasErrors: boolean = false
   let _error: boolean
 
-  if ((replySed as F002Sed).formaal) {
+  if (!_.isEmpty((replySed as F002Sed).formaal)) {
     if ((replySed as F002Sed).formaal.indexOf('motregning') >= 0) {
       _error = validateMotregninger(v, t, {
         replySed,
@@ -251,7 +256,7 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
     })
     hasErrors = hasErrors || _error
 
-    if (replySed.sedType === 'U002') {
+    if (replySed.sedType === 'U002' || replySed.sedType === 'U017') {
       _error = validatePerioderMedForsikring(v, t, {
         perioderMedForsikring: (replySed as U002Sed)?.perioderAnsattMedForsikring,
         namespace: `personmanager-${personID}-forsikring-perioderAnsattMedForsikring`,
@@ -333,7 +338,12 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
     }
 
     if (replySed.sedType === 'U004') {
+      _error = validateLoennsopplysninger(v, t, {
+        loennsopplysninger: (replySed as U004Sed)?.loennsopplysninger,
+        namespace: `personmanager-${personID}-inntekt`
 
+      })
+      hasErrors = hasErrors || _error
     }
 
     if (replySed.sedType === 'U017') {

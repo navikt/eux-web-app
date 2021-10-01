@@ -171,13 +171,15 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
       return false
     }
 
-    const newPeriode: any = {}
+    let newPeriode: PensjonPeriode | Periode
 
     if (_newCategory === 'perioderMedPensjon') {
-      (newPeriode as PensjonPeriode).pensjonstype = _newPensjonsType!;
-      (newPeriode as PensjonPeriode).periode = _newPeriode
+      newPeriode = {
+        pensjonstype: _newPensjonsType!,
+        periode: _newPeriode
+      }
     } else {
-      (newPeriode as Periode) = _newPeriode
+      newPeriode = _newPeriode
     }
 
     const valid: boolean = performValidation({

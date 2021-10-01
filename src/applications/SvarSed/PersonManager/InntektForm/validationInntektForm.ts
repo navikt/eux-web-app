@@ -61,11 +61,18 @@ export const validateLoennsopplysning = (
   return hasErrors
 }
 
+export interface ValidationLoennsopplysningerProps {
+  loennsopplysninger: Array<Loennsopplysning> | undefined
+  namespace: string
+}
+
 export const validateLoennsopplysninger = (
   validation: Validation,
   t: TFunction,
-  loennsopplysninger: Array<Loennsopplysning>,
-  namespace: string
+  {
+    loennsopplysninger,
+    namespace
+  }: ValidationLoennsopplysningerProps
 ): boolean => {
   let hasErrors: boolean = false
   loennsopplysninger?.forEach((loennsopplysning: Loennsopplysning, index: number) => {

@@ -528,10 +528,12 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
               gettingArbeidsperioder={gettingArbeidsperioder}
               getArbeidsperioder={() => dispatch(getArbeidsperioder(fnr))}
               fillOutFnr={() => {
-                document.dispatchEvent(new CustomEvent('feillenke', { detail: {
-                  skjemaelementId: `personmanager-${personID}-personopplysninger-norskpin-nummer`,
-                  feilmelding: ''
-                  } as FeiloppsummeringFeil }))
+                document.dispatchEvent(new CustomEvent('feillenke', {
+                  detail: {
+                    skjemaelementId: `personmanager-${personID}-personopplysninger-norskpin-nummer`,
+                    feilmelding: ''
+                  } as FeiloppsummeringFeil
+                }))
               }}
             />
           </Column>

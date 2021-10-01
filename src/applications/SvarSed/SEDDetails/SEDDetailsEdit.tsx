@@ -554,12 +554,12 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
             >
               <HighContrastRadio
                 name='seddetails-typeKrav'
-                checked={(replySed as F002Sed).krav.kravType === 'nytt_krav'}
+                checked={(replySed as F002Sed).krav?.kravType === 'nytt_krav'}
                 label={t('app:kravType-nytt_krav')}
                 onClick={() => setKravType('nytt_krav')}
               />
               <HighContrastRadio
-                checked={(replySed as F002Sed).krav.kravType === 'endrede_omstendigheter'}
+                checked={(replySed as F002Sed).krav?.kravType === 'endrede_omstendigheter'}
                 name='seddetails-typeKrav'
                 label={t('app:kravType-endrede_omstendigheter')}
                 onClick={() => setKravType('endrede_omstendigheter')}
