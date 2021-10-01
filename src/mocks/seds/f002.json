@@ -255,13 +255,6 @@
       ],
       "pin": [
         {
-          "land": "NO",
-          "sektor": "yrkesskade_og_yrkessykdom",
-          "identifikator": "10000000002",
-          "institusjonsid": "F002 ektefelle institusjons ID 1",
-          "institusjonsnavn": "F002 ektefelle institusjons navn 1"
-        },
-        {
           "land": "DK",
           "sektor": "yrkesskade_og_yrkessykdom",
           "identifikator": "20000000002",

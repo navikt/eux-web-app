@@ -661,6 +661,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                 <Arbeidsgivere
                   namespace='arbeidsgivere'
                   searchable
+                  fnr={person?.fnr}
                   getArbeidsperioder={() => dispatch(sakActions.getArbeidsperioder(person?.fnr))}
                   gettingArbeidsperioder={gettingArbeidsperioder}
                   valgteArbeidsgivere={valgteArbeidsgivere}

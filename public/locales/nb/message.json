@@ -3,6 +3,7 @@
   "error-abroadperson-exists": "Du kan ikke legge til samme person flere ganger",
   "error-tpsperson-exists": "Du kan ikke legge til samme person flere ganger",
   "error-noDocumentFound": "Ingen dokumenter funnet",
+  "error-no-fnr": "Ingen fnr i personen, derfor kan ikke fortsette",
   "error-personRelated-notFound": "Ingen person med FNR {{feiletSok}} funnet eller har en diskresjonskode",
   "error-person-notFound": "Brukeren du søker finnes ikke i TPS eller har en diskresjonskode",
   "error-relation-already-in-tps": "Familierelasjonen er allerede registrert i TPS",

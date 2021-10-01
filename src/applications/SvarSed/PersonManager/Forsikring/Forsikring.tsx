@@ -119,6 +119,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                   <ArbeidsforholdMedForsikring
                     parentNamespace={namespace}
                     target={target}
+                    personID={personID}
                     typeTrygdeforhold={periodeTypeHash[type]}
                   />
                 )}

@@ -12,6 +12,7 @@ import ArbeidsgiverBox, { Editable } from './ArbeidsgiverBox'
 export interface ArbeidsgivereProps {
   arbeidsperioder: Arbeidsperioder | undefined
   editable?: Editable
+  fnr: string | undefined
   getArbeidsperioder?: () => void
   gettingArbeidsperioder?: boolean
   namespace: string
@@ -26,6 +27,7 @@ export interface ArbeidsgivereProps {
 const Arbeidsgivere: React.FC<ArbeidsgivereProps> = ({
   arbeidsperioder,
   editable = 'no',
+  fnr,
   gettingArbeidsperioder = false,
   getArbeidsperioder = () => {},
   namespace,
@@ -44,6 +46,7 @@ const Arbeidsgivere: React.FC<ArbeidsgivereProps> = ({
           <Row>
             <Column>
               <ArbeidsgiverSøk
+                fnr={fnr}
                 gettingArbeidsperioder={gettingArbeidsperioder}
                 getArbeidsperioder={getArbeidsperioder}
               />

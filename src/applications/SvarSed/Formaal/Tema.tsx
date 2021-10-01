@@ -45,7 +45,7 @@ const Tema: React.FC = () => {
   const [_tema, setTema] = useState<string | undefined>(() => (replySed as HSed).tema)
   const [_fagsak, setFagsak] = useState<string | undefined>(() => (replySed as HSed).fagsakId)
   const [editMode, setEditMode] = useState<boolean>(false)
-  const fnr = getFnr(replySed)
+  const fnr = getFnr(replySed, 'bruker')
 
   const temaOptions: Options = [
     { label: t('tema:GEN'), value: 'GEN' },

@@ -95,7 +95,7 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
     sedSendResponse,
     validation
   }: SEDEditorSelector = useSelector<State, SEDEditorSelector>(mapState)
-  const fnr = getFnr(replySed)
+  const fnr = getFnr(replySed, 'bruker')
   const namespace = 'editor'
 
   const [_attachments, setAttachments] = useState<JoarkBrowserItems | undefined>(undefined)

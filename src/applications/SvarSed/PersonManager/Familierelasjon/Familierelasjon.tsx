@@ -69,7 +69,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
   const [_newAnnenRelasjonDato, _setNewAnnenRelasjonDato] = useState<string>('')
   const [_newBorSammen, _setNewBorSammen] = useState<JaNei | undefined>(undefined)
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<FamilieRelasjon>((f: FamilieRelasjon): string => f.relasjonType + '-' + f.periode.startdato)
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<FamilieRelasjon>((f: FamilieRelasjon): string => f.relasjonType + '-' + f.periode?.startdato ?? '')
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationFamilierelasjonProps>({}, validateFamilierelasjon)
 

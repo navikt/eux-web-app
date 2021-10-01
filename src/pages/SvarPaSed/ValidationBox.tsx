@@ -13,7 +13,7 @@ const ValidationBox = (): JSX.Element => {
 
   const validation: Validation = useSelector<State, any>(state => state.validation.status)
 
-  const isValid = _.find(_.values(validation), (e) => e !== undefined) === undefined
+  const isValid = _.find(_.values(validation), (e) => e !== undefined && e.feilmelding !== 'notnull') === undefined
 
   if (isValid) {
     return <div />

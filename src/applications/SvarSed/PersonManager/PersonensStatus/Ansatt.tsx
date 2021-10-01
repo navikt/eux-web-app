@@ -17,6 +17,7 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import moment from 'moment'
+import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Normaltekst, Systemtittel, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
@@ -84,7 +85,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
   const [_validationPeriode, _resetValidationPeriode, performValidationPeriode] =
     useValidation<ValidationArbeidsperiodeProps>({}, validateAnsattPeriode)
 
-  const fnr = getFnr(replySed)
+  const fnr = getFnr(replySed, personID)
 
   const addPeriode = (newPeriode: Periode) => {
     let newPerioder: Array<Periode> | undefined = _.cloneDeep(perioderSomAnsatt)
@@ -523,8 +524,15 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
         <Row>
           <Column>
             <ArbeidsgiverSøk
+              fnr={fnr}
               gettingArbeidsperioder={gettingArbeidsperioder}
               getArbeidsperioder={() => dispatch(getArbeidsperioder(fnr))}
+              fillOutFnr={() => {
+                document.dispatchEvent(new CustomEvent('feillenke', { detail: {
+                  skjemaelementId: `personmanager-${personID}-personopplysninger-norskpin-nummer`,
+                  feilmelding: ''
+                  } as FeiloppsummeringFeil }))
+              }}
             />
           </Column>
         </Row>

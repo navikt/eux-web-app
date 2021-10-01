@@ -325,7 +325,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
     dispatch(fetchInntekt(fnr, fom, tom, inntektsliste))
   }
 
-  const fnr = getFnr(replySed)
+  const fnr = getFnr(replySed, personID)
 
   return (
     <PaddedDiv>

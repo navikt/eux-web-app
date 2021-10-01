@@ -51,6 +51,7 @@ export interface ArbeidsforholdMedForsikringSelector extends PersonManagerFormSe
 
 export interface ArbeidsforholdMedForsikringProps {
   parentNamespace: string
+  personID: string | undefined
   target: string
   typeTrygdeforhold: string
 }
@@ -67,6 +68,7 @@ const mapState = (state: State): ArbeidsforholdMedForsikringSelector => ({
 
 const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = ({
   parentNamespace,
+  personID,
   target,
   typeTrygdeforhold
 }:ArbeidsforholdMedForsikringProps): JSX.Element => {
@@ -84,7 +86,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
   const includeAddress = true
   const perioder: Array<PeriodeMedForsikring> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${target}`
-  const fnr = getFnr(replySed)
+  const fnr = getFnr(replySed, personID)
   /*
   const [_arbeidssøkStartDato, _setArbeidssøkStartDato] = useState<string>('')
   const [_arbeidssøkSluttDato, _setArbeidssøkSluttDato] = useState<string>('')
@@ -582,6 +584,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
         <Column>
           <VerticalSeparatorDiv size='1.8' />
           <ArbeidsgiverSøk
+            fnr={fnr}
             gettingArbeidsperioder={gettingArbeidsperioder}
             getArbeidsperioder={onArbeidsperioderSearchClicked}
           />

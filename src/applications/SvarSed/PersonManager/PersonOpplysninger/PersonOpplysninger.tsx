@@ -173,7 +173,10 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
   }
 
   const onNorwegianPinChange = (newPin: string) => {
-    const pins: Array<Pin> = _.cloneDeep(personInfo!.pin)
+    let pins: Array<Pin> = _.cloneDeep(personInfo!.pin)
+    if (_.isNil(pins)) {
+      pins = []
+    }
     const norwegianPinIndex = _.findIndex(pins, p => p.land === 'NO')
     if (norwegianPinIndex >= 0) {
       pins[norwegianPinIndex].identifikator = newPin.trim()
