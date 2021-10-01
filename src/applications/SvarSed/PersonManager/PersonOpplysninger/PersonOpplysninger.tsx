@@ -1,8 +1,9 @@
-import { searchPerson } from 'actions/person'
+import { resetPerson, searchPerson } from 'actions/person'
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
+import Edit from 'assets/icons/Edit'
 import Search from 'assets/icons/Search'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
@@ -26,7 +27,8 @@ import {
   HighContrastKnapp,
   HighContrastRadioPanelGroup,
   HorizontalSeparatorDiv,
-  PaddedDiv, Row,
+  PaddedDiv,
+  Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useMemo, useState } from 'react'
@@ -68,7 +70,9 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
   const namespace: string = `${parentNamespace}-${personID}-personopplysninger`
 
   const [_seeNewFoedstedForm, setSeeNewFoedstedForm] = useState<boolean>(false)
+
   const norwegianPin: Pin | undefined = _.find(personInfo?.pin, p => p.land === 'NO')
+  const [_seeNorskPinForm, _setSeeNorskPinForm] = useState<boolean>(false)
 
   const landkoderListUtenNorge = useMemo(() => {
     return landkoderList?.map((l: Kodeverk) => l.kode).filter((it: string) => it !== 'NO') ?? []
@@ -146,6 +150,8 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
     if (validation[namespace + '-norskpin-nummer']) {
       dispatch(resetValidation(namespace + '-norskpin-nummer'))
     }
+    dispatch(resetPerson())
+    _setSeeNorskPinForm(false)
   }
 
   const onUtenlandskIdentifikatorChange = (newIdentifikator: string, index: number) => {
@@ -414,33 +420,69 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
           </Row>
           )}
       <VerticalSeparatorDiv />
+      <label className='skjemaelement__label'>
+        {t('label:norsk-fnr')}
+      </label>
+      <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft'>
-        <Column>
-          <Input
-            feil={validation[namespace + '-norskpin-nummer']?.feilmelding}
-            id='norskpin-nummer'
-            key={namespace + '-norskpin-nummer-' + norwegianPin?.identifikator}
-            label={t('label:norsk-fnr')}
-            namespace={namespace}
-            onChanged={onNorwegianPinChange}
-            value={norwegianPin?.identifikator}
-          />
-        </Column>
-        <Column>
-          <HighContrastKnapp
-            className='nolabel'
-            disabled={searchingPerson}
-            spinner={searchingPerson}
-            onClick={onSearchUser}
-          >
-            <Search />
-            <HorizontalSeparatorDiv />
-            {searchingPerson
-              ? t('message:loading-searching')
-              : t('el:button-search-for-x', { x: t('label:person').toLowerCase() })}
-          </HighContrastKnapp>
-        </Column>
-        <Column />
+        {!_seeNorskPinForm
+          ? (
+            <>
+            <Column>
+              <Normaltekst>
+                {norwegianPin?.identifikator ?? t('message:warning-no-fnr')}
+              </Normaltekst>
+            </Column>
+            <Column>
+               <HighContrastKnapp
+                 kompakt
+                 onClick={() => _setSeeNorskPinForm(true)}>
+                 <FlexCenterDiv>
+                   <Edit />
+                   <HorizontalSeparatorDiv size='0.35'/>
+                   {t('label:endre')}
+                 </FlexCenterDiv>
+               </HighContrastKnapp>
+            </Column>
+              <Column/>
+            </>
+          )
+          : (
+            <>
+              <Column>
+                <Input
+                  feil={validation[namespace + '-norskpin-nummer']?.feilmelding}
+                  id='norskpin-nummer'
+                  key={namespace + '-norskpin-nummer-' + norwegianPin?.identifikator}
+                  label={''}
+                  namespace={namespace}
+                  onChanged={onNorwegianPinChange}
+                  value={norwegianPin?.identifikator}
+                />
+              </Column>
+              <Column>
+                <HighContrastKnapp
+                  kompakt
+                  disabled={searchingPerson}
+                  spinner={searchingPerson}
+                  onClick={onSearchUser}
+                >
+                  <Search />
+                  <HorizontalSeparatorDiv />
+                  {searchingPerson
+                    ? t('message:loading-searching')
+                    : t('el:button-search-for-x', { x: t('label:person').toLowerCase() })}
+                </HighContrastKnapp>
+                <HorizontalSeparatorDiv size='0.35'/>
+                <HighContrastFlatknapp
+                  kompakt
+                  onClick={() => _setSeeNorskPinForm(false)}
+                >
+                  {t('el:button-cancel')}
+                </HighContrastFlatknapp>
+              </Column>
+            </>
+          )}
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow>
@@ -460,11 +502,11 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                 </HighContrastKnapp>
               </FlexCenterDiv>
               )
-            : (
+            : _.isEmpty(norwegianPin?.identifikator) ? (
               <Normaltekst>
                 {t('label:norsk-fnr-beskrivelse')}
               </Normaltekst>
-              )}
+              ): <div/>}
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />

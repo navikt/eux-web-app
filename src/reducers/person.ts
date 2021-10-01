@@ -18,6 +18,7 @@ const personReducer = (state: PersonState = initialPersonState, action: ActionWi
       return initialPersonState
 
     case types.PERSON_SEARCH_REQUEST:
+    case types.PERSON_SEARCH_RESET:
       return {
         ...state,
         person: undefined

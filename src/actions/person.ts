@@ -2,7 +2,7 @@ import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockPerson from 'mocks/person'
-import { ActionCreator } from 'redux'
+import { Action, ActionCreator } from 'redux'
 const sprintf = require('sprintf-js').sprintf
 
 export const searchPerson: ActionCreator<ThunkResult<ActionWithPayload>> = (
@@ -19,6 +19,10 @@ export const searchPerson: ActionCreator<ThunkResult<ActionWithPayload>> = (
     }
   })
 }
+
+export const resetPerson: ActionCreator<Action> = () => ({
+  type: types.PERSON_SEARCH_RESET
+})
 
 export const searchPersonRelated: ActionCreator<ThunkResult<ActionWithPayload>> = (
   fnr: string
