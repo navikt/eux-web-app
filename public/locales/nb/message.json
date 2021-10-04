@@ -41,6 +41,8 @@
   "loading-sending-sed" : "Sender SED i RINA...",
   "loading-sending-XofY" : "Sender {{current}} av {{total}}",
 
+  "success-svarPaSed-localstorage-save": "SvarSED utkastet er lagret",
+
   "validation-duplicateBirthCountry": "Statsborgerskapen eksisterer allerede",
   "validation-duplicateEpostAdresseForPerson": "e-post adresse eksisterer allerede til {{person}}",
   "validation-duplicateGrunnForPerson": "Grunn eksisterer allerede til {{person}}",

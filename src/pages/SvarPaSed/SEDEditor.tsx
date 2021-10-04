@@ -1,3 +1,4 @@
+import { saveEntry } from 'actions/localStorage'
 import { createSed, getPreviewFile, resetPreviewFile, sendSedInRina, updateReplySed } from 'actions/svarpased'
 import { resetAllValidation, resetValidation, viewValidation } from 'actions/validation'
 import Formaal from 'applications/SvarSed/Formaal/Formaal'
@@ -12,16 +13,18 @@ import Add from 'assets/icons/Add'
 
 import TextArea from 'components/Forms/TextArea'
 import Modal from 'components/Modal/Modal'
-import { TextAreaDiv } from 'components/StyledComponents'
+import { AlertstripeDiv, TextAreaDiv } from 'components/StyledComponents'
+import * as types from 'constants/actionTypes'
 import { SvarPaSedMode } from 'declarations/app'
 import { JoarkBrowserItems } from 'declarations/attachments'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import { Barn, F002Sed, FSed, ReplySed } from 'declarations/sed'
-import { CreateSedResponse, Validation } from 'declarations/types'
+import { CreateSedResponse, LocalStorageEntry, Validation } from 'declarations/types'
 import FileFC, { File } from 'forhandsvisningsfil'
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import _ from 'lodash'
+import AlertStripe from 'nav-frontend-alertstriper'
 import { VenstreChevron } from 'nav-frontend-chevron'
 import { Systemtittel } from 'nav-frontend-typografi'
 import {
@@ -46,12 +49,15 @@ import { isFSed, isHSed, isSed, isUSed } from 'utils/sed'
 import { validateSEDEditor, ValidationSEDEditorProps } from './mainValidation'
 
 export interface SEDEditorSelector {
+  alertType: string | undefined
+  alertMessage:  string | undefined
   creatingSvarPaSed: boolean
   gettingPreviewFile: boolean
   highContrast: boolean
   mode: SvarPaSedMode,
   previewFile: any,
   replySed: ReplySed | undefined
+  currentEntry: LocalStorageEntry<ReplySed> | undefined
   savingSed: boolean
   sendingSed: boolean
   sedCreatedResponse: CreateSedResponse
@@ -64,12 +70,15 @@ export interface SEDEditorProps {
 }
 
 const mapState = (state: State): any => ({
+  alertType: state.alert.type,
+  alertMessage: state.alert.clientErrorMessage,
   creatingSvarPaSed: state.loading.creatingSvarPaSed,
   gettingPreviewFile: state.loading.gettingPreviewFile,
   highContrast: state.ui.highContrast,
   mode: state.svarpased.mode,
   previewFile: state.svarpased.previewFile,
   replySed: state.svarpased.replySed,
+  currentEntry: state.localStorage.currentEntry,
   savingSed: state.loading.savingSed,
   sendingSed: state.loading.sendingSed,
   sedCreatedResponse: state.svarpased.sedCreatedResponse,
@@ -83,12 +92,15 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const {
+    alertType,
+    alertMessage,
     creatingSvarPaSed,
     gettingPreviewFile,
     highContrast,
     mode,
     previewFile,
     replySed,
+    currentEntry,
     savingSed,
     sendingSed,
     sedCreatedResponse,
@@ -142,7 +154,13 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
   }
 
   const onSaveSedClick = () => {
-    setViewSaveSedModal(true)
+    if (_.isNil(currentEntry)) {
+      setViewSaveSedModal(true)
+    } else {
+      const newCurrentEntry: LocalStorageEntry<ReplySed> = _.cloneDeep(currentEntry)
+      newCurrentEntry.content = _.cloneDeep(replySed!)
+      dispatch(saveEntry(storageKey, newCurrentEntry))
+    }
   }
 
   const resetPreview = () => {
@@ -329,12 +347,11 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
           >
             {_.isEmpty(sedCreatedResponse)
               ? creatingSvarPaSed
-                ? t('message:loading-opprette-svarsed')
-                : t('label:opprett-svarsed')
+                  ? t('message:loading-opprette-svarsed')
+                  : t('label:opprett-svarsed')
               : creatingSvarPaSed
                 ? t('message:loading-oppdatering-svarsed')
-                : t('label:oppdatere-svarsed')
-            }
+                : t('label:oppdatere-svarsed')}
           </HighContrastHovedknapp>
           <VerticalSeparatorDiv size='0.5' />
         </div>
@@ -361,12 +378,25 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
             disabled={savingSed}
             spinner={savingSed}
           >
-            {t('el:button-save')}
+            {_.isNil(currentEntry) ? t('el:button-save-draft') : t('el:button-update-draft')}
           </HighContrastKnapp>
           <VerticalSeparatorDiv size='0.5' />
         </div>
       </FlexDiv>
       <VerticalSeparatorDiv />
+      {alertMessage && alertType === types.LOCALSTORAGE_SAVEDENTRY_SAVE && (
+        <>
+        <FlexDiv>
+          <AlertstripeDiv>
+            <AlertStripe type='suksess'>
+              {t(alertMessage!)}
+            </AlertStripe>
+          </AlertstripeDiv>
+          <div/>
+        </FlexDiv>
+        <VerticalSeparatorDiv />
+        </>
+      )}
     </PaddedDiv>
   )
 }

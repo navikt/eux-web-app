@@ -1,5 +1,6 @@
 import validator from '@navikt/fnrvalidator'
 import * as appActions from 'actions/app'
+import { setReplySed } from 'actions/svarpased'
 import * as svarpasedActions from 'actions/svarpased'
 import { resetAllValidation } from 'actions/validation'
 import ReceivedIcon from 'assets/icons/Email'
@@ -11,7 +12,8 @@ import classNames from 'classnames'
 import { AlertstripeDiv, Etikett, HiddenFormContainer } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
-import { ConnectedSed, Sed } from 'declarations/types'
+import { ReplySed } from 'declarations/sed'
+import { ConnectedSed, LocalStorageEntry, Sed } from 'declarations/types'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import AlertStripe from 'nav-frontend-alertstriper'
@@ -40,6 +42,8 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
+import Edit from 'assets/icons/Edit'
+import { setCurrentEntry } from 'actions/localStorage'
 
 const ContainerDiv = styled.div`
   max-width: 1000px;
@@ -77,6 +81,7 @@ const mapState = (state: State): any => ({
   previousParentSed: state.svarpased.previousParentSed,
   replySed: state.svarpased.replySed,
   rinasaksnummerOrFnrParam: state.app.params.rinasaksnummerOrFnr,
+  savedEntries: state.localStorage.savedEntries,
   seds: state.svarpased.seds
 })
 
@@ -99,6 +104,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
     queryingReplySed,
     replySed,
     rinasaksnummerOrFnrParam,
+    savedEntries,
     seds
   }: any = useSelector<State, any>(mapState)
   const [_filter, _setFilter] = useState<string | undefined>(undefined)
@@ -122,6 +128,28 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
       if (result.type === 'dnr') {
         _setValidMessage(t('label:valid-dnr'))
       }
+    }
+  }
+
+  const findSavedEntry = (connectedSed: ConnectedSed): LocalStorageEntry<ReplySed> | undefined => {
+    return _.find(savedEntries, (e: LocalStorageEntry<ReplySed>) =>
+      e.content.sedId === connectedSed.sedId + '-' + connectedSed.sedType
+    )
+  }
+
+  const hasDraft = (connectedSed: ConnectedSed): boolean => {
+    if (_.isEmpty(savedEntries)) {
+      return false
+    }
+    return findSavedEntry(connectedSed) !== undefined
+  }
+
+  const loadDraft = (connectedSed: ConnectedSed) => {
+    const entry: LocalStorageEntry<ReplySed> | undefined = findSavedEntry(connectedSed)
+    if (entry) {
+      dispatch(setCurrentEntry(entry))
+      dispatch(setReplySed(entry.content))
+      setReplySedRequested(true)
     }
   }
 
@@ -376,7 +404,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                           <FlexDiv>
                             <HighContrastLink target='_blank' href={connectedSed.sedUrl}>
                               <span>
-                                {t('label:gå-til-sed-i-rina')}
+                                {t('label:rediger-sed-i-rina')}
                               </span>
                               <HorizontalSeparatorDiv size='0.35' />
                               <ExternalLink />
@@ -403,23 +431,35 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                               <VerticalSeparatorDiv size='0.5' />
                             </>
                           )}
-                          {connectedSed.svarsedType
+                          {hasDraft(connectedSed)
                             ? (
-                              <HighContrastHovedknapp
-                                disabled={queryingReplySed || connectedSed.lenkeHvisForrigeSedMaaJournalfoeres}
-                                spinner={queryingReplySed}
+                              <HighContrastKnapp
                                 mini
-                                title={connectedSed.lenkeHvisForrigeSedMaaJournalfoeres ? t('message:warning-spørre-sed-not-journalført') : ''}
-                                onClick={() => onReplySedClick(connectedSed, sed.sakId)}
+                                kompakt
+                                onClick={() => loadDraft(connectedSed)}
                               >
-                                {queryingReplySed
-                                  ? t('message:loading-replying')
-                                  : t('label:besvar-med', {
-                                    sedtype: connectedSed.svarsedType
-                                  })}
-                              </HighContrastHovedknapp>
+                                <Edit />
+                                <HorizontalSeparatorDiv size='0.35' />
+                                {t('el:button-load-draft')}
+                              </HighContrastKnapp>
                               )
-                            : (<div />)}
+                            : connectedSed.svarsedType
+                              ? (
+                                <HighContrastHovedknapp
+                                  disabled={queryingReplySed || connectedSed.lenkeHvisForrigeSedMaaJournalfoeres}
+                                  spinner={queryingReplySed}
+                                  mini
+                                  title={connectedSed.lenkeHvisForrigeSedMaaJournalfoeres ? t('message:warning-spørre-sed-not-journalført') : ''}
+                                  onClick={() => onReplySedClick(connectedSed, sed.sakId)}
+                                >
+                                  {queryingReplySed
+                                    ? t('message:loading-replying')
+                                    : t('label:besvar-med', {
+                                      sedtype: connectedSed.svarsedType
+                                    })}
+                                </HighContrastHovedknapp>
+                                )
+                              : (<div />)}
                         </PileDiv>
                       </FlexDiv>
 

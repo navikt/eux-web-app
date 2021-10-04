@@ -3,6 +3,7 @@ import { FlexEtikett } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { State } from 'declarations/reducers'
 import { LocalStorageEntry } from 'declarations/types'
+import useAddRemove from 'hooks/useAddRemove'
 import _ from 'lodash'
 import { Normaltekst, UndertekstBold } from 'nav-frontend-typografi'
 import { FlexCenterSpacedDiv, FlexDiv, FlexBaseSpacedDiv, PileDiv, HighContrastFlatknapp, HighContrastPanel, VerticalSeparatorDiv, HorizontalSeparatorDiv } from 'nav-hoykontrast'
@@ -39,23 +40,13 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
   const dispatch = useDispatch()
   const { savedEntries }: SEDLoadSaveSelector = useSelector<State, SEDLoadSaveSelector>(mapState)
   const [loadingSavedItems, setLoadingSavedItems] = useState<boolean>(false)
-  const [_confirmDelete, setConfirmDelete] = useState<Array<string>>([])
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<LocalStorageEntry<ReplySed>>(
+    (entry: LocalStorageEntry<ReplySed>): string => entry.id)
+
   const { t } = useTranslation()
 
-  const onRemove = async (i: number) => {
-    const newSavedEntries = _.cloneDeep(savedEntries) as Array<LocalStorageEntry<ReplySed>>
-    if (!_.isNil(newSavedEntries)) {
-      newSavedEntries.splice(i, 1)
-      dispatch(localStorageActions.saveEntries(storageKey, newSavedEntries))
-    }
-  }
-
-  const addCandidateForDeletion = (key: string) => {
-    setConfirmDelete(_confirmDelete.concat(key))
-  }
-
-  const removeCandidateForDeletion = (key: string) => {
-    setConfirmDelete(_.filter(_confirmDelete, it => it !== key))
+  const onRemove = (entry: LocalStorageEntry<ReplySed>) => {
+    dispatch(localStorageActions.removeEntry(storageKey, entry))
   }
 
   useEffect(() => {
@@ -87,77 +78,74 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
             </Normaltekst>
             )}
         <VerticalSeparatorDiv />
-        {savedEntries?.map((savedEntry: LocalStorageEntry<ReplySed>, i: number) => {
-          const candidateForDeletion = _confirmDelete.indexOf(savedEntry.name) >= 0
-          return (
-            <div key={savedEntry.name}>
-              <FlexEtikett>
-                <PileDiv flex='1'>
-                  <FlexCenterSpacedDiv>
-                    <FlexBaseSpacedDiv>
-                      <UndertekstBold>
-                        {t('label:navn') + ': '}
-                      </UndertekstBold>
-                      <HorizontalSeparatorDiv size='0.5' />
-                      <Normaltekst>
-                        {savedEntry.name}
-                      </Normaltekst>
-                    </FlexBaseSpacedDiv>
-                    <HorizontalSeparatorDiv />
-                    <FlexBaseSpacedDiv>
-                      <UndertekstBold>
-                        {t('label:dato') + ': '}
-                      </UndertekstBold>
-                      <HorizontalSeparatorDiv size='0.5' />
-                      <Normaltekst>
-                        {savedEntry.date}
-                      </Normaltekst>
-                    </FlexBaseSpacedDiv>
-                  </FlexCenterSpacedDiv>
-                  <FlexCenterSpacedDiv>
-                    <FlexBaseSpacedDiv>
-                      <UndertekstBold>
-                        {t('label:saksnummer') + ': '}
-                      </UndertekstBold>
-                      <HorizontalSeparatorDiv size='0.5' />
-                      <Normaltekst>
-                        {(savedEntry.content as any).saksnummer}
-                      </Normaltekst>
-                    </FlexBaseSpacedDiv>
-                    <HorizontalSeparatorDiv />
-                    <FlexBaseSpacedDiv>
-                      <UndertekstBold>
-                        {t('label:type') + ': '}
-                      </UndertekstBold>
-                      <HorizontalSeparatorDiv size='0.5' />
-                      <Normaltekst>
-                        {(savedEntry.content as any).sedType}
-                      </Normaltekst>
-                    </FlexBaseSpacedDiv>
-                  </FlexCenterSpacedDiv>
-                  <VerticalSeparatorDiv size='0.5' />
+        {savedEntries?.map((savedEntry: LocalStorageEntry<ReplySed>) => (
+          <div key={savedEntry.id}>
+            <FlexEtikett>
+              <PileDiv flex='1'>
+                <FlexCenterSpacedDiv>
                   <FlexBaseSpacedDiv>
-                    <HighContrastFlatknapp
-                      mini
-                      kompakt
-                      onClick={() => onLoad(savedEntry.content)}
-                    >
-                      {t('el:button-load')}
-                    </HighContrastFlatknapp>
-                    <AddRemovePanel
-                      existingItem
-                      candidateForDeletion={candidateForDeletion}
-                      onBeginRemove={() => addCandidateForDeletion(savedEntry.name)}
-                      onConfirmRemove={() => onRemove(i)}
-                      onCancelRemove={() => removeCandidateForDeletion(savedEntry.name!)}
-                    />
+                    <UndertekstBold>
+                      {t('label:navn') + ': '}
+                    </UndertekstBold>
+                    <HorizontalSeparatorDiv size='0.5' />
+                    <Normaltekst>
+                      {savedEntry.name}
+                    </Normaltekst>
                   </FlexBaseSpacedDiv>
-                </PileDiv>
-              </FlexEtikett>
-              <VerticalSeparatorDiv />
-            </div>
-          )
-        })}
+                  <HorizontalSeparatorDiv />
+                  <FlexBaseSpacedDiv>
+                    <UndertekstBold>
+                      {t('label:dato') + ': '}
+                    </UndertekstBold>
+                    <HorizontalSeparatorDiv size='0.5' />
+                    <Normaltekst>
+                      {savedEntry.date}
+                    </Normaltekst>
+                  </FlexBaseSpacedDiv>
+                </FlexCenterSpacedDiv>
+                <FlexCenterSpacedDiv>
+                  <FlexBaseSpacedDiv>
+                    <UndertekstBold>
+                      {t('label:saksnummer') + ': '}
+                    </UndertekstBold>
+                    <HorizontalSeparatorDiv size='0.5' />
+                    <Normaltekst>
+                      {(savedEntry.content as any).saksnummer}
+                    </Normaltekst>
+                  </FlexBaseSpacedDiv>
+                  <HorizontalSeparatorDiv />
+                  <FlexBaseSpacedDiv>
+                    <UndertekstBold>
+                      {t('label:type') + ': '}
+                    </UndertekstBold>
+                    <HorizontalSeparatorDiv size='0.5' />
+                    <Normaltekst>
+                      {(savedEntry.content as any).sedType}
+                    </Normaltekst>
+                  </FlexBaseSpacedDiv>
+                </FlexCenterSpacedDiv>
+                <VerticalSeparatorDiv size='0.5' />
+                <FlexBaseSpacedDiv>
+                  <HighContrastFlatknapp
+                    mini
+                    kompakt
+                    onClick={() => onLoad(savedEntry)}
+                  >
+                    {t('el:button-load')}
+                  </HighContrastFlatknapp>
+                  <AddRemovePanel
+                    existingItem
+                    candidateForDeletion={isInDeletion(savedEntry)}
+                    onBeginRemove={() => addToDeletion(savedEntry)}
+                    onConfirmRemove={() => onRemove(savedEntry)}
+                    onCancelRemove={() => removeFromDeletion(savedEntry)}
+                  />
+                </FlexBaseSpacedDiv>
+              </PileDiv>
+            </FlexEtikett>
+            <VerticalSeparatorDiv />
+          </div>
+        ))}
       </LoadSaveDiv>
     </HighContrastPanel>
   )

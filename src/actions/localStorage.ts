@@ -10,10 +10,23 @@ export const loadEntries = (key: string): ActionWithPayload => ({
   }
 })
 
-export const saveEntries = (key: string, value: Array<LocalStorageEntry<ReplySed>>): ActionWithPayload<any> => ({
-  type: types.LOCALSTORAGE_SAVEDENTRIES_SAVE,
+export const setCurrentEntry = (entry: LocalStorageEntry<ReplySed>) : ActionWithPayload<LocalStorageEntry<ReplySed>> => ({
+  type: types.LOCALSTORAGE_CURRENTENTRY_SET,
+  payload: entry
+})
+
+export const removeEntry = (key: string, entry: LocalStorageEntry<ReplySed>) => ({
+  type: types.LOCALSTORAGE_SAVEDENTRY_REMOVE,
   payload: {
     key: key,
-    value: value
+    entry: entry
+  }
+})
+
+export const saveEntry = (key: string, entry: LocalStorageEntry<ReplySed>): ActionWithPayload<any> => ({
+  type: types.LOCALSTORAGE_SAVEDENTRY_SAVE,
+  payload: {
+    key: key,
+    entry: entry
   }
 })

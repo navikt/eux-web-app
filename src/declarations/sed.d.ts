@@ -342,6 +342,7 @@ export interface BaseReplySed {
   // added
   saksnummer ?: string
   sedUrl ?: string
+  sedId ?: string
 }
 
 export interface LokaleSakId {

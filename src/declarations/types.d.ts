@@ -44,6 +44,7 @@ export interface BucTyper {
 }
 
 export interface LocalStorageEntry<CustomLocalStorageContent extends any = any> {
+  id: string
   name: string
   date: string
   content: CustomLocalStorageContent

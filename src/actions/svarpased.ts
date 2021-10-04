@@ -20,6 +20,7 @@ export const createSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
   const copyReplySed = _.cloneDeep(replySed)
   delete copyReplySed.saksnummer
   delete copyReplySed.sedUrl
+  delete copyReplySed.sedId
   return call({
     method: 'POST',
     url: sprintf(urls.API_SED_CREATE_URL, { rinaSakId: rinaSakId }),
@@ -113,7 +114,8 @@ export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed
     },
     context: {
       saksnummer: saksnummer,
-      sedUrl: connectedSed.sedUrl
+      sedUrl: connectedSed.sedUrl,
+      sedId: connectedSed.sedId + '-' + connectedSed.sedType
     },
     type: {
       request: types.SVARPASED_REPLYSED_QUERY_REQUEST,

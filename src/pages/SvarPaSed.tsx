@@ -1,4 +1,5 @@
 import { setStatusParam } from 'actions/app'
+import { setCurrentEntry } from 'actions/localStorage'
 import * as svarpasedActions from 'actions/svarpased'
 import { setMode, setReplySed } from 'actions/svarpased'
 import SEDDetails from 'applications/SvarSed/SEDDetails/SEDDetails'
@@ -10,6 +11,8 @@ import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { FeatureToggles } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
+import { LocalStorageEntry } from 'declarations/types'
+import { timeDiffLogger } from 'metrics/loggers'
 import { Container, Content, fadeIn, fadeOut, Margin } from 'nav-hoykontrast'
 import SEDEditor from 'pages/SvarPaSed/SEDEditor'
 import SEDSelection from 'pages/SvarPaSed/SEDSelection'
@@ -118,6 +121,7 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
   const [_mounted, setMounted] = useState<boolean>(!waitForMount)
   const storageKey = 'replySed'
   const { featureToggles }: SvarPaSedPageSelector = useSelector<State, SvarPaSedPageSelector>(mapState)
+  const [totalTime, setTotalTime] = useState<number>(0)
 
   const [positionContentA, setPositionContentA] = useState<Slide>(Slide.LEFT)
   const [positionContentB, setPositionContentB] = useState<Slide>(Slide.RIGHT)
@@ -173,8 +177,9 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
         <SideBarDiv>
           <SEDLoadSave
             storageKey={storageKey}
-            onLoad={(replySed: ReplySed) => {
-              dispatch(setReplySed(replySed))
+            onLoad={(entry: LocalStorageEntry<ReplySed>) => {
+              dispatch(setCurrentEntry(entry))
+              dispatch(setReplySed(entry.content))
               changeMode('editor', 'forward')
             }}
           />
@@ -234,8 +239,9 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
         <SideBarDiv>
           <SEDLoadSave
             storageKey={storageKey}
-            onLoad={(replySed: ReplySed) => {
-              dispatch(setReplySed(replySed))
+            onLoad={(entry: LocalStorageEntry<ReplySed>) => {
+              dispatch(setCurrentEntry(entry))
+              dispatch(setReplySed(entry.content))
               changeMode('editor', 'forward')
             }}
           />
@@ -245,6 +251,15 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
       setMounted(true)
     }
   }, [dispatch, _mounted, changeMode, WaitingDiv, location.search])
+
+  useEffect(() => {
+    if (totalTime === 0) {
+      setTotalTime(new Date().getTime())
+    }
+    return () => {
+      timeDiffLogger('svarpased.time', totalTime)
+    }
+  }, [])
 
   if (!_mounted) {
     return WaitingDiv

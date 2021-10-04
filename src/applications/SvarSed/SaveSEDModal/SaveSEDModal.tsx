@@ -1,6 +1,6 @@
+import { saveEntry } from 'actions/localStorage'
 import Modal from 'components/Modal/Modal'
 import { AlertstripeDiv } from 'components/StyledComponents'
-import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
 import { LocalStorageEntry, Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -18,9 +18,8 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
-import * as localStorageActions from 'actions/localStorage'
 
 const MinimalModalDiv = styled.div`
   min-height: 200px;
@@ -52,14 +51,6 @@ interface SaveSEDModalProps {
   storageKey: string
 }
 
-interface SaveSEDModalSelector {
-  savedEntries: Array<LocalStorageEntry<ReplySed>> | null | undefined
-}
-
-const mapState = (state: State): SaveSEDModalSelector => ({
-  savedEntries: state.localStorage.savedEntries
-})
-
 const SendSEDModal = ({
   highContrast,
   onModalClose,
@@ -73,7 +64,6 @@ const SendSEDModal = ({
   const [_saved, setSaved] = useState<boolean>(false)
 
   const dispatch = useDispatch()
-  const { savedEntries } : SaveSEDModalSelector = useSelector<State, SaveSEDModalSelector>(mapState)
   const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
 
   const performValidation = (): boolean => {
@@ -90,24 +80,14 @@ const SendSEDModal = ({
 
   const onSave = async () => {
     if (performValidation()) {
-      let newSavedEntries: Array<LocalStorageEntry<ReplySed>> | null | undefined = _.cloneDeep(savedEntries)
-      if (_.isNil(newSavedEntries)) {
-        newSavedEntries = []
-      }
       const dateString = new Date().toDateString()
       const newItem: LocalStorageEntry<ReplySed> = {
+        id: '' + new Date().getTime(),
         name: _name,
         date: dateString,
         content: replySed
       } as LocalStorageEntry
-
-      const existsIndex: number = _.findIndex(savedEntries, entry => entry.name === _name)
-      if (existsIndex >= 0) {
-        newSavedEntries[existsIndex] = newItem
-      } else {
-        newSavedEntries = newSavedEntries.concat(newItem)
-      }
-      dispatch(localStorageActions.saveEntries(storageKey, newSavedEntries))
+      dispatch(saveEntry(storageKey, newItem))
       setSaved(true)
       setMessage(t('label:lagret-sed-utkast', { name: _name, date: dateString }))
     }
@@ -164,7 +144,7 @@ const SendSEDModal = ({
                         mini
                         onClick={onSave}
                       >
-                        {t('el:button-save')}
+                        {t('el:button-save-draft')}
                       </HighContrastHovedknapp>
                       <HorizontalSeparatorDiv />
                       <HighContrastFlatknapp
