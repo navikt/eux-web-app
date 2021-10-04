@@ -180,7 +180,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
         modalContent: (
           <MinimalModalDiv>
             <Undertittel>
-              {t('label:opprette-ny-sed')}
+              {_.isEmpty(sedCreatedResponse) ? t('label:opprette-ny-sed') : t('label:oppdatere-svarsed')}
             </Undertittel>
             <VerticalSeparatorDiv />
             {alertMessage && alertType && [types.SVARPASED_SED_CREATE_FAILURE].indexOf(alertType) >= 0 && (
@@ -201,14 +201,14 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                       <FlexCenterSpacedDiv>
                         <NavFrontendSpinner type='XS' />
                         <HorizontalSeparatorDiv size='0.5' />
-                        <span>{t('message:loading-creatingReplySed')}</span>
+                        <span>{_.isEmpty(sedCreatedResponse) ? t('message:loading-opprette-svarsed') : t('message:loading-oppdatering-svarsed')}</span>
                       </FlexCenterSpacedDiv>
                     )}
                     {!_.isNil(sedCreatedResponse) && (
                       <FlexCenterSpacedDiv>
                         <GreenCircle />
                         <HorizontalSeparatorDiv size='0.5' />
-                        <span>{t('message:loading-sedCreated')}</span>
+                        <span>{t('message:loading-sed-created-updated')}</span>
                       </FlexCenterSpacedDiv>
                     )}
                   </div>
@@ -218,7 +218,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                       <FlexCenterSpacedDiv>
                         <GreenCircle />
                         <HorizontalSeparatorDiv size='0.5' />
-                        <span>{t('message:loading-sedFinished')}</span>
+                        <span>{t('message:loading-sed-ferdig')}</span>
                       </FlexCenterSpacedDiv>
                     )}
                     {_sendingAttachments && (
@@ -235,7 +235,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                       <FlexCenterSpacedDiv>
                         <GreenCircle />
                         <HorizontalSeparatorDiv size='0.5' />
-                        <span>{t('message:loading-sedSent')}</span>
+                        <span>{t('message:loading-sed-sendt')}</span>
                       </FlexCenterSpacedDiv>
                     )}
                     {sendingSed && (
@@ -297,7 +297,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                         mini
                         onClick={() => window.open(goToRinaUrl, 'rina')}
                       >
-                        {t('label:gå-til-sed-i-rina')}
+                        {t('label:rediger-sed-i-rina')}
                       </HighContrastHovedknapp>
                     )}
                   </FlexCenterSpacedDiv>

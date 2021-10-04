@@ -324,10 +324,17 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
           <HighContrastHovedknapp
             mini
             onClick={sendReplySed}
-            disabled={creatingSvarPaSed || !_.isEmpty(sedCreatedResponse)}
+            disabled={creatingSvarPaSed}
             spinner={creatingSvarPaSed}
           >
-            {creatingSvarPaSed ? t('message:loading-sending-svarsed') : t('label:send-svarsed')}
+            {_.isEmpty(sedCreatedResponse)
+              ? creatingSvarPaSed
+                ? t('message:loading-opprette-svarsed')
+                : t('label:opprett-svarsed')
+              : creatingSvarPaSed
+                ? t('message:loading-oppdatering-svarsed')
+                : t('label:oppdatere-svarsed')
+            }
           </HighContrastHovedknapp>
           <VerticalSeparatorDiv size='0.5' />
         </div>

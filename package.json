@@ -104,6 +104,7 @@
   "devDependencies": {
     "@babel/core": "^7.15.5",
     "@navikt/fnrvalidator": "^1.1.4",
+    "@types/amplitude-js": "^8.0.1",
     "@types/classnames": "^2.3.0",
     "@types/enzyme": "^3.10.9",
     "@types/history": "^4.7.9",

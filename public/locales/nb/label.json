@@ -117,7 +117,6 @@
   "grunner": "Grunner",
   "gutt" : "Gutt",
   "gå-til-rina" : "Gå direkte til Rina",
-  "gå-til-sed-i-rina" : "Gå til SED i Rina",
   "gå-til-A-inntekt" : "Gå til A-inntekt",
 
   "hele-familien" : "Hele familien",
@@ -202,6 +201,8 @@
   "opprett-sak": "Opprett Sak",
   "opprett-sak-i-rina" : "Opprett sak i RINA",
   "opprett-sed-rediger-i-rina" : "Opprett SED, rediger i RINA",
+  "opprett-svarsed" : "Opprett SvarSED",
+  "oppdatere-svarsed" : "Oppdatere SvarSED",
   "orgnr": "Orgnr.",
 
   "partner": "Ektefelle/partner",
@@ -223,6 +224,7 @@
   "prosedyre-ved-uenighet": "Prosedyre ved uenighet",
 
   "reason" : "Grunn",
+  "rediger-sed-i-rina" : "Rediger SED i Rina",
   "region" : "Region",
   "referanseperiode" : "Referanseperiode",
   "refusjon-i-henhold-til-artikkel-58-i-forordningen": "Krav om refusjon",
@@ -243,7 +245,6 @@
   "sepa-konto-ja": "SEPA-konto",
   "sepa-konto-nei": "Ikke SEPA-konto",
   "sektor" : "Sektor",
-  "send-svarsed" : "Send svarSED",
   "send-vedlegg" : "Send vedlegg",
   "show-less": "Vis mindre",
   "show-more": "Vis mer",
