@@ -1,4 +1,4 @@
-import { OptionTypeBase } from 'react-select'
+import { Option as OptionTypeBase } from 'react-select'
 
 export interface Option extends OptionTypeBase {
   label: string

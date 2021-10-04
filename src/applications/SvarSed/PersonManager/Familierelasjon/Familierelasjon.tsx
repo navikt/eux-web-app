@@ -236,9 +236,8 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
               onChange={(e) => setRelasjonType(e.value as RelasjonType, index)}
               options={relasjonTypeOptions}
               placeholder={t('el:placeholder-select-default')}
-              required
               defaultValue={_.find(relasjonTypeOptions, r => r.value === (index < 0 ? _newRelasjonType : familierelasjon!.relasjonType))}
-              selectedValue={_.find(relasjonTypeOptions, r => r.value === (index < 0 ? _newRelasjonType : familierelasjon!.relasjonType))}
+              value={_.find(relasjonTypeOptions, r => r.value === (index < 0 ? _newRelasjonType : familierelasjon!.relasjonType))}
             />
           </Column>
           <PeriodeInput

@@ -53,14 +53,13 @@ const Inntekter: React.FC<any> = ({
   const [_validation, resetValidation, performValidation] = useValidation<ValidationInntekterProps>({}, validateInntekt)
 
   const inntektTypeOptions = [
-    {label: t("el:option-inntekttype-nettoinntekt"), value: "nettoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet"},
-    {label: t("el:option-inntekttype-bruttoinntekt"), value: "bruttoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet"},
-    {label: t("el:option-inntekttype-en-enkelt-utbetaling"), value: "en_enkelt_utbetaling"},
-    {label: t("el:option-inntekttype-overtidsgodtgjørelse"), value: "overtidsgodtgjørelse"},
-    {label: t( "el:option-inntekttype-vederlag"), value: "vederlag_for_ferie_som_ikke_er_tatt_ut"},
-    {label: t("el:option-inntekttype-annet-vederlag"), value: "annet_vederlag"}
+    { label: t('el:option-inntekttype-nettoinntekt'), value: 'nettoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet' },
+    { label: t('el:option-inntekttype-bruttoinntekt'), value: 'bruttoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet' },
+    { label: t('el:option-inntekttype-en-enkelt-utbetaling'), value: 'en_enkelt_utbetaling' },
+    { label: t('el:option-inntekttype-overtidsgodtgjørelse'), value: 'overtidsgodtgjørelse' },
+    { label: t('el:option-inntekttype-vederlag'), value: 'vederlag_for_ferie_som_ikke_er_tatt_ut' },
+    { label: t('el:option-inntekttype-annet-vederlag'), value: 'annet_vederlag' }
   ]
-
 
   const onInntektTypeChanged = (type: string, index: number) => {
     if (index < 0) {
@@ -198,7 +197,7 @@ const Inntekter: React.FC<any> = ({
               onChange={(e: any) => onInntektTypeChanged(e.value, index)}
               options={inntektTypeOptions}
               placeholder={t('el:placeholder-select-default')}
-              selectedValue={_.find(inntektTypeOptions, b => b.value === (index < 0 ? _newInntektType : inntekt?.type ?? ''))}
+              value={_.find(inntektTypeOptions, b => b.value === (index < 0 ? _newInntektType : inntekt?.type ?? ''))}
               defaultValue={_.find(inntektTypeOptions, b => b.value === (index < 0 ? _newInntektType : inntekt?.type ?? ''))}
             />
           </Column>
@@ -246,8 +245,8 @@ const Inntekter: React.FC<any> = ({
         <VerticalSeparatorDiv size='0.5' />
         {(index < 0 ? _newInntektType : inntekt?.type ?? '') === 'annet_vederlag' && (
           <AlignStartRow
-           className={classNames('slideInFromLeft')}
-           style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
+            className={classNames('slideInFromLeft')}
+            style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
           >
             <Column>
               <Input
@@ -262,9 +261,9 @@ const Inntekter: React.FC<any> = ({
                 value={index < 0 ? _newInformasjonOmVederlag : inntekt?.typeAnnen ?? ''}
               />
             </Column>
-            <Column/>
+            <Column />
           </AlignStartRow>
-          )}
+        )}
       </RepeatableRow>
     )
   }

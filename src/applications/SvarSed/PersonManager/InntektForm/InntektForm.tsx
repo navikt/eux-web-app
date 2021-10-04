@@ -86,8 +86,8 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
   const isVisible = (index: number): boolean => _visible.indexOf(index) >= 0
 
   const periodeTypeOptions = [
-    {label: t('el:option-periodetype-ansettelsesforhold'), value: 'ansettelsesforhold'},
-    {label: t('el:option-periodetype-selvstendig-næringsvirksomhet'), value: 'selvstendig-næringsvirksomhet'}
+    { label: t('el:option-periodetype-ansettelsesforhold'), value: 'ansettelsesforhold' },
+    { label: t('el:option-periodetype-selvstendig-næringsvirksomhet'), value: 'selvstendig-næringsvirksomhet' }
   ]
 
   const toggleVisibility = (index: number) => {
@@ -248,7 +248,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
                 onChange={(e: any) => setPeriodeType(e.value, index)}
                 options={periodeTypeOptions}
                 placeholder={t('el:placeholder-select-default')}
-                selectedValue={_.find(periodeTypeOptions, b => b.value === loennsopplysning?.periodetype)}
+                value={_.find(periodeTypeOptions, b => b.value === loennsopplysning?.periodetype)}
                 defaultValue={_.find(periodeTypeOptions, b => b.value === loennsopplysning?.periodetype)}
               />
             </Column>

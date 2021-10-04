@@ -296,7 +296,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
               onChange={(e) => setRelasjonType(e.value, index)}
               options={relasjonTypeOptions}
               placeholder={t('el:placeholder-select-default')}
-              selectedValue={_.find(relasjonTypeOptions, b => b.value === (index < 0 ? _newRelasjonType : barnetilhoerighet?.relasjonType))}
+              value={_.find(relasjonTypeOptions, b => b.value === (index < 0 ? _newRelasjonType : barnetilhoerighet?.relasjonType))}
               defaultValue={_.find(relasjonTypeOptions, b => b.value === (index < 0 ? _newRelasjonType : barnetilhoerighet?.relasjonType))}
             />
           </Column>

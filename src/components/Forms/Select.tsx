@@ -44,8 +44,8 @@ const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
           menu: (styles: any) => ({
             ...styles,
             zIndex: 500,
-            width: "max-content",
-            minWidth: "100%"
+            width: 'max-content',
+            minWidth: '100%'
           }),
           menuList: (styles: any) => ({
             ...styles,

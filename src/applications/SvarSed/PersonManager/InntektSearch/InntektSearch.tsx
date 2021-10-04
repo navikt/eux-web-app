@@ -18,7 +18,7 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { OptionTypeBase } from 'react-select'
+import { Option } from 'declarations/app.d'
 
 interface InntektSearchProps {
   fnr: string
@@ -90,10 +90,10 @@ const InntektSearch = ({
           id={namespace + '-inntektsliste'}
           label={t('label:inntektsfilter')}
           menuPortalTarget={document.body}
-          onChange={(o: OptionTypeBase) => setFilter(o.value)}
+          onChange={(o: Option) => setFilter(o.value)}
           options={filterOptions}
           placeholder={t('el:placeholder-select-default')}
-          selectedValue={_.find(filterOptions, b => b.value === _filter)}
+          value={_.find(filterOptions, b => b.value === _filter)}
           defaultValue={_.find(filterOptions, b => b.value === _filter)}
         />
       </Column>

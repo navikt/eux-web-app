@@ -33,7 +33,6 @@ import {
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { OptionTypeBase } from 'react-select'
 import styled from 'styled-components'
 
 const ModalDiv = styled(NavModal)`
@@ -144,7 +143,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
     _setNewPersonName(navn.trim())
   }
 
-  const onNewPersonRelationChange = (o: OptionTypeBase) => {
+  const onNewPersonRelationChange = (o: Option) => {
     _resetValidation(namespace + '-relasjon')
     _setNewPersonRelation(o.value.trim())
   }
@@ -356,7 +355,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
                 onChange={onNewPersonRelationChange}
                 options={relationOptions}
                 placeholder={t('el:placeholder-select-default')}
-                selectedValue={_.find(relationOptions, o => o.value === _newPersonRelation)}
+                value={_.find(relationOptions, o => o.value === _newPersonRelation)}
                 defaultValue={_.find(relationOptions, o => o.value === _newPersonRelation)}
               />
               <HorizontalSeparatorDiv />

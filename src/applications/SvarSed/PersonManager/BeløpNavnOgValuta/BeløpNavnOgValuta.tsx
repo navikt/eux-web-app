@@ -149,7 +149,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
             onChange={(e: any) => setYtelseNavn(e.value)}
             options={ytelseNavnOptions}
             placeholder={t('el:placeholder-select-default')}
-            selectedValue={_.find(ytelseNavnOptions, b => b.value === ytelse?.ytelseNavn as YtelseNavn)}
+            value={_.find(ytelseNavnOptions, b => b.value === ytelse?.ytelseNavn as YtelseNavn)}
             defaultValue={_.find(ytelseNavnOptions, b => b.value === ytelse?.ytelseNavn as YtelseNavn)}
           />
         </Column>

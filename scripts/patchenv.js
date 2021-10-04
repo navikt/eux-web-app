@@ -3,7 +3,7 @@ import dotenv from 'dotenv-save';
 import branch from 'git-branch';
 import { readPackageSync } from 'read-pkg';
 // Read package.json into js map.
-const pkg = readPackageSync();
+const pkg = readPackageSync({cwd: '.'})
 
 moment.locale('nb');
 

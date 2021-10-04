@@ -250,8 +250,7 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
               onChange={(e) => onTypeChanged(e.value as TelefonType, index)}
               options={telefonTypeOptions}
               placeholder={t('el:placeholder-select-default')}
-              required
-              selectedValue={getTypeOption(index < 0 ? _newType : telefon?.type)}
+              value={getTypeOption(index < 0 ? _newType : telefon?.type)}
               defaultValue={getTypeOption(index < 0 ? _newType : telefon?.type)}
             />
           </Column>

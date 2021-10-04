@@ -12,7 +12,7 @@ import { Column, FlexBaseDiv, HighContrastFlatknapp, HorizontalSeparatorDiv, Row
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { OptionTypeBase } from 'react-select'
+import { Option } from 'declarations/app.d'
 import { getFnr } from 'utils/fnr'
 
 interface TemaSelector {
@@ -75,7 +75,7 @@ const Tema: React.FC = () => {
     setEditMode(false)
   }
 
-  const onTemaChanged = (o: OptionTypeBase) => {
+  const onTemaChanged = (o: Option) => {
     if (validation[namespace]) {
       dispatch(resetValidation(namespace))
     }
@@ -83,7 +83,7 @@ const Tema: React.FC = () => {
     dispatch(getFagsaker(fnr, 'HZ', o.value))
   }
 
-  const onSakIDChange = (o: OptionTypeBase): void => {
+  const onSakIDChange = (o: Option): void => {
     if (validation[namespace + '-fagsak']) {
       dispatch(resetValidation(namespace + '-fagsak'))
     }
@@ -131,7 +131,7 @@ const Tema: React.FC = () => {
                 id={namespace + '-select'}
                 onChange={onTemaChanged}
                 options={temaOptions}
-                selectedValue={_.find(temaOptions, { value: _tema })}
+                value={_.find(temaOptions, { value: _tema })}
                 style={{ minWidth: '300px' }}
               />
               )}
@@ -161,7 +161,7 @@ const Tema: React.FC = () => {
                       id={namespace + '-fagsak-select'}
                       onChange={onSakIDChange}
                       options={fagsakIdOptions}
-                      selectedValue={_.find(fagsakIdOptions, { value: _fagsak })}
+                      value={_.find(fagsakIdOptions, { value: _fagsak })}
                       style={{ minWidth: '300px' }}
                     />
                     )}

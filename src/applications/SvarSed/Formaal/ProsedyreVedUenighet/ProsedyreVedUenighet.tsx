@@ -26,7 +26,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { OptionTypeBase } from 'react-select'
+import { Option } from 'declarations/app.d'
 import { validateProsedyreVedUenighetGrunn, ValidationProsedyreVedUenighetGrunnProps } from './validation'
 
 export interface ProsedyreVedUenighetSelector extends FormålManagerFormSelector {
@@ -209,10 +209,10 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
               key={namespace + idx + '-grunn-' + (grunn === null ? _newGrunn : grunn?.grunn)}
               label={t('label:velg-grunn-til-uenighet')}
               menuPortalTarget={document.body}
-              onChange={(o: OptionTypeBase) => setGrunn(o.value, index, (grunn === null ? _newGrunn : grunn?.grunn))}
+              onChange={(o: Option) => setGrunn(o.value, index, (grunn === null ? _newGrunn : grunn?.grunn))}
               options={thisGrunnOptions}
               placeholder={t('el:placeholder-select-default')}
-              selectedValue={_.find(grunnOptions, b => b.value === (grunn === null ? _newGrunn : grunn?.grunn))}
+              value={_.find(grunnOptions, b => b.value === (grunn === null ? _newGrunn : grunn?.grunn))}
               defaultValue={_.find(grunnOptions, b => b.value === (grunn === null ? _newGrunn : grunn?.grunn))}
             />
           </Column>
@@ -226,10 +226,10 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
               key={namespace + idx + '-person-' + (grunn === null ? _newPerson : grunn?.person)}
               label={t('label:personen-det-gjelder') + ' *'}
               menuPortalTarget={document.body}
-              onChange={(o: OptionTypeBase) => setPerson(o.value, index, (grunn === null ? _newGrunn : grunn?.grunn))}
+              onChange={(o: Option) => setPerson(o.value, index, (grunn === null ? _newGrunn : grunn?.grunn))}
               options={personOptions}
               placeholder={t('el:placeholder-select-default')}
-              selectedValue={_.find(personOptions, b => b.value === (grunn === null ? _newPerson : grunn?.person))}
+              value={_.find(personOptions, b => b.value === (grunn === null ? _newPerson : grunn?.person))}
               defaultValue={_.find(personOptions, b => b.value === (grunn === null ? _newPerson : grunn?.person))}
             />
           </Column>

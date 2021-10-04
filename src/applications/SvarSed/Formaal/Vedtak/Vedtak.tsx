@@ -37,7 +37,7 @@ import {
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { OptionTypeBase } from 'react-select'
+import { Option } from 'declarations/app.d'
 import { getIdx } from 'utils/namespace'
 import { validateVedtakPeriode } from './validation'
 
@@ -378,11 +378,11 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
                   id={namespace + '-vedtaksperioder-vedtak'}
                   label={t('label:vedtak-type')}
                   menuPortalTarget={document.body}
-                  onChange={(o: OptionTypeBase) => setVedtaksperioderVedtak(o.value, index)}
+                  onChange={(o: Option) => setVedtaksperioderVedtak(o.value, index)}
                   options={vedtakTypeOptions}
                   placeholder={t('el:placeholder-select-default')}
                   defaultValue={_.find(vedtakTypeOptions, v => v.value === _newVedtaksperioderVedtak)}
-                  selectedValue={_.find(vedtakTypeOptions, v => v.value === _newVedtaksperioderVedtak)}
+                  value={_.find(vedtakTypeOptions, v => v.value === _newVedtaksperioderVedtak)}
                 />
               </Column>
             </AlignStartRow>
@@ -527,11 +527,11 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
             id={namespace + '-vedtakstype'}
             label={t('label:vedtak-type') + ' *'}
             menuPortalTarget={document.body}
-            onChange={(e: OptionTypeBase) => setVedtakstype(e.value)}
+            onChange={(e: Option) => setVedtakstype(e.value)}
             options={vedtakTypeOptions}
             placeholder={t('el:placeholder-select-default')}
             defaultValue={_.find(vedtakTypeOptions, v => v.value === vedtak?.vedtakstype)}
-            selectedValue={_.find(vedtakTypeOptions, v => v.value === vedtak?.vedtakstype)}
+            value={_.find(vedtakTypeOptions, v => v.value === vedtak?.vedtakstype)}
           />
         </Column>
         <Column>

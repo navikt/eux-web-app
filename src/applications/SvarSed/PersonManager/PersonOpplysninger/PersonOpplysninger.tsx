@@ -428,25 +428,26 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
         {!_seeNorskPinForm
           ? (
             <>
-            <Column>
-              <Normaltekst>
-                {norwegianPin?.identifikator ?? t('message:warning-no-fnr')}
-              </Normaltekst>
-            </Column>
-            <Column>
-               <HighContrastKnapp
-                 kompakt
-                 onClick={() => _setSeeNorskPinForm(true)}>
-                 <FlexCenterDiv>
-                   <Edit />
-                   <HorizontalSeparatorDiv size='0.35'/>
-                   {t('label:endre')}
-                 </FlexCenterDiv>
-               </HighContrastKnapp>
-            </Column>
-              <Column/>
+              <Column>
+                <Normaltekst>
+                  {norwegianPin?.identifikator ?? t('message:warning-no-fnr')}
+                </Normaltekst>
+              </Column>
+              <Column>
+                <HighContrastKnapp
+                  kompakt
+                  onClick={() => _setSeeNorskPinForm(true)}
+                >
+                  <FlexCenterDiv>
+                    <Edit />
+                    <HorizontalSeparatorDiv size='0.35' />
+                    {t('label:endre')}
+                  </FlexCenterDiv>
+                </HighContrastKnapp>
+              </Column>
+              <Column />
             </>
-          )
+            )
           : (
             <>
               <Column>
@@ -454,7 +455,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                   feil={validation[namespace + '-norskpin-nummer']?.feilmelding}
                   id='norskpin-nummer'
                   key={namespace + '-norskpin-nummer-' + norwegianPin?.identifikator}
-                  label={''}
+                  label=''
                   namespace={namespace}
                   onChanged={onNorwegianPinChange}
                   value={norwegianPin?.identifikator}
@@ -473,7 +474,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                     ? t('message:loading-searching')
                     : t('el:button-search-for-x', { x: t('label:person').toLowerCase() })}
                 </HighContrastKnapp>
-                <HorizontalSeparatorDiv size='0.35'/>
+                <HorizontalSeparatorDiv size='0.35' />
                 <HighContrastFlatknapp
                   kompakt
                   onClick={() => _setSeeNorskPinForm(false)}
@@ -482,7 +483,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                 </HighContrastFlatknapp>
               </Column>
             </>
-          )}
+            )}
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow>
@@ -502,11 +503,13 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                 </HighContrastKnapp>
               </FlexCenterDiv>
               )
-            : _.isEmpty(norwegianPin?.identifikator) ? (
-              <Normaltekst>
-                {t('label:norsk-fnr-beskrivelse')}
-              </Normaltekst>
-              ): <div/>}
+            : _.isEmpty(norwegianPin?.identifikator)
+              ? (
+                <Normaltekst>
+                  {t('label:norsk-fnr-beskrivelse')}
+                </Normaltekst>
+                )
+              : <div />}
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />

@@ -26,7 +26,6 @@ import {
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { ValueType } from 'react-select'
 import { getIdx } from 'utils/namespace'
 import { validateWithSubsidiesPeriode, ValidationWithSubsidiesProps } from './withSubsidiesValidation'
 
@@ -186,10 +185,10 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
               key={namespace + idx + '-pensjontype-' + (index < 0 ? _newPensjonType : (pensjonPeriode as PensjonPeriode)?.pensjonstype)}
               label={t('label:type-pensjon')}
               menuPortalTarget={document.body}
-              onChange={(e: ValueType<Option, false>) => setPensjonType(e?.value, index)}
+              onChange={(o: Option) => setPensjonType(o?.value, index)}
               options={selectPensjonTypeOptions}
               placeholder={t('el:placeholder-select-default')}
-              selectedValue={getPensjonTypeOption(index < 0 ? _newPensjonType : (pensjonPeriode as PensjonPeriode)?.pensjonstype)}
+              value={getPensjonTypeOption(index < 0 ? _newPensjonType : (pensjonPeriode as PensjonPeriode)?.pensjonstype)}
               defaultValue={getPensjonTypeOption(index < 0 ? _newPensjonType : (pensjonPeriode as PensjonPeriode)?.pensjonstype)}
             />
           </Column>

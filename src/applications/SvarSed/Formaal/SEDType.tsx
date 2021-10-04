@@ -17,7 +17,7 @@ import { Column, FlexCenterDiv, HighContrastFlatknapp, HorizontalSeparatorDiv, R
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { OptionTypeBase } from 'react-select'
+import { Option } from 'declarations/app.d'
 
 interface SEDTypeSelector {
   highContrast: boolean
@@ -112,7 +112,7 @@ const SEDType: React.FC = () => {
     setEditMode(false)
   }
 
-  const onSedTypeChanged = (o: OptionTypeBase) => {
+  const onSedTypeChanged = (o: Option) => {
     if (validation[namespace]) {
       dispatch(resetValidation(namespace))
     }
@@ -150,7 +150,7 @@ const SEDType: React.FC = () => {
                     id={namespace + '-select'}
                     onChange={onSedTypeChanged}
                     options={sedTypeOptions}
-                    selectedValue={_.find(sedTypeOptions, s => s.value === _sedType)}
+                    value={_.find(sedTypeOptions, s => s.value === _sedType)}
                     style={{ minWidth: '300px' }}
                   />
                   <HorizontalSeparatorDiv size='0.5' />

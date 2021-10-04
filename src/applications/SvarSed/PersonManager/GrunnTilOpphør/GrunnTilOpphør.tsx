@@ -11,7 +11,7 @@ import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoyk
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { OptionTypeBase } from 'react-select'
+import { Option } from 'declarations/app.d'
 
 interface GrunnTilOpphørSelector extends PersonManagerFormSelector {
   highContrast: boolean
@@ -88,10 +88,10 @@ const GrunnTilOpphør: React.FC<PersonManagerFormProps> = ({
             id={namespace + '-typeGrunnOpphoerAnsatt'}
             label={t('label:årsak-til-avslutning-av-arbeidsforhold')}
             menuPortalTarget={document.body}
-            onChange={(o: OptionTypeBase) => setTypeGrunnOpphoerAnsatt(o.value)}
+            onChange={(o: Option) => setTypeGrunnOpphoerAnsatt(o.value)}
             options={årsakOptions}
             placeholder={t('el:placeholder-select-default')}
-            selectedValue={_.find(årsakOptions, b => b.value === grunntilopphor?.typeGrunnOpphoerAnsatt)}
+            value={_.find(årsakOptions, b => b.value === grunntilopphor?.typeGrunnOpphoerAnsatt)}
             defaultValue={_.find(årsakOptions, b => b.value === grunntilopphor?.typeGrunnOpphoerAnsatt)}
           />
         </Column>

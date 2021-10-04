@@ -38,7 +38,6 @@ import {
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { OptionTypeBase } from 'react-select'
 import { getIdx } from 'utils/namespace'
 import { validateMotregningNavnOgBetegnelser, ValidationMotregningNavnOgBetegnelserProps } from './validation'
 
@@ -437,10 +436,10 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
               key={namespace + '-navn-' + (index < 0 ? _newNavn : nob?.navn)}
               label={t('label:barnets-navn') + ' *'}
               menuPortalTarget={document.body}
-              onChange={(e: OptionTypeBase) => setNavn(e.value, index, nob?.navn)}
+              onChange={(e: any) => setNavn(e.value, index, nob?.navn)}
               options={allNameOptions}
               placeholder={t('el:placeholder-select-default')}
-              selectedValue={_.find(allNameOptions, b => b.value === (index < 0 ? _newNavn : nob?.navn))}
+              value={_.find(allNameOptions, b => b.value === (index < 0 ? _newNavn : nob?.navn))}
               defaultValue={_.find(allNameOptions, b => b.value === (index < 0 ? _newNavn : nob?.navn))}
             />
           </Column>

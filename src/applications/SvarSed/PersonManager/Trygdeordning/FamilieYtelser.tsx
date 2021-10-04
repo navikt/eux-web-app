@@ -26,7 +26,7 @@ import {
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { OptionsType } from 'react-select'
+import { Option } from 'declarations/app.d'
 import { getIdx } from 'utils/namespace'
 import { validateFamilieytelserPeriode, ValidationFamilieytelsePeriodeProps } from './validation'
 
@@ -74,7 +74,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
   const [_validation, _resetValidation, performValidation, _setValidation] =
     useValidation<ValidationFamilieytelsePeriodeProps>({}, validateFamilieytelserPeriode)
 
-  const selectCategoryOptions: OptionsType<{label: string, value: SedCategory}> = [{
+  const selectCategoryOptions: Array<Option> = [{
     label: t('el:option-trygdeordning-perioderMedArbeid'), value: 'perioderMedArbeid'
   }, {
     label: t('el:option-trygdeordning-perioderMedTrygd'), value: 'perioderMedTrygd'
@@ -268,7 +268,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
                     onChange={(e: any) => setCategory(e.value)}
                     options={selectCategoryOptions}
                     placeholder={t('el:placeholder-select-default')}
-                    selectedValue={getCategoryOption(_newCategory)}
+                    value={getCategoryOption(_newCategory)}
                     defaultValue={getCategoryOption(_newCategory)}
                   />
                 )}
@@ -289,7 +289,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
                     onChange={(e: any) => setPensjonType(e.value, index)}
                     options={selectPensjonsTypeOptions}
                     placeholder={t('el:placeholder-select-default')}
-                    selectedValue={getPensjonsTypeOption(index < 0 ? _newPensjonsType : (periode as PensjonPeriode)?.pensjonstype)}
+                    value={getPensjonsTypeOption(index < 0 ? _newPensjonsType : (periode as PensjonPeriode)?.pensjonstype)}
                     defaultValue={getPensjonsTypeOption(index < 0 ? _newPensjonsType : (periode as PensjonPeriode)?.pensjonstype)}
                   />
                 )}

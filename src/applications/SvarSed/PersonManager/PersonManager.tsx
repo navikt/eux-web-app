@@ -8,7 +8,7 @@ import GreenCircle from 'assets/icons/GreenCircle'
 import RemoveCircle from 'assets/icons/RemoveCircle'
 import classNames from 'classnames'
 import { WithErrorPanel } from 'components/StyledComponents'
-import { Option, Options } from 'declarations/app'
+import { Option } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { F002Sed, FSed, PersonInfo, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -196,6 +196,15 @@ export interface PersonManagerFormProps {
   personName: string
 }
 
+export interface PersonManagerOption extends Option {
+  component: any
+  type: string | Array<string>
+  normal: boolean
+  barn: boolean
+  family: boolean
+  condition ?: () => void
+}
+
 const mapState = (state: State): PersonManagerSelector => ({
   gettingPerson: state.loading.gettingPerson,
   replySed: state.svarpased.replySed,
@@ -251,7 +260,7 @@ const PersonManager: React.FC = () => {
 
   const menuRef = useRef(currentMenu + '|' + currentMenuOption)
 
-  const options: Options = [
+  const options: Array<PersonManagerOption> = [
     { label: t('el:option-personmanager-1'), value: 'personopplysninger', component: PersonOpplysninger, type: 'F', normal: true, barn: true, family: false },
     { label: t('el:option-personmanager-2'), value: 'nasjonaliteter', component: Nasjonaliteter, type: 'F', normal: true, barn: true, family: false },
     { label: t('el:option-personmanager-3'), value: 'adresser', component: Adresser, type: 'F', normal: true, barn: true, family: false },
@@ -290,7 +299,7 @@ const PersonManager: React.FC = () => {
   ]
 
   const getForm = (value: string): JSX.Element | null => {
-    const option: Option | undefined = _.find(options, o => o.value === value)
+    const option: PersonManagerOption | undefined = _.find(options, o => o.value === value)
     if (option) {
       const Component = option.component
       return (

@@ -116,15 +116,15 @@ const PeriodeInput = ({
         />
       </Column>
       {periodeType === 'withcheckbox' && (
-      <WrapperDiv className={classNames('slideInFromLeft', { nolabel: showLabel })}>
-        {_.isEmpty(_periode?.sluttdato) && (
-          <Checkbox
-            checked={_periode?.aapenPeriodeType === 'ukjent_sluttdato'}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => onCheckboxChanged(e.target.checked)}
-            label={t('label:ukjent')}
-          />
-        )}
-      </WrapperDiv>
+        <WrapperDiv className={classNames('slideInFromLeft', { nolabel: showLabel })}>
+          {_.isEmpty(_periode?.sluttdato) && (
+            <Checkbox
+              checked={_periode?.aapenPeriodeType === 'ukjent_sluttdato'}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onCheckboxChanged(e.target.checked)}
+              label={t('label:ukjent')}
+            />
+          )}
+        </WrapperDiv>
       )}
     </>
   )

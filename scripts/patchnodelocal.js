@@ -1,4 +1,4 @@
-import writePkg from 'write-pkg';
+import { writePackageSync } from 'write-pkg';
 import { readPackageSync } from 'read-pkg';
 
 const DEFAULT_NODE_MOCK_SERVER = 'http://localhost:3002';
@@ -15,6 +15,6 @@ const patchPackageNodeLocal = () => {
   if (!pkg['disabled-homepage']) {
     pkg['disabled-homepage'] = 'http://eesi2.no/melosys';
   }
-  writePkg.sync(pkg);
+  writePackageSync(pkg);
 };
 patchPackageNodeLocal();
