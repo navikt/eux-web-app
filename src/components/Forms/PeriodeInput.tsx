@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import Input from 'components/Forms/Input'
-import { Periode, PeriodeType } from 'declarations/sed'
+import { Periode, PeriodeInputType } from 'declarations/sed'
 import _ from 'lodash'
 import moment from 'moment'
 import { Checkbox } from 'nav-frontend-skjema'
@@ -27,7 +27,7 @@ export interface PeriodProps {
     startdato?: string
     sluttdato?: string
   }
-  periodeType?: PeriodeType
+  periodeType?: PeriodeInputType
   namespace: string
   setPeriode: (periode: Periode) => void
   showLabel?: boolean
@@ -115,8 +115,9 @@ const PeriodeInput = ({
           value={toUIDateFormat(_periode?.sluttdato) ?? ''}
         />
       </Column>
+      {periodeType === 'withcheckbox' && (
       <WrapperDiv className={classNames('slideInFromLeft', { nolabel: showLabel })}>
-        {periodeType === 'withcheckbox' && _.isEmpty(_periode?.sluttdato) && (
+        {_.isEmpty(_periode?.sluttdato) && (
           <Checkbox
             checked={_periode?.aapenPeriodeType === 'ukjent_sluttdato'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => onCheckboxChanged(e.target.checked)}
@@ -124,6 +125,7 @@ const PeriodeInput = ({
           />
         )}
       </WrapperDiv>
+      )}
     </>
   )
 }

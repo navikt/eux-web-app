@@ -80,6 +80,7 @@ const InntektSearch = ({
         }}
         setPeriode={setSearchPeriode}
         value={_searchPeriode}
+        periodeType='simple'
       />
       <Column>
         <Select

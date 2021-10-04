@@ -60,6 +60,13 @@
   "option-grunntilopphør-ukjent": "Ukjent",
   "option-grunntilopphør-annet": "Annet",
 
+  "option-inntekttype-nettoinntekt" : "Nettoinntekt, under ansettelsesforhold eller selvstendig næringsvirksomhet",
+  "option-inntekttype-bruttoinntekt" : "Bruttoinntekt under ansettelsesforhold eller selvstendig næringsvirksomhet",
+  "option-inntekttype-en-enkelt-utbetaling" : "En enkelt utbetaling",
+  "option-inntekttype-overtidsgodtgjørelse" : "Overtidsgodtgjørelse",
+  "option-inntekttype-vederlag" : "Vederlag for ferie som ikke er tatt ut",
+  "option-inntekttype-annet-vederlag" : "Annet, vederlag",
+
   "option-inntektsfilter-BARNETRYGD": "Barnetrygd",
   "option-inntektsfilter-KONTANTSTOETTE": "Kontantstøtte",
   "option-inntektsfilter-DAGPENGER": "Dagpenger",
@@ -67,6 +74,9 @@
   "option-institusjonstype-01" : "Periode med frivillig, uavbrutt forsikring",
   "option-institusjonstype-02" : "Vederlag for ferie som ikke er tatt ut",
   "option-institusjonstype-03" : "Annen periode behandlet som forsikringsperiode",
+
+  "option-periodetype-ansettelsesforhold": "Ansettelsesforhold",
+  "option-periodetype-selvstendig-næringsvirksomhet": "Selvstendig næringsvirksomhet",
 
   "option-person-søker" : "Søker",
   "option-person-ektefelle_partner" : "Ektefelle/partner",

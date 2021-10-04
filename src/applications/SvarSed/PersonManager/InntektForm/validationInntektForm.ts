@@ -49,6 +49,14 @@ export const validateLoennsopplysning = (
     }
   }
 
+  if (!_.isEmpty(loennsopplysning?.periodetype)) {
+    v[namespace + idx + '-periodetype'] = {
+      feilmelding: t('message:validation-noPeriodeType'),
+      skjemaelementId: namespace + idx + '-periodetype'
+    } as FeiloppsummeringFeil
+    hasErrors = true
+  }
+
   if (hasErrors) {
     const namespaceBits = namespace.split('-')
     const mainNamespace = namespaceBits[0]

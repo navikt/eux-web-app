@@ -129,6 +129,7 @@
   "validation-noPensjonType": "Ingen type pensjon",
   "validation-noPensjonTypeTilPerson": "Ingen type pensjon til {{person}}",
   "validation-noPersonGiven": "Ingen person oppgitt",
+  "validation-noPeriodeType": "Ingen periodetype",
   "validation-noPersonGivenForPerson": "Ingen person oppgitt til {{person}}",
   "validation-noRelation": "Ingen relasjon valgt",
   "validation-noRelationForPerson": "Ingen relasjon valgt til {{person}}",

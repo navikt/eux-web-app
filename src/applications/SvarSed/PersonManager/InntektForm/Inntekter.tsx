@@ -2,8 +2,9 @@ import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
+import Select from 'components/Forms/Select'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
-import { Inntekt, TelefonType } from 'declarations/sed'
+import { Inntekt } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import { Currency } from 'land-verktoy'
@@ -21,9 +22,9 @@ import {
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
+import styled from 'styled-components'
 import { getIdx } from 'utils/namespace'
 import { validateInntekt, ValidationInntekterProps } from './validationInntekter'
-import styled from 'styled-components'
 
 const MyPaddedDiv = styled.div`
   padding: 0.5rem 0.5rem 0.5rem 2rem;
@@ -42,8 +43,8 @@ const Inntekter: React.FC<any> = ({
 
   const namespace = `${parentNamespace}-inntekt`
 
-  const [_newType, _setNewType] = useState<string | undefined>(undefined)
-  const [_newTypeAnnen, _setNewTypeAnnen] = useState<string | undefined>(undefined)
+  const [_newInntektType, _setNewInntektType] = useState<string | undefined>(undefined)
+  const [_newInformasjonOmVederlag, _setNewInformasjonOmVederlag] = useState<string | undefined>(undefined)
   const [_newBeløp, _setNewBeløp] = useState<string | undefined>(undefined)
   const [_newValuta, _setNewValuta] = useState<string | undefined>(undefined)
 
@@ -51,9 +52,19 @@ const Inntekter: React.FC<any> = ({
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Inntekt>((it: Inntekt): string => it.type + '-' + it.beloep)
   const [_validation, resetValidation, performValidation] = useValidation<ValidationInntekterProps>({}, validateInntekt)
 
-  const onTypeChanged = (type: string, index: number) => {
+  const inntektTypeOptions = [
+    {label: t("el:option-inntekttype-nettoinntekt"), value: "nettoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet"},
+    {label: t("el:option-inntekttype-bruttoinntekt"), value: "bruttoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet"},
+    {label: t("el:option-inntekttype-en-enkelt-utbetaling"), value: "en_enkelt_utbetaling"},
+    {label: t("el:option-inntekttype-overtidsgodtgjørelse"), value: "overtidsgodtgjørelse"},
+    {label: t( "el:option-inntekttype-vederlag"), value: "vederlag_for_ferie_som_ikke_er_tatt_ut"},
+    {label: t("el:option-inntekttype-annet-vederlag"), value: "annet_vederlag"}
+  ]
+
+
+  const onInntektTypeChanged = (type: string, index: number) => {
     if (index < 0) {
-      _setNewType(type.trim() as TelefonType)
+      _setNewInntektType(type.trim())
       resetValidation(namespace + '-type')
     } else {
       const newInntekter: Array<Inntekt> = _.cloneDeep(inntekter)
@@ -65,16 +76,16 @@ const Inntekter: React.FC<any> = ({
     }
   }
 
-  const onTypeAnnenChanged = (newTypeAnnen: string, index: number) => {
+  const onInformasjonOmVederlagChanged = (newInformasjonOmVederlag: string, index: number) => {
     if (index < 0) {
-      _setNewTypeAnnen(newTypeAnnen.trim())
-      resetValidation(namespace + '-typeAnnen')
+      _setNewInformasjonOmVederlag(newInformasjonOmVederlag.trim())
+      resetValidation(namespace + '-informasjonOmVederlag')
     } else {
       const newInntekter: Array<Inntekt> = _.cloneDeep(inntekter)
-      newInntekter[index].typeAnnen = newTypeAnnen.trim()
+      newInntekter[index].typeAnnen = newInformasjonOmVederlag.trim()
       onInntekterChanged(newInntekter)
-      if (validation[namespace + getIdx(index) + '-typeAnnen']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-typeAnnen'))
+      if (validation[namespace + getIdx(index) + '-informasjonOmVederlag']) {
+        dispatch(resetValidation(namespace + getIdx(index) + '-informasjonOmVederlag'))
       }
     }
   }
@@ -114,8 +125,8 @@ const Inntekter: React.FC<any> = ({
   }
 
   const resetForm = () => {
-    _setNewType(undefined)
-    _setNewTypeAnnen(undefined)
+    _setNewInntektType(undefined)
+    _setNewInformasjonOmVederlag(undefined)
     _setNewBeløp(undefined)
     _setNewValuta('NOK')
     resetValidation()
@@ -137,8 +148,8 @@ const Inntekter: React.FC<any> = ({
 
   const onAdd = () => {
     const newInntekt: Inntekt = {
-      type: _newType?.trim() as string,
-      typeAnnen: _newTypeAnnen?.trim() as string,
+      type: _newInntektType?.trim() as string,
+      typeAnnen: _newInformasjonOmVederlag?.trim() as string,
       beloep: _newBeløp?.trim() as string,
       valuta: _newValuta as string
     }
@@ -175,29 +186,20 @@ const Inntekter: React.FC<any> = ({
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
         >
           <Column>
-            <Input
-              ariaLabel={t('label:type')}
-              feil={getErrorFor(index, 'type')}
-              key={namespace + idx + '-type-' + (index < 0 ? _newType : inntekt?.type ?? '')}
-              id='type'
-              label={t('label:type')}
-              namespace={namespace + idx}
-              onChanged={(type: string) => onTypeChanged(type, index)}
-              required
-              value={index < 0 ? _newType : inntekt?.type ?? ''}
-            />
-          </Column>
-          <Column>
-            <Input
-              ariaLabel={t('label:typeAnnen')}
-              feil={getErrorFor(index, 'typeAnnen')}
-              key={namespace + idx + '-typeAnnen-' + (index < 0 ? _newTypeAnnen : inntekt?.typeAnnen ?? '')}
-              id='typeAnnen'
-              label={t('label:typeAnnen')}
-              namespace={namespace + idx}
-              onChanged={(typeAnnen: string) => onTypeAnnenChanged(typeAnnen, index)}
-              required
-              value={index < 0 ? _newTypeAnnen : inntekt?.typeAnnen ?? ''}
+            <Select
+              closeMenuOnSelect
+              data-test-id={namespace + '-type'}
+              feil={validation[namespace + '-type']?.feilmelding}
+              highContrast={highContrast}
+              id={namespace + '-type'}
+              key={namespace + '-type-' + (index < 0 ? _newInntektType : inntekt?.type ?? '')}
+              label={t('label:type') + ' *'}
+              menuPortalTarget={document.body}
+              onChange={(e: any) => onInntektTypeChanged(e.value, index)}
+              options={inntektTypeOptions}
+              placeholder={t('el:placeholder-select-default')}
+              selectedValue={_.find(inntektTypeOptions, b => b.value === (index < 0 ? _newInntektType : inntekt?.type ?? ''))}
+              defaultValue={_.find(inntektTypeOptions, b => b.value === (index < 0 ? _newInntektType : inntekt?.type ?? ''))}
             />
           </Column>
           <Column>
@@ -242,6 +244,27 @@ const Inntekter: React.FC<any> = ({
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv size='0.5' />
+        {(index < 0 ? _newInntektType : inntekt?.type ?? '') === 'annet_vederlag' && (
+          <AlignStartRow
+           className={classNames('slideInFromLeft')}
+           style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
+          >
+            <Column>
+              <Input
+                ariaLabel={t('label:informasjon-om-vederlag')}
+                feil={getErrorFor(index, 'informasjonOmVederlag')}
+                key={namespace + idx + '-informasjonOmVederlag-' + (index < 0 ? _newInformasjonOmVederlag : inntekt?.typeAnnen ?? '')}
+                id='informasjonOmVederlag'
+                label={t('label:informasjon-om-vederlag')}
+                namespace={namespace + idx}
+                onChanged={(informasjonOmVederlag: string) => onInformasjonOmVederlagChanged(informasjonOmVederlag, index)}
+                required
+                value={index < 0 ? _newInformasjonOmVederlag : inntekt?.typeAnnen ?? ''}
+              />
+            </Column>
+            <Column/>
+          </AlignStartRow>
+          )}
       </RepeatableRow>
     )
   }

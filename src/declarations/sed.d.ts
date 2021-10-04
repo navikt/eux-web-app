@@ -35,7 +35,9 @@ export type GrunnUenighet = 'bosted' | 'medlemsperiode' | 'personligSituasjon'| 
 
 export type ArbeidsgiverIdentifikatorType = 'registrering' | 'trygd' | 'skatt' | 'ukjent'
 
-export type PeriodeType = 'simple' | 'withcheckbox'
+export type PeriodeInputType = 'simple' | 'withcheckbox'
+
+export type PeriodeType = 'ansettelsesforhold' | 'selvstendig_næringsvirksomhet'
 
 export interface Adresse {
   by?: string
@@ -320,6 +322,7 @@ export interface Inntekt {
 
 export interface Loennsopplysning {
   periode: Periode
+  periodetype: string
   ansettelsestype?: string
   inntekter: Array<Inntekt>
   arbeidsdager?: string

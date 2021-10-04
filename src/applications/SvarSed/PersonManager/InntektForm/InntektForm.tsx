@@ -8,12 +8,13 @@ import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
-import InntektFC from 'components/Inntekt/Inntekt'
 import PeriodeInput from 'components/Forms/PeriodeInput'
+import Select from 'components/Forms/Select'
+import InntektFC from 'components/Inntekt/Inntekt'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { State } from 'declarations/reducers'
-import { Loennsopplysning, Periode } from 'declarations/sed'
+import { Loennsopplysning, Periode, PeriodeType } from 'declarations/sed'
 import { Inntekt } from 'declarations/sed.d'
 import { IInntekter } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
@@ -70,7 +71,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-inntekt`
 
   const [_newPeriode, _setNewPeriode] = useState<Periode>({ startdato: '' })
-  const [_newAnsettelsesType, _setNewAnsettelsesType] = useState<string>('')
+  const [_newPeriodeType, _setNewPeriodeType] = useState<PeriodeType | undefined>(undefined)
   const [_newInntekter, _setNewInntekter] = useState<Array<Inntekt>>([])
   const [_newArbeidsdager, _setNewArbeidsdager] = useState<string>('')
   const [_newArbeidstimer, _setNewArbeidstimer] = useState<string>('')
@@ -83,6 +84,11 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
     useValidation<ValidationLoennsopplysningProps>({}, validateLoennsopplysning)
 
   const isVisible = (index: number): boolean => _visible.indexOf(index) >= 0
+
+  const periodeTypeOptions = [
+    {label: t('el:option-periodetype-ansettelsesforhold'), value: 'ansettelsesforhold'},
+    {label: t('el:option-periodetype-selvstendig-næringsvirksomhet'), value: 'selvstendig-næringsvirksomhet'}
+  ]
 
   const toggleVisibility = (index: number) => {
     const visible: boolean = isVisible(index)
@@ -105,14 +111,14 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const setAnsettelsesType = (newAnsettelsesType: string, index: number) => {
+  const setPeriodeType = (newPeriodeType: PeriodeType, index: number) => {
     if (index < 0) {
-      _setNewAnsettelsesType(newAnsettelsesType.trim())
-      _resetValidation(namespace + '-ansettelsestype')
+      _setNewPeriodeType(newPeriodeType)
+      _resetValidation(namespace + '-periodetype')
     } else {
-      dispatch(updateReplySed(`${target}[${index}].ansettelsestype`, newAnsettelsesType.trim()))
-      if (validation[namespace + getIdx(index) + '-ansettelsestype']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-ansettelsestype'))
+      dispatch(updateReplySed(`${target}[${index}].periodetype`, newPeriodeType))
+      if (validation[namespace + getIdx(index) + '-periodetype']) {
+        dispatch(resetValidation(namespace + getIdx(index) + '-periodetype'))
       }
     }
   }
@@ -153,10 +159,10 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
     }
   }
   const resetForm = () => {
-    _setNewAnsettelsesType('')
     _setNewArbeidsdager('')
     _setNewArbeidstimer('')
     _setNewPeriode({ startdato: '' })
+    _setNewPeriodeType(undefined)
     _setNewInntekter([])
     _resetValidation()
   }
@@ -178,11 +184,11 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
   const onAdd = () => {
     const newLoennsopplysning: Loennsopplysning = {
       periode: _newPeriode,
-      ansettelsestype: _newAnsettelsesType,
+      periodetype: _newPeriodeType,
       inntekter: _newInntekter,
       arbeidsdager: _newArbeidsdager,
       arbeidstimer: _newArbeidstimer
-    }
+    } as Loennsopplysning
 
     const valid: boolean = performValidation({
       loennsopplysning: newLoennsopplysning,
@@ -226,7 +232,27 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
             }}
             setPeriode={(p: Periode) => setPeriode(p, index)}
             value={_periode}
+            periodeType='simple'
           />
+          <Column>
+            <Column>
+              <Select
+                closeMenuOnSelect
+                data-test-id={namespace + '-periodetype'}
+                feil={validation[namespace + '-periodetype']?.feilmelding}
+                highContrast={highContrast}
+                id={namespace + '-periodetype'}
+                key={namespace + '-periodetype-' + loennsopplysning?.periodetype}
+                label={t('label:type-periode') + ' *'}
+                menuPortalTarget={document.body}
+                onChange={(e: any) => setPeriodeType(e.value, index)}
+                options={periodeTypeOptions}
+                placeholder={t('el:placeholder-select-default')}
+                selectedValue={_.find(periodeTypeOptions, b => b.value === loennsopplysning?.periodetype)}
+                defaultValue={_.find(periodeTypeOptions, b => b.value === loennsopplysning?.periodetype)}
+              />
+            </Column>
+          </Column>
           <Column>
             {index >= 0 && (
               <div className='nolabel'>
@@ -267,17 +293,6 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
               </AlignStartRow>
               <VerticalSeparatorDiv size='0.5' />
               <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-                <Column>
-                  <Input
-                    feil={getErrorFor(index, 'ansettelsestype')}
-                    namespace={namespace}
-                    id='ansettelsestype'
-                    key={'ansettelsestype-' + (index < 0 ? _newAnsettelsesType : loennsopplysning?.ansettelsestype ?? '')}
-                    label={t('label:ansettelses-type')}
-                    onChanged={(ansettelsestype: string) => setAnsettelsesType(ansettelsestype, index)}
-                    value={index < 0 ? _newAnsettelsesType : loennsopplysning?.ansettelsestype ?? ''}
-                  />
-                </Column>
                 <Column>
                   <Input
                     feil={getErrorFor(index, 'arbeidsdager')}
