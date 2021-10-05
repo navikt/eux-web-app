@@ -50,7 +50,7 @@ import { validateSEDEditor, ValidationSEDEditorProps } from './mainValidation'
 
 export interface SEDEditorSelector {
   alertType: string | undefined
-  alertMessage:  string | undefined
+  alertMessage: string | undefined
   creatingSvarPaSed: boolean
   gettingPreviewFile: boolean
   highContrast: boolean
@@ -386,15 +386,15 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
       <VerticalSeparatorDiv />
       {alertMessage && alertType === types.LOCALSTORAGE_SAVEDENTRY_SAVE && (
         <>
-        <FlexDiv>
-          <AlertstripeDiv>
-            <AlertStripe type='suksess'>
-              {t(alertMessage!)}
-            </AlertStripe>
-          </AlertstripeDiv>
-          <div/>
-        </FlexDiv>
-        <VerticalSeparatorDiv />
+          <FlexDiv>
+            <AlertstripeDiv>
+              <AlertStripe type='suksess'>
+                {t(alertMessage!)}
+              </AlertStripe>
+            </AlertstripeDiv>
+            <div />
+          </FlexDiv>
+          <VerticalSeparatorDiv />
         </>
       )}
     </PaddedDiv>

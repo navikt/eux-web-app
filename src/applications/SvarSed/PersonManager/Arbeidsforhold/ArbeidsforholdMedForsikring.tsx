@@ -1,4 +1,4 @@
-import { getArbeidsperioder, updateArbeidsgivere } from 'actions/arbeidsgiver'
+import { updateArbeidsgivere } from 'actions/arbeidsgiver'
 import { fetchInntekt } from 'actions/inntekt'
 import { updateReplySed } from 'actions/svarpased'
 import InntektSearch from 'applications/SvarSed/PersonManager/InntektSearch/InntektSearch'
@@ -36,7 +36,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getOrgnr, hasOrgnr, sanitizePeriodeMedForsikring } from 'utils/arbeidsgiver'
 import { getFnr } from 'utils/fnr'
 import makeRenderPlan, { PlanItem } from 'utils/renderPlan'
-// import { performValidationArbeidsperioderSearch, ValidationDatoProps } from './validation'
 import { validatePeriodeMedForsikring, ValidationPeriodeMedForsikringProps } from './validationPeriodeMedForsikring'
 
 export interface ArbeidsforholdMedForsikringSelector extends PersonManagerFormSelector {
@@ -75,22 +74,17 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
   const { t } = useTranslation()
   const {
     arbeidsperioder,
-    gettingArbeidsperioder,
     inntekter,
     gettingInntekter,
     replySed,
     highContrast
   } = useSelector<State, ArbeidsforholdMedForsikringSelector>(mapState)
   const dispatch = useDispatch()
-
   const includeAddress = true
   const perioder: Array<PeriodeMedForsikring> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${target}`
   const fnr = getFnr(replySed, personID)
-  /*
-  const [_arbeidssøkStartDato, _setArbeidssøkStartDato] = useState<string>('')
-  const [_arbeidssøkSluttDato, _setArbeidssøkSluttDato] = useState<string>('')
-*/
+
   const [_newPeriode, _setNewPeriode] = useState<Periode>({ startdato: '' })
   const [_newOrgnr, _setNewOrgnr] = useState<string>('')
   const [_newNavn, _setNewNavn] = useState<string>('')
@@ -108,31 +102,8 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
 
   const [_validationPeriodeMedForsikring, _resetValidationPeriodeMedForsikring, performValidationPeriodeMedForsikring] =
     useValidation<ValidationPeriodeMedForsikringProps>({}, validatePeriodeMedForsikring)
-  // const [_validationSearch, _resetValidationSearch, performValidationSearch] = useValidation<ValidationDatoProps>({}, performValidationArbeidsperioderSearch)
 
   const [_addedPeriodeMedForsikring, setAddedPeriodeMedForsikring] = useState<Array<PeriodeMedForsikring>>([])
-
-  /*
-  const setArbeidssøkStartDato = (value: string) => {
-    _resetValidationSearch('arbeidssok-startdato')
-    _setArbeidssøkStartDato(value)
-  }
-
-  const setArbeidssøkSluttDato = (value: string) => {
-    _resetValidationSearch('arbeidssok-sluttdato')
-    _setArbeidssøkSluttDato(value)
-  } */
-
-  const onArbeidsperioderSearchClicked = () => {
-    /* const valid = performValidationSearch({
-      startdato: _arbeidssøkStartDato,
-      sluttdato: _arbeidssøkSluttDato,
-      namespace: namespace + '-arbeidssok'
-    })
-    if (valid) { */
-    dispatch(getArbeidsperioder(fnr))
-  //  }
-  }
 
   const onInntektSearch = (fnr: string, fom: string, tom: string, inntektsliste: string) => {
     dispatch(fetchInntekt(fnr, fom, tom, inntektsliste))
@@ -570,26 +541,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-        {/*        <PeriodeInput
-          key={_arbeidssøkStartDato + _arbeidssøkSluttDato}
-          namespace={namespace + '-arbeidssok'}
-          errorStartDato={_validationSearch[namespace + '-arbeidssok-startdato']?.feilmelding}
-          errorSluttDato={_validationSearch[namespace + '-arbeidssok-sluttdato']?.feilmelding}
-          setStartDato={setArbeidssøkStartDato}
-          setSluttDato={setArbeidssøkSluttDato}
-          valueStartDato={_arbeidssøkStartDato}
-          valueSluttDato={_arbeidssøkSluttDato}
-        /> */}
-        <Column>
-          <VerticalSeparatorDiv size='1.8' />
-          <ArbeidsgiverSøk
-            fnr={fnr}
-            gettingArbeidsperioder={gettingArbeidsperioder}
-            getArbeidsperioder={onArbeidsperioderSearchClicked}
-          />
-        </Column>
-      </AlignStartRow>
+      <ArbeidsgiverSøk fnr={fnr} namespace={namespace} />
       <VerticalSeparatorDiv size='2' />
       <Systemtittel>
         {t('label:aa-registeret')}

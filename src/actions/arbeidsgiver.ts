@@ -7,11 +7,18 @@ import { ActionCreator } from 'redux'
 
 const sprintf = require('sprintf-js').sprintf
 
-export const getArbeidsperioder: ActionCreator<ThunkResult<ActionWithPayload<Arbeidsperioder>>> = (
+export interface GetArbeidsperiodeOptions {
   fnr: string
+  inntektslistetype: string
+  fom: string
+  tom: string
+}
+
+export const fetchArbeidsperioder: ActionCreator<ThunkResult<ActionWithPayload<Arbeidsperioder>>> = (
+  options: GetArbeidsperiodeOptions
 ): ThunkResult<ActionWithPayload<Arbeidsperioder>> => {
   return call({
-    url: sprintf(urls.API_ARBEIDSPERIODER_QUERY_URL, { fnr: fnr }),
+    url: sprintf(urls.API_ARBEIDSPERIODER_QUERY_URL, options),
     expectedPayload: mockArbeidsperioder,
     type: {
       request: types.ARBEIDSPERIODER_GET_REQUEST,

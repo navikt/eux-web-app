@@ -28,8 +28,6 @@ const Arbeidsgivere: React.FC<ArbeidsgivereProps> = ({
   arbeidsperioder,
   editable = 'no',
   fnr,
-  gettingArbeidsperioder = false,
-  getArbeidsperioder = () => {},
   namespace,
   personFnr,
   onArbeidsgiverSelect,
@@ -47,8 +45,7 @@ const Arbeidsgivere: React.FC<ArbeidsgivereProps> = ({
             <Column>
               <ArbeidsgiverSøk
                 fnr={fnr}
-                gettingArbeidsperioder={gettingArbeidsperioder}
-                getArbeidsperioder={getArbeidsperioder}
+                namespace={namespace}
               />
             </Column>
           </Row>

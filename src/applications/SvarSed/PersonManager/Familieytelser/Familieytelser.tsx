@@ -217,8 +217,8 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
           }}
           setPeriode={setPeriode}
           value={{
-            startdato: ytelse.startdato,
-            sluttdato: ytelse.sluttdato
+            startdato: ytelse?.startdato ?? '',
+            sluttdato: ytelse?.sluttdato ?? ''
           }}
         />
         <Column />

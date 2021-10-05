@@ -5,12 +5,71 @@ import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
 import { getOrgnr } from 'utils/arbeidsgiver'
 
-const datePattern = /^\d{4}-\d{2}-\d{2}$/
-
 export interface ValidationArbeidsgiverProps {
   arbeidsgiver: PeriodeMedForsikring
   namespace: string
   includeAddress: boolean
+}
+
+export interface ValidationArbeidsgiverSøkProps {
+  fom: string
+  tom: string
+  inntektslistetype: string
+  namespace: string
+}
+
+const datePattern = /^\d{4}-\d{2}$/
+
+export const validateArbeidsgiverSøk = (
+  v: Validation,
+  t: TFunction,
+  {
+    fom,
+    tom,
+    inntektslistetype,
+    namespace
+  }: ValidationArbeidsgiverSøkProps
+): boolean => {
+  let hasErrors: boolean = false
+  if (_.isEmpty(fom.trim())) {
+    v[namespace + '-startdato'] = {
+      skjemaelementId: namespace + '-startdato',
+      feilmelding: t('message:validation-noDate')
+    } as FeiloppsummeringFeil
+    hasErrors = true
+  } else {
+    if (!(fom.trim().match(datePattern))) {
+      v[namespace + '-startdato'] = {
+        skjemaelementId: namespace + '-startdato',
+        feilmelding: t('message:validation-invalidDate')
+      } as FeiloppsummeringFeil
+    }
+  }
+
+  if (_.isEmpty(tom.trim())) {
+    v[namespace + '-sluttdato'] = {
+      skjemaelementId: namespace + '-sluttdato',
+      feilmelding: t('message:validation-noDate')
+    } as FeiloppsummeringFeil
+    hasErrors = true
+  } else {
+    if (!(tom.trim().match(datePattern))) {
+      v[namespace + '-sluttdato'] = {
+        skjemaelementId: namespace + '-sluttdato',
+        feilmelding: t('message:validation-invalidDate')
+      } as FeiloppsummeringFeil
+    }
+  }
+
+  if (_.isEmpty(inntektslistetype.trim())) {
+    v[namespace + '-inntektslistetype'] = {
+      skjemaelementId: namespace + '-inntektslistetype',
+      feilmelding: t('message:validation-noInntektsliste')
+    } as FeiloppsummeringFeil
+    hasErrors = true
+  }
+
+  return hasErrors
 }
 
 export const validateArbeidsgiver = (

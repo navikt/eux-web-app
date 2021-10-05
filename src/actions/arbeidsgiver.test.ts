@@ -20,9 +20,9 @@ describe('actions/arbeidsgiver', () => {
     call.mockRestore()
   })
 
-  it('getArbeidsperioder()', () => {
+  it('fetchArbeidsperioder()', () => {
     const fnr = 'mockFnr'
-    arbeidsgiverActions.getArbeidsperioder(fnr)
+    arbeidsgiverActions.fetchArbeidsperioder(fnr)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {

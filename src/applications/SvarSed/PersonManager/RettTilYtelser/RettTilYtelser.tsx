@@ -118,7 +118,7 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
                 label={t('label:ja')}
                 onClick={() => setRettTilStonad('ja')}
               />
-              ,              <HorizontalSeparatorDiv size='2' />
+              <HorizontalSeparatorDiv size='2' />
               <HighContrastRadio
                 name={namespace + '-retttilstønad'}
                 checked={_rettTilStonad === 'nei'}

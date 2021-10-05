@@ -1,4 +1,4 @@
-import { getArbeidsperioder, updateArbeidsgivere } from 'actions/arbeidsgiver'
+import { updateArbeidsgivere } from 'actions/arbeidsgiver'
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
@@ -26,7 +26,6 @@ import {
   HighContrastFlatknapp,
   HighContrastKnapp,
   HorizontalSeparatorDiv,
-  Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
@@ -40,12 +39,10 @@ import { validateAnsattPeriode, ValidationArbeidsperiodeProps } from './ansattVa
 
 interface AnsattSelector extends PersonManagerFormSelector {
   arbeidsperioder: Arbeidsperioder | undefined
-  gettingArbeidsperioder: boolean
 }
 
 const mapState = (state: State): AnsattSelector => ({
   arbeidsperioder: state.arbeidsgiver.arbeidsperioder,
-  gettingArbeidsperioder: state.loading.gettingArbeidsperioder,
   replySed: state.svarpased.replySed,
   validation: state.validation.status
 })
@@ -58,7 +55,6 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
   const { t } = useTranslation()
   const {
     arbeidsperioder,
-    gettingArbeidsperioder,
     replySed,
     validation
   } = useSelector<State, AnsattSelector>(mapState)
@@ -67,6 +63,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
   const target = `${personID}.perioderSomAnsatt`
   const perioderSomAnsatt: Array<Periode> | undefined = _.get(replySed, target)
   const includeAddress = false
+  const fnr = getFnr(replySed, personID)
 
   const [_addedArbeidsperioder, setAddedArbeidsperioder] = useState<Array<PeriodeMedForsikring>>([])
 
@@ -84,8 +81,6 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode) => p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType))
   const [_validationPeriode, _resetValidationPeriode, performValidationPeriode] =
     useValidation<ValidationArbeidsperiodeProps>({}, validateAnsattPeriode)
-
-  const fnr = getFnr(replySed, personID)
 
   const addPeriode = (newPeriode: Periode) => {
     let newPerioder: Array<Periode> | undefined = _.cloneDeep(perioderSomAnsatt)
@@ -520,25 +515,18 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
         {t('label:registered-arbeidsperiode')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      {_.isNil(arbeidsperioder) && (
-        <Row>
-          <Column>
-            <ArbeidsgiverSøk
-              fnr={fnr}
-              gettingArbeidsperioder={gettingArbeidsperioder}
-              getArbeidsperioder={() => dispatch(getArbeidsperioder(fnr))}
-              fillOutFnr={() => {
-                document.dispatchEvent(new CustomEvent('feillenke', {
-                  detail: {
-                    skjemaelementId: `personmanager-${personID}-personopplysninger-norskpin-nummer`,
-                    feilmelding: ''
-                  } as FeiloppsummeringFeil
-                }))
-              }}
-            />
-          </Column>
-        </Row>
-      )}
+      <ArbeidsgiverSøk
+        fnr={fnr}
+        namespace={namespace}
+        fillOutFnr={() => {
+          document.dispatchEvent(new CustomEvent('feillenke', {
+            detail: {
+              skjemaelementId: `personmanager-${personID}-personopplysninger-norskpin-nummer`,
+              feilmelding: ''
+            } as FeiloppsummeringFeil
+          }))
+        }}
+      />
       <VerticalSeparatorDiv size='2' />
       {_.isEmpty(perioderSomAnsatt) && (
         <>
