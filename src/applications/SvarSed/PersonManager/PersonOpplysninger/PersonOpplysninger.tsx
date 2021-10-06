@@ -18,6 +18,7 @@ import useValidation from 'hooks/useValidation'
 import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
+import { buttonLogger, standardLogger } from 'metrics/loggers'
 import Chevron from 'nav-frontend-chevron'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
@@ -220,8 +221,9 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const onSearchUser = () => {
+  const onSearchUser = (e: React.ChangeEvent<HTMLButtonElement>) => {
     if (norwegianPin && norwegianPin.identifikator) {
+      buttonLogger(e)
       dispatch(searchPerson(norwegianPin.identifikator))
     }
   }
@@ -243,6 +245,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
     if (deletedPin && deletedPin.length > 0) {
       removeFromDeletion(deletedPin[0])
     }
+    standardLogger('svarsed.editor.personopplysning.utenlandskpin.remove')
     dispatch(updateReplySed(target, deletedPin))
   }
 
@@ -265,6 +268,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
       }
       newPins = newPins.concat(newPin)
       dispatch(updateReplySed(`${target}.pin`, newPins))
+      standardLogger('svarsed.editor.personopplysning.utenlandskpin.add')
       resetForm()
     }
   }
@@ -467,6 +471,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                   kompakt
                   disabled={searchingPerson}
                   spinner={searchingPerson}
+                  data-amplitude='svarsed.editor.personopplysning.norskpin.search'
                   onClick={onSearchUser}
                 >
                   <Search />
@@ -497,8 +502,13 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                 </Normaltekst>
                 <HorizontalSeparatorDiv />
                 <HighContrastKnapp
-                  mini kompakt
-                  onClick={() => onFillOutPerson(searchedPerson)}
+                  mini
+                  kompakt
+                  data-amplitude='svarsed.editor.personopplysning.norskpin.fill'
+                  onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+                    buttonLogger(e)
+                    onFillOutPerson(searchedPerson)
+                  }}
                 >
                   {t('label:fill-in-person-data')}
                 </HighContrastKnapp>
@@ -525,56 +535,56 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
       {_seeNewFoedstedForm
         ? (
           <>
-          <AlignStartRow key='showNewForm' className='slideInFromLeft'>
-            <Column>
-              <Input
-                feil={validation[namespace + '-foedested-by']?.feilmelding}
-                id='foedested-by'
-                label={t('label:by')}
-                namespace={namespace}
-                onChanged={onFoedestedByChange}
-                value={personInfo!.pinMangler?.foedested?.by ?? ''}
-              />
-            </Column>
-            <Column>
-              <Input
-                feil={validation[namespace + '-foedested-region']?.feilmelding}
-                id='foedested-region'
-                label={t('label:region')}
-                namespace={namespace}
-                onChanged={onFoedestedRegionChange}
-                value={personInfo!.pinMangler?.foedested?.region ?? ''}
-              />
-            </Column>
-            <Column>
-              <CountrySelect
-                data-test-id={namespace + '-foedested-land'}
-                error={validation[namespace + '-foedested-land']?.feilmelding}
-                id={namespace + '-foedested-land'}
-                includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
-                label={t('label:land')}
-                menuPortalTarget={document.body}
-                onOptionSelected={(e: Country) => onFoedestedLandChange(e.value)}
-                placeholder={t('el:placeholder-select-default')}
-                values={personInfo!.pinMangler?.foedested?.land ?? ''}
-              />
-            </Column>
-          </AlignStartRow>
-          <VerticalSeparatorDiv/>
-          <AlignStartRow>
-            <Column flex='2'/>
-            <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
-                onClick={() => setSeeNewFoedstedForm(false)}
-              >
-                <Chevron type='opp' />
-                <HorizontalSeparatorDiv size='0.5' />
-                {t('label:show-less')}
-              </HighContrastFlatknapp>
-            </Column>
-          </AlignStartRow>
+            <AlignStartRow key='showNewForm' className='slideInFromLeft'>
+              <Column>
+                <Input
+                  feil={validation[namespace + '-foedested-by']?.feilmelding}
+                  id='foedested-by'
+                  label={t('label:by')}
+                  namespace={namespace}
+                  onChanged={onFoedestedByChange}
+                  value={personInfo!.pinMangler?.foedested?.by ?? ''}
+                />
+              </Column>
+              <Column>
+                <Input
+                  feil={validation[namespace + '-foedested-region']?.feilmelding}
+                  id='foedested-region'
+                  label={t('label:region')}
+                  namespace={namespace}
+                  onChanged={onFoedestedRegionChange}
+                  value={personInfo!.pinMangler?.foedested?.region ?? ''}
+                />
+              </Column>
+              <Column>
+                <CountrySelect
+                  data-test-id={namespace + '-foedested-land'}
+                  error={validation[namespace + '-foedested-land']?.feilmelding}
+                  id={namespace + '-foedested-land'}
+                  includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
+                  label={t('label:land')}
+                  menuPortalTarget={document.body}
+                  onOptionSelected={(e: Country) => onFoedestedLandChange(e.value)}
+                  placeholder={t('el:placeholder-select-default')}
+                  values={personInfo!.pinMangler?.foedested?.land ?? ''}
+                />
+              </Column>
+            </AlignStartRow>
+            <VerticalSeparatorDiv />
+            <AlignStartRow>
+              <Column flex='2' />
+              <Column>
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  onClick={() => setSeeNewFoedstedForm(false)}
+                >
+                  <Chevron type='opp' />
+                  <HorizontalSeparatorDiv size='0.5' />
+                  {t('label:show-less')}
+                </HighContrastFlatknapp>
+              </Column>
+            </AlignStartRow>
           </>
           )
         : (

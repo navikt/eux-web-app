@@ -14,6 +14,7 @@ import useValidation from 'hooks/useValidation'
 import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
@@ -176,6 +177,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
       removeFromDeletion(deletedAddresses[0])
     }
     dispatch(updateReplySed(target, newAdresses))
+    standardLogger('svarsed.editor.adresse.remove')
   }
 
   const onAdd = () => {
@@ -200,6 +202,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
       }
       newAdresses = newAdresses.concat(newAdresse)
       dispatch(updateReplySed(target, newAdresses))
+      standardLogger('svarsed.editor.adresse.add')
       resetForm()
     }
   }

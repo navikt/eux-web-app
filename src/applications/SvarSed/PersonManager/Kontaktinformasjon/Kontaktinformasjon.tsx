@@ -13,6 +13,7 @@ import { Epost, Telefon, TelefonType } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
 import { Normaltekst, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
@@ -148,6 +149,7 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
       removeFromDeletion(deletedTelefoner[0])
     }
     dispatch(updateReplySed(targetTelefon, newTelefoner))
+    standardLogger('svarsed.editor.telefon.remove')
   }
 
   const onEpostRemoved = (i: number) => {
@@ -157,6 +159,7 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
       removeFromDeletion(deletedEposter[0])
     }
     dispatch(updateReplySed(targetEpost, newEposter))
+    standardLogger('svarsed.editor.epost.remove')
   }
 
   const onTelefonAdd = () => {
@@ -179,6 +182,7 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
       }
       newTelefoner.push(newTelefon)
       dispatch(updateReplySed(targetTelefon, newTelefoner))
+      standardLogger('svarsed.editor.telefon.add')
       resetForm('telefon')
     }
   }
@@ -203,6 +207,7 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
       }
       newEposter.push(newEpost)
       dispatch(updateReplySed(targetEpost, newEposter))
+      standardLogger('svarsed.editor.epost.add')
       resetForm('epost')
     }
   }

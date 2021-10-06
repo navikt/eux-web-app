@@ -13,6 +13,7 @@ import { PensjonPeriode, Periode } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
@@ -118,6 +119,7 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
       removeFromDeletion(deletedPeriods[0])
     }
     dispatch(updateReplySed(target, newPerioder))
+    standardLogger('svarsed.editor.periode.remove', { type: 'perioderMedPensjon' })
   }
 
   const onAdd = () => {
@@ -140,6 +142,7 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
       }
       newPensjonPerioder = newPensjonPerioder.concat(newPensjonPeriode)
       dispatch(updateReplySed(target, newPensjonPerioder))
+      standardLogger('svarsed.editor.periode.add', { type: 'perioderMedPensjon' })
       resetForm()
     }
   }

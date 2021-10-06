@@ -11,6 +11,7 @@ import { Periode } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
@@ -99,6 +100,7 @@ const NotAnsatt: React.FC<PersonManagerFormProps & {arbeidsforhold: string}> = (
       removeFromDeletion(deletedPeriods[0])
     }
     dispatch(updateReplySed(target, newPerioder))
+    standardLogger('svarsed.editor.periode.remove', { type: periodeType })
   }
 
   const onAdd = () => {
@@ -116,6 +118,7 @@ const NotAnsatt: React.FC<PersonManagerFormProps & {arbeidsforhold: string}> = (
       }
       newPerioder = newPerioder.concat(_newPeriode)
       dispatch(updateReplySed(target, newPerioder))
+      standardLogger('svarsed.editor.periode.add', { type: periodeType })
       resetForm()
     }
   }

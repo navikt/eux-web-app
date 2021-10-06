@@ -143,8 +143,8 @@ export interface Person {
   perioderMedArbeid ?: Array<Periode>
   perioderMedITrygdeordning ?: Array<Periode>
   perioderMedPensjon ?: Array<PensjonPeriode>
-  periodeMedTrygd ?: Array<Periode>
-  periodeMedYtelser ?: Array<Periode>
+  perioderMedTrygd ?: Array<Periode>
+  perioderMedYtelser ?: Array<Periode>
   perioderUtenforTrygdeordning ?: Array<Periode>
   perioderSomAnsatt?: Array<Periode>
   perioderSomSelvstendig?: Array<Periode>

@@ -63,6 +63,10 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
 
   const [_periodeType, setPeriodeType] = useState<Array<string>>(initialPeriodeType)
 
+  const _setPeriodeType = (types: Array<string>) => {
+    setPeriodeType(types)
+  }
+
   const periodeOptions: Options = [
     { label: t('el:option-forsikring-ANSATTPERIODE_FORSIKRET'), value: 'ansettelsesforhold_som_utgjør_forsikringsperiode' },
     { label: t('el:option-forsikring-SELVSTENDIG_FORSIKRET'), value: 'selvstendig_næringsvirksomhet_som_utgjør_forsikringsperiode' },
@@ -91,7 +95,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
             itemLabel={t('label:periode')}
             namespace='formål'
             options={periodeOptions}
-            onChange={setPeriodeType}
+            onChange={_setPeriodeType}
             selectLabel={t('label:type-periode')}
           />
         </Column>

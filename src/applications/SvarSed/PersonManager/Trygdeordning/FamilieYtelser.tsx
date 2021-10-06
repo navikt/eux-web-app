@@ -13,6 +13,7 @@ import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Ingress, Normaltekst, UndertekstBold } from 'nav-frontend-typografi'
 import {
@@ -158,6 +159,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
       removeFromDeletion(deletedPerioder[0])
     }
     dispatch(updateReplySed(`${personID}.${newSedCategory}`, newPerioder))
+    standardLogger('svarsed.editor.periode.remove', { type: newSedCategory })
   }
 
   const onAdd = () => {
@@ -196,8 +198,9 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
         newPerioder = []
       }
       newPerioder = newPerioder.concat(newPeriode)
-      resetForm()
       dispatch(updateReplySed(`${personID}.${_newCategory}`, newPerioder))
+      standardLogger('svarsed.editor.periode.add', { type: _newCategory })
+      resetForm()
     }
   }
 

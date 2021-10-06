@@ -18,7 +18,7 @@ interface StackProps {
   itemLabel: string
   namespace: string
   options: any
-  onChange: (options: any) => void
+  onChange: (options: any, action: 'add' | 'remove', item: string) => void
   selectLabel?: string
   title?: string
 }
@@ -43,23 +43,23 @@ const Stack: React.FC<StackProps> = ({
   const [_newItemIndex, setNewItemIndex] = useState<number | undefined>(undefined)
   const [_itemValues, setItemValues] = useState<Array<Option>>(_.filter(options, p => _items.indexOf(p.value) < 0))
 
-  const saveChanges = (newFormaals: Array<string>) => {
+  const saveChanges = (newFormaals: Array<string>, action: 'add' | 'remove', item: string) => {
     const newFormaalValues = _.filter(options, p => newFormaals.indexOf(p.value) < 0)
     setItems(newFormaals)
     setItemValues(newFormaalValues)
-    onChange(newFormaals)
+    onChange(newFormaals, action, item)
   }
   const onRemove = (item: string) => {
     removeFromDeletion(item)
     const newItems = _.filter(_items, _f => _f !== item)
-    saveChanges(newItems)
+    saveChanges(newItems, 'remove', item)
   }
 
   const onAdd = () => {
     if (_newItem) {
       const newItems = _items.concat(_newItem.value.trim())
       setNewItemIndex(newItems.length - 1)
-      saveChanges(newItems)
+      saveChanges(newItems, 'add', _newItem.value.trim())
       setNewItem(undefined)
     }
   }

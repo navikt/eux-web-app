@@ -16,6 +16,7 @@ import { Arbeidsgiver, Arbeidsperioder } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Normaltekst, Systemtittel, Undertittel } from 'nav-frontend-typografi'
@@ -95,6 +96,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
 
   const addPeriodeFromArbeidsgiver = (selectedArbeidsgiver: PeriodeMedForsikring) => {
     addPeriode(selectedArbeidsgiver.periode)
+    standardLogger('svarsed.editor.periode.add', { type: 'perioderSomAnsatt' })
   }
 
   const removePeriode = (deletedPeriode: Periode) => {
@@ -102,8 +104,10 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
     if (!newPerioder) {
       newPerioder = []
     }
-    newPerioder = _.filter(newPerioder, p => p.startdato !== deletedPeriode.startdato)
+    newPerioder = _.filter(newPerioder, p =>
+      p.startdato !== deletedPeriode.startdato && p.sluttdato !== deletedPeriode.sluttdato)
     dispatch(updateReplySed(target, newPerioder))
+    standardLogger('svarsed.editor.periode.remove', { type: 'perioderSomAnsatt' })
   }
 
   const removePeriodeFromArbeidsgiver = (deletedArbeidsgiver: PeriodeMedForsikring) => {
@@ -111,8 +115,10 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
     if (!newPerioder) {
       newPerioder = []
     }
-    newPerioder = _.filter(newPerioder, p => p.startdato !== deletedArbeidsgiver.periode.startdato)
+    newPerioder = _.filter(newPerioder, p =>
+      p.startdato !== deletedArbeidsgiver.periode.startdato && p.sluttdato !== deletedArbeidsgiver.periode.sluttdato)
     dispatch(updateReplySed(target, newPerioder))
+    standardLogger('svarsed.editor.periode.remove', { type: 'perioderSomAnsatt' })
   }
 
   const onArbeidsgiverSelect = (arbeidsgiver: PeriodeMedForsikring, checked: boolean) => {
@@ -144,19 +150,11 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
           return oldArbeidsgiver.periode.startdato === p.startdato && oldArbeidsgiver.periode.sluttdato === p.sluttdato
         })
         if (indexPerioder >= 0) {
-          const newPeriode: Periode = {
-            startdato: newArbeidsgiver.periode.startdato
-          }
-          if (newArbeidsgiver.periode.sluttdato) {
-            newPeriode.sluttdato = newArbeidsgiver.periode.sluttdato.trim()
-          } else {
-            newPeriode.aapenPeriodeType = 'åpen_sluttdato'
-          }
-
-          newPerioder[indexPerioder] = newPeriode
+          newPerioder[indexPerioder] = newArbeidsgiver.periode
           dispatch(updateReplySed(target, newPerioder))
         }
       }
+      standardLogger('svarsed.editor.arbeidsgiver.fromAA.edit')
     }
   }
 
@@ -180,19 +178,11 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
           return oldArbeidsgiver.periode.startdato === p.startdato && oldArbeidsgiver.periode.sluttdato === p.sluttdato
         })
         if (indexPerioder >= 0) {
-          const newPeriode: Periode = {
-            startdato: newArbeidsgiver.periode.startdato
-          }
-          if (newArbeidsgiver.periode.sluttdato) {
-            newPeriode.sluttdato = newArbeidsgiver.periode.sluttdato.trim()
-          } else {
-            newPeriode.aapenPeriodeType = 'åpen_sluttdato'
-          }
-
-          newPerioder[indexPerioder] = newPeriode
+          newPerioder[indexPerioder] = newArbeidsgiver.periode
           dispatch(updateReplySed(target, newPerioder))
         }
       }
+      standardLogger('svarsed.editor.arbeidsgiver.added.edit')
     }
   }
 
@@ -202,6 +192,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
     if (newAddedArbeidsperioder && needleId) {
       newAddedArbeidsperioder = _.filter(newAddedArbeidsperioder, (p: PeriodeMedForsikring) => !hasOrgnr(p, needleId))
       setAddedArbeidsperioder(newAddedArbeidsperioder)
+      standardLogger('svarsed.editor.arbeidsgiver.added.remove')
     }
   }
 
@@ -240,6 +231,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
       let newAddedArbeidsperioder: Array<PeriodeMedForsikring> = _.cloneDeep(_addedArbeidsperioder)
       newAddedArbeidsperioder = newAddedArbeidsperioder.concat(newArbeidsgiver)
       setAddedArbeidsperioder(newAddedArbeidsperioder)
+      standardLogger('svarsed.editor.arbeidsgiver.added.add')
       resetArbeidsgiverForm()
     }
   }
@@ -253,6 +245,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
     })
     if (valid) {
       addPeriode(_newPeriode)
+      standardLogger('svarsed.editor.periode.add', { type: 'perioderSomAnsatt' })
       resetPeriodeForm()
     }
   }
@@ -516,8 +509,8 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
       </Undertittel>
       <VerticalSeparatorDiv />
       <ArbeidsgiverSøk
+        amplitude='svarsed.editor.personensstatus.ansatt.arbeidsgiver.search'
         fnr={fnr}
-        namespace={namespace}
         fillOutFnr={() => {
           document.dispatchEvent(new CustomEvent('feillenke', {
             detail: {
@@ -526,6 +519,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
             } as FeiloppsummeringFeil
           }))
         }}
+        namespace={namespace}
       />
       <VerticalSeparatorDiv size='2' />
       {_.isEmpty(perioderSomAnsatt) && (

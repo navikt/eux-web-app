@@ -4,6 +4,7 @@ import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { FSed, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
+import { standardLogger } from 'metrics/loggers'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -49,8 +50,9 @@ const Formaal: React.FC<FormaalProps> = ({
     { label: t('el:option-formaal-8'), value: 'refusjon_i_henhold_til_artikkel_58_i_forordningen' }
   ]
 
-  const onItemsChanged = (newFormaals: Array<string>) => {
+  const onItemsChanged = (newFormaals: Array<string>, action: 'add' | 'remove', item: string) => {
     dispatch(updateReplySed('formaal', newFormaals))
+    standardLogger('svarsed.fsed.formal.' + action, { item: item })
     dispatch(resetValidation(namespace))
   }
 

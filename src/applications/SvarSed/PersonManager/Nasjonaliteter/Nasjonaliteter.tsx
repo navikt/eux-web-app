@@ -14,6 +14,7 @@ import useValidation from 'hooks/useValidation'
 import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
 import { Normaltekst, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
@@ -105,6 +106,7 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
       removeFromDeletion(deletedStatsborgerskaper[0])
     }
     dispatch(updateReplySed(target, newStatsborgerskaper))
+    standardLogger('svarsed.editor.nasjonaliteter.remove')
   }
 
   const onAdd = () => {
@@ -125,6 +127,7 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
       }
       newStatsborgerskaper.push(newStatsborgerskap)
       dispatch(updateReplySed(target, newStatsborgerskaper))
+      standardLogger('svarsed.editor.nasjonaliteter.add')
       resetForm()
     }
   }

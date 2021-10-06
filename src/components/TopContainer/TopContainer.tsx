@@ -24,6 +24,7 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled, { createGlobalStyle } from 'styled-components'
+import * as Sentry from '@sentry/browser'
 
 const GlobalStyle = createGlobalStyle`
 body {
@@ -132,9 +133,18 @@ export const TopContainer: React.FC<TopContainerProps> = ({
     dispatch(closeModal())
   }
 
-  const ErrorFallback = ({ error, resetErrorBoundary }: any) => (
-    <Error error={error} resetErrorBoundary={resetErrorBoundary} />
-  )
+  const ErrorFallback = ({ error, resetErrorBoundary }: any) => {
+    Sentry.captureEvent({
+      message: error.message,
+      extra: {
+        error: error
+      },
+      level: Sentry.Severity.Error
+    })
+    return (
+      <Error error={error} resetErrorBoundary={resetErrorBoundary} />
+    )
+  }
 
   return (
     <NavHighContrast highContrast={highContrast}>

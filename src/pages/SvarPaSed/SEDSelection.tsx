@@ -492,7 +492,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                               >
                                 <Edit />
                                 <HorizontalSeparatorDiv size='0.35' />
-                                {t('el:button-load-draft')}
+                                {t('label:gå-til-draft')}
                               </HighContrastKnapp>
                               )
                             : connectedSed.svarsedType

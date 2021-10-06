@@ -1,74 +1,116 @@
 Amplitude - nEESSI
 
-SvarSED session time
-	#neessi.svarpased.time - Total time spent in SvarPaSed app
+1. SvarSED page
+	#neessi.svarpased.time - Total time spent in the SvarPaSed page
 
-SvarSED search session Search
-	#nessi.svarsed.sedselection.time  - Total time spent in SvarPaSed selection page
+2. SvarSED selection page
+	#neessi.svarsed.selection.time - Total time spent in the SvarPaSed selection page
+  #neessi.svarsed.selection.query.button, {type: 'saksnummer' | 'fnr' | 'dnr'} - Number of searches performed, grouped by search types
+	#neessi.svarsed.selection.filter.alle.button - Number of 'alle' filter clicks
+	#neessi.svarsed.selection.filter.fb.button - Number of 'fb' filter clicks
+	#neessi.svarsed.selection.filter.u.button - Number of 'u' filter clicks
+	#neessi.svarsed.selection.filter.h.button - Number of 'h' filter clicks
+	#neessi.svarsed.selection.filter.s.button - Number of 's' filter clicks
+	#neessi.svarsed.selection.journalforing.button, {type: svarsed} - Number of journalfort button clicks, grouped by type
+	#neessi.svarsed.selection.replysed.button, {type: svarsedType, 'parenttype': sedtype} - Number of Reply SED clicks, group by type and parenttype
+	#neessi.svarsed.selection.loaddraft.button, {type: sedType} - Number of draft SEDs loaded, using result list
 
-SED Search:
-  #neessi.svarsed.selection.query, {type: 'saksnummer' | 'fnr' | 'dnr'} - Number of searches, with search types
-	#neessi.svarsed.selection.filter.alle - Filter click
-	#neessi.svarsed.selection.filter.fb - Filter click
-	#neessi.svarsed.selection.filter.u - Filter click
-	#neessi.svarsed.selection.filter.h - Filter click
-	#neessi.svarsed.selection.filter.s - Filter click
-	#neessi.svarsed.selection.journalforing, {type: svarsed} - Journalfort clicks, by type
-	#neessi.svarsed.selection.replysed, {type: svarsedType, 'parenttype': sedtype}.  # Reply SED clicks, by type
+3. Sidebar:
 
-Saving function
-	#neessi.svarsed.selection.loaddraft, {type: sedType} - Number of localStorage load from left menu
-  #neessi.svarsed.sidebar.loaddraft, {type: sedType} - Number of localStorage load from right menu
-  #neessi.svarsed.sidebar.removedraft - Number of localStorage removed from right menu
+  3.1 Load/remove drafts
+    #neessi.svarsed.sidebar.loaddraft.button, {type: sedType} - Number of draft SEDs loaded, using the sidebar menu
+    #neessi.svarsed.sidebar.removedraft.button - Number of draft SEDs removed, using the sidebar menu
 
-Right Menu
-  #neessi.svarsed.sidebar.edit - # Number of edits
+  3.2 Sidebar: properties
+    #neessi.svarsed.sidebar.edit - Number of edit modes requested to the sidebar
 
-Average Session SED Edit
-#nessi.svarsed.editor.time - Total time spent in SvarPaSed editor page
+4. SvarSED editor page
+  #neessi.svarsed.editor.time - Total time spent in the SvarPaSed editor page
 
-sedselection/selection
-remove time
+  4.1 PersonManager:
+    #neessi.svarsed.editor.forms.time { [key]: {status, total, date}} - Total time spent on each personManager menu, grouped by main menu (Nasjonalitetet, Adresse, etc)
+    #neessi.svarsed.editor.personmodal.add, {type: string} - Person added
+    #neessi.svarsed.editor.personmodal.remove, {type: string} - Person removed
 
-F002:
-   # Formal added, deleted
+  4.2 Formål (F002):
+    #neessi.svarsed.fsed.formal.add, {item: string} - Formal added
+    #neessi.svarsed.fsed.formal.remove, {item: string} - Formal removed
 
-  PersonOpplysning:
-  		# utendlandsk pin added, removed
-		# norsk personner searched
-        # norsk personner filled
-   Nasjonalitet:
-   		 added, removed
-	Address:
-	   Added, removed
-    Telkefon:
-       addded ,removed
-   epost:
-       added, removed
-    trygdeordningen
-	    dekkede: added, removed
-		udekkede: added, removed
-		familieytelse: added, removed
-	familierelasjon:
-	    added, removed
-	Personenstatus;
-		ansatte:
-			Arbeidsgiver søk in ansatte
-			periode arbeidsgiver added, removed
-			arbeidsgiver added, removed
-			trygdeperiode avsnderland added, removed
-			grunnlag bosetting added, removed
-			mottatt pensjon added, renoved
-	Relasjon:
-		added, removed
-		grunnlag bosetting added, removed
+  4.3 PersonOpplysning:
+    #neessi.svarsed.editor.personopplysning.norskpin.search - Norsk pin searched
+    #neessi.svarsed.editor.personopplysning.norskpin.fill - Norsk pin filled
+    #neessi.svarsed.editor.personopplysning.utenlandskpin.add - utendlandsk pin added
+    #neessi.svarsed.editor.personopplysning.utenlandskpin.remove - utendlandsk pin added
 
-Legg til personen
-		  # numbers licked
-		  # people added, removed
+  4.4 Nasjonalitet:
+    #neessi.svarsed.editor.nasjonaliteter.add - nationalities added
+    #neessi.svarsed.editor.nasjonaliteter.remove - nationalities removed
+
+  4.5 Address:
+    #neessi.svarsed.editor.adresse.add - address added
+    #neessi.svarsed.editor.adresse.remove - address removed
+
+  4.6 Kontaktinformasjon:
+    #neessi.svarsed.editor.telefon.add - phone number added
+    #neessi.svarsed.editor.telefon.remove - phone number removed
+    #neessi.svarsed.editor.epost.add - email added
+    #neessi.svarsed.editor.epost.remove - email removed
+
+  4.7 Trygdeordning:
+    #neessi.svarsed.editor.periode.add, {type: 'perioderMedITrygdeordning'}:  periode added
+    #neessi.svarsed.editor.periode.remove, {type: 'perioderMedITrygdeordning'}: periode removed
+    #neessi.svarsed.editor.periode.add, {type: 'perioderUtenforTrygdeordning'} : periode added
+    #neessi.svarsed.editor.periode.remove, {type: 'perioderUtenforTrygdeordning'}: periode removed
+    #neessi.svarsed.editor.periode.add, {type: 'perioderMedArbeid'}: periode added
+    #neessi.svarsed.editor.periode.remove, {type: 'perioderMedArbeid'}: periode added
+    #neessi.svarsed.editor.periode.add, {type: 'perioderMedPensjon'}: periode added
+    #neessi.svarsed.editor.periode.remove, {type: 'perioderMedPensjon'}: periode removed
+    #neessi.svarsed.editor.periode.add, {type: 'periodeMedTrygd'}: periode added
+    #neessi.svarsed.editor.periode.remove, {type: 'periodeMedTrygd'}: periode added
+    #neessi.svarsed.editor.periode.add, {type: 'periodeMedYtelser'}: periode added
+    #neessi.svarsed.editor.periode.remove, {type: 'periodeMedYtelser'}: periode removed
+
+	4.8 familierelasjon:
+	  #neessi.svarsed.editor.familierelasjon.add : relationship added
+	  #neessi.svarsed.editor.familierelasjon.remove : relationship removed
+
+	4.9 Personenstatus:
+
+	  4.9.1 Ansatt:
+		#neessi.svarsed.editor.personensstatus.ansatt.arbeidsgiver.search - Arbeidsgiver searches
+		#neessi.svarsed.editor.periode.add, {type: perioderSomAnsatt} - periode added
+		#neessi.svarsed.editor.periode.remove, {type: 'perioderSomAnsatt'} - periode removed
+		#neessi.svarsed.editor.arbeidsgiver.fromAA.edit - Arbeidsgiver from AA edited on its periods
+		#neessi.svarsed.editor.arbeidsgiver.added.edit - Arbeidsgiver added edited
+		#neessi.svarsed.editor.arbeidsgiver.added.remove - Arbeidsgiver added removed
+		#neessi.svarsed.editor.arbeidsgiver.added.add - Arbeidsgiver added add
+
+    4.9.2 Avsenderlandet:
+		#neessi.svarsed.editor.periode.add, {type: perioderMedTrygd} - periode added
+		#neessi.svarsed.editor.periode.remove, {type: 'perioderMedTrygd'} - periode removed
+
+    4.9.3 Not Ansatt:
+		#neessi.svarsed.editor.periode.add, {type: perioderSomSelvstendig} - periode added
+		#neessi.svarsed.editor.periode.remove, {type: 'perioderSomSelvstendig'} - periode removed
+ 		#neessi.svarsed.editor.periode.add, {type: perioderSomSykMedLoenn} - periode added
+ 		#neessi.svarsed.editor.periode.remove, {type: 'perioderSomSykMedLoenn'} - periode removed
+    #neessi.svarsed.editor.periode.add, {type: perioderSomPermittertMedLoenn} - periode added
+    #neessi.svarsed.editor.periode.remove, {type: 'perioderSomPermittertMedLoenn'} - periode removed
+    #neessi.svarsed.editor.periode.add, {type: perioderSomPermittertUtenLoenn} - periode added
+    #neessi.svarsed.editor.periode.remove, {type: 'perioderSomPermittertUtenLoenn'} - periode removed
+
+    4.9.4 Grunnlag for bosetting
+    #neessi.svarsed.editor.periode.add, {type: 'flyttegrunn'} - periode added
+    #neessi.svarsed.editor.periode.remove, {type: 'flyttegrunn'} - periode removed
+
+	4.10 Relasjon:
+	  #neessi.svarsed.editor.relasjon.add - periode added
+    #neessi.svarsed.editor.relasjon.remove - periode removed
+
+  4.11 Motregning:
 
 
-Motregning: adding barns, removing barns
+  adding barns, removing barns
 		click oppgi kontoopplysninger
 Prosedyre: grunn added, removed
 krav: click oppgi kontoopplysning
@@ -95,6 +137,8 @@ U004
 
 Time on each
 
+H00X : tema
+
 = = = = = =
 
 
@@ -109,4 +153,4 @@ gjebnta opprettset clicks
 lagre utkast sed clicks
 
 oppdatere utkast sed clicks
-@
+

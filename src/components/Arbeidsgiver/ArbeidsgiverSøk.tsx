@@ -6,6 +6,7 @@ import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
 import { Normaltekst } from 'nav-frontend-typografi'
 import { AlignEndRow, AlignStartRow, Column, HighContrastKnapp, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
@@ -16,6 +17,7 @@ import moment from 'moment'
 import { validateArbeidsgiverSøk, ValidationArbeidsgiverSøkProps } from './validation'
 
 interface ArbeidsgiverSøkProps {
+  amplitude ?: string
   fnr: string | undefined
   namespace: string
   fillOutFnr ?: () => void
@@ -32,6 +34,7 @@ const mapState = (state: State): ArbeidsgiverSøkSelector => ({
 })
 
 const ArbeidsgiverSøk: React.FC<ArbeidsgiverSøkProps> = ({
+  amplitude,
   fnr,
   namespace,
   fillOutFnr
@@ -85,6 +88,9 @@ const ArbeidsgiverSøk: React.FC<ArbeidsgiverSøkProps> = ({
         inntektslistetype: _arbeidssøkInntektslistetype.trim()
       }
       dispatch(fetchArbeidsperioder(options))
+      if (amplitude) {
+        standardLogger(amplitude)
+      }
     }
   }
 

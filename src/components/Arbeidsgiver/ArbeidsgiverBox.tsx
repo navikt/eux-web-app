@@ -95,10 +95,7 @@ const ArbeidsgiverBox = ({
 
   const [_arbeidsgiversNavn, setArbeidsgiversNavn] = useState<string>(arbeidsgiver.arbeidsgiver.navn ?? '')
   const [_arbeidsgiversOrgnr, setArbeidsgiversOrgnr] = useState<string>(getOrgnr(arbeidsgiver) ?? '')
-  const [_arbeidsgiverPeriode, setArbeidsgiversPeriode] = useState<Periode>({
-    startdato: arbeidsgiver.periode.startdato ?? '',
-    sluttdato: arbeidsgiver.periode.sluttdato ?? ''
-  })
+  const [_arbeidsgiverPeriode, setArbeidsgiversPeriode] = useState<Periode>(arbeidsgiver.periode)
 
   // for includeAddress
   const [_gate, setGate] = useState<string>(arbeidsgiver.arbeidsgiver?.adresse?.gate ?? '')
@@ -287,7 +284,6 @@ const ArbeidsgiverBox = ({
                         }}
                         setPeriode={onPeriodeChanged}
                         value={_arbeidsgiverPeriode}
-                        periodeType='simple'
                       />
                     </Row>
                   </>

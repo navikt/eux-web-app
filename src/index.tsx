@@ -1,5 +1,9 @@
+import * as appActions from 'actions/app'
+import { IS_PRODUCTION } from 'constants/environment'
 import 'core-js'
 import { createBrowserHistory } from 'history'
+import * as Amplitude from 'metrics/amplitude'
+import * as Sentry from 'metrics/sentry'
 import 'nav-frontend-alertstriper-style/dist/main.css'
 import 'nav-frontend-chevron-style/dist/main.css'
 import 'nav-frontend-core/dist/main.css'
@@ -15,22 +19,19 @@ import 'nav-frontend-popover-style/dist/main.css'
 import 'nav-frontend-skjema-style/dist/main.css'
 import 'nav-frontend-tabell-style/dist/main.css'
 import 'nav-frontend-typografi-style/dist/main.css'
+import Pages from 'pages'
 import 'rc-tooltip/assets/bootstrap_white.css'
 import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom'
 import { I18nextProvider } from 'react-i18next'
 import { Provider } from 'react-redux'
 import { Route, Router, Switch } from 'react-router'
+import * as reducers from 'reducers'
 import { applyMiddleware, combineReducers, compose, createStore, Store } from 'redux'
 import thunk from 'redux-thunk'
-import * as appActions from './actions/app'
-import { IS_PRODUCTION } from './constants/environment'
+import * as Utils from 'utils/utils'
 import i18n from './i18n'
-import * as Sentry from './metrics/sentry'
-import Pages from './pages'
-import * as reducers from './reducers'
 import { unregister } from './registerServiceWorker'
-import * as Utils from './utils/utils'
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const store: Store = createStore(combineReducers(reducers), composeEnhancers(applyMiddleware(thunk)))
@@ -40,6 +41,7 @@ if (!IS_PRODUCTION) {
   axe(React, ReactDOM, 1000)
 } else {
   Sentry.init()
+  Amplitude.init()
 }
 
 (window as any).frontendlogger.info(Utils.buildinfo())

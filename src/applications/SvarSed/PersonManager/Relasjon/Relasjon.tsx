@@ -13,6 +13,7 @@ import { Barnetilhoerighet, BarnRelasjon, BarnRelasjonType, JaNei, Periode } fro
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignCenterRow,
@@ -204,6 +205,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
       removeFromDeletion(deletedBarnetilhoerighet[0])
     }
     dispatch(updateReplySed(target, newBarnetilhoerighet))
+    standardLogger('svarsed.editor.relasjon.remove')
   }
 
   const onAdd = () => {
@@ -233,6 +235,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
       }
       newBarnetilhoerigheter.push(newBarnetilhoerighet)
       dispatch(updateReplySed(target, newBarnetilhoerigheter))
+      standardLogger('svarsed.editor.relasjon.add')
       resetForm()
     }
   }

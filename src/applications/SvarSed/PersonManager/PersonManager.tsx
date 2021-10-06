@@ -13,6 +13,7 @@ import { State } from 'declarations/reducers'
 import { F002Sed, FSed, PersonInfo, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
 import Chevron from 'nav-frontend-chevron'
 import { Checkbox, FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
@@ -253,10 +254,48 @@ const PersonManager: React.FC = () => {
   const [focusedMenu, setFocusedMenu] = useState<string | undefined>(totalPeopleNr === 1 ? 'bruker' : undefined)
   const [currentMenuLabel, setCurrentMenuLabel] = useState<string | undefined>(undefined)
   const [previousMenuOption, setPreviousMenuOption] = useState<string | undefined>(undefined)
-  const [currentMenuOption, setCurrentMenuOption] = useState<string | undefined>(totalPeopleNr === 1
+  const initialMenuOption = totalPeopleNr === 1
     ? (isFSed(replySed) ? 'personopplysninger' : 'person')
-    : undefined)
+    : undefined
+  const [currentMenuOption, _setCurrentMenuOption] = useState<string | undefined>(initialMenuOption)
   const alreadyOpenMenu = (menu: string) => _.find(openMenus, _id => _id === menu) !== undefined
+
+  const [statistics, _setStatistics] = useState<any>({})
+
+  useEffect(() => {
+    if (!_.isNil(initialMenuOption)) {
+      _setStatistics({
+        [initialMenuOption]: { total: 0, status: 'stop' }
+      })
+    }
+    return () => {
+      standardLogger('svarsed.editor.forms.time', statistics)
+    }
+  }, [])
+
+  const setCurrentMenuOption = (currentMenu: string | undefined) => {
+    const previousMenu = currentMenuOption
+    const newStatistics = _.cloneDeep(statistics)
+
+    if (!_.isNil(previousMenu) && newStatistics[previousMenu].status === 'start') {
+      const diff = new Date().getTime() - newStatistics[previousMenu].date.getTime()
+      const diffSeconds = Math.ceil(diff / 1000)
+      newStatistics[previousMenu] = {
+        date: undefined,
+        status: 'stop',
+        total: statistics[previousMenu].total += diffSeconds
+      }
+    }
+    if (!_.isNil(currentMenu)) {
+      newStatistics[currentMenu] = {
+        date: new Date(),
+        status: 'start',
+        total: statistics[currentMenu]?.total ?? 0
+      }
+    }
+    _setStatistics(newStatistics)
+    _setCurrentMenuOption(currentMenu)
+  }
 
   const menuRef = useRef(currentMenu + '|' + currentMenuOption)
 

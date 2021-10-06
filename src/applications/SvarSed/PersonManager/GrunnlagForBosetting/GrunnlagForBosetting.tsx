@@ -13,6 +13,7 @@ import { Flyttegrunn, Periode } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
 import { Normaltekst, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import {
@@ -113,6 +114,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
       removeFromDeletion(deletedPeriods[0])
     }
     dispatch(updateReplySed(`${target}.perioder`, newPerioder))
+    standardLogger('svarsed.editor.periode.remove', { type: 'flyttegrunn' })
   }
 
   const onAdd = () => {
@@ -130,6 +132,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
       }
       newPerioder = newPerioder.concat(_newPeriode)
       dispatch(updateReplySed(`${target}.perioder`, newPerioder))
+      standardLogger('svarsed.editor.periode.add', { type: 'flyttegrunn' })
       resetForm()
     }
   }

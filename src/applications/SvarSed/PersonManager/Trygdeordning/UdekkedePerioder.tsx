@@ -15,6 +15,7 @@ import { Periode } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
 import { Ingress, Normaltekst } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
@@ -90,6 +91,7 @@ const UdekkedePerioder: React.FC<PersonManagerFormProps> = ({
       removeFromDeletion(deletedPerioder[0])
     }
     dispatch(updateReplySed(target, newPerioder))
+    standardLogger('svarsed.editor.periode.remove', { type: 'perioderUtenforTrygdeordning' })
   }
 
   const onAdd = () => {
@@ -107,6 +109,7 @@ const UdekkedePerioder: React.FC<PersonManagerFormProps> = ({
       }
       newPerioder = newPerioder.concat(_newPeriode)
       dispatch(updateReplySed(target, newPerioder))
+      standardLogger('svarsed.editor.periode.add', { type: 'perioderUtenforTrygdeordning' })
       resetForm()
     }
   }
