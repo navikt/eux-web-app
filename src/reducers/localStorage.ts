@@ -40,7 +40,7 @@ const localStorageReducer = (
     case types.LOCALSTORAGE_SAVEDENTRY_REMOVE: {
       const newSavedEntries = _.cloneDeep(state.savedEntries)
       const index: number = _.findIndex(state.savedEntries, (entry) =>
-        entry.id === (((action as ActionWithPayload).payload) as LocalStorageEntry<ReplySed>)?.id
+        entry.id === ((action as ActionWithPayload).payload).entry.content.id
       )
       if (index >= 0) {
         if (!_.isNil(newSavedEntries)) {
