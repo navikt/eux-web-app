@@ -2,6 +2,7 @@ import Edit from 'assets/icons/Edit'
 import RemoveCircle from 'assets/icons/RemoveCircle'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed.d'
+import { buttonLogger } from 'metrics/loggers'
 import { Undertittel } from 'nav-frontend-typografi'
 import { HighContrastPanel, HighContrastFlatknapp, VerticalSeparatorDiv, FlexCenterSpacedDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
@@ -15,7 +16,13 @@ const SEDDetails = () => {
   const { t } = useTranslation()
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const replySed: ReplySed | undefined = useSelector((state: State): ReplySed | undefined => (state.svarpased.replySed))
-  const toggleEditing = () => setIsEditing(!isEditing)
+
+  const toggleEditing = (e: React.ChangeEvent<HTMLButtonElement>) => {
+    if (!isEditing) {
+      buttonLogger(e)
+    }
+    setIsEditing(!isEditing)
+  }
 
   if (!replySed) {
     return <div />
@@ -29,6 +36,7 @@ const SEDDetails = () => {
         </Undertittel>
         <HighContrastFlatknapp
           kompakt
+          data-amplitude='svarsed.sidebar.edit'
           style={{
             marginTop: '-0.5rem',
             marginRight: '-0.5rem'

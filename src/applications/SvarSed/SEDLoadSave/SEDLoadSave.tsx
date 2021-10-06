@@ -5,6 +5,7 @@ import { State } from 'declarations/reducers'
 import { LocalStorageEntry } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import _ from 'lodash'
+import { buttonLogger, standardLogger } from 'metrics/loggers'
 import { Normaltekst, UndertekstBold } from 'nav-frontend-typografi'
 import { FlexCenterSpacedDiv, FlexDiv, FlexBaseSpacedDiv, PileDiv, HighContrastFlatknapp, HighContrastPanel, VerticalSeparatorDiv, HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
@@ -46,6 +47,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
   const { t } = useTranslation()
 
   const onRemove = (entry: LocalStorageEntry<ReplySed>) => {
+    standardLogger('svarsed.sidebar.removedraft', {})
     dispatch(localStorageActions.removeEntry(storageKey, entry))
   }
 
@@ -129,7 +131,13 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
                   <HighContrastFlatknapp
                     mini
                     kompakt
-                    onClick={() => onLoad(savedEntry)}
+                    data-amplitude='svarsed.sidebar.loaddraft'
+                    onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+                      buttonLogger(e, {
+                        type: savedEntry.content.sedType
+                      })
+                      onLoad(savedEntry)
+                    }}
                   >
                     {t('el:button-load')}
                   </HighContrastFlatknapp>

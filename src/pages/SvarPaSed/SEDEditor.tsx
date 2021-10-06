@@ -24,6 +24,7 @@ import { CreateSedResponse, LocalStorageEntry, Validation } from 'declarations/t
 import FileFC, { File } from 'forhandsvisningsfil'
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import _ from 'lodash'
+import { timeDiffLogger } from 'metrics/loggers'
 import AlertStripe from 'nav-frontend-alertstriper'
 import { VenstreChevron } from 'nav-frontend-chevron'
 import { Systemtittel } from 'nav-frontend-typografi'
@@ -115,6 +116,8 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
   const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
   const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
   const performValidation = useGlobalValidation<ValidationSEDEditorProps>(validateSEDEditor)
+
+  const [totalTime, setTotalTime] = useState<number>(0)
 
   const storageKey = 'replySed'
   const showPersonManager = (): boolean => isSed(replySed)
@@ -237,6 +240,16 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
       showPreviewModal(previewFile)
     }
   }, [previewFile])
+
+  useEffect(() => {
+    if (totalTime === 0) {
+      setTotalTime(new Date().getTime())
+    }
+    return () => {
+      setTotalTime(0)
+      timeDiffLogger('svarpased.editor', totalTime)
+    }
+  }, [])
 
   return (
     <PaddedDiv size='0.5'>

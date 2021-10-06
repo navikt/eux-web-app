@@ -132,7 +132,7 @@ export const validatePersonOpplysninger = (
     hasErrors = hasErrors || _errors
   })
 
-  if (!_.isEmpty(personInfo.pinMangler)) {
+  if (!_.isEmpty(personInfo.pinMangler?.foedested)) {
     if (_.isEmpty(personInfo.pinMangler?.foedested?.by?.trim())) {
       v[namespace + '-foedested-by'] = {
         feilmelding: t('message:validation-noFoedestedByForPerson', { person: personName }),

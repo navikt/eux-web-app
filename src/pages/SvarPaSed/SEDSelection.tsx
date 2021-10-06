@@ -16,6 +16,7 @@ import { ReplySed } from 'declarations/sed'
 import { ConnectedSed, LocalStorageEntry, Sed } from 'declarations/types'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
+import { buttonLogger, standardLogger, timeDiffLogger } from 'metrics/loggers'
 import AlertStripe from 'nav-frontend-alertstriper'
 import { Normaltekst, Systemtittel, Undertekst, Undertittel } from 'nav-frontend-typografi'
 import {
@@ -109,9 +110,12 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
   }: any = useSelector<State, any>(mapState)
   const [_filter, _setFilter] = useState<string | undefined>(undefined)
   const [_saksnummerOrFnr, _setSaksnummerOrFnr] = useState<string>(rinasaksnummerOrFnrParam ?? '')
+  const [_queryType, _setQueryType] = useState<string |undefined>(undefined)
   const [_validMessage, _setValidMessage] = useState<string>('')
   const [_validation, _resetValidation, performValidation] = useValidation({}, validateSEDSelection)
   const [_replySedRequested, setReplySedRequested] = useState<boolean>(false)
+
+  const [totalTime, setTotalTime] = useState<number>(0)
 
   const onSaksnummerOrFnrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value
@@ -120,12 +124,15 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
     _setSaksnummerOrFnr(query)
     const result = validator.idnr(query)
     if (result.status !== 'valid') {
+      _setQueryType('saksnummer')
       _setValidMessage(t('label:saksnummer'))
     } else {
       if (result.type === 'fnr') {
+        _setQueryType('fnr')
         _setValidMessage(t('label:valid-fnr'))
       }
       if (result.type === 'dnr') {
+        _setQueryType('dnr')
         _setValidMessage(t('label:valid-dnr'))
       }
     }
@@ -158,6 +165,9 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
       saksnummerOrFnr: _saksnummerOrFnr.trim()
     })
     if (valid) {
+      standardLogger('svarsed.selection.query', {
+        type: _queryType
+      })
       dispatch(svarpasedActions.querySaksnummerOrFnr(_saksnummerOrFnr.trim()))
     }
   }
@@ -179,12 +189,22 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
     }
   }, [replySed, mode])
 
+  useEffect(() => {
+    if (totalTime === 0) {
+      setTotalTime(new Date().getTime())
+    }
+    return () => {
+      setTotalTime(0)
+      timeDiffLogger('svarpased.selection', totalTime)
+    }
+  }, [])
+
   const familieytelser: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('FB_'))?.length ?? 0
   const dagpenger: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('U_'))?.length ?? 0
   const horisontal: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('H_'))?.length ?? 0
   const ssed: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('S_'))?.length ?? 0
-
   const filteredSeds = _.filter(seds, (s: Sed) => _filter ? s.sakType.startsWith(_filter) : true)
+
   return (
     <ContainerDiv>
       <Systemtittel>
@@ -267,8 +287,12 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
             <HighContrastFlatknapp
               mini
               kompakt
+              data-amplitude='svarsed.selection.filter.alle'
               className={classNames({ selected: _filter === undefined })}
-              onClick={() => _setFilter(undefined)}
+              onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+                buttonLogger(e)
+                _setFilter(undefined)
+              }}
             >
               {t('label:alle') + ' (' + seds.length + ')'}
             </HighContrastFlatknapp>
@@ -278,8 +302,12 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                 <HighContrastFlatknapp
                   mini
                   kompakt
+                  data-amplitude='svarsed.selection.filter.fb'
                   className={classNames({ selected: _filter === 'FB_' })}
-                  onClick={() => _setFilter('FB_')}
+                  onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+                    buttonLogger(e)
+                    _setFilter('FB_')
+                  }}
                 >
                   {t('label:familieytelser') + ' (' + familieytelser + ')'}
                 </HighContrastFlatknapp>
@@ -291,8 +319,12 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                 <HighContrastFlatknapp
                   mini
                   kompakt
+                  data-amplitude='svarsed.selection.filter.u'
                   className={classNames({ selected: _filter === 'U_' })}
-                  onClick={() => _setFilter('U_')}
+                  onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+                    buttonLogger(e)
+                    _setFilter('U_')
+                  }}
                 >
                   {t('label:dagpenger') + ' (' + dagpenger + ')'}
                 </HighContrastFlatknapp>
@@ -304,8 +336,12 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                 <HighContrastFlatknapp
                   mini
                   kompakt
+                  data-amplitude='svarsed.selection.filter.h'
                   className={classNames({ selected: _filter === 'H_' })}
-                  onClick={() => _setFilter('H_')}
+                  onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+                    buttonLogger(e)
+                    _setFilter('H_')
+                  }}
                 >
                   {t('label:horisontal') + ' (' + horisontal + ')'}
                 </HighContrastFlatknapp>
@@ -317,8 +353,12 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                 <HighContrastFlatknapp
                   mini
                   kompakt
+                  data-amplitude='svarsed.selection.filter.s'
                   className={classNames({ selected: _filter === 'S_' })}
-                  onClick={() => _setFilter('S_')}
+                  onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+                    buttonLogger(e)
+                    _setFilter('S_')
+                  }}
                 >
                   {t('label:S') + ' (' + ssed + ')'}
                 </HighContrastFlatknapp>
@@ -422,7 +462,13 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                             <>
                               <HighContrastKnapp
                                 mini
-                                onClick={() => window.open(connectedSed.lenkeHvisForrigeSedMaaJournalfoeres, 'rina')}
+                                data-amplitude='svarsed.selection.journalforing'
+                                onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+                                  buttonLogger(e, {
+                                    type: connectedSed.sedType
+                                  })
+                                  window.open(connectedSed.lenkeHvisForrigeSedMaaJournalfoeres, 'rina')
+                                }}
                               >
                                 {t('label:journalforing', {
                                   sedtype: connectedSed.sedType
@@ -436,7 +482,13 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                               <HighContrastKnapp
                                 mini
                                 kompakt
-                                onClick={() => loadDraft(connectedSed)}
+                                data-amplitude='svarsed.selection.loaddraft'
+                                onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+                                  buttonLogger(e, {
+                                    type: connectedSed.svarsedType
+                                  })
+                                  loadDraft(connectedSed)
+                                }}
                               >
                                 <Edit />
                                 <HorizontalSeparatorDiv size='0.35' />
@@ -449,8 +501,15 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                                   disabled={queryingReplySed || connectedSed.lenkeHvisForrigeSedMaaJournalfoeres}
                                   spinner={queryingReplySed}
                                   mini
+                                  data-amplitude='svarsed.selection.replysed'
                                   title={connectedSed.lenkeHvisForrigeSedMaaJournalfoeres ? t('message:warning-spørre-sed-not-journalført') : ''}
-                                  onClick={() => onReplySedClick(connectedSed, sed.sakId)}
+                                  onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+                                    buttonLogger(e, {
+                                      type: connectedSed.svarsedType,
+                                      parenttype: connectedSed.sedType
+                                    })
+                                    onReplySedClick(connectedSed, sed.sakId)
+                                  }}
                                 >
                                   {queryingReplySed
                                     ? t('message:loading-replying')
@@ -462,7 +521,6 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                               : (<div />)}
                         </PileDiv>
                       </FlexDiv>
-
                     </SEDPanel>
                     <VerticalSeparatorDiv />
                   </HiddenFormContainer>
@@ -470,7 +528,6 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
               </div>
             )
           })}
-
         </HighContrastRadioGroup>
       )}
     </ContainerDiv>

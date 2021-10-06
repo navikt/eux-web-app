@@ -1,0 +1,112 @@
+Amplitude - nEESSI
+
+SvarSED session time
+	#neessi.svarpased.time - Total time spent in SvarPaSed app
+
+SvarSED search session Search
+	#nessi.svarsed.sedselection.time  - Total time spent in SvarPaSed selection page
+
+SED Search:
+  #neessi.svarsed.selection.query, {type: 'saksnummer' | 'fnr' | 'dnr'} - Number of searches, with search types
+	#neessi.svarsed.selection.filter.alle - Filter click
+	#neessi.svarsed.selection.filter.fb - Filter click
+	#neessi.svarsed.selection.filter.u - Filter click
+	#neessi.svarsed.selection.filter.h - Filter click
+	#neessi.svarsed.selection.filter.s - Filter click
+	#neessi.svarsed.selection.journalforing, {type: svarsed} - Journalfort clicks, by type
+	#neessi.svarsed.selection.replysed, {type: svarsedType, 'parenttype': sedtype}.  # Reply SED clicks, by type
+
+Saving function
+	#neessi.svarsed.selection.loaddraft, {type: sedType} - Number of localStorage load from left menu
+  #neessi.svarsed.sidebar.loaddraft, {type: sedType} - Number of localStorage load from right menu
+  #neessi.svarsed.sidebar.removedraft - Number of localStorage removed from right menu
+
+Right Menu
+  #neessi.svarsed.sidebar.edit - # Number of edits
+
+Average Session SED Edit
+#nessi.svarsed.editor.time - Total time spent in SvarPaSed editor page
+
+sedselection/selection
+remove time
+
+F002:
+   # Formal added, deleted
+
+  PersonOpplysning:
+  		# utendlandsk pin added, removed
+		# norsk personner searched
+        # norsk personner filled
+   Nasjonalitet:
+   		 added, removed
+	Address:
+	   Added, removed
+    Telkefon:
+       addded ,removed
+   epost:
+       added, removed
+    trygdeordningen
+	    dekkede: added, removed
+		udekkede: added, removed
+		familieytelse: added, removed
+	familierelasjon:
+	    added, removed
+	Personenstatus;
+		ansatte:
+			Arbeidsgiver søk in ansatte
+			periode arbeidsgiver added, removed
+			arbeidsgiver added, removed
+			trygdeperiode avsnderland added, removed
+			grunnlag bosetting added, removed
+			mottatt pensjon added, renoved
+	Relasjon:
+		added, removed
+		grunnlag bosetting added, removed
+
+Legg til personen
+		  # numbers licked
+		  # people added, removed
+
+
+Motregning: adding barns, removing barns
+		click oppgi kontoopplysninger
+Prosedyre: grunn added, removed
+krav: click oppgi kontoopplysning
+vedtak:
+			 periode added, removed
+			 periode added, removed
+
+U002
+  arbeidsforhold:
+  	  # sok arbeidsgiver clicks
+	  # arbeidsgiver added, removed
+   inntekt
+   	   # searches clicked
+
+	forsikring:
+	* periode added, removed
+	siste ansettelsesforfold
+		   utbetaling added, removed
+	periode dagpenger:
+		added, removed
+
+U004
+	lønnsopplysning added ,removed
+
+Time on each
+
+= = = = = =
+
+
+Vedlegg: clicks
+previewSed: clicks
+
+opprettSed: clicks
+   - successful, with mistakes
+
+gjebnta opprettset clicks
+
+lagre utkast sed clicks
+
+oppdatere utkast sed clicks
+@

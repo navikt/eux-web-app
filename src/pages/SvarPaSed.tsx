@@ -257,7 +257,8 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
       setTotalTime(new Date().getTime())
     }
     return () => {
-      timeDiffLogger('svarpased.time', totalTime)
+      setTotalTime(0)
+      timeDiffLogger('svarpased', totalTime)
     }
   }, [])
 

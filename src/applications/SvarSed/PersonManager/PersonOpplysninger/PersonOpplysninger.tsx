@@ -18,6 +18,7 @@ import useValidation from 'hooks/useValidation'
 import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
+import Chevron from 'nav-frontend-chevron'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
@@ -523,6 +524,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv size='0.5' />
       {_seeNewFoedstedForm
         ? (
+          <>
           <AlignStartRow key='showNewForm' className='slideInFromLeft'>
             <Column>
               <Input
@@ -531,7 +533,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                 label={t('label:by')}
                 namespace={namespace}
                 onChanged={onFoedestedByChange}
-                value={personInfo!.pinMangler?.foedested.by}
+                value={personInfo!.pinMangler?.foedested?.by ?? ''}
               />
             </Column>
             <Column>
@@ -541,7 +543,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                 label={t('label:region')}
                 namespace={namespace}
                 onChanged={onFoedestedRegionChange}
-                value={personInfo!.pinMangler?.foedested.region}
+                value={personInfo!.pinMangler?.foedested?.region ?? ''}
               />
             </Column>
             <Column>
@@ -554,10 +556,26 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                 menuPortalTarget={document.body}
                 onOptionSelected={(e: Country) => onFoedestedLandChange(e.value)}
                 placeholder={t('el:placeholder-select-default')}
-                values={personInfo!.pinMangler?.foedested.land}
+                values={personInfo!.pinMangler?.foedested?.land ?? ''}
               />
             </Column>
           </AlignStartRow>
+          <VerticalSeparatorDiv/>
+          <AlignStartRow>
+            <Column flex='2'/>
+            <Column>
+              <HighContrastFlatknapp
+                mini
+                kompakt
+                onClick={() => setSeeNewFoedstedForm(false)}
+              >
+                <Chevron type='opp' />
+                <HorizontalSeparatorDiv size='0.5' />
+                {t('label:show-less')}
+              </HighContrastFlatknapp>
+            </Column>
+          </AlignStartRow>
+          </>
           )
         : (
           <AlignStartRow key='seeNewForm'>
