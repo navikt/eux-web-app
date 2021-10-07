@@ -121,7 +121,7 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
   const [_mounted, setMounted] = useState<boolean>(!waitForMount)
   const storageKey = 'replySed'
   const { featureToggles }: SvarPaSedPageSelector = useSelector<State, SvarPaSedPageSelector>(mapState)
-  const [totalTime, setTotalTime] = useState<Date | undefined>(undefined)
+  const [totalTime] = useState<Date>(new Date())
 
   const [positionContentA, setPositionContentA] = useState<Slide>(Slide.LEFT)
   const [positionContentB, setPositionContentB] = useState<Slide>(Slide.RIGHT)
@@ -253,12 +253,8 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
   }, [dispatch, _mounted, changeMode, WaitingDiv, location.search])
 
   useEffect(() => {
-    if (totalTime === undefined) {
-      setTotalTime(new Date())
-    }
     return () => {
       timeLogger('svarpased', totalTime)
-      setTotalTime(undefined)
     }
   }, [])
 

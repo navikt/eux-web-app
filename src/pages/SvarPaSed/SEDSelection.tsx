@@ -115,7 +115,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
   const [_validation, _resetValidation, performValidation] = useValidation({}, validateSEDSelection)
   const [_replySedRequested, setReplySedRequested] = useState<boolean>(false)
 
-  const [totalTime, setTotalTime] = useState<Date | undefined>(undefined)
+  const [totalTime] = useState<Date>(new Date())
 
   const onSaksnummerOrFnrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value
@@ -190,12 +190,8 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
   }, [replySed, mode])
 
   useEffect(() => {
-    if (totalTime === undefined) {
-      setTotalTime(new Date())
-    }
     return () => {
       timeLogger('svarpased.selection', totalTime)
-      setTotalTime(undefined)
     }
   }, [])
 

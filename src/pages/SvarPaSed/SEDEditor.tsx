@@ -117,7 +117,7 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
   const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
   const performValidation = useGlobalValidation<ValidationSEDEditorProps>(validateSEDEditor)
 
-  const [totalTime, setTotalTime] = useState<Date | undefined>(undefined)
+  const [totalTime] = useState<Date>(new Date())
 
   const storageKey = 'replySed'
   const showPersonManager = (): boolean => isSed(replySed)
@@ -245,12 +245,8 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
   }, [previewFile])
 
   useEffect(() => {
-    if (totalTime === undefined) {
-      setTotalTime(new Date())
-    }
     return () => {
       timeLogger('svarpased.editor', totalTime)
-      setTotalTime(undefined)
     }
   }, [])
 
