@@ -16,7 +16,7 @@ import { ReplySed } from 'declarations/sed'
 import { ConnectedSed, LocalStorageEntry, Sed } from 'declarations/types'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { buttonLogger, standardLogger, timeDiffLogger } from 'metrics/loggers'
+import { buttonLogger, standardLogger, timeLogger } from 'metrics/loggers'
 import AlertStripe from 'nav-frontend-alertstriper'
 import { Normaltekst, Systemtittel, Undertekst, Undertittel } from 'nav-frontend-typografi'
 import {
@@ -194,8 +194,8 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
       setTotalTime(new Date().getTime())
     }
     return () => {
+      timeLogger('svarpased.selection', totalTime)
       setTotalTime(0)
-      timeDiffLogger('svarpased.selection', totalTime)
     }
   }, [])
 

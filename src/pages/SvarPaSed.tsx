@@ -12,7 +12,7 @@ import { FeatureToggles } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
 import { LocalStorageEntry } from 'declarations/types'
-import { timeDiffLogger } from 'metrics/loggers'
+import { timeLogger } from 'metrics/loggers'
 import { Container, Content, fadeIn, fadeOut, Margin } from 'nav-hoykontrast'
 import SEDEditor from 'pages/SvarPaSed/SEDEditor'
 import SEDSelection from 'pages/SvarPaSed/SEDSelection'
@@ -257,8 +257,8 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
       setTotalTime(new Date().getTime())
     }
     return () => {
+      timeLogger('svarpased', totalTime)
       setTotalTime(0)
-      timeDiffLogger('svarpased', totalTime)
     }
   }, [])
 

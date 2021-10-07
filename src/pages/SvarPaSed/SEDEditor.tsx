@@ -24,7 +24,7 @@ import { CreateSedResponse, LocalStorageEntry, Validation } from 'declarations/t
 import FileFC, { File } from 'forhandsvisningsfil'
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import _ from 'lodash'
-import { buttonLogger, standardLogger, timeDiffLogger } from 'metrics/loggers'
+import { buttonLogger, standardLogger, timeLogger } from 'metrics/loggers'
 import AlertStripe from 'nav-frontend-alertstriper'
 import { VenstreChevron } from 'nav-frontend-chevron'
 import { Systemtittel } from 'nav-frontend-typografi'
@@ -249,8 +249,8 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
       setTotalTime(new Date().getTime())
     }
     return () => {
+      timeLogger('svarpased.editor', totalTime)
       setTotalTime(0)
-      timeDiffLogger('svarpased.editor', totalTime)
     }
   }, [])
 
