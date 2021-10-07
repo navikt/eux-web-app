@@ -3,10 +3,20 @@ import ExpandingPanel from 'components/ExpandingPanel/ExpandingPanel'
 import { VerticalSeparatorDiv } from 'nav-hoykontrast'
 import TopContainer from 'components/TopContainer/TopContainer'
 import PT from 'prop-types'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import StackTracey from 'stacktracey'
 import styled from 'styled-components'
+import { standardLogger } from 'metrics/loggers'
+import Convert from 'ansi-to-html'
+import deserializeError from 'deserialize-error'
+
+const convert = new Convert({
+  newline: true,
+  escapeXML: true,
+  fg: '#000'
+})
 
 const Content = styled.div`
   flex: 1;
@@ -34,10 +44,6 @@ const Line = styled.div`
   border-bottom: 1px solid #78706A;
 `
 
-export interface ErrorPageSelector {
-  highContrast: boolean
-}
-
 export interface ErrorProps {
   error?: any;
   resetErrorBoundary ?: any
@@ -49,6 +55,14 @@ export const Error = ({ error }: ErrorProps) => {
   const description = t('message:error-page-description')
   const footer = t('message:error-page-footer')
 
+  useEffect(() => {
+    standardLogger('.errorpage.view')
+  }, [])
+
+  const e = deserializeError(error)
+  const stack = new StackTracey(e).withSources().clean()
+  const msg = convert.toHtml(error.message)
+
   return (
     <TopContainer className={classNames('p-error')}>
       <Content>
@@ -58,11 +72,17 @@ export const Error = ({ error }: ErrorProps) => {
         <Description dangerouslySetInnerHTML={{ __html: description }} />
         {error && (
           <Panel
+            open
             data-test-id='p-error__content-error-id'
             className={classNames('p-error__content-error', 's-border')}
             heading={t('message:error-header')}
           >
-            <div dangerouslySetInnerHTML={{ __html: '<pre>' + error.stack + '</pre>' }} />
+            <>
+              <div style={{ whiteSpace: 'break-spaces' }} dangerouslySetInnerHTML={{ __html: msg }} />
+              {stack.items?.map((e: any, i) => (
+                <div key={'' + i}>{e?.beforeParse}</div>
+              ))}
+            </>
           </Panel>
         )}
         {footer && (

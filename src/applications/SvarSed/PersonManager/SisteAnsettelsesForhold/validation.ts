@@ -57,7 +57,7 @@ export const validateUtbetaling = (
     hasErrors = true
   }
 
-  if (!_.isEmpty(utbetaling?.beloep?.trim()) && !utbetaling?.beloep?.trim().match(/^[\d\.,]+$/)) {
+  if (!_.isEmpty(utbetaling?.beloep?.trim()) && !utbetaling?.beloep?.trim().match(/^[\d.,]+$/)) {
     v[namespace + '-beloep'] = {
       skjemaelementId: namespace + '-beloep',
       feilmelding: t('message:validation-invalidBeløp')

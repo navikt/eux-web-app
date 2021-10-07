@@ -219,4 +219,6 @@ General:
     #neessi.svarsed.create.success - Number of times Opprett/oppdater SvarSED was successful
     #neessi.svarsed.create.failure - Number of times Opprett/oppdater SvarSED failed
 
+5. Error
 
+    #neessi.errorpage.view

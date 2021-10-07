@@ -75,9 +75,10 @@ const Stack: React.FC<StackProps> = ({
         </>
       )}
       {_items
+        .filter(i => i)
         ?.sort((a, b) => {
-          const _a = _.find(options, _f => _f.value === a)?.label
-          const _b = _.find(options, _f => _f.value === b)?.label
+          const _a = _.find(options, _f => _f.value === a)?.label ?? ''
+          const _b = _.find(options, _f => _f.value === b)?.label ?? ''
           return _a.localeCompare(_b)
         })
         ?.map((item: string, i: number) => (
