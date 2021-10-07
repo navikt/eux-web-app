@@ -38,8 +38,10 @@ export const standardLogger = (name: string, values?: object) => {
   amplitudeLogger(name, data)
 }
 
-export const timeLogger = (name: string, loggedTime: Date) => {
-  timeDiffLogger(name, (new Date().getTime() - loggedTime.getTime()))
+export const timeLogger = (name: string, loggedTime: Date | undefined) => {
+  if (loggedTime) {
+    timeDiffLogger(name, (new Date().getTime() - loggedTime.getTime()))
+  }
 }
 
 export const timeDiffLogger = (name: string, diff: number) => {

@@ -117,7 +117,7 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
   const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
   const performValidation = useGlobalValidation<ValidationSEDEditorProps>(validateSEDEditor)
 
-  const [totalTime, setTotalTime] = useState<number>(0)
+  const [totalTime, setTotalTime] = useState<Date | undefined>(undefined)
 
   const storageKey = 'replySed'
   const showPersonManager = (): boolean => isSed(replySed)
@@ -174,7 +174,7 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
 
   const onSendSedClick = () => {
     dispatch(sendSedInRina(replySed?.saksnummer, sedCreatedResponse?.sedId))
-    standardLogger('svarsed.editor.sendsvarsed.button', {type: 'editor'})
+    standardLogger('svarsed.editor.sendsvarsed.button', { type: 'editor' })
   }
 
   const showPreviewModal = (previewFile: Blob) => {
@@ -245,12 +245,12 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
   }, [previewFile])
 
   useEffect(() => {
-    if (totalTime === 0) {
-      setTotalTime(new Date().getTime())
+    if (totalTime === undefined) {
+      setTotalTime(new Date())
     }
     return () => {
       timeLogger('svarpased.editor', totalTime)
-      setTotalTime(0)
+      setTotalTime(undefined)
     }
   }, [])
 

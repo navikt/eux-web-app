@@ -140,7 +140,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
 
   const onSendSedClick = () => {
     dispatch(sendSedInRina(replySed?.saksnummer, sedCreatedResponse?.sedId))
-    standardLogger('svarsed.editor.sendsvarsed.button', {type: 'modal'})
+    standardLogger('svarsed.editor.sendsvarsed.button', { type: 'modal' })
   }
 
   const _onFinished = useCallback((): void => {

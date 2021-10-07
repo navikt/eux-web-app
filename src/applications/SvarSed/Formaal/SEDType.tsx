@@ -106,7 +106,7 @@ const SEDType: React.FC = () => {
           delete (newReplySed as U004Sed).loennsopplysninger
         }
         dispatch(setReplySed(newReplySed))
-        standardLogger('svarsed.editor.sedtype.change', {type: newSedType})
+        standardLogger('svarsed.editor.sedtype.change', { type: newSedType })
       } else {
         setSedType(oldSedType)
       }
