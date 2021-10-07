@@ -82,7 +82,7 @@ export const validateMotregning = (
     } as FeiloppsummeringFeil
     hasErrors = true
   } else {
-    if (!motregning?.beloep?.trim().match(/^\d+$/)) {
+    if (!motregning?.beloep?.trim().match(/^[\d\.,]+$/)) {
       v[namespace + '-beloep'] = {
         skjemaelementId: namespace + '-beloep',
         feilmelding: t('message:validation-invalidBeløpForPerson', { person: formalName })

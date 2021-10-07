@@ -46,7 +46,7 @@ export const validateBeløpNavnOgValuta = (
     hasErrors = true
   }
 
-  if (!_.isEmpty(ytelse?.beloep?.trim()) && !ytelse?.beloep?.trim().match(/^\d+$/)) {
+  if (!_.isEmpty(ytelse?.beloep?.trim()) && !ytelse?.beloep?.trim().match(/^[\d\.,]+$/)) {
     v[namespace + '-beloep'] = {
       skjemaelementId: namespace + '-beloep',
       feilmelding: t('message:validation-invalidBeløpForPerson', { person: personName })
