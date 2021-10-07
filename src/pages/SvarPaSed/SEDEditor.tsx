@@ -24,7 +24,7 @@ import { CreateSedResponse, LocalStorageEntry, Validation } from 'declarations/t
 import FileFC, { File } from 'forhandsvisningsfil'
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import _ from 'lodash'
-import { timeDiffLogger } from 'metrics/loggers'
+import { buttonLogger, standardLogger, timeDiffLogger } from 'metrics/loggers'
 import AlertStripe from 'nav-frontend-alertstriper'
 import { VenstreChevron } from 'nav-frontend-chevron'
 import { Systemtittel } from 'nav-frontend-typografi'
@@ -140,7 +140,7 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
     return newReplySed
   }
 
-  const sendReplySed = (): void => {
+  const sendReplySed = (e: React.ChangeEvent<HTMLButtonElement>): void => {
     if (replySed) {
       const newReplySed: ReplySed = cleanReplySed(replySed)
       const valid = performValidation({
@@ -152,6 +152,7 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
         cleanReplySed(newReplySed)
         dispatch(createSed(newReplySed))
         dispatch(resetAllValidation())
+        buttonLogger(e)
       }
     }
   }
@@ -173,6 +174,7 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
 
   const onSendSedClick = () => {
     dispatch(sendSedInRina(replySed?.saksnummer, sedCreatedResponse?.sedId))
+    standardLogger('svarsed.editor.sendsvarsed.button', {type: 'editor'})
   }
 
   const showPreviewModal = (previewFile: Blob) => {
@@ -210,7 +212,7 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
     })
   }
 
-  const onPreviewSed = () => {
+  const onPreviewSed = (e: React.ChangeEvent<HTMLButtonElement>) => {
     if (replySed) {
       const newReplySed = _.cloneDeep(replySed)
       cleanReplySed(newReplySed)
@@ -218,6 +220,7 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
       delete newReplySed.saksnummer
       delete newReplySed.sedUrl
       dispatch(getPreviewFile(rinaSakId!, newReplySed))
+      buttonLogger(e)
     }
   }
 
@@ -341,6 +344,7 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
         kompakt
         disabled={gettingPreviewFile}
         spinner={gettingPreviewFile}
+        data-amplitude='svarsed.editor.preview'
         onClick={onPreviewSed}
       >
         <Add />
@@ -354,6 +358,7 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
         <div>
           <HighContrastHovedknapp
             mini
+            data-amplitude={_.isEmpty(sedCreatedResponse) ? 'svarsed.editor.opprettsvarsed' : 'svarsed.editor.oppdattersvarsed'}
             onClick={sendReplySed}
             disabled={creatingSvarPaSed}
             spinner={creatingSvarPaSed}
@@ -373,6 +378,7 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
           <>
             <div>
               <HighContrastHovedknapp
+                // amplitude is dealt on SendSedClick
                 mini
                 title={t('message:help-send-sed')}
                 disabled={sendingSed || !_.isNil(sedSendResponse)}
@@ -386,6 +392,7 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
         )}
         <div>
           <HighContrastKnapp
+            data-amplitude={_.isNil(currentEntry) ? 'svarsed.editor.savedraft' : 'svarsed.editor.updatedraft'}
             mini
             onClick={onSaveSedClick}
             disabled={savingSed}

@@ -20,6 +20,7 @@ import { IInntekter } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
 import Chevron from 'nav-frontend-chevron'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
@@ -179,6 +180,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
       removeFromDeletion(deletedLoennsopplysning[0])
     }
     dispatch(updateReplySed(target, newLoennsopplysning))
+    standardLogger('svarsed.editor.loennsopplysning.remove')
   }
 
   const onAdd = () => {
@@ -202,6 +204,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
       }
       newLoennsopplysninger = newLoennsopplysninger.concat(newLoennsopplysning)
       dispatch(updateReplySed(target, newLoennsopplysninger))
+      standardLogger('svarsed.editor.loennsopplysning.add')
       resetForm()
     }
   }

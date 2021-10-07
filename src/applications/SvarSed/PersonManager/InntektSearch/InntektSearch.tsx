@@ -1,4 +1,5 @@
 import { Periode } from 'declarations/sed'
+import { standardLogger } from 'metrics/loggers'
 import {
   validateInntektSearch,
   ValidationInntektSearchProps
@@ -21,6 +22,7 @@ import { useTranslation } from 'react-i18next'
 import { Option } from 'declarations/app.d'
 
 interface InntektSearchProps {
+  amplitude ?: string
   fnr: string
   highContrast: boolean
   onInntektSearch: (fnr: string, fom: string, tom: string, inntektsliste: string) => void
@@ -28,6 +30,7 @@ interface InntektSearchProps {
 }
 
 const InntektSearch = ({
+  amplitude,
   fnr,
   highContrast,
   onInntektSearch,
@@ -66,6 +69,9 @@ const InntektSearch = ({
     })
     if (valid) {
       onInntektSearch(fnr, _searchPeriode?.startdato ?? '2015-01', _searchPeriode?.sluttdato ?? '', _filter ?? '')
+      if (amplitude) {
+        standardLogger(amplitude)
+      }
     }
   }
 

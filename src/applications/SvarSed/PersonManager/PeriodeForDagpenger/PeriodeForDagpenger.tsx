@@ -1,5 +1,6 @@
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
+import { standardLogger } from 'metrics/loggers'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   validatePeriodeDagpenger,
@@ -304,6 +305,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
       removeFromDeletion(deletedPerioder[0])
     }
     dispatch(updateReplySed(target, newPerioder))
+    standardLogger('svarsed.editor.periode.remove', { type: 'perioderDagpenger' })
   }
 
   const onAdd = () => {
@@ -338,6 +340,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
       }
       newPerioderDagpenger = newPerioderDagpenger.concat(newPeriodeDagpenger)
       dispatch(updateReplySed(target, newPerioderDagpenger))
+      standardLogger('svarsed.editor.periode.add', { type: 'perioderDagpenger' })
       resetForm()
     }
   }

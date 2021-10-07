@@ -5,6 +5,7 @@ import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { F002Sed } from 'declarations/sed'
+import { buttonLogger } from 'metrics/loggers'
 import { Undertittel } from 'nav-frontend-typografi'
 import { AlignStartRow, Column, HighContrastFlatknapp, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
@@ -65,8 +66,13 @@ const KravOmRefusjon: React.FC<FormålManagerFormProps> = ({
       <AlignStartRow>
         <Column>
           <HighContrastFlatknapp
-            mini kompakt
-            onClick={() => seeKontoopplysninger()}
+            mini
+            kompakt
+            data-amplitude='svarsed.editor.seekontoopplysning'
+            onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+              buttonLogger(e)
+              seeKontoopplysninger()
+            }}
           >
             {t('label:oppgi-kontoopplysninger')}
           </HighContrastFlatknapp>

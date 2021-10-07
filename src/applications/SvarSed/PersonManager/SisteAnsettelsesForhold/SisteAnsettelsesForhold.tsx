@@ -3,6 +3,7 @@ import { resetValidation } from 'actions/validation'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import { standardLogger } from 'metrics/loggers'
 import { validateUtbetaling, ValidationUtbetalingProps } from './validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import DateInput from 'components/Forms/DateInput'
@@ -190,6 +191,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
       removeFromDeletion(deletedUtbetalinger[0])
     }
     dispatch(updateReplySed(`${target}.utbetalinger`, newUtbetalinger))
+    standardLogger('svarsed.editor.utbetaling.remove')
   }
 
   const onAdd = () => {
@@ -212,6 +214,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
       }
       newUtbetalinger = newUtbetalinger.concat(newUtbetaling)
       dispatch(updateReplySed(`${target}.utbetalinger`, newUtbetalinger))
+      standardLogger('svarsed.editor.utbetaling.add')
       resetForm()
     }
   }

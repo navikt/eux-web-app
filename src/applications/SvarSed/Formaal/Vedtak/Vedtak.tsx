@@ -21,6 +21,7 @@ import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
 import { Checkbox, FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Ingress, Normaltekst, Undertittel } from 'nav-frontend-typografi'
@@ -234,6 +235,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
       perioderRemoveFromDeletion(deletedPerioder[0])
     }
     dispatch(updateReplySed(`${target}.vedtaksperioder`, newPerioder))
+    standardLogger('svarsed.editor.periode.remove', { type: 'vedtaksperioder' })
   }
 
   const onVedtaksperioderRemove = (index: number, vedtaktype: string) => {
@@ -244,6 +246,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
       deletionHash[vedtaktype].removefrom(deletedPerioder[0])
     }
     dispatch(updateReplySed(`${target}.${vedtaktype}`, newPerioder))
+    standardLogger('svarsed.editor.periode.remove', { type: vedtaktype })
   }
 
   const onPeriodeAdd = () => {
@@ -260,6 +263,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
       }
       newPerioder = newPerioder.concat(_newPeriode)
       dispatch(updateReplySed(`${target}.vedtaksperioder`, newPerioder))
+      standardLogger('svarsed.editor.periode.add', { type: 'vedtaksperioder' })
       perioderResetForm()
     }
   }
@@ -294,6 +298,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
       }
       newVedtaksperioder = newVedtaksperioder.concat(newVedtaksperiode)
       dispatch(updateReplySed(`${target}.${_newVedtaksperioderVedtak}`, newVedtaksperioder))
+      standardLogger('svarsed.editor.periode.add', { type: _newVedtaksperioderVedtak })
       vedtaksperioderResetForm()
     }
   }

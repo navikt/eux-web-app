@@ -269,11 +269,11 @@ const PersonManager: React.FC = () => {
       })
     }
     return () => {
-      standardLogger('svarsed.editor.forms.time', statistics)
+      standardLogger('svarsed.editor.personmanager.time', statistics)
     }
   }, [])
 
-  const setCurrentMenuOption = (currentMenu: string | undefined) => {
+  const setCurrentMenuOption = (newMenu: string | undefined) => {
     const previousMenu = currentMenuOption
     const newStatistics = _.cloneDeep(statistics)
 
@@ -286,15 +286,15 @@ const PersonManager: React.FC = () => {
         total: statistics[previousMenu].total += diffSeconds
       }
     }
-    if (!_.isNil(currentMenu)) {
-      newStatistics[currentMenu] = {
+    if (!_.isNil(newMenu)) {
+      newStatistics[newMenu] = {
         date: new Date(),
         status: 'start',
-        total: statistics[currentMenu]?.total ?? 0
+        total: statistics[newMenu]?.total ?? 0
       }
     }
     _setStatistics(newStatistics)
-    _setCurrentMenuOption(currentMenu)
+    _setCurrentMenuOption(newMenu)
   }
 
   const menuRef = useRef(currentMenu + '|' + currentMenuOption)

@@ -13,6 +13,7 @@ import { F002Sed, ProsedyreVedUenighet as IProsedyreVedUenighet, Grunn } from 'd
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
@@ -151,6 +152,7 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
       delete newProsedyreveduenighet[grunn.grunn]
       removeFromDeletion(grunn)
       dispatch(updateReplySed(target, newProsedyreveduenighet))
+      standardLogger('svarsed.editor.prosedyreveduenighet.grunn.remove')
     }
   }
 
@@ -174,6 +176,7 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
       // @ts-ignore
       newProsedyreveduenighet[_newGrunn.trim()] = _newPerson.trim()
       dispatch(updateReplySed(target, newProsedyreveduenighet))
+      standardLogger('svarsed.editor.prosedyreveduenighet.grunn.add')
       resetForm()
     }
   }

@@ -12,6 +12,7 @@ import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
 import { Normaltekst } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
@@ -99,6 +100,7 @@ const ArbeidsforholdSimple: React.FC<ArbeidsforholdSimpleProps> = ({
       removeFromDeletion(deletedPerioder[0])
     }
     dispatch(updateReplySed(target, newPerioder))
+    standardLogger('svarsed.editor.periode.remove', { type: target })
   }
 
   const onAdd = () => {
@@ -119,6 +121,7 @@ const ArbeidsforholdSimple: React.FC<ArbeidsforholdSimpleProps> = ({
       }
       newPerioderSimple = newPerioderSimple.concat(newPeriodeSimple)
       dispatch(updateReplySed(target, newPerioderSimple))
+      standardLogger('svarsed.editor.periode.add', { type: target })
       resetForm()
     }
   }

@@ -5,6 +5,7 @@ import {
   JoarkBrowserItems
 } from 'declarations/attachments'
 import _ from 'lodash'
+import { buttonLogger } from 'metrics/loggers'
 import { HighContrastKnapp, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -50,8 +51,12 @@ const Attachments: React.FC<AttachmentsProps> = ({
       </label>
       <VerticalSeparatorDiv />
       <HighContrastKnapp
+        data-amplitude='svarsed.editor.attachments'
         disabled={_.isNil(fnr)}
-        onClick={() => setAttachmentsTableVisible(!_attachmentsTableVisible)}
+        onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+          buttonLogger(e)
+          setAttachmentsTableVisible(!_attachmentsTableVisible)
+        }}
       >
         {t('label:vis-vedlegg-tabell')}
       </HighContrastKnapp>

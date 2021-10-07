@@ -13,6 +13,7 @@ import {
 } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
 import { Column, FlexCenterDiv, HighContrastFlatknapp, HorizontalSeparatorDiv, Row } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -105,6 +106,7 @@ const SEDType: React.FC = () => {
           delete (newReplySed as U004Sed).loennsopplysninger
         }
         dispatch(setReplySed(newReplySed))
+        standardLogger('svarsed.editor.sedtype.change', {type: newSedType})
       } else {
         setSedType(oldSedType)
       }

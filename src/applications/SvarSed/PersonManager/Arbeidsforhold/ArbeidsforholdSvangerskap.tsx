@@ -15,6 +15,7 @@ import useValidation from 'hooks/useValidation'
 import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
 import { Normaltekst } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
@@ -242,6 +243,7 @@ const ArbeidsforholdSvangerskap: React.FC<ArbeidsforholdSvangerskapProps> = ({
       removeFromDeletion(deletedPerioder[0])
     }
     dispatch(updateReplySed(target, newPerioder))
+    standardLogger('svarsed.editor.periode.remove', { type: target })
   }
 
   const onAdd = () => {
@@ -274,6 +276,7 @@ const ArbeidsforholdSvangerskap: React.FC<ArbeidsforholdSvangerskapProps> = ({
       }
       newPerioderSvangerskap = newPerioderSvangerskap.concat(newPeriodeSvangerskap)
       dispatch(updateReplySed(target, newPerioderSvangerskap))
+      standardLogger('svarsed.editor.periode.add', { type: target })
       resetForm()
     }
   }

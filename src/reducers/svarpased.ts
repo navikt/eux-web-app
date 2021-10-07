@@ -4,6 +4,7 @@ import { ReplySed } from 'declarations/sed.d'
 import { CreateSedResponse, FagSaker, Seds } from 'declarations/types.d'
 import { ActionWithPayload } from 'js-fetch-api'
 import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
 import { Action } from 'redux'
 
 export interface SvarpasedState {
@@ -122,18 +123,22 @@ const svarpasedReducer = (
     }
 
     case types.SVARPASED_SED_CREATE_SUCCESS:
+
+      standardLogger('svarsed.create.success')
       return {
         ...state,
         sedCreatedResponse: (action as ActionWithPayload).payload
       }
 
     case types.SVARPASED_SED_CREATE_FAILURE:
+      standardLogger('svarsed.create.failure')
       return {
         ...state,
         sedCreatedResponse: null
       }
 
     case types.SVARPASED_SED_CREATE_REQUEST:
+      standardLogger('svarsed.create.request')
       return {
         ...state,
         sedCreatedResponse: undefined

@@ -17,6 +17,7 @@ import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
 import { CreateSedResponse } from 'declarations/types'
 import _ from 'lodash'
+import { buttonLogger, standardLogger } from 'metrics/loggers'
 import AlertStripe from 'nav-frontend-alertstriper'
 import NavFrontendSpinner from 'nav-frontend-spinner'
 import { Undertittel } from 'nav-frontend-typografi'
@@ -139,6 +140,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
 
   const onSendSedClick = () => {
     dispatch(sendSedInRina(replySed?.saksnummer, sedCreatedResponse?.sedId))
+    standardLogger('svarsed.editor.sendsvarsed.button', {type: 'modal'})
   }
 
   const _onFinished = useCallback((): void => {
@@ -273,6 +275,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                   <FlexCenterSpacedDiv>
                     <HighContrastKnapp
                       mini
+                      ampliutude
                       onClick={onModalClose}
                     >
                       {t('el:button-close')}
@@ -282,6 +285,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                       <>
                         <HorizontalSeparatorDiv />
                         <HighContrastHovedknapp
+                          // amplitude is dealt on SendSedClick
                           mini
                           title={t('message:help-send-sed')}
                           disabled={sendingSed || !_.isNil(sedSendResponse)}
@@ -295,7 +299,11 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                     {goToRinaUrl && (
                       <HighContrastHovedknapp
                         mini
-                        onClick={() => window.open(goToRinaUrl, 'rina')}
+                        data-amplitude='svarsed.editor.editinrina.button'
+                        onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+                          buttonLogger(e)
+                          window.open(goToRinaUrl, 'rina')
+                        }}
                       >
                         {t('label:rediger-sed-i-rina')}
                       </HighContrastHovedknapp>

@@ -19,6 +19,7 @@ import useValidation from 'hooks/useValidation'
 import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
 import { Systemtittel, Undertittel } from 'nav-frontend-typografi'
 import {
@@ -118,6 +119,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
       moment(a.periode.startdato).isSameOrBefore(moment(b.periode.startdato)) ? -1 : 1
     )
     dispatch(updateReplySed(target, newPerioderMedForsikring))
+    standardLogger('svarsed.editor.periode.add', { type: 'perioderAnsattMedForsikring' })
   }
 
   const removePeriodeMedForsikring = (deletedPeriodeMedForsikring: PeriodeMedForsikring) => {
@@ -129,6 +131,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
       p => p.periode.startdato !== deletedPeriodeMedForsikring.periode.startdato
     )
     dispatch(updateReplySed(target, newPerioderMedForsikring))
+    standardLogger('svarsed.editor.periode.remove', { type: 'perioderAnsattMedForsikring' })
   }
 
   const onPeriodeMedForsikringSelect = (periodeMedForsikring: PeriodeMedForsikring, checked: boolean) => {
@@ -157,6 +160,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
           dispatch(updateReplySed(target, newPerioderMedForsikring))
         }
       }
+      standardLogger('svarsed.editor.arbeidsgiver.fromAA.edit')
     }
   }
 
@@ -178,6 +182,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
             dispatch(updateReplySed(target, newPerioderMedForsikring))
           }
         }
+        standardLogger('svarsed.editor.arbeidsgiver.added.edit')
       }
     }
   }
@@ -192,6 +197,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
     if (selected) {
       removePeriodeMedForsikring(deletedPeriodeMedForsikring)
     }
+    standardLogger('svarsed.editor.arbeidsgiver.added.remove')
   }
 
   const resetArbeidsgiverForm = () => {
@@ -289,6 +295,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
       let newAddedPerioderMedForsikring: Array<PeriodeMedForsikring> = _.cloneDeep(_addedPeriodeMedForsikring)
       newAddedPerioderMedForsikring = newAddedPerioderMedForsikring.concat(newPeriodeMedForsikring)
       setAddedPeriodeMedForsikring(newAddedPerioderMedForsikring)
+      standardLogger('svarsed.editor.arbeidsgiver.added.add')
       resetArbeidsgiverForm()
     }
   }
@@ -541,7 +548,11 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <ArbeidsgiverSøk fnr={fnr} namespace={namespace} />
+      <ArbeidsgiverSøk
+        amplitude='svarsed.editor.arbeidsforholdmedforsikring.arbeidsgiver.search'
+        fnr={fnr}
+        namespace={namespace}
+      />
       <VerticalSeparatorDiv size='2' />
       <Systemtittel>
         {t('label:aa-registeret')}
@@ -578,6 +589,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
       </Undertittel>
       <VerticalSeparatorDiv />
       <InntektSearch
+        amplitude='svarsed.editor.inntekt.search'
         fnr={fnr!}
         highContrast={highContrast}
         onInntektSearch={onInntektSearch}

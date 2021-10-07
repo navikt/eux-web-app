@@ -24,6 +24,7 @@ import useValidation from 'hooks/useValidation'
 import CountryData, { Currency } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
+import { buttonLogger, standardLogger } from 'metrics/loggers'
 import { Normaltekst, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
@@ -365,6 +366,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
     // @ts-ignore
     delete newReplySed.barn[_barnaNameKeys[navn].id].motregning
     dispatch(setReplySed(newReplySed))
+    standardLogger('svarsed.editor.motregning.remove')
   }
 
   const onAdd = () => {
@@ -399,6 +401,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
       newMotregning!.ytelseNavn = newNavOgBetegnelse.betegnelsePåYtelse
 
       dispatch(updateReplySed(`${_barnaNameKeys[_newNavn!].key}.motregning`, newMotregning))
+      standardLogger('svarsed.editor.motregning.add')
       resetForm()
     }
   }
@@ -698,8 +701,13 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
       <AlignStartRow>
         <Column>
           <HighContrastFlatknapp
-            mini kompakt
-            onClick={() => seeKontoopplysninger()}
+            mini
+            kompakt
+            data-amplitude='svarsed.editor.seekontoopplysning'
+            onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+              buttonLogger(e)
+              seeKontoopplysninger()
+            }}
           >
             {t('label:oppgi-kontoopplysninger')}
           </HighContrastFlatknapp>

@@ -7,6 +7,7 @@ import { State } from 'declarations/reducers'
 import { HSed, ReplySed } from 'declarations/sed'
 import { FagSak, FagSaker, Validation } from 'declarations/types'
 import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
 import NavFrontendSpinner from 'nav-frontend-spinner'
 import { Column, FlexBaseDiv, HighContrastFlatknapp, HorizontalSeparatorDiv, Row } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
@@ -72,6 +73,7 @@ const Tema: React.FC = () => {
   const onSaveChangesClicked = () => {
     dispatch(updateReplySed('tema', _tema))
     dispatch(updateReplySed('fagsakId', _fagsak))
+    standardLogger('svarsed.editor.tema.add', { tema: _tema })
     setEditMode(false)
   }
 
