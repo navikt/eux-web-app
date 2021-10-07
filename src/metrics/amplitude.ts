@@ -16,7 +16,7 @@ const getApiKey = () => {
     : 'feb0ead20059b4be531bfa6e076906ab'
 }
 
-const debug = true
+const debug = isProduction() ? false : true
 
 const config = {
   apiEndpoint: 'amplitude.nav.no/collect',

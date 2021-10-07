@@ -28,7 +28,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import styled, { keyframes } from 'styled-components'
-import { isFSed } from 'utils/sed'
 
 const transitionTime = 0.3
 
