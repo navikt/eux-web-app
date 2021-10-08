@@ -34,9 +34,8 @@ const arbeidsgiverReducer = (state: ArbeidsgiverState = initialArbeidsgiverState
         arbeidsperioder: (action as ActionWithPayload).payload
       }
 
-    case types.ARBEIDSPERIODER_UPDATE:
-
-      let newArbeidsperioder: Arbeidsperioder | null | undefined = _.cloneDeep(state.arbeidsperioder)
+    case types.ARBEIDSPERIODER_UPDATE: {
+      const newArbeidsperioder: Arbeidsperioder | null | undefined = _.cloneDeep(state.arbeidsperioder)
       if (_.isNil(newArbeidsperioder)) {
         return state
       }
@@ -47,6 +46,7 @@ const arbeidsgiverReducer = (state: ArbeidsgiverState = initialArbeidsgiverState
           arbeidsperioder: (action as ActionWithPayload).payload
         }
       }
+    }
 
     default:
       return state

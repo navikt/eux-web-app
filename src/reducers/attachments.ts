@@ -85,13 +85,14 @@ const joarkReducer = (state: JoarkState = initialJoarkState, action: ActionWithP
         }
       }
 
-    case types.ATTACHMENT_SEND_REQUEST:
-      let newSavingAttachmentsJob = _.cloneDeep(state.savingAttachmentsJob)
+    case types.ATTACHMENT_SEND_REQUEST: {
+      const newSavingAttachmentsJob = _.cloneDeep(state.savingAttachmentsJob)
       newSavingAttachmentsJob!.saving = action.context.joarkBrowserItem
       return {
         ...state,
         savingAttachmentsJob: newSavingAttachmentsJob
       }
+    }
 
     case types.ATTACHMENT_RESET: {
       return {

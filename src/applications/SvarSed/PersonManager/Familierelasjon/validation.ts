@@ -1,7 +1,6 @@
 import { validatePeriode } from 'components/Forms/validation'
 import { FamilieRelasjon } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
@@ -26,54 +25,13 @@ export const validateFamilierelasjon = (
   let hasErrors: boolean = false
   const idx = getIdx(index)
 
-  if (_.isEmpty(familierelasjon.relasjonType?.trim())) {
-    v[namespace + idx + '-relasjonType'] = {
-      feilmelding: t('message:validation-noRelationForPerson', { person: personName }),
-      skjemaelementId: namespace + idx + '-relasjonType'
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-
   const periodErrors : boolean = validatePeriode(v, t, {
     periode: familierelasjon.periode,
     namespace: namespace + idx + '-periode',
+    mandatoryStartdato: false,
     personName
   })
   hasErrors = hasErrors || periodErrors
-
-  if (familierelasjon.relasjonType === 'ANNEN') {
-    if (_.isEmpty(familierelasjon?.annenRelasjonType?.trim())) {
-      v[namespace + idx + '-annenRelasjonType'] = {
-        feilmelding: t('message:validation-noRelationTypeForPerson', { person: personName }),
-        skjemaelementId: namespace + idx + '-annenRelasjonType'
-      } as FeiloppsummeringFeil
-      hasErrors = true
-    }
-
-    if (_.isEmpty(familierelasjon?.annenRelasjonPersonNavn?.trim())) {
-      v[namespace + idx + '-annenRelasjonPersonNavn'] = {
-        feilmelding: t('message:validation-noNavnTilPerson', { person: personName }),
-        skjemaelementId: namespace + idx + '-annenRelasjonPersonNavn'
-      } as FeiloppsummeringFeil
-      hasErrors = true
-    }
-
-    if (_.isEmpty(familierelasjon?.annenRelasjonDato?.trim())) {
-      v[namespace + idx + '-annenRelasjonDato'] = {
-        feilmelding: t('message:validation-noRelationDateForPerson', { person: personName }),
-        skjemaelementId: namespace + idx + '-annenRelasjonDato'
-      } as FeiloppsummeringFeil
-      hasErrors = true
-    }
-
-    if (_.isEmpty(familierelasjon?.borSammen?.trim())) {
-      v[namespace + idx + '-borSammen'] = {
-        feilmelding: t('message:validation-noBoSammen', { person: personName }),
-        skjemaelementId: namespace + idx + '-borSammen'
-      } as FeiloppsummeringFeil
-      hasErrors = true
-    }
-  }
 
   if (hasErrors) {
     const namespaceBits = namespace.split('-')

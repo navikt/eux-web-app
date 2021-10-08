@@ -9,6 +9,7 @@ import { getIdx } from 'utils/namespace'
 export interface ValidationPeriodeProps {
   periode: Periode
   index?: number | undefined
+  mandatoryStartdato ?: boolean
   namespace: string,
   personName?: string
 }
@@ -22,12 +23,13 @@ export const validatePeriode = (
     periode,
     index = undefined,
     namespace,
+    mandatoryStartdato = true,
     personName
   }: ValidationPeriodeProps
 ): boolean => {
   let hasErrors: boolean = false
   const idx = getIdx(index)
-  if (_.isEmpty(periode?.startdato?.trim())) {
+  if (mandatoryStartdato && _.isEmpty(periode?.startdato?.trim())) {
     v[namespace + idx + '-startdato'] = {
       skjemaelementId: namespace + idx + '-startdato',
       feilmelding: personName
