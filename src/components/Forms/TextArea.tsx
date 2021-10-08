@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 
 export interface TextAreaProps {
   className ?: string
+  description ?: string
   feil: string | undefined
   namespace: string
   id: string
@@ -16,6 +17,7 @@ export interface TextAreaProps {
 }
 const TextArea: React.FC<TextAreaProps> = ({
   className,
+  description,
   feil,
   namespace,
   id,
@@ -33,6 +35,7 @@ const TextArea: React.FC<TextAreaProps> = ({
     <HighContrastTextArea
       className={classNames(className, { 'skjemaelement__input--harFeil': feil })}
       data-test-id={namespace + '-' + id}
+      description={description || label}
       feil={feil}
       id={namespace + '-' + id}
       label={label}
