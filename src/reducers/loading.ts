@@ -32,23 +32,20 @@ export const initialLoadingState: LoadingState = {
 const loadingReducer = (
   state: LoadingState = initialLoadingState,
   action: Action = { type: '' }
-) => {
+): LoadingState => {
   if (_.endsWith(action.type, '/ERROR')) {
     return initialLoadingState
   }
 
   switch (action.type) {
     // SAK
-    case types.SAK_ARBEIDSPERIODER_GET_REQUEST:
     case types.ARBEIDSPERIODER_GET_REQUEST:
       return {
         ...state,
         gettingArbeidsperioder: true
       }
 
-    case types.SAK_ARBEIDSPERIODER_GET_SUCCESS:
     case types.ARBEIDSPERIODER_GET_SUCCESS:
-    case types.SAK_ARBEIDSPERIODER_GET_FAILURE:
     case types.ARBEIDSPERIODER_GET_FAILURE:
       return {
         ...state,

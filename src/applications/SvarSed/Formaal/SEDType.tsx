@@ -22,7 +22,7 @@ import { Option } from 'declarations/app.d'
 
 interface SEDTypeSelector {
   highContrast: boolean
-  replySed: ReplySed | undefined
+  replySed: ReplySed | null | undefined
   validation: Validation
 }
 

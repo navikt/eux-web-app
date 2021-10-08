@@ -15,7 +15,7 @@ import SEDDetailsView from './SEDDetailsView'
 const SEDDetails = () => {
   const { t } = useTranslation()
   const [isEditing, setIsEditing] = useState<boolean>(false)
-  const replySed: ReplySed | undefined = useSelector((state: State): ReplySed | undefined => (state.svarpased.replySed))
+  const replySed: ReplySed | null | undefined = useSelector((state: State): ReplySed | null |undefined => (state.svarpased.replySed))
 
   const toggleEditing = (e: React.ChangeEvent<HTMLButtonElement>) => {
     if (!isEditing) {

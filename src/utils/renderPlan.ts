@@ -17,7 +17,7 @@ type Plan<T> = Array<PlanItem<T>>
 
 export interface RenderPlanProps<T> {
   perioder: Array<T> | undefined
-  arbeidsperioder: Arbeidsperioder | undefined
+  arbeidsperioder: Arbeidsperioder | null | undefined
   addedArbeidsperioder: Array<PeriodeMedForsikring>
 }
 

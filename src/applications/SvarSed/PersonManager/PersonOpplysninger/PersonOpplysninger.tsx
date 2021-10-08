@@ -42,7 +42,7 @@ import { validatePin, ValidationPinProps } from './validation'
 interface PersonOpplysningerSelector extends PersonManagerFormSelector {
   landkoderList: Array<Kodeverk> | undefined
   searchingPerson: boolean
-  searchedPerson: Person | undefined
+  searchedPerson: Person | null | undefined
 }
 
 const mapState = (state: State): PersonOpplysningerSelector => ({

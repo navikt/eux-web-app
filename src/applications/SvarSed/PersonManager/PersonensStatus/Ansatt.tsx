@@ -39,7 +39,7 @@ import makeRenderPlan, { PlanItem, RenderPlanProps } from 'utils/renderPlan'
 import { validateAnsattPeriode, ValidationArbeidsperiodeProps } from './ansattValidation'
 
 interface AnsattSelector extends PersonManagerFormSelector {
-  arbeidsperioder: Arbeidsperioder | undefined
+  arbeidsperioder: Arbeidsperioder | null | undefined
 }
 
 const mapState = (state: State): AnsattSelector => ({

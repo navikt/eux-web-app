@@ -38,7 +38,7 @@ export interface TPSPersonFormProps {
   onTPSPersonAddedFailure: () => void
   onTPSPersonAddedSuccess: (e: any) => void
   person: Person
-  personRelatert: Person | undefined
+  personRelatert: Person | null | undefined
   rolleList: Array<Kodeverk>
 }
 

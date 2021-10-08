@@ -16,7 +16,7 @@ interface FormaalProps {
 
 interface FormaalSelector {
   highContrast: boolean
-  replySed: ReplySed | undefined
+  replySed: ReplySed | null | undefined
   validation: Validation
 }
 

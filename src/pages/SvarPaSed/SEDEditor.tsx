@@ -57,7 +57,7 @@ export interface SEDEditorSelector {
   highContrast: boolean
   mode: SvarPaSedMode,
   previewFile: any,
-  replySed: ReplySed | undefined
+  replySed: ReplySed | null | undefined
   currentEntry: LocalStorageEntry<ReplySed> | undefined
   savingSed: boolean
   sendingSed: boolean

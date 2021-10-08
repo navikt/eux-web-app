@@ -2,7 +2,7 @@ import * as types from 'constants/actionTypes'
 import {
   SavingAttachmentsJob,
   JoarkPoster,
-  JoarkBrowserItem
+  JoarkBrowserItem, JoarkBrowserItems
 } from 'declarations/attachments'
 import { ActionWithPayload } from 'js-fetch-api'
 import _ from 'lodash'
@@ -19,7 +19,7 @@ export const initialJoarkState: JoarkState = {
   savingAttachmentsJob: undefined
 }
 
-const joarkReducer = (state: JoarkState = initialJoarkState, action: ActionWithPayload = { type: '', payload: '' }) => {
+const joarkReducer = (state: JoarkState = initialJoarkState, action: ActionWithPayload = { type: '', payload: '' }): JoarkState => {
   switch (action.type) {
     case types.JOARK_LIST_SUCCESS:
       return {
@@ -59,12 +59,13 @@ const joarkReducer = (state: JoarkState = initialJoarkState, action: ActionWithP
           item.variant === newlySavedJoarkBrowserItem.variant
       })
       newlySavedJoarkBrowserItem.type = 'sednew'
-      const newSaved = state.savingAttachmentsJob?.saved.concat(newlySavedJoarkBrowserItem)
+
+      const newSaved: JoarkBrowserItems = state.savingAttachmentsJob!.saved.concat(newlySavedJoarkBrowserItem)
 
       return {
         ...state,
         savingAttachmentsJob: {
-          ...state.savingAttachmentsJob,
+          total: state.savingAttachmentsJob!.total,
           saving: undefined,
           saved: newSaved,
           remaining: newRemaining
@@ -85,15 +86,11 @@ const joarkReducer = (state: JoarkState = initialJoarkState, action: ActionWithP
       }
 
     case types.ATTACHMENT_SEND_REQUEST:
+      let newSavingAttachmentsJob = _.cloneDeep(state.savingAttachmentsJob)
+      newSavingAttachmentsJob!.saving = action.context.joarkBrowserItem
       return {
         ...state,
-        attachmentsError: false,
-        savingAttachmentsJob: {
-          ...state.savingAttachmentsJob,
-          saving: {
-            foo: 'bar'
-          }
-        }
+        savingAttachmentsJob: newSavingAttachmentsJob
       }
 
     case types.ATTACHMENT_RESET: {

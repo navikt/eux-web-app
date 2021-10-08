@@ -35,7 +35,7 @@ import { getIdx } from 'utils/namespace'
 import { validatePeriodeAnnen, ValidationPeriodeAnnenProps } from './validationPeriodeAnnen'
 
 export interface ArbeidsforholdAnnenSelector extends PersonManagerFormSelector {
-  replySed: ReplySed | undefined
+  replySed: ReplySed | null | undefined
   validation: Validation
 }
 

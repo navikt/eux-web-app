@@ -40,7 +40,7 @@ export interface AbroadPersonFormProps {
   existingFamilyRelationships: Array<OldFamilieRelasjon>
   onAbroadPersonAddedFailure: () => void
   onAbroadPersonAddedSuccess: (r: OldFamilieRelasjon) => void
-  person: Person | undefined
+  person: Person | null | undefined
 }
 
 const mapState = (state: State): AbroadPersonFormSelector => ({

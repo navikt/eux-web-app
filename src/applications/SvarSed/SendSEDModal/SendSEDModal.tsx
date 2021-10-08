@@ -65,7 +65,7 @@ interface SendSEDSelector {
   alertMessage: string | undefined
   alertType: string | undefined
   creatingSvarPaSed: boolean
-  replySed: ReplySed | undefined
+  replySed: ReplySed | null | undefined
   sedCreatedResponse: CreateSedResponse | null | undefined
   sedSendResponse: any | null | undefined
   sendingSed: boolean

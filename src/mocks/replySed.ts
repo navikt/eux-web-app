@@ -14,7 +14,7 @@ const seds: {[k in SedTypes]: ReplySed} = {
   H002: <H002Sed>h002
 }
 
-const getReplySed = (sedType: string): ReplySed | undefined => Object.prototype.hasOwnProperty.call(seds, sedType)
+const getReplySed = (sedType: string): ReplySed | null | undefined => Object.prototype.hasOwnProperty.call(seds, sedType)
   ? seds[sedType as SedTypes]
   : undefined
 

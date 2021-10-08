@@ -35,7 +35,7 @@ import { getIdx } from 'utils/namespace'
 import { validatePeriodeUtenForsikring, ValidationPeriodeUtenForsikringProps } from './validationPeriodeUtenForsikring'
 
 export interface ArbeidsforholdUtenForsikringSelector extends PersonManagerFormSelector {
-  replySed: ReplySed | undefined
+  replySed: ReplySed | null | undefined
   validation: Validation
 }
 

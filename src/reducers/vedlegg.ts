@@ -20,7 +20,7 @@ export const initialVedleggState: VedleggState = {
   dokument: undefined
 }
 
-const vedleggReducer = (state: VedleggState = initialVedleggState, action: ActionWithPayload = { type: '', payload: undefined }) => {
+const vedleggReducer = (state: VedleggState = initialVedleggState, action: ActionWithPayload = { type: '', payload: undefined }): VedleggState => {
   switch (action.type) {
     case types.VEDLEGG_POST_SUCCESS:
       return {

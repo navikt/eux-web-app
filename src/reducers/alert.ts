@@ -21,7 +21,7 @@ export const initialAlertState: AlertState = {
   type: undefined
 }
 
-const alertReducer = (state: AlertState = initialAlertState, action: Action | ActionWithPayload = { type: '' }) => {
+const alertReducer = (state: AlertState = initialAlertState, action: Action | ActionWithPayload = { type: '' }): AlertState => {
   let clientErrorMessage: string | undefined, serverErrorMessage: string, clientErrorStatus: string
 
   if (

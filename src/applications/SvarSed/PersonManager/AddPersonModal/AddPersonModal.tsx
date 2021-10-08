@@ -82,7 +82,7 @@ interface AddPersonModalProps {
 
 interface AddPersonModalSelector {
   highContrast: boolean
-  replySed: ReplySed | undefined
+  replySed: ReplySed | null | undefined
 }
 
 const mapState = (state: State): AddPersonModalSelector => ({

@@ -11,7 +11,7 @@ export const initialValidationState: ValidationState = {
   status: {}
 }
 
-const validationReducer = (state: ValidationState = initialValidationState, action: ActionWithPayload = { type: '', payload: undefined }) => {
+const validationReducer = (state: ValidationState = initialValidationState, action: ActionWithPayload = { type: '', payload: undefined }): ValidationState => {
   switch (action.type) {
     case types.APP_CLEAN_DATA:
       return initialValidationState

@@ -40,11 +40,11 @@ import makeRenderPlan, { PlanItem } from 'utils/renderPlan'
 import { validatePeriodeMedForsikring, ValidationPeriodeMedForsikringProps } from './validationPeriodeMedForsikring'
 
 export interface ArbeidsforholdMedForsikringSelector extends PersonManagerFormSelector {
-  arbeidsperioder: Arbeidsperioder | undefined
+  arbeidsperioder: Arbeidsperioder | null | undefined
   gettingArbeidsperioder: boolean
   inntekter: IInntekter | undefined
   gettingInntekter: boolean
-  replySed: ReplySed | undefined
+  replySed: ReplySed | null |undefined
   validation: Validation
   highContrast: boolean
 }

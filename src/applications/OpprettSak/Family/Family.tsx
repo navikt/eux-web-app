@@ -33,8 +33,8 @@ export interface FamilyProps {
   onSearchFnr: (sok: any) => void
   onTPSPersonAddedFailure: () => void
   onTPSPersonAddedSuccess: (e: any) => void
-  person: Person | undefined
-  personRelatert: Person | undefined
+  person: Person | null | undefined
+  personRelatert: Person | null | undefined
   TPSPersonFormAlertTypesWatched: Array<string> | undefined
   valgteFamilieRelasjoner: Array<OldFamilieRelasjon> | undefined
 }

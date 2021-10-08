@@ -182,7 +182,7 @@ const MenuLabelText = styled(Normaltekst)`
 `
 
 export interface PersonManagerFormSelector {
-  replySed: ReplySed | undefined
+  replySed: ReplySed | null | undefined
   validation: Validation
 }
 

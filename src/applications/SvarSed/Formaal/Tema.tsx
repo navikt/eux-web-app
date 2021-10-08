@@ -18,7 +18,7 @@ import { getFnr } from 'utils/fnr'
 
 interface TemaSelector {
   highContrast: boolean
-  replySed: ReplySed | undefined
+  replySed: ReplySed | null | undefined
   validation: Validation
   gettingFagsaker: boolean
   fagsaker: FagSaker | null | undefined

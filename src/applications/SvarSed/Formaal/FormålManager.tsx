@@ -131,7 +131,7 @@ const MenuLabelText = styled(Normaltekst)`
 `
 
 export interface FormålManagerFormSelector {
-  replySed: ReplySed | undefined
+  replySed: ReplySed | null | undefined
   validation: Validation
   viewValidation: boolean
 }

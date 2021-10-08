@@ -14,7 +14,7 @@ export interface SvarpasedState {
   personRelatert: any
   previewFile: any
   previousParentSed: string | undefined
-  replySed: ReplySed | undefined
+  replySed: ReplySed | null | undefined
   seds: Seds | undefined
   sedCreatedResponse: CreateSedResponse | null | undefined
   sedSendResponse: any | null | undefined
@@ -36,7 +36,7 @@ export const initialSvarpasedState: SvarpasedState = {
 const svarpasedReducer = (
   state: SvarpasedState = initialSvarpasedState,
   action: Action | ActionWithPayload = { type: '', payload: undefined }
-) => {
+): SvarpasedState => {
   switch (action.type) {
     case types.SVARPASED_FAGSAKER_RESET:
     case types.SVARPASED_FAGSAKER_GET_REQUEST:
@@ -182,7 +182,7 @@ const svarpasedReducer = (
       }
 
     case types.SVARPASED_REPLYSED_UPDATE: {
-      let newReplySed: ReplySed | undefined = _.cloneDeep(state.replySed)
+      let newReplySed: ReplySed | null | undefined = _.cloneDeep(state.replySed)
       if (!newReplySed) {
         newReplySed = {} as ReplySed
       }

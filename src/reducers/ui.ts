@@ -4,7 +4,7 @@ import { ActionWithPayload } from 'js-fetch-api'
 import { Action } from 'redux'
 
 export interface UiState {
-  highContrast: false,
+  highContrast: boolean
   modal: ModalContent | undefined
 }
 
@@ -13,7 +13,7 @@ export const initialUiState: UiState = {
   modal: undefined
 }
 
-const uiReducer = (state: UiState = initialUiState, action: Action | ActionWithPayload = { type: '' }) => {
+const uiReducer = (state: UiState = initialUiState, action: Action | ActionWithPayload = { type: '' }): UiState => {
   switch (action.type) {
     case types.UI_MODAL_SET:
       return {
@@ -29,7 +29,6 @@ const uiReducer = (state: UiState = initialUiState, action: Action | ActionWithP
       }
 
     default:
-
       return state
   }
 }

@@ -21,7 +21,7 @@ export const initialLocalStorageState: LocalStorageState = {
 const localStorageReducer = (
   state: LocalStorageState = initialLocalStorageState,
   action: Action = { type: '' }
-) => {
+): LocalStorageState => {
   switch (action.type) {
     case types.LOCALSTORAGE_ENTRIES_LOAD: {
       const items: string | null = window.localStorage.getItem((action as ActionWithPayload).payload.key)

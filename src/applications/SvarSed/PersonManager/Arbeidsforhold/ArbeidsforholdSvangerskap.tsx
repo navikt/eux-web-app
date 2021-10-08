@@ -34,7 +34,7 @@ import { getIdx } from 'utils/namespace'
 import { validatePeriodeSvangerskap, ValidationPeriodeSvangerskapProps } from './validationPeriodeSvangerskap'
 
 export interface ArbeidsforholdSvangerskapSelector extends PersonManagerFormSelector {
-  replySed: ReplySed | undefined
+  replySed: ReplySed | null | undefined
   validation: Validation
 }
 

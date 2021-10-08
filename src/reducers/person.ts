@@ -3,8 +3,8 @@ import { Person } from 'declarations/types.d'
 import { ActionWithPayload } from 'js-fetch-api'
 
 export interface PersonState {
-  person: Person | undefined
-  personRelatert: Person | undefined
+  person: Person | null | undefined
+  personRelatert: Person | null | undefined
 }
 
 export const initialPersonState: PersonState = {
@@ -12,7 +12,10 @@ export const initialPersonState: PersonState = {
   personRelatert: undefined
 }
 
-const personReducer = (state: PersonState = initialPersonState, action: ActionWithPayload = { type: '', payload: undefined }) => {
+const personReducer = (
+  state: PersonState = initialPersonState,
+  action: ActionWithPayload = { type: '', payload: undefined }
+): PersonState => {
   switch (action.type) {
     case types.APP_CLEAN_DATA:
       return initialPersonState

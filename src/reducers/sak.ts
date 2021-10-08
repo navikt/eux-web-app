@@ -22,8 +22,8 @@ export interface SakState {
   institusjonList: Array<Institusjon> | undefined
   landkode: string | undefined
   opprettetSak: OpprettetSak | undefined
-  person: Person | undefined
-  personRelatert: OldFamilieRelasjon | undefined
+  person: Person | null | undefined
+  personRelatert: OldFamilieRelasjon | null | undefined
   saksId: any
   sektor: any
   sedtype: any
@@ -51,7 +51,7 @@ export const initialSakState: SakState = {
   unit: undefined
 }
 
-const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload = { type: '', payload: undefined }) => {
+const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload = { type: '', payload: undefined }): SakState => {
   switch (action.type) {
 
     case types.SAK_FAGSAKER_RESET:
@@ -82,7 +82,7 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
     case types.SAK_LANDKODER_GET_SUCCESS:
       return {
         ...state,
-        landkoder: action.payload
+        landkode: action.payload
       }
 
     case types.SAK_PERSON_GET_FAILURE:

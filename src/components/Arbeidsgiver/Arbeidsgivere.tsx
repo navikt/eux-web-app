@@ -10,7 +10,7 @@ import { arbeidsgiverToPeriodeMedForsikring } from 'utils/arbeidsgiver'
 import ArbeidsgiverBox, { Editable } from './ArbeidsgiverBox'
 
 export interface ArbeidsgivereProps {
-  arbeidsperioder: Arbeidsperioder | undefined
+  arbeidsperioder: Arbeidsperioder | null | undefined
   editable?: Editable
   fnr: string | undefined
   namespace: string

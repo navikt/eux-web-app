@@ -78,7 +78,7 @@ export interface OpprettSakSelector {
   gettingPerson: boolean
   gettingArbeidsperioder: boolean
 
-  arbeidsperioder: Arbeidsperioder | undefined
+  arbeidsperioder: Arbeidsperioder | null | undefined
   buctyper: BucTyper | undefined
   fagsaker: FagSaker | undefined | null
   familierelasjonKodeverk: Array<Kodeverk> | undefined
@@ -86,8 +86,8 @@ export interface OpprettSakSelector {
   institusjoner: Array<Institusjon> | undefined
   landkoder: Array<Kodeverk> | undefined
   opprettetSak: OpprettetSak | undefined
-  person: Person | undefined
-  personRelatert: Person | undefined
+  person: Person | null | undefined
+  personRelatert: Person | null | undefined
   sedtyper: Array<Kodeverk> | undefined
   sektor: Array<Kodeverk> | undefined
   tema: Tema | undefined

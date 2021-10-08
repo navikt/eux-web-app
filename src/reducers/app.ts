@@ -12,6 +12,9 @@ export interface AppState {
   serverinfo: ServerInfo | undefined
   expirationTime: Date | undefined
 
+  navn: string | undefined
+  brukernavn: string | undefined
+
   familierelasjoner: Array<Kodeverk> | undefined
   kjoenn: Array<Kodeverk> | undefined
   landkoder: Array<Kodeverk> | undefined
@@ -22,6 +25,7 @@ export interface AppState {
 
   params: Params
   featureToggles: FeatureToggles
+
 }
 
 export const initialAppState: AppState = {
@@ -40,11 +44,14 @@ export const initialAppState: AppState = {
   tema: undefined,
   kodemaps: undefined,
 
+  brukernavn: undefined,
+  navn: undefined,
+
   params: {},
   featureToggles: {}
 }
 
-const appReducer = (state: AppState = initialAppState, action: ActionWithPayload = { type: '', payload: undefined }) => {
+const appReducer = (state: AppState = initialAppState, action: ActionWithPayload = { type: '', payload: undefined }): AppState => {
   let newParams: Params
 
   switch (action.type) {
@@ -104,7 +111,7 @@ const appReducer = (state: AppState = initialAppState, action: ActionWithPayload
 
     case types.APP_LOGMEAGAIN_SUCCESS:
       window.location.href = action.payload.Location
-      return
+      return state
 
     case types.APP_PRELOAD:
       return {

@@ -30,7 +30,7 @@ import { getIdx } from 'utils/namespace'
 import { validatePeriodeSimple, ValidationPeriodeSimpleProps } from './validationPeriodeSimple'
 
 export interface ArbeidsforholdSimpleSelector extends PersonManagerFormSelector {
-  replySed: ReplySed | undefined
+  replySed: ReplySed | null | undefined
   validation: Validation
 }
 

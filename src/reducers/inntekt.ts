@@ -3,7 +3,7 @@ import { IInntekter } from 'declarations/types.d'
 import { ActionWithPayload } from 'js-fetch-api'
 
 export interface InntektState {
-  inntekter: IInntekter | undefined
+  inntekter: IInntekter | null | undefined
   fra: string | undefined
   til: string | undefined
 }
@@ -14,7 +14,7 @@ export const initialInntektState: InntektState = {
   til: undefined
 }
 
-const inntektReducer = (state: InntektState = initialInntektState, action: ActionWithPayload = { type: '', payload: undefined }) => {
+const inntektReducer = (state: InntektState = initialInntektState, action: ActionWithPayload = { type: '', payload: undefined }): InntektState => {
   switch (action.type) {
     case types.APP_CLEAN_DATA:
       return initialInntektState
