@@ -13,12 +13,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
-export interface KravOmRefusjonProps extends FormålManagerFormSelector {
-  highContrast: boolean
-}
-
-const mapState = (state: State): KravOmRefusjonProps => ({
-  highContrast: state.ui.highContrast,
+const mapState = (state: State): FormålManagerFormSelector => ({
   replySed: state.svarpased.replySed,
   validation: state.validation.status,
   viewValidation: state.validation.view
@@ -104,7 +99,7 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
       <VerticalSeparatorDiv />
       <AlignStartRow
         className={classNames('slideInFromLeft')}
-        style={{ animationDelay: '0.1s' }}
+        style={{ animationDelay: '0.05s' }}
       >
         <Column>
           <Input
@@ -131,11 +126,11 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow
         className={classNames('slideInFromLeft')}
-        style={{ animationDelay: '0.2s' }}
+        style={{ animationDelay: '0.1s' }}
       >
         <Column>
           <HighContrastRadioPanelGroup
-            checked={utbetalingTilInstitusjon.kontoOrdinaer.sepaKonto}
+            checked={utbetalingTilInstitusjon?.kontoOrdinaer?.sepaKonto}
             data-no-border
             data-test-id={namespace + '-kontoOrdinaer-sepaKonto'}
             feil={validation[namespace + '-kontoOrdinaer-sepaKonto']?.feilmelding}
@@ -153,7 +148,7 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
       <VerticalSeparatorDiv />
       <AlignStartRow
         className={classNames('slideInFromLeft')}
-        style={{ animationDelay: '0.3s' }}
+        style={{ animationDelay: '0.15s' }}
       >
         <Column flex='2'>
           <Input
@@ -170,7 +165,7 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
       <VerticalSeparatorDiv />
       <AlignStartRow
         className={classNames('slideInFromLeft')}
-        style={{ animationDelay: '0.4s' }}
+        style={{ animationDelay: '0.2s' }}
       >
         <Column flex='2'>
           <Input

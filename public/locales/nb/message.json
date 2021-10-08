@@ -1,6 +1,7 @@
 {
   "error-fnr-is-user": "FNR {{sok}} tilhører bruker",
   "error-abroadperson-exists": "Du kan ikke legge til samme person flere ganger",
+  "error-header": "Feilmeldingsdetaljer. Vennligst del denne informasjonen til utvikleren",
   "error-tpsperson-exists": "Du kan ikke legge til samme person flere ganger",
   "error-noDocumentFound": "Ingen dokumenter funnet",
   "error-no-fnr": "Ingen fnr i personen, derfor kan ikke fortsette",

@@ -38,7 +38,7 @@ describe('actions/validation', () => {
     const generatedResult = validationActions.viewValidation()
     expect(generatedResult)
       .toMatchObject({
-        type: types.SVARPASED_REPLYSED_UPDATE
+        type: types.VALIDATION_VIEW
       })
   })
 })

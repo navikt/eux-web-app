@@ -4,11 +4,10 @@ import {
   OldFamilieRelasjon,
   Institusjoner,
   Kodeverk,
-  Person, Arbeidsperioder
+  Person
 } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockSendSak from 'mocks/sendSak'
-import mockArbeidsperioder from 'mocks/arbeidsperioder'
 import mockFagsakerList from 'mocks/fagsakerList'
 import { mockInstitusjon, mockLandkode } from 'mocks/institutionList'
 import mockPerson from 'mocks/person'
@@ -77,20 +76,6 @@ export const createSak: ActionCreator<ThunkResult<ActionWithPayload<any>>> = (
       request: types.SAK_SEND_REQUEST,
       success: types.SAK_SEND_SUCCESS,
       failure: types.SAK_SEND_FAILURE
-    }
-  })
-}
-
-export const getArbeidsperioder: ActionCreator<ThunkResult<ActionWithPayload<Arbeidsperioder>>> = (
-  fnr: string
-): ThunkResult<ActionWithPayload<Arbeidsperioder>> => {
-  return call({
-    url: sprintf(urls.API_ARBEIDSPERIODER_QUERY_URL, { fnr: fnr }),
-    expectedPayload: mockArbeidsperioder,
-    type: {
-      request: types.SAK_ARBEIDSPERIODER_GET_REQUEST,
-      success: types.SAK_ARBEIDSPERIODER_GET_SUCCESS,
-      failure: types.SAK_ARBEIDSPERIODER_GET_FAILURE
     }
   })
 }

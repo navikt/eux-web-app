@@ -6,9 +6,9 @@ import EKV from 'eessi-kodeverk'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockEnhet from 'mocks/enhet'
 import mockReautorisering from 'mocks/reautorisering'
+import mockSaksbehandler from 'mocks/saksbehandler'
 import mockServerInfo from 'mocks/serverinfo'
 import mockUtgaarDato from 'mocks/utgaarDato'
-import mockSaksbehandler from 'mocks/saksbehandler'
 import { Action, ActionCreator } from 'redux'
 
 export const cleanData: ActionCreator<Action> = (): Action => ({

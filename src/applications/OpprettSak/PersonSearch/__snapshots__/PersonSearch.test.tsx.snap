@@ -1,76 +1,72 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`components/PersonSearch/PersonSearch Render: match snapshot 1`] = `
-.c10 {
+.c3 {
+  -webkit-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+  background-color: inherit !important;
+  color: !important;
+  border-color: !important;
+}
+
+.c3:hover:not(:disabled) {
+  background-color: !important;
+  color: !important;
+}
+
+.c3:hover:not(:disabled) svg {
+  color: !important;
+}
+
+.c3:hover:not(:disabled) svg path {
+  stroke: !important;
+}
+
+.c3:disabled {
+  color: !important;
+  background-color: !important;
+  border-color: !important;
+}
+
+.c3:disabled svg {
+  color: !important;
+}
+
+.c3:disabled svg path {
+  stroke: !important;
+}
+
+.c3:disabled .knapp__spinner {
+  border: 2px solid !important;
+  border-top-color: !important;
+  border-right-color: !important;
+}
+
+.c3 .knapp__spinner {
+  border: 2px solid !important;
+  border-left-color: !important;
+  border-bottom-color: !important;
+}
+
+.c3:not(:disabled) svg {
+  color: !important;
+}
+
+.c3:not(:disabled) svg path {
+  stroke: !important;
+}
+
+.c9 {
   display: inline-block;
   margin-left: 1rem;
 }
 
-.c5 {
-  opacity: 0;
-  -webkit-animation: jIkTRE 0.5s forwards;
-  animation: jIkTRE 0.5s forwards;
-  position: relative;
+.c11 {
+  display: inline-block;
+  margin-left: 0.5rem;
 }
 
-.c5 .alertstripe__tekst {
-  -webkit-flex: auto !important;
-  -ms-flex: auto !important;
-  flex: auto !important;
-  margin: auto 0;
-  max-width: 100vw;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-}
-
-.c5 .fixed {
-  position: fixed;
-  top: 0.25rem;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  -ms-transform: translateX(-50%);
-  transform: translateX(-50%);
-  z-index: 10;
-}
-
-.c5 .closeIcon {
-  position: absolute;
-  top: 0.25rem;
-  right: 0.25rem;
-  cursor: pointer;
-}
-
-.c5 .type-server {
-  border-radius: 0px !important;
-  border: 0px !important;
-}
-
-.c5 .type-server .alertstripe__tekst {
-  display: -webkit-box !important;
-  display: -webkit-flex !important;
-  display: -ms-flexbox !important;
-  display: flex !important;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  max-width: none !important;
-}
-
-.c6 {
-  position: absolute;
-  top: 0.25rem;
-  right: 0.25rem;
-  cursor: pointer;
-}
-
-.c8 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -88,7 +84,7 @@ exports[`components/PersonSearch/PersonSearch Render: match snapshot 1`] = `
   align-items: center;
 }
 
-.c7 {
+.c6 {
   border: 1px solid lightgray;
   background: transparent;
   margin-top: 1.5rem;
@@ -98,26 +94,26 @@ exports[`components/PersonSearch/PersonSearch Render: match snapshot 1`] = `
   border-radius: 5px;
 }
 
-.c7.personNotSelected {
+.c6.personNotSelected {
   border: 3px solid red;
 }
 
-.c7.personSelected {
+.c6.personSelected {
   border: 3px solid green;
 }
 
-.c7.neutral {
+.c6.neutral {
   background: white;
 }
 
-.c9 {
+.c8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.c11 {
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -148,11 +144,9 @@ exports[`components/PersonSearch/PersonSearch Render: match snapshot 1`] = `
   align-self: center;
 }
 
-.c4 {
+.c5 {
   margin: 0.5rem;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  width: 50%;
+  min-width: 50%;
 }
 
 .c0 {
@@ -173,7 +167,7 @@ exports[`components/PersonSearch/PersonSearch Render: match snapshot 1`] = `
   min-width: 24.5em;
 }
 
-.c3 {
+.c4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -281,14 +275,14 @@ exports[`components/PersonSearch/PersonSearch Render: match snapshot 1`] = `
           className="c1"
         >
           <Styled(Input)
-            label="label:searchUser"
+            label="label:søker"
             onChange={[Function]}
             value="12345678901"
           >
             <Input
               bredde="fullbredde"
               className="c2"
-              label="label:searchUser"
+              label="label:søker"
               onChange={[Function]}
               value="12345678901"
             >
@@ -296,19 +290,19 @@ exports[`components/PersonSearch/PersonSearch Render: match snapshot 1`] = `
                 className="skjemaelement c2"
               >
                 <Label
-                  htmlFor="663813830-23974-0979-03975-3605092879187"
+                  htmlFor="520000248-02443-4985-4868-9077671400106"
                 >
                   <label
                     className="skjemaelement__label"
-                    htmlFor="663813830-23974-0979-03975-3605092879187"
+                    htmlFor="520000248-02443-4985-4868-9077671400106"
                   >
-                    label:searchUser
+                    label:søker
                   </label>
                 </Label>
                 <input
                   aria-invalid={false}
                   className="skjemaelement__input input--fullbredde"
-                  id="663813830-23974-0979-03975-3605092879187"
+                  id="520000248-02443-4985-4868-9077671400106"
                   onChange={[Function]}
                   type="text"
                   value="12345678901"
@@ -316,18 +310,18 @@ exports[`components/PersonSearch/PersonSearch Render: match snapshot 1`] = `
               </div>
             </Input>
           </Styled(Input)>
-          <Styled(Knapp)
+          <Styled(Styled(u))
             disabled={false}
             onClick={[Function]}
           >
-            <Knapp
-              className="c3"
+            <u
+              className="c3 c4"
               disabled={false}
               onClick={[Function]}
             >
-              <KnappBase
+              <p
                 autoDisableVedSpinner={false}
-                className="c3"
+                className="c3 c4"
                 disabled={false}
                 htmlType="submit"
                 inaktivKlasseVedDisabled={false}
@@ -338,140 +332,93 @@ exports[`components/PersonSearch/PersonSearch Render: match snapshot 1`] = `
                 type="standard"
               >
                 <button
-                  className="knapp c3 knapp--standard"
+                  className="knapp c3 c4 knapp--standard"
                   disabled={false}
                   onClick={[Function]}
                   type="submit"
                 >
-                  label:search
+                  el:button-search
                 </button>
-              </KnappBase>
-            </Knapp>
-          </Styled(Knapp)>
+              </p>
+            </u>
+          </Styled(Styled(u))>
         </div>
       </styled.div>
       <styled.div>
         <div
-          className="c4"
+          className="c5"
         >
-          <Alert
-            fixed={false}
-            message="message"
-            onClose={[MockFunction]}
-            status="ERROR"
-            type="client"
+          <AlertStripe
+            form="default"
+            size="1.5em"
+            type="advarsel"
           >
-            <Styled(AlertStripe)
-              className="type-client status-ERROR"
-              role="alert"
-              type="feil"
+            <div
+              className="alertstripe alertstripe--advarsel"
             >
-              <AlertStripe
-                className="c5 type-client status-ERROR"
-                form="default"
-                role="alert"
-                size="1.5em"
-                type="feil"
+              <span
+                className="alertstripe__ikon"
               >
-                <div
-                  className="alertstripe c5 type-client status-ERROR alertstripe--feil"
-                  role="alert"
+                <span
+                  className="sr-only"
                 >
-                  <span
-                    className="alertstripe__ikon"
+                  advarsel
+                </span>
+                <Icon
+                  aria-label="advarsel-ikon"
+                  kind="advarsel-sirkel-fyll"
+                  role="img"
+                  size="1.5em"
+                >
+                  <svg
+                    aria-label="advarsel-ikon"
+                    focusable="false"
+                    height="1.5em"
+                    kind="advarsel-sirkel-fyll"
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width="1.5em"
                   >
-                    <span
-                      className="sr-only"
+                    <g
+                      fill="none"
+                      fillRule="evenodd"
                     >
-                      feil
-                    </span>
-                    <Icon
-                      aria-label="feil-ikon"
-                      kind="feil-sirkel-fyll"
-                      role="img"
-                      size="1.5em"
-                    >
-                      <svg
-                        aria-label="feil-ikon"
-                        focusable="false"
-                        height="1.5em"
-                        kind="feil-sirkel-fyll"
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width="1.5em"
-                      >
-                        <g
-                          fill="none"
-                          fillRule="evenodd"
-                        >
-                          <path
-                            d="M11.999 0C5.395 0 .013 5.372 0 11.976a11.923 11.923 0 0 0 3.498 8.493A11.925 11.925 0 0 0 11.977 24H12c6.603 0 11.986-5.373 12-11.978C24.013 5.406 18.64.012 11.999 0z"
-                            fill="#A13A28"
-                            fillRule="nonzero"
-                          />
-                          <path
-                            d="M12 10.651l3.372-3.372a.954.954 0 1 1 1.349 1.35L13.349 12l3.372 3.372a.954.954 0 1 1-1.35 1.349L12 13.349 8.628 16.72a.954.954 0 1 1-1.349-1.35L10.651 12 7.28 8.628A.954.954 0 1 1 8.63 7.28L12 10.651z"
-                            fill="#FFF"
-                            fillRule="nonzero"
-                          />
-                        </g>
-                      </svg>
-                    </Icon>
-                  </span>
-                  <Normaltekst
-                    className="alertstripe__tekst"
-                    tag="div"
+                      <path
+                        d="M12.205-.004l-.214.002a12.225 12.225 0 0 0-8.517 3.659C1.179 5.977-.053 9.013.002 12.208c.115 6.613 5.296 11.793 11.795 11.793l.212-.002c6.726-.116 12.105-5.595 11.99-12.21C23.883 5.178 18.702-.003 12.204-.003z"
+                        fill="#FFA733"
+                        fillRule="nonzero"
+                      />
+                      <path
+                        d="M12.027 19H12A1.499 1.499 0 0 1 11.973 16L12 16a1.501 1.501 0 0 1 .027 3z"
+                        fill="#262626"
+                      />
+                      <path
+                        d="M12 5a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V6a1 1 0 0 1 1-1z"
+                        fill="#262626"
+                        fillRule="nonzero"
+                      />
+                    </g>
+                  </svg>
+                </Icon>
+              </span>
+              <Normaltekst
+                className="alertstripe__tekst"
+                tag="div"
+              >
+                <TypografiBase
+                  className="alertstripe__tekst"
+                  tag="div"
+                  type="normaltekst"
+                >
+                  <div
+                    className="typo-normal alertstripe__tekst"
                   >
-                    <TypografiBase
-                      className="alertstripe__tekst"
-                      tag="div"
-                      type="normaltekst"
-                    >
-                      <div
-                        className="typo-normal alertstripe__tekst"
-                      >
-                        message
-                        <Styled(_default)
-                          data-test-id="c-alert__close-icon"
-                          onClick={[Function]}
-                        >
-                          <_default
-                            className="c6"
-                            data-test-id="c-alert__close-icon"
-                            onClick={[Function]}
-                          >
-                            <svg
-                              className="c6"
-                              contentScriptType="text/ecmascript"
-                              contentStyleType="text/css"
-                              data-test-id="c-alert__close-icon"
-                              enableBackground="new 0 0 24 24"
-                              height={24}
-                              id="Filled_Version"
-                              onClick={[Function]}
-                              preserveAspectRatio="xMidYMid meet"
-                              version="1.1"
-                              viewBox="0 0 24 24"
-                              width={24}
-                              x="0px"
-                              xmlns="http://www.w3.org/2000/svg"
-                              y="0px"
-                              zoomAndPan="magnify"
-                            >
-                              <path
-                                d="M11.499,0C5.17,0,0.012,5.148,0,11.477c-0.006,3.072,1.184,5.962,3.352,8.139c2.168,2.176,5.054,3.378,8.126,3.384H11.5  c6.328,0,11.487-5.149,11.5-11.479C23.012,5.181,17.863,0.012,11.499,0z M11.5,22.5L11.5,22.5L11.5,22.5L11.5,22.5z M16.088,15.398  c0.194,0.195,0.193,0.512-0.002,0.707c-0.098,0.098-0.225,0.146-0.353,0.146c-0.127,0-0.256-0.049-0.354-0.146l-3.882-3.898  l-3.896,3.882c-0.098,0.098-0.226,0.146-0.354,0.146c-0.128,0-0.255-0.049-0.353-0.146c-0.195-0.196-0.195-0.513,0.001-0.707  l3.897-3.882L6.91,7.602C6.715,7.406,6.716,7.09,6.912,6.896C7.107,6.699,7.424,6.7,7.619,6.897l3.881,3.897l3.896-3.881  c0.195-0.195,0.513-0.195,0.707,0.001c0.195,0.195,0.195,0.512-0.001,0.707l-3.896,3.882L16.088,15.398z"
-                                fill="#3e3832"
-                              />
-                            </svg>
-                          </_default>
-                        </Styled(_default)>
-                      </div>
-                    </TypografiBase>
-                  </Normaltekst>
-                </div>
-              </AlertStripe>
-            </Styled(AlertStripe)>
-          </Alert>
+                    message
+                  </div>
+                </TypografiBase>
+              </Normaltekst>
+            </div>
+          </AlertStripe>
         </div>
       </styled.div>
       <PersonCard
@@ -510,18 +457,18 @@ exports[`components/PersonSearch/PersonSearch Render: match snapshot 1`] = `
         >
           <Panel
             border={false}
-            className="c7 neutral"
+            className="c6 neutral"
           >
             <div
-              className="panel c7 neutral"
+              className="panel c6 neutral"
             >
               <styled.div>
                 <div
-                  className="c8"
+                  className="c7"
                 >
                   <styled.div>
                     <div
-                      className="c9"
+                      className="c8"
                     >
                       <img
                         alt="nav-man-icon"
@@ -531,7 +478,7 @@ exports[`components/PersonSearch/PersonSearch Render: match snapshot 1`] = `
                       />
                       <styled.div>
                         <div
-                          className="c10"
+                          className="c9"
                         />
                       </styled.div>
                       <div
@@ -556,40 +503,50 @@ exports[`components/PersonSearch/PersonSearch Render: match snapshot 1`] = `
                         </Undertittel>
                         <styled.div>
                           <div
-                            className="c11"
+                            className="c10"
                           >
                             <div>
                               label:fnr : 02026100715
                             </div>
                             <div>
-                              label:birthdate: 02.02.1961
+                              label:fødselsdato: 02.02.1961
                             </div>
                           </div>
                         </styled.div>
                       </div>
                     </div>
                   </styled.div>
-                  <Styled(Knapp)
+                  <styled.div
+                    size="0.5"
+                  >
+                    <div
+                      className="c11"
+                      size="0.5"
+                    />
+                  </styled.div>
+                  <Styled(Styled(u))
+                    kompakt={true}
                     onClick={[Function]}
                   >
-                    <Knapp
-                      className="c12"
+                    <u
+                      className="c3 c12"
+                      kompakt={true}
                       onClick={[Function]}
                     >
-                      <KnappBase
+                      <p
                         autoDisableVedSpinner={false}
-                        className="c12"
+                        className="c3 c12"
                         disabled={false}
                         htmlType="submit"
                         inaktivKlasseVedDisabled={false}
-                        kompakt={false}
+                        kompakt={true}
                         mini={false}
                         onClick={[Function]}
                         spinner={false}
                         type="standard"
                       >
                         <button
-                          className="knapp c12 knapp--standard"
+                          className="knapp c3 c12 knapp--standard knapp--kompakt"
                           disabled={false}
                           onClick={[Function]}
                           type="submit"
@@ -618,20 +575,20 @@ exports[`components/PersonSearch/PersonSearch Render: match snapshot 1`] = `
                           </_default>
                           <styled.div>
                             <div
-                              className="c10"
+                              className="c9"
                             />
                           </styled.div>
                           <styled.div>
                             <div
                               className="c13"
                             >
-                              label:remove
+                              el:button-remove
                             </div>
                           </styled.div>
                         </button>
-                      </KnappBase>
-                    </Knapp>
-                  </Styled(Knapp)>
+                      </p>
+                    </u>
+                  </Styled(Styled(u))>
                 </div>
               </styled.div>
             </div>

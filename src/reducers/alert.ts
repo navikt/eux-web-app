@@ -102,7 +102,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
     }
   }
 
-  if (action.type === types.LOCALSTORAGE_SAVEDENTRY_SAVE) {
+  if (action.type === types.LOCALSTORAGE_ENTRY_SAVE) {
     clientErrorMessage = 'message:success-svarPaSed-localstorage-save'
   }
   if (action.type === types.SVARPASED_REPLYSED_SET) {

@@ -53,11 +53,6 @@ export const initialSakState: SakState = {
 
 const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload = { type: '', payload: undefined }) => {
   switch (action.type) {
-    case types.SAK_ARBEIDSPERIODER_GET_SUCCESS:
-      return {
-        ...state,
-        arbeidsperioder: action.payload
-      }
 
     case types.SAK_FAGSAKER_RESET:
     case types.SAK_FAGSAKER_GET_REQUEST:

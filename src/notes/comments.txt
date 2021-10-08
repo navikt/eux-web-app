@@ -33,6 +33,7 @@ ui improvs:
 - useState lazy init
 - rever slideAnimate 0.05
 - meter keys para melhor ver o que muda
+
 - accessibility
      - desligar css
      - div onclick /role=buttton

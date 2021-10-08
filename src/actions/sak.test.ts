@@ -58,20 +58,6 @@ describe('actions/sak', () => {
       }))
   })
 
-  it('getArbeidsperidioder()', () => {
-    const mockFnr = '12345678901'
-    sakActions.getArbeidsperioder(mockFnr)
-    expect(call)
-      .toBeCalledWith(expect.objectContaining({
-        type: {
-          request: types.SAK_ARBEIDSPERIODER_GET_REQUEST,
-          success: types.SAK_ARBEIDSPERIODER_GET_SUCCESS,
-          failure: types.SAK_ARBEIDSPERIODER_GET_FAILURE
-        },
-        url: sprintf(urls.API_ARBEIDSPERIODER_QUERY_URL, { fnr: mockFnr })
-      }))
-  })
-
   it('getFagsaker()', () => {
     const mockFnr = '12345678901'
     const mockSektor = 'mockSektor'

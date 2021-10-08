@@ -400,7 +400,7 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
         </div>
       </FlexDiv>
       <VerticalSeparatorDiv />
-      {alertMessage && alertType === types.LOCALSTORAGE_SAVEDENTRY_SAVE && (
+      {alertMessage && alertType === types.LOCALSTORAGE_ENTRY_SAVE && (
         <>
           <FlexDiv>
             <AlertstripeDiv>

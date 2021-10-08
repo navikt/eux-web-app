@@ -3,50 +3,18 @@
 exports[`components/Alert/Alert Render: match snapshot 1`] = `
 .c0 {
   opacity: 0;
-  -webkit-animation: jIkTRE 0.5s forwards;
-  animation: jIkTRE 0.5s forwards;
-  position: relative;
-}
-
-.c0 .alertstripe__tekst {
-  -webkit-flex: auto !important;
-  -ms-flex: auto !important;
-  flex: auto !important;
-  margin: auto 0;
-  max-width: 100vw;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-}
-
-.c0 .fixed {
-  position: fixed;
-  top: 0.25rem;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  -ms-transform: translateX(-50%);
-  transform: translateX(-50%);
+  -webkit-animation: kGLwuF 1s forwards;
+  animation: kGLwuF 1s forwards;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
   z-index: 10;
-}
-
-.c0 .closeIcon {
-  position: absolute;
-  top: 0.25rem;
-  right: 0.25rem;
-  cursor: pointer;
-}
-
-.c0 .type-server {
+  width: 100%;
   border-radius: 0px !important;
   border: 0px !important;
 }
 
-.c0 .type-server .alertstripe__tekst {
+.c0 .alertstripe__tekst {
   display: -webkit-box !important;
   display: -webkit-flex !important;
   display: -ms-flexbox !important;
@@ -69,22 +37,21 @@ exports[`components/Alert/Alert Render: match snapshot 1`] = `
   message="mockErrorMessage"
   onClose={[MockFunction]}
   status="OK"
-  type="server"
 >
   <Styled(AlertStripe)
-    className="type-server status-OK"
+    className="status-OK"
     role="alert"
     type="suksess"
   >
     <AlertStripe
-      className="c0 type-server status-OK"
+      className="c0 status-OK"
       form="default"
       role="alert"
       size="1.5em"
       type="suksess"
     >
       <div
-        className="alertstripe c0 type-server status-OK alertstripe--suksess"
+        className="alertstripe c0 status-OK alertstripe--suksess"
         role="alert"
       >
         <span
@@ -140,19 +107,19 @@ exports[`components/Alert/Alert Render: match snapshot 1`] = `
             >
               mockErrorMessage
               <Styled(_default)
-                data-test-id="c-alert__close-icon"
+                data-test-id="alert__close-icon"
                 onClick={[Function]}
               >
                 <_default
                   className="c1"
-                  data-test-id="c-alert__close-icon"
+                  data-test-id="alert__close-icon"
                   onClick={[Function]}
                 >
                   <svg
                     className="c1"
                     contentScriptType="text/ecmascript"
                     contentStyleType="text/css"
-                    data-test-id="c-alert__close-icon"
+                    data-test-id="alert__close-icon"
                     enableBackground="new 0 0 24 24"
                     height={24}
                     id="Filled_Version"

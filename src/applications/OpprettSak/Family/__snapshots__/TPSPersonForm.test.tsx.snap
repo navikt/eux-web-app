@@ -1,12 +1,59 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`components/Family/TPSPersonForm Render: match snapshot 1`] = `
-.c2 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
+.c6 {
+  -webkit-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+  background-color: inherit !important;
+  color: !important;
+  border-color: !important;
+}
+
+.c6:hover:not(:disabled) {
+  background-color: !important;
+  color: !important;
+}
+
+.c6:hover:not(:disabled) svg {
+  color: !important;
+}
+
+.c6:hover:not(:disabled) svg path {
+  stroke: !important;
+}
+
+.c6:disabled {
+  color: !important;
+  background-color: !important;
+  border-color: !important;
+}
+
+.c6:disabled svg {
+  color: !important;
+}
+
+.c6:disabled svg path {
+  stroke: !important;
+}
+
+.c6:disabled .knapp__spinner {
+  border: 2px solid !important;
+  border-top-color: !important;
+  border-right-color: !important;
+}
+
+.c6 .knapp__spinner {
+  border: 2px solid !important;
+  border-left-color: !important;
+  border-bottom-color: !important;
+}
+
+.c6:not(:disabled) svg {
+  color: !important;
+}
+
+.c6:not(:disabled) svg path {
+  stroke: !important;
 }
 
 .c1 {
@@ -19,6 +66,14 @@ exports[`components/Family/TPSPersonForm Render: match snapshot 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+}
+
+.c2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 }
 
 .c4 {
@@ -140,7 +195,7 @@ exports[`components/Family/TPSPersonForm Render: match snapshot 1`] = `
             >
               <Input
                 bredde="fullbredde"
-                data-test-id="c-TPSPersonForm__input-fnr-or-dnr-id"
+                data-test-id="TPSPersonForm__input-fnr-or-dnr-id"
                 label="label:fnr-dnr"
                 onChange={[Function]}
                 placeholder="label:fnr-dnr"
@@ -150,11 +205,11 @@ exports[`components/Family/TPSPersonForm Render: match snapshot 1`] = `
                   className="skjemaelement"
                 >
                   <Label
-                    htmlFor="136103570-15709-09617-7344-303800342411727"
+                    htmlFor="32645966-04709-06956-10607-2876069867041"
                   >
                     <label
                       className="skjemaelement__label"
-                      htmlFor="136103570-15709-09617-7344-303800342411727"
+                      htmlFor="32645966-04709-06956-10607-2876069867041"
                     >
                       label:fnr-dnr
                     </label>
@@ -162,8 +217,8 @@ exports[`components/Family/TPSPersonForm Render: match snapshot 1`] = `
                   <input
                     aria-invalid={false}
                     className="skjemaelement__input input--fullbredde"
-                    data-test-id="c-TPSPersonForm__input-fnr-or-dnr-id"
-                    id="136103570-15709-09617-7344-303800342411727"
+                    data-test-id="TPSPersonForm__input-fnr-or-dnr-id"
+                    id="32645966-04709-06956-10607-2876069867041"
                     onChange={[Function]}
                     placeholder="label:fnr-dnr"
                     type="text"
@@ -187,32 +242,38 @@ exports[`components/Family/TPSPersonForm Render: match snapshot 1`] = `
             <div
               className="c2 c5"
             >
-              <Knapp
+              <Styled(u)
                 disabled={false}
                 onClick={[Function]}
               >
-                <KnappBase
-                  autoDisableVedSpinner={false}
-                  className={null}
+                <u
+                  className="c6"
                   disabled={false}
-                  htmlType="submit"
-                  inaktivKlasseVedDisabled={false}
-                  kompakt={false}
-                  mini={false}
                   onClick={[Function]}
-                  spinner={false}
-                  type="standard"
                 >
-                  <button
-                    className="knapp knapp--standard"
+                  <p
+                    autoDisableVedSpinner={false}
+                    className="c6"
                     disabled={false}
+                    htmlType="submit"
+                    inaktivKlasseVedDisabled={false}
+                    kompakt={false}
+                    mini={false}
                     onClick={[Function]}
-                    type="submit"
+                    spinner={false}
+                    type="standard"
                   >
-                    el:button-search
-                  </button>
-                </KnappBase>
-              </Knapp>
+                    <button
+                      className="knapp c6 knapp--standard"
+                      disabled={false}
+                      onClick={[Function]}
+                      type="submit"
+                    >
+                      el:button-search
+                    </button>
+                  </p>
+                </u>
+              </Styled(u)>
             </div>
           </Styled(styled.div)>
         </div>

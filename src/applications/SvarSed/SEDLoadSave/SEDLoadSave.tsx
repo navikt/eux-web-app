@@ -27,11 +27,11 @@ interface SEDLoadSaveProps {
 }
 
 interface SEDLoadSaveSelector {
-  savedEntries: Array<LocalStorageEntry<ReplySed>> | null | undefined
+  entries: Array<LocalStorageEntry<ReplySed>> | null | undefined
 }
 
 const mapState = (state: State): SEDLoadSaveSelector => ({
-  savedEntries: state.localStorage.savedEntries
+  entries: state.localStorage.entries
 })
 
 const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
@@ -39,7 +39,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
   storageKey
 }: SEDLoadSaveProps) => {
   const dispatch = useDispatch()
-  const { savedEntries }: SEDLoadSaveSelector = useSelector<State, SEDLoadSaveSelector>(mapState)
+  const { entries }: SEDLoadSaveSelector = useSelector<State, SEDLoadSaveSelector>(mapState)
   const [loadingSavedItems, setLoadingSavedItems] = useState<boolean>(false)
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<LocalStorageEntry<ReplySed>>(
     (entry: LocalStorageEntry<ReplySed>): string => entry.id)
@@ -52,23 +52,23 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
   }
 
   useEffect(() => {
-    if (!loadingSavedItems && savedEntries === undefined) {
+    if (!loadingSavedItems && entries === undefined) {
       setLoadingSavedItems(true)
       dispatch(localStorageActions.loadEntries(storageKey))
     }
-  }, [savedEntries, loadingSavedItems])
+  }, [entries, loadingSavedItems])
 
   useEffect(() => {
-    if (loadingSavedItems && savedEntries !== undefined) {
+    if (loadingSavedItems && entries !== undefined) {
       setLoadingSavedItems(false)
     }
-  }, [savedEntries, loadingSavedItems])
+  }, [entries, loadingSavedItems])
 
   return (
     <HighContrastPanel border style={{ margin: '0.1rem' }}>
       <LoadSaveDiv>
         {loadingSavedItems && (<WaitingPanel />)}
-        {savedEntries === null || _.isEmpty(savedEntries)
+        {entries === null || _.isEmpty(entries)
           ? (
             <Normaltekst>
               {t('label:ingen-lagrede-seds')}
@@ -80,7 +80,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
             </Normaltekst>
             )}
         <VerticalSeparatorDiv />
-        {savedEntries?.map((savedEntry: LocalStorageEntry<ReplySed>) => (
+        {entries?.map((savedEntry: LocalStorageEntry<ReplySed>) => (
           <div key={savedEntry.id}>
             <FlexEtikett>
               <PileDiv flex='1'>

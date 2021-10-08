@@ -6,15 +6,15 @@ import _ from 'lodash'
 import { Action } from 'redux'
 
 export interface LocalStorageState {
-  savedEntries: Array<LocalStorageEntry<ReplySed>> | null | undefined
-  // savedEntry !== undefined serves only the purpose of telling SEDEditor that the
-  // current replySed came from a localstorage load. Do not use this replySed for
-  // anything else!
+  entries: Array<LocalStorageEntry<ReplySed>> | null | undefined
+  // currentEntry !== undefined serves only the purpose of telling SEDEditor that the
+  // current replySed came from a localstorage load, and therefore decides if the saving
+  // button will be labeled as Update or Save
   currentEntry: LocalStorageEntry<ReplySed> | undefined
 }
 
 export const initialLocalStorageState: LocalStorageState = {
-  savedEntries: undefined,
+  entries: undefined,
   currentEntry: undefined
 }
 
@@ -23,61 +23,61 @@ const localStorageReducer = (
   action: Action = { type: '' }
 ) => {
   switch (action.type) {
-    case types.LOCALSTORAGE_SAVEDENTRIES_LOAD: {
+    case types.LOCALSTORAGE_ENTRIES_LOAD: {
       const items: string | null = window.localStorage.getItem((action as ActionWithPayload).payload.key)
-      let savedEntries: Array<LocalStorageEntry<ReplySed>> | null | undefined
+      let entries: Array<LocalStorageEntry<ReplySed>> | null | undefined
       if (_.isString(items)) {
-        savedEntries = JSON.parse(items)
+        entries = JSON.parse(items)
       } else {
-        savedEntries = null
+        entries = null
       }
       return {
         ...state,
-        savedEntries: savedEntries
+        entries: entries
       }
     }
 
-    case types.LOCALSTORAGE_SAVEDENTRY_REMOVE: {
-      const newSavedEntries = _.cloneDeep(state.savedEntries)
-      const index: number = _.findIndex(state.savedEntries, (entry) =>
+    case types.LOCALSTORAGE_ENTRY_REMOVE: {
+      const newEntries = _.cloneDeep(state.entries)
+      const index: number = _.findIndex(state.entries, (entry) =>
         entry.id === ((action as ActionWithPayload).payload).entry.content.id
       )
       if (index >= 0) {
-        if (!_.isNil(newSavedEntries)) {
-          newSavedEntries.splice(index, 1)
+        if (!_.isNil(newEntries)) {
+          newEntries.splice(index, 1)
           window.localStorage.setItem(
             (action as ActionWithPayload).payload.key,
-            JSON.stringify(newSavedEntries, null, 2))
+            JSON.stringify(newEntries, null, 2))
         }
       }
       return {
         ...state,
-        savedEntries: newSavedEntries
+        entries: newEntries
       }
     }
 
-    case types.LOCALSTORAGE_SAVEDENTRY_SAVE: {
-      let newSavedEntries = _.cloneDeep(state.savedEntries)
+    case types.LOCALSTORAGE_ENTRY_SAVE: {
+      let newEntries = _.cloneDeep(state.entries)
       const newEntry: LocalStorageEntry<ReplySed> = (action as ActionWithPayload).payload.entry
 
-      if (_.isNil(newSavedEntries)) {
-        newSavedEntries = []
+      if (_.isNil(newEntries)) {
+        newEntries = []
       }
 
-      const existsIndex: number = _.findIndex(newSavedEntries, _e => _e.id === newEntry.id)
+      const existsIndex: number = _.findIndex(newEntries, _e => _e.id === newEntry.id)
       if (existsIndex >= 0) {
-        newSavedEntries[existsIndex] = (action as ActionWithPayload).payload.entry
+        newEntries[existsIndex] = (action as ActionWithPayload).payload.entry
       } else {
-        newSavedEntries = newSavedEntries.concat(newEntry)
+        newEntries = newEntries.concat(newEntry)
       }
 
       window.localStorage.setItem(
         (action as ActionWithPayload).payload.key,
-        JSON.stringify(newSavedEntries, null, 2))
+        JSON.stringify(newEntries, null, 2))
 
       return {
         ...state,
-        savedEntries: (action as ActionWithPayload).payload.value
+        entries: (action as ActionWithPayload).payload.value
       }
     }
 

@@ -1,9 +1,69 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`components/PersonCard/PersonCard Renders 1`] = `
+.c6 {
+  -webkit-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+  background-color: inherit !important;
+  color: !important;
+  border-color: !important;
+}
+
+.c6:hover:not(:disabled) {
+  background-color: !important;
+  color: !important;
+}
+
+.c6:hover:not(:disabled) svg {
+  color: !important;
+}
+
+.c6:hover:not(:disabled) svg path {
+  stroke: !important;
+}
+
+.c6:disabled {
+  color: !important;
+  background-color: !important;
+  border-color: !important;
+}
+
+.c6:disabled svg {
+  color: !important;
+}
+
+.c6:disabled svg path {
+  stroke: !important;
+}
+
+.c6:disabled .knapp__spinner {
+  border: 2px solid !important;
+  border-top-color: !important;
+  border-right-color: !important;
+}
+
+.c6 .knapp__spinner {
+  border: 2px solid !important;
+  border-left-color: !important;
+  border-bottom-color: !important;
+}
+
+.c6:not(:disabled) svg {
+  color: !important;
+}
+
+.c6:not(:disabled) svg path {
+  stroke: !important;
+}
+
 .c3 {
   display: inline-block;
   margin-left: 1rem;
+}
+
+.c5 {
+  display: inline-block;
+  margin-left: 0.5rem;
 }
 
 .c1 {
@@ -63,7 +123,7 @@ exports[`components/PersonCard/PersonCard Renders 1`] = `
   flex-direction: column;
 }
 
-.c5 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -74,7 +134,7 @@ exports[`components/PersonCard/PersonCard Renders 1`] = `
   justify-self: flex-end;
 }
 
-.c6 {
+.c8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -221,7 +281,7 @@ exports[`components/PersonCard/PersonCard Renders 1`] = `
                         label:fnr : 02026100715
                       </div>
                       <div>
-                        label:birthdate: 02.02.1961
+                        label:fødselsdato: 02.02.1961
                       </div>
                     </div>
                   </styled.div>
@@ -232,20 +292,20 @@ exports[`components/PersonCard/PersonCard Renders 1`] = `
               bredde="fullbredde"
               date-testid="familierelasjoner__select-familirelasjon-rolle"
               disabled={false}
-              label="label:family-relationship"
+              label="label:familierelasjon"
               onChange={[Function]}
             >
               <div
                 className="skjemaelement"
               >
                 <Label
-                  htmlFor="544321050-7703-18207-27167-1272793367634"
+                  htmlFor="113782408-9928-8596-02814-20169219386456"
                 >
                   <label
                     className="skjemaelement__label"
-                    htmlFor="544321050-7703-18207-27167-1272793367634"
+                    htmlFor="113782408-9928-8596-02814-20169219386456"
                   >
-                    label:family-relationship
+                    label:familierelasjon
                   </label>
                 </Label>
                 <div
@@ -256,13 +316,13 @@ exports[`components/PersonCard/PersonCard Renders 1`] = `
                     className="skjemaelement__input"
                     date-testid="familierelasjoner__select-familirelasjon-rolle"
                     disabled={false}
-                    id="544321050-7703-18207-27167-1272793367634"
+                    id="113782408-9928-8596-02814-20169219386456"
                     onChange={[Function]}
                   >
                     <option
                       value=""
                     >
-                      label:choose
+                      label:velg
                     </option>
                     <option
                       key="BARN"
@@ -298,27 +358,37 @@ exports[`components/PersonCard/PersonCard Renders 1`] = `
                 </div>
               </div>
             </Select>
-            <Styled(Knapp)
+            <styled.div
+              size="0.5"
+            >
+              <div
+                className="c5"
+                size="0.5"
+              />
+            </styled.div>
+            <Styled(Styled(u))
+              kompakt={true}
               onClick={[Function]}
             >
-              <Knapp
-                className="c5"
+              <u
+                className="c6 c7"
+                kompakt={true}
                 onClick={[Function]}
               >
-                <KnappBase
+                <p
                   autoDisableVedSpinner={false}
-                  className="c5"
+                  className="c6 c7"
                   disabled={false}
                   htmlType="submit"
                   inaktivKlasseVedDisabled={false}
-                  kompakt={false}
+                  kompakt={true}
                   mini={false}
                   onClick={[Function]}
                   spinner={false}
                   type="standard"
                 >
                   <button
-                    className="knapp c5 knapp--standard"
+                    className="knapp c6 c7 knapp--standard knapp--kompakt"
                     disabled={false}
                     onClick={[Function]}
                     type="submit"
@@ -352,89 +422,106 @@ exports[`components/PersonCard/PersonCard Renders 1`] = `
                     </styled.div>
                     <styled.div>
                       <div
-                        className="c6"
+                        className="c8"
                       >
-                        label:remove
+                        el:button-remove
                       </div>
                     </styled.div>
                   </button>
-                </KnappBase>
-              </Knapp>
-            </Styled(Knapp)>
-            <Knapp
+                </p>
+              </u>
+            </Styled(Styled(u))>
+            <styled.div
+              size="0.5"
+            >
+              <div
+                className="c5"
+                size="0.5"
+              />
+            </styled.div>
+            <Styled(u)
               data-test-id="familierelasjoner__knapp--legg-til"
               disabled={true}
+              kompakt={true}
               onClick={[Function]}
             >
-              <KnappBase
-                autoDisableVedSpinner={false}
-                className={null}
+              <u
+                className="c6"
                 data-test-id="familierelasjoner__knapp--legg-til"
                 disabled={true}
-                htmlType="submit"
-                inaktivKlasseVedDisabled={false}
-                kompakt={false}
-                mini={false}
+                kompakt={true}
                 onClick={[Function]}
-                spinner={false}
-                type="standard"
               >
-                <button
-                  className="knapp knapp--standard knapp--disabled"
+                <p
+                  autoDisableVedSpinner={false}
+                  className="c6"
                   data-test-id="familierelasjoner__knapp--legg-til"
                   disabled={true}
+                  htmlType="submit"
+                  inaktivKlasseVedDisabled={false}
+                  kompakt={true}
+                  mini={false}
                   onClick={[Function]}
-                  type="submit"
+                  spinner={false}
+                  type="standard"
                 >
-                  <_default
-                    width={20}
+                  <button
+                    className="knapp c6 knapp--standard knapp--disabled knapp--kompakt"
+                    data-test-id="familierelasjoner__knapp--legg-til"
+                    disabled={true}
+                    onClick={[Function]}
+                    type="submit"
                   >
-                    <svg
-                      version="1.1"
-                      viewBox="0 0 24 24"
+                    <_default
                       width={20}
-                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <title>
-                        Add
-                      </title>
-                      <g
-                        fill="none"
-                        fillRule="evenodd"
-                        stroke="none"
-                        strokeWidth="1"
+                      <svg
+                        version="1.1"
+                        viewBox="0 0 24 24"
+                        width={20}
+                        xmlns="http://www.w3.org/2000/svg"
                       >
-                        <path
-                          d="M20.146852,3.88403947 L20.146771,3.88395809 C17.976089,1.70435546 15.0928534,0.505997541 11.9994782,0.5 C5.67074719,0.5 0.512021923,5.64860101 0.500022608,11.9769766 C0.494020029,15.0501691 1.68354863,17.9384927 3.85210448,20.1159605 C6.02125562,22.2930255 8.90491868,23.494 11.9775643,23.5 C18.3251119,23.5 23.4879722,18.3534487 23.4999774,12.0209361 C23.5059792,8.94917357 22.3156837,6.06078388 20.146852,3.88403947 Z"
-                          stroke="#0067C5"
-                        />
-                        <path
-                          d="M18.2616513,12.5217391 L5.73939227,12.5217391 C5.45138031,12.5206957 5.21658796,12.288 5.21763148,12 C5.21763148,11.7130435 5.45138031,11.4782609 5.73939227,11.4782609 L18.2616513,11.4782609 C18.5486197,11.4782609 18.7844556,11.712 18.7834121,12 C18.7834121,12.288 18.5496632,12.5217391 18.2616513,12.5217391 Z"
-                          fill="#0067C5"
-                        />
-                        <path
-                          d="M18.2616513,12.5217391 L5.73939227,12.5217391 C5.45138031,12.5206957 5.21658796,12.288 5.21763148,12 C5.21763148,11.7130435 5.45138031,11.4782609 5.73939227,11.4782609 L18.2616513,11.4782609 C18.5486197,11.4782609 18.7844556,11.712 18.7834121,12 C18.7834121,12.288 18.5496632,12.5217391 18.2616513,12.5217391 Z"
-                          fill="#0067C5"
-                          transform="translate(12.000522, 12.000000) rotate(90.000000) translate(-12.000522, -12.000000) "
-                        />
-                      </g>
-                    </svg>
-                  </_default>
-                  <styled.div>
-                    <div
-                      className="c3"
-                    />
-                  </styled.div>
-                  <styled.div>
-                    <div
-                      className="c6"
-                    >
-                      label:add
-                    </div>
-                  </styled.div>
-                </button>
-              </KnappBase>
-            </Knapp>
+                        <title>
+                          Add
+                        </title>
+                        <g
+                          fill="none"
+                          fillRule="evenodd"
+                          stroke="none"
+                          strokeWidth="1"
+                        >
+                          <path
+                            d="M20.146852,3.88403947 L20.146771,3.88395809 C17.976089,1.70435546 15.0928534,0.505997541 11.9994782,0.5 C5.67074719,0.5 0.512021923,5.64860101 0.500022608,11.9769766 C0.494020029,15.0501691 1.68354863,17.9384927 3.85210448,20.1159605 C6.02125562,22.2930255 8.90491868,23.494 11.9775643,23.5 C18.3251119,23.5 23.4879722,18.3534487 23.4999774,12.0209361 C23.5059792,8.94917357 22.3156837,6.06078388 20.146852,3.88403947 Z"
+                            stroke="#0067C5"
+                          />
+                          <path
+                            d="M18.2616513,12.5217391 L5.73939227,12.5217391 C5.45138031,12.5206957 5.21658796,12.288 5.21763148,12 C5.21763148,11.7130435 5.45138031,11.4782609 5.73939227,11.4782609 L18.2616513,11.4782609 C18.5486197,11.4782609 18.7844556,11.712 18.7834121,12 C18.7834121,12.288 18.5496632,12.5217391 18.2616513,12.5217391 Z"
+                            fill="#0067C5"
+                          />
+                          <path
+                            d="M18.2616513,12.5217391 L5.73939227,12.5217391 C5.45138031,12.5206957 5.21658796,12.288 5.21763148,12 C5.21763148,11.7130435 5.45138031,11.4782609 5.73939227,11.4782609 L18.2616513,11.4782609 C18.5486197,11.4782609 18.7844556,11.712 18.7834121,12 C18.7834121,12.288 18.5496632,12.5217391 18.2616513,12.5217391 Z"
+                            fill="#0067C5"
+                            transform="translate(12.000522, 12.000000) rotate(90.000000) translate(-12.000522, -12.000000) "
+                          />
+                        </g>
+                      </svg>
+                    </_default>
+                    <styled.div>
+                      <div
+                        className="c3"
+                      />
+                    </styled.div>
+                    <styled.div>
+                      <div
+                        className="c8"
+                      >
+                        label:legg-til
+                      </div>
+                    </styled.div>
+                  </button>
+                </p>
+              </u>
+            </Styled(u)>
           </div>
         </styled.div>
       </div>

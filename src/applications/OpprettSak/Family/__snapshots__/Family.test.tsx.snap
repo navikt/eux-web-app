@@ -1,20 +1,83 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`components/Family/Family Renders 1`] = `
+.c10 {
+  -webkit-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+  background-color: inherit !important;
+  color: !important;
+  border-color: !important;
+}
+
+.c10:hover:not(:disabled) {
+  background-color: !important;
+  color: !important;
+}
+
+.c10:hover:not(:disabled) svg {
+  color: !important;
+}
+
+.c10:hover:not(:disabled) svg path {
+  stroke: !important;
+}
+
+.c10:disabled {
+  color: !important;
+  background-color: !important;
+  border-color: !important;
+}
+
+.c10:disabled svg {
+  color: !important;
+}
+
+.c10:disabled svg path {
+  stroke: !important;
+}
+
+.c10:disabled .knapp__spinner {
+  border: 2px solid !important;
+  border-top-color: !important;
+  border-right-color: !important;
+}
+
+.c10 .knapp__spinner {
+  border: 2px solid !important;
+  border-left-color: !important;
+  border-bottom-color: !important;
+}
+
+.c10:not(:disabled) svg {
+  color: !important;
+}
+
+.c10:not(:disabled) svg path {
+  stroke: !important;
+}
+
 .c0 {
   display: inline-block;
   margin-left: 1rem;
+}
+
+.c9 {
+  display: inline-block;
+  margin-left: 0.5rem;
 }
 
 .c1 {
   margin-bottom: 1rem;
 }
 
-.c13 {
+.c15 {
   margin-bottom: 1.5rem;
 }
 
 .c2 {
+  -webkit-flex: 0 1 auto;
+  -ms-flex: 0 1 auto;
+  flex: 0 1 auto;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -24,7 +87,10 @@ exports[`components/Family/Family Renders 1`] = `
   flex-direction: row;
 }
 
-.c11 {
+.c13 {
+  -webkit-flex: 0 1 auto;
+  -ms-flex: 0 1 auto;
+  flex: 0 1 auto;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -34,11 +100,11 @@ exports[`components/Family/Family Renders 1`] = `
   flex-direction: column;
 }
 
-.c12 {
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+.c14 {
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
 }
 
 .c6 {
@@ -98,7 +164,7 @@ exports[`components/Family/Family Renders 1`] = `
   flex-direction: column;
 }
 
-.c9 {
+.c11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -109,15 +175,10 @@ exports[`components/Family/Family Renders 1`] = `
 }
 
 .c3 {
-  -webkit-flex: 10;
-  -ms-flex: 10;
-  flex: 10;
+  width: 500px;
 }
 
-.c10 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
+.c12 {
   border-left: 1px solid lightgrey;
 }
 
@@ -188,7 +249,7 @@ exports[`components/Family/Family Renders 1`] = `
   }
 >
   <div
-    data-test-id="c-family"
+    data-test-id="family"
   >
     <styled.div>
       <div
@@ -202,7 +263,7 @@ exports[`components/Family/Family Renders 1`] = `
         <h2
           className="typo-undertittel"
         >
-          el:title-family-description
+          label:family-description
         </h2>
       </TypografiBase>
     </Undertittel>
@@ -231,7 +292,7 @@ exports[`components/Family/Family Renders 1`] = `
                 <p
                   className="typo-ingress"
                 >
-                  label:family-relations-in-tps
+                  label:familierelasjon-i-tps
                 </p>
               </TypografiBase>
             </Ingress>
@@ -338,87 +399,104 @@ exports[`components/Family/Family Renders 1`] = `
                                         label:fnr : 02026100714
                                       </div>
                                       <div>
-                                        label:birthdate: 08.04.1961
+                                        label:fødselsdato: 08.04.1961
                                       </div>
                                     </div>
                                   </styled.div>
                                 </div>
                               </div>
                             </styled.div>
-                            <Knapp
+                            <styled.div
+                              size="0.5"
+                            >
+                              <div
+                                className="c9"
+                                size="0.5"
+                              />
+                            </styled.div>
+                            <Styled(u)
                               data-test-id="familierelasjoner__knapp--legg-til"
                               disabled={false}
+                              kompakt={true}
                               onClick={[Function]}
                             >
-                              <KnappBase
-                                autoDisableVedSpinner={false}
-                                className={null}
+                              <u
+                                className="c10"
                                 data-test-id="familierelasjoner__knapp--legg-til"
                                 disabled={false}
-                                htmlType="submit"
-                                inaktivKlasseVedDisabled={false}
-                                kompakt={false}
-                                mini={false}
+                                kompakt={true}
                                 onClick={[Function]}
-                                spinner={false}
-                                type="standard"
                               >
-                                <button
-                                  className="knapp knapp--standard"
+                                <p
+                                  autoDisableVedSpinner={false}
+                                  className="c10"
                                   data-test-id="familierelasjoner__knapp--legg-til"
                                   disabled={false}
+                                  htmlType="submit"
+                                  inaktivKlasseVedDisabled={false}
+                                  kompakt={true}
+                                  mini={false}
                                   onClick={[Function]}
-                                  type="submit"
+                                  spinner={false}
+                                  type="standard"
                                 >
-                                  <_default
-                                    width={20}
+                                  <button
+                                    className="knapp c10 knapp--standard knapp--kompakt"
+                                    data-test-id="familierelasjoner__knapp--legg-til"
+                                    disabled={false}
+                                    onClick={[Function]}
+                                    type="submit"
                                   >
-                                    <svg
-                                      version="1.1"
-                                      viewBox="0 0 24 24"
+                                    <_default
                                       width={20}
-                                      xmlns="http://www.w3.org/2000/svg"
                                     >
-                                      <title>
-                                        Add
-                                      </title>
-                                      <g
-                                        fill="none"
-                                        fillRule="evenodd"
-                                        stroke="none"
-                                        strokeWidth="1"
+                                      <svg
+                                        version="1.1"
+                                        viewBox="0 0 24 24"
+                                        width={20}
+                                        xmlns="http://www.w3.org/2000/svg"
                                       >
-                                        <path
-                                          d="M20.146852,3.88403947 L20.146771,3.88395809 C17.976089,1.70435546 15.0928534,0.505997541 11.9994782,0.5 C5.67074719,0.5 0.512021923,5.64860101 0.500022608,11.9769766 C0.494020029,15.0501691 1.68354863,17.9384927 3.85210448,20.1159605 C6.02125562,22.2930255 8.90491868,23.494 11.9775643,23.5 C18.3251119,23.5 23.4879722,18.3534487 23.4999774,12.0209361 C23.5059792,8.94917357 22.3156837,6.06078388 20.146852,3.88403947 Z"
-                                          stroke="#0067C5"
-                                        />
-                                        <path
-                                          d="M18.2616513,12.5217391 L5.73939227,12.5217391 C5.45138031,12.5206957 5.21658796,12.288 5.21763148,12 C5.21763148,11.7130435 5.45138031,11.4782609 5.73939227,11.4782609 L18.2616513,11.4782609 C18.5486197,11.4782609 18.7844556,11.712 18.7834121,12 C18.7834121,12.288 18.5496632,12.5217391 18.2616513,12.5217391 Z"
-                                          fill="#0067C5"
-                                        />
-                                        <path
-                                          d="M18.2616513,12.5217391 L5.73939227,12.5217391 C5.45138031,12.5206957 5.21658796,12.288 5.21763148,12 C5.21763148,11.7130435 5.45138031,11.4782609 5.73939227,11.4782609 L18.2616513,11.4782609 C18.5486197,11.4782609 18.7844556,11.712 18.7834121,12 C18.7834121,12.288 18.5496632,12.5217391 18.2616513,12.5217391 Z"
-                                          fill="#0067C5"
-                                          transform="translate(12.000522, 12.000000) rotate(90.000000) translate(-12.000522, -12.000000) "
-                                        />
-                                      </g>
-                                    </svg>
-                                  </_default>
-                                  <styled.div>
-                                    <div
-                                      className="c0"
-                                    />
-                                  </styled.div>
-                                  <styled.div>
-                                    <div
-                                      className="c9"
-                                    >
-                                      label:add
-                                    </div>
-                                  </styled.div>
-                                </button>
-                              </KnappBase>
-                            </Knapp>
+                                        <title>
+                                          Add
+                                        </title>
+                                        <g
+                                          fill="none"
+                                          fillRule="evenodd"
+                                          stroke="none"
+                                          strokeWidth="1"
+                                        >
+                                          <path
+                                            d="M20.146852,3.88403947 L20.146771,3.88395809 C17.976089,1.70435546 15.0928534,0.505997541 11.9994782,0.5 C5.67074719,0.5 0.512021923,5.64860101 0.500022608,11.9769766 C0.494020029,15.0501691 1.68354863,17.9384927 3.85210448,20.1159605 C6.02125562,22.2930255 8.90491868,23.494 11.9775643,23.5 C18.3251119,23.5 23.4879722,18.3534487 23.4999774,12.0209361 C23.5059792,8.94917357 22.3156837,6.06078388 20.146852,3.88403947 Z"
+                                            stroke="#0067C5"
+                                          />
+                                          <path
+                                            d="M18.2616513,12.5217391 L5.73939227,12.5217391 C5.45138031,12.5206957 5.21658796,12.288 5.21763148,12 C5.21763148,11.7130435 5.45138031,11.4782609 5.73939227,11.4782609 L18.2616513,11.4782609 C18.5486197,11.4782609 18.7844556,11.712 18.7834121,12 C18.7834121,12.288 18.5496632,12.5217391 18.2616513,12.5217391 Z"
+                                            fill="#0067C5"
+                                          />
+                                          <path
+                                            d="M18.2616513,12.5217391 L5.73939227,12.5217391 C5.45138031,12.5206957 5.21658796,12.288 5.21763148,12 C5.21763148,11.7130435 5.45138031,11.4782609 5.73939227,11.4782609 L18.2616513,11.4782609 C18.5486197,11.4782609 18.7844556,11.712 18.7834121,12 C18.7834121,12.288 18.5496632,12.5217391 18.2616513,12.5217391 Z"
+                                            fill="#0067C5"
+                                            transform="translate(12.000522, 12.000000) rotate(90.000000) translate(-12.000522, -12.000000) "
+                                          />
+                                        </g>
+                                      </svg>
+                                    </_default>
+                                    <styled.div>
+                                      <div
+                                        className="c0"
+                                      />
+                                    </styled.div>
+                                    <styled.div>
+                                      <div
+                                        className="c11"
+                                      >
+                                        label:legg-til
+                                      </div>
+                                    </styled.div>
+                                  </button>
+                                </p>
+                              </u>
+                            </Styled(u)>
                           </div>
                         </styled.div>
                       </div>
@@ -530,87 +608,104 @@ exports[`components/Family/Family Renders 1`] = `
                                         label:fnr : 02026100713
                                       </div>
                                       <div>
-                                        label:birthdate: 02.02.1980
+                                        label:fødselsdato: 02.02.1980
                                       </div>
                                     </div>
                                   </styled.div>
                                 </div>
                               </div>
                             </styled.div>
-                            <Knapp
+                            <styled.div
+                              size="0.5"
+                            >
+                              <div
+                                className="c9"
+                                size="0.5"
+                              />
+                            </styled.div>
+                            <Styled(u)
                               data-test-id="familierelasjoner__knapp--legg-til"
                               disabled={false}
+                              kompakt={true}
                               onClick={[Function]}
                             >
-                              <KnappBase
-                                autoDisableVedSpinner={false}
-                                className={null}
+                              <u
+                                className="c10"
                                 data-test-id="familierelasjoner__knapp--legg-til"
                                 disabled={false}
-                                htmlType="submit"
-                                inaktivKlasseVedDisabled={false}
-                                kompakt={false}
-                                mini={false}
+                                kompakt={true}
                                 onClick={[Function]}
-                                spinner={false}
-                                type="standard"
                               >
-                                <button
-                                  className="knapp knapp--standard"
+                                <p
+                                  autoDisableVedSpinner={false}
+                                  className="c10"
                                   data-test-id="familierelasjoner__knapp--legg-til"
                                   disabled={false}
+                                  htmlType="submit"
+                                  inaktivKlasseVedDisabled={false}
+                                  kompakt={true}
+                                  mini={false}
                                   onClick={[Function]}
-                                  type="submit"
+                                  spinner={false}
+                                  type="standard"
                                 >
-                                  <_default
-                                    width={20}
+                                  <button
+                                    className="knapp c10 knapp--standard knapp--kompakt"
+                                    data-test-id="familierelasjoner__knapp--legg-til"
+                                    disabled={false}
+                                    onClick={[Function]}
+                                    type="submit"
                                   >
-                                    <svg
-                                      version="1.1"
-                                      viewBox="0 0 24 24"
+                                    <_default
                                       width={20}
-                                      xmlns="http://www.w3.org/2000/svg"
                                     >
-                                      <title>
-                                        Add
-                                      </title>
-                                      <g
-                                        fill="none"
-                                        fillRule="evenodd"
-                                        stroke="none"
-                                        strokeWidth="1"
+                                      <svg
+                                        version="1.1"
+                                        viewBox="0 0 24 24"
+                                        width={20}
+                                        xmlns="http://www.w3.org/2000/svg"
                                       >
-                                        <path
-                                          d="M20.146852,3.88403947 L20.146771,3.88395809 C17.976089,1.70435546 15.0928534,0.505997541 11.9994782,0.5 C5.67074719,0.5 0.512021923,5.64860101 0.500022608,11.9769766 C0.494020029,15.0501691 1.68354863,17.9384927 3.85210448,20.1159605 C6.02125562,22.2930255 8.90491868,23.494 11.9775643,23.5 C18.3251119,23.5 23.4879722,18.3534487 23.4999774,12.0209361 C23.5059792,8.94917357 22.3156837,6.06078388 20.146852,3.88403947 Z"
-                                          stroke="#0067C5"
-                                        />
-                                        <path
-                                          d="M18.2616513,12.5217391 L5.73939227,12.5217391 C5.45138031,12.5206957 5.21658796,12.288 5.21763148,12 C5.21763148,11.7130435 5.45138031,11.4782609 5.73939227,11.4782609 L18.2616513,11.4782609 C18.5486197,11.4782609 18.7844556,11.712 18.7834121,12 C18.7834121,12.288 18.5496632,12.5217391 18.2616513,12.5217391 Z"
-                                          fill="#0067C5"
-                                        />
-                                        <path
-                                          d="M18.2616513,12.5217391 L5.73939227,12.5217391 C5.45138031,12.5206957 5.21658796,12.288 5.21763148,12 C5.21763148,11.7130435 5.45138031,11.4782609 5.73939227,11.4782609 L18.2616513,11.4782609 C18.5486197,11.4782609 18.7844556,11.712 18.7834121,12 C18.7834121,12.288 18.5496632,12.5217391 18.2616513,12.5217391 Z"
-                                          fill="#0067C5"
-                                          transform="translate(12.000522, 12.000000) rotate(90.000000) translate(-12.000522, -12.000000) "
-                                        />
-                                      </g>
-                                    </svg>
-                                  </_default>
-                                  <styled.div>
-                                    <div
-                                      className="c0"
-                                    />
-                                  </styled.div>
-                                  <styled.div>
-                                    <div
-                                      className="c9"
-                                    >
-                                      label:add
-                                    </div>
-                                  </styled.div>
-                                </button>
-                              </KnappBase>
-                            </Knapp>
+                                        <title>
+                                          Add
+                                        </title>
+                                        <g
+                                          fill="none"
+                                          fillRule="evenodd"
+                                          stroke="none"
+                                          strokeWidth="1"
+                                        >
+                                          <path
+                                            d="M20.146852,3.88403947 L20.146771,3.88395809 C17.976089,1.70435546 15.0928534,0.505997541 11.9994782,0.5 C5.67074719,0.5 0.512021923,5.64860101 0.500022608,11.9769766 C0.494020029,15.0501691 1.68354863,17.9384927 3.85210448,20.1159605 C6.02125562,22.2930255 8.90491868,23.494 11.9775643,23.5 C18.3251119,23.5 23.4879722,18.3534487 23.4999774,12.0209361 C23.5059792,8.94917357 22.3156837,6.06078388 20.146852,3.88403947 Z"
+                                            stroke="#0067C5"
+                                          />
+                                          <path
+                                            d="M18.2616513,12.5217391 L5.73939227,12.5217391 C5.45138031,12.5206957 5.21658796,12.288 5.21763148,12 C5.21763148,11.7130435 5.45138031,11.4782609 5.73939227,11.4782609 L18.2616513,11.4782609 C18.5486197,11.4782609 18.7844556,11.712 18.7834121,12 C18.7834121,12.288 18.5496632,12.5217391 18.2616513,12.5217391 Z"
+                                            fill="#0067C5"
+                                          />
+                                          <path
+                                            d="M18.2616513,12.5217391 L5.73939227,12.5217391 C5.45138031,12.5206957 5.21658796,12.288 5.21763148,12 C5.21763148,11.7130435 5.45138031,11.4782609 5.73939227,11.4782609 L18.2616513,11.4782609 C18.5486197,11.4782609 18.7844556,11.712 18.7834121,12 C18.7834121,12.288 18.5496632,12.5217391 18.2616513,12.5217391 Z"
+                                            fill="#0067C5"
+                                            transform="translate(12.000522, 12.000000) rotate(90.000000) translate(-12.000522, -12.000000) "
+                                          />
+                                        </g>
+                                      </svg>
+                                    </_default>
+                                    <styled.div>
+                                      <div
+                                        className="c0"
+                                      />
+                                    </styled.div>
+                                    <styled.div>
+                                      <div
+                                        className="c11"
+                                      >
+                                        label:legg-til
+                                      </div>
+                                    </styled.div>
+                                  </button>
+                                </p>
+                              </u>
+                            </Styled(u)>
                           </div>
                         </styled.div>
                       </div>
@@ -621,9 +716,25 @@ exports[`components/Family/Family Renders 1`] = `
             </styled.div>
           </div>
         </styled.div>
+        <styled.div
+          size="0.5"
+        >
+          <div
+            className="c9"
+            size="0.5"
+          />
+        </styled.div>
         <styled.div>
           <div
-            className="c10"
+            className="c12"
+          />
+        </styled.div>
+        <styled.div
+          size="0.5"
+        >
+          <div
+            className="c9"
+            size="0.5"
           />
         </styled.div>
         <styled.div>
@@ -642,7 +753,7 @@ exports[`components/Family/Family Renders 1`] = `
                 <p
                   className="typo-ingress"
                 >
-                  label:family-chosen
+                  label:valgt-familie
                    (
                   0
                   )
@@ -655,15 +766,15 @@ exports[`components/Family/Family Renders 1`] = `
     </styled.div>
     <Styled(styled.div)>
       <div
-        className="c11 c12"
+        className="c13 c14"
       >
         <div>
           <styled.div
-            data-size="1.5"
+            size="1.5"
           >
             <div
-              className="c13"
-              data-size="1.5"
+              className="c15"
+              size="1.5"
             />
           </styled.div>
           <Ingress>
@@ -673,7 +784,7 @@ exports[`components/Family/Family Renders 1`] = `
               <p
                 className="typo-ingress"
               >
-                el:title-family-utland
+                label:family-utland
               </p>
             </TypografiBase>
           </Ingress>
@@ -682,39 +793,44 @@ exports[`components/Family/Family Renders 1`] = `
               className="c1"
             />
           </styled.div>
-          <Knapp
+          <Styled(u)
             onClick={[Function]}
           >
-            <KnappBase
-              autoDisableVedSpinner={false}
-              className={null}
-              disabled={false}
-              htmlType="submit"
-              inaktivKlasseVedDisabled={false}
-              kompakt={false}
-              mini={false}
+            <u
+              className="c10"
               onClick={[Function]}
-              spinner={false}
-              type="standard"
             >
-              <button
-                className="knapp knapp--standard"
+              <p
+                autoDisableVedSpinner={false}
+                className="c10"
                 disabled={false}
+                htmlType="submit"
+                inaktivKlasseVedDisabled={false}
+                kompakt={false}
+                mini={false}
                 onClick={[Function]}
-                type="submit"
+                spinner={false}
+                type="standard"
               >
-                label:show-form
-              </button>
-            </KnappBase>
-          </Knapp>
+                <button
+                  className="knapp c10 knapp--standard"
+                  disabled={false}
+                  onClick={[Function]}
+                  type="submit"
+                >
+                  label:vis-skjema
+                </button>
+              </p>
+            </u>
+          </Styled(u)>
         </div>
         <div>
           <styled.div
-            data-size="1.5"
+            size="1.5"
           >
             <div
-              className="c13"
-              data-size="1.5"
+              className="c15"
+              size="1.5"
             />
           </styled.div>
           <Ingress>
@@ -724,7 +840,7 @@ exports[`components/Family/Family Renders 1`] = `
               <p
                 className="typo-ingress"
               >
-                el:title-family-tps
+                label:family-tps
               </p>
             </TypografiBase>
           </Ingress>
@@ -733,31 +849,36 @@ exports[`components/Family/Family Renders 1`] = `
               className="c1"
             />
           </styled.div>
-          <Knapp
+          <Styled(u)
             onClick={[Function]}
           >
-            <KnappBase
-              autoDisableVedSpinner={false}
-              className={null}
-              disabled={false}
-              htmlType="submit"
-              inaktivKlasseVedDisabled={false}
-              kompakt={false}
-              mini={false}
+            <u
+              className="c10"
               onClick={[Function]}
-              spinner={false}
-              type="standard"
             >
-              <button
-                className="knapp knapp--standard"
+              <p
+                autoDisableVedSpinner={false}
+                className="c10"
                 disabled={false}
+                htmlType="submit"
+                inaktivKlasseVedDisabled={false}
+                kompakt={false}
+                mini={false}
                 onClick={[Function]}
-                type="submit"
+                spinner={false}
+                type="standard"
               >
-                label:show-form
-              </button>
-            </KnappBase>
-          </Knapp>
+                <button
+                  className="knapp c10 knapp--standard"
+                  disabled={false}
+                  onClick={[Function]}
+                  type="submit"
+                >
+                  label:vis-skjema
+                </button>
+              </p>
+            </u>
+          </Styled(u)>
         </div>
       </div>
     </Styled(styled.div)>

@@ -82,7 +82,7 @@ const mapState = (state: State): any => ({
   previousParentSed: state.svarpased.previousParentSed,
   replySed: state.svarpased.replySed,
   rinasaksnummerOrFnrParam: state.app.params.rinasaksnummerOrFnr,
-  savedEntries: state.localStorage.savedEntries,
+  entries: state.localStorage.entries,
   seds: state.svarpased.seds
 })
 
@@ -105,7 +105,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
     queryingReplySed,
     replySed,
     rinasaksnummerOrFnrParam,
-    savedEntries,
+    entries,
     seds
   }: any = useSelector<State, any>(mapState)
   const [_filter, _setFilter] = useState<string | undefined>(undefined)
@@ -139,13 +139,13 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
   }
 
   const findSavedEntry = (connectedSed: ConnectedSed): LocalStorageEntry<ReplySed> | undefined => {
-    return _.find(savedEntries, (e: LocalStorageEntry<ReplySed>) =>
+    return _.find(entries, (e: LocalStorageEntry<ReplySed>) =>
       e.content.sedId === connectedSed.sedId + '-' + connectedSed.sedType
     )
   }
 
   const hasDraft = (connectedSed: ConnectedSed): boolean => {
-    if (_.isEmpty(savedEntries)) {
+    if (_.isEmpty(entries)) {
       return false
     }
     return findSavedEntry(connectedSed) !== undefined

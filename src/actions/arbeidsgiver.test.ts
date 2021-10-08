@@ -21,8 +21,13 @@ describe('actions/arbeidsgiver', () => {
   })
 
   it('fetchArbeidsperioder()', () => {
-    const fnr = 'mockFnr'
-    arbeidsgiverActions.fetchArbeidsperioder(fnr)
+    const mockOptions = {
+      fnr: 'mockFnr',
+      inntektslistetype: 'type',
+      fom: 'fom',
+      tom: 'tom'
+    }
+    arbeidsgiverActions.fetchArbeidsperioder(mockOptions)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
@@ -30,7 +35,7 @@ describe('actions/arbeidsgiver', () => {
           success: types.ARBEIDSPERIODER_GET_SUCCESS,
           failure: types.ARBEIDSPERIODER_GET_FAILURE
         },
-        url: sprintf(urls.API_ARBEIDSPERIODER_QUERY_URL, { fnr: fnr })
+        url: sprintf(urls.API_ARBEIDSPERIODER_QUERY_URL, mockOptions)
       }))
   })
 

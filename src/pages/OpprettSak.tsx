@@ -125,7 +125,8 @@ const mapState = (state: State): OpprettSakSelector => ({
   gettingPerson: state.loading.gettingPerson,
   gettingArbeidsperioder: state.loading.gettingArbeidsperioder,
 
-  arbeidsperioder: state.sak.arbeidsperioder,
+  arbeidsperioder: state.arbeidsgiver.arbeidsperioder,
+
   valgteArbeidsgivere: state.sak.arbeidsgivere,
   valgtBucType: state.sak.buctype,
   valgteFamilieRelasjoner: state.sak.familierelasjoner,
@@ -151,7 +152,6 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
     alertStatus,
     alertMessage,
     alertType,
-    gettingArbeidsperioder,
     gettingFagsaker,
     gettingPerson,
     enheter,
@@ -662,8 +662,6 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                   namespace='arbeidsgivere'
                   searchable
                   fnr={person?.fnr}
-                  getArbeidsperioder={() => dispatch(sakActions.getArbeidsperioder(person?.fnr))}
-                  gettingArbeidsperioder={gettingArbeidsperioder}
                   valgteArbeidsgivere={valgteArbeidsgivere}
                   arbeidsperioder={arbeidsperioder}
                   onArbeidsgiverSelect={(a: PeriodeMedForsikring, checked: boolean) => dispatch(

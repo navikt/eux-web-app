@@ -13,8 +13,6 @@ export interface ArbeidsgivereProps {
   arbeidsperioder: Arbeidsperioder | undefined
   editable?: Editable
   fnr: string | undefined
-  getArbeidsperioder?: () => void
-  gettingArbeidsperioder?: boolean
   namespace: string
   personFnr?: string
   onArbeidsgiverSelect: (a: PeriodeMedForsikring, checked: boolean) => void

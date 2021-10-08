@@ -16,7 +16,7 @@ exports[`components/TopContainer Renders 1`] = `
 }
 
 .c5:focus {
-  background-color: #19548a !important;
+  background-color: #00347d !important;
   color: #FFFFFF !important;
 }
 
@@ -39,9 +39,22 @@ exports[`components/TopContainer Renders 1`] = `
   margin-left: 1rem;
 }
 
+.c7 {
+  -webkit-flex: 0 1 auto;
+  -ms-flex: 0 1 auto;
+  flex: 0 1 auto;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
 .c0 {
   background-color: #99c2e8;
-  color: #3e3832;
+  color: #262626;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -76,7 +89,7 @@ exports[`components/TopContainer Renders 1`] = `
 }
 
 .c2 {
-  border-left: 1px solid #78706a;
+  border-left: 1px solid #6a6a6a;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -115,45 +128,37 @@ exports[`components/TopContainer Renders 1`] = `
   align-items: center;
 }
 
-.c8 {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  color: #3e3832;
-  overflow: hidden;
-  max-height: 2.3em;
-  margin: 2px;
-  padding: 0em 0.5em;
-  z-index: 99999;
+.c10 {
+  font-size: 80%;
 }
 
-.c7 {
+.c8 {
   padding: 0px;
-  -webkit-flex: 1 0 auto;
-  -ms-flex: 1 0 auto;
-  flex: 1 0 auto;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+}
+
+.c9 {
+  position: fixed;
+  bottom: 0;
+  right: 0;
   color: #3e3832;
-  background-color: whitesmoke;
+  overflow: hidden;
+  margin: 0.5rem;
+  padding: 0em 0.5em;
+  z-index: 99999;
 }
 
 <TopContainer
   header="mockHeader"
 >
-  <J
+  <he
     highContrast={false}
   >
     <Component
       theme={
         Object {
           "alternative-background-color": "#FFFFFF",
-          "alternative-hover-color": "#cce1f3",
+          "alternative-hover-color": "#cce1ff",
+          "alternative-interactive-color": "#0074df",
           "black": "#000000",
           "border-radius-base": "4px",
           "border-radius-large": "6px",
@@ -164,10 +169,10 @@ exports[`components/TopContainer Renders 1`] = `
           "container-md": "(940px + @grid-gutter-width)",
           "container-sm": "(720px + @grid-gutter-width)",
           "container-tablet": "(720px + @grid-gutter-width)",
-          "fokusFarge": "#19548a",
-          "grayBackground": "#e9e7e7",
-          "grayIcon": "#b7b1a9",
-          "grayInactive": "#78706a",
+          "fokusFarge": "#00347d",
+          "grayBackground": "#f1f1f1",
+          "grayIcon": "#a0a0a0",
+          "grayInactive": "#6a6a6a",
           "grayModia": "#333333",
           "grid-columns": "12",
           "grid-float-breakpoint": "768px",
@@ -178,106 +183,89 @@ exports[`components/TopContainer Renders 1`] = `
           "line-height-small": "1.5",
           "main-active-color": "#005b82",
           "main-background-color": "#f1f1f1",
-          "main-border-color": "#78706a",
+          "main-border-color": "#6a6a6a",
           "main-border-radius": "4px",
           "main-border-width": "1px",
-          "main-disabled-color": "#b7b1a9",
+          "main-disabled-color": "#a0a0a0",
           "main-error-color": "#ba3a26",
-          "main-focus-color": "#19548a",
-          "main-font-color": "#3e3832",
-          "main-hover-color": "#0074df",
+          "main-focus-color": "#00347d",
+          "main-font-color": "#262626",
+          "main-hover-color": "#99c3ff",
           "main-interactive-color": "#0067c5",
           "main-success-color": "#06893a",
           "main-warning-color": "#ff9100",
           "navBakgrunn": "#ffffff",
           "navBla": "#0067c5",
-          "navBlaDarken20": "#32414f",
-          "navBlaDarken40": "#254b6d",
-          "navBlaDarken60": "#19548a",
-          "navBlaDarken80": "#0c5ea8",
-          "navBlaLighten20": "#cce1f3",
-          "navBlaLighten40": "#99c2e8",
-          "navBlaLighten60": "#66a4dc",
-          "navBlaLighten80": "#3385d1",
+          "navBlaDarken20": "#0056b4",
+          "navBlaDarken40": "#00459c",
+          "navBlaDarken60": "#00347d",
+          "navBlaDarken80": "#002252",
+          "navBlaLighten20": "#3386e0",
+          "navBlaLighten40": "#66a5f4",
+          "navBlaLighten60": "#99c3ff",
+          "navBlaLighten80": "#cce1ff",
           "navDypBla": "#005b82",
-          "navDypBlaDarken20": "#323f42",
-          "navDypBlaDarken40": "#254652",
-          "navDypBlaDarken60": "#194d62",
-          "navDypBlaDarken80": "#0c5472",
-          "navDypBlaLighten20": "#ccdee6",
-          "navDypBlaLighten40": "#99bdcd",
-          "navDypBlaLighten60": "#669db4",
-          "navDypBlaLighten80": "#337c9b",
-          "navGra20": "#c6c2bf",
-          "navGra40": "#b7b1a9",
-          "navGra60": "#78706a",
-          "navGra80": "#59514b",
+          "navDypBlaDarken20": "#005077",
+          "navDypBlaDarken40": "#004367",
+          "navDypBlaDarken60": "#003453",
+          "navDypBlaDarken80": "#00243a",
+          "navDypBlaLighten20": "#3380a5",
+          "navDypBlaLighten40": "#66a3c4",
+          "navDypBlaLighten60": "#99c4dd",
+          "navDypBlaLighten80": "#cce2f0",
+          "navGra20": "#c9c9c9",
+          "navGra40": "#a0a0a0",
+          "navGra60": "#6a6a6a",
+          "navGra80": "#4f4f4f",
           "navGraBakgrunn": "#f1f1f1",
           "navGronn": "#06893a",
-          "navGronnDarken20": "#334834",
-          "navGronnDarken40": "#285835",
-          "navGronnDarken60": "#1c6937",
-          "navGronnDarken80": "#117938",
-          "navGronnLighten20": "#cde7d8",
-          "navGronnLighten40": "#9bd0b0",
-          "navGronnLighten60": "#6ab889",
-          "navGronnLighten80": "#38a161",
+          "navGronnDarken20": "#007c2e",
+          "navGronnDarken40": "#006a23",
+          "navGronnDarken60": "#005519",
+          "navGronnDarken80": "#003b0f",
+          "navGronnLighten20": "#33aa5f",
+          "navGronnLighten40": "#66c786",
+          "navGronnLighten60": "#99dead",
+          "navGronnLighten80": "#ccf1d6",
           "navLilla": "#634689",
-          "navLillaDarken20": "#453b43",
-          "navLillaDarken40": "#4d3e55",
-          "navLillaDarken60": "#544066",
-          "navLillaDarken80": "#5c4378",
-          "navLillaLighten20": "#e0dae7",
-          "navLillaLighten40": "#c1b5d0",
-          "navLillaLighten60": "#a190b8",
-          "navLillaLighten80": "#826ba1",
+          "navLillaDarken20": "#523874",
+          "navLillaDarken40": "#412b5d",
+          "navLillaDarken60": "#301f46",
+          "navLillaDarken80": "#1f142f",
+          "navLillaLighten20": "#8269a2",
+          "navLillaLighten40": "#a18dbb",
+          "navLillaLighten60": "#c0b2d2",
+          "navLillaLighten80": "#e0d8e9",
           "navLimeGronn": "#a2ad00",
-          "navLimeGronnDarken20": "#524f28",
-          "navLimeGronnDarken40": "#66671e",
-          "navLimeGronnDarken60": "#7a7e14",
-          "navLimeGronnDarken80": "#8e960a",
-          "navLimeGronnLighten20": "#ecefcc",
-          "navLimeGronnLighten40": "#dade99",
-          "navLimeGronnLighten60": "#c7ce66",
-          "navLimeGronnLighten80": "#b5bd33",
+          "navLimeGronnDarken20": "#939e00",
+          "navLimeGronnDarken40": "#7f8900",
+          "navLimeGronnDarken60": "#666e00",
+          "navLimeGronnDarken80": "#474e00",
+          "navLimeGronnLighten20": "#c1cb33",
+          "navLimeGronnLighten40": "#d9e366",
+          "navLimeGronnLighten60": "#ecf399",
+          "navLimeGronnLighten80": "#f9fccc",
           "navLysBla": "#66cbec",
-          "navLysBlaDarken20": "#465557",
-          "navLysBlaDarken40": "#4e737c",
-          "navLysBlaDarken60": "#5690a2",
-          "navLysBlaDarken80": "#5eaec7",
-          "navLysBlaLighten20": "#e0f5fb",
-          "navLysBlaLighten40": "#c2eaf7",
-          "navLysBlaLighten60": "#a3e0f4",
-          "navLysBlaLighten80": "#85d5f0",
-          "navLysGra": "#e9e7e7",
-          "navMorkGra": "#3e3832",
+          "navLysBlaDarken20": "#4cadcd",
+          "navLysBlaDarken40": "#368da8",
+          "navLysBlaDarken60": "#236b7d",
+          "navLysBlaDarken80": "#134852",
+          "navLysBlaLighten20": "#7cdaf8",
+          "navLysBlaLighten40": "#97e6ff",
+          "navLysBlaLighten60": "#b5f1ff",
+          "navLysBlaLighten80": "#d8f9ff",
+          "navLysGra": "#f1f1f1",
+          "navMorkGra": "#262626",
           "navOransje": "#ff9100",
-          "navOransjeDarken20": "#654a28",
-          "navOransjeDarken40": "#8b5c1e",
-          "navOransjeDarken60": "#b26d14",
-          "navOransjeDarken80": "#d87f0a",
-          "navOransjeLighten20": "#ffe9cc",
-          "navOransjeLighten40": "#ffd399",
-          "navOransjeLighten60": "#ffbd66",
-          "navOransjeLighten80": "#ffa733",
+          "navOransjeDarken20": "#d47b00",
+          "navOransjeDarken40": "#a86400",
+          "navOransjeDarken60": "#7d4c00",
+          "navOransjeDarken80": "#523300",
+          "navOransjeLighten20": "#ffaa33",
+          "navOransjeLighten40": "#ffc166",
+          "navOransjeLighten60": "#ffd799",
+          "navOransjeLighten80": "#ffeccc",
           "navRod": "#c30000",
-          "navRodDarken20": "#592d28",
-          "navRodDarken40": "#73221e",
-          "navRodDarken60": "#8e1614",
-          "navRodDarken80": "#a80b0a",
-          "navRodLighten20": "#f3cccc",
-          "navRodLighten40": "#e79999",
-          "navRodLighten60": "#db6666",
-          "navRodLighten80": "#cf3333",
-          "orangeFocus": "#ffbd66",
-          "orangeFocusDarken20": "#65533c",
-          "orangeFocusDarken40": "#8b6d47",
-          "orangeFocusDarken60": "#b28851",
-          "orangeFocusDarken80": "#d8a25c",
-          "orangeFocusLighten20": "#fff2e0",
-          "orangeFocusLighten40": "#ffe5c2",
-          "orangeFocusLighten60": "#ffd7a3",
-          "orangeFocusLighten80": "#ffca85",
           "padding-base-horizontal": "12px",
           "padding-base-vertical": "6px",
           "padding-large-horizontal": "16px",
@@ -288,14 +276,14 @@ exports[`components/TopContainer Renders 1`] = `
           "padding-xs-vertical": "1px",
           "pinkErrorBg": "#f3e3e3",
           "redError": "#ba3a26",
-          "redErrorDarken20": "#573830",
-          "redErrorDarken40": "#70392d",
-          "redErrorDarken60": "#88392b",
-          "redErrorDarken80": "#a13a28",
-          "redErrorLighten20": "#f1d8d4",
-          "redErrorLighten40": "#e3b0a8",
-          "redErrorLighten60": "#d6897d",
-          "redErrorLighten80": "#c86151",
+          "redErrorDarken20": "#a32a17",
+          "redErrorDarken40": "#881d0c",
+          "redErrorDarken60": "#6a1204",
+          "redErrorDarken80": "#480900",
+          "redErrorLighten20": "#d05c4a",
+          "redErrorLighten40": "#e18071",
+          "redErrorLighten60": "#efa89d",
+          "redErrorLighten80": "#f9d2cc",
           "screen-desktop": "992px",
           "screen-lg": "1200px",
           "screen-lg-desktop": "1200px",
@@ -313,291 +301,124 @@ exports[`components/TopContainer Renders 1`] = `
         }
       }
     >
-      <u
-        renderError={[Function]}
+      <Memo(l) />
+      <ErrorBoundary
+        FallbackComponent={[Function]}
+        onReset={[Function]}
       >
-        <n
-          onDidCatch={[Function]}
-          renderError={[Function]}
-        >
-          <Header
-            highContrast={false}
-          >
-            <J
-              highContrast={false}
+        <Header>
+          <styled.header>
+            <header
+              className="c0"
             >
-              <Component
-                theme={
-                  Object {
-                    "alternative-background-color": "#FFFFFF",
-                    "alternative-hover-color": "#cce1f3",
-                    "black": "#000000",
-                    "border-radius-base": "4px",
-                    "border-radius-large": "6px",
-                    "border-radius-small": "2px",
-                    "container-desktop": "(940px + @grid-gutter-width)",
-                    "container-large-desktop": "(1140px + @grid-gutter-width)",
-                    "container-lg": "(1140px + @grid-gutter-width)",
-                    "container-md": "(940px + @grid-gutter-width)",
-                    "container-sm": "(720px + @grid-gutter-width)",
-                    "container-tablet": "(720px + @grid-gutter-width)",
-                    "fokusFarge": "#19548a",
-                    "grayBackground": "#e9e7e7",
-                    "grayIcon": "#b7b1a9",
-                    "grayInactive": "#78706a",
-                    "grayModia": "#333333",
-                    "grid-columns": "12",
-                    "grid-float-breakpoint": "768px",
-                    "grid-float-breakpoint-max": "(@grid-float-breakpoint - 1)",
-                    "grid-gutter-width": "16px",
-                    "inverted-font-color": "#FFFFFF",
-                    "line-height-large": "1.3333333",
-                    "line-height-small": "1.5",
-                    "main-active-color": "#005b82",
-                    "main-background-color": "#f1f1f1",
-                    "main-border-color": "#78706a",
-                    "main-border-radius": "4px",
-                    "main-border-width": "1px",
-                    "main-disabled-color": "#b7b1a9",
-                    "main-error-color": "#ba3a26",
-                    "main-focus-color": "#19548a",
-                    "main-font-color": "#3e3832",
-                    "main-hover-color": "#0074df",
-                    "main-interactive-color": "#0067c5",
-                    "main-success-color": "#06893a",
-                    "main-warning-color": "#ff9100",
-                    "navBakgrunn": "#ffffff",
-                    "navBla": "#0067c5",
-                    "navBlaDarken20": "#32414f",
-                    "navBlaDarken40": "#254b6d",
-                    "navBlaDarken60": "#19548a",
-                    "navBlaDarken80": "#0c5ea8",
-                    "navBlaLighten20": "#cce1f3",
-                    "navBlaLighten40": "#99c2e8",
-                    "navBlaLighten60": "#66a4dc",
-                    "navBlaLighten80": "#3385d1",
-                    "navDypBla": "#005b82",
-                    "navDypBlaDarken20": "#323f42",
-                    "navDypBlaDarken40": "#254652",
-                    "navDypBlaDarken60": "#194d62",
-                    "navDypBlaDarken80": "#0c5472",
-                    "navDypBlaLighten20": "#ccdee6",
-                    "navDypBlaLighten40": "#99bdcd",
-                    "navDypBlaLighten60": "#669db4",
-                    "navDypBlaLighten80": "#337c9b",
-                    "navGra20": "#c6c2bf",
-                    "navGra40": "#b7b1a9",
-                    "navGra60": "#78706a",
-                    "navGra80": "#59514b",
-                    "navGraBakgrunn": "#f1f1f1",
-                    "navGronn": "#06893a",
-                    "navGronnDarken20": "#334834",
-                    "navGronnDarken40": "#285835",
-                    "navGronnDarken60": "#1c6937",
-                    "navGronnDarken80": "#117938",
-                    "navGronnLighten20": "#cde7d8",
-                    "navGronnLighten40": "#9bd0b0",
-                    "navGronnLighten60": "#6ab889",
-                    "navGronnLighten80": "#38a161",
-                    "navLilla": "#634689",
-                    "navLillaDarken20": "#453b43",
-                    "navLillaDarken40": "#4d3e55",
-                    "navLillaDarken60": "#544066",
-                    "navLillaDarken80": "#5c4378",
-                    "navLillaLighten20": "#e0dae7",
-                    "navLillaLighten40": "#c1b5d0",
-                    "navLillaLighten60": "#a190b8",
-                    "navLillaLighten80": "#826ba1",
-                    "navLimeGronn": "#a2ad00",
-                    "navLimeGronnDarken20": "#524f28",
-                    "navLimeGronnDarken40": "#66671e",
-                    "navLimeGronnDarken60": "#7a7e14",
-                    "navLimeGronnDarken80": "#8e960a",
-                    "navLimeGronnLighten20": "#ecefcc",
-                    "navLimeGronnLighten40": "#dade99",
-                    "navLimeGronnLighten60": "#c7ce66",
-                    "navLimeGronnLighten80": "#b5bd33",
-                    "navLysBla": "#66cbec",
-                    "navLysBlaDarken20": "#465557",
-                    "navLysBlaDarken40": "#4e737c",
-                    "navLysBlaDarken60": "#5690a2",
-                    "navLysBlaDarken80": "#5eaec7",
-                    "navLysBlaLighten20": "#e0f5fb",
-                    "navLysBlaLighten40": "#c2eaf7",
-                    "navLysBlaLighten60": "#a3e0f4",
-                    "navLysBlaLighten80": "#85d5f0",
-                    "navLysGra": "#e9e7e7",
-                    "navMorkGra": "#3e3832",
-                    "navOransje": "#ff9100",
-                    "navOransjeDarken20": "#654a28",
-                    "navOransjeDarken40": "#8b5c1e",
-                    "navOransjeDarken60": "#b26d14",
-                    "navOransjeDarken80": "#d87f0a",
-                    "navOransjeLighten20": "#ffe9cc",
-                    "navOransjeLighten40": "#ffd399",
-                    "navOransjeLighten60": "#ffbd66",
-                    "navOransjeLighten80": "#ffa733",
-                    "navRod": "#c30000",
-                    "navRodDarken20": "#592d28",
-                    "navRodDarken40": "#73221e",
-                    "navRodDarken60": "#8e1614",
-                    "navRodDarken80": "#a80b0a",
-                    "navRodLighten20": "#f3cccc",
-                    "navRodLighten40": "#e79999",
-                    "navRodLighten60": "#db6666",
-                    "navRodLighten80": "#cf3333",
-                    "orangeFocus": "#ffbd66",
-                    "orangeFocusDarken20": "#65533c",
-                    "orangeFocusDarken40": "#8b6d47",
-                    "orangeFocusDarken60": "#b28851",
-                    "orangeFocusDarken80": "#d8a25c",
-                    "orangeFocusLighten20": "#fff2e0",
-                    "orangeFocusLighten40": "#ffe5c2",
-                    "orangeFocusLighten60": "#ffd7a3",
-                    "orangeFocusLighten80": "#ffca85",
-                    "padding-base-horizontal": "12px",
-                    "padding-base-vertical": "6px",
-                    "padding-large-horizontal": "16px",
-                    "padding-large-vertical": "10px",
-                    "padding-small-horizontal": "10px",
-                    "padding-small-vertical": "5px",
-                    "padding-xs-horizontal": "5px",
-                    "padding-xs-vertical": "1px",
-                    "pinkErrorBg": "#f3e3e3",
-                    "redError": "#ba3a26",
-                    "redErrorDarken20": "#573830",
-                    "redErrorDarken40": "#70392d",
-                    "redErrorDarken60": "#88392b",
-                    "redErrorDarken80": "#a13a28",
-                    "redErrorLighten20": "#f1d8d4",
-                    "redErrorLighten40": "#e3b0a8",
-                    "redErrorLighten60": "#d6897d",
-                    "redErrorLighten80": "#c86151",
-                    "screen-desktop": "992px",
-                    "screen-lg": "1200px",
-                    "screen-lg-desktop": "1200px",
-                    "screen-lg-min": "1200px",
-                    "screen-md": "992px",
-                    "screen-md-max": "(@screen-lg-min - 1)",
-                    "screen-md-min": "992px",
-                    "screen-sm": "768px",
-                    "screen-sm-max": "(@screen-md-min - 1)",
-                    "screen-sm-min": "768px",
-                    "screen-tablet": "768px",
-                    "screen-xs-max": "(@screen-sm-min - 1)",
-                    "type": "theme",
-                    "white": "#FFFFFF",
-                  }
-                }
-              >
-                <styled.header>
-                  <header
-                    className="c0"
+              <styled.div>
+                <div
+                  className="c1"
+                >
+                  <Link
+                    onClick={[Function]}
+                    to="/"
                   >
-                    <styled.div>
-                      <div
-                        className="c1"
+                    <div
+                      className="mock-link"
+                    />
+                  </Link>
+                  <styled.div>
+                    <div
+                      className="c2"
+                    />
+                  </styled.div>
+                  <styled.div>
+                    <div
+                      className="c3"
+                    >
+                      app:name
+                    </div>
+                  </styled.div>
+                </div>
+              </styled.div>
+              <Undertittel>
+                <TypografiBase
+                  type="undertittel"
+                >
+                  <h2
+                    className="typo-undertittel"
+                  >
+                    app:title
+                  </h2>
+                </TypografiBase>
+              </Undertittel>
+              <styled.div>
+                <div
+                  className="c4"
+                >
+                  <Styled(f)
+                    data-test-id="header__highcontrast-link"
+                    href="#highContrast"
+                    onClick={[Function]}
+                  >
+                    <f
+                      className="c5"
+                      data-test-id="header__highcontrast-link"
+                      href="#highContrast"
+                      onClick={[Function]}
+                    >
+                      <a
+                        className="lenke c5"
+                        data-test-id="header__highcontrast-link"
+                        href="#highContrast"
+                        onClick={[Function]}
                       >
-                        <Link
-                          onClick={[Function]}
-                          to="/"
-                        >
-                          <div
-                            className="mock-link"
-                          />
-                        </Link>
-                        <styled.div>
-                          <div
-                            className="c2"
-                          />
-                        </styled.div>
-                        <styled.div>
-                          <div
-                            className="c3"
-                          >
-                            app:name
-                          </div>
-                        </styled.div>
-                      </div>
-                    </styled.div>
-                    <Undertittel>
-                      <TypografiBase
-                        type="undertittel"
-                      >
-                        <h2
-                          className="typo-undertittel"
-                        >
-                          app:title
-                        </h2>
-                      </TypografiBase>
-                    </Undertittel>
-                    <styled.div>
-                      <div
-                        className="c4"
-                      >
-                        <Styled(s)
-                          data-test-id="c-header__highcontrast-link"
-                          href="#highContrast"
-                          onClick={[Function]}
-                        >
-                          <s
-                            className="c5"
-                            data-test-id="c-header__highcontrast-link"
-                            href="#highContrast"
-                            onClick={[Function]}
-                          >
-                            <a
-                              className="lenke c5"
-                              data-test-id="c-header__highcontrast-link"
-                              href="#highContrast"
-                              onClick={[Function]}
-                            >
-                              label:highContrast
-                            </a>
-                          </s>
-                        </Styled(s)>
-                        <styled.div>
-                          <div
-                            className="c6"
-                          />
-                        </styled.div>
-                      </div>
-                    </styled.div>
-                  </header>
-                </styled.header>
-              </Component>
-            </J>
-          </Header>
-          <Alert
-            onClose={[Function]}
-            type="server"
-          />
-          <styled.main
-            className=""
+                        label:høy-kontrast
+                      </a>
+                    </f>
+                  </Styled(f)>
+                  <styled.div>
+                    <div
+                      className="c6"
+                    />
+                  </styled.div>
+                </div>
+              </styled.div>
+            </header>
+          </styled.header>
+        </Header>
+        <Alert
+          onClose={[Function]}
+        />
+        <Styled(styled.div)
+          className=""
+          id="main"
+          role="main"
+        >
+          <div
+            className="c7 c8"
             id="main"
             role="main"
           >
-            <main
-              className="c7"
-              id="main"
-              role="main"
-            >
-              <div
-                id="TEST_CHILD"
-              />
-            </main>
-          </styled.main>
-          <SessionMonitor>
-            <styled.div>
-              <div
-                className="c8"
-              />
-            </styled.div>
-          </SessionMonitor>
-          <Version />
-        </n>
-      </u>
+            <div
+              id="TEST_CHILD"
+            />
+          </div>
+        </Styled(styled.div)>
+        <styled.div>
+          <div
+            className="c9"
+          >
+            <SessionMonitor>
+              <styled.div>
+                <div
+                  className="c10"
+                >
+                  Sesjon utløper om 
+                </div>
+              </styled.div>
+            </SessionMonitor>
+            <Version />
+          </div>
+        </styled.div>
+      </ErrorBoundary>
     </Component>
-  </J>
+  </he>
 </TopContainer>
 `;

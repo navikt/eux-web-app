@@ -134,7 +134,8 @@ describe('actions/svarpased', () => {
     const connectedSed = {
       svarsedType: 'U002',
       sedId: '123',
-      sedUrl: 'mockSedUrl'
+      sedUrl: 'mockSedUrl',
+      sedType: 'U001'
     } as ConnectedSed
     const saksnummer = '456'
 
@@ -148,7 +149,8 @@ describe('actions/svarpased', () => {
         },
         context: {
           saksnummer: saksnummer,
-          sedUrl: connectedSed.sedUrl
+          sedUrl: connectedSed.sedUrl,
+          sedId: '123-U001'
         },
         url: sprintf(urls.API_RINASAK_SVARSED_QUERY_URL, {
           rinaSakId: saksnummer,
@@ -158,12 +160,38 @@ describe('actions/svarpased', () => {
       }))
   })
 
+  it('resetPreviewFile()', () => {
+    const generatedResult = svarpasedActions.resetPreviewFile()
+    expect(generatedResult)
+      .toMatchObject({
+        type: types.SVARPASED_PREVIEW_RESET
+      })
+  })
+
   it('resetReplySed()', () => {
     const generatedResult = svarpasedActions.resetReplySed()
     expect(generatedResult)
       .toMatchObject({
         type: types.SVARPASED_REPLYSED_RESET
       })
+  })
+
+  it('sendSedInRina()', () => {
+    const rinaSakId = '123'
+    const sedId = '456'
+    svarpasedActions.sendSedInRina(rinaSakId, sedId)
+    expect(call)
+      .toBeCalledWith(expect.objectContaining({
+        type: {
+          request: types.SVARPASED_SED_SEND_REQUEST,
+          success: types.SVARPASED_SED_SEND_SUCCESS,
+          failure: types.SVARPASED_SED_SEND_FAILURE
+        },
+        url: sprintf(urls.API_SED_SEND_URL, {
+          rinaSakId: rinaSakId,
+          sedId: sedId
+        })
+      }))
   })
 
   it('setMode()', () => {
@@ -186,10 +214,20 @@ describe('actions/svarpased', () => {
       })
   })
 
+  it('setReplySed()', () => {
+    const replySed = 'replySed'
+    const generatedResult = svarpasedActions.setReplySed(replySed)
+    expect(generatedResult)
+      .toMatchObject({
+        type: types.SVARPASED_REPLYSED_SET,
+        payload: replySed
+      })
+  })
+
   it('updateReplySed()', () => {
     const needle = 'needle'
     const value = 'value'
-    const generatedResult = svarpasedActions.setReplySed(needle, value)
+    const generatedResult = svarpasedActions.updateReplySed(needle, value)
     expect(generatedResult)
       .toMatchObject({
         type: types.SVARPASED_REPLYSED_UPDATE,
