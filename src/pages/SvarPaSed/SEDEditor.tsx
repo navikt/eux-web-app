@@ -84,7 +84,8 @@ const mapState = (state: State): any => ({
   sendingSed: state.loading.sendingSed,
   sedCreatedResponse: state.svarpased.sedCreatedResponse,
   sedSendResponse: state.svarpased.sedSendResponse,
-  validation: state.validation.status
+  validation: state.validation.status,
+  view: state.validation.view
 })
 
 const SEDEditor: React.FC<SEDEditorProps> = ({
@@ -106,7 +107,8 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
     sendingSed,
     sedCreatedResponse,
     sedSendResponse,
-    validation
+    validation,
+    view
   }: SEDEditorSelector = useSelector<State, SEDEditorSelector>(mapState)
   const fnr = getFnr(replySed, 'bruker')
   const namespace = 'editor'
@@ -302,13 +304,13 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
       <VerticalSeparatorDiv size='3' />
       {showPersonManager() && (
         <>
-          <PersonManager />
+          <PersonManager viewValidation={view}/>
           <VerticalSeparatorDiv size='2' />
         </>
       )}
       {isFSed(replySed) && showFormålManager() && (
         <>
-          <FormålManager />
+          <FormålManager viewValidation={view}/>
           <VerticalSeparatorDiv size='2' />
         </>
       )}

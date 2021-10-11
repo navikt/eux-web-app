@@ -27,7 +27,7 @@ export const validateAdresse = (
 
   if (_.isEmpty(adresse?.type?.trim())) {
     v[namespace + idx + '-type'] = {
-      feilmelding: t('message:validation-noAddressTypeForPerson', { person: personName }),
+      feilmelding: t('message:validation-noAddressTypeTil', { person: personName }),
       skjemaelementId: namespace + idx + '-type'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -35,7 +35,7 @@ export const validateAdresse = (
 
   if (_.isEmpty(adresse?.land?.trim())) {
     v[namespace + idx + '-land'] = {
-      feilmelding: t('message:validation-noAddressCountryForPerson', { person: personName }),
+      feilmelding: t('message:validation-noAddressCountryTil', { person: personName }),
       skjemaelementId: namespace + idx + '-land'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -43,7 +43,7 @@ export const validateAdresse = (
 
   if (_.isEmpty(adresse?.gate?.trim())) {
     v[namespace + idx + '-gate'] = {
-      feilmelding: t('message:validation-noAddressStreetForPerson', { person: personName }),
+      feilmelding: t('message:validation-noAddressStreetTil', { person: personName }),
       skjemaelementId: namespace + idx + '-gate'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -51,7 +51,7 @@ export const validateAdresse = (
 
   if (_.isEmpty(adresse?.postnummer?.trim())) {
     v[namespace + idx + '-postnummer'] = {
-      feilmelding: t('message:validation-noAddressPostnummerForPerson', { person: personName }),
+      feilmelding: t('message:validation-noAddressPostnummerTil', { person: personName }),
       skjemaelementId: namespace + idx + '-postnummer'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -59,7 +59,7 @@ export const validateAdresse = (
 
   if (_.isEmpty(adresse?.by?.trim())) {
     v[namespace + idx + '-by'] = {
-      feilmelding: t('message:validation-noAddressCityForPerson', { person: personName }),
+      feilmelding: t('message:validation-noAddressCityTil', { person: personName }),
       skjemaelementId: namespace + idx + '-by'
     } as FeiloppsummeringFeil
     hasErrors = true

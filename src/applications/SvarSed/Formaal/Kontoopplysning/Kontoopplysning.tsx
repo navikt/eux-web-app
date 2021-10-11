@@ -1,6 +1,6 @@
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
-import { FormålManagerFormProps, FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
+import { mapState, FormålManagerFormProps, FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
 import classNames from 'classnames'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
@@ -13,24 +13,15 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
-const mapState = (state: State): FormålManagerFormSelector => ({
-  replySed: state.svarpased.replySed,
-  validation: state.validation.status,
-  viewValidation: state.validation.view
-})
-
 const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
   parentNamespace
 }: FormålManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {
-    replySed,
-    validation
-  }: any = useSelector<State, FormålManagerFormSelector>(mapState)
+  const {replySed, validation}: FormålManagerFormSelector = useSelector<State, FormålManagerFormSelector>(mapState)
   const dispatch = useDispatch()
-  const target = 'utbetalingTilInstitusjon'
+  const target: string = 'utbetalingTilInstitusjon'
   const utbetalingTilInstitusjon: UtbetalingTilInstitusjon | undefined = (replySed as F002Sed).utbetalingTilInstitusjon
-  const namespace = `${parentNamespace}-kontoopplysninger`
+  const namespace: string = `${parentNamespace}-kontoopplysninger`
 
   const setBegrunnelse = (newBegrunnelse: string) => {
     dispatch(updateReplySed(`${target}.begrunnelse`, newBegrunnelse.trim()))
@@ -86,10 +77,12 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
           <TextAreaDiv>
             <TextArea
               feil={validation[namespace + '-begrunnelse']?.feilmelding}
-              namespace={namespace}
+              key={namespace + '-begrunnelse-' + (utbetalingTilInstitusjon.begrunnelse ?? '')}
               id='begrunnelse'
               label={t('label:begrunnelse-for-myndighetens-krav') + '*'}
+              namespace={namespace}
               onChanged={setBegrunnelse}
+              required
               value={utbetalingTilInstitusjon.begrunnelse ?? ''}
             />
           </TextAreaDiv>
@@ -99,15 +92,16 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
       <VerticalSeparatorDiv />
       <AlignStartRow
         className={classNames('slideInFromLeft')}
-        style={{ animationDelay: '0.05s' }}
-      >
+        style={{ animationDelay: '0.05s' }}>
         <Column>
           <Input
             feil={validation[namespace + '-id']?.feilmelding}
-            namespace={namespace}
             id='id'
+            key={namespace + '-id-' + (utbetalingTilInstitusjon.id ?? '')}
             label={t('label:institusjonens-id') + ' *'}
+            namespace={namespace}
             onChanged={setId}
+            required
             value={utbetalingTilInstitusjon.id ?? ''}
           />
         </Column>
@@ -115,9 +109,11 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
           <Input
             feil={validation[namespace + '-navn']?.feilmelding}
             namespace={namespace}
+            key={namespace + '-navn-' + (utbetalingTilInstitusjon.navn ?? '')}
             id='navn'
             label={t('label:institusjonens-navn') + ' *'}
             onChanged={setNavn}
+            required
             value={utbetalingTilInstitusjon.navn ?? ''}
           />
         </Column>
@@ -130,18 +126,19 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
       >
         <Column>
           <HighContrastRadioPanelGroup
-            checked={utbetalingTilInstitusjon?.kontoOrdinaer?.sepaKonto}
+            checked={utbetalingTilInstitusjon?.kontoOrdinaer?.sepaKonto === 'ja'}
             data-no-border
             data-test-id={namespace + '-kontoOrdinaer-sepaKonto'}
             feil={validation[namespace + '-kontoOrdinaer-sepaKonto']?.feilmelding}
             id={namespace + '-kontoOrdinaer-sepaKonto'}
             legend={t('label:bankinformasjon') + ' *'}
             name={namespace + '-bankinformasjon'}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSepaKonto(e.target.value as JaNei)}
             radios={[
               { label: t('label:sepa-konto-ja'), value: 'ja' },
               { label: t('label:sepa-konto-nei'), value: 'nei' }
             ]}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSepaKonto(e.target.value as JaNei)}
+            required
           />
         </Column>
       </AlignStartRow>
@@ -172,8 +169,10 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
             feil={validation[namespace + '-kontoOrdinaer-swift']?.feilmelding}
             namespace={namespace}
             id='kontoOrdinaer-swift'
+            key={namespace + '-kontoOrdinaer-swift-' + (utbetalingTilInstitusjon.kontoOrdinaer.swift ?? '')}
             label={t('label:swift') + ' *'}
             onChanged={setSwift}
+            required
             value={utbetalingTilInstitusjon.kontoOrdinaer.swift ?? ''}
           />
         </Column>

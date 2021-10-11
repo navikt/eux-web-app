@@ -187,7 +187,6 @@ export interface PersonManagerFormSelector {
 
 export interface PersonManagerSelector extends PersonManagerFormSelector {
   gettingPerson: boolean
-  viewValidation: boolean
 }
 
 export interface PersonManagerFormProps {
@@ -208,17 +207,15 @@ export interface PersonManagerOption extends Option {
 const mapState = (state: State): PersonManagerSelector => ({
   gettingPerson: state.loading.gettingPerson,
   replySed: state.svarpased.replySed,
-  validation: state.validation.status,
-  viewValidation: state.validation.view
+  validation: state.validation.status
 })
 
-const PersonManager: React.FC = () => {
+const PersonManager: React.FC = ({viewValidation}: any) => {
   const { t } = useTranslation()
   const {
     gettingPerson,
     replySed,
-    validation,
-    viewValidation
+    validation
   }: any = useSelector<State, PersonManagerSelector>(mapState)
   const namespace = 'personmanager'
 

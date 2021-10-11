@@ -40,14 +40,22 @@ personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-region      
 personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring[]                    - {CONNECTED} perioderAnsattMedForsikring[]
 
 F-Sed, barn:
-personmanager-{personID}-beløpnavnogvaluta-barnetsNavn          - {CONNECTED} barn[].ytelse.barnetsNavn
-personmanager-{personID}-beløpnavnogvaluta-ytelseNavn           - {CONNECTED} barn[].ytelse.ytelseNavn
-personmanager-{personID}-beløpnavnogvaluta-beloep               - {CONNECTED} barn[].ytelse.beloep
-personmanager-{personID}-beløpnavnogvaluta-valuta               - {CONNECTED} barn[].ytelse.valuta
-personmanager-{personID}-beløpnavnogvaluta-startdato            - {CONNECTED} barn[].ytelse.startdato
-personmanager-{personID}-beløpnavnogvaluta-sluttdato            - {CONNECTED} barn[].ytelse.sluttdato
-personmanager-{personID}-beløpnavnogvaluta-mottakersNavn        - {CONNECTED} barn[].ytelse.mottakersNavn
-personmanager-{personID}-beløpnavnogvaluta-utbetalingshyppighet - {CONNECTED} barn[].ytelse.utbetalingshyppighet
+personmanager-{personID}-beløpnavnogvaluta-barnetsNavn               - {INTERNAL} not used
+personmanager-{personID}-beløpnavnogvaluta-ytelseNavn                - {INTERNAL} not used
+personmanager-{personID}-beløpnavnogvaluta-beloep                    - {INTERNAL} not used
+personmanager-{personID}-beløpnavnogvaluta-valuta                    - {INTERNAL} not used
+personmanager-{personID}-beløpnavnogvaluta-startdato                 - {INTERNAL} not used
+personmanager-{personID}-beløpnavnogvaluta-sluttdato                 - {INTERNAL} not used
+personmanager-{personID}-beløpnavnogvaluta-mottakersNavn             - {INTERNAL} not used
+personmanager-{personID}-beløpnavnogvaluta-utbetalingshyppighet      - {INTERNAL} not used
+personmanager-{personID}-beløpnavnogvaluta[{i}]-barnetsNavn          - {CONNECTED} barn[].ytelser[].barnetsNavn
+personmanager-{personID}-beløpnavnogvaluta[{i}]-ytelseNavn           - {CONNECTED} barn[].ytelser[].ytelseNavn
+personmanager-{personID}-beløpnavnogvaluta[{i}]-beloep               - {CONNECTED} barn[].ytelser[].beloep
+personmanager-{personID}-beløpnavnogvaluta[{i}]-valuta               - {CONNECTED} barn[].ytelser[].valuta
+personmanager-{personID}-beløpnavnogvaluta[{i}]-startdato            - {CONNECTED} barn[].ytelser[].startdato
+personmanager-{personID}-beløpnavnogvaluta[{i}]-sluttdato            - {CONNECTED} barn[].ytelser[].sluttdato
+personmanager-{personID}-beløpnavnogvaluta[{i}]-mottakersNavn        - {CONNECTED} barn[].ytelser[].mottakersNavn
+personmanager-{personID}-beløpnavnogvaluta[{i}]-utbetalingshyppighet - {CONNECTED} barn[].ytelser[].utbetalingshyppighet
 
 F-Sed:
 personmanager-{personID}-familierelasjon-relasjonType                 - {INTERNAL}  not used
@@ -66,14 +74,22 @@ personmanager-{personID}-familierelasjon[{i}]-annenRelasjonDato       - {CONNECT
 personmanager-{personID}-familierelasjon[{i}]-borSammen               - {CONNECTED} {person}.familierelasjoner[].borSammen
 
 F-Sed, hele familien
-personmanager-{personID=familie}-familieytelser-number               - {CONNECTED} familie.ytelse.antallPersoner
-personmanager-{personID=familie}-familieytelser-ytelseNavn           - {CONNECTED} familie.ytelse.ytelseNavn
-personmanager-{personID=familie}-familieytelser-beloep               - {CONNECTED} familie.ytelse.beloep
-personmanager-{personID=familie}-familieytelser-valuta               - {CONNECTED} familie.ytelse.valuta
-personmanager-{personID=familie}-familieytelser-startdato            - {CONNECTED} familie.ytelse.startdato
-personmanager-{personID=familie}-familieytelser-sluttdato            - {CONNECTED} familie.ytelse.sluttdato
-personmanager-{personID=familie}-familieytelser-mottakersNavn        - {CONNECTED} familie.ytelse.mottakersNavn
-personmanager-{personID=familie}-familieytelser-utbetalingshyppighet - {CONNECTED} familie.ytelse.utbetalingshyppighet
+personmanager-{personID=familie}-familieytelser-antallPersoner            - {INTERNAL} not used
+personmanager-{personID=familie}-familieytelser-ytelseNavn                - {INTERNAL} not used
+personmanager-{personID=familie}-familieytelser-beloep                    - {INTERNAL} not used
+personmanager-{personID=familie}-familieytelser-valuta                    - {INTERNAL} not used
+personmanager-{personID=familie}-familieytelser-startdato                 - {INTERNAL} not used
+personmanager-{personID=familie}-familieytelser-sluttdato                 - {INTERNAL} not used
+personmanager-{personID=familie}-familieytelser-mottakersNavn             - {INTERNAL} not used
+personmanager-{personID=familie}-familieytelser-utbetalingshyppighet      - {INTERNAL} not used
+personmanager-{personID=familie}-familieytelser[{i}]-antallPersoner       - {CONNECTED} familie.ytelser[].antallPersoner
+personmanager-{personID=familie}-familieytelser[{i}]-ytelseNavn           - {CONNECTED} familie.ytelser[].ytelseNavn
+personmanager-{personID=familie}-familieytelser[{i}]-beloep               - {CONNECTED} familie.ytelser[].beloep
+personmanager-{personID=familie}-familieytelser[{i}]-valuta               - {CONNECTED} familie.ytelser[].valuta
+personmanager-{personID=familie}-familieytelser[{i}]-startdato            - {CONNECTED} familie.ytelser[].startdato
+personmanager-{personID=familie}-familieytelser[{i}]-sluttdato            - {CONNECTED} familie.ytelser[].sluttdato
+personmanager-{personID=familie}-familieytelser[{i}]-mottakersNavn        - {CONNECTED} familie.ytelser[].mottakersNavn
+personmanager-{personID=familie}-familieytelser[{i}]-utbetalingshyppighet - {CONNECTED} familie.ytelser[].utbetalingshyppighet
 
 U-Sed:
 personmanager-{personID}-forsikring-${target}-arbeidssok-startdato       - {INTERNAL}  not used
@@ -250,10 +266,6 @@ formålmanager-vedtak-vedtaksperioder-{$vedtak}[{i}]-periode-sluttdato    - {CON
 formålmanager-vedtak-vedtaksperioder-{$vedtak}[{i}]-skalYtelseUtbetales  - {CONNECTED} vedtak.{$vedtak}[i].skalYtelseUtbetales
 
 ($vedtak = primaerkompetanseArt58, sekundaerkompetanseArt58, primaerkompetanseArt68, sekundaerkompetanseArt68)
-
-export interface Vedtak {
-  innhold?????????: string
-}
 
 seddetails-anmodningsperiode-startdato      - {INTERNAL}
 seddetails-anmodningsperiode-sluttdato      - {INTERNAL}

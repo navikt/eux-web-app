@@ -94,8 +94,8 @@ export const validateFormålManager = (v: Validation, t: TFunction, replySed: Re
     }
     if ((replySed as F002Sed).formaal.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0) {
       _error = validateKravOmRefusjon(v, t, {
-        kravOmRefusjon: (replySed as F002Sed)?.refusjon_ihht_artikkel_58_i_forordning,
-        namespace: 'formålmanager-refusjon_i_henhold_til_artikkel_58_i_forordningen',
+        kravOmRefusjon: (replySed as F002Sed)?.refusjonskrav,
+        namespace: 'formålmanager-refusjonskrav',
         formalName: t('label:krav-om-refusjon').toLowerCase()
       })
       hasErrors = hasErrors || _error
@@ -461,7 +461,7 @@ export const validateSEDEditor = (
   // @ts-ignore
   if (!_.isEmpty(replySed?.ytterligereInfo?.trim()) && replySed?.ytterligereInfo?.trim().length > 500) {
     v['editor-ytterligereInfo'] = {
-      feilmelding: t('message:validation-textOver500TilPerson', { person: 'SED' }),
+      feilmelding: t('message:validation-textOver500Til', { person: 'SED' }),
       skjemaelementId: 'editor-ytterligereInfo'
     } as FeiloppsummeringFeil
     hasErrors = true

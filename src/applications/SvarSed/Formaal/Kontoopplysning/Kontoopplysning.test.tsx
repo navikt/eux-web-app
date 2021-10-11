@@ -41,7 +41,7 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning', () => {
   it('Handling: update begrunnelse', () => {
     (updateReplySed as jest.Mock).mockReset()
     const mockText = 'mockText'
-    const formField = wrapper.find('#test-kontoopplysninger-begrunnelse').hostNodes()
+    const formField = wrapper.find('[data-test-id=\'test-kontoopplysninger-begrunnelse\']').hostNodes()
     formField.simulate('change', {target: {value: mockText}})
     formField.simulate('blur')
     expect(updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon.begrunnelse', mockText)
@@ -50,7 +50,7 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning', () => {
   it('Handling: update id', () => {
     (updateReplySed as jest.Mock).mockReset()
     const mockId = 'mockId'
-    const formField = wrapper.find('#test-kontoopplysninger-id').hostNodes()
+    const formField = wrapper.find('[data-test-id=\'test-kontoopplysninger-id\']').hostNodes()
     formField.simulate('change', {target: {value: mockId}})
     formField.simulate('blur')
     expect(updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon.id', mockId)
@@ -59,7 +59,7 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning', () => {
   it('Handling: update navn', () => {
     (updateReplySed as jest.Mock).mockReset()
     const mockNavn = 'mockNavn'
-    const formField = wrapper.find('#test-kontoopplysninger-navn').hostNodes()
+    const formField = wrapper.find('[data-test-id=\'test-kontoopplysninger-navn\']').hostNodes()
     formField.simulate('change', {target: {value: mockNavn}})
     formField.simulate('blur')
     expect(updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon.navn', mockNavn)
@@ -68,7 +68,7 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning', () => {
   it('Handling: update sepa konto', () => {
     (updateReplySed as jest.Mock).mockReset()
     const mockJaNei = 'jaNei'
-    const formField = wrapper.find('#test-kontoopplysninger-kontoOrdinaer-sepaKonto input[type="radio"]').hostNodes()
+    const formField = wrapper.find('[data-test-id=\'test-kontoopplysninger-kontoOrdinaer-sepaKonto\'] input[type="radio"]').hostNodes()
     formField.first().simulate('change', {target: {value: mockJaNei}})
     expect(updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon.kontoOrdinaer.sepaKonto', mockJaNei)
   })
@@ -76,7 +76,7 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning', () => {
   it('Handling: update iban', () => {
     (updateReplySed as jest.Mock).mockReset()
     const mockIban = 'mockIban'
-    const formField = wrapper.find('#test-kontoopplysninger-kontoOrdinaer-iban').hostNodes()
+    const formField = wrapper.find('[data-test-id=\'test-kontoopplysninger-kontoOrdinaer-iban\']').hostNodes()
     formField.simulate('change', {target: {value: mockIban}})
     formField.simulate('blur')
     expect(updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon.kontoOrdinaer.iban', mockIban)
@@ -85,10 +85,9 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning', () => {
   it('Handling: update swift', () => {
     (updateReplySed as jest.Mock).mockReset()
     const mockSwift = 'mockSwift'
-    const formField = wrapper.find('#test-kontoopplysninger-kontoOrdinaer-swift').hostNodes()
+    const formField = wrapper.find('[data-test-id=\'test-kontoopplysninger-kontoOrdinaer-swift\']').hostNodes()
     formField.simulate('change', {target: {value: mockSwift}})
     formField.simulate('blur')
     expect(updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon.kontoOrdinaer.swift', mockSwift)
   })
-
 })

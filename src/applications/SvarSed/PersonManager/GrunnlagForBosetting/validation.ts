@@ -34,7 +34,7 @@ export const validateGrunnlagForBosetting = (
     const duplicate: boolean = _.find(perioder, p => p.startdato === periode?.startdato) !== undefined
     if (duplicate) {
       v[namespace + '-perioder-startdato'] = {
-        feilmelding: t('message:validation-duplicateStartdatoForPerson', { person: personName }),
+        feilmelding: t('message:validation-duplicateStartdatoTil', { person: personName }),
         skjemaelementId: namespace + 'perioder-startdato'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -73,7 +73,7 @@ export const validateAllGrunnlagForBosetting = (
   if (!_.isEmpty(flyttegrunn?.datoFlyttetTilAvsenderlandet) && !flyttegrunn?.datoFlyttetTilAvsenderlandet.match(datePattern)) {
     v[namespace + '-datoFlyttetTilAvsenderlandet'] = {
       skjemaelementId: namespace + '-datoFlyttetTilAvsenderlandet',
-      feilmelding: t('message:validation-invalidDateForPerson', { person: personName })
+      feilmelding: t('message:validation-invalidDateTil', { person: personName })
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -81,7 +81,7 @@ export const validateAllGrunnlagForBosetting = (
   if (!_.isEmpty(flyttegrunn?.datoFlyttetTilMottakerlandet) && !flyttegrunn?.datoFlyttetTilMottakerlandet.match(datePattern)) {
     v[namespace + '-datoFlyttetTilMottakerlandet'] = {
       skjemaelementId: namespace + '-datoFlyttetTilMottakerlandet',
-      feilmelding: t('message:validation-invalidDateForPerson', { person: personName })
+      feilmelding: t('message:validation-invalidDateTil', { person: personName })
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -89,7 +89,7 @@ export const validateAllGrunnlagForBosetting = (
   if (!_.isEmpty(flyttegrunn?.personligSituasjon) && flyttegrunn?.personligSituasjon!.length > 500) {
     v[namespace + '-personligSituasjon'] = {
       skjemaelementId: namespace + '-personligSituasjon',
-      feilmelding: t('message:validation-textOver500TilPerson', { person: personName })
+      feilmelding: t('message:validation-textOver500Til', { person: personName })
     } as FeiloppsummeringFeil
     hasErrors = true
   }

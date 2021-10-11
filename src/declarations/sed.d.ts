@@ -389,6 +389,13 @@ export interface PeriodeSykSvangerskapOmsorg extends PeriodeForsikring {
   adresse: Adresse
 }
 
+export interface UenighetKonklusjon {
+  "vedtakFraDato": string
+  "kommentarTilVedtak": string
+  "tasTilAdministrativKommisjon":  JaNei
+  "grunnTilUenighet": string
+}
+
 export interface FSed extends BaseReplySed {
   anmodningsperioder: Array<Periode>
   formaal: Array<string>
@@ -410,8 +417,9 @@ export interface F002Sed extends FSed {
     kravType: string
   }
   utbetalingTilInstitusjon: UtbetalingTilInstitusjon
-  'refusjon_ihht_artikkel_58_i_forordning' ?: string
+  refusjonskrav ?: string
   uenighet?: ProsedyreVedUenighet
+  uenighetKonklusjon: Array<UenighetKonklusjon>
   vedtak?: Vedtak
 }
 

@@ -11,30 +11,21 @@ import { AlignStartRow, Column, HighContrastFlatknapp, PaddedDiv, VerticalSepara
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { FormålManagerFormProps, FormålManagerFormSelector } from '../FormålManager'
-
-const mapState = (state: State): FormålManagerFormSelector => ({
-  replySed: state.svarpased.replySed,
-  validation: state.validation.status,
-  viewValidation: state.validation.view
-})
+import { FormålManagerFormProps, FormålManagerFormSelector, mapState } from '../FormålManager'
 
 const KravOmRefusjon: React.FC<FormålManagerFormProps> = ({
   parentNamespace,
   seeKontoopplysninger
 }: FormålManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {
-    replySed,
-    validation
-  }: any = useSelector<State, FormålManagerFormSelector>(mapState)
+  const {replySed, validation}: FormålManagerFormSelector = useSelector<State, FormålManagerFormSelector>(mapState)
   const dispatch = useDispatch()
-  const target = 'refusjon_ihht_artikkel_58_i_forordning'
-  const refusjonIHenholdTilArtikkel58IForordningen: string | undefined = (replySed as F002Sed).refusjon_ihht_artikkel_58_i_forordning
-  const namespace = `${parentNamespace}-refusjon_i_henhold_til_artikkel_58_i_forordningen`
+  const target = 'refusjonskrav'
+  const refusjonIHenholdTilArtikkel58IForordningen: string | undefined = (replySed as F002Sed).refusjonskrav
+  const namespace = `${parentNamespace}-refusjonskrav`
 
   const setKrav = (newKrav: string) => {
-    dispatch(updateReplySed(`${target}`, newKrav.trim()))
+    dispatch(updateReplySed(target, newKrav.trim()))
     if (validation[namespace + '-krav']) {
       dispatch(resetValidation(namespace + '-krav'))
     }
@@ -53,10 +44,12 @@ const KravOmRefusjon: React.FC<FormålManagerFormProps> = ({
           <TextAreaDiv>
             <TextArea
               feil={validation[namespace + '-krav']?.feilmelding}
-              namespace={namespace}
+              key={namespace + '-krav-' + (refusjonIHenholdTilArtikkel58IForordningen ?? '')}
               id='krav'
               label={t('label:krav-om-refusjon-under-artikkel') + ' *'}
+              namespace={namespace}
               onChanged={setKrav}
+              required
               value={refusjonIHenholdTilArtikkel58IForordningen ?? ''}
             />
           </TextAreaDiv>
@@ -68,6 +61,7 @@ const KravOmRefusjon: React.FC<FormålManagerFormProps> = ({
           <HighContrastFlatknapp
             mini
             kompakt
+            data-test-id={namespace + '-konto-button'}
             data-amplitude='svarsed.editor.seekontoopplysning'
             onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
               buttonLogger(e)

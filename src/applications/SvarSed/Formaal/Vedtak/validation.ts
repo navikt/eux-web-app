@@ -57,7 +57,7 @@ export const validateVedtakPeriode = (
     }
     if (duplicate) {
       v[namespace + '-perioder' + idx + '-startdato'] = {
-        feilmelding: t('message:validation-duplicateStartdatoForPerson', { person: formalName }),
+        feilmelding: t('message:validation-duplicateStartdatoTil', { person: formalName }),
         skjemaelementId: namespace + '-perioder' + idx + '-startdato'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -102,7 +102,7 @@ export const validateVedtakVedtaksperiode = (
     }
     if (duplicate) {
       v[namespace + '-vedtaksperioder' + idx + '-periode-startdato'] = {
-        feilmelding: t('message:validation-duplicateStartdatoForPerson', { person: formalName }),
+        feilmelding: t('message:validation-duplicateStartdatoTil', { person: formalName }),
         skjemaelementId: namespace + '-vedtaksperioder' + idx + '-periode-startdato'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -111,7 +111,7 @@ export const validateVedtakVedtaksperiode = (
 
   if (_.isEmpty(vedtaksperiode?.skalYtelseUtbetales?.trim())) {
     v[namespace + '-vedtaksperioder' + idx + '-skalYtelseUtbetales'] = {
-      feilmelding: t('message:validation-noSkalYtelseUtbetalesTilPerson', { person: formalName }),
+      feilmelding: t('message:validation-noSkalYtelseUtbetalesTil', { person: formalName }),
       skjemaelementId: namespace + '-vedtaksperioder' + idx + '-skalYtelseUtbetales'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -138,7 +138,7 @@ export const validateVedtak = (
 
   if (_.isEmpty(vedtak?.gjelderAlleBarn)) {
     v[namespace + '-gjelderAlleBarn'] = {
-      feilmelding: t('message:validation-noBarnValgtTilPerson', { person: formalName }),
+      feilmelding: t('message:validation-noBarnValgtTil', { person: formalName }),
       skjemaelementId: namespace + '-gjelderAlleBarn'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -151,7 +151,7 @@ export const validateVedtak = (
 
   if (_.isEmpty(vedtak?.vedtakstype?.trim())) {
     v[namespace + '-vedtakstype'] = {
-      feilmelding: t('message:validation-noVedtakTypeTilPerson', { person: formalName }),
+      feilmelding: t('message:validation-noVedtakTypeTil', { person: formalName }),
       skjemaelementId: namespace + '-vedtakstype'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -159,7 +159,7 @@ export const validateVedtak = (
 
   if (_.isEmpty(vedtak?.vedtaksdato?.trim())) {
     v[namespace + '-vedtaksdato'] = {
-      feilmelding: t('message:validation-noDateForPerson', { person: formalName }),
+      feilmelding: t('message:validation-noDateTil', { person: formalName }),
       skjemaelementId: namespace + '-vedtaksdato'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -167,7 +167,7 @@ export const validateVedtak = (
     if (!vedtak?.vedtaksdato?.trim().match(datePattern)) {
       v[namespace + '-vedtaksdato'] = {
         skjemaelementId: namespace + '-vedtaksdato',
-        feilmelding: t('message:validation-invalidDateForPerson', { person: formalName })
+        feilmelding: t('message:validation-invalidDateTil', { person: formalName })
       } as FeiloppsummeringFeil
       hasErrors = true
     }
@@ -175,14 +175,14 @@ export const validateVedtak = (
 
   if (_.isEmpty(vedtak?.begrunnelse?.trim())) {
     v[namespace + '-begrunnelse'] = {
-      feilmelding: t('message:validation-noBegrunnelseTilPerson', { person: formalName }),
+      feilmelding: t('message:validation-noBegrunnelseTil', { person: formalName }),
       skjemaelementId: namespace + '-begrunnelse'
     } as FeiloppsummeringFeil
     hasErrors = true
   } else {
     if (vedtak?.begrunnelse?.trim()?.length > 500) {
       v[namespace + '-begrunnelse'] = {
-        feilmelding: t('message:validation-textOver500TilPerson', { person: formalName }),
+        feilmelding: t('message:validation-textOver500Til', { person: formalName }),
         skjemaelementId: namespace + '-begrunnelse'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -191,7 +191,7 @@ export const validateVedtak = (
 
   if (vedtak?.ytterligereInfo?.trim()?.length > 500) {
     v[namespace + '-ytterligereInfo'] = {
-      feilmelding: t('message:validation-textOver500TilPerson', { person: formalName }),
+      feilmelding: t('message:validation-textOver500Til', { person: formalName }),
       skjemaelementId: namespace + '-ytterligereInfo'
     } as FeiloppsummeringFeil
     hasErrors = true

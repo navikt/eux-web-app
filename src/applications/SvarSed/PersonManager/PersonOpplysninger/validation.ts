@@ -37,7 +37,7 @@ export const validatePin = (
 
   if (_.isEmpty(pin.identifikator?.trim())) {
     v[namespace + idx + '-identifikator'] = {
-      feilmelding: t('message:validation-noIdForPerson', { person: personName }),
+      feilmelding: t('message:validation-noIdTil', { person: personName }),
       skjemaelementId: namespace + idx + '-identifikator'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -45,7 +45,7 @@ export const validatePin = (
 
   if (_.isEmpty(pin.land?.trim())) {
     v[namespace + idx + '-land'] = {
-      feilmelding: t('message:validation-noLandForPerson', { person: personName }),
+      feilmelding: t('message:validation-noLandTil', { person: personName }),
       skjemaelementId: namespace + idx + '-land'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -62,7 +62,7 @@ export const validatePin = (
     }
     if (duplicate) {
       v[namespace + idx + '-land'] = {
-        feilmelding: t('message:validation-duplicateLandForPerson', { person: personName }),
+        feilmelding: t('message:validation-duplicateLandTil', { person: personName }),
         skjemaelementId: namespace + idx + '-land'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -83,7 +83,7 @@ export const validatePersonOpplysninger = (
 
   if (_.isEmpty(personInfo?.fornavn?.trim())) {
     v[namespace + '-fornavn'] = {
-      feilmelding: t('message:validation-noFornavnForPerson', { person: personName }),
+      feilmelding: t('message:validation-noFornavnTil', { person: personName }),
       skjemaelementId: namespace + '-fornavn'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -91,7 +91,7 @@ export const validatePersonOpplysninger = (
 
   if (_.isEmpty(personInfo?.etternavn?.trim())) {
     v[namespace + '-etternavn'] = {
-      feilmelding: t('message:validation-noEtternavnForPerson', { person: personName }),
+      feilmelding: t('message:validation-noEtternavnTil', { person: personName }),
       skjemaelementId: namespace + '-etternavn'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -99,7 +99,7 @@ export const validatePersonOpplysninger = (
 
   if (_.isEmpty(personInfo?.foedselsdato?.trim())) {
     v[namespace + '-foedselsdato'] = {
-      feilmelding: t('message:validation-noFoedselsdatoForPerson', { person: personName }),
+      feilmelding: t('message:validation-noFoedselsdatoTil', { person: personName }),
       skjemaelementId: namespace + '-foedselsdato'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -107,7 +107,7 @@ export const validatePersonOpplysninger = (
 
   if (!personInfo?.foedselsdato?.trim().match(datePattern)) {
     v[namespace + '-foedselsdato'] = {
-      feilmelding: t('message:validation-invalidFoedselsdatoForPerson', { person: personName }),
+      feilmelding: t('message:validation-invalidFoedselsdatoTil', { person: personName }),
       skjemaelementId: namespace + '-foedselsdato'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -115,7 +115,7 @@ export const validatePersonOpplysninger = (
 
   if (_.isEmpty(personInfo?.kjoenn?.trim())) {
     v[namespace + '-kjoenn'] = {
-      feilmelding: t('message:validation-noKjoennForPerson', { person: personName }),
+      feilmelding: t('message:validation-noKjoennTil', { person: personName }),
       skjemaelementId: namespace + '-kjoenn'
     } as FeiloppsummeringFeil
     hasErrors = true

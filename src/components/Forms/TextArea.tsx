@@ -13,6 +13,7 @@ export interface TextAreaProps {
   maxLength ?: number
   onChanged: (e: string) => void
   placeholder?: string
+  required?: boolean
   value: string | undefined
 }
 const TextArea: React.FC<TextAreaProps> = ({
@@ -25,6 +26,7 @@ const TextArea: React.FC<TextAreaProps> = ({
   maxLength = 500,
   onChanged,
   placeholder,
+  required = false,
   value
 }: TextAreaProps) => {
   const [_value, _setValue] = useState<string>(value ?? '')
@@ -33,6 +35,7 @@ const TextArea: React.FC<TextAreaProps> = ({
 
   return (
     <HighContrastTextArea
+      aria-label={label}
       className={classNames(className, { 'skjemaelement__input--harFeil': feil })}
       data-test-id={namespace + '-' + id}
       description={description || label}
@@ -51,6 +54,7 @@ const TextArea: React.FC<TextAreaProps> = ({
         _setDirty(true)
       }}
       placeholder={placeholder || t('el:placeholder-textarea-default')}
+      required={required}
       value={_value}
     />
   )
