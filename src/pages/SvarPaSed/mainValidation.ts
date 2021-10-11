@@ -9,9 +9,8 @@ import { validatePerioderMedForsikring } from 'applications/SvarSed/PersonManage
 import { validatePerioderSimple } from 'applications/SvarSed/PersonManager/Arbeidsforhold/validationPeriodeSimple'
 import { validatePerioderSvangerskapOgSyk } from 'applications/SvarSed/PersonManager/Arbeidsforhold/validationPeriodeSvangerskap'
 import { validatePerioderUtenForsikring } from 'applications/SvarSed/PersonManager/Arbeidsforhold/validationPeriodeUtenForsikring'
-import { validateBeløpNavnOgValuta } from 'applications/SvarSed/PersonManager/BeløpNavnOgValuta/validation'
+import { validateBeløpNavnOgValutas } from 'applications/SvarSed/PersonManager/BeløpNavnOgValuta/validation'
 import { validateFamilierelasjoner } from 'applications/SvarSed/PersonManager/Familierelasjon/validation'
-import { validateFamilieytelse } from 'applications/SvarSed/PersonManager/Familieytelser/validation'
 import { validateAllGrunnlagForBosetting } from 'applications/SvarSed/PersonManager/GrunnlagForBosetting/validation'
 import { validateGrunnTilOpphor } from 'applications/SvarSed/PersonManager/GrunnTilOpphør/validation'
 import { validateLoennsopplysninger } from 'applications/SvarSed/PersonManager/InntektForm/validationInntektForm'
@@ -143,9 +142,9 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
 
     if (!personID.startsWith('barn')) {
       if (personID === 'familie') {
-        const ytelse: Ytelse = _.get(replySed, `${personID}.ytelse`)
-        _error = validateFamilieytelse(v, t, {
-          ytelse: ytelse, namespace: `personmanager-${personID}-familieytelser`, personName
+        const ytelser: Array<Ytelse> = _.get(replySed, `${personID}.ytelser`)
+        _error = validateBeløpNavnOgValutas(v, t, {
+          ytelser: ytelser, namespace: `personmanager-${personID}-familieytelser`, personID, personName
         })
         hasErrors = hasErrors || _error
       } else {
@@ -235,10 +234,10 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
         flyttegrunn, namespace: `personmanager-${personID}-grunnlagforbosetting`, personName
       })
       hasErrors = hasErrors || _error
-      const ytelse: Ytelse = _.get(replySed, `${personID}.ytelse`)
+      const ytelser: Array<Ytelse> = _.get(replySed, `${personID}.ytelser`)
       if ((replySed as FSed).formaal.indexOf('vedtak') >= 0) {
-        _error = validateBeløpNavnOgValuta(v, t, {
-          ytelse, namespace: `personmanager-${personID}-beløpnavnogvaluta`, personName
+        _error = validateBeløpNavnOgValutas(v, t, {
+          ytelser, namespace: `personmanager-${personID}-beløpnavnogvaluta`, personID, personName
         })
         hasErrors = hasErrors || _error
       }

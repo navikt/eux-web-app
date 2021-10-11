@@ -487,7 +487,7 @@
         "datoFlyttetTilMottakerlandet": "2040-01-01",
         "datoFlyttetTilAvsenderlandet": "2041-01-01"
       },
-      "ytelse": {
+      "ytelser": [{
         "startdato": "2043-01-01",
         "sluttdato": "2044-01-01",
         "beloep": "100",
@@ -496,7 +496,7 @@
         "ytelseNavn": "F002 barn2 ytelse ytelse",
         "mottakersNavn": "F002 barn2 ytelse mottakersNavn",
         "barnetsNavn": ""
-      },
+      }],
       "motregning": {
         "startdato": "2045-01-01",
         "sluttdato": "2046-01-01",
@@ -609,7 +609,7 @@
         "datoFlyttetTilMottakerlandet": "2040-01-01",
         "datoFlyttetTilAvsenderlandet": "2041-01-01"
       },
-      "ytelse": {
+      "ytelser": [{
         "startdato": "2043-01-01",
         "sluttdato": "2044-01-01",
         "beloep": "100",
@@ -618,7 +618,7 @@
         "ytelseNavn": "F002 barn2 ytelse ytelse",
         "mottakersNavn": "F002 barn2 ytelse mottakersNavn",
         "barnetsNavn": "F002 barn2 ytelse barnetsNavn"
-      }
+      }]
     }
   ],
   "familie": {},

@@ -4,10 +4,13 @@ import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
+import { getIdx } from 'utils/namespace'
 
 export interface ValidationBeløpNavnOgValutaProps {
   ytelse: Ytelse
-  namespace: string,
+  index?: number
+  namespace: string
+  personID: string | undefined
   personName: string
 }
 
@@ -16,13 +19,24 @@ export const validateBeløpNavnOgValuta = (
   t: TFunction,
   {
     ytelse,
+    index,
     namespace,
+    personID,
     personName
   }: ValidationBeløpNavnOgValutaProps
 ): boolean => {
   let hasErrors: boolean = false
+  const idx = getIdx(index)
 
-  if (_.isEmpty(ytelse?.barnetsNavn?.trim())) {
+  if (personID === 'familie' && _.isEmpty(ytelse?.antallPersoner?.trim())) {
+    v[namespace + idx + '-antallPersoner'] = {
+      skjemaelementId: namespace + idx + '-antallPersoner',
+      feilmelding: t('message:validation-noAntallPersonerForPerson', { person: personName })
+    } as FeiloppsummeringFeil
+    hasErrors = true
+  }
+
+  if (personID !== 'familie' && _.isEmpty(ytelse?.barnetsNavn?.trim())) {
     v[namespace + '-barnetsNavn'] = {
       skjemaelementId: namespace + '-barnetsNavn',
       feilmelding: t('message:validation-noNavnTilPerson', { person: personName })
@@ -98,3 +112,30 @@ export const validateBeløpNavnOgValuta = (
   }
   return hasErrors
 }
+
+
+interface ValidationBeløpNavnOgValutasProps {
+  ytelser: Array<Ytelse>
+  namespace: string
+  personID: string | undefined
+  personName: string
+}
+
+export const validateBeløpNavnOgValutas = (
+  validation: Validation,
+  t: TFunction,
+  {
+    ytelser,
+    namespace,
+    personID,
+    personName
+  }: ValidationBeløpNavnOgValutasProps
+): boolean => {
+  let hasErrors: boolean = false
+  ytelser?.forEach((ytelse: Ytelse, index: number) => {
+    const _error: boolean = validateBeløpNavnOgValuta(validation, t, { ytelse, index, namespace, personID, personName })
+    hasErrors = hasErrors || _error
+  })
+  return hasErrors
+}
+

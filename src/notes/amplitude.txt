@@ -39,112 +39,133 @@ Amplitude - nEESSI
   #neessi.svarsed.editor.sendsvarsed.button, {type: 'modal'} - Number of times send svarsed button is clicked, from SvarSED modal
   #neessi.svarsed.editor.editinrina.button - Number of times Edit in Rina button is clicked
 
-  4.1 PersonManager:
+  Opprett:
+  #neessi.svarsed.create.request - Number of times Opprett/oppdater SvarSED was requested
+  #neessi.svarsed.create.success - Number of times Opprett/oppdater SvarSED was successful
+  #neessi.svarsed.create.failure - Number of times Opprett/oppdater SvarSED failed
+
+  4.1 Sed type
+
+    4.1.1 Formål (F002):
+      #neessi.svarsed.fsed.formal.add, {item: string} - Formal added
+      #neessi.svarsed.fsed.formal.remove, {item: string} - Formal removed
+
+    4.1.2: SEDType (U-Sed)
+      #neessi.svarsed.editor.sedtype.change, {type: type} - U0XX changed to another U0XX
+
+    4.1.3: Tema (H-Sed)
+      #neessi.svarsed.editor.tema.add, {tema: tema} - tema added
+
+  4.2 PersonManager:
     #neessi.svarsed.editor.personmanager.time { [key]: {status, total, date}} - Total time spent on each personManager menu, grouped by main menu (Nasjonalitetet, Adresse, etc)
     #neessi.svarsed.editor.personmodal.add, {type: string} - Person added
     #neessi.svarsed.editor.personmodal.remove, {type: string} - Person removed
 
-  4.2 Formål (F002):
-    #neessi.svarsed.fsed.formal.add, {item: string} - Formal added
-    #neessi.svarsed.fsed.formal.remove, {item: string} - Formal removed
+    4.2.1 PersonOpplysning:
+      #neessi.svarsed.editor.personopplysning.norskpin.search - Norsk pin searched
+      #neessi.svarsed.editor.personopplysning.norskpin.fill - Norsk pin filled
+      #neessi.svarsed.editor.personopplysning.utenlandskpin.add - utendlandsk pin added
+      #neessi.svarsed.editor.personopplysning.utenlandskpin.remove - utendlandsk pin added
 
-  4.3 PersonOpplysning:
-    #neessi.svarsed.editor.personopplysning.norskpin.search - Norsk pin searched
-    #neessi.svarsed.editor.personopplysning.norskpin.fill - Norsk pin filled
-    #neessi.svarsed.editor.personopplysning.utenlandskpin.add - utendlandsk pin added
-    #neessi.svarsed.editor.personopplysning.utenlandskpin.remove - utendlandsk pin added
+    4.2.2 Nasjonalitet:
+      #neessi.svarsed.editor.nasjonaliteter.add - nationalities added
+      #neessi.svarsed.editor.nasjonaliteter.remove - nationalities removed
 
-  4.4 Nasjonalitet:
-    #neessi.svarsed.editor.nasjonaliteter.add - nationalities added
-    #neessi.svarsed.editor.nasjonaliteter.remove - nationalities removed
+    4.2.3 Address:
+      #neessi.svarsed.editor.adresse.add - address added
+      #neessi.svarsed.editor.adresse.remove - address removed
 
-  4.5 Address:
-    #neessi.svarsed.editor.adresse.add - address added
-    #neessi.svarsed.editor.adresse.remove - address removed
+    4.2.4 Kontaktinformasjon:
+      #neessi.svarsed.editor.telefon.add - phone number added
+      #neessi.svarsed.editor.telefon.remove - phone number removed
+      #neessi.svarsed.editor.epost.add - email added
+      #neessi.svarsed.editor.epost.remove - email removed
 
-  4.6 Kontaktinformasjon:
-    #neessi.svarsed.editor.telefon.add - phone number added
-    #neessi.svarsed.editor.telefon.remove - phone number removed
-    #neessi.svarsed.editor.epost.add - email added
-    #neessi.svarsed.editor.epost.remove - email removed
+    4.2.5 Trygdeordning:
+      #neessi.svarsed.editor.periode.add, {type: 'perioderMedITrygdeordning'}:  periode added
+      #neessi.svarsed.editor.periode.remove, {type: 'perioderMedITrygdeordning'}: periode removed
+      #neessi.svarsed.editor.periode.add, {type: 'perioderUtenforTrygdeordning'} : periode added
+      #neessi.svarsed.editor.periode.remove, {type: 'perioderUtenforTrygdeordning'}: periode removed
+      #neessi.svarsed.editor.periode.add, {type: 'perioderMedArbeid'}: periode added
+      #neessi.svarsed.editor.periode.remove, {type: 'perioderMedArbeid'}: periode added
+      #neessi.svarsed.editor.periode.add, {type: 'perioderMedPensjon'}: periode added
+      #neessi.svarsed.editor.periode.remove, {type: 'perioderMedPensjon'}: periode removed
+      #neessi.svarsed.editor.periode.add, {type: 'periodeMedTrygd'}: periode added
+      #neessi.svarsed.editor.periode.remove, {type: 'periodeMedTrygd'}: periode added
+      #neessi.svarsed.editor.periode.add, {type: 'periodeMedYtelser'}: periode added
+      #neessi.svarsed.editor.periode.remove, {type: 'periodeMedYtelser'}: periode removed
 
-  4.7 Trygdeordning:
-    #neessi.svarsed.editor.periode.add, {type: 'perioderMedITrygdeordning'}:  periode added
-    #neessi.svarsed.editor.periode.remove, {type: 'perioderMedITrygdeordning'}: periode removed
-    #neessi.svarsed.editor.periode.add, {type: 'perioderUtenforTrygdeordning'} : periode added
-    #neessi.svarsed.editor.periode.remove, {type: 'perioderUtenforTrygdeordning'}: periode removed
-    #neessi.svarsed.editor.periode.add, {type: 'perioderMedArbeid'}: periode added
-    #neessi.svarsed.editor.periode.remove, {type: 'perioderMedArbeid'}: periode added
-    #neessi.svarsed.editor.periode.add, {type: 'perioderMedPensjon'}: periode added
-    #neessi.svarsed.editor.periode.remove, {type: 'perioderMedPensjon'}: periode removed
-    #neessi.svarsed.editor.periode.add, {type: 'periodeMedTrygd'}: periode added
-    #neessi.svarsed.editor.periode.remove, {type: 'periodeMedTrygd'}: periode added
-    #neessi.svarsed.editor.periode.add, {type: 'periodeMedYtelser'}: periode added
-    #neessi.svarsed.editor.periode.remove, {type: 'periodeMedYtelser'}: periode removed
+    4.2.6 familierelasjon:
+      #neessi.svarsed.editor.familierelasjon.add : relationship added
+      #neessi.svarsed.editor.familierelasjon.remove : relationship removed
 
-	4.8 familierelasjon:
-	  #neessi.svarsed.editor.familierelasjon.add : relationship added
-	  #neessi.svarsed.editor.familierelasjon.remove : relationship removed
+    4.2.7 Personenstatus:
 
-	4.9 Personenstatus:
+      4.2.7.1 Ansatt:
+      #neessi.svarsed.editor.personensstatus.ansatt.arbeidsgiver.search - Arbeidsgiver searches
+      #neessi.svarsed.editor.periode.add, {type: perioderSomAnsatt} - periode added
+      #neessi.svarsed.editor.periode.remove, {type: 'perioderSomAnsatt'} - periode removed
+      #neessi.svarsed.editor.arbeidsgiver.fromAA.edit - Arbeidsgiver from AA edited on its periods
+      #neessi.svarsed.editor.arbeidsgiver.added.edit - Arbeidsgiver added edited
+      #neessi.svarsed.editor.arbeidsgiver.added.remove - Arbeidsgiver added removed
+      #neessi.svarsed.editor.arbeidsgiver.added.add - Arbeidsgiver added add
 
-	  4.9.1 Ansatt:
-		#neessi.svarsed.editor.personensstatus.ansatt.arbeidsgiver.search - Arbeidsgiver searches
-		#neessi.svarsed.editor.periode.add, {type: perioderSomAnsatt} - periode added
-		#neessi.svarsed.editor.periode.remove, {type: 'perioderSomAnsatt'} - periode removed
-		#neessi.svarsed.editor.arbeidsgiver.fromAA.edit - Arbeidsgiver from AA edited on its periods
-		#neessi.svarsed.editor.arbeidsgiver.added.edit - Arbeidsgiver added edited
-		#neessi.svarsed.editor.arbeidsgiver.added.remove - Arbeidsgiver added removed
-		#neessi.svarsed.editor.arbeidsgiver.added.add - Arbeidsgiver added add
+      4.2.7.2 Avsenderlandet:
+      #neessi.svarsed.editor.periode.add, {type: perioderMedTrygd} - periode added
+      #neessi.svarsed.editor.periode.remove, {type: 'perioderMedTrygd'} - periode removed
 
-    4.9.2 Avsenderlandet:
-		#neessi.svarsed.editor.periode.add, {type: perioderMedTrygd} - periode added
-		#neessi.svarsed.editor.periode.remove, {type: 'perioderMedTrygd'} - periode removed
+      4.2.7.3 Not Ansatt:
+      #neessi.svarsed.editor.periode.add, {type: perioderSomSelvstendig} - periode added
+      #neessi.svarsed.editor.periode.remove, {type: 'perioderSomSelvstendig'} - periode removed
+      #neessi.svarsed.editor.periode.add, {type: perioderSomSykMedLoenn} - periode added
+      #neessi.svarsed.editor.periode.remove, {type: 'perioderSomSykMedLoenn'} - periode removed
+      #neessi.svarsed.editor.periode.add, {type: perioderSomPermittertMedLoenn} - periode added
+      #neessi.svarsed.editor.periode.remove, {type: 'perioderSomPermittertMedLoenn'} - periode removed
+      #neessi.svarsed.editor.periode.add, {type: perioderSomPermittertUtenLoenn} - periode added
+      #neessi.svarsed.editor.periode.remove, {type: 'perioderSomPermittertUtenLoenn'} - periode removed
 
-    4.9.3 Not Ansatt:
-		#neessi.svarsed.editor.periode.add, {type: perioderSomSelvstendig} - periode added
-		#neessi.svarsed.editor.periode.remove, {type: 'perioderSomSelvstendig'} - periode removed
- 		#neessi.svarsed.editor.periode.add, {type: perioderSomSykMedLoenn} - periode added
- 		#neessi.svarsed.editor.periode.remove, {type: 'perioderSomSykMedLoenn'} - periode removed
-    #neessi.svarsed.editor.periode.add, {type: perioderSomPermittertMedLoenn} - periode added
-    #neessi.svarsed.editor.periode.remove, {type: 'perioderSomPermittertMedLoenn'} - periode removed
-    #neessi.svarsed.editor.periode.add, {type: perioderSomPermittertUtenLoenn} - periode added
-    #neessi.svarsed.editor.periode.remove, {type: 'perioderSomPermittertUtenLoenn'} - periode removed
+      4.2.7.4 Grunnlag for bosetting
+      #neessi.svarsed.editor.periode.add, {type: 'flyttegrunn'} - periode added
+      #neessi.svarsed.editor.periode.remove, {type: 'flyttegrunn'} - periode removed
 
-    4.9.4 Grunnlag for bosetting
-    #neessi.svarsed.editor.periode.add, {type: 'flyttegrunn'} - periode added
-    #neessi.svarsed.editor.periode.remove, {type: 'flyttegrunn'} - periode removed
+    4.2.8 Relasjon:
+      #neessi.svarsed.editor.relasjon.add - periode added
+      #neessi.svarsed.editor.relasjon.remove - periode removed
 
-	4.10 Relasjon:
-	  #neessi.svarsed.editor.relasjon.add - periode added
-    #neessi.svarsed.editor.relasjon.remove - periode removed
+    4.2.9 Beløp Navn og Valuta
+      #neessi.svarsed.editor.ytelse.add - ytelse added
+      #neessi.svarsed.editor.ytelse.remove - ytelse removed
 
-  4.11 FormålManager
+    4.2.10 FamilieYtelse
+      #neessi.svarsed.editor.ytelse.add - ytelse added
+      #neessi.svarsed.editor.ytelse.remove - ytelse removed
+
+  4.3 FormålManager
     #neessi.svarsed.editor.formålnmanager.time { [key]: {status, total, date}} - Total time spent on each formålManager menu, grouped by main menu (Vedtak, Motregning, etc)
 
-  4.12 Motregning:
-    #neessi.svarsed.editor.motregning.add - navn og betegnelse added
-    #neessi.svarsed.editor.motregning.remove - navn og betegnelse removed
-    #neessi.svarsed.editor.seekontoopplysning.button - Button clicked for kontoopplysning
+    4.3.1 Motregning:
+      #neessi.svarsed.editor.motregning.add - navn og betegnelse added
+      #neessi.svarsed.editor.motregning.remove - navn og betegnelse removed
+      #neessi.svarsed.editor.seekontoopplysning.button - Button clicked for kontoopplysning
 
-  4.13 Prosedyre ved uenighet:
-    #neessi.svarsed.editor.prosedyreveduenighet.grunn.remove - grunn removed
-    #neessi.svarsed.editor.prosedyreveduenighet.grunn.add - grunn added
+    4.3.2 Prosedyre ved uenighet:
+      #neessi.svarsed.editor.prosedyreveduenighet.grunn.remove - grunn removed
+      #neessi.svarsed.editor.prosedyreveduenighet.grunn.add - grunn added
 
-  4.14 Krav om refusjon:
-    #neessi.svarsed.editor.seekontoopplysning.button - Button clicked for kontoopplysning
+    4.3.3 Krav om refusjon:
+      #neessi.svarsed.editor.seekontoopplysning.button - Button clicked for kontoopplysning
 
-  4.15 Vedtak:
-    #neessi.svarsed.editor.periode.add, {type: 'vedtaksperioder'} - periode added
-    #neessi.svarsed.editor.periode.remove, {type: 'vedtaksperioder'} - periode removed
-    #neessi.svarsed.editor.periode.add, {type: 'primaerkompetanseArt58'} - periode added
-    #neessi.svarsed.editor.periode.remove, {type: 'primaerkompetanseArt58'} - periode removed
-    #neessi.svarsed.editor.periode.add, {type: 'sekundaerkompetanseArt58'} - periode added
-    #neessi.svarsed.editor.periode.remove, {type: 'sekundaerkompetanseArt58'} - periode removed
-    #neessi.svarsed.editor.periode.add, {type: 'primaerkompetanseArt68'} - periode added
-    #neessi.svarsed.editor.periode.remove, {type: 'primaerkompetanseArt68'} - periode removed
-    #neessi.svarsed.editor.periode.add, {type: 'sekundaerkompetanseArt68'} - periode added
-    #neessi.svarsed.editor.periode.remove, {type: 'sekundaerkompetanseArt68'} - periode removed
+    4.3.4 Vedtak:
+      #neessi.svarsed.editor.periode.add, {type: 'vedtaksperioder'} - periode added
+      #neessi.svarsed.editor.periode.remove, {type: 'vedtaksperioder'} - periode removed
+      #neessi.svarsed.editor.periode.add, {type: 'primaerkompetanseArt58'} - periode added
+      #neessi.svarsed.editor.periode.remove, {type: 'primaerkompetanseArt58'} - periode removed
+      #neessi.svarsed.editor.periode.add, {type: 'sekundaerkompetanseArt58'} - periode added
+      #neessi.svarsed.editor.periode.remove, {type: 'sekundaerkompetanseArt58'} - periode removed
+      #neessi.svarsed.editor.periode.add, {type: 'primaerkompetanseArt68'} - periode added
+      #neessi.svarsed.editor.periode.remove, {type: 'primaerkompetanseArt68'} - periode removed
+      #neessi.svarsed.editor.periode.add, {type: 'sekundaerkompetanseArt68'} - periode added
+      #neessi.svarsed.editor.periode.remove, {type: 'sekundaerkompetanseArt68'} - periode removed
 
 U002
 
@@ -196,28 +217,10 @@ U002
       #neessi.svarsed.editor.utbetaling.add - utbetaling added
       #neessi.svarsed.editor.utbetaling.remove - utbetaling removed
 
-U004
-
-  4.20: Inntekt
+  4.20: Inntekt (U004):
       #neessi.svarsed.editor.loennsopplysning.add - loennsopplysning added
       #neessi.svarsed.editor.loennsopplysning.remove - utbetaling removed
       #neessi.svarsed.editor.inntekt.search - Inntekt search
-
-U0XX
-
-  4.21: SEDType
-      #neessi.svarsed.editor.sedtype.change, {type: type} - U0XX changed to another U0XX
-
-H002:
-
-  4.22: Tema
-      #neessi.svarsed.editor.tema.add, {tema: tema} - tema added
-
-General:
-
-    #neessi.svarsed.create.request - Number of times Opprett/oppdater SvarSED was requested
-    #neessi.svarsed.create.success - Number of times Opprett/oppdater SvarSED was successful
-    #neessi.svarsed.create.failure - Number of times Opprett/oppdater SvarSED failed
 
 5. Error
 

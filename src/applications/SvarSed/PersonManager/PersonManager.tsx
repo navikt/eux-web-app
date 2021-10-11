@@ -35,7 +35,6 @@ import { isFSed } from 'utils/sed'
 import Adresser from './Adresser/Adresser'
 import BeløpNavnOgValuta from './BeløpNavnOgValuta/BeløpNavnOgValuta'
 import Familierelasjon from './Familierelasjon/Familierelasjon'
-import Familieytelser from './Familieytelser/Familieytelser'
 import Forsikring from './Forsikring/Forsikring'
 import GrunnlagForBosetting from './GrunnlagForBosetting/GrunnlagForBosetting'
 import InntektForm from './InntektForm/InntektForm'
@@ -322,7 +321,7 @@ const PersonManager: React.FC = () => {
         return (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 ?? false
       }
     },
-    { label: t('el:option-personmanager-11'), value: 'familieytelser', component: Familieytelser, type: 'F', normal: false, barn: false, family: true },
+    { label: t('el:option-personmanager-11'), value: 'familieytelser', component: BeløpNavnOgValuta, type: 'F', normal: false, barn: false, family: true },
     { label: t('el:option-personmanager-12'), value: 'personopplysninger', component: PersonOpplysninger, type: 'U', normal: true, barn: false, family: false },
     { label: t('el:option-personmanager-13'), value: 'referanseperiode', component: Referanseperiode, type: 'U', normal: true, barn: false, family: false },
     { label: t('el:option-personmanager-14'), value: 'arbeidsforhold/arbeidsgivere', component: Arbeidsforhold, type: 'U002', normal: true, barn: false, family: false },
