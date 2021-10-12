@@ -524,11 +524,11 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               <Input
                 feil={validation[namespace + '-ektefelle-fornavn']?.feilmelding}
                 namespace={namespace}
-                key={namespace + '-ektefelle-fornavn' + (replySed as F002Sed).ektefelle.personInfo.fornavn}
+                key={namespace + '-ektefelle-fornavn' + (replySed as F002Sed).ektefelle?.personInfo?.fornavn ?? ''}
                 id='-ektefelle-fornavn'
                 label={t('label:fornavn') + ' *'}
                 onChanged={setEktefelleFornavn}
-                value={(replySed as F002Sed).ektefelle.personInfo.fornavn ?? ''}
+                value={(replySed as F002Sed).ektefelle?.personInfo?.fornavn ?? ''}
               />
             </Column>
             <HorizontalSeparatorDiv size='0.35' />
@@ -536,11 +536,11 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               <Input
                 feil={validation[namespace + '-ektefelle-etternavn']?.feilmelding}
                 namespace={namespace}
-                key={namespace + '-ektefelle-etternavn' + (replySed as F002Sed).ektefelle.personInfo.etternavn}
+                key={namespace + '-ektefelle-etternavn' + (replySed as F002Sed).ektefelle?.personInfo?.etternavn ?? ''}
                 id='-ektefelle-etternavn'
                 label={t('label:etternavn') + ' *'}
                 onChanged={setEktefelleEtternavn}
-                value={(replySed as F002Sed).ektefelle.personInfo.etternavn ?? ''}
+                value={(replySed as F002Sed).ektefelle?.personInfo?.etternavn ?? ''}
               />
             </Column>
           </AlignStartRow>
@@ -570,11 +570,11 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           <DateInput
             feil={validation[namespace + '-kravMottattDato']?.feilmelding}
             namespace={namespace}
-            key={(replySed as F002Sed).krav.kravMottattDato ?? ''}
+            key={(replySed as F002Sed).krav?.kravMottattDato ?? ''}
             id='kravMottattDato'
             label={t('label:krav-mottatt-dato')}
             onChanged={setKravMottattDato}
-            value={(replySed as F002Sed).krav.kravMottattDato}
+            value={(replySed as F002Sed).krav?.kravMottattDato}
           />
           <VerticalSeparatorDiv />
           <div>

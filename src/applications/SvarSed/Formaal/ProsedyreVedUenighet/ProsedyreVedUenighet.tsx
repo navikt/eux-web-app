@@ -37,8 +37,7 @@ export interface ProsedyreVedUenighetSelector extends FormålManagerFormSelector
 const mapState = (state: State): ProsedyreVedUenighetSelector => ({
   highContrast: state.ui.highContrast,
   replySed: state.svarpased.replySed,
-  validation: state.validation.status,
-  viewValidation: state.validation.view
+  validation: state.validation.status
 })
 
 const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({

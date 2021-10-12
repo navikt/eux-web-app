@@ -130,10 +130,14 @@ const MenuLabelText = styled(Normaltekst)`
   }
 `
 
+export interface FormålManagerProps {
+  viewValidation: boolean
+}
+
 export interface FormålManagerFormSelector {
+  highContrast: boolean
   replySed: ReplySed | null | undefined
   validation: Validation
-  viewValidation?: boolean
 }
 
 export interface FormålManagerFormProps {
@@ -142,11 +146,12 @@ export interface FormålManagerFormProps {
 }
 
 export const mapState = (state: State): FormålManagerFormSelector => ({
+  highContrast: state.ui.highContrast,
   replySed: state.svarpased.replySed,
   validation: state.validation.status
 })
 
-const FormålManager: React.FC = ({viewValidation}: any) => {
+const FormålManager: React.FC<FormålManagerProps> = ({viewValidation}: FormålManagerProps) => {
   const { t } = useTranslation()
   const {
     replySed,

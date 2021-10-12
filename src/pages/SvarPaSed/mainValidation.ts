@@ -425,12 +425,10 @@ export const validateSEDEditor = (
       _error = validatePersonManager(v, t, replySed, 'annenPerson')
       hasErrors = hasErrors || _error
     }
-    if ((replySed as F002Sed).barn) {
-      (replySed as F002Sed).barn.forEach((b: Person, i: number) => {
-        _error = validatePersonManager(v, t, replySed, `barn[${i}]`)
-        hasErrors = hasErrors || _error
-      })
-    }
+    (replySed as F002Sed).barn?.forEach((b: Person, i: number) => {
+      _error = validatePersonManager(v, t, replySed, `barn[${i}]`)
+      hasErrors = hasErrors || _error
+    })
     if ((replySed as F002Sed).familie) {
       _error = validatePersonManager(v, t, replySed, 'familie')
       hasErrors = hasErrors || _error

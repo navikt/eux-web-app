@@ -10,7 +10,7 @@ import classNames from 'classnames'
 import { WithErrorPanel } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import { F002Sed, FSed, PersonInfo, ReplySed } from 'declarations/sed'
+import { Barn, F002Sed, FSed, PersonInfo, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
@@ -180,9 +180,8 @@ const MenuLabelText = styled(Normaltekst)`
   }
 `
 
-export interface PersonManagerFormSelector {
-  replySed: ReplySed | null | undefined
-  validation: Validation
+export interface PersonManagerProps {
+  viewValidation: boolean
 }
 
 export interface PersonManagerSelector extends PersonManagerFormSelector {
@@ -193,6 +192,11 @@ export interface PersonManagerFormProps {
   parentNamespace: string
   personID: string | undefined
   personName: string
+}
+
+export interface PersonManagerFormSelector {
+  replySed: ReplySed | null | undefined
+  validation: Validation
 }
 
 export interface PersonManagerOption extends Option {
@@ -210,7 +214,7 @@ const mapState = (state: State): PersonManagerSelector => ({
   validation: state.validation.status
 })
 
-const PersonManager: React.FC = ({viewValidation}: any) => {
+const PersonManager: React.FC<PersonManagerProps> = ({viewValidation}: PersonManagerProps) => {
   const { t } = useTranslation()
   const {
     gettingPerson,
@@ -226,10 +230,8 @@ const PersonManager: React.FC = ({viewValidation}: any) => {
   const annenPersonNr = ektefelleNr + ((replySed as F002Sed).annenPerson ? 1 : 0)
   if (annenPersonNr > 0) initialSelectedMenus.push('annenPerson')
   const barnNr = annenPersonNr + ((replySed as F002Sed).barn ? 1 : 0)
-  const totalPeopleNr = annenPersonNr + ((replySed as F002Sed).barn ? (replySed as F002Sed).barn.length : 0)
-  if ((replySed as F002Sed).barn) {
-    (replySed as F002Sed).barn.forEach((b, i) => initialSelectedMenus.push(`barn[${i}]`))
-  }
+  const totalPeopleNr = annenPersonNr + ((replySed as F002Sed).barn?.length ?? 0);
+  (replySed as F002Sed).barn?.forEach((b: Barn, i: number) => initialSelectedMenus.push(`barn[${i}]`))
   let familieNr: number | undefined
   if ((replySed as F002Sed).sedType.startsWith('F')) {
     familieNr = barnNr + 1
@@ -581,7 +583,7 @@ const PersonManager: React.FC = ({viewValidation}: any) => {
             {replySed.bruker && renderMenu(replySed, 'bruker', brukerNr)}
             {(replySed as F002Sed).ektefelle && renderMenu(replySed, 'ektefelle', ektefelleNr)}
             {(replySed as F002Sed).annenPerson && renderMenu(replySed, 'annenPerson', annenPersonNr)}
-            {(replySed as F002Sed).barn && (replySed as F002Sed).barn.map((b: any, i: number) => renderMenu(replySed, `barn[${i}]`, barnNr + i))}
+            {(replySed as F002Sed).barn?.map((b: any, i: number) => renderMenu(replySed, `barn[${i}]`, barnNr + i))}
             {isFSed(replySed) && renderMenu(replySed, 'familie', familieNr as number)}
             {isFSed(replySed) && (
               <MarginDiv>

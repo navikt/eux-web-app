@@ -1,5 +1,6 @@
 import { FormålManagerFormProps, FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
 import KravOmRefusjon from 'applications/SvarSed/Formaal/KravOmRefusjon/KravOmRefusjon'
+import Motregning from 'applications/SvarSed/Formaal/Motregning/Motregning'
 import { mount, ReactWrapper } from 'enzyme'
 import getReplySed from 'mocks/replySed'
 import { stageSelector } from 'setupTests'
@@ -21,7 +22,7 @@ const defaultSelector: FormålManagerFormSelector = {
   validation: {}
 }
 
-describe('applications/SvarSed/Formaal/KravOmRefusjon/KravOmRefusjon', () => {
+describe('applications/SvarSed/Formaal/Motregning/Motregning', () => {
   let wrapper: ReactWrapper
 
   const initialMockProps: FormålManagerFormProps = {
@@ -31,7 +32,7 @@ describe('applications/SvarSed/Formaal/KravOmRefusjon/KravOmRefusjon', () => {
 
   beforeEach(() => {
     stageSelector(defaultSelector, {})
-    wrapper = mount(<KravOmRefusjon {...initialMockProps} />)
+    wrapper = mount(<Motregning {...initialMockProps} />)
   })
 
   afterEach(() => {

@@ -390,10 +390,10 @@ export interface PeriodeSykSvangerskapOmsorg extends PeriodeForsikring {
 }
 
 export interface UenighetKonklusjon {
-  "vedtakFraDato": string
-  "kommentarTilVedtak": string
-  "tasTilAdministrativKommisjon":  JaNei
-  "grunnTilUenighet": string
+  vedtakFraDato: string
+  kommentarTilVedtak: string
+  tasTilAdministrativKommisjon:  JaNei
+  grunnTilUenighet: string
 }
 
 export interface FSed extends BaseReplySed {
@@ -402,11 +402,11 @@ export interface FSed extends BaseReplySed {
 }
 
 export interface F002Sed extends FSed {
-  annenPerson: Person
-  barn: Array<Barn>
-  ektefelle: Person
-  endredeForhold: Array<string>
-  familie: {
+  annenPerson?: Person
+  barn?: Array<Barn>
+  ektefelle?: Person
+  endredeForhold?: Array<string>
+  familie?: {
     motregning?: Motregning
     ytelse?: Ytelse
   }
@@ -416,10 +416,10 @@ export interface F002Sed extends FSed {
     kravMottattDato: string
     kravType: string
   }
-  utbetalingTilInstitusjon: UtbetalingTilInstitusjon
+  utbetalingTilInstitusjon?: UtbetalingTilInstitusjon
   refusjonskrav ?: string
   uenighet?: ProsedyreVedUenighet
-  uenighetKonklusjon: Array<UenighetKonklusjon>
+  uenighetKonklusjon?: Array<UenighetKonklusjon>
   vedtak?: Vedtak
 }
 

@@ -1,7 +1,7 @@
 import { Option } from 'declarations/app'
 import React from 'react'
 import { Feilmelding } from 'nav-frontend-typografi'
-import { theme, themeKeys, themeHighContrast } from 'nav-hoykontrast'
+import { theme, themeHighContrast, themeKeys } from 'nav-hoykontrast'
 import ReactSelect, { Props } from 'react-select'
 
 interface SelectProps extends Props<Option> {
@@ -11,7 +11,7 @@ interface SelectProps extends Props<Option> {
   feil?: string
   onChange: (e: any) => void
   style?: any
-  highContrast: boolean
+  highContrast?: boolean
   value?: any
 }
 

@@ -16,9 +16,9 @@ jest.mock('actions/validation', () => ({
 const mockReplySed = getReplySed('F002')
 
 const defaultSelector: FormålManagerFormSelector = {
+  highContrast: false,
   replySed: mockReplySed,
-  validation: {},
-  viewValidation: false
+  validation: {}
 }
 
 describe('applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning', () => {

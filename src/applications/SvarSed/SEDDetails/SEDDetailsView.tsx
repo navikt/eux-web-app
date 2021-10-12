@@ -75,15 +75,15 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
                   <FlagList
                     size='XS'
                     type='circle'
-                    items={(replySed as F002Sed).ektefelle.personInfo.statsborgerskap.map((s: any) => ({ country: s.land }))}
+                    items={(replySed as F002Sed).ektefelle?.personInfo?.statsborgerskap?.map((s: any) => ({ country: s.land }))}
                   />
                 )}
                 <HorizontalSeparatorDiv size='0.35' />
                 <span>
                   {(replySed as F002Sed).ektefelle
-                    ? (replySed as F002Sed).ektefelle.personInfo.fornavn + ' ' +
-                 (replySed as F002Sed).ektefelle.personInfo.etternavn +
-              ' (' + (replySed as F002Sed).ektefelle.personInfo.kjoenn + ')'
+                    ? (replySed as F002Sed).ektefelle?.personInfo?.fornavn + ' ' +
+                      (replySed as F002Sed).ektefelle?.personInfo?.etternavn + ' (' +
+                      (replySed as F002Sed).ektefelle?.personInfo?.kjoenn + ')'
                     : '-'}
                 </span>
               </FlexDiv>
@@ -115,13 +115,13 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
               {t('label:type-krav')}
             </Dt>
             <Dd>
-              {t('app:kravType-' + (replySed as F002Sed).krav.kravType)}
+              {t('app:kravType-' + (replySed as F002Sed).krav?.kravType)}
             </Dd>
             <Dt>
               {t('label:krav-mottatt-dato')}
             </Dt>
             <Dd>
-              {(replySed as F002Sed).krav.kravMottattDato}
+              {(replySed as F002Sed).krav?.kravMottattDato}
             </Dd>
             {(replySed as F002Sed).krav?.infoType === 'vi_bekrefter_leverte_opplysninger' && (
               <>

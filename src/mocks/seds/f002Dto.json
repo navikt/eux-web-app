@@ -1,0 +1,696 @@
+{
+  "sedVersjon": "4.2",
+  "bruker": {
+    "personInfo": {
+      "fornavn": "æøå",
+      "etternavn": "æøå",
+      "kjoenn": "M",
+      "foedselsdato": "2001-01-01",
+      "statsborgerskap": [
+        {
+          "land": "NO"
+        }
+      ],
+      "pin": [
+        {
+          "land": "NO",
+          "sektor": "yrkesskade_og_yrkessykdom",
+          "identifikator": "æøå",
+          "institusjonsid": "æøå",
+          "institusjonsnavn": "æøå"
+        }
+      ],
+      "pinMangler": {
+        "etternavnVedFoedsel": "æøå",
+        "fornavnVedFoedsel": "æøå",
+        "foedested": {
+          "by": "æøå",
+          "region": "æøå",
+          "land": "NO"
+        },
+        "far": {
+          "fornavn": "æøå",
+          "etternavnVedFoedsel": "æøå"
+        },
+        "mor": {
+          "fornavn": "æøå",
+          "etternavnVedFoedsel": "æøå"
+        }
+      }
+    },
+    "adresser": [
+      {
+        "type": "bosted",
+        "gate": "æøå",
+        "postnummer": "æøå",
+        "by": "æøå",
+        "land": "NO",
+        "bygning": "æøå",
+        "region": "æøå"
+      }
+    ],
+    "telefon": [
+      {
+        "type": "hjem",
+        "nummer": "æøå"
+      }
+    ],
+    "epost": [
+      {
+        "adresse": "æøå"
+      }
+    ],
+    "flyttegrunn": {
+      "personligSituasjon": "æøå",
+      "datoFlyttetTilMottakerlandet": "2001-01-01",
+      "datoFlyttetTilAvsenderlandet": "2001-01-01",
+      "perioder": [
+        {
+          "startdato": "2001-01-01",
+          "sluttdato": "2001-01-01"
+        }
+      ]
+    },
+    "familierelasjoner": [
+      {
+        "relasjonType": "gift",
+        "relasjonInfo": "æøå",
+        "periode": {
+          "startdato": "2001-01-01",
+          "sluttdato": "2001-01-01"
+        },
+        "borSammen": "ja",
+        "annenRelasjonType": "æøå",
+        "annenRelasjonPersonNavn": "æøå",
+        "annenRelasjonDato": "2001-01-01"
+      }
+    ],
+    "ytterligereInfo": "æøå",
+    "perioderSomAnsatt": [
+      {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      }
+    ],
+    "perioderSomSelvstendig": [
+      {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      }
+    ],
+    "perioderSomSykMedLoenn": [
+      {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      }
+    ],
+    "perioderSomPermittertMedLoenn": [
+      {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      }
+    ],
+    "perioderSomPermittertUtenLoenn": [
+      {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      }
+    ],
+    "perioderMedTrygd": [
+      {
+        "startdato": "2001-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    ],
+    "perioderMedITrygdeordning": [
+      {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      }
+    ],
+    "perioderUtenforTrygdeordning": [
+      {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      }
+    ],
+    "perioderMedYtelser": [
+      {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      }
+    ],
+    "ikkeRettTilYtelser": {
+      "typeGrunn": "krav_ikke_framsatt",
+      "typeGrunnAnnen": "æøå"
+    },
+    "perioderMedPensjon": [
+      {
+        "pensjonstype": "alderspensjon",
+        "periode": {
+          "startdato": "2001-01-01",
+          "aapenPeriodeType": "åpen_sluttdato"
+        }
+      }
+    ]
+  },
+  "ektefelle": {
+    "personInfo": {
+      "fornavn": "æøå",
+      "etternavn": "æøå",
+      "kjoenn": "M",
+      "foedselsdato": "2001-01-01",
+      "statsborgerskap": [
+        {
+          "land": "NO"
+        }
+      ],
+      "pin": [
+        {
+          "land": "NO",
+          "sektor": "yrkesskade_og_yrkessykdom",
+          "identifikator": "æøå",
+          "institusjonsid": "æøå",
+          "institusjonsnavn": "æøå"
+        }
+      ],
+      "pinMangler": {
+        "etternavnVedFoedsel": "æøå",
+        "fornavnVedFoedsel": "æøå",
+        "foedested": {
+          "by": "æøå",
+          "region": "æøå",
+          "land": "NO"
+        },
+        "far": {
+          "fornavn": "æøå",
+          "etternavnVedFoedsel": "æøå"
+        },
+        "mor": {
+          "fornavn": "æøå",
+          "etternavnVedFoedsel": "æøå"
+        }
+      }
+    },
+    "adresser": [
+      {
+        "type": "bosted",
+        "gate": "æøå",
+        "postnummer": "æøå",
+        "by": "æøå",
+        "land": "NO",
+        "bygning": "æøå",
+        "region": "æøå"
+      }
+    ],
+    "telefon": [
+      {
+        "type": "hjem",
+        "nummer": "æøå"
+      }
+    ],
+    "epost": [
+      {
+        "adresse": "æøå"
+      }
+    ],
+    "flyttegrunn": {
+      "personligSituasjon": "æøå",
+      "datoFlyttetTilMottakerlandet": "2001-01-01",
+      "datoFlyttetTilAvsenderlandet": "2001-01-01",
+      "perioder": [
+        {
+          "startdato": "2001-01-01",
+          "sluttdato": "2001-01-01"
+        }
+      ]
+    },
+    "familierelasjoner": [
+      {
+        "relasjonType": "gift",
+        "relasjonInfo": "æøå",
+        "periode": {
+          "startdato": "2001-01-01",
+          "sluttdato": "2001-01-01"
+        },
+        "borSammen": "ja",
+        "annenRelasjonType": "æøå",
+        "annenRelasjonPersonNavn": "æøå",
+        "annenRelasjonDato": "2001-01-01"
+      }
+    ],
+    "ytterligereInfo": "æøå",
+    "perioderSomAnsatt": [
+      {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      }
+    ],
+    "perioderSomSelvstendig": [
+      {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      }
+    ],
+    "perioderMedTrygd": [
+      {
+        "startdato": "2001-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    ],
+    "perioderMedITrygdeordning": [
+      {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      }
+    ],
+    "perioderUtenforTrygdeordning": [
+      {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      }
+    ],
+    "perioderMedYtelser": [
+      {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      }
+    ],
+    "ikkeRettTilYtelser": {
+      "typeGrunn": "krav_ikke_framsatt",
+      "typeGrunnAnnen": "æøå"
+    },
+    "perioderMedPensjon": [
+      {
+        "pensjonstype": "alderspensjon",
+        "periode": {
+          "startdato": "2001-01-01",
+          "aapenPeriodeType": "åpen_sluttdato"
+        }
+      }
+    ]
+  },
+  "annenPerson": {
+    "personInfo": {
+      "fornavn": "æøå",
+      "etternavn": "æøå",
+      "kjoenn": "M",
+      "foedselsdato": "2001-01-01",
+      "statsborgerskap": [
+        {
+          "land": "NO"
+        }
+      ],
+      "pin": [
+        {
+          "land": "NO",
+          "sektor": "yrkesskade_og_yrkessykdom",
+          "identifikator": "æøå",
+          "institusjonsid": "æøå",
+          "institusjonsnavn": "æøå"
+        }
+      ],
+      "pinMangler": {
+        "etternavnVedFoedsel": "æøå",
+        "fornavnVedFoedsel": "æøå",
+        "foedested": {
+          "by": "æøå",
+          "region": "æøå",
+          "land": "NO"
+        },
+        "far": {
+          "fornavn": "æøå",
+          "etternavnVedFoedsel": "æøå"
+        },
+        "mor": {
+          "fornavn": "æøå",
+          "etternavnVedFoedsel": "æøå"
+        }
+      }
+    },
+    "adresser": [
+      {
+        "type": "bosted",
+        "gate": "æøå",
+        "postnummer": "æøå",
+        "by": "æøå",
+        "land": "NO",
+        "bygning": "æøå",
+        "region": "æøå"
+      }
+    ],
+    "telefon": [
+      {
+        "type": "hjem",
+        "nummer": "æøå"
+      }
+    ],
+    "epost": [
+      {
+        "adresse": "æøå"
+      }
+    ],
+    "flyttegrunn": {
+      "personligSituasjon": "æøå",
+      "datoFlyttetTilMottakerlandet": "2001-01-01",
+      "datoFlyttetTilAvsenderlandet": "2001-01-01",
+      "perioder": [
+        {
+          "startdato": "2001-01-01",
+          "sluttdato": "2001-01-01"
+        }
+      ]
+    },
+    "familierelasjoner": [
+      {
+        "relasjonType": "gift",
+        "relasjonInfo": "æøå",
+        "periode": {
+          "startdato": "2001-01-01",
+          "sluttdato": "2001-01-01"
+        },
+        "borSammen": "ja",
+        "annenRelasjonType": "æøå",
+        "annenRelasjonPersonNavn": "æøå",
+        "annenRelasjonDato": "2001-01-01"
+      }
+    ],
+    "ytterligereInfo": "æøå",
+    "perioderSomAnsatt": [
+      {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      }
+    ],
+    "perioderSomSelvstendig": [
+      {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      }
+    ],
+    "perioderMedTrygd": [
+      {
+        "startdato": "2001-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    ],
+    "perioderMedITrygdeordning": [
+      {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      }
+    ],
+    "perioderUtenforTrygdeordning": [
+      {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      }
+    ],
+    "perioderMedYtelser": [
+      {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      }
+    ],
+    "ikkeRettTilYtelser": {
+      "typeGrunn": "krav_ikke_framsatt",
+      "typeGrunnAnnen": "æøå"
+    },
+    "perioderMedPensjon": [
+      {
+        "pensjonstype": "alderspensjon",
+        "periode": {
+          "startdato": "2001-01-01",
+          "aapenPeriodeType": "åpen_sluttdato"
+        }
+      }
+    ]
+  },
+  "anmodningsperioder": [
+    {
+      "startdato": "2001-01-01",
+      "aapenPeriodeType": "åpen_sluttdato"
+    }
+  ],
+  "krav": {
+    "kravMottattDato": "2001-01-01",
+    "kravType": "nytt_krav",
+    "infoType": "bekrefter_opplysninger",
+    "infoPresisering": "æøå"
+  },
+  "utbetalingTilInstitusjon": {
+    "id": "æøå",
+    "navn": "æøå",
+    "kontoOrdinaer": {
+      "bankensNavn": "æøå",
+      "kontonummer": "æøå",
+      "swift": "æøå",
+      "adresse": {
+        "gate": "æøå",
+        "postnummer": "æøå",
+        "by": "æøå",
+        "land": "NO",
+        "bygning": "æøå",
+        "region": "æøå"
+      }
+    },
+    "kontoSepa": {
+      "iban": "æøå",
+      "swift": "æøå"
+    },
+    "begrunnelse": "æøå"
+  },
+  "familie": {
+    "ytelser": [
+      {
+        "antallPersoner": "æøå",
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01",
+        "beloep": "æøå",
+        "valuta": "NOK",
+        "utbetalingshyppighet": "æøå",
+        "ytelseNavn": "æøå",
+        "mottakersNavn": "æøå"
+      }
+    ],
+    "motregning": {
+      "svarType": "anmodning_om_motregning_for_hele_familien",
+      "antallPersoner": "æøå",
+      "vedtaksdato": "2001-01-01",
+      "begrunnelse": "æøå",
+      "ytterligereInfo": "æøå",
+      "startdato": "2001-01-01",
+      "sluttdato": "2001-01-01",
+      "beloep": "æøå",
+      "valuta": "NOK",
+      "utbetalingshyppighet": "æøå",
+      "ytelseNavn": "æøå",
+      "mottakersNavn": "æøå"
+    }
+  },
+  "vedtak": {
+    "innhold": "æøå",
+    "ytterligereInfo": "æøå",
+    "vedtakstype": "midlertidig_vedtak",
+    "vedtaksdato": "2001-01-01",
+    "begrunnelse": "æøå",
+    "primaerkompetanseArt58": [
+      {
+        "periode": {
+          "startdato": "2001-01-01",
+          "aapenPeriodeType": "åpen_sluttdato"
+        }
+      }
+    ],
+    "sekundaerkompetanseArt58": [
+      {
+        "periode": {
+          "startdato": "2001-01-01",
+          "aapenPeriodeType": "åpen_sluttdato"
+        }
+      }
+    ],
+    "primaerkompetanseArt68": [
+      {
+        "periode": {
+          "startdato": "2001-01-01",
+          "aapenPeriodeType": "åpen_sluttdato"
+        },
+        "skalYtelseUtbetales": "ja"
+      }
+    ],
+    "sekundaerkompetanseArt68": [
+      {
+        "periode": {
+          "startdato": "2001-01-01",
+          "aapenPeriodeType": "åpen_sluttdato"
+        },
+        "skalYtelseUtbetales": "ja"
+      }
+    ],
+    "vedtaksperioder": [
+      {
+        "startdato": "2001-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    ],
+    "barnVedtaketOmfatter": [
+      {
+        "fornavn": "æøå",
+        "etternavn": "æøå",
+        "foedselsdato": "2001-01-01"
+      }
+    ],
+    "gjelderAlleBarn": "ja"
+  },
+  "sedType": "F002",
+  "ytterligereInfo": "æøå",
+  "refusjonskrav": "æøå",
+  "uenighet": {
+    "bosted": "søker",
+    "medlemsperiode": "søker",
+    "personligSituasjon": "søker",
+    "pensjon": "søker",
+    "oppholdetsVarighet": "søker",
+    "ansettelse": "søker",
+    "ytterligereGrunner": "æøå"
+  },
+  "uenighetKonklusjon": [
+    {
+      "vedtakFraDato": "2001-01-01",
+      "kommentarTilVedtak": "æøå",
+      "tasTilAdministrativKommisjon": "ja",
+      "grunnTilUenighet": "æøå"
+    }
+  ],
+  "barn": [
+    {
+      "adresser": [
+        {
+          "type": "bosted",
+          "gate": "æøå",
+          "postnummer": "æøå",
+          "by": "æøå",
+          "land": "NO",
+          "bygning": "æøå",
+          "region": "æøå"
+        }
+      ],
+      "mor": {
+        "fornavn": "æøå",
+        "etternavnVedFoedsel": "æøå"
+      },
+      "far": {
+        "fornavn": "æøå",
+        "etternavnVedFoedsel": "æøå"
+      },
+      "barnetilhoerigheter": [
+        {
+          "borIBrukersHushold": "ja",
+          "borIEktefellesHushold": "ja",
+          "borIAnnenPersonsHushold": "ja",
+          "borPaaInstitusjon": "ja",
+          "erDeltForeldreansvar": "ja",
+          "relasjonTilPerson": "søker",
+          "relasjonType": "daglig_omsorg",
+          "periode": {
+            "startdato": "2001-01-01",
+            "aapenPeriodeType": "åpen_sluttdato"
+          }
+        }
+      ],
+      "flyttegrunn": {
+        "personligSituasjon": "æøå",
+        "datoFlyttetTilMottakerlandet": "2001-01-01",
+        "datoFlyttetTilAvsenderlandet": "2001-01-01",
+        "perioder": [
+          {
+            "startdato": "2001-01-01",
+            "sluttdato": "2001-01-01"
+          }
+        ]
+      },
+      "personInfo": {
+        "fornavn": "æøå",
+        "etternavn": "1",
+        "kjoenn": "M",
+        "foedselsdato": "2001-01-01",
+        "statsborgerskap": [
+          {
+            "land": "NO"
+          }
+        ],
+        "pin": [
+          {
+            "land": "NO",
+            "sektor": "yrkesskade_og_yrkessykdom",
+            "identifikator": "æøå",
+            "institusjonsid": "æøå",
+            "institusjonsnavn": "æøå"
+          }
+        ],
+        "pinMangler": {
+          "etternavnVedFoedsel": "æøå",
+          "fornavnVedFoedsel": "æøå",
+          "foedested": {
+            "by": "æøå",
+            "region": "æøå",
+            "land": "NO"
+          },
+          "far": {
+            "fornavn": "æøå",
+            "etternavnVedFoedsel": "æøå"
+          },
+          "mor": {
+            "fornavn": "æøå",
+            "etternavnVedFoedsel": "æøå"
+          }
+        }
+      }
+    },
+    {
+      "ytelse": {
+        "barnetsNavn": "æøå 2",
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01",
+        "beloep": "æøå",
+        "valuta": "NOK",
+        "utbetalingshyppighet": "æøå",
+        "ytelseNavn": "æøå",
+        "mottakersNavn": "æøå"
+      },
+      "personInfo": {
+        "fornavn": "æøå",
+        "etternavn": "2"
+      }
+    },
+    {
+      "motregning": {
+        "barnetsNavn": "æøå 3",
+        "vedtaksdato": "2001-01-01",
+        "begrunnelse": "æøå",
+        "ytterligereInfo": "æøå",
+        "svarType": "anmodning_om_motregning_per_barn",
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01",
+        "beloep": "æøå",
+        "valuta": "NOK",
+        "utbetalingshyppighet": "æøå",
+        "ytelseNavn": "æøå",
+        "mottakersNavn": "æøå"
+      },
+      "personInfo": {
+        "fornavn": "æøå",
+        "etternavn": "3"
+      }
+    }
+  ],
+  "endredeForhold": [
+    "hele_familien"
+  ],
+  "formaal": [
+    "mottak_av_søknad_om_familieytelser"
+  ],
+  "tema": "BAR",
+  "fagsakId": "fraDto"
+}

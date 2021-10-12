@@ -64,6 +64,7 @@ export interface SEDEditorSelector {
   sedCreatedResponse: CreateSedResponse
   sedSendResponse: any
   validation: Validation
+  view: boolean
 }
 
 export interface SEDEditorProps {
@@ -134,8 +135,8 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
     // if we do not have vedtak, do not have ytelse in barna
     if (Object.prototype.hasOwnProperty.call(replySed, 'formaal') && (replySed as FSed)?.formaal.indexOf('vedtak') < 0) {
       (newReplySed as F002Sed).barn?.forEach((b: Barn, i: number) => {
-        if (Object.prototype.hasOwnProperty.call((newReplySed as F002Sed).barn[i], 'ytelse')) {
-          delete (newReplySed as F002Sed).barn[i].ytelse
+        if (Object.prototype.hasOwnProperty.call((newReplySed as F002Sed).barn?.[i], 'ytelse')) {
+          delete (newReplySed as F002Sed).barn?.[i].ytelse
         }
       })
     }

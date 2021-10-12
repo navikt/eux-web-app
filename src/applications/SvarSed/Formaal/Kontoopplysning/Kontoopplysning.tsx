@@ -1,7 +1,6 @@
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
 import { mapState, FormålManagerFormProps, FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
-import classNames from 'classnames'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
@@ -70,60 +69,52 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
         {t('label:kontoopplysninger')}
       </Undertittel>
       <VerticalSeparatorDiv size='2' />
-      <AlignStartRow
-        className={classNames('slideInFromLeft')}
-      >
-        <Column flex='2'>
+      <AlignStartRow>
+        <Column>
           <TextAreaDiv>
             <TextArea
               feil={validation[namespace + '-begrunnelse']?.feilmelding}
-              key={namespace + '-begrunnelse-' + (utbetalingTilInstitusjon.begrunnelse ?? '')}
+              key={namespace + '-begrunnelse-' + (utbetalingTilInstitusjon?.begrunnelse ?? '')}
               id='begrunnelse'
               label={t('label:begrunnelse-for-myndighetens-krav') + '*'}
               namespace={namespace}
               onChanged={setBegrunnelse}
               required
-              value={utbetalingTilInstitusjon.begrunnelse ?? ''}
+              value={utbetalingTilInstitusjon?.begrunnelse ?? ''}
             />
           </TextAreaDiv>
         </Column>
         <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow
-        className={classNames('slideInFromLeft')}
-        style={{ animationDelay: '0.05s' }}>
+      <AlignStartRow>
         <Column>
           <Input
             feil={validation[namespace + '-id']?.feilmelding}
             id='id'
-            key={namespace + '-id-' + (utbetalingTilInstitusjon.id ?? '')}
+            key={namespace + '-id-' + (utbetalingTilInstitusjon?.id ?? '')}
             label={t('label:institusjonens-id') + ' *'}
             namespace={namespace}
             onChanged={setId}
             required
-            value={utbetalingTilInstitusjon.id ?? ''}
+            value={utbetalingTilInstitusjon?.id ?? ''}
           />
         </Column>
         <Column>
           <Input
             feil={validation[namespace + '-navn']?.feilmelding}
             namespace={namespace}
-            key={namespace + '-navn-' + (utbetalingTilInstitusjon.navn ?? '')}
+            key={namespace + '-navn-' + (utbetalingTilInstitusjon?.navn ?? '')}
             id='navn'
             label={t('label:institusjonens-navn') + ' *'}
             onChanged={setNavn}
             required
-            value={utbetalingTilInstitusjon.navn ?? ''}
+            value={utbetalingTilInstitusjon?.navn ?? ''}
           />
         </Column>
-        <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />
-      <AlignStartRow
-        className={classNames('slideInFromLeft')}
-        style={{ animationDelay: '0.1s' }}
-      >
+      <AlignStartRow>
         <Column>
           <HighContrastRadioPanelGroup
             checked={utbetalingTilInstitusjon?.kontoOrdinaer?.sepaKonto === 'ja'}
@@ -143,40 +134,33 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow
-        className={classNames('slideInFromLeft')}
-        style={{ animationDelay: '0.15s' }}
-      >
-        <Column flex='2'>
+      <AlignStartRow>
+        <Column>
           <Input
             feil={validation[namespace + '-kontoOrdinaer-iban']?.feilmelding}
             namespace={namespace}
             id='kontoOrdinaer-iban'
+            key={namespace + 'kontoOrdinaer-iban' + (utbetalingTilInstitusjon?.kontoOrdinaer.iban ?? '')}
             label={t('label:iban') + ' *'}
             onChanged={setIban}
-            value={utbetalingTilInstitusjon.kontoOrdinaer.iban ?? ''}
+            value={utbetalingTilInstitusjon?.kontoOrdinaer.iban ?? ''}
           />
         </Column>
-        <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow
-        className={classNames('slideInFromLeft')}
-        style={{ animationDelay: '0.2s' }}
-      >
-        <Column flex='2'>
+      <AlignStartRow>
+        <Column>
           <Input
             feil={validation[namespace + '-kontoOrdinaer-swift']?.feilmelding}
             namespace={namespace}
             id='kontoOrdinaer-swift'
-            key={namespace + '-kontoOrdinaer-swift-' + (utbetalingTilInstitusjon.kontoOrdinaer.swift ?? '')}
+            key={namespace + '-kontoOrdinaer-swift-' + (utbetalingTilInstitusjon?.kontoOrdinaer.swift ?? '')}
             label={t('label:swift') + ' *'}
             onChanged={setSwift}
             required
-            value={utbetalingTilInstitusjon.kontoOrdinaer.swift ?? ''}
+            value={utbetalingTilInstitusjon?.kontoOrdinaer.swift ?? ''}
           />
         </Column>
-        <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
     </PaddedDiv>

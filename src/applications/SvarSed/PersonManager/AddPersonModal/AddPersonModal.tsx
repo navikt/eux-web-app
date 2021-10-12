@@ -181,7 +181,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
             personInfo: personInfo
           }]
         } else {
-          (newReplySed as F002Sed).barn.push({
+          (newReplySed as F002Sed).barn?.push({
             personInfo: personInfo
           })
         }
@@ -345,7 +345,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
           {_replySed.bruker && renderPerson('bruker', brukerNr)}
           {(_replySed as F002Sed).ektefelle && renderPerson('ektefelle', ektefelleNr)}
           {(_replySed as F002Sed).annenPerson && renderPerson('annenPerson', annenPersonNr)}
-          {(_replySed as F002Sed).barn && (_replySed as F002Sed).barn.map((b: any, i: number) => renderPerson(`barn[${i}]`, barnNr + i))}
+          {(_replySed as F002Sed).barn?.map((b: any, i: number) => renderPerson(`barn[${i}]`, barnNr + i))}
           <VerticalSeparatorDiv />
           <HorizontalLineSeparator />
           <VerticalSeparatorDiv size='2' />
