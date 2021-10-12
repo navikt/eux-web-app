@@ -1,5 +1,6 @@
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
+import { mapState } from 'applications/SvarSed/Formaal/FormålManager'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
@@ -7,7 +8,6 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Adresse as IAdresse } from 'declarations/sed'
-import { Kodeverk } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -30,16 +30,6 @@ import { getIdx } from 'utils/namespace'
 import Adresse from './Adresse'
 import { validateAdresse, ValidationAddressProps } from './validation'
 
-interface AdresserSelector extends PersonManagerFormSelector {
-  landkoderList: Array<Kodeverk> | undefined
-}
-
-const mapState = (state: State): AdresserSelector => ({
-  landkoderList: state.app.landkoder,
-  replySed: state.svarpased.replySed,
-  validation: state.validation.status
-})
-
 const Adresser: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
@@ -47,10 +37,9 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
-    landkoderList,
     replySed,
     validation
-  } = useSelector<State, AdresserSelector>(mapState)
+  } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const target = `${personID}.adresser`
   const adresses: Array<IAdresse> = _.get(replySed, target)
@@ -127,7 +116,6 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
           key={namespace + idx + getId( index < 0 ? _newAdresse : adresse)}
           namespace={namespace + idx}
           adresse={index < 0 ? _newAdresse: adresse}
-          landkoderList={landkoderList}
           onAdressChanged={(a: IAdresse) => setAdresse(a, index)}
           validation={index < 0 ? _validation : validation}
           resetValidation={(n: string) => onValidationReset(n, index)}

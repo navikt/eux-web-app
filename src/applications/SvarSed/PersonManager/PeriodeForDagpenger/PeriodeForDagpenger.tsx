@@ -1,5 +1,6 @@
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
+import AdresseFC from 'applications/SvarSed/PersonManager/Adresser/Adresse'
 import { standardLogger } from 'metrics/loggers'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
@@ -14,12 +15,10 @@ import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { Periode, PeriodeDagpenger } from 'declarations/sed'
+import { Adresse, Periode, PeriodeDagpenger } from 'declarations/sed'
 import { Kodeverk } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
-import { Country } from 'land-verktoy'
-import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import {
   AlignStartRow,
@@ -64,12 +63,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
   const [_newInstitutionsId, _setNewInstitutionsId] = useState<string>('')
   const [_newInstitutionsNavn, _setNewInstitutionsNavn] = useState<string>('')
   const [_newNavn, _setNewNavn] = useState<string>('')
-  const [_newGate, _setNewGate] = useState<string>('')
-  const [_newPostnummer, _setNewPostnummer] = useState<string>('')
-  const [_newBy, _setNewBy] = useState<string>('')
-  const [_newBygning, _setNewBygning] = useState<string>('')
-  const [_newRegion, _setNewRegion] = useState<string>('')
-  const [_newLand, _setNewLand] = useState<string>('')
+  const [_newAdresse, _setNewAdresse] = useState<Adresse | undefined>(undefined)
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PeriodeDagpenger>(
     (p: PeriodeDagpenger) => p.periode.startdato + '-' + (p.periode.sluttdato ?? p.periode.aapenPeriodeType))
@@ -109,32 +103,15 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
           ...cacheForIdMangler,
           newitem: {
             navn: _newNavn,
-            adresse: {
-              gate: _newGate,
-              postnummer: _newPostnummer,
-              bygning: _newBygning,
-              by: _newBy,
-              region: _newRegion,
-              land: _newLand
-            }
+            adresse: _newAdresse
           }
         })
         _setNewNavn('')
-        _setNewGate('')
-        _setNewPostnummer('')
-        _setNewBy('')
-        _setNewBygning('')
-        _setNewRegion('')
-        _setNewLand('')
+        _setNewAdresse(undefined)
       } else {
         if (Object.prototype.hasOwnProperty.call(cacheForIdMangler, 'newitem')) {
           _setNewNavn(cacheForIdMangler.newitem?.navn ?? '-')
-          _setNewGate(cacheForIdMangler.newitem?.adresse.gate ?? '')
-          _setNewPostnummer(cacheForIdMangler.newitem?.adresse.postnummer ?? '')
-          _setNewBy(cacheForIdMangler.newitem?.adresse.by ?? '')
-          _setNewBygning(cacheForIdMangler.newitem?.adresse.bygning ?? '')
-          _setNewRegion(cacheForIdMangler.newitem?.adresse.region ?? '')
-          _setNewLand(cacheForIdMangler.newitem?.adresse.land ?? '')
+          _setNewAdresse(cacheForIdMangler.newitem?.adresse)
           setCacheForIdMangler({
             ...cacheForIdMangler,
             newitem: undefined
@@ -206,75 +183,21 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
       }
     }
   }
-
-  const setGate = (gate: string, index: number) => {
+  const setAdresse = (adresse: Adresse, index: number) => {
     if (index < 0) {
-      _setNewGate(gate.trim())
-      _resetValidation(namespace + '-institusjon-idmangler-gate')
+      _setNewAdresse(adresse)
     } else {
-      dispatch(updateReplySed(`${target}[${index}].institusjon.idmangler.gate`, gate.trim()))
-      if (validation[namespace + getIdx(index) + '-institusjon-idmangler-gate']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-institusjon-idmangler-gate'))
-      }
+      dispatch(updateReplySed(`${target}[${index}].adresse`, adresse))
+
     }
   }
 
-  const setPostnummer = (postnummer: string, index: number) => {
+  const resetAdresseValidation = (fullnamespace: string, index: number) => {
     if (index < 0) {
-      _setNewPostnummer(postnummer.trim())
-      _resetValidation(namespace + '-institusjon-idmangler-postnummer')
+      _resetValidation(fullnamespace)
     } else {
-      dispatch(updateReplySed(`${target}[${index}].institusjon.idmangler.postnummer`, postnummer.trim()))
-      if (validation[namespace + getIdx(index) + '-institusjon-idmangler-postnummer']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-institusjon-idmangler-postnummer'))
-      }
-    }
-  }
-
-  const setBy = (by: string, index: number) => {
-    if (index < 0) {
-      _setNewBy(by.trim())
-      _resetValidation(namespace + '-institusjon-idmangler-by')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].institusjon.idmangler.by`, by.trim()))
-      if (validation[namespace + getIdx(index) + '-institusjon-idmangler-by']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-institusjon-idmangler-by'))
-      }
-    }
-  }
-
-  const setBygning = (bygning: string, index: number) => {
-    if (index < 0) {
-      _setNewBygning(bygning.trim())
-      _resetValidation(namespace + '-institusjon-idmangler-bygning')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].institusjon.idmangler.bygning`, bygning.trim()))
-      if (validation[namespace + getIdx(index) + '-institusjon-idmangler-bygning']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-institusjon-idmangler-bygning'))
-      }
-    }
-  }
-
-  const setRegion = (region: string, index: number) => {
-    if (index < 0) {
-      _setNewRegion(region.trim())
-      _resetValidation(namespace + '-institusjon-idmangler-region')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].institusjon.idmangler.region`, region.trim()))
-      if (validation[namespace + getIdx(index) + '-institusjon-idmangler-region']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-institusjon-idmangler-region'))
-      }
-    }
-  }
-
-  const setLand = (land: string, index: number) => {
-    if (index < 0) {
-      _setNewLand(land.trim())
-      _resetValidation(namespace + '-institusjon-idmangler-land')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].institusjon.idmangler.land`, land.trim()))
-      if (validation[namespace + getIdx(index) + '-institusjon-idmangler-land']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-institusjon-idmangler-land'))
+      if (validation[fullnamespace]) {
+        dispatch(resetValidation(fullnamespace))
       }
     }
   }
@@ -284,12 +207,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
     _setNewInstitutionsId('')
     _setNewNavn('')
     _setNewPeriode({ startdato: '' })
-    _setNewGate('')
-    _setNewPostnummer('')
-    _setNewRegion('')
-    _setNewBygning('')
-    _setNewBy('')
-    _setNewLand('')
+    _setNewAdresse(undefined)
     _resetValidation()
   }
 
@@ -316,14 +234,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
         id: _newInstitutionsId.trim(),
         idmangler: {
           navn: _newNavn.trim(),
-          adresse: {
-            gate: _newGate.trim(),
-            postnummer: _newPostnummer.trim(),
-            bygning: _newBygning.trim(),
-            by: _newBy.trim(),
-            region: _newRegion.trim(),
-            land: _newLand.trim()
-          }
+          adresse: _newAdresse ?? {} as Adresse
         }
       }
     }
@@ -356,8 +267,8 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
     const _periode = index < 0 ? _newPeriode : periodeDagpenger?.periode
 
     const idmangler = index < 0
-      ? !_.isEmpty(_newNavn.trim()) || !_.isEmpty(_newGate.trim()) || !_.isEmpty(_newPostnummer.trim()) ||
-        !_.isEmpty(_newBygning.trim()) || !_.isEmpty(_newBy.trim()) || !_.isEmpty(_newRegion.trim()) || !_.isEmpty(_newLand.trim())
+      ? !_.isEmpty(_newNavn.trim()) || !_.isEmpty(_newAdresse?.gate?.trim()) || !_.isEmpty(_newAdresse?.postnummer?.trim()) ||
+        !_.isEmpty(_newAdresse?.bygning?.trim()) || !_.isEmpty(_newAdresse?.by?.trim()) || !_.isEmpty(_newAdresse?.region?.trim()) || !_.isEmpty(_newAdresse?.land)
       : !_.isEmpty(periodeDagpenger?.institusjon.idmangler?.navn) || !_.isEmpty(periodeDagpenger?.institusjon.idmangler?.adresse)
 
     const institusjonKjent = !idmangler
@@ -442,86 +353,14 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
               </Column>
               <Column />
             </AlignStartRow>
-
             <VerticalSeparatorDiv />
-            <AlignStartRow>
-              <Column flex='3'>
-                <Input
-                  namespace={namespace}
-                  feil={getErrorFor(index, 'institusjon-idmangler-adresse-gate')}
-                  id='institusjon-idmangler-adresse-gate'
-                  key={'institusjon-idmangler-adresse-gate-' + (index < 0 ? _newGate : periodeDagpenger?.institusjon.idmangler?.adresse.gate)}
-                  label={t('label:gateadresse')}
-                  onChanged={(gate: string) => setGate(gate, index)}
-                  value={index < 0 ? _newGate : periodeDagpenger?.institusjon.idmangler?.adresse.gate}
-                />
-              </Column>
-              <Column>
-                <Input
-                  namespace={namespace}
-                  feil={getErrorFor(index, 'institusjon-idmangler-adresse-bygning')}
-                  id='institusjon-idmangler-adresse-bygning'
-                  key={'institusjon-idmangler-adresse-bygning-' + (index < 0 ? _newBygning : periodeDagpenger?.institusjon.idmangler?.adresse.bygning ?? '')}
-                  label={t('label:bygning')}
-                  onChanged={(newBygning: string) => setBygning(newBygning, index)}
-                  value={index < 0 ? _newBygning : periodeDagpenger?.institusjon.idmangler?.adresse.bygning ?? ''}
-                />
-              </Column>
-            </AlignStartRow>
-            <VerticalSeparatorDiv />
-            <AlignStartRow>
-              <Column>
-                <Input
-                  namespace={namespace}
-                  feil={getErrorFor(index, 'institusjon-idmangler-adresse-postnummer')}
-                  id='institusjon-idmangler-adresse-postnummer'
-                  key={'institusjon-idmangler-adresse-postnummer-' + (index < 0 ? _newPostnummer : periodeDagpenger?.institusjon.idmangler?.adresse.postnummer ?? '')}
-                  label={t('label:postnummer')}
-                  onChanged={(newPostnummer: string) => setPostnummer(newPostnummer, index)}
-                  value={index < 0 ? _newPostnummer : periodeDagpenger?.institusjon.idmangler?.adresse.postnummer ?? ''}
-                />
-              </Column>
-              <Column flex='3'>
-                <Input
-                  namespace={namespace}
-                  feil={getErrorFor(index, 'institusjon-idmangler-adresse-by')}
-                  id='institusjon-idmangler-adresse-by'
-                  key={'institusjon-idmangler-adresse-by-' + (index < 0 ? _newBy : periodeDagpenger?.institusjon.idmangler?.adresse.by ?? '')}
-                  label={t('label:by')}
-                  onChanged={(newBy: string) => setBy(newBy, index)}
-                  value={index < 0 ? _newBy : periodeDagpenger?.institusjon.idmangler?.adresse.by ?? ''}
-                />
-              </Column>
-            </AlignStartRow>
-            <VerticalSeparatorDiv />
-            <AlignStartRow>
-              <Column flex='2'>
-                <Input
-                  namespace={namespace}
-                  feil={getErrorFor(index, 'institusjon-idmangler-adresse-region')}
-                  id='institusjon-idmangler-adresse-region'
-                  key={'institusjon-idmangler-adresse-region-' + (index < 0 ? _newRegion : periodeDagpenger?.institusjon.idmangler?.adresse?.region ?? '')}
-                  label={t('label:region')}
-                  onChanged={(newRegion: string) => setRegion(newRegion, index)}
-                  value={index < 0 ? _newRegion : periodeDagpenger?.institusjon.idmangler?.adresse?.region ?? ''}
-                />
-              </Column>
-              <Column flex='2'>
-                <CountrySelect
-                  closeMenuOnSelect
-                  key={'institusjon-idmangler-land-' + (index < 0 ? _newLand : periodeDagpenger?.institusjon.idmangler?.adresse?.land ?? '')}
-                  data-test-id={namespace + '-institusjon-idmangler-adresse-land'}
-                  error={getErrorFor(index, 'institusjon-idmangler-adresse-land')}
-                  flagWave
-                  id={namespace + '-institusjon-idmangler-adresse-land'}
-                  label={t('label:land') + ' *'}
-                  menuPortalTarget={document.body}
-                  onOptionSelected={(e: Country) => setLand(e.value, index)}
-                  placeholder={t('el:placeholder-select-default')}
-                  values={index < 0 ? _newLand : periodeDagpenger?.institusjon.idmangler?.adresse?.land ?? ''}
-                />
-              </Column>
-            </AlignStartRow>
+            <AdresseFC
+              adresse={(index < 0 ? _newAdresse : periodeDagpenger?.institusjon.idmangler?.adresse)}
+              onAdressChanged={(a) => setAdresse(a, index)}
+              namespace={namespace + '-adresse'}
+              validation={index < 0 ? _validation : validation}
+              resetValidation={(fullnamespace: string) => resetAdresseValidation(fullnamespace, index)}
+            />
           </>
         )}
         <VerticalSeparatorDiv />

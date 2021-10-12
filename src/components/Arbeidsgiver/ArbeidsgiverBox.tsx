@@ -1,3 +1,4 @@
+import AdresseFC from 'applications/SvarSed/PersonManager/Adresser/Adresse'
 import Add from 'assets/icons/Add'
 import IkonArbeidsgiver from 'assets/icons/Arbeidsgiver'
 import Edit from 'assets/icons/Edit'
@@ -5,15 +6,13 @@ import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
 import Input from 'components/Forms/Input'
 import PeriodeInput, { toUIDateFormat } from 'components/Forms/PeriodeInput'
-import { Periode, PeriodeMedForsikring } from 'declarations/sed.d'
+import { Adresse as IAdresse, Periode, PeriodeMedForsikring } from 'declarations/sed.d'
 import useValidation from 'hooks/useValidation'
-import CountryData, { Country } from 'land-verktoy'
-import CountrySelect from 'landvelger'
+import CountryData from 'land-verktoy'
 import _ from 'lodash'
 import { Checkbox } from 'nav-frontend-skjema'
 import { Normaltekst, Undertekst, UndertekstBold } from 'nav-frontend-typografi'
 import {
-  AlignStartRow,
   Column,
   FlexCenterSpacedDiv,
   FlexDiv,
@@ -98,13 +97,7 @@ const ArbeidsgiverBox = ({
   const [_arbeidsgiverPeriode, setArbeidsgiversPeriode] = useState<Periode>(arbeidsgiver.periode)
 
   // for includeAddress
-  const [_gate, setGate] = useState<string>(arbeidsgiver.arbeidsgiver?.adresse?.gate ?? '')
-  const [_postnummer, setPostnummer] = useState<string>(arbeidsgiver.arbeidsgiver?.adresse?.postnummer ?? '')
-  const [_by, setBy] = useState<string>(arbeidsgiver.arbeidsgiver?.adresse?.by ?? '')
-  const [_bygning, setBygning] = useState<string>(arbeidsgiver.arbeidsgiver?.adresse?.bygning ?? '')
-  const [_region, setRegion] = useState<string>(arbeidsgiver.arbeidsgiver?.adresse?.region ?? '')
-  const [_land, setLand] = useState<string>(arbeidsgiver.arbeidsgiver?.adresse?.land ?? '')
-
+  const [_adresse, _setAdresse] = useState<IAdresse | undefined>(arbeidsgiver.arbeidsgiver.adresse ?? undefined)
   const [_validation, resetValidation, performValidation] = useValidation<ValidationArbeidsgiverProps>({}, validateArbeidsgiver)
 
   const onNameChanged = (newName: string) => {
@@ -127,36 +120,6 @@ const ArbeidsgiverBox = ({
     setArbeidsgiversPeriode(newPeriode)
   }
 
-  const onGateChanged = (newGate: string) => {
-    resetValidation(_namespace + '-gate')
-    setGate(newGate)
-  }
-
-  const onPostnummerChanged = (newPostnummer: string) => {
-    resetValidation(_namespace + '-postnummer')
-    setPostnummer(newPostnummer)
-  }
-
-  const onByChanged = (newBy: string) => {
-    resetValidation(_namespace + '-by')
-    setBy(newBy)
-  }
-
-  const onBygningChanged = (newBygning: string) => {
-    resetValidation(_namespace + '-bygning')
-    setBygning(newBygning)
-  }
-
-  const onRegionChanged = (newRegion: string) => {
-    resetValidation(_namespace + '-region')
-    setRegion(newRegion)
-  }
-
-  const onLandChanged = (newLand: string) => {
-    resetValidation(_namespace + '-land')
-    setLand(newLand)
-  }
-
   const onSaveEditButtonClicked = () => {
     const newArbeidsgiver: PeriodeMedForsikring = {
       arbeidsgiver: {
@@ -171,14 +134,7 @@ const ArbeidsgiverBox = ({
     } as PeriodeMedForsikring
 
     if (includeAddress) {
-      newArbeidsgiver.arbeidsgiver.adresse = {
-        gate: _gate,
-        postnummer: _postnummer,
-        by: _by,
-        bygning: _bygning,
-        region: _region,
-        land: _land
-      }
+      newArbeidsgiver.arbeidsgiver.adresse = _adresse
     }
 
     const valid: boolean = performValidation({
@@ -202,12 +158,7 @@ const ArbeidsgiverBox = ({
     setArbeidsgiversNavn(_arbeidsgiversNavn || '')
     setArbeidsgiversPeriode(_arbeidsgiverPeriode)
     if (includeAddress) {
-      setGate(_gate)
-      setPostnummer(_postnummer)
-      setBygning(_bygning)
-      setBy(_by)
-      setRegion(_region)
-      setLand(_land)
+      _setAdresse(_adresse)
     }
   }
 
@@ -307,98 +258,32 @@ const ArbeidsgiverBox = ({
                     ? (
                       <>
                         <VerticalSeparatorDiv size='0.5' />
-                        <AlignStartRow>
-                          <Column flex='3'>
-                            <Input
-                              namespace={_namespace}
-                              feil={_validation[_namespace + '-gate']?.feilmelding}
-                              id='gate'
-                              label={t('label:gateadresse')}
-                              onChanged={onGateChanged}
-                              value={_gate}
-                            />
-                          </Column>
-                          <Column>
-                            <Input
-                              namespace={_namespace}
-                              feil={_validation[_namespace + '-bygning']?.feilmelding}
-                              id='bygning'
-                              label={t('label:bygning')}
-                              onChanged={onBygningChanged}
-                              value={_bygning}
-                            />
-                          </Column>
-                        </AlignStartRow>
-                        <VerticalSeparatorDiv />
-                        <AlignStartRow>
-                          <Column>
-                            <Input
-                              namespace={_namespace}
-                              feil={_validation[_namespace + '-postnummer']?.feilmelding}
-                              id='postnummer'
-                              label={t('label:postnummer')}
-                              onChanged={onPostnummerChanged}
-                              value={_postnummer}
-                            />
-                          </Column>
-                          <Column flex='3'>
-                            <Input
-                              namespace={_namespace}
-                              feil={_validation[_namespace + '-by']?.feilmelding}
-                              id='by'
-                              label={t('label:by')}
-                              onChanged={onByChanged}
-                              value={_by}
-                            />
-                          </Column>
-                        </AlignStartRow>
-                        <VerticalSeparatorDiv />
-                        <AlignStartRow>
-                          <Column flex='2'>
-                            <Input
-                              namespace={_namespace}
-                              feil={_validation[_namespace + '-region']?.feilmelding}
-                              id='region'
-                              label={t('label:region')}
-                              onChanged={onRegionChanged}
-                              value={_region}
-                            />
-                          </Column>
-                          <Column flex='2'>
-                            <CountrySelect
-                              closeMenuOnSelect
-                              key={_land}
-                              data-test-id={namespace + '-land'}
-                              error={_validation[_namespace + '-land']?.feilmelding}
-                              flagWave
-                              id={namespace + '-land'}
-                              label={t('label:land') + ' *'}
-                              menuPortalTarget={document.body}
-                              onOptionSelected={(e: Country) => onLandChanged(e.value)}
-                              placeholder={t('el:placeholder-select-default')}
-                              values={_land}
-                            />
-                          </Column>
-                        </AlignStartRow>
+                        <AdresseFC
+                          adresse={_adresse}
+                          onAdressChanged={_setAdresse}
+                          namespace={_namespace}
+                          validation={_validation}
+                          resetValidation={resetValidation}
+                        />
                       </>
                       )
                     : (
                       <div>
                         <Normaltekst>
-                          {(!!_gate || !!_bygning || !!_postnummer || !!_by || !!_region || !!_land) && (
+                          {!_.isEmpty(_adresse) && (
                             <>{t('label:adresse')}: </>
                           )}
                         </Normaltekst>
                         <Normaltekst>
-                          {_gate ?? '-'}
-                          {_bygning ? ', ' + t('label:bygning').toLowerCase() + ' ' + _bygning : ''}
+                          {_adresse?.gate ?? '-'}
+                          {_adresse?.bygning ? ', ' + t('label:bygning').toLowerCase() + ' ' + _adresse?.bygning : ''}
                         </Normaltekst>
                         <Normaltekst>
-                          {_postnummer + ' ' + _by}
+                          {_adresse?.postnummer + ' ' + _adresse?.by}
                         </Normaltekst>
                         <Normaltekst>
-                          {_region ? _region + ', ' : ''}
-                          {countryData.findByValue(_land)?.label ?? _land}
+                          {_adresse?.region ? _adresse?.region + ', ' : ''}
+                          {countryData.findByValue(_adresse?.land)?.label ?? _adresse?.land}
                         </Normaltekst>
                       </div>
                       )}

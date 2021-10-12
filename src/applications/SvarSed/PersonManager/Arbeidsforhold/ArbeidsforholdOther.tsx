@@ -1,5 +1,6 @@
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
+import AdresseFC from 'applications/SvarSed/PersonManager/Adresser/Adresse'
 import { PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
@@ -8,12 +9,10 @@ import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { Periode, PeriodeAnnenForsikring, ReplySed } from 'declarations/sed'
+import { Adresse, Periode, PeriodeAnnenForsikring, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
-import { Country } from 'land-verktoy'
-import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import { Normaltekst } from 'nav-frontend-typografi'
@@ -70,12 +69,7 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
   const [_newInstitutionsType, _setNewInstitutionsType] = useState<string>('')
   const [_newVirksomhetensart, _setNewVirksomhetensart] = useState<string>('')
   const [_newNavn, _setNewNavn] = useState<string>('')
-  const [_newGate, _setNewGate] = useState<string>('')
-  const [_newPostnummer, _setNewPostnummer] = useState<string>('')
-  const [_newBy, _setNewBy] = useState<string>('')
-  const [_newBygning, _setNewBygning] = useState<string>('')
-  const [_newRegion, _setNewRegion] = useState<string>('')
-  const [_newLand, _setNewLand] = useState<string>('')
+  const [_newAdresse, _setNewAdresse] = useState<Adresse | undefined>(undefined)
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PeriodeAnnenForsikring>(
     (p: PeriodeAnnenForsikring) => p.periode.startdato + '-' + (p.periode.sluttdato ?? p.periode.aapenPeriodeType))
@@ -142,6 +136,24 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
     }
   }
 
+  const setAdresse = (newAdresse: Adresse, index: number) => {
+    if (index < 0) {
+      _setNewAdresse(newAdresse)
+    } else {
+      dispatch(updateReplySed(`${target}[${index}].adresse`,newAdresse))
+    }
+  }
+
+  const resetAdresseValidation = (fullnamespace: string, index: number) => {
+    if (index < 0) {
+      _resetValidation(fullnamespace)
+    } else {
+      if (validation[fullnamespace]) {
+        dispatch(resetValidation(fullnamespace))
+      }
+    }
+  }
+
   const setPeriode = (periode: Periode, index: number) => {
     if (index < 0) {
       _setNewPeriode(periode)
@@ -158,78 +170,6 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
     }
   }
 
-  const setGate = (gate: string, index: number) => {
-    if (index < 0) {
-      _setNewGate(gate.trim())
-      _resetValidation(namespace + '-gate')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].adresse.gate`, gate.trim()))
-      if (validation[namespace + getIdx(index) + '-gate']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-gate'))
-      }
-    }
-  }
-
-  const setPostnummer = (postnummer: string, index: number) => {
-    if (index < 0) {
-      _setNewPostnummer(postnummer.trim())
-      _resetValidation(namespace + '-postnummer')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].adresse.postnummer`, postnummer.trim()))
-      if (validation[namespace + getIdx(index) + '-postnummer']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-postnummer'))
-      }
-    }
-  }
-
-  const setBy = (by: string, index: number) => {
-    if (index < 0) {
-      _setNewBy(by.trim())
-      _resetValidation(namespace + '-by')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].adresse.by`, by.trim()))
-      if (validation[namespace + getIdx(index) + '-by']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-by'))
-      }
-    }
-  }
-
-  const setBygning = (bygning: string, index: number) => {
-    if (index < 0) {
-      _setNewBygning(bygning.trim())
-      _resetValidation(namespace + '-bygning')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].adresse.bygning`, bygning.trim()))
-      if (validation[namespace + getIdx(index) + '-bygning']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-bygning'))
-      }
-    }
-  }
-
-  const setRegion = (region: string, index: number) => {
-    if (index < 0) {
-      _setNewRegion(region.trim())
-      _resetValidation(namespace + '-region')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].adresse.region`, region.trim()))
-      if (validation[namespace + getIdx(index) + '-region']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-region'))
-      }
-    }
-  }
-
-  const setLand = (land: string, index: number) => {
-    if (index < 0) {
-      _setNewLand(land.trim())
-      _resetValidation(namespace + '-land')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].adresse.land`, land.trim()))
-      if (validation[namespace + getIdx(index) + '-land']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-land'))
-      }
-    }
-  }
-
   const resetForm = () => {
     _setNewInstitutionsNavn('')
     _setNewInstitutionsId('')
@@ -237,12 +177,7 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
     _setNewVirksomhetensart('')
     _setNewNavn('')
     _setNewPeriode({ startdato: '' })
-    _setNewGate('')
-    _setNewPostnummer('')
-    _setNewRegion('')
-    _setNewBygning('')
-    _setNewBy('')
-    _setNewLand('')
+    _setNewAdresse(undefined)
     _resetValidation()
   }
 
@@ -270,14 +205,7 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
       institusjonsid: _newInstitutionsId.trim(),
       institusjonstype: _newInstitutionsType.trim(),
       virksomhetensart: _newVirksomhetensart.trim(),
-      adresse: {
-        gate: _newGate.trim(),
-        postnummer: _newPostnummer.trim(),
-        bygning: _newBygning.trim(),
-        by: _newBy.trim(),
-        region: _newRegion.trim(),
-        land: _newLand.trim()
-      }
+      adresse: _newAdresse ?? {} as Adresse
     }
 
     const valid: boolean = performValidation({
@@ -377,84 +305,13 @@ const ArbeidsforholdAnnen: React.FC<ArbeidsforholdAnnenProps> = ({
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column flex='3'>
-            <Input
-              namespace={namespace}
-              feil={getErrorFor(index, 'gate')}
-              id='gate'
-              key={'gate-' + (index < 0 ? _newGate : periodeAnnen?.adresse?.gate)}
-              label={t('label:gateadresse')}
-              onChanged={(gate: string) => setGate(gate, index)}
-              value={index < 0 ? _newGate : periodeAnnen?.adresse?.gate}
-            />
-          </Column>
-          <Column>
-            <Input
-              namespace={namespace}
-              feil={getErrorFor(index, 'bygning')}
-              id='bygning'
-              key={'bygning-' + (index < 0 ? _newBygning : periodeAnnen?.adresse?.bygning ?? '')}
-              label={t('label:bygning')}
-              onChanged={(newBygning: string) => setBygning(newBygning, index)}
-              value={index < 0 ? _newBygning : periodeAnnen?.adresse?.bygning ?? ''}
-            />
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column>
-            <Input
-              namespace={namespace}
-              feil={getErrorFor(index, 'postnummer')}
-              id='postnummer'
-              key={'postnummer-' + (index < 0 ? _newPostnummer : periodeAnnen?.adresse?.postnummer ?? '')}
-              label={t('label:postnummer')}
-              onChanged={(newPostnummer: string) => setPostnummer(newPostnummer, index)}
-              value={index < 0 ? _newPostnummer : periodeAnnen?.adresse?.postnummer ?? ''}
-            />
-          </Column>
-          <Column flex='3'>
-            <Input
-              namespace={namespace}
-              feil={getErrorFor(index, 'by')}
-              id='by'
-              key={'by-' + (index < 0 ? _newBy : periodeAnnen?.adresse?.by ?? '')}
-              label={t('label:by')}
-              onChanged={(newBy: string) => setBy(newBy, index)}
-              value={index < 0 ? _newBy : periodeAnnen?.adresse?.by ?? ''}
-            />
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column flex='2'>
-            <Input
-              namespace={namespace}
-              feil={getErrorFor(index, 'region')}
-              id='region'
-              key={'region-' + (index < 0 ? _newRegion : periodeAnnen?.adresse?.region ?? '')}
-              label={t('label:region')}
-              onChanged={(newRegion: string) => setRegion(newRegion, index)}
-              value={index < 0 ? _newRegion : periodeAnnen?.adresse?.region ?? ''}
-            />
-          </Column>
-          <Column flex='2'>
-            <CountrySelect
-              closeMenuOnSelect
-              key={'land-' + (index < 0 ? _newLand : periodeAnnen?.adresse?.land ?? '')}
-              data-test-id={namespace + '-land'}
-              error={getErrorFor(index, 'land')}
-              flagWave
-              id={namespace + '-land'}
-              label={t('label:land') + ' *'}
-              menuPortalTarget={document.body}
-              onOptionSelected={(e: Country) => setLand(e.value, index)}
-              placeholder={t('el:placeholder-select-default')}
-              values={index < 0 ? _newLand : periodeAnnen?.adresse?.land ?? ''}
-            />
-          </Column>
-        </AlignStartRow>
+        <AdresseFC
+          adresse={(index < 0 ? _newAdresse : periodeAnnen?.adresse)}
+          onAdressChanged={(a) => setAdresse(a, index)}
+          namespace={namespace + '-adresse'}
+          validation={index < 0 ? _validation : validation}
+          resetValidation={(fullnamespace: string) => resetAdresseValidation(fullnamespace, index)}
+        />
         <VerticalSeparatorDiv />
         <AlignEndRow>
           <Column flex='2'>

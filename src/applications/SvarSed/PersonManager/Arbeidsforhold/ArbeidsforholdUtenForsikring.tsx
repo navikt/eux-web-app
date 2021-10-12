@@ -1,5 +1,6 @@
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
+import AdresseFC from 'applications/SvarSed/PersonManager/Adresser/Adresse'
 import { PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
@@ -8,12 +9,10 @@ import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { JaNei, Periode, PeriodeUtenForsikring, ReplySed } from 'declarations/sed'
+import { Adresse, JaNei, Periode, PeriodeUtenForsikring, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
-import { Country } from 'land-verktoy'
-import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import { Normaltekst } from 'nav-frontend-typografi'
@@ -67,12 +66,8 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
   const [_newPeriode, _setNewPeriode] = useState<Periode>({ startdato: '' })
   const [_newOrgnr, _setNewOrgnr] = useState<string>('')
   const [_newNavn, _setNewNavn] = useState<string>('')
-  const [_newGate, _setNewGate] = useState<string>('')
-  const [_newPostnummer, _setNewPostnummer] = useState<string>('')
-  const [_newBy, _setNewBy] = useState<string>('')
-  const [_newBygning, _setNewBygning] = useState<string>('')
-  const [_newRegion, _setNewRegion] = useState<string>('')
-  const [_newLand, _setNewLand] = useState<string>('')
+  const [_newAdresse, _setNewAdresse] = useState<Adresse | undefined>(undefined)
+
   const [_newKreverinformasjonomtypearberidsforhold, _setNewKreverinformasjonomtypearberidsforhold] = useState<string>('')
   const [_newKreverinformasjonomantallarbeidstimer, _setNewKreverinformasjonomantallarbeidstimer] = useState<string>('')
   const [_newKreverinformasjonominntekt, _setNewKreverinformasjonominntekt] = useState<string>('')
@@ -125,74 +120,21 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
     }
   }
 
-  const setGate = (gate: string, index: number) => {
+  const setAdresse = (adresse: Adresse, index: number) => {
     if (index < 0) {
-      _setNewGate(gate.trim())
-      _resetValidation(namespace + '-gate')
+      _setNewAdresse(adresse)
     } else {
-      dispatch(updateReplySed(`${target}[${index}].gate`, gate.trim()))
-      if (validation[namespace + getIdx(index) + '-gate']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-gate'))
-      }
+      dispatch(updateReplySed(`${target}[${index}].adresse`, adresse))
+
     }
   }
 
-  const setPostnummer = (postnummer: string, index: number) => {
+  const resetAdresseValidation = (fullnamespace: string, index: number) => {
     if (index < 0) {
-      _setNewPostnummer(postnummer.trim())
-      _resetValidation(namespace + '-postnummer')
+      _resetValidation(fullnamespace)
     } else {
-      dispatch(updateReplySed(`${target}[${index}].postnummer`, postnummer.trim()))
-      if (validation[namespace + getIdx(index) + '-postnummer']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-postnummer'))
-      }
-    }
-  }
-
-  const setBy = (by: string, index: number) => {
-    if (index < 0) {
-      _setNewBy(by.trim())
-      _resetValidation(namespace + '-by')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].by`, by.trim()))
-      if (validation[namespace + getIdx(index) + '-by']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-by'))
-      }
-    }
-  }
-
-  const setBygning = (bygning: string, index: number) => {
-    if (index < 0) {
-      _setNewBygning(bygning.trim())
-      _resetValidation(namespace + '-bygning')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].bygning`, bygning.trim()))
-      if (validation[namespace + getIdx(index) + '-bygning']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-bygning'))
-      }
-    }
-  }
-
-  const setRegion = (region: string, index: number) => {
-    if (index < 0) {
-      _setNewRegion(region.trim())
-      _resetValidation(namespace + '-region')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].region`, region.trim()))
-      if (validation[namespace + getIdx(index) + '-region']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-region'))
-      }
-    }
-  }
-
-  const setLand = (land: string, index: number) => {
-    if (index < 0) {
-      _setNewLand(land.trim())
-      _resetValidation(namespace + '-land')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].land`, land.trim()))
-      if (validation[namespace + getIdx(index) + '-land']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-land'))
+      if (validation[fullnamespace]) {
+        dispatch(resetValidation(fullnamespace))
       }
     }
   }
@@ -237,12 +179,7 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
     _setNewNavn('')
     _setNewOrgnr('')
     _setNewPeriode({ startdato: '' })
-    _setNewRegion('')
-    _setNewBygning('')
-    _setNewPostnummer('')
-    _setNewGate('')
-    _setNewBy('')
-    _setNewLand('')
+    _setNewAdresse(undefined)
     _setNewKreverinformasjonomantallarbeidstimer('')
     _setNewKreverinformasjonomtypearberidsforhold('')
     _setNewKreverinformasjonominntekt('')
@@ -271,14 +208,7 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
       arbeidsgiver: {
         navn: _newNavn.trim(),
         identifikator: [{ type: 'registrering', id: _newOrgnr.trim() }],
-        adresse: {
-          gate: _newGate.trim(),
-          postnummer: _newPostnummer.trim(),
-          bygning: _newBygning.trim(),
-          by: _newBy.trim(),
-          region: _newRegion.trim(),
-          land: _newLand.trim()
-        }
+        adresse: _newAdresse
       },
       kreverinformasjonomtypearberidsforhold: _newKreverinformasjonomtypearberidsforhold as JaNei,
       kreverinformasjonomantallarbeidstimer: _newKreverinformasjonomantallarbeidstimer as JaNei,
@@ -357,84 +287,13 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
           <Column />
         </AlignStartRow>
         <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column flex='3'>
-            <Input
-              namespace={namespace}
-              feil={getErrorFor(index, 'gate')}
-              id='gate'
-              key={'gate-' + (index < 0 ? _newGate : periodeUtenForsikring?.arbeidsgiver?.adresse?.gate)}
-              label={t('label:gateadresse')}
-              onChanged={(gate: string) => setGate(gate, index)}
-              value={index < 0 ? _newGate : periodeUtenForsikring?.arbeidsgiver?.adresse?.gate}
-            />
-          </Column>
-          <Column>
-            <Input
-              namespace={namespace}
-              feil={getErrorFor(index, 'bygning')}
-              id='bygning'
-              key={'bygning-' + (index < 0 ? _newBygning : periodeUtenForsikring?.arbeidsgiver?.adresse?.bygning)}
-              label={t('label:bygning')}
-              onChanged={(newBygning: string) => setBygning(newBygning, index)}
-              value={index < 0 ? _newBygning : periodeUtenForsikring?.arbeidsgiver?.adresse?.bygning}
-            />
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column>
-            <Input
-              namespace={namespace}
-              feil={getErrorFor(index, 'postnummer')}
-              id='postnummer'
-              key={'postnummer-' + (index < 0 ? _newPostnummer : periodeUtenForsikring?.arbeidsgiver?.adresse?.postnummer)}
-              label={t('label:postnummer')}
-              onChanged={(newPostnummer: string) => setPostnummer(newPostnummer, index)}
-              value={index < 0 ? _newPostnummer : periodeUtenForsikring?.arbeidsgiver?.adresse?.postnummer}
-            />
-          </Column>
-          <Column flex='3'>
-            <Input
-              namespace={namespace}
-              feil={getErrorFor(index, 'by')}
-              id='by'
-              key={'by-' + (index < 0 ? _newBy : periodeUtenForsikring?.arbeidsgiver?.adresse?.by)}
-              label={t('label:by')}
-              onChanged={(newBy: string) => setBy(newBy, index)}
-              value={index < 0 ? _newBy : periodeUtenForsikring?.arbeidsgiver?.adresse?.by}
-            />
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column flex='2'>
-            <Input
-              namespace={namespace}
-              feil={getErrorFor(index, 'region')}
-              id='region'
-              key={'region-' + (index < 0 ? _newRegion : periodeUtenForsikring?.arbeidsgiver?.adresse?.region)}
-              label={t('label:region')}
-              onChanged={(newRegion: string) => setRegion(newRegion, index)}
-              value={index < 0 ? _newRegion : periodeUtenForsikring?.arbeidsgiver?.adresse?.region}
-            />
-          </Column>
-          <Column flex='2'>
-            <CountrySelect
-              closeMenuOnSelect
-              key={'land-' + (index < 0 ? _newLand : periodeUtenForsikring?.arbeidsgiver?.adresse?.land)}
-              data-test-id={namespace + '-land'}
-              error={getErrorFor(index, 'land')}
-              flagWave
-              id={namespace + '-land'}
-              label={t('label:land') + ' *'}
-              menuPortalTarget={document.body}
-              onOptionSelected={(e: Country) => setLand(e.value, index)}
-              placeholder={t('el:placeholder-select-default')}
-              values={index < 0 ? _newLand : periodeUtenForsikring?.arbeidsgiver?.adresse?.land}
-            />
-          </Column>
-        </AlignStartRow>
+        <AdresseFC
+          adresse={(index < 0 ? _newAdresse : periodeUtenForsikring?.arbeidsgiver?.adresse)}
+          onAdressChanged={(a) => setAdresse(a, index)}
+          namespace={namespace + '-adresse'}
+          validation={index < 0 ? _validation : validation}
+          resetValidation={(fullnamespace: string) => resetAdresseValidation(fullnamespace, index)}
+          />
         <VerticalSeparatorDiv />
         <AlignStartRow>
           <Column flex='2'>

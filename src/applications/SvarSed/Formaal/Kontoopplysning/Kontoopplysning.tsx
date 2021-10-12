@@ -1,13 +1,12 @@
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
-import { FormålManagerFormProps, FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
+import { FormålManagerFormProps, FormålManagerFormSelector, mapState } from 'applications/SvarSed/Formaal/FormålManager'
 import Adresse from 'applications/SvarSed/PersonManager/Adresser/Adresse'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Adresse as IAdresse, F002Sed, KontoType, UtbetalingTilInstitusjon } from 'declarations/sed'
-import { Kodeverk } from 'declarations/types'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
 import { AlignStartRow, Column, HighContrastRadioPanelGroup, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
@@ -15,22 +14,11 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
-interface KontoopplysningSelector extends FormålManagerFormSelector {
-  landkoderList: Array<Kodeverk> | undefined
-}
-
-const mapState = (state: State): KontoopplysningSelector => ({
-  landkoderList: state.app.landkoder,
-  replySed: state.svarpased.replySed,
-  validation: state.validation.status,
-  highContrast: state.ui.highContrast
-})
-
 const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
   parentNamespace
 }: FormålManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {replySed, validation, landkoderList}: KontoopplysningSelector = useSelector<State, KontoopplysningSelector>(mapState)
+  const {replySed, validation}: FormålManagerFormSelector = useSelector<State, FormålManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const target: string = 'utbetalingTilInstitusjon'
   const utbetalingTilInstitusjon: UtbetalingTilInstitusjon | undefined = (replySed as F002Sed).utbetalingTilInstitusjon
@@ -251,7 +239,6 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
               adresse={utbetalingTilInstitusjon?.kontoOrdinaer?.adresse ?? {}}
               onAdressChanged={setOrdinaerAdresse}
               validation={validation}
-              landkoderList={landkoderList}
               resetValidation={(fullNamespace) => {
                 if (validation[fullNamespace]) {
                   dispatch(resetValidation(fullNamespace))

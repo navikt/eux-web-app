@@ -1,6 +1,7 @@
 import { updateArbeidsgivere } from 'actions/arbeidsgiver'
 import { fetchInntekt } from 'actions/inntekt'
 import { updateReplySed } from 'actions/svarpased'
+import AdresseFC from 'applications/SvarSed/PersonManager/Adresser/Adresse'
 import InntektSearch from 'applications/SvarSed/PersonManager/InntektSearch/InntektSearch'
 import { PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
@@ -8,16 +9,14 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import ArbeidsgiverBox from 'components/Arbeidsgiver/ArbeidsgiverBox'
 import ArbeidsgiverSøk from 'components/Arbeidsgiver/ArbeidsgiverSøk'
 import Input from 'components/Forms/Input'
-import Inntekt from 'components/Inntekt/Inntekt'
 import PeriodeInput from 'components/Forms/PeriodeInput'
+import Inntekt from 'components/Inntekt/Inntekt'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { Periode, PeriodeMedForsikring, ReplySed } from 'declarations/sed'
+import { Adresse, Periode, PeriodeMedForsikring, ReplySed } from 'declarations/sed'
 import { Arbeidsgiver, Arbeidsperioder, IInntekter, Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
-import { Country } from 'land-verktoy'
-import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
@@ -89,12 +88,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
   const [_newPeriode, _setNewPeriode] = useState<Periode>({ startdato: '' })
   const [_newOrgnr, _setNewOrgnr] = useState<string>('')
   const [_newNavn, _setNewNavn] = useState<string>('')
-  const [_newGate, _setNewGate] = useState<string>('')
-  const [_newPostnummer, _setNewPostnummer] = useState<string>('')
-  const [_newBy, _setNewBy] = useState<string>('')
-  const [_newBygning, _setNewBygning] = useState<string>('')
-  const [_newRegion, _setNewRegion] = useState<string>('')
-  const [_newLand, _setNewLand] = useState<string>('')
+  const [_newAdresse, _setNewAdresse] = useState<Adresse | undefined>(undefined)
 
   const [_seeNewPeriodeMedForsikring, _setSeeNewPeriodeMedForsikring] = useState<boolean>(false)
 
@@ -204,12 +198,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
     _setNewNavn('')
     _setNewOrgnr('')
     _setNewPeriode({ startdato: '' })
-    _setNewBy('')
-    _setNewGate('')
-    _setNewPostnummer('')
-    _setNewBygning('')
-    _setNewRegion('')
-    _setNewLand('')
+    _setNewAdresse(undefined)
     _resetValidationPeriodeMedForsikring()
   }
 
@@ -234,34 +223,12 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
     _setNewNavn(newName)
   }
 
-  const onGateChanged = (newGate: string) => {
-    _resetValidationPeriodeMedForsikring(namespace + '-gate')
-    _setNewGate(newGate)
+  const setAdresse = (adresse: Adresse) => {
+    _setNewAdresse(adresse)
   }
 
-  const onPostnummerChanged = (newPostnummer: string) => {
-    _resetValidationPeriodeMedForsikring(namespace + '-postnummer')
-    _setNewPostnummer(newPostnummer)
-  }
-
-  const onByChanged = (newBy: string) => {
-    _resetValidationPeriodeMedForsikring(namespace + '-by')
-    _setNewBy(newBy)
-  }
-
-  const onBygningChanged = (newBygning: string) => {
-    _resetValidationPeriodeMedForsikring(namespace + '-bygning')
-    _setNewBygning(newBygning)
-  }
-
-  const onRegionChanged = (newRegion: string) => {
-    _resetValidationPeriodeMedForsikring(namespace + '-region')
-    _setNewRegion(newRegion)
-  }
-
-  const onLandChanged = (newLand: string) => {
-    _resetValidationPeriodeMedForsikring(namespace + '-land')
-    _setNewLand(newLand)
+  const resetAdresseValidation = (fullnamespace: string) => {
+    _resetValidationPeriodeMedForsikring(fullnamespace)
   }
 
   const onPeriodeMedForsikringAdd = () => {
@@ -272,14 +239,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
           id: _newOrgnr
         }],
         navn: _newNavn,
-        adresse: {
-          postnummer: _newPostnummer,
-          gate: _newGate,
-          bygning: _newBygning,
-          land: _newLand,
-          by: _newBy,
-          region: _newRegion
-        }
+        adresse: _newAdresse
       },
       periode: _newPeriode,
       typeTrygdeforhold: typeTrygdeforhold
@@ -346,85 +306,13 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
         <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
-
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-        <Column flex='3'>
-          <Input
-            namespace={namespace}
-            feil={_validationPeriodeMedForsikring[namespace + '-gate']?.feilmelding}
-            id='gate'
-            key={'gate-' + _newGate}
-            label={t('label:gateadresse')}
-            onChanged={onGateChanged}
-            value={_newGate}
-          />
-        </Column>
-        <Column>
-          <Input
-            namespace={namespace}
-            feil={_validationPeriodeMedForsikring[namespace + '-bygning']?.feilmelding}
-            id='bygning'
-            key={'bygning-' + _newBygning}
-            label={t('label:bygning')}
-            onChanged={onBygningChanged}
-            value={_newBygning}
-          />
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.15s' }}>
-        <Column>
-          <Input
-            namespace={namespace}
-            feil={_validationPeriodeMedForsikring[namespace + '-postnummer']?.feilmelding}
-            id='postnummer'
-            key={'postnummer-' + _newPostnummer}
-            label={t('label:postnummer')}
-            onChanged={onPostnummerChanged}
-            value={_newPostnummer}
-          />
-        </Column>
-        <Column flex='3'>
-          <Input
-            namespace={namespace}
-            feil={_validationPeriodeMedForsikring[namespace + '-by']?.feilmelding}
-            id='by'
-            key={'by-' + _newBy}
-            label={t('label:by')}
-            onChanged={onByChanged}
-            value={_newBy}
-          />
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
-        <Column flex='2'>
-          <Input
-            namespace={namespace}
-            feil={_validationPeriodeMedForsikring[namespace + '-region']?.feilmelding}
-            id='region'
-            key={'region-' + _newRegion}
-            label={t('label:region')}
-            onChanged={onRegionChanged}
-            value={_newRegion}
-          />
-        </Column>
-        <Column flex='2'>
-          <CountrySelect
-            closeMenuOnSelect
-            key={'land-' + _newLand}
-            data-test-id={namespace + '-land'}
-            error={_validationPeriodeMedForsikring[namespace + '-land']?.feilmelding}
-            flagWave
-            id={namespace + '-land'}
-            label={t('label:land') + ' *'}
-            menuPortalTarget={document.body}
-            onOptionSelected={(e: Country) => onLandChanged(e.value)}
-            placeholder={t('el:placeholder-select-default')}
-            values={_newLand}
-          />
-        </Column>
-      </AlignStartRow>
+      <AdresseFC
+        adresse={_newAdresse}
+        onAdressChanged={setAdresse}
+        namespace={namespace + '-adresse'}
+        validation={_validationPeriodeMedForsikring}
+        resetValidation={resetAdresseValidation}
+      />
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.25s' }}>
         <Column>

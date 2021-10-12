@@ -1,7 +1,7 @@
 import { resetValidation } from 'actions/validation'
 import Input from 'components/Forms/Input'
 import { Adresse, AdresseType } from 'declarations/sed'
-import { Kodeverk, Validation } from 'declarations/types'
+import { Validation } from 'declarations/types'
 import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import { AlignStartRow, Column, HighContrastRadioPanelGroup, VerticalSeparatorDiv } from 'nav-hoykontrast'
@@ -11,7 +11,6 @@ import { useTranslation } from 'react-i18next'
 export interface AdresseProps {
   adresse: Adresse | null | undefined
   onAdressChanged: (a: Adresse) => void
-  landkoderList: Array<Kodeverk> | undefined
   namespace: string
   validation: Validation
   resetValidation: (fullnamespace: string) => void
@@ -20,7 +19,6 @@ export interface AdresseProps {
 const AdresseFC: React.FC<AdresseProps> = ({
   adresse,
   onAdressChanged,
-  landkoderList,
   namespace,
   validation
 }: AdresseProps) => {
@@ -189,7 +187,6 @@ const AdresseFC: React.FC<AdresseProps> = ({
             id={namespace  + '-land'}
             label={t('label:land') + ' *'}
             menuPortalTarget={document.body}
-            includeList={landkoderList?.map((l: Kodeverk) => l.kode) ?? []}
             onOptionSelected={(e: Country) => setLand(e.value)}
             placeholder={t('el:placeholder-select-default')}
             values={adresse?.land}
