@@ -35,7 +35,10 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
   })
   // caches konto information while switching from konto ordinær to sepa, so that we do not
   // throw away completely all information added
-  const [_cacheKonto, _setCacheKonto] = useState<any>({ordinaer: undefined, sepa: undefined})
+  const [_cacheKonto, _setCacheKonto] = useState<any>({
+    ordinaer: utbetalingTilInstitusjon?.kontoOrdinaer,
+    sepa: utbetalingTilInstitusjon?.kontoSepa,
+  })
 
   const setKontoType = (kontoType: KontoType) => {
     let newUti: UtbetalingTilInstitusjon | undefined = _.cloneDeep(utbetalingTilInstitusjon)
@@ -98,9 +101,9 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
   }
 
   const setOrdinaerKontonummer = (newKontonummer: string) => {
-    dispatch(updateReplySed(`${target}.kontoOrdinaer.newKontonummer`, newKontonummer.trim()))
-    if (validation[namespace + '-kontoOrdinaer-newKontonummer']) {
-      dispatch(resetValidation(namespace + '-kontoOrdinaer-newKontonummer'))
+    dispatch(updateReplySed(`${target}.kontoOrdinaer.kontonummer`, newKontonummer.trim()))
+    if (validation[namespace + '-kontoOrdinaer-kontonummer']) {
+      dispatch(resetValidation(namespace + '-kontoOrdinaer-kontonummer'))
     }
   }
 
@@ -184,8 +187,8 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
             data-test-id={namespace + '-kontotype'}
             feil={validation[namespace + '-kontotype']?.feilmelding}
             id={namespace + '-kontotype'}
-            legend={t('label:bankinformasjon') + ' *'}
-            name={namespace + '-bankinformasjon'}
+            legend={t('label:konto-type') + ' *'}
+            name={namespace + '-kontotype'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKontoType(e.target.value as KontoType)}
             radios={[
               { label: t('label:ordinær-konto'), value: 'ordinaer' },
@@ -198,54 +201,54 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
       <VerticalSeparatorDiv />
       {_kontoType === 'ordinaer' && (
         <>
-            <AlignStartRow>
-              <Column>
-                <Input
-                  feil={validation[namespace + '-kontoOrdinaer-bankensNavn']?.feilmelding}
-                  namespace={namespace}
-                  id='kontoOrdinaer-bankensNavn'
-                  key={namespace + '-kontoOrdinaer-bankensNavn-' + (utbetalingTilInstitusjon?.kontoOrdinaer?.bankensNavn ?? '')}
-                  label={t('label:bankens-navn') + ' *'}
-                  onChanged={setOrdinaerBankensNavn}
-                  value={utbetalingTilInstitusjon?.kontoOrdinaer?.bankensNavn ?? ''}
-                />
-              </Column>
-              <Column>
-                <Input
-                  feil={validation[namespace + '-kontoOrdinaer-kontonummer']?.feilmelding}
-                  namespace={namespace}
-                  id='kontoOrdinaer-kontonummer'
-                  key={namespace + '-kontoOrdinaer-kontonummer-' + (utbetalingTilInstitusjon?.kontoOrdinaer?.kontonummer ?? '')}
-                  label={t('label:kontonummer') + ' *'}
-                  onChanged={setOrdinaerKontonummer}
-                  value={utbetalingTilInstitusjon?.kontoOrdinaer?.kontonummer ?? ''}
-                />
-              </Column>
-              <Column>
-                <Input
-                  feil={validation[namespace + '-kontoOrdinaer-swift']?.feilmelding}
-                  namespace={namespace}
-                  id='kontoOrdinaer-swift'
-                  key={namespace + '-kontoOrdinaer-swift-' + (utbetalingTilInstitusjon?.kontoOrdinaer?.swift ?? '')}
-                  label={t('label:swift') + ' *'}
-                  onChanged={setOrdinaerSwift}
-                  value={utbetalingTilInstitusjon?.kontoOrdinaer?.swift ?? ''}
-                />
-              </Column>
-            </AlignStartRow>
-            <VerticalSeparatorDiv/>
-            <Adresse
-              namespace={namespace}
-              adresse={utbetalingTilInstitusjon?.kontoOrdinaer?.adresse ?? {}}
-              onAdressChanged={setOrdinaerAdresse}
-              validation={validation}
-              resetValidation={(fullNamespace) => {
-                if (validation[fullNamespace]) {
-                  dispatch(resetValidation(fullNamespace))
-                }
-              }}
-            />
-          </>
+          <AlignStartRow>
+            <Column>
+              <Input
+                feil={validation[namespace + '-kontoOrdinaer-bankensNavn']?.feilmelding}
+                namespace={namespace}
+                id='kontoOrdinaer-bankensNavn'
+                key={namespace + '-kontoOrdinaer-bankensNavn-' + (utbetalingTilInstitusjon?.kontoOrdinaer?.bankensNavn ?? '')}
+                label={t('label:bankens-navn') + ' *'}
+                onChanged={setOrdinaerBankensNavn}
+                value={utbetalingTilInstitusjon?.kontoOrdinaer?.bankensNavn ?? ''}
+              />
+            </Column>
+            <Column>
+              <Input
+                feil={validation[namespace + '-kontoOrdinaer-kontonummer']?.feilmelding}
+                namespace={namespace}
+                id='kontoOrdinaer-kontonummer'
+                key={namespace + '-kontoOrdinaer-kontonummer-' + (utbetalingTilInstitusjon?.kontoOrdinaer?.kontonummer ?? '')}
+                label={t('label:kontonummer') + ' *'}
+                onChanged={setOrdinaerKontonummer}
+                value={utbetalingTilInstitusjon?.kontoOrdinaer?.kontonummer ?? ''}
+              />
+            </Column>
+            <Column>
+              <Input
+                feil={validation[namespace + '-kontoOrdinaer-swift']?.feilmelding}
+                namespace={namespace}
+                id='kontoOrdinaer-swift'
+                key={namespace + '-kontoOrdinaer-swift-' + (utbetalingTilInstitusjon?.kontoOrdinaer?.swift ?? '')}
+                label={t('label:swift') + ' *'}
+                onChanged={setOrdinaerSwift}
+                value={utbetalingTilInstitusjon?.kontoOrdinaer?.swift ?? ''}
+              />
+            </Column>
+          </AlignStartRow>
+          <VerticalSeparatorDiv/>
+          <Adresse
+            namespace={namespace + '-kontoOrdinaer'}
+            adresse={utbetalingTilInstitusjon?.kontoOrdinaer?.adresse ?? {}}
+            onAdressChanged={setOrdinaerAdresse}
+            validation={validation}
+            resetValidation={(fullNamespace) => {
+              if (validation[fullNamespace]) {
+                dispatch(resetValidation(fullNamespace))
+              }
+            }}
+          />
+        </>
       )}
       {_kontoType === 'sepa' && (
         <>
@@ -254,7 +257,7 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
               <Input
                 feil={validation[namespace + '-kontoSepa-iban']?.feilmelding}
                 namespace={namespace}
-                id='kontoOrdinaer-iban'
+                id='kontoSepa-iban'
                 key={namespace + 'kontoOrdinaer-iban' + (utbetalingTilInstitusjon?.kontoSepa?.iban ?? '')}
                 label={t('label:iban') + ' *'}
                 onChanged={setSepaIban}
@@ -268,7 +271,7 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
               <Input
                 feil={validation[namespace + '-kontoSepa-swift']?.feilmelding}
                 namespace={namespace}
-                id='kontoOrdinaer-swift'
+                id='kontoSepa-swift'
                 key={namespace + '-kontoOrdinaer-swift-' + (utbetalingTilInstitusjon?.kontoSepa?.swift ?? '')}
                 label={t('label:swift') + ' *'}
                 onChanged={setSepaSwift}
