@@ -10,7 +10,6 @@ import StackTracey from 'stacktracey'
 import styled from 'styled-components'
 import { standardLogger } from 'metrics/loggers'
 import Convert from 'ansi-to-html'
-import deserializeError from 'deserialize-error'
 
 const convert = new Convert({
   newline: true,
@@ -59,8 +58,7 @@ export const Error = ({ error }: ErrorProps) => {
     standardLogger('.errorpage.view')
   }, [])
 
-  const e = deserializeError(error)
-  const stack = new StackTracey(e).withSources().clean()
+  const stack = new StackTracey(error).withSources()
   const msg = convert.toHtml(error.message)
 
   return (

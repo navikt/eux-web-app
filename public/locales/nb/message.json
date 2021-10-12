@@ -120,6 +120,7 @@
   "validation-noJournalpostID": "Du må taste inn en journalpostID",
   "validation-noKjoennTil": "Du må velge kjønn til {{person}}",
   "validation-noKravTil": "Du må skrive {{person}}",
+  "validation-noKontotype": "Du må velge kontotype",
   "validation-noLand": "Du må velge land",
   "validation-noLandTil": "Du må velge land til {{person}}",
   "validation-noLastName": "Du må taste inn etternavn",

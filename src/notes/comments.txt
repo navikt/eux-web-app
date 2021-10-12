@@ -1,22 +1,14 @@
 Todo:
 
 1. na familierelasjon, pode ser que envie borSammen, etc com REPA/EKTE/etc. Confirmar que backend limpa
-2. Side menu
+2. Kontoopplysning: kontoOrdinar/KontoSEPA
+
+
 
 I have to decide once and for all what is the id (orgnr + stardato) and check validation when I duplicate them
 =>  Editing arbeidsgiver / PeriodeMedForsikring thta is already selected, does NOT update the replySed
 
 
-/*
-"uenighetKonklusjon": [
-  {
-    "vedtakFraDato": "2001-01-01",
-    "kommentarTilVedtak": "æøå",
-    "tasTilAdministrativKommisjon": "ja",
-    "grunnTilUenighet": "æøå"
-  }
-],
-*/
 
 --> 400 login for Z992366
 

@@ -6,7 +6,7 @@ import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
 export interface ValidationAddressProps {
-  adresse: Adresse
+  adresse: Adresse | undefined
   index?: number
   namespace: string
   personName: string

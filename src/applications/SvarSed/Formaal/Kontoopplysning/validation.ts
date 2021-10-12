@@ -20,6 +20,13 @@ export const validateKontoopplysning = (
   }: ValidateKontoopplysningProps
 ): boolean => {
   let hasErrors: boolean = false
+  let kontoType = undefined
+  if (Object.prototype.hasOwnProperty.call(uti, 'kontoOrdinaer')) {
+    kontoType = 'ordinaer'
+  }
+  if (Object.prototype.hasOwnProperty.call(uti, 'kontoSepa')) {
+    kontoType = 'sepa'
+  }
 
   if (_.isEmpty(uti?.begrunnelse?.trim())) {
     v[namespace + '-begrunnelse'] = {
@@ -53,28 +60,40 @@ export const validateKontoopplysning = (
     hasErrors = true
   }
 
-  if (_.isEmpty(uti?.kontoOrdinaer?.sepaKonto?.trim())) {
-    v[namespace + '-kontoOrdinaer-sepaKonto'] = {
-      feilmelding: t('message:validation-noSepaKontoTil', { person: formalName }),
-      skjemaelementId: namespace + '-kontoOrdinaer-sepaKonto'
+  if (!kontoType) {
+    v[namespace + '-kontotype'] = {
+      feilmelding: t('message:validation-noKontotype'),
+      skjemaelementId: namespace + '-kontotype'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
 
-  if (_.isEmpty(uti?.kontoOrdinaer?.iban?.trim())) {
-    v[namespace + '-kontoOrdinaer-iban'] = {
-      feilmelding: t('message:validation-noIbanTil', { person: formalName }),
-      skjemaelementId: namespace + '-kontoOrdinaer-iban'
-    } as FeiloppsummeringFeil
-    hasErrors = true
+  if (kontoType === 'ordinar') {
+    if (_.isEmpty(uti?.kontoOrdinaer?.swift?.trim())) {
+      v[namespace + '-kontoOrdinaer-swift'] = {
+        feilmelding: t('message:validation-noSwiftTil', { person: formalName }),
+        skjemaelementId: namespace + '-kontoOrdinaer-swift'
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
   }
 
-  if (_.isEmpty(uti?.kontoOrdinaer?.swift?.trim())) {
-    v[namespace + '-kontoOrdinaer-swift'] = {
-      feilmelding: t('message:validation-noSwiftTil', { person: formalName }),
-      skjemaelementId: namespace + '-kontoOrdinaer-swift'
-    } as FeiloppsummeringFeil
-    hasErrors = true
+  if (kontoType === 'sepa') {
+    if (_.isEmpty(uti?.kontoSepa?.iban?.trim())) {
+      v[namespace + '-kontoSepa-iban'] = {
+        feilmelding: t('message:validation-noIbanTil', { person: formalName }),
+        skjemaelementId: namespace + '-kontoSepa-iban'
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
+
+    if (_.isEmpty(uti?.kontoSepa?.swift?.trim())) {
+      v[namespace + '-kontoSepa-swift'] = {
+        feilmelding: t('message:validation-noSwiftTil', { person: formalName }),
+        skjemaelementId: namespace + '-kontoSepa-swift'
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
   }
 
   if (hasErrors) {

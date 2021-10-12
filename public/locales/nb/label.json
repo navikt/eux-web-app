@@ -34,6 +34,7 @@
   "avslutt-utfylling": "AVSLUTT UTFYLLING",
 
   "bankinformasjon": "Bankinformasjon",
+  "bankens-navn": "Bankens navn",
   "barn": "Barn",
   "barn-i-hustand-spørsmål": "Barn i husstanden",
   "barn-i-hustand-spørsmål-1": "Bor barnet i samme husstand som søkeren?",
@@ -150,6 +151,7 @@
   "kjønn" : "Kjønn",
   "kontaktadresse": "Kontaktadresse",
   "kontaktinformasjon": "Kontaktinformasjon",
+  "kontonummer": "Kontonummer",
   "kontoopplysninger": "Kontoopplysninger",
   "kontoller-inntekt": "Kontrollere inntekt",
   "krav-mottatt-dato": "Krav mottatt dato",
@@ -204,6 +206,7 @@
   "opprett-sed-rediger-i-rina" : "Opprett SED, rediger i RINA",
   "opprett-svarsed" : "Opprett SvarSED",
   "oppdatere-svarsed" : "Oppdatere SvarSED",
+  "ordinær-konto": "Ordinær konto",
   "orgnr": "Orgnr.",
 
   "partner": "Ektefelle/partner",
@@ -243,8 +246,7 @@
   "save-sed" : "Lagring SED",
   "sed": "SED",
   "se-mindre": "Se mindre",
-  "sepa-konto-ja": "SEPA-konto",
-  "sepa-konto-nei": "Ikke SEPA-konto",
+  "sepa-konto": "SEPA-konto",
   "sektor" : "Sektor",
   "send-vedlegg" : "Send vedlegg",
   "show-less": "Vis mindre",

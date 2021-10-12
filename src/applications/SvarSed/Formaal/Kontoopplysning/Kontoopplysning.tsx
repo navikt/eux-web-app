@@ -1,26 +1,78 @@
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
-import { mapState, FormålManagerFormProps, FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
+import { FormålManagerFormProps, FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
+import Adresse from 'applications/SvarSed/PersonManager/Adresser/Adresse'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { F002Sed, JaNei, UtbetalingTilInstitusjon } from 'declarations/sed'
+import { Adresse as IAdresse, F002Sed, KontoType, UtbetalingTilInstitusjon } from 'declarations/sed'
+import { Kodeverk } from 'declarations/types'
+import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
 import { AlignStartRow, Column, HighContrastRadioPanelGroup, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+
+interface KontoopplysningSelector extends FormålManagerFormSelector {
+  landkoderList: Array<Kodeverk> | undefined
+}
+
+const mapState = (state: State): KontoopplysningSelector => ({
+  landkoderList: state.app.landkoder,
+  replySed: state.svarpased.replySed,
+  validation: state.validation.status,
+  highContrast: state.ui.highContrast
+})
 
 const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
   parentNamespace
 }: FormålManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {replySed, validation}: FormålManagerFormSelector = useSelector<State, FormålManagerFormSelector>(mapState)
+  const {replySed, validation, landkoderList}: KontoopplysningSelector = useSelector<State, KontoopplysningSelector>(mapState)
   const dispatch = useDispatch()
   const target: string = 'utbetalingTilInstitusjon'
   const utbetalingTilInstitusjon: UtbetalingTilInstitusjon | undefined = (replySed as F002Sed).utbetalingTilInstitusjon
   const namespace: string = `${parentNamespace}-kontoopplysninger`
+
+  const [_kontoType, _setKontoType] = useState<KontoType | undefined>(() => {
+    if (Object.prototype.hasOwnProperty.call(utbetalingTilInstitusjon, 'kontoOrdinaer')) {
+      return 'ordinaer'
+    }
+    if (Object.prototype.hasOwnProperty.call(utbetalingTilInstitusjon, 'kontoSepa')) {
+      return 'sepa'
+    }
+    return undefined
+  })
+  // caches konto information while switching from konto ordinær to sepa, so that we do not
+  // throw away completely all information added
+  const [_cacheKonto, _setCacheKonto] = useState<any>({ordinaer: undefined, sepa: undefined})
+
+  const setKontoType = (kontoType: KontoType) => {
+    let newUti: UtbetalingTilInstitusjon | undefined = _.cloneDeep(utbetalingTilInstitusjon)
+    if (!newUti) {
+      newUti = {} as UtbetalingTilInstitusjon
+    }
+    if (kontoType === 'ordinaer') {
+      _setCacheKonto({
+        ..._cacheKonto,
+        sepa: utbetalingTilInstitusjon?.kontoSepa
+      })
+      delete newUti!.kontoSepa
+      newUti.kontoOrdinaer = _cacheKonto.ordinaer
+    }
+    if (kontoType === 'sepa') {
+      _setCacheKonto({
+        ..._cacheKonto,
+        ordinaer: utbetalingTilInstitusjon?.kontoOrdinaer
+      })
+      delete newUti.kontoOrdinaer
+      newUti.kontoSepa = _cacheKonto.sepa
+    }
+    dispatch(updateReplySed(target, newUti))
+    _setKontoType(kontoType)
+  }
 
   const setBegrunnelse = (newBegrunnelse: string) => {
     dispatch(updateReplySed(`${target}.begrunnelse`, newBegrunnelse.trim()))
@@ -43,23 +95,45 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
     }
   }
 
-  const setSepaKonto = (newSepaKonto: JaNei) => {
-    dispatch(updateReplySed(`${target}.kontoOrdinaer.sepaKonto`, newSepaKonto.trim()))
-    if (validation[namespace + '-kontoOrdinaer-sepaKonto']) {
-      dispatch(resetValidation(namespace + '-kontoOrdinaer-sepaKonto'))
-    }
-  }
-  const setIban = (newIban: string) => {
-    dispatch(updateReplySed(`${target}.kontoOrdinaer.iban`, newIban.trim()))
-    if (validation[namespace + '-kontoOrdinaer-iban']) {
-      dispatch(resetValidation(namespace + '-kontoOrdinaer-iban'))
+  const setOrdinaerAdresse = (newAdresse: IAdresse) => {
+    dispatch(updateReplySed(`${target}.kontoOrdinaer.adresse`, newAdresse))
+    if (validation[namespace + '-kontoOrdinaer-adresse']) {
+      dispatch(resetValidation(namespace + '-kontoOrdinaer-adresse'))
     }
   }
 
-  const setSwift = (newSwift: string) => {
+  const setOrdinaerBankensNavn = (newBankensNavn: string) => {
+    dispatch(updateReplySed(`${target}.kontoOrdinaer.bankensNavn`, newBankensNavn.trim()))
+    if (validation[namespace + '-kontoOrdinaer-bankensNavn']) {
+      dispatch(resetValidation(namespace + '-kontoOrdinaer-bankensNavn'))
+    }
+  }
+
+  const setOrdinaerKontonummer = (newKontonummer: string) => {
+    dispatch(updateReplySed(`${target}.kontoOrdinaer.newKontonummer`, newKontonummer.trim()))
+    if (validation[namespace + '-kontoOrdinaer-newKontonummer']) {
+      dispatch(resetValidation(namespace + '-kontoOrdinaer-newKontonummer'))
+    }
+  }
+
+  const setOrdinaerSwift = (newSwift: string) => {
     dispatch(updateReplySed(`${target}.kontoOrdinaer.swift`, newSwift.trim()))
     if (validation[namespace + '-kontoOrdinaer-swift']) {
       dispatch(resetValidation(namespace + '-kontoOrdinaer-swift'))
+    }
+  }
+
+  const setSepaIban = (newIban: string) => {
+    dispatch(updateReplySed(`${target}.kontoSepa.iban`, newIban.trim()))
+    if (validation[namespace + '-kontoSepa-iban']) {
+      dispatch(resetValidation(namespace + '-kontoSepa-iban'))
+    }
+  }
+
+  const setSepaSwift = (newSwift: string) => {
+    dispatch(updateReplySed(`${target}.kontoSepa.swift`, newSwift.trim()))
+    if (validation[namespace + '-kontoSepa-swift']) {
+      dispatch(resetValidation(namespace + '-kontoSepa-swift'))
     }
   }
 
@@ -117,51 +191,107 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
       <AlignStartRow>
         <Column>
           <HighContrastRadioPanelGroup
-            checked={utbetalingTilInstitusjon?.kontoOrdinaer?.sepaKonto === 'ja'}
+            checked={_kontoType}
             data-no-border
-            data-test-id={namespace + '-kontoOrdinaer-sepaKonto'}
-            feil={validation[namespace + '-kontoOrdinaer-sepaKonto']?.feilmelding}
-            id={namespace + '-kontoOrdinaer-sepaKonto'}
+            data-test-id={namespace + '-kontotype'}
+            feil={validation[namespace + '-kontotype']?.feilmelding}
+            id={namespace + '-kontotype'}
             legend={t('label:bankinformasjon') + ' *'}
             name={namespace + '-bankinformasjon'}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSepaKonto(e.target.value as JaNei)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKontoType(e.target.value as KontoType)}
             radios={[
-              { label: t('label:sepa-konto-ja'), value: 'ja' },
-              { label: t('label:sepa-konto-nei'), value: 'nei' }
+              { label: t('label:ordinær-konto'), value: 'ordinaer' },
+              { label: t('label:sepa-konto'), value: 'sepa' }
             ]}
             required
           />
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow>
-        <Column>
-          <Input
-            feil={validation[namespace + '-kontoOrdinaer-iban']?.feilmelding}
-            namespace={namespace}
-            id='kontoOrdinaer-iban'
-            key={namespace + 'kontoOrdinaer-iban' + (utbetalingTilInstitusjon?.kontoOrdinaer.iban ?? '')}
-            label={t('label:iban') + ' *'}
-            onChanged={setIban}
-            value={utbetalingTilInstitusjon?.kontoOrdinaer.iban ?? ''}
-          />
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-      <AlignStartRow>
-        <Column>
-          <Input
-            feil={validation[namespace + '-kontoOrdinaer-swift']?.feilmelding}
-            namespace={namespace}
-            id='kontoOrdinaer-swift'
-            key={namespace + '-kontoOrdinaer-swift-' + (utbetalingTilInstitusjon?.kontoOrdinaer.swift ?? '')}
-            label={t('label:swift') + ' *'}
-            onChanged={setSwift}
-            required
-            value={utbetalingTilInstitusjon?.kontoOrdinaer.swift ?? ''}
-          />
-        </Column>
-      </AlignStartRow>
+      {_kontoType === 'ordinaer' && (
+        <>
+            <AlignStartRow>
+              <Column>
+                <Input
+                  feil={validation[namespace + '-kontoOrdinaer-bankensNavn']?.feilmelding}
+                  namespace={namespace}
+                  id='kontoOrdinaer-bankensNavn'
+                  key={namespace + '-kontoOrdinaer-bankensNavn-' + (utbetalingTilInstitusjon?.kontoOrdinaer?.bankensNavn ?? '')}
+                  label={t('label:bankens-navn') + ' *'}
+                  onChanged={setOrdinaerBankensNavn}
+                  value={utbetalingTilInstitusjon?.kontoOrdinaer?.bankensNavn ?? ''}
+                />
+              </Column>
+              <Column>
+                <Input
+                  feil={validation[namespace + '-kontoOrdinaer-kontonummer']?.feilmelding}
+                  namespace={namespace}
+                  id='kontoOrdinaer-kontonummer'
+                  key={namespace + '-kontoOrdinaer-kontonummer-' + (utbetalingTilInstitusjon?.kontoOrdinaer?.kontonummer ?? '')}
+                  label={t('label:kontonummer') + ' *'}
+                  onChanged={setOrdinaerKontonummer}
+                  value={utbetalingTilInstitusjon?.kontoOrdinaer?.kontonummer ?? ''}
+                />
+              </Column>
+              <Column>
+                <Input
+                  feil={validation[namespace + '-kontoOrdinaer-swift']?.feilmelding}
+                  namespace={namespace}
+                  id='kontoOrdinaer-swift'
+                  key={namespace + '-kontoOrdinaer-swift-' + (utbetalingTilInstitusjon?.kontoOrdinaer?.swift ?? '')}
+                  label={t('label:swift') + ' *'}
+                  onChanged={setOrdinaerSwift}
+                  value={utbetalingTilInstitusjon?.kontoOrdinaer?.swift ?? ''}
+                />
+              </Column>
+            </AlignStartRow>
+            <VerticalSeparatorDiv/>
+            <Adresse
+              namespace={namespace}
+              adresse={utbetalingTilInstitusjon?.kontoOrdinaer?.adresse ?? {}}
+              onAdressChanged={setOrdinaerAdresse}
+              validation={validation}
+              landkoderList={landkoderList}
+              resetValidation={(fullNamespace) => {
+                if (validation[fullNamespace]) {
+                  dispatch(resetValidation(fullNamespace))
+                }
+              }}
+            />
+          </>
+      )}
+      {_kontoType === 'sepa' && (
+        <>
+          <AlignStartRow>
+            <Column>
+              <Input
+                feil={validation[namespace + '-kontoSepa-iban']?.feilmelding}
+                namespace={namespace}
+                id='kontoOrdinaer-iban'
+                key={namespace + 'kontoOrdinaer-iban' + (utbetalingTilInstitusjon?.kontoSepa?.iban ?? '')}
+                label={t('label:iban') + ' *'}
+                onChanged={setSepaIban}
+                value={utbetalingTilInstitusjon?.kontoSepa?.iban ?? ''}
+              />
+            </Column>
+          </AlignStartRow>
+          <VerticalSeparatorDiv />
+          <AlignStartRow>
+            <Column>
+              <Input
+                feil={validation[namespace + '-kontoSepa-swift']?.feilmelding}
+                namespace={namespace}
+                id='kontoOrdinaer-swift'
+                key={namespace + '-kontoOrdinaer-swift-' + (utbetalingTilInstitusjon?.kontoSepa?.swift ?? '')}
+                label={t('label:swift') + ' *'}
+                onChanged={setSepaSwift}
+                required
+                value={utbetalingTilInstitusjon?.kontoSepa?.swift ?? ''}
+              />
+            </Column>
+          </AlignStartRow>
+        </>
+        )}
       <VerticalSeparatorDiv />
     </PaddedDiv>
   )

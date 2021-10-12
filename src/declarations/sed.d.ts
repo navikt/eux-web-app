@@ -39,6 +39,8 @@ export type PeriodeInputType = 'simple' | 'withcheckbox'
 
 export type PeriodeType = 'ansettelsesforhold' | 'selvstendig_næringsvirksomhet'
 
+export type KontoType = 'sepa' | 'ordinaer'
+
 export interface Adresse {
   by?: string
   bygning?: string
@@ -216,15 +218,19 @@ export interface KontoOrdinaer {
   kontonummer?: string
   adresse?: Adresse
   swift: string
+}
+
+export interface KontoSepa {
+  swift: string
   iban: string
-  sepaKonto?: JaNei
 }
 
 export interface UtbetalingTilInstitusjon {
   begrunnelse: string
   id: string
   navn: string
-  kontoOrdinaer: KontoOrdinaer
+  kontoOrdinaer?: KontoOrdinaer
+  kontoSepa?: KontoSepa
 }
 
 export interface Grunn {
