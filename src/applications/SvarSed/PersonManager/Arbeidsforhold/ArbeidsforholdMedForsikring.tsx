@@ -52,7 +52,6 @@ export interface ArbeidsforholdMedForsikringProps {
   parentNamespace: string
   personID: string | undefined
   target: string
-  typeTrygdeforhold: string
 }
 
 const mapState = (state: State): ArbeidsforholdMedForsikringSelector => ({
@@ -68,8 +67,7 @@ const mapState = (state: State): ArbeidsforholdMedForsikringSelector => ({
 const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = ({
   parentNamespace,
   personID,
-  target,
-  typeTrygdeforhold
+  target
 }:ArbeidsforholdMedForsikringProps): JSX.Element => {
   const { t } = useTranslation()
   const {
@@ -93,7 +91,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
   const [_seeNewPeriodeMedForsikring, _setSeeNewPeriodeMedForsikring] = useState<boolean>(false)
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PeriodeMedForsikring>(
-    (p: PeriodeMedForsikring) => p.periode.startdato + '-' + (p.periode.sluttdato ?? p.periode.aapenPeriodeType))
+    (p: PeriodeMedForsikring) => p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType))
 
   const [_validationPeriodeMedForsikring, _resetValidationPeriodeMedForsikring, performValidationPeriodeMedForsikring] =
     useValidation<ValidationPeriodeMedForsikringProps>({}, validatePeriodeMedForsikring)
@@ -110,7 +108,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
       newPerioderMedForsikring = []
     }
     newPerioderMedForsikring = newPerioderMedForsikring.concat(newPeriodeMedForsikring).sort((a, b) =>
-      moment(a.periode.startdato).isSameOrBefore(moment(b.periode.startdato)) ? -1 : 1
+      moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1
     )
     dispatch(updateReplySed(target, newPerioderMedForsikring))
     standardLogger('svarsed.editor.periode.add', { type: 'perioderAnsattMedForsikring' })
@@ -122,7 +120,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
       newPerioderMedForsikring = []
     }
     newPerioderMedForsikring = _.filter(newPerioderMedForsikring,
-      p => p.periode.startdato !== deletedPeriodeMedForsikring.periode.startdato
+      p => p.startdato !== deletedPeriodeMedForsikring.startdato
     )
     dispatch(updateReplySed(target, newPerioderMedForsikring))
     standardLogger('svarsed.editor.periode.remove', { type: 'perioderAnsattMedForsikring' })
@@ -143,8 +141,8 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
     if (needleId) {
       const indexArbeidsgiver = _.findIndex(newArbeidsgivere, (p: Arbeidsgiver) => p.arbeidsgiversOrgnr === needleId)
       if (indexArbeidsgiver >= 0) {
-        newArbeidsgivere[indexArbeidsgiver].fraDato = newPeriodeMedForsikring.periode.startdato
-        newArbeidsgivere[indexArbeidsgiver].tilDato = newPeriodeMedForsikring.periode.sluttdato
+        newArbeidsgivere[indexArbeidsgiver].fraDato = newPeriodeMedForsikring.startdato
+        newArbeidsgivere[indexArbeidsgiver].tilDato = newPeriodeMedForsikring.sluttdato
         dispatch(updateArbeidsgivere(newArbeidsgivere))
       }
       if (selected) {
@@ -233,6 +231,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
 
   const onPeriodeMedForsikringAdd = () => {
     const newPeriodeMedForsikring: PeriodeMedForsikring = {
+      ..._newPeriode,
       arbeidsgiver: {
         identifikator: [{
           type: 'registrering',
@@ -240,9 +239,7 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
         }],
         navn: _newNavn,
         adresse: _newAdresse
-      },
-      periode: _newPeriode,
-      typeTrygdeforhold: typeTrygdeforhold
+      }
     }
 
     const valid: boolean = performValidationPeriodeMedForsikring({
@@ -382,7 +379,6 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
                 arbeidsgiver={item.item}
                 editable='only_period'
                 includeAddress={includeAddress}
-                typeTrygdeforhold={typeTrygdeforhold}
                 newArbeidsgiver={false}
                 selected={!_.isNil(item.index) && item.index >= 0}
                 key={getOrgnr(item.item)}
@@ -404,7 +400,6 @@ const ArbeidsforholdMedForsikring: React.FC<ArbeidsforholdMedForsikringProps> = 
                 includeAddress={includeAddress}
                 error={item.duplicate}
                 newArbeidsgiver
-                typeTrygdeforhold={typeTrygdeforhold}
                 selected={!_.isNil(item.index) && item.index >= 0}
                 key={getOrgnr(item.item)}
                 onArbeidsgiverSelect={onPeriodeMedForsikringSelect}

@@ -29,7 +29,7 @@ import {
   PaddedDiv,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
@@ -71,7 +71,6 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
   const namespace: string = `${parentNamespace}-${personID}-` + (personID === 'familie' ? 'familieytelser' : 'beløpnavnogvaluta')
 
   const [_newAntallPersoner, _setNewAntallPersoner] = useState<string | undefined>(undefined)
-  const [_newBarnetsNavn, _setNewBarnetsNavn] = useState<string | undefined>(undefined)
   const [_newYtelsesNavn, _setNewYtelsesNavn] = useState<string | undefined>(undefined)
   const [_newBeløp, _setNewBeløp] = useState<string | undefined>(undefined)
   const [_newValuta, _setNewValuta] = useState<Currency | undefined>(undefined)
@@ -97,18 +96,6 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
       dispatch(updateReplySed(`${target}[${index}].antallPersoner`, newAntallPersoner.trim()))
       if (validation[namespace + getIdx(index) + '-antallPersoner']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-antallPersoner'))
-      }
-    }
-  }
-
-  const setBarnetsNavn = (newBarnetsNavn: string, index: number) => {
-    if (index < 0) {
-      _setNewBarnetsNavn(newBarnetsNavn.trim())
-      _resetValidation(namespace + '-barnetsNavn')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].barnetsNavn`, newBarnetsNavn.trim()))
-      if (validation[namespace + getIdx(index) + '-barnetsNavn']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-barnetsNavn'))
       }
     }
   }
@@ -200,20 +187,8 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  useEffect(() => {
-    if (personID !== 'familie') {
-      ytelser?.forEach((ytelse: Ytelse, index: number) => {
-        if (_.isEmpty(ytelse.barnetsNavn)) {
-          const newBarnetsNavn: string = _.get(replySed, `${personID}.personInfo.fornavn`) + ' ' + _.get(replySed, `${personID}.personInfo.etternavn`)
-          dispatch(updateReplySed(`${target}[${index}].barnetsNavn`, newBarnetsNavn.trim()))
-        }
-      })
-    }
-  }, [])
-
   const resetForm = () => {
     _setNewAntallPersoner(undefined)
-    _setNewBarnetsNavn(undefined)
     _setNewYtelsesNavn(undefined)
     _setNewBeløp(undefined)
     _setNewValuta(undefined)
@@ -247,13 +222,10 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
       startdato: _newPeriode?.startdato?.trim(),
       utbetalingshyppighet: _newUtbetalingshyppighet?.trim(),
       valuta: _newValuta?.value,
-      ytelseNavn: _newYtelsesNavn?.trim(),
-      barnetsNavn: _newBarnetsNavn?.trim()
+      ytelseNavn: _newYtelsesNavn?.trim()
     } as Ytelse
 
-    if (personID === 'familie') {
-      delete newYtelse.barnetsNavn
-    } else {
+    if (personID !== 'familie') {
       delete newYtelse.antallPersoner
     }
 
@@ -287,19 +259,6 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
     return (
       <RepeatableRow className={classNames({new: index < 0})}>
         <AlignStartRow className='slideInFromLeft'>
-          {personID !== 'familie' && (
-            <Column>
-              <Input
-                feil={getErrorFor(index,'barnetsNavn')}
-                namespace={namespace}
-                id='barnetsNavn'
-                key={namespace + '-barnetsnavn-' + (index < 0 ? _newBarnetsNavn : ytelse?.barnetsNavn ?? '')}
-                label={t('label:barnets-navn') + ' *'}
-                onChanged={(newNavn: string) => setBarnetsNavn(newNavn, index)}
-                value={index < 0 ? _newBarnetsNavn : ytelse?.barnetsNavn ?? ''}
-              />
-            </Column>
-          )}
           <Column>
             <Select
               closeMenuOnSelect

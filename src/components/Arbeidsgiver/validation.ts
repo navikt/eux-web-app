@@ -97,14 +97,14 @@ export const validateArbeidsgiver = (
     } as FeiloppsummeringFeil
     hasErrors = true
   }
-  if (_.isEmpty(arbeidsgiver.periode?.startdato)) {
+  if (_.isEmpty(arbeidsgiver.startdato)) {
     v[namespace + '-startdato'] = {
       skjemaelementId: namespace + '-startdato',
       feilmelding: t('message:validation-noDate')
     } as FeiloppsummeringFeil
     hasErrors = true
   } else {
-    if (!(arbeidsgiver.periode?.startdato!.trim().match(datePattern))) {
+    if (!(arbeidsgiver.startdato!.trim().match(datePattern))) {
       v[namespace + '-startdato'] = {
         skjemaelementId: namespace + '-startdato',
         feilmelding: t('message:validation-invalidDate')
@@ -112,7 +112,7 @@ export const validateArbeidsgiver = (
       hasErrors = true
     }
   }
-  if (!_.isEmpty(arbeidsgiver.periode?.sluttdato) && !(arbeidsgiver.periode?.sluttdato!.trim().match(datePattern))) {
+  if (!_.isEmpty(arbeidsgiver.sluttdato) && !(arbeidsgiver.sluttdato!.trim().match(datePattern))) {
     v[namespace + '-sluttdato'] = {
       skjemaelementId: namespace + '-sluttdato',
       feilmelding: t('message:validation-invalidDate')

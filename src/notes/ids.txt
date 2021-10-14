@@ -40,7 +40,6 @@ personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-region      
 personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring[]                    - {CONNECTED} perioderAnsattMedForsikring[]
 
 F-Sed, barn:
-personmanager-{personID}-beløpnavnogvaluta-barnetsNavn               - {INTERNAL} not used
 personmanager-{personID}-beløpnavnogvaluta-ytelseNavn                - {INTERNAL} not used
 personmanager-{personID}-beløpnavnogvaluta-beloep                    - {INTERNAL} not used
 personmanager-{personID}-beløpnavnogvaluta-valuta                    - {INTERNAL} not used
@@ -48,7 +47,6 @@ personmanager-{personID}-beløpnavnogvaluta-startdato                 - {INTERNA
 personmanager-{personID}-beløpnavnogvaluta-sluttdato                 - {INTERNAL} not used
 personmanager-{personID}-beløpnavnogvaluta-mottakersNavn             - {INTERNAL} not used
 personmanager-{personID}-beløpnavnogvaluta-utbetalingshyppighet      - {INTERNAL} not used
-personmanager-{personID}-beløpnavnogvaluta[{i}]-barnetsNavn          - {CONNECTED} barn[].ytelser[].barnetsNavn
 personmanager-{personID}-beløpnavnogvaluta[{i}]-ytelseNavn           - {CONNECTED} barn[].ytelser[].ytelseNavn
 personmanager-{personID}-beløpnavnogvaluta[{i}]-beloep               - {CONNECTED} barn[].ytelser[].beloep
 personmanager-{personID}-beløpnavnogvaluta[{i}]-valuta               - {CONNECTED} barn[].ytelser[].valuta

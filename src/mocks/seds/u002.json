@@ -71,11 +71,8 @@
           }
         ]
       },
-      "periode": {
-        "startdato": "1960-01-01",
-        "sluttdato": "1969-12-31"
-      },
-      "typeTrygdeforhold": "ansettelsesforhold_som_utgjør_forsikringsperiode"
+      "startdato": "1960-01-01",
+      "sluttdato": "1969-12-31"
     }
   ],
   "perioderDagpenger": [

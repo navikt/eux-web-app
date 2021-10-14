@@ -38,7 +38,7 @@ export const validatePeriodeMedForsikring = (
   }
 
   const periodeError: boolean = validatePeriode(v, t, {
-    periode: periodeMedForsikring?.periode,
+    periode: periodeMedForsikring,
     namespace
   })
   hasErrors = hasErrors || periodeError

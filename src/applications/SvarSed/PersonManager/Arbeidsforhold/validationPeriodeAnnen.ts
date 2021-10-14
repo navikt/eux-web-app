@@ -26,59 +26,19 @@ export const validatePeriodeAnnen = (
   let hasErrors: boolean = false
   const idx = getIdx(index)
 
-  if (_.isEmpty(periodeAnnen?.navn?.trim())) {
-    v[namespace + idx + '-navn'] = {
-      feilmelding: t('message:validation-noName'),
-      skjemaelementId: namespace + idx + '-navn'
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-
-  if (_.isEmpty(periodeAnnen?.institusjonsid.trim())) {
-    v[namespace + idx + '-institusjonsid'] = {
-      feilmelding: t('message:validation-noInstitusjonsID'),
-      skjemaelementId: namespace + idx + '-institusjonsid'
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-
-  if (_.isEmpty(periodeAnnen?.institusjonsnavn.trim())) {
-    v[namespace + idx + '-institusjonsnavn'] = {
-      feilmelding: t('message:validation-noInstitusjonensNavn'),
-      skjemaelementId: namespace + idx + '-institusjonsnavn'
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-
-  if (_.isEmpty(periodeAnnen?.institusjonstype.trim())) {
-    v[namespace + idx + '-institusjonstype'] = {
-      feilmelding: t('message:validation-noInstitusjonensType'),
-      skjemaelementId: namespace + idx + '-institusjonstype'
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-
-  if (_.isEmpty(periodeAnnen?.virksomhetensart.trim())) {
-    v[namespace + idx + '-virksomhetensart'] = {
-      feilmelding: t('message:validation-noVirksomhetensArt'),
-      skjemaelementId: namespace + idx + '-virksomhetensart'
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-
   const periodeError: boolean = validatePeriode(v, t, {
-    periode: periodeAnnen?.periode,
+    periode: periodeAnnen,
     namespace
   })
   hasErrors = hasErrors || periodeError
 
-  if (!_.isEmpty(periodeAnnen?.periode?.startdato)) {
+  if (!_.isEmpty(periodeAnnen?.startdato)) {
     let duplicate: boolean
     if (_.isNil(index)) {
-      duplicate = _.find(perioderAnnen, p => p.periode.startdato === periodeAnnen?.periode.startdato && p.periode.sluttdato === periodeAnnen.periode.sluttdato) !== undefined
+      duplicate = _.find(perioderAnnen, p => p.startdato === periodeAnnen.startdato && p.sluttdato === periodeAnnen.sluttdato) !== undefined
     } else {
       const otherPerioder: Array<PeriodeAnnenForsikring> = _.filter(perioderAnnen, (p, i) => i !== index)
-      duplicate = _.find(otherPerioder, p => p.periode.startdato === periodeAnnen?.periode?.startdato && p.periode.sluttdato === periodeAnnen.periode?.sluttdato) !== undefined
+      duplicate = _.find(otherPerioder, p => p.startdato === periodeAnnen?.startdato && p.sluttdato === periodeAnnen?.sluttdato) !== undefined
     }
     if (duplicate) {
       v[namespace + idx + '-startdato'] = {
@@ -89,42 +49,10 @@ export const validatePeriodeAnnen = (
     }
   }
 
-  if (_.isEmpty(periodeAnnen?.adresse?.land?.trim())) {
-    v[namespace + idx + '-land'] = {
-      feilmelding: t('message:validation-noAddressCountry'),
-      skjemaelementId: namespace + idx + '-land'
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-
-  if (_.isEmpty(periodeAnnen?.adresse?.gate?.trim())) {
-    v[namespace + idx + '-gate'] = {
-      feilmelding: t('message:validation-noAddressStreet'),
-      skjemaelementId: namespace + idx + '-gate'
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-
-  if (_.isEmpty(periodeAnnen?.adresse?.postnummer?.trim())) {
-    v[namespace + idx + '-postnummer'] = {
-      feilmelding: t('message:validation-noAddressPostnummer'),
-      skjemaelementId: namespace + idx + '-postnummer'
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-
-  if (_.isEmpty(periodeAnnen?.adresse?.by?.trim())) {
-    v[namespace + idx + '-by'] = {
-      feilmelding: t('message:validation-noAddressCity'),
-      skjemaelementId: namespace + idx + '-by'
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-
-  if (_.isEmpty(periodeAnnen?.institusjonstype?.trim())) {
-    v[namespace + idx + '-institusjonstype'] = {
-      feilmelding: t('message:validation-noType'),
-      skjemaelementId: namespace + idx + '-institusjonstype'
+  if (_.isEmpty(periodeAnnen?.annenTypeForsikringsperiode?.trim())) {
+    v[namespace + idx + '-annenTypeForsikringsperiode'] = {
+      feilmelding: t('message:validation-noAnnenTypeForsikringsperiode'),
+      skjemaelementId: namespace + idx + '-annenTypeForsikringsperiode'
     } as FeiloppsummeringFeil
     hasErrors = true
   }

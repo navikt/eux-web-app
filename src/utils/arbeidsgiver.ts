@@ -13,7 +13,7 @@ export const arbeidsgiverToPeriodeMedForsikring = (a: Arbeidsgiver): PeriodeMedF
   }
 
   return {
-    periode: newPeriode,
+    ... newPeriode,
     arbeidsgiver: {
       identifikator: [{
         type: 'registrering',
@@ -24,8 +24,7 @@ export const arbeidsgiverToPeriodeMedForsikring = (a: Arbeidsgiver): PeriodeMedF
     extra: {
       fraArbeidsgiverregisteret: a.fraArbeidsgiverregisteret,
       fraInntektsregisteret: a.fraInntektsregisteret
-    },
-    typeTrygdeforhold: ''
+    }
   }
 }
 
@@ -40,8 +39,8 @@ export const periodeMedForsikringToArbeidsgiver = (a: PeriodeMedForsikring): Arb
     fraInntektsregisteret: a.extra?.fraInntektsregisteret ?? '',
     fraArbeidsgiverregisteret: a.extra?.fraArbeidsgiverregisteret ?? '',
     arbeidsgiversOrgnr: getOrgnr(a) ?? '',
-    fraDato: a.periode.startdato,
-    tilDato: a.periode.sluttdato,
+    fraDato: a.startdato,
+    tilDato: a.sluttdato,
     arbeidsgiversNavn: a.arbeidsgiver.navn
   }
 }

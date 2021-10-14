@@ -1,6 +1,7 @@
 import { FormålManagerFormProps, FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
 import KravOmRefusjon from 'applications/SvarSed/Formaal/KravOmRefusjon/KravOmRefusjon'
 import Motregning from 'applications/SvarSed/Formaal/Motregning/Motregning'
+import { PersonInfo } from 'declarations/sed'
 import { mount, ReactWrapper } from 'enzyme'
 import getReplySed from 'mocks/replySed'
 import { stageSelector } from 'setupTests'
@@ -39,13 +40,23 @@ describe('applications/SvarSed/Formaal/Motregning/Motregning', () => {
     wrapper.unmount()
   })
 
-  it('Handling: update krav', () => {
+
+  it('Handling: update setSvarType: barna', () => {
     (updateReplySed as jest.Mock).mockReset()
+    stageSelector(defaultSelector, {
+      replySed: {
+        barn: [{
+          person
+        } as PersonInfo, {
+
+        }]
+      }
+    })
     const mockText = 'mockText'
-    const formField = wrapper.find('[data-test-id=\'test-refusjonskrav-krav\']').hostNodes()
+    const formField = wrapper.find('[data-test-id=\'test-motregning-svarType\']').hostNodes()
     formField.simulate('change', {target: {value: mockText}})
     formField.simulate('blur')
-    expect(updateReplySed).toHaveBeenCalledWith('refusjonskrav', mockText)
+    expect(updateReplySed).toHaveBeenCalledWith('svarType', mockText)
   })
 
   it('Handling: see kontoopplysning button clicked', () => {

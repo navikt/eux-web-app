@@ -650,7 +650,6 @@
     },
     {
       "ytelse": {
-        "barnetsNavn": "æøå 2",
         "startdato": "2001-01-01",
         "sluttdato": "2001-01-01",
         "beloep": "æøå",
@@ -666,7 +665,6 @@
     },
     {
       "motregning": {
-        "barnetsNavn": "æøå 3",
         "vedtaksdato": "2001-01-01",
         "begrunnelse": "æøå",
         "ytterligereInfo": "æøå",

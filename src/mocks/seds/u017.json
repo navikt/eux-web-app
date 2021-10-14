@@ -71,18 +71,14 @@
           }
         ]
       },
-      "periode": {
-        "sluttdato": "2002-02-02",
-        "startdato": "2001-01-01"
-      },
-      "typeTrygdeforhold": "ansettelsesforhold_som_utgjør_forsikringsperiode"
+      "sluttdato": "2002-02-02",
+      "startdato": "2001-01-01"
     }
   ],
   "perioderAnsattUtenForsikring": [
     {
-      "kreverinformasjonomtypearberidsforhold": "",
-      "kreverinformasjonomantallarbeidstimer": "",
-      "kreverinformasjonominntekt": "",
+      "inntektOgTimer": [],
+      "inntektOgTimerInfo": "inntekt og timer info",
       "arbeidsgiver": {
         "navn": "æøå",
         "adresse": {
@@ -100,11 +96,8 @@
           }
         ]
       },
-      "periode": {
-        "sluttdato": "2002-02-02",
-        "startdato": "2001-01-01"
-      },
-      "typeTrygdeforhold": "ansettelsesforhold_som_utgjør_forsikringsperiode"
+      "sluttdato": "2002-02-02",
+      "startdato": "2001-01-01"
     }
   ],
   "perioderDagpenger": [

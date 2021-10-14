@@ -494,22 +494,8 @@
         "valuta": "NOK",
         "utbetalingshyppighet": "F002 barn2 ytelse utbetalingshyppighet",
         "ytelseNavn": "F002 barn2 ytelse ytelse",
-        "mottakersNavn": "F002 barn2 ytelse mottakersNavn",
-        "barnetsNavn": ""
-      }],
-      "motregning": {
-        "startdato": "2045-01-01",
-        "sluttdato": "2046-01-01",
-        "beloep": "200",
-        "valuta": "NOK",
-        "utbetalingshyppighet": "F002 barn2 motregning utbetalingshyppighet",
-        "ytelseNavn": "F002 barn2 motregning ytelse",
-        "mottakersNavn": "F002 barn2 motregning mottakersNavn",
-        "barnetsNavn": "Bart Simpson",
-        "vedtaksdato": "2047-01-01",
-        "begrunnelse": "F002 barn2 motregning begrunnelse",
-        "ytterligereInfo": "F002 barn2 motregning ytterligereInfo"
-      }
+        "mottakersNavn": "F002 barn2 ytelse mottakersNavn"
+      }]
     },
     {
       "personInfo": {
@@ -616,8 +602,7 @@
         "valuta": "NOK",
         "utbetalingshyppighet": "F002 barn2 ytelse utbetalingshyppighet",
         "ytelseNavn": "F002 barn2 ytelse ytelse",
-        "mottakersNavn": "F002 barn2 ytelse mottakersNavn",
-        "barnetsNavn": "F002 barn2 ytelse barnetsNavn"
+        "mottakersNavn": "F002 barn2 ytelse mottakersNavn"
       }]
     }
   ],

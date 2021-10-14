@@ -43,18 +43,18 @@ export const validatePeriodeUtenForsikring = (
   }
 
   const periodeError: boolean = validatePeriode(v, t, {
-    periode: periodeUtenForsikring?.periode,
+    periode: periodeUtenForsikring,
     namespace
   })
   hasErrors = hasErrors || periodeError
 
-  if (!_.isEmpty(periodeUtenForsikring?.periode?.startdato)) {
+  if (!_.isEmpty(periodeUtenForsikring?.startdato)) {
     let duplicate: boolean
     if (_.isNil(index)) {
-      duplicate = _.find(perioderUtenForsikring, p => p.periode.startdato === periodeUtenForsikring?.periode.startdato && p.periode.sluttdato === periodeUtenForsikring.periode?.sluttdato) !== undefined
+      duplicate = _.find(perioderUtenForsikring, p => p.startdato === periodeUtenForsikring?.startdato && p.sluttdato === periodeUtenForsikring?.sluttdato) !== undefined
     } else {
       const otherPerioder: Array<PeriodeUtenForsikring> = _.filter(perioderUtenForsikring, (p, i) => i !== index)
-      duplicate = _.find(otherPerioder, p => p.periode.startdato === periodeUtenForsikring?.periode?.startdato && p.periode.sluttdato === periodeUtenForsikring.periode?.sluttdato) !== undefined
+      duplicate = _.find(otherPerioder, p => p.startdato === periodeUtenForsikring?.startdato && p.sluttdato === periodeUtenForsikring?.sluttdato) !== undefined
     }
     if (duplicate) {
       v[namespace + idx + '-startdato'] = {
@@ -93,30 +93,6 @@ export const validatePeriodeUtenForsikring = (
     v[namespace + idx + '-by'] = {
       feilmelding: t('message:validation-noAddressCity'),
       skjemaelementId: namespace + idx + '-by'
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-
-  if (_.isEmpty(periodeUtenForsikring?.kreverinformasjonomtypearberidsforhold)) {
-    v[namespace + idx + '-kreverinformasjonomtypearberidsforhold'] = {
-      feilmelding: t('message:validation-noAnswer'),
-      skjemaelementId: namespace + idx + '-kreverinformasjonomtypearberidsforhold'
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-
-  if (_.isEmpty(periodeUtenForsikring?.kreverinformasjonominntekt)) {
-    v[namespace + idx + '-kreverinformasjonominntekt'] = {
-      feilmelding: t('message:validation-noAnswer'),
-      skjemaelementId: namespace + idx + '-kreverinformasjonominntekt'
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-
-  if (_.isEmpty(periodeUtenForsikring?.kreverinformasjonomantallarbeidstimer)) {
-    v[namespace + idx + '-kreverinformasjonomantallarbeidstimer'] = {
-      feilmelding: t('message:validation-noAnswer'),
-      skjemaelementId: namespace + idx + '-kreverinformasjonomantallarbeidstimer'
     } as FeiloppsummeringFeil
     hasErrors = true
   }

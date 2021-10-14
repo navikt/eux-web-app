@@ -79,6 +79,7 @@
   "validation-noAddressStreetTil": "Ingen adresses gate til {{person}}",
   "validation-noAddressTypeTil": "Ingen adresse type til {{person}}",
   "validation-noAntallPersonerTil": "Ingen antall personer i {{person}}",
+  "validation-noAnnenTypeForsikringsperiode": "Ingen annen type forsikringsperiode",
   "validation-noAnswer": "Ingen svar til spørsmål",
   "validation-noAnswerTil": "Ingen svar i {{person}}",
   "validation-noAvgrensingTil": "Ingen avgrensning av periode i {{person}}",
@@ -188,11 +189,12 @@
   "warning-no-familierelasjon": "Ingen familierelasjoner",
   "warning-no-fnr": "Ingen fødselsnummer",
   "warning-no-inntekt": "Ingen inntekter",
+  "warning-no-motregning": "Ingen motregninger",
   "warning-no-relasjon": "Ingen relasjoner",
   "warning-no-periods": "Ingen perioder",
   "warning-no-satsborgerskap": "Ingen statsborgerskap",
   "warning-no-telephone": "Ingen telefonnummer",
   "warning-no-utbetaling": "Ingen utbetalinger",
-  "warning-no-ytelse": "Ingen ytelse",
+  "warning-no-ytelse": "Ingen ytelser",
   "warning-spørre-sed-not-journalført": "Du kan ikke opprette SED fordi spørre SED er ikke journalført"
 }

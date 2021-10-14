@@ -58,7 +58,6 @@ export interface ArbeidsgiverProps {
   includeAddress ?: boolean
   newArbeidsgiver?: boolean
   orphanArbeidsgiver ?: boolean
-  typeTrygdeforhold ?: string
   onArbeidsgiverSelect?: (a: PeriodeMedForsikring, checked: boolean) => void
   onArbeidsgiverEdit?: (a: PeriodeMedForsikring, old: PeriodeMedForsikring, checked: boolean) => void
   onArbeidsgiverDelete?: (a: PeriodeMedForsikring, checked: boolean) => void
@@ -75,7 +74,6 @@ const ArbeidsgiverBox = ({
   includeAddress = false,
   newArbeidsgiver = false,
   orphanArbeidsgiver = false,
-  typeTrygdeforhold,
   selected = false,
   selectable = true,
   onArbeidsgiverSelect,
@@ -94,7 +92,11 @@ const ArbeidsgiverBox = ({
 
   const [_arbeidsgiversNavn, setArbeidsgiversNavn] = useState<string>(arbeidsgiver.arbeidsgiver.navn ?? '')
   const [_arbeidsgiversOrgnr, setArbeidsgiversOrgnr] = useState<string>(getOrgnr(arbeidsgiver) ?? '')
-  const [_arbeidsgiverPeriode, setArbeidsgiversPeriode] = useState<Periode>(arbeidsgiver.periode)
+  const [_arbeidsgiverPeriode, setArbeidsgiversPeriode] = useState<Periode>({
+    startdato: arbeidsgiver.startdato,
+    sluttdato: arbeidsgiver.sluttdato,
+    aapenPeriodeType: arbeidsgiver.aapenPeriodeType
+  })
 
   // for includeAddress
   const [_adresse, _setAdresse] = useState<IAdresse | undefined>(arbeidsgiver.arbeidsgiver.adresse ?? undefined)
@@ -122,15 +124,14 @@ const ArbeidsgiverBox = ({
 
   const onSaveEditButtonClicked = () => {
     const newArbeidsgiver: PeriodeMedForsikring = {
+      ..._arbeidsgiverPeriode,
       arbeidsgiver: {
         identifikator: [{
           type: 'registrering',
           id: _arbeidsgiversOrgnr
         }],
         navn: _arbeidsgiversNavn
-      },
-      periode: _arbeidsgiverPeriode,
-      typeTrygdeforhold: typeTrygdeforhold
+      }
     } as PeriodeMedForsikring
 
     if (includeAddress) {

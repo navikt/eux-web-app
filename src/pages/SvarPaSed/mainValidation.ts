@@ -7,7 +7,6 @@ import { validateAdresser } from 'applications/SvarSed/PersonManager/Adresser/va
 import { validatePerioderAnnen } from 'applications/SvarSed/PersonManager/Arbeidsforhold/validationPeriodeAnnen'
 import { validatePerioderMedForsikring } from 'applications/SvarSed/PersonManager/Arbeidsforhold/validationPeriodeMedForsikring'
 import { validatePerioderSimple } from 'applications/SvarSed/PersonManager/Arbeidsforhold/validationPeriodeSimple'
-import { validatePerioderSvangerskapOgSyk } from 'applications/SvarSed/PersonManager/Arbeidsforhold/validationPeriodeSvangerskap'
 import { validatePerioderUtenForsikring } from 'applications/SvarSed/PersonManager/Arbeidsforhold/validationPeriodeUtenForsikring'
 import { validateBeløpNavnOgValutas } from 'applications/SvarSed/PersonManager/BeløpNavnOgValuta/validation'
 import { validateFamilierelasjoner } from 'applications/SvarSed/PersonManager/Familierelasjon/validation'
@@ -287,14 +286,14 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
       })
       hasErrors = hasErrors || _error
 
-      _error = validatePerioderSvangerskapOgSyk(v, t, {
-        perioderSvangerskap: (replySed as U002Sed)?.perioderSvangerskapBarn,
+      _error = validatePerioderSimple(v, t, {
+        perioder: (replySed as U002Sed)?.perioderSvangerskapBarn,
         namespace: `personmanager-${personID}-forsikring-perioderSvangerskapBarn`
       })
       hasErrors = hasErrors || _error
 
-      _error = validatePerioderSvangerskapOgSyk(v, t, {
-        perioderSvangerskap: (replySed as U002Sed)?.perioderSyk,
+      _error = validatePerioderSimple(v, t, {
+        perioder: (replySed as U002Sed)?.perioderSyk,
         namespace: `personmanager-${personID}-forsikring-perioderSyk`
       })
       hasErrors = hasErrors || _error

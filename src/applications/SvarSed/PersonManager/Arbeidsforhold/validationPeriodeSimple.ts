@@ -1,5 +1,5 @@
 import { validatePeriode } from 'components/Forms/validation'
-import { PeriodeForsikring } from 'declarations/sed'
+import { Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
@@ -7,8 +7,8 @@ import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
 export interface ValidationPeriodeSimpleProps {
-  periode: PeriodeForsikring,
-  perioder: Array<PeriodeForsikring>,
+  periode: Periode,
+  perioder: Array<Periode>,
   index?: number
   namespace: string
 }
@@ -27,18 +27,18 @@ export const validatePeriodeSimple = (
   const idx = getIdx(index)
 
   const periodeError: boolean = validatePeriode(v, t, {
-    periode: periode?.periode,
+    periode,
     namespace
   })
   hasErrors = hasErrors || periodeError
 
-  if (!_.isEmpty(periode?.periode?.startdato)) {
+  if (!_.isEmpty(periode?.startdato)) {
     let duplicate: boolean
     if (_.isNil(index)) {
-      duplicate = _.find(perioder, p => p.periode.startdato === periode?.periode.startdato && p.periode.sluttdato === periode?.periode.sluttdato) !== undefined
+      duplicate = _.find(perioder, p => p.startdato === periode?.startdato && p.sluttdato === periode?.sluttdato) !== undefined
     } else {
-      const otherPerioder: Array<PeriodeForsikring> = _.filter(perioder, (p, i) => i !== index)
-      duplicate = _.find(otherPerioder, p => p.periode.startdato === periode?.periode?.startdato && p.periode.sluttdato === periode?.periode.sluttdato) !== undefined
+      const otherPerioder: Array<Periode> = _.filter(perioder, (p, i) => i !== index)
+      duplicate = _.find(otherPerioder, p => p.startdato === periode?.startdato && p.sluttdato === periode?.sluttdato) !== undefined
     }
     if (duplicate) {
       v[namespace + idx + '-startdato'] = {
@@ -62,7 +62,7 @@ export const validatePeriodeSimple = (
 }
 
 interface ValidatePerioderSimpleProps {
-  perioder: Array<PeriodeForsikring> | undefined
+  perioder: Array<Periode> | undefined
   namespace: string
 }
 
@@ -75,7 +75,7 @@ export const validatePerioderSimple = (
   }: ValidatePerioderSimpleProps
 ): boolean => {
   let hasErrors: boolean = false
-  perioder?.forEach((periode: PeriodeForsikring, index: number) => {
+  perioder?.forEach((periode: Periode, index: number) => {
     const _errors: boolean = validatePeriodeSimple(validation, t, {
       periode: periode,
       perioder: perioder,

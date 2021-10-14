@@ -7,7 +7,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { Periode, PeriodeForsikring, ReplySed } from 'declarations/sed'
+import { Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
@@ -37,7 +37,6 @@ export interface ArbeidsforholdSimpleSelector extends PersonManagerFormSelector 
 export interface ArbeidsforholdSimpleProps {
   parentNamespace: string
   target: string
-  typeTrygdeforhold: string
 }
 
 const mapState = (state: State): ArbeidsforholdSimpleSelector => ({
@@ -47,8 +46,7 @@ const mapState = (state: State): ArbeidsforholdSimpleSelector => ({
 
 const ArbeidsforholdSimple: React.FC<ArbeidsforholdSimpleProps> = ({
   parentNamespace,
-  target,
-  typeTrygdeforhold
+  target
 }: ArbeidsforholdSimpleProps): JSX.Element => {
   const { t } = useTranslation()
   const {
@@ -56,13 +54,13 @@ const ArbeidsforholdSimple: React.FC<ArbeidsforholdSimpleProps> = ({
     validation
   } = useSelector<State, ArbeidsforholdSimpleSelector>(mapState)
   const dispatch = useDispatch()
-  const perioder: Array<PeriodeForsikring> | undefined = _.get(replySed, target)
+  const perioder: Array<Periode> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${target}`
 
   const [_newPeriode, _setNewPeriode] = useState<Periode>({ startdato: '' })
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PeriodeForsikring>(
-    (p: PeriodeForsikring) => p.periode.startdato + '-' + (p.periode.sluttdato ?? p.periode.aapenPeriodeType))
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>(
+    (p: Periode) => p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType))
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] =
     useValidation<ValidationPeriodeSimpleProps>({}, validatePeriodeSimple)
@@ -94,8 +92,8 @@ const ArbeidsforholdSimple: React.FC<ArbeidsforholdSimpleProps> = ({
   }
 
   const onRemove = (index: number) => {
-    const newPerioder: Array<PeriodeForsikring> = _.cloneDeep(perioder) as Array<PeriodeForsikring>
-    const deletedPerioder: Array<PeriodeForsikring> = newPerioder.splice(index, 1)
+    const newPerioder: Array<Periode> = _.cloneDeep(perioder) as Array<Periode>
+    const deletedPerioder: Array<Periode> = newPerioder.splice(index, 1)
     if (deletedPerioder && deletedPerioder.length > 0) {
       removeFromDeletion(deletedPerioder[0])
     }
@@ -104,10 +102,7 @@ const ArbeidsforholdSimple: React.FC<ArbeidsforholdSimpleProps> = ({
   }
 
   const onAdd = () => {
-    const newPeriodeSimple: PeriodeForsikring = {
-      periode: _newPeriode,
-      typeTrygdeforhold: typeTrygdeforhold
-    }
+    const newPeriodeSimple: Periode = _newPeriode
 
     const valid: boolean = performValidation({
       periode: newPeriodeSimple,
@@ -115,7 +110,7 @@ const ArbeidsforholdSimple: React.FC<ArbeidsforholdSimpleProps> = ({
       namespace: namespace
     })
     if (valid) {
-      let newPerioderSimple: Array<PeriodeForsikring> | undefined = _.cloneDeep(perioder)
+      let newPerioderSimple: Array<Periode> | undefined = _.cloneDeep(perioder)
       if (_.isNil(newPerioderSimple)) {
         newPerioderSimple = []
       }
@@ -126,7 +121,7 @@ const ArbeidsforholdSimple: React.FC<ArbeidsforholdSimpleProps> = ({
     }
   }
 
-  const renderRow = (periode: PeriodeForsikring | null, index: number) => {
+  const renderRow = (periode: Periode | null, index: number) => {
     const candidateForDeletion = index < 0 ? false : isInDeletion(periode)
     const idx = getIdx(index)
     const getErrorFor = (index: number, el: string): string | undefined => (
@@ -134,7 +129,7 @@ const ArbeidsforholdSimple: React.FC<ArbeidsforholdSimpleProps> = ({
         ? _validation[namespace + '-' + el]?.feilmelding
         : validation[namespace + idx + '-' + el]?.feilmelding
     )
-    const _periode = index < 0 ? _newPeriode : periode?.periode
+    const _periode = index < 0 ? _newPeriode : periode
 
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>

@@ -36,14 +36,6 @@ export const validateBeløpNavnOgValuta = (
     hasErrors = true
   }
 
-  if (personID !== 'familie' && _.isEmpty(ytelse?.barnetsNavn?.trim())) {
-    v[namespace + '-barnetsNavn'] = {
-      skjemaelementId: namespace + '-barnetsNavn',
-      feilmelding: t('message:validation-noNavnTil', { person: personName })
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-
   if (_.isEmpty(ytelse?.ytelseNavn?.trim())) {
     v[namespace + '-ytelseNavn'] = {
       skjemaelementId: namespace + '-ytelseNavn',

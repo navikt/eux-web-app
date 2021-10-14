@@ -1,14 +1,26 @@
 Todo:
 
 1. na familierelasjon, pode ser que envie borSammen, etc com REPA/EKTE/etc. Confirmar que backend limpa
-2. Kontoopplysning: kontoOrdinar/KontoSEPA
-
-
 
 I have to decide once and for all what is the id (orgnr + stardato) and check validation when I duplicate them
 =>  Editing arbeidsgiver / PeriodeMedForsikring thta is already selected, does NOT update the replySed
 
+// labels
+//  verificar estado dos utkasts, pode ser que tenha de apagar unsbquando arranco com a página
 
+"motregninger": [{
+        "startdato": "2045-01-01",
+        "sluttdato": "2046-01-01",
+        "beloep": "200",
+        "valuta": "NOK",
+        "utbetalingshyppighet": "F002 barn2 motregning utbetalingshyppighet",
+        "ytelseNavn": "F002 barn2 motregning ytelse",
+        "mottakersNavn": "F002 barn2 motregning mottakersNavn",
+        "vedtaksdato": "2047-01-01",
+        "begrunnelse": "F002 barn2 motregning begrunnelse",
+        "ytterligereInfo": "F002 barn2 motregning ytterligereInfo",
+        "svarType": "anmodning_om_motregning_per_barn"
+      }]
 
 --> 400 login for Z992366
 

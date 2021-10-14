@@ -1,90 +1,63 @@
 import { validatePeriode } from 'components/Forms/validation'
-import { NavnOgBetegnelse, Motregning as IMotregning, ReplySed, Barn, F002Sed } from 'declarations/sed'
+import { Motregning as IMotregning, ReplySed, Barn, F002Sed, BarnaEllerFamilie } from 'declarations/sed'
 import { TFunction } from 'react-i18next'
 import { Validation } from 'declarations/types'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import _ from 'lodash'
 import { getIdx } from 'utils/namespace'
 
-export interface ValidationMotregningNavnOgBetegnelserProps {
-  navnOgBetegnelse: NavnOgBetegnelse
-  index?: number
+export interface ValidationMotregningProps {
+  motregning: IMotregning
+  type: BarnaEllerFamilie
+  index ?: number
   namespace: string
+  formalName: string
 }
 
-export const validateMotregningNavnOgBetegnelser = (
-  v: Validation,
-  t: TFunction,
-  {
-    navnOgBetegnelse,
-    index,
-    namespace
-  }: ValidationMotregningNavnOgBetegnelserProps
-): boolean => {
-  let hasErrors: boolean = false
-  const idx = getIdx(index)
-
-  if (_.isEmpty(navnOgBetegnelse?.navn?.trim())) {
-    v[namespace + '-navnOgBetegnelser' + idx + '-navn'] = {
-      feilmelding: t('message:validation-noNavn'),
-      skjemaelementId: namespace + '-navnOgBetegnelser' + idx + '-navn'
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-
-  if (_.isEmpty(navnOgBetegnelse?.betegnelsePåYtelse?.trim())) {
-    v[namespace + '-navnOgBetegnelser' + idx + '-betegnelsePåYtelse'] = {
-      feilmelding: t('message:validation-noBetegnelsePåYtelse'),
-      skjemaelementId: namespace + '-navnOgBetegnelser' + idx + '-betegnelsePåYtelse'
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-  return hasErrors
+export interface ValidationMotregningerProps {
+  replySed: ReplySed
+  namespace: string
+  formalName: string
 }
 
 export const validateMotregning = (
   v: Validation,
   t: TFunction,
-  motregning: IMotregning,
-  type: string,
-  namespace: string,
-  formalName: string
-): boolean => {
+  {
+    motregning,
+    index,
+    namespace,
+    formalName
+  }: ValidationMotregningProps): boolean => {
   let hasErrors: boolean = false
-  if (_.isEmpty(motregning?.svarType?.trim())) {
-    v[namespace + '-svarType'] = {
-      feilmelding: t('message:validation-noAnswerTil', { person: formalName }),
-      skjemaelementId: namespace + '-svarType'
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
+  let idx = getIdx(index)
 
-  if (_.isEmpty(motregning?.barnetsNavn?.trim())) {
-    v[namespace + '-barnetsNavn'] = {
-      feilmelding: t('message:validation-noNameTil', { person: formalName }),
-      skjemaelementId: namespace + '-barnetsNavn'
+  if (_.isEmpty(motregning?.svarType?.trim())) {
+    v[namespace + idx + '-svarType'] = {
+      feilmelding: t('message:validation-noAnswerTil', { person: formalName }),
+      skjemaelementId: namespace + idx + '-svarType'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
 
   if (_.isEmpty(motregning?.ytelseNavn?.trim())) {
-    v[namespace + '-ytelseNavn'] = {
+    v[namespace + idx + '-ytelseNavn'] = {
       feilmelding: t('message:validation-noYtelseTil', { person: formalName }),
-      skjemaelementId: namespace + '-ytelseNavn'
+      skjemaelementId: namespace + idx + '-ytelseNavn'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
 
   if (_.isEmpty(motregning?.beloep?.trim())) {
-    v[namespace + '-beloep'] = {
+    v[namespace + idx + '-beloep'] = {
       feilmelding: t('message:validation-noBeløpTil', { person: formalName }),
-      skjemaelementId: namespace + '-beloep'
+      skjemaelementId: namespace + idx + '-beloep'
     } as FeiloppsummeringFeil
     hasErrors = true
   } else {
     if (!motregning?.beloep?.trim().match(/^[\d.,]+$/)) {
-      v[namespace + '-beloep'] = {
-        skjemaelementId: namespace + '-beloep',
+      v[namespace + idx + '-beloep'] = {
+        skjemaelementId: namespace + idx + '-beloep',
         feilmelding: t('message:validation-invalidBeløpTil', { person: formalName })
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -92,9 +65,9 @@ export const validateMotregning = (
   }
 
   if (_.isEmpty(motregning?.valuta?.trim())) {
-    v[namespace + '-valuta'] = {
+    v[namespace + idx + '-valuta'] = {
       feilmelding: t('message:validation-noValutaTil', { person: formalName }),
-      skjemaelementId: namespace + '-valuta'
+      skjemaelementId: namespace + idx + '-valuta'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -104,57 +77,51 @@ export const validateMotregning = (
       startdato: motregning.startdato,
       sluttdato: motregning.sluttdato
     },
-    namespace: namespace,
+    namespace: namespace + idx ,
     personName: formalName
   })
   hasErrors = hasErrors || periodError
 
   if (_.isEmpty(motregning?.utbetalingshyppighet?.trim())) {
-    v[namespace + '-utbetalingshyppighet'] = {
+    v[namespace + idx + '-utbetalingshyppighet'] = {
       feilmelding: t('message:validation-noAvgrensingTil', { person: formalName }),
-      skjemaelementId: namespace + '-utbetalingshyppighet'
+      skjemaelementId: namespace + idx + '-utbetalingshyppighet'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
 
   if (_.isEmpty(motregning?.mottakersNavn?.trim())) {
-    v[namespace + '-mottakersNavn'] = {
+    v[namespace + idx + '-mottakersNavn'] = {
       feilmelding: t('message:validation-noMottakersNavnTil', { person: formalName }),
-      skjemaelementId: namespace + '-mottakersNavn'
+      skjemaelementId: namespace + idx + '-mottakersNavn'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
 
   if (_.isEmpty(motregning?.begrunnelse?.trim())) {
-    v[namespace + '-begrunnelse'] = {
+    v[namespace + idx + '-begrunnelse'] = {
       feilmelding: t('message:validation-noGrunnTil', { person: formalName }),
-      skjemaelementId: namespace + '-begrunnelse'
+      skjemaelementId: namespace + idx + '-begrunnelse'
     } as FeiloppsummeringFeil
     hasErrors = true
   } else {
     if (motregning?.begrunnelse.trim().length > 500) {
-      v[namespace + '-begrunnelse'] = {
+      v[namespace + idx + '-begrunnelse'] = {
         feilmelding: t('message:validation-textOver500Til', { person: formalName }),
-        skjemaelementId: namespace + '-begrunnelse'
+        skjemaelementId: namespace + idx + '-begrunnelse'
       } as FeiloppsummeringFeil
       hasErrors = true
     }
   }
 
   if (motregning?.ytterligereInfo?.trim()?.length > 500) {
-    v[namespace + '-ytterligereInfo'] = {
+    v[namespace + idx + '-ytterligereInfo'] = {
       feilmelding: t('message:validation-textOver500Til', { person: formalName }),
-      skjemaelementId: namespace + '-ytterligereInfo'
+      skjemaelementId: namespace + idx + '-ytterligereInfo'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
   return hasErrors
-}
-
-interface ValidateMotregningerProps {
-  replySed: ReplySed
-  namespace: string
-  formalName: string
 }
 
 export const validateMotregninger = (
@@ -164,20 +131,34 @@ export const validateMotregninger = (
     replySed,
     namespace,
     formalName
-  }: ValidateMotregningerProps
+  }: ValidationMotregningerProps
 ): boolean => {
   let hasErrors: boolean = false;
 
   (replySed as F002Sed).barn?.forEach((b: Barn) => {
-    if (!_.isNil(b.motregning)) {
-      const answer = validateMotregning(v, t, b.motregning, 'barna', namespace, formalName)
+    b.motregninger?.forEach((motregning: IMotregning, index: number) => {
+      const answer = validateMotregning(v, t, {
+        motregning: motregning,
+        type: 'barna',
+        index,
+        namespace,
+        formalName
+      })
       hasErrors = hasErrors || answer
-    }
+    })
   })
 
-  if (!_.isNil((replySed as F002Sed).familie?.motregning)) {
-    const answer = validateMotregning(v, t, (replySed as F002Sed).familie?.motregning!, 'familie', namespace, formalName)
-    hasErrors = hasErrors || answer
+  if (!_.isNil((replySed as F002Sed).familie?.motregninger)) {
+    (replySed as F002Sed).familie?.motregninger?.forEach((motregning: IMotregning, index: number) => {
+      const answer = validateMotregning(v, t, {
+        motregning: motregning,
+        type: 'familie',
+        index,
+        namespace,
+        formalName
+      })
+      hasErrors = hasErrors || answer
+    })
   }
 
   if (hasErrors) {

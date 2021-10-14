@@ -95,7 +95,11 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
   }
 
   const addPeriodeFromArbeidsgiver = (selectedArbeidsgiver: PeriodeMedForsikring) => {
-    addPeriode(selectedArbeidsgiver.periode)
+    addPeriode({
+      startdato: selectedArbeidsgiver.startdato,
+      sluttdato: selectedArbeidsgiver.sluttdato,
+      aapenPeriodeType: selectedArbeidsgiver.aapenPeriodeType
+    })
     standardLogger('svarsed.editor.periode.add', { type: 'perioderSomAnsatt' })
   }
 
@@ -116,7 +120,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
       newPerioder = []
     }
     newPerioder = _.filter(newPerioder, p =>
-      p.startdato !== deletedArbeidsgiver.periode.startdato && p.sluttdato !== deletedArbeidsgiver.periode.sluttdato)
+      p.startdato !== deletedArbeidsgiver.startdato && p.sluttdato !== deletedArbeidsgiver.sluttdato)
     dispatch(updateReplySed(target, newPerioder))
     standardLogger('svarsed.editor.periode.remove', { type: 'perioderSomAnsatt' })
   }
@@ -140,17 +144,21 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
     if (needleId) {
       const indexArbeidsgiver = _.findIndex(newArbeidsgivere, (p: Arbeidsgiver) => p.arbeidsgiversOrgnr === needleId)
       if (indexArbeidsgiver >= 0) {
-        newArbeidsgivere[indexArbeidsgiver].fraDato = newArbeidsgiver.periode.startdato
-        newArbeidsgivere[indexArbeidsgiver].tilDato = newArbeidsgiver.periode.sluttdato
+        newArbeidsgivere[indexArbeidsgiver].fraDato = newArbeidsgiver.startdato
+        newArbeidsgivere[indexArbeidsgiver].tilDato = newArbeidsgiver.sluttdato
         dispatch(updateArbeidsgivere(newArbeidsgivere))
       }
 
       if (selected) {
         const indexPerioder = _.findIndex(newPerioder, (p: Periode) => {
-          return oldArbeidsgiver.periode.startdato === p.startdato && oldArbeidsgiver.periode.sluttdato === p.sluttdato
+          return oldArbeidsgiver.startdato === p.startdato && oldArbeidsgiver.sluttdato === p.sluttdato
         })
         if (indexPerioder >= 0) {
-          newPerioder[indexPerioder] = newArbeidsgiver.periode
+          newPerioder[indexPerioder] = {
+            startdato: newArbeidsgiver.startdato,
+            sluttdato: newArbeidsgiver.sluttdato,
+            aapenPeriodeType: newArbeidsgiver.aapenPeriodeType
+          }
           dispatch(updateReplySed(target, newPerioder))
         }
       }
@@ -175,10 +183,14 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
 
       if (selected) {
         const indexPerioder = _.findIndex(newPerioder, (p: Periode) => {
-          return oldArbeidsgiver.periode.startdato === p.startdato && oldArbeidsgiver.periode.sluttdato === p.sluttdato
+          return oldArbeidsgiver.startdato === p.startdato && oldArbeidsgiver.sluttdato === p.sluttdato
         })
         if (indexPerioder >= 0) {
-          newPerioder[indexPerioder] = newArbeidsgiver.periode
+          newPerioder[indexPerioder] =  {
+            startdato: newArbeidsgiver.startdato,
+            sluttdato: newArbeidsgiver.sluttdato,
+            aapenPeriodeType: newArbeidsgiver.aapenPeriodeType
+          }
           dispatch(updateReplySed(target, newPerioder))
         }
       }
@@ -210,15 +222,14 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
 
   const onArbeidsgiverAdd = () => {
     const newArbeidsgiver: PeriodeMedForsikring = {
+      ..._newArbeidsgiverPeriode,
       arbeidsgiver: {
         navn: _newArbeidsgiversNavn,
         identifikator: [{
           type: 'registrering',
           id: _newArbeidsgiversOrgnr
         }]
-      },
-      periode: _newArbeidsgiverPeriode,
-      typeTrygdeforhold: ''
+      }
     }
 
     const valid: boolean = performValidationArbeidsgiver({

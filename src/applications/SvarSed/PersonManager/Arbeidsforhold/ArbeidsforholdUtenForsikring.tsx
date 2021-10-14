@@ -9,7 +9,7 @@ import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { Adresse, JaNei, Periode, PeriodeUtenForsikring, ReplySed } from 'declarations/sed'
+import { Adresse, InntektOgTime, Periode, PeriodeUtenForsikring, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
@@ -20,7 +20,6 @@ import {
   AlignStartRow,
   Column,
   HighContrastFlatknapp,
-  HighContrastRadioPanelGroup,
   HorizontalSeparatorDiv,
   PaddedDiv,
   Row,
@@ -41,7 +40,6 @@ export interface ArbeidsforholdUtenForsikringSelector extends PersonManagerFormS
 export interface ArbeidsforholdUtenForsikringProps {
   parentNamespace: string
   target: string
-  typeTrygdeforhold: string
 }
 
 const mapState = (state: State): ArbeidsforholdUtenForsikringSelector => ({
@@ -51,8 +49,7 @@ const mapState = (state: State): ArbeidsforholdUtenForsikringSelector => ({
 
 const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> = ({
   parentNamespace,
-  target,
-  typeTrygdeforhold
+  target
 }: ArbeidsforholdUtenForsikringProps): JSX.Element => {
   const { t } = useTranslation()
   const {
@@ -68,12 +65,11 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
   const [_newNavn, _setNewNavn] = useState<string>('')
   const [_newAdresse, _setNewAdresse] = useState<Adresse | undefined>(undefined)
 
-  const [_newKreverinformasjonomtypearberidsforhold, _setNewKreverinformasjonomtypearberidsforhold] = useState<string>('')
-  const [_newKreverinformasjonomantallarbeidstimer, _setNewKreverinformasjonomantallarbeidstimer] = useState<string>('')
-  const [_newKreverinformasjonominntekt, _setNewKreverinformasjonominntekt] = useState<string>('')
+  const [_newInntektOgTimer, _setNewInntektOgTimer] = useState<Array<InntektOgTime> | undefined>(undefined)
+  const [_newInntektOgTimerInfo, _setNewInntektOgTimerInfo] = useState<string>('')
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PeriodeUtenForsikring>(
-    (p: PeriodeUtenForsikring) => p.periode.startdato + '-' + (p.periode.sluttdato ?? p.periode.aapenPeriodeType))
+    (p: PeriodeUtenForsikring) => p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType))
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] =
     useValidation<ValidationPeriodeUtenForsikringProps>({}, validatePeriodeUtenForsikring)
@@ -139,38 +135,26 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
     }
   }
 
-  const setKreverinformasjonomtypearberidsforhold = (newKreverinformasjonomtypearberidsforhold: string, index: number) => {
+/*  const setInntektOgTimer = (newInntektOgTimer: Array<InntektOgTime>, index: number) => {
     if (index < 0) {
-      _setNewKreverinformasjonomtypearberidsforhold(newKreverinformasjonomtypearberidsforhold.trim() as JaNei)
-      _resetValidation(namespace + '-kreverinformasjonomtypearberidsforhold')
+      _setNewInntektOgTimer(newInntektOgTimer)
+      _resetValidation(namespace + '-inntektOgTimer')
     } else {
-      dispatch(updateReplySed(`${target}[${index}].kreverinformasjonomtypearberidsforhold`, newKreverinformasjonomtypearberidsforhold.trim()))
-      if (validation[namespace + getIdx(index) + '-kreverinformasjonomtypearberidsforhold']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-kreverinformasjonomtypearberidsforhold'))
+      dispatch(updateReplySed(`${target}[${index}].inntektOgTimer`, newInntektOgTimer.trim()))
+      if (validation[namespace + getIdx(index) + '-inntektOgTimer']) {
+        dispatch(resetValidation(namespace + getIdx(index) + '-inntektOgTimer'))
       }
     }
-  }
+  }*/
 
-  const setKreverinformasjonomantallarbeidstimer = (newKreverinformasjonomantallarbeidstimer: string, index: number) => {
+  const setInntektOgTimerInfo = (newInntektOgTimerInfo: string, index: number) => {
     if (index < 0) {
-      _setNewKreverinformasjonomantallarbeidstimer(newKreverinformasjonomantallarbeidstimer.trim() as JaNei)
-      _resetValidation(namespace + '-kreverinformasjonomantallarbeidstimer')
+      _setNewInntektOgTimerInfo(newInntektOgTimerInfo.trim())
+      _resetValidation(namespace + '-inntektOgTimerInfo')
     } else {
-      dispatch(updateReplySed(`${target}[${index}].kreverinformasjonomantallarbeidstimer`, newKreverinformasjonomantallarbeidstimer.trim()))
-      if (validation[namespace + getIdx(index) + '-kreverinformasjonomantallarbeidstimer']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-kreverinformasjonomantallarbeidstimer'))
-      }
-    }
-  }
-
-  const setKreverinformasjonominntekt = (newKreverinformasjonominntekt: string, index: number) => {
-    if (index < 0) {
-      _setNewKreverinformasjonominntekt(newKreverinformasjonominntekt.trim() as JaNei)
-      _resetValidation(namespace + '-kreverinformasjonominntekt')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].kreverinformasjonominntekt`, newKreverinformasjonominntekt.trim()))
-      if (validation[namespace + getIdx(index) + '-kreverinformasjonominntekt']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-kreverinformasjonominntekt'))
+      dispatch(updateReplySed(`${target}[${index}].inntektOgTimerInfo`, newInntektOgTimerInfo.trim()))
+      if (validation[namespace + getIdx(index) + '-inntektOgTimerInfo']) {
+        dispatch(resetValidation(namespace + getIdx(index) + '-inntektOgTimerInfo'))
       }
     }
   }
@@ -180,9 +164,8 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
     _setNewOrgnr('')
     _setNewPeriode({ startdato: '' })
     _setNewAdresse(undefined)
-    _setNewKreverinformasjonomantallarbeidstimer('')
-    _setNewKreverinformasjonomtypearberidsforhold('')
-    _setNewKreverinformasjonominntekt('')
+    _setNewInntektOgTimer(undefined)
+    _setNewInntektOgTimerInfo('')
     _resetValidation()
   }
 
@@ -203,16 +186,14 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
 
   const onAdd = () => {
     const newPeriodeUtenForsikring: PeriodeUtenForsikring = {
-      periode: _newPeriode,
-      typeTrygdeforhold: typeTrygdeforhold,
+      ..._newPeriode,
       arbeidsgiver: {
         navn: _newNavn.trim(),
         identifikator: [{ type: 'registrering', id: _newOrgnr.trim() }],
         adresse: _newAdresse
       },
-      kreverinformasjonomtypearberidsforhold: _newKreverinformasjonomtypearberidsforhold as JaNei,
-      kreverinformasjonomantallarbeidstimer: _newKreverinformasjonomantallarbeidstimer as JaNei,
-      kreverinformasjonominntekt: _newKreverinformasjonominntekt as JaNei
+      inntektOgTimer: _newInntektOgTimer as Array<InntektOgTime>,
+      inntektOgTimerInfo: _newInntektOgTimerInfo
     }
 
     const valid: boolean = performValidation({
@@ -240,7 +221,7 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
         ? _validation[namespace + '-' + el]?.feilmelding
         : validation[namespace + idx + '-' + el]?.feilmelding
     )
-    const _periode = index < 0 ? _newPeriode : periodeUtenForsikring?.periode
+    const _periode = index < 0 ? _newPeriode : periodeUtenForsikring
 
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
@@ -297,59 +278,20 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
         <VerticalSeparatorDiv />
         <AlignStartRow>
           <Column flex='2'>
-            <HighContrastRadioPanelGroup
-              checked={index < 0 ? _newKreverinformasjonomtypearberidsforhold : periodeUtenForsikring?.kreverinformasjonomtypearberidsforhold}
-              data-test-id={namespace + idx + '-kreverinformasjonomtypearberidsforhold'}
-              data-no-border
-              id={namespace + idx + '-kreverinformasjonomtypearberidsforhold'}
-              feil={getErrorFor(index, 'kreverinformasjonomtypearberidsforhold')}
-              legend={t('label:kreverinformasjonomtypearberidsforhold') + ' *'}
-              name={namespace + idx + '-kreverinformasjonomtypearberidsforhold'}
-              radios={[
-                { label: t('label:ja'), value: 'ja' },
-                { label: t('label:nei'), value: 'nei' }
-              ]}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKreverinformasjonomtypearberidsforhold(e.target.value as JaNei, index)}
-            />
+            {/* TODO inntektOgTime */}
           </Column>
-          <Column flex='2' />
         </AlignStartRow>
         <VerticalSeparatorDiv />
         <AlignStartRow>
           <Column flex='2'>
-            <HighContrastRadioPanelGroup
-              checked={index < 0 ? _newKreverinformasjonomantallarbeidstimer : periodeUtenForsikring?.kreverinformasjonomantallarbeidstimer}
-              data-test-id={namespace + idx + '-kreverinformasjonomantallarbeidstimer'}
-              data-no-border
-              id={namespace + idx + '-kreverinformasjonomantallarbeidstimer'}
-              feil={getErrorFor(index, 'kreverinformasjonomantallarbeidstimer')}
-              legend={t('label:kreverinformasjonomantallarbeidstimer') + ' *'}
-              name={namespace + idx + '-kreverinformasjonomantallarbeidstimer'}
-              radios={[
-                { label: t('label:ja'), value: 'ja' },
-                { label: t('label:nei'), value: 'nei' }
-              ]}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKreverinformasjonomantallarbeidstimer(e.target.value as JaNei, index)}
-            />
-          </Column>
-          <Column flex='2' />
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column flex='2'>
-            <HighContrastRadioPanelGroup
-              checked={index < 0 ? _newKreverinformasjonominntekt : periodeUtenForsikring?.kreverinformasjonominntekt}
-              data-test-id={namespace + idx + '-kreverinformasjonominntekt'}
-              data-no-border
-              id={namespace + idx + '-kreverinformasjonominntekt'}
-              feil={getErrorFor(index, 'kreverinformasjonominntekt')}
-              legend={t('label:kreverinformasjonominntekt') + ' *'}
-              name={namespace + idx + '-kreverinformasjonominntekt'}
-              radios={[
-                { label: t('label:ja'), value: 'ja' },
-                { label: t('label:nei'), value: 'nei' }
-              ]}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKreverinformasjonominntekt(e.target.value as JaNei, index)}
+            <Input
+              feil={getErrorFor(index, 'inntektOgTimerInfo')}
+              namespace={namespace}
+              id='inntektOgTimerInfo'
+              key={'inntektOgTimerInfo-' + (index < 0 ? _newInntektOgTimerInfo : periodeUtenForsikring?.inntektOgTimerInfo)}
+              label={t('label:inntektOgTimerInfo')}
+              onChanged={(inntektOgTimerInfo: string) => setInntektOgTimerInfo(inntektOgTimerInfo, index)}
+              value={index < 0 ? _newInntektOgTimerInfo : periodeUtenForsikring?.inntektOgTimerInfo ?? ''}
             />
           </Column>
           <Column flex='2'>

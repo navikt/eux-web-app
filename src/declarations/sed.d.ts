@@ -172,11 +172,9 @@ export interface Ytelse {
   utbetalingshyppighet: Utbetalingshyppighet
   valuta: string
   ytelseNavn: string
-  barnetsNavn?: string
 }
 
 export interface Motregning {
-  barnetsNavn?: string
   begrunnelse: string
   beloep: string
   mottakersNavn: string
@@ -206,11 +204,6 @@ export interface Barnetilhoerighet {
   relasjonTilPerson: BarnRelasjon
   relasjonType?: BarnRelasjonType
   periode: Periode
-}
-
-export interface NavnOgBetegnelse {
-  navn: string
-  betegnelsePåYtelse: string
 }
 
 export interface KontoOrdinaer {
@@ -301,8 +294,8 @@ export interface Barn {
   barnetilhoerigheter?: Array<Barnetilhoerighet>
   flyttegrunn?: Flyttegrunn
   personInfo: PersonInfo
-  motregning?: Motregning
-  ytelse?: Ytelse
+  motregninger?: Array<Motregning>
+  ytelser?: Array<Ytelse>
 }
 
 export interface Institusjon {
@@ -358,12 +351,14 @@ export interface LokaleSakId {
   land: string
 }
 
-export interface PeriodeForsikring {
-  periode: Periode
-  typeTrygdeforhold: string
+export interface InntektOgTime {
+  bruttoinntekt: string
+  valuta: string
+  arbeidstimer: string
+  inntektsperiode: Periode
 }
 
-export interface PeriodeMedForsikring extends PeriodeForsikring {
+export interface PeriodeMedForsikring extends Periode {
   arbeidsgiver: ArbeidsgiverWithAdresse
   // this is just to accommodate Arbeidsgiver conversion as PeriodeMedForsikring, just for internal use while showing ArbeidsgiverBox
   extra ?: {
@@ -373,26 +368,12 @@ export interface PeriodeMedForsikring extends PeriodeForsikring {
 }
 
 export interface PeriodeUtenForsikring extends PeriodeMedForsikring {
-  kreverinformasjonomtypearberidsforhold: JaNei
-  kreverinformasjonomantallarbeidstimer: JaNei
-  kreverinformasjonominntekt: JaNei
+  inntektOgTimer: Array<InntektOgTime>
+  inntektOgTimerInfo: string
 }
 
-export interface PeriodeAnnenForsikring extends PeriodeForsikring {
-  institusjonsid: string
-  institusjonsnavn: string
-  institusjonstype: string
-  virksomhetensart: string
-  navn: string
-  adresse: Adresse
-}
-
-export interface PeriodeSykSvangerskapOmsorg extends PeriodeForsikring {
-  institusjonsnavn: string
-  institusjonsid: string
-  erinstitusjonsidkjent: JaNei
-  navn: string
-  adresse: Adresse
+export interface PeriodeAnnenForsikring extends Periode {
+  annenTypeForsikringsperiode: string
 }
 
 export interface UenighetKonklusjon {
@@ -413,8 +394,8 @@ export interface F002Sed extends FSed {
   ektefelle?: Person
   endredeForhold?: Array<string>
   familie?: {
-    motregning?: Motregning
-    ytelse?: Ytelse
+    motregninger?: Array<Motregning>
+    ytelser?: Array<Ytelse>
   }
   krav: {
     infoPresisering: string
@@ -436,14 +417,16 @@ export interface USed extends BaseReplySed {
 
 export interface U002Sed extends USed {
   perioderAnsattMedForsikring?: Array<PeriodeMedForsikring>
+  perioderSelvstendigMedForsikring?: Array<PeriodeMedForsikring>
   perioderAnsattUtenForsikring?: Array<PeriodeUtenForsikring>
-  perioderSelvstendigMedForsikring?: Array<PeriodeForsikring>
   perioderSelvstendigUtenForsikring?: Array<PeriodeUtenForsikring>
-  perioderFrihetsberoevet?: Array<PeriodeForsikring>
-  perioderSyk?: Array<PeriodeSykSvangerskapOmsorg>
-  perioderSvangerskapBarn?: Array<PeriodeSykSvangerskapOmsorg>
-  perioderUtdanning?: Array<PeriodeForsikring>
-  perioderMilitaertjeneste?: Array<PeriodeForsikring>
+  perioderSyk?: Array<Periode>
+  perioderSvangerskapBarn?: Array<Periode>
+  perioderUtdanning?: Array<Periode>
+  perioderMilitaertjeneste?: Array<Periode>
+  perioderFrihetsberoevet?: Array<Periode>
+  perioderFrivilligForsikring?: Array<Periode>
+  perioderKompensertFerie?: Array<Periode>
   perioderAnnenForsikring?: Array<PeriodeAnnenForsikring>
   perioderDagpenger?:Array<PeriodeDagpenger>
   grunntilopphor?: GrunnTilOpphør

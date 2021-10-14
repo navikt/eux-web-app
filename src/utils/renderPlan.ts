@@ -41,13 +41,13 @@ export default <T extends Periode | PeriodeMedForsikring>({
 }: RenderPlanProps<T>): Plan<T> => {
   const getStartDato = (periode: T): string => (
     Object.prototype.hasOwnProperty.call(periode, 'periode')
-      ? (periode as unknown as PeriodeMedForsikring).periode?.startdato
+      ? (periode as unknown as PeriodeMedForsikring).startdato
       : (periode as unknown as Periode).startdato
   )
 
   const getSluttDato = (periode: T): string | undefined => (
     Object.prototype.hasOwnProperty.call(periode, 'periode')
-      ? (periode as unknown as PeriodeMedForsikring).periode?.sluttdato
+      ? (periode as unknown as PeriodeMedForsikring).sluttdato
       : (periode as unknown as Periode).sluttdato
   )
 
@@ -70,8 +70,8 @@ export default <T extends Periode | PeriodeMedForsikring>({
     const arbeidsgiverAsPeriodeMedForsikring: PeriodeMedForsikring = arbeidsgiverToPeriodeMedForsikring(arbeidsgiver)
 
     const foundIndex: number = _.findIndex(plan, p =>
-      getStartDato(p.item as T) === arbeidsgiverAsPeriodeMedForsikring.periode.startdato &&
-      getSluttDato(p.item as T) === arbeidsgiverAsPeriodeMedForsikring.periode.sluttdato
+      getStartDato(p.item as T) === arbeidsgiverAsPeriodeMedForsikring.startdato &&
+      getSluttDato(p.item as T) === arbeidsgiverAsPeriodeMedForsikring.sluttdato
     )
 
     if (foundIndex >= 0) {
@@ -103,12 +103,12 @@ export default <T extends Periode | PeriodeMedForsikring>({
   addedArbeidsperioder.forEach((arbeidsgiver: PeriodeMedForsikring) => {
     const foundPeriodeIndex: number = _.findIndex(plan, (item: PlanItem<T>) => {
       return item.type === 'orphan'
-        ? getStartDato(item.item as T) === arbeidsgiver.periode.startdato && getSluttDato(item.item as T) === arbeidsgiver.periode.sluttdato
+        ? getStartDato(item.item as T) === arbeidsgiver.startdato && getSluttDato(item.item as T) === arbeidsgiver.sluttdato
         : false // only match Periods
     })
     const foundArbeidsgiver: boolean = _.find(plan, (item: PlanItem<T>) => {
       return item.type === 'arbeidsgiver'
-        ? (item.item as PeriodeMedForsikring).periode.startdato === arbeidsgiver.periode.startdato && (item.item as PeriodeMedForsikring).periode.sluttdato === arbeidsgiver.periode.sluttdato
+        ? (item.item as PeriodeMedForsikring).startdato === arbeidsgiver.startdato && (item.item as PeriodeMedForsikring).sluttdato === arbeidsgiver.sluttdato
         : false // only match PeriodeMedForsikring
     }) !== undefined
 

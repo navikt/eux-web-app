@@ -11,7 +11,6 @@ const Arbeidsforhold: React.FC<PersonManagerFormProps> = ({
       parentNamespace={`${parentNamespace}-${personID}-arbeidsforhold`}
       personID={personID}
       target='perioderAnsattMedForsikring'
-      typeTrygdeforhold='ansettelsesforhold_som_utgjør_forsikringsperiode'
     />
   )
 }
