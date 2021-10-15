@@ -1,3 +1,4 @@
+import { resetValidation } from 'actions/validation'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
@@ -22,56 +23,60 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { getIdx } from 'utils/namespace'
-import { BarnaNameKeyMap, Index } from './Motregning'
-import { validateKeyAndYtelseNavn, ValidationKeyAndYtelseNavnProps } from './validationKeyAndYtelseNavn'
+import { BarnaNameKeyMap } from './Motregning'
+import { validateKeyAndYtelse, ValidationKeyAndYtelseProps } from './validationKeyAndYtelse'
 
 const MyPaddedDiv = styled.div`
   padding: 0.5rem 0.5rem 0.5rem 2rem;
 `
 
-export interface IKeyAndYtelseNavn {
-  key: string
-  ytelseNavn: string
+export interface KeyAndYtelse {
+  // points to a full motregninger, like barn[1].motregninger[2] or familie.motregninger[0], if we are in an existing motregninger,
+  // but if we are in a new-motregniger (draft), points to a barnaKey (fullKeys exist only when motregning is saved on replySed)
+  fullKey: string
+  ytelseNavn?: string // ytelseNavn, for barna
 }
 
-interface KeyAndYtelseNavnProps {
+interface KeyAndYtelseProps {
   highContrast: boolean
-  keyAndYtelseNavns: Array<IKeyAndYtelseNavn>
-  onKeyAndYtelseNavnChanged: (a: Array<IKeyAndYtelseNavn>) => void
+  keyAndYtelses: Array<KeyAndYtelse>
+  onAdded: (barnKey: string, ytelseNavn: string) => void
+  onRemoved: (fullKey: string) => void
+  onYtelseChanged: (fullKey: string, ytelseNavn: string) => void
+  onKeyChanged: (fullKey: string, barnKey: string) => void
   allBarnaNameKeys: BarnaNameKeyMap
-  selectedBarnaNames: Array<Index>
   parentNamespace: string
   validation: Validation
 }
 
-const KeyAndYtelseNavn: React.FC<KeyAndYtelseNavnProps> = ({
+const KeyAndYtelseFC: React.FC<KeyAndYtelseProps> = ({
   highContrast,
-  keyAndYtelseNavns,
-  onKeyAndYtelseNavnChanged,
+  keyAndYtelses,
+  onAdded,
+  onRemoved,
+  onYtelseChanged,
+  onKeyChanged,
   allBarnaNameKeys,
-  selectedBarnaNames,
   parentNamespace,
   validation
-}: KeyAndYtelseNavnProps): JSX.Element => {
+}: KeyAndYtelseProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const namespace = `${parentNamespace}-keyandytelsenavn`
+  const namespace = `${parentNamespace}-keyandytelse`
 
-  const [_newKey, _setNewKey] = useState<string | undefined>(undefined)
+  const [_newBarnaKey, _setNewBarnaKey] = useState<string | undefined>(undefined)
   const [_newYtelseNavn, _setNewYtelseNavn] = useState<string | undefined>(undefined)
 
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<IKeyAndYtelseNavn>((it: IKeyAndYtelseNavn): string => it.key)
-  const [_validation, resetValidation, performValidation] = useValidation<ValidationKeyAndYtelseNavnProps>({}, validateKeyAndYtelseNavn)
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<KeyAndYtelse>((it: KeyAndYtelse): string => it.fullKey)
+  const [_validation, _resetValidation, _performValidation] = useValidation<ValidationKeyAndYtelseProps>({}, validateKeyAndYtelse)
 
-  const setKey = (newKey: string, index: number) => {
+  const setKey = (newBarnaKey: string, index: number) => {
     if (index < 0) {
-      _setNewKey(newKey.trim())
-      resetValidation(namespace + '-key')
+      _setNewBarnaKey(newBarnaKey.trim())
+      _resetValidation(namespace + '-key')
     } else {
-      const newKeyAndYtelseNavns: Array<IKeyAndYtelseNavn> = _.cloneDeep(keyAndYtelseNavns)
-      newKeyAndYtelseNavns[index].key = newKey.trim()
-      onKeyAndYtelseNavnChanged(newKeyAndYtelseNavns)
+      onKeyChanged(keyAndYtelses[index].fullKey, newBarnaKey)
       if (validation[namespace + getIdx(index) + '-key']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-key'))
       }
@@ -81,11 +86,9 @@ const KeyAndYtelseNavn: React.FC<KeyAndYtelseNavnProps> = ({
   const setYtelseNavn = (newYtelseNavn: string, index: number) => {
     if (index < 0) {
       _setNewYtelseNavn(newYtelseNavn.trim())
-      resetValidation(namespace + '-ytelseNavn')
+      _resetValidation(namespace + '-ytelseNavn')
     } else {
-      const newKeyAndYtelseNavns: Array<IKeyAndYtelseNavn> = _.cloneDeep(keyAndYtelseNavns)
-      newKeyAndYtelseNavns[index].ytelseNavn = newYtelseNavn.trim()
-      onKeyAndYtelseNavnChanged(newKeyAndYtelseNavns)
+      onYtelseChanged(keyAndYtelses[index].fullKey, newYtelseNavn.trim())
       if (validation[namespace + getIdx(index) + '-ytelseNavn']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-ytelseNavn'))
       }
@@ -93,7 +96,7 @@ const KeyAndYtelseNavn: React.FC<KeyAndYtelseNavnProps> = ({
   }
 
   const resetForm = () => {
-    _setNewKey(undefined)
+    _setNewBarnaKey(undefined)
     _setNewYtelseNavn(undefined)
     resetValidation()
   }
@@ -103,53 +106,44 @@ const KeyAndYtelseNavn: React.FC<KeyAndYtelseNavnProps> = ({
     resetForm()
   }
 
-  const onRemoved = (index: number) => {
-    const newKeyAndYtelseNavns: Array<IKeyAndYtelseNavn> = _.cloneDeep(keyAndYtelseNavns)
-    const deletedKeyAndYtelseNavns: Array<IKeyAndYtelseNavn> = newKeyAndYtelseNavns.splice(index, 1)
-    if (deletedKeyAndYtelseNavns && deletedKeyAndYtelseNavns.length > 0) {
-      removeFromDeletion(deletedKeyAndYtelseNavns[0])
-    }
-    onKeyAndYtelseNavnChanged(deletedKeyAndYtelseNavns)
+  const onRemove = (index: number) => {
+    removeFromDeletion(keyAndYtelses[index])
+    onRemoved(keyAndYtelses[index].fullKey)
   }
 
   const onAdd = () => {
-    const newKeyAndYtelseNavn: IKeyAndYtelseNavn = {
-      key: _newKey?.trim() as string,
+    const newKeyAndYtelse: KeyAndYtelse = {
+      fullKey: _newBarnaKey?.trim() as string, // not really a full key, but it is only for isEmpty() validation
       ytelseNavn: _newYtelseNavn?.trim() as string
     }
-
-    const valid: boolean = performValidation({
-      keyAndYtelseNavn: newKeyAndYtelseNavn,
+    const valid: boolean = _performValidation({
+      keyAndYtelse: newKeyAndYtelse,
       namespace: namespace
     })
-
     if (valid) {
-      let newKeyAndYtelseNavns: Array<IKeyAndYtelseNavn> = _.cloneDeep(keyAndYtelseNavns)
-      if (_.isNil(newKeyAndYtelseNavns)) {
-        newKeyAndYtelseNavns = []
-      }
-      newKeyAndYtelseNavns.push(newKeyAndYtelseNavn)
-      onKeyAndYtelseNavnChanged(newKeyAndYtelseNavns)
+      onAdded(_newBarnaKey!.trim(), _newYtelseNavn!.trim())
       resetForm()
     }
   }
 
-  const renderRow = (keyAndYtelseNavn: IKeyAndYtelseNavn | null, index: number) => {
-    const candidateForDeletion = index < 0 ? false : isInDeletion(keyAndYtelseNavn)
+  const fullKeyToBarnaKey = (fullKey: string): string => fullKey.match(/^barn\[\d+\]/)![0]
+
+  const renderRow = (keyAndYtelse: KeyAndYtelse | null, index: number) => {
+    const candidateForDeletion = index < 0 ? false : isInDeletion(keyAndYtelse)
     const idx = getIdx(index)
     const getErrorFor = (el: string): string | undefined => {
       return index < 0
-        ? _validation[namespace + '-keyandytelsenavn' + idx + '-' + el]?.feilmelding
-        : validation[namespace + '-keyandytelsenavn' + idx + '-' + el]?.feilmelding
+        ? _validation[namespace + idx + '-' + el]?.feilmelding
+        : validation[namespace + idx + '-' + el]?.feilmelding
     }
-    const selectedBarnaKeys: Array<string> = selectedBarnaNames?.map(k => k.barnaKey!) ?? []
-    const allBarnaNameOptions = Object.keys(allBarnaNameKeys)
-      .map(key => ({
-        label: allBarnaNameKeys[key],
-        value: key,
-        isDisabled: selectedBarnaKeys.indexOf(key) >= 0
-      }))
+    const allBarnaNameOptions = Object.keys(allBarnaNameKeys).map(key => ({
+      label: allBarnaNameKeys[key],
+      value: key,
+      isDisabled: _.find(keyAndYtelses, it => it.fullKey.startsWith(key)) !== undefined
+    }))
 
+    const barnaKey = index < 0 ? _newBarnaKey : fullKeyToBarnaKey(keyAndYtelse!.fullKey)
+    const ytelseNavn = (index < 0 ? _newYtelseNavn : keyAndYtelse?.ytelseNavn)
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow>
@@ -160,25 +154,25 @@ const KeyAndYtelseNavn: React.FC<KeyAndYtelseNavnProps> = ({
               feil={getErrorFor('key')}
               highContrast={highContrast}
               id={namespace + idx + '-key'}
-              key={namespace + idx + '-navn-' + (index < 0 ? _newKey : keyAndYtelseNavn?.key)}
+              key={namespace + idx + '-key-' + barnaKey}
               label={t('label:barnets-navn') + ' *'}
               menuPortalTarget={document.body}
               onChange={(e: any) => setKey(e.value, index)}
               options={allBarnaNameOptions}
               placeholder={t('el:placeholder-select-default')}
-              value={_.find(allBarnaNameOptions, b => b.value === (index < 0 ? _newKey : keyAndYtelseNavn?.key))}
-              defaultValue={_.find(allBarnaNameOptions, b => b.value === (index < 0 ? _newKey : keyAndYtelseNavn?.key))}
+              value={_.find(allBarnaNameOptions, b => b.value === barnaKey)}
+              defaultValue={_.find(allBarnaNameOptions, b => b.value === barnaKey)}
             />
           </Column>
           <Column>
             <Input
               feil={getErrorFor('ytelseNavn')}
               id='ytelseNavn'
-              key={namespace + idx + '-ytelseNavn-' + (index < 0 ? _newYtelseNavn : keyAndYtelseNavn?.ytelseNavn)}
+              key={namespace + idx + '-ytelseNavn-' + ytelseNavn}
               label={t('label:betegnelse-på-ytelse') + ' *'}
               namespace={namespace + idx}
               onChanged={(value: string) => setYtelseNavn(value, index)}
-              value={index < 0 ? _newYtelseNavn : keyAndYtelseNavn?.ytelseNavn}
+              value={ytelseNavn}
             />
           </Column>
           <Column>
@@ -186,9 +180,9 @@ const KeyAndYtelseNavn: React.FC<KeyAndYtelseNavnProps> = ({
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}
               marginTop
-              onBeginRemove={() => addToDeletion(keyAndYtelseNavn)}
-              onConfirmRemove={() => onRemoved(index)}
-              onCancelRemove={() => removeFromDeletion(keyAndYtelseNavn)}
+              onBeginRemove={() => addToDeletion(keyAndYtelse)}
+              onConfirmRemove={() => onRemove(index)}
+              onCancelRemove={() => removeFromDeletion(keyAndYtelse)}
               onAddNew={onAdd}
               onCancelNew={onCancel}
             />
@@ -205,13 +199,13 @@ const KeyAndYtelseNavn: React.FC<KeyAndYtelseNavnProps> = ({
         {t('label:barna-og-betegnelse-på-ytelse')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      {_.isEmpty(keyAndYtelseNavns)
+      {_.isEmpty(keyAndYtelses)
         ? (
           <Normaltekst>
             {t('message:warning-no-barn')}
           </Normaltekst>
           )
-        : keyAndYtelseNavns?.map(renderRow)}
+        : keyAndYtelses?.map(renderRow)}
       <VerticalSeparatorDiv />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
@@ -236,4 +230,4 @@ const KeyAndYtelseNavn: React.FC<KeyAndYtelseNavnProps> = ({
   )
 }
 
-export default KeyAndYtelseNavn
+export default KeyAndYtelseFC

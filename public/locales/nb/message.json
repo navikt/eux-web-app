@@ -83,6 +83,7 @@
   "validation-noAnswer": "Ingen svar til spørsmål",
   "validation-noAnswerTil": "Ingen svar i {{person}}",
   "validation-noAvgrensingTil": "Ingen avgrensning av periode i {{person}}",
+  "validation-noBarnaEllerFamilie": "Velg mellom barna eller familie",
   "validation-noBarnValgtTil": "Ingen barn valgt til {{person}}",
   "validation-noBarnValgt": "Ingen barn valgt",
   "validation-noBegrunnelseTil": "Ingen begrunnelse til {{person}}",

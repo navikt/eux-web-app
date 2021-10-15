@@ -1,4 +1,4 @@
-import { IKeyAndYtelseNavn } from 'applications/SvarSed/Formaal/Motregning/KeyAndYtelseNavn'
+import { KeyAndYtelse } from './KeyAndYtelse'
 import { validatePeriode } from 'components/Forms/validation'
 import { Motregning as IMotregning, ReplySed, Barn, F002Sed, BarnaEllerFamilie } from 'declarations/sed'
 import { TFunction } from 'react-i18next'
@@ -9,7 +9,7 @@ import { getIdx } from 'utils/namespace'
 
 export interface ValidationMotregningProps {
   motregning: IMotregning
-  keyAndYtelsNavns?: Array<IKeyAndYtelseNavn> | undefined // only used for the new-motregning
+  keyAndYtelses?: Array<KeyAndYtelse> | undefined // only used for the new-motregning
   type: BarnaEllerFamilie
   index ?: number
   namespace: string
@@ -27,7 +27,7 @@ export const validateMotregning = (
   t: TFunction,
   {
     motregning,
-    keyAndYtelsNavns,
+    keyAndYtelses,
     index,
     type,
     namespace,
@@ -46,10 +46,17 @@ export const validateMotregning = (
 
   // if we are validation a new motregning and it has barnas, then
   // ytelseNavn comes through keyAndYtelsNavns (Array<IKeyAndYtelsNavn>)
-  if (_.isNil(index) && type === 'barna') {
-    if (_.isEmpty(keyAndYtelsNavns)) {
+  if (_.isNil(index)) {
+    if (type === undefined && _.isEmpty(keyAndYtelses)) {
+      v[namespace + idx + '-barnaEllerFamilie'] = {
+        feilmelding: t('message:validation-noBarnaEllerFamilie'),
+        skjemaelementId: namespace + idx + '-barnaEllerFamilie'
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
+    if (type === 'barna' && _.isEmpty(keyAndYtelses)) {
       v[namespace + idx + '-ytelseNavn'] = {
-        feilmelding: t('message:validation-noYtelseTil', {person: formalName}),
+        feilmelding: t('message:validation-noYtelseTil', { person: formalName }),
         skjemaelementId: namespace + idx + '-ytelseNavn'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -58,7 +65,7 @@ export const validateMotregning = (
   } else {
     if (_.isEmpty(motregning?.ytelseNavn?.trim())) {
       v[namespace + idx + '-ytelseNavn'] = {
-        feilmelding: t('message:validation-noYtelseTil', {person: formalName}),
+        feilmelding: t('message:validation-noYtelseTil', { person: formalName }),
         skjemaelementId: namespace + idx + '-ytelseNavn'
       } as FeiloppsummeringFeil
       hasErrors = true

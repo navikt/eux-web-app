@@ -3,38 +3,38 @@ import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
-import { IKeyAndYtelseNavn } from './KeyAndYtelseNavn'
+import { KeyAndYtelse } from './KeyAndYtelse'
 
-export interface ValidationKeyAndYtelseNavnProps {
-  keyAndYtelseNavn: IKeyAndYtelseNavn
+export interface ValidationKeyAndYtelseProps {
+  keyAndYtelse: KeyAndYtelse
   index?: number
   namespace: string
 }
 
-export const validateKeyAndYtelseNavn = (
+export const validateKeyAndYtelse = (
   v: Validation,
   t: TFunction,
   {
-    keyAndYtelseNavn,
+    keyAndYtelse,
     index,
     namespace
-  }: ValidationKeyAndYtelseNavnProps
+  }: ValidationKeyAndYtelseProps
 ): boolean => {
   let hasErrors: boolean = false
   const idx = getIdx(index)
 
-  if (_.isEmpty(keyAndYtelseNavn?.key?.trim())) {
-    v[namespace + '-keyandytelsenavn' + idx + '-key'] = {
+  if (_.isEmpty(keyAndYtelse?.fullKey?.trim())) {
+    v[namespace + '-keyandytelse' + idx + '-key'] = {
       feilmelding: t('message:validation-noNavn'),
-      skjemaelementId: namespace + '-keyandytelsenavn' + idx + '-key'
+      skjemaelementId: namespace + '-keyandytelse' + idx + '-key'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
 
-  if (_.isEmpty(keyAndYtelseNavn?.ytelseNavn?.trim())) {
-    v[namespace + '-keyandytelsenavn' + idx + '-ytelseNavn'] = {
+  if (_.isEmpty(keyAndYtelse?.ytelseNavn?.trim())) {
+    v[namespace + '-keyandytelse' + idx + '-ytelseNavn'] = {
       feilmelding: t('message:validation-noBetegnelsePåYtelse'),
-      skjemaelementId: namespace + '-keyandytelsenavn' + idx + '-ytelseNavn'
+      skjemaelementId: namespace + '-keyandytelse' + idx + '-ytelseNavn'
     } as FeiloppsummeringFeil
     hasErrors = true
   }
