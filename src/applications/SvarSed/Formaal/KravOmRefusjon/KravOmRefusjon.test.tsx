@@ -42,7 +42,7 @@ describe('applications/SvarSed/Formaal/KravOmRefusjon/KravOmRefusjon', () => {
     (updateReplySed as jest.Mock).mockReset()
     const mockText = 'mockText'
     const formField = wrapper.find('[data-test-id=\'test-refusjonskrav-krav\']').hostNodes()
-    formField.simulate('change', {target: {value: mockText}})
+    formField.simulate('change', { target: { value: mockText } })
     formField.simulate('blur')
     expect(updateReplySed).toHaveBeenCalledWith('refusjonskrav', mockText)
   })

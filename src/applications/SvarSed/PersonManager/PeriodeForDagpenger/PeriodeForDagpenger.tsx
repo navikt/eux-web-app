@@ -188,7 +188,6 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
       _setNewAdresse(adresse)
     } else {
       dispatch(updateReplySed(`${target}[${index}].adresse`, adresse))
-
     }
   }
 

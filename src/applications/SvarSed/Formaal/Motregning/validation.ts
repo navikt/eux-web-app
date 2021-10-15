@@ -1,3 +1,4 @@
+import { IKeyAndYtelseNavn } from 'applications/SvarSed/Formaal/Motregning/KeyAndYtelseNavn'
 import { validatePeriode } from 'components/Forms/validation'
 import { Motregning as IMotregning, ReplySed, Barn, F002Sed, BarnaEllerFamilie } from 'declarations/sed'
 import { TFunction } from 'react-i18next'
@@ -8,6 +9,7 @@ import { getIdx } from 'utils/namespace'
 
 export interface ValidationMotregningProps {
   motregning: IMotregning
+  keyAndYtelsNavns?: Array<IKeyAndYtelseNavn> | undefined // only used for the new-motregning
   type: BarnaEllerFamilie
   index ?: number
   namespace: string
@@ -25,12 +27,14 @@ export const validateMotregning = (
   t: TFunction,
   {
     motregning,
+    keyAndYtelsNavns,
     index,
+    type,
     namespace,
     formalName
   }: ValidationMotregningProps): boolean => {
   let hasErrors: boolean = false
-  let idx = getIdx(index)
+  const idx = getIdx(index)
 
   if (_.isEmpty(motregning?.svarType?.trim())) {
     v[namespace + idx + '-svarType'] = {
@@ -40,12 +44,25 @@ export const validateMotregning = (
     hasErrors = true
   }
 
-  if (_.isEmpty(motregning?.ytelseNavn?.trim())) {
-    v[namespace + idx + '-ytelseNavn'] = {
-      feilmelding: t('message:validation-noYtelseTil', { person: formalName }),
-      skjemaelementId: namespace + idx + '-ytelseNavn'
-    } as FeiloppsummeringFeil
-    hasErrors = true
+  // if we are validation a new motregning and it has barnas, then
+  // ytelseNavn comes through keyAndYtelsNavns (Array<IKeyAndYtelsNavn>)
+  if (_.isNil(index) && type === 'barna') {
+    if (_.isEmpty(keyAndYtelsNavns)) {
+      v[namespace + idx + '-ytelseNavn'] = {
+        feilmelding: t('message:validation-noYtelseTil', {person: formalName}),
+        skjemaelementId: namespace + idx + '-ytelseNavn'
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
+  // on other cases, ytelseNavn comes on the motregning (new motregning as familie, or all existing motregning)
+  } else {
+    if (_.isEmpty(motregning?.ytelseNavn?.trim())) {
+      v[namespace + idx + '-ytelseNavn'] = {
+        feilmelding: t('message:validation-noYtelseTil', {person: formalName}),
+        skjemaelementId: namespace + idx + '-ytelseNavn'
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
   }
 
   if (_.isEmpty(motregning?.beloep?.trim())) {
@@ -77,7 +94,7 @@ export const validateMotregning = (
       startdato: motregning.startdato,
       sluttdato: motregning.sluttdato
     },
-    namespace: namespace + idx ,
+    namespace: namespace + idx,
     personName: formalName
   })
   hasErrors = hasErrors || periodError

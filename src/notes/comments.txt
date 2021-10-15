@@ -5,8 +5,10 @@ Todo:
 I have to decide once and for all what is the id (orgnr + stardato) and check validation when I duplicate them
 =>  Editing arbeidsgiver / PeriodeMedForsikring thta is already selected, does NOT update the replySed
 
-// labels
 //  verificar estado dos utkasts, pode ser que tenha de apagar unsbquando arranco com a página
+
+
+-> tenho de validar, ao meter um motregning novo, at least one boarn
 
 "motregninger": [{
         "startdato": "2045-01-01",

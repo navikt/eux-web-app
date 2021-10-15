@@ -4,12 +4,11 @@ import { useTranslation } from 'react-i18next'
 import { validateKontoopplysning } from './validation'
 
 describe('applications/SvarSed/Formaal/Kontoopplysning/validation', () => {
-  let {t} = useTranslation()
+  const { t } = useTranslation()
 
   it('Empty form: failed validation', () => {
-
-    let validation: Validation = {}
-    let hasErrors: boolean = validateKontoopplysning(validation, t, {
+    const validation: Validation = {}
+    const hasErrors: boolean = validateKontoopplysning(validation, t, {
       uti: {
         begrunnelse: '', id: '', navn: ''
       },
@@ -21,13 +20,13 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/validation', () => {
     expect(validation['test-mock-id']?.feilmelding).toEqual('message:validation-noInstitusjonensIdTil')
     expect(validation['test-mock-navn']?.feilmelding).toEqual('message:validation-noInstitusjonensNavnTil')
     expect(validation['test-mock-kontotype']?.feilmelding).toEqual('message:validation-noKontotype')
-    expect(validation['test']?.feilmelding).toEqual('notnull')
+    expect(validation.test?.feilmelding).toEqual('notnull')
     expect(validation['test-mock']?.feilmelding).toEqual('notnull')
   })
 
   it('invalid form: failed validation', () => {
-    let validation: Validation = {}
-    let hasErrors: boolean = validateKontoopplysning(validation, t, {
+    const validation: Validation = {}
+    const hasErrors: boolean = validateKontoopplysning(validation, t, {
       uti: {
         begrunnelse: '1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890' +
           '1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890' +
@@ -38,7 +37,10 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/validation', () => {
         id: '123@abc',
         navn: '123@abc',
         kontoOrdinaer: {
-          bankensNavn: '123@abc', kontonummer: '123@abc', swift: '123@abc', adresse: {
+          bankensNavn: '123@abc',
+          kontonummer: '123@abc',
+          swift: '123@abc',
+          adresse: {
             land: '123@abc', region: '123@abc', by: '123@abc', bygning: '123@abc', postnummer: '123@abc', gate: '123@abc', type: 'annet'
           }
         }
@@ -48,14 +50,13 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/validation', () => {
     })
     expect(hasErrors).toBeTruthy()
     expect(validation['test-mock-begrunnelse']?.feilmelding).toEqual('message:validation-textOver500Til')
-    expect(validation['test']?.feilmelding).toEqual('notnull')
+    expect(validation.test?.feilmelding).toEqual('notnull')
     expect(validation['test-mock']?.feilmelding).toEqual('notnull')
   })
 
   it('valid form: success validation', () => {
-
-    let validation: Validation = {}
-    let hasErrors: boolean = validateKontoopplysning(validation, t, {
+    const validation: Validation = {}
+    const hasErrors: boolean = validateKontoopplysning(validation, t, {
       uti: {
         begrunnelse: 'begrunnelse',
         id: 'id',

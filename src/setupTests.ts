@@ -45,7 +45,7 @@ jest.mock('i18next', () => {
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key })
-}));
+}))
 
 export const stageSelector = (defaultSelector: any, params: any) => {
   (useDispatch as jest.Mock).mockImplementation(() => jest.fn());

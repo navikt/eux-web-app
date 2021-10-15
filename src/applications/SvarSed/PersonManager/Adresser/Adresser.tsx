@@ -45,7 +45,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
   const adresses: Array<IAdresse> = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-adresser`
 
-  const [_newAdresse, _setNewAdresse ] = useState<IAdresse | undefined>(undefined)
+  const [_newAdresse, _setNewAdresse] = useState<IAdresse | undefined>(undefined)
   const getId = (a: IAdresse | null | undefined): string => (a?.type ?? '') + '-' + (a?.postnummer ?? '')
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<IAdresse>(getId)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
@@ -113,9 +113,9 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
         <Adresse
-          key={namespace + idx + getId( index < 0 ? _newAdresse : adresse)}
+          key={namespace + idx + getId(index < 0 ? _newAdresse : adresse)}
           namespace={namespace + idx}
-          adresse={index < 0 ? _newAdresse: adresse}
+          adresse={index < 0 ? _newAdresse : adresse}
           onAdressChanged={(a: IAdresse) => setAdresse(a, index)}
           validation={index < 0 ? _validation : validation}
           resetValidation={(n: string) => onValidationReset(n, index)}

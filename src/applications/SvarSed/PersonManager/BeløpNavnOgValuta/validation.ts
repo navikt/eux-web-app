@@ -105,7 +105,6 @@ export const validateBeløpNavnOgValuta = (
   return hasErrors
 }
 
-
 interface ValidationBeløpNavnOgValutasProps {
   ytelser: Array<Ytelse>
   namespace: string
@@ -130,4 +129,3 @@ export const validateBeløpNavnOgValutas = (
   })
   return hasErrors
 }
-

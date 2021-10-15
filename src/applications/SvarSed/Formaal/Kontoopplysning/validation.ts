@@ -20,7 +20,7 @@ export const validateKontoopplysning = (
   }: ValidateKontoopplysningProps
 ): boolean => {
   let hasErrors: boolean = false
-  let kontoType = undefined
+  let kontoType
   if (Object.prototype.hasOwnProperty.call(uti, 'kontoOrdinaer')) {
     kontoType = 'ordinaer'
   }

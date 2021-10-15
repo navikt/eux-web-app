@@ -13,7 +13,7 @@ export const arbeidsgiverToPeriodeMedForsikring = (a: Arbeidsgiver): PeriodeMedF
   }
 
   return {
-    ... newPeriode,
+    ...newPeriode,
     arbeidsgiver: {
       identifikator: [{
         type: 'registrering',

@@ -186,7 +186,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
           return oldArbeidsgiver.startdato === p.startdato && oldArbeidsgiver.sluttdato === p.sluttdato
         })
         if (indexPerioder >= 0) {
-          newPerioder[indexPerioder] =  {
+          newPerioder[indexPerioder] = {
             startdato: newArbeidsgiver.startdato,
             sluttdato: newArbeidsgiver.sluttdato,
             aapenPeriodeType: newArbeidsgiver.aapenPeriodeType

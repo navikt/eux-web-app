@@ -40,7 +40,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import KeyAndYtelseNavn, { IKeyAndYtelseNavn } from './KeyAndYtelseNavn'
-import { validateMotregning, ValidationMotregningProps} from './validation'
+import { validateMotregning, ValidationMotregningProps } from './validation'
 
 export type BarnaNameKeyMap = {[barnaName in string]: string}
 
@@ -48,7 +48,6 @@ export interface Index {
   key: string
   ytelseNavn?: string
   barnaKey?: string
-  barnaName?: string
 }
 
 type BigIndexMap = {[motregningKey in string]: Array<Index>}
@@ -58,7 +57,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
   seeKontoopplysninger
 }: FormålManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {replySed, validation, highContrast}: FormålManagerFormSelector = useSelector<State, FormålManagerFormSelector>(mapState)
+  const { replySed, validation, highContrast }: FormålManagerFormSelector = useSelector<State, FormålManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const namespace = `${parentNamespace}-motregning`
   const _currencyData = CountryData.getCurrencyInstance('nb')
@@ -66,7 +65,10 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
   // Motregning
   const [_newSvarType, _setNewSvarType] = useState<AnmodningSvarType | undefined>(undefined)
   const [_newBarnaEllerFamilie, _setNewBarnaEllerFamilie] = useState<BarnaEllerFamilie | undefined>(undefined)
+  // ytelseNavn for barnas
   const [_newKeyAndYtelseNavns, _setNewKeyAndYtelseNavns] = useState<Array<IKeyAndYtelseNavn>>([])
+  // ytelseNavn for familie
+  const [_newYtelseNavn, _setNewYtelseNavn] = useState<string | undefined>(undefined)
   const [_newVedtaksdato, _setNewVedtaksdato] = useState<string | undefined>(undefined)
   const [_newBeløp, _setNewBeløp] = useState<string | undefined>(undefined)
   const [_newValuta, _setNewValuta] = useState<Currency | undefined>(undefined)
@@ -76,58 +78,68 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
   const [_newBegrunnelse, _setNewBegrunnelse] = useState<string | undefined>(undefined)
   const [_newYtterligereInfo, _setNewYtterligereInfo] = useState<string | undefined>(undefined)
 
-
-  const getMotregningId = (m: IMotregning | null): string => m?.vedtaksdato ?? 'new-motregning'
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<IMotregning>(getMotregningId)
+  const getMotregningId = (m: IMotregning | null): string => m ? m?.startdato + '-' + (m?.sluttdato ?? '') : 'new-motregning'
+  const [_addToDeletion, _removeFromDeletion, _isInDeletion] = useAddRemove<IMotregning>(getMotregningId)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useValidation<ValidationMotregningProps>({}, validateMotregning)
+  const [_validation, _resetValidation, _performValidation] = useValidation<ValidationMotregningProps>({}, validateMotregning)
 
   const [_allBarnaNameKeys, _setAllBarnaNameKeys] = useState<BarnaNameKeyMap>({})
   const [_bigIndexMap, _setBigIndexMap] = useState<BigIndexMap>({})
-  // toggle between motregning for barna, and motregning for familie
 
   const getPersonName = (b: Barn): string => b.personInfo.fornavn + ' ' + b.personInfo.etternavn
 
   useEffect(() => {
-     /**
+    /** sample of a big index map
        {
-         '2020-08-01' : [{key: 'familie.motregninger[0]'}],
-         '2020-08-02' : [{key: 'familie.motregninger[1]'}],
-         '2020-09-01' : [
-           {key: 'barn[1].motregninger[0]', ytelseNavn: 'x', barnaKey: 'barn[1]', barnaName: 'bart simpson'}
+         '2020-08-01-2020-08-02' : [{key: 'familie.motregninger[0]'}],
+         '2020-08-02-2020-08-03' : [{key: 'familie.motregninger[1]'}],
+         '2020-09-01-2020-09-02' : [
+           {key: 'barn[1].motregninger[0]', ytelseNavn: 'xxx', barnaKey: 'barn[1]'}
          ],
-         '2020-10-01' : [
-           {key: 'barn[0].motregninger[0]', ytelseNavn: 'y', barnaKey: 'barn[1]', barnaName: 'lisa simpson'}
-           {key: 'barn[1].motregninger[1]', ytelseNavn: 'z', barnaKey: 'barn[1]', barnaName: 'bart simpson'}
+         '2020-10-01-2020-10-02' : [
+           {key: 'barn[0].motregninger[0]', ytelseNavn: 'yyy', barnaKey: 'barn[1]'}
+           {key: 'barn[1].motregninger[1]', ytelseNavn: 'zzz', barnaKey: 'barn[1]'}
          ],
-         '2020-11-01' : [
-           {key: 'barn[0].motregninger[1]', ytelseNavn: 'z', barnaKey: 'barn[1]', barnaName: 'lisa simpson'}
-           {key: 'barn[1].motregninger[2]', ytelseNavn: 'w', barnaKey: 'barn[1]', barnaName: 'bart simpson'}
-         ],
-         'new-motregning': [
-            {... }
+         '2020-11-01-2020-11-02' : [
+           {key: 'barn[0].motregninger[1]', ytelseNavn: 'zzz', barnaKey: 'barn[1]'}
+           {key: 'barn[1].motregninger[2]', ytelseNavn: 'www', barnaKey: 'barn[1]'}
          ]
       } */
     const newBigIndexMap: BigIndexMap = {}
 
-    /** {'bart simpson' : 'barn[0]', 'lisa simpson' 'barn[1]' } */
+    /** sample of allBarnaNameKeys
+      {
+        'barn[0]': 'bart simpson',
+        'barn[1]': 'lisa simpson'
+      }
+     */
     const newAllBarnaNameKeys: BarnaNameKeyMap = {};
 
     (replySed as F002Sed).barn?.forEach((barn: Barn, i: number) => {
-      const barnaName: string = getPersonName(barn)
       const barnaKey = 'barn[' + i + ']'
-      newAllBarnaNameKeys[barnaKey] = barnaName
+      newAllBarnaNameKeys[barnaKey] = getPersonName(barn)
 
       barn.motregninger?.forEach((motregning: IMotregning, j: number) => {
-        let motregningKey = getMotregningId(motregning)
-        const index = {key: barnaKey + '.motregninger[' + j + ']', ytelseNavn: motregning.ytelseNavn, barnaKey, barnaName}
-        if (! Object.prototype.hasOwnProperty.call(newBigIndexMap, motregningKey)) {
+        const motregningKey = getMotregningId(motregning)
+        const index = { key: `${barnaKey}.motregninger[${j}]`, ytelseNavn: motregning.ytelseNavn, barnaKey }
+        if (!Object.prototype.hasOwnProperty.call(newBigIndexMap, motregningKey)) {
           newBigIndexMap[motregningKey] = [index]
         } else {
           newBigIndexMap[motregningKey].push(index)
         }
       })
+    });
+
+    (replySed as F002Sed).familie?.motregninger?.forEach((motregning: IMotregning, j: number) => {
+      const motregningKey = getMotregningId(motregning)
+      const index = { key: `familie.motregninger[${j}]`, ytelseNavn: motregning.ytelseNavn }
+      if (!Object.prototype.hasOwnProperty.call(newBigIndexMap, motregningKey)) {
+        newBigIndexMap[motregningKey] = [index]
+      } else {
+        newBigIndexMap[motregningKey].push(index)
+      }
     })
+
     _setAllBarnaNameKeys(newAllBarnaNameKeys)
     _setBigIndexMap(newBigIndexMap)
   }, [replySed])
@@ -152,36 +164,31 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
     } else {
       const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
       const newBigIndex: BigIndexMap = _.cloneDeep(_bigIndexMap)
-      let _clonedMotregning: IMotregning = _.get(newReplySed,  _bigIndexMap[motregningKey][0].key)
-      let _newIndex : Array<Index> = []
+      const _clonedMotregning: IMotregning = _.get(newReplySed, _bigIndexMap[motregningKey][0].key)
+      const _newIndex : Array<Index> = []
 
+      // switching to barna -- maybe switching from familie
       if (newBarnaEllerFamilie === 'barna' as BarnaEllerFamilie) {
-
         // delete the motregning from familie
         newReplySed.familie!.motregninger = _.filter(newReplySed.familie!.motregninger, (m: IMotregning) => getMotregningId(m) !== motregningKey)
-
-        // pre-select all barn, add a opy of the motregning to each.
+        // pre-select all barn, add a copy of the cloned motregning to each barn.
         newReplySed.barn?.forEach((barn: Barn, i: number) => {
-          let barnaKey = 'barn[' + i + ']'
-          let barnaName = _allBarnaNameKeys[barnaKey]
-          let newMotregninger: Array<IMotregning> |undefined = _.cloneDeep(barn.motregninger)
+          const barnaKey = 'barn[' + i + ']'
+          let newMotregninger: Array<IMotregning> | undefined = _.cloneDeep(barn.motregninger)
           if (!newMotregninger) {
             newMotregninger = []
           }
-          let newKey = barnaKey + '.motregninger[' + newMotregninger.length + ']'
-          // since family motregning does not have ytelseNavn, we will init with a blank
-          _clonedMotregning.ytelseNavn = ''
+          // newMotregninger.length will be the index when pushed the motregning
+          const newKey = barnaKey + '.motregninger[' + newMotregninger.length + ']'
           newMotregninger.push(_clonedMotregning)
           // update indexes
-          _newIndex.push({
-            key: newKey, barnaKey, barnaName, ytelseNavn: _clonedMotregning.ytelseNavn
-          })
+          _newIndex.push({key: newKey, barnaKey, ytelseNavn: _clonedMotregning.ytelseNavn})
         })
       }
 
+      // switching to familie -- maybe switching from barna
       if (newBarnaEllerFamilie === 'familie' as BarnaEllerFamilie) {
-
-        // delete the motregning from barnas
+        // delete the motregning from barna
         newReplySed.barn?.forEach((barn: Barn, i: number) => {
           newReplySed.barn![i].motregninger = _.filter(newReplySed.barn![i].motregninger, (m: IMotregning) => getMotregningId(m) !== motregningKey)
         })
@@ -189,13 +196,12 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
         if (!newMotregninger) {
           newMotregninger = []
         }
-        let newKey = 'familie.motregninger[' + newMotregninger.length + ']'
-        // since family motregning does not have ytelseNavn, let's delete it from the clone
-        delete _clonedMotregning.ytelseNavn
+        // newMotregninger.length will be the index when pushed the motregning
+        const newKey = 'familie.motregninger[' + newMotregninger.length + ']'
+        // familie will inherit ytelseNavn from cloned motregning -- up to saksbehandler to check if it is right
         newMotregninger.push(_clonedMotregning)
         // update indexes
-        _newIndex.push({key: newKey})
-
+        _newIndex.push({ key: newKey })
       }
       newBigIndex[motregningKey] = _newIndex
       _setBigIndexMap(newBigIndex)
@@ -203,69 +209,68 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
     }
   }
 
+  /** this will only be called when barnaEllerFamilie === 'familie, it does not apply to barna */
+  const setYtelseNavn = (newYtelseNavn: string, motregningKey: string) => {
+    if (motregningKey === 'new-motregning') {
+      _setNewYtelseNavn(newYtelseNavn.trim())
+      _resetValidation(namespace + '-ytelseNavn')
+    } else {
+      const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
+      _bigIndexMap[motregningKey].forEach(index => _.set(newReplySed, index.key + '.ytelseNavn', newYtelseNavn.trim()))
+      dispatch(setReplySed(newReplySed))
+      if (validation[namespace + '[' + motregningKey + ']-ytelseNavn']) {
+        dispatch(resetValidation(namespace + '[' + motregningKey + ']-ytelseNavn'))
+      }
+    }
+  }
+
+  /** this will only be called when barnaEllerFamilie === 'barna, it does not apply to familie */
   const setKeyAndYtelseNavns = (newKeyAndYtelseNavn: Array<IKeyAndYtelseNavn>, motregningKey: string) => {
     if (motregningKey === 'new-motregning') {
       _setNewKeyAndYtelseNavns(newKeyAndYtelseNavn)
     } else {
       const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
       const newBigIndex: BigIndexMap = _.cloneDeep(_bigIndexMap)
-      let _clonedMotregning: IMotregning = _.get(newReplySed, _bigIndexMap[motregningKey][0].key)
-      let _newIndex: Array<Index> = []
+      const _clonedMotregning: IMotregning = _.get(newReplySed, _bigIndexMap[motregningKey][0].key)
+      const _newIndex: Array<Index> = []
 
-      // if it is barna
-      if (!_.isEmpty(_bigIndexMap[motregningKey][0].barnaName)) {
+      // delete the motregnings with this key from barnas - I have to rebuild them
+      newReplySed.barn?.forEach((barn: Barn, index: number) => {
+        newReplySed.barn![index].motregninger = _.filter(newReplySed.barn![index].motregninger, (m: IMotregning) => getMotregningId(m) !== motregningKey)
+      })
 
-        // delete the motregning from barnas - I have to rebuild them
-        newReplySed.barn?.forEach((barn: Barn, index: number) => {
-          newReplySed.barn![index].motregninger = _.filter(newReplySed.barn![index].motregninger, (m: IMotregning) => getMotregningId(m) !== motregningKey)
+      // adding motregning to barn according to newKeyAndYtelseNavn
+      newKeyAndYtelseNavn?.forEach((keyAndYtelseNavn) => {
+        const barnaKey: string | undefined = keyAndYtelseNavn.key.match(/^barn\[\d+\]/)?.[0]
+        if (_.isNil(barnaKey)) {
+          throw Error('Error while reading keyAndYtelseNavn: ' + keyAndYtelseNavn.key)
+        }
+        _.set(newReplySed, keyAndYtelseNavn.key, {
+          ..._clonedMotregning,
+          ytelseNavn: keyAndYtelseNavn.ytelseNavn
         })
-
-        // adding motregnings according to new indexes
-        newKeyAndYtelseNavn?.forEach((keyAndYtelseNavn) => {
-          let barnaKey: string = keyAndYtelseNavn.key.match(/^barn\[\d+\]/)?.[0] ?? 'error'
-          _.set(newReplySed, keyAndYtelseNavn.key, {
-            ..._clonedMotregning,
-            ytelseNavn: keyAndYtelseNavn.ytelseNavn
-          })
-          _newIndex.push({
-            key: keyAndYtelseNavn.key,
-            ytelseNavn: keyAndYtelseNavn.ytelseNavn,
-            barnaKey: barnaKey,
-            barnaName: _allBarnaNameKeys[barnaKey]
-          })
+        _newIndex.push({
+          key: keyAndYtelseNavn.key,
+          ytelseNavn: keyAndYtelseNavn.ytelseNavn,
+          barnaKey: barnaKey
         })
-
-        newBigIndex[motregningKey] = _newIndex
-        _setBigIndexMap(newBigIndex)
-        dispatch(setReplySed(newReplySed))
-      }
+      })
+      newBigIndex[motregningKey] = _newIndex
+      _setBigIndexMap(newBigIndex)
+      dispatch(setReplySed(newReplySed))
     }
   }
 
-  const setVedtaksDato = (newDato: string, motregningKey: string): boolean => {
+  const setVedtaksDato = (newDato: string, motregningKey: string) => {
     if (motregningKey === 'new-motregning') {
       _setNewVedtaksdato(newDato.trim())
       _resetValidation(namespace + '-vedtaksDato')
-      return true
     } else {
-      // let's see if it does not collide.
-      let otherKeys: Array<string> = _.filter(Object.keys(_bigIndexMap), key => key !== motregningKey)
-      if (otherKeys.indexOf(newDato.trim()) >= 0) {
-        window.alert('vedtaks dato already exists, choose another')
-        return false
-      } else {
-        const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
-        _bigIndexMap[motregningKey].forEach(index => _.set(newReplySed, index.key + '.vedtaksDato', newDato.trim()))
-        dispatch(setReplySed(newReplySed))
-        if (validation[namespace + '[' + motregningKey + ']-vedtaksDato']) {
-          dispatch(resetValidation(namespace + '[' + motregningKey + ']-vedtaksDato'))
-        }
-        // we have to update the big index with the new motregningKey
-        let newBigIndexMap = _.cloneDeep(_bigIndexMap)
-        newBigIndexMap[newDato.trim()] = _.cloneDeep(newBigIndexMap[motregningKey])
-        delete newBigIndexMap[motregningKey]
-        _setBigIndexMap(newBigIndexMap)
-        return true
+      const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
+      _bigIndexMap[motregningKey].forEach(index => _.set(newReplySed, index.key + '.vedtaksDato', newDato.trim()))
+      dispatch(setReplySed(newReplySed))
+      if (validation[namespace + '[' + motregningKey + ']-vedtaksDato']) {
+        dispatch(resetValidation(namespace + '[' + motregningKey + ']-vedtaksDato'))
       }
     }
   }
@@ -275,13 +280,13 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
       _setNewBeløp(newBeløp.trim())
       _resetValidation(namespace + '-beloep')
       if (_.isNil(_newValuta)) {
-        _setNewValuta({value: 'NOK'} as Currency)
+        _setNewValuta({ value: 'NOK' } as Currency)
       }
     } else {
       const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
       _bigIndexMap[motregningKey].forEach(index => {
         _.set(newReplySed, index.key + '.beloep', newBeløp.trim())
-        let valuta = _.get(newReplySed, index.key + '.valuta')
+        const valuta = _.get(newReplySed, index.key + '.valuta')
         if (_.isNil(valuta)) {
           _.set(newReplySed, index.key + '.valuta', 'NOK')
         }
@@ -310,23 +315,37 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
     }
   }
 
-  const setPeriode = (newPeriode: Periode, motregningKey: string) => {
-    if (motregningKey === 'new-motregning') {
+  const setPeriode = (newPeriode: Periode, oldMotregningKey: string): boolean => {
+    if (oldMotregningKey === 'new-motregning') {
       _setNewPeriode(newPeriode)
       _resetValidation(namespace + '-startdato')
       _resetValidation(namespace + '-sluttdato')
+      return true
     } else {
-      const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
-      _bigIndexMap[motregningKey].forEach(index => {
-        _.set(newReplySed, index.key + '.startdato', newPeriode.startdato)
-        _.set(newReplySed, index.key + '.sluttdato', newPeriode.sluttdato)
-      })
-      dispatch(setReplySed(newReplySed))
-      if (validation[namespace + '[' + motregningKey + ']-startdato']) {
-        dispatch(resetValidation(namespace + '[' + motregningKey + ']-startdato'))
-      }
-      if (validation[namespace + '[' + motregningKey + ']-sluttdato']) {
-        dispatch(resetValidation(namespace + '[' + motregningKey + ']-sluttdato'))
+      const otherKeys: Array<string> = _.filter(Object.keys(_bigIndexMap), key => key !== oldMotregningKey)
+      const newMotregningKey = newPeriode.startdato.trim() + '-' + (newPeriode.sluttdato ?? '')
+      if (otherKeys.indexOf(newMotregningKey) >= 0) {
+        window.alert('startsdato/sluttdato already exists, choose another')
+        return false
+      } else {
+        const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
+        _bigIndexMap[oldMotregningKey].forEach(index => {
+          _.set(newReplySed, index.key + '.startdato', newPeriode.startdato)
+          _.set(newReplySed, index.key + '.sluttdato', newPeriode.sluttdato)
+        })
+        dispatch(setReplySed(newReplySed))
+        if (validation[namespace + '[' + oldMotregningKey + ']-startdato']) {
+          dispatch(resetValidation(namespace + '[' + oldMotregningKey + ']-startdato'))
+        }
+        if (validation[namespace + '[' + oldMotregningKey + ']-sluttdato']) {
+          dispatch(resetValidation(namespace + '[' + oldMotregningKey + ']-sluttdato'))
+        }
+        // we have to update the big index with the new motregningKey
+        const newBigIndexMap = _.cloneDeep(_bigIndexMap)
+        newBigIndexMap[newMotregningKey] = _.cloneDeep(newBigIndexMap[oldMotregningKey])
+        delete newBigIndexMap[oldMotregningKey]
+        _setBigIndexMap(newBigIndexMap)
+        return true
       }
     }
   }
@@ -415,7 +434,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
       newReplySed.familie!.motregninger = _.filter(newReplySed.familie!.motregninger, (m: IMotregning) => getMotregningId(m) !== motregningKey)
     }
     // sync big index
-    let newBigIndexMap = _.cloneDeep(_bigIndexMap)
+    const newBigIndexMap = _.cloneDeep(_bigIndexMap)
     delete newBigIndexMap[motregningKey]
     _setBigIndexMap(newBigIndexMap)
     dispatch(setReplySed(newReplySed))
@@ -433,11 +452,13 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
       utbetalingshyppighet: _newUtbetalingshyppighet,
       valuta: _newValuta?.value,
       vedtaksdato: _newVedtaksdato,
-      ytterligereInfo: _newYtterligereInfo
+      ytterligereInfo: _newYtterligereInfo,
+      ytelseNavn: _newYtelseNavn  // only for familie
     } as IMotregning
 
-    const valid: boolean = performValidation({
+    const valid: boolean = _performValidation({
       motregning: newMotregning,
+      keyAndYtelsNavns: _newKeyAndYtelseNavns,
       type: _newBarnaEllerFamilie as BarnaEllerFamilie,
       namespace: namespace,
       formalName: t('label:motregning').toLowerCase()
@@ -457,14 +478,15 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
     if (valid && _newBarnaEllerFamilie === 'barna') {
       const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
       _newKeyAndYtelseNavns.forEach(keyAndYtelseNavn => {
-        let barn: Barn = _.get(replySed, keyAndYtelseNavn.key)
+        const barn: Barn = _.get(replySed, keyAndYtelseNavn.key)
         let newMotregninger: Array<IMotregning> | undefined = _.cloneDeep(barn.motregninger)
         if (_.isNil(newMotregninger)) {
           newMotregninger = []
         }
-        let thisMotregning: IMotregning = _.cloneDeep(newMotregning)
-        thisMotregning.ytelseNavn = keyAndYtelseNavn.ytelseNavn
-        newMotregninger.push(thisMotregning)
+        newMotregninger.push({
+          ...newMotregning,
+          ytelseNavn: keyAndYtelseNavn.ytelseNavn
+        })
         _.set(newReplySed, keyAndYtelseNavn.key + '.motregninger', newMotregninger)
       })
       dispatch(setReplySed(newReplySed))
@@ -474,20 +496,19 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
   }
 
   const renderRow = (motregningKey: string) => {
-
     let motregning: IMotregning | null
     if (motregningKey === 'new-motregning') {
       motregning = null
     } else {
-       let indexes: Array<Index> | undefined = _bigIndexMap[motregningKey]
-       if (_.isEmpty(indexes)) {
-         motregning = {} as IMotregning
-       } else {
-         motregning = _.get(replySed, _bigIndexMap[motregningKey][0].key)
-       }
+      const indexes: Array<Index> | undefined = _bigIndexMap[motregningKey]
+      if (_.isEmpty(indexes)) {
+        motregning = {} as IMotregning
+      } else {
+        motregning = _.get(replySed, _bigIndexMap[motregningKey][0].key)
+      }
     }
 
-    const candidateForDeletion = motregningKey === 'new-motregning' ? false : isInDeletion(motregning)
+    const candidateForDeletion = motregningKey === 'new-motregning' ? false : _isInDeletion(motregning)
     const idx = motregningKey === 'new-motregning' ? '' : '[' + motregningKey + ']'
     const getErrorFor = (el: string): string | undefined => {
       return motregningKey === 'new-motregning'
@@ -497,13 +518,13 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
 
     const indexes: Array<Index> = _bigIndexMap[motregningKey]
     const barnaEllerFamilie: BarnaEllerFamilie | undefined = !_.isEmpty(indexes)
-      ? (!_.isEmpty(indexes[0].barnaName) ? 'barna' : 'familie')
+      ? (!_.isEmpty(indexes[0].barnaKey) ? 'barna' : 'familie')
       : undefined
     const _barnaEllerFamilie = motregningKey === 'new-motregning' ? _newBarnaEllerFamilie : barnaEllerFamilie
     const _keyAndYtelseNavns: Array<IKeyAndYtelseNavn> | undefined = _barnaEllerFamilie === 'barna'
       ? motregningKey === 'new-motregning'
-        ? _newKeyAndYtelseNavns
-        : indexes.map(i => ({key: i.key, ytelseNavn: i.ytelseNavn})) as Array<IKeyAndYtelseNavn>
+          ? _newKeyAndYtelseNavns
+          : indexes.map(i => ({ key: i.key, ytelseNavn: i.ytelseNavn })) as Array<IKeyAndYtelseNavn>
       : undefined
 
     return (
@@ -526,7 +547,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
               ]}
             />
           </Column>
-          <Column/>
+          <Column />
         </AlignStartRow>
         <VerticalSeparatorDiv size='2' />
         <AlignStartRow>
@@ -548,30 +569,40 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarType(e.target.value as AnmodningSvarType, motregningKey)}
             />
           </Column>
-          <Column/>
+          <Column />
         </AlignStartRow>
         <VerticalSeparatorDiv />
         {_barnaEllerFamilie === 'barna' && (
           <>
-            {_.isEmpty(_keyAndYtelseNavns)
-              ? (
-                <Normaltekst>
-                  {t('message:warning-no-barn')}
-                </Normaltekst>
-              )
-              : (
-                <KeyAndYtelseNavn
-                  highContrast={highContrast}
-                  keyAndYtelseNavns={_keyAndYtelseNavns!}
-                  onKeyAndYtelseNavnChanged={(newKeyAndYtelseNavn) => setKeyAndYtelseNavns(newKeyAndYtelseNavn, motregningKey)}
-                  allBarnaNameKeys={_allBarnaNameKeys}
-                  selectedBarnaNames={indexes}
-                  parentNamespace={namespace}
-                  validation={validation}
-                  />
-              )}
-              <VerticalSeparatorDiv size='2' />
-           </>
+            <KeyAndYtelseNavn
+              highContrast={highContrast}
+              keyAndYtelseNavns={_keyAndYtelseNavns!}
+              onKeyAndYtelseNavnChanged={(newKeyAndYtelseNavn) => setKeyAndYtelseNavns(newKeyAndYtelseNavn, motregningKey)}
+              allBarnaNameKeys={_allBarnaNameKeys}
+              selectedBarnaNames={indexes}
+              parentNamespace={namespace}
+              validation={validation}
+            />
+            <VerticalSeparatorDiv size='2' />
+          </>
+        )}
+        {_barnaEllerFamilie === 'familie' && (
+          <>
+            <AlignStartRow>
+              <Column>
+                <Input
+                  feil={getErrorFor('ytelseNavn')}
+                  id='ytelseNavn'
+                  key={namespace + idx + '-ytelseNavn-' + (motregningKey === 'new-motregning' ? _newYtelseNavn : motregning?.ytelseNavn)}
+                  label={t('label:betegnelse-på-ytelse') + ' *'}
+                  namespace={namespace + idx}
+                  onChanged={(newYtelseNavn: string) => setYtelseNavn(newYtelseNavn, motregningKey)}
+                  value={(motregningKey === 'new-motregning' ? _newYtelseNavn : motregning?.ytelseNavn)}
+                />
+              </Column>
+            </AlignStartRow>
+            <VerticalSeparatorDiv size='2' />
+          </>
         )}
         <VerticalSeparatorDiv size='2' />
         <UndertekstBold>
@@ -586,7 +617,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
               key={namespace + '-vedtaksdato-' + (motregningKey === 'new-motregning' ? _newVedtaksdato : motregning?.vedtaksdato)}
               label={t('label:vedtaksdato') + ' *'}
               namespace={namespace}
-              onChanged={(newVedtaksdato) => {return setVedtaksDato(newVedtaksdato, motregningKey)}}
+              onChanged={(newVedtaksdato) => { return setVedtaksDato(newVedtaksdato, motregningKey) }}
               required
               value={(motregningKey === 'new-motregning' ? _newVedtaksdato : motregning?.vedtaksdato)}
             />
@@ -623,7 +654,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
               values={(motregningKey === 'new-motregning' ? _newValuta : _currencyData.findByValue(motregning?.valuta))}
             />
           </Column>
-          <Column/>
+          <Column />
         </AlignStartRow>
         <VerticalSeparatorDiv />
         <AlignStartRow>
@@ -637,15 +668,17 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
               sluttdato: getErrorFor('sluttdato')
             }}
             label={{
-              startdato: t('label:startdato') + ' (' + t('label:innvilgelse').toLowerCase() + ')',
-              sluttdato: t('label:sluttdato') + ' (' + t('label:innvilgelse').toLowerCase() + ')'
+              startdato: t('label:startdato') + ' (' + t('label:innvilgelse').toLowerCase() + ') *',
+              sluttdato: t('label:sluttdato') + ' (' + t('label:innvilgelse').toLowerCase() + ') *'
             }}
             periodeType='simple'
             setPeriode={(newPeriode: Periode) => setPeriode(newPeriode, motregningKey)}
-            value={motregningKey === 'new-motregning' ? _newPeriode: {
-              startdato: motregning?.startdato,
-              sluttdato: motregning?.sluttdato
-            } as Periode}
+            value={motregningKey === 'new-motregning'
+              ? _newPeriode
+              : {
+                startdato: motregning?.startdato,
+                sluttdato: motregning?.sluttdato
+              } as Periode}
           />
           <Column />
         </AlignStartRow>
@@ -668,7 +701,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUtbetalingshyppighet(e.target.value as Utbetalingshyppighet, motregningKey)}
             />
           </Column>
-          <Column/>
+          <Column />
         </AlignStartRow>
         <VerticalSeparatorDiv />
         <AlignStartRow>
@@ -684,7 +717,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
               value={(motregningKey === 'new-motregning' ? _newMottakersNavn : motregning?.mottakersNavn)}
             />
           </Column>
-          <Column/>
+          <Column />
         </AlignStartRow>
         <VerticalSeparatorDiv />
         <AlignStartRow>
@@ -722,9 +755,9 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
               candidateForDeletion={candidateForDeletion}
               existingItem={motregningKey !== 'new-motregning'}
               marginTop
-              onBeginRemove={() => addToDeletion(motregning)}
+              onBeginRemove={() => _addToDeletion(motregning)}
               onConfirmRemove={() => onRemove(motregningKey)}
-              onCancelRemove={() => removeFromDeletion(motregning)}
+              onCancelRemove={() => _removeFromDeletion(motregning)}
               onAddNew={onAdd}
               onCancelNew={onCancel}
             />
@@ -763,7 +796,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
           <Normaltekst>
             {t('message:warning-no-motregning')}
           </Normaltekst>
-        )
+          )
         : Object.keys(_bigIndexMap)?.map(renderRow)}
       <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />
@@ -784,8 +817,8 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
               </HighContrastFlatknapp>
             </Column>
           </Row>
-        )}
-      </PaddedDiv>
+          )}
+    </PaddedDiv>
 
   )
 }

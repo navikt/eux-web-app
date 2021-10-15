@@ -18,7 +18,7 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
   parentNamespace
 }: FormålManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {replySed, validation}: FormålManagerFormSelector = useSelector<State, FormålManagerFormSelector>(mapState)
+  const { replySed, validation }: FormålManagerFormSelector = useSelector<State, FormålManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const target: string = 'utbetalingTilInstitusjon'
   const utbetalingTilInstitusjon: UtbetalingTilInstitusjon | undefined = (replySed as F002Sed).utbetalingTilInstitusjon
@@ -37,7 +37,7 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
   // throw away completely all information added
   const [_cacheKonto, _setCacheKonto] = useState<any>({
     ordinaer: utbetalingTilInstitusjon?.kontoOrdinaer,
-    sepa: utbetalingTilInstitusjon?.kontoSepa,
+    sepa: utbetalingTilInstitusjon?.kontoSepa
   })
 
   const setKontoType = (kontoType: KontoType) => {
@@ -236,7 +236,7 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
               />
             </Column>
           </AlignStartRow>
-          <VerticalSeparatorDiv/>
+          <VerticalSeparatorDiv />
           <Adresse
             namespace={namespace + '-kontoOrdinaer'}
             adresse={utbetalingTilInstitusjon?.kontoOrdinaer?.adresse ?? {}}
@@ -281,7 +281,7 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
             </Column>
           </AlignStartRow>
         </>
-        )}
+      )}
       <VerticalSeparatorDiv />
     </PaddedDiv>
   )

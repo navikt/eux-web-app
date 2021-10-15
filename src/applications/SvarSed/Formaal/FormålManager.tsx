@@ -151,7 +151,7 @@ export const mapState = (state: State): FormålManagerFormSelector => ({
   validation: state.validation.status
 })
 
-const FormålManager: React.FC<FormålManagerProps> = ({viewValidation}: FormålManagerProps) => {
+const FormålManager: React.FC<FormålManagerProps> = ({ viewValidation }: FormålManagerProps) => {
   const { t } = useTranslation()
   const {
     replySed,

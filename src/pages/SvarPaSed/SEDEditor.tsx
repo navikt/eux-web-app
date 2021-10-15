@@ -305,13 +305,13 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
       <VerticalSeparatorDiv size='3' />
       {showPersonManager() && (
         <>
-          <PersonManager viewValidation={view}/>
+          <PersonManager viewValidation={view} />
           <VerticalSeparatorDiv size='2' />
         </>
       )}
       {isFSed(replySed) && showFormålManager() && (
         <>
-          <FormålManager viewValidation={view}/>
+          <FormålManager viewValidation={view} />
           <VerticalSeparatorDiv size='2' />
         </>
       )}

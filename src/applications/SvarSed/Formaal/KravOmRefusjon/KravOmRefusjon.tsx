@@ -18,7 +18,7 @@ const KravOmRefusjon: React.FC<FormålManagerFormProps> = ({
   seeKontoopplysninger
 }: FormålManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {replySed, validation}: FormålManagerFormSelector = useSelector<State, FormålManagerFormSelector>(mapState)
+  const { replySed, validation }: FormålManagerFormSelector = useSelector<State, FormålManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const target = 'refusjonskrav'
   const refusjonIHenholdTilArtikkel58IForordningen: string | undefined = (replySed as F002Sed).refusjonskrav

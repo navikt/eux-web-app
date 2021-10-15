@@ -59,7 +59,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
   personID,
   personName
 }:PersonManagerFormProps): JSX.Element => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const {
     highContrast,
     replySed,
@@ -117,7 +117,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
       _setNewBeløp(newBeløp.trim())
       _resetValidation(namespace + '-beloep')
       if (_.isNil(_newValuta)) {
-        _setNewValuta({value: 'NOK'} as Currency)
+        _setNewValuta({ value: 'NOK' } as Currency)
       }
     } else {
       dispatch(updateReplySed(`${target}[${index}].beloep`, newBeløp.trim()))
@@ -125,7 +125,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
         dispatch(resetValidation(namespace + getIdx(index) + '-beloep'))
       }
       if (_.isNil(ytelser[index]?.valuta)) {
-        setValuta({value: 'NOK'} as Currency, index)
+        setValuta({ value: 'NOK' } as Currency, index)
       }
     }
   }
@@ -257,13 +257,13 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
     )
 
     return (
-      <RepeatableRow className={classNames({new: index < 0})}>
+      <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow className='slideInFromLeft'>
           <Column>
             <Select
               closeMenuOnSelect
               data-test-id={namespace + '-ytelseNavn'}
-              feil={getErrorFor(index,'ytelseNavn')}
+              feil={getErrorFor(index, 'ytelseNavn')}
               highContrast={highContrast}
               id={namespace + '-ytelseNavn'}
               key={namespace + '-ytelseNavn-' + (index < 0 ? _newYtelsesNavn : ytelse?.ytelseNavn as YtelseNavn)}
@@ -281,7 +281,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
               <Input
                 type='number'
                 min='0'
-                feil={getErrorFor(index,'antallPersoner')}
+                feil={getErrorFor(index, 'antallPersoner')}
                 key={'antall-innvilges-' + (index < 0 ? _newAntallPersoner : ytelse?.antallPersoner)}
                 namespace={namespace}
                 id='antallPersoner'
@@ -292,8 +292,8 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
             </Column>
           )}
         </AlignStartRow>
-        <VerticalSeparatorDiv/>
-        <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.05s'}}>
+        <VerticalSeparatorDiv />
+        <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
           <Column>
             <Input
               feil={getErrorFor(index, 'beloep')}
@@ -303,13 +303,15 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
                 ? (
                   <FlexCenterSpacedDiv>
                     <span>{t('label:beløp') + ' *'}</span>
-                    <HorizontalSeparatorDiv size='0.5'/>
-                    <Tooltip placement='top' trigger={['hover']}
-                             overlay={<span>{t('message:help-familieytelser-beløp')}</span>}>
-                      <HelpProperIcon className='hjelpetekst__ikon'/>
+                    <HorizontalSeparatorDiv size='0.5' />
+                    <Tooltip
+                      placement='top' trigger={['hover']}
+                      overlay={<span>{t('message:help-familieytelser-beløp')}</span>}
+                    >
+                      <HelpProperIcon className='hjelpetekst__ikon' />
                     </Tooltip>
                   </FlexCenterSpacedDiv>
-                )
+                  )
                 : t('label:beløp') + ' *'}
               key={namespace + '-beløp-' + (index < 0 ? _newBeløp : (ytelse?.beloep ?? ''))}
               onChanged={(newBeløp: string) => setBeløp(newBeløp, index)}
@@ -334,12 +336,12 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
             />
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv size='2'/>
-        <Undertittel className='slideInFromLeft' style={{animationDelay: '0.1s'}}>
+        <VerticalSeparatorDiv size='2' />
+        <Undertittel className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
           {t('label:grant-date')}
         </Undertittel>
-        <VerticalSeparatorDiv size={2}/>
-        <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.15s'}}>
+        <VerticalSeparatorDiv size={2} />
+        <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.15s' }}>
           <PeriodeInput
             key={'' +
             (index < 0 ? _newPeriode?.startdato : ytelse?.startdato) +
@@ -355,10 +357,10 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
               sluttdato: (index < 0 ? _newPeriode?.sluttdato : ytelse?.sluttdato) ?? ''
             }}
           />
-          <Column/>
+          <Column />
         </AlignStartRow>
-        <VerticalSeparatorDiv/>
-        <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.2s'}}>
+        <VerticalSeparatorDiv />
+        <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
           <Column>
             <Input
               feil={getErrorFor(index, 'mottakersNavn')}
@@ -371,8 +373,8 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
             />
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv/>
-        <AlignStartRow className='slideInFromLeft' style={{animationDelay: '0.25s'}}>
+        <VerticalSeparatorDiv />
+        <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.25s' }}>
           <Column flex='2'>
             <HighContrastRadioPanelGroup
               checked={index < 0 ? _newUtbetalingshyppighet : ytelse?.utbetalingshyppighet}
@@ -384,8 +386,8 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
               name={namespace + '-utbetalingshyppighet'}
               legend={t('label:periode-avgrensing') + ' *'}
               radios={[
-                {label: t('label:månedlig'), value: 'Månedlig'},
-                {label: t('label:årlig'), value: 'Årlig'}
+                { label: t('label:månedlig'), value: 'Månedlig' },
+                { label: t('label:årlig'), value: 'Årlig' }
               ]}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUtbetalingshyppighet(e.target.value as Utbetalingshyppighet, index)}
             />
@@ -407,24 +409,23 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
     )
   }
 
-
   return (
     <PaddedDiv>
       <Undertittel>
         {personID === 'familie' ? t('label:beløp-for-hele-familien') : t('label:beløp-navn-valuta-barn')}
       </Undertittel>
-      <VerticalSeparatorDiv size={2}/>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv size={2} />
+      <VerticalSeparatorDiv />
       {_.isEmpty(ytelser)
         ? (
           <Normaltekst>
             {t('message:warning-no-ytelse')}
           </Normaltekst>
-        )
+          )
         : ytelser?.map(renderRow)}
-      <VerticalSeparatorDiv size='2'/>
-      <HorizontalLineSeparator/>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv size='2' />
+      <HorizontalLineSeparator />
+      <VerticalSeparatorDiv />
       {_seeNewForm
         ? renderRow(null, -1)
         : (
@@ -435,14 +436,14 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
                 kompakt
                 onClick={() => _setSeeNewForm(true)}
               >
-                <Add/>
-                <HorizontalSeparatorDiv size='0.5'/>
-                {t('el:button-add-new-x', {x: t('label:ytelse').toLowerCase()})}
+                <Add />
+                <HorizontalSeparatorDiv size='0.5' />
+                {t('el:button-add-new-x', { x: t('label:ytelse').toLowerCase() })}
               </HighContrastFlatknapp>
 
             </Column>
           </AlignStartRow>
-        )}
+          )}
     </PaddedDiv>
   )
 }

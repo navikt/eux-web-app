@@ -379,7 +379,7 @@ export interface PeriodeAnnenForsikring extends Periode {
 export interface UenighetKonklusjon {
   vedtakFraDato: string
   kommentarTilVedtak: string
-  tasTilAdministrativKommisjon:  JaNei
+  tasTilAdministrativKommisjon: JaNei
   grunnTilUenighet: string
 }
 

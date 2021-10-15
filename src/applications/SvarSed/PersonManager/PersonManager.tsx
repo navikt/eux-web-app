@@ -214,7 +214,7 @@ const mapState = (state: State): PersonManagerSelector => ({
   validation: state.validation.status
 })
 
-const PersonManager: React.FC<PersonManagerProps> = ({viewValidation}: PersonManagerProps) => {
+const PersonManager: React.FC<PersonManagerProps> = ({ viewValidation }: PersonManagerProps) => {
   const { t } = useTranslation()
   const {
     gettingPerson,

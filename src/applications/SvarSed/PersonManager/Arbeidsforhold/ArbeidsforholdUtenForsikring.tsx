@@ -121,7 +121,6 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
       _setNewAdresse(adresse)
     } else {
       dispatch(updateReplySed(`${target}[${index}].adresse`, adresse))
-
     }
   }
 
@@ -135,7 +134,7 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
     }
   }
 
-/*  const setInntektOgTimer = (newInntektOgTimer: Array<InntektOgTime>, index: number) => {
+  /*  const setInntektOgTimer = (newInntektOgTimer: Array<InntektOgTime>, index: number) => {
     if (index < 0) {
       _setNewInntektOgTimer(newInntektOgTimer)
       _resetValidation(namespace + '-inntektOgTimer')
@@ -145,7 +144,7 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
         dispatch(resetValidation(namespace + getIdx(index) + '-inntektOgTimer'))
       }
     }
-  }*/
+  } */
 
   const setInntektOgTimerInfo = (newInntektOgTimerInfo: string, index: number) => {
     if (index < 0) {
@@ -274,7 +273,7 @@ const ArbeidsforholdUtenForsikring: React.FC<ArbeidsforholdUtenForsikringProps> 
           namespace={namespace + '-adresse'}
           validation={index < 0 ? _validation : validation}
           resetValidation={(fullnamespace: string) => resetAdresseValidation(fullnamespace, index)}
-          />
+        />
         <VerticalSeparatorDiv />
         <AlignStartRow>
           <Column flex='2'>

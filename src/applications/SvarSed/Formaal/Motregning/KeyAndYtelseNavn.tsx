@@ -8,7 +8,7 @@ import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { Undertittel } from 'nav-frontend-typografi'
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
@@ -45,14 +45,14 @@ interface KeyAndYtelseNavnProps {
 }
 
 const KeyAndYtelseNavn: React.FC<KeyAndYtelseNavnProps> = ({
-    highContrast,
-    keyAndYtelseNavns,
-    onKeyAndYtelseNavnChanged,
-    allBarnaNameKeys,
-    selectedBarnaNames,
-    parentNamespace,
-    validation
-  }: KeyAndYtelseNavnProps): JSX.Element => {
+  highContrast,
+  keyAndYtelseNavns,
+  onKeyAndYtelseNavnChanged,
+  allBarnaNameKeys,
+  selectedBarnaNames,
+  parentNamespace,
+  validation
+}: KeyAndYtelseNavnProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const namespace = `${parentNamespace}-keyandytelsenavn`
@@ -148,7 +148,7 @@ const KeyAndYtelseNavn: React.FC<KeyAndYtelseNavnProps> = ({
         label: allBarnaNameKeys[key],
         value: key,
         isDisabled: selectedBarnaKeys.indexOf(key) >= 0
-    }))
+      }))
 
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
@@ -205,7 +205,13 @@ const KeyAndYtelseNavn: React.FC<KeyAndYtelseNavnProps> = ({
         {t('label:barna-og-betegnelse-på-ytelse')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      {keyAndYtelseNavns?.map(renderRow)}
+      {_.isEmpty(keyAndYtelseNavns)
+        ? (
+          <Normaltekst>
+            {t('message:warning-no-barn')}
+          </Normaltekst>
+          )
+        : keyAndYtelseNavns?.map(renderRow)}
       <VerticalSeparatorDiv />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
@@ -225,7 +231,7 @@ const KeyAndYtelseNavn: React.FC<KeyAndYtelseNavnProps> = ({
               </HighContrastFlatknapp>
             </Column>
           </Row>
-        )}
+          )}
     </MyPaddedDiv>
   )
 }

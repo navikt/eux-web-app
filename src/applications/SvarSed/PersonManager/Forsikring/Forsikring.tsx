@@ -29,7 +29,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
   } = useSelector<State, ForsikringSelector>(mapState)
   const namespace = `${parentNamespace}-${personID}-forsikring`
 
-  /*const [_allPeriods, _setAllPeriods ] = useState<Array<Periode | PeriodeMedForsikring | PeriodeUtenForsikring | PeriodeAnnenForsikring>>(() =>
+  /* const [_allPeriods, _setAllPeriods ] = useState<Array<Periode | PeriodeMedForsikring | PeriodeUtenForsikring | PeriodeAnnenForsikring>>(() =>
       ([] as any).concat(
        (replySed as U002Sed)?.perioderAnsattMedForsikring ?? [] as Array<Periode>,
        (replySed as U002Sed)?.perioderAnsattUtenForsikring ?? [],
@@ -44,9 +44,9 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
        (replySed as U002Sed)?.perioderFrivilligForsikring,
        (replySed as U002Sed)?.perioderKompensertFerie
        ).sort((a: Periode, b: Periode) => moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1)
-  )*/
+  ) */
 
-  /*const periodeTypeHash: {[k in string]: string} = {
+  /* const periodeTypeHash: {[k in string]: string} = {
     perioderAnsattMedForsikring: 'ansettelsesforhold_som_utgjør_forsikringsperiode',
     perioderAnsattUtenForsikring: 'ansettelsesforhold_som_ikke_utgjør_forsikringsperiode',
     perioderSelvstendigMedForsikring: 'selvstendig_næringsvirksomhet_som_utgjør_forsikringsperiode',
@@ -74,15 +74,15 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
     { label: t('el:option-forsikring-ANNENPERIODE'), value: 'perioderAnnenForsikring' },
     { label: t('el:option-forsikring-FRIVILLIG'), value: 'perioderFrivilligForsikring' },
     { label: t('el:option-forsikring-FERIE'), value: 'perioderKompensertFerie' }
-  ]*/
+  ] */
 
   const renderRow = (periode: Periode | PeriodeMedForsikring | PeriodeUtenForsikring | PeriodeAnnenForsikring,
-  index: number,
-  type: string) => {
+    index: number,
+    type: string) => {
     return (
       <FlexCenterDiv>
         <span>{type}</span>
-        <HorizontalLineSeparator/>
+        <HorizontalLineSeparator />
         <PeriodeInput
           error={{
             startdato: undefined,

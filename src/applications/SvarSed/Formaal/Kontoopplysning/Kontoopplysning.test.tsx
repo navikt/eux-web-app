@@ -1,10 +1,10 @@
+import { updateReplySed } from 'actions/svarpased'
 import { FormålManagerFormProps, FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
 import Kontoopplysning from 'applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning'
+import { KontoOrdinaer, KontoSepa } from 'declarations/sed'
 import { mount, ReactWrapper } from 'enzyme'
 import getReplySed from 'mocks/replySed'
 import { stageSelector } from 'setupTests'
-import { updateReplySed } from 'actions/svarpased'
-import { F002Sed, KontoOrdinaer, KontoSepa, UtbetalingTilInstitusjon } from 'declarations/sed'
 
 jest.mock('actions/svarpased', () => ({
   updateReplySed: jest.fn()
@@ -67,7 +67,7 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning', () => {
     })
     wrapper = mount(<Kontoopplysning {...initialMockProps} />)
     const formField = wrapper.find('[data-test-id=\'test-kontoopplysninger-kontotype\'] input[type="radio"]').hostNodes()
-    formField.first().simulate('change', {target: {value: 'ordinaer'}})
+    formField.first().simulate('change', { target: { value: 'ordinaer' } })
     expect(updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon', {
       begrunnelse: 'begrunnelse',
       id: 'id',
@@ -76,7 +76,7 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning', () => {
     });
 
     (updateReplySed as jest.Mock).mockReset()
-    formField.last().simulate('change', {target: {value: 'sepa'}})
+    formField.last().simulate('change', { target: { value: 'sepa' } })
     expect(updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon', {
       begrunnelse: 'begrunnelse',
       id: 'id',
@@ -85,7 +85,7 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning', () => {
     });
 
     (updateReplySed as jest.Mock).mockReset()
-    formField.first().simulate('change', {target: {value: 'ordinaer'}})
+    formField.first().simulate('change', { target: { value: 'ordinaer' } })
     expect(updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon', {
       begrunnelse: 'begrunnelse',
       id: 'id',
@@ -98,7 +98,7 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning', () => {
     (updateReplySed as jest.Mock).mockReset()
     const mockText = 'mockText'
     const formField = wrapper.find('[data-test-id=\'test-kontoopplysninger-begrunnelse\']').hostNodes()
-    formField.simulate('change', {target: {value: mockText}})
+    formField.simulate('change', { target: { value: mockText } })
     formField.simulate('blur')
     expect(updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon.begrunnelse', mockText)
   })
@@ -107,7 +107,7 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning', () => {
     (updateReplySed as jest.Mock).mockReset()
     const mockId = 'mockId'
     const formField = wrapper.find('[data-test-id=\'test-kontoopplysninger-id\']').hostNodes()
-    formField.simulate('change', {target: {value: mockId}})
+    formField.simulate('change', { target: { value: mockId } })
     formField.simulate('blur')
     expect(updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon.id', mockId)
   })
@@ -116,7 +116,7 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning', () => {
     (updateReplySed as jest.Mock).mockReset()
     const mockNavn = 'mockNavn'
     const formField = wrapper.find('[data-test-id=\'test-kontoopplysninger-navn\']').hostNodes()
-    formField.simulate('change', {target: {value: mockNavn}})
+    formField.simulate('change', { target: { value: mockNavn } })
     formField.simulate('blur')
     expect(updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon.navn', mockNavn)
   })
@@ -133,9 +133,9 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning', () => {
     })
     wrapper = mount(<Kontoopplysning {...initialMockProps} />)
     const formField = wrapper.find('[data-test-id=\'test-kontoopplysninger-kontoOrdinaer-gate\']').hostNodes()
-    formField.simulate('change', {target: {value: '123'}})
+    formField.simulate('change', { target: { value: '123' } })
     formField.simulate('blur')
-    expect(updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon.kontoOrdinaer.adresse', {gate: '123'})
+    expect(updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon.kontoOrdinaer.adresse', { gate: '123' })
   })
 
   it('Handling: update kontoOrdinaer bankens navn', () => {
@@ -150,7 +150,7 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning', () => {
     })
     wrapper = mount(<Kontoopplysning {...initialMockProps} />)
     const formField = wrapper.find('[data-test-id=\'test-kontoopplysninger-kontoOrdinaer-bankensNavn\']').hostNodes()
-    formField.simulate('change', {target: {value: 'bankensNavn'}})
+    formField.simulate('change', { target: { value: 'bankensNavn' } })
     formField.simulate('blur')
     expect(updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon.kontoOrdinaer.bankensNavn', 'bankensNavn')
   })
@@ -168,7 +168,7 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning', () => {
     wrapper = mount(<Kontoopplysning {...initialMockProps} />)
     const mockKontonummer = 'mockKontonummer'
     const formField = wrapper.find('[data-test-id=\'test-kontoopplysninger-kontoOrdinaer-kontonummer\']').hostNodes()
-    formField.simulate('change', {target: {value: mockKontonummer}})
+    formField.simulate('change', { target: { value: mockKontonummer } })
     formField.simulate('blur')
     expect(updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon.kontoOrdinaer.kontonummer', mockKontonummer)
   })
@@ -186,7 +186,7 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning', () => {
     wrapper = mount(<Kontoopplysning {...initialMockProps} />)
     const mockSwift = 'mockSwift'
     const formField = wrapper.find('[data-test-id=\'test-kontoopplysninger-kontoOrdinaer-swift\']').hostNodes()
-    formField.simulate('change', {target: {value: mockSwift}})
+    formField.simulate('change', { target: { value: mockSwift } })
     formField.simulate('blur')
     expect(updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon.kontoOrdinaer.swift', mockSwift)
   })
@@ -204,7 +204,7 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning', () => {
     wrapper = mount(<Kontoopplysning {...initialMockProps} />)
     const mockIban = 'mockIban'
     const formField = wrapper.find('[data-test-id=\'test-kontoopplysninger-kontoSepa-iban\']').hostNodes()
-    formField.simulate('change', {target: {value: mockIban}})
+    formField.simulate('change', { target: { value: mockIban } })
     formField.simulate('blur')
     expect(updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon.kontoSepa.iban', mockIban)
   })
@@ -222,7 +222,7 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning', () => {
     wrapper = mount(<Kontoopplysning {...initialMockProps} />)
     const mockSwift = 'mockSwift'
     const formField = wrapper.find('[data-test-id=\'test-kontoopplysninger-kontoSepa-swift\']').hostNodes()
-    formField.simulate('change', {target: {value: mockSwift}})
+    formField.simulate('change', { target: { value: mockSwift } })
     formField.simulate('blur')
     expect(updateReplySed).toHaveBeenCalledWith('utbetalingTilInstitusjon.kontoSepa.swift', mockSwift)
   })

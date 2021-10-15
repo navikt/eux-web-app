@@ -22,7 +22,6 @@ const AdresseFC: React.FC<AdresseProps> = ({
   namespace,
   validation
 }: AdresseProps) => {
-
   const { t } = useTranslation()
 
   const setType = (type: AdresseType) => {
@@ -184,7 +183,7 @@ const AdresseFC: React.FC<AdresseProps> = ({
             data-test-id={namespace + '-land'}
             error={validation[namespace + '-land']?.feilmelding}
             flagWave
-            id={namespace  + '-land'}
+            id={namespace + '-land'}
             label={t('label:land') + ' *'}
             menuPortalTarget={document.body}
             onOptionSelected={(e: Country) => setLand(e.value)}

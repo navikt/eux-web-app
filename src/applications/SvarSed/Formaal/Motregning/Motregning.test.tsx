@@ -1,11 +1,10 @@
+import { updateReplySed } from 'actions/svarpased'
 import { FormålManagerFormProps, FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
-import KravOmRefusjon from 'applications/SvarSed/Formaal/KravOmRefusjon/KravOmRefusjon'
 import Motregning from 'applications/SvarSed/Formaal/Motregning/Motregning'
 import { PersonInfo } from 'declarations/sed'
 import { mount, ReactWrapper } from 'enzyme'
 import getReplySed from 'mocks/replySed'
 import { stageSelector } from 'setupTests'
-import { updateReplySed } from 'actions/svarpased'
 
 jest.mock('actions/svarpased', () => ({
   updateReplySed: jest.fn()
@@ -40,7 +39,6 @@ describe('applications/SvarSed/Formaal/Motregning/Motregning', () => {
     wrapper.unmount()
   })
 
-
   it('Handling: update setSvarType: barna', () => {
     (updateReplySed as jest.Mock).mockReset()
     stageSelector(defaultSelector, {
@@ -54,7 +52,7 @@ describe('applications/SvarSed/Formaal/Motregning/Motregning', () => {
     })
     const mockText = 'mockText'
     const formField = wrapper.find('[data-test-id=\'test-motregning-svarType\']').hostNodes()
-    formField.simulate('change', {target: {value: mockText}})
+    formField.simulate('change', { target: { value: mockText } })
     formField.simulate('blur')
     expect(updateReplySed).toHaveBeenCalledWith('svarType', mockText)
   })
