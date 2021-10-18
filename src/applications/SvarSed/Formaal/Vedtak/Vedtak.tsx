@@ -125,17 +125,21 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
     }
   }
 
-  const setPeriode = (p: Periode, index: number) => {
+  const setPeriode = (p: Periode, id: string, index: number) => {
     if (index < 0) {
       _setNewPeriode(p)
-      _perioderResetValidation(namespace + '-perioder-startdato')
-      _perioderResetValidation(namespace + '-perioder-sluttdato')
+      if (id === 'startdato') {
+        _perioderResetValidation(namespace + '-perioder-startdato')
+      }
+      if (id === 'sluttdato') {
+        _perioderResetValidation(namespace + '-perioder-sluttdato')
+      }
     } else {
       dispatch(updateReplySed(`${target}.vedtaksperioder[${index}]`, p))
-      if (validation[namespace + '-perioder' + getIdx(index) + '-startdato']) {
+      if (id === 'startdato' && validation[namespace + '-perioder' + getIdx(index) + '-startdato']) {
         dispatch(resetValidation(namespace + '-perioder' + getIdx(index) + '-startdato'))
       }
-      if (validation[namespace + '-perioder' + getIdx(index) + '-sluttdato']) {
+      if (id === 'sluttdato' && validation[namespace + '-perioder' + getIdx(index) + '-sluttdato']) {
         dispatch(resetValidation(namespace + '-perioder' + getIdx(index) + '-sluttdato'))
       }
     }
@@ -322,7 +326,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
               startdato: getErrorFor(index, 'startdato'),
               sluttdato: getErrorFor(index, 'sluttdato')
             }}
-            setPeriode={(p: Periode) => setPeriode(p, index)}
+            setPeriode={(p: Periode, id: string) => setPeriode(p, id, index)}
             value={_periode}
           />
           <Column>

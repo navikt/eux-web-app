@@ -142,21 +142,25 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const setPeriode = (newPeriode: Periode, index: number) => {
+  const setPeriode = (newPeriode: Periode, id: string, index: number) => {
     if (index < 0) {
       _setNewPeriode(newPeriode)
-      _resetValidation(namespace + '-startdato')
-      _resetValidation(namespace + '-sluttdato')
+      if (id === 'startdato') {
+        _resetValidation(namespace + '-startdato')
+      }
+      if (id === 'sluttdato') {
+        _resetValidation(namespace + '-sluttdato')
+      }
     } else {
       if (ytelser[index].startdato !== newPeriode.startdato) {
         dispatch(updateReplySed(`${target}[${index}].startdato`, newPeriode.startdato))
-        if (validation[namespace + getIdx(index) + '-startdato']) {
+        if (id === 'startdato' && validation[namespace + getIdx(index) + '-startdato']) {
           dispatch(resetValidation(namespace + getIdx(index) + '-startdato'))
         }
       }
       if (ytelser[index].sluttdato !== newPeriode.sluttdato) {
         dispatch(updateReplySed(`${target}[${index}].sluttdato`, newPeriode.sluttdato))
-        if (validation[namespace + getIdx(index) + '-sluttdato']) {
+        if (id === 'sluttdato' && validation[namespace + getIdx(index) + '-sluttdato']) {
           dispatch(resetValidation(namespace + getIdx(index) + '-sluttdato'))
         }
       }
@@ -351,7 +355,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
               startdato: getErrorFor(index, 'startdato'),
               sluttdato: getErrorFor(index, 'sluttdato')
             }}
-            setPeriode={(p: Periode) => setPeriode(p, index)}
+            setPeriode={(p: Periode, id: string) => setPeriode(p, id, index)}
             value={{
               startdato: (index < 0 ? _newPeriode?.startdato : ytelse?.startdato) ?? '',
               sluttdato: (index < 0 ? _newPeriode?.sluttdato : ytelse?.sluttdato) ?? ''

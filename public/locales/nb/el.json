@@ -36,8 +36,8 @@
   "option-forsikring-UTDANNINGSPERIODE" : "Utdanningsperiode som utgjør eller behandles som forsikringsperiode",
   "option-forsikring-MILITAERTJENESTE" : "Militærtjeneste eller alternativ tjeneste som utgjør forsikringsperiode eller behandles som forsikringsperiode",
   "option-forsikring-ANNENPERIODE" : "Annen periode som utgjør eller behandles som forsikringsperiode",
-  "option-forsikring-FRIVILLIG" : "Annen periode som utgjør eller behandles som forsikringsperiode",
-  "option-forsikring-FERIE" : "Annen periode som utgjør eller behandles som forsikringsperiode",
+  "option-forsikring-FRIVILLIG" : "Periode med frivillig uavbrutt forsikring",
+  "option-forsikring-FERIE" : "Vederlag for ferie som ikke er tatt ut",
 
   "option-formaal-1": "Mottak av søknad om familieytelser",
   "option-formaal-2": "Informasjon om endrede forhold",

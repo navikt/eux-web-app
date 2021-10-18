@@ -71,17 +71,21 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
     label: t('el:option-trygdeordning-uførhet'), value: 'uførhet'
   }]
 
-  const setPeriode = (periode: Periode, index: number) => {
+  const setPeriode = (periode: Periode, id: string, index: number) => {
     if (index < 0) {
       _setNewPeriode(periode)
-      _resetValidation(namespace + '-startdato')
-      _resetValidation(namespace + '-sluttdato')
+      if (id === 'startdato') {
+        _resetValidation(namespace + '-startdato')
+      }
+      if (id === 'sluttdato') {
+        _resetValidation(namespace + '-sluttdato')
+      }
     } else {
       dispatch(updateReplySed(`${target}[${index}]`, periode))
-      if (validation[namespace + getIdx(index) + '-startdato']) {
+      if (id === 'startdato' && validation[namespace + getIdx(index) + '-startdato']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-startdato'))
       }
-      if (validation[namespace + getIdx(index) + '-sluttdato']) {
+      if (id === 'sluttdato' && validation[namespace + getIdx(index) + '-sluttdato']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-sluttdato'))
       }
     }
@@ -171,7 +175,7 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
               startdato: getErrorFor(index, 'periode-startdato'),
               sluttdato: getErrorFor(index, 'periode-sluttdato')
             }}
-            setPeriode={(p: Periode) => setPeriode(p, index)}
+            setPeriode={(p: Periode, id: string) => setPeriode(p, id, index)}
             value={_periode}
           />
           <Column />

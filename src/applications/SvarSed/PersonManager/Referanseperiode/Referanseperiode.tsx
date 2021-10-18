@@ -30,12 +30,12 @@ const Referanseperiode: React.FC<PersonManagerFormProps> = ({
   const anmodningsperiode: Periode = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-referanseperiode`
 
-  const setPeriode = (periode: Periode) => {
+  const setPeriode = (periode: Periode, id: string) => {
     dispatch(updateReplySed(`${target}`, periode))
-    if (validation[namespace + '-startdato']) {
+    if (id === 'startdato' && validation[namespace + '-startdato']) {
       dispatch(resetValidation(namespace + '-startdato'))
     }
-    if (validation[namespace + '-sluttdato']) {
+    if (id === 'sluttdato' && validation[namespace + '-sluttdato']) {
       dispatch(resetValidation(namespace + '-sluttdato'))
     }
   }

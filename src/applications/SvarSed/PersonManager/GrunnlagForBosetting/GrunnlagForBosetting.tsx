@@ -74,17 +74,21 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
     }
   }
 
-  const setPeriode = (periode: Periode, index: number) => {
+  const setPeriode = (periode: Periode, id: string, index: number) => {
     if (index < 0) {
       _setNewPeriode(periode)
-      _resetValidation(namespace + '-perioder-startdato')
-      _resetValidation(namespace + '-perioder-sluttdato')
+      if (id === 'startdato') {
+        _resetValidation(namespace + '-perioder-startdato')
+      }
+      if (id === 'sluttdato') {
+        _resetValidation(namespace + '-perioder-sluttdato')
+      }
     } else {
       dispatch(updateReplySed(`${target}.perioder[${index}]`, periode))
-      if (validation[namespace + '-perioder' + getIdx(index) + '-startdato']) {
+      if (id === 'startdato' && validation[namespace + '-perioder' + getIdx(index) + '-startdato']) {
         dispatch(resetValidation(namespace + '-perioder' + getIdx(index) + '-startdato'))
       }
-      if (validation[namespace + '-perioder' + getIdx(index) + '-sluttdato']) {
+      if (id === 'sluttdato' && validation[namespace + '-perioder' + getIdx(index) + '-sluttdato']) {
         dispatch(resetValidation(namespace + '-perioder' + getIdx(index) + '-sluttdato'))
       }
     }
@@ -160,7 +164,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
               startdato: getErrorFor(index, 'startdato'),
               sluttdato: getErrorFor(index, 'sluttdato')
             }}
-            setPeriode={(p: Periode) => setPeriode(p, index)}
+            setPeriode={(p: Periode, id: string) => setPeriode(p, id, index)}
             value={_periode}
           />
           <Column>

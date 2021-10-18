@@ -95,15 +95,19 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
 
   const getPensjonsTypeOption = (value: string | undefined | null) => _.find(selectPensjonsTypeOptions, s => s.value === value)
 
-  const setPeriode = (periode: Periode, index: number, newSedCategory: SedCategory | null) => {
+  const setPeriode = (periode: Periode, id: string, index: number, newSedCategory: SedCategory | null) => {
     let suffixnamespace: string = ''
     if (newSedCategory === 'perioderMedPensjon') {
       suffixnamespace = '-periode'
     }
     if (index < 0) {
       _setNewPeriode(periode)
-      _resetValidation(namespace + '-familieYtelse-startdato')
-      _resetValidation(namespace + '-familieYtelse-sluttdato')
+      if (id === 'startdato') {
+        _resetValidation(namespace + '-familieYtelse-startdato')
+      }
+      if (id === 'sluttdato') {
+        _resetValidation(namespace + '-familieYtelse-sluttdato')
+      }
     } else {
       // const newPerioder: Array<Periode | PensjonPeriode> = _.cloneDeep(perioder[newSedCategory!])
       if (newSedCategory === 'perioderMedPensjon') {
@@ -111,10 +115,10 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
       } else {
         dispatch(updateReplySed(`${personID}.${newSedCategory}`, periode))
       }
-      if (validation[namespace + '-' + newSedCategory + getIdx(index) + suffixnamespace + '-startdato']) {
+      if (id === 'startdato' && validation[namespace + '-' + newSedCategory + getIdx(index) + suffixnamespace + '-startdato']) {
         dispatch(resetValidation(namespace + '-' + newSedCategory + getIdx(index) + suffixnamespace + '-startdato'))
       }
-      if (validation[namespace + newSedCategory + getIdx(index) + suffixnamespace + '-sluttdato']) {
+      if (id === 'sluttdato' && validation[namespace + newSedCategory + getIdx(index) + suffixnamespace + '-sluttdato']) {
         dispatch(resetValidation(namespace + newSedCategory + getIdx(index) + suffixnamespace + '-sluttdato'))
       }
     }
@@ -237,7 +241,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
               startdato: getErrorFor(index, 'startdato'),
               sluttdato: getErrorFor(index, 'sluttdato')
             }}
-            setPeriode={(p: Periode) => setPeriode(p, index, sedCategory)}
+            setPeriode={(p: Periode, id: string) => setPeriode(p, id, index, sedCategory)}
             value={_periode}
           />
           <Column>

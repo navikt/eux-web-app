@@ -406,11 +406,15 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
     }
   }
 
-  const setPeriode = (newPeriode: Periode, oldMotregningKey: string): boolean => {
+  const setPeriode = (newPeriode: Periode, id: string, oldMotregningKey: string): boolean => {
     if (oldMotregningKey === 'new-motregning') {
       _setNewPeriode(newPeriode)
-      _resetValidation(namespace + '-startdato')
-      _resetValidation(namespace + '-sluttdato')
+      if (id === 'startdato') {
+        _resetValidation(namespace + '-startdato')
+      }
+      if (id === 'sluttdato') {
+        _resetValidation(namespace + '-sluttdato')
+      }
       return true
     } else {
       const otherKeys: Array<string> = _.filter(Object.keys(_keyAndYtelseMap), key => key !== oldMotregningKey)
@@ -425,10 +429,10 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
           _.set(newReplySed, index.fullKey + '.sluttdato', newPeriode.sluttdato)
         })
         dispatch(setReplySed(newReplySed))
-        if (validation[namespace + '[' + oldMotregningKey + ']-startdato']) {
+        if (id === 'startdato' && validation[namespace + '[' + oldMotregningKey + ']-startdato']) {
           dispatch(resetValidation(namespace + '[' + oldMotregningKey + ']-startdato'))
         }
-        if (validation[namespace + '[' + oldMotregningKey + ']-sluttdato']) {
+        if (id === 'sluttdato' && validation[namespace + '[' + oldMotregningKey + ']-sluttdato']) {
           dispatch(resetValidation(namespace + '[' + oldMotregningKey + ']-sluttdato'))
         }
         // we have to update the big index with the new motregningKey
@@ -769,7 +773,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
               sluttdato: t('label:sluttdato') + ' (' + t('label:innvilgelse').toLowerCase() + ') *'
             }}
             periodeType='simple'
-            setPeriode={(newPeriode: Periode) => setPeriode(newPeriode, motregningKey)}
+            setPeriode={(newPeriode: Periode, id: string) => setPeriode(newPeriode, id, motregningKey)}
             value={motregningKey === 'new-motregning'
               ? _newPeriode
               : {
@@ -861,22 +865,6 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column>
-            <HighContrastFlatknapp
-              mini
-              kompakt
-              data-amplitude='svarsed.editor.seekontoopplysning'
-              onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
-                buttonLogger(e)
-                seeKontoopplysninger()
-              }}
-            >
-              {t('label:oppgi-kontoopplysninger')}
-            </HighContrastFlatknapp>
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>
     )
   }
@@ -914,8 +902,24 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
             </Column>
           </Row>
           )}
+      <VerticalSeparatorDiv />
+      <AlignStartRow>
+        <Column>
+          <HighContrastFlatknapp
+            mini
+            kompakt
+            data-amplitude='svarsed.editor.seekontoopplysning'
+            onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+              buttonLogger(e)
+              seeKontoopplysninger()
+            }}
+          >
+            {t('label:oppgi-kontoopplysninger')}
+          </HighContrastFlatknapp>
+        </Column>
+      </AlignStartRow>
+      <VerticalSeparatorDiv size='0.5' />
     </PaddedDiv>
-
   )
 }
 

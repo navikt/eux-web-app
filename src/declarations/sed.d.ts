@@ -55,6 +55,8 @@ export interface Periode {
   startdato: string
   sluttdato?: string
   aapenPeriodeType?: string
+  // internal use, for periode labeling
+  __type ?: string
 }
 
 export interface PensjonPeriode {

@@ -17,7 +17,7 @@ const WrapperDiv = styled.div`
   align-items: center;
 `
 
-export interface PeriodProps {
+export interface PeriodeProps<T> {
   error: {
     startdato: string | null | undefined
     sluttdato: string | null | undefined
@@ -29,9 +29,9 @@ export interface PeriodProps {
   }
   periodeType?: PeriodeInputType
   namespace: string
-  setPeriode: (periode: Periode) => void
+  setPeriode: (periode: T, id: string) => void
   showLabel?: boolean
-  value: Periode | null | undefined
+  value: T | null | undefined
 }
 
 export const toFinalDateFormat = (date: string | undefined): string => {
@@ -47,7 +47,7 @@ export const toUIDateFormat = (date: string | undefined): string | undefined => 
   return newDate.isValid() ? newDate.format('DD.MM.YYYY') : date
 }
 
-const PeriodeInput = ({
+const PeriodeInput = <T extends Periode>({
   error,
   label = {},
   namespace,
@@ -55,20 +55,20 @@ const PeriodeInput = ({
   setPeriode,
   showLabel = true,
   value
-}: PeriodProps) => {
+}: PeriodeProps<T>) => {
   const { t } = useTranslation()
 
-  const [_periode, _setPeriode] = useState<Periode | null | undefined>(value)
+  const [_periode, _setPeriode] = useState<T | null | undefined>(value)
 
   const onStartDatoChanged = (startDato: string) => {
-    const newPeriode: Periode = _.cloneDeep(_periode) ?? {} as Periode
+    const newPeriode: T = _.cloneDeep(_periode) ?? {} as T
     newPeriode.startdato = toFinalDateFormat(startDato)
     _setPeriode(newPeriode)
-    setPeriode(newPeriode)
+    setPeriode(newPeriode, 'startdato')
   }
 
   const onEndDatoChanged = (sluttDato: string) => {
-    const newPeriode: Periode = _.cloneDeep(_periode) ?? {} as Periode
+    const newPeriode: T = _.cloneDeep(_periode) ?? {} as T
     newPeriode.sluttdato = toFinalDateFormat(sluttDato)
     if (_.isEmpty(newPeriode.sluttdato)) {
       newPeriode.aapenPeriodeType = 'åpen_sluttdato'
@@ -76,14 +76,14 @@ const PeriodeInput = ({
       delete newPeriode.aapenPeriodeType
     }
     _setPeriode(newPeriode)
-    setPeriode(newPeriode)
+    setPeriode(newPeriode, 'sluttdato')
   }
 
   const onCheckboxChanged = (checked: boolean) => {
-    const newPeriode: Periode = _.cloneDeep(_periode) ?? {} as Periode
+    const newPeriode: T = _.cloneDeep(_periode) ?? {} as T
     newPeriode.aapenPeriodeType = checked ? 'ukjent_sluttdato' : 'åpen_sluttdato'
     _setPeriode(newPeriode)
-    setPeriode(newPeriode)
+    setPeriode(newPeriode, 'aapenPeriodeType')
   }
 
   return (

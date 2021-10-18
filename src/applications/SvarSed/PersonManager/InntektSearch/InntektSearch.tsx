@@ -50,10 +50,14 @@ const InntektSearch = ({
     { label: t('el:option-inntektsfilter-DAGPENGER'), value: 'DAGPENGER' }
   ]
 
-  const setSearchPeriode = (p: Periode) => {
+  const setSearchPeriode = (p: Periode, id: string) => {
     _setSearchPeriode(p)
-    _resetValidation(namespace + '-startdato')
-    _resetValidation(namespace + '-sluttdato')
+    if (id === 'startdato') {
+      _resetValidation(namespace + '-startdato')
+    }
+    if (id === 'sluttdato') {
+      _resetValidation(namespace + '-sluttdato')
+    }
   }
 
   const setFilter = (filter: string) => {

@@ -96,17 +96,21 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
     _setVisible(visible ? _.filter(_visible, (it) => it !== index) : _visible.concat(index))
   }
 
-  const setPeriode = (periode: Periode, index: number) => {
+  const setPeriode = (periode: Periode, id: string, index: number) => {
     if (index < 0) {
       _setNewPeriode(periode)
-      _resetValidation(namespace + '-periode-startdato')
-      _resetValidation(namespace + '-periode-sluttdato')
+      if (id === 'startdato') {
+        _resetValidation(namespace + '-periode-startdato')
+      }
+      if (id === 'sluttdato') {
+        _resetValidation(namespace + '-periode-sluttdato')
+      }
     } else {
       dispatch(updateReplySed(`${target}[${index}].periode`, periode))
-      if (validation[namespace + getIdx(index) + '-periode-startdato']) {
+      if (id === 'startdato' && validation[namespace + getIdx(index) + '-periode-startdato']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-periode-startdato'))
       }
-      if (validation[namespace + getIdx(index) + '-periode-sluttdato']) {
+      if (id === 'sluttdato' && validation[namespace + getIdx(index) + '-periode-sluttdato']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-periode-sluttdato'))
       }
     }
@@ -233,7 +237,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
               startdato: getErrorFor(index, 'periode-startdato'),
               sluttdato: getErrorFor(index, 'periode-sluttdato')
             }}
-            setPeriode={(p: Periode) => setPeriode(p, index)}
+            setPeriode={(p: Periode, id: string) => setPeriode(p, id, index)}
             value={_periode}
             periodeType='simple'
           />

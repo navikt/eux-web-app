@@ -53,17 +53,21 @@ const DekkedePerioder: React.FC<PersonManagerFormProps> = ({
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationDekkedePeriodeProps>({}, validateDekkedePeriode)
 
-  const setPeriode = (periode: Periode, index: number) => {
+  const setPeriode = (periode: Periode, id: string, index: number) => {
     if (index < 0) {
       _setNewPeriode(periode)
-      _resetValidation(namespace + '-dekkede-startdato')
-      _resetValidation(namespace + '-dekkede-sluttdato')
+      if (id === 'startdato') {
+        _resetValidation(namespace + '-dekkede-startdato')
+      }
+      if (id === 'sluttdato') {
+        _resetValidation(namespace + '-dekkede-sluttdato')
+      }
     } else {
       dispatch(updateReplySed(`${target}[${index}]`, periode))
-      if (validation[namespace + '-perioderMedITrygdeordning' + getIdx(index) + '-startdato']) {
+      if (id === 'startdato' && validation[namespace + '-perioderMedITrygdeordning' + getIdx(index) + '-startdato']) {
         dispatch(resetValidation(namespace + '-perioderMedITrygdeordning' + getIdx(index) + '-startdato'))
       }
-      if (validation[namespace + '-perioderMedITrygdeordning' + getIdx(index) + '-sluttdato']) {
+      if (id === 'sluttdato' && validation[namespace + '-perioderMedITrygdeordning' + getIdx(index) + '-sluttdato']) {
         dispatch(resetValidation(namespace + '-perioderMedITrygdeordning' + getIdx(index) + '-sluttdato'))
       }
     }
@@ -132,7 +136,7 @@ const DekkedePerioder: React.FC<PersonManagerFormProps> = ({
               startdato: getErrorFor(index, 'startdato'),
               sluttdato: getErrorFor(index, 'sluttdato')
             }}
-            setPeriode={(p: Periode) => setPeriode(p, index)}
+            setPeriode={(p: Periode, id: string) => setPeriode(p, id, index)}
             value={_periode}
           />
           <Column>
