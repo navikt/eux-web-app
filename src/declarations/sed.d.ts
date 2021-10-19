@@ -378,6 +378,8 @@ export interface PeriodeAnnenForsikring extends Periode {
   annenTypeForsikringsperiode: string
 }
 
+export type ForsikringPeriode = Periode | PeriodeMedForsikring | PeriodeUtenForsikring | PeriodeAnnenForsikring
+
 export interface UenighetKonklusjon {
   vedtakFraDato: string
   kommentarTilVedtak: string

@@ -1,7 +1,9 @@
+import { clientClear } from 'actions/alert'
 import { createSavingAttachmentJob, resetSedAttachments, sendAttachmentToSed } from 'actions/attachments'
 import { sendSedInRina } from 'actions/svarpased'
 import SEDAttachmentSender from 'applications/Vedlegg/SEDAttachmentSender/SEDAttachmentSender'
 import GreenCircle from 'assets/icons/GreenCircle'
+import Alert from 'components/Alert/Alert'
 import Modal from 'components/Modal/Modal'
 import { AlertstripeDiv } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
@@ -18,7 +20,6 @@ import { ReplySed } from 'declarations/sed'
 import { CreateSedResponse } from 'declarations/types'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
-import AlertStripe from 'nav-frontend-alertstriper'
 import NavFrontendSpinner from 'nav-frontend-spinner'
 import { Undertittel } from 'nav-frontend-typografi'
 import {
@@ -114,6 +115,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
   const [_sedAttachments, setSedAttachments] = useState<JoarkBrowserItems>(attachments)
   const [_sedSent, setSedSent] = useState<boolean>(false)
   const [_finished, setFinished] = useState<boolean>(false)
+  const [_sendButtonClicked, _setSendButtonClicked] = useState<boolean>(false)
 
   const sedAttachmentSorter = (a: JoarkBrowserItem, b: JoarkBrowserItem): number => {
     if (b.type === 'joark' && a.type === 'sed') return -1
@@ -139,6 +141,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
   }
 
   const onSendSedClick = () => {
+    _setSendButtonClicked(true)
     dispatch(sendSedInRina(replySed?.saksnummer, sedCreatedResponse?.sedId))
     standardLogger('svarsed.editor.sendsvarsed.button', { type: 'modal' })
   }
@@ -188,12 +191,25 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
             {alertMessage && alertType && [types.SVARPASED_SED_CREATE_FAILURE].indexOf(alertType) >= 0 && (
               <>
                 <AlertstripeDiv>
-                  <AlertStripe type='advarsel'>
-                    {t(alertMessage)}
-                  </AlertStripe>
+                  <Alert status='ERROR' message={t(alertMessage)} onClose={() => dispatch(clientClear())}/>
                 </AlertstripeDiv>
                 <VerticalSeparatorDiv />
               </>
+            )}
+            {alertMessage && _sendButtonClicked && (alertType === types.SVARPASED_SED_SEND_SUCCESS || alertType === types.SVARPASED_SED_SEND_FAILURE) && (
+            <>
+              <AlertstripeDiv>
+                <Alert
+                  status={alertType === types.SVARPASED_SED_SEND_FAILURE ? 'ERROR' : 'OK'}
+                  message={t(alertMessage!)}
+                  onClose={() => {
+                    _setSendButtonClicked(false)
+                    dispatch(clientClear())
+                  }}
+                />
+              </AlertstripeDiv>
+              <VerticalSeparatorDiv />
+            </>
             )}
             <MinimalContentDiv>
               <SectionDiv>

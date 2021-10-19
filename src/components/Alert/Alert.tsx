@@ -52,12 +52,6 @@ export const Alert: React.FC<AlertProps> = ({
 }: AlertProps): JSX.Element | null => {
   let _message: JSX.Element | string | undefined = message
 
-  const onCloseIconClicked = (): void => {
-    if (_.isFunction(onClose)) {
-      onClose()
-    }
-  }
-
   const printError = (error: AlertError | string): string => {
     const errorMessage: Array<JSX.Element | string> = []
     if (_.isString(error)) {
@@ -98,10 +92,10 @@ export const Alert: React.FC<AlertProps> = ({
       type={errorTypes[status]}
     >
       {_message}
-      {onClose && (
+      {_.isFunction(onClose) && (
         <CloseIcon
           data-test-id='alert__close-icon'
-          onClick={onCloseIconClicked}
+          onClick={onClose}
         />
       )}
     </AlertDiv>

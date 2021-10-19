@@ -232,6 +232,7 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
                 key={namespace + '-kontoOrdinaer-swift-' + (utbetalingTilInstitusjon?.kontoOrdinaer?.swift ?? '')}
                 label={t('label:swift') + ' *'}
                 onChanged={setOrdinaerSwift}
+                placeholder={t('message:placeholder-swift')}
                 value={utbetalingTilInstitusjon?.kontoOrdinaer?.swift ?? ''}
               />
             </Column>

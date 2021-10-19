@@ -1,3 +1,4 @@
+import { clientClear } from 'actions/alert'
 import { saveEntry } from 'actions/localStorage'
 import { createSed, getPreviewFile, resetPreviewFile, sendSedInRina, updateReplySed } from 'actions/svarpased'
 import { resetAllValidation, resetValidation, viewValidation } from 'actions/validation'
@@ -10,6 +11,7 @@ import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
 import SendSEDModal from 'applications/SvarSed/SendSEDModal/SendSEDModal'
 import Attachments from 'applications/Vedlegg/Attachments/Attachments'
 import Add from 'assets/icons/Add'
+import Alert from 'components/Alert/Alert'
 
 import TextArea from 'components/Forms/TextArea'
 import Modal from 'components/Modal/Modal'
@@ -25,7 +27,6 @@ import FileFC, { File } from 'forhandsvisningsfil'
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import _ from 'lodash'
 import { buttonLogger, standardLogger, timeLogger } from 'metrics/loggers'
-import AlertStripe from 'nav-frontend-alertstriper'
 import { VenstreChevron } from 'nav-frontend-chevron'
 import { Systemtittel } from 'nav-frontend-typografi'
 import {
@@ -118,6 +119,7 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
   const [_modal, setModal] = useState<ModalContent | undefined>(undefined)
   const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
   const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
+  const [_sendButtonClicked, _setSendButtonClicked] = useState<boolean>(false)
   const performValidation = useGlobalValidation<ValidationSEDEditorProps>(validateSEDEditor)
 
   const [totalTime] = useState<Date>(new Date())
@@ -176,6 +178,7 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
   }
 
   const onSendSedClick = () => {
+    _setSendButtonClicked(true)
     dispatch(sendSedInRina(replySed?.saksnummer, sedCreatedResponse?.sedId))
     standardLogger('svarsed.editor.sendsvarsed.button', { type: 'editor' })
   }
@@ -407,9 +410,26 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
         <>
           <FlexDiv>
             <AlertstripeDiv>
-              <AlertStripe type='suksess'>
-                {t(alertMessage!)}
-              </AlertStripe>
+              <Alert status='OK' message={t(alertMessage!)} onClose={() => dispatch(clientClear())}/>
+            </AlertstripeDiv>
+            <div />
+          </FlexDiv>
+          <VerticalSeparatorDiv />
+        </>
+      )}
+      {_sendButtonClicked && alertMessage &&
+      (alertType === types.SVARPASED_SED_SEND_SUCCESS || alertType === types.SVARPASED_SED_SEND_FAILURE) && (
+        <>
+          <FlexDiv>
+            <AlertstripeDiv>
+              <Alert
+                status={alertType === types.SVARPASED_SED_SEND_FAILURE ? 'ERROR' : 'OK'}
+                message={t(alertMessage!)}
+                onClose={() => {
+                  _setSendButtonClicked(false)
+                  dispatch(clientClear())
+                }}
+              />
             </AlertstripeDiv>
             <div />
           </FlexDiv>

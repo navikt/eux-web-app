@@ -1,21 +1,22 @@
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
-import { validateForsikring, ValidationForsikringProps } from 'applications/SvarSed/PersonManager/Forsikring/validation'
+import { validateForsikringPeriode, ValidationForsikringPeriodeProps } from 'applications/SvarSed/PersonManager/Forsikring/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import Input from 'components/Forms/Input'
+import PeriodeInput from 'components/Forms/PeriodeInput'
 import Select from 'components/Forms/Select'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import {
-  Periode,
-  PeriodeAnnenForsikring,
-  PeriodeMedForsikring,
-  PeriodeUtenForsikring,
+  ForsikringPeriode,
+  Periode, PeriodeAnnenForsikring,
   U002Sed
 } from 'declarations/sed'
+import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -35,10 +36,6 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
-import PeriodeMedForsikringFC from './PeriodeMedForsikring'
-import PeriodeUtenForsikringFC from './PeriodeUtenForsikring'
-import PeriodeAnnenForsikringFC from './PeriodeAnnenForsikring'
-import PeriodeSimple from './PeriodeSimple'
 
 interface ForsikringSelector extends PersonManagerFormSelector {
   highContrast: boolean
@@ -49,8 +46,6 @@ const mapState = (state: State): ForsikringSelector => ({
   replySed: state.svarpased.replySed,
   validation: state.validation.status
 })
-
-type AllPeriode = Periode | PeriodeMedForsikring | PeriodeUtenForsikring | PeriodeAnnenForsikring
 
 const Forsikring: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
@@ -67,32 +62,16 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-forsikring`
 
   const [_newType, _setNewType] = useState<string>('perioderAnsattMedForsikring')
-  const [_newPeriode, _setNewPeriode] = useState<Periode |undefined>(undefined)
+  const [_newPeriode, _setNewPeriode] = useState<ForsikringPeriode |undefined>(undefined)
+  const [_allPeriods, _setAllPeriods ] = useState<Array<ForsikringPeriode>>([])
 
-  const [_allPeriods, _setAllPeriods ] = useState<Array<AllPeriode>>([])
-
-  const getId = (p: Periode): string => (p?.startdato ?? '') + '-' + (p?.sluttdato ?? p.aapenPeriodeType)
+  const getId = (p: ForsikringPeriode): string => (p.__type + '-' + p?.startdato ?? '') + '-' + (p?.sluttdato ?? p.aapenPeriodeType)
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>(getId)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useValidation<ValidationForsikringProps>({}, validateForsikring)
-
-  const periodeRender: {[k in string]: any} = {
-    perioderAnsattMedForsikring: PeriodeMedForsikringFC,
-    perioderSelvstendigMedForsikring : PeriodeMedForsikringFC,
-    perioderAnsattUtenForsikring : PeriodeUtenForsikringFC,
-    perioderSelvstendigUtenForsikring: PeriodeUtenForsikringFC,
-    perioderSyk: PeriodeSimple,
-    perioderSvangerskapBarn : PeriodeSimple,
-    perioderUtdanning : PeriodeSimple,
-    perioderMilitaertjeneste: PeriodeSimple,
-    perioderFrihetsberoevet: PeriodeSimple,
-    perioderFrivilligForsikring: PeriodeSimple,
-    perioderKompensertFerie: PeriodeSimple,
-    perioderAnnenForsikring: PeriodeAnnenForsikringFC
-  }
+  const [_validation, _resetValidation, performValidation] = useValidation<ValidationForsikringPeriodeProps>({}, validateForsikringPeriode)
 
   useEffect(() => {
-    let periodes: Array<AllPeriode> = [];
+    let periodes: Array<ForsikringPeriode> = [];
     (replySed as U002Sed)?.perioderAnsattMedForsikring?.forEach(p => periodes.push({...p, __type: 'perioderAnsattMedForsikring'}));
     (replySed as U002Sed)?.perioderAnsattUtenForsikring?.forEach(p => periodes.push({...p, __type: 'perioderAnsattUtenForsikring'}));
     (replySed as U002Sed)?.perioderSelvstendigMedForsikring?.forEach(p => periodes.push({...p, __type: 'perioderSelvstendigMedForsikring'}));
@@ -105,7 +84,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
     (replySed as U002Sed)?.perioderAnnenForsikring?.forEach(p => periodes.push({...p, __type: 'perioderAnnenForsikring'}));
     (replySed as U002Sed)?.perioderFrivilligForsikring?.forEach(p => periodes.push({...p, __type: 'perioderFrivilligForsikring'}));
     (replySed as U002Sed)?.perioderKompensertFerie?.forEach(p => periodes.push({...p, __type: 'perioderKompensertFerie'}));
-    _setAllPeriods(periodes.sort((a: AllPeriode, b: AllPeriode) => moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1))
+    _setAllPeriods(periodes.sort((a: ForsikringPeriode, b: ForsikringPeriode) => moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1))
   }, [replySed])
 
   const periodeOptions: Options = [
@@ -128,24 +107,16 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
     _resetValidation(namespace + '-type')
   }
 
-  const setPeriode = (periode: AllPeriode, id: string, index: number) => {
+  const setPeriode = (periode: ForsikringPeriode, id: string, index: number) => {
     if (index < 0) {
       _setNewPeriode(periode)
-      if (id === 'startdato') {
-        _resetValidation(namespace + '-startdato')
-      }
-      if (id === 'sluttdato') {
-        _resetValidation(namespace + '-sluttdato')
-      }
+      _resetValidation(namespace + '-' + id)
     } else {
       const type = periode.__type
       delete periode.__type
       dispatch(updateReplySed(`${type}[${index}]`, periode))
-      if (id === 'startdato' && validation[namespace + getIdx(index) + '-startdato']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-startdato'))
-      }
-      if (id === 'sluttdato' && validation[namespace + getIdx(index) + '-sluttdato']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-sluttdato'))
+      if (validation[namespace + getIdx(index) + '-' + id]) {
+        dispatch(resetValidation(namespace + getIdx(index) + '-' + id))
       }
     }
   }
@@ -160,25 +131,26 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
     resetForm()
   }
 
-  const onRemove = (periode: AllPeriode) => {
+  const onRemove = (periode: ForsikringPeriode) => {
     removeFromDeletion(periode)
-    let newPeriodes: Array<AllPeriode> = _.get(replySed, periode.__type!) as Array<AllPeriode>
+    let newPeriodes: Array<ForsikringPeriode> = _.get(replySed, periode.__type!) as Array<ForsikringPeriode>
     newPeriodes = _.filter(newPeriodes, p => p.startdato !== periode.startdato && p.sluttdato !== periode.sluttdato)
     dispatch(updateReplySed(periode.__type, newPeriodes))
   }
 
   const onAdd = () => {
+    let newPeriodes: Array<any> | undefined = _.get(replySed, _newType!)
+    if (_.isNil(newPeriodes)) {
+      newPeriodes = []
+    }
     const valid: boolean = performValidation({
       periode: _newPeriode as Periode,
+      perioder: newPeriodes,
       type: _newType,
       namespace: namespace,
       personName: personName
     })
     if (valid) {
-      let newPeriodes: Array<any> | undefined = _.get(replySed, _newType!)
-      if (_.isNil(newPeriodes)) {
-        newPeriodes = []
-      }
       newPeriodes = newPeriodes.concat(_newPeriode)
       dispatch(updateReplySed(_newType, newPeriodes))
       standardLogger('svarsed.editor.adresse.add')
@@ -186,16 +158,13 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const renderRow = (periode: AllPeriode | null, index: number) => {
+  const renderRow = (periode: ForsikringPeriode | null, index: number) => {
     const candidateForDeletion = index < 0 ? false : isInDeletion(periode)
     const idx = getIdx(index)
-    const getErrorFor = (el: string): string | undefined => {
-      return index < 0
-        ? _validation[namespace + idx + '-' + el]?.feilmelding
-        : validation[namespace + idx + '-' + el]?.feilmelding
-    }
+    const v: Validation = index < 0 ? _validation : validation
+
     const _type: string = index < 0 ? _newType! : periode!.__type!
-    const Component = periodeRender[_type]
+    const _periode: ForsikringPeriode = (index < 0 ? _newPeriode : periode) ?? {} as ForsikringPeriode
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow>
@@ -204,7 +173,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
               ? (<Select
                   closeMenuOnSelect
                   data-test-id={namespace + idx + '-type'}
-                  feil={getErrorFor('type')}
+                  feil={v[namespace + idx + '-type']?.feilmelding}
                   highContrast={highContrast}
                   id={namespace + idx + '-type'}
                   key={namespace + idx + '-type-' + _newType}
@@ -221,12 +190,18 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv/>
-        <Component
-          periode={periode}
-          namespace={namespace + idx}
-          setPeriode={(p: AllPeriode, id: string) => setPeriode(p, id, index)}
-          validation={validation}
-          addRemove={(
+        <AlignStartRow>
+          <PeriodeInput
+            key={'' + _periode?.startdato + _periode?.sluttdato}
+            namespace={namespace}
+            error={{
+              startdato: v[namespace + '-startdato']?.feilmelding,
+              sluttdato: v[namespace + '-sluttdato']?.feilmelding,
+            }}
+            setPeriode={(p: ForsikringPeriode, id: string) => setPeriode(p, id, index)}
+            value={_periode}
+          />
+          <Column>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}
@@ -237,8 +212,47 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
               onAddNew={() => onAdd()}
               onCancelNew={onCancel}
             />
-          )}
-        />
+          </Column>
+        </AlignStartRow>
+        <VerticalSeparatorDiv/>
+        {/**
+
+        const periodeRender: {[k in string]: any} = {
+        perioderAnsattMedForsikring: PeriodeMedForsikringFC,
+        perioderSelvstendigMedForsikring : PeriodeMedForsikringFC,
+        perioderAnsattUtenForsikring : PeriodeUtenForsikringFC,
+        perioderSelvstendigUtenForsikring: PeriodeUtenForsikringFC,
+        perioderSyk: PeriodeSimple,
+        perioderSvangerskapBarn : PeriodeSimple,
+        perioderUtdanning : PeriodeSimple,
+        perioderMilitaertjeneste: PeriodeSimple,
+        perioderFrihetsberoevet: PeriodeSimple,
+        perioderFrivilligForsikring: PeriodeSimple,
+        perioderKompensertFerie: PeriodeSimple,
+        perioderAnnenForsikring: PeriodeAnnenForsikringFC
+      }
+
+        */}
+        {_type === 'perioderAnnenForsikring' && (
+          <><AlignStartRow>
+          <Column>
+            <Input
+              feil={validation[namespace + '-annenTypeForsikringsperiode']?.feilmelding}
+              namespace={namespace}
+              id='annenTypeForsikringsperiode'
+              key={'annenTypeForsikringsperiode-' + (_periode as PeriodeAnnenForsikring)?.annenTypeForsikringsperiode ?? ''}
+              label={t('label:virksomhetens-art')}
+              onChanged={(v: string) => setPeriode({
+                ..._periode,
+                annenTypeForsikringsperiode: v
+              }, _type, index)}
+              value={(_periode as PeriodeAnnenForsikring)?.annenTypeForsikringsperiode ?? ''}
+            />
+          </Column>
+          </AlignStartRow>
+          <VerticalSeparatorDiv/>
+          </>
+        )}
       </RepeatableRow>
     )
   }

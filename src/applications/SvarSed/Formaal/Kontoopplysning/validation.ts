@@ -94,6 +94,14 @@ export const validateKontoopplysning = (
       } as FeiloppsummeringFeil
       hasErrors = true
     }
+  } else {
+    if (!uti?.kontoSepa?.swift?.trim().match(/^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/)) {
+      v[namespace + '-kontoSepa-swift'] = {
+        feilmelding: t('message:validation-invalidSwiftTil', { person: formalName }),
+        skjemaelementId: namespace + '-kontoSepa-swift'
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
   }
 
   if (hasErrors) {

@@ -4,12 +4,9 @@ import { validateMotregninger } from 'applications/SvarSed/Formaal/Motregning/va
 import { validateProsedyreVedUenighet } from 'applications/SvarSed/Formaal/ProsedyreVedUenighet/validation'
 import { validateVedtak } from 'applications/SvarSed/Formaal/Vedtak/validation'
 import { validateAdresser } from 'applications/SvarSed/PersonManager/Adresser/validation'
-import { validatePerioderAnnen } from 'applications/SvarSed/PersonManager/Arbeidsforhold/validationPeriodeAnnen'
-import { validatePerioderMedForsikring } from 'applications/SvarSed/PersonManager/Arbeidsforhold/validationPeriodeMedForsikring'
-import { validatePerioderSimple } from 'applications/SvarSed/PersonManager/Arbeidsforhold/validationPeriodeSimple'
-import { validatePerioderUtenForsikring } from 'applications/SvarSed/PersonManager/Arbeidsforhold/validationPeriodeUtenForsikring'
 import { validateBeløpNavnOgValutas } from 'applications/SvarSed/PersonManager/BeløpNavnOgValuta/validation'
 import { validateFamilierelasjoner } from 'applications/SvarSed/PersonManager/Familierelasjon/validation'
+import { validateAlleForsikringPerioder } from 'applications/SvarSed/PersonManager/Forsikring/validation'
 import { validateAllGrunnlagForBosetting } from 'applications/SvarSed/PersonManager/GrunnlagForBosetting/validation'
 import { validateGrunnTilOpphor } from 'applications/SvarSed/PersonManager/GrunnTilOpphør/validation'
 import { validateLoennsopplysninger } from 'applications/SvarSed/PersonManager/InntektForm/validationInntektForm'
@@ -37,6 +34,7 @@ import {
   F002Sed,
   FamilieRelasjon,
   Flyttegrunn,
+  ForsikringPeriode,
   FSed,
   HSed,
   PensjonPeriode,
@@ -255,64 +253,23 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
     hasErrors = hasErrors || _error
 
     if (replySed.sedType === 'U002' || replySed.sedType === 'U017') {
-      _error = validatePerioderMedForsikring(v, t, {
-        perioderMedForsikring: (replySed as U002Sed)?.perioderAnsattMedForsikring,
-        namespace: `personmanager-${personID}-forsikring-perioderAnsattMedForsikring`,
-        includeAddress: false
-      })
-      hasErrors = hasErrors || _error
-
-      _error = validatePerioderSimple(v, t, {
-        perioder: (replySed as U002Sed)?.perioderSelvstendigMedForsikring,
-        namespace: `personmanager-${personID}-forsikring-perioderSelvstendigMedForsikring`
-      })
-      hasErrors = hasErrors || _error
-
-      _error = validatePerioderUtenForsikring(v, t, {
-        perioderUtenForsikring: (replySed as U002Sed)?.perioderAnsattUtenForsikring,
-        namespace: `personmanager-${personID}-forsikring-perioderAnsattUtenForsikring`
-      })
-      hasErrors = hasErrors || _error
-
-      _error = validatePerioderUtenForsikring(v, t, {
-        perioderUtenForsikring: (replySed as U002Sed)?.perioderSelvstendigUtenForsikring,
-        namespace: `personmanager-${personID}-forsikring-perioderSelvstendigUtenForsikring`
-      })
-      hasErrors = hasErrors || _error
-
-      _error = validatePerioderSimple(v, t, {
-        perioder: (replySed as U002Sed)?.perioderFrihetsberoevet,
-        namespace: `personmanager-${personID}-forsikring-perioderFrihetsberoevet`
-      })
-      hasErrors = hasErrors || _error
-
-      _error = validatePerioderSimple(v, t, {
-        perioder: (replySed as U002Sed)?.perioderSvangerskapBarn,
-        namespace: `personmanager-${personID}-forsikring-perioderSvangerskapBarn`
-      })
-      hasErrors = hasErrors || _error
-
-      _error = validatePerioderSimple(v, t, {
-        perioder: (replySed as U002Sed)?.perioderSyk,
-        namespace: `personmanager-${personID}-forsikring-perioderSyk`
-      })
-      hasErrors = hasErrors || _error
-
-      _error = validatePerioderSimple(v, t, {
-        perioder: (replySed as U002Sed)?.perioderUtdanning,
-        namespace: `personmanager-${personID}-forsikring-perioderUtdanning`
-      })
-      hasErrors = hasErrors || _error
-
-      _error = validatePerioderSimple(v, t, {
-        perioder: (replySed as U002Sed)?.perioderMilitaertjeneste,
-        namespace: `personmanager-${personID}-forsikring-perioderMilitaertjeneste`
-      })
-      hasErrors = hasErrors || _error
-
-      _error = validatePerioderAnnen(v, t, {
-        perioderAnnen: (replySed as U002Sed)?.perioderAnnenForsikring,
-        namespace: `personmanager-${personID}-forsikring-perioderAnnenForsikring`
+      //
+      const perioder: {[k in string]: Array<ForsikringPeriode>| undefined} = {
+        perioderAnsattMedForsikring: (replySed as U002Sed)?.perioderAnsattMedForsikring,
+        perioderSelvstendigMedForsikring: (replySed as U002Sed)?.perioderSelvstendigMedForsikring,
+        perioderAnsattUtenForsikring: (replySed as U002Sed)?.perioderAnsattUtenForsikring,
+        perioderSelvstendigUtenForsikring: (replySed as U002Sed)?.perioderSelvstendigUtenForsikring,
+        perioderSyk: (replySed as U002Sed)?.perioderSyk,
+        perioderSvangerskapBarn: (replySed as U002Sed)?.perioderSvangerskapBarn,
+        perioderUtdanning: (replySed as U002Sed)?.perioderUtdanning,
+        perioderMilitaertjeneste: (replySed as U002Sed)?.perioderMilitaertjeneste,
+        perioderFrihetsberoevet: (replySed as U002Sed)?.perioderFrihetsberoevet,
+        perioderFrivilligForsikring: (replySed as U002Sed)?.perioderFrivilligForsikring,
+        perioderKompensertFerie: (replySed as U002Sed)?.perioderKompensertFerie,
+        perioderAnnenForsikring: (replySed as U002Sed)?.perioderAnnenForsikring
+      }
+      _error = validateAlleForsikringPerioder(v, t, {
+        perioder, namespace: `personmanager-${personID}-trygdeordninger`, personName
       })
       hasErrors = hasErrors || _error
 
