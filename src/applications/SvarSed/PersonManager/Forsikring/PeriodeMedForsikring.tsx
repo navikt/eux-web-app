@@ -26,7 +26,7 @@ const PeriodeMedForsikringFC: React.FC<PeriodeMedForsikringProps> = ({
         namespace={namespace}
         error={{
           startdato: validation[namespace + '-startdato']?.feilmelding,
-          sluttdato: validation[namespace + '-sluttdato']?.feilmelding,
+          sluttdato: validation[namespace + '-sluttdato']?.feilmelding
         }}
         setPeriode={setPeriode}
         value={periode}

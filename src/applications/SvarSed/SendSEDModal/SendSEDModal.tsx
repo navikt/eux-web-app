@@ -191,25 +191,25 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
             {alertMessage && alertType && [types.SVARPASED_SED_CREATE_FAILURE].indexOf(alertType) >= 0 && (
               <>
                 <AlertstripeDiv>
-                  <Alert status='ERROR' message={t(alertMessage)} onClose={() => dispatch(clientClear())}/>
+                  <Alert status='ERROR' message={t(alertMessage)} onClose={() => dispatch(clientClear())} />
                 </AlertstripeDiv>
                 <VerticalSeparatorDiv />
               </>
             )}
             {alertMessage && _sendButtonClicked && (alertType === types.SVARPASED_SED_SEND_SUCCESS || alertType === types.SVARPASED_SED_SEND_FAILURE) && (
-            <>
-              <AlertstripeDiv>
-                <Alert
-                  status={alertType === types.SVARPASED_SED_SEND_FAILURE ? 'ERROR' : 'OK'}
-                  message={t(alertMessage!)}
-                  onClose={() => {
-                    _setSendButtonClicked(false)
-                    dispatch(clientClear())
-                  }}
-                />
-              </AlertstripeDiv>
-              <VerticalSeparatorDiv />
-            </>
+              <>
+                <AlertstripeDiv>
+                  <Alert
+                    status={alertType === types.SVARPASED_SED_SEND_FAILURE ? 'ERROR' : 'OK'}
+                    message={t(alertMessage!)}
+                    onClose={() => {
+                      _setSendButtonClicked(false)
+                      dispatch(clientClear())
+                    }}
+                  />
+                </AlertstripeDiv>
+                <VerticalSeparatorDiv />
+              </>
             )}
             <MinimalContentDiv>
               <SectionDiv>

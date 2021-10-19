@@ -256,7 +256,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
       const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
 
       // if we will remove the last element of an array, them remove the whole motregninger
-      let partialKey = fullKey.match(/^barn\[\d+\]/)![0] + '.motregninger'
+      const partialKey = fullKey.match(/^barn\[\d+\]/)![0] + '.motregninger'
       const motregninger = _.get(newReplySed, partialKey)
       if (motregninger.length === 1) {
         _.unset(newReplySed, partialKey)
@@ -294,7 +294,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
       const clonedMotregning: IMotregning = _.get(newReplySed, fullKey) as IMotregning
 
       // if we will remove the last element of an array, them remove the whole motregninger
-      let partialKey = fullKey.match(/^barn\[\d+\]/)![0] + '.motregninger'
+      const partialKey = fullKey.match(/^barn\[\d+\]/)![0] + '.motregninger'
       const motregninger = _.get(newReplySed, partialKey)
       if (motregninger.length === 1) {
         _.unset(newReplySed, partialKey)

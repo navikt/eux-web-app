@@ -57,7 +57,7 @@ const localStorageReducer = (
     }
 
     case types.LOCALSTORAGE_REMOVE_ALL : {
-      window.localStorage.setItem((action as ActionWithPayload).payload.key, "[]")
+      window.localStorage.setItem((action as ActionWithPayload).payload.key, '[]')
       return initialLocalStorageState
     }
 

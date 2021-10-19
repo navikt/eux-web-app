@@ -333,10 +333,10 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
           <HorizontalSeparatorDiv />
           <Column className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
             <DateInput
-              id={'fdato'}
+              id='fdato'
               data-test-id='familierelasjoner__input-fdato'
               key={'familierelasjoner__input-fdato-' + _relation.fdato}
-              namespace={'familierelasjoner__input'}
+              namespace='familierelasjoner__input'
               feil={_validation['familierelasjoner__input-fdato']?.feilmelding}
               label={t('label:fødselsdato')}
               onChanged={(date: string) => {

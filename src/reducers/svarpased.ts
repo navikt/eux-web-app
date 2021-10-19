@@ -148,7 +148,7 @@ const svarpasedReducer = (
 
     case types.SVARPASED_SED_STATUS_SUCCESS: {
       const sedId: string = (action as ActionWithPayload).context.sedId
-      let newSedStatus = _.cloneDeep(state.sedStatus)
+      const newSedStatus = _.cloneDeep(state.sedStatus)
       newSedStatus[sedId] = (action as ActionWithPayload).payload.status
       return {
         ...state,
@@ -158,7 +158,7 @@ const svarpasedReducer = (
 
     case types.SVARPASED_SED_STATUS_FAILURE: {
       const sedId: string = (action as ActionWithPayload).context.sedId
-      let newSedStatus = _.cloneDeep(state.sedStatus)
+      const newSedStatus = _.cloneDeep(state.sedStatus)
       newSedStatus[sedId] = null
       return {
         ...state,
@@ -168,7 +168,7 @@ const svarpasedReducer = (
 
     case types.SVARPASED_SED_STATUS_REQUEST: {
       const sedId: string = (action as ActionWithPayload).context.sedId
-      let newSedStatus = _.cloneDeep(state.sedStatus)
+      const newSedStatus = _.cloneDeep(state.sedStatus)
       delete newSedStatus[sedId]
       return {
         ...state,
@@ -188,14 +188,11 @@ const svarpasedReducer = (
         sedSendResponse: null
       }
 
-    case types.SVARPASED_SED_SEND_REQUEST:
+    case types.SVARPASED_SED_SEND_SUCCESS:
       return {
         ...state,
-        sedSendResponse: undefined
+        sedSendResponse: { success: true }
       }
-
-
-
 
     case types.SVARPASED_PARENTSED_SET:
       return {

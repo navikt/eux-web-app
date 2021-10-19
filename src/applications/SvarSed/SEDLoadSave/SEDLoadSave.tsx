@@ -72,7 +72,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
   }
 
   const handleLoadDraft = (e: React.ChangeEvent<HTMLButtonElement>, savedEntry: LocalStorageEntry<ReplySed>) => {
-    buttonLogger(e, {type: savedEntry.content.sedType})
+    buttonLogger(e, { type: savedEntry.content.sedType })
     if (!Object.prototype.hasOwnProperty.call(sedStatus, savedEntry.id)) {
       setSedStatusRequested(savedEntry.id)
       dispatch(getSedStatus(savedEntry.content.saksnummer!, savedEntry.id))
@@ -187,9 +187,8 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
                     {_sedStatusRequested === savedEntry.id
                       ? t('message:loading-checking-sed-status')
                       : (hasSentStatus(savedEntry.id)
-                        ? t('label:sendt')
-                        : t('el:button-load'))
-                    }
+                          ? t('label:sendt')
+                          : t('el:button-load'))}
                   </HighContrastFlatknapp>
                   <AddRemovePanel
                     existingItem
@@ -206,15 +205,15 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
         ))}
         {!_.isEmpty(entries) && (
           <>
-            <VerticalSeparatorDiv/>
-              <HighContrastFlatknapp
-                mini
-                kompakt
-                data-amplitude='svarsed.sidebar.removeall'
-                onClick={onRemoveAll}
-              >
-                {t('el:button-remove-all')}
-           </HighContrastFlatknapp>
+            <VerticalSeparatorDiv />
+            <HighContrastFlatknapp
+              mini
+              kompakt
+              data-amplitude='svarsed.sidebar.removeall'
+              onClick={onRemoveAll}
+            >
+              {t('el:button-remove-all')}
+            </HighContrastFlatknapp>
           </>
         )}
       </LoadSaveDiv>

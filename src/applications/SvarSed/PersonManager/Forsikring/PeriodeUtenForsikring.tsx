@@ -13,20 +13,20 @@ export interface PeriodeUtenForsikringProps {
 }
 
 const PeriodeUtenForsikringFC: React.FC<PeriodeUtenForsikringProps> = ({
-   namespace,
-   periode,
-   setPeriode,
-   validation,
-   addRemove
- }: PeriodeUtenForsikringProps): JSX.Element => {
-return (
+  namespace,
+  periode,
+  setPeriode,
+  validation,
+  addRemove
+}: PeriodeUtenForsikringProps): JSX.Element => {
+  return (
     <AlignStartRow>
       <PeriodeInput
         key={'' + periode?.startdato + periode?.sluttdato}
         namespace={namespace}
         error={{
           startdato: validation[namespace + '-startdato']?.feilmelding,
-          sluttdato: validation[namespace + '-sluttdato']?.feilmelding,
+          sluttdato: validation[namespace + '-sluttdato']?.feilmelding
         }}
         setPeriode={setPeriode}
         value={periode}

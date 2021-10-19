@@ -40,7 +40,7 @@ export default [
         sistEndretDato: '2020-01-03',
         svarsedType: 'U002',
         svarsedDisplay: 'Description for U002',
-        svarsedId: '603e18ebd5b549b1b5c0f53c58558116_2',
+        svarsedId: '603e18ebd5b549b1b5c0f53c58558116_2'
       },
       {
         sedTittel: 'Description for U003',
@@ -51,7 +51,7 @@ export default [
         sistEndretDato: '2020-01-04',
         svarsedType: 'U004',
         svarsedDisplay: 'Description for U004',
-        svarsedId: '603e18ebd5b549b1b5c0f53c58558117_2',
+        svarsedId: '603e18ebd5b549b1b5c0f53c58558117_2'
       }, {
         sedTittel: 'Description for U00X',
         status: 'new',
@@ -96,7 +96,7 @@ export default [
         sistEndretDato: '2021-02-19',
         svarsedType: 'H002',
         svarsedDisplay: 'Create H002',
-        svarsedId: '8edd012b62d84a768cbd4a734929076d_2',
+        svarsedId: '8edd012b62d84a768cbd4a734929076d_2'
       }
     ]
   },
@@ -119,7 +119,7 @@ export default [
         sistEndretDato: '2021-02-18',
         svarsedType: 'U002',
         svarsedDisplay: 'Create U002 Reply',
-        svarsedId: '8edd012b62d84a768cbd4a734929076d_2',
+        svarsedId: '8edd012b62d84a768cbd4a734929076d_2'
       }
     ]
   }

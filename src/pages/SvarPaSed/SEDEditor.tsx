@@ -410,7 +410,7 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
         <>
           <FlexDiv>
             <AlertstripeDiv>
-              <Alert status='OK' message={t(alertMessage!)} onClose={() => dispatch(clientClear())}/>
+              <Alert status='OK' message={t(alertMessage!)} onClose={() => dispatch(clientClear())} />
             </AlertstripeDiv>
             <div />
           </FlexDiv>

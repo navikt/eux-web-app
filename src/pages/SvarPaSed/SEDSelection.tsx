@@ -511,9 +511,8 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                                 {_sedStatusRequested === connectedSed.svarsedId
                                   ? t('message:loading-checking-sed-status')
                                   : (hasSentStatus(connectedSed.svarsedId)
-                                    ? t('label:sed-already-sent', {sed: connectedSed.svarsedType})
-                                    : t('label:gå-til-draft'))
-                                }
+                                      ? t('label:sed-already-sent', { sed: connectedSed.svarsedType })
+                                      : t('label:gå-til-draft'))}
                               </HighContrastKnapp>
                               )
                             : connectedSed.svarsedType
