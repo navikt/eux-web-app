@@ -20,6 +20,7 @@ export const initialLoadingState: LoadingState = {
   gettingSaksbehandler: false,
   gettingSavedItems: false,
   gettingServerinfo: false,
+  gettingSedStatus: false,
   searchingPerson: false,
   sendingVedlegg: false,
   sendingSak: false,
@@ -222,6 +223,19 @@ const loadingReducer = (
       return {
         ...state,
         creatingSvarPaSed: false
+      }
+
+    case types.SVARPASED_SED_STATUS_REQUEST:
+      return {
+        ...state,
+        gettingSedStatus: true
+      }
+
+    case types.SVARPASED_SED_STATUS_SUCCESS:
+    case types.SVARPASED_SED_STATUS_FAILURE:
+      return {
+        ...state,
+        gettingSedStatus: false
       }
 
     case types.VEDLEGG_POST_REQUEST:

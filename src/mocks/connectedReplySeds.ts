@@ -17,7 +17,8 @@ export default [
         sedUrl: 'http://...',
         sistEndretDato: '2020-01-02',
         svarsedType: 'F002',
-        svarsedDisplay: 'Description for F002'
+        svarsedDisplay: 'Description for F002',
+        svarsedId: '603e18ebd5b549b1b5c0f53c58558115_2'
       }
     ]
   }, {
@@ -38,7 +39,8 @@ export default [
         sedUrl: 'http://...',
         sistEndretDato: '2020-01-03',
         svarsedType: 'U002',
-        svarsedDisplay: 'Description for U002'
+        svarsedDisplay: 'Description for U002',
+        svarsedId: '603e18ebd5b549b1b5c0f53c58558116_2',
       },
       {
         sedTittel: 'Description for U003',
@@ -48,7 +50,8 @@ export default [
         sedUrl: 'http://...',
         sistEndretDato: '2020-01-04',
         svarsedType: 'U004',
-        svarsedDisplay: 'Description for U004'
+        svarsedDisplay: 'Description for U004',
+        svarsedId: '603e18ebd5b549b1b5c0f53c58558117_2',
       }, {
         sedTittel: 'Description for U00X',
         status: 'new',
@@ -57,7 +60,8 @@ export default [
         sedUrl: 'http://...',
         sistEndretDato: '2020-01-04',
         svarsedType: 'U017',
-        svarsedDisplay: 'Description for U017'
+        svarsedDisplay: 'Description for U017',
+        svarsedId: '603e18ebd5b549b1b5c0f53c58558118_2'
       }
     ]
   },
@@ -81,7 +85,8 @@ export default [
         sistEndretDato: '2021-02-18',
         svarsedType: 'H002',
         svarsedDisplay: 'Create H002',
-        lenkeHvisForrigeSedMaaJournalfoeres: 'http://www.nav.no'
+        lenkeHvisForrigeSedMaaJournalfoeres: 'http://www.nav.no',
+        svarsedId: '8edd012b62d84a768cbd4a734929076f_2'
       }, {
         sedTittel: 'Horizontal',
         sedType: 'H001',
@@ -90,7 +95,8 @@ export default [
         status: 'received',
         sistEndretDato: '2021-02-19',
         svarsedType: 'H002',
-        svarsedDisplay: 'Create H002'
+        svarsedDisplay: 'Create H002',
+        svarsedId: '8edd012b62d84a768cbd4a734929076d_2',
       }
     ]
   },
@@ -112,7 +118,8 @@ export default [
         status: 'received',
         sistEndretDato: '2021-02-18',
         svarsedType: 'U002',
-        svarsedDisplay: 'Create U002 Reply'
+        svarsedDisplay: 'Create U002 Reply',
+        svarsedId: '8edd012b62d84a768cbd4a734929076d_2',
       }
     ]
   }

@@ -30,3 +30,10 @@ export const saveEntry = (key: string, entry: LocalStorageEntry<ReplySed>): Acti
     entry: entry
   }
 })
+
+export const removeAll = (key: string) => ({
+  type: types.LOCALSTORAGE_REMOVE_ALL,
+  payload: {
+    key: key
+  }
+})

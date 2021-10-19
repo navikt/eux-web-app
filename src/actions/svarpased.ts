@@ -66,6 +66,23 @@ export const getPreviewFile = (rinaSakId: string, replySed: ReplySed) => {
   })
 }
 
+export const getSedStatus = ( rinaSakId: string, sedId: string) => {
+  return call({
+    url: sprintf(urls.API_SED_STATUS_URL, { rinaSakId: rinaSakId, sedId: sedId }),
+    expectedPayload: {
+      status: 'sent'
+    },
+    context: {
+      sedId: sedId
+    },
+    type: {
+      request: types.SVARPASED_SED_STATUS_REQUEST,
+      success: types.SVARPASED_SED_STATUS_SUCCESS,
+      failure: types.SVARPASED_SED_STATUS_FAILURE
+    }
+  })
+}
+
 export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload<ConnectedSed>>> = (
   saksnummerOrFnr: string
 ): ThunkResult<ActionWithPayload<ConnectedSed>> => {
@@ -115,7 +132,7 @@ export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed
     context: {
       saksnummer: saksnummer,
       sedUrl: connectedSed.sedUrl,
-      sedId: connectedSed.sedId + '-' + connectedSed.sedType
+      sedId: connectedSed.svarsedId
     },
     type: {
       request: types.SVARPASED_REPLYSED_QUERY_REQUEST,

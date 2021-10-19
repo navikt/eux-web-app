@@ -18,6 +18,7 @@ export interface SvarpasedState {
   seds: Seds | undefined
   sedCreatedResponse: CreateSedResponse | null | undefined
   sedSendResponse: any | null | undefined
+  sedStatus: {[k in string]: string | null}
 }
 
 export const initialSvarpasedState: SvarpasedState = {
@@ -30,7 +31,8 @@ export const initialSvarpasedState: SvarpasedState = {
   replySed: undefined,
   seds: undefined,
   sedCreatedResponse: undefined,
-  sedSendResponse: undefined
+  sedSendResponse: undefined,
+  sedStatus: {}
 }
 
 const svarpasedReducer = (
@@ -144,10 +146,40 @@ const svarpasedReducer = (
         sedCreatedResponse: undefined
       }
 
-    case types.SVARPASED_SED_SEND_SUCCESS:
+    case types.SVARPASED_SED_STATUS_SUCCESS: {
+      const sedId: string = (action as ActionWithPayload).context.sedId
+      let newSedStatus = _.cloneDeep(state.sedStatus)
+      newSedStatus[sedId] = (action as ActionWithPayload).payload.status
       return {
         ...state,
-        sedSendResponse: { success: true }
+        sedStatus: newSedStatus
+      }
+    }
+
+    case types.SVARPASED_SED_STATUS_FAILURE: {
+      const sedId: string = (action as ActionWithPayload).context.sedId
+      let newSedStatus = _.cloneDeep(state.sedStatus)
+      newSedStatus[sedId] = null
+      return {
+        ...state,
+        sedStatus: newSedStatus
+      }
+    }
+
+    case types.SVARPASED_SED_STATUS_REQUEST: {
+      const sedId: string = (action as ActionWithPayload).context.sedId
+      let newSedStatus = _.cloneDeep(state.sedStatus)
+      delete newSedStatus[sedId]
+      return {
+        ...state,
+        sedStatus: newSedStatus
+      }
+    }
+
+    case types.SVARPASED_SED_SEND_REQUEST:
+      return {
+        ...state,
+        sedSendResponse: undefined
       }
 
     case types.SVARPASED_SED_SEND_FAILURE:
@@ -161,6 +193,9 @@ const svarpasedReducer = (
         ...state,
         sedSendResponse: undefined
       }
+
+
+
 
     case types.SVARPASED_PARENTSED_SET:
       return {

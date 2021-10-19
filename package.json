@@ -29,6 +29,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.15",
+    "@navikt/ds-icons": "^0.5.5",
     "@sentry/browser": "^6.13.3",
     "@types/react-modal": "^3.13.1",
     "amplitude-js": "^8.8.0",

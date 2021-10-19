@@ -1,8 +1,25 @@
+import {
+  Add,
+  Bag,
+  Hospital,
+  Law,
+  Office1,
+  Office2,
+  PensionBag,
+  Receipt,
+  SchoolBag,
+  ShakeHandsFilled,
+  Stroller,
+  Vacation
+} from '@navikt/ds-icons'
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
-import { validateForsikringPeriode, ValidationForsikringPeriodeProps } from 'applications/SvarSed/PersonManager/Forsikring/validation'
+import {
+  validateForsikringPeriode,
+  ValidationForsikringPeriodeProps
+} from 'applications/SvarSed/PersonManager/Forsikring/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
-import Add from 'assets/icons/Add'
+import Military from 'assets/icons/Military'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
@@ -11,11 +28,7 @@ import Select from 'components/Forms/Select'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import {
-  ForsikringPeriode,
-  Periode, PeriodeAnnenForsikring,
-  U002Sed
-} from 'declarations/sed'
+import { ForsikringPeriode, Periode, PeriodeAnnenForsikring, U002Sed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
@@ -24,6 +37,7 @@ import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
+  AlignEndRow,
   AlignStartRow,
   Column,
   HighContrastFlatknapp,
@@ -167,10 +181,11 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
     const _periode: ForsikringPeriode = (index < 0 ? _newPeriode : periode) ?? {} as ForsikringPeriode
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
-        <AlignStartRow>
-          <Column>
-            {index < 0
-              ? (<Select
+        {index < 0 && (
+          <>
+            <AlignStartRow>
+              <Column>
+                <Select
                   closeMenuOnSelect
                   data-test-id={namespace + idx + '-type'}
                   feil={v[namespace + idx + '-type']?.feilmelding}
@@ -184,13 +199,31 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                   placeholder={t('el:placeholder-select-default')}
                   value={_.find(periodeOptions, o => o.value === _newType)}
                   defaultValue={_.find(periodeOptions, o => o.value === _newType)}
-                  />)
-              : <span>{_.find(periodeOptions, {value:periode?.__type})?.label}</span>
-            }
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv/>
-        <AlignStartRow>
+                  />
+              </Column>
+            </AlignStartRow>
+            <VerticalSeparatorDiv/>
+          </>
+          )}
+        <AlignEndRow>
+          {index >= 0 && (
+            <Column style={{maxWidth: '40px'}}>
+            <div title={_.find(periodeOptions, (o => o.value === _type))?.label ?? ''}>
+              {_type === 'perioderAnsattMedForsikring' && (<Office1 width='32' height='32'/>)}
+              {_type === 'perioderSelvstendigMedForsikring' && (<PensionBag width='32' height='32'/>)}
+              {_type === 'perioderAnsattUtenForsikring' && (<Office2 width='32' height='32'/>)}
+              {_type === 'perioderSelvstendigUtenForsikring' && (<Bag width='32' height='32'/>)}
+              {_type === 'perioderSyk' && (<Hospital width='32' height='32'/>)}
+              {_type === 'perioderSvangerskapBarn' && (<Stroller width='32' height='32'/>)}
+              {_type === 'perioderUtdanning' && (<SchoolBag width='32' height='32'/>)}
+              {_type === 'perioderMilitaertjeneste' && (<Military/>)}
+              {_type === 'perioderFrihetsberoevet' && (<Law width='32' height='32'/>)}
+              {_type === 'perioderFrivilligForsikring' && (<ShakeHandsFilled width='32' height='32'/>)}
+              {_type === 'perioderKompensertFerie' && (<Vacation width='32' height='32'/>)}
+              {_type === 'perioderAnnenForsikring' && (<Receipt width='32' height='32'/>)}
+            </div>
+            </Column>
+          )}
           <PeriodeInput
             key={'' + _periode?.startdato + _periode?.sluttdato}
             namespace={namespace}
@@ -213,7 +246,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
               onCancelNew={onCancel}
             />
           </Column>
-        </AlignStartRow>
+        </AlignEndRow>
         <VerticalSeparatorDiv/>
         {/**
 
@@ -234,25 +267,27 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
 
         */}
         {_type === 'perioderAnnenForsikring' && (
-          <><AlignStartRow>
-          <Column>
-            <Input
-              feil={validation[namespace + '-annenTypeForsikringsperiode']?.feilmelding}
-              namespace={namespace}
-              id='annenTypeForsikringsperiode'
-              key={'annenTypeForsikringsperiode-' + (_periode as PeriodeAnnenForsikring)?.annenTypeForsikringsperiode ?? ''}
-              label={t('label:virksomhetens-art')}
-              onChanged={(v: string) => setPeriode({
-                ..._periode,
-                annenTypeForsikringsperiode: v
-              }, _type, index)}
-              value={(_periode as PeriodeAnnenForsikring)?.annenTypeForsikringsperiode ?? ''}
-            />
-          </Column>
-          </AlignStartRow>
-          <VerticalSeparatorDiv/>
+          <>
+            <AlignStartRow>
+              <Column>
+                <Input
+                  feil={validation[namespace + '-annenTypeForsikringsperiode']?.feilmelding}
+                  namespace={namespace}
+                  id='annenTypeForsikringsperiode'
+                  key={'annenTypeForsikringsperiode-' + (_periode as PeriodeAnnenForsikring)?.annenTypeForsikringsperiode ?? ''}
+                  label={t('label:virksomhetens-art')}
+                  onChanged={(v: string) => setPeriode({
+                    ..._periode,
+                    annenTypeForsikringsperiode: v
+                  }, _type, index)}
+                  value={(_periode as PeriodeAnnenForsikring)?.annenTypeForsikringsperiode ?? ''}
+                />
+              </Column>
+              </AlignStartRow>
+            <VerticalSeparatorDiv/>
           </>
         )}
+
       </RepeatableRow>
     )
   }

@@ -82,7 +82,7 @@ const SendSEDModal = ({
     if (performValidation()) {
       const dateString = new Date().toDateString()
       const newItem: LocalStorageEntry<ReplySed> = {
-        id: '' + new Date().getTime(),
+        id: replySed.sedId,
         name: _name,
         date: dateString,
         content: replySed

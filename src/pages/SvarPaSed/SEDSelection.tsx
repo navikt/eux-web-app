@@ -1,6 +1,6 @@
 import validator from '@navikt/fnrvalidator'
 import * as appActions from 'actions/app'
-import { setReplySed } from 'actions/svarpased'
+import { getSedStatus, setReplySed } from 'actions/svarpased'
 import * as svarpasedActions from 'actions/svarpased'
 import { resetAllValidation } from 'actions/validation'
 import ReceivedIcon from 'assets/icons/Email'
@@ -83,7 +83,8 @@ const mapState = (state: State): any => ({
   replySed: state.svarpased.replySed,
   rinasaksnummerOrFnrParam: state.app.params.rinasaksnummerOrFnr,
   entries: state.localStorage.entries,
-  seds: state.svarpased.seds
+  seds: state.svarpased.seds,
+  sedStatus: state.svarpased.sedStatus
 })
 
 export interface SvarPaSedProps {
@@ -106,7 +107,8 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
     replySed,
     rinasaksnummerOrFnrParam,
     entries,
-    seds
+    seds,
+    sedStatus
   }: any = useSelector<State, any>(mapState)
   const [_filter, _setFilter] = useState<string | undefined>(undefined)
   const [_saksnummerOrFnr, _setSaksnummerOrFnr] = useState<string>(rinasaksnummerOrFnrParam ?? '')
@@ -114,6 +116,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
   const [_validMessage, _setValidMessage] = useState<string>('')
   const [_validation, _resetValidation, performValidation] = useValidation({}, validateSEDSelection)
   const [_replySedRequested, setReplySedRequested] = useState<boolean>(false)
+  const [_sedStatusRequested, setSedStatusRequested] = useState<string |undefined>(undefined)
 
   const [totalTime] = useState<Date>(new Date())
 
@@ -138,25 +141,28 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
     }
   }
 
-  const findSavedEntry = (connectedSed: ConnectedSed): LocalStorageEntry<ReplySed> | undefined => {
-    return _.find(entries, (e: LocalStorageEntry<ReplySed>) =>
-      e.content.sedId === connectedSed.sedId + '-' + connectedSed.sedType
-    )
-  }
+  const findSavedEntry = (svarsedId: string): LocalStorageEntry<ReplySed> | undefined => (
+    _.find(entries, (e: LocalStorageEntry<ReplySed>) => e.id === svarsedId)
+  )
 
   const hasDraft = (connectedSed: ConnectedSed): boolean => {
     if (_.isEmpty(entries)) {
       return false
     }
-    return findSavedEntry(connectedSed) !== undefined
+    return findSavedEntry(connectedSed.svarsedId) !== undefined
   }
 
-  const loadDraft = (connectedSed: ConnectedSed) => {
-    const entry: LocalStorageEntry<ReplySed> | undefined = findSavedEntry(connectedSed)
-    if (entry) {
-      dispatch(setCurrentEntry(entry))
-      dispatch(setReplySed(entry.content))
-      setReplySedRequested(true)
+  const hasSentStatus = (svarsedId: string): boolean => {
+    if (!Object.prototype.hasOwnProperty.call(sedStatus, svarsedId)) {
+      return false
+    }
+    return sedStatus[svarsedId] === 'sent'
+  }
+
+  const loadDraft = (sakId: string, svarsedId: string) => {
+    if (!Object.prototype.hasOwnProperty.call(sedStatus, svarsedId)) {
+      setSedStatusRequested(svarsedId)
+      dispatch(getSedStatus(sakId, svarsedId))
     }
   }
 
@@ -180,6 +186,18 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
     setReplySedRequested(true)
     dispatch(svarpasedActions.queryReplySed(connectedSed, saksnummer))
   }
+
+  useEffect(() => {
+    if (!_.isNil(_sedStatusRequested) && Object.prototype.hasOwnProperty.call(sedStatus, _sedStatusRequested)) {
+      const entry: LocalStorageEntry<ReplySed> | undefined = findSavedEntry(_sedStatusRequested)
+      if (entry && !hasSentStatus(entry.id)) {
+        dispatch(setCurrentEntry(entry))
+        dispatch(setReplySed(entry.content))
+        setReplySedRequested(true)
+      }
+      setSedStatusRequested(undefined)
+    }
+  }, [_sedStatusRequested, sedStatus])
 
   useEffect(() => {
     if (replySed && _replySedRequested && mode === 'selection') {
@@ -478,17 +496,24 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                               <HighContrastKnapp
                                 mini
                                 kompakt
+                                disabled={_sedStatusRequested === connectedSed.svarsedId || hasSentStatus(connectedSed.svarsedId)}
+                                spinner={_sedStatusRequested === connectedSed.svarsedId}
                                 data-amplitude='svarsed.selection.loaddraft'
                                 onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
                                   buttonLogger(e, {
                                     type: connectedSed.svarsedType
                                   })
-                                  loadDraft(connectedSed)
+                                  loadDraft(sed.sakId, connectedSed.svarsedId)
                                 }}
                               >
                                 <Edit />
                                 <HorizontalSeparatorDiv size='0.35' />
-                                {t('label:gå-til-draft')}
+                                {_sedStatusRequested === connectedSed.svarsedId
+                                  ? t('message:loading-checking-sed-status')
+                                  : (hasSentStatus(connectedSed.svarsedId)
+                                    ? t('label:sed-already-sent', {sed: connectedSed.svarsedType})
+                                    : t('label:gå-til-draft'))
+                                }
                               </HighContrastKnapp>
                               )
                             : connectedSed.svarsedType

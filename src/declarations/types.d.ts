@@ -59,6 +59,7 @@ export interface ConnectedSed {
   status: string
   sistEndretDato: string
   svarsedType: string
+  svarsedId: string
   svarsedDisplay: string
   lenkeHvisForrigeSedMaaJournalfoeres?: string
 }

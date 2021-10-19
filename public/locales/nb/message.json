@@ -28,6 +28,7 @@
   "help-jeg-kan-ikke-sende": "Jeg kan ikke sende",
   "help-send-sed": "Sender avgårde en Sed som allerede fins i Rina.",
 
+  "loading-checking-sed-status": "Kontrollerer SED status...",
   "loading-getting-person" : "Hent personinfo...",
   "loading-replying": "Besvaring...",
   "loading-searching" : "Søker...",

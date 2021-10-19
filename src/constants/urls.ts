@@ -15,8 +15,10 @@ export const API_SAK_SEND_URL = API_BASE_URL + '/rina/sak'
 export const API_RINASAKER_OVERSIKT_SAKID_QUERY_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/oversikt'
 export const API_SED_CREATE_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed'
 export const API_SED_SEND_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/send'
+export const API_SED_STATUS_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/status'
 export const API_RINASAK_SVARSED_QUERY_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/svarsed/%(sedType)s'
 export const API_PREVIEW_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/utkast/pdf'
+
 
 // Registre
 export const API_FAGSAKER_QUERY_URL = API_BASE_URL + '/fagsaker/%(fnr)s/?sektor=%(sektor)s&tema=%(tema)s'

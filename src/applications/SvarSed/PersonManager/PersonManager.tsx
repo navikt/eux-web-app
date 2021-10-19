@@ -275,7 +275,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({ viewValidation }: PersonM
     const previousMenu = currentMenuOption
     const newStatistics = _.cloneDeep(statistics)
 
-    if (!_.isNil(previousMenu) && newStatistics[previousMenu].status === 'start') {
+    if (!_.isNil(previousMenu) && newStatistics[previousMenu] && newStatistics[previousMenu].status === 'start') {
       const diff = new Date().getTime() - newStatistics[previousMenu].date.getTime()
       const diffSeconds = Math.ceil(diff / 1000)
       newStatistics[previousMenu] = {

@@ -56,6 +56,11 @@ const localStorageReducer = (
       }
     }
 
+    case types.LOCALSTORAGE_REMOVE_ALL : {
+      window.localStorage.setItem((action as ActionWithPayload).payload.key, "[]")
+      return initialLocalStorageState
+    }
+
     case types.LOCALSTORAGE_ENTRY_SAVE: {
       let newEntries = _.cloneDeep(state.entries)
       const newEntry: LocalStorageEntry<ReplySed> = (action as ActionWithPayload).payload.entry
