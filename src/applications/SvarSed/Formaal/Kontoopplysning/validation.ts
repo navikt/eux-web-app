@@ -95,7 +95,7 @@ export const validateKontoopplysning = (
       }
     }
 
-    if (_.isEmpty(uti?.kontoSepa?.swift?.trim())) {
+    if (_.isEmpty(uti?.kontoSepa?.iban?.trim() && _.isEmpty(uti?.kontoSepa?.swift?.trim())) {
       v[namespace + '-kontoSepa-swift'] = {
         feilmelding: t('message:validation-noSwiftTil', { person: formalName }),
         skjemaelementId: namespace + '-kontoSepa-swift'
