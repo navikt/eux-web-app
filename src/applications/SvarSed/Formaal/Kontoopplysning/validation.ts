@@ -85,6 +85,14 @@ export const validateKontoopplysning = (
         skjemaelementId: namespace + '-kontoSepa-iban'
       } as FeiloppsummeringFeil
       hasErrors = true
+    } else {
+      if (!uti?.kontoSepa?.iban.trim().match(/^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[a-zA-Z0-9]{7}([a-zA-Z0-9]?){0,16}$/)) {
+        v[namespace + '-kontoSepa-iban'] = {
+          feilmelding: t('message:validation-invalidIbanTil', { person: formalName }),
+          skjemaelementId: namespace + '-kontoSepa-iban'
+        } as FeiloppsummeringFeil
+        hasErrors = true
+      }
     }
 
     if (_.isEmpty(uti?.kontoSepa?.swift?.trim())) {

@@ -68,6 +68,7 @@
   "validation-invalidDateTil": "Ugyldig dato til {{person}}",
   "validation-invalidEpostTil": "Ugyldig epost adresse til {{person}}",
   "validation-invalidFoedselsdatoTil": "Ugyldig fødselsdato til {{person}}",
+  "validation-invalidIbanTil": "Ugyldig IBAN til {{person}}",
   "validation-invalidSwiftTil": "Ugyldig SWIFT til {{person}}",
   "validation-invalidTema": "Tema kan ikke være 'Generell'",
   "validation-noBoSammen": "Du må velge hvis de bor sammen til {{person}}",
