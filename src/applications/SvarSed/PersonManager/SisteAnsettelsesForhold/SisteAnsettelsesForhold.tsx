@@ -1,6 +1,5 @@
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
-import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import { standardLogger } from 'metrics/loggers'
@@ -30,6 +29,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
+import { Add } from '@navikt/ds-icons'
 
 interface SisteAnsettelsesForholdSelector extends PersonManagerFormSelector {
   highContrast: boolean

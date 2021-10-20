@@ -1,4 +1,4 @@
-import Add from 'assets/icons/Add'
+import { Add } from '@navikt/ds-icons'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'

@@ -1,6 +1,5 @@
 import { getFagsaker, updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
-import Edit from 'assets/icons/Edit'
 import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
@@ -15,6 +14,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Option } from 'declarations/app.d'
 import { getFnr } from 'utils/fnr'
+import { Edit } from '@navikt/ds-icons'
 
 interface TemaSelector {
   highContrast: boolean

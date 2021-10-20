@@ -4,7 +4,6 @@ import { State } from 'declarations/reducers'
 import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import { validateSakseier, validateSEDDetail, ValidationSakseierProps, ValidationSEDDetailsProps } from './validation'
-import Add from 'assets/icons/Add'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
@@ -32,6 +31,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import { isF002Sed, isFSed, isHSed, isUSed } from 'utils/sed'
+import { Add } from '@navikt/ds-icons'
 
 export interface SEDDetailsEditProps {
   replySed: ReplySed

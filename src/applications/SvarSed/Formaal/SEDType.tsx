@@ -1,6 +1,5 @@
 import { setReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
-import Edit from 'assets/icons/Edit'
 import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
@@ -19,6 +18,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Option } from 'declarations/app.d'
+import { Edit } from '@navikt/ds-icons'
 
 interface SEDTypeSelector {
   highContrast: boolean

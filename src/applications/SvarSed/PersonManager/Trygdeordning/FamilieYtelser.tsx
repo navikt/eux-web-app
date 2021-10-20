@@ -1,7 +1,6 @@
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
-import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Forms/Select'
@@ -30,6 +29,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Option } from 'declarations/app.d'
 import { getIdx } from 'utils/namespace'
 import { validateFamilieytelserPeriode, ValidationFamilieytelsePeriodeProps } from './validation'
+import { Add } from '@navikt/ds-icons'
 
 interface FamilieYtelserSelector extends PersonManagerFormSelector {
   highContrast: boolean

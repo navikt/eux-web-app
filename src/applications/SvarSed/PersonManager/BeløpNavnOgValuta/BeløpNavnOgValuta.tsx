@@ -1,8 +1,7 @@
+import { Add, Helptext } from '@navikt/ds-icons'
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
-import Add from 'assets/icons/Add'
-import HelpIcon from 'assets/icons/HelpIcon'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
@@ -32,17 +31,9 @@ import {
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import styled from 'styled-components'
 import { getIdx } from 'utils/namespace'
 import { validateBeløpNavnOgValuta, ValidationBeløpNavnOgValutaProps } from './validation'
 import Tooltip from 'rc-tooltip'
-
-const HelpProperIcon = styled(HelpIcon)`
-  &.hjelpetekst__ikon {
-    width: 22px;
-    height: 22px;
-  }
-`
 
 interface BeløpNavnOgValutaSelector extends PersonManagerFormSelector {
   highContrast: boolean
@@ -312,7 +303,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
                       placement='top' trigger={['hover']}
                       overlay={<span>{t('message:help-familieytelser-beløp')}</span>}
                     >
-                      <HelpProperIcon className='hjelpetekst__ikon' />
+                      <Helptext width='22' height='22' />
                     </Tooltip>
                   </FlexCenterSpacedDiv>
                   )

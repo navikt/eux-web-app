@@ -1,13 +1,10 @@
+import { Email, Send, Star, Edit, Search } from '@navikt/ds-icons'
 import validator from '@navikt/fnrvalidator'
 import * as appActions from 'actions/app'
 import { getSedStatus, setReplySed } from 'actions/svarpased'
 import * as svarpasedActions from 'actions/svarpased'
 import { resetAllValidation } from 'actions/validation'
-import ReceivedIcon from 'assets/icons/Email'
-import FileIcon from 'assets/icons/FileIcon'
 import ExternalLink from 'assets/icons/Logout'
-import Search from 'assets/icons/Search'
-import SentIcon from 'assets/icons/Send'
 import classNames from 'classnames'
 import { AlertstripeDiv, Etikett, HiddenFormContainer } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
@@ -43,7 +40,6 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import Edit from 'assets/icons/Edit'
 import { setCurrentEntry } from 'actions/localStorage'
 
 const ContainerDiv = styled.div`
@@ -440,13 +436,14 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                   >
                     <SEDPanel border>
                       <FlexDiv>
-                        <PileCenterDiv style={{ alignItems: 'center' }}>
-                          {connectedSed.status === 'received' && <ReceivedIcon />}
-                          {connectedSed.status === 'sent' && <SentIcon />}
-                          {connectedSed.status === 'new' && <FileIcon />}
+                        <PileCenterDiv style={{ alignItems: 'center' }} title={t('')}>
+                          {connectedSed.status === 'received' && <Email width='32' height='32'/>}
+                          {connectedSed.status === 'sent' && <Send width='32' height='32'/>}
+                          {connectedSed.status === 'new' && <Star width='32' height='32'/>}
+                          {connectedSed.status === 'active' && <Edit width='32' height='32' />}
                           <VerticalSeparatorDiv size='0.35' />
                           <Undertekst>
-                            {t('app:status-received-' + connectedSed.status)}
+                            {t('app:status-received-' + connectedSed.status.toLowerCase())}
                           </Undertekst>
                         </PileCenterDiv>
                         <HorizontalSeparatorDiv />

@@ -1,4 +1,4 @@
-import Add from 'assets/icons/Add'
+import { Add } from '@navikt/ds-icons'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Forms/Select'
 import { Etikett } from 'components/StyledComponents'

@@ -6,7 +6,6 @@ import {
   ValidationVedtakPeriodeProps,
   ValidationVedtakVedtaksperiodeProps
 } from 'applications/SvarSed/Formaal/Vedtak/validation'
-import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
@@ -41,6 +40,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Option } from 'declarations/app.d'
 import { getIdx } from 'utils/namespace'
 import { validateVedtakPeriode } from './validation'
+import { Add } from '@navikt/ds-icons'
 
 export interface MotregningSelector extends FormålManagerFormSelector {
   highContrast: boolean

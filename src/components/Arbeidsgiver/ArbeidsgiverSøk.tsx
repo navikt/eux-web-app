@@ -1,5 +1,4 @@
 import { GetArbeidsperiodeOptions, fetchArbeidsperioder } from 'actions/arbeidsgiver'
-import Search from 'assets/icons/Search'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { Option, Options } from 'declarations/app'
@@ -15,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { validateArbeidsgiverSøk, ValidationArbeidsgiverSøkProps } from './validation'
+import { Search } from '@navikt/ds-icons'
 
 interface ArbeidsgiverSøkProps {
   amplitude ?: string

@@ -28,6 +28,7 @@
   "status-received-sent" : "Sendt",
   "status-received-received" : "Mottatt",
   "status-received-new" : "Utkast",
+  "status-received-active" : "Aktiv",
 
   "ok-got-it" : "Ok, stemmer det",
   "log-me-again": "Logg inn på nytt"

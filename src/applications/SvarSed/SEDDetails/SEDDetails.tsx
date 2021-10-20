@@ -1,4 +1,4 @@
-import Edit from 'assets/icons/Edit'
+import { Edit } from '@navikt/ds-icons'
 import RemoveCircle from 'assets/icons/RemoveCircle'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed.d'

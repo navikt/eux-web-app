@@ -25,6 +25,9 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
   const namespace: string = `${parentNamespace}-kontoopplysninger`
 
   const [_kontoType, _setKontoType] = useState<KontoType | undefined>(() => {
+    if (_.isNil(utbetalingTilInstitusjon)) {
+      return undefined
+    }
     if (Object.prototype.hasOwnProperty.call(utbetalingTilInstitusjon, 'kontoOrdinaer')) {
       return 'ordinaer'
     }

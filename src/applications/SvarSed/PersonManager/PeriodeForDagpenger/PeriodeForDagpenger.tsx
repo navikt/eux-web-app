@@ -8,7 +8,6 @@ import {
   ValidationPeriodeDagpengerProps
 } from './validationPeriodeDagpenger'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
-import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
@@ -34,6 +33,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
+import { Add } from '@navikt/ds-icons'
 
 interface PeriodeForDagpengerSelector extends PersonManagerFormSelector {
   landkoderList: Array<Kodeverk> | undefined

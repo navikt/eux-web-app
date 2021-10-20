@@ -1,7 +1,6 @@
 import kvinne from 'assets/icons/Woman.png'
 import mann from 'assets/icons/Man.png'
 import ukjent from 'assets/icons/Unknown.png'
-import Add from 'assets/icons/Add'
 import Trashcan from 'assets/icons/Trashcan'
 import { toUIDateFormat } from 'components/Forms/PeriodeInput'
 import { HighContrastKnapp, HorizontalSeparatorDiv } from 'nav-hoykontrast'
@@ -15,6 +14,7 @@ import PT from 'prop-types'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
+import { Add } from '@navikt/ds-icons'
 
 const PersonCardDiv = styled.div`
   display: flex;

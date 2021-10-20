@@ -1,9 +1,8 @@
+import { Add, Child } from '@navikt/ds-icons'
 import AddPersonModal from 'applications/SvarSed/PersonManager/AddPersonModal/AddPersonModal'
 import Arbeidsforhold from 'applications/SvarSed/PersonManager/Arbeidsforhold/Arbeidsforhold'
 import GrunnTilOpphør from 'applications/SvarSed/PersonManager/GrunnTilOpphør/GrunnTilOpphør'
 import SisteAnsettelsesForhold from 'applications/SvarSed/PersonManager/SisteAnsettelsesForhold/SisteAnsettelsesForhold'
-import Add from 'assets/icons/Add'
-import ChildIcon from 'assets/icons/Child'
 import GreenCircle from 'assets/icons/GreenCircle'
 import RemoveCircle from 'assets/icons/RemoveCircle'
 import classNames from 'classnames'
@@ -466,7 +465,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({ viewValidation }: PersonM
             {personId.startsWith('barn[') && (
               <>
                 <HorizontalSeparatorDiv size='0.5' />
-                <ChildIcon />
+                <Child />
               </>
             )}
           </MenuLabelDiv>

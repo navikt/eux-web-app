@@ -1,10 +1,9 @@
+import { Add, Child } from '@navikt/ds-icons'
 import { setReplySed } from 'actions/svarpased'
 import {
   validateAddPersonModal,
   ValidationAddPersonModalProps
 } from 'applications/SvarSed/PersonManager/AddPersonModal/validation'
-import Add from 'assets/icons/Add'
-import Barn from 'assets/icons/Child'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
@@ -308,7 +307,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
             {personId.startsWith('barn[') && (
               <>
                 <HorizontalSeparatorDiv size='0.5' />
-                <Barn />
+                <Child />
               </>
             )}
           </FlexCenterSpacedDiv>

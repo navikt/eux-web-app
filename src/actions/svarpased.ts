@@ -70,7 +70,7 @@ export const getSedStatus = (rinaSakId: string, sedId: string) => {
   return call({
     url: sprintf(urls.API_SED_STATUS_URL, { rinaSakId: rinaSakId, sedId: sedId }),
     expectedPayload: {
-      status: 'sent'
+      status: 'new'
     },
     context: {
       sedId: sedId

@@ -1,3 +1,4 @@
+import { Add } from '@navikt/ds-icons'
 import { clientClear } from 'actions/alert'
 import { saveEntry } from 'actions/localStorage'
 import { createSed, getPreviewFile, resetPreviewFile, sendSedInRina, updateReplySed } from 'actions/svarpased'
@@ -10,7 +11,6 @@ import PersonManager from 'applications/SvarSed/PersonManager/PersonManager'
 import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
 import SendSEDModal from 'applications/SvarSed/SendSEDModal/SendSEDModal'
 import Attachments from 'applications/Vedlegg/Attachments/Attachments'
-import Add from 'assets/icons/Add'
 import Alert from 'components/Alert/Alert'
 
 import TextArea from 'components/Forms/TextArea'

@@ -1,5 +1,5 @@
+import { Add } from '@navikt/ds-icons'
 import { resetValidation } from 'actions/validation'
-import Add from 'assets/icons/Add'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'

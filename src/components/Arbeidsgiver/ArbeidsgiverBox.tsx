@@ -1,7 +1,5 @@
+import { Add, Edit, Office1 } from '@navikt/ds-icons'
 import AdresseFC from 'applications/SvarSed/PersonManager/Adresser/Adresse'
-import Add from 'assets/icons/Add'
-import IkonArbeidsgiver from 'assets/icons/Arbeidsgiver'
-import Edit from 'assets/icons/Edit'
 import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
 import Input from 'components/Forms/Input'
@@ -184,7 +182,7 @@ const ArbeidsgiverBox = ({
       >
         <FlexCenterSpacedDiv>
           <PaddedFlexDiv className='slideInFromLeft'>
-            <IkonArbeidsgiver />
+            <Office1 width='30' height='30' />
             <HorizontalSeparatorDiv />
             <div>
               {_isEditing && editable === 'full'

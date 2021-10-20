@@ -4,7 +4,6 @@ import {
   validateInntektSearch,
   ValidationInntektSearchProps
 } from './validation'
-import Search from 'assets/icons/Search'
 import Select from 'components/Forms/Select'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import { Options } from 'declarations/app'
@@ -20,6 +19,7 @@ import {
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Option } from 'declarations/app.d'
+import { Search } from '@navikt/ds-icons'
 
 interface InntektSearchProps {
   amplitude ?: string

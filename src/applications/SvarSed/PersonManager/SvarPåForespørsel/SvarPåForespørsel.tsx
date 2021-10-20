@@ -1,7 +1,7 @@
+import { Helptext } from '@navikt/ds-icons'
 import { setReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
-import HelpIcon from 'assets/icons/HelpIcon'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
@@ -21,14 +21,6 @@ import Tooltip from 'rc-tooltip'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import styled from 'styled-components'
-
-const HelpProperIcon = styled(HelpIcon)`
-  &.hjelpetekst__ikon {
-    width: 22px;
-    height: 22px;
-  }
-`
 
 const mapState = (state: State): PersonManagerFormSelector => ({
   replySed: state.svarpased.replySed,
@@ -180,7 +172,7 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
                     <span>{t('el:option-svar-1')}</span>
                     <HorizontalSeparatorDiv size='0.5' />
                     <Tooltip placement='top' trigger={['hover']} overlay={<span>{t('message:help-jeg-kan-sende')}</span>}>
-                      <HelpProperIcon className='hjelpetekst__ikon' />
+                      <Helptext width='22' />
                     </Tooltip>
                   </FlexCenterDiv>
                 ),
@@ -192,7 +184,7 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
                     <span>{t('el:option-svar-2')}</span>
                     <HorizontalSeparatorDiv size='0.5' />
                     <Tooltip placement='top' trigger={['hover']} overlay={<span>{t('message:help-jeg-kan-ikke-sende')}</span>}>
-                      <HelpProperIcon className='hjelpetekst__ikon' />
+                      <Helptext width='22' />
                     </Tooltip>
                   </FlexCenterDiv>
                 ),

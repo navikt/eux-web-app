@@ -1,4 +1,4 @@
-import Add from 'assets/icons/Add'
+import { Add } from '@navikt/ds-icons'
 import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
 import { Labels } from 'declarations/app'

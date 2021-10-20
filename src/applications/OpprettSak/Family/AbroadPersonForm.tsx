@@ -1,4 +1,4 @@
-import Add from 'assets/icons/Add'
+import { Add } from '@navikt/ds-icons'
 import DateInput from 'components/Forms/DateInput'
 import { toUIDateFormat } from 'components/Forms/PeriodeInput'
 import { AlertstripeDiv } from 'components/StyledComponents'
