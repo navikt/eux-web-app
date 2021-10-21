@@ -1,6 +1,7 @@
 import { Email, Send, Star, Edit, Search } from '@navikt/ds-icons'
 import validator from '@navikt/fnrvalidator'
 import * as appActions from 'actions/app'
+import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import { getSedStatus, setReplySed } from 'actions/svarpased'
 import * as svarpasedActions from 'actions/svarpased'
 import { resetAllValidation } from 'actions/validation'
@@ -13,7 +14,7 @@ import { ReplySed } from 'declarations/sed'
 import { ConnectedSed, LocalStorageEntry, Sed } from 'declarations/types'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { buttonLogger, standardLogger, timeLogger } from 'metrics/loggers'
+import { buttonLogger, standardLogger } from 'metrics/loggers'
 import AlertStripe from 'nav-frontend-alertstriper'
 import { Normaltekst, Systemtittel, Undertekst, Undertittel } from 'nav-frontend-typografi'
 import {
@@ -114,8 +115,6 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
   const [_replySedRequested, setReplySedRequested] = useState<boolean>(false)
   const [_sedStatusRequested, setSedStatusRequested] = useState<string |undefined>(undefined)
 
-  const [totalTime] = useState<Date>(new Date())
-
   const onSaksnummerOrFnrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value
     dispatch(appActions.cleanData())
@@ -156,10 +155,8 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
   }
 
   const loadDraft = (sakId: string, svarsedId: string) => {
-    if (!Object.prototype.hasOwnProperty.call(sedStatus, svarsedId)) {
-      setSedStatusRequested(svarsedId)
-      dispatch(getSedStatus(sakId, svarsedId))
-    }
+    setSedStatusRequested(svarsedId)
+    dispatch(getSedStatus(sakId, svarsedId))
   }
 
   const onSaksnummerOrFnrClick = () => {
@@ -204,8 +201,9 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
   }, [replySed, mode])
 
   useEffect(() => {
+    dispatch(startPageStatistic('selection'))
     return () => {
-      timeLogger('svarsed.selection', totalTime)
+      dispatch(finishPageStatistic('selection'))
     }
   }, [])
 

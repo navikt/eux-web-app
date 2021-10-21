@@ -7,11 +7,12 @@ import loading from './loading'
 import localStorage from './localStorage'
 import person from './person'
 import sak from './sak'
+import statistics from './statistics'
 import svarpased from './svarpased'
 import ui from './ui'
 import validation from './validation'
 import vedlegg from './vedlegg'
 
 export {
-  alert, app, arbeidsgiver, attachments, inntekt, loading, localStorage, person, sak, svarpased, ui, validation, vedlegg
+  alert, app, arbeidsgiver, attachments, inntekt, loading, localStorage, person, sak, statistics, svarpased, ui, validation, vedlegg
 }

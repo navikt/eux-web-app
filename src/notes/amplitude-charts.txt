@@ -5,9 +5,9 @@ Amplitude - nEESSI
 => - Amend event name
 Error: personmanager/formålmanager times
 
-1. SvarSED app - Total time spent
+1. SvarSED app - Average total time spent
 
-	#neessi.svarpased.time - SvarSed Page
+	=> #neessi.svarpased.total.time - SvarSed Page
 	#neessi.svarsed.selection.time - selection page
   #neessi.svarsed.editor.time - editor page
 

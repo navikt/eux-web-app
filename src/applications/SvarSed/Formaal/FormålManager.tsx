@@ -1,3 +1,4 @@
+import { finishMenuStatistic, logMenuStatistic, startMenuStatistic } from 'actions/statistics'
 import Kontoopplysning from 'applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning'
 import KravOmRefusjon from 'applications/SvarSed/Formaal/KravOmRefusjon/KravOmRefusjon'
 import Motregning from 'applications/SvarSed/Formaal/Motregning/Motregning'
@@ -11,7 +12,6 @@ import { State } from 'declarations/reducers'
 import { FSed, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import Chevron from 'nav-frontend-chevron'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
@@ -26,7 +26,7 @@ import {
 } from 'nav-hoykontrast'
 import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styled, { keyframes } from 'styled-components'
 
 const transitionTime = 0.3
@@ -151,12 +151,16 @@ export const mapState = (state: State): FormålManagerFormSelector => ({
   validation: state.validation.status
 })
 
-const FormålManager: React.FC<FormålManagerProps> = ({ viewValidation }: FormålManagerProps) => {
+const FormålManager: React.FC<FormålManagerProps> = ({
+  viewValidation
+}: FormålManagerProps) => {
   const { t } = useTranslation()
   const {
     replySed,
     validation
   }: any = useSelector<State, FormålManagerFormSelector>(mapState)
+
+  const dispatch = useDispatch()
   const namespace = 'formålmanager'
   const target = 'formaal'
   const initialSelectedMenus: Array<string> = _.get(replySed, target)
@@ -167,40 +171,17 @@ const FormålManager: React.FC<FormålManagerProps> = ({ viewValidation }: Form�
   const [previousMenu, setPreviousMenu] = useState<string | undefined>(undefined)
   const [_viewKontoopplysninger, setViewKontoopplysninger] = useState<boolean>(false)
 
-  const [statistics, _setStatistics] = useState<any>({})
-
   useEffect(() => {
     if (!_.isNil(initialMenu)) {
-      _setStatistics({
-        [initialMenu]: { total: 0, status: 'stop' }
-      })
+      dispatch(startMenuStatistic('formalmanager', initialMenu))
     }
     return () => {
-      standardLogger('svarsed.editor.formålmanager.time', statistics)
+      dispatch(finishMenuStatistic('formalmanager'))
     }
   }, [])
 
   const setCurrentMenu = (newMenu: string | undefined) => {
-    const previousMenu = currentMenu
-    const newStatistics = _.cloneDeep(statistics)
-
-    if (!_.isNil(previousMenu) && newStatistics[previousMenu].status === 'start') {
-      const diff = new Date().getTime() - newStatistics[previousMenu].date.getTime()
-      const diffSeconds = Math.ceil(diff / 1000)
-      newStatistics[previousMenu] = {
-        date: undefined,
-        status: 'stop',
-        total: statistics[previousMenu].total += diffSeconds
-      }
-    }
-    if (!_.isNil(newMenu)) {
-      newStatistics[newMenu] = {
-        date: new Date(),
-        status: 'start',
-        total: statistics[newMenu]?.total ?? 0
-      }
-    }
-    _setStatistics(newStatistics)
+    dispatch(logMenuStatistic('formalmanager', currentMenu, newMenu))
     _setCurrentMenu(newMenu)
   }
 

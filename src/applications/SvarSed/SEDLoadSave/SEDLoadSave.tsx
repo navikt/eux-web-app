@@ -73,10 +73,8 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
 
   const handleLoadDraft = (e: React.ChangeEvent<HTMLButtonElement>, savedEntry: LocalStorageEntry<ReplySed>) => {
     buttonLogger(e, { type: savedEntry.content.sedType })
-    if (!Object.prototype.hasOwnProperty.call(sedStatus, savedEntry.id)) {
-      setSedStatusRequested(savedEntry.id)
-      dispatch(getSedStatus(savedEntry.content.saksnummer!, savedEntry.id))
-    }
+    setSedStatusRequested(savedEntry.id)
+    dispatch(getSedStatus(savedEntry.content.saksnummer!, savedEntry.id))
   }
 
   const findSavedEntry = (svarsedId: string): LocalStorageEntry<ReplySed> | undefined => (

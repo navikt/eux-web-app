@@ -1,5 +1,6 @@
 import { setStatusParam } from 'actions/app'
 import { setCurrentEntry } from 'actions/localStorage'
+import { logPageStatistics, startPageStatistic } from 'actions/statistics'
 import * as svarpasedActions from 'actions/svarpased'
 import { setMode, setReplySed } from 'actions/svarpased'
 import SEDDetails from 'applications/SvarSed/SEDDetails/SEDDetails'
@@ -12,7 +13,6 @@ import { FeatureToggles } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
 import { LocalStorageEntry } from 'declarations/types'
-import { timeLogger } from 'metrics/loggers'
 import { Container, Content, fadeIn, fadeOut, Margin } from 'nav-hoykontrast'
 import SEDEditor from 'pages/SvarPaSed/SEDEditor'
 import SEDSelection from 'pages/SvarPaSed/SEDSelection'
@@ -121,7 +121,6 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
   const [_mounted, setMounted] = useState<boolean>(!waitForMount)
   const storageKey = 'replySed'
   const { featureToggles }: SvarPaSedPageSelector = useSelector<State, SvarPaSedPageSelector>(mapState)
-  const [totalTime] = useState<Date>(new Date())
 
   const [positionContentA, setPositionContentA] = useState<Slide>(Slide.LEFT)
   const [positionContentB, setPositionContentB] = useState<Slide>(Slide.RIGHT)
@@ -144,8 +143,10 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
     if (animating) {
       return
     }
+
     if (newMode === 'selection') {
       if (!from || from === 'none') {
+        dispatch(startPageStatistic(newMode))
         setPositionContentA(Slide.LEFT)
         setPositionContentB(Slide.RIGHT)
         setPositionSidebarA(Slide.ALT_LEFT)
@@ -155,6 +156,7 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
         }
       }
       if (from === 'back') {
+        dispatch(logPageStatistics('editor', 'selection'))
         setPositionContentA(Slide.A_GOING_TO_RIGHT)
         setPositionContentB(Slide.B_GOING_TO_RIGHT)
         setPositionSidebarA(Slide.A_GOING_TO_LEFT)
@@ -188,6 +190,7 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
     }
     if (newMode === 'editor') {
       if (!from || from === 'none') {
+        dispatch(startPageStatistic('editor'))
         setPositionContentA(Slide.ALT_LEFT)
         setPositionContentB(Slide.ALT_RIGHT)
         setPositionSidebarA(Slide.LEFT)
@@ -197,6 +200,7 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
         }
       }
       if (from === 'forward') {
+        dispatch(logPageStatistics('selection', 'editor'))
         setPositionContentA(Slide.A_GOING_TO_LEFT)
         setPositionContentB(Slide.B_GOING_TO_LEFT)
         setPositionSidebarA(Slide.A_GOING_TO_RIGHT)
@@ -253,8 +257,9 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
   }, [dispatch, _mounted, changeMode, WaitingDiv, location.search])
 
   useEffect(() => {
+    dispatch(startPageStatistic('total'))
     return () => {
-      timeLogger('svarsed', totalTime)
+      dispatch(startPageStatistic('total'))
     }
   }, [])
 

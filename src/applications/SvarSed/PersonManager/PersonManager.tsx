@@ -1,4 +1,5 @@
 import { Add, Child } from '@navikt/ds-icons'
+import { finishMenuStatistic, logMenuStatistic, startMenuStatistic } from 'actions/statistics'
 import AddPersonModal from 'applications/SvarSed/PersonManager/AddPersonModal/AddPersonModal'
 import Arbeidsforhold from 'applications/SvarSed/PersonManager/Arbeidsforhold/Arbeidsforhold'
 import GrunnTilOpphør from 'applications/SvarSed/PersonManager/GrunnTilOpphør/GrunnTilOpphør'
@@ -12,7 +13,6 @@ import { State } from 'declarations/reducers'
 import { Barn, F002Sed, FSed, PersonInfo, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import Chevron from 'nav-frontend-chevron'
 import { Checkbox, FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
@@ -28,7 +28,7 @@ import {
 } from 'nav-hoykontrast'
 import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styled, { keyframes } from 'styled-components'
 import { isFSed } from 'utils/sed'
 import Adresser from './Adresser/Adresser'
@@ -213,7 +213,9 @@ const mapState = (state: State): PersonManagerSelector => ({
   validation: state.validation.status
 })
 
-const PersonManager: React.FC<PersonManagerProps> = ({ viewValidation }: PersonManagerProps) => {
+const PersonManager: React.FC<PersonManagerProps> = ({
+  viewValidation
+}: PersonManagerProps) => {
   const { t } = useTranslation()
   const {
     gettingPerson,
@@ -222,6 +224,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({ viewValidation }: PersonM
   }: any = useSelector<State, PersonManagerSelector>(mapState)
   const namespace = 'personmanager'
 
+  const dispatch = useDispatch()
   const brukerNr = 1
   const initialSelectedMenus = ['bruker']
   const ektefelleNr = brukerNr + ((replySed as F002Sed).ektefelle ? 1 : 0)
@@ -251,46 +254,21 @@ const PersonManager: React.FC<PersonManagerProps> = ({ viewValidation }: PersonM
   const [focusedMenu, setFocusedMenu] = useState<string | undefined>(totalPeopleNr === 1 ? 'bruker' : undefined)
   const [currentMenuLabel, setCurrentMenuLabel] = useState<string | undefined>(undefined)
   const [previousMenuOption, setPreviousMenuOption] = useState<string | undefined>(undefined)
-  const initialMenuOption = totalPeopleNr === 1
-    ? (isFSed(replySed) ? 'personopplysninger' : 'person')
-    : undefined
+  const initialMenuOption = totalPeopleNr === 1 ? 'personopplysninger' : undefined
   const [currentMenuOption, _setCurrentMenuOption] = useState<string | undefined>(initialMenuOption)
   const alreadyOpenMenu = (menu: string) => _.find(openMenus, _id => _id === menu) !== undefined
 
-  const [statistics, _setStatistics] = useState<any>({})
-
   useEffect(() => {
     if (!_.isNil(initialMenuOption)) {
-      _setStatistics({
-        [initialMenuOption]: { total: 0, status: 'stop' }
-      })
+      dispatch(startMenuStatistic('personmanager', initialMenuOption))
     }
     return () => {
-      standardLogger('svarsed.editor.personmanager.time', statistics)
+      dispatch(finishMenuStatistic('personmanager'))
     }
   }, [])
 
   const setCurrentMenuOption = (newMenu: string | undefined) => {
-    const previousMenu = currentMenuOption
-    const newStatistics = _.cloneDeep(statistics)
-
-    if (!_.isNil(previousMenu) && newStatistics[previousMenu] && newStatistics[previousMenu].status === 'start') {
-      const diff = new Date().getTime() - newStatistics[previousMenu].date.getTime()
-      const diffSeconds = Math.ceil(diff / 1000)
-      newStatistics[previousMenu] = {
-        date: undefined,
-        status: 'stop',
-        total: statistics[previousMenu].total += diffSeconds
-      }
-    }
-    if (!_.isNil(newMenu)) {
-      newStatistics[newMenu] = {
-        date: new Date(),
-        status: 'start',
-        total: statistics[newMenu]?.total ?? 0
-      }
-    }
-    _setStatistics(newStatistics)
+    dispatch(logMenuStatistic('personmanager', currentMenuOption, newMenu))
     _setCurrentMenuOption(newMenu)
   }
 
@@ -549,7 +527,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({ viewValidation }: PersonM
     setFocusedMenu(totalPeopleNr === 1 ? 'bruker' : undefined)
     setCurrentMenuLabel(undefined)
     setPreviousMenuOption(undefined)
-    setCurrentMenuOption(totalPeopleNr === 1 ? (isFSed(replySed) ? 'personopplysninger' : 'person') : undefined)
+    setCurrentMenuOption(undefined)
   }
 
   useEffect(() => {

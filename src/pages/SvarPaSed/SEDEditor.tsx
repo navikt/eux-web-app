@@ -1,6 +1,7 @@
 import { Add } from '@navikt/ds-icons'
 import { clientClear } from 'actions/alert'
 import { saveEntry } from 'actions/localStorage'
+import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import { createSed, getPreviewFile, resetPreviewFile, sendSedInRina, updateReplySed } from 'actions/svarpased'
 import { resetAllValidation, resetValidation, viewValidation } from 'actions/validation'
 import Formaal from 'applications/SvarSed/Formaal/Formaal'
@@ -26,7 +27,7 @@ import { CreateSedResponse, LocalStorageEntry, Validation } from 'declarations/t
 import FileFC, { File } from 'forhandsvisningsfil'
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import _ from 'lodash'
-import { buttonLogger, standardLogger, timeLogger } from 'metrics/loggers'
+import { buttonLogger, standardLogger } from 'metrics/loggers'
 import { VenstreChevron } from 'nav-frontend-chevron'
 import { Systemtittel } from 'nav-frontend-typografi'
 import {
@@ -121,8 +122,6 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
   const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
   const [_sendButtonClicked, _setSendButtonClicked] = useState<boolean>(false)
   const performValidation = useGlobalValidation<ValidationSEDEditorProps>(validateSEDEditor)
-
-  const [totalTime] = useState<Date>(new Date())
 
   const storageKey = 'replySed'
   const showPersonManager = (): boolean => isSed(replySed)
@@ -251,8 +250,9 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
   }, [previewFile])
 
   useEffect(() => {
+    dispatch(startPageStatistic('editor'))
     return () => {
-      timeLogger('svarsed.editor', totalTime)
+      dispatch(finishPageStatistic('editor'))
     }
   }, [])
 
@@ -308,13 +308,17 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
       <VerticalSeparatorDiv size='3' />
       {showPersonManager() && (
         <>
-          <PersonManager viewValidation={view} />
+          <PersonManager
+            viewValidation={view}
+          />
           <VerticalSeparatorDiv size='2' />
         </>
       )}
       {isFSed(replySed) && showFormålManager() && (
         <>
-          <FormålManager viewValidation={view} />
+          <FormålManager
+            viewValidation={view}
+          />
           <VerticalSeparatorDiv size='2' />
         </>
       )}
