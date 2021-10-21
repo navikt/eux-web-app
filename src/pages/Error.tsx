@@ -55,7 +55,7 @@ export const Error = ({ error }: ErrorProps) => {
   const footer = t('message:error-page-footer')
 
   useEffect(() => {
-    standardLogger('.errorpage.view')
+    standardLogger('errorpage.view')
   }, [])
 
   const stack = new StackTracey(error).withSources()

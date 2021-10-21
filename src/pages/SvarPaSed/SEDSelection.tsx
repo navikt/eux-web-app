@@ -205,7 +205,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
 
   useEffect(() => {
     return () => {
-      timeLogger('svarpased.selection', totalTime)
+      timeLogger('svarsed.selection', totalTime)
     }
   }, [])
 

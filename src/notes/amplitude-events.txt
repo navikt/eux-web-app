@@ -1,11 +1,11 @@
 Amplitude - nEESSI
 
 1. SvarSED page
-	#neessi.svarpased.time - Total time spent in the SvarPaSed page
+	#neessi.svarsed.time - Total time spent in the SvarPaSed page
 
 2. SvarSED selection page
 	#neessi.svarsed.selection.time - Total time spent in the SvarPaSed selection page
-  #neessi.svarsed.selection.query.button, {type: 'saksnummer' | 'fnr' | 'dnr'} - Number of searches performed, grouped by search types
+  #neessi.svarsed.selection.query, {type: 'saksnummer' | 'fnr' | 'dnr'} - Number of searches performed, grouped by search types
 	#neessi.svarsed.selection.filter.alle.button - Number of 'alle' filter clicks
 	#neessi.svarsed.selection.filter.fb.button - Number of 'fb' filter clicks
 	#neessi.svarsed.selection.filter.u.button - Number of 'u' filter clicks
@@ -37,7 +37,7 @@ Amplitude - nEESSI
 
   Opprett SvarSed modal:
   #neessi.svarsed.editor.sendsvarsed.button, {type: 'modal'} - Number of times send svarsed button is clicked, from SvarSED modal
-  #neessi.svarsed.editor.editinrina.button - Number of times Edit in Rina button is clicked
+  => #neessi.svarsed.editor.editinrina.button - Number of times Edit in Rina button is clicked
 
   Opprett:
   #neessi.svarsed.create.request - Number of times Opprett/oppdater SvarSED was requested
@@ -62,8 +62,8 @@ Amplitude - nEESSI
     #neessi.svarsed.editor.personmodal.remove, {type: string} - Person removed
 
     4.2.1 PersonOpplysning:
-      #neessi.svarsed.editor.personopplysning.norskpin.search - Norsk pin searched
-      #neessi.svarsed.editor.personopplysning.norskpin.fill - Norsk pin filled
+      #neessi.svarsed.editor.personopplysning.norskpin.search.button - Norsk pin searched
+      #neessi.svarsed.editor.personopplysning.norskpin.fill.button - Norsk pin filled
       #neessi.svarsed.editor.personopplysning.utenlandskpin.add - utendlandsk pin added
       #neessi.svarsed.editor.personopplysning.utenlandskpin.remove - utendlandsk pin added
 
@@ -90,10 +90,10 @@ Amplitude - nEESSI
       #neessi.svarsed.editor.periode.remove, {type: 'perioderMedArbeid'}: periode added
       #neessi.svarsed.editor.periode.add, {type: 'perioderMedPensjon'}: periode added
       #neessi.svarsed.editor.periode.remove, {type: 'perioderMedPensjon'}: periode removed
-      #neessi.svarsed.editor.periode.add, {type: 'periodeMedTrygd'}: periode added
-      #neessi.svarsed.editor.periode.remove, {type: 'periodeMedTrygd'}: periode added
-      #neessi.svarsed.editor.periode.add, {type: 'periodeMedYtelser'}: periode added
-      #neessi.svarsed.editor.periode.remove, {type: 'periodeMedYtelser'}: periode removed
+      #neessi.svarsed.editor.periode.add, {type: 'perioderMedTrygd'}: periode added
+      #neessi.svarsed.editor.periode.remove, {type: 'perioderMedTrygd'}: periode added
+      #neessi.svarsed.editor.periode.add, {type: 'perioderMedYtelser'}: periode added
+      #neessi.svarsed.editor.periode.remove, {type: 'perioderMedYtelser'}: periode removed
 
     4.2.6 familierelasjon:
       #neessi.svarsed.editor.familierelasjon.add : relationship added
@@ -144,8 +144,8 @@ Amplitude - nEESSI
     #neessi.svarsed.editor.formålnmanager.time { [key]: {status, total, date}} - Total time spent on each formålManager menu, grouped by main menu (Vedtak, Motregning, etc)
 
     4.3.1 Motregning:
-      #neessi.svarsed.editor.motregning.add - navn og betegnelse added
-      #neessi.svarsed.editor.motregning.remove - navn og betegnelse removed
+      #neessi.svarsed.editor.motregning.add - motregning added
+      #neessi.svarsed.editor.motregning.remove - motregning removed
       #neessi.svarsed.editor.seekontoopplysning.button - Button clicked for kontoopplysning
 
     4.3.2 Prosedyre ved uenighet:

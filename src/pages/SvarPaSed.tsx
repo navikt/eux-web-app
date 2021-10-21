@@ -254,7 +254,7 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
 
   useEffect(() => {
     return () => {
-      timeLogger('svarpased', totalTime)
+      timeLogger('svarsed', totalTime)
     }
   }, [])
 

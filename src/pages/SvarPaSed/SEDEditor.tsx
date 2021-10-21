@@ -252,7 +252,7 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
 
   useEffect(() => {
     return () => {
-      timeLogger('svarpased.editor', totalTime)
+      timeLogger('svarsed.editor', totalTime)
     }
   }, [])
 

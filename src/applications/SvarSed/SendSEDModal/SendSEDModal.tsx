@@ -315,7 +315,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                     {goToRinaUrl && (
                       <HighContrastHovedknapp
                         mini
-                        data-amplitude='svarsed.editor.editinrina.button'
+                        data-amplitude='svarsed.editor.editinrina'
                         onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
                           buttonLogger(e)
                           window.open(goToRinaUrl, 'rina')
