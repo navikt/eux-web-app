@@ -437,9 +437,9 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                     <SEDPanel border>
                       <FlexDiv>
                         <PileCenterDiv style={{ alignItems: 'center' }} title={t('')}>
-                          {connectedSed.status === 'received' && <Email width='32' height='32'/>}
-                          {connectedSed.status === 'sent' && <Send width='32' height='32'/>}
-                          {connectedSed.status === 'new' && <Star width='32' height='32'/>}
+                          {connectedSed.status === 'received' && <Email width='32' height='32' />}
+                          {connectedSed.status === 'sent' && <Send width='32' height='32' />}
+                          {connectedSed.status === 'new' && <Star width='32' height='32' />}
                           {connectedSed.status === 'active' && <Edit width='32' height='32' />}
                           <VerticalSeparatorDiv size='0.35' />
                           <Undertekst>
