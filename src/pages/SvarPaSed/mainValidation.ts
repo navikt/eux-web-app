@@ -115,7 +115,7 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
   const personInfo: PersonInfo = _.get(replySed, `${personID}.personInfo`)
   const personName: string = personID === 'familie'
     ? t('label:familien').toLowerCase()
-    : personInfo.fornavn + ' ' + personInfo.etternavn
+    : personInfo.fornavn + ' ' + (personInfo.etternavn ?? '')
 
   if (isFSed(replySed)) {
     if (personID !== 'familie') {

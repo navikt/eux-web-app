@@ -79,7 +79,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
   const [_allBarnaNameKeys, _setAllBarnaNameKeys] = useState<BarnaNameKeyMap>({})
   const [_keyAndYtelseMap, _setKeyAndYtelseMap] = useState<KeyAndYtelseMap>({})
 
-  const getPersonName = (b: Barn): string => b.personInfo.fornavn + ' ' + b.personInfo.etternavn
+  const getPersonName = (b: Barn): string => b.personInfo.fornavn + ' ' + (b.personInfo?.etternavn ?? '')
 
   useEffect(() => {
     /** sample of a keyAndYtelse map. When fullKey is for familie, we do not have ytelseNavn

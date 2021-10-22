@@ -357,7 +357,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
 
       if (menu !== 'familie') {
         const p = _.get(replySed, menu)
-        const personName = p.personInfo.fornavn + ' ' + p.personInfo.etternavn
+        const personName = p.personInfo.fornavn + ' ' + (p.personInfo.etternavn ?? '')
         setCurrentMenuLabel(personName)
       } else {
         setCurrentMenuLabel(t('label:hele-familien'))
@@ -431,7 +431,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
               <MenuLabelText className={classNames({ selected: selected })}>
                 {personId === 'familie'
                   ? t('label:hele-familien')
-                  : personInfo?.fornavn + ' ' + personInfo?.etternavn}
+                  : personInfo?.fornavn + ' ' + (personInfo?.etternavn ?? '')}
               </MenuLabelText>
               <HorizontalSeparatorDiv size='0.5' />
               {personInfo?.statsborgerskap && !_.isEmpty(personInfo?.statsborgerskap) && (
@@ -450,7 +450,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
           {isFSed(replySed) && (
             <CheckboxDiv>
               <MenuCheckbox
-                aria-label={t('label:velg-person', { person: personInfo?.fornavn + ' ' + personInfo?.etternavn })}
+                aria-label={t('label:velg-person', { person: personInfo?.fornavn + ' ' + (personInfo?.etternavn ?? '')})}
                 aria-checked={selected}
                 checked={selected}
                 label=''

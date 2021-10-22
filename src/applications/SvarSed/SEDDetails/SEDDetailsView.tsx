@@ -62,7 +62,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
             )}
             <HorizontalSeparatorDiv size='0.35' />
             <span>
-              {replySed.bruker.personInfo.fornavn} {replySed.bruker.personInfo.etternavn} ({replySed.bruker.personInfo.kjoenn})
+              {replySed.bruker.personInfo.fornavn} {replySed.bruker.personInfo.etternavn ?? ''} ({replySed.bruker.personInfo.kjoenn})
             </span>
           </FlexDiv>
         </Dd>
@@ -82,8 +82,8 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
                 <span>
                   {(replySed as F002Sed).ektefelle
                     ? (replySed as F002Sed).ektefelle?.personInfo?.fornavn + ' ' +
-                      (replySed as F002Sed).ektefelle?.personInfo?.etternavn + ' (' +
-                      (replySed as F002Sed).ektefelle?.personInfo?.kjoenn + ')'
+                    ((replySed as F002Sed).ektefelle?.personInfo?.etternavn ?? '') + ' (' +
+                    ((replySed as F002Sed).ektefelle?.personInfo?.kjoenn ?? '') + ')'
                     : '-'}
                 </span>
               </FlexDiv>

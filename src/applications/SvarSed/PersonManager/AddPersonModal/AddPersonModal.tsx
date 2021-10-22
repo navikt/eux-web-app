@@ -106,7 +106,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
   const [_newPersonFnr, _setNewPersonFnr] = useState<string>('')
   const [_newPersonName, _setNewPersonName] = useState<string>('')
   const [_newPersonRelation, _setNewPersonRelation] = useState<string | undefined>(undefined)
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PersonInfo>((p: PersonInfo) => p?.fornavn + ' ' + p?.etternavn)
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PersonInfo>((p: PersonInfo) => p?.fornavn + ' ' + (p?.etternavn ?? ''))
   const [_replySed, _setReplySed] = useState<ReplySed>(replySed)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationAddPersonModalProps>({}, validateAddPersonModal)
 
@@ -297,7 +297,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
           <FlexCenterSpacedDiv>
             <FlexBaseSpacedDiv>
               <Normaltekst>
-                {p?.fornavn + ' ' + p?.etternavn}
+                {p?.fornavn + ' ' + (p?.etternavn ?? '')}
               </Normaltekst>
               <HorizontalSeparatorDiv size='0.5' />
               <GreySpan>

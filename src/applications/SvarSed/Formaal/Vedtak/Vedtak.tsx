@@ -480,7 +480,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
               >
                 <Checkbox
                   checked={checked}
-                  label={vedtakBarn.fornavn + ' ' + vedtakBarn.etternavn + ' (' + vedtakBarn.foedselsdato + ')'}
+                  label={vedtakBarn.fornavn + ' ' + (vedtakBarn.etternavn ?? '') + ' (' + vedtakBarn.foedselsdato + ')'}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangedBarnaCheckbox(vedtakBarn, e.target.checked)}
                 />
                 <VerticalSeparatorDiv size='0.5' />
