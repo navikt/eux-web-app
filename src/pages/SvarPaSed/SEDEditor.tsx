@@ -223,7 +223,7 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
       cleanReplySed(newReplySed)
       const rinaSakId = newReplySed.saksnummer
       delete newReplySed.saksnummer
-      delete newReplySed.sedUrl
+      delete newReplySed.sakUrl
       dispatch(getPreviewFile(rinaSakId!, newReplySed))
       buttonLogger(e)
     }
@@ -268,7 +268,7 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
       {_viewSendSedModal && (
         <SendSEDModal
           fnr={fnr!}
-          goToRinaUrl={replySed?.sedUrl}
+          goToRinaUrl={replySed?.sakUrl}
           highContrast={highContrast}
           attachments={_attachments}
           onModalClose={() => setViewSendSedModal(false)}

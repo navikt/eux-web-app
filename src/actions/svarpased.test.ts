@@ -24,7 +24,7 @@ describe('actions/svarpased', () => {
   it('createSed()', () => {
     const replySed: ReplySed = {
       saksnummer: '123',
-      sedUrl: 'url'
+      sakUrl: 'url'
     } as ReplySed
     svarpasedActions.createSed(replySed)
     expect(call)
@@ -59,7 +59,7 @@ describe('actions/svarpased', () => {
     const rinaSakId = '123'
     const replySed = {
       saksnummer: '123',
-      sedUrl: 'url'
+      sakUrl: 'url'
     } as ReplySed
     svarpasedActions.getPreviewFile(rinaSakId, replySed)
     expect(call)
@@ -134,12 +134,11 @@ describe('actions/svarpased', () => {
     const connectedSed = {
       svarsedType: 'U002',
       sedId: '123',
-      sedUrl: 'mockSedUrl',
       sedType: 'U001'
     } as ConnectedSed
     const saksnummer = '456'
-
-    svarpasedActions.queryReplySed(connectedSed, saksnummer)
+    const sakUrl = 'mockSakurl'
+    svarpasedActions.queryReplySed(connectedSed, saksnummer, sakUrl)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
@@ -149,7 +148,7 @@ describe('actions/svarpased', () => {
         },
         context: {
           saksnummer: saksnummer,
-          sedUrl: connectedSed.sedUrl,
+          sakUrl: sakUrl,
           sedId: '123-U001'
         },
         url: sprintf(urls.API_RINASAK_SVARSED_QUERY_URL, {

@@ -19,7 +19,7 @@ export const createSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
   const rinaSakId = replySed.saksnummer
   const copyReplySed = _.cloneDeep(replySed)
   delete copyReplySed.saksnummer
-  delete copyReplySed.sedUrl
+  delete copyReplySed.sakUrl
   delete copyReplySed.sedId
   return call({
     method: 'POST',
@@ -116,7 +116,7 @@ export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload<C
 }
 
 export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed>>> = (
-  connectedSed: ConnectedSed, saksnummer: string
+  connectedSed: ConnectedSed, saksnummer: string, sakUrl: string
 ): ThunkResult<ActionWithPayload<ReplySed>> => {
   const mockSed = mockReplySed(connectedSed.svarsedType)
   return call({
@@ -131,7 +131,7 @@ export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed
     },
     context: {
       saksnummer: saksnummer,
-      sedUrl: connectedSed.sedUrl,
+      sakUrl: sakUrl,
       sedId: connectedSed.svarsedId
     },
     type: {

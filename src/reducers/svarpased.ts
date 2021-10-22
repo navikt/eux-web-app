@@ -78,7 +78,7 @@ const svarpasedReducer = (
         replySed: {
           ...(action as ActionWithPayload).payload,
           saksnummer: (action as ActionWithPayload).context.saksnummer,
-          sedUrl: (action as ActionWithPayload).context.sedUrl,
+          sakUrl: (action as ActionWithPayload).context.sakUrl,
           sedId: (action as ActionWithPayload).context.sedId
         }
       }

@@ -55,7 +55,6 @@ export interface ConnectedSed {
   sedType: string
   sedId: string
   sedIdParent?: string
-  sedUrl: string
   status: string
   sistEndretDato: string
   svarsedType: string

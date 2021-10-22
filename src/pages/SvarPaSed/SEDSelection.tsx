@@ -175,9 +175,9 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
     dispatch(svarpasedActions.setParentSed(e.target.value))
   }
 
-  const onReplySedClick = (connectedSed: ConnectedSed, saksnummer: string) => {
+  const onReplySedClick = (connectedSed: ConnectedSed, saksnummer: string, sakUrl: string) => {
     setReplySedRequested(true)
-    dispatch(svarpasedActions.queryReplySed(connectedSed, saksnummer))
+    dispatch(svarpasedActions.queryReplySed(connectedSed, saksnummer, sakUrl))
   }
 
   useEffect(() => {
@@ -451,7 +451,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                           </Undertittel>
                           <VerticalSeparatorDiv size='0.5' />
                           <FlexDiv>
-                            <HighContrastLink target='_blank' href={connectedSed.sedUrl}>
+                            <HighContrastLink target='_blank' href={sed.sakUrl}>
                               <span>
                                 {t('label:rediger-sed-i-rina')}
                               </span>
@@ -523,7 +523,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                                       type: connectedSed.svarsedType,
                                       parenttype: connectedSed.sedType
                                     })
-                                    onReplySedClick(connectedSed, sed.sakId)
+                                    onReplySedClick(connectedSed, sed.sakId, sed.sakUrl)
                                   }}
                                 >
                                   {queryingReplySed

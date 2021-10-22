@@ -342,7 +342,7 @@ export interface BaseReplySed {
   sedVersjon: string
   // added
   saksnummer ?: string
-  sedUrl ?: string
+  sakUrl ?: string
   sedId ?: string
 }
 
