@@ -118,7 +118,6 @@ export const validateKontoopplysning = (
       } as FeiloppsummeringFeil
       hasErrors = true
     }
-
   }
 
   if (hasErrors) {

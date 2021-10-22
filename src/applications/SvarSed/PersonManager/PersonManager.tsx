@@ -450,7 +450,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
           {isFSed(replySed) && (
             <CheckboxDiv>
               <MenuCheckbox
-                aria-label={t('label:velg-person', { person: personInfo?.fornavn + ' ' + (personInfo?.etternavn ?? '')})}
+                aria-label={t('label:velg-person', { person: personInfo?.fornavn + ' ' + (personInfo?.etternavn ?? '') })}
                 aria-checked={selected}
                 checked={selected}
                 label=''

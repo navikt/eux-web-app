@@ -31,7 +31,10 @@ const statisticReducer = (state: StatisticsState = initialUiState, action: Actio
             [initialMenu]: {
               date: new Date(),
               status: 'start',
-              total: 0
+              total: {
+                minutes: 0,
+                seconds: 0
+              }
             }
           }
         }
@@ -46,7 +49,10 @@ const statisticReducer = (state: StatisticsState = initialUiState, action: Actio
           [(action as ActionWithPayload).payload.page]: {
             date: new Date(),
             status: 'start',
-            total: 0
+            total: {
+              minutes: 0,
+              seconds: 0
+            }
           }
         }
       }
@@ -89,17 +95,24 @@ const statisticReducer = (state: StatisticsState = initialUiState, action: Actio
       if (newPageTime[previousPage] && newPageTime[previousPage].status === 'start') {
         const diff = new Date().getTime() - newPageTime[previousPage].date.getTime()
         const diffSeconds = Math.ceil(diff / 1000)
+        const diffMinutes = Math.ceil(diffSeconds / 60)
         newPageTime[previousPage] = {
           date: undefined,
           status: 'stop',
-          total: newPageTime[previousPage].total += diffSeconds
+          total: {
+            seconds: newPageTime[previousPage].total.seconds += diffSeconds,
+            minutes: newPageTime[previousPage].total.minutes += diffMinutes
+          }
         }
       }
       if (!_.isNil(nextPage)) {
         newPageTime[nextPage] = {
           date: new Date(),
           status: 'start',
-          total: newPageTime[nextPage]?.total ?? 0
+          total: newPageTime[nextPage]?.total ?? {
+            minutes: 0,
+            seconds: 0
+          }
         }
       }
 
@@ -119,10 +132,14 @@ const statisticReducer = (state: StatisticsState = initialUiState, action: Actio
       if (!_.isNil(previousMenu) && newStatistics[previousMenu] && newStatistics[previousMenu].status === 'start') {
         const diff = new Date().getTime() - newStatistics[previousMenu].date.getTime()
         const diffSeconds = Math.ceil(diff / 1000)
+        const diffMinutes = Math.ceil(diffSeconds / 60)
         newStatistics[previousMenu] = {
           date: undefined,
           status: 'stop',
-          total: newStatistics[previousMenu].total += diffSeconds
+          total: {
+            seconds: newStatistics[previousMenu].total.seconds += diffSeconds,
+            minutes: newStatistics[previousMenu].total.minutes += diffMinutes
+          }
         }
       }
       if (!_.isNil(nextMenu)) {
@@ -137,10 +154,14 @@ const statisticReducer = (state: StatisticsState = initialUiState, action: Actio
           if (newStatistics[key].status === 'start') {
             const diff = new Date().getTime() - newStatistics[key].date.getTime()
             const diffSeconds = Math.ceil(diff / 1000)
+            const diffMinutes = Math.ceil(diffSeconds / 60)
             newStatistics[key] = {
               date: undefined,
               status: 'stop',
-              total: newStatistics[key].total += diffSeconds
+              total: {
+                seconds: newStatistics[key].total.seconds += diffSeconds,
+                minutes: newStatistics[key].total.minutes += diffMinutes
+              }
             }
           }
         })
