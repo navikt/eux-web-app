@@ -1,6 +1,6 @@
 import { setStatusParam } from 'actions/app'
 import { setCurrentEntry } from 'actions/localStorage'
-import { logPageStatistics, startPageStatistic } from 'actions/statistics'
+import { finishPageStatistic, logPageStatistics, startPageStatistic } from 'actions/statistics'
 import * as svarpasedActions from 'actions/svarpased'
 import { setMode, setReplySed } from 'actions/svarpased'
 import SEDDetails from 'applications/SvarSed/SEDDetails/SEDDetails'
@@ -259,7 +259,7 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
   useEffect(() => {
     dispatch(startPageStatistic('total'))
     return () => {
-      dispatch(startPageStatistic('total'))
+      dispatch(finishPageStatistic('total'))
     }
   }, [])
 
