@@ -28,6 +28,7 @@ export interface PeriodeProps<T> {
     sluttdato?: string
   }
   periodeType?: PeriodeInputType
+  requiredStartDato?: boolean
   namespace: string
   setPeriode: (periode: T, id: string) => void
   showLabel?: boolean
@@ -52,6 +53,7 @@ const PeriodeInput = <T extends Periode>({
   label = {},
   namespace,
   periodeType = 'withcheckbox',
+  requiredStartDato = true,
   setPeriode,
   showLabel = true,
   value
@@ -94,11 +96,11 @@ const PeriodeInput = <T extends Periode>({
           feil={error.startdato}
           id='startdato'
           key={namespace + '-startdato-' + _periode?.startdato}
-          label={showLabel ? label?.startdato ?? t('label:startdato') + ' *' : ''}
+          label={showLabel ? label?.startdato ?? t('label:startdato') + (requiredStartDato ? ' *' : ''): ''}
           namespace={namespace}
           onChanged={onStartDatoChanged}
           placeholder={t('el:placeholder-date-default')}
-          required
+          required={requiredStartDato}
           value={toUIDateFormat(_periode?.startdato) ?? ''}
         />
       </Column>

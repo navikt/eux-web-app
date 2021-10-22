@@ -41,22 +41,6 @@ export const validateAdresse = (
     hasErrors = true
   }
 
-  if (_.isEmpty(adresse?.gate?.trim())) {
-    v[namespace + idx + '-gate'] = {
-      feilmelding: t('message:validation-noAddressStreetTil', { person: personName }),
-      skjemaelementId: namespace + idx + '-gate'
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-
-  if (_.isEmpty(adresse?.postnummer?.trim())) {
-    v[namespace + idx + '-postnummer'] = {
-      feilmelding: t('message:validation-noAddressPostnummerTil', { person: personName }),
-      skjemaelementId: namespace + idx + '-postnummer'
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-
   if (_.isEmpty(adresse?.by?.trim())) {
     v[namespace + idx + '-by'] = {
       feilmelding: t('message:validation-noAddressCityTil', { person: personName }),

@@ -323,6 +323,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
             }}
             setPeriode={(p: Periode, id: string) => setPeriode(p, id, index)}
             value={_periode}
+            requiredStartDato={false}
           />
           <Column />
         </Row>
@@ -335,7 +336,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
               data-test-id={namespace + idx + '-erDeltForeldreansvar'}
               feil={getErrorFor(index, 'erDeltForeldreansvar')}
               id={namespace + idx + '-erDeltForeldreansvar'}
-              legend={t('label:delt-foreldreansvar') + ' *'}
+              legend={t('label:delt-foreldreansvar')}
               name={namespace + '-erDeltForeldreansvar'}
               radios={[
                 { label: t('label:ja'), value: 'ja' },
@@ -353,7 +354,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
         <AlignCenterRow>
           <Column flex='2'>
             <Normaltekst>
-              {t('label:barn-i-hustand-spørsmål-1') + ' *'}
+              {t('label:barn-i-hustand-spørsmål-1')}
             </Normaltekst>
           </Column>
           <Column>
@@ -376,7 +377,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
         <AlignCenterRow>
           <Column flex='2'>
             <Normaltekst>
-              {t('label:barn-i-hustand-spørsmål-2') + ' *'}
+              {t('label:barn-i-hustand-spørsmål-2')}
             </Normaltekst>
           </Column>
           <Column>
@@ -399,7 +400,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
         <AlignCenterRow>
           <Column flex='2'>
             <Normaltekst>
-              {t('label:barn-i-hustand-spørsmål-3') + ' *'}
+              {t('label:barn-i-hustand-spørsmål-3')}
             </Normaltekst>
           </Column>
           <Column>
@@ -422,7 +423,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
         <AlignCenterRow>
           <Column flex='2'>
             <Normaltekst>
-              {t('label:barn-i-hustand-spørsmål-4') + ' *'}
+              {t('label:barn-i-hustand-spørsmål-4')}
             </Normaltekst>
           </Column>
           <Column>

@@ -68,48 +68,57 @@ export const validateKontoopplysning = (
     hasErrors = true
   }
 
-  if (kontoType === 'ordinar') {
+  if (kontoType === 'ordinaer') {
     if (_.isEmpty(uti?.kontoOrdinaer?.swift?.trim())) {
       v[namespace + '-kontoOrdinaer-swift'] = {
         feilmelding: t('message:validation-noSwiftTil', { person: formalName }),
         skjemaelementId: namespace + '-kontoOrdinaer-swift'
       } as FeiloppsummeringFeil
       hasErrors = true
-    }
-  }
-
-  if (kontoType === 'sepa') {
-    if (_.isEmpty(uti?.kontoSepa?.iban?.trim())) {
-      v[namespace + '-kontoSepa-iban'] = {
-        feilmelding: t('message:validation-noIbanTil', { person: formalName }),
-        skjemaelementId: namespace + '-kontoSepa-iban'
-      } as FeiloppsummeringFeil
-      hasErrors = true
     } else {
-      if (!uti?.kontoSepa?.iban.trim().match(/^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[a-zA-Z0-9]{7}([a-zA-Z0-9]?){0,16}$/)) {
-        v[namespace + '-kontoSepa-iban'] = {
-          feilmelding: t('message:validation-invalidIbanTil', { person: formalName }),
-          skjemaelementId: namespace + '-kontoSepa-iban'
+      if (!uti?.kontoOrdinaer?.swift?.trim().match(/^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/)) {
+        v[namespace + '-kontoOrdinaer-swift'] = {
+          feilmelding: t('message:validation-invalidSwiftTil', { person: formalName }),
+          skjemaelementId: namespace + '-kontoOrdinaer-swift'
         } as FeiloppsummeringFeil
         hasErrors = true
       }
     }
+  }
 
-    if (_.isEmpty(uti?.kontoSepa?.iban?.trim() && _.isEmpty(uti?.kontoSepa?.swift?.trim()))) {
+  if (kontoType === 'sepa') {
+    if (_.isEmpty(uti?.kontoSepa?.iban?.trim()) && _.isEmpty(uti?.kontoSepa?.swift?.trim())) {
+      v[namespace + '-kontoSepa-iban'] = {
+        feilmelding: t('message:validation-noIbanOrSwiftTil', { person: formalName }),
+        skjemaelementId: namespace + '-kontoSepa-iban'
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
+
+    if (!_.isEmpty(uti?.kontoSepa?.iban?.trim()) && !uti.kontoSepa!.iban.trim().match(/^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[a-zA-Z0-9]{7}([a-zA-Z0-9]?){0,16}$/)) {
+      v[namespace + '-kontoSepa-iban'] = {
+        feilmelding: t('message:validation-invalidIbanTil', { person: formalName }),
+        skjemaelementId: namespace + '-kontoSepa-iban'
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
+
+    if (_.isEmpty(uti?.kontoSepa?.iban?.trim()) && _.isEmpty(uti?.kontoSepa?.swift?.trim())) {
       v[namespace + '-kontoSepa-swift'] = {
-        feilmelding: t('message:validation-noSwiftTil', { person: formalName }),
+        feilmelding: t('message:validation-noIbanOrSwiftTil', { person: formalName }),
         skjemaelementId: namespace + '-kontoSepa-swift'
       } as FeiloppsummeringFeil
       hasErrors = true
     }
-  } else {
-    if (!uti?.kontoSepa?.swift?.trim().match(/^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/)) {
+
+    if (!_.isEmpty(uti?.kontoSepa?.iban?.trim() && !uti?.kontoSepa?.swift?.trim().match(/^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/))) {
       v[namespace + '-kontoSepa-swift'] = {
         feilmelding: t('message:validation-invalidSwiftTil', { person: formalName }),
         skjemaelementId: namespace + '-kontoSepa-swift'
       } as FeiloppsummeringFeil
       hasErrors = true
     }
+
   }
 
   if (hasErrors) {

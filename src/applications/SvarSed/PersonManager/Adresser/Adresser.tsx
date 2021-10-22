@@ -46,7 +46,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-adresser`
 
   const [_newAdresse, _setNewAdresse] = useState<IAdresse | undefined>(undefined)
-  const getId = (a: IAdresse | null | undefined): string => (a?.type ?? '') + '-' + (a?.postnummer ?? '')
+  const getId = (a: IAdresse | null | undefined): string => (a?.type ?? '') + '-' + (a?.by ?? '') + '-' + (a?.land ?? '')
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<IAdresse>(getId)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationAddressProps>({}, validateAdresse)

@@ -7,6 +7,7 @@ import CountrySelect from 'landvelger'
 import { AlignStartRow, Column, HighContrastRadioPanelGroup, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
 
 export interface AdresseProps {
   adresse: Adresse | null | undefined
@@ -15,6 +16,12 @@ export interface AdresseProps {
   validation: Validation
   resetValidation: (fullnamespace: string) => void
 }
+
+const HighContrastRadioPanelGroupWithNoErrorVisible = styled(HighContrastRadioPanelGroup)`
+  .typo-feilmelding {
+     display: none;
+  }
+`
 
 const AdresseFC: React.FC<AdresseProps> = ({
   adresse,
@@ -84,7 +91,7 @@ const AdresseFC: React.FC<AdresseProps> = ({
     <div>
       <AlignStartRow>
         <Column flex='4'>
-          <HighContrastRadioPanelGroup
+          <HighContrastRadioPanelGroupWithNoErrorVisible
             checked={adresse?.type}
             data-no-border
             data-test-id={namespace + '-type'}
@@ -122,9 +129,8 @@ const AdresseFC: React.FC<AdresseProps> = ({
             feil={validation[namespace + '-gate']?.feilmelding}
             namespace={namespace}
             id='gate'
-            label={t('label:gateadresse') + ' *'}
+            label={t('label:gateadresse')}
             onChanged={setGate}
-            required
             value={adresse?.gate}
           />
         </Column>
@@ -146,9 +152,8 @@ const AdresseFC: React.FC<AdresseProps> = ({
             feil={validation[namespace + '-postnummer']?.feilmelding}
             namespace={namespace}
             id='postnummer'
-            label={t('label:postnummer') + ' *'}
+            label={t('label:postnummer')}
             onChanged={setPostnummer}
-            required
             value={adresse?.postnummer}
           />
         </Column>

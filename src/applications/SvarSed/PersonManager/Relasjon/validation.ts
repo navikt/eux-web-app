@@ -1,4 +1,3 @@
-import { validatePeriode } from 'components/Forms/validation'
 import { Barnetilhoerighet } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -55,53 +54,6 @@ export const validateBarnetilhoerighet = (
     v[namespace + idx + '-relasjonType'] = {
       feilmelding: t('message:validation-noRelationTypeTil', { person: personName }),
       skjemaelementId: namespace + idx + '-relasjonType'
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-
-  const periodError: boolean = validatePeriode(v, t, {
-    periode: barnetilhorighet.periode,
-    namespace: namespace + idx + '-periode',
-    personName
-  })
-  hasErrors = hasErrors || periodError
-
-  if (['ja', 'nei'].indexOf(barnetilhorighet.erDeltForeldreansvar) < 0) {
-    v[namespace + idx + '-erDeltForeldreansvar'] = {
-      feilmelding: t('message:validation-noAnswerTil', { person: personName }),
-      skjemaelementId: namespace + idx + '-erDeltForeldreansvar'
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-
-  if (['ja', 'nei'].indexOf(barnetilhorighet.borIBrukersHushold) < 0) {
-    v[namespace + idx + '-borIBrukersHushold'] = {
-      feilmelding: t('message:validation-noAnswerTil', { person: personName }),
-      skjemaelementId: namespace + idx + '-borIBrukersHushold'
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-
-  if (['ja', 'nei'].indexOf(barnetilhorighet.borIEktefellesHushold) < 0) {
-    v[namespace + idx + '-borIEktefellesHushold'] = {
-      feilmelding: t('message:validation-noAnswerTil', { person: personName }),
-      skjemaelementId: namespace + idx + '-borIEktefellesHushold'
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-
-  if (['ja', 'nei'].indexOf(barnetilhorighet.borIAnnenPersonsHushold) < 0) {
-    v[namespace + idx + '-borIAnnenPersonsHushold'] = {
-      feilmelding: t('message:validation-noAnswerTil', { person: personName }),
-      skjemaelementId: namespace + idx + '-borIAnnenPersonsHushold'
-    } as FeiloppsummeringFeil
-    hasErrors = true
-  }
-
-  if (['ja', 'nei'].indexOf(barnetilhorighet.borPaaInstitusjon) < 0) {
-    v[namespace + idx + '-borPaaInstitusjon'] = {
-      feilmelding: t('message:validation-noAnswerTil', { person: personName }),
-      skjemaelementId: namespace + idx + '-borPaaInstitusjon'
     } as FeiloppsummeringFeil
     hasErrors = true
   }

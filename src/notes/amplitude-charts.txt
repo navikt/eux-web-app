@@ -2,10 +2,9 @@ Amplitude - nEESSI
 
 * - not used yet in q
 ** - not used yet in p
-=> - Amend event name
-Error: personmanager/formålmanager times
+=> - Amended event name, UPDATE
 
-1. SvarSED app - Average total time spent
+1. SvarSED app - Average total time spent in pages
 
 	=> #neessi.svarpased.total.time - SvarSed Page
 	#neessi.svarsed.selection.time - selection page
