@@ -22,19 +22,17 @@ const statisticReducer = (state: StatisticsState = initialUiState, action: Actio
       if (!initialMenu) {
         return state
       }
+      const _initialMenu = initialMenu.replace(/\[\d+\]/g,'')
       return {
         ...state,
         menuTime: {
           ...state.menuTime,
           [domain]: {
             ...state.menuTime[domain],
-            [initialMenu]: {
+            [_initialMenu]: {
               date: new Date(),
               status: 'start',
-              total: {
-                minutes: 0,
-                seconds: 0
-              }
+              total: 0
             }
           }
         }
@@ -49,10 +47,7 @@ const statisticReducer = (state: StatisticsState = initialUiState, action: Actio
           [(action as ActionWithPayload).payload.page]: {
             date: new Date(),
             status: 'start',
-            total: {
-              minutes: 0,
-              seconds: 0
-            }
+            total: 0
           }
         }
       }
@@ -64,7 +59,9 @@ const statisticReducer = (state: StatisticsState = initialUiState, action: Actio
         finalObject[menuKey] = state.menuTime[domain][menuKey].total
       })
 
-      standardLogger('svarsed.editor.' + domain + '.time', finalObject)
+      Object.keys(finalObject).forEach(key => {
+        standardLogger('svarsed.editor.' + domain + '.' + key + '.time', finalObject[key])
+      })
       return {
         ...state,
         menuTime: {
@@ -99,20 +96,14 @@ const statisticReducer = (state: StatisticsState = initialUiState, action: Actio
         newPageTime[previousPage] = {
           date: undefined,
           status: 'stop',
-          total: {
-            seconds: newPageTime[previousPage].total.seconds += diffSeconds,
-            minutes: newPageTime[previousPage].total.minutes += diffMinutes
-          }
+          total: newPageTime[previousPage].total += diffMinutes
         }
       }
       if (!_.isNil(nextPage)) {
         newPageTime[nextPage] = {
           date: new Date(),
           status: 'start',
-          total: newPageTime[nextPage]?.total ?? {
-            minutes: 0,
-            seconds: 0
-          }
+          total: newPageTime[nextPage]?.total ?? 0
         }
       }
 
@@ -126,42 +117,41 @@ const statisticReducer = (state: StatisticsState = initialUiState, action: Actio
       const domain = (action as ActionWithPayload).payload.domain
       const previousMenu = (action as ActionWithPayload).payload.previousMenu
       const nextMenu = (action as ActionWithPayload).payload.nextMenu
-
       const newStatistics = _.cloneDeep(state.menuTime[domain])
 
-      if (!_.isNil(previousMenu) && newStatistics[previousMenu] && newStatistics[previousMenu].status === 'start') {
-        const diff = new Date().getTime() - newStatistics[previousMenu].date.getTime()
+      // convert barn[0], barn[1] to barn
+      const _previousMenu = previousMenu.replace(/\[\d+\]/g,'')
+
+      if (!_.isNil(_previousMenu) && newStatistics[_previousMenu] && newStatistics[_previousMenu].status === 'start') {
+        const diff = new Date().getTime() - newStatistics[_previousMenu].date.getTime()
         const diffSeconds = Math.ceil(diff / 1000)
         const diffMinutes = Math.ceil(diffSeconds / 60)
-        newStatistics[previousMenu] = {
+        newStatistics[_previousMenu] = {
           date: undefined,
           status: 'stop',
-          total: {
-            seconds: newStatistics[previousMenu].total.seconds += diffSeconds,
-            minutes: newStatistics[previousMenu].total.minutes += diffMinutes
-          }
+          total: newStatistics[_previousMenu].total += diffMinutes
         }
       }
+      // convert barn[0], barn[1] to barn
       if (!_.isNil(nextMenu)) {
-        newStatistics[nextMenu] = {
+        const _nextMenu = nextMenu.replace(/\[\d+\]/g,'')
+        newStatistics[_nextMenu] = {
           date: new Date(),
           status: 'start',
-          total: newStatistics[nextMenu]?.total ?? 0
+          total: newStatistics[_nextMenu]?.total ?? 0
         }
       } else {
         // menu is offloading - stop all pages
         Object.keys(newStatistics).forEach(key => {
-          if (newStatistics[key].status === 'start') {
-            const diff = new Date().getTime() - newStatistics[key].date.getTime()
+          const _key = key.replace(/\[\d+\]/g,'')
+          if (newStatistics[_key].status === 'start') {
+            const diff = new Date().getTime() - newStatistics[_key].date.getTime()
             const diffSeconds = Math.ceil(diff / 1000)
             const diffMinutes = Math.ceil(diffSeconds / 60)
-            newStatistics[key] = {
+            newStatistics[_key] = {
               date: undefined,
               status: 'stop',
-              total: {
-                seconds: newStatistics[key].total.seconds += diffSeconds,
-                minutes: newStatistics[key].total.minutes += diffMinutes
-              }
+              total: newStatistics[_key].total += diffMinutes
             }
           }
         })

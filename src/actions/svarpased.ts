@@ -28,6 +28,9 @@ export const createSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
     expectedPayload: {
       sedId: '123'
     } as CreateSedResponse,
+    context: {
+      sedType: replySed.sedType
+    },
     type: {
       request: types.SVARPASED_SED_CREATE_REQUEST,
       success: types.SVARPASED_SED_CREATE_SUCCESS,

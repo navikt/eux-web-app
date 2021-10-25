@@ -2,101 +2,117 @@ Amplitude - nEESSI
 
 * - not used yet in q
 ** - not used yet in p
-=> - Amended event name, UPDATE
+=> - TO FIX
 
-1. SvarSED app - Average total time spent in pages
+1. Overall
 
-	=> #neessi.svarpased.total.time - SvarSed Page
-	#neessi.svarsed.selection.time - selection page
-  #neessi.svarsed.editor.time - editor page
+  1.1 SvarSED app - Average total time spent in pages
+
+	=> #neessi.svarsed.total.time - SvarSed Page
+	=> #neessi.svarsed.selection.time - selection page
+  => #neessi.svarsed.editor.time - editor page
+
+  1.2 Creating svarSED conversion
+
+  #neessi.svarsed.create.request
+  #neessi.svarsed.create.success
+  #neessi.svarsed.create.failure
+
+  1.3 Successful SvarSED creations
+
+  => #neessi.svarsed.create.success
+
+  1.4 Error page views
+
+  #neessi.errorpage.view
 
 2. Selection
 
-  2.1 SvarSED query grouped by type
-     #neessi.svarsed.selection.query.button, {type: 'saksnummer' | 'fnr' | 'dnr'}
+  2.1 SvarSED queries, grouped by type
+     #neessi.svarsed.selection.query, {type: 'saksnummer' | 'fnr' | 'dnr'}
 
-  2.2 SvarSED selection - filters
-    ** #neessi.svarsed.selection.filter.alle.button - Number of 'alle' filter clicks
-    #neessi.svarsed.selection.filter.fb.button - Number of 'fb' filter clicks
-    ** #neessi.svarsed.selection.filter.u.button - Number of 'u' filter clicks
-    ** #neessi.svarsed.selection.filter.h.button - Number of 'h' filter clicks
-    ** #neessi.svarsed.selection.filter.s.button - Number of 's' filter clicks
+  2.2 SvarSED result filters
+    ** #neessi.svarsed.selection.filter.alle.button
+    neessi.svarsed.selection.filter.fb.button
+    * ** #neessi.svarsed.selection.filter.u.button
+    ** #neessi.svarsed.selection.filter.h.button
+    ** #neessi.svarsed.selection.filter.s.button
 
-  2.3 SvarSED selection actions
+  2.3 SvarSED result actions
     ** #neessi.svarsed.selection.journalforing.button, {type: svarsed}
     #neessi.svarsed.selection.replysed.button, {type: svarsedType, 'parenttype': sedtype}
     #neessi.svarsed.selection.loaddraft.button, {type: sedType}
 
-  2.4 svarSED reply action - distribution by types
+  2.4 SvarSED reply actions - types total
     #neessi.svarsed.selection.replysed.button, {type: svarsedType, 'parenttype': sedtype}
 
 3. Sidebar:
 
-  3.1 Sidebar actions
+  3.1 SvarSED sidebar actions
     #neessi.svarsed.sidebar.loaddraft.button, {type: sedType}
-    #neessi.svarsed.sidebar.removedraft.button
-    ** #neessi.svarsed.sidebar.edit
+    #neessi.svarsed.sidebar.removedraft
+    ** #neessi.svarsed.sidebar.removeall.button
+    * ** #neessi.svarsed.sidebar.edit
 
 4. Editor
 
-  4.1 Action buttons
+  4.1 SvarSED editor - Action buttons
     #neessi.svarsed.editor.preview.button
-    ** #neessi.svarsed.editor.attachments.button
+    * ** #neessi.svarsed.editor.attachments.button
     #neessi.svarsed.editor.opprettsvarsed.button
     #neessi.svarsed.editor.oppdattersvarsed.button
     #neessi.svarsed.editor.sendsvarsed.button
-    ** #neessi.svarsed.editor.savedraft.button
-    ** #neessi.svarsed.editor.updatedraft.button
-    => #neessi.svarsed.editor.editinrina.button
+    * ** #neessi.svarsed.editor.savedraft.button
+    * ** #neessi.svarsed.editor.updatedraft.button
+    #neessi.svarsed.editor.editinrina.button
 
-  4.2 Send SED in Rina - editor or modal distribution
+  4.2 Sending SED in Rina - editor or modal
     #neessi.svarsed.editor.sendsvarsed.button, {type: 'editor', 'modal'}
 
-  4.3 Create SvarSED conversion
-    #neessi.svarsed.create.request
-    #neessi.svarsed.create.success
-    #neessi.svarsed.create.failure
+5 F-Sed
 
- 4.4 Editor - F-Sed - Formål added distribution
+  5.1 Time spent in menus
+    #neessi.svarsed.editor.personmanager.time { [key]: {minutes, seconds}} -
+
+  5.2 F-Sed formål added - distribution
     #neessi.svarsed.fsed.formal.add, {item: string}
-    (unused: #neessi.svarsed.fsed.formal.remove, {item: string})
 
- 4.5 (not created)
-    ERROR -> #neessi.svarsed.editor.personmanager.time { [key]: {status, total, date}} - Total time spent on each personManager menu, grouped by main menu (Nasjonalitetet, Adresse, etc)
+  5.3 (not created) Adding persons
+    * ** #neessi.svarsed.editor.personmodal.add, {type: string} - Person added
 
- 4.6.1 (nor created)  Editor - Add  person
-    ** #neessi.svarsed.editor.personmodal.add, {type: string} - Person added
+  5.4 Persons removed from F-Sed
+    * #neessi.svarsed.editor.personmodal.remove, {type: string} - Person removed
 
- 4.6.2 Editor - Remove person
-    #neessi.svarsed.editor.personmodal.remove, {type: string} - Person removed
+6 PersonManager
 
- 4.7 Editor - Norsk / utenlandsk PIN searches
+  6.1 Norsk / utenlandsk PIN searches
 
     #neessi.svarsed.editor.personopplysning.norskpin.search.button - Norsk pin searched
     #neessi.svarsed.editor.personopplysning.norskpin.fill.button - Norsk pin filled
     #neessi.svarsed.editor.personopplysning.utenlandskpin.add - utendlandsk pin added
     ** #neessi.svarsed.editor.personopplysning.utenlandskpin.remove - utendlandsk pin added
 
- 4.8 (not created)
+  6.2 Nationalities added
 
-    ** #neessi.svarsed.editor.nasjonaliteter.add - nationalities added
+    #neessi.svarsed.editor.nasjonaliteter.add - nationalities added
     ** #neessi.svarsed.editor.nasjonaliteter.remove - nationalities removed
 
- 4.9 Editor - Addresses added / removed
+  6.3 Addresses added / removed
 
     #neessi.svarsed.editor.adresse.add
     #neessi.svarsed.editor.adresse.remove
 
- 4.10 Editor - Contact information added / removed
+  6.4 (not created) Contact information added / removed
 
     ** #neessi.svarsed.editor.telefon.add - phone number added
     #neessi.svarsed.editor.telefon.remove - phone number removed
     ** #neessi.svarsed.editor.epost.add - email added
     ** #neessi.svarsed.editor.epost.remove - email removed
 
- 4.11 Editor - Periodes added, type distribution
+  6.5  Periodes added, type distribution
 
-  #neessi.svarsed.editor.periode.add, types:
+    #neessi.svarsed.editor.periode.add, types:
+
   F002:
     perioderMedITrygdeordning
     perioderUtenforTrygdeordning
@@ -132,7 +148,11 @@ Amplitude - nEESSI
     perioderAnnenForsikring
     perioderDagpenger
 
-  4.12 Editor - Periodes removed, type distribution
+  6.6 Periodes added - totals
+
+    same as above
+
+  6.7 (not created) Periodes removed, type distribution
 
     #neessi.svarsed.editor.periode.remove, types:
     F002:
@@ -169,25 +189,27 @@ Amplitude - nEESSI
       perioderAnnenForsikring
       perioderDagpenger
 
-  4.13 Editor - familierelasjon added / removed
+  6.8 - Familierelasjon added / removed
 
     #neessi.svarsed.editor.familierelasjon.add
     ** #neessi.svarsed.editor.familierelasjon.remove
     #neessi.svarsed.editor.relasjon.add - periode added
     #neessi.svarsed.editor.relasjon.remove - periode removed
 
-  4.14 - Editor - arbeidsgiver searches
+  6.9 - Arbeidsgiver searches
 
     #neessi.svarsed.editor.personensstatus.ansatt.arbeidsgiver.search - Arbeidsgiver searches
     ** #neessi.svarsed.editor.arbeidsforholdmedforsikring.arbeidsgiver.search - AA search for arbeidsgiver
 
-  4.15 - (not created)
+  6.10 - (not created)
     #neessi.svarsed.editor.arbeidsgiver.fromAA.edit - Arbeidsgiver from AA edited on its periods
     #neessi.svarsed.editor.arbeidsgiver.added.edit - Arbeidsgiver added edited
     #neessi.svarsed.editor.arbeidsgiver.added.remove - Arbeidsgiver added removed
     #neessi.svarsed.editor.arbeidsgiver.added.add - Arbeidsgiver added add
 
-  4.16 (not created ) - Editor - Ytelse added / removed
+7. FormålManager
+
+  7.1 (not created) - Editor - Ytelse added / removed
     ** #neessi.svarsed.editor.ytelse.add - ytelse added
     ** #neessi.svarsed.editor.ytelse.remove - ytelse removed
 
@@ -197,12 +219,10 @@ Amplitude - nEESSI
   4.18 (not created)
     #neessi.svarsed.editor.inntekt.search - Inntekt search
 
-5. Error
-
-    #neessi.errorpage.view
-
-
 unused:
+
+ (unused: #neessi.svarsed.fsed.formal.remove, {item: string})
+
   #neessi.svarsed.editor.sedtype.change, {type: type} - U0XX changed to another U0XX)
   #neessi.svarsed.editor.tema.add, {tema: tema} - tema added)
 

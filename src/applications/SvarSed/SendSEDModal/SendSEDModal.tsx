@@ -194,6 +194,12 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                   <Alert status='ERROR' message={t(alertMessage)} onClose={() => dispatch(clientClear())} />
                 </AlertstripeDiv>
                 <VerticalSeparatorDiv />
+                <HighContrastKnapp
+                  mini
+                  onClick={onModalClose}
+                >
+                  {t('label:damn-really')}
+                </HighContrastKnapp>
               </>
             )}
             {alertMessage && _sendButtonClicked && (alertType === types.SVARPASED_SED_SEND_SUCCESS || alertType === types.SVARPASED_SED_SEND_FAILURE) && (
@@ -291,7 +297,6 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                   <FlexCenterSpacedDiv>
                     <HighContrastKnapp
                       mini
-                      ampliutude
                       onClick={onModalClose}
                     >
                       {t('el:button-close')}
