@@ -7,21 +7,20 @@ import PersonSearch, { PersonSearchProps } from './PersonSearch'
 describe('components/PersonSearch/PersonSearch', () => {
   let wrapper: ReactWrapper
   const initialMockProps: PersonSearchProps = {
-    alertStatus: 'ERROR',
     alertMessage: 'message',
     alertType: types.SAK_PERSON_GET_FAILURE,
     alertTypesWatched: [types.SAK_PERSON_GET_FAILURE],
     className: 'mock-className',
+    id: 'id',
+    feil: undefined,
     initialFnr: '12345678901',
     gettingPerson: false,
-    onAlertClose: jest.fn(),
     onFnrChange: jest.fn(),
     onPersonFound: jest.fn(),
     onPersonRemoved: jest.fn(),
     onSearchPerformed: jest.fn(),
     person: samplePerson,
-    resetAllValidation: jest.fn(),
-    validation: undefined
+    resetAllValidation: jest.fn()
   }
 
   beforeEach(() => {

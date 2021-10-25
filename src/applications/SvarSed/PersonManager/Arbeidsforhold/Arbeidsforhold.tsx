@@ -36,7 +36,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getOrgnr, hasOrgnr, sanitizePeriodeMedForsikring } from 'utils/arbeidsgiver'
 import { getFnr } from 'utils/fnr'
 import makeRenderPlan, { PlanItem } from 'utils/renderPlan'
-import { validatePeriodeMedForsikring, ValidationPeriodeMedForsikringProps } from './validationPeriodeMedForsikring'
+import { validatePeriodeMedForsikring, ValidationPeriodeMedForsikringProps } from './validation'
 
 export interface ArbeidsforholdSelector extends PersonManagerFormSelector {
   arbeidsperioder: Arbeidsperioder | null | undefined

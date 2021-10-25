@@ -87,6 +87,7 @@
   "validation-noAnnenTypeForsikringsperiode": "Ingen annen type forsikringsperiode",
   "validation-noAnswer": "Ingen svar til spørsmål",
   "validation-noAnswerTil": "Ingen svar i {{person}}",
+  "validation-noArbeidstimerTil": "Ingen arbeidstimer til {{person}}",
   "validation-noAvgrensingTil": "Ingen avgrensning av periode i {{person}}",
   "validation-noBarnaEllerFamilie": "Velg mellom barna eller familie",
   "validation-noBarnValgtTil": "Ingen barn valgt til {{person}}",

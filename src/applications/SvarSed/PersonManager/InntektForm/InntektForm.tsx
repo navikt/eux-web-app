@@ -84,12 +84,12 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
   const [_validation, _resetValidation, performValidation] =
     useValidation<ValidationLoennsopplysningProps>({}, validateLoennsopplysning)
 
-  const isVisible = (index: number): boolean => _visible.indexOf(index) >= 0
-
   const periodeTypeOptions = [
     { label: t('el:option-periodetype-ansettelsesforhold'), value: 'ansettelsesforhold' },
     { label: t('el:option-periodetype-selvstendig-næringsvirksomhet'), value: 'selvstendig-næringsvirksomhet' }
   ]
+
+  const isVisible = (index: number): boolean => _visible.indexOf(index) >= 0
 
   const toggleVisibility = (index: number) => {
     const visible: boolean = isVisible(index)
