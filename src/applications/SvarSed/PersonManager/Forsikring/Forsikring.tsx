@@ -31,11 +31,14 @@ import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledCompone
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import {
-  Adresse, ArbeidsgiverIdentifikator,
-  ForsikringPeriode, InntektOgTime,
+  Adresse,
+  ArbeidsgiverIdentifikator,
+  ForsikringPeriode,
+  InntektOgTime,
   Periode,
   PeriodeAnnenForsikring,
-  PeriodeMedForsikring, PeriodeUtenForsikring,
+  PeriodeMedForsikring,
+  PeriodeUtenForsikring,
   U002Sed
 } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -45,11 +48,14 @@ import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
 import Chevron from 'nav-frontend-chevron'
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { Checkbox } from 'nav-frontend-skjema'
+import { Normaltekst, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignEndRow,
   AlignStartRow,
-  Column, FlexCenterDiv,
+  Column,
+  FlexCenterDiv,
+  FlexEndDiv,
   HighContrastFlatknapp,
   HorizontalSeparatorDiv,
   PaddedDiv,
@@ -86,9 +92,9 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-forsikring`
 
   const [_newType, _setNewType] = useState<string>('perioderAnsattMedForsikring')
-  const [_newPeriode, _setNewPeriode] = useState<ForsikringPeriode |undefined>(undefined)
   const [_allPeriods, _setAllPeriods] = useState<Array<ForsikringPeriode>>([])
 
+  const [_newPeriode, _setNewPeriode] = useState<ForsikringPeriode | undefined>(undefined)
   const [_newNavn, _setNewNavn] = useState<string | undefined>(undefined)
   const [_newAdresse, _setNewAdresse] = useState<Adresse | undefined>(undefined)
   const [_newIdentifikator, _setNewIdentifikator] = useState<Array<ArbeidsgiverIdentifikator> | undefined>(undefined)
@@ -96,10 +102,11 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
   const [_newInntektOgTimeInfo, _setNewInntektOgTimeInfo] = useState<string | undefined>(undefined)
   const [_newAnnenTypeForsikringsperiode, _setNewAnnenTypeForsikringsperiode] = useState<string | undefined>(undefined)
 
-  const getId = (p: ForsikringPeriode): string => (p.__type + '-' + p?.startdato ?? '') + '-' + (p?.sluttdato ?? p.aapenPeriodeType)
+  const getId = (p: ForsikringPeriode | null): string => p ? (p.__type + '-' + p?.startdato ?? '') + '-' + (p?.sluttdato ?? p.aapenPeriodeType) : 'new-forsikring'
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>(getId)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_visible, _setVisible] = useState<{[k in string]: Array<number>| undefined}>({})
+  const [_sort, _setSort] = useState<string>('time')
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationForsikringPeriodeProps>({}, validateForsikringPeriode)
 
   const isVisible = (type: string, index: number): boolean => Object.prototype.hasOwnProperty.call(_visible, type) && _visible[type]!.indexOf(index) >= 0
@@ -115,23 +122,6 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
     _setVisible(newVisible)
   }
 
-  useEffect(() => {
-    const periodes: Array<ForsikringPeriode> = [];
-    (replySed as U002Sed)?.perioderAnsattMedForsikring?.forEach(p => periodes.push({ ...p, __type: 'perioderAnsattMedForsikring' }));
-    (replySed as U002Sed)?.perioderAnsattUtenForsikring?.forEach(p => periodes.push({ ...p, __type: 'perioderAnsattUtenForsikring' }));
-    (replySed as U002Sed)?.perioderSelvstendigMedForsikring?.forEach(p => periodes.push({ ...p, __type: 'perioderSelvstendigMedForsikring' }));
-    (replySed as U002Sed)?.perioderSelvstendigUtenForsikring?.forEach(p => periodes.push({ ...p, __type: 'perioderSelvstendigUtenForsikring' }));
-    (replySed as U002Sed)?.perioderFrihetsberoevet?.forEach(p => periodes.push({ ...p, __type: 'perioderFrihetsberoevet' }));
-    (replySed as U002Sed)?.perioderSyk?.forEach(p => periodes.push({ ...p, __type: 'perioderSyk' }));
-    (replySed as U002Sed)?.perioderSvangerskapBarn?.forEach(p => periodes.push({ ...p, __type: 'perioderSvangerskapBarn' }));
-    (replySed as U002Sed)?.perioderUtdanning?.forEach(p => periodes.push({ ...p, __type: 'perioderUtdanning' }));
-    (replySed as U002Sed)?.perioderMilitaertjeneste?.forEach(p => periodes.push({ ...p, __type: 'perioderMilitaertjeneste' }));
-    (replySed as U002Sed)?.perioderAnnenForsikring?.forEach(p => periodes.push({ ...p, __type: 'perioderAnnenForsikring' }));
-    (replySed as U002Sed)?.perioderFrivilligForsikring?.forEach(p => periodes.push({ ...p, __type: 'perioderFrivilligForsikring' }));
-    (replySed as U002Sed)?.perioderKompensertFerie?.forEach(p => periodes.push({ ...p, __type: 'perioderKompensertFerie' }))
-    _setAllPeriods(periodes.sort((a: ForsikringPeriode, b: ForsikringPeriode) => moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1))
-  }, [replySed])
-
   const periodeOptions: Options = [
     { label: t('el:option-forsikring-ANSATTPERIODE_FORSIKRET'), value: 'perioderAnsattMedForsikring' },
     { label: t('el:option-forsikring-SELVSTENDIG_FORSIKRET'), value: 'perioderSelvstendigMedForsikring' },
@@ -146,6 +136,25 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
     { label: t('el:option-forsikring-FRIVILLIG'), value: 'perioderFrivilligForsikring' },
     { label: t('el:option-forsikring-FERIE'), value: 'perioderKompensertFerie' }
   ]
+
+  const periodeSort = (a: ForsikringPeriode, b: ForsikringPeriode) => moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1
+
+  useEffect(() => {
+    const periodes: Array<ForsikringPeriode> = [];
+    (replySed as U002Sed)?.perioderAnsattMedForsikring?.forEach((p, i) => periodes.push({ ...p, __index: i, __type: 'perioderAnsattMedForsikring' }));
+    (replySed as U002Sed)?.perioderAnsattUtenForsikring?.forEach((p, i) => periodes.push({ ...p, __index: i, __type: 'perioderAnsattUtenForsikring' }));
+    (replySed as U002Sed)?.perioderSelvstendigMedForsikring?.forEach((p, i) => periodes.push({ ...p, __index: i, __type: 'perioderSelvstendigMedForsikring' }));
+    (replySed as U002Sed)?.perioderSelvstendigUtenForsikring?.forEach((p, i) => periodes.push({ ...p, __index: i, __type: 'perioderSelvstendigUtenForsikring' }));
+    (replySed as U002Sed)?.perioderFrihetsberoevet?.forEach((p, i) => periodes.push({ ...p, __index: i, __type: 'perioderFrihetsberoevet' }));
+    (replySed as U002Sed)?.perioderSyk?.forEach((p, i) => periodes.push({ ...p, __index: i, __type: 'perioderSyk' }));
+    (replySed as U002Sed)?.perioderSvangerskapBarn?.forEach((p, i) => periodes.push({ ...p, __index: i, __type: 'perioderSvangerskapBarn' }));
+    (replySed as U002Sed)?.perioderUtdanning?.forEach((p, i) => periodes.push({ ...p, __index: i, __type: 'perioderUtdanning' }));
+    (replySed as U002Sed)?.perioderMilitaertjeneste?.forEach((p, i) => periodes.push({ ...p, __index: i, __type: 'perioderMilitaertjeneste' }));
+    (replySed as U002Sed)?.perioderAnnenForsikring?.forEach((p, i) => periodes.push({ ...p, __index: i, __type: 'perioderAnnenForsikring' }));
+    (replySed as U002Sed)?.perioderFrivilligForsikring?.forEach((p, i) => periodes.push({ ...p, __index: i, __type: 'perioderFrivilligForsikring' }));
+    (replySed as U002Sed)?.perioderKompensertFerie?.forEach((p, i) => periodes.push({ ...p, __index: i, __type: 'perioderKompensertFerie' }))
+    _setAllPeriods(periodes.sort(periodeSort))
+  }, [replySed])
 
   const setType = (type: string) => {
     _setNewType(type)
@@ -249,21 +258,41 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
     }
   }
 
+  const getIcon = (type: string, size: string = '32') => (
+    <>
+      {type === 'perioderAnsattMedForsikring' && (<Office1 width={size} height={size} />)}
+      {type === 'perioderSelvstendigMedForsikring' && (<PensionBag width={size} height={size} />)}
+      {type === 'perioderAnsattUtenForsikring' && (<Office2 width={size} height={size} />)}
+      {type === 'perioderSelvstendigUtenForsikring' && (<Bag width={size} height={size} />)}
+      {type === 'perioderSyk' && (<Hospital width={size} height={size} />)}
+      {type === 'perioderSvangerskapBarn' && (<Stroller width={size} height={size} />)}
+      {type === 'perioderUtdanning' && (<SchoolBag width={size} height={size} />)}
+      {type === 'perioderMilitaertjeneste' && (<Military />)}
+      {type === 'perioderFrihetsberoevet' && (<Law width={size} height={size} />)}
+      {type === 'perioderFrivilligForsikring' && (<ShakeHandsFilled width={size} height={size} />)}
+      {type === 'perioderKompensertFerie' && (<Vacation width={size} height={size} />)}
+      {type === 'perioderAnnenForsikring' && (<Receipt width={size} height={size} />)}
+    </>
+  )
+
   const renderRow = (periode: ForsikringPeriode | null, index: number) => {
     const candidateForDeletion = index < 0 ? false : isInDeletion(periode)
     const idx = getIdx(index)
     const v: Validation = index < 0 ? _validation : validation
 
     const _type: string = index < 0 ? _newType! : periode!.__type!
+    // __index is the periode's index order in the replysed; index is the order with sort, thus does not tell the real position in the replysed list
+    const _index: number = index < 0 ? -1 : periode!.__index!
+
     const _periode: ForsikringPeriode = (index < 0 ? _newPeriode : periode) ?? {} as ForsikringPeriode
     const _annenTypeForsikringsperiode: string | undefined = (index < 0 ? _newAnnenTypeForsikringsperiode : (_periode as PeriodeAnnenForsikring)?.annenTypeForsikringsperiode)
-    const _navn: string | undefined = (index < 0 ? _newNavn : (_periode as PeriodeMedForsikring | PeriodeUtenForsikring)?.arbeidsgiver.navn)
-    const _orgnr: Array<ArbeidsgiverIdentifikator> | undefined = (index < 0 ? _newIdentifikator : (_periode as PeriodeMedForsikring | PeriodeUtenForsikring)?.arbeidsgiver.identifikator)
-    const _adresse: Adresse | undefined = (index < 0 ? _newAdresse : (_periode as PeriodeMedForsikring | PeriodeUtenForsikring)?.arbeidsgiver.adresse)
+    const _navn: string | undefined = (index < 0 ? _newNavn : (_periode as PeriodeMedForsikring | PeriodeUtenForsikring)?.arbeidsgiver?.navn)
+    const _orgnr: Array<ArbeidsgiverIdentifikator> | undefined = (index < 0 ? _newIdentifikator : (_periode as PeriodeMedForsikring | PeriodeUtenForsikring)?.arbeidsgiver?.identifikator)
+    const _adresse: Adresse | undefined = (index < 0 ? _newAdresse : (_periode as PeriodeMedForsikring | PeriodeUtenForsikring)?.arbeidsgiver?.adresse)
     const _inntektOgTime: Array<InntektOgTime> | undefined = (index < 0 ? _newInntektOgTime : (_periode as PeriodeUtenForsikring)?.inntektOgTimer)
     const _inntektOgTimeInfo: string | undefined = (index < 0 ? _newInntektOgTimeInfo : (_periode as PeriodeUtenForsikring)?.inntektOgTimerInfo)
 
-    const visible = index >= 0 ? isVisible(_type, index) : true
+    const visible = index >= 0 ? isVisible(_type, _index) : true
 
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
@@ -292,21 +321,10 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
           </>
         )}
         <AlignEndRow>
-          {index >= 0 && (
+          {index >= 0 && _sort === 'time' && (
             <Column style={{ maxWidth: '40px' }}>
               <div title={_.find(periodeOptions, o => o.value === _type)?.label ?? ''}>
-                {_type === 'perioderAnsattMedForsikring' && (<Office1 width='32' height='32' />)}
-                {_type === 'perioderSelvstendigMedForsikring' && (<PensionBag width='32' height='32' />)}
-                {_type === 'perioderAnsattUtenForsikring' && (<Office2 width='32' height='32' />)}
-                {_type === 'perioderSelvstendigUtenForsikring' && (<Bag width='32' height='32' />)}
-                {_type === 'perioderSyk' && (<Hospital width='32' height='32' />)}
-                {_type === 'perioderSvangerskapBarn' && (<Stroller width='32' height='32' />)}
-                {_type === 'perioderUtdanning' && (<SchoolBag width='32' height='32' />)}
-                {_type === 'perioderMilitaertjeneste' && (<Military />)}
-                {_type === 'perioderFrihetsberoevet' && (<Law width='32' height='32' />)}
-                {_type === 'perioderFrivilligForsikring' && (<ShakeHandsFilled width='32' height='32' />)}
-                {_type === 'perioderKompensertFerie' && (<Vacation width='32' height='32' />)}
-                {_type === 'perioderAnnenForsikring' && (<Receipt width='32' height='32' />)}
+                {getIcon(_type, '32')}
               </div>
             </Column>
           )}
@@ -317,38 +335,39 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
               startdato: v[namespace + '-startdato']?.feilmelding,
               sluttdato: v[namespace + '-sluttdato']?.feilmelding
             }}
-            setPeriode={(p: ForsikringPeriode, id: string) => setPeriode(p, id, index)}
+            setPeriode={(p: ForsikringPeriode, id: string) => setPeriode(p, id, _index)}
             value={_periode}
           />
-          {index >= 0 && ['perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring', 'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring']
-            .indexOf(_type) >= 0 && (
-              <Column>
-                <div className='nolabel'>
-                  <HighContrastFlatknapp
-                    mini
-                    kompakt
-                    onClick={() => toggleVisibility(_type, index)}
-                  >
-                    <FlexCenterDiv>
-                      <Chevron type={visible ? 'opp' : 'ned'} />
-                      <HorizontalSeparatorDiv size='0.35' />
-                      {visible ? t('label:show-less') : t('label:show-more')}
-                    </FlexCenterDiv>
-                  </HighContrastFlatknapp>
-                </div>
-              </Column>
-          )}
-          <Column>
-            <AddRemovePanel
-              candidateForDeletion={candidateForDeletion}
-              existingItem={(index >= 0)}
-              marginTop
-              onBeginRemove={() => addToDeletion(periode)}
-              onConfirmRemove={() => onRemove(periode!)}
-              onCancelRemove={() => removeFromDeletion(periode)}
-              onAddNew={() => onAdd()}
-              onCancelNew={onCancel}
-            />
+          <Column flex='1.5'>
+            <FlexEndDiv style={{ justifyContent: 'end' }}>
+              {index >= 0 && ['perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring', 'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring', 'perioderAnnenForsikring']
+                .indexOf(_type) >= 0 && (
+                  <div className='nolabel'>
+                    <HighContrastFlatknapp
+                      mini
+                      kompakt
+                      onClick={() => toggleVisibility(_type, _index)}
+                    >
+                      <FlexCenterDiv>
+                        <Chevron type={visible ? 'opp' : 'ned'} />
+                        <HorizontalSeparatorDiv size='0.35' />
+                        {visible ? t('label:show-less') : t('label:show-more')}
+                      </FlexCenterDiv>
+                    </HighContrastFlatknapp>
+                  </div>
+              )}
+              <HorizontalSeparatorDiv size='0.5' />
+              <AddRemovePanel
+                candidateForDeletion={candidateForDeletion}
+                existingItem={(index >= 0)}
+                marginTop
+                onBeginRemove={() => addToDeletion(periode)}
+                onConfirmRemove={() => onRemove(periode!)}
+                onCancelRemove={() => removeFromDeletion(periode)}
+                onAddNew={() => onAdd()}
+                onCancelNew={onCancel}
+              />
+            </FlexEndDiv>
           </Column>
         </AlignEndRow>
         <VerticalSeparatorDiv />
@@ -356,14 +375,15 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
           .indexOf(_type) >= 0 && (
             <>
               <AlignStartRow>
+                <Column style={{ maxWidth: '40px' }} />
                 <Column>
                   <Input
                     feil={validation[namespace + '-navn']?.feilmelding}
                     namespace={namespace}
                     id='navn'
                     key={'navn-' + _navn ?? ''}
-                    label={t('label:navn')}
-                    onChanged={(v: string) => setNavn(v, _type, index)}
+                    label={t('label:institusjonens-navn')}
+                    onChanged={(v: string) => setNavn(v, _type, _index)}
                     value={_type ?? ''}
                   />
                 </Column>
@@ -374,13 +394,14 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                     id='orgnr'
                     key={'orgnr-' + JSON.stringify(_orgnr) ?? ''}
                     label={t('label:orgnr')}
-                    onChanged={(v: string) => setIdentifikator(v, _type, index)}
+                    onChanged={(v: string) => setIdentifikator(v, _type, _index)}
                     value={_newIdentifikator?.[0].id ?? ''}
                   />
                 </Column>
               </AlignStartRow>
               <VerticalSeparatorDiv />
               <AlignStartRow>
+                <Column style={{ maxWidth: '40px' }} />
                 <Column>
                   <AdresseFC
                     adresse={_adresse}
@@ -393,10 +414,10 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                             ...(_periode as PeriodeMedForsikring).arbeidsgiver,
                             adresse: a
                           }
-                        }, _type, index)}
+                        }, _type, _index)}
                     namespace={namespace + '-adresse'}
                     validation={index < 0 ? _validation : validation}
-                    resetValidation={(fullnamespace: string) => resetAdresseValidation(fullnamespace, index)}
+                    resetValidation={(fullnamespace: string) => resetAdresseValidation(fullnamespace, _index)}
                   />
                 </Column>
               </AlignStartRow>
@@ -405,16 +426,18 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
         )}
         {visible && ['perioderSelvstendigMedForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(_type) >= 0 && (
           <>
+            <Column style={{ maxWidth: '40px' }} />
             <InntektOgTimeFC
               highContrast={highContrast}
               validation={validation}
               personName={personName}
               parentNamespace={namespace}
               inntektOgTime={_inntektOgTime}
-              onInntektOgTimeChanged={(i: Array<InntektOgTime>) => setInntektOgTime(i, _type, index)}
+              onInntektOgTimeChanged={(i: Array<InntektOgTime>) => setInntektOgTime(i, _type, _index)}
             />
             <VerticalSeparatorDiv />
             <AlignStartRow>
+              <Column style={{ maxWidth: '40px' }} />
               <Column>
                 <Input
                   feil={validation[namespace + '-inntektogtimeinfo']?.feilmelding}
@@ -427,16 +450,17 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                     : setPeriode({
                       ..._periode,
                       inntektOgTimerInfo: v.trim()
-                    }, _type, index)}
+                    }, _type, _index)}
                   value={_inntektOgTimeInfo ?? ''}
                 />
               </Column>
             </AlignStartRow>
           </>
         )}
-        {_type === 'perioderAnnenForsikring' && (
+        {visible && _type === 'perioderAnnenForsikring' && (
           <>
             <AlignStartRow>
+              <Column style={{ maxWidth: '40px' }} />
               <Column>
                 <Input
                   feil={validation[namespace + '-annenTypeForsikringsperiode']?.feilmelding}
@@ -449,7 +473,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                     : setPeriode({
                       ..._periode,
                       annenTypeForsikringsperiode: v
-                    }, _type, index)}
+                    }, _type, _index)}
                   value={_annenTypeForsikringsperiode ?? ''}
                 />
               </Column>
@@ -457,7 +481,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
             <VerticalSeparatorDiv />
           </>
         )}
-
+        <VerticalSeparatorDiv />
       </RepeatableRow>
     )
   }
@@ -468,13 +492,48 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
         {t('label:forsikring')}
       </Undertittel>
       <VerticalSeparatorDiv size='2' />
+      {!_.isEmpty(_allPeriods) && (
+        <>
+          <Checkbox
+            checked={_sort === 'group'}
+            label={t('label:group-by-type')}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
+          />
+          <VerticalSeparatorDiv size='2' />
+        </>
+      )}
       {_.isEmpty(_allPeriods)
         ? (
           <Normaltekst>
             {t('message:warning-no-periods')}
           </Normaltekst>
           )
-        : _allPeriods.map(renderRow)}
+        : _sort === 'time'
+          ? _allPeriods.map(renderRow)
+          : (
+            <>
+              {periodeOptions.map(o => {
+                const periods: Array<ForsikringPeriode> | undefined = _.get(replySed, o.value) as Array<ForsikringPeriode> | undefined
+                if (_.isEmpty(periods)) {
+                  return null
+                }
+                return (
+                  <div key={o.value}>
+                    <FlexEndDiv>
+                      {getIcon(o.value, '20')}
+                      <HorizontalSeparatorDiv size='0.35' />
+                      <UndertekstBold>
+                        {o.label}
+                      </UndertekstBold>
+                    </FlexEndDiv>
+                    <VerticalSeparatorDiv />
+                    {periods!.map((p, i) => ({ ...p, __type: o.value, __index: i })).sort(periodeSort).map(renderRow)}
+                    <VerticalSeparatorDiv size='2' />
+                  </div>
+                )
+              })}
+            </>
+            )}
       <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
@@ -500,19 +559,3 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
 }
 
 export default Forsikring
-
-/* const periodeTypeHash: {[k in string]: string} = {
-  perioderAnsattMedForsikring: 'ansettelsesforhold_som_utgjør_forsikringsperiode',
-  perioderAnsattUtenForsikring: 'ansettelsesforhold_som_ikke_utgjør_forsikringsperiode',
-  perioderSelvstendigMedForsikring: 'selvstendig_næringsvirksomhet_som_utgjør_forsikringsperiode',
-  perioderSelvstendigUtenForsikring: 'selvstendig_næringsvirksomhet_som_ikke_utgjør_forsikringsperiode',
-  perioderFrihetsberoevet: 'frihetsberøvelse_som_utgjør_eller_behandles_som_forsikringsperiode',
-  perioderSyk: 'sykdomsperiode_som_utgjør_eller_behandles_som_forsikringsperiode',
-  perioderSvangerskapBarn: 'svangerskapsperiode_eller_omsorg_for_barn_som_utgjør_forsikringsperiode_eller_behandles_som_forsikringsperiode',
-  perioderUtdanning: 'utdanningsperiode_som_utgjør_eller_behandles_som_forsikringsperiode',
-  perioderMilitaertjeneste: 'militærtjeneste_eller_alternativ_tjeneste_som_utgjør_forsikringsperiode_eller_behandles_som_forsikringsperiode',
-  perioderAnnenForsikring: 'annen_periode_behandlet_som_forsikringsperiode',
-  perioderFrivilligForsikring: 'periode_med_frivillig_uavbrutt_forsikring',
-  perioderKompensertFerie: 'vederlag_for_ferie_som_ikke_er_tatt_ut'
-}
-*/

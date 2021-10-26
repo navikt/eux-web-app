@@ -43,7 +43,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
   return candidateForDeletion
     ? (
       <InlineFlexDiv className={classNames('slideInFromRight', { nolabel: marginTop })}>
-        <Normaltekst>
+        <Normaltekst style={{ whiteSpace: 'nowrap' }}>
           {labels?.areYouSure ?? t('label:er-du-sikker')}
         </Normaltekst>
         <HorizontalSeparatorDiv size='0.5' />

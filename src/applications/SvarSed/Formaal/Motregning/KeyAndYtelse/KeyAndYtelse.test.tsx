@@ -1,9 +1,4 @@
-import { FormålManagerFormProps, FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
-import KravOmRefusjon from 'applications/SvarSed/Formaal/KravOmRefusjon/KravOmRefusjon'
 import { mount, ReactWrapper } from 'enzyme'
-import getReplySed from 'mocks/replySed'
-import { stageSelector } from 'setupTests'
-import { updateReplySed } from 'actions/svarpased'
 import KeyAndYtelseFC, { KeyAndYtelseProps } from './KeyAndYtelse'
 
 describe('applications/SvarSed/Formaal/Motregning/KeyAndYtelse/KeyAndYtelse', () => {
@@ -11,12 +6,12 @@ describe('applications/SvarSed/Formaal/Motregning/KeyAndYtelse/KeyAndYtelse', ()
 
   const initialMockProps: KeyAndYtelseProps = {
     highContrast: false,
-    keyAndYtelses: [{fullKey: 'barn[0]', ytelseNavn: 'ytelseNavn'}],
+    keyAndYtelses: [{ fullKey: 'barn[0]', ytelseNavn: 'ytelseNavn' }],
     onAdded: jest.fn(),
     onRemoved: jest.fn(),
     onYtelseChanged: jest.fn(),
     onKeyChanged: jest.fn(),
-    allBarnaNameKeys: {'barn[0]': 'Bart Simpson', 'barn[1]': 'Lisa Simpson'},
+    allBarnaNameKeys: { 'barn[0]': 'Bart Simpson', 'barn[1]': 'Lisa Simpson' },
     parentNamespace: 'test',
     validation: {}
   }
@@ -42,7 +37,7 @@ describe('applications/SvarSed/Formaal/Motregning/KeyAndYtelse/KeyAndYtelse', ()
     (initialMockProps.onYtelseChanged as jest.Mock).mockReset()
     const mockYtelseNavn = 'mockYtelseNavn'
     const ytelseNavnInput = wrapper.find('[data-test-id=\'test-keyandytelse[0]-ytelseNavn\']').hostNodes()
-    ytelseNavnInput.simulate('change', {target: {value: mockYtelseNavn}})
+    ytelseNavnInput.simulate('change', { target: { value: mockYtelseNavn } })
     ytelseNavnInput.simulate('blur')
     expect(initialMockProps.onYtelseChanged).toHaveBeenCalledWith('barn[0]', mockYtelseNavn)
   })
@@ -58,7 +53,7 @@ describe('applications/SvarSed/Formaal/Motregning/KeyAndYtelse/KeyAndYtelse', ()
 
     const mockYtelseNavn = 'mockYtelseNavn'
     const ytelseNavnInput = wrapper.find('[data-test-id=\'test-keyandytelse-ytelseNavn\']').hostNodes()
-    ytelseNavnInput.simulate('change', {target: {value: mockYtelseNavn}})
+    ytelseNavnInput.simulate('change', { target: { value: mockYtelseNavn } })
     ytelseNavnInput.simulate('blur')
 
     wrapper.find('[data-test-id=\'test-keyandytelse-addremove-add\']').hostNodes().simulate('click')

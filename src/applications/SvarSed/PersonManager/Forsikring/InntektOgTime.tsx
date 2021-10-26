@@ -202,7 +202,6 @@ const InntektOgTimeFC: React.FC<InntektOgTimeProps> = ({
           <PeriodeInput
             key={'' + _periode?.startdato + _periode?.sluttdato}
             namespace={namespace + idx}
-            showLabel={false}
             error={{
               startdato: getErrorFor('startdato'),
               sluttdato: getErrorFor('sluttdato')

@@ -2,14 +2,13 @@ import * as statisticsActions from 'actions/statistics'
 import * as types from 'constants/actionTypes'
 
 describe('actions/ui', () => {
-
   it('startMenuStatistic()', () => {
     const domain = 'domain'
     const initialMenu = 'menu'
     const generatedResult = statisticsActions.startMenuStatistic(domain, initialMenu)
     expect(generatedResult).toMatchObject({
       type: types.STATISTICS_MENU_START,
-      payload: {domain, initialMenu}
+      payload: { domain, initialMenu }
     })
   })
 
@@ -18,7 +17,7 @@ describe('actions/ui', () => {
     const generatedResult = statisticsActions.finishMenuStatistic(domain)
     expect(generatedResult).toMatchObject({
       type: types.STATISTICS_MENU_FINISH,
-      payload: {domain}
+      payload: { domain }
     })
   })
 
@@ -29,7 +28,7 @@ describe('actions/ui', () => {
     const generatedResult = statisticsActions.logMenuStatistic(domain, previousMenu, nextMenu)
     expect(generatedResult).toMatchObject({
       type: types.STATISTICS_MENU_LOG,
-      payload: {domain, previousMenu, nextMenu}
+      payload: { domain, previousMenu, nextMenu }
     })
   })
 
@@ -38,7 +37,7 @@ describe('actions/ui', () => {
     const generatedResult = statisticsActions.startPageStatistic(page)
     expect(generatedResult).toMatchObject({
       type: types.STATISTICS_PAGE_START,
-      payload: {page}
+      payload: { page }
     })
   })
 
@@ -57,7 +56,7 @@ describe('actions/ui', () => {
     const generatedResult = statisticsActions.finishPageStatistic(page)
     expect(generatedResult).toMatchObject({
       type: types.STATISTICS_PAGE_FINISH,
-      payload: {page}
+      payload: { page }
     })
   })
 })

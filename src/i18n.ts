@@ -13,7 +13,7 @@ i18n
       default: ['nb']
     },
     debug: true,
-    ns: ['app', 'buc', 'el', 'label', 'message', 'tema'],
+    ns: ['app', 'buc', 'el', 'label', 'message', 'tema', 'validation'],
     defaultNS: 'label',
     backend: {
       loadPath: '/locales/{{lng}}/{{ns}}.json'

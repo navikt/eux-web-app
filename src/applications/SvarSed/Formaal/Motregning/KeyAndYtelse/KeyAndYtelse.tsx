@@ -113,7 +113,6 @@ const KeyAndYtelseFC: React.FC<KeyAndYtelseProps> = ({
   }
 
   const onAdd = () => {
-
     const newKeyAndYtelse: KeyAndYtelse = {
       fullKey: _newBarnaKey?.trim() as string, // not really a full key, but it is only for isEmpty() validation
       ytelseNavn: _newYtelseNavn?.trim() as string

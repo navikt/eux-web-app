@@ -5,7 +5,7 @@ import { validateKontoopplysning } from './validation'
 
 describe('applications/SvarSed/Formaal/Kontoopplysning/validation', () => {
   const { t } = useTranslation()
-/*
+  /*
   it('Empty form: failed validation', () => {
     const validation: Validation = {}
     const hasErrors: boolean = validateKontoopplysning(validation, t, {
@@ -109,7 +109,7 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/validation', () => {
         navn: '123@abc',
         kontoSepa: {
           iban: 'NO123456789101112',
-          swift: 'ABC',
+          swift: 'ABC'
         }
       },
       namespace: 'test-mock',
@@ -120,7 +120,6 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/validation', () => {
     expect(validation.test?.feilmelding).toEqual('notnull')
     expect(validation['test-mock']?.feilmelding).toEqual('notnull')
   })
-
 
   it('valid form: success validation', () => {
     const validation: Validation = {}

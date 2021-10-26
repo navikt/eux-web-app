@@ -55,7 +55,7 @@
   "perioderAnsattMedForsikring": [
     {
       "arbeidsgiver": {
-        "navn": "Duh AS",
+        "navn": "Ansatt Med Forsikring AS",
         "adresse": {
           "gate": "Storgata 1",
           "postnummer": "0155",
@@ -67,14 +67,136 @@
         "identifikator": [
           {
             "type": "registrering",
-            "id": "235835247"
+            "id": "111111111"
           }
         ]
       },
       "startdato": "1960-01-01",
-      "sluttdato": "1969-12-31"
+      "sluttdato": "1960-12-31"
     }
   ],
+  "perioderSelvstendigMedForsikring" : [
+    {
+      "arbeidsgiver": {
+        "navn": "Selvstendig Med Forsikring AS",
+        "adresse": {
+          "gate": "Storgata 2",
+          "postnummer": "0155",
+          "by": "Oslo",
+          "land": "NO",
+          "bygning": "A",
+          "region": "Akershus"
+        },
+        "identifikator": [
+          {
+            "type": "registrering",
+            "id": "222222222"
+          }
+        ]
+      },
+      "startdato": "1961-01-01",
+      "sluttdato": "1961-12-31"
+    }
+  ],
+  "perioderAnsattUtenForsikring" : [
+    {
+      "arbeidsgiver": {
+        "navn": "Ansatt Uten Forsikring AS",
+        "adresse": {
+          "gate": "Storgata 3",
+          "postnummer": "0155",
+          "by": "Oslo",
+          "land": "NO",
+          "bygning": "A",
+          "region": "Akershus"
+        },
+        "identifikator": [
+          {
+            "type": "registrering",
+            "id": "333333333"
+          }
+        ]
+      },
+      "startdato": "1962-01-01",
+      "sluttdato": "1962-12-31",
+      "inntektOgTimer": [{
+        "bruttoinntekt": "5000",
+        "valuta": "NOK",
+        "arbeidstimer": "Ansatt timer",
+        "inntektsperiode": {
+          "startdato": "1962-01-01",
+          "sluttdato": "1962-12-31"
+        }
+      }],
+      "inntektOgTimerInfo": "Ansatt info"
+    }
+  ],
+  "perioderSelvstendigUtenForsikring" : [
+    {
+      "arbeidsgiver": {
+        "navn": "Selvstendig Uten Forsikring AS",
+        "adresse": {
+          "gate": "Storgata 4",
+          "postnummer": "0155",
+          "by": "Oslo",
+          "land": "NO",
+          "bygning": "A",
+          "region": "Akershus"
+        },
+        "identifikator": [
+          {
+            "type": "registrering",
+            "id": "444444444"
+          }
+        ]
+      },
+      "startdato": "1963-01-01",
+      "sluttdato": "1963-12-31",
+      "inntektOgTimer": [{
+        "bruttoinntekt": "5000",
+        "valuta": "NOK",
+        "arbeidstimer": "Selvstendig timer",
+        "inntektsperiode": {
+          "startdato": "1963-01-01",
+          "sluttdato": "1963-12-31"
+        }
+      }],
+      "inntektOgTimerInfo": "Selvstendig info"
+    }
+  ],
+  "perioderSyk": [{
+    "startdato": "1964-01-01",
+    "sluttdato": "1964-12-31"
+  }],
+  "perioderSvangerskapBarn": [{
+    "startdato": "1965-01-01",
+    "sluttdato": "1965-12-31"
+  }],
+  "perioderUtdanning": [{
+      "startdato": "1966-01-01",
+      "sluttdato": "1966-12-31"
+    }],
+  "perioderMilitaertjeneste": [{
+      "startdato": "1967-01-01",
+      "sluttdato": "1967-12-31"
+    }],
+  "perioderFrihetsberoevet":[{
+      "startdato": "1968-01-01",
+      "sluttdato": "1968-12-31"
+    }],
+  "perioderFrivilligForsikring": [{
+      "startdato": "1969-01-01",
+      "sluttdato": "1969-12-31"
+    }],
+  "perioderKompensertFerie": [{
+      "startdato": "1970-01-01",
+      "sluttdato": "1970-12-31"
+    }],
+  "perioderAnnenForsikring": [{
+      "startdato": "1971-01-01",
+      "sluttdato": "1971-12-31",
+      "annenTypeForsikringsperiode": "Annen"
+    }],
   "perioderDagpenger": [
     {
       "periode": {

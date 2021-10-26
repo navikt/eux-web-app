@@ -57,6 +57,7 @@ export interface Periode {
   aapenPeriodeType?: string
   // internal use, for periode labeling
   __type ?: string
+  __index ?: number
 }
 
 export interface PensjonPeriode {

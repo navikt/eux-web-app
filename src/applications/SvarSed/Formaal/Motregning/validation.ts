@@ -1,4 +1,4 @@
-import { KeyAndYtelse } from './KeyAndYtelse'
+import { KeyAndYtelse } from './KeyAndYtelse/KeyAndYtelse'
 import { validatePeriode } from 'components/Forms/validation'
 import { Motregning as IMotregning, ReplySed, Barn, F002Sed, BarnaEllerFamilie } from 'declarations/sed'
 import { TFunction } from 'react-i18next'

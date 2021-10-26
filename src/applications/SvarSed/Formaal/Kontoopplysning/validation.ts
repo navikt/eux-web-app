@@ -62,7 +62,7 @@ export const validateKontoopplysning = (
 
   if (!kontoType) {
     v[namespace + '-kontotype'] = {
-      feilmelding: t('validation:noKontotypeTil',{ person: formalName }),
+      feilmelding: t('validation:noKontotypeTil', { person: formalName }),
       skjemaelementId: namespace + '-kontotype'
     } as FeiloppsummeringFeil
     hasErrors = true
