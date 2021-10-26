@@ -125,14 +125,14 @@ const svarpasedReducer = (
     }
 
     case types.SVARPASED_SED_CREATE_SUCCESS:
-      standardLogger('svarsed.create.success', {type: (action as ActionWithPayload).context.sedType})
+      standardLogger('svarsed.create.success', { type: (action as ActionWithPayload).context.sedType })
       return {
         ...state,
         sedCreatedResponse: (action as ActionWithPayload).payload
       }
 
     case types.SVARPASED_SED_CREATE_FAILURE:
-      standardLogger('svarsed.create.failure', {type: (action as ActionWithPayload).context.sedType})
+      standardLogger('svarsed.create.failure', { type: (action as ActionWithPayload).context.sedType })
       return {
         ...state,
         sedCreatedResponse: null

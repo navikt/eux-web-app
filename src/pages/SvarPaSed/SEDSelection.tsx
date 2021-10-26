@@ -47,7 +47,7 @@ const ContainerDiv = styled.div`
   max-width: 1000px;
 `
 const LeftDiv = styled.div`
-  display: flex;
+  display: flex;ss
   align-items: center;
 `
 const FilterDiv = styled(FlexDiv)`
@@ -368,7 +368,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                     _setFilter('S_')
                   }}
                 >
-                  {t('label:S') + ' (' + ssed + ')'}
+                  {t('label:sykdom') + ' (' + ssed + ')'}
                 </HighContrastFlatknapp>
                 <HorizontalSeparatorDiv />
               </>

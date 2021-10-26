@@ -97,7 +97,6 @@ const InntektOgTimeFC: React.FC<InntektOgTimeProps> = ({
       if (id === 'sluttdato' && validation[namespace + getIdx(index) + '-sluttdato']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-sluttdato'))
       }
-
     }
   }
 
@@ -223,7 +222,7 @@ const InntektOgTimeFC: React.FC<InntektOgTimeProps> = ({
             />
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <AlignStartRow>
           <Column>
             <Input
@@ -297,10 +296,9 @@ const InntektOgTimeFC: React.FC<InntektOgTimeProps> = ({
               </HighContrastFlatknapp>
             </Column>
           </Row>
-        )}
+          )}
     </MyPaddedDiv>
   )
 }
 
 export default InntektOgTimeFC
-

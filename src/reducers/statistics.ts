@@ -22,7 +22,7 @@ const statisticReducer = (state: StatisticsState = initialUiState, action: Actio
       if (!initialMenu) {
         return state
       }
-      const _initialMenu = initialMenu?.replace(/\[\d+\]/g,'')
+      const _initialMenu = initialMenu?.replace(/\[\d+\]/g, '')
       return {
         ...state,
         menuTime: {
@@ -120,7 +120,7 @@ const statisticReducer = (state: StatisticsState = initialUiState, action: Actio
       const newStatistics = _.cloneDeep(state.menuTime[domain])
 
       // convert barn[0], barn[1] to barn
-      const _previousMenu = previousMenu?.replace(/\[\d+\]/g,'')
+      const _previousMenu = previousMenu?.replace(/\[\d+\]/g, '')
 
       if (!_.isNil(_previousMenu) && newStatistics[_previousMenu] && newStatistics[_previousMenu].status === 'start') {
         const diff = new Date().getTime() - newStatistics[_previousMenu].date.getTime()
@@ -134,7 +134,7 @@ const statisticReducer = (state: StatisticsState = initialUiState, action: Actio
       }
       // convert barn[0], barn[1] to barn
       if (!_.isNil(nextMenu)) {
-        const _nextMenu = nextMenu?.replace(/\[\d+\]/g,'')
+        const _nextMenu = nextMenu?.replace(/\[\d+\]/g, '')
         newStatistics[_nextMenu] = {
           date: new Date(),
           status: 'start',
@@ -143,7 +143,7 @@ const statisticReducer = (state: StatisticsState = initialUiState, action: Actio
       } else {
         // menu is offloading - stop all pages
         Object.keys(newStatistics).forEach(key => {
-          const _key = key?.replace(/\[\d+\]/g,'')
+          const _key = key?.replace(/\[\d+\]/g, '')
           if (newStatistics[_key].status === 'start') {
             const diff = new Date().getTime() - newStatistics[_key].date.getTime()
             const diffSeconds = Math.ceil(diff / 1000)
