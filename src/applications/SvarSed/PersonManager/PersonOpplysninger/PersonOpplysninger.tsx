@@ -244,7 +244,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
       removeFromDeletion(deletedPin[0])
     }
     standardLogger('svarsed.editor.personopplysning.utenlandskpin.remove')
-    dispatch(updateReplySed(target, deletedPin))
+    dispatch(updateReplySed(target, newPin))
   }
 
   const onAdd = () => {
