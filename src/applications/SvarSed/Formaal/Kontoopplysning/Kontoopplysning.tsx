@@ -36,6 +36,7 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
     }
     return undefined
   })
+
   // caches konto information while switching from konto ordinær to sepa, so that we do not
   // throw away completely all information added
   const [_cacheKonto, _setCacheKonto] = useState<any>({
@@ -159,8 +160,8 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
         <Column>
           <Input
             feil={validation[namespace + '-id']?.feilmelding}
-            id='id'
             key={namespace + '-id-' + (utbetalingTilInstitusjon?.id ?? '')}
+            id='id'
             label={t('label:institusjonens-id') + ' *'}
             namespace={namespace}
             onChanged={setId}
@@ -171,10 +172,10 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
         <Column>
           <Input
             feil={validation[namespace + '-navn']?.feilmelding}
-            namespace={namespace}
             key={namespace + '-navn-' + (utbetalingTilInstitusjon?.navn ?? '')}
             id='navn'
             label={t('label:institusjonens-navn') + ' *'}
+            namespace={namespace}
             onChanged={setNavn}
             required
             value={utbetalingTilInstitusjon?.navn ?? ''}
@@ -208,10 +209,10 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
             <Column>
               <Input
                 feil={validation[namespace + '-kontoOrdinaer-bankensNavn']?.feilmelding}
-                namespace={namespace}
                 id='kontoOrdinaer-bankensNavn'
                 key={namespace + '-kontoOrdinaer-bankensNavn-' + (utbetalingTilInstitusjon?.kontoOrdinaer?.bankensNavn ?? '')}
                 label={t('label:bankens-navn') + ' *'}
+                namespace={namespace}
                 onChanged={setOrdinaerBankensNavn}
                 value={utbetalingTilInstitusjon?.kontoOrdinaer?.bankensNavn ?? ''}
               />
@@ -219,10 +220,10 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
             <Column>
               <Input
                 feil={validation[namespace + '-kontoOrdinaer-kontonummer']?.feilmelding}
-                namespace={namespace}
                 id='kontoOrdinaer-kontonummer'
                 key={namespace + '-kontoOrdinaer-kontonummer-' + (utbetalingTilInstitusjon?.kontoOrdinaer?.kontonummer ?? '')}
                 label={t('label:kontonummer') + ' *'}
+                namespace={namespace}
                 onChanged={setOrdinaerKontonummer}
                 value={utbetalingTilInstitusjon?.kontoOrdinaer?.kontonummer ?? ''}
               />
@@ -230,10 +231,10 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
             <Column>
               <Input
                 feil={validation[namespace + '-kontoOrdinaer-swift']?.feilmelding}
-                namespace={namespace}
                 id='kontoOrdinaer-swift'
                 key={namespace + '-kontoOrdinaer-swift-' + (utbetalingTilInstitusjon?.kontoOrdinaer?.swift ?? '')}
                 label={t('label:swift') + (_.isEmpty(utbetalingTilInstitusjon?.kontoOrdinaer?.kontonummer) ? ' *' : '')}
+                namespace={namespace}
                 onChanged={setOrdinaerSwift}
                 placeholder={t('el:placeholder-swift')}
                 value={utbetalingTilInstitusjon?.kontoOrdinaer?.swift ?? ''}
@@ -242,9 +243,9 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
           </AlignStartRow>
           <VerticalSeparatorDiv />
           <Adresse
-            namespace={namespace + '-kontoOrdinaer'}
             adresse={utbetalingTilInstitusjon?.kontoOrdinaer?.adresse ?? {}}
             onAdressChanged={setOrdinaerAdresse}
+            namespace={namespace + '-kontoOrdinaer'}
             validation={validation}
             resetValidation={(fullNamespace) => {
               if (validation[fullNamespace]) {
@@ -260,10 +261,10 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
             <Column>
               <Input
                 feil={validation[namespace + '-kontoSepa-iban']?.feilmelding}
-                namespace={namespace}
                 id='kontoSepa-iban'
-                key={namespace + 'kontoSepa-iban' + (utbetalingTilInstitusjon?.kontoSepa?.iban ?? '')}
+                key={namespace + '-kontoSepa-iban-' + (utbetalingTilInstitusjon?.kontoSepa?.iban ?? '')}
                 label={t('label:iban') + ' *'}
+                namespace={namespace}
                 onChanged={setSepaIban}
                 value={utbetalingTilInstitusjon?.kontoSepa?.iban ?? ''}
               />
@@ -274,12 +275,11 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
             <Column>
               <Input
                 feil={validation[namespace + '-kontoSepa-swift']?.feilmelding}
-                namespace={namespace}
                 id='kontoSepa-swift'
                 key={namespace + '-kontoSepa-swift-' + (utbetalingTilInstitusjon?.kontoSepa?.swift ?? '')}
                 label={t('label:swift') + (!_.isEmpty(utbetalingTilInstitusjon?.kontoSepa?.iban) ? '' : ' *')}
+                namespace={namespace}
                 onChanged={setSepaSwift}
-                required
                 value={utbetalingTilInstitusjon?.kontoSepa?.swift ?? ''}
               />
             </Column>

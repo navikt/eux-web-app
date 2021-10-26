@@ -13,6 +13,7 @@ export interface AddRemovePanelProps {
   existingItem: boolean
   labels?: Labels
   marginTop?: boolean,
+  namespace?: string
   onAddNew?: () => void
   onCancelNew?: () => void
   onBeginRemove: () => void
@@ -30,6 +31,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
   candidateForDeletion,
   existingItem,
   marginTop = undefined,
+  namespace = '',
   onAddNew,
   onCancelNew,
   onBeginRemove,
@@ -48,6 +50,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
         <HighContrastFlatknapp
           mini
           kompakt
+          data-test-id={namespace + '-addremove-yes'}
           onClick={onConfirmRemove}
         >
           {labels?.yes ?? t('label:ja')}
@@ -56,6 +59,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
         <HighContrastFlatknapp
           mini
           kompakt
+          data-test-id={namespace + '-addremove-no'}
           onClick={onCancelRemove}
         >
           {labels?.no ?? t('label:nei')}
@@ -67,6 +71,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
         <HighContrastFlatknapp
           mini
           kompakt
+          data-test-id={namespace + '-addremove-' + (existingItem ? 'remove' : 'add')}
           onClick={existingItem ? onBeginRemove : onAddNew}
         >
           {!existingItem ? <Add /> : <Trashcan />}
@@ -79,6 +84,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
             <HighContrastFlatknapp
               mini
               kompakt
+              data-test-id={namespace + '-addremove-cancel'}
               onClick={onCancelNew}
             >
               {labels?.cancel ?? t('el:button-cancel')}

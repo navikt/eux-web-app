@@ -73,6 +73,22 @@ describe('actions/svarpased', () => {
       }))
   })
 
+  it('getSedStatus()', () => {
+    const rinaSakId = '123'
+    const sedId = '456'
+
+    svarpasedActions.getSedStatus(rinaSakId, sedId)
+    expect(call)
+      .toBeCalledWith(expect.objectContaining({
+        type: {
+          request: types.SVARPASED_SED_STATUS_REQUEST,
+          success: types.SVARPASED_SED_STATUS_SUCCESS,
+          failure: types.SVARPASED_SED_STATUS_FAILURE
+        },
+        url: sprintf(urls.API_SED_STATUS_URL, { rinaSakId: rinaSakId, sedId: sedId })
+      }))
+  })
+
   it('querySaksnummerOrFnr() - saksnummer', () => {
     const saksnummerOrFnr = '123'
 
@@ -133,7 +149,7 @@ describe('actions/svarpased', () => {
   it('queryReplySed()', () => {
     const connectedSed = {
       svarsedType: 'U002',
-      sedId: '123',
+      svarsedId: '123',
       sedType: 'U001'
     } as ConnectedSed
     const saksnummer = '456'
@@ -149,7 +165,7 @@ describe('actions/svarpased', () => {
         context: {
           saksnummer: saksnummer,
           sakUrl: sakUrl,
-          sedId: '123-U001'
+          sedId: '123'
         },
         url: sprintf(urls.API_RINASAK_SVARSED_QUERY_URL, {
           rinaSakId: saksnummer,

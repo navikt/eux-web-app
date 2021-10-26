@@ -6,6 +6,7 @@ import ReactSelect, { Props } from 'react-select'
 
 interface SelectProps extends Props<Option> {
   className?: string
+  'data-test-id' ?: string
   id: string
   label?: string
   feil?: string
@@ -18,7 +19,11 @@ interface SelectProps extends Props<Option> {
 const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
   const _theme = props.highContrast ? themeHighContrast : theme
   return (
-    <div className={props.className} style={props.style}>
+      <div
+        className={props.className}
+        data-test-id={props['data-test-id'] || props.id}
+        style={props.style}
+      >
       {props.label && <label htmlFor={props.id} className='skjemaelement__label'>{props.label}</label>}
       <ReactSelect
         inputId={props.id}

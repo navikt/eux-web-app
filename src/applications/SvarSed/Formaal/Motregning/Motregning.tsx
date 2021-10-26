@@ -39,7 +39,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import KeyAndYtelseFC, { KeyAndYtelse } from './KeyAndYtelse'
+import KeyAndYtelseFC, { KeyAndYtelse } from './KeyAndYtelse/KeyAndYtelse'
 import { validateMotregning, ValidationMotregningProps } from './validation'
 
 export type BarnaNameKeyMap = {[barnaName in string]: string}

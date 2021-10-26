@@ -23,8 +23,8 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { getIdx } from 'utils/namespace'
-import { BarnaNameKeyMap } from './Motregning'
-import { validateKeyAndYtelse, ValidationKeyAndYtelseProps } from './validationKeyAndYtelse'
+import { BarnaNameKeyMap } from '../Motregning'
+import { validateKeyAndYtelse, ValidationKeyAndYtelseProps } from './validation'
 
 const MyPaddedDiv = styled.div`
   padding: 0.5rem 0.5rem 0.5rem 2rem;
@@ -37,7 +37,7 @@ export interface KeyAndYtelse {
   ytelseNavn?: string // ytelseNavn, for barna
 }
 
-interface KeyAndYtelseProps {
+export interface KeyAndYtelseProps {
   highContrast: boolean
   keyAndYtelses: Array<KeyAndYtelse>
   onAdded: (barnKey: string, ytelseNavn: string) => void
@@ -68,7 +68,8 @@ const KeyAndYtelseFC: React.FC<KeyAndYtelseProps> = ({
   const [_newYtelseNavn, _setNewYtelseNavn] = useState<string | undefined>(undefined)
 
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<KeyAndYtelse>((it: KeyAndYtelse): string => it.fullKey)
+  const getId = (it: KeyAndYtelse | null): string => it ? it.fullKey : 'new-keyandyelse'
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<KeyAndYtelse>(getId)
   const [_validation, _resetValidation, _performValidation] = useValidation<ValidationKeyAndYtelseProps>({}, validateKeyAndYtelse)
 
   const setKey = (newBarnaKey: string, index: number) => {
@@ -112,6 +113,7 @@ const KeyAndYtelseFC: React.FC<KeyAndYtelseProps> = ({
   }
 
   const onAdd = () => {
+
     const newKeyAndYtelse: KeyAndYtelse = {
       fullKey: _newBarnaKey?.trim() as string, // not really a full key, but it is only for isEmpty() validation
       ytelseNavn: _newYtelseNavn?.trim() as string
@@ -145,7 +147,10 @@ const KeyAndYtelseFC: React.FC<KeyAndYtelseProps> = ({
     const barnaKey = index < 0 ? _newBarnaKey : fullKeyToBarnaKey(keyAndYtelse!.fullKey)
     const ytelseNavn = (index < 0 ? _newYtelseNavn : keyAndYtelse?.ytelseNavn)
     return (
-      <RepeatableRow className={classNames({ new: index < 0 })}>
+      <RepeatableRow
+        className={classNames('slideInFromLeft', { new: index < 0 })}
+        key={getId(keyAndYtelse)}
+      >
         <AlignStartRow>
           <Column>
             <Select
@@ -177,6 +182,7 @@ const KeyAndYtelseFC: React.FC<KeyAndYtelseProps> = ({
           </Column>
           <Column>
             <AddRemovePanel
+              namespace={namespace + idx}
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}
               marginTop
@@ -217,6 +223,7 @@ const KeyAndYtelseFC: React.FC<KeyAndYtelseProps> = ({
               <HighContrastFlatknapp
                 mini
                 kompakt
+                data-test-id={namespace + '-new'}
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />

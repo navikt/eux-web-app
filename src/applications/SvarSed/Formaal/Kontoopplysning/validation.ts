@@ -62,7 +62,7 @@ export const validateKontoopplysning = (
 
   if (!kontoType) {
     v[namespace + '-kontotype'] = {
-      feilmelding: t('validation:noKontotype'),
+      feilmelding: t('validation:noKontotypeTil',{ person: formalName }),
       skjemaelementId: namespace + '-kontotype'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -111,7 +111,7 @@ export const validateKontoopplysning = (
       hasErrors = true
     }
 
-    if (!_.isEmpty(uti?.kontoSepa?.iban?.trim() && !uti?.kontoSepa?.swift?.trim().match(/^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/))) {
+    if (!_.isEmpty(uti?.kontoSepa?.swift?.trim()) && _.isNil(uti?.kontoSepa?.swift?.trim().match(/^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/))) {
       v[namespace + '-kontoSepa-swift'] = {
         feilmelding: t('validation:invalidSwiftTil', { person: formalName }),
         skjemaelementId: namespace + '-kontoSepa-swift'

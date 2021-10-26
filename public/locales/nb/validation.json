@@ -80,7 +80,7 @@
   "noJournalpostID": "Du må taste inn en journalpostID",
 
   "noKjoennTil": "Du må velge kjønn til {{person}}",
-  "noKontotype": "Du må velge kontotype",
+  "noKontotypeTil": "Du må velge kontotype til {{person}}",
   "noKravTil": "Du må skrive {{person}}",
 
   "noLand": "Du må velge land",
