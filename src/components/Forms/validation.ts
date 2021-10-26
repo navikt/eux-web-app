@@ -33,8 +33,8 @@ export const validatePeriode = (
     v[namespace + idx + '-startdato'] = {
       skjemaelementId: namespace + idx + '-startdato',
       feilmelding: personName
-        ? t('message:validation-noDateTil', { person: personName })
-        : t('message:validation-noDate')
+        ? t('validation:noDateTil', { person: personName })
+        : t('validation:noDate')
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -43,8 +43,8 @@ export const validatePeriode = (
     v[namespace + idx + '-startdato'] = {
       skjemaelementId: namespace + idx + '-startdato',
       feilmelding: personName
-        ? t('message:validation-invalidDateTil', { person: personName })
-        : t('message:validation-invalidDate')
+        ? t('validation:invalidDateTil', { person: personName })
+        : t('validation:invalidDate')
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -53,8 +53,8 @@ export const validatePeriode = (
     v[namespace + idx + '-sluttdato'] = {
       skjemaelementId: namespace + idx + '-sluttdato',
       feilmelding: personName
-        ? t('message:validation-invalidDateTil', { person: personName })
-        : t('message:validation-invalidDate')
+        ? t('validation:invalidDateTil', { person: personName })
+        : t('validation:invalidDate')
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -64,7 +64,7 @@ export const validatePeriode = (
       .isAfter(moment(periode.sluttdato?.trim(), 'YYYY-MM-DD'))) {
     v[namespace + idx + '-sluttdato'] = {
       skjemaelementId: namespace + idx + '-sluttdato',
-      feilmelding: t('message:validation-endDateBeforeStartDate')
+      feilmelding: t('validation:endDateBeforeStartDate')
     } as FeiloppsummeringFeil
     hasErrors = true
   }

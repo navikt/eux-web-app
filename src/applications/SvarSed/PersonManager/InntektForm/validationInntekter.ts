@@ -25,7 +25,7 @@ export const validateInntekt = (
 
   if (_.isEmpty(inntekt?.type?.trim())) {
     v[namespace + idx + '-type'] = {
-      feilmelding: t('message:validation-noType'),
+      feilmelding: t('validation:noType'),
       skjemaelementId: namespace + idx + '-type'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -34,7 +34,7 @@ export const validateInntekt = (
   if (_.isEmpty(inntekt?.beloep?.trim())) {
     v[namespace + '-beloep'] = {
       skjemaelementId: namespace + '-beloep',
-      feilmelding: t('message:validation-noBeløp')
+      feilmelding: t('validation:noBeløp')
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -42,7 +42,7 @@ export const validateInntekt = (
   if (!_.isEmpty(inntekt?.beloep?.trim()) && !inntekt?.beloep?.trim().match(/^[\d.,]+$/)) {
     v[namespace + '-beloep'] = {
       skjemaelementId: namespace + '-beloep',
-      feilmelding: t('message:validation-invalidBeløp')
+      feilmelding: t('validation:invalidBeløp')
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -50,7 +50,7 @@ export const validateInntekt = (
   if (_.isEmpty(inntekt?.valuta?.trim())) {
     v[namespace + '-valuta'] = {
       skjemaelementId: namespace + '-valuta',
-      feilmelding: t('message:validation-noValuta')
+      feilmelding: t('validation:noValuta')
     } as FeiloppsummeringFeil
     hasErrors = true
   }

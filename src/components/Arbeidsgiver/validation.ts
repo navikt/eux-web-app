@@ -34,14 +34,14 @@ export const validateArbeidsgiverSøk = (
   if (_.isEmpty(fom.trim())) {
     v[namespace + '-startdato'] = {
       skjemaelementId: namespace + '-startdato',
-      feilmelding: t('message:validation-noDate')
+      feilmelding: t('validation:noDate')
     } as FeiloppsummeringFeil
     hasErrors = true
   } else {
     if (!(fom.trim().match(datePattern))) {
       v[namespace + '-startdato'] = {
         skjemaelementId: namespace + '-startdato',
-        feilmelding: t('message:validation-invalidDate')
+        feilmelding: t('validation:invalidDate')
       } as FeiloppsummeringFeil
     }
   }
@@ -49,14 +49,14 @@ export const validateArbeidsgiverSøk = (
   if (_.isEmpty(tom.trim())) {
     v[namespace + '-sluttdato'] = {
       skjemaelementId: namespace + '-sluttdato',
-      feilmelding: t('message:validation-noDate')
+      feilmelding: t('validation:noDate')
     } as FeiloppsummeringFeil
     hasErrors = true
   } else {
     if (!(tom.trim().match(datePattern))) {
       v[namespace + '-sluttdato'] = {
         skjemaelementId: namespace + '-sluttdato',
-        feilmelding: t('message:validation-invalidDate')
+        feilmelding: t('validation:invalidDate')
       } as FeiloppsummeringFeil
     }
   }
@@ -64,7 +64,7 @@ export const validateArbeidsgiverSøk = (
   if (_.isEmpty(inntektslistetype.trim())) {
     v[namespace + '-inntektslistetype'] = {
       skjemaelementId: namespace + '-inntektslistetype',
-      feilmelding: t('message:validation-noInntektsliste')
+      feilmelding: t('validation:noInntektsliste')
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -86,28 +86,28 @@ export const validateArbeidsgiver = (
   if (_.isEmpty(arbeidsgiver.arbeidsgiver?.navn?.trim())) {
     v[namespace + '-navn'] = {
       skjemaelementId: namespace + '-navn',
-      feilmelding: t('message:validation-noNavn')
+      feilmelding: t('validation:noNavn')
     } as FeiloppsummeringFeil
     hasErrors = true
   }
   if (_.isEmpty(getOrgnr(arbeidsgiver))) {
     v[namespace + '-orgnr'] = {
       skjemaelementId: namespace + '-orgnr',
-      feilmelding: t('message:validation-noOrgnr')
+      feilmelding: t('validation:noOrgnr')
     } as FeiloppsummeringFeil
     hasErrors = true
   }
   if (_.isEmpty(arbeidsgiver.startdato)) {
     v[namespace + '-startdato'] = {
       skjemaelementId: namespace + '-startdato',
-      feilmelding: t('message:validation-noDate')
+      feilmelding: t('validation:noDate')
     } as FeiloppsummeringFeil
     hasErrors = true
   } else {
     if (!(arbeidsgiver.startdato!.trim().match(datePattern))) {
       v[namespace + '-startdato'] = {
         skjemaelementId: namespace + '-startdato',
-        feilmelding: t('message:validation-invalidDate')
+        feilmelding: t('validation:invalidDate')
       } as FeiloppsummeringFeil
       hasErrors = true
     }
@@ -115,7 +115,7 @@ export const validateArbeidsgiver = (
   if (!_.isEmpty(arbeidsgiver.sluttdato) && !(arbeidsgiver.sluttdato!.trim().match(datePattern))) {
     v[namespace + '-sluttdato'] = {
       skjemaelementId: namespace + '-sluttdato',
-      feilmelding: t('message:validation-invalidDate')
+      feilmelding: t('validation:invalidDate')
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -129,28 +129,28 @@ export const validateArbeidsgiver = (
     if (_.isEmpty((arbeidsgiver as PeriodeMedForsikring).arbeidsgiver.adresse?.gate)) {
       v[namespace + '-gate'] = {
         skjemaelementId: namespace + '-gate',
-        feilmelding: t('message:validation-noAddressStreet')
+        feilmelding: t('validation:noAddressStreet')
       } as FeiloppsummeringFeil
       hasErrors = true
     }
     if (_.isEmpty((arbeidsgiver as PeriodeMedForsikring).arbeidsgiver.adresse?.postnummer)) {
       v[namespace + '-postnummer'] = {
         skjemaelementId: namespace + '-postnummer',
-        feilmelding: t('message:validation-noAddressPostnummer')
+        feilmelding: t('validation:noAddressPostnummer')
       } as FeiloppsummeringFeil
       hasErrors = true
     }
     if (_.isEmpty((arbeidsgiver as PeriodeMedForsikring).arbeidsgiver.adresse?.by)) {
       v[namespace + '-by'] = {
         skjemaelementId: namespace + '-by',
-        feilmelding: t('message:validation-noAddressCity')
+        feilmelding: t('validation:noAddressCity')
       } as FeiloppsummeringFeil
       hasErrors = true
     }
     if (_.isEmpty((arbeidsgiver as PeriodeMedForsikring).arbeidsgiver.adresse?.land)) {
       v[namespace + '-land'] = {
         skjemaelementId: namespace + '-land',
-        feilmelding: t('message:validation-noAddressLand')
+        feilmelding: t('validation:noAddressCountry')
       } as FeiloppsummeringFeil
       hasErrors = true
     }

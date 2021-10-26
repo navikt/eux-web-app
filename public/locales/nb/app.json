@@ -1,10 +1,15 @@
 {
-  "name" : "nEESSI",
-  "title": "Velkommen til nEESSI",
-
-  "indexpage-createCase" : "Opprett sak",
   "indexpage-addAttachment": "Legg vedlegg til SED",
+  "indexpage-createCase" : "Opprett sak",
   "indexpage-svarSed": "SvarSED eller ny SED i eksisterende sak",
+
+  "info-confirm-information" : "Vi bekrefter leverte opplysninger",
+  "info-point-information" : "Gi oss punktvise opplysninger",
+
+  "kravType-nytt_krav" : "Nytt krav",
+  "kravType-endrede_omstendigheter" : "Endrede omstendigheter",
+
+  "log-me-again": "Logg inn på nytt",
 
   "modal-abort-contentLabel": "Bekreft navigasjon tilbake til forsiden",
   "modal-abort-description": "Informasjonen du har fylt inn hittil vil ikke bli lagret.",
@@ -12,15 +17,9 @@
   "modal-abort-title": "Er du sikker på at du vil avbryte?",
   "modal-abort-yes-cancel": "JA, AVBRYT",
 
-  "kravType-nytt_krav" : "Nytt krav",
-  "kravType-endrede_omstendigheter" : "Endrede omstendigheter",
+  "name" : "nEESSI",
 
-  "info-confirm-information" : "Vi bekrefter leverte opplysninger",
-  "info-point-information" : "Gi oss punktvise opplysninger",
-
-
-  "serverInternalError" : "Serverfeil",
-  "serverAuthenticationError" : "Uautorisert",
+  "ok-got-it" : "Ok, stemmer det",
 
   "session-expire-title" : "Du vil snart bli logget ut",
   "session-expire-text" : "Husk å lagre opplysningene. Hvis du ønsker å fortsette, må du logge inn igjen.  Du blir logget ut om {{minutes}} minutter",
@@ -30,7 +29,5 @@
   "status-received-new" : "Utkast",
   "status-received-active" : "Aktiv",
 
-  "ok-got-it" : "Ok, stemmer det",
-  "log-me-again": "Logg inn på nytt"
-
+  "title": "Velkommen til nEESSI"
 }

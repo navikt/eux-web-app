@@ -170,7 +170,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
     if (!_newCategory) {
       const newValidation: Validation = {}
       newValidation[namespace + '-familieYtelse-category'] = {
-        feilmelding: t('message:validation-noPensjonTypeTil', { person: personName }),
+        feilmelding: t('validation:noPensjonTypeTil', { person: personName }),
         skjemaelementId: namespace + '-category'
       } as FeiloppsummeringFeil
       _setValidation(newValidation)

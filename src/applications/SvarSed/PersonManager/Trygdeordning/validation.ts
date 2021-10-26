@@ -70,7 +70,7 @@ const validateGenericPeriode = (
     }
     if (duplicate) {
       v[extraNamespace + idx + '-startdato'] = {
-        feilmelding: t('message:validation-duplicateStartdatoTil', { person: personName }),
+        feilmelding: t('validation:duplicateStartdatoTil', { person: personName }),
         skjemaelementId: namespace + idx + '-startdato'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -189,7 +189,7 @@ export const validateFamilieytelserPeriode = (
   }
   if (duplicate) {
     v[extraperiodeNamespace + '-startdato'] = {
-      feilmelding: t('message:validation-duplicateStartdatoTil', { person: personName }),
+      feilmelding: t('validation:duplicateStartdatoTil', { person: personName }),
       skjemaelementId: extraperiodeNamespace + '-startdato'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -198,7 +198,7 @@ export const validateFamilieytelserPeriode = (
   if (sedCategory === 'perioderMedPensjon') {
     if (_.isEmpty((periode as PensjonPeriode).pensjonstype)) {
       v[extraNamespace + '-pensjonstype'] = {
-        feilmelding: t('message:validation-noPensjonTypeTil', { person: personName }),
+        feilmelding: t('validation:noPensjonTypeTil', { person: personName }),
         skjemaelementId: extraNamespace + '-pensjonstype'
       } as FeiloppsummeringFeil
       hasErrors = true

@@ -42,7 +42,7 @@ export const validatePeriodeDagpenger = (
     }
     if (duplicate) {
       v[namespace + idx + '-periode-startdato'] = {
-        feilmelding: t('message:validation-duplicateStartdato'),
+        feilmelding: t('validation:duplicateStartdato'),
         skjemaelementId: namespace + idx + '-periode-startdato'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -51,7 +51,7 @@ export const validatePeriodeDagpenger = (
 
   if (_.isEmpty(periodeDagpenger?.institusjon.id.trim())) {
     v[namespace + idx + '-institusjon-id'] = {
-      feilmelding: t('message:validation-noInstitusjonsID'),
+      feilmelding: t('validation:noInstitusjonsID'),
       skjemaelementId: namespace + idx + '-institusjon-id'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -59,7 +59,7 @@ export const validatePeriodeDagpenger = (
 
   if (_.isEmpty(periodeDagpenger?.institusjon.navn.trim())) {
     v[namespace + idx + '-institusjon-navn'] = {
-      feilmelding: t('message:validation-noInstitusjonensNavn'),
+      feilmelding: t('validation:noInstitusjonensNavn'),
       skjemaelementId: namespace + idx + '-institusjon-navn'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -68,7 +68,7 @@ export const validatePeriodeDagpenger = (
   if (!_.isEmpty(periodeDagpenger?.institusjon.idmangler?.navn?.trim())) {
     if (periodeDagpenger?.institusjon.idmangler?.navn?.trim() === '-') {
       v[namespace + idx + '-institusjon-idmangler-navn'] = {
-        feilmelding: t('message:validation-noName'),
+        feilmelding: t('validation:noName'),
         skjemaelementId: namespace + idx + '-institusjon-idmangler-navn'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -76,7 +76,7 @@ export const validatePeriodeDagpenger = (
 
     if (_.isEmpty(periodeDagpenger?.institusjon.idmangler?.adresse?.land?.trim())) {
       v[namespace + idx + '-institusjon-idmangler-adresse-land'] = {
-        feilmelding: t('message:validation-noAddressCountry'),
+        feilmelding: t('validation:noAddressCountry'),
         skjemaelementId: namespace + idx + '-institusjon-idmangler-adresse-land'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -84,7 +84,7 @@ export const validatePeriodeDagpenger = (
 
     if (_.isEmpty(periodeDagpenger?.institusjon.idmangler?.adresse?.gate?.trim())) {
       v[namespace + idx + '-institusjon-idmangler-adresse-gate'] = {
-        feilmelding: t('message:validation-noAddressStreet'),
+        feilmelding: t('validation:noAddressStreet'),
         skjemaelementId: namespace + idx + '-institusjon-idmangler-adresse-gate'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -92,7 +92,7 @@ export const validatePeriodeDagpenger = (
 
     if (_.isEmpty(periodeDagpenger?.institusjon.idmangler?.adresse?.postnummer?.trim())) {
       v[namespace + idx + '-institusjon-idmangler-adresse-postnummer'] = {
-        feilmelding: t('message:validation-noAddressPostnummer'),
+        feilmelding: t('validation:noAddressPostnummer'),
         skjemaelementId: namespace + idx + '-institusjon-idmangler-adresse-postnummer'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -100,7 +100,7 @@ export const validatePeriodeDagpenger = (
 
     if (_.isEmpty(periodeDagpenger?.institusjon.idmangler?.adresse?.by?.trim())) {
       v[namespace + idx + '-institusjon-idmangler-adresse-by'] = {
-        feilmelding: t('message:validation-noAddressCity'),
+        feilmelding: t('validation:noAddressCity'),
         skjemaelementId: namespace + idx + '-institusjon-idmangler-adresse-by'
       } as FeiloppsummeringFeil
       hasErrors = true

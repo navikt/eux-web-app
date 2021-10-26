@@ -1,22 +1,20 @@
 {
   "button-add": "Legg til",
-  "button-add-attachments" : "Legg til vedlegg",
   "button-add-new-x": "Legg til ny {{x}}",
   "button-add-new-xs": "Legg til nye {{x}}",
-  "button-add-x": "Legg til {{x}}",
   "button-add-selected-attachments": "Legg til markerte vedlegg",
+  "button-add-x": "Legg til {{x}}",
   "button-cancel": "Avbryt",
   "button-close": "Lukk",
-  "button-download": "Last ned",
   "button-edit": "Rediger",
   "button-load": "Last inn",
   "button-remove" : "Fjern",
   "button-remove-all" : "Fjern alle",
   "button-save" : "Lagre",
   "button-save-draft" : "Lagre utkast svarSED",
-  "button-send-sed" : "Send SED",
   "button-search" : "Søk",
   "button-search-for-x" : "Søk {{x}}",
+  "button-send-sed" : "Send SED",
   "button-update-draft" : "Oppdattere utkast svarSED",
 
   "option-familierelasjon-bruker": "bruker",
@@ -26,6 +24,15 @@
 
   "option-familieytelser-barnetrygd": "Barnetrygd",
   "option-familieytelser-kontantstøtte": "Kontantstøtte",
+
+  "option-formaal-1": "Mottak av søknad om familieytelser",
+  "option-formaal-2": "Informasjon om endrede forhold",
+  "option-formaal-3": "Svar på kontroll eller årlig kontroll",
+  "option-formaal-4": "Svar på anmodning om informasjon",
+  "option-formaal-5": "Vedtak",
+  "option-formaal-6": "Motregning",
+  "option-formaal-7": "Prosedyre ved uenighet",
+  "option-formaal-8": "Refusjon i henhold til artikkel 58 i forordningen",
 
   "option-forsikring-ANSATTPERIODE_FORSIKRET" : "Ansettelsesforhold som utgjør forsikringsperiode",
   "option-forsikring-SELVSTENDIG_FORSIKRET" : "Selvstendig næringsvirksomhet som utgjør forsikringsperiode",
@@ -39,15 +46,6 @@
   "option-forsikring-ANNENPERIODE" : "Annen periode som utgjør eller behandles som forsikringsperiode",
   "option-forsikring-FRIVILLIG" : "Periode med frivillig uavbrutt forsikring",
   "option-forsikring-FERIE" : "Vederlag for ferie som ikke er tatt ut",
-
-  "option-formaal-1": "Mottak av søknad om familieytelser",
-  "option-formaal-2": "Informasjon om endrede forhold",
-  "option-formaal-3": "Svar på kontroll eller årlig kontroll",
-  "option-formaal-4": "Svar på anmodning om informasjon",
-  "option-formaal-5": "Vedtak",
-  "option-formaal-6": "Motregning",
-  "option-formaal-7": "Prosedyre ved uenighet",
-  "option-formaal-8": "Refusjon i henhold til artikkel 58 i forordningen",
 
   "option-grunn-ansettelse": "Periode/status for ansettelsesforhpld eller selvstendig næringsvirksomhet",
   "option-grunn-pensjon": "Mottaksperiode for pensjon",
@@ -65,16 +63,16 @@
   "option-grunntilopphør-ukjent": "Ukjent",
   "option-grunntilopphør-annet": "Annet",
 
+  "option-inntektsfilter-BARNETRYGD": "Barnetrygd",
+  "option-inntektsfilter-KONTANTSTOETTE": "Kontantstøtte",
+  "option-inntektsfilter-DAGPENGER": "Dagpenger",
+
   "option-inntekttype-nettoinntekt" : "Nettoinntekt, under ansettelsesforhold eller selvstendig næringsvirksomhet",
   "option-inntekttype-bruttoinntekt" : "Bruttoinntekt under ansettelsesforhold eller selvstendig næringsvirksomhet",
   "option-inntekttype-en-enkelt-utbetaling" : "En enkelt utbetaling",
   "option-inntekttype-overtidsgodtgjørelse" : "Overtidsgodtgjørelse",
   "option-inntekttype-vederlag" : "Vederlag for ferie som ikke er tatt ut",
   "option-inntekttype-annet-vederlag" : "Annet, vederlag",
-
-  "option-inntektsfilter-BARNETRYGD": "Barnetrygd",
-  "option-inntektsfilter-KONTANTSTOETTE": "Kontantstøtte",
-  "option-inntektsfilter-DAGPENGER": "Dagpenger",
 
   "option-periodetype-ansettelsesforhold": "Ansettelsesforhold",
   "option-periodetype-selvstendig-næringsvirksomhet": "Selvstendig næringsvirksomhet",
@@ -83,6 +81,14 @@
   "option-person-ektefelle_partner" : "Ektefelle/partner",
   "option-person-avdød" : "Avdød",
   "option-person-annen-person" : "Annen person",
+
+  "option-personensstatus-1": "Ansatt",
+  "option-personensstatus-2": "Selvstendig næringsdrivende",
+  "option-personensstatus-3": "Mottar lønn eller ytelser, unntatt pensjon",
+  "option-personensstatus-3-more": "Mottar lønn eller ytelser, unntatt pensjon, i en periode med opphør i aktivitet for ansatt eller selvstendig næringsdrivende på grunn av sykdom, omsorg for barn, arbeidsulykke, yrkessykdom eller arbeidsledighet.",
+  "option-personensstatus-4": "Personen har permisjon med lønn, er i streik eller lockout",
+  "option-personensstatus-5": "Personen har permisjon uten lønn",
+  "option-personensstatus-5-more": "Personen har permisjon uten lønn på grunn av omsorg for barn eller en tilsvarende periode i samsvar med lovgivningen i avsenderlandet",
 
   "option-personmanager-1": "Personopplysninger",
   "option-personmanager-2": "Nasjonalitet",
@@ -105,14 +111,6 @@
   "option-personmanager-19": "Grunn til opphør",
   "option-personmanager-20": "Periode for dagpenger",
   "option-personmanager-21": "Svar på forespørsel",
-
-  "option-personensstatus-1": "Ansatt",
-  "option-personensstatus-2": "Selvstendig næringsdrivende",
-  "option-personensstatus-3": "Mottar lønn eller ytelser, unntatt pensjon",
-  "option-personensstatus-3-more": "Mottar lønn eller ytelser, unntatt pensjon, i en periode med opphør i aktivitet for ansatt eller selvstendig næringsdrivende på grunn av sykdom, omsorg for barn, arbeidsulykke, yrkessykdom eller arbeidsledighet.",
-  "option-personensstatus-4": "Personen har permisjon med lønn, er i streik eller lockout",
-  "option-personensstatus-5": "Personen har permisjon uten lønn",
-  "option-personensstatus-5-more": "Personen har permisjon uten lønn på grunn av omsorg for barn eller en tilsvarende periode i samsvar med lovgivningen i avsenderlandet",
 
   "option-relasjon-1": "Daglig omsorg for barnet",
   "option-relasjon-2": "Barn født i ekteskap",
@@ -147,10 +145,9 @@
   "option-vedtaktype-sekundaerkompetanseArt68": "Vedtak om sekundærkompetanse etter artikkel 68 i forordning (EF) nr. 883/2004020",
 
   "placeholder-date-default": "DD.MM.ÅÅÅÅ",
-  "placeholder-grunner-default": "Skriv inn...",
   "placeholder-input-default": "Skriv inn...",
   "placeholder-textarea-default": "Skriv inn...",
   "placeholder-select-default": "Velg...",
   "placeholder-sed": "Skriv inn tekst til SED",
-  "placeholder-text-to-sed": "Skriv inn tekst til SED"
+  "placeholder-swift": "8-11 tegn"
 }

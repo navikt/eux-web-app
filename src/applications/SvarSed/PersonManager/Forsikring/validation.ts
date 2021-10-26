@@ -50,7 +50,7 @@ export const validateForsikringPeriode = (
   if (_.isNil(index) && _.isEmpty(type)) {
     v[namespace + '-type'] = {
       skjemaelementId: namespace + '-type',
-      feilmelding: t('message:validation-noType')
+      feilmelding: t('validation:noType')
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -70,7 +70,7 @@ export const validateForsikringPeriode = (
     }
     if (duplicate) {
       v[namespace + idx + '-startdato'] = {
-        feilmelding: t('message:validation-duplicateStartdato'),
+        feilmelding: t('validation:duplicateStartdato'),
         skjemaelementId: namespace + idx + '-startdato'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -80,7 +80,7 @@ export const validateForsikringPeriode = (
   if (type === 'perioderAnnenForsikring') {
     if (_.isEmpty((periode as PeriodeAnnenForsikring)?.annenTypeForsikringsperiode?.trim())) {
       v[namespace + idx + '-annenTypeForsikringsperiode'] = {
-        feilmelding: t('message:validation-noAnnenTypeForsikringsperiode'),
+        feilmelding: t('validation:noAnnenTypeForsikringsperiode'),
         skjemaelementId: namespace + idx + '-annenTypeForsikringsperiode'
       } as FeiloppsummeringFeil
       hasErrors = true

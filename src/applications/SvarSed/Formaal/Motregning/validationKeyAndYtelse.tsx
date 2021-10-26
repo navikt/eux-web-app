@@ -25,7 +25,7 @@ export const validateKeyAndYtelse = (
 
   if (_.isEmpty(keyAndYtelse?.fullKey?.trim())) {
     v[namespace + '-keyandytelse' + idx + '-key'] = {
-      feilmelding: t('message:validation-noNavn'),
+      feilmelding: t('validation:noNavn'),
       skjemaelementId: namespace + '-keyandytelse' + idx + '-key'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -33,7 +33,7 @@ export const validateKeyAndYtelse = (
 
   if (_.isEmpty(keyAndYtelse?.ytelseNavn?.trim())) {
     v[namespace + '-keyandytelse' + idx + '-ytelseNavn'] = {
-      feilmelding: t('message:validation-noBetegnelsePåYtelse'),
+      feilmelding: t('validation:noBetegnelsePåYtelse'),
       skjemaelementId: namespace + '-keyandytelse' + idx + '-ytelseNavn'
     } as FeiloppsummeringFeil
     hasErrors = true

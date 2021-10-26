@@ -145,49 +145,49 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
       fnr: _relation.fnr
         ? undefined
         : {
-          feilmelding: t('message:validation-noFnr'),
+          feilmelding: t('validation:noFnr'),
           skjemaelementId: 'familierelasjoner__input-fnr-id'
         } as FeiloppsummeringFeil,
       fornavn: _relation.fornavn
         ? undefined
         : {
-          feilmelding: t('message:validation-noFirstName'),
+          feilmelding: t('validation:noFirstName'),
           skjemaelementId: 'familierelasjoner__input-fornavn'
         } as FeiloppsummeringFeil,
       etternavn: _relation.etternavn
         ? undefined
         : {
-          feilmelding: t('message:validation-noLastName'),
+          feilmelding: t('validation:noLastName'),
           skjemaelementId: 'familierelasjoner__input-etternavn'
         } as FeiloppsummeringFeil,
       kjoenn: _relation.kjoenn
         ? undefined
         : {
-          feilmelding: t('message:validation-noGender'),
+          feilmelding: t('validation:noGender'),
           skjemaelementId: 'familierelasjoner__select-kjoenn'
         } as FeiloppsummeringFeil,
       fdato: _relation.fdato
         ? undefined
         : {
-          feilmelding: t('message:validation-noDate'),
+          feilmelding: t('validation:noDate'),
           skjemaelementId: 'familierelasjoner__input-fdato'
         } as FeiloppsummeringFeil,
       rolle: _relation.rolle
         ? undefined
         : {
-          feilmelding: t('message:validation-noRolle'),
+          feilmelding: t('validation:noRolle'),
           skjemaelementId: 'familierelasjoner__input-familierelasjon'
         } as FeiloppsummeringFeil,
       land: _relation.land
         ? undefined
         : {
-          feilmelding: t('message:validation-noLand'),
+          feilmelding: t('validation:noLand'),
           skjemaelementId: 'familierelasjoner__input-land'
         } as FeiloppsummeringFeil,
       statsborgerskap: _relation.land
         ? undefined
         : {
-          feilmelding: t('message:validation-noNationality'),
+          feilmelding: t('validation:noNationality'),
           skjemaelementId: 'familierelasjoner__input-statsborgerskap'
         } as FeiloppsummeringFeil
     } as Validation

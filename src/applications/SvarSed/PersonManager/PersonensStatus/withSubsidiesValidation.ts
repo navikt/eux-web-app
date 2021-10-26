@@ -43,7 +43,7 @@ export const validateWithSubsidiesPeriode = (
   if (duplicate) {
     v[namespace + idx + '-periode-startdato'] = {
       skjemaelementId: namespace + idx + '-periode-startdato',
-      feilmelding: t('message:validation-duplicateStartdato')
+      feilmelding: t('validation:duplicateStartdato')
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -51,7 +51,7 @@ export const validateWithSubsidiesPeriode = (
   if (_.isEmpty(pensjonPeriode.pensjonstype)) {
     v[namespace + idx + '-pensjontype'] = {
       skjemaelementId: namespace + idx + '-pensjontype',
-      feilmelding: t('message:validation-noPensjonType')
+      feilmelding: t('validation:noPensjonType')
     } as FeiloppsummeringFeil
     hasErrors = true
   }

@@ -28,8 +28,8 @@ export const validateProsedyreVedUenighetGrunn = (
   if (_.isEmpty(grunn?.person)) {
     v[namespace + '-person'] = {
       feilmelding: formalName
-        ? t('message:validation-noPersonGivenTil', { person: formalName })
-        : t('message:validation-noPersonGiven'),
+        ? t('validation:noPersonGivenTil', { person: formalName })
+        : t('validation:noPersonGiven'),
       skjemaelementId: namespace + '-person'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -38,8 +38,8 @@ export const validateProsedyreVedUenighetGrunn = (
   if (_.isEmpty(grunn?.grunn?.trim())) {
     v[namespace + '-grunn'] = {
       feilmelding: formalName
-        ? t('message:validation-noGrunnTil', { person: formalName })
-        : t('message:validation-noGrunn'),
+        ? t('validation:noGrunnTil', { person: formalName })
+        : t('validation:noGrunn'),
       skjemaelementId: namespace + '-grunn'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -48,7 +48,7 @@ export const validateProsedyreVedUenighetGrunn = (
   const duplicate: boolean = Object.prototype.hasOwnProperty.call(prosedyreVedUenighet, grunn.grunn)
   if (duplicate) {
     v[namespace + '-grunn'] = {
-      feilmelding: t('message:validation-duplicateGrunnTil', { person: formalName }),
+      feilmelding: t('validation:duplicateGrunnTil', { person: formalName }),
       skjemaelementId: namespace + '-grunn'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -76,7 +76,7 @@ export const validateProsedyreVedUenighet = (
     !prosedyreVedUenighet.pensjon && !prosedyreVedUenighet.oppholdetsVarighet && !prosedyreVedUenighet.ansettelse
   ) {
     v[namespace + '-grunner'] = {
-      feilmelding: t('message:validation-noGrunnTil', { person: formalName }),
+      feilmelding: t('validation:noGrunnTil', { person: formalName }),
       skjemaelementId: namespace + '-grunner'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -84,7 +84,7 @@ export const validateProsedyreVedUenighet = (
 
   if (prosedyreVedUenighet && prosedyreVedUenighet?.ytterligereGrunner && prosedyreVedUenighet?.ytterligereGrunner?.trim()?.length > 500) {
     v[namespace + '-ytterligereGrunner'] = {
-      feilmelding: t('message:validation-textOver500Til', { person: formalName }),
+      feilmelding: t('validation:textOver500Til', { person: formalName }),
       skjemaelementId: namespace + '-ytterligereGrunner'
     } as FeiloppsummeringFeil
     hasErrors = true

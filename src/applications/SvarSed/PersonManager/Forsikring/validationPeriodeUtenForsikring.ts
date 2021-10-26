@@ -28,7 +28,7 @@ export const validatePeriodeUtenForsikring = (
 
   if (_.isEmpty(periodeUtenForsikring?.arbeidsgiver.navn?.trim())) {
     v[namespace + idx + '-navn'] = {
-      feilmelding: t('message:validation-noName'),
+      feilmelding: t('validation:noName'),
       skjemaelementId: namespace + idx + '-navn'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -36,7 +36,7 @@ export const validatePeriodeUtenForsikring = (
 
   if (_.isEmpty(periodeUtenForsikring?.arbeidsgiver.identifikator)) {
     v[namespace + idx + '-orgnr'] = {
-      feilmelding: t('message:validation-noOrgnr'),
+      feilmelding: t('validation:noOrgnr'),
       skjemaelementId: namespace + idx + '-orgnr'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -58,7 +58,7 @@ export const validatePeriodeUtenForsikring = (
     }
     if (duplicate) {
       v[namespace + idx + '-startdato'] = {
-        feilmelding: t('message:validation-duplicateStartdato'),
+        feilmelding: t('validation:duplicateStartdato'),
         skjemaelementId: namespace + idx + '-startdato'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -67,7 +67,7 @@ export const validatePeriodeUtenForsikring = (
 
   if (_.isEmpty(periodeUtenForsikring?.arbeidsgiver?.adresse?.land?.trim())) {
     v[namespace + idx + '-land'] = {
-      feilmelding: t('message:validation-noAddressCountry'),
+      feilmelding: t('validation:noAddressCountry'),
       skjemaelementId: namespace + idx + '-land'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -75,7 +75,7 @@ export const validatePeriodeUtenForsikring = (
 
   if (_.isEmpty(periodeUtenForsikring?.arbeidsgiver?.adresse?.gate?.trim())) {
     v[namespace + idx + '-gate'] = {
-      feilmelding: t('message:validation-noAddressStreet'),
+      feilmelding: t('validation:noAddressStreet'),
       skjemaelementId: namespace + idx + '-gate'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -83,7 +83,7 @@ export const validatePeriodeUtenForsikring = (
 
   if (_.isEmpty(periodeUtenForsikring?.arbeidsgiver?.adresse?.postnummer?.trim())) {
     v[namespace + idx + '-postnummer'] = {
-      feilmelding: t('message:validation-noAddressPostnummer'),
+      feilmelding: t('validation:noAddressPostnummer'),
       skjemaelementId: namespace + idx + '-postnummer'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -91,7 +91,7 @@ export const validatePeriodeUtenForsikring = (
 
   if (_.isEmpty(periodeUtenForsikring?.arbeidsgiver?.adresse?.by?.trim())) {
     v[namespace + idx + '-by'] = {
-      feilmelding: t('message:validation-noAddressCity'),
+      feilmelding: t('validation:noAddressCity'),
       skjemaelementId: namespace + idx + '-by'
     } as FeiloppsummeringFeil
     hasErrors = true

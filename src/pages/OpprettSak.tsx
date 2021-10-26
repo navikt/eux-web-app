@@ -698,7 +698,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
                     <Column>
                       <Feiloppsummering
                         data-test-id='opprettsak__feiloppsummering'
-                        tittel={t('message:validation-feiloppsummering')}
+                        tittel={t('validation:feiloppsummering')}
                         feil={Object.values(_validation).filter(v => v !== undefined) as Array<FeiloppsummeringFeil>}
                       />
                     </Column>

@@ -30,14 +30,14 @@ export const validateKontoopplysning = (
 
   if (_.isEmpty(uti?.begrunnelse?.trim())) {
     v[namespace + '-begrunnelse'] = {
-      feilmelding: t('message:validation-noBegrunnelseTil', { person: formalName }),
+      feilmelding: t('validation:noBegrunnelseTil', { person: formalName }),
       skjemaelementId: namespace + '-begrunnelse'
     } as FeiloppsummeringFeil
     hasErrors = true
   } else {
     if (uti.begrunnelse.length > 500) {
       v[namespace + '-begrunnelse'] = {
-        feilmelding: t('message:validation-textOver500Til', { person: formalName }),
+        feilmelding: t('validation:textOver500Til', { person: formalName }),
         skjemaelementId: namespace + '-begrunnelse'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -46,7 +46,7 @@ export const validateKontoopplysning = (
 
   if (_.isEmpty(uti?.id?.trim())) {
     v[namespace + '-id'] = {
-      feilmelding: t('message:validation-noInstitusjonensIdTil', { person: formalName }),
+      feilmelding: t('validation:noInstitusjonensIdTil', { person: formalName }),
       skjemaelementId: namespace + '-id'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -54,7 +54,7 @@ export const validateKontoopplysning = (
 
   if (_.isEmpty(uti?.navn?.trim())) {
     v[namespace + '-navn'] = {
-      feilmelding: t('message:validation-noInstitusjonensNavnTil', { person: formalName }),
+      feilmelding: t('validation:noInstitusjonensNavnTil', { person: formalName }),
       skjemaelementId: namespace + '-navn'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -62,7 +62,7 @@ export const validateKontoopplysning = (
 
   if (!kontoType) {
     v[namespace + '-kontotype'] = {
-      feilmelding: t('message:validation-noKontotype'),
+      feilmelding: t('validation:noKontotype'),
       skjemaelementId: namespace + '-kontotype'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -71,14 +71,14 @@ export const validateKontoopplysning = (
   if (kontoType === 'ordinaer') {
     if (_.isEmpty(uti?.kontoOrdinaer?.swift?.trim())) {
       v[namespace + '-kontoOrdinaer-swift'] = {
-        feilmelding: t('message:validation-noSwiftTil', { person: formalName }),
+        feilmelding: t('validation:noSwiftTil', { person: formalName }),
         skjemaelementId: namespace + '-kontoOrdinaer-swift'
       } as FeiloppsummeringFeil
       hasErrors = true
     } else {
       if (!uti?.kontoOrdinaer?.swift?.trim().match(/^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/)) {
         v[namespace + '-kontoOrdinaer-swift'] = {
-          feilmelding: t('message:validation-invalidSwiftTil', { person: formalName }),
+          feilmelding: t('validation:invalidSwiftTil', { person: formalName }),
           skjemaelementId: namespace + '-kontoOrdinaer-swift'
         } as FeiloppsummeringFeil
         hasErrors = true
@@ -89,7 +89,7 @@ export const validateKontoopplysning = (
   if (kontoType === 'sepa') {
     if (_.isEmpty(uti?.kontoSepa?.iban?.trim()) && _.isEmpty(uti?.kontoSepa?.swift?.trim())) {
       v[namespace + '-kontoSepa-iban'] = {
-        feilmelding: t('message:validation-noIbanOrSwiftTil', { person: formalName }),
+        feilmelding: t('validation:noIbanOrSwiftTil', { person: formalName }),
         skjemaelementId: namespace + '-kontoSepa-iban'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -97,7 +97,7 @@ export const validateKontoopplysning = (
 
     if (!_.isEmpty(uti?.kontoSepa?.iban?.trim()) && !uti.kontoSepa!.iban.trim().match(/^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[a-zA-Z0-9]{7}([a-zA-Z0-9]?){0,16}$/)) {
       v[namespace + '-kontoSepa-iban'] = {
-        feilmelding: t('message:validation-invalidIbanTil', { person: formalName }),
+        feilmelding: t('validation:invalidIbanTil', { person: formalName }),
         skjemaelementId: namespace + '-kontoSepa-iban'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -105,7 +105,7 @@ export const validateKontoopplysning = (
 
     if (_.isEmpty(uti?.kontoSepa?.iban?.trim()) && _.isEmpty(uti?.kontoSepa?.swift?.trim())) {
       v[namespace + '-kontoSepa-swift'] = {
-        feilmelding: t('message:validation-noIbanOrSwiftTil', { person: formalName }),
+        feilmelding: t('validation:noIbanOrSwiftTil', { person: formalName }),
         skjemaelementId: namespace + '-kontoSepa-swift'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -113,7 +113,7 @@ export const validateKontoopplysning = (
 
     if (!_.isEmpty(uti?.kontoSepa?.iban?.trim() && !uti?.kontoSepa?.swift?.trim().match(/^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/))) {
       v[namespace + '-kontoSepa-swift'] = {
-        feilmelding: t('message:validation-invalidSwiftTil', { person: formalName }),
+        feilmelding: t('validation:invalidSwiftTil', { person: formalName }),
         skjemaelementId: namespace + '-kontoSepa-swift'
       } as FeiloppsummeringFeil
       hasErrors = true

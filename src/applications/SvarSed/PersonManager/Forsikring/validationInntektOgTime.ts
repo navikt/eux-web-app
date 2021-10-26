@@ -40,7 +40,7 @@ export const validateInntektOgTime = (
 
   if (!_.isEmpty(inntektOgTime?.bruttoinntekt)) {
     v[namespace + idx + '-bruttoinntekt'] = {
-      feilmelding: t('message:validation-noInntektTil', { person: personName }),
+      feilmelding: t('validation:noInntektTil', { person: personName }),
       skjemaelementId: namespace + idx + '-bruttoinntekt'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -48,7 +48,7 @@ export const validateInntektOgTime = (
 
   if (!_.isEmpty(inntektOgTime?.valuta)) {
     v[namespace + idx + '-valuta'] = {
-      feilmelding: t('message:validation-noValutaTil', { person: personName }),
+      feilmelding: t('validation:noValutaTil', { person: personName }),
       skjemaelementId: namespace + idx + '-valuta'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -56,7 +56,7 @@ export const validateInntektOgTime = (
 
   if (!_.isEmpty(inntektOgTime?.arbeidstimer)) {
     v[namespace + idx + '-arbeidstimer'] = {
-      feilmelding: t('message:validation-noArbeidstimerTil', { person: personName }),
+      feilmelding: t('validation:noArbeidstimerTil', { person: personName }),
       skjemaelementId: namespace + idx + '-arbeidstimer'
     } as FeiloppsummeringFeil
     hasErrors = true

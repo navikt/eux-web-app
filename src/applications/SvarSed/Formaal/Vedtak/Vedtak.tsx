@@ -280,7 +280,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
     if (_.isEmpty(_newVedtaksperioderVedtak)) {
       const newValidation: Validation = {}
       newValidation[namespace + '-vedtaksperioder-vedtak'] = {
-        feilmelding: t('message:validation-noVedtakTypeTil', { person: t('label:vedtak') }),
+        feilmelding: t('validation:noVedtakTypeTil', { person: t('label:vedtak') }),
         skjemaelementId: namespace + '-vedtaksperioder-vedtak'
       } as FeiloppsummeringFeil
       _setVedtaksperioderValidation(newValidation)

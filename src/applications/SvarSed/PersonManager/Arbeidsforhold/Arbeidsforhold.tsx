@@ -468,7 +468,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv size='2' />
       <Undertittel>
-        {t('label:kontoller-inntekt')}
+        {t('label:kontroller-inntekt')}
       </Undertittel>
       <VerticalSeparatorDiv />
       <InntektSearch

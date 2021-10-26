@@ -26,7 +26,10 @@ I have to decide once and for all what is the id (orgnr + stardato) and check va
 
 --> 400 login for Z992366
 
+ grep -rho -e "'app:[^']*'" * | sort -u
  grep -rho -e "'label:[^']*'" * | sort -u
+ grep -rho -e "'el:[^']*'" * | sort -u
+ grep -rho -e "'message:[^']*'" * | sort -u
 
 test:
 

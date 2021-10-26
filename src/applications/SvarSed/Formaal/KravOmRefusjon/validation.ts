@@ -22,14 +22,14 @@ export const validateKravOmRefusjon = (
 
   if (_.isEmpty(kravOmRefusjon?.trim())) {
     v[namespace + '-krav'] = {
-      feilmelding: t('message:validation-noKravTil', { person: formalName }),
+      feilmelding: t('validation:noKravTil', { person: formalName }),
       skjemaelementId: namespace + '-krav'
     } as FeiloppsummeringFeil
     hasErrors = true
   } else {
     if (kravOmRefusjon && kravOmRefusjon.length > 500) {
       v[namespace + '-krav'] = {
-        feilmelding: t('message:validation-textOver500Til', { person: formalName }),
+        feilmelding: t('validation:textOver500Til', { person: formalName }),
         skjemaelementId: namespace + '-krav'
       } as FeiloppsummeringFeil
       hasErrors = true

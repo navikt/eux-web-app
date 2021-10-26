@@ -29,7 +29,7 @@ export const validateBarnetilhoerighet = (
 
   if (_.isEmpty(barnetilhorighet.relasjonTilPerson)) {
     v[namespace + idx + '-relasjonTilPerson'] = {
-      feilmelding: t('message:validation-noRelationTil', { person: personName }),
+      feilmelding: t('validation:noRelationTil', { person: personName }),
       skjemaelementId: namespace + idx + '-relasjonTilPerson'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -43,7 +43,7 @@ export const validateBarnetilhoerighet = (
     }
     if (duplicate) {
       v[namespace + idx + '-relasjonTilPerson'] = {
-        feilmelding: t('message:validation-duplicateRelationTil', { person: personName }),
+        feilmelding: t('validation:duplicateRelationTil', { person: personName }),
         skjemaelementId: namespace + idx + '-relasjonTilPerson'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -52,7 +52,7 @@ export const validateBarnetilhoerighet = (
 
   if (_.isEmpty(barnetilhorighet.relasjonType)) {
     v[namespace + idx + '-relasjonType'] = {
-      feilmelding: t('message:validation-noRelationTypeTil', { person: personName }),
+      feilmelding: t('validation:noRelationTypeTil', { person: personName }),
       skjemaelementId: namespace + idx + '-relasjonType'
     } as FeiloppsummeringFeil
     hasErrors = true

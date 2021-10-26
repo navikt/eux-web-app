@@ -16,10 +16,10 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/validation', () => {
       formalName: 'name'
     })
     expect(hasErrors).toBeTruthy()
-    expect(validation['test-mock-begrunnelse']?.feilmelding).toEqual('message:validation-noBegrunnelseTil')
-    expect(validation['test-mock-id']?.feilmelding).toEqual('message:validation-noInstitusjonensIdTil')
-    expect(validation['test-mock-navn']?.feilmelding).toEqual('message:validation-noInstitusjonensNavnTil')
-    expect(validation['test-mock-kontotype']?.feilmelding).toEqual('message:validation-noKontotype')
+    expect(validation['test-mock-begrunnelse']?.feilmelding).toEqual('validation:noBegrunnelseTil')
+    expect(validation['test-mock-id']?.feilmelding).toEqual('validation:noInstitusjonensIdTil')
+    expect(validation['test-mock-navn']?.feilmelding).toEqual('validation:noInstitusjonensNavnTil')
+    expect(validation['test-mock-kontotype']?.feilmelding).toEqual('validation:noKontotype')
     expect(validation.test?.feilmelding).toEqual('notnull')
     expect(validation['test-mock']?.feilmelding).toEqual('notnull')
   })
@@ -49,7 +49,7 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/validation', () => {
       formalName: 'name'
     })
     expect(hasErrors).toBeTruthy()
-    expect(validation['test-mock-begrunnelse']?.feilmelding).toEqual('message:validation-textOver500Til')
+    expect(validation['test-mock-begrunnelse']?.feilmelding).toEqual('validation:textOver500Til')
     expect(validation.test?.feilmelding).toEqual('notnull')
     expect(validation['test-mock']?.feilmelding).toEqual('notnull')
   })

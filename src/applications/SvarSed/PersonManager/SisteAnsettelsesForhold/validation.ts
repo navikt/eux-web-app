@@ -25,7 +25,7 @@ export const validateUtbetaling = (
 
   if (_.isEmpty(utbetaling?.utbetalingType?.trim())) {
     v[namespace + idx + '-utbetalingType'] = {
-      feilmelding: t('message:validation-noUtbetalingType'),
+      feilmelding: t('validation:noUtbetalingType'),
       skjemaelementId: namespace + idx + '-utbetalingType'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -33,7 +33,7 @@ export const validateUtbetaling = (
     if (utbetaling?.utbetalingType?.trim() === 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet' &&
       _.isEmpty(utbetaling?.loennTilDato?.trim())) {
       v[namespace + idx + '-loennTilDato'] = {
-        feilmelding: t('message:validation-noLoennTilDato'),
+        feilmelding: t('validation:noLoennTilDato'),
         skjemaelementId: namespace + idx + '-loennTilDato'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -42,7 +42,7 @@ export const validateUtbetaling = (
     if (utbetaling?.utbetalingType?.trim() === 'vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie' &&
       _.isEmpty(utbetaling?.feriedagerTilGode?.trim())) {
       v[namespace + idx + '-feriedagerTilGode'] = {
-        feilmelding: t('message:validation-noFeriedagerTilGode'),
+        feilmelding: t('validation:noFeriedagerTilGode'),
         skjemaelementId: namespace + idx + '-feriedagerTilGode'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -52,7 +52,7 @@ export const validateUtbetaling = (
   if (_.isEmpty(utbetaling?.beloep?.trim())) {
     v[namespace + '-beloep'] = {
       skjemaelementId: namespace + '-beloep',
-      feilmelding: t('message:validation-noBeløp')
+      feilmelding: t('validation:noBeløp')
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -60,14 +60,14 @@ export const validateUtbetaling = (
   if (!_.isEmpty(utbetaling?.beloep?.trim()) && !utbetaling?.beloep?.trim().match(/^[\d.,]+$/)) {
     v[namespace + '-beloep'] = {
       skjemaelementId: namespace + '-beloep',
-      feilmelding: t('message:validation-invalidBeløp')
+      feilmelding: t('validation:invalidBeløp')
     } as FeiloppsummeringFeil
     hasErrors = true
   }
 
   if (_.isEmpty(utbetaling?.valuta?.trim())) {
     v[namespace + idx + '-valuta'] = {
-      feilmelding: t('message:validation-noValuta'),
+      feilmelding: t('validation:noValuta'),
       skjemaelementId: namespace + idx + '-valuta'
     } as FeiloppsummeringFeil
     hasErrors = true

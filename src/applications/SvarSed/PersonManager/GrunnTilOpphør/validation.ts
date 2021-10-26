@@ -23,7 +23,7 @@ export const validateGrunnTilOpphor = (
   if (_.isEmpty(grunntilopphor?.typeGrunnOpphoerAnsatt)) {
     v[namespace + '-typeGrunnOpphoerAnsatt'] = {
       skjemaelementId: namespace + '-typeGrunnOpphoerAnsatt',
-      feilmelding: t('message:validation-noType')
+      feilmelding: t('validation:noType')
     } as FeiloppsummeringFeil
     hasErrors = true
   }

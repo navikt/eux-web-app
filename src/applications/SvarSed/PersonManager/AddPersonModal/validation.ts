@@ -23,28 +23,28 @@ export const validateAddPersonModal = (
 
   if (_.isEmpty(fnr?.trim())) {
     v[namespace + '-fnr'] = {
-      feilmelding: t('message:validation-noFnr'),
+      feilmelding: t('validation:noFnr'),
       skjemaelementId: namespace + '-fnr'
     }
     hasErrors = true
   }
   if (!_.isEmpty(fnr?.trim()) && !fnr.match(/^\d{11}$/)) {
     v[namespace + '-fnr'] = {
-      feilmelding: t('message:validation-invalidFnr'),
+      feilmelding: t('validation:invalidFnr'),
       skjemaelementId: namespace + '-fnr'
     }
     hasErrors = true
   }
   if (_.isEmpty(navn?.trim())) {
     v[namespace + '-navn'] = {
-      feilmelding: t('message:validation-noNavn'),
+      feilmelding: t('validation:noNavn'),
       skjemaelementId: namespace + '-navn'
     }
     hasErrors = true
   }
   if (_.isEmpty(relasjon?.trim())) {
     v[namespace + '-relasjon'] = {
-      feilmelding: t('message:validation-noRelation'),
+      feilmelding: t('validation:noRelation'),
       skjemaelementId: namespace + '-relasjon'
     }
     hasErrors = true

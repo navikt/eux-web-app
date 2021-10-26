@@ -342,7 +342,7 @@ export const validateSEDSelection = (
   let hasErrors: boolean = false
   if (_.isEmpty(saksnummerOrFnr.trim())) {
     v['sedselection-saksnummerOrFnr'] = {
-      feilmelding: t('message:validation-noSaksnummerOrFnr'),
+      feilmelding: t('validation:noSaksnummerOrFnr'),
       skjemaelementId: 'sedselection-saksnummerOrFnr'
     } as FeiloppsummeringFeil
     hasErrors = true
@@ -367,7 +367,7 @@ export const validateSEDEditor = (
   if (isFSed(replySed)) {
     if (_.isEmpty((replySed as F002Sed).formaal)) {
       v['editor-formål'] = {
-        feilmelding: t('message:validation-noFormaal'),
+        feilmelding: t('validation:noFormaal'),
         skjemaelementId: 'editor-formål'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -397,14 +397,14 @@ export const validateSEDEditor = (
   if (isHSed(replySed)) {
     if (_.isEmpty((replySed as HSed).tema)) {
       v['editor-tema'] = {
-        feilmelding: t('message:validation-noTema'),
+        feilmelding: t('validation:noTema'),
         skjemaelementId: 'editor-tema'
       } as FeiloppsummeringFeil
       hasErrors = true
     } else {
       if ((replySed as HSed).tema === 'GEN') {
         v['editor-tema'] = {
-          feilmelding: t('message:validation-invalidTema'),
+          feilmelding: t('validation:invalidTema'),
           skjemaelementId: 'editor-tema'
         } as FeiloppsummeringFeil
         hasErrors = true
@@ -415,7 +415,7 @@ export const validateSEDEditor = (
   // @ts-ignore
   if (!_.isEmpty(replySed?.ytterligereInfo?.trim()) && replySed?.ytterligereInfo?.trim().length > 500) {
     v['editor-ytterligereInfo'] = {
-      feilmelding: t('message:validation-textOver500Til', { person: 'SED' }),
+      feilmelding: t('validation:textOver500Til', { person: 'SED' }),
       skjemaelementId: 'editor-ytterligereInfo'
     } as FeiloppsummeringFeil
     hasErrors = true

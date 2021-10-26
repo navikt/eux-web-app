@@ -42,7 +42,7 @@ export const validateAnsattPeriode = (
     }
     if (duplicate) {
       v[namespace + '-periode' + idx + '-startdato'] = {
-        feilmelding: t('message:validation-duplicateStartdatoTil', { person: personName }),
+        feilmelding: t('validation:duplicateStartdatoTil', { person: personName }),
         skjemaelementId: namespace + '-periode' + idx + '-startdato'
       } as FeiloppsummeringFeil
       hasErrors = true

@@ -46,7 +46,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         break
 
       default:
-        serverErrorMessage = (action as ActionWithPayload).payload.message || 'ui:serverInternalError'
+        serverErrorMessage = (action as ActionWithPayload).payload.message || 'meaage:error-serverInternalError'
         break
     }
 

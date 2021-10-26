@@ -42,7 +42,7 @@ export const validateLoennsopplysning = (
     }
     if (duplicate) {
       v[namespace + idx + '-startdato'] = {
-        feilmelding: t('message:validation-duplicateStartdato'),
+        feilmelding: t('validation:duplicateStartdato'),
         skjemaelementId: namespace + idx + '-startdato'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -51,7 +51,7 @@ export const validateLoennsopplysning = (
 
   if (!_.isEmpty(loennsopplysning?.periodetype)) {
     v[namespace + idx + '-periodetype'] = {
-      feilmelding: t('message:validation-noPeriodeType'),
+      feilmelding: t('validation:noPeriodeType'),
       skjemaelementId: namespace + idx + '-periodetype'
     } as FeiloppsummeringFeil
     hasErrors = true

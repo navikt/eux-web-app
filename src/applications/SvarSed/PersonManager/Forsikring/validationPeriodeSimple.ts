@@ -42,7 +42,7 @@ export const validatePeriodeSimple = (
     }
     if (duplicate) {
       v[namespace + idx + '-startdato'] = {
-        feilmelding: t('message:validation-duplicateStartdato'),
+        feilmelding: t('validation:duplicateStartdato'),
         skjemaelementId: namespace + idx + '-startdato'
       } as FeiloppsummeringFeil
       hasErrors = true

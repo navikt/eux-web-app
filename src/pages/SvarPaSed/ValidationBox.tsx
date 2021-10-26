@@ -25,7 +25,7 @@ const ValidationBox = (): JSX.Element => {
         <Column>
           <Feiloppsummering
             data-test-id='opprettsak__feiloppsummering'
-            tittel={t('message:validation-feiloppsummering')}
+            tittel={t('validation:feiloppsummering')}
             feil={Object.values(validation)
               .filter(v => v !== undefined)
               .filter(v => v?.feilmelding !== 'notnull')

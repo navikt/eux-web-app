@@ -91,12 +91,12 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
 
   const sokEtterPerson = (): void => {
     if (!_fnr) {
-      setLocalValidation(t('message:validation-noFnr'))
+      setLocalValidation(t('validation:noFnr'))
       return
     }
     const fnrPattern = /^[0-9]{11}$/
     if (_fnr && !fnrPattern.test(_fnr)) {
-      setLocalValidation(t('message:validation-invalidFnr'))
+      setLocalValidation(t('validation:invalidFnr'))
       return
     }
     setLocalValidation(undefined)

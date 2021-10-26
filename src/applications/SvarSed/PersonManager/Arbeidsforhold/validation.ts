@@ -25,14 +25,14 @@ export const validatePeriodeMedForsikring = (
   if (_.isEmpty(periodeMedForsikring.arbeidsgiver?.navn?.trim())) {
     v[namespace + '-navn'] = {
       skjemaelementId: namespace + '-navn',
-      feilmelding: t('message:validation-noNavn')
+      feilmelding: t('validation:noNavn')
     } as FeiloppsummeringFeil
     hasErrors = true
   }
   if (_.isEmpty(periodeMedForsikring.arbeidsgiver?.identifikator[0]?.id)) {
     v[namespace + '-orgnr'] = {
       skjemaelementId: namespace + '-orgnr',
-      feilmelding: t('message:validation-noOrgnr')
+      feilmelding: t('validation:noOrgnr')
     } as FeiloppsummeringFeil
     hasErrors = true
   }
@@ -54,28 +54,28 @@ export const validatePeriodeMedForsikring = (
     if (_.isEmpty(periodeMedForsikring.arbeidsgiver.adresse?.gate)) {
       v[namespace + '-gate'] = {
         skjemaelementId: namespace + '-gate',
-        feilmelding: t('message:validation-noAddressStreet')
+        feilmelding: t('validation:noAddressStreet')
       } as FeiloppsummeringFeil
       hasErrors = true
     }
     if (_.isEmpty(periodeMedForsikring.arbeidsgiver.adresse?.postnummer)) {
       v[namespace + '-postnummer'] = {
         skjemaelementId: namespace + '-postnummer',
-        feilmelding: t('message:validation-noAddressPostnummer')
+        feilmelding: t('validation:noAddressPostnummer')
       } as FeiloppsummeringFeil
       hasErrors = true
     }
     if (_.isEmpty(periodeMedForsikring.arbeidsgiver.adresse?.by)) {
       v[namespace + '-by'] = {
         skjemaelementId: namespace + '-by',
-        feilmelding: t('message:validation-noAddressCity')
+        feilmelding: t('validation:noAddressCity')
       } as FeiloppsummeringFeil
       hasErrors = true
     }
     if (_.isEmpty(periodeMedForsikring.arbeidsgiver.adresse?.land)) {
       v[namespace + '-land'] = {
         skjemaelementId: namespace + '-land',
-        feilmelding: t('message:validation-noAddressLand')
+        feilmelding: t('validation:noAddressCountry')
       } as FeiloppsummeringFeil
       hasErrors = true
     }

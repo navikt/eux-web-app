@@ -84,31 +84,31 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
     const validation = {
       journalpostID: !journalpostID
         ? {
-          feilmelding: t('message:validation-noJournalpostID'),
+          feilmelding: t('validation:noJournalpostID'),
           skjemaelementId: 'vedlegg-journalpostID-id'
         } as FeiloppsummeringFeil
         : undefined,
       dokumentID: !dokumentID
         ? {
-          feilmelding: t('message:validation-noDokumentID'),
+          feilmelding: t('validation:noDokumentID'),
           skjemaelementId: 'vedlegg-dokumentID-id'
         } as FeiloppsummeringFeil
         : undefined,
       rinasaksnummer: !rinasaksnummer
         ? {
-          feilmelding: t('message:validation-noSaksnummer'),
+          feilmelding: t('validation:noSaksnummer'),
           skjemaelementId: ''
         } as FeiloppsummeringFeil
         : (!_isRinaNumberValid
             ? {
-                feilmelding: t('message:validation-unverifiedSaksnummer'),
+                feilmelding: t('validation:unverifiedSaksnummer'),
                 skjemaelementId: ''
               }
             : undefined
           ),
       rinadokumentID: !rinadokumentID
         ? {
-          feilmelding: t('message:validation-noRinadokumentID'),
+          feilmelding: t('validation:noRinadokumentID'),
           skjemaelementId: ''
         } as FeiloppsummeringFeil
         : undefined

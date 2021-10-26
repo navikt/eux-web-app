@@ -71,7 +71,7 @@ const SendSEDModal = ({
     if (!_name) {
       validation['savesedmodal-name'] = {
         skjemaelementId: 'savesedmodal-name',
-        feilmelding: t('message:validation-noNavn')
+        feilmelding: t('validation:noNavn')
       } as FeiloppsummeringFeil
     }
     setValidation(validation)
