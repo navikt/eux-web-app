@@ -157,6 +157,7 @@ export const sendSedInRina: ActionCreator<ThunkResult<ActionWithPayload<any>>> =
   rinaSakId: string, sedId: string
 ): ThunkResult<ActionWithPayload<any>> => {
   return call({
+    method: 'POST',
     url: sprintf(urls.API_SED_SEND_URL, { rinaSakId: rinaSakId, sedId: sedId }),
     expectedPayload: {
       foo: 'bar'

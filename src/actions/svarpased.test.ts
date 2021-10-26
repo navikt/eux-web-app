@@ -186,6 +186,7 @@ describe('actions/svarpased', () => {
           success: types.SVARPASED_SED_SEND_SUCCESS,
           failure: types.SVARPASED_SED_SEND_FAILURE
         },
+        method: 'POST',
         url: sprintf(urls.API_SED_SEND_URL, {
           rinaSakId: rinaSakId,
           sedId: sedId
