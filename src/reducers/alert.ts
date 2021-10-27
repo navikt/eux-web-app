@@ -46,7 +46,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         break
 
       default:
-        serverErrorMessage = (action as ActionWithPayload).payload.message || 'meaage:error-serverInternalError'
+        serverErrorMessage = (action as ActionWithPayload).payload.message || 'message:error-serverInternalError'
         break
     }
 
@@ -80,7 +80,11 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         break
 
       case types.SVARPASED_SED_CREATE_FAILURE:
-        clientErrorMessage = 'message:error-svarPaSed-failure'
+        if ((action as ActionWithPayload).status === 409) {
+          clientErrorMessage = 'message:error-svarPaSed-failure-duplicate'
+        } else {
+          clientErrorMessage = 'message:error-svarPaSed-failure'
+        }
         break
 
       default:

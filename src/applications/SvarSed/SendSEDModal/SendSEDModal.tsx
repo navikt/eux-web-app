@@ -27,6 +27,7 @@ import {
   HighContrastHovedknapp,
   HighContrastKnapp,
   HorizontalSeparatorDiv,
+  PileCenterDiv,
   PileDiv,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
@@ -189,18 +190,22 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
             </Undertittel>
             <VerticalSeparatorDiv />
             {alertMessage && alertType && [types.SVARPASED_SED_CREATE_FAILURE].indexOf(alertType) >= 0 && (
-              <>
+              <PileCenterDiv>
                 <AlertstripeDiv>
                   <Alert status='ERROR' message={t(alertMessage)} onClose={() => dispatch(clientClear())} />
                 </AlertstripeDiv>
                 <VerticalSeparatorDiv />
-                <HighContrastKnapp
-                  mini
-                  onClick={onModalClose}
-                >
-                  {t('label:damn-really')}
-                </HighContrastKnapp>
-              </>
+                <FlexCenterSpacedDiv>
+                  <div />
+                  <HighContrastKnapp
+                    mini
+                    onClick={onModalClose}
+                  >
+                    {t('label:damn-really')}
+                  </HighContrastKnapp>
+                  <div />
+                </FlexCenterSpacedDiv>
+              </PileCenterDiv>
             )}
             {alertMessage && _sendButtonClicked && (alertType === types.SVARPASED_SED_SEND_SUCCESS || alertType === types.SVARPASED_SED_SEND_FAILURE) && (
               <>

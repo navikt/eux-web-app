@@ -203,10 +203,12 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
       _resetValidation(namespace + '-' + id)
     } else {
       const type = periode.__type
+      const realIndex = periode.__index
       delete periode.__type
-      dispatch(updateReplySed(`${type}[${index}]`, periode))
-      if (validation[namespace + getIdx(index) + '-' + id]) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-' + id))
+      delete periode.__index
+      dispatch(updateReplySed(`${type}[${realIndex}]`, periode))
+      if (validation[namespace + getIdx(realIndex) + '-' + id]) {
+        dispatch(resetValidation(namespace + getIdx(realIndex) + '-' + id))
       }
     }
   }
