@@ -53,7 +53,7 @@ import { validateSEDEditor, ValidationSEDEditorProps } from './mainValidation'
 
 export interface SEDEditorSelector {
   alertType: string | undefined
-  alertMessage: string | undefined
+  alertMessage: JSX.Element | string | undefined
   creatingSvarPaSed: boolean
   gettingPreviewFile: boolean
   highContrast: boolean
@@ -414,7 +414,7 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
         <>
           <FlexDiv>
             <AlertstripeDiv>
-              <Alert status='OK' message={t(alertMessage!)} onClose={() => dispatch(clientClear())} />
+              <Alert status='OK' message={alertMessage!} onClose={() => dispatch(clientClear())} />
             </AlertstripeDiv>
             <div />
           </FlexDiv>
@@ -428,7 +428,7 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
             <AlertstripeDiv>
               <Alert
                 status={alertType === types.SVARPASED_SED_SEND_FAILURE ? 'ERROR' : 'OK'}
-                message={t(alertMessage!)}
+                message={alertMessage!}
                 onClose={() => {
                   _setSendButtonClicked(false)
                   dispatch(clientClear())

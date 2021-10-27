@@ -30,7 +30,7 @@ const Button = styled(HighContrastKnapp)`
 `
 
 export interface PersonSearchProps {
-  alertMessage: string | undefined
+  alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
   alertTypesWatched: Array<string> | undefined
   className?: string
@@ -145,7 +145,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
       {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (
         <AlertstripeDiv>
           <AlertStripe type='advarsel'>
-            {t(alertMessage)}
+            {alertMessage}
           </AlertStripe>
         </AlertstripeDiv>
       )}

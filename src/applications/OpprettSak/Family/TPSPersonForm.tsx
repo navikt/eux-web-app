@@ -28,7 +28,7 @@ const AlignCenterColumn = styled(Column)`
 `
 
 export interface TPSPersonFormProps {
-  alertMessage: string | undefined
+  alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
   alertTypesWatched: Array<string> | undefined
   className?: string
@@ -170,7 +170,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
           {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (
             <AlertstripeDiv>
               <AlertStripe type='advarsel'>
-                t(alertMessage)
+                {alertMessage}
               </AlertStripe>
             </AlertstripeDiv>
           )}

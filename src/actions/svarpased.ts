@@ -30,7 +30,8 @@ export const createSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
       sedId: '123'
     } as CreateSedResponse,
     context: {
-      sedType: replySed.sedType
+      sedType: replySed.sedType,
+      sakUrl: replySed.sakUrl
     },
     type: {
       request: types.SVARPASED_SED_CREATE_REQUEST,

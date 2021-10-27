@@ -33,7 +33,7 @@ export interface AbroadPersonFormSelector {
 }
 
 export interface AbroadPersonFormProps {
-  alertMessage: string | undefined
+  alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
   alertTypesWatched: Array<string> | undefined
   className?: string
@@ -395,7 +395,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
           {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (
             <AlertstripeDiv>
               <AlertStripe type='advarsel'>
-                {t(alertMessage)}
+                {alertMessage}
               </AlertStripe>
             </AlertstripeDiv>
           )}

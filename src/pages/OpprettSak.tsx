@@ -67,7 +67,7 @@ export interface OpprettSakProps {
 
 export interface OpprettSakSelector {
   alertStatus: AlertStatus | undefined
-  alertMessage: string | undefined
+  alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
 
   enheter: Enheter | undefined

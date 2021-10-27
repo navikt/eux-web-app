@@ -64,7 +64,7 @@ const WrapperDiv = styled.div`
 `
 
 interface SendSEDSelector {
-  alertMessage: string | undefined
+  alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
   creatingSvarPaSed: boolean
   replySed: ReplySed | null | undefined
@@ -192,7 +192,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
             {alertMessage && alertType && [types.SVARPASED_SED_CREATE_FAILURE].indexOf(alertType) >= 0 && (
               <PileCenterDiv>
                 <AlertstripeDiv>
-                  <Alert status='ERROR' message={t(alertMessage)} onClose={() => dispatch(clientClear())} />
+                  <Alert status='ERROR' message={alertMessage} onClose={() => dispatch(clientClear())} />
                 </AlertstripeDiv>
                 <VerticalSeparatorDiv />
                 <FlexCenterSpacedDiv>
@@ -212,7 +212,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                 <AlertstripeDiv>
                   <Alert
                     status={alertType === types.SVARPASED_SED_SEND_FAILURE ? 'ERROR' : 'OK'}
-                    message={t(alertMessage!)}
+                    message={alertMessage}
                     onClose={() => {
                       _setSendButtonClicked(false)
                       dispatch(clientClear())

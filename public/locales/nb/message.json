@@ -15,7 +15,9 @@
   "error-serverInternalError": "Serverens interne feil",
   "error-serverAuthenticationError": "Serverautentiseringsfeil",
   "error-svarPaSed-failure" : "Det oppsto en feil under sending av data for å svare på SED",
-  "error-svarPaSed-failure-duplicate" : "Det oppsto en 'konflikt' feil, det er sannsynlig at SED allerede ble opprettet og eksisterer nå i RINA.",
+  "error-svarPaSed-failure-duplicate" : "Kunne ikke opprette SED. ",
+  "error-svarPaSed-failure-duplicate-2" : "Fins det allerede en SED i Rina?",
+
   "error-tpsperson-exists": "Du kan ikke legge til samme person flere ganger",
   "error-unknownPage-cantFindRoute": "Denne siden finnes ikke: '{{pathname}}'.",
   "error-unknownPage-description": "Dersom du ble sendt hit fra Gosys eller et annet Nav-system, ta kontakt med driftsansvarlig.",

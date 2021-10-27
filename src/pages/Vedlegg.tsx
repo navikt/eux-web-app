@@ -32,7 +32,7 @@ const FlexDiv = styled.div`
 `
 
 export interface VedleggSelector {
-  alertMessage: string | undefined
+  alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
   vedlegg: VedleggSendResponse | undefined
   rinasaksnummer: string | undefined
@@ -214,7 +214,7 @@ const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Elemen
               <>
                 <VerticalSeparatorDiv />
                 <AlertStripe type='advarsel'>
-                  {t(alertMessage)}
+                  {alertMessage}
                 </AlertStripe>
                 <VerticalSeparatorDiv />
               </>

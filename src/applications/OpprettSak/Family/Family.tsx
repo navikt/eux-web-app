@@ -22,7 +22,7 @@ const MarginDiv = styled.div`
 export interface FamilyProps {
   abroadPersonFormAlertTypesWatched: Array<string> | undefined
   alertStatus: string | undefined
-  alertMessage: string | undefined
+  alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
   familierelasjonKodeverk: Array<Kodeverk> | undefined
   onAbroadPersonAddedFailure: () => void

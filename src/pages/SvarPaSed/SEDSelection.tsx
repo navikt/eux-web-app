@@ -267,7 +267,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
         <>
           <AlertstripeDiv>
             <AlertStripe type='advarsel'>
-              {t(alertMessage)}
+              {alertMessage}
             </AlertStripe>
           </AlertstripeDiv>
           <VerticalSeparatorDiv />
