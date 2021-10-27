@@ -12,6 +12,12 @@ export interface ValidationAddressProps {
   personName: string
 }
 
+interface ValidateAdresserProps {
+  adresser: Array<Adresse>
+  namespace: string
+  personName: string
+}
+
 export const validateAdresse = (
   v: Validation,
   t: TFunction,
@@ -61,12 +67,6 @@ export const validateAdresse = (
   return hasErrors
 }
 
-interface ValidateVedtakProps {
-  adresser: Array<Adresse>
-  namespace: string
-  personName: string
-}
-
 export const validateAdresser = (
   validation: Validation,
   t: TFunction,
@@ -74,7 +74,7 @@ export const validateAdresser = (
     adresser,
     namespace,
     personName
-  }: ValidateVedtakProps
+  }: ValidateAdresserProps
 ): boolean => {
   let hasErrors: boolean = false
   adresser?.forEach((adresse: Adresse, index: number) => {

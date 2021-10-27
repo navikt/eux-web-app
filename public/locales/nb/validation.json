@@ -71,6 +71,7 @@
   "noIbanOrSwiftTil": "Du må skrive IBAN eller SWIFT til {{person}}",
   "noIdTil": "Du må skrive identifikatoren til {{person}}",
   "noInntektTil": "Ingen inntekt til {{person}}",
+  "noInntektInfoTil": "Ingen inntekt info til {{person}}",
   "noInntektsliste": "Du må velge en inntektsfilter",
   "noInstitusjonensIdTil": "Du må velge institusjonens ID til {{person}}",
   "noInstitusjonensNavn": "Du må velge institusjonens navn",
@@ -95,6 +96,7 @@
   "noNavnTil": "Ingen navn på person til {{person}}",
 
   "noOrgnr": "Ingen orgnr",
+  "noOrgnrTil": "Ingen orgnr til {{person}}",
 
   "noPensjonType": "Ingen type pensjon",
   "noPensjonTypeTil": "Ingen type pensjon til {{person}}",

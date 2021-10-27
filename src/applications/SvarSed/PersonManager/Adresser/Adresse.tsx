@@ -11,7 +11,7 @@ import styled from 'styled-components'
 
 export interface AdresseProps {
   adresse: Adresse | null | undefined
-  onAdressChanged: (a: Adresse) => void
+  onAdressChanged: (a: Adresse, id: string) => void
   namespace: string
   validation: Validation
   resetValidation: (fullnamespace: string) => void
@@ -35,7 +35,7 @@ const AdresseFC: React.FC<AdresseProps> = ({
     onAdressChanged({
       ...adresse,
       type: type.trim() as AdresseType
-    })
+    }, 'type')
     resetValidation(namespace + '-type')
   }
 
@@ -43,7 +43,7 @@ const AdresseFC: React.FC<AdresseProps> = ({
     onAdressChanged({
       ...adresse,
       gate: gate.trim()
-    })
+    }, 'gate')
     resetValidation(namespace + '-gate')
   }
 
@@ -51,7 +51,7 @@ const AdresseFC: React.FC<AdresseProps> = ({
     onAdressChanged({
       ...adresse,
       postnummer: postnummer.trim()
-    })
+    }, 'postnummer')
     resetValidation(namespace + '-postnummer')
   }
 
@@ -59,7 +59,7 @@ const AdresseFC: React.FC<AdresseProps> = ({
     onAdressChanged({
       ...adresse,
       by: by.trim()
-    })
+    }, 'by')
     resetValidation(namespace + '-by')
   }
 
@@ -67,7 +67,7 @@ const AdresseFC: React.FC<AdresseProps> = ({
     onAdressChanged({
       ...adresse,
       bygning: bygning.trim()
-    })
+    }, 'bygning')
     resetValidation(namespace + '-bygning')
   }
 
@@ -75,7 +75,7 @@ const AdresseFC: React.FC<AdresseProps> = ({
     onAdressChanged({
       ...adresse,
       region: region.trim()
-    })
+    }, 'region')
     resetValidation(namespace + '-region')
   }
 
@@ -83,7 +83,7 @@ const AdresseFC: React.FC<AdresseProps> = ({
     onAdressChanged({
       ...adresse,
       land: land.trim()
-    })
+    }, 'land')
     resetValidation(namespace + '-land')
   }
 

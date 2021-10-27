@@ -26,34 +26,34 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { getIdx } from 'utils/namespace'
-import { validateInntektOgTime, ValidationInntektOgTimeProps } from './validationInntektOgTime'
+import { validateInntektOgTime, ValidationInntektOgTimeProps } from './validation'
 
 const MyPaddedDiv = styled.div`
   padding: 0.5rem 0.5rem 0.5rem 2rem;
 `
 
-export interface InntektOgTimeProps {
+export interface InntektOgTimerProps {
   highContrast: boolean
-  inntektOgTime: Array<InntektOgTime> | undefined
-  onInntektOgTimeChanged: (a: Array<InntektOgTime>) => void
+  inntektOgTimer: Array<InntektOgTime> | undefined
+  onInntektOgTimeChanged: (inntektOgTimer: Array<InntektOgTime>, whatChanged: string) => void
   parentNamespace: string
   personName: string
   validation: Validation
 }
 
-const InntektOgTimeFC: React.FC<InntektOgTimeProps> = ({
+const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
   highContrast,
-  inntektOgTime,
+  inntektOgTimer,
   onInntektOgTimeChanged,
   parentNamespace,
   personName,
   validation
-}: InntektOgTimeProps): JSX.Element => {
+}: InntektOgTimerProps): JSX.Element => {
   const { t } = useTranslation()
 
   const dispatch = useDispatch()
 
-  const namespace = `${parentNamespace}-inntektogtime`
+  const namespace = `${parentNamespace}-inntektOgTimer`
 
   const [_newArbeidstimer, _setNewArbeidstimer] = useState<string | undefined>(undefined)
   const [_newPeriode, _setNewPeriode] = useState<Periode | undefined>(undefined)
@@ -69,33 +69,25 @@ const InntektOgTimeFC: React.FC<InntektOgTimeProps> = ({
       _setNewArbeidstimer(arbeidstimer.trim())
       _resetValidation(namespace + '-arbeidstimer')
     } else {
-      const newInntektOgTime: Array<InntektOgTime> = _.cloneDeep(inntektOgTime) as Array<InntektOgTime>
-      newInntektOgTime[index].arbeidstimer = arbeidstimer.trim()
-      onInntektOgTimeChanged(newInntektOgTime)
+      const newInntektOgTimer: Array<InntektOgTime> = _.cloneDeep(inntektOgTimer) as Array<InntektOgTime>
+      newInntektOgTimer[index].arbeidstimer = arbeidstimer.trim()
+      onInntektOgTimeChanged(newInntektOgTimer, 'arbeidstimer')
       if (validation[namespace + getIdx(index) + '-arbeidstimer']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-arbeidstimer'))
       }
     }
   }
 
-  const setPeriode = (newPeriode: Periode, id: string, index: number) => {
+  const setPeriode = (newPeriode: Periode, whatChanged: string, index: number) => {
     if (index < 0) {
       _setNewPeriode(newPeriode)
-      if (id === 'startdato') {
-        _resetValidation(namespace + '-startdato')
-      }
-      if (id === 'sluttdato') {
-        _resetValidation(namespace + '-sluttdato')
-      }
+      _resetValidation(namespace + '-inntektsperiode-' + whatChanged)
     } else {
-      const newInntektOgTime: Array<InntektOgTime> = _.cloneDeep(inntektOgTime) as Array<InntektOgTime>
-      newInntektOgTime[index].inntektsperiode = newPeriode
-      onInntektOgTimeChanged(newInntektOgTime)
-      if (id === 'startdato' && validation[namespace + getIdx(index) + '-startdato']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-startdato'))
-      }
-      if (id === 'sluttdato' && validation[namespace + getIdx(index) + '-sluttdato']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-sluttdato'))
+      const newInntektOgTimer: Array<InntektOgTime> = _.cloneDeep(inntektOgTimer) as Array<InntektOgTime>
+      newInntektOgTimer[index].inntektsperiode = newPeriode
+      onInntektOgTimeChanged(newInntektOgTimer, whatChanged)
+      if ( validation[namespace + getIdx(index) + '-inntektsperiode-' + whatChanged]) {
+        dispatch(resetValidation(namespace + getIdx(index) + '-inntektsperiode-' + whatChanged))
       }
     }
   }
@@ -108,16 +100,16 @@ const InntektOgTimeFC: React.FC<InntektOgTimeProps> = ({
         setValuta({ value: 'NOK' } as Currency, index)
       }
     } else {
-      const newInntektOgTime: Array<InntektOgTime> = _.cloneDeep(inntektOgTime) as Array<InntektOgTime>
-      newInntektOgTime[index].bruttoinntekt = newBeløp
-      if (_.isNil(newInntektOgTime[index].valuta)) {
-        newInntektOgTime[index].valuta = 'NOK'
+      const newInntektOgTimer: Array<InntektOgTime> = _.cloneDeep(inntektOgTimer) as Array<InntektOgTime>
+      newInntektOgTimer[index].bruttoinntekt = newBeløp
+      if (_.isNil(newInntektOgTimer[index].valuta)) {
+        newInntektOgTimer[index].valuta = 'NOK'
       }
 
-      onInntektOgTimeChanged(newInntektOgTime)
-      if (validation[namespace + '-beloep']) {
-        dispatch(resetValidation(namespace + '-beloep'))
-        dispatch(resetValidation(namespace + '-valuta'))
+      onInntektOgTimeChanged(newInntektOgTimer, 'bruttoinntekt')
+      if (validation[namespace + getIdx(index) + '-beloep']) {
+        dispatch(resetValidation(namespace + getIdx(index) + '-beloep'))
+        dispatch(resetValidation(namespace + getIdx(index) + '-valuta'))
       }
     }
   }
@@ -127,11 +119,11 @@ const InntektOgTimeFC: React.FC<InntektOgTimeProps> = ({
       _setNewValuta(newValuta.value)
       resetValidation(namespace + '-valuta')
     } else {
-      const newInntektOgTime: Array<InntektOgTime> = _.cloneDeep(inntektOgTime) as Array<InntektOgTime>
-      newInntektOgTime[index].bruttoinntekt = newValuta?.value
-      onInntektOgTimeChanged(newInntektOgTime)
-      if (validation[namespace + '-valuta']) {
-        dispatch(resetValidation(namespace + '-valuta'))
+      const newInntektOgTimer: Array<InntektOgTime> = _.cloneDeep(inntektOgTimer) as Array<InntektOgTime>
+      newInntektOgTimer[index].bruttoinntekt = newValuta?.value
+      onInntektOgTimeChanged(newInntektOgTimer, 'valuta')
+      if (validation[namespace + getIdx(index) +'-valuta']) {
+        dispatch(resetValidation(namespace + getIdx(index) +'-valuta'))
       }
     }
   }
@@ -150,12 +142,12 @@ const InntektOgTimeFC: React.FC<InntektOgTimeProps> = ({
   }
 
   const onRemoved = (index: number) => {
-    const newInntektOgTime: Array<InntektOgTime> = _.cloneDeep(inntektOgTime) as Array<InntektOgTime>
-    const deletedInntektOgTime: Array<InntektOgTime> = newInntektOgTime.splice(index, 1)
+    const newInntektOgTimer: Array<InntektOgTime> = _.cloneDeep(inntektOgTimer) as Array<InntektOgTime>
+    const deletedInntektOgTime: Array<InntektOgTime> = newInntektOgTimer.splice(index, 1)
     if (deletedInntektOgTime && deletedInntektOgTime.length > 0) {
       removeFromDeletion(deletedInntektOgTime[0])
     }
-    onInntektOgTimeChanged(newInntektOgTime)
+    onInntektOgTimeChanged(newInntektOgTimer, 'removed')
   }
 
   const onAdd = () => {
@@ -173,12 +165,12 @@ const InntektOgTimeFC: React.FC<InntektOgTimeProps> = ({
     })
 
     if (valid) {
-      let newInntektOgTimer: Array<InntektOgTime> = _.cloneDeep(inntektOgTime) as Array<InntektOgTime>
-      if (_.isNil(newInntektOgTime)) {
+      let newInntektOgTimer: Array<InntektOgTime> = _.cloneDeep(inntektOgTimer) as Array<InntektOgTime>
+      if (_.isNil(newInntektOgTimer)) {
         newInntektOgTimer = []
       }
       newInntektOgTimer.push(newInntektOgTime)
-      onInntektOgTimeChanged(newInntektOgTimer)
+      onInntektOgTimeChanged(newInntektOgTimer, 'add')
       resetForm()
     }
   }
@@ -200,11 +192,11 @@ const InntektOgTimeFC: React.FC<InntektOgTimeProps> = ({
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
         >
           <PeriodeInput
-            key={'' + _periode?.startdato + _periode?.sluttdato}
-            namespace={namespace + idx}
+            key={namespace + idx + '-inntektsperiode-' + _periode?.startdato + _periode?.sluttdato}
+            namespace={namespace + idx + '-inntektsperiode'}
             error={{
-              startdato: getErrorFor('startdato'),
-              sluttdato: getErrorFor('sluttdato')
+              startdato: getErrorFor('inntektsperiode-startdato'),
+              sluttdato: getErrorFor('inntektsperiode-sluttdato')
             }}
             setPeriode={(p: Periode, id: string) => setPeriode(p, id, index)}
             value={_periode}
@@ -212,7 +204,7 @@ const InntektOgTimeFC: React.FC<InntektOgTimeProps> = ({
           <Column>
             <Input
               feil={getErrorFor('arbeidstimer')}
-              namespace={namespace}
+              namespace={namespace + idx}
               key={namespace + idx + '-arbeidstimer-' + (index < 0 ? _newArbeidstimer : inntektOgTime?.arbeidstimer ?? '')}
               id='arbeidstimer'
               label={t('label:arbeidstimer') + ' *'}
@@ -226,7 +218,7 @@ const InntektOgTimeFC: React.FC<InntektOgTimeProps> = ({
           <Column>
             <Input
               feil={getErrorFor('bruttoinntekt')}
-              namespace={namespace}
+              namespace={namespace + idx}
               key={namespace + idx + '-bruttoinntekt-' + (index < 0 ? _newBruttoinntekt : inntektOgTime?.bruttoinntekt ?? '')}
               id='bruttoinntekt'
               label={t('label:brutto-inntekt') + ' *'}
@@ -236,13 +228,13 @@ const InntektOgTimeFC: React.FC<InntektOgTimeProps> = ({
           </Column>
           <Column>
             <CountrySelect
-              key={namespace + '-valuta-' + (index < 0 ? _newValuta : inntektOgTime?.valuta ?? '')}
+              key={namespace + idx + '-valuta-' + (index < 0 ? _newValuta : inntektOgTime?.valuta ?? '')}
               closeMenuOnSelect
               ariaLabel={t('label:valuta')}
-              data-test-id={namespace + '-valuta'}
+              data-test-id={namespace + idx +'-valuta'}
               error={getErrorFor('valuta')}
               highContrast={highContrast}
-              id={namespace + '-valuta'}
+              id={namespace + idx + '-valuta'}
               label={t('label:valuta') + ' *'}
               locale='nb'
               menuPortalTarget={document.body}
@@ -275,7 +267,7 @@ const InntektOgTimeFC: React.FC<InntektOgTimeProps> = ({
         {t('label:inntekt-og-time')}
       </Undertittel>
       <VerticalSeparatorDiv />
-      {inntektOgTime?.map(renderRow)}
+      {inntektOgTimer?.map(renderRow)}
       <VerticalSeparatorDiv />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
@@ -300,4 +292,4 @@ const InntektOgTimeFC: React.FC<InntektOgTimeProps> = ({
   )
 }
 
-export default InntektOgTimeFC
+export default InntektOgTimerFC

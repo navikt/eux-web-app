@@ -15,7 +15,7 @@ import {
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
 import AdresseFC from 'applications/SvarSed/PersonManager/Adresser/Adresse'
-import InntektOgTimeFC from 'applications/SvarSed/PersonManager/Forsikring/InntektOgTime'
+import InntektOgTimerFC from 'applications/SvarSed/PersonManager/Forsikring/InntektOgTimer/InntektOgTimer'
 import {
   validateForsikringPeriode,
   ValidationForsikringPeriodeProps
@@ -51,7 +51,6 @@ import Chevron from 'nav-frontend-chevron'
 import { Checkbox } from 'nav-frontend-skjema'
 import { Normaltekst, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import {
-  AlignEndRow,
   AlignStartRow,
   Column,
   FlexCenterDiv,
@@ -65,7 +64,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { getIdx } from 'utils/namespace'
+import { getNSIdx } from 'utils/namespace'
 
 interface ForsikringSelector extends PersonManagerFormSelector {
   highContrast: boolean
@@ -76,6 +75,8 @@ const mapState = (state: State): ForsikringSelector => ({
   replySed: state.svarpased.replySed,
   validation: state.validation.status
 })
+
+type Sort = 'time' | 'group'
 
 const Forsikring: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
@@ -91,23 +92,17 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
   const dispatch = useDispatch()
   const namespace = `${parentNamespace}-${personID}-forsikring`
 
-  const [_newType, _setNewType] = useState<string>('perioderAnsattMedForsikring')
-  const [_allPeriods, _setAllPeriods] = useState<Array<ForsikringPeriode>>([])
-
-  const [_newPeriode, _setNewPeriode] = useState<ForsikringPeriode | undefined>(undefined)
-  const [_newNavn, _setNewNavn] = useState<string | undefined>(undefined)
-  const [_newAdresse, _setNewAdresse] = useState<Adresse | undefined>(undefined)
-  const [_newIdentifikator, _setNewIdentifikator] = useState<Array<ArbeidsgiverIdentifikator> | undefined>(undefined)
-  const [_newInntektOgTime, _setNewInntektOgTime] = useState<Array<InntektOgTime> | undefined>(undefined)
-  const [_newInntektOgTimeInfo, _setNewInntektOgTimeInfo] = useState<string | undefined>(undefined)
-  const [_newAnnenTypeForsikringsperiode, _setNewAnnenTypeForsikringsperiode] = useState<string | undefined>(undefined)
-
   const getId = (p: ForsikringPeriode | null): string => p ? (p.__type + '-' + p?.startdato ?? '') + '-' + (p?.sluttdato ?? p.aapenPeriodeType) : 'new-forsikring'
+
+  const [_newType, _setNewType] = useState<string | undefined>(undefined)
+  const [_allPeriods, _setAllPeriods] = useState<Array<ForsikringPeriode>>([])
+  const [_newPeriode, _setNewPeriode] = useState<ForsikringPeriode | undefined>(undefined)
+
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>(getId)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
+  const [_sort, _setSort] = useState<Sort>('time')
   const [_visible, _setVisible] = useState<{[k in string]: Array<number>| undefined}>({})
-  const [_sort, _setSort] = useState<string>('time')
-  const [_validation, _resetValidation, performValidation] = useValidation<ValidationForsikringPeriodeProps>({}, validateForsikringPeriode)
+  const [_validation, _resetValidation, _performValidation] = useValidation<ValidationForsikringPeriodeProps>({}, validateForsikringPeriode)
 
   const isVisible = (type: string, index: number): boolean => Object.prototype.hasOwnProperty.call(_visible, type) && _visible[type]!.indexOf(index) >= 0
 
@@ -163,52 +158,114 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
 
   const setNavn = (newNavn: string, type: string, index: number) => {
     if (index < 0) {
-      _setNewNavn(newNavn.trim)
-      _resetValidation(namespace + '-navn')
+      _setNewPeriode({
+        ..._newPeriode,
+        arbeidsgiver: {
+          ...(_newPeriode as PeriodeMedForsikring).arbeidsgiver,
+          navn: newNavn.trim()
+        }
+      } as PeriodeMedForsikring)
+      _resetValidation(namespace + '-arbeidsgiver-navn')
     } else {
       dispatch(updateReplySed(`${type}[${index}].arbeidsgiver.navn`, newNavn.trim()))
-      if (validation[namespace + getIdx(index) + '-navn']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-navn'))
+      if (validation[namespace + getNSIdx(type, index) + '-arbeidsgiver-navn']) {
+        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-arbeidsgiver-navn'))
       }
     }
   }
 
   const setIdentifikator = (newOrgnr: string, type: string, index: number) => {
+    const newOrgEntry: Array<ArbeidsgiverIdentifikator> = [{ type: 'registrering', id: newOrgnr.trim() }]
     if (index < 0) {
-      _setNewIdentifikator([{ type: 'registrering', id: newOrgnr.trim() }])
-      _resetValidation(namespace + '-identifikator')
+      _setNewPeriode({
+        ..._newPeriode,
+        arbeidsgiver: {
+          ...(_newPeriode as PeriodeMedForsikring).arbeidsgiver,
+          identifikator: newOrgEntry
+        }
+      } as PeriodeMedForsikring)
+      _resetValidation(namespace + '-arbeidsgiver-identifikator')
     } else {
-      dispatch(updateReplySed(`${type}[${index}].arbeidsgiver.identifikator`, [{ type: 'registrering', id: newOrgnr.trim() }]))
-      if (validation[namespace + getIdx(index) + '-identifikator']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-identifikator'))
+      dispatch(updateReplySed(`${type}[${index}].arbeidsgiver.identifikator`, newOrgEntry))
+      if (validation[namespace + getNSIdx(type, index) + '-arbeidsgiver-identifikator']) {
+        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-arbeidsgiver-identifikator'))
       }
     }
   }
 
-  const setInntektOgTime = (newInntektOgTime: Array<InntektOgTime>, type: string, index: number) => {
+  const setAdresse = (newAdresse: Adresse, whatChanged: string, type: string, index: number) => {
     if (index < 0) {
-      _setNewInntektOgTime(newInntektOgTime)
-      _resetValidation(namespace + '-inntektogtime')
+      _setNewPeriode({
+        ..._newPeriode,
+        arbeidsgiver: {
+          ...(_newPeriode as PeriodeMedForsikring).arbeidsgiver,
+          adresse: newAdresse
+        }
+      } as PeriodeMedForsikring)
+      _resetValidation(namespace + '-arbeidsgiver-adresse-' + whatChanged)
     } else {
-      dispatch(updateReplySed(`${type}[${index}].inntektOgTime.`, newInntektOgTime))
-      if (validation[namespace + getIdx(index) + '-identifikator']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-identifikator'))
+      dispatch(updateReplySed(`${type}[${index}].arbeidsgiver.adresse`, newAdresse))
+      if (validation[namespace + getNSIdx(type, index) + '-arbeidsgiver-adresse-' + whatChanged]) {
+        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-arbeidsgiver-adresse-' + whatChanged))
       }
     }
   }
 
-  const setPeriode = (periode: ForsikringPeriode, id: string, index: number) => {
+  const setInntektOgTimer = (newInntektOgTimer: Array<InntektOgTime>, whatChanged: string, type: string, index: number) => {
+    if (index < 0) {
+      _setNewPeriode({
+        ..._newPeriode,
+        inntektOgTimer: newInntektOgTimer
+      } as PeriodeUtenForsikring)
+      _resetValidation(namespace + '-' + whatChanged)
+    } else {
+      dispatch(updateReplySed(`${type}[${index}].inntektOgTimer`, newInntektOgTimer))
+      if (validation[namespace + getNSIdx(type, index) + '-' + whatChanged]) {
+        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-' + whatChanged))
+      }
+    }
+  }
+
+  const setInntektOgTimerInfo = (newInntektOgTimerInfo: string, type: string, index: number) => {
+    if (index < 0) {
+      _setNewPeriode({
+        ..._newPeriode,
+        inntektOgTimerInfo: newInntektOgTimerInfo.trim()
+      } as PeriodeUtenForsikring)
+      _resetValidation(namespace + '-inntektOgTimerInfo')
+    } else {
+      dispatch(updateReplySed(`${type}[${index}].inntektOgTimerInfo`, newInntektOgTimerInfo.trim()))
+      if (validation[namespace + getNSIdx(type, index) + '-inntektOgTimerInfo']) {
+        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-inntektOgTimerInfo'))
+      }
+    }
+  }
+
+  const setAnnenTypeForsikringsperiode = (newAnnenTypeForsikringsperiode: string, type: string, index: number) => {
+    if (index < 0) {
+      _setNewPeriode({
+        ..._newPeriode,
+        annenTypeForsikringsperiode: newAnnenTypeForsikringsperiode.trim()
+      } as PeriodeAnnenForsikring)
+      _resetValidation(namespace + '-annenTypeForsikringsperiode')
+    } else {
+      dispatch(updateReplySed(`${type}[${index}].annenTypeForsikringsperiode`, newAnnenTypeForsikringsperiode.trim()))
+      if (validation[namespace + getNSIdx(type, index) + '-annenTypeForsikringsperiode']) {
+        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-annenTypeForsikringsperiode'))
+      }
+    }
+  }
+
+  const setPeriode = (periode: ForsikringPeriode, whatChanged: string, type: string, index: number) => {
     if (index < 0) {
       _setNewPeriode(periode)
-      _resetValidation(namespace + '-' + id)
+      _resetValidation(namespace + '-' + whatChanged)
     } else {
-      const type = periode.__type
-      const realIndex = periode.__index
       delete periode.__type
       delete periode.__index
-      dispatch(updateReplySed(`${type}[${realIndex}]`, periode))
-      if (validation[namespace + getIdx(realIndex) + '-' + id]) {
-        dispatch(resetValidation(namespace + getIdx(realIndex) + '-' + id))
+      dispatch(updateReplySed(`${type}[${index}]`, periode))
+      if (validation[namespace + getNSIdx(type, index) + '-' + whatChanged]) {
+        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-' + whatChanged))
       }
     }
   }
@@ -236,26 +293,27 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
   const onRemove = (periode: ForsikringPeriode) => {
     removeFromDeletion(periode)
     let newPeriodes: Array<ForsikringPeriode> = _.get(replySed, periode.__type!) as Array<ForsikringPeriode>
-    newPeriodes = _.filter(newPeriodes, p => p.startdato !== periode.startdato && p.sluttdato !== periode.sluttdato)
+    newPeriodes.splice(periode.__index!, 1)
     dispatch(updateReplySed(periode.__type, newPeriodes))
+    standardLogger('svarsed.editor.periode.remove', {type: periode.__type!})
   }
 
   const onAdd = () => {
-    let newPeriodes: Array<any> | undefined = _.get(replySed, _newType!)
+    let newPeriodes: Array<ForsikringPeriode> | undefined = _.get(replySed, _newType!)
     if (_.isNil(newPeriodes)) {
       newPeriodes = []
     }
-    const valid: boolean = performValidation({
-      periode: _newPeriode as Periode,
+    const valid: boolean = _performValidation({
+      periode: _newPeriode as ForsikringPeriode,
       perioder: newPeriodes,
       type: _newType,
       namespace: namespace,
       personName: personName
     })
     if (valid) {
-      newPeriodes = newPeriodes.concat(_newPeriode)
+      newPeriodes = newPeriodes.concat(_newPeriode!)
       dispatch(updateReplySed(_newType, newPeriodes))
-      standardLogger('svarsed.editor.adresse.add')
+      standardLogger('svarsed.editor.periode.add', {type: _newType})
       resetForm()
     }
   }
@@ -279,25 +337,22 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
 
   const renderRow = (periode: ForsikringPeriode | null, index: number) => {
     const candidateForDeletion = index < 0 ? false : isInDeletion(periode)
-    const idx = getIdx(index)
-    const v: Validation = index < 0 ? _validation : validation
-
     const _type: string = index < 0 ? _newType! : periode!.__type!
+    const _index: number = index < 0 ? index : periode!.__index! // replace index order from map (which is "ruined" by a sort) with real replySed index
+    // namespace for index < 0: personmanager-bruker-forsikring-arbeidsgiver-adresse-gate
+    // namespace for index >= 0: personmanager-bruker-forsikring[perioderSyk][2]-arbeidsgiver-adresse-gate
+    let idx = getNSIdx(_type, _index)
+
+    const _v: Validation = index < 0 ? _validation : validation
     // __index is the periode's index order in the replysed; index is the order with sort, thus does not tell the real position in the replysed list
-    const _index: number = index < 0 ? -1 : periode!.__index!
-
     const _periode: ForsikringPeriode = (index < 0 ? _newPeriode : periode) ?? {} as ForsikringPeriode
-    const _annenTypeForsikringsperiode: string | undefined = (index < 0 ? _newAnnenTypeForsikringsperiode : (_periode as PeriodeAnnenForsikring)?.annenTypeForsikringsperiode)
-    const _navn: string | undefined = (index < 0 ? _newNavn : (_periode as PeriodeMedForsikring | PeriodeUtenForsikring)?.arbeidsgiver?.navn)
-    const _orgnr: Array<ArbeidsgiverIdentifikator> | undefined = (index < 0 ? _newIdentifikator : (_periode as PeriodeMedForsikring | PeriodeUtenForsikring)?.arbeidsgiver?.identifikator)
-    const _adresse: Adresse | undefined = (index < 0 ? _newAdresse : (_periode as PeriodeMedForsikring | PeriodeUtenForsikring)?.arbeidsgiver?.adresse)
-    const _inntektOgTime: Array<InntektOgTime> | undefined = (index < 0 ? _newInntektOgTime : (_periode as PeriodeUtenForsikring)?.inntektOgTimer)
-    const _inntektOgTimeInfo: string | undefined = (index < 0 ? _newInntektOgTimeInfo : (_periode as PeriodeUtenForsikring)?.inntektOgTimerInfo)
-
-    const visible = index >= 0 ? isVisible(_type, _index) : true
+    const _visible = index >= 0 ? isVisible(_type, _index) : true
 
     return (
-      <RepeatableRow className={classNames({ new: index < 0 })}>
+      <RepeatableRow
+        className={classNames('slideInFromLeft', { new: index < 0 })}
+        key={getId(periode)}
+      >
         {index < 0 && (
           <>
             <AlignStartRow>
@@ -305,7 +360,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                 <Select
                   closeMenuOnSelect
                   data-test-id={namespace + idx + '-type'}
-                  feil={v[namespace + idx + '-type']?.feilmelding}
+                  feil={_v[namespace + idx + '-type']?.feilmelding}
                   highContrast={highContrast}
                   id={namespace + idx + '-type'}
                   key={namespace + idx + '-type-' + _newType}
@@ -322,7 +377,8 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
             <VerticalSeparatorDiv />
           </>
         )}
-        <AlignEndRow>
+        {_type && (
+          <AlignStartRow>
           {index >= 0 && _sort === 'time' && (
             <Column style={{ maxWidth: '40px' }}>
               <div title={_.find(periodeOptions, o => o.value === _type)?.label ?? ''}>
@@ -332,92 +388,91 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
           )}
           <PeriodeInput
             key={'' + _periode?.startdato + _periode?.sluttdato}
-            namespace={namespace}
+            namespace={namespace + idx}
             error={{
-              startdato: v[namespace + '-startdato']?.feilmelding,
-              sluttdato: v[namespace + '-sluttdato']?.feilmelding
+              startdato: _v[namespace + '-startdato']?.feilmelding,
+              sluttdato: _v[namespace + '-sluttdato']?.feilmelding
             }}
-            setPeriode={(p: ForsikringPeriode, id: string) => setPeriode(p, id, _index)}
+            setPeriode={(p: ForsikringPeriode, whatChanged: string) => setPeriode(p, whatChanged, _type, _index)}
             value={_periode}
           />
-          <Column flex='1.5'>
-            <FlexEndDiv style={{ justifyContent: 'end' }}>
-              {index >= 0 && ['perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring', 'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring', 'perioderAnnenForsikring']
-                .indexOf(_type) >= 0 && (
-                  <div className='nolabel'>
-                    <HighContrastFlatknapp
-                      mini
-                      kompakt
-                      onClick={() => toggleVisibility(_type, _index)}
-                    >
-                      <FlexCenterDiv>
-                        <Chevron type={visible ? 'opp' : 'ned'} />
-                        <HorizontalSeparatorDiv size='0.35' />
-                        {visible ? t('label:show-less') : t('label:show-more')}
-                      </FlexCenterDiv>
-                    </HighContrastFlatknapp>
-                  </div>
-              )}
-              <HorizontalSeparatorDiv size='0.5' />
-              <AddRemovePanel
-                candidateForDeletion={candidateForDeletion}
-                existingItem={(index >= 0)}
-                marginTop
-                onBeginRemove={() => addToDeletion(periode)}
-                onConfirmRemove={() => onRemove(periode!)}
-                onCancelRemove={() => removeFromDeletion(periode)}
-                onAddNew={() => onAdd()}
-                onCancelNew={onCancel}
-              />
-            </FlexEndDiv>
-          </Column>
-        </AlignEndRow>
+          {index >= 0 ? (
+            <Column flex='1.5'>
+              <FlexEndDiv style={{ justifyContent: 'end' }}>
+                {index >= 0 && [
+                  'perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring',
+                  'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring',
+                  'perioderAnnenForsikring'
+                ].indexOf(_type) >= 0 && (
+                    <div className='nolabel'>
+                      <HighContrastFlatknapp
+                        mini
+                        kompakt
+                        onClick={() => toggleVisibility(_type, _index)}
+                      >
+                        <FlexCenterDiv>
+                          <Chevron type={_visible ? 'opp' : 'ned'} />
+                          <HorizontalSeparatorDiv size='0.35' />
+                          {_visible ? t('label:show-less') : t('label:show-more')}
+                        </FlexCenterDiv>
+                      </HighContrastFlatknapp>
+                    </div>
+                )}
+                <HorizontalSeparatorDiv size='0.5' />
+                <AddRemovePanel
+                  candidateForDeletion={candidateForDeletion}
+                  existingItem={(index >= 0)}
+                  marginTop
+                  onBeginRemove={() => addToDeletion(periode)}
+                  onConfirmRemove={() => onRemove(periode!)}
+                  onCancelRemove={() => removeFromDeletion(periode)}
+                  onAddNew={onAdd}
+                  onCancelNew={onCancel}
+                />
+              </FlexEndDiv>
+            </Column>
+          ) : <Column/>}
+          </AlignStartRow>
+        )}
         <VerticalSeparatorDiv />
-        {visible && ['perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring', 'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring']
-          .indexOf(_type) >= 0 && (
+        {_type && _visible && [
+          'perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring',
+          'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'
+        ].indexOf(_type) >= 0 && (
             <>
               <AlignStartRow>
-                <Column style={{ maxWidth: '40px' }} />
+                {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
                 <Column>
                   <Input
-                    feil={validation[namespace + '-navn']?.feilmelding}
-                    namespace={namespace}
+                    feil={_v[namespace + idx + '-arbeidsgiver-navn']?.feilmelding}
+                    namespace={namespace + idx + '-arbeidsgiver'}
                     id='navn'
-                    key={'navn-' + _navn ?? ''}
+                    key={namespace + idx + '-arbeidsgiver-navn-' + ((_periode as PeriodeMedForsikring).arbeidsgiver?.navn ?? '')}
                     label={t('label:institusjonens-navn')}
-                    onChanged={(v: string) => setNavn(v, _type, _index)}
-                    value={_type ?? ''}
+                    onChanged={(newNavn: string) => setNavn(newNavn, _type, _index)}
+                    value={(_periode as PeriodeMedForsikring).arbeidsgiver?.navn ?? ''}
                   />
                 </Column>
                 <Column>
                   <Input
-                    feil={validation[namespace + '-orgnr']?.feilmelding}
-                    namespace={namespace}
-                    id='orgnr'
-                    key={'orgnr-' + JSON.stringify(_orgnr) ?? ''}
-                    label={t('label:orgnr')}
-                    onChanged={(v: string) => setIdentifikator(v, _type, _index)}
-                    value={_newIdentifikator?.[0].id ?? ''}
+                    feil={_v[namespace + idx + '-arbeidsgiver-identifikator']?.feilmelding}
+                    namespace={namespace + idx + '-arbeidsgiver'}
+                    id='identifikator'
+                    key={namespace + idx + '-arbeidsgiver-identifikator-' + ((_periode as PeriodeMedForsikring).arbeidsgiver?.identifikator?.[0]?.id ?? '')}
+                    label={t('label:institusjonens-orgnr')}
+                    onChanged={(newIdentifikator: string) => setIdentifikator(newIdentifikator, _type, _index)}
+                    value={(_periode as PeriodeMedForsikring).arbeidsgiver?.identifikator?.[0]?.id ?? ''}
                   />
                 </Column>
               </AlignStartRow>
               <VerticalSeparatorDiv />
               <AlignStartRow>
-                <Column style={{ maxWidth: '40px' }} />
+                {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
                 <Column>
                   <AdresseFC
-                    adresse={_adresse}
-                    onAdressChanged={(a) =>
-                      index < 0
-                        ? _setNewAdresse(a)
-                        : setPeriode({
-                          ..._periode,
-                          arbeidsgiver: {
-                            ...(_periode as PeriodeMedForsikring).arbeidsgiver,
-                            adresse: a
-                          }
-                        }, _type, _index)}
-                    namespace={namespace + '-adresse'}
+                    adresse={(_periode as PeriodeMedForsikring).arbeidsgiver?.adresse}
+                    onAdressChanged={(newAdresse, whatChanged) => setAdresse(newAdresse, whatChanged, _type, _index)}
+                    namespace={namespace + idx + '-arbeidsgiver-adresse'}
                     validation={index < 0 ? _validation : validation}
                     resetValidation={(fullnamespace: string) => resetAdresseValidation(fullnamespace, _index)}
                   />
@@ -426,62 +481,66 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
               <VerticalSeparatorDiv />
             </>
         )}
-        {visible && ['perioderSelvstendigMedForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(_type) >= 0 && (
+        {_type && _visible && ['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(_type) >= 0 && (
           <>
-            <Column style={{ maxWidth: '40px' }} />
-            <InntektOgTimeFC
+            {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
+            <InntektOgTimerFC
               highContrast={highContrast}
               validation={validation}
               personName={personName}
-              parentNamespace={namespace}
-              inntektOgTime={_inntektOgTime}
-              onInntektOgTimeChanged={(i: Array<InntektOgTime>) => setInntektOgTime(i, _type, _index)}
+              parentNamespace={namespace + idx}
+              inntektOgTimer={(_periode as PeriodeUtenForsikring).inntektOgTimer}
+              onInntektOgTimeChanged={(newInntektOgTimer: Array<InntektOgTime>, whatChanged: string) => setInntektOgTimer(newInntektOgTimer, whatChanged, _type, _index)}
             />
             <VerticalSeparatorDiv />
             <AlignStartRow>
-              <Column style={{ maxWidth: '40px' }} />
+              {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
               <Column>
                 <Input
-                  feil={validation[namespace + '-inntektogtimeinfo']?.feilmelding}
-                  namespace={namespace}
-                  id='inntektogtimeinfo'
-                  key={'inntektogtimeinfo-' + _inntektOgTimeInfo ?? ''}
+                  feil={_v[namespace + idx + '-inntektOgTimerInfo']?.feilmelding}
+                  namespace={namespace + idx}
+                  id='inntektOgTimerInfo'
+                  key={namespace + idx + '-inntektOgTimerInfo-' + (_periode as PeriodeMedForsikring).arbeidsgiver?.adresse ?? ''}
                   label={t('label:inntekt-og-time-info')}
-                  onChanged={(v: string) => index < 0
-                    ? _setNewInntektOgTimeInfo(v)
-                    : setPeriode({
-                      ..._periode,
-                      inntektOgTimerInfo: v.trim()
-                    }, _type, _index)}
-                  value={_inntektOgTimeInfo ?? ''}
+                  onChanged={(newInntektOgTimerInfo: string) => setInntektOgTimerInfo(newInntektOgTimerInfo, _type, _index)}
+                  value={(_periode as PeriodeUtenForsikring).inntektOgTimerInfo}
                 />
               </Column>
             </AlignStartRow>
           </>
         )}
-        {visible && _type === 'perioderAnnenForsikring' && (
+        {_type && _visible && _type === 'perioderAnnenForsikring' && (
           <>
             <AlignStartRow>
-              <Column style={{ maxWidth: '40px' }} />
+              {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
               <Column>
                 <Input
-                  feil={validation[namespace + '-annenTypeForsikringsperiode']?.feilmelding}
-                  namespace={namespace}
+                  feil={_v[namespace + idx + '-annenTypeForsikringsperiode']?.feilmelding}
+                  namespace={namespace + idx}
                   id='annenTypeForsikringsperiode'
-                  key={'annenTypeForsikringsperiode-' + _annenTypeForsikringsperiode ?? ''}
-                  label={t('label:virksomhetens-art')}
-                  onChanged={(v: string) => index < 0
-                    ? _setNewAnnenTypeForsikringsperiode(v)
-                    : setPeriode({
-                      ..._periode,
-                      annenTypeForsikringsperiode: v
-                    }, _type, _index)}
-                  value={_annenTypeForsikringsperiode ?? ''}
+                  key={namespace + idx + '-annenTypeForsikringsperiode-' + ((_periode as PeriodeAnnenForsikring).annenTypeForsikringsperiode ?? '')}
+                  label={t('label:annen-type')}
+                  onChanged={(newAnnenTypeForsikringsperiode: string) => setAnnenTypeForsikringsperiode(newAnnenTypeForsikringsperiode, _type, _index)}
+                  value={(_periode as PeriodeAnnenForsikring).annenTypeForsikringsperiode ?? ''}
                 />
               </Column>
             </AlignStartRow>
             <VerticalSeparatorDiv />
           </>
+        )}
+        {index < 0 && (
+          <FlexEndDiv style={{ justifyContent: 'end' }}>
+            <AddRemovePanel
+              candidateForDeletion={candidateForDeletion}
+              existingItem={(index >= 0)}
+              marginTop
+              onBeginRemove={() => addToDeletion(periode)}
+              onConfirmRemove={() => onRemove(periode!)}
+              onCancelRemove={() => removeFromDeletion(periode)}
+              onAddNew={onAdd}
+              onCancelNew={onCancel}
+            />
+          </FlexEndDiv>
         )}
         <VerticalSeparatorDiv />
       </RepeatableRow>

@@ -34,11 +34,11 @@ export const validateInntektOgTime = (
 
   const periodeError: boolean = validatePeriode(v, t, {
     periode: inntektOgTime.inntektsperiode,
-    namespace: namespace + idx + '-periode'
+    namespace: namespace + idx + '-inntektsperiode'
   })
   hasErrors = hasErrors || periodeError
 
-  if (!_.isEmpty(inntektOgTime?.bruttoinntekt)) {
+  if (_.isEmpty(inntektOgTime?.bruttoinntekt)) {
     v[namespace + idx + '-bruttoinntekt'] = {
       feilmelding: t('validation:noInntektTil', { person: personName }),
       skjemaelementId: namespace + idx + '-bruttoinntekt'
@@ -46,7 +46,7 @@ export const validateInntektOgTime = (
     hasErrors = true
   }
 
-  if (!_.isEmpty(inntektOgTime?.valuta)) {
+  if (_.isEmpty(inntektOgTime?.valuta)) {
     v[namespace + idx + '-valuta'] = {
       feilmelding: t('validation:noValutaTil', { person: personName }),
       skjemaelementId: namespace + idx + '-valuta'
@@ -54,7 +54,7 @@ export const validateInntektOgTime = (
     hasErrors = true
   }
 
-  if (!_.isEmpty(inntektOgTime?.arbeidstimer)) {
+  if (_.isEmpty(inntektOgTime?.arbeidstimer)) {
     v[namespace + idx + '-arbeidstimer'] = {
       feilmelding: t('validation:noArbeidstimerTil', { person: personName }),
       skjemaelementId: namespace + idx + '-arbeidstimer'

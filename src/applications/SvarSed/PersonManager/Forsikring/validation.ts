@@ -2,13 +2,16 @@ import { validatePeriode } from 'components/Forms/validation'
 import {
   ForsikringPeriode,
   Periode,
-  PeriodeAnnenForsikring
+  PeriodeAnnenForsikring,
+  PeriodeMedForsikring, PeriodeUtenForsikring
 } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
+import { validateAdresse } from '../Adresser/validation'
+import { validateInntektOgTimer } from './InntektOgTimer/validation'
 
 export interface ValidationForsikringPeriodeProps {
   periode: ForsikringPeriode
@@ -54,11 +57,13 @@ export const validateForsikringPeriode = (
     } as FeiloppsummeringFeil
     hasErrors = true
   }
-  hasErrors = hasErrors || validatePeriode(v, t, {
+
+  let _error: boolean = validatePeriode(v, t, {
     periode,
-    namespace,
+    namespace: namespace + idx,
     personName
   })
+  hasErrors = hasErrors || _error
 
   if (!_.isEmpty(periode?.startdato)) {
     let duplicate: boolean
@@ -86,11 +91,59 @@ export const validateForsikringPeriode = (
       hasErrors = true
     }
   }
+
+  if (type && ['perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring', 'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring']
+    .indexOf(type) >= 0) {
+    let _error: boolean = validateAdresse(v, t, {
+      adresse: (periode as PeriodeMedForsikring)?.arbeidsgiver?.adresse,
+      namespace: namespace + idx + '-arbeidsgiver-adresse',
+      personName
+    })
+    hasErrors = hasErrors || _error
+
+    if (_.isEmpty((periode as PeriodeMedForsikring)?.arbeidsgiver?.navn)) {
+      v[namespace + idx + '-arbeidsgiver-navn'] = {
+        feilmelding: t('validation:noInstitusjonensNavnTil', {person: personName}),
+        skjemaelementId: namespace + idx + '-arbeidsgiver-navn'
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
+
+    if (_.isEmpty((periode as PeriodeMedForsikring)?.arbeidsgiver?.identifikator)) {
+      v[namespace + idx + '-arbeidsgiver-identifikator'] = {
+        feilmelding: t('validation:noOrgnrTil', {person: personName}),
+        skjemaelementId: namespace + idx + '-arbeidsgiver-identifikator'
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
+  }
+
+  if (type && ['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(type) >= 0) {
+    let _error = validateInntektOgTimer(v, t, {
+      inntektOgTimer: (periode as PeriodeUtenForsikring)?.inntektOgTimer,
+      namespace: namespace + idx + '-inntektOgTimer',
+      personName
+    })
+    hasErrors = hasErrors || _error
+
+    if (_.isEmpty((periode as PeriodeUtenForsikring)?.inntektOgTimerInfo)) {
+      v[namespace + idx + '-inntektOgTimerInfo'] = {
+        feilmelding: t('validation:noInntektInfoTil', {person: personName}),
+        skjemaelementId: namespace + idx + '-inntektOgTimerInfo'
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    }
+  }
+
   if (hasErrors) {
     const namespaceBits = namespace.split('-')
     const mainNamespace = namespaceBits[0]
     const personNamespace = mainNamespace + '-' + namespaceBits[1]
-    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
+    let categoryNamespace = personNamespace + '-' + namespaceBits[2]
+    // clean up category names, like forsikring[periodeSyk][1] to forsikring
+    if (categoryNamespace.indexOf('[') >= 0) {
+      categoryNamespace = categoryNamespace.substring(0, categoryNamespace.indexOf('['))
+    }
     v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
     v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
@@ -115,7 +168,7 @@ export const validateForsikringPerioder = (
       perioder: perioder,
       type,
       index,
-      namespace,
+      namespace: namespace + '[' + type + ']',
       personName
     })
     hasErrors = hasErrors || _errors

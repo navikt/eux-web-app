@@ -111,6 +111,7 @@ const RightDiv = styled.div`
   align-self: stretch;
   position: relative;
   overflow: hidden;
+  width: 780px;
 `
 const RightActiveDiv = styled.div`
   border-width: ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_WIDTH]};

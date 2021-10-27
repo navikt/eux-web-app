@@ -269,7 +269,7 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
         perioderAnnenForsikring: (replySed as U002Sed)?.perioderAnnenForsikring
       }
       _error = validateAlleForsikringPerioder(v, t, {
-        perioder, namespace: `personmanager-${personID}-trygdeordninger`, personName
+        perioder, namespace: `personmanager-${personID}-forsikring`, personName
       })
       hasErrors = hasErrors || _error
 

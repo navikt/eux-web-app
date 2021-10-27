@@ -43,11 +43,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { setCurrentEntry } from 'actions/localStorage'
 
-const ContainerDiv = styled.div`
-  max-width: 1000px;
+const ContainerDiv = styled(PileCenterDiv)`
+  width: 780px;
+  align-items: center;
 `
 const LeftDiv = styled.div`
-  display: flex;ss
+  display: flex;
   align-items: center;
 `
 const FilterDiv = styled(FlexDiv)`
