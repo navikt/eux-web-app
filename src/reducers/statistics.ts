@@ -32,7 +32,10 @@ const statisticReducer = (state: StatisticsState = initialUiState, action: Actio
             [_initialMenu]: {
               date: new Date(),
               status: 'start',
-              total: 0
+              total: {
+                minutes: 0,
+                seconds: 0
+              }
             }
           }
         }
@@ -47,7 +50,10 @@ const statisticReducer = (state: StatisticsState = initialUiState, action: Actio
           [(action as ActionWithPayload).payload.page]: {
             date: new Date(),
             status: 'start',
-            total: 0
+            total: {
+              minutes: 0,
+              seconds: 0
+            }
           }
         }
       }
@@ -56,7 +62,10 @@ const statisticReducer = (state: StatisticsState = initialUiState, action: Actio
       const domain = (action as ActionWithPayload).payload.domain
       const finalObject: any = {}
       Object.keys(state.menuTime[domain]).forEach(menuKey => {
-        finalObject[menuKey] = state.menuTime[domain][menuKey].total
+        finalObject[menuKey] = {
+          minutes: state.menuTime[domain][menuKey].total.minutes,
+          seconds: state.menuTime[domain][menuKey].total.seconds
+        }
       })
 
       Object.keys(finalObject).forEach(key => {
@@ -92,18 +101,25 @@ const statisticReducer = (state: StatisticsState = initialUiState, action: Actio
       if (newPageTime[previousPage] && newPageTime[previousPage].status === 'start') {
         const diff = new Date().getTime() - newPageTime[previousPage].date.getTime()
         const diffSeconds = Math.ceil(diff / 1000)
-        const diffMinutes = Math.ceil(diffSeconds / 60)
+        const totalSeconds = newPageTime[previousPage].total.seconds + diffSeconds
+        const diffMinutes = Math.ceil(totalSeconds / 60)
         newPageTime[previousPage] = {
           date: undefined,
           status: 'stop',
-          total: newPageTime[previousPage].total += diffMinutes
+          total: {
+            minutes: diffMinutes,
+            seconds: diffSeconds
+          }
         }
       }
       if (!_.isNil(nextPage)) {
         newPageTime[nextPage] = {
           date: new Date(),
           status: 'start',
-          total: newPageTime[nextPage]?.total ?? 0
+          total: newPageTime[nextPage]?.total ?? {
+            minutes: 0,
+            seconds: 0
+          }
         }
       }
 
@@ -125,11 +141,16 @@ const statisticReducer = (state: StatisticsState = initialUiState, action: Actio
       if (!_.isNil(_previousMenu) && newStatistics[_previousMenu] && newStatistics[_previousMenu].status === 'start') {
         const diff = new Date().getTime() - newStatistics[_previousMenu].date.getTime()
         const diffSeconds = Math.ceil(diff / 1000)
-        const diffMinutes = Math.ceil(diffSeconds / 60)
+        const totalSeconds = newStatistics[_previousMenu].total.seconds + diffSeconds
+        const diffMinutes = Math.ceil(totalSeconds / 60)
+
         newStatistics[_previousMenu] = {
           date: undefined,
           status: 'stop',
-          total: newStatistics[_previousMenu].total += diffMinutes
+          total: {
+            minutes: diffMinutes,
+            seconds: diffSeconds
+          }
         }
       }
       // convert barn[0], barn[1] to barn
@@ -138,7 +159,10 @@ const statisticReducer = (state: StatisticsState = initialUiState, action: Actio
         newStatistics[_nextMenu] = {
           date: new Date(),
           status: 'start',
-          total: newStatistics[_nextMenu]?.total ?? 0
+          total: newStatistics[_nextMenu]?.total ?? {
+            minutes: 0,
+            seconds: 0
+          }
         }
       } else {
         // menu is offloading - stop all pages
@@ -147,11 +171,15 @@ const statisticReducer = (state: StatisticsState = initialUiState, action: Actio
           if (newStatistics[_key].status === 'start') {
             const diff = new Date().getTime() - newStatistics[_key].date.getTime()
             const diffSeconds = Math.ceil(diff / 1000)
-            const diffMinutes = Math.ceil(diffSeconds / 60)
+            const totalSeconds = newStatistics[_key].total.seconds + diffSeconds
+            const diffMinutes = Math.ceil(totalSeconds / 60)
             newStatistics[_key] = {
               date: undefined,
               status: 'stop',
-              total: newStatistics[_key].total += diffMinutes
+              total: {
+                minutes: diffMinutes,
+                seconds: diffSeconds
+              }
             }
           }
         })
