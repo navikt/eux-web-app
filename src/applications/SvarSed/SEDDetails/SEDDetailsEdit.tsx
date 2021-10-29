@@ -1,7 +1,6 @@
 import { updateReplySed } from 'actions/svarpased'
 import { resetValidation } from 'actions/validation'
-import { State } from 'declarations/reducers'
-import { Country } from 'land-verktoy'
+import { Country, CountryFilter } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import { validateSakseier, validateSEDDetail, ValidationSakseierProps, ValidationSEDDetailsProps } from './validation'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
@@ -11,7 +10,7 @@ import TextArea from 'components/Forms/TextArea'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, TextAreaDiv } from 'components/StyledComponents'
 import { F002Sed, FSed, LokaleSakId, Periode, ReplySed, USed } from 'declarations/sed'
-import { Kodeverk, Validation } from 'declarations/types'
+import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -28,7 +27,7 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import { isF002Sed, isFSed, isHSed, isUSed } from 'utils/sed'
 import { Add } from '@navikt/ds-icons'
@@ -43,8 +42,6 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
   const { t } = useTranslation()
   const validation: Validation = {}
   const dispatch = useDispatch()
-
-  const landkoderList: Array<Kodeverk> | undefined = useSelector((state: State): Array<Kodeverk> | undefined => (state.app.landkoder))
 
   const [_newAnmodningsperioder, _setNewAnmodningsperioder] = useState<Periode>({ startdato: '' })
 
@@ -345,7 +342,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               key={namespace + '-lokaleSakIder' + idx + '-land' + (index < 0 ? _newSakseierLand : lokaleSakId?.land)}
               id={namespace + '-lokaleSakIder' + idx + '-land'}
               label={t('label:land')}
-              includeList={landkoderList?.map((l: Kodeverk) => l.kode) || []}
+              includeList={CountryFilter.STANDARD}
               menuPortalTarget={document.body}
               onOptionSelected={(e: Country) => setSakseierLand(e.value, index)}
               required

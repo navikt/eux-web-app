@@ -393,6 +393,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
               startdato: _v[namespace + '-startdato']?.feilmelding,
               sluttdato: _v[namespace + '-sluttdato']?.feilmelding
             }}
+            showLabel={index < 0}
             setPeriode={(p: ForsikringPeriode, whatChanged: string) => setPeriode(p, whatChanged, _type, _index)}
             value={_periode}
           />
@@ -570,7 +571,25 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
           </Normaltekst>
           )
         : _sort === 'time'
-          ? _allPeriods.map(renderRow)
+          ? (
+            <>
+              <AlignStartRow>
+                <Column style={{ maxWidth: '40px' }}/>
+                <Column>
+                  <label className='skjemaelement__label'>
+                    {t('label:startdato')}
+                  </label>
+                </Column>
+                <Column>
+                  <label className='skjemaelement__label'>
+                    {t('label:sluttdato')}
+                  </label>
+                </Column>
+                <Column flex='2'/>
+              </AlignStartRow>
+              {_allPeriods.map(renderRow)}
+            </>
+          )
           : (
             <>
               {periodeOptions.map(o => {

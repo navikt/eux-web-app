@@ -10,10 +10,10 @@ import Input from 'components/Forms/Input'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Kjoenn, PersonInfo, Pin } from 'declarations/sed'
-import { Kodeverk, Person } from 'declarations/types'
+import { Person } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
-import { Country } from 'land-verktoy'
+import { Country, CountryFilter } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
@@ -31,20 +31,18 @@ import {
   Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import { validatePin, ValidationPinProps } from './validation'
 
 interface PersonOpplysningerSelector extends PersonManagerFormSelector {
-  landkoderList: Array<Kodeverk> | undefined
   searchingPerson: boolean
   searchedPerson: Person | null | undefined
 }
 
 const mapState = (state: State): PersonOpplysningerSelector => ({
-  landkoderList: state.app.landkoder,
   replySed: state.svarpased.replySed,
   searchedPerson: state.person.person,
   searchingPerson: state.loading.searchingPerson,
@@ -58,7 +56,6 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
-    landkoderList,
     replySed,
     searchedPerson,
     searchingPerson,
@@ -73,11 +70,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
 
   const norwegianPin: Pin | undefined = _.find(personInfo?.pin, p => p.land === 'NO')
   const [_seeNorskPinForm, _setSeeNorskPinForm] = useState<boolean>(false)
-
-  const landkoderListUtenNorge = useMemo(() => {
-    return landkoderList?.map((l: Kodeverk) => l.kode).filter((it: string) => it !== 'NO') ?? []
-  }, [landkoderList])
-
+  const landUtenNorge = CountryFilter.STANDARD?.filter((it: string) => it !== 'NO')
   const [_newIdentifikator, _setNewIdentifikator] = useState<string>('')
   const [_newLand, _setNewLand] = useState<string>('')
 
@@ -308,7 +301,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
               error={getErrorFor(index, 'land')}
               flagWave
               id={namespace + '-pin-land'}
-              includeList={landkoderListUtenNorge}
+              includeList={landUtenNorge}
               key={namespace + '-pin' + idx + '-land-' + (index < 0 ? _newLand : pin?.land)}
               label={t('label:land')}
               menuPortalTarget={document.body}
@@ -559,7 +552,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                   data-test-id={namespace + '-foedested-land'}
                   error={validation[namespace + '-foedested-land']?.feilmelding}
                   id={namespace + '-foedested-land'}
-                  includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
+                  includeList={CountryFilter.STANDARD}
                   label={t('label:land')}
                   menuPortalTarget={document.body}
                   onOptionSelected={(e: Country) => onFoedestedLandChange(e.value)}

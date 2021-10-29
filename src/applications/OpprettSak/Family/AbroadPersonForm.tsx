@@ -29,7 +29,6 @@ const AlignCenterColumn = styled(Column)`
 
 export interface AbroadPersonFormSelector {
   kjoennList: Array<Kodeverk> | undefined
-  landkoderList: Array<Kodeverk> | undefined
 }
 
 export interface AbroadPersonFormProps {
@@ -45,8 +44,7 @@ export interface AbroadPersonFormProps {
 }
 
 const mapState = (state: State): AbroadPersonFormSelector => ({
-  kjoennList: state.app.kjoenn,
-  landkoderList: state.app.landkoder
+  kjoennList: state.app.kjoenn
 })
 
 const emptyFamilieRelasjon: OldFamilieRelasjon = {
@@ -73,8 +71,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
 }: AbroadPersonFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
-    kjoennList,
-    landkoderList
+    kjoennList
   }: AbroadPersonFormSelector = useSelector<State, AbroadPersonFormSelector>(mapState)
   const [_relation, setRelation] = useState<OldFamilieRelasjon>(emptyFamilieRelasjon)
   const [_validation, setValidation] = useState<Validation>({})
@@ -247,7 +244,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               label={t('label:land')}
               key={'familierelasjoner__input-land-' + _relation.land}
               menuPortalTarget={document.body}
-              includeList={landkoderList ? landkoderList.map((l: Kodeverk) => l.kode) : []}
+              includeList={CountryFilter.STANDARD}
               onOptionSelected={(e: Country) => {
                 updateCountry('land', e.value)
                 resetValidation('land')

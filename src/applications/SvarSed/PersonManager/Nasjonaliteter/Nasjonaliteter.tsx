@@ -8,10 +8,9 @@ import DateInput from 'components/Forms/DateInput'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Statsborgerskap } from 'declarations/sed'
-import { Kodeverk } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
-import { Country } from 'land-verktoy'
+import { Country, CountryFilter } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
@@ -31,12 +30,9 @@ import { getIdx } from 'utils/namespace'
 import { isUSed } from 'utils/sed'
 import { validateNasjonalitet, ValidationNasjonalitetProps } from './validation'
 
-interface NasjonaliteterSelector extends PersonManagerFormSelector {
-  landkoderList: Array<Kodeverk> | undefined
-}
 
-const mapState = (state: State): NasjonaliteterSelector => ({
-  landkoderList: state.app.landkoder,
+
+const mapState = (state: State): PersonManagerFormSelector => ({
   replySed: state.svarpased.replySed,
   validation: state.validation.status
 })
@@ -48,10 +44,9 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
-    landkoderList,
     replySed,
     validation
-  } = useSelector<State, NasjonaliteterSelector>(mapState)
+  } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const target = `${personID}.personInfo.statsborgerskap`
   const statsborgerskaper: Array<Statsborgerskap> = _.get(replySed, target)
@@ -156,7 +151,7 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
               flagWave
               key={namespace + idx + '-land' + (index < 0 ? _newLand : statsborgerskap?.land)}
               id={namespace + idx + '-land'}
-              includeList={landkoderList?.map((l: Kodeverk) => l.kode) || []}
+              includeList={CountryFilter.STANDARD}
               menuPortalTarget={document.body}
               onOptionSelected={(e: Country) => onLandSelected(e.value, index)}
               placeholder={t('el:placeholder-select-default')}
