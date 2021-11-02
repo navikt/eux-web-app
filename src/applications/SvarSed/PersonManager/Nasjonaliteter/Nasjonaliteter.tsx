@@ -30,8 +30,6 @@ import { getIdx } from 'utils/namespace'
 import { isUSed } from 'utils/sed'
 import { validateNasjonalitet, ValidationNasjonalitetProps } from './validation'
 
-
-
 const mapState = (state: State): PersonManagerFormSelector => ({
   replySed: state.svarpased.replySed,
   validation: state.validation.status

@@ -292,10 +292,10 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
 
   const onRemove = (periode: ForsikringPeriode) => {
     removeFromDeletion(periode)
-    let newPeriodes: Array<ForsikringPeriode> = _.get(replySed, periode.__type!) as Array<ForsikringPeriode>
+    const newPeriodes: Array<ForsikringPeriode> = _.get(replySed, periode.__type!) as Array<ForsikringPeriode>
     newPeriodes.splice(periode.__index!, 1)
     dispatch(updateReplySed(periode.__type, newPeriodes))
-    standardLogger('svarsed.editor.periode.remove', {type: periode.__type!})
+    standardLogger('svarsed.editor.periode.remove', { type: periode.__type! })
   }
 
   const onAdd = () => {
@@ -313,7 +313,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
     if (valid) {
       newPeriodes = newPeriodes.concat(_newPeriode!)
       dispatch(updateReplySed(_newType, newPeriodes))
-      standardLogger('svarsed.editor.periode.add', {type: _newType})
+      standardLogger('svarsed.editor.periode.add', { type: _newType })
       resetForm()
     }
   }
@@ -341,7 +341,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
     const _index: number = index < 0 ? index : periode!.__index! // replace index order from map (which is "ruined" by a sort) with real replySed index
     // namespace for index < 0: personmanager-bruker-forsikring-arbeidsgiver-adresse-gate
     // namespace for index >= 0: personmanager-bruker-forsikring[perioderSyk][2]-arbeidsgiver-adresse-gate
-    let idx = getNSIdx(_type, _index)
+    const idx = getNSIdx(_type, _index)
 
     const _v: Validation = index < 0 ? _validation : validation
     // __index is the periode's index order in the replysed; index is the order with sort, thus does not tell the real position in the replysed list
@@ -379,60 +379,62 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
         )}
         {_type && (
           <AlignStartRow>
-          {index >= 0 && _sort === 'time' && (
-            <Column style={{ maxWidth: '40px' }}>
-              <div title={_.find(periodeOptions, o => o.value === _type)?.label ?? ''}>
-                {getIcon(_type, '32')}
-              </div>
-            </Column>
-          )}
-          <PeriodeInput
-            key={'' + _periode?.startdato + _periode?.sluttdato}
-            namespace={namespace + idx}
-            error={{
-              startdato: _v[namespace + '-startdato']?.feilmelding,
-              sluttdato: _v[namespace + '-sluttdato']?.feilmelding
-            }}
-            showLabel={index < 0}
-            setPeriode={(p: ForsikringPeriode, whatChanged: string) => setPeriode(p, whatChanged, _type, _index)}
-            value={_periode}
-          />
-          {index >= 0 ? (
-            <Column flex='1.5'>
-              <FlexEndDiv style={{ justifyContent: 'end' }}>
-                {index >= 0 && [
-                  'perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring',
-                  'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring',
-                  'perioderAnnenForsikring'
-                ].indexOf(_type) >= 0 && (
-                    <div className='nolabel'>
-                      <HighContrastFlatknapp
-                        mini
-                        kompakt
-                        onClick={() => toggleVisibility(_type, _index)}
-                      >
-                        <FlexCenterDiv>
-                          <Chevron type={_visible ? 'opp' : 'ned'} />
-                          <HorizontalSeparatorDiv size='0.35' />
-                          {_visible ? t('label:show-less') : t('label:show-more')}
-                        </FlexCenterDiv>
-                      </HighContrastFlatknapp>
-                    </div>
-                )}
-                <HorizontalSeparatorDiv size='0.5' />
-                <AddRemovePanel
-                  candidateForDeletion={candidateForDeletion}
-                  existingItem={(index >= 0)}
-                  marginTop
-                  onBeginRemove={() => addToDeletion(periode)}
-                  onConfirmRemove={() => onRemove(periode!)}
-                  onCancelRemove={() => removeFromDeletion(periode)}
-                  onAddNew={onAdd}
-                  onCancelNew={onCancel}
-                />
-              </FlexEndDiv>
-            </Column>
-          ) : <Column/>}
+            {index >= 0 && _sort === 'time' && (
+              <Column style={{ maxWidth: '40px' }}>
+                <div title={_.find(periodeOptions, o => o.value === _type)?.label ?? ''}>
+                  {getIcon(_type, '32')}
+                </div>
+              </Column>
+            )}
+            <PeriodeInput
+              key={'' + _periode?.startdato + _periode?.sluttdato}
+              namespace={namespace + idx}
+              error={{
+                startdato: _v[namespace + '-startdato']?.feilmelding,
+                sluttdato: _v[namespace + '-sluttdato']?.feilmelding
+              }}
+              showLabel={index < 0}
+              setPeriode={(p: ForsikringPeriode, whatChanged: string) => setPeriode(p, whatChanged, _type, _index)}
+              value={_periode}
+            />
+            {index >= 0
+              ? (
+                <Column flex='1.5'>
+                  <FlexEndDiv style={{ justifyContent: 'end' }}>
+                    {index >= 0 && [
+                      'perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring',
+                      'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring',
+                      'perioderAnnenForsikring'
+                    ].indexOf(_type) >= 0 && (
+                      <div className='nolabel'>
+                        <HighContrastFlatknapp
+                          mini
+                          kompakt
+                          onClick={() => toggleVisibility(_type, _index)}
+                        >
+                          <FlexCenterDiv>
+                            <Chevron type={_visible ? 'opp' : 'ned'} />
+                            <HorizontalSeparatorDiv size='0.35' />
+                            {_visible ? t('label:show-less') : t('label:show-more')}
+                          </FlexCenterDiv>
+                        </HighContrastFlatknapp>
+                      </div>
+                    )}
+                    <HorizontalSeparatorDiv size='0.5' />
+                    <AddRemovePanel
+                      candidateForDeletion={candidateForDeletion}
+                      existingItem={(index >= 0)}
+                      marginTop
+                      onBeginRemove={() => addToDeletion(periode)}
+                      onConfirmRemove={() => onRemove(periode!)}
+                      onCancelRemove={() => removeFromDeletion(periode)}
+                      onAddNew={onAdd}
+                      onCancelNew={onCancel}
+                    />
+                  </FlexEndDiv>
+                </Column>
+                )
+              : <Column />}
           </AlignStartRow>
         )}
         <VerticalSeparatorDiv />
@@ -440,47 +442,47 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
           'perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring',
           'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'
         ].indexOf(_type) >= 0 && (
-            <>
-              <AlignStartRow>
-                {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
-                <Column>
-                  <Input
-                    feil={_v[namespace + idx + '-arbeidsgiver-navn']?.feilmelding}
-                    namespace={namespace + idx + '-arbeidsgiver'}
-                    id='navn'
-                    key={namespace + idx + '-arbeidsgiver-navn-' + ((_periode as PeriodeMedForsikring).arbeidsgiver?.navn ?? '')}
-                    label={t('label:institusjonens-navn')}
-                    onChanged={(newNavn: string) => setNavn(newNavn, _type, _index)}
-                    value={(_periode as PeriodeMedForsikring).arbeidsgiver?.navn ?? ''}
-                  />
-                </Column>
-                <Column>
-                  <Input
-                    feil={_v[namespace + idx + '-arbeidsgiver-identifikator']?.feilmelding}
-                    namespace={namespace + idx + '-arbeidsgiver'}
-                    id='identifikator'
-                    key={namespace + idx + '-arbeidsgiver-identifikator-' + ((_periode as PeriodeMedForsikring).arbeidsgiver?.identifikator?.[0]?.id ?? '')}
-                    label={t('label:institusjonens-orgnr')}
-                    onChanged={(newIdentifikator: string) => setIdentifikator(newIdentifikator, _type, _index)}
-                    value={(_periode as PeriodeMedForsikring).arbeidsgiver?.identifikator?.[0]?.id ?? ''}
-                  />
-                </Column>
-              </AlignStartRow>
-              <VerticalSeparatorDiv />
-              <AlignStartRow>
-                {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
-                <Column>
-                  <AdresseFC
-                    adresse={(_periode as PeriodeMedForsikring).arbeidsgiver?.adresse}
-                    onAdressChanged={(newAdresse, whatChanged) => setAdresse(newAdresse, whatChanged, _type, _index)}
-                    namespace={namespace + idx + '-arbeidsgiver-adresse'}
-                    validation={index < 0 ? _validation : validation}
-                    resetValidation={(fullnamespace: string) => resetAdresseValidation(fullnamespace, _index)}
-                  />
-                </Column>
-              </AlignStartRow>
-              <VerticalSeparatorDiv />
-            </>
+          <>
+            <AlignStartRow>
+              {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
+              <Column>
+                <Input
+                  feil={_v[namespace + idx + '-arbeidsgiver-navn']?.feilmelding}
+                  namespace={namespace + idx + '-arbeidsgiver'}
+                  id='navn'
+                  key={namespace + idx + '-arbeidsgiver-navn-' + ((_periode as PeriodeMedForsikring).arbeidsgiver?.navn ?? '')}
+                  label={t('label:institusjonens-navn')}
+                  onChanged={(newNavn: string) => setNavn(newNavn, _type, _index)}
+                  value={(_periode as PeriodeMedForsikring).arbeidsgiver?.navn ?? ''}
+                />
+              </Column>
+              <Column>
+                <Input
+                  feil={_v[namespace + idx + '-arbeidsgiver-identifikator']?.feilmelding}
+                  namespace={namespace + idx + '-arbeidsgiver'}
+                  id='identifikator'
+                  key={namespace + idx + '-arbeidsgiver-identifikator-' + ((_periode as PeriodeMedForsikring).arbeidsgiver?.identifikator?.[0]?.id ?? '')}
+                  label={t('label:institusjonens-orgnr')}
+                  onChanged={(newIdentifikator: string) => setIdentifikator(newIdentifikator, _type, _index)}
+                  value={(_periode as PeriodeMedForsikring).arbeidsgiver?.identifikator?.[0]?.id ?? ''}
+                />
+              </Column>
+            </AlignStartRow>
+            <VerticalSeparatorDiv />
+            <AlignStartRow>
+              {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
+              <Column>
+                <AdresseFC
+                  adresse={(_periode as PeriodeMedForsikring).arbeidsgiver?.adresse}
+                  onAdressChanged={(newAdresse, whatChanged) => setAdresse(newAdresse, whatChanged, _type, _index)}
+                  namespace={namespace + idx + '-arbeidsgiver-adresse'}
+                  validation={index < 0 ? _validation : validation}
+                  resetValidation={(fullnamespace: string) => resetAdresseValidation(fullnamespace, _index)}
+                />
+              </Column>
+            </AlignStartRow>
+            <VerticalSeparatorDiv />
+          </>
         )}
         {_type && _visible && ['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(_type) >= 0 && (
           <>
@@ -574,7 +576,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
           ? (
             <>
               <AlignStartRow>
-                <Column style={{ maxWidth: '40px' }}/>
+                <Column style={{ maxWidth: '40px' }} />
                 <Column>
                   <label className='skjemaelement__label'>
                     {t('label:startdato')}
@@ -585,11 +587,11 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                     {t('label:sluttdato')}
                   </label>
                 </Column>
-                <Column flex='2'/>
+                <Column flex='2' />
               </AlignStartRow>
               {_allPeriods.map(renderRow)}
             </>
-          )
+            )
           : (
             <>
               {periodeOptions.map(o => {

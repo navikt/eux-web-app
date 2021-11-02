@@ -52,13 +52,13 @@ const parseDate = (date: string | undefined): Moment | undefined => {
 
 export const toFinalDateFormat = (date: string | undefined): string => {
   const newDate = parseDate(date)
-  if (!newDate) {return ''}
+  if (!newDate) { return '' }
   return newDate.isValid() ? newDate!.format('YYYY-MM-DD') : ''
 }
 
 export const toUIDateFormat = (date: string | undefined): string => {
   const newDate = parseDate(date)
-  if (!newDate) {return ''}
+  if (!newDate) { return '' }
   return newDate.isValid() ? newDate.format('DD.MM.YYYY') : ''
 }
 

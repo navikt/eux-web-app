@@ -86,7 +86,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
       const newInntektOgTimer: Array<InntektOgTime> = _.cloneDeep(inntektOgTimer) as Array<InntektOgTime>
       newInntektOgTimer[index].inntektsperiode = newPeriode
       onInntektOgTimeChanged(newInntektOgTimer, whatChanged)
-      if ( validation[namespace + getIdx(index) + '-inntektsperiode-' + whatChanged]) {
+      if (validation[namespace + getIdx(index) + '-inntektsperiode-' + whatChanged]) {
         dispatch(resetValidation(namespace + getIdx(index) + '-inntektsperiode-' + whatChanged))
       }
     }
@@ -122,8 +122,8 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
       const newInntektOgTimer: Array<InntektOgTime> = _.cloneDeep(inntektOgTimer) as Array<InntektOgTime>
       newInntektOgTimer[index].bruttoinntekt = newValuta?.value
       onInntektOgTimeChanged(newInntektOgTimer, 'valuta')
-      if (validation[namespace + getIdx(index) +'-valuta']) {
-        dispatch(resetValidation(namespace + getIdx(index) +'-valuta'))
+      if (validation[namespace + getIdx(index) + '-valuta']) {
+        dispatch(resetValidation(namespace + getIdx(index) + '-valuta'))
       }
     }
   }
@@ -231,7 +231,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
               key={namespace + idx + '-valuta-' + (index < 0 ? _newValuta : inntektOgTime?.valuta ?? '')}
               closeMenuOnSelect
               ariaLabel={t('label:valuta')}
-              data-test-id={namespace + idx +'-valuta'}
+              data-test-id={namespace + idx + '-valuta'}
               error={getErrorFor('valuta')}
               highContrast={highContrast}
               id={namespace + idx + '-valuta'}

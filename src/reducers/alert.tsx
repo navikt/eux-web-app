@@ -58,7 +58,11 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
       ...state,
       type: action.type,
       serverErrorMessage: serverErrorMessage,
-      error: (action as ActionWithPayload).payload ? (action as ActionWithPayload).payload.error : undefined,
+      error: (action as ActionWithPayload).payload
+        ? _.isString((action as ActionWithPayload).payload.error)
+            ? (action as ActionWithPayload).payload.error
+            : (action as ActionWithPayload).payload.error?.message
+        : undefined,
       uuid: (action as ActionWithPayload).payload ? (action as ActionWithPayload).payload.uuid : undefined
     }
   }
@@ -106,7 +110,9 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
 
       default:
         if ((action as ActionWithPayload).payload && (action as ActionWithPayload).payload.error) {
-          clientErrorMessage = (action as ActionWithPayload).payload.error
+          clientErrorMessage = _.isString((action as ActionWithPayload).payload.error)
+            ? (action as ActionWithPayload).payload.error
+            : (action as ActionWithPayload).payload.error?.message
         } else {
           clientErrorMessage = i18n.t('ui:error')
         }
@@ -118,7 +124,11 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
       type: action.type,
       clientErrorStatus: clientErrorMessage ? clientErrorStatus : undefined,
       clientErrorMessage: clientErrorMessage,
-      error: (action as ActionWithPayload).payload ? (action as ActionWithPayload).payload.error : undefined,
+      error: (action as ActionWithPayload).payload
+        ? _.isString((action as ActionWithPayload).payload.error)
+            ? (action as ActionWithPayload).payload.error
+            : (action as ActionWithPayload).payload.error?.message
+        : undefined,
       uuid: (action as ActionWithPayload).payload ? (action as ActionWithPayload).payload.uuid : undefined
     }
   }

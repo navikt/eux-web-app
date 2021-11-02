@@ -271,27 +271,27 @@ const ArbeidsgiverBox = ({
                         <Normaltekst>
                           {t('message:warning-no-address')}
                         </Normaltekst>
-                      )
+                        )
                       : (
-                      <div>
-                        <Normaltekst>
-                          {!_.isEmpty(_adresse) && (
-                            <>{t('label:adresse')}: </>
-                          )}
-                        </Normaltekst>
-                        <Normaltekst>
-                          {_adresse?.gate ?? '-'}
-                          {_adresse?.bygning ? ', ' + t('label:bygning').toLowerCase() + ' ' + _adresse?.bygning : ''}
-                        </Normaltekst>
-                        <Normaltekst>
-                          {_adresse?.postnummer + ' ' + _adresse?.by}
-                        </Normaltekst>
-                        <Normaltekst>
-                          {_adresse?.region ? _adresse?.region + ', ' : ''}
-                          {countryData.findByValue(_adresse?.land)?.label ?? _adresse?.land}
-                        </Normaltekst>
-                      </div>
-                      )}
+                        <div>
+                          <Normaltekst>
+                            {!_.isEmpty(_adresse) && (
+                              <>{t('label:adresse')}: </>
+                            )}
+                          </Normaltekst>
+                          <Normaltekst>
+                            {_adresse?.gate ?? '-'}
+                            {_adresse?.bygning ? ', ' + t('label:bygning').toLowerCase() + ' ' + _adresse?.bygning : ''}
+                          </Normaltekst>
+                          <Normaltekst>
+                            {_adresse?.postnummer + ' ' + _adresse?.by}
+                          </Normaltekst>
+                          <Normaltekst>
+                            {_adresse?.region ? _adresse?.region + ', ' : ''}
+                            {countryData.findByValue(_adresse?.land)?.label ?? _adresse?.land}
+                          </Normaltekst>
+                        </div>
+                        )}
                 </div>
               </>
             )}

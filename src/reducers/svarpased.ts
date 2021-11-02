@@ -15,7 +15,7 @@ export interface SvarpasedState {
   previewFile: any
   previousParentSed: string | undefined
   replySed: ReplySed | null | undefined
-  seds: Seds | undefined
+  seds: Seds | null | undefined
   sedCreatedResponse: CreateSedResponse | null | undefined
   sedSendResponse: any | null | undefined
   sedStatus: {[k in string]: string | null}
@@ -112,6 +112,12 @@ const svarpasedReducer = (
       return {
         ...state,
         seds: undefined
+      }
+
+    case types.SVARPASED_SAKSNUMMERORFNR_QUERY_FAILURE:
+      return {
+        ...state,
+        seds: null
       }
 
     case types.SVARPASED_SAKSNUMMERORFNR_QUERY_SUCCESS: {

@@ -58,7 +58,7 @@ export const validateForsikringPeriode = (
     hasErrors = true
   }
 
-  let _error: boolean = validatePeriode(v, t, {
+  const _error: boolean = validatePeriode(v, t, {
     periode,
     namespace: namespace + idx,
     personName
@@ -94,7 +94,7 @@ export const validateForsikringPeriode = (
 
   if (type && ['perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring', 'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring']
     .indexOf(type) >= 0) {
-    let _error: boolean = validateAdresse(v, t, {
+    const _error: boolean = validateAdresse(v, t, {
       adresse: (periode as PeriodeMedForsikring)?.arbeidsgiver?.adresse,
       namespace: namespace + idx + '-arbeidsgiver-adresse',
       personName
@@ -103,7 +103,7 @@ export const validateForsikringPeriode = (
 
     if (_.isEmpty((periode as PeriodeMedForsikring)?.arbeidsgiver?.navn)) {
       v[namespace + idx + '-arbeidsgiver-navn'] = {
-        feilmelding: t('validation:noInstitusjonensNavnTil', {person: personName}),
+        feilmelding: t('validation:noInstitusjonensNavnTil', { person: personName }),
         skjemaelementId: namespace + idx + '-arbeidsgiver-navn'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -111,7 +111,7 @@ export const validateForsikringPeriode = (
 
     if (_.isEmpty((periode as PeriodeMedForsikring)?.arbeidsgiver?.identifikator)) {
       v[namespace + idx + '-arbeidsgiver-identifikator'] = {
-        feilmelding: t('validation:noOrgnrTil', {person: personName}),
+        feilmelding: t('validation:noOrgnrTil', { person: personName }),
         skjemaelementId: namespace + idx + '-arbeidsgiver-identifikator'
       } as FeiloppsummeringFeil
       hasErrors = true
@@ -119,7 +119,7 @@ export const validateForsikringPeriode = (
   }
 
   if (type && ['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(type) >= 0) {
-    let _error = validateInntektOgTimer(v, t, {
+    const _error = validateInntektOgTimer(v, t, {
       inntektOgTimer: (periode as PeriodeUtenForsikring)?.inntektOgTimer,
       namespace: namespace + idx + '-inntektOgTimer',
       personName
@@ -128,7 +128,7 @@ export const validateForsikringPeriode = (
 
     if (_.isEmpty((periode as PeriodeUtenForsikring)?.inntektOgTimerInfo)) {
       v[namespace + idx + '-inntektOgTimerInfo'] = {
-        feilmelding: t('validation:noInntektInfoTil', {person: personName}),
+        feilmelding: t('validation:noInntektInfoTil', { person: personName }),
         skjemaelementId: namespace + idx + '-inntektOgTimerInfo'
       } as FeiloppsummeringFeil
       hasErrors = true
