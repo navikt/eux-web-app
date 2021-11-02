@@ -1,4 +1,4 @@
-import { Email, Send, Star, Edit, Search } from '@navikt/ds-icons'
+import { Close, Email, Send, Star, Edit, Search } from '@navikt/ds-icons'
 import validator from '@navikt/fnrvalidator'
 import * as appActions from 'actions/app'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
@@ -440,6 +440,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                           {connectedSed.status === 'sent' && <Send width='32' height='32' />}
                           {connectedSed.status === 'new' && <Star width='32' height='32' />}
                           {connectedSed.status === 'active' && <Edit width='32' height='32' />}
+                          {connectedSed.status === 'cancelled' && <Close width='32' height='32' />}
                           <VerticalSeparatorDiv size='0.35' />
                           <Undertekst>
                             {t('app:status-received-' + connectedSed.status.toLowerCase())}

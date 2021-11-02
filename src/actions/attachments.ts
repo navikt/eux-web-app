@@ -61,7 +61,7 @@ export const sendAttachmentToSed: ActionCreator<ThunkResult<Action>> = (
 ): ThunkResult<Action> => {
   return call({
     url: sprintf(urls.API_JOARK_ATTACHMENT_URL, params),
-    method: 'PUT',
+    method: 'POST',
     cascadeFailureError: true,
     expectedPayload: joarkBrowserItem,
     context: {

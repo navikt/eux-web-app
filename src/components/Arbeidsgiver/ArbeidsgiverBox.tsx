@@ -266,7 +266,13 @@ const ArbeidsgiverBox = ({
                         />
                       </>
                       )
-                    : (
+                    : _.isEmpty(_adresse)
+                      ? (
+                        <Normaltekst>
+                          {t('message:warning-no-address')}
+                        </Normaltekst>
+                      )
+                      : (
                       <div>
                         <Normaltekst>
                           {!_.isEmpty(_adresse) && (

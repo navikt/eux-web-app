@@ -29,6 +29,7 @@ export interface PeriodeProps<T> {
   }
   periodeType?: PeriodeInputType
   requiredStartDato?: boolean
+  requiredSluttDato?: boolean
   namespace: string
   setPeriode: (periode: T, id: string) => void
   showLabel?: boolean
@@ -54,6 +55,7 @@ const PeriodeInput = <T extends Periode>({
   namespace,
   periodeType = 'withcheckbox',
   requiredStartDato = true,
+  requiredSluttDato = false,
   setPeriode,
   showLabel = true,
   value
@@ -110,14 +112,15 @@ const PeriodeInput = <T extends Periode>({
           feil={error.sluttdato}
           id='sluttdato'
           key={namespace + '-sluttdato-' + _periode?.sluttdato}
-          label={showLabel ? label?.sluttdato ?? t('label:sluttdato') : ''}
+          label={showLabel ? label?.sluttdato ?? t('label:sluttdato') + (requiredSluttDato ? ' *' : '') : ''}
           namespace={namespace}
           onChanged={onEndDatoChanged}
           placeholder={t('el:placeholder-date-default')}
+          required={requiredSluttDato}
           value={toUIDateFormat(_periode?.sluttdato) ?? ''}
         />
       </Column>
-      {periodeType === 'withcheckbox' && (
+      {(periodeType === 'withcheckbox' || requiredSluttDato === true) && (
         <WrapperDiv className={classNames('slideInFromLeft', { nolabel: showLabel })}>
           {_.isEmpty(_periode?.sluttdato) && (
             <Checkbox
