@@ -1,10 +1,10 @@
-import { SavingAttachmentsJob } from 'declarations/buc'
+import { SavingAttachmentsJob } from 'declarations/attachments'
 import { mount, ReactWrapper } from 'enzyme'
 import ProgressBar from 'fremdriftslinje'
 import React from 'react'
 import { stageSelector } from 'setupTests'
 import SEDAttachmentSender, { SEDAttachmentSenderProps } from './SEDAttachmentSender'
-import joarkBrowserItems from 'mocks/joark/items'
+import joarkBrowserItems from 'mocks/attachments/items'
 
 const defaultSelector = {
   savingAttachmentsJob: {
@@ -15,7 +15,7 @@ const defaultSelector = {
   }
 }
 
-describe('applications/BUC/components/SEDAttachmentSender/SEDAttachmentSender', () => {
+describe('components/SEDAttachmentSender/SEDAttachmentSender', () => {
   let wrapper: ReactWrapper
   const initialMockProps: SEDAttachmentSenderProps = {
     attachmentsError: false,
@@ -46,14 +46,14 @@ describe('applications/BUC/components/SEDAttachmentSender/SEDAttachmentSender', 
   })
 
   it('Render: Has proper HTML structure', () => {
-    expect(wrapper.exists('[data-test-id=\'a-buc-c-sedAttachmentSender__div-id\']')).toBeTruthy()
-    expect(wrapper.exists('[data-test-id=\'a-buc-c-sedAttachmentSender__progress-bar-id\']')).toBeTruthy()
+    expect(wrapper.exists('[data-test-id=\'c-sedAttachmentSender__div-id\']')).toBeTruthy()
+    expect(wrapper.exists('[data-test-id=\'c-sedAttachmentSender__progress-bar-id\']')).toBeTruthy()
     expect(wrapper.find(ProgressBar).props().status).toEqual(initialMockProps.initialStatus)
   })
 
   it('Handling: cancel button pressed', () => {
     (initialMockProps.onCancel as jest.Mock).mockReset()
-    wrapper.find('[data-test-id=\'a-buc-c-sedAttachmentSender__cancel-button-id\']').hostNodes().simulate('click')
+    wrapper.find('[data-test-id=\'c-sedAttachmentSender__cancel-button-id\']').hostNodes().simulate('click')
     expect(initialMockProps.onCancel).toHaveBeenCalled()
   })
 

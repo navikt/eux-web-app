@@ -68,7 +68,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
           onModalClose={() => setAttachmentsTableVisible(false)}
           onFinishedSelection={onJoarkAttachmentsChanged}
           sedAttachments={_items}
-          tableId='newsed-modal'
+          tableId='vedlegg-modal'
         />
       )}
       {!_.isEmpty(_items) && (
@@ -80,7 +80,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
             highContrast={highContrast}
             mode='view'
             onRowViewDelete={onRowViewDelete}
-            tableId='newsed-view'
+            tableId='vedlegg-view'
           />
         </>
       )}

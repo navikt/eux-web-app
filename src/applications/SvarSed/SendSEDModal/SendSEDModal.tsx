@@ -31,7 +31,7 @@ import {
   PileDiv,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
@@ -115,7 +115,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
   const [_sendingAttachments, setSendingAttachments] = useState<boolean>(initialSendingAttachments)
   const [_sedAttachments, setSedAttachments] = useState<JoarkBrowserItems>(attachments)
   const [_sedSent, setSedSent] = useState<boolean>(false)
-  const [_finished, setFinished] = useState<boolean>(false)
+  const [_finished, setFinished] = useState<string | undefined>(undefined)
   const [_sendButtonClicked, _setSendButtonClicked] = useState<boolean>(false)
 
   const sedAttachmentSorter = (a: JoarkBrowserItem, b: JoarkBrowserItem): number => {
@@ -147,15 +147,21 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
     standardLogger('svarsed.editor.sendsvarsed.button', { type: 'modal' })
   }
 
-  const _onFinished = useCallback((): void => {
-    setFinished(true)
+  const _onFinished = (summary: any) => {
+    if (!_finished) {
+      if (_.isString(summary)) {
+        setFinished(summary)
+      } else {
+        setFinished(t('message:success-x-attachments-total-y-saved', summary))
+      }
+    }
     dispatch(resetSedAttachments())
     setSedSent(false)
     if (_attachmentsSent) {
       setAttachmentsSent(false)
     }
     setSendingAttachments(false)
-  }, [_attachmentsSent, dispatch])
+  }
 
   useEffect(() => {
     if (sedCreatedResponse && !_sedSent) {
@@ -169,7 +175,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
         if (!IS_TEST) {
           console.log('SEDStart: No attachments to send, concluding')
         }
-        _onFinished()
+        _onFinished(t('message:success-no-attachments-to-save'))
         return
       }
       // attachments to send -> start a savingAttachmentsJob
@@ -247,7 +253,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                       <FlexCenterSpacedDiv>
                         <GreenCircle />
                         <HorizontalSeparatorDiv size='0.5' />
-                        <span>{t('message:loading-sed-ferdig')}</span>
+                        <span>{_finished}</span>
                       </FlexCenterSpacedDiv>
                     )}
                     {_sendingAttachments && (

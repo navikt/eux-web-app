@@ -35,8 +35,6 @@ const SEDDetails = () => {
     return <div />
   }
 
-  console.log(replySed.sakUrl)
-  console.log(replySed.saksnummer)
   return (
     <HighContrastPanel border style={{ margin: '0.1rem' }}>
       <FlexCenterSpacedDiv>

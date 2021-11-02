@@ -44,7 +44,7 @@ const SEDAttachmentModal: React.FC<SEDAttachmentModalProps> = ({
         modalContent: (
           <>
             <JoarkBrowser
-              data-test-id='a-buc-c-sedattachmentmodal__joarkbrowser-id'
+              data-test-id='c-sedattachmentmodal__joarkbrowser-id'
               existingItems={sedAttachments}
               fnr={fnr}
               mode='select'

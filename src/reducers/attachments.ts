@@ -51,6 +51,15 @@ const joarkReducer = (state: JoarkState = initialJoarkState, action: ActionWithP
         previewFileRaw: action.payload
       }
 
+    case types.ATTACHMENT_SEND_REQUEST:
+      return {
+        ...state,
+        savingAttachmentsJob: {
+          ...(state.savingAttachmentsJob as SavingAttachmentsJob),
+          saving: action.context.joarkBrowserItem
+        }
+      }
+
     case types.ATTACHMENT_SEND_SUCCESS: {
       const newlySavedJoarkBrowserItem: JoarkBrowserItem = (action as ActionWithPayload).context.joarkBrowserItem
       const newRemaining = _.reject(state.savingAttachmentsJob!.remaining, (item: JoarkBrowserItem) => {
@@ -84,15 +93,6 @@ const joarkReducer = (state: JoarkState = initialJoarkState, action: ActionWithP
           saved: []
         }
       }
-
-    case types.ATTACHMENT_SEND_REQUEST: {
-      const newSavingAttachmentsJob = _.cloneDeep(state.savingAttachmentsJob)
-      newSavingAttachmentsJob!.saving = action.context.joarkBrowserItem
-      return {
-        ...state,
-        savingAttachmentsJob: newSavingAttachmentsJob
-      }
-    }
 
     case types.ATTACHMENT_RESET: {
       return {

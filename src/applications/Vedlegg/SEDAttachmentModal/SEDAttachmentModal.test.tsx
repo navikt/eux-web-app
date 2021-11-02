@@ -20,7 +20,7 @@ const defaultSelector = {
   error: undefined
 }
 
-describe('applications/BUC/components/InstitutionList/InstitutionList', () => {
+describe('components/SEDAttachmentModal', () => {
   let wrapper: ReactWrapper
 
   const initialMockProps: SEDAttachmentModalProps = {
@@ -46,7 +46,7 @@ describe('applications/BUC/components/InstitutionList/InstitutionList', () => {
   })
 
   it('Render: Has proper HTML structure', () => {
-    expect(wrapper.exists('[data-test-id=\'a-buc-c-sedattachmentmodal__joarkbrowser-id\']')).toBeTruthy()
+    expect(wrapper.exists('[data-test-id=\'c-sedattachmentmodal__joarkbrowser-id\']')).toBeTruthy()
   })
 
   it('Render: show alert inside modal if there is an error', () => {

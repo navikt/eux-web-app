@@ -28,7 +28,7 @@ export interface SEDAttachmentSenderProps {
   className?: string
   initialStatus ?: ProgressBarStatus
   onCancel ?: () => void
-  onFinished : () => void
+  onFinished : (summary: any) => void
   onSaved: (savingAttachmentsJob: SavingAttachmentsJob) => void
   payload: SEDAttachmentPayload
   sendAttachmentToSed : (params: SEDAttachmentPayloadWithFile, unsent: JoarkBrowserItem) => void
@@ -56,6 +56,10 @@ const SEDAttachmentSender: React.FC<SEDAttachmentSenderProps> = ({
       if (savingAttachmentsJob.remaining.length === 0) {
         if (!savingAttachmentsJob.saving) {
           /* istanbul ignore next */
+          const summary = {
+            total: savingAttachmentsJob.total.length,
+            saved: savingAttachmentsJob.saved.length
+          }
           if (!IS_TEST) {
             console.log('Concluding.' +
               ' Total (' + savingAttachmentsJob.total.length +
@@ -65,7 +69,7 @@ const SEDAttachmentSender: React.FC<SEDAttachmentSenderProps> = ({
           }
           onSaved(savingAttachmentsJob)
           setStatus('done')
-          onFinished()
+          onFinished(summary)
           return
         }
         return
@@ -122,11 +126,11 @@ const SEDAttachmentSender: React.FC<SEDAttachmentSenderProps> = ({
 
   return (
     <SEDAttachmentSenderDiv
-      data-test-id='a-buc-c-sedAttachmentSender__div-id'
+      data-test-id='c-sedAttachmentSender__div-id'
       className={className}
     >
       <ProgressBar
-        data-test-id='a-buc-c-sedAttachmentSender__progress-bar-id'
+        data-test-id='c-sedAttachmentSender__progress-bar-id'
         now={percentage}
         status={_status}
       >
@@ -143,7 +147,7 @@ const SEDAttachmentSender: React.FC<SEDAttachmentSenderProps> = ({
         <>
           <HorizontalSeparatorDiv data-sise='0.35' />
           <HighContrastKnapp
-            data-test-id='a-buc-c-sedAttachmentSender__cancel-button-id'
+            data-test-id='c-sedAttachmentSender__cancel-button-id'
             kompakt
             mini
             onClick={(e: React.MouseEvent<HTMLButtonElement>) => {

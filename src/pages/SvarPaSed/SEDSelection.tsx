@@ -209,9 +209,10 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
   }, [])
 
   const familieytelser: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('FB_'))?.length ?? 0
-  const dagpenger: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('U_'))?.length ?? 0
+  const dagpenger: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('UB_'))?.length ?? 0
   const horisontal: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('H_'))?.length ?? 0
-  const ssed: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('S_'))?.length ?? 0
+  const sykdom: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('S_'))?.length ?? 0
+  const lovvalg: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('LA_'))?.length ?? 0
   const filteredSeds = _.filter(seds, (s: Sed) => _filter ? s.sakType.startsWith(_filter) : true)
 
   return (
@@ -328,11 +329,11 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                 <HighContrastFlatknapp
                   mini
                   kompakt
-                  data-amplitude='svarsed.selection.filter.u'
-                  className={classNames({ selected: _filter === 'U_' })}
+                  data-amplitude='svarsed.selection.filter.ub'
+                  className={classNames({ selected: _filter === 'UB_' })}
                   onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
                     buttonLogger(e)
-                    _setFilter('U_')
+                    _setFilter('UB_')
                   }}
                 >
                   {t('label:dagpenger') + ' (' + dagpenger + ')'}
@@ -357,7 +358,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                 <HorizontalSeparatorDiv />
               </>
             )}
-            {ssed > 0 && (
+            {sykdom > 0 && (
               <>
                 <HighContrastFlatknapp
                   mini
@@ -369,11 +370,30 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                     _setFilter('S_')
                   }}
                 >
-                  {t('label:sykdom') + ' (' + ssed + ')'}
+                  {t('label:sykdom') + ' (' + sykdom + ')'}
                 </HighContrastFlatknapp>
                 <HorizontalSeparatorDiv />
               </>
             )}
+
+            {lovvalg > 0 && (
+              <>
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  data-amplitude='svarsed.selection.filter.la'
+                  className={classNames({ selected: _filter === 'LA_' })}
+                  onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+                    buttonLogger(e)
+                    _setFilter('LA_')
+                  }}
+                >
+                  {t('label:lovvalg') + ' (' + lovvalg + ')'}
+                </HighContrastFlatknapp>
+                <HorizontalSeparatorDiv />
+              </>
+            )}
+
           </FilterDiv>
           <VerticalSeparatorDiv />
           {filteredSeds.map((sed: Sed) => {
