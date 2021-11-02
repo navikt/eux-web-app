@@ -1,10 +1,17 @@
 import { Edit } from '@navikt/ds-icons'
+import ExternalLink from 'assets/icons/Logout'
 import RemoveCircle from 'assets/icons/RemoveCircle'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed.d'
 import { buttonLogger } from 'metrics/loggers'
 import { Undertittel } from 'nav-frontend-typografi'
-import { HighContrastPanel, HighContrastFlatknapp, VerticalSeparatorDiv, FlexCenterSpacedDiv } from 'nav-hoykontrast'
+import {
+  HighContrastPanel,
+  HighContrastFlatknapp,
+  VerticalSeparatorDiv,
+  FlexCenterSpacedDiv,
+  HorizontalSeparatorDiv, HighContrastLink
+} from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -28,11 +35,23 @@ const SEDDetails = () => {
     return <div />
   }
 
+  console.log(replySed.sakUrl)
+  console.log(replySed.saksnummer)
   return (
     <HighContrastPanel border style={{ margin: '0.1rem' }}>
       <FlexCenterSpacedDiv>
         <Undertittel>
-          {t('label:rina-saksnummer') + ': ' + replySed.saksnummer}
+          <FlexCenterSpacedDiv>
+            {t('label:rina-saksnummer') + ':'}
+            <HorizontalSeparatorDiv size='0.35' />
+            <HighContrastLink target='_blank' href={replySed.sakUrl}>
+              <span>
+                {replySed.saksnummer}
+              </span>
+              <HorizontalSeparatorDiv size='0.35' />
+              <ExternalLink />
+            </HighContrastLink>
+          </FlexCenterSpacedDiv>
         </Undertittel>
         <HighContrastFlatknapp
           kompakt

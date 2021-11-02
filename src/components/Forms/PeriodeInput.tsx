@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import Input from 'components/Forms/Input'
 import { Periode, PeriodeInputType } from 'declarations/sed'
 import _ from 'lodash'
-import moment from 'moment'
+import moment, { Moment } from 'moment'
 import { Checkbox } from 'nav-frontend-skjema'
 import { Column } from 'nav-hoykontrast'
 import React, { useState } from 'react'
@@ -36,17 +36,30 @@ export interface PeriodeProps<T> {
   value: T | null | undefined
 }
 
-export const toFinalDateFormat = (date: string | undefined): string => {
-  if (!date) return ''
-  if (date === '') return ''
-  const newDate = moment(date, 'DD.MM.YYYY')
-  return newDate.isValid() ? newDate.format('YYYY-MM-DD') : date
+const parseDate = (date: string | undefined): Moment | undefined => {
+  if (!date) return undefined
+  if (date === '') return undefined
+  let newDate: Moment
+  if (date.match(/\d{2}.\d{2}.\d{4}/)) {
+    newDate = moment(date, 'DD.MM.YYYY')
+  } else if (date.match(/\d{4}-\d{2}-\d{2}/)) {
+    newDate = moment(date, 'YYYY-MM-DD')
+  } else {
+    newDate = moment(date)
+  }
+  return newDate
 }
 
-export const toUIDateFormat = (date: string | undefined): string | undefined => {
-  if (!date) return undefined
-  const newDate = moment(date, 'YYYY-MM-DD')
-  return newDate.isValid() ? newDate.format('DD.MM.YYYY') : date
+export const toFinalDateFormat = (date: string | undefined): string => {
+  const newDate = parseDate(date)
+  if (!newDate) {return ''}
+  return newDate.isValid() ? newDate!.format('YYYY-MM-DD') : ''
+}
+
+export const toUIDateFormat = (date: string | undefined): string => {
+  const newDate = parseDate(date)
+  if (!newDate) {return ''}
+  return newDate.isValid() ? newDate.format('DD.MM.YYYY') : ''
 }
 
 const PeriodeInput = <T extends Periode>({
