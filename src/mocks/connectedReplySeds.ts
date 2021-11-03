@@ -18,6 +18,16 @@ export default [
         svarsedType: 'F002',
         svarsedDisplay: 'Description for F002',
         svarsedId: '603e18ebd5b549b1b5c0f53c58558115_2'
+      }, {
+        sedTittel: 'Description for F002',
+        status: 'received',
+        sedType: 'F002',
+        sedId: '603e18ebd5b549b1b5c0f53c58558116',
+        sedIdParent: '603e18ebd5b549b1b5c0f53c58558117',
+        sistEndretDato: '2020-01-02',
+        svarsedType: 'F002',
+        svarsedDisplay: 'Description for F002',
+        svarsedId: '603e18ebd5b549b1b5c0f53c58558116_2'
       }
     ]
   }, {
