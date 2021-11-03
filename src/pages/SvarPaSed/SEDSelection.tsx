@@ -1,9 +1,10 @@
-import { Close, Email, Send, Star, Edit, Search } from '@navikt/ds-icons'
+import { Close, Edit, Email, Search, Send, Star } from '@navikt/ds-icons'
 import validator from '@navikt/fnrvalidator'
 import * as appActions from 'actions/app'
+import { setCurrentEntry } from 'actions/localStorage'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
-import { getSedStatus, setReplySed } from 'actions/svarpased'
 import * as svarpasedActions from 'actions/svarpased'
+import { getSedStatus, setReplySed } from 'actions/svarpased'
 import { resetAllValidation } from 'actions/validation'
 import ExternalLink from 'assets/icons/Logout'
 import classNames from 'classnames'
@@ -16,11 +17,13 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
 import AlertStripe from 'nav-frontend-alertstriper'
+import { Checkbox } from 'nav-frontend-skjema'
 import { Normaltekst, Systemtittel, Undertekst, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
   FlexDiv,
+  FlexEndSpacedDiv,
   FlexStartDiv,
   HighContrastFlatknapp,
   HighContrastHovedknapp,
@@ -28,7 +31,6 @@ import {
   HighContrastKnapp,
   HighContrastLink,
   HighContrastPanel,
-  HighContrastRadioGroup,
   HorizontalSeparatorDiv,
   PileCenterDiv,
   PileDiv,
@@ -41,7 +43,6 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { setCurrentEntry } from 'actions/localStorage'
 
 const ContainerDiv = styled(PileCenterDiv)`
   width: 780px;
@@ -108,6 +109,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
     seds,
     sedStatus
   }: any = useSelector<State, any>(mapState)
+  const [_allOpen, _setAllOpen] = useState<boolean>(false)
   const [_filter, _setFilter] = useState<string | undefined>(undefined)
   const [_saksnummerOrFnr, _setSaksnummerOrFnr] = useState<string>(rinasaksnummerOrFnrParam ?? '')
   const [_queryType, _setQueryType] = useState<string |undefined>(undefined)
@@ -276,10 +278,9 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
         </>
       )}
       {seds && (
-        <HighContrastRadioGroup
-          style={{ marginLeft: '0.1rem', marginRight: '0.1rem' }}
-          legend={(
-            <>
+        <div style={{ width: '100%', maxWidth: '600px' }}>
+          <FlexEndSpacedDiv>
+            <div>
               <span>{
                 t('label:antall-treff-for', {
                   saksnummerOrFnr: _saksnummerOrFnr
@@ -290,9 +291,16 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
               <span style={{ fontSize: '130%' }}>
                 {seds.length}
               </span>
-            </>
-            )}
-        >
+            </div>
+            <div>
+              <Checkbox
+                checked={_allOpen}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setAllOpen(e.target.checked)}
+                label={t('label:utvid-alle')}
+              />
+            </div>
+          </FlexEndSpacedDiv>
+          <VerticalSeparatorDiv />
           <FilterDiv>
             <HighContrastFlatknapp
               mini
@@ -443,13 +451,14 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                   onChange={onParentSedChange}
                   value={sedId}
                 />
+                <VerticalSeparatorDiv />
                 {sed.sedListe.map((connectedSed: ConnectedSed) => (
                   <HiddenFormContainer
                     aria-hidden={!(previousParentSed !== sedId && parentSed === sedId)}
                     className={classNames({
-                      slideOpen: alone || (previousParentSed !== sedId && parentSed === sedId),
-                      slideClose: previousParentSed === sedId && parentSed !== sedId,
-                      closed: !alone && !((previousParentSed !== sedId && parentSed === sedId) || (previousParentSed === sedId && parentSed !== sedId))
+                      slideOpen: _allOpen === true ? true : (alone || (previousParentSed !== sedId && parentSed === sedId)),
+                      slideClose: _allOpen === true ? false : ((previousParentSed === sedId && parentSed !== sedId)),
+                      closed: _allOpen === true ? false : (!alone && !((previousParentSed !== sedId && parentSed === sedId) || (previousParentSed === sedId && parentSed !== sedId)))
                     })}
                     key={sed + '-' + connectedSed.sedId}
                   >
@@ -565,7 +574,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
               </div>
             )
           })}
-        </HighContrastRadioGroup>
+        </div>
       )}
     </ContainerDiv>
   )
