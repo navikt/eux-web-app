@@ -73,6 +73,7 @@ const SEDPanel = styled(HighContrastPanel)`
 const mapState = (state: State): any => ({
   alertMessage: state.alert.clientErrorMessage,
   alertType: state.alert.type,
+  featureToggles: state.app.featureToggles,
   highContrast: state.ui.highContrast,
   mode: state.svarpased.mode,
   queryingSaksnummerOrFnr: state.loading.queryingSaksnummerOrFnr,
@@ -98,6 +99,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
   const {
     alertMessage,
     alertType,
+    featureToggles,
     mode,
     parentSed,
     previousParentSed,
@@ -210,12 +212,14 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
     }
   }, [])
 
-  const familieytelser: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('FB_'))?.length ?? 0
-  const dagpenger: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('UB_'))?.length ?? 0
-  const horisontal: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('H_'))?.length ?? 0
-  const sykdom: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('S_'))?.length ?? 0
-  const lovvalg: number = _.filter(seds, (s: Sed) => s.sakType.startsWith('LA_'))?.length ?? 0
-  const filteredSeds = _.filter(seds, (s: Sed) => _filter ? s.sakType.startsWith(_filter) : true)
+  const visibleSeds = seds?.filter((s: Sed) => !(s.sakType.startsWith('U_') && featureToggles['featureSvarsed.u'] === false)) ?? undefined
+
+  const familieytelser: number = _.filter(visibleSeds, (s: Sed) => s.sakType.startsWith('FB_'))?.length ?? 0
+  const dagpenger: number = _.filter(visibleSeds, (s: Sed) => s.sakType.startsWith('UB_'))?.length ?? 0
+  const horisontal: number = _.filter(visibleSeds, (s: Sed) => s.sakType.startsWith('H_'))?.length ?? 0
+  const sykdom: number = _.filter(visibleSeds, (s: Sed) => s.sakType.startsWith('S_'))?.length ?? 0
+  const lovvalg: number = _.filter(visibleSeds, (s: Sed) => s.sakType.startsWith('LA_'))?.length ?? 0
+  const filteredSeds = _.filter(visibleSeds, (s: Sed) => _filter ? s.sakType.startsWith(_filter) : true)
 
   return (
     <ContainerDiv>
@@ -277,7 +281,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
           <VerticalSeparatorDiv />
         </>
       )}
-      {seds && (
+      {visibleSeds && (
         <div style={{ width: '100%', maxWidth: '600px' }}>
           <FlexEndSpacedDiv>
             <div>
@@ -289,7 +293,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
               </span>
               <HorizontalSeparatorDiv size='0.3' />
               <span style={{ fontSize: '130%' }}>
-                {seds.length}
+                {visibleSeds.length}
               </span>
             </div>
             <div>
@@ -312,7 +316,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
                 _setFilter(undefined)
               }}
             >
-              {t('label:alle') + ' (' + seds.length + ')'}
+              {t('label:alle') + ' (' + visibleSeds.length + ')'}
             </HighContrastFlatknapp>
             <HorizontalSeparatorDiv />
             {familieytelser > 0 && (

@@ -48,7 +48,10 @@ export const initialAppState: AppState = {
   navn: undefined,
 
   params: {},
-  featureToggles: {}
+  featureToggles: {
+    featureSvarsed: true,
+    'featureSvarsed.u': false
+  }
 }
 
 const appReducer = (state: AppState = initialAppState, action: ActionWithPayload = { type: '', payload: undefined }): AppState => {

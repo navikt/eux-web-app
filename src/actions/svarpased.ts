@@ -125,7 +125,8 @@ export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed
   const mockSed = mockReplySed(connectedSed.svarsedType)
 
   const sedId = connectedSed.sedType === 'F002' && connectedSed.svarsedType === 'F002' && !_.isEmpty(connectedSed.sedIdParent)
-    ? connectedSed.sedIdParent : connectedSed.sedId
+    ? connectedSed.sedIdParent
+    : connectedSed.sedId
 
   return call({
     url: sprintf(urls.API_RINASAK_SVARSED_QUERY_URL, {
