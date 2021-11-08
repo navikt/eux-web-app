@@ -38,17 +38,17 @@ export const periodeMedForsikringToArbeidsgiver = (a: PeriodeMedForsikring): Arb
   return {
     fraInntektsregisteret: a.extra?.fraInntektsregisteret ?? '',
     fraArbeidsgiverregisteret: a.extra?.fraArbeidsgiverregisteret ?? '',
-    arbeidsgiversOrgnr: getOrgnr(a) ?? '',
+    arbeidsgiversOrgnr: getOrgnr(a, 'registrering') ?? '',
     fraDato: a.startdato,
     tilDato: a.sluttdato,
     arbeidsgiversNavn: a.arbeidsgiver.navn
   }
 }
 
-export const getOrgnr = (arbeidsgiver: PeriodeMedForsikring): string | undefined => (
-  _.find(arbeidsgiver.arbeidsgiver?.identifikator, (id: ArbeidsgiverIdentifikator) => id.type === 'registrering')?.id
-)
+export const generateIdentifikatorKey = (ids: Array<ArbeidsgiverIdentifikator>): string => ids
+  .sort((a, b) => a.type.localeCompare(b.type))
+  .map(it => it.type + '-' + it.id).join(';')
 
-export const hasOrgnr = (arbeidsgiver: PeriodeMedForsikring, needleId: string): boolean => (
-  _.find(arbeidsgiver.arbeidsgiver.identifikator, (id: ArbeidsgiverIdentifikator) => id.type === 'registrering' && id.id === needleId) !== undefined
+export const getOrgnr = (arbeidsgiver: PeriodeMedForsikring, type: string): string | undefined => (
+  _.find(arbeidsgiver.arbeidsgiver?.identifikator, (id: ArbeidsgiverIdentifikator) => id.type === type)?.id
 )

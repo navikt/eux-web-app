@@ -103,6 +103,8 @@ export interface OpprettSakSelector {
   valgtSektor: string | undefined
   valgtTema: string | undefined
   valgtUnit: string | undefined
+
+  highContrast: boolean
 }
 
 const mapState = (state: State): OpprettSakSelector => ({
@@ -142,7 +144,9 @@ const mapState = (state: State): OpprettSakSelector => ({
   valgtSedType: state.sak.sedtype,
   valgtSektor: state.sak.sektor,
   valgtTema: state.sak.tema,
-  valgtUnit: state.sak.unit
+  valgtUnit: state.sak.unit,
+
+  highContrast: state.ui.highContrast
 })
 
 const OpprettSak: React.FC<OpprettSakProps> = ({
@@ -180,7 +184,8 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
     valgtSedType,
     valgtSektor,
     valgtTema,
-    valgtUnit
+    valgtUnit,
+    highContrast
   }: OpprettSakSelector = useSelector<State, OpprettSakSelector>(mapState)
   const dispatch = useDispatch()
   const { t } = useTranslation()
@@ -659,6 +664,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
               )}
               {visArbeidsgivere && (
                 <Arbeidsgivere
+                  highContrast={highContrast}
                   namespace='arbeidsgivere'
                   searchable
                   fnr={person?.fnr}

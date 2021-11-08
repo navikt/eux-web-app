@@ -1,10 +1,12 @@
-import { Add, Edit, Office1 } from '@navikt/ds-icons'
+import { Add, Close, Edit, Office1 } from '@navikt/ds-icons'
 import AdresseFC from 'applications/SvarSed/PersonManager/Adresser/Adresse'
+import IdentifikatorFC from 'applications/SvarSed/PersonManager/Identifikator/Identifikator'
 import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
 import Input from 'components/Forms/Input'
 import PeriodeInput, { toUIDateFormat } from 'components/Forms/PeriodeInput'
-import { Adresse as IAdresse, Periode, PeriodeMedForsikring } from 'declarations/sed.d'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
+import { Adresse as IAdresse, ArbeidsgiverIdentifikator, Periode, PeriodeMedForsikring } from 'declarations/sed.d'
 import useValidation from 'hooks/useValidation'
 import CountryData from 'land-verktoy'
 import _ from 'lodash'
@@ -27,7 +29,7 @@ import {
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { getOrgnr } from 'utils/arbeidsgiver'
+import { generateIdentifikatorKey } from 'utils/arbeidsgiver'
 import { validateArbeidsgiver, ValidationArbeidsgiverProps } from './validation'
 
 const ArbeidsgiverPanel = styled(HighContrastPanel)`
@@ -53,6 +55,7 @@ export interface ArbeidsgiverProps {
   arbeidsgiver: PeriodeMedForsikring
   editable?: Editable
   error?: boolean,
+  highContrast: boolean
   includeAddress ?: boolean
   newArbeidsgiver?: boolean
   orphanArbeidsgiver ?: boolean
@@ -70,6 +73,7 @@ const ArbeidsgiverBox = ({
   editable = 'no',
   error = false,
   includeAddress = false,
+  highContrast,
   newArbeidsgiver = false,
   orphanArbeidsgiver = false,
   selected = false,
@@ -81,15 +85,15 @@ const ArbeidsgiverBox = ({
 //  personFnr
 }: ArbeidsgiverProps): JSX.Element => {
   const { t } = useTranslation()
-  const _namespace = namespace + '-arbeidsgiver[' + (getOrgnr(arbeidsgiver) ?? '-') + ']'
+  const _namespace = namespace + '-arbeidsgiver[' + (generateIdentifikatorKey(arbeidsgiver.arbeidsgiver.identifikator) ?? '-') + ']'
   const countryData = CountryData.getCountryInstance('nb')
 
   const [_isDeleting, setIsDeleting] = useState<boolean>(false)
   const [_isEditing, setIsEditing] = useState<boolean>(false)
-  const [_beforeEditingVersion, setBeforeEditingVersion] = useState< PeriodeMedForsikring | undefined>(undefined)
+  const [_beforeEditingVersion, setBeforeEditingVersion] = useState<PeriodeMedForsikring | undefined>(undefined)
 
   const [_arbeidsgiversNavn, setArbeidsgiversNavn] = useState<string>(arbeidsgiver.arbeidsgiver.navn ?? '')
-  const [_arbeidsgiversOrgnr, setArbeidsgiversOrgnr] = useState<string>(getOrgnr(arbeidsgiver) ?? '')
+  const [_arbeidsgiversIdentifikator, setArbeidsgiversIdentifikator] = useState<Array<ArbeidsgiverIdentifikator>>(arbeidsgiver.arbeidsgiver.identifikator ?? [])
   const [_arbeidsgiverPeriode, setArbeidsgiversPeriode] = useState<Periode>({
     startdato: arbeidsgiver.startdato,
     sluttdato: arbeidsgiver.sluttdato,
@@ -105,10 +109,12 @@ const ArbeidsgiverBox = ({
     setArbeidsgiversNavn(newName)
   }
 
-  const onOrgnrChanged = (newOrgnr: string) => {
-    resetValidation(_namespace + '-orgnr')
-    setArbeidsgiversOrgnr(newOrgnr)
+  const onIdentifikatorerChanged = (newIdentifikatorer: Array<ArbeidsgiverIdentifikator>, whatChanged: string) => {
+    resetValidation(_namespace + '-' + whatChanged)
+    setArbeidsgiversIdentifikator(newIdentifikatorer)
   }
+
+  const resetSubValidation = (fullnamespace: string) => resetValidation(fullnamespace)
 
   const onPeriodeChanged = (newPeriode: Periode) => {
     if (_arbeidsgiverPeriode.startdato !== newPeriode.startdato) {
@@ -124,10 +130,7 @@ const ArbeidsgiverBox = ({
     const newArbeidsgiver: PeriodeMedForsikring = {
       ..._arbeidsgiverPeriode,
       arbeidsgiver: {
-        identifikator: [{
-          type: 'registrering',
-          id: _arbeidsgiversOrgnr
-        }],
+        identifikator: _arbeidsgiversIdentifikator,
         navn: _arbeidsgiversNavn
       }
     } as PeriodeMedForsikring
@@ -153,12 +156,24 @@ const ArbeidsgiverBox = ({
   const onEditButtonClicked = () => {
     setIsEditing(true)
     setBeforeEditingVersion(_.cloneDeep(arbeidsgiver))
-    setArbeidsgiversOrgnr(_arbeidsgiversOrgnr || '')
+    setArbeidsgiversIdentifikator(_arbeidsgiversIdentifikator)
     setArbeidsgiversNavn(_arbeidsgiversNavn || '')
     setArbeidsgiversPeriode(_arbeidsgiverPeriode)
     if (includeAddress) {
       _setAdresse(_adresse)
     }
+  }
+
+  const onCancelButtonClicked = () => {
+    setIsEditing(false)
+    setArbeidsgiversIdentifikator(_beforeEditingVersion?.arbeidsgiver.identifikator ?? [])
+    setArbeidsgiversNavn(_beforeEditingVersion?.arbeidsgiver.navn || '')
+    setArbeidsgiversPeriode({
+      startdato: _beforeEditingVersion?.startdato!,
+      sluttdato: _beforeEditingVersion?.sluttdato,
+      aapenPeriodeType: _beforeEditingVersion?.aapenPeriodeType
+    })
+    setBeforeEditingVersion(undefined)
   }
 
   const onSelectCheckboxClicked = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -167,13 +182,13 @@ const ArbeidsgiverBox = ({
     }
   }
 
-  if (!_arbeidsgiversNavn || !_arbeidsgiversOrgnr) {
+  if (!_arbeidsgiversNavn || _.isEmpty(_arbeidsgiversIdentifikator)) {
     return <div />
   }
   return (
     <div
       className='slideInFromLeft'
-      key={_arbeidsgiversOrgnr}
+      key={generateIdentifikatorKey(_arbeidsgiversIdentifikator)}
     >
       <VerticalSeparatorDiv size='0.5' />
       <ArbeidsgiverPanel
@@ -187,37 +202,45 @@ const ArbeidsgiverBox = ({
             <div>
               {_isEditing && editable === 'full'
                 ? (
-                  <Row>
-                    <Column>
-                      <Input
-                        namespace={_namespace}
-                        feil={_validation[_namespace + '-navn']?.feilmelding}
-                        id='navn'
-                        label={t('label:navn')}
-                        onChanged={onNameChanged}
-                        value={_arbeidsgiversNavn}
-                      />
-                    </Column>
-                    <Column>
-                      <Input
-                        namespace={_namespace}
-                        feil={_validation[_namespace + '-orgnr']?.feilmelding}
-                        id='orgnr'
-                        label={t('label:orgnr')}
-                        onChanged={onOrgnrChanged}
-                        value={_arbeidsgiversOrgnr}
-                      />
-                    </Column>
-                  </Row>
+                  <>
+                    <Row>
+                      <Column>
+                        <Input
+                          namespace={_namespace}
+                          feil={_validation[_namespace + '-navn']?.feilmelding}
+                          id='navn'
+                          label={t('label:navn')}
+                          onChanged={onNameChanged}
+                          value={_arbeidsgiversNavn}
+                        />
+                      </Column>
+                    </Row>
+                    <IdentifikatorFC
+                      highContrast={highContrast}
+                      identifikatorer={_arbeidsgiversIdentifikator}
+                      onIdentifikatorerChanged={onIdentifikatorerChanged}
+                      namespace={_namespace + '-identifikator'}
+                      validation={_validation}
+                      resetValidation={resetSubValidation}
+                      personName={_arbeidsgiversNavn}
+                    />
+                  </>
                   )
                 : (
                   <div>
                     <UndertekstBold>
                       {_arbeidsgiversNavn}
                     </UndertekstBold>
-                    <Normaltekst>
-                      {t('label:orgnr')}:&nbsp;{_arbeidsgiversOrgnr}
-                    </Normaltekst>
+                    <HorizontalLineSeparator />
+                    <VerticalSeparatorDiv size='0.5' />
+                    {_.isEmpty(_arbeidsgiversIdentifikator)
+                      ? (<Normaltekst>{t('message:warning-no-ids')}</Normaltekst>)
+                      : null}
+                    {_arbeidsgiversIdentifikator.map(id => (
+                      <Normaltekst key={id.type}>
+                        {t('el:option-identifikator-' + id.type) + ': ' + id.id}
+                      </Normaltekst>
+                    ))}
                   </div>
                   )}
               {_isEditing
@@ -241,13 +264,20 @@ const ArbeidsgiverBox = ({
                 : (
                   <div>
                     <Normaltekst>
-                      {t('label:startdato')}:&nbsp;{toUIDateFormat(_arbeidsgiverPeriode.startdato)}
-                    </Normaltekst>
-                    <Normaltekst>
-                      {t('label:sluttdato')}:&nbsp;{toUIDateFormat(_arbeidsgiverPeriode.sluttdato)}
+                      {toUIDateFormat(_arbeidsgiverPeriode.startdato)} - {_arbeidsgiverPeriode.sluttdato ? toUIDateFormat(_arbeidsgiverPeriode.sluttdato) : _arbeidsgiverPeriode.aapenPeriodeType}
                     </Normaltekst>
                   </div>
                   )}
+              {arbeidsgiver?.extra?.fraArbeidsgiverregisteret === 'ja' && (
+                <PileDiv style={{ flexDirection: 'column-reverse' }}>
+                  <Undertekst>{t('label:fra-arbeidsgiverregisteret')}</Undertekst>
+                </PileDiv>
+              )}
+              {arbeidsgiver?.extra?.fraInntektsregisteret === 'ja' && (
+                <PileDiv style={{ flexDirection: 'column-reverse' }}>
+                  <Undertekst>{t('label:fra-inntektsregisteret')}</Undertekst>
+                </PileDiv>
+              )}
             </div>
             {includeAddress && (
               <>
@@ -302,16 +332,7 @@ const ArbeidsgiverBox = ({
                   duplicate warning
                 </Normaltekst>
               )}
-              {arbeidsgiver?.extra?.fraArbeidsgiverregisteret === 'ja' && (
-                <PileDiv style={{ flexDirection: 'column-reverse' }}>
-                  <Undertekst>{t('label:fra-arbeidsgiverregisteret')}</Undertekst>
-                </PileDiv>
-              )}
-              {arbeidsgiver?.extra?.fraInntektsregisteret === 'ja' && (
-                <PileDiv style={{ flexDirection: 'column-reverse' }}>
-                  <Undertekst>{t('label:fra-inntektsregisteret')}</Undertekst>
-                </PileDiv>
-              )}
+
             </>
           </PaddedFlexDiv>
           <PaddedFlexDiv className='slideInFromRight' style={{ animationDelay: '0.3s' }}>
@@ -351,8 +372,7 @@ const ArbeidsgiverBox = ({
               />
             )}
             {_isEditing && (
-              <div>
-                <VerticalSeparatorDiv />
+              <PileDiv>
                 <HighContrastKnapp
                   mini
                   kompakt
@@ -362,7 +382,18 @@ const ArbeidsgiverBox = ({
                   <HorizontalSeparatorDiv size='0.5' />
                   {t('el:button-save')}
                 </HighContrastKnapp>
-              </div>
+                <VerticalSeparatorDiv size='0.5' />
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  onClick={onCancelButtonClicked}
+                >
+                  <Close />
+                  <HorizontalSeparatorDiv size='0.5' />
+                  {t('el:button-cancel')}
+                </HighContrastFlatknapp>
+
+              </PileDiv>
             )}
           </PaddedFlexDiv>
           {_isDeleting && (

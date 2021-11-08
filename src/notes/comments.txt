@@ -7,9 +7,17 @@ I have to decide once and for all what is the id (orgnr + stardato) and check va
 
 //  verificar estado dos utkasts, pode ser que tenha de apagar unsbquando arranco com a página
 
+Move to ds-react
+Validation - better system for personName
+  -   Better system that opens forms when clicking validation error
+Move to yarn
+update ids.txt, uniform namespace
+Still have to properly fix registrering
+check all forms for onRemove(index or element), onAdd, etc
+remove underscores
+    - _set to set, set to handle
+    - validation, _val to thisVal
 
-
---> 400 login for Z992366
 
  grep -rho -e "'app:[^']*'" * | sort -u
  grep -rho -e "'label:[^']*'" * | sort -u

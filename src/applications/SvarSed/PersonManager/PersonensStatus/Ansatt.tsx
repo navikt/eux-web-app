@@ -32,7 +32,7 @@ import {
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { getOrgnr, hasOrgnr } from 'utils/arbeidsgiver'
+import { generateIdentifikatorKey, getOrgnr } from 'utils/arbeidsgiver'
 import { getFnr } from 'utils/fnr'
 import { getIdx } from 'utils/namespace'
 import makeRenderPlan, { PlanItem, RenderPlanProps } from 'utils/renderPlan'
@@ -40,10 +40,12 @@ import { validateAnsattPeriode, ValidationArbeidsperiodeProps } from './ansattVa
 
 interface AnsattSelector extends PersonManagerFormSelector {
   arbeidsperioder: Arbeidsperioder | null | undefined
+  highContrast: boolean
 }
 
 const mapState = (state: State): AnsattSelector => ({
   arbeidsperioder: state.arbeidsgiver.arbeidsperioder,
+  highContrast: state.ui.highContrast,
   replySed: state.svarpased.replySed,
   validation: state.validation.status
 })
@@ -56,6 +58,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
   const { t } = useTranslation()
   const {
     arbeidsperioder,
+    highContrast,
     replySed,
     validation
   } = useSelector<State, AnsattSelector>(mapState)
@@ -139,7 +142,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
       newPerioder = []
     }
     const newArbeidsgivere: Array<Arbeidsgiver> | undefined = _.cloneDeep(arbeidsperioder?.arbeidsperioder) as Array<Arbeidsgiver>
-    const needleId: string | undefined = getOrgnr(newArbeidsgiver)
+    const needleId: string | undefined = getOrgnr(newArbeidsgiver, 'registrering')
 
     if (needleId) {
       const indexArbeidsgiver = _.findIndex(newArbeidsgivere, (p: Arbeidsgiver) => p.arbeidsgiversOrgnr === needleId)
@@ -172,10 +175,10 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
       newPerioder = []
     }
     const newAddedArbeidsperioder: Array<PeriodeMedForsikring> = _.cloneDeep(_addedArbeidsperioder)
-    const needleId : string | undefined = getOrgnr(newArbeidsgiver)
+    const needleId : string | undefined = generateIdentifikatorKey(newArbeidsgiver.arbeidsgiver.identifikator)
 
     if (newAddedArbeidsperioder && needleId) {
-      const index = _.findIndex(newAddedArbeidsperioder, (p: PeriodeMedForsikring) => hasOrgnr(p, needleId))
+      const index = _.findIndex(newAddedArbeidsperioder, (p: PeriodeMedForsikring) => generateIdentifikatorKey(p.arbeidsgiver.identifikator) === needleId)
       if (index >= 0) {
         newAddedArbeidsperioder[index] = newArbeidsgiver
         setAddedArbeidsperioder(newAddedArbeidsperioder)
@@ -200,9 +203,9 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
 
   const onArbeidsgiverDelete = (deletedArbeidsgiver: PeriodeMedForsikring) => {
     let newAddedArbeidsperioder: Array<PeriodeMedForsikring> = _.cloneDeep(_addedArbeidsperioder)
-    const needleId : string | undefined = getOrgnr(deletedArbeidsgiver)
+    const needleId : string | undefined = generateIdentifikatorKey(deletedArbeidsgiver.arbeidsgiver.identifikator)
     if (newAddedArbeidsperioder && needleId) {
-      newAddedArbeidsperioder = _.filter(newAddedArbeidsperioder, (p: PeriodeMedForsikring) => !hasOrgnr(p, needleId))
+      newAddedArbeidsperioder = _.filter(newAddedArbeidsperioder, (p: PeriodeMedForsikring) => generateIdentifikatorKey(p.arbeidsgiver.identifikator) !== needleId)
       setAddedArbeidsperioder(newAddedArbeidsperioder)
       standardLogger('svarsed.editor.arbeidsgiver.added.remove')
     }
@@ -465,10 +468,11 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
               <ArbeidsgiverBox
                 arbeidsgiver={item.item as unknown as PeriodeMedForsikring}
                 editable='only_period'
+                highContrast={highContrast}
                 newArbeidsgiver={false}
                 includeAddress={includeAddress}
                 selected={!_.isNil(item.index) && item.index >= 0}
-                key={getOrgnr(item.item as unknown as PeriodeMedForsikring)}
+                key={getOrgnr(item.item as unknown as PeriodeMedForsikring, 'registrering')}
                 onArbeidsgiverSelect={onArbeidsgiverSelect}
                 onArbeidsgiverEdit={onRegisteredArbeidsgiverEdit}
                 namespace={namespace}
@@ -486,10 +490,11 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
                 arbeidsgiver={item.item as unknown as PeriodeMedForsikring}
                 editable='full'
                 error={item.duplicate}
+                highContrast={highContrast}
                 newArbeidsgiver
                 includeAddress={includeAddress}
                 selected={!_.isNil(item.index) && item.index >= 0}
-                key={getOrgnr(item.item as unknown as PeriodeMedForsikring)}
+                key={getOrgnr(item.item as unknown as PeriodeMedForsikring, 'registrering')}
                 onArbeidsgiverSelect={onArbeidsgiverSelect}
                 onArbeidsgiverDelete={onArbeidsgiverDelete}
                 onArbeidsgiverEdit={onArbeidsgiverEdit}

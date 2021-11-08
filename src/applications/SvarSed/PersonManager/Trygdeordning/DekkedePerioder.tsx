@@ -147,8 +147,8 @@ const DekkedePerioder: React.FC<PersonManagerFormProps> = ({
               onBeginRemove={() => addToDeletion(periode)}
               onConfirmRemove={() => onRemove(index)}
               onCancelRemove={() => removeFromDeletion(periode)}
-              onAddNew={() => onAdd()}
-              onCancelNew={() => onCancel()}
+              onAddNew={onAdd}
+              onCancelNew={onCancel}
             />
           </Column>
         </AlignStartRow>

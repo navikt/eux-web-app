@@ -52,29 +52,29 @@ export const validatePeriodeMedForsikring = (
     !_.isEmpty(periodeMedForsikring.arbeidsgiver.adresse?.land)
   )) {
     if (_.isEmpty(periodeMedForsikring.arbeidsgiver.adresse?.gate)) {
-      v[namespace + '-gate'] = {
-        skjemaelementId: namespace + '-gate',
+      v[namespace + '-adresse-gate'] = {
+        skjemaelementId: namespace + '-adresse-gate',
         feilmelding: t('validation:noAddressStreet')
       } as FeiloppsummeringFeil
       hasErrors = true
     }
     if (_.isEmpty(periodeMedForsikring.arbeidsgiver.adresse?.postnummer)) {
-      v[namespace + '-postnummer'] = {
-        skjemaelementId: namespace + '-postnummer',
+      v[namespace + '-adresse-postnummer'] = {
+        skjemaelementId: namespace + '-adresse-postnummer',
         feilmelding: t('validation:noAddressPostnummer')
       } as FeiloppsummeringFeil
       hasErrors = true
     }
     if (_.isEmpty(periodeMedForsikring.arbeidsgiver.adresse?.by)) {
-      v[namespace + '-by'] = {
-        skjemaelementId: namespace + '-by',
+      v[namespace + '-adresse-by'] = {
+        skjemaelementId: namespace + '-adresse-by',
         feilmelding: t('validation:noAddressCity')
       } as FeiloppsummeringFeil
       hasErrors = true
     }
     if (_.isEmpty(periodeMedForsikring.arbeidsgiver.adresse?.land)) {
-      v[namespace + '-land'] = {
-        skjemaelementId: namespace + '-land',
+      v[namespace + '-adresse-land'] = {
+        skjemaelementId: namespace + '-adresse-land',
         feilmelding: t('validation:noAddressCountry')
       } as FeiloppsummeringFeil
       hasErrors = true

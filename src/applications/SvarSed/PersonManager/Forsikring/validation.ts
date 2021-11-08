@@ -97,7 +97,7 @@ export const validateForsikringPeriode = (
     const _error: boolean = validateAdresse(v, t, {
       adresse: (periode as PeriodeMedForsikring)?.arbeidsgiver?.adresse,
       namespace: namespace + idx + '-arbeidsgiver-adresse',
-      personName
+      personName: (periode as PeriodeMedForsikring)?.arbeidsgiver?.navn ?? personName
     })
     hasErrors = hasErrors || _error
 

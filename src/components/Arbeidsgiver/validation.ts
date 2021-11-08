@@ -90,7 +90,7 @@ export const validateArbeidsgiver = (
     } as FeiloppsummeringFeil
     hasErrors = true
   }
-  if (_.isEmpty(getOrgnr(arbeidsgiver))) {
+  if (_.isEmpty(getOrgnr(arbeidsgiver, 'registrering'))) {
     v[namespace + '-orgnr'] = {
       skjemaelementId: namespace + '-orgnr',
       feilmelding: t('validation:noOrgnr')

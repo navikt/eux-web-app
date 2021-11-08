@@ -20,6 +20,7 @@ import {
   validateForsikringPeriode,
   ValidationForsikringPeriodeProps
 } from 'applications/SvarSed/PersonManager/Forsikring/validation'
+import IdentifikatorFC from 'applications/SvarSed/PersonManager/Identifikator/Identifikator'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Military from 'assets/icons/Military'
 import classNames from 'classnames'
@@ -161,7 +162,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
       _setNewPeriode({
         ..._newPeriode,
         arbeidsgiver: {
-          ...(_newPeriode as PeriodeMedForsikring).arbeidsgiver,
+          ...(_newPeriode as PeriodeMedForsikring)?.arbeidsgiver,
           navn: newNavn.trim()
         }
       } as PeriodeMedForsikring)
@@ -174,21 +175,20 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const setIdentifikator = (newOrgnr: string, type: string, index: number) => {
-    const newOrgEntry: Array<ArbeidsgiverIdentifikator> = [{ type: 'registrering', id: newOrgnr.trim() }]
+  const setIdentifikatorer = (newIdentifikatorer: Array<ArbeidsgiverIdentifikator>, whatChanged: string, type: string, index: number) => {
     if (index < 0) {
       _setNewPeriode({
         ..._newPeriode,
         arbeidsgiver: {
-          ...(_newPeriode as PeriodeMedForsikring).arbeidsgiver,
-          identifikator: newOrgEntry
+          ...(_newPeriode as PeriodeMedForsikring)?.arbeidsgiver,
+          identifikator: newIdentifikatorer
         }
       } as PeriodeMedForsikring)
-      _resetValidation(namespace + '-arbeidsgiver-identifikator')
+      _resetValidation(namespace + '-arbeidsgiver-identifikator-' + whatChanged)
     } else {
-      dispatch(updateReplySed(`${type}[${index}].arbeidsgiver.identifikator`, newOrgEntry))
-      if (validation[namespace + getNSIdx(type, index) + '-arbeidsgiver-identifikator']) {
-        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-arbeidsgiver-identifikator'))
+      dispatch(updateReplySed(`${type}[${index}].arbeidsgiver.identifikator`, newIdentifikatorer))
+      if (validation[namespace + getNSIdx(type, index) + '-arbeidsgiver-identifikator-' + whatChanged]) {
+        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-arbeidsgiver-identifikator-' + whatChanged))
       }
     }
   }
@@ -198,7 +198,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
       _setNewPeriode({
         ..._newPeriode,
         arbeidsgiver: {
-          ...(_newPeriode as PeriodeMedForsikring).arbeidsgiver,
+          ...(_newPeriode as PeriodeMedForsikring)?.arbeidsgiver,
           adresse: newAdresse
         }
       } as PeriodeMedForsikring)
@@ -270,7 +270,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const resetAdresseValidation = (fullnamespace: string, index: number) => {
+  const resetSubValidation = (fullnamespace: string, index: number) => {
     if (index < 0) {
       _resetValidation(fullnamespace)
     } else {
@@ -406,25 +406,24 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                       'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring',
                       'perioderAnnenForsikring'
                     ].indexOf(_type) >= 0 && (
-                      <div className='nolabel'>
-                        <HighContrastFlatknapp
-                          mini
-                          kompakt
-                          onClick={() => toggleVisibility(_type, _index)}
-                        >
-                          <FlexCenterDiv>
-                            <Chevron type={_visible ? 'opp' : 'ned'} />
-                            <HorizontalSeparatorDiv size='0.35' />
-                            {_visible ? t('label:show-less') : t('label:show-more')}
-                          </FlexCenterDiv>
-                        </HighContrastFlatknapp>
-                      </div>
+
+                      <HighContrastFlatknapp
+                        mini
+                        kompakt
+                        onClick={() => toggleVisibility(_type, _index)}
+                      >
+                        <FlexCenterDiv>
+                          <Chevron type={_visible ? 'opp' : 'ned'} />
+                          <HorizontalSeparatorDiv size='0.35' />
+                          {_visible ? t('label:show-less') : t('label:show-more')}
+                        </FlexCenterDiv>
+                      </HighContrastFlatknapp>
+
                     )}
                     <HorizontalSeparatorDiv size='0.5' />
                     <AddRemovePanel
                       candidateForDeletion={candidateForDeletion}
                       existingItem={(index >= 0)}
-                      marginTop
                       onBeginRemove={() => addToDeletion(periode)}
                       onConfirmRemove={() => onRemove(periode!)}
                       onCancelRemove={() => removeFromDeletion(periode)}
@@ -450,21 +449,24 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                   feil={_v[namespace + idx + '-arbeidsgiver-navn']?.feilmelding}
                   namespace={namespace + idx + '-arbeidsgiver'}
                   id='navn'
-                  key={namespace + idx + '-arbeidsgiver-navn-' + ((_periode as PeriodeMedForsikring).arbeidsgiver?.navn ?? '')}
+                  key={namespace + idx + '-arbeidsgiver-navn-' + ((_periode as PeriodeMedForsikring)?.arbeidsgiver?.navn ?? '')}
                   label={t('label:institusjonens-navn')}
                   onChanged={(newNavn: string) => setNavn(newNavn, _type, _index)}
-                  value={(_periode as PeriodeMedForsikring).arbeidsgiver?.navn ?? ''}
+                  value={(_periode as PeriodeMedForsikring)?.arbeidsgiver?.navn ?? ''}
                 />
               </Column>
+            </AlignStartRow>
+            <VerticalSeparatorDiv />
+            <AlignStartRow>
               <Column>
-                <Input
-                  feil={_v[namespace + idx + '-arbeidsgiver-identifikator']?.feilmelding}
-                  namespace={namespace + idx + '-arbeidsgiver'}
-                  id='identifikator'
-                  key={namespace + idx + '-arbeidsgiver-identifikator-' + ((_periode as PeriodeMedForsikring).arbeidsgiver?.identifikator?.[0]?.id ?? '')}
-                  label={t('label:institusjonens-orgnr')}
-                  onChanged={(newIdentifikator: string) => setIdentifikator(newIdentifikator, _type, _index)}
-                  value={(_periode as PeriodeMedForsikring).arbeidsgiver?.identifikator?.[0]?.id ?? ''}
+                <IdentifikatorFC
+                  highContrast={highContrast}
+                  identifikatorer={(_periode as PeriodeMedForsikring)?.arbeidsgiver?.identifikator}
+                  onIdentifikatorerChanged={(newIdentifikatorer: Array<ArbeidsgiverIdentifikator>, whatChanged: string) => setIdentifikatorer(newIdentifikatorer, whatChanged, _type, _index)}
+                  namespace={namespace + idx + '-identifikator'}
+                  validation={_v}
+                  personName={personName}
+                  resetValidation={(fullnamespace: string) => resetSubValidation(fullnamespace, _index)}
                 />
               </Column>
             </AlignStartRow>
@@ -476,8 +478,8 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                   adresse={(_periode as PeriodeMedForsikring).arbeidsgiver?.adresse}
                   onAdressChanged={(newAdresse, whatChanged) => setAdresse(newAdresse, whatChanged, _type, _index)}
                   namespace={namespace + idx + '-arbeidsgiver-adresse'}
-                  validation={index < 0 ? _validation : validation}
-                  resetValidation={(fullnamespace: string) => resetAdresseValidation(fullnamespace, _index)}
+                  validation={_v}
+                  resetValidation={(fullnamespace: string) => resetSubValidation(fullnamespace, _index)}
                 />
               </Column>
             </AlignStartRow>

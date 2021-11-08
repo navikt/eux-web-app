@@ -2,7 +2,9 @@ import { Add } from '@navikt/ds-icons'
 import { updateArbeidsgivere } from 'actions/arbeidsgiver'
 import { fetchInntekt } from 'actions/inntekt'
 import { updateReplySed } from 'actions/svarpased'
+import { resetValidation } from 'actions/validation'
 import AdresseFC from 'applications/SvarSed/PersonManager/Adresser/Adresse'
+import IdentifikatorFC from 'applications/SvarSed/PersonManager/Identifikator/Identifikator'
 import InntektSearch from 'applications/SvarSed/PersonManager/InntektSearch/InntektSearch'
 import { PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
@@ -13,7 +15,7 @@ import PeriodeInput from 'components/Forms/PeriodeInput'
 import Inntekt from 'components/Inntekt/Inntekt'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { Adresse, Periode, PeriodeMedForsikring, ReplySed } from 'declarations/sed'
+import { Adresse, ArbeidsgiverIdentifikator, Periode, PeriodeMedForsikring, ReplySed } from 'declarations/sed'
 import { Arbeidsgiver, Arbeidsperioder, IInntekter, Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
@@ -33,7 +35,7 @@ import {
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { getOrgnr, hasOrgnr, sanitizePeriodeMedForsikring } from 'utils/arbeidsgiver'
+import { generateIdentifikatorKey, getOrgnr, sanitizePeriodeMedForsikring } from 'utils/arbeidsgiver'
 import { getFnr } from 'utils/fnr'
 import makeRenderPlan, { PlanItem } from 'utils/renderPlan'
 import { validatePeriodeMedForsikring, ValidationPeriodeMedForsikringProps } from './validation'
@@ -84,7 +86,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
   const fnr = getFnr(replySed, personID)
 
   const [_newPeriode, _setNewPeriode] = useState<Periode>({ startdato: '' })
-  const [_newOrgnr, _setNewOrgnr] = useState<string>('')
+  const [_newIdentifikatorer, _setNewIdentifikatorer] = useState<Array<ArbeidsgiverIdentifikator> | undefined>(undefined)
   const [_newNavn, _setNewNavn] = useState<string>('')
   const [_newAdresse, _setNewAdresse] = useState<Adresse | undefined>(undefined)
 
@@ -137,7 +139,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
   const onPeriodeMedForsikringEdit = (newPeriodeMedForsikring: PeriodeMedForsikring, oldPeriodeMedForsikring: PeriodeMedForsikring, selected: boolean) => {
     const newPerioderMedForsikring: Array<PeriodeMedForsikring> = _.cloneDeep(perioder) as Array<PeriodeMedForsikring>
     const newArbeidsgivere: Array<Arbeidsgiver> = _.cloneDeep(arbeidsperioder?.arbeidsperioder) as Array<Arbeidsgiver>
-    const needleId: string | undefined = getOrgnr(newPeriodeMedForsikring)
+    const needleId: string | undefined = getOrgnr(newPeriodeMedForsikring, 'registrering')
     if (needleId) {
       const indexArbeidsgiver = _.findIndex(newArbeidsgivere, (p: Arbeidsgiver) => p.arbeidsgiversOrgnr === needleId)
       if (indexArbeidsgiver >= 0) {
@@ -146,7 +148,9 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
         dispatch(updateArbeidsgivere(newArbeidsgivere))
       }
       if (selected) {
-        const indexPerioder = _.findIndex(newPerioderMedForsikring, (p: PeriodeMedForsikring) => hasOrgnr(p, needleId))
+        const indexPerioder = _.findIndex(newPerioderMedForsikring, (p: PeriodeMedForsikring) =>
+          _.find(p.arbeidsgiver.identifikator, id => id.type === 'registrering' && id.id === needleId) !== undefined
+        )
         if (indexPerioder >= 0) {
           newPerioderMedForsikring[indexPerioder] = newPeriodeMedForsikring
           dispatch(updateReplySed(target, newPerioderMedForsikring))
@@ -160,16 +164,19 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
     const newPerioderMedForsikring: Array<PeriodeMedForsikring> = _.cloneDeep(perioder) as Array<PeriodeMedForsikring>
     const newAddedPeriodeMedForsikring: Array<PeriodeMedForsikring> = _.cloneDeep(_addedPeriodeMedForsikring)
     if (newAddedPeriodeMedForsikring) {
-      const needleId : string | undefined = getOrgnr(newPeriodeMedForsikring)
+      const needleId : string | undefined = generateIdentifikatorKey(newPeriodeMedForsikring.arbeidsgiver.identifikator)
       if (needleId) {
-        const index = _.findIndex(newAddedPeriodeMedForsikring, (p: PeriodeMedForsikring) => hasOrgnr(p, needleId))
+        const index = _.findIndex(newAddedPeriodeMedForsikring, (p: PeriodeMedForsikring) =>
+          generateIdentifikatorKey(p.arbeidsgiver.identifikator) === needleId)
         if (index >= 0) {
           newAddedPeriodeMedForsikring[index] = newPeriodeMedForsikring
           setAddedPeriodeMedForsikring(newAddedPeriodeMedForsikring)
         }
         if (selected) {
-          const indexPerioder = _.findIndex(newPerioderMedForsikring, (p: PeriodeMedForsikring) => hasOrgnr(p, needleId))
-          if (indexPerioder >= 0) {
+          const indexPerioder = _.findIndex(newAddedPeriodeMedForsikring, (p: Periode) => {
+            return oldPeriodeMedForsikring.startdato === p.startdato && oldPeriodeMedForsikring.sluttdato === p.sluttdato
+          })
+          if (indexPerioder > 0) {
             newPerioderMedForsikring[indexPerioder] = newPeriodeMedForsikring
             dispatch(updateReplySed(target, newPerioderMedForsikring))
           }
@@ -181,9 +188,10 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
 
   const onPeriodeMedForsikringDelete = (deletedPeriodeMedForsikring: PeriodeMedForsikring, selected: boolean) => {
     let newAddedPeriodeMedForsikring: Array<PeriodeMedForsikring> = _.cloneDeep(_addedPeriodeMedForsikring)
-    const needleId : string | undefined = getOrgnr(deletedPeriodeMedForsikring)
+    const needleId : string | undefined = generateIdentifikatorKey(deletedPeriodeMedForsikring.arbeidsgiver.identifikator)
     if (needleId) {
-      newAddedPeriodeMedForsikring = _.filter(newAddedPeriodeMedForsikring, (p: PeriodeMedForsikring) => !hasOrgnr(p, needleId))
+      newAddedPeriodeMedForsikring = _.filter(newAddedPeriodeMedForsikring, (p: PeriodeMedForsikring) =>
+        generateIdentifikatorKey(p.arbeidsgiver.identifikator) !== needleId)
       setAddedPeriodeMedForsikring(newAddedPeriodeMedForsikring)
     }
     if (selected) {
@@ -194,7 +202,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
 
   const resetArbeidsgiverForm = () => {
     _setNewNavn('')
-    _setNewOrgnr('')
+    _setNewIdentifikatorer(undefined)
     _setNewPeriode({ startdato: '' })
     _setNewAdresse(undefined)
     _resetValidationPeriodeMedForsikring()
@@ -211,10 +219,11 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
     _setNewPeriode(p)
   }
 
-  const onArbeidsgiversOrgnrChanged = (newOrg: string) => {
-    _resetValidationPeriodeMedForsikring(namespace + '-orgnr')
-    _setNewOrgnr(newOrg)
+  const onIdentifikatorerChanged = (newIdentifikatorer: Array<ArbeidsgiverIdentifikator>) => {
+    _setNewIdentifikatorer(newIdentifikatorer)
   }
+
+  const resetSubValidation = (fullnamespace: string) => resetValidation(fullnamespace)
 
   const onArbeidsgiversNavnChanged = (newName: string) => {
     _resetValidationPeriodeMedForsikring(namespace + '-navn')
@@ -233,10 +242,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
     const newPeriodeMedForsikring: PeriodeMedForsikring = {
       ..._newPeriode,
       arbeidsgiver: {
-        identifikator: [{
-          type: 'registrering',
-          id: _newOrgnr
-        }],
+        identifikator: _newIdentifikatorer as Array<ArbeidsgiverIdentifikator>,
         navn: _newNavn,
         adresse: _newAdresse
       }
@@ -279,14 +285,14 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
       <VerticalSeparatorDiv size='0.5' />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
         <Column>
-          <Input
-            feil={_validationPeriodeMedForsikring[namespace + '-orgnr']?.feilmelding}
-            namespace={namespace}
-            id='orgnr'
-            key={'orgnr-' + _newOrgnr}
-            label={t('label:orgnr')}
-            onChanged={onArbeidsgiversOrgnrChanged}
-            value={_newOrgnr}
+          <IdentifikatorFC
+            highContrast={highContrast}
+            identifikatorer={_newIdentifikatorer}
+            onIdentifikatorerChanged={onIdentifikatorerChanged}
+            namespace={namespace + '-identifikator'}
+            validation={_validationPeriodeMedForsikring}
+            personName={_newNavn}
+            resetValidation={resetSubValidation}
           />
         </Column>
         <Column>
@@ -349,11 +355,12 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
           <AlignStartRow className='slideInFromLeft'>
             <Column flex='2'>
               <ArbeidsgiverBox
+                highContrast={highContrast}
                 arbeidsgiver={item.item}
                 editable='no'
                 includeAddress={includeAddress}
                 orphanArbeidsgiver
-                key={getOrgnr(item.item)}
+                key={getOrgnr(item.item, 'registrering')}
                 namespace={namespace}
                 selectable={false}
               />
@@ -378,10 +385,11 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
               <ArbeidsgiverBox
                 arbeidsgiver={item.item}
                 editable='only_period'
+                highContrast={highContrast}
                 includeAddress={includeAddress}
                 newArbeidsgiver={false}
                 selected={!_.isNil(item.index) && item.index >= 0}
-                key={getOrgnr(item.item)}
+                key={getOrgnr(item.item, 'registrering')}
                 onArbeidsgiverSelect={onPeriodeMedForsikringSelect}
                 onArbeidsgiverEdit={onPeriodeMedForsikringEdit}
                 namespace={namespace}
@@ -397,11 +405,12 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
               <ArbeidsgiverBox
                 arbeidsgiver={item.item}
                 editable='full'
+                highContrast={highContrast}
                 includeAddress={includeAddress}
                 error={item.duplicate}
                 newArbeidsgiver
                 selected={!_.isNil(item.index) && item.index >= 0}
-                key={getOrgnr(item.item)}
+                key={getOrgnr(item.item, 'registrering')}
                 onArbeidsgiverSelect={onPeriodeMedForsikringSelect}
                 onArbeidsgiverDelete={onPeriodeMedForsikringDelete}
                 onArbeidsgiverEdit={onAddedPeriodeMedForsikringEdit}
