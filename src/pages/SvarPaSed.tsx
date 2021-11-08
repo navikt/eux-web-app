@@ -19,6 +19,7 @@ import SEDSelection from 'pages/SvarPaSed/SEDSelection'
 import PT from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
 const transition = 500
@@ -89,8 +90,6 @@ export interface SvarPaSedPageProps {
   onFullFocus?: () => void
   onRestoreFocus?: () => void
   waitForMount?: boolean
-  location: any
-  setMode: (mode: string, from: string, callback?: () => void) => void
 }
 
 export enum Slide {
@@ -113,11 +112,11 @@ const mapState = (state: State): SvarPaSedPageSelector => ({
 })
 
 export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
-  location,
-  waitForMount = true
+    waitForMount = true
 }: SvarPaSedPageProps): JSX.Element => {
   const dispatch = useDispatch()
 
+  const location = useLocation()
   const [_mounted, setMounted] = useState<boolean>(!waitForMount)
   const storageKey = 'replySed'
   const { featureToggles }: SvarPaSedPageSelector = useSelector<State, SvarPaSedPageSelector>(mapState)

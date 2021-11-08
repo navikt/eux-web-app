@@ -22,6 +22,7 @@ import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
 const Link = styled(Lenke)`
@@ -42,10 +43,6 @@ export interface VedleggSelector {
   sendingVedlegg: boolean
 }
 
-export interface VedleggProps {
-  location: any
-}
-
 const mapState = (state: State): VedleggSelector => ({
   alertMessage: state.alert.clientErrorMessage,
   alertType: state.alert.type,
@@ -57,9 +54,10 @@ const mapState = (state: State): VedleggSelector => ({
   sendingVedlegg: state.loading.sendingVedlegg
 })
 
-const Vedlegg: React.FC<VedleggProps> = ({ location }: VedleggProps): JSX.Element => {
+const Vedlegg: React.FC = (): JSX.Element => {
   const [mounted, setMounted] = useState(false)
   const dispatch = useDispatch()
+  const location = useLocation()
   const { t } = useTranslation()
   const { alertMessage, alertType, journalpostID, dokumentID, rinasaksnummer, rinadokumentID, sendingVedlegg, vedlegg }: VedleggSelector = useSelector<State, VedleggSelector>(mapState)
   const [_isRinaNumberValid, setIsRinaNumberValid] = useState<boolean>(false)

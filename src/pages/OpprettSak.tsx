@@ -28,7 +28,6 @@ import {
   Tema
 } from 'declarations/types'
 import * as EKV from 'eessi-kodeverk'
-import { History } from 'history'
 import useValidation from 'hooks/useValidation'
 import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
@@ -57,13 +56,10 @@ import PT from 'prop-types'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { periodeMedForsikringToArbeidsgiver } from 'utils/arbeidsgiver'
 import { validateOpprettSak, ValidationOpprettSakProps } from './validationOpprettSak'
 
-export interface OpprettSakProps {
-  history: History
-}
 
 export interface OpprettSakSelector {
   alertStatus: AlertStatus | undefined
@@ -149,9 +145,7 @@ const mapState = (state: State): OpprettSakSelector => ({
   highContrast: state.ui.highContrast
 })
 
-const OpprettSak: React.FC<OpprettSakProps> = ({
-  history
-}: OpprettSakProps): JSX.Element => {
+const OpprettSak: React.FC = (): JSX.Element => {
   const {
     alertStatus,
     alertMessage,
@@ -189,7 +183,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
   }: OpprettSakSelector = useSelector<State, OpprettSakSelector>(mapState)
   const dispatch = useDispatch()
   const { t } = useTranslation()
-
+  const navigate = useNavigate()
   const namespace = 'opprettsak'
   const [_visModal, setVisModal] = useState<boolean>(false)
   const [_isFnrValid, setIsFnrValid] = useState<boolean>(false)
@@ -258,7 +252,7 @@ const OpprettSak: React.FC<OpprettSakProps> = ({
   const onAbort = (): void => {
     dispatch(sakActions.cleanData())
     dispatch(appActions.cleanData())
-    history.push('/')
+    navigate('/')
   }
 
   const onUnitChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {

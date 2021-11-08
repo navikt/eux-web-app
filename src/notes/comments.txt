@@ -3,9 +3,8 @@ Todo:
 1. na familierelasjon, pode ser que envie borSammen, etc com REPA/EKTE/etc. Confirmar que backend limpa
 
 I have to decide once and for all what is the id (orgnr + stardato) and check validation when I duplicate them
-=>  Editing arbeidsgiver / PeriodeMedForsikring thta is already selected, does NOT update the replySed
+=>  Editing arbeidsgiver / PeriodeMedForsikring that is already selected, does NOT update the replySed
 
-//  verificar estado dos utkasts, pode ser que tenha de apagar unsbquando arranco com a página
 
 Move to ds-react
 Validation - better system for personName
@@ -45,7 +44,7 @@ ui improvs:
      - usar listas
      - role=alert
        aria-checked="false"
-        aria-label/ aria-labelledby
+       aria-label/ aria-labelledby
        aria-describedby attr
        required / aria-required.
        aria-invalid
@@ -53,7 +52,6 @@ ui improvs:
 
 - unit tests
 
-Opprettsak:
 
---> key in select
+Opprettsak:
 --> when arbeidsgivere list is []

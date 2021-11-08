@@ -1,7 +1,6 @@
 import * as appActions from 'actions/app'
 import { IS_PRODUCTION } from 'constants/environment'
 import 'core-js'
-import { createBrowserHistory } from 'history'
 import * as Amplitude from 'metrics/amplitude'
 import * as Sentry from 'metrics/sentry'
 import 'nav-frontend-alertstriper-style/dist/main.css'
@@ -25,7 +24,7 @@ import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom'
 import { I18nextProvider } from 'react-i18next'
 import { Provider } from 'react-redux'
-import { Route, Router, Switch } from 'react-router'
+import { Route, Routes, BrowserRouter } from 'react-router-dom'
 import * as reducers from 'reducers'
 import { applyMiddleware, combineReducers, compose, createStore, Store } from 'redux'
 import thunk from 'redux-thunk'
@@ -59,15 +58,15 @@ ReactDOM.render(
   <I18nextProvider i18n={i18n}>
     <Provider store={store}>
       <Suspense fallback={<span>...</span>}>
-        <Router history={createBrowserHistory()}>
-          <Switch>
-            <Route path='/vedlegg' component={Pages.Vedlegg} />
-            <Route path='/opprett' component={Pages.OpprettSak} />
-            <Route path='/svarpased' component={Pages.SvarPaSed} />
-            <Route exact path='/' component={Pages.Forside} />
-            <Route component={Pages.UkjentSide} />
-          </Switch>
-        </Router>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/vedlegg' element={<Pages.Vedlegg/>} />
+            <Route path='/opprett' element={<Pages.OpprettSak/>} />
+            <Route path='/svarpased' element={<Pages.SvarPaSed/>} />
+            <Route path='/' element={<Pages.Forside/>} />
+            <Route element={<Pages.UkjentSide/>} />
+          </Routes>
+        </BrowserRouter>
       </Suspense>
     </Provider>
   </I18nextProvider>,
