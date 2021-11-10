@@ -88,6 +88,7 @@ export interface TopContainerProps {
   children?: JSX.Element | Array<JSX.Element | null>
   fluid?: boolean
   header?: string | JSX.Element
+  title: string
 }
 
 export interface TopContainerSelector {
@@ -107,7 +108,7 @@ const mapState = (state: State): TopContainerSelector => ({
 })
 
 export const TopContainer: React.FC<TopContainerProps> = ({
-  className, children
+  className, children, title
 }: TopContainerProps): JSX.Element => {
   const {
     serverErrorMessage, error, expirationTime, highContrast, modal
@@ -155,7 +156,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
           // reset the state of your app so the error doesn't happen again
         }}
       >
-        <Header />
+        <Header title={title} />
         <Alert
           message={getServerErrorMessage()}
           error={error}

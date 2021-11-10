@@ -14,9 +14,9 @@
   "error-sending-attachments" : "Feil å sende vedlegg",
   "error-serverInternalError": "Serverens interne feil",
   "error-serverAuthenticationError": "Serverautentiseringsfeil",
-  "error-svarPaSed-failure" : "Det oppsto en feil under sending av data for å svare på SED",
-  "error-svarPaSed-failure-duplicate" : "Kunne ikke opprette SED. ",
-  "error-svarPaSed-failure-duplicate-2" : "Fins det allerede en SED i Rina?",
+  "error-svarsed-failure" : "Det oppsto en feil under sending av data for å svare på SED",
+  "error-svarsed-failure-duplicate" : "Kunne ikke opprette SED. ",
+  "error-svarsed-failure-duplicate-2" : "Fins det allerede en SED i Rina?",
 
   "error-tpsperson-exists": "Du kan ikke legge til samme person flere ganger",
   "error-unknownPage-cantFindRoute": "Denne siden finnes ikke: '{{pathname}}'.",

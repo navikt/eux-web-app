@@ -1,8 +1,4 @@
 {
-  "indexpage-addAttachment": "Legg vedlegg til SED",
-  "indexpage-createCase" : "Opprett sak",
-  "indexpage-svarSed": "SvarSED eller ny SED i eksisterende sak",
-  "indexpage-pdu1": "PD U1 - Perioder av betydning for retten til dagpenger",
 
   "info-confirm-information" : "Vi bekrefter leverte opplysninger",
   "info-point-information" : "Gi oss punktvise opplysninger",
@@ -22,6 +18,13 @@
 
   "ok-got-it" : "Ok, stemmer det",
 
+  "page-title-forside": "Velkommen til nEESSI",
+  "page-title-vedlegg": "Legg vedlegg til SED",
+  "page-title-opprettsak" : "Opprett sak",
+  "page-title-svarsed": "SvarSED eller ny SED i eksisterende sak",
+  "page-title-pdu1": "PD U1 - Perioder av betydning for retten til dagpenger",
+  "page-title-unknown": "Ukjent",
+
   "session-expire-title" : "Du vil snart bli logget ut",
   "session-expire-text" : "Husk å lagre opplysningene. Hvis du ønsker å fortsette, må du logge inn igjen.  Du blir logget ut om {{minutes}} minutter",
 
@@ -29,7 +32,5 @@
   "status-received-received" : "Mottatt",
   "status-received-new" : "Utkast",
   "status-received-active" : "Aktiv",
-  "status-received-cancelled" : "Kansellert",
-
-  "title": "Velkommen til nEESSI"
+  "status-received-cancelled" : "Kansellert"
 }

@@ -1,4 +1,4 @@
-import { updateReplySed } from 'actions/svarpased'
+import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { FormålManagerFormProps, FormålManagerFormSelector, mapState } from 'applications/SvarSed/Formaal/FormålManager'
 import Adresse from 'applications/SvarSed/PersonManager/Adresser/Adresse'

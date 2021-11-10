@@ -1,5 +1,5 @@
 import { Helptext } from '@navikt/ds-icons'
-import { setReplySed } from 'actions/svarpased'
+import { setReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import TextArea from 'components/Forms/TextArea'
@@ -23,7 +23,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
 const mapState = (state: State): PersonManagerFormSelector => ({
-  replySed: state.svarpased.replySed,
+  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 

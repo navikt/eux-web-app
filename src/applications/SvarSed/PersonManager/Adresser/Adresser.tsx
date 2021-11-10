@@ -1,5 +1,5 @@
 import { Add } from '@navikt/ds-icons'
-import { updateReplySed } from 'actions/svarpased'
+import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { mapState } from 'applications/SvarSed/Formaal/FormålManager'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'

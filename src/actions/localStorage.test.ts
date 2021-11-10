@@ -2,7 +2,7 @@ import * as localStorageActions from 'actions/localStorage'
 import * as types from 'constants/actionTypes'
 import { ReplySed } from 'declarations/sed'
 import { LocalStorageEntry } from 'declarations/types'
-import getReplySed from 'mocks/replySed'
+import getReplySed from 'mocks/svarsed/replySed'
 
 describe('actions/localStorage', () => {
   it('loadEntries()', () => {

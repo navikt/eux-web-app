@@ -9,7 +9,6 @@ import AlertStripe from 'nav-frontend-alertstriper'
 import Hjelpetekst from 'nav-frontend-hjelpetekst'
 import Lenke from 'nav-frontend-lenker'
 import { FeiloppsummeringFeil, Input } from 'nav-frontend-skjema'
-import { Systemtittel } from 'nav-frontend-typografi'
 import {
   Container,
   Content,
@@ -146,14 +145,10 @@ const Vedlegg: React.FC = (): JSX.Element => {
   }
 
   return (
-    <TopContainer>
+    <TopContainer title={t('app:page-title-vedlegg')}>
       <Container>
         <Margin />
         <Content>
-          <VerticalSeparatorDiv />
-          <Systemtittel>
-            {t('label:vedlegg')}
-          </Systemtittel>
           <VerticalSeparatorDiv />
           <div className='noslideInFromLeft'>
             <Input

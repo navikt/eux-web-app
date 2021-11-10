@@ -1,4 +1,4 @@
-import { updateReplySed } from 'actions/svarpased'
+import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
@@ -37,7 +37,7 @@ interface SisteAnsettelsesForholdSelector extends PersonManagerFormSelector {
 
 const mapState = (state: State): SisteAnsettelsesForholdSelector => ({
   highContrast: state.ui.highContrast,
-  replySed: state.svarpased.replySed,
+  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 

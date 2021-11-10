@@ -1,7 +1,7 @@
 import { Add } from '@navikt/ds-icons'
 import { updateArbeidsgivere } from 'actions/arbeidsgiver'
 import { fetchInntekt } from 'actions/inntekt'
-import { updateReplySed } from 'actions/svarpased'
+import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import AdresseFC from 'applications/SvarSed/PersonManager/Adresser/Adresse'
 import IdentifikatorFC from 'applications/SvarSed/PersonManager/Identifikator/Identifikator'
@@ -61,7 +61,7 @@ const mapState = (state: State): ArbeidsforholdSelector => ({
   gettingArbeidsperioder: state.loading.gettingArbeidsperioder,
   inntekter: state.inntekt.inntekter,
   gettingInntekter: state.loading.gettingInntekter,
-  replySed: state.svarpased.replySed,
+  replySed: state.svarsed.replySed,
   validation: state.validation.status,
   highContrast: state.ui.highContrast
 })

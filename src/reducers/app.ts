@@ -3,6 +3,7 @@ import { FeatureToggles, Params } from 'declarations/app'
 import { BucTyper, Enheter, Kodemaps, Kodeverk, Saksbehandler, ServerInfo, Tema } from 'declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
 import _ from 'lodash'
+import { IS_DEVELOPMENT } from 'constants/environment'
 
 export interface AppState {
   buctyper: BucTyper | undefined
@@ -50,7 +51,7 @@ export const initialAppState: AppState = {
   featureToggles: {
     featureSvarsed: true,
     'featureSvarsed.u': false,
-    featurePdu1: true
+    featurePdu1: IS_DEVELOPMENT
   }
 }
 
@@ -85,7 +86,10 @@ const appReducer = (state: AppState = initialAppState, action: ActionWithPayload
         ...state,
         brukernavn: brukernavn,
         navn: navn,
-        featureToggles: payload
+        featureToggles: {
+          ...state.featureToggles,
+          payload
+        }
       }
     }
 

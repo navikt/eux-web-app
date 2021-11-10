@@ -1,4 +1,4 @@
-import mockArbeidsgiver from 'mocks/arbeidsgiver'
+import mockArbeidsgiver from 'mocks/arbeidsgiver/arbeidsgiver'
 import mockFamilierelasjon from 'mocks/familierelasjon'
 
 export default {

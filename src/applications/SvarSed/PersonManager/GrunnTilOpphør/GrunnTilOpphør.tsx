@@ -1,4 +1,4 @@
-import { updateReplySed } from 'actions/svarpased'
+import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Input from 'components/Forms/Input'
@@ -19,7 +19,7 @@ interface GrunnTilOpphørSelector extends PersonManagerFormSelector {
 
 const mapState = (state: State): GrunnTilOpphørSelector => ({
   highContrast: state.ui.highContrast,
-  replySed: state.svarpased.replySed,
+  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 

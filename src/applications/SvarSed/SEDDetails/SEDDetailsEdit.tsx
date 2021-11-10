@@ -1,4 +1,4 @@
-import { updateReplySed } from 'actions/svarpased'
+import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { Country, CountryFilter } from 'land-verktoy'
 import CountrySelect from 'landvelger'

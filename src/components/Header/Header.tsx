@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import NEESSILogo from 'assets/logos/nEESSI'
 import styled from 'styled-components'
+import PT from 'prop-types'
 
 const HeaderContent = styled.header`
   background-color: ${({ theme }: any) => theme.type === 'themeHighContrast' ? theme[themeKeys.MAIN_BACKGROUND_COLOR] : '#99c2e8'};
@@ -58,11 +59,17 @@ export interface HeaderSelector {
   saksbehandler: Saksbehandler | undefined
 }
 
+export interface HeaderProps {
+  title: string
+}
+
 export const mapState = (state: State): HeaderSelector => ({
   saksbehandler: state.app.saksbehandler
 })
 
-const Header: React.FC = (): JSX.Element => {
+const Header: React.FC<HeaderProps> = ({
+  title
+}: HeaderProps): JSX.Element => {
   const { saksbehandler }: HeaderSelector = useSelector<State, HeaderSelector>(mapState)
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -85,7 +92,7 @@ const Header: React.FC = (): JSX.Element => {
         </Title>
       </Brand>
       <Undertittel>
-        {t('app:title')}
+        {title}
       </Undertittel>
       <SaksbehandlerDiv>
         <HighContrastLink
@@ -110,6 +117,8 @@ const Header: React.FC = (): JSX.Element => {
   )
 }
 
-Header.propTypes = {}
+Header.propTypes = {
+  title: PT.string.isRequired
+}
 
 export default Header

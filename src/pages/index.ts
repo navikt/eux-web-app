@@ -1,8 +1,8 @@
-import Forside from './Forside'
-import OpprettSak from './OpprettSak'
-import Vedlegg from './Vedlegg'
-import UkjentSide from './UkjentSide'
-import SvarPaSed from './SvarPaSed/SvarPaSed'
+import Forside from './Forside/Forside'
+import OpprettSak from './OpprettSak/OpprettSak'
+import Vedlegg from './Vedlegg/Vedlegg'
+import UkjentSide from './UkjentSide/UkjentSide'
+import SvarSed from './SvarSed/SvarSed'
 import PDU1 from './PDU1/PDU1'
 
 export default {
@@ -10,6 +10,6 @@ export default {
   OpprettSak,
   Vedlegg,
   UkjentSide,
-  SvarPaSed,
+  SvarSed,
   PDU1
 }

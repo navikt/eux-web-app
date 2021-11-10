@@ -1,7 +1,6 @@
-import * as svarpasedActions from 'actions/svarpased'
+import * as svarsedActions from 'actions/svarsed'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { SvarPaSedMode } from 'declarations/app'
 import { ReplySed } from 'declarations/sed'
 import { ConnectedSed } from 'declarations/types'
 import { call as originalCall } from 'js-fetch-api'
@@ -12,7 +11,7 @@ jest.mock('js-fetch-api', () => ({
 }))
 const call = originalCall as jest.Mock<typeof originalCall>
 
-describe('actions/svarpased', () => {
+describe('actions/svarsed', () => {
   afterEach(() => {
     call.mockReset()
   })
@@ -26,13 +25,13 @@ describe('actions/svarpased', () => {
       saksnummer: '123',
       sakUrl: 'url'
     } as ReplySed
-    svarpasedActions.createSed(replySed)
+    svarsedActions.createSed(replySed)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.SVARPASED_SED_CREATE_REQUEST,
-          success: types.SVARPASED_SED_CREATE_SUCCESS,
-          failure: types.SVARPASED_SED_CREATE_FAILURE
+          request: types.SVARSED_SED_CREATE_REQUEST,
+          success: types.SVARSED_SED_CREATE_SUCCESS,
+          failure: types.SVARSED_SED_CREATE_FAILURE
         },
         method: 'POST',
         url: sprintf(urls.API_SED_CREATE_URL, { rinaSakId: replySed.saksnummer })
@@ -43,13 +42,13 @@ describe('actions/svarpased', () => {
     const fnr = 'mockFnr'
     const sektor = 'mockSektor'
     const tema = 'mockTema'
-    svarpasedActions.getFagsaker(fnr, sektor, tema)
+    svarsedActions.getFagsaker(fnr, sektor, tema)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.SVARPASED_FAGSAKER_GET_REQUEST,
-          success: types.SVARPASED_FAGSAKER_GET_SUCCESS,
-          failure: types.SVARPASED_FAGSAKER_GET_FAILURE
+          request: types.SVARSED_FAGSAKER_GET_REQUEST,
+          success: types.SVARSED_FAGSAKER_GET_SUCCESS,
+          failure: types.SVARSED_FAGSAKER_GET_FAILURE
         },
         url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr: fnr, sektor: sektor, tema: tema })
       }))
@@ -61,13 +60,13 @@ describe('actions/svarpased', () => {
       saksnummer: '123',
       sakUrl: 'url'
     } as ReplySed
-    svarpasedActions.getPreviewFile(rinaSakId, replySed)
+    svarsedActions.getPreviewFile(rinaSakId, replySed)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.SVARPASED_PREVIEW_REQUEST,
-          success: types.SVARPASED_PREVIEW_SUCCESS,
-          failure: types.SVARPASED_PREVIEW_FAILURE
+          request: types.SVARSED_PREVIEW_REQUEST,
+          success: types.SVARSED_PREVIEW_SUCCESS,
+          failure: types.SVARSED_PREVIEW_FAILURE
         },
         url: sprintf(urls.API_PREVIEW_URL, { rinaSakId: rinaSakId })
       }))
@@ -77,13 +76,13 @@ describe('actions/svarpased', () => {
     const rinaSakId = '123'
     const sedId = '456'
 
-    svarpasedActions.getSedStatus(rinaSakId, sedId)
+    svarsedActions.getSedStatus(rinaSakId, sedId)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.SVARPASED_SED_STATUS_REQUEST,
-          success: types.SVARPASED_SED_STATUS_SUCCESS,
-          failure: types.SVARPASED_SED_STATUS_FAILURE
+          request: types.SVARSED_SED_STATUS_REQUEST,
+          success: types.SVARSED_SED_STATUS_SUCCESS,
+          failure: types.SVARSED_SED_STATUS_FAILURE
         },
         url: sprintf(urls.API_SED_STATUS_URL, { rinaSakId: rinaSakId, sedId: sedId })
       }))
@@ -92,13 +91,13 @@ describe('actions/svarpased', () => {
   it('querySaksnummerOrFnr() - saksnummer', () => {
     const saksnummerOrFnr = '123'
 
-    svarpasedActions.querySaksnummerOrFnr(saksnummerOrFnr)
+    svarsedActions.querySaksnummerOrFnr(saksnummerOrFnr)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.SVARPASED_SAKSNUMMERORFNR_QUERY_REQUEST,
-          success: types.SVARPASED_SAKSNUMMERORFNR_QUERY_SUCCESS,
-          failure: types.SVARPASED_SAKSNUMMERORFNR_QUERY_FAILURE
+          request: types.SVARSED_SAKSNUMMERORFNR_QUERY_REQUEST,
+          success: types.SVARSED_SAKSNUMMERORFNR_QUERY_SUCCESS,
+          failure: types.SVARSED_SAKSNUMMERORFNR_QUERY_FAILURE
         },
         context: {
           type: 'saksnummer',
@@ -111,13 +110,13 @@ describe('actions/svarpased', () => {
   it('querySaksnummerOrFnr() - valid fnr', () => {
     const saksnummerOrFnr = '24053626692'
 
-    svarpasedActions.querySaksnummerOrFnr(saksnummerOrFnr)
+    svarsedActions.querySaksnummerOrFnr(saksnummerOrFnr)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.SVARPASED_SAKSNUMMERORFNR_QUERY_REQUEST,
-          success: types.SVARPASED_SAKSNUMMERORFNR_QUERY_SUCCESS,
-          failure: types.SVARPASED_SAKSNUMMERORFNR_QUERY_FAILURE
+          request: types.SVARSED_SAKSNUMMERORFNR_QUERY_REQUEST,
+          success: types.SVARSED_SAKSNUMMERORFNR_QUERY_SUCCESS,
+          failure: types.SVARSED_SAKSNUMMERORFNR_QUERY_FAILURE
         },
         context: {
           type: 'fnr',
@@ -130,13 +129,13 @@ describe('actions/svarpased', () => {
   it('querySaksnummerOrFnr() - valid dnr', () => {
     const saksnummerOrFnr = '43099015781'
 
-    svarpasedActions.querySaksnummerOrFnr(saksnummerOrFnr)
+    svarsedActions.querySaksnummerOrFnr(saksnummerOrFnr)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.SVARPASED_SAKSNUMMERORFNR_QUERY_REQUEST,
-          success: types.SVARPASED_SAKSNUMMERORFNR_QUERY_SUCCESS,
-          failure: types.SVARPASED_SAKSNUMMERORFNR_QUERY_FAILURE
+          request: types.SVARSED_SAKSNUMMERORFNR_QUERY_REQUEST,
+          success: types.SVARSED_SAKSNUMMERORFNR_QUERY_SUCCESS,
+          failure: types.SVARSED_SAKSNUMMERORFNR_QUERY_FAILURE
         },
         context: {
           type: 'dnr',
@@ -154,13 +153,13 @@ describe('actions/svarpased', () => {
     } as ConnectedSed
     const saksnummer = '456'
     const sakUrl = 'mockSakurl'
-    svarpasedActions.queryReplySed(connectedSed, saksnummer, sakUrl)
+    svarsedActions.queryReplySed(connectedSed, saksnummer, sakUrl)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.SVARPASED_REPLYSED_QUERY_REQUEST,
-          success: types.SVARPASED_REPLYSED_QUERY_SUCCESS,
-          failure: types.SVARPASED_REPLYSED_QUERY_FAILURE
+          request: types.SVARSED_REPLYSED_QUERY_REQUEST,
+          success: types.SVARSED_REPLYSED_QUERY_SUCCESS,
+          failure: types.SVARSED_REPLYSED_QUERY_FAILURE
         },
         context: {
           saksnummer: saksnummer,
@@ -176,31 +175,31 @@ describe('actions/svarpased', () => {
   })
 
   it('resetPreviewFile()', () => {
-    const generatedResult = svarpasedActions.resetPreviewFile()
+    const generatedResult = svarsedActions.resetPreviewFile()
     expect(generatedResult)
       .toMatchObject({
-        type: types.SVARPASED_PREVIEW_RESET
+        type: types.SVARSED_PREVIEW_RESET
       })
   })
 
   it('resetReplySed()', () => {
-    const generatedResult = svarpasedActions.resetReplySed()
+    const generatedResult = svarsedActions.resetReplySed()
     expect(generatedResult)
       .toMatchObject({
-        type: types.SVARPASED_REPLYSED_RESET
+        type: types.SVARSED_REPLYSED_RESET
       })
   })
 
   it('sendSedInRina()', () => {
     const rinaSakId = '123'
     const sedId = '456'
-    svarpasedActions.sendSedInRina(rinaSakId, sedId)
+    svarsedActions.sendSedInRina(rinaSakId, sedId)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.SVARPASED_SED_SEND_REQUEST,
-          success: types.SVARPASED_SED_SEND_SUCCESS,
-          failure: types.SVARPASED_SED_SEND_FAILURE
+          request: types.SVARSED_SED_SEND_REQUEST,
+          success: types.SVARSED_SED_SEND_SUCCESS,
+          failure: types.SVARSED_SED_SEND_FAILURE
         },
         method: 'POST',
         url: sprintf(urls.API_SED_SEND_URL, {
@@ -210,32 +209,22 @@ describe('actions/svarpased', () => {
       }))
   })
 
-  it('setMode()', () => {
-    const mode = 'mockMode' as SvarPaSedMode
-    const generatedResult = svarpasedActions.setMode(mode)
-    expect(generatedResult)
-      .toMatchObject({
-        type: types.SVARPASED_MODE_SET,
-        payload: mode
-      })
-  })
-
   it('setParentSed()', () => {
     const payload = 'payload'
-    const generatedResult = svarpasedActions.setParentSed(payload)
+    const generatedResult = svarsedActions.setParentSed(payload)
     expect(generatedResult)
       .toMatchObject({
-        type: types.SVARPASED_PARENTSED_SET,
+        type: types.SVARSED_PARENTSED_SET,
         payload: payload
       })
   })
 
   it('setReplySed()', () => {
     const replySed = 'replySed'
-    const generatedResult = svarpasedActions.setReplySed(replySed)
+    const generatedResult = svarsedActions.setReplySed(replySed)
     expect(generatedResult)
       .toMatchObject({
-        type: types.SVARPASED_REPLYSED_SET,
+        type: types.SVARSED_REPLYSED_SET,
         payload: replySed
       })
   })
@@ -243,10 +232,10 @@ describe('actions/svarpased', () => {
   it('updateReplySed()', () => {
     const needle = 'needle'
     const value = 'value'
-    const generatedResult = svarpasedActions.updateReplySed(needle, value)
+    const generatedResult = svarsedActions.updateReplySed(needle, value)
     expect(generatedResult)
       .toMatchObject({
-        type: types.SVARPASED_REPLYSED_UPDATE,
+        type: types.SVARSED_REPLYSED_UPDATE,
         payload: {
           needle: needle,
           value: value

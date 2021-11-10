@@ -3,9 +3,9 @@ import KravOmRefusjon from 'applications/SvarSed/Formaal/KravOmRefusjon/KravOmRe
 import { mount, ReactWrapper } from 'enzyme'
 import getReplySed from 'mocks/replySed'
 import { stageSelector } from 'setupTests'
-import { updateReplySed } from 'actions/svarpased'
+import { updateReplySed } from 'actions/svarsed'
 
-jest.mock('actions/svarpased', () => ({
+jest.mock('actions/svarsed', () => ({
   updateReplySed: jest.fn()
 }))
 

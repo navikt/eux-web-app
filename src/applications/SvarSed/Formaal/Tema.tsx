@@ -1,4 +1,4 @@
-import { getFagsaker, updateReplySed } from 'actions/svarpased'
+import { getFagsaker, updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
@@ -26,10 +26,10 @@ interface TemaSelector {
 
 const mapState = (state: State): TemaSelector => ({
   highContrast: state.ui.highContrast,
-  replySed: state.svarpased.replySed,
+  replySed: state.svarsed.replySed,
   validation: state.validation.status,
   gettingFagsaker: state.loading.gettingFagsaker,
-  fagsaker: state.svarpased.fagsaker
+  fagsaker: state.svarsed.fagsaker
 })
 
 const Tema: React.FC = () => {

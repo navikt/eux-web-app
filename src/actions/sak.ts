@@ -7,7 +7,7 @@ import {
   Person
 } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
-import mockSendSak from 'mocks/sendSak'
+import mockSendSak from 'mocks/sak/sendSak'
 import mockFagsakerList from 'mocks/fagsakerList'
 import { mockInstitusjon, mockLandkode } from 'mocks/institutionList'
 import mockPerson from 'mocks/person'

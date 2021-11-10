@@ -1,4 +1,4 @@
-import { updateReplySed } from 'actions/svarpased'
+import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import classNames from 'classnames'
 import TextArea from 'components/Forms/TextArea'

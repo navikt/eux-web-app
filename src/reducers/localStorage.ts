@@ -94,7 +94,6 @@ const localStorageReducer = (
     }
 
     case types.LOCALSTORAGE_CURRENTENTRY_RESET: {
-
       return {
         ...state,
         currentEntry: undefined

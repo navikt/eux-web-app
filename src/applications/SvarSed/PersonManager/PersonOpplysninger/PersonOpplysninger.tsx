@@ -1,6 +1,6 @@
 import { Add, Edit, Search } from '@navikt/ds-icons'
 import { resetPerson, searchPerson } from 'actions/person'
-import { updateReplySed } from 'actions/svarpased'
+import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import classNames from 'classnames'
@@ -43,7 +43,7 @@ interface PersonOpplysningerSelector extends PersonManagerFormSelector {
 }
 
 const mapState = (state: State): PersonOpplysningerSelector => ({
-  replySed: state.svarpased.replySed,
+  replySed: state.svarsed.replySed,
   searchedPerson: state.person.person,
   searchingPerson: state.loading.searchingPerson,
   validation: state.validation.status

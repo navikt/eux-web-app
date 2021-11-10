@@ -210,7 +210,7 @@ export interface PersonManagerOption extends Option {
 
 const mapState = (state: State): PersonManagerSelector => ({
   gettingPerson: state.loading.gettingPerson,
-  replySed: state.svarpased.replySed,
+  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 

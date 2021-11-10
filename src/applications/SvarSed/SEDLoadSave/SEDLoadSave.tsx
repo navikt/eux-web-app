@@ -1,6 +1,6 @@
 import { setCurrentEntry } from 'actions/localStorage'
 import * as localStorageActions from 'actions/localStorage'
-import { getSedStatus, setReplySed } from 'actions/svarpased'
+import { getSedStatus, setReplySed } from 'actions/svarsed'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import { ChangeModeFunction } from 'components/SlidePage/SlidePage'
 import { FlexEtikett } from 'components/StyledComponents'
@@ -45,7 +45,7 @@ interface SEDLoadSaveSelector {
 
 const mapState = (state: State): SEDLoadSaveSelector => ({
   entries: state.localStorage.entries,
-  sedStatus: state.svarpased.sedStatus
+  sedStatus: state.svarsed.sedStatus
 })
 
 const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({

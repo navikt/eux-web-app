@@ -87,16 +87,16 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         clientErrorMessage = i18n.t('message:error-tpsperson-exists')
         break
 
-      case types.SVARPASED_SED_CREATE_FAILURE:
+      case types.SVARSED_SED_CREATE_FAILURE:
         if ((action as ActionWithPayload).status === 409) {
           const url = (action as ActionWithPayload).context.sakUrl
           clientErrorMessage = (
             <FlexDiv>
-              <span>{i18n.t('message:error-svarPaSed-failure-duplicate')}</span>
+              <span>{i18n.t('message:error-svarsed-failure-duplicate')}</span>
               <HorizontalSeparatorDiv size='0.5' />
               <HighContrastLink target='_blank' href={url}>
                 <span>
-                  {i18n.t('message:error-svarPaSed-failure-duplicate-2')}
+                  {i18n.t('message:error-svarsed-failure-duplicate-2')}
                 </span>
                 <HorizontalSeparatorDiv size='0.35' />
                 <ExternalLink />
@@ -104,7 +104,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
             </FlexDiv>
           )
         } else {
-          clientErrorMessage = i18n.t('message:error-svarPaSed-failure')
+          clientErrorMessage = i18n.t('message:error-svarsed-failure')
         }
         break
 
@@ -134,9 +134,9 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
   }
 
   if (action.type === types.LOCALSTORAGE_ENTRY_SAVE) {
-    clientErrorMessage = i18n.t('message:success-svarPaSed-localstorage-save')
+    clientErrorMessage = i18n.t('message:success-svarsed-localstorage-save')
   }
-  if (action.type === types.SVARPASED_REPLYSED_SET) {
+  if (action.type === types.SVARSED_REPLYSED_SET) {
     clientErrorMessage = undefined
   }
 

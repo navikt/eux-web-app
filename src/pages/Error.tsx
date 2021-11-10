@@ -1,15 +1,15 @@
+import Convert from 'ansi-to-html'
 import classNames from 'classnames'
 import ExpandingPanel from 'components/ExpandingPanel/ExpandingPanel'
-import { VerticalSeparatorDiv } from 'nav-hoykontrast'
 import TopContainer from 'components/TopContainer/TopContainer'
+import { standardLogger } from 'metrics/loggers'
+import { Normaltekst } from 'nav-frontend-typografi'
+import { VerticalSeparatorDiv } from 'nav-hoykontrast'
 import PT from 'prop-types'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import StackTracey from 'stacktracey'
 import styled from 'styled-components'
-import { standardLogger } from 'metrics/loggers'
-import Convert from 'ansi-to-html'
 
 const convert = new Convert({
   newline: true,
@@ -28,9 +28,6 @@ const Description = styled.div`
   width: 80%;
   margin: 1rem;
   text-align: center;
-`
-const Title = styled(Undertittel)`
-  margin: 1.5rem;
 `
 const Panel = styled(ExpandingPanel)`
   border: 1px solid gray;
@@ -62,11 +59,8 @@ export const Error = ({ error }: ErrorProps) => {
   const msg = convert.toHtml(error.message)
 
   return (
-    <TopContainer className={classNames('p-error')}>
+    <TopContainer title={title} className={classNames('p-error')}>
       <Content>
-        <Title>
-          {title}
-        </Title>
         <Description dangerouslySetInnerHTML={{ __html: description }} />
         {error && (
           <Panel

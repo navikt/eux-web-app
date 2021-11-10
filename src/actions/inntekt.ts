@@ -2,7 +2,7 @@ import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { IInntekter } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
-import mockInntekt from 'mocks/inntekt'
+import mockInntekt from 'mocks/inntekt/inntekt'
 import { ActionCreator } from 'redux'
 
 const sprintf = require('sprintf-js').sprintf

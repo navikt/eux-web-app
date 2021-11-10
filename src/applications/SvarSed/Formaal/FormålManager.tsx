@@ -147,7 +147,7 @@ export interface FormålManagerFormProps {
 
 export const mapState = (state: State): FormålManagerFormSelector => ({
   highContrast: state.ui.highContrast,
-  replySed: state.svarpased.replySed,
+  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 

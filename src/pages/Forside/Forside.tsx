@@ -20,17 +20,17 @@ const Forside: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
   const { featureToggles }: ForsideSelector = useSelector<State, ForsideSelector>(mapState)
   return (
-    <TopContainer>
+    <TopContainer title={t('app:page-title-forside')}>
       <Container>
         <Margin />
         <Content style={{ minWidth: '800px' }}>
           <Lenkepanel
             className='slideInFromLeft'
             href='#'
-            linkCreator={(props: any) => (<Link to='/opprett' {...props} />)}
+            linkCreator={(props: any) => (<Link to='/opprettsak' {...props} />)}
             tittelProps='undertittel'
           >
-            {t('app:indexpage-createCase')}
+            {t('app:page-title-opprettsak')}
           </Lenkepanel>
           <VerticalSeparatorDiv />
           <Lenkepanel
@@ -40,7 +40,7 @@ const Forside: React.FC = (): JSX.Element => {
             style={{ animationDelay: '0.1s' }}
             tittelProps='undertittel'
           >
-            {t('app:indexpage-addAttachment')}
+            {t('app:page-title-vedlegg')}
           </Lenkepanel>
           {featureToggles?.featureSvarsed && (
             <>
@@ -48,11 +48,11 @@ const Forside: React.FC = (): JSX.Element => {
               <Lenkepanel
                 className='slideInFromLeft'
                 href='#'
-                linkCreator={(props: any) => (<Link to='/svarpased' {...props} />)}
+                linkCreator={(props: any) => (<Link to='/svarsed' {...props} />)}
                 style={{ animationDelay: '0.2s' }}
                 tittelProps='undertittel'
               >
-                {t('app:indexpage-svarSed')}
+                {t('app:page-title-svarsed')}
               </Lenkepanel>
             </>
           )}
@@ -66,7 +66,7 @@ const Forside: React.FC = (): JSX.Element => {
                 style={{ animationDelay: '0.3s' }}
                 tittelProps='undertittel'
               >
-                {t('app:indexpage-pdu1')}
+                {t('app:page-title-pdu1')}
               </Lenkepanel>
             </>
           )}

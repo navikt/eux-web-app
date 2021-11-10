@@ -1,10 +1,8 @@
 
 import { finishPageStatistic, logPageStatistics, startPageStatistic } from 'actions/statistics'
 
-import { setMode } from 'actions/svarpased'
 import classNames from 'classnames'
 import { FadingLineSeparator } from 'components/StyledComponents'
-import TopContainer from 'components/TopContainer/TopContainer'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { Container, Content, fadeIn, fadeOut, Margin } from 'nav-hoykontrast'
 import PT from 'prop-types'
@@ -131,9 +129,7 @@ export const SlidePage: React.FC<SlidePageProps> = ({
     </WaitingPanelDiv>
   )
 
-
   const changeMode = (page: string, direction: string, callback?: () => void) => {
-    dispatch(setMode(page))
     if (animating) {
       return
     }
@@ -243,51 +239,50 @@ export const SlidePage: React.FC<SlidePageProps> = ({
   })
 
   return (
-    <TopContainer>
-      <Container>
-        <Margin />
-        <Content style={{ flex: 3, maxWidth: '1100px' }}>
-          <ContainerDiv>
-            <WindowDiv>
-              <AnimatableDiv
-                key='animatableDivA'
-                className={classNames(cls(positionContentA))}
-              >
-                {contentA}
-              </AnimatableDiv>
-              <AnimatableDiv
-                key='animatableDivB'
-                className={classNames(cls(positionContentB))}
-              >
-                {contentB}
-              </AnimatableDiv>
-            </WindowDiv>
-          </ContainerDiv>
-        </Content>
-        <FadingLineSeparator className='fadeIn'>
+
+    <Container>
+      <Margin />
+      <Content style={{ flex: 3, maxWidth: '1100px' }}>
+        <ContainerDiv>
+          <WindowDiv>
+            <AnimatableDiv
+              key='animatableDivA'
+              className={classNames(cls(positionContentA))}
+            >
+              {contentA}
+            </AnimatableDiv>
+            <AnimatableDiv
+              key='animatableDivB'
+              className={classNames(cls(positionContentB))}
+            >
+              {contentB}
+            </AnimatableDiv>
+          </WindowDiv>
+        </ContainerDiv>
+      </Content>
+      <FadingLineSeparator className='fadeIn'>
           &nbsp;
-        </FadingLineSeparator>
-        <Content style={{ width: '23.5rem' }}>
-          <ContainerDiv>
-            <WindowDiv>
-              <AnimatableDiv
-                key='animatableDivA'
-                className={classNames(cls(positionSidebarA))}
-              >
-                {sidebarA}
-              </AnimatableDiv>
-              <AnimatableDiv
-                key='animatableDivB'
-                className={classNames(cls(positionSidebarB))}
-              >
-                {sidebarB}
-              </AnimatableDiv>
-            </WindowDiv>
-          </ContainerDiv>
-        </Content>
-        <Margin />
-      </Container>
-    </TopContainer>
+      </FadingLineSeparator>
+      <Content style={{ width: '23.5rem' }}>
+        <ContainerDiv>
+          <WindowDiv>
+            <AnimatableDiv
+              key='animatableDivA'
+              className={classNames(cls(positionSidebarA))}
+            >
+              {sidebarA}
+            </AnimatableDiv>
+            <AnimatableDiv
+              key='animatableDivB'
+              className={classNames(cls(positionSidebarB))}
+            >
+              {sidebarB}
+            </AnimatableDiv>
+          </WindowDiv>
+        </ContainerDiv>
+      </Content>
+      <Margin />
+    </Container>
   )
 }
 

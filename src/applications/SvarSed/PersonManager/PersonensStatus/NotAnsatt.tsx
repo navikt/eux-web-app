@@ -1,5 +1,5 @@
 import { Add } from '@navikt/ds-icons'
-import { updateReplySed } from 'actions/svarpased'
+import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import classNames from 'classnames'
@@ -29,7 +29,7 @@ import { getIdx } from 'utils/namespace'
 import { validateNotAnsattPeriode, ValidationNotAnsattProps } from './notAnsattValidation'
 
 const mapState = (state: State): PersonManagerFormSelector => ({
-  replySed: state.svarpased.replySed,
+  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 

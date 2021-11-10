@@ -1,4 +1,4 @@
-import { updateReplySed } from 'actions/svarpased'
+import { updateReplySed } from 'actions/svarsed'
 import { FormålManagerFormProps, FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
 import Motregning from 'applications/SvarSed/Formaal/Motregning/Motregning'
 import { PersonInfo } from 'declarations/sed'
@@ -6,7 +6,7 @@ import { mount, ReactWrapper } from 'enzyme'
 import getReplySed from 'mocks/replySed'
 import { stageSelector } from 'setupTests'
 
-jest.mock('actions/svarpased', () => ({
+jest.mock('actions/svarsed', () => ({
   updateReplySed: jest.fn()
 }))
 

@@ -58,8 +58,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { periodeMedForsikringToArbeidsgiver } from 'utils/arbeidsgiver'
-import { validateOpprettSak, ValidationOpprettSakProps } from './validationOpprettSak'
-
+import { validateOpprettSak, ValidationOpprettSakProps } from './validation'
 
 export interface OpprettSakSelector {
   alertStatus: AlertStatus | undefined
@@ -319,14 +318,10 @@ const OpprettSak: React.FC = (): JSX.Element => {
   const isValid: boolean = _.find(_.values(_validation), (e) => e !== undefined) === undefined
 
   return (
-    <TopContainer>
+    <TopContainer title={t('app:page-title-opprettsak')}>
       <Container>
         <Margin />
         <Content>
-          <Systemtittel>
-            {t('label:opprett-sak')}
-          </Systemtittel>
-          <VerticalSeparatorDiv />
           <PersonSearch
             alertMessage={alertMessage}
             alertType={alertType}

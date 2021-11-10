@@ -1,4 +1,4 @@
-import { updateReplySed } from 'actions/svarpased'
+import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
@@ -22,7 +22,7 @@ interface FormaalSelector {
 
 const mapState = (state: State): FormaalSelector => ({
   highContrast: state.ui.highContrast,
-  replySed: state.svarpased.replySed,
+  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 

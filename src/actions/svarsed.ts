@@ -1,12 +1,11 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { SvarPaSedMode } from 'declarations/app'
 import { ReplySed } from 'declarations/sed'
 import { ConnectedSed, CreateSedResponse, FagSaker, UpdateReplySedPayload } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockFagsakerList from 'mocks/fagsakerList'
-import mockReplySed from 'mocks/replySed'
-import mockConnectedReplySeds from 'mocks/connectedReplySeds'
+import mockReplySed from 'mocks/svarsed/replySed'
+import mockConnectedReplySeds from 'mocks/svarsed/connectedReplySeds'
 import { Action, ActionCreator } from 'redux'
 import validator from '@navikt/fnrvalidator'
 import mockPreview from 'mocks/previewFile'
@@ -33,9 +32,9 @@ export const createSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
       sakUrl: replySed.sakUrl
     },
     type: {
-      request: types.SVARPASED_SED_CREATE_REQUEST,
-      success: types.SVARPASED_SED_CREATE_SUCCESS,
-      failure: types.SVARPASED_SED_CREATE_FAILURE
+      request: types.SVARSED_SED_CREATE_REQUEST,
+      success: types.SVARSED_SED_CREATE_SUCCESS,
+      failure: types.SVARSED_SED_CREATE_FAILURE
     },
     body: copyReplySed
   })
@@ -48,9 +47,9 @@ export const getFagsaker: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>
     url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr: fnr, sektor: sektor, tema: tema }),
     expectedPayload: mockFagsakerList({ fnr: fnr, sektor: sektor, tema: tema }),
     type: {
-      request: types.SVARPASED_FAGSAKER_GET_REQUEST,
-      success: types.SVARPASED_FAGSAKER_GET_SUCCESS,
-      failure: types.SVARPASED_FAGSAKER_GET_FAILURE
+      request: types.SVARSED_FAGSAKER_GET_REQUEST,
+      success: types.SVARSED_FAGSAKER_GET_SUCCESS,
+      failure: types.SVARSED_FAGSAKER_GET_FAILURE
     }
   })
 }
@@ -62,9 +61,9 @@ export const getPreviewFile = (rinaSakId: string, replySed: ReplySed) => {
     expectedPayload: mockPreview,
     responseType: 'pdf',
     type: {
-      request: types.SVARPASED_PREVIEW_REQUEST,
-      success: types.SVARPASED_PREVIEW_SUCCESS,
-      failure: types.SVARPASED_PREVIEW_FAILURE
+      request: types.SVARSED_PREVIEW_REQUEST,
+      success: types.SVARSED_PREVIEW_SUCCESS,
+      failure: types.SVARSED_PREVIEW_FAILURE
     },
     body: replySed
   })
@@ -80,9 +79,9 @@ export const getSedStatus = (rinaSakId: string, sedId: string) => {
       sedId: sedId
     },
     type: {
-      request: types.SVARPASED_SED_STATUS_REQUEST,
-      success: types.SVARPASED_SED_STATUS_SUCCESS,
-      failure: types.SVARPASED_SED_STATUS_FAILURE
+      request: types.SVARSED_SED_STATUS_REQUEST,
+      success: types.SVARSED_SED_STATUS_SUCCESS,
+      failure: types.SVARSED_SED_STATUS_FAILURE
     }
   })
 }
@@ -112,9 +111,9 @@ export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload<C
       saksnummerOrFnr: saksnummerOrFnr
     },
     type: {
-      request: types.SVARPASED_SAKSNUMMERORFNR_QUERY_REQUEST,
-      success: types.SVARPASED_SAKSNUMMERORFNR_QUERY_SUCCESS,
-      failure: types.SVARPASED_SAKSNUMMERORFNR_QUERY_FAILURE
+      request: types.SVARSED_SAKSNUMMERORFNR_QUERY_REQUEST,
+      success: types.SVARSED_SAKSNUMMERORFNR_QUERY_SUCCESS,
+      failure: types.SVARSED_SAKSNUMMERORFNR_QUERY_FAILURE
     }
   })
 }
@@ -144,19 +143,19 @@ export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed
       sedId: connectedSed.svarsedId
     },
     type: {
-      request: types.SVARPASED_REPLYSED_QUERY_REQUEST,
-      success: types.SVARPASED_REPLYSED_QUERY_SUCCESS,
-      failure: types.SVARPASED_REPLYSED_QUERY_FAILURE
+      request: types.SVARSED_REPLYSED_QUERY_REQUEST,
+      success: types.SVARSED_REPLYSED_QUERY_SUCCESS,
+      failure: types.SVARSED_REPLYSED_QUERY_FAILURE
     }
   })
 }
 
 export const resetPreviewFile = () => ({
-  type: types.SVARPASED_PREVIEW_RESET
+  type: types.SVARSED_PREVIEW_RESET
 })
 
 export const resetReplySed: ActionCreator<Action> = (): Action => ({
-  type: types.SVARPASED_REPLYSED_RESET
+  type: types.SVARSED_REPLYSED_RESET
 })
 
 export const sendSedInRina: ActionCreator<ThunkResult<ActionWithPayload<any>>> = (
@@ -169,38 +168,31 @@ export const sendSedInRina: ActionCreator<ThunkResult<ActionWithPayload<any>>> =
       foo: 'bar'
     },
     type: {
-      request: types.SVARPASED_SED_SEND_REQUEST,
-      success: types.SVARPASED_SED_SEND_SUCCESS,
-      failure: types.SVARPASED_SED_SEND_FAILURE
+      request: types.SVARSED_SED_SEND_REQUEST,
+      success: types.SVARSED_SED_SEND_SUCCESS,
+      failure: types.SVARSED_SED_SEND_FAILURE
     }
   })
 }
 
-export const setMode: ActionCreator<ActionWithPayload<SvarPaSedMode>> = (
-  mode: SvarPaSedMode
-): ActionWithPayload<SvarPaSedMode> => ({
-  type: types.SVARPASED_MODE_SET,
-  payload: mode
-})
-
 export const setParentSed: ActionCreator<ActionWithPayload> = (
   payload: string
 ): ActionWithPayload => ({
-  type: types.SVARPASED_PARENTSED_SET,
+  type: types.SVARSED_PARENTSED_SET,
   payload: payload
 })
 
 export const setReplySed: ActionCreator<ActionWithPayload<ReplySed>> = (
   replySed: ReplySed
 ): ActionWithPayload<ReplySed> => ({
-  type: types.SVARPASED_REPLYSED_SET,
+  type: types.SVARSED_REPLYSED_SET,
   payload: replySed
 })
 
 export const updateReplySed: ActionCreator<ActionWithPayload<UpdateReplySedPayload>> = (
   needle: string, value: any
 ): ActionWithPayload<UpdateReplySedPayload> => ({
-  type: types.SVARPASED_REPLYSED_UPDATE,
+  type: types.SVARSED_REPLYSED_UPDATE,
   payload: {
     needle,
     value

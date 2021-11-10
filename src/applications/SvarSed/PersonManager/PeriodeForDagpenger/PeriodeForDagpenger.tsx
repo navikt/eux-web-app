@@ -1,4 +1,4 @@
-import { updateReplySed } from 'actions/svarpased'
+import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import AdresseFC from 'applications/SvarSed/PersonManager/Adresser/Adresse'
 import { standardLogger } from 'metrics/loggers'
@@ -41,7 +41,7 @@ interface PeriodeForDagpengerSelector extends PersonManagerFormSelector {
 
 const mapState = (state: State): PeriodeForDagpengerSelector => ({
   landkoderList: state.app.landkoder,
-  replySed: state.svarpased.replySed,
+  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 

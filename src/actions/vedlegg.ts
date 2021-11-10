@@ -3,8 +3,8 @@ import * as urls from 'constants/urls'
 import { VedleggPayload } from 'declarations/types'
 import { call, ActionWithPayload, ThunkResult } from 'js-fetch-api'
 import { ActionCreator } from 'redux'
-import mockSendVedlegg from 'mocks/sendVedlegg'
-import mockRinaDokumenter from 'mocks/rinaDokumenter'
+import mockSendVedlegg from 'mocks/vedlegg/sendVedlegg'
+import mockRinaDokumenter from 'mocks/vedlegg/rinaDokumenter'
 const sprintf = require('sprintf-js').sprintf
 
 export const getDokument: ActionCreator<ThunkResult<ActionWithPayload>> = (rinasaksnummer: string): ThunkResult<ActionWithPayload> => {

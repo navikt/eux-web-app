@@ -12,7 +12,7 @@ const UkjentSide: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
   const location = useLocation()
   return (
-    <TopContainer>
+    <TopContainer title={t('app:page-title-unknown')}>
       <Container>
         <Margin />
         <Content>

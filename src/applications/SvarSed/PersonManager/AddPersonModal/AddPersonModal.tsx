@@ -1,5 +1,5 @@
 import { Add, Child } from '@navikt/ds-icons'
-import { setReplySed } from 'actions/svarpased'
+import { setReplySed } from 'actions/svarsed'
 import {
   validateAddPersonModal,
   ValidationAddPersonModalProps
@@ -86,7 +86,7 @@ interface AddPersonModalSelector {
 
 const mapState = (state: State): AddPersonModalSelector => ({
   highContrast: state.ui.highContrast,
-  replySed: state.svarpased.replySed
+  replySed: state.svarsed.replySed
 })
 
 const AddPersonModal: React.FC<AddPersonModalProps> = ({

@@ -2,7 +2,7 @@ import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { Arbeidsgiver, Arbeidsperioder } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
-import mockArbeidsperioder from 'mocks/arbeidsperioder'
+import mockArbeidsperioder from 'mocks/arbeidsgiver/arbeidsperioder'
 import { ActionCreator } from 'redux'
 
 const sprintf = require('sprintf-js').sprintf

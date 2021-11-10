@@ -60,12 +60,12 @@ ReactDOM.render(
       <Suspense fallback={<span>...</span>}>
         <BrowserRouter>
           <Routes>
-            <Route path='/vedlegg' element={<Pages.Vedlegg/>} />
-            <Route path='/opprett' element={<Pages.OpprettSak/>} />
-            <Route path='/svarpased' element={<Pages.SvarPaSed/>} />
-            <Route path='/pdu1' element={<Pages.PDU1/>} />
-            <Route path='/' element={<Pages.Forside/>} />
-            <Route element={<Pages.UkjentSide/>} />
+            <Route path='/vedlegg' element={<Pages.Vedlegg />} />
+            <Route path='/opprettsak' element={<Pages.OpprettSak />} />
+            <Route path='/svarsed' element={<Pages.SvarSed />} />
+            <Route path='/pdu1' element={<Pages.PDU1 />} />
+            <Route path='/' element={<Pages.Forside />} />
+            <Route element={<Pages.UkjentSide />} />
           </Routes>
         </BrowserRouter>
       </Suspense>

@@ -25,7 +25,7 @@ export const initialLoadingState: LoadingState = {
   sendingVedlegg: false,
   sendingSak: false,
   sendingSed: false,
-  creatingSvarPaSed: false,
+  creatingSvarSed: false,
   queryingReplySed: false,
   queryingSaksnummerOrFnr: false
 }
@@ -66,15 +66,15 @@ const loadingReducer = (
         gettingDokument: false
       }
 
-    case types.SVARPASED_FAGSAKER_GET_REQUEST:
+    case types.SVARSED_FAGSAKER_GET_REQUEST:
     case types.SAK_FAGSAKER_GET_REQUEST:
       return {
         ...state,
         gettingFagsaker: true
       }
 
-    case types.SVARPASED_FAGSAKER_GET_SUCCESS:
-    case types.SVARPASED_FAGSAKER_GET_FAILURE:
+    case types.SVARSED_FAGSAKER_GET_SUCCESS:
+    case types.SVARSED_FAGSAKER_GET_FAILURE:
     case types.SAK_FAGSAKER_GET_SUCCESS:
     case types.SAK_FAGSAKER_GET_FAILURE:
       return {
@@ -134,14 +134,14 @@ const loadingReducer = (
         gettingPerson: false
       }
 
-    case types.SVARPASED_PREVIEW_REQUEST:
+    case types.SVARSED_PREVIEW_REQUEST:
       return {
         ...state,
         gettingPreviewFile: true
       }
 
-    case types.SVARPASED_PREVIEW_SUCCESS:
-    case types.SVARPASED_PREVIEW_FAILURE:
+    case types.SVARSED_PREVIEW_SUCCESS:
+    case types.SVARSED_PREVIEW_FAILURE:
       return {
         ...state,
         gettingPreviewFile: false
@@ -160,14 +160,14 @@ const loadingReducer = (
         searchingPerson: false
       }
 
-    case types.SVARPASED_SAKSNUMMERORFNR_QUERY_REQUEST:
+    case types.SVARSED_SAKSNUMMERORFNR_QUERY_REQUEST:
       return {
         ...state,
         queryingSaksnummerOrFnr: true
       }
 
-    case types.SVARPASED_SAKSNUMMERORFNR_QUERY_SUCCESS:
-    case types.SVARPASED_SAKSNUMMERORFNR_QUERY_FAILURE:
+    case types.SVARSED_SAKSNUMMERORFNR_QUERY_SUCCESS:
+    case types.SVARSED_SAKSNUMMERORFNR_QUERY_FAILURE:
       return {
         ...state,
         queryingSaksnummerOrFnr: false
@@ -186,53 +186,53 @@ const loadingReducer = (
         sendingSak: false
       }
 
-    case types.SVARPASED_SED_SEND_REQUEST:
+    case types.SVARSED_SED_SEND_REQUEST:
       return {
         ...state,
         sendingSed: true
       }
 
-    case types.SVARPASED_SED_SEND_SUCCESS:
-    case types.SVARPASED_SED_SEND_FAILURE:
+    case types.SVARSED_SED_SEND_SUCCESS:
+    case types.SVARSED_SED_SEND_FAILURE:
       return {
         ...state,
         sendingSed: false
       }
 
-    case types.SVARPASED_REPLYSED_QUERY_REQUEST:
+    case types.SVARSED_REPLYSED_QUERY_REQUEST:
       return {
         ...state,
         queryingReplySed: true
       }
 
-    case types.SVARPASED_REPLYSED_QUERY_SUCCESS:
-    case types.SVARPASED_REPLYSED_QUERY_FAILURE:
+    case types.SVARSED_REPLYSED_QUERY_SUCCESS:
+    case types.SVARSED_REPLYSED_QUERY_FAILURE:
       return {
         ...state,
         queryingReplySed: false
       }
 
-    case types.SVARPASED_SED_CREATE_REQUEST:
+    case types.SVARSED_SED_CREATE_REQUEST:
       return {
         ...state,
-        creatingSvarPaSed: true
+        creatingSvarSed: true
       }
 
-    case types.SVARPASED_SED_CREATE_SUCCESS:
-    case types.SVARPASED_SED_CREATE_FAILURE:
+    case types.SVARSED_SED_CREATE_SUCCESS:
+    case types.SVARSED_SED_CREATE_FAILURE:
       return {
         ...state,
-        creatingSvarPaSed: false
+        creatingSvarSed: false
       }
 
-    case types.SVARPASED_SED_STATUS_REQUEST:
+    case types.SVARSED_SED_STATUS_REQUEST:
       return {
         ...state,
         gettingSedStatus: true
       }
 
-    case types.SVARPASED_SED_STATUS_SUCCESS:
-    case types.SVARPASED_SED_STATUS_FAILURE:
+    case types.SVARSED_SED_STATUS_SUCCESS:
+    case types.SVARSED_SED_STATUS_FAILURE:
       return {
         ...state,
         gettingSedStatus: false

@@ -2,7 +2,7 @@ import { Add } from '@navikt/ds-icons'
 import { clientClear } from 'actions/alert'
 import { resetCurrentEntry, saveEntry } from 'actions/localStorage'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
-import { createSed, getPreviewFile, resetPreviewFile, sendSedInRina, updateReplySed } from 'actions/svarpased'
+import { createSed, getPreviewFile, resetPreviewFile, sendSedInRina, updateReplySed } from 'actions/svarsed'
 import { resetAllValidation, resetValidation, viewValidation } from 'actions/validation'
 import Formaal from 'applications/SvarSed/Formaal/Formaal'
 import FormålManager from 'applications/SvarSed/Formaal/FormålManager'
@@ -41,7 +41,7 @@ import {
   Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
-import ValidationBox from 'pages/SvarPaSed/ValidationBox'
+import ValidationBox from 'pages/SvarSed/ValidationBox'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -53,7 +53,7 @@ import { validateSEDEditor, ValidationSEDEditorProps } from './mainValidation'
 export interface SEDEditorSelector {
   alertType: string | undefined
   alertMessage: JSX.Element | string | undefined
-  creatingSvarPaSed: boolean
+  creatingSvarSed: boolean
   gettingPreviewFile: boolean
   highContrast: boolean
   previewFile: any,
@@ -74,16 +74,16 @@ export interface SEDEditorProps {
 const mapState = (state: State): any => ({
   alertType: state.alert.type,
   alertMessage: state.alert.clientErrorMessage,
-  creatingSvarPaSed: state.loading.creatingSvarPaSed,
+  creatingSvarSed: state.loading.creatingSvarSed,
   gettingPreviewFile: state.loading.gettingPreviewFile,
   highContrast: state.ui.highContrast,
-  previewFile: state.svarpased.previewFile,
-  replySed: state.svarpased.replySed,
+  previewFile: state.svarsed.previewFile,
+  replySed: state.svarsed.replySed,
   currentEntry: state.localStorage.currentEntry,
   savingSed: state.loading.savingSed,
   sendingSed: state.loading.sendingSed,
-  sedCreatedResponse: state.svarpased.sedCreatedResponse,
-  sedSendResponse: state.svarpased.sedSendResponse,
+  sedCreatedResponse: state.svarsed.sedCreatedResponse,
+  sedSendResponse: state.svarsed.sedSendResponse,
   validation: state.validation.status,
   view: state.validation.view
 })
@@ -96,7 +96,7 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
   const {
     alertType,
     alertMessage,
-    creatingSvarPaSed,
+    creatingSvarSed,
     gettingPreviewFile,
     highContrast,
     previewFile,
@@ -361,14 +361,14 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
             mini
             data-amplitude={_.isEmpty(sedCreatedResponse) ? 'svarsed.editor.opprettsvarsed' : 'svarsed.editor.oppdattersvarsed'}
             onClick={sendReplySed}
-            disabled={creatingSvarPaSed}
-            spinner={creatingSvarPaSed}
+            disabled={creatingSvarSed}
+            spinner={creatingSvarSed}
           >
             {_.isEmpty(sedCreatedResponse)
-              ? creatingSvarPaSed
+              ? creatingSvarSed
                   ? t('message:loading-opprette-svarsed')
                   : t('label:opprett-svarsed')
-              : creatingSvarPaSed
+              : creatingSvarSed
                 ? t('message:loading-oppdatering-svarsed')
                 : t('label:oppdatere-svarsed')}
           </HighContrastHovedknapp>
@@ -417,12 +417,12 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
         </>
       )}
       {_sendButtonClicked && alertMessage &&
-      (alertType === types.SVARPASED_SED_SEND_SUCCESS || alertType === types.SVARPASED_SED_SEND_FAILURE) && (
+      (alertType === types.SVARSED_SED_SEND_SUCCESS || alertType === types.SVARSED_SED_SEND_FAILURE) && (
         <>
           <FlexDiv>
             <AlertstripeDiv>
               <Alert
-                status={alertType === types.SVARPASED_SED_SEND_FAILURE ? 'ERROR' : 'OK'}
+                status={alertType === types.SVARSED_SED_SEND_FAILURE ? 'ERROR' : 'OK'}
                 message={alertMessage!}
                 onClose={() => {
                   _setSendButtonClicked(false)

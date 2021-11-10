@@ -3,8 +3,8 @@ import validator from '@navikt/fnrvalidator'
 import * as appActions from 'actions/app'
 import { setCurrentEntry } from 'actions/localStorage'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
-import * as svarpasedActions from 'actions/svarpased'
-import { getSedStatus, setReplySed } from 'actions/svarpased'
+import * as svarsedActions from 'actions/svarsed'
+import { getSedStatus, setReplySed } from 'actions/svarsed'
 import { resetAllValidation } from 'actions/validation'
 import ExternalLink from 'assets/icons/Logout'
 import classNames from 'classnames'
@@ -38,7 +38,7 @@ import {
   themeKeys,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
-import { validateSEDSelection } from 'pages/SvarPaSed/mainValidation'
+import { validateSEDSelection } from 'pages/SvarSed/mainValidation'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -77,22 +77,22 @@ const mapState = (state: State): any => ({
   highContrast: state.ui.highContrast,
   queryingSaksnummerOrFnr: state.loading.queryingSaksnummerOrFnr,
   queryingReplySed: state.loading.queryingReplySed,
-  parentSed: state.svarpased.parentSed,
-  previousParentSed: state.svarpased.previousParentSed,
-  replySed: state.svarpased.replySed,
+  parentSed: state.svarsed.parentSed,
+  previousParentSed: state.svarsed.previousParentSed,
+  replySed: state.svarsed.replySed,
   rinasaksnummerOrFnrParam: state.app.params.rinasaksnummerOrFnr,
   entries: state.localStorage.entries,
-  seds: state.svarpased.seds,
-  sedStatus: state.svarpased.sedStatus
+  seds: state.svarsed.seds,
+  sedStatus: state.svarsed.sedStatus
 })
 
-export interface SvarPaSedProps {
+export interface SvarSedProps {
   changeMode: (mode: string, from: string, callback?: () => void) => void
 }
 
-const SEDSelection: React.FC<SvarPaSedProps> = ({
+const SEDSelection: React.FC<SvarSedProps> = ({
   changeMode
-}: SvarPaSedProps): JSX.Element => {
+}: SvarSedProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const {
@@ -170,17 +170,17 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
       standardLogger('svarsed.selection.query', {
         type: _queryType
       })
-      dispatch(svarpasedActions.querySaksnummerOrFnr(_saksnummerOrFnr.trim()))
+      dispatch(svarsedActions.querySaksnummerOrFnr(_saksnummerOrFnr.trim()))
     }
   }
 
   const onParentSedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(svarpasedActions.setParentSed(e.target.value))
+    dispatch(svarsedActions.setParentSed(e.target.value))
   }
 
   const onReplySedClick = (connectedSed: ConnectedSed, saksnummer: string, sakUrl: string) => {
     setReplySedRequested(true)
-    dispatch(svarpasedActions.queryReplySed(connectedSed, saksnummer, sakUrl))
+    dispatch(svarsedActions.queryReplySed(connectedSed, saksnummer, sakUrl))
   }
 
   useEffect(() => {
@@ -269,7 +269,7 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='3' />
-      {alertMessage && alertType && [types.SVARPASED_SAKSNUMMERORFNR_QUERY_FAILURE].indexOf(alertType) >= 0 && (
+      {alertMessage && alertType && [types.SVARSED_SAKSNUMMERORFNR_QUERY_FAILURE].indexOf(alertType) >= 0 && (
         <>
           <AlertstripeDiv>
             <AlertStripe type='advarsel'>

@@ -2,7 +2,7 @@ import * as vedleggActions from 'actions/vedlegg'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { call as originalCall } from 'js-fetch-api'
-import mockVedleggPayload from 'mocks/vedlegg'
+import mockVedleggPayload from 'mocks/vedlegg/vedlegg'
 
 jest.mock('js-fetch-api', () => ({
   call: jest.fn()

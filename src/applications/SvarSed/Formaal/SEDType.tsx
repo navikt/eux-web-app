@@ -1,4 +1,4 @@
-import { setReplySed } from 'actions/svarpased'
+import { setReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
@@ -28,7 +28,7 @@ interface SEDTypeSelector {
 
 const mapState = (state: State): SEDTypeSelector => ({
   highContrast: state.ui.highContrast,
-  replySed: state.svarpased.replySed,
+  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 

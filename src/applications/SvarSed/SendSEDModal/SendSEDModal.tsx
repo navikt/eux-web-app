@@ -1,6 +1,6 @@
 import { clientClear } from 'actions/alert'
 import { createSavingAttachmentJob, resetSedAttachments, sendAttachmentToSed } from 'actions/attachments'
-import { sendSedInRina } from 'actions/svarpased'
+import { sendSedInRina } from 'actions/svarsed'
 import SEDAttachmentSender from 'applications/Vedlegg/SEDAttachmentSender/SEDAttachmentSender'
 import GreenCircle from 'assets/icons/GreenCircle'
 import Alert from 'components/Alert/Alert'
@@ -66,7 +66,7 @@ const WrapperDiv = styled.div`
 interface SendSEDSelector {
   alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
-  creatingSvarPaSed: boolean
+  creatingSvarSed: boolean
   replySed: ReplySed | null | undefined
   sedCreatedResponse: CreateSedResponse | null | undefined
   sedSendResponse: any | null | undefined
@@ -85,10 +85,10 @@ interface SendSEDModalProps {
 const mapState = (state: State): SendSEDSelector => ({
   alertMessage: state.alert.clientErrorMessage,
   alertType: state.alert.type,
-  creatingSvarPaSed: state.loading.creatingSvarPaSed,
-  replySed: state.svarpased.replySed,
-  sedCreatedResponse: state.svarpased.sedCreatedResponse,
-  sedSendResponse: state.svarpased.sedSendResponse,
+  creatingSvarSed: state.loading.creatingSvarSed,
+  replySed: state.svarsed.replySed,
+  sedCreatedResponse: state.svarsed.sedCreatedResponse,
+  sedSendResponse: state.svarsed.sedSendResponse,
   sendingSed: state.loading.sendingSed
 })
 
@@ -103,7 +103,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
   const {
     alertMessage,
     alertType,
-    creatingSvarPaSed,
+    creatingSvarSed,
     sendingSed,
     replySed,
     sedCreatedResponse,
@@ -195,7 +195,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
               {_.isEmpty(sedCreatedResponse) ? t('label:opprette-ny-sed') : t('label:oppdatere-svarsed')}
             </Undertittel>
             <VerticalSeparatorDiv />
-            {alertMessage && alertType && [types.SVARPASED_SED_CREATE_FAILURE].indexOf(alertType) >= 0 && (
+            {alertMessage && alertType && [types.SVARSED_SED_CREATE_FAILURE].indexOf(alertType) >= 0 && (
               <PileCenterDiv>
                 <AlertstripeDiv>
                   <Alert status='ERROR' message={alertMessage} onClose={() => dispatch(clientClear())} />
@@ -213,11 +213,11 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                 </FlexCenterSpacedDiv>
               </PileCenterDiv>
             )}
-            {alertMessage && _sendButtonClicked && (alertType === types.SVARPASED_SED_SEND_SUCCESS || alertType === types.SVARPASED_SED_SEND_FAILURE) && (
+            {alertMessage && _sendButtonClicked && (alertType === types.SVARSED_SED_SEND_SUCCESS || alertType === types.SVARSED_SED_SEND_FAILURE) && (
               <>
                 <AlertstripeDiv>
                   <Alert
-                    status={alertType === types.SVARPASED_SED_SEND_FAILURE ? 'ERROR' : 'OK'}
+                    status={alertType === types.SVARSED_SED_SEND_FAILURE ? 'ERROR' : 'OK'}
                     message={alertMessage}
                     onClose={() => {
                       _setSendButtonClicked(false)
@@ -232,7 +232,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
               <SectionDiv>
                 <PileDiv style={{ alignItems: 'flex-start' }}>
                   <div>
-                    {creatingSvarPaSed && (
+                    {creatingSvarSed && (
                       <FlexCenterSpacedDiv>
                         <NavFrontendSpinner type='XS' />
                         <HorizontalSeparatorDiv size='0.5' />
