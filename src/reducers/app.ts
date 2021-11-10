@@ -25,7 +25,6 @@ export interface AppState {
 
   params: Params
   featureToggles: FeatureToggles
-
 }
 
 export const initialAppState: AppState = {
@@ -50,7 +49,8 @@ export const initialAppState: AppState = {
   params: {},
   featureToggles: {
     featureSvarsed: true,
-    'featureSvarsed.u': false
+    'featureSvarsed.u': false,
+    featurePdu1: true
   }
 }
 

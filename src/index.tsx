@@ -63,6 +63,7 @@ ReactDOM.render(
             <Route path='/vedlegg' element={<Pages.Vedlegg/>} />
             <Route path='/opprett' element={<Pages.OpprettSak/>} />
             <Route path='/svarpased' element={<Pages.SvarPaSed/>} />
+            <Route path='/pdu1' element={<Pages.PDU1/>} />
             <Route path='/' element={<Pages.Forside/>} />
             <Route element={<Pages.UkjentSide/>} />
           </Routes>

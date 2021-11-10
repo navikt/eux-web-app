@@ -37,7 +37,7 @@ const Forside: React.FC = (): JSX.Element => {
             className='slideInFromLeft'
             href='#'
             linkCreator={(props: any) => (<Link to='/vedlegg' {...props} />)}
-            style={{ animationDelay: '0.15s' }}
+            style={{ animationDelay: '0.1s' }}
             tittelProps='undertittel'
           >
             {t('app:indexpage-addAttachment')}
@@ -49,10 +49,24 @@ const Forside: React.FC = (): JSX.Element => {
                 className='slideInFromLeft'
                 href='#'
                 linkCreator={(props: any) => (<Link to='/svarpased' {...props} />)}
-                style={{ animationDelay: '0.3s' }}
+                style={{ animationDelay: '0.2s' }}
                 tittelProps='undertittel'
               >
                 {t('app:indexpage-svarSed')}
+              </Lenkepanel>
+            </>
+          )}
+          {featureToggles?.featurePdu1 && (
+            <>
+              <VerticalSeparatorDiv />
+              <Lenkepanel
+                className='slideInFromLeft'
+                href='#'
+                linkCreator={(props: any) => (<Link to='/pdu1' {...props} />)}
+                style={{ animationDelay: '0.3s' }}
+                tittelProps='undertittel'
+              >
+                {t('app:indexpage-pdu1')}
               </Lenkepanel>
             </>
           )}

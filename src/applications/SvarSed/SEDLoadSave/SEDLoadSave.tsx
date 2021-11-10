@@ -1,6 +1,8 @@
+import { setCurrentEntry } from 'actions/localStorage'
 import * as localStorageActions from 'actions/localStorage'
-import { getSedStatus } from 'actions/svarpased'
+import { getSedStatus, setReplySed } from 'actions/svarpased'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import { ChangeModeFunction } from 'components/SlidePage/SlidePage'
 import { FlexEtikett } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { State } from 'declarations/reducers'
@@ -32,7 +34,7 @@ const LoadSaveDiv = styled(FlexDiv)`
 `
 
 interface SEDLoadSaveProps {
-  onLoad: (content: any) => void
+  changeMode: ChangeModeFunction
   storageKey: string
 }
 
@@ -47,7 +49,7 @@ const mapState = (state: State): SEDLoadSaveSelector => ({
 })
 
 const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
-  onLoad,
+  changeMode,
   storageKey
 }: SEDLoadSaveProps) => {
   const dispatch = useDispatch()
@@ -92,7 +94,9 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
     if (!_.isNil(_sedStatusRequested) && Object.prototype.hasOwnProperty.call(sedStatus, _sedStatusRequested)) {
       const entry: LocalStorageEntry<ReplySed> | undefined = findSavedEntry(_sedStatusRequested)
       if (entry && !hasSentStatus(entry.id)) {
-        onLoad(entry)
+        dispatch(setCurrentEntry(entry))
+        dispatch(setReplySed(entry.content))
+        changeMode('B', 'forward')
       }
       setSedStatusRequested(undefined)
     }

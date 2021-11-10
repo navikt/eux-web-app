@@ -75,7 +75,6 @@ const mapState = (state: State): any => ({
   alertType: state.alert.type,
   featureToggles: state.app.featureToggles,
   highContrast: state.ui.highContrast,
-  mode: state.svarpased.mode,
   queryingSaksnummerOrFnr: state.loading.queryingSaksnummerOrFnr,
   queryingReplySed: state.loading.queryingReplySed,
   parentSed: state.svarpased.parentSed,
@@ -88,11 +87,11 @@ const mapState = (state: State): any => ({
 })
 
 export interface SvarPaSedProps {
-  setMode: (mode: string, from: string, callback?: () => void) => void
+  changeMode: (mode: string, from: string, callback?: () => void) => void
 }
 
 const SEDSelection: React.FC<SvarPaSedProps> = ({
-  setMode
+  changeMode
 }: SvarPaSedProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -100,7 +99,6 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
     alertMessage,
     alertType,
     featureToggles,
-    mode,
     parentSed,
     previousParentSed,
     queryingSaksnummerOrFnr,
@@ -198,12 +196,12 @@ const SEDSelection: React.FC<SvarPaSedProps> = ({
   }, [_sedStatusRequested, sedStatus])
 
   useEffect(() => {
-    if (replySed && _replySedRequested && mode === 'selection') {
+    if (replySed && _replySedRequested) {
       setReplySedRequested(false)
       dispatch(resetAllValidation())
-      setMode('editor', 'forward')
+      changeMode('B', 'forward')
     }
-  }, [replySed, mode])
+  }, [replySed])
 
   useEffect(() => {
     dispatch(startPageStatistic('selection'))

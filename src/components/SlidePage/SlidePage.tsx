@@ -1,24 +1,15 @@
-import { setStatusParam } from 'actions/app'
-import { setCurrentEntry } from 'actions/localStorage'
+
 import { finishPageStatistic, logPageStatistics, startPageStatistic } from 'actions/statistics'
-import * as svarpasedActions from 'actions/svarpased'
-import { setMode, setReplySed } from 'actions/svarpased'
-import SEDDetails from 'applications/SvarSed/SEDDetails/SEDDetails'
-import SEDLoadSave from 'applications/SvarSed/SEDLoadSave/SEDLoadSave'
+
+import { setMode } from 'actions/svarpased'
 import classNames from 'classnames'
-import { FadingLineSeparator, SideBarDiv } from 'components/StyledComponents'
+import { FadingLineSeparator } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
-import { FeatureToggles } from 'declarations/app'
-import { State } from 'declarations/reducers'
-import { ReplySed } from 'declarations/sed'
-import { LocalStorageEntry } from 'declarations/types'
 import { Container, Content, fadeIn, fadeOut, Margin } from 'nav-hoykontrast'
-import SEDEditor from 'pages/SvarPaSed/SEDEditor'
-import SEDSelection from 'pages/SvarPaSed/SEDSelection'
 import PT from 'prop-types'
-import React, { useCallback, useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { MutableRefObject, useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -85,11 +76,17 @@ export const WindowDiv = styled.div`
   overflow: hidden;
 `
 
-export interface SvarPaSedPageProps {
-  allowFullScreen?: boolean
-  onFullFocus?: () => void
-  onRestoreFocus?: () => void
+export type ChangeModeFunction = (page: string, direction: string, callback?: () => void) => void
+
+export interface SlidePageProps {
   waitForMount?: boolean
+  initialPage: string
+  initialDirection: string
+  changeModeFunc: MutableRefObject<ChangeModeFunction | null>
+  divA1: JSX.Element
+  divA2: JSX.Element
+  divB1: JSX.Element
+  divB2: JSX.Element
 }
 
 export enum Slide {
@@ -103,23 +100,20 @@ export enum Slide {
   B_GOING_TO_RIGHT
 }
 
-interface SvarPaSedPageSelector {
-  featureToggles: FeatureToggles | null | undefined
-}
-
-const mapState = (state: State): SvarPaSedPageSelector => ({
-  featureToggles: state.app.featureToggles
-})
-
-export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
-    waitForMount = true
-}: SvarPaSedPageProps): JSX.Element => {
+export const SlidePage: React.FC<SlidePageProps> = ({
+  waitForMount = true,
+  initialPage,
+  initialDirection,
+  changeModeFunc,
+  divA1,
+  divA2,
+  divB1,
+  divB2
+}: SlidePageProps): JSX.Element => {
   const dispatch = useDispatch()
 
   const location = useLocation()
   const [_mounted, setMounted] = useState<boolean>(!waitForMount)
-  const storageKey = 'replySed'
-  const { featureToggles }: SvarPaSedPageSelector = useSelector<State, SvarPaSedPageSelector>(mapState)
 
   const [positionContentA, setPositionContentA] = useState<Slide>(Slide.LEFT)
   const [positionContentB, setPositionContentB] = useState<Slide>(Slide.RIGHT)
@@ -137,15 +131,16 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
     </WaitingPanelDiv>
   )
 
-  const changeMode = useCallback((newMode: string, from: string, callback?: () => void) => {
-    dispatch(setMode(newMode))
+
+  const changeMode = (page: string, direction: string, callback?: () => void) => {
+    dispatch(setMode(page))
     if (animating) {
       return
     }
 
-    if (newMode === 'selection') {
-      if (!from || from === 'none') {
-        dispatch(startPageStatistic(newMode))
+    if (page === 'A') {
+      if (!direction || direction === 'none') {
+        dispatch(startPageStatistic(page))
         setPositionContentA(Slide.LEFT)
         setPositionContentB(Slide.RIGHT)
         setPositionSidebarA(Slide.ALT_LEFT)
@@ -154,7 +149,7 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
           callback()
         }
       }
-      if (from === 'back') {
+      if (direction === 'back') {
         dispatch(logPageStatistics('editor', 'selection'))
         setPositionContentA(Slide.A_GOING_TO_RIGHT)
         setPositionContentB(Slide.B_GOING_TO_RIGHT)
@@ -173,22 +168,11 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
           }
         }, timeout)
       }
-      setContentA(<SEDSelection setMode={changeMode} />)
-      setSidebarB(
-        <SideBarDiv>
-          <SEDLoadSave
-            storageKey={storageKey}
-            onLoad={(entry: LocalStorageEntry<ReplySed>) => {
-              dispatch(setCurrentEntry(entry))
-              dispatch(setReplySed(entry.content))
-              changeMode('editor', 'forward')
-            }}
-          />
-        </SideBarDiv>
-      )
+      setContentA(divA1)
+      setSidebarB(divA2)
     }
-    if (newMode === 'editor') {
-      if (!from || from === 'none') {
+    if (page === 'B') {
+      if (!direction || direction === 'none') {
         dispatch(startPageStatistic('editor'))
         setPositionContentA(Slide.ALT_LEFT)
         setPositionContentB(Slide.ALT_RIGHT)
@@ -198,7 +182,7 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
           callback()
         }
       }
-      if (from === 'forward') {
+      if (direction === 'forward') {
         dispatch(logPageStatistics('selection', 'editor'))
         setPositionContentA(Slide.A_GOING_TO_LEFT)
         setPositionContentB(Slide.B_GOING_TO_LEFT)
@@ -217,43 +201,23 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
           }
         }, timeout)
       }
-      setContentB(<SEDEditor setMode={changeMode} />)
-      setSidebarA(
-        <SideBarDiv>
-          <SEDDetails />
-        </SideBarDiv>
-      )
+      setContentB(divB1)
+      setSidebarA(divB2)
     }
-  }, [animating, dispatch])
+  }
+
+  useEffect(() => {
+    changeModeFunc!.current = changeMode
+  }, [])
 
   useEffect(() => {
     if (!_mounted) {
-      const params: URLSearchParams = new URLSearchParams(location.search)
-      const rinasaksnummerParam: string | null = params.get('rinasaksnummer')
-
-      const fnrParam : string | null = params.get('fnr')
-      if (rinasaksnummerParam || fnrParam) {
-        setStatusParam('rinasaksnummerOrFnr', rinasaksnummerParam || fnrParam || undefined)
-        dispatch(svarpasedActions.querySaksnummerOrFnr(rinasaksnummerParam || fnrParam || undefined))
-      }
-
-      setContentA(<SEDSelection setMode={changeMode} />)
-      setSidebarB(
-        <SideBarDiv>
-          <SEDLoadSave
-            storageKey={storageKey}
-            onLoad={(entry: LocalStorageEntry<ReplySed>) => {
-              dispatch(setCurrentEntry(entry))
-              dispatch(setReplySed(entry.content))
-              changeMode('editor', 'forward')
-            }}
-          />
-        </SideBarDiv>
-      )
-      changeMode('selection', 'none')
+      setContentA(divA1)
+      setSidebarB(divA2)
+      changeMode(initialPage, initialDirection)
       setMounted(true)
     }
-  }, [dispatch, _mounted, changeMode, WaitingDiv, location.search])
+  }, [dispatch, _mounted, WaitingDiv, location.search])
 
   useEffect(() => {
     dispatch(startPageStatistic('total'))
@@ -277,10 +241,6 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
     right: Slide.RIGHT === position,
     left: Slide.LEFT === position
   })
-
-  if (!featureToggles?.featureSvarsed) {
-    return <div />
-  }
 
   return (
     <TopContainer>
@@ -331,11 +291,8 @@ export const SvarPaSedPage: React.FC<SvarPaSedPageProps> = ({
   )
 }
 
-SvarPaSedPage.propTypes = {
-  allowFullScreen: PT.bool.isRequired,
-  onFullFocus: PT.func.isRequired,
-  onRestoreFocus: PT.func.isRequired,
+SlidePage.propTypes = {
   waitForMount: PT.bool
 }
 
-export default SvarPaSedPage
+export default SlidePage

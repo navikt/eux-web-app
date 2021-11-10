@@ -1,6 +1,6 @@
 import { Add } from '@navikt/ds-icons'
 import { clientClear } from 'actions/alert'
-import { saveEntry } from 'actions/localStorage'
+import { resetCurrentEntry, saveEntry } from 'actions/localStorage'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import { createSed, getPreviewFile, resetPreviewFile, sendSedInRina, updateReplySed } from 'actions/svarpased'
 import { resetAllValidation, resetValidation, viewValidation } from 'actions/validation'
@@ -18,7 +18,6 @@ import TextArea from 'components/Forms/TextArea'
 import Modal from 'components/Modal/Modal'
 import { AlertstripeDiv, TextAreaDiv } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
-import { SvarPaSedMode } from 'declarations/app'
 import { JoarkBrowserItems } from 'declarations/attachments'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
@@ -57,7 +56,6 @@ export interface SEDEditorSelector {
   creatingSvarPaSed: boolean
   gettingPreviewFile: boolean
   highContrast: boolean
-  mode: SvarPaSedMode,
   previewFile: any,
   replySed: ReplySed | null | undefined
   currentEntry: LocalStorageEntry<ReplySed> | undefined
@@ -70,7 +68,7 @@ export interface SEDEditorSelector {
 }
 
 export interface SEDEditorProps {
-  setMode: (mode: string, from: string, callback?: () => void) => void
+  changeMode: (mode: string, from: string, callback?: () => void) => void
 }
 
 const mapState = (state: State): any => ({
@@ -79,7 +77,6 @@ const mapState = (state: State): any => ({
   creatingSvarPaSed: state.loading.creatingSvarPaSed,
   gettingPreviewFile: state.loading.gettingPreviewFile,
   highContrast: state.ui.highContrast,
-  mode: state.svarpased.mode,
   previewFile: state.svarpased.previewFile,
   replySed: state.svarpased.replySed,
   currentEntry: state.localStorage.currentEntry,
@@ -92,7 +89,7 @@ const mapState = (state: State): any => ({
 })
 
 const SEDEditor: React.FC<SEDEditorProps> = ({
-  setMode
+  changeMode
 }: SEDEditorProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -102,7 +99,6 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
     creatingSvarPaSed,
     gettingPreviewFile,
     highContrast,
-    mode,
     previewFile,
     replySed,
     currentEntry,
@@ -230,10 +226,9 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
   }
 
   const onGoBackClick = () => {
-    if (mode === 'editor') {
-      setMode('selection', 'back')
-      document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
-    }
+    changeMode('A', 'back')
+    dispatch(resetCurrentEntry())
+    document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
   }
 
   const setComment = (comment: string) => {

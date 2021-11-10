@@ -93,13 +93,13 @@ const localStorageReducer = (
       }
     }
 
-    case types.SVARPASED_MODE_SET:
+    case types.LOCALSTORAGE_CURRENTENTRY_RESET: {
+
       return {
         ...state,
-        currentEntry: (action as ActionWithPayload).payload === 'selection'
-          ? undefined
-          : state.currentEntry
+        currentEntry: undefined
       }
+    }
 
     default:
       return state
