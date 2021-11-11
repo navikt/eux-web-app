@@ -48,9 +48,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { blobToBase64 } from 'utils/blob'
 import { getFnr } from 'utils/fnr'
 import { isFSed, isHSed, isSed, isUSed } from 'utils/sed'
-import { validateSEDEditor, ValidationSEDEditorProps } from './mainValidation'
+import { validateSEDEdit, ValidationSEDEditProps } from './mainValidation'
 
-export interface SEDEditorSelector {
+export interface SEDEditSelector {
   alertType: string | undefined
   alertMessage: JSX.Element | string | undefined
   creatingSvarSed: boolean
@@ -67,8 +67,9 @@ export interface SEDEditorSelector {
   view: boolean
 }
 
-export interface SEDEditorProps {
+export interface SEDEditProps {
   changeMode: (mode: string, from: string, callback?: () => void) => void
+  storageKey: string
 }
 
 const mapState = (state: State): any => ({
@@ -88,9 +89,10 @@ const mapState = (state: State): any => ({
   view: state.validation.view
 })
 
-const SEDEditor: React.FC<SEDEditorProps> = ({
-  changeMode
-}: SEDEditorProps): JSX.Element => {
+const SEDEdit: React.FC<SEDEditProps> = ({
+  changeMode,
+  storageKey
+}: SEDEditProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const {
@@ -108,7 +110,7 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
     sedSendResponse,
     validation,
     view
-  }: SEDEditorSelector = useSelector<State, SEDEditorSelector>(mapState)
+  }: SEDEditSelector = useSelector<State, SEDEditSelector>(mapState)
   const fnr = getFnr(replySed, 'bruker')
   const namespace = 'editor'
 
@@ -117,9 +119,8 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
   const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
   const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
   const [_sendButtonClicked, _setSendButtonClicked] = useState<boolean>(false)
-  const performValidation = useGlobalValidation<ValidationSEDEditorProps>(validateSEDEditor)
+  const performValidation = useGlobalValidation<ValidationSEDEditProps>(validateSEDEdit)
 
-  const storageKey = 'replySed'
   const showPersonManager = (): boolean => isSed(replySed)
   const showFormålManager = (): boolean =>
     (replySed as F002Sed)?.formaal?.indexOf('motregning') >= 0 ||
@@ -439,4 +440,4 @@ const SEDEditor: React.FC<SEDEditorProps> = ({
   )
 }
 
-export default SEDEditor
+export default SEDEdit

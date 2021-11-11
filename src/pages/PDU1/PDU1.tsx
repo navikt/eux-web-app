@@ -1,18 +1,21 @@
 import { setStatusParam } from 'actions/app'
 import * as svarsedActions from 'actions/svarsed'
 import SEDDetails from 'applications/SvarSed/SEDDetails/SEDDetails'
-import SEDLoadSave from 'applications/SvarSed/SEDLoadSave/SEDLoadSave'
 import SlidePage, { ChangeModeFunction } from 'components/SlidePage/SlidePage'
 import { SideBarDiv } from 'components/StyledComponents'
-import SEDEditor from 'pages/SvarSed/SEDEditor'
-import SEDSelection from 'pages/SvarSed/SEDSelection'
+import TopContainer from 'components/TopContainer/TopContainer'
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
+import PDU1Edit from './PDU1Edit'
+import PDU1Search from './PDU1Search'
+import { STORAGE_PDU1 } from 'constants/storage'
 
 export const PDU1Page = (): JSX.Element => {
-  const storageKey = 'replySed'
   const [_mounted, setMounted] = useState<boolean>(false)
   const dispatch = useDispatch()
+  const { t } = useTranslation()
+  const storageKey = STORAGE_PDU1
 
   const changeModeFunc = React.useRef<ChangeModeFunction>(null)
 
@@ -37,26 +40,26 @@ export const PDU1Page = (): JSX.Element => {
   }, [_mounted])
 
   return (
-    <SlidePage
+    <TopContainer title={t('app:page-title-pdu1')}>
+      <SlidePage
       changeModeFunc={changeModeFunc}
       initialPage='A'
       initialDirection='none'
-      divA1={(<SEDSelection changeMode={changeMode} />)}
+      divA1={(<PDU1Search changeMode={changeMode} />)}
       divA2={(
         <SideBarDiv>
-          <SEDLoadSave
-            storageKey={storageKey}
-            changeMode={changeMode}
-          />
+          <div/>
         </SideBarDiv>
       )}
-      divB1={(<SEDEditor changeMode={changeMode} />)}
+      divB1={(<PDU1Edit
+        storageKey={storageKey} changeMode={changeMode} />)}
       divB2={(
         <SideBarDiv>
           <SEDDetails />
         </SideBarDiv>
       )}
     />
+    </TopContainer>
   )
 }
 

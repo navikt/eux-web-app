@@ -38,7 +38,7 @@ import {
   themeKeys,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
-import { validateSEDSelection } from 'pages/SvarSed/mainValidation'
+import { validateSEDSearch } from 'pages/SvarSed/mainValidation'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -90,7 +90,7 @@ export interface SvarSedProps {
   changeMode: (mode: string, from: string, callback?: () => void) => void
 }
 
-const SEDSelection: React.FC<SvarSedProps> = ({
+const PDU1Search: React.FC<SvarSedProps> = ({
   changeMode
 }: SvarSedProps): JSX.Element => {
   const { t } = useTranslation()
@@ -114,14 +114,14 @@ const SEDSelection: React.FC<SvarSedProps> = ({
   const [_saksnummerOrFnr, _setSaksnummerOrFnr] = useState<string>(rinasaksnummerOrFnrParam ?? '')
   const [_queryType, _setQueryType] = useState<string |undefined>(undefined)
   const [_validMessage, _setValidMessage] = useState<string>('')
-  const [_validation, _resetValidation, performValidation] = useValidation({}, validateSEDSelection)
+  const [_validation, _resetValidation, performValidation] = useValidation({}, validateSEDSearch)
   const [_replySedRequested, setReplySedRequested] = useState<boolean>(false)
   const [_sedStatusRequested, setSedStatusRequested] = useState<string |undefined>(undefined)
 
   const onSaksnummerOrFnrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value
     dispatch(appActions.cleanData())
-    _resetValidation('sedselection-saksnummerOrFnr')
+    _resetValidation('sedsearch-saksnummerOrFnr')
     _setSaksnummerOrFnr(query)
     const result = validator.idnr(query)
     if (result.status !== 'valid') {
@@ -234,11 +234,11 @@ const SEDSelection: React.FC<SvarSedProps> = ({
             <FlexStartDiv>
               <HighContrastInput
                 ariaLabel={t('label:saksnummer-eller-fnr')}
-                ariaInvalid={_validation['sedselection-saksnummerOrFnr']?.feilmelding}
+                ariaInvalid={_validation['sedsearch-saksnummerOrFnr']?.feilmelding}
                 bredde='xl'
-                data-test-id='sedselection-saksnummerOrFnr'
-                feil={_validation['sedselection-saksnummerOrFnr']?.feilmelding}
-                id='sedselection-saksnummerOrFnr'
+                data-test-id='sedsearch-saksnummerOrFnr'
+                feil={_validation['sedsearch-saksnummerOrFnr']?.feilmelding}
+                id='sedsearch-saksnummerOrFnr'
                 label={t('label:saksnummer-eller-fnr')}
                 onChange={onSaksnummerOrFnrChange}
                 placeholder={t('el:placeholder-input-default')}
@@ -449,7 +449,7 @@ const SEDSelection: React.FC<SvarSedProps> = ({
                       </Etikett>
                     </>
                   )}
-                  name='sedselection-saksnummerOrFnr-results'
+                  name='sedsearch-saksnummerOrFnr-results'
                   onChange={onParentSedChange}
                   value={sedId}
                 />
@@ -582,4 +582,4 @@ const SEDSelection: React.FC<SvarSedProps> = ({
   )
 }
 
-export default SEDSelection
+export default PDU1Search

@@ -1,3 +1,4 @@
+import { AdresseState } from 'reducers/adresse'
 import { AlertState } from 'reducers/alert'
 import { AppState } from 'reducers/app'
 import { ArbeidsgiverState } from 'reducers/arbeidsgiver'
@@ -14,6 +15,7 @@ import { ValidationState } from 'reducers/validation'
 import { VedleggState } from 'reducers/vedlegg'
 
 export interface State {
+  adresse: AdresseState,
   alert: AlertState,
   app: AppState,
   arbeidsgiver: ArbeidsgiverState,

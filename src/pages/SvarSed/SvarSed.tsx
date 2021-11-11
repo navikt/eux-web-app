@@ -5,14 +5,15 @@ import SEDLoadSave from 'applications/SvarSed/SEDLoadSave/SEDLoadSave'
 import SlidePage, { ChangeModeFunction } from 'components/SlidePage/SlidePage'
 import { SideBarDiv } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
-import SEDEditor from 'pages/SvarSed/SEDEditor'
-import SEDSelection from 'pages/SvarSed/SEDSelection'
+import SEDEdit from 'pages/SvarSed/SEDEdit'
+import SEDSearch from 'pages/SvarSed/SEDSearch'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
+import { STORAGE_SVARSED } from 'constants/storage'
 
 export const SvarSedPage = (): JSX.Element => {
-  const storageKey = 'replySed'
+  const storageKey = STORAGE_SVARSED
   const [_mounted, setMounted] = useState<boolean>(false)
   const dispatch = useDispatch()
   const { t } = useTranslation()
@@ -44,7 +45,7 @@ export const SvarSedPage = (): JSX.Element => {
         changeModeFunc={changeModeFunc}
         initialPage='A'
         initialDirection='none'
-        divA1={(<SEDSelection changeMode={changeMode} />)}
+        divA1={(<SEDSearch changeMode={changeMode} />)}
         divA2={(
           <SideBarDiv>
             <SEDLoadSave
@@ -53,7 +54,11 @@ export const SvarSedPage = (): JSX.Element => {
             />
           </SideBarDiv>
       )}
-        divB1={(<SEDEditor changeMode={changeMode} />)}
+        divB1={(
+          <SEDEdit
+            storageKey={storageKey}
+            changeMode={changeMode}
+          />)}
         divB2={(
           <SideBarDiv>
             <SEDDetails />

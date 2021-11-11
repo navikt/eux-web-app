@@ -1,8 +1,3 @@
-import { validateKontoopplysning } from 'applications/SvarSed/Formaal/Kontoopplysning/validation'
-import { validateKravOmRefusjon } from 'applications/SvarSed/Formaal/KravOmRefusjon/validation'
-import { validateMotregninger } from 'applications/SvarSed/Formaal/Motregning/validation'
-import { validateProsedyreVedUenighet } from 'applications/SvarSed/Formaal/ProsedyreVedUenighet/validation'
-import { validateVedtak } from 'applications/SvarSed/Formaal/Vedtak/validation'
 import { validateAdresser } from 'applications/SvarSed/PersonManager/Adresser/validation'
 import { validateBeløpNavnOgValutas } from 'applications/SvarSed/PersonManager/BeløpNavnOgValuta/validation'
 import { validateFamilierelasjoner } from 'applications/SvarSed/PersonManager/Familierelasjon/validation'
@@ -56,57 +51,8 @@ import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
 import { isFSed, isHSed, isUSed } from 'utils/sed'
 
-export interface ValidationSEDEditProps {
+export interface ValidationPDU1EditProps {
   replySed: ReplySed
-}
-
-export const validateFormålManager = (v: Validation, t: TFunction, replySed: ReplySed): boolean => {
-  let hasErrors: boolean = false
-  let _error: boolean
-
-  if (!_.isEmpty((replySed as F002Sed).formaal)) {
-    if ((replySed as F002Sed).formaal.indexOf('motregning') >= 0) {
-      _error = validateMotregninger(v, t, {
-        replySed,
-        namespace: 'formålmanager-motregning',
-        formalName: t('label:motregning').toLowerCase()
-      })
-      hasErrors = hasErrors || _error
-    }
-    if ((replySed as F002Sed).formaal.indexOf('vedtak') >= 0) {
-      _error = validateVedtak(v, t, {
-        vedtak: _.get(replySed, 'vedtak'),
-        namespace: 'formålmanager-vedtak',
-        formalName: t('label:vedtak').toLowerCase()
-      })
-      hasErrors = hasErrors || _error
-    }
-    if ((replySed as F002Sed).formaal.indexOf('prosedyre_ved_uenighet') >= 0) {
-      _error = validateProsedyreVedUenighet(v, t, {
-        prosedyreVedUenighet: _.get(replySed, 'uenighet'),
-        namespace: 'formålmanager-prosedyre_ved_uenighet',
-        formalName: t('label:prosedyre-ved-uenighet').toLowerCase()
-      })
-      hasErrors = hasErrors || _error
-    }
-    if ((replySed as F002Sed).formaal.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0) {
-      _error = validateKravOmRefusjon(v, t, {
-        kravOmRefusjon: (replySed as F002Sed)?.refusjonskrav,
-        namespace: 'formålmanager-refusjonskrav',
-        formalName: t('label:krav-om-refusjon').toLowerCase()
-      })
-      hasErrors = hasErrors || _error
-    }
-    if (!_.isNil((replySed as F002Sed).utbetalingTilInstitusjon)) {
-      _error = validateKontoopplysning(v, t, {
-        uti: _.get(replySed, 'utbetalingTilInstitusjon'),
-        namespace: 'formålmanager-kontoopplysninger',
-        formalName: t('label:kontoopplysninger').toLowerCase()
-      })
-      hasErrors = hasErrors || _error
-    }
-  }
-  return hasErrors
 }
 
 export const validatePersonManager = (v: Validation, t: TFunction, replySed: ReplySed, personID: string): boolean => {
@@ -350,12 +296,12 @@ export const validateSEDSearch = (
   return hasErrors
 }
 
-export const validateSEDEdit = (
+export const validatePDU1Edit = (
   v: Validation,
   t: TFunction,
   {
     replySed
-  }: ValidationSEDEditProps
+  }: ValidationPDU1EditProps
 ): boolean => {
   let hasErrors: boolean = false
   let _error: boolean
@@ -389,9 +335,6 @@ export const validateSEDEdit = (
       _error = validatePersonManager(v, t, replySed, 'familie')
       hasErrors = hasErrors || _error
     }
-
-    _error = validateFormålManager(v, t, replySed)
-    hasErrors = hasErrors || _error
   }
 
   if (isHSed(replySed)) {

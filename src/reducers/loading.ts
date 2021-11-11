@@ -7,6 +7,7 @@ export interface LoadingState {
 }
 
 export const initialLoadingState: LoadingState = {
+  gettingAdresse: false,
   gettingArbeidsperioder: false,
   gettingDokument: false,
   gettingFagsaker: false,
@@ -39,7 +40,20 @@ const loadingReducer = (
   }
 
   switch (action.type) {
-    // SAK
+
+    case types.ADRESSE_SEARCH_REQUEST:
+      return {
+        ...state,
+        gettingAdresse: true
+      }
+
+    case types.ADRESSE_SEARCH_FAILURE:
+    case types.ADRESSE_SEARCH_SUCCESS:
+      return {
+        ...state,
+        gettingAdresse: false
+      }
+
     case types.ARBEIDSPERIODER_GET_REQUEST:
       return {
         ...state,

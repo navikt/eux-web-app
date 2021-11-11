@@ -24,6 +24,7 @@ export const API_FAGSAKER_QUERY_URL = API_BASE_URL + '/fagsaker/%(fnr)s/?sektor=
 export const API_INNTEKT_FOM_TOM_URL = API_BASE_URL + '/person/%(fnr)s/inntekter/oversikt?fom=%(fom)s&tom=%(tom)s&inntektsliste=%(inntektsliste)s'
 export const API_ARBEIDSPERIODER_QUERY_URL = API_BASE_URL + '/person/%(fnr)s/arbeidsperioder/inntektsperioder/%(inntektslistetype)s/?fom=%(fom)s&tom=%(tom)s'
 export const API_PERSONER_URL = API_BASE_URL + '/personer/?fnr=%(fnr)s'
+export const API_ADRESSE_URL = API_BASE_URL + '/person/%(fnr)s/adresse'
 
 // Saksbehandler
 export const API_SAKSBEHANDLER_URL = API_BASE_URL + '/saksbehandler'

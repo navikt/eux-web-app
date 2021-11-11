@@ -99,6 +99,7 @@
   "fra-arbeidsgiverregisteret" : "Fra arbeidsgiverregisteret",
   "fra-dato": "Fra dato",
   "fra-inntektsregisteret" : "Fra inntektsregisteret",
+  "fyll-inn-adresse": "Fyll inn adresse",
   "fødested": "Fødested",
   "fødselsdato": "Fødselsdato",
 
@@ -204,6 +205,7 @@
   "orgnr": "Orgnr.",
 
   "partner": "Ektefelle/partner",
+  "pdl-adresse-til": "PDL adresser til {{person}}",
   "periode": "Periode",
   "periode-avgrensing": "Avgrensning av periode",
   "periode-for-dagpenger": "Periode for dagpenger",
@@ -261,6 +263,7 @@
   "swift": "SWIFT",
   "sykdom": "Sykdom",
   "søker" : "Søker",
+  "søk-pdl-adresse-til": "Søk PDL adresse til {{person}}",
 
   "telefonnummer": "Telefonnummer",
   "tema": "Tema",

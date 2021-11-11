@@ -3,12 +3,12 @@ import AdresseFC from 'applications/SvarSed/PersonManager/Adresser/Adresse'
 import IdentifikatorFC from 'applications/SvarSed/PersonManager/Identifikator/Identifikator'
 import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
+import AdresseBox from 'components/AdresseBox/AdresseBox'
 import Input from 'components/Forms/Input'
 import PeriodeInput, { toUIDateFormat } from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Adresse as IAdresse, ArbeidsgiverIdentifikator, Periode, PeriodeMedForsikring } from 'declarations/sed.d'
 import useValidation from 'hooks/useValidation'
-import CountryData from 'land-verktoy'
 import _ from 'lodash'
 import { Checkbox } from 'nav-frontend-skjema'
 import { Normaltekst, Undertekst, UndertekstBold } from 'nav-frontend-typografi'
@@ -86,7 +86,6 @@ const ArbeidsgiverBox = ({
 }: ArbeidsgiverProps): JSX.Element => {
   const { t } = useTranslation()
   const _namespace = namespace + '-arbeidsgiver[' + (generateIdentifikatorKey(arbeidsgiver.arbeidsgiver.identifikator) ?? '-') + ']'
-  const countryData = CountryData.getCountryInstance('nb')
 
   const [_isDeleting, setIsDeleting] = useState<boolean>(false)
   const [_isEditing, setIsEditing] = useState<boolean>(false)
@@ -309,17 +308,7 @@ const ArbeidsgiverBox = ({
                               <>{t('label:adresse')}: </>
                             )}
                           </Normaltekst>
-                          <Normaltekst>
-                            {_adresse?.gate ?? '-'}
-                            {_adresse?.bygning ? ', ' + t('label:bygning').toLowerCase() + ' ' + _adresse?.bygning : ''}
-                          </Normaltekst>
-                          <Normaltekst>
-                            {_adresse?.postnummer + ' ' + _adresse?.by}
-                          </Normaltekst>
-                          <Normaltekst>
-                            {_adresse?.region ? _adresse?.region + ', ' : ''}
-                            {countryData.findByValue(_adresse?.land)?.label ?? _adresse?.land}
-                          </Normaltekst>
+                          <AdresseBox adresse={_adresse}/>
                         </div>
                         )}
                 </div>

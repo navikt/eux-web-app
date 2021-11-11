@@ -7,7 +7,7 @@ import { Action } from 'redux'
 
 export interface LocalStorageState {
   entries: Array<LocalStorageEntry<ReplySed>> | null | undefined
-  // currentEntry !== undefined serves only the purpose of telling SEDEditor that the
+  // currentEntry !== undefined serves only the purpose of telling SEDEdit that the
   // current replySed came from a localstorage load, and therefore decides if the saving
   // button will be labeled as Update or Save
   currentEntry: LocalStorageEntry<ReplySed> | undefined

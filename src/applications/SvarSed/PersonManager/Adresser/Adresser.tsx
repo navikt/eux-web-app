@@ -1,10 +1,12 @@
-import { Add } from '@navikt/ds-icons'
+import { Add, Search } from '@navikt/ds-icons'
+import { resetAdresse, searchAdresse } from 'actions/adresse'
 import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
-import { mapState } from 'applications/SvarSed/Formaal/FormålManager'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import AdresseBox from 'components/AdresseBox/AdresseBox'
+import Modal from 'components/Modal/Modal'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Adresse as IAdresse } from 'declarations/sed'
@@ -18,38 +20,76 @@ import {
   AlignStartRow,
   Column,
   HighContrastFlatknapp,
+  HighContrastHovedknapp,
+  HighContrastRadio,
+  HighContrastRadioGroup,
   HorizontalSeparatorDiv,
   PaddedDiv,
   Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import { getFnr } from 'utils/fnr'
 import { getIdx } from 'utils/namespace'
 import Adresse from './Adresse'
 import { validateAdresse, ValidationAddressProps } from './validation'
+
+interface AdresserSelector extends PersonManagerFormSelector {
+  highContrast: boolean
+  adresse: Array<IAdresse> | null | undefined
+  gettingAdresse: boolean
+}
+
+const mapState = (state: State): AdresserSelector => ({
+  highContrast: state.ui.highContrast,
+  replySed: state.svarsed.replySed,
+  validation: state.validation.status,
+  adresse: state.adresse.adresse,
+  gettingAdresse: state.loading.gettingAdresse
+})
 
 const Adresser: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
   personName
-}:PersonManagerFormProps): JSX.Element => {
+}: PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
+    highContrast,
     replySed,
-    validation
-  } = useSelector<State, PersonManagerFormSelector>(mapState)
+    validation,
+    adresse,
+    gettingAdresse
+  }: AdresserSelector = useSelector<State, AdresserSelector>(mapState)
   const dispatch = useDispatch()
   const target = `${personID}.adresser`
   const adresses: Array<IAdresse> = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-adresser`
-
+  const fnr = getFnr(replySed, personID)
   const [_newAdresse, _setNewAdresse] = useState<IAdresse | undefined>(undefined)
+
+  const [_searchingAdresse, _setSearchingAdresse] = useState<boolean>(false)
+  const [_showModal, _setShowModal] = useState<boolean>(false)
+  const [_selectedAdresse, _setSelectedAdresse] = useState<IAdresse | undefined>(undefined)
+
   const getId = (a: IAdresse | null | undefined): string => (a?.type ?? '') + '-' + (a?.by ?? '') + '-' + (a?.land ?? '')
+
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<IAdresse>(getId)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationAddressProps>({}, validateAdresse)
+
+  useEffect(() => {
+    if (adresse && !_showModal && _searchingAdresse) {
+      if (adresse.length > 1) {
+        _setShowModal(true)
+      } else if (adresse.length === 1) {
+        _setNewAdresse(adresse[0])
+        onCleanupFillAdresse()
+      }
+    }
+  }, [adresse, _showModal, _searchingAdresse])
 
   const setAdresse = (adresse: IAdresse, index: number) => {
     if (index < 0) {
@@ -89,6 +129,11 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
     }
   }
 
+  const getAdresse = () => {
+    _setSearchingAdresse(true)
+    dispatch(searchAdresse(fnr))
+  }
+
   const onAdd = () => {
     const valid: boolean = performValidation({
       adresse: _newAdresse,
@@ -107,15 +152,77 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const renderRow = (adresse: IAdresse | null, index: number) => {
-    const candidateForDeletion = index < 0 ? false : isInDeletion(adresse)
+  const onFillAdresse = () => {
+    _setNewAdresse(_selectedAdresse)
+    onCleanupFillAdresse()
+  }
+
+  const onCleanupFillAdresse = () => {
+    dispatch(resetAdresse())
+    _setSelectedAdresse(undefined)
+    _setShowModal(false)
+    _setSearchingAdresse(false)
+  }
+
+  const renderRow = (_adresse: IAdresse | null, index: number) => {
+    const candidateForDeletion = index < 0 ? false : isInDeletion(_adresse)
     const idx = getIdx(index)
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
+        {_showModal && (
+          <Modal highContrast={highContrast} modal={{
+            modalTitle: t('label:pdl-adresse-til', {person: personName}),
+            modalContent: (
+              <div style={{padding: '1rem'}}>
+                <HighContrastRadioGroup
+                  key={JSON.stringify(_selectedAdresse)}
+                  legend={t('label:adresser')}
+                >
+                  {adresse?.map(a => (
+                    <HighContrastRadio
+                      name='adresser'
+                      checked={_.isEqual(_selectedAdresse, a)}
+                      label={(<AdresseBox adresse={a}/>)}
+                      onClick={() => _setSelectedAdresse(a)}
+                    />
+                  ))}
+                </HighContrastRadioGroup>
+              </div>
+            ),
+            modalButtons: [{
+              main: true,
+              text: t('label:fyll-inn-adresse'),
+              onClick: onFillAdresse
+            }, {
+              text: t('el:button-cancel'),
+              onClick: onCleanupFillAdresse
+            }]
+          }}/>
+        )}
+        {index < 0 && (
+          <>
+          <AlignStartRow>
+            <Column>
+            <HighContrastHovedknapp
+              disabled={gettingAdresse || _.isNil(fnr)}
+              spinner={gettingAdresse}
+              onClick={getAdresse}
+            >
+              <Search />
+              <HorizontalSeparatorDiv size='0.5' />
+              {gettingAdresse
+                ? t('message:loading-searching')
+                : t('label:søk-pdl-adresse-til', {person: personName})}
+            </HighContrastHovedknapp>
+            </Column>
+          </AlignStartRow>
+          <VerticalSeparatorDiv/>
+          </>
+        )}
         <Adresse
-          key={namespace + idx + getId(index < 0 ? _newAdresse : adresse)}
+          key={namespace + idx + getId(index < 0 ? _newAdresse : _adresse)}
           namespace={namespace + idx}
-          adresse={index < 0 ? _newAdresse : adresse}
+          adresse={index < 0 ? _newAdresse : _adresse}
           onAdressChanged={(a: IAdresse) => setAdresse(a, index)}
           validation={index < 0 ? _validation : validation}
           resetValidation={(n: string) => onValidationReset(n, index)}
@@ -126,9 +233,9 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}
               marginTop
-              onBeginRemove={() => addToDeletion(adresse)}
+              onBeginRemove={() => addToDeletion(_adresse)}
               onConfirmRemove={() => onRemove(index)}
-              onCancelRemove={() => removeFromDeletion(adresse)}
+              onCancelRemove={() => removeFromDeletion(_adresse)}
               onAddNew={onAdd}
               onCancelNew={onCancel}
             />
