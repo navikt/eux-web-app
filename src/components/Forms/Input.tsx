@@ -10,7 +10,8 @@ export interface InputProps {
   id: string
   label: JSX.Element | string
   min ?: string
-  onChanged: (e: string) => void
+  onContentChange?: (e: string) => void
+  onChanged?: (e: string) => void
   placeholder?: string
   required ?: boolean
   type?: string
@@ -24,7 +25,8 @@ const Input: React.FC<InputProps> = ({
   label,
   min,
   namespace,
-  onChanged,
+  onContentChange = () => {},
+  onChanged = () => {},
   placeholder,
   required = false,
   type = 'text',
@@ -50,6 +52,7 @@ const Input: React.FC<InputProps> = ({
         }
       }}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+        onContentChange(e.target.value)
         _setValue(e.target.value)
         _setDirty(true)
       }}

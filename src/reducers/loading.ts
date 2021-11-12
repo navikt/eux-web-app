@@ -7,6 +7,8 @@ export interface LoadingState {
 }
 
 export const initialLoadingState: LoadingState = {
+  creatingPdu1: false,
+  creatingSvarSed: false,
   gettingAdresse: false,
   gettingArbeidsperioder: false,
   gettingDokument: false,
@@ -22,13 +24,12 @@ export const initialLoadingState: LoadingState = {
   gettingSavedItems: false,
   gettingServerinfo: false,
   gettingSedStatus: false,
+  queryingReplySed: false,
+  queryingSaksnummerOrFnr: false,
   searchingPerson: false,
   sendingVedlegg: false,
   sendingSak: false,
-  sendingSed: false,
-  creatingSvarSed: false,
-  queryingReplySed: false,
-  queryingSaksnummerOrFnr: false
+  sendingSed: false
 }
 
 const loadingReducer = (
@@ -40,7 +41,6 @@ const loadingReducer = (
   }
 
   switch (action.type) {
-
     case types.ADRESSE_SEARCH_REQUEST:
       return {
         ...state,
@@ -159,6 +159,19 @@ const loadingReducer = (
       return {
         ...state,
         gettingPreviewFile: false
+      }
+
+    case types.PDU1_CREATE_REQUEST:
+      return {
+        ...state,
+        creatingPdu1: true
+      }
+
+    case types.PDU1_CREATE_FAILURE:
+    case types.PDU1_CREATE_SUCCESS:
+      return {
+        ...state,
+        creatingPdu1: false
       }
 
     case types.PERSON_SEARCH_REQUEST:

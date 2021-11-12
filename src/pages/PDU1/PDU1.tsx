@@ -10,10 +10,12 @@ import { useDispatch } from 'react-redux'
 import PDU1Edit from './PDU1Edit'
 import PDU1Search from './PDU1Search'
 import { STORAGE_PDU1 } from 'constants/storage'
+import { useLocation } from 'react-router-dom'
 
 export const PDU1Page = (): JSX.Element => {
   const [_mounted, setMounted] = useState<boolean>(false)
   const dispatch = useDispatch()
+  const location = useLocation()
   const { t } = useTranslation()
   const storageKey = STORAGE_PDU1
 
@@ -42,23 +44,24 @@ export const PDU1Page = (): JSX.Element => {
   return (
     <TopContainer title={t('app:page-title-pdu1')}>
       <SlidePage
-      changeModeFunc={changeModeFunc}
-      initialPage='A'
-      initialDirection='none'
-      divA1={(<PDU1Search changeMode={changeMode} />)}
-      divA2={(
-        <SideBarDiv>
-          <div/>
-        </SideBarDiv>
+        changeModeFunc={changeModeFunc}
+        initialPage='A'
+        initialDirection='none'
+        divA1={(<PDU1Search changeMode={changeMode} />)}
+        divA2={(
+          <SideBarDiv>
+            <div />
+          </SideBarDiv>
       )}
-      divB1={(<PDU1Edit
-        storageKey={storageKey} changeMode={changeMode} />)}
-      divB2={(
-        <SideBarDiv>
-          <SEDDetails />
-        </SideBarDiv>
+        divB1={(<PDU1Edit
+          storageKey={storageKey} changeMode={changeMode}
+                />)}
+        divB2={(
+          <SideBarDiv>
+            <SEDDetails />
+          </SideBarDiv>
       )}
-    />
+      />
     </TopContainer>
   )
 }

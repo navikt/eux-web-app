@@ -1,0 +1,123 @@
+export default {
+  sedVersjon: '4.2',
+  bruker: {
+    personInfo: {
+      fornavn: 'æøå',
+      etternavn: 'æøå',
+      kjoenn: 'M',
+      foedselsdato: '2001-01-01',
+      statsborgerskap: [
+        {
+          land: 'NO'
+        }
+      ],
+      pin: [
+        {
+          land: 'NO',
+          sektor: 'yrkesskade_og_yrkessykdom',
+          identifikator: 'æøå',
+          institusjonsid: 'ES:3100',
+          institusjonsnavn: 'æøå'
+        }
+      ],
+      pinmangler: {
+        foedested: {
+          by: 'æøå',
+          region: 'æøå',
+          land: 'NO'
+        },
+        far: {
+          fornavn: 'æøå',
+          etternavnvedfoedsel: 'æøå'
+        },
+        mor: {
+          fornavn: 'æøå',
+          etternavnvedfoedsel: 'æøå'
+        },
+        etternavnvedfoedsel: 'æøå',
+        fornavnvedfoedsel: 'æøå'
+      }
+    }
+  },
+  anmodningsperiode: {
+    startdato: '2001-01-01',
+    aapenPeriodeType: 'åpen_sluttdato'
+  },
+  lokaleSakIder: [
+    {
+      saksnummer: 'æøå',
+      institusjonsnavn: 'æøå',
+      institusjonsid: 'ES:3100',
+      land: 'NO'
+    }
+  ],
+  sedType: 'U017',
+  perioderAnsattMedForsikring: [
+    {
+      arbeidsgiver: {
+        navn: 'æøå',
+        adresse: {
+          gate: 'æøå',
+          postnummer: 'æøå',
+          by: 'æøå',
+          land: 'NO',
+          bygning: 'æøå',
+          region: 'æøå'
+        },
+        identifikator: [
+          {
+            type: 'registrering',
+            id: 'ES:3100'
+          }
+        ]
+      },
+      sluttdato: '2002-02-02',
+      startdato: '2001-01-01'
+    }
+  ],
+  perioderAnsattUtenForsikring: [
+    {
+      inntektOgTimer: [],
+      inntektOgTimerInfo: 'inntekt og timer info',
+      arbeidsgiver: {
+        navn: 'æøå',
+        adresse: {
+          gate: 'æøå',
+          postnummer: 'æøå',
+          by: 'æøå',
+          land: 'NO',
+          bygning: 'æøå',
+          region: 'æøå'
+        },
+        identifikator: [
+          {
+            type: 'registrering',
+            id: 'ES:3100'
+          }
+        ]
+      },
+      sluttdato: '2002-02-02',
+      startdato: '2001-01-01'
+    }
+  ],
+  perioderDagpenger: [
+    {
+      periode: {
+        startdato: '2001-01-01',
+        aapenPeriodeType: 'åpen_sluttdato'
+      },
+      institusjon: {
+        navn: 'æøå',
+        id: 'ES:3100'
+      }
+    }
+  ],
+  rettTilYtelse: {
+    bekreftelsesgrunn: 'artikkel_64_i_forordning_EF_nr_883_2004',
+    periode: {
+      startdato: '2001-01-01',
+      aapenPeriodeType: 'åpen_sluttdato'
+    },
+    avvisningsgrunn: 'ingen_rett_til_stønad_i_henhold_til_lovgivningen_til_institusjonen_som_utsteder_denne_meldingen'
+  }
+}

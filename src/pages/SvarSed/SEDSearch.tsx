@@ -222,7 +222,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
   return (
     <ContainerDiv>
       <Systemtittel>
-        {t('label:svarsed')}
+        {t('app:page-title-svarsed-search')}
       </Systemtittel>
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow

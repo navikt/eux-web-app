@@ -41,7 +41,10 @@ export const API_VEDLEGG_POST_URL = API_BASE_URL + '/rina/vedlegg'
 export const API_VEDLEGG_DOKUMENT_URL = API_BASE_URL + '/rina/dokumenter/?rinasaksnummer=%(rinasaksnummer)s'
 export const API_VEDLEGG_OVERSIKT_URL = API_BASE_URL + '/rina/vedlegg/dokumentoversikt/%(fnr)s'
 
-// TO DO
+// Joark
 export const API_JOARK_LIST_URL = '/api/vedlegg/dokumentoversikt/%(fnr)s'
 export const API_JOARK_GET_URL = '/api/vedlegg/dokument/%(journalpostId)s/%(dokumentInfoId)s/%(variantformat)s'
 export const API_JOARK_ATTACHMENT_URL = '/api/vedlegg/dokument/%(journalpostId)s/%(dokumentInfoId)s/%(variantformat)s/rina/%(rinaId)s/%(rinaDokumentId)s/%(filnavn)s'
+
+// OTHER
+export const PDU1_CREATE_URL = '/api/pdi1/create/%(fnr)s/%(fagsak)s'

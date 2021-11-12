@@ -3,8 +3,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import CountryData from 'land-verktoy'
 
-const AdresseBox = ({adresse}: any) => {
-
+const AdresseBox = ({ adresse }: any) => {
   const countryData = CountryData.getCountryInstance('nb')
   const { t } = useTranslation()
   return (

@@ -170,53 +170,56 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
         {_showModal && (
-          <Modal highContrast={highContrast} modal={{
-            modalTitle: t('label:pdl-adresse-til', {person: personName}),
-            modalContent: (
-              <div style={{padding: '1rem'}}>
-                <HighContrastRadioGroup
-                  key={JSON.stringify(_selectedAdresse)}
-                  legend={t('label:adresser')}
-                >
-                  {adresse?.map(a => (
-                    <HighContrastRadio
-                      name='adresser'
-                      checked={_.isEqual(_selectedAdresse, a)}
-                      label={(<AdresseBox adresse={a}/>)}
-                      onClick={() => _setSelectedAdresse(a)}
-                    />
-                  ))}
-                </HighContrastRadioGroup>
-              </div>
-            ),
-            modalButtons: [{
-              main: true,
-              text: t('label:fyll-inn-adresse'),
-              onClick: onFillAdresse
-            }, {
-              text: t('el:button-cancel'),
-              onClick: onCleanupFillAdresse
-            }]
-          }}/>
+          <Modal
+            highContrast={highContrast} modal={{
+              modalTitle: t('label:pdl-adresse-til', { person: personName }),
+              modalContent: (
+                <div style={{ padding: '1rem' }}>
+                  <HighContrastRadioGroup
+                    key={JSON.stringify(_selectedAdresse)}
+                    legend={t('label:adresser')}
+                  >
+                    {adresse?.map(a => (
+                      <HighContrastRadio
+                        key={a.type + '-' + a.gate}
+                        name='adresser'
+                        checked={_.isEqual(_selectedAdresse, a)}
+                        label={(<AdresseBox adresse={a} />)}
+                        onClick={() => _setSelectedAdresse(a)}
+                      />
+                    ))}
+                  </HighContrastRadioGroup>
+                </div>
+              ),
+              modalButtons: [{
+                main: true,
+                text: t('label:fyll-inn-adresse'),
+                onClick: onFillAdresse
+              }, {
+                text: t('el:button-cancel'),
+                onClick: onCleanupFillAdresse
+              }]
+            }}
+          />
         )}
         {index < 0 && (
           <>
-          <AlignStartRow>
-            <Column>
-            <HighContrastHovedknapp
-              disabled={gettingAdresse || _.isNil(fnr)}
-              spinner={gettingAdresse}
-              onClick={getAdresse}
-            >
-              <Search />
-              <HorizontalSeparatorDiv size='0.5' />
-              {gettingAdresse
-                ? t('message:loading-searching')
-                : t('label:søk-pdl-adresse-til', {person: personName})}
-            </HighContrastHovedknapp>
-            </Column>
-          </AlignStartRow>
-          <VerticalSeparatorDiv/>
+            <AlignStartRow>
+              <Column>
+                <HighContrastHovedknapp
+                  disabled={gettingAdresse || _.isNil(fnr)}
+                  spinner={gettingAdresse}
+                  onClick={getAdresse}
+                >
+                  <Search />
+                  <HorizontalSeparatorDiv size='0.5' />
+                  {gettingAdresse
+                    ? t('message:loading-searching')
+                    : t('label:søk-pdl-adresse-til', { person: personName })}
+                </HighContrastHovedknapp>
+              </Column>
+            </AlignStartRow>
+            <VerticalSeparatorDiv />
           </>
         )}
         <Adresse

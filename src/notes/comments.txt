@@ -6,16 +6,16 @@ I have to decide once and for all what is the id (orgnr + stardato) and check va
 =>  Editing arbeidsgiver / PeriodeMedForsikring that is already selected, does NOT update the replySed
 
 
-Move to ds-react
+Move to ds-react, ds-icons
 Validation - better system for personName
-  -   Better system that opens forms when clicking validation error
-Move to yarn
-update ids.txt, uniform namespace
+  - Better system that opens forms when clicking validation error
+update ids.txt, better uniform namespace (camelcase, etc)
 Still have to properly fix registrering
 check all forms for onRemove(index or element), onAdd, etc
 remove underscores
-    - _set to set, set to handle
-    - validation, _val to thisVal
+  - _set to set, set to handle
+  - validation, _val to thisVal
+padding on right form: let form make it, also make hover color to separate each element
 
 
  grep -rho -e "'app:[^']*'" * | sort -u

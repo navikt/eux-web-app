@@ -308,7 +308,7 @@ const ArbeidsgiverBox = ({
                               <>{t('label:adresse')}: </>
                             )}
                           </Normaltekst>
-                          <AdresseBox adresse={_adresse}/>
+                          <AdresseBox adresse={_adresse} />
                         </div>
                         )}
                 </div>

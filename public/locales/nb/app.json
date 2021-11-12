@@ -1,5 +1,4 @@
 {
-
   "info-confirm-information" : "Vi bekrefter leverte opplysninger",
   "info-point-information" : "Gi oss punktvise opplysninger",
 
@@ -22,7 +21,9 @@
   "page-title-vedlegg": "Legg vedlegg til SED",
   "page-title-opprettsak" : "Opprett sak",
   "page-title-svarsed": "SvarSED eller ny SED i eksisterende sak",
+  "page-title-svarsed-search": "Velg RINA-sak og opprett SED",
   "page-title-pdu1": "PD U1 - Perioder av betydning for retten til dagpenger",
+  "page-title-pdu1-search": "Søk på person og opprett PD U1",
   "page-title-unknown": "Ukjent",
 
   "session-expire-title" : "Du vil snart bli logget ut",
