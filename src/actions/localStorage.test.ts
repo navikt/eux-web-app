@@ -5,9 +5,11 @@ import { LocalStorageEntry } from 'declarations/types'
 import getReplySed from 'mocks/svarsed/replySed'
 
 describe('actions/localStorage', () => {
+  const namespace = 'svarsed'
+
   it('loadEntries()', () => {
     const mockKey = 'mockKey'
-    const generatedResult = localStorageActions.loadEntries(mockKey)
+    const generatedResult = localStorageActions.loadEntries(namespace, mockKey)
     expect(generatedResult)
       .toMatchObject({
         type: types.LOCALSTORAGE_ENTRIES_LOAD,
@@ -24,7 +26,7 @@ describe('actions/localStorage', () => {
       date: 'date',
       content: getReplySed('H002')
     } as LocalStorageEntry<ReplySed>
-    const generatedResult = localStorageActions.setCurrentEntry(mockEntry)
+    const generatedResult = localStorageActions.setCurrentEntry(namespace, mockEntry)
     expect(generatedResult)
       .toMatchObject({
         type: types.LOCALSTORAGE_CURRENTENTRY_SET,
@@ -40,7 +42,7 @@ describe('actions/localStorage', () => {
       date: 'date',
       content: getReplySed('H002')!
     }
-    const generatedResult = localStorageActions.removeEntry(mockKey, mockEntry)
+    const generatedResult = localStorageActions.removeEntry(namespace, mockKey, mockEntry)
     expect(generatedResult)
       .toMatchObject({
         type: types.LOCALSTORAGE_ENTRY_REMOVE,
@@ -59,7 +61,7 @@ describe('actions/localStorage', () => {
       date: 'date',
       content: getReplySed('H002')!
     }
-    const generatedResult = localStorageActions.saveEntry(mockKey, mockEntry)
+    const generatedResult = localStorageActions.saveEntry(namespace, mockKey, mockEntry)
     expect(generatedResult)
       .toMatchObject({
         type: types.LOCALSTORAGE_ENTRY_SAVE,

@@ -1,6 +1,7 @@
 import { setStatusParam } from 'actions/app'
 import * as svarsedActions from 'actions/svarsed'
 import SEDDetails from 'applications/SvarSed/SEDDetails/SEDDetails'
+import LoadSave from 'components/LoadSave/LoadSave'
 import SlidePage, { ChangeModeFunction } from 'components/SlidePage/SlidePage'
 import { SideBarDiv } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
@@ -47,20 +48,31 @@ export const PDU1Page = (): JSX.Element => {
         changeModeFunc={changeModeFunc}
         initialPage='A'
         initialDirection='none'
-        divA1={(<PDU1Search changeMode={changeMode} />)}
+        divA1={(
+          <PDU1Search
+            changeMode={changeMode}
+          />
+        )}
         divA2={(
           <SideBarDiv>
-            <div />
+            <LoadSave
+              namespace='pdu1'
+              storageKey={storageKey}
+              changeMode={changeMode}
+            />
           </SideBarDiv>
-      )}
-        divB1={(<PDU1Edit
-          storageKey={storageKey} changeMode={changeMode}
-                />)}
+        )}
+        divB1={(
+          <PDU1Edit
+            storageKey={storageKey}
+            changeMode={changeMode}
+          />
+        )}
         divB2={(
           <SideBarDiv>
             <SEDDetails />
           </SideBarDiv>
-      )}
+        )}
       />
     </TopContainer>
   )

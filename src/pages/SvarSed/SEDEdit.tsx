@@ -80,7 +80,6 @@ const mapState = (state: State): any => ({
   highContrast: state.ui.highContrast,
   previewFile: state.svarsed.previewFile,
   replySed: state.svarsed.replySed,
-  currentEntry: state.localStorage.currentEntry,
   savingSed: state.loading.savingSed,
   sendingSed: state.loading.sendingSed,
   sedCreatedResponse: state.svarsed.sedCreatedResponse,
@@ -103,7 +102,6 @@ const SEDEdit: React.FC<SEDEditProps> = ({
     highContrast,
     previewFile,
     replySed,
-    currentEntry,
     savingSed,
     sendingSed,
     sedCreatedResponse,
@@ -111,6 +109,10 @@ const SEDEdit: React.FC<SEDEditProps> = ({
     validation,
     view
   }: SEDEditSelector = useSelector<State, SEDEditSelector>(mapState)
+
+  const currentEntry = useSelector<State, LocalStorageEntry<ReplySed> | undefined>(
+    (state) => state.localStorage.svarsed.currentEntry)
+
   const fnr = getFnr(replySed, 'bruker')
   const namespace = 'editor'
 
@@ -164,7 +166,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({
     } else {
       const newCurrentEntry: LocalStorageEntry<ReplySed> = _.cloneDeep(currentEntry)
       newCurrentEntry.content = _.cloneDeep(replySed!)
-      dispatch(saveEntry(storageKey, newCurrentEntry))
+      dispatch(saveEntry('svarsed', storageKey, newCurrentEntry))
     }
   }
 
@@ -228,7 +230,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({
 
   const onGoBackClick = () => {
     changeMode('A', 'back')
-    dispatch(resetCurrentEntry())
+    dispatch(resetCurrentEntry('svarsed'))
     document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
   }
 

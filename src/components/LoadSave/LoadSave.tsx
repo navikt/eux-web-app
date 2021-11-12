@@ -26,6 +26,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
+import { LocalStorageNamespaces } from 'reducers/localStorage'
 
 const LoadSaveDiv = styled(FlexDiv)`
   width: 100%;
@@ -33,27 +34,28 @@ const LoadSaveDiv = styled(FlexDiv)`
   flex-direction: column;
 `
 
-interface SEDLoadSaveProps {
+interface LoadSaveProps {
   changeMode: ChangeModeFunction
   storageKey: string
+  namespace: LocalStorageNamespaces
 }
 
-interface SEDLoadSaveSelector {
+interface LoadSaveSelector {
   entries: Array<LocalStorageEntry<ReplySed>> | null | undefined
   sedStatus: {[k in string]: string | null}
 }
 
-const mapState = (state: State): SEDLoadSaveSelector => ({
-  entries: state.localStorage.entries,
-  sedStatus: state.svarsed.sedStatus
-})
-
-const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
+const LoadSave: React.FC<LoadSaveProps> = ({
   changeMode,
-  storageKey
-}: SEDLoadSaveProps) => {
+  storageKey,
+  namespace
+}: LoadSaveProps) => {
   const dispatch = useDispatch()
-  const { entries, sedStatus }: SEDLoadSaveSelector = useSelector<State, SEDLoadSaveSelector>(mapState)
+  const { entries, sedStatus }: LoadSaveSelector =
+    useSelector<State, LoadSaveSelector>((state: State): LoadSaveSelector => ({
+      entries: state.localStorage[namespace].entries,
+      sedStatus: state.svarsed.sedStatus
+    }))
   const [loadingSavedItems, setLoadingSavedItems] = useState<boolean>(false)
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<LocalStorageEntry<ReplySed>>(
     (entry: LocalStorageEntry<ReplySed>): string => entry.id)
@@ -62,14 +64,14 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
   const { t } = useTranslation()
 
   const onRemove = (entry: LocalStorageEntry<ReplySed>) => {
-    standardLogger('svarsed.sidebar.removedraft', {})
-    dispatch(localStorageActions.removeEntry(storageKey, entry))
+    standardLogger(namespace + '.sidebar.removedraft', {})
+    dispatch(localStorageActions.removeEntry(namespace, storageKey, entry))
   }
 
   const onRemoveAll = (e: React.ChangeEvent<HTMLButtonElement>) => {
     buttonLogger(e)
     if (window.confirm(t('label:er-du-sikker'))) {
-      dispatch(localStorageActions.removeAll(storageKey))
+      dispatch(localStorageActions.removeAll(namespace, storageKey))
     }
   }
 
@@ -94,7 +96,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
     if (!_.isNil(_sedStatusRequested) && Object.prototype.hasOwnProperty.call(sedStatus, _sedStatusRequested)) {
       const entry: LocalStorageEntry<ReplySed> | undefined = findSavedEntry(_sedStatusRequested)
       if (entry && !hasSentStatus(entry.id)) {
-        dispatch(setCurrentEntry(entry))
+        dispatch(setCurrentEntry(namespace, entry))
         dispatch(setReplySed(entry.content))
         changeMode('B', 'forward')
       }
@@ -105,7 +107,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
   useEffect(() => {
     if (!loadingSavedItems && entries === undefined) {
       setLoadingSavedItems(true)
-      dispatch(localStorageActions.loadEntries(storageKey))
+      dispatch(localStorageActions.loadEntries(namespace, storageKey))
     }
   }, [entries, loadingSavedItems])
 
@@ -183,7 +185,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
                     kompakt
                     disabled={_sedStatusRequested === savedEntry.id || hasSentStatus(savedEntry.id)}
                     spinner={_sedStatusRequested === savedEntry.id}
-                    data-amplitude='svarsed.sidebar.loaddraft'
+                    data-amplitude={namespace + '.sidebar.loaddraft'}
                     onClick={(e: any) => handleLoadDraft(e, savedEntry)}
                   >
                     {_sedStatusRequested === savedEntry.id
@@ -211,7 +213,7 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
             <HighContrastFlatknapp
               mini
               kompakt
-              data-amplitude='svarsed.sidebar.removeall'
+              data-amplitude={namespace + '.sidebar.removeall'}
               onClick={onRemoveAll}
             >
               {t('el:button-remove-all')}
@@ -223,4 +225,4 @@ const SEDLoadSave: React.FC<SEDLoadSaveProps> = ({
   )
 }
 
-export default SEDLoadSave
+export default LoadSave

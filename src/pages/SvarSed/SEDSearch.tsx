@@ -81,7 +81,6 @@ const mapState = (state: State): any => ({
   previousParentSed: state.svarsed.previousParentSed,
   replySed: state.svarsed.replySed,
   rinasaksnummerOrFnrParam: state.app.params.rinasaksnummerOrFnr,
-  entries: state.localStorage.entries,
   seds: state.svarsed.seds,
   sedStatus: state.svarsed.sedStatus
 })
@@ -105,10 +104,11 @@ const SEDSearch: React.FC<SvarSedProps> = ({
     queryingReplySed,
     replySed,
     rinasaksnummerOrFnrParam,
-    entries,
     seds,
     sedStatus
   }: any = useSelector<State, any>(mapState)
+  const entries = useSelector<State, Array<LocalStorageEntry<ReplySed>> | null | undefined>(
+    (state) => state.localStorage.svarsed.entries)
   const [_allOpen, _setAllOpen] = useState<boolean>(false)
   const [_filter, _setFilter] = useState<string | undefined>(undefined)
   const [_saksnummerOrFnr, _setSaksnummerOrFnr] = useState<string>(rinasaksnummerOrFnrParam ?? '')
@@ -187,7 +187,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
     if (!_.isNil(_sedStatusRequested) && Object.prototype.hasOwnProperty.call(sedStatus, _sedStatusRequested)) {
       const entry: LocalStorageEntry<ReplySed> | undefined = findSavedEntry(_sedStatusRequested)
       if (entry && !hasSentStatus(entry.id)) {
-        dispatch(setCurrentEntry(entry))
+        dispatch(setCurrentEntry('svarsed', entry))
         dispatch(setReplySed(entry.content))
         setReplySedRequested(true)
       }

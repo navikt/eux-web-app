@@ -1,10 +1,10 @@
-import { FagSak, Validation } from 'declarations/types'
+import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
 
 export interface ValidationPdu1SearchProps {
-  fagsak: FagSak | null | undefined
+  fagsak: string | undefined
   namespace: string
   fnrOrDnr: string
 }

@@ -1,12 +1,13 @@
 import validator from '@navikt/fnrvalidator'
 import * as appActions from 'actions/app'
-import { getFagsaker, createPdu1 } from 'actions/pdu1'
+import { createPdu1, getFagsaker } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import { resetAllValidation } from 'actions/validation'
 import classNames from 'classnames'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { ChangeModeFunction } from 'components/SlidePage/SlidePage'
+import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
@@ -16,12 +17,10 @@ import _ from 'lodash'
 import { Normaltekst, Systemtittel, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
-  Column,
-  FlexStartDiv,
+  Column, FlexStartDiv,
   HighContrastHovedknapp,
   HorizontalSeparatorDiv,
-  PileCenterDiv,
-  PileDiv,
+  PileCenterDiv, PileDiv,
   RadioElementBorder,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
@@ -33,12 +32,14 @@ import { validatePdu1Search } from './validation'
 
 const ContainerDiv = styled(PileCenterDiv)`
   width: 780px;
+  align-items: center;
 `
 
 export interface PDU1SearchSelector {
   fnrParam: string | undefined
   highContrast: boolean
   fagsaker: FagSaker | null | undefined
+  gettingFagsaker: boolean
   creatingPdu1: boolean
   replySed: ReplySed | null | undefined
 }
@@ -47,6 +48,7 @@ const mapState = (state: State): PDU1SearchSelector => ({
   fnrParam: state.app.params.fnr,
   highContrast: state.ui.highContrast,
   fagsaker: state.pdu1.fagsaker,
+  gettingFagsaker: state.loading.gettingFagsaker,
   creatingPdu1: state.loading.creatingPdu1,
   replySed: state.pdu1.replySed
 })
@@ -64,11 +66,12 @@ const PDU1Search: React.FC<PDU1Props> = ({
     fnrParam,
     highContrast,
     fagsaker,
-    queryingPdu1,
+    gettingFagsaker,
+    creatingPdu1,
     replySed
-  }: any = useSelector<State, any>(mapState)
+  }: PDU1SearchSelector = useSelector<State, PDU1SearchSelector>(mapState)
   const [fnrOrDnr, setFnrOrDnr] = useState<string>(fnrParam ?? '')
-  const [fagsak, setFagsak] = useState<FagSak | undefined | null>(undefined)
+  const [fagsak, setFagsak] = useState<string | undefined>(undefined)
   const [tema, setTema] = useState<string | undefined>(undefined)
   const [pdu1Request, setPdu1Request] = useState<boolean>(false)
   const [validFnr, setValidFnr] = useState<boolean>(false)
@@ -122,10 +125,10 @@ const PDU1Search: React.FC<PDU1Props> = ({
       dispatch(resetValidation(namespace + '-tema'))
     }
     setTema(o.value)
-    dispatch(getFagsaker(fnrOrDnr, 'PD', tema))
+    dispatch(getFagsaker(fnrOrDnr, 'PD', o.value))
   }
 
-  const onFagsakerSelected = (f: FagSak) => {
+  const onFagsakerSelected = (f: string) => {
     if (validation[namespace + '-fagsaker']) {
       dispatch(resetValidation(namespace + '-fagsaker'))
     }
@@ -170,7 +173,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
         className={classNames('slideInFromLeft', { feil: validation[namespace + '-search'] })}
       >
         <HorizontalSeparatorDiv size='0.2' />
-        <Column flex='2'>
+        <Column>
           <PileDiv>
             <FlexStartDiv>
               <Input
@@ -182,7 +185,6 @@ const PDU1Search: React.FC<PDU1Props> = ({
                 required
                 value={fnrOrDnr}
               />
-              <HorizontalSeparatorDiv />
             </FlexStartDiv>
             <VerticalSeparatorDiv size='0.5' />
             <Normaltekst>
@@ -191,7 +193,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
           </PileDiv>
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv size='3' />
+      <VerticalSeparatorDiv size='2' />
       {validFnr && (
         <>
           <AlignStartRow>
@@ -210,37 +212,43 @@ const PDU1Search: React.FC<PDU1Props> = ({
               />
             </Column>
           </AlignStartRow>
-          <VerticalSeparatorDiv />
-          {fagsaker?.map((f: FagSak) => (
-            <div key={f.saksID}>
-              <AlignStartRow>
-                <Column>
-                  <RadioElementBorder
-                    ariaLabel={f.temakode + '-' + f.saksID}
-                    ariaChecked={fagsak?.saksID === f.saksID}
-                    checked={fagsak?.saksID === f.saksID}
-                    className='slideInFromLeft'
-                    label={(
-                      <Undertittel>
-                        {f.temakode + '-' + f.saksID}
-                      </Undertittel>
-                  )}
-                    name={namespace + '-fagsaker'}
-                    onChange={onFagsakerSelected}
-                    value={f}
-                  />
+          <VerticalSeparatorDiv size='2' />
+          <div style={{ width: '100%' }}>
+            {gettingFagsaker && (
+              <WaitingPanel />
+            )}
+            {fagsaker?.map((f: FagSak) => (
+              <div key={f.saksID}>
+                <AlignStartRow>
+                  <Column>
+                    <RadioElementBorder
+                      ariaLabel={f.temakode + '-' + f.saksID}
+                      ariaChecked={fagsak === f.saksID}
+                      checked={fagsak === f.saksID}
+                      className='slideInFromLeft'
+                      label={(
+                        <Undertittel>
+                          {f.temakode + '-' + f.saksID}
+                        </Undertittel>
+                    )}
+                      name={namespace + '-fagsaker'}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => onFagsakerSelected(e.target.value)}
+                      value={f.saksID}
+                    />
 
-                </Column>
-              </AlignStartRow>
-              <VerticalSeparatorDiv />
-            </div>
-          ))}
+                  </Column>
+                </AlignStartRow>
+                <VerticalSeparatorDiv />
+              </div>
+            ))}
+          </div>
           <VerticalSeparatorDiv size='2' />
           <HighContrastHovedknapp
-            disabled={!tema || !fagsak || queryingPdu1}
+            spinner={creatingPdu1}
+            disabled={!tema || !fagsak || creatingPdu1}
             onClick={onCreatePdu1Clicked}
           >
-            {t('el:button-create-x', { x: 'PD U1' })}
+            {creatingPdu1 ? t('message:loading') : t('el:button-create-x', { x: 'PD U1' })}
           </HighContrastHovedknapp>
         </>
       )}

@@ -1,7 +1,7 @@
 import { setStatusParam } from 'actions/app'
 import * as svarsedActions from 'actions/svarsed'
 import SEDDetails from 'applications/SvarSed/SEDDetails/SEDDetails'
-import SEDLoadSave from 'applications/SvarSed/SEDLoadSave/SEDLoadSave'
+import LoadSave from 'components/LoadSave/LoadSave'
 import SlidePage, { ChangeModeFunction } from 'components/SlidePage/SlidePage'
 import { SideBarDiv } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
@@ -52,7 +52,8 @@ export const SvarSedPage = (): JSX.Element => {
         divA1={(<SEDSearch changeMode={changeMode} />)}
         divA2={(
           <SideBarDiv>
-            <SEDLoadSave
+            <LoadSave
+              namespace='svarsed'
               storageKey={storageKey}
               changeMode={changeMode}
             />

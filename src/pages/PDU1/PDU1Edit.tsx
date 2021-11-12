@@ -80,7 +80,6 @@ const mapState = (state: State): any => ({
   highContrast: state.ui.highContrast,
   previewFile: state.svarsed.previewFile,
   replySed: state.svarsed.replySed,
-  currentEntry: state.localStorage.currentEntry,
   savingSed: state.loading.savingSed,
   sendingSed: state.loading.sendingSed,
   sedCreatedResponse: state.svarsed.sedCreatedResponse,
@@ -164,7 +163,7 @@ const PDU1Edit: React.FC<SEDEditProps> = ({
     } else {
       const newCurrentEntry: LocalStorageEntry<ReplySed> = _.cloneDeep(currentEntry)
       newCurrentEntry.content = _.cloneDeep(replySed!)
-      dispatch(saveEntry(storageKey, newCurrentEntry))
+      dispatch(saveEntry('pdu1', storageKey, newCurrentEntry))
     }
   }
 
@@ -228,7 +227,7 @@ const PDU1Edit: React.FC<SEDEditProps> = ({
 
   const onGoBackClick = () => {
     changeMode('A', 'back')
-    dispatch(resetCurrentEntry())
+    dispatch(resetCurrentEntry('pdu1'))
     document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
   }
 
