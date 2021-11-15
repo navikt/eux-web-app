@@ -169,39 +169,38 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
     const idx = getIdx(index)
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
-        {_showModal && (
-          <Modal
-            highContrast={highContrast} modal={{
-              modalTitle: t('label:pdl-adresse-til', { person: personName }),
-              modalContent: (
-                <div style={{ padding: '1rem' }}>
-                  <HighContrastRadioGroup
-                    key={JSON.stringify(_selectedAdresse)}
-                    legend={t('label:adresser')}
-                  >
-                    {adresse?.map(a => (
-                      <HighContrastRadio
-                        key={a.type + '-' + a.gate}
-                        name='adresser'
-                        checked={_.isEqual(_selectedAdresse, a)}
-                        label={(<AdresseBox adresse={a} />)}
-                        onClick={() => _setSelectedAdresse(a)}
-                      />
-                    ))}
-                  </HighContrastRadioGroup>
-                </div>
-              ),
-              modalButtons: [{
-                main: true,
-                text: t('label:fyll-inn-adresse'),
-                onClick: onFillAdresse
-              }, {
-                text: t('el:button-cancel'),
-                onClick: onCleanupFillAdresse
-              }]
-            }}
-          />
-        )}
+        <Modal
+          open={_showModal}
+          highContrast={highContrast} modal={{
+            modalTitle: t('label:pdl-adresse-til', { person: personName }),
+            modalContent: (
+              <div style={{ padding: '1rem' }}>
+                <HighContrastRadioGroup
+                  key={JSON.stringify(_selectedAdresse)}
+                  legend={t('label:adresser')}
+                >
+                  {adresse?.map(a => (
+                    <HighContrastRadio
+                      key={a.type + '-' + a.gate}
+                      name='adresser'
+                      checked={_.isEqual(_selectedAdresse, a)}
+                      label={(<AdresseBox adresse={a} />)}
+                      onClick={() => _setSelectedAdresse(a)}
+                    />
+                  ))}
+                </HighContrastRadioGroup>
+              </div>
+            ),
+            modalButtons: [{
+              main: true,
+              text: t('label:fyll-inn-adresse'),
+              onClick: onFillAdresse
+            }, {
+              text: t('el:button-cancel'),
+              onClick: onCleanupFillAdresse
+            }]
+          }}
+        />
         {index < 0 && (
           <>
             <AlignStartRow>

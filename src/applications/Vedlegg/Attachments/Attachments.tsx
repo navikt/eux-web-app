@@ -61,16 +61,15 @@ const Attachments: React.FC<AttachmentsProps> = ({
         {t('label:vis-vedlegg-tabell')}
       </HighContrastKnapp>
       <VerticalSeparatorDiv />
-      {_attachmentsTableVisible && (
-        <SEDAttachmentModal
-          fnr={fnr!}
-          highContrast={highContrast}
-          onModalClose={() => setAttachmentsTableVisible(false)}
-          onFinishedSelection={onJoarkAttachmentsChanged}
-          sedAttachments={_items}
-          tableId='vedlegg-modal'
-        />
-      )}
+      <SEDAttachmentModal
+        open={_attachmentsTableVisible}
+        fnr={fnr!}
+        highContrast={highContrast}
+        onModalClose={() => setAttachmentsTableVisible(false)}
+        onFinishedSelection={onJoarkAttachmentsChanged}
+        sedAttachments={_items}
+        tableId='vedlegg-modal'
+      />
       {!_.isEmpty(_items) && (
         <>
           <VerticalSeparatorDiv />

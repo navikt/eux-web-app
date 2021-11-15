@@ -162,14 +162,13 @@ export const TopContainer: React.FC<TopContainerProps> = ({
           error={error}
           onClose={onClear}
         />
-        {modal !== undefined && (
-          <Modal
-            highContrast={highContrast}
-            appElement={(document.getElementById('main') || document.body)}
-            modal={modal}
-            onModalClose={handleModalClose}
-          />
-        )}
+        <Modal
+          open={!_.isUndefined(modal)}
+          highContrast={highContrast}
+          appElementId={'main'}
+          modal={modal}
+          onModalClose={handleModalClose}
+        />
         <Main
           id='main'
           role='main'

@@ -7,6 +7,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 export interface SEDAttachmentModalProps {
+  open: boolean
   fnr: string
   highContrast: boolean
   onFinishedSelection: (jbi: JoarkBrowserItems) => void
@@ -16,7 +17,7 @@ export interface SEDAttachmentModalProps {
 }
 
 const SEDAttachmentModal: React.FC<SEDAttachmentModalProps> = ({
-  fnr, highContrast, onFinishedSelection, onModalClose, sedAttachments, tableId
+  fnr, open, highContrast, onFinishedSelection, onModalClose, sedAttachments, tableId
 }: SEDAttachmentModalProps): JSX.Element => {
   const { t } = useTranslation()
   const [_items, setItems] = useState<JoarkBrowserItems>(sedAttachments)
@@ -35,8 +36,8 @@ const SEDAttachmentModal: React.FC<SEDAttachmentModalProps> = ({
   }
 
   return (
-
     <Modal
+      open={open}
       highContrast={highContrast}
       icon={<Document />}
       modal={{

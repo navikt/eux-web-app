@@ -7,6 +7,7 @@ export interface LoadingState {
 }
 
 export const initialLoadingState: LoadingState = {
+  completingPdu1: false,
   creatingPdu1: false,
   creatingSvarSed: false,
   gettingAdresse: false,
@@ -20,6 +21,7 @@ export const initialLoadingState: LoadingState = {
   gettingLandkoder: false,
   gettingPerson: false,
   gettingPreviewFile: false,
+  gettingPreviewPdu1: false,
   gettingSaksbehandler: false,
   gettingSavedItems: false,
   gettingServerinfo: false,
@@ -29,7 +31,11 @@ export const initialLoadingState: LoadingState = {
   searchingPerson: false,
   sendingVedlegg: false,
   sendingSak: false,
-  sendingSed: false
+  sendingSed: false,
+
+
+
+
 }
 
 const loadingReducer = (

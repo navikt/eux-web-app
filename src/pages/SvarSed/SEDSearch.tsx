@@ -117,11 +117,12 @@ const SEDSearch: React.FC<SvarSedProps> = ({
   const [_validation, _resetValidation, performValidation] = useValidation({}, validateSEDSearch)
   const [_replySedRequested, setReplySedRequested] = useState<boolean>(false)
   const [_sedStatusRequested, setSedStatusRequested] = useState<string |undefined>(undefined)
+  const namespace = 'sedsearch'
 
   const onSaksnummerOrFnrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value
     dispatch(appActions.cleanData())
-    _resetValidation('sedsearch-saksnummerOrFnr')
+    _resetValidation(namespace + '-saksnummerOrFnr')
     _setSaksnummerOrFnr(query)
     const result = validator.idnr(query)
     if (result.status !== 'valid') {
@@ -234,11 +235,11 @@ const SEDSearch: React.FC<SvarSedProps> = ({
             <FlexStartDiv>
               <HighContrastInput
                 ariaLabel={t('label:saksnummer-eller-fnr')}
-                ariaInvalid={_validation['sedsearch-saksnummerOrFnr']?.feilmelding}
+                ariaInvalid={_validation[namespace + '-saksnummerOrFnr']?.feilmelding}
                 bredde='xl'
-                data-test-id='sedsearch-saksnummerOrFnr'
-                feil={_validation['sedsearch-saksnummerOrFnr']?.feilmelding}
-                id='sedsearch-saksnummerOrFnr'
+                data-test-id={namespace + '-saksnummerOrFnr'}
+                feil={_validation[namespace + '-saksnummerOrFnr']?.feilmelding}
+                id={namespace + '-saksnummerOrFnr'}
                 label={t('label:saksnummer-eller-fnr')}
                 onChange={onSaksnummerOrFnrChange}
                 placeholder={t('el:placeholder-input-default')}
@@ -449,7 +450,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                       </Etikett>
                     </>
                   )}
-                  name='sedsearch-saksnummerOrFnr-results'
+                  name={namespace + '-saksnummerOrFnr-results'}
                   onChange={onParentSedChange}
                   value={sedId}
                 />

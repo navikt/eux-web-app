@@ -256,30 +256,30 @@ const SEDEdit: React.FC<SEDEditProps> = ({
 
   return (
     <PaddedDiv size='0.5'>
-      {_modal && (
-        <Modal
-          highContrast={highContrast}
-          modal={_modal}
-          onModalClose={resetPreview}
-        />
-      )}
+      <Modal
+        open={!_.isNil(_modal)}
+        highContrast={highContrast}
+        modal={_modal}
+        onModalClose={resetPreview}
+      />
       {_viewSendSedModal && (
         <SendSEDModal
           fnr={fnr!}
+          open={_viewSendSedModal}
           goToRinaUrl={replySed?.sakUrl}
           highContrast={highContrast}
           attachments={_attachments}
           onModalClose={() => setViewSendSedModal(false)}
         />
       )}
-      {_viewSaveSedModal && (
-        <SaveSEDModal
-          highContrast={highContrast}
-          replySed={replySed!}
-          storageKey={storageKey}
-          onModalClose={() => setViewSaveSedModal(false)}
-        />
-      )}
+
+      <SaveSEDModal
+        open={_viewSaveSedModal}
+        highContrast={highContrast}
+        replySed={replySed!}
+        storageKey={storageKey}
+        onModalClose={() => setViewSaveSedModal(false)}
+      />
       <FlexCenterSpacedDiv>
         <HighContrastKnapp
           kompakt

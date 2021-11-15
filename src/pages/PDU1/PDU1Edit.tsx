@@ -1,34 +1,26 @@
 import { Add } from '@navikt/ds-icons'
 import { clientClear } from 'actions/alert'
 import { resetCurrentEntry, saveEntry } from 'actions/localStorage'
+import { completePdu1, getPreviewPdu1 } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
-import { createSed, getPreviewFile, resetPreviewFile, sendSedInRina, updateReplySed } from 'actions/svarsed'
+import { resetPreviewFile, updateReplySed } from 'actions/svarsed'
 import { resetAllValidation, resetValidation, viewValidation } from 'actions/validation'
-import Formaal from 'applications/SvarSed/Formaal/Formaal'
-import FormålManager from 'applications/SvarSed/Formaal/FormålManager'
-import SEDType from 'applications/SvarSed/Formaal/SEDType'
-import Tema from 'applications/SvarSed/Formaal/Tema'
+import SavePDU1Modal from 'applications/PDU1/SavePDU1Modal/SavePDU1Modal'
 import PersonManager from 'applications/SvarSed/PersonManager/PersonManager'
-import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
-import SendSEDModal from 'applications/SvarSed/SendSEDModal/SendSEDModal'
-import Attachments from 'applications/Vedlegg/Attachments/Attachments'
 import Alert from 'components/Alert/Alert'
 
 import TextArea from 'components/Forms/TextArea'
 import Modal from 'components/Modal/Modal'
 import { AlertstripeDiv, TextAreaDiv } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
-import { JoarkBrowserItems } from 'declarations/attachments'
-import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
-import { Barn, F002Sed, FSed, ReplySed } from 'declarations/sed'
-import { CreateSedResponse, LocalStorageEntry, Validation } from 'declarations/types'
-import FileFC, { File } from 'forhandsvisningsfil'
+import { ReplySed } from 'declarations/sed'
+import { LocalStorageEntry, Validation } from 'declarations/types'
+import FileFC from 'forhandsvisningsfil'
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import _ from 'lodash'
-import { buttonLogger, standardLogger } from 'metrics/loggers'
+import { buttonLogger } from 'metrics/loggers'
 import { VenstreChevron } from 'nav-frontend-chevron'
-import { Systemtittel } from 'nav-frontend-typografi'
 import {
   Column,
   FlexCenterSpacedDiv,
@@ -45,29 +37,23 @@ import ValidationBox from 'pages/SvarSed/ValidationBox'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { blobToBase64 } from 'utils/blob'
-import { getFnr } from 'utils/fnr'
-import { isFSed, isHSed, isSed, isUSed } from 'utils/sed'
 import { validatePDU1Edit, ValidationPDU1EditProps } from './mainValidation'
 
-export interface SEDEditSelector {
+export interface PDU1EditSelector {
   alertType: string | undefined
   alertMessage: JSX.Element | string | undefined
-  creatingSvarSed: boolean
-  gettingPreviewFile: boolean
+  completingPdu1: boolean
+  gettingPreviewPdu1: boolean
   highContrast: boolean
-  previewFile: any,
+  previewPdu1: any,
   replySed: ReplySed | null | undefined
-  currentEntry: LocalStorageEntry<ReplySed> | undefined
-  savingSed: boolean
-  sendingSed: boolean
-  sedCreatedResponse: CreateSedResponse
-  sedSendResponse: any
+  savingPdu1: boolean
+  completePdu1Response: any
   validation: Validation
   view: boolean
 }
 
-export interface SEDEditProps {
+export interface PDU1EditProps {
   changeMode: (mode: string, from: string, callback?: () => void) => void
   storageKey: string
 }
@@ -75,91 +61,61 @@ export interface SEDEditProps {
 const mapState = (state: State): any => ({
   alertType: state.alert.type,
   alertMessage: state.alert.clientErrorMessage,
-  creatingSvarSed: state.loading.creatingSvarSed,
-  gettingPreviewFile: state.loading.gettingPreviewFile,
+  completingPdu1: state.loading.completingPdu1,
+  gettingPreviewPdu1: state.loading.gettingPreviewPdu1,
+  previewPdu1: state.pdu1.previewPdu1,
+  replySed: state.pdu1.replySed,
+  completePdu1Response: state.pdu1.completePdu1Response,
   highContrast: state.ui.highContrast,
-  previewFile: state.svarsed.previewFile,
-  replySed: state.svarsed.replySed,
-  savingSed: state.loading.savingSed,
-  sendingSed: state.loading.sendingSed,
-  sedCreatedResponse: state.svarsed.sedCreatedResponse,
-  sedSendResponse: state.svarsed.sedSendResponse,
   validation: state.validation.status,
   view: state.validation.view
 })
 
-const PDU1Edit: React.FC<SEDEditProps> = ({
+const PDU1Edit: React.FC<PDU1EditProps> = ({
   changeMode,
   storageKey
-}: SEDEditProps): JSX.Element => {
+}: PDU1EditProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const {
     alertType,
     alertMessage,
-    creatingSvarSed,
-    gettingPreviewFile,
-    highContrast,
-    previewFile,
+    completingPdu1,
+    gettingPreviewPdu1,
+    previewPdu1,
     replySed,
-    currentEntry,
-    savingSed,
-    sendingSed,
-    sedCreatedResponse,
-    sedSendResponse,
+    completePdu1Response,
+    highContrast,
     validation,
     view
-  }: SEDEditSelector = useSelector<State, SEDEditSelector>(mapState)
-  const fnr = getFnr(replySed, 'bruker')
-  const namespace = 'editor'
+  }: PDU1EditSelector = useSelector<State, PDU1EditSelector>(mapState)
+  const currentEntry = useSelector<State, LocalStorageEntry<ReplySed> | undefined>(
+    (state) => state.localStorage.pdu1.currentEntry)
+  const namespace = 'pdu1editor'
 
-  const [_attachments, setAttachments] = useState<JoarkBrowserItems | undefined>(undefined)
-  const [_modal, setModal] = useState<ModalContent | undefined>(undefined)
-  const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
-  const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
-  const [_sendButtonClicked, _setSendButtonClicked] = useState<boolean>(false)
+  const [previewModal, setPreviewModal] = useState<boolean>(false)
+  const [viewSavePdu1Modal, setViewSavePdu1Modal] = useState<boolean>(false)
   const performValidation = useGlobalValidation<ValidationPDU1EditProps>(validatePDU1Edit)
 
-  const showPersonManager = (): boolean => isSed(replySed)
-  const showFormålManager = (): boolean =>
-    (replySed as F002Sed)?.formaal?.indexOf('motregning') >= 0 ||
-    (replySed as F002Sed)?.formaal?.indexOf('vedtak') >= 0 ||
-    (replySed as F002Sed)?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0 ||
-    (replySed as F002Sed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0
-
-  const cleanReplySed = (replySed: ReplySed): ReplySed => {
-    const newReplySed = _.cloneDeep(replySed)
-    // if we do not have vedtak, do not have ytelse in barna
-    if (Object.prototype.hasOwnProperty.call(replySed, 'formaal') && (replySed as FSed)?.formaal.indexOf('vedtak') < 0) {
-      (newReplySed as F002Sed).barn?.forEach((b: Barn, i: number) => {
-        if (Object.prototype.hasOwnProperty.call((newReplySed as F002Sed).barn?.[i], 'ytelser')) {
-          delete (newReplySed as F002Sed).barn?.[i].ytelser
-        }
-      })
-    }
-    return newReplySed
-  }
-
-  const sendReplySed = (e: React.ChangeEvent<HTMLButtonElement>): void => {
+  const completePdu1Clicked = (e: React.ChangeEvent<HTMLButtonElement>): void => {
     if (replySed) {
-      const newReplySed: ReplySed = cleanReplySed(replySed)
+      const newReplySed: ReplySed = _.cloneDeep(replySed)
       const valid = performValidation({
         replySed: newReplySed
       })
       dispatch(viewValidation())
       if (valid) {
-        setViewSendSedModal(true)
-        cleanReplySed(newReplySed)
-        dispatch(createSed(newReplySed))
+
+        dispatch(completePdu1(newReplySed))
         dispatch(resetAllValidation())
         buttonLogger(e)
       }
     }
   }
 
-  const onSaveSedClick = () => {
+  const onSavePdu1Click = () => {
     if (_.isNil(currentEntry)) {
-      setViewSaveSedModal(true)
+      setViewSavePdu1Modal(true)
     } else {
       const newCurrentEntry: LocalStorageEntry<ReplySed> = _.cloneDeep(currentEntry)
       newCurrentEntry.content = _.cloneDeep(replySed!)
@@ -169,58 +125,13 @@ const PDU1Edit: React.FC<SEDEditProps> = ({
 
   const resetPreview = () => {
     dispatch(resetPreviewFile())
-    setModal(undefined)
+    setPreviewModal(false)
   }
 
-  const onSendSedClick = () => {
-    _setSendButtonClicked(true)
-    dispatch(sendSedInRina(replySed?.saksnummer, sedCreatedResponse?.sedId))
-    standardLogger('svarsed.editor.sendsvarsed.button', { type: 'editor' })
-  }
-
-  const showPreviewModal = (previewFile: Blob) => {
-    blobToBase64(previewFile).then((base64: any) => {
-      const file: File = {
-        id: '' + new Date().getTime(),
-        size: previewFile.size,
-        name: '',
-        mimetype: 'application/pdf',
-        content: {
-          base64: base64.replaceAll('octet-stream', 'pdf')
-        }
-      }
-
-      setModal({
-        closeButton: true,
-        modalContent: (
-          <div
-            style={{ cursor: 'pointer' }}
-          >
-            <FileFC
-              file={{
-                ...file,
-                mimetype: 'application/pdf'
-              }}
-              width={600}
-              height={800}
-              tema='simple'
-              viewOnePage={false}
-              onContentClick={resetPreview}
-            />
-          </div>
-        )
-      })
-    })
-  }
-
-  const onPreviewSed = (e: React.ChangeEvent<HTMLButtonElement>) => {
+  const onPreviewPdu1Clicked = (e: React.ChangeEvent<HTMLButtonElement>) => {
     if (replySed) {
       const newReplySed = _.cloneDeep(replySed)
-      cleanReplySed(newReplySed)
-      const rinaSakId = newReplySed.saksnummer
-      delete newReplySed.saksnummer
-      delete newReplySed.sakUrl
-      dispatch(getPreviewFile(rinaSakId!, newReplySed))
+      dispatch(getPreviewPdu1(newReplySed))
       buttonLogger(e)
     }
   }
@@ -239,44 +150,49 @@ const PDU1Edit: React.FC<SEDEditProps> = ({
   }
 
   useEffect(() => {
-    if (!_modal && !_.isNil(previewFile)) {
-      showPreviewModal(previewFile)
+    if (!previewModal && !_.isNil(previewPdu1)) {
+      setPreviewModal(true)
     }
-  }, [previewFile])
+  }, [previewPdu1])
 
   useEffect(() => {
-    dispatch(startPageStatistic('editor'))
+    dispatch(startPageStatistic('pdu1editor'))
     return () => {
-      dispatch(finishPageStatistic('editor'))
+      dispatch(finishPageStatistic('pdu1editor'))
     }
   }, [])
 
   return (
     <PaddedDiv size='0.5'>
-      {_modal && (
-        <Modal
-          highContrast={highContrast}
-          modal={_modal}
-          onModalClose={resetPreview}
-        />
-      )}
-      {_viewSendSedModal && (
-        <SendSEDModal
-          fnr={fnr!}
-          goToRinaUrl={replySed?.sakUrl}
-          highContrast={highContrast}
-          attachments={_attachments}
-          onModalClose={() => setViewSendSedModal(false)}
-        />
-      )}
-      {_viewSaveSedModal && (
-        <SaveSEDModal
-          highContrast={highContrast}
-          replySed={replySed!}
-          storageKey={storageKey}
-          onModalClose={() => setViewSaveSedModal(false)}
-        />
-      )}
+      <Modal
+        open={previewModal}
+        highContrast={highContrast}
+        modal={{
+          closeButton: true,
+          modalContent: (
+            <div
+              style={{ cursor: 'pointer' }}
+            >
+              <FileFC
+                file={previewPdu1}
+                width={600}
+                height={800}
+                tema='simple'
+                viewOnePage={false}
+                onContentClick={resetPreview}
+              />
+            </div>
+          )
+        }}
+        onModalClose={resetPreview}
+      />
+      <SavePDU1Modal
+        open={viewSavePdu1Modal}
+        highContrast={highContrast}
+        replySed={replySed!}
+        storageKey={storageKey}
+        onModalClose={() => setViewSavePdu1Modal(false)}
+      />
       <FlexCenterSpacedDiv>
         <HighContrastKnapp
           kompakt
@@ -288,36 +204,8 @@ const PDU1Edit: React.FC<SEDEditProps> = ({
         </HighContrastKnapp>
       </FlexCenterSpacedDiv>
       <VerticalSeparatorDiv size='2' />
-      <Row>
-        <Column flex='2'>
-          <Systemtittel>
-            {replySed?.sedType} - {t('buc:' + replySed?.sedType)}
-          </Systemtittel>
-          <VerticalSeparatorDiv />
-          {isFSed(replySed) && <Formaal parentNamespace={namespace} />}
-          {isUSed(replySed) && <SEDType />}
-          {isHSed(replySed) && <Tema />}
-        </Column>
-        <Column />
-      </Row>
-      <VerticalSeparatorDiv size='3' />
-      {showPersonManager() && (
-        <>
-          <PersonManager
-            viewValidation={view}
-          />
-          <VerticalSeparatorDiv size='2' />
-        </>
-      )}
-      {isFSed(replySed) && showFormålManager() && (
-        <>
-          <FormålManager
-            viewValidation={view}
-          />
-          <VerticalSeparatorDiv size='2' />
-        </>
-      )}
-      <VerticalSeparatorDiv />
+      <PersonManager viewValidation={view}/>
+      <VerticalSeparatorDiv size='2' />
       <Row>
         <Column flex='2'>
           <TextAreaDiv>
@@ -335,22 +223,17 @@ const PDU1Edit: React.FC<SEDEditProps> = ({
         <Column />
       </Row>
       <VerticalSeparatorDiv size='2' />
-      <Attachments
-        fnr={fnr}
-        highContrast={highContrast}
-        onAttachmentsChanged={(attachments) => setAttachments(attachments)}
-      />
       <HighContrastFlatknapp
         mini
         kompakt
-        disabled={gettingPreviewFile}
-        spinner={gettingPreviewFile}
-        data-amplitude='svarsed.editor.preview'
-        onClick={onPreviewSed}
+        disabled={gettingPreviewPdu1}
+        spinner={gettingPreviewPdu1}
+        data-amplitude='pdu1.editor.preview'
+        onClick={onPreviewPdu1Clicked}
       >
         <Add />
         <HorizontalSeparatorDiv size='0.5' />
-        {gettingPreviewFile ? t('label:laster-ned-filen') : t('label:forhåndsvis-sed')}
+        {gettingPreviewPdu1 ? t('label:laster-ned-filen') : t('label:forhåndsvis-sed')}
       </HighContrastFlatknapp>
       <VerticalSeparatorDiv size='2' />
       <ValidationBox />
@@ -359,45 +242,24 @@ const PDU1Edit: React.FC<SEDEditProps> = ({
         <div>
           <HighContrastHovedknapp
             mini
-            data-amplitude={_.isEmpty(sedCreatedResponse) ? 'svarsed.editor.opprettsvarsed' : 'svarsed.editor.oppdattersvarsed'}
-            onClick={sendReplySed}
-            disabled={creatingSvarSed}
-            spinner={creatingSvarSed}
+            data-amplitude={'pdu1.editor.opprett'}
+            onClick={completePdu1Clicked}
+            disabled={completingPdu1 || !_.isEmpty(completePdu1Response)}
+            spinner={completingPdu1}
           >
-            {_.isEmpty(sedCreatedResponse)
-              ? creatingSvarSed
-                  ? t('message:loading-opprette-svarsed')
-                  : t('label:opprett-svarsed')
-              : creatingSvarSed
-                ? t('message:loading-oppdatering-svarsed')
-                : t('label:oppdatere-svarsed')}
+            {completingPdu1
+              ? t('message:loading-opprette-pdu1')
+              : t('label:opprett-pdu1')}
           </HighContrastHovedknapp>
           <VerticalSeparatorDiv size='0.5' />
         </div>
         <HorizontalSeparatorDiv />
-        {!_.isEmpty(sedCreatedResponse) && (
-          <>
-            <div>
-              <HighContrastHovedknapp
-                // amplitude is dealt on SendSedClick
-                mini
-                title={t('message:help-send-sed')}
-                disabled={sendingSed || !_.isNil(sedSendResponse)}
-                onClick={onSendSedClick}
-              >
-                {sendingSed ? t('message:loading-sending-sed') : t('el:button-send-sed')}
-              </HighContrastHovedknapp>
-            </div>
-            <HorizontalSeparatorDiv />
-          </>
-        )}
+
         <div>
           <HighContrastKnapp
-            data-amplitude={_.isNil(currentEntry) ? 'svarsed.editor.savedraft' : 'svarsed.editor.updatedraft'}
+            data-amplitude={_.isNil(currentEntry) ? 'pdu1.editor.savedraft' : 'pdu1.editor.updatedraft'}
             mini
-            onClick={onSaveSedClick}
-            disabled={savingSed}
-            spinner={savingSed}
+            onClick={onSavePdu1Click}
           >
             {_.isNil(currentEntry) ? t('el:button-save-draft') : t('el:button-update-draft')}
           </HighContrastKnapp>
@@ -410,25 +272,6 @@ const PDU1Edit: React.FC<SEDEditProps> = ({
           <FlexDiv>
             <AlertstripeDiv>
               <Alert status='OK' message={alertMessage!} onClose={() => dispatch(clientClear())} />
-            </AlertstripeDiv>
-            <div />
-          </FlexDiv>
-          <VerticalSeparatorDiv />
-        </>
-      )}
-      {_sendButtonClicked && alertMessage &&
-      (alertType === types.SVARSED_SED_SEND_SUCCESS || alertType === types.SVARSED_SED_SEND_FAILURE) && (
-        <>
-          <FlexDiv>
-            <AlertstripeDiv>
-              <Alert
-                status={alertType === types.SVARSED_SED_SEND_FAILURE ? 'ERROR' : 'OK'}
-                message={alertMessage!}
-                onClose={() => {
-                  _setSendButtonClicked(false)
-                  dispatch(clientClear())
-                }}
-              />
             </AlertstripeDiv>
             <div />
           </FlexDiv>

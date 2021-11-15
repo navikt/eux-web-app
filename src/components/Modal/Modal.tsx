@@ -82,33 +82,35 @@ const ContentDiv = styled.div`
 `
 
 export interface ModalProps {
-  appElement?: Element
+  appElementId?: string
   className?: string
   highContrast: boolean
   icon?: JSX.Element | undefined
   onModalClose?: () => void
+  open: boolean,
   closeButton?: boolean
   closeButtonLabel?: string
   modal: ModalContent | undefined
 }
 
 const Modal: React.FC<ModalProps> = ({
-  className,
-  icon = undefined,
-  onModalClose,
-  closeButton = true,
-  closeButtonLabel = '',
-  modal
-}: ModalProps): JSX.Element => {
+                                       appElementId = 'body',
+                                       className,
+                                       icon = undefined,
+                                       onModalClose,
+                                       open,
+                                       closeButton = true,
+                                       closeButtonLabel = '',
+                                       modal
+                                     }: ModalProps): JSX.Element => {
   const [_modal, setModal] = useState<ModalContent | undefined>(modal)
 
   useEffect(() => {
-    if (!_.isEqual(_modal, modal)) {
-      setModal(modal)
-    }
-  }, [modal, _modal])
+    setModal(modal)
+  }, [modal])
 
   const closeModal = (): void => {
+    setModal(undefined)
     if (_.isFunction(onModalClose)) {
       onModalClose()
     }
@@ -117,16 +119,15 @@ const Modal: React.FC<ModalProps> = ({
   const onCloseButtonClicked = (e: React.MouseEvent): void => {
     e.preventDefault()
     e.stopPropagation()
+    setModal(undefined)
     if (_.isFunction(onModalClose)) {
       onModalClose()
     }
   }
 
   if (typeof (window) !== 'undefined') {
-    ReactModal.setAppElement('body')
+    ReactModal.setAppElement(document.getElementById(appElementId) ?? 'body')
   }
-
-  // ReactModal.setAppElement(appElement)
 
   return (
     <>
@@ -134,14 +135,14 @@ const Modal: React.FC<ModalProps> = ({
       <ModalDiv
         className={className}
         overlayClassName='modal__overlay'
-        isOpen={!_(_modal).isNil()}
+        isOpen={open}
         onRequestClose={closeModal}
       >
         {icon && (
           <IconDiv>{icon}</IconDiv>
         )}
-        <>
-          {_modal && (
+        {_modal && (
+          <>
             <ContentDiv className={classNames({ icon: !!icon })}>
               {closeButton && (
                 <CloseButton
@@ -162,48 +163,48 @@ const Modal: React.FC<ModalProps> = ({
                 </ModalText>
               )}
             </ContentDiv>
-          )}
-          {_modal && _modal.modalButtons && (
-            <ModalButtons className={classNames('buttons')}>
-              {_modal.modalButtons.map((button, i) => {
-                let Button = HighContrastKnapp
-                if (button.main) {
-                  Button = HighContrastHovedknapp
-                }
-                if (button.flat) {
-                  Button = HighContrastFlatknapp
-                }
-                const handleClick = _.isFunction(button.onClick)
-                  ? () => {
-                    button.onClick!()
-                    closeModal()
+            {_modal.modalButtons && (
+              <ModalButtons className={classNames('buttons')}>
+                {_modal.modalButtons.map((button, i) => {
+                  let Button = HighContrastKnapp
+                  if (button.main) {
+                    Button = HighContrastHovedknapp
+                  }
+                  if (button.flat) {
+                    Button = HighContrastFlatknapp
+                  }
+                  const handleClick = _.isFunction(button.onClick)
+                    ? () => {
+                      button.onClick!()
+                      closeModal()
                     }
-                  : closeModal
+                    : closeModal
 
-                return (
-                  <ButtonMargin key={i}>
-                    <Button
-                      data-test-id={'modal__button-id-' + i}
-                      disabled={button.disabled || false}
-                      key={button.text}
-                      id={'modal__button-id-' + i}
-                      onClick={handleClick}
-                    >
-                      {button.text}
-                    </Button>
-                  </ButtonMargin>
-                )
-              })}
-            </ModalButtons>
-          )}
-        </>
+                  return (
+                    <ButtonMargin key={i}>
+                      <Button
+                        data-test-id={'modal__button-id-' + i}
+                        disabled={button.disabled || false}
+                        key={button.text}
+                        id={'modal__button-id-' + i}
+                        onClick={handleClick}
+                      >
+                        {button.text}
+                      </Button>
+                    </ButtonMargin>
+                  )
+                })}
+              </ModalButtons>
+            )}
+          </>
+        )}
       </ModalDiv>
     </>
   )
 }
 
 Modal.propTypes = {
-  appElement: PT.any,
+  appElementId: PT.string,
   className: PT.string,
   closeButton: PT.bool,
   closeButtonLabel: PT.string,

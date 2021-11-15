@@ -80,6 +80,7 @@ interface SendSEDModalProps {
   attachments?: JoarkBrowserItems
   initialSendingAttachments?: boolean
   onModalClose: () => void
+  open: boolean
 }
 
 const mapState = (state: State): SendSEDSelector => ({
@@ -98,7 +99,8 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
   highContrast,
   attachments = [],
   initialSendingAttachments = false,
-  onModalClose
+  onModalClose,
+  open
 }: SendSEDModalProps): JSX.Element => {
   const {
     alertMessage,
@@ -186,6 +188,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
 
   return (
     <Modal
+      open={open}
       highContrast={highContrast}
       modal={{
         closeButton: false,

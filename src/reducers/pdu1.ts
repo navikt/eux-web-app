@@ -7,11 +7,16 @@ import { Action } from 'redux'
 export interface Pdu1State {
   fagsaker: FagSaker | null | undefined
   replySed: ReplySed | null | undefined
+
+  previewPdu1: any
+  completePdu1Response: any
 }
 
 export const initialPdu1State: Pdu1State = {
   fagsaker: undefined,
-  replySed: undefined
+  replySed: undefined,
+  previewPdu1: undefined,
+  completePdu1Response: undefined
 }
 
 const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: Action | ActionWithPayload = { type: '' }): Pdu1State => {

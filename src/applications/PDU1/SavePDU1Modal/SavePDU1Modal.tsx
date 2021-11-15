@@ -44,21 +44,21 @@ const SectionDiv = styled.div`
   justify-content: center;
 `
 
-interface SaveSEDModalProps {
-  open: boolean
+interface SavePDU1ModalProps {
   highContrast: boolean
   onModalClose: () => void
   replySed: ReplySed
   storageKey: string
+  open: boolean
 }
 
-const SendSEDModal = ({
+const SendPDU1Modal = ({
   open,
   highContrast,
   onModalClose,
   replySed,
   storageKey
-}: SaveSEDModalProps): JSX.Element => {
+}: SavePDU1ModalProps): JSX.Element => {
   const { t } = useTranslation()
   const [_name, setName] = useState<string>(replySed.saksnummer + '-' + replySed.sedType)
   const [_message, setMessage] = useState<string>('')
@@ -179,4 +179,4 @@ const SendSEDModal = ({
   )
 }
 
-export default SendSEDModal
+export default SendPDU1Modal
