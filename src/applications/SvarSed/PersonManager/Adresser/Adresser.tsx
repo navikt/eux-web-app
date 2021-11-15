@@ -1,6 +1,5 @@
 import { Add, Search } from '@navikt/ds-icons'
 import { resetAdresse, searchAdresse } from 'actions/adresse'
-import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import classNames from 'classnames'
@@ -44,7 +43,6 @@ interface AdresserSelector extends PersonManagerFormSelector {
 
 const mapState = (state: State): AdresserSelector => ({
   highContrast: state.ui.highContrast,
-  replySed: state.svarsed.replySed,
   validation: state.validation.status,
   adresse: state.adresse.adresse,
   gettingAdresse: state.loading.gettingAdresse
@@ -53,12 +51,13 @@ const mapState = (state: State): AdresserSelector => ({
 const Adresser: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
-  personName
+  personName,
+  replySed,
+  updateReplySed
 }: PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
     highContrast,
-    replySed,
     validation,
     adresse,
     gettingAdresse

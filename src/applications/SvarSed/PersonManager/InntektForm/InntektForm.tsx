@@ -1,6 +1,5 @@
 import { Add } from '@navikt/ds-icons'
 import { fetchInntekt } from 'actions/inntekt'
-import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import Inntekter from 'applications/SvarSed/PersonManager/InntektForm/Inntekter'
 import InntektSearch from 'applications/SvarSed/PersonManager/InntektSearch/InntektSearch'
@@ -50,20 +49,20 @@ const mapState = (state: State): InntektFormSelector => ({
   gettingInntekter: state.loading.gettingInntekter,
   highContrast: state.ui.highContrast,
   inntekter: state.inntekt.inntekter,
-  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 
 const InntektForm: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
-  personID
+  personID,
+  replySed,
+  updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
     gettingInntekter,
     highContrast,
     inntekter,
-    replySed,
     validation
   } = useSelector<State, InntektFormSelector>(mapState)
   const dispatch = useDispatch()

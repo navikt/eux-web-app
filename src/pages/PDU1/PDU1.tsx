@@ -1,24 +1,22 @@
-import { setStatusParam } from 'actions/app'
-import * as svarsedActions from 'actions/svarsed'
+import { setReplySed, updateReplySed } from 'actions/pdu1'
 import SEDDetails from 'applications/SvarSed/SEDDetails/SEDDetails'
 import LoadSave from 'components/LoadSave/LoadSave'
 import SlidePage, { ChangeModeFunction } from 'components/SlidePage/SlidePage'
 import { SideBarDiv } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
-import React, { useEffect, useState } from 'react'
+import { STORAGE_PDU1 } from 'constants/storage'
+import { State } from 'declarations/reducers'
+import { ReplySed } from 'declarations/sed'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import PDU1Edit from './PDU1Edit'
 import PDU1Search from './PDU1Search'
-import { STORAGE_PDU1 } from 'constants/storage'
-import { useLocation } from 'react-router-dom'
 
 export const PDU1Page = (): JSX.Element => {
-  const [_mounted, setMounted] = useState<boolean>(false)
-  const dispatch = useDispatch()
-  const location = useLocation()
   const { t } = useTranslation()
   const storageKey = STORAGE_PDU1
+  const replySed: ReplySed | null | undefined = useSelector<State, ReplySed | null | undefined>((state: State) => state.svarsed.replySed)
 
   const changeModeFunc = React.useRef<ChangeModeFunction>(null)
 
@@ -27,20 +25,6 @@ export const PDU1Page = (): JSX.Element => {
       changeModeFunc.current(newPage, newDirection, newCallback)
     }
   }
-
-  useEffect(() => {
-    if (!_mounted) {
-      const params: URLSearchParams = new URLSearchParams(location.search)
-      const rinasaksnummerParam: string | null = params.get('rinasaksnummer')
-
-      const fnrParam: string | null = params.get('fnr')
-      if (rinasaksnummerParam || fnrParam) {
-        setStatusParam('rinasaksnummerOrFnr', rinasaksnummerParam || fnrParam || undefined)
-        dispatch(svarsedActions.querySaksnummerOrFnr(rinasaksnummerParam || fnrParam || undefined))
-      }
-      setMounted(true)
-    }
-  }, [_mounted])
 
   return (
     <TopContainer title={t('app:page-title-pdu1')}>
@@ -59,6 +43,7 @@ export const PDU1Page = (): JSX.Element => {
               namespace='pdu1'
               storageKey={storageKey}
               changeMode={changeMode}
+              setReplySed={setReplySed}
             />
           </SideBarDiv>
         )}
@@ -70,7 +55,10 @@ export const PDU1Page = (): JSX.Element => {
         )}
         divB2={(
           <SideBarDiv>
-            <SEDDetails />
+            <SEDDetails
+              replySed={replySed}
+              updateReplySed={updateReplySed}
+            />
           </SideBarDiv>
         )}
       />

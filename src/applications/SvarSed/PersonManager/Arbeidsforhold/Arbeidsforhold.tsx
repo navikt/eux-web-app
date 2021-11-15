@@ -1,7 +1,6 @@
 import { Add } from '@navikt/ds-icons'
 import { updateArbeidsgivere } from 'actions/arbeidsgiver'
 import { fetchInntekt } from 'actions/inntekt'
-import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import AdresseFC from 'applications/SvarSed/PersonManager/Adresser/Adresse'
 import IdentifikatorFC from 'applications/SvarSed/PersonManager/Identifikator/Identifikator'
@@ -45,7 +44,6 @@ export interface ArbeidsforholdSelector extends PersonManagerFormSelector {
   gettingArbeidsperioder: boolean
   inntekter: IInntekter | undefined
   gettingInntekter: boolean
-  replySed: ReplySed | null |undefined
   validation: Validation
   highContrast: boolean
 }
@@ -54,6 +52,8 @@ export interface ArbeidsforholdProps {
   parentNamespace: string
   personID: string | undefined
   target: string
+  replySed: ReplySed | null | undefined
+  updateReplySed: (needle: string, value: any) => void
 }
 
 const mapState = (state: State): ArbeidsforholdSelector => ({
@@ -61,21 +61,21 @@ const mapState = (state: State): ArbeidsforholdSelector => ({
   gettingArbeidsperioder: state.loading.gettingArbeidsperioder,
   inntekter: state.inntekt.inntekter,
   gettingInntekter: state.loading.gettingInntekter,
-  replySed: state.svarsed.replySed,
   validation: state.validation.status,
   highContrast: state.ui.highContrast
 })
 
 const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
   parentNamespace,
-  personID
+  personID,
+  replySed,
+  updateReplySed
 }:ArbeidsforholdProps): JSX.Element => {
   const { t } = useTranslation()
   const {
     arbeidsperioder,
     inntekter,
     gettingInntekter,
-    replySed,
     highContrast
   } = useSelector<State, ArbeidsforholdSelector>(mapState)
   const dispatch = useDispatch()

@@ -3,7 +3,6 @@ import KravOmRefusjon from 'applications/SvarSed/Formaal/KravOmRefusjon/KravOmRe
 import { mount, ReactWrapper } from 'enzyme'
 import getReplySed from 'mocks/replySed'
 import { stageSelector } from 'setupTests'
-import { updateReplySed } from 'actions/svarsed'
 
 jest.mock('actions/svarsed', () => ({
   updateReplySed: jest.fn()
@@ -17,7 +16,6 @@ const mockReplySed = getReplySed('F002')
 
 const defaultSelector: FormålManagerFormSelector = {
   highContrast: false,
-  replySed: mockReplySed,
   validation: {}
 }
 
@@ -26,7 +24,10 @@ describe('applications/SvarSed/Formaal/KravOmRefusjon/KravOmRefusjon', () => {
 
   const initialMockProps: FormålManagerFormProps = {
     parentNamespace: 'test',
-    seeKontoopplysninger: jest.fn()
+    replySed: mockReplySed,
+    seeKontoopplysninger: jest.fn(),
+    updateReplySed: jest.fn(),
+    setReplySed: jest.fn()
   }
 
   beforeEach(() => {
@@ -39,12 +40,12 @@ describe('applications/SvarSed/Formaal/KravOmRefusjon/KravOmRefusjon', () => {
   })
 
   it('Handling: update krav', () => {
-    (updateReplySed as jest.Mock).mockReset()
+    (initialMockProps.updateReplySed as jest.Mock).mockReset()
     const mockText = 'mockText'
     const formField = wrapper.find('[data-test-id=\'test-refusjonskrav-krav\']').hostNodes()
     formField.simulate('change', { target: { value: mockText } })
     formField.simulate('blur')
-    expect(updateReplySed).toHaveBeenCalledWith('refusjonskrav', mockText)
+    expect(initialMockProps.updateReplySed).toHaveBeenCalledWith('refusjonskrav', mockText)
   })
 
   it('Handling: see kontoopplysning button clicked', () => {

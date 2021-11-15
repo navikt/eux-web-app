@@ -1,5 +1,4 @@
 import { Add } from '@navikt/ds-icons'
-import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import classNames from 'classnames'
@@ -31,18 +30,18 @@ import { isUSed } from 'utils/sed'
 import { validateNasjonalitet, ValidationNasjonalitetProps } from './validation'
 
 const mapState = (state: State): PersonManagerFormSelector => ({
-  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 
 const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
-  personName
+  personName,
+  replySed,
+  updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
-    replySed,
     validation
   } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()

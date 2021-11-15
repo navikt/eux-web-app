@@ -1,6 +1,5 @@
 import { Add } from '@navikt/ds-icons'
 import { updateArbeidsgivere } from 'actions/arbeidsgiver'
-import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
@@ -46,20 +45,20 @@ interface AnsattSelector extends PersonManagerFormSelector {
 const mapState = (state: State): AnsattSelector => ({
   arbeidsperioder: state.arbeidsgiver.arbeidsperioder,
   highContrast: state.ui.highContrast,
-  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 
 const Ansatt: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
-  personName
+  personName,
+  replySed,
+  updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
     arbeidsperioder,
     highContrast,
-    replySed,
     validation
   } = useSelector<State, AnsattSelector>(mapState)
   const dispatch = useDispatch()

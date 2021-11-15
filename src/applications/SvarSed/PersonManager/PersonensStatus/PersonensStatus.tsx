@@ -13,7 +13,10 @@ import { useTranslation } from 'react-i18next'
 const PersonensStatus: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
-  personName
+  personName,
+  replySed,
+  updateReplySed,
+  setReplySed
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const namespace = `${parentNamespace}-${personID}-personensstatus`
@@ -74,6 +77,9 @@ const PersonensStatus: React.FC<PersonManagerFormProps> = ({
                   parentNamespace={namespace}
                   personID={personID}
                   personName={personName}
+                  replySed={replySed}
+                  updateReplySed={updateReplySed}
+                  setReplySed={setReplySed}
                 />
                 )
               : (
@@ -82,6 +88,9 @@ const PersonensStatus: React.FC<PersonManagerFormProps> = ({
                   parentNamespace={namespace}
                   personID={personID}
                   personName={personName}
+                  replySed={replySed}
+                  updateReplySed={updateReplySed}
+                  setReplySed={setReplySed}
                 />
                 )}
           </Column>
@@ -96,6 +105,9 @@ const PersonensStatus: React.FC<PersonManagerFormProps> = ({
                 parentNamespace={namespace}
                 personID={personID}
                 personName={personName}
+                replySed={replySed}
+                updateReplySed={updateReplySed}
+                setReplySed={setReplySed}
               />
             </Column>
           </AlignStartRow>
@@ -111,6 +123,9 @@ const PersonensStatus: React.FC<PersonManagerFormProps> = ({
                 parentNamespace={namespace}
                 personID={personID}
                 personName={personName}
+                replySed={replySed}
+                updateReplySed={updateReplySed}
+                setReplySed={setReplySed}
               />
             </Column>
           </AlignStartRow>
@@ -121,6 +136,9 @@ const PersonensStatus: React.FC<PersonManagerFormProps> = ({
                 parentNamespace={namespace}
                 personID={personID}
                 personName={personName}
+                replySed={replySed}
+                updateReplySed={updateReplySed}
+                setReplySed={setReplySed}
                 standalone={false}
               />
             </Column>

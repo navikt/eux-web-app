@@ -1,9 +1,9 @@
 import { Add } from '@navikt/ds-icons'
 import { clientClear } from 'actions/alert'
 import { resetCurrentEntry, saveEntry } from 'actions/localStorage'
-import { completePdu1, getPreviewPdu1 } from 'actions/pdu1'
+import { completePdu1, getPreviewPdu1, setReplySed, updateReplySed } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
-import { resetPreviewFile, updateReplySed } from 'actions/svarsed'
+import { resetPreviewFile } from 'actions/svarsed'
 import { resetAllValidation, resetValidation, viewValidation } from 'actions/validation'
 import SavePDU1Modal from 'applications/PDU1/SavePDU1Modal/SavePDU1Modal'
 import PersonManager from 'applications/SvarSed/PersonManager/PersonManager'
@@ -105,7 +105,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
       })
       dispatch(viewValidation())
       if (valid) {
-
         dispatch(completePdu1(newReplySed))
         dispatch(resetAllValidation())
         buttonLogger(e)
@@ -204,7 +203,12 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
         </HighContrastKnapp>
       </FlexCenterSpacedDiv>
       <VerticalSeparatorDiv size='2' />
-      <PersonManager viewValidation={view}/>
+      <PersonManager
+        replySed={replySed}
+        setReplySed={setReplySed}
+        updateReplySed={updateReplySed}
+        viewValidation={view}
+      />
       <VerticalSeparatorDiv size='2' />
       <Row>
         <Column flex='2'>
@@ -242,7 +246,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
         <div>
           <HighContrastHovedknapp
             mini
-            data-amplitude={'pdu1.editor.opprett'}
+            data-amplitude='pdu1.editor.opprett'
             onClick={completePdu1Clicked}
             disabled={completingPdu1 || !_.isEmpty(completePdu1Response)}
             spinner={completingPdu1}

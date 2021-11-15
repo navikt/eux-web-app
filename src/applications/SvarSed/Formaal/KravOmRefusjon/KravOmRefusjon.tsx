@@ -1,4 +1,3 @@
-import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import classNames from 'classnames'
 import TextArea from 'components/Forms/TextArea'
@@ -15,10 +14,12 @@ import { FormålManagerFormProps, FormålManagerFormSelector, mapState } from '.
 
 const KravOmRefusjon: React.FC<FormålManagerFormProps> = ({
   parentNamespace,
+  replySed,
+  updateReplySed,
   seeKontoopplysninger
 }: FormålManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { replySed, validation }: FormålManagerFormSelector = useSelector<State, FormålManagerFormSelector>(mapState)
+  const { validation }: FormålManagerFormSelector = useSelector<State, FormålManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const target = 'refusjonskrav'
   const refusjonIHenholdTilArtikkel58IForordningen: string | undefined = (replySed as F002Sed).refusjonskrav

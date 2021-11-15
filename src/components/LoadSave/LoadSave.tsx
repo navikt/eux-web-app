@@ -1,6 +1,6 @@
 import { setCurrentEntry } from 'actions/localStorage'
 import * as localStorageActions from 'actions/localStorage'
-import { getSedStatus, setReplySed } from 'actions/svarsed'
+import { getSedStatus } from 'actions/svarsed'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import { ChangeModeFunction } from 'components/SlidePage/SlidePage'
 import { FlexEtikett } from 'components/StyledComponents'
@@ -38,6 +38,7 @@ interface LoadSaveProps {
   changeMode: ChangeModeFunction
   storageKey: string
   namespace: LocalStorageNamespaces
+  setReplySed: (payload: ReplySed) => void
 }
 
 interface LoadSaveSelector {
@@ -48,7 +49,8 @@ interface LoadSaveSelector {
 const LoadSave: React.FC<LoadSaveProps> = ({
   changeMode,
   storageKey,
-  namespace
+  namespace,
+  setReplySed
 }: LoadSaveProps) => {
   const dispatch = useDispatch()
   const { entries, sedStatus }: LoadSaveSelector =

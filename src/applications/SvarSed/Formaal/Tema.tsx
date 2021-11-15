@@ -1,4 +1,4 @@
-import { getFagsaker, updateReplySed } from 'actions/svarsed'
+import { getFagsaker } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
@@ -16,9 +16,13 @@ import { Option } from 'declarations/app.d'
 import { getFnr } from 'utils/fnr'
 import { Edit } from '@navikt/ds-icons'
 
+interface TemaProps {
+  replySed: ReplySed | null | undefined
+  updateReplySed: (needle: string, value: any) => void
+}
+
 interface TemaSelector {
   highContrast: boolean
-  replySed: ReplySed | null | undefined
   validation: Validation
   gettingFagsaker: boolean
   fagsaker: FagSaker | null | undefined
@@ -26,17 +30,15 @@ interface TemaSelector {
 
 const mapState = (state: State): TemaSelector => ({
   highContrast: state.ui.highContrast,
-  replySed: state.svarsed.replySed,
   validation: state.validation.status,
   gettingFagsaker: state.loading.gettingFagsaker,
   fagsaker: state.svarsed.fagsaker
 })
 
-const Tema: React.FC = () => {
+const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
   const { t } = useTranslation()
   const {
     highContrast,
-    replySed,
     validation,
     gettingFagsaker,
     fagsaker

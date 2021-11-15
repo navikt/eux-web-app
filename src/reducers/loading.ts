@@ -31,10 +31,7 @@ export const initialLoadingState: LoadingState = {
   searchingPerson: false,
   sendingVedlegg: false,
   sendingSak: false,
-  sendingSed: false,
-
-
-
+  sendingSed: false
 
 }
 

@@ -1,7 +1,6 @@
 import { Edit } from '@navikt/ds-icons'
 import ExternalLink from 'assets/icons/Logout'
 import RemoveCircle from 'assets/icons/RemoveCircle'
-import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed.d'
 import { buttonLogger } from 'metrics/loggers'
 import { Undertittel } from 'nav-frontend-typografi'
@@ -14,15 +13,20 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
-
 import SEDDetailsEdit from './SEDDetailsEdit'
 import SEDDetailsView from './SEDDetailsView'
 
-const SEDDetails = () => {
+export interface SEDDetailsProps {
+  replySed: ReplySed | null | undefined
+  updateReplySed: (needle: string, value: any) => void
+}
+
+const SEDDetails: React.FC<SEDDetailsProps> = ({
+  replySed,
+  updateReplySed
+}: SEDDetailsProps) => {
   const { t } = useTranslation()
   const [isEditing, setIsEditing] = useState<boolean>(false)
-  const replySed: ReplySed | null | undefined = useSelector((state: State): ReplySed | null |undefined => (state.svarsed.replySed))
 
   const toggleEditing = (e: React.ChangeEvent<HTMLButtonElement>) => {
     if (!isEditing) {
@@ -64,7 +68,18 @@ const SEDDetails = () => {
         </HighContrastFlatknapp>
       </FlexCenterSpacedDiv>
       <VerticalSeparatorDiv />
-      {isEditing ? <SEDDetailsEdit replySed={replySed} /> : <SEDDetailsView replySed={replySed} />}
+      {isEditing
+        ? (
+          <SEDDetailsEdit
+            replySed={replySed}
+            updateReplySed={updateReplySed}
+          />
+          )
+        : (
+          <SEDDetailsView
+            replySed={replySed}
+          />
+          )}
     </HighContrastPanel>
 
   )

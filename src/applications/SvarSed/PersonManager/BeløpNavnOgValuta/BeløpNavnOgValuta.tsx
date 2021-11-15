@@ -1,5 +1,4 @@
 import { Add, Helptext } from '@navikt/ds-icons'
-import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import classNames from 'classnames'
@@ -41,19 +40,19 @@ interface BeløpNavnOgValutaSelector extends PersonManagerFormSelector {
 
 const mapState = (state: State): BeløpNavnOgValutaSelector => ({
   highContrast: state.ui.highContrast,
-  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 
 const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
-  personName
+  personName,
+  replySed,
+  updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
     highContrast,
-    replySed,
     validation
   } = useSelector<State, BeløpNavnOgValutaSelector>(mapState)
   const dispatch = useDispatch()

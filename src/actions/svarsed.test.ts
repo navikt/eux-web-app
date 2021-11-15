@@ -182,14 +182,6 @@ describe('actions/svarsed', () => {
       })
   })
 
-  it('resetReplySed()', () => {
-    const generatedResult = svarsedActions.resetReplySed()
-    expect(generatedResult)
-      .toMatchObject({
-        type: types.SVARSED_REPLYSED_RESET
-      })
-  })
-
   it('sendSedInRina()', () => {
     const rinaSakId = '123'
     const sedId = '456'

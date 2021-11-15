@@ -1,5 +1,4 @@
 import { Add } from '@navikt/ds-icons'
-import { setReplySed, updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { FormålManagerFormProps, FormålManagerFormSelector, mapState } from 'applications/SvarSed/Formaal/FormålManager'
 import classNames from 'classnames'
@@ -47,10 +46,13 @@ type KeyAndYtelseMap = {[motregningKey in string]: Array<KeyAndYtelse>}
 
 const Motregning: React.FC<FormålManagerFormProps> = ({
   parentNamespace,
+  setReplySed,
+  replySed,
+  updateReplySed,
   seeKontoopplysninger
 }: FormålManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { replySed, validation, highContrast }: FormålManagerFormSelector = useSelector<State, FormålManagerFormSelector>(mapState)
+  const { validation, highContrast }: FormålManagerFormSelector = useSelector<State, FormålManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const namespace = `${parentNamespace}-motregning`
   const _currencyData = CountryData.getCurrencyInstance('nb')

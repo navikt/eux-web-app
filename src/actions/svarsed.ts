@@ -6,7 +6,7 @@ import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockFagsakerList from 'mocks/fagsakerList'
 import mockReplySed from 'mocks/svarsed/replySed'
 import mockConnectedReplySeds from 'mocks/svarsed/connectedReplySeds'
-import { Action, ActionCreator } from 'redux'
+import { ActionCreator } from 'redux'
 import validator from '@navikt/fnrvalidator'
 import mockPreview from 'mocks/previewFile'
 import _ from 'lodash'
@@ -152,10 +152,6 @@ export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed
 
 export const resetPreviewFile = () => ({
   type: types.SVARSED_PREVIEW_RESET
-})
-
-export const resetReplySed: ActionCreator<Action> = (): Action => ({
-  type: types.SVARSED_REPLYSED_RESET
 })
 
 export const sendSedInRina: ActionCreator<ThunkResult<ActionWithPayload<any>>> = (

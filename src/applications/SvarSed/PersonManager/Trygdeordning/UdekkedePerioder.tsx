@@ -1,5 +1,4 @@
 import { Add } from '@navikt/ds-icons'
-import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import {
@@ -31,18 +30,18 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 
 const mapState = (state: State): PersonManagerFormSelector => ({
-  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 
 const UdekkedePerioder: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
-  personName
+  personName,
+  replySed,
+  updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
-    replySed,
     validation
   } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()

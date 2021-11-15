@@ -1,4 +1,3 @@
-import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
@@ -12,27 +11,29 @@ import Stack from 'components/Stack/Stack'
 
 interface FormaalProps {
   parentNamespace: string
+  replySed: ReplySed | null | undefined
+  updateReplySed: (needle: string, value: any) => void
 }
 
 interface FormaalSelector {
   highContrast: boolean
-  replySed: ReplySed | null | undefined
+
   validation: Validation
 }
 
 const mapState = (state: State): FormaalSelector => ({
   highContrast: state.ui.highContrast,
-  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 
 const Formaal: React.FC<FormaalProps> = ({
-  parentNamespace
+  replySed,
+  parentNamespace,
+  updateReplySed
 }: FormaalProps): JSX.Element => {
   const { t } = useTranslation()
   const {
     highContrast,
-    replySed,
     validation
   }: any = useSelector<State, FormaalSelector>(mapState)
   const dispatch = useDispatch()

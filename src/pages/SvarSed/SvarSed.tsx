@@ -1,5 +1,5 @@
 import { setStatusParam } from 'actions/app'
-import * as svarsedActions from 'actions/svarsed'
+import { querySaksnummerOrFnr, updateReplySed, setReplySed } from 'actions/svarsed'
 import SEDDetails from 'applications/SvarSed/SEDDetails/SEDDetails'
 import LoadSave from 'components/LoadSave/LoadSave'
 import SlidePage, { ChangeModeFunction } from 'components/SlidePage/SlidePage'
@@ -9,14 +9,17 @@ import SEDEdit from 'pages/SvarSed/SEDEdit'
 import SEDSearch from 'pages/SvarSed/SEDSearch'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { STORAGE_SVARSED } from 'constants/storage'
 import { useLocation } from 'react-router-dom'
+import { ReplySed } from 'declarations/sed'
+import { State } from 'declarations/reducers'
 
 export const SvarSedPage = (): JSX.Element => {
   const storageKey = STORAGE_SVARSED
   const [_mounted, setMounted] = useState<boolean>(false)
   const dispatch = useDispatch()
+  const replySed: ReplySed | null | undefined = useSelector<State, ReplySed | null | undefined>((state: State) => state.svarsed.replySed)
   const location = useLocation()
   const { t } = useTranslation()
   const changeModeFunc = React.useRef<ChangeModeFunction>(null)
@@ -37,7 +40,7 @@ export const SvarSedPage = (): JSX.Element => {
       }
       if (rinasaksnummerParam || fnrParam) {
         setStatusParam('rinasaksnummerOrFnr', rinasaksnummerParam || fnrParam || undefined)
-        dispatch(svarsedActions.querySaksnummerOrFnr(rinasaksnummerParam || fnrParam || undefined))
+        dispatch(querySaksnummerOrFnr(rinasaksnummerParam || fnrParam || undefined))
       }
       setMounted(true)
     }
@@ -56,6 +59,7 @@ export const SvarSedPage = (): JSX.Element => {
               namespace='svarsed'
               storageKey={storageKey}
               changeMode={changeMode}
+              setReplySed={setReplySed}
             />
           </SideBarDiv>
       )}
@@ -66,7 +70,10 @@ export const SvarSedPage = (): JSX.Element => {
           />)}
         divB2={(
           <SideBarDiv>
-            <SEDDetails />
+            <SEDDetails
+              replySed={replySed}
+              updateReplySed={updateReplySed}
+            />
           </SideBarDiv>
       )}
       />

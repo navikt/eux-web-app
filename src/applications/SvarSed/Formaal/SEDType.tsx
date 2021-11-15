@@ -1,4 +1,3 @@
-import { setReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
@@ -20,23 +19,28 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Option } from 'declarations/app.d'
 import { Edit } from '@navikt/ds-icons'
 
+interface SEDTypeProps {
+  replySed: ReplySed | null | undefined
+  setReplySed: (replySed: ReplySed) => void
+}
+
 interface SEDTypeSelector {
   highContrast: boolean
-  replySed: ReplySed | null | undefined
   validation: Validation
 }
 
 const mapState = (state: State): SEDTypeSelector => ({
   highContrast: state.ui.highContrast,
-  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 
-const SEDType: React.FC = () => {
+const SEDType: React.FC<SEDTypeProps> = ({
+  replySed,
+  setReplySed
+}: SEDTypeProps) => {
   const { t } = useTranslation()
   const {
     highContrast,
-    replySed,
     validation
   }: any = useSelector<State, SEDTypeSelector>(mapState)
   const dispatch = useDispatch()
@@ -76,12 +80,12 @@ const SEDType: React.FC = () => {
     const message = t('label:all-data-regarding-x-will-be-lost', { x: x.join(', ') })
 
     if (_.isEmpty(x)) {
-      const newReplySed: ReplySed = _.cloneDeep(replySed)
+      const newReplySed: ReplySed = _.cloneDeep(replySed) as ReplySed
       newReplySed.sedType = newSedType
       dispatch(setReplySed(newReplySed))
     } else {
       if (window.confirm(message)) {
-        const newReplySed: ReplySed = _.cloneDeep(replySed)
+        const newReplySed: ReplySed = _.cloneDeep(replySed) as ReplySed
         newReplySed.sedType = newSedType
 
         if (newSedType === 'U004' && oldSedType !== 'U004') {
@@ -140,7 +144,7 @@ const SEDType: React.FC = () => {
           <FlexCenterDiv className={namespace}>
             {!editMode
               ? _sedType
-                  ? t('buc:' + replySed.sedType)
+                  ? t('buc:' + replySed?.sedType)
                   : t('label:ukjent')
               : (
                 <>

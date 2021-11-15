@@ -2,6 +2,7 @@ import * as types from 'constants/actionTypes'
 import { ReplySed } from 'declarations/sed'
 import { FagSaker } from 'declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
+import _ from 'lodash'
 import { Action } from 'redux'
 
 export interface Pdu1State {
@@ -56,6 +57,28 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: Action | Actio
         ...state,
         replySed: null
       }
+
+    case types.PDU1_REPLYSED_SET:
+      return {
+        ...state,
+        replySed: (action as ActionWithPayload).payload
+      }
+
+    case types.PDU1_REPLYSED_UPDATE: {
+      let newReplySed: ReplySed | null | undefined = _.cloneDeep(state.replySed)
+      if (!newReplySed) {
+        newReplySed = {} as ReplySed
+      }
+      _.set(newReplySed,
+        (action as ActionWithPayload).payload.needle,
+        (action as ActionWithPayload).payload.value
+      )
+
+      return {
+        ...state,
+        replySed: newReplySed
+      }
+    }
 
     default:
       return state

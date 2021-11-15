@@ -1,4 +1,3 @@
-import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import PeriodeInput from 'components/Forms/PeriodeInput'
@@ -21,17 +20,17 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
 const mapState = (state: State): PersonManagerFormSelector => ({
-  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 
 const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
-  personID
+  personID,
+  replySed,
+  updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
-    replySed,
     validation
   } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()

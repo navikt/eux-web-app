@@ -94,15 +94,15 @@ export interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({
-                                       appElementId = 'body',
-                                       className,
-                                       icon = undefined,
-                                       onModalClose,
-                                       open,
-                                       closeButton = true,
-                                       closeButtonLabel = '',
-                                       modal
-                                     }: ModalProps): JSX.Element => {
+  appElementId = 'body',
+  className,
+  icon = undefined,
+  onModalClose,
+  open,
+  closeButton = true,
+  closeButtonLabel = '',
+  modal
+}: ModalProps): JSX.Element => {
   const [_modal, setModal] = useState<ModalContent | undefined>(modal)
 
   useEffect(() => {
@@ -177,7 +177,7 @@ const Modal: React.FC<ModalProps> = ({
                     ? () => {
                       button.onClick!()
                       closeModal()
-                    }
+                      }
                     : closeModal
 
                   return (

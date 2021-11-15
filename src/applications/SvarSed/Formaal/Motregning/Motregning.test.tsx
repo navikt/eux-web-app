@@ -1,9 +1,8 @@
-import { updateReplySed } from 'actions/svarsed'
 import { FormålManagerFormProps, FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
 import Motregning from 'applications/SvarSed/Formaal/Motregning/Motregning'
 import { PersonInfo } from 'declarations/sed'
 import { mount, ReactWrapper } from 'enzyme'
-import getReplySed from 'mocks/replySed'
+import getReplySed from 'mocks/svarsed/replySed'
 import { stageSelector } from 'setupTests'
 
 jest.mock('actions/svarsed', () => ({
@@ -18,7 +17,6 @@ const mockReplySed = getReplySed('F002')
 
 const defaultSelector: FormålManagerFormSelector = {
   highContrast: false,
-  replySed: mockReplySed,
   validation: {}
 }
 
@@ -27,7 +25,10 @@ describe('applications/SvarSed/Formaal/Motregning/Motregning', () => {
 
   const initialMockProps: FormålManagerFormProps = {
     parentNamespace: 'test',
-    seeKontoopplysninger: jest.fn()
+    seeKontoopplysninger: jest.fn(),
+    replySed: mockReplySed,
+    updateReplySed: jest.fn(),
+    setReplySed: jest.fn()
   }
 
   beforeEach(() => {
@@ -40,7 +41,7 @@ describe('applications/SvarSed/Formaal/Motregning/Motregning', () => {
   })
 
   it('Handling: update setSvarType: barna', () => {
-    (updateReplySed as jest.Mock).mockReset()
+    (initialMockProps.updateReplySed as jest.Mock).mockReset()
     stageSelector(defaultSelector, {
       replySed: {
         barn: [{
@@ -54,7 +55,7 @@ describe('applications/SvarSed/Formaal/Motregning/Motregning', () => {
     const formField = wrapper.find('[data-test-id=\'test-motregning-svarType\']').hostNodes()
     formField.simulate('change', { target: { value: mockText } })
     formField.simulate('blur')
-    expect(updateReplySed).toHaveBeenCalledWith('svarType', mockText)
+    expect(initialMockProps.updateReplySed).toHaveBeenCalledWith('svarType', mockText)
   })
 
   it('Handling: see kontoopplysning button clicked', () => {

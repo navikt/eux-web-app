@@ -10,7 +10,10 @@ import { useTranslation } from 'react-i18next'
 const Trygdeordning: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
-  personName
+  personName,
+  replySed,
+  updateReplySed,
+  setReplySed
 }: PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
 
@@ -26,6 +29,9 @@ const Trygdeordning: React.FC<PersonManagerFormProps> = ({
           parentNamespace={parentNamespace}
           personID={personID}
           personName={personName}
+          replySed={replySed}
+          updateReplySed={updateReplySed}
+          setReplySed={setReplySed}
         />
 
         <VerticalSeparatorDiv size={2} />
@@ -34,6 +40,9 @@ const Trygdeordning: React.FC<PersonManagerFormProps> = ({
           parentNamespace={parentNamespace}
           personID={personID}
           personName={personName}
+          replySed={replySed}
+          updateReplySed={updateReplySed}
+          setReplySed={setReplySed}
         />
 
         <VerticalSeparatorDiv size={2} />
@@ -42,6 +51,9 @@ const Trygdeordning: React.FC<PersonManagerFormProps> = ({
           parentNamespace={parentNamespace}
           personID={personID}
           personName={personName}
+          replySed={replySed}
+          updateReplySed={updateReplySed}
+          setReplySed={setReplySed}
         />
       </>
     </PaddedDiv>

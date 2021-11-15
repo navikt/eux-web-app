@@ -2,7 +2,14 @@ import { Add } from '@navikt/ds-icons'
 import { clientClear } from 'actions/alert'
 import { resetCurrentEntry, saveEntry } from 'actions/localStorage'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
-import { createSed, getPreviewFile, resetPreviewFile, sendSedInRina, updateReplySed } from 'actions/svarsed'
+import {
+  createSed,
+  getPreviewFile,
+  resetPreviewFile,
+  sendSedInRina,
+  setReplySed,
+  updateReplySed
+} from 'actions/svarsed'
 import { resetAllValidation, resetValidation, viewValidation } from 'actions/validation'
 import Formaal from 'applications/SvarSed/Formaal/Formaal'
 import FormålManager from 'applications/SvarSed/Formaal/FormålManager'
@@ -269,6 +276,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({
           goToRinaUrl={replySed?.sakUrl}
           highContrast={highContrast}
           attachments={_attachments}
+          replySed={replySed}
           onModalClose={() => setViewSendSedModal(false)}
         />
       )}
@@ -297,9 +305,25 @@ const SEDEdit: React.FC<SEDEditProps> = ({
             {replySed?.sedType} - {t('buc:' + replySed?.sedType)}
           </Systemtittel>
           <VerticalSeparatorDiv />
-          {isFSed(replySed) && <Formaal parentNamespace={namespace} />}
-          {isUSed(replySed) && <SEDType />}
-          {isHSed(replySed) && <Tema />}
+          {isFSed(replySed) && (
+            <Formaal
+              replySed={replySed}
+              updateReplySed={updateReplySed}
+              parentNamespace={namespace}
+            />
+          )}
+          {isUSed(replySed) && (
+            <SEDType
+              replySed={replySed}
+              setReplySed={setReplySed}
+            />
+          )}
+          {isHSed(replySed) && (
+            <Tema
+              updateReplySed={updateReplySed}
+              replySed={replySed}
+            />
+          )}
         </Column>
         <Column />
       </Row>
@@ -308,6 +332,9 @@ const SEDEdit: React.FC<SEDEditProps> = ({
         <>
           <PersonManager
             viewValidation={view}
+            replySed={replySed}
+            updateReplySed={updateReplySed}
+            setReplySed={setReplySed}
           />
           <VerticalSeparatorDiv size='2' />
         </>
@@ -315,7 +342,10 @@ const SEDEdit: React.FC<SEDEditProps> = ({
       {isFSed(replySed) && showFormålManager() && (
         <>
           <FormålManager
+            replySed={replySed}
             viewValidation={view}
+            updateReplySed={updateReplySed}
+            setReplySed={setReplySed}
           />
           <VerticalSeparatorDiv size='2' />
         </>

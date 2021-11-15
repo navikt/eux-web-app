@@ -131,32 +131,38 @@ const MenuLabelText = styled(Normaltekst)`
 `
 
 export interface FormålManagerProps {
+  replySed: ReplySed | null | undefined
+  setReplySed: (replySed: ReplySed) => void
+  updateReplySed: (needle: string, value: any) => void
   viewValidation: boolean
 }
 
 export interface FormålManagerFormSelector {
   highContrast: boolean
-  replySed: ReplySed | null | undefined
   validation: Validation
 }
 
 export interface FormålManagerFormProps {
   parentNamespace: string
+  replySed: ReplySed | null | undefined
+  setReplySed: (replySed: ReplySed) => void
+  updateReplySed: (needle: string, value: any) => void
   seeKontoopplysninger: () => void
 }
 
 export const mapState = (state: State): FormålManagerFormSelector => ({
   highContrast: state.ui.highContrast,
-  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 
 const FormålManager: React.FC<FormålManagerProps> = ({
+  replySed,
+  setReplySed,
+  updateReplySed,
   viewValidation
 }: FormålManagerProps) => {
   const { t } = useTranslation()
   const {
-    replySed,
     validation
   }: any = useSelector<State, FormålManagerFormSelector>(mapState)
 
@@ -200,6 +206,9 @@ const FormålManager: React.FC<FormålManagerProps> = ({
     return (
       <Component
         parentNamespace={namespace}
+        replySed={replySed}
+        setReplySed={setReplySed}
+        updateReplySed={updateReplySed}
         seeKontoopplysninger={() => {
           setViewKontoopplysninger(true)
           document.dispatchEvent(new CustomEvent('switch', { detail: namespace + '-kontoopplysninger' }))

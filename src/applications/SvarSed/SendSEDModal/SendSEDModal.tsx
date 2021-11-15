@@ -67,7 +67,6 @@ interface SendSEDSelector {
   alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
   creatingSvarSed: boolean
-  replySed: ReplySed | null | undefined
   sedCreatedResponse: CreateSedResponse | null | undefined
   sedSendResponse: any | null | undefined
   sendingSed: boolean
@@ -81,13 +80,13 @@ interface SendSEDModalProps {
   initialSendingAttachments?: boolean
   onModalClose: () => void
   open: boolean
+  replySed: ReplySed | null | undefined
 }
 
 const mapState = (state: State): SendSEDSelector => ({
   alertMessage: state.alert.clientErrorMessage,
   alertType: state.alert.type,
   creatingSvarSed: state.loading.creatingSvarSed,
-  replySed: state.svarsed.replySed,
   sedCreatedResponse: state.svarsed.sedCreatedResponse,
   sedSendResponse: state.svarsed.sedSendResponse,
   sendingSed: state.loading.sendingSed
@@ -100,14 +99,14 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
   attachments = [],
   initialSendingAttachments = false,
   onModalClose,
-  open
+  open,
+  replySed
 }: SendSEDModalProps): JSX.Element => {
   const {
     alertMessage,
     alertType,
     creatingSvarSed,
     sendingSed,
-    replySed,
     sedCreatedResponse,
     sedSendResponse
   }: SendSEDSelector = useSelector<State, SendSEDSelector>(mapState)
@@ -157,12 +156,14 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
         setFinished(t('message:success-x-attachments-total-y-saved', summary))
       }
     }
-    dispatch(resetSedAttachments())
-    setSedSent(false)
-    if (_attachmentsSent) {
-      setAttachmentsSent(false)
+    if (_sendingAttachments) {
+      setSedSent(false)
+      if (_attachmentsSent) {
+        setAttachmentsSent(false)
+        dispatch(resetSedAttachments())
+      }
+      setSendingAttachments(false)
     }
-    setSendingAttachments(false)
   }
 
   useEffect(() => {

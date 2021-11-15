@@ -1,1 +1,1 @@
-export default {success: true}
+export default { success: true }

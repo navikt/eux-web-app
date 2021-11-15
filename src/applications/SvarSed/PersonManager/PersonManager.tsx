@@ -181,7 +181,10 @@ const MenuLabelText = styled(Normaltekst)`
 `
 
 export interface PersonManagerProps {
+  replySed: ReplySed | null | undefined
   viewValidation: boolean
+  setReplySed: (replySed: ReplySed) => void
+  updateReplySed: (needle: string, value: any) => void
 }
 
 export interface PersonManagerSelector extends PersonManagerFormSelector {
@@ -189,13 +192,15 @@ export interface PersonManagerSelector extends PersonManagerFormSelector {
 }
 
 export interface PersonManagerFormProps {
+  replySed: ReplySed | null | undefined
   parentNamespace: string
   personID: string | undefined
   personName: string
+  setReplySed: (replySed: ReplySed) => void
+  updateReplySed: (needle: string, value: any) => void
 }
 
 export interface PersonManagerFormSelector {
-  replySed: ReplySed | null | undefined
   validation: Validation
 }
 
@@ -210,17 +215,18 @@ export interface PersonManagerOption extends Option {
 
 const mapState = (state: State): PersonManagerSelector => ({
   gettingPerson: state.loading.gettingPerson,
-  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 
 const PersonManager: React.FC<PersonManagerProps> = ({
+  replySed,
+  setReplySed,
+  updateReplySed,
   viewValidation
 }: PersonManagerProps) => {
   const { t } = useTranslation()
   const {
     gettingPerson,
-    replySed,
     validation
   }: any = useSelector<State, PersonManagerSelector>(mapState)
   const namespace = 'personmanager'
@@ -228,15 +234,15 @@ const PersonManager: React.FC<PersonManagerProps> = ({
   const dispatch = useDispatch()
   const brukerNr = 1
   const initialSelectedMenus = ['bruker']
-  const ektefelleNr = brukerNr + ((replySed as F002Sed).ektefelle ? 1 : 0)
+  const ektefelleNr = brukerNr + ((replySed as F002Sed)?.ektefelle ? 1 : 0)
   if (ektefelleNr > 0) initialSelectedMenus.push('ektefelle')
-  const annenPersonNr = ektefelleNr + ((replySed as F002Sed).annenPerson ? 1 : 0)
+  const annenPersonNr = ektefelleNr + ((replySed as F002Sed)?.annenPerson ? 1 : 0)
   if (annenPersonNr > 0) initialSelectedMenus.push('annenPerson')
-  const barnNr = annenPersonNr + ((replySed as F002Sed).barn ? 1 : 0)
-  const totalPeopleNr = annenPersonNr + ((replySed as F002Sed).barn?.length ?? 0);
-  (replySed as F002Sed).barn?.forEach((b: Barn, i: number) => initialSelectedMenus.push(`barn[${i}]`))
+  const barnNr = annenPersonNr + ((replySed as F002Sed)?.barn ? 1 : 0)
+  const totalPeopleNr = annenPersonNr + ((replySed as F002Sed)?.barn?.length ?? 0);
+  (replySed as F002Sed)?.barn?.forEach((b: Barn, i: number) => initialSelectedMenus.push(`barn[${i}]`))
   let familieNr: number | undefined
-  if ((replySed as F002Sed).sedType.startsWith('F')) {
+  if ((replySed as F002Sed)?.sedType?.startsWith('F')) {
     familieNr = barnNr + 1
     initialSelectedMenus.push('familie')
   }
@@ -322,6 +328,9 @@ const PersonManager: React.FC<PersonManagerProps> = ({
           parentNamespace={namespace}
           personID={currentMenu!}
           personName={currentMenuLabel!}
+          replySed={replySed}
+          setReplySed={setReplySed}
+          updateReplySed={updateReplySed}
         />
       )
     }
@@ -541,9 +550,11 @@ const PersonManager: React.FC<PersonManagerProps> = ({
   }, [])
 
   return (
-    <PileDiv key={replySed.sedType + '-' + ((replySed as FSed)?.formaal?.join(',') ?? '')}>
+    <PileDiv key={replySed?.sedType + '-' + ((replySed as FSed)?.formaal?.join(',') ?? '')}>
       {_seeNewPersonModal && (
         <AddPersonModal
+          replySed={replySed}
+          setReplySed={setReplySed}
           parentNamespace={namespace}
           onModalClose={() => setSeeNewPersonModal(false)}
         />
@@ -558,11 +569,11 @@ const PersonManager: React.FC<PersonManagerProps> = ({
       >
         <FlexCenterSpacedDiv>
           <LeftDiv className='left'>
-            {replySed.bruker && renderMenu(replySed, 'bruker', brukerNr)}
-            {(replySed as F002Sed).ektefelle && renderMenu(replySed, 'ektefelle', ektefelleNr)}
-            {(replySed as F002Sed).annenPerson && renderMenu(replySed, 'annenPerson', annenPersonNr)}
-            {(replySed as F002Sed).barn?.map((b: any, i: number) => renderMenu(replySed, `barn[${i}]`, barnNr + i))}
-            {isFSed(replySed) && renderMenu(replySed, 'familie', familieNr as number)}
+            {replySed?.bruker && renderMenu(replySed, 'bruker', brukerNr)}
+            {(replySed as F002Sed)?.ektefelle && renderMenu(replySed!, 'ektefelle', ektefelleNr)}
+            {(replySed as F002Sed)?.annenPerson && renderMenu(replySed!, 'annenPerson', annenPersonNr)}
+            {(replySed as F002Sed)?.barn?.map((b: any, i: number) => renderMenu(replySed!, `barn[${i}]`, barnNr + i))}
+            {isFSed(replySed) && renderMenu(replySed!, 'familie', familieNr as number)}
             {isFSed(replySed) && (
               <MarginDiv>
                 <HighContrastFlatknapp

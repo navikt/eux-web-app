@@ -1,4 +1,3 @@
-import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import classNames from 'classnames'
@@ -37,19 +36,19 @@ interface FamilieYtelserSelector extends PersonManagerFormSelector {
 
 const mapState = (state: State): FamilieYtelserSelector => ({
   highContrast: state.ui.highContrast,
-  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 
 const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
-  personName
+  personName,
+  replySed,
+  updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
     highContrast,
-    replySed,
     validation
   } = useSelector<State, FamilieYtelserSelector>(mapState)
   const dispatch = useDispatch()

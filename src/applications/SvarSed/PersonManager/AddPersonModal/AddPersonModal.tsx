@@ -1,5 +1,4 @@
 import { Add, Child } from '@navikt/ds-icons'
-import { setReplySed } from 'actions/svarsed'
 import {
   validateAddPersonModal,
   ValidationAddPersonModalProps
@@ -77,37 +76,39 @@ interface AddPersonModalProps {
   onModalClose?: () => void
   closeButton?: boolean
   parentNamespace: string
+  replySed: ReplySed | null | undefined
+  setReplySed: (replySed: ReplySed) => void
 }
 
 interface AddPersonModalSelector {
   highContrast: boolean
-  replySed: ReplySed | null | undefined
+
 }
 
 const mapState = (state: State): AddPersonModalSelector => ({
-  highContrast: state.ui.highContrast,
-  replySed: state.svarsed.replySed
+  highContrast: state.ui.highContrast
 })
 
 const AddPersonModal: React.FC<AddPersonModalProps> = ({
   appElement = document.body,
   closeButton,
   onModalClose = () => {},
-  parentNamespace
+  parentNamespace,
+  replySed,
+  setReplySed
 }: AddPersonModalProps) => {
   const { t } = useTranslation()
   const namespace = `${parentNamespace}-addpersonmodal`
   const dispatch = useDispatch()
   const {
-    highContrast,
-    replySed
+    highContrast
   }: any = useSelector<State, AddPersonModalSelector>(mapState)
 
   const [_newPersonFnr, _setNewPersonFnr] = useState<string>('')
   const [_newPersonName, _setNewPersonName] = useState<string>('')
   const [_newPersonRelation, _setNewPersonRelation] = useState<string | undefined>(undefined)
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PersonInfo>((p: PersonInfo) => p?.fornavn + ' ' + (p?.etternavn ?? ''))
-  const [_replySed, _setReplySed] = useState<ReplySed>(replySed)
+  const [_replySed, _setReplySed] = useState<ReplySed | null | undefined>(replySed)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationAddPersonModalProps>({}, validateAddPersonModal)
 
   const brukerNr = 0
@@ -186,7 +187,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
         }
       }
       if (_newPersonRelation === 'bruker') {
-        newReplySed.bruker = {
+        newReplySed!.bruker = {
           personInfo: personInfo
         }
       }
@@ -206,10 +207,10 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
   }
 
   const onSavePersons = () => {
-    if (!_.isEmpty(replySed.bruker) && _.isEmpty(_replySed.bruker)) {
+    if (!_.isEmpty(replySed?.bruker) && _.isEmpty(_replySed?.bruker)) {
       standardLogger('svarsed.editor.personmodal.remove', { person: 'bruker' })
     }
-    if (_.isEmpty(replySed.bruker) && !_.isEmpty(_replySed.bruker)) {
+    if (_.isEmpty(replySed?.bruker) && !_.isEmpty(_replySed?.bruker)) {
       standardLogger('svarsed.editor.personmodal.add', { person: 'bruker' })
     }
     if (!_.isEmpty((replySed as F002Sed).ektefelle) && _.isEmpty((replySed as F002Sed).ektefelle)) {
@@ -239,17 +240,17 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
         }
       }
     }
-    dispatch(setReplySed(_replySed))
+    dispatch(setReplySed(_replySed!))
   }
 
   const getRelationOptions = (): Array<Option> => {
     const relationOptions: Array<Option> = []
     relationOptions.push({
-      label: t('el:option-familierelasjon-bruker') + (_replySed.bruker
+      label: t('el:option-familierelasjon-bruker') + (_replySed?.bruker
         ? '(' + t('label:ikke-tilgjengelig') + ')'
         : ''),
       value: 'bruker',
-      isDisabled: !!_replySed.bruker
+      isDisabled: !!_replySed?.bruker
     })
 
     relationOptions.push({
@@ -341,7 +342,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
         </Title>
         <VerticalSeparatorDiv size='2' />
         <>
-          {_replySed.bruker && renderPerson('bruker', brukerNr)}
+          {_replySed?.bruker && renderPerson('bruker', brukerNr)}
           {(_replySed as F002Sed).ektefelle && renderPerson('ektefelle', ektefelleNr)}
           {(_replySed as F002Sed).annenPerson && renderPerson('annenPerson', annenPersonNr)}
           {(_replySed as F002Sed).barn?.map((b: any, i: number) => renderPerson(`barn[${i}]`, barnNr + i))}

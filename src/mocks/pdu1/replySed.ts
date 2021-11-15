@@ -1,5 +1,6 @@
 export default {
   sedVersjon: '4.2',
+  sedType: 'U017',
   bruker: {
     personInfo: {
       fornavn: 'æøå',
@@ -51,7 +52,6 @@ export default {
       land: 'NO'
     }
   ],
-  sedType: 'U017',
   perioderAnsattMedForsikring: [
     {
       arbeidsgiver: {

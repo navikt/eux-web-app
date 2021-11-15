@@ -1,5 +1,4 @@
 import { Add } from '@navikt/ds-icons'
-import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import classNames from 'classnames'
@@ -42,20 +41,20 @@ interface FamilierelasjonSelector extends PersonManagerFormSelector {
 const mapState = (state: State): FamilierelasjonSelector => ({
   familierelasjonKodeverk: state.app.familierelasjoner,
   highContrast: state.ui.highContrast,
-  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 
 const Familierelasjon: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
-  personName
+  personName,
+  replySed,
+  updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
     familierelasjonKodeverk,
     highContrast,
-    replySed,
     validation
   } = useSelector<State, FamilierelasjonSelector>(mapState)
   const dispatch = useDispatch()

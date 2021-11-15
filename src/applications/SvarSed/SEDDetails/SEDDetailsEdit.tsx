@@ -1,4 +1,3 @@
-import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { Country, CountryFilter } from 'land-verktoy'
 import CountrySelect from 'landvelger'
@@ -33,11 +32,13 @@ import { isF002Sed, isFSed, isHSed, isUSed } from 'utils/sed'
 import { Add } from '@navikt/ds-icons'
 
 export interface SEDDetailsEditProps {
-  replySed: ReplySed
+  replySed: ReplySed,
+  updateReplySed: (needle: string, value: any) => void
 }
 
 const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
-  replySed
+  replySed,
+  updateReplySed
 }: SEDDetailsEditProps): JSX.Element => {
   const { t } = useTranslation()
   const validation: Validation = {}

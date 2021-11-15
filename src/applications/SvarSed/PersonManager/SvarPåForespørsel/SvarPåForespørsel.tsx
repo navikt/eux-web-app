@@ -1,11 +1,10 @@
 import { Helptext } from '@navikt/ds-icons'
-import { setReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { HSed, HSvar, HSvarType } from 'declarations/sed'
+import { H002Sed, HSed, HSvar, HSvarType } from 'declarations/sed'
 import _ from 'lodash'
 import { Undertittel } from 'nav-frontend-typografi'
 import {
@@ -23,17 +22,17 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
 const mapState = (state: State): PersonManagerFormSelector => ({
-  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 
 const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
-  personID
+  personID,
+  replySed,
+  setReplySed
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
-    replySed,
     validation
   } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
@@ -69,8 +68,8 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
         newPositivtSvar[needle] = value
       }
 
-      const newReplySed = {
-        ...replySed,
+      const newReplySed: H002Sed = {
+        ...(replySed as H002Sed),
         positivtSvar: newPositivtSvar
       }
 
@@ -78,17 +77,17 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
       dispatch(setReplySed(newReplySed))
     } else {
       const newNegativtSvar = {
-        informasjon: svarChanged ? (replySed as HSed)?.positivtSvar?.informasjon : (replySed as HSed)?.negativeSvar?.informasjon,
-        dokument: svarChanged ? (replySed as HSed)?.positivtSvar?.dokument : (replySed as HSed)?.negativeSvar?.dokument,
-        sed: svarChanged ? (replySed as HSed)?.positivtSvar?.sed : (replySed as HSed)?.negativeSvar?.sed
+        informasjon: svarChanged ? (replySed as HSed)?.positivtSvar?.informasjon ?? '' : (replySed as HSed)?.negativeSvar?.informasjon ?? '',
+        dokument: svarChanged ? (replySed as HSed)?.positivtSvar?.dokument ?? '' : (replySed as HSed)?.negativeSvar?.dokument ?? '',
+        sed: svarChanged ? (replySed as HSed)?.positivtSvar?.sed ?? '' : (replySed as HSed)?.negativeSvar?.sed ?? ''
       }
       if (!svarChanged) {
         // @ts-ignore
         newNegativtSvar[needle] = value
       }
 
-      const newReplySed = {
-        ...replySed,
+      const newReplySed: H002Sed = {
+        ...(replySed as H002Sed),
         negativeSvar: newNegativtSvar
       }
       delete (newReplySed as HSed).positivtSvar

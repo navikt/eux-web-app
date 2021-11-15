@@ -1,4 +1,3 @@
-import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { FormålManagerFormProps, FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
 import {
@@ -48,17 +47,17 @@ export interface MotregningSelector extends FormålManagerFormSelector {
 
 const mapState = (state: State): MotregningSelector => ({
   highContrast: state.ui.highContrast,
-  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 
 const VedtakFC: React.FC<FormålManagerFormProps> = ({
-  parentNamespace
+  parentNamespace,
+  replySed,
+  updateReplySed
 }: FormålManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
     highContrast,
-    replySed,
     validation
   }: any = useSelector<State, MotregningSelector>(mapState)
   const dispatch = useDispatch()

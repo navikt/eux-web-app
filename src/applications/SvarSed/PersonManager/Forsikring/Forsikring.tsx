@@ -12,7 +12,6 @@ import {
   Stroller,
   Vacation
 } from '@navikt/ds-icons'
-import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import AdresseFC from 'applications/SvarSed/PersonManager/Adresser/Adresse'
 import InntektOgTimerFC from 'applications/SvarSed/PersonManager/Forsikring/InntektOgTimer/InntektOgTimer'
@@ -73,7 +72,6 @@ interface ForsikringSelector extends PersonManagerFormSelector {
 
 const mapState = (state: State): ForsikringSelector => ({
   highContrast: state.ui.highContrast,
-  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 
@@ -82,12 +80,13 @@ type Sort = 'time' | 'group'
 const Forsikring: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
-  personName
+  personName,
+  replySed,
+  updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
     highContrast,
-    replySed,
     validation
   } = useSelector<State, ForsikringSelector>(mapState)
   const dispatch = useDispatch()
@@ -294,7 +293,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
     removeFromDeletion(periode)
     const newPeriodes: Array<ForsikringPeriode> = _.get(replySed, periode.__type!) as Array<ForsikringPeriode>
     newPeriodes.splice(periode.__index!, 1)
-    dispatch(updateReplySed(periode.__type, newPeriodes))
+    dispatch(updateReplySed(periode.__type!, newPeriodes))
     standardLogger('svarsed.editor.periode.remove', { type: periode.__type! })
   }
 
@@ -310,7 +309,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
       namespace: namespace,
       personName: personName
     })
-    if (valid) {
+    if (valid && _newType) {
       newPeriodes = newPeriodes.concat(_newPeriode!)
       dispatch(updateReplySed(_newType, newPeriodes))
       standardLogger('svarsed.editor.periode.add', { type: _newType })

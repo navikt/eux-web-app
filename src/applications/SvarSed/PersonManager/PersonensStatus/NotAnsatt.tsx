@@ -1,5 +1,4 @@
 import { Add } from '@navikt/ds-icons'
-import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import classNames from 'classnames'
@@ -29,7 +28,6 @@ import { getIdx } from 'utils/namespace'
 import { validateNotAnsattPeriode, ValidationNotAnsattProps } from './notAnsattValidation'
 
 const mapState = (state: State): PersonManagerFormSelector => ({
-  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 
@@ -44,12 +42,12 @@ const NotAnsatt: React.FC<PersonManagerFormProps & {arbeidsforhold: string}> = (
   arbeidsforhold,
   parentNamespace,
   personID,
-  personName
-
+  personName,
+  replySed,
+  updateReplySed
 }:PersonManagerFormProps & {arbeidsforhold: string}): JSX.Element => {
   const { t } = useTranslation()
   const {
-    replySed,
     validation
   } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()

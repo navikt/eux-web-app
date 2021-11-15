@@ -1,4 +1,3 @@
-import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { FormålManagerFormProps, FormålManagerFormSelector, mapState } from 'applications/SvarSed/Formaal/FormålManager'
 import Adresse from 'applications/SvarSed/PersonManager/Adresser/Adresse'
@@ -15,10 +14,12 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
 const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
-  parentNamespace
+  parentNamespace,
+  replySed,
+  updateReplySed
 }: FormålManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { replySed, validation }: FormålManagerFormSelector = useSelector<State, FormålManagerFormSelector>(mapState)
+  const { validation }: FormålManagerFormSelector = useSelector<State, FormålManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const target: string = 'utbetalingTilInstitusjon'
   const utbetalingTilInstitusjon: UtbetalingTilInstitusjon | undefined = (replySed as F002Sed).utbetalingTilInstitusjon

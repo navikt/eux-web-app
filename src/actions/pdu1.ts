@@ -1,13 +1,15 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { ReplySed } from 'declarations/sed'
-import { FagSaker } from 'declarations/types'
+import { FagSaker, UpdateReplySedPayload } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockFagsakerList from 'mocks/fagsakerList'
 import mockCreatePdu1 from 'mocks/pdu1/replySed'
 import mockCompletePdu1 from 'mocks/pdu1/complete'
 import mockPreviewPdu1 from 'mocks/pdu1/preview'
 import { ActionCreator } from 'redux'
+import File from 'forhandsvisningsfil'
+
 const sprintf = require('sprintf-js').sprintf
 
 export const getFagsaker: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>> = (
@@ -69,3 +71,20 @@ export const completePdu1: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>
     }
   })
 }
+
+export const setReplySed: ActionCreator<ActionWithPayload<ReplySed>> = (
+  replySed: ReplySed
+): ActionWithPayload<ReplySed> => ({
+  type: types.PDU1_REPLYSED_SET,
+  payload: replySed
+})
+
+export const updateReplySed: ActionCreator<ActionWithPayload<UpdateReplySedPayload>> = (
+  needle: string, value: any
+): ActionWithPayload<UpdateReplySedPayload> => ({
+  type: types.PDU1_REPLYSED_UPDATE,
+  payload: {
+    needle,
+    value
+  }
+})

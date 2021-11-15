@@ -1,4 +1,3 @@
-import { updateReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { FormålManagerFormProps, FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
 import classNames from 'classnames'
@@ -36,17 +35,17 @@ export interface ProsedyreVedUenighetSelector extends FormålManagerFormSelector
 
 const mapState = (state: State): ProsedyreVedUenighetSelector => ({
   highContrast: state.ui.highContrast,
-  replySed: state.svarsed.replySed,
   validation: state.validation.status
 })
 
 const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
-  parentNamespace
+  parentNamespace,
+  replySed,
+  updateReplySed
 }: FormålManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
     highContrast,
-    replySed,
     validation
   }: any = useSelector<State, ProsedyreVedUenighetSelector>(mapState)
   const dispatch = useDispatch()
