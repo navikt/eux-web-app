@@ -1,5 +1,12 @@
 export default [{
   type: 'bosted',
+  gate: 'Bosted Gatenavn etasje 1',
+  postnummer: '1211',
+  by: 'Lillestrøm',
+  region: 'region',
+  land: 'NO'
+}, {
+  type: 'bosted',
   gate: 'Bosted Gatenavn etasje postboksnr',
   postnummer: '1212',
   by: 'Oslo',

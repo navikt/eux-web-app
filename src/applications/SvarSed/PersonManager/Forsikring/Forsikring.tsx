@@ -48,13 +48,13 @@ import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
 import Chevron from 'nav-frontend-chevron'
-import { Checkbox } from 'nav-frontend-skjema'
 import { Normaltekst, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
   FlexCenterDiv,
   FlexEndDiv,
+  HighContrastCheckbox,
   HighContrastFlatknapp,
   HorizontalSeparatorDiv,
   PaddedDiv,
@@ -559,7 +559,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       {!_.isEmpty(_allPeriods) && (
         <>
-          <Checkbox
+          <HighContrastCheckbox
             checked={_sort === 'group'}
             label={t('label:group-by-type')}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}

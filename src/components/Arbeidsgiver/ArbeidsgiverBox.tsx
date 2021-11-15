@@ -10,12 +10,12 @@ import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Adresse as IAdresse, ArbeidsgiverIdentifikator, Periode, PeriodeMedForsikring } from 'declarations/sed.d'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { Checkbox } from 'nav-frontend-skjema'
 import { Normaltekst, Undertekst, UndertekstBold } from 'nav-frontend-typografi'
 import {
   Column,
   FlexCenterSpacedDiv,
   FlexDiv,
+  HighContrastCheckbox,
   HighContrastFlatknapp,
   HighContrastKnapp,
   HighContrastPanel,
@@ -354,7 +354,7 @@ const ArbeidsgiverBox = ({
               </>
             )}
             {!_isEditing && !_isDeleting && selectable && (
-              <Checkbox
+              <HighContrastCheckbox
                 checked={selected}
                 onChange={onSelectCheckboxClicked}
                 label={t('label:velg')}

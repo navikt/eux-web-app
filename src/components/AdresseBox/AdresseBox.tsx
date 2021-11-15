@@ -2,12 +2,13 @@ import { Normaltekst } from 'nav-frontend-typografi'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import CountryData from 'land-verktoy'
+import { HighContrastPanel } from 'nav-hoykontrast'
 
-const AdresseBox = ({ adresse }: any) => {
+const AdresseBox = ({ adresse, border = true }: any) => {
   const countryData = CountryData.getCountryInstance('nb')
   const { t } = useTranslation()
   return (
-    <>
+    <HighContrastPanel border={border}>
       <Normaltekst>
         {adresse?.gate ?? '-'}
         {adresse?.bygning ? ', ' + t('label:bygning').toLowerCase() + ' ' + adresse?.bygning : ''}
@@ -19,7 +20,7 @@ const AdresseBox = ({ adresse }: any) => {
         {adresse?.region ? adresse?.region + ', ' : ''}
         {countryData.findByValue(adresse?.land)?.label ?? adresse?.land}
       </Normaltekst>
-    </>
+    </HighContrastPanel>
   )
 }
 

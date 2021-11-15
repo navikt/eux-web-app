@@ -14,11 +14,12 @@ import { Barn, F002Sed, FSed, PersonInfo, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import Chevron from 'nav-frontend-chevron'
-import { Checkbox, FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   FlexCenterDiv,
   FlexCenterSpacedDiv,
+  HighContrastCheckbox,
   HighContrastFlatknapp,
   HorizontalSeparatorDiv,
   PileCenterDiv,
@@ -86,7 +87,7 @@ const MenuDiv = styled.div`
      display: flex;
   }
 `
-const MenuCheckbox = styled(Checkbox)`
+const MenuCheckbox = styled(HighContrastCheckbox)`
   padding: 1rem 0.5rem;
 `
 const MenuLabelDiv = styled(FlexCenterDiv)`

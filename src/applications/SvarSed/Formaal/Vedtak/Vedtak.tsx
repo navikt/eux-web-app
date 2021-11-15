@@ -21,11 +21,12 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
-import { Checkbox, FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { Ingress, Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
+  HighContrastCheckbox,
   HighContrastFlatknapp,
   HighContrastRadioPanelGroup,
   HorizontalSeparatorDiv,
@@ -477,7 +478,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
                 className={classNames('slideInFromLeft')}
                 style={{ animationDelay: (index * 0.1) + 's' }}
               >
-                <Checkbox
+                <HighContrastCheckbox
                   checked={checked}
                   label={vedtakBarn.fornavn + ' ' + (vedtakBarn.etternavn ?? '') + ' (' + vedtakBarn.foedselsdato + ')'}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangedBarnaCheckbox(vedtakBarn, e.target.checked)}

@@ -17,7 +17,6 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
 import AlertStripe from 'nav-frontend-alertstriper'
-import { Checkbox } from 'nav-frontend-skjema'
 import { Normaltekst, Systemtittel, Undertekst, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
@@ -25,6 +24,7 @@ import {
   FlexDiv,
   FlexEndSpacedDiv,
   FlexStartDiv,
+  HighContrastCheckbox,
   HighContrastFlatknapp,
   HighContrastHovedknapp,
   HighContrastInput,
@@ -296,7 +296,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
               </span>
             </div>
             <div>
-              <Checkbox
+              <HighContrastCheckbox
                 checked={_allOpen}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setAllOpen(e.target.checked)}
                 label={t('label:utvid-alle')}

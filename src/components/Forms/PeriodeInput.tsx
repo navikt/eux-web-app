@@ -3,8 +3,7 @@ import Input from 'components/Forms/Input'
 import { Periode, PeriodeInputType } from 'declarations/sed'
 import _ from 'lodash'
 import moment, { Moment } from 'moment'
-import { Checkbox } from 'nav-frontend-skjema'
-import { Column } from 'nav-hoykontrast'
+import { Column, HighContrastCheckbox } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -138,7 +137,7 @@ const PeriodeInput = <T extends Periode>({
       {(periodeType === 'withcheckbox' || requiredSluttDato === true) && (
         <WrapperDiv className={classNames('slideInFromLeft', { nolabel: showLabel })}>
           {_.isEmpty(_periode?.sluttdato) && (
-            <Checkbox
+            <HighContrastCheckbox
               checked={_periode?.aapenPeriodeType === 'ukjent_sluttdato'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onCheckboxChanged(e.target.checked)}
               label={t('label:ukjent')}
