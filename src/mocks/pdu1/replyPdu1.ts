@@ -39,7 +39,6 @@ export default {
       }
     }
   },
-
   perioderAnsattMedForsikring: [
     {
       arbeidsgiver: {
@@ -86,18 +85,6 @@ export default {
       },
       sluttdato: '2002-02-02',
       startdato: '2001-01-01'
-    }
-  ],
-  perioderDagpenger: [
-    {
-      periode: {
-        startdato: '2001-01-01',
-        aapenPeriodeType: 'åpen_sluttdato'
-      },
-      institusjon: {
-        navn: 'æøå',
-        id: 'ES:3100'
-      }
     }
   ],
   rettTilYtelse: {

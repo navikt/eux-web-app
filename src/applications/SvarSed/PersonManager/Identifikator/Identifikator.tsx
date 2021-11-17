@@ -1,20 +1,16 @@
-
 import { Add } from '@navikt/ds-icons'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
-import {
-  ArbeidsgiverIdentifikator,
-  ArbeidsgiverIdentifikatorType
-} from 'declarations/sed'
 import { Option } from 'declarations/app'
+import { ArbeidsgiverIdentifikator, ArbeidsgiverIdentifikatorType } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { Feilmelding, Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
@@ -26,13 +22,8 @@ import {
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import styled from 'styled-components'
 import { getIdx } from 'utils/namespace'
 import { validateIdentifikator, ValidationIdentifikatorProps } from './validation'
-
-const MyPaddedDiv = styled.div`
-  padding: 0.5rem 0.5rem 0.5rem 2rem;
-`
 
 export interface IdentifikatorProps {
   highContrast: boolean
@@ -138,6 +129,7 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
       }
       newIdentifikatorer.push(newIdentifikator)
       onIdentifikatorerChanged(newIdentifikatorer, 'add')
+      resetValidation(namespace)
       resetForm()
     }
   }
@@ -206,8 +198,10 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
     )
   }
 
+  const hasError = validation[namespace]?.feilmelding
+
   return (
-    <MyPaddedDiv>
+    <div>
       <Undertittel>
         {t('label:institusjonens-id')}
       </Undertittel>
@@ -220,6 +214,14 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
           )
         : identifikatorer?.map(renderRow)}
       <VerticalSeparatorDiv />
+      {hasError && (
+        <>
+          <div role='alert' aria-live='assertive' className='feilmelding skjemaelement__feilmelding'>
+            <Feilmelding>{hasError}</Feilmelding>
+          </div>
+          <VerticalSeparatorDiv />
+        </>
+      )}
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm
@@ -240,7 +242,7 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
             </Column>
           </Row>
           )}
-    </MyPaddedDiv>
+    </div>
   )
 }
 

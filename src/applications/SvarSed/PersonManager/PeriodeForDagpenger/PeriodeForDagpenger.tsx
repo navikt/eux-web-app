@@ -46,6 +46,7 @@ const mapState = (state: State): PeriodeForDagpengerSelector => ({
 const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
+  personName,
   replySed,
   updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
@@ -244,7 +245,8 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
     const valid: boolean = performValidation({
       periodeDagpenger: newPeriodeDagpenger,
       perioderDagpenger: perioder ?? [],
-      namespace: namespace
+      namespace: namespace,
+      personName: personName
     })
     if (valid) {
       let newPerioderDagpenger: Array<PeriodeDagpenger> | undefined = _.cloneDeep(perioder)
@@ -359,7 +361,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
             <AdresseFC
               adresse={(index < 0 ? _newAdresse : periodeDagpenger?.institusjon.idmangler?.adresse)}
               onAdressChanged={(a) => setAdresse(a, index)}
-              namespace={namespace + '-adresse'}
+              namespace={namespace + '-institusjon-idmangler-adresse'}
               validation={index < 0 ? _validation : validation}
               resetValidation={(fullnamespace: string) => resetAdresseValidation(fullnamespace, index)}
             />

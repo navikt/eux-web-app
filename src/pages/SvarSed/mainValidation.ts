@@ -268,6 +268,7 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
         perioderKompensertFerie: (replySed as U002Sed)?.perioderKompensertFerie,
         perioderAnnenForsikring: (replySed as U002Sed)?.perioderAnnenForsikring
       }
+
       _error = validateAlleForsikringPerioder(v, t, {
         perioder, namespace: `personmanager-${personID}-forsikring`, personName
       })
@@ -275,16 +276,24 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
 
       _error = validatePerioderDagpenger(v, t, {
         perioderDagpenger: (replySed as U002Sed)?.perioderDagpenger,
-        namespace: `personmanager-${personID}-periodefordagpenger`
+        namespace: `personmanager-${personID}-periodefordagpenger`,
+        personName: personName
       })
       hasErrors = hasErrors || _error
 
-      _error = validateGrunnTilOpphor(v, t, {
-        grunntilopphor: (replySed as U002Sed)?.grunntilopphor,
-        namespace: `personmanager-${personID}-grunntilopphør`
-      })
-      hasErrors = hasErrors || _error
-
+      const nrArbeidsperioder = (
+        (perioder?.perioderAnsattMedForsikring?.length ?? 0) +
+        (perioder?.perioderSelvstendigMedForsikring?.length ?? 0) +
+        (perioder?.perioderAnsattUtenForsikring?.length ?? 0) +
+        (perioder?.perioderSelvstendigUtenForsikring?.length ?? 0)
+      )
+      if (nrArbeidsperioder > 0) {
+        _error = validateGrunnTilOpphor(v, t, {
+          grunntilopphor: (replySed as U002Sed)?.grunntilopphor,
+          namespace: `personmanager-${personID}-grunntilopphør`
+        })
+        hasErrors = hasErrors || _error
+      }
       _error = validateSisteansettelsesforhold(v, t, {
         sisteansettelsesforhold: (replySed as U002Sed)?.sisteAnsettelsesForhold,
         namespace: `personmanager-${personID}-sisteAnsettelsesForhold`

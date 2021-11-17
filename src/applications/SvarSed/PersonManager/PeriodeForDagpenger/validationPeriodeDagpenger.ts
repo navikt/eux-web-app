@@ -1,3 +1,4 @@
+import { validateAdresse } from 'applications/SvarSed/PersonManager/Adresser/validation'
 import { validatePeriode } from 'components/Forms/validation'
 import { PeriodeDagpenger } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -11,6 +12,7 @@ export interface ValidationPeriodeDagpengerProps {
   perioderDagpenger: Array<PeriodeDagpenger>,
   index?: number
   namespace: string
+  personName: string
 }
 
 export const validatePeriodeDagpenger = (
@@ -20,7 +22,8 @@ export const validatePeriodeDagpenger = (
     periodeDagpenger,
     perioderDagpenger,
     index,
-    namespace
+    namespace,
+    personName
   }: ValidationPeriodeDagpengerProps
 ): boolean => {
   let hasErrors: boolean = false
@@ -74,37 +77,12 @@ export const validatePeriodeDagpenger = (
       hasErrors = true
     }
 
-    if (_.isEmpty(periodeDagpenger?.institusjon.idmangler?.adresse?.land?.trim())) {
-      v[namespace + idx + '-institusjon-idmangler-adresse-land'] = {
-        feilmelding: t('validation:noAddressCountry'),
-        skjemaelementId: namespace + idx + '-institusjon-idmangler-adresse-land'
-      } as FeiloppsummeringFeil
-      hasErrors = true
-    }
-
-    if (_.isEmpty(periodeDagpenger?.institusjon.idmangler?.adresse?.gate?.trim())) {
-      v[namespace + idx + '-institusjon-idmangler-adresse-gate'] = {
-        feilmelding: t('validation:noAddressStreet'),
-        skjemaelementId: namespace + idx + '-institusjon-idmangler-adresse-gate'
-      } as FeiloppsummeringFeil
-      hasErrors = true
-    }
-
-    if (_.isEmpty(periodeDagpenger?.institusjon.idmangler?.adresse?.postnummer?.trim())) {
-      v[namespace + idx + '-institusjon-idmangler-adresse-postnummer'] = {
-        feilmelding: t('validation:noAddressPostnummer'),
-        skjemaelementId: namespace + idx + '-institusjon-idmangler-adresse-postnummer'
-      } as FeiloppsummeringFeil
-      hasErrors = true
-    }
-
-    if (_.isEmpty(periodeDagpenger?.institusjon.idmangler?.adresse?.by?.trim())) {
-      v[namespace + idx + '-institusjon-idmangler-adresse-by'] = {
-        feilmelding: t('validation:noAddressCity'),
-        skjemaelementId: namespace + idx + '-institusjon-idmangler-adresse-by'
-      } as FeiloppsummeringFeil
-      hasErrors = true
-    }
+    const _error: boolean = validateAdresse(v, t, {
+      adresse: periodeDagpenger?.institusjon.idmangler?.adresse,
+      namespace: namespace + idx + '-institusjon-idmangler-adresse',
+      personName: personName
+    })
+    hasErrors = hasErrors || _error
   }
 
   if (hasErrors) {
@@ -122,6 +100,7 @@ export const validatePeriodeDagpenger = (
 interface ValidatePerioderDagpengerProps {
   perioderDagpenger: Array<PeriodeDagpenger> | undefined
   namespace: string
+  personName: string
 }
 
 export const validatePerioderDagpenger = (
@@ -129,7 +108,8 @@ export const validatePerioderDagpenger = (
   t: TFunction,
   {
     perioderDagpenger,
-    namespace
+    namespace,
+    personName
   }: ValidatePerioderDagpengerProps
 ): boolean => {
   let hasErrors: boolean = false
@@ -138,7 +118,8 @@ export const validatePerioderDagpenger = (
       periodeDagpenger: periodeDagpenger,
       perioderDagpenger: perioderDagpenger,
       index,
-      namespace
+      namespace,
+      personName
     })
     hasErrors = hasErrors || _errors
   })

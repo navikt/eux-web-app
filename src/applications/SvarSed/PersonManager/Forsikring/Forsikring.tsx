@@ -304,7 +304,6 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
     }
     const valid: boolean = _performValidation({
       periode: _newPeriode as ForsikringPeriode,
-      perioder: newPeriodes,
       type: _newType,
       namespace: namespace,
       personName: personName
@@ -462,7 +461,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                   highContrast={highContrast}
                   identifikatorer={(_periode as PeriodeMedForsikring)?.arbeidsgiver?.identifikator}
                   onIdentifikatorerChanged={(newIdentifikatorer: Array<ArbeidsgiverIdentifikator>, whatChanged: string) => setIdentifikatorer(newIdentifikatorer, whatChanged, _type, _index)}
-                  namespace={namespace + idx + '-identifikator'}
+                  namespace={namespace + idx + '-arbeidsgiver-identifikator'}
                   validation={_v}
                   personName={personName}
                   resetValidation={(fullnamespace: string) => resetSubValidation(fullnamespace, _index)}

@@ -24,11 +24,11 @@ export interface ReplyPdu1 {
   perioderSelvstendigUtenForsikring?: Array<PeriodeUtenForsikring> // 2.2.2
   inntektAnsettelsesforhold: Array<SimpleInntekt>
   inntektSelvstendig: Array<SimpleInntekt>
-  grunntilopphor: GrunnTilOpphør// 3
+  grunntilopphor?: GrunnTilOpphør// 3
   // 4 ?
   // 5 ?
-  rettTilYtelse: RettTilYtelse // 6
+  rettTilYtelse?: RettTilYtelse // 6
   // 7 ?
-  ytterligereInfo: string
+  ytterligereInfo?: string
 
 }

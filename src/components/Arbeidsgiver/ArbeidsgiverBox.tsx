@@ -12,6 +12,7 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { Normaltekst, Undertekst, UndertekstBold } from 'nav-frontend-typografi'
 import {
+  AlignStartRow,
   Column,
   FlexCenterSpacedDiv,
   FlexDiv,
@@ -42,6 +43,12 @@ const ArbeidsgiverPanel = styled(HighContrastPanel)`
     background-color: light-gray;
   }
 `
+const AdresseDiv = styled.div`
+  .panel {
+    padding: 0px !important;
+  }
+`
+
 const EditIcon = styled(Edit)`
   cursor: pointer;
 `
@@ -202,7 +209,7 @@ const ArbeidsgiverBox = ({
               {_isEditing && editable === 'full'
                 ? (
                   <>
-                    <Row>
+                    <AlignStartRow>
                       <Column>
                         <Input
                           namespace={_namespace}
@@ -213,7 +220,7 @@ const ArbeidsgiverBox = ({
                           value={_arbeidsgiversNavn}
                         />
                       </Column>
-                    </Row>
+                    </AlignStartRow>
                     <IdentifikatorFC
                       highContrast={highContrast}
                       identifikatorer={_arbeidsgiversIdentifikator}
@@ -302,14 +309,14 @@ const ArbeidsgiverBox = ({
                         </Normaltekst>
                         )
                       : (
-                        <div>
+                        <AdresseDiv>
                           <Normaltekst>
                             {!_.isEmpty(_adresse) && (
                               <>{t('label:adresse')}: </>
                             )}
                           </Normaltekst>
-                          <AdresseBox adresse={_adresse} />
-                        </div>
+                          <AdresseBox border={false} adresse={_adresse} />
+                        </AdresseDiv>
                         )}
                 </div>
               </>

@@ -48,5 +48,5 @@ export const API_JOARK_ATTACHMENT_URL = '/api/vedlegg/dokument/%(journalpostId)s
 
 // OTHER
 export const PDU1_CREATE_URL = '/api/pdu1/create/%(fnr)s/%(fagsak)s'
-export const PDU1_COMPLETE_URL = '/api/pdu1/complete'
+export const PDU1_COMPLETE_URL = '/api/pdf/generate/json'
 export const PDU1_PREVIEW_URL = '/api/pdu1/preview'

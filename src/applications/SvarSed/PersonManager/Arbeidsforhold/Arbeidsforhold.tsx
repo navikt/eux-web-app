@@ -285,6 +285,21 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
       <VerticalSeparatorDiv size='0.5' />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
         <Column>
+          <Input
+            feil={_validationPeriodeMedForsikring[namespace + '-navn']?.feilmelding}
+            namespace={namespace}
+            id='navn'
+            key={'navn-' + _newNavn}
+            label={t('label:institusjonens-navn')}
+            onChanged={onArbeidsgiversNavnChanged}
+            value={_newNavn}
+          />
+        </Column>
+        <Column />
+      </AlignStartRow>
+      <VerticalSeparatorDiv />
+      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
+        <Column>
           <IdentifikatorFC
             highContrast={highContrast}
             identifikatorer={_newIdentifikatorer}
@@ -295,18 +310,6 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
             resetValidation={resetSubValidation}
           />
         </Column>
-        <Column>
-          <Input
-            feil={_validationPeriodeMedForsikring[namespace + '-navn']?.feilmelding}
-            namespace={namespace}
-            id='navn'
-            key={'navn-' + _newNavn}
-            label={t('label:navn')}
-            onChanged={onArbeidsgiversNavnChanged}
-            value={_newNavn}
-          />
-        </Column>
-        <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AdresseFC

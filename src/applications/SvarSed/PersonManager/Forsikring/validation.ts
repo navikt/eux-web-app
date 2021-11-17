@@ -15,7 +15,6 @@ import { validateInntektOgTimer } from './InntektOgTimer/validation'
 
 export interface ValidationForsikringPeriodeProps {
   periode: ForsikringPeriode
-  perioder: Array<ForsikringPeriode> |undefined
   type: string | undefined
   index?: number
   namespace: string
@@ -40,7 +39,6 @@ export const validateForsikringPeriode = (
   t: TFunction,
   {
     periode,
-    perioder,
     type,
     index,
     namespace,
@@ -64,23 +62,6 @@ export const validateForsikringPeriode = (
     personName
   })
   hasErrors = hasErrors || _error
-
-  if (!_.isEmpty(periode?.startdato)) {
-    let duplicate: boolean
-    if (_.isNil(index)) {
-      duplicate = _.find(perioder, p => p.startdato === periode.startdato && p.sluttdato === periode.sluttdato) !== undefined
-    } else {
-      const otherPerioder: Array<Periode> = _.filter(perioder, (p, i) => i !== index)
-      duplicate = _.find(otherPerioder, p => p.startdato === periode?.startdato && p.sluttdato === periode?.sluttdato) !== undefined
-    }
-    if (duplicate) {
-      v[namespace + idx + '-startdato'] = {
-        feilmelding: t('validation:duplicateStartdato'),
-        skjemaelementId: namespace + idx + '-startdato'
-      } as FeiloppsummeringFeil
-      hasErrors = true
-    }
-  }
 
   if (type === 'perioderAnnenForsikring') {
     if (_.isEmpty((periode as PeriodeAnnenForsikring)?.annenTypeForsikringsperiode?.trim())) {
