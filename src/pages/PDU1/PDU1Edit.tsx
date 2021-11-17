@@ -13,8 +13,8 @@ import TextArea from 'components/Forms/TextArea'
 import Modal from 'components/Modal/Modal'
 import { AlertstripeDiv, TextAreaDiv } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
+import { ReplyPdu1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
-import { ReplySed } from 'declarations/sed'
 import { LocalStorageEntry, Validation } from 'declarations/types'
 import FileFC from 'forhandsvisningsfil'
 import useGlobalValidation from 'hooks/useGlobalValidation'
@@ -46,7 +46,7 @@ export interface PDU1EditSelector {
   gettingPreviewPdu1: boolean
   highContrast: boolean
   previewPdu1: any,
-  replySed: ReplySed | null | undefined
+  replyPdu1: ReplyPdu1 | null | undefined
   savingPdu1: boolean
   completePdu1Response: any
   validation: Validation
@@ -64,7 +64,7 @@ const mapState = (state: State): any => ({
   completingPdu1: state.loading.completingPdu1,
   gettingPreviewPdu1: state.loading.gettingPreviewPdu1,
   previewPdu1: state.pdu1.previewPdu1,
-  replySed: state.pdu1.replySed,
+  replyPdu1: state.pdu1.replyPdu1,
   completePdu1Response: state.pdu1.completePdu1Response,
   highContrast: state.ui.highContrast,
   validation: state.validation.status,
@@ -83,13 +83,13 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
     completingPdu1,
     gettingPreviewPdu1,
     previewPdu1,
-    replySed,
+    replyPdu1,
     completePdu1Response,
     highContrast,
     validation,
     view
   }: PDU1EditSelector = useSelector<State, PDU1EditSelector>(mapState)
-  const currentEntry = useSelector<State, LocalStorageEntry<ReplySed> | undefined>(
+  const currentEntry = useSelector<State, LocalStorageEntry<ReplyPdu1> | undefined>(
     (state) => state.localStorage.pdu1.currentEntry)
   const namespace = 'pdu1editor'
 
@@ -98,14 +98,14 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
   const performValidation = useGlobalValidation<ValidationPDU1EditProps>(validatePDU1Edit)
 
   const completePdu1Clicked = (e: React.ChangeEvent<HTMLButtonElement>): void => {
-    if (replySed) {
-      const newReplySed: ReplySed = _.cloneDeep(replySed)
+    if (replyPdu1) {
+      const newReplyPdu1: ReplyPdu1 = _.cloneDeep(replyPdu1)
       const valid = performValidation({
-        replySed: newReplySed
+        replyPdu1: newReplyPdu1
       })
       dispatch(viewValidation())
       if (valid) {
-        dispatch(completePdu1(newReplySed))
+        dispatch(completePdu1(newReplyPdu1))
         dispatch(resetAllValidation())
         buttonLogger(e)
       }
@@ -116,8 +116,8 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
     if (_.isNil(currentEntry)) {
       setViewSavePdu1Modal(true)
     } else {
-      const newCurrentEntry: LocalStorageEntry<ReplySed> = _.cloneDeep(currentEntry)
-      newCurrentEntry.content = _.cloneDeep(replySed!)
+      const newCurrentEntry: LocalStorageEntry<ReplyPdu1> = _.cloneDeep(currentEntry)
+      newCurrentEntry.content = _.cloneDeep(replyPdu1!)
       dispatch(saveEntry('pdu1', storageKey, newCurrentEntry))
     }
   }
@@ -128,9 +128,9 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
   }
 
   const onPreviewPdu1Clicked = (e: React.ChangeEvent<HTMLButtonElement>) => {
-    if (replySed) {
-      const newReplySed = _.cloneDeep(replySed)
-      dispatch(getPreviewPdu1(newReplySed))
+    if (replyPdu1) {
+      const newReplyPdu1 = _.cloneDeep(replyPdu1)
+      dispatch(getPreviewPdu1(newReplyPdu1))
       buttonLogger(e)
     }
   }
@@ -188,7 +188,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
       <SavePDU1Modal
         open={viewSavePdu1Modal}
         highContrast={highContrast}
-        replySed={replySed!}
+        replyPdu1={replyPdu1!}
         storageKey={storageKey}
         onModalClose={() => setViewSavePdu1Modal(false)}
       />
@@ -204,7 +204,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
       </FlexCenterSpacedDiv>
       <VerticalSeparatorDiv size='2' />
       <PersonManager
-        replySed={replySed}
+        replySed={replyPdu1}
         setReplySed={setReplySed}
         updateReplySed={updateReplySed}
         viewValidation={view}
@@ -220,7 +220,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
               label={t('label:ytterligere-informasjon-til-sed')}
               onChanged={setComment}
               placeholder={t('el:placeholder-sed')}
-              value={replySed?.bruker?.ytterligereInfo}
+              value={replyPdu1?.bruker?.ytterligereInfo}
             />
           </TextAreaDiv>
         </Column>

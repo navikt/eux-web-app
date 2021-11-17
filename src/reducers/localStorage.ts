@@ -1,4 +1,5 @@
 import * as types from 'constants/actionTypes'
+import { ReplyPdu1 } from 'declarations/pd'
 import { ReplySed } from 'declarations/sed'
 import { LocalStorageEntry } from 'declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
@@ -16,8 +17,8 @@ export interface LocalStorageState {
     currentEntry: LocalStorageEntry<ReplySed> | undefined
   }
   pdu1: {
-    entries: Array<LocalStorageEntry<ReplySed>> | null | undefined
-    currentEntry: LocalStorageEntry<ReplySed> | undefined
+    entries: Array<LocalStorageEntry<ReplyPdu1>> | null | undefined
+    currentEntry: LocalStorageEntry<ReplyPdu1> | undefined
   }
 }
 
@@ -42,7 +43,7 @@ const localStorageReducer = (
     switch (action.type) {
       case types.LOCALSTORAGE_ENTRIES_LOAD: {
         const items: string | null = window.localStorage.getItem((action as ActionWithPayload).payload.key)
-        let entries: Array<LocalStorageEntry<ReplySed>> | null | undefined
+        let entries: Array<LocalStorageEntry<ReplySed | ReplyPdu1>> | null | undefined
         if (_.isString(items)) {
           entries = JSON.parse(items)
         } else {
@@ -58,8 +59,8 @@ const localStorageReducer = (
       }
 
       case types.LOCALSTORAGE_ENTRY_REMOVE: {
-        const newEntries = _.cloneDeep(state[namespace].entries)
-        const index: number = _.findIndex(state[namespace].entries, (entry) =>
+        const newEntries: Array<LocalStorageEntry<ReplySed | ReplyPdu1>> | null | undefined = _.cloneDeep(state[namespace].entries)
+        const index: number = _.findIndex(newEntries, (entry) =>
           entry.id === ((action as ActionWithPayload).payload).entry.id
         )
         if (index >= 0) {
@@ -91,8 +92,8 @@ const localStorageReducer = (
       }
 
       case types.LOCALSTORAGE_ENTRY_SAVE: {
-        let newEntries = _.cloneDeep(state[namespace].entries)
-        const newEntry: LocalStorageEntry<ReplySed> = (action as ActionWithPayload).payload.entry
+        let newEntries: Array<LocalStorageEntry<ReplySed | ReplyPdu1>> | null | undefined = _.cloneDeep(state[namespace].entries)
+        const newEntry: LocalStorageEntry<ReplySed | ReplyPdu1> = (action as ActionWithPayload).payload.entry
 
         if (_.isNil(newEntries)) {
           newEntries = []

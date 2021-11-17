@@ -9,6 +9,7 @@ import RemoveCircle from 'assets/icons/RemoveCircle'
 import classNames from 'classnames'
 import { WithErrorPanel } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
+import { ReplyPdu1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { Barn, F002Sed, FSed, PersonInfo, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -182,7 +183,7 @@ const MenuLabelText = styled(Normaltekst)`
 `
 
 export interface PersonManagerProps {
-  replySed: ReplySed | null | undefined
+  replySed: ReplySed | ReplyPdu1 | null | undefined
   viewValidation: boolean
   setReplySed: (replySed: ReplySed) => void
   updateReplySed: (needle: string, value: any) => void
@@ -193,7 +194,7 @@ export interface PersonManagerSelector extends PersonManagerFormSelector {
 }
 
 export interface PersonManagerFormProps {
-  replySed: ReplySed | null | undefined
+  replySed: ReplySed | ReplyPdu1 | null | undefined
   parentNamespace: string
   personID: string | undefined
   personName: string
@@ -208,9 +209,9 @@ export interface PersonManagerFormSelector {
 export interface PersonManagerOption extends Option {
   component: any
   type: string | Array<string>
-  normal: boolean
-  barn: boolean
-  family: boolean
+  person?: boolean
+  barn?: boolean
+  family?: boolean
   condition ?: () => void
 }
 
@@ -283,41 +284,28 @@ const PersonManager: React.FC<PersonManagerProps> = ({
   const menuRef = useRef(currentMenu + '|' + currentMenuOption)
 
   const options: Array<PersonManagerOption> = [
-    { label: t('el:option-personmanager-1'), value: 'personopplysninger', component: PersonOpplysninger, type: 'F', normal: true, barn: true, family: false },
-    { label: t('el:option-personmanager-2'), value: 'nasjonaliteter', component: Nasjonaliteter, type: 'F', normal: true, barn: true, family: false },
-    { label: t('el:option-personmanager-3'), value: 'adresser', component: Adresser, type: 'F', normal: true, barn: true, family: false },
-    { label: t('el:option-personmanager-4'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: 'F', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-5'), value: 'trygdeordninger', component: Trygdeordning, type: 'F', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-6'), value: 'familierelasjon', component: Familierelasjon, type: 'F', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-7'), value: 'personensstatus', component: PersonensStatus, type: 'F', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-8'), value: 'relasjon', component: Relasjon, type: 'F', normal: false, barn: true, family: false },
-    { label: t('el:option-personmanager-9'), value: 'grunnlagforbosetting', component: GrunnlagForBosetting, type: 'F', normal: false, barn: true, family: false },
-    {
-      label: t('el:option-personmanager-10'),
-      value: 'beløpnavnogvaluta',
-      component: BeløpNavnOgValuta,
-      type: 'F',
-      normal: false,
-      barn: true,
-      family: false,
-      condition: () => {
-        console.log((replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 ?? false)
-        return (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 ?? false
-      }
-    },
-    { label: t('el:option-personmanager-11'), value: 'familieytelser', component: BeløpNavnOgValuta, type: 'F', normal: false, barn: false, family: true },
-    { label: t('el:option-personmanager-12'), value: 'personopplysninger', component: PersonOpplysninger, type: 'U', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-13'), value: 'referanseperiode', component: Referanseperiode, type: 'U', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-14'), value: 'arbeidsforhold/arbeidsgivere', component: Arbeidsforhold, type: 'U002', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-15'), value: 'inntekt', component: InntektForm, type: 'U004', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-16'), value: 'retttilytelser', component: RettTilYtelser, type: 'U017', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-17'), value: 'forsikring', component: Forsikring, type: ['U002', 'U017'], normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-18'), value: 'sisteansettelsesforhold', component: SisteAnsettelsesForhold, type: ['U002', 'U017'], normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-19'), value: 'grunntilopphør', component: GrunnTilOpphør, type: ['U002', 'U017'], normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-20'), value: 'periodefordagpenger', component: PeriodeForDagpenger, type: ['U002', 'U017'], normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-12'), value: 'personopplysninger', component: PersonOpplysninger, type: 'H', normal: true, barn: false, family: false },
-    { label: t('el:option-personmanager-3'), value: 'adresser', component: Adresser, type: 'H', normal: true, barn: true, family: false },
-    { label: t('el:option-personmanager-21'), value: 'svarpåforespørsel', component: SvarPåForespørsel, type: 'H', normal: true, barn: true, family: false }
+    { label: t('el:option-personmanager-1'), value: 'personopplysninger', component: PersonOpplysninger, type: ['F', 'PD'], person: true, barn: true },
+    { label: t('el:option-personmanager-2'), value: 'nasjonaliteter', component: Nasjonaliteter, type: 'F', person: true, barn: true },
+    { label: t('el:option-personmanager-3'), value: 'adresser', component: Adresser, type: ['F', 'H'], person: true, barn: true },
+    { label: t('el:option-personmanager-4'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: 'F', person: true },
+    { label: t('el:option-personmanager-5'), value: 'trygdeordninger', component: Trygdeordning, type: 'F', person: true },
+    { label: t('el:option-personmanager-6'), value: 'familierelasjon', component: Familierelasjon, type: 'F', person: true },
+    { label: t('el:option-personmanager-7'), value: 'personensstatus', component: PersonensStatus, type: 'F', person: true },
+    { label: t('el:option-personmanager-8'), value: 'relasjon', component: Relasjon, type: 'F', barn: true },
+    { label: t('el:option-personmanager-9'), value: 'grunnlagforbosetting', component: GrunnlagForBosetting, type: 'F', barn: true },
+    { label: t('el:option-personmanager-10'), value: 'beløpnavnogvaluta', component: BeløpNavnOgValuta, type: 'F', barn: true, condition: () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 ?? false },
+    { label: t('el:option-personmanager-11'), value: 'familieytelser', component: BeløpNavnOgValuta, type: 'F', family: true },
+    { label: t('el:option-personmanager-12'), value: 'personopplysninger', component: PersonOpplysninger, type: 'U', person: true },
+    { label: t('el:option-personmanager-13'), value: 'referanseperiode', component: Referanseperiode, type: 'U', person: true },
+    { label: t('el:option-personmanager-14'), value: 'arbeidsforhold/arbeidsgivere', component: Arbeidsforhold, type: 'U002', person: true },
+    { label: t('el:option-personmanager-15'), value: 'inntekt', component: InntektForm, type: 'U004', person: true },
+    { label: t('el:option-personmanager-16'), value: 'retttilytelser', component: RettTilYtelser, type: 'U017', person: true },
+    { label: t('el:option-personmanager-17'), value: 'forsikring', component: Forsikring, type: ['U002', 'U017'], person: true },
+    { label: t('el:option-personmanager-18'), value: 'sisteansettelsesforhold', component: SisteAnsettelsesForhold, type: ['U002', 'U017'], person: true },
+    { label: t('el:option-personmanager-19'), value: 'grunntilopphør', component: GrunnTilOpphør, type: ['U002', 'U017'], person: true },
+    { label: t('el:option-personmanager-20'), value: 'periodefordagpenger', component: PeriodeForDagpenger, type: ['U002', 'U017'], person: true },
+    { label: t('el:option-personmanager-12'), value: 'personopplysninger', component: PersonOpplysninger, type: 'H', person: true },
+    { label: t('el:option-personmanager-21'), value: 'svarpåforespørsel', component: SvarPåForespørsel, type: 'H', person: true, barn: true }
   ]
 
   const getForm = (value: string): JSX.Element | null => {
@@ -403,7 +391,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
     setSeeNewPersonModal(true)
   }
 
-  const renderMenu = (replySed: ReplySed, personId: string, totalIndex: number) => {
+  const renderMenu = (replySed: ReplySed | ReplyPdu1, personId: string, totalIndex: number) => {
     const personInfo: PersonInfo | undefined = _.get(replySed, `${personId}.personInfo`) // undefined for family
     const open: boolean = _.find(openMenus, _id => _id === personId) !== undefined
     const selected: boolean = _.find(selectedMenus, _id => _id === personId) !== undefined
@@ -475,15 +463,16 @@ const PersonManager: React.FC<PersonManagerProps> = ({
         </MenuDiv>
         {open && options
           .filter(o => {
+            const _type = (replySed as ReplySed).sedType ?? (replySed as ReplyPdu1).type
             return _.isString(o.type)
-              ? replySed.sedType.startsWith(o.type)
-              : o.type.indexOf(replySed.sedType) >= 0
+              ? _type.startsWith(o.type)
+              : _.find(o.type, (t: string) => _type.startsWith(t)) !== undefined
           })
           .filter(o => personId.startsWith('barn')
-            ? o.barn
+            ? !!o.barn
             : personId === 'familie'
-              ? o.family
-              : o.normal
+              ? !!o.family
+              : !!o.person
           )
           .filter(o => _.isFunction(o.condition) ? o.condition() : true)
           .map((o, i) => {
@@ -551,10 +540,10 @@ const PersonManager: React.FC<PersonManagerProps> = ({
   }, [])
 
   return (
-    <PileDiv key={replySed?.sedType + '-' + ((replySed as FSed)?.formaal?.join(',') ?? '')}>
+    <PileDiv key={(replySed as ReplySed)?.sedType + '-' + ((replySed as FSed)?.formaal?.join(',') ?? '')}>
       {_seeNewPersonModal && (
         <AddPersonModal
-          replySed={replySed}
+          replySed={replySed as ReplySed}
           setReplySed={setReplySed}
           parentNamespace={namespace}
           onModalClose={() => setSeeNewPersonModal(false)}

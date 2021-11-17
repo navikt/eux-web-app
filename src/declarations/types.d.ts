@@ -213,6 +213,11 @@ export interface UpdateReplySedPayload {
   value: any
 }
 
+export interface UpdateReplyPdu1Payload {
+  needle: string
+  value: any
+}
+
 export interface CreateSedResponse {
  sedId: string
 }

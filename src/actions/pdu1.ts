@@ -1,10 +1,10 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { ReplySed } from 'declarations/sed'
-import { FagSaker, UpdateReplySedPayload } from 'declarations/types'
+import { ReplyPdu1 } from 'declarations/pd'
+import { FagSaker, UpdateReplyPdu1Payload } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockFagsakerList from 'mocks/fagsakerList'
-import mockCreatePdu1 from 'mocks/pdu1/replySed'
+import mockCreatePdu1 from 'mocks/pdu1/replyPdu1'
 import mockCompletePdu1 from 'mocks/pdu1/complete'
 import mockPreviewPdu1 from 'mocks/pdu1/preview'
 import { ActionCreator } from 'redux'
@@ -57,12 +57,12 @@ export const createPdu1: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>>
 }
 
 export const completePdu1: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>> = (
-  replySed: ReplySed
+  replyPdu1: ReplyPdu1
 ): ThunkResult<ActionWithPayload<FagSaker>> => {
   return call({
     method: 'POST',
     url: sprintf(urls.PDU1_COMPLETE_URL, {}),
-    body: replySed,
+    body: replyPdu1,
     expectedPayload: mockCompletePdu1,
     type: {
       request: types.PDU1_COMPLETE_REQUEST,
@@ -72,16 +72,16 @@ export const completePdu1: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>
   })
 }
 
-export const setReplySed: ActionCreator<ActionWithPayload<ReplySed>> = (
-  replySed: ReplySed
-): ActionWithPayload<ReplySed> => ({
+export const setReplySed: ActionCreator<ActionWithPayload<ReplyPdu1>> = (
+  replyPdu1: ReplyPdu1
+): ActionWithPayload<ReplyPdu1> => ({
   type: types.PDU1_REPLYSED_SET,
-  payload: replySed
+  payload: replyPdu1
 })
 
-export const updateReplySed: ActionCreator<ActionWithPayload<UpdateReplySedPayload>> = (
+export const updateReplySed: ActionCreator<ActionWithPayload<UpdateReplyPdu1Payload>> = (
   needle: string, value: any
-): ActionWithPayload<UpdateReplySedPayload> => ({
+): ActionWithPayload<UpdateReplyPdu1Payload> => ({
   type: types.PDU1_REPLYSED_UPDATE,
   payload: {
     needle,

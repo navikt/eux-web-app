@@ -1,5 +1,5 @@
 import * as types from 'constants/actionTypes'
-import { ReplySed } from 'declarations/sed'
+import { ReplyPdu1 } from 'declarations/pd'
 import { FagSaker } from 'declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
 import _ from 'lodash'
@@ -7,15 +7,14 @@ import { Action } from 'redux'
 
 export interface Pdu1State {
   fagsaker: FagSaker | null | undefined
-  replySed: ReplySed | null | undefined
-
+  replyPdu1: ReplyPdu1 | null | undefined
   previewPdu1: any
   completePdu1Response: any
 }
 
 export const initialPdu1State: Pdu1State = {
   fagsaker: undefined,
-  replySed: undefined,
+  replyPdu1: undefined,
   previewPdu1: undefined,
   completePdu1Response: undefined
 }
@@ -43,40 +42,40 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: Action | Actio
     case types.PDU1_CREATE_REQUEST:
       return {
         ...state,
-        replySed: undefined
+        replyPdu1: undefined
       }
 
     case types.PDU1_CREATE_SUCCESS:
       return {
         ...state,
-        replySed: (action as ActionWithPayload).payload
+        replyPdu1: (action as ActionWithPayload).payload
       }
 
     case types.PDU1_CREATE_FAILURE:
       return {
         ...state,
-        replySed: null
+        replyPdu1: null
       }
 
     case types.PDU1_REPLYSED_SET:
       return {
         ...state,
-        replySed: (action as ActionWithPayload).payload
+        replyPdu1: (action as ActionWithPayload).payload
       }
 
     case types.PDU1_REPLYSED_UPDATE: {
-      let newReplySed: ReplySed | null | undefined = _.cloneDeep(state.replySed)
-      if (!newReplySed) {
-        newReplySed = {} as ReplySed
+      let newReplyPdu1: ReplyPdu1 | null | undefined = _.cloneDeep(state.replyPdu1)
+      if (!newReplyPdu1) {
+        newReplyPdu1 = {} as ReplyPdu1
       }
-      _.set(newReplySed,
+      _.set(newReplyPdu1,
         (action as ActionWithPayload).payload.needle,
         (action as ActionWithPayload).payload.value
       )
 
       return {
         ...state,
-        replySed: newReplySed
+        replyPdu1: newReplyPdu1
       }
     }
 

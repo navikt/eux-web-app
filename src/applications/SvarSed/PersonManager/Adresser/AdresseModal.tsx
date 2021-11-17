@@ -44,10 +44,8 @@ const AdresseModal: React.FC<AdresseModalProps> = ({
     })
   }
 
-  const hasAddress = (adresser: Array<IAdresse> | undefined, a: IAdresse) : boolean => {
-    console.log(adresser, a, _.find(adresser, _a => _a.type === a.type && _a.gate === a.gate))
-    return _.find(adresser, _a => _a.type === a.type && _a.gate === a.gate) !== undefined
-  }
+  const hasAddress = (adresser: Array<IAdresse> | undefined, a: IAdresse) : boolean =>
+    _.find(adresser, _a => _a.type === a.type && _a.gate === a.gate) !== undefined
 
   const onRadioSelected = (key: string, a: IAdresse) => {
     setSelectedAdresser({

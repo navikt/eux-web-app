@@ -139,7 +139,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
   const onPeriodeMedForsikringEdit = (newPeriodeMedForsikring: PeriodeMedForsikring, oldPeriodeMedForsikring: PeriodeMedForsikring, selected: boolean) => {
     const newPerioderMedForsikring: Array<PeriodeMedForsikring> = _.cloneDeep(perioder) as Array<PeriodeMedForsikring>
     const newArbeidsgivere: Array<Arbeidsgiver> = _.cloneDeep(arbeidsperioder?.arbeidsperioder) as Array<Arbeidsgiver>
-    const needleId: string | undefined = getOrgnr(newPeriodeMedForsikring, 'registrering')
+    const needleId: string | undefined = getOrgnr(newPeriodeMedForsikring, 'organisasjonsnummer')
     if (needleId) {
       const indexArbeidsgiver = _.findIndex(newArbeidsgivere, (p: Arbeidsgiver) => p.arbeidsgiversOrgnr === needleId)
       if (indexArbeidsgiver >= 0) {
@@ -149,7 +149,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
       }
       if (selected) {
         const indexPerioder = _.findIndex(newPerioderMedForsikring, (p: PeriodeMedForsikring) =>
-          _.find(p.arbeidsgiver.identifikator, id => id.type === 'registrering' && id.id === needleId) !== undefined
+          _.find(p.arbeidsgiver.identifikator, id => id.type === 'organisasjonsnummer' && id.id === needleId) !== undefined
         )
         if (indexPerioder >= 0) {
           newPerioderMedForsikring[indexPerioder] = newPeriodeMedForsikring
@@ -360,7 +360,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
                 editable='no'
                 includeAddress={includeAddress}
                 orphanArbeidsgiver
-                key={getOrgnr(item.item, 'registrering')}
+                key={getOrgnr(item.item, 'organisasjonsnummer')}
                 namespace={namespace}
                 selectable={false}
               />
@@ -389,7 +389,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
                 includeAddress={includeAddress}
                 newArbeidsgiver={false}
                 selected={!_.isNil(item.index) && item.index >= 0}
-                key={getOrgnr(item.item, 'registrering')}
+                key={getOrgnr(item.item, 'organisasjonsnummer')}
                 onArbeidsgiverSelect={onPeriodeMedForsikringSelect}
                 onArbeidsgiverEdit={onPeriodeMedForsikringEdit}
                 namespace={namespace}
@@ -410,7 +410,7 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
                 error={item.duplicate}
                 newArbeidsgiver
                 selected={!_.isNil(item.index) && item.index >= 0}
-                key={getOrgnr(item.item, 'registrering')}
+                key={getOrgnr(item.item, 'organisasjonsnummer')}
                 onArbeidsgiverSelect={onPeriodeMedForsikringSelect}
                 onArbeidsgiverDelete={onPeriodeMedForsikringDelete}
                 onArbeidsgiverEdit={onAddedPeriodeMedForsikringEdit}

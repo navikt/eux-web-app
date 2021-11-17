@@ -1,10 +1,9 @@
 export default {
-  sedVersjon: '4.2',
-  sedType: 'U017',
+  type: 'PDU1',
   bruker: {
     personInfo: {
-      fornavn: 'æøå',
-      etternavn: 'æøå',
+      fornavn: 'Homer',
+      etternavn: 'Simpson',
       kjoenn: 'M',
       foedselsdato: '2001-01-01',
       statsborgerskap: [
@@ -16,42 +15,31 @@ export default {
         {
           land: 'NO',
           sektor: 'yrkesskade_og_yrkessykdom',
-          identifikator: 'æøå',
+          identifikator: '1000000000001',
           institusjonsid: 'ES:3100',
           institusjonsnavn: 'æøå'
         }
       ],
       pinmangler: {
         foedested: {
-          by: 'æøå',
-          region: 'æøå',
-          land: 'NO'
+          by: 'Springfield',
+          region: 'Springfield',
+          land: 'USA'
         },
         far: {
-          fornavn: 'æøå',
-          etternavnvedfoedsel: 'æøå'
+          fornavn: 'Grandpa Simpson',
+          etternavnvedfoedsel: 'Simpson'
         },
         mor: {
-          fornavn: 'æøå',
-          etternavnvedfoedsel: 'æøå'
+          fornavn: 'Grandma Simpson',
+          etternavnvedfoedsel: 'Simpson'
         },
-        etternavnvedfoedsel: 'æøå',
-        fornavnvedfoedsel: 'æøå'
+        etternavnvedfoedsel: 'Simpson',
+        fornavnvedfoedsel: 'Homer'
       }
     }
   },
-  anmodningsperiode: {
-    startdato: '2001-01-01',
-    aapenPeriodeType: 'åpen_sluttdato'
-  },
-  lokaleSakIder: [
-    {
-      saksnummer: 'æøå',
-      institusjonsnavn: 'æøå',
-      institusjonsid: 'ES:3100',
-      land: 'NO'
-    }
-  ],
+
   perioderAnsattMedForsikring: [
     {
       arbeidsgiver: {
@@ -66,7 +54,7 @@ export default {
         },
         identifikator: [
           {
-            type: 'registrering',
+            type: 'organisasjonsnummer',
             id: 'ES:3100'
           }
         ]
@@ -91,7 +79,7 @@ export default {
         },
         identifikator: [
           {
-            type: 'registrering',
+            type: 'organisasjonsnummer',
             id: 'ES:3100'
           }
         ]

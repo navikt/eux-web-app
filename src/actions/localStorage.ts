@@ -1,4 +1,5 @@
 import * as types from 'constants/actionTypes'
+import { ReplyPdu1 } from 'declarations/pd'
 import { ReplySed } from 'declarations/sed'
 import { LocalStorageEntry } from 'declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
@@ -18,7 +19,7 @@ export const resetCurrentEntry = (namespace: string): ActionWithPayload => ({
   }
 })
 
-export const setCurrentEntry = (namespace: string, entry: LocalStorageEntry<ReplySed>) : ActionWithPayload<{namespace: string, entry: LocalStorageEntry<ReplySed>}> => ({
+export const setCurrentEntry = (namespace: string, entry: LocalStorageEntry<ReplySed | ReplyPdu1>) : ActionWithPayload<{namespace: string, entry: LocalStorageEntry<ReplySed | ReplyPdu1>}> => ({
   type: types.LOCALSTORAGE_CURRENTENTRY_SET,
   payload: {
     namespace: namespace,
@@ -26,7 +27,7 @@ export const setCurrentEntry = (namespace: string, entry: LocalStorageEntry<Repl
   }
 })
 
-export const removeEntry = (namespace: string, key: string, entry: LocalStorageEntry<ReplySed>) => ({
+export const removeEntry = (namespace: string, key: string, entry: LocalStorageEntry<ReplySed | ReplyPdu1>) => ({
   type: types.LOCALSTORAGE_ENTRY_REMOVE,
   payload: {
     namespace: namespace,
@@ -35,7 +36,7 @@ export const removeEntry = (namespace: string, key: string, entry: LocalStorageE
   }
 })
 
-export const saveEntry = (namespace: string, key: string, entry: LocalStorageEntry<ReplySed>): ActionWithPayload<any> => ({
+export const saveEntry = (namespace: string, key: string, entry: LocalStorageEntry<ReplySed | ReplyPdu1>): ActionWithPayload<any> => ({
   type: types.LOCALSTORAGE_ENTRY_SAVE,
   payload: {
     namespace: namespace,

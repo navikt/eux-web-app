@@ -16,7 +16,7 @@ export const arbeidsgiverToPeriodeMedForsikring = (a: Arbeidsgiver): PeriodeMedF
     ...newPeriode,
     arbeidsgiver: {
       identifikator: [{
-        type: 'registrering',
+        type: 'organisasjonsnummer',
         id: a.arbeidsgiversOrgnr
       }],
       navn: a.arbeidsgiversNavn ?? ''
@@ -38,7 +38,7 @@ export const periodeMedForsikringToArbeidsgiver = (a: PeriodeMedForsikring): Arb
   return {
     fraInntektsregisteret: a.extra?.fraInntektsregisteret ?? '',
     fraArbeidsgiverregisteret: a.extra?.fraArbeidsgiverregisteret ?? '',
-    arbeidsgiversOrgnr: getOrgnr(a, 'registrering') ?? '',
+    arbeidsgiversOrgnr: getOrgnr(a, 'organisasjonsnummer') ?? '',
     fraDato: a.startdato,
     tilDato: a.sluttdato,
     arbeidsgiversNavn: a.arbeidsgiver.navn

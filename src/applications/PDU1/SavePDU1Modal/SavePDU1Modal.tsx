@@ -1,7 +1,7 @@
 import { saveEntry } from 'actions/localStorage'
 import Modal from 'components/Modal/Modal'
 import { AlertstripeDiv } from 'components/StyledComponents'
-import { ReplySed } from 'declarations/sed'
+import { ReplyPdu1 } from 'declarations/pd'
 import { LocalStorageEntry, Validation } from 'declarations/types'
 import _ from 'lodash'
 import AlertStripe from 'nav-frontend-alertstriper'
@@ -47,7 +47,7 @@ const SectionDiv = styled.div`
 interface SavePDU1ModalProps {
   highContrast: boolean
   onModalClose: () => void
-  replySed: ReplySed
+  replyPdu1: ReplyPdu1
   storageKey: string
   open: boolean
 }
@@ -56,11 +56,11 @@ const SendPDU1Modal = ({
   open,
   highContrast,
   onModalClose,
-  replySed,
+  replyPdu1,
   storageKey
 }: SavePDU1ModalProps): JSX.Element => {
   const { t } = useTranslation()
-  const [_name, setName] = useState<string>(replySed.saksnummer + '-' + replySed.sedType)
+  const [_name, setName] = useState<string>(replyPdu1.type + '-' + new Date().getTime())
   const [_message, setMessage] = useState<string>('')
   const [_validation, setValidation] = useState<Validation>({})
   const [_saved, setSaved] = useState<boolean>(false)
@@ -82,12 +82,13 @@ const SendPDU1Modal = ({
 
   const onSave = async () => {
     if (performValidation()) {
-      const dateString = new Date().toDateString()
-      const newItem: LocalStorageEntry<ReplySed> = {
-        id: replySed.sedId,
+      const now = new Date()
+      const dateString = now.toDateString()
+      const newItem: LocalStorageEntry<ReplyPdu1> = {
+        id: '' + now.getTime(),
         name: _name,
         date: dateString,
-        content: replySed
+        content: replyPdu1
       } as LocalStorageEntry
       dispatch(saveEntry('svarsed', storageKey, newItem))
       setSaved(true)

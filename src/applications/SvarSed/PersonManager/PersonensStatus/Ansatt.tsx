@@ -141,7 +141,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
       newPerioder = []
     }
     const newArbeidsgivere: Array<Arbeidsgiver> | undefined = _.cloneDeep(arbeidsperioder?.arbeidsperioder) as Array<Arbeidsgiver>
-    const needleId: string | undefined = getOrgnr(newArbeidsgiver, 'registrering')
+    const needleId: string | undefined = getOrgnr(newArbeidsgiver, 'organisasjonsnummer')
 
     if (needleId) {
       const indexArbeidsgiver = _.findIndex(newArbeidsgivere, (p: Arbeidsgiver) => p.arbeidsgiversOrgnr === needleId)
@@ -228,7 +228,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
       arbeidsgiver: {
         navn: _newArbeidsgiversNavn,
         identifikator: [{
-          type: 'registrering',
+          type: 'organisasjonsnummer',
           id: _newArbeidsgiversOrgnr
         }]
       }
@@ -471,7 +471,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
                 newArbeidsgiver={false}
                 includeAddress={includeAddress}
                 selected={!_.isNil(item.index) && item.index >= 0}
-                key={getOrgnr(item.item as unknown as PeriodeMedForsikring, 'registrering')}
+                key={getOrgnr(item.item as unknown as PeriodeMedForsikring, 'organisasjonsnummer')}
                 onArbeidsgiverSelect={onArbeidsgiverSelect}
                 onArbeidsgiverEdit={onRegisteredArbeidsgiverEdit}
                 namespace={namespace}
@@ -493,7 +493,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
                 newArbeidsgiver
                 includeAddress={includeAddress}
                 selected={!_.isNil(item.index) && item.index >= 0}
-                key={getOrgnr(item.item as unknown as PeriodeMedForsikring, 'registrering')}
+                key={getOrgnr(item.item as unknown as PeriodeMedForsikring, 'organisasjonsnummer')}
                 onArbeidsgiverSelect={onArbeidsgiverSelect}
                 onArbeidsgiverDelete={onArbeidsgiverDelete}
                 onArbeidsgiverEdit={onArbeidsgiverEdit}

@@ -9,8 +9,8 @@ import Select from 'components/Forms/Select'
 import { ChangeModeFunction } from 'components/SlidePage/SlidePage'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { Option, Options } from 'declarations/app'
+import { ReplyPdu1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
-import { ReplySed } from 'declarations/sed'
 import { FagSak, FagSaker } from 'declarations/types'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -28,7 +28,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { validatePdu1Search } from './validation'
+import { validatePdu1Search, ValidationPdu1SearchProps } from './mainValidation'
 
 const ContainerDiv = styled(PileCenterDiv)`
   width: 780px;
@@ -41,7 +41,7 @@ export interface PDU1SearchSelector {
   fagsaker: FagSaker | null | undefined
   gettingFagsaker: boolean
   creatingPdu1: boolean
-  replySed: ReplySed | null | undefined
+  replyPdu1: ReplyPdu1 | null | undefined
 }
 
 const mapState = (state: State): PDU1SearchSelector => ({
@@ -50,7 +50,7 @@ const mapState = (state: State): PDU1SearchSelector => ({
   fagsaker: state.pdu1.fagsaker,
   gettingFagsaker: state.loading.gettingFagsaker,
   creatingPdu1: state.loading.creatingPdu1,
-  replySed: state.pdu1.replySed
+  replyPdu1: state.pdu1.replyPdu1
 })
 
 export interface PDU1Props {
@@ -68,7 +68,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
     fagsaker,
     gettingFagsaker,
     creatingPdu1,
-    replySed
+    replyPdu1
   }: PDU1SearchSelector = useSelector<State, PDU1SearchSelector>(mapState)
   const [fnrOrDnr, setFnrOrDnr] = useState<string>(fnrParam ?? '')
   const [fagsak, setFagsak] = useState<string | undefined>(undefined)
@@ -76,7 +76,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
   const [pdu1Request, setPdu1Request] = useState<boolean>(false)
   const [validFnr, setValidFnr] = useState<boolean>(false)
   const [validMessage, setValidMessage] = useState<string>('')
-  const [validation, resetValidation, performValidation] = useValidation({}, validatePdu1Search)
+  const [validation, resetValidation, performValidation] = useValidation<ValidationPdu1SearchProps>({}, validatePdu1Search)
   const namespace = 'pdu1search'
 
   const temaOptions: Options = [
@@ -149,12 +149,12 @@ const PDU1Search: React.FC<PDU1Props> = ({
   }
 
   useEffect(() => {
-    if (replySed && pdu1Request) {
+    if (replyPdu1 && pdu1Request) {
       setPdu1Request(false)
       dispatch(resetAllValidation())
       changeMode('B', 'forward')
     }
-  }, [replySed])
+  }, [replyPdu1])
 
   useEffect(() => {
     dispatch(startPageStatistic('pdu1-search'))

@@ -33,7 +33,7 @@ export type AnmodningSvarType = 'anmodning_om_motregning_per_barn' | 'svar_om_an
 
 export type GrunnUenighet = 'bosted' | 'medlemsperiode' | 'personligSituasjon'| 'pensjon' | 'oppholdetsVarighet' | 'ansettelse'
 
-export type ArbeidsgiverIdentifikatorType = 'registrering' | 'trygd' | 'skatt' | 'ukjent'
+export type ArbeidsgiverIdentifikatorType = 'organisasjonsnummer' | 'trygd' | 'skattemessig' | 'ukjent'
 
 export type PeriodeInputType = 'simple' | 'withcheckbox'
 

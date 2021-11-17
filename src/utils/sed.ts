@@ -1,17 +1,18 @@
+import { ReplyPdu1 } from 'declarations/pd'
 import { ReplySed } from 'declarations/sed'
 
-export const isSed = (replySed: ReplySed | null | undefined): boolean => !!replySed?.sedType
+export const isSed = (replySed: ReplySed | ReplyPdu1 | null | undefined): boolean => !!(replySed as ReplySed)?.sedType
 
-export const isFSed = (replySed: ReplySed | null | undefined): boolean => replySed?.sedType.startsWith('F') ?? false
+export const isFSed = (replySed: ReplySed | ReplyPdu1 | null | undefined): boolean => (replySed as ReplySed)?.sedType?.startsWith('F') ?? false
 
-export const isUSed = (replySed: ReplySed | null | undefined): boolean => replySed?.sedType.startsWith('U') ?? false
+export const isUSed = (replySed: ReplySed | ReplyPdu1 | null | undefined): boolean => (replySed as ReplySed)?.sedType?.startsWith('U') ?? false
 
-export const isHSed = (replySed: ReplySed | null | undefined): boolean => replySed?.sedType.startsWith('H') ?? false
+export const isHSed = (replySed: ReplySed | ReplyPdu1 | null | undefined): boolean => (replySed as ReplySed)?.sedType?.startsWith('H') ?? false
 
-export const isF002Sed = (replySed: ReplySed | null | undefined): boolean => replySed?.sedType === 'F002'
+export const isF002Sed = (replySed: ReplySed | ReplyPdu1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'F002'
 
-export const isU002Sed = (replySed: ReplySed | null | undefined): boolean => replySed?.sedType === 'U002'
+export const isU002Sed = (replySed: ReplySed | ReplyPdu1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'U002'
 
-export const isU004Sed = (replySed: ReplySed | null | undefined): boolean => replySed?.sedType === 'U004'
+export const isU004Sed = (replySed: ReplySed | ReplyPdu1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'U004'
 
-export const isU017Sed = (replySed: ReplySed | null | undefined): boolean => replySed?.sedType === 'U017'
+export const isU017Sed = (replySed: ReplySed | ReplyPdu1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'U017'

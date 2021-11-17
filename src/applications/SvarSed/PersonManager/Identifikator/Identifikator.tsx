@@ -65,9 +65,9 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
   const [_validation, _resetValidation, _performValidation] = useValidation<ValidationIdentifikatorProps>({}, validateIdentifikator)
 
   const allTypeOptions: Array<Option> = [
-    { label: t('el:option-identifikator-registrering'), value: 'registrering' },
+    { label: t('el:option-identifikator-organisasjonsnummer'), value: 'organisasjonsnummer' },
     { label: t('el:option-identifikator-trygd'), value: 'trygd' },
-    { label: t('el:option-identifikator-skatt'), value: 'skatt' },
+    { label: t('el:option-identifikator-skattemessig'), value: 'skattemessig' },
     { label: t('el:option-identifikator-ukjent'), value: 'ukjent' }
   ]
 

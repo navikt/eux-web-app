@@ -68,9 +68,9 @@
   "option-inntektsfilter-KONTANTSTOETTE": "Kontantstøtte",
   "option-inntektsfilter-DAGPENGER": "Dagpenger",
 
-  "option-identifikator-registrering" : "Registrering",
+  "option-identifikator-organisasjonsnummer" : "Organisasjonsnummer",
   "option-identifikator-trygd" : "Trygd",
-  "option-identifikator-skatt" : "Skatt",
+  "option-identifikator-skattemessig" : "Skattemessig",
   "option-identifikator-ukjent" : "Ukjent",
 
   "option-inntekttype-nettoinntekt" : "Nettoinntekt, under ansettelsesforhold eller selvstendig næringsvirksomhet",
