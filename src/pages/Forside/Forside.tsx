@@ -42,20 +42,18 @@ const Forside: React.FC = (): JSX.Element => {
           >
             {t('app:page-title-vedlegg')}
           </Lenkepanel>
-          {featureToggles?.featureSvarsed && (
-            <>
-              <VerticalSeparatorDiv />
-              <Lenkepanel
-                className='slideInFromLeft'
-                href='#'
-                linkCreator={(props: any) => (<Link to='/svarsed' {...props} />)}
-                style={{ animationDelay: '0.2s' }}
-                tittelProps='undertittel'
-              >
-                {t('app:page-title-svarsed')}
-              </Lenkepanel>
-            </>
-          )}
+          <>
+            <VerticalSeparatorDiv />
+            <Lenkepanel
+              className='slideInFromLeft'
+              href='#'
+              linkCreator={(props: any) => (<Link to='/svarsed' {...props} />)}
+              style={{ animationDelay: '0.2s' }}
+              tittelProps='undertittel'
+            >
+              {t('app:page-title-svarsed')}
+            </Lenkepanel>
+          </>
           {featureToggles?.featurePdu1 && (
             <>
               <VerticalSeparatorDiv />
