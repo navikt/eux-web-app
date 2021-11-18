@@ -109,6 +109,7 @@ const PeriodeInput = <T extends Periode>({
       <Column>
         <Input
           ariaLabel={label?.startdato ?? t('label:startdato')}
+          bredde='S'
           feil={error.startdato}
           id='startdato'
           key={namespace + '-startdato-' + _periode?.startdato}
@@ -123,6 +124,7 @@ const PeriodeInput = <T extends Periode>({
       <Column>
         <Input
           ariaLabel={label?.sluttdato || t('label:sluttdato')}
+          bredde='S'
           feil={error.sluttdato}
           id='sluttdato'
           key={namespace + '-sluttdato-' + _periode?.sluttdato}

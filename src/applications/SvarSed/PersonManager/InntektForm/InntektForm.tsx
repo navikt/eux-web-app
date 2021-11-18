@@ -6,6 +6,8 @@ import InntektSearch from 'applications/SvarSed/PersonManager/InntektSearch/Innt
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import ArbeidsgiverBox from 'components/Arbeidsgiver/ArbeidsgiverBox'
+import ArbeidsgiverSøk from 'components/Arbeidsgiver/ArbeidsgiverSøk'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import Select from 'components/Forms/Select'
@@ -13,9 +15,9 @@ import InntektFC from 'components/Inntekt/Inntekt'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { State } from 'declarations/reducers'
-import { Loennsopplysning, Periode, PeriodeType } from 'declarations/sed'
+import { Loennsopplysning, Periode, PeriodeMedForsikring, PeriodeType } from 'declarations/sed'
 import { Inntekt } from 'declarations/sed.d'
-import { IInntekter } from 'declarations/types'
+import { Arbeidsperioder, IInntekter } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -35,18 +37,21 @@ import {
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import { arbeidsgiverToPeriodeMedForsikring, getOrgnr } from 'utils/arbeidsgiver'
 import { getFnr } from 'utils/fnr'
 import { getIdx } from 'utils/namespace'
 import { validateLoennsopplysning, ValidationLoennsopplysningProps } from './validationInntektForm'
 
 interface InntektFormSelector extends PersonManagerFormSelector {
   gettingInntekter: boolean
+  arbeidsperioder: Arbeidsperioder | null | undefined
   highContrast: boolean
   inntekter: IInntekter | undefined
 }
 
 const mapState = (state: State): InntektFormSelector => ({
   gettingInntekter: state.loading.gettingInntekter,
+  arbeidsperioder: state.arbeidsgiver.arbeidsperioder,
   highContrast: state.ui.highContrast,
   inntekter: state.inntekt.inntekter,
   validation: state.validation.status
@@ -61,6 +66,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
   const { t } = useTranslation()
   const {
     gettingInntekter,
+    arbeidsperioder,
     highContrast,
     inntekter,
     validation
@@ -82,6 +88,8 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] =
     useValidation<ValidationLoennsopplysningProps>({}, validateLoennsopplysning)
+
+  const fnr: string | undefined = getFnr(replySed, personID)
 
   const periodeTypeOptions = [
     { label: t('el:option-periodetype-ansettelsesforhold'), value: 'ansettelsesforhold' },
@@ -238,7 +246,6 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
             }}
             setPeriode={(p: Periode, id: string) => setPeriode(p, id, index)}
             value={_periode}
-            periodeType='simple'
           />
           <Column>
             <Column>
@@ -346,8 +353,6 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
     dispatch(fetchInntekt(fnr, fom, tom, inntektsliste))
   }
 
-  const fnr = getFnr(replySed, personID)
-
   return (
     <PaddedDiv>
       <Undertittel>
@@ -403,7 +408,46 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
       {inntekter && (
         <InntektFC inntekter={inntekter} />
       )}
-
+      <VerticalSeparatorDiv size='2' />
+      <HorizontalLineSeparator />
+      <VerticalSeparatorDiv size='2' />
+      <AlignStartRow className='slideInFromLeft'>
+        <Column>
+          <Undertittel>
+            {t('label:arbeidsforhold/arbeidsgivere')}
+          </Undertittel>
+        </Column>
+      </AlignStartRow>
+      <VerticalSeparatorDiv />
+      <ArbeidsgiverSøk
+        amplitude='svarsed.editor.inntekt.arbeidsgiver.search'
+        fnr={fnr}
+        namespace={namespace}
+      />
+      <VerticalSeparatorDiv size='2' />
+      {arbeidsperioder?.arbeidsperioder && (
+        <>
+          <Undertittel>
+            {t('label:registered-arbeidsperiode')}
+          </Undertittel>
+          <VerticalSeparatorDiv size='2' />
+          {arbeidsperioder?.arbeidsperioder?.map(a => {
+            const period: PeriodeMedForsikring = arbeidsgiverToPeriodeMedForsikring(a)
+            return (
+              <ArbeidsgiverBox
+                highContrast={highContrast}
+                arbeidsgiver={period}
+                editable='no'
+                includeAddress={false}
+                orphanArbeidsgiver
+                key={getOrgnr(period, 'organisasjonsnummer')}
+                namespace={namespace}
+                selectable={false}
+              />
+            )
+          })}
+        </>
+      )}
     </PaddedDiv>
   )
 }

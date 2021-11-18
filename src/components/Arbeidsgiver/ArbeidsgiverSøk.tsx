@@ -48,7 +48,7 @@ const ArbeidsgiverSøk: React.FC<ArbeidsgiverSøkProps> = ({
 
   const [_arbeidssøkStartDato, _setArbeidssøkStartDato] = useState<string>('2015-01')
   const [_arbeidssøkSluttDato, _setArbeidssøkSluttDato] = useState<string>(moment().format('YYYY-MM'))
-  const [_arbeidssøkInntektslistetype, _setArbeidssøkInntektslistetype] = useState<string>('')
+  const [_arbeidssøkInntektslistetype, _setArbeidssøkInntektslistetype] = useState<string>('DAGPENGER')
 
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationArbeidsgiverSøkProps>({}, validateArbeidsgiverSøk)
 

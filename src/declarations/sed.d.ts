@@ -54,7 +54,7 @@ export interface Adresse {
 export interface Periode {
   startdato: string
   sluttdato?: string
-  aapenPeriodeType?: string
+  aapenPeriodeType?: 'ukjent_sluttdato' | 'åpen_sluttdato'
   // internal use, for periode labeling
   __type ?: string
   __index ?: number

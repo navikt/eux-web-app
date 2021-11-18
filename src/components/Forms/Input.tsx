@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 
 export interface InputProps {
   ariaLabel ?: string
+  bredde ?: string
   className ?: string
   feil: string | null | undefined
   namespace: string
@@ -15,10 +16,12 @@ export interface InputProps {
   placeholder?: string
   required ?: boolean
   type?: string
+  style ?: any
   value: string | undefined
 }
 const Input: React.FC<InputProps> = ({
   ariaLabel,
+  bredde,
   className,
   feil,
   id,
@@ -40,6 +43,7 @@ const Input: React.FC<InputProps> = ({
     <HighContrastInput
       aria-invalid={!!feil}
       aria-label={ariaLabel ?? label}
+      bredde={bredde}
       className={className}
       data-test-id={namespace + '-' + id}
       feil={feil}

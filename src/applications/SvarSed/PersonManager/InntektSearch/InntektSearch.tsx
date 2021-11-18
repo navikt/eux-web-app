@@ -1,14 +1,13 @@
-import { Periode } from 'declarations/sed'
-import { standardLogger } from 'metrics/loggers'
-import {
-  validateInntektSearch,
-  ValidationInntektSearchProps
-} from './validation'
+import { Search } from '@navikt/ds-icons'
+import PeriodeInput, { toFinalDateFormat } from 'components/Forms/PeriodeInput'
 import Select from 'components/Forms/Select'
-import PeriodeInput from 'components/Forms/PeriodeInput'
 import { Options } from 'declarations/app'
+import { Option } from 'declarations/app.d'
+import { Periode } from 'declarations/sed'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
+import moment from 'moment'
 import {
   AlignStartRow,
   Column,
@@ -18,8 +17,7 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Option } from 'declarations/app.d'
-import { Search } from '@navikt/ds-icons'
+import { validateInntektSearch, ValidationInntektSearchProps } from './validation'
 
 interface InntektSearchProps {
   amplitude ?: string
@@ -38,8 +36,11 @@ const InntektSearch = ({
 }: InntektSearchProps) => {
   const { t } = useTranslation()
 
-  const [_searchPeriode, _setSearchPeriode] = useState<Periode>({ startdato: '' })
-  const [_filter, _setFilter] = useState<string | undefined>(undefined)
+  const [_searchPeriode, _setSearchPeriode] = useState<Periode>(() => ({
+    startdato: '2015-01-01',
+    sluttdato: toFinalDateFormat(moment(new Date()).format('YYYY-MM-DD'))
+  }))
+  const [_filter, _setFilter] = useState<string>('DAGPENGER')
   const [_validation, _resetValidation, performValidation] =
     useValidation<ValidationInntektSearchProps>({}, validateInntektSearch)
   const namespace = 'inntekt-search'

@@ -49,7 +49,7 @@ export const validateLoennsopplysning = (
     }
   }
 
-  if (!_.isEmpty(loennsopplysning?.periodetype)) {
+  if (_.isEmpty(loennsopplysning?.periodetype)) {
     v[namespace + idx + '-periodetype'] = {
       feilmelding: t('validation:noPeriodeType'),
       skjemaelementId: namespace + idx + '-periodetype'
