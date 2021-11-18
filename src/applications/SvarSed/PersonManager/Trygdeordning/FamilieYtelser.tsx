@@ -233,7 +233,6 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
       >
         <AlignStartRow>
           <PeriodeInput
-            key={'' + _periode.startdato + _periode.sluttdato}
             showLabel={false}
             namespace={namespace + idx}
             error={{

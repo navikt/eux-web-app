@@ -47,7 +47,6 @@ const Referanseperiode: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <PeriodeInput
-          key={'' + anmodningsperiode?.startdato + anmodningsperiode?.sluttdato}
           namespace={namespace}
           error={{
             startdato: validation[namespace + '-startdato']?.feilmelding,

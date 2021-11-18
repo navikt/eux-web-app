@@ -1,6 +1,7 @@
 import { PeriodeMedForsikring } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
+import moment from 'moment'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
 import { getOrgnr } from 'utils/arbeidsgiver'
@@ -18,7 +19,9 @@ export interface ValidationArbeidsgiverSøkProps {
   namespace: string
 }
 
-const datePattern = /^\d{4}-\d{2}$/
+const dateSearchPattern = /^\d{4}-\d{2}$/
+
+const datePattern = /^\d{4}-\d{2}-\d{2}$/
 
 export const validateArbeidsgiverSøk = (
   v: Validation,
@@ -38,11 +41,21 @@ export const validateArbeidsgiverSøk = (
     } as FeiloppsummeringFeil
     hasErrors = true
   } else {
-    if (!(fom.trim().match(datePattern))) {
+    if (!(fom.trim().match(dateSearchPattern))) {
       v[namespace + '-startdato'] = {
         skjemaelementId: namespace + '-startdato',
         feilmelding: t('validation:invalidDate')
       } as FeiloppsummeringFeil
+      hasErrors = true
+    } else {
+      const fomDate = moment(fom, 'YYYY-MM')
+      if (fomDate.isBefore(new Date(2015, 0, 1))) {
+        v[namespace + '-startdato'] = {
+          feilmelding: t('validation:invalidDate2015'),
+          skjemaelementId: namespace + '-startdato'
+        } as FeiloppsummeringFeil
+        hasErrors = true
+      }
     }
   }
 
@@ -53,11 +66,22 @@ export const validateArbeidsgiverSøk = (
     } as FeiloppsummeringFeil
     hasErrors = true
   } else {
-    if (!(tom.trim().match(datePattern))) {
+    if (!(tom.trim().match(dateSearchPattern))) {
       v[namespace + '-sluttdato'] = {
         skjemaelementId: namespace + '-sluttdato',
         feilmelding: t('validation:invalidDate')
       } as FeiloppsummeringFeil
+      hasErrors = true
+    } else {
+      const fomDate = moment(fom, 'YYYY-MM')
+      const tomDate = moment(tom, 'YYYY-MM')
+      if (tomDate.isBefore(fomDate)) {
+        v[namespace + '-sluttdato'] = {
+          feilmelding: t('validation:invalidDateFomTom'),
+          skjemaelementId: namespace + '-sluttdato'
+        } as FeiloppsummeringFeil
+        hasErrors = true
+      }
     }
   }
 

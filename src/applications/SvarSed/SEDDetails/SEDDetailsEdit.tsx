@@ -283,7 +283,6 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       <>
         <AlignStartRow>
           <PeriodeInput
-            key={'' + _periode?.startdato + _periode?.sluttdato}
             namespace={namespace + '-perioder' + getIdx(index)}
             error={{
               startdato: getErrorFor(index, 'startdato'),
@@ -409,7 +408,6 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
             <>
               <AlignStartRow>
                 <PeriodeInput
-                  key={'' + (replySed as USed).anmodningsperiode.startdato + (replySed as USed).anmodningsperiode.sluttdato}
                   namespace={namespace + '-anmodningsperiode'}
                   error={{
                     startdato: validation[namespace + '-anmodningsperiode-startdato']?.feilmelding,

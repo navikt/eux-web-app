@@ -157,7 +157,6 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
         >
           <PeriodeInput
-            key={'' + _periode?.startdato + _periode?.sluttdato}
             namespace={namespace + '-perioder' + idx}
             error={{
               startdato: getErrorFor(index, 'startdato'),

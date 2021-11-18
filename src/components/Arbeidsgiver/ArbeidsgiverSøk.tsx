@@ -102,7 +102,7 @@ const ArbeidsgiverSøk: React.FC<ArbeidsgiverSøkProps> = ({
             namespace={namespace + '-arbeidssok'}
             feil={_validation[namespace + '-arbeidssok-startdato']?.feilmelding}
             id='startdato'
-            label={t('label:startdato')}
+            label={t('label:fra')}
             onChanged={setArbeidssøkStartDato}
             placeholder='ÅÅÅÅ-MM'
             value={_arbeidssøkStartDato}
@@ -113,7 +113,7 @@ const ArbeidsgiverSøk: React.FC<ArbeidsgiverSøkProps> = ({
             namespace={namespace + '-arbeidssok'}
             feil={_validation[namespace + '-arbeidssok-sluttdato']?.feilmelding}
             id='sluttdato'
-            label={t('label:sluttdato')}
+            label={t('label:til')}
             onChanged={setArbeidssøkSluttDato}
             placeholder='ÅÅÅÅ-MM'
             value={_arbeidssøkSluttDato}
@@ -145,7 +145,7 @@ const ArbeidsgiverSøk: React.FC<ArbeidsgiverSøkProps> = ({
             <HorizontalSeparatorDiv size='0.5' />
             {gettingArbeidsperioder
               ? t('message:loading-searching')
-              : t('el:button-search-for-x', { x: t('label:arbeidsgiver').toLowerCase() })}
+              : t('el:button-search-i-x', { x: t('label:aa-registeret') })}
           </HighContrastKnapp>
         </Column>
       </AlignStartRow>

@@ -23,7 +23,7 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import Chevron from 'nav-frontend-chevron'
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { Ingress, Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
@@ -238,7 +238,6 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
         >
           <PeriodeInput
-            key={'' + _periode?.startdato + _periode?.sluttdato}
             namespace={namespace}
             error={{
               startdato: getErrorFor(index, 'periode-startdato'),
@@ -411,13 +410,9 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv size='2' />
-      <AlignStartRow className='slideInFromLeft'>
-        <Column>
-          <Undertittel>
-            {t('label:arbeidsforhold/arbeidsgivere')}
-          </Undertittel>
-        </Column>
-      </AlignStartRow>
+      <Ingress>
+        {t('label:hent-perioder-i-aa-registeret')}
+      </Ingress>
       <VerticalSeparatorDiv />
       <ArbeidsgiverSøk
         amplitude='svarsed.editor.inntekt.arbeidsgiver.search'
@@ -428,7 +423,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
       {arbeidsperioder?.arbeidsperioder && (
         <>
           <Undertittel>
-            {t('label:registered-arbeidsperiode')}
+            {t('label:arbeidsperioder-i-aa-registeret')}
           </Undertittel>
           <VerticalSeparatorDiv size='2' />
           {arbeidsperioder?.arbeidsperioder?.map(a => {

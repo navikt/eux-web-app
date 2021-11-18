@@ -141,7 +141,6 @@ const NotAnsatt: React.FC<PersonManagerFormProps & {arbeidsforhold: string}> = (
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
         >
           <PeriodeInput
-            key={'' + _periode?.startdato + _periode?.sluttdato}
             namespace={namespace + idx}
             error={{
               startdato: getErrorFor(index, 'startdato'),

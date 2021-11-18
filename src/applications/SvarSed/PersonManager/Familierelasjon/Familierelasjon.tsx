@@ -246,7 +246,6 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
             />
           </Column>
           <PeriodeInput
-            key={'' + _periode?.startdato + _periode?.sluttdato}
             namespace={namespace + idx + '-periode'}
             error={{
               startdato: getErrorFor(index, 'periode-startdato'),

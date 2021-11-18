@@ -385,7 +385,6 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
               </Column>
             )}
             <PeriodeInput
-              key={'' + _periode?.startdato + _periode?.sluttdato}
               namespace={namespace + idx}
               error={{
                 startdato: _v[namespace + '-startdato']?.feilmelding,

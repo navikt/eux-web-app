@@ -1,5 +1,5 @@
 import { Search } from '@navikt/ds-icons'
-import PeriodeInput, { toFinalDateFormat } from 'components/Forms/PeriodeInput'
+import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
 import { Option } from 'declarations/app.d'
@@ -8,13 +8,7 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
-import {
-  AlignStartRow,
-  Column,
-  HighContrastFlatknapp,
-  HorizontalSeparatorDiv,
-  VerticalSeparatorDiv
-} from 'nav-hoykontrast'
+import { AlignStartRow, Column, HighContrastKnapp, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { validateInntektSearch, ValidationInntektSearchProps } from './validation'
@@ -37,8 +31,8 @@ const InntektSearch = ({
   const { t } = useTranslation()
 
   const [_searchPeriode, _setSearchPeriode] = useState<Periode>(() => ({
-    startdato: '2015-01-01',
-    sluttdato: toFinalDateFormat(moment(new Date()).format('YYYY-MM-DD'))
+    startdato: '2015-01',
+    sluttdato: moment(new Date()).format('YYYY-MM')
   }))
   const [_filter, _setFilter] = useState<string>('DAGPENGER')
   const [_validation, _resetValidation, performValidation] =
@@ -51,14 +45,20 @@ const InntektSearch = ({
     { label: t('el:option-inntektsfilter-DAGPENGER'), value: 'DAGPENGER' }
   ]
 
-  const setSearchPeriode = (p: Periode, id: string) => {
-    _setSearchPeriode(p)
-    if (id === 'startdato') {
-      _resetValidation(namespace + '-startdato')
-    }
-    if (id === 'sluttdato') {
-      _resetValidation(namespace + '-sluttdato')
-    }
+  const setSearchPeriodeStartdato = (newStartdato: string) => {
+    _setSearchPeriode({
+      ..._searchPeriode,
+      startdato: newStartdato.trim()
+    })
+    _resetValidation(namespace + '-startdato')
+  }
+
+  const setSearchPeriodeSluttdato = (newSluttdato: string) => {
+    _setSearchPeriode({
+      ..._searchPeriode,
+      sluttdato: newSluttdato.trim()
+    })
+    _resetValidation(namespace + '-startdato')
   }
 
   const setFilter = (filter: string) => {
@@ -82,17 +82,28 @@ const InntektSearch = ({
 
   return (
     <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-      <PeriodeInput
-        key={'' + _searchPeriode?.startdato + _searchPeriode?.sluttdato}
-        namespace={namespace}
-        error={{
-          startdato: _validation[namespace + '-startdato']?.feilmelding,
-          sluttdato: _validation[namespace + '-sluttdato']?.feilmelding
-        }}
-        setPeriode={setSearchPeriode}
-        value={_searchPeriode}
-        periodeType='simple'
-      />
+      <Column>
+        <Input
+          namespace={namespace}
+          feil={_validation[namespace + '-startdato']?.feilmelding}
+          id='startdato'
+          label={t('label:fra')}
+          onChanged={setSearchPeriodeStartdato}
+          placeholder='ÅÅÅÅ-MM'
+          value={_searchPeriode.startdato}
+        />
+      </Column>
+      <Column>
+        <Input
+          namespace={namespace}
+          feil={_validation[namespace + '-sluttdato']?.feilmelding}
+          id='sluttdato'
+          label={t('label:til')}
+          onChanged={setSearchPeriodeSluttdato}
+          placeholder='ÅÅÅÅ-MM'
+          value={_searchPeriode.sluttdato}
+        />
+      </Column>
       <Column>
         <Select
           data-test-id={namespace + '-inntektsliste'}
@@ -110,15 +121,17 @@ const InntektSearch = ({
       </Column>
       <Column>
         <VerticalSeparatorDiv size='1.8' />
-        <HighContrastFlatknapp
+        <HighContrastKnapp
           disabled={gettingInntekter}
           spinner={gettingInntekter}
           onClick={onInntektSearchClicked}
         >
           <Search />
           <HorizontalSeparatorDiv />
-          {gettingInntekter ? t('message:loading-searching') : t('el:button-search')}
-        </HighContrastFlatknapp>
+          {gettingInntekter
+            ? t('message:loading-searching')
+            : t('el:button-search-i-x', { x: t('label:a-inntekt') })}
+        </HighContrastKnapp>
       </Column>
     </AlignStartRow>
   )

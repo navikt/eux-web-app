@@ -12,7 +12,7 @@ export interface ValidationInntektSearchProps {
   namespace: string
 }
 
-const datePattern = /^\d{4}-\d{2}-\d{2}$/
+const datePattern = /^\d{4}-\d{2}$/
 
 export const validateInntektSearch = (
   v: Validation,
@@ -25,8 +25,13 @@ export const validateInntektSearch = (
   }: ValidationInntektSearchProps
 ): boolean => {
   let hasErrors: boolean = false
-
-  if (!_.isEmpty(fom.trim())) {
+  if (_.isEmpty(fom.trim())) {
+    v[namespace + '-startdato'] = {
+      skjemaelementId: namespace + '-startdato',
+      feilmelding: t('validation:noDate')
+    } as FeiloppsummeringFeil
+    hasErrors = true
+  } else {
     if (!fom?.trim().match(datePattern)) {
       v[namespace + '-startdato'] = {
         feilmelding: t('validation:invalidDate'),
@@ -34,7 +39,7 @@ export const validateInntektSearch = (
       } as FeiloppsummeringFeil
       hasErrors = true
     } else {
-      const fomDate = moment(fom, 'YYYY-MM-DD')
+      const fomDate = moment(fom, 'YYYY-MM')
       if (fomDate.isBefore(new Date(2015, 0, 1))) {
         v[namespace + '-startdato'] = {
           feilmelding: t('validation:invalidDate2015'),
@@ -45,12 +50,30 @@ export const validateInntektSearch = (
     }
   }
 
-  if (!_.isEmpty(tom?.trim()) && !tom?.trim().match(datePattern)) {
+  if (_.isEmpty(tom.trim())) {
     v[namespace + '-sluttdato'] = {
-      feilmelding: t('validation:invalidDate'),
-      skjemaelementId: namespace + '-sluttdato'
+      skjemaelementId: namespace + '-sluttdato',
+      feilmelding: t('validation:noDate')
     } as FeiloppsummeringFeil
     hasErrors = true
+  } else {
+    if (!(tom.trim().match(datePattern))) {
+      v[namespace + '-sluttdato'] = {
+        skjemaelementId: namespace + '-sluttdato',
+        feilmelding: t('validation:invalidDate')
+      } as FeiloppsummeringFeil
+      hasErrors = true
+    } else {
+      const fomDate = moment(fom, 'YYYY-MM')
+      const tomDate = moment(tom, 'YYYY-MM')
+      if (tomDate.isBefore(fomDate)) {
+        v[namespace + '-sluttdato'] = {
+          feilmelding: t('validation:invalidDateFomTom'),
+          skjemaelementId: namespace + '-sluttdato'
+        } as FeiloppsummeringFeil
+        hasErrors = true
+      }
+    }
   }
 
   if (_.isEmpty(inntektsliste?.trim())) {

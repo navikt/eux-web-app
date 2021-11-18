@@ -320,7 +320,6 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
       <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow className={classNames('slideInFromLeft')}>
           <PeriodeInput
-            key={'' + _periode?.startdato + _periode?.sluttdato}
             namespace={namespace + '-perioder' + getIdx(index)}
             error={{
               startdato: getErrorFor(index, 'startdato'),
@@ -362,7 +361,6 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
       <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow className={classNames('slideInFromLeft')}>
           <PeriodeInput
-            key={'' + periode?.startdato + '-' + periode?.sluttdato}
             namespace={namespace + '-vedtaksperioder' + getIdx(index) + '-periode'}
             error={{
               startdato: getErrorFor(index, 'periode-startdato'),

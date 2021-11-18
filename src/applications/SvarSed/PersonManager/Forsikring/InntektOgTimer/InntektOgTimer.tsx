@@ -192,7 +192,6 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
         >
           <PeriodeInput
-            key={namespace + idx + '-inntektsperiode-' + _periode?.startdato + _periode?.sluttdato}
             namespace={namespace + idx + '-inntektsperiode'}
             error={{
               startdato: getErrorFor('inntektsperiode-startdato'),

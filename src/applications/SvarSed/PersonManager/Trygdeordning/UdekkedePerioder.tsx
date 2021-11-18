@@ -134,7 +134,6 @@ const UdekkedePerioder: React.FC<PersonManagerFormProps> = ({
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
         >
           <PeriodeInput
-            key={'' + _periode?.startdato + _periode?.sluttdato}
             namespace={namespace + idx}
             showLabel={false}
             error={{

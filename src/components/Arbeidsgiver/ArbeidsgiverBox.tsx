@@ -10,7 +10,7 @@ import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Adresse as IAdresse, ArbeidsgiverIdentifikator, Periode, PeriodeMedForsikring } from 'declarations/sed.d'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { Normaltekst, Undertekst, UndertekstBold } from 'nav-frontend-typografi'
+import { Ingress, Normaltekst, Undertekst, UndertekstBold } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
@@ -21,7 +21,6 @@ import {
   HighContrastKnapp,
   HighContrastPanel,
   HorizontalSeparatorDiv,
-  PaddedFlexDiv,
   PileCenterDiv,
   PileDiv,
   Row,
@@ -201,8 +200,32 @@ const ArbeidsgiverBox = ({
         border
         className={classNames({ new: newArbeidsgiver, orphan: orphanArbeidsgiver })}
       >
+        {_isEditing
+          ? (
+            <FlexDiv style={{ padding: '0.5rem 0.5rem 0rem 0.5rem' }}>
+              <VerticalSeparatorDiv size='0.5' />
+              <Row>
+                <PeriodeInput
+                  namespace={_namespace}
+                  error={{
+                    startdato: _validation[_namespace + '-startdato']?.feilmelding,
+                    sluttdato: _validation[_namespace + '-sluttdato']?.feilmelding
+                  }}
+                  setPeriode={onPeriodeChanged}
+                  value={_arbeidsgiverPeriode}
+                />
+              </Row>
+            </FlexDiv>
+            )
+          : (
+            <FlexDiv style={{ padding: '0.5rem' }}>
+              <Ingress>
+                {toUIDateFormat(_arbeidsgiverPeriode.startdato)} - {_arbeidsgiverPeriode.sluttdato ? toUIDateFormat(_arbeidsgiverPeriode.sluttdato) : _arbeidsgiverPeriode.aapenPeriodeType}
+              </Ingress>
+            </FlexDiv>
+            )}
         <FlexCenterSpacedDiv>
-          <PaddedFlexDiv className='slideInFromLeft'>
+          <FlexDiv style={{ padding: '1rem' }} className='slideInFromLeft'>
             <Office1 width='30' height='30' />
             <HorizontalSeparatorDiv />
             <div>
@@ -221,15 +244,21 @@ const ArbeidsgiverBox = ({
                         />
                       </Column>
                     </AlignStartRow>
-                    <IdentifikatorFC
-                      highContrast={highContrast}
-                      identifikatorer={_arbeidsgiversIdentifikator}
-                      onIdentifikatorerChanged={onIdentifikatorerChanged}
-                      namespace={_namespace + '-identifikator'}
-                      validation={_validation}
-                      resetValidation={resetSubValidation}
-                      personName={_arbeidsgiversNavn}
-                    />
+                    {includeAddress && (
+                      <>
+                        <HorizontalSeparatorDiv />
+                        <div>
+                          <VerticalSeparatorDiv size='0.5' />
+                          <AdresseFC
+                            adresse={_adresse}
+                            onAdressChanged={_setAdresse}
+                            namespace={_namespace}
+                            validation={_validation}
+                            resetValidation={resetValidation}
+                          />
+                        </div>
+                      </>
+                    )}
                   </>
                   )
                 : (
@@ -239,6 +268,36 @@ const ArbeidsgiverBox = ({
                     </UndertekstBold>
                     <HorizontalLineSeparator />
                     <VerticalSeparatorDiv size='0.5' />
+                    {_.isEmpty(_adresse)
+                      ? (
+                        <Normaltekst>
+                          {t('message:warning-unknown-address')}
+                        </Normaltekst>
+                        )
+                      : (
+                        <AdresseDiv>
+                          <AdresseBox border={false} adresse={_adresse} />
+                        </AdresseDiv>
+                        )}
+                  </div>
+                  )}
+            </div>
+            <HorizontalSeparatorDiv />
+            <div>
+              {_isEditing && editable === 'full'
+                ? (
+                  <IdentifikatorFC
+                    highContrast={highContrast}
+                    identifikatorer={_arbeidsgiversIdentifikator}
+                    onIdentifikatorerChanged={onIdentifikatorerChanged}
+                    namespace={_namespace + '-identifikator'}
+                    validation={_validation}
+                    resetValidation={resetSubValidation}
+                    personName={_arbeidsgiversNavn}
+                  />
+                  )
+                : (
+                  <>
                     {_.isEmpty(_arbeidsgiversIdentifikator)
                       ? (<Normaltekst>{t('message:warning-no-ids')}</Normaltekst>)
                       : null}
@@ -247,32 +306,7 @@ const ArbeidsgiverBox = ({
                         {t('el:option-identifikator-' + id.type) + ': ' + id.id}
                       </Normaltekst>
                     ))}
-                  </div>
-                  )}
-              {_isEditing
-                ? (
-                  <>
-                    <VerticalSeparatorDiv size='0.5' />
-                    <Row>
-                      <PeriodeInput
-                        key={'' + _arbeidsgiverPeriode.startdato + _arbeidsgiverPeriode.sluttdato}
-                        namespace={_namespace}
-                        error={{
-                          startdato: _validation[_namespace + '-startdato']?.feilmelding,
-                          sluttdato: _validation[_namespace + '-sluttdato']?.feilmelding
-                        }}
-                        setPeriode={onPeriodeChanged}
-                        value={_arbeidsgiverPeriode}
-                      />
-                    </Row>
                   </>
-                  )
-                : (
-                  <div>
-                    <Normaltekst>
-                      {toUIDateFormat(_arbeidsgiverPeriode.startdato)} - {_arbeidsgiverPeriode.sluttdato ? toUIDateFormat(_arbeidsgiverPeriode.sluttdato) : _arbeidsgiverPeriode.aapenPeriodeType}
-                    </Normaltekst>
-                  </div>
                   )}
               {arbeidsgiver?.extra?.fraArbeidsgiverregisteret === 'ja' && (
                 <PileDiv style={{ flexDirection: 'column-reverse' }}>
@@ -285,42 +319,6 @@ const ArbeidsgiverBox = ({
                 </PileDiv>
               )}
             </div>
-            {includeAddress && (
-              <>
-                <HorizontalSeparatorDiv />
-                <div>
-                  {_isEditing && editable === 'full'
-                    ? (
-                      <>
-                        <VerticalSeparatorDiv size='0.5' />
-                        <AdresseFC
-                          adresse={_adresse}
-                          onAdressChanged={_setAdresse}
-                          namespace={_namespace}
-                          validation={_validation}
-                          resetValidation={resetValidation}
-                        />
-                      </>
-                      )
-                    : _.isEmpty(_adresse)
-                      ? (
-                        <Normaltekst>
-                          {t('message:warning-no-address')}
-                        </Normaltekst>
-                        )
-                      : (
-                        <AdresseDiv>
-                          <Normaltekst>
-                            {!_.isEmpty(_adresse) && (
-                              <>{t('label:adresse')}: </>
-                            )}
-                          </Normaltekst>
-                          <AdresseBox border={false} adresse={_adresse} />
-                        </AdresseDiv>
-                        )}
-                </div>
-              </>
-            )}
             <>
               <HorizontalSeparatorDiv />
               {error && (
@@ -330,8 +328,8 @@ const ArbeidsgiverBox = ({
               )}
 
             </>
-          </PaddedFlexDiv>
-          <PaddedFlexDiv className='slideInFromRight' style={{ animationDelay: '0.3s' }}>
+          </FlexDiv>
+          <FlexDiv style={{ padding: '1rem' }} className='slideInFromRight'>
             {editable === 'full' && !_isEditing && !_isDeleting && (
               <>
                 <HighContrastFlatknapp
@@ -391,7 +389,7 @@ const ArbeidsgiverBox = ({
 
               </PileDiv>
             )}
-          </PaddedFlexDiv>
+          </FlexDiv>
           {_isDeleting && (
             <PileCenterDiv className='slideInFromRight'>
               <strong>

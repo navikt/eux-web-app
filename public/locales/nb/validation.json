@@ -17,6 +17,7 @@
   "invalidBeløpTil": "Ugyldig beløp til {{person}}",
   "invalidDate": "Ugyldig dato",
   "invalidDate2015": "Fom dato må være etter 01-2015",
+  "invalidDateFomTom": "Tom dato må være etter fom dato",
   "invalidDateTil": "Ugyldig dato til {{person}}",
   "invalidEpostTil": "Ugyldig epost adresse til {{person}}",
   "invalidFnr": "Fnr må ha 11 siffer",

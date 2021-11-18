@@ -168,7 +168,6 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
       >
         <AlignStartRow>
           <PeriodeInput
-            key={'' + _periode?.startdato + _periode?.sluttdato}
             namespace={namespace + idx + '-periode'}
             error={{
               startdato: getErrorFor(index, 'periode-startdato'),

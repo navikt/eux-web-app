@@ -283,7 +283,6 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
         >
           <PeriodeInput
-            key={'' + _periode?.startdato + _periode?.sluttdato}
             namespace={namespace}
             error={{
               startdato: getErrorFor(index, 'periode-startdato'),

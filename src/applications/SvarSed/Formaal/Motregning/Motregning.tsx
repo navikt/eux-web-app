@@ -762,9 +762,6 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
         <VerticalSeparatorDiv />
         <AlignStartRow>
           <PeriodeInput
-            key={namespace + idx + '-periode-' + (motregningKey === 'new-motregning'
-              ? _newPeriode?.startdato + '-' + _newPeriode?.sluttdato
-              : motregning?.startdato + '-' + motregning?.sluttdato)}
             namespace={namespace + idx}
             error={{
               startdato: getErrorFor('startdato'),

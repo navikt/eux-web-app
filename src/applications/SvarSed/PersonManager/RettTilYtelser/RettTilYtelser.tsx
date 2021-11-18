@@ -194,7 +194,6 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <PeriodeInput
-          key={'' + rettTilYtelse?.periode?.startdato + rettTilYtelse?.periode?.sluttdato}
           namespace={namespace}
           error={{
             startdato: validation[namespace + '-periode-startdato']?.feilmelding,

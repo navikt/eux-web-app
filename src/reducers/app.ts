@@ -87,7 +87,7 @@ const appReducer = (state: AppState = initialAppState, action: ActionWithPayload
         navn: navn,
         featureToggles: {
           ...state.featureToggles,
-          payload
+          ...payload
         }
       }
     }

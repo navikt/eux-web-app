@@ -337,9 +337,6 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
         <VerticalSeparatorDiv size={2} />
         <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.15s' }}>
           <PeriodeInput
-            key={'' +
-            (index < 0 ? _newPeriode?.startdato : ytelse?.startdato) +
-            (index < 0 ? _newPeriode?.sluttdato : ytelse?.sluttdato)}
             namespace={namespace}
             error={{
               startdato: getErrorFor(index, 'startdato'),

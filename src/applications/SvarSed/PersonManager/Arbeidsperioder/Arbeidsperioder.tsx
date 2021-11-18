@@ -21,7 +21,7 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
-import { Systemtittel, Undertittel } from 'nav-frontend-typografi'
+import { Ingress, Systemtittel, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
@@ -65,7 +65,7 @@ const mapState = (state: State): ArbeidsforholdSelector => ({
   highContrast: state.ui.highContrast
 })
 
-const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
+const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
   parentNamespace,
   personID,
   replySed,
@@ -271,7 +271,6 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft'>
         <PeriodeInput
-          key={'' + _newPeriode.startdato + _newPeriode.sluttdato}
           namespace={namespace}
           error={{
             startdato: _validationPeriodeMedForsikring[namespace + '-startdato']?.feilmelding,
@@ -435,13 +434,13 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
 
   return (
     <PaddedDiv>
-      <AlignStartRow className='slideInFromLeft'>
-        <Column>
-          <Undertittel>
-            {t('label:arbeidsforhold/arbeidsgivere')}
-          </Undertittel>
-        </Column>
-      </AlignStartRow>
+      <Undertittel>
+        {t('label:oversikt-brukers-arbeidsperioder')}
+      </Undertittel>
+      <VerticalSeparatorDiv size='2' />
+      <Ingress>
+        {t('label:hent-perioder-i-aa-registeret')}
+      </Ingress>
       <VerticalSeparatorDiv />
       <ArbeidsgiverSøk
         amplitude='svarsed.editor.arbeidsforholdmedforsikring.arbeidsgiver.search'
@@ -450,12 +449,8 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
       />
       <VerticalSeparatorDiv size='2' />
       <Systemtittel>
-        {t('label:aa-registeret')}
+        {t('label:arbeidsperioder-i-aa-registeret')}
       </Systemtittel>
-      <VerticalSeparatorDiv />
-      <Undertittel>
-        {t('label:registered-arbeidsperiode')}
-      </Undertittel>
       <VerticalSeparatorDiv size='2' />
       {renderPlan()}
       <VerticalSeparatorDiv size='2' />
@@ -472,16 +467,16 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
             <Add />
             <HorizontalSeparatorDiv size='0.5' />
             {t('el:button-add-new-x', {
-              x: t('label:arbeidsgiver').toLowerCase()
+              x: t('label:arbeidperioder').toLowerCase()
             })}
           </HighContrastFlatknapp>
           )}
       <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv size='2' />
-      <Undertittel>
-        {t('label:kontroller-inntekt')}
-      </Undertittel>
+      <Ingress>
+        {t('label:hent-inntekt-i-A-inntekt')}
+      </Ingress>
       <VerticalSeparatorDiv />
       <InntektSearch
         amplitude='svarsed.editor.inntekt.search'
@@ -496,4 +491,4 @@ const Arbeidsforhold: React.FC<ArbeidsforholdProps> = ({
   )
 }
 
-export default Arbeidsforhold
+export default ArbeidsperioderFC

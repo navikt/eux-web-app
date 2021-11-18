@@ -1,7 +1,7 @@
 import { Add, Child } from '@navikt/ds-icons'
 import { finishMenuStatistic, logMenuStatistic, startMenuStatistic } from 'actions/statistics'
 import AddPersonModal from 'applications/SvarSed/PersonManager/AddPersonModal/AddPersonModal'
-import Arbeidsforhold from 'applications/SvarSed/PersonManager/Arbeidsforhold/Arbeidsforhold'
+import Arbeidsperioder from 'applications/SvarSed/PersonManager/Arbeidsperioder/Arbeidsperioder'
 import GrunnTilOpphør from 'applications/SvarSed/PersonManager/GrunnTilOpphør/GrunnTilOpphør'
 import SisteAnsettelsesForhold from 'applications/SvarSed/PersonManager/SisteAnsettelsesForhold/SisteAnsettelsesForhold'
 import GreenCircle from 'assets/icons/GreenCircle'
@@ -297,7 +297,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
     { label: t('el:option-personmanager-11'), value: 'familieytelser', component: BeløpNavnOgValuta, type: 'F', family: true },
     { label: t('el:option-personmanager-12'), value: 'personopplysninger', component: PersonOpplysninger, type: 'U', person: true },
     { label: t('el:option-personmanager-13'), value: 'referanseperiode', component: Referanseperiode, type: 'U', person: true },
-    { label: t('el:option-personmanager-14'), value: 'arbeidsforhold/arbeidsgivere', component: Arbeidsforhold, type: 'U002', person: true },
+    { label: t('el:option-personmanager-14'), value: 'arbeidsperioder', component: Arbeidsperioder, type: 'U002', person: true },
     { label: t('el:option-personmanager-15'), value: 'inntekt', component: InntektForm, type: 'U004', person: true },
     { label: t('el:option-personmanager-16'), value: 'retttilytelser', component: RettTilYtelser, type: 'U017', person: true },
     { label: t('el:option-personmanager-17'), value: 'forsikring', component: Forsikring, type: ['U002', 'U017'], person: true },

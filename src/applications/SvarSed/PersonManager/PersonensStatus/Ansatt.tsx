@@ -18,7 +18,7 @@ import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
 import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
-import { Normaltekst, Systemtittel, Undertittel } from 'nav-frontend-typografi'
+import { Ingress, Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
@@ -236,7 +236,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
 
     const valid: boolean = performValidationArbeidsgiver({
       arbeidsgiver: newArbeidsgiver,
-      namespace: namespace,
+      namespace: namespace + '-arbeidsgiver',
       includeAddress: includeAddress
     })
 
@@ -313,7 +313,6 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft'>
         <PeriodeInput
-          key={'' + _newArbeidsgiverPeriode.startdato + _newArbeidsgiverPeriode.sluttdato}
           namespace={namespace}
           error={{
             startdato: _validationArbeidsgiver[namespace + '-arbeidsgiver-startdato']?.feilmelding,
@@ -380,7 +379,6 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft'>
         <PeriodeInput
-          key={'' + _newPeriode.startdato + _newPeriode.sluttdato}
           namespace={namespace}
           error={{
             startdato: _validationPeriode[namespace + '-periode-startdato']?.feilmelding,
@@ -437,7 +435,6 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
         element = (
           <AlignStartRow className='slideInFromLeft'>
             <PeriodeInput
-              key={'' + (item.item as Periode).startdato + (item.item as Periode).sluttdato}
               namespace={namespace + '-periode' + idx}
               error={{
                 startdato: getErrorFor('startdato'),
@@ -515,13 +512,13 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
 
   return (
     <>
-      <Systemtittel>
-        {t('label:aa-registeret')}
-      </Systemtittel>
-      <VerticalSeparatorDiv size='2' />
       <Undertittel>
-        {t('label:registered-arbeidsperiode')}
+        {t('label:oversikt-brukers-arbeidsperioder')}
       </Undertittel>
+      <VerticalSeparatorDiv size='2' />
+      <Ingress>
+        {t('label:hent-perioder-i-aa-registeret')}
+      </Ingress>
       <VerticalSeparatorDiv />
       <ArbeidsgiverSøk
         amplitude='svarsed.editor.personensstatus.ansatt.arbeidsgiver.search'
@@ -562,7 +559,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
             <Add />
             <HorizontalSeparatorDiv size='0.5' />
             {t('el:button-add-new-x', {
-              x: t('label:arbeidsgiver').toLowerCase()
+              x: t('label:arbeidperioder').toLowerCase()
             })}
           </HighContrastFlatknapp>
           <span>&nbsp;{t('label:eller')}&nbsp;</span>

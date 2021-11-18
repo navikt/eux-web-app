@@ -28,7 +28,7 @@ import * as types from 'constants/actionTypes'
 import { JoarkBrowserItems } from 'declarations/attachments'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
-import { Barn, F002Sed, FSed, ReplySed } from 'declarations/sed'
+import { Barn, F002Sed, FSed, HSed, ReplySed } from 'declarations/sed'
 import { CreateSedResponse, LocalStorageEntry, Validation } from 'declarations/types'
 import FileFC, { File } from 'forhandsvisningsfil'
 import useGlobalValidation from 'hooks/useGlobalValidation'
@@ -242,7 +242,11 @@ const SEDEdit: React.FC<SEDEditProps> = ({
   }
 
   const setComment = (comment: string) => {
-    dispatch(updateReplySed('bruker.ytterligereInfo', comment))
+    if (isHSed(replySed)) {
+      dispatch(updateReplySed('ytterligereInfo', comment))
+    } else {
+      dispatch(updateReplySed('bruker.ytterligereInfo', comment))
+    }
     if (validation[namespace + '-ytterligereInfo']) {
       dispatch(resetValidation(namespace + '-ytterligereInfo'))
     }
@@ -361,7 +365,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({
               label={t('label:ytterligere-informasjon-til-sed')}
               onChanged={setComment}
               placeholder={t('el:placeholder-sed')}
-              value={replySed?.bruker?.ytterligereInfo}
+              value={isHSed(replySed) ? (replySed as HSed)?.ytterligereInfo : replySed?.bruker?.ytterligereInfo}
             />
           </TextAreaDiv>
         </Column>
