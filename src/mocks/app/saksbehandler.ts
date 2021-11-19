@@ -3,6 +3,6 @@ import _ from 'lodash'
 
 export default () => {
   const sb: any = _.sample(mockSaksbehandler)
-  sb['featureSvarsed.u'] = true
+  sb.featureSvarsedU = true
   return sb
 }

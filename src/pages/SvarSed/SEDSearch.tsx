@@ -212,7 +212,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
   }, [])
 
   // filter out U-seds or UB-seds if featureSvarsed.u = false
-  const visibleSeds = seds?.filter((s: Sed) => !((s.sakType.startsWith('U_') || s.sakType.startsWith('UB_')) && featureToggles['featureSvarsed.u'] === false)) ?? undefined
+  const visibleSeds = seds?.filter((s: Sed) => !((s.sakType.startsWith('U_') || s.sakType.startsWith('UB_')) && featureToggles.featureSvarsedU === false)) ?? undefined
   const familieytelser: number = _.filter(visibleSeds, (s: Sed) => s.sakType.startsWith('FB_'))?.length ?? 0
   const dagpenger: number = _.filter(visibleSeds, (s: Sed) => s.sakType.startsWith('UB_'))?.length ?? 0
   const horisontal: number = _.filter(visibleSeds, (s: Sed) => s.sakType.startsWith('H_'))?.length ?? 0

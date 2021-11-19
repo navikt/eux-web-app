@@ -17,10 +17,10 @@ import _ from 'lodash'
 import { Normaltekst, Systemtittel, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
-  Column, FlexStartDiv,
+  Column,
   HighContrastHovedknapp,
-  HorizontalSeparatorDiv,
-  PileCenterDiv, PileDiv,
+  PileCenterDiv,
+  PileDiv,
   RadioElementBorder,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
@@ -170,49 +170,48 @@ const PDU1Search: React.FC<PDU1Props> = ({
       </Systemtittel>
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow
+        style={{minWidth: '600px'}}
         className={classNames('slideInFromLeft', { feil: validation[namespace + '-search'] })}
       >
-        <HorizontalSeparatorDiv size='0.2' />
         <Column>
           <PileDiv>
-            <FlexStartDiv>
-              <Input
-                label={t('label:fnr-dnr')}
-                feil={validation[namespace + '-search']?.feilmelding}
-                id='search'
-                namespace={namespace}
-                onContentChange={onFnrDnrChange}
-                required
-                value={fnrOrDnr}
-              />
-            </FlexStartDiv>
+            <Input
+              label={t('label:fnr-dnr')}
+              feil={validation[namespace + '-search']?.feilmelding}
+              id='search'
+              bredde='XL'
+              namespace={namespace}
+              onContentChange={onFnrDnrChange}
+              required
+              value={fnrOrDnr}
+            />
             <VerticalSeparatorDiv size='0.5' />
             <Normaltekst>
               {validMessage}
             </Normaltekst>
           </PileDiv>
         </Column>
+        <Column>
+          {validFnr && (
+            <Select
+              label={t('label:tema')}
+              defaultValue={_.find(temaOptions, { value: tema })}
+              feil={validation[namespace + '-tema']?.feilmelding}
+              highContrast={highContrast}
+              key={namespace + '-tema-' + tema}
+              id={namespace + '-tema'}
+              menuPortalTarget={document.body}
+              onChange={onTemaChanged}
+              options={temaOptions}
+              value={_.find(temaOptions, { value: tema })}
+              style={{ minWidth: '300px' }}
+            />
+          )}
+        </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />
       {validFnr && (
         <>
-          <AlignStartRow>
-            <Column>
-              <Select
-                defaultValue={_.find(temaOptions, { value: tema })}
-                feil={validation[namespace + '-tema']?.feilmelding}
-                highContrast={highContrast}
-                key={namespace + '-tema-' + tema}
-                id={namespace + '-tema'}
-                menuPortalTarget={document.body}
-                onChange={onTemaChanged}
-                options={temaOptions}
-                value={_.find(temaOptions, { value: tema })}
-                style={{ minWidth: '300px' }}
-              />
-            </Column>
-          </AlignStartRow>
-          <VerticalSeparatorDiv size='2' />
           <div style={{ width: '100%' }}>
             {gettingFagsaker && (
               <WaitingPanel />

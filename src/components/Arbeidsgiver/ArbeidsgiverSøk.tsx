@@ -125,7 +125,7 @@ const ArbeidsgiverSøk: React.FC<ArbeidsgiverSøkProps> = ({
             feil={_validation[namespace + '-arbeidssok-inntektsliste']?.feilmelding}
             highContrast={highContrast}
             id={namespace + '-arbeidssok-inntektsliste'}
-            label={t('label:inntektsfilter')}
+            label={t('label:inntektskilde')}
             menuPortalTarget={document.body}
             onChange={(o: Option) => setArbeidssøkInntektslistetype(o.value)}
             options={inntektslistetypeOptions}
@@ -145,7 +145,7 @@ const ArbeidsgiverSøk: React.FC<ArbeidsgiverSøkProps> = ({
             <HorizontalSeparatorDiv size='0.5' />
             {gettingArbeidsperioder
               ? t('message:loading-searching')
-              : t('el:button-search-i-x', { x: t('label:aa-registeret') })}
+              : t('el:button-search-x', { x: t('label:arbeidsperioder') })}
           </HighContrastKnapp>
         </Column>
       </AlignStartRow>

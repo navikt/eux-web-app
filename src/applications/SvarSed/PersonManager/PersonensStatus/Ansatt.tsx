@@ -517,7 +517,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
       </Undertittel>
       <VerticalSeparatorDiv size='2' />
       <Ingress>
-        {t('label:hent-perioder-i-aa-registeret')}
+        {t('label:hent-perioder-fra-aa-registeret-og-a-inntekt')}
       </Ingress>
       <VerticalSeparatorDiv />
       <ArbeidsgiverSøk

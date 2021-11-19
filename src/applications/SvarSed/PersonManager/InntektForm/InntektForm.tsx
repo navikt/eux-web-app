@@ -411,7 +411,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv size='2' />
       <Ingress>
-        {t('label:hent-perioder-i-aa-registeret')}
+        {t('label:hent-perioder-fra-aa-registeret-og-a-inntekt')}
       </Ingress>
       <VerticalSeparatorDiv />
       <ArbeidsgiverSøk
@@ -423,7 +423,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
       {arbeidsperioder?.arbeidsperioder && (
         <>
           <Undertittel>
-            {t('label:arbeidsperioder-i-aa-registeret')}
+            {t('label:arbeidsperioder')}
           </Undertittel>
           <VerticalSeparatorDiv size='2' />
           {arbeidsperioder?.arbeidsperioder?.map(a => {

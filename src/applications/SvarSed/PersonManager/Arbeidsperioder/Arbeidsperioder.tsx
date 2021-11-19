@@ -439,7 +439,7 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
       </Undertittel>
       <VerticalSeparatorDiv size='2' />
       <Ingress>
-        {t('label:hent-perioder-i-aa-registeret')}
+        {t('label:hent-perioder-fra-aa-registeret-og-a-inntekt')}
       </Ingress>
       <VerticalSeparatorDiv />
       <ArbeidsgiverSøk
@@ -449,7 +449,7 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
       />
       <VerticalSeparatorDiv size='2' />
       <Systemtittel>
-        {t('label:arbeidsperioder-i-aa-registeret')}
+        {t('label:arbeidsperioder')}
       </Systemtittel>
       <VerticalSeparatorDiv size='2' />
       {renderPlan()}
