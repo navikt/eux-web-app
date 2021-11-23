@@ -15,6 +15,13 @@ export const cleanData: ActionCreator<Action> = (): Action => ({
   type: types.APP_CLEAN_DATA
 })
 
+export const copyToClipboard = (text: string) => {
+  navigator.clipboard.writeText(text)
+  return {
+    type: types.APP_CLIPBOARD_COPY
+  }
+}
+
 export const getEnheter: ActionCreator<ThunkResult<ActionWithPayload<Enheter>>> = (
 ): ThunkResult<ActionWithPayload<Enheter>> => {
   return call({

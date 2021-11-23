@@ -145,7 +145,7 @@ const ArbeidsgiverSøk: React.FC<ArbeidsgiverSøkProps> = ({
             <HorizontalSeparatorDiv size='0.5' />
             {gettingArbeidsperioder
               ? t('message:loading-searching')
-              : t('el:button-search-x', { x: t('label:arbeidsperioder') })}
+              : t('el:button-search-for-x', { x: t('label:arbeidsperioder') })}
           </HighContrastKnapp>
         </Column>
       </AlignStartRow>

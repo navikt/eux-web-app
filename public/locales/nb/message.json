@@ -44,6 +44,7 @@
   "loading-sending-sed" : "Sender SED i RINA...",
   "loading-sending-vedlegg" : "Sender vedlegg...",
 
+  "success-clipboard-copy": "Kopiert til utklippstavlen",
   "success-svarPaSed-localstorage-save": "SvarSED utkastet er lagret",
   "success-x-attachments-total-y-saved": "{{saved}} av {{total}} vedlegg er lagret",
   "success-no-attachments-to-save": "Ingen vedlegg å lagre",

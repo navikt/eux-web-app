@@ -103,8 +103,8 @@ export interface OpprettSakSelector {
 }
 
 const mapState = (state: State): OpprettSakSelector => ({
-  alertStatus: state.alert.clientErrorStatus as AlertStatus,
-  alertMessage: state.alert.clientErrorMessage,
+  alertStatus: state.alert.stripeStatus as AlertStatus,
+  alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type,
 
   enheter: state.app.enheter,
@@ -739,7 +739,6 @@ const OpprettSak: React.FC = (): JSX.Element => {
                   </div>
                 </AlertStripe>
               </Column>
-              <Column />
             </Row>
           )}
           <AbortModal

@@ -43,7 +43,7 @@ export interface VedleggSelector {
 }
 
 const mapState = (state: State): VedleggSelector => ({
-  alertMessage: state.alert.clientErrorMessage,
+  alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type,
   vedlegg: state.vedlegg.vedlegg,
   rinasaksnummer: state.vedlegg.rinasaksnummer,

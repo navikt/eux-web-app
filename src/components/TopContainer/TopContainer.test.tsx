@@ -9,7 +9,7 @@ jest.mock('react-router-dom', () => ({
 }))
 
 const defaultSelector: TopContainerSelector = {
-  serverErrorMessage: undefined,
+  bannerMessage: undefined,
   error: undefined,
   highContrast: false
 }
@@ -51,7 +51,7 @@ describe('components/TopContainer', () => {
 
   it('Compute the client error message', () => {
     (clientClear as jest.Mock).mockReset()
-    stageSelector(defaultSelector, { serverErrorMessage: 'mockMessage|mockParams' })
+    stageSelector(defaultSelector, { bannerMessage: 'mockMessage|mockParams' })
     wrapper = mount(
       <TopContainer {...initialMockProps}>
         <div id='TEST_CHILD' />

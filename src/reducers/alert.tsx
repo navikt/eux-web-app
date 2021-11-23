@@ -8,25 +8,30 @@ import React from 'react'
 import { Action } from 'redux'
 
 export interface AlertState {
-  clientErrorStatus: string | undefined
-  clientErrorMessage: JSX.Element | string | undefined
-  serverErrorMessage: string | undefined
+  stripeStatus: string | undefined
+  stripeMessage: JSX.Element | string | undefined
+  bannerStatus: string | undefined
+  bannerMessage: string | undefined
   uuid: string | undefined
   error: any | undefined
   type: string | undefined
 }
 
 export const initialAlertState: AlertState = {
-  clientErrorStatus: undefined,
-  clientErrorMessage: undefined,
-  serverErrorMessage: undefined,
+  stripeStatus: undefined,
+  stripeMessage: undefined,
+  bannerStatus: undefined,
+  bannerMessage: undefined,
   uuid: undefined,
   error: undefined,
   type: undefined
 }
 
 const alertReducer = (state: AlertState = initialAlertState, action: Action | ActionWithPayload = { type: '' }): AlertState => {
-  let clientErrorMessage: JSX.Element | string | undefined, serverErrorMessage: string, clientErrorStatus: string
+  let stripeMessage: JSX.Element | string | undefined,
+    bannerMessage: string,
+    stripeStatus: string,
+    bannerStatus: string
 
   if (
     action.type === types.ALERT_CLIENT_CLEAR ||
@@ -39,25 +44,30 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
     return initialAlertState
   }
 
+  /**
+   * All ERROR MESSAGES go here, to banner alert
+   */
   if (_.endsWith(action.type, '/ERROR')) {
+    bannerStatus = 'ERROR'
     switch (action.type) {
       case types.SERVER_INTERNAL_ERROR:
-        serverErrorMessage = i18n.t('message:error-serverInternalError')
+        bannerMessage = i18n.t('message:error-serverInternalError')
         break
 
       case types.SERVER_UNAUTHORIZED_ERROR:
-        serverErrorMessage = i18n.t('message:error-serverAuthenticationError')
+        bannerMessage = i18n.t('message:error-serverAuthenticationError')
         break
 
       default:
-        serverErrorMessage = (action as ActionWithPayload).payload.message || i18n.t('message:error-serverInternalError')
+        bannerMessage = (action as ActionWithPayload).payload.message || i18n.t('message:error-serverInternalError')
         break
     }
 
     return {
       ...state,
       type: action.type,
-      serverErrorMessage: serverErrorMessage,
+      bannerMessage: bannerMessage,
+      bannerStatus: bannerStatus,
       error: (action as ActionWithPayload).payload
         ? _.isString((action as ActionWithPayload).payload.error)
             ? (action as ActionWithPayload).payload.error
@@ -67,30 +77,32 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
     }
   }
 
+  /**
+   * All FAILURE MESSAGES go here, to stripe alert
+   */
   if (_.endsWith(action.type, '/FAILURE')) {
-    clientErrorStatus = 'ERROR'
-
+    stripeStatus = 'ERROR'
     switch (action.type) {
       case types.SAK_PERSON_GET_FAILURE:
-        clientErrorMessage = i18n.t('message:error-person-notFound')
+        stripeMessage = i18n.t('message:error-person-notFound')
         break
 
       case types.SAK_PERSON_RELATERT_SEARCH_FAILURE:
-        clientErrorMessage = i18n.t('message:error-personRelated-notFound')
+        stripeMessage = i18n.t('message:error-personRelated-notFound')
         break
 
       case types.SAK_ABROADPERSON_ADD_FAILURE:
-        clientErrorMessage = i18n.t('message:error-abroadperson-exists')
+        stripeMessage = i18n.t('message:error-abroadperson-exists')
         break
 
       case types.SAK_TPSPERSON_ADD_FAILURE:
-        clientErrorMessage = i18n.t('message:error-tpsperson-exists')
+        stripeMessage = i18n.t('message:error-tpsperson-exists')
         break
 
       case types.SVARSED_SED_CREATE_FAILURE:
         if ((action as ActionWithPayload).status === 409) {
           const url = (action as ActionWithPayload).context.sakUrl
-          clientErrorMessage = (
+          stripeMessage = (
             <FlexDiv>
               <span>{i18n.t('message:error-svarsed-failure-duplicate')}</span>
               <HorizontalSeparatorDiv size='0.5' />
@@ -104,17 +116,17 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
             </FlexDiv>
           )
         } else {
-          clientErrorMessage = i18n.t('message:error-svarsed-failure')
+          stripeMessage = i18n.t('message:error-svarsed-failure')
         }
         break
 
       default:
         if ((action as ActionWithPayload).payload && (action as ActionWithPayload).payload.error) {
-          clientErrorMessage = _.isString((action as ActionWithPayload).payload.error)
+          stripeMessage = _.isString((action as ActionWithPayload).payload.error)
             ? (action as ActionWithPayload).payload.error
             : (action as ActionWithPayload).payload.error?.message
         } else {
-          clientErrorMessage = i18n.t('ui:error')
+          stripeMessage = i18n.t('ui:error')
         }
         break
     }
@@ -122,8 +134,8 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
     return {
       ...state,
       type: action.type,
-      clientErrorStatus: clientErrorMessage ? clientErrorStatus : undefined,
-      clientErrorMessage: clientErrorMessage,
+      stripeStatus: stripeMessage ? stripeStatus : undefined,
+      stripeMessage: stripeMessage,
       error: (action as ActionWithPayload).payload
         ? _.isString((action as ActionWithPayload).payload.error)
             ? (action as ActionWithPayload).payload.error
@@ -133,22 +145,44 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
     }
   }
 
-  if (action.type === types.LOCALSTORAGE_ENTRY_SAVE) {
-    clientErrorMessage = i18n.t('message:success-svarsed-localstorage-save')
-  }
-  if (action.type === types.SVARSED_REPLYSED_SET) {
-    clientErrorMessage = undefined
+  /**
+   * All OK MESSAGES for banner go here
+   */
+  if (action.type === types.APP_CLIPBOARD_COPY) {
+    bannerStatus = 'OK'
+    bannerMessage = i18n.t('message:success-clipboard-copy')
+    return {
+      ...state,
+      type: action.type,
+      bannerStatus: bannerStatus,
+      bannerMessage: bannerMessage,
+      uuid: undefined,
+      error: undefined
+    }
   }
 
-  if (!clientErrorMessage) {
+  /**
+   * All OK MESSAGES for stripe go here
+   */
+
+  stripeStatus = 'OK'
+
+  if (action.type === types.LOCALSTORAGE_ENTRY_SAVE) {
+    stripeMessage = i18n.t('message:success-svarsed-localstorage-save')
+  }
+  if (action.type === types.SVARSED_REPLYSED_SET) {
+    stripeMessage = undefined
+  }
+
+  if (!stripeMessage) {
     return state
   }
 
   return {
     ...state,
     type: action.type,
-    clientErrorStatus: 'OK',
-    clientErrorMessage: clientErrorMessage,
+    stripeStatus: stripeStatus,
+    stripeMessage: stripeMessage,
     uuid: undefined,
     error: undefined
   }

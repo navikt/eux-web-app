@@ -285,6 +285,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
 
   const options: Array<PersonManagerOption> = [
     { label: t('el:option-personmanager-1'), value: 'personopplysninger', component: PersonOpplysninger, type: ['F', 'PD'], person: true, barn: true },
+    { label: t('el:option-personmanager-12'), value: 'personopplysninger', component: PersonOpplysninger, type: 'H', person: true },
     { label: t('el:option-personmanager-2'), value: 'nasjonaliteter', component: Nasjonaliteter, type: 'F', person: true, barn: true },
     { label: t('el:option-personmanager-3'), value: 'adresser', component: Adresser, type: ['F', 'H'], person: true, barn: true },
     { label: t('el:option-personmanager-4'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: 'F', person: true },
@@ -304,7 +305,6 @@ const PersonManager: React.FC<PersonManagerProps> = ({
     { label: t('el:option-personmanager-18'), value: 'sisteansettelsesforhold', component: SisteAnsettelsesForhold, type: ['U002', 'U017'], person: true },
     { label: t('el:option-personmanager-19'), value: 'grunntilopphør', component: GrunnTilOpphør, type: ['U002', 'U017'], person: true },
     { label: t('el:option-personmanager-20'), value: 'periodefordagpenger', component: PeriodeForDagpenger, type: ['U002', 'U017'], person: true },
-    { label: t('el:option-personmanager-12'), value: 'personopplysninger', component: PersonOpplysninger, type: 'H', person: true },
     { label: t('el:option-personmanager-21'), value: 'svarpåforespørsel', component: SvarPåForespørsel, type: 'H', person: true, barn: true }
   ]
 

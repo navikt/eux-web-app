@@ -6,7 +6,7 @@ import Header from 'components/Header/Header'
 import Modal from 'components/Modal/Modal'
 import SessionMonitor from 'components/SessionMonitor/SessionMonitor'
 import Version from 'components/Version/Version'
-import { ModalContent } from 'declarations/components'
+import { AlertStatus, ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
 import NavHighContrast, {
@@ -92,7 +92,8 @@ export interface TopContainerProps {
 }
 
 export interface TopContainerSelector {
-  serverErrorMessage: string | undefined
+  bannerStatus: string | undefined
+  bannerMessage: string | undefined
   error: any | undefined
   expirationTime: Date | undefined
   highContrast: boolean
@@ -100,7 +101,8 @@ export interface TopContainerSelector {
 }
 
 const mapState = (state: State): TopContainerSelector => ({
-  serverErrorMessage: state.alert.serverErrorMessage,
+  bannerStatus: state.alert.bannerStatus,
+  bannerMessage: state.alert.bannerMessage,
   error: state.alert.error,
   expirationTime: state.app.expirationTime,
   highContrast: state.ui.highContrast,
@@ -111,7 +113,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
   className, children, title
 }: TopContainerProps): JSX.Element => {
   const {
-    serverErrorMessage, error, expirationTime, highContrast, modal
+    bannerMessage, bannerStatus, error, expirationTime, highContrast, modal
   }: TopContainerSelector = useSelector<State, TopContainerSelector>(mapState)
   const dispatch = useDispatch()
   const { t } = useTranslation()
@@ -120,8 +122,8 @@ export const TopContainer: React.FC<TopContainerProps> = ({
     dispatch(clientClear())
   }
 
-  const getServerErrorMessage = (): string | undefined => {
-    return serverErrorMessage ? t(serverErrorMessage) : undefined
+  const getbannerMessage = (): string | undefined => {
+    return bannerMessage ? t(bannerMessage) : undefined
   }
 
   if (_.isNil(window.onerror)) {
@@ -158,7 +160,8 @@ export const TopContainer: React.FC<TopContainerProps> = ({
       >
         <Header title={title} />
         <Alert
-          message={getServerErrorMessage()}
+          message={getbannerMessage()}
+          status={bannerStatus as AlertStatus}
           error={error}
           onClose={onClear}
         />

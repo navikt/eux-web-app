@@ -14,9 +14,9 @@ jest.mock('components/Alert/Alert', () => {
 
 const defaultSelector = {
   clientErrorParam: undefined,
-  clientErrorStatus: undefined,
-  clientErrorMessage: undefined,
-  serverErrorMessage: undefined,
+  stripeStatus: undefined,
+  stripeMessage: undefined,
+  bannerMessage: undefined,
   error: undefined
 }
 
@@ -51,8 +51,8 @@ describe('components/SEDAttachmentModal', () => {
 
   it('Render: show alert inside modal if there is an error', () => {
     stageSelector(defaultSelector, {
-      clientErrorStatus: 'ERROR',
-      clientErrorMessage: 'something'
+      stripeStatus: 'ERROR',
+      stripeMessage: 'something'
     })
     wrapper = mount(<SEDAttachmentModal {...initialMockProps} />)
     expect(wrapper.exists('[data-test-id=\'mock-c-alert\']')).toBeTruthy()

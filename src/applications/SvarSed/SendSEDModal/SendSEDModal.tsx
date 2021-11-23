@@ -84,7 +84,7 @@ interface SendSEDModalProps {
 }
 
 const mapState = (state: State): SendSEDSelector => ({
-  alertMessage: state.alert.clientErrorMessage,
+  alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type,
   creatingSvarSed: state.loading.creatingSvarSed,
   sedCreatedResponse: state.svarsed.sedCreatedResponse,

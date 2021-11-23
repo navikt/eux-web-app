@@ -134,7 +134,7 @@
 3.7 Annet (ansettelsesforhold)
 |  |  |--topmostSubform[0].Page2[0].Other_employment[0] = ,         PDTextField => 3.7
 3.8 Annet (selvstendig næringsvirksomhet)
-|  |  |--topmostSubform[0].Page2[0].Other_self_employment[0] = ,    PDTextFieldb=> 3.8
+|  |  |--topmostSubform[0].Page2[0].Other_self_employment[0] = ,    PDTextField => 3.8
 
 4. ANDRE MOTTATTE UTBETALINGER
 Innehaver

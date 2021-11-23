@@ -81,7 +81,7 @@ export interface SEDEditProps {
 
 const mapState = (state: State): any => ({
   alertType: state.alert.type,
-  alertMessage: state.alert.clientErrorMessage,
+  alertMessage: state.alert.stripeMessage,
   creatingSvarSed: state.loading.creatingSvarSed,
   gettingPreviewFile: state.loading.gettingPreviewFile,
   highContrast: state.ui.highContrast,

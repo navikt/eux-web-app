@@ -1,6 +1,6 @@
-import { Close, Edit, Email, Search, Send, Star } from '@navikt/ds-icons'
+import { Close, Copy, Edit, Email, Search, Send, Star } from '@navikt/ds-icons'
 import validator from '@navikt/fnrvalidator'
-import * as appActions from 'actions/app'
+import { cleanData, copyToClipboard } from 'actions/app'
 import { setCurrentEntry } from 'actions/localStorage'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import * as svarsedActions from 'actions/svarsed'
@@ -71,7 +71,7 @@ const SEDPanel = styled(HighContrastPanel)`
 `
 
 const mapState = (state: State): any => ({
-  alertMessage: state.alert.clientErrorMessage,
+  alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type,
   featureToggles: state.app.featureToggles,
   highContrast: state.ui.highContrast,
@@ -121,7 +121,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
 
   const onSaksnummerOrFnrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value
-    dispatch(appActions.cleanData())
+    dispatch(cleanData())
     _resetValidation(namespace + '-saksnummerOrFnr')
     _setSaksnummerOrFnr(query)
     const result = validator.idnr(query)
@@ -429,10 +429,22 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                         <HorizontalSeparatorDiv />
                         <HighContrastLink target='_blank' href={sed.sakUrl}>
                           <span>
-                            {t('label:gå-til-rina')}
+                            {t('label:sak-i-rina')}
                           </span>
                           <HorizontalSeparatorDiv size='0.35' />
                           <ExternalLink />
+                        </HighContrastLink>
+                        <HorizontalSeparatorDiv />
+                        <HighContrastLink onClick={(e: any) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          dispatch(copyToClipboard(sed.sakId))
+                        }}>
+                          <span>
+                            {t('label:kopiere')}
+                          </span>
+                          <HorizontalSeparatorDiv size='0.35' />
+                          <Copy />
                         </HighContrastLink>
                       </LeftDiv>
                       <FlexDiv>

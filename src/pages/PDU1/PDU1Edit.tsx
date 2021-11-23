@@ -60,7 +60,7 @@ export interface PDU1EditProps {
 
 const mapState = (state: State): any => ({
   alertType: state.alert.type,
-  alertMessage: state.alert.clientErrorMessage,
+  alertMessage: state.alert.stripeMessage,
   completingPdu1: state.loading.completingPdu1,
   gettingPreviewPdu1: state.loading.gettingPreviewPdu1,
   previewPdu1: state.pdu1.previewPdu1,

@@ -24,7 +24,7 @@ describe('reducers/alert', () => {
     ).toEqual({
       ...initialAlertState,
       type: types.SERVER_INTERNAL_ERROR,
-      serverErrorMessage: 'message:error-serverInternalError',
+      bannerMessage: 'message:error-serverInternalError',
       error: 'mockPayload'
     })
   })
@@ -40,7 +40,7 @@ describe('reducers/alert', () => {
     ).toEqual({
       ...initialAlertState,
       type: types.SERVER_UNAUTHORIZED_ERROR,
-      serverErrorMessage: 'message:error-serverAuthenticationError',
+      bannerMessage: 'message:error-serverAuthenticationError',
       error: 'mockPayload'
     })
   })
@@ -53,8 +53,8 @@ describe('reducers/alert', () => {
       })
     ).toEqual({
       ...initialAlertState,
-      clientErrorMessage: 'ui:error',
-      clientErrorStatus: 'ERROR',
+      stripeMessage: 'ui:error',
+      stripeStatus: 'ERROR',
       type: 'UNKNOWN/FAILURE'
     })
   })
