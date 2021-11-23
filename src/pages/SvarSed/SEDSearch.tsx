@@ -439,7 +439,8 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                           e.preventDefault()
                           e.stopPropagation()
                           dispatch(copyToClipboard(sed.sakId))
-                        }}>
+                        }}
+                        >
                           <span>
                             {t('label:kopiere')}
                           </span>

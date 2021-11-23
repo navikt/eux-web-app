@@ -2,7 +2,7 @@ import { Add } from '@navikt/ds-icons'
 import { updateArbeidsgivere } from 'actions/arbeidsgiver'
 import { fetchInntekt } from 'actions/inntekt'
 import { resetValidation } from 'actions/validation'
-import AdresseFC from 'applications/SvarSed/PersonManager/Adresser/Adresse'
+import AdresseForm from 'applications/SvarSed/PersonManager/Adresser/AdresseForm'
 import IdentifikatorFC from 'applications/SvarSed/PersonManager/Identifikator/Identifikator'
 import InntektSearch from 'applications/SvarSed/PersonManager/InntektSearch/InntektSearch'
 import { PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
@@ -311,7 +311,7 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AdresseFC
+      <AdresseForm
         adresse={_newAdresse}
         onAdressChanged={setAdresse}
         namespace={namespace + '-adresse'}

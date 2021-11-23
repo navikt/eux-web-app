@@ -9,6 +9,7 @@ I have to decide once and for all what is the id (orgnr + stardato) and check va
 Move to ds-react, ds-icons
 Validation - better system for personName
   - Better system that opens forms when clicking validation error
+  - Better way to deal with reset bvalidation for duplicate items (have to reset both)
 update ids.txt, better uniform namespace (camelcase, etc)
 Still have to properly fix registrering
 check all forms for onRemove(index or element), onAdd, etc

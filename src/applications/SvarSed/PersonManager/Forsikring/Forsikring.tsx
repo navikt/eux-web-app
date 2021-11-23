@@ -13,7 +13,7 @@ import {
   Vacation
 } from '@navikt/ds-icons'
 import { resetValidation } from 'actions/validation'
-import AdresseFC from 'applications/SvarSed/PersonManager/Adresser/Adresse'
+import AdresseForm from 'applications/SvarSed/PersonManager/Adresser/AdresseForm'
 import InntektOgTimerFC from 'applications/SvarSed/PersonManager/Forsikring/InntektOgTimer/InntektOgTimer'
 import {
   validateForsikringPeriode,
@@ -471,7 +471,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
             <AlignStartRow>
               {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
               <Column>
-                <AdresseFC
+                <AdresseForm
                   adresse={(_periode as PeriodeMedForsikring).arbeidsgiver?.adresse}
                   onAdressChanged={(newAdresse, whatChanged) => setAdresse(newAdresse, whatChanged, _type, _index)}
                   namespace={namespace + idx + '-arbeidsgiver-adresse'}

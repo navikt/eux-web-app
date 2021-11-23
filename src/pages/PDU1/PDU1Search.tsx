@@ -170,7 +170,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
       </Systemtittel>
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow
-        style={{minWidth: '600px'}}
+        style={{ minWidth: '600px' }}
         className={classNames('slideInFromLeft', { feil: validation[namespace + '-search'] })}
       >
         <Column>
@@ -247,7 +247,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
             disabled={!tema || !fagsak || creatingPdu1}
             onClick={onCreatePdu1Clicked}
           >
-            {creatingPdu1 ? t('message:loading') : t('el:button-create-x', { x: 'PD U1' })}
+            {creatingPdu1 ? t('label:laster') : t('el:button-create-x', { x: 'PD U1' })}
           </HighContrastHovedknapp>
         </>
       )}

@@ -1,17 +1,15 @@
-import { Add } from '@navikt/ds-icons'
+import { Sight } from '@navikt/ds-icons'
 import { clientClear } from 'actions/alert'
 import { resetCurrentEntry, saveEntry } from 'actions/localStorage'
 import { completePdu1, getPreviewPdu1, setReplySed, updateReplySed } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import { resetPreviewFile } from 'actions/svarsed'
-import { resetAllValidation, resetValidation, viewValidation } from 'actions/validation'
+import { resetAllValidation, viewValidation } from 'actions/validation'
 import SavePDU1Modal from 'applications/PDU1/SavePDU1Modal/SavePDU1Modal'
 import PersonManager from 'applications/SvarSed/PersonManager/PersonManager'
 import Alert from 'components/Alert/Alert'
-
-import TextArea from 'components/Forms/TextArea'
 import Modal from 'components/Modal/Modal'
-import { AlertstripeDiv, TextAreaDiv } from 'components/StyledComponents'
+import { AlertstripeDiv } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
 import { ReplyPdu1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
@@ -22,7 +20,6 @@ import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
 import { VenstreChevron } from 'nav-frontend-chevron'
 import {
-  Column,
   FlexCenterSpacedDiv,
   FlexDiv,
   HighContrastFlatknapp,
@@ -30,7 +27,6 @@ import {
   HighContrastKnapp,
   HorizontalSeparatorDiv,
   PaddedDiv,
-  Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import ValidationBox from 'pages/SvarSed/ValidationBox'
@@ -86,12 +82,10 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
     replyPdu1,
     completePdu1Response,
     highContrast,
-    validation,
     view
   }: PDU1EditSelector = useSelector<State, PDU1EditSelector>(mapState)
   const currentEntry = useSelector<State, LocalStorageEntry<ReplyPdu1> | undefined>(
     (state) => state.localStorage.pdu1.currentEntry)
-  const namespace = 'pdu1editor'
 
   const [previewModal, setPreviewModal] = useState<boolean>(false)
   const [viewSavePdu1Modal, setViewSavePdu1Modal] = useState<boolean>(false)
@@ -139,13 +133,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
     changeMode('A', 'back')
     dispatch(resetCurrentEntry('pdu1'))
     document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
-  }
-
-  const setComment = (comment: string) => {
-    dispatch(updateReplySed('bruker.ytterligereInfo', comment))
-    if (validation[namespace + '-ytterligereInfo']) {
-      dispatch(resetValidation(namespace + '-ytterligereInfo'))
-    }
   }
 
   useEffect(() => {
@@ -210,23 +197,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
         viewValidation={view}
       />
       <VerticalSeparatorDiv size='2' />
-      <Row>
-        <Column flex='2'>
-          <TextAreaDiv>
-            <TextArea
-              namespace={namespace}
-              feil={validation[namespace + '-ytterligereInfo']?.feilmelding}
-              id='ytterligereInfo'
-              label={t('label:ytterligere-informasjon-til-sed')}
-              onChanged={setComment}
-              placeholder={t('el:placeholder-sed')}
-              value={replyPdu1?.bruker?.ytterligereInfo}
-            />
-          </TextAreaDiv>
-        </Column>
-        <Column />
-      </Row>
-      <VerticalSeparatorDiv size='2' />
       <HighContrastFlatknapp
         mini
         kompakt
@@ -235,9 +205,9 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
         data-amplitude='pdu1.editor.preview'
         onClick={onPreviewPdu1Clicked}
       >
-        <Add />
+        <Sight />
         <HorizontalSeparatorDiv size='0.5' />
-        {gettingPreviewPdu1 ? t('label:laster-ned-filen') : t('label:forhåndsvis-sed')}
+        {gettingPreviewPdu1 ? t('label:laster-ned-filen') : t('el:button-preview-x', { x: 'PD U1' })}
       </HighContrastFlatknapp>
       <VerticalSeparatorDiv size='2' />
       <ValidationBox />
@@ -265,7 +235,9 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
             mini
             onClick={onSavePdu1Click}
           >
-            {_.isNil(currentEntry) ? t('el:button-save-draft') : t('el:button-update-draft')}
+            {_.isNil(currentEntry)
+              ? t('el:button-save-draft-x', { x: t('label:replySed') })
+              : t('el:button-update-draft-x', { x: t('label:replySed') })}
           </HighContrastKnapp>
           <VerticalSeparatorDiv size='0.5' />
         </div>

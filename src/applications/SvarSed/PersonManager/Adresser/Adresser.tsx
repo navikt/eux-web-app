@@ -29,7 +29,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getFnr } from 'utils/fnr'
 import { getIdx } from 'utils/namespace'
-import Adresse from './Adresse'
+import AdresseForm from './AdresseForm'
 import { validateAdresse, ValidationAddressProps } from './validation'
 
 interface AdresserSelector extends PersonManagerFormSelector {
@@ -198,7 +198,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
               <VerticalSeparatorDiv />
             </div>
           )}
-          <Adresse
+          <AdresseForm
             key={namespace + idx + getId(index < 0 ? _newAdresse : _adresse)}
             namespace={namespace + idx}
             adresse={index < 0 ? _newAdresse : _adresse}

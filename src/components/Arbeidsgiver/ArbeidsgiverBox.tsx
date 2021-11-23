@@ -1,5 +1,5 @@
 import { Add, Close, Edit, Office1 } from '@navikt/ds-icons'
-import AdresseFC from 'applications/SvarSed/PersonManager/Adresser/Adresse'
+import AdresseForm from 'applications/SvarSed/PersonManager/Adresser/AdresseForm'
 import IdentifikatorFC from 'applications/SvarSed/PersonManager/Identifikator/Identifikator'
 import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
@@ -249,7 +249,7 @@ const ArbeidsgiverBox = ({
                         <HorizontalSeparatorDiv />
                         <div>
                           <VerticalSeparatorDiv size='0.5' />
-                          <AdresseFC
+                          <AdresseForm
                             adresse={_adresse}
                             onAdressChanged={_setAdresse}
                             namespace={_namespace}

@@ -1,5 +1,5 @@
 import { resetValidation } from 'actions/validation'
-import AdresseFC from 'applications/SvarSed/PersonManager/Adresser/Adresse'
+import AdresseForm from 'applications/SvarSed/PersonManager/Adresser/AdresseForm'
 import { standardLogger } from 'metrics/loggers'
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
 import {
@@ -357,7 +357,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
               <Column />
             </AlignStartRow>
             <VerticalSeparatorDiv />
-            <AdresseFC
+            <AdresseForm
               adresse={(index < 0 ? _newAdresse : periodeDagpenger?.institusjon.idmangler?.adresse)}
               onAdressChanged={(a) => setAdresse(a, index)}
               namespace={namespace + '-institusjon-idmangler-adresse'}

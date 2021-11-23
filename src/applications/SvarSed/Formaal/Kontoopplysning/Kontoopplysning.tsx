@@ -1,6 +1,6 @@
 import { resetValidation } from 'actions/validation'
 import { FormålManagerFormProps, FormålManagerFormSelector, mapState } from 'applications/SvarSed/Formaal/FormålManager'
-import Adresse from 'applications/SvarSed/PersonManager/Adresser/Adresse'
+import AdresseForm from 'applications/SvarSed/PersonManager/Adresser/AdresseForm'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
@@ -243,7 +243,7 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
             </Column>
           </AlignStartRow>
           <VerticalSeparatorDiv />
-          <Adresse
+          <AdresseForm
             adresse={utbetalingTilInstitusjon?.kontoOrdinaer?.adresse ?? {}}
             onAdressChanged={setOrdinaerAdresse}
             namespace={namespace + '-kontoOrdinaer'}

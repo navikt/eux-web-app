@@ -1,4 +1,4 @@
-import { Add } from '@navikt/ds-icons'
+import { Sight } from '@navikt/ds-icons'
 import { clientClear } from 'actions/alert'
 import { resetCurrentEntry, saveEntry } from 'actions/localStorage'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
@@ -361,6 +361,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({
             <TextArea
               namespace={namespace}
               feil={validation[namespace + '-ytterligereInfo']?.feilmelding}
+              key={namespace + '-' + replySed?.sedType}
               id='ytterligereInfo'
               label={t('label:ytterligere-informasjon-til-sed')}
               onChanged={setComment}
@@ -385,9 +386,9 @@ const SEDEdit: React.FC<SEDEditProps> = ({
         data-amplitude='svarsed.editor.preview'
         onClick={onPreviewSed}
       >
-        <Add />
+        <Sight />
         <HorizontalSeparatorDiv size='0.5' />
-        {gettingPreviewFile ? t('label:laster-ned-filen') : t('label:forhåndsvis-sed')}
+        {gettingPreviewFile ? t('label:laster-ned-filen') : t('el:button-preview-x', { x: 'SED' })}
       </HighContrastFlatknapp>
       <VerticalSeparatorDiv size='2' />
       <ValidationBox />

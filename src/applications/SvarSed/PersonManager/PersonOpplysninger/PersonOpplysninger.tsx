@@ -48,6 +48,7 @@ const mapState = (state: State): PersonOpplysningerSelector => ({
 })
 
 const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
+  options,
   parentNamespace,
   personID,
   personName,
@@ -273,7 +274,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
     )
     // hide the Norwegian pins. We are doing this to preserve index numbers,
     // so when we are deleting / changing elements, pin array keeps the order
-    if (pin?.land === 'NO') {
+    if (pin?.land === 'NO' || options.utenlandsk === false) {
       return <div />
     }
     return (
@@ -296,10 +297,10 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
           <Column>
             <CountrySelect
               closeMenuOnSelect
-              data-test-id={namespace + '-pin-land'}
+              data-test-id={namespace + '-pin' + idx + '-land'}
               error={getErrorFor(index, 'land')}
               flagWave
-              id={namespace + '-pin-land'}
+              id={namespace + '-pin' + idx + '-land'}
               includeList={landUtenNorge}
               key={namespace + '-pin' + idx + '-land-' + (index < 0 ? _newLand : pin?.land)}
               label={t('label:land')}
@@ -399,21 +400,23 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv />
       {_seeNewForm
         ? renderRow(null, -1)
-        : (
-          <Row>
-            <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
-                onClick={() => _setSeeNewForm(true)}
-              >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
-                {t('el:button-add-new-x', { x: t('label:utenlandsk-pin').toLowerCase() })}
-              </HighContrastFlatknapp>
-            </Column>
-          </Row>
-          )}
+        : options.utenlandsk === false
+          ? <div />
+          : (
+            <Row>
+              <Column>
+                <HighContrastFlatknapp
+                  mini
+                  kompakt
+                  onClick={() => _setSeeNewForm(true)}
+                >
+                  <Add />
+                  <HorizontalSeparatorDiv size='0.5' />
+                  {t('el:button-add-new-x', { x: t('label:utenlandsk-pin').toLowerCase() })}
+                </HighContrastFlatknapp>
+              </Column>
+            </Row>
+            )}
       <VerticalSeparatorDiv />
       <label className='skjemaelement__label'>
         {t('label:norsk-fnr')}

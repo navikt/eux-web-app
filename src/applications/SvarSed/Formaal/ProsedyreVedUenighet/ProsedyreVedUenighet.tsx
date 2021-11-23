@@ -125,8 +125,8 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
     }
   }
 
-  const setYtterligereGrunner = (newYtterligereInfo: string) => {
-    dispatch(updateReplySed(`${target}.ytterligereGrunner`, newYtterligereInfo.trim()))
+  const setYtterligereGrunner = (newYtterligereGrunner: string) => {
+    dispatch(updateReplySed(`${target}.ytterligereGrunner`, newYtterligereGrunner.trim()))
     if (validation[namespace + '-ytterligereGrunner']) {
       dispatch(resetValidation(namespace + '-ytterligereGrunner'))
     }
