@@ -16,7 +16,7 @@ let branchName = process.env.BRANCH_NAME || 'unknown';
 if (branchName === 'unknown') {
   branchName = await git.branch();
 }
-const describe = await git.raw('describe');
+const describe = await git.raw('describe --always --dirty --abbrev=8 --exclude \'*\'');
 
 const {
   dependencies: {
