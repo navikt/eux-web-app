@@ -1,16 +1,18 @@
-import { Sight } from '@navikt/ds-icons'
-import { clientClear } from 'actions/alert'
+import { Download, Sight } from '@navikt/ds-icons'
 import { resetCurrentEntry, saveEntry } from 'actions/localStorage'
-import { completePdu1, getPreviewPdu1, setReplySed, updateReplySed } from 'actions/pdu1'
+import {
+  completePdu1,
+  getPreviewPdu1,
+  resetCompletePdu1,
+  resetPreviewFile,
+  setReplySed,
+  updateReplySed
+} from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
-import { resetPreviewFile } from 'actions/svarsed'
 import { resetAllValidation, viewValidation } from 'actions/validation'
 import SavePDU1Modal from 'applications/PDU1/SavePDU1Modal/SavePDU1Modal'
 import PersonManager from 'applications/SvarSed/PersonManager/PersonManager'
-import Alert from 'components/Alert/Alert'
 import Modal from 'components/Modal/Modal'
-import { AlertstripeDiv } from 'components/StyledComponents'
-import * as types from 'constants/actionTypes'
 import { ReplyPdu1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { LocalStorageEntry, Validation } from 'declarations/types'
@@ -20,24 +22,26 @@ import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
 import { VenstreChevron } from 'nav-frontend-chevron'
 import {
+  FlexCenterDiv,
   FlexCenterSpacedDiv,
   FlexDiv,
   HighContrastFlatknapp,
   HighContrastHovedknapp,
   HighContrastKnapp,
+  HighContrastLink,
   HorizontalSeparatorDiv,
   PaddedDiv,
+  PileCenterDiv,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import ValidationBox from 'pages/SvarSed/ValidationBox'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import { convertToPayloadPdu1 } from 'utils/pdu1'
 import { validatePDU1Edit, ValidationPDU1EditProps } from './mainValidation'
 
 export interface PDU1EditSelector {
-  alertType: string | undefined
-  alertMessage: JSX.Element | string | undefined
   completingPdu1: boolean
   gettingPreviewPdu1: boolean
   highContrast: boolean
@@ -55,8 +59,6 @@ export interface PDU1EditProps {
 }
 
 const mapState = (state: State): any => ({
-  alertType: state.alert.type,
-  alertMessage: state.alert.stripeMessage,
   completingPdu1: state.loading.completingPdu1,
   gettingPreviewPdu1: state.loading.gettingPreviewPdu1,
   previewPdu1: state.pdu1.previewPdu1,
@@ -74,8 +76,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const {
-    alertType,
-    alertMessage,
     completingPdu1,
     gettingPreviewPdu1,
     previewPdu1,
@@ -88,6 +88,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
     (state) => state.localStorage.pdu1.currentEntry)
 
   const [previewModal, setPreviewModal] = useState<boolean>(false)
+  const [completeModal, setCompleteModal] = useState<boolean>(false)
   const [viewSavePdu1Modal, setViewSavePdu1Modal] = useState<boolean>(false)
   const performValidation = useGlobalValidation<ValidationPDU1EditProps>(validatePDU1Edit)
 
@@ -99,7 +100,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
       })
       dispatch(viewValidation())
       if (valid) {
-        dispatch(completePdu1(newReplyPdu1))
+        dispatch(completePdu1(convertToPayloadPdu1(newReplyPdu1)))
         dispatch(resetAllValidation())
         buttonLogger(e)
       }
@@ -119,6 +120,11 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
   const resetPreview = () => {
     dispatch(resetPreviewFile())
     setPreviewModal(false)
+  }
+
+  const resetComplete = () => {
+    dispatch(resetCompletePdu1())
+    setCompleteModal(false)
   }
 
   const onPreviewPdu1Clicked = (e: React.ChangeEvent<HTMLButtonElement>) => {
@@ -141,6 +147,14 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
     }
   }, [previewPdu1])
 
+
+  useEffect(() => {
+    if (!completeModal && !_.isNil(completePdu1Response)) {
+      setCompleteModal(true)
+    }
+  }, [completePdu1Response])
+
+
   useEffect(() => {
     dispatch(startPageStatistic('pdu1editor'))
     return () => {
@@ -150,6 +164,41 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
 
   return (
     <PaddedDiv size='0.5'>
+      {completePdu1Response && (
+        <Modal
+        open={completeModal}
+        highContrast={highContrast}
+        modal={{
+          closeButton: true,
+          modalTitle: t('message:success-complete-pdu1'),
+          modalContent: (
+            <FlexCenterDiv style={{minWidth: '400px', minHeight: '100px'}}>
+              <PileCenterDiv style={{alignItems: 'center', width: '100%'}}>
+                <HighContrastLink
+                onClick={(e: any) => {
+                  e.stopPropagation()
+                }}
+                href={'data:application/octet-stream;base64,' + encodeURIComponent(completePdu1Response.content.base64)}
+                download={completePdu1Response.name}
+              >
+                <FlexDiv>
+                  {t('label:last-ned-pdu1')}
+                  <HorizontalSeparatorDiv/>
+                  <Download width={20} />
+                </FlexDiv>
+              </HighContrastLink>
+              </PileCenterDiv>
+            </FlexCenterDiv>
+          ),
+          modalButtons: [{
+            main: true,
+            text: 'OK',
+            onClick: resetComplete
+          }]
+        }}
+        onModalClose={resetComplete}
+      />
+      )}
       <Modal
         open={previewModal}
         highContrast={highContrast}
@@ -236,24 +285,13 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
             onClick={onSavePdu1Click}
           >
             {_.isNil(currentEntry)
-              ? t('el:button-save-draft-x', { x: t('label:replySed') })
-              : t('el:button-update-draft-x', { x: t('label:replySed') })}
+              ? t('el:button-save-draft-x', { x: 'PD U1' })
+              : t('el:button-update-draft-x', { x: 'PD U1' })}
           </HighContrastKnapp>
           <VerticalSeparatorDiv size='0.5' />
         </div>
       </FlexDiv>
       <VerticalSeparatorDiv />
-      {alertMessage && alertType === types.LOCALSTORAGE_ENTRY_SAVE && (
-        <>
-          <FlexDiv>
-            <AlertstripeDiv>
-              <Alert status='OK' message={alertMessage!} onClose={() => dispatch(clientClear())} />
-            </AlertstripeDiv>
-            <div />
-          </FlexDiv>
-          <VerticalSeparatorDiv />
-        </>
-      )}
     </PaddedDiv>
   )
 }

@@ -21,6 +21,10 @@ export const initialPdu1State: Pdu1State = {
 
 const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: Action | ActionWithPayload = { type: '' }): Pdu1State => {
   switch (action.type) {
+
+    case types.APP_CLEAN_DATA:
+      return initialPdu1State
+
     case types.PDU1_FAGSAKER_GET_REQUEST:
       return {
         ...state,
@@ -48,13 +52,54 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: Action | Actio
     case types.PDU1_CREATE_SUCCESS:
       return {
         ...state,
-        replyPdu1: (action as ActionWithPayload).payload
+        replyPdu1: {
+          ...(action as ActionWithPayload).payload,
+          fagsaker: (action as ActionWithPayload).context.fagsaker,
+        }
       }
 
     case types.PDU1_CREATE_FAILURE:
       return {
         ...state,
         replyPdu1: null
+      }
+
+    case types.PDU1_PREVIEW_RESET:
+    case types.PDU1_PREVIEW_REQUEST:
+      return {
+        ...state,
+        previewPdu1: undefined
+      }
+
+    case types.PDU1_PREVIEW_SUCCESS:
+      return {
+        ...state,
+        previewPdu1: (action as ActionWithPayload).payload
+      }
+
+    case types.PDU1_PREVIEW_FAILURE:
+      return {
+        ...state,
+        previewPdu1: null
+      }
+
+    case types.PDU1_COMPLETE_RESET:
+    case types.PDU1_COMPLETE_REQUEST:
+      return {
+        ...state,
+        completePdu1Response: undefined
+      }
+
+    case types.PDU1_COMPLETE_SUCCESS:
+      return {
+        ...state,
+        completePdu1Response: (action as ActionWithPayload).payload
+      }
+
+    case types.PDU1_COMPLETE_FAILURE:
+      return {
+        ...state,
+        completePdu1Response: null
       }
 
     case types.PDU1_REPLYSED_SET:

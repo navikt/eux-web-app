@@ -16,6 +16,7 @@ export interface SimpleInntekt {
 export interface ReplyPdu1 {
   bruker: Person
   type: string
+  fagsaker: string
   perioderAnsattMedForsikring?: Array<PeriodeMedForsikring> // 2.1.1
   perioderSelvstendigMedForsikring?: Array<PeriodeMedForsikring> // 2.1.2
   perioderAnnenForsikring?: Array<PeriodeAnnenForsikring> // 2.1.3

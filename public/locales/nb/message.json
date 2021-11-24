@@ -35,6 +35,7 @@
   "loading-getting-person" : "Hent personinfo...",
   "loading-oppdatering-svarsed" : "Oppdatering svarSED...",
   "loading-opprette-svarsed" : "Oppretter svarSED...",
+  "loading-opprette-pdu1" : "Fullfører PD U1...",
   "loading-replying": "Besvaring...",
   "loading-saker" : "Hent saker...",
   "loading-searching" : "Søker...",
@@ -44,8 +45,9 @@
   "loading-sending-sed" : "Sender SED i RINA...",
   "loading-sending-vedlegg" : "Sender vedlegg...",
 
+  "success-complete-pdu1": "PD U1 fullført",
   "success-clipboard-copy": "Kopiert til utklippstavlen",
-  "success-svarPaSed-localstorage-save": "SvarSED utkastet er lagret",
+  "success-localstorage-save": "Utkastet er lagret",
   "success-x-attachments-total-y-saved": "{{saved}} av {{total}} vedlegg er lagret",
   "success-no-attachments-to-save": "Ingen vedlegg å lagre",
 

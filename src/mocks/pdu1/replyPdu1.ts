@@ -49,7 +49,8 @@ export default {
           by: 'æøå',
           land: 'NO',
           bygning: 'æøå',
-          region: 'æøå'
+          region: 'æøå',
+          type: 'bodsted'
         },
         identifikator: [
           {
@@ -74,7 +75,8 @@ export default {
           by: 'æøå',
           land: 'NO',
           bygning: 'æøå',
-          region: 'æøå'
+          region: 'æøå',
+          type: 'bodsted'
         },
         identifikator: [
           {
@@ -87,6 +89,12 @@ export default {
       startdato: '2001-01-01'
     }
   ],
+
+  grunntilopphor: {
+    typeGrunnOpphoerAnsatt: '01',
+    annenGrunnOpphoerAnsatt: 'annen',
+    grunnOpphoerSelvstendig: 'grunn'
+  },
   rettTilYtelse: {
     bekreftelsesgrunn: 'artikkel_64_i_forordning_EF_nr_883_2004',
     periode: {

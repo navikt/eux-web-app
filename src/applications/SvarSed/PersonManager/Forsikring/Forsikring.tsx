@@ -78,6 +78,7 @@ const mapState = (state: State): ForsikringSelector => ({
 type Sort = 'time' | 'group'
 
 const Forsikring: React.FC<PersonManagerFormProps> = ({
+  options,
   parentNamespace,
   personID,
   personName,
@@ -130,7 +131,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
     { label: t('el:option-forsikring-ANNENPERIODE'), value: 'perioderAnnenForsikring' },
     { label: t('el:option-forsikring-FRIVILLIG'), value: 'perioderFrivilligForsikring' },
     { label: t('el:option-forsikring-FERIE'), value: 'perioderKompensertFerie' }
-  ]
+  ].filter(it => options && options.include ? options.include.indexOf(it.value) >= 0 : true)
 
   const periodeSort = (a: ForsikringPeriode, b: ForsikringPeriode) => moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1
 

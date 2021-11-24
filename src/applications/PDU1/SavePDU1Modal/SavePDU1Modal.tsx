@@ -71,8 +71,8 @@ const SendPDU1Modal = ({
   const performValidation = (): boolean => {
     const validation: Validation = {}
     if (!_name) {
-      validation['savesedmodal-name'] = {
-        skjemaelementId: 'savesedmodal-name',
+      validation['savepdu1modal-name'] = {
+        skjemaelementId: 'savepdu1modal-name',
         feilmelding: t('validation:noNavn')
       } as FeiloppsummeringFeil
     }
@@ -90,9 +90,9 @@ const SendPDU1Modal = ({
         date: dateString,
         content: replyPdu1
       } as LocalStorageEntry
-      dispatch(saveEntry('svarsed', storageKey, newItem))
+      dispatch(saveEntry('pdu1', storageKey, newItem))
       setSaved(true)
-      setMessage(t('label:lagret-sed-utkast', { name: _name, date: dateString }))
+      setMessage(t('label:lagret-pdu1-utkast', { name: _name, date: dateString }))
     }
   }
 
@@ -105,7 +105,7 @@ const SendPDU1Modal = ({
         modalContent: (
           <MinimalModalDiv>
             <Undertittel>
-              {t('label:save-sed')}
+              {t('label:save-pdu1')}
             </Undertittel>
             <VerticalSeparatorDiv />
             {_message && (
@@ -125,9 +125,9 @@ const SendPDU1Modal = ({
                     <div>
                       <FlexCenterSpacedDiv>
                         <HighContrastInput
-                          data-test-id='savesedmodal-name'
-                          feil={_validation['savesedmodal-name']?.feilmelding}
-                          id='savesedmodal-name'
+                          data-test-id='savepdu1modal-name'
+                          feil={_validation['savepdu1modal-name']?.feilmelding}
+                          id='savepdu1modal-name'
                           label={t('label:navn')}
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                           placeholder={t('el:placeholder-input-default')}
@@ -148,7 +148,7 @@ const SendPDU1Modal = ({
                         mini
                         onClick={onSave}
                       >
-                        {t('el:button-save-draft')}
+                        {t('el:button-save-draft-x', {x: 'PD U1'})}
                       </HighContrastHovedknapp>
                       <HorizontalSeparatorDiv />
                       <HighContrastFlatknapp

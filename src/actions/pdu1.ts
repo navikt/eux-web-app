@@ -1,11 +1,10 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { ReplyPdu1 } from 'declarations/pd'
+import { PayloadPdu1, ReplyPdu1 } from 'declarations/pd'
 import { FagSaker, UpdateReplyPdu1Payload } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockFagsakerList from 'mocks/fagsakerList'
 import mockCreatePdu1 from 'mocks/pdu1/replyPdu1'
-import mockCompletePdu1 from 'mocks/pdu1/complete'
 import mockPreviewPdu1 from 'mocks/pdu1/preview'
 import { ActionCreator } from 'redux'
 import File from 'forhandsvisningsfil'
@@ -48,6 +47,10 @@ export const createPdu1: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>>
       fagsak: fagsak
     }),
     expectedPayload: mockCreatePdu1,
+    context: {
+      fnr: fnr,
+      fagsak: fagsak
+    },
     type: {
       request: types.PDU1_CREATE_REQUEST,
       success: types.PDU1_CREATE_SUCCESS,
@@ -56,14 +59,14 @@ export const createPdu1: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>>
   })
 }
 
-export const completePdu1: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>> = (
-  replyPdu1: ReplyPdu1
-): ThunkResult<ActionWithPayload<FagSaker>> => {
+export const completePdu1: ActionCreator<ThunkResult<ActionWithPayload<any>>> = (
+  payload: PayloadPdu1
+): ThunkResult<ActionWithPayload<any>> => {
   return call({
     method: 'POST',
     url: sprintf(urls.PDU1_COMPLETE_URL, {}),
-    body: replyPdu1,
-    expectedPayload: mockCompletePdu1,
+    body: payload,
+    expectedPayload: mockPreviewPdu1,
     type: {
       request: types.PDU1_COMPLETE_REQUEST,
       success: types.PDU1_COMPLETE_SUCCESS,
@@ -71,6 +74,14 @@ export const completePdu1: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>
     }
   })
 }
+
+export const resetPreviewFile = () => ({
+  type: types.PDU1_PREVIEW_RESET
+})
+
+export const resetCompletePdu1 = () => ({
+  type: types.PDU1_COMPLETE_RESET
+})
 
 export const setReplySed: ActionCreator<ActionWithPayload<ReplyPdu1>> = (
   replyPdu1: ReplyPdu1

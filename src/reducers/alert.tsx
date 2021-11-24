@@ -29,7 +29,7 @@ export const initialAlertState: AlertState = {
 
 const alertReducer = (state: AlertState = initialAlertState, action: Action | ActionWithPayload = { type: '' }): AlertState => {
   let stripeMessage: JSX.Element | string | undefined,
-    bannerMessage: string,
+    bannerMessage: string | undefined = undefined,
     stripeStatus: string,
     bannerStatus: string
 
@@ -148,13 +148,22 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
   /**
    * All OK MESSAGES for banner go here
    */
+  let dealWithBanner = false
   if (action.type === types.APP_CLIPBOARD_COPY) {
-    bannerStatus = 'OK'
     bannerMessage = i18n.t('message:success-clipboard-copy')
+    dealWithBanner = true
+  }
+
+  if (action.type === types.LOCALSTORAGE_ENTRY_SAVE) {
+    bannerMessage = i18n.t('message:success-localstorage-save')
+    dealWithBanner = true
+  }
+
+  if (dealWithBanner) {
     return {
       ...state,
       type: action.type,
-      bannerStatus: bannerStatus,
+      bannerStatus: 'OK',
       bannerMessage: bannerMessage,
       uuid: undefined,
       error: undefined
@@ -167,9 +176,6 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
 
   stripeStatus = 'OK'
 
-  if (action.type === types.LOCALSTORAGE_ENTRY_SAVE) {
-    stripeMessage = i18n.t('message:success-svarsed-localstorage-save')
-  }
   if (action.type === types.SVARSED_REPLYSED_SET) {
     stripeMessage = undefined
   }

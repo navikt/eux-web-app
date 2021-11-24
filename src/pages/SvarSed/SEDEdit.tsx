@@ -443,17 +443,6 @@ const SEDEdit: React.FC<SEDEditProps> = ({
         </div>
       </FlexDiv>
       <VerticalSeparatorDiv />
-      {alertMessage && alertType === types.LOCALSTORAGE_ENTRY_SAVE && (
-        <>
-          <FlexDiv>
-            <AlertstripeDiv>
-              <Alert status='OK' message={alertMessage!} onClose={() => dispatch(clientClear())} />
-            </AlertstripeDiv>
-            <div />
-          </FlexDiv>
-          <VerticalSeparatorDiv />
-        </>
-      )}
       {_sendButtonClicked && alertMessage &&
       (alertType === types.SVARSED_SED_SEND_SUCCESS || alertType === types.SVARSED_SED_SEND_FAILURE) && (
         <>

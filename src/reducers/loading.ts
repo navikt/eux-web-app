@@ -167,6 +167,19 @@ const loadingReducer = (
         gettingPreviewFile: false
       }
 
+    case types.PDU1_COMPLETE_REQUEST:
+      return {
+        ...state,
+        completingPdu1: true
+      }
+
+    case types.PDU1_COMPLETE_FAILURE:
+    case types.PDU1_COMPLETE_SUCCESS:
+      return {
+        ...state,
+        completingPdu1: false
+      }
+
     case types.PDU1_CREATE_REQUEST:
       return {
         ...state,
@@ -179,6 +192,20 @@ const loadingReducer = (
         ...state,
         creatingPdu1: false
       }
+
+    case types.PDU1_PREVIEW_REQUEST:
+      return {
+        ...state,
+        gettingPreviewPdu1: true
+      }
+
+    case types.PDU1_PREVIEW_SUCCESS:
+    case types.PDU1_PREVIEW_FAILURE:
+      return {
+        ...state,
+        gettingPreviewPdu1: false
+      }
+
 
     case types.PERSON_SEARCH_REQUEST:
       return {

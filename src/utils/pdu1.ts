@@ -9,7 +9,8 @@ export const convertToPayloadPdu1 = (replyPdu1: ReplyPdu1): PayloadPdu1 => {
 
   const countryData = CountryData.getCountryInstance('nb')
 
-  // Person: 1.1 - 1.7
+  // Person form : PD U1 1.1, 1.2, 1.3, 1.4, 1.5, 1.7
+  // Nasjonalitet form: PD U1 1.6
   _.set(result, 'topmostSubform[0].Page1[0].PIN[0]', getFnr(replyPdu1, 'bruker') ?? '')
   if (replyPdu1.bruker.personInfo.kjoenn === 'K') {
     _.set(result, 'topmostSubform[0].Page1[0].Sex[0]', '1')
@@ -26,7 +27,7 @@ export const convertToPayloadPdu1 = (replyPdu1: ReplyPdu1): PayloadPdu1 => {
     replyPdu1.bruker.personInfo.pinMangler?.foedested.by
       ? replyPdu1.bruker.personInfo.pinMangler?.foedested.by + ' - ' + replyPdu1.bruker.personInfo.pinMangler?.foedested.land
       : '')
-  // Adresse: 1.8
+  // Adresse form: PD U1 1.8
   if (replyPdu1.bruker.adresser?.length === 1) {
     _.set(result, 'topmostSubform[0].Page1[0].Street_N[0]', replyPdu1.bruker.adresser[0].gate ?? '')
     _.set(result, 'topmostSubform[0].Page1[0].Town[0]', replyPdu1.bruker.adresser[0].by ?? '')
@@ -34,7 +35,7 @@ export const convertToPayloadPdu1 = (replyPdu1: ReplyPdu1): PayloadPdu1 => {
     _.set(result, 'topmostSubform[0].Page1[0].Country_code[0]', replyPdu1.bruker.adresser[0].land ?? '')
   }
 
-  // perioderAnsattMedForsikring: 2.1.1
+  // Forsikring form, perioderAnsattMedForsikring: PD U1 2.1.1
   replyPdu1.perioderAnsattMedForsikring?.forEach((p, i) => {
     if (i < 7) {
       _.set(result, 'topmostSubform[0].Page1[0].From[' + i + ']', p.startdato)
@@ -44,7 +45,7 @@ export const convertToPayloadPdu1 = (replyPdu1: ReplyPdu1): PayloadPdu1 => {
     }
   })
 
-  // perioderSelvstendigMedForsikring: 2.1.2
+  // Forsikring form, perioderSelvstendigMedForsikring: PD U1 2.1.2
   replyPdu1.perioderSelvstendigMedForsikring?.forEach((p, i) => {
     if (i < 7) {
       _.set(result, 'topmostSubform[0].Page1[0].From[' + (i + 7) + ']', p.startdato)
@@ -54,7 +55,7 @@ export const convertToPayloadPdu1 = (replyPdu1: ReplyPdu1): PayloadPdu1 => {
     }
   })
 
-  // perioderAnnenForsikring: 2.1.3
+  // Forsikring form, perioderAnnenForsikring: PD U1 2.1.3
   replyPdu1.perioderAnnenForsikring?.forEach((p, i) => {
     if (i < 3) {
       _.set(result, 'topmostSubform[0].Page2[0].From[' + i + ']', p.startdato)
@@ -79,7 +80,7 @@ export const convertToPayloadPdu1 = (replyPdu1: ReplyPdu1): PayloadPdu1 => {
   })
   */
 
-  // perioderAnsattUtenForsikring: 2.2.1
+  // Forsikring form, perioderAnsattUtenForsikring: PD U1 2.2.1
   replyPdu1.perioderAnsattUtenForsikring?.forEach((p, i) => {
     if (i < 3) {
       _.set(result, 'topmostSubform[0].Page2[0].From[' + (i + 6) + ']', p.startdato)
@@ -91,7 +92,7 @@ export const convertToPayloadPdu1 = (replyPdu1: ReplyPdu1): PayloadPdu1 => {
     }
   })
 
-  // perioderSelvstendigUtenForsikring: 2.2.2
+  // Forsikring form, perioderSelvstendigUtenForsikring: PD U1 2.2.2
   replyPdu1.perioderSelvstendigUtenForsikring?.forEach((p, i) => {
     if (i < 3) {
       _.set(result, 'topmostSubform[0].Page2[0].From[' + (i + 9) + ']', p.startdato)
@@ -103,7 +104,7 @@ export const convertToPayloadPdu1 = (replyPdu1: ReplyPdu1): PayloadPdu1 => {
     }
   })
 
-  // inntektAnsettelsesforhold: 2.3.1
+  // ???? form: inntektAnsettelsesforhold: PD U1 2.3.1
   replyPdu1.inntektAnsettelsesforhold?.forEach((si, i) => {
     if (i < 3) {
       _.set(result, 'topmostSubform[0].Page2[0].From[' + (i + 12) + ']', si.periode.startdato)
@@ -114,18 +115,18 @@ export const convertToPayloadPdu1 = (replyPdu1: ReplyPdu1): PayloadPdu1 => {
     }
   })
 
-  // inntektAnsettelsesforhold: 2.3.2
+  // ???? form: inntektAnsettelsesforhold: PD U1 2.3.2
   replyPdu1.inntektSelvstendig?.forEach((si, i) => {
     if (i < 3) {
       _.set(result, 'topmostSubform[0].Page2[0].From[' + (i + 15) + ']', si.periode.startdato)
       if (si.periode.sluttdato) {
         _.set(result, 'topmostSubform[0].Page2[0].To[' + (i + 15) + ']', si.periode.sluttdato)
       }
-      _.set(result, 'topmostSubform[0].Page2[0].Earninga[' + i + ']', si.beloep + ' ' + si.valuta)
+      _.set(result, 'topmostSubform[0].Page2[0].Earnings[' + i + ']', si.beloep + ' ' + si.valuta)
     }
   })
 
-  // Grunn til Opphør: 3
+  // Grunn til Opphør form: PD U1 3
   if (replyPdu1.grunntilopphor) {
     if (replyPdu1.grunntilopphor.typeGrunnOpphoerAnsatt === '01') {
       _.set(result, 'topmostSubform[0].Page2[0].Reason_end_employment[0]', '1')
@@ -189,6 +190,7 @@ export const convertToPayloadPdu1 = (replyPdu1: ReplyPdu1): PayloadPdu1 => {
   result["topmostSubform[0].Page3[0].Country_code[0]"?: string
   */
 
+  // Rett Til Ytelse form
   if (replyPdu1.rettTilYtelse) {
     if (!_.isEmpty(replyPdu1.rettTilYtelse.avvisningsgrunn)) {
       _.set(result, 'topmostSubform[0].Page3[0].CheckBox6\\.1[0]', '1')
