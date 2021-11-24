@@ -9,6 +9,7 @@ export const convertToPayloadPdu1 = (replyPdu1: ReplyPdu1): PayloadPdu1 => {
 
   const countryData = CountryData.getCountryInstance('nb')
 
+  result.fagsaker = replyPdu1.fagsaker
   // Person form : PD U1 1.1, 1.2, 1.3, 1.4, 1.5, 1.7
   // Nasjonalitet form: PD U1 1.6
   _.set(result, 'topmostSubform[0].Page1[0].PIN[0]', getFnr(replyPdu1, 'bruker') ?? '')

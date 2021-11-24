@@ -1,6 +1,5 @@
 import { toggleHighContrast } from 'actions/ui'
 import { themeKeys, HighContrastLink, HorizontalSeparatorDiv } from 'nav-hoykontrast'
-import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import { Saksbehandler } from 'declarations/types'
 import { Undertittel } from 'nav-frontend-typografi'
@@ -11,6 +10,7 @@ import { Link } from 'react-router-dom'
 import NEESSILogo from 'assets/logos/nEESSI'
 import styled from 'styled-components'
 import PT from 'prop-types'
+import { cleanData } from 'actions/app'
 
 const HeaderContent = styled.header`
   background-color: ${({ theme }: any) => theme.type === 'themeHighContrast' ? theme[themeKeys.MAIN_BACKGROUND_COLOR] : '#99c2e8'};
@@ -78,12 +78,14 @@ const Header: React.FC<HeaderProps> = ({
     dispatch(toggleHighContrast())
   }
 
-  const cleanData = () => dispatch({ type: types.APP_CLEAN_DATA })
+  const _cleanData = () => {
+    dispatch(cleanData())
+  }
 
   return (
     <HeaderContent>
       <Brand>
-        <Link to='/' onClick={cleanData}>
+        <Link to='/' onClick={_cleanData}>
           <NEESSILogo />
         </Link>
         <Skillelinje />

@@ -7,12 +7,6 @@
 
   "log-me-again": "Logg inn på nytt",
 
-  "modal-abort-contentLabel": "Bekreft navigasjon tilbake til forsiden",
-  "modal-abort-description": "Informasjonen du har fylt inn hittil vil ikke bli lagret.",
-  "modal-abort-no-continue": "NEI, FORTSETT",
-  "modal-abort-title": "Er du sikker på at du vil avbryte?",
-  "modal-abort-yes-cancel": "JA, AVBRYT",
-
   "name" : "nEESSI",
 
   "ok-got-it" : "Ok, stemmer det",

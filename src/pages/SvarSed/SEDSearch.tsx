@@ -197,7 +197,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
   }, [_sedStatusRequested, sedStatus])
 
   useEffect(() => {
-    if (replySed && _replySedRequested) {
+    if (!_.isEmpty(replySed) && _replySedRequested) {
       setReplySedRequested(false)
       dispatch(resetAllValidation())
       changeMode('B', 'forward')

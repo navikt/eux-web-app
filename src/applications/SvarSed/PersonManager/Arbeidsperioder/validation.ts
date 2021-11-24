@@ -29,9 +29,9 @@ export const validatePeriodeMedForsikring = (
     } as FeiloppsummeringFeil
     hasErrors = true
   }
-  if (_.isEmpty(periodeMedForsikring.arbeidsgiver?.identifikator?.[0]?.id)) {
-    v[namespace + '-identifikator'] = {
-      skjemaelementId: namespace + '-identifikator',
+  if (_.isEmpty(periodeMedForsikring.arbeidsgiver?.identifikatorer?.[0]?.id)) {
+    v[namespace + '-identifikatorer'] = {
+      skjemaelementId: namespace + '-identifikatorer',
       feilmelding: t('validation:noOrgnr')
     } as FeiloppsummeringFeil
     hasErrors = true

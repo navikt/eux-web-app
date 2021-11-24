@@ -73,7 +73,7 @@ export interface ArbeidsgiverIdentifikator {
 export interface ArbeidsgiverWithAdresse {
   navn: string
   adresse?: Adresse
-  identifikator: Array<ArbeidsgiverIdentifikator>
+  identifikatorer: Array<ArbeidsgiverIdentifikator>
 }
 
 export interface Epost {

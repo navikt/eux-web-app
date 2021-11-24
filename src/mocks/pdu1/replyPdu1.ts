@@ -52,7 +52,7 @@ export default {
           region: 'æøå',
           type: 'bodsted'
         },
-        identifikator: [
+        identifikatorer: [
           {
             type: 'organisasjonsnummer',
             id: 'ES:3100'
@@ -78,7 +78,7 @@ export default {
           region: 'æøå',
           type: 'bodsted'
         },
-        identifikator: [
+        identifikatorer: [
           {
             type: 'organisasjonsnummer',
             id: 'ES:3100'

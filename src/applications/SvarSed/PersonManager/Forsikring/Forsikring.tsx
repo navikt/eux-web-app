@@ -181,14 +181,14 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
         ..._newPeriode,
         arbeidsgiver: {
           ...(_newPeriode as PeriodeMedForsikring)?.arbeidsgiver,
-          identifikator: newIdentifikatorer
+          identifikatorer: newIdentifikatorer
         }
       } as PeriodeMedForsikring)
-      _resetValidation(namespace + '-arbeidsgiver-identifikator-' + whatChanged)
+      _resetValidation(namespace + '-arbeidsgiver-identifikatorer-' + whatChanged)
     } else {
-      dispatch(updateReplySed(`${type}[${index}].arbeidsgiver.identifikator`, newIdentifikatorer))
-      if (validation[namespace + getNSIdx(type, index) + '-arbeidsgiver-identifikator-' + whatChanged]) {
-        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-arbeidsgiver-identifikator-' + whatChanged))
+      dispatch(updateReplySed(`${type}[${index}].arbeidsgiver.identifikatorer`, newIdentifikatorer))
+      if (validation[namespace + getNSIdx(type, index) + '-arbeidsgiver-identifikatorer-' + whatChanged]) {
+        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-arbeidsgiver-identifikatorer-' + whatChanged))
       }
     }
   }
@@ -326,7 +326,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
       {type === 'perioderSyk' && (<Hospital width={size} height={size} />)}
       {type === 'perioderSvangerskapBarn' && (<Stroller width={size} height={size} />)}
       {type === 'perioderUtdanning' && (<SchoolBag width={size} height={size} />)}
-      {type === 'perioderMilitaertjeneste' && (<Military />)}
+      {type === 'perioderMilitaertjeneste' && (<Military width={size} height={size} />)}
       {type === 'perioderFrihetsberoevet' && (<Law width={size} height={size} />)}
       {type === 'perioderFrivilligForsikring' && (<ShakeHandsFilled width={size} height={size} />)}
       {type === 'perioderKompensertFerie' && (<Vacation width={size} height={size} />)}
@@ -459,9 +459,9 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
               <Column>
                 <IdentifikatorFC
                   highContrast={highContrast}
-                  identifikatorer={(_periode as PeriodeMedForsikring)?.arbeidsgiver?.identifikator}
+                  identifikatorer={(_periode as PeriodeMedForsikring)?.arbeidsgiver?.identifikatorer}
                   onIdentifikatorerChanged={(newIdentifikatorer: Array<ArbeidsgiverIdentifikator>, whatChanged: string) => setIdentifikatorer(newIdentifikatorer, whatChanged, _type, _index)}
-                  namespace={namespace + idx + '-arbeidsgiver-identifikator'}
+                  namespace={namespace + idx + '-arbeidsgiver-identifikatorer'}
                   validation={_v}
                   personName={personName}
                   resetValidation={(fullnamespace: string) => resetSubValidation(fullnamespace, _index)}

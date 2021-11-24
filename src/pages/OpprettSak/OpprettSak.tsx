@@ -3,7 +3,6 @@ import * as sakActions from 'actions/sak'
 import Family from 'applications/OpprettSak/Family/Family'
 import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
 import classNames from 'classnames'
-import AbortModal from 'components/AbortModal/AbortModal'
 import Arbeidsgivere from 'components/Arbeidsgiver/Arbeidsgivere'
 import TopContainer from 'components/TopContainer/TopContainer'
 import * as types from 'constants/actionTypes'
@@ -42,7 +41,6 @@ import {
   Container,
   Content,
   FlexDiv,
-  HighContrastFlatknapp,
   HighContrastHovedknapp,
   HighContrastKnapp,
   HighContrastPanel,
@@ -56,7 +54,7 @@ import PT from 'prop-types'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { periodeMedForsikringToArbeidsgiver } from 'utils/arbeidsgiver'
 import { validateOpprettSak, ValidationOpprettSakProps } from './validation'
 
@@ -182,9 +180,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
   }: OpprettSakSelector = useSelector<State, OpprettSakSelector>(mapState)
   const dispatch = useDispatch()
   const { t } = useTranslation()
-  const navigate = useNavigate()
   const namespace = 'opprettsak'
-  const [_visModal, setVisModal] = useState<boolean>(false)
   const [_isFnrValid, setIsFnrValid] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationOpprettSakProps>({}, validateOpprettSak)
 
@@ -238,20 +234,6 @@ const OpprettSak: React.FC = (): JSX.Element => {
         enhet: valgtUnit
       }))
     }
-  }
-
-  const openModal = (): void => {
-    setVisModal(true)
-  }
-
-  const closeModal = (): void => {
-    setVisModal(false)
-  }
-
-  const onAbort = (): void => {
-    dispatch(sakActions.cleanData())
-    dispatch(appActions.cleanData())
-    navigate('/')
   }
 
   const onUnitChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
@@ -678,13 +660,6 @@ const OpprettSak: React.FC = (): JSX.Element => {
                 >
                   {t('label:opprett-sak-i-rina')}
                 </HighContrastHovedknapp>
-                <HorizontalSeparatorDiv />
-                <HighContrastFlatknapp
-                  aria-label='Navigasjonslink tilbake til forsiden'
-                  onClick={openModal}
-                >
-                  {t('label:avslutt-utfylling')}
-                </HighContrastFlatknapp>
               </Row>
               {!isValid && (
                 <>
@@ -741,11 +716,6 @@ const OpprettSak: React.FC = (): JSX.Element => {
               </Column>
             </Row>
           )}
-          <AbortModal
-            closeModal={closeModal}
-            isOpen={_visModal}
-            onAbort={onAbort}
-          />
         </Content>
         <Margin />
       </Container>

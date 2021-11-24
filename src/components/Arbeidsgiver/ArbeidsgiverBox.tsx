@@ -92,14 +92,14 @@ const ArbeidsgiverBox = ({
 //  personFnr
 }: ArbeidsgiverProps): JSX.Element => {
   const { t } = useTranslation()
-  const _namespace = namespace + '-arbeidsgiver[' + (generateIdentifikatorKey(arbeidsgiver.arbeidsgiver.identifikator) ?? '-') + ']'
+  const _namespace = namespace + '-arbeidsgiver[' + (generateIdentifikatorKey(arbeidsgiver.arbeidsgiver.identifikatorer) ?? '-') + ']'
 
   const [_isDeleting, setIsDeleting] = useState<boolean>(false)
   const [_isEditing, setIsEditing] = useState<boolean>(false)
   const [_beforeEditingVersion, setBeforeEditingVersion] = useState<PeriodeMedForsikring | undefined>(undefined)
 
   const [_arbeidsgiversNavn, setArbeidsgiversNavn] = useState<string>(arbeidsgiver.arbeidsgiver.navn ?? '')
-  const [_arbeidsgiversIdentifikator, setArbeidsgiversIdentifikator] = useState<Array<ArbeidsgiverIdentifikator>>(arbeidsgiver.arbeidsgiver.identifikator ?? [])
+  const [_arbeidsgiversIdentifikator, setArbeidsgiversIdentifikator] = useState<Array<ArbeidsgiverIdentifikator>>(arbeidsgiver.arbeidsgiver.identifikatorer ?? [])
   const [_arbeidsgiverPeriode, setArbeidsgiversPeriode] = useState<Periode>({
     startdato: arbeidsgiver.startdato,
     sluttdato: arbeidsgiver.sluttdato,
@@ -136,7 +136,7 @@ const ArbeidsgiverBox = ({
     const newArbeidsgiver: PeriodeMedForsikring = {
       ..._arbeidsgiverPeriode,
       arbeidsgiver: {
-        identifikator: _arbeidsgiversIdentifikator,
+        identifikatorer: _arbeidsgiversIdentifikator,
         navn: _arbeidsgiversNavn
       }
     } as PeriodeMedForsikring
@@ -172,7 +172,7 @@ const ArbeidsgiverBox = ({
 
   const onCancelButtonClicked = () => {
     setIsEditing(false)
-    setArbeidsgiversIdentifikator(_beforeEditingVersion?.arbeidsgiver.identifikator ?? [])
+    setArbeidsgiversIdentifikator(_beforeEditingVersion?.arbeidsgiver.identifikatorer ?? [])
     setArbeidsgiversNavn(_beforeEditingVersion?.arbeidsgiver.navn || '')
     setArbeidsgiversPeriode({
       startdato: _beforeEditingVersion?.startdato!,
@@ -302,7 +302,7 @@ const ArbeidsgiverBox = ({
                     highContrast={highContrast}
                     identifikatorer={_arbeidsgiversIdentifikator}
                     onIdentifikatorerChanged={onIdentifikatorerChanged}
-                    namespace={_namespace + '-identifikator'}
+                    namespace={_namespace + '-identifikatorer'}
                     validation={_validation}
                     resetValidation={resetSubValidation}
                     personName={_arbeidsgiversNavn}

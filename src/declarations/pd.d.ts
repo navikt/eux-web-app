@@ -34,7 +34,7 @@ export interface ReplyPdu1 {
 }
 
 export interface PayloadPdu1 {
-  'saksnummer' ?: string
+  'fagsaker': string
   'topmostSubform[0].Page1[0].PIN[0]': string
   'topmostSubform[0].Page1[0].Sex[0]' : '1' | '2'
   'topmostSubform[0].Page1[0].Surname[0]' : string

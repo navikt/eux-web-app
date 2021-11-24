@@ -90,10 +90,10 @@ export const validateForsikringPeriode = (
       hasErrors = true
     }
 
-    if (_.isEmpty((periode as PeriodeMedForsikring)?.arbeidsgiver?.identifikator)) {
-      v[namespace + idx + '-arbeidsgiver-identifikator'] = {
+    if (_.isEmpty((periode as PeriodeMedForsikring)?.arbeidsgiver?.identifikatorer)) {
+      v[namespace + idx + '-arbeidsgiver-identifikatorer'] = {
         feilmelding: t('validation:noOrgnrTil', { person: personName }),
-        skjemaelementId: namespace + idx + '-arbeidsgiver-identifikator'
+        skjemaelementId: namespace + idx + '-arbeidsgiver-identifikatorer'
       } as FeiloppsummeringFeil
       hasErrors = true
     }

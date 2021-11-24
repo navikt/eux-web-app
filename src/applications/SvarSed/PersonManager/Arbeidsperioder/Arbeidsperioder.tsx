@@ -149,7 +149,7 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
       }
       if (selected) {
         const indexPerioder = _.findIndex(newPerioderMedForsikring, (p: PeriodeMedForsikring) =>
-          _.find(p.arbeidsgiver.identifikator, id => id.type === 'organisasjonsnummer' && id.id === needleId) !== undefined
+          _.find(p.arbeidsgiver.identifikatorer, id => id.type === 'organisasjonsnummer' && id.id === needleId) !== undefined
         )
         if (indexPerioder >= 0) {
           newPerioderMedForsikring[indexPerioder] = newPeriodeMedForsikring
@@ -164,10 +164,10 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
     const newPerioderMedForsikring: Array<PeriodeMedForsikring> = _.cloneDeep(perioder) as Array<PeriodeMedForsikring>
     const newAddedPeriodeMedForsikring: Array<PeriodeMedForsikring> = _.cloneDeep(_addedPeriodeMedForsikring)
     if (newAddedPeriodeMedForsikring) {
-      const needleId : string | undefined = generateIdentifikatorKey(newPeriodeMedForsikring.arbeidsgiver.identifikator)
+      const needleId : string | undefined = generateIdentifikatorKey(newPeriodeMedForsikring.arbeidsgiver.identifikatorer)
       if (needleId) {
         const index = _.findIndex(newAddedPeriodeMedForsikring, (p: PeriodeMedForsikring) =>
-          generateIdentifikatorKey(p.arbeidsgiver.identifikator) === needleId)
+          generateIdentifikatorKey(p.arbeidsgiver.identifikatorer) === needleId)
         if (index >= 0) {
           newAddedPeriodeMedForsikring[index] = newPeriodeMedForsikring
           setAddedPeriodeMedForsikring(newAddedPeriodeMedForsikring)
@@ -188,10 +188,10 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
 
   const onPeriodeMedForsikringDelete = (deletedPeriodeMedForsikring: PeriodeMedForsikring, selected: boolean) => {
     let newAddedPeriodeMedForsikring: Array<PeriodeMedForsikring> = _.cloneDeep(_addedPeriodeMedForsikring)
-    const needleId : string | undefined = generateIdentifikatorKey(deletedPeriodeMedForsikring.arbeidsgiver.identifikator)
+    const needleId : string | undefined = generateIdentifikatorKey(deletedPeriodeMedForsikring.arbeidsgiver.identifikatorer)
     if (needleId) {
       newAddedPeriodeMedForsikring = _.filter(newAddedPeriodeMedForsikring, (p: PeriodeMedForsikring) =>
-        generateIdentifikatorKey(p.arbeidsgiver.identifikator) !== needleId)
+        generateIdentifikatorKey(p.arbeidsgiver.identifikatorer) !== needleId)
       setAddedPeriodeMedForsikring(newAddedPeriodeMedForsikring)
     }
     if (selected) {
@@ -242,7 +242,7 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
     const newPeriodeMedForsikring: PeriodeMedForsikring = {
       ..._newPeriode,
       arbeidsgiver: {
-        identifikator: _newIdentifikatorer as Array<ArbeidsgiverIdentifikator>,
+        identifikatorer: _newIdentifikatorer as Array<ArbeidsgiverIdentifikator>,
         navn: _newNavn,
         adresse: _newAdresse
       }

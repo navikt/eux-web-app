@@ -15,7 +15,7 @@ export const arbeidsgiverToPeriodeMedForsikring = (a: Arbeidsgiver): PeriodeMedF
   return {
     ...newPeriode,
     arbeidsgiver: {
-      identifikator: [{
+      identifikatorer: [{
         type: 'organisasjonsnummer',
         id: a.arbeidsgiversOrgnr
       }],
@@ -50,5 +50,5 @@ export const generateIdentifikatorKey = (ids: Array<ArbeidsgiverIdentifikator>):
   .map(it => it.type + '-' + it.id).join(';')
 
 export const getOrgnr = (arbeidsgiver: PeriodeMedForsikring, type: string): string | undefined => (
-  _.find(arbeidsgiver.arbeidsgiver?.identifikator, (id: ArbeidsgiverIdentifikator) => id.type === type)?.id
+  _.find(arbeidsgiver.arbeidsgiver?.identifikatorer, (id: ArbeidsgiverIdentifikator) => id.type === type)?.id
 )

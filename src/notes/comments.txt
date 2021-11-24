@@ -2,28 +2,53 @@ Todo:
 
 1. na familierelasjon, pode ser que envie borSammen, etc com REPA/EKTE/etc. Confirmar que backend limpa
 
-I have to decide once and for all what is the id (orgnr + stardato) and check validation when I duplicate them
-=>  Editing arbeidsgiver / PeriodeMedForsikring that is already selected, does NOT update the replySed
-
-
-Move to ds-react, ds-icons
-Validation - better system for personName
+- Move to ds-react, ds-icons
+- Validation
+  - better system for personName
   - Better system that opens forms when clicking validation error
-  - Better way to deal with reset bvalidation for duplicate items (have to reset both)
+  - Better way to deal with reset validation for duplicate items (have to reset both)
+  - Better labeling
+
 update ids.txt, better uniform namespace (camelcase, etc)
 Still have to properly fix registrering
 check all forms for onRemove(index or element), onAdd, etc
 remove underscores
   - _set to set, set to handle
   - validation, _val to thisVal
-padding on right form: let form make it, also make hover color to separate each element
 
+padding on right form: let form make it, also make hover color to separate each element
+make hover color to separate itens
+
+go eazy on keys
+- rever slideAnimate 0.05
+use getId
+
+= = = =
+
+Refactor:
+
+=> update ds-react, ds-icon
+= separate slideAnimate
+=> fix nav-dashboard
+=> package.json: move to peerDependencies
+=> webpack: use dupøicates, peer-deps-externals-webpack-plugin - everything in peerDependencies is not webpacked
+= = = =
+
+deploying
+
+ - cra next
+ - lint fix, audit --production, test, dist
+ - depcheck, README
+
+= = = = =
 
  grep -rho -e "'app:[^']*'" * | sort -u
  grep -rho -e "'label:[^']*'" * | sort -u
  grep -rho -e "'el:[^']*'" * | sort -u
  grep -rho -e "'message:[^']*'" * | sort -u
 
+
+= = = = =
 test:
 
 25086820857 -> Q1
@@ -38,21 +63,15 @@ ui improvs:
 - getId
 
 - accessibility
-     - desligar css
-     - div onclick /role=buttton
-     - <div id="saveChanges" tabindex="0" role="button" aria-pressed="false">Save</div>
-     -  label for?
-     - usar listas
-     - role=alert
-       aria-checked="false"
-       aria-label/ aria-labelledby
-       aria-describedby attr
-       required / aria-required.
-       aria-invalid
-       react-axe
-
-- unit tests
-
-
-Opprettsak:
---> when arbeidsgivere list is []
+   - desligar css
+   - div onclick /role=buttton
+   - <div id="saveChanges" tabindex="0" role="button" aria-pressed="false">Save</div>
+   -  label for?
+   - usar listas
+   - role=alert
+     aria-checked="false"
+     aria-label/ aria-labelledby
+     aria-describedby attr
+     required / aria-required.
+     aria-invalid
+     react-axe

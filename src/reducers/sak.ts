@@ -53,6 +53,28 @@ export const initialSakState: SakState = {
 
 const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload = { type: '', payload: undefined }): SakState => {
   switch (action.type) {
+
+    case types.APP_CLEAN_DATA:
+      // reset all but stuff that comes from eessi-kodeverk
+      return {
+        ...state,
+        opprettetSak: undefined,
+        arbeidsgivere: [],
+        buctype: undefined,
+        fagsaker: undefined,
+        familierelasjoner: [],
+        institusjonList: undefined,
+        institusjon: undefined,
+        landkode: undefined,
+        person: undefined,
+        personRelatert: undefined,
+        saksId: undefined,
+        sedtype: undefined,
+        sektor: undefined,
+        tema: undefined,
+        unit: undefined
+      }
+
     case types.SAK_FAGSAKER_RESET:
     case types.SAK_FAGSAKER_GET_REQUEST:
       return {
@@ -140,32 +162,6 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
         tema: undefined,
         unit: undefined,
         fnr: undefined
-      }
-
-    case types.SAK_CLEAN_DATA:
-      return {
-        ...state,
-        opprettetSak: undefined
-      }
-
-    case types.APP_CLEAN_DATA:
-      // reset all but stuff that comes from eessi-kodeverk
-      return {
-        ...state,
-        arbeidsgivere: [],
-        buctype: undefined,
-        fagsaker: undefined,
-        familierelasjoner: [],
-        institusjonList: undefined,
-        institusjon: undefined,
-        landkode: undefined,
-        person: undefined,
-        personRelatert: undefined,
-        saksId: undefined,
-        sedtype: undefined,
-        sektor: undefined,
-        tema: undefined,
-        unit: undefined
       }
 
     case types.SAK_PROPERTY_SET:
