@@ -307,9 +307,15 @@ const PersonManager: React.FC<PersonManagerProps> = ({
     { label: t('el:option-personmanager-inntekt'), value: 'inntekt', component: InntektForm, type: 'U004' },
     { label: t('el:option-personmanager-retttilytelser'), value: 'retttilytelser', component: RettTilYtelser, type: ['U017', 'PD'] },
     { label: t('el:option-personmanager-forsikring'), value: 'forsikring', component: Forsikring, type: ['U002', 'U017'] },
-    { label: t('el:option-personmanager-forsikring'), value: 'forsikring_pd', component: Forsikring, type: 'PD', options: {
-      include: ['perioderAnsattMedForsikring','perioderSelvstendigMedForsikring','perioderAnsattUtenForsikring','perioderSelvstendigUtenForsikring','perioderAnnenForsikring']
-    }},
+    {
+      label: t('el:option-personmanager-forsikring'),
+      value: 'forsikring_pd',
+      component: Forsikring,
+      type: 'PD',
+      options: {
+        include: ['perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring', 'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring', 'perioderAnnenForsikring']
+      }
+    },
     { label: t('el:option-personmanager-sisteansettelsesforhold'), value: 'sisteansettelsesforhold', component: SisteAnsettelsesForhold, type: ['U002', 'U017'] },
     { label: t('el:option-personmanager-grunntilopphør'), value: 'grunntilopphør', component: GrunnTilOpphør, type: ['U002', 'U017', 'PD'] },
     { label: t('el:option-personmanager-periodefordagpenger'), value: 'periodefordagpenger', component: PeriodeForDagpenger, type: ['U002', 'U017'] },

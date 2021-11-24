@@ -197,6 +197,9 @@
       "sluttdato": "1971-12-31",
       "annenTypeForsikringsperiode": "Annen"
     }],
+  "grunntilopphor": {
+    "typeGrunnOpphoerAnsatt": "01"
+  },
   "perioderDagpenger": [
     {
       "periode": {

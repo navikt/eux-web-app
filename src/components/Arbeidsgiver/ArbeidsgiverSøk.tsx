@@ -125,7 +125,7 @@ const ArbeidsgiverSøk: React.FC<ArbeidsgiverSøkProps> = ({
             feil={_validation[namespace + '-arbeidssok-inntektsliste']?.feilmelding}
             highContrast={highContrast}
             id={namespace + '-arbeidssok-inntektsliste'}
-            label={t('label:inntektskilde')}
+            label={t('label:filter')}
             menuPortalTarget={document.body}
             onChange={(o: Option) => setArbeidssøkInntektslistetype(o.value)}
             options={inntektslistetypeOptions}

@@ -21,7 +21,7 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
-import { Ingress, Systemtittel, Undertittel } from 'nav-frontend-typografi'
+import { Ingress, Undertittel } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
@@ -266,7 +266,7 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
   const renderNewArbeidsgiver = () => (
     <>
       <Undertittel>
-        {t('label:legg-til-arbeidsgiver')}
+        {t('label:legg-til-arbeidsperiode')}
       </Undertittel>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft'>
@@ -448,9 +448,9 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
         namespace={namespace}
       />
       <VerticalSeparatorDiv size='2' />
-      <Systemtittel>
+      <Ingress>
         {t('label:arbeidsperioder')}
-      </Systemtittel>
+      </Ingress>
       <VerticalSeparatorDiv size='2' />
       {renderPlan()}
       <VerticalSeparatorDiv size='2' />

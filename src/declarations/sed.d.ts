@@ -288,8 +288,8 @@ export interface SisteAnsettelsesForhold {
 
 export interface GrunnTilOpphør {
   typeGrunnOpphoerAnsatt: string
-  annenGrunnOpphoerAnsatt: string
-  grunnOpphoerSelvstendig: string
+  annenGrunnOpphoerAnsatt?: string
+  grunnOpphoerSelvstendig?: string
 }
 
 export interface Barn {

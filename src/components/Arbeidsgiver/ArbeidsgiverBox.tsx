@@ -10,12 +10,13 @@ import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Adresse as IAdresse, ArbeidsgiverIdentifikator, Periode, PeriodeMedForsikring } from 'declarations/sed.d'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { Ingress, Normaltekst, Undertekst, UndertekstBold } from 'nav-frontend-typografi'
+import { Ingress, Normaltekst, UndertekstBold } from 'nav-frontend-typografi'
 import {
   AlignStartRow,
   Column,
   FlexCenterSpacedDiv,
   FlexDiv,
+  FlexEndDiv,
   HighContrastCheckbox,
   HighContrastFlatknapp,
   HighContrastKnapp,
@@ -218,11 +219,22 @@ const ArbeidsgiverBox = ({
             </FlexDiv>
             )
           : (
-            <FlexDiv style={{ padding: '0.5rem' }}>
+            <FlexEndDiv style={{ padding: '0.5rem' }}>
               <Ingress>
-                {toUIDateFormat(_arbeidsgiverPeriode.startdato)} - {_arbeidsgiverPeriode.sluttdato ? toUIDateFormat(_arbeidsgiverPeriode.sluttdato) : _arbeidsgiverPeriode.aapenPeriodeType}
+                {toUIDateFormat(_arbeidsgiverPeriode.startdato)} {
+                _arbeidsgiverPeriode.sluttdato
+                  ? ' - ' + toUIDateFormat(_arbeidsgiverPeriode.sluttdato)
+                  : '(' + t('label:' + _arbeidsgiverPeriode.aapenPeriodeType).toLowerCase() + ')'
+                }
               </Ingress>
-            </FlexDiv>
+              <HorizontalSeparatorDiv size='0.5' />
+              {arbeidsgiver?.extra?.fraArbeidsgiverregisteret === 'ja' && (
+                <Normaltekst>{t('label:fra-arbeidsgiverregisteret')}</Normaltekst>
+              )}
+              {arbeidsgiver?.extra?.fraInntektsregisteret === 'ja' && (
+                <Normaltekst>{t('label:fra-inntektsregisteret')}</Normaltekst>
+              )}
+            </FlexEndDiv>
             )}
         <FlexCenterSpacedDiv>
           <FlexDiv style={{ padding: '1rem' }} className='slideInFromLeft'>
@@ -308,16 +320,6 @@ const ArbeidsgiverBox = ({
                     ))}
                   </>
                   )}
-              {arbeidsgiver?.extra?.fraArbeidsgiverregisteret === 'ja' && (
-                <PileDiv style={{ flexDirection: 'column-reverse' }}>
-                  <Undertekst>{t('label:fra-arbeidsgiverregisteret')}</Undertekst>
-                </PileDiv>
-              )}
-              {arbeidsgiver?.extra?.fraInntektsregisteret === 'ja' && (
-                <PileDiv style={{ flexDirection: 'column-reverse' }}>
-                  <Undertekst>{t('label:fra-inntektsregisteret')}</Undertekst>
-                </PileDiv>
-              )}
             </div>
             <>
               <HorizontalSeparatorDiv />

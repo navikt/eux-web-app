@@ -437,7 +437,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({
             disabled={savingSed}
             spinner={savingSed}
           >
-            {_.isNil(currentEntry) ? t('el:button-save-draft') : t('el:button-update-draft')}
+            {_.isNil(currentEntry) ? t('el:button-save-draft-x', { x: 'svarSED' }) : t('el:button-update-draft-x', { x: 'svarSED' })}
           </HighContrastKnapp>
           <VerticalSeparatorDiv size='0.5' />
         </div>

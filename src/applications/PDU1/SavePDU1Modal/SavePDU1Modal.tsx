@@ -148,7 +148,7 @@ const SendPDU1Modal = ({
                         mini
                         onClick={onSave}
                       >
-                        {t('el:button-save-draft-x', {x: 'PD U1'})}
+                        {t('el:button-save-draft-x', { x: 'PD U1' })}
                       </HighContrastHovedknapp>
                       <HorizontalSeparatorDiv />
                       <HighContrastFlatknapp

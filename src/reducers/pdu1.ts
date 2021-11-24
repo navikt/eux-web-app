@@ -21,7 +21,6 @@ export const initialPdu1State: Pdu1State = {
 
 const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: Action | ActionWithPayload = { type: '' }): Pdu1State => {
   switch (action.type) {
-
     case types.APP_CLEAN_DATA:
       return initialPdu1State
 
@@ -54,7 +53,7 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: Action | Actio
         ...state,
         replyPdu1: {
           ...(action as ActionWithPayload).payload,
-          fagsaker: (action as ActionWithPayload).context.fagsaker,
+          fagsaker: (action as ActionWithPayload).context.fagsaker
         }
       }
 

@@ -5,19 +5,14 @@ import SlidePage, { ChangeModeFunction } from 'components/SlidePage/SlidePage'
 import { SideBarDiv } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { STORAGE_PDU1 } from 'constants/storage'
-import { State } from 'declarations/reducers'
-import { ReplySed } from 'declarations/sed'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 import PDU1Edit from './PDU1Edit'
 import PDU1Search from './PDU1Search'
 
 export const PDU1Page = (): JSX.Element => {
   const { t } = useTranslation()
   const storageKey = STORAGE_PDU1
-  const replySed: ReplySed | null | undefined = useSelector<State, ReplySed | null | undefined>((state: State) => state.svarsed.replySed)
-
   const changeModeFunc = React.useRef<ChangeModeFunction>(null)
 
   const changeMode = (newPage: string, newDirection: string, newCallback?: () => void) => {
@@ -56,7 +51,6 @@ export const PDU1Page = (): JSX.Element => {
         divB2={(
           <SideBarDiv>
             <SEDDetails
-              replySed={replySed}
               updateReplySed={updateReplySed}
             />
           </SideBarDiv>

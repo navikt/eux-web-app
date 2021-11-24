@@ -90,6 +90,7 @@
   "feriedager-til-gode": "Feriedager til gode",
   "fill-fnr": "Fyll fnr",
   "fill-in-person-data": "Fyll ut personopplysninger",
+  "filter": "Filter",
   "flyttedato-til-avsenderlandet": "Flyttedato til avsenderlandet",
   "flyttedato-til-mottakerslandet": "Flyttedato til mottakerslandet",
   "fnr" : "Fødselsnummer",
@@ -103,7 +104,7 @@
   "fra" : "Fra",
   "fra-arbeidsgiverregisteret" : "Fra arbeidsgiverregisteret",
   "fra-dato": "Fra dato",
-  "fra-inntektsregisteret" : "Fra inntektsregisteret",
+  "fra-inntektsregisteret" : "Fra A-Inntekt",
   "fyll-inn-adresse": "Fyll inn adresse",
   "fødested": "Fødested",
   "fødselsdato": "Fødselsdato",
@@ -122,7 +123,7 @@
   "gå-til-draft": "gå til lagret utkast",
 
   "hele-familien" : "Hele familien",
-  "hent-perioder-fra-aa-registeret-og-a-inntekt": "Hent perioder fra AA-Registeret og A-Inntekt",
+  "hent-perioder-fra-aa-registeret-og-a-inntekt": "Hent arbeidsperioder fra AA-Registeret og A-Inntekt",
   "hent-inntekt-i-A-inntekt": "Hent inntekt i A-Inntekt",
   "horisontal": "Horisontal",
   "høy-kontrast": "Høy kontrast",
@@ -140,7 +141,6 @@
   "inntekt-og-time": "Inntekt og time",
   "inntekt-og-time-info": "Inntekt og time info",
   "inntekter": "Inntekter",
-  "inntektskilde": "Inntekts kilde",
   "inntektsfilter": "Inntekts filter",
   "innvilgelse" : "innvilgelse",
   "institusjonens-adresse" : "Institusjonens adresse",
@@ -174,7 +174,6 @@
   "laster-ned-filen": "Laster ned filen...",
   "last-ned-pdu1": "Last ned PD U1",
   "legg-til": "Legg til",
-  "legg-til-arbeidsgiver": "Legg til arbeidsgiver",
   "legg-til-arbeidsperiode": "Legg til arbeidsperiode",
   "legg-til-fjern-personer": "Legg til/fjern person(er)",
   "legg-til-vedlegg-til-sed" : "Legge til vedlegg til SED",
@@ -294,6 +293,7 @@
 
   "udekkede-periode": "Udekkede periode",
   "ukjent": "Ukjent",
+  "ukjent_sluttdato": "Ukjent sluttdato",
   "ukjent-rolle": "(ukjent rolle)",
   "utbetaling": "Utbetaling",
   "utbetaling-type": "Utbetaling type",
@@ -332,6 +332,7 @@
   "ytterligere-grunner-til-uenighet":  "Ytterligere grunner til uenighet",
 
   "åpen": "Åpen",
+  "åpen_sluttdato": "Åpen sluttdato",
   "årlig": "Årlig",
   "årsak-til-avslutning-av-arbeidsforhold" : "Årsak til avslutning av arbeidsforhold",
   "årsak-til-avslutning-av-selvstendig-næringsvirksomhet" : "Årsak til avslutning av selvstendig næringsvirksomhet"

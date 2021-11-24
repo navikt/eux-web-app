@@ -147,7 +147,7 @@ const SendSEDModal = ({
                         mini
                         onClick={onSave}
                       >
-                        {t('el:button-save-draft')}
+                        {t('el:button-save-draft-x', { x: 'svarSED' })}
                       </HighContrastHovedknapp>
                       <HorizontalSeparatorDiv />
                       <HighContrastFlatknapp

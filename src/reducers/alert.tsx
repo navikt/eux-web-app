@@ -28,10 +28,10 @@ export const initialAlertState: AlertState = {
 }
 
 const alertReducer = (state: AlertState = initialAlertState, action: Action | ActionWithPayload = { type: '' }): AlertState => {
-  let stripeMessage: JSX.Element | string | undefined,
-    bannerMessage: string | undefined = undefined,
-    stripeStatus: string,
-    bannerStatus: string
+  let stripeMessage: JSX.Element | string | undefined
+  let bannerMessage: string | undefined
+  let stripeStatus: string
+  let bannerStatus: string
 
   if (
     action.type === types.ALERT_CLIENT_CLEAR ||

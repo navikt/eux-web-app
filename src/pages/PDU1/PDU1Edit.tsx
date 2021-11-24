@@ -147,13 +147,11 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
     }
   }, [previewPdu1])
 
-
   useEffect(() => {
     if (!completeModal && !_.isNil(completePdu1Response)) {
       setCompleteModal(true)
     }
   }, [completePdu1Response])
-
 
   useEffect(() => {
     dispatch(startPageStatistic('pdu1editor'))
@@ -166,38 +164,38 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
     <PaddedDiv size='0.5'>
       {completePdu1Response && (
         <Modal
-        open={completeModal}
-        highContrast={highContrast}
-        modal={{
-          closeButton: true,
-          modalTitle: t('message:success-complete-pdu1'),
-          modalContent: (
-            <FlexCenterDiv style={{minWidth: '400px', minHeight: '100px'}}>
-              <PileCenterDiv style={{alignItems: 'center', width: '100%'}}>
-                <HighContrastLink
-                onClick={(e: any) => {
-                  e.stopPropagation()
-                }}
-                href={'data:application/octet-stream;base64,' + encodeURIComponent(completePdu1Response.content.base64)}
-                download={completePdu1Response.name}
-              >
-                <FlexDiv>
-                  {t('label:last-ned-pdu1')}
-                  <HorizontalSeparatorDiv/>
-                  <Download width={20} />
-                </FlexDiv>
-              </HighContrastLink>
-              </PileCenterDiv>
-            </FlexCenterDiv>
-          ),
-          modalButtons: [{
-            main: true,
-            text: 'OK',
-            onClick: resetComplete
-          }]
-        }}
-        onModalClose={resetComplete}
-      />
+          open={completeModal}
+          highContrast={highContrast}
+          modal={{
+            closeButton: true,
+            modalTitle: t('message:success-complete-pdu1'),
+            modalContent: (
+              <FlexCenterDiv style={{ minWidth: '400px', minHeight: '100px' }}>
+                <PileCenterDiv style={{ alignItems: 'center', width: '100%' }}>
+                  <HighContrastLink
+                    onClick={(e: any) => {
+                      e.stopPropagation()
+                    }}
+                    href={'data:application/octet-stream;base64,' + encodeURIComponent(completePdu1Response.content.base64)}
+                    download={completePdu1Response.name}
+                  >
+                    <FlexDiv>
+                      {t('label:last-ned-pdu1')}
+                      <HorizontalSeparatorDiv />
+                      <Download width={20} />
+                    </FlexDiv>
+                  </HighContrastLink>
+                </PileCenterDiv>
+              </FlexCenterDiv>
+            ),
+            modalButtons: [{
+              main: true,
+              text: 'OK',
+              onClick: resetComplete
+            }]
+          }}
+          onModalClose={resetComplete}
+        />
       )}
       <Modal
         open={previewModal}

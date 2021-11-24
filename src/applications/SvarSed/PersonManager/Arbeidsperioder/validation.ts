@@ -30,8 +30,8 @@ export const validatePeriodeMedForsikring = (
     hasErrors = true
   }
   if (_.isEmpty(periodeMedForsikring.arbeidsgiver?.identifikator?.[0]?.id)) {
-    v[namespace + '-orgnr'] = {
-      skjemaelementId: namespace + '-orgnr',
+    v[namespace + '-identifikator'] = {
+      skjemaelementId: namespace + '-identifikator',
       feilmelding: t('validation:noOrgnr')
     } as FeiloppsummeringFeil
     hasErrors = true
