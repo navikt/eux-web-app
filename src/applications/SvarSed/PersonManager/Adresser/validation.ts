@@ -1,7 +1,7 @@
 import { Adresse } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
@@ -35,7 +35,7 @@ export const validateAdresse = (
     v[namespace + idx + '-type'] = {
       feilmelding: t('validation:noAddressTypeTil', { person: personName }),
       skjemaelementId: namespace + idx + '-type'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -43,7 +43,7 @@ export const validateAdresse = (
     v[namespace + idx + '-land'] = {
       feilmelding: t('validation:noAddressCountryTil', { person: personName }),
       skjemaelementId: namespace + idx + '-land'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -51,7 +51,7 @@ export const validateAdresse = (
     v[namespace + idx + '-by'] = {
       feilmelding: t('validation:noAddressCityTil', { person: personName }),
       skjemaelementId: namespace + idx + '-by'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -60,9 +60,9 @@ export const validateAdresse = (
     const mainNamespace = namespaceBits[0]
     const personNamespace = mainNamespace + '-' + namespaceBits[1]
     const categoryNamespace = personNamespace + '-' + namespaceBits[2]
-    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
   }
   return hasErrors
 }

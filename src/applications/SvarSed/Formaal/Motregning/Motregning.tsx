@@ -24,12 +24,11 @@ import CountryData, { Currency } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
-import { Normaltekst, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
+import { BodyLong, Detail, Heading, Button } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
-  HighContrastFlatknapp,
-  HighContrastRadioPanelGroup,
+  RadioPanelGroup,
   HorizontalSeparatorDiv,
   PaddedDiv,
   Row,
@@ -625,7 +624,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
       <RepeatableRow className={classNames({ new: motregningKey === 'new-motregning' })}>
         <AlignStartRow>
           <Column flex='2'>
-            <HighContrastRadioPanelGroup
+            <RadioPanelGroup
               checked={motregningKey === 'new-motregning' ? _newBarnaEllerFamilie : barnaEllerFamilie}
               data-no-border
               data-test-id={namespace + idx + '-barnaEllerFamilie'}
@@ -646,7 +645,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
         <VerticalSeparatorDiv size='2' />
         <AlignStartRow>
           <Column flex='2'>
-            <HighContrastRadioPanelGroup
+            <RadioPanelGroup
               checked={motregningKey === 'new-motregning' ? _newSvarType : motregning?.svarType}
               data-multiple-line
               data-no-border
@@ -708,9 +707,9 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
           </>
         )}
         <VerticalSeparatorDiv size='2' />
-        <UndertekstBold>
+        <Detail>
           {t('label:informasjon-om-familieytelser')}
-        </UndertekstBold>
+        </Detail>
         <VerticalSeparatorDiv />
         <AlignStartRow>
           <Column>
@@ -785,7 +784,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
         <VerticalSeparatorDiv />
         <AlignStartRow>
           <Column flex='2'>
-            <HighContrastRadioPanelGroup
+            <RadioPanelGroup
               checked={motregningKey === 'new-motregning' ? _newUtbetalingshyppighet : motregning?.utbetalingshyppighet}
               data-no-border
               data-test-id={namespace + idx + '-utbetalingshyppighet'}
@@ -869,16 +868,16 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
   }
   return (
     <PaddedDiv>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:motregning')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv size='2' />
 
       {_.isEmpty(Object.keys(_keyAndYtelseMap))
         ? (
-          <Normaltekst>
+          <BodyLong>
             {t('message:warning-no-motregning')}
-          </Normaltekst>
+          </BodyLong>
           )
         : Object.keys(_keyAndYtelseMap)?.map(renderRow)}
       <VerticalSeparatorDiv size='2' />
@@ -889,24 +888,24 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
         : (
           <Row>
             <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                variant='tertiary'
+                size='small'
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:motregning').toLowerCase() })}
-              </HighContrastFlatknapp>
+              </Button>
             </Column>
           </Row>
           )}
       <VerticalSeparatorDiv />
       <AlignStartRow>
         <Column>
-          <HighContrastFlatknapp
-            mini
-            kompakt
+          <Button
+            variant='tertiary'
+            size='small'
             data-amplitude='svarsed.editor.seekontoopplysning'
             onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
               buttonLogger(e)
@@ -914,7 +913,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
             }}
           >
             {t('label:oppgi-kontoopplysninger')}
-          </HighContrastFlatknapp>
+          </Button>
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='0.5' />

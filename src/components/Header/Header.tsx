@@ -1,8 +1,8 @@
 import { toggleHighContrast } from 'actions/ui'
-import { themeKeys, HighContrastLink, HorizontalSeparatorDiv } from 'nav-hoykontrast'
+import {  HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import { State } from 'declarations/reducers'
 import { Saksbehandler } from 'declarations/types'
-import { Undertittel } from 'nav-frontend-typografi'
+import { Link, Heading } from '@navikt/ds-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -93,11 +93,11 @@ const Header: React.FC<HeaderProps> = ({
           {t('app:name')}
         </Title>
       </Brand>
-      <Undertittel>
+      <Heading size='small'>
         {title}
-      </Undertittel>
+      </Heading>
       <SaksbehandlerDiv>
-        <HighContrastLink
+        <Link
           data-test-id='header__highcontrast-link'
           href='#highContrast'
           onClick={(e: React.MouseEvent) => {
@@ -107,7 +107,7 @@ const Header: React.FC<HeaderProps> = ({
           }}
         >
           {t('label:høy-kontrast')}
-        </HighContrastLink>
+        </Link>
         <HorizontalSeparatorDiv />
         {saksbehandler && saksbehandler.navn && (
           <Name>

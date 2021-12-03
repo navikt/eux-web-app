@@ -14,17 +14,13 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import Lukknapp from 'nav-frontend-lukknapp'
-import NavModal from 'nav-frontend-modal'
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { Modal as NavModal, BodyLong, Heading, Button } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
   FlexBaseSpacedDiv,
   FlexCenterSpacedDiv,
   FlexDiv,
-  HighContrastHovedknapp,
-  HighContrastKnapp,
   HorizontalSeparatorDiv,
   PaddedDiv,
   VerticalSeparatorDiv
@@ -38,25 +34,8 @@ const ModalDiv = styled(NavModal)`
   width: auto !important;
   height: auto !important;
 `
-const CloseButton = styled(Lukknapp)`
-  position: absolute !important;
-  right: 0.5rem;
-  top: 0.5rem;
-  z-index: 999;
-`
-const Title = styled(Undertittel)`
-  text-align: center;
-`
 const ModalButtons = styled.div`
   text-align: center;
-`
-const MainButton = styled(HighContrastHovedknapp)`
-  margin-right: 1rem;
-  margin-bottom: 1rem;
-`
-const OtherButton = styled(HighContrastKnapp)`
-  margin-right: 1rem;
-  margin-bottom: 1rem;
 `
 const CheckboxDiv = styled.div`
   display: flex;
@@ -297,9 +276,9 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
         <CheckboxDiv>
           <FlexCenterSpacedDiv>
             <FlexBaseSpacedDiv>
-              <Normaltekst>
+              <BodyLong>
                 {p?.fornavn + ' ' + (p?.etternavn ?? '')}
-              </Normaltekst>
+              </BodyLong>
               <HorizontalSeparatorDiv size='0.5' />
               <GreySpan>
                 {'(' + getPersonLabel(personId) + ')'}
@@ -326,20 +305,13 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
 
   return (
     <ModalDiv
-      isOpen
-      onRequestClose={onModalClose}
-      closeButton
-      contentLabel='contentLabel'
+      open
+      onClose={onModalClose}
     >
       <PaddedDiv id='add-person-modal-id'>
-        {closeButton && (
-          <CloseButton onClick={onCloseButtonClicked}>
-            {t('el:button-close')}
-          </CloseButton>
-        )}
-        <Title>
+        <Heading size='small'>
           {t('label:legg-til-fjern-personer')}
-        </Title>
+        </Heading>
         <VerticalSeparatorDiv size='2' />
         <>
           {_replySed?.bruker && renderPerson('bruker', brukerNr)}
@@ -349,9 +321,9 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
           <VerticalSeparatorDiv />
           <HorizontalLineSeparator />
           <VerticalSeparatorDiv size='2' />
-          <Undertittel>
+          <Heading size='small'>
             {t('el:button-add-new-x', { x: t('label:person').toLowerCase() })}
-          </Undertittel>
+          </Heading>
           <VerticalSeparatorDiv />
           <AlignStartRow className='slideInFromLeft'>
             <Column>
@@ -398,33 +370,36 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
             </Column>
             <Column>
               <div className='nolabel'>
-                <HighContrastKnapp
-                  mini
-                  kompakt
+                <Button
+                  variant='secondary'
+                  size='small'
                   onClick={onAdd}
                 >
                   <Add width={20} />
                   <HorizontalSeparatorDiv />
                   {t('el:button-add')}
-                </HighContrastKnapp>
+                </Button>
               </div>
             </Column>
           </AlignStartRow>
           <VerticalSeparatorDiv />
         </>
         <ModalButtons>
-          <MainButton
+          <Button
+            variant='primary'
             onClick={() => {
               onSavePersons()
               onModalClose()
             }}
           >
             {t('el:button-save')}
-          </MainButton>
+          </Button>
           <HorizontalSeparatorDiv />
-          <OtherButton onClick={onModalClose}>
+          <Button
+            variant='secondary'
+            onClick={onModalClose}>
             {t('el:button-cancel')}
-          </OtherButton>
+          </Button>
         </ModalButtons>
       </PaddedDiv>
     </ModalDiv>

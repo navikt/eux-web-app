@@ -10,17 +10,13 @@ import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Adresse as IAdresse, ArbeidsgiverIdentifikator, Periode, PeriodeMedForsikring } from 'declarations/sed.d'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { Ingress, Normaltekst, UndertekstBold } from 'nav-frontend-typografi'
+import { Checkbox, Button, Ingress, BodyLong, Detail, Panel } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
   FlexCenterSpacedDiv,
   FlexDiv,
   FlexEndDiv,
-  HighContrastCheckbox,
-  HighContrastFlatknapp,
-  HighContrastKnapp,
-  HighContrastPanel,
   HorizontalSeparatorDiv,
   PileCenterDiv,
   PileDiv,
@@ -33,7 +29,7 @@ import styled from 'styled-components'
 import { generateIdentifikatorKey } from 'utils/arbeidsgiver'
 import { validateArbeidsgiver, ValidationArbeidsgiverProps } from './validation'
 
-const ArbeidsgiverPanel = styled(HighContrastPanel)`
+const ArbeidsgiverPanel = styled(Panel)`
   padding: 0rem !important;
   max-width: 800px;
   &.new {
@@ -229,10 +225,10 @@ const ArbeidsgiverBox = ({
               </Ingress>
               <HorizontalSeparatorDiv size='0.5' />
               {arbeidsgiver?.extra?.fraArbeidsgiverregisteret === 'ja' && (
-                <Normaltekst>{t('label:fra-arbeidsgiverregisteret')}</Normaltekst>
+                <BodyLong>{t('label:fra-arbeidsgiverregisteret')}</BodyLong>
               )}
               {arbeidsgiver?.extra?.fraInntektsregisteret === 'ja' && (
-                <Normaltekst>{t('label:fra-inntektsregisteret')}</Normaltekst>
+                <BodyLong>{t('label:fra-inntektsregisteret')}</BodyLong>
               )}
             </FlexEndDiv>
             )}
@@ -275,16 +271,16 @@ const ArbeidsgiverBox = ({
                   )
                 : (
                   <div>
-                    <UndertekstBold>
+                    <Detail>
                       {_arbeidsgiversNavn}
-                    </UndertekstBold>
+                    </Detail>
                     <HorizontalLineSeparator />
                     <VerticalSeparatorDiv size='0.5' />
                     {_.isEmpty(_adresse)
                       ? (
-                        <Normaltekst>
+                        <BodyLong>
                           {t('message:warning-unknown-address')}
-                        </Normaltekst>
+                        </BodyLong>
                         )
                       : (
                         <AdresseDiv>
@@ -311,12 +307,12 @@ const ArbeidsgiverBox = ({
                 : (
                   <>
                     {_.isEmpty(_arbeidsgiversIdentifikator)
-                      ? (<Normaltekst>{t('message:warning-no-ids')}</Normaltekst>)
+                      ? (<BodyLong>{t('message:warning-no-ids')}</BodyLong>)
                       : null}
                     {_arbeidsgiversIdentifikator.map(id => (
-                      <Normaltekst key={id.type}>
+                      <BodyLong key={id.type}>
                         {t('el:option-identifikator-' + id.type) + ': ' + id.id}
-                      </Normaltekst>
+                      </BodyLong>
                     ))}
                   </>
                   )}
@@ -324,9 +320,9 @@ const ArbeidsgiverBox = ({
             <>
               <HorizontalSeparatorDiv />
               {error && (
-                <Normaltekst>
+                <BodyLong>
                   duplicate warning
-                </Normaltekst>
+                </BodyLong>
               )}
 
             </>
@@ -334,61 +330,64 @@ const ArbeidsgiverBox = ({
           <FlexDiv style={{ padding: '1rem' }} className='slideInFromRight'>
             {editable === 'full' && !_isEditing && !_isDeleting && (
               <>
-                <HighContrastFlatknapp
-                  kompakt style={{
+                <Button
+                  variant='tertiary'
+                  size='small'
+                  style={{
                     marginTop: '-0.5rem',
                     marginRight: '-0.5rem'
                   }}
                   onClick={() => setIsDeleting(!_isDeleting)}
                 >
                   <TrashcanIcon />
-                </HighContrastFlatknapp>
+                </Button>
                 <HorizontalSeparatorDiv size='0.5' />
               </>
             )}
             {editable !== 'no' && !_isEditing && !_isDeleting && (
               <>
-                <HighContrastFlatknapp
-                  kompakt style={{
+                <Button
+                  variant='tertiary'
+                  size='small'
+                  style={{
                     marginTop: '-0.5rem',
                     marginRight: '-0.5rem'
                   }}
                   onClick={onEditButtonClicked}
                 >
                   <EditIcon />
-                </HighContrastFlatknapp>
+                </Button>
                 <HorizontalSeparatorDiv />
               </>
             )}
             {!_isEditing && !_isDeleting && selectable && (
-              <HighContrastCheckbox
+              <Checkbox
                 checked={selected}
                 onChange={onSelectCheckboxClicked}
-                label={t('label:velg')}
-              />
+               >{t('label:velg')}
+              </Checkbox>
             )}
             {_isEditing && (
               <PileDiv>
-                <HighContrastKnapp
-                  mini
-                  kompakt
+                <Button
+                  variant='secondary'
+                  size='small'
                   onClick={onSaveEditButtonClicked}
                 >
                   <Add />
                   <HorizontalSeparatorDiv size='0.5' />
                   {t('el:button-save')}
-                </HighContrastKnapp>
+                </Button>
                 <VerticalSeparatorDiv size='0.5' />
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
+                <Button
+                  variant='tertiary'
+                  size='small'
                   onClick={onCancelButtonClicked}
                 >
                   <Close />
                   <HorizontalSeparatorDiv size='0.5' />
                   {t('el:button-cancel')}
-                </HighContrastFlatknapp>
-
+                </Button>
               </PileDiv>
             )}
           </FlexDiv>
@@ -399,9 +398,9 @@ const ArbeidsgiverBox = ({
               </strong>
               <VerticalSeparatorDiv />
               <FlexDiv>
-                <HighContrastKnapp
-                  mini
-                  kompakt
+                <Button
+                  variant='secondary'
+                  size='small'
                   onClick={() => {
                     if (_.isFunction(onArbeidsgiverDelete)) {
                       onArbeidsgiverDelete(arbeidsgiver, selected)
@@ -411,15 +410,15 @@ const ArbeidsgiverBox = ({
                   <Trashcan />
                   <HorizontalSeparatorDiv size='0.5' />
                   {t('el:button-remove')}
-                </HighContrastKnapp>
+                </Button>
                 <HorizontalSeparatorDiv size='0.5' />
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
+                <Button
+                  variant='tertiary'
+                  size='small'
                   onClick={() => setIsDeleting(!_isDeleting)}
                 >
                   {t('el:button-cancel')}
-                </HighContrastFlatknapp>
+                </Button>
                 <HorizontalSeparatorDiv />
               </FlexDiv>
             </PileCenterDiv>

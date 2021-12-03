@@ -17,14 +17,12 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
-import { Ingress, Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { ErrorElement } from 'declarations/app.d'
+import { Button, Ingress, BodyLong, Heading } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
   FlexCenterDiv,
-  HighContrastFlatknapp,
-  HighContrastKnapp,
   HorizontalSeparatorDiv,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
@@ -307,9 +305,9 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
 
   const renderNewArbeidsgiver = () => (
     <RepeatableRow className='new'>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:legg-til-arbeidsperiode')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft'>
         <PeriodeInput
@@ -352,23 +350,23 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
         <Column>
-          <HighContrastKnapp
-            mini
-            kompakt
+          <Button
+            variant='secondary'
+            size='small'
             onClick={onArbeidsgiverAdd}
           >
             <Add />
             <HorizontalSeparatorDiv size='0.5' />
             {t('el:button-add')}
-          </HighContrastKnapp>
+          </Button>
           <HorizontalSeparatorDiv size='0.5' />
-          <HighContrastFlatknapp
-            mini
-            kompakt
+          <Button
+            variant='tertiary'
+            size='small'
             onClick={onCancelArbeidsgiverClicked}
           >
             {t('el:button-cancel')}
-          </HighContrastFlatknapp>
+          </Button>
         </Column>
       </AlignStartRow>
     </RepeatableRow>
@@ -392,23 +390,23 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
         <Column>
-          <HighContrastKnapp
-            mini
-            kompakt
+          <Button
+            variant='secondary'
+            size='small'
             onClick={onPeriodeAdd}
           >
             <Add />
             <HorizontalSeparatorDiv size='0.5' />
             {t('el:button-add')}
-          </HighContrastKnapp>
+          </Button>
           <HorizontalSeparatorDiv size='0.5' />
-          <HighContrastFlatknapp
-            mini
-            kompakt
+          <Button
+            variant='tertiary'
+            size='small'
             onClick={onCancelPeriodeClicked}
           >
             {t('el:button-cancel')}
-          </HighContrastFlatknapp>
+          </Button>
         </Column>
       </AlignStartRow>
     </RepeatableRow>
@@ -512,9 +510,9 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
 
   return (
     <>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:oversikt-brukers-arbeidsperioder')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv size='2' />
       <Ingress>
         {t('label:hent-perioder-fra-aa-registeret-og-a-inntekt')}
@@ -528,7 +526,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
             detail: {
               skjemaelementId: `personmanager-${personID}-personopplysninger-norskpin-nummer`,
               feilmelding: ''
-            } as FeiloppsummeringFeil
+            } as ErrorElement
           }))
         }}
         namespace={namespace}
@@ -536,9 +534,9 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       {_.isEmpty(perioderSomAnsatt) && (
         <>
-          <Normaltekst>
+          <BodyLong>
             {t('message:warning-no-periods')}
-          </Normaltekst>
+          </BodyLong>
           <VerticalSeparatorDiv />
         </>
       )}
@@ -551,9 +549,9 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
       {!_seeNewPeriode && !_seeNewArbeidsgiver && (
         <FlexCenterDiv>
           <span>{t('label:du-kan')}</span>
-          <HighContrastFlatknapp
-            mini
-            kompakt
+          <Button
+            variant='tertiary'
+            size='small'
             onClick={() => _setSeeNewArbeidsgiver(true)}
           >
             <Add />
@@ -561,11 +559,11 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
             {t('el:button-add-new-x', {
               x: t('label:arbeidperioder').toLowerCase()
             })}
-          </HighContrastFlatknapp>
+          </Button>
           <span>&nbsp;{t('label:eller')}&nbsp;</span>
-          <HighContrastFlatknapp
-            mini
-            kompakt
+          <Button
+            variant='tertiary'
+            size='small'
             onClick={() => _setSeeNewPeriode(true)}
           >
             <Add />
@@ -573,7 +571,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
             {t('el:button-add-new-x', {
               x: t('label:periode').toLowerCase()
             })}
-          </HighContrastFlatknapp>
+          </Button>
         </FlexCenterDiv>
       )}
     </>

@@ -14,14 +14,13 @@ import { State } from 'declarations/reducers'
 import { FagSak, FagSaker } from 'declarations/types'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { Normaltekst, Systemtittel, Undertittel } from 'nav-frontend-typografi'
+import { BodyLong, Loader, Heading, Button } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
-  HighContrastHovedknapp,
   PileCenterDiv,
   PileDiv,
-  RadioElementBorder,
+  RadioPanelBorder,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
@@ -165,9 +164,9 @@ const PDU1Search: React.FC<PDU1Props> = ({
 
   return (
     <ContainerDiv>
-      <Systemtittel>
+      <Heading size='medium'>
         {t('app:page-title-pdu1-search')}
-      </Systemtittel>
+      </Heading>
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow
         style={{ minWidth: '600px' }}
@@ -186,9 +185,9 @@ const PDU1Search: React.FC<PDU1Props> = ({
               value={fnrOrDnr}
             />
             <VerticalSeparatorDiv size='0.5' />
-            <Normaltekst>
+            <BodyLong>
               {validMessage}
-            </Normaltekst>
+            </BodyLong>
           </PileDiv>
         </Column>
         <Column>
@@ -220,15 +219,15 @@ const PDU1Search: React.FC<PDU1Props> = ({
               <div key={f.saksID}>
                 <AlignStartRow>
                   <Column>
-                    <RadioElementBorder
+                    <RadioPanelBorder
                       ariaLabel={f.temakode + '-' + f.saksID}
                       ariaChecked={fagsak === f.saksID}
                       checked={fagsak === f.saksID}
                       className='slideInFromLeft'
                       label={(
-                        <Undertittel>
+                        <Heading size='small'>
                           {f.temakode + '-' + f.saksID}
-                        </Undertittel>
+                        </Heading>
                     )}
                       name={namespace + '-fagsaker'}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => onFagsakerSelected(e.target.value)}
@@ -242,13 +241,14 @@ const PDU1Search: React.FC<PDU1Props> = ({
             ))}
           </div>
           <VerticalSeparatorDiv size='2' />
-          <HighContrastHovedknapp
-            spinner={creatingPdu1}
+          <Button
+            variant='primary'
             disabled={!tema || !fagsak || creatingPdu1}
             onClick={onCreatePdu1Clicked}
           >
+            {creatingPdu1 && <Loader/>}
             {creatingPdu1 ? t('label:laster') : t('el:button-create-x', { x: 'PD U1' })}
-          </HighContrastHovedknapp>
+          </Button>
         </>
       )}
     </ContainerDiv>

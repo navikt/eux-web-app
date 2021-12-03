@@ -71,9 +71,9 @@ export const opprettetSakPropType = PT.shape({
   url: PT.string
 })
 
-export const FeiloppsummeringFeilPropType = PT.shape({
+export const ErrorElementPropType = PT.shape({
   feilmendling: PT.string.isRequired,
   skjemaelementId: PT.string.isRequired
 })
 
-export const ValidationPropType = PT.objectOf(FeiloppsummeringFeilPropType)
+export const ValidationPropType = PT.objectOf(ErrorElementPropType)

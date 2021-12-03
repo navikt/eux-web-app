@@ -12,13 +12,11 @@ import { LocalStorageEntry } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
-import { Normaltekst, UndertekstBold } from 'nav-frontend-typografi'
+import { Button, Panel, BodyLong, Detail } from '@navikt/ds-react'
 import {
   FlexBaseSpacedDiv,
   FlexCenterSpacedDiv,
   FlexDiv,
-  HighContrastFlatknapp,
-  HighContrastPanel,
   HorizontalSeparatorDiv,
   PileDiv,
   VerticalSeparatorDiv
@@ -133,19 +131,19 @@ const LoadSave: React.FC<LoadSaveProps> = ({
   }, [entries, loadingSavedItems])
 
   return (
-    <HighContrastPanel border style={{ margin: '0.1rem' }}>
+    <Panel border style={{ margin: '0.1rem' }}>
       <LoadSaveDiv>
         {loadingSavedItems && (<WaitingPanel />)}
         {entries === null || _.isEmpty(entries)
           ? (
-            <Normaltekst>
+            <BodyLong>
               {t('label:ingen-lagrede-seds')}
-            </Normaltekst>
+            </BodyLong>
             )
           : (
-            <Normaltekst>
+            <BodyLong>
               {t('label:lagrede-seds')}
-            </Normaltekst>
+            </BodyLong>
             )}
         {entries?.map((savedEntry: LocalStorageEntry<ReplySed | ReplyPdu1>) => (
           <div key={savedEntry.id}>
@@ -153,62 +151,62 @@ const LoadSave: React.FC<LoadSaveProps> = ({
               <PileDiv flex='1'>
                 <FlexCenterSpacedDiv>
                   <FlexBaseSpacedDiv>
-                    <UndertekstBold>
+                    <Detail>
                       {t('label:navn') + ': '}
-                    </UndertekstBold>
+                    </Detail>
                     <HorizontalSeparatorDiv size='0.5' />
-                    <Normaltekst>
+                    <BodyLong>
                       {savedEntry.name}
-                    </Normaltekst>
+                    </BodyLong>
                   </FlexBaseSpacedDiv>
                   <HorizontalSeparatorDiv />
                   <FlexBaseSpacedDiv>
-                    <UndertekstBold>
+                    <Detail>
                       {t('label:dato') + ': '}
-                    </UndertekstBold>
+                    </Detail>
                     <HorizontalSeparatorDiv size='0.5' />
-                    <Normaltekst>
+                    <BodyLong>
                       {savedEntry.date}
-                    </Normaltekst>
+                    </BodyLong>
                   </FlexBaseSpacedDiv>
                 </FlexCenterSpacedDiv>
                 <FlexCenterSpacedDiv>
                   <FlexBaseSpacedDiv>
-                    <UndertekstBold>
+                    <Detail>
                       {t('label:saksnummer') + ': '}
-                    </UndertekstBold>
+                    </Detail>
                     <HorizontalSeparatorDiv size='0.5' />
-                    <Normaltekst>
+                    <BodyLong>
                       {(savedEntry.content as any).saksnummer}
-                    </Normaltekst>
+                    </BodyLong>
                   </FlexBaseSpacedDiv>
                   <HorizontalSeparatorDiv />
                   <FlexBaseSpacedDiv>
-                    <UndertekstBold>
+                    <Detail>
                       {t('label:type') + ': '}
-                    </UndertekstBold>
+                    </Detail>
                     <HorizontalSeparatorDiv size='0.5' />
-                    <Normaltekst>
+                    <BodyLong>
                       {(savedEntry.content as any).sedType}
-                    </Normaltekst>
+                    </BodyLong>
                   </FlexBaseSpacedDiv>
                 </FlexCenterSpacedDiv>
                 <VerticalSeparatorDiv size='0.5' />
                 <FlexBaseSpacedDiv>
-                  <HighContrastFlatknapp
-                    mini
-                    kompakt
+                  <Button
+                    variant='tertiary'
+                    size='small'
                     disabled={_sedStatusRequested === savedEntry.id || hasSentStatus(savedEntry.id)}
-                    spinner={_sedStatusRequested === savedEntry.id}
                     data-amplitude={namespace + '.sidebar.loaddraft'}
                     onClick={(e: any) => handleLoadDraft(e, savedEntry)}
                   >
+                    {_sedStatusRequested === savedEntry.id && <Loader/>}
                     {_sedStatusRequested === savedEntry.id
                       ? t('message:loading-checking-sed-status')
                       : (hasSentStatus(savedEntry.id)
                           ? t('label:sendt')
                           : t('el:button-load'))}
-                  </HighContrastFlatknapp>
+                  </Button>
                   <AddRemovePanel
                     existingItem
                     candidateForDeletion={isInDeletion(savedEntry)}
@@ -225,18 +223,18 @@ const LoadSave: React.FC<LoadSaveProps> = ({
         {!_.isEmpty(entries) && (
           <>
             <VerticalSeparatorDiv />
-            <HighContrastFlatknapp
-              mini
-              kompakt
+            <Button
+              variant='tertiary'
+              size='small'
               data-amplitude={namespace + '.sidebar.removeall'}
               onClick={onRemoveAll}
             >
               {t('el:button-remove-all')}
-            </HighContrastFlatknapp>
+            </Button>
           </>
         )}
       </LoadSaveDiv>
-    </HighContrastPanel>
+    </Panel>
   )
 }
 

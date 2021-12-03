@@ -12,7 +12,8 @@ import { State } from 'declarations/reducers'
 import ProgressBar, { ProgressBarStatus } from 'fremdriftslinje'
 import _ from 'lodash'
 import md5 from 'md5'
-import { HighContrastKnapp, HorizontalSeparatorDiv } from 'nav-hoykontrast'
+import { Button } from '@navikt/ds-react'
+import { HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -146,10 +147,10 @@ const SEDAttachmentSender: React.FC<SEDAttachmentSenderProps> = ({
       {_status === 'inprogress' && _.isFunction(onCancel) && (
         <>
           <HorizontalSeparatorDiv data-sise='0.35' />
-          <HighContrastKnapp
+          <Button
+            variant='secondary'
+            size='small'
             data-test-id='c-sedAttachmentSender__cancel-button-id'
-            kompakt
-            mini
             onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
               e.preventDefault()
               e.stopPropagation()
@@ -157,7 +158,7 @@ const SEDAttachmentSender: React.FC<SEDAttachmentSenderProps> = ({
             }}
           >
             {t('el:button-cancel')}
-          </HighContrastKnapp>
+          </Button>
         </>
       )}
     </SEDAttachmentSenderDiv>

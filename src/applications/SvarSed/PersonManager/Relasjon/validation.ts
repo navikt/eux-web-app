@@ -1,7 +1,7 @@
 import { Barnetilhoerighet } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
@@ -31,7 +31,7 @@ export const validateBarnetilhoerighet = (
     v[namespace + idx + '-relasjonTilPerson'] = {
       feilmelding: t('validation:noRelationTil', { person: personName }),
       skjemaelementId: namespace + idx + '-relasjonTilPerson'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   } else {
     let duplicate: boolean
@@ -45,7 +45,7 @@ export const validateBarnetilhoerighet = (
       v[namespace + idx + '-relasjonTilPerson'] = {
         feilmelding: t('validation:duplicateRelationTil', { person: personName }),
         skjemaelementId: namespace + idx + '-relasjonTilPerson'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
   }
@@ -54,7 +54,7 @@ export const validateBarnetilhoerighet = (
     v[namespace + idx + '-relasjonType'] = {
       feilmelding: t('validation:noRelationTypeTil', { person: personName }),
       skjemaelementId: namespace + idx + '-relasjonType'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -63,9 +63,9 @@ export const validateBarnetilhoerighet = (
     const mainNamespace = namespaceBits[0]
     const personNamespace = mainNamespace + '-' + namespaceBits[1]
     const categoryNamespace = personNamespace + '-' + namespaceBits[2]
-    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
   }
   return hasErrors
 }

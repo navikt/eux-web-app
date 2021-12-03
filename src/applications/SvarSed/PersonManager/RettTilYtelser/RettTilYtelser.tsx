@@ -4,12 +4,10 @@ import PeriodeInput from 'components/Forms/PeriodeInput'
 import { State } from 'declarations/reducers'
 import { JaNei, Periode, RettTilYtelse } from 'declarations/sed'
 import _ from 'lodash'
-import { Undertittel } from 'nav-frontend-typografi'
+import { Heading,  Radio, RadioGroup, } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
-  HighContrastRadio,
-  HighContrastRadioGroup,
   HorizontalSeparatorDiv,
   PaddedDiv,
   PileDiv,
@@ -95,99 +93,110 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
 
   return (
     <PaddedDiv>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:rett-til-ytelser')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>
-          <HighContrastRadioGroup
+          <RadioGroup
             id={namespace + '-retttilstønad'}
             data-test-id={namespace + '-retttilstønad'}
             legend={t('label:rett-til-stønad') + ' *'}
             key={'rett-til-stonad-' + _rettTilStonad}
-            feil={validation[namespace + '-retttilstønad']?.feilmelding}
+            error={validation[namespace + '-retttilstønad']?.feilmelding}
           >
             <VerticalSeparatorDiv size='0.5' />
             <PileDiv>
               <HorizontalSeparatorDiv size='0.2' />
-              <HighContrastRadio
+              <Radio
                 name={namespace + '-retttilstønad'}
+                value='ja'
                 checked={_rettTilStonad === 'ja'}
-                label={t('label:ja')}
                 onClick={() => setRettTilStonad('ja')}
-              />
+              >
+                {t('label:ja')}
+              </Radio>
               <HorizontalSeparatorDiv size='2' />
-              <HighContrastRadio
+              <Radio
                 name={namespace + '-retttilstønad'}
+                value='nei'
                 checked={_rettTilStonad === 'nei'}
-                label={t('label:nei')}
-                onClick={() => setRettTilStonad('nei')}
-              />
+                onClick={() => setRettTilStonad('nei')}>
+                {t('label:nei')}
+              </Radio>
             </PileDiv>
-          </HighContrastRadioGroup>
+          </RadioGroup>
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />
       {_rettTilStonad === 'ja' && (
         <AlignStartRow>
           <Column>
-            <HighContrastRadioGroup
+            <RadioGroup
               id={namespace + '-bekreftelsesgrunn'}
               data-test-id={namespace + '-bekreftelsesgrunn'}
               legend={t('label:artikkelnummer') + ' *'}
               key={'bekreftelsesgrunn-' + rettTilYtelse?.bekreftelsesgrunn}
-              feil={validation[namespace + '-bekreftelsesgrunn']?.feilmelding}
+              error={validation[namespace + '-bekreftelsesgrunn']?.feilmelding}
             >
               <VerticalSeparatorDiv size='0.5' />
               <PileDiv>
                 <HorizontalSeparatorDiv size='0.2' />
-                <HighContrastRadio
+                <Radio
                   name={namespace + '-bekreftelsesgrunn'}
+                  value='artikkel_64_i_forordningen_EF_nr._883/2004'
                   checked={rettTilYtelse?.bekreftelsesgrunn === 'artikkel_64_i_forordningen_EF_nr._883/2004'}
-                  label={t('label:artikkel-64')}
                   onClick={() => setBekreftelsesgrunn('artikkel_64_i_forordningen_EF_nr._883/2004')}
-                />
+                >
+                  {t('label:artikkel-64')}
+                </Radio>
                 <HorizontalSeparatorDiv size='2' />
-                <HighContrastRadio
+                <Radio
                   name={namespace + '-bekreftelsesgrunn'}
+                  value='artikkel_65_1_i_forordningen_EF_nr._883/2004'
                   checked={rettTilYtelse?.bekreftelsesgrunn === 'artikkel_65_1_i_forordningen_EF_nr._883/2004'}
-                  label={t('label:artikkel-65')}
                   onClick={() => setBekreftelsesgrunn('artikkel_65_1_i_forordningen_EF_nr._883/2004')}
-                />
+                >
+                  {t('label:artikkel-65')}
+                </Radio>
               </PileDiv>
-            </HighContrastRadioGroup>
+            </RadioGroup>
           </Column>
         </AlignStartRow>
       )}
       {_rettTilStonad === 'nei' && (
         <AlignStartRow>
           <Column>
-            <HighContrastRadioGroup
+            <RadioGroup
               id={namespace + '-avvisningsgrunn'}
               data-test-id={namespace + '-avvisningsgrunn'}
               legend={t('label:grunn') + ' *'}
               key={'avvisningsgrunn-' + rettTilYtelse?.avvisningsgrunn}
-              feil={validation[namespace + '-avvisningsgrunn']?.feilmelding}
+              error={validation[namespace + '-avvisningsgrunn']?.feilmelding}
             >
               <VerticalSeparatorDiv size='0.5' />
               <PileDiv>
                 <HorizontalSeparatorDiv size='0.2' />
-                <HighContrastRadio
+                <Radio
                   name={namespace + '-avvisningsgrunn'}
+                  value='ingen_rett_til_stønad_i_henhold_til_lovgivningen_til_institusjonen_som_utsteder_denne_meldingen'
                   checked={rettTilYtelse?.avvisningsgrunn === 'ingen_rett_til_stønad_i_henhold_til_lovgivningen_til_institusjonen_som_utsteder_denne_meldingen'}
-                  label={t('label:grunn-ingen-rett')}
                   onClick={() => setAvvisningsGrunn('ingen_rett_til_stønad_i_henhold_til_lovgivningen_til_institusjonen_som_utsteder_denne_meldingen')}
-                />
+                >
+                  {t('label:grunn-ingen-rett')}
+                </Radio>
                 <HorizontalSeparatorDiv size='2' />
-                <HighContrastRadio
+                <Radio
                   name={namespace + '-avvisningsgrunn'}
+                  value='personen_søkte_ikke_om_eksport_av_stønad_på_riktig_måte'
                   checked={rettTilYtelse?.avvisningsgrunn === 'personen_søkte_ikke_om_eksport_av_stønad_på_riktig_måte'}
-                  label={t('label:grunn-personen')}
                   onClick={() => setAvvisningsGrunn('personen_søkte_ikke_om_eksport_av_stønad_på_riktig_måte')}
-                />
+                >
+                  {t('label:grunn-personen')}
+                </Radio>
               </PileDiv>
-            </HighContrastRadioGroup>
+            </RadioGroup>
           </Column>
         </AlignStartRow>
       )}

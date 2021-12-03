@@ -7,8 +7,8 @@ import { HSed, ReplySed } from 'declarations/sed'
 import { FagSak, FagSaker, Validation } from 'declarations/types'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import NavFrontendSpinner from 'nav-frontend-spinner'
-import { Column, FlexBaseDiv, HighContrastFlatknapp, HorizontalSeparatorDiv, Row } from 'nav-hoykontrast'
+import { Loader, Button } from '@navikt/ds-react'
+import { Column, FlexBaseDiv, HorizontalSeparatorDiv, Row } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -155,7 +155,7 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
             : (
               <>
                 {gettingFagsaker
-                  ? <NavFrontendSpinner />
+                  ? <Loader />
                   : (
                     <Select
                       defaultValue={_.find(fagsakIdOptions, { value: _fagsak })}
@@ -174,21 +174,21 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
           {editMode && (
             <>
               <HorizontalSeparatorDiv size='0.5' />
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                variant='tertiary'
+                size='small'
                 onClick={onSaveChangesClicked}
               >
                 {t('el:button-save')}
-              </HighContrastFlatknapp>
+              </Button>
               <HorizontalSeparatorDiv size='0.5' />
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                variant='tertiary'
+                size='small'
                 onClick={onCancelChangesClicked}
               >
                 {t('el:button-cancel')}
-              </HighContrastFlatknapp>
+              </Button>
             </>
           )}
           {!editMode && validation[namespace]?.feilmelding && (
@@ -203,15 +203,15 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
           )}
           <HorizontalSeparatorDiv />
           {!editMode && (
-            <HighContrastFlatknapp
-              mini
-              kompakt
+            <Button
+              variant='tertiary'
+              size='small'
               onClick={onEditModeClicked}
             >
               <Edit />
               <HorizontalSeparatorDiv size='0.5' />
               {t('el:button-edit')}
-            </HighContrastFlatknapp>
+            </Button>
           )}
         </FlexBaseDiv>
       </Column>

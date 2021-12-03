@@ -1,7 +1,7 @@
 import { UtbetalingTilInstitusjon } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 
 interface ValidateKontoopplysningProps {
@@ -32,14 +32,14 @@ export const validateKontoopplysning = (
     v[namespace + '-begrunnelse'] = {
       feilmelding: t('validation:noBegrunnelseTil', { person: formalName }),
       skjemaelementId: namespace + '-begrunnelse'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   } else {
     if (uti.begrunnelse.length > 500) {
       v[namespace + '-begrunnelse'] = {
         feilmelding: t('validation:textOver500Til', { person: formalName }),
         skjemaelementId: namespace + '-begrunnelse'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
   }
@@ -48,7 +48,7 @@ export const validateKontoopplysning = (
     v[namespace + '-id'] = {
       feilmelding: t('validation:noInstitusjonensIdTil', { person: formalName }),
       skjemaelementId: namespace + '-id'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -56,7 +56,7 @@ export const validateKontoopplysning = (
     v[namespace + '-navn'] = {
       feilmelding: t('validation:noInstitusjonensNavnTil', { person: formalName }),
       skjemaelementId: namespace + '-navn'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -64,7 +64,7 @@ export const validateKontoopplysning = (
     v[namespace + '-kontotype'] = {
       feilmelding: t('validation:noKontotypeTil', { person: formalName }),
       skjemaelementId: namespace + '-kontotype'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -73,14 +73,14 @@ export const validateKontoopplysning = (
       v[namespace + '-kontoOrdinaer-swift'] = {
         feilmelding: t('validation:noSwiftTil', { person: formalName }),
         skjemaelementId: namespace + '-kontoOrdinaer-swift'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     } else {
       if (!uti?.kontoOrdinaer?.swift?.trim().match(/^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/)) {
         v[namespace + '-kontoOrdinaer-swift'] = {
           feilmelding: t('validation:invalidSwiftTil', { person: formalName }),
           skjemaelementId: namespace + '-kontoOrdinaer-swift'
-        } as FeiloppsummeringFeil
+        } as ErrorElement
         hasErrors = true
       }
     }
@@ -91,7 +91,7 @@ export const validateKontoopplysning = (
       v[namespace + '-kontoSepa-iban'] = {
         feilmelding: t('validation:noIbanOrSwiftTil', { person: formalName }),
         skjemaelementId: namespace + '-kontoSepa-iban'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
 
@@ -99,7 +99,7 @@ export const validateKontoopplysning = (
       v[namespace + '-kontoSepa-iban'] = {
         feilmelding: t('validation:invalidIbanTil', { person: formalName }),
         skjemaelementId: namespace + '-kontoSepa-iban'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
 
@@ -107,7 +107,7 @@ export const validateKontoopplysning = (
       v[namespace + '-kontoSepa-swift'] = {
         feilmelding: t('validation:noIbanOrSwiftTil', { person: formalName }),
         skjemaelementId: namespace + '-kontoSepa-swift'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
 
@@ -115,7 +115,7 @@ export const validateKontoopplysning = (
       v[namespace + '-kontoSepa-swift'] = {
         feilmelding: t('validation:invalidSwiftTil', { person: formalName }),
         skjemaelementId: namespace + '-kontoSepa-swift'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
   }
@@ -124,8 +124,8 @@ export const validateKontoopplysning = (
     const namespaceBits = namespace.split('-')
     const mainNamespace = namespaceBits[0]
     const formaalNamespace = mainNamespace + '-' + namespaceBits[1]
-    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[formaalNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[formaalNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
   }
   return hasErrors
 }

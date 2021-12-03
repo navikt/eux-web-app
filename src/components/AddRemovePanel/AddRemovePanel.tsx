@@ -2,8 +2,8 @@ import { Add } from '@navikt/ds-icons'
 import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
 import { Labels } from 'declarations/app'
-import { Normaltekst } from 'nav-frontend-typografi'
-import { HighContrastFlatknapp, HorizontalSeparatorDiv } from 'nav-hoykontrast'
+import { Button, BodyLong } from '@navikt/ds-react'
+import { HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -43,52 +43,52 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
   return candidateForDeletion
     ? (
       <InlineFlexDiv className={classNames('slideInFromRight', { nolabel: marginTop })}>
-        <Normaltekst style={{ whiteSpace: 'nowrap' }}>
+        <BodyLong style={{ whiteSpace: 'nowrap' }}>
           {labels?.areYouSure ?? t('label:er-du-sikker')}
-        </Normaltekst>
+        </BodyLong>
         <HorizontalSeparatorDiv size='0.5' />
-        <HighContrastFlatknapp
-          mini
-          kompakt
+        <Button
+          variant='tertiary'
+          size='small'
           data-test-id={namespace + '-addremove-yes'}
           onClick={onConfirmRemove}
         >
           {labels?.yes ?? t('label:ja')}
-        </HighContrastFlatknapp>
+        </Button>
         <HorizontalSeparatorDiv size='0.5' />
-        <HighContrastFlatknapp
-          mini
-          kompakt
+        <Button
+          variant='tertiary'
+          size='small'
           data-test-id={namespace + '-addremove-no'}
           onClick={onCancelRemove}
         >
           {labels?.no ?? t('label:nei')}
-        </HighContrastFlatknapp>
+        </Button>
       </InlineFlexDiv>
       )
     : (
       <InlineFlexDiv className={classNames({ nolabel: marginTop })}>
-        <HighContrastFlatknapp
-          mini
-          kompakt
+        <Button
+          variant='tertiary'
+          size='small'
           data-test-id={namespace + '-addremove-' + (existingItem ? 'remove' : 'add')}
           onClick={existingItem ? onBeginRemove : onAddNew}
         >
           {!existingItem ? <Add /> : <Trashcan />}
           <HorizontalSeparatorDiv size='0.5' />
           {!existingItem ? labels?.add ?? t('el:button-add') : labels?.remove ?? t('el:button-remove')}
-        </HighContrastFlatknapp>
+        </Button>
         {!existingItem && (
           <>
             <HorizontalSeparatorDiv />
-            <HighContrastFlatknapp
-              mini
-              kompakt
+            <Button
+              variant='tertiary'
+              size='small'
               data-test-id={namespace + '-addremove-cancel'}
               onClick={onCancelNew}
             >
               {labels?.cancel ?? t('el:button-cancel')}
-            </HighContrastFlatknapp>
+            </Button>
           </>
         )}
       </InlineFlexDiv>

@@ -2,7 +2,7 @@ import { validatePeriode } from 'components/Forms/validation'
 import { Ytelse } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
@@ -32,7 +32,7 @@ export const validateBeløpNavnOgValuta = (
     v[namespace + idx + '-antallPersoner'] = {
       skjemaelementId: namespace + idx + '-antallPersoner',
       feilmelding: t('validation:noAntallPersonerTil', { person: personName })
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -40,7 +40,7 @@ export const validateBeløpNavnOgValuta = (
     v[namespace + '-ytelseNavn'] = {
       skjemaelementId: namespace + '-ytelseNavn',
       feilmelding: t('validation:noBetegnelsePåYtelseTil', { person: personName })
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -48,7 +48,7 @@ export const validateBeløpNavnOgValuta = (
     v[namespace + '-beloep'] = {
       skjemaelementId: namespace + '-beloep',
       feilmelding: t('validation:noBeløpTil', { person: personName })
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -56,7 +56,7 @@ export const validateBeløpNavnOgValuta = (
     v[namespace + '-beloep'] = {
       skjemaelementId: namespace + '-beloep',
       feilmelding: t('validation:invalidBeløpTil', { person: personName })
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -64,7 +64,7 @@ export const validateBeløpNavnOgValuta = (
     v[namespace + '-valuta'] = {
       skjemaelementId: namespace + '-valuta',
       feilmelding: t('validation:noValutaTil', { person: personName })
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -81,7 +81,7 @@ export const validateBeløpNavnOgValuta = (
     v[namespace + '-mottakersNavn'] = {
       skjemaelementId: namespace + '-mottakersNavn',
       feilmelding: t('validation:noNavnTil', { person: personName })
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -89,7 +89,7 @@ export const validateBeløpNavnOgValuta = (
     v[namespace + '-utbetalingshyppighet'] = {
       skjemaelementId: namespace + '-utbetalingshyppighet',
       feilmelding: t('validation:noUtbetalingshyppighetTil', { person: personName })
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -98,9 +98,9 @@ export const validateBeløpNavnOgValuta = (
     const mainNamespace = namespaceBits[0]
     const personNamespace = mainNamespace + '-' + namespaceBits[1]
     const categoryNamespace = personNamespace + '-' + namespaceBits[2]
-    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
   }
   return hasErrors
 }

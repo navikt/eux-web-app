@@ -8,15 +8,13 @@ import { KodeverkPropType } from 'declarations/types.pt'
 import { Country, CountryFilter } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
-import AlertStripe from 'nav-frontend-alertstriper'
-import Panel from 'nav-frontend-paneler'
-import { FeiloppsummeringFeil, Input, Select } from 'nav-frontend-skjema'
-import { Normaltekst } from 'nav-frontend-typografi'
-import { Column, HighContrastKnapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { Alert, Button, Panel, TextField, Select, BodyLong  } from '@navikt/ds-react'
+import { Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
+import { ErrorElement } from 'declarations/app'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -144,49 +142,49 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
         : {
           feilmelding: t('validation:noFnr'),
           skjemaelementId: 'familierelasjoner__input-fnr-id'
-        } as FeiloppsummeringFeil,
+        } as ErrorElement,
       fornavn: _relation.fornavn
         ? undefined
         : {
           feilmelding: t('validation:noFirstName'),
           skjemaelementId: 'familierelasjoner__input-fornavn'
-        } as FeiloppsummeringFeil,
+        } as ErrorElement,
       etternavn: _relation.etternavn
         ? undefined
         : {
           feilmelding: t('validation:noLastName'),
           skjemaelementId: 'familierelasjoner__input-etternavn'
-        } as FeiloppsummeringFeil,
+        } as ErrorElement,
       kjoenn: _relation.kjoenn
         ? undefined
         : {
           feilmelding: t('validation:noGender'),
           skjemaelementId: 'familierelasjoner__select-kjoenn'
-        } as FeiloppsummeringFeil,
+        } as ErrorElement,
       fdato: _relation.fdato
         ? undefined
         : {
           feilmelding: t('validation:noDate'),
           skjemaelementId: 'familierelasjoner__input-fdato'
-        } as FeiloppsummeringFeil,
+        } as ErrorElement,
       rolle: _relation.rolle
         ? undefined
         : {
           feilmelding: t('validation:noRolle'),
           skjemaelementId: 'familierelasjoner__input-familierelasjon'
-        } as FeiloppsummeringFeil,
+        } as ErrorElement,
       land: _relation.land
         ? undefined
         : {
           feilmelding: t('validation:noLand'),
           skjemaelementId: 'familierelasjoner__input-land'
-        } as FeiloppsummeringFeil,
+        } as ErrorElement,
       statsborgerskap: _relation.land
         ? undefined
         : {
           feilmelding: t('validation:noNationality'),
           skjemaelementId: 'familierelasjoner__input-statsborgerskap'
-        } as FeiloppsummeringFeil
+        } as ErrorElement
     } as Validation
     setValidation(validation)
     return hasNoValidationErrors(validation)
@@ -219,14 +217,14 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
 
   return (
     <Container className={className}>
-      <Normaltekst>{t('label:family-utland-add-form')}</Normaltekst>
+      <BodyLong>{t('label:family-utland-add-form')}</BodyLong>
       <VerticalSeparatorDiv />
       <Panel data-test-id='familierelasjoner__utland__wrapper'>
         <Row>
           <Column className='slideInFromLeft'>
-            <Input
+            <TextField
               data-test-id='familierelasjoner__input-fnr-id'
-              feil={_validation.fnr ? _validation.fnr.feilmelding : undefined}
+              error={_validation.fnr ? _validation.fnr.feilmelding : undefined}
               label={t('label:utenlandsk-id')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 updateRelation('fnr', e.currentTarget.value)
@@ -275,9 +273,9 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
         </Row>
         <Row>
           <Column className='slideInFromLeft' style={{ animationDelay: '0.15s' }}>
-            <Input
+            <TextField
               data-test-id='familierelasjoner__input-fornavn'
-              feil={_validation.fornavn ? _validation.fornavn.feilmelding : undefined}
+              error={_validation.fornavn ? _validation.fornavn.feilmelding : undefined}
               label={t('label:fornavn')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 updateRelation('fornavn', e.currentTarget.value)
@@ -289,9 +287,9 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
           </Column>
           <HorizontalSeparatorDiv />
           <Column className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
-            <Input
+            <TextField
               data-test-id='familierelasjoner__input-etternavn'
-              feil={_validation.etternavn ? _validation.etternavn.feilmelding : undefined}
+              error={_validation.etternavn ? _validation.etternavn.feilmelding : undefined}
               label={t('label:etternavn')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 updateRelation('etternavn', e.currentTarget.value)
@@ -374,7 +372,8 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             className='slideInFromLeft'
             style={{ animationDelay: '0.4s' }}
           >
-            <HighContrastKnapp
+            <Button
+              variant='secondary'
               onClick={addRelation}
               className='relasjon familierelasjoner__knapp'
             >
@@ -387,14 +386,12 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               <span>
                 {t('el:button-add')}
               </span>
-            </HighContrastKnapp>
+            </Button>
           </AlignCenterColumn>
           {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (
-            <AlertstripeDiv>
-              <AlertStripe type='advarsel'>
-                {alertMessage}
-              </AlertStripe>
-            </AlertstripeDiv>
+            <Alert variant='warning'>
+              {alertMessage}
+            </Alert>
           )}
         </Row>
       </Panel>

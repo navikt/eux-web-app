@@ -2,7 +2,7 @@ import { validatePeriode } from 'components/Forms/validation'
 import { Loennsopplysning } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
@@ -44,7 +44,7 @@ export const validateLoennsopplysning = (
       v[namespace + idx + '-startdato'] = {
         feilmelding: t('validation:duplicateStartdato'),
         skjemaelementId: namespace + idx + '-startdato'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
   }
@@ -53,7 +53,7 @@ export const validateLoennsopplysning = (
     v[namespace + idx + '-periodetype'] = {
       feilmelding: t('validation:noPeriodeType'),
       skjemaelementId: namespace + idx + '-periodetype'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -62,9 +62,9 @@ export const validateLoennsopplysning = (
     const mainNamespace = namespaceBits[0]
     const personNamespace = mainNamespace + '-' + namespaceBits[1]
     const categoryNamespace = personNamespace + '-' + namespaceBits[2]
-    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
   }
   return hasErrors
 }

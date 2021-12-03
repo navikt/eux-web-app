@@ -6,12 +6,12 @@ import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { H002Sed, HSed, HSvar, HSvarType } from 'declarations/sed'
 import _ from 'lodash'
-import { Undertittel } from 'nav-frontend-typografi'
+import { Heading } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
   FlexCenterDiv,
-  HighContrastRadioPanelGroup,
+  RadioPanelGroup,
   HorizontalSeparatorDiv,
   PaddedDiv,
   VerticalSeparatorDiv
@@ -139,9 +139,9 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
     <PaddedDiv>
       <AlignStartRow className='slideInFromLeft'>
         <Column>
-          <Undertittel>
+          <Heading size='small'>
             {t('label:svar-på-forespørsel')}
-          </Undertittel>
+          </Heading>
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />

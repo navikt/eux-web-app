@@ -2,7 +2,7 @@ import ArbeidsgiverSøk from 'components/Arbeidsgiver/ArbeidsgiverSøk'
 import { PeriodeMedForsikring } from 'declarations/sed'
 import { Arbeidsgiver, Arbeidsperioder } from 'declarations/types.d'
 import _ from 'lodash'
-import { Normaltekst } from 'nav-frontend-typografi'
+import { BodyLong } from '@navikt/ds-react'
 import { Column, Row } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -74,9 +74,9 @@ const Arbeidsgivere: React.FC<ArbeidsgivereProps> = ({
 
         ).filter(e => e !== undefined)}
         {arbeidsperioder && _.isEmpty(arbeidsperioder) && (
-          <Normaltekst>
+          <BodyLong>
             {t('message:warning-no-arbeidsgiver-found')}
-          </Normaltekst>
+          </BodyLong>
         )}
 
       </Column>

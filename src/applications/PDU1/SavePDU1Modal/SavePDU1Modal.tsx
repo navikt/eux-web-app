@@ -1,17 +1,12 @@
 import { saveEntry } from 'actions/localStorage'
 import Modal from 'components/Modal/Modal'
-import { AlertstripeDiv } from 'components/StyledComponents'
 import { ReplyPdu1 } from 'declarations/pd'
 import { LocalStorageEntry, Validation } from 'declarations/types'
 import _ from 'lodash'
-import AlertStripe from 'nav-frontend-alertstriper'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
-import { Undertittel } from 'nav-frontend-typografi'
+import { Alert, Heading, Button, TextField } from '@navikt/ds-react'
+import { ErrorElement } from 'declarations/app.d'
 import {
   FlexCenterSpacedDiv,
-  HighContrastFlatknapp,
-  HighContrastHovedknapp,
-  HighContrastInput,
   HorizontalSeparatorDiv,
   PileDiv,
   VerticalSeparatorDiv
@@ -74,7 +69,7 @@ const SendPDU1Modal = ({
       validation['savepdu1modal-name'] = {
         skjemaelementId: 'savepdu1modal-name',
         feilmelding: t('validation:noNavn')
-      } as FeiloppsummeringFeil
+      } as ErrorElement
     }
     setValidation(validation)
     return hasNoValidationErrors(validation)
@@ -104,17 +99,15 @@ const SendPDU1Modal = ({
         closeButton: false,
         modalContent: (
           <MinimalModalDiv>
-            <Undertittel>
+            <Heading size='small'>
               {t('label:save-pdu1')}
-            </Undertittel>
+            </Heading>
             <VerticalSeparatorDiv />
             {_message && (
               <>
-                <AlertstripeDiv>
-                  <AlertStripe type='suksess'>
-                    {t(_message)}
-                  </AlertStripe>
-                </AlertstripeDiv>
+                <Alert variant='success'>
+                  {t(_message)}
+                </Alert>
                 <VerticalSeparatorDiv />
               </>
             )}
@@ -124,9 +117,9 @@ const SendPDU1Modal = ({
                   <PileDiv style={{ alignItems: 'flex-start' }}>
                     <div>
                       <FlexCenterSpacedDiv>
-                        <HighContrastInput
+                        <TextField
                           data-test-id='savepdu1modal-name'
-                          feil={_validation['savepdu1modal-name']?.feilmelding}
+                          error={_validation['savepdu1modal-name']?.feilmelding}
                           id='savepdu1modal-name'
                           label={t('label:navn')}
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
@@ -144,30 +137,33 @@ const SendPDU1Modal = ({
                 {!_saved
                   ? (
                     <div>
-                      <HighContrastHovedknapp
-                        mini
+                      <Button
+                        variant='primary'
+                        size='small'
                         onClick={onSave}
                       >
                         {t('el:button-save-draft-x', { x: 'PD U1' })}
-                      </HighContrastHovedknapp>
+                      </Button>
                       <HorizontalSeparatorDiv />
-                      <HighContrastFlatknapp
-                        mini
+                      <Button
+                        variant='tertiary'
+                        size='small'
                         onClick={onModalClose}
                       >
                         {t('el:button-cancel')}
-                      </HighContrastFlatknapp>
+                      </Button>
 
                     </div>
                     )
                   : (
                     <div>
-                      <HighContrastHovedknapp
-                        mini
+                      <Button
+                        variant='primary'
+                        size='small'
                         onClick={onModalClose}
                       >
                         {t('el:button-close')}
-                      </HighContrastHovedknapp>
+                      </Button>
                     </div>
                     )}
               </SectionDiv>

@@ -8,7 +8,8 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
-import { AlignStartRow, Column, HighContrastKnapp, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { Button, Loader } from '@navikt/ds-react'
+import { AlignStartRow, Column, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { validateInntektSearch, ValidationInntektSearchProps } from './validation'
@@ -121,9 +122,9 @@ const InntektSearch = ({
       </Column>
       <Column>
         <VerticalSeparatorDiv size='1.8' />
-        <HighContrastKnapp
+        <Button
+          variant='secondary'
           disabled={gettingInntekter}
-          spinner={gettingInntekter}
           onClick={onInntektSearchClicked}
         >
           <Search />
@@ -131,7 +132,8 @@ const InntektSearch = ({
           {gettingInntekter
             ? t('message:loading-searching')
             : t('el:button-search-i-x', { x: t('label:a-inntekt') })}
-        </HighContrastKnapp>
+          {gettingInntekter && <Loader/>}
+        </Button>
       </Column>
     </AlignStartRow>
   )

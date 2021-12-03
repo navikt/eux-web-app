@@ -20,12 +20,9 @@ import { ReplySed } from 'declarations/sed'
 import { CreateSedResponse } from 'declarations/types'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
-import NavFrontendSpinner from 'nav-frontend-spinner'
-import { Undertittel } from 'nav-frontend-typografi'
+import { Button, Loader, Heading } from '@navikt/ds-react'
 import {
   FlexCenterSpacedDiv,
-  HighContrastHovedknapp,
-  HighContrastKnapp,
   HorizontalSeparatorDiv,
   PileCenterDiv,
   PileDiv,
@@ -195,9 +192,9 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
         closeButton: false,
         modalContent: (
           <MinimalModalDiv>
-            <Undertittel>
+            <Heading size='small'>
               {_.isEmpty(sedCreatedResponse) ? t('label:opprette-ny-sed') : t('label:oppdatere-svarsed')}
-            </Undertittel>
+            </Heading>
             <VerticalSeparatorDiv />
             {alertMessage && alertType && [types.SVARSED_SED_CREATE_FAILURE].indexOf(alertType) >= 0 && (
               <PileCenterDiv>
@@ -207,12 +204,13 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                 <VerticalSeparatorDiv />
                 <FlexCenterSpacedDiv>
                   <div />
-                  <HighContrastKnapp
-                    mini
+                  <Button
+                    variant='secondary'
+                    size='small'
                     onClick={onModalClose}
                   >
                     {t('label:damn-really')}
-                  </HighContrastKnapp>
+                  </Button>
                   <div />
                 </FlexCenterSpacedDiv>
               </PileCenterDiv>
@@ -238,7 +236,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                   <div>
                     {creatingSvarSed && (
                       <FlexCenterSpacedDiv>
-                        <NavFrontendSpinner type='XS' />
+                        <Loader type='xsmall' />
                         <HorizontalSeparatorDiv size='0.5' />
                         <span>{_.isEmpty(sedCreatedResponse) ? t('message:loading-opprette-svarsed') : t('message:loading-oppdatering-svarsed')}</span>
                       </FlexCenterSpacedDiv>
@@ -262,7 +260,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                     )}
                     {_sendingAttachments && (
                       <FlexCenterSpacedDiv>
-                        <NavFrontendSpinner type='XS' />
+                        <Loader type='xsmall' />
                         <HorizontalSeparatorDiv size='0.5' />
                         <span>{t('message:loading-sending-vedlegg')}</span>
                       </FlexCenterSpacedDiv>
@@ -279,7 +277,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                     )}
                     {sendingSed && (
                       <FlexCenterSpacedDiv>
-                        <NavFrontendSpinner type='XS' />
+                        <Loader type='xsmall' />
                         <HorizontalSeparatorDiv size='0.5' />
                         <span>{t('message:loading-sending-sed')}</span>
                       </FlexCenterSpacedDiv>
@@ -310,31 +308,32 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                 )}
                 {_finished && (
                   <FlexCenterSpacedDiv>
-                    <HighContrastKnapp
-                      mini
+                    <Button
+                      variant='secondary'
+                      size='small'
                       onClick={onModalClose}
                     >
                       {t('el:button-close')}
-                    </HighContrastKnapp>
+                    </Button>
 
                     {!_.isEmpty(sedCreatedResponse) && (
                       <>
                         <HorizontalSeparatorDiv />
-                        <HighContrastHovedknapp
+                        <Button
+                          variant='primary'
                           // amplitude is dealt on SendSedClick
-                          mini
                           title={t('message:help-send-sed')}
                           disabled={sendingSed || !_.isNil(sedSendResponse)}
                           onClick={onSendSedClick}
                         >
                           {sendingSed ? t('message:loading-sending-sed') : t('el:button-send-sed')}
-                        </HighContrastHovedknapp>
+                        </Button>
                       </>
                     )}
                     <HorizontalSeparatorDiv />
                     {goToRinaUrl && (
-                      <HighContrastHovedknapp
-                        mini
+                      <Button
+                        variant='primary'
                         data-amplitude='svarsed.editor.editinrina'
                         onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
                           buttonLogger(e)
@@ -342,7 +341,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                         }}
                       >
                         {t('label:rediger-sed-i-rina')}
-                      </HighContrastHovedknapp>
+                      </Button>
                     )}
                   </FlexCenterSpacedDiv>
                 )}

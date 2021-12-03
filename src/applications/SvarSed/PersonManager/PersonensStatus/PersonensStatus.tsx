@@ -5,8 +5,8 @@ import NotAnsatt from 'applications/SvarSed/PersonManager/PersonensStatus/NotAns
 import WithSubsidies from 'applications/SvarSed/PersonManager/PersonensStatus/WithSubsidies'
 import { PersonManagerFormProps } from 'applications/SvarSed/PersonManager/PersonManager'
 import LesMer from 'components/LesMer/LesMer'
-import { Undertittel } from 'nav-frontend-typografi'
-import { AlignStartRow, Column, HighContrastRadioPanelGroup, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { Heading } from '@navikt/ds-react'
+import { AlignStartRow, Column, RadioPanelGroup, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -25,13 +25,13 @@ const PersonensStatus: React.FC<PersonManagerFormProps> = ({
 
   return (
     <PaddedDiv>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:arbeidsforhold-type')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow className='slideInFromLeft'>
         <Column>
-          <HighContrastRadioPanelGroup
+          <RadioPanelGroup
             checked={_arbeidsforhold}
             data-multiple-line
             data-no-border

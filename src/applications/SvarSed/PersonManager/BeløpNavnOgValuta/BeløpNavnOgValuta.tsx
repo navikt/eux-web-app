@@ -16,13 +16,12 @@ import { Currency } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { BodyLong, Heading, Button } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
   FlexCenterSpacedDiv,
-  HighContrastFlatknapp,
-  HighContrastRadioPanelGroup,
+  RadioPanelGroup,
   HorizontalSeparatorDiv,
   PaddedDiv,
   VerticalSeparatorDiv
@@ -331,9 +330,9 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv size='2' />
-        <Undertittel className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+        <Heading size='small' className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
           {t('label:grant-date')}
-        </Undertittel>
+        </Heading>
         <VerticalSeparatorDiv size={2} />
         <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.15s' }}>
           <PeriodeInput
@@ -367,7 +366,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
         <VerticalSeparatorDiv />
         <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.25s' }}>
           <Column flex='2'>
-            <HighContrastRadioPanelGroup
+            <RadioPanelGroup
               checked={index < 0 ? _newUtbetalingshyppighet : ytelse?.utbetalingshyppighet}
               data-no-border
               data-test-id={namespace + '-utbetalingshyppighet'}
@@ -402,16 +401,16 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
 
   return (
     <PaddedDiv>
-      <Undertittel>
+      <Heading size='small'>
         {personID === 'familie' ? t('label:beløp-for-hele-familien') : t('label:beløp-navn-valuta-barn')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv size={2} />
       <VerticalSeparatorDiv />
       {_.isEmpty(ytelser)
         ? (
-          <Normaltekst>
+          <BodyLong>
             {t('message:warning-no-ytelse')}
-          </Normaltekst>
+          </BodyLong>
           )
         : ytelser?.map(renderRow)}
       <VerticalSeparatorDiv size='2' />
@@ -422,15 +421,15 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
         : (
           <AlignStartRow>
             <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                variant='tertiary'
+                size='small'
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:ytelse').toLowerCase() })}
-              </HighContrastFlatknapp>
+              </Button>
 
             </Column>
           </AlignStartRow>

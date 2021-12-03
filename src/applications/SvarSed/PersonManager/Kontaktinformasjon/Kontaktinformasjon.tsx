@@ -13,11 +13,10 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { Normaltekst, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
+import { Button, BodyLong, Detail, Heading } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
-  HighContrastFlatknapp,
   HorizontalSeparatorDiv,
   PaddedDiv,
   Row,
@@ -318,9 +317,9 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
 
   return (
     <PaddedDiv>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:kontaktinformasjon')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv size='2' />
       <Row className='slideInFromLeft'>
         <Column>
@@ -331,9 +330,9 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
               </UndertekstBold>
               )
             : (
-              <Normaltekst>
+              <BodyLong>
                 {t('message:warning-no-telephone')}
-              </Normaltekst>
+              </BodyLong>
               )}
         </Column>
         <Column>
@@ -355,15 +354,15 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
         : (
           <Row className='slideInFromLeft'>
             <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                variant='tertiary'
+                size='small'
                 onClick={() => _setSeeNewTelefonForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:telefonnummer').toLowerCase() })}
-              </HighContrastFlatknapp>
+              </Button>
             </Column>
           </Row>
           )}
@@ -377,9 +376,9 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
               </UndertekstBold>
               )
             : (
-              <Normaltekst>
+              <BodyLong>
                 {t('message:warning-no-email')}
-              </Normaltekst>
+              </BodyLong>
               )}
         </Column>
         <Column />
@@ -394,15 +393,15 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
         : (
           <Row className='slideInFromLeft'>
             <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                variant='tertiary'
+                size='small'
                 onClick={() => _setSeeNewEpostForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:epost').toLowerCase() })}
-              </HighContrastFlatknapp>
+              </Button>
             </Column>
           </Row>
           )}

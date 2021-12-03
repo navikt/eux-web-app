@@ -4,13 +4,11 @@ import RemoveCircle from 'assets/icons/RemoveCircle'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed.d'
 import { buttonLogger } from 'metrics/loggers'
-import { Undertittel } from 'nav-frontend-typografi'
+import { Button, Heading, Link, Panel } from '@navikt/ds-react'
 import {
-  HighContrastPanel,
-  HighContrastFlatknapp,
   VerticalSeparatorDiv,
   FlexCenterSpacedDiv,
-  HorizontalSeparatorDiv, HighContrastLink
+  HorizontalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -41,23 +39,24 @@ const SEDDetails: React.FC<SEDDetailsProps> = ({
   }
 
   return (
-    <HighContrastPanel border style={{ margin: '0.1rem' }}>
+    <Panel border style={{ margin: '0.1rem' }}>
       <FlexCenterSpacedDiv>
-        <Undertittel>
+        <Heading size='small'>
           <FlexCenterSpacedDiv>
             {t('label:rina-saksnummer') + ':'}
             <HorizontalSeparatorDiv size='0.35' />
-            <HighContrastLink target='_blank' href={replySed.sakUrl}>
+            <Link target='_blank' href={replySed.sakUrl}>
               <span>
                 {replySed.saksnummer}
               </span>
               <HorizontalSeparatorDiv size='0.35' />
               <ExternalLink />
-            </HighContrastLink>
+            </Link>
           </FlexCenterSpacedDiv>
-        </Undertittel>
-        <HighContrastFlatknapp
-          kompakt
+        </Heading>
+        <Button
+          variant='tertiary'
+          size='small'
           data-amplitude='svarsed.sidebar.edit'
           style={{
             marginTop: '-0.5rem',
@@ -66,7 +65,7 @@ const SEDDetails: React.FC<SEDDetailsProps> = ({
           onClick={toggleEditing}
         >
           {isEditing ? <RemoveCircle /> : <Edit />}
-        </HighContrastFlatknapp>
+        </Button>
       </FlexCenterSpacedDiv>
       <VerticalSeparatorDiv />
       {isEditing
@@ -81,7 +80,7 @@ const SEDDetails: React.FC<SEDDetailsProps> = ({
             replySed={replySed}
           />
           )}
-    </HighContrastPanel>
+    </Panel>
 
   )
 }

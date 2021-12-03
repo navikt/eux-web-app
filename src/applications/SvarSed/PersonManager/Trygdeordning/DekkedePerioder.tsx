@@ -11,11 +11,10 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { Ingress, Normaltekst } from 'nav-frontend-typografi'
+import { Button, Ingress, BodyLong } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
-  HighContrastFlatknapp,
   HorizontalSeparatorDiv,
   Row,
   VerticalSeparatorDiv
@@ -161,9 +160,9 @@ const DekkedePerioder: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       {_.isEmpty(perioderMedITrygdeordning)
         ? (
-          <Normaltekst>
+          <BodyLong>
             {t('message:warning-no-periods')}
-          </Normaltekst>
+          </BodyLong>
           )
         : (
           <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
@@ -189,15 +188,15 @@ const DekkedePerioder: React.FC<PersonManagerFormProps> = ({
         : (
           <Row className='slideInFromLeft'>
             <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                variant='tertiary'
+                size='small'
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:dekkede-periode').toLowerCase() })}
-              </HighContrastFlatknapp>
+              </Button>
             </Column>
           </Row>
           )}

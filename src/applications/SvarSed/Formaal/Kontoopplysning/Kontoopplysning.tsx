@@ -7,8 +7,8 @@ import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Adresse as IAdresse, F002Sed, KontoType, UtbetalingTilInstitusjon } from 'declarations/sed'
 import _ from 'lodash'
-import { Undertittel } from 'nav-frontend-typografi'
-import { AlignStartRow, Column, HighContrastRadioPanelGroup, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { Heading } from '@navikt/ds-react'
+import { AlignStartRow, Column, RadioPanelGroup, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -135,9 +135,9 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
 
   return (
     <PaddedDiv>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:kontoopplysninger')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>

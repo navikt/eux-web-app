@@ -2,7 +2,7 @@ import { PersonManagerFormProps } from 'applications/SvarSed/PersonManager/Perso
 import DekkedePerioder from 'applications/SvarSed/PersonManager/Trygdeordning/DekkedePerioder'
 import FamilieYtelser from 'applications/SvarSed/PersonManager/Trygdeordning/FamilieYtelser'
 import UdekkedePerioder from 'applications/SvarSed/PersonManager/Trygdeordning/UdekkedePerioder'
-import { Undertittel } from 'nav-frontend-typografi'
+import { Heading } from '@navikt/ds-react'
 import { PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -19,9 +19,9 @@ const Trygdeordning: React.FC<PersonManagerFormProps> = ({
 
   return (
     <PaddedDiv>
-      <Undertittel className='slideInFromLeft'>
+      <Heading size='small' className='slideInFromLeft'>
         {t('label:dekning-trygdeordningen')}
-      </Undertittel>
+      </Heading>
       <>
         <VerticalSeparatorDiv size={2} />
 

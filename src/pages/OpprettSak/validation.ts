@@ -1,6 +1,6 @@
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 
 export interface ValidationOpprettSakProps {
@@ -42,7 +42,7 @@ export const validateOpprettSak = (
     v[namespace + '-fnr'] = {
       feilmelding: t('validation:noFnr'),
       skjemaelementId: namespace + '-fnr'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -50,7 +50,7 @@ export const validateOpprettSak = (
     v[namespace + '-fnr'] = {
       feilmelding: t('validation:uncheckedFnr'),
       skjemaelementId: namespace + '-fnr'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -58,7 +58,7 @@ export const validateOpprettSak = (
     v[namespace + '-sektor'] = {
       feilmelding: t('validation:noSektor'),
       skjemaelementId: namespace + '-sektor'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -66,7 +66,7 @@ export const validateOpprettSak = (
     v[namespace + '-buctype'] = {
       feilmelding: t('validation:noBuctype'),
       skjemaelementId: namespace + '-buctype'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -74,49 +74,49 @@ export const validateOpprettSak = (
     v[namespace + '-sedtype'] = {
       feilmelding: t('validation:noSedtype'),
       skjemaelementId: namespace + '-sedtype'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
   if (_.isEmpty(landkode)) {
     v[namespace + '-landkode'] = {
       feilmelding: t('validation:noLand'),
       skjemaelementId: namespace + '-landkode'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
   if (_.isEmpty(institusjon)) {
     v[namespace + '-institusjon'] = {
       feilmelding: t('validation:noInstitusjonsID'),
       skjemaelementId: namespace + '-institusjon'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
   if (_.isEmpty(tema)) {
     v[namespace + '-tema'] = {
       feilmelding: t('validation:noTema'),
       skjemaelementId: namespace + '-tema'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
   if (_.isEmpty(saksId)) {
     v[namespace + '-saksId'] = {
       feilmelding: t('validation:noSaksId'),
       skjemaelementId: namespace + '-saksId'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
   if (_.isEmpty(saksId)) {
     v[namespace + '-saksId'] = {
       feilmelding: t('validation:noSaksId'),
       skjemaelementId: namespace + '-saksId'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
   if (visEnheter && _.isEmpty(unit)) {
     v[namespace + '-unit'] = {
       feilmelding: t('validation:noUnit'),
       skjemaelementId: namespace + '-unit'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 

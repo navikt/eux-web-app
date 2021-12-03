@@ -1,18 +1,18 @@
+import { Loader } from '@navikt/ds-react'
 import * as vedleggActions from 'actions/vedlegg'
 import DocumentSearch from 'applications/Vedlegg/DocumentSearch/DocumentSearch'
+import Input from 'components/Forms/Input'
 import TopContainer from 'components/TopContainer/TopContainer'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import { Validation, VedleggSendResponse } from 'declarations/types'
 import _ from 'lodash'
-import AlertStripe from 'nav-frontend-alertstriper'
-import Hjelpetekst from 'nav-frontend-hjelpetekst'
-import Lenke from 'nav-frontend-lenker'
-import { FeiloppsummeringFeil, Input } from 'nav-frontend-skjema'
+import { Alert, Button, HelpText, Loader, Link } from '@navikt/ds-react'
+import { ErrorElement }  from 'declarations/app.d'
 import {
+  FlexDiv,
   Container,
   Content,
-  HighContrastHovedknapp,
   HorizontalSeparatorDiv,
   Margin,
   VerticalSeparatorDiv
@@ -22,14 +22,6 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import styled from 'styled-components'
-
-const Link = styled(Lenke)`
-  margin-top: 2em;
-`
-const FlexDiv = styled.div`
-  display: flex;
-`
 
 export interface VedleggSelector {
   alertMessage: JSX.Element | string | undefined
@@ -83,19 +75,19 @@ const Vedlegg: React.FC = (): JSX.Element => {
         ? {
           feilmelding: t('validation:noJournalpostID'),
           skjemaelementId: 'vedlegg-journalpostID-id'
-        } as FeiloppsummeringFeil
+        } as ErrorElement
         : undefined,
       dokumentID: !dokumentID
         ? {
           feilmelding: t('validation:noDokumentID'),
           skjemaelementId: 'vedlegg-dokumentID-id'
-        } as FeiloppsummeringFeil
+        } as ErrorElement
         : undefined,
       rinasaksnummer: !rinasaksnummer
         ? {
           feilmelding: t('validation:noSaksnummer'),
           skjemaelementId: ''
-        } as FeiloppsummeringFeil
+        } as ErrorElement
         : (!_isRinaNumberValid
             ? {
                 feilmelding: t('validation:unverifiedSaksnummer'),
@@ -107,7 +99,7 @@ const Vedlegg: React.FC = (): JSX.Element => {
         ? {
           feilmelding: t('validation:noRinadokumentID'),
           skjemaelementId: ''
-        } as FeiloppsummeringFeil
+        } as ErrorElement
         : undefined
     }
     setValidation(validation)
@@ -158,9 +150,9 @@ const Vedlegg: React.FC = (): JSX.Element => {
                 <FlexDiv>
                   {t('label:journalpost-id')}
                   <HorizontalSeparatorDiv size='0.35' />
-                  <Hjelpetekst id='journalPostID'>
+                  <HelpText id='journalPostID'>
                     {t('message:help-journalpostID')}
-                  </Hjelpetekst>
+                  </HelpText>
                 </FlexDiv>
               )}
               onChange={onjournalpostIDChange}
@@ -176,9 +168,9 @@ const Vedlegg: React.FC = (): JSX.Element => {
                 <FlexDiv>
                   {t('label:dokument-id')}
                   <HorizontalSeparatorDiv size='0.35' />
-                  <Hjelpetekst id='dokumentID'>
+                  <HelpText id='dokumentID'>
                     {t('message:help-dokumentID')}
-                  </Hjelpetekst>
+                  </HelpText>
                 </FlexDiv>
               )}
               onChange={onDokumentIDChange}
@@ -196,26 +188,27 @@ const Vedlegg: React.FC = (): JSX.Element => {
             <VerticalSeparatorDiv />
           </div>
           <div className='slideInFromLeft' style={{ animationDelay: '0.45s' }}>
-            <HighContrastHovedknapp
+            <Button
+              variant='primary'
               onClick={sendSkjema}
               disabled={sendingVedlegg}
-              spinner={sendingVedlegg}
             >
               {sendingVedlegg ? t('message:loading-sending-vedlegg') : t('label:send-vedlegg')}
-            </HighContrastHovedknapp>
+              {sendingVedlegg & <Loader/>}
+            </Button>
             {alertMessage && alertType && [types.VEDLEGG_POST_FAILURE].indexOf(alertType) >= 0 && (
               <>
                 <VerticalSeparatorDiv />
-                <AlertStripe type='advarsel'>
+                <Alert variant='warning'>
                   {alertMessage}
-                </AlertStripe>
+                </Alert>
                 <VerticalSeparatorDiv />
               </>
             )}
             {vedlegg && (
               <>
                 <VerticalSeparatorDiv />
-                <AlertStripe type='suksess'>
+                <Alert variant='success'>
                   <div>
                     <div>{t('label:vedlagte')}: {vedlegg.filnavn || vedlegg.vedleggID}</div>
                     {vedlegg.url && (
@@ -224,7 +217,7 @@ const Vedlegg: React.FC = (): JSX.Element => {
                       </Link>
                     )}
                   </div>
-                </AlertStripe>
+                </Alert>
               </>
             )}
           </div>

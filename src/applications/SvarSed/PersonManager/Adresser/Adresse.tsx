@@ -3,7 +3,7 @@ import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/
 import { State } from 'declarations/reducers'
 import { Adresse as IAdresse } from 'declarations/sed'
 import _ from 'lodash'
-import { Undertittel } from 'nav-frontend-typografi'
+import { Heading } from '@navikt/ds-react'
 import { PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -39,9 +39,9 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
 
   return (
     <PaddedDiv key={namespace + '-div'}>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:adresse')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv size='2' />
       <AdresseForm
         type={false}

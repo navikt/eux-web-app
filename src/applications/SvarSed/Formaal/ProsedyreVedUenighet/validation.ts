@@ -2,7 +2,7 @@
 import { ProsedyreVedUenighet as IProsedyreVedUenighet, Grunn } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { ErrorElement } from 'declarations/app'
 import { TFunction } from 'react-i18next'
 
 export interface ValidationProsedyreVedUenighetGrunnProps {
@@ -31,7 +31,7 @@ export const validateProsedyreVedUenighetGrunn = (
         ? t('validation:noPersonGivenTil', { person: formalName })
         : t('validation:noPersonGiven'),
       skjemaelementId: namespace + '-person'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -41,7 +41,7 @@ export const validateProsedyreVedUenighetGrunn = (
         ? t('validation:noGrunnTil', { person: formalName })
         : t('validation:noGrunn'),
       skjemaelementId: namespace + '-grunn'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -50,7 +50,7 @@ export const validateProsedyreVedUenighetGrunn = (
     v[namespace + '-grunn'] = {
       feilmelding: t('validation:duplicateGrunnTil', { person: formalName }),
       skjemaelementId: namespace + '-grunn'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
   return hasErrors
@@ -78,7 +78,7 @@ export const validateProsedyreVedUenighet = (
     v[namespace + '-grunner'] = {
       feilmelding: t('validation:noGrunnTil', { person: formalName }),
       skjemaelementId: namespace + '-grunner'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -86,7 +86,7 @@ export const validateProsedyreVedUenighet = (
     v[namespace + '-ytterligereGrunner'] = {
       feilmelding: t('validation:textOver500Til', { person: formalName }),
       skjemaelementId: namespace + '-ytterligereGrunner'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -94,8 +94,8 @@ export const validateProsedyreVedUenighet = (
     const namespaceBits = namespace.split('-')
     const mainNamespace = namespaceBits[0]
     const formaalNamespace = mainNamespace + '-' + namespaceBits[1]
-    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[formaalNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[formaalNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
   }
   return hasErrors
 }

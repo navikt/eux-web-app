@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import ExpandingPanel from 'components/ExpandingPanel/ExpandingPanel'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { standardLogger } from 'metrics/loggers'
-import { Normaltekst } from 'nav-frontend-typografi'
+import { BodyLong } from '@navikt/ds-react'
 import { VerticalSeparatorDiv } from 'nav-hoykontrast'
 import PT from 'prop-types'
 import React, { useEffect } from 'react'
@@ -81,9 +81,9 @@ export const Error = ({ error }: ErrorProps) => {
           <>
             <Line />
             <VerticalSeparatorDiv size='0.5' />
-            <Normaltekst>
+            <BodyLong>
               {footer}
-            </Normaltekst>
+            </BodyLong>
           </>
         )}
       </Content>

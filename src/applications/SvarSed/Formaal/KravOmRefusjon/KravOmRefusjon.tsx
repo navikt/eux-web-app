@@ -5,8 +5,8 @@ import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { F002Sed } from 'declarations/sed'
 import { buttonLogger } from 'metrics/loggers'
-import { Undertittel } from 'nav-frontend-typografi'
-import { AlignStartRow, Column, HighContrastFlatknapp, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { Heading, Button } from '@navikt/ds-react'
+import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -34,9 +34,9 @@ const KravOmRefusjon: React.FC<FormålManagerFormProps> = ({
 
   return (
     <PaddedDiv>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:krav-om-refusjon')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow
         className={classNames('slideInFromLeft')}
@@ -59,9 +59,9 @@ const KravOmRefusjon: React.FC<FormålManagerFormProps> = ({
       <VerticalSeparatorDiv />
       <AlignStartRow>
         <Column>
-          <HighContrastFlatknapp
-            mini
-            kompakt
+          <Button
+            variant='tertiary'
+            size='small'
             data-test-id={namespace + '-konto-button'}
             data-amplitude='svarsed.editor.seekontoopplysning'
             onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
@@ -70,7 +70,7 @@ const KravOmRefusjon: React.FC<FormålManagerFormProps> = ({
             }}
           >
             {t('label:oppgi-kontoopplysninger')}
-          </HighContrastFlatknapp>
+          </Button>
         </Column>
       </AlignStartRow>
     </PaddedDiv>

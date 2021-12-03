@@ -1,7 +1,7 @@
 import { resetValidation } from 'actions/validation'
 import AdresseForm from 'applications/SvarSed/PersonManager/Adresser/AdresseForm'
 import { standardLogger } from 'metrics/loggers'
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { Button, BodyLong, Heading } from '@navikt/ds-react'
 import {
   validatePeriodeDagpenger,
   ValidationPeriodeDagpengerProps
@@ -21,8 +21,7 @@ import _ from 'lodash'
 import {
   AlignStartRow,
   Column,
-  HighContrastFlatknapp,
-  HighContrastRadioPanelGroup,
+  RadioPanelGroup,
   HorizontalSeparatorDiv,
   PaddedDiv,
   Row,
@@ -389,15 +388,15 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
 
   return (
     <PaddedDiv>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:periode-for-dagpenger')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv size='2' />
       {_.isEmpty(perioder)
         ? (
-          <Normaltekst>
+          <BodyLong>
             {t('message:warning-no-periods')}
-          </Normaltekst>
+          </BodyLong>
           )
         : perioder?.map(renderRow)}
       <VerticalSeparatorDiv size='2' />
@@ -408,15 +407,15 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
         : (
           <Row>
             <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                variant='tertiary'
+                size='small'
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-              </HighContrastFlatknapp>
+              </Button>
             </Column>
           </Row>
           )}

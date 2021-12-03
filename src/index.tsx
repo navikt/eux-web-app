@@ -3,21 +3,7 @@ import { IS_PRODUCTION } from 'constants/environment'
 import 'core-js'
 import * as Amplitude from 'metrics/amplitude'
 import * as Sentry from 'metrics/sentry'
-import 'nav-frontend-alertstriper-style/dist/main.css'
-import 'nav-frontend-chevron-style/dist/main.css'
-import 'nav-frontend-core/dist/main.css'
-import 'nav-frontend-ekspanderbartpanel-style/dist/main.css'
-import 'nav-frontend-hjelpetekst-style/dist/main.css'
-import 'nav-frontend-knapper-style/dist/main.css'
-import 'nav-frontend-lenkepanel-style/dist/main.css'
-import 'nav-frontend-lenker-style/dist/main.css'
-import 'nav-frontend-lukknapp-style/dist/main.css'
-import 'nav-frontend-modal-style/dist/main.css'
-import 'nav-frontend-paneler-style/dist/main.css'
-import 'nav-frontend-popover-style/dist/main.css'
-import 'nav-frontend-skjema-style/dist/main.css'
 import 'nav-frontend-tabell-style/dist/main.css'
-import 'nav-frontend-typografi-style/dist/main.css'
 import Pages from 'pages'
 import 'rc-tooltip/assets/bootstrap_white.css'
 import React, { Suspense } from 'react'
@@ -31,10 +17,10 @@ import thunk from 'redux-thunk'
 import * as Utils from 'utils/utils'
 import i18n from './i18n'
 import { unregister } from './registerServiceWorker'
+import '@navikt/ds-css'
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const store: Store = createStore(combineReducers(reducers), composeEnhancers(applyMiddleware(thunk)))
-
 if (!IS_PRODUCTION) {
   const axe = require('react-axe')
   axe(React, ReactDOM, 1000)

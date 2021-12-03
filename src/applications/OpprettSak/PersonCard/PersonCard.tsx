@@ -1,15 +1,13 @@
 import kvinne from 'assets/icons/Woman.png'
 import mann from 'assets/icons/Man.png'
 import ukjent from 'assets/icons/Unknown.png'
-import Trashcan from 'assets/icons/Trashcan'
+import { Delete } from '@navikt/ds-icons'
 import { toUIDateFormat } from 'components/Forms/PeriodeInput'
-import { HighContrastKnapp, HorizontalSeparatorDiv } from 'nav-hoykontrast'
+import { HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import { OldFamilieRelasjon, Kodeverk, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
 import _ from 'lodash'
-import Panel from 'nav-frontend-paneler'
-import { Select } from 'nav-frontend-skjema'
-import { Undertittel } from 'nav-frontend-typografi'
+import { Button, Panel, Select, Heading } from '@navikt/ds-react'
 import PT from 'prop-types'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -48,7 +46,7 @@ const Undertitle = styled.div`
   display: flex;
   flex-direction: column;
 `
-const RemoveButton = styled(HighContrastKnapp)`
+const RemoveButton = styled(Button)`
   display: flex;
   align-self: center;
   justify-self: flex-end;
@@ -141,12 +139,12 @@ const PersonCard: React.FC<PersonCardProps> = ({
           />
           <HorizontalSeparatorDiv />
           <div data-test-id='panelheader__tittel'>
-            <Undertittel data-test-id='panelheader__tittel__hoved'>
+            <Heading size='small' data-test-id='panelheader__tittel__hoved'>
               {fornavn}
               {' '}
               {etternavn}
               {(person as OldFamilieRelasjon).rolle ? ' - ' + rolleTerm : ''}
-            </Undertittel>
+            </Heading>
             <Undertitle>
               <div>{t('label:fnr') + ' : ' + fnr}</div>
               <div>{t('label:fødselsdato') + ': ' + toUIDateFormat(fdato)}</div>
@@ -173,7 +171,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
               kompakt
               onClick={() => _onRemoveClick(person)}
             >
-              <Trashcan color='#0067C5' width='20' height='20' />
+              <Delete width='20' height='20' />
               <HorizontalSeparatorDiv />
               <ButtonLabel>
                 {t('el:button-remove')}
@@ -184,8 +182,9 @@ const PersonCard: React.FC<PersonCardProps> = ({
         {_.isFunction(onAddClick) && (
           <>
             <HorizontalSeparatorDiv size='0.5' />
-            <HighContrastKnapp
-              kompakt
+            <Button
+              variant='secondary'
+              size='small'
               data-test-id='familierelasjoner__knapp--legg-til'
               disabled={rolleList !== undefined && !rolle}
               onClick={() => _onAddClick(person)}
@@ -195,7 +194,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
               <ButtonLabel>
                 {t('label:legg-til')}
               </ButtonLabel>
-            </HighContrastKnapp>
+            </Button>
           </>
         )}
       </PersonCardDiv>

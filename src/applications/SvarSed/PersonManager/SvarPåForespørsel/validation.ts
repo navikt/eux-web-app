@@ -1,7 +1,7 @@
 import { HSed, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 
 export interface ValidationSvarPåForespørselProps {
@@ -33,7 +33,7 @@ export const validateSvarPåForespørsel = (
     v[namespace + '-svar'] = {
       skjemaelementId: namespace + '-svar',
       feilmelding: t('validation:noSvarTypeTil', { person: personName })
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -44,21 +44,21 @@ export const validateSvarPåForespørsel = (
       v[namespace + '-informasjon'] = {
         skjemaelementId: namespace + '-informasjon',
         feilmelding: t('validation:textOver500Til', { person: personName })
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
     if (!_.isEmpty((replySed as HSed).positivtSvar?.dokument) && (replySed as HSed).positivtSvar!.dokument.length > 500) {
       v[namespace + '-dokument'] = {
         skjemaelementId: namespace + '-dokument',
         feilmelding: t('validation:textOver500Til', { person: personName })
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
     if (!_.isEmpty((replySed as HSed).positivtSvar?.sed) && (replySed as HSed).positivtSvar!.sed.length > 500) {
       v[namespace + '-sed'] = {
         skjemaelementId: namespace + '-sed',
         feilmelding: t('validation:textOver500Til', { person: personName })
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
   }
@@ -68,21 +68,21 @@ export const validateSvarPåForespørsel = (
       v[namespace + '-informasjon'] = {
         skjemaelementId: namespace + '-informasjon',
         feilmelding: t('validation:textOver500Til', { person: personName })
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
     if (!_.isEmpty((replySed as HSed).negativeSvar?.dokument) && (replySed as HSed).negativeSvar!.dokument.length > 500) {
       v[namespace + '-dokument'] = {
         skjemaelementId: namespace + '-dokument',
         feilmelding: t('validation:textOver500Til', { person: personName })
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
     if (!_.isEmpty((replySed as HSed).negativeSvar?.sed) && (replySed as HSed).negativeSvar!.sed.length > 500) {
       v[namespace + '-sed'] = {
         skjemaelementId: namespace + '-sed',
         feilmelding: t('validation:textOver500Til', { person: personName })
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
     // @ts-ignore
@@ -90,7 +90,7 @@ export const validateSvarPåForespørsel = (
       v[namespace + '-grunn'] = {
         skjemaelementId: namespace + '-grunn',
         feilmelding: t('validation:textOver500Til', { person: personName })
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
   }
@@ -100,9 +100,9 @@ export const validateSvarPåForespørsel = (
     const mainNamespace = namespaceBits[0]
     const personNamespace = mainNamespace + '-' + namespaceBits[1]
     const categoryNamespace = personNamespace + '-' + namespaceBits[2]
-    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
   }
 
   return hasErrors

@@ -1,4 +1,5 @@
 import { Close, Copy, Edit, Email, Search, Send, Star } from '@navikt/ds-icons'
+import { Loader } from '@navikt/ds-react'
 import validator from '@navikt/fnrvalidator'
 import { cleanData, copyToClipboard } from 'actions/app'
 import { setCurrentEntry } from 'actions/localStorage'
@@ -6,7 +7,7 @@ import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import * as svarsedActions from 'actions/svarsed'
 import { getSedStatus, setReplySed } from 'actions/svarsed'
 import { resetAllValidation } from 'actions/validation'
-import ExternalLink from 'assets/icons/Logout'
+import { ExternalLink } from '@navikt/ds-icons'
 import classNames from 'classnames'
 import { AlertstripeDiv, Etikett, HiddenFormContainer } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
@@ -16,26 +17,17 @@ import { ConnectedSed, LocalStorageEntry, Sed } from 'declarations/types'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
-import AlertStripe from 'nav-frontend-alertstriper'
-import { Normaltekst, Systemtittel, Undertekst, Undertittel } from 'nav-frontend-typografi'
+import { Alert, Button, TextField, Checkbox, Link, Panel, BodyLong, Detail, Heading } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
   FlexDiv,
   FlexEndSpacedDiv,
   FlexStartDiv,
-  HighContrastCheckbox,
-  HighContrastFlatknapp,
-  HighContrastHovedknapp,
-  HighContrastInput,
-  HighContrastKnapp,
-  HighContrastLink,
-  HighContrastPanel,
   HorizontalSeparatorDiv,
   PileCenterDiv,
   PileDiv,
-  RadioElementBorder,
-  themeKeys,
+  RadioPanelBorder,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import { validateSEDSearch } from 'pages/SvarSed/mainValidation'
@@ -57,16 +49,16 @@ const FilterDiv = styled(FlexDiv)`
   .selected {
     text-decoration: underline;
     text-decoration: bold;
-    color: ${({ theme }) => theme[themeKeys.MAIN_ACTIVE_COLOR]} !important;
+    color: var(--navds-color-action-active) !important;
   }
 `
 
-const SEDPanel = styled(HighContrastPanel)`
+const SEDPanel = styled(Panel)`
   transition: all 0.15s ease-in-out;
   margin-left: 3rem;
   &:hover, .skjemaelement__input:hover {
-    color: ${({ theme }: any) => theme[themeKeys.MAIN_FONT_COLOR]} !important;
-    background-color: ${({ theme }: any) => theme[themeKeys.MAIN_HOVER_COLOR]} !important;
+    color: var(--navds-color-text-primary) !important;
+    background-color: var(--navds-color-hover) !important;
   }
 `
 
@@ -233,7 +225,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
         <Column flex='2'>
           <PileDiv>
             <FlexStartDiv>
-              <HighContrastInput
+              <TextField
                 ariaLabel={t('label:saksnummer-eller-fnr')}
                 ariaInvalid={_validation[namespace + '-saksnummerOrFnr']?.feilmelding}
                 bredde='XL'
@@ -248,10 +240,11 @@ const SEDSearch: React.FC<SvarSedProps> = ({
               />
               <HorizontalSeparatorDiv />
               <div className='nolabel'>
-                <HighContrastKnapp
+                <Button
+                  variant='secondary'
+                  size='small'
                   ariaLabel={t('el:button-search')}
                   disabled={queryingSaksnummerOrFnr}
-                  spinner={queryingSaksnummerOrFnr}
                   onClick={onSaksnummerOrFnrClick}
                 >
                   <Search />
@@ -259,13 +252,14 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                   {queryingSaksnummerOrFnr
                     ? t('message:loading-searching')
                     : t('el:button-search')}
-                </HighContrastKnapp>
+                  {queryingSaksnummerOrFnr && <Loader/>}
+                </Button>
               </div>
             </FlexStartDiv>
             <VerticalSeparatorDiv size='0.5' />
-            <Normaltekst>
+            <BodyLong>
               {_validMessage}
-            </Normaltekst>
+            </BodyLong>
           </PileDiv>
         </Column>
       </AlignStartRow>
@@ -305,9 +299,9 @@ const SEDSearch: React.FC<SvarSedProps> = ({
           </FlexEndSpacedDiv>
           <VerticalSeparatorDiv />
           <FilterDiv>
-            <HighContrastFlatknapp
-              mini
-              kompakt
+            <Button
+              variant='tertiary'
+              size='small'
               data-amplitude='svarsed.selection.filter.alle'
               className={classNames({ selected: _filter === undefined })}
               onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
@@ -316,13 +310,13 @@ const SEDSearch: React.FC<SvarSedProps> = ({
               }}
             >
               {t('label:alle') + ' (' + visibleSeds.length + ')'}
-            </HighContrastFlatknapp>
+            </Button>
             <HorizontalSeparatorDiv />
             {familieytelser > 0 && (
               <>
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
+                <Button
+                  variant='tertiary'
+                  size='small'
                   data-amplitude='svarsed.selection.filter.fb'
                   className={classNames({ selected: _filter === 'FB_' })}
                   onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
@@ -331,15 +325,15 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                   }}
                 >
                   {t('label:familieytelser') + ' (' + familieytelser + ')'}
-                </HighContrastFlatknapp>
+                </Button>
                 <HorizontalSeparatorDiv />
               </>
             )}
             {dagpenger > 0 && (
               <>
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
+                <Button
+                  variant='tertiary'
+                  size='small'
                   data-amplitude='svarsed.selection.filter.ub'
                   className={classNames({ selected: _filter === 'UB_' })}
                   onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
@@ -348,15 +342,15 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                   }}
                 >
                   {t('label:dagpenger') + ' (' + dagpenger + ')'}
-                </HighContrastFlatknapp>
+                </Button>
                 <HorizontalSeparatorDiv />
               </>
             )}
             {horisontal > 0 && (
               <>
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
+                <Button
+                  variant='tertiary'
+                  size='small'
                   data-amplitude='svarsed.selection.filter.h'
                   className={classNames({ selected: _filter === 'H_' })}
                   onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
@@ -365,15 +359,15 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                   }}
                 >
                   {t('label:horisontal') + ' (' + horisontal + ')'}
-                </HighContrastFlatknapp>
+                </Button>
                 <HorizontalSeparatorDiv />
               </>
             )}
             {sykdom > 0 && (
               <>
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
+                <Button
+                  variant='tertiary'
+                  size='small'
                   data-amplitude='svarsed.selection.filter.s'
                   className={classNames({ selected: _filter === 'S_' })}
                   onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
@@ -382,16 +376,16 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                   }}
                 >
                   {t('label:sykdom') + ' (' + sykdom + ')'}
-                </HighContrastFlatknapp>
+                </Button>
                 <HorizontalSeparatorDiv />
               </>
             )}
 
             {lovvalg > 0 && (
               <>
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
+                <Button
+                  variant='tertiary'
+                  size='small'
                   data-amplitude='svarsed.selection.filter.la'
                   className={classNames({ selected: _filter === 'LA_' })}
                   onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
@@ -400,7 +394,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                   }}
                 >
                   {t('label:lovvalg') + ' (' + lovvalg + ')'}
-                </HighContrastFlatknapp>
+                </Button>
                 <HorizontalSeparatorDiv />
               </>
             )}
@@ -412,30 +406,30 @@ const SEDSearch: React.FC<SvarSedProps> = ({
             const alone = filteredSeds?.length === 1
             return (
               <div key={sedId}>
-                <RadioElementBorder
+                <RadioPanelBorder
                   ariaLabel={sed.sakType + ' - ' + sed.sakTittel}
                   ariaChecked={parentSed === sedId}
                   checked={alone || parentSed === sedId}
                   className='slideInFromLeft'
                   label={(
                     <>
-                      <Undertittel>
+                      <Heading size='small'>
                         {sed.sakType + ' - ' + sed.sakTittel}
-                      </Undertittel>
+                      </Heading>
                       <LeftDiv>
                         <span>
                           {t('label:saksnummer') + ': ' + sed.sakId}
                         </span>
                         <HorizontalSeparatorDiv />
-                        <HighContrastLink target='_blank' href={sed.sakUrl}>
+                        <Link target='_blank' href={sed.sakUrl}>
                           <span>
                             {t('label:sak-i-rina')}
                           </span>
                           <HorizontalSeparatorDiv size='0.35' />
                           <ExternalLink />
-                        </HighContrastLink>
+                        </Link>
                         <HorizontalSeparatorDiv />
-                        <HighContrastLink onClick={(e: any) => {
+                        <Link onClick={(e: any) => {
                           e.preventDefault()
                           e.stopPropagation()
                           dispatch(copyToClipboard(sed.sakId))
@@ -446,16 +440,16 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                           </span>
                           <HorizontalSeparatorDiv size='0.35' />
                           <Copy />
-                        </HighContrastLink>
+                        </Link>
                       </LeftDiv>
                       <FlexDiv>
-                        <Normaltekst>
+                        <BodyLong>
                           {t('label:motpart')}:
-                        </Normaltekst>
+                        </BodyLong>
                         <HorizontalSeparatorDiv size='0.35' />
-                        <Normaltekst>
+                        <BodyLong>
                           {sed?.motpart?.join(', ') ?? '-'}
-                        </Normaltekst>
+                        </BodyLong>
                       </FlexDiv>
                       <VerticalSeparatorDiv size='0.3' />
                       <Etikett>
@@ -487,24 +481,24 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                           {connectedSed.status === 'active' && <Edit width='32' height='32' />}
                           {connectedSed.status === 'cancelled' && <Close width='32' height='32' />}
                           <VerticalSeparatorDiv size='0.35' />
-                          <Undertekst>
+                          <Detail>
                             {t('app:status-received-' + connectedSed.status.toLowerCase())}
-                          </Undertekst>
+                          </Detail>
                         </PileCenterDiv>
                         <HorizontalSeparatorDiv />
                         <PileDiv flex={2}>
-                          <Undertittel>
+                          <Heading size='small'>
                             {connectedSed.sedType} - {connectedSed.sedTittel}
-                          </Undertittel>
+                          </Heading>
                           <VerticalSeparatorDiv size='0.5' />
                           <FlexDiv>
-                            <HighContrastLink target='_blank' href={sed.sakUrl}>
+                            <Link target='_blank' href={sed.sakUrl}>
                               <span>
                                 {t('label:rediger-sed-i-rina')}
                               </span>
                               <HorizontalSeparatorDiv size='0.35' />
                               <ExternalLink />
-                            </HighContrastLink>
+                            </Link>
                           </FlexDiv>
                           <VerticalSeparatorDiv size='0.35' />
                           <div>
@@ -516,8 +510,9 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                         <PileDiv>
                           {connectedSed.lenkeHvisForrigeSedMaaJournalfoeres && (
                             <>
-                              <HighContrastKnapp
-                                mini
+                              <Button
+                                variant='secondary'
+                                size='small'
                                 data-amplitude='svarsed.selection.journalforing'
                                 onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
                                   buttonLogger(e, {
@@ -529,17 +524,16 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                                 {t('label:journalforing', {
                                   sedtype: connectedSed.sedType
                                 })}
-                              </HighContrastKnapp>
+                              </Button>
                               <VerticalSeparatorDiv size='0.5' />
                             </>
                           )}
                           {hasDraft(connectedSed)
                             ? (
-                              <HighContrastKnapp
-                                mini
-                                kompakt
+                              <Button
+                                variant='secondary'
+                                size='small'
                                 disabled={_sedStatusRequested === connectedSed.svarsedId || hasSentStatus(connectedSed.svarsedId)}
-                                spinner={_sedStatusRequested === connectedSed.svarsedId}
                                 data-amplitude='svarsed.selection.loaddraft'
                                 onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
                                   buttonLogger(e, {
@@ -555,14 +549,14 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                                   : (hasSentStatus(connectedSed.svarsedId)
                                       ? t('label:sed-already-sent', { sed: connectedSed.svarsedType })
                                       : t('label:gå-til-draft'))}
-                              </HighContrastKnapp>
+                                {_sedStatusRequested === connectedSed.svarsedId && <Loader/>}
+                              </Button>
                               )
                             : connectedSed.svarsedType
                               ? (
-                                <HighContrastHovedknapp
+                                <Button
+                                  variant='primary'
                                   disabled={queryingReplySed || connectedSed.lenkeHvisForrigeSedMaaJournalfoeres}
-                                  spinner={queryingReplySed}
-                                  mini
                                   data-amplitude='svarsed.selection.replysed'
                                   title={connectedSed.lenkeHvisForrigeSedMaaJournalfoeres ? t('message:warning-spørre-sed-not-journalført') : ''}
                                   onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
@@ -578,7 +572,8 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                                     : t('label:besvar-med', {
                                       sedtype: connectedSed.svarsedType
                                     })}
-                                </HighContrastHovedknapp>
+                                  {queryingReplySed & <Loader/>}
+                                </Button>
                                 )
                               : (<div />)}
                         </PileDiv>

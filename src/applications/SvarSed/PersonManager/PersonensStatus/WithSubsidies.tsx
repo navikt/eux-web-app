@@ -13,11 +13,10 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { Button, BodyLong, Heading } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
-  HighContrastFlatknapp,
   HorizontalSeparatorDiv,
   Row,
   VerticalSeparatorDiv
@@ -218,15 +217,15 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
 
   return (
     <>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:periode-pensjon-avsenderlandet')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv size={2} />
       {_.isEmpty(perioderMedPensjon)
         ? (
-          <Normaltekst>
+          <BodyLong>
             {t('message:warning-no-periods')}
-          </Normaltekst>
+          </BodyLong>
           )
         : perioderMedPensjon
           ?.sort((a, b) =>
@@ -241,15 +240,15 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
         : (
           <Row>
             <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                variant='tertiary'
+                size='small'
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-              </HighContrastFlatknapp>
+              </Button>
             </Column>
           </Row>
           )}

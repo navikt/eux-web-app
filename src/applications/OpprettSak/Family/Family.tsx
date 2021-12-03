@@ -1,8 +1,8 @@
 import PersonCard from 'applications/OpprettSak/PersonCard/PersonCard'
 import { Kodeverk, OldFamilieRelasjon, Person } from 'declarations/types'
 import _ from 'lodash'
-import { Ingress, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
-import { FlexDiv, HighContrastKnapp, HorizontalSeparatorDiv, PileCenterDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { Ingress, Detail, Heading, Button } from '@navikt/ds-react'
+import { FlexDiv, HorizontalSeparatorDiv, PileCenterDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -97,9 +97,9 @@ const Family: React.FC<FamilyProps> = ({
   return (
     <div data-test-id='family'>
       <HorizontalSeparatorDiv />
-      <Undertittel>
+      <Heading size='small'>
         {t('label:family-description')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv />
       <FlexDiv>
         <FamilySubArea>
@@ -122,18 +122,18 @@ const Family: React.FC<FamilyProps> = ({
             <>
               <HorizontalSeparatorDiv size='0.5' />
               <VerticalSeparatorDiv size='1.5' />
-              <UndertekstBold>
+              <Detail>
                 ({t('label:familie-alle-lagt-inn')})
-              </UndertekstBold>
+              </Detail>
             </>
           )}
           {_.isEmpty(person!.relasjoner) && (
             <>
               <HorizontalSeparatorDiv size='0.5' />
               <VerticalSeparatorDiv size='1.5' />
-              <UndertekstBold>
+              <Detail>
                 ({t('label:ingen-familie-i-tps')})
-              </UndertekstBold>
+              </Detail>
             </>
           )}
         </FamilySubArea>
@@ -180,13 +180,14 @@ const Family: React.FC<FamilyProps> = ({
             </>
           )}
           <VerticalSeparatorDiv />
-          <HighContrastKnapp
+          <Button
+            variant='secondary'
             onClick={toggleViewAbroadPersonForm}
           >
             {_viewAbroadPersonForm
               ? t('label:skjul-skjema')
               : t('label:vis-skjema')}
-          </HighContrastKnapp>
+          </Button>
         </div>
         <div>
           <VerticalSeparatorDiv size='1.5' />
@@ -212,11 +213,13 @@ const Family: React.FC<FamilyProps> = ({
             </>
           )}
           <VerticalSeparatorDiv />
-          <HighContrastKnapp onClick={toggleViewTPSRelatedForm}>
+          <Button
+            variant='secondary'
+            onClick={toggleViewTPSRelatedForm}>
             {_viewTPSRelatedForm
               ? t('label:skjul-skjema')
               : t('label:vis-skjema')}
-          </HighContrastKnapp>
+          </Button>
         </div>
       </PileCenterDiv>
     </div>

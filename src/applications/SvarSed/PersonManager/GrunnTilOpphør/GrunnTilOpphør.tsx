@@ -5,7 +5,7 @@ import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
-import { Undertittel } from 'nav-frontend-typografi'
+import { Heading } from '@navikt/ds-react'
 import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -74,9 +74,9 @@ const GrunnTilOpphør: React.FC<PersonManagerFormProps> = ({
 
   return (
     <PaddedDiv>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:grunn-til-opphør')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column>

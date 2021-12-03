@@ -16,15 +16,12 @@ import { Country, CountryFilter } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
-import Chevron from 'nav-frontend-chevron'
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { Button, BodyLong, Heading } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
   FlexCenterDiv,
-  HighContrastFlatknapp,
-  HighContrastKnapp,
-  HighContrastRadioPanelGroup,
+  RadioPanelGroup,
   HorizontalSeparatorDiv,
   PaddedDiv,
   Row,
@@ -330,9 +327,9 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
 
   return (
     <PaddedDiv key={namespace + '-div'}>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:personopplysninger')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>
@@ -405,15 +402,15 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
           : (
             <Row>
               <Column>
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
+                <Button
+                  variant='tertiary'
+                  size='small'
                   onClick={() => _setSeeNewForm(true)}
                 >
                   <Add />
                   <HorizontalSeparatorDiv size='0.5' />
                   {t('el:button-add-new-x', { x: t('label:utenlandsk-pin').toLowerCase() })}
-                </HighContrastFlatknapp>
+                </Button>
               </Column>
             </Row>
             )}
@@ -427,13 +424,14 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
           ? (
             <>
               <Column>
-                <Normaltekst>
+                <BodyLong>
                   {norwegianPin?.identifikator ?? t('message:warning-no-fnr')}
-                </Normaltekst>
+                </BodyLong>
               </Column>
               <Column>
-                <HighContrastKnapp
-                  kompakt
+                <Button
+                  variant='secondary'
+                  size='small'
                   onClick={() => _setSeeNorskPinForm(true)}
                 >
                   <FlexCenterDiv>
@@ -441,7 +439,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                     <HorizontalSeparatorDiv size='0.35' />
                     {t('label:endre')}
                   </FlexCenterDiv>
-                </HighContrastKnapp>
+                </Button>
               </Column>
               <Column />
             </>
@@ -460,10 +458,10 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                 />
               </Column>
               <Column>
-                <HighContrastKnapp
-                  kompakt
+                <Button
+                  variant='secondary'
+                  size='small'
                   disabled={searchingPerson}
-                  spinner={searchingPerson}
                   data-amplitude='svarsed.editor.personopplysning.norskpin.search'
                   onClick={onSearchUser}
                 >
@@ -472,14 +470,16 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                   {searchingPerson
                     ? t('message:loading-searching')
                     : t('el:button-search-for-x', { x: t('label:person').toLowerCase() })}
-                </HighContrastKnapp>
+                  {searchingPerson && <Loader/>}
+                </Button>
                 <HorizontalSeparatorDiv size='0.35' />
-                <HighContrastFlatknapp
-                  kompakt
+                <Button
+                  variant='tertiary'
+                  size='small'
                   onClick={() => _setSeeNorskPinForm(false)}
                 >
                   {t('el:button-cancel')}
-                </HighContrastFlatknapp>
+                </Button>
               </Column>
             </>
             )}
@@ -490,13 +490,13 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
           {searchedPerson
             ? (
               <FlexCenterDiv>
-                <Normaltekst>
+                <BodyLong>
                   {searchedPerson.fornavn + ' ' + searchedPerson.etternavn + ' (' + searchedPerson.kjoenn + ')'}
-                </Normaltekst>
+                </BodyLong>
                 <HorizontalSeparatorDiv />
-                <HighContrastKnapp
-                  mini
-                  kompakt
+                <Button
+                  variant='secondary'
+                  size='small'
                   data-amplitude='svarsed.editor.personopplysning.norskpin.fill'
                   onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
                     buttonLogger(e)
@@ -504,14 +504,14 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                   }}
                 >
                   {t('label:fill-in-person-data')}
-                </HighContrastKnapp>
+                </Button>
               </FlexCenterDiv>
               )
             : _.isEmpty(norwegianPin?.identifikator)
               ? (
-                <Normaltekst>
+                <BodyLong>
                   {t('label:norsk-fnr-beskrivelse')}
-                </Normaltekst>
+                </BodyLong>
                 )
               : <div />}
         </Column>
@@ -519,9 +519,9 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>
-          <Undertittel>
+          <Heading size='small'>
             {t('label:fødested')}
-          </Undertittel>
+          </Heading>
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='0.5' />
@@ -567,15 +567,15 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
             <AlignStartRow>
               <Column flex='2' />
               <Column>
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
+                <Button
+                  variant='tertiary'
+                  size='small'
                   onClick={() => setSeeNewFoedstedForm(false)}
                 >
                   <Chevron type='opp' />
                   <HorizontalSeparatorDiv size='0.5' />
                   {t('label:show-less')}
-                </HighContrastFlatknapp>
+                </Button>
               </Column>
             </AlignStartRow>
           </>
@@ -583,15 +583,15 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
         : (
           <AlignStartRow key='seeNewForm'>
             <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                variant='tertiary'
+                size='small'
                 onClick={() => setSeeNewFoedstedForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-x', { x: t('label:fødested') })}
-              </HighContrastFlatknapp>
+              </Button>
             </Column>
           </AlignStartRow>
           )}

@@ -10,11 +10,10 @@ import useValidation from 'hooks/useValidation'
 import { Currency } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
-import { Undertittel } from 'nav-frontend-typografi'
+import { Button, Heading } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
-  HighContrastFlatknapp,
   HorizontalSeparatorDiv,
   Row,
   VerticalSeparatorDiv
@@ -270,9 +269,9 @@ const Inntekter: React.FC<any> = ({
 
   return (
     <MyPaddedDiv>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:inntekter')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv />
       {inntekter?.map(renderRow)}
       <VerticalSeparatorDiv />
@@ -283,15 +282,15 @@ const Inntekter: React.FC<any> = ({
         : (
           <Row className='slideInFromLeft'>
             <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                variant='tertiary'
+                size='small'
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:inntekt').toLowerCase() })}
-              </HighContrastFlatknapp>
+              </Button>
             </Column>
           </Row>
           )}

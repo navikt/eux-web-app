@@ -1,10 +1,9 @@
-import GreenCircle from 'assets/icons/GreenCircle'
-import Warning from 'assets/icons/Warning'
+import { Warning, AddCircle } from '@navikt/ds-icons'
 import { Dd, Dl, Dt } from 'components/StyledComponents'
 import { F002Sed, FSed, ReplySed, USed } from 'declarations/sed'
 import Flag, { FlagList } from 'flagg-ikoner'
 import CountryData from 'land-verktoy'
-import { Normaltekst, UndertekstBold } from 'nav-frontend-typografi'
+import { BodyLong, Detail } from '@navikt/ds-react'
 import { FlexCenterDiv, FlexDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -37,15 +36,15 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
             </Dt>
             <Dd>
               {(replySed as USed).anmodningsperiode && (
-                <UndertekstBold>
+                <Detail>
                   {(replySed as USed).anmodningsperiode.startdato} -
                   {(replySed as USed).anmodningsperiode.sluttdato ? (replySed as USed).anmodningsperiode.sluttdato : '...'}
-                </UndertekstBold>
+                </Detail>
               )}
               {(replySed as FSed).anmodningsperioder && (replySed as FSed).anmodningsperioder.map((p) => (
-                <UndertekstBold key={p.startdato}>
+                <Detail key={p.startdato}>
                   {p.startdato} - {p.sluttdato ? p.sluttdato : '...'}
-                </UndertekstBold>
+                </Detail>
               ))}
             </Dd>
           </>
@@ -127,11 +126,11 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
               <>
                 <VerticalSeparatorDiv size='3' />
                 <FlexDiv>
-                  <GreenCircle width={18} height={18} />
+                  <AddCircle color='green' width={18} height={18} />
                   <HorizontalSeparatorDiv size='0.5' />
-                  <Normaltekst>
+                  <BodyLong>
                     {t('app:info-confirm-information')}
-                  </Normaltekst>
+                  </BodyLong>
                 </FlexDiv>
               </>
             )}
@@ -141,9 +140,9 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
                 <FlexDiv>
                   <Warning width={18} height={18} />
                   <HorizontalSeparatorDiv size='0.5' />
-                  <Normaltekst>
+                  <BodyLong>
                     {t('app:info-point-information')}
-                  </Normaltekst>
+                  </BodyLong>
                 </FlexDiv>
                 <VerticalSeparatorDiv />
                 <FlexDiv>

@@ -21,12 +21,10 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
-import { Ingress, Undertittel } from 'nav-frontend-typografi'
+import { Ingress, Button, Heading } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
-  HighContrastFlatknapp,
-  HighContrastKnapp,
   HorizontalSeparatorDiv,
   PaddedDiv,
   VerticalSeparatorDiv
@@ -265,9 +263,9 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
 
   const renderNewArbeidsgiver = () => (
     <>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:legg-til-arbeidsperiode')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft'>
         <PeriodeInput
@@ -321,23 +319,23 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.25s' }}>
         <Column>
-          <HighContrastKnapp
-            mini
-            kompakt
+          <Button
+            variant='secondary'
+            size='small'
             onClick={onPeriodeMedForsikringAdd}
           >
             <Add />
             <HorizontalSeparatorDiv size='0.5' />
             {t('el:button-add')}
-          </HighContrastKnapp>
+          </Button>
           <HorizontalSeparatorDiv size='0.5' />
-          <HighContrastFlatknapp
-            mini
-            kompakt
+          <Button
+            variant='tertiary'
+            size='small'
             onClick={onCancelArbeidsgiverClicked}
           >
             {t('el:button-cancel')}
-          </HighContrastFlatknapp>
+          </Button>
         </Column>
       </AlignStartRow>
     </>
@@ -434,9 +432,9 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
 
   return (
     <PaddedDiv>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:oversikt-brukers-arbeidsperioder')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv size='2' />
       <Ingress>
         {t('label:hent-perioder-fra-aa-registeret-og-a-inntekt')}
@@ -459,9 +457,9 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
       {_seeNewPeriodeMedForsikring
         ? renderNewArbeidsgiver()
         : (
-          <HighContrastFlatknapp
-            mini
-            kompakt
+          <Button
+            size='small'
+            variant='tertiary'
             onClick={() => _setSeeNewPeriodeMedForsikring(true)}
           >
             <Add />
@@ -469,7 +467,7 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
             {t('el:button-add-new-x', {
               x: t('label:arbeidperioder').toLowerCase()
             })}
-          </HighContrastFlatknapp>
+          </Button>
           )}
       <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />

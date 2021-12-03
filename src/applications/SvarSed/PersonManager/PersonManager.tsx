@@ -4,8 +4,6 @@ import AddPersonModal from 'applications/SvarSed/PersonManager/AddPersonModal/Ad
 import Arbeidsperioder from 'applications/SvarSed/PersonManager/Arbeidsperioder/Arbeidsperioder'
 import GrunnTilOpphør from 'applications/SvarSed/PersonManager/GrunnTilOpphør/GrunnTilOpphør'
 import SisteAnsettelsesForhold from 'applications/SvarSed/PersonManager/SisteAnsettelsesForhold/SisteAnsettelsesForhold'
-import GreenCircle from 'assets/icons/GreenCircle'
-import RemoveCircle from 'assets/icons/RemoveCircle'
 import classNames from 'classnames'
 import { WithErrorPanel } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
@@ -14,18 +12,15 @@ import { State } from 'declarations/reducers'
 import { Barn, F002Sed, FSed, PersonInfo, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import Chevron from 'nav-frontend-chevron'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { ExpandFilled, ErrorFilled, SuccessFilled, NextFilled } from '@navikt/ds-icons'
+import { ErrorElement } from 'declarations/app.d'
+import { BodyLong, Heading, Checkbox, Button } from '@navikt/ds-react'
 import {
   FlexCenterDiv,
   FlexCenterSpacedDiv,
-  HighContrastCheckbox,
-  HighContrastFlatknapp,
   HorizontalSeparatorDiv,
   PileCenterDiv,
   PileDiv,
-  themeKeys,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useEffect, useRef, useState } from 'react'
@@ -57,13 +52,13 @@ const LeftDiv = styled.div`
   flex: 1;
   align-self: stretch;
   min-width: 300px;
-  border-right: 1px solid ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
-  border-width: ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_WIDTH]};
+  border-right: 1px solid var(--navds-color-border);
+  border-width: 1px;
   border-style: solid;
-  border-color: ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
-  background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
-  border-top-left-radius: ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_RADIUS]};
-  border-bottom-left-radius: ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_RADIUS]};
+  border-color: var(--navds-color-border);
+  background-color: var(--navds-semantic-color-component-background-alternate);
+  border-top-left-radius: var(--navds-border-radius);
+  border-bottom-left-radius: var(--navds-border-radius);
 `
 const OptionDiv = styled.div`
   transition: all 0.2s ease-in-out;
@@ -73,12 +68,12 @@ const OptionDiv = styled.div`
   align-items: center;
   cursor: pointer;
   &:hover {
-    background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_HOVER_COLOR]};
+    background-color: var(--navds-color-hover);
   }
   &.selected {
     font-weight: bold;
-    background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
-    border-left: 6px solid ${({ theme }: any) => theme[themeKeys.MAIN_INTERACTIVE_COLOR]};
+    background-color: var(--navds-semantic-color-component-background-alternate);
+    border-left: 6px solid var(--navds-semantic-color-interaction-primary-default);
   }
 `
 
@@ -89,7 +84,7 @@ const MenuDiv = styled.div`
      display: flex;
   }
 `
-const MenuCheckbox = styled(HighContrastCheckbox)`
+const MenuCheckbox = styled(Checkbox)`
   padding: 1rem 0.5rem;
 `
 const MenuLabelDiv = styled(FlexCenterDiv)`
@@ -98,18 +93,18 @@ const MenuLabelDiv = styled(FlexCenterDiv)`
   flex: 1;
   transition: all 0.2s ease-in-out;
   &:hover {
-   background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_HOVER_COLOR]};
+   background-color: var(--navds-color-hover);
   }
 `
 const CheckboxDiv = styled.div`
   transition: all 0.3s ease-in-out;
   &:hover {
-   background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_HOVER_COLOR]};
+   background-color: var(--navds-color-hover);
   }
 `
 const RightDiv = styled.div`
   flex: 3;
-  border-left: 1px solid ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
+  border-left: 1px solid var(--navds-color-border);
   margin-left: -1px;
   align-self: stretch;
   position: relative;
@@ -117,14 +112,14 @@ const RightDiv = styled.div`
   width: 780px;
 `
 const RightActiveDiv = styled.div`
-  border-width: ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_WIDTH]};
+  border-width: 1px;
   border-style: solid;
   border-left-width: 0;
-  border-color: ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
-  background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
-  border-top-right-radius: ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_RADIUS]};
-  border-bottom-right-radius: ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_RADIUS]};
-  background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
+  border-color: var(--navds-color-border);
+  background-color: var(--navds-semantic-color-component-background-alternate);
+  border-top-right-radius: var(--navds-border-radius);
+  border-bottom-right-radius: $var(--navds-border-radius);
+  background-color: var(--navds-semantic-color-component-background-alternate);
   height: 100%;
 `
 const slideIn = keyframes`
@@ -177,7 +172,7 @@ const LandSpan = styled.span`
   color: grey;
   white-space: nowrap;
 `
-const MenuLabelText = styled(Normaltekst)`
+const MenuLabelText = styled(BodyLong)`
   &.selected {
     font-weight: bold;
   }
@@ -424,19 +419,19 @@ const PersonManager: React.FC<PersonManagerProps> = ({
               selected: focusedMenu === personId
             })}
           >
-            <Chevron type={open ? 'ned' : 'høyre'} />
+            {open ? <ExpandFilled/> : <NextFilled/> }
             <HorizontalSeparatorDiv size='0.5' />
             {viewValidation && (
               validation[namespace + '-' + personId]
                 ? (
                   <>
-                    <RemoveCircle height={20} color='red' />
+                    <ErrorFilled height={20} color='red' />
                     <HorizontalSeparatorDiv size='0.5' />
                   </>
                   )
                 : (
                   <>
-                    <GreenCircle height={20} />
+                    <SuccessFilled color='green' height={20} />
                     <HorizontalSeparatorDiv size='0.5' />
                   </>
                   )
@@ -504,8 +499,8 @@ const PersonManager: React.FC<PersonManagerProps> = ({
               >
                 {viewValidation && (
                   validation[namespace + '-' + personId + '-' + o.value] === undefined
-                    ? <GreenCircle height={20} />
-                    : <RemoveCircle height={20} color='red' />
+                    ? <SuccessFilled color='green' height={20} />
+                    : <ErrorFilled height={20} color='red' />
                 )}
                 <HorizontalSeparatorDiv size='0.5' />
                 {`${i + 1}. ${o.label}`}
@@ -517,7 +512,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
   }
 
   const handleFeilLenke = (e: any) => {
-    const feil: FeiloppsummeringFeil = e.detail
+    const feil: ErrorElement = e.detail
     const namespaceBits = feil.skjemaelementId.split('-')
     if (namespaceBits[0] === namespace) {
       const newMenu = namespaceBits[1]
@@ -564,9 +559,9 @@ const PersonManager: React.FC<PersonManagerProps> = ({
           onModalClose={() => setSeeNewPersonModal(false)}
         />
       )}
-      <Undertittel>
+      <Heading size='small'>
         {t('label:personmanager')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv />
       <WithErrorPanel
         border
@@ -581,15 +576,15 @@ const PersonManager: React.FC<PersonManagerProps> = ({
             {isFSed(replySed) && renderMenu(replySed!, 'familie', familieNr as number)}
             {isFSed(replySed) && (
               <MarginDiv>
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
+                <Button
+                  variant='tertiary'
+                  size='small'
                   onClick={onAddNewPerson}
                 >
                   <Add />
                   <HorizontalSeparatorDiv size='0.5' />
                   {t('el:button-add-new-x', { x: t('label:person') })}
-                </HighContrastFlatknapp>
+                </Button>
               </MarginDiv>
             )}
             <VerticalSeparatorDiv />

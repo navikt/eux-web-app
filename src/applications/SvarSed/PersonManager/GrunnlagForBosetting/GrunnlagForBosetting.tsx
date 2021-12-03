@@ -14,11 +14,10 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
-import { Normaltekst, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
+import { BodyLong, Detail, Button, Heading } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
-  HighContrastFlatknapp,
   HorizontalSeparatorDiv,
   PaddedDiv,
   Row,
@@ -185,15 +184,15 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
 
   const render = () => (
     <>
-      <UndertekstBold>
+      <Detail>
         {t('label:oppholdets-varighet')}
-      </UndertekstBold>
+      </Detail>
       <VerticalSeparatorDiv />
       {_.isEmpty(flyttegrunn?.perioder)
         ? (
-          <Normaltekst>
+          <BodyLong>
             {t('message:warning-no-periods')}
-          </Normaltekst>
+          </BodyLong>
           )
         : flyttegrunn?.perioder.sort((a, b) =>
           moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1
@@ -207,15 +206,15 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
         : (
           <Row>
             <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                variant='tertiary'
+                size='small'
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-              </HighContrastFlatknapp>
+              </Button>
             </Column>
           </Row>
           )}
@@ -268,18 +267,18 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
     standalone
       ? (
         <PaddedDiv>
-          <Undertittel>
+          <Heading size='small'>
             {t('label:grunnlag-for-bosetting')}
-          </Undertittel>
+          </Heading>
           <VerticalSeparatorDiv size={2} />
           {render()}
         </PaddedDiv>
         )
       : (
         <>
-          <Undertittel>
+          <Heading size='small'>
             {t('label:grunnlag-for-bosetting')}
-          </Undertittel>
+          </Heading>
           <VerticalSeparatorDiv />
           {render()}
         </>

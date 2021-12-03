@@ -12,11 +12,10 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { BodyLong, Heading,Button } from @navikt/ds-react'
 import {
   AlignStartRow,
   Column,
-  HighContrastFlatknapp,
   HorizontalSeparatorDiv,
   PaddedDiv,
   Row,
@@ -254,9 +253,9 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
 
   return (
     <PaddedDiv>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:prosedyre-ved-uenighet')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv size='2' />
       <VerticalSeparatorDiv />
       {_.isEmpty(_grunns)
@@ -271,9 +270,9 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
                 </div>
                 )
               : (
-                <Normaltekst>
+                <BodyLong>
                   {t('label:no-grunn')}
-                </Normaltekst>
+                </BodyLong>
                 )}
           </div>
           )
@@ -286,15 +285,15 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
         : (
           <Row className='slideInFromLeft'>
             <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                variant='tertiary'
+                size='small'
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:reason').toLowerCase() })}
-              </HighContrastFlatknapp>
+              </Button>
             </Column>
           </Row>
           )}

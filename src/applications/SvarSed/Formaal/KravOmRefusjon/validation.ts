@@ -1,6 +1,6 @@
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { ErrorElement } from 'declarations/app'
 import { TFunction } from 'react-i18next'
 
 interface ValidateKravOmRefusjonProps {
@@ -24,14 +24,14 @@ export const validateKravOmRefusjon = (
     v[namespace + '-krav'] = {
       feilmelding: t('validation:noKravTil', { person: formalName }),
       skjemaelementId: namespace + '-krav'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   } else {
     if (kravOmRefusjon && kravOmRefusjon.length > 500) {
       v[namespace + '-krav'] = {
         feilmelding: t('validation:textOver500Til', { person: formalName }),
         skjemaelementId: namespace + '-krav'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
   }
@@ -40,8 +40,8 @@ export const validateKravOmRefusjon = (
     const namespaceBits = namespace.split('-')
     const mainNamespace = namespaceBits[0]
     const formaalNamespace = mainNamespace + '-' + namespaceBits[1]
-    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[formaalNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[formaalNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
   }
   return hasErrors
 }

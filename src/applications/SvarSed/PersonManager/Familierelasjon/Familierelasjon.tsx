@@ -16,12 +16,10 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { BodyLong, Heading, Button } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
-  HighContrastFlatknapp,
-  HighContrastRadioPanelGroup,
   HorizontalSeparatorDiv,
   PaddedDiv,
   Row,
@@ -316,7 +314,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
             <VerticalSeparatorDiv />
             <AlignStartRow className={classNames('slideInFromLeft')} style={{ animationDelay: index < 0 ? '0.2s' : (index * 0.3 + 0.2) + 's' }}>
               <Column flex='3'>
-                <HighContrastRadioPanelGroup
+                <RadioPanelGroup
                   checked={index < 0 ? _newBorSammen : familierelasjon?.borSammen}
                   data-test-id={namespace + idx + '-borSammen'}
                   data-no-border
@@ -342,15 +340,15 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
 
   return (
     <PaddedDiv>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:familierelasjon')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv />
       {_.isEmpty(familierelasjoner)
         ? (
-          <Normaltekst>
+          <BodyLong>
             {t('message:warning-no-familierelasjon')}
-          </Normaltekst>
+          </BodyLong>
           )
         : familierelasjoner?.map(renderRow)}
       <VerticalSeparatorDiv size='2' />
@@ -361,15 +359,15 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
         : (
           <Row>
             <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                variant='tertiary'
+                size='small'
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:familierelasjon').toLowerCase() })}
-              </HighContrastFlatknapp>
+              </Button>
             </Column>
           </Row>
           )}

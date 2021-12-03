@@ -2,8 +2,8 @@ import AdresseBox from 'components/AdresseBox/AdresseBox'
 import Modal from 'components/Modal/Modal'
 import { Adresse as IAdresse, AdresseType } from 'declarations/sed'
 import _ from 'lodash'
-import { UndertekstBold } from 'nav-frontend-typografi'
-import { AlignStartRow, Column, HighContrastCheckbox, RadioElementBorder, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { Detail, Checkbox } from '@navikt/ds-react'
+import { AlignStartRow, Column, RadioPanelBorder, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -17,7 +17,7 @@ export interface AdresseModalProps {
   onRejectAdresser: () => void
 }
 
-const Radio = styled(RadioElementBorder)`
+const Radio = styled(RadioPanelBorder)`
   max-width: 300px;
   .panel {
     padding: 0px !important;
@@ -70,15 +70,14 @@ const AdresseModal: React.FC<AdresseModalProps> = ({
   const renderAdresses = (key: AdresseType, label: string, adresser: Array<IAdresse>) => {
     return (
       <>
-        <HighContrastCheckbox
+        <Checkbox
           checked={adresseKeys[key]}
-          label={(
-            <UndertekstBold>
-              {label}
-            </UndertekstBold>
-          )}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => onCheckboxClicked(key, e.target.checked)}
-        />
+        >
+          <Detail>
+            {label}
+          </Detail>
+        </Checkbox>
         <VerticalSeparatorDiv />
 
         <AlignStartRow>

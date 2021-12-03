@@ -5,14 +5,14 @@ import { Etikett } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
 import useAddRemove from 'hooks/useAddRemove'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema/lib/feiloppsummering'
-import { Feilmelding, Undertittel } from 'nav-frontend-typografi'
-import { FlexCenterSpacedDiv, PileDiv, HighContrastFlatknapp, HighContrastKnapp, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { ErrorElement } from 'declarations/app.d'
+import { Heading, Button } from '@navikt/ds-react'
+import { FlexCenterSpacedDiv, PileDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 interface StackProps {
-  feil: FeiloppsummeringFeil | undefined
+  feil: ErrorElement | undefined
   highContrast: boolean
   initialValues: any
   itemLabel: string
@@ -68,9 +68,9 @@ const Stack: React.FC<StackProps> = ({
     <>
       {title && (
         <>
-          <Undertittel>
+          <Heading size='small'>
             {title}
-          </Undertittel>
+          </Heading>
           <VerticalSeparatorDiv />
         </>
       )}
@@ -104,15 +104,15 @@ const Stack: React.FC<StackProps> = ({
       {!_addItem
         ? (
           <div className='slideInFromLeft'>
-            <HighContrastFlatknapp
-              mini
-              kompakt
+            <Button
+              variant='tertiary'
+              size='small'
               onClick={() => setAddItem(!_addItem)}
             >
               <Add />
               <HorizontalSeparatorDiv size='0.5' />
               {t('el:button-add-new-x', { x: itemLabel.toLowerCase() })}
-            </HighContrastFlatknapp>
+            </Button>
           </div>
           )
         : (
@@ -140,32 +140,30 @@ const Stack: React.FC<StackProps> = ({
             <PileDiv>
               {selectLabel && <VerticalSeparatorDiv size='1.3' />}
               <FlexCenterSpacedDiv>
-                <HighContrastKnapp
-                  mini
-                  kompakt
+                <Button
+                  variant='secondary'
+                  size='small'
                   onClick={onAdd}
                 >
                   <Add />
                   <HorizontalSeparatorDiv size='0.5' />
                   {t('el:button-add')}
-                </HighContrastKnapp>
+                </Button>
                 <HorizontalSeparatorDiv size='0.5' />
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
+                <Button
+                  variant='tertiary'
+                  size='small'
                   onClick={() => setAddItem(!_addItem)}
                 >
                   {t('el:button-cancel')}
-                </HighContrastFlatknapp>
+                </Button>
               </FlexCenterSpacedDiv>
             </PileDiv>
           </FlexCenterSpacedDiv>
           )}
       {feil && (
-        <div role='alert' aria-live='assertive' className='feilmelding skjemaelement__feilmelding'>
-          <Feilmelding>
-            {feil}
-          </Feilmelding>
+        <div role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium navds-label'>
+          {feil}
         </div>
       )}
     </>

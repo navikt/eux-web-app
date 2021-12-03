@@ -4,7 +4,7 @@ import PeriodeInput from 'components/Forms/PeriodeInput'
 import { State } from 'declarations/reducers'
 import { Periode } from 'declarations/sed'
 import _ from 'lodash'
-import { Undertittel } from 'nav-frontend-typografi'
+import { Heading } from '@navikt/ds-react'
 import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -41,9 +41,9 @@ const Referanseperiode: React.FC<PersonManagerFormProps> = ({
 
   return (
     <PaddedDiv>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:referanseperiode')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <PeriodeInput

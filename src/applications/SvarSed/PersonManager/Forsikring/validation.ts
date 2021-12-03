@@ -7,7 +7,7 @@ import {
 } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 import { validateAdresse } from '../Adresser/validation'
@@ -52,7 +52,7 @@ export const validateForsikringPeriode = (
     v[namespace + '-type'] = {
       skjemaelementId: namespace + '-type',
       feilmelding: t('validation:noType')
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -68,7 +68,7 @@ export const validateForsikringPeriode = (
       v[namespace + idx + '-annenTypeForsikringsperiode'] = {
         feilmelding: t('validation:noAnnenTypeForsikringsperiode'),
         skjemaelementId: namespace + idx + '-annenTypeForsikringsperiode'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
   }
@@ -86,7 +86,7 @@ export const validateForsikringPeriode = (
       v[namespace + idx + '-arbeidsgiver-navn'] = {
         feilmelding: t('validation:noInstitusjonensNavnTil', { person: personName }),
         skjemaelementId: namespace + idx + '-arbeidsgiver-navn'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
 
@@ -94,7 +94,7 @@ export const validateForsikringPeriode = (
       v[namespace + idx + '-arbeidsgiver-identifikatorer'] = {
         feilmelding: t('validation:noOrgnrTil', { person: personName }),
         skjemaelementId: namespace + idx + '-arbeidsgiver-identifikatorer'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
   }
@@ -111,7 +111,7 @@ export const validateForsikringPeriode = (
       v[namespace + idx + '-inntektOgTimerInfo'] = {
         feilmelding: t('validation:noInntektInfoTil', { person: personName }),
         skjemaelementId: namespace + idx + '-inntektOgTimerInfo'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
   }
@@ -125,9 +125,9 @@ export const validateForsikringPeriode = (
     if (categoryNamespace.indexOf('[') >= 0) {
       categoryNamespace = categoryNamespace.substring(0, categoryNamespace.indexOf('['))
     }
-    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
   }
   return hasErrors
 }

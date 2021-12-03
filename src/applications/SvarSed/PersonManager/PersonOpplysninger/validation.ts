@@ -1,7 +1,7 @@
+import { ErrorElement } from 'declarations/app'
 import { PersonInfo, Pin } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
@@ -39,7 +39,7 @@ export const validatePin = (
     v[namespace + idx + '-identifikator'] = {
       feilmelding: t('validation:noIdTil', { person: personName }),
       skjemaelementId: namespace + idx + '-identifikator'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -47,7 +47,7 @@ export const validatePin = (
     v[namespace + idx + '-land'] = {
       feilmelding: t('validation:noLandTil', { person: personName }),
       skjemaelementId: namespace + idx + '-land'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -64,7 +64,7 @@ export const validatePin = (
       v[namespace + idx + '-land'] = {
         feilmelding: t('validation:duplicateLandTil', { person: personName }),
         skjemaelementId: namespace + idx + '-land'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
   }
@@ -85,7 +85,7 @@ export const validatePersonOpplysninger = (
     v[namespace + '-fornavn'] = {
       feilmelding: t('validation:noFornavnTil', { person: personName }),
       skjemaelementId: namespace + '-fornavn'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -93,7 +93,7 @@ export const validatePersonOpplysninger = (
     v[namespace + '-etternavn'] = {
       feilmelding: t('validation:noEtternavnTil', { person: personName }),
       skjemaelementId: namespace + '-etternavn'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -101,7 +101,7 @@ export const validatePersonOpplysninger = (
     v[namespace + '-foedselsdato'] = {
       feilmelding: t('validation:noFoedselsdatoTil', { person: personName }),
       skjemaelementId: namespace + '-foedselsdato'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -109,7 +109,7 @@ export const validatePersonOpplysninger = (
     v[namespace + '-foedselsdato'] = {
       feilmelding: t('validation:invalidFoedselsdatoTil', { person: personName }),
       skjemaelementId: namespace + '-foedselsdato'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -117,7 +117,7 @@ export const validatePersonOpplysninger = (
     v[namespace + '-kjoenn'] = {
       feilmelding: t('validation:noKjoennTil', { person: personName }),
       skjemaelementId: namespace + '-kjoenn'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -137,9 +137,9 @@ export const validatePersonOpplysninger = (
     const mainNamespace = namespaceBits[0]
     const personNamespace = mainNamespace + '-' + namespaceBits[1]
     const categoryNamespace = personNamespace + '-' + namespaceBits[2]
-    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
   }
   return hasErrors
 }

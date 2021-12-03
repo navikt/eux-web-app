@@ -1,7 +1,7 @@
 import { ArbeidsgiverIdentifikator } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
@@ -33,7 +33,7 @@ export const validateIdentifikator = (
     v[namespace + idx + '-type'] = {
       feilmelding: t('validation:noTypeTil', { person: personName }),
       skjemaelementId: namespace + idx + '-type'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -41,7 +41,7 @@ export const validateIdentifikator = (
     v[namespace + idx + '-id'] = {
       feilmelding: t('validation:noIdTil', { person: personName }),
       skjemaelementId: namespace + idx + '-id'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -58,7 +58,7 @@ export const validateIdentifikator = (
       v[namespace + idx + '-id'] = {
         feilmelding: t('validation:duplicateIdTil', { person: personName }),
         skjemaelementId: namespace + idx + '-id'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
   }
@@ -68,9 +68,9 @@ export const validateIdentifikator = (
     const mainNamespace = namespaceBits[0]
     const personNamespace = mainNamespace + '-' + namespaceBits[1]
     const categoryNamespace = personNamespace + '-' + namespaceBits[2]
-    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
   }
   return hasErrors
 }

@@ -1,12 +1,10 @@
 import PersonCard from 'applications/OpprettSak/PersonCard/PersonCard'
 import classNames from 'classnames'
-import { AlertstripeDiv } from 'components/StyledComponents'
 import { Kodeverk, OldFamilieRelasjon, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
 import _ from 'lodash'
-import AlertStripe from 'nav-frontend-alertstriper'
-import { Input } from 'nav-frontend-skjema'
-import { Column, HighContrastKnapp, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { Alert, TextField, Button } from '@navikt/ds-react'
+import { Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -131,7 +129,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
         className={classNames(className, 'slideInFromLeft', { feil: !!alertMessage })}
       >
         <Column>
-          <Input
+          <TextField
             data-test-id='TPSPersonForm__input-fnr-or-dnr-id'
             label={t('label:fnr-dnr')}
             placeholder={t('label:fnr-dnr')}
@@ -142,37 +140,32 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
         </Column>
         <HorizontalSeparatorDiv />
         <AlignCenterColumn>
-          <HighContrastKnapp
+          <Button
+            variant='secondary'
             disabled={person.fnr === _query}
             onClick={sokEtterFnr}
           >
             {t('el:button-search')}
-          </HighContrastKnapp>
+          </Button>
         </AlignCenterColumn>
       </Row>
       <VerticalSeparatorDiv />
       <Row>
         <Column>
           {person.fnr === _query && (
-            <AlertstripeDiv>
-              <AlertStripe type='advarsel'>
+              <Alert variant='warning'>
                 {t('message:error-fnr-is-user', { sok: _query })}
-              </AlertStripe>
-            </AlertstripeDiv>
+              </Alert>
           )}
           {_tpsperson && (
-            <AlertstripeDiv>
-              <AlertStripe type='advarsel'>
+            <Alert variant='warning'>
                 {t('message:error-relation-already-in-tps')}
-              </AlertStripe>
-            </AlertstripeDiv>
+              </Alert>
           )}
           {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (
-            <AlertstripeDiv>
-              <AlertStripe type='advarsel'>
+            <Alert variant='warning'>
                 {alertMessage}
-              </AlertStripe>
-            </AlertstripeDiv>
+              </Alert>
           )}
           {_personRelatert && (
             <MarginDiv>

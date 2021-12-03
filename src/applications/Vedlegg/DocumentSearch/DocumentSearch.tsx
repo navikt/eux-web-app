@@ -1,12 +1,11 @@
 import * as vedleggActions from 'actions/vedlegg'
 import classNames from 'classnames'
-import { HighContrastKnapp, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { VerticalSeparatorDiv } from 'nav-hoykontrast'
 import { State } from 'declarations/reducers'
 import { Dokument, Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
-import { Input, Select } from 'nav-frontend-skjema'
-import { Normaltekst } from 'nav-frontend-typografi'
+import { TextField, Select, Button, BodyLong } from '@navikt/ds-react'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -21,7 +20,7 @@ const Form = styled.div`
     align-items: center !important;
   }
 `
-const Rinasaknummer = styled(Input)`
+const Rinasaknummer = styled(TextField)`
   flex: 2;
   margin-right: 1rem;
 `
@@ -98,12 +97,13 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
           onChange={onRinaSaksnummerChange}
           value={rinasaksnummer}
         />
-        <HighContrastKnapp
+        <Button
+          variant='secondary'
           onClick={sokEtterDokument}
-          spinner={gettingDokument}
         >
           {t('el:button-search')}
-        </HighContrastKnapp>
+          {gettingDokument && <Loader/>}
+        </Button>
       </Form>
       <VerticalSeparatorDiv />
       <div data-test-id='dokumentsok__card slideInFromLeft'>
@@ -127,9 +127,9 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
       </div>
       <VerticalSeparatorDiv />
       {(dokument === null || dokument?.length === 0) && (
-        <Normaltekst>
+        <BodyLong>
           {t('message:error-noDocumentFound')}
-        </Normaltekst>
+        </BodyLong>
       )}
     </div>
   )

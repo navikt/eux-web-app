@@ -2,7 +2,7 @@ import { Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
@@ -35,7 +35,7 @@ export const validatePeriode = (
       feilmelding: personName
         ? t('validation:noDateTil', { person: personName })
         : t('validation:noDate')
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -45,7 +45,7 @@ export const validatePeriode = (
       feilmelding: personName
         ? t('validation:invalidDateTil', { person: personName })
         : t('validation:invalidDate')
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -55,7 +55,7 @@ export const validatePeriode = (
       feilmelding: personName
         ? t('validation:invalidDateTil', { person: personName })
         : t('validation:invalidDate')
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -65,7 +65,7 @@ export const validatePeriode = (
     v[namespace + idx + '-sluttdato'] = {
       skjemaelementId: namespace + idx + '-sluttdato',
       feilmelding: t('validation:endDateBeforeStartDate')
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
   return hasErrors

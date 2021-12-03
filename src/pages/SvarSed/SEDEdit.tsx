@@ -1,4 +1,5 @@
 import { Sight } from '@navikt/ds-icons'
+import { Loader } from '@navikt/ds-react'
 import { clientClear } from 'actions/alert'
 import { resetCurrentEntry, saveEntry } from 'actions/localStorage'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
@@ -34,15 +35,12 @@ import FileFC, { File } from 'forhandsvisningsfil'
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
-import { VenstreChevron } from 'nav-frontend-chevron'
-import { Systemtittel } from 'nav-frontend-typografi'
+import { VenstreChevron } from '@navikt/ds-icons'
+import { Button, Heading } from '@navikt/ds-react'
 import {
   Column,
   FlexCenterSpacedDiv,
   FlexDiv,
-  HighContrastFlatknapp,
-  HighContrastHovedknapp,
-  HighContrastKnapp,
   HorizontalSeparatorDiv,
   PaddedDiv,
   Row,
@@ -293,21 +291,22 @@ const SEDEdit: React.FC<SEDEditProps> = ({
         onModalClose={() => setViewSaveSedModal(false)}
       />
       <FlexCenterSpacedDiv>
-        <HighContrastKnapp
-          kompakt
+        <Button
+          variant='secondary'
+          size='small'
           onClick={onGoBackClick}
         >
           <VenstreChevron />
           <HorizontalSeparatorDiv size='0.5' />
           {t('label:tilbake')}
-        </HighContrastKnapp>
+        </Button>
       </FlexCenterSpacedDiv>
       <VerticalSeparatorDiv size='2' />
       <Row>
         <Column flex='2'>
-          <Systemtittel>
+          <Heading size='medium'>
             {replySed?.sedType} - {t('buc:' + replySed?.sedType)}
-          </Systemtittel>
+          </Heading>
           <VerticalSeparatorDiv />
           {isFSed(replySed) && (
             <Formaal
@@ -378,29 +377,28 @@ const SEDEdit: React.FC<SEDEditProps> = ({
         highContrast={highContrast}
         onAttachmentsChanged={(attachments) => setAttachments(attachments)}
       />
-      <HighContrastFlatknapp
-        mini
-        kompakt
+      <Button
+        variant='tertiary'
+        size='small'
         disabled={gettingPreviewFile}
-        spinner={gettingPreviewFile}
         data-amplitude='svarsed.editor.preview'
         onClick={onPreviewSed}
       >
         <Sight />
         <HorizontalSeparatorDiv size='0.5' />
         {gettingPreviewFile ? t('label:laster-ned-filen') : t('el:button-preview-x', { x: 'SED' })}
-      </HighContrastFlatknapp>
+        {gettingPreviewFile && <Loader/>}
+      </Button>
       <VerticalSeparatorDiv size='2' />
       <ValidationBox />
       <VerticalSeparatorDiv size='2' />
       <FlexDiv>
         <div>
-          <HighContrastHovedknapp
-            mini
+          <Button
+            variant='primary'
             data-amplitude={_.isEmpty(sedCreatedResponse) ? 'svarsed.editor.opprettsvarsed' : 'svarsed.editor.oppdattersvarsed'}
             onClick={sendReplySed}
             disabled={creatingSvarSed}
-            spinner={creatingSvarSed}
           >
             {_.isEmpty(sedCreatedResponse)
               ? creatingSvarSed
@@ -409,36 +407,38 @@ const SEDEdit: React.FC<SEDEditProps> = ({
               : creatingSvarSed
                 ? t('message:loading-oppdatering-svarsed')
                 : t('label:oppdatere-svarsed')}
-          </HighContrastHovedknapp>
+            {creatingSvarSed && <Loader/>}
+          </Button>
           <VerticalSeparatorDiv size='0.5' />
         </div>
         <HorizontalSeparatorDiv />
         {!_.isEmpty(sedCreatedResponse) && (
           <>
             <div>
-              <HighContrastHovedknapp
+              <Button
+                variant='primary'
                 // amplitude is dealt on SendSedClick
-                mini
                 title={t('message:help-send-sed')}
                 disabled={sendingSed || !_.isNil(sedSendResponse)}
                 onClick={onSendSedClick}
               >
                 {sendingSed ? t('message:loading-sending-sed') : t('el:button-send-sed')}
-              </HighContrastHovedknapp>
+              </Button>
             </div>
             <HorizontalSeparatorDiv />
           </>
         )}
         <div>
-          <HighContrastKnapp
+          <Button
+            variant='secondary'
+            size='small'
             data-amplitude={_.isNil(currentEntry) ? 'svarsed.editor.savedraft' : 'svarsed.editor.updatedraft'}
-            mini
             onClick={onSaveSedClick}
             disabled={savingSed}
-            spinner={savingSed}
           >
             {_.isNil(currentEntry) ? t('el:button-save-draft-x', { x: 'svarSED' }) : t('el:button-update-draft-x', { x: 'svarSED' })}
-          </HighContrastKnapp>
+            {savingSed && <Loader/>}
+          </Button>
           <VerticalSeparatorDiv size='0.5' />
         </div>
       </FlexDiv>
@@ -447,16 +447,15 @@ const SEDEdit: React.FC<SEDEditProps> = ({
       (alertType === types.SVARSED_SED_SEND_SUCCESS || alertType === types.SVARSED_SED_SEND_FAILURE) && (
         <>
           <FlexDiv>
-            <AlertstripeDiv>
-              <Alert
-                status={alertType === types.SVARSED_SED_SEND_FAILURE ? 'ERROR' : 'OK'}
-                message={alertMessage!}
-                onClose={() => {
-                  _setSendButtonClicked(false)
-                  dispatch(clientClear())
-                }}
-              />
-            </AlertstripeDiv>
+            <Alert
+              variant={alertType === types.SVARSED_SED_SEND_FAILURE ? 'error' : 'info'}
+              onClose={() => {
+                _setSendButtonClicked(false)
+                dispatch(clientClear())
+              }}
+            >
+              {alertMessage!}
+            </Alert>
             <div />
           </FlexDiv>
           <VerticalSeparatorDiv />

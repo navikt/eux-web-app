@@ -1,8 +1,8 @@
+
 import { validatePeriode } from 'components/Forms/validation'
 import { PeriodeMedForsikring } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
 import { TFunction } from 'react-i18next'
 
 export interface ValidationPeriodeMedForsikringProps {
@@ -26,14 +26,14 @@ export const validatePeriodeMedForsikring = (
     v[namespace + '-navn'] = {
       skjemaelementId: namespace + '-navn',
       feilmelding: t('validation:noNavn')
-    } as FeiloppsummeringFeil
+    } as ErrorSummaryItemType
     hasErrors = true
   }
   if (_.isEmpty(periodeMedForsikring.arbeidsgiver?.identifikatorer?.[0]?.id)) {
     v[namespace + '-identifikatorer'] = {
       skjemaelementId: namespace + '-identifikatorer',
       feilmelding: t('validation:noOrgnr')
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -55,28 +55,28 @@ export const validatePeriodeMedForsikring = (
       v[namespace + '-adresse-gate'] = {
         skjemaelementId: namespace + '-adresse-gate',
         feilmelding: t('validation:noAddressStreet')
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
     if (_.isEmpty(periodeMedForsikring.arbeidsgiver.adresse?.postnummer)) {
       v[namespace + '-adresse-postnummer'] = {
         skjemaelementId: namespace + '-adresse-postnummer',
         feilmelding: t('validation:noAddressPostnummer')
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
     if (_.isEmpty(periodeMedForsikring.arbeidsgiver.adresse?.by)) {
       v[namespace + '-adresse-by'] = {
         skjemaelementId: namespace + '-adresse-by',
         feilmelding: t('validation:noAddressCity')
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
     if (_.isEmpty(periodeMedForsikring.arbeidsgiver.adresse?.land)) {
       v[namespace + '-adresse-land'] = {
         skjemaelementId: namespace + '-adresse-land',
         feilmelding: t('validation:noAddressCountry')
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
   }
@@ -86,9 +86,9 @@ export const validatePeriodeMedForsikring = (
     const mainNamespace = namespaceBits[0]
     const personNamespace = mainNamespace + '-' + namespaceBits[1]
     const categoryNamespace = personNamespace + '-' + namespaceBits[2]
-    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
   }
   return hasErrors
 }

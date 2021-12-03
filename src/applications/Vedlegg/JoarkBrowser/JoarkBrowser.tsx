@@ -1,5 +1,3 @@
-import * as icons from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { getJoarkItemPreview, listJoarkItems, setJoarkItemPreview } from 'actions/attachments'
 import Trashcan from 'assets/icons/Trashcan'
 import Modal from 'components/Modal/Modal'
@@ -15,8 +13,8 @@ import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import FileFC, { File } from 'forhandsvisningsfil'
 import _ from 'lodash'
-import { Element } from 'nav-frontend-typografi'
-import { HighContrastKnapp } from 'nav-hoykontrast'
+import { Button, Loader, Element } from '@navikt/ds-react'
+import { Sight } from '@navikt/ds-icons'
 import PT from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -128,24 +126,23 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
     return (
       <ButtonsDiv>
         {item.journalpostId && item.dokumentInfoId && (
-          <HighContrastKnapp
+          <Button
+            variant='secondary'
+            size='small'
             data-tip={t('label:preview')}
-            kompakt
-            mini
             disabled={previewing}
-            spinner={spinner}
             id={'tablesorter__preview-button-' + item.journalpostId + '-' + item.dokumentInfoId}
             className='tablesorter__preview-button'
             onClick={() => onPreviewItem(item as JoarkBrowserItem)}
           >
-            {spinner ? '' : <FontAwesomeIcon icon={icons.faEye} />}
-          </HighContrastKnapp>
+            {spinner ? <Loader/> : <Sight/>}
+          </Button>
         )}
 
         {mode === 'view' && item.type === 'joark' && (
-          <HighContrastKnapp
-            kompakt
-            mini
+          <Button
+            variant='secondary'
+            size='small'
             onClick={(e: any) => {
               e.preventDefault()
               e.stopPropagation()
@@ -153,7 +150,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
             }}
           >
             <Trashcan />
-          </HighContrastKnapp>
+          </Button>
         )}
       </ButtonsDiv>
     )

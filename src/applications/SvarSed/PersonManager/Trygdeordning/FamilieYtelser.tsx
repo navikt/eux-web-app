@@ -12,12 +12,11 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
-import { Ingress, Normaltekst, UndertekstBold } from 'nav-frontend-typografi'
+import { ErrorElement } from 'declarations/app.d'
+import { Button, Ingress, BodyLong, Detail, Heading } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
-  HighContrastFlatknapp,
   HorizontalSeparatorDiv,
   Row,
   VerticalSeparatorDiv
@@ -171,7 +170,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
       newValidation[namespace + '-familieYtelse-category'] = {
         feilmelding: t('validation:noPensjonTypeTil', { person: personName }),
         skjemaelementId: namespace + '-category'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       _setValidation(newValidation)
       return false
     }
@@ -363,9 +362,9 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
           </Row>
           )
         : (
-          <Normaltekst>
+          <BodyLong>
             {t('message:warning-no-periods')}
-          </Normaltekst>
+          </BodyLong>
           )}
       <VerticalSeparatorDiv />
       {titleFor('perioderMedArbeid')}
@@ -383,15 +382,15 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
         : (
           <Row className='slideInFromLeft'>
             <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                variant='tertiary'
+                size='small'
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-              </HighContrastFlatknapp>
+              </Button>
             </Column>
           </Row>
           )}

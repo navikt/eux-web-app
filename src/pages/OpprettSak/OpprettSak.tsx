@@ -31,19 +31,13 @@ import useValidation from 'hooks/useValidation'
 import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
-import AlertStripe from 'nav-frontend-alertstriper'
-import Lenke from 'nav-frontend-lenker'
-import { Feiloppsummering, FeiloppsummeringFeil, Select } from 'nav-frontend-skjema'
-import { Systemtittel } from 'nav-frontend-typografi'
+import { Alert, Button, Link, Loader, ErrorSummary, Panel, Select, Heading } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
   Container,
   Content,
   FlexDiv,
-  HighContrastHovedknapp,
-  HighContrastKnapp,
-  HighContrastPanel,
   HorizontalSeparatorDiv,
   Margin,
   PileDiv,
@@ -54,9 +48,10 @@ import PT from 'prop-types'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link as DOMLink } from 'react-router-dom'
 import { periodeMedForsikringToArbeidsgiver } from 'utils/arbeidsgiver'
 import { validateOpprettSak, ValidationOpprettSakProps } from './validation'
+import { ErrorElement } from 'declarations/app'
 
 export interface OpprettSakSelector {
   alertStatus: AlertStatus | undefined
@@ -498,11 +493,11 @@ const OpprettSak: React.FC = (): JSX.Element => {
               <Row>
                 {valgtSektor === 'FB' && (
                   <Column className='slideInFromLeft'>
-                    <Systemtittel>
+                    <Heading size='medium'>
                       {t('label:familierelasjon')}
-                    </Systemtittel>
+                    </Heading>
                     <VerticalSeparatorDiv />
-                    <HighContrastPanel border>
+                    <Panel border>
                       <Family
                         alertStatus={alertStatus}
                         alertMessage={alertMessage}
@@ -544,7 +539,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
                           dispatch(sakActions.getPersonRelated(fnrQuery))
                         }}
                       />
-                    </HighContrastPanel>
+                    </Panel>
                     <VerticalSeparatorDiv />
                   </Column>
                 )}
@@ -556,7 +551,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
                   >
                     <Select
                       data-test-id={namespace + '-tema'}
-                      feil={_validation[namespace + '-tema']?.feilmelding}
+                      error={_validation[namespace + '-tema']?.feilmelding}
                       id={namespace + '-tema'}
                       label={t('label:velg-tema')}
                       onChange={onTemaChange}
@@ -577,13 +572,14 @@ const OpprettSak: React.FC = (): JSX.Element => {
                     <PileDiv>
                       <VerticalSeparatorDiv size='2' />
                       <FlexDiv>
-                        <HighContrastKnapp
+                        <Button
+                          variant='secondary'
                           onClick={onViewFagsakerClick}
-                          spinner={gettingFagsaker}
                           disabled={gettingFagsaker || !isSomething(valgtTema)}
                         >
+                          {gettingFagsaker && <Loader/>}
                           {gettingFagsaker ? t('message:loading-saker') : t('label:vis-saker')}
-                        </HighContrastKnapp>
+                        </Button>
                       </FlexDiv>
                     </PileDiv>
                   </Column>
@@ -591,19 +587,19 @@ const OpprettSak: React.FC = (): JSX.Element => {
               )}
               {(fagsaker === null || (fagsaker !== undefined && _.isEmpty(fagsaker))) && (
                 <Row>
-                  <AlertStripe type='advarsel'>
+                  <Alert variant='warning'>
                     {t('message:error-fagsak-notFound')}
                     {serverInfo && (
-                      <Lenke
+                      <Link
                         href={serverInfo?.gosysURL}
                         ariaLabel={t('label:lenke-til-gosys')}
                         target='_blank'
                       >
                         {t('label:lenke-til-gosys')}
-                      </Lenke>
+                      </Link>
                     )}
                     <VerticalSeparatorDiv />
-                  </AlertStripe>
+                  </Alert>
                   <VerticalSeparatorDiv />
                 </Row>
               )}
@@ -612,7 +608,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
                   <Column>
                     <Select
                       data-test-id={namespace + '-saksId'}
-                      feil={_validation[namespace + '-saksId']?.feilmelding}
+                      error={_validation[namespace + '-saksId']?.feilmelding}
                       id={namespace + '-saksId'}
                       label={t('label:velg-fagsak')}
                       onChange={onSakIDChange}
@@ -653,24 +649,29 @@ const OpprettSak: React.FC = (): JSX.Element => {
                 className='slideInFromLeft'
                 style={{ animationDelay: '0.9s' }}
               >
-                <HighContrastHovedknapp
+                <Button
+                  variant='primary'
                   disabled={sendingSak}
                   onClick={skjemaSubmit}
-                  spinner={sendingSak}
+
                 >
+                  {sendingSak && <Loader/>}
                   {t('label:opprett-sak-i-rina')}
-                </HighContrastHovedknapp>
+                </Button>
               </Row>
               {!isValid && (
                 <>
                   <VerticalSeparatorDiv size='2' />
                   <Row>
                     <Column>
-                      <Feiloppsummering
+                      <ErrorSummary
                         data-test-id='opprettsak__feiloppsummering'
-                        tittel={t('validation:feiloppsummering')}
-                        feil={Object.values(_validation).filter(v => v !== undefined) as Array<FeiloppsummeringFeil>}
-                      />
+                        heading={t('validation:feiloppsummering')}
+                      >
+                        {_.filter(Object.values(_validation), v => v !== undefined).map((a: ErrorElement | undefined) => (
+                          <ErrorSummary.Item href={a?.skjemaelementId}>{a?.feilmelding}</ErrorSummary.Item>
+                        ))}
+                      </ErrorSummary>
                     </Column>
                     <HorizontalSeparatorDiv size='2' />
                     <Column />
@@ -694,22 +695,22 @@ const OpprettSak: React.FC = (): JSX.Element => {
                     </span>
                     <HorizontalSeparatorDiv size='0.25' />
                     {opprettetSak.url && (
-                      <Lenke
+                      <Link
                         className='vedlegg__lenke'
                         href={opprettetSak.url}
                         target='_blank'
                       >
                         {t('label:gå-til-rina')}
-                      </Lenke>
+                      </Link>
                     )}
                   </FlexDiv>
                   <div>
                     {opprettetSak.rinasaksnummer && (
-                      <Link
+                      <DOMLink
                         to={'/vedlegg?rinasaksnummer=' + opprettetSak.rinasaksnummer}
                       >
                         {t('label:legg-til-vedlegg-til-sed')}
-                      </Link>
+                      </DOMLink>
                     )}
                   </div>
                 </AlertStripe>

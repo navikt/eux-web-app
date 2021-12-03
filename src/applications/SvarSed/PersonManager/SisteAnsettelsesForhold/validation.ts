@@ -1,7 +1,7 @@
 import { SisteAnsettelsesForhold, Utbetaling } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
@@ -27,7 +27,7 @@ export const validateUtbetaling = (
     v[namespace + idx + '-utbetalingType'] = {
       feilmelding: t('validation:noUtbetalingType'),
       skjemaelementId: namespace + idx + '-utbetalingType'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   } else {
     if (utbetaling?.utbetalingType?.trim() === 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet' &&
@@ -35,7 +35,7 @@ export const validateUtbetaling = (
       v[namespace + idx + '-loennTilDato'] = {
         feilmelding: t('validation:noLoennTilDato'),
         skjemaelementId: namespace + idx + '-loennTilDato'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
 
@@ -44,7 +44,7 @@ export const validateUtbetaling = (
       v[namespace + idx + '-feriedagerTilGode'] = {
         feilmelding: t('validation:noFeriedagerTilGode'),
         skjemaelementId: namespace + idx + '-feriedagerTilGode'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
   }
@@ -53,7 +53,7 @@ export const validateUtbetaling = (
     v[namespace + '-beloep'] = {
       skjemaelementId: namespace + '-beloep',
       feilmelding: t('validation:noBeløp')
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -61,7 +61,7 @@ export const validateUtbetaling = (
     v[namespace + '-beloep'] = {
       skjemaelementId: namespace + '-beloep',
       feilmelding: t('validation:invalidBeløp')
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -69,7 +69,7 @@ export const validateUtbetaling = (
     v[namespace + idx + '-valuta'] = {
       feilmelding: t('validation:noValuta'),
       skjemaelementId: namespace + idx + '-valuta'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -116,9 +116,9 @@ export const validateSisteansettelsesforhold = (
     const mainNamespace = namespaceBits[0]
     const personNamespace = mainNamespace + '-' + namespaceBits[1]
     const categoryNamespace = personNamespace + '-' + namespaceBits[2]
-    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
   }
   return hasErrors
 }

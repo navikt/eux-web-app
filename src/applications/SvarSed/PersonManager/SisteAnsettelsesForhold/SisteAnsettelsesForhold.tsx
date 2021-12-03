@@ -15,11 +15,12 @@ import useValidation from 'hooks/useValidation'
 import CountryData, { Currency } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { Button, BodyLong, Heading } from '@navikt/ds-react'
 import {
   AlignStartRow,
-  Column, HighContrastFlatknapp,
-  HighContrastRadioPanelGroup, HorizontalSeparatorDiv,
+  Column,
+  RadioPanelGroup,
+  HorizontalSeparatorDiv,
   PaddedDiv,
   Row,
   VerticalSeparatorDiv
@@ -264,9 +265,9 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />
-        <Undertittel>
+        <Heading size='small'>
           {t('label:utbetaling')}
-        </Undertittel>
+        </Heading>
         <VerticalSeparatorDiv />
         <AlignStartRow>
           <Column>
@@ -347,17 +348,17 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
     <PaddedDiv>
       <AlignStartRow className='slideInFromLeft'>
         <Column>
-          <Undertittel>
+          <Heading size='small'>
             {t('label:siste-ansettelsesforhold')}
-          </Undertittel>
+          </Heading>
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />
       {_.isEmpty(sisteAnsettelsesForhold?.utbetalinger)
         ? (
-          <Normaltekst>
+          <BodyLong>
             {t('message:warning-no-utbetaling')}
-          </Normaltekst>
+          </BodyLong>
           )
         : sisteAnsettelsesForhold?.utbetalinger?.map(renderRow)}
       <VerticalSeparatorDiv size='2' />
@@ -368,22 +369,22 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
         : (
           <Row>
             <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                variant='tertiary'
+                size='small'
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:utbetaling').toLowerCase() })}
-              </HighContrastFlatknapp>
+              </Button>
             </Column>
           </Row>
           )}
       <VerticalSeparatorDiv size='2' />
-      <Undertittel>
+      <Heading size='small'>
         {t('label:opphoer')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column>

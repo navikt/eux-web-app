@@ -3,7 +3,7 @@ import { validatePeriode } from 'components/Forms/validation'
 import { Motregning as IMotregning, ReplySed, Barn, F002Sed, BarnaEllerFamilie } from 'declarations/sed'
 import { TFunction } from 'react-i18next'
 import { Validation } from 'declarations/types'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { ErrorElement } from 'declarations/app.d'
 import _ from 'lodash'
 import { getIdx } from 'utils/namespace'
 
@@ -40,7 +40,7 @@ export const validateMotregning = (
     v[namespace + idx + '-svarType'] = {
       feilmelding: t('validation:noAnswerTil', { person: formalName }),
       skjemaelementId: namespace + idx + '-svarType'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -51,14 +51,14 @@ export const validateMotregning = (
       v[namespace + idx + '-barnaEllerFamilie'] = {
         feilmelding: t('validation:noBarnaEllerFamilie'),
         skjemaelementId: namespace + idx + '-barnaEllerFamilie'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
     if (type === 'barna' && _.isEmpty(keyAndYtelses)) {
       v[namespace + idx + '-ytelseNavn'] = {
         feilmelding: t('validation:noYtelseTil', { person: formalName }),
         skjemaelementId: namespace + idx + '-ytelseNavn'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
   // on other cases, ytelseNavn comes on the motregning (new motregning as familie, or all existing motregning)
@@ -67,7 +67,7 @@ export const validateMotregning = (
       v[namespace + idx + '-ytelseNavn'] = {
         feilmelding: t('validation:noYtelseTil', { person: formalName }),
         skjemaelementId: namespace + idx + '-ytelseNavn'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
   }
@@ -76,14 +76,14 @@ export const validateMotregning = (
     v[namespace + idx + '-beloep'] = {
       feilmelding: t('validation:noBeløpTil', { person: formalName }),
       skjemaelementId: namespace + idx + '-beloep'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   } else {
     if (!motregning?.beloep?.trim().match(/^[\d.,]+$/)) {
       v[namespace + idx + '-beloep'] = {
         skjemaelementId: namespace + idx + '-beloep',
         feilmelding: t('validation:invalidBeløpTil', { person: formalName })
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
   }
@@ -92,7 +92,7 @@ export const validateMotregning = (
     v[namespace + idx + '-valuta'] = {
       feilmelding: t('validation:noValutaTil', { person: formalName }),
       skjemaelementId: namespace + idx + '-valuta'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -110,7 +110,7 @@ export const validateMotregning = (
     v[namespace + idx + '-utbetalingshyppighet'] = {
       feilmelding: t('validation:noAvgrensingTil', { person: formalName }),
       skjemaelementId: namespace + idx + '-utbetalingshyppighet'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -118,7 +118,7 @@ export const validateMotregning = (
     v[namespace + idx + '-mottakersNavn'] = {
       feilmelding: t('validation:noMottakersNavnTil', { person: formalName }),
       skjemaelementId: namespace + idx + '-mottakersNavn'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -126,14 +126,14 @@ export const validateMotregning = (
     v[namespace + idx + '-begrunnelse'] = {
       feilmelding: t('validation:noGrunnTil', { person: formalName }),
       skjemaelementId: namespace + idx + '-begrunnelse'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   } else {
     if (motregning?.begrunnelse.trim().length > 500) {
       v[namespace + idx + '-begrunnelse'] = {
         feilmelding: t('validation:textOver500Til', { person: formalName }),
         skjemaelementId: namespace + idx + '-begrunnelse'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
   }
@@ -142,7 +142,7 @@ export const validateMotregning = (
     v[namespace + idx + '-ytterligereInfo'] = {
       feilmelding: t('validation:textOver500Til', { person: formalName }),
       skjemaelementId: namespace + idx + '-ytterligereInfo'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
   return hasErrors
@@ -189,8 +189,8 @@ export const validateMotregninger = (
     const namespaceBits = namespace.split('-')
     const mainNamespace = namespaceBits[0]
     const formaalNamespace = mainNamespace + '-' + namespaceBits[1]
-    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[formaalNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[formaalNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
   }
   return hasErrors
 }

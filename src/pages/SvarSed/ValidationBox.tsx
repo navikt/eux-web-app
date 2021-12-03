@@ -1,8 +1,8 @@
 import { State } from 'declarations/reducers'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import Lenke from 'nav-frontend-lenker'
-import { Feiloppsummering, FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { ErrorSummary } from '@navikt/ds-react'
+import { ErrorElement } from 'declarations/app'
 import { Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -23,18 +23,19 @@ const ValidationBox = (): JSX.Element => {
       <VerticalSeparatorDiv size='2' />
       <Row>
         <Column>
-          <Feiloppsummering
+          <ErrorSummary
             data-test-id='opprettsak__feiloppsummering'
-            tittel={t('validation:feiloppsummering')}
-            feil={Object.values(validation)
+            heading={t('validation:feiloppsummering')}
+           >
+            {Object.values(validation)
               .filter(v => v !== undefined)
               .filter(v => v?.feilmelding !== 'notnull')
               .map(v => ({
                 feilmelding: v!.feilmelding,
                 skjemaelementId: v!.skjemaelementId
-              })) as Array<FeiloppsummeringFeil>}
-            customFeilRender={(item: FeiloppsummeringFeil) => (
-              <Lenke
+              })) as Array<ErrorElement>}
+            customFeilRender={(item: ErrorElement) => (
+              <ErrorSummary.Item
                 href={`#${item.skjemaelementId}`} onClick={(e) => {
                   e.preventDefault()
                   const element = document.getElementById(item.skjemaelementId)
@@ -49,9 +50,9 @@ const ValidationBox = (): JSX.Element => {
                 }}
               >
                 {item.feilmelding}
-              </Lenke>
+              </ErrorSummary.Item>
             )}
-          />
+          </ErrorSummary>
         </Column>
         <HorizontalSeparatorDiv size='2' />
         <Column />

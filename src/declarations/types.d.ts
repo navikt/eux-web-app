@@ -1,5 +1,5 @@
 import { FeatureToggles } from 'declarations/app'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { ErrorElement }  from 'declarations/app.d'
 
 export interface OldPeriod {
   fom: string
@@ -186,7 +186,7 @@ export interface Tema {
   unemployment: Array<Kodeverk>
 }
 
-export type Validation = {[key: string]: FeiloppsummeringFeil | undefined}
+export type Validation = {[key: string]: ErrorElement | undefined}
 
 export interface VedleggPayload {
   journalpostID: string

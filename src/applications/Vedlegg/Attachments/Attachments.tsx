@@ -6,7 +6,8 @@ import {
 } from 'declarations/attachments'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
-import { HighContrastKnapp, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { Button } from '@navikt/ds-react'
+import { VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -50,7 +51,8 @@ const Attachments: React.FC<AttachmentsProps> = ({
         {t('label:vedlegg')}
       </label>
       <VerticalSeparatorDiv />
-      <HighContrastKnapp
+      <Button
+        variant='secondary'
         data-amplitude='svarsed.editor.attachments'
         disabled={_.isNil(fnr)}
         onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
@@ -59,7 +61,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
         }}
       >
         {t('label:vis-vedlegg-tabell')}
-      </HighContrastKnapp>
+      </Button>
       <VerticalSeparatorDiv />
       <SEDAttachmentModal
         open={_attachmentsTableVisible}

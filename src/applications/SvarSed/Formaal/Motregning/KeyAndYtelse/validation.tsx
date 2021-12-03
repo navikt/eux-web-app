@@ -1,6 +1,6 @@
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 import { KeyAndYtelse } from './KeyAndYtelse'
@@ -27,7 +27,7 @@ export const validateKeyAndYtelse = (
     v[namespace + '-keyandytelse' + idx + '-key'] = {
       feilmelding: t('validation:noNavn'),
       skjemaelementId: namespace + '-keyandytelse' + idx + '-key'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -35,7 +35,7 @@ export const validateKeyAndYtelse = (
     v[namespace + '-keyandytelse' + idx + '-ytelseNavn'] = {
       feilmelding: t('validation:noBetegnelsePåYtelse'),
       skjemaelementId: namespace + '-keyandytelse' + idx + '-ytelseNavn'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
   return hasErrors

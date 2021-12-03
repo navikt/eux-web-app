@@ -12,7 +12,8 @@ import {
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { Column, FlexCenterDiv, HighContrastFlatknapp, HorizontalSeparatorDiv, Row } from 'nav-hoykontrast'
+import { Button } from '@navikt/ds-react'
+import { Column, FlexCenterDiv, HorizontalSeparatorDiv, Row } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -160,21 +161,21 @@ const SEDType: React.FC<SEDTypeProps> = ({
                     style={{ minWidth: '300px' }}
                   />
                   <HorizontalSeparatorDiv size='0.5' />
-                  <HighContrastFlatknapp
-                    mini
-                    kompakt
+                  <Button
+                    variant='tertiary'
+                    size='small'
                     onClick={onSaveChangesClicked}
                   >
                     {t('el:button-save')}
-                  </HighContrastFlatknapp>
+                  </Button>
                   <HorizontalSeparatorDiv size='0.5' />
-                  <HighContrastFlatknapp
-                    mini
-                    kompakt
+                  <Button
+                    variant='tertiary'
+                    size='small'
                     onClick={onCancelChangesClicked}
                   >
                     {t('el:button-cancel')}
-                  </HighContrastFlatknapp>
+                  </Button>
                 </>
                 )}
             {!editMode && validation[namespace]?.feilmelding && (
@@ -190,15 +191,15 @@ const SEDType: React.FC<SEDTypeProps> = ({
           </FlexCenterDiv>
           <HorizontalSeparatorDiv />
           {!editMode && (
-            <HighContrastFlatknapp
-              mini
-              kompakt
+            <Button
+              variant='tertiary'
+              size='small'
               onClick={onEditModeClicked}
             >
               <Edit />
               <HorizontalSeparatorDiv size='0.5' />
               {t('el:button-edit')}
-            </HighContrastFlatknapp>
+            </Button>
           )}
         </FlexCenterDiv>
       </Column>

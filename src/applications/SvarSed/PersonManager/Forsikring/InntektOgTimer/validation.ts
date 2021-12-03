@@ -2,7 +2,7 @@ import { validatePeriode } from 'components/Forms/validation'
 import { InntektOgTime } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
@@ -42,7 +42,7 @@ export const validateInntektOgTime = (
     v[namespace + idx + '-bruttoinntekt'] = {
       feilmelding: t('validation:noInntektTil', { person: personName }),
       skjemaelementId: namespace + idx + '-bruttoinntekt'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -50,7 +50,7 @@ export const validateInntektOgTime = (
     v[namespace + idx + '-valuta'] = {
       feilmelding: t('validation:noValutaTil', { person: personName }),
       skjemaelementId: namespace + idx + '-valuta'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -58,7 +58,7 @@ export const validateInntektOgTime = (
     v[namespace + idx + '-arbeidstimer'] = {
       feilmelding: t('validation:noArbeidstimerTil', { person: personName }),
       skjemaelementId: namespace + idx + '-arbeidstimer'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -67,9 +67,9 @@ export const validateInntektOgTime = (
     const mainNamespace = namespaceBits[0]
     const personNamespace = mainNamespace + '-' + namespaceBits[1]
     const categoryNamespace = personNamespace + '-' + namespaceBits[2]
-    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
   }
   return hasErrors
 }

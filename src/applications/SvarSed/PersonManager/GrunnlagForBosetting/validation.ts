@@ -2,7 +2,7 @@ import { validatePeriode } from 'components/Forms/validation'
 import { Flyttegrunn, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 
 export interface ValidationGrunnlagForBosettingProps {
@@ -36,7 +36,7 @@ export const validateGrunnlagForBosetting = (
       v[namespace + '-perioder-startdato'] = {
         feilmelding: t('validation:duplicateStartdatoTil', { person: personName }),
         skjemaelementId: namespace + 'perioder-startdato'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
   }
@@ -74,7 +74,7 @@ export const validateAllGrunnlagForBosetting = (
     v[namespace + '-datoFlyttetTilAvsenderlandet'] = {
       skjemaelementId: namespace + '-datoFlyttetTilAvsenderlandet',
       feilmelding: t('validation:invalidDateTil', { person: personName })
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -82,7 +82,7 @@ export const validateAllGrunnlagForBosetting = (
     v[namespace + '-datoFlyttetTilMottakerlandet'] = {
       skjemaelementId: namespace + '-datoFlyttetTilMottakerlandet',
       feilmelding: t('validation:invalidDateTil', { person: personName })
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -90,7 +90,7 @@ export const validateAllGrunnlagForBosetting = (
     v[namespace + '-personligSituasjon'] = {
       skjemaelementId: namespace + '-personligSituasjon',
       feilmelding: t('validation:textOver500Til', { person: personName })
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -99,9 +99,9 @@ export const validateAllGrunnlagForBosetting = (
     const mainNamespace = namespaceBits[0]
     const personNamespace = mainNamespace + '-' + namespaceBits[1]
     const categoryNamespace = personNamespace + '-' + namespaceBits[2]
-    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
   }
   return hasErrors
 }

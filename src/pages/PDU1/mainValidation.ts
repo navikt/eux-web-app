@@ -8,7 +8,7 @@ import { ReplyPdu1 } from 'declarations/pd'
 import { Adresse, ForsikringPeriode, PersonInfo, Statsborgerskap } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 
 export interface ValidationPdu1SearchProps {
@@ -92,7 +92,7 @@ export const validatePdu1Search = (
     v[namespace + '-fagsak'] = {
       skjemaelementId: namespace + '-fagsak',
       feilmelding: t('validation:noFagsak')
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -100,7 +100,7 @@ export const validatePdu1Search = (
     v[namespace + '-fnrOrDnr'] = {
       skjemaelementId: namespace + '-fnrOrDnr',
       feilmelding: t('validation:noFnr')
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -124,7 +124,7 @@ export const validatePDU1Edit = (
     v['editor-ytterligereInfo'] = {
       feilmelding: t('validation:textOver500Til', { person: 'SED' }),
       skjemaelementId: 'editor-ytterligereInfo'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 

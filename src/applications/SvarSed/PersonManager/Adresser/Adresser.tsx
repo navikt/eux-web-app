@@ -12,13 +12,11 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { BodyLong, Button, Heading } from '@navikt/ds-react'
 import {
   AlignEndColumn,
   AlignStartRow,
   Column,
-  HighContrastFlatknapp,
-  HighContrastHovedknapp,
   HorizontalSeparatorDiv,
   PaddedDiv,
   Row,
@@ -175,9 +173,9 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
           <>
             <AlignStartRow>
               <Column>
-                <HighContrastHovedknapp
+                <Button
+                  variant='primary'
                   disabled={gettingAdresse || _.isNil(fnr)}
-                  spinner={gettingAdresse}
                   onClick={getAdresse}
                 >
                   <Search />
@@ -185,7 +183,8 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
                   {gettingAdresse
                     ? t('message:loading-searching')
                     : t('label:søk-pdl-adresse-til', { person: personName })}
-                </HighContrastHovedknapp>
+                  {gettingAdresse && <Loader/>}
+                </Button>
               </Column>
             </AlignStartRow>
             <VerticalSeparatorDiv />
@@ -194,7 +193,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
         <RepeatableRow className={classNames({ new: index < 0 })}>
           {index < 0 && _newAdresseMessage && (
             <div>
-              <Normaltekst>{_newAdresseMessage}</Normaltekst>
+              <BodyLong>{_newAdresseMessage}</BodyLong>
               <VerticalSeparatorDiv />
             </div>
           )}
@@ -228,15 +227,15 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
 
   return (
     <PaddedDiv key={namespace + '-div'}>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:adresser')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv size='2' />
       {_.isEmpty(adresses)
         ? (
-          <Normaltekst>
+          <BodyLong>
             {t('message:warning-no-address')}
-          </Normaltekst>
+          </BodyLong>
           )
         : adresses?.map(renderRow)}
       <VerticalSeparatorDiv size='2' />
@@ -255,15 +254,15 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
         : (
           <Row>
             <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                variant='tertiary'
+                size='small'
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:adresse').toLowerCase() })}
-              </HighContrastFlatknapp>
+              </Button>
             </Column>
           </Row>
           )}

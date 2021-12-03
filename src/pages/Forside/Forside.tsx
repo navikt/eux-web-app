@@ -5,7 +5,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import Lenkepanel from 'nav-frontend-lenkepanel'
+import { LinkPanel } from '@navikt/ds-react'
 import { FeatureToggles } from 'declarations/app'
 
 interface ForsideSelector {
@@ -24,16 +24,16 @@ const Forside: React.FC = (): JSX.Element => {
       <Container>
         <Margin />
         <Content style={{ minWidth: '800px' }}>
-          <Lenkepanel
+          <LinkPanel
             className='slideInFromLeft'
             href='#'
             linkCreator={(props: any) => (<Link to='/opprettsak' {...props} />)}
             tittelProps='undertittel'
           >
             {t('app:page-title-opprettsak')}
-          </Lenkepanel>
+          </LinkPanel>
           <VerticalSeparatorDiv />
-          <Lenkepanel
+          <LinkPanel
             className='slideInFromLeft'
             href='#'
             linkCreator={(props: any) => (<Link to='/vedlegg' {...props} />)}
@@ -41,10 +41,10 @@ const Forside: React.FC = (): JSX.Element => {
             tittelProps='undertittel'
           >
             {t('app:page-title-vedlegg')}
-          </Lenkepanel>
+          </LinkPanel>
           <>
             <VerticalSeparatorDiv />
-            <Lenkepanel
+            <LinkPanel
               className='slideInFromLeft'
               href='#'
               linkCreator={(props: any) => (<Link to='/svarsed' {...props} />)}
@@ -52,12 +52,12 @@ const Forside: React.FC = (): JSX.Element => {
               tittelProps='undertittel'
             >
               {t('app:page-title-svarsed')}
-            </Lenkepanel>
+            </LinkPanel>
           </>
           {featureToggles?.featurePdu1 && (
             <>
               <VerticalSeparatorDiv />
-              <Lenkepanel
+              <LinkPanel
                 className='slideInFromLeft'
                 href='#'
                 linkCreator={(props: any) => (<Link to='/pdu1' {...props} />)}
@@ -65,7 +65,7 @@ const Forside: React.FC = (): JSX.Element => {
                 tittelProps='undertittel'
               >
                 {t('app:page-title-pdu1')}
-              </Lenkepanel>
+              </LinkPanel>
             </>
           )}
         </Content>

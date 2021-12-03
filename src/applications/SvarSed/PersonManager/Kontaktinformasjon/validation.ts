@@ -1,7 +1,7 @@
 import { Epost, Telefon } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
@@ -41,7 +41,7 @@ export const validateKontaktsinformasjonTelefon = (
     v[namespace + idx + '-type'] = {
       feilmelding: t('validation:noTelephoneTypeTil', { person: personName }),
       skjemaelementId: namespace + idx + '-type'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -49,7 +49,7 @@ export const validateKontaktsinformasjonTelefon = (
     v[namespace + idx + '-nummer'] = {
       feilmelding: t('validation:noTelephoneNumberTil', { person: personName }),
       skjemaelementId: namespace + idx + '-nummer'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
   let duplicate: boolean
@@ -63,7 +63,7 @@ export const validateKontaktsinformasjonTelefon = (
     v[namespace + idx + '-nummer'] = {
       feilmelding: t('validation:duplicateTelephoneNumberTil', { person: personName }),
       skjemaelementId: namespace + idx + '-nummer'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -72,9 +72,9 @@ export const validateKontaktsinformasjonTelefon = (
     const mainNamespace = namespaceBits[0]
     const personNamespace = mainNamespace + '-' + namespaceBits[1]
     const categoryNamespace = personNamespace + '-' + namespaceBits[2]
-    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
   }
   return hasErrors
 }
@@ -98,14 +98,14 @@ export const validateKontaktsinformasjonEpost = (
       v[namespace + idx + '-adresse'] = {
         feilmelding: t('validation:invalidEpostTil', { person: personName }),
         skjemaelementId: namespace + idx + '-adresse'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
   } else {
     v[namespace + idx + '-adresse'] = {
       feilmelding: t('validation:noEpostTil', { person: personName }),
       skjemaelementId: namespace + idx + '-adresse'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -120,7 +120,7 @@ export const validateKontaktsinformasjonEpost = (
     v[namespace + idx + '-adresse'] = {
       feilmelding: t('validation:duplicateEpostAdresseTil', { person: personName }),
       skjemaelementId: namespace + idx + '-adresse'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -129,9 +129,9 @@ export const validateKontaktsinformasjonEpost = (
     const mainNamespace = namespaceBits[0]
     const personNamespace = mainNamespace + '-' + namespaceBits[1]
     const categoryNamespace = personNamespace + '-' + namespaceBits[2]
-    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
   }
   return hasErrors
 }

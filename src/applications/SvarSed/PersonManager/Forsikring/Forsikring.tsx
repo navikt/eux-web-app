@@ -47,15 +47,13 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
-import Chevron from 'nav-frontend-chevron'
-import { Normaltekst, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
+import { NextFilled } from '@navikt/ds-icons'
+import { BodyLong, Detail, Heading, Checkbox, Button } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
   FlexCenterDiv,
   FlexEndDiv,
-  HighContrastCheckbox,
-  HighContrastFlatknapp,
   HorizontalSeparatorDiv,
   PaddedDiv,
   Row,
@@ -405,17 +403,17 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                       'perioderAnnenForsikring'
                     ].indexOf(_type) >= 0 && (
 
-                      <HighContrastFlatknapp
-                        mini
-                        kompakt
+                      <Button
+                        variant='tertiary'
+                        size='small'
                         onClick={() => toggleVisibility(_type, _index)}
                       >
                         <FlexCenterDiv>
-                          <Chevron type={_visible ? 'opp' : 'ned'} />
+                          {_visible ? <CollapseFilled/> : <ExpandFilled/>}
                           <HorizontalSeparatorDiv size='0.35' />
                           {_visible ? t('label:show-less') : t('label:show-more')}
                         </FlexCenterDiv>
-                      </HighContrastFlatknapp>
+                      </Button>
 
                     )}
                     <HorizontalSeparatorDiv size='0.5' />
@@ -552,25 +550,26 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
 
   return (
     <PaddedDiv>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:forsikring')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv size='2' />
       {!_.isEmpty(_allPeriods) && (
         <>
-          <HighContrastCheckbox
+          <Checkbox
             checked={_sort === 'group'}
-            label={t('label:group-by-type')}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
-          />
+          >
+            {t('label:group-by-type')}
+          </Checkbox>
           <VerticalSeparatorDiv size='2' />
         </>
       )}
       {_.isEmpty(_allPeriods)
         ? (
-          <Normaltekst>
+          <BodyLong>
             {t('message:warning-no-periods')}
-          </Normaltekst>
+          </BodyLong>
           )
         : _sort === 'time'
           ? (
@@ -604,9 +603,9 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                     <FlexEndDiv>
                       {getIcon(o.value, '20')}
                       <HorizontalSeparatorDiv size='0.35' />
-                      <UndertekstBold>
+                      <Detail>
                         {o.label}
-                      </UndertekstBold>
+                      </Detail>
                     </FlexEndDiv>
                     <VerticalSeparatorDiv />
                     {periods!.map((p, i) => ({ ...p, __type: o.value, __index: i })).sort(periodeSort).map(renderRow)}
@@ -624,15 +623,15 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
         : (
           <Row>
             <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                variant='tertiary'
+                size='small'
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-              </HighContrastFlatknapp>
+              </Button>
             </Column>
           </Row>
           )}

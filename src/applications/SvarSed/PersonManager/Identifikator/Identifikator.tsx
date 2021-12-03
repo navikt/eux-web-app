@@ -10,11 +10,10 @@ import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { Feilmelding, Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { Button, BodyLong, Heading } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
-  HighContrastFlatknapp,
   HorizontalSeparatorDiv,
   Row,
   VerticalSeparatorDiv
@@ -202,23 +201,24 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
 
   return (
     <div>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:institusjonens-id')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv />
       {_.isEmpty(identifikatorer)
         ? (
-          <Normaltekst>
+          <BodyLong>
             {t('message:warning-no-ids')}
-          </Normaltekst>
+          </BodyLong>
           )
         : identifikatorer?.map(renderRow)}
       <VerticalSeparatorDiv />
       {hasError && (
         <>
-          <div role='alert' aria-live='assertive' className='feilmelding skjemaelement__feilmelding'>
-            <Feilmelding>{hasError}</Feilmelding>
+          <div role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium navds-label'>
+            {hasError}
           </div>
+
           <VerticalSeparatorDiv />
         </>
       )}
@@ -229,16 +229,16 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
         : (
           <Row className='slideInFromLeft'>
             <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                variant='tertiary'
+                size='small'
                 data-test-id={namespace + '-new'}
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:identifikator').toLowerCase() })}
-              </HighContrastFlatknapp>
+              </Button>
             </Column>
           </Row>
           )}

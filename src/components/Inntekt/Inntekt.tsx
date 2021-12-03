@@ -1,7 +1,7 @@
 import ExternalLink from 'assets/icons/Logout'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { IInntekt, IInntekter } from 'declarations/types'
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { BodyLong, Undertittel } from '@navikt/ds-react'
 import {
   AlignEndRow,
   AlignStartRow,
@@ -43,7 +43,7 @@ const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
   }
 
   if (inntekter?.inntektsperioder?.length === 0) {
-    return <Normaltekst>{t('message:warning-no-inntekt-found')}</Normaltekst>
+    return <BodyLong>{t('message:warning-no-inntekt-found')}</BodyLong>
   }
 
   return (
@@ -65,21 +65,21 @@ const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
               <Column>
                 <ArbeidsgiverDiv>
                   <PileDiv>
-                    <Undertittel>
+                    <Heading size='small'>
                       {inntekt.arbeidsgiverNavn}
-                    </Undertittel>
+                    </Heading>
                   </PileDiv>
                   <PileDiv>
-                    <span><Normaltekst>{t('label:orgnr')}</Normaltekst></span>
-                    <span><Normaltekst>{inntekt.orgNr}</Normaltekst></span>
+                    <span><BodyLong>{t('label:orgnr')}</BodyLong></span>
+                    <span><BodyLong>{inntekt.orgNr}</BodyLong></span>
                   </PileDiv>
                   <PileDiv>
-                    <span><Normaltekst>{t('label:stillingprosent')}</Normaltekst></span>
-                    <span><Normaltekst>{inntekt.stillingsprosent} %</Normaltekst></span>
+                    <span><BodyLong>{t('label:stillingprosent')}</BodyLong></span>
+                    <span><BodyLong>{inntekt.stillingsprosent} %</BodyLong></span>
                   </PileDiv>
                   <PileDiv>
-                    <span><Normaltekst>{t('label:siste-lønnsendring')}</Normaltekst></span>
-                    <span><Normaltekst>{inntekt.sisteLoennsendring}</Normaltekst></span>
+                    <span><BodyLong>{t('label:siste-lønnsendring')}</BodyLong></span>
+                    <span><BodyLong>{inntekt.sisteLoennsendring}</BodyLong></span>
                   </PileDiv>
                 </ArbeidsgiverDiv>
                 <VerticalSeparatorDiv size='0.5' />

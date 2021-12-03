@@ -1,27 +1,26 @@
+import AddCircleFilled from '@navikt/ds-icons'
+import { Heading } from '@navikt/ds-react'
 import { finishMenuStatistic, logMenuStatistic, startMenuStatistic } from 'actions/statistics'
 import Kontoopplysning from 'applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning'
 import KravOmRefusjon from 'applications/SvarSed/Formaal/KravOmRefusjon/KravOmRefusjon'
 import Motregning from 'applications/SvarSed/Formaal/Motregning/Motregning'
 import ProsedyreVedUenighet from 'applications/SvarSed/Formaal/ProsedyreVedUenighet/ProsedyreVedUenighet'
 import Vedtak from 'applications/SvarSed/Formaal/Vedtak/Vedtak'
-import GreenCircle from 'assets/icons/GreenCircle'
-import RemoveCircle from 'assets/icons/RemoveCircle'
+import { NextFilled, AddCircleFilled, SuccessFilled } from '@navikt/ds-icons'
+impoty { BodyLong, Heading } from '@navikt/ds-react'
 import classNames from 'classnames'
 import { WithErrorPanel } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { FSed, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import Chevron from 'nav-frontend-chevron'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { ErrorElement } from 'declarations/app.d'
 import {
   FlexCenterDiv,
   FlexCenterSpacedDiv,
   HorizontalSeparatorDiv,
   PileCenterDiv,
   PileDiv,
-  themeKeys,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useEffect, useRef, useState } from 'react'
@@ -35,13 +34,13 @@ const LeftDiv = styled.div`
   flex: 1;
   align-self: stretch;
   min-width: 300px;
-  border-right: 1px solid ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
-  border-width: ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_WIDTH]};
+  border-right: 1px solid var(--navds-color-border);
+  border-width: 1px;
   border-style: solid;
-  border-color: ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
-  background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
-  border-top-left-radius: ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_RADIUS]};
-  border-bottom-left-radius: ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_RADIUS]};
+  border-color: var(--navds-color-border);
+  background-color: var(--navds-semantic-color-component-background-alternate);
+  border-top-left-radius: var(--navds-border-radius);
+  border-bottom-left-radius: var(--navds-border-radius);
 `
 const MenuDiv = styled.div`
   display: flex;
@@ -56,31 +55,31 @@ const MenuLabelDiv = styled(FlexCenterDiv)`
   flex: 1;
   transition: all 0.2s ease-in-out;
   &:hover {
-   background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_HOVER_COLOR]};
+   background-color: var(--navds-color-hover);
   }
    &.selected {
     font-weight: bold;
-    background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
-     border-left: 6px solid ${({ theme }: any) => theme[themeKeys.MAIN_INTERACTIVE_COLOR]};
+    background-color: var(--navds-semantic-color-component-background-alternate);
+     border-left: 6px solid var(--navds-semantic-color-interaction-primary-default);
   }
 `
 const RightDiv = styled.div`
   flex: 3;
-  border-left: 1px solid ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
+  border-left: 1px solid var(--navds-color-border);
   margin-left: -1px;
   align-self: stretch;
   position: relative;
   overflow: hidden;
 `
 const RightActiveDiv = styled.div`
-  border-width: ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_WIDTH]};
+  border-width: 1px;
   border-style: solid;
   border-left-width: 0;
-  border-color: ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
-  background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
-  border-top-right-radius: ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_RADIUS]};
-  border-bottom-right-radius: ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_RADIUS]};
-  background-color: ${({ theme }: any) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
+  border-color: var(--navds-color-border);
+  background-color: var(--navds-semantic-color-component-background-alternate);
+  border-top-right-radius: var(--navds-border-radius);
+  border-bottom-right-radius: var(--navds-border-radius);
+  background-color: var(--navds-semantic-color-component-background-alternate);
   height: 100%;
 `
 const slideIn = keyframes`
@@ -124,7 +123,7 @@ const PreviousFormDiv = styled(RightActiveDiv)`
     display: none;
   }
 `
-const MenuLabelText = styled(Normaltekst)`
+const MenuLabelText = styled(BodyLong)`
   &.selected {
     font-weight: bold;
   }
@@ -231,7 +230,7 @@ const FormålManager: React.FC<FormålManagerProps> = ({
   }
 
   const handleFeilLenkeEvent = (e: any) => {
-    const feil: FeiloppsummeringFeil = e.detail
+    const feil: ErrorElement = e.detail
     const namespaceBits = feil.skjemaelementId.split('-')
     if (namespaceBits[0] === namespace) {
       const newMenu = namespaceBits[1]
@@ -289,9 +288,9 @@ const FormålManager: React.FC<FormålManagerProps> = ({
 
   return (
     <PileDiv>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:formålmanager')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv />
       <WithErrorPanel border className={classNames({ feil: validation[namespace]?.feilmelding })}>
         <FlexCenterSpacedDiv>
@@ -310,13 +309,13 @@ const FormålManager: React.FC<FormålManagerProps> = ({
                       selected: currentMenu === menu
                     })}
                   >
-                    <Chevron type='høyre' />
+                    <NextFilled/>
                     <HorizontalSeparatorDiv size='0.5' />
                     {viewValidation && (
                       validation[namespace + '-' + menu]
                         ? (
                           <>
-                            <RemoveCircle height={20} color='red' />
+                            <ErrorFilled  color='red' />
                             <HorizontalSeparatorDiv size='0.5' />
                           </>
                           )

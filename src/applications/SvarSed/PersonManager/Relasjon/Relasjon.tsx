@@ -12,12 +12,11 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { Button, BodyLong, Heading } from '@navikt/ds-react'
 import {
   AlignCenterRow,
   Column,
-  HighContrastFlatknapp,
-  HighContrastRadioPanelGroup,
+  RadioPanelGroup,
   HorizontalSeparatorDiv,
   PaddedDiv,
   Row,
@@ -310,7 +309,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
         <VerticalSeparatorDiv size='2' />
         <Undertittel className='slideInFromLeft'>
           {t('label:relasjonens-varighet')}
-        </Undertittel>
+        </Heading>
         <VerticalSeparatorDiv />
         <Row>
           <PeriodeInput
@@ -346,14 +345,14 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
           <Column />
         </Row>
         <VerticalSeparatorDiv />
-        <Undertittel>
+        <Heading size='small'>
           {t('label:barn-i-hustand-spørsmål')}
-        </Undertittel>
+        </Heading>
         <AlignCenterRow>
           <Column flex='2'>
-            <Normaltekst>
+            <BodyLong>
               {t('label:barn-i-hustand-spørsmål-1')}
-            </Normaltekst>
+            </BodyLong>
           </Column>
           <Column>
             <HighContrastRadioPanelGroup
@@ -374,9 +373,9 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
         <VerticalSeparatorDiv size='0.2' />
         <AlignCenterRow>
           <Column flex='2'>
-            <Normaltekst>
+            <BodyLong>
               {t('label:barn-i-hustand-spørsmål-2')}
-            </Normaltekst>
+            </BodyLong>
           </Column>
           <Column>
             <HighContrastRadioPanelGroup
@@ -397,9 +396,9 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
         <VerticalSeparatorDiv size='0.2' />
         <AlignCenterRow>
           <Column flex='2'>
-            <Normaltekst>
+            <BodyLong>
               {t('label:barn-i-hustand-spørsmål-3')}
-            </Normaltekst>
+            </BodyLong>
           </Column>
           <Column>
             <HighContrastRadioPanelGroup
@@ -420,9 +419,9 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
         <VerticalSeparatorDiv size='0.2' />
         <AlignCenterRow>
           <Column flex='2'>
-            <Normaltekst>
+            <BodyLong>
               {t('label:barn-i-hustand-spørsmål-4')}
-            </Normaltekst>
+            </BodyLong>
           </Column>
           <Column>
             <HighContrastRadioPanelGroup
@@ -465,13 +464,13 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
     <PaddedDiv>
       <Undertittel className='slideInFromLeft'>
         {t('label:relasjon-til-barn')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv size='2' />
       {_.isEmpty(barnetilhoerigheter)
         ? (
-          <Normaltekst>
+          <BodyLong>
             {t('message:warning-no-relasjon')}
-          </Normaltekst>
+          </BodyLong>
           )
         : barnetilhoerigheter?.map(renderRow)}
       <VerticalSeparatorDiv size='2' />
@@ -483,15 +482,15 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
           <Row>
 
             <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                variant='tertiary'
+                size='small'
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:relasjon').toLowerCase() })}
-              </HighContrastFlatknapp>
+              </Button>
             </Column>
           </Row>
           )}

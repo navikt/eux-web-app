@@ -2,7 +2,7 @@
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 
 export interface ValidationInntektSearchProps {
@@ -29,14 +29,14 @@ export const validateInntektSearch = (
     v[namespace + '-startdato'] = {
       skjemaelementId: namespace + '-startdato',
       feilmelding: t('validation:noDate')
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   } else {
     if (!fom?.trim().match(datePattern)) {
       v[namespace + '-startdato'] = {
         feilmelding: t('validation:invalidDate'),
         skjemaelementId: namespace + '-startdato'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     } else {
       const fomDate = moment(fom, 'YYYY-MM')
@@ -44,7 +44,7 @@ export const validateInntektSearch = (
         v[namespace + '-startdato'] = {
           feilmelding: t('validation:invalidDate2015'),
           skjemaelementId: namespace + '-startdato'
-        } as FeiloppsummeringFeil
+        } as ErrorElement
         hasErrors = true
       }
     }
@@ -54,14 +54,14 @@ export const validateInntektSearch = (
     v[namespace + '-sluttdato'] = {
       skjemaelementId: namespace + '-sluttdato',
       feilmelding: t('validation:noDate')
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   } else {
     if (!(tom.trim().match(datePattern))) {
       v[namespace + '-sluttdato'] = {
         skjemaelementId: namespace + '-sluttdato',
         feilmelding: t('validation:invalidDate')
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     } else {
       const fomDate = moment(fom, 'YYYY-MM')
@@ -70,7 +70,7 @@ export const validateInntektSearch = (
         v[namespace + '-sluttdato'] = {
           feilmelding: t('validation:invalidDateFomTom'),
           skjemaelementId: namespace + '-sluttdato'
-        } as FeiloppsummeringFeil
+        } as ErrorElement
         hasErrors = true
       }
     }
@@ -80,7 +80,7 @@ export const validateInntektSearch = (
     v[namespace + '-inntektsliste'] = {
       skjemaelementId: namespace + '-inntektsliste',
       feilmelding: t('validation:noInntektsliste')
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 

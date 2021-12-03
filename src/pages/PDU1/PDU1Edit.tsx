@@ -1,4 +1,5 @@
 import { Download, Sight } from '@navikt/ds-icons'
+import { Loader } from '@navikt/ds-react'
 import { resetCurrentEntry, saveEntry } from 'actions/localStorage'
 import {
   completePdu1,
@@ -20,15 +21,12 @@ import FileFC from 'forhandsvisningsfil'
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
-import { VenstreChevron } from 'nav-frontend-chevron'
+import { BackFilled } from '@navikt/ds-icons'
+import { Button, Link } from '@navikt/ds-react'
 import {
   FlexCenterDiv,
   FlexCenterSpacedDiv,
   FlexDiv,
-  HighContrastFlatknapp,
-  HighContrastHovedknapp,
-  HighContrastKnapp,
-  HighContrastLink,
   HorizontalSeparatorDiv,
   PaddedDiv,
   PileCenterDiv,
@@ -165,14 +163,13 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
       {completePdu1Response && (
         <Modal
           open={completeModal}
-          highContrast={highContrast}
           modal={{
             closeButton: true,
             modalTitle: t('message:success-complete-pdu1'),
             modalContent: (
               <FlexCenterDiv style={{ minWidth: '400px', minHeight: '100px' }}>
                 <PileCenterDiv style={{ alignItems: 'center', width: '100%' }}>
-                  <HighContrastLink
+                  <Link
                     onClick={(e: any) => {
                       e.stopPropagation()
                     }}
@@ -184,7 +181,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
                       <HorizontalSeparatorDiv />
                       <Download width={20} />
                     </FlexDiv>
-                  </HighContrastLink>
+                  </Link>
                 </PileCenterDiv>
               </FlexCenterDiv>
             ),
@@ -199,7 +196,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
       )}
       <Modal
         open={previewModal}
-        highContrast={highContrast}
         modal={{
           closeButton: true,
           modalContent: (
@@ -227,14 +223,15 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
         onModalClose={() => setViewSavePdu1Modal(false)}
       />
       <FlexCenterSpacedDiv>
-        <HighContrastKnapp
-          kompakt
+        <Button
+          variant='secondary'
+          size='small'
           onClick={onGoBackClick}
         >
-          <VenstreChevron />
+          <BackFilled />
           <HorizontalSeparatorDiv size='0.5' />
           {t('label:tilbake')}
-        </HighContrastKnapp>
+        </Button>
       </FlexCenterSpacedDiv>
       <VerticalSeparatorDiv size='2' />
       <PersonManager
@@ -244,48 +241,49 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
         viewValidation={view}
       />
       <VerticalSeparatorDiv size='2' />
-      <HighContrastFlatknapp
-        mini
-        kompakt
+      <Button
+        variant='tertiary'
+        size='small'
         disabled={gettingPreviewPdu1}
-        spinner={gettingPreviewPdu1}
         data-amplitude='pdu1.editor.preview'
         onClick={onPreviewPdu1Clicked}
       >
         <Sight />
         <HorizontalSeparatorDiv size='0.5' />
         {gettingPreviewPdu1 ? t('label:laster-ned-filen') : t('el:button-preview-x', { x: 'PD U1' })}
-      </HighContrastFlatknapp>
+        {gettingPreviewPdu1 && <Loader/>}
+      </Button>
       <VerticalSeparatorDiv size='2' />
       <ValidationBox />
       <VerticalSeparatorDiv size='2' />
       <FlexDiv>
         <div>
-          <HighContrastHovedknapp
-            mini
+          <Button
+            variant='primary'
             data-amplitude='pdu1.editor.opprett'
             onClick={completePdu1Clicked}
             disabled={completingPdu1 || !_.isEmpty(completePdu1Response)}
-            spinner={completingPdu1}
           >
             {completingPdu1
               ? t('message:loading-opprette-pdu1')
               : t('label:opprett-pdu1')}
-          </HighContrastHovedknapp>
+            {completingPdu1 && <Loader/>}
+          </Button>
           <VerticalSeparatorDiv size='0.5' />
         </div>
         <HorizontalSeparatorDiv />
 
         <div>
-          <HighContrastKnapp
+          <Button
+            variant='secondary'
+            size='small'
             data-amplitude={_.isNil(currentEntry) ? 'pdu1.editor.savedraft' : 'pdu1.editor.updatedraft'}
-            mini
             onClick={onSavePdu1Click}
           >
             {_.isNil(currentEntry)
               ? t('el:button-save-draft-x', { x: 'PD U1' })
               : t('el:button-update-draft-x', { x: 'PD U1' })}
-          </HighContrastKnapp>
+          </Button>
           <VerticalSeparatorDiv size='0.5' />
         </div>
       </FlexDiv>

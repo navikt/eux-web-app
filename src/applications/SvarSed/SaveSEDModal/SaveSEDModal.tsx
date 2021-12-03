@@ -4,14 +4,10 @@ import { AlertstripeDiv } from 'components/StyledComponents'
 import { ReplySed } from 'declarations/sed'
 import { LocalStorageEntry, Validation } from 'declarations/types'
 import _ from 'lodash'
-import AlertStripe from 'nav-frontend-alertstriper'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
-import { Undertittel } from 'nav-frontend-typografi'
+import { ErrorElement } from 'declarations/app.d'
+import { Alert, Button, Heading } from '@navikt/ds-react'
 import {
   FlexCenterSpacedDiv,
-  HighContrastFlatknapp,
-  HighContrastHovedknapp,
-  HighContrastInput,
   HorizontalSeparatorDiv,
   PileDiv,
   VerticalSeparatorDiv
@@ -20,6 +16,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
+import Input from 'components/Forms/Input'
 
 const MinimalModalDiv = styled.div`
   min-height: 200px;
@@ -74,7 +71,7 @@ const SendSEDModal = ({
       validation['savesedmodal-name'] = {
         skjemaelementId: 'savesedmodal-name',
         feilmelding: t('validation:noNavn')
-      } as FeiloppsummeringFeil
+      } as ErrorElement
     }
     setValidation(validation)
     return hasNoValidationErrors(validation)
@@ -103,16 +100,16 @@ const SendSEDModal = ({
         closeButton: false,
         modalContent: (
           <MinimalModalDiv>
-            <Undertittel>
+            <Heading size='small'>
               {t('label:save-sed')}
-            </Undertittel>
+            </Heading>
             <VerticalSeparatorDiv />
             {_message && (
               <>
                 <AlertstripeDiv>
-                  <AlertStripe type='suksess'>
+                  <Alert variant='success'>
                     {t(_message)}
-                  </AlertStripe>
+                  </Alert>
                 </AlertstripeDiv>
                 <VerticalSeparatorDiv />
               </>
@@ -123,12 +120,12 @@ const SendSEDModal = ({
                   <PileDiv style={{ alignItems: 'flex-start' }}>
                     <div>
                       <FlexCenterSpacedDiv>
-                        <HighContrastInput
+                        <Input
                           data-test-id='savesedmodal-name'
                           feil={_validation['savesedmodal-name']?.feilmelding}
                           id='savesedmodal-name'
                           label={t('label:navn')}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                          onChanged={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                           placeholder={t('el:placeholder-input-default')}
                           value={_name}
                         />
@@ -143,30 +140,30 @@ const SendSEDModal = ({
                 {!_saved
                   ? (
                     <div>
-                      <HighContrastHovedknapp
-                        mini
+                      <Button
+                        variant='primary'
                         onClick={onSave}
                       >
                         {t('el:button-save-draft-x', { x: 'svarSED' })}
-                      </HighContrastHovedknapp>
+                      </Button>
                       <HorizontalSeparatorDiv />
-                      <HighContrastFlatknapp
-                        mini
+                      <Button
+                        variant='secondary'
                         onClick={onModalClose}
                       >
                         {t('el:button-cancel')}
-                      </HighContrastFlatknapp>
+                      </Button>
 
                     </div>
                     )
                   : (
                     <div>
-                      <HighContrastHovedknapp
-                        mini
+                      <Button
+                        variant='primary'
                         onClick={onModalClose}
                       >
                         {t('el:button-close')}
-                      </HighContrastHovedknapp>
+                      </Button>
                     </div>
                     )}
               </SectionDiv>

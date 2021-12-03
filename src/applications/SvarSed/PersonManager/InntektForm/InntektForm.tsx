@@ -1,4 +1,5 @@
-import { Add } from '@navikt/ds-icons'
+import CollapseFilled from '@navikt/ds-icons'
+import ExpandFilled, { Add } from '@navikt/ds-icons'
 import { fetchInntekt } from 'actions/inntekt'
 import { resetValidation } from 'actions/validation'
 import Inntekter from 'applications/SvarSed/PersonManager/InntektForm/Inntekter'
@@ -22,13 +23,12 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import Chevron from 'nav-frontend-chevron'
-import { Ingress, Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { ExpandFilled, CollapseFilled } from '@navikt/ds-icons'
+import { Button, Ingress, BodyLong, Heading } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
   FlexCenterDiv,
-  HighContrastFlatknapp,
   HorizontalSeparatorDiv,
   PaddedDiv,
   Row,
@@ -268,18 +268,18 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
           <Column>
             {index >= 0 && (
               <div className='nolabel'>
-                <HighContrastFlatknapp
-                  mini
-                  kompakt
+                <Button
+                  variant='tertiary'
+                  size='small'
                   onClick={() => toggleVisibility(index)}
                 >
                   <FlexCenterDiv>
-                    <Chevron type={visible ? 'opp' : 'ned'} />
+                    {visible ? <CollapseFilled/> : <ExpandFilled/>}
                     <HorizontalSeparatorDiv size='0.35' />
                     {visible ? t('label:show-less') : t('label:show-more')}
                   </FlexCenterDiv>
 
-                </HighContrastFlatknapp>
+                </Button>
               </div>
             )}
           </Column>
@@ -354,15 +354,15 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
 
   return (
     <PaddedDiv>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:inntekt')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv size='2' />
       {_.isEmpty(loennsopplysninger)
         ? (
-          <Normaltekst>
+          <BodyLong>
             {t('message:warning-no-inntekt')}
-          </Normaltekst>
+          </BodyLong>
           )
         : loennsopplysninger?.map(renderRow)}
       <VerticalSeparatorDiv size='2' />
@@ -373,15 +373,15 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
         : (
           <Row>
             <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                variant='tertiary'
+                size='small'
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-xs', { x: t('label:loennsopplysninger').toLowerCase() })}
-              </HighContrastFlatknapp>
+              </Button>
             </Column>
           </Row>
           )}
@@ -390,9 +390,9 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow className='slideInFromLeft'>
         <Column>
-          <Undertittel>
+          <Heading size='small'>
             {t('label:inntekt-fra-komponent')}
-          </Undertittel>
+          </Heading>
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
@@ -422,9 +422,9 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       {arbeidsperioder?.arbeidsperioder && (
         <>
-          <Undertittel>
+          <Heading size='small'>
             {t('label:arbeidsperioder')}
-          </Undertittel>
+          </Heading>
           <VerticalSeparatorDiv size='2' />
           {arbeidsperioder?.arbeidsperioder?.map(a => {
             const period: PeriodeMedForsikring = arbeidsgiverToPeriodeMedForsikring(a)

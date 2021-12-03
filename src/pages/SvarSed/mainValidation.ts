@@ -52,7 +52,7 @@ import {
 } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 import { isFSed, isHSed, isUSed } from 'utils/sed'
 
@@ -353,7 +353,7 @@ export const validateSEDSearch = (
     v['sedsearch-saksnummerOrFnr'] = {
       feilmelding: t('validation:noSaksnummerOrFnr'),
       skjemaelementId: 'sedsearch-saksnummerOrFnr'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
   return hasErrors
@@ -378,7 +378,7 @@ export const validateSEDEdit = (
       v['editor-formål'] = {
         feilmelding: t('validation:noFormaal'),
         skjemaelementId: 'editor-formål'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
 
@@ -408,14 +408,14 @@ export const validateSEDEdit = (
       v['editor-tema'] = {
         feilmelding: t('validation:noTema'),
         skjemaelementId: 'editor-tema'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     } else {
       if ((replySed as HSed).tema === 'GEN') {
         v['editor-tema'] = {
           feilmelding: t('validation:invalidTema'),
           skjemaelementId: 'editor-tema'
-        } as FeiloppsummeringFeil
+        } as ErrorElement
         hasErrors = true
       }
     }
@@ -426,7 +426,7 @@ export const validateSEDEdit = (
     v['editor-ytterligereInfo'] = {
       feilmelding: t('validation:textOver500Til', { person: 'SED' }),
       skjemaelementId: 'editor-ytterligereInfo'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 

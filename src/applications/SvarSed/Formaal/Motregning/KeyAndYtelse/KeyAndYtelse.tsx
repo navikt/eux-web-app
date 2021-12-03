@@ -9,11 +9,10 @@ import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { BodyLong, Heading, Button } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
-  HighContrastFlatknapp,
   HorizontalSeparatorDiv,
   Row,
   VerticalSeparatorDiv
@@ -200,15 +199,15 @@ const KeyAndYtelseFC: React.FC<KeyAndYtelseProps> = ({
 
   return (
     <MyPaddedDiv>
-      <Undertittel>
+      <Heading size='medium'>
         {t('label:barna-og-betegnelse-på-ytelse')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv />
       {_.isEmpty(keyAndYtelses)
         ? (
-          <Normaltekst>
+          <BodyLong>
             {t('message:warning-no-barn')}
-          </Normaltekst>
+          </BodyLong>
           )
         : keyAndYtelses?.map(renderRow)}
       <VerticalSeparatorDiv />
@@ -219,16 +218,16 @@ const KeyAndYtelseFC: React.FC<KeyAndYtelseProps> = ({
         : (
           <Row className='slideInFromLeft'>
             <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                size='small'
+                variant='tertiary'
                 data-test-id={namespace + '-new'}
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:betegnelse-på-ytelse').toLowerCase() })}
-              </HighContrastFlatknapp>
+              </Button>
             </Column>
           </Row>
           )}

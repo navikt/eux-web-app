@@ -13,11 +13,10 @@ import { Country, CountryFilter } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { Normaltekst, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
+import { Button, BodyLong, Detail, Heading } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
-  HighContrastFlatknapp,
   HorizontalSeparatorDiv,
   PaddedDiv,
   VerticalSeparatorDiv
@@ -191,30 +190,30 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
 
   return (
     <PaddedDiv key={namespace + '-div'}>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:nasjonalitet')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>
           {!_.isEmpty(statsborgerskaper)
             ? (
-              <UndertekstBold>
+              <Detail>
                 {t('label:nasjonalitet') + ' *'}
-              </UndertekstBold>
+              </Detail>
               )
             : (
-              <Normaltekst>
+              <BodyLong>
                 {t('message:warning-no-satsborgerskap')}
-              </Normaltekst>
+              </BodyLong>
               )}
         </Column>
         {isUSed(replySed!)
           ? (
             <Column>
-              <UndertekstBold>
+              <Detail>
                 {t('label:fra-dato')}
-              </UndertekstBold>
+              </Detail>
             </Column>
             )
           : <Column />}
@@ -230,15 +229,15 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
         : (
           <AlignStartRow>
             <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                variant='tertiary'
+                size='small'
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:nasjonalitet').toLowerCase() })}
-              </HighContrastFlatknapp>
+              </Button>
 
             </Column>
           </AlignStartRow>

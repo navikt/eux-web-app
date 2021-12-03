@@ -13,13 +13,10 @@ import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { UndertekstBold } from 'nav-frontend-typografi'
+import { Button, Detail, Radio, RadioGroup } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
-  HighContrastFlatknapp,
-  HighContrastRadio,
-  HighContrastRadioGroup,
   HorizontalSeparatorDiv,
   Row,
   VerticalSeparatorDiv
@@ -431,15 +428,15 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
                 : (
                   <Row>
                     <Column>
-                      <HighContrastFlatknapp
-                        mini
-                        kompakt
+                      <Button
+                        variant='tertiary'
+                        size='small'
                         onClick={() => _setSeeNewForm(true)}
                       >
                         <Add />
                         <HorizontalSeparatorDiv size='0.5' />
                         {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-                      </HighContrastFlatknapp>
+                      </Button>
                     </Column>
                   </Row>
                   )}
@@ -494,15 +491,15 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
             : (
               <Row>
                 <Column>
-                  <HighContrastFlatknapp
-                    mini
-                    kompakt
+                  <Button
+                    variant='tertiary'
+                    size='small'
                     onClick={() => _setSakseierSeeNewForm(true)}
                   >
                     <Add />
                     <HorizontalSeparatorDiv size='0.5' />
                     {t('el:button-add-new-x', { x: t('label:motpart-sakseier').toLowerCase() })}
-                  </HighContrastFlatknapp>
+                  </Button>
                 </Column>
               </Row>
               )}

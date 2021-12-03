@@ -21,14 +21,12 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
-import { Ingress, Normaltekst, Undertittel } from 'nav-frontend-typografi'
+import { ErrorElement } from 'declarations/app'
+import { Ingress, BodyLong, Heading, Checkbox, Button } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
-  HighContrastCheckbox,
-  HighContrastFlatknapp,
-  HighContrastRadioPanelGroup,
+  RadioPanelGroup,
   HorizontalSeparatorDiv,
   PaddedDiv,
   Row,
@@ -282,7 +280,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
       newValidation[namespace + '-vedtaksperioder-vedtak'] = {
         feilmelding: t('validation:noVedtakTypeTil', { person: t('label:vedtak') }),
         skjemaelementId: namespace + '-vedtaksperioder-vedtak'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       _setVedtaksperioderValidation(newValidation)
       return false
     }
@@ -397,7 +395,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
         )}
         <AlignStartRow>
           <Column>
-            <HighContrastRadioPanelGroup
+            <PanelGroup
               checked={index < 0 ? _newVedtaksperioderSkalYtelseUtbetales : vedtaksperiode?.skalYtelseUtbetales}
               data-test-id={namespace + '-vedtaksperioder' + getIdx(index) + '-skalYtelseUtbetales'}
               data-no-border
@@ -432,13 +430,13 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
 
   return (
     <PaddedDiv>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:vedtak')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv size='2' />
       <Row>
         <Column flex='2'>
-          <HighContrastRadioPanelGroup
+          <RadioPanelGroup
             checked={vedtak?.gjelderAlleBarn}
             data-no-border
             data-test-id={namespace + '-gjelderAlleBarn'}
@@ -476,11 +474,12 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
                 className={classNames('slideInFromLeft')}
                 style={{ animationDelay: (index * 0.1) + 's' }}
               >
-                <HighContrastCheckbox
+                <Checkbox
                   checked={checked}
-                  label={vedtakBarn.fornavn + ' ' + (vedtakBarn.etternavn ?? '') + ' (' + vedtakBarn.foedselsdato + ')'}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangedBarnaCheckbox(vedtakBarn, e.target.checked)}
-                />
+                >
+                  {vedtakBarn.fornavn + ' ' + (vedtakBarn.etternavn ?? '') + ' (' + vedtakBarn.foedselsdato + ')'}
+                </Checkbox>
                 <VerticalSeparatorDiv size='0.5' />
               </div>
             )
@@ -488,15 +487,15 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
         </div>
       )}
       <VerticalSeparatorDiv size='2' />
-      <Undertittel>
+      <Heading size='small'>
         {t('label:periode')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv />
       {_.isEmpty(vedtak?.vedtaksperioder)
         ? (
-          <Normaltekst>
+          <BodyLong>
             {t('message:warning-no-periods')}
-          </Normaltekst>
+          </BodyLong>
           )
         : vedtak?.vedtaksperioder?.map(renderPeriode)}
       <VerticalSeparatorDiv size='2' />
@@ -507,15 +506,15 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
         : (
           <Row className='slideInFromLeft'>
             <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                variant='tertiary'
+                size='small'
                 onClick={() => _setSeeNewPerioderForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-              </HighContrastFlatknapp>
+              </Button>
             </Column>
           </Row>
           )}
@@ -590,15 +589,15 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />
-      <Undertittel>
+      <Heading size='small'>
         {t('label:perioder')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv />
       {(_.isEmpty(vedtak?.primaerkompetanseArt58) && _.isEmpty(vedtak?.sekundaerkompetanseArt58) &&
       _.isEmpty(vedtak?.primaerkompetanseArt68) && _.isEmpty(vedtak?.sekundaerkompetanseArt68)) && (
-        <Normaltekst>
+        <BodyLong>
           {t('message:warning-no-periods')}
-        </Normaltekst>
+        </BodyLong>
       )}
       {['primaerkompetanseArt58', 'sekundaerkompetanseArt58', 'primaerkompetanseArt68', 'sekundaerkompetanseArt68'].map(vedtaktype => {
         const perioder: Array<VedtakPeriode> | undefined | null = _.get(vedtak, vedtaktype)
@@ -625,15 +624,15 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
         : (
           <Row className='slideInFromLeft'>
             <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                variant='tertiary'
+                size='small'
                 onClick={() => _setSeeNewVedtaksperioderForm(true)}
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-              </HighContrastFlatknapp>
+              </Button>
             </Column>
           </Row>
           )}

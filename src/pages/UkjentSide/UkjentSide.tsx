@@ -1,8 +1,6 @@
 import { Container, Content, Margin } from 'nav-hoykontrast'
 import TopContainer from 'components/TopContainer/TopContainer'
-import Alertstripe from 'nav-frontend-alertstriper'
-import Lenke from 'nav-frontend-lenker'
-import { Systemtittel } from 'nav-frontend-typografi'
+import { Alert, Link, Heading } from '@navikt/ds-react'
 import PT from 'prop-types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -16,15 +14,18 @@ const UkjentSide: React.FC = (): JSX.Element => {
       <Container>
         <Margin />
         <Content>
-          <Alertstripe type='advarsel'>
-            <Systemtittel>
+          <Alert variant='warning'>
+            <Heading size='medium'>
               {t('message:error-unknownPage-cantFindRoute', { pathname: location.pathname })}
-            </Systemtittel>
-          </Alertstripe>
+            </Heading>
+          </Alert>
           <p>{t('message:error-unknownPage-description')}</p>
-          <Lenke href='/' ariaLabel={t('message:error-unknownPage-linkToRoot-ariaLabel')}>
+          <Link
+            href='/'
+            ariaLabel={t('message:error-unknownPage-linkToRoot-ariaLabel')}
+          >
             {t('message:error-unknownPage-linkToRoot')}
-          </Lenke>
+          </Link>
         </Content>
         <Margin />
       </Container>

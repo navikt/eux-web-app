@@ -2,7 +2,7 @@ import { validatePeriode } from 'components/Forms/validation'
 import { Vedtak, VedtakPeriode, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { FeiloppsummeringFeil } from 'nav-frontend-skjema'
+import { ErrorElement } from 'applications/app.d'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
@@ -59,7 +59,7 @@ export const validateVedtakPeriode = (
       v[namespace + '-perioder' + idx + '-startdato'] = {
         feilmelding: t('validation:duplicateStartdatoTil', { person: formalName }),
         skjemaelementId: namespace + '-perioder' + idx + '-startdato'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
   }
@@ -104,7 +104,7 @@ export const validateVedtakVedtaksperiode = (
       v[namespace + '-vedtaksperioder' + idx + '-periode-startdato'] = {
         feilmelding: t('validation:duplicateStartdatoTil', { person: formalName }),
         skjemaelementId: namespace + '-vedtaksperioder' + idx + '-periode-startdato'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
   }
@@ -113,7 +113,7 @@ export const validateVedtakVedtaksperiode = (
     v[namespace + '-vedtaksperioder' + idx + '-skalYtelseUtbetales'] = {
       feilmelding: t('validation:noSkalYtelseUtbetalesTil', { person: formalName }),
       skjemaelementId: namespace + '-vedtaksperioder' + idx + '-skalYtelseUtbetales'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
   return hasErrors
@@ -140,7 +140,7 @@ export const validateVedtak = (
     v[namespace + '-gjelderAlleBarn'] = {
       feilmelding: t('validation:noBarnValgtTil', { person: formalName }),
       skjemaelementId: namespace + '-gjelderAlleBarn'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -153,7 +153,7 @@ export const validateVedtak = (
     v[namespace + '-vedtakstype'] = {
       feilmelding: t('validation:noVedtakTypeTil', { person: formalName }),
       skjemaelementId: namespace + '-vedtakstype'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -161,14 +161,14 @@ export const validateVedtak = (
     v[namespace + '-vedtaksdato'] = {
       feilmelding: t('validation:noDateTil', { person: formalName }),
       skjemaelementId: namespace + '-vedtaksdato'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   } else {
     if (!vedtak?.vedtaksdato?.trim().match(datePattern)) {
       v[namespace + '-vedtaksdato'] = {
         skjemaelementId: namespace + '-vedtaksdato',
         feilmelding: t('validation:invalidDateTil', { person: formalName })
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
   }
@@ -177,14 +177,14 @@ export const validateVedtak = (
     v[namespace + '-begrunnelse'] = {
       feilmelding: t('validation:noBegrunnelseTil', { person: formalName }),
       skjemaelementId: namespace + '-begrunnelse'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   } else {
     if (vedtak?.begrunnelse?.trim()?.length > 500) {
       v[namespace + '-begrunnelse'] = {
         feilmelding: t('validation:textOver500Til', { person: formalName }),
         skjemaelementId: namespace + '-begrunnelse'
-      } as FeiloppsummeringFeil
+      } as ErrorElement
       hasErrors = true
     }
   }
@@ -193,7 +193,7 @@ export const validateVedtak = (
     v[namespace + '-ytterligereInfo'] = {
       feilmelding: t('validation:textOver500Til', { person: formalName }),
       skjemaelementId: namespace + '-ytterligereInfo'
-    } as FeiloppsummeringFeil
+    } as ErrorElement
     hasErrors = true
   }
 
@@ -217,8 +217,8 @@ export const validateVedtak = (
     const namespaceBits = namespace.split('-')
     const mainNamespace = namespaceBits[0]
     const formaalNamespace = mainNamespace + '-' + namespaceBits[1]
-    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
-    v[formaalNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as FeiloppsummeringFeil
+    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+    v[formaalNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
   }
   return hasErrors
 }

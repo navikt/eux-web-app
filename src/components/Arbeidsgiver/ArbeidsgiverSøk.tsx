@@ -6,8 +6,8 @@ import { State } from 'declarations/reducers'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { Normaltekst } from 'nav-frontend-typografi'
-import { AlignEndRow, AlignStartRow, Column, HighContrastKnapp, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { Button, BodyLong } from '@navikt/ds-react'
+import { AlignEndRow, AlignStartRow, Column, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -135,10 +135,10 @@ const ArbeidsgiverSøk: React.FC<ArbeidsgiverSøkProps> = ({
           />
         </Column>
         <Column>
-          <HighContrastKnapp
+          <Button
+            variant='secondary'
             className='nolabel'
             disabled={gettingArbeidsperioder || _.isNil(fnr)}
-            spinner={gettingArbeidsperioder}
             onClick={getArbeidsperioder}
           >
             <Search />
@@ -146,7 +146,8 @@ const ArbeidsgiverSøk: React.FC<ArbeidsgiverSøkProps> = ({
             {gettingArbeidsperioder
               ? t('message:loading-searching')
               : t('el:button-search-for-x', { x: t('label:arbeidsperioder') })}
-          </HighContrastKnapp>
+            {gettingArbeidsperioder && <Loader/>}
+          </Button>
         </Column>
       </AlignStartRow>
       {_.isNil(fnr) && _.isFunction(fillOutFnr) && (
@@ -155,9 +156,9 @@ const ArbeidsgiverSøk: React.FC<ArbeidsgiverSøkProps> = ({
           <AlignEndRow>
             <Column>
               <HorizontalSeparatorDiv size='0.35' />
-              <Normaltekst>
+              <BodyLong>
                 {t('message:error-no-fnr')}
-              </Normaltekst>
+              </BodyLong>
               <HorizontalSeparatorDiv size='0.35' />
               <Link
                 to='#' onClick={() => {

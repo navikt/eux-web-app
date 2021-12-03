@@ -1,11 +1,8 @@
 import PersonCard from 'applications/OpprettSak/PersonCard/PersonCard'
-import { AlertstripeDiv } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { Person } from 'declarations/types'
 import _ from 'lodash'
-import AlertStripe from 'nav-frontend-alertstriper'
-import { Input } from 'nav-frontend-skjema'
-import { HighContrastKnapp } from 'nav-hoykontrast'
+import { Alert, TextField, Button } from '@navikt/ds-react'
 import PT from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -18,10 +15,10 @@ const PersonSearchPanel = styled.div`
   display: flex;
   flex-direction: row;
 `
-const PersonSearchInput = styled(Input)`
+const PersonSearchInput = styled(TextField)`
   min-width: 24.5em;
 `
-const Button = styled(HighContrastKnapp)`
+const MyButton = styled(Button)`
   display: flex;
   flex: 0;
   height: 2.4em;
@@ -136,18 +133,16 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
           onChange={onChange}
           feil={feil ?? localValidation}
         />
-        <Button onClick={sokEtterPerson} disabled={gettingPerson}>
+        <MyButton onClick={sokEtterPerson} disabled={gettingPerson}>
           {gettingPerson
             ? <WaitingPanel size='S' message={t('message:loading-searching')} oneLine />
             : t('el:button-search')}
-        </Button>
+        </MyButton>
       </PersonSearchPanel>
       {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (
-        <AlertstripeDiv>
-          <AlertStripe type='advarsel'>
-            {alertMessage}
-          </AlertStripe>
-        </AlertstripeDiv>
+        <Alert variant='warning'>
+          {alertMessage}
+        </Alert>
       )}
       {person && isPersonValid(person) && (
         <PersonCard
@@ -165,7 +160,7 @@ PersonSearch.propTypes = {
   onFnrChange: PT.func,
   onPersonFound: PT.func,
   resetAllValidation: PT.func.isRequired
-  // validation: FeiloppsummeringFeilPropType
+  // validation: ErrorElementPropType
 }
 
 export default PersonSearch

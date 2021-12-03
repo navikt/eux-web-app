@@ -12,11 +12,10 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
-import { Normaltekst, UndertekstBold, Undertittel } from 'nav-frontend-typografi'
+import { Button, BodyLong, Detail, Heading } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
-  HighContrastFlatknapp,
   HorizontalSeparatorDiv,
   Row,
   VerticalSeparatorDiv
@@ -159,9 +158,9 @@ const Avsenderlandet: React.FC<PersonManagerFormProps> = ({
 
   return (
     <>
-      <Undertittel>
+      <Heading size='small'>
         {t('label:periods-in-sender-country')}
-      </Undertittel>
+      </Heading>
       <VerticalSeparatorDiv size={2} />
       <UndertekstBold>
         {t('label:medlemsperiode')}
@@ -169,9 +168,9 @@ const Avsenderlandet: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv />
       {_.isEmpty(perioderMedTrygd)
         ? (
-          <Normaltekst>
+          <BodyLong>
             {t('message:warning-no-periods')}
-          </Normaltekst>
+          </BodyLong>
           )
         : perioderMedTrygd.sort((a, b) =>
           moment(a.startdato, 'YYYY-MM-DD').isSameOrBefore(moment(b.startdato, 'YYYY-MM-DD'))
@@ -187,9 +186,9 @@ const Avsenderlandet: React.FC<PersonManagerFormProps> = ({
         : (
           <Row>
             <Column>
-              <HighContrastFlatknapp
-                mini
-                kompakt
+              <Button
+                variant='tertiary'
+                size='small'
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
